@@ -1,3 +1,26 @@
 // Place all the styles related to the Plannings controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+// = require leaflet
+// = require leaflet.ie
+// = require leaflet_numbered_markers
+
+.routes {
+  overflow-y: auto;
+  height: 600px;
+  padding: 0px;
+  margin: 0px;
+
+  .route {
+    list-style-type: none;
+    margin-bottom: 1em;
+  }
+}
+
+#map {
+  height: 600px;
+}
+
+.placeholder {
+  list-style-type: none;
+}

@@ -1,4 +1,6 @@
-json.array!(@destinations) do |destination|
-  json.extract! destination, :name, :street, :postalcode, :city, :lat, :lng, :quantity, :open, :close, :user_id
-  json.url destination_url(destination, format: :json)
+json.tags do
+  json.array! @tags, :id, :label
+end
+json.destinations do
+  json.array! @destinations, partial: 'destinations/show', as: :destination
 end

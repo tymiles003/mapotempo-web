@@ -1,7 +1,22 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+mapbox = Layer.create!("name"=>"MapBox Street", "url"=>"http://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png", "attribution"=>"Tiles by MapBox")
+Layer.create!("name"=>"Mapnik", "url"=>"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "attribution"=>"Tiles by OpenStreetMap")
+Layer.create!("name"=>"Mapnik-fr", "url"=>"http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", "attribution"=>"Tiles by OpenStreetMap-France")
+Layer.create!("name"=>"Mapnik B&W", "url"=>"http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png", "attribution"=>"Tiles by Wikimedia")
+Layer.create!("name"=>"MapQuest", "url"=>"http://otile2.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", "attribution"=>"Tiles by MapQuest")
+Layer.create!("name"=>"Stamen B&W", "url"=>"http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", "attribution"=>"Tiles by Stamen Design")
+admin = User.create!("email"=>"admin@admin.com", "password"=>"123456789", "admin"=>true)
+fred = User.create!("email"=>"user@user.com", "password"=>"123456789", "max_vehicles"=>3, "layer"=>mapbox)
+toto = User.create!("email"=>"toto@toto.com", "password"=>"123456789")
+Vehicle.create!("capacity"=>100, "user"=>fred, "name"=>"Renault Kangoo")
+Vehicle.create!("capacity"=>100, "user"=>fred, "name"=>"Fiat Vito")
+store = Destination.create!("name"=>"Store", "street"=>"Rue du Commandant Marchant", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.83423, "lng"=>-0.60068)
+fred.store_id = store.id
+fred.save
+Destination.create!("name"=>"l1", "street"=>"Place Picard", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.84512, "lng"=>-0.578, "quantity"=>1, "user"=>fred)
+Destination.create!("name"=>"l2", "street"=>"Rue Esprit des Lois", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.83395, "lng"=>-0.56545, "quantity"=>1, "user"=>fred)
+Destination.create!("name"=>"l3", "street"=>"Rue de Nuits", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.84272, "lng"=>-0.55013, "quantity"=>1, "user"=>fred)
+Destination.create!("name"=>"l4", "street"=>"Rue de New York", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.86576, "lng"=>-0.57577, "quantity"=>1, "user"=>fred)
+Planning.create!("name"=>"P1", "user"=>fred)
+Tag.create!("label"=>"lundi", "user"=>fred)
+Tag.create!("label"=>"jeudi", "user"=>fred)
+Tag.create!("label"=>"frigo", "user"=>fred)

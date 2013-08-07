@@ -14,4 +14,11 @@
 //= require jquery_ujs
 //= require twbs/bootstrap
 //= require turbolinks
+//= require jquery.ui.sortable
+//= require jquery.ui.autocomplete
+//= require jquery.ui.dialog
+//= require leaflet
+//= require mustache
+//= require select2
 //= require_tree .
+//= require_tree ../../templates

@@ -1,4 +1,4 @@
-<%= form_for(@planning) do |f| %>
+<%= form_for @planning, html:{class:"form-horizontal"} do |f| %>
   <% if @planning.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@planning.errors.count, "error") %> prohibited this planning from being saved:</h2>
@@ -11,15 +11,27 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="row">
+    <%= f.label :name, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><%= f.text_field :name, class:"form-control" %></span>
   </div>
-  <div class="field">
-    <%= f.label :user %><br>
-    <%= f.text_field :user %>
+  <div class="row">
+    <%= f.label :tags, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4 input-group">
+      <%= select_tag 'tags[]', options_from_collection_for_select(current_user.tags, :id, :label), multiple: true %>
+      <span class="input-group-addon input-small"><i class="icon-tags"></i></span>
+    </span>
+    <script>
+$('[name=tags\\[\\]]').select2({
+  allow_single_deselect: true,
+  no_results_text: 'No results matched',
+  width: '100%'
+});
+    </script>
   </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="row">
+    <div class="col-lg-offset-2">
+      <%= f.submit class:"btn btn-primary" %>
+    </div>
   </div>
 <% end %>

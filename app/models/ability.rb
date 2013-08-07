@@ -10,6 +10,7 @@ class Ability
       else
         can :manage, User, :id => user.id
         can :manage, Vehicle, :user_id => user.id
+        can :manage, Destination, :id => user.store_id
         can :manage, Destination, :user_id => user.id
         can :manage, Planning, :user_id => user.id
       end

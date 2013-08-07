@@ -1,5 +1,6 @@
 class PlanningsController < ApplicationController
-  before_action :set_planning, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource :except => :create
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch]
 
   # GET /plannings
   # GET /plannings.json
@@ -25,11 +26,17 @@ class PlanningsController < ApplicationController
   # POST /plannings.json
   def create
     @planning = Planning.new(planning_params)
+    @planning.user = current_user
+    if params[:tags]
+      @planning.tags = current_user.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
+    end
+
+    @planning.default_routes
 
     respond_to do |format|
       if @planning.save
-        format.html { redirect_to @planning, notice: 'Planning was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @planning }
+        format.html { redirect_to edit_planning_path(@planning), notice: 'Planning was successfully created.' }
+        format.json { head :no_content }
       else
         format.html { render action: 'new' }
         format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -61,14 +68,60 @@ class PlanningsController < ApplicationController
     end
   end
 
+  def move
+    destinations = Hash[current_user.destinations.map{ |d| [d.id, d] }]
+    destinations[current_user.store_id] = current_user.store
+    routes = Hash[@planning.routes.map{ |route| [String(route.id), route] }]
+    params["_json"].each{ |r|
+      route = routes[r[:route]]
+      if r[:destinations]
+        route.set_destinations(r[:destinations].collect{ |d| [destinations[d[:id]], !!d[:active]] })
+      end
+    }
+
+    respond_to do |format|
+      if @planning.save
+        format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def refresh
+    @planning.compute
+    respond_to do |format|
+      if @planning.save
+        format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def switch
+    respond_to do |format|
+      route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
+      vehicle = Vehicle.where(id: Integer(params["vehicle_id"]), user: current_user).first
+      if route and vehicle and @planning.switch(route, vehicle) and @planning.save
+        format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_planning
-      @planning = Planning.find(params[:id])
+      @planning = Planning.find(params[:id] || params[:planning_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def planning_params
-      params.require(:planning).permit(:name, :user_id)
+      params.require(:planning).permit(:name)
     end
 end

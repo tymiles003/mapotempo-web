@@ -1,6 +1,112 @@
-<h1>Editing planning</h1>
+<p id="notice"><%= notice %></p>
 
-<%= render 'form' %>
+<div id="planning" class="col-lg-3"></div>
+<div class="fill col-lg-9">
+<div id="map"></div>
+</div>
 
-<%= link_to 'Show', @planning %> |
-<%= link_to 'Back', plannings_path %>
+<script>
+var map = L.map('map').setView([<%= @planning.user.store.lat %>, <%= @planning.user.store.lng %>], 13);
+var layer = L.layerGroup();
+
+L.tileLayer('<%= current_user.layer.url %>', {
+  maxZoom: 18,
+  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
+}).addTo(map);
+
+function update_planning(event, ui) {
+  var data = $('#planning > ol > li').map(function(){
+    return {
+      'route': $(this).attr("data-route_id"),
+      'destinations': $('li[data-destination_id]', $(this)).map(function(){
+        return {'id': parseInt($(this).attr("data-destination_id")), 'active': $('input', $(this)).is(':checked')};
+      }).get() };
+  }).get();
+  $.ajax({
+    type: "post",
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    url: '<%= planning_move_path(@planning, format: :json) %>',
+    success: display_planning,
+  });
+}
+
+function display_planning(data) {
+  $("#planning").html(SMT['plannings/show'](data));
+
+  $("#planning input:checkbox").change(update_planning);
+
+  map.removeLayer(layer);
+  layer = L.layerGroup();
+  layer.addTo(map);
+  $.each(data.routes, function(i, route) {
+    if(route.vehicle) {
+      $(".route[data-route_id="+route.id+"] select").val(route.vehicle.id);
+
+      var color = route.vehicle.color;
+      var index = 1;
+      $.each(route.stops, function(i, stop) {
+        if(stop.trace) {
+          var polyline = L.Polyline.fromEncoded(stop.trace);
+          var p = L.polyline(polyline.getLatLngs(), {color: color}).addTo(map);
+          layer.addLayer(p);
+        }
+        if(index==1) {
+          var marker = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+            icon: new L.NumberedDivIcon({
+              number: index,
+              iconUrl: '<%= asset_path("marker-000000.svg") %>'
+            }),
+          }).addTo(map);
+        } else if(index<route.stops.length && stop.destination.lat && stop.destination.lng) {
+          var marker = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+            icon: new L.NumberedDivIcon({
+              number: index,
+              iconUrl: route.icon
+            }),
+          }).addTo(map);
+          marker.bindPopup(SMT['stops/show'](stop));
+        }
+        index++;
+      });
+    }
+  });
+
+  $("#out_of_road").sortable({
+    connectWith: ".sortable",
+    update: update_planning,
+  }).disableSelection();
+  $(".stops").sortable({
+    connectWith: ".sortable",
+    items: "li:not(:first, :last, .placeholder)",
+    update: update_planning,
+  }).disableSelection();
+
+  $("select").select2({minimumResultsForSearch:99});
+  $("select").change(function() {
+    $.ajax({
+      type: "post",
+      data: JSON.stringify({
+        route_id: $(this).closest("[data-route_id]").attr("data-route_id"),
+        vehicle_id: $(this).val()
+      }),
+      contentType: 'application/json',
+      url: '<%= planning_switch_path(@planning, format: :json) %>',
+      success: display_planning,
+    });
+  });
+
+  $("#refresh").click(function update_planning(event, ui){
+    $.ajax({
+      type: "get",
+      url: '<%= planning_refresh_path(@planning, format: :json) %>',
+      success: display_planning,
+    });
+  });
+}
+
+$.ajax({
+  url: '<%= polymorphic_path(@planning, format: :json) %>',
+  success: display_planning,
+});
+</script>

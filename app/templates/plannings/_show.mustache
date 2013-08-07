@@ -1,0 +1,62 @@
+<p>
+  <strong>Name:</strong>
+  {{name}}
+  -
+  {{#tags}}
+    <span>{{label}}</span>
+  {{/tags}}
+  -
+  {{distance}} km
+  -
+  {{emission}} kgCO<sub>2</sub>e
+  <button type="button" class="btn btn-primary btn-small" id="optimize"><i class="icon-gears icon-fixed-width"></i> Optimize</button>
+  {{#out_of_date}}<button type="button" class="btn btn-warning btn-small" id="refresh"><i class="icon-refresh icon-fixed-width"></i> Refresh</button>{{/out_of_date}}
+</p>
+<ol class="routes">
+{{#routes}}
+<li class="route" data-route_id="{{id}}"{{#vehicle}} style="border-left: 6px solid {{color}}"{{/vehicle}}>
+  {{^vehicle}}
+    Out of route
+    <ul id="out_of_road" class="sortable">
+    {{#stops}}
+      {{#destination}}
+      <li data-destination_id="{{id}}" class="ui-state-error">
+        <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} style="display: none"/>
+        {{name}}
+        <!--<span>{{street}}, {{postalcode}} {{city}}</span>-->
+      </li>
+      {{/destination}}
+    {{/stops}}
+      <li class="placeholder"/>
+    </ul>
+  {{/vehicle}}
+  {{#vehicle}}
+    <span>
+      <select name="vehicle">
+        {{#vehicles}}<option value="{{id}}">{{name}}</option>{{/vehicles}}
+      </select>
+      <a href="{{path}}"><i class="icon-truck icon-fixed-width"></i></a>
+      <button type="button" class="btn btn-default btn-small"><i class="icon-gear icon-fixed-width"></i></button>
+      <br/>
+      -
+      {{distance}} km
+      -
+      {{emission}} kgCO<sub>2</sub>e
+    </span>
+    <ol class="stops sortable">
+    {{#stops}}
+      {{#destination}}
+      <li data-destination_id="{{id}}" {{^lat}}class="ui-state-error"{{/lat}}>
+        <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
+        {{name}}
+        {{#lat}}({{distance}} km){{/lat}}
+        <!--<span>{{street}}, {{postalcode}} {{city}}</span>-->
+      </li>
+      {{/destination}}
+    {{/stops}}
+      <li class="placeholder"/>
+    </ol>
+  {{/vehicle}}
+</li>
+{{/routes}}
+</ol>

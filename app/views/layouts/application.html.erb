@@ -40,7 +40,8 @@
   </head>
 
   <body>
-    <div class="navbar navbar-fixed-top">
+<div id="wrapper">
+    <div class="navbar navbar-static-top">
       <div class="container">
         <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -50,46 +51,70 @@
         </button>
 
         <!-- Be sure to leave the brand out there if you want it shown -->
-        <a class="navbar-brand" href="#">Opentour</a>
+        <a class="navbar-brand" href="/">Opentour</a>
 
         <!-- Place everything within .navbar-collapse to hide it until above 768px -->
         <div class="nav-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
-            <li><%= link_to "Link1", "/path1"  %></li>
-            <li><%= link_to "Link2", "/path2"  %></li>
-            <li><%= link_to "Link3", "/path3"  %></li>
+            <% if user_signed_in? %>
+              <li class="dropdown">
+                <%= link_to plannings_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-calendar-empty icon-fixed-width"></i> Plannings <span class="caret"></span><% end %>
+                <ul class="dropdown-menu">
+                  <li><%= link_to plannings_path do %><i class="icon-calendar-empty icon-fixed-width"></i> List<% end %></li>
+                  <li class="divider"></li>
+                  <% current_user.plannings.each do |planning| %>
+                    <li><%= link_to edit_planning_path(planning) do %><i class="icon-calendar icon-fixed-width"></i> <%= planning.name %><% end %></li>
+                  <% end %>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <%= link_to destinations_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-map-marker icon-fixed-width"></i> Destinations <span class="caret"></span><% end %>
+                <ul class="dropdown-menu">
+                  <li><%= link_to destinations_path do %><i class="icon-map-marker icon-fixed-width"></i> List<% end %></li>
+                  <li><%= link_to destination_import_path do %><i class="icon-upload icon-fixed-width"></i> Import<% end %></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <%= link_to vehicles_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-truck icon-fixed-width"></i> Veihicles <span class="caret"></span><% end %>
+                <ul class="dropdown-menu">
+                  <li><%= link_to vehicles_path do %><i class="icon-truck icon-fixed-width"></i> List<% end %></li>
+                  <li class="divider"></li>
+                  <% current_user.vehicles.each do |vehicle| %>
+                    <li><%= link_to edit_vehicle_path(vehicle) do %><i class="icon-truck icon-fixed-width"></i> <%= vehicle.name %><% end %></li>
+                  <% end %>
+                  <li class="divider"></li>
+                  <li><%= link_to destination_edit_store_path(current_user.store) do %><i class="icon-home icon-fixed-width"></i> Store</a><% end %></li>
+                </ul>
+              </li>
+            <% end %>
+          </ul>
+
+          <ul class="nav navbar-nav pull-right">
+            <li>
+            <% if user_signed_in? %>
+              <li><%= link_to user_edit_path(current_user) do %><i class="icon-wrench icon-fixed-width"></i> Parameter<% end %></li>
+              <li><%= link_to edit_user_registration_path do %><i class="icon-lock icon-fixed-width"></i> Change Password<% end %></li>
+              <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="icon-off icon-fixed-width"></i> Sign out<% end %></li>
+            <% else %>
+              <li><%= link_to new_user_session_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> Sign in<% end %></li>
+              <li><%= link_to new_user_registration_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> Sign up<% end %></li>
+            <% end %>
           </ul>
         </div>
+
       </div>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-9">
-          <%= bootstrap_flash %>
-          <%= yield %>
-        </div>
-        <div class="col-lg-3">
-          <div class="well sidebar-nav">
-            <h3>Sidebar</h3>
-            <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li><%= link_to "Link1", "/path1"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <footer>
-        <div class="row">
-          <div class="col-lg-12">
-            <p>&copy; Company 2013</p>
-          </div>
-        </div>
-      </footer>
-
+    <div class="main container">
+      <%= bootstrap_flash %>
+      <%= yield %>
     </div>
+
+    <footer>
+      <div class="col-lg-12">
+        <p>&copy; Company 2013</p>
+      </div>
+    </footer>
+</div>
   </body>
 </html>

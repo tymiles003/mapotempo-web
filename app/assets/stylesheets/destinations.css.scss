@@ -1,3 +1,47 @@
 // Place all the styles related to the Destinations controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.table {
+  height: 300px;
+  overflow-y: scroll;
+}
+
+.table div span {
+  text-align: center;
+}
+
+.destination {
+  display: inline-block;
+}
+
+.destination .block {
+  display: table;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.destination .block span {
+  display: table-cell;
+}
+
+.destination .block span:not(:last-child) input {
+  border-radius: 0 0 0 0;
+}
+
+.destination .block span:not(:last-child) input {
+  border-right: 0;
+}
+
+.destination .block span:first-child input {
+  border-radius: 3px 0 0 3px;
+}
+
+.destination .block span:last-child input {
+  border-radius: 0 3px 3px 0;
+}
+
+
+.ui-helper-hidden-accessible {
+  display: none
+}

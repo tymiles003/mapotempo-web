@@ -1,0 +1,32 @@
+<%= form_tag({action:'upload'}, {multipart:true, class:"form-horizontal"}) do %>
+  <div class="row">
+    <%= label_tag :datafile, "File", class:"col-lg-2 control-label" %>
+    <div class="col-lg-4">
+      <%= file_field 'upload', 'datafile' %>
+      <p class="help-block">Import only CSV files.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-offset-2">
+      <%= submit_tag nil, class:"btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
+
+<div id="dialog-upload" title="Import" style="display:none">
+  <p>Please wait, import in progress.</p>
+  <div class="progress progress-striped active">
+    <div class="progress-bar" style="width: 100%">
+  </div>
+</div>
+
+<script>
+$("#dialog-upload").dialog({
+  autoOpen: false,
+  modal: true
+});
+
+$("form").submit(function(){
+  $("#dialog-upload").dialog("open");
+});
+</script>

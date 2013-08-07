@@ -1,11 +1,10 @@
 <h1>Listing plannings</h1>
 
-<table>
+<table class="table table-striped table-hover">
   <thead>
     <tr>
       <th>Name</th>
-      <th>User</th>
-      <th></th>
+      <th>Tags</th>
       <th></th>
       <th></th>
     </tr>
@@ -15,10 +14,13 @@
     <% @plannings.each do |planning| %>
       <tr>
         <td><%= planning.name %></td>
-        <td><%= planning.user %></td>
-        <td><%= link_to 'Show', planning %></td>
-        <td><%= link_to 'Edit', edit_planning_path(planning) %></td>
-        <td><%= link_to 'Destroy', planning, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+        <% planning.tags.each{ |tag| %>
+          <%= tag.label %>
+        <% } %>
+        </td>
+        <td><%= link_to edit_planning_path(planning) do %><i class="icon-edit icon-fixed-width"></i> Edit<% end %></td>
+        <td><%= link_to planning, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="icon-remove icon-fixed-width"></i> Destroy<% end %></td>
       </tr>
     <% end %>
   </tbody>

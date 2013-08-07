@@ -1,20 +1,32 @@
 Opentour::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
-  get "user/edit"
-  get "user/update"
-  get "index/index"
-  resources :plannings
+  devise_for :users
 
-  resources :destinations
+  get 'user/:id/edit' => 'user#edit', :as => 'user_edit'
+  patch 'user/:id' => 'user#update', :as => 'user'
 
   resources :vehicles
 
-  devise_for :users
+  resources :destinations do
+    post 'geocode_complete'
+    get 'edit_store'
+  end
+  get 'destination/import' => 'destinations#import'
+  post 'destinations/upload' => 'destinations#upload'
+
+  resources :plannings do
+    patch 'move'
+    get 'refresh'
+    patch 'switch'
+  end
+
+  resources :routes
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'index#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -65,10 +77,3 @@ Opentour::Application.routes.draw do
   #     resources :products
   #   end
 end
-
-Opentour::Application.routes.draw do
-  resources :vehicles
-  resources :destination
-  resources :plannings
-end
-

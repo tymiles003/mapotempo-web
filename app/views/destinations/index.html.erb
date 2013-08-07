@@ -1,45 +1,191 @@
 <h1>Listing destinations</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Street</th>
-      <th>Postalcode</th>
-      <th>City</th>
-      <th>Lat</th>
-      <th>Lng</th>
-      <th>Quantity</th>
-      <th>Open</th>
-      <th>Close</th>
-      <th>User</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @destinations.each do |destination| %>
-      <tr>
-        <td><%= destination.name %></td>
-        <td><%= destination.street %></td>
-        <td><%= destination.postalcode %></td>
-        <td><%= destination.city %></td>
-        <td><%= destination.lat %></td>
-        <td><%= destination.lng %></td>
-        <td><%= destination.quantity %></td>
-        <td><%= destination.open %></td>
-        <td><%= destination.close %></td>
-        <td><%= destination.user %></td>
-        <td><%= link_to 'Show', destination %></td>
-        <td><%= link_to 'Edit', edit_destination_path(destination) %></td>
-        <td><%= link_to 'Destroy', destination, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
+<div class="table" id="destination_box">
+  <div>
+    <span class="col-lg-2">Name</span>
+    <span class="col-lg-4">
+      <span>Street</span>
+      <span>Postalcode</span>
+      <span>City</span>
+    </span>
+    <span class="col-lg-1">Quantity</span>
+    <span class="col-lg-2">
+      <span>Open</span>
+      <span>Close</span>
+    </span>
+    <span class="col-lg-2">Tags</span>
+  </div>
+  <div class="destinations"></div>
+</div>
 
 <%= link_to 'New Destination', new_destination_path %>
+
+<div id="map" style="height: 300px;"></div>
+<script>
+var map = L.map('map').setView([<%= current_user.store.lat %>, <%= current_user.store.lng %>], 13);
+var layer = L.layerGroup();
+
+L.tileLayer('<%= current_user.layer.url %>', {
+  maxZoom: 18,
+  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
+}).addTo(map);
+
+
+var tags = {};
+var markers = {};
+var pointing = false;
+var pointing_cursor;
+var icon_default = new L.Icon.Default();
+var icon_over = L.icon({iconUrl:'<%= asset_path('marker-FFBB00.svg') %>'});
+var icon_over_stack = [];
+
+function wire(row) {
+  var id = $(row).attr('data-destination_id');
+
+  $(":input[name=destination\\[street\\]]", row).autocomplete({
+    delay: 500,
+    source: function(req, add) {
+      $.ajax({
+        type: "post",
+        data: $(row).serialize(),
+        url: '/destinations/'+id+'/geocode_complete.json',
+        success: function(data) {
+          add($.map(data, function(val, i) {
+            return {label: val.street+' '+val.postalcode+' '+val.city, value: val.street};
+          }));
+        }
+      });
+    },
+    select: function(event, ui) {
+      event.target.value = ui.item.value;
+      $(event.target).trigger('change');
+    }
+  });
+
+  $(":input", row).change(function(event) {
+    $.ajax({
+      type: "put",
+      data: $(row).serialize(),
+      url: '/destinations/'+id+'.json',
+      success: function(data) { update(id, data); }
+    });
+  });
+
+  $(row).click(function (event) {
+    clean_over();
+    $('input', row).addClass('ui-state-highlight');
+    if(id in markers) {
+      map.setView(markers[id].getLatLng(), 16);
+      markers[id].setIcon(icon_over);
+      icon_over_stack.push(id);
+    }
+  });
+
+  $('.pointing', row).click(function (event) {
+    pointing = id;
+    $('body').css('cursor', 'crosshair');
+    pointing_cursor = $('.leaflet-container').css('cursor');
+    $('.leaflet-container').css('cursor', 'crosshair');
+  });
+
+  $(':input[name=tags\\[\\]]', row).select2({
+    allow_single_deselect: true,
+    no_results_text: 'No results matched',
+    widht: '100%'
+  });
+}
+
+function update(id, destination) {
+  var row = $('[data-destination_id='+id+']');
+  var t = []
+  $.each(tags, function(i, tag) {
+    t.push({id: tag.id, label: tag.label, active: $.inArray(tag.id, destination.tags)>=0});
+  });
+  destination.tags = t;
+  $(row).replaceWith(SMT['destinations/show'](destination));
+  markers[id].setLatLng(new L.LatLng(destination.lat, destination.lng));
+  map.setView(markers[id].getLatLng(), 16);
+  row = $('[data-destination_id='+id+']');
+  wire(row);
+}
+
+function sendMove(id, latLng) {
+  var row = $('[data-destination_id='+id+']');
+  $('[name=destination\\[lat\\]]', row).val(latLng.lat);
+  $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
+}
+
+function dragend(event) {
+  sendMove(event.target.options.destination, event.target.getLatLng());
+}
+
+
+function click(mouseEvent) {
+  if(pointing) {
+    var id = pointing;
+    if(id in markers) {
+      markers[id].setLatLng(mouseEvent.latlng);
+    } else {
+      addMarker(pointing, mouseEvent.latlng.lat, mouseEvent.latlng.lng);
+    }
+    sendMove(id, mouseEvent.latlng);
+    pointing = false;
+    $('body').css('cursor', null);
+    $('.leaflet-container').css('cursor', pointing_cursor);
+  }
+}
+
+
+function clean_over() {
+ $('.destination input').removeClass('ui-state-highlight');
+ var i;
+ while(i=icon_over_stack.pop()) {
+   markers[i].setIcon(icon_default);
+ }
+}
+
+function mouseover(mouseEvent) {
+  if( !pointing) {
+    var id = mouseEvent.target.options.destination
+    var row = $('[data-destination_id='+id+']');
+    clean_over();
+    $('input', row).addClass('ui-state-highlight');
+    $("#destination_box").scrollTop($("#destination_box").scrollTop()+row.position().top-200);
+  }
+}
+
+function addMarker(id, lat, lng) {
+  var marker = L.marker(new L.LatLng(lat, lng), {
+    draggable: true,
+    destination: id
+  }).addTo(map);
+  marker.on('dragend', dragend);
+  marker.on('mouseover', mouseover);
+  markers[id] = marker;
+}
+
+function display_destinations(data) {
+  var table = $('.destinations');
+  $.each(data.tags, function(i, tag) {
+    tags[tag.id] = tag;
+  });
+  $.each(data.destinations, function(i, destination) {
+    var t = []
+    $.each(tags, function(i, tag) {
+      t.push({id: tag.id, label: tag.label, active: $.inArray(tag.id, destination.tags)>=0});
+    });
+    destination.tags = t;
+    $(table).append(SMT['destinations/show'](destination));
+    if(destination.lat && destination.lng) {
+      addMarker(destination.id, destination.lat, destination.lng);
+    }
+    wire($(".destination:last", table));
+  });
+}
+
+$.ajax({
+  url: '/destinations.json',
+  success: display_destinations
+});
+map.on('click', click);
+</script>
