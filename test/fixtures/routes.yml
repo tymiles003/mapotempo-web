@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  distance: 1.5
+  emission: 1.5
+  planning_id: 
+  out_of_date: false
+  vehicle_id: 
+
+two:
+  distance: 1.5
+  emission: 1.5
+  planning_id: 
+  out_of_date: false
+  vehicle_id: 

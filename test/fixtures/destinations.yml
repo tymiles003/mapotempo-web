@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  street: MyString
+  postalcode: MyString
+  city: MyString
+  lat: 1.5
+  lng: 1.5
+  quantity: 1
+  open: 2013-08-07 21:59:40
+  close: 2013-08-07 21:59:40
+  user_id: 
+
+two:
+  name: MyString
+  street: MyString
+  postalcode: MyString
+  city: MyString
+  lat: 1.5
+  lng: 1.5
+  quantity: 1
+  open: 2013-08-07 21:59:40
+  close: 2013-08-07 21:59:40
+  user_id: 

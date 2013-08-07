@@ -1,0 +1,41 @@
+<h1>Listing vehicles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Emission</th>
+      <th>Consumption</th>
+      <th>Capacity</th>
+      <th>Color</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>User</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vehicles.each do |vehicle| %>
+      <tr>
+        <td><%= vehicle.name %></td>
+        <td><%= vehicle.emission %></td>
+        <td><%= vehicle.consumption %></td>
+        <td><%= vehicle.capacity %></td>
+        <td><%= vehicle.color %></td>
+        <td><%= vehicle.open %></td>
+        <td><%= vehicle.close %></td>
+        <td><%= vehicle.user %></td>
+        <td><%= link_to 'Show', vehicle %></td>
+        <td><%= link_to 'Edit', edit_vehicle_path(vehicle) %></td>
+        <td><%= link_to 'Destroy', vehicle, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Vehicle', new_vehicle_path %>

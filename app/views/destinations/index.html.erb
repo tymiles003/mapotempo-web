@@ -1,0 +1,45 @@
+<h1>Listing destinations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Street</th>
+      <th>Postalcode</th>
+      <th>City</th>
+      <th>Lat</th>
+      <th>Lng</th>
+      <th>Quantity</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>User</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @destinations.each do |destination| %>
+      <tr>
+        <td><%= destination.name %></td>
+        <td><%= destination.street %></td>
+        <td><%= destination.postalcode %></td>
+        <td><%= destination.city %></td>
+        <td><%= destination.lat %></td>
+        <td><%= destination.lng %></td>
+        <td><%= destination.quantity %></td>
+        <td><%= destination.open %></td>
+        <td><%= destination.close %></td>
+        <td><%= destination.user %></td>
+        <td><%= link_to 'Show', destination %></td>
+        <td><%= link_to 'Edit', edit_destination_path(destination) %></td>
+        <td><%= link_to 'Destroy', destination, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Destination', new_destination_path %>

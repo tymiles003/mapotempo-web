@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  emission: 1.5
+  consumption: 1.5
+  capacity: 1
+  color: MyString
+  open: 2013-08-07 21:59:35
+  close: 2013-08-07 21:59:35
+  user_id: 
+
+two:
+  name: MyString
+  emission: 1.5
+  consumption: 1.5
+  capacity: 1
+  color: MyString
+  open: 2013-08-07 21:59:35
+  close: 2013-08-07 21:59:35
+  user_id: 
