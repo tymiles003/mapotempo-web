@@ -6,7 +6,7 @@ class CreateStops < ActiveRecord::Migration
       t.time :begin
       t.time :end
       t.float :distance
-      t.string :trace
+      t.text :trace
       t.references :route, index: true
       t.references :destination, index: true
 
