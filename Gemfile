@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', group: :development
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -50,6 +50,9 @@ gem 'devise'
 gem 'cancan'
 gem 'rails_admin'
 gem 'twitter-bootstrap-rails', github: 'diowa/twitter-bootstrap-rails', branch: 'bootstrap-3.0.0'
+
+gem 'pg', group: :production
+gem 'rails_12factor', group: :production
 
 gem 'filecache'
 gem 'leaflet-rails'
