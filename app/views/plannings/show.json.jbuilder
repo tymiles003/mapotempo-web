@@ -14,9 +14,11 @@ json.emission @planning.routes.to_a.sum(0){ |route| route.emission or 0 }
 if @planning.routes.inject(false){ |acc, route| acc or route.out_of_date }
     json.out_of_date true
 end
+json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
 json.routes @planning.routes do |route|
   json.extract! route, :id, :emission
   json.distance (route.distance or 0)/1000
+  json.size route.stops.size
   if route.vehicle
     json.icon asset_path("marker-#{route.vehicle.color.gsub('#','')}.svg")
     json.vehicle do

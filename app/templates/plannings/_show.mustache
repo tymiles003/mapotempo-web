@@ -9,6 +9,8 @@
   {{distance}} km
   -
   {{emission}} kgCO<sub>2</sub>e
+  -
+  {{size}} stops
   <button type="button" class="btn btn-primary btn-small" id="optimize"><i class="icon-gears icon-fixed-width"></i> Optimize</button>
   {{#out_of_date}}<button type="button" class="btn btn-warning btn-small" id="refresh"><i class="icon-refresh icon-fixed-width"></i> Refresh</button>{{/out_of_date}}
 </p>
@@ -17,6 +19,7 @@
 <li class="route" data-route_id="{{id}}"{{#vehicle}} style="border-left: 6px solid {{color}}"{{/vehicle}}>
   {{^vehicle}}
     Out of route
+    {{size}} stops
     <ul id="out_of_road" class="sortable">
     {{#stops}}
       {{#destination}}
@@ -42,6 +45,8 @@
       {{distance}} km
       -
       {{emission}} kgCO<sub>2</sub>e
+      -
+      {{size}} stops
     </span>
     <ol class="stops sortable">
     {{#stops}}
