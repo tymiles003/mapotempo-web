@@ -23,7 +23,7 @@ function update_planning(event, ui) {
       }).get() };
   }).get();
   $.ajax({
-    type: "post",
+    type: "patch",
     data: JSON.stringify(data),
     contentType: 'application/json',
     url: '<%= planning_move_path(@planning, format: :json) %>',
@@ -85,7 +85,7 @@ function display_planning(data) {
   $("select").select2({minimumResultsForSearch:99});
   $("select").change(function() {
     $.ajax({
-      type: "post",
+      type: "patch",
       data: JSON.stringify({
         route_id: $(this).closest("[data-route_id]").attr("data-route_id"),
         vehicle_id: $(this).val()
