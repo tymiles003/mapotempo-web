@@ -83,7 +83,7 @@
                     <li><%= link_to edit_vehicle_path(vehicle) do %><i class="icon-truck icon-fixed-width"></i> <%= vehicle.name %><% end %></li>
                   <% end %>
                   <li class="divider"></li>
-                  <li><%= link_to destination_edit_store_path(current_user.store) do %><i class="icon-home icon-fixed-width"></i> Store</a><% end %></li>
+                  <li><%= link_to edit_destination_path(current_user.store) do %><i class="icon-home icon-fixed-width"></i> Store</a><% end %></li>
                 </ul>
               </li>
             <% end %>

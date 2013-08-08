@@ -3,7 +3,7 @@ require 'csv'
 
 class DestinationsController < ApplicationController
   load_and_authorize_resource :except => [:create, :upload]
-  before_action :set_destination, only: [:show, :edit, :edit_store, :update, :destroy, :geocode_reverse, :geocode_complete, :geocode_code]
+  before_action :set_destination, only: [:show, :edit, :update, :destroy, :geocode_reverse, :geocode_complete, :geocode_code]
 
   # GET /destinations
   # GET /destinations.json
@@ -26,9 +26,6 @@ class DestinationsController < ApplicationController
   def edit
   end
 
-  def edit_store
-  end
-
   # POST /destinations
   # POST /destinations.json
   def create
@@ -49,40 +46,17 @@ class DestinationsController < ApplicationController
   # PATCH/PUT /destinations/1
   # PATCH/PUT /destinations/1.json
   def update
-    p = destination_params
-    if p[:street] != @destination.street or p[:postalcode] != @destination.postalcode or p[:city] != @destination.city
-      address = Geocoder.search([p[:street], p[:postalcode], p[:city], "France"].join(','))
-#      address = Geocode.code(p[:street], p[:postalcode], p[:city])
-      if address and address.size >= 1
-        @destination.lat, @destination.lng = address[0].latitude, address[0].longitude
-#        address = address[0]
-#        @destination.lat, @destination.lng = address["lat"], address["lng"]
-        p.delete(:lat)
-        p.delete(:lng)
-      end
-    end
-
-    if p[:lat] and p[:lng] and (Float(p[:lat]) != @destination.lat or Float(p[:lng]) != @destination.lng)
-#        @destination.street, @destination.postalcode, @destination.city = Geocode.reverse(p[:lat], p[:lng])
-      address = Geocoder.search([p[:lat], p[:lng]])
-      # Google
-      # @destination.street, @destination.postalcode, @destination.city = address[0].street_number+' '+address[0].route, address[0].postal_code, address[0].city
-      # MapQuest
-      @destination.street, @destination.postalcode, @destination.city = address[0].street, address[0].postal_code, address[0].city
-      p.delete(:street)
-      p.delete(:postalcode)
-      p.delete(:city)
-    end
-
-    params[:tags] = params[:tags] || []
-    if @destination.tag_ids.sort != params[:tags].collect{ |i| Integer(i) }.sort
-      @destination.tags = current_user.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
-    end
-
+    p = update_data
     respond_to do |format|
-      if @destination.update(p)
-        format.html { redirect_to @destination, notice: 'Destination was successfully updated.' }
-        format.json { render action: 'show', status: :created, location: @destination }
+      ok = if @destination == current_user.store
+        @destination.assign_attributes(p)
+        params.key?("live") or @destination.save() # No save in "live" mode
+      else
+        @destination.update(p)
+      end
+      if ok
+        format.html { redirect_to edit_destination_path(@destination), notice: 'Destination was successfully updated.' }
+        format.json { render action: 'show', location: @destination }
       else
         format.html { render action: 'edit' }
         format.json { render json: @destination.errors, status: :unprocessable_entity }
@@ -202,4 +176,38 @@ class DestinationsController < ApplicationController
     def destination_params
       params.require(:destination).permit(:name, :street, :postalcode, :city, :lat, :lng, :quantity, :open, :close)
     end
+
+  def update_data
+    p = destination_params
+    if p[:street] != @destination.street or p[:postalcode] != @destination.postalcode or p[:city] != @destination.city
+      address = Geocoder.search([p[:street], p[:postalcode], p[:city], "France"].join(','))
+#      address = Geocode.code(p[:street], p[:postalcode], p[:city])
+      if address and address.size >= 1
+        @destination.lat, @destination.lng = address[0].latitude, address[0].longitude
+#        address = address[0]
+#        @destination.lat, @destination.lng = address["lat"], address["lng"]
+        p.delete(:lat)
+        p.delete(:lng)
+      end
+    end
+
+    if p[:lat] and p[:lng] and (Float(p[:lat]) != @destination.lat or Float(p[:lng]) != @destination.lng)
+#        @destination.street, @destination.postalcode, @destination.city = Geocode.reverse(p[:lat], p[:lng])
+      address = Geocoder.search([p[:lat], p[:lng]])
+      # Google
+      # @destination.street, @destination.postalcode, @destination.city = address[0].street_number+' '+address[0].route, address[0].postal_code, address[0].city
+      # MapQuest
+      @destination.street, @destination.postalcode, @destination.city = address[0].street, address[0].postal_code, address[0].city
+      p.delete(:street)
+      p.delete(:postalcode)
+      p.delete(:city)
+    end
+
+    params[:tags] = params[:tags] || []
+    if @destination.tag_ids.sort != params[:tags].collect{ |i| Integer(i) }.sort
+      @destination.tags = current_user.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
+    end
+
+    p
+  end
 end

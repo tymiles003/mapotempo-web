@@ -9,7 +9,6 @@ Opentour::Application.routes.draw do
 
   resources :destinations do
     post 'geocode_complete'
-    get 'edit_store'
   end
   get 'destination/import' => 'destinations#import'
   post 'destinations/upload' => 'destinations#upload'

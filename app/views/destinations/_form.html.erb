@@ -1,4 +1,4 @@
-<%= form_for(@destination) do |f| %>
+<%= form_for(@destination, html:{class:"form-horizontal", "data-destination_id"=>@destination.id}) do |f| %>
   <% if @destination.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@destination.errors.count, "error") %> prohibited this destination from being saved:</h2>
@@ -11,43 +11,155 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="row">
+    <%= f.label :name, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><%= f.text_field :name, class:"form-control" %></span>
   </div>
-  <div class="field">
-    <%= f.label :street %><br>
-    <%= f.text_field :street %>
+  <div class="row">
+    <%= f.label :address, class:"col-lg-2 control-label" %>
+    <div class="col-lg-4 block">
+      <span>
+        <input class="form-control" type="text" name="destination[street]" value="<%= @destination.street %>"/>
+      </span>
+      <span style="width:4em">
+        <input class="form-control" type="text" maxlength="7" width="7" name="destination[postalcode]" value="<%= @destination.postalcode %>"/>
+      </span>
+      <span>
+        <div class="input-group">
+          <input class="form-control" type="text" name="destination[city]" value="<%= @destination.city %>"/>
+          <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
+        </div>
+      </span>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :postalcode %><br>
-    <%= f.text_field :postalcode %>
+  <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
+  <input type="hidden" name="destination[lng]" value="<%= @destination.lng %>" />
+  <div class="row">
+    <span class="col-lg-offset-2 col-lg-4"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
-  <div class="field">
-    <%= f.label :city %><br>
-    <%= f.text_field :city %>
+  <% if @destination != current_user.store %>
+  <div class="row">
+    <%= f.label :quantity, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><%= f.number_field :quantity, class:"form-control" %></span>
   </div>
-  <div class="field">
-    <%= f.label :lat %><br>
-    <%= f.text_field :lat %>
+  <div class="row">
+    <%= f.label :open, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><%= f.time_select :open, class:"form-control" %></span>
   </div>
-  <div class="field">
-    <%= f.label :lng %><br>
-    <%= f.text_field :lng %>
+  <div class="row">
+    <%= f.label :close, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><%= f.time_select :close, class:"form-control" %></span>
   </div>
-  <div class="field">
-    <%= f.label :quantity %><br>
-    <%= f.number_field :quantity %>
-  </div>
-  <div class="field">
-    <%= f.label :open %><br>
-    <%= f.time_select :open %>
-  </div>
-  <div class="field">
-    <%= f.label :close %><br>
-    <%= f.time_select :close %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <% end %>
+  <div class="row">
+    <div class="col-lg-offset-2">
+      <input type="hidden" name="live" value="true" />
+      <%= f.submit class:"btn btn-primary" %>
+    </div>
   </div>
 <% end %>
+
+<script>
+var map = L.map('map').setView([<%= current_user.store.lat %>, <%= current_user.store.lng %>], 13);
+var layer = L.layerGroup();
+var marker;
+
+var change = true;
+var pointing = false;
+var pointing_cursor;
+
+function wire(row) {
+  var id = $(row).attr('data-destination_id');
+
+  $(":input[name=destination\\[street\\]]", row).autocomplete({
+    delay: 500,
+    source: function(req, add) {
+      $.ajax({
+        type: "post",
+        data: $(row).serialize(),
+        url: '/destinations/'+id+'/geocode_complete.json',
+        success: function(data) {
+          add($.map(data, function(val, i) {
+            return {label: val.street+' '+val.postalcode+' '+val.city, value: val.street};
+          }));
+        }
+      });
+    },
+    select: function(event, ui) {
+      event.target.value = ui.item.value;
+      $(event.target).trigger('change');
+    }
+  });
+
+  $(":input", row).change(function(event) {
+    if ( change) {
+      $.ajax({
+        type: "put",
+        data: $(row).serialize(),
+        url: '/destinations/'+id+'.json',
+        success: function(data) { update(id, data); }
+      });
+    }
+  });
+
+  $('.pointing', row).click(function (event) {
+    pointing = id;
+    $('body').css('cursor', 'crosshair');
+    pointing_cursor = $('.leaflet-container').css('cursor');
+    $('.leaflet-container').css('cursor', 'crosshair');
+  });
+}
+
+function update(id, destination) {
+  var row = $('[data-destination_id='+id+']');
+  change = false;
+  $('[name=destination\\[name\\]]', row).val(destination.name);
+  $('[name=destination\\[street\\]]', row).val(destination.street);
+  $('[name=destination\\[postalcode\\]]', row).val(destination.postalcode);
+  $('[name=destination\\[city\\]]', row).val(destination.city);
+  $('[name=destination\\[lat\\]]', row).val(destination.lat);
+  $('[name=destination\\[lng\\]]', row).val(destination.lng);
+  change = true;
+  marker.setLatLng(new L.LatLng(destination.lat, destination.lng));
+  map.setView(marker.getLatLng(), 16);
+  row = $('[data-destination_id='+id+']');
+}
+
+function sendMove(id, latLng) {
+  var row = $('[data-destination_id='+id+']');
+  $('[name=destination\\[lat\\]]', row).val(latLng.lat);
+  $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
+}
+
+function dragend(event) {
+console.log(event);
+  sendMove(event.target.options.destination, event.target.getLatLng());
+}
+
+function click(mouseEvent) {
+  if(pointing) {
+    var id = pointing;
+    marker.setLatLng(mouseEvent.latlng);
+    sendMove(id, mouseEvent.latlng);
+    pointing = false;
+    $('body').css('cursor', null);
+    $('.leaflet-container').css('cursor', pointing_cursor);
+  }
+}
+
+map.on('click', click);
+
+wire($("form"));
+
+L.tileLayer('<%= current_user.layer.url %>', {
+  maxZoom: 18,
+  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
+}).addTo(map);
+
+marker = L.marker(new L.LatLng(<%= @destination.lat %>, <%= @destination.lng %>), {
+  icon: L.icon({iconUrl:'<%= asset_path('marker-004499.svg') %>'}), // FIXME https://github.com/axyjo/leaflet-rails/pull/10
+  draggable: true,
+  destination: <%= @destination.id %>
+}).addTo(map);
+marker.on('dragend', dragend);
+</script>
