@@ -46,6 +46,7 @@ L.tileLayer('<%= current_user.layer.url %>', {
 }).addTo(map);
 
   var marker = L.marker(new L.LatLng(<%= @destination.lat %>, <%= @destination.lng %>), {
+    icon: L.icon({iconUrl:'<%= asset_path('marker-004499.svg') %>'}), // FIXME https://github.com/axyjo/leaflet-rails/pull/10
     draggable: true,
     destination: <%= @destination.id %>
   }).addTo(map);
