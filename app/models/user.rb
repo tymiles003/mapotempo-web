@@ -7,8 +7,8 @@ class User < ActiveRecord::Base
 
   belongs_to :store, :class_name => "Destination"
   belongs_to :layer
-  has_many :vehicles
-  has_many :destinations
-  has_many :plannings
-  has_many :tags
+  has_many :vehicles, -> { order('id')}
+  has_many :destinations, -> { order('id')}
+  has_many :plannings, -> { order('id')}
+  has_many :tags, -> { order('label')}
 end

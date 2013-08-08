@@ -1,7 +1,7 @@
 class Destination < ActiveRecord::Base
   belongs_to :user
   has_many :stops, :dependent => :destroy
-  has_and_belongs_to_many :tags
+  has_and_belongs_to_many :tags, -> { order('label')}
 
 #  validates :user, presence: true
   validates :name, presence: true

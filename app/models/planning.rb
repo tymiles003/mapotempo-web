@@ -1,7 +1,7 @@
 class Planning < ActiveRecord::Base
   belongs_to :user
-  has_many :routes, :autosave => true, :dependent => :destroy
-  has_and_belongs_to_many :tags
+  has_many :routes, -> { order('id')}, :autosave => true, :dependent => :destroy
+  has_and_belongs_to_many :tags, -> { order('label')}
 
 #  validates :user, presence: true
 #  validates :name, presence: true
