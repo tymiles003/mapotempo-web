@@ -16,7 +16,7 @@ if @planning.routes.inject(false){ |acc, route| acc or route.out_of_date }
 end
 json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
 json.routes @planning.routes do |route|
-  json.extract! route, :id, :emission
+  json.extract! route, :id, :emission, :start, :end
   if route.hidden
     json.hidden true
   end
@@ -33,7 +33,7 @@ json.routes @planning.routes do |route|
     end
   end
   json.stops route.stops do |stop|
-    json.extract! stop, :trace
+    json.extract! stop, :trace, :time
     if stop.active
       json.active true
     end

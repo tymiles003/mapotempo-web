@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130808183130) do
+ActiveRecord::Schema.define(version: 20130808210830) do
 
   create_table "destinations", force: true do |t|
     t.string   "name"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20130808183130) do
     t.integer  "destination_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.time     "time"
   end
 
   add_index "stops", ["destination_id"], name: "index_stops_on_destination_id"

@@ -34,19 +34,25 @@ class Route < ActiveRecord::Base
     self.out_of_date = false
     self.distance = 0
     self.emission = 0
+    self.start = self.end = nil
     if vehicle
+      self.end = self.start = vehicle.open
       last = stops[0]
       stops.sort{ |a,b| a.index <=> b.index }[1..-1].each{ |stop|
         if stop.active and stop.destination.lat and stop.destination.lng
-          stop.distance, stop.trace = Trace.compute(last.destination.lat, last.destination.lng, stop.destination.lat, stop.destination.lng)
+          stop.distance, time, stop.trace = Trace.compute(last.destination.lat, last.destination.lng, stop.destination.lat, stop.destination.lng)
+          stop.time = self.end + time
+
           self.distance += stop.distance
+          self.end += time + (planning.user.take_over || 0)
+
           last = stop
         else
           stop.active = false
-          stop.begin = stop.end = stop.distance = stop.trace = nil
+          stop.begin = stop.end = stop.distance = stop.trace = stop.time = nil
         end
+        self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
       }
-      self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
     end
   end
 

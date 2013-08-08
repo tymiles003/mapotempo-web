@@ -51,6 +51,8 @@
       {{emission}} kgCO<sub>2</sub>e
       -
       {{size}} stops
+      -
+      {{start}} {{end}}
     </span>
     <ol class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}}>
     {{#stops}}
@@ -58,7 +60,8 @@
       <li data-destination_id="{{id}}" {{^lat}}class="ui-state-error"{{/lat}}>
         <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
         {{name}}
-        {{#lat}}({{distance}} km){{/lat}}
+        {{#lat}}{{distance}} km{{/lat}}
+        {{#lat}}{{time}}{{/lat}}
         <!--<span>{{street}}, {{postalcode}} {{city}}</span>-->
       </li>
       {{/destination}}

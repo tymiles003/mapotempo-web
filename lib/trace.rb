@@ -20,7 +20,8 @@ module Trace
     end
 
     distance = result["route_summary"]["total_distance"]
+    time = result["route_summary"]["total_time"]
     trace = result["route_geometry"]
-    [distance, trace]
+    [distance, time, trace]
   end
 end
