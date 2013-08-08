@@ -13,6 +13,7 @@ class Ability
         can :manage, Destination, :id => user.store_id
         can :manage, Destination, :user_id => user.id
         can :manage, Planning, :user_id => user.id
+        can :manage, Route, :planning => {:user_id => user.id}
       end
     end
   end

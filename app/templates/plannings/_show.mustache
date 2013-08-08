@@ -20,7 +20,9 @@
   {{^vehicle}}
     Out of route
     {{size}} stops
-    <ul id="out_of_road" class="sortable">
+    <button type="button" class="toggle btn btn-default btn-small"><i class="icon-eye-close icon-fixed-width"></i></button>
+    <button type="button" class="lock btn btn-default btn-small"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+    <ul id="out_of_road" class="sortable"{{#hidden}} style="display: none;"{{/hidden}}>
     {{#stops}}
       {{#destination}}
       <li data-destination_id="{{id}}" class="ui-state-error">
@@ -39,7 +41,9 @@
         {{#vehicles}}<option value="{{id}}">{{name}}</option>{{/vehicles}}
       </select>
       <a href="{{path}}"><i class="icon-truck icon-fixed-width"></i></a>
-      <button type="button" class="btn btn-default btn-small"><i class="icon-gear icon-fixed-width"></i></button>
+      <button type="button" class="optimize btn btn-primary btn-small"><i class="icon-gear icon-fixed-width"></i></button>
+      <button type="button" class="toggle btn btn-default btn-small"><i class="icon-eye-close icon-fixed-width"></i></button>
+      <button type="button" class="lock btn btn-default btn-small"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
       <br/>
       -
       {{distance}} km
@@ -48,7 +52,7 @@
       -
       {{size}} stops
     </span>
-    <ol class="stops sortable">
+    <ol class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}}>
     {{#stops}}
       {{#destination}}
       <li data-destination_id="{{id}}" {{^lat}}class="ui-state-error"{{/lat}}>

@@ -96,11 +96,38 @@ function display_planning(data) {
     });
   });
 
-  $("#refresh").click(function update_planning(event, ui){
+  $("#refresh").click(function(event, ui) {
     $.ajax({
       type: "get",
       url: '<%= planning_refresh_path(@planning, format: :json) %>',
       success: display_planning,
+    });
+  });
+
+  $(".toggle").click(function(event, ui) {
+    var id = $(this).closest("[data-route_id]").attr("data-route_id");
+    var li = $("ul, ol", $(this).closest("li"));
+    li.toggle();
+    var hidden = !li.is(":visible");
+    $.ajax({
+      type: "patch",
+      data: JSON.stringify({route:{hidden: hidden}}),
+      contentType: 'application/json',
+      url: '/routes/'+id+'.json'
+    });
+  });
+
+  $(".lock").click(function(event, ui) {
+    var id = $(this).closest("[data-route_id]").attr("data-route_id");
+    var i = $("i", this);
+    i.toggleClass("icon-lock");
+    i.toggleClass("icon-unlock");
+    var locked = i.hasClass("icon-lock");
+    $.ajax({
+      type: "patch",
+      data: JSON.stringify({route:{locked: locked}}),
+      contentType: 'application/json',
+      url: '/routes/'+id+'.json'
     });
   });
 }

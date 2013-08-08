@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130807211354) do
+ActiveRecord::Schema.define(version: 20130808183130) do
 
   create_table "destinations", force: true do |t|
     t.string   "name"
@@ -78,6 +78,10 @@ ActiveRecord::Schema.define(version: 20130807211354) do
     t.integer  "vehicle_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.time     "start"
+    t.time     "end"
+    t.boolean  "hidden"
+    t.boolean  "locked"
   end
 
   add_index "routes", ["planning_id"], name: "index_routes_on_planning_id"

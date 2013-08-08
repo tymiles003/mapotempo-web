@@ -1,6 +1,4 @@
 class Vehicle < ActiveRecord::Base
-  after_initialize :assign_defaults, if: 'new_record?'
-
   belongs_to :user
   has_many :routes, :autosave => true
 
@@ -10,6 +8,9 @@ class Vehicle < ActiveRecord::Base
   validates :consumption, presence: true, numericality: {only_float: true}
   validates :capacity, presence: true, numericality: {only_integer: true}
   validates :color, presence: true
+
+  after_initialize :assign_defaults, if: 'new_record?'
+  before_update :update_out_of_date
 
   def self.emissions_table
   [
@@ -23,8 +24,6 @@ class Vehicle < ActiveRecord::Base
   def self.colors_table
     ["004499", "EEEE00", "00CC00", "DD0000", "EEEEBB", "558800", "FFBB00", "00BBFF"]
   end
-
-  before_update :update_out_of_date
 
   private
     def assign_defaults

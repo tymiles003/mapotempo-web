@@ -17,6 +17,12 @@ end
 json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
 json.routes @planning.routes do |route|
   json.extract! route, :id, :emission
+  if route.hidden
+    json.hidden true
+  end
+  if route.locked
+    json.locked
+  end
   json.distance (route.distance or 0)/1000
   json.size route.stops.size
   if route.vehicle

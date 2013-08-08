@@ -93,7 +93,7 @@
             <li>
             <% if user_signed_in? %>
               <li><%= link_to user_edit_path(current_user) do %><i class="icon-wrench icon-fixed-width"></i> Parameter<% end %></li>
-              <li><%= link_to edit_user_registration_path do %><i class="icon-lock icon-fixed-width"></i> Change Password<% end %></li>
+              <li><%= link_to edit_user_registration_path do %><i class="icon-key icon-fixed-width"></i> Change Password<% end %></li>
               <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="icon-off icon-fixed-width"></i> Sign out<% end %></li>
             <% else %>
               <li><%= link_to new_user_session_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> Sign in<% end %></li>

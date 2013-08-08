@@ -8,6 +8,8 @@ class Route < ActiveRecord::Base
 #  validates :planning, presence: true
 #  validates :vehicle, presence: true
 
+  after_initialize :assign_defaults, if: 'new_record?'
+
   def default_stops
     i = 0
     stops << Stop.create(destination:planning.user.store, route:self, active:true, index:0)
@@ -67,4 +69,10 @@ class Route < ActiveRecord::Base
       compute
     end
   end
+
+  private
+    def assign_defaults
+      self.hidden = false
+      self.locked = false
+    end
 end
