@@ -1,6 +1,6 @@
 <h1>Listing destinations</h1>
 
-<div class="table" id="destination_box">
+<div class="row table" id="destination_box">
   <div>
     <span class="col-lg-2">Name</span>
     <span class="col-lg-4">
@@ -17,10 +17,13 @@
   </div>
   <div class="destinations"></div>
 </div>
+<div class="row col-lg-1">
+  <%= link_to 'New Destination', new_destination_path %>
+</div>
 
-<%= link_to 'New Destination', new_destination_path %>
-
-<div id="map" style="height: 300px;"></div>
+<div class="row col-lg-12">
+  <div id="map" style="height: 300px;"></div>
+</div>
 <script>
 var map = L.map('map').setView([<%= current_user.store.lat %>, <%= current_user.store.lng %>], 13);
 var layer = L.layerGroup();
@@ -36,8 +39,6 @@ var cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
 map.addLayer(cluster);
 
 map.on('zoomend ', function(e) {
-console.log(e);
-console.log(map.zoom);
   if(map.getZoom() > 14) {
     map.removeLayer(cluster);
     map.addLayer(markersLayers);
@@ -87,7 +88,7 @@ function wire(row) {
     });
   });
 
-  $(row).click(function (event) {
+  $(row).click(function(event) {
     clean_over();
     $('input', row).addClass('ui-state-highlight');
     if(id in markers) {
@@ -97,7 +98,7 @@ function wire(row) {
     }
   });
 
-  $('.pointing', row).click(function (event) {
+  $('.pointing', row).click(function(event) {
     pointing = id;
     $('body').css('cursor', 'crosshair');
     pointing_cursor = $('.leaflet-container').css('cursor');
@@ -108,6 +109,14 @@ function wire(row) {
     allow_single_deselect: true,
     no_results_text: 'No results matched',
     widht: '100%'
+  });
+
+  $('.destroy', row).click(function(event) {
+    $.ajax({
+      type: "delete",
+      url: '/destinations/'+id+'.json',
+      success: function(data) { row.remove(); }
+    });
   });
 }
 

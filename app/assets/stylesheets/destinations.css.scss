@@ -5,10 +5,10 @@
 .table {
   height: 300px;
   overflow-y: scroll;
-}
 
-.table div span {
-  text-align: center;
+  div span {
+    text-align: center;
+  }
 }
 
 .destination {
@@ -19,28 +19,24 @@
   display: table;
   table-layout: fixed;
   border-collapse: collapse;
-}
 
-.destination .block span {
-  display: table-cell;
-}
+  span {
+    display: table-cell;
+  }
 
-.destination .block span:not(:last-child) input {
-  border-radius: 0 0 0 0;
-}
+  span:not(:last-child) input {
+    border-radius: 0 0 0 0;
+    border-right: 0;
+  }
 
-.destination .block span:not(:last-child) input {
-  border-right: 0;
-}
+  span:first-child input {
+    border-radius: 3px 0 0 3px;
+  }
 
-.destination .block span:first-child input {
-  border-radius: 3px 0 0 3px;
+  span:last-child input {
+    border-radius: 0 3px 3px 0;
+  }
 }
-
-.destination .block span:last-child input {
-  border-radius: 0 3px 3px 0;
-}
-
 
 .ui-helper-hidden-accessible {
   display: none
