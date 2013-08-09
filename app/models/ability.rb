@@ -8,8 +8,8 @@ class Ability
         can :dashboard                  # allow access to dashboard
         can :manage, :all
       else
-        can :manage, User, :id => user.id
-        can :manage, Vehicle, :user_id => user.id
+        can [:edit, :update], User, :id => user.id
+        can [:index, :edit, :update], Vehicle, :user_id => user.id
         can :manage, Destination, :id => user.store_id
         can :manage, Destination, :user_id => user.id
         can :manage, Planning, :user_id => user.id

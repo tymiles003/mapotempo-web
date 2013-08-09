@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :plannings, -> { order('id')}, :autosave => true, :dependent => :destroy
   has_many :tags, -> { order('label')}, :autosave => true, :dependent => :destroy
 
-  before_update :update_out_of_date
+  before_update :update_out_of_date, :update_max_vehicles
 
   private
     def update_out_of_date
@@ -22,6 +22,31 @@ class User < ActiveRecord::Base
             planning.routes.each{ |route|
               route.out_of_date = true
             }
+          }
+        end
+      end
+    end
+
+    def update_max_vehicles
+      if max_vehicles_changed?
+        if vehicles.size < max_vehicles
+          # Add new
+          (max_vehicles - vehicles.size).times{ |i|
+            vehicle = Vehicle.new(name: "Vehcile #{vehicles.size+1}")
+            vehicle.user = self
+            vehicles << vehicle
+            plannings.each{ |planning|
+              planning.add(vehicle)
+            }
+          }
+        elsif vehicles.size > max_vehicles
+          # Delete
+          (vehicles.size - max_vehicles).times{ |i|
+            vehicle = vehicles.pop
+            plannings.each{ |planning|
+              planning.remove(vehicle)
+            }
+            vehicle.destroy
           }
         end
       end

@@ -18,10 +18,23 @@ class Planning < ActiveRecord::Base
     end
   end
 
+  def add(vehicle)
+    route = Route.create(planning: self, vehicle: vehicle, out_of_date:true)
+    route.default_store
+    routes << route
+  end
+
+  def remove(vehicle)
+    route = routes.find{ |route| route.vehicle == vehicle }
+    routes[0].stops += route.stops.select{ |stop| stop.destination != user.store }.collect{ |stop| Stop.new(destination: stop.destination, route: route[0]) }
+    routes[0].out_of_date = true
+    route.destroy
+  end
+
   def default_empty_routes
     routes << Route.create(planning: self)
-    user.vehicles.each { |v|
-      routes << Route.create(planning: self, vehicle: v)
+    user.vehicles.each { |vehicle|
+      add(vehicle)
     }
   end
 

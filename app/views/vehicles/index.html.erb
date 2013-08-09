@@ -11,7 +11,6 @@
       <th>Capacity</th>
       <th>Color</th>
       <th></th>
-      <th></th>
     </tr>
   </thead>
 
@@ -19,19 +18,14 @@
     <% @vehicles.each do |vehicle| %>
       <tr>
         <td><%= vehicle.name %></td>
-        <td><%= vehicle.open %></td>
-        <td><%= vehicle.close %></td>
+        <td><%= if(vehicle.open) then vehicle.open.strftime("%H:%M") end %></td>
+        <td><%= if(vehicle.close) then vehicle.close.strftime("%H:%M") end %></td>
         <td><%= vehicle.emission %></td>
         <td><%= vehicle.consumption %></td>
         <td><%= vehicle.capacity %></td>
         <td><div class="vehicle_color" style="background:<%= vehicle.color %>"/></td>
         <td><%= link_to edit_vehicle_path(vehicle) do %><i class="icon-edit icon-fixed-width"></i> Edit<% end %></td>
-        <td><%= link_to vehicle, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="icon-remove icon-fixed-width"></i> Destroy<% end %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Vehicle', new_vehicle_path %>
