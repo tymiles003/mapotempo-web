@@ -206,7 +206,6 @@ PLATFORMS
 
 DEPENDENCIES
   cancan
-  coffee-rails (~> 4.0.0)
   compass-rails!
   devise
   execjs

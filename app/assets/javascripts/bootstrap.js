@@ -1,3 +1,4 @@
+/*
 jQuery ->
   # For performance reasons, the Tooltip and Popover data-apis are opt in.
   # Uncomment the following line to enable tooltips
@@ -5,3 +6,4 @@ jQuery ->
 
   # Uncomment the following line to enable popovers
   # $("[data-toggle='popover']").popover()
+*/
