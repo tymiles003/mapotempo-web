@@ -16,13 +16,11 @@ if @planning.routes.inject(false){ |acc, route| acc or route.out_of_date }
 end
 json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
 json.routes @planning.routes do |route|
-  json.extract! route, :id, :emission, :start, :end
-  if route.hidden
-    json.hidden true
-  end
-  if route.locked
-    json.locked
-  end
+  json.extract! route, :id, :emission
+  (json.start route.start.strftime("%H:%M")) if route.start
+  (json.end route.end.strftime("%H:%M")) if route.end
+  (json.hidden true) if route.hidden
+  (json.locked) if route.locked
   json.distance (route.distance or 0)/1000
   json.size route.stops.size
   if route.vehicle
@@ -33,10 +31,9 @@ json.routes @planning.routes do |route|
     end
   end
   json.stops route.stops do |stop|
-    json.extract! stop, :trace, :time
-    if stop.active
-      json.active true
-    end
+    json.extract! stop, :trace
+    (json.time stop.time.strftime("%H:%M")) if stop.time
+    (json.active true) if stop.active
     json.distance (stop.distance or 0)/1000
     json.destination(stop.destination, :id, :name, :street, :postalcode, :city, :lat, :lng)
   end

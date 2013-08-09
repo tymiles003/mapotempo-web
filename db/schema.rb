@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130808210830) do
+ActiveRecord::Schema.define(version: 20130809090745) do
 
   create_table "destinations", force: true do |t|
     t.string   "name"
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 20130808210830) do
     t.boolean  "admin"
     t.date     "end_subscription"
     t.integer  "max_vehicles"
-    t.time     "take_over"
+    t.integer  "take_over"
     t.integer  "store_id"
     t.integer  "layer_id"
     t.datetime "created_at"

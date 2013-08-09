@@ -44,7 +44,7 @@ class Route < ActiveRecord::Base
           stop.time = self.end + time
 
           self.distance += stop.distance
-          self.end += time + (planning.user.take_over || 0)
+          self.end += time + (planning.user.take_over || 0) * 60
 
           last = stop
         else

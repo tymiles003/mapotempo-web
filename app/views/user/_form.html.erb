@@ -45,15 +45,20 @@ $('[name=user\\[layer_id\\]]').change(function(event){
   </div>
   <div class="row">
     <%= f.label :end_subscription, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.text_field :end_subscription, class:"form-control", disabled:true %></span>
+    <span class="col-lg-4"><%= f.date_field :end_subscription, class:"form-control", disabled:true %></span>
   </div>
   <div class="row">
     <%= f.label :max_vehicles, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.text_field :max_vehicles, class:"form-control", disabled:true %></span>
+    <span class="col-lg-4"><%= f.number_field :max_vehicles, class:"form-control", disabled:true %></span>
   </div>
   <div class="row">
     <%= f.label :take_over, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.text_field :take_over, class:"form-control" %></span>
+    <span class="col-lg-4">
+      <div class="input-group">
+        <%= f.number_field :take_over, class:"form-control" %>
+        <span class="input-group-addon">min</span>
+      </div>
+    </span>
   </div>
   <div class="row">
     <div class="col-lg-offset-2">
