@@ -30,6 +30,22 @@ L.tileLayer('<%= current_user.layer.url %>', {
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
 }).addTo(map);
 
+var markersLayers = L.layerGroup();
+
+var cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+map.addLayer(cluster);
+
+map.on('zoomend ', function(e) {
+console.log(e);
+console.log(map.zoom);
+  if(map.getZoom() > 14) {
+    map.removeLayer(cluster);
+    map.addLayer(markersLayers);
+  } else {
+    map.removeLayer(markersLayers);
+    map.addLayer(cluster);
+  }
+});
 
 var tags = {};
 var markers = {};
@@ -159,7 +175,7 @@ function addMarker(id, lat, lng) {
     icon: icon_default, // FIXME https://github.com/axyjo/leaflet-rails/pull/10
     draggable: true,
     destination: id
-  }).addTo(map);
+  }).addTo(markersLayers).addTo(cluster);
   marker.on('dragend', dragend);
   marker.on('mouseover', mouseover);
   markers[id] = marker;

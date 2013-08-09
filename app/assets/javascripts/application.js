@@ -18,6 +18,7 @@
 //= require jquery.ui.autocomplete
 //= require jquery.ui.dialog
 //= require leaflet
+//= require leaflet.markercluster
 //= require mustache
 //= require select2
 //= require_tree .

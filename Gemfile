@@ -56,6 +56,7 @@ gem 'rails_12factor', group: :production
 
 gem 'filecache'
 gem 'leaflet-rails'
+gem 'leaflet-markercluster-rails'
 gem 'jquery-ui-rails'
 gem 'mustache'
 gem 'smt_rails'
