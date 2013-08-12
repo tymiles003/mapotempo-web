@@ -26,6 +26,7 @@
     {{#stops}}
       {{#destination}}
       <li data-destination_id="{{id}}" class="ui-state-error">
+        {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} style="display: none"/>
         {{name}}
         <!--<span>{{street}}, {{postalcode}} {{city}}</span>-->
@@ -59,6 +60,7 @@
       {{#destination}}
       <li data-destination_id="{{id}}" {{^lat}}class="ui-state-error"{{/lat}}>
         <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
+        {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         {{name}}
         {{#lat}}{{distance}} km{{/lat}}
         {{#lat}}{{time}}{{/lat}}

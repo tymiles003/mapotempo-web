@@ -11,6 +11,7 @@ var layers = {};
 <% @planning.routes.each{ |route| %>
   layers[<%= route.id %>] = L.layerGroup();
 <% } %>
+var markers = {};
 
 L.tileLayer('<%= current_user.layer.url %>', {
   maxZoom: 18,
@@ -57,21 +58,13 @@ function display_planning(data) {
         var polyline = L.Polyline.fromEncoded(stop.trace);
         L.polyline(polyline.getLatLngs(), {color: color}).addTo(layers[route.id]);
       }
-      if(index==0 || !color) {
-        L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
-          icon: new L.NumberedDivIcon({
-            number: index,
-            iconUrl: '<%= asset_path("marker-000000.svg") %>'
-          }),
-        }).addTo(layers[route.id]);
-      } else if(index<route.stops.length && stop.destination.lat && stop.destination.lng) {
-        var marker = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+      if(stop.destination.lat && stop.destination.lng) {
+        markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
           icon: new L.NumberedDivIcon({
             number: index+1,
-            iconUrl: route.icon
+            iconUrl: (index==0 || !color)? '<%= asset_path("marker-000000.svg") %>' : route.icon
           }),
-        }).addTo(layers[route.id]);
-        marker.bindPopup(SMT['stops/show'](stop));
+        }).addTo(layers[route.id]).bindPopup(SMT['stops/show'](stop));
       }
     });
   });
@@ -139,6 +132,14 @@ function display_planning(data) {
       contentType: 'application/json',
       url: '/routes/'+id+'.json'
     });
+  });
+
+  $(".marker").click(function(event, ui) {
+    var id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+    if(id in markers) {
+      map.setView(markers[id].getLatLng(), 16);
+    }
+    return false;
   });
 }
 
