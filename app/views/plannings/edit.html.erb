@@ -7,7 +7,10 @@
 
 <script>
 var map = L.map('map').setView([<%= @planning.user.store.lat %>, <%= @planning.user.store.lng %>], 13);
-var layer = L.layerGroup();
+var layers = {};
+<% @planning.routes.each{ |route| %>
+  layers[<%= route.id %>] = L.layerGroup();
+<% } %>
 
 L.tileLayer('<%= current_user.layer.url %>', {
   maxZoom: 18,
@@ -36,40 +39,41 @@ function display_planning(data) {
 
   $("#planning input:checkbox").change(update_planning);
 
-  map.removeLayer(layer);
-  layer = L.layerGroup();
-  layer.addTo(map);
   $.each(data.routes, function(i, route) {
+    map.removeLayer(layers[route.id]);
+    layers[route.id] = L.layerGroup();
+    if(!route.hidden) {
+      layers[route.id].addTo(map);
+    }
+
+    var color;
     if(route.vehicle) {
       $(".route[data-route_id="+route.id+"] select").val(route.vehicle.id);
-
-      var color = route.vehicle.color;
-      var index = 1;
-      $.each(route.stops, function(i, stop) {
-        if(stop.trace) {
-          var polyline = L.Polyline.fromEncoded(stop.trace);
-          var p = L.polyline(polyline.getLatLngs(), {color: color}).addTo(map);
-          layer.addLayer(p);
-        }
-        if(index==1) {
-          var marker = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
-            icon: new L.NumberedDivIcon({
-              number: index,
-              iconUrl: '<%= asset_path("marker-000000.svg") %>'
-            }),
-          }).addTo(map);
-        } else if(index<route.stops.length && stop.destination.lat && stop.destination.lng) {
-          var marker = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
-            icon: new L.NumberedDivIcon({
-              number: index,
-              iconUrl: route.icon
-            }),
-          }).addTo(map);
-          marker.bindPopup(SMT['stops/show'](stop));
-        }
-        index++;
-      });
+      color = route.vehicle.color;
     }
+
+    $.each(route.stops, function(index, stop) {
+      if(stop.trace) {
+        var polyline = L.Polyline.fromEncoded(stop.trace);
+        L.polyline(polyline.getLatLngs(), {color: color}).addTo(layers[route.id]);
+      }
+      if(index==0 || !color) {
+        L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+          icon: new L.NumberedDivIcon({
+            number: index,
+            iconUrl: '<%= asset_path("marker-000000.svg") %>'
+          }),
+        }).addTo(layers[route.id]);
+      } else if(index<route.stops.length && stop.destination.lat && stop.destination.lng) {
+        var marker = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+          icon: new L.NumberedDivIcon({
+            number: index+1,
+            iconUrl: route.icon
+          }),
+        }).addTo(layers[route.id]);
+        marker.bindPopup(SMT['stops/show'](stop));
+      }
+    });
   });
 
   $("#out_of_road").sortable({
@@ -115,6 +119,12 @@ function display_planning(data) {
       contentType: 'application/json',
       url: '/routes/'+id+'.json'
     });
+
+    if(hidden) {
+      map.removeLayer(layers[id]);
+    } else {
+      layers[id].addTo(map);
+    }
   });
 
   $(".lock").click(function(event, ui) {
