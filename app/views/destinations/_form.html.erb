@@ -132,7 +132,6 @@ function sendMove(id, latLng) {
 }
 
 function dragend(event) {
-console.log(event);
   sendMove(event.target.options.destination, event.target.getLatLng());
 }
 
@@ -156,10 +155,10 @@ L.tileLayer('<%= current_user.layer.url %>', {
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
 }).addTo(map);
 
-marker = L.marker(new L.LatLng(<%= @destination.lat %>, <%= @destination.lng %>), {
+marker = L.marker(new L.LatLng(<%= @destination.lat || current_user.store.lat %>, <%= @destination.lng || current_user.store.lng %>), {
   icon: L.icon({iconUrl:'<%= asset_path('marker-004499.svg') %>'}), // FIXME https://github.com/axyjo/leaflet-rails/pull/10
   draggable: true,
-  destination: <%= @destination.id %>
+  destination: <%= @destination.id || 0 %>
 }).addTo(map);
 marker.on('dragend', dragend);
 </script>
