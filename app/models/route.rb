@@ -38,6 +38,7 @@ class Route < ActiveRecord::Base
     if vehicle
       self.end = self.start = vehicle.open
       last = stops[0]
+      last.time = self.end
       stops.sort{ |a,b| a.index <=> b.index }[1..-1].each{ |stop|
         if stop.active and stop.destination.lat and stop.destination.lng
           stop.distance, time, stop.trace = Trace.compute(last.destination.lat, last.destination.lng, stop.destination.lat, stop.destination.lng)

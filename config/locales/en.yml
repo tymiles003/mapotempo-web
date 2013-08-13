@@ -21,3 +21,7 @@
 
 en:
   hello: "Hello world"
+
+  distance:
+    unit: "m"
+    thousand: "km"

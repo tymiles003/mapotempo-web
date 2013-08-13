@@ -12,11 +12,12 @@
   -
   {{size}} stops
   <button type="button" class="btn btn-primary btn-small" id="optimize"><i class="icon-gears icon-fixed-width"></i> Optimize</button>
+  <a href="/plannings/{{id}}" class="btn btn-primary btn-small"><i class="icon-print icon-fixed-width"></i> Export</a>
   {{#out_of_date}}<button type="button" class="btn btn-warning btn-small" id="refresh"><i class="icon-refresh icon-fixed-width"></i> Refresh</button>{{/out_of_date}}
 </p>
 <ol class="routes">
 {{#routes}}
-<li class="route" data-route_id="{{id}}"{{#vehicle}} style="border-left: 6px solid {{color}}"{{/vehicle}}>
+<li class="route" data-route_id="{{route_id}}"{{#vehicle}} style="border-left: 6px solid {{color}}"{{/vehicle}}>
   {{^vehicle}}
     Out of route
     {{size}} stops
@@ -45,6 +46,7 @@
       <button type="button" class="optimize btn btn-primary btn-small"><i class="icon-gear icon-fixed-width"></i></button>
       <button type="button" class="toggle btn btn-default btn-small"><i class="icon-eye-close icon-fixed-width"></i></button>
       <button type="button" class="lock btn btn-default btn-small"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+      <a href="/routes/{{route_id}}" class="btn btn-default btn-small"><i class="icon-print icon-fixed-width"></i></a>
       <br/>
       -
       {{distance}} km

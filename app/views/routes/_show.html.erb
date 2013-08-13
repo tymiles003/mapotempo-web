@@ -1,0 +1,33 @@
+<li class="route" style="border-left: 6px solid <%= route.vehicle.color %>">
+  <h1><%= route.planning.name %> - <%= route.vehicle.name %> - <%= Time.now.strftime("%d-%m-%Y") %></h1>
+  <span>
+    <%= number_to_human(route.distance, units: :distance, precision: 3) %>
+    -
+    <%= number_to_human(route.emission, precision: 3) %> kgCO<sub>2</sub>e
+    -
+    <%= route.stops.size %> stops
+    -
+    <%= route.start.strftime("%H:%M") if route.start %> <%= route.end.strftime("%H:%M") if route.end %>
+  </span>
+  <ol class="stops">
+  <%
+  route.stops.each{ |stop|
+    if stop.active and stop.destination.lat
+  %>
+    <li class="list-group-item row">
+      <span class="time col-lg-1 col-1"><%= stop.time.strftime("%H:%M")if stop.time %></span>
+      <span class="distance badge"><%= number_to_human(stop.distance, units: :distance, precision: 3) %></span>
+      <span class="col-lg-4 col-4">
+        <span class="name"><%= stop.destination.name %></span></br>
+        <span class="address">
+          <%= stop.destination.street %></br>
+          <%= stop.destination.postalcode %> <%= stop.destination.city %>
+        </span>
+      </span>
+    </li>
+  <%
+    end
+  }
+  %>
+  </ol>
+</li>

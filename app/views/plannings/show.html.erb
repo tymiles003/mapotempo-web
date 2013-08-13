@@ -1,0 +1,5 @@
+<% @planning.routes.each{ |route| %>
+<%  if route.vehicle %>
+<%=    render 'routes/show', route: route %>
+<%  end %>
+<% } %>

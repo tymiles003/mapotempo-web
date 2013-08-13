@@ -36,27 +36,27 @@ function update_planning(event, ui) {
 }
 
 function display_planning(data) {
-  $("#planning").html(SMT['plannings/show'](data));
+  $("#planning").html(SMT['plannings/edit'](data));
 
   $("#planning input:checkbox").change(update_planning);
 
   $.each(data.routes, function(i, route) {
-    map.removeLayer(layers[route.id]);
-    layers[route.id] = L.layerGroup();
+    map.removeLayer(layers[route.route_id]);
+    layers[route.route_id] = L.layerGroup();
     if(!route.hidden) {
-      layers[route.id].addTo(map);
+      layers[route.route_id].addTo(map);
     }
 
     var color;
     if(route.vehicle) {
-      $(".route[data-route_id="+route.id+"] select").val(route.vehicle.id);
+      $(".route[data-route_id="+route.route_id+"] select").val(route.vehicle.id);
       color = route.vehicle.color;
     }
 
     $.each(route.stops, function(index, stop) {
       if(stop.trace) {
         var polyline = L.Polyline.fromEncoded(stop.trace);
-        L.polyline(polyline.getLatLngs(), {color: color}).addTo(layers[route.id]);
+        L.polyline(polyline.getLatLngs(), {color: color}).addTo(layers[route.route_id]);
       }
       if(stop.destination.lat && stop.destination.lng) {
         markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
@@ -64,7 +64,7 @@ function display_planning(data) {
             number: index+1,
             iconUrl: (index==0 || !color)? '<%= asset_path("marker-000000.svg") %>' : route.icon
           }),
-        }).addTo(layers[route.id]).bindPopup(SMT['stops/show'](stop));
+        }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
       }
     });
   });
