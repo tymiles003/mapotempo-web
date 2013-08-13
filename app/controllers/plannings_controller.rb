@@ -1,6 +1,6 @@
 class PlanningsController < ApplicationController
   load_and_authorize_resource :except => :create
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :update_stop]
 
   # GET /plannings
   # GET /plannings.json
@@ -114,6 +114,24 @@ class PlanningsController < ApplicationController
     end
   end
 
+  def update_stop
+    @route = Route.where(planning: @planning, id: params[:route_id]).first
+    if @route
+      @stop = Stop.where(route: @route, destination_id: params[:destination_id]).first
+      if @stop
+        respond_to do |format|
+          if @stop.update(stop_params)
+            @planning.compute
+            @planning.save
+            format.json { render action: 'show', location: @planning }
+          else
+            format.json { render json: @stop.errors, status: :unprocessable_entity }
+          end
+        end
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_planning
@@ -123,5 +141,9 @@ class PlanningsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def planning_params
       params.require(:planning).permit(:name)
+    end
+
+    def stop_params
+      params.require(:stop).permit(:active)
     end
 end

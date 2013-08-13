@@ -38,7 +38,18 @@ function update_planning(event, ui) {
 function display_planning(data) {
   $("#planning").html(SMT['plannings/edit'](data));
 
-  $("#planning input:checkbox").change(update_planning);
+  $("#planning input:checkbox").change(function(event, ui) {
+    var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
+    var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+    var active = $(this).is(':checked');
+    $.ajax({
+      type: "patch",
+      data: JSON.stringify({stop: {active: active}}),
+      contentType: 'application/json',
+      url: '/plannings/<%= @planning.id %>/'+route_id+'/'+destination_id+'.json',
+      success: display_planning,
+    });
+  });
 
   $.each(data.routes, function(i, route) {
     map.removeLayer(layers[route.route_id]);

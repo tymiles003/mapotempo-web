@@ -17,6 +17,7 @@ Opentour::Application.routes.draw do
     patch 'move'
     get 'refresh'
     patch 'switch'
+    patch ':route_id/:destination_id' => 'plannings#update_stop'
   end
 
   resources :routes
