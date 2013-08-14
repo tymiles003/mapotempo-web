@@ -7,7 +7,7 @@ class Planning < ActiveRecord::Base
 #  validates :name, presence: true
 
   def set_destinations(destinations)
-    default_empty_routes
+    default_empty_route
     routes[0].set_destinations([])
     if destinations.size <= routes.size-1
       0.upto(destinations.size-1).each{ |i|
@@ -15,7 +15,7 @@ class Planning < ActiveRecord::Base
       }
     else
       # FIXME erreur, pas assez de véhicules
-    end
+   end
   end
 
   def vehicle_add(vehicle)
@@ -45,10 +45,7 @@ class Planning < ActiveRecord::Base
 
   def default_routes
     default_empty_routes
-    routes[0].default_stops
-    routes[1..-1].each { |route|
-      route.default_store
-    }
+    routes[1].default_stops
   end
 
   def compute

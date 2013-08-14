@@ -26,7 +26,7 @@
     <ul id="out_of_road" class="sortable"{{#hidden}} style="display: none;"{{/hidden}}>
     {{#stops}}
       {{#destination}}
-      <li data-destination_id="{{id}}" class="ui-state-error">
+      <li data-destination_id="{{id}}" class="waypoint ui-state-error">
         {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} style="display: none"/>
         {{name}}
@@ -60,7 +60,7 @@
     <ol class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}}>
     {{#stops}}
       {{#destination}}
-      <li data-destination_id="{{id}}" {{^lat}}class="ui-state-error"{{/lat}}>
+      <li data-destination_id="{{id}}" class="{{type}}{{^lat}} ui-state-error{{/lat}}">
         <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
         {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         {{name}}

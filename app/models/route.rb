@@ -12,6 +12,7 @@ class Route < ActiveRecord::Base
 
   def default_stops
     i = 0
+    stops.clear
     stops << Stop.create(destination:planning.user.store, route:self, active:true, index:0)
     planning.user.destinations.select{
       |c| c != planning.user.store
@@ -26,6 +27,7 @@ class Route < ActiveRecord::Base
   end
 
   def default_store
+    stops.clear
     stops << Stop.create(destination:planning.user.store, route:self, active:true, index:0)
     stops << Stop.create(destination:planning.user.store, route:self, active:true, index:1)
   end
@@ -60,13 +62,9 @@ class Route < ActiveRecord::Base
   def set_destinations(destinations)
     Stop.transaction do
       stops.clear
+      destinations.select!{ |d| d[0] != planning.user.store }
       if vehicle
-        if destinations.size == 0 or destinations[0][0].id != planning.user.store.id
-          destinations = [[planning.user.store, true]] + destinations
-        end
-        if destinations[-1][0].id != planning.user.store.id
-          destinations << [planning.user.store, true]
-        end
+        destinations = [[planning.user.store, true]] + destinations + [[planning.user.store, true]]
       end
       i = 0
       destinations.each{ |stop|

@@ -86,7 +86,7 @@ function display_planning(data) {
   }).disableSelection();
   $(".stops").sortable({
     connectWith: ".sortable",
-    items: "li:not(:first, :last, .placeholder)",
+    items: "li.waypoint",
     update: update_planning,
   }).disableSelection();
 
