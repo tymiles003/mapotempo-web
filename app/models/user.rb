@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
             vehicle.user = self
             vehicles << vehicle
             plannings.each{ |planning|
-              planning.add(vehicle)
+              planning.vehicle_add(vehicle)
             }
           }
         elsif vehicles.size > max_vehicles
@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
           (vehicles.size - max_vehicles).times{ |i|
             vehicle = vehicles.pop
             plannings.each{ |planning|
-              planning.remove(vehicle)
+              planning.vehcile_remove(vehicle)
             }
             vehicle.destroy
           }

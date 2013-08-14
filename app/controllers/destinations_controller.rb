@@ -31,9 +31,12 @@ class DestinationsController < ApplicationController
   def create
     @destination = Destination.new(destination_params)
     @destination.user = current_user
+    current_user.plannings.each { |planning|
+      planning.destination_add(@destination)
+    }
 
     respond_to do |format|
-      if @destination.save
+      if current_user.save
         format.html { redirect_to @destination, notice: 'Destination was successfully created.' }
         format.json { render action: 'show', status: :created, location: @destination }
       else

@@ -16,7 +16,6 @@ Destination.create!("name"=>"l1", "street"=>"Place Picard", "postalcode"=>"33000
 Destination.create!("name"=>"l2", "street"=>"Rue Esprit des Lois", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.83395, "lng"=>-0.56545, "quantity"=>1, "user"=>fred)
 Destination.create!("name"=>"l3", "street"=>"Rue de Nuits", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.84272, "lng"=>-0.55013, "quantity"=>1, "user"=>fred)
 Destination.create!("name"=>"l4", "street"=>"Rue de New York", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.86576, "lng"=>-0.57577, "quantity"=>1, "user"=>fred)
-Planning.create!("name"=>"P1", "user"=>fred)
 Tag.create!("label"=>"lundi", "user"=>fred)
 Tag.create!("label"=>"jeudi", "user"=>fred)
 Tag.create!("label"=>"frigo", "user"=>fred)
