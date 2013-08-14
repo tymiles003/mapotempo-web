@@ -75,6 +75,20 @@ class Route < ActiveRecord::Base
     end
   end
 
+  def add(destination)
+    stops << Stop.new(destination: destination, route: self)
+    self.out_of_date = true
+  end
+
+  def remove(destination)
+    stops.each{ |stop|
+      if(stop.destination ==  destination)
+        stop.destroy
+        self.out_of_date = true
+      end
+    }
+  end
+
   private
     def assign_defaults
       self.hidden = false

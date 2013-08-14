@@ -53,9 +53,9 @@ class DestinationsController < ApplicationController
     respond_to do |format|
       ok = if @destination == current_user.store
         @destination.assign_attributes(p)
-        params.key?("live") or @destination.save() # No save in "live" mode
+        params.key?("live") or (@destination.save() && @destination.user.save) # No save in "live" mode
       else
-        @destination.update(p)
+        @destination.update(p) && @destination.user.save
       end
       if ok
         format.html { redirect_to edit_destination_path(@destination), notice: 'Destination was successfully updated.' }

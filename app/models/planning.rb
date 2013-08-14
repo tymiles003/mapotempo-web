@@ -32,8 +32,13 @@ class Planning < ActiveRecord::Base
   end
 
   def destination_add(destination)
-    routes[0].stops << Stop.new(destination: destination, route: routes[0])
-    routes[0].out_of_date = true
+    routes[0].add(destination)
+  end
+
+  def destination_remove(destination)
+    routes.each{ |route|
+      route.remove(destination)
+    }
   end
 
   def default_empty_routes

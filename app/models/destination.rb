@@ -1,7 +1,7 @@
 class Destination < ActiveRecord::Base
   belongs_to :user
-  has_many :stops, :dependent => :destroy
-  has_and_belongs_to_many :tags, -> { order('label')}
+  has_many :stops, dependent: :destroy
+  has_and_belongs_to_many :tags, after_add: :update_add_tag, after_remove: :update_remove_tag
 
 #  validates :user, presence: true
   validates :name, presence: true
@@ -18,6 +18,22 @@ class Destination < ActiveRecord::Base
       if lat_changed? or lng_changed?
         out_of_date
       end
+    end
+
+    def update_add_tag(tag)
+      user.plannings.select{ |planning|
+        planning.tags.include?(tag)
+      }.each{ |planning|
+        planning.destination_add(self)
+      }
+    end
+
+    def update_remove_tag(tag)
+      user.plannings.select{ |planning|
+        planning.tags.include?(tag)
+      }.each{ |planning|
+        planning.destination_remove(self)
+      }
     end
 
     def destroy_out_of_date
