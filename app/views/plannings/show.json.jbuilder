@@ -10,14 +10,14 @@ json.vehicles do
   end
 end
 json.distance @planning.routes.to_a.sum(0){ |route| route.distance or 0 }/1000
-json.emission @planning.routes.to_a.sum(0){ |route| route.emission or 0 }
+json.emission number_to_human(@planning.routes.to_a.sum(0){ |route| route.emission or 0 }, precision: 4)
 if @planning.routes.inject(false){ |acc, route| acc or route.out_of_date }
     json.out_of_date true
 end
 json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
 json.routes @planning.routes do |route|
   json.route_id route.id
-  json.emission number_to_human(route.emission, precision: 3)
+  json.emission number_to_human(route.emission, precision: 4)
   (json.start route.start.strftime("%H:%M")) if route.start
   (json.end route.end.strftime("%H:%M")) if route.end
   (json.hidden true) if route.hidden
