@@ -76,6 +76,8 @@ class PlanningsController < ApplicationController
       route = routes[r[:route]]
       if r[:destinations]
         route.set_destinations(r[:destinations].collect{ |d| [destinations[d[:id]], !!d[:active]] })
+      else
+        route.set_destinations([])
       end
     }
 
