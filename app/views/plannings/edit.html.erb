@@ -84,10 +84,14 @@ function display_planning(data) {
     connectWith: ".sortable",
     update: update_planning,
   }).disableSelection();
+
+  var sortableUpdate = false;
   $(".stops").sortable({
     connectWith: ".sortable",
     items: "li.waypoint",
-    update: update_planning,
+    start: function(event, ui) { sortableUpdate = false; },
+    update: function(event, ui) { sortableUpdate = true; },
+    stop: function(event, ui) { if(sortableUpdate) { update_planning(event, ui); } }
   }).disableSelection();
 
   $("select").select2({minimumResultsForSearch:99});
