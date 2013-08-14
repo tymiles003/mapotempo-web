@@ -11,9 +11,9 @@
   {{emission}} kgCO<sub>2</sub>e
   -
   {{size}} stops
-  <button type="button" class="btn btn-primary btn-small" id="optimize"><i class="icon-gears icon-fixed-width"></i> Optimize</button>
-  <a href="/plannings/{{id}}" class="btn btn-primary btn-small"><i class="icon-print icon-fixed-width"></i> Export</a>
-  {{#out_of_date}}<button type="button" class="btn btn-warning btn-small" id="refresh"><i class="icon-refresh icon-fixed-width"></i> Refresh</button>{{/out_of_date}}
+  <button type="button" class="btn btn-primary btn-sm" id="optimize"><i class="icon-gears icon-fixed-width"></i> Optimize</button>
+  <a href="/plannings/{{id}}" class="btn btn-primary btn-sm"><i class="icon-print icon-fixed-width"></i> Export</a>
+  {{#out_of_date}}<button type="button" class="btn btn-warning btn-sm" id="refresh"><i class="icon-refresh icon-fixed-width"></i> Refresh</button>{{/out_of_date}}
 </p>
 <ol class="routes">
 {{#routes}}
@@ -21,8 +21,8 @@
   {{^vehicle}}
     Out of route
     {{size}} stops
-    <button type="button" class="toggle btn btn-default btn-small"><i class="icon-eye-close icon-fixed-width"></i></button>
-    <button type="button" class="lock btn btn-default btn-small"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+    <button type="button" class="toggle btn btn-default btn-xs"><i class="icon-eye-close icon-fixed-width"></i></button>
+    <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
     <ul id="out_of_road" class="sortable"{{#hidden}} style="display: none;"{{/hidden}}>
     {{#stops}}
       {{#destination}}
@@ -43,10 +43,10 @@
         {{#vehicles}}<option value="{{id}}">{{name}}</option>{{/vehicles}}
       </select>
       <a href="{{path}}"><i class="icon-truck icon-fixed-width"></i></a>
-      <button type="button" class="optimize btn btn-primary btn-small"><i class="icon-gear icon-fixed-width"></i></button>
-      <button type="button" class="toggle btn btn-default btn-small"><i class="icon-eye-close icon-fixed-width"></i></button>
-      <button type="button" class="lock btn btn-default btn-small"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
-      <a href="/routes/{{route_id}}" class="btn btn-default btn-small"><i class="icon-print icon-fixed-width"></i></a>
+      <button type="button" class="optimize btn btn-primary btn-xs"><i class="icon-gear icon-fixed-width"></i></button>
+      <button type="button" class="toggle btn btn-default btn-xs"><i class="icon-eye-close icon-fixed-width"></i></button>
+      <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+      <a href="/routes/{{route_id}}" class="btn btn-default btn-xs"><i class="icon-print icon-fixed-width"></i></a>
       <br/>
       -
       {{distance}} km
