@@ -31,3 +31,10 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
     html_tag.insert html_tag.index('>'), ' class="ui-state-error"'
   end
 end
+
+Opentour::Application.config.optimizer_exec = "tsp_simple"
+Opentour::Application.config.optimizer_tmp_dir = Dir.tmpdir
+
+Opentour::Application.config.trace_cache_dir = Dir.tmpdir+'/trace'
+Opentour::Application.config.trace_cache_delay = 60*60*24*10
+Opentour::Application.config.trace_osrm_url = "http://router.project-osrm.org"

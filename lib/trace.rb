@@ -5,15 +5,18 @@ require 'filecache'
 
 module Trace
 
-  @cache = FileCache.new("cache", "/tmp/trace", 60*60*24*10, 3)
+  @cache_dir = Opentour::Application.config.trace_cache_dir
+  @cache_delay = Opentour::Application.config.trace_cache_delay
+  @osrm_url = Opentour::Application.config.trace_osrm_url
+
+  @cache = FileCache.new("cache", @cache_dir, @cache_delay, 3)
 
   def self.compute(from_lat, from_lng, to_lat, to_lng)
     key = "#{from_lat} #{from_lng} #{to_lat} #{to_lng}"
 
-    Rails.logger.info @diskcache.inspect
     result = @cache.get(key)
     if !result
-      url = "http://router.project-osrm.org/viaroute?loc=#{from_lat},#{from_lng}&loc=#{to_lat},#{to_lng}&alt=false&output=json"
+      url = "#{@osrm_url}/viaroute?loc=#{from_lat},#{from_lng}&loc=#{to_lat},#{to_lng}&alt=false&output=json"
       Rails.logger.info "get #{url}"
       result = JSON.parse(open(url).read)
       @cache.set(key, result)

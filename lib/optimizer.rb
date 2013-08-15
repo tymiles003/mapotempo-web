@@ -2,8 +2,8 @@ require 'tempfile'
 
 module Optimizer
 
-  @optimizer_exec = @optimizer_exec or "tsp_simple"
-  @tmp_dir = @tmp_dir or Dir.tmpdir
+  @exec = Opentour::Application.config.optimizer_exec
+  @tmp_dir = Opentour::Application.config.optimizer_tmp_dir
 
   def self.optimize(number, matrix)
     input = Tempfile.new('optimize-route-input', tmpdir=@tmp_dir)
@@ -26,7 +26,7 @@ EDGE_WEIGHT_SECTION
 
       `cat #{input.path} > /tmp/in` # FIXME tmp
       `cat #{output.path} > /tmp/out` # FIXME tmp
-      cmd = "#{@optimizer_exec} -tsp_time_limit_in_ms 2000 -instance_file '#{input.path}' > '#{output.path}'"
+      cmd = "#{@exec} -tsp_time_limit_in_ms 2000 -instance_file '#{input.path}' > '#{output.path}'"
       Rails.logger.info(cmd)
       system(cmd)
       Rails.logger.info($?.exitstatus)
