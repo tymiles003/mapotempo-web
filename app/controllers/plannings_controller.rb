@@ -1,6 +1,8 @@
+require 'optimizer'
+
 class PlanningsController < ApplicationController
   load_and_authorize_resource :except => :create
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :update_stop]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :update_stop, :optimize_route]
 
   # GET /plannings
   # GET /plannings.json
@@ -107,7 +109,7 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
       vehicle = Vehicle.where(id: Integer(params["vehicle_id"]), user: current_user).first
-      if route and vehicle and @planning.switch(route, vehicle) and @planning.save
+      if route and vehicle and @planning.switch(route, vehicle) and @planning.compute and @planning.save
         format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
         format.json { render action: 'show', location: @planning }
       else
@@ -129,6 +131,27 @@ class PlanningsController < ApplicationController
           else
             format.json { render json: @stop.errors, status: :unprocessable_entity }
           end
+        end
+      end
+    end
+  end
+
+  def optimize_route
+    @route = Route.where(planning: @planning, id: params[:route_id]).first
+    if @route
+      optimum = Optimizer.optimize(1, @route.matrix)
+      ok = if optimum
+        @route.order(optimum)
+        @planning.compute && @route.save
+      else
+        false
+      end
+      respond_to do |format|
+        if ok
+          format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
       end
     end

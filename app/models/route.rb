@@ -89,6 +89,28 @@ class Route < ActiveRecord::Base
     }
   end
 
+  def matrix
+    stops.select{ |stop| stop.active && stop.destination.lat && stop.destination.lng }.collect{ |stop1|
+      stops.select{ |stop| stop.active && stop.destination.lat && stop.destination.lng }.collect{ |stop2|
+        distance, time, trace = Trace.compute(stop1.destination.lat, stop1.destination.lng, stop2.destination.lat, stop2.destination.lng)
+        distance
+      }
+    }
+  end
+
+  def order(o)
+    available_stops = stops.select{ |stop| stop.active && stop.destination.lat && stop.destination.lng }
+    a = o.collect{ |i|
+      available_stops[i]
+    }
+    a = a[0..-2] + stops.select{ |stop| not(stop.active && stop.destination.lat && stop.destination.lng) } + a[-1..-1]
+    i = 0
+    a.each{ |stop|
+      stop.index = i
+      i += 1
+    }
+  end
+
   private
     def assign_defaults
       self.hidden = false

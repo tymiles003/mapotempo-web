@@ -7,7 +7,7 @@ class Planning < ActiveRecord::Base
 #  validates :name, presence: true
 
   def set_destinations(destinations)
-    default_empty_route
+    default_empty_routes
     routes[0].set_destinations([])
     if destinations.size <= routes.size-1
       0.upto(destinations.size-1).each{ |i|

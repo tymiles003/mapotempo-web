@@ -156,6 +156,15 @@ function display_planning(data) {
     }
     return false;
   });
+
+  $(".optimize").click(function(event, ui) {
+    var id = $(this).closest("[data-route_id]").attr("data-route_id");
+    $.ajax({
+      type: "get",
+      url: '/plannings/<%= @planning.id %>/'+id+'/optimize.json',
+      success: display_planning
+    });
+  });
 }
 
 $.ajax({
