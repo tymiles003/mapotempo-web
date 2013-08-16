@@ -90,8 +90,9 @@ class Route < ActiveRecord::Base
   end
 
   def matrix
-    stops.select{ |stop| stop.active && stop.destination.lat && stop.destination.lng }.collect{ |stop1|
-      stops.select{ |stop| stop.active && stop.destination.lat && stop.destination.lng }.collect{ |stop2|
+    stops_on = stops_segregate[true]
+    stops_on.collect{ |stop1|
+      stops_on.collect{ |stop2|
         distance, time, trace = Trace.compute(stop1.destination.lat, stop1.destination.lng, stop2.destination.lat, stop2.destination.lng)
         distance
       }
@@ -99,11 +100,11 @@ class Route < ActiveRecord::Base
   end
 
   def order(o)
-    available_stops = stops.select{ |stop| stop.active && stop.destination.lat && stop.destination.lng }
+    stops_ = stops_segregate
     a = o.collect{ |i|
-      available_stops[i]
+      stops_[true][i]
     }
-    a = a[0..-2] + stops.select{ |stop| not(stop.active && stop.destination.lat && stop.destination.lng) } + a[-1..-1]
+    a = a[0..-2] + stops_[false] + stops[-1..-1]
     i = 0
     a.each{ |stop|
       stop.index = i
@@ -116,4 +117,8 @@ class Route < ActiveRecord::Base
       self.hidden = false
       self.locked = false
     end
+
+  def stops_segregate
+    stops[0..-2].group_by{ |stop| !!(stop.active && stop.destination.lat && stop.destination.lng) }
+  end
 end
