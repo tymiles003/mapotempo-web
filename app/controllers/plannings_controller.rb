@@ -143,6 +143,7 @@ class PlanningsController < ApplicationController
       ok = if optimum
         @route.order(optimum)
         @planning.compute && @route.save
+        @planning.reload # Refresh stops order
       else
         false
       end
