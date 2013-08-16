@@ -32,7 +32,7 @@ class Vehicle < ActiveRecord::Base
       self.emission = 0
       self.consumption = 0
       self.capacity = 999
-      self.color = Vehicle.colors_table[0]
+      self.color = '#'+Vehicle.colors_table[0]
       self.open = Time.new(2000, 1, 1, 8, 0)
       self.close = Time.new(2000, 1, 1, 12, 0)
     end
