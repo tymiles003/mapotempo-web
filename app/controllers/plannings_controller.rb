@@ -139,13 +139,17 @@ class PlanningsController < ApplicationController
   def optimize_route
     @route = Route.where(planning: @planning, id: params[:route_id]).first
     if @route
-      optimum = Optimizer.optimize(1, @route.matrix)
-      ok = if optimum
-        @route.order(optimum)
-        @planning.compute && @route.save
-        @planning.reload # Refresh stops order
+      ok = if @route.stops.size <= 2
+        true
       else
-        false
+        optimum = Optimizer.optimize(1, @route.matrix)
+        if optimum
+          @route.order(optimum)
+          @planning.compute && @route.save
+          @planning.reload # Refresh stops order
+        else
+          false
+        end
       end
       respond_to do |format|
         if ok
