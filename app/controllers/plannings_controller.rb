@@ -7,7 +7,7 @@ class PlanningsController < ApplicationController
   # GET /plannings
   # GET /plannings.json
   def index
-    @plannings = Planning.all
+    @plannings = Planning.where(user_id: current_user.id)
   end
 
   # GET /plannings/1

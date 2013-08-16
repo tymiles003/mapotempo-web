@@ -9,9 +9,6 @@ fred = User.create!("email"=>"user@user.com", "password"=>"123456789", "max_vehi
 toto = User.create!("email"=>"toto@toto.com", "password"=>"123456789")
 Vehicle.create!("capacity"=>100, "user"=>fred, "name"=>"Renault Kangoo")
 Vehicle.create!("capacity"=>100, "user"=>fred, "name"=>"Fiat Vito")
-store = Destination.create!("name"=>"Store", "street"=>"Rue du Commandant Marchant", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.83423, "lng"=>-0.60068)
-fred.store_id = store.id
-fred.save
 Destination.create!("name"=>"l1", "street"=>"Place Picard", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.84512, "lng"=>-0.578, "quantity"=>1, "user"=>fred)
 Destination.create!("name"=>"l2", "street"=>"Rue Esprit des Lois", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.83395, "lng"=>-0.56545, "quantity"=>1, "user"=>fred)
 Destination.create!("name"=>"l3", "street"=>"Rue de Nuits", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.84272, "lng"=>-0.55013, "quantity"=>1, "user"=>fred)

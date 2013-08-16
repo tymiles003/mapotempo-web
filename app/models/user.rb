@@ -5,16 +5,23 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  belongs_to :store, :class_name => "Destination"
+  belongs_to :store, :class_name => "Destination", :autosave => true, :dependent => :destroy
   belongs_to :layer
   has_many :vehicles, -> { order('id')}, :autosave => true, :dependent => :destroy
   has_many :destinations, -> { order('id')}, :autosave => true, :dependent => :destroy
   has_many :plannings, -> { order('id')}, :autosave => true, :dependent => :destroy
   has_many :tags, -> { order('label')}, :autosave => true, :dependent => :destroy
 
+  after_initialize :assign_defaults, if: 'new_record?'
   before_update :update_out_of_date, :update_max_vehicles
 
   private
+    def assign_defaults
+      self.max_vehicles = 0
+      self.layer_id = 1
+      self.store = Destination.create(name:"Store", city:"Bordeaux", lat:44.83423, lng:-0.60068)
+    end
+
     def update_out_of_date
       if take_over_changed?
         Route.transaction do
