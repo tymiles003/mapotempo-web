@@ -17,6 +17,9 @@
 //= require jquery.ui.sortable
 //= require jquery.ui.autocomplete
 //= require jquery.ui.dialog
+//= require jquery.ui.slider
+//= require jquery-tablesorter
+//= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
 //= require leaflet
 //= require leaflet.markercluster
 //= require mustache

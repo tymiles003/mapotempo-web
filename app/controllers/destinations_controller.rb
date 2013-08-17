@@ -31,6 +31,7 @@ class DestinationsController < ApplicationController
   def create
     @destination = Destination.new(destination_params)
     @destination.user = current_user
+    current_user.destinations << @destination
     current_user.plannings.each { |planning|
       planning.destination_add(@destination)
     }

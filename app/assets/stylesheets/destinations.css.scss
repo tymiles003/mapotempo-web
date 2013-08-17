@@ -2,39 +2,30 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.table {
+#destination_box {
   height: 300px;
   overflow-y: scroll;
 
-  div span {
-    text-align: center;
-  }
-}
+  .destination .block {
+    display: table;
+    table-layout: fixed;
 
-.destination {
-  display: inline-block;
-}
+    > span {
+      display: table-cell;
+    }
 
-.destination .block {
-  display: table;
-  table-layout: fixed;
-  border-collapse: collapse;
+    > span:not(:last-child) input {
+      border-radius: 0 0 0 0;
+      border-right: 0;
+    }
 
-  span {
-    display: table-cell;
-  }
+    > span:first-child input {
+      border-radius: 3px 0 0 3px;
+    }
 
-  span:not(:last-child) input {
-    border-radius: 0 0 0 0;
-    border-right: 0;
-  }
-
-  span:first-child input {
-    border-radius: 3px 0 0 3px;
-  }
-
-  span:last-child input {
-    border-radius: 0 3px 3px 0;
+    > span:last-child input {
+      border-radius: 0 3px 3px 0;
+    }
   }
 }
 

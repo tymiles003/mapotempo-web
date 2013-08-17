@@ -1,39 +1,43 @@
-<form data-destination_id="{{id}}" class="destination form-inline{{^lat}} ui-state-error{{/lat}}">
-  <div class="col-lg-2"><input class="form-control input-sm" type="text" name="destination[name]" value="{{name}}"/></div>
-  <div class="col-lg-4 block">
-    <span>
-      <input class="form-control input-sm" type="text" name="destination[street]" value="{{street}}"/>
+<tr data-destination_id="{{id}}" class="destination form-inline{{^lat}} ui-state-error{{/lat}}">
+  <td><input class="form-control input-sm" type="text" name="destination[name]" value="{{name}}"/></td>
+  <td>
+    <span class="block">
+      <span>
+        <input class="form-control input-sm" type="text" name="destination[street]" value="{{street}}"/>
+      </span>
+      <span style="width:4em">
+        <input class="form-control input-sm" type="text" maxlength="7" width="7" name="destination[postalcode]" value="{{postalcode}}"/>
+      </span>
+      <span>
+        <div class="input-group">
+          <input class="form-control input-sm" type="text" name="destination[city]" value="{{city}}"/>
+          <span class="input-group-addon input-sm pointing"><i class="icon-screenshot"></i></span>
+        </div>
+      </span>
     </span>
-    <span style="width:4em">
-      <input class="form-control input-sm" type="text" maxlength="7" width="7" name="destination[postalcode]" value="{{postalcode}}"/>
-    </span>
-    <span>
-      <div class="input-group">
-        <input class="form-control input-sm" type="text" name="destination[city]" value="{{city}}"/>
-        <span class="input-group-addon input-sm pointing"><i class="icon-screenshot"></i></span>
-      </div>
-    </span>
-  </div>
-  <div class="col-lg-1">
+  </td>
+  <td>
     <input class="form-control input-sm" type="integer" name="destination[quantity]" value="{{quantity}}"/>
-  </div>
-  <div class="col-lg-2 block">
-    <span>
-      <input class="form-control input-sm" type="datetime" name="destination[open]" value="{{open}}"/>
+  </td>
+  <td>
+    <span class="block">
+      <span>
+        <input class="form-control input-sm" type="datetime" name="destination[open]" value="{{open}}"/>
+      </span>
+      <span>
+        <input class="form-control input-sm" type="datetime" name="destination[close]" value="{{close}}"/>
+      </span>
     </span>
-    <span>
-      <input class="form-control input-sm" type="datetime" name="destination[close]" value="{{close}}"/>
-    </span>
-  </div>
-  <div class="col-lg-2">
-      <div class="input-group">
-        <select style="width: 100%" multiple="multiple" name="tags[]">{{#tags}}<option value="{{id}}" {{#active}} selected="selected"{{/active}}>{{label}}</option>{{/tags}}</select>
-        <span class="input-group-addon input-sm"><i class="icon-tags"></i></span>
-      </div>
-  </div>
-  <input type="hidden" name="destination[lat]" value="{{lat}}" />
-  <input type="hidden" name="destination[lng]" value="{{lng}}" />
-  <div class="col-lg-1">
+  </td>
+  <td>
+   <div class="input-group">
+     <select style="width: 100%" multiple="multiple" name="tags[]">{{#tags}}<option value="{{id}}" {{#active}} selected="selected"{{/active}}>{{label}}</option>{{/tags}}</select>
+     <span class="input-group-addon input-sm"><i class="icon-tags"></i></span>
+   </div>
+  </td>
+  <td>
+    <input type="hidden" name="destination[lat]" value="{{lat}}" />
+    <input type="hidden" name="destination[lng]" value="{{lng}}" />
     <button type="button" class="destroy btn btn-default btn-xs"><i class="icon-remove icon-fixed-width"></i> Destroy</button>
-  </div>
-</form>
+  </td>
+</tr>

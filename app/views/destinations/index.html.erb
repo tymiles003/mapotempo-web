@@ -1,21 +1,24 @@
 <h1>Listing destinations</h1>
 
-<div class="row table" id="destination_box">
-  <div>
-    <span class="col-lg-2">Name</span>
-    <span class="col-lg-4">
-      <span>Street</span>
-      <span>Postalcode</span>
-      <span>City</span>
-    </span>
-    <span class="col-lg-1">Quantity</span>
-    <span class="col-lg-2">
-      <span>Open</span>
-      <span>Close</span>
-    </span>
-    <span class="col-lg-2">Tags</span>
-  </div>
-  <div class="destinations"></div>
+<div id="destination_box" class="row col-lg-12">
+  <table class="tablesorter">
+    <thead><tr>
+      <th>Name</th>
+      <th>
+        <span>Street</span>
+        <span>Postalcode</span>
+        <span>City</span>
+      </th>
+      <th>Quantity</th>
+      <th>
+        <span>Open</span>
+        <span>Close</span>
+      </th>
+      <th>Tags</th>
+      <th></th>
+    </tr></thead>
+    <tbody class="destinations"></tbody>
+  </table>
 </div>
 <div class="row col-lg-1">
   <button id="add" type="button" class="destroy btn btn-default btn-sm"><i class="icon-plus icon-fixed-width"></i> New Destination</button>
@@ -64,7 +67,7 @@ function wire(row) {
     source: function(req, add) {
       $.ajax({
         type: "post",
-        data: $(row).serialize(),
+        data: $(":input", $(row)).serialize(),
         url: '/destinations/'+id+'/geocode_complete.json',
         success: function(data) {
           add($.map(data, function(val, i) {
@@ -82,7 +85,7 @@ function wire(row) {
   $(":input", row).change(function(event) {
     $.ajax({
       type: "put",
-      data: $(row).serialize(),
+      data: $(":input", $(row)).serialize(),
       url: '/destinations/'+id+'.json',
       success: function(data) { update(id, data); }
     });
@@ -129,6 +132,7 @@ function update(id, destination) {
   id = destination.id;
   row = $('[data-destination_id='+id+']');
   wire(row);
+  $('.destinations').trigger('update');
 
   markers[id].setLatLng(new L.LatLng(destination.lat, destination.lng));
   map.setView(markers[id].getLatLng(), 16);
@@ -226,6 +230,13 @@ $("#add").click(function(event) {
   });
 });
 
+function filter_text(exactText, normalizedValue, filter, index) {
+  return !!normalizedValue.match(new RegExp(filter,'i'));
+}
+function filter_number(exactText, normalizedValue, filter, index) {
+  return normalizedValue == filter;
+}
+
 function display_destinations(data) {
   var table = $('.destinations');
   $.each(data.tags, function(i, tag) {
@@ -243,6 +254,49 @@ function display_destinations(data) {
     }
     wire($(".destination:last", table));
   });
+
+  $("#destination_box table").tablesorter({
+    headers: {
+      2: { sorter: "digit" },
+      3: { sorter: false },
+      5: { sorter: false }
+    },
+    textExtraction: function(node, table, cellIndex) {
+      if(cellIndex == 4) {
+        return $.map($("[name=tags\\[\\]] :selected", node), function(e,i) { return e.text; }).join(",");
+      } else {
+        return $.map($(":input", node), function(e,i) { return e.value; }).join(",");
+      }
+    },
+    theme : "bootstrap",
+    // Show order icon v and ^
+    headerTemplate : '{content} {icon}',
+    widgets: ["uitheme", "filter"],
+    widgetOptions: {
+      filter_childRows: true,
+      // class name applied to filter row and each input
+      filter_cssFilter: "tablesorter-filter",
+      filter_functions: {
+        0: filter_text,
+        1: filter_text,
+        2: filter_number,
+        4: filter_text
+      },
+      filter_formatter: {
+        3: function($cell, indx){
+            return $.tablesorter.filterFormatter.uiRange($cell, indx, {
+              values : [0, 24],
+              min : 0,
+              max : 24,
+              delayed : false,
+              valueToHeader : false
+            });
+        },
+        5: function($cell, indx){ return false; }
+      }
+    }
+  });
+  $(".tablesorter-filter").addClass("form-control input-sm"); // filter_cssFilter not support setting multiple class at once
 }
 
 $.ajax({
