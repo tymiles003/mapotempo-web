@@ -91,6 +91,16 @@ class DestinationsController < ApplicationController
   def import
   end
 
+  def export
+    csv = CSV.generate { |csv|
+      csv << [:name, :street, :postalcode, :city, :lat, :lng, :quantity, :open, :close]
+      Destination.where(user_id: current_user.id).each { |destination|
+        csv << [destination.name, destination.street, destination.postalcode, destination.city, destination.lat, destination.lng, destination.quantity, destination.open, destination.close]
+      }
+    }
+    send_data csv, type: 'text/csv'
+  end
+
   def upload
     tags = Hash[current_user.tags.collect{ |tag| [tag.label, tag] }]
     routes = Hash.new{ |h,k| h[k] = [] }
