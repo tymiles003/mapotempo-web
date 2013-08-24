@@ -20,6 +20,7 @@ class DestinationsController < ApplicationController
   # GET /destinations/new
   def new
     @destination = current_user.store.dup
+    @destination.name = ""
   end
 
   # GET /destinations/1/edit
