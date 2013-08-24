@@ -21,7 +21,12 @@ class User < ActiveRecord::Base
     def assign_defaults
       self.max_vehicles = 0
       self.layer_id = 1
-      self.store = Destination.create(name:"Store", city:"Bordeaux", lat:44.83423, lng:-0.60068)
+      self.store = Destination.create(
+        name: I18n.t('destinations.default_store_name'),
+        city: I18n.t('destinations.default_store_city'),
+        lat:Float(I18n.t('destinations.default_store_lat')),
+        lng:Float(I18n.t('destinations.default_store_lng'))
+      )
     end
 
     def update_out_of_date
@@ -41,7 +46,7 @@ class User < ActiveRecord::Base
         if vehicles.size < max_vehicles
           # Add new
           (max_vehicles - vehicles.size).times{ |i|
-            vehicle = Vehicle.new(name: "Vehcile #{vehicles.size+1}")
+            vehicle = Vehicle.new(name: I18n.t('vehicles.default_name', n:vehicles.size+1))
             vehicle.user = self
             vehicles << vehicle
             plannings.each{ |planning|

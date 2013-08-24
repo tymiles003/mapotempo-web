@@ -3,7 +3,7 @@
   <span>
     <%= number_to_human(route.distance, units: :distance, precision: 3) %>
     -
-    <%= number_to_human(route.emission, precision: 3) %> kgCO<sub>2</sub>e
+    <%= number_to_human(route.emission, precision: 3) %> <%= t 'all.unit.kgco2e_html' %>
     -
     <%= route.stops.size %> stops
     -

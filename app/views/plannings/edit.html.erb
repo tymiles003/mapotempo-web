@@ -15,7 +15,7 @@ var markers = {};
 
 L.tileLayer('<%= current_user.layer.url %>', {
   maxZoom: 18,
-  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
+  attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
 }).addTo(map);
 
 function update_planning(event, ui) {

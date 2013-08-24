@@ -28,7 +28,7 @@
     <span class="col-lg-4">
       <div class="input-group">
         <%= f.select :emission, Vehicle.emissions_table, {}, class:"form-control" %>
-        <span class="input-group-addon">kgCO<sub>2</sub>e/l</span>
+        <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
       </div>
     </span>
   </div>
@@ -37,7 +37,7 @@
     <span class="col-lg-4">
       <div class="input-group">
         <%= f.number_field :consumption, class:"form-control" %>
-        <span class="input-group-addon">l/100Km</span>
+        <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
       </div>
     </span>
   </div>

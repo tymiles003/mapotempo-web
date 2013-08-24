@@ -1,26 +1,25 @@
 <p>
-  <strong>Name:</strong>
   {{name}}
   -
   {{#tags}}
     <span>{{label}}</span>
   {{/tags}}
   -
-  {{distance}} km
+  {{distance}} <%= I18n.t 'all.unit.km' %>
   -
-  {{emission}} kgCO<sub>2</sub>e
+  {{emission}} <%= I18n.t 'all.unit.kgco2e_html' %>
   -
-  {{size}} stops
-  <!--<button type="button" class="btn btn-primary btn-sm" id="optimize"><i class="icon-gears icon-fixed-width"></i> Optimize</button>-->
-  <a href="/plannings/{{id}}" class="btn btn-primary btn-sm"><i class="icon-print icon-fixed-width"></i> Export</a>
-  {{#out_of_date}}<button type="button" class="btn btn-warning btn-sm" id="refresh"><i class="icon-refresh icon-fixed-width"></i> Refresh</button>{{/out_of_date}}
+  {{size}} <%= I18n.t 'plannings.edit.stops' %>
+  <!--<button type="button" class="btn btn-primary btn-sm" id="optimize"><i class="icon-gears icon-fixed-width"></i> <%= I18n.t 'plannings.edit.optimize' %></button>-->
+  <a href="/plannings/{{id}}" class="btn btn-primary btn-sm"><i class="icon-print icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export' %></a>
+  {{#out_of_date}}<button type="button" class="btn btn-warning btn-sm" id="refresh"><i class="icon-refresh icon-fixed-width"></i> <%= I18n.t 'plannings.edit.refresh' %></button>{{/out_of_date}}
 </p>
 <ol class="routes">
 {{#routes}}
 <li class="route" data-route_id="{{route_id}}"{{#vehicle}} style="border-left: 6px solid {{color}}"{{/vehicle}}>
   {{^vehicle}}
-    Out of route
-    {{size}} stops
+    <%= I18n.t 'plannings.edit.out_of_road' %>
+    {{size}} <%= I18n.t 'plannings.edit.stops' %>
     <button type="button" class="toggle btn btn-default btn-xs"><i class="icon-eye-close icon-fixed-width"></i></button>
     <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
     <ul id="out_of_road" class="sortable"{{#hidden}} style="display: none;"{{/hidden}}>
@@ -30,7 +29,6 @@
         {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} style="display: none"/>
         {{name}}
-        <!--<span>{{street}}, {{postalcode}} {{city}}</span>-->
       </li>
       {{/destination}}
     {{/stops}}
@@ -49,11 +47,11 @@
       <a href="/routes/{{route_id}}" class="btn btn-default btn-xs"><i class="icon-print icon-fixed-width"></i></a>
       <br/>
       -
-      {{distance}} km
+      {{distance}} <%= I18n.t 'all.unit.km' %>
       -
-      {{emission}} kgCO<sub>2</sub>e
+      {{emission}} <%= I18n.t 'all.unit.kgco2e_html' %>
       -
-      {{size}} stops
+      {{size}} <%= I18n.t 'plannings.edit.stops' %>
       -
       {{start}} {{end}}
     </span>
@@ -64,9 +62,8 @@
         <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
         {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         {{name}}
-        {{#lat}}{{distance}} km{{/lat}}
+        {{#lat}}{{distance}} <%= I18n.t 'all.unit.km' %>{{/lat}}
         {{#lat}}{{time}}{{/lat}}
-        <!--<span>{{street}}, {{postalcode}} {{city}}</span>-->
       </li>
       {{/destination}}
     {{/stops}}

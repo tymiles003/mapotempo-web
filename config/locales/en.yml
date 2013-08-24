@@ -25,3 +25,164 @@ en:
   distance:
     unit: "m"
     thousand: "km"
+
+  activerecord:
+    models:
+      destinations:
+        one: "destination"
+        other: "destinations"
+      layers:
+        one: "layer"
+        other: "layers"
+      plannings:
+        one: "planning"
+        other: "plannings"
+      routes:
+        one: "route"
+        other: "routes"
+      stops:
+        one: "stop"
+        other: "stops"
+      tags:
+        one: "tag"
+        other: "tags"
+      users:
+        one: "user"
+        other: "users"
+      vehicles:
+        one: "vehicle"
+        other: "vehicles"
+
+    attributes:
+      destination:
+        name: "Name"
+        address: "Address"
+        street: "Street"
+        postalcode: "Postalcode"
+        city: "City"
+        quantity: "Quantity"
+        open: "Open"
+        close: "Close"
+        tags: "Tags"
+      layers:
+        name: "Name"
+        url: "URL"
+        attribution: "Attribution"
+      plannings:
+        name: "Name"
+        tags: "Tags"
+      routes:
+        distance: "Distance"
+        emission: "Emission"
+        out_of_date: "Out of date"
+        start: "Start"
+        end: "End"
+        hidden: "Hidden"
+        locked: "Locked"
+      stops:
+        active: "Active"
+        begin: "Begin"
+        end: "End"
+        distance: "Distance"
+        time: "Time"
+      tags:
+        label: "Label"
+      users:
+        email: "email"
+        end_subscription: "End subscription"
+        max_vehicles: "Max vehicles"
+        take_over: "Take over"
+      vehicles:
+        name: "Name"
+        emission: "Emission"
+        consumption: "Consumption"
+        capacity: "Capacity"
+        color: "Color"
+        open: "Open"
+        close: "Close"
+
+  destinations:
+    default_store_name: "Store"
+    default_store_lat: "44.83423"
+    default_store_lng: "-0.60068"
+    default_store_city: "Bordeaux"
+    menu:
+      destinations: "Destinations"
+      import: "Import"
+      export: "Export"
+      store: "Store"
+    edit:
+      title: "Editing destination"
+    import:
+      title: "Import destinations"
+      file: "File"
+      file_help: "Import only CSV files."
+      dialog:
+        title: "Import"
+        import_in_progress: "Please wait, import in progress."
+    index:
+      title: "Listing destinations"
+      new: "New Destination"
+      default_name: "New Destination"
+      dialog:
+        title: "Geocoding"
+        geocoding_in_progress: "Please wait, geocoding in progress."
+    new:
+      title: "New destination"
+
+  plannings:
+    menu:
+      plannings: "Plannings"
+    index:
+      title: "Listing plannings"
+      new: "New Planning"
+    edit:
+      stops: "stops"
+      optimize: "Optimize"
+      export: "Export"
+      refresh: "Refresh"
+      out_of_road: "Out of route"
+    new:
+      title: "New planning"
+
+  users:
+    menu:
+      parameter: "Parameter"
+      change_password: "Change Password"
+      sign_out: "Sign out"
+      sign_in: "Sign in"
+      sign_up: "Sign up"
+  user:
+    edit:
+      title: "Editing user"
+
+  vehicles:
+    default_name: "Vehcile %{n}"
+    emissions_nothing: "Nothing - %{n}"
+    emissions_petrol: "Petrol - %{n}"
+    emissions_diesel: "Diesel - %{n}"
+    emissions_lgp: "LGP - %{n}"
+    menu:
+      vehicles: "Vehicles"
+    edit:
+      title: "Editing vehicle"
+    index:
+      title: "Listing vehicles"
+    new:
+      title: "New vehicle"
+
+  all:
+    osm_attribution_html: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{layer_attribution}"
+    select2:
+      empty_result: "No results matched"
+    verb:
+      new: "New"
+      list: "List"
+      edit: "Edit"
+      destroy: "Destroy"
+    unit:
+      km: "km"
+      minute: "min"
+      kgco2e_html: "kgCO<sub>2</sub>e"
+      kgco2e_l_html: "kgCO<sub>2</sub>e/l"
+      l_100km: "l/100Km"

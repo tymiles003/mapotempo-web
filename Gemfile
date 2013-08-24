@@ -41,9 +41,11 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'rails-i18n'
 gem 'execjs'
 gem 'therubyracer'
 gem 'devise'
+gem 'devise-i18n'
 gem 'cancan'
 gem 'rails_admin'
 gem 'twitter-bootstrap-rails', github: 'diowa/twitter-bootstrap-rails', branch: 'bootstrap-3.0.0'

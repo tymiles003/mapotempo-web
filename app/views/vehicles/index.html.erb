@@ -1,15 +1,15 @@
-<h1>Listing vehicles</h1>
+<h1><%= t '.title' %></h1>
 
 <table class="table table-striped table-hover">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Open</th>
-      <th>Close</th>
-      <th>Emission</th>
-      <th>Consumption</th>
-      <th>Capacity</th>
-      <th>Color</th>
+      <th><%= t 'activerecord.attributes.vehicles.name' %></th>
+      <th><%= t 'activerecord.attributes.vehicles.open' %></th>
+      <th><%= t 'activerecord.attributes.vehicles.close' %></th>
+      <th><%= t 'activerecord.attributes.vehicles.emission' %></th>
+      <th><%= t 'activerecord.attributes.vehicles.consumption' %></th>
+      <th><%= t 'activerecord.attributes.vehicles.capacity' %></th>
+      <th><%= t 'activerecord.attributes.vehicles.color' %></th>
       <th></th>
     </tr>
   </thead>
@@ -24,7 +24,7 @@
         <td><%= vehicle.consumption %></td>
         <td><%= vehicle.capacity %></td>
         <td><div class="vehicle_color" style="background:<%= vehicle.color %>"/></td>
-        <td><%= link_to edit_vehicle_path(vehicle) do %><i class="icon-edit icon-fixed-width"></i> Edit<% end %></td>
+        <td><%= link_to edit_vehicle_path(vehicle) do %><i class="icon-edit icon-fixed-width"></i> <%= t 'all.verb.edit' %><% end %></td>
       </tr>
     <% end %>
   </tbody>

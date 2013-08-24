@@ -1,27 +1,27 @@
-<h1>Listing destinations</h1>
+<h1><%= t '.title' %></h1>
 
 <div id="destination_box" class="row col-lg-12">
   <table class="tablesorter">
     <thead><tr>
-      <th>Name</th>
+      <th><%= t 'activerecord.attributes.destination.name' %></th>
       <th>
-        <span>Street</span>
-        <span>Postalcode</span>
-        <span>City</span>
+        <span><%= t 'activerecord.attributes.destination.street' %></span>
+        <span><%= t 'activerecord.attributes.destination.postalcode' %></span>
+        <span><%= t 'activerecord.attributes.destination.city' %></span>
       </th>
-      <th>Quantity</th>
+      <th><%= t 'activerecord.attributes.destination.quantity' %></th>
       <th>
-        <span>Open</span>
-        <span>Close</span>
+        <span><%= t 'activerecord.attributes.destination.open' %></span>
+        <span><%= t 'activerecord.attributes.destination.close' %></span>
       </th>
-      <th>Tags</th>
+      <th><%= t 'activerecord.attributes.destination.tags' %></th>
       <th></th>
     </tr></thead>
     <tbody class="destinations"></tbody>
   </table>
 </div>
 <div class="row col-lg-1">
-  <button id="add" type="button" class="destroy btn btn-default btn-sm"><i class="icon-plus icon-fixed-width"></i> New Destination</button>
+  <button id="add" type="button" class="destroy btn btn-default btn-sm"><i class="icon-plus icon-fixed-width"></i> <%= t '.new' %></button>
 </div>
 
 <div class="row col-lg-12">
@@ -33,7 +33,7 @@ var layer = L.layerGroup();
 
 L.tileLayer('<%= current_user.layer.url %>', {
   maxZoom: 18,
-  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
+  attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
 }).addTo(map);
 
 var markersLayers = L.layerGroup();
@@ -104,7 +104,7 @@ function wire(row) {
 
   $(':input[name=tags\\[\\]]', row).select2({
     allow_single_deselect: true,
-    no_results_text: 'No results matched',
+    no_results_text: '<%= t 'all.select2.empty_result' %>',
     widht: '100%'
   });
 
@@ -209,7 +209,7 @@ $("#add").click(function(event) {
   var id = 0;
   var destination = {
     id: id,
-    name: "New Destination",
+    name: "<%= t '.default_name' %>",
     street: "<%= current_user.store.street %>",
     postalcode: "<%= current_user.store.postalcode %>",
     city: "<%= current_user.store.city %>",
@@ -323,8 +323,8 @@ $.ajax({
 map.on('click', click);
 </script>
 
-<div id="dialog-geocoding" title="Geocoding" style="display:none">
-  <p>Please wait, geocoding in progress.</p>
+<div id="dialog-geocoding" title="<%= t '.dialog.title' %>" style="display:none">
+  <p><%= t '.dialog.geocoding_in_progress' %></p>
   <div class="progress progress-striped active">
     <div class="progress-bar" style="width: 0%">
   </div>
