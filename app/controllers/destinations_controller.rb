@@ -1,5 +1,5 @@
-#require 'geocode'
 require 'csv'
+require 'importer'
 
 class DestinationsController < ApplicationController
   load_and_authorize_resource :except => [:create, :upload]
@@ -50,13 +50,19 @@ class DestinationsController < ApplicationController
   # PATCH/PUT /destinations/1
   # PATCH/PUT /destinations/1.json
   def update
-    p = update_data
+    p = destination_params
+
+    params[:tags] = params[:tags] || []
+    if @destination.tag_ids.sort != params[:tags].collect{ |i| Integer(i) }.sort
+      @destination.tags = current_user.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
+    end
+
     respond_to do |format|
       ok = if @destination == current_user.store
         @destination.assign_attributes(p)
         (params.key?("live") and params["live"] == "true") or (@destination.save and current_user.save) # No save in "live" mode
       else
-        @destination.update(p) and @destination.save and current_user.save
+        @destination.update(p) and current_user.save
       end
       if ok
         format.html { redirect_to edit_destination_path(@destination), notice: 'Destination was successfully updated.' }
@@ -102,75 +108,11 @@ class DestinationsController < ApplicationController
   end
 
   def upload
-    tags = Hash[current_user.tags.collect{ |tag| [tag.label, tag] }]
-    routes = Hash.new{ |h,k| h[k] = [] }
-
-    separator = ','
-    decimal = '.'
-    File.open(params[:upload][:datafile].tempfile) do |f|
-      line = f.readline
-      splitComma, splitSemicolon = line.split(','), line.split(';')
-      split, separator = splitComma.size() > splitSemicolon.size() ? [splitComma, ','] : [splitSemicolon, ';']
-
-      csv = CSV.open(params[:upload][:datafile].tempfile, col_sep: separator, headers: true)
-      row = csv.readline
-      ilat = row.index('lat')
-      row = csv.readline
-      if ilat
-        data = row[ilat]
-        decimal = data.split('.').size > data.split(',').size ? '.' : ','
-      end
-    end
-
-    Destination.transaction do
-      current_user.destinations.destroy_all
-
-      CSV.foreach(params[:upload][:datafile].tempfile, col_sep: separator, headers: true) { |row|
-        r = row.to_hash.select{ |k|
-          ["name", "street", "postalcode", "city", "lat", "lng"].include?(k)
-        }
-        if decimal == ','
-          r["lat"].gsub!(',', '.')
-          r["lng"].gsub!(',', '.')
-        end
-        destination = Destination.new(r)
-        destination.user = current_user
-
-        if row["tags"]
-          destination.tags = row["tags"].split(',').collect { |key|
-            if not tags.key?(key)
-              current_user.tags << tags[key] = Tag.new(:label=>key, :user=>current_user)
-            end
-            tags[key]
-          }
-        end
-
-        routes[row.key?("route")? row["route"] : nil] << destination
-
-        if not(destination.lat and destination.lng)
-#          address = Geocode.code(destination.street, destination.postalcode, destination.city)
-          address = Geocoder.search([destination.street, destination.postalcode, destination.city, "FR"].join(','))
-          if address and address.size >= 1
-            destination.lat, destination.lng = address[0].latitude, address[0].longitude
-#            address = address[0]
-#            destination.lat = address["lat"]
-#            destination.lng = address["lng"]
-          end
-        end
-
-        current_user.destinations << destination
-      }
-
-      if routes.size > 1
-        planning = Planning.new(name:params[:upload][:datafile].original_filename.split('.')[0..-2].join('.'))
-        planning.user = current_user
-        planning.set_destinations(routes.values)
-        current_user.plannings << planning
-     end
-    end
+    file = params[:upload][:datafile].tempfile
+    name = params[:upload][:datafile].original_filename.split('.')[0..-2].join('.')
 
     respond_to do |format|
-      if current_user.save
+      if Importer.import(current_user, file, name) and current_user.save
         format.html { redirect_to :action => 'index' }
         format.json { render action: 'show', status: :created, location: @destination }
       else
@@ -190,38 +132,4 @@ class DestinationsController < ApplicationController
     def destination_params
       params.require(:destination).permit(:name, :street, :postalcode, :city, :lat, :lng, :quantity, :open, :close)
     end
-
-  def update_data
-    p = destination_params
-    if p[:street] != @destination.street or p[:postalcode] != @destination.postalcode or p[:city] != @destination.city
-      address = Geocoder.search([p[:street], p[:postalcode], p[:city], "France"].join(','))
-#      address = Geocode.code(p[:street], p[:postalcode], p[:city])
-      if address and address.size >= 1
-        @destination.lat, @destination.lng = address[0].latitude, address[0].longitude
-#        address = address[0]
-#        @destination.lat, @destination.lng = address["lat"], address["lng"]
-        p.delete(:lat)
-        p.delete(:lng)
-      end
-    end
-
-    if p[:lat] and p[:lng] and (Float(p[:lat]) != @destination.lat or Float(p[:lng]) != @destination.lng)
-#        @destination.street, @destination.postalcode, @destination.city = Geocode.reverse(p[:lat], p[:lng])
-      address = Geocoder.search([p[:lat], p[:lng]])
-      # Google
-      # @destination.street, @destination.postalcode, @destination.city = address[0].street_number+' '+address[0].route, address[0].postal_code, address[0].city
-      # MapQuest
-      @destination.street, @destination.postalcode, @destination.city = address[0].street, address[0].postal_code, address[0].city
-      p.delete(:street)
-      p.delete(:postalcode)
-      p.delete(:city)
-    end
-
-    params[:tags] = params[:tags] || []
-    if @destination.tag_ids.sort != params[:tags].collect{ |i| Integer(i) }.sort
-      @destination.tags = current_user.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
-    end
-
-    p
-  end
 end

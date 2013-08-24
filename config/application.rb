@@ -38,3 +38,5 @@ Opentour::Application.config.optimizer_tmp_dir = Dir.tmpdir
 Opentour::Application.config.trace_cache_dir = Dir.tmpdir+'/trace'
 Opentour::Application.config.trace_cache_delay = 60*60*24*10
 Opentour::Application.config.trace_osrm_url = "http://router.project-osrm.org"
+
+Opentour::Application.config.delayed_job_use = false

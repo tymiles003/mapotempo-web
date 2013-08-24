@@ -238,6 +238,23 @@ function filter_number(exactText, normalizedValue, filter, index) {
 }
 
 function display_destinations(data) {
+  if($("#dialog-geocoding").size()==0) {
+    return; // Avoid render and loop with turbolink when page is over
+  }
+  if(typeof data.geocoding != 'undefined') {
+    $("#dialog-geocoding").dialog("open");
+    $("#dialog-geocoding .progress-bar").css("width", ""+data.geocoding+"%");
+    setTimeout(function() {
+      $.ajax({
+        url: '/destinations.json',
+        success: display_destinations
+       });
+    }, 2000);
+    return;
+  } else {
+    $("#dialog-geocoding").dialog("close");
+  }
+
   var table = $('.destinations');
   $.each(data.tags, function(i, tag) {
     tags[tag.id] = tag;
@@ -304,4 +321,18 @@ $.ajax({
   success: display_destinations
 });
 map.on('click', click);
+</script>
+
+<div id="dialog-geocoding" title="Geocoding" style="display:none">
+  <p>Please wait, geocoding in progress.</p>
+  <div class="progress progress-striped active">
+    <div class="progress-bar" style="width: 0%">
+  </div>
+</div>
+
+<script>
+$("#dialog-geocoding").dialog({
+  autoOpen: false,
+  modal: true
+});
 </script>

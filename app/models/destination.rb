@@ -10,13 +10,34 @@ class Destination < ActiveRecord::Base
 #  validates :lat, presence: true, numericality: {only_float: true}
 #  validates :lng, presence: true, numericality: {only_float: true}
 
-  before_update :update_out_of_date
+  before_update :update_out_of_date, :update_geocode
   before_destroy :destroy_out_of_date
+
+  def geocode
+    Rails.logger.info self.inspect
+    address = Geocoder.search([street, postalcode, city, "FR"].join(','))
+    Rails.logger.info address
+    if address and address.size >= 1
+      self.lat, self.lng = address[0].latitude, address[0].longitude
+    end
+  end
 
   private
     def update_out_of_date
       if lat_changed? or lng_changed?
         out_of_date
+      end
+    end
+
+    def update_geocode
+      if street_changed? or postalcode_changed? or city_changed?
+        geocode
+      elsif lat_changed? or lng_changed?
+        address = Geocoder.search([lat, lng])
+        # Google
+        # @destination.street, @destination.postalcode, @destination.city = address[0].street_number+' '+address[0].route, address[0].postal_code, address[0].city
+        # MapQuest
+        self.street, self.postalcode, self.city = address[0].street, address[0].postal_code, address[0].city
       end
     end
 

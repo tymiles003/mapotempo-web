@@ -11,7 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130809090745) do
+ActiveRecord::Schema.define(version: 20130821202106) do
+
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.integer  "progress",   default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "destinations", force: true do |t|
     t.string   "name"
@@ -132,6 +149,8 @@ ActiveRecord::Schema.define(version: 20130809090745) do
     t.integer  "layer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "job_geocoding_id"
+    t.integer  "job_optimizer_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
