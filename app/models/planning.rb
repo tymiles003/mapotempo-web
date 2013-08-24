@@ -50,7 +50,7 @@ class Planning < ActiveRecord::Base
 
   def default_routes
     default_empty_routes
-    routes[1].default_stops
+    routes[0].default_stops
   end
 
   def compute
