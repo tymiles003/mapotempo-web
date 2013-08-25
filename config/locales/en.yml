@@ -161,11 +161,6 @@ en:
   users:
     menu:
       sign_out: "Sign out"
-      sign_in: "Sign in"
-      sign_up: "Sign up"
-  user:
-    edit:
-      title: "Editing user"
 
   vehicles:
     default_name: "Vehcile %{n}"

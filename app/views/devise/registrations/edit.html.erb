@@ -24,6 +24,37 @@
     </span>
   </div>
   <div class="row">
+    <%= f.label :display_map, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><%= f.collection_select :layer_id, Layer.all, :id, :name, {}, class:"form-control" %></span>
+  </div>
+  <div class="row">
+    <span class="col-lg-offset-2 col-lg-4"><div id="map" style="width: 100%; height: 200px;"></div></span>
+<script>
+var layers = {
+<% Layer.all.each{ |layer| %>
+  <%= layer.id %>: {url:"<%= j layer.url %>", attribution: "<%= j layer.attribution %>"},
+<% } %>
+};
+var map = L.map('map').setView([<%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>], 13);
+var layer = L.layerGroup();
+
+var layer = L.tileLayer('<%= @user.layer.url %>', {
+  maxZoom: 18,
+  attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
+})
+layer.addTo(map);
+
+$('[name=user\\[layer_id\\]]').change(function(event){
+  map.removeLayer(layer);
+  map.addLayer(
+    layer = L.tileLayer(layers[event.target.value].url, {
+    maxZoom: 18,
+    attribution: '<%= t 'all.osm_attribution_html', layer_attribution: '' %>'+layers[event.target.value].attribution
+  }));
+  layer.addTo(map);
+});
+</script>
+  <div class="row">
     <div class="col-lg-offset-2">
       <%= f.submit t('.update', default: "Update"), class: 'btn btn-primary' %>
     </div>

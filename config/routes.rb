@@ -2,9 +2,6 @@ Opentour::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
   devise_for :users
 
-  get 'user/:id/edit' => 'user#edit', :as => 'user_edit'
-  patch 'user/:id' => 'user#update', :as => 'user'
-
   resources :customers
 
   resources :vehicles

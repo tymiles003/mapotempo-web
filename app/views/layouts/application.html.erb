@@ -99,8 +99,7 @@
                 <%= link_to customers_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-wrench icon-fixed-width"></i> <%= t 'customers.menu.parameter' %> <span class="caret"></span><% end %>
                 <ul class="dropdown-menu">
                   <li><%= link_to edit_customer_path(current_user.customer) do %><i class="icon-building icon-fixed-width"></i> <%= t 'customer.menu.customer' %><% end %></li>
-                  <li><%= link_to user_edit_path(current_user) do %><i class="icon-user icon-fixed-width"></i> <%= t 'customer.menu.user' %><% end %></li>
-                  <li><%= link_to edit_user_registration_path do %><i class="icon-key icon-fixed-width"></i> <%= t 'customer.menu.change_password' %><% end %></li>
+                  <li><%= link_to edit_user_registration_path do %><i class="icon-user icon-fixed-width"></i> <%= t 'customer.menu.user' %><% end %></li>
                 </ul>
               </li>
               <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="icon-off icon-fixed-width"></i> <%= t 'users.menu.sign_out' %><% end %></li>
