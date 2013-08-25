@@ -5,7 +5,7 @@ json.tags do
   end
 end
 json.vehicles do
-  json.array!(current_user.vehicles) do |vehicle|
+  json.array!(current_user.customer.vehicles) do |vehicle|
     json.extract! vehicle, :id, :name
   end
 end
@@ -37,6 +37,6 @@ json.routes @planning.routes do |route|
     (json.active true) if stop.active
     json.distance (stop.distance or 0)/1000
     json.destination(stop.destination, :id, :name, :street, :postalcode, :city, :lat, :lng)
-    json.type (stop.destination==current_user.store)? 'store' : 'waypoint'
+    json.type (stop.destination==current_user.customer.store)? 'store' : 'waypoint'
   end
 end

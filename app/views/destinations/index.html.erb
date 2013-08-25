@@ -28,7 +28,7 @@
   <div id="map" style="height: 300px;"></div>
 </div>
 <script>
-var map = L.map('map').setView([<%= current_user.store.lat %>, <%= current_user.store.lng %>], 13);
+var map = L.map('map').setView([<%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>], 13);
 var layer = L.layerGroup();
 
 L.tileLayer('<%= current_user.layer.url %>', {
@@ -210,11 +210,11 @@ $("#add").click(function(event) {
   var destination = {
     id: id,
     name: "<%= t '.default_name' %>",
-    street: "<%= current_user.store.street %>",
-    postalcode: "<%= current_user.store.postalcode %>",
-    city: "<%= current_user.store.city %>",
-    lat: <%= current_user.store.lat %>,
-    lng: <%= current_user.store.lng %>
+    street: "<%= current_user.customer.store.street %>",
+    postalcode: "<%= current_user.customer.store.postalcode %>",
+    city: "<%= current_user.customer.store.city %>",
+    lat: <%= current_user.customer.store.lat %>,
+    lng: <%= current_user.customer.store.lng %>
   };
   $(".destinations").append(SMT['destinations/show'](destination));
   $.ajax({

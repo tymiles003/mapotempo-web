@@ -13,23 +13,23 @@ class Route < ActiveRecord::Base
   def default_stops
     i = 0
     stops.clear
-    stops << Stop.create(destination:planning.user.store, route:self, active:true, index:0)
-    planning.user.destinations.select{
-      |c| c != planning.user.store
+    stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:0)
+    planning.customer.destinations.select{
+      |c| c != planning.customer.store
     }.select{ |c|
       planning.tags & c.tags == planning.tags
     }.each { |c|
       stops << Stop.create(destination:c, route:self, active:true, index:i+=1)
     }
-    stops << Stop.create(destination:planning.user.store, route:self, active:true, index:i+=1)
+    stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:i+=1)
 
     compute
   end
 
   def default_store
     stops.clear
-    stops << Stop.create(destination:planning.user.store, route:self, active:true, index:0)
-    stops << Stop.create(destination:planning.user.store, route:self, active:true, index:1)
+    stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:0)
+    stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:1)
   end
 
   def compute
@@ -47,7 +47,7 @@ class Route < ActiveRecord::Base
           stop.time = self.end + time
 
           self.distance += stop.distance
-          self.end += time + (planning.user.take_over || 0) * 60
+          self.end += time + (planning.customer.take_over || 0) * 60
 
           last = stop
         else
@@ -62,9 +62,9 @@ class Route < ActiveRecord::Base
   def set_destinations(destinations)
     Stop.transaction do
       stops.clear
-      destinations.select!{ |d| d[0] != planning.user.store }
+      destinations.select!{ |d| d[0] != planning.customer.store }
       if vehicle
-        destinations = [[planning.user.store, true]] + destinations + [[planning.user.store, true]]
+        destinations = [[planning.customer.store, true]] + destinations + [[planning.customer.store, true]]
       end
       i = 0
       destinations.each{ |stop|

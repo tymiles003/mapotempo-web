@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  end_subscription: 2013-08-25
+  max_vehicles: 1
+  take_over: 2013-08-25 14:39:59
+  store_id: 
+
+two:
+  end_subscription: 2013-08-25
+  max_vehicles: 1
+  take_over: 2013-08-25 14:39:59
+  store_id: 

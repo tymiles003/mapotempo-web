@@ -7,8 +7,7 @@ class UserController < ApplicationController
 
   def update
     respond_to do |format|
-      p = user_params
-      if @user.update(p)
+      if @user.update(user_params)
         format.html { redirect_to user_edit_path(@user), notice: 'user was successfully updated.' }
         format.json { head :no_content }
       else
@@ -26,6 +25,6 @@ class UserController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:display_map, :take_over, :layer_id)
+      params.require(:user).permit(:display_map, :layer_id)
     end
 end

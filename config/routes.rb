@@ -5,6 +5,8 @@ Opentour::Application.routes.draw do
   get 'user/:id/edit' => 'user#edit', :as => 'user_edit'
   patch 'user/:id' => 'user#update', :as => 'user'
 
+  resources :customers
+
   resources :vehicles
 
   resources :destinations do

@@ -23,7 +23,7 @@ var layers = {
   <%= layer.id %>: {url:"<%= j layer.url %>", attribution: "<%= j layer.attribution %>"},
 <% } %>
 };
-var map = L.map('map').setView([<%= current_user.store.lat %>, <%= current_user.store.lng %>], 13);
+var map = L.map('map').setView([<%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>], 13);
 var layer = L.layerGroup();
 
 var layer = L.tileLayer('<%= @user.layer.url %>', {
@@ -42,23 +42,6 @@ $('[name=user\\[layer_id\\]]').change(function(event){
   layer.addTo(map);
 });
 </script>
-  </div>
-  <div class="row">
-    <%= f.label :end_subscription, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.date_field :end_subscription, class:"form-control", disabled:true %></span>
-  </div>
-  <div class="row">
-    <%= f.label :max_vehicles, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.number_field :max_vehicles, class:"form-control", disabled:true %></span>
-  </div>
-  <div class="row">
-    <%= f.label :take_over, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4">
-      <div class="input-group">
-        <%= f.number_field :take_over, class:"form-control" %>
-        <span class="input-group-addon"><%= t 'all.unit.minute' %></span>
-      </div>
-    </span>
   </div>
   <div class="row">
     <div class="col-lg-offset-2">

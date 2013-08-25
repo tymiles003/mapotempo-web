@@ -37,7 +37,7 @@
   <div class="row">
     <span class="col-lg-offset-2 col-lg-4"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
-  <% if @destination != current_user.store %>
+  <% if @destination != current_user.customer.store %>
   <div class="row">
     <%= f.label :quantity, class:"col-lg-2 control-label" %>
     <span class="col-lg-4"><%= f.number_field :quantity, class:"form-control" %></span>
@@ -60,7 +60,7 @@
 <% end %>
 
 <script>
-var map = L.map('map').setView([<%= current_user.store.lat %>, <%= current_user.store.lng %>], 13);
+var map = L.map('map').setView([<%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>], 13);
 var layer = L.layerGroup();
 var marker;
 
@@ -158,7 +158,7 @@ L.tileLayer('<%= current_user.layer.url %>', {
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
 }).addTo(map);
 
-marker = L.marker(new L.LatLng(<%= @destination.lat || current_user.store.lat %>, <%= @destination.lng || current_user.store.lng %>), {
+marker = L.marker(new L.LatLng(<%= @destination.lat || current_user.customer.store.lat %>, <%= @destination.lng || current_user.customer.store.lng %>), {
   icon: L.icon({iconUrl:'<%= asset_path('marker-004499.svg') %>'}), // FIXME https://github.com/axyjo/leaflet-rails/pull/10
   draggable: true,
   destination: <%= @destination.id || 0 %>

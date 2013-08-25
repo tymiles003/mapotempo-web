@@ -18,7 +18,7 @@
   <div class="row">
     <%= f.label :tags, class:"col-lg-2 control-label" %>
     <span class="col-lg-4 input-group">
-      <%= select_tag 'tags[]', options_from_collection_for_select(current_user.tags, :id, :label), multiple: true %>
+      <%= select_tag 'tags[]', options_from_collection_for_select(current_user.customer.tags, :id, :label), multiple: true %>
       <span class="input-group-addon input-sm"><i class="icon-tags"></i></span>
     </span>
     <script>

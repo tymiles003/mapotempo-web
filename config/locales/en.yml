@@ -28,6 +28,9 @@ en:
 
   activerecord:
     models:
+      customers:
+        one: "customer"
+        other: "customers"
       destinations:
         one: "destination"
         other: "destinations"
@@ -54,6 +57,10 @@ en:
         other: "vehicles"
 
     attributes:
+      customers:
+        end_subscription: "End subscription"
+        max_vehicles: "Max vehicles"
+        take_over: "Take over"
       destination:
         name: "Name"
         address: "Address"
@@ -89,9 +96,6 @@ en:
         label: "Label"
       users:
         email: "email"
-        end_subscription: "End subscription"
-        max_vehicles: "Max vehicles"
-        take_over: "Take over"
       vehicles:
         name: "Name"
         emission: "Emission"
@@ -100,6 +104,15 @@ en:
         color: "Color"
         open: "Open"
         close: "Close"
+
+  customers:
+    menu:
+      parameter: "Parameter"
+      customer: "Customer"
+      user: "User"
+      change_password: "Change Password"
+    edit:
+      title: "Editing customer"
 
   destinations:
     default_store_name: "Store"
@@ -147,8 +160,6 @@ en:
 
   users:
     menu:
-      parameter: "Parameter"
-      change_password: "Change Password"
       sign_out: "Sign out"
       sign_in: "Sign in"
       sign_up: "Sign up"

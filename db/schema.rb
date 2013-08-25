@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130821202106) do
+ActiveRecord::Schema.define(version: 20130825123959) do
+
+  create_table "customers", force: true do |t|
+    t.date     "end_subscription"
+    t.integer  "max_vehicles"
+    t.integer  "take_over"
+    t.integer  "store_id"
+    t.integer  "job_geocoding_id"
+    t.integer  "job_optimizer_id_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id"
+  add_index "customers", ["job_optimizer_id_id"], name: "index_customers_on_job_optimizer_id_id"
+  add_index "customers", ["store_id"], name: "index_customers_on_store_id"
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -40,12 +55,12 @@ ActiveRecord::Schema.define(version: 20130821202106) do
     t.integer  "quantity"
     t.time     "open"
     t.time     "close"
-    t.integer  "user_id"
+    t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "destinations", ["user_id"], name: "index_destinations_on_user_id"
+  add_index "destinations", ["customer_id"], name: "index_destinations_on_customer_id"
 
   create_table "destinations_tags", id: false, force: true do |t|
     t.integer "destination_id"
@@ -62,12 +77,12 @@ ActiveRecord::Schema.define(version: 20130821202106) do
 
   create_table "plannings", force: true do |t|
     t.string   "name"
-    t.integer  "user_id"
+    t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "plannings", ["user_id"], name: "index_plannings_on_user_id"
+  add_index "plannings", ["customer_id"], name: "index_plannings_on_customer_id"
 
   create_table "plannings_tags", id: false, force: true do |t|
     t.integer "planning_id"
@@ -123,12 +138,12 @@ ActiveRecord::Schema.define(version: 20130821202106) do
 
   create_table "tags", force: true do |t|
     t.string   "label"
-    t.integer  "user_id"
+    t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "tags", ["user_id"], name: "index_tags_on_user_id"
+  add_index "tags", ["customer_id"], name: "index_tags_on_customer_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -142,15 +157,10 @@ ActiveRecord::Schema.define(version: 20130821202106) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.boolean  "admin"
-    t.date     "end_subscription"
-    t.integer  "max_vehicles"
-    t.integer  "take_over"
-    t.integer  "store_id"
+    t.integer  "customer_id"
     t.integer  "layer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "job_geocoding_id"
-    t.integer  "job_optimizer_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
@@ -164,11 +174,11 @@ ActiveRecord::Schema.define(version: 20130821202106) do
     t.string   "color"
     t.time     "open"
     t.time     "close"
-    t.integer  "user_id"
+    t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "vehicles", ["user_id"], name: "index_vehicles_on_user_id"
+  add_index "vehicles", ["customer_id"], name: "index_vehicles_on_customer_id"
 
 end

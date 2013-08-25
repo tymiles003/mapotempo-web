@@ -1,9 +1,9 @@
 class Destination < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :customer
   has_many :stops, dependent: :destroy
   has_and_belongs_to_many :tags, after_add: :update_add_tag, after_remove: :update_remove_tag
 
-#  validates :user, presence: true
+#  validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true
   validates :city, presence: true
@@ -42,7 +42,7 @@ class Destination < ActiveRecord::Base
     end
 
     def update_add_tag(tag)
-      user.plannings.select{ |planning|
+      customer.plannings.select{ |planning|
         planning.tags.include?(tag)
       }.each{ |planning|
         planning.destination_add(self)
@@ -50,7 +50,7 @@ class Destination < ActiveRecord::Base
     end
 
     def update_remove_tag(tag)
-      user.plannings.select{ |planning|
+      customer.plannings.select{ |planning|
         planning.tags.include?(tag)
       }.each{ |planning|
         planning.destination_remove(self)

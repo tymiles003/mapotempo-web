@@ -6,7 +6,7 @@
 </div>
 
 <script>
-var map = L.map('map').setView([<%= @planning.user.store.lat %>, <%= @planning.user.store.lng %>], 13);
+var map = L.map('map').setView([<%= @planning.customer.store.lat %>, <%= @planning.customer.store.lng %>], 13);
 var layers = {};
 <% @planning.routes.each{ |route| %>
   layers[<%= route.id %>] = L.layerGroup();

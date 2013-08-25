@@ -1,8 +1,8 @@
 class Vehicle < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :customer
   has_many :routes, :autosave => true
 
-#  validates :user, presence: true
+#  validates :customer, presence: true
   validates :name, presence: true
   validates :emission, presence: true, numericality: {only_float: true}
   validates :consumption, presence: true, numericality: {only_float: true}

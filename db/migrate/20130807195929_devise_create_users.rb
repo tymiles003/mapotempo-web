@@ -34,10 +34,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # t.string :authentication_token
 
       t.boolean :admin
-      t.date :end_subscription
-      t.integer :max_vehicles
-      t.time :take_over
-      t.references :store
+      t.references :customer
       t.references :layer
 
       t.timestamps

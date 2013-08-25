@@ -9,11 +9,12 @@ class Ability
         can :manage, :all
       else
         can [:edit, :update], User, :id => user.id
-        can [:index, :edit, :update], Vehicle, :user_id => user.id
-        can :manage, Destination, :id => user.store_id
-        can :manage, Destination, :user_id => user.id
-        can :manage, Planning, :user_id => user.id
-        can :manage, Route, :planning => {:user_id => user.id}
+        can [:edit, :update], Customer, :id => user.customer.id
+        can [:index, :edit, :update], Vehicle, :customer_id => user.customer.id
+        can :manage, Destination, :id => user.customer.store_id
+        can :manage, Destination, :customer_id => user.customer.id
+        can :manage, Planning, :customer_id => user.customer.id
+        can :manage, Route, :planning => {:customer_id => user.customer.id}
       end
     end
   end

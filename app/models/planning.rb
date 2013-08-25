@@ -1,9 +1,9 @@
 class Planning < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :customer
   has_many :routes, -> { order('id')}, :autosave => true, :dependent => :destroy
   has_and_belongs_to_many :tags, -> { order('label')}
 
-#  validates :user, presence: true
+#  validates :customer, presence: true
 #  validates :name, presence: true
 
   def set_destinations(destinations)
@@ -26,7 +26,7 @@ class Planning < ActiveRecord::Base
 
   def vehicle_remove(vehicle)
     route = routes.find{ |route| route.vehicle == vehicle }
-    routes[0].stops += route.stops.select{ |stop| stop.destination != user.store }.collect{ |stop| Stop.new(destination: stop.destination, route: route[0]) }
+    routes[0].stops += route.stops.select{ |stop| stop.destination != customer.store }.collect{ |stop| Stop.new(destination: stop.destination, route: route[0]) }
     routes[0].out_of_date = true
     route.destroy
   end
@@ -43,7 +43,7 @@ class Planning < ActiveRecord::Base
 
   def default_empty_routes
     routes << Route.create(planning: self)
-    user.vehicles.each { |vehicle|
+    customer.vehicles.each { |vehicle|
       vehicle_add(vehicle)
     }
   end

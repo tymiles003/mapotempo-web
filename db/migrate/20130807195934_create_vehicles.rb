@@ -8,7 +8,7 @@ class CreateVehicles < ActiveRecord::Migration
       t.string :color
       t.time :open
       t.time :close
-      t.references :user, index: true
+      t.references :customer, index: true
 
       t.timestamps
     end

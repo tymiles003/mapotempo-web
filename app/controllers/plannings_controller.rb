@@ -7,7 +7,7 @@ class PlanningsController < ApplicationController
   # GET /plannings
   # GET /plannings.json
   def index
-    @plannings = Planning.where(user_id: current_user.id)
+    @plannings = Planning.where(customer_id: current_user.customer.id)
   end
 
   # GET /plannings/1
@@ -28,9 +28,9 @@ class PlanningsController < ApplicationController
   # POST /plannings.json
   def create
     @planning = Planning.new(planning_params)
-    @planning.user = current_user
+    @planning.customer = current_user.customer
     if params[:tags]
-      @planning.tags = current_user.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
+      @planning.tags = current_user.customer.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
     end
 
     @planning.default_routes
@@ -71,8 +71,8 @@ class PlanningsController < ApplicationController
   end
 
   def move
-    destinations = Hash[current_user.destinations.map{ |d| [d.id, d] }]
-    destinations[current_user.store_id] = current_user.store
+    destinations = Hash[current_user.customer.destinations.map{ |d| [d.id, d] }]
+    destinations[current_user.customer.store_id] = current_user.customer.store
     routes = Hash[@planning.routes.map{ |route| [String(route.id), route] }]
     params["_json"].each{ |r|
       route = routes[r[:route]]
@@ -108,7 +108,7 @@ class PlanningsController < ApplicationController
   def switch
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
-      vehicle = Vehicle.where(id: Integer(params["vehicle_id"]), user: current_user).first
+      vehicle = Vehicle.where(id: Integer(params["vehicle_id"]), customer: current_user.customer).first
       if route and vehicle and @planning.switch(route, vehicle) and @planning.compute and @planning.save
         format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
         format.json { render action: 'show', location: @planning }

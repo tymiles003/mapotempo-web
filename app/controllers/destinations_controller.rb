@@ -8,8 +8,8 @@ class DestinationsController < ApplicationController
   # GET /destinations
   # GET /destinations.json
   def index
-    @destinations = Destination.where(user_id: current_user.id)
-    @tags = current_user.tags
+    @destinations = Destination.where(customer_id: current_user.customer.id)
+    @tags = current_user.customer.tags
   end
 
   # GET /destinations/1
@@ -19,7 +19,7 @@ class DestinationsController < ApplicationController
 
   # GET /destinations/new
   def new
-    @destination = current_user.store.dup
+    @destination = current_user.customer.store.dup
     @destination.name = ""
   end
 
@@ -31,9 +31,9 @@ class DestinationsController < ApplicationController
   # POST /destinations.json
   def create
     @destination = Destination.new(destination_params)
-    @destination.user = current_user
-    current_user.destinations << @destination
-    current_user.plannings.each { |planning|
+    @destination.customer = current_user.customer
+    current_user.customer.destinations << @destination
+    current_user.customer.plannings.each { |planning|
       planning.destination_add(@destination)
     }
 
@@ -55,11 +55,11 @@ class DestinationsController < ApplicationController
 
     params[:tags] = params[:tags] || []
     if @destination.tag_ids.sort != params[:tags].collect{ |i| Integer(i) }.sort
-      @destination.tags = current_user.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
+      @destination.tags = current_user.customer.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
     end
 
     respond_to do |format|
-      ok = if @destination == current_user.store
+      ok = if @destination == current_user.customer.store
         @destination.assign_attributes(p)
         (params.key?("live") and params["live"] == "true") or (@destination.save and current_user.save) # No save in "live" mode
       else
@@ -87,7 +87,7 @@ class DestinationsController < ApplicationController
 
   def geocode_complete
     p = destination_params
-    address_list = Geocode.complete(@destination.user.store.lat, @destination.user.store.lng, 40000, p[:street], p[:postalcode], p[:city])
+    address_list = Geocode.complete(@destination.user.customer.store.lat, @destination.user.customer.store.lng, 40000, p[:street], p[:postalcode], p[:city])
     address_list = address_list.collect{ |i| {street: i[0], postalcode: i[1], city: i[2]} }
     respond_to do |format|
       format.html
@@ -101,7 +101,7 @@ class DestinationsController < ApplicationController
   def export
     csv = CSV.generate { |csv|
       csv << [:name, :street, :postalcode, :city, :lat, :lng, :quantity, :open, :close]
-      Destination.where(user_id: current_user.id).each { |destination|
+      Destination.where(customer_id: current_user.customer.id).each { |destination|
         csv << [destination.name, destination.street, destination.postalcode, destination.city, destination.lat, destination.lng, destination.quantity, destination.open, destination.close]
       }
     }
@@ -113,7 +113,7 @@ class DestinationsController < ApplicationController
     name = params[:upload][:datafile].original_filename.split('.')[0..-2].join('.')
 
     respond_to do |format|
-      if Importer.import(current_user, file, name) and current_user.save
+      if Importer.import(current_user.customer, file, name) and current_user.save
         format.html { redirect_to :action => 'index' }
         format.json { render action: 'show', status: :created, location: @destination }
       else

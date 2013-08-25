@@ -63,7 +63,7 @@
                   <li><%= link_to new_planning_path do %><i class="icon-plus icon-fixed-width"></i> <%= t 'all.verb.new' %><% end %></li>
                   <li><%= link_to plannings_path do %><i class="icon-calendar-empty icon-fixed-width"></i> <%= t 'all.verb.list' %><% end %></li>
                   <li class="divider"></li>
-                  <% current_user.plannings.each do |planning| %>
+                  <% current_user.customer.plannings.each do |planning| %>
                     <li><%= link_to edit_planning_path(planning) do %><i class="icon-calendar icon-fixed-width"></i> <%= planning.name %><% end %></li>
                   <% end %>
                 </ul>
@@ -82,11 +82,11 @@
                 <ul class="dropdown-menu">
                   <li><%= link_to vehicles_path do %><i class="icon-truck icon-fixed-width"></i> <%= t 'all.verb.list' %><% end %></li>
                   <li class="divider"></li>
-                  <% current_user.vehicles.each do |vehicle| %>
+                  <% current_user.customer.vehicles.each do |vehicle| %>
                     <li><%= link_to edit_vehicle_path(vehicle) do %><i class="icon-truck icon-fixed-width"></i> <%= vehicle.name %><% end %></li>
                   <% end %>
                   <li class="divider"></li>
-                  <li><%= link_to edit_destination_path(current_user.store) do %><i class="icon-home icon-fixed-width"></i> <%= t 'destinations.menu.store' %></a><% end %></li>
+                  <li><%= link_to edit_destination_path(current_user.customer.store) do %><i class="icon-home icon-fixed-width"></i> <%= t 'destinations.menu.store' %></a><% end %></li>
                 </ul>
               </li>
             <% end %>
@@ -95,8 +95,14 @@
           <ul class="nav navbar-nav pull-right">
             <li>
             <% if user_signed_in? %>
-              <li><%= link_to user_edit_path(current_user) do %><i class="icon-wrench icon-fixed-width"></i> <%= t 'users.menu.parameter' %><% end %></li>
-              <li><%= link_to edit_user_registration_path do %><i class="icon-key icon-fixed-width"></i> <%= t 'users.menu.change_password' %><% end %></li>
+              <li class="dropdown">
+                <%= link_to customers_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-wrench icon-fixed-width"></i> <%= t 'customers.menu.parameter' %> <span class="caret"></span><% end %>
+                <ul class="dropdown-menu">
+                  <li><%= link_to edit_customer_path(current_user.customer) do %><i class="icon-building icon-fixed-width"></i> <%= t 'customer.menu.customer' %><% end %></li>
+                  <li><%= link_to user_edit_path(current_user) do %><i class="icon-user icon-fixed-width"></i> <%= t 'customer.menu.user' %><% end %></li>
+                  <li><%= link_to edit_user_registration_path do %><i class="icon-key icon-fixed-width"></i> <%= t 'customer.menu.change_password' %><% end %></li>
+                </ul>
+              </li>
               <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="icon-off icon-fixed-width"></i> <%= t 'users.menu.sign_out' %><% end %></li>
             <% else %>
               <li><%= link_to new_user_session_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> <%= t 'users.menu.sign_in' %><% end %></li>

@@ -1,10 +1,10 @@
-class GeocoderJob < Struct.new(:user_id)
+class GeocoderJob < Struct.new(:customer_id)
   def perform
-    user = User.find(user_id)
-    Delayed::Worker.logger.info "GeocoderJob user_id=#{user_id} perform"
-    count = Destination.where(user_id: user_id, lat: nil).count
+    customer = Customer.find(customer_id)
+    Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} perform"
+    count = Destination.where(customer_id: customer_id, lat: nil).count
     i = 0
-    Destination.where(user_id: user_id, lat: nil).each_slice(50){ |destinations|
+    Destination.where(customer_id: customer_id, lat: nil).each_slice(50){ |destinations|
       Destination.transaction do
         destinations.each { |destination|
           destination.geocode
@@ -12,9 +12,9 @@ class GeocoderJob < Struct.new(:user_id)
           destination.save
           i += 1
         }
-        user.job_geocoding.progress = Integer(i * 100 / count)
-        user.job_geocoding.save
-        Delayed::Worker.logger.info "GeocoderJob user_id=#{user_id} #{user.job_geocoding.progress}%"
+        customer.job_geocoding.progress = Integer(i * 100 / count)
+        customer.job_geocoding.save
+        Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} #{customer.job_geocoding.progress}%"
       end
     }
   end
