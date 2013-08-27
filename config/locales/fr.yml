@@ -1,0 +1,206 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+fr:
+  distance:
+    unit: "m"
+    thousand: "km"
+
+  activerecord:
+    models:
+      customers:
+        one: "compte"
+        other: "comptes"
+      destinations:
+        one: "client"
+        other: "clients"
+      layers:
+        one: "fond de carte"
+        other: "fond de cartes"
+      plannings:
+        one: "planning"
+        other: "plannings"
+      routes:
+        one: "tournée"
+        other: "tournées"
+      stops:
+        one: "arrêt"
+        other: "arrêts"
+      tags:
+        one: "libellé"
+        other: "libellés"
+      users:
+        one: "utilisateur"
+        other: "utilisateurs"
+      vehicles:
+        one: "véhicule"
+        other: "véhicules"
+
+    attributes:
+      customer:
+        end_subscription: "Fin de souscription"
+        max_vehicles: "Forfait"
+        take_over: "Durée de visite"
+      destination:
+        name: "Nom"
+        address: "Adresse"
+        street: "Voie"
+        postalcode: "Code postal"
+        city: "Ville"
+        quantity: "Quantité"
+        open: "Horaire début"
+        close: "Horaire fin"
+        tags: "Libellés"
+      layer:
+        name: "Nom"
+        url: "URL"
+        attribution: "Attribution"
+      planning:
+        name: "Nom"
+        tags: "Libellés"
+      route:
+        distance: "Distance"
+        emission: "Emissions"
+        out_of_date: "Périmé"
+        start: "Début"
+        end: "Fin"
+        hidden: "Masqué"
+        locked: "Verrouillé"
+      stop:
+        active: "Actif"
+        begin: "Début"
+        end: "Fin"
+        distance: "Distance"
+        time: "Durée"
+      tag:
+        label: "Libellé"
+      user:
+        email: "Email"
+        customer: "Compte"
+        layer: "Fond de carte"
+        password: "Mot de passe"
+        password_confirmation: "Confirmation mot de passe"
+        current_password: "Mot de passe actuel"
+      vehicle:
+        name: "Nom"
+        emission: "Emissions"
+        consumption: "Consommation"
+        capacity: "Capacité"
+        color: "Couleur"
+        open: "Horaire début"
+        close: "Horaire fin"
+
+  customers:
+    menu:
+      parameters: "Paremètres"
+      customer: "Compte client"
+      user: "Compte utilisateur"
+    edit:
+      title: "Modifier compte client"
+
+  destinations:
+    default_store_name: "Dépôt"
+    default_store_lat: "44.83423"
+    default_store_lng: "-0.60068"
+    default_store_city: "Bordeaux"
+    menu:
+      destinations: "Clients"
+      import: "Importer"
+      export: "Exporter"
+      store: "Dépôt"
+      tags: "Libellés"
+    edit:
+      title: "Modifier client"
+    import:
+      title: "Importer des clients"
+      file: "Fichier"
+      file_help: "Import de fichier CSV uniquement."
+      dialog:
+        title: "Import des clients"
+        import_in_progress: "Import des clients en cours, merci de patienter."
+    index:
+      title: "Liste clients"
+      new: "Nouveau client"
+      default_name: "Nouveau client"
+      dialog:
+        title: "Géocodage"
+        geocoding_in_progress: "Géocodage en cours, merci de patienter."
+    new:
+      title: "Nouveau client"
+
+  plannings:
+    menu:
+      plannings: "Plannings"
+    index:
+      title: "Liste plannings"
+      new: "Nouveau planning"
+    edit:
+      stops: "arrêts"
+      optimize: "Optimiser"
+      export: "Exporter"
+      refresh: "Actualiser"
+      out_of_road: "Non plannifiés"
+    new:
+      title: "Nouveau planning"
+
+  tags:
+    edit:
+      title: "Modifier libellé"
+    index:
+      title: "Liste libellés"
+      new: "Nouveau libellé"
+    new:
+      title: "Nouveau Libellé"
+
+  users:
+    menu:
+      sign_out: "Déconnexion"
+
+  vehicles:
+    default_name: "Véhicle %{n}"
+    emissions_nothing: "Aucun - %{n}"
+    emissions_petrol: "Essence - %{n}"
+    emissions_diesel: "Gazole - %{n}"
+    emissions_lgp: "GPL - %{n}"
+    menu:
+      vehicles: "Véhicules"
+    edit:
+      title: "Modifier véhicules"
+    index:
+      title: "Liste véhicules"
+    new:
+      title: "Nouveau véhicules"
+
+  all:
+    osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"
+    select2:
+      empty_result: "Pas de résultats"
+    verb:
+      new: "Nouveau"
+      list: "Liste"
+      edit: "Modifier"
+      destroy: "Supprimer"
+    unit:
+      km: "km"
+      minute: "min"
+      kgco2e_html: "kgCO<sub>2</sub>e"
+      kgco2e_l_html: "kgCO<sub>2</sub>e/l"
+      l_100km: "l/100Km"

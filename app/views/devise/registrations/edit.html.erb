@@ -24,7 +24,7 @@
     </span>
   </div>
   <div class="row">
-    <%= f.label :display_map, class:"col-lg-2 control-label" %>
+    <%= f.label :layer, class:"col-lg-2 control-label" %>
     <span class="col-lg-4"><%= f.collection_select :layer_id, Layer.all, :id, :name, {}, class:"form-control" %></span>
   </div>
   <div class="row">

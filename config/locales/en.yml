@@ -20,8 +20,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
-
   distance:
     unit: "m"
     thousand: "km"
@@ -57,7 +55,7 @@ en:
         other: "vehicles"
 
     attributes:
-      customers:
+      customer:
         end_subscription: "End subscription"
         max_vehicles: "Max vehicles"
         take_over: "Take over"
@@ -71,14 +69,14 @@ en:
         open: "Open"
         close: "Close"
         tags: "Tags"
-      layers:
+      layer:
         name: "Name"
         url: "URL"
         attribution: "Attribution"
-      plannings:
+      planning:
         name: "Name"
         tags: "Tags"
-      routes:
+      route:
         distance: "Distance"
         emission: "Emission"
         out_of_date: "Out of date"
@@ -86,17 +84,22 @@ en:
         end: "End"
         hidden: "Hidden"
         locked: "Locked"
-      stops:
+      stop:
         active: "Active"
         begin: "Begin"
         end: "End"
         distance: "Distance"
         time: "Time"
-      tags:
+      tag:
         label: "Label"
-      users:
-        email: "email"
-      vehicles:
+      user:
+        email: "Email"
+        customer: "Customer"
+        layer: "Map"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        current_password: "Current password"
+      vehicle:
         name: "Name"
         emission: "Emission"
         consumption: "Consumption"
@@ -107,10 +110,9 @@ en:
 
   customers:
     menu:
-      parameter: "Parameter"
+      parameters: "Parameters"
       customer: "Customer"
       user: "User"
-      change_password: "Change Password"
     edit:
       title: "Editing customer"
 

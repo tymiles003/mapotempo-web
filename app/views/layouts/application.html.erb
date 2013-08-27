@@ -97,16 +97,16 @@
             <li>
             <% if user_signed_in? %>
               <li class="dropdown">
-                <%= link_to customers_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-wrench icon-fixed-width"></i> <%= t 'customers.menu.parameter' %> <span class="caret"></span><% end %>
+                <%= link_to customers_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-wrench icon-fixed-width"></i> <%= t 'customers.menu.parameters' %> <span class="caret"></span><% end %>
                 <ul class="dropdown-menu">
-                  <li><%= link_to edit_customer_path(current_user.customer) do %><i class="icon-building icon-fixed-width"></i> <%= t 'customer.menu.customer' %><% end %></li>
-                  <li><%= link_to edit_user_registration_path do %><i class="icon-user icon-fixed-width"></i> <%= t 'customer.menu.user' %><% end %></li>
+                  <li><%= link_to edit_customer_path(current_user.customer) do %><i class="icon-building icon-fixed-width"></i> <%= t 'customers.menu.customer' %><% end %></li>
+                  <li><%= link_to edit_user_registration_path do %><i class="icon-user icon-fixed-width"></i> <%= t 'customers.menu.user' %><% end %></li>
                 </ul>
               </li>
               <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="icon-off icon-fixed-width"></i> <%= t 'users.menu.sign_out' %><% end %></li>
             <% else %>
-              <li><%= link_to new_user_session_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> <%= t 'users.menu.sign_in' %><% end %></li>
-              <li><%= link_to new_user_registration_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> <%= t 'users.menu.sign_up' %><% end %></li>
+              <li><%= link_to new_user_session_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> <%= t 'devise.sessions.new.sign_in' %><% end %></li>
+              <li><%= link_to new_user_registration_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> <%= t 'devise.registrations.new.sign_up' %><% end %></li>
             <% end %>
           </ul>
         </div>
