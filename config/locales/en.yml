@@ -124,6 +124,7 @@ en:
       import: "Import"
       export: "Export"
       store: "Store"
+      tags: "Tags"
     edit:
       title: "Editing destination"
     import:
@@ -157,6 +158,15 @@ en:
       out_of_road: "Out of route"
     new:
       title: "New planning"
+
+  tags:
+    edit:
+      title: "Editing Tag"
+    index:
+      title: "Listing tags"
+      new: "New Tag"
+    new:
+      title: "New Tag"
 
   users:
     menu:

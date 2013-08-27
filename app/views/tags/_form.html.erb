@@ -1,0 +1,23 @@
+<%= form_for @tag, html:{class:"form-horizontal"} do |f| %>
+  <% if @tag.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@tag.errors.count, "error") %> prohibited this tag from being saved:</h2>
+
+      <ul>
+      <% @tag.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <%= f.label :label, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><%= f.text_field :label, class:"form-control" %></span>
+  </div>
+  <div class="row">
+    <div class="col-lg-offset-2">
+      <%= f.submit class:"btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

@@ -11,6 +11,7 @@ class Ability
         can [:edit, :update], User, :id => user.id
         can [:edit, :update], Customer, :id => user.customer.id
         can [:index, :edit, :update], Vehicle, :customer_id => user.customer.id
+        can :manage, Tag, :customer_id => user.customer.id
         can :manage, Destination, :id => user.customer.store_id
         can :manage, Destination, :customer_id => user.customer.id
         can :manage, Planning, :customer_id => user.customer.id
