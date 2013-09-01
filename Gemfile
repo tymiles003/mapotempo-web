@@ -55,7 +55,7 @@ gem 'pg', group: :production
 gem 'rails_12factor', group: :production
 
 gem 'filecache'
-gem 'leaflet-rails'
+gem 'leaflet-rails', github: 'axyjo/leaflet-rails' # FIXME waiting for new version after 0.6.2'
 gem 'leaflet-markercluster-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-tablesorter'

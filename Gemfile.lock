@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/axyjo/leaflet-rails.git
+  revision: 732ae98f6eab847db8c95049aa74242a31f92606
+  specs:
+    leaflet-rails (0.6.2)
+
+GIT
   remote: git://github.com/diowa/twitter-bootstrap-rails.git
   revision: 40beaacabc9b5653aafb829999cf02acadeb5a42
   branch: bootstrap-3.0.0
@@ -105,7 +111,6 @@ GEM
       activesupport (>= 3.0.0)
     leaflet-markercluster-rails (0.6.0)
       railties (>= 3.1)
-    leaflet-rails (0.6.2)
     libv8 (3.11.8.17)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -233,7 +238,7 @@ DEPENDENCIES
   jquery-tablesorter
   jquery-ui-rails
   leaflet-markercluster-rails
-  leaflet-rails
+  leaflet-rails!
   mustache
   pg
   rails (= 4.0.0)

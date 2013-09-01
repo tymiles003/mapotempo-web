@@ -55,7 +55,7 @@ var tags = {};
 var markers = {};
 var pointing = false;
 var pointing_cursor;
-var icon_default = L.icon({iconUrl:'<%= asset_path('marker-004499.svg') %>'}); // FIXME new L.Icon.Default();  https://github.com/axyjo/leaflet-rails/pull/10
+var icon_default = new L.Icon.Default();
 var icon_over = L.icon({iconUrl:'<%= asset_path('marker-FFBB00.svg') %>'});
 var icon_over_stack = [];
 
@@ -196,7 +196,7 @@ function mouseover(mouseEvent) {
 
 function addMarker(id, lat, lng) {
   var marker = L.marker(new L.LatLng(lat, lng), {
-    icon: icon_default, // FIXME https://github.com/axyjo/leaflet-rails/pull/10
+    icon: icon_default,
     draggable: true,
     destination: id
   }).addTo(markersLayers).addTo(cluster);

@@ -159,7 +159,7 @@ L.tileLayer('<%= current_user.layer.url %>', {
 }).addTo(map);
 
 marker = L.marker(new L.LatLng(<%= @destination.lat || current_user.customer.store.lat %>, <%= @destination.lng || current_user.customer.store.lng %>), {
-  icon: L.icon({iconUrl:'<%= asset_path('marker-004499.svg') %>'}), // FIXME https://github.com/axyjo/leaflet-rails/pull/10
+  icon: new L.Icon.Default(),
   draggable: true,
   destination: <%= @destination.id || 0 %>
 }).addTo(map);
