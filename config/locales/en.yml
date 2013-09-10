@@ -198,6 +198,7 @@ en:
       list: "List"
       edit: "Edit"
       destroy: "Destroy"
+      destroy_confirm: "Are you sure?"
     unit:
       km: "km"
       minute: "min"

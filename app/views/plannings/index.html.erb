@@ -20,7 +20,7 @@
         <% } %>
         </td>
         <td><%= link_to edit_planning_path(planning) do %><i class="icon-edit icon-fixed-width"></i> <%= t 'all.verb.edit' %><% end %></td>
-        <td><%= link_to planning, method: :delete, data: { confirm: 'Are you sure?' } do %><i class="icon-remove icon-fixed-width"></i> <%= t 'all.verb.destroy' %><% end %></td>
+        <td><%= link_to planning, method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="icon-remove icon-fixed-width"></i> <%= t 'all.verb.destroy' %><% end %></td>
       </tr>
     <% end %>
   </tbody>

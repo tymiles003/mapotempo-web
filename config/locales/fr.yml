@@ -198,6 +198,7 @@ fr:
       list: "Liste"
       edit: "Modifier"
       destroy: "Supprimer"
+      destroy_confirm: "Êtes-vous sûr ?"
     unit:
       km: "km"
       minute: "min"
