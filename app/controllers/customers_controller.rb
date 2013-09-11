@@ -8,7 +8,7 @@ class CustomersController < ApplicationController
   def update
     respond_to do |format|
       if @customer.update(customer_params)
-        format.html { redirect_to edit_customer_path(@customer), notice: 'customer was successfully updated.' }
+        format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.cupdated', model: @customer.class.model_name.human) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

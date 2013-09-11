@@ -26,30 +26,39 @@ fr:
 
   activerecord:
     models:
+      customer: "Compte"
       customers:
         one: "compte"
         other: "comptes"
+      destination: "Client"
       destinations:
         one: "client"
         other: "clients"
+      layer: "Fond de carte"
       layers:
         one: "fond de carte"
         other: "fond de cartes"
+      planning: "Planning"
       plannings:
         one: "planning"
         other: "plannings"
+      route: "Tournée"
       routes:
         one: "tournée"
         other: "tournées"
+      stop: "Arrêt"
       stops:
         one: "arrêt"
         other: "arrêts"
+      tag: "Libellé"
       tags:
         one: "libellé"
         other: "libellés"
+      user: "Utilisateur"
       users:
         one: "utilisateur"
         other: "utilisateurs"
+      vehicle: "Véhicule"
       vehicles:
         one: "véhicule"
         other: "véhicules"
@@ -107,6 +116,11 @@ fr:
         color: "Couleur"
         open: "Horaire début"
         close: "Horaire fin"
+
+    successful:
+      messages:
+        created: "%{model} a bien été crée."
+        updated: "%{model} a bien été mis à jour."
 
   customers:
     menu:

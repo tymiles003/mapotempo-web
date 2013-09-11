@@ -37,7 +37,7 @@ class PlanningsController < ApplicationController
 
     respond_to do |format|
       if @planning.save
-        format.html { redirect_to edit_planning_path(@planning), notice: 'Planning was successfully created.' }
+        format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
         format.json { head :no_content }
       else
         format.html { render action: 'new' }
@@ -51,7 +51,7 @@ class PlanningsController < ApplicationController
   def update
     respond_to do |format|
       if @planning.update(planning_params)
-        format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -85,7 +85,7 @@ class PlanningsController < ApplicationController
 
     respond_to do |format|
       if @planning.save
-        format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -97,7 +97,7 @@ class PlanningsController < ApplicationController
     @planning.compute
     respond_to do |format|
       if @planning.save
-        format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -110,7 +110,7 @@ class PlanningsController < ApplicationController
       route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
       vehicle = Vehicle.where(id: Integer(params["vehicle_id"]), customer: current_user.customer).first
       if route and vehicle and @planning.switch(route, vehicle) and @planning.compute and @planning.save
-        format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -153,7 +153,7 @@ class PlanningsController < ApplicationController
       end
       respond_to do |format|
         if ok
-          format.html { redirect_to @planning, notice: 'Planning was successfully updated.' }
+          format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
           format.json { render action: 'show', location: @planning }
         else
           format.json { render json: @planning.errors, status: :unprocessable_entity }

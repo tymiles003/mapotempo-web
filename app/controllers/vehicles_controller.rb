@@ -25,7 +25,7 @@ class VehiclesController < ApplicationController
 
     respond_to do |format|
       if @vehicle.save
-        format.html { redirect_to vehicles_path, notice: 'Vehicle was successfully created.' }
+        format.html { redirect_to vehicles_path, notice: t('activerecord.successful.messages.created', model: @vehicle.class.model_name.human) }
         format.json { head :no_content }
       else
         format.html { render action: 'new' }
@@ -39,7 +39,7 @@ class VehiclesController < ApplicationController
   def update
     respond_to do |format|
       if @vehicle.update(vehicle_params)
-        format.html { redirect_to vehicles_path, notice: 'Vehicle was successfully updated.' }
+        format.html { redirect_to vehicles_path, notice: t('activerecord.successful.messages.updated', model: @vehicle.class.model_name.human) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

@@ -26,30 +26,39 @@ en:
 
   activerecord:
     models:
+      customer: "Customer"
       customers:
         one: "customer"
         other: "customers"
+      destination: "Destination"
       destinations:
         one: "destination"
         other: "destinations"
+      layer: "Layer"
       layers:
         one: "layer"
         other: "layers"
+      planning: "Planning"
       plannings:
         one: "planning"
         other: "plannings"
+      route: "Route"
       routes:
         one: "route"
         other: "routes"
+      stop: "Stop"
       stops:
         one: "stop"
         other: "stops"
+      tag: "Tag"
       tags:
         one: "tag"
         other: "tags"
+      user: "User"
       users:
         one: "user"
         other: "users"
+      vehicle: "Vehicle"
       vehicles:
         one: "vehicle"
         other: "vehicles"
@@ -107,6 +116,11 @@ en:
         color: "Color"
         open: "Open"
         close: "Close"
+
+    successful:
+      messages:
+        created: "%{model} was successfully created."
+        updated: "%{model} was successfully updated."
 
   customers:
     menu:
