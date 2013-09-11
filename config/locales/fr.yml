@@ -108,6 +108,7 @@ fr:
         password: "Mot de passe"
         password_confirmation: "Confirmation mot de passe"
         current_password: "Mot de passe actuel"
+        remember_me: "Se rappeler de moi"
       vehicle:
         name: "Nom"
         emission: "Emissions"
