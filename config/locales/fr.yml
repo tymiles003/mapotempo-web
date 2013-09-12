@@ -176,6 +176,12 @@ fr:
     new:
       title: "Nouveau planning"
 
+  shared:
+    error_messages:
+      form_contains_error:
+        one: "Le formulaire contient une erreur."
+        other: "Le formulaire contient des erreurs."
+
   tags:
     edit:
       title: "Modifier libellé"

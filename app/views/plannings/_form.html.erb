@@ -1,16 +1,5 @@
 <%= form_for @planning, html:{class:"form-horizontal"} do |f| %>
-  <% if @planning.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@planning.errors.count, "error") %> prohibited this planning from being saved:</h2>
-
-      <ul>
-      <% @planning.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+  <%= render 'shared/error_messages', model: @planning %>
   <div class="row">
     <%= f.label :name, class:"col-lg-2 control-label" %>
     <span class="col-lg-4"><%= f.text_field :name, class:"form-control" %></span>

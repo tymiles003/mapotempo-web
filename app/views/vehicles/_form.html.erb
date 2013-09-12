@@ -1,16 +1,5 @@
 <%= form_for @vehicle, html:{class:"form-horizontal"} do |f| %>
-  <% if @vehicle.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@vehicle.errors.count, "error") %> prohibited this vehicle from being saved:</h2>
-
-      <ul>
-      <% @vehicle.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+  <%= render 'shared/error_messages', model: @vehicle %>
   <div class="row">
     <%= f.label :name, class:"col-lg-2 control-label" %>
     <span class="col-lg-4"><%= f.text_field :name, class:"form-control" %></span>

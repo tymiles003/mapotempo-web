@@ -176,6 +176,12 @@ en:
     new:
       title: "New planning"
 
+  shared:
+    error_messages:
+      form_contains_error:
+        one: "The form contains one error."
+        other: "The form contains errors."
+
   tags:
     edit:
       title: "Editing Tag"
