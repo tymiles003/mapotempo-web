@@ -4,7 +4,7 @@ class Planning < ActiveRecord::Base
   has_and_belongs_to_many :tags, -> { order('label')}
 
 #  validates :customer, presence: true
-#  validates :name, presence: true
+  validates :name, presence: true
 
   def set_destinations(destinations)
     default_empty_routes
