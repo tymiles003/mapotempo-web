@@ -3,5 +3,5 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many :destinations
   has_and_belongs_to_many :plannings
 
-#  validates :customer, presence: true
+  validates :label, presence: true
 end
