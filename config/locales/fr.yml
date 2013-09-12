@@ -26,10 +26,10 @@ fr:
 
   activerecord:
     models:
-      customer: "Compte"
+      customer: "Compte client"
       customers:
-        one: "compte"
-        other: "comptes"
+        one: "compte client"
+        other: "comptes client"
       destination: "Client"
       destinations:
         one: "client"
