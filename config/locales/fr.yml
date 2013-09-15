@@ -130,6 +130,7 @@ fr:
       user: "Compte utilisateur"
     edit:
       title: "Modifier compte client"
+      user_list: "Liste des utilisateurs"
 
   destinations:
     default_store_name: "Dépôt"

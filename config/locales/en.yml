@@ -130,6 +130,7 @@ en:
       user: "User"
     edit:
       title: "Editing customer"
+      user_list: "Users list"
 
   destinations:
     default_store_name: "Store"
