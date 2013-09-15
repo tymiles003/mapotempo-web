@@ -3,7 +3,7 @@ require 'geocoder_job'
 class Importer
 
   def self.import(customer, file, name)
-    if Opentour::Application.config.delayed_job_use and customer.job_geocoding
+    if Mapotempo::Application.config.delayed_job_use and customer.job_geocoding
       return false
     end
 
@@ -54,7 +54,7 @@ class Importer
         routes[row.key?("route")? row["route"] : nil] << destination
 
         if not(destination.lat and destination.lng)
-          if not Opentour::Application.config.delayed_job_use
+          if not Mapotempo::Application.config.delayed_job_use
             destination.geocode
           else
             delayed_job = true

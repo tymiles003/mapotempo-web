@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Opentour::Application.load_tasks
+Mapotempo::Application.load_tasks

@@ -2,8 +2,8 @@ require 'tempfile'
 
 module Optimizer
 
-  @exec = Opentour::Application.config.optimizer_exec
-  @tmp_dir = Opentour::Application.config.optimizer_tmp_dir
+  @exec = Mapotempo::Application.config.optimizer_exec
+  @tmp_dir = Mapotempo::Application.config.optimizer_tmp_dir
 
   def self.optimize(number, matrix)
     input = Tempfile.new('optimize-route-input', tmpdir=@tmp_dir)
@@ -12,7 +12,7 @@ module Optimizer
     begin
       output.close
 
-      input.write("NAME : openroute
+      input.write("NAME : mapotempo
 TYPE : ATSP
 DIMENSION : #{matrix.size}
 EDGE_WEIGHT_TYPE: EXPLICIT

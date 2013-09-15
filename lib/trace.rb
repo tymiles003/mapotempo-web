@@ -5,9 +5,9 @@ require 'filecache'
 
 module Trace
 
-  @cache_dir = Opentour::Application.config.trace_cache_dir
-  @cache_delay = Opentour::Application.config.trace_cache_delay
-  @osrm_url = Opentour::Application.config.trace_osrm_url
+  @cache_dir = Mapotempo::Application.config.trace_cache_dir
+  @cache_delay = Mapotempo::Application.config.trace_cache_delay
+  @osrm_url = Mapotempo::Application.config.trace_osrm_url
 
   @cache = FileCache.new("cache", @cache_dir, @cache_delay, 3)
 

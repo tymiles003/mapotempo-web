@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
 
-module Opentour
+module Mapotempo
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -32,11 +32,11 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
   end
 end
 
-Opentour::Application.config.optimizer_exec = "tsp_simple"
-Opentour::Application.config.optimizer_tmp_dir = Dir.tmpdir
+Mapotempo::Application.config.optimizer_exec = "tsp_simple"
+Mapotempo::Application.config.optimizer_tmp_dir = Dir.tmpdir
 
-Opentour::Application.config.trace_cache_dir = Dir.tmpdir+'/trace'
-Opentour::Application.config.trace_cache_delay = 60*60*24*10
-Opentour::Application.config.trace_osrm_url = "http://router.project-osrm.org"
+Mapotempo::Application.config.trace_cache_dir = Dir.tmpdir+'/trace'
+Mapotempo::Application.config.trace_cache_delay = 60*60*24*10
+Mapotempo::Application.config.trace_osrm_url = "http://router.project-osrm.org"
 
-Opentour::Application.config.delayed_job_use = false
+Mapotempo::Application.config.delayed_job_use = false
