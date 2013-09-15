@@ -1,2 +1,11 @@
 <% if user_signed_in? %>
+  <% if current_user.customer %>
+    <% if not current_user.customer.end_subscription or current_user.customer.end_subscription > Time.now %>
+      <%= render 'subscription_on' %>
+    <% else %>
+      <%= render 'subscription_end' %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= render 'default_home_page' %>
 <% end %>

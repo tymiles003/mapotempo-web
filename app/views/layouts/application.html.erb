@@ -56,17 +56,21 @@
         <!-- Place everything within .navbar-collapse to hide it until above 768px -->
         <div class="nav-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
-            <% if user_signed_in? %>
-              <li class="dropdown">
-                <%= link_to plannings_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-calendar-empty icon-fixed-width"></i> <%= t 'plannings.menu.plannings' %> <span class="caret"></span><% end %>
-                <ul class="dropdown-menu">
-                  <li><%= link_to new_planning_path do %><i class="icon-plus icon-fixed-width"></i> <%= t 'all.verb.new' %><% end %></li>
-                  <li><%= link_to plannings_path do %><i class="icon-calendar-empty icon-fixed-width"></i> <%= t 'all.verb.list' %><% end %></li>
-                  <li class="divider"></li>
-                  <% current_user.customer.plannings.each do |planning| %>
-                    <li><%= link_to edit_planning_path(planning) do %><i class="icon-calendar icon-fixed-width"></i> <%= planning.name %><% end %></li>
-                  <% end %>
-                </ul>
+            <% if user_signed_in? and current_user.customer %>
+              <% if can?(:manage, Planning) %>
+                <li class="dropdown">
+                  <%= link_to plannings_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-calendar-empty icon-fixed-width"></i> <%= t 'plannings.menu.plannings' %> <span class="caret"></span><% end %>
+                  <ul class="dropdown-menu">
+                    <li><%= link_to new_planning_path do %><i class="icon-plus icon-fixed-width"></i> <%= t 'all.verb.new' %><% end %></li>
+                    <li><%= link_to plannings_path do %><i class="icon-calendar-empty icon-fixed-width"></i> <%= t 'all.verb.list' %><% end %></li>
+                    <li class="divider"></li>
+                    <% current_user.customer.plannings.each do |planning| %>
+                      <li><%= link_to edit_planning_path(planning) do %><i class="icon-calendar icon-fixed-width"></i> <%= planning.name %><% end %></li>
+                    <% end %>
+                  </ul>
+              <% else %>
+                <li class="disabled"><a href="#"><i class="icon-calendar-empty icon-fixed-width"></i> <%= t 'plannings.menu.plannings' %></span></a></li>
+              <% end %>
               </li>
               <li class="dropdown">
                 <%= link_to destinations_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-map-marker icon-fixed-width"></i> <%= t 'destinations.menu.destinations' %> <span class="caret"></span><% end %>
