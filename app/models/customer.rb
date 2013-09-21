@@ -1,6 +1,7 @@
 class Customer < ActiveRecord::Base
   belongs_to :store, :class_name => "Destination", :autosave => true, :dependent => :destroy
   belongs_to :job_geocoding, :class_name => "Delayed::Backend::ActiveRecord::Job"
+  belongs_to :job_matrix, :class_name => "Delayed::Backend::ActiveRecord::Job"
   belongs_to :job_optimizer, :class_name => "Delayed::Backend::ActiveRecord::Job"
   has_many :vehicles, -> { order('id')}, :autosave => true, :dependent => :destroy
   has_many :destinations, -> { order('id')}, :autosave => true, :dependent => :destroy

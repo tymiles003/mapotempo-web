@@ -19,13 +19,15 @@ ActiveRecord::Schema.define(version: 20130825123959) do
     t.integer  "take_over"
     t.integer  "store_id"
     t.integer  "job_geocoding_id"
-    t.integer  "job_optimizer_id_id"
+    t.integer  "job_matrix_id"
+    t.integer  "job_optimizer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id"
-  add_index "customers", ["job_optimizer_id_id"], name: "index_customers_on_job_optimizer_id_id"
+  add_index "customers", ["job_matrix_id"], name: "index_customers_on_job_matrix_id"
+  add_index "customers", ["job_optimizer_id"], name: "index_customers_on_job_optimizer_id"
   add_index "customers", ["store_id"], name: "index_customers_on_store_id"
 
   create_table "delayed_jobs", force: true do |t|

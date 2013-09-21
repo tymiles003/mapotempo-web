@@ -94,6 +94,7 @@ class Route < ActiveRecord::Base
     stops_on.collect{ |stop1|
       stops_on.collect{ |stop2|
         distance, time, trace = Trace.compute(stop1.destination.lat, stop1.destination.lng, stop2.destination.lat, stop2.destination.lng)
+        yield if block_given?
         distance
       }
     }
@@ -101,10 +102,10 @@ class Route < ActiveRecord::Base
 
   def order(o)
     stops_ = stops_segregate
-    a = o.collect{ |i|
+    a = o[0..-2].collect{ |i|
       stops_[true][i]
     }
-    a = a[0..-2] + stops_[false] + stops[-1..-1]
+    a = a + (stops_[false] || []) + stops[-1..-1]
     i = 0
     a.each{ |stop|
       stop.index = i
@@ -118,7 +119,7 @@ class Route < ActiveRecord::Base
       self.locked = false
     end
 
-  def stops_segregate
-    stops[0..-2].group_by{ |stop| !!(stop.active && stop.destination.lat && stop.destination.lng) }
-  end
+    def stops_segregate
+      stops[0..-2].group_by{ |stop| !!(stop.active && stop.destination.lat && stop.destination.lng) }
+    end
 end

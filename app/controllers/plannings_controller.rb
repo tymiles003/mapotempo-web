@@ -1,4 +1,4 @@
-require 'optimizer'
+require 'matrix_job'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource :except => :create
@@ -139,20 +139,8 @@ class PlanningsController < ApplicationController
   def optimize_route
     @route = Route.where(planning: @planning, id: params[:route_id]).first
     if @route
-      ok = if @route.stops.size <= 2
-        true
-      else
-        optimum = Optimizer.optimize(1, @route.matrix)
-        if optimum
-          @route.order(optimum)
-          @planning.compute && @route.save
-          @planning.reload # Refresh stops order
-        else
-          false
-        end
-      end
       respond_to do |format|
-        if ok
+        if @route.stops.size <= 2 or (Optimizer::optimize(current_user.customer, @planning, @route) && current_user.save)
           format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
           format.json { render action: 'show', location: @planning }
         else

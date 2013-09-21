@@ -6,7 +6,8 @@ class CreateCustomers < ActiveRecord::Migration
       t.integer :take_over
       t.references :store, index: true
       t.references :job_geocoding, index: true
-      t.references :job_optimizer_id, index: true
+      t.references :job_matrix, index: true
+      t.references :job_optimizer, index: true
 
       t.timestamps
     end

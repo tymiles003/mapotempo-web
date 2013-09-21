@@ -1,6 +1,6 @@
 require 'tempfile'
 
-module Optimizer
+module Ort
 
   @exec = Mapotempo::Application.config.optimizer_exec
   @tmp_dir = Mapotempo::Application.config.optimizer_tmp_dir
@@ -25,11 +25,11 @@ EDGE_WEIGHT_SECTION
       input.close
 
       `cat #{input.path} > /tmp/in` # FIXME tmp
-      `cat #{output.path} > /tmp/out` # FIXME tmp
       cmd = "#{@exec} -tsp_time_limit_in_ms 2000 -instance_file '#{input.path}' > '#{output.path}'"
       Rails.logger.info(cmd)
       system(cmd)
       Rails.logger.info($?.exitstatus)
+      `cat #{output.path} > /tmp/out` # FIXME tmp
       if $?.exitstatus == 0
         result = File.read(output.path)
         result = result.split("\n")[-1]

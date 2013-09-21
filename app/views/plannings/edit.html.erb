@@ -34,6 +34,36 @@ function update_planning(event, ui) {
 }
 
 function display_planning(data) {
+  if($("#dialog-matrix").size()==0) {
+    return; // Avoid render and loop with turbolink when page is over
+  }
+  if(typeof data.matrix != 'undefined') {
+    $("#dialog-matrix").dialog("open");
+    $("#dialog-matrix .progress-bar").css("width", ""+data.matrix+"%");
+    setTimeout(function() {
+      $.ajax({
+        url: '<%= polymorphic_path(@planning, format: :json) %>',
+        success: display_planning
+       });
+    }, 2000);
+    return;
+  } else {
+    $("#dialog-matrix").dialog("close");
+  }
+  if(typeof data.optimizer != 'undefined') {
+    $("#dialog-optimizer").dialog("open");
+    $("#dialog-optimizer .progress-bar").css("width", ""+data.optimizer+"%");
+    setTimeout(function() {
+      $.ajax({
+        url: '<%= polymorphic_path(@planning, format: :json) %>',
+        success: display_planning
+       });
+    }, 2000);
+    return;
+  } else {
+    $("#dialog-optimizer").dialog("close");
+  }
+
   $("#planning").html(SMT['plannings/edit'](data));
 
   $("#planning input:checkbox").change(function(event, ui) {
@@ -168,5 +198,33 @@ function display_planning(data) {
 $.ajax({
   url: '<%= polymorphic_path(@planning, format: :json) %>',
   success: display_planning,
+});
+</script>
+
+<div id="dialog-matrix" title="<%= t '.dialog.matrix_title' %>" style="display:none">
+  <p><%= t '.dialog.matrix_in_progress' %></p>
+  <div class="progress progress-striped active">
+    <div class="progress-bar" style="width: 0%">
+  </div>
+</div>
+
+<script>
+$("#dialog-matrix").dialog({
+  autoOpen: false,
+  modal: true
+});
+</script>
+
+<div id="dialog-matrix" title="<%= t '.dialog.optimizer_title' %>" style="display:none">
+  <p><%= t '.dialog.optimizer_in_progress' %></p>
+  <div class="progress progress-striped active">
+    <div class="progress-bar" style="width: 0%">
+  </div>
+</div>
+
+<script>
+$("#dialog-optimizer").dialog({
+  autoOpen: false,
+  modal: true
 });
 </script>
