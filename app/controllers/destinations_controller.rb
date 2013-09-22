@@ -109,11 +109,12 @@ class DestinationsController < ApplicationController
   end
 
   def upload
+    replace = params[:replace]
     file = params[:upload][:datafile].tempfile
     name = params[:upload][:datafile].original_filename.split('.')[0..-2].join('.')
 
     respond_to do |format|
-      if Importer.import(current_user.customer, file, name) and current_user.save
+      if Importer.import(replace, current_user.customer, file, name) and current_user.save
         format.html { redirect_to :action => 'index' }
         format.json { render action: 'show', status: :created, location: @destination }
       else

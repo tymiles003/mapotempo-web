@@ -147,6 +147,8 @@ fr:
       title: "Modifier client"
     import:
       title: "Importer des clients"
+      replace: "Remplacer"
+      replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également être perdu."
       file: "Fichier"
       file_help: "Import de fichier CSV uniquement."
       dialog:

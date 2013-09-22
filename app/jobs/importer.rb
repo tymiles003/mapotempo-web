@@ -2,7 +2,7 @@ require 'geocoder_job'
 
 class Importer
 
-  def self.import(customer, file, name)
+  def self.import(replace, customer, file, name)
     if Mapotempo::Application.config.delayed_job_use and customer.job_geocoding
       return false
     end
@@ -29,7 +29,9 @@ class Importer
 
     Destination.transaction do
       delayed_job = false
-      customer.destinations.destroy_all
+      if replace
+        customer.destinations.destroy_all
+      end
 
       CSV.foreach(file, col_sep: separator, headers: true) { |row|
         r = row.to_hash.select{ |k|
@@ -51,7 +53,11 @@ class Importer
           }
         end
 
-        routes[row.key?("route")? row["route"] : nil] << destination
+        if replace
+          routes[row.key?("route")? row["route"] : nil] << destination
+        else
+          routes[nil] << destination
+        end
 
         if not(destination.lat and destination.lng)
           if not Mapotempo::Application.config.delayed_job_use
@@ -64,11 +70,19 @@ class Importer
         customer.destinations << destination
       }
 
-      if routes.size > 1
-        planning = Planning.new(name: name)
-        planning.customer = customer
-        planning.set_destinations(routes.values)
-        customer.plannings << planning
+      if replace
+        if routes.size > 1
+          planning = Planning.new(name: name)
+          planning.customer = customer
+          planning.set_destinations(routes.values)
+          customer.plannings << planning
+        end
+      else
+        customer.plannings.each { |planning|
+          routes[nil].each{ |destination|
+            planning.destination_add(destination)
+          }
+        }
       end
 
       if delayed_job

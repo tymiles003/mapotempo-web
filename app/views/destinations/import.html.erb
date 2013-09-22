@@ -9,6 +9,13 @@
     </div>
   </div>
   <div class="row">
+    <%= label_tag :replace, t('.replace'), class:"col-lg-2 control-label" %>
+    <div class="col-lg-4">
+      <%= check_box_tag :replace %>
+      <p class="help-block"><%= t '.replace_help' %></p>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-lg-offset-2">
       <%= submit_tag nil, class:"btn btn-primary" %>
     </div>

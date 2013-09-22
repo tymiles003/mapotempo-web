@@ -147,6 +147,8 @@ en:
       title: "Editing destination"
     import:
       title: "Import destinations"
+      replace: "Replace"
+      replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost."
       file: "File"
       file_help: "Import only CSV files."
       dialog:
