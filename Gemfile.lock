@@ -16,6 +16,12 @@ GIT
       railties (>= 3.1)
 
 GIT
+  remote: git://github.com/frodrigo/leaflet-draw-rails.git
+  revision: 705dbbfcdd55a830c4c85f94da5c1a873db80089
+  specs:
+    leaflet-draw-rails (0.0.1)
+
+GIT
   remote: git://github.com/milgner/compass-rails.git
   revision: c86e7fd9c2605c80816a2f64a3fb8b7c3a09e494
   branch: rails4
@@ -237,6 +243,7 @@ DEPENDENCIES
   jquery-rails
   jquery-tablesorter
   jquery-ui-rails
+  leaflet-draw-rails!
   leaflet-markercluster-rails
   leaflet-rails!
   mustache

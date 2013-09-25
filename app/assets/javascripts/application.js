@@ -22,6 +22,7 @@
 //= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
 //= require leaflet
 //= require leaflet.markercluster
+//= require leaflet.draw
 //= require mustache
 //= require select2
 //= require_tree .
