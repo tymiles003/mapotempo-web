@@ -19,7 +19,7 @@ else
   if @planning.routes.inject(false){ |acc, route| acc or route.out_of_date }
       json.out_of_date true
   end
-  json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
+  json.size @planning.routes.to_a.sum(0){ |route| route.stops.size - (route.vehicle ? 2 : 0) }
   json.routes @planning.routes do |route|
     json.route_id route.id
     json.emission number_to_human(route.emission, precision: 4)
@@ -28,7 +28,7 @@ else
     (json.hidden true) if route.hidden
     (json.locked) if route.locked
     json.distance (route.distance or 0)/1000
-    json.size route.stops.size
+    json.size route.stops.size - (route.vehicle ? 2 : 0)
     if route.vehicle
       json.icon asset_path("marker-#{route.vehicle.color.gsub('#','')}.svg")
       json.vehicle do
