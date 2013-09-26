@@ -3,13 +3,13 @@
 <table class="table table-striped table-hover">
   <thead>
     <tr>
-      <th><%= t 'activerecord.attributes.vehicles.name' %></th>
-      <th><%= t 'activerecord.attributes.vehicles.open' %></th>
-      <th><%= t 'activerecord.attributes.vehicles.close' %></th>
-      <th><%= t 'activerecord.attributes.vehicles.emission' %></th>
-      <th><%= t 'activerecord.attributes.vehicles.consumption' %></th>
-      <th><%= t 'activerecord.attributes.vehicles.capacity' %></th>
-      <th><%= t 'activerecord.attributes.vehicles.color' %></th>
+      <th><%= t 'activerecord.attributes.vehicle.name' %></th>
+      <th><%= t 'activerecord.attributes.vehicle.open' %></th>
+      <th><%= t 'activerecord.attributes.vehicle.close' %></th>
+      <th><%= t 'activerecord.attributes.vehicle.emission' %></th>
+      <th><%= t 'activerecord.attributes.vehicle.consumption' %></th>
+      <th><%= t 'activerecord.attributes.vehicle.capacity' %></th>
+      <th><%= t 'activerecord.attributes.vehicle.color' %></th>
       <th></th>
     </tr>
   </thead>
@@ -20,8 +20,8 @@
         <td><%= vehicle.name %></td>
         <td><%= if(vehicle.open) then vehicle.open.strftime("%H:%M") end %></td>
         <td><%= if(vehicle.close) then vehicle.close.strftime("%H:%M") end %></td>
-        <td><%= vehicle.emission %></td>
-        <td><%= vehicle.consumption %></td>
+        <td><%= vehicle.emission %> <%= t 'all.unit.kgco2e_l_html' %></td>
+        <td><%= vehicle.consumption %> <%= t 'all.unit.l_100km' %></td>
         <td><%= vehicle.capacity %></td>
         <td><div class="vehicle_color" style="background:<%= vehicle.color %>"/></td>
         <td><%= link_to edit_vehicle_path(vehicle) do %><i class="icon-edit icon-fixed-width"></i> <%= t 'all.verb.edit' %><% end %></td>
