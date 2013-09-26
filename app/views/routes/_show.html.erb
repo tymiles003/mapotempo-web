@@ -1,7 +1,7 @@
 <li class="route" style="border-left: 6px solid <%= route.vehicle.color %>">
   <h1><%= route.planning.name %> - <%= route.vehicle.name %> - <%= Time.now.strftime("%d-%m-%Y") %></h1>
   <span>
-    <%= route.stops.size - 2 %> <%= I18n.t 'plannings.edit.stops' %>
+    <%= route.size %> <%= I18n.t 'plannings.edit.stops' %>
     -
     <%= route.start.strftime("%H:%M") if route.start %> <%= route.end.strftime("%H:%M") if route.end %>
     -

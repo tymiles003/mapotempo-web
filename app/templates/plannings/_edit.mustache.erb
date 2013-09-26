@@ -56,8 +56,14 @@
     {{#stops}}
       {{#destination}}
       <li data-destination_id="{{id}}" class="{{type}}{{^lat}} ui-state-error{{/lat}}">
-        <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
-        {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
+        {{#store}}
+          <input type="checkbox" checked="checked" disabled="disabled" style="visibility:hidden"/>
+          <a href="#" class="marker"><i class="icon-home icon-fixed-width"></i></a>
+        {{/store}}
+        {{^store}}
+          <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
+          {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
+        {{/store}}
         {{name}}
         {{#lat}}{{distance}} <%= I18n.t 'all.unit.km' %>{{/lat}}
         {{#lat}}{{time}}{{/lat}}
