@@ -3,8 +3,6 @@
   <span>
     <%= number_to_human(route.distance, units: :distance, precision: 3) %>
     -
-    <%= number_to_human(route.emission, precision: 3) %> <%= t 'all.unit.kgco2e_html' %>
-    -
     <%= route.stops.size %> stops
     -
     <%= route.start.strftime("%H:%M") if route.start %> <%= route.end.strftime("%H:%M") if route.end %>

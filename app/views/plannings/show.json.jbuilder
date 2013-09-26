@@ -22,7 +22,6 @@ else
   json.size @planning.routes.to_a.sum(0){ |route| route.stops.size - (route.vehicle ? 2 : 0) }
   json.routes @planning.routes do |route|
     json.route_id route.id
-    json.emission number_to_human(route.emission, precision: 4)
     (json.start route.start.strftime("%H:%M")) if route.start
     (json.end route.end.strftime("%H:%M")) if route.end
     (json.hidden true) if route.hidden
