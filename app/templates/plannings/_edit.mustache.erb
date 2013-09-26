@@ -52,7 +52,7 @@
       -
       {{distance}} <%= I18n.t 'all.unit.km' %>
     </span>
-    <ol class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}}>
+    <ol class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}} start="0">
     {{#stops}}
       {{#destination}}
       <li data-destination_id="{{id}}" class="{{type}}{{^lat}} ui-state-error{{/lat}}">

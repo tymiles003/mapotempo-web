@@ -100,7 +100,7 @@ function display_planning(data) {
       if(stop.destination.lat && stop.destination.lng) {
         markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
           icon: new L.NumberedDivIcon({
-            number: index+1,
+            number: index,
             iconUrl: (index==0 || !color)? '<%= asset_path("marker-000000.svg") %>' : route.icon
           }),
         }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));

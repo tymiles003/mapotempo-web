@@ -7,7 +7,7 @@
     -
     <%= number_to_human(route.distance, units: :distance, precision: 3) %>
   </span>
-  <ol class="stops">
+  <ol class="stops" start="0">
   <%
   route.stops.each{ |stop|
     if stop.active and stop.destination.lat
