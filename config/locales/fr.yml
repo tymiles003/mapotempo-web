@@ -133,7 +133,7 @@ fr:
       user_list: "Liste des utilisateurs"
 
   destinations:
-    default_store_name: "Dépôt"
+    default_store_name: "Départ véhicule"
     default_store_lat: "44.83423"
     default_store_lng: "-0.60068"
     default_store_city: "Bordeaux"
@@ -141,7 +141,7 @@ fr:
       destinations: "Clients"
       import: "Importer"
       export: "Exporter"
-      store: "Dépôt"
+      store: "Départ véhicule"
       tags: "Libellés"
     edit:
       title: "Modifier client"
