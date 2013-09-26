@@ -5,21 +5,21 @@
     <span class="col-lg-4"><%= f.text_field :name, class:"form-control" %></span>
   </div>
   <div class="row">
-    <%= f.label :address, class:"col-lg-2 control-label" %>
-    <div class="col-lg-4 block">
-      <span>
+    <%= f.label :street, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4">
+      <div class="input-group">
         <input class="form-control" type="text" name="destination[street]" value="<%= @destination.street %>"/>
-      </span>
-      <span style="width:4em">
-        <input class="form-control" type="text" maxlength="7" width="7" name="destination[postalcode]" value="<%= @destination.postalcode %>"/>
-      </span>
-      <span>
-        <div class="input-group">
-          <input class="form-control" type="text" name="destination[city]" value="<%= @destination.city %>"/>
-          <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
-        </div>
-      </span>
-    </div>
+        <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
+      </div>
+    </span>
+  </div>
+  <div class="row">
+    <%= f.label :postalcode, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><input class="form-control" type="text" maxlength="7" width="7" name="destination[postalcode]" value="<%= @destination.postalcode %>"/></span>
+  </div>
+  <div class="row">
+    <%= f.label :city, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><input class="form-control" type="text" name="destination[city]" value="<%= @destination.city %>"/></span>
   </div>
   <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
   <input type="hidden" name="destination[lng]" value="<%= @destination.lng %>" />
