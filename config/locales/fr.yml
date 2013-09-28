@@ -233,6 +233,7 @@ fr:
       destroy_confirm: "Êtes-vous sûr ?"
     unit:
       km: "km"
+      second: "s"
       minute: "min"
       kgco2e_html: "kgCO<sub>2</sub>e"
       kgco2e_l_html: "kgCO<sub>2</sub>e/l"
