@@ -20,6 +20,11 @@ else
       json.out_of_date true
   end
   json.size @planning.routes.to_a.sum(0){ |route| route.vehicle ? route.size : 0 }
+  json.store do
+    json.lat current_user.customer.store.lat
+    json.lng current_user.customer.store.lng
+    json.icon asset_path("marker-home.svg")
+  end
   json.routes @planning.routes do |route|
     json.route_id route.id
     (json.start route.start.strftime("%H:%M")) if route.start
@@ -37,7 +42,7 @@ else
     end
     json.stops route.stops do |stop|
       if stop.destination == current_user.customer.store
-        json.store true
+        json.is_store true
       end
       json.extract! stop, :trace
       (json.time stop.time.strftime("%H:%M")) if stop.time

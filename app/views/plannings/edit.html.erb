@@ -79,6 +79,15 @@ function display_planning(data) {
     });
   });
 
+  var store_marker = L.marker(new L.LatLng(data.store.lat, data.store.lng), {
+    icon: L.icon({
+      iconUrl: data.store.icon,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    })
+  });
+  store_marker.addTo(map);
+
   $.each(data.routes, function(i, route) {
     map.removeLayer(layers[route.route_id]);
     layers[route.route_id] = L.layerGroup();
@@ -98,12 +107,16 @@ function display_planning(data) {
         L.polyline(polyline.getLatLngs(), {color: color}).addTo(layers[route.route_id]);
       }
       if(stop.destination.lat && stop.destination.lng) {
-        markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
-          icon: new L.NumberedDivIcon({
-            number: index,
-            iconUrl: (index==0 || !color)? '<%= asset_path("marker-000000.svg") %>' : route.icon
-          }),
-        }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
+        if(stop.is_store) {
+          markers[stop.destination.id] = store_marker;
+        } else {
+          markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+            icon: new L.NumberedDivIcon({
+              number: index,
+              iconUrl: color ? route.icon : '<%= asset_path("marker-000000.svg") %>',
+            }),
+          }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
+        }
       }
     });
   });
