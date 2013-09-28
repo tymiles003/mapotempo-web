@@ -143,8 +143,11 @@ en:
       export: "Export"
       store: "Store"
       tags: "Tags"
+    form:
+      submit_store: "Edit store"
     edit:
       title: "Editing destination"
+      title_store: "Editing store"
     import:
       title: "Import destinations"
       replace: "Replace"

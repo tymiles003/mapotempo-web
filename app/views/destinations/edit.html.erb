@@ -1,3 +1,7 @@
-<h1><%= t '.title' %></h1>
+<% if @destination != current_user.customer.store %>
+  <h1><%= t '.title' %></h1>
+<% else %>
+  <h1><%= t '.title_store' %></h1>
+<% end %>
 
 <%= render 'form' %>

@@ -143,8 +143,11 @@ fr:
       export: "Exporter"
       store: "Départ véhicule"
       tags: "Libellés"
+    form:
+      submit_store: "Modifier départ véhicule"
     edit:
       title: "Modifier client"
+      title_store: "Modifier départ véhicule"
     import:
       title: "Importer des clients"
       replace: "Remplacer"
