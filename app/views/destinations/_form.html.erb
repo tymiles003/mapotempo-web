@@ -43,6 +43,7 @@
   <div class="row">
     <div class="col-lg-offset-2">
       <input type="hidden" name="live" value="false"/>
+      <input type="hidden" name="live_type" value="false"/>
       <% if @destination != current_user.customer.store %>
         <%= f.submit class:"btn btn-primary" %>
       <% else %>
@@ -87,14 +88,16 @@ function wire(row) {
 
   $(":input", row).change(function(event) {
     if(change) {
-      $("[name=live]").attr('live', 'true');
+      $("[name=live]").attr('value', 'true');
+      var name = $(this).attr('name');
+      $("[name=live_type]").attr('value', name == 'destination[lat]' || name == 'destination[lng]'? 'lat-lng' : 'address');
       $.ajax({
         type: "put",
         data: $(row).serialize(),
         url: '/destinations/'+id+'.json',
         success: function(data) { update(id, data); }
       });
-      $("[name=live]").attr('live', 'false');
+      $("[name=live]").attr('value', 'false');
     }
   });
 

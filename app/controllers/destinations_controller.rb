@@ -61,7 +61,17 @@ class DestinationsController < ApplicationController
     respond_to do |format|
       ok = if @destination == current_user.customer.store
         @destination.assign_attributes(p)
-        (params.key?("live") and params["live"] == "true") or (@destination.save and current_user.save) # No save in "live" mode
+        if params.key?("live") and params["live"] == "true" # No save in "live" mode
+          if params.key?("live_type")
+            if params["live_type"] == "address"
+              @destination.geocode
+            else
+              @destination.reverse_geocode
+            end
+          end
+        else
+          @destination.save and current_user.save
+        end
       else
         @destination.update(p) and current_user.save
       end
