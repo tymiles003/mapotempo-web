@@ -1,3 +1,5 @@
+require 'geocode'
+
 class Destination < ActiveRecord::Base
   belongs_to :customer
   has_many :stops, dependent: :destroy
@@ -15,10 +17,10 @@ class Destination < ActiveRecord::Base
 
   def geocode
     Rails.logger.info self.inspect
-    address = Geocoder.search([street, postalcode, city, "FR"].join(','))
+    address = Geocode.code(street, postalcode, city)
     Rails.logger.info address
-    if address and address.size >= 1
-      self.lat, self.lng = address[0].latitude, address[0].longitude
+    if address
+      self.lat, self.lng = address[:lat], address[:lng]
     end
   end
 
@@ -34,9 +36,6 @@ class Destination < ActiveRecord::Base
         geocode
       elsif lat_changed? or lng_changed?
         address = Geocoder.search([lat, lng])
-        # Google
-        # @destination.street, @destination.postalcode, @destination.city = address[0].street_number+' '+address[0].route, address[0].postal_code, address[0].city
-        # MapQuest
         self.street, self.postalcode, self.city = address[0].street, address[0].postal_code, address[0].city
       end
     end
