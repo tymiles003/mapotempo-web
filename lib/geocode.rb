@@ -89,9 +89,15 @@ module Geocode
 </XLS>"
 
       response = http.request(request)
-      response.code # => 200 Ok
-      result = response.body # => The body (HTML, XML, blob, whatever)
-      @cache.set(key, result)
+      if response.code == "200"
+        result = response.body # => The body (HTML, XML, blob, whatever)
+        @cache.set(key, result)
+      else
+        Rails.logger.info request.body
+        Rails.logger.info response.code
+        Rails.logger.info response.body
+        return
+      end
     end
 
     doc = Document.new(result)
