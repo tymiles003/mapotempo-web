@@ -151,7 +151,7 @@ wire($("form"));
 
 L.tileLayer('<%= current_user.layer.url %>', {
   maxZoom: 18,
-  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <%= current_user.layer.attribution %>'
+  attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
 }).addTo(map);
 
 marker = L.marker(new L.LatLng(<%= @destination.lat || current_user.customer.store.lat %>, <%= @destination.lng || current_user.customer.store.lng %>), {
