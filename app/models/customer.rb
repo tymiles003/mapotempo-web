@@ -41,7 +41,7 @@ class Customer < ActiveRecord::Base
           # Add new
           (max_vehicles - vehicles.size).times{ |i|
             vehicle = Vehicle.new(name: I18n.t('vehicles.default_name', n:vehicles.size+1))
-            vehicle.user = self
+            vehicle.customer = self
             vehicles << vehicle
             plannings.each{ |planning|
               planning.vehicle_add(vehicle)
