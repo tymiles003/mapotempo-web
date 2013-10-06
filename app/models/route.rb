@@ -114,7 +114,7 @@ class Route < ActiveRecord::Base
   end
 
   def size
-    stops.sum(0) { |stop|
+    stops.to_a.sum(0) { |stop|
       stop.destination != planning.customer.store && (stop.active || ! vehicle) ? 1 : 0
     }
   end
