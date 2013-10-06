@@ -3,7 +3,7 @@ require 'trace'
 class Route < ActiveRecord::Base
   belongs_to :planning
   belongs_to :vehicle
-  has_many :stops, -> { order('"index"')}, :autosave => true, :dependent => :destroy
+  has_many :stops, :autosave => true, :dependent => :destroy, :order=>"\"index\" ASC", :include=>:destination
 
 #  validates :planning, presence: true
 #  validates :vehicle, presence: true
