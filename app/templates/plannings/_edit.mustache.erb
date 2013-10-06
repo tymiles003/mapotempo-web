@@ -11,7 +11,12 @@
   -
   {{emission}} <%= I18n.t 'all.unit.kgco2e_html' %>
   <!--<button type="button" class="btn btn-primary btn-sm" id="optimize"><i class="icon-gears icon-fixed-width"></i> <%= I18n.t 'plannings.edit.optimize' %></button>-->
-  <a href="/plannings/{{id}}" class="btn btn-primary btn-sm"><i class="icon-print icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export' %></a>
+  <div class="btn-group">
+    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><i class="icon-share icon-fixed-width"></i><%= I18n.t 'plannings.edit.exports' %><span class="caret"></span></button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="/plannings/{{id}}"><i class="icon-print icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export.print' %></a></li>
+    </ul>
+  </div>
   {{#out_of_date}}<button type="button" class="btn btn-warning btn-sm" id="refresh"><i class="icon-refresh icon-fixed-width"></i> <%= I18n.t 'plannings.edit.refresh' %></button>{{/out_of_date}}
 </p>
 <ol class="routes">
@@ -44,7 +49,12 @@
       <button type="button" class="optimize btn btn-primary btn-xs"><i class="icon-gear icon-fixed-width"></i></button>
       <button type="button" class="toggle btn btn-default btn-xs"><i class="icon-eye-close icon-fixed-width"></i></button>
       <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
-      <a href="/routes/{{route_id}}" class="btn btn-default btn-xs"><i class="icon-print icon-fixed-width"></i></a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><i class="icon-share icon-fixed-width"></i><span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="/routes/{{route_id}}"><i class="icon-print icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export.print' %></a></li>
+        </ul>
+      </div>
       <br/>
       {{size}} <%= I18n.t 'plannings.edit.stops' %>
       -

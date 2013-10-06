@@ -176,7 +176,9 @@ fr:
     edit:
       stops: "arrêts"
       optimize: "Optimiser"
-      export: "Exporter"
+      exports: "Exporter"
+      export:
+        print: "Imprimer"
       refresh: "Actualiser"
       out_of_road: "Non plannifiés"
       dialog:

@@ -176,7 +176,9 @@ en:
     edit:
       stops: "stops"
       optimize: "Optimize"
-      export: "Export"
+      exports: "Export"
+      export:
+        print: "Print"
       refresh: "Refresh"
       out_of_road: "Out of route"
       dialog:

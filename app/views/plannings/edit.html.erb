@@ -159,7 +159,7 @@ function display_planning(data) {
 
   $(".toggle").click(function(event, ui) {
     var id = $(this).closest("[data-route_id]").attr("data-route_id");
-    var li = $("ul, ol", $(this).closest("li"));
+    var li = $("ul.stops, ol.stops", $(this).closest("li"));
     li.toggle();
     var hidden = !li.is(":visible");
     $.ajax({
