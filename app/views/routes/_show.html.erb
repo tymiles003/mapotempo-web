@@ -9,10 +9,12 @@
   </span>
   <ol class="stops" start="0">
   <%
+  index = -1
   route.stops.each{ |stop|
     if stop.active and stop.destination.lat
   %>
     <li class="list-group-item row">
+      <span class="time col-lg-1 col-1">#<%= index += 1 %></span>
       <span class="time col-lg-1 col-1"><%= stop.time.strftime("%H:%M")if stop.time %></span>
       <span class="distance badge"><%= number_to_human(stop.distance, units: :distance, precision: 3) %></span>
       <span class="col-lg-4 col-4">
