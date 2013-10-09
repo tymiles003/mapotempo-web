@@ -179,6 +179,7 @@ fr:
       exports: "Exporter"
       export:
         print: "Imprimer"
+        spreadsheet: "Tableur"
       refresh: "Actualiser"
       out_of_road: "Non plannifiés"
       dialog:

@@ -15,6 +15,7 @@
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><i class="icon-share icon-fixed-width"></i><%= I18n.t 'plannings.edit.exports' %><span class="caret"></span></button>
     <ul class="dropdown-menu" role="menu">
       <li><a href="/plannings/{{id}}"><i class="icon-print icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export.print' %></a></li>
+      <li><a href="/plannings/{{id}}.csv"><i class="icon-table icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export.spreadsheet' %></a></li>
     </ul>
   </div>
   {{#out_of_date}}<button type="button" class="btn btn-warning btn-sm" id="refresh"><i class="icon-refresh icon-fixed-width"></i> <%= I18n.t 'plannings.edit.refresh' %></button>{{/out_of_date}}
@@ -53,6 +54,7 @@
         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><i class="icon-share icon-fixed-width"></i><span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
           <li><a href="/routes/{{route_id}}"><i class="icon-print icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export.print' %></a></li>
+          <li><a href="/routes/{{route_id}}.csv"><i class="icon-table icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export.spreadsheet' %></a></li>
         </ul>
       </div>
       <br/>

@@ -179,6 +179,7 @@ en:
       exports: "Export"
       export:
         print: "Print"
+        spreadsheet: "Spreadsheet"
       refresh: "Refresh"
       out_of_road: "Out of route"
       dialog:

@@ -13,6 +13,13 @@ class PlanningsController < ApplicationController
   # GET /plannings/1
   # GET /plannings/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json
+      format.csv do
+        response.headers['Content-Disposition'] = 'attachment; filename="'+@planning.name.gsub('"', '')+'.csv"'
+      end
+    end
   end
 
   # GET /plannings/new
