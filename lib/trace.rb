@@ -9,22 +9,30 @@ module Trace
   @cache_delay = Mapotempo::Application.config.trace_cache_delay
   @osrm_url = Mapotempo::Application.config.trace_osrm_url
 
-  @cache = FileCache.new("cache", @cache_dir, @cache_delay, 3)
+  @cache_request = FileCache.new("cache", @cache_dir, @cache_delay, 3)
+  @cache_result = FileCache.new("cache", @cache_dir+"_result", @cache_delay, 3)
 
   def self.compute(from_lat, from_lng, to_lat, to_lng)
     key = "#{from_lat} #{from_lng} #{to_lat} #{to_lng}"
 
-    result = @cache.get(key)
+    result = @cache_result.get(key)
     if !result
-      url = "#{@osrm_url}/viaroute?loc=#{from_lat},#{from_lng}&loc=#{to_lat},#{to_lng}&alt=false&output=json"
-      Rails.logger.info "get #{url}"
-      result = JSON.parse(open(url).read)
-      @cache.set(key, result)
+      request = @cache_request.get(key)
+      if !request
+        url = "#{@osrm_url}/viaroute?loc=#{from_lat},#{from_lng}&loc=#{to_lat},#{to_lng}&alt=false&output=json"
+        Rails.logger.info "get #{url}"
+        request = JSON.parse(open(url).read)
+        @cache_request.set(key, request)
+      end
+
+      distance = request["route_summary"]["total_distance"]
+      time = request["route_summary"]["total_time"]
+      trace = request["route_geometry"]
+
+      result = [distance, time, trace]
+      @cache_result.set(key, result)
     end
 
-    distance = result["route_summary"]["total_distance"]
-    time = result["route_summary"]["total_time"]
-    trace = result["route_geometry"]
-    [distance, time, trace]
+    result
   end
 end
