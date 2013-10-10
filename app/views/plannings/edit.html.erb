@@ -103,7 +103,7 @@ function display_planning(data) {
 
     $.each(route.stops, function(index, stop) {
       if(stop.trace) {
-        var polyline = L.Polyline.fromEncoded(stop.trace);
+        var polyline = new L.Polyline(L.PolylineUtil.decode(stop.trace, 6));
         L.polyline(polyline.getLatLngs(), {color: color}).addTo(layers[route.route_id]);
       }
       if(stop.destination.lat && stop.destination.lng) {

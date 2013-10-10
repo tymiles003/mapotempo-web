@@ -11,117 +11,144 @@
  * http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/\
  */
 
-/*jshint browser:true, debug: true, strict:false, globalstrict:false, indent:4, white:true, smarttabs:true*/
-/*global L:true, console:true*/
+(function () {
+	'use strict';
 
+	/* jshint bitwise:false */
 
-// Inject functionality into Leaflet
-(function (L) {
-	if (!(L.Polyline.prototype.fromEncoded)) {
-		L.Polyline.fromEncoded = function (encoded, options) {
-			return new L.Polyline(L.PolylineUtil.decode(encoded), options);
-		};
-	}
-	if (!(L.Polygon.prototype.fromEncoded)) {
-		L.Polygon.fromEncoded = function (encoded, options) {
-			return new L.Polygon(L.PolylineUtil.decode(encoded), options);
-		};
-	}
+	// This function is very similar to Google's, but I added
+	// some stuff to deal with the double slash issue.
+	var encodeNumber = function (num) {
+		var encodeString = '';
+		var nextValue, finalValue;
+		while (num >= 0x20) {
+			nextValue = (0x20 | (num & 0x1f)) + 63;
+			encodeString += (String.fromCharCode(nextValue));
+			num >>= 5;
+		}
+		finalValue = num + 63;
+		encodeString += (String.fromCharCode(finalValue));
+		return encodeString;
+	};
 
-	var encodeMixin = {
-		encodePath: function () {
-			return L.PolylineUtil.encode(this.getLatLngs());
+	// This one is Google's verbatim.
+	var encodeSignedNumber = function (num) {
+		var sgn_num = num << 1;
+		if (num < 0) {
+			sgn_num = ~(sgn_num);
+		}
+
+		return encodeNumber(sgn_num);
+	};
+
+	var getLat = function (latlng) {
+		if (latlng.lat) {
+			return latlng.lat;
+		} else {
+			return latlng[0];
+		}
+	};
+	var getLng = function (latlng) {
+		if (latlng.lng) {
+			return latlng.lng;
+		} else {
+			return latlng[1];
 		}
 	};
 
-	if (!L.Polyline.prototype.encodePath) {
-		L.Polyline.include(encodeMixin);
-	}
-	if (!L.Polygon.prototype.encodePath) {
-		L.Polygon.include(encodeMixin);
-	}
-})(L);
+	var PolylineUtil = {
+		encode: function (latlngs, precision) {
+			var i, dlat, dlng;
+			var plat = 0;
+			var plng = 0;
+			var encoded_points = '';
 
-// Utility functions.
-L.PolylineUtil = {};
+			precision = Math.pow(10, precision || 5);
 
-L.PolylineUtil.encode = function (latlngs) {
-	var i, dlat, dlng;
-	var plat = 0;
-	var plng = 0;
-	var encoded_points = "";
+			for (i = 0; i < latlngs.length; i++) {
+				var lat = getLat(latlngs[i]);
+				var lng = getLng(latlngs[i]);
+				var latFloored = Math.floor(lat * precision);
+				var lngFloored = Math.floor(lng * precision);
+				dlat = latFloored - plat;
+				dlng = lngFloored - plng;
+				plat = latFloored;
+				plng = lngFloored;
+				encoded_points += encodeSignedNumber(dlat) + encodeSignedNumber(dlng);
+			}
+			return encoded_points;
+		},
 
-	for (i = 0; i < latlngs.length; i++) {
-		var lat = latlngs[i].lat;
-		var lng = latlngs[i].lng;
-		var late5 = Math.floor(lat * 1e5);
-		var lnge5 = Math.floor(lng * 1e5);
-		dlat = late5 - plat;
-		dlng = lnge5 - plng;
-		plat = late5;
-		plng = lnge5;
-		encoded_points +=
-			L.PolylineUtil.encodeSignedNumber(dlat) +
-			L.PolylineUtil.encodeSignedNumber(dlng);
-	}
-	return encoded_points;
-};
+		decode: function (encoded, precision) {
+			var len = encoded.length;
+			var index = 0;
+			var latlngs = [];
+			var lat = 0;
+			var lng = 0;
 
-// This function is very similar to Google's, but I added
-// some stuff to deal with the double slash issue.
-L.PolylineUtil.encodeNumber = function (num) {
-	var encodeString = "";
-	var nextValue, finalValue;
-	while (num >= 0x20) {
-		nextValue = (0x20 | (num & 0x1f)) + 63;
-		encodeString += (String.fromCharCode(nextValue));
-		num >>= 5;
-	}
-	finalValue = num + 63;
-	encodeString += (String.fromCharCode(finalValue));
-	return encodeString;
-};
+			precision = Math.pow(10, -(precision || 5));
 
-// This one is Google's verbatim.
-L.PolylineUtil.encodeSignedNumber = function (num) {
-	var sgn_num = num << 1;
-	if (num < 0) {
-		sgn_num = ~(sgn_num);
-	}
-	return (L.PolylineUtil.encodeNumber(sgn_num));
-};
+			while (index < len) {
+				var b;
+				var shift = 0;
+				var result = 0;
+				do {
+					b = encoded.charCodeAt(index++) - 63;
+					result |= (b & 0x1f) << shift;
+					shift += 5;
+				} while (b >= 0x20);
+				var dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+				lat += dlat;
 
-L.PolylineUtil.decode = function (encoded) {
-	var len = encoded.length;
-	var index = 0;
-	var latlngs = [];
-	var lat = 0;
-	var lng = 0;
+				shift = 0;
+				result = 0;
+				do {
+					b = encoded.charCodeAt(index++) - 63;
+					result |= (b & 0x1f) << shift;
+					shift += 5;
+				} while (b >= 0x20);
+				var dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+				lng += dlng;
 
-	while (index < len) {
-		var b;
-		var shift = 0;
-		var result = 0;
-		do {
-			b = encoded.charCodeAt(index++) - 63;
-			result |= (b & 0x1f) << shift;
-			shift += 5;
-		} while (b >= 0x20);
-		var dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
-		lat += dlat;
+				latlngs.push([lat * precision, lng * precision]);
+			}
 
-		shift = 0;
-		result = 0;
-		do {
-			b = encoded.charCodeAt(index++) - 63;
-			result |= (b & 0x1f) << shift;
-			shift += 5;
-		} while (b >= 0x20);
-		var dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
-		lng += dlng;
+			return latlngs;
+		}
+	};
+	/* jshint bitwise:true */
 
-		latlngs.push(new L.LatLng(lat * 1e-5, lng * 1e-5));
+	// Export Node module
+	if (typeof module === 'object' && typeof module.exports === 'object') {
+		module.exports = PolylineUtil;
 	}
 
-	return latlngs;
-};
+	// Inject functionality into Leaflet
+	if (typeof L === 'object') {
+		if (!(L.Polyline.prototype.fromEncoded)) {
+			L.Polyline.fromEncoded = function (encoded, options) {
+				return new L.Polyline(PolylineUtil.decode(encoded), options);
+			};
+		}
+		if (!(L.Polygon.prototype.fromEncoded)) {
+			L.Polygon.fromEncoded = function (encoded, options) {
+				return new L.Polygon(PolylineUtil.decode(encoded), options);
+			};
+		}
+
+		var encodeMixin = {
+			encodePath: function () {
+				return PolylineUtil.encode(this.getLatLngs());
+			}
+		};
+
+		if (!L.Polyline.prototype.encodePath) {
+			L.Polyline.include(encodeMixin);
+		}
+		if (!L.Polygon.prototype.encodePath) {
+			L.Polygon.include(encodeMixin);
+		}
+
+		L.PolylineUtil = PolylineUtil;
+	}
+})();
