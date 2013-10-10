@@ -82,7 +82,7 @@
                   <li><%= link_to tags_path do %><i class="icon-tags icon-fixed-width"></i> <%= t 'destinations.menu.tags' %><% end %></li>
                   <li class="divider"></li>
                   <li><%= link_to destination_import_path do %><i class="icon-upload icon-fixed-width"></i> <%= t 'destinations.menu.import' %><% end %></li>
-                  <li><%= link_to destination_export_path do %><i class="icon-download icon-fixed-width"></i> <%= t 'destinations.menu.export' %><% end %></li>
+                  <li><%= link_to destinations_path({format: :csv}) do %><i class="icon-download icon-fixed-width"></i> <%= t 'destinations.menu.export' %><% end %></li>
                 </ul>
               </li>
               <li class="dropdown">

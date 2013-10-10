@@ -108,16 +108,6 @@ class DestinationsController < ApplicationController
   def import
   end
 
-  def export
-    csv = CSV.generate { |csv|
-      csv << [:name, :street, :postalcode, :city, :lat, :lng, :quantity, :open, :close]
-      Destination.where(customer_id: current_user.customer.id).each { |destination|
-        csv << [destination.name, destination.street, destination.postalcode, destination.city, destination.lat, destination.lng, destination.quantity, destination.open, destination.close]
-      }
-    }
-    send_data csv, type: 'text/csv'
-  end
-
   def upload
     replace = params[:replace]
     file = params[:upload][:datafile].tempfile

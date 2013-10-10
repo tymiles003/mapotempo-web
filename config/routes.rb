@@ -12,7 +12,6 @@ Mapotempo::Application.routes.draw do
     post 'geocode_complete'
   end
   get 'destination/import' => 'destinations#import'
-  get 'destination/export' => 'destinations#export'
   post 'destinations/upload' => 'destinations#upload'
 
   resources :plannings do
