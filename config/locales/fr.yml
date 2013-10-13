@@ -62,6 +62,10 @@ fr:
       vehicles:
         one: "véhicule"
         other: "véhicules"
+      zoning: "Zonage"
+      zonings:
+        one: "zonage"
+        other: "zonages"
 
     attributes:
       customer:
@@ -117,6 +121,8 @@ fr:
         color: "Couleur"
         open: "Horaire début"
         close: "Horaire fin"
+      zoning:
+        name: "Nom"
 
     successful:
       messages:
@@ -223,6 +229,17 @@ fr:
       title: "Liste véhicules"
     new:
       title: "Nouveau véhicules"
+
+  zonings:
+    menu:
+      zonings: "Zonages"
+    edit:
+      title: "Modifier zonage"
+    index:
+      title: "Liste zonages"
+      new: "Nouveau zonage"
+    new:
+      title: "Nouveau zonage"
 
   all:
     osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"

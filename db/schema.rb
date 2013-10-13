@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130825123959) do
+ActiveRecord::Schema.define(version: 20131012124400) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -182,5 +182,28 @@ ActiveRecord::Schema.define(version: 20130825123959) do
   end
 
   add_index "vehicles", ["customer_id"], name: "index_vehicles_on_customer_id"
+
+  create_table "vehicles_zones", id: false, force: true do |t|
+    t.integer "vehicle_id"
+    t.integer "zone_id"
+  end
+
+  create_table "zones", force: true do |t|
+    t.text     "polygon"
+    t.integer  "zoning_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "zones", ["zoning_id"], name: "index_zones_on_zoning_id"
+
+  create_table "zonings", force: true do |t|
+    t.string   "name"
+    t.integer  "customer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "zonings", ["customer_id"], name: "index_zonings_on_customer_id"
 
 end

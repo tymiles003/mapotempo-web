@@ -68,6 +68,8 @@
                     <% current_user.customer.plannings.each do |planning| %>
                       <li><%= link_to edit_planning_path(planning) do %><i class="icon-calendar icon-fixed-width"></i> <%= planning.name %><% end %></li>
                     <% end %>
+                    <li class="divider"></li>
+                    <li><%= link_to zonings_path do %><i class="icon-adjust icon-fixed-width"></i> <%= t 'zonings.menu.zonings' %><% end %></li>
                   </ul>
               <% else %>
                 <li class="disabled"><a href="#"><i class="icon-calendar-empty icon-fixed-width"></i> <%= t 'plannings.menu.plannings' %></span></a></li>

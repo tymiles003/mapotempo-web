@@ -1,6 +1,7 @@
 class Vehicle < ActiveRecord::Base
   belongs_to :customer
   has_many :routes, :autosave => true
+  has_and_belongs_to_many :zones
 
 #  validates :customer, presence: true
   validates :name, presence: true

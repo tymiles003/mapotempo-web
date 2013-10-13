@@ -14,6 +14,7 @@ class Ability
         can :manage, Tag, :customer_id => user.customer.id
         can :manage, Destination, :id => user.customer.store_id
         can :manage, Destination, :customer_id => user.customer.id
+        can :manage, Zoning, :customer_id => user.customer.id
         if not user.customer.end_subscription or user.customer.end_subscription > Time.now
           can :manage, Planning, :customer_id => user.customer.id
         end
