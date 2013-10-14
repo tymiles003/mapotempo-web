@@ -24,7 +24,10 @@ Mapotempo::Application.routes.draw do
 
   resources :routes
 
-  resources :zonings
+  resources :zonings do
+    get 'edit/planning/:planning_id' => 'zonings#edit'
+    get 'planning/:planning_id' => 'zonings#show'
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

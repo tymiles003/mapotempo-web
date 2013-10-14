@@ -23,6 +23,21 @@ L.tileLayer('<%= current_user.layer.url %>', {
   attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
 }).addTo(map);
 
+var markersLayers = L.layerGroup();
+
+var cluster = new L.MarkerClusterGroup({showCoverageOnHover: false});
+map.addLayer(cluster);
+
+map.on('zoomend ', function(e) {
+  if(map.getZoom() > 12) {
+    map.removeLayer(cluster);
+    map.addLayer(markersLayers);
+  } else {
+    map.removeLayer(markersLayers);
+    map.addLayer(cluster);
+  }
+});
+
 var vehicles_array;
 var vehicles_map;
 var zone_map = {};
@@ -140,10 +155,25 @@ function display_zoning(data) {
     set_color(geom, zone.vehicles);
     add_zone(zone, geom);
   });
+  $.each(data.planning, function(index, route) {
+    $.each(route, function(index, stop) {
+      if(stop.lat && stop.lng) {
+        var options = {};
+        if(!stop.active) {
+          options = {icon: L.icon({iconUrl: '<%= asset_path("marker-000000.svg") %>'})}
+        }
+        L.marker(new L.LatLng(stop.lat, stop.lng), options).addTo(markersLayers).addTo(cluster);
+      }
+    });
+  });
 }
 
 $.ajax({
+<% if @planning %>
+  url: '/zonings/<%= @zoning.id %>/planning/<%= @planning.id %>.json',
+<% else %>
   url: '<%= polymorphic_path(@zoning, format: :json) %>',
+<% end %>
   success: display_zoning,
 });
 
