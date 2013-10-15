@@ -170,9 +170,9 @@ function display_zoning(data) {
 
 $.ajax({
 <% if @planning %>
-  url: '/zonings/<%= @zoning.id %>/planning/<%= @planning.id %>.json',
+  url: '/zonings/<%= @zoning.id %>/edit/planning/<%= @planning.id %>.json',
 <% else %>
-  url: '<%= polymorphic_path(@zoning, format: :json) %>',
+  url: '<%= edit_zoning_path(@zoning, format: :json) %>',
 <% end %>
   success: display_zoning,
 });

@@ -11,8 +11,6 @@ class ZoningsController < ApplicationController
   # GET /zonings/1
   # GET /zonings/1.json
   def show
-    @vehicles = @zoning.customer.vehicles
-    @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
   end
 
   # GET /zonings/new
