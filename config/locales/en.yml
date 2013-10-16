@@ -186,6 +186,10 @@ en:
       export:
         print: "Print"
         spreadsheet: "Spreadsheet"
+      zoning:
+        none: "None"
+        apply: "Apply zoning"
+        edit: "Edit zoning"
       refresh: "Refresh"
       out_of_road: "Out of route"
       dialog:

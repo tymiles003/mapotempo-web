@@ -6,10 +6,12 @@
 <script>
 var map = L.map('map').setView([<%= @planning.customer.store.lat %>, <%= @planning.customer.store.lng %>], 13);
 var layers = {};
+var layer_zoning;
 <% @planning.routes.each{ |route| %>
   layers[<%= route.id %>] = L.layerGroup();
 <% } %>
 var markers = {};
+var vehicles_map = {};
 
 L.tileLayer('<%= current_user.layer.url %>', {
   maxZoom: 18,
@@ -31,6 +33,21 @@ function update_planning(event, ui) {
     url: '<%= planning_move_path(@planning, format: :json) %>',
     success: display_planning,
   });
+}
+
+function display_zoning(zoning) {
+  if(layer_zoning) {
+    map.removeLayer(layer_zoning);
+  }
+  layer_zoning = new L.LayerGroup();
+  $.each(zoning.zones, function(index, zone) {
+    var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
+    geom.setStyle({
+      color: (zone.vehicles.length > 0 ? vehicles_map[zone.vehicles[0].id].color : '#000000')
+    });
+    geom.addTo(layer_zoning);
+  });
+  layer_zoning.addTo(map);
 }
 
 function display_planning(data) {
@@ -65,6 +82,34 @@ function display_planning(data) {
   }
 
   $("#planning").html(SMT['plannings/edit'](data));
+
+  $.each(data.vehicles, function(index, vehicle) {
+    vehicles_map[vehicle.id] = vehicle;
+  });
+
+  $("select[name=zoning]").select2();
+  $("select[name=zoning]").change(function() {
+    var id = $(this).val();
+    if(id && id>0) {
+      $("#zoning_apply").show();
+      $("#zoning_edit").show();
+      $("#zoning_edit").attr("href", "/zonings/"+id+"/edit/planning/"+data.id);
+      $.ajax({
+        type: "get",
+        url: "/zonings/"+id+".json",
+        success: display_zoning
+      });
+    } else {
+      $("#zoning_apply").hide();
+      $("#zoning_edit").hide();
+      map.removeLayer(layer_zoning);
+      layer_zoning = null;
+    }
+  });
+
+  if(data.zoning) {
+    display_zoning(data.zoning);
+  }
 
   $("#planning input:checkbox").change(function(event, ui) {
     var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
@@ -135,8 +180,8 @@ function display_planning(data) {
     stop: function(event, ui) { if(sortableUpdate) { update_planning(event, ui); } }
   }).disableSelection();
 
-  $("select").select2({minimumResultsForSearch:99});
-  $("select").change(function() {
+  $("select[name=vehicle]").select2();
+  $("select[name=vehicle]").change(function() {
     $.ajax({
       type: "patch",
       data: JSON.stringify({

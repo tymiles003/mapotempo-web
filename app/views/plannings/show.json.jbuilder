@@ -9,9 +9,22 @@ else
       json.extract! tag, :label
     end
   end
+  json.zonings do
+    json.array! current_user.customer.zonings do |zoning|
+      json.extract! zoning, :id, :name
+      if @planning.zoning == zoning
+        json.selected true
+      end
+    end
+  end
+  if @planning.zoning
+    json.zoning do
+      json.partial! 'zonings/show', zoning: @planning.zoning
+    end
+  end
   json.vehicles do
     json.array!(current_user.customer.vehicles) do |vehicle|
-      json.extract! vehicle, :id, :name
+      json.extract! vehicle, :id, :name, :color
     end
   end
   json.distance @planning.routes.to_a.sum(0){ |route| route.distance or 0 }/1000

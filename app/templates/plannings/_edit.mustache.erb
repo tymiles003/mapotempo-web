@@ -11,6 +11,12 @@
   -
   {{emission}} <%= I18n.t 'all.unit.kgco2e_html' %>
   <!--<button type="button" class="btn btn-primary btn-sm" id="optimize"><i class="icon-gears icon-fixed-width"></i> <%= I18n.t 'plannings.edit.optimize' %></button>-->
+  <select name="zoning">
+    <option value="-1"><%= I18n.t 'plannings.edit.zoning.none' %></option>
+    {{#zonings}}<option value="{{id}}"{{#selected}} selected="selected"{{/selected}}>{{name}}</option>{{/zonings}}
+  </select>
+  <button type="button" class="btn btn-primary btn-sm" id="zoning_apply"{{^zoning}} style="display: none;"{{/zoning}}><i class="icon-gear icon-fixed-width"></i> <%= I18n.t 'plannings.edit.zoning.apply' %></button>
+  <a href="/zonings/{{#zoning}}{{id}}{{/zoning}}/edit/planning/{{id}}" class="btn btn-primary btn-sm" id="zoning_edit"{{^zoning}} style="display: none;"{{/zoning}}><i class="icon-pencil icon-fixed-width"></i> <%= I18n.t 'plannings.edit.zoning.edit' %></a>
   <div class="btn-group">
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><i class="icon-share icon-fixed-width"></i><%= I18n.t 'plannings.edit.exports' %><span class="caret"></span></button>
     <ul class="dropdown-menu" role="menu">

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131012124400) do
+ActiveRecord::Schema.define(version: 20131015182755) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20131012124400) do
     t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "zoning_id"
   end
 
   add_index "plannings", ["customer_id"], name: "index_plannings_on_customer_id"
@@ -205,5 +206,14 @@ ActiveRecord::Schema.define(version: 20131012124400) do
   end
 
   add_index "zonings", ["customer_id"], name: "index_zonings_on_customer_id"
+
+  create_table "zonnings", force: true do |t|
+    t.text     "polygon"
+    t.integer  "customer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "zonnings", ["customer_id"], name: "index_zonnings_on_customer_id"
 
 end

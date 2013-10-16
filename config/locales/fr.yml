@@ -186,6 +186,10 @@ fr:
       export:
         print: "Imprimer"
         spreadsheet: "Tableur"
+      zoning:
+        none: "Aucun"
+        apply: "Appliquer zonage"
+        edit: "Modifier zonage"
       refresh: "Actualiser"
       out_of_road: "Non plannifiés"
       dialog:

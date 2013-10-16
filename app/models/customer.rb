@@ -8,6 +8,7 @@ class Customer < ActiveRecord::Base
   has_many :plannings, -> { order('id')}, :autosave => true, :dependent => :destroy
   has_many :tags, -> { order('label')}, :autosave => true, :dependent => :destroy
   has_many :users
+  has_many :zonings
 
   after_initialize :assign_defaults, if: 'new_record?'
   before_update :update_out_of_date, :update_max_vehicles
