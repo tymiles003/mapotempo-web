@@ -118,7 +118,7 @@ class DestinationsController < ApplicationController
         format.html { redirect_to :action => 'index' }
         format.json { render action: 'show', status: :created, location: @destination }
       else
-        format.html { render action: 'import' }
+        format.html { render action: 'import', status: :unprocessable_entity }
         format.json { render json: current_user.errors, status: :unprocessable_entity }
       end
     end
