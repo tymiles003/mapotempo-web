@@ -54,7 +54,7 @@
 <% end %>
 
 <script>
-var map = L.map('map').setView([<%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>], 13);
+var map = L.map('map').setView([<%= @destination.lat %>, <%= @destination.lng %>], 13);
 var layer = L.layerGroup();
 var marker;
 

@@ -38,6 +38,7 @@
     {{#stops}}
       {{#destination}}
       <li data-destination_id="{{id}}" class="waypoint ui-state-error">
+        <a href="/destinations/{{id}}/edit" class="marker_edit"><i class="icon-pencil icon-fixed-width"></i></a>
         {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} style="display: none"/>
         {{name}}
@@ -80,6 +81,7 @@
         {{/is_store}}
         {{^is_store}}
           <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
+          <a href="/destinations/{{id}}/edit" class="marker_edit"><i class="icon-pencil icon-fixed-width"></i></a>
           {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         {{/is_store}}
         {{name}}
