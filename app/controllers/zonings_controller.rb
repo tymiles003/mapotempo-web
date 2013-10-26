@@ -30,7 +30,7 @@ class ZoningsController < ApplicationController
     @zoning.customer = current_user.customer
 
     respond_to do |format|
-      if @zoning.save
+      if save_zoning
         format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
         format.json { render action: 'show', status: :created, location: @zoning }
       else
@@ -44,19 +44,7 @@ class ZoningsController < ApplicationController
   # PATCH/PUT /zonings/1.json
   def update
     respond_to do |format|
-      znp = zoning_neasted_params['zones']
-      if znp
-        znp = znp.collect{ |zone|
-          if zone['vehicles']
-            zone['vehicles'] = zone['vehicles'].collect{ |vehicle|
-              Vehicle.where(id: Integer(vehicle['vehicle_id']), customer: current_user.customer).first
-            }.select{ |vehicle| vehicle }
-          end
-          zone
-        }
-      end
-
-      if @zoning.update_attributes(zoning_params) and @zoning.set_zones(znp) and @zoning.save
+      if save_zoning
         format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
         format.json { head :no_content }
       else
@@ -89,5 +77,21 @@ class ZoningsController < ApplicationController
 
     def zoning_neasted_params
       params.require(:zoning).permit({zones: [:polygon, {vehicles: [:vehicle_id]}]})
+    end
+
+    def save_zoning
+      znp = zoning_neasted_params['zones']
+      if znp
+        znp = znp.collect{ |zone|
+          if zone['vehicles']
+            zone['vehicles'] = zone['vehicles'].collect{ |vehicle|
+              Vehicle.where(id: Integer(vehicle['vehicle_id']), customer: current_user.customer).first
+            }.select{ |vehicle| vehicle }
+          end
+          zone
+        }
+      end
+
+      @zoning.update_attributes(zoning_params) and @zoning.set_zones(znp) and @zoning.save
     end
 end
