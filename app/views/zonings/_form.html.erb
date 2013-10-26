@@ -38,8 +38,17 @@ map.on('zoomend ', function(e) {
   }
 });
 
-var vehicles_array;
-var vehicles_map;
+var vehicles_array = [
+<% current_user.customer.vehicles.each{ |vehicle| %>
+  {'id':<%= vehicle.id %>,'name':'<%= vehicle.name %>','color':'<%= vehicle.color %>'},
+<% } %>
+];
+var vehicles_map = {
+<% current_user.customer.vehicles.each{ |vehicle| %>
+  <%= vehicle.id %>: {'id':<%= vehicle.id %>,'name':'<%= vehicle.name %>','color':'<%= vehicle.color %>'},
+<% } %>
+};
+
 var zone_map = {};
 
 var featureGroup = L.featureGroup().addTo(map);
@@ -145,11 +154,6 @@ function update_zone(geom) {
 }
 
 function display_zoning(data) {
-  vehicles_array = data.vehicles;
-  vehicles_map = {};
-  $.each(data.vehicles, function(index, vehicle) {
-    vehicles_map[vehicle.id] = vehicle;
-  });
   $.each(data.zoning, function(index, zone) {
     var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
     set_color(geom, zone.vehicles);
@@ -168,6 +172,7 @@ function display_zoning(data) {
   });
 }
 
+<% if @zoning.id %>
 $.ajax({
 <% if @planning %>
   url: '/zonings/<%= @zoning.id %>/edit/planning/<%= @planning.id %>.json',
@@ -176,5 +181,6 @@ $.ajax({
 <% end %>
   success: display_zoning,
 });
+<% end %>
 
 </script>

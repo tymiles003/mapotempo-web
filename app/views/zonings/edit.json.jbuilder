@@ -1,6 +1,3 @@
-json.vehicles current_user.customer.vehicles do |vehicle|
-  json.extract! vehicle, :id, :name, :color
-end
 json.zoning @zoning.zones do |zone|
   json.extract! zone, :polygon
   json.vehicles current_user.customer.vehicles do |vehicle|
