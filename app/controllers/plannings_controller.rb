@@ -58,7 +58,7 @@ class PlanningsController < ApplicationController
   def update
     respond_to do |format|
       if @planning.update(planning_params)
-        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
+        format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -165,7 +165,7 @@ class PlanningsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def planning_params
-      params.require(:planning).permit(:name)
+      params.require(:planning).permit(:name, :zoning_id)
     end
 
     def stop_params

@@ -89,6 +89,7 @@ en:
       planning:
         name: "Name"
         tags: "Tags"
+        zoning: "Zoning"
       route:
         distance: "Distance"
         emission: "Emission"
@@ -180,6 +181,7 @@ en:
       title: "Listing plannings"
       new: "New Planning"
     edit:
+      title: "Editing planning"
       stops: "stops"
       optimize: "Optimize"
       exports: "Export"

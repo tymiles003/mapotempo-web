@@ -3,30 +3,7 @@ if current_user.customer.job_matrix
 elsif current_user.customer.job_optimizer
   json.optimizer current_user.customer.job_optimizer.progress
 else
-  json.extract! @planning, :id, :name
-  json.tags do
-    json.array!(@planning.tags) do |tag|
-      json.extract! tag, :label
-    end
-  end
-  json.zonings do
-    json.array! current_user.customer.zonings do |zoning|
-      json.extract! zoning, :id, :name
-      if @planning.zoning == zoning
-        json.selected true
-      end
-    end
-  end
-  if @planning.zoning
-    json.zoning do
-      json.partial! 'zonings/show', zoning: @planning.zoning
-    end
-  end
-  json.vehicles do
-    json.array!(current_user.customer.vehicles) do |vehicle|
-      json.extract! vehicle, :id, :name, :color
-    end
-  end
+  json.extract! @planning, :id
   json.distance @planning.routes.to_a.sum(0){ |route| route.distance or 0 }/1000
   json.emission number_to_human(@planning.routes.to_a.sum(0){ |route| route.emission or 0 }, precision: 4)
   if @planning.routes.inject(false){ |acc, route| acc or route.out_of_date }

@@ -19,6 +19,13 @@ $('[name=tags\\[\\]]').select2({
     </script>
   </div>
   <div class="row">
+    <%= f.label :zoning, class:"col-lg-2 control-label" %>
+    <span class="col-lg-4"><%= f.collection_select :zoning_id, current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, class:"form-control" %></span>
+    <% if @planning.id %>
+      <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_edit"<% if not @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.edit' %></a>
+    <% end %>
+  </div>
+  <div class="row">
     <div class="col-lg-offset-2">
       <%= f.submit class:"btn btn-primary" %>
     </div>
