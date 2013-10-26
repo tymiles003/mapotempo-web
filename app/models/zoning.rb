@@ -1,6 +1,7 @@
 class Zoning < ActiveRecord::Base
   belongs_to :customer
   has_many :zones, dependent: :destroy, autosave: true
+  has_many :plannings, dependent: :nullify, autosave: true
 
   validates :name, presence: true
 
