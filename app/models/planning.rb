@@ -7,6 +7,8 @@ class Planning < ActiveRecord::Base
 #  validates :customer, presence: true
   validates :name, presence: true
 
+  before_update :update_zoning
+
   def set_destinations(destinations)
     default_empty_routes
     routes[0].set_destinations([])
@@ -66,6 +68,30 @@ class Planning < ActiveRecord::Base
       route_prec.vehicle = vehicle_prec
     else
       false
+    end
+  end
+
+  def update_zoning
+    if zoning_id_changed? && zoning
+      z = {}
+      unaffected = []
+      zoning.apply(customer.destinations).each{ |zone, destinations|
+        if zone && zone.vehicles && zone.vehicles.size > 0
+          z[zone.vehicles[0]] = destinations
+        else
+          unaffected += destinations
+        end
+      }
+      z = Hash[z]
+      routes[0].set_destinations(unaffected)
+      routes[1..-1].each{ |route|
+        if route.vehicle && z.has_key?(route.vehicle)
+          route.set_destinations(z[route.vehicle].collect{ |d| [d,true]})
+        else
+          route.set_destinations([])
+        end
+        route.out_of_date = true
+      }
     end
   end
 end

@@ -178,6 +178,9 @@ GEM
       json (~> 1.4)
     ref (1.0.5)
     remotipart (1.2.1)
+    rgeo (0.3.20)
+    rgeo-geojson (0.2.3)
+      rgeo (>= 0.3.7)
     safe_yaml (0.9.5)
     sass (3.2.10)
     sass-rails (4.0.0)
@@ -252,6 +255,8 @@ DEPENDENCIES
   rails-i18n
   rails_12factor
   rails_admin
+  rgeo
+  rgeo-geojson
   sass-rails (~> 4.0.0)
   sdoc
   select2-rails

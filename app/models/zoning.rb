@@ -11,4 +11,12 @@ class Zoning < ActiveRecord::Base
       self.zones << Zone.new(zone)
     }
   end
+
+  def apply(destinations)
+    destinations.group_by{ |destination|
+      zones.find{ |zone|
+        zone.inside?(destination.lat, destination.lng)
+      }
+    }
+  end
 end
