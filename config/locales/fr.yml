@@ -213,6 +213,15 @@ fr:
         optimizer_in_progress: "Optimisation en cours, merci de patienter."
     new:
       title: "Nouveau planning"
+    export_file:
+      route: "tournée"
+      order: "ordre"
+      time: "heure"
+      distance: "distance"
+      name: "nom"
+      street: "rue"
+      postalcode: "code postal"
+      city: "ville"
 
   shared:
     error_messages:

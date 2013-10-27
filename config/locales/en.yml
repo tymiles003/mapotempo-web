@@ -213,6 +213,15 @@ en:
         optimizer_in_progress: "Please wait, optimization in progress."
     new:
       title: "New planning"
+    export_file:
+      route: "route"
+      order: "order"
+      time: "time"
+      distance: "distance"
+      name: "name"
+      street: "street"
+      postalcode: "postalcode"
+      city: "city"
 
   shared:
     error_messages:
