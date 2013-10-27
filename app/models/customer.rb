@@ -53,7 +53,7 @@ class Customer < ActiveRecord::Base
           (vehicles.size - max_vehicles).times{ |i|
             vehicle = vehicles.pop
             plannings.each{ |planning|
-              planning.vehcile_remove(vehicle)
+              planning.vehicle_remove(vehicle)
             }
             vehicle.destroy
           }
