@@ -159,17 +159,19 @@ function display_zoning(data) {
     set_color(geom, zone.vehicles);
     add_zone(zone, geom);
   });
-  $.each(data.planning, function(index, route) {
-    $.each(route, function(index, stop) {
-      if(stop.lat && stop.lng) {
-        var options = {};
-        if(!stop.active) {
-          options = {icon: L.icon({iconUrl: '<%= asset_path("marker-000000.svg") %>'})}
+  if(data.planning) {
+    $.each(data.planning, function(index, route) {
+      $.each(route, function(index, stop) {
+        if(stop.lat && stop.lng) {
+          var options = {};
+          if(!stop.active) {
+            options = {icon: L.icon({iconUrl: '<%= asset_path("marker-000000.svg") %>'})}
+          }
+          L.marker(new L.LatLng(stop.lat, stop.lng), options).addTo(markersLayers).addTo(cluster);
         }
-        L.marker(new L.LatLng(stop.lat, stop.lng), options).addTo(markersLayers).addTo(cluster);
-      }
+      });
     });
-  });
+  }
 }
 
 <% if @zoning.id %>
