@@ -14,7 +14,7 @@
     {{size}} <%= I18n.t 'plannings.edit.stops' %>
     <button type="button" class="toggle btn btn-default btn-xs"><i class="icon-eye-close icon-fixed-width"></i></button>
     <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
-    <ul id="out_of_road" class="sortable"{{#hidden}} style="display: none;"{{/hidden}}>
+    <ul id="out_of_road" class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}}>
     {{#stops}}
       {{#destination}}
       <li data-destination_id="{{id}}" class="waypoint ui-state-error">
