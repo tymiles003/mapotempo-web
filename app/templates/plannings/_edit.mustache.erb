@@ -13,7 +13,7 @@
     <%= I18n.t 'plannings.edit.out_of_road' %>
     {{size}} <%= I18n.t 'plannings.edit.stops' %>
     <button type="button" class="toggle btn btn-default btn-xs"><i class="icon-eye-close icon-fixed-width"></i></button>
-    <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+    <!--<button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>-->
     <ul id="out_of_road" class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}}>
     {{#stops}}
       {{#destination}}
@@ -34,7 +34,7 @@
       <a href="{{path}}"><i class="icon-truck icon-fixed-width"></i></a>
       <button type="button" class="optimize btn btn-primary btn-xs"><i class="icon-gear icon-fixed-width"></i></button>
       <button type="button" class="toggle btn btn-default btn-xs"><i class="icon-eye-close icon-fixed-width"></i></button>
-      <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+      <!--<button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>-->
       <div class="btn-group">
         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><i class="icon-share icon-fixed-width"></i><span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
