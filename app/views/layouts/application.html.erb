@@ -28,6 +28,10 @@
     <!-- Size should be 32 x 32 pixels -->
     <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
 
+    <script type="text/javascript">
+      var defaultLocale = "<%= I18n.default_locale %>";
+    </script>
+
     <!-- Javascripts -->
     <!-- Placed inside head element to support turbolinks -->
     <%= javascript_include_tag 'application' %>

@@ -1,0 +1,59 @@
+fr:
+  leaflet_draw:
+    draw:
+      toolbar:
+        actions:
+          title: "Annuler le dessin"
+          text: "Annuler"
+        buttons:
+          polyline: "Dessiner un chemin"
+          polygon: "Dessiner une zone"
+          rectangle: "Dessiner un rectangle"
+          circle: "Dessiner un cercle"
+          marker: "Posser un marqueur"
+      handlers:
+        circle:
+          tooltip:
+            start: "Click and drag to draw circle."
+        marker:
+          tooltip:
+            start: "Click map to place marker."
+        polygon:
+          tooltip:
+            start: "Cliquez pour commencer à dessiner."
+            cont: "Cliquez pour continuer à dessiner."
+            end: "Cliquez sur le premier point pour refermer le polygone."
+        polyline:
+          error: "<strong>Erreur :</strong> la forme ne peut pas se croiser elle-même !"
+          tooltip:
+            start: "Click to start drawing line."
+            cont: "Click to continue drawing line."
+            end: "Click last point to finish line."
+        rectangle:
+          tooltip:
+            start: "Click and drag to draw rectangle."
+        simpleshape:
+          tooltip:
+            end: "Release mouse to finish drawing."
+    edit:
+      toolbar:
+        actions:
+          save:
+            title: "Confirmer les modifications."
+            text: "Confirmer"
+          cancel:
+            title: "Abandonner les changements."
+            text: "Abandonner"
+        buttons:
+          edit: "Modifier."
+          editDisabled: "Rien à modifier."
+          remove: "Supprimer."
+          removeDisabled: "Rien à supprimer."
+      handlers:
+        edit:
+          tooltip:
+            text: "Déplacez les contrôleurs pour modifier un objet."
+            subtext: "Cliquez sur abandonner pour annuler les modifications."
+        remove:
+          tooltip:
+            text: "Cliquez sur un objet pour l'enlever"

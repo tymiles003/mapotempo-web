@@ -20,6 +20,9 @@
 //= require jquery.ui.slider
 //= require jquery-tablesorter
 //= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
+//= require i18n
+//= require i18n/translations
+//= require i18n/translations-setting
 //= require leaflet
 //= require leaflet.markercluster
 //= require leaflet.draw
