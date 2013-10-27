@@ -72,11 +72,13 @@ function wire(row) {
         type: "post",
         data: $(row).serialize(),
         url: '/destinations/'+id+'/geocode_complete.json',
+        beforeSend: beforeSendWaiting,
         success: function(data) {
           add($.map(data, function(val, i) {
             return {label: val.street+' '+val.postalcode+' '+val.city, value: val.street};
           }));
-        }
+        },
+        complete: completeWaiting
       });
       $("[name=live]").attr('live', 'false');
     },
@@ -95,7 +97,9 @@ function wire(row) {
         type: "put",
         data: $(row).serialize(),
         url: '/destinations/'+id+'.json',
-        success: function(data) { update(id, data); }
+        beforeSend: beforeSendWaiting,
+        success: function(data) { update(id, data); },
+        complete: completeWaiting
       });
       $("[name=live]").attr('value', 'false');
     }

@@ -64,7 +64,9 @@ $("#planning_zoning_id").change(function() {
     $.ajax({
       type: "get",
       url: "/zonings/"+id+".json",
-      success: display_zoning
+      beforeSend: beforeSendWaiting,
+      success: display_zoning,
+      complete: completeWaiting
     });
   } else {
     $("#zoning_edit").hide();
@@ -77,7 +79,9 @@ $("#planning_zoning_id").change(function() {
 $.ajax({
   type: "get",
   url: "/zonings/"+<%= @planning.zoning.id %>+".json",
-  success: display_zoning
+  beforeSend: beforeSendWaiting,
+  success: display_zoning,
+  complete: completeWaiting
 });
 <% end%>
 
@@ -95,7 +99,9 @@ function update_planning(event, ui) {
     data: JSON.stringify(data),
     contentType: 'application/json',
     url: '<%= planning_move_path(@planning, format: :json) %>',
+    beforeSend: beforeSendWaiting,
     success: display_planning,
+    complete: completeWaiting
   });
 }
 
@@ -142,7 +148,9 @@ function display_planning(data) {
       data: JSON.stringify({stop: {active: active}}),
       contentType: 'application/json',
       url: '/plannings/<%= @planning.id %>/'+route_id+'/'+destination_id+'.json',
+      beforeSend: beforeSendWaiting,
       success: display_planning,
+      complete: completeWaiting
     });
   });
 
@@ -203,7 +211,9 @@ function display_planning(data) {
       }),
       contentType: 'application/json',
       url: '<%= planning_switch_path(@planning, format: :json) %>',
+      beforeSend: beforeSendWaiting,
       success: display_planning,
+      complete: completeWaiting
     });
   });
 
@@ -225,7 +235,9 @@ function display_planning(data) {
     $.ajax({
       type: "get",
       url: '<%= planning_refresh_path(@planning, format: :json) %>',
+      beforeSend: beforeSendWaiting,
       success: display_planning,
+      complete: completeWaiting
     });
   });
 
@@ -275,14 +287,18 @@ function display_planning(data) {
     $.ajax({
       type: "get",
       url: '/plannings/<%= @planning.id %>/'+id+'/optimize.json',
-      success: display_planning
+      beforeSend: beforeSendWaiting,
+      success: display_planning,
+      complete: completeWaiting
     });
   });
 }
 
 $.ajax({
   url: '<%= polymorphic_path(@planning, format: :json) %>',
+  beforeSend: beforeSendWaiting,
   success: display_planning,
+  complete: completeWaiting
 });
 </script>
 

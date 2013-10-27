@@ -69,11 +69,13 @@ function wire(row) {
         type: "post",
         data: $(":input", $(row)).serialize(),
         url: '/destinations/'+id+'/geocode_complete.json',
+        beforeSend: beforeSendWaiting,
         success: function(data) {
           add($.map(data, function(val, i) {
             return {label: val.street+' '+val.postalcode+' '+val.city, value: val.street};
           }));
-        }
+        },
+        complete: completeWaiting
       });
     },
     select: function(event, ui) {
@@ -87,7 +89,9 @@ function wire(row) {
       type: "put",
       data: $(":input", $(row)).serialize(),
       url: '/destinations/'+id+'.json',
-      success: function(data) { update(id, data); }
+      beforeSend: beforeSendWaiting,
+      success: function(data) { update(id, data); },
+      complete: completeWaiting
     });
   });
 
@@ -112,11 +116,13 @@ function wire(row) {
     $.ajax({
       type: "delete",
       url: '/destinations/'+id+'.json',
+      beforeSend: beforeSendWaiting,
       success: function(data) {
         row.remove();
         markersLayers.removeLayer(markers[id]);
         delete markers[id];
-      }
+      },
+      complete: completeWaiting
     });
   });
 }
@@ -222,11 +228,13 @@ $("#add").click(function(event) {
     data: JSON.stringify({destination: destination}),
     contentType: 'application/json',
     url: '/destinations.json',
+    beforeSend: beforeSendWaiting,
     success: function(data) {
       addMarker(data.id, data.lat, data.lng),
       update(id, data);
       over(data.id, true);
-    }
+    },
+    complete: completeWaiting
   });
 });
 
@@ -247,7 +255,9 @@ function display_destinations(data) {
     setTimeout(function() {
       $.ajax({
         url: '/destinations.json',
-        success: display_destinations
+        beforeSend: beforeSendWaiting,
+        success: display_destinations,
+        complete: completeWaiting
        });
     }, 2000);
     return;
@@ -318,7 +328,9 @@ function display_destinations(data) {
 
 $.ajax({
   url: '/destinations.json',
-  success: display_destinations
+  beforeSend: beforeSendWaiting,
+  success: display_destinations,
+  complete: completeWaiting
 });
 map.on('click', click);
 </script>

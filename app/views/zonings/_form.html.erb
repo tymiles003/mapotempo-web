@@ -179,7 +179,9 @@ $.ajax({
 <% else %>
   url: '<%= edit_zoning_path(@zoning, format: :json) %>',
 <% end %>
+  beforeSend: beforeSendWaiting,
   success: display_zoning,
+  complete: completeWaiting
 });
 <% end %>
 
