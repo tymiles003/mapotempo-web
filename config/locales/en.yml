@@ -173,6 +173,18 @@ en:
         geocoding_in_progress: "Please wait, geocoding in progress."
     new:
       title: "New destination"
+    import:
+      route: "route"
+      name: "name"
+      street: "street"
+      postalcode: "postalcode"
+      city: "city"
+      lat: "lat"
+      lng: "lng"
+      quantity: "quantity"
+      open: "open"
+      close: "close"
+      tags: "tags"
 
   plannings:
     menu:

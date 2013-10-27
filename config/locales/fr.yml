@@ -173,6 +173,18 @@ fr:
         geocoding_in_progress: "Géocodage en cours, merci de patienter."
     new:
       title: "Nouveau client"
+    import_file:
+      route: "tournée"
+      name: "nom"
+      street: "rue"
+      postalcode: "code postal"
+      city: "ville"
+      lat: "lat"
+      lng: "lng"
+      quantity: "quantié"
+      open: "ouverture"
+      close: "fermeture"
+      tags: "libellé"
 
   plannings:
     menu:

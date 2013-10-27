@@ -33,7 +33,26 @@ class Importer
         customer.destinations.destroy_all
       end
 
+      columns = {
+        'route' => I18n.t('destinations.import_file.route'),
+        'name' => I18n.t('destinations.import_file.name'),
+        'street' => I18n.t('destinations.import_file.street'),
+        'postalcode' => I18n.t('destinations.import_file.postalcode'),
+        'city' => I18n.t('destinations.import_file.city'),
+        'lat' => I18n.t('destinations.import_file.lat'),
+        'lng' => I18n.t('destinations.import_file.lng'),
+        'tags' => I18n.t('destinations.import_file.tags')
+      }
       CSV.foreach(file, col_sep: separator, headers: true) { |row|
+        # Switch from locale to internal column name
+        r = {}
+        columns.each{ |k,v|
+          if row.key?(v) && row[v]
+            r[k] = row[v]
+          end
+        }
+        row = r
+
         r = row.to_hash.select{ |k|
           ["name", "street", "postalcode", "city", "lat", "lng"].include?(k)
         }
