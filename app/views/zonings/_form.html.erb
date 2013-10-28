@@ -117,7 +117,7 @@ function add_zone(zone, geom) {
     formatSelection: format,
     escapeMarkup: function(m) { return m; },
     allow_single_deselect: true,
-    no_results_text: '<%= t 'all.select2.empty_result' %>',
+    no_results_text: I18n.t('web.select2.empty_result'),
     width: '100%'
   });
 

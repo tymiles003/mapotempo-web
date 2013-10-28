@@ -167,7 +167,6 @@ en:
     index:
       title: "Listing destinations"
       new: "New Destination"
-      default_name: "New Destination"
       dialog:
         title: "Geocoding"
         geocoding_in_progress: "Please wait, geocoding in progress."
@@ -268,10 +267,15 @@ en:
     new:
       title: "New zoning"
 
-  all:
-    osm_attribution_html: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{layer_attribution}"
+  web:
+    destinations:
+      index:
+        default_name: "New Destination"
     select2:
       empty_result: "No results matched"
+
+  all:
+    osm_attribution_html: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{layer_attribution}"
     verb:
       new: "New"
       list: "List"

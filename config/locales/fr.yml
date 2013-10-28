@@ -167,7 +167,6 @@ fr:
     index:
       title: "Liste clients"
       new: "Nouveau client"
-      default_name: "Nouveau client"
       dialog:
         title: "Géocodage"
         geocoding_in_progress: "Géocodage en cours, merci de patienter."
@@ -268,10 +267,15 @@ fr:
     new:
       title: "Nouveau zonage"
 
-  all:
-    osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"
+  web:
+    destinations:
+      index:
+        default_name: "Nouveau client"
     select2:
       empty_result: "Pas de résultats"
+
+  all:
+    osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"
     verb:
       new: "Nouveau"
       list: "Liste"

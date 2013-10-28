@@ -108,7 +108,7 @@ function wire(row) {
 
   $(':input[name=tags\\[\\]]', row).select2({
     allow_single_deselect: true,
-    no_results_text: '<%= t 'all.select2.empty_result' %>',
+    no_results_text: I18n.t('web.select2.empty_result'),
     widht: '100%'
   });
 
@@ -215,7 +215,7 @@ $("#add").click(function(event) {
   var id = 0;
   var destination = {
     id: id,
-    name: "<%= t '.default_name' %>",
+    name: I18n.t('web.destinations.index.default_name'),
     street: "<%= current_user.customer.store.street %>",
     postalcode: "<%= current_user.customer.store.postalcode %>",
     city: "<%= current_user.customer.store.city %>",
