@@ -16,12 +16,12 @@
 <% end %>
 
 <script>
-var map = L.map('map').setView([<%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>], 13);
-
-L.tileLayer('<%= current_user.layer.url %>', {
-  maxZoom: 18,
-  attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
-}).addTo(map);
+var map = addMap(
+    '<%= current_user.layer.url %>',
+    <%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>,
+    13,
+    '<%= j t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
+);
 
 var markersLayers = L.layerGroup();
 

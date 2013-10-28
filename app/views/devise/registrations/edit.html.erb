@@ -35,17 +35,18 @@ var layers = {
   <%= layer.id %>: {url:"<%= j layer.url %>", attribution: "<%= j layer.attribution %>"},
 <% } %>
 };
-var map = L.map('map').setView([<%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>], 13);
-var layer = L.layerGroup();
 
-var layer = L.tileLayer('<%= @user.layer.url %>', {
-  maxZoom: 18,
-  attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
-})
-layer.addTo(map);
+var map = addMap(
+    '<%= current_user.layer.url %>',
+    <%= current_user.customer.store.lat %>, <%= current_user.customer.store.lng %>,
+    13,
+    '<%= j t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
+);
 
 $('[name=user\\[layer_id\\]]').change(function(event){
-  map.removeLayer(layer);
+  map.eachLayer(function(layer) {
+    map.removeLayer(layer);
+  });
   map.addLayer(
     layer = L.tileLayer(layers[event.target.value].url, {
     maxZoom: 18,

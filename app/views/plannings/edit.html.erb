@@ -17,7 +17,15 @@
 </div>
 
 <script>
-var map = L.map('map').setView([<%= @planning.customer.store.lat %>, <%= @planning.customer.store.lng %>], 13);
+var planning_id = <%= @planning.id %>;
+
+var map = addMap(
+    '<%= current_user.layer.url %>',
+    <%= @planning.customer.store.lat %>, <%= @planning.customer.store.lng %>,
+    13,
+    '<%= j t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
+);
+
 var layers = {};
 var layer_zoning;
 <% @planning.routes.each{ |route| %>
@@ -34,12 +42,6 @@ var vehicles_map = {
   <%= vehicle.id %>: {'id':<%= vehicle.id %>,'name':'<%= vehicle.name %>','color':'<%= vehicle.color %>'},
 <% } %>
 };
-
-L.tileLayer('<%= current_user.layer.url %>', {
-  maxZoom: 18,
-  attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
-}).addTo(map);
-
 
 function display_zoning(zoning) {
   if(layer_zoning) {
@@ -60,7 +62,7 @@ $("#planning_zoning_id").change(function() {
   var id = $(this).val();
   if(id) {
     $("#zoning_edit").show();
-    $("#zoning_edit").attr("href", "/zonings/"+id+"/edit/planning/"+<%= @planning.id %>);
+    $("#zoning_edit").attr("href", "/zonings/"+id+"/edit/planning/"+planning_id);
     $.ajax({
       type: "get",
       url: "/zonings/"+id+".json",
@@ -98,7 +100,7 @@ function update_planning(event, ui) {
     type: "patch",
     data: JSON.stringify(data),
     contentType: 'application/json',
-    url: '<%= planning_move_path(@planning, format: :json) %>',
+    url: '/plannings/'+planning_id+'/move.json',
     beforeSend: beforeSendWaiting,
     success: display_planning,
     complete: completeWaiting
@@ -115,7 +117,7 @@ function display_planning(data) {
     $("#dialog-matrix .progress-bar").css("width", ""+data.matrix+"%");
     setTimeout(function() {
       $.ajax({
-        url: '<%= polymorphic_path(@planning, format: :json) %>',
+        url: '/plannings/'+planning_id+'.json',
         success: display_planning
        });
     }, 2000);
@@ -128,7 +130,7 @@ function display_planning(data) {
     $("#dialog-optimizer .progress-bar").css("width", ""+data.optimizer+"%");
     setTimeout(function() {
       $.ajax({
-        url: '<%= polymorphic_path(@planning, format: :json) %>',
+        url: '/plannings/'+planning_id+'.json',
         success: display_planning
        });
     }, 2000);
@@ -147,7 +149,7 @@ function display_planning(data) {
       type: "patch",
       data: JSON.stringify({stop: {active: active}}),
       contentType: 'application/json',
-      url: '/plannings/<%= @planning.id %>/'+route_id+'/'+destination_id+'.json',
+      url: '/plannings/'+planning_id+'/'+route_id+'/'+destination_id+'.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting
@@ -210,7 +212,7 @@ function display_planning(data) {
         vehicle_id: $(this).val()
       }),
       contentType: 'application/json',
-      url: '<%= planning_switch_path(@planning, format: :json) %>',
+      url: '/plannings/'+planning_id+'/switch.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting
@@ -234,7 +236,7 @@ function display_planning(data) {
   $("#refresh").click(function(event, ui) {
     $.ajax({
       type: "get",
-      url: '<%= planning_refresh_path(@planning, format: :json) %>',
+      url: '/plannings/'+planning_id+'/refresh.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting
@@ -286,7 +288,7 @@ function display_planning(data) {
     var id = $(this).closest("[data-route_id]").attr("data-route_id");
     $.ajax({
       type: "get",
-      url: '/plannings/<%= @planning.id %>/'+id+'/optimize.json',
+      url: '/plannings/'+planning_id+'/'+id+'/optimize.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting
@@ -295,7 +297,7 @@ function display_planning(data) {
 }
 
 $.ajax({
-  url: '<%= polymorphic_path(@planning, format: :json) %>',
+  url: '/plannings/'+planning_id+'.json',
   beforeSend: beforeSendWaiting,
   success: display_planning,
   complete: completeWaiting

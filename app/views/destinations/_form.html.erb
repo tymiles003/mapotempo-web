@@ -54,7 +54,13 @@
 <% end %>
 
 <script>
-var map = L.map('map').setView([<%= @destination.lat %>, <%= @destination.lng %>], 13);
+var map = addMap(
+    '<%= current_user.layer.url %>',
+    <%= @destination.lat %>, <%= @destination.lng %>,
+    13,
+    '<%= j t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
+);
+
 var layer = L.layerGroup();
 var marker;
 
@@ -152,11 +158,6 @@ function click(mouseEvent) {
 map.on('click', click);
 
 wire($("form"));
-
-L.tileLayer('<%= current_user.layer.url %>', {
-  maxZoom: 18,
-  attribution: '<%= t 'all.osm_attribution_html', layer_attribution: current_user.layer.attribution %>'
-}).addTo(map);
 
 marker = L.marker(new L.LatLng(<%= @destination.lat || current_user.customer.store.lat %>, <%= @destination.lng || current_user.customer.store.lng %>), {
   icon: new L.Icon.Default(),
