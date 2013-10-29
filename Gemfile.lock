@@ -22,6 +22,14 @@ GIT
     leaflet-draw-rails (0.0.1)
 
 GIT
+  remote: git://github.com/frodrigo/paloma.git
+  revision: 3a92dfc6b7d8d864d3a1f3955d05d1261ecec214
+  branch: 3.0
+  specs:
+    paloma (3.0.1)
+      jquery-rails
+
+GIT
   remote: git://github.com/milgner/compass-rails.git
   revision: c86e7fd9c2605c80816a2f64a3fb8b7c3a09e494
   branch: rails4
@@ -253,6 +261,7 @@ DEPENDENCIES
   leaflet-markercluster-rails
   leaflet-rails!
   mustache
+  paloma!
   pg
   rails (= 4.0.0)
   rails-i18n

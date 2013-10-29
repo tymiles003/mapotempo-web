@@ -10,6 +10,23 @@ class DestinationsController < ApplicationController
   def index
     @destinations = Destination.where(customer_id: current_user.customer.id)
     @tags = current_user.customer.tags
+
+    respond_to do |format|
+      format.html do
+        js(
+          map_layer_url: current_user.layer.url,
+          map_lat: current_user.customer.store.lat,
+          map_lng: current_user.customer.store.lng,
+          map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution),
+          default_street: current_user.customer.store.street,
+          default_postalcode: current_user.customer.store.postalcode,
+          default_city: current_user.customer.store.city,
+          default_lat: current_user.customer.store.lat,
+          default_lng: current_user.customer.store.lng
+        )
+      end
+      format.json
+    end
   end
 
   # GET /destinations/1
@@ -21,10 +38,37 @@ class DestinationsController < ApplicationController
   def new
     @destination = current_user.customer.store.dup
     @destination.name = ""
+
+    respond_to do |format|
+      format.html do
+        js(
+          destination_id: @destination.id || 0,
+          destination_lat: @destination.lat || current_user.customer.store.lat,
+          destination_lng: @destination.lng || current_user.customer.store.lng,
+          map_layer_url: current_user.layer.url,
+          map_lat: current_user.customer.store.lat,
+          map_lng: current_user.customer.store.lng,
+          map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution)
+        )
+      end
+    end
   end
 
   # GET /destinations/1/edit
   def edit
+    respond_to do |format|
+      format.html do
+        js(
+          destination_id: @destination.id || 0,
+          destination_lat: @destination.lat || current_user.customer.store.lat,
+          destination_lng: @destination.lng || current_user.customer.store.lng,
+          map_layer_url: current_user.layer.url,
+          map_lat: current_user.customer.store.lat,
+          map_lng: current_user.customer.store.lng,
+          map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution)
+        )
+      end
+    end
   end
 
   # POST /destinations

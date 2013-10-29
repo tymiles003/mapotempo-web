@@ -10,13 +10,6 @@
       <%= select_tag 'tags[]', options_from_collection_for_select(current_user.customer.tags, :id, :label), multiple: true %>
       <span class="input-group-addon input-sm"><i class="icon-tags"></i></span>
     </span>
-    <script>
-$('[name=tags\\[\\]]').select2({
-  allow_single_deselect: true,
-  no_results_text: I18n.t('web.select2.empty_result'),
-  width: '100%'
-});
-    </script>
   </div>
   <div class="row">
     <%= f.label :zoning, class:"col-lg-2 control-label" %>

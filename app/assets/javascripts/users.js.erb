@@ -1,0 +1,24 @@
+Paloma.controller('Registration').prototype.edit = function () {
+
+  var map_layer_url = this.params['map_layer_url'];
+  var map_lat = this.params['map_lat'];
+  var map_lng = this.params['map_lng'];
+  var map_attribution = this.params['map_attribution'];
+  var layers = this.params['layers'];
+
+  var map = L.map('map').setView([map_lat, map_lng], 13);
+  var layer = L.tileLayer(map_layer_url, {
+    maxZoom: 18,
+    attribution: map_attribution
+  }).addTo(map);
+
+  $('[name=user\\[layer_id\\]]').change(function (event) {
+    map.removeLayer(layer);
+    map.addLayer(
+      layer = L.tileLayer(layers[event.target.value].url, {
+        maxZoom: 18,
+        attribution: '<%= I18n.t 'all.osm_attribution_html', layer_attribution: '' %>'+layers[event.target.value].attribution
+      }));
+    layer.addTo(map);
+  });
+};

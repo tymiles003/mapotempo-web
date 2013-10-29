@@ -28,5 +28,6 @@
 //= require leaflet.draw
 //= require mustache
 //= require select2
-//= require_tree .
 //= require_tree ../../templates
+//= require paloma
+//= require_tree .

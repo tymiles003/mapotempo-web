@@ -1,0 +1,177 @@
+Paloma.controller('Zoning').prototype.edit = function () {
+
+  var zoning_id = this.params['zoning_id'];
+  var planning_id = this.params['planning_id'];
+  var map_layer_url = this.params['map_layer_url'];
+  var map_lat = this.params['map_lat'];
+  var map_lng = this.params['map_lng'];
+  var map_attribution = this.params['map_attribution'];
+  var vehicles_array = this.params['vehicles_array'];
+  var vehicles_map = this.params['vehicles_map'];
+
+  var map = L.map('map').setView([map_lat, map_lng], 13);
+  L.tileLayer(map_layer_url, {
+    maxZoom: 18,
+    attribution: map_attribution
+  }).addTo(map);
+
+  var markersLayers = L.layerGroup();
+
+  var cluster = new L.MarkerClusterGroup({
+    showCoverageOnHover: false
+  });
+  map.addLayer(cluster);
+
+  map.on('zoomend ', function (e) {
+    if (map.getZoom() > 12) {
+      map.removeLayer(cluster);
+      map.addLayer(markersLayers);
+    } else {
+      map.removeLayer(markersLayers);
+      map.addLayer(cluster);
+    }
+  });
+
+  var zone_map = {};
+
+  var featureGroup = L.featureGroup().addTo(map);
+
+  var drawControl = new L.Control.Draw({
+    draw: {
+      polyline: false,
+      polygon: {
+        allowIntersection: false, // Restricts shapes to simple polygons
+        drawError: {
+          color: '#e1e100', // Color the shape will turn when intersects
+          message: '<strong>Oh snap!<strong> you can\'t draw that!' // Message that will show when intersect
+        },
+        shapeOptions: {
+          color: '#000000'
+        }
+      },
+      rectangle: false,
+      circle: false,
+      marker: false
+    },
+    edit: {
+      featureGroup: featureGroup
+    }
+  }).addTo(map);
+
+  map.on('draw:created', function (e) {
+    add_zone({
+      'vehicles': vehicles_array,
+      'polygon': JSON.stringify(e.layer.toGeoJSON())
+    }, e.layer);
+  });
+
+  map.on('draw:edited', function (e) {
+    e.layers.eachLayer(function (layer) {
+      update_zone(layer);
+    });
+  });
+
+  map.on('draw:deleted', function (e) {
+    e.layers.eachLayer(function (layer) {
+      del_zone(layer);
+    });
+  });
+
+  function set_color(polygon, vehicles) {
+    var vehicles = $.grep(vehicles, function (vehicle, index) {
+      return vehicle.selected;
+    });
+    polygon.setStyle({
+      color: (vehicles.length > 0 ? vehicles_map[vehicles[0].id].color : '#000000')
+    });
+  }
+
+  function format(state) {
+    return "<div class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
+  }
+
+  function add_zone(zone, geom) {
+    featureGroup.addLayer(geom);
+
+    $('#zones').append(SMT['zones/show'](zone))
+    var ele = $('#zones .zone:last')
+    ele.data('feature', zone);
+    zone_map[geom._leaflet_id] = ele;
+
+    $('select', ele).select2({
+      formatResult: format,
+      formatSelection: format,
+      escapeMarkup: function (m) {
+        return m;
+      },
+      allow_single_deselect: true,
+      no_results_text: I18n.t('web.select2.empty_result'),
+      width: '100%'
+    });
+
+    $('select', ele).change(function (e) {
+      if (e.added) {
+        $.each($('#zones .zone select option[value=' + e.added.id + ']'), function (index, option) {
+          option = $(option);
+          var select = option.closest('select');
+          var ee = option.closest('.zone');
+          if (!ee.is(ele)) {
+            option.prop('selected', false);
+            select.trigger("change");
+          }
+        });
+      }
+      var val = e.val ? e.val : e.target.value;
+      geom.setStyle({
+        color: (val.length > 0 ? vehicles_map[val[0]].color : '#000000')
+      });
+    });
+
+    $('.delete', ele).click(function (event) {
+      featureGroup.removeLayer(geom);
+      ele.remove();
+    });
+  }
+
+  function del_zone(geom) {
+    zone_map[geom._leaflet_id].remove();
+  }
+
+  function update_zone(geom) {
+    $('input[type=hidden]', zone_map[geom._leaflet_id]).attr('value', JSON.stringify(geom.toGeoJSON()));
+  }
+
+  function display_zoning(data) {
+    $.each(data.zoning, function (index, zone) {
+      var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
+      set_color(geom, zone.vehicles);
+      add_zone(zone, geom);
+    });
+    if (data.planning) {
+      $.each(data.planning, function (index, route) {
+        $.each(route, function (index, stop) {
+          if (stop.lat && stop.lng) {
+            var options = {};
+            if (!stop.active) {
+              options = {
+                icon: L.icon({
+                  iconUrl: '<%= asset_path("marker-000000.svg") %>'
+                })
+              }
+            }
+            L.marker(new L.LatLng(stop.lat, stop.lng), options).addTo(markersLayers).addTo(cluster);
+          }
+        });
+      });
+    }
+  }
+
+  if (zoning_id) {
+    $.ajax({
+      url: planning_id ? '/zonings/' + zoning_id + '/edit/planning/' + planning_id + '.json' : '/zonings/' + zoning_id + '/edit.json',
+      beforeSend: beforeSendWaiting,
+      success: display_zoning,
+      complete: completeWaiting
+    });
+  }
+};

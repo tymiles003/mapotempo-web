@@ -29,6 +29,25 @@ class PlanningsController < ApplicationController
 
   # GET /plannings/1/edit
   def edit
+    respond_to do |format|
+      format.html do
+        js(
+          planning_id: @planning.id,
+          zoning_id: @planning.zoning ? @planning.zoning.id : nil,
+          map_layer_url: current_user.layer.url,
+          map_lat: current_user.customer.store.lat,
+          map_lng: current_user.customer.store.lng,
+          map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution),
+          routes_id: @planning.routes.collect{ |route| route.id },
+          vehicles_array: current_user.customer.vehicles.collect{ |vehicle|
+            {id: vehicle.id, name: vehicle.name, color: vehicle.color}
+          },
+          vehicles_map: Hash[current_user.customer.vehicles.collect{ |vehicle|
+            [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color}]
+          }]
+        )
+      end
+    end
   end
 
   # POST /plannings

@@ -36,20 +36,7 @@
   </div>
   <div class="row">
     <%= f.label :color, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.text_field :color, class:"form-control simple_color" %>
-<script>
-$('.simple_color').simpleColor({
-    cellWidth: 40,
-    cellHeight: 40,
-    border: '1px solid #CCCCCC',
-    buttonClass: 'button',
-    boxWidth: '100%',
-    boxHeight: 40,
-    colors: ["<%= Vehicle.colors_table.join('", "').html_safe %>"],
-    columns: <%= Vehicle.colors_table.size %>
-});
-</script>
-    </span>
+    <span class="col-lg-4"><%= f.text_field :color, class:"form-control simple_color" %></span>
   </div>
   <div class="row">
     <div class="col-lg-offset-2">

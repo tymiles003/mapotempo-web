@@ -1,0 +1,342 @@
+//= require leaflet_numbered_markers
+//= require Polyline.encoded.js
+
+function plannings_form() {
+$('[name=tags\\[\\]]').select2({
+  allow_single_deselect: true,
+  no_results_text: I18n.t('web.select2.empty_result'),
+  width: '100%'
+});
+}
+
+Paloma.controller('Planning').prototype.new = function () {
+  plannings_form();
+};
+
+Paloma.controller('Planning').prototype.edit = function () {
+  plannings_form();
+
+  var planning_id = this.params['planning_id'];
+  var zoning_id = this.params['zoning_id'];
+  var map_layer_url = this.params['map_layer_url'];
+  var map_lat = this.params['map_lat'];
+  var map_lng = this.params['map_lng'];
+  var map_attribution = this.params['map_attribution'];
+  var routes_id = this.params['routes_id'];
+  var vehicles_array = this.params['vehicles_array'];
+  var vehicles_map = this.params['vehicles_map'];
+
+  var map = L.map('map').setView([map_lat, map_lng], 13);
+  L.tileLayer(map_layer_url, {
+    maxZoom: 18,
+    attribution: map_attribution
+  }).addTo(map);
+
+  var layer_zoning;
+  var markers = {};
+  var layers = {};
+  $.each(routes_id, function(i, id) {
+    layers[id] = L.layerGroup();
+  });
+
+  function display_zoning(zoning) {
+    if (layer_zoning) {
+      map.removeLayer(layer_zoning);
+    }
+    layer_zoning = new L.LayerGroup();
+    $.each(zoning.zones, function (index, zone) {
+      var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
+      geom.setStyle({
+        color: (zone.vehicles.length > 0 ? vehicles_map[zone.vehicles[0].id].color : '#000000')
+      });
+      geom.addTo(layer_zoning);
+    });
+    layer_zoning.addTo(map);
+  }
+
+  $("#planning_zoning_id").change(function () {
+    var id = $(this).val();
+    if (id) {
+      $("#zoning_edit").show();
+      $("#zoning_edit").attr("href", "/zonings/" + id + "/edit/planning/" + planning_id);
+      $.ajax({
+        type: "get",
+        url: "/zonings/" + id + ".json",
+        beforeSend: beforeSendWaiting,
+        success: display_zoning,
+        complete: completeWaiting
+      });
+    } else {
+      $("#zoning_edit").hide();
+      map.removeLayer(layer_zoning);
+      layer_zoning = null;
+    }
+  });
+
+  function update_planning(event, ui) {
+    var data = $('#planning > ol > li').map(function () {
+      return {
+        'route': $(this).attr("data-route_id"),
+        'destinations': $('li[data-destination_id]', $(this)).map(function () {
+          return {
+            'id': parseInt($(this).attr("data-destination_id")),
+            'active': $('input', $(this)).is(':checked')
+          };
+        }).get()
+      };
+    }).get();
+    $.ajax({
+      type: "patch",
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      url: '/plannings/' + planning_id + '/move.json',
+      beforeSend: beforeSendWaiting,
+      success: display_planning,
+      complete: completeWaiting
+    });
+  }
+
+  function display_planning(data) {
+    if ($("#dialog-matrix").size() == 0) {
+      return; // Avoid render and loop with turbolink when page is over
+    }
+    if (typeof data.matrix != 'undefined') {
+      $("#dialog-matrix").dialog("open");
+      $("#dialog-matrix .progress-bar").css("width", "" + data.matrix + "%");
+      setTimeout(function () {
+        $.ajax({
+          url: '/plannings/' + planning_id + '.json',
+          success: display_planning
+        });
+      }, 2000);
+      return;
+    } else {
+      $("#dialog-matrix").dialog("close");
+    }
+    if (typeof data.optimizer != 'undefined') {
+      $("#dialog-optimizer").dialog("open");
+      $("#dialog-optimizer .progress-bar").css("width", "" + data.optimizer + "%");
+      setTimeout(function () {
+        $.ajax({
+          url: '/plannings/' + planning_id + '.json',
+          success: display_planning
+        });
+      }, 2000);
+      return;
+    } else {
+      $("#dialog-optimizer").dialog("close");
+    }
+
+    $("#planning").html(SMT['plannings/edit'](data));
+
+    $("#planning input:checkbox").change(function (event, ui) {
+      var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
+      var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+      var active = $(this).is(':checked');
+      $.ajax({
+        type: "patch",
+        data: JSON.stringify({
+          stop: {
+            active: active
+          }
+        }),
+        contentType: 'application/json',
+        url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '.json',
+        beforeSend: beforeSendWaiting,
+        success: display_planning,
+        complete: completeWaiting
+      });
+    });
+
+    var store_marker = L.marker(new L.LatLng(data.store.lat, data.store.lng), {
+      icon: L.icon({
+        iconUrl: data.store.icon,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16]
+      })
+    });
+    store_marker.addTo(map);
+
+    $(".vehicle_select").select2({
+      data: {
+        results: vehicles_array,
+        text: 'name'
+      },
+      formatSelection: function (item) {
+        return item.name;
+      },
+      formatResult: function (item) {
+        return item.name;
+      }
+    });
+
+    $.each(data.routes, function (i, route) {
+      map.removeLayer(layers[route.route_id]);
+      layers[route.route_id] = L.layerGroup();
+      if (!route.hidden) {
+        layers[route.route_id].addTo(map);
+      }
+
+      var color;
+      if (route.vehicle) {
+        $(".route[data-route_id=" + route.route_id + "] .vehicle_select").val(route.vehicle.id).trigger("change");
+        color = route.vehicle.color;
+      }
+
+      $.each(route.stops, function (index, stop) {
+        if (stop.trace) {
+          var polyline = new L.Polyline(L.PolylineUtil.decode(stop.trace, 6));
+          L.polyline(polyline.getLatLngs(), {
+            color: color
+          }).addTo(layers[route.route_id]);
+        }
+        if (stop.destination.lat && stop.destination.lng) {
+          if (stop.is_store) {
+            markers[stop.destination.id] = store_marker;
+          } else {
+            markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+              icon: new L.NumberedDivIcon({
+                number: index,
+                iconUrl: color ? route.icon : '<%= asset_path("marker-000000.svg") %>',
+              }),
+            }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
+          }
+        }
+      });
+    });
+
+    $(".vehicle_select").change(function () {
+      $.ajax({
+        type: "patch",
+        data: JSON.stringify({
+          route_id: $(this).closest("[data-route_id]").attr("data-route_id"),
+          vehicle_id: $(this).val()
+        }),
+        contentType: 'application/json',
+        url: '/plannings/' + planning_id + '/switch.json',
+        beforeSend: beforeSendWaiting,
+        success: display_planning,
+        complete: completeWaiting
+      });
+    });
+
+    $("#out_of_road").sortable({
+      connectWith: ".sortable",
+      update: update_planning,
+    }).disableSelection();
+
+    var sortableUpdate = false;
+    $(".stops").sortable({
+      connectWith: ".sortable",
+      items: "li.waypoint",
+      start: function (event, ui) {
+        sortableUpdate = false;
+      },
+      update: function (event, ui) {
+        sortableUpdate = true;
+      },
+      stop: function (event, ui) {
+        if (sortableUpdate) {
+          update_planning(event, ui);
+        }
+      }
+    }).disableSelection();
+
+    $("#refresh").click(function (event, ui) {
+      $.ajax({
+        type: "get",
+        url: '/plannings/' + planning_id + '/refresh.json',
+        beforeSend: beforeSendWaiting,
+        success: display_planning,
+        complete: completeWaiting
+      });
+    });
+
+    $(".toggle").click(function (event, ui) {
+      var id = $(this).closest("[data-route_id]").attr("data-route_id");
+      var li = $("ul.stops, ol.stops", $(this).closest("li"));
+      li.toggle();
+      var hidden = !li.is(":visible");
+      $.ajax({
+        type: "patch",
+        data: JSON.stringify({
+          route: {
+            hidden: hidden
+          }
+        }),
+        contentType: 'application/json',
+        url: '/routes/' + id + '.json'
+      });
+
+      if (hidden) {
+        map.removeLayer(layers[id]);
+      } else {
+        layers[id].addTo(map);
+      }
+    });
+
+    $(".lock").click(function (event, ui) {
+      var id = $(this).closest("[data-route_id]").attr("data-route_id");
+      var i = $("i", this);
+      i.toggleClass("icon-lock");
+      i.toggleClass("icon-unlock");
+      var locked = i.hasClass("icon-lock");
+      $.ajax({
+        type: "patch",
+        data: JSON.stringify({
+          route: {
+            locked: locked
+          }
+        }),
+        contentType: 'application/json',
+        url: '/routes/' + id + '.json'
+      });
+    });
+
+    $(".marker").click(function (event, ui) {
+      var id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+      if (id in markers) {
+        map.setView(markers[id].getLatLng(), 16);
+      }
+      return false;
+    });
+
+    $(".optimize").click(function (event, ui) {
+      var id = $(this).closest("[data-route_id]").attr("data-route_id");
+      $.ajax({
+        type: "get",
+        url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
+        beforeSend: beforeSendWaiting,
+        success: display_planning,
+        complete: completeWaiting
+      });
+    });
+  }
+
+  $.ajax({
+    url: '/plannings/' + planning_id + '.json',
+    beforeSend: beforeSendWaiting,
+    success: display_planning,
+    complete: completeWaiting
+  });
+
+  if (zoning_id) {
+    $.ajax({
+      type: "get",
+      url: "/zonings/" + zoning_id + ".json",
+      beforeSend: beforeSendWaiting,
+      success: display_zoning,
+      complete: completeWaiting
+    });
+  }
+
+  $("#dialog-matrix").dialog({
+    autoOpen: false,
+    modal: true
+  });
+
+  $("#dialog-optimizer").dialog({
+    autoOpen: false,
+    modal: true
+  });
+};
