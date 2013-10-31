@@ -237,9 +237,9 @@ Paloma.controller('Destination').prototype.index = function () {
       $('.leaflet-container').css('cursor', 'crosshair');
     });
 
+    var formatNoMatches = I18n.t('web.select2.empty_result');
     $(':input[name=tags\\[\\]]', row).select2({
-      allow_single_deselect: true,
-      no_results_text: I18n.t('web.select2.empty_result'),
+      formatNoMatches: function() { return formatNoMatches; },
       widht: '100%'
     });
 

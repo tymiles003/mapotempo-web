@@ -94,14 +94,14 @@ Paloma.controller('Zoning').prototype.edit = function () {
     ele.data('feature', zone);
     zone_map[geom._leaflet_id] = ele;
 
+    var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select', ele).select2({
       formatResult: format,
       formatSelection: format,
+      formatNoMatches: function() { return formatNoMatches; },
       escapeMarkup: function (m) {
         return m;
       },
-      allow_single_deselect: true,
-      no_results_text: I18n.t('web.select2.empty_result'),
       width: '100%'
     });
 
