@@ -22,6 +22,12 @@ GIT
     leaflet-draw-rails (0.0.1)
 
 GIT
+  remote: git://github.com/frodrigo/leaflet_numbered_markers-rails.git
+  revision: 1f88c5329c3d5a4c866ceb4f7100a96a2a71a51a
+  specs:
+    leaflet_numbered_markers-rails (0.0.1)
+
+GIT
   remote: git://github.com/frodrigo/paloma.git
   revision: 3a92dfc6b7d8d864d3a1f3955d05d1261ecec214
   branch: 3.0
@@ -260,6 +266,7 @@ DEPENDENCIES
   leaflet-draw-rails!
   leaflet-markercluster-rails
   leaflet-rails!
+  leaflet_numbered_markers-rails!
   mustache
   paloma!
   pg
