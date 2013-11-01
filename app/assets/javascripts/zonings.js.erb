@@ -1,13 +1,13 @@
-Paloma.controller('Zoning').prototype.edit = function () {
+function zonings_edit(params) {
 
-  var zoning_id = this.params['zoning_id'];
-  var planning_id = this.params['planning_id'];
-  var map_layer_url = this.params['map_layer_url'];
-  var map_lat = this.params['map_lat'];
-  var map_lng = this.params['map_lng'];
-  var map_attribution = this.params['map_attribution'];
-  var vehicles_array = this.params['vehicles_array'];
-  var vehicles_map = this.params['vehicles_map'];
+  var zoning_id = params['zoning_id'];
+  var planning_id = params['planning_id'];
+  var map_layer_url = params['map_layer_url'];
+  var map_lat = params['map_lat'];
+  var map_lng = params['map_lng'];
+  var map_attribution = params['map_attribution'];
+  var vehicles_array = params['vehicles_array'];
+  var vehicles_map = params['vehicles_map'];
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -170,4 +170,20 @@ Paloma.controller('Zoning').prototype.edit = function () {
       complete: completeWaiting
     });
   }
+}
+
+Paloma.controller('Zoning').prototype.new = function () {
+  zonings_edit(this.params);
+};
+
+Paloma.controller('Zoning').prototype.create = function () {
+  zonings_edit(this.params);
+};
+
+Paloma.controller('Zoning').prototype.edit = function () {
+  zonings_edit(this.params);
+};
+
+Paloma.controller('Zoning').prototype.update = function () {
+  zonings_edit(this.params);
 };

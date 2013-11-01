@@ -120,12 +120,28 @@ function destinations_form(params) {
   });
 }
 
+function destinations_new(params) {
+  destinations_form(params);
+}
+
+function destinations_edit(params) {
+  destinations_form(params);
+}
+
 Paloma.controller('Destination').prototype.new = function () {
-  destinations_form(this.params);
+  destinations_new(this.params);
+};
+
+Paloma.controller('Destination').prototype.create = function () {
+  destinations_new(this.params);
 };
 
 Paloma.controller('Destination').prototype.edit = function () {
-  destinations_form(this.params);
+  destinations_edit(this.params);
+};
+
+Paloma.controller('Destination').prototype.update = function () {
+  destinations_edit(this.params);
 };
 
 Paloma.controller('Destination').prototype.import = function () {

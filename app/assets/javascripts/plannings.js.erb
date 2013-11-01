@@ -9,22 +9,22 @@ function plannings_form() {
   });
 }
 
-Paloma.controller('Planning').prototype.new = function () {
+function plannings_new(params) {
   plannings_form();
-};
+}
 
-Paloma.controller('Planning').prototype.edit = function () {
+function plannings_edit(params) {
   plannings_form();
 
-  var planning_id = this.params['planning_id'];
-  var zoning_id = this.params['zoning_id'];
-  var map_layer_url = this.params['map_layer_url'];
-  var map_lat = this.params['map_lat'];
-  var map_lng = this.params['map_lng'];
-  var map_attribution = this.params['map_attribution'];
-  var routes_id = this.params['routes_id'];
-  var vehicles_array = this.params['vehicles_array'];
-  var vehicles_map = this.params['vehicles_map'];
+  var planning_id = params['planning_id'];
+  var zoning_id = params['zoning_id'];
+  var map_layer_url = params['map_layer_url'];
+  var map_lat = params['map_lat'];
+  var map_lng = params['map_lng'];
+  var map_attribution = params['map_attribution'];
+  var routes_id = params['routes_id'];
+  var vehicles_array = params['vehicles_array'];
+  var vehicles_map = params['vehicles_map'];
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -341,4 +341,20 @@ Paloma.controller('Planning').prototype.edit = function () {
     autoOpen: false,
     modal: true
   });
+}
+
+Paloma.controller('Planning').prototype.new = function () {
+  plannings_new(this.params);
+};
+
+Paloma.controller('Planning').prototype.create = function () {
+  plannings_new(this.params);
+};
+
+Paloma.controller('Planning').prototype.edit = function () {
+  plannings_edit(this.params);
+};
+
+Paloma.controller('Planning').prototype.update = function () {
+  plannings_edit(this.params);
 };

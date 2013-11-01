@@ -52,3 +52,14 @@
     </div>
   </div>
 <% end %>
+<%
+controller.js(
+  destination_id: @destination.id || 0,
+  destination_lat: @destination.lat || current_user.customer.store.lat,
+  destination_lng: @destination.lng || current_user.customer.store.lng,
+  map_layer_url: current_user.layer.url,
+  map_lat: current_user.customer.store.lat,
+  map_lng: current_user.customer.store.lng,
+  map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution)
+)
+%>

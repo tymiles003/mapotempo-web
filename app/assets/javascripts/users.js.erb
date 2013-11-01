@@ -1,10 +1,9 @@
-Paloma.controller('Registration').prototype.edit = function () {
-
-  var map_layer_url = this.params['map_layer_url'];
-  var map_lat = this.params['map_lat'];
-  var map_lng = this.params['map_lng'];
-  var map_attribution = this.params['map_attribution'];
-  var layers = this.params['layers'];
+function user_edit(params) {
+  var map_layer_url = params['map_layer_url'];
+  var map_lat = params['map_lat'];
+  var map_lng = params['map_lng'];
+  var map_attribution = params['map_attribution'];
+  var layers = params['layers'];
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   var layer = L.tileLayer(map_layer_url, {
@@ -21,4 +20,12 @@ Paloma.controller('Registration').prototype.edit = function () {
       }));
     layer.addTo(map);
   });
+}
+
+Paloma.controller('Devise/Registration').prototype.edit = function () {
+  user_edit(this.params);
+};
+
+Paloma.controller('Devise/Registration').prototype.update = function () {
+  user_edit(this.params);
 };

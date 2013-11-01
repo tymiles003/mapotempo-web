@@ -21,25 +21,6 @@ class ZoningsController < ApplicationController
   # GET /zonings/1/edit
   def edit
     @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
-    respond_to do |format|
-      format.html do
-        js(
-          zoning_id: @zoning.id,
-          planning_id: @planning ? @planning.id : nil,
-          map_layer_url: current_user.layer.url,
-          map_lat: current_user.customer.store.lat,
-          map_lng: current_user.customer.store.lng,
-          map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution),
-          vehicles_array: current_user.customer.vehicles.collect{ |vehicle|
-            {id: vehicle.id, name: vehicle.name, color: vehicle.color}
-          },
-          vehicles_map: Hash[current_user.customer.vehicles.collect{ |vehicle|
-            [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color}]
-          }]
-        )
-      end
-      format.json
-    end
   end
 
   # POST /zonings
