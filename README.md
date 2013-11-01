@@ -13,6 +13,8 @@ Install ruby, bundler and some dependencies from system package.
 
 And finally install gem project dependencies with :
 
+    bundle install
+
 # On other systems
 
 Install ruby from system package.
