@@ -172,7 +172,7 @@ en:
         geocoding_in_progress: "Please wait, geocoding in progress."
     new:
       title: "New destination"
-    import:
+    import_file:
       route: "route"
       name: "name"
       street: "street"
@@ -184,6 +184,8 @@ en:
       open: "open"
       close: "close"
       tags: "tags"
+      missing_name_street_city: "\"name\", \"street\" ou \"city\" missing at line %{line}."
+      too_many_errors: "Stop import, too many errors."
 
   plannings:
     menu:

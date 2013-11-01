@@ -158,12 +158,12 @@ class DestinationsController < ApplicationController
     name = params[:upload][:datafile].original_filename.split('.')[0..-2].join('.')
 
     respond_to do |format|
-      if Importer.import(replace, current_user.customer, file, name) and current_user.save
-        format.html { redirect_to :action => 'index' }
-        format.json { render action: 'show', status: :created, location: @destination }
-      else
+      begin
+        Importer.import(replace, current_user.customer, file, name) and current_user.save
+        format.html { redirect_to action: 'index' }
+      rescue StandardError => e
+        flash[:error] = e.message
         format.html { render action: 'import', status: :unprocessable_entity }
-        format.json { render json: current_user.errors, status: :unprocessable_entity }
       end
     end
   end

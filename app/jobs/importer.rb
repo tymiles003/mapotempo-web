@@ -33,6 +33,8 @@ class Importer
         customer.destinations.destroy_all
       end
 
+      line = 1
+      errors = []
       columns = {
         'route' => I18n.t('destinations.import_file.route'),
         'name' => I18n.t('destinations.import_file.name'),
@@ -45,6 +47,12 @@ class Importer
       }
       CSV.foreach(file, col_sep: separator, headers: true) { |row|
         # Switch from locale to internal column name
+        line += 1
+        if errors.length > 10
+          errors << I18n.t('destinations.import_file.too_many_errors')
+          break
+        end
+
         r = {}
         columns.each{ |k,v|
           if row.key?(v) && row[v]
@@ -56,6 +64,11 @@ class Importer
         r = row.to_hash.select{ |k|
           ["name", "street", "postalcode", "city", "lat", "lng"].include?(k)
         }
+        if !r.key?('name') or !r.key?('street') or !r.key?('city')
+          errors << I18n.t('destinations.import_file.missing_name_street_city', line: line)
+          next
+        end
+
         if decimal == ','
           r["lat"].gsub!(',', '.')
           r["lng"].gsub!(',', '.')
@@ -88,6 +101,10 @@ class Importer
 
         customer.destinations << destination
       }
+
+      if errors.length
+        raise errors.join(' ')
+      end
 
       if replace
         if routes.size > 1
