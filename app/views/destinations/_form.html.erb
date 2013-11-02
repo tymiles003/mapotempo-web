@@ -15,6 +15,9 @@
     <%= f.number_field :quantity %>
     <%= f.time_select :open %>
     <%= f.time_select :close %>
+    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, div_class:'input-group col-lg-4', add_on: 'append'} do %>
+      <span class="input-group-addon"><i class="icon-tags"></i></span>
+    <% end %>
   <% end %>
   <input type="hidden" name="live_type" value="false"/>
   <%= f.actions do %>

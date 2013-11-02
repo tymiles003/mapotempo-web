@@ -81,7 +81,7 @@ en:
         quantity: "Quantity"
         open: "Open"
         close: "Close"
-        tags: "Tags"
+        tag_ids: "Tags"
       layer:
         name: "Name"
         url: "URL"
