@@ -68,7 +68,7 @@ function destinations_form(params) {
     });
 
     $('.pointing', row).click(function (event) {
-      pointing = true;
+      pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
       $('.leaflet-container').css('cursor', 'crosshair');
@@ -101,7 +101,7 @@ function destinations_form(params) {
       marker.setLatLng(mouseEvent.latlng);
       sendMove(pointing, mouseEvent.latlng);
       pointing = false;
-      $('body').css('cursor', null);
+      $('body').css('cursor', '');
       $('.leaflet-container').css('cursor', pointing_cursor);
     }
   });
