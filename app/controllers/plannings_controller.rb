@@ -34,19 +34,23 @@ class PlanningsController < ApplicationController
   # POST /plannings
   # POST /plannings.json
   def create
-    @planning = Planning.new(planning_params)
-    @planning.customer = current_user.customer
-    if params[:tags]
-      @planning.tags = current_user.customer.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
-    end
-
-    @planning.default_routes
-
     respond_to do |format|
-      if @planning.save
+      begin
+        Planning.transaction do
+          @planning = Planning.new(planning_params)
+          @planning.customer = current_user.customer
+          if params[:tags]
+            @planning.tags = current_user.customer.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
+          end
+
+          @planning.default_routes
+
+          @planning.save!
+        end
+
         format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
         format.json { head :no_content }
-      else
+      rescue
         format.html { render action: 'new' }
         format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
