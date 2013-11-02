@@ -1,46 +1,17 @@
-<%= form_for @vehicle, html:{class:"form-horizontal"} do |f| %>
+<%= twitter_bootstrap_form_for @vehicle, layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
   <%= render 'shared/error_messages', model: @vehicle %>
-  <div class="row">
-    <%= f.label :name, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.text_field :name, class:"form-control" %></span>
-  </div>
-  <div class="row">
-    <%= f.label :open, class:"col-lg-2 control-label" %><br>
-    <span class="col-lg-4"><%= f.time_select :open %></span>
-  </div>
-  <div class="row">
-    <%= f.label :close, class:"col-lg-2 control-label" %><br>
-    <span class="col-lg-4"><%= f.time_select :close %></span>
-  </div>
-  <div class="row">
-    <%= f.label :emission, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4">
-      <div class="input-group">
-        <%= f.select :emission, Vehicle.emissions_table, {}, class:"form-control" %>
-        <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
-      </div>
-    </span>
-  </div>
-  <div class="row">
-    <%= f.label :consumption, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4">
-      <div class="input-group">
-        <%= f.number_field :consumption, class:"form-control" %>
-        <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
-      </div>
-    </span>
-  </div>
-  <div class="row">
-    <%= f.label :capacity, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.number_field :capacity, min:1, class:"form-control" %></span>
-  </div>
-  <div class="row">
-    <%= f.label :color, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.text_field :color, class:"form-control simple_color" %></span>
-  </div>
-  <div class="row">
-    <div class="col-lg-offset-2">
-      <%= f.submit class:"btn btn-primary" %>
-    </div>
-  </div>
+  <%= f.text_field :name %>
+  <%= f.time_select :open %>
+  <%= f.time_select :close %>
+  <%= f.select :emission, [], Vehicle.emissions_table, {}, {div_class:'input-group col-lg-4', add_on: 'append'} do %>
+    <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
+  <% end %>
+  <%= f.number_field :consumption, {div_class:'input-group col-lg-4', add_on: 'append'} do %>
+    <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
+  <% end %>
+  <%= f.number_field :capacity, min:1 %>
+  <%= f.text_field :color, class:"simple_color" %>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
 <% end %>

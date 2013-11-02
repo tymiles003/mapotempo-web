@@ -1,26 +1,15 @@
-<%= form_for @planning, html:{class:"form-horizontal"} do |f| %>
+<%= twitter_bootstrap_form_for @planning, layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
-  <div class="row">
-    <%= f.label :name, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.text_field :name, class:"form-control" %></span>
-  </div>
-  <div class="row">
-    <%= f.label :tags, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4 input-group">
-      <%= select_tag 'tags[]', options_from_collection_for_select(current_user.customer.tags, :id, :label), multiple: true %>
-      <span class="input-group-addon input-sm"><i class="icon-tags"></i></span>
-    </span>
-  </div>
-  <div class="row">
-    <%= f.label :zoning, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.collection_select :zoning_id, current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, class:"form-control" %></span>
+  <%= f.text_field :name %>
+  <%= f.select :tags, [], options_from_collection_for_select(current_user.customer.tags, :id, :label), {}, {multiple: true, div_class:'input-group col-lg-4', add_on: 'append'} do %>
+    <span class="input-group-addon"><i class="icon-tags"></i></span>
+  <% end %>
+  <%= f.collection_select :zoning_id, [], current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {add_on: 'append'} do %>
     <% if @planning.id %>
       <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_edit"<% if not @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.edit' %></a>
     <% end %>
-  </div>
-  <div class="row">
-    <div class="col-lg-offset-2">
-      <%= f.submit class:"btn btn-primary" %>
-    </div>
-  </div>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
 <% end %>

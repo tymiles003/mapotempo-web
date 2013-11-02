@@ -1,25 +1,11 @@
-<%= form_for @customer, html:{class:"form-horizontal"} do |f| %>
+<%= twitter_bootstrap_form_for @customer, layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
-  <div class="row">
-    <%= f.label :end_subscription, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.date_field :end_subscription, class:"form-control", disabled:true %></span>
-  </div>
-  <div class="row">
-    <%= f.label :max_vehicles, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.number_field :max_vehicles, class:"form-control", disabled:true %></span>
-  </div>
-  <div class="row">
-    <%= f.label :take_over, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4">
-      <div class="input-group">
-        <%= f.number_field :take_over, class:"form-control" %>
-        <span class="input-group-addon"><%= t 'all.unit.second' %></span>
-      </div>
-    </span>
-  </div>
-  <div class="row">
-    <div class="col-lg-offset-2">
-      <%= f.submit class:"btn btn-primary" %>
-    </div>
-  </div>
+  <%= f.date_field :end_subscription, disabled:true %>
+  <%= f.number_field :max_vehicles, disabled:true %>
+  <%= f.number_field :take_over, {div_class:'input-group col-lg-4', add_on: 'append'} do %>
+    <span class="input-group-addon"><%= t 'all.unit.second' %></span>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
 <% end %>

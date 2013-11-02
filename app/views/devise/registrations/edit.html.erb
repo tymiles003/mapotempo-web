@@ -1,40 +1,22 @@
 <h1><%= t('.title', resource: resource_class.model_name.human , default: 'Edit #{resource_name.to_s.humanize}') %></h1>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'form-horizontal', class: 'form-horizontal' }) do |f| %>
+<%= twitter_bootstrap_form_for resource, as: resource_name, url: registration_path(resource_name), layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
   <%= devise_error_messages! %>
-  <div class="row">
-    <%= f.label :email, class: 'col-lg-2 control-label' %>
-    <span class="col-lg-4"><%= f.email_field :email, class: 'form-control' %></span>
-  </div>
-  <div class="row">
-    <%= f.label :password, class: 'col-lg-2 control-label' %>
-    <span class="col-lg-4">
-      <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
-      <p class="help-block"><%= t('.leave_blank_if_you_don_t_want_to_change_it', default: "leave blank if you don't want to change it") %></p>
-    </span>
-  </div>
-  <div class="row">
-    <%= f.label :password_confirmation, class: 'col-lg-2 control-label' %>
-    <span class="col-lg-4"><%= f.password_field :password_confirmation, class: 'form-control' %></span>
-  </div>
-  <div class="row">
-    <%= f.label :current_password, class: 'col-lg-2 control-label' %>
-    <span class="col-lg-4"><%= f.password_field :current_password, class: 'form-control' %>
-      <p class="help-block"><%= t('.we_need_your_current_password_to_confirm_your_changes', default: 'we need your current password to confirm your changes') %></p>
-    </span>
-  </div>
-  <div class="row">
-    <%= f.label :layer, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.collection_select :layer_id, Layer.all, :id, :name, {}, class:"form-control" %></span>
-  </div>
+  <%= f.email_field :email %>
+  <%= f.password_field :password, {autocomplete: 'off', add_on: 'append'} do %>
+    <p class="help-block"><%= t('.leave_blank_if_you_don_t_want_to_change_it', default: "leave blank if you don't want to change it") %></p>
+  <% end %>
+  <%= f.password_field :password_confirmation %>
+  <%= f.password_field :current_password, {add_on: 'append'} do %>
+    <p class="help-block"><%= t('.we_need_your_current_password_to_confirm_your_changes', default: 'we need your current password to confirm your changes') %></p>
+  <% end %>
+  <%= f.collection_select :layer_id, [], Layer.all, :id, :name, {}, {} %>
   <div class="row">
     <span class="col-lg-offset-2 col-lg-4"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
-  <div class="row">
-    <div class="col-lg-offset-2">
-      <%= f.submit t('.update', default: "Update"), class: 'btn btn-primary' %>
-    </div>
-  </div>
+  <%= f.actions do %>
+    <%= f.submit t('.update', default: "Update") %>
+  <% end %>
 <% end %>
 
 <h2><%= t('.cancel_my_account', default: 'Cancel my account') %></h2>

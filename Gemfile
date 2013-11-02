@@ -50,6 +50,7 @@ gem 'devise-i18n-views'
 gem 'cancan'
 gem 'rails_admin'
 gem 'twitter-bootstrap-rails', github: 'diowa/twitter-bootstrap-rails', branch: 'bootstrap-3.0.0'
+gem 'twitter_bootstrap_form_for', github: 'stouset/twitter_bootstrap_form_for'
 
 gem 'pg', group: :production
 gem 'rails_12factor', group: :production

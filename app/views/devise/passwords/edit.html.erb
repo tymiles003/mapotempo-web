@@ -1,21 +1,12 @@
 <h1><%= t('.change_your_password', default: 'Change your password') %></h1>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'form-horizontal' }) do |f| %>
+<%= twitter_bootstrap_form_for resource, as: resource_name, url: password_path(resource_name), layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
   <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
-  <div class="row">
-    <%= f.label :password, t('.new_password', default: 'New password'), class: 'col-lg-2 control-label' %>
-    <span class="col-lg-4"><%= f.password_field :password, class:"form-control" %></span>
-  </div>
-  <div class="row">
-    <%= f.label :password_confirmation, t('.confirm_new_password', default: 'Confirm new password'), class: 'col-lg-2 control-label' %>
-    <span class="col-lg-4"><%= f.password_field :password_confirmation, class:"form-control" %></span>
-  </div>
-  <div class="row">
-    <div class="col-lg-offset-2">
-      <%= f.submit t('.change_my_password', default: 'Change my password'), class: 'btn btn-primary' %>
-    </div>
-  </div>
+  <%= f.password_field :password %>
+  <%= f.password_field :password_confirmation %>
+  <%= f.actions do %>
+    <%= f.submit t('.change_my_password', default: 'Change my password') %>
+  <% end %>
 <% end %>
 
 <%= render "devise/shared/links" %>

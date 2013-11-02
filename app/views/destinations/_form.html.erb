@@ -1,56 +1,30 @@
-<%= form_for(@destination, html:{class:"form-horizontal", "data-destination_id"=>@destination.id}) do |f| %>
+<%= twitter_bootstrap_form_for(@destination, layout: :horizontal, default_div_class: 'col-lg-4', html: {class: "form-horizontal", "data-destination_id" => @destination.id}) do |f| %>
   <%= render 'shared/error_messages', model: @destination %>
-  <div class="row">
-    <%= f.label :name, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.text_field :name, class:"form-control" %></span>
-  </div>
-  <div class="row">
-    <%= f.label :street, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4">
-      <div class="input-group">
-        <input class="form-control" type="text" name="destination[street]" value="<%= @destination.street %>"/>
-        <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
-      </div>
-    </span>
-  </div>
-  <div class="row">
-    <%= f.label :postalcode, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><input class="form-control" type="text" maxlength="7" width="7" name="destination[postalcode]" value="<%= @destination.postalcode %>"/></span>
-  </div>
-  <div class="row">
-    <%= f.label :city, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><input class="form-control" type="text" name="destination[city]" value="<%= @destination.city %>"/></span>
-  </div>
+  <%= f.text_field :name %>
+  <%= f.text_field :street, {div_class:'input-group col-lg-4', add_on: 'append'} do %>
+    <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
+  <% end %>
+  <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
+  <%= f.text_field :city %>
   <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
   <input type="hidden" name="destination[lng]" value="<%= @destination.lng %>" />
   <div class="row">
     <span class="col-lg-offset-2 col-lg-4"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
   <% if @destination != current_user.customer.store %>
-  <div class="row">
-    <%= f.label :quantity, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.number_field :quantity, class:"form-control" %></span>
-  </div>
-  <div class="row">
-    <%= f.label :open, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.time_select :open, class:"form-control" %></span>
-  </div>
-  <div class="row">
-    <%= f.label :close, class:"col-lg-2 control-label" %>
-    <span class="col-lg-4"><%= f.time_select :close, class:"form-control" %></span>
-  </div>
+    <%= f.number_field :quantity %>
+    <%= f.time_select :open %>
+    <%= f.time_select :close %>
   <% end %>
-  <div class="row">
-    <div class="col-lg-offset-2">
-      <input type="hidden" name="live" value="false"/>
-      <input type="hidden" name="live_type" value="false"/>
-      <% if @destination != current_user.customer.store %>
-        <%= f.submit class:"btn btn-primary" %>
-      <% else %>
-        <%= f.submit(t('.submit_store'), class:"btn btn-primary") %>
-      <% end %>
-    </div>
-  </div>
+  <input type="hidden" name="live" value="false"/>
+  <input type="hidden" name="live_type" value="false"/>
+  <%= f.actions do %>
+    <% if @destination != current_user.customer.store %>
+      <%= f.submit %>
+    <% else %>
+      <%= f.submit t('.submit_store') %>
+    <% end %>
+  <% end %>
 <% end %>
 <%
 controller.js(
