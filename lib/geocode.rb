@@ -77,7 +77,7 @@ module Geocode
   <RequestHeader/>
   <Request requestID='1' version='1.2' methodName='LocationUtilityService'>
    <GeocodeRequest returnFreeForm='false'>
-     <Address countryCode='StreetAddress'>
+     <Address countryCode=\"StreetAddress\"> <!-- FIXME IGN bug here on quote -->
        <StreetAddress>
          <Street>#{street.encode(xml: :text)}</Street>
        </StreetAddress>
