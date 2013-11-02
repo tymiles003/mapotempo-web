@@ -3,7 +3,7 @@ require 'importer'
 
 class DestinationsController < ApplicationController
   load_and_authorize_resource :except => [:create, :upload]
-  before_action :set_destination, only: [:show, :edit, :update, :destroy, :geocode_reverse, :geocode_complete, :geocode_code]
+  before_action :set_destination, only: [:show, :edit, :update, :destroy, :geocode_complete]
 
   # GET /destinations
   # GET /destinations.json
@@ -59,23 +59,7 @@ class DestinationsController < ApplicationController
     end
 
     respond_to do |format|
-      ok = if @destination == current_user.customer.store
-        @destination.assign_attributes(p)
-        if params.key?("live") and params["live"] == "true" # No save in "live" mode
-          if params.key?("live_type")
-            if params["live_type"] == "address"
-              @destination.geocode
-            else
-              @destination.reverse_geocode
-            end
-          end
-        else
-          @destination.save and current_user.save
-        end
-      else
-        @destination.update(p) and current_user.save
-      end
-      if ok
+      if @destination.update(p) and current_user.save
         format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         format.json { render action: 'show', location: @destination }
       else
@@ -92,6 +76,24 @@ class DestinationsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to destinations_url }
       format.json { head :no_content }
+    end
+  end
+
+  def geocode
+    respond_to do |format|
+      @destination = Destination.new(destination_params)
+
+      if params.key?("live_type")
+        if params["live_type"] == "address"
+          @destination.geocode
+        else
+          @destination.reverse_geocode
+        end
+
+        format.json { render action: 'show', location: @destination }
+      end
+
+      format.json { render json: nil, status: :unprocessable_entity }
     end
   end
 

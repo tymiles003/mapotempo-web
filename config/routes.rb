@@ -13,6 +13,7 @@ Mapotempo::Application.routes.draw do
   end
   get 'destination/import' => 'destinations#import'
   post 'destinations/upload' => 'destinations#upload'
+  patch 'destination/geocode' => 'destinations#geocode'
 
   resources :plannings do
     patch 'move'

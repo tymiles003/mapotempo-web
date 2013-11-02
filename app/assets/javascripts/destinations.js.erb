@@ -40,7 +40,6 @@ function destinations_form(params) {
           },
           complete: completeWaiting
         });
-        $("[name=live]").attr('live', 'false');
       },
       select: function (event, ui) {
         event.target.value = ui.item.value;
@@ -50,20 +49,18 @@ function destinations_form(params) {
 
     $(":input", row).change(function (event) {
       if (change) {
-        $("[name=live]").attr('value', 'true');
         var name = $(this).attr('name');
         $("[name=live_type]").attr('value', name == 'destination[lat]' || name == 'destination[lng]' ? 'lat-lng' : 'address');
         $.ajax({
-          type: "put",
+          type: "patch",
           data: $(row).serialize(),
-          url: '/destinations/' + destination_id + '.json',
+          url: '/destination/geocode.json',
           beforeSend: beforeSendWaiting,
           success: function (data) {
             update(id, data);
           },
           complete: completeWaiting
         });
-        $("[name=live]").attr('value', 'false');
       }
     });
 

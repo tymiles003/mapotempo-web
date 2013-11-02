@@ -16,7 +16,6 @@
     <%= f.time_select :open %>
     <%= f.time_select :close %>
   <% end %>
-  <input type="hidden" name="live" value="false"/>
   <input type="hidden" name="live_type" value="false"/>
   <%= f.actions do %>
     <% if @destination != current_user.customer.store %>
