@@ -3,7 +3,7 @@ require 'importer'
 
 class DestinationsController < ApplicationController
   load_and_authorize_resource :except => [:create, :upload]
-  before_action :set_destination, only: [:show, :edit, :update, :destroy, :geocode_complete]
+  before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
   # GET /destinations
   # GET /destinations.json
@@ -99,7 +99,7 @@ class DestinationsController < ApplicationController
 
   def geocode_complete
     p = destination_params
-    address_list = Geocode.complete(@destination.user.customer.store.lat, @destination.user.customer.store.lng, 40000, p[:street], p[:postalcode], p[:city])
+    address_list = Geocode.complete(current_user.customer.store.lat, current_user.customer.store.lng, 40000, p[:street], p[:postalcode], p[:city])
     address_list = address_list.collect{ |i| {street: i[0], postalcode: i[1], city: i[2]} }
     respond_to do |format|
       format.html

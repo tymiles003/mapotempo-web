@@ -26,9 +26,9 @@ function destinations_form(params) {
       delay: 500,
       source: function (req, add) {
         $.ajax({
-          type: "post",
+          type: "patch",
           data: $(row).serialize(),
-          url: '/destinations/' + id + '/geocode_complete.json',
+          url: '/destination/geocode_complete.json',
           beforeSend: beforeSendWaiting,
           success: function (data) {
             add($.map(data, function (val, i) {

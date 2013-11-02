@@ -8,12 +8,11 @@ Mapotempo::Application.routes.draw do
 
   resources :vehicles
 
-  resources :destinations do
-    post 'geocode_complete'
-  end
+  resources :destinations
   get 'destination/import' => 'destinations#import'
   post 'destinations/upload' => 'destinations#upload'
   patch 'destination/geocode' => 'destinations#geocode'
+  patch 'destination/geocode_complete' => 'destinations#geocode_complete'
 
   resources :plannings do
     patch 'move'
