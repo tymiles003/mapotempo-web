@@ -1,8 +1,6 @@
 function destinations_form(params) {
 
   var destination_id = params['destination_id'];
-  var destination_lat = params['destination_lat'];
-  var destination_lng = params['destination_lng'];
   var map_layer_url = params['map_layer_url'];
   var map_lat = params['map_lat'];
   var map_lng = params['map_lng'];
@@ -110,7 +108,7 @@ function destinations_form(params) {
 
   wire($("form"));
 
-  marker = L.marker(new L.LatLng(destination_lat, destination_lng), {
+  marker = L.marker(new L.LatLng(map_lat, map_lng), {
     icon: new L.Icon.Default(),
     draggable: true,
     destination: destination_id
