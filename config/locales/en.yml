@@ -88,7 +88,7 @@ en:
         attribution: "Attribution"
       planning:
         name: "Name"
-        tags: "Tags"
+        tag_ids: "Tags"
         zoning: "Zoning"
       route:
         distance: "Distance"

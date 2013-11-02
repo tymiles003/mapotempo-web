@@ -39,12 +39,7 @@ class PlanningsController < ApplicationController
         Planning.transaction do
           @planning = Planning.new(planning_params)
           @planning.customer = current_user.customer
-          if params[:tags]
-            @planning.tags = current_user.customer.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
-          end
-
           @planning.default_routes
-
           @planning.save!
         end
 
@@ -169,7 +164,7 @@ class PlanningsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def planning_params
-      params.require(:planning).permit(:name, :zoning_id)
+      params.require(:planning).permit(:name, :zoning_id, :tag_ids => [])
     end
 
     def stop_params
