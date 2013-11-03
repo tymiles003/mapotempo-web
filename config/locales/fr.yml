@@ -183,7 +183,7 @@ fr:
       quantity: "quantié"
       open: "ouverture"
       close: "fermeture"
-      tags: "libellé"
+      tags: "libellés"
       missing_name_street_city: "\"nom\", \"rue\" ou \"ville\" manquant à la ligne %{line}."
       too_many_errors: "Import stoppé, trop d'erreurs."
 
