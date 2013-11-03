@@ -38,7 +38,8 @@ function destinations_form(params) {
               };
             }));
           },
-          complete: completeWaiting
+          complete: completeWaiting,
+          error: ajaxError
         });
       },
       select: function (event, ui) {
@@ -59,7 +60,8 @@ function destinations_form(params) {
           success: function (data) {
             update(id, data);
           },
-          complete: completeWaiting
+          complete: completeWaiting,
+          error: ajaxError
         });
       }
     });
@@ -221,7 +223,8 @@ Paloma.controller('Destination').prototype.index = function () {
               };
             }));
           },
-          complete: completeWaiting
+          complete: completeWaiting,
+          error: ajaxError
         });
       },
       select: function (event, ui) {
@@ -239,7 +242,8 @@ Paloma.controller('Destination').prototype.index = function () {
         success: function (data) {
           update(id, data);
         },
-        complete: completeWaiting
+        complete: completeWaiting,
+        error: ajaxError
       });
     });
 
@@ -270,7 +274,8 @@ Paloma.controller('Destination').prototype.index = function () {
           markersLayers.removeLayer(markers[id]);
           delete markers[id];
         },
-        complete: completeWaiting
+        complete: completeWaiting,
+        error: ajaxError
       });
     });
   }
@@ -388,7 +393,8 @@ Paloma.controller('Destination').prototype.index = function () {
         update(id, data);
         over(data.id, true);
       },
-      complete: completeWaiting
+      complete: completeWaiting,
+      error: ajaxError
     });
   });
 
@@ -412,7 +418,8 @@ Paloma.controller('Destination').prototype.index = function () {
           url: '/destinations.json',
           beforeSend: beforeSendWaiting,
           success: display_destinations,
-          complete: completeWaiting
+          complete: completeWaiting,
+          error: ajaxError
         });
       }, 2000);
       return;
@@ -501,7 +508,8 @@ Paloma.controller('Destination').prototype.index = function () {
     url: '/destinations.json',
     beforeSend: beforeSendWaiting,
     success: display_destinations,
-    complete: completeWaiting
+    complete: completeWaiting,
+    error: ajaxError
   });
   map.on('click', click);
 

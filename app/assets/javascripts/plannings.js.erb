@@ -64,7 +64,8 @@ function plannings_edit(params) {
         url: "/zonings/" + id + ".json",
         beforeSend: beforeSendWaiting,
         success: display_zoning,
-        complete: completeWaiting
+        complete: completeWaiting,
+        error: ajaxError
       });
     } else {
       $("#zoning_edit").hide();
@@ -92,7 +93,8 @@ function plannings_edit(params) {
       url: '/plannings/' + planning_id + '/move.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
-      complete: completeWaiting
+      complete: completeWaiting,
+      error: ajaxError
     });
   }
 
@@ -106,7 +108,8 @@ function plannings_edit(params) {
       setTimeout(function () {
         $.ajax({
           url: '/plannings/' + planning_id + '.json',
-          success: display_planning
+          success: display_planning,
+          error: ajaxError
         });
       }, 2000);
       return;
@@ -119,7 +122,8 @@ function plannings_edit(params) {
       setTimeout(function () {
         $.ajax({
           url: '/plannings/' + planning_id + '.json',
-          success: display_planning
+          success: display_planning,
+          error: ajaxError
         });
       }, 2000);
       return;
@@ -144,7 +148,8 @@ function plannings_edit(params) {
         url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '.json',
         beforeSend: beforeSendWaiting,
         success: display_planning,
-        complete: completeWaiting
+        complete: completeWaiting,
+        error: ajaxError
       });
     });
 
@@ -218,7 +223,8 @@ function plannings_edit(params) {
         url: '/plannings/' + planning_id + '/switch.json',
         beforeSend: beforeSendWaiting,
         success: display_planning,
-        complete: completeWaiting
+        complete: completeWaiting,
+        error: ajaxError
       });
     });
 
@@ -250,7 +256,8 @@ function plannings_edit(params) {
         url: '/plannings/' + planning_id + '/refresh.json',
         beforeSend: beforeSendWaiting,
         success: display_planning,
-        complete: completeWaiting
+        complete: completeWaiting,
+        error: ajaxError
       });
     });
 
@@ -267,7 +274,8 @@ function plannings_edit(params) {
           }
         }),
         contentType: 'application/json',
-        url: '/routes/' + id + '.json'
+        url: '/routes/' + id + '.json',
+        error: ajaxError
       });
 
       if (hidden) {
@@ -291,7 +299,8 @@ function plannings_edit(params) {
           }
         }),
         contentType: 'application/json',
-        url: '/routes/' + id + '.json'
+        url: '/routes/' + id + '.json',
+        error: ajaxError
       });
     });
 
@@ -310,7 +319,8 @@ function plannings_edit(params) {
         url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
         beforeSend: beforeSendWaiting,
         success: display_planning,
-        complete: completeWaiting
+        complete: completeWaiting,
+        error: ajaxError
       });
     });
   }
@@ -319,7 +329,8 @@ function plannings_edit(params) {
     url: '/plannings/' + planning_id + '.json',
     beforeSend: beforeSendWaiting,
     success: display_planning,
-    complete: completeWaiting
+    complete: completeWaiting,
+    error: ajaxError
   });
 
   if (zoning_id) {
@@ -328,7 +339,8 @@ function plannings_edit(params) {
       url: "/zonings/" + zoning_id + ".json",
       beforeSend: beforeSendWaiting,
       success: display_zoning,
-      complete: completeWaiting
+      complete: completeWaiting,
+      error: ajaxError
     });
   }
 

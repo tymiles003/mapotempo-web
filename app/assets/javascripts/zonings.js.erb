@@ -167,7 +167,8 @@ function zonings_edit(params) {
       url: planning_id ? '/zonings/' + zoning_id + '/edit/planning/' + planning_id + '.json' : '/zonings/' + zoning_id + '/edit.json',
       beforeSend: beforeSendWaiting,
       success: display_zoning,
-      complete: completeWaiting
+      complete: completeWaiting,
+      error: ajaxError
     });
   }
 }
