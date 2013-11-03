@@ -117,7 +117,7 @@ class DestinationsController < ApplicationController
 
     respond_to do |format|
       begin
-        Importer.import(replace, current_user.customer, file, name) and current_user.save
+        Importer.import(replace, current_user.customer, file, name) and current_user.save!
         format.html { redirect_to action: 'index' }
       rescue StandardError => e
         flash[:error] = e.message

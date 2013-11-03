@@ -102,7 +102,7 @@ class Importer
         customer.destinations << destination
       }
 
-      if errors.length
+      if errors.length > 0
         raise errors.join(' ')
       end
 
