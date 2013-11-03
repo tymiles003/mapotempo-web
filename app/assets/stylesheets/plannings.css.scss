@@ -17,6 +17,17 @@
   .route {
     list-style-type: none;
     margin-bottom: 1em;
+
+    .store, .waypoint {
+      list-style-type: none;
+      margin-left: -2em;
+
+      .number {
+        text-align: right;
+        display: inline-block;
+        width: 1.5em;
+      }
+    }
   }
 }
 

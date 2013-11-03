@@ -203,7 +203,7 @@ function plannings_edit(params) {
           } else {
             markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
               icon: new L.NumberedDivIcon({
-                number: index,
+                number: stop.number,
                 iconUrl: color ? route.icon : '<%= asset_path("marker-000000.svg") %>',
               }),
             }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));

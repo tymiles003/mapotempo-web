@@ -30,6 +30,7 @@ else
         json.path edit_vehicle_path(route.vehicle)
       end
     end
+    number = 0
     json.stops route.stops do |stop|
       if stop.destination == current_user.customer.store
         json.is_store true
@@ -37,6 +38,7 @@ else
       json.extract! stop, :trace
       (json.time stop.time.strftime("%H:%M")) if stop.time
       (json.active true) if stop.active
+      (json.number number+=1) if stop.active && stop.destination != current_user.customer.store
       json.distance (stop.distance or 0)/1000
       json.destination(stop.destination, :id, :name, :street, :postalcode, :city, :lat, :lng)
       json.type (stop.destination==current_user.customer.store)? 'store' : 'waypoint'
