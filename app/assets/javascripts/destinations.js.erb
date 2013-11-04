@@ -15,7 +15,6 @@ function destinations_form(params) {
   var layer = L.layerGroup();
   var marker;
 
-  var change = true;
   var pointing = false;
   var pointing_cursor;
 
@@ -49,21 +48,25 @@ function destinations_form(params) {
     });
 
     $(":input", row).change(function (event) {
-      if (change) {
-        var name = $(this).attr('name');
-        $("[name=live_type]").attr('value', name == 'destination[lat]' || name == 'destination[lng]' ? 'lat-lng' : 'address');
-        $.ajax({
-          type: "patch",
-          data: $(row).serialize(),
-          url: '/destination/geocode.json',
-          beforeSend: beforeSendWaiting,
-          success: function (data) {
-            update(id, data);
-          },
-          complete: completeWaiting,
-          error: ajaxError
-        });
-      }
+      var name = $(this).attr('name');
+      $("[name=live_type]").attr('value', name == 'destination[lat]' || name == 'destination[lng]' ? 'lat-lng' : 'address');
+      $.ajax({
+        type: "patch",
+        data: $(row).serialize(),
+        url: '/destination/geocode.json',
+        beforeSend: beforeSendWaiting,
+        success: function (data) {
+          update(id, data);
+        },
+        complete: completeWaiting,
+        error: ajaxError
+      });
+    });
+
+    var formatNoMatches = I18n.t('web.select2.empty_result');
+    $('select[name=destination\\[tag_ids\\]\\[\\]]').select2({
+      formatNoMatches: function () { return formatNoMatches; },
+      width: '100%'
     });
 
     $('.pointing', row).click(function (event) {
@@ -76,14 +79,12 @@ function destinations_form(params) {
 
   function update(destination_id, destination) {
     var row = $('[data-destination_id=' + destination_id + ']');
-    change = false;
     $('[name=destination\\[name\\]]', row).val(destination.name);
     $('[name=destination\\[street\\]]', row).val(destination.street);
     $('[name=destination\\[postalcode\\]]', row).val(destination.postalcode);
     $('[name=destination\\[city\\]]', row).val(destination.city);
     $('[name=destination\\[lat\\]]', row).val(destination.lat);
     $('[name=destination\\[lng\\]]', row).val(destination.lng);
-    change = true;
     marker.setLatLng(new L.LatLng(destination.lat, destination.lng));
     map.setView(marker.getLatLng(), 16);
     row = $('[data-destination_id=' + destination_id + ']');
@@ -94,12 +95,6 @@ function destinations_form(params) {
     $('[name=destination\\[lat\\]]', row).val(latLng.lat);
     $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
   }
-
-  var formatNoMatches = I18n.t('web.select2.empty_result');
-  $('select[name=destination\\[tag_ids\\]\\[\\]]').select2({
-    formatNoMatches: function () { return formatNoMatches; },
-    width: '100%'
-  });
 
   map.on('click', function(mouseEvent) {
     if (pointing !== false) {
@@ -158,17 +153,17 @@ Paloma.controller('Destination').prototype.import = function () {
   });
 };
 
-Paloma.controller('Destination').prototype.index = function () {
+function destinations_index(params) {
 
-  var map_layer_url = this.params['map_layer_url'];
-  var map_lat = this.params['map_lat'];
-  var map_lng = this.params['map_lng'];
-  var map_attribution = this.params['map_attribution'];
-  var default_street = this.params['default_street'];
-  var default_postalcode = this.params['default_postalcode'];
-  var default_city = this.params['default_city'];
-  var default_lat = this.params['default_lat'];
-  var default_lng = this.params['default_lng'];
+  var map_layer_url = params['map_layer_url'];
+  var map_lat = params['map_lat'];
+  var map_lng = params['map_lng'];
+  var map_attribution = params['map_attribution'];
+  var default_street = params['default_street'];
+  var default_postalcode = params['default_postalcode'];
+  var default_city = params['default_city'];
+  var default_lat = params['default_lat'];
+  var default_lng = params['default_lng'];
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -251,17 +246,17 @@ Paloma.controller('Destination').prototype.index = function () {
       over(id, true);
     });
 
+    var formatNoMatches = I18n.t('web.select2.empty_result');
+    $(':input[name=tags\\[\\]]', row).select2({
+      formatNoMatches: function() { return formatNoMatches; },
+      widht: '100%'
+    });
+
     $('.pointing', row).click(function (event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
       $('.leaflet-container').css('cursor', 'crosshair');
-    });
-
-    var formatNoMatches = I18n.t('web.select2.empty_result');
-    $(':input[name=tags\\[\\]]', row).select2({
-      formatNoMatches: function() { return formatNoMatches; },
-      widht: '100%'
     });
 
     $('.destroy', row).click(function (event) {
@@ -312,7 +307,7 @@ Paloma.controller('Destination').prototype.index = function () {
   }
 
 
-  function click(mouseEvent) {
+  map.on('click', function(mouseEvent) {
     if (pointing) {
       var id = pointing;
       if (id in markers) {
@@ -322,10 +317,10 @@ Paloma.controller('Destination').prototype.index = function () {
       }
       sendMove(id, mouseEvent.latlng);
       pointing = false;
-      $('body').css('cursor', null);
+      $('body').css('cursor', '');
       $('.leaflet-container').css('cursor', pointing_cursor);
     }
-  }
+  });
 
 
   function over(id, move) {
@@ -511,10 +506,13 @@ Paloma.controller('Destination').prototype.index = function () {
     complete: completeWaiting,
     error: ajaxError
   });
-  map.on('click', click);
 
   $("#dialog-geocoding").dialog({
     autoOpen: false,
     modal: true
   });
+}
+
+Paloma.controller('Destination').prototype.index = function () {
+  destinations_index(this.params);
 };
