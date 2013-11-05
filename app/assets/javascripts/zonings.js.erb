@@ -145,17 +145,13 @@ function zonings_edit(params) {
     });
     if (data.planning) {
       $.each(data.planning, function (index, route) {
-        $.each(route, function (index, stop) {
+        $.each(route.stops, function (index, stop) {
           if (stop.lat && stop.lng) {
-            var options = {};
-            if (!stop.active) {
-              options = {
-                icon: L.icon({
-                  iconUrl: '<%= asset_path("marker-000000.svg") %>'
-                })
-              }
-            }
-            L.marker(new L.LatLng(stop.lat, stop.lng), options).addTo(markersLayers).addTo(cluster);
+            L.marker(new L.LatLng(stop.lat, stop.lng), {
+              icon: L.icon({
+                iconUrl: stop.active && route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].marker : '<%= asset_path("marker-000000.svg") %>'
+              })
+            }).addTo(markersLayers).addTo(cluster);
           }
         });
       });

@@ -9,11 +9,16 @@ json.zoning @zoning.zones do |zone|
 end
 if @planning
   json.planning @planning.routes do |route|
-    json.array! route.stops.collect do |stop|
-      if stop.destination != current_user.customer.store
-        destination = stop.destination
-        json.extract! destination, :lat, :lng
-        json.active route.vehicle && stop.active
+    if route.vehicle
+      json.vehicle_id route.vehicle.id
+    end
+    json.stops do
+      json.array! route.stops.collect do |stop|
+        if stop.destination != current_user.customer.store
+          destination = stop.destination
+          json.extract! destination, :lat, :lng
+          json.active route.vehicle && stop.active
+        end
       end
     end
   end
