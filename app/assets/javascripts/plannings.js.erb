@@ -204,7 +204,10 @@ function plannings_edit(params) {
             markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
               icon: new L.NumberedDivIcon({
                 number: stop.number,
-                iconUrl: color ? route.icon : '<%= asset_path("marker-000000.svg") %>',
+                iconUrl: color ? route.icon : '<%= asset_path("point-000000.svg") %>',
+                iconSize: new L.Point(12, 12),
+                iconAnchor: new L.Point(6, 6),
+                popupAnchor: new L.Point(1, 11)
               }),
             }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
           }

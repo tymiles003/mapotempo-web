@@ -38,3 +38,9 @@
 .placeholder {
   list-style-type: none;
 }
+
+.leaflet-marker-icon .number {
+  background: none;
+  right: -1px;
+  top: 3px;
+}

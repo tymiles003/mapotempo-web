@@ -149,7 +149,10 @@ function zonings_edit(params) {
           if (stop.lat && stop.lng) {
             L.marker(new L.LatLng(stop.lat, stop.lng), {
               icon: L.icon({
-                iconUrl: stop.active && route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].marker : '<%= asset_path("marker-000000.svg") %>'
+                iconUrl: stop.active && route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].marker : '<%= asset_path("point-000000.svg") %>',
+                iconSize: new L.Point(12, 12),
+                iconAnchor: new L.Point(6, 6),
+                popupAnchor: new L.Point(1, 11)
               })
             }).addTo(markersLayers).addTo(cluster);
           }
