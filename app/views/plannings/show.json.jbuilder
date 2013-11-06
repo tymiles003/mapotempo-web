@@ -24,11 +24,8 @@ else
     json.distance (route.distance or 0)/1000
     json.size route.size
     if route.vehicle
+      json.vehicle_id route.vehicle.id
       json.icon asset_path("point-#{route.vehicle.color.gsub('#','')}.svg")
-      json.vehicle do
-        json.extract! route.vehicle, :id, :name, :color
-        json.path edit_vehicle_path(route.vehicle)
-      end
     end
     number = 0
     json.stops route.stops do |stop|

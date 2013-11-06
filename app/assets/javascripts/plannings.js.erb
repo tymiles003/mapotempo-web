@@ -131,6 +131,13 @@ function plannings_edit(params) {
       $("#dialog-optimizer").dialog("close");
     }
 
+    $.each(data.routes, function(i, route) {
+      if (route.vehicle_id) {
+        route.vehicle = vehicles_map[route.vehicle_id];
+        route.path = '/vehicle/' + route.vehicle_id + '/edit';
+      }
+    });
+
     $("#planning").html(SMT['plannings/edit'](data));
 
     $("#planning input:checkbox").change(function (event, ui) {
