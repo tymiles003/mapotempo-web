@@ -17,20 +17,6 @@ module Geocode
 
   @cache = FileCache.new("cache", @cache_dir, @cache_delay, 3)
 
-  def self.reverse(lat, lng)
-    key = "reverse #{lat} #{lng}"
-
-    result = @cache.get(key)
-    if !result
-      url="http://services.gisgraphy.com/street/streetsearch?format=json&lat=#{lat}&lng=#{lng}&from=1&to=1" # FIXME filtrer les types de route, mais coment ?
-      Rails.logger.info "get #{url}"
-      result = JSON.parse(open(url).read)
-      @cache.set(key, result)
-    end
-
-    [result["result"][0]["name"], "0", result["result"][0]["isIn"]]
-  end
-
   def self.complete(lat, lng, radius, street, postalcode, city)
     key = "complete #{lat} #{lng} #{radius} #{street} #{postalcode} #{city}"
 

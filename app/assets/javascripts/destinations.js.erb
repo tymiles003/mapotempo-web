@@ -48,8 +48,6 @@ function destinations_form(params) {
     });
 
     $(":input", row).change(function (event) {
-      var name = $(this).attr('name');
-      $("[name=live_type]").attr('value', name == 'destination[lat]' || name == 'destination[lng]' ? 'lat-lng' : 'address');
       $.ajax({
         type: "patch",
         data: $(row).serialize(),
@@ -93,7 +91,7 @@ function destinations_form(params) {
   function sendMove(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     $('[name=destination\\[lat\\]]', row).val(latLng.lat);
-    $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
+    $('[name=destination\\[lng\\]]', row).val(latLng.lng);
   }
 
   map.on('click', function(mouseEvent) {

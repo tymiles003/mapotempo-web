@@ -19,7 +19,6 @@
       <span class="input-group-addon"><i class="icon-tags"></i></span>
     <% end %>
   <% end %>
-  <input type="hidden" name="live_type" value="false"/>
   <%= f.actions do %>
     <% if @destination != current_user.customer.store %>
       <%= f.submit %>

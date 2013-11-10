@@ -24,11 +24,6 @@ class Destination < ActiveRecord::Base
     end
   end
 
-  def reverse_geocode
-    address = Geocoder.search([lat, lng])
-    self.street, self.postalcode, self.city = address[0].street, address[0].postal_code, address[0].city
-  end
-
   private
     def update_out_of_date
       if lat_changed? or lng_changed?
@@ -39,8 +34,6 @@ class Destination < ActiveRecord::Base
     def update_geocode
       if street_changed? or postalcode_changed? or city_changed?
         geocode
-      elsif lat_changed? or lng_changed?
-        reverse_geocode
       end
     end
 

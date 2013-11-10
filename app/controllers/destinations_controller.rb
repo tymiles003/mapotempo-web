@@ -82,18 +82,8 @@ class DestinationsController < ApplicationController
   def geocode
     respond_to do |format|
       @destination = Destination.new(destination_params)
-
-      if params.key?("live_type")
-        if params["live_type"] == "address"
-          @destination.geocode
-        else
-          @destination.reverse_geocode
-        end
-
-        format.json { render action: 'show', location: @destination }
-      end
-
-      format.json { render json: nil, status: :unprocessable_entity }
+      @destination.geocode
+      format.json { render action: 'show', location: @destination }
     end
   end
 
