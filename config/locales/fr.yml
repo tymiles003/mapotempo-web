@@ -130,6 +130,10 @@ fr:
         created: "%{model} a bien été crée."
         updated: "%{model} a bien été mis à jour."
 
+  errors:
+    planning:
+      import_too_routes: "Tentative d'importer de plus de tournées que de véhicles disponibles."
+
   customers:
     menu:
       parameters: "Paramètres"

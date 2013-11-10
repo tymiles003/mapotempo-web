@@ -28,7 +28,6 @@ class Importer
     end
 
     Destination.transaction do
-      delayed_job = false
       if replace
         customer.destinations.destroy_all
       end
@@ -91,14 +90,6 @@ class Importer
           routes[nil] << destination
         end
 
-        if not(destination.lat and destination.lng)
-          if not Mapotempo::Application.config.delayed_job_use
-            destination.geocode
-          else
-            delayed_job = true
-          end
-        end
-
         customer.destinations << destination
       }
 
@@ -121,7 +112,15 @@ class Importer
         }
       end
 
-      if delayed_job
+      if not Mapotempo::Application.config.delayed_job_use
+        routes.each{ |key, destinations|
+          destinations.each{ |destination|
+            if not(destination.lat and destination.lng)
+              destination.geocode
+            end
+          }
+        }
+      else
         customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id))
       end
     end

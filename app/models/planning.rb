@@ -17,7 +17,7 @@ class Planning < ActiveRecord::Base
         routes[i+1].set_destinations(destinations[i].collect{ |d| [d, true] })
       }
     else
-      # FIXME erreur, pas assez de véhicules
+      raise I18n.t('errors.planning.import_too_routes')
    end
   end
 

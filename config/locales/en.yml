@@ -130,6 +130,10 @@ en:
         created: "%{model} was successfully created."
         updated: "%{model} was successfully updated."
 
+  errors:
+    planning:
+      import_too_routes: "Try to import more routes than available vehicles."
+
   customers:
     menu:
       parameters: "Parameters"
