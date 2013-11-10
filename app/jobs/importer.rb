@@ -116,7 +116,10 @@ class Importer
         routes.each{ |key, destinations|
           destinations.each{ |destination|
             if not(destination.lat and destination.lng)
-              destination.geocode
+              begin
+                destination.geocode
+              rescue StandardError => e
+              end
             end
           }
         }

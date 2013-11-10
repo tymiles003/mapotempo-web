@@ -82,7 +82,7 @@ module Geocode
         Rails.logger.info request.body
         Rails.logger.info response.code
         Rails.logger.info response.body
-        return
+        raise response.body
       end
     end
 

@@ -81,9 +81,13 @@ class DestinationsController < ApplicationController
 
   def geocode
     respond_to do |format|
-      @destination = Destination.new(destination_params)
-      @destination.geocode
-      format.json { render action: 'show', location: @destination }
+      begin
+        @destination = Destination.new(destination_params)
+        @destination.geocode
+        format.json { render action: 'show', location: @destination }
+      rescue StandardError => e
+        format.json { render json: e.message, status: :unprocessable_entity }
+      end
     end
   end
 

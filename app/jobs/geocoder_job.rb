@@ -7,7 +7,10 @@ class GeocoderJob < Struct.new(:customer_id)
     Destination.where(customer_id: customer_id, lat: nil).each_slice(50){ |destinations|
       Destination.transaction do
         destinations.each { |destination|
-          destination.geocode
+          begin
+            destination.geocode
+          rescue StandardError => e
+          end
           Delayed::Worker.logger.info destination.inspect
           destination.save
           i += 1
