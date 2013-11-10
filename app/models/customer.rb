@@ -51,7 +51,7 @@ class Customer < ActiveRecord::Base
         elsif vehicles.size > max_vehicles
           # Delete
           (vehicles.size - max_vehicles).times{ |i|
-            vehicle = vehicles.pop
+            vehicle = vehicles[vehicles.size-i-1]
             plannings.each{ |planning|
               planning.vehicle_remove(vehicle)
             }
