@@ -39,7 +39,7 @@ class DestinationsController < ApplicationController
 
     respond_to do |format|
       if current_user.save
-        format.html { redirect_to @destination, notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
+        format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
         format.json { render action: 'show', status: :created, location: @destination }
       else
         format.html { render action: 'new' }
