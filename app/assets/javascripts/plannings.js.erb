@@ -94,7 +94,11 @@ function plannings_edit(params) {
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting,
-      error: ajaxError
+      error: function(request, status, error) {
+        ajaxError(request, status, error);
+        $("#out_of_road").sortable('cancel');
+        $(".stops").sortable('cancel');
+      }
     });
   }
 

@@ -77,67 +77,83 @@ class PlanningsController < ApplicationController
   end
 
   def move
-    destinations = Hash[current_user.customer.destinations.map{ |d| [d.id, d] }]
-    destinations[current_user.customer.store_id] = current_user.customer.store
-    routes = Hash[@planning.routes.map{ |route| [String(route.id), route] }]
-    params["_json"].each{ |r|
-      route = routes[r[:route]]
-      if r[:destinations]
-        route.set_destinations(r[:destinations].collect{ |d| [destinations[d[:id]], !!d[:active]] })
-      else
-        route.set_destinations([])
-      end
-    }
-
     respond_to do |format|
-      if @planning.save
-        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
-        format.json { render action: 'show', location: @planning }
-      else
-        format.json { render json: @planning.errors, status: :unprocessable_entity }
+      begin
+        destinations = Hash[current_user.customer.destinations.map{ |d| [d.id, d] }]
+        destinations[current_user.customer.store_id] = current_user.customer.store
+        routes = Hash[@planning.routes.map{ |route| [String(route.id), route] }]
+        Planning.transaction do
+          params["_json"].each{ |r|
+            route = routes[r[:route]]
+            if r[:destinations]
+              route.set_destinations(r[:destinations].collect{ |d| [destinations[d[:id]], !!d[:active]] })
+            else
+              route.set_destinations([])
+            end
+          }
+        end
+
+        if @planning.save
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
+        end
+      rescue StandardError => e
+        format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
   end
 
   def refresh
-    @planning.compute
     respond_to do |format|
-      if @planning.save
-        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
-        format.json { render action: 'show', location: @planning }
-      else
-        format.json { render json: @planning.errors, status: :unprocessable_entity }
+      begin
+        @planning.compute
+        if @planning.save
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
+        end
+      rescue StandardError => e
+        format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
   end
 
   def switch
     respond_to do |format|
-      route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
-      vehicle = Vehicle.where(id: Integer(params["vehicle_id"]), customer: current_user.customer).first
-      if route and vehicle and @planning.switch(route, vehicle) and @planning.compute and @planning.save
-        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
-        format.json { render action: 'show', location: @planning }
-      else
-        format.json { render json: @planning.errors, status: :unprocessable_entity }
+      begin
+        route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
+        vehicle = Vehicle.where(id: Integer(params["vehicle_id"]), customer: current_user.customer).first
+        if route and vehicle and @planning.switch(route, vehicle) and @planning.compute and @planning.save
+          format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
+        end
+      rescue StandardError => e
+        format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
   end
 
   def update_stop
-    @route = Route.where(planning: @planning, id: params[:route_id]).first
-    if @route
-      @stop = Stop.where(route: @route, destination_id: params[:destination_id]).first
-      if @stop
-        respond_to do |format|
-          if @stop.update(stop_params)
-            @planning.compute
-            @planning.save
-            format.json { render action: 'show', location: @planning }
-          else
-            format.json { render json: @stop.errors, status: :unprocessable_entity }
+    respond_to do |format|
+      begin
+        @route = Route.where(planning: @planning, id: params[:route_id]).first
+        if @route
+          @stop = Stop.where(route: @route, destination_id: params[:destination_id]).first
+          if @stop
+            if @stop.update(stop_params)
+              @planning.compute
+              @planning.save
+              format.json { render action: 'show', location: @planning }
+            else
+              format.json { render json: @stop.errors, status: :unprocessable_entity }
+            end
           end
         end
+      rescue StandardError => e
+        format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
   end
