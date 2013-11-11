@@ -30,8 +30,9 @@ class DestinationsController < ApplicationController
   # POST /destinations
   # POST /destinations.json
   def create
-    @destination = Destination.new(destination_params)
+    @destination = Destination.new
     @destination.customer = current_user.customer
+    @destination.update(destination_params)
     current_user.customer.destinations << @destination
     current_user.customer.plannings.each { |planning|
       planning.destination_add(@destination)
