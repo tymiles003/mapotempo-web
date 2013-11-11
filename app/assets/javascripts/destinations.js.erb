@@ -13,10 +13,11 @@ function destinations_form(params) {
   }).addTo(map);
 
   var layer = L.layerGroup();
-  var marker;
+  var markers = {};
 
   var pointing = false;
   var pointing_cursor;
+  var icon_default = new L.Icon.Default();
 
   function wire(row) {
     var id = $(row).attr('data-destination_id');
@@ -83,9 +84,8 @@ function destinations_form(params) {
     $('[name=destination\\[city\\]]', row).val(destination.city);
     $('[name=destination\\[lat\\]]', row).val(destination.lat);
     $('[name=destination\\[lng\\]]', row).val(destination.lng);
-    marker.setLatLng(new L.LatLng(destination.lat, destination.lng));
-    map.setView(marker.getLatLng(), 16);
-    row = $('[data-destination_id=' + destination_id + ']');
+    markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
+    map.setView(markers[destination_id].getLatLng(), 16);
   }
 
   function sendMove(id, latLng) {
@@ -96,7 +96,7 @@ function destinations_form(params) {
 
   map.on('click', function(mouseEvent) {
     if (pointing !== false) {
-      marker.setLatLng(mouseEvent.latlng);
+      markers[pointing].setLatLng(mouseEvent.latlng);
       sendMove(pointing, mouseEvent.latlng);
       pointing = false;
       $('body').css('cursor', '');
@@ -106,14 +106,19 @@ function destinations_form(params) {
 
   wire($("form"));
 
-  marker = L.marker(new L.LatLng(map_lat, map_lng), {
-    icon: new L.Icon.Default(),
-    draggable: true,
-    destination: destination_id
-  }).addTo(map);
-  marker.on('dragend', function(event) {
-    sendMove(event.target.options.destination, event.target.getLatLng());
-  });
+  function addMarker(id, lat, lng) {
+    var marker = L.marker(new L.LatLng(lat, lng), {
+      icon: icon_default,
+      draggable: true,
+      destination: id
+    }).addTo(map);
+    marker.on('dragend', function (event) {
+      sendMove(event.target.options.destination, event.target.getLatLng());
+    });
+    markers[id] = marker;
+  }
+
+  addMarker(destination_id, map_lat, map_lng);
 }
 
 function destinations_new(params) {
@@ -170,6 +175,7 @@ function destinations_index(params) {
   }).addTo(map);
 
   var layer = L.layerGroup();
+  var markers = {};
   var markersLayers = L.layerGroup();
 
   var cluster = new L.MarkerClusterGroup({
@@ -188,7 +194,6 @@ function destinations_index(params) {
   });
 
   var tags = {};
-  var markers = {};
   var pointing = false;
   var pointing_cursor;
   var icon_default = new L.Icon.Default();
@@ -246,8 +251,8 @@ function destinations_index(params) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $(':input[name=tags\\[\\]]', row).select2({
-      formatNoMatches: function() { return formatNoMatches; },
-      widht: '100%'
+      formatNoMatches: function () { return formatNoMatches; },
+      width: '100%'
     });
 
     $('.pointing', row).click(function (event) {
@@ -273,8 +278,8 @@ function destinations_index(params) {
     });
   }
 
-  function update(id, destination) {
-    var row = $('[data-destination_id=' + id + ']');
+  function update(destination_id, destination) {
+    var row = $('[data-destination_id=' + destination_id + ']');
     var t = []
     $.each(tags, function (i, tag) {
       t.push({
@@ -285,13 +290,13 @@ function destinations_index(params) {
     });
     destination.tags = t;
     $(row).replaceWith(SMT['destinations/show'](destination));
-    id = destination.id;
-    row = $('[data-destination_id=' + id + ']');
+    destination_id = destination.id;
+    row = $('[data-destination_id=' + destination_id + ']');
     wire(row);
     $('.destinations').trigger('update');
 
-    markers[id].setLatLng(new L.LatLng(destination.lat, destination.lng));
-    map.setView(markers[id].getLatLng(), 16);
+    markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
+    map.setView(markers[destination_id].getLatLng(), 16);
   }
 
   function sendMove(id, latLng) {
@@ -300,20 +305,14 @@ function destinations_index(params) {
     $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
   }
 
-  function dragend(event) {
-    sendMove(event.target.options.destination, event.target.getLatLng());
-  }
-
-
   map.on('click', function(mouseEvent) {
-    if (pointing) {
-      var id = pointing;
-      if (id in markers) {
-        markers[id].setLatLng(mouseEvent.latlng);
+    if (pointing !== false) {
+      if (pointing in markers) {
+        markers[pointing].setLatLng(mouseEvent.latlng);
       } else {
         addMarker(pointing, mouseEvent.latlng.lat, mouseEvent.latlng.lng);
       }
-      sendMove(id, mouseEvent.latlng);
+      sendMove(pointing, mouseEvent.latlng);
       pointing = false;
       $('body').css('cursor', '');
       $('.leaflet-container').css('cursor', pointing_cursor);
@@ -344,20 +343,20 @@ function destinations_index(params) {
     $("#destination_box").scrollTop($("#destination_box").scrollTop() + row.position().top - 200);
   }
 
-  function mouseover(mouseEvent) {
-    if (!pointing) {
-      over(mouseEvent.target.options.destination, false);
-    }
-  }
-
   function addMarker(id, lat, lng) {
     var marker = L.marker(new L.LatLng(lat, lng), {
       icon: icon_default,
       draggable: true,
       destination: id
     }).addTo(markersLayers).addTo(cluster);
-    marker.on('dragend', dragend);
-    marker.on('mouseover', mouseover);
+    marker.on('dragend', function (event) {
+      sendMove(event.target.options.destination, event.target.getLatLng());
+    });
+    marker.on('mouseover', function (mouseEvent) {
+      if (!pointing) {
+        over(mouseEvent.target.options.destination, false);
+      }
+    });
     markers[id] = marker;
   }
 
