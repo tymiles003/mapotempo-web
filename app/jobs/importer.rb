@@ -98,7 +98,7 @@ class Importer
       end
 
       if replace
-        if routes.size > 1
+        if routes.size > 1 || !routes.key?(nil)
           planning = Planning.new(name: name)
           planning.customer = customer
           planning.set_destinations(routes.values)
