@@ -45,6 +45,8 @@ class Importer
         'tags' => I18n.t('destinations.import_file.tags')
       }
       CSV.foreach(file, col_sep: separator, headers: true) { |row|
+        row = row.to_hash
+
         # Switch from locale to internal column name
         line += 1
         if errors.length > 10
