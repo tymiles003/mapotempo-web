@@ -207,13 +207,4 @@ ActiveRecord::Schema.define(version: 20131015182755) do
 
   add_index "zonings", ["customer_id"], name: "index_zonings_on_customer_id"
 
-  create_table "zonnings", force: true do |t|
-    t.text     "polygon"
-    t.integer  "customer_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "zonnings", ["customer_id"], name: "index_zonnings_on_customer_id"
-
 end
