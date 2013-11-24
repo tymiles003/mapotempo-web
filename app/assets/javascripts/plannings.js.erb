@@ -138,7 +138,7 @@ function plannings_edit(params) {
     $.each(data.routes, function(i, route) {
       if (route.vehicle_id) {
         route.vehicle = vehicles_map[route.vehicle_id];
-        route.path = '/vehicle/' + route.vehicle_id + '/edit';
+        route.path = '/vehicles/' + route.vehicle_id + '/edit';
       }
     });
 
