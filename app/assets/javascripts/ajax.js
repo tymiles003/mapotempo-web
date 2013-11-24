@@ -21,3 +21,9 @@ function ajaxError(request, status, error) {
     status + ' ' + $('<div/>').text(request.responseText).html() +
    '</div>');
 }
+
+function mustache_i18n() {
+  return function(text) {
+    return I18n.t(text);
+  }
+}

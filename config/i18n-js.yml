@@ -22,4 +22,4 @@
 #
 translations:
 - file: "app/assets/javascripts/i18n/translations.js"
-  only: ["*.web.*", "*.leaflet_draw.*"]
+  only: ["*.customers.*", "*.destinations.*", "*.plannings.*", "*.tags.*", "*.users.*", "*.vehicles.*", "*.zonings.*", "*.all.*", "*.web.*", "*.leaflet_draw.*"]

@@ -142,6 +142,7 @@ function plannings_edit(params) {
       }
     });
 
+    data['i18n'] = mustache_i18n;
     $("#planning").html(SMT['plannings/edit'](data));
 
     $("#planning input:checkbox").change(function (event, ui) {

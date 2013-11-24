@@ -1,17 +1,17 @@
 <p>
-  {{size}} <%= I18n.t 'plannings.edit.stops' %>
+  {{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
   -
-  {{distance}} <%= I18n.t 'all.unit.km' %>
+  {{distance}} {{#i18n}}all.unit.km{{/i18n}}
   -
-  {{emission}} <%= I18n.t 'all.unit.kgco2e_html' %>
-  {{#out_of_date}}<button type="button" class="btn btn-warning btn-sm" id="refresh"><i class="icon-refresh icon-fixed-width"></i> <%= I18n.t 'plannings.edit.refresh' %></button>{{/out_of_date}}
+  {{emission}} {{#i18n}}all.unit.kgco2e_html{{/i18n}}
+  {{#out_of_date}}<button type="button" class="btn btn-warning btn-sm" id="refresh"><i class="icon-refresh icon-fixed-width"></i> {{#i18n}}plannings.edit.refresh{{/i18n}}</button>{{/out_of_date}}
 </p>
 <ol class="routes">
 {{#routes}}
 <li class="route" data-route_id="{{route_id}}"{{#vehicle}} style="border-left: 6px solid {{color}}"{{/vehicle}}>
   {{^vehicle}}
-    <%= I18n.t 'plannings.edit.out_of_road' %>
-    {{size}} <%= I18n.t 'plannings.edit.stops' %>
+    {{#i18n}}plannings.edit.out_of_road{{/i18n}}
+    {{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
     <button type="button" class="toggle btn btn-default btn-xs"><i class="icon-eye-close icon-fixed-width"></i></button>
     <!--<button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>-->
     <ul id="out_of_road" class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}}>
@@ -38,16 +38,16 @@
       <div class="btn-group">
         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><i class="icon-share icon-fixed-width"></i><span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="/routes/{{route_id}}"><i class="icon-print icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export.print' %></a></li>
-          <li><a href="/routes/{{route_id}}.csv"><i class="icon-table icon-fixed-width"></i> <%= I18n.t 'plannings.edit.export.spreadsheet' %></a></li>
+          <li><a href="/routes/{{route_id}}"><i class="icon-print icon-fixed-width"></i> {{#i18n}}plannings.edit.export.print{{/i18n}}</a></li>
+          <li><a href="/routes/{{route_id}}.csv"><i class="icon-table icon-fixed-width"></i> {{#i18n}}plannings.edit.export.spreadsheet{{/i18n}}</a></li>
         </ul>
       </div>
       <br/>
-      {{size}} <%= I18n.t 'plannings.edit.stops' %>
+      {{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
       -
       {{start}} {{end}}
       -
-      {{distance}} <%= I18n.t 'all.unit.km' %>
+      {{distance}} {{#i18n}}all.unit.km{{/i18n}}
     </span>
     <ul class="stops sortable"{{#hidden}} style="display: none;"{{/hidden}} start="0">
     {{#stops}}
@@ -64,7 +64,7 @@
           {{#lat}}<a href="#" class="marker"><i class="icon-map-marker icon-fixed-width"></i></a>{{/lat}}
         {{/is_store}}
         {{name}}
-        {{#lat}}{{distance}} <%= I18n.t 'all.unit.km' %>{{/lat}}
+        {{#lat}}{{distance}} {{#i18n}}all.unit.km{{/i18n}}{{/lat}}
         {{#lat}}{{time}}{{/lat}}
       </li>
       {{/destination}}
