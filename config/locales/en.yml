@@ -171,6 +171,7 @@ en:
     index:
       title: "Listing destinations"
       new: "New Destination"
+      default_name: "New Destination"
       dialog:
         title: "Geocoding"
         geocoding_in_progress: "Please wait, geocoding in progress."
@@ -274,9 +275,6 @@ en:
       title: "New zoning"
 
   web:
-    destinations:
-      index:
-        default_name: "New Destination"
     select2:
       empty_result: "No results matched"
 

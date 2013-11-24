@@ -171,6 +171,7 @@ fr:
     index:
       title: "Liste clients"
       new: "Nouveau client"
+      default_name: "Nouveau client"
       dialog:
         title: "Géocodage"
         geocoding_in_progress: "Géocodage en cours, merci de patienter."
@@ -274,9 +275,6 @@ fr:
       title: "Nouveau zonage"
 
   web:
-    destinations:
-      index:
-        default_name: "Nouveau client"
     select2:
       empty_result: "Pas de résultats"
 
