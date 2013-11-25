@@ -37,13 +37,13 @@ end
 Mapotempo::Application.config.optimizer_exec = "tsp_simple"
 Mapotempo::Application.config.optimizer_tmp_dir = Dir.tmpdir
 
-Mapotempo::Application.config.geocode_cache_dir = Dir.tmpdir+'/geocode'
-Mapotempo::Application.config.geocode_cache_delay = 60*60*24*10
+Mapotempo::Application.config.geocode_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode', expires_in: 60*60*24*10)
+Mapotempo::Application.config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_complete', expires_in: 60*60*24*10)
 Mapotempo::Application.config.geocode_ign_referer = "localhost"
 Mapotempo::Application.config.geocode_ign_key = nil
 
-Mapotempo::Application.config.trace_cache_dir = Dir.tmpdir+'/trace'
-Mapotempo::Application.config.trace_cache_delay = 60*60*24*10
+Mapotempo::Application.config.trace_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_request', expires_in: 60*60*24*10)
+Mapotempo::Application.config.trace_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_result', expires_in: 60*60*24*10)
 Mapotempo::Application.config.trace_osrm_url = "http://router.project-osrm.org"
 
 Mapotempo::Application.config.delayed_job_use = false

@@ -1,22 +1,17 @@
 require 'json'
 
-require 'filecache'
-
 module Trace
 
-  @cache_dir = Mapotempo::Application.config.trace_cache_dir
-  @cache_delay = Mapotempo::Application.config.trace_cache_delay
+  @cache_request = Mapotempo::Application.config.trace_cache_request
+  @cache_result = Mapotempo::Application.config.trace_cache_result
   @osrm_url = Mapotempo::Application.config.trace_osrm_url
 
-  @cache_request = FileCache.new("cache", @cache_dir, @cache_delay, 3)
-  @cache_result = FileCache.new("cache", @cache_dir+"_result", @cache_delay, 3)
-
   def self.compute(from_lat, from_lng, to_lat, to_lng)
-    key = "#{from_lat} #{from_lng} #{to_lat} #{to_lng}"
+    key = [from_lat, from_lng, to_lat, to_lng]
 
-    result = @cache_result.get(key)
+    result = @cache_result.read(key)
     if !result
-      request = @cache_request.get(key)
+      request = @cache_request.read(key)
       if !request
         begin
           uri = URI(url = "#{@osrm_url}/viaroute")
@@ -25,7 +20,7 @@ module Trace
           res = Net::HTTP.get_response(uri)
           if res.is_a?(Net::HTTPSuccess)
             request = JSON.parse(res.body)
-            @cache_request.set(key, request)
+            @cache_request.write(key, request)
           else
             raise http.message
           end
@@ -53,7 +48,7 @@ module Trace
       trace = request["route_geometry"]
 
       result = [distance, time, trace]
-      @cache_result.set(key, result)
+      @cache_result.write(key, result)
     end
 
     result

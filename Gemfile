@@ -55,7 +55,6 @@ gem 'twitter_bootstrap_form_for', github: 'stouset/twitter_bootstrap_form_for'
 gem 'pg', group: :production
 gem 'rails_12factor', group: :production
 
-gem 'filecache'
 gem 'leaflet-rails', github: 'axyjo/leaflet-rails' # FIXME waiting for new version after 0.6.2'
 gem 'leaflet-markercluster-rails'
 gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for https://github.com/zentrification/leaflet-draw-rails/pull/1
@@ -64,7 +63,6 @@ gem 'jquery-tablesorter'
 gem 'mustache'
 gem 'smt_rails'
 gem 'select2-rails'
-gem 'geocoder'
 gem 'daemons'
 gem 'delayed_job'
 gem 'delayed_job_active_record'

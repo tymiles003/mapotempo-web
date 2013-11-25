@@ -3,24 +3,20 @@ require 'net/http'
 require 'open-uri'
 require 'json'
 
-require 'filecache'
-
 require 'rexml/document'
 include REXML
 
 module Geocode
 
-  @cache_dir = Mapotempo::Application.config.geocode_cache_dir
-  @cache_delay = Mapotempo::Application.config.geocode_cache_delay
+  @cache = Mapotempo::Application.config.geocode_cache
+  @cache_complete = Mapotempo::Application.config.geocode_complete_cache
   @ign_referer = Mapotempo::Application.config.geocode_ign_referer
   @ign_key = Mapotempo::Application.config.geocode_ign_key
 
-  @cache = FileCache.new("cache", @cache_dir, @cache_delay, 3)
-
   def self.complete(lat, lng, radius, street, postalcode, city)
-    key = "complete #{lat} #{lng} #{radius} #{street} #{postalcode} #{city}"
+    key = [lat, lng, radius, street, postalcode, city]
 
-    result = @cache.get(key)
+    result = @cache_complete.read(key)
     if !result
       url = URI::HTTP.build(:host => "services.gisgraphy.com", :path => "/street/streetsearch", :query => {
         :format => "json",
@@ -34,7 +30,7 @@ module Geocode
       }.to_query)
       Rails.logger.info "get #{url}"
       result = JSON.parse(open(url).read)
-      @cache.set(key, result)
+      @cache_complete.wrtie(key, result)
     end
 
     result["result"].collect{ |r|
@@ -43,9 +39,9 @@ module Geocode
   end
 
   def self.code(street, postalcode, city)
-    key = "code #{street} #{postalcode} #{city}"
+    key = [street, postalcode, city]
 
-    result = @cache.get(key)
+    result = @cache.read(key)
     if !result
       url = URI.parse("http://gpp3-wxs.ign.fr/#{@ign_key}/geoportail/ols")
       http = Net::HTTP.new(url.host)
@@ -77,7 +73,7 @@ module Geocode
       response = http.request(request)
       if response.code == "200"
         result = response.body # => The body (HTML, XML, blob, whatever)
-        @cache.set(key, result)
+        @cache.write(key, result)
       else
         Rails.logger.info request.body
         Rails.logger.info response.code
