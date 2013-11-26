@@ -27,7 +27,7 @@
 //= require leaflet.markercluster
 //= require leaflet.draw
 //= require mustache
-//= require select2.min.js
+//= require select2.js
 //= require_tree ../../templates
 //= require paloma
 //= require_tree .
