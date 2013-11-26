@@ -205,33 +205,35 @@ function destinations_index(params) {
   function wire(row) {
     var id = $(row).attr('data-destination_id');
 
-    $(":input[name=destination\\[street\\]]", row).autocomplete({
-      delay: 500,
-      source: function (req, add) {
-        $.ajax({
-          type: "patch",
-          data: $(":input", $(row)).serialize(),
-          url: '/destination/geocode_complete.json',
-          beforeSend: beforeSendWaiting,
-          success: function (data) {
-            add($.map(data, function (val, i) {
-              return {
-                label: val.street + ' ' + val.postalcode + ' ' + val.city,
-                value: val.street
-              };
-            }));
-          },
-          complete: completeWaiting,
-          error: ajaxError
-        });
-      },
-      select: function (event, ui) {
-        event.target.value = ui.item.value;
-        $(event.target).trigger('change');
-      }
-    });
-
-    $(":input", row).change(function (event) {
+    $(row)
+    .one("focus", ":input[name=destination\\[street\\]]", function(){
+      $(this).autocomplete({
+        delay: 500,
+        source: function (req, add) {
+          $.ajax({
+            type: "patch",
+            data: $(":input", $(row)).serialize(),
+            url: '/destination/geocode_complete.json',
+            beforeSend: beforeSendWaiting,
+            success: function (data) {
+              add($.map(data, function (val, i) {
+                return {
+                  label: val.street + ' ' + val.postalcode + ' ' + val.city,
+                  value: val.street
+                };
+              }));
+            },
+            complete: completeWaiting,
+            error: ajaxError
+          });
+        },
+        select: function (event, ui) {
+          event.target.value = ui.item.value;
+          $(event.target).trigger('change');
+        }
+      });
+    })
+    .on("change", ":input", function (event) {
       $.ajax({
         type: "put",
         data: $(":input", $(row)).serialize(),
@@ -243,26 +245,17 @@ function destinations_index(params) {
         complete: completeWaiting,
         error: ajaxError
       });
-    });
-
-    $(row).click(function (event) {
+    })
+    .click(function (event) {
       over(id, true);
-    });
-
-    var formatNoMatches = I18n.t('web.select2.empty_result');
-    $(':input[name=tags\\[\\]]', row).select2({
-      formatNoMatches: function () { return formatNoMatches; },
-      width: '100%'
-    });
-
-    $('.pointing', row).click(function (event) {
+    })
+    .on("click", ".pointing", function (event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
       $('.leaflet-container').css('cursor', 'crosshair');
-    });
-
-    $('.destroy', row).click(function (event) {
+    })
+    .on("click", ".destroy", function (event) {
       $.ajax({
         type: "delete",
         url: '/destinations/' + id + '.json',
@@ -275,6 +268,12 @@ function destinations_index(params) {
         complete: completeWaiting,
         error: ajaxError
       });
+    });
+
+    var formatNoMatches = I18n.t('web.select2.empty_result');
+    $(':input[name=tags\\[\\]]', row).select2({
+      formatNoMatches: function () { return formatNoMatches; },
+      width: '100%'
     });
   }
 
