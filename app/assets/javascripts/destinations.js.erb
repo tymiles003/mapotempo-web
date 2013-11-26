@@ -439,7 +439,11 @@ function destinations_index(params) {
       if (destination.lat && destination.lng) {
         addMarker(destination.id, destination.lat, destination.lng);
       }
-      wire($(".destination:last", table));
+    });
+
+    $('tr', table).each(function (index, element) {
+     
+      wire( element );
     });
 
     $("#destination_box table").tablesorter({
