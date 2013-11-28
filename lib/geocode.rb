@@ -30,7 +30,7 @@ module Geocode
       }.to_query)
       Rails.logger.info "get #{url}"
       result = JSON.parse(open(url).read)
-      @cache_complete.wrtie(key, result)
+      @cache_complete.write(key, result)
     end
 
     result["result"].collect{ |r|
