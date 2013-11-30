@@ -24,6 +24,7 @@ Mapotempo::Application.routes.draw do
 
   resources :routes
 
+  get '/zonings/new/planning/:planning_id' => 'zonings#new'
   resources :zonings do
     get 'edit/planning/:planning_id' => 'zonings#edit'
     get 'planning/:planning_id' => 'zonings#show'
