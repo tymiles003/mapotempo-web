@@ -65,6 +65,11 @@ class Importer
         r = row.to_hash.select{ |k|
           ["name", "street", "postalcode", "city", "lat", "lng"].include?(k)
         }
+
+        if r.size == 0
+          next # Skip empty line
+        end
+
         if !r.key?('name') or !r.key?('street') or !r.key?('city')
           errors << I18n.t('destinations.import_file.missing_name_street_city', line: line)
           next
