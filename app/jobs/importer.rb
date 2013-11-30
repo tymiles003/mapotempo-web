@@ -34,6 +34,7 @@ class Importer
 
       line = 1
       errors = []
+      need_geocode = false
       columns = {
         'route' => I18n.t('destinations.import_file.route'),
         'name' => I18n.t('destinations.import_file.name'),
@@ -70,14 +71,22 @@ class Importer
           next # Skip empty line
         end
 
-        if !r.key?('name') or !r.key?('street') or !r.key?('city')
+        if !r.key?('name') || !r.key?('street') || !r.key?('city')
           errors << I18n.t('destinations.import_file.missing_name_street_city', line: line)
           next
         end
 
+        if !r.key?('lat') || !r.key?('lng')
+          need_geocode = true
+        end
+
         if decimal == ','
-          r["lat"].gsub!(',', '.')
-          r["lng"].gsub!(',', '.')
+          if r.key?('lat')
+            r['lat'].gsub!(',', '.')
+          end
+          if r.key?('lng')
+            r['lng'].gsub!(',', '.')
+          end
         end
         destination = Destination.new(r)
         destination.customer = customer
@@ -119,19 +128,21 @@ class Importer
         }
       end
 
-      if not Mapotempo::Application.config.delayed_job_use
-        routes.each{ |key, destinations|
-          destinations.each{ |destination|
-            if not(destination.lat and destination.lng)
-              begin
-                destination.geocode
-              rescue StandardError => e
+      if need_geocode
+        if not Mapotempo::Application.config.delayed_job_use
+          routes.each{ |key, destinations|
+            destinations.each{ |destination|
+              if not(destination.lat and destination.lng)
+                begin
+                  destination.geocode
+                rescue StandardError => e
+                end
               end
-            end
+            }
           }
-        }
-      else
-        customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id))
+        else
+          customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id))
+        end
       end
     end
 
