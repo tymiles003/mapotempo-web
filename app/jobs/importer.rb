@@ -10,22 +10,14 @@ class Importer
     tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
     routes = Hash.new{ |h,k| h[k] = [] }
 
-    separator = ','
-    decimal = '.'
-    File.open(file) do |f|
-      line = f.readline
-      splitComma, splitSemicolon = line.split(','), line.split(';')
-      split, separator = splitComma.size() > splitSemicolon.size() ? [splitComma, ','] : [splitSemicolon, ';']
+    contents = File.open(file, "r:bom|utf-8").read
+    detection = CharlockHolmes::EncodingDetector.detect(contents)
+    contents = CharlockHolmes::Converter.convert(contents, detection[:encoding], 'UTF-8')
 
-      csv = CSV.open(file, col_sep: separator, headers: true)
-      row = csv.readline
-      ilat = row.index('lat')
-      row = csv.readline
-      if ilat
-        data = row[ilat]
-        decimal = data.split('.').size > data.split(',').size ? '.' : ','
-      end
-    end
+    separator = ','
+    line = contents.lines.first
+    splitComma, splitSemicolon = line.split(','), line.split(';')
+    split, separator = splitComma.size() > splitSemicolon.size() ? [splitComma, ','] : [splitSemicolon, ';']
 
     Destination.transaction do
       if replace
@@ -45,7 +37,7 @@ class Importer
         'lng' => I18n.t('destinations.import_file.lng'),
         'tags' => I18n.t('destinations.import_file.tags')
       }
-      CSV.foreach(file, col_sep: separator, headers: true) { |row|
+      CSV.parse(contents, col_sep: separator, headers: true) { |row|
         row = row.to_hash
 
         # Switch from locale to internal column name
@@ -80,13 +72,11 @@ class Importer
           need_geocode = true
         end
 
-        if decimal == ','
-          if r.key?('lat')
-            r['lat'].gsub!(',', '.')
-          end
-          if r.key?('lng')
-            r['lng'].gsub!(',', '.')
-          end
+        if r.key?('lat')
+          r['lat'].gsub!(',', '.')
+        end
+        if r.key?('lng')
+          r['lng'].gsub!(',', '.')
         end
         destination = Destination.new(r)
         destination.customer = customer
