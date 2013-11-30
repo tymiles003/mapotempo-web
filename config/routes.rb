@@ -12,7 +12,9 @@ Mapotempo::Application.routes.draw do
   get 'destination/import' => 'destinations#import'
   post 'destinations/upload' => 'destinations#upload'
   patch 'destination/geocode' => 'destinations#geocode'
-  patch 'destination/geocode_complete' => 'destinations#geocode_complete'
+  if Mapotempo::Application.config.geocode_complete
+    patch 'destination/geocode_complete' => 'destinations#geocode_complete'
+  end
 
   resources :plannings do
     patch 'move'

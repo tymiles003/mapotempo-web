@@ -22,8 +22,9 @@ function destinations_form(params) {
   function wire(row) {
     var id = $(row).attr('data-destination_id');
 
-    $(row)
-    .one("focus", ":input[name=destination\\[street\\]]", function(){
+    var row = $(row);
+    <% if Mapotempo::Application.config.geocode_complete %>
+    row.one("focus", ":input[name=destination\\[street\\]]", function(){
       $(this).autocomplete({
         delay: 500,
         source: function (req, add) {
@@ -49,8 +50,9 @@ function destinations_form(params) {
           $(event.target).trigger('change');
         }
       });
-    })
-    .on("change", ":input", function (event) {
+    });
+    <% end %>
+    row.on("change", ":input", function (event) {
       $.ajax({
         type: "patch",
         data: $(row).serialize(),
@@ -206,8 +208,9 @@ function destinations_index(params) {
   function wire(row) {
     var id = $(row).attr('data-destination_id');
 
-    $(row)
-    .one("focus", ":input[name=destination\\[street\\]]", function(){
+    var row = $(row);
+    <% if Mapotempo::Application.config.geocode_complete %>
+    row.one("focus", ":input[name=destination\\[street\\]]", function(){
       $(this).autocomplete({
         delay: 500,
         source: function (req, add) {
@@ -233,8 +236,9 @@ function destinations_index(params) {
           $(event.target).trigger('change');
         }
       });
-    })
-    .on("change", ":input", function (event) {
+    });
+    <% end %>
+    row.on("change", ":input", function (event) {
       $.ajax({
         type: "put",
         data: $(":input", $(row)).serialize(),
