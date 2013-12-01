@@ -10,7 +10,7 @@
     <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
   <% end %>
   <%= f.number_field :capacity, min:1 %>
-  <%= f.text_field :color, class:"simple_color" %>
+  <%= f.select :color, [], Vehicle.colors_table %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

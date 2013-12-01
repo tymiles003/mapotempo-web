@@ -20,6 +20,7 @@
 //= require jquery.ui.slider
 //= require jquery-tablesorter
 //= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
+//= require jquery.simplecolorpicker.js
 //= require i18n
 //= require i18n/translations
 //= require i18n/translations-setting

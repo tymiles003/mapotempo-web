@@ -60,6 +60,7 @@ gem 'leaflet-markercluster-rails'
 gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for https://github.com/zentrification/leaflet-draw-rails/pull/1
 gem 'jquery-ui-rails'
 gem 'jquery-tablesorter'
+gem 'jquery-simplecolorpicker-rails', github: 'frodrigo/jquery-simplecolorpicker-rails'
 gem 'mustache'
 gem 'smt_rails'
 gem 'select2-rails', '<3.0.0' # FIXME wait for https://github.com/ivaynberg/select2/issues/781
