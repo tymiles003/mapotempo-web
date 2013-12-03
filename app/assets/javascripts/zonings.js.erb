@@ -161,15 +161,13 @@ function zonings_edit(params) {
     }
   }
 
-  if (zoning_id) {
-    $.ajax({
-      url: planning_id ? '/zonings/' + zoning_id + '/edit/planning/' + planning_id + '.json' : '/zonings/' + zoning_id + '/edit.json',
-      beforeSend: beforeSendWaiting,
-      success: display_zoning,
-      complete: completeWaiting,
-      error: ajaxError
-    });
-  }
+  $.ajax({
+    url: '/zonings/' + (zoning_id ? zoning_id + '/edit' : 'new') + (planning_id ? '/planning/' + planning_id : '') + '.json',
+    beforeSend: beforeSendWaiting,
+    success: display_zoning,
+    complete: completeWaiting,
+    error: ajaxError
+  });
 }
 
 Paloma.controller('Zoning').prototype.new = function () {

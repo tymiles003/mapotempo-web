@@ -10,22 +10,14 @@ class Importer
     tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
     routes = Hash.new{ |h,k| h[k] = [] }
 
-    separator = ','
-    decimal = '.'
-    File.open(file) do |f|
-      line = f.readline
-      splitComma, splitSemicolon = line.split(','), line.split(';')
-      split, separator = splitComma.size() > splitSemicolon.size() ? [splitComma, ','] : [splitSemicolon, ';']
+    contents = File.open(file, "r:bom|utf-8").read
+    detection = CharlockHolmes::EncodingDetector.detect(contents)
+    contents = CharlockHolmes::Converter.convert(contents, detection[:encoding], 'UTF-8')
 
-      csv = CSV.open(file, col_sep: separator, headers: true)
-      row = csv.readline
-      ilat = row.index('lat')
-      row = csv.readline
-      if ilat
-        data = row[ilat]
-        decimal = data.split('.').size > data.split(',').size ? '.' : ','
-      end
-    end
+    separator = ','
+    line = contents.lines.first
+    splitComma, splitSemicolon = line.split(','), line.split(';')
+    split, separator = splitComma.size() > splitSemicolon.size() ? [splitComma, ','] : [splitSemicolon, ';']
 
     Destination.transaction do
       if replace
@@ -34,6 +26,7 @@ class Importer
 
       line = 1
       errors = []
+      need_geocode = false
       columns = {
         'route' => I18n.t('destinations.import_file.route'),
         'name' => I18n.t('destinations.import_file.name'),
@@ -44,7 +37,7 @@ class Importer
         'lng' => I18n.t('destinations.import_file.lng'),
         'tags' => I18n.t('destinations.import_file.tags')
       }
-      CSV.foreach(file, col_sep: separator, headers: true) { |row|
+      CSV.parse(contents, col_sep: separator, headers: true) { |row|
         row = row.to_hash
 
         # Switch from locale to internal column name
@@ -65,14 +58,25 @@ class Importer
         r = row.to_hash.select{ |k|
           ["name", "street", "postalcode", "city", "lat", "lng"].include?(k)
         }
-        if !r.key?('name') or !r.key?('street') or !r.key?('city')
+
+        if r.size == 0
+          next # Skip empty line
+        end
+
+        if !r.key?('name') || !r.key?('street') || !r.key?('city')
           errors << I18n.t('destinations.import_file.missing_name_street_city', line: line)
           next
         end
 
-        if decimal == ','
-          r["lat"].gsub!(',', '.')
-          r["lng"].gsub!(',', '.')
+        if !r.key?('lat') || !r.key?('lng')
+          need_geocode = true
+        end
+
+        if r.key?('lat')
+          r['lat'].gsub!(',', '.')
+        end
+        if r.key?('lng')
+          r['lng'].gsub!(',', '.')
         end
         destination = Destination.new(r)
         destination.customer = customer
@@ -114,19 +118,21 @@ class Importer
         }
       end
 
-      if not Mapotempo::Application.config.delayed_job_use
-        routes.each{ |key, destinations|
-          destinations.each{ |destination|
-            if not(destination.lat and destination.lng)
-              begin
-                destination.geocode
-              rescue StandardError => e
+      if need_geocode
+        if not Mapotempo::Application.config.delayed_job_use
+          routes.each{ |key, destinations|
+            destinations.each{ |destination|
+              if not(destination.lat and destination.lng)
+                begin
+                  destination.geocode
+                rescue StandardError => e
+                end
               end
-            end
+            }
           }
-        }
-      else
-        customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id))
+        else
+          customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id))
+        end
       end
     end
 

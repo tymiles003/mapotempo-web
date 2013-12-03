@@ -25,7 +25,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def self.colors_table
-    ["004499", "EEEE00", "00CC00", "DD0000", "EEEEBB", "558800", "FFBB00", "00BBFF"]
+    ['#004499', '#EEEE00', '#00CC00', '#DD0000', '#EEEEBB', '#558800', '#FFBB00', '#00BBFF']
   end
 
   private
@@ -33,7 +33,7 @@ class Vehicle < ActiveRecord::Base
       self.emission = 0
       self.consumption = 0
       self.capacity = 999
-      self.color = '#'+Vehicle.colors_table[0]
+      self.color = Vehicle.colors_table[0]
       self.open = Time.new(2000, 1, 1, 8, 0)
       self.close = Time.new(2000, 1, 1, 12, 0)
     end

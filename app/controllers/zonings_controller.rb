@@ -16,6 +16,7 @@ class ZoningsController < ApplicationController
   # GET /zonings/new
   def new
     @zoning = Zoning.new
+    @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
   end
 
   # GET /zonings/1/edit

@@ -41,6 +41,7 @@ Mapotempo::Application.config.geocode_cache = ActiveSupport::Cache::FileStore.ne
 Mapotempo::Application.config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_complete', expires_in: 60*60*24*10)
 Mapotempo::Application.config.geocode_ign_referer = "localhost"
 Mapotempo::Application.config.geocode_ign_key = nil
+Mapotempo::Application.config.geocode_complete = false # Build time setting
 
 Mapotempo::Application.config.trace_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_request', expires_in: 60*60*24*10)
 Mapotempo::Application.config.trace_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_result', expires_in: 60*60*24*10)

@@ -81,6 +81,7 @@ fr:
         quantity: "Quantité"
         open: "Horaire début"
         close: "Horaire fin"
+        tags: "Libellés"
         tag_ids: "Libellés"
       layer:
         name: "Nom"

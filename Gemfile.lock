@@ -16,6 +16,13 @@ GIT
       railties (>= 3.1)
 
 GIT
+  remote: git://github.com/frodrigo/jquery-simplecolorpicker-rails.git
+  revision: 37f515d5738bc706606fafd1d7974dbea2ef54e7
+  specs:
+    jquery-simplecolorpicker-rails (0.5.0)
+      railties (>= 3.1.0)
+
+GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
   revision: 671dec655635265e5e1cc3e9be10e3f62f465101
   specs:
@@ -77,6 +84,7 @@ GEM
       sass (~> 3.2)
     builder (3.1.4)
     cancan (1.6.10)
+    charlock_holmes (0.6.9.4)
     coffee-rails (4.0.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0.beta, < 5.0)
@@ -239,6 +247,7 @@ PLATFORMS
 
 DEPENDENCIES
   cancan
+  charlock_holmes
   daemons
   delayed_job
   delayed_job_active_record
@@ -249,6 +258,7 @@ DEPENDENCIES
   i18n-js
   jbuilder (~> 1.2)
   jquery-rails
+  jquery-simplecolorpicker-rails!
   jquery-tablesorter
   jquery-ui-rails
   leaflet-draw-rails!

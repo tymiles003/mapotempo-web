@@ -5,9 +5,8 @@
     <span class="input-group-addon"><i class="icon-tags"></i></span>
   <% end %>
   <%= f.collection_select :zoning_id, [], current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {add_on: 'append'} do %>
-    <% if @planning.id %>
-      <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_edit"<% if not @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.edit' %></a>
-    <% end %>
+    <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_edit"<% if not @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.edit' %></a>
+    <a href="/zonings/new/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_new"<% if @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.new' %></a>
   <% end %>
   <%= f.actions :class => 'col-lg-6 col-lg-offset-4' do %>
     <%= f.submit :class => 'btn btn-primary' %>

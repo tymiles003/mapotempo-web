@@ -1,15 +1,6 @@
-//= require jquery.simple-color
-
 function vehicles_form() {
-  $('.simple_color').simpleColor({
-    cellWidth: 40,
-    cellHeight: 40,
-    border: '1px solid #CCCCCC',
-    buttonClass: 'button',
-    boxWidth: '100%',
-    boxHeight: 40,
-    colors: ["<%= Vehicle.colors_table.join('", "').html_safe %>"],
-    columns: <%= Vehicle.colors_table.size %>
+  $('#vehicle_color').simplecolorpicker({
+    theme: 'fontawesome'
   });
 }
 

@@ -57,6 +57,7 @@ function plannings_edit(params) {
   $("#planning_zoning_id").change(function () {
     var id = $(this).val();
     if (id) {
+      $("#zoning_new").hide();
       $("#zoning_edit").show();
       $("#zoning_edit").attr("href", "/zonings/" + id + "/edit/planning/" + planning_id);
       $.ajax({
@@ -69,6 +70,7 @@ function plannings_edit(params) {
       });
     } else {
       $("#zoning_edit").hide();
+      $("#zoning_new").show();
       map.removeLayer(layer_zoning);
       layer_zoning = null;
     }
