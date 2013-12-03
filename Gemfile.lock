@@ -16,13 +16,6 @@ GIT
       railties (>= 3.1)
 
 GIT
-  remote: git://github.com/frodrigo/jquery-simplecolorpicker-rails.git
-  revision: 37f515d5738bc706606fafd1d7974dbea2ef54e7
-  specs:
-    jquery-simplecolorpicker-rails (0.5.0)
-      railties (>= 3.1.0)
-
-GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
   revision: 671dec655635265e5e1cc3e9be10e3f62f465101
   specs:
@@ -122,6 +115,8 @@ GEM
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-simplecolorpicker-rails (0.4.0)
+      railties (>= 3.1.0)
     jquery-tablesorter (1.5.0)
       railties (>= 3.1, < 5)
     jquery-ui-rails (4.0.4)
@@ -258,7 +253,7 @@ DEPENDENCIES
   i18n-js
   jbuilder (~> 1.2)
   jquery-rails
-  jquery-simplecolorpicker-rails!
+  jquery-simplecolorpicker-rails
   jquery-tablesorter
   jquery-ui-rails
   leaflet-draw-rails!
