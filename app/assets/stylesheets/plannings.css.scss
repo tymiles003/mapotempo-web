@@ -20,39 +20,55 @@
   padding: 4px 8px;
 }
 
-.btn-danger {
-  
-  color: #fff !important;
-}
 
-.icon {
 
-  margin-right: 4px;
-  font-size: 14px;
-}
+.box {
 
-.btn .icon {
+  .btn-danger {
+    
+    color: #fff !important;
+  }
 
-  margin-right: 0;
-}
+  .icon {
 
-.export {
+    margin-right: 4px;
+    font-size: 14px;
+  }
 
-  margin-top: 8px;
-  
-  .caret {
-  
-    border-top-color: #333;
+  .btn .icon {
+
+    margin-right: 0;
+  }
+
+  .export {
+
+    margin-top: 8px;
+    
+    .caret {
+    
+      border-top-color: #333;
+    }
+  }
+
+  .export:hover,
+  .export:focus,
+  .export.active {
+    
+    color: #333;
+  }
+
+
+  .select2-container.form-control {
+
+    padding: 0;
+  }
+
+  .select2-container-multi .select2-choices {
+
+    height: 100% !important;
+    border-width: 0;
   }
 }
-
-.export:hover,
-.export:focus,
-.export.active {
-  
-  color: #333;
-}
-
 
 .routes {
   overflow-y: auto;
