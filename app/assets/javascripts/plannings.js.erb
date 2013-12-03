@@ -103,6 +103,17 @@ function plannings_edit(params) {
   }
 
   function display_planning(data) {
+    
+    function scrollUp() {
+      
+      $('.box').animate({ 'scrollTop': '-=40' }, 200);
+    }
+    
+    function scrollDown() {
+      
+      $('.box').animate({ 'scrollTop': '+=40' }, 200);
+    }
+    
     if ($("#dialog-matrix").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
@@ -200,6 +211,7 @@ function plannings_edit(params) {
       if (route.vehicle) {
         $(".route[data-route_id=" + route.route_id + "] .vehicle_select").val(route.vehicle.id).trigger("change");
         color = route.vehicle.color;
+        $(".route[data-route_id=" + route.route_id + "] .label").css('background-color', color);
       }
 
       $.each(route.stops, function (index, stop) {
@@ -245,12 +257,14 @@ function plannings_edit(params) {
 
     $("#out_of_road").sortable({
       connectWith: ".sortable",
+      axis: "y",
       update: update_planning,
     }).disableSelection();
 
     var sortableUpdate = false;
     $(".stops").sortable({
       connectWith: ".sortable",
+      axis: "y",
       items: "li.waypoint",
       start: function (event, ui) {
         sortableUpdate = false;

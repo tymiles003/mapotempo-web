@@ -8,39 +8,215 @@
 // = require leaflet.markercluster.default
 // = require leaflet.markercluster.default.ie
 
+
+
+.icon {
+
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+.btn .icon {
+
+  margin-right: 0;
+}
+
+.export {
+
+  margin-top: 8px;
+  
+  .caret {
+  
+    border-top-color: #333;
+  }
+}
+
+.export:hover,
+.export:focus,
+.export.active {
+  
+  color: #333;
+}
+
+
 .routes {
   overflow-y: auto;
-  height: 600px;
   padding: 0px;
   margin: 0px;
 
   .route {
     list-style-type: none;
     margin-bottom: 1em;
+    
+    .panel {
+    
+      margin-bottom: 40px;
+    }
+    
+    .panel-heading {
+      
+      .vehicle_select {
+      
+        width: 140px;
+      }
+    }
+    
+    
+    .stops {      
+      position:relative;
+      cursor: default;
+      
+      li {
+      
+        line-height: 30px;
+        padding: 10px 15px;
+        
+        .icon-reorder {
+        
+          color: #ccc;
+        }
+        
+        .icon-reorder:hover {
+        
+          cursor: move;
+        }
+        
+        .label {
+          
+          display: inline-block;
+          margin-right: 4px;
+          width: 24px;
+        }
 
-    .store, .waypoint {
-      list-style-type: none;
-      margin-left: -2em;
+        .label-empty {
+          
+          visibility: hidden;
+        }
 
-      .number {
-        text-align: right;
-        display: inline-block;
-        width: 1.5em;
+        .caption {
+        
+          display: inline-block;
+          line-height: 14px;
+          vertical-align: middle;
+          
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 130px;
+          display: inline-block;
+
+          .name {
+          
+            font-weight: bold;
+          }
+          
+          .info {
+          
+            color: #777;
+          }
+        }
+        
+        .btn-inverse {
+        
+          border-color: #ccc;
+          
+          .icon {
+          
+            color: #333;
+          }
+        }
+        
+        .btn-inverse:hover,
+        .btn-inverse:focus,
+        .btn-inverse.active {
+        
+          background-color: #efefef;
+          
+          .icon {
+          
+            color: #333;
+          }
+        }
       }
     }
   }
 }
 
-#map {
-  height: 600px;
-}
-
-.placeholder {
-  list-style-type: none;
-}
 
 .leaflet-marker-icon .number {
   background: none;
   right: -1px;
   top: 3px;
+  color: #fff;
+}
+
+
+#map {
+
+  position: absolute;
+  z-index: -1;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+.box-wrapper {
+
+    width: 350px;
+    position: fixed;
+    right: 20px;
+    top: 70px;
+    bottom: 30px;
+  
+  .box {
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    
+    background-color: #fff;
+    padding: 15px;
+  }
+}
+
+
+.navbar,
+.box {
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  -o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+
+  font-size: 30px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+
+.in_drag {
+
+  .routes .route .stops li {
+  
+    line-height: 16px;
+    padding: 4px 15px;
+  }
+
+  h1,
+  form,
+  .global_info,
+  .panel-body,
+  .caption .info,
+  .btn {
+  
+    display:none;
+  }
 }

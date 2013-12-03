@@ -1,7 +1,7 @@
-<%= twitter_bootstrap_form_for @planning, layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
+<%= twitter_bootstrap_form_for @planning, layout: :horizontal, default_div_class: 'col-lg-6 col-lg-offset-1', default_label_class: 'control-label col-lg-3' do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
   <%= f.text_field :name %>
-  <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {disabled:!!@planning.id, multiple: true, div_class:'input-group col-lg-4', add_on: 'append'} do %>
+  <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {disabled:!!@planning.id, multiple: true, div_class:'input-group col-lg-6 col-lg-offset-1', add_on: 'append'} do %>
     <span class="input-group-addon"><i class="icon-tags"></i></span>
   <% end %>
   <%= f.collection_select :zoning_id, [], current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {add_on: 'append'} do %>
@@ -9,7 +9,7 @@
       <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_edit"<% if not @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.edit' %></a>
     <% end %>
   <% end %>
-  <%= f.actions do %>
-    <%= f.submit %>
+  <%= f.actions :class => 'col-lg-6 col-lg-offset-4' do %>
+    <%= f.submit :class => 'btn btn-primary' %>
   <% end %>
 <% end %>
