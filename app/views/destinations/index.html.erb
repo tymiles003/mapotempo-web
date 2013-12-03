@@ -1,31 +1,39 @@
 <h1><%= t '.title' %></h1>
 
-<div id="destination_box" class="row col-lg-12">
-  <table class="tablesorter">
-    <thead><tr>
-      <th><%= t 'activerecord.attributes.destination.name' %></th>
-      <th>
-        <span><%= t 'activerecord.attributes.destination.street' %></span>
-        <span><%= t 'activerecord.attributes.destination.postalcode' %></span>
-        <span><%= t 'activerecord.attributes.destination.city' %></span>
-      </th>
-      <th><%= t 'activerecord.attributes.destination.quantity' %></th>
-      <th>
-        <span><%= t 'activerecord.attributes.destination.open' %></span>
-        <span><%= t 'activerecord.attributes.destination.close' %></span>
-      </th>
-      <th><%= t 'activerecord.attributes.destination.tags' %></th>
-      <th></th>
-    </tr></thead>
-    <tbody class="destinations"></tbody>
-  </table>
-</div>
-<div class="row col-lg-1">
-  <button id="add" type="button" class="destroy btn btn-default btn-sm"><i class="icon-plus icon-fixed-width"></i> <%= t '.new' %></button>
+<div class="row">
+  <div class="col-lg-12">
+    <button id="add" type="button" class="btn btn-default btn-sm"><i class="icon icon-plus icon-fixed-width"></i> <%= t '.new' %></button>
+  </div>
 </div>
 
-<div class="row col-lg-12">
-  <div id="map" style="height: 300px;"></div>
+
+<div id="destination_box" class="row">
+  <div class="col-lg-12">
+    <table class="tablesorter">
+      <thead><tr>
+        <th><%= t 'activerecord.attributes.destination.name' %></th>
+        <th>
+          <span><%= t 'activerecord.attributes.destination.street' %></span>
+          <span><%= t 'activerecord.attributes.destination.postalcode' %></span>
+          <span><%= t 'activerecord.attributes.destination.city' %></span>
+        </th>
+        <th><%= t 'activerecord.attributes.destination.quantity' %></th>
+        <th>
+          <span><%= t 'activerecord.attributes.destination.open' %></span>
+          <span><%= t 'activerecord.attributes.destination.close' %></span>
+        </th>
+        <th><%= t 'activerecord.attributes.destination.tags' %></th>
+        <th></th>
+      </tr></thead>
+      <tbody class="destinations"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div id="map" style="height: 300px;"></div>
+  </div>
 </div>
 
 <div id="dialog-geocoding" title="<%= t '.dialog.title' %>" style="display:none">

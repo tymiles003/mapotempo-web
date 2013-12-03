@@ -5,6 +5,7 @@
 #destination_box {
   height: 300px;
   overflow-y: scroll;
+  margin-top: 20px;
 
   .destination .block {
     display: table;
@@ -32,3 +33,4 @@
 .ui-helper-hidden-accessible {
   display: none
 }
+
