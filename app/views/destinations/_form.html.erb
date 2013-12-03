@@ -8,7 +8,7 @@
   <%= f.text_field :city %>
   <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
   <input type="hidden" name="destination[lng]" value="<%= @destination.lng %>" />
-  <div class="row">
+  <div class="form-group">
     <span class="col-lg-offset-2 col-lg-4"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
   <% if @destination != current_user.customer.store %>
