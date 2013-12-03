@@ -211,7 +211,7 @@ function plannings_edit(params) {
 
       var color;
       if (route.vehicle) {
-        $(".route[data-route_id=" + route.route_id + "] .vehicle_select").val(route.vehicle.id).trigger("change");
+        $(".route[data-route_id=" + route.route_id + "] .vehicle_select").select2('val', { 'id': route.vehicle.id, 'name': route.vehicle.name }).trigger("change");
         color = route.vehicle.color;
         $(".route[data-route_id=" + route.route_id + "] .label").css('background-color', color);
       }
