@@ -80,6 +80,11 @@
     list-style-type: none;
     margin-bottom: 1em;
     
+    .sortable {
+    
+      min-height: 10px;
+    }
+    
     .panel {
     
       margin-bottom: 40px;

@@ -20,7 +20,6 @@
 <li class="route" data-route_id="{{route_id}}"{{#vehicle}} data-color="{{color}}" {{/vehicle}}>
   
   {{^vehicle}}
-    {{#size}}
       <div class="panel panel-danger">
         <div class="panel-heading">
           {{#i18n}}plannings.edit.out_of_road{{/i18n}}
@@ -55,7 +54,6 @@
         {{/stops}}
         </ul>
       </div>
-    {{/size}}
   {{/vehicle}}
   
   
