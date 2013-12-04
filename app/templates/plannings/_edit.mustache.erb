@@ -45,8 +45,8 @@
             </div>
             
             <div class="btn-group pull-right">
-              <a href="/destinations/{{id}}/edit" class="marker_edit btn btn-inverse btn-sm"><i class="icon icon-pencil"></i></a>
-              {{#lat}}<a href="#" class="marker btn btn-inverse btn-sm"><i class="icon icon-map-marker"></i></a>{{/lat}}
+              <a href="/destinations/{{id}}/edit" class="marker_edit btn btn-inverse btn-xs"><i class="icon icon-pencil"></i></a>
+              {{#lat}}<a href="#" class="marker btn btn-inverse btn-xs"><i class="icon icon-map-marker"></i></a>{{/lat}}
             </div>
 
             <div class="clearfix"></div>
@@ -101,17 +101,17 @@
           {{/is_store}}
           
           <div class="caption">
-            <span class="name" title="{{name}}">{{name}}</span><br />
-            <span class="info">{{#lat}}{{distance}} {{#i18n}}all.unit.km{{/i18n}}{{/lat}}{{#active}}{{#lat}} - {{time}}{{/lat}}{{/active}}</span>
+            <span class="name" title="{{name}}">{{name}}</span>
+            <span class="info">{{#active}}{{#lat}} - {{time}}{{/lat}}{{/active}}</span>
           </div>
           
           {{#is_store}}
-            <a href="#" class="marker btn btn-inverse btn-sm pull-right"><i class="icon icon-map-marker"></i></a>
+            <a href="#" class="marker btn btn-inverse btn-xs pull-right"><i class="icon icon-map-marker"></i></a>
           {{/is_store}}
           {{^is_store}}
             <div class="btn-group pull-right">
-              <a href="/destinations/{{id}}/edit" class="marker_edit btn btn-inverse btn-sm"><i class="icon icon-pencil"></i></a>
-              {{#lat}}<a href="#" class="marker btn btn-inverse btn-sm"><i class="icon icon-map-marker"></i></a>{{/lat}}
+              <a href="/destinations/{{id}}/edit" class="marker_edit btn btn-inverse btn-xs"><i class="icon icon-pencil"></i></a>
+              {{#lat}}<a href="#" class="marker btn btn-inverse btn-xs"><i class="icon icon-map-marker"></i></a>{{/lat}}
             </div>
           {{/is_store}}
 

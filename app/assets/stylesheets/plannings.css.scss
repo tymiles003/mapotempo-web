@@ -110,8 +110,8 @@
       
       li {
       
-        line-height: 30px;
-        padding: 10px 15px;
+        line-height: 26px;
+        padding: 2px 2px 2px 6px;
         
         .icon-reorder {
         
@@ -258,9 +258,6 @@ h1 {
       h1,
       form,
       .global_info,
-      .panel-body,
-      .caption .info,
-      .checkbox-inline,
       .btn {
       
         display: none;
@@ -286,19 +283,14 @@ h1 {
           vertical-align: top;
           margin: 5px;
           
-          .panel-heading {
-          
-            margin-bottom: -1px;
-          }
-
           .stops {
           
             margin-top: 0;
             
             li {
             
-              line-height: 16px;
-              padding: 4px 15px;
+              line-height: 26px;
+              padding: 2px 2px 2px 6px;
             }
           }
         }
