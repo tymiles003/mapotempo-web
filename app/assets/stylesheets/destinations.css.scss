@@ -23,6 +23,37 @@
   overflow-y: scroll;
   margin-top: 20px;
 
+  .table thead > tr > th,
+  .table tbody > tr > th,
+  .table tfoot > tr > th,
+  .table thead > tr > td,
+  .table tbody > tr > td,
+  .table tfoot > tr > td {
+
+    line-height: 23px;
+    padding: 0;
+  }
+  
+  .input-group-tags {
+  
+    margin-right: 4px;
+  }
+  
+  .select2-container.select2-container-multi {
+  
+    display: inline;
+  }
+  
+  .select2-container-multi .select2-choices {
+  
+    min-height: 25px;
+  }
+  
+  .destroy {
+  
+    border: none;
+  }
+
   .destination .block {
     display: table;
     table-layout: fixed;
