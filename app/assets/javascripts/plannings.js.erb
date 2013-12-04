@@ -256,6 +256,15 @@ function plannings_edit(params) {
         error: ajaxError
       });
     });
+    
+    $('.btn.extend').click(function () {
+        
+        $('body').toggleClass('box-extended');
+    });
+    
+    $(".routes").sortable({
+      items: "li.route",
+    }).disableSelection();
 
     $("#out_of_road").sortable({
       connectWith: ".sortable",

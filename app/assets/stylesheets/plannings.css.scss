@@ -72,7 +72,6 @@
 }
 
 .routes {
-  overflow-y: auto;
   padding: 0px;
   margin: 0px;
 
@@ -240,21 +239,59 @@ h1 {
 }
 
 
-.in_drag {
+.box-extended {
 
-  .routes .route .stops li {
+  .box-wrapper {
   
-    line-height: 16px;
-    padding: 4px 15px;
-  }
+    width: auto;
+    left: 20px;
+    
+    .box {
+      
+      white-space: nowrap;
+      
+      h1,
+      form,
+      .global_info,
+      .panel-body,
+      .caption .info,
+      .checkbox-inline,
+      .btn {
+      
+        display: none;
+      }
 
-  h1,
-  form,
-  .global_info,
-  .panel-body,
-  .caption .info,
-  .btn {
-  
-    display:none;
+      .btn.extend,
+      .btn.toggle {
+      
+        display: inline-block;
+      }
+      
+      .routes {
+      
+        .route {
+        
+          display: inline-block;
+          vertical-align: top;
+          margin: 5px;
+          
+          .panel-heading {
+          
+            margin-bottom: -1px;
+          }
+
+          .stops {
+          
+            margin-top: 0;
+            
+            li {
+            
+              line-height: 16px;
+              padding: 4px 15px;
+            }
+          }
+        }
+      }
+    }
   }
 }
