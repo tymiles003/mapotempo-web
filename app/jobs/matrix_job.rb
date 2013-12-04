@@ -20,7 +20,7 @@ class MatrixJob < Struct.new(:planning_id, :route_id)
     Delayed::Worker.logger.info "MatrixJob planning_id=#{planning_id} #{customer.job_matrix.progress}%"
 
     # Optimize
-    optimum = Ort.optimize(1, matrix)
+    optimum = Ort.optimize(route.vehicle.capacity, matrix)
     if optimum
       route.order(optimum)
       route.save && route.reload # Refresh stops order

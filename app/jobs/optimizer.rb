@@ -12,7 +12,7 @@ class Optimizer
         customer.job_matrix = Delayed::Job.enqueue(MatrixJob.new(planning.id, route.id))
       end
     else
-      optimum = Ort.optimize(1, route.vehicle.capacity, route.matrix)
+      optimum = Ort.optimize(route.vehicle.capacity, route.matrix)
       if optimum
         route.order(optimum)
         route.save && route.reload # Refresh stops order

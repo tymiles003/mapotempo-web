@@ -5,7 +5,7 @@ module Ort
   @exec = Mapotempo::Application.config.optimizer_exec
   @tmp_dir = Mapotempo::Application.config.optimizer_tmp_dir
 
-  def self.optimize(number, capacity, matrix)
+  def self.optimize(capacity, matrix)
     input = Tempfile.new('optimize-route-input', tmpdir=@tmp_dir)
     output = Tempfile.new('optimize-route-output', tmpdir=@tmp_dir)
 
