@@ -20,17 +20,17 @@ function destinations_form(params) {
   var icon_default = new L.Icon.Default();
 
   function wire(row) {
-    var id = $(row).attr('data-destination_id');
+    var $row = $(row),
+    id = $row.attr('data-destination_id');
 
-    var row = $(row);
     <% if Mapotempo::Application.config.geocode_complete %>
-    row.one("focus", ":input[name=destination\\[street\\]]", function(){
+    $row.one("focus", ":input[name=destination\\[street\\]]", function(){
       $(this).autocomplete({
         delay: 500,
         source: function (req, add) {
           $.ajax({
             type: "patch",
-            data: $(row).serialize(),
+            data: $row.serialize(),
             url: '/destination/geocode_complete.json',
             beforeSend: beforeSendWaiting,
             success: function (data) {
@@ -52,10 +52,10 @@ function destinations_form(params) {
       });
     });
     <% end %>
-    row.on("change", ":input", function (event) {
+    $row.on("change", ":input", function (event) {
       $.ajax({
         type: "patch",
-        data: $(row).serialize(),
+        data: $row.serialize(),
         url: '/destination/geocode.json',
         beforeSend: beforeSendWaiting,
         success: function (data) {
