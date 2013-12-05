@@ -25,23 +25,25 @@
 
   .table thead > tr > th,
   .table tbody > tr > th,
-  .table tfoot > tr > th,
+  .table tfoot > tr > th {
+
+    line-height: 15px;
+  }
+  
   .table thead > tr > td,
   .table tbody > tr > td,
   .table tfoot > tr > td {
 
-    line-height: 23px;
+    line-height: 9px;
     padding: 0;
   }
   
   .input-group-tags {
   
     margin-right: 4px;
-  }
-  
-  .select2-container.select2-container-multi {
-  
-    display: inline;
+    width: 150px;
+    height: 25px;
+    line-height: auto;
   }
   
   .select2-container-multi .select2-choices {
