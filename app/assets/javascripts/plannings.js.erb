@@ -103,8 +103,7 @@ function plannings_edit(params) {
       complete: completeWaiting,
       error: function(request, status, error) {
         ajaxError(request, status, error);
-        $("#out_of_road").sortable('cancel');
-        $(".stops").sortable('cancel');
+        $("#out_of_road, .stops").sortable('cancel');
       }
     });
   }
