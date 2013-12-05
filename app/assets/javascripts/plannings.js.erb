@@ -60,8 +60,11 @@ function plannings_edit(params) {
     var id = $(this).val();
     if (id) {
       $("#zoning_new").hide();
-      $("#zoning_edit").show();
-      $("#zoning_edit").attr("href", "/zonings/" + id + "/edit/planning/" + planning_id);
+      
+      $("#zoning_edit")
+      .show()
+      .attr("href", "/zonings/" + id + "/edit/planning/" + planning_id);
+      
       $.ajax({
         type: "get",
         url: "/zonings/" + id + ".json",
