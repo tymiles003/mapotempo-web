@@ -153,7 +153,7 @@ function plannings_edit(params) {
     data['i18n'] = mustache_i18n;
     $("#planning").html(SMT['plannings/edit'](data));
 
-    $("#planning input:checkbox").change(function (event, ui) {
+    $("#planning").on('change', 'input:checkbox', function (event, ui) {
       var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
       var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
       var active = $(this).is(':checked');
