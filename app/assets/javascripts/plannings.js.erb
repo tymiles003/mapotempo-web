@@ -294,7 +294,8 @@ function plannings_edit(params) {
       });
     });
 
-    $(".routes").on("click", ".toggle", function (event, ui) {
+    $(".routes")
+    .on("click", ".toggle", function (event, ui) {
       var id = $(this).closest("[data-route_id]").attr("data-route_id");
       var li = $("ul.stops, ol.stops", $(this).closest("li"));
       li.toggle();
@@ -316,6 +317,24 @@ function plannings_edit(params) {
       } else {
         layers[id].addTo(map);
       }
+    })
+    .on("click", ".marker", function (event, ui) {
+      var id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+      if (id in markers) {
+        map.setView(markers[id].getLatLng(), 16);
+      }
+      return false;
+    })
+    .on("click", ".optimize", function (event, ui) {
+      var id = $(this).closest("[data-route_id]").attr("data-route_id");
+      $.ajax({
+        type: "get",
+        url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
+        beforeSend: beforeSendWaiting,
+        success: display_planning,
+        complete: completeWaiting,
+        error: ajaxError
+      });
     });
 
     $(".lock").click(function (event, ui) {
@@ -333,26 +352,6 @@ function plannings_edit(params) {
         }),
         contentType: 'application/json',
         url: '/routes/' + id + '.json',
-        error: ajaxError
-      });
-    });
-
-    $(".marker").click(function (event, ui) {
-      var id = $(this).closest("[data-destination_id]").attr("data-destination_id");
-      if (id in markers) {
-        map.setView(markers[id].getLatLng(), 16);
-      }
-      return false;
-    });
-
-    $(".optimize").click(function (event, ui) {
-      var id = $(this).closest("[data-route_id]").attr("data-route_id");
-      $.ajax({
-        type: "get",
-        url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
-        beforeSend: beforeSendWaiting,
-        success: display_planning,
-        complete: completeWaiting,
         error: ajaxError
       });
     });
