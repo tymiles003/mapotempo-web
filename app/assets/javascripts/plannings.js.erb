@@ -111,16 +111,6 @@ function plannings_edit(params) {
 
   function display_planning(data) {
     
-    function scrollUp() {
-      
-      $('.box').animate({ 'scrollTop': '-=40' }, 200);
-    }
-    
-    function scrollDown() {
-      
-      $('.box').animate({ 'scrollTop': '+=40' }, 200);
-    }
-    
     if ($("#dialog-matrix").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
