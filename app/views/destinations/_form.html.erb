@@ -1,7 +1,7 @@
-<%= twitter_bootstrap_form_for(@destination, layout: :horizontal, default_div_class: 'col-lg-4', html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
+<%= twitter_bootstrap_form_for(@destination, layout: :horizontal, default_div_class: 'col-lg-6', html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: @destination %>
   <%= f.text_field :name %>
-  <%= f.text_field :street, {div_class:'input-group col-lg-4', add_on: 'append'} do %>
+  <%= f.text_field :street, {div_class:'input-group col-lg-6', add_on: 'append'} do %>
     <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
   <% end %>
   <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
@@ -9,13 +9,13 @@
   <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
   <input type="hidden" name="destination[lng]" value="<%= @destination.lng %>" />
   <div class="form-group">
-    <span class="col-lg-offset-2 col-lg-4"><div id="map" style="width: 100%; height: 200px;"></div></span>
+    <span class="col-lg-offset-2 col-lg-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
   <% if @destination != current_user.customer.store %>
     <%= f.number_field :quantity %>
     <%= f.time_select :open %>
     <%= f.time_select :close %>
-    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, div_class:'input-group col-lg-4', add_on: 'append'} do %>
+    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, div_class:'input-group col-lg-6', add_on: 'append'} do %>
       <span class="input-group-addon"><i class="icon-tags"></i></span>
     <% end %>
   <% end %>

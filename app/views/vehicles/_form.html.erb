@@ -1,12 +1,12 @@
-<%= twitter_bootstrap_form_for @vehicle, layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
+<%= twitter_bootstrap_form_for @vehicle, layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
   <%= render 'shared/error_messages', model: @vehicle %>
   <%= f.text_field :name %>
   <%= f.time_select :open %>
   <%= f.time_select :close %>
-  <%= f.select :emission, [], Vehicle.emissions_table, {}, {div_class:'input-group col-lg-4', add_on: 'append'} do %>
+  <%= f.select :emission, [], Vehicle.emissions_table, {}, {div_class:'input-group col-lg-6', add_on: 'append'} do %>
     <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
   <% end %>
-  <%= f.number_field :consumption, {div_class:'input-group col-lg-4', add_on: 'append'} do %>
+  <%= f.number_field :consumption, {div_class:'input-group col-lg-6', add_on: 'append'} do %>
     <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
   <% end %>
   <%= f.number_field :capacity, min:1 %>

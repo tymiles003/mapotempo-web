@@ -1,8 +1,8 @@
-<%= twitter_bootstrap_form_for @customer, layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
+<%= twitter_bootstrap_form_for @customer, layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
   <%= f.date_field :end_subscription, disabled:true %>
   <%= f.number_field :max_vehicles, disabled:true %>
-  <%= f.number_field :take_over, {div_class:'input-group col-lg-4', add_on: 'append'} do %>
+  <%= f.number_field :take_over, {div_class:'input-group col-lg-6', add_on: 'append'} do %>
     <span class="input-group-addon"><%= t 'all.unit.second' %></span>
   <% end %>
   <%= f.actions do %>

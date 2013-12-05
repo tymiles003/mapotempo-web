@@ -1,4 +1,4 @@
-<%= twitter_bootstrap_form_for @tag, layout: :horizontal, default_div_class: 'col-lg-4' do |f| %>
+<%= twitter_bootstrap_form_for @tag, layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
   <%= render 'shared/error_messages', model: @tag %>
   <%= f.text_field :label %>
   <%= f.actions do %>
