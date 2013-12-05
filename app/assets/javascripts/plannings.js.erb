@@ -85,7 +85,7 @@ function plannings_edit(params) {
     var data = $('#planning > ol > li').map(function () {
       return {
         'route': $(this).attr("data-route_id"),
-        'destinations': $('li[data-destination_id]', $(this)).map(function () {
+        'destinations': $('li[data-destination_id]', this).map(function () {
           return {
             'id': parseInt($(this).attr("data-destination_id")),
             'active': $('input', this).is(':checked')
