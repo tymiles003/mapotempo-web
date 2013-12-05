@@ -16,25 +16,27 @@ function plannings_new(params) {
 function plannings_edit(params) {
   plannings_form();
 
-  var planning_id = params['planning_id'];
-  var zoning_id = params['zoning_id'];
-  var map_layer_url = params['map_layer_url'];
-  var map_lat = params['map_lat'];
-  var map_lng = params['map_lng'];
-  var map_attribution = params['map_attribution'];
-  var routes_id = params['routes_id'];
-  var vehicles_array = params['vehicles_array'];
-  var vehicles_map = params['vehicles_map'];
-
-  var map = L.map('map').setView([map_lat, map_lng], 13);
+  var planning_id = params['planning_id'],
+  zoning_id = params['zoning_id'],
+  map_layer_url = params['map_layer_url'],
+  map_lat = params['map_lat'],
+  map_lng = params['map_lng'],
+  map_attribution = params['map_attribution'],
+  routes_id = params['routes_id'],
+  vehicles_array = params['vehicles_array'],
+  vehicles_map = params['vehicles_map'],
+  map = L.map('map').setView([map_lat, map_lng], 13),
+  layer_zoning,
+  markers = {},
+  layers = {};
+  
+  
   L.tileLayer(map_layer_url, {
     maxZoom: 18,
     attribution: map_attribution
   }).addTo(map);
 
-  var layer_zoning;
-  var markers = {};
-  var layers = {};
+
   $.each(routes_id, function(i, id) {
     layers[id] = L.layerGroup();
   });
