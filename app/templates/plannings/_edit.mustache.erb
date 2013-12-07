@@ -1,24 +1,16 @@
-
 <p class="global_info">
   <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}<br />
   <i class="icon icon-road icon-fixed-width"></i>{{distance}} {{#i18n}}all.unit.km{{/i18n}}<br />
   <i class="icon icon-beaker icon-fixed-width"></i>{{emission}} {{#i18n}}all.unit.kgco2e_html{{/i18n}}
 </p>
-
-
-
 {{#out_of_date}}
 <p class="text-center">
   <button type="button" class="btn btn-warning btn-sm" id="refresh"><i class="icon-refresh icon-fixed-width"></i> {{#i18n}}plannings.edit.refresh{{/i18n}}</button>
 </p>
 {{/out_of_date}}
-
-
-
 <ol class="routes">
 {{#routes}}
 <li class="route" data-route_id="{{route_id}}"{{#vehicle}} data-color="{{color}}" {{/vehicle}}>
-  
   {{^vehicle}}
       <div class="panel panel-danger">
         <div class="panel-heading">
@@ -32,23 +24,18 @@
             <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
           </p>
         </div>
-
         <ul id="out_of_road" class="stops sortable list-group">
         {{#stops}}
           {{#destination}}
           <li data-destination_id="{{id}}" class="waypoint ui-state-error list-group-item">
-              
             <i class="icon icon-reorder icon-fixed-width"></i>
-            
             <div class="caption">
               <span class="name" title="{{name}}">{{name}}</span><br />
             </div>
-            
             <div class="btn-group pull-right">
               <a href="/destinations/{{id}}/edit" class="marker_edit btn btn-inverse btn-xs"><i class="icon icon-pencil"></i></a>
               {{#lat}}<a href="#" class="marker btn btn-inverse btn-xs"><i class="icon icon-map-marker"></i></a>{{/lat}}
             </div>
-
             <div class="clearfix"></div>
           </li>
           {{/destination}}
@@ -56,9 +43,6 @@
         </ul>
       </div>
   {{/vehicle}}
-  
-  
-  
   {{#vehicle}}
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -83,12 +67,10 @@
           <i class="icon icon-road icon-fixed-width"></i>{{distance}} {{#i18n}}all.unit.km{{/i18n}}
         </p>
       </div>
-
       <ul class="stops sortable list-group"{{#hidden}} style="display: none;"{{/hidden}} start="0">
       {{#stops}}
         {{#destination}}
         <li data-destination_id="{{id}}" class="{{type}}{{^lat}} ui-state-error{{/lat}} list-group-item">
-            
           {{#is_store}}
             <i class="icon icon-home icon-fixed-width"></i>
           {{/is_store}}
@@ -99,12 +81,10 @@
               <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
             </div>
           {{/is_store}}
-          
           <div class="caption">
             <span class="name" title="{{name}}">{{name}}</span>
             <span class="info">{{#active}}{{#lat}} - {{time}}{{/lat}}{{/active}}</span>
           </div>
-          
           {{#is_store}}
             <a href="#" class="marker btn btn-inverse btn-xs pull-right"><i class="icon icon-map-marker"></i></a>
           {{/is_store}}
@@ -114,7 +94,6 @@
               {{#lat}}<a href="#" class="marker btn btn-inverse btn-xs"><i class="icon icon-map-marker"></i></a>{{/lat}}
             </div>
           {{/is_store}}
-
             <div class="clearfix"></div>
         </li>
         {{/destination}}
@@ -122,8 +101,6 @@
       </ul>
     </div>
   {{/vehicle}}
-  
-  
 </li>
 {{/routes}}
 </ol>
