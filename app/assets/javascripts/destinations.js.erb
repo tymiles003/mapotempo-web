@@ -21,10 +21,10 @@ function destinations_form(params) {
 
   function wire(row) {
     var $row = $(row),
-    id = $row.attr('data-destination_id');
+      id = $row.attr('data-destination_id');
 
     <% if Mapotempo::Application.config.geocode_complete %>
-    $row.one("focus", ":input[name=destination\\[street\\]]", function(){
+    $row.one("focus", ":input[name=destination\\[street\\]]", function () {
       $(this).autocomplete({
         delay: 500,
         source: function (req, add) {
@@ -74,7 +74,9 @@ function destinations_form(params) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name=destination\\[tag_ids\\]\\[\\]]').select2({
-      formatNoMatches: function () { return formatNoMatches; },
+      formatNoMatches: function () {
+        return formatNoMatches;
+      },
       width: '100%'
     });
   }
@@ -97,7 +99,7 @@ function destinations_form(params) {
     $('[name=destination\\[lng\\]]', row).val(latLng.lng);
   }
 
-  map.on('click', function(mouseEvent) {
+  map.on('click', function (mouseEvent) {
     if (pointing !== false) {
       markers[pointing].setLatLng(mouseEvent.latlng);
       sendMove(pointing, mouseEvent.latlng);
@@ -210,7 +212,7 @@ function destinations_index(params) {
 
     var row = $(row);
     <% if Mapotempo::Application.config.geocode_complete %>
-    row.one("focus", ":input[name=destination\\[street\\]]", function(){
+    row.one("focus", ":input[name=destination\\[street\\]]", function () {
       $(this).autocomplete({
         delay: 500,
         source: function (req, add) {
@@ -277,7 +279,9 @@ function destinations_index(params) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $(':input[name=tags\\[\\]]', row).select2({
-      formatNoMatches: function () { return formatNoMatches; },
+      formatNoMatches: function () {
+        return formatNoMatches;
+      },
       width: '100%'
     });
   }
@@ -310,7 +314,7 @@ function destinations_index(params) {
     $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
   }
 
-  map.on('click', function(mouseEvent) {
+  map.on('click', function (mouseEvent) {
     if (pointing !== false) {
       if (pointing in markers) {
         markers[pointing].setLatLng(mouseEvent.latlng);
@@ -323,7 +327,6 @@ function destinations_index(params) {
       $('.leaflet-container').css('cursor', pointing_cursor);
     }
   });
-
 
   function over(id, move) {
     // clean over
@@ -447,8 +450,7 @@ function destinations_index(params) {
     });
 
     $('tr', table).each(function (index, element) {
-     
-      wire( element );
+      wire(element);
     });
 
     $("#destination_box table").tablesorter({

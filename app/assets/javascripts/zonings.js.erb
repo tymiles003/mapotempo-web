@@ -98,7 +98,9 @@ function zonings_edit(params) {
     $('select', ele).select2({
       formatResult: format,
       formatSelection: format,
-      formatNoMatches: function() { return formatNoMatches; },
+      formatNoMatches: function () {
+        return formatNoMatches;
+      },
       escapeMarkup: function (m) {
         return m;
       },

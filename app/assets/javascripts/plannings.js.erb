@@ -4,7 +4,9 @@
 function plannings_form() {
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
-    formatNoMatches: function () { return formatNoMatches; },
+    formatNoMatches: function () {
+      return formatNoMatches;
+    },
     width: '100%'
   });
 }
@@ -17,27 +19,25 @@ function plannings_edit(params) {
   plannings_form();
 
   var planning_id = params['planning_id'],
-  zoning_id = params['zoning_id'],
-  map_layer_url = params['map_layer_url'],
-  map_lat = params['map_lat'],
-  map_lng = params['map_lng'],
-  map_attribution = params['map_attribution'],
-  routes_id = params['routes_id'],
-  vehicles_array = params['vehicles_array'],
-  vehicles_map = params['vehicles_map'],
-  map = L.map('map').setView([map_lat, map_lng], 13),
-  layer_zoning,
-  markers = {},
-  layers = {};
-  
-  
+    zoning_id = params['zoning_id'],
+    map_layer_url = params['map_layer_url'],
+    map_lat = params['map_lat'],
+    map_lng = params['map_lng'],
+    map_attribution = params['map_attribution'],
+    routes_id = params['routes_id'],
+    vehicles_array = params['vehicles_array'],
+    vehicles_map = params['vehicles_map'],
+    map = L.map('map').setView([map_lat, map_lng], 13),
+    layer_zoning,
+    markers = {},
+    layers = {};
+
   L.tileLayer(map_layer_url, {
     maxZoom: 18,
     attribution: map_attribution
   }).addTo(map);
 
-
-  $.each(routes_id, function(i, id) {
+  $.each(routes_id, function (i, id) {
     layers[id] = L.layerGroup();
   });
 
@@ -60,11 +60,11 @@ function plannings_edit(params) {
     var id = $(this).val();
     if (id) {
       $("#zoning_new").hide();
-      
+
       $("#zoning_edit")
-      .show()
-      .attr("href", "/zonings/" + id + "/edit/planning/" + planning_id);
-      
+        .show()
+        .attr("href", "/zonings/" + id + "/edit/planning/" + planning_id);
+
       $.ajax({
         type: "get",
         url: "/zonings/" + id + ".json",
@@ -101,7 +101,7 @@ function plannings_edit(params) {
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting,
-      error: function(request, status, error) {
+      error: function (request, status, error) {
         ajaxError(request, status, error);
         $("#out_of_road, .stops").sortable('cancel');
       }
@@ -109,7 +109,6 @@ function plannings_edit(params) {
   }
 
   function display_planning(data) {
-    
     if ($("#dialog-matrix").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
@@ -142,7 +141,7 @@ function plannings_edit(params) {
       $("#dialog-optimizer").dialog("close");
     }
 
-    $.each(data.routes, function(i, route) {
+    $.each(data.routes, function (i, route) {
       if (route.vehicle_id) {
         route.vehicle = vehicles_map[route.vehicle_id];
         route.path = '/vehicles/' + route.vehicle_id + '/edit';
@@ -193,7 +192,9 @@ function plannings_edit(params) {
       formatResult: function (item) {
         return item.name;
       },
-      formatNoMatches: function () { return formatNoMatches; },
+      formatNoMatches: function () {
+        return formatNoMatches;
+      },
     });
 
     $.each(data.routes, function (i, route) {
@@ -205,7 +206,10 @@ function plannings_edit(params) {
 
       var color;
       if (route.vehicle) {
-        $(".route[data-route_id=" + route.route_id + "] .vehicle_select").select2('val', { 'id': route.vehicle.id, 'name': route.vehicle.name }).trigger("change");
+        $(".route[data-route_id=" + route.route_id + "] .vehicle_select").select2('val', {
+          'id': route.vehicle.id,
+          'name': route.vehicle.name
+        }).trigger("change");
         color = route.vehicle.color;
         $(".route[data-route_id=" + route.route_id + "] .label").css('background-color', color);
       }
@@ -250,12 +254,11 @@ function plannings_edit(params) {
         error: ajaxError
       });
     });
-    
+
     $('.btn.extend').click(function () {
-        
-        $('body').toggleClass('box-extended');
+      $('body').toggleClass('box-extended');
     });
-    
+
     $(".routes").sortable({
       items: "li.route",
     }).disableSelection();
@@ -295,47 +298,47 @@ function plannings_edit(params) {
     });
 
     $(".routes")
-    .on("click", ".toggle", function (event, ui) {
-      var id = $(this).closest("[data-route_id]").attr("data-route_id");
-      var li = $("ul.stops, ol.stops", $(this).closest("li"));
-      li.toggle();
-      var hidden = !li.is(":visible");
-      $.ajax({
-        type: "patch",
-        data: JSON.stringify({
-          route: {
-            hidden: hidden
-          }
-        }),
-        contentType: 'application/json',
-        url: '/routes/' + id + '.json',
-        error: ajaxError
-      });
+      .on("click", ".toggle", function (event, ui) {
+        var id = $(this).closest("[data-route_id]").attr("data-route_id");
+        var li = $("ul.stops, ol.stops", $(this).closest("li"));
+        li.toggle();
+        var hidden = !li.is(":visible");
+        $.ajax({
+          type: "patch",
+          data: JSON.stringify({
+            route: {
+              hidden: hidden
+            }
+          }),
+          contentType: 'application/json',
+          url: '/routes/' + id + '.json',
+          error: ajaxError
+        });
 
-      if (hidden) {
-        map.removeLayer(layers[id]);
-      } else {
-        layers[id].addTo(map);
-      }
-    })
-    .on("click", ".marker", function (event, ui) {
-      var id = $(this).closest("[data-destination_id]").attr("data-destination_id");
-      if (id in markers) {
-        map.setView(markers[id].getLatLng(), 16);
-      }
-      return false;
-    })
-    .on("click", ".optimize", function (event, ui) {
-      var id = $(this).closest("[data-route_id]").attr("data-route_id");
-      $.ajax({
-        type: "get",
-        url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
-        beforeSend: beforeSendWaiting,
-        success: display_planning,
-        complete: completeWaiting,
-        error: ajaxError
+        if (hidden) {
+          map.removeLayer(layers[id]);
+        } else {
+          layers[id].addTo(map);
+        }
+      })
+      .on("click", ".marker", function (event, ui) {
+        var id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+        if (id in markers) {
+          map.setView(markers[id].getLatLng(), 16);
+        }
+        return false;
+      })
+      .on("click", ".optimize", function (event, ui) {
+        var id = $(this).closest("[data-route_id]").attr("data-route_id");
+        $.ajax({
+          type: "get",
+          url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
+          beforeSend: beforeSendWaiting,
+          success: display_planning,
+          complete: completeWaiting,
+          error: ajaxError
+        });
       });
-    });
 
     $(".lock").click(function (event, ui) {
       var id = $(this).closest("[data-route_id]").attr("data-route_id");
