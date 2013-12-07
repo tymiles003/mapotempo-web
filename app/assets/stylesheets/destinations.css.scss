@@ -4,19 +4,15 @@
 
 
 #new_destination {
-
   .select2-container.form-control {
-
     padding: 0;
   }
 
   .select2-container-multi .select2-choices {
-
     height: 100% !important;
     border-width: 0;
   }
 }
-
 
 #destination_box {
   height: 300px;
@@ -24,40 +20,34 @@
   margin-top: 20px;
 
   .col-lg-12 {
-  
     padding: 0;
   }
 
   .table thead > tr > th,
   .table tbody > tr > th,
   .table tfoot > tr > th {
-
     line-height: 15px;
   }
-  
+
   .table thead > tr > td,
   .table tbody > tr > td,
   .table tfoot > tr > td {
-
     line-height: 9px;
     padding: 0;
   }
-  
+
   .input-group-tags {
-  
     margin-right: 4px;
     width: 150px;
     height: 25px;
     line-height: auto;
   }
-  
+
   .select2-container-multi .select2-choices {
-  
     min-height: 25px;
   }
-  
+
   .destroy {
-  
     border: none;
   }
 
@@ -92,7 +82,6 @@
 .map-container,
 .map-container .row,
 .map-container .col-lg-12 {
-
   z-index: -1;
   position: absolute;
   top: 0;
@@ -109,14 +98,11 @@
 }
 
 .map-container {
-
   .col-lg-12 {
-  
     padding: 0;
   }
 
   #map {
-
     position: absolute;
     top: 485px;
     bottom: 0;

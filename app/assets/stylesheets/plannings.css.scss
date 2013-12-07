@@ -15,38 +15,27 @@
 .table thead > tr > td,
 .table tbody > tr > td,
 .table tfoot > tr > td {
-
   line-height: 28px;
   padding: 4px 8px;
 }
 
-
 .btn-danger {
-  
   color: #fff !important;
 }
 
-
-
 .box {
-
   .icon {
-
     margin-right: 4px;
     font-size: 14px;
   }
 
   .btn .icon {
-
     margin-right: 0;
   }
 
   .export {
-
     margin-top: 8px;
-    
     .caret {
-    
       border-top-color: #333;
     }
   }
@@ -54,18 +43,14 @@
   .export:hover,
   .export:focus,
   .export.active {
-    
     color: #333;
   }
 
-
   .select2-container.form-control {
-
     padding: 0;
   }
 
   .select2-container-multi .select2-choices {
-
     height: 100% !important;
     border-width: 0;
   }
@@ -78,69 +63,55 @@
   .route {
     list-style-type: none;
     margin-bottom: 1em;
-    
     .sortable {
-    
       min-height: 10px;
     }
-    
+
     .panel {
-    
       margin-bottom: 40px;
     }
-    
+
     .panel-heading {
-      
       .icon-resize-horizontal {
-      
         display: none;
       }
-      
+
       .vehicle_select {
-      
         width: 140px;
         vertical-align: middle;
       }
     }
-    
-    
-    .stops {      
+
+    .stops {
       position:relative;
       cursor: default;
-      
+
       li {
-      
         line-height: 26px;
         padding: 2px 2px 2px 6px;
-        
+
         .icon-reorder {
-        
           color: #ccc;
         }
-        
+
         .icon-reorder:hover {
-        
           cursor: move;
         }
-        
+
         .label {
-          
           display: inline-block;
           margin-right: 4px;
           width: 24px;
         }
 
         .label-empty {
-          
           visibility: hidden;
         }
 
         .caption {
-        
           display: inline-block;
           line-height: 14px;
           vertical-align: middle;
-          
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -148,34 +119,26 @@
           display: inline-block;
 
           .name {
-          
             font-weight: bold;
           }
-          
+
           .info {
-          
             color: #777;
           }
         }
-        
+
         .btn-inverse {
-        
           border-color: #ccc;
-          
           .icon {
-          
             color: #333;
           }
         }
-        
+
         .btn-inverse:hover,
         .btn-inverse:focus,
         .btn-inverse.active {
-        
           background-color: #efefef;
-          
           .icon {
-          
             color: #333;
           }
         }
@@ -183,7 +146,6 @@
     }
   }
 }
-
 
 .leaflet-marker-icon .number {
   background: none;
@@ -192,9 +154,7 @@
   color: #fff;
 }
 
-
 #map.planning_map {
-
   position: absolute;
   z-index: -1;
   top: 50px;
@@ -203,33 +163,27 @@
   bottom: 0;
 }
 
-
 .box-wrapper {
-
     width: 350px;
     position: fixed;
     right: 20px;
     top: 70px;
     bottom: 30px;
-  
-  .box {
 
+  .box {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     overflow: auto;
-    
     background-color: #fff;
     padding: 15px;
   }
 }
 
-
 .navbar,
 .box {
-
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -237,58 +191,45 @@
 }
 
 h1 {
-
   font-size: 30px;
   margin-bottom: 20px;
   margin-top: 10px;
 }
 
-
 .box-extended {
-
   .box-wrapper {
-  
     width: auto;
     left: 20px;
-    
+
     .box {
-      
       white-space: nowrap;
-      
+
       h1,
       form,
       .global_info,
       .btn {
-      
         display: none;
       }
 
       .btn.extend,
       .btn.toggle {
-      
         display: inline-block;
       }
-      
+
       .icon-resize-horizontal {
-      
         display: inline-block;
         cursor: move;
       }
-      
+
       .routes {
-      
         .route {
-        
           display: inline-block;
           vertical-align: top;
           margin: 5px;
-          
+
           .stops {
-          
             margin-top: 0;
-            
             li {
-            
               line-height: 26px;
               padding: 2px 2px 2px 6px;
             }
@@ -299,16 +240,12 @@ h1 {
   }
 }
 
-
 #new_planning {
-
   .select2-container.form-control {
-
     padding: 0;
   }
 
   .select2-container-multi .select2-choices {
-
     min-height: 0;
     border-width: 0;
     box-shadow: none;

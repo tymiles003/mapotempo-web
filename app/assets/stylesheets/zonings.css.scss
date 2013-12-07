@@ -2,32 +2,26 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-
 .table thead > tr > th,
 .table tbody > tr > th,
 .table tfoot > tr > th,
 .table thead > tr > td,
 .table tbody > tr > td,
 .table tfoot > tr > td {
-
   line-height: 28px;
   padding: 4px 8px;
 }
 
 .icon {
-
   font-size: 14px;
 }
 
 .zone {
-
   .select2-container.form-control {
-
     padding: 0;
   }
 
   .select2-container-multi .select2-choices {
-
     min-height: 0;
     border-width: 0;
     box-shadow: none;
@@ -38,18 +32,14 @@
 }
 
 #zones {
-
   .form-group {
-  
     margin-right: 0;
     margin-left: 0;
   }
 }
 
 .fill {
-
   #map {
-  
     height: 600px;
   }
 }
