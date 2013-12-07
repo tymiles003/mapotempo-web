@@ -33,19 +33,6 @@
     margin-right: 0;
   }
 
-  .export {
-    margin-top: 8px;
-    .caret {
-      border-top-color: #333;
-    }
-  }
-
-  .export:hover,
-  .export:focus,
-  .export.active {
-    color: #333;
-  }
-
   .select2-container.form-control {
     padding: 0;
   }
@@ -63,28 +50,32 @@
   .route {
     list-style-type: none;
     margin-bottom: 1em;
+
     .sortable {
       min-height: 10px;
     }
 
     .panel {
-      margin-bottom: 40px;
+      .panel-heading {
+        padding: 2px 5px;
+        margin: -15px -15px 0;
+
+        .icon-resize-horizontal {
+          display: none;
+        }
+
+      }
     }
 
-    .panel-heading {
-      .icon-resize-horizontal {
-        display: none;
-      }
-
-      .vehicle_select {
-        width: 140px;
-        vertical-align: middle;
-      }
+    .vehicle_select {
+      width: 140px;
+      vertical-align: middle;
     }
 
     .stops {
       position:relative;
       cursor: default;
+      margin-top: 0px;
 
       li {
         line-height: 26px;
@@ -102,6 +93,7 @@
           display: inline-block;
           margin-right: 4px;
           width: 24px;
+          font-weight: 700;
         }
 
         .label-empty {
@@ -115,7 +107,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          width: 130px;
+          width: 175px;
           display: inline-block;
 
           .name {
@@ -178,7 +170,7 @@
     bottom: 0;
     overflow: auto;
     background-color: #fff;
-    padding: 15px;
+    padding: 10px;
   }
 }
 
@@ -206,7 +198,6 @@ h1 {
 
       h1,
       form,
-      .global_info,
       .btn {
         display: none;
       }
@@ -225,7 +216,7 @@ h1 {
         .route {
           display: inline-block;
           vertical-align: top;
-          margin: 5px;
+          margin: 2px;
 
           .stops {
             margin-top: 0;

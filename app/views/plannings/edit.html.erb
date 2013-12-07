@@ -2,20 +2,20 @@
 
 <div class="box-wrapper">
   <div class="box">
-    <p>
+    <div class="pull-right">
       <button type="button" class="btn btn-default btn-sm extend"><i class="icon icon-fullscreen"></i></button>
-    </p>
-    <div class="btn-group pull-right">
-      <button type="button" class="btn btn-inverse btn-sm dropdown-toggle right export" data-toggle="dropdown" title="<%= t '.exports' %>"><i class="icon-share icon-fixed-width"></i><span class="caret"></span></button>
-      <ul class="dropdown-menu" role="menu">
-        <li><%= link_to planning_path(@planning) do %><i class="icon-print icon-fixed-width"></i> <%= t '.export.print' %><% end %></li>
-        <li><%= link_to planning_path(@planning, format: :csv) do %><i class="icon-table icon-fixed-width"></i> <%= t '.export.spreadsheet' %><% end %></li>
-      </ul>
     </div>
     <h1><%= t '.title' %></h1>
 
     <%= render 'form' %>
     <!--<button type="button" class="btn btn-primary btn-sm" id="optimize"><i class="icon-gears icon-fixed-width"></i> <%= t '.optimize' %></button>-->
+    <div class="btn-group pull-right">
+      <button type="button" class="btn btn-default btn-sm dropdown-toggle right export" data-toggle="dropdown" title="<%= t '.exports' %>"><i class="icon-share icon-fixed-width"></i><span class="caret"></span></button>
+      <ul class="dropdown-menu" role="menu">
+        <li><%= link_to planning_path(@planning) do %><i class="icon-print icon-fixed-width"></i> <%= t '.export.print' %><% end %></li>
+        <li><%= link_to planning_path(@planning, format: :csv) do %><i class="icon-table icon-fixed-width"></i> <%= t '.export.spreadsheet' %><% end %></li>
+      </ul>
+    </div>
     <div id="planning"></div>
   </div>
 </div>

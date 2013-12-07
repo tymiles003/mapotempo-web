@@ -1,4 +1,4 @@
-<%= twitter_bootstrap_form_for @planning, layout: :horizontal, default_div_class: 'col-lg-6', default_label_class: 'control-label col-lg-2' do |f| %>
+<%= twitter_bootstrap_form_for @planning, layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
   <%= f.text_field :name %>
   <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {disabled:!!@planning.id, multiple: true, div_class:'input-group col-lg-6', add_on: 'append'} do %>
