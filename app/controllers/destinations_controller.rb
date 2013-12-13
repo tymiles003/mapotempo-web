@@ -52,15 +52,8 @@ class DestinationsController < ApplicationController
   # PATCH/PUT /destinations/1
   # PATCH/PUT /destinations/1.json
   def update
-    p = destination_params
-
-    params[:tags] = params[:tags] || []
-    if @destination.tag_ids.sort != params[:tags].collect{ |i| Integer(i) }.sort
-      @destination.tags = current_user.customer.tags.select{ |tag| params[:tags].include?(String(tag.id)) }
-    end
-
     respond_to do |format|
-      if @destination.update(p) and current_user.save
+      if @destination.update(destination_params) and current_user.save
         format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         format.json { render action: 'show', location: @destination }
       else

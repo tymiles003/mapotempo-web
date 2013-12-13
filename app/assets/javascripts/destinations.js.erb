@@ -278,7 +278,7 @@ function destinations_index(params) {
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
-    $(':input[name=tags\\[\\]]', $row).select2({
+    $('select[name=destination\\[tag_ids\\]\\[\\]]', $row).select2({
       formatNoMatches: function () {
         return formatNoMatches;
       },
@@ -466,7 +466,7 @@ function destinations_index(params) {
       },
       textExtraction: function (node, table, cellIndex) {
         if (cellIndex == 4) {
-          return $.map($("[name=tags\\[\\]] :selected", node), function (e, i) {
+          return $.map($("[name=destination\\[tag_ids\\]\\[\\]] :selected", node), function (e, i) {
             return e.text;
           }).join(",");
         } else {
