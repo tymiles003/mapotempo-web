@@ -19,21 +19,6 @@
   padding: 4px 8px;
 }
 
-.btn-danger {
-  color: #fff !important;
-}
-
-.box {
-  .icon {
-    margin-right: 4px;
-    font-size: 14px;
-  }
-
-  .btn .icon {
-    margin-right: 0;
-  }
-}
-
 .routes {
   padding: 0px;
   margin: 0px;
@@ -162,21 +147,16 @@
     overflow: auto;
     background-color: #fff;
     padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+    .form-horizontal .form-group {
+      margin-left: -10px;
+      margin-right: -10px;
+    }
   }
-}
-
-.navbar,
-.box {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  -o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-h1 {
-  font-size: 30px;
-  margin-bottom: 20px;
-  margin-top: 10px;
 }
 
 .box-extended {
