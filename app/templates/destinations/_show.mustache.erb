@@ -31,6 +31,7 @@
   </td>
   <td>
    <div class="input-group input-group-tags">
+     <input type="hidden" value="" name="destination[tag_ids][]">
      <select multiple="multiple" name="destination[tag_ids][]">{{#tags}}<option value="{{id}}" {{#active}} selected="selected"{{/active}}>{{label}}</option>{{/tags}}</select>
      <span class="input-group-addon input-sm"><i class="icon-tags"></i></span>
    </div>
