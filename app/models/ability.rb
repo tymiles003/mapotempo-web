@@ -10,6 +10,7 @@ class Ability
       else
         can [:edit, :update], User, :id => user.id
         can [:edit, :update], Customer, :id => user.customer.id
+        can [:stop_job_matrix, :stop_job_optimizer, :stop_job_geocoding], Customer
         can [:index, :edit, :update], Vehicle, :customer_id => user.customer.id
         can :manage, Tag, :customer_id => user.customer.id
         can :manage, Destination, :id => user.customer.store_id

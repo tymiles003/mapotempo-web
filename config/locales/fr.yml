@@ -174,8 +174,11 @@ fr:
       new: "Nouveau client"
       default_name: "Nouveau client"
       dialog:
-        title: "Géocodage"
-        geocoding_in_progress: "Géocodage en cours, merci de patienter."
+        geocoding:
+          title: "Géocodage"
+          in_progress: "Géocodage en cours, merci de patienter."
+          attempts: "Tentatives :"
+          error: "Impossible d'effectuer le calcul."
     new:
       title: "Nouveau client"
     import_file:
@@ -214,10 +217,16 @@ fr:
       refresh: "Actualiser"
       out_of_road: "Non plannifiés"
       dialog:
-        matrix_title: "Distancier"
-        matrix_in_progress: "Calul du distancier en cours, merci de patienter."
-        optimizer_title: "Optimisation"
-        optimizer_in_progress: "Optimisation en cours, merci de patienter."
+        matrix:
+          title: "Distancier"
+          in_progress: "Calul du distancier en cours, merci de patienter."
+          attempts: "Tentatives :"
+          error: "Impossible d'effectuer le calcul."
+        optimizer:
+          title: "Optimisation"
+          in_progress: "Optimisation en cours, merci de patienter."
+          attempts: "Tentatives :"
+          error: "Impossible d'effectuer le calcul."
     new:
       title: "Nouveau planning"
     export_file:
@@ -278,6 +287,8 @@ fr:
   web:
     select2:
       empty_result: "Pas de résultats"
+    dialog:
+      close: "Fermer"
 
   all:
     osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"

@@ -112,33 +112,11 @@ function plannings_edit(params) {
     if ($("#dialog-matrix").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
-    if (typeof data.matrix != 'undefined') {
-      $("#dialog-matrix").dialog("open");
-      $("#dialog-matrix .progress-bar").css("width", "" + data.matrix + "%");
-      setTimeout(function () {
-        $.ajax({
-          url: '/plannings/' + planning_id + '.json',
-          success: display_planning,
-          error: ajaxError
-        });
-      }, 2000);
+    if (!progress_dialog(data.matrix, $("#dialog-matrix"), display_planning, '/plannings/' + planning_id + '.json', '/customer/job_matrix.json')) {
       return;
-    } else {
-      $("#dialog-matrix").dialog("close");
     }
-    if (typeof data.optimizer != 'undefined') {
-      $("#dialog-optimizer").dialog("open");
-      $("#dialog-optimizer .progress-bar").css("width", "" + data.optimizer + "%");
-      setTimeout(function () {
-        $.ajax({
-          url: '/plannings/' + planning_id + '.json',
-          success: display_planning,
-          error: ajaxError
-        });
-      }, 2000);
+    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json', '/customer/job_optimizer.json')) {
       return;
-    } else {
-      $("#dialog-optimizer").dialog("close");
     }
 
     $.each(data.routes, function (i, route) {

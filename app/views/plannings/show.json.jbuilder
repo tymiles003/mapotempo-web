@@ -1,7 +1,13 @@
 if current_user.customer.job_matrix
-  json.matrix current_user.customer.job_matrix.progress
+  json.matrix do
+    json.extract! current_user.customer.job_matrix, :progress, :attempts
+    json.error !!current_user.customer.job_matrix.failed_at
+  end
 elsif current_user.customer.job_optimizer
-  json.optimizer current_user.customer.job_optimizer.progress
+  json.optimizer do
+    json.extract! current_user.customer.job_optimizer, :progress, :attempts
+    json.error !!current_user.customer.job_optimizer.failed_at
+  end
 else
   json.extract! @planning, :id
   json.distance @planning.routes.to_a.sum(0){ |route| route.distance or 0 }/1000

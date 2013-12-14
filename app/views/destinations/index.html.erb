@@ -37,11 +37,15 @@
   </div>
 </div>
 
-<div id="dialog-geocoding" title="<%= t '.dialog.title' %>" style="display:none">
-  <p><%= t '.dialog.geocoding_in_progress' %></p>
-  <div class="progress progress-striped active">
-    <div class="progress-bar" style="width: 0%">
+<div id="dialog-geocoding" title="<%= t '.dialog.geocoding.title' %>" style="display:none">
+  <div class="dialog-progress">
+    <p><%= t '.dialog.geocoding.in_progress' %></p>
+    <div class="progress progress-striped active">
+      <div class="progress-bar" style="width: 0%"></div>
+    </div>
   </div>
+  <p class="dialog-error" style="display: none"><%= t '.dialog.geocoding.error' %></p>
+  <p class="dialog-attempts" style="display: none"><%= t '.dialog.geocoding.attempts' %> <span class="dialog-attempts-number"></span></p>
 </div>
 <%
 controller.js(

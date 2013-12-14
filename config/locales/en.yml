@@ -174,8 +174,11 @@ en:
       new: "New Destination"
       default_name: "New Destination"
       dialog:
-        title: "Geocoding"
-        geocoding_in_progress: "Please wait, geocoding in progress."
+        geocoding:
+          title: "Geocoding"
+          geocoding_in_progress: "Please wait, geocoding in progress."
+          attempts: "Attempts:"
+          error: "Compute fail."
     new:
       title: "New destination"
     import_file:
@@ -214,10 +217,16 @@ en:
       refresh: "Refresh"
       out_of_road: "Out of route"
       dialog:
-        matrix_title: "Distance matrix"
-        matrix_in_progress: "Please wait, computing distance matrix."
-        optimizer_title: "Optimization"
-        optimizer_in_progress: "Please wait, optimization in progress."
+        matrix:
+          title: "Distance matrix"
+          in_progress: "Please wait, computing distance matrix."
+          attempts: "Attempts:"
+          error: "Compute fail."
+        optimizer:
+          title: "Optimization"
+          in_progress: "Please wait, optimization in progress."
+          attempts: "Attempts:"
+          error: "Compute fail."
     new:
       title: "New planning"
     export_file:
@@ -278,6 +287,8 @@ en:
   web:
     select2:
       empty_result: "No results matched"
+    dialog:
+      close: "Close"
 
   all:
     osm_attribution_html: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{layer_attribution}"

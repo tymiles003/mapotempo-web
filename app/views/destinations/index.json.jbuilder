@@ -1,5 +1,8 @@
 if current_user.customer.job_geocoding
-  json.geocoding current_user.customer.job_geocoding.progress
+  json.geocoding do
+    json.extract! current_user.customer.job_geocoding, :progress, :attempts
+    json.error !!current_user.customer.job_geocoding.failed_at
+  end
 else
   json.tags do
     json.array! @tags, :id, :label

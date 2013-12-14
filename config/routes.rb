@@ -5,6 +5,9 @@ Mapotempo::Application.routes.draw do
   resources :tags
 
   resources :customers
+  delete 'customer/job_matrix' => 'customers#stop_job_matrix'
+  delete 'customer/job_optimizer' => 'customers#stop_job_optimizer'
+  delete 'customer/job_geocoding' => 'customers#stop_job_geocoding'
 
   resources :vehicles
 

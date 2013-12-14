@@ -410,21 +410,8 @@ function destinations_index(params) {
     if ($("#dialog-geocoding").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
-    if (typeof data.geocoding != 'undefined') {
-      $("#dialog-geocoding").dialog("open");
-      $("#dialog-geocoding .progress-bar").css("width", "" + data.geocoding + "%");
-      setTimeout(function () {
-        $.ajax({
-          url: '/destinations.json',
-          beforeSend: beforeSendWaiting,
-          success: display_destinations,
-          complete: completeWaiting,
-          error: ajaxError
-        });
-      }, 2000);
+    if (!progress_dialog(data.geocoding, $("#dialog-geocoding"), display_destinations, '/destinations.json', '/customer/job_geocoding.json')) {
       return;
-    } else {
-      $("#dialog-geocoding").dialog("close");
     }
 
     var table = $('.destinations');

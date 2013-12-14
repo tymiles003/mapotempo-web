@@ -17,6 +17,27 @@ class CustomersController < ApplicationController
     end
   end
 
+  def stop_job_matrix
+    if current_user.customer.job_matrix
+      current_user.customer.job_matrix.destroy
+    end
+    render json: {}
+  end
+
+  def stop_job_optimizer
+    if current_user.customer.job_optimizer
+      current_user.customer.job_optimizer.destroy
+    end
+    render json: {}
+  end
+
+  def stop_job_geocoding
+    if current_user.customer.job_geocoding
+      current_user.customer.job_geocoding.destroy
+    end
+    render json: {}
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_customer
