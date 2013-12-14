@@ -4,7 +4,10 @@ require 'matrix_job'
 class Optimizer
 
   def self.optimize(customer, planning, route)
-    if Mapotempo::Application.config.delayed_job_use
+    if route.size <= 3
+        # Nothing to optimize
+        true
+    elsif Mapotempo::Application.config.delayed_job_use
       if customer.job_matrix
         # Customer already run an optimization
         false
