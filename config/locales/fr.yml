@@ -128,7 +128,7 @@ fr:
 
     successful:
       messages:
-        created: "%{model} a bien été crée."
+        created: "%{model} a bien été créé."
         updated: "%{model} a bien été mis à jour."
 
   errors:
@@ -220,7 +220,7 @@ fr:
       dialog:
         matrix:
           title: "Distancier"
-          in_progress: "Calul du distancier en cours, merci de patienter."
+          in_progress: "Calcul du distancier en cours, merci de patienter."
           attempts: "Tentatives :"
           error: "Impossible d'effectuer le calcul."
         optimizer:
