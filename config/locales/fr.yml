@@ -90,7 +90,7 @@ fr:
       planning:
         name: "Nom"
         tag_ids: "Libellés"
-        zoning: "Zonage"
+        zoning_id: "Zonage"
       route:
         distance: "Distance"
         emission: "Emissions"
@@ -214,6 +214,7 @@ fr:
         none: "Aucun"
         apply: "Appliquer zonage"
         edit: "Modifier zonage"
+        new: "Nouveau zonage"
       refresh: "Actualiser"
       out_of_road: "Non plannifiés"
       dialog:

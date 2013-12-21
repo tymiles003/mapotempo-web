@@ -90,7 +90,7 @@ en:
       planning:
         name: "Name"
         tag_ids: "Tags"
-        zoning: "Zoning"
+        zoning_id: "Zoning"
       route:
         distance: "Distance"
         emission: "Emission"
@@ -214,6 +214,7 @@ en:
         none: "None"
         apply: "Apply zoning"
         edit: "Edit zoning"
+        new: "New zoning"
       refresh: "Refresh"
       out_of_road: "Out of route"
       dialog:
