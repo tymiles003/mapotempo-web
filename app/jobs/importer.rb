@@ -35,6 +35,8 @@ class Importer
         'city' => I18n.t('destinations.import_file.city'),
         'lat' => I18n.t('destinations.import_file.lat'),
         'lng' => I18n.t('destinations.import_file.lng'),
+        'open' => I18n.t('destinations.import_file.open'),
+        'close' => I18n.t('destinations.import_file.close'),
         'tags' => I18n.t('destinations.import_file.tags')
       }
       CSV.parse(contents, col_sep: separator, headers: true) { |row|
@@ -56,7 +58,7 @@ class Importer
         row = r
 
         r = row.to_hash.select{ |k|
-          ["name", "street", "postalcode", "city", "lat", "lng"].include?(k)
+          ["name", "street", "postalcode", "city", "open", "close", "lat", "lng"].include?(k)
         }
 
         if r.size == 0
