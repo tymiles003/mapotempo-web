@@ -42,16 +42,20 @@ class Route < ActiveRecord::Base
       last = stops[0]
       last.time = self.end
       stops.sort{ |a,b| a.index <=> b.index }[1..-1].each{ |stop|
-        if stop.active and stop.destination.lat and stop.destination.lng
+        if stop.active && stop.destination.lat && stop.destination.lng
           stop.distance, time, stop.trace = Trace.compute(last.destination.lat, last.destination.lng, stop.destination.lat, stop.destination.lng)
           stop.time = self.end + time
+          if stop.destination.open && stop.time < stop.destination.open
+            stop.time = stop.destination.open
+          end
+          stop.out_of_window = (stop.destination.open && stop.time < stop.destination.open) || (stop.destination.close && stop.time > stop.destination.close)
 
           self.distance += stop.distance
-          self.end += time + (planning.customer.take_over || 0)
+          self.end = stop.time + (planning.customer.take_over || 0)
 
           last = stop
         else
-          stop.active = false
+          stop.active = stop.out_of_window = false
           stop.begin = stop.end = stop.distance = stop.trace = stop.time = nil
         end
         self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
@@ -95,7 +99,7 @@ class Route < ActiveRecord::Base
       stops_on.collect{ |stop2|
         distance, time, trace = Trace.compute(stop1.destination.lat, stop1.destination.lng, stop2.destination.lat, stop2.destination.lng)
         yield if block_given?
-        distance
+        [distance, time]
       }
     }
   end

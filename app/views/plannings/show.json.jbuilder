@@ -38,7 +38,7 @@ else
       if stop.destination == current_user.customer.store
         json.is_store true
       end
-      json.extract! stop, :trace
+      json.extract! stop, :trace, :out_of_window
       (json.time stop.time.strftime("%H:%M")) if stop.time
       (json.active true) if stop.active
       (json.number number+=1) if stop.active && stop.destination != current_user.customer.store

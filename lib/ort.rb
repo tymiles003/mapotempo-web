@@ -5,28 +5,25 @@ module Ort
   @exec = Mapotempo::Application.config.optimizer_exec
   @tmp_dir = Mapotempo::Application.config.optimizer_tmp_dir
 
-  def self.optimize(capacity, matrix)
+  def self.optimize(capacity, matrix, time_window)
     input = Tempfile.new('optimize-route-input', tmpdir=@tmp_dir)
     output = Tempfile.new('optimize-route-output', tmpdir=@tmp_dir)
 
     begin
       output.close
 
-      input.write("NAME : mapotempo
-TYPE : ATSP
-DIMENSION : #{matrix.size}
-EDGE_WEIGHT_TYPE: EXPLICIT
-EDGE_WEIGHT_FORMAT: FULL_MATRIX
-EDGE_WEIGHT_SECTION
-")
-      input.write(matrix.collect{ |a| a.join(" ") }.join("\n"))
-      input.write("\nEOF\n")
+      input.write(matrix.size)
+      input.write("\n")
+      input.write(matrix.collect{ |a| a.collect{ |b| b.join(" ") }.join(" ") }.join("\n"))
+      input.write("\n")
+      input.write(time_window.collect{ |a| a.collect{ |b| b ? b : -1 }.join(" ") }.join("\n"))
+      input.write("\n")
 
       input.close
 
       `cat #{input.path} > /tmp/in` # FIXME tmp
       capacity_arg = capacity ? "-max #{capacity}" : ""
-      cmd = "#{@exec} -tsp_time_limit_in_ms 2000 #{capacity_arg} -instance_file '#{input.path}' > '#{output.path}'"
+      cmd = "#{@exec} -time_limit_in_ms 2000 #{capacity_arg} -instance_file '#{input.path}' > '#{output.path}'"
       Rails.logger.info(cmd)
       system(cmd)
       Rails.logger.info($?.exitstatus)

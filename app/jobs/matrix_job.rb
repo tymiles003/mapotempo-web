@@ -20,7 +20,13 @@ class MatrixJob < Struct.new(:planning_id, :route_id)
     Delayed::Worker.logger.info "MatrixJob planning_id=#{planning_id} #{customer.job_matrix.progress}%"
 
     # Optimize
-    optimum = Ort.optimize(route.vehicle.capacity, matrix)
+    tws = route.stops[0..-2].select{ |stop| stop.active }.collect{ |stop|
+      [
+        (stop.destination.open ? stop.destination.open.min * 60 + stop.destination.open.hour * 60 * 60 + (customer.take_over or 0): nil),
+        (stop.destination.close ? stop.destination.close.min * 60 + stop.destination.close.hour * 60 * 60 : nil)
+      ]
+    }
+    optimum = Ort.optimize(route.vehicle.capacity, matrix, tws)
     if optimum
       route.order(optimum)
       route.save && route.reload # Refresh stops order
