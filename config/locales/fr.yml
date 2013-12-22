@@ -148,6 +148,8 @@ fr:
     index:
       title: "Liste comptes client"
       new: "Nouveau compte client"
+    new:
+      title: "Nouveau compte client"
 
   destinations:
     default_store_name: "Départ véhicule"

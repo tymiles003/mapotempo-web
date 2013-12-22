@@ -17,12 +17,11 @@ class Customer < ActiveRecord::Base
 
   private
     def assign_defaults
-      self.max_vehicles = 0
       self.store = Destination.create(
         name: I18n.t('destinations.default_store_name'),
         city: I18n.t('destinations.default_store_city'),
-        lat:Float(I18n.t('destinations.default_store_lat')),
-        lng:Float(I18n.t('destinations.default_store_lng'))
+        lat: Float(I18n.t('destinations.default_store_lat')),
+        lng: Float(I18n.t('destinations.default_store_lng'))
       )
     end
 

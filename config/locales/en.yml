@@ -148,6 +148,8 @@ en:
     index:
       title: "Listing customers"
       new: "New Customer"
+    new:
+      title: "New customer"
 
   destinations:
     default_store_name: "Store"

@@ -1,12 +1,30 @@
 class CustomersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:create]
   before_action :set_customer, only: [:edit, :update]
 
   def index
     @customers = Customer.all
   end
 
+  def new
+    @customer = Customer.new
+  end
+
   def edit
+  end
+
+  def create
+    @customer = Customer.new(customer_params)
+
+    respond_to do |format|
+      if @customer.save
+        format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.created', model: @customer.class.model_name.human) }
+        format.json { render action: 'show', status: :created, location: @customer }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @customer.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def update
@@ -18,6 +36,14 @@ class CustomersController < ApplicationController
         format.html { render action: 'edit' }
         format.json { render json: @customer.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    @customer.destroy
+    respond_to do |format|
+      format.html { redirect_to customers_url }
+      format.json { head :no_content }
     end
   end
 
