@@ -10,6 +10,8 @@ class Customer < ActiveRecord::Base
   has_many :users
   has_many :zonings
 
+  validates :name, presence: true
+
   after_initialize :assign_defaults, if: 'new_record?'
   before_update :update_out_of_date, :update_max_vehicles
 

@@ -4,7 +4,7 @@ Layer.create!("name"=>"Mapnik-fr", "url"=>"http://{s}.tile.openstreetmap.fr/osmf
 Layer.create!("name"=>"Mapnik B&W", "url"=>"http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png", "attribution"=>"Tiles by Wikimedia")
 Layer.create!("name"=>"MapQuest", "url"=>"http://otile2.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", "attribution"=>"Tiles by MapQuest")
 Layer.create!("name"=>"Stamen B&W", "url"=>"http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", "attribution"=>"Tiles by Stamen Design")
-customer = Customer.create!("max_vehicles"=>3)
+customer = Customer.create!("name"=>"Toto", "max_vehicles"=>3)
 admin = User.create!("email"=>"admin@admin.com", "password"=>"123456789", "admin"=>true)
 fred = User.create!("email"=>"user@user.com", "password"=>"123456789", "layer"=>mapbox, "customer"=>customer)
 toto = User.create!("email"=>"toto@toto.com", "password"=>"123456789")

@@ -72,6 +72,7 @@ en:
         end_subscription: "End subscription"
         max_vehicles: "Max vehicles"
         take_over: "Take over"
+        name: "Name"
       destination:
         name: "Name"
         address: "Address"
@@ -140,9 +141,13 @@ en:
       parameters: "Parameters"
       customer: "Customer"
       user: "User"
+      customers: "Customers"
     edit:
       title: "Editing customer"
       user_list: "Users list"
+    index:
+      title: "Listing customers"
+      new: "New Customer"
 
   destinations:
     default_store_name: "Store"

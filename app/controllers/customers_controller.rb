@@ -2,6 +2,10 @@ class CustomersController < ApplicationController
   load_and_authorize_resource
   before_action :set_customer, only: [:edit, :update]
 
+  def index
+    @customers = Customer.all
+  end
+
   def edit
   end
 
@@ -46,6 +50,10 @@ class CustomersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def customer_params
-      params.require(:customer).permit(:take_over)
+      if current_user.admin?
+        params.require(:customer).permit(:name, :end_subscription, :max_vehicles, :take_over)
+      else
+        params.require(:customer).permit(:take_over)
+      end
     end
 end

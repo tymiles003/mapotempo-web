@@ -72,6 +72,7 @@ fr:
         end_subscription: "Fin de souscription"
         max_vehicles: "Forfait"
         take_over: "Durée de visite"
+        name: "Nom"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -140,9 +141,13 @@ fr:
       parameters: "Paramètres"
       customer: "Compte client"
       user: "Compte utilisateur"
+      customers: "Comptes client"
     edit:
       title: "Modifier compte client"
       user_list: "Liste des utilisateurs"
+    index:
+      title: "Liste comptes client"
+      new: "Nouveau compte client"
 
   destinations:
     default_store_name: "Départ véhicule"
