@@ -307,7 +307,7 @@ function destinations_index(params) {
       if (destination_id in markers) {
         markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
       } else {
-        addMarker(destination_id, destination.lat, destination.ln);
+        addMarker(destination_id, destination.lat, destination.lng);
       }
       map.setView(markers[destination_id].getLatLng(), 16);
     } else {
@@ -386,8 +386,6 @@ function destinations_index(params) {
       lat: default_lat,
       lng: default_lng
     };
-    destination['i18n'] = mustache_i18n;
-    $(".destinations").append(SMT['destinations/show'](destination));
     $.ajax({
       type: "post",
       data: JSON.stringify({
@@ -397,8 +395,10 @@ function destinations_index(params) {
       url: '/destinations.json',
       beforeSend: beforeSendWaiting,
       success: function (data) {
-        addMarker(data.id, data.lat, data.lng),
         update(id, data);
+        destination['i18n'] = mustache_i18n;
+        $(".destinations").append(SMT['destinations/show'](data));
+        wire($('[data-destination_id=' + data.id + ']'));
         over(data.id, true);
       },
       complete: completeWaiting,
