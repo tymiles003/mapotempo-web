@@ -55,7 +55,7 @@ class Route < ActiveRecord::Base
 
           last = stop
         else
-          stop.active = stop.out_of_window = false
+          stop.active = false
           stop.begin = stop.end = stop.distance = stop.trace = stop.time = nil
         end
         self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
@@ -107,6 +107,12 @@ class Route < ActiveRecord::Base
   def order(o)
     stops_ = stops_segregate
     a = o[0..-2].collect{ |i|
+      stops_[true][i].out_of_window = false
+      stops_[true][i]
+    }
+    a = a + ((1..stops_[true].size-1).to_a - o[1..-2]).collect{ |i|
+      stops_[true][i].active = false
+      stops_[true][i].out_of_window = true
       stops_[true][i]
     }
     a = a + (stops_[false] || []) + stops[-1..-1]
