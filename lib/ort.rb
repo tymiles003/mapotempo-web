@@ -4,6 +4,7 @@ module Ort
 
   @exec = Mapotempo::Application.config.optimizer_exec
   @tmp_dir = Mapotempo::Application.config.optimizer_tmp_dir
+  @time = Mapotempo::Application.config.optimizer_time
 
   def self.optimize(capacity, matrix, time_window)
     input = Tempfile.new('optimize-route-input', tmpdir=@tmp_dir)
@@ -23,7 +24,7 @@ module Ort
 
       `cat #{input.path} > /tmp/in` # FIXME tmp
       capacity_arg = capacity ? "-max #{capacity}" : ""
-      cmd = "#{@exec} -time_limit_in_ms 2000 #{capacity_arg} -instance_file '#{input.path}' > '#{output.path}'"
+      cmd = "#{@exec} -time_limit_in_ms #{@time} #{capacity_arg} -instance_file '#{input.path}' > '#{output.path}'"
       Rails.logger.info(cmd)
       system(cmd)
       Rails.logger.info($?.exitstatus)
