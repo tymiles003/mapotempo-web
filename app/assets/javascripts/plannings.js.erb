@@ -158,18 +158,18 @@ function plannings_edit(params) {
     });
     store_marker.addTo(map);
 
+    function formatVehicles(state) {
+      return "<span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
+    }
+
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $(".vehicle_select").select2({
       data: {
         results: vehicles_array,
         text: 'name'
       },
-      formatSelection: function (item) {
-        return item.name;
-      },
-      formatResult: function (item) {
-        return item.name;
-      },
+      formatSelection: formatVehicles,
+      formatResult: formatVehicles,
       formatNoMatches: function () {
         return formatNoMatches;
       },

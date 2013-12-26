@@ -14,7 +14,8 @@
 }
 
 .vehicle_color_small {
-  display: inline-block;
+  display: inline-block !important; // override select2 2.1 css
+  margin-right: 0px !important; // override select2 2.1 css
   width: 12px;
   height: 12px;
   border-radius: 2px;
