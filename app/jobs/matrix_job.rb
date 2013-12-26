@@ -21,10 +21,12 @@ class MatrixJob < Struct.new(:planning_id, :route_id)
 
     # Optimize
     tws = route.stops[0..-2].select{ |stop| stop.active }.collect{ |stop|
-      [
-        (stop.destination.open ? stop.destination.open.min * 60 + stop.destination.open.hour * 60 * 60 + (customer.take_over or 0): nil),
-        (stop.destination.close ? stop.destination.close.min * 60 + stop.destination.close.hour * 60 * 60 : nil)
-      ]
+      open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
+      close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
+      if open && close && open > close
+        close = open
+      end
+      [open, close, (customer.take_over or 0)]
     }
     optimum = Ort.optimize(route.vehicle.capacity, matrix, tws)
     if optimum
