@@ -64,6 +64,7 @@
             <% if user_signed_in? and current_user.admin? %>
               <% if can?(:manage, Customer) %>
                 <li><%= link_to customers_path do %><i class="icon-user icon-fixed-width"></i> <%= t 'customers.menu.customers' %><% end %></li>
+                <li><%= link_to admin_users_path do %><i class="icon-user icon-fixed-width"></i> <%= t 'admin.users.menu.users' %><% end %></li>
               <% end %>
             <% end %>
             <% if user_signed_in? and current_user.customer %>

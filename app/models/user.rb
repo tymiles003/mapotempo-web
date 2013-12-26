@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
 
   after_initialize :assign_defaults, if: 'new_record?'
 
+  validates :customer, presence: true, unless: :admin
+
   private
     def assign_defaults
       self.layer_id = 1

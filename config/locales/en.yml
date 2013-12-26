@@ -111,6 +111,7 @@ en:
       user:
         email: "Email"
         customer: "Customer"
+        customer_id: "Customer"
         layer: "Map"
         password: "Password"
         password_confirmation: "Password confirmation"
@@ -136,6 +137,16 @@ en:
     planning:
       import_too_routes: "Try to import more routes than available vehicles."
 
+  admin:
+    users:
+      menu:
+        users : "Users"
+      index:
+        title: "Editing users"
+        new: "New user"
+      new:
+        title: "New user"
+
   customers:
     menu:
       parameters: "Parameters"
@@ -144,7 +155,9 @@ en:
       customers: "Customers"
     edit:
       title: "Editing customer"
-      user_list: "Users list"
+      user:
+        list: "Users list"
+        new: "New user"
     index:
       title: "Listing customers"
       new: "New Customer"

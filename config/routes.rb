@@ -1,6 +1,9 @@
 Mapotempo::Application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
   devise_for :users
+
+  namespace :admin do
+    resources :users
+  end
 
   resources :tags
 
@@ -34,6 +37,8 @@ Mapotempo::Application.routes.draw do
     get 'edit/planning/:planning_id' => 'zonings#edit'
     get 'planning/:planning_id' => 'zonings#show'
   end
+
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

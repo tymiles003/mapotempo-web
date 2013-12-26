@@ -110,7 +110,8 @@ fr:
         label: "Libellé"
       user:
         email: "Email"
-        customer: "Compte"
+        customer: "Compte client"
+        customer_id: "Compte client"
         layer: "Fond de carte"
         password: "Mot de passe"
         password_confirmation: "Confirmation mot de passe"
@@ -136,6 +137,16 @@ fr:
     planning:
       import_too_routes: "Tentative d'importer de plus de tournées que de véhicles disponibles."
 
+  admin:
+    users:
+      menu:
+        users : "Utilisateurs"
+      index:
+        title: "Modifier utilisateurs"
+        new: "Nouveau utilisateur"
+      new:
+        title: "Nouveau utilisateur"
+
   customers:
     menu:
       parameters: "Paramètres"
@@ -144,7 +155,9 @@ fr:
       customers: "Comptes client"
     edit:
       title: "Modifier compte client"
-      user_list: "Liste des utilisateurs"
+      user:
+        list: "Liste des utilisateurs"
+        new: "Nouveau utilisateur"
     index:
       title: "Liste comptes client"
       new: "Nouveau compte client"

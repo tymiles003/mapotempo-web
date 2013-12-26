@@ -1,0 +1,34 @@
+<h1><%= t '.title' %></h1>
+
+<p>
+  <%= link_to new_admin_user_path, class:"btn btn-default btn-sm" do %><i class="icon icon-plus icon-fixed-width"></i> <%= t '.new' %><% end %>
+</p>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th><%= t 'activerecord.attributes.user.email' %></th>
+      <th><%= t 'activerecord.attributes.user.customer' %></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td>
+          <% if user.customer %>
+            <%= link_to edit_customer_path(user.customer) do %>
+              <%= user.customer.name %>
+            <% end %>
+          <% end %>
+        </td>
+        <td class="text-right">
+          <%= link_to edit_admin_user_path(user), :class => "btn btn-primary btn-sm" do %><i class="icon icon-edit icon-fixed-width"></i> <%= t 'all.verb.edit' %><% end %>
+          <%= link_to admin_user_path(user), :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="icon icon-trash icon-fixed-width"></i> <%= t 'all.verb.destroy' %><% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

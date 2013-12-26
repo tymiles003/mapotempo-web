@@ -1,0 +1,10 @@
+<%= twitter_bootstrap_form_for @user, url: admin_user_path(@user), layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
+  <%= render 'shared/error_messages', model: @user %>
+  <%= f.email_field :email %>
+  <%= f.password_field :password %>
+  <%= f.password_field :password_confirmation %>
+  <%= f.collection_select :customer_id, [], @customers, :id, :name, {include_blank: t('plannings.edit.zoning.none')} %>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
