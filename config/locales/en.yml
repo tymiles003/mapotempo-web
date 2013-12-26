@@ -113,6 +113,7 @@ en:
         customer: "Customer"
         customer_id: "Customer"
         layer: "Map"
+        layer_id: "Map"
         password: "Password"
         password_confirmation: "Password confirmation"
         current_password: "Current password"

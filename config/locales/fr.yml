@@ -113,6 +113,7 @@ fr:
         customer: "Compte client"
         customer_id: "Compte client"
         layer: "Fond de carte"
+        layer_id: "Fond de carte"
         password: "Mot de passe"
         password_confirmation: "Confirmation mot de passe"
         current_password: "Mot de passe actuel"
