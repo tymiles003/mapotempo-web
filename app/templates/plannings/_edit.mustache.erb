@@ -24,7 +24,7 @@
             <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
           </p>
         </div>
-        <ul id="out_of_road" class="stops sortable list-group">
+        <ul id="out_of_road" class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
         {{#stops}}
           {{#destination}}
           <li data-destination_id="{{id}}" class="waypoint ui-state-error list-group-item">
