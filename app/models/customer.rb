@@ -13,6 +13,7 @@ class Customer < ActiveRecord::Base
   validates :name, presence: true
 
   after_initialize :assign_defaults, if: 'new_record?'
+  before_create :update_max_vehicles
   before_update :update_out_of_date, :update_max_vehicles
 
   def destination_add(destination)
