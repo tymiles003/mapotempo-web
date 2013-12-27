@@ -16,6 +16,13 @@ GIT
       railties (>= 3.1)
 
 GIT
+  remote: git://github.com/frodrigo/jquery-timeentry-rails.git
+  revision: baeb044ee85fb5bae4faaf4b3d067826dcb5d666
+  specs:
+    jquery-timeentry-rails (1.5.2)
+      railties (>= 3.1.0)
+
+GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
   revision: 671dec655635265e5e1cc3e9be10e3f62f465101
   specs:
@@ -184,7 +191,7 @@ GEM
       activesupport (= 4.0.0)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (10.1.0)
+    rake (10.1.1)
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.5)
@@ -255,6 +262,7 @@ DEPENDENCIES
   jquery-rails
   jquery-simplecolorpicker-rails
   jquery-tablesorter
+  jquery-timeentry-rails!
   jquery-ui-rails
   leaflet-draw-rails!
   leaflet-markercluster-rails

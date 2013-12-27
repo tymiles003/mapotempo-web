@@ -79,6 +79,11 @@ function destinations_form(params) {
       },
       width: '100%'
     });
+
+    $('#destination_open, #destination_close').timeEntry({
+      show24Hours: true,
+      spinnerImage: ''
+    });
   }
 
   function update(destination_id, destination) {

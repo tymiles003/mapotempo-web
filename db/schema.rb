@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131222174504) do
+ActiveRecord::Schema.define(version: 20131227135405) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
     t.integer  "max_vehicles"
-    t.integer  "take_over"
+    t.time     "take_over"
     t.integer  "store_id"
     t.integer  "job_geocoding_id"
     t.integer  "job_matrix_id"

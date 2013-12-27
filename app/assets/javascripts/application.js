@@ -21,6 +21,7 @@
 //= require jquery-tablesorter
 //= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
 //= require jquery.simplecolorpicker.js
+//= require jquery.timeentry
 //= require i18n
 //= require i18n/translations
 //= require i18n/translations-setting

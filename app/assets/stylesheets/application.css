@@ -18,6 +18,7 @@
  *= require jquery-tablesorter/theme.bootstrap
  *= require jquery.simplecolorpicker
  *= require jquery.simplecolorpicker-fontawesome
+ *= require jquery.timeentry
  *= require leaflet.draw
  *= require_tree .
  */

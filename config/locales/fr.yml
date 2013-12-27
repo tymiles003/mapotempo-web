@@ -327,6 +327,8 @@ fr:
       kgco2e_html: "kgCO<sub>2</sub>e"
       kgco2e_l_html: "kgCO<sub>2</sub>e/l"
       l_100km: "l/100Km"
+      hour_minute: "heure : minute"
+      hour_minute_second: "heure : minute : seconde"
 
   # Override rails-i18n
   helpers:

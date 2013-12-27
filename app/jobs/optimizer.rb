@@ -21,7 +21,8 @@ class Optimizer
         if open && close && open > close
           close = open
         end
-        [open, close, (customer.take_over or 0)]
+        take_over = customer.take_over ? Integer(customer.take_over.seconds_since_midnight) : 0
+        [open, close, take_over]
       }
       optimum = Ort.optimize(route.vehicle.capacity, route.matrix, tws)
       if optimum

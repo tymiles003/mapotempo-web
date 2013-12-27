@@ -51,7 +51,7 @@ class Route < ActiveRecord::Base
           stop.out_of_window = (stop.destination.open && stop.time < stop.destination.open) || (stop.destination.close && stop.time > stop.destination.close)
 
           self.distance += stop.distance
-          self.end = stop.time + (planning.customer.take_over || 0)
+          self.end = stop.time + (planning.customer.take_over ? planning.customer.take_over.seconds_since_midnight : 0)
 
           last = stop
         else
