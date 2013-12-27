@@ -17,14 +17,13 @@ module Ort
       input.write("\n")
       input.write(matrix.collect{ |a| a.collect{ |b| b.join(" ") }.join(" ") }.join("\n"))
       input.write("\n")
-      input.write(time_window.collect{ |a| a.collect{ |b| b ? b : -1 }.join(" ") }.join("\n"))
+      input.write(time_window.collect{ |a| [a[0] ? a[0]:0, a[1]? a[1]:2147483647, a[2]].join(" ") }.join("\n"))
       input.write("\n")
 
       input.close
 
       `cat #{input.path} > /tmp/in` # FIXME tmp
-      capacity_arg = capacity ? "-max #{capacity}" : ""
-      cmd = "#{@exec} -time_limit_in_ms #{@time} #{capacity_arg} -instance_file '#{input.path}' > '#{output.path}'"
+      cmd = "#{@exec} -time_limit_in_ms #{@time} -instance_file '#{input.path}' > '#{output.path}'"
       Rails.logger.info(cmd)
       system(cmd)
       Rails.logger.info($?.exitstatus)
