@@ -13,23 +13,23 @@ class Route < ActiveRecord::Base
   def default_stops
     i = 0
     stops.clear
-    stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:0)
+    stops << Stop.new(destination:planning.customer.store, route:self, active:true, index:0)
     planning.customer.destinations.select{ |c|
       c != planning.customer.store
     }.select{ |c|
       planning.tags & c.tags == planning.tags
     }.each { |c|
-      stops << Stop.create(destination:c, route:self, active:true, index:i+=1)
+      stops << Stop.new(destination:c, route:self, active:true, index:i+=1)
     }
-    stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:i+=1)
+    stops << Stop.new(destination:planning.customer.store, route:self, active:true, index:i+=1)
 
     compute
   end
 
   def default_store
     stops.clear
-    stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:0)
-    stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:1)
+    stops << Stop.new(destination:planning.customer.store, route:self, active:true, index:0)
+    stops << Stop.new(destination:planning.customer.store, route:self, active:true, index:1)
   end
 
   def compute
@@ -73,7 +73,7 @@ class Route < ActiveRecord::Base
       i = 0
       destinations.each{ |stop|
         destination, active = stop
-        stops << Stop.create(destination:destination, route:self, active:active, index:i+=1)
+        stops << Stop.new(destination:destination, route:self, active:active, index:i+=1)
       }
       compute
     end

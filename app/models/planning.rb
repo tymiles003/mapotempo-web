@@ -7,6 +7,7 @@ class Planning < ActiveRecord::Base
 #  validates :customer, presence: true
   validates :name, presence: true
 
+  before_create :update_zoning
   before_update :update_zoning
 
   def set_destinations(destinations)
@@ -22,7 +23,7 @@ class Planning < ActiveRecord::Base
   end
 
   def vehicle_add(vehicle)
-    route = Route.create(planning: self, vehicle: vehicle, out_of_date:true)
+    route = Route.new(planning: self, vehicle: vehicle, out_of_date:true)
     route.default_store
     routes << route
   end
@@ -45,7 +46,7 @@ class Planning < ActiveRecord::Base
   end
 
   def default_empty_routes
-    routes << Route.create(planning: self)
+    routes << Route.new(planning: self)
     customer.vehicles.each { |vehicle|
       vehicle_add(vehicle)
     }
