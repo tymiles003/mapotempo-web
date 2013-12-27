@@ -14,8 +14,8 @@ class Route < ActiveRecord::Base
     i = 0
     stops.clear
     stops << Stop.create(destination:planning.customer.store, route:self, active:true, index:0)
-    planning.customer.destinations.select{
-      |c| c != planning.customer.store
+    planning.customer.destinations.select{ |c|
+      c != planning.customer.store
     }.select{ |c|
       planning.tags & c.tags == planning.tags
     }.each { |c|

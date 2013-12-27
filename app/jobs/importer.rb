@@ -20,13 +20,11 @@ class Importer
     split, separator = splitComma.size() > splitSemicolon.size() ? [splitComma, ','] : [splitSemicolon, ';']
 
     Destination.transaction do
-      if replace
-        customer.destinations.destroy_all
-      end
 
       line = 1
       errors = []
       need_geocode = false
+      destinations = []
       columns = {
         'route' => I18n.t('destinations.import_file.route'),
         'name' => I18n.t('destinations.import_file.name'),
@@ -98,7 +96,7 @@ class Importer
           routes[nil] << destination
         end
 
-        customer.destinations << destination
+        destinations << destination
       }
 
       if errors.length > 0
@@ -106,6 +104,8 @@ class Importer
       end
 
       if replace
+        customer.destinations.destroy_all
+        customer.destinations += destinations
         if routes.size > 1 || !routes.key?(nil)
           planning = Planning.new(name: name)
           planning.customer = customer
@@ -113,10 +113,8 @@ class Importer
           customer.plannings << planning
         end
       else
-        customer.plannings.each { |planning|
-          routes[nil].each{ |destination|
-            planning.destination_add(destination)
-          }
+        destinations.each { |destination|
+          customer.destination_add(destination)
         }
       end
 

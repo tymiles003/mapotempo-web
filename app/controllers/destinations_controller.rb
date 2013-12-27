@@ -30,19 +30,18 @@ class DestinationsController < ApplicationController
   # POST /destinations
   # POST /destinations.json
   def create
-    @destination = Destination.new
-    @destination.customer = current_user.customer
-    @destination.update(destination_params)
-    current_user.customer.destinations << @destination
-    current_user.customer.plannings.each { |planning|
-      planning.destination_add(@destination)
-    }
-
     respond_to do |format|
-      if current_user.save
-        format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
-        format.json { render action: 'show', status: :created, location: @destination }
-      else
+      begin
+        Destination.transaction do
+          @destination = Destination.new(destination_params)
+          @destination.customer = current_user.customer
+          current_user.customer.destination_add(@destination)
+
+          current_user.customer.save!
+          format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
+          format.json { render action: 'show', status: :created, location: @destination }
+        end
+      rescue StandardError => e
         format.html { render action: 'new' }
         format.json { render json: @destination.errors, status: :unprocessable_entity }
       end
