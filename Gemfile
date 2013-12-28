@@ -63,7 +63,7 @@ gem 'jquery-tablesorter'
 gem 'jquery-simplecolorpicker-rails'
 gem 'mustache'
 gem 'smt_rails'
-gem 'select2-rails', '<3.0.0' # FIXME wait for https://github.com/ivaynberg/select2/issues/781
+gem 'select2-rails', github: 'frodrigo/select2-rails', branch: 'v2' # FIXME wait for https://github.com/ivaynberg/select2/issues/781
 gem 'daemons'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
