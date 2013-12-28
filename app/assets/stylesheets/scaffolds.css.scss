@@ -67,3 +67,47 @@ div {
   line-height: 28px;
   padding: 4px 8px;
 }
+
+#map.planning_map, #map.zoning_map {
+  position: absolute;
+  z-index: -1;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.box-wrapper {
+    width: 350px;
+    position: fixed;
+    right: 20px;
+    top: 70px;
+    bottom: 30px;
+
+  .box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+    .form-horizontal .form-group {
+      margin-left: -10px;
+      margin-right: -10px;
+    }
+  }
+
+  .panel {
+    .panel-heading {
+      padding: 2px 5px;
+      margin: -15px -15px 0;
+    }
+  }
+}

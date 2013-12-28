@@ -32,4 +32,5 @@
 //= require select2.js
 //= require_tree ../../templates
 //= require paloma
+//= require leaflet-pip
 //= require_tree .

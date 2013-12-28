@@ -16,6 +16,8 @@ function zonings_edit(params) {
   }).addTo(map);
 
   var markersLayers = L.layerGroup();
+  var hasPlanning = false;
+  var geoJsonLayers = {};
 
   var cluster = new L.MarkerClusterGroup({
     showCoverageOnHover: false
@@ -73,6 +75,20 @@ function zonings_edit(params) {
     });
   });
 
+  function count_point_in_polygon(layer_id, ele) {
+    if (hasPlanning) {
+      geoJsonLayer = geoJsonLayers[layer_id];
+      var n = 0;
+      markersLayers.eachLayer(function (markerLayer) {
+        if (leafletPip.pointInLayer(markerLayer.getLatLng(), geoJsonLayer, true).length > 0) {
+          n += 1;
+        }
+      });
+      $('.stop_number', ele).html(n);
+      $('.stop').show(); // Display all
+    }
+  }
+
   function set_color(polygon, vehicles) {
     var vehicles = $.grep(vehicles, function (vehicle, index) {
       return vehicle.selected;
@@ -83,16 +99,31 @@ function zonings_edit(params) {
   }
 
   function format(state) {
-    return "<div class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
+    return "<span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
   }
 
   function add_zone(zone, geom) {
+    var geoJsonLayer;
+    if (geom instanceof L.GeoJSON) {
+      geoJsonLayer = geom;
+      geom = geom.getLayers()[0];
+    } else {
+      geoJsonLayer = L.geoJson();
+      geoJsonLayer.addLayer(geom);
+    }
+    geoJsonLayers[geom._leaflet_id] = geoJsonLayer
+
     featureGroup.addLayer(geom);
 
+    zone['i18n'] = mustache_i18n;
     $('#zones').append(SMT['zones/show'](zone))
     var ele = $('#zones .zone:last')
     ele.data('feature', zone);
-    zone_map[geom._leaflet_id] = ele;
+    zone_map[geom._leaflet_id] = {
+      layer: geom,
+      ele: ele
+    };
+    count_point_in_polygon(geom._leaflet_id, ele);
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select', ele).select2({
@@ -103,8 +134,7 @@ function zonings_edit(params) {
       },
       escapeMarkup: function (m) {
         return m;
-      },
-      width: '100%'
+      }
     });
 
     $('select', ele).change(function (e) {
@@ -121,7 +151,7 @@ function zonings_edit(params) {
       }
       var val = e.val ? e.val : e.target.value;
       geom.setStyle({
-        color: (val.length > 0 ? vehicles_map[val[0]].color : '#000000')
+        color: (val.length > 0 ? vehicles_map[val].color : '#000000')
       });
     });
 
@@ -132,20 +162,17 @@ function zonings_edit(params) {
   }
 
   function del_zone(geom) {
-    zone_map[geom._leaflet_id].remove();
+    zone_map[geom._leaflet_id].ele.remove();
   }
 
   function update_zone(geom) {
-    $('input[type=hidden]', zone_map[geom._leaflet_id]).attr('value', JSON.stringify(geom.toGeoJSON()));
+    $('input[type=hidden]', zone_map[geom._leaflet_id].ele).attr('value', JSON.stringify(geom.toGeoJSON()));
+    count_point_in_polygon(geom._leaflet_id, zone_map[geom._leaflet_id].ele);
   }
 
   function display_zoning(data) {
-    $.each(data.zoning, function (index, zone) {
-      var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
-      set_color(geom, zone.vehicles);
-      add_zone(zone, geom);
-    });
     if (data.planning) {
+      hasPlanning = true;
       $.each(data.planning, function (index, route) {
         $.each(route.stops, function (index, stop) {
           if (stop.lat && stop.lng) {
@@ -161,6 +188,11 @@ function zonings_edit(params) {
         });
       });
     }
+    $.each(data.zoning, function (index, zone) {
+      var geom = L.geoJson(JSON.parse(zone.polygon));
+      set_color(geom, zone.vehicles);
+      add_zone(zone, geom);
+    });
   }
 
   $.ajax({
