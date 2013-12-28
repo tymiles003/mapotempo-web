@@ -268,18 +268,20 @@ function destinations_index(params) {
       over(id, true);
     })
     .on("click", ".destroy", function (event) {
-      $.ajax({
-        type: "delete",
-        url: '/destinations/' + id + '.json',
-        beforeSend: beforeSendWaiting,
-        success: function (data) {
-          row.remove();
-          markersLayers.removeLayer(markers[id]);
-          delete markers[id];
-        },
-        complete: completeWaiting,
-        error: ajaxError
-      });
+      if (confirm(I18n.t('all.verb.destroy_confirm'))) {
+        $.ajax({
+          type: "delete",
+          url: '/destinations/' + id + '.json',
+          beforeSend: beforeSendWaiting,
+          success: function (data) {
+            row.remove();
+            markersLayers.removeLayer(markers[id]);
+            delete markers[id];
+          },
+          complete: completeWaiting,
+          error: ajaxError
+        });
+      };
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
