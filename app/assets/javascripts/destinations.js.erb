@@ -495,6 +495,19 @@ function destinations_index(params) {
           0: filter_text,
           1: filter_text,
           2: filter_number,
+          3: function(e, n, f, i, $r) {
+            n = n.split(',');
+            n[0] = n[0].split(':');
+            n[0] = new Date(2000, 01, 01, n[0][0], n[0][1]);
+            n[1] = n[1].split(':');
+            n[1] = new Date(2000, 01, 01, n[1][0], n[1][1]);
+
+            f = f.split(' - ');
+            f[0] = new Date(2000, 01, 01, f[0]);
+            f[1] = new Date(2000, 01, 01, f[1]);
+
+            return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
+          },
           4: filter_text,
           5: filter_text,
         },
