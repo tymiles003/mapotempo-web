@@ -14,16 +14,20 @@
     if stop.active and stop.destination.lat
   %>
     <li class="list-group-item row">
-      <span class="time col-lg-1 col-1">#<%= index += 1 %></span>
+      <span class="index col-lg-1 col-1">#<%= index += 1 %></span>
       <span class="time col-lg-1 col-1"><%= stop.time.strftime("%H:%M")if stop.time %></span>
       <span class="distance badge"><%= number_to_human(stop.distance, units: :distance, precision: 3) %></span>
       <span class="col-lg-6 col-4">
         <span class="name"><%= stop.destination.name %></span></br>
         <span class="address">
           <%= stop.destination.street %></br>
+          <% if stop.destination.detail && !stop.destination.detail.empty? %>
+            <%= stop.destination.detail %></br>
+          <% end %>
           <%= stop.destination.postalcode %> <%= stop.destination.city %>
         </span>
       </span>
+      <span class="comment col-lg-1 col-4"><%= stop.destination.comment %></span>
     </li>
   <%
     end

@@ -29,14 +29,18 @@ class Importer
         'route' => I18n.t('destinations.import_file.route'),
         'name' => I18n.t('destinations.import_file.name'),
         'street' => I18n.t('destinations.import_file.street'),
+        'detail' => I18n.t('destinations.import_file.detail'),
         'postalcode' => I18n.t('destinations.import_file.postalcode'),
         'city' => I18n.t('destinations.import_file.city'),
         'lat' => I18n.t('destinations.import_file.lat'),
         'lng' => I18n.t('destinations.import_file.lng'),
         'open' => I18n.t('destinations.import_file.open'),
         'close' => I18n.t('destinations.import_file.close'),
-        'tags' => I18n.t('destinations.import_file.tags')
+        'comment' => I18n.t('destinations.import_file.comment'),
+        'tags' => I18n.t('destinations.import_file.tags'),
+        'quantity' => I18n.t('destinations.import_file.quantity')
       }
+      columns_name = columns.keys - ['route']
       CSV.parse(contents, col_sep: separator, headers: true) { |row|
         row = row.to_hash
 
@@ -56,7 +60,7 @@ class Importer
         row = r
 
         r = row.to_hash.select{ |k|
-          ["name", "street", "postalcode", "city", "open", "close", "lat", "lng"].include?(k)
+          columns_name.include?(k)
         }
 
         if r.size == 0

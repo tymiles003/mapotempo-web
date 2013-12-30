@@ -77,11 +77,15 @@ en:
         name: "Name"
         address: "Address"
         street: "Street"
+        detail: "Detail"
         postalcode: "Postalcode"
         city: "City"
         quantity: "Quantity"
+        quantity_small: "Qty."
         open: "Open"
         close: "Close"
+        open_close_small: "Open/Close"
+        comment: "Comment"
         tags: "Tags"
         tag_ids: "Tags"
       layer:
@@ -206,6 +210,7 @@ en:
       route: "route"
       name: "name"
       street: "street"
+      detail: "detail"
       postalcode: "postalcode"
       city: "city"
       lat: "lat"
@@ -213,6 +218,7 @@ en:
       quantity: "quantity"
       open: "open"
       close: "close"
+      comment: "comment"
       tags: "tags"
       missing_name_street_city: "\"name\", \"street\" ou \"city\" missing at line %{line}."
       too_many_errors: "Stop import, too many errors."
@@ -258,8 +264,10 @@ en:
       distance: "distance"
       name: "name"
       street: "street"
+      detail: "detail"
       postalcode: "postalcode"
       city: "city"
+      comment: "comment"
 
   shared:
     error_messages:

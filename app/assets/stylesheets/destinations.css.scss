@@ -25,10 +25,19 @@
   }
 
   .input-group-tags {
-    margin-right: 4px;
-    width: 150px;
-    height: 25px;
-    line-height: auto;
+    max-width: 160px;
+  }
+
+  .tablesorter-filter-row {
+    td:nth-of-type(3) input {
+      width: 6em;
+    }
+  }
+
+  .tablesorter-headerRow {
+    th:nth-of-type(7) div {
+      display: none;
+    }
   }
 
   .select2-container-multi .select2-choices {

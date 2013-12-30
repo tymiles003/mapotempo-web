@@ -5,6 +5,9 @@
       <span>
         <input class="form-control input-sm" type="text" name="destination[street]" value="{{street}}"/>
       </span>
+      <span>
+        <input class="form-control input-sm" type="text" name="destination[detail]" value="{{detail}}"/>
+      </span>
       <span style="width:4em">
         <input class="form-control input-sm" type="text" maxlength="7" width="7" name="destination[postalcode]" value="{{postalcode}}"/>
       </span>
@@ -17,17 +20,20 @@
     </span>
   </td>
   <td>
-    <input class="form-control input-sm" type="integer" name="destination[quantity]" value="{{quantity}}"/>
+    <input class="form-control input-sm" type="integer" maxlength="2" width="2" name="destination[quantity]" value="{{quantity}}" style="width:6em"/>
   </td>
   <td>
     <span class="block">
-      <span>
-        <input class="form-control input-sm" type="datetime" name="destination[open]" value="{{open}}"/>
+      <span style="width:4em">
+        <input class="form-control input-sm" type="datetime" maxlength="5" width="5" name="destination[open]" value="{{open}}"/>
       </span>
-      <span>
-        <input class="form-control input-sm" type="datetime" name="destination[close]" value="{{close}}"/>
+      <span style="width:4em">
+        <input class="form-control input-sm" type="datetime" maxlength="5" width="5" name="destination[close]" value="{{close}}"/>
       </span>
     </span>
+  </td>
+  <td>
+    <input class="form-control input-sm" type="integer" maxlength="2" width="2" name="destination[comment]" value="{{comment}}"/>
   </td>
   <td>
    <div class="input-group input-group-tags">

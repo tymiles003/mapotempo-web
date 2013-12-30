@@ -4,6 +4,7 @@
   <%= f.text_field :street, {div_class:'input-group col-lg-6', add_on: 'append'} do %>
     <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
   <% end %>
+  <%= f.text_field :detail %>
   <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
   <%= f.text_field :city %>
   <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
@@ -23,6 +24,7 @@
       <span class="input-group-addon"><i class="icon-tags"></i></span>
     <% end %>
   <% end %>
+  <%= f.text_field :comment %>
   <%= f.actions do %>
     <% if @destination != current_user.customer.store %>
       <%= f.submit %>

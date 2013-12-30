@@ -462,7 +462,13 @@ function destinations_index(params) {
         3: {
           sorter: false
         },
+        4: {
+          sorter: false
+        },
         5: {
+          sorter: false
+        },
+        6: {
           sorter: false
         }
       },
@@ -489,7 +495,8 @@ function destinations_index(params) {
           0: filter_text,
           1: filter_text,
           2: filter_number,
-          4: filter_text
+          4: filter_text,
+          5: filter_text,
         },
         filter_formatter: {
           3: function ($cell, indx) {
@@ -501,7 +508,7 @@ function destinations_index(params) {
               valueToHeader: false
             });
           },
-          5: function ($cell, indx) {
+          6: function ($cell, indx) {
             return false;
           }
         }
