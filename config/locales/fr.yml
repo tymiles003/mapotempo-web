@@ -181,10 +181,10 @@ fr:
       store: "Départ véhicule"
       tags: "Libellés"
     form:
-      submit_store: "Modifier départ véhicule"
+      submit_store: "Enregistrer départ véhicule"
     edit:
       title: "Modifier client"
-      title_store: "Modifier départ véhicule"
+      title_store: "Enregistrer départ véhicule"
     import:
       title: "Importer des clients"
       replace: "Remplacer"
@@ -342,5 +342,5 @@ fr:
   helpers:
     submit:
       create: "Créer %{model}"
-      update: "Modifier %{model}"
+      update: "Enregistrer %{model}"
       submit: "Enregistrer %{model}"
