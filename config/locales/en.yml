@@ -23,6 +23,11 @@ en:
   distance:
     unit: "m"
     thousand: "km"
+  time:
+    formats:
+      default: "%d-%m-%Y"
+      short: "%b %d"
+      long: "%B %d, %Y"
 
   activerecord:
     models:
@@ -96,6 +101,8 @@ en:
         name: "Name"
         tag_ids: "Tags"
         zoning_id: "Zoning"
+        created_at: "Created"
+        updated_at: "Updated"
       route:
         distance: "Distance"
         emission: "Emission"

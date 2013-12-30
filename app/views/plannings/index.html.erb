@@ -9,6 +9,8 @@
     <tr>
       <th><%= t 'activerecord.attributes.planning.name' %></th>
       <th><%= t 'activerecord.attributes.planning.tags' %></th>
+      <th><%= t 'activerecord.attributes.planning.created_at' %></th>
+      <th><%= t 'activerecord.attributes.planning.updated_at' %></th>
       <th></th>
     </tr>
   </thead>
@@ -22,6 +24,8 @@
           <%= tag.label %>
         <% } %>
         </td>
+        <td><%= l planning.created_at %></td>
+        <td><%= l planning.updated_at %></td>
         <td class="text-right">
           <%= link_to edit_planning_path(planning), :class => "btn btn-primary btn-sm" do %><i class="icon icon-edit icon-fixed-width"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to planning, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="icon icon-trash icon-fixed-width"></i> <%= t 'all.verb.destroy' %><% end %>
