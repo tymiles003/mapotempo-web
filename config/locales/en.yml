@@ -205,6 +205,7 @@ en:
       title: "Listing destinations"
       new: "New Destination"
       default_name: "New Destination"
+      count: "Destinations number:"
       dialog:
         geocoding:
           title: "Geocoding"

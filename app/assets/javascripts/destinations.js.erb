@@ -277,6 +277,7 @@ function destinations_index(params) {
             row.remove();
             markersLayers.removeLayer(markers[id]);
             delete markers[id];
+            count_dec();
           },
           complete: completeWaiting,
           error: ajaxError
@@ -320,6 +321,19 @@ function destinations_index(params) {
     } else {
       delete markers[destination_id];
     }
+  }
+
+  function count() {
+    var count = $('.destinations tr:visible').length
+    $("#count").html(count);
+  }
+
+  function count_inc() {
+    $("#count").html(parseInt($("#count").text()) + 1);
+  }
+
+  function count_dec() {
+    $("#count").html(parseInt($("#count").text()) - 1);
   }
 
   function sendMove(id, latLng) {
@@ -407,6 +421,7 @@ function destinations_index(params) {
         $(".destinations").append(SMT['destinations/show'](data));
         wire($('[data-destination_id=' + data.id + ']'));
         over(data.id, true);
+        count_inc();
       },
       complete: completeWaiting,
       error: ajaxError
@@ -449,6 +464,8 @@ function destinations_index(params) {
         addMarker(destination.id, destination.lat, destination.lng);
       }
     });
+
+    count();
 
     $('tr', table).each(function (index, element) {
       wire(element);
@@ -526,6 +543,8 @@ function destinations_index(params) {
           }
         }
       }
+    }).bind('filterEnd', function (e, filter) {
+      count();
     });
     $(".tablesorter-filter").addClass("form-control input-sm"); // filter_cssFilter not support setting multiple class at once
   }
