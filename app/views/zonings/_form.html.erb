@@ -1,5 +1,8 @@
 <%= twitter_bootstrap_form_for @zoning, layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
   <%= render 'shared/error_messages', model: @zoning %>
+  <% if @planning %>
+    <input id="planning_id" type="hidden" value="<%= @planning.id %>" name="planning_id">
+  <% end %>
   <%= f.text_field :name %>
   <%= f.actions do %>
     <%= f.submit %>

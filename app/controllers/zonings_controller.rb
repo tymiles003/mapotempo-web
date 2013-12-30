@@ -29,6 +29,7 @@ class ZoningsController < ApplicationController
   def create
     @zoning = Zoning.new(zoning_params)
     @zoning.customer = current_user.customer
+    @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
 
     respond_to do |format|
       if save_zoning
@@ -44,6 +45,8 @@ class ZoningsController < ApplicationController
   # PATCH/PUT /zonings/1
   # PATCH/PUT /zonings/1.json
   def update
+    @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
+
     respond_to do |format|
       if save_zoning
         format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
