@@ -218,7 +218,7 @@ fr:
     import_file:
       route: "tournée"
       name: "nom"
-      street: "rue"
+      street: "voie"
       detail: "complément"
       postalcode: "code postal"
       city: "ville"
@@ -229,7 +229,7 @@ fr:
       close: "fermeture"
       comment: "commentaire"
       tags: "libellés"
-      missing_name_street_city: "\"nom\", \"rue\" ou \"ville\" manquant à la ligne %{line}."
+      missing_name_street_city: "\"nom\", \"voie\" ou \"ville\" manquant à la ligne %{line}."
       too_many_errors: "Import stoppé, trop d'erreurs."
 
   plannings:
@@ -272,7 +272,7 @@ fr:
       time: "heure"
       distance: "distance"
       name: "nom"
-      street: "rue"
+      street: "voie"
       detail: "complément"
       postalcode: "code postal"
       city: "ville"
