@@ -164,6 +164,7 @@ en:
       parameters: "Parameters"
       customer: "Customer"
       user: "User"
+      user_settings: "User's Settings"
       customers: "Customers"
     edit:
       title: "Editing customer"
@@ -295,6 +296,8 @@ en:
   users:
     menu:
       sign_out: "Sign out"
+    edit_settings:
+      title: "User's Settings"
 
   vehicles:
     default_name: "Vehcile %{n}"

@@ -1,4 +1,4 @@
-function user_edit(params) {
+function user_edit_settings(params) {
   var map_layer_url = params['map_layer_url'];
   var map_lat = params['map_lat'];
   var map_lng = params['map_lng'];
@@ -23,9 +23,15 @@ function user_edit(params) {
 }
 
 Paloma.controller('Devise/Registration').prototype.edit = function () {
-  user_edit(this.params);
 };
 
 Paloma.controller('Devise/Registration').prototype.update = function () {
-  user_edit(this.params);
+};
+
+Paloma.controller('User').prototype.edit_settings = function () {
+  user_edit_settings(this.params);
+};
+
+Paloma.controller('User').prototype.update_settings = function () {
+  user_edit_settings(this.params);
 };

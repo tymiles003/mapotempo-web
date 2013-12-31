@@ -164,6 +164,7 @@ fr:
       parameters: "Paramètres"
       customer: "Compte client"
       user: "Compte utilisateur"
+      user_settings: "Paramètres utilisateur"
       customers: "Comptes client"
     edit:
       title: "Modifier compte client"
@@ -295,6 +296,8 @@ fr:
   users:
     menu:
       sign_out: "Déconnexion"
+    edit_settings:
+      title: "Paramètres utilisateurs"
 
   vehicles:
     default_name: "Véhicle %{n}"

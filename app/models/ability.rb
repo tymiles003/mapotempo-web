@@ -9,6 +9,7 @@ class Ability
         can :manage, :all
       else
         can [:edit, :update], User, :id => user.id
+        can [:edit_settings, :update_settings], User, :id => user.id
         can [:edit, :update], Customer, :id => user.customer.id
         can [:stop_job_matrix, :stop_job_optimizer, :stop_job_geocoding], Customer
         can [:index, :edit, :update], Vehicle, :customer_id => user.customer.id

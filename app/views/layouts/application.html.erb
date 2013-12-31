@@ -120,7 +120,8 @@
                   <%= link_to customers_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="icon-wrench icon-fixed-width"></i> <%= t 'customers.menu.parameters' %> <span class="caret"></span><% end %>
                   <ul class="dropdown-menu">
                     <li><%= link_to edit_customer_path(current_user.customer) do %><i class="icon-building icon-fixed-width"></i> <%= t 'customers.menu.customer' %><% end %></li>
-                    <li><%= link_to edit_user_registration_path do %><i class="icon-user icon-fixed-width"></i> <%= t 'customers.menu.user' %><% end %></li>
+                    <li><%= link_to edit_user_registration_path do %><i class="icon-key icon-fixed-width"></i> <%= t 'customers.menu.user' %><% end %></li>
+                    <li><%= link_to edit_user_settings_path(current_user) do %><i class="icon-user icon-fixed-width"></i> <%= t 'customers.menu.user_settings' %><% end %></li>
                   </ul>
                 </li>
               <% end %>

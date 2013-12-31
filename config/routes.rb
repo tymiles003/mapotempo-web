@@ -1,5 +1,7 @@
 Mapotempo::Application.routes.draw do
   devise_for :users
+  get 'user_settings/:id' => 'users#edit_settings', :as => 'edit_user_settings'
+  patch 'user_settings/:id' => 'users#update_settings', :as => 'update_user_settings'
 
   namespace :admin do
     resources :users
