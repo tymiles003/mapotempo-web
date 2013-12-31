@@ -1,7 +1,21 @@
 {{#destination}}
 <p><b>{{name}}</b></p>
+<ul>
+  <li>{{#i18n}}plannings.edit.popup.open{{/i18n}} {{open}}</li>
+  <li>{{#i18n}}plannings.edit.popup.close{{/i18n}} {{close}}</li>
+  <li{{#out_of_window}} class="ui-state-error"{{/out_of_window}}>
+    {{#i18n}}plannings.edit.popup.time{{/i18n}} {{time}}
+    {{#out_of_window}}<i class="icon icon-time icon-fixed-width"></i>{{/out_of_window}}
+  </li>
+</ul>
 <p>
-{{street}}</br>
-{{postalcode}} {{city}}
+  {{street}}</br>
+  {{#detail}}
+    {{detail}}</br>
+  {{/detail}}
+  {{postalcode}} {{city}}
 </p>
+{{#comment}}
+  <p>{{comment}}</p>
+{{/comment}}
 {{/destination}}

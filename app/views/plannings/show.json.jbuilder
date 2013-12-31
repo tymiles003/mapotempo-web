@@ -43,7 +43,12 @@ else
       (json.active true) if stop.active
       (json.number number+=1) if stop.active && stop.destination != current_user.customer.store
       json.distance (stop.distance or 0)/1000
-      json.destination(stop.destination, :id, :name, :street, :postalcode, :city, :lat, :lng)
+      json.destination do
+         destination = stop.destination
+         json.extract! destination, :id, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment
+         (json.open destination.open.strftime("%H:%M")) if destination.open
+         (json.close destination.close.strftime("%H:%M")) if destination.close
+      end
       json.type (stop.destination==current_user.customer.store)? 'store' : 'waypoint'
     end
   end

@@ -203,7 +203,8 @@ function plannings_edit(params) {
           if (stop.is_store) {
             markers[stop.destination.id] = store_marker;
           } else {
-            markers[stop.destination.id] = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+            stop['i18n'] = mustache_i18n;
+            var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
               icon: new L.NumberedDivIcon({
                 number: stop.number,
                 iconUrl: color ? route.icon : '<%= asset_path("point-000000.svg") %>',
@@ -212,6 +213,12 @@ function plannings_edit(params) {
                 popupAnchor: new L.Point(1, 11)
               }),
             }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
+            m.on('mouseover', function(e){
+              m.openPopup();
+            }).on('mouseout', function(e){
+              m.closePopup();
+            });
+            markers[stop.destination.id] = m;
           }
         }
       });

@@ -253,6 +253,10 @@ fr:
         new: "Nouveau zonage"
       refresh: "Actualiser"
       out_of_road: "Non plannifiés"
+      popup:
+        open: "Ouverture :"
+        close: "Fermeture :"
+        time: "Passage :"
       dialog:
         matrix:
           title: "Distancier"

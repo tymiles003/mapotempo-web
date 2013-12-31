@@ -253,6 +253,10 @@ en:
         new: "New zoning"
       refresh: "Refresh"
       out_of_road: "Out of route"
+      popup:
+        open: "Open:"
+        close: "Close:"
+        time: "Arrival:"
       dialog:
         matrix:
           title: "Distance matrix"
