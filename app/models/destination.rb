@@ -16,15 +16,23 @@ class Destination < ActiveRecord::Base
   before_destroy :destroy_out_of_date
 
   def geocode
-    Rails.logger.info self.inspect
     address = Geocode.code(street, postalcode, city)
     Rails.logger.info address
     if address
       self.lat, self.lng = address[:lat], address[:lng]
     end
+    is_gecoded = true
+  end
+
+  def reverse_geocode
+    address = Geocode.reverse(lat, lng)
+    self.street, self.postalcode, self.city = address[:street], address[:postal_code], address[:city]
+    is_gecoded = true
   end
 
   private
+    attr_accessor :is_gecoded
+
     def update_out_of_date
       if lat_changed? or lng_changed? or open_changed? or close_changed?
         out_of_date
@@ -32,7 +40,7 @@ class Destination < ActiveRecord::Base
     end
 
     def update_geocode
-      if street_changed? or postalcode_changed? or city_changed?
+      if !is_gecoded and (street_changed? or postalcode_changed? or city_changed?)
         geocode
       end
     end

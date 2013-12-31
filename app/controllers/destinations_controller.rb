@@ -52,10 +52,14 @@ class DestinationsController < ApplicationController
   # PATCH/PUT /destinations/1.json
   def update
     respond_to do |format|
-      if @destination.update(destination_params) and current_user.save
+      begin
+        @destination.assign_attributes(destination_params)
+        !params[:reverse] or @destination.reverse_geocode
+        current_user.save!
+
         format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         format.json { render action: 'show', location: @destination }
-      else
+      rescue StandardError => e
         format.html { render action: 'edit' }
         format.json { render json: @destination.errors, status: :unprocessable_entity }
       end
@@ -77,6 +81,18 @@ class DestinationsController < ApplicationController
       begin
         @destination = Destination.new(destination_params)
         @destination.geocode
+        format.json { render action: 'show', location: @destination }
+      rescue StandardError => e
+        format.json { render json: e.message, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def geocode_reverse
+    respond_to do |format|
+      begin
+        @destination = Destination.new(destination_params)
+        @destination.reverse_geocode
         format.json { render action: 'show', location: @destination }
       rescue StandardError => e
         format.json { render json: e.message, status: :unprocessable_entity }

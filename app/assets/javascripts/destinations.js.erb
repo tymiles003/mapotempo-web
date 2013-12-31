@@ -53,10 +53,18 @@ function destinations_form(params) {
     });
     <% end %>
     $row.on("change", ":input", function (event) {
+      var url;
+      if (['destination[street]', 'destination[street]', 'destination[street]'].indexOf(event.currentTarget.name) >= 0) {
+        url = '/destination/geocode.json';
+      } else if (pointing !== false && ['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) {
+        url = '/destination/geocode_reverse.json';
+      } else {
+        return;
+      }
       $.ajax({
         type: "patch",
         data: $(":input", $row).serialize(),
-        url: '/destination/geocode.json',
+        url: url,
         beforeSend: beforeSendWaiting,
         success: function (data) {
           update(id, data);
@@ -101,7 +109,7 @@ function destinations_form(params) {
   function sendMove(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     $('[name=destination\\[lat\\]]', row).val(latLng.lat);
-    $('[name=destination\\[lng\\]]', row).val(latLng.lng);
+    $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
   }
 
   map.on('click', function (mouseEvent) {
@@ -249,7 +257,7 @@ function destinations_index(params) {
       $.ajax({
         type: "put",
         data: $(":input", $row).serialize(),
-        url: '/destinations/' + id + '.json',
+        url: '/destinations/' + id + '.json' + ((pointing !== false && ['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) ? '?reverse=true': ''),
         beforeSend: beforeSendWaiting,
         success: function (data) {
           update(id, data);

@@ -39,6 +39,7 @@ Mapotempo::Application.config.optimizer_tmp_dir = Dir.tmpdir
 Mapotempo::Application.config.optimizer_time = 20000
 
 Mapotempo::Application.config.geocode_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode', expires_in: 60*60*24*10)
+Mapotempo::Application.config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_reverse', expires_in: 60*60*24*10)
 Mapotempo::Application.config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_complete', expires_in: 60*60*24*10)
 Mapotempo::Application.config.geocode_ign_referer = "localhost"
 Mapotempo::Application.config.geocode_ign_key = nil
