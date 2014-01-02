@@ -73,7 +73,7 @@ class Planning < ActiveRecord::Base
   end
 
   def update_zoning
-    if zoning && (zoning_id_changed? || updated_at > zoning.updated_at)
+    if zoning && (zoning_id_changed? || updated_at < zoning.updated_at)
       z = {}
       unaffected = []
       zoning.apply(customer.destinations).each{ |zone, destinations|

@@ -1,5 +1,5 @@
 class Zone < ActiveRecord::Base
-  belongs_to :zoning
+  belongs_to :zoning, touch: true
   has_and_belongs_to_many :vehicles
 
   def inside?(lat, lng)
