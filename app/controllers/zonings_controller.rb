@@ -29,13 +29,13 @@ class ZoningsController < ApplicationController
   def create
     @zoning = Zoning.new(zoning_params)
     @zoning.customer = current_user.customer
-    @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
 
     respond_to do |format|
       if save_zoning
-        format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
+        format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
         format.json { render action: 'show', status: :created, location: @zoning }
       else
+        @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
         format.html { render action: 'new' }
         format.json { render json: @zoning.errors, status: :unprocessable_entity }
       end
@@ -45,13 +45,12 @@ class ZoningsController < ApplicationController
   # PATCH/PUT /zonings/1
   # PATCH/PUT /zonings/1.json
   def update
-    @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
-
     respond_to do |format|
       if save_zoning
-        format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
+        format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
         format.json { head :no_content }
       else
+        @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
         format.html { render action: 'edit' }
         format.json { render json: @zoning.errors, status: :unprocessable_entity }
       end
