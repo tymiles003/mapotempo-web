@@ -72,27 +72,35 @@ class Planning < ActiveRecord::Base
     end
   end
 
-  def update_zoning
-    if zoning && (zoning_id_changed? || updated_at < zoning.updated_at)
-      z = {}
-      unaffected = []
-      zoning.apply(customer.destinations).each{ |zone, destinations|
-        if zone && zone.vehicles && zone.vehicles.size > 0
-          z[zone.vehicles[0]] = destinations
-        else
-          unaffected += destinations
-        end
-      }
-      z = Hash[z]
-      routes[0].set_destinations(unaffected)
-      routes[1..-1].each{ |route|
-        if route.vehicle && z.has_key?(route.vehicle)
-          route.set_destinations(z[route.vehicle].collect{ |d| [d,true]})
-        else
-          route.set_destinations([])
-        end
-        route.out_of_date = true
-      }
-    end
+  def out_of_date
+    (zoning && updated_at < zoning.updated_at) || routes.inject(false){ |acc, route|
+      acc or route.out_of_date
+    }
   end
+
+  private
+
+    def update_zoning
+      if zoning && (zoning_id_changed? || updated_at < zoning.updated_at)
+        z = {}
+        unaffected = []
+        zoning.apply(customer.destinations).each{ |zone, destinations|
+          if zone && zone.vehicles && zone.vehicles.size > 0
+            z[zone.vehicles[0]] = destinations
+          else
+            unaffected += destinations
+          end
+        }
+        z = Hash[z]
+        routes[0].set_destinations(unaffected)
+        routes[1..-1].each{ |route|
+          if route.vehicle && z.has_key?(route.vehicle)
+            route.set_destinations(z[route.vehicle].collect{ |d| [d,true]})
+          else
+            route.set_destinations([])
+          end
+          route.out_of_date = true
+        }
+      end
+    end
 end

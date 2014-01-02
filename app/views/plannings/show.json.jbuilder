@@ -12,9 +12,7 @@ else
   json.extract! @planning, :id
   json.distance @planning.routes.to_a.sum(0){ |route| route.distance or 0 }/1000
   json.emission number_to_human(@planning.routes.to_a.sum(0){ |route| route.emission or 0 }, precision: 4)
-  if @planning.routes.inject(false){ |acc, route| acc or route.out_of_date }
-      json.out_of_date true
-  end
+  (json.out_of_date true) if @planning.out_of_date
   json.size @planning.routes.to_a.sum(0){ |route| route.vehicle ? route.size : 0 }
   json.store do
     json.lat current_user.customer.store.lat
