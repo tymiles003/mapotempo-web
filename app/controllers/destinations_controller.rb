@@ -55,6 +55,7 @@ class DestinationsController < ApplicationController
       begin
         @destination.assign_attributes(destination_params)
         !params[:reverse] or @destination.reverse_geocode
+        @destination.save!
         current_user.save!
 
         format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
