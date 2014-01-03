@@ -36,8 +36,8 @@ else
       if stop.destination == current_user.customer.store
         json.is_store true
       end
-      (json.error true) if !stop.destination.lat || stop.out_of_window || stop.out_of_capacity
-      json.extract! stop, :trace, :out_of_window, :out_of_capacity
+      (json.error true) if !stop.destination.lat || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+      json.extract! stop, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
       (json.time stop.time.strftime("%H:%M")) if stop.time
       (json.active true) if stop.active
       (json.number number+=1) if stop.active && stop.destination != current_user.customer.store

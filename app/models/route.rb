@@ -56,9 +56,11 @@ class Route < ActiveRecord::Base
           stop.out_of_capacity = destination != planning.customer.store && vehicle.capacity && quantity > vehicle.capacity
           quantity += (destination.quantity or 1)
 
+          stop.out_of_drive_time = destination != planning.customer.store && stop.time > vehicle.close
+
           last = stop
         else
-          stop.active = stop.out_of_capacity = false
+          stop.active = stop.out_of_capacity = stop.out_of_drive_time = false
           stop.begin = stop.end = stop.distance = stop.trace = stop.time = nil
         end
         self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
