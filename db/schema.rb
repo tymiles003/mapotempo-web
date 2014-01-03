@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131228174827) do
+ActiveRecord::Schema.define(version: 20140103161317) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -128,8 +128,6 @@ ActiveRecord::Schema.define(version: 20131228174827) do
   create_table "stops", force: true do |t|
     t.integer  "index"
     t.boolean  "active"
-    t.time     "begin"
-    t.time     "end"
     t.float    "distance"
     t.text     "trace"
     t.integer  "route_id"
