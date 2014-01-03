@@ -257,6 +257,10 @@ en:
         open: "Open:"
         close: "Close:"
         time: "Arrival:"
+      error:
+        out_of_window: "Out of customer's time window"
+        out_of_capacity: "Out of capacity"
+        out_of_drive_time: "Out of vehicle's time window"
       dialog:
         matrix:
           title: "Distance matrix"

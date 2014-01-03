@@ -257,6 +257,10 @@ fr:
         open: "Ouverture :"
         close: "Fermeture :"
         time: "Passage :"
+      error:
+        out_of_window: "Hors créneau client"
+        out_of_capacity: "Hors capacité véhicule"
+        out_of_drive_time: "Hors créneau véhicule"
       dialog:
         matrix:
           title: "Distancier"

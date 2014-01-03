@@ -66,6 +66,19 @@
           <i class="icon icon-time icon-fixed-width"></i>{{start}} - {{end}}
           <i class="icon icon-road icon-fixed-width"></i>{{distance}} {{#i18n}}all.unit.km{{/i18n}}
         </p>
+        {{#route_error}}
+          <ul class="ui-state-error">
+            {{#route_out_of_window}}
+              <li><i class="icon icon-time icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_window{{/i18n}}</li>
+            {{/route_out_of_window}}
+            {{#route_out_of_capacity}}
+              <li><i class="icon icon-gift icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_capacity{{/i18n}}</li>
+            {{/route_out_of_capacity}}
+            {{#route_out_of_drive_time}}
+              <li><i class="icon icon-power-off icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_drive_time{{/i18n}}</li>
+            {{/route_out_of_drive_time}}
+          </ul>
+        {{/route_error}}
       </div>
       <ul class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
       {{#stops}}

@@ -3,19 +3,19 @@
 <ul>
   <li>{{#i18n}}plannings.edit.popup.open{{/i18n}} {{open}}</li>
   <li>{{#i18n}}plannings.edit.popup.close{{/i18n}} {{close}}</li>
-  <li{{#out_of_window}} class="ui-state-error"{{/out_of_window}}>
-    {{#i18n}}plannings.edit.popup.time{{/i18n}} {{time}}
-    {{#out_of_window}}<i class="icon icon-time icon-fixed-width"></i>{{/out_of_window}}
-  </li>
+  <li>{{#i18n}}plannings.edit.popup.time{{/i18n}} {{time}}</li>
 </ul>
 {{#error}}
   <ul class="ui-state-error">
-  {{#out_of_capacity}}
-    <li><i class="icon icon-gift icon-fixed-width"></i></li>
-  {{/out_of_capacity}}
-  {{#out_of_drive_time}}
-    <li><i class="icon icon-power-off icon-fixed-width"></i></li>
-  {{/out_of_drive_time}}
+    {{#out_of_window}}
+      <li><i class="icon icon-time icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_window{{/i18n}}</li>
+    {{/out_of_window}}
+    {{#out_of_capacity}}
+      <li><i class="icon icon-gift icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_capacity{{/i18n}}</li>
+    {{/out_of_capacity}}
+    {{#out_of_drive_time}}
+      <li><i class="icon icon-power-off icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_drive_time{{/i18n}}</li>
+    {{/out_of_drive_time}}
   </ul>
 {{/error}}
 <p>
