@@ -1,4 +1,9 @@
 function vehicles_form() {
+  $('#vehicle_open, #vehicle_close').timeEntry({
+    show24Hours: true,
+    spinnerImage: ''
+  });
+
   $('#vehicle_color').simplecolorpicker({
     theme: 'fontawesome'
   });
