@@ -8,6 +8,13 @@
     {{#out_of_window}}<i class="icon icon-time icon-fixed-width"></i>{{/out_of_window}}
   </li>
 </ul>
+{{#error}}
+  <ul class="ui-state-error">
+  {{#out_of_capacity}}
+    <li><i class="icon icon-gift icon-fixed-width"></i></li>
+  {{/out_of_capacity}}
+  </ul>
+{{/error}}
 <p>
   {{street}}</br>
   {{#detail}}

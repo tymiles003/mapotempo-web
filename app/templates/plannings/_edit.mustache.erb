@@ -70,7 +70,7 @@
       <ul class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
       {{#stops}}
         {{#destination}}
-        <li data-destination_id="{{id}}" class="{{type}}{{^lat}} ui-state-error{{/lat}}{{#out_of_window}} ui-state-error{{/out_of_window}} list-group-item">
+        <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           {{#is_store}}
             <i class="icon icon-home icon-fixed-width"></i>
           {{/is_store}}
@@ -85,6 +85,9 @@
             {{#out_of_window}}
               <i class="icon icon-time icon-fixed-width"></i>
             {{/out_of_window}}
+            {{#out_of_capacity}}
+              <i class="icon icon-gift icon-fixed-width"></i>
+            {{/out_of_capacity}}
             <span class="info">{{#active}}{{#lat}}{{time}} - {{/lat}}{{/active}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>

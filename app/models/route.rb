@@ -39,21 +39,26 @@ class Route < ActiveRecord::Base
       self.end = self.start = vehicle.open
       last = stops[0]
       last.time = self.end
+      quantity = 0
       stops.sort{ |a,b| a.index <=> b.index }[1..-1].each{ |stop|
-        if stop.active && stop.destination.lat && stop.destination.lng
-          stop.distance, time, stop.trace = Trace.compute(last.destination.lat, last.destination.lng, stop.destination.lat, stop.destination.lng)
+        destination = stop.destination
+        if stop.active && destination.lat && destination.lng
+          stop.distance, time, stop.trace = Trace.compute(last.destination.lat, last.destination.lng, destination.lat, destination.lng)
           stop.time = self.end + time
-          if stop.destination.open && stop.time < stop.destination.open
-            stop.time = stop.destination.open
+          if destination.open && stop.time < destination.open
+            stop.time = destination.open
           end
-          stop.out_of_window = (stop.destination.open && stop.time < stop.destination.open) || (stop.destination.close && stop.time > stop.destination.close)
+          stop.out_of_window = (destination.open && stop.time < destination.open) || (destination.close && stop.time > destination.close)
 
           self.distance += stop.distance
           self.end = stop.time + (planning.customer.take_over ? planning.customer.take_over.seconds_since_midnight : 0)
 
+          stop.out_of_capacity = destination != planning.customer.store && vehicle.capacity && quantity > vehicle.capacity
+          quantity += (destination.quantity or 1)
+
           last = stop
         else
-          stop.active = false
+          stop.active = stop.out_of_capacity = false
           stop.begin = stop.end = stop.distance = stop.trace = stop.time = nil
         end
         self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
