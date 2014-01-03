@@ -9,7 +9,10 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('plannings.export_file.detail'),
     I18n.t('plannings.export_file.postalcode'),
     I18n.t('plannings.export_file.city'),
-    I18n.t('plannings.export_file.comment')
+    I18n.t('plannings.export_file.comment'),
+    I18n.t('plannings.export_file.out_of_window'),
+    I18n.t('plannings.export_file.out_of_capacity'),
+    I18n.t('plannings.export_file.out_of_drive_time')
   ]
   @planning.routes.select { |route|
     route.vehicle

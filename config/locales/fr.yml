@@ -285,6 +285,9 @@ fr:
       postalcode: "code postal"
       city: "ville"
       comment: "commentaire"
+      out_of_window: "hors créneau client"
+      out_of_capacity: "hors capacité véhicule"
+      out_of_drive_time: "hors créneau véhicule"
 
   shared:
     error_messages:

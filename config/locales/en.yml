@@ -285,6 +285,9 @@ en:
       postalcode: "postalcode"
       city: "city"
       comment: "comment"
+      out_of_window: "out of customer's time window"
+      out_of_capacity: "out of capacity"
+      out_of_drive_time: "out of vehicle's time window"
 
   shared:
     error_messages:
