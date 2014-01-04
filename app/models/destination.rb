@@ -34,7 +34,7 @@ class Destination < ActiveRecord::Base
     attr_accessor :is_gecoded
 
     def update_out_of_date
-      if lat_changed? or lng_changed? or open_changed? or close_changed?
+      if lat_changed? or lng_changed? or open_changed? or close_changed? or quantity_changed?
         out_of_date
       end
     end
