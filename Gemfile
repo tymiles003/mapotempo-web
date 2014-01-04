@@ -55,8 +55,8 @@ gem 'twitter_bootstrap_form_for', github: 'stouset/twitter_bootstrap_form_for'
 gem 'pg', group: :production
 gem 'rails_12factor', group: :production
 
-gem 'leaflet-rails', github: 'axyjo/leaflet-rails' # FIXME waiting for new version after 0.6.2'
-gem 'leaflet-markercluster-rails'
+gem 'leaflet-rails'
+gem 'leaflet-markercluster-rails', github: 'gordonk/leaflet-markercluster-rails'
 gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for https://github.com/zentrification/leaflet-draw-rails/pull/1
 gem 'jquery-ui-rails'
 gem 'jquery-tablesorter'

@@ -210,7 +210,7 @@ function plannings_edit(params) {
                 iconUrl: color ? route.icon : '<%= asset_path("point-000000.svg") %>',
                 iconSize: new L.Point(12, 12),
                 iconAnchor: new L.Point(6, 6),
-                popupAnchor: new L.Point(1, 11)
+                popupAnchor: new L.Point(0, -6)
               }),
             }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
             m.on('mouseover', function(e){
