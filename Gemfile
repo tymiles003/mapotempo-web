@@ -58,19 +58,23 @@ gem 'rails_12factor', group: :production
 gem 'leaflet-rails'
 gem 'leaflet-markercluster-rails', github: 'gordonk/leaflet-markercluster-rails'
 gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for https://github.com/zentrification/leaflet-draw-rails/pull/1
+gem 'leaflet_numbered_markers-rails', github: 'frodrigo/leaflet_numbered_markers-rails'
+
 gem 'jquery-ui-rails'
 gem 'jquery-tablesorter'
 gem 'jquery-simplecolorpicker-rails'
+gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
+gem 'select2-rails', github: 'frodrigo/select2-rails', branch: 'v2' # FIXME wait for https://github.com/ivaynberg/select2/issues/781
+gem 'i18n-js'
 gem 'mustache'
 gem 'smt_rails'
-gem 'select2-rails', github: 'frodrigo/select2-rails', branch: 'v2' # FIXME wait for https://github.com/ivaynberg/select2/issues/781
+gem 'paloma', github: 'frodrigo/paloma', branch: '3.0'
+
 gem 'daemons'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
+
 gem 'rgeo'
 gem 'rgeo-geojson'
-gem 'i18n-js'
-gem 'paloma', github: 'frodrigo/paloma', branch: '3.0'
-gem 'leaflet_numbered_markers-rails', github: 'frodrigo/leaflet_numbered_markers-rails'
+
 gem 'charlock_holmes'
-gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
