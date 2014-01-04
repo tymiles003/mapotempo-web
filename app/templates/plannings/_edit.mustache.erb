@@ -29,7 +29,7 @@
           {{#destination}}
           <li data-destination_id="{{id}}" class="waypoint ui-state-error list-group-item">
             <i class="icon icon-reorder icon-fixed-width"></i>
-            <div class="caption">
+            <div class="title">
               <span class="name" title="{{name}}">{{name}}</span><br />
             </div>
             <div class="btn-group pull-right">
@@ -94,7 +94,7 @@
               <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
             </div>
           {{/is_store}}
-          <div class="caption">
+          <div class="title">
             {{#out_of_window}}
               <i class="icon icon-time icon-fixed-width"></i>
             {{/out_of_window}}
