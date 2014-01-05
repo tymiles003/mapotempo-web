@@ -300,9 +300,12 @@ function plannings_edit(params) {
           error: ajaxError
         });
 
+        var i = $("i", this);
         if (hidden) {
+          i.removeClass("icon-eye-open").addClass("icon-eye-close");
           map.removeLayer(layers[id]);
         } else {
+          i.removeClass("icon-eye-close").addClass("icon-eye-open");
           layers[id].addTo(map);
         }
       })
