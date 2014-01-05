@@ -11,6 +11,9 @@ route.stops.each { |stop|
     stop.destination.postalcode,
     stop.destination.city,
     stop.destination.comment,
+    stop.destination.quantity,
+    (stop.destination.open.strftime("%H:%M") if stop.destination.open),
+    (stop.destination.close.strftime("%H:%M") if stop.destination.close),
     stop.out_of_window ? 'x' : '',
     stop.out_of_capacity ? 'x' : '',
     stop.out_of_drive_time ? 'x' : ''
