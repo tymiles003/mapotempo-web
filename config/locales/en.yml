@@ -257,6 +257,7 @@ en:
         open: "Open:"
         close: "Close:"
         time: "Arrival:"
+        quantity: "Quantity:"
       error:
         out_of_window: "Out of customer's time window"
         out_of_capacity: "Out of capacity"

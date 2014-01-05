@@ -49,7 +49,7 @@ else
       json.distance (stop.distance or 0)/1000
       json.destination do
          destination = stop.destination
-         json.extract! destination, :id, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment
+         json.extract! destination, :id, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment, :quantity
          (json.open destination.open.strftime("%H:%M")) if destination.open
          (json.close destination.close.strftime("%H:%M")) if destination.close
       end

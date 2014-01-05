@@ -313,6 +313,7 @@ function plannings_edit(params) {
         var id = $(this).closest("[data-destination_id]").attr("data-destination_id");
         if (id in markers) {
           map.setView(markers[id].getLatLng(), 16);
+          markers[id].openPopup();
         }
         return false;
       })

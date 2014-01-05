@@ -254,9 +254,10 @@ fr:
       refresh: "Actualiser"
       out_of_road: "Non plannifiés"
       popup:
-        open: "Horaire début :"
-        close: "Horaire fin :"
-        time: "Passage :"
+        open: "Horaire début : "
+        close: "Horaire fin : "
+        time: "Passage : "
+        quantity: "Quantité : "
       error:
         out_of_window: "Hors créneau client"
         out_of_capacity: "Hors capacité véhicule"

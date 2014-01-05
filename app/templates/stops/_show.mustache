@@ -1,10 +1,21 @@
 {{#destination}}
-<p><b>{{name}}</b></p>
+<p>
+  <b>{{name}}</b></br>
+  {{street}}</br>
+  {{#detail}}
+    {{detail}}</br>
+  {{/detail}}
+  {{postalcode}} {{city}}
+</p>
 <ul>
-  <li>{{#i18n}}plannings.edit.popup.open{{/i18n}} {{open}}</li>
-  <li>{{#i18n}}plannings.edit.popup.close{{/i18n}} {{close}}</li>
-  <li>{{#i18n}}plannings.edit.popup.time{{/i18n}} {{time}}</li>
+  {{#open}}<li>{{#i18n}}plannings.edit.popup.open{{/i18n}} {{open}}</li>{{/open}}
+  {{#close}}<li>{{#i18n}}plannings.edit.popup.close{{/i18n}} {{close}}</li>{{/close}}
+  {{#time}}<li> {{#i18n}}plannings.edit.popup.time{{/i18n}} <i class="icon icon-time icon-fixed-width"></i> {{time}}</li>{{/time}}
+  {{#quantity}}<li>{{#i18n}}plannings.edit.popup.quantity{{/i18n}} <i class="icon icon-gift icon-fixed-width"></i> {{quantity}}</li>{{/quantity}}
 </ul>
+{{#comment}}
+  <p>{{comment}}</p>
+{{/comment}}
 {{#error}}
   <ul class="ui-state-error">
     {{#out_of_window}}
@@ -18,14 +29,4 @@
     {{/out_of_drive_time}}
   </ul>
 {{/error}}
-<p>
-  {{street}}</br>
-  {{#detail}}
-    {{detail}}</br>
-  {{/detail}}
-  {{postalcode}} {{city}}
-</p>
-{{#comment}}
-  <p>{{comment}}</p>
-{{/comment}}
 {{/destination}}
