@@ -225,8 +225,8 @@ fr:
       lat: "lat"
       lng: "lng"
       quantity: "quantité"
-      open: "ouverture"
-      close: "fermeture"
+      open: "horaire début"
+      close: "horaire fin"
       comment: "commentaire"
       tags: "libellés"
       missing_name_street_city: "\"nom\", \"voie\" ou \"ville\" manquant à la ligne %{line}."
@@ -254,8 +254,8 @@ fr:
       refresh: "Actualiser"
       out_of_road: "Non plannifiés"
       popup:
-        open: "Ouverture :"
-        close: "Fermeture :"
+        open: "Horaire début :"
+        close: "Horaire fin :"
         time: "Passage :"
       error:
         out_of_window: "Hors créneau client"
