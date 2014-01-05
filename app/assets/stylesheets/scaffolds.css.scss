@@ -5,17 +5,6 @@ body {
   font-size: 13px;
 }
 
-p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
-}
-
-pre {
-  background-color: #eee;
-  padding: 10px;
-  font-size: 11px;
-}
-
 a {
   color: #000;
   &:visited {
@@ -54,16 +43,6 @@ div {
 
 .btn-danger {
   color: #fff !important;
-}
-
-.table thead > tr > th,
-.table tbody > tr > th,
-.table tfoot > tr > th,
-.table thead > tr > td,
-.table tbody > tr > td,
-.table tfoot > tr > td {
-  line-height: 28px;
-  padding: 4px 8px;
 }
 
 #map.planning_map, #map.zoning_map {
