@@ -54,7 +54,7 @@ controller.js(
     {id: vehicle.id, name: vehicle.name, color: vehicle.color}
   },
   vehicles_map: Hash[current_user.customer.vehicles.collect{ |vehicle|
-    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color}]
+    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]
   }]
 )
 %>

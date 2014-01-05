@@ -134,6 +134,12 @@ class Route < ActiveRecord::Base
     }
   end
 
+  def quantity
+    stops.to_a.sum(0) { |stop|
+      stop.destination != planning.customer.store && (stop.active || ! vehicle) ? (stop.destination.quantity or 1) : 0
+    }
+  end
+
   private
     def assign_defaults
       self.hidden = false

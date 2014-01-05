@@ -10,7 +10,7 @@ elsif current_user.customer.job_optimizer
   end
 else
   json.extract! @planning, :id
-  json.distance @planning.routes.to_a.sum(0){ |route| route.distance or 0 }/1000
+  json.distance number_to_human(@planning.routes.to_a.sum(0){ |route| route.distance or 0 }, units: :distance, precision: 3)
   json.emission number_to_human(@planning.routes.to_a.sum(0){ |route| route.emission or 0 }, precision: 4)
   (json.out_of_date true) if @planning.out_of_date
   json.size @planning.routes.to_a.sum(0){ |route| route.vehicle ? route.size : 0 }
@@ -25,8 +25,9 @@ else
     (json.end route.end.strftime("%H:%M")) if route.end
     (json.hidden true) if route.hidden
     (json.locked) if route.locked
-    json.distance (route.distance or 0)/1000
+    json.distance number_to_human((route.distance or 0), units: :distance, precision: 3)
     json.size route.size
+    json.quantity route.quantity
     if route.vehicle
       json.vehicle_id route.vehicle.id
       json.icon asset_path("point-#{route.vehicle.color.gsub('#','')}.svg")

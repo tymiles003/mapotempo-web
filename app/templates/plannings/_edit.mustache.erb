@@ -1,6 +1,6 @@
 <p class="global_info">
   <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
-  <i class="icon icon-road icon-fixed-width"></i>{{distance}} {{#i18n}}all.unit.km{{/i18n}}
+  <i class="icon icon-road icon-fixed-width"></i>{{distance}}
   <i class="icon icon-beaker icon-fixed-width"></i>{{emission}} {{#i18n}}all.unit.kgco2e_html{{/i18n}}
 </p>
 {{#out_of_date}}
@@ -22,6 +22,7 @@
         <div class="panel-body">
           <p>
             <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
+          <i class="icon icon-gift icon-fixed-width"></i>{{quantity}}
           </p>
         </div>
         <ul id="out_of_road" class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
@@ -63,8 +64,9 @@
       <div class="panel-body">
         <p>
           <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
-          <i class="icon icon-time icon-fixed-width"></i>{{start}} - {{end}}
-          <i class="icon icon-road icon-fixed-width"></i>{{distance}} {{#i18n}}all.unit.km{{/i18n}}
+          <i class="icon icon-time icon-fixed-width"></i>{{start}}-{{end}}
+          <i class="icon icon-road icon-fixed-width"></i>{{distance}}
+          <i class="icon icon-gift icon-fixed-width"></i>{{quantity}}/{{capacity}}
         </p>
         {{#route_error}}
           <ul class="ui-state-error">
