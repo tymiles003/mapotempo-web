@@ -78,7 +78,24 @@ en:
         max_vehicles: "Max vehicles"
         take_over: "Take over"
         name: "Name"
+        destinations: "Destinations"
       destination:
+        name: "Name"
+        address: "Address"
+        street: "Street"
+        detail: "Detail"
+        postalcode: "Postalcode"
+        city: "City"
+        quantity: "Quantity"
+        quantity_small: "Qty."
+        open: "Open"
+        close: "Close"
+        open_close_small: "Open/Close"
+        comment: "Comment"
+        tags: "Tags"
+        tag_ids: "Tags"
+      # Duplicate for nested errors with autosave
+      destinations:
         name: "Name"
         address: "Address"
         street: "Street"
@@ -147,10 +164,14 @@ en:
 
     errors:
       models:
+        customer:
+          attributes:
+            destinations:
+              over_max_limit: "over maximum number"
         route:
           attributes:
             stops:
-              over_max_limit: "Over maximum number of route's stop"
+              over_max_limit: "Over maximum number of route's stops"
 
   errors:
     planning:

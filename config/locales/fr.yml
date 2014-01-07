@@ -78,7 +78,24 @@ fr:
         max_vehicles: "Forfait"
         take_over: "Durée de visite"
         name: "Nom"
+        destinations : "Clients"
       destination:
+        name: "Nom"
+        address: "Adresse"
+        street: "Voie"
+        detail: "Complément"
+        postalcode: "Code postal"
+        city: "Ville"
+        quantity: "Quantité"
+        quantity_small: "Qté."
+        open: "Horaire début"
+        close: "Horaire fin"
+        open_close_small: "Début/Fin"
+        comment: "Commentaire"
+        tags: "Libellés"
+        tag_ids: "Libellés"
+      # Duplicate for nested errors with autosave
+      destinations:
         name: "Nom"
         address: "Adresse"
         street: "Voie"
@@ -147,10 +164,14 @@ fr:
 
     errors:
       models:
+        customer:
+          attributes:
+            destinations:
+              over_max_limit: "dépassement du monbre maximal"
         route:
           attributes:
             stops:
-              over_max_limit: "Dépassement du monbre maximal d'arrêt dans une tournée"
+              over_max_limit: "Dépassement du monbre maximal d'arrêts dans une tournée"
 
   errors:
     planning:

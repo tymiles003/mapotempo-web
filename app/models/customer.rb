@@ -11,6 +11,7 @@ class Customer < ActiveRecord::Base
   has_many :zonings
 
   validates :name, presence: true
+  validates :destinations, length: { maximum: 1000, message: :over_max_limit }
 
   after_initialize :assign_defaults, if: 'new_record?'
   before_create :update_max_vehicles
