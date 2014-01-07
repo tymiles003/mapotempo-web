@@ -145,6 +145,13 @@ en:
         created: "%{model} was successfully created."
         updated: "%{model} was successfully updated."
 
+    errors:
+      models:
+        route:
+          attributes:
+            stops:
+              over_max_limit: "Over maximum number of route's stop"
+
   errors:
     planning:
       import_too_routes: "Try to import more routes than available vehicles."

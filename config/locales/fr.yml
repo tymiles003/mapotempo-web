@@ -145,6 +145,13 @@ fr:
         created: "%{model} a bien été créé."
         updated: "%{model} a bien été mis à jour."
 
+    errors:
+      models:
+        route:
+          attributes:
+            stops:
+              over_max_limit: "Dépassement du monbre maximal d'arrêt dans une tournée"
+
   errors:
     planning:
       import_too_routes: "Tentative d'importer de plus de tournées que de véhicles disponibles."

@@ -91,12 +91,12 @@ class PlanningsController < ApplicationController
               route.set_destinations([])
             end
           }
-        end
 
-        if @planning.save
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
+          if @planning.save
+            format.json { render action: 'show', location: @planning }
+          else
+            format.json { render json: @planning.errors, status: :unprocessable_entity }
+          end
         end
       rescue StandardError => e
         format.json { render json: e.message, status: :unprocessable_entity }

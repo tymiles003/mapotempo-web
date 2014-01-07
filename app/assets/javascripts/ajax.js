@@ -15,10 +15,23 @@ function completeWaiting() {
 }
 
 function ajaxError(request, status, error) {
+  var otext = request.responseText;
+  var text;
+  try {
+    text = "";
+    $.each($.parseJSON(otext), function(i, e) {
+      text += e;
+    });
+  } catch (e) {
+    text = otext;
+  }
+  if (!text) {
+    text = status;
+  }
   $(".main .flash").prepend(
     '<div class="alert fade in alert-error">' +
     '<button class="close" data-dismiss="alert">×</button>' +
-    status + ' ' + $('<div/>').text(request.responseText).html() +
+    $('<div/>').text(text).html() +
     '</div>');
 }
 

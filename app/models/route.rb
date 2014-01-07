@@ -7,6 +7,7 @@ class Route < ActiveRecord::Base
 
 #  validates :planning, presence: true
 #  validates :vehicle, presence: true
+  validate :validate_stops_length
 
   after_initialize :assign_defaults, if: 'new_record?'
 
@@ -148,5 +149,11 @@ class Route < ActiveRecord::Base
 
     def stops_segregate
       stops[0..-2].group_by{ |stop| !!(stop.active && stop.destination.lat && stop.destination.lng) }
+    end
+
+    def validate_stops_length
+      if vehicle && stops.length > 100
+        errors.add(:stops, :over_max_limit)
+      end
     end
 end
