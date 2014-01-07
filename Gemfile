@@ -73,6 +73,7 @@ gem 'paloma', github: 'frodrigo/paloma', branch: '3.0'
 gem 'daemons'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
+gem 'rest-client'
 
 gem 'rgeo'
 gem 'rgeo-geojson'

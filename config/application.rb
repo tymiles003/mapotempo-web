@@ -56,9 +56,8 @@ module ActiveRecord
   end
 end
 
-Mapotempo::Application.config.optimizer_exec = "tsp_simple"
-Mapotempo::Application.config.optimizer_tmp_dir = Dir.tmpdir
-Mapotempo::Application.config.optimizer_time = 20000
+Mapotempo::Application.config.optimize_cache =  ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10)
+Mapotempo::Application.config.optimize_url = 'http://localhost:4567/0.1/optimize_tsptw'
 
 Mapotempo::Application.config.geocode_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode', expires_in: 60*60*24*10)
 Mapotempo::Application.config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_reverse', expires_in: 60*60*24*10)

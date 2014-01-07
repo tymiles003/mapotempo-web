@@ -201,6 +201,8 @@ GEM
       json (~> 1.4)
     ref (1.0.5)
     remotipart (1.2.1)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rgeo (0.3.20)
     rgeo-geojson (0.2.3)
       rgeo (>= 0.3.7)
@@ -278,6 +280,7 @@ DEPENDENCIES
   rails-i18n
   rails_12factor
   rails_admin
+  rest-client
   rgeo
   rgeo-geojson
   sass-rails (~> 4.0.0)
