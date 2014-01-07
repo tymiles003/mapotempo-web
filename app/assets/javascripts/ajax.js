@@ -15,7 +15,7 @@ function completeWaiting() {
 }
 
 function ajaxError(request, status, error) {
-  $(".main").prepend(
+  $(".main .flash").prepend(
     '<div class="alert fade in alert-error">' +
     '<button class="close" data-dismiss="alert">×</button>' +
     status + ' ' + $('<div/>').text(request.responseText).html() +
