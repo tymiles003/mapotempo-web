@@ -40,7 +40,7 @@ class Importer
         'tags' => I18n.t('destinations.import_file.tags'),
         'quantity' => I18n.t('destinations.import_file.quantity')
       }
-      columns_name = columns.keys - ['route']
+      columns_name = columns.keys - ['route', 'tags']
       CSV.parse(contents, col_sep: separator, headers: true) { |row|
         row = row.to_hash
 
