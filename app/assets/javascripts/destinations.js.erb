@@ -54,7 +54,7 @@ function destinations_form(params) {
     <% end %>
     $row.on("change", ":input", function (event) {
       var url;
-      if (['destination[street]', 'destination[street]', 'destination[street]'].indexOf(event.currentTarget.name) >= 0) {
+      if (['destination[street]', 'destination[postalcode]', 'destination[city]'].indexOf(event.currentTarget.name) >= 0) {
         url = '/destination/geocode.json';
       } else if (pointing !== false && ['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) {
         url = '/destination/geocode_reverse.json';
