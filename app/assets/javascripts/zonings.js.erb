@@ -156,13 +156,14 @@ function zonings_edit(params) {
     });
 
     $('.delete', ele).click(function (event) {
-      featureGroup.removeLayer(geom);
-      ele.remove();
+      del_zone(geom);
     });
   }
 
   function del_zone(geom) {
-    zone_map[geom._leaflet_id].ele.remove();
+    var ele = zone_map[geom._leaflet_id].ele;
+    ele.hide();
+    ele.append('<input type="hidden" name="zoning[zones_attributes][][_destroy]" value="1"/>');
   }
 
   function update_zone(geom) {

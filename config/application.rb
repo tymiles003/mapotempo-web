@@ -34,6 +34,28 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
   end
 end
 
+module ActiveRecord
+  module Validations
+    class AssociatedBubblingValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        (value.is_a?(Enumerable) || value.is_a?(ActiveRecord::Associations::CollectionProxy) ? value : [value]).each do |v|
+          unless v.valid?
+            v.errors.full_messages.each do |msg|
+              record.errors.add(attribute, msg, options.merge(:value => value))
+            end
+          end
+        end
+      end
+    end
+
+    module ClassMethods
+      def validates_associated_bubbling(*attr_names)
+        validates_with AssociatedBubblingValidator, _merge_attributes(attr_names)
+      end
+    end
+  end
+end
+
 Mapotempo::Application.config.optimizer_exec = "tsp_simple"
 Mapotempo::Application.config.optimizer_tmp_dir = Dir.tmpdir
 Mapotempo::Application.config.optimizer_time = 20000

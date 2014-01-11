@@ -46,7 +46,9 @@ div {
 }
 
 [data-controller='plannings'][data-action='edit'],
-[data-controller='zonings'][data-action='edit'] {
+[data-controller='plannings'][data-action='update'],
+[data-controller='zonings'][data-action='edit'],
+[data-controller='zonings'][data-action='update'] {
   #map {
     position: absolute;
     z-index: -1;

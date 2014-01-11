@@ -3,14 +3,10 @@ class Zoning < ActiveRecord::Base
   has_many :zones, dependent: :destroy, autosave: true
   has_many :plannings, dependent: :nullify, autosave: true
 
-  validates :name, presence: true
+  accepts_nested_attributes_for :zones, allow_destroy: true
+  validates_associated_bubbling :zones
 
-  def set_zones(zones)
-    self.zones.clear
-    zones and zones.each{ |zone|
-      self.zones << Zone.new(zone)
-    }
-  end
+  validates :name, presence: true
 
   def apply(destinations)
     destinations.group_by{ |destination|

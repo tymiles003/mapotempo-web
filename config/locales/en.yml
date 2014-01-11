@@ -156,6 +156,8 @@ en:
         close: "Close"
       zoning:
         name: "Name"
+      zones:
+        vehicles: "Véhicules"
 
     successful:
       messages:
@@ -168,6 +170,10 @@ en:
           attributes:
             destinations:
               over_max_limit: "over maximum number"
+        zone:
+          attributes:
+            vehicles:
+              bad_customer: "not associated with customer"
         route:
           attributes:
             stops:

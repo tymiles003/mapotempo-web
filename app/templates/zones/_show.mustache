@@ -1,7 +1,8 @@
 <div class="panel panel-default zone">
   <div class="panel-heading">
-    <input name="zoning[zones][][polygon]" type="hidden" value="{{polygon}}" />
-    <select name="zoning[zones][][vehicles][][vehicle_id]" multiple="multiple" class="vehicle_select">
+    <input name="zoning[zones_attributes][][id]" type="hidden" value="{{id}}" />
+    <input name="zoning[zones_attributes][][polygon]" type="hidden" value="{{polygon}}" />
+    <select name="zoning[zones_attributes][][vehicle_ids][]" multiple="multiple" class="vehicle_select">
       {{#vehicles}}
         <option value={{id}}{{#selected}} selected="selected"{{/selected}}>{{name}}</option>
       {{/vehicles}}

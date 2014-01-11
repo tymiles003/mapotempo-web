@@ -31,7 +31,7 @@ class ZoningsController < ApplicationController
     @zoning.customer = current_user.customer
 
     respond_to do |format|
-      if save_zoning
+      if @zoning.save
         format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
         format.json { render action: 'show', status: :created, location: @zoning }
       else
@@ -46,7 +46,7 @@ class ZoningsController < ApplicationController
   # PATCH/PUT /zonings/1.json
   def update
     respond_to do |format|
-      if save_zoning
+      if @zoning.update(zoning_params)
         format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
         format.json { head :no_content }
       else
@@ -75,26 +75,6 @@ class ZoningsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def zoning_params
-      params.require(:zoning).permit(:name)
-    end
-
-    def zoning_neasted_params
-      params.require(:zoning).permit({zones: [:polygon, {vehicles: [:vehicle_id]}]})
-    end
-
-    def save_zoning
-      znp = zoning_neasted_params['zones']
-      if znp
-        znp = znp.collect{ |zone|
-          if zone['vehicles']
-            zone['vehicles'] = zone['vehicles'].collect{ |vehicle|
-              Vehicle.where(id: Integer(vehicle['vehicle_id']), customer: current_user.customer).first
-            }.select{ |vehicle| vehicle }
-          end
-          zone
-        }
-      end
-
-      @zoning.update_attributes(zoning_params) and @zoning.set_zones(znp) and @zoning.save
+      params.require(:zoning).permit(:name, zones_attributes: [:id, :polygon, :_destroy, vehicle_ids: []])
     end
 end
