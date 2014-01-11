@@ -1,16 +1,16 @@
-<%= twitter_bootstrap_form_for @vehicle, layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
+<%= twitter_bootstrap_form_for @vehicle, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @vehicle %>
   <%= f.text_field :name %>
-  <%= f.text_field :open, {value: @vehicle.open.strftime("%H:%M"), div_class:'input-group col-lg-6', add_on: 'append'} do %>
+  <%= f.text_field :open, {value: @vehicle.open.strftime("%H:%M"), input_group: true, add_on: 'append'} do %>
     <span class="input-group-addon"><%= t 'all.unit.hour_minute' %></span>
   <% end %>
-  <%= f.text_field :close, {value: @vehicle.close.strftime("%H:%M"), div_class:'input-group col-lg-6', add_on: 'append'} do %>
+  <%= f.text_field :close, {value: @vehicle.close.strftime("%H:%M"), input_group: true, add_on: 'append'} do %>
     <span class="input-group-addon"><%= t 'all.unit.hour_minute' %></span>
   <% end %>
-  <%= f.select :emission, [], Vehicle.emissions_table, {}, {div_class:'input-group col-lg-6', add_on: 'append'} do %>
+  <%= f.select :emission, [], Vehicle.emissions_table, {}, {input_group: true, add_on: 'append'} do %>
     <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
   <% end %>
-  <%= f.number_field :consumption, {div_class:'input-group col-lg-6', add_on: 'append'} do %>
+  <%= f.number_field :consumption, {input_group: true, add_on: 'append'} do %>
     <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
   <% end %>
   <%= f.number_field :capacity, min:1 %>

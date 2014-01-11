@@ -12,36 +12,22 @@
     if stop.active and stop.destination.lat
   %>
     <li class="list-group-item">
-      <span class="distance badge"><%= number_to_human(stop.distance, units: :distance, precision: 3) %></span>
       <div class="row">
-        <span class="title col-lg-2 col-md-2 col-sm-2">
+        <div class="title col-md-2 col-sm-2 col-xs-3">
           <span class="number">#<%= index += 1 %></span>
+          <span class="time"><%= stop.time.strftime("%H:%M") if stop.time %></span>
           <% if stop.destination.open or stop.destination.close %>
-            <span>
+            <span class="window">
               <%= stop.destination.open.strftime("%H:%M") if stop.destination.open %>-<%= stop.destination.close.strftime("%H:%M") if stop.destination.close %>
             </span>
           <% end %>
-          <span class="time"><%= stop.time.strftime("%H:%M") if stop.time %></span>
-        </span>
-        <span class="col-lg-5 col-md-5 col-sm-5">
-          <span class="name"><%= stop.destination.name %></span></br>
-          <span class="address">
-            <%= stop.destination.street %></br>
-            <% if stop.destination.detail && !stop.destination.detail.empty? %>
-              <%= stop.destination.detail %></br>
-            <% end %>
-            <%= stop.destination.postalcode %> <%= stop.destination.city %>
-          </span>
-        </span>
-        <span class="comment col-lg-2 col-md-2 col-sm-2"><%= stop.destination.comment %></span>
-        <span class="devilery col-lg-2 col-md-2 col-sm-2">
           <% if stop.destination.tags.size > 0 %>
-            <span class="tags">
+            <div class="tags visible-xs">
               <%= stop.destination.tags.collect { |tag| tag.label }.join(', ') %>
-            </span>
+            </div>
           <% end %>
           <% if stop.destination.quantity && stop.destination.quantity > 1 %>
-            <span class="quantity">
+            <div class="quantity visible-xs">
               <% if stop.destination.quantity <= 3 %>
                 <% stop.destination.quantity.times do |i| %>
                   <i class="icon icon-gift icon-fixed-width"></i>
@@ -49,25 +35,59 @@
               <% else %>
                 <i class="icon icon-gift icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
               <% end %>
-            </span>
+            </div>
           <% end %>
-        </span>
         </div>
-        <% if stop.out_of_window || stop.out_of_capacity || stop.out_of_capacity %>
-          <div class="row">
-            <span class="col-lg-offset-1 col-lg-11 ui-state-error">
-              <% if stop.out_of_window %>
-                <span><i class="icon icon-time icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_window' %></span>
+        <div class="col-md-5 col-sm-8 col-xs-9">
+          <span class="name"><%= stop.destination.name %></span><br/>
+          <span class="address">
+            <%= stop.destination.street %><br/>
+            <% if stop.destination.detail && !stop.destination.detail.empty? %>
+              <%= stop.destination.detail %><br/>
+            <% end %>
+            <%= stop.destination.postalcode %> <%= stop.destination.city %>
+          </span>
+          <% if stop.destination.comment && stop.destination.comment.length > 0 %>
+            <hr class="visible-sm visible-xs"/>
+            <div class="visible-sm visible-xs"><%= stop.destination.comment %></div>
+          <% end %>
+        </div>
+        <div class="comment col-md-3 hidden-sm hidden-xs"><%= stop.destination.comment %></div>
+        <div class="devilery col-md-2 col-sm-2 hidden-xs">
+          <% if stop.destination.tags.size > 0 %>
+            <div class="tags">
+              <%= stop.destination.tags.collect { |tag| tag.label }.join(', ') %>
+            </div>
+          <% end %>
+          <% if stop.destination.quantity && stop.destination.quantity > 1 %>
+            <div class="quantity">
+              <% if stop.destination.quantity <= 3 %>
+                <% stop.destination.quantity.times do |i| %>
+                  <i class="icon icon-gift icon-fixed-width"></i>
+                <% end %>
+              <% else %>
+                <i class="icon icon-gift icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
               <% end %>
-              <% if stop.out_of_capacity %>
-                <span><i class="icon icon-gift icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_capacity' %></span>
-              <% end %>
-              <% if stop.out_of_drive_time %>
-                <span><i class="icon icon-power-off icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
-              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <% if stop.out_of_window || stop.out_of_capacity || stop.out_of_capacity %>
+        <div class="row">
+          <span class="col-md-offset-1 col-md-11 ui-state-error">
+            <% if stop.out_of_window %>
+              <span><i class="icon icon-time icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_window' %></span>
+            <% end %>
+            <% if stop.out_of_capacity %>
+              <span><i class="icon icon-gift icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_capacity' %></span>
+            <% end %>
+            <% if stop.out_of_drive_time %>
+              <span><i class="icon icon-power-off icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
+            <% end %>
           </span>
         </div>
-        <% end %>
+       <% end %>
     </li>
   <%
     end

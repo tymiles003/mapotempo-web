@@ -1,6 +1,6 @@
 <h1><%= t('.resend_unlock_instructions', default: "Resend unlock instructions") %></h1>
 
-<%= twitter_bootstrap_form_for resource, as: resource_name, url: unlock_path(resource_name), layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
+<%= twitter_bootstrap_form_for resource, as: resource_name, url: unlock_path(resource_name), layout: :horizontal do |f| %>
   <%= devise_error_messages! %>
   <%= f.email_field :email %>
   <%= f.actions do %>

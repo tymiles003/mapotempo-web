@@ -1,7 +1,7 @@
-<%= twitter_bootstrap_form_for(@destination, layout: :horizontal, default_div_class: 'col-lg-6', html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
+<%= twitter_bootstrap_form_for(@destination, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: current_user.customer %>
   <%= f.text_field :name %>
-  <%= f.text_field :street, {div_class:'input-group col-lg-6', add_on: 'append'} do %>
+  <%= f.text_field :street, {input_group: true, add_on: 'append'} do %>
     <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
   <% end %>
   <%= f.text_field :detail %>
@@ -10,17 +10,17 @@
   <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
   <input type="hidden" name="destination[lng]" value="<%= @destination.lng %>" />
   <div class="form-group">
-    <span class="col-lg-offset-2 col-lg-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
+    <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
   <% if @destination != current_user.customer.store %>
     <%= f.number_field :quantity %>
-    <%= f.text_field :open, {value: @destination.open ? @destination.open.strftime("%H:%M") : nil, div_class:'input-group col-lg-6', add_on: 'append'} do %>
+    <%= f.text_field :open, {value: @destination.open ? @destination.open.strftime("%H:%M") : nil, input_group: true, add_on: 'append'} do %>
       <span class="input-group-addon"><%= t 'all.unit.hour_minute' %></span>
     <% end %>
-    <%= f.text_field :close, {value: @destination.close ? @destination.close.strftime("%H:%M") : nil, div_class:'input-group col-lg-6', add_on: 'append'} do %>
+    <%= f.text_field :close, {value: @destination.close ? @destination.close.strftime("%H:%M") : nil, input_group: true, add_on: 'append'} do %>
       <span class="input-group-addon"><%= t 'all.unit.hour_minute' %></span>
     <% end %>
-    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, div_class:'input-group col-lg-6', add_on: 'append'} do %>
+    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, input_group: true, add_on: 'append'} do %>
       <span class="input-group-addon"><i class="icon-tags"></i></span>
     <% end %>
   <% end %>

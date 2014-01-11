@@ -45,6 +45,10 @@ div {
   color: #fff !important;
 }
 
+label {
+  text-align: right;
+}
+
 [data-controller='plannings'][data-action='edit'],
 [data-controller='plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],
@@ -88,7 +92,6 @@ div {
     .panel {
       .panel-heading {
         padding: 2px 5px;
-        margin: -15px -15px 0;
       }
     }
   }

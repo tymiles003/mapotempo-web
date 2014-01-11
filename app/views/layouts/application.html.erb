@@ -38,21 +38,22 @@
   </head>
 
   <body>
-<div id="wrapper">
-    <div class="navbar navbar-static-top">
-      <div class="container">
-        <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
+    <div id="wrapper">
+      <div class="navbar navbar-default navbar-static-top">
+        <div class="navbar-header">
+          <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
 
-        <!-- Be sure to leave the brand out there if you want it shown -->
-        <a class="navbar-brand" href="/">Mapotempo</a>
+          <!-- Be sure to leave the brand out there if you want it shown -->
+          <a class="navbar-brand" href="/">Mapotempo</a>
+        </div>
 
         <!-- Place everything within .navbar-collapse to hide it until above 768px -->
-        <div class="nav-collapse collapse navbar-responsive-collapse">
+        <div class="collapse navbar-collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
             <% if user_signed_in? and current_user.admin? %>
               <% if can?(:manage, Customer) %>
@@ -127,19 +128,18 @@
         </div>
 
       </div>
-    </div>
 
-    <div class="main container" data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>">
-      <div class="flash">
-        <%= bootstrap_flash %>
+      <div class="main container" data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>">
+        <div class="flash">
+          <%= bootstrap_flash %>
+        </div>
+        <%= yield %>
       </div>
-      <%= yield %>
-    </div>
 
-    <footer class="hidden-print">
-      <div class="col-lg-12">
-      </div>
-    </footer>
-</div>
+      <footer class="hidden-print">
+        <div class="col-md-12">
+        </div>
+      </footer>
+    </div>
   </body>
 </html>

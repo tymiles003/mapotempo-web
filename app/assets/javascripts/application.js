@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require twbs/bootstrap
+//= require twitter/bootstrap
 //= require turbolinks
 //= require jquery.ui.sortable
 //= require jquery.ui.autocomplete

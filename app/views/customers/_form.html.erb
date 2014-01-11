@@ -1,9 +1,9 @@
-<%= twitter_bootstrap_form_for @customer, layout: :horizontal, default_div_class: 'col-lg-6' do |f| %>
+<%= twitter_bootstrap_form_for @customer, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
   <%= f.text_field :name, disabled:!current_user.admin? %>
   <%= f.date_field :end_subscription, disabled:!current_user.admin? %>
   <%= f.number_field :max_vehicles, disabled:!current_user.admin? %>
-  <%= f.text_field :take_over, {value: @customer.take_over ? @customer.take_over.strftime("%H:%M:%S") : nil, div_class:'input-group col-lg-6', add_on: 'append'} do %>
+  <%= f.text_field :take_over, {value: @customer.take_over ? @customer.take_over.strftime("%H:%M:%S") : nil, input_group: true, add_on: 'append'} do %>
     <span class="input-group-addon"><%= t 'all.unit.hour_minute_second' %></span>
   <% end %>
   <%= f.actions do %>

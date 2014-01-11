@@ -2,21 +2,21 @@
 
 <%= form_tag({action:'upload'}, {multipart:true, class:"form-horizontal"}) do %>
   <div class="form-group">
-    <%= label_tag :datafile, t('.file'), class:"col-lg-2 control-label" %>
-    <div class="col-lg-6">
+    <%= label_tag :datafile, t('.file'), class:"col-md-2 control-label" %>
+    <div class="col-md-6">
       <%= file_field 'upload', 'datafile' %>
       <p class="help-block"><%= t '.file_help' %></p>
     </div>
   </div>
   <div class="form-group">
-    <%= label_tag :replace, t('.replace'), class:"col-lg-2 control-label" %>
-    <div class="col-lg-6">
+    <%= label_tag :replace, t('.replace'), class:"col-md-2 control-label" %>
+    <div class="col-md-6">
       <%= check_box_tag :replace %>
       <p class="help-block"><%= t '.replace_help' %></p>
     </div>
   </div>
   <div class="form-group">
-    <div class="col-lg-offset-2">
+    <div class="col-md-6 col-md-offset-2">
       <%= submit_tag nil, class:"btn btn-primary" %>
     </div>
   </div>
