@@ -7,6 +7,20 @@
 // = require leaflet.markercluster.default
 // = require leaflet.markercluster.default.ie
 
+[data-controller='plannings'] {
+
+  .label {
+    display: inline-block;
+    margin-right: 4px;
+    width: 24px;
+    font-weight: 700;
+  }
+
+  .label-empty {
+    visibility: hidden;
+  }
+
+
 .routes {
   padding: 0px;
   margin: 0px;
@@ -45,16 +59,6 @@
           cursor: move;
         }
 
-        .label {
-          display: inline-block;
-          margin-right: 4px;
-          width: 24px;
-          font-weight: 700;
-        }
-
-        .label-empty {
-          visibility: hidden;
-        }
 
         .title {
           display: inline-block;
@@ -135,4 +139,6 @@
       }
     }
   }
+}
+
 }

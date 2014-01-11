@@ -189,7 +189,6 @@ function plannings_edit(params) {
           'name': route.vehicle.name
         }).trigger("change");
         color = route.vehicle.color;
-        $(".route[data-route_id=" + route.route_id + "] .label").css('background-color', color);
       }
 
       $.each(route.stops, function (index, stop) {
@@ -204,6 +203,7 @@ function plannings_edit(params) {
             markers[stop.destination.id] = store_marker;
           } else {
             stop['i18n'] = mustache_i18n;
+            stop.color = color;
             var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
               icon: new L.NumberedDivIcon({
                 number: stop.number,

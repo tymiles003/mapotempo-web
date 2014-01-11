@@ -91,7 +91,7 @@
           {{/is_store}}
           {{^is_store}}
             <i class="icon icon-reorder icon-fixed-width"></i>
-            <span class="number label label-default{{^active}} label-empty{{/active}}">{{#number}}{{number}}{{/number}}</span>
+            <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
             <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}}/>
           {{/is_store}}
           <div class="title">

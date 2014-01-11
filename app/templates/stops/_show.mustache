@@ -1,6 +1,9 @@
 {{#destination}}
 <p>
-  <b>{{name}}</b></br>
+  <b>
+    <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
+    {{name}}
+  </b></br>
   {{street}}</br>
   {{#detail}}
     {{detail}}</br>
