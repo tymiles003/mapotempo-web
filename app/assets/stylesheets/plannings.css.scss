@@ -106,9 +106,11 @@
   color: #fff;
 }
 
-.box-extended {
+}
+
+[data-controller='plannings'].box-extended {
   .box-wrapper {
-    width: auto;
+    width: auto !important;
     left: 20px;
 
     .box {
@@ -139,6 +141,4 @@
       }
     }
   }
-}
-
 }
