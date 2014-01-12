@@ -168,7 +168,7 @@ function zonings_edit(params) {
   }
 
   function update_zone(geom) {
-    $('input[type=hidden]', zone_map[geom._leaflet_id].ele).attr('value', JSON.stringify(geom.toGeoJSON()));
+    $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[polygon\\]]', zone_map[geom._leaflet_id].ele).attr('value', JSON.stringify(geom.toGeoJSON()));
     count_point_in_polygon(geom._leaflet_id, zone_map[geom._leaflet_id].ele);
   }
 
