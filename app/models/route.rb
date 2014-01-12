@@ -141,6 +141,15 @@ class Route < ActiveRecord::Base
     }
   end
 
+  def active_all
+    stops.each { |stop|
+      if stop.destination.lat && stop.destination.lng
+        stop.active = true
+      end
+    }
+    compute
+  end
+
   private
     def assign_defaults
       self.hidden = false

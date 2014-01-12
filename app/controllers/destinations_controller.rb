@@ -121,10 +121,8 @@ class DestinationsController < ApplicationController
 
     respond_to do |format|
       begin
-        Destination.transaction do
-          Importer.import(replace, current_user.customer, file, name) and current_user.save!
-          format.html { redirect_to action: 'index' }
-        end
+        Importer.import(replace, current_user.customer, file, name) and current_user.save!
+        format.html { redirect_to action: 'index' }
       rescue StandardError => e
         flash[:error] = e.message
         format.html { render action: 'import', status: :unprocessable_entity }

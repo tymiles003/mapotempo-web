@@ -1,4 +1,4 @@
-class GeocoderJob < Struct.new(:customer_id)
+class GeocoderJob < Struct.new(:customer_id, :planning_id)
   def perform
     customer = Customer.find(customer_id)
     Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} perform"
@@ -20,5 +20,15 @@ class GeocoderJob < Struct.new(:customer_id)
         Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} #{customer.job_geocoding.progress}%"
       end
     }
+
+    Destination.transaction do
+#    if planning_id
+      planning = Planning.where(customer_id: customer_id, id: planning_id).first
+#      if planning
+        planning.active_all
+        planning.save
+#      end
+#    end
+    end
   end
 end

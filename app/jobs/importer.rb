@@ -19,11 +19,13 @@ class Importer
     splitComma, splitSemicolon = line.split(','), line.split(';')
     split, separator = splitComma.size() > splitSemicolon.size() ? [splitComma, ','] : [splitSemicolon, ';']
 
+    planning = nil
+    need_geocode = false
+
     Destination.transaction do
 
       line = 1
       errors = []
-      need_geocode = false
       destinations = []
       columns = {
         'route' => I18n.t('destinations.import_file.route'),
@@ -107,6 +109,19 @@ class Importer
         raise errors.join(' ')
       end
 
+      if need_geocode && ! Mapotempo::Application.config.delayed_job_use
+        routes.each{ |key, destinations|
+          destinations.each{ |destination|
+            if not(destination.lat and destination.lng)
+              begin
+                destination.geocode
+              rescue StandardError => e
+              end
+            end
+          }
+        }
+      end
+
       if replace
         customer.destinations.destroy_all
         customer.destinations += destinations
@@ -121,23 +136,10 @@ class Importer
           customer.destination_add(destination)
         }
       end
+    end
 
-      if need_geocode
-        if not Mapotempo::Application.config.delayed_job_use
-          routes.each{ |key, destinations|
-            destinations.each{ |destination|
-              if not(destination.lat and destination.lng)
-                begin
-                  destination.geocode
-                rescue StandardError => e
-                end
-              end
-            }
-          }
-        else
-          customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id))
-        end
-      end
+    if need_geocode && Mapotempo::Application.config.delayed_job_use
+      customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id, planning ? planning.id : nil))
     end
 
     return true

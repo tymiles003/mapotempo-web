@@ -78,6 +78,12 @@ class Planning < ActiveRecord::Base
     }
   end
 
+  def active_all
+    routes.each{ |route|
+      route.active_all
+    }
+  end
+
   private
 
     def update_zoning
