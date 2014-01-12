@@ -58,6 +58,10 @@ class Planning < ActiveRecord::Base
   end
 
   def compute
+    if updated_at < zoning.updated_at
+      split_by_zones
+      self.touch # Force update date for no more on out_of_date without waiting for before_update
+    end
     routes.each(&:compute)
   end
 
@@ -85,28 +89,31 @@ class Planning < ActiveRecord::Base
   end
 
   private
+    def split_by_zones
+      z = {}
+      unaffected = []
+      zoning.apply(customer.destinations).each{ |zone, destinations|
+        if zone && zone.vehicles && zone.vehicles.size > 0
+          z[zone.vehicles[0]] = destinations
+        else
+          unaffected += destinations
+        end
+      }
+      z = Hash[z]
+      routes[0].set_destinations(unaffected)
+      routes[1..-1].each{ |route|
+        if route.vehicle && z.has_key?(route.vehicle)
+          route.set_destinations(z[route.vehicle].collect{ |d| [d,true]})
+        else
+          route.set_destinations([])
+        end
+        route.out_of_date = true
+      }
+    end
 
     def update_zoning
-      if zoning && (zoning_id_changed? || updated_at < zoning.updated_at)
-        z = {}
-        unaffected = []
-        zoning.apply(customer.destinations).each{ |zone, destinations|
-          if zone && zone.vehicles && zone.vehicles.size > 0
-            z[zone.vehicles[0]] = destinations
-          else
-            unaffected += destinations
-          end
-        }
-        z = Hash[z]
-        routes[0].set_destinations(unaffected)
-        routes[1..-1].each{ |route|
-          if route.vehicle && z.has_key?(route.vehicle)
-            route.set_destinations(z[route.vehicle].collect{ |d| [d,true]})
-          else
-            route.set_destinations([])
-          end
-          route.out_of_date = true
-        }
+      if zoning && zoning_id_changed?
+        split_by_zones
       end
     end
 end
