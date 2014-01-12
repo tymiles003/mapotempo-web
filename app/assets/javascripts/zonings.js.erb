@@ -161,6 +161,7 @@ function zonings_edit(params) {
   }
 
   function del_zone(geom) {
+    featureGroup.removeLayer(geom);
     var ele = zone_map[geom._leaflet_id].ele;
     ele.hide();
     ele.append('<input type="hidden" name="zoning[zones_attributes][][_destroy]" value="1"/>');
