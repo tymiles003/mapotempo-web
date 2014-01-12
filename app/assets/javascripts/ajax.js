@@ -29,7 +29,7 @@ function ajaxError(request, status, error) {
     text = status;
   }
   $(".main .flash").prepend(
-    '<div class="alert fade in alert-error">' +
+    '<div class="alert fade in alert-danger">' +
     '<button class="close" data-dismiss="alert">×</button>' +
     $('<div/>').text(text).html() +
     '</div>');
