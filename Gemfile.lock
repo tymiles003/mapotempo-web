@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/frodrigo/jquery-timeentry-rails.git
-  revision: 1dd3f2c066b134d74d8a71e51b807798f7d27938
+  revision: ccecc885d334b772d065bb722e2d4528a9f9a40c
   specs:
     jquery-timeentry-rails (1.5.2)
       railties (>= 3.1.0)
