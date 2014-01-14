@@ -39,13 +39,13 @@ class GeocoderJob < Struct.new(:customer_id, :planning_id)
     }
 
     Destination.transaction do
-#    if planning_id
-      planning = Planning.where(customer_id: customer_id, id: planning_id).first
-#      if planning
-        planning.active_all
-        planning.save
-#      end
-#    end
+      if planning_id
+        planning = Planning.where(customer_id: customer_id, id: planning_id).first
+        if planning
+          planning.active_all
+          planning.save
+        end
+      end
     end
   end
 end
