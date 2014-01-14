@@ -105,7 +105,9 @@ class Importer
         destination.customer = customer
 
         if row["tags"]
-          destination.tags = row["tags"].split(',').collect { |key|
+          destination.tags = row["tags"].split(',').select { |key|
+            not key.empty?
+          }.collect { |key|
             if not tags.key?(key)
               customer.tags << tags[key] = Tag.new(label: key, customer: customer)
             end
