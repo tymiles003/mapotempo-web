@@ -171,11 +171,16 @@ module Geocode
       end
     end
 
-    doc = Document.new(result)
-    root = doc.root
-    pos = root.elements['Response'].elements['GeocodeResponse'].elements['GeocodeResponseList'].elements['GeocodedAddress'].elements['gml:Point'].elements['gml:pos'].text
-    pos = pos.split(' ')
+    begin
+      doc = Document.new(result)
+      root = doc.root
+      pos = root.elements['Response'].elements['GeocodeResponse'].elements['GeocodeResponseList'].elements['GeocodedAddress'].elements['gml:Point'].elements['gml:pos'].text
+      pos = pos.split(' ')
 
-    {lat: pos[0], lng: pos[1]}
+      {lat: pos[0], lng: pos[1]}
+    rescue Exception => e
+      Rails.logger.info e
+      nil
+    end
   end
 end
