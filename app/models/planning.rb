@@ -105,11 +105,19 @@ class Planning < ActiveRecord::Base
     }
   end
 
+  def destinations
+    customer.destinations.select{ |c|
+      c != customer.store
+    }.select{ |c|
+      tags & c.tags == tags
+    }
+  end
+
   private
     def split_by_zones
       z = {}
       unaffected = []
-      zoning.apply(customer.destinations).each{ |zone, destinations|
+      zoning.apply(destinations).each{ |zone, destinations|
         if zone && zone.vehicles && zone.vehicles.size > 0
           z[zone.vehicles[0]] = destinations
         else

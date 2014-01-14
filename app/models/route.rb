@@ -31,11 +31,7 @@ class Route < ActiveRecord::Base
   def default_stops
     i = 0
     stops.clear
-    planning.customer.destinations.select{ |c|
-      c != planning.customer.store
-    }.select{ |c|
-      planning.tags & c.tags == planning.tags
-    }.each { |c|
+    planning.destinations.each { |c|
       stops << Stop.new(destination:c, route:self, active:true, index:i+=1)
     }
 
