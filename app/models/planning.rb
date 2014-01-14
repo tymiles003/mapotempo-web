@@ -75,7 +75,7 @@ class Planning < ActiveRecord::Base
   end
 
   def compute
-    if updated_at < zoning.updated_at
+    if zoning && updated_at < zoning.updated_at
       split_by_zones
       self.touch # Force update date for no more on out_of_date without waiting for before_update
     end
