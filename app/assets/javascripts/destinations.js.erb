@@ -515,7 +515,7 @@ function destinations_index(params) {
         }
       },
       textExtraction: function (node, table, cellIndex) {
-        if (cellIndex == 4) {
+        if (cellIndex == 5) {
           return $.map($("[name=destination\\[tag_ids\\]\\[\\]] :selected", node), function (e, i) {
             return e.text;
           }).join(",");
