@@ -100,9 +100,7 @@ class Planning < ActiveRecord::Base
   end
 
   def active_all
-    routes.each{ |route|
-      route.active_all
-    }
+    routes.each(&:active_all)
   end
 
   def destinations
