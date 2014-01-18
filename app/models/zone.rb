@@ -17,7 +17,7 @@
 #
 class Zone < ActiveRecord::Base
   belongs_to :zoning, touch: true
-  has_and_belongs_to_many :vehicles
+  has_and_belongs_to_many :vehicles, after_add: :touch_vehicles, after_remove: :touch_vehicles
 
   validate :valide_vehicles_from_customer
 
@@ -38,5 +38,11 @@ class Zone < ActiveRecord::Base
           return
         end
       }
+    end
+
+    def touch_vehicles(t)
+      if id
+        touch
+      end
     end
 end
