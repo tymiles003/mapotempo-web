@@ -16,11 +16,11 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 function user_edit_settings(params) {
-  var map_layer_url = params['map_layer_url'];
-  var map_lat = params['map_lat'];
-  var map_lng = params['map_lng'];
-  var map_attribution = params['map_attribution'];
-  var layers = params['layers'];
+  var map_layer_url = params.map_layer_url,
+    map_lat = params.map_lat,
+    map_lng = params.map_lng,
+    map_attribution = params.map_attribution,
+    layers = params.layers;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   var layer = L.tileLayer(map_layer_url, {
@@ -31,11 +31,10 @@ function user_edit_settings(params) {
   $('[name=user\\[layer_id\\]]').change(function (event) {
     map.removeLayer(layer);
     map.addLayer(
-      layer = L.tileLayer(layers[event.target.value].url, {
+      L.tileLayer(layers[event.target.value].url, {
         maxZoom: 18,
         attribution: '<%= I18n.t 'all.osm_attribution_html', layer_attribution: '' %>'+layers[event.target.value].attribution
       }));
-    layer.addTo(map);
   });
 }
 

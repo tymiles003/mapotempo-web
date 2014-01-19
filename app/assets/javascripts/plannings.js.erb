@@ -36,15 +36,15 @@ function plannings_new(params) {
 function plannings_edit(params) {
   plannings_form();
 
-  var planning_id = params['planning_id'],
-    zoning_id = params['zoning_id'],
-    map_layer_url = params['map_layer_url'],
-    map_lat = params['map_lat'],
-    map_lng = params['map_lng'],
-    map_attribution = params['map_attribution'],
-    routes_id = params['routes_id'],
-    vehicles_array = params['vehicles_array'],
-    vehicles_map = params['vehicles_map'],
+  var planning_id = params.planning_id,
+    zoning_id = params.zoning_id,
+    map_layer_url = params.map_layer_url,
+    map_lat = params.map_lat,
+    map_lng = params.map_lng,
+    map_attribution = params.map_attribution,
+    routes_id = params.routes_id,
+    vehicles_array = params.vehicles_array,
+    vehicles_map = params.vehicles_map,
     map = L.map('map').setView([map_lat, map_lng], 13),
     layer_zoning,
     markers = {},
@@ -144,7 +144,7 @@ function plannings_edit(params) {
       }
     });
 
-    data['i18n'] = mustache_i18n;
+    data.i18n = mustache_i18n;
     $("#planning").html(SMT['plannings/edit'](data));
 
     $(".routes").on('change', 'input:checkbox', function (event, ui) {
@@ -190,7 +190,7 @@ function plannings_edit(params) {
       formatResult: formatVehicles,
       formatNoMatches: function () {
         return formatNoMatches;
-      },
+      }
     });
 
     $.each(data.routes, function (i, route) {
@@ -220,7 +220,7 @@ function plannings_edit(params) {
           if (stop.is_store) {
             markers[stop.destination.id] = store_marker;
           } else {
-            stop['i18n'] = mustache_i18n;
+            stop.i18n = mustache_i18n;
             stop.color = color;
             var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
               icon: new L.NumberedDivIcon({
@@ -229,7 +229,7 @@ function plannings_edit(params) {
                 iconSize: new L.Point(12, 12),
                 iconAnchor: new L.Point(6, 6),
                 popupAnchor: new L.Point(0, -6)
-              }),
+              })
             }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
             m.on('mouseover', function(e){
               m.openPopup();
@@ -263,12 +263,12 @@ function plannings_edit(params) {
     });
 
     $(".routes").sortable({
-      items: "li.route",
+      items: "li.route"
     }).disableSelection();
 
     $("#out_of_road").sortable({
       connectWith: ".sortable",
-      update: update_planning,
+      update: update_planning
     }).disableSelection();
 
     var sortableUpdate = false;

@@ -17,11 +17,11 @@
 //
 function destinations_form(params) {
 
-  var destination_id = params['destination_id'];
-  var map_layer_url = params['map_layer_url'];
-  var map_lat = params['map_lat'];
-  var map_lng = params['map_lng'];
-  var map_attribution = params['map_attribution'];
+  var destination_id = params.destination_id,
+    map_layer_url = params.map_layer_url,
+    map_lat = params.map_lat,
+    map_lng = params.map_lng,
+    map_attribution = params.map_attribution;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -29,7 +29,6 @@ function destinations_form(params) {
     attribution: map_attribution
   }).addTo(map);
 
-  var layer = L.layerGroup();
   var markers = {};
 
   var pointing = false;
@@ -193,15 +192,15 @@ Paloma.controller('Destination').prototype.import = function () {
 
 function destinations_index(params) {
 
-  var map_layer_url = params['map_layer_url'];
-  var map_lat = params['map_lat'];
-  var map_lng = params['map_lng'];
-  var map_attribution = params['map_attribution'];
-  var default_street = params['default_street'];
-  var default_postalcode = params['default_postalcode'];
-  var default_city = params['default_city'];
-  var default_lat = params['default_lat'];
-  var default_lng = params['default_lng'];
+  var map_layer_url = params.map_layer_url,
+    map_lat = params.map_lat,
+    map_lng = params.map_lng,
+    map_attribution = params.map_attribution,
+    default_street = params.default_street,
+    default_postalcode = params.default_postalcode,
+    default_city = params.default_city,
+    default_lat = params.default_lat,
+    default_lng = params.default_lng;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -209,7 +208,6 @@ function destinations_index(params) {
     attribution: map_attribution
   }).addTo(map);
 
-  var layer = L.layerGroup();
   var markers = {};
   var markersLayers = L.layerGroup();
 
@@ -307,7 +305,7 @@ function destinations_index(params) {
           complete: completeWaiting,
           error: ajaxError
         });
-      };
+      }
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
@@ -320,8 +318,8 @@ function destinations_index(params) {
   }
 
   function update(destination_id, destination) {
-    var row = $('[data-destination_id=' + destination_id + ']');
-    var t = []
+    var row = $('[data-destination_id=' + destination_id + ']'),
+      t = [];
     $.each(tags, function (i, tag) {
       t.push({
         id: tag.id,
@@ -330,7 +328,7 @@ function destinations_index(params) {
       });
     });
     destination.tags = t;
-    destination['i18n'] = mustache_i18n;
+    destination.i18n = mustache_i18n;
     $(row).replaceWith(SMT['destinations/show'](destination));
     row = $('[data-destination_id=' + destination_id + ']');
     wire(row);
@@ -349,8 +347,8 @@ function destinations_index(params) {
   }
 
   function count() {
-    var count = $('.destinations tr:visible').length
-    $("#count").html(count);
+    var n = $('.destinations tr:visible').length;
+    $("#count").html(n);
   }
 
   function count_inc() {
@@ -442,7 +440,7 @@ function destinations_index(params) {
       beforeSend: beforeSendWaiting,
       success: function (data) {
         update(id, data);
-        destination['i18n'] = mustache_i18n;
+        destination.i18n = mustache_i18n;
         $(".destinations").append(SMT['destinations/show'](data));
         wire($('[data-destination_id=' + data.id + ']'));
         over(data.id, true);
@@ -474,7 +472,7 @@ function destinations_index(params) {
       tags[tag.id] = tag;
     });
     $.each(data.destinations, function (i, destination) {
-      var t = []
+      var t = [];
       $.each(tags, function (i, tag) {
         t.push({
           id: tag.id,
@@ -483,7 +481,7 @@ function destinations_index(params) {
         });
       });
       destination.tags = t;
-      destination['i18n'] = mustache_i18n;
+      destination.i18n = mustache_i18n;
       $(table).append(SMT['destinations/show'](destination));
       if (destination.lat && destination.lng) {
         addMarker(destination.id, destination.lat, destination.lng);
@@ -551,7 +549,7 @@ function destinations_index(params) {
             return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
           },
           4: filter_text,
-          5: filter_text,
+          5: filter_text
         },
         filter_formatter: {
           3: function ($cell, indx) {

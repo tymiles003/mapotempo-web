@@ -17,14 +17,14 @@
 //
 function zonings_edit(params) {
 
-  var zoning_id = params['zoning_id'];
-  var planning_id = params['planning_id'];
-  var map_layer_url = params['map_layer_url'];
-  var map_lat = params['map_lat'];
-  var map_lng = params['map_lng'];
-  var map_attribution = params['map_attribution'];
-  var vehicles_array = params['vehicles_array'];
-  var vehicles_map = params['vehicles_map'];
+  var zoning_id = params.zoning_id,
+    planning_id = params.planning_id,
+    map_layer_url = params.map_layer_url,
+    map_lat = params.map_lat,
+    map_lng = params.map_lng,
+    map_attribution = params.map_attribution,
+    vehicles_array = params.vehicles_array,
+    vehicles_map = params.vehicles_map;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -107,7 +107,7 @@ function zonings_edit(params) {
   }
 
   function set_color(polygon, vehicles) {
-    var vehicles = $.grep(vehicles, function (vehicle, index) {
+    vehicles = $.grep(vehicles, function (vehicle, index) {
       return vehicle.selected;
     });
     polygon.setStyle({
@@ -128,13 +128,13 @@ function zonings_edit(params) {
       geoJsonLayer = L.geoJson();
       geoJsonLayer.addLayer(geom);
     }
-    geoJsonLayers[geom._leaflet_id] = geoJsonLayer
+    geoJsonLayers[geom._leaflet_id] = geoJsonLayer;
 
     featureGroup.addLayer(geom);
 
-    zone['i18n'] = mustache_i18n;
-    $('#zones').append(SMT['zones/show'](zone))
-    var ele = $('#zones .zone:last')
+    zone.i18n = mustache_i18n;
+    $('#zones').append(SMT['zones/show'](zone));
+    var ele = $('#zones .zone:last');
     ele.data('feature', zone);
     zone_map[geom._leaflet_id] = {
       layer: geom,
@@ -166,7 +166,7 @@ function zonings_edit(params) {
           }
         });
       }
-      var val = e.val ? e.val : e.target.value;
+      var val = e.val || e.target.value;
       geom.setStyle({
         color: (val.length > 0 ? vehicles_map[val].color : '#000000')
       });
