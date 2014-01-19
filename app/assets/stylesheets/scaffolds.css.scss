@@ -15,6 +15,17 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+@font-face {
+    font-family: 'comfortaabold';
+    src: url(font_path('comfortaa_bold-webfont.eot'));
+    src: url(font_path('comfortaa_bold-webfont.eot') + '?#iefix') format('embedded-opentype'),
+         url(font_path('comfortaa_bold-webfont.woff')) format('woff'),
+         url(font_path('comfortaa_bold-webfont.ttf')) format('truetype'),
+         url(font_path('comfortaa_bold-webfont.svg') + '#comfortaabold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
   background-color: #fff;
   color: #333;
@@ -64,6 +75,18 @@ div {
 
 label {
   text-align: right;
+}
+
+.navbar-brand {
+  font-family: 'comfortaabold';
+  font-size: 200%;
+
+  span:nth-child(1) {
+    color: #729fcf;
+  }
+  span:nth-child(2) {
+    color: #73d216;
+  }
 }
 
 [data-controller='plannings'][data-action='edit'],
