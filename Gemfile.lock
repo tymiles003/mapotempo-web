@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/twitter_bootstrap_form_for.git
-  revision: 02aa7e699a58d8ef778add23cceea0402dc51081
+  revision: 85fc69857efd701771c05bf24bcfd5d656d700c2
   specs:
     twitter_bootstrap_form_for (2.0.0.beta)
       actionpack (~> 4)

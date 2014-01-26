@@ -1,19 +1,21 @@
 <%= twitter_bootstrap_form_for @vehicle, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @vehicle %>
   <%= f.text_field :name %>
-  <%= f.text_field :open, {value: @vehicle.open.strftime("%H:%M"), input_group: true, add_on: 'append'} do %>
-    <span class="input-group-addon"><%= t 'all.unit.hour_minute' %></span>
+  <%= f.text_field :open, {value: @vehicle.open.strftime("%H:%M"), input_group: t('all.unit.hour_minute')} do %>
+    <p class="help-block"><%= t '.open_help' %></p>
   <% end %>
-  <%= f.text_field :close, {value: @vehicle.close.strftime("%H:%M"), input_group: true, add_on: 'append'} do %>
-    <span class="input-group-addon"><%= t 'all.unit.hour_minute' %></span>
+  <%= f.text_field :close, {value: @vehicle.close.strftime("%H:%M"), input_group: t('all.unit.hour_minute')} do %>
+    <p class="help-block"><%= t '.close_help' %></p>
   <% end %>
-  <%= f.select :emission, [], Vehicle.emissions_table, {}, {input_group: true, add_on: 'append'} do %>
-    <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
+  <%= f.select :emission, [], Vehicle.emissions_table, {}, {input_group: t('all.unit.kgco2e_l_html')} do %>
+    <p class="help-block"><%= t '.emissions_help' %></p>
   <% end %>
-  <%= f.number_field :consumption, {input_group: true, add_on: 'append'} do %>
-    <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
+  <%= f.number_field :consumption, {input_group: t('all.unit.l_100km')} do %>
+    <p class="help-block"><%= t '.consumption_help' %></p>
   <% end %>
-  <%= f.number_field :capacity, min:1 %>
+  <%= f.number_field :capacity, min:1 do %>
+    <p class="help-block"><%= t '.capacity_help' %></p>
+  <% end %>
   <%= f.select :color, [], Vehicle.colors_table %>
   <%= f.actions do %>
     <%= f.submit %>

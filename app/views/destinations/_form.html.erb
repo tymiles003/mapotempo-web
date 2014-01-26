@@ -1,10 +1,10 @@
 <%= twitter_bootstrap_form_for(@destination, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: current_user.customer %>
   <%= f.text_field :name %>
-  <%= f.text_field :street, {input_group: true, add_on: 'append'} do %>
-    <span class="input-group-addon pointing"><i class="icon-screenshot"></i></span>
+  <%= f.text_field :street, {input_group: content_tag('i', '', class: 'icon-screenshot')} %>
+  <%= f.text_field :detail do %>
+    <p class="help-block"><%= t '.detail_help' %></p>
   <% end %>
-  <%= f.text_field :detail %>
   <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
   <%= f.text_field :city %>
   <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
@@ -13,18 +13,18 @@
     <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
   <% if @destination != current_user.customer.store %>
-    <%= f.number_field :quantity %>
-    <%= f.text_field :open, {value: @destination.open ? @destination.open.strftime("%H:%M") : nil, input_group: true, add_on: 'append'} do %>
-      <span class="input-group-addon"><%= t 'all.unit.hour_minute' %></span>
+    <%= f.number_field :quantity do %>
+      <p class="help-block"><%= t '.quantity_help' %></p>
     <% end %>
-    <%= f.text_field :close, {value: @destination.close ? @destination.close.strftime("%H:%M") : nil, input_group: true, add_on: 'append'} do %>
-      <span class="input-group-addon"><%= t 'all.unit.hour_minute' %></span>
-    <% end %>
-    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, input_group: true, add_on: 'append'} do %>
-      <span class="input-group-addon"><i class="icon-tags"></i></span>
+    <%= f.text_field :open, {value: @destination.open ? @destination.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
+    <%= f.text_field :close, {value: @destination.close ? @destination.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
+    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, input_group: content_tag('i', '', class: 'icon-tags')} do %>
+      <p class="help-block"><%= t '.tags_help' %></p>
     <% end %>
   <% end %>
-  <%= f.text_field :comment %>
+  <%= f.text_field :comment do %>
+    <p class="help-block"><%= t '.comment_help' %></p>
+  <% end %>
   <%= f.actions do %>
     <% if @destination != current_user.customer.store %>
       <%= f.submit %>

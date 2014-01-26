@@ -210,6 +210,8 @@ en:
       new: "New Customer"
     new:
       title: "New customer"
+    form:
+      take_over_help: "Average time per customer"
 
   destinations:
     default_store_name: "Store"
@@ -224,6 +226,10 @@ en:
       tags: "Tags"
     form:
       submit_store: "Edit store"
+      detail_help: "Non geocoded addresse complement; like flat number"
+      quantity_help: "Quantity to be delivered"
+      tags_help: "Customer's categories"
+      comment_help: "Delivery required information"
     edit:
       title: "Editing destination"
       title_store: "Editing store"
@@ -323,6 +329,8 @@ en:
       out_of_window: "out of customer's time window"
       out_of_capacity: "out of capacity"
       out_of_drive_time: "out of vehicle's time window"
+    form:
+      tags_help: "Restrict customer to this categories"
 
   shared:
     error_messages:
@@ -359,6 +367,12 @@ en:
       title: "Listing vehicles"
     new:
       title: "New vehicle"
+    form:
+      open_help: "Deliveryman's working hours"
+      close_help: "Deliveryman's working hours"
+      emissions_help: "Fuel Type"
+      consumption_help: "Average fuel consumption in liters per 100 km"
+      capacity_help: "Maximun vehicle's capacity"
 
   zonings:
     menu:

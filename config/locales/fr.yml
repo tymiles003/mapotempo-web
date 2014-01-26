@@ -210,6 +210,8 @@ fr:
       new: "Nouveau compte client"
     new:
       title: "Nouveau compte client"
+    form:
+      take_over_help: "Durée de visite moyenne par client"
 
   destinations:
     default_store_name: "Départ véhicule"
@@ -224,6 +226,10 @@ fr:
       tags: "Libellés"
     form:
       submit_store: "Enregistrer départ véhicule"
+      detail_help: "Complément d'adresse non géocodable, ex. numéro d'escalier"
+      quantity_help: "Quantité à livrer"
+      tags_help: "Catégories du client"
+      comment_help: "Informations nécessaires pour la livraison"
     edit:
       title: "Modifier client"
       title_store: "Enregistrer départ véhicule"
@@ -326,6 +332,8 @@ fr:
       out_of_window: "hors créneau client"
       out_of_capacity: "hors capacité véhicule"
       out_of_drive_time: "hors créneau véhicule"
+    form:
+      tags_help: "Restreint les clients pris en compte à ces catégories"
 
   shared:
     error_messages:
@@ -362,6 +370,12 @@ fr:
       title: "Liste véhicules"
     new:
       title: "Nouveau véhicules"
+    form:
+      open_help: "Horaire de travail livreur"
+      close_help: "Horaire de travail livreur"
+      emissions_help: "Type de carburant"
+      consumption_help: "Consommation moyenne aux 100 km en litres de carburant"
+      capacity_help: "Capacité maximum du véhicule"
 
   zonings:
     menu:

@@ -1,10 +1,10 @@
 <%= twitter_bootstrap_form_for @planning, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
   <%= f.text_field :name %>
-  <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {disabled:!!@planning.id, multiple: true, input_group: true, add_on: 'append'} do %>
-    <span class="input-group-addon"><i class="icon-tags"></i></span>
+  <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {disabled:!!@planning.id, multiple: true, input_group: content_tag('i', '', class: 'icon-tags')} do %>
+    <p class="help-block"><%= t '.tags_help' %></p>
   <% end %>
-  <%= f.collection_select :zoning_id, [], current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {add_on: 'append'} do %>
+  <%= f.collection_select :zoning_id, [], current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {} do %>
     <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_edit"<% if !@planning.id || !@planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.edit' %></a>
     <a href="/zonings/new/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_new"<% if !@planning.id || @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.new' %></a>
   <% end %>
