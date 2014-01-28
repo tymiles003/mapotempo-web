@@ -26,6 +26,17 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'mapotempo';
+    src: url(font_path('mapotempo-webfont.eot'));
+    src: url(font_path('mapotempo-webfont.eot') + '?#iefix') format('embedded-opentype'),
+         url(font_path('mapotempo-webfont.woff')) format('woff'),
+         url(font_path('mapotempo-webfont.ttf')) format('truetype'),
+         url(font_path('mapotempo-webfont.svg') + '#mapotempo') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
   background-color: #fff;
   color: #333;
@@ -78,8 +89,11 @@ label {
 }
 
 .navbar-brand {
-  font-family: 'comfortaabold';
   font-size: 200%;
+}
+
+.mapotempo-logo {
+  font-family: 'comfortaabold';
 
   span:nth-child(1) {
     color: #729fcf;
