@@ -393,6 +393,7 @@ fr:
       empty_result: "Pas de résultats"
     dialog:
       close: "Fermer"
+    help: "Aide"
 
   all:
     osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"

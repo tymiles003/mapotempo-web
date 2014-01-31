@@ -390,6 +390,7 @@ en:
       empty_result: "No results matched"
     dialog:
       close: "Close"
+    help: "Help"
 
   all:
     osm_attribution_html: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{layer_attribution}"

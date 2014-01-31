@@ -71,3 +71,5 @@ Mapotempo::Application.config.trace_cache_result = ActiveSupport::Cache::FileSto
 Mapotempo::Application.config.trace_osrm_url = "http://router.project-osrm.org"
 
 Mapotempo::Application.config.delayed_job_use = false
+
+Mapotempo::Application.config.help_url = nil
