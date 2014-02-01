@@ -43,7 +43,7 @@ Initialization
 ==============
 Check database configuration in `config/database.yml` and from project directory create a database for your environment with :
 
-    rake db:migrate RAILS_ENV=development
+    rake db:schema:load RAILS_ENV=development
 
 You can load demo data from `db/seeds.rb` into database with :
 
