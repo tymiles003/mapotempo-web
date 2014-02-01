@@ -7,7 +7,7 @@ Layer.create!("name"=>"Stamen B&W", "url"=>"http://{s}.tile.stamen.com/toner/{z}
 customer = Customer.create!("name"=>"Toto", "max_vehicles"=>3)
 admin = User.create!("email"=>"admin@admin.com", "password"=>"123456789", "admin"=>true)
 fred = User.create!("email"=>"user@user.com", "password"=>"123456789", "layer"=>mapbox, "customer"=>customer)
-toto = User.create!("email"=>"toto@toto.com", "password"=>"123456789")
+toto = User.create!("email"=>"toto@toto.com", "password"=>"123456789", "customer"=>customer)
 Vehicle.create!("capacity"=>100, "customer"=>customer, "name"=>"Renault Kangoo")
 Vehicle.create!("capacity"=>100, "customer"=>customer, "name"=>"Fiat Vito")
 Destination.create!("name"=>"l1", "street"=>"Place Picard", "postalcode"=>"33000", "city"=>"Bordeaux", "lat"=>44.84512, "lng"=>-0.578, "quantity"=>1, "customer"=>customer)
