@@ -292,7 +292,16 @@ en:
         edit: "Edit zoning"
         new: "New zoning"
       refresh: "Refresh"
+      refresh_help: "Planning parameters or customer has been changed, it is necessary to recalculate"
       out_of_road: "Out of route"
+      toggle_help: "Toogle view of clients on map"
+      vehicle_help: "Vehicle parameters"
+      optimize_help: "Optimize route"
+      export_help: "Export route"
+      drag_help: "Drag&drop customer on routes"
+      active_help: "Take or not customer into route"
+      edit_help: "Edit customer information"
+      marker_help: "Show on map"
       popup:
         open: "Open:"
         close: "Close:"
@@ -300,8 +309,11 @@ en:
         quantity: "Quantity:"
       error:
         out_of_window: "Out of customer's time window"
+        out_of_window_help: "Customer planned out of his time window"
         out_of_capacity: "Out of capacity"
+        out_of_capacity_help: "Vehicle capacity exceeded"
         out_of_drive_time: "Out of vehicle's time window"
+        out_of_drive_time_help: "Vehicle time window activity exceeded"
       dialog:
         matrix:
           title: "Distance matrix"

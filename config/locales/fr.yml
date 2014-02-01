@@ -292,7 +292,16 @@ fr:
         edit: "Modifier zonage"
         new: "Nouveau zonage"
       refresh: "Actualiser"
+      refresh_help: "Des paramètres ou des clients utilisés par ce planning ont été modifié, il est nécessaire de le recalculer"
       out_of_road: "Non plannifiés"
+      toggle_help: "Affiche ou cache les clients sur la carte"
+      vehicle_help: "Paramétrer le véhicule"
+      optimize_help: "Optimiser la tournée"
+      export_help: "Exporter la tournée"
+      drag_help: "Glisser-déposer pour ordonner le client dans les trounées"
+      active_help: "Prendre en compte ou non un client dans la torunée"
+      edit_help: "Modifier les informations du client"
+      marker_help: "Visualiser sur la carte"
       popup:
         open: "Horaire début : "
         close: "Horaire fin : "
@@ -300,8 +309,11 @@ fr:
         quantity: "Quantité : "
       error:
         out_of_window: "Hors créneau client"
+        out_of_window_help: "Client planifié en dehors de ses créneaux de livraison"
         out_of_capacity: "Hors capacité véhicule"
+        out_of_capacity_help: "Capacité du véhicule dépassée"
         out_of_drive_time: "Hors créneau véhicule"
+        out_of_drive_time_help: "Client planifié en dehors de ses créneaux d'activité du véhicule"
       dialog:
         matrix:
           title: "Distancier"
