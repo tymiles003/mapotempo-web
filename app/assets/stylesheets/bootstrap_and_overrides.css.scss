@@ -53,8 +53,8 @@ a.btn-primary:visited { color:#FFFFFF; }
 a.btn-primary:hover { color:#FFFFFF; }
 a.btn-primary:active { color:#FFFFFF; }
 
-.dropdown-menu {
-    z-index: 1001; /*  Leaflet also use 1000 for control */
+.leaflet-top, .leaflet-bottom {
+    z-index: 999 !important; /* Bootstrap also use 1000 for control */
 }
 
 hr {
