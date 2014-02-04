@@ -76,17 +76,18 @@
       display: table-cell;
     }
 
-    > span:not(:last-child) input {
-      border-radius: 0 0 0 0;
-      border-right: 0;
+    > span:not(:first-child) input {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
 
-    > span:first-child input {
-      border-radius: 3px 0 0 3px;
+    > span:not(:last-child) input:last-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
 
-    > span:last-child input {
-      border-radius: 0 3px 3px 0;
+    > span + span input {
+      border-left: 0;
     }
   }
 }
