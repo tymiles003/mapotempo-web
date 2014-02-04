@@ -1,10 +1,10 @@
 <%= twitter_bootstrap_form_for @vehicle, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @vehicle %>
   <%= f.text_field :name %>
-  <%= f.text_field :open, {value: @vehicle.open.strftime("%H:%M"), input_group: t('all.unit.hour_minute')} do %>
+  <%= f.text_field :open, {value: @vehicle.open ? @vehicle.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
     <p class="help-block"><%= t '.open_help' %></p>
   <% end %>
-  <%= f.text_field :close, {value: @vehicle.close.strftime("%H:%M"), input_group: t('all.unit.hour_minute')} do %>
+  <%= f.text_field :close, {value: @vehicle.close ? @vehicle.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
     <p class="help-block"><%= t '.close_help' %></p>
   <% end %>
   <%= f.select :emission, [], Vehicle.emissions_table, {}, {input_group: t('all.unit.kgco2e_l_html')} do %>
