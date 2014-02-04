@@ -33,7 +33,7 @@ else
       json.icon asset_path("point-#{route.vehicle.color.gsub('#','')}.svg")
     end
     number = 0
-    out_of_window = out_of_capacity = out_of_drive_time = false
+    no_geocoding = out_of_window = out_of_capacity = out_of_drive_time = false
     json.stops route.stops do |stop|
       if stop.destination == current_user.customer.store
         json.is_store true
@@ -41,8 +41,10 @@ else
       out_of_window |= stop.out_of_window
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
+      no_geocoding |= !stop.destination.lat
       (json.error true) if !stop.destination.lat || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.extract! stop, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+      (json.no_geocoding true) if !stop.destination.lat
       (json.time stop.time.strftime("%H:%M")) if stop.time
       (json.active true) if stop.active
       (json.number number+=1) if stop.active && stop.destination != current_user.customer.store
@@ -55,9 +57,10 @@ else
       end
       json.type (stop.destination==current_user.customer.store)? 'store' : 'waypoint'
     end
+    (json.route_no_geocoding no_geocoding) if no_geocoding
     (json.route_out_of_window out_of_window) if out_of_window
     (json.route_out_of_capacity out_of_capacity) if out_of_capacity
     (json.route_out_of_drive_time out_of_drive_time) if out_of_drive_time
-    (json.route_error true) if out_of_window || out_of_capacity || out_of_drive_time
+    (json.route_error true) if no_geocoding || out_of_window || out_of_capacity || out_of_drive_time
   end
 end

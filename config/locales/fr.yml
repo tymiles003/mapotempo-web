@@ -308,6 +308,8 @@ fr:
         time: "Passage : "
         quantity: "Quantité : "
       error:
+        no_geocoding: "Pas de géocodage"
+        no_geocoding_help: "L'adresse n'a pas pu être converti en coordonnées géographiques"
         out_of_window: "Hors créneau client"
         out_of_window_help: "Client planifié en dehors de ses créneaux de livraison"
         out_of_capacity: "Hors capacité véhicule"

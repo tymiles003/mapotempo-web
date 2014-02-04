@@ -308,6 +308,8 @@ en:
         time: "Arrival:"
         quantity: "Quantity:"
       error:
+        no_geocoding: "No geocoding"
+        no_geocoding_help: "Adresse could not be converted to geographic coordinates"
         out_of_window: "Out of customer's time window"
         out_of_window_help: "Customer planned out of his time window"
         out_of_capacity: "Out of capacity"

@@ -71,6 +71,9 @@
         </p>
         {{#route_error}}
           <ul class="ui-state-error">
+            {{#route_no_geocoding}}
+              <li title="{{#i18n}}plannings.edit.error.no_geocoding_help{{/i18n}}"><i class="icon icon-map-marker icon-fixed-width"></i> {{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}</li>
+            {{/route_no_geocoding}}
             {{#route_out_of_window}}
               <li title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"><i class="icon icon-time icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_window{{/i18n}}</li>
             {{/route_out_of_window}}
@@ -96,6 +99,9 @@
             <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
           {{/is_store}}
           <div class="title">
+            {{#no_geocoding}}
+              <i class="icon icon-map-marker icon-fixed-width" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>
+            {{/no_geocoding}}
             {{#out_of_window}}
               <i class="icon icon-time icon-fixed-width" title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"></i>
             {{/out_of_window}}
