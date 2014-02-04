@@ -89,7 +89,7 @@ function destinations_form(params) {
         error: ajaxError
       });
     })
-    .on("click", ".pointing", function (event) {
+    .on("click", "input[name='destination\\[street\\]'] + .input-group-addon", function (event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
@@ -281,7 +281,7 @@ function destinations_index(params) {
         error: ajaxError
       });
     })
-    .on("click", ".pointing", function (event) {
+    .on("click", "input[name='destination\\[city\\]'] + .input-group-addon", function (event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
