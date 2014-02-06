@@ -65,6 +65,8 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
     if (data.attempts) {
       $(".dialog-attempts-number", dialog).html(data.attempts);
       $(".dialog-attempts", dialog).show();
+    } else {
+      $(".dialog-attempts", dialog).hide();
     }
     if (data.error) {
       $(".dialog-progress", dialog).hide();
