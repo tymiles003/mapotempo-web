@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140103161317) do
+ActiveRecord::Schema.define(version: 20140207112148) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 20140103161317) do
     t.string   "attribution"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "urlssl"
   end
 
   create_table "plannings", force: true do |t|

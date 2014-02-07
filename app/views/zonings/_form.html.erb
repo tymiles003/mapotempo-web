@@ -14,7 +14,7 @@
 controller.js(
   zoning_id: @zoning.id,
   planning_id: @planning ? @planning.id : nil,
-  map_layer_url: current_user.layer.url,
+  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
   map_lat: current_user.customer.store.lat,
   map_lng: current_user.customer.store.lng,
   map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution),

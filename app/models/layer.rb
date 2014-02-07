@@ -18,5 +18,6 @@
 class Layer < ActiveRecord::Base
   validates :name, presence: true
   validates :url, presence: true
+  validates :urlssl, presence: true
   validates :attribution, presence: true
 end

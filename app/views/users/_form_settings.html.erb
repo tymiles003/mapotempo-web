@@ -10,12 +10,12 @@
 <% end %>
 <%
 controller.js(
-  map_layer_url: current_user.layer.url,
+  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
   map_lat: current_user.customer.store.lat,
   map_lng: current_user.customer.store.lng,
   map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution),
   layers: Hash[Layer.all.collect{ |layer|
-    [layer.id, {url: layer.url, attribution: layer.attribution}]
+    [layer.id, {url: request.ssl? ? layer.urlssl : layer.url, attribution: layer.attribution}]
   }]
 )
 %>
