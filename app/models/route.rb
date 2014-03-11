@@ -174,7 +174,7 @@ class Route < ActiveRecord::Base
     end
 
     def validate_stops_length
-      if vehicle && stops.length > 100
+      if vehicle && stops.length > 300
         errors.add(:stops, :over_max_limit)
       end
     end
