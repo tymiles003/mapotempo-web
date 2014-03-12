@@ -196,8 +196,6 @@ function destinations_index(params) {
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
-    default_street = params.default_street,
-    default_postalcode = params.default_postalcode,
     default_city = params.default_city;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
@@ -423,8 +421,6 @@ function destinations_index(params) {
     var destination = {
       id: id,
       name: I18n.t('destinations.index.default_name'),
-      street: default_street,
-      postalcode: default_postalcode,
       city: default_city,
       lat: center.lat,
       lng: center.lng
