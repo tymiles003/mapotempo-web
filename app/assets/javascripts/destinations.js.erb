@@ -198,9 +198,7 @@ function destinations_index(params) {
     map_attribution = params.map_attribution,
     default_street = params.default_street,
     default_postalcode = params.default_postalcode,
-    default_city = params.default_city,
-    default_lat = params.default_lat,
-    default_lng = params.default_lng;
+    default_city = params.default_city;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -421,14 +419,15 @@ function destinations_index(params) {
 
   $("#add").click(function (event) {
     var id = 0;
+    var center = map.getCenter();
     var destination = {
       id: id,
       name: I18n.t('destinations.index.default_name'),
       street: default_street,
       postalcode: default_postalcode,
       city: default_city,
-      lat: default_lat,
-      lng: default_lng
+      lat: center.lat,
+      lng: center.lng
     };
     $.ajax({
       type: "post",
