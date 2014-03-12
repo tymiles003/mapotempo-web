@@ -330,19 +330,19 @@ function destinations_index(params) {
     destination.tags = t;
     destination.i18n = mustache_i18n;
     $(row).replaceWith(SMT['destinations/show'](destination));
-    row = $('[data-destination_id=' + destination_id + ']');
+    row = $('[data-destination_id=' + destination.id + ']');
     wire(row);
     $('.destinations').trigger('update');
 
     if(destination.lat && destination.lng) {
-      if (destination_id in markers) {
+      if (destination.id in markers) {
         markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
       } else {
-        addMarker(destination_id, destination.lat, destination.lng);
+        addMarker(destination.id, destination.lat, destination.lng);
       }
-      map.setView(markers[destination_id].getLatLng(), 16);
+      map.setView(markers[destination.id].getLatLng(), 16);
     } else {
-      delete markers[destination_id];
+      delete markers[destination.id];
     }
   }
 
