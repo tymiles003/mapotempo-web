@@ -147,6 +147,15 @@ class DestinationsController < ApplicationController
     end
   end
 
+  def clear
+    Destination.transaction do
+        current_user.customer.destinations.destroy_all
+    end
+    respond_to do |format|
+        format.html { redirect_to action: 'index' }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_destination

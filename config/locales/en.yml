@@ -224,6 +224,8 @@ en:
       export: "Export"
       store: "Store"
       tags: "Tags"
+      clear: "Clear all destinations"
+      clear_confirm: "Are you sure to want to delete all destinations?"
     form:
       submit_store: "Edit store"
       detail_help: "Non geocoded addresse complement; like flat number"

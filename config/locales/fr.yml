@@ -224,6 +224,8 @@ fr:
       export: "Exporter"
       store: "Départ véhicule"
       tags: "Libellés"
+      clear: "Supprimer tous les clients"
+      clear_confirm: "Êtes-vous sûr de vouloir supprimer tous les clients ?"
     form:
       submit_store: "Enregistrer départ véhicule"
       detail_help: "Complément d'adresse non géocodable, ex. numéro d'escalier"
