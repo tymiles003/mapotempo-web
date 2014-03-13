@@ -271,7 +271,7 @@ fr:
       close: "horaire fin"
       comment: "commentaire"
       tags: "libellés"
-      missing_name_street_city: "\"nom\", \"voie\" ou \"ville\" manquant à la ligne %{line}."
+      missing_name_city: "\"nom\" ou \"ville\" manquant à la ligne %{line}."
       too_many_errors: "Import stoppé, trop d'erreurs."
 
   plannings:

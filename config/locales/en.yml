@@ -271,7 +271,7 @@ en:
       close: "close"
       comment: "comment"
       tags: "tags"
-      missing_name_street_city: "\"name\", \"street\" ou \"city\" missing at line %{line}."
+      missing_name_city: "\"name\", or \"city\" missing at line %{line}."
       too_many_errors: "Stop import, too many errors."
 
   plannings:

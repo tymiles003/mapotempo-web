@@ -86,8 +86,8 @@ class Importer
           next # Skip empty line
         end
 
-        if !r.key?('name') || !r.key?('street') || !r.key?('city')
-          errors << I18n.t('destinations.import_file.missing_name_street_city', line: line)
+        if !r.key?('name') || !r.key?('city')
+          errors << I18n.t('destinations.import_file.missing_name_city', line: line)
           next
         end
 
