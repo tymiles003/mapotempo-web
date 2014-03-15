@@ -21,8 +21,7 @@ else
   end
   json.routes @planning.routes do |route|
     json.route_id route.id
-    (json.start route.start.strftime("%H:%M")) if route.start
-    (json.end route.end.strftime("%H:%M")) if route.end
+    (json.duration "%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end
     (json.hidden true) if route.hidden
     (json.locked) if route.locked
     json.distance number_to_human((route.distance or 0), units: :distance, precision: 3)

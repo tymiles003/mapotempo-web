@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140207112148) do
+ActiveRecord::Schema.define(version: 20140315155331) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -113,14 +113,15 @@ ActiveRecord::Schema.define(version: 20140207112148) do
     t.float    "distance"
     t.float    "emission"
     t.integer  "planning_id"
-    t.boolean  "out_of_date"
     t.integer  "vehicle_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.time     "start"
-    t.time     "end"
+    t.datetime "start"
+    t.datetime "end"
     t.boolean  "hidden"
     t.boolean  "locked"
+    t.datetime "build_at"
+    t.boolean  "out_of_date"
   end
 
   add_index "routes", ["planning_id"], name: "index_routes_on_planning_id"
@@ -135,7 +136,7 @@ ActiveRecord::Schema.define(version: 20140207112148) do
     t.integer  "destination_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.time     "time"
+    t.datetime "time"
     t.boolean  "out_of_window"
     t.boolean  "out_of_capacity"
     t.boolean  "out_of_drive_time"
