@@ -30,7 +30,6 @@ class Destination < ActiveRecord::Base
 #  validates :lng, presence: true, numericality: {only_float: true}
 
   before_update :update_out_of_date, :update_geocode
-  before_destroy :destroy_out_of_date
 
   def geocode
     address = Geocode.code(street, postalcode, city)
@@ -45,6 +44,11 @@ class Destination < ActiveRecord::Base
     address = Geocode.reverse(lat, lng)
     self.street, self.postalcode, self.city = address[:street], address[:postal_code], address[:city]
     @is_gecoded = true
+  end
+
+  def destroy
+    out_of_date # Too late to do this in before_destroy callback, children already destroyed
+    super
   end
 
   private
@@ -74,10 +78,6 @@ class Destination < ActiveRecord::Base
       }.each{ |planning|
         planning.destination_remove(self)
       }
-    end
-
-    def destroy_out_of_date
-      out_of_date
     end
 
     def out_of_date
