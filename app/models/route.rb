@@ -112,6 +112,10 @@ class Route < ActiveRecord::Base
     }
   end
 
+  def matrix_size
+    stops_segregate.size
+  end
+
   def matrix
     stops_on = stops_segregate[true]
     stops_on.collect{ |stop1|

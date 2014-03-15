@@ -22,7 +22,8 @@ class MatrixJob < Struct.new(:planning_id, :route_id)
     Delayed::Worker.logger.info "MatrixJob planning_id=#{planning_id} perform"
     route = Route.where(id: route_id, planning_id: planning_id).first
     customer = route.planning.customer
-    count = route.stops.size
+    count = route.matrix_size
+    count *= count
     i = 0
     matrix = route.matrix {
       i += 1
