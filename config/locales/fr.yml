@@ -293,6 +293,7 @@ fr:
         apply: "Appliquer zonage"
         edit: "Modifier zonage"
         new: "Nouveau zonage"
+      open_planning_panel: "Déployer le panneau du planning"
       refresh: "Actualiser"
       refresh_help: "Des paramètres ou des clients utilisés par ce planning ont été modifié, il est nécessaire de le recalculer"
       out_of_road: "Non plannifiés"

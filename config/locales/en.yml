@@ -293,6 +293,7 @@ en:
         apply: "Apply zoning"
         edit: "Edit zoning"
         new: "New zoning"
+      open_planning_panel: "Open planning panel"
       refresh: "Refresh"
       refresh_help: "Planning parameters or customer has been changed, it is necessary to recalculate"
       out_of_road: "Out of route"
