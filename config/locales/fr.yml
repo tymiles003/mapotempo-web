@@ -301,7 +301,7 @@ fr:
       optimize_help: "Optimiser la tournée"
       export_help: "Exporter la tournée"
       drag_help: "Glisser-déposer pour ordonner le client dans les trounées"
-      active_help: "Prendre en compte ou non un client dans la torunée"
+      active_help: "Prendre en compte ou non un client dans la tournée"
       edit_help: "Modifier les informations du client"
       marker_help: "Visualiser sur la carte"
       popup:
