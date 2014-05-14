@@ -33,6 +33,9 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       format.html
       format.json
+      format.gpx do
+        response.headers['Content-Disposition'] = 'attachment; filename="'+@planning.name.gsub('"', '')+'.gpx"'
+      end
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="'+@planning.name.gsub('"', '')+'.csv"'
       end

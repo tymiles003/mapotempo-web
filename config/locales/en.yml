@@ -288,6 +288,7 @@ en:
       export:
         print: "Print"
         spreadsheet: "Spreadsheet"
+        gps_waypoint: "GPS Waypoint"
       zoning:
         none: "None"
         apply: "Apply zoning"

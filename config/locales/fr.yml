@@ -288,6 +288,7 @@ fr:
       export:
         print: "Imprimer"
         spreadsheet: "Tableur"
+        gps_waypoint: "Points de passage GPS"
       zoning:
         none: "Aucun"
         apply: "Appliquer zonage"

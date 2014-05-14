@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx>
+  <name><%= @route.planning.name %></name>
+  <time><%= Time.now.strftime("%Y-%m-%d") %></time>
+<%= render 'show', route: @route %>
+</gpx>

@@ -22,9 +22,12 @@ class RoutesController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { head :no_content }
+      format.json
+      format.gpx do
+        response.headers['Content-Disposition'] = 'attachment; filename="'+(@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.gpx"'
+      end
       format.csv do
-        response.headers['Content-Disposition'] = 'attachment; filename="'+@route.vehicle.name.gsub('"','')+'.csv"'
+        response.headers['Content-Disposition'] = 'attachment; filename="'+(@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.csv"'
       end
     end
   end

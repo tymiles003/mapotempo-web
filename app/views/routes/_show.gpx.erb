@@ -1,0 +1,41 @@
+  <rte>
+    <name><%= route.vehicle.name %></name>
+    <desc>
+      <%= route.size %> <%= I18n.t 'plannings.edit.stops' %>
+      <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
+      <%= number_to_human(route.distance, units: :distance, precision: 3) %>
+    </desc>
+<%
+index = -1
+route.stops.each{ |stop|
+  if stop.active and stop.destination.lat
+%>
+    <rtept lat="<%= stop.destination.lat %>" lon="<%= stop.destination.lng %>">
+      <name><%= index += 1%>-<%= stop.destination.name %><% if stop.destination.quantity && stop.destination.quantity > 1 %> ⨯<%= stop.destination.quantity %><% end %></name>
+      <desc><%= stop.time.strftime("%H:%M") if stop.time %>
+      <% if stop.destination.open or stop.destination.close %>
+<%= stop.destination.open.strftime("%H:%M") if stop.destination.open %>-<%= stop.destination.close.strftime("%H:%M") if stop.destination.close %>
+      <% end %>
+<%= [stop.destination.street, stop.destination.detail, stop.destination.postalcode, stop.destination.city].select{ |i| i && i.length > 0 }.join(', ') %>.
+      <% if stop.destination.comment && stop.destination.comment.length > 0 %>
+<%= stop.destination.comment %>
+      <% end %>
+      <% if stop.destination.tags.size > 0 %>
+<%= stop.destination.tags.collect { |tag| tag.label }.join(', ') %>
+      <% end %>
+      <% if stop.out_of_window %>
+<%= t 'plannings.edit.error.out_of_window' %>
+      <% end %>
+      <% if stop.out_of_capacity %>
+<%= t 'plannings.edit.error.out_of_capacity' %>
+      <% end %>
+      <% if stop.out_of_drive_time %>
+<%= t 'plannings.edit.error.out_of_drive_time' %>
+      <% end %>
+      </desc>
+    </rtept>
+<%
+  end
+}
+%>
+  </rte>
