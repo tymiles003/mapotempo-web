@@ -60,9 +60,16 @@ module Trace
         end
       end
 
-      distance = request["route_summary"]["total_distance"]
-      time = request["route_summary"]["total_time"]
-      trace = request["route_geometry"]
+      if request["route_summary"]
+        distance = request["route_summary"]["total_distance"]
+        time = request["route_summary"]["total_time"]
+        trace = request["route_geometry"]
+      else
+        # TODO : throw "no route" to the UI
+        distance = 1000000
+        time = 60*60*12
+        trace = nil
+      end
 
       result = [distance, time, trace]
       @cache_result.write(key, result)
