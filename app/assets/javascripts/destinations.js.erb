@@ -377,7 +377,7 @@ function destinations_index(params) {
 
   function over(id, move) {
     // clean over
-    $('.destination input').removeClass('ui-state-highlight');
+    $('.destination').removeClass('highlight');
     var i;
     while (i = icon_over_stack.pop()) {
       if (i in markers) {
@@ -394,7 +394,7 @@ function destinations_index(params) {
       icon_over_stack.push(id);
     }
     var row = $('[data-destination_id=' + id + ']');
-    $('input', row).addClass('ui-state-highlight');
+    row.addClass('highlight');
     $("#destination_box").scrollTop($("#destination_box").scrollTop() + row.position().top - 200);
   }
 

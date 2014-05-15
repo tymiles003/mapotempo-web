@@ -90,6 +90,11 @@
       border-left: 0;
     }
   }
+
+  .highlight input,
+  .highlight .select2-choices {
+    border-color: #FFBB00;
+  }
 }
 
 .ui-helper-hidden-accessible {
