@@ -1,4 +1,4 @@
-mapbox = Layer.create!("name"=>"MapBox Street", "url"=>"http://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png", "urlssl"=>"https://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png", "attribution"=>"Tiles by MapBox")
+mapbox = Layer.create!("name"=>"MapBox Street", "url"=>"http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png", "urlssl"=>"https://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png", "attribution"=>"Tiles by MapBox")
 Layer.create!("name"=>"Mapnik", "url"=>"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "urlssl"=>"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", "attribution"=>"Tiles by OpenStreetMap")
 Layer.create!("name"=>"Mapnik-fr", "url"=>"http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", "urlssl"=>"https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", "attribution"=>"Tiles by OpenStreetMap-France")
 Layer.create!("name"=>"Mapnik B&W", "url"=>"http://{s}.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png", "urlssl"=>"https://{s}.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png", "attribution"=>"Tiles by Wikimedia")
