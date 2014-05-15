@@ -232,6 +232,7 @@ en:
       quantity_help: "Quantity to be delivered"
       tags_help: "Customer's categories"
       comment_help: "Delivery required information"
+      locate_manually: "Locate manually on the map"
     edit:
       title: "Editing destination"
       title_store: "Editing store"

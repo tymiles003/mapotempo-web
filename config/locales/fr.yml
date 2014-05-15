@@ -232,6 +232,7 @@ fr:
       quantity_help: "Quantité à livrer"
       tags_help: "Catégories du client"
       comment_help: "Informations nécessaires pour la livraison"
+      locate_manually: "Positionner manuellement sur la carte"
     edit:
       title: "Modifier client"
       title_store: "Enregistrer départ véhicule"
