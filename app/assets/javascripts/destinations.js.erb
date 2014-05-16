@@ -395,7 +395,9 @@ function destinations_index(params) {
     }
     var row = $('[data-destination_id=' + id + ']');
     row.addClass('highlight');
-    $("#destination_box").scrollTop($("#destination_box").scrollTop() + row.position().top - 200);
+    if (row.position().top < $("#destination_box").scrollTop() || row.position().top > $("#destination_box").scrollTop() + $("#destination_box").height()) {
+      $("#destination_box").animate({scrollTop: row.position().top - 100});
+    }
   }
 
   function addMarker(id, lat, lng) {
