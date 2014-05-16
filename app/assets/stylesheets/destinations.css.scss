@@ -19,80 +19,89 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#destination_box {
-  height: 300px;
-  overflow-y: scroll;
-  margin-top: 20px;
 
-  .col-md-12 {
-    padding: 0;
+[data-controller='destinations'] {
+
+  input[name='destination\[street\]'] + .input-group-addon,
+  input[name='destination\[city\]'] + .input-group-addon {
+    cursor: pointer;
   }
 
-  table th {
-    line-height: 15px;
-  }
+  #destination_box {
+    height: 300px;
+    overflow-y: scroll;
+    margin-top: 20px;
 
-  table td {
-    line-height: 9px;
-    padding: 0;
-  }
-
-  .input-group-tags {
-    max-width: 160px;
-  }
-
-  .tablesorter-filter-row {
-    td:nth-of-type(3) input {
-      width: 6em;
-    }
-  }
-
-  .tablesorter-headerRow {
-    th:nth-of-type(7) div {
-      display: none;
-    }
-  }
-
-  .select2-container-multi .select2-choices {
-    border-radius: 3px 0 0 3px;
-    border-right: 0px;
-    border: 1px solid #CCCCCC;
-    min-height: 25px;
-
-    .select2-search-choice {
-      margin: 1px 0 1px 2px;
-    }
-  }
-
-  .destroy {
-    border: none;
-  }
-
-  .destination .block {
-    display: table;
-    table-layout: fixed;
-
-    > span {
-      display: table-cell;
+    .col-md-12 {
+      padding: 0;
     }
 
-    > span:not(:first-child) input {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+    table th {
+      line-height: 15px;
     }
 
-    > span:not(:last-child) input:last-child {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+    table td {
+      line-height: 9px;
+      padding: 0;
     }
 
-    > span + span input {
-      border-left: 0;
+    .input-group-tags {
+      max-width: 160px;
     }
-  }
 
-  .highlight td {
-    background-color: rgba(255, 187, 0, 0.5);
+    .tablesorter-filter-row {
+      td:nth-of-type(3) input {
+        width: 6em;
+      }
+    }
+
+    .tablesorter-headerRow {
+      th:nth-of-type(7) div {
+        display: none;
+      }
+    }
+
+    .select2-container-multi .select2-choices {
+      border-radius: 3px 0 0 3px;
+      border-right: 0px;
+      border: 1px solid #CCCCCC;
+      min-height: 25px;
+
+      .select2-search-choice {
+        margin: 1px 0 1px 2px;
+      }
+    }
+
+    .destroy {
+      border: none;
+    }
+
+    .destination .block {
+      display: table;
+      table-layout: fixed;
+
+      > span {
+        display: table-cell;
+      }
+
+      > span:not(:first-child) input {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      > span:not(:last-child) input:last-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > span + span input {
+        border-left: 0;
+      }
+    }
+
+    .highlight td {
+      background-color: rgba(255, 187, 0, 0.5);
+    }
   }
 }
 
