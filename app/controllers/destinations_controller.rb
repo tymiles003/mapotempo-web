@@ -138,7 +138,7 @@ class DestinationsController < ApplicationController
       begin
         @destinations_import.assign_attributes(destinations_import_params)
         @destinations_import.valid? or raise
-        Importer.import(@destinations_import.replace, current_user.customer, @destinations_import.file, @destinations_import.name) and current_user.save!
+        Importer.import(@destinations_import.replace, current_user.customer, @destinations_import.tempfile, @destinations_import.name) and current_user.save!
         format.html { redirect_to action: 'index' }
       rescue StandardError => e
         flash[:error] = e.message
