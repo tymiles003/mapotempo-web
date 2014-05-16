@@ -129,16 +129,16 @@ class DestinationsController < ApplicationController
   end
 
   def import
+    @destinations_import = DestinationsImportModel.new
   end
 
   def upload
-    replace = params[:replace]
-    file = params[:upload][:datafile].tempfile
-    name = params[:upload][:datafile].original_filename.split('.')[0..-2].join('.')
-
+    @destinations_import = DestinationsImportModel.new
     respond_to do |format|
       begin
-        Importer.import(replace, current_user.customer, file, name) and current_user.save!
+        @destinations_import.assign_attributes(destinations_import_params)
+        @destinations_import.valid? or raise
+        Importer.import(@destinations_import.replace, current_user.customer, @destinations_import.file, @destinations_import.name) and current_user.save!
         format.html { redirect_to action: 'index' }
       rescue StandardError => e
         flash[:error] = e.message
@@ -165,5 +165,10 @@ class DestinationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def destination_params
       params.require(:destination).permit(:name, :street, :detail, :postalcode, :city, :lat, :lng, :quantity, :open, :close, :comment, :tag_ids => [])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def destinations_import_params
+      params.require(:destinations_import_model).permit(:replace, :file)
     end
 end

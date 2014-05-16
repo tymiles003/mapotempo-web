@@ -29,6 +29,17 @@ fr:
       short: "%b %d"
       long: "%B %d, %Y"
 
+  activemodel:
+    models:
+      import: "Import"
+      imports:
+        one: "Import"
+        other: "Imports"
+    attributes:
+      destinations_import_model:
+        file: "Fichier"
+        replace: "Remplacer"
+
   activerecord:
     models:
       customer: "Compte client"
@@ -238,9 +249,7 @@ fr:
       title_store: "Enregistrer départ véhicule"
     import:
       title: "Importer des clients"
-      replace: "Remplacer"
       replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus."
-      file: "Fichier"
       file_help: "Import de fichier CSV uniquement."
       dialog:
         title: "Import des clients"
@@ -420,6 +429,7 @@ fr:
       new: "Nouveau"
       list: "Liste"
       edit: "Modifier"
+      send: "Envoyer"
       destroy: "Supprimer"
       destroy_confirm: "Êtes-vous sûr ?"
     unit:

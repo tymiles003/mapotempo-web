@@ -18,7 +18,7 @@ Mapotempo::Application.routes.draw do
 
   resources :destinations
   get 'destination/import' => 'destinations#import'
-  post 'destinations/upload' => 'destinations#upload'
+  post 'destinations/upload' => 'destinations#upload', :as => 'destinations_import_models'
   delete 'destinations' => 'destinations#clear'
   patch 'destination/geocode' => 'destinations#geocode'
   patch 'destination/geocode_reverse' => 'destinations#geocode_reverse'

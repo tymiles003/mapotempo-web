@@ -29,6 +29,15 @@ en:
       short: "%b %d"
       long: "%B %d, %Y"
 
+  activemodel:
+    models:
+      import: "Import"
+      imports: "Imports"
+    attributes:
+      destinations_import_model:
+        file: "File"
+        replace: "Replace"
+
   activerecord:
     models:
       customer: "Customer"
@@ -238,9 +247,7 @@ en:
       title_store: "Editing store"
     import:
       title: "Import destinations"
-      replace: "Replace"
       replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost."
-      file: "File"
       file_help: "Import only CSV files."
       dialog:
         title: "Import"
@@ -417,6 +424,7 @@ en:
       new: "New"
       list: "List"
       edit: "Edit"
+      send: "Send"
       destroy: "Destroy"
       destroy_confirm: "Are you sure?"
     unit:
