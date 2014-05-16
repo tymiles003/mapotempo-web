@@ -2,7 +2,7 @@
 
 <%= twitter_bootstrap_form_for(@destinations_import, {layout: :horizontal, multipart: true}) do |f| %>
   <%= render 'shared/error_messages', model: @destinations_import %>
-  <%= f.file_field :file do %>
+  <%= f.file_field :file, {class: 'filestyle', 'data-iconName' => 'icon-folder-open', 'data-buttonText' => t('.choose_file'), 'data-buttonName' => 'btn-primary'} do %>
     <p class="help-block"><%= t '.file_help' %></p>
   <% end %>
   <%= f.toggles t 'activemodel.attributes.destinations_import_model.replace' do %>
