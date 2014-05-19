@@ -1,6 +1,7 @@
+<% require 'time' %>
 <?xml version="1.0" encoding="UTF-8"?>
-<gpx>
+<gpx version="1.0" creator="mapotempo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
   <name><%= @route.planning.name %></name>
-  <time><%= Time.now.strftime("%Y-%m-%d") %></time>
+  <time><%= Time.now.iso8601 %></time>
 <%= render 'show', route: @route %>
 </gpx>
