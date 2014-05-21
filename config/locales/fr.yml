@@ -232,7 +232,8 @@ fr:
     menu:
       destinations: "Clients"
       import: "Importer"
-      export: "Exporter"
+      export_spreadsheet_standard: "Export tableur standard"
+      export_spreadsheet_excel: "Export tableur Excel"
       store: "Départ véhicule"
       tags: "Libellés"
       clear: "Supprimer tous les clients"
@@ -298,7 +299,8 @@ fr:
       exports: "Exporter"
       export:
         print: "Imprimer"
-        spreadsheet: "Tableur"
+        spreadsheet_standard: "Tableur standard"
+        spreadsheet_excel: "Tableur Excel"
         gps_waypoint: "Points de passage GPS"
       zoning:
         none: "Aucun"

@@ -1,4 +1,4 @@
-CSV.generate { |csv|
+CSV.generate({col_sep: ';'}) { |csv|
   csv << [
     I18n.t('destinations.import_file.name'),
     I18n.t('destinations.import_file.street'),

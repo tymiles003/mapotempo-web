@@ -26,6 +26,12 @@ class RoutesController < ApplicationController
       format.gpx do
         response.headers['Content-Disposition'] = 'attachment; filename="'+(@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.gpx"'
       end
+      format.excel do
+        data = render_to_string
+        send_data data.encode('ISO-8859-1'),
+            type: 'text/csv',
+            filename: (@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.csv'
+      end
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="'+(@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.csv"'
       end
@@ -39,9 +45,6 @@ class RoutesController < ApplicationController
       if @route.update(route_params)
         format.html { redirect_to @route, notice: t('activerecord.successful.messages.updated', model: @route.class.model_name.human) }
         format.json { head :no_content }
-        format.csv do
-          response.headers['Content-Disposition'] = 'attachment; filename="#{vehicle.name}.csv"'
-        end
       else
         format.html { render action: 'edit' }
         format.json { render json: @route.errors, status: :unprocessable_entity }

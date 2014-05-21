@@ -1,4 +1,4 @@
-CSV.generate { |csv|
+CSV.generate({col_sep: ';'}) { |csv|
   csv << [
     I18n.t('plannings.export_file.route'),
     I18n.t('plannings.export_file.order'),
@@ -17,5 +17,9 @@ CSV.generate { |csv|
     I18n.t('plannings.export_file.out_of_capacity'),
     I18n.t('plannings.export_file.out_of_drive_time')
   ]
-  render 'show', route: @route, csv: csv
+  @planning.routes.select { |route|
+    route.vehicle
+  }.collect { |route|
+    render partial: 'routes/show', formats: [:csv], locals: {route: route, csv: csv}
+  }.join('')
 }

@@ -1,4 +1,4 @@
-CSV.generate({col_sep: ';'}) { |csv|
+CSV.generate { |csv|
   csv << [
     I18n.t('plannings.export_file.route'),
     I18n.t('plannings.export_file.order'),

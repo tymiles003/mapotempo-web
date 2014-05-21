@@ -27,6 +27,17 @@ class DestinationsController < ApplicationController
   def index
     @destinations = Destination.where(customer_id: current_user.customer.id)
     @tags = current_user.customer.tags
+    respond_to do |format|
+      format.html
+      format.json
+      format.excel do
+        data = render_to_string
+        send_data data.encode('ISO-8859-1'),
+            type: 'text/csv',
+            filename: 'destinations.csv'
+      end
+      format.csv
+    end
   end
 
   # GET /destinations/1
