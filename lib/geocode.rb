@@ -32,7 +32,7 @@ module Geocode
   @ign_key = Mapotempo::Application.config.geocode_ign_key
 
   def self.reverse(lat, lng)
-    self.reverse_gisgraphy(lat, lng)
+    self.reverse_ign(lat, lng)
   end
 
   def self.reverse_gisgraphy(lat, lng)
@@ -40,7 +40,7 @@ module Geocode
 
     result = @cache.read(key)
     if !result
-      url="http://services.gisgraphy.com/street/streetsearch?format=json&lat=#{lat}&lng=#{lng}&from=1&to=1" # FIXME filtrer les types de route, mais coment ?
+      url="http://services.gisgraphy.com/street/streetsearch?format=json&lat=#{lat}&lng=#{lng}&from=1&to=1" # FIXME filtrer les types de route, mais comment
       Rails.logger.info "get #{url}"
       result = JSON.parse(open(url).read)
       @cache.write(key, result)
@@ -68,7 +68,7 @@ module Geocode
     version='1.2'
     xsi:schemaLocation='http://www.opengis.net/xls http://schemas.opengis.net/ols/1.2/olsAll.xsd'>
   <RequestHeader/>
-  <Request requestID='1' version='1.2' methodName='GeocodeRequest'>
+  <Request requestID='1' version='1.2' methodName='ReverseGeocodeRequest' maximumResponses='1'>
     <ReverseGeocodeRequest>
       <Position><gml:Point><gml:pos>#{lat} #{lng}</gml:pos></gml:Point></Position>
       <ReverseGeocodePreference>StreetAddress</ReverseGeocodePreference>
@@ -88,18 +88,23 @@ module Geocode
       end
     end
 
-    doc = Document.new(result)
-    root = doc.root
-    pos = root.elements['Response'].elements['ReverseGeocodeResponse'].elements['Address']
-    building = pos.elements['StreetAddress'].elements['Building'].
-    street = pos.elements['StreetAddress'].elements['Street'].text
-    place = pos.elements['Place'].elements['PostalCode'].text
-    postal_code = pos.elements['PostalCode'].text
+    begin
+      doc = Document.new(result)
+      root = doc.root
+      pos = root.elements['Response'].elements['ReverseGeocodeResponse'].elements['ReverseGeocodedLocation'].elements['Address']
+      building = pos.elements['StreetAddress'].elements['Building'].attribute('number').value
+      street = pos.elements['StreetAddress'].elements['Street'].text
+      city = pos.elements['Place[@type=\'Commune\']'].text
+      postal_code = pos.elements['PostalCode'].text
 
-    if building && !building.empty?
-      street = "#{building} #{street}"
+      if building && !building.empty?
+        street = "#{building} #{street}"
+      end
+
+      {street: street, postal_code: postal_code, city: city}
+    rescue
+      nil
     end
-    {street: street, postal_code: postal_code, city: place}
   end
 
   def self.complete(lat, lng, radius, street, postalcode, city)

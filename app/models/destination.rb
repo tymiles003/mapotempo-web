@@ -42,8 +42,10 @@ class Destination < ActiveRecord::Base
 
   def reverse_geocode
     address = Geocode.reverse(lat, lng)
-    self.street, self.postalcode, self.city = address[:street], address[:postal_code], address[:city]
-    @is_gecoded = true
+    if address
+      self.street, self.postalcode, self.city = address[:street], address[:postal_code], address[:city]
+      @is_gecoded = true
+    end
   end
 
   def destroy
