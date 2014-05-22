@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
-  revision: 671dec655635265e5e1cc3e9be10e3f62f465101
+  revision: b654421a6138ee39fc85b61a749e238e89a1b134
   specs:
     leaflet-draw-rails (0.0.1)
 

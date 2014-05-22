@@ -24,6 +24,10 @@ L.drawLocal = {
 				title: I18n.t('leaflet_draw.draw.toolbar.actions.title'),
 				text: I18n.t('leaflet_draw.draw.toolbar.actions.text'),
 			},
+			undo: {
+				title: I18n.t('leaflet_draw.draw.toolbar.undo.title'),
+				text: I18n.t('leaflet_draw.draw.toolbar.undo.text')
+			},
 			buttons: {
 				polyline: I18n.t('leaflet_draw.draw.toolbar.buttons.polyline'),
 				polygon: I18n.t('leaflet_draw.draw.toolbar.buttons.polygon'),

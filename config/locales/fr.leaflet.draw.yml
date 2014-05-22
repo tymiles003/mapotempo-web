@@ -5,6 +5,9 @@ fr:
         actions:
           title: "Annuler le dessin"
           text: "Annuler"
+        undo:
+          title: "Supprime le dernier point ajouté"
+          text: "Supprime le dernier point"
         buttons:
           polyline: "Dessiner un chemin"
           polygon: "Dessiner une zone"
