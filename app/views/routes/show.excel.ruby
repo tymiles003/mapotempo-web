@@ -9,6 +9,8 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('plannings.export_file.detail'),
     I18n.t('plannings.export_file.postalcode'),
     I18n.t('plannings.export_file.city'),
+    I18n.t('plannings.export_file.lat'),
+    I18n.t('plannings.export_file.lng'),
     I18n.t('plannings.export_file.comment'),
     I18n.t('plannings.export_file.quantity'),
     I18n.t('plannings.export_file.open'),

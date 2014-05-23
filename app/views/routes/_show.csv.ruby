@@ -10,6 +10,8 @@ route.stops.each { |stop|
     stop.destination.detail,
     stop.destination.postalcode,
     stop.destination.city,
+    stop.destination.lat,
+    stop.destination.lng,
     stop.destination.comment,
     stop.destination.quantity,
     (stop.destination.open.strftime("%H:%M") if stop.destination.open),

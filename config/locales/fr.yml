@@ -356,6 +356,8 @@ fr:
       detail: "complément"
       postalcode: "code postal"
       city: "ville"
+      lat: "lat"
+      lng: "lng"
       comment: "commentaire"
       quantity: "quantité"
       open: "horaire début"
