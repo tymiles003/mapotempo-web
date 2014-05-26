@@ -102,7 +102,8 @@ module Geocode
       end
 
       {street: street, postal_code: postal_code, city: city}
-    rescue
+    rescue Exception => e
+      Rails.logger.info e
       nil
     end
   end
