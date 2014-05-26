@@ -282,7 +282,9 @@ fr:
       close: "horaire fin"
       comment: "commentaire"
       tags: "libellés"
+      missing_header_name_city: "\"nom\" ou \"ville\" manquant dans l'entête."
       missing_name_city: "\"nom\" ou \"ville\" manquant à la ligne %{line}."
+      not_csv: "Le fichier importé n'est pas au format CSV."
       too_many_errors: "Import stoppé, trop d'erreurs."
 
   plannings:

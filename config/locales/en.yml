@@ -280,7 +280,9 @@ en:
       close: "close"
       comment: "comment"
       tags: "tags"
+      missing_header_city: "\"name\", or \"city\" missing in the header."
       missing_name_city: "\"name\", or \"city\" missing at line %{line}."
+      not_csv: "Imported file is not a CSV"
       too_many_errors: "Stop import, too many errors."
 
   plannings:

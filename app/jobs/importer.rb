@@ -29,6 +29,9 @@ class Importer
 
     contents = File.open(file, "r:bom|utf-8").read
     detection = CharlockHolmes::EncodingDetector.detect(contents)
+    if !contents || !detection[:encoding]
+      raise I18n.t('destinations.import_file.not_csv')
+    end
     contents = CharlockHolmes::Converter.convert(contents, detection[:encoding], 'UTF-8')
 
     separator = ','
@@ -60,16 +63,32 @@ class Importer
         'quantity' => I18n.t('destinations.import_file.quantity')
       }
       columns_name = columns.keys - ['route', 'tags']
-      CSV.parse(contents, col_sep: separator, headers: true) { |row|
+
+      CSV.parse(contents, col_sep: separator, headers: false) { |row|
+        r = []
+        columns.each{ |k,v|
+          if row.include?(v)
+            r << k
+          end
+        }
+        row = r
+
+        if !row.include?('name') || !row.include?('city')
+          errors << I18n.t('destinations.import_file.missing_header_name_city')
+        end
+        break
+      }
+
+      errors.empty? and CSV.parse(contents, col_sep: separator, headers: true) { |row|
         row = row.to_hash
 
-        # Switch from locale to internal column name
         line += 1
         if errors.length > 10
           errors << I18n.t('destinations.import_file.too_many_errors')
           break
         end
 
+        # Switch from locale to internal column name
         r = {}
         columns.each{ |k,v|
           if row.key?(v) && row[v]
