@@ -252,7 +252,6 @@ fr:
       title: "Importer des clients"
       replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus."
       file_help: "Import de fichier CSV uniquement."
-      choose_file: "Sélectionner fichier"
       dialog:
         title: "Import des clients"
         import_in_progress: "Import des clients en cours, merci de patienter."
@@ -427,6 +426,7 @@ fr:
     dialog:
       close: "Fermer"
     help: "Aide"
+    choose_file: "Sélectionner fichier"
 
   all:
     osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"

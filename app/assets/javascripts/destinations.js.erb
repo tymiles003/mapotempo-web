@@ -187,6 +187,12 @@ Paloma.controller('Destination').prototype.import = function () {
     modal: true
   });
 
+  $(":file").filestyle({
+    buttonName: "btn-primary",
+    iconName: "icon-folder-open",
+    buttonText: I18n.t('web.choose_file')
+  });
+
   $("form").submit(function () {
     $("#dialog-upload").dialog("open");
   });

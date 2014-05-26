@@ -250,7 +250,6 @@ en:
       title: "Import destinations"
       replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost."
       file_help: "Import only CSV files."
-      choose_file: "Choose file"
       dialog:
         title: "Import"
         import_in_progress: "Please wait, import in progress."
@@ -422,6 +421,7 @@ en:
     dialog:
       close: "Close"
     help: "Help"
+    choose_file: "Choose file"
 
   all:
     osm_attribution_html: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{layer_attribution}"
