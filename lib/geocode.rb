@@ -179,10 +179,15 @@ module Geocode
     begin
       doc = Document.new(result)
       root = doc.root
-      pos = root.elements['Response'].elements['GeocodeResponse'].elements['GeocodeResponseList'].elements['GeocodedAddress'].elements['gml:Point'].elements['gml:pos'].text
+      geocodedAddress = root.elements['Response'].elements['GeocodeResponse'].elements['GeocodeResponseList'].elements['GeocodedAddress']
+      pos = geocodedAddress.elements['gml:Point'].elements['gml:pos'].text
       pos = pos.split(' ')
 
-      {lat: pos[0], lng: pos[1]}
+      geocodeMatchCode = geocodedAddress.elements['GeocodeMatchCode']
+      matchType = geocodeMatchCode.attribute('matchType').value
+      accuracy = Float(geocodeMatchCode.attribute('accuracy').value)
+
+      {lat: pos[0], lng: pos[1], quality:matchType, accuracy:accuracy}
     rescue Exception => e
       Rails.logger.info e
       nil
