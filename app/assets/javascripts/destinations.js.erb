@@ -181,7 +181,7 @@ Paloma.controller('Destination').prototype.update = function () {
   destinations_edit(this.params);
 };
 
-Paloma.controller('Destination').prototype.import = function () {
+function destinations_import(params) {
   $("#dialog-upload").dialog({
     autoOpen: false,
     modal: true
@@ -196,7 +196,15 @@ Paloma.controller('Destination').prototype.import = function () {
   $("form").submit(function () {
     $("#dialog-upload").dialog("open");
   });
-};
+}
+
+Paloma.controller('Destination').prototype.import = function () {
+  destinations_import(this.params);
+}
+
+Paloma.controller('Destination').prototype.upload = function () {
+  destinations_import(this.params);
+}
 
 function destinations_index(params) {
 
