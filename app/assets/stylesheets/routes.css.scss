@@ -26,21 +26,24 @@
 }
 
 .route_print {
+  li {
+    padding: 0px;
+  }
+  li:nth-child(odd) {
+    background: lightgray;
+  }
   .title {
     .window {
       display: block;
     }
-
-    .quantity {
-      font-size: 170%;
-    }
   }
   .name {
-    font-size: 200%;
+    font-weight: bold;
   }
-  .devilery {
-    .quantity {
-      font-size: 200%;
-    }
+  .quantity {
+    font-weight: bold;
+  }
+  .comment {
+    font-style: italic;
   }
 }
