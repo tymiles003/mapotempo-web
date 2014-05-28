@@ -24,6 +24,10 @@ class DestinationsImportModel
   attr_accessor :replace, :file
   validates :file, presence: true
 
+  def replace=(value)
+    @replace = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
+  end
+
   def tempfile
     file.tempfile
   end
