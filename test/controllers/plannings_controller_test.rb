@@ -2,7 +2,8 @@ require 'test_helper'
 
 class PlanningsControllerTest < ActionController::TestCase
   setup do
-    @planning = plannings(:one)
+    @planning = plannings(:planning_one)
+    sign_in users(:user_one)
   end
 
   test "should get index" do
@@ -18,15 +19,10 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test "should create planning" do
     assert_difference('Planning.count') do
-      post :create, planning: { name: @planning.name, user_id: @planning.user_id }
+      post :create, planning: { name: @planning.name, customer: @planning.customer, zoning: @planning.zoning }
     end
 
-    assert_redirected_to planning_path(assigns(:planning))
-  end
-
-  test "should show planning" do
-    get :show, id: @planning
-    assert_response :success
+    assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
   test "should get edit" do
@@ -35,8 +31,8 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should update planning" do
-    patch :update, id: @planning, planning: { name: @planning.name, user_id: @planning.user_id }
-    assert_redirected_to planning_path(assigns(:planning))
+    patch :update, id: @planning, planning: { name: @planning.name, customer: @planning.customer, zoning: @planning.zoning }
+    assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
   test "should destroy planning" do

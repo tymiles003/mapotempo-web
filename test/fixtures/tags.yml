@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
+tag_one:
   label: MyString
-  user_id: 
+  customer: customer_one
 
-two:
+tag_two:
   label: MyString
-  user_id: 
+  customer: customer_one

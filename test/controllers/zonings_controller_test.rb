@@ -2,7 +2,8 @@ require 'test_helper'
 
 class ZoningsControllerTest < ActionController::TestCase
   setup do
-    @zoning = zonings(:one)
+    @zoning = zonings(:zoning_one)
+    sign_in users(:user_one)
   end
 
   test "should get index" do
@@ -18,15 +19,10 @@ class ZoningsControllerTest < ActionController::TestCase
 
   test "should create zoning" do
     assert_difference('Zoning.count') do
-      post :create, zoning: {  }
+      post :create, zoning: { name: @zoning.name, customer: @zoning.customer }
     end
 
-    assert_redirected_to zoning_path(assigns(:zoning))
-  end
-
-  test "should show zoning" do
-    get :show, id: @zoning
-    assert_response :success
+    assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
   test "should get edit" do
@@ -35,8 +31,8 @@ class ZoningsControllerTest < ActionController::TestCase
   end
 
   test "should update zoning" do
-    patch :update, id: @zoning, zoning: {  }
-    assert_redirected_to zoning_path(assigns(:zoning))
+    patch :update, id: @zoning, zoning: { name: @zoning.name, customer: @zoning.customer }
+    assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
   test "should destroy zoning" do

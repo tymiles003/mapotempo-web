@@ -1,13 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  end_subscription: 2013-08-25
+customer_one:
+  end_subscription:
   max_vehicles: 1
-  take_over: 2013-08-25 14:39:59
-  store_id: 
+  take_over: 0000-01-01 00:05:00
+  store: store_one
+  job_geocoding_id:
+  job_matrix_id:
+  job_optimizer_id:
+  name: MyString
 
-two:
-  end_subscription: 2013-08-25
+customer_two:
+  end_subscription:
   max_vehicles: 1
-  take_over: 2013-08-25 14:39:59
-  store_id: 
+  take_over: 0000-01-01 00:05:00
+  store: store_one
+  job_geocoding_id:
+  job_matrix_id:
+  job_optimizer_id:
+  name: MyString

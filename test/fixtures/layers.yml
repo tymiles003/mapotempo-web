@@ -1,11 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
+layer_one:
   name: MyString
   url: MyString
   attribution: MyString
+  urlssl: MyString
 
-two:
+layer_two:
   name: MyString
   url: MyString
   attribution: MyString
+  urlssl: MyString
