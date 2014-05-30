@@ -3,13 +3,13 @@
 route_one:
   distance: 1.5
   emission: 1.5
-  planning_id: 
+  planning: planning_one
   out_of_date: false
-  vehicle_id: 
+  vehicle: vehicle_one
 
 route_two:
   distance: 1.5
   emission: 1.5
-  planning_id: 
+  planning: planning_one
   out_of_date: false
-  vehicle_id: 
+  vehicle: vehicle_one

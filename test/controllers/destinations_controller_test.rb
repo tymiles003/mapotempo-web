@@ -42,4 +42,16 @@ class DestinationsControllerTest < ActionController::TestCase
 
     assert_redirected_to destinations_path
   end
+
+  test "should stop job matrix" do
+    # TODO
+  end
+
+  test "should stop job optimizer" do
+    # TODO
+  end
+
+  test "should stop job geocoding" do
+    # TODO
+  end
 end

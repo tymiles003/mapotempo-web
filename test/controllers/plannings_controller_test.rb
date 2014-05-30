@@ -25,6 +25,11 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
+  test "should show planning" do
+    get :show, id: @planning
+    assert_response :success
+  end
+
   test "should get edit" do
     get :edit, id: @planning
     assert_response :success
@@ -41,5 +46,25 @@ class PlanningsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to plannings_path
+  end
+
+  test "should move" do
+    # TODO
+  end
+
+  test "should refresh" do
+    # TODO
+  end
+
+  test "should switch" do
+    # TODO
+  end
+
+  test "should update_stop" do
+    # TODO
+  end
+
+  test "should optimize_route" do
+    # TODO
   end
 end

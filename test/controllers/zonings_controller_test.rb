@@ -25,6 +25,11 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
+  test "should show zoning" do
+    get :show, id: @zoning, format: :josm
+    assert_response :success
+  end
+
   test "should get edit" do
     get :edit, id: @zoning
     assert_response :success
