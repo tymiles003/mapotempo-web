@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-route_one:
+route_zero:
   distance: 1.5
   emission: 1.5
   planning: planning_one
   out_of_date: false
-  vehicle: vehicle_one
+  vehicle:
 
-route_two:
+route_one:
   distance: 1.5
   emission: 1.5
   planning: planning_one

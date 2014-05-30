@@ -1,5 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
+stop_zero:
+  index: 1
+  active: false
+  distance: 1.5
+  trace: MyString
+  route: route_one
+  destination: store_one
+  time: 0000-01-01 00:00:30
+  out_of_window: false
+  out_of_capacity: false
+  out_of_drive_time: false
+
 stop_one:
   index: 1
   active: false
@@ -18,7 +30,7 @@ stop_two:
   distance: 1.5
   trace: MyString
   route: route_one
-  destination: destination_one
+  destination: store_one
   time: 0000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false

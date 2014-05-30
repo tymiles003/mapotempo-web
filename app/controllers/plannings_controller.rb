@@ -109,7 +109,7 @@ class PlanningsController < ApplicationController
         destinations[current_user.customer.store_id] = current_user.customer.store
         routes = Hash[@planning.routes.map{ |route| [String(route.id), route] }]
         Planning.transaction do
-          params["_json"].each{ |r|
+          params["_json"] and params["_json"].each{ |r|
             route = routes[r[:route]]
             if r[:destinations]
               route.set_destinations(r[:destinations].collect{ |d| [destinations[d[:id]], !!d[:active]] })

@@ -49,22 +49,27 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should move" do
-    # TODO
+    patch :move, planning_id: @planning, format: :json, planning: { name: @planning.name, customer: @planning.customer, zoning: @planning.zoning }
+    assert_response :success
   end
 
   test "should refresh" do
-    # TODO
+    get :refresh, planning_id: @planning, format: :json
+    assert_response :success
   end
 
   test "should switch" do
-    # TODO
+    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one).id, vehicle_id: vehicles(:vehicle_one).id
+    assert_response :success, id: @planning
   end
 
-  test "should update_stop" do
-    # TODO
+  test "should update stop" do
+    patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one).id, destination_id: destinations(:destination_one).id, stop: { active: false }
+    assert_response :success
   end
 
-  test "should optimize_route" do
-    # TODO
+  test "should optimize route" do
+    get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one).id
+    assert_response :success
   end
 end

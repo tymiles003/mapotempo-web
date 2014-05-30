@@ -79,7 +79,7 @@ class Planning < ActiveRecord::Base
       split_by_zones
       self.touch # Force update date for no more on out_of_date without waiting for before_update
     end
-    routes.each(&:compute)
+    routes.select{ |route| route.vehicle }.each(&:compute)
   end
 
   def switch(route, vehicle)
