@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class TagTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "should not save" do
+    o = Tag.new
+    assert_not o.save, "Saved without required fields"
+  end
 end

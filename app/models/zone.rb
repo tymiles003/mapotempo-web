@@ -19,6 +19,7 @@ class Zone < ActiveRecord::Base
   belongs_to :zoning, touch: true
   has_and_belongs_to_many :vehicles, after_add: :touch_vehicles, after_remove: :touch_vehicles
 
+  validates :polygon, presence: true
   validate :valide_vehicles_from_customer
 
   def inside?(lat, lng)

@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class RouteTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "should not save" do
+    o = Route.new
+    assert_not o.save, "Saved without required fields"
+  end
 end

@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class StopTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "should not save" do
+    o = Stop.new
+    assert_not o.save, "Saved without required fields"
+  end
 end
