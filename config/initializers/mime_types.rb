@@ -6,3 +6,4 @@
 
 Mime::Type.register "application/gpx+xml", :gpx
 Mime::Type.register "text/csv", :excel
+Mime::Type.register_alias :json, :tomtom

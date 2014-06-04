@@ -70,6 +70,8 @@ Mapotempo::Application.config.trace_cache_request = ActiveSupport::Cache::FileSt
 Mapotempo::Application.config.trace_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_result', expires_in: 60*60*24*10)
 Mapotempo::Application.config.trace_osrm_url = "http://router.project-osrm.org"
 
+Mapotempo::Application.config.tomtom_api_url = 'https://csv.business.tomtom.com/extern'
+
 Mapotempo::Application.config.delayed_job_use = false
 
 Mapotempo::Application.config.help_url = nil

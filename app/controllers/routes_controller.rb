@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'tomtom'
+
 class RoutesController < ApplicationController
   load_and_authorize_resource
   before_action :set_route, only: [:update]
@@ -29,11 +31,19 @@ class RoutesController < ApplicationController
       format.excel do
         data = render_to_string
         send_data data.encode('ISO-8859-1'),
-            type: 'text/csv',
-            filename: (@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.csv'
+          type: 'text/csv',
+          filename: (@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.csv'
       end
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="'+(@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.csv"'
+      end
+      format.tomtom do
+        begin
+          Tomtom.export_route(current_user.customer, @route)
+          head :no_content
+        rescue StandardError => e
+          render json: e.message, status: :unprocessable_entity
+        end
       end
     end
   end

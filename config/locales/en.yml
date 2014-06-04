@@ -88,6 +88,9 @@ en:
         take_over: "Take over"
         name: "Name"
         destinations: "Destinations"
+        tomtom_account: "WEBFLEET account name"
+        tomtom_user: "WEBFLEET Username"
+        tomtom_password: "WEBFLEET Password"
       destination:
         name: "Name"
         address: "Address"
@@ -163,6 +166,7 @@ en:
         color: "Color"
         open: "Open"
         close: "Close"
+        tomtom_id: "TomTom ID"
       zoning:
         name: "Name"
       zones:
@@ -221,6 +225,8 @@ en:
       title: "New customer"
     form:
       take_over_help: "Average time per customer"
+      tomtom: "TomTom WEBFLEET"
+      tomtom__help: "Allows sending plannings to TomTom Pro with WEBFLEET."
 
   destinations:
     default_store_name: "Store"
@@ -301,6 +307,7 @@ en:
         spreadsheet_standard: "Spreadsheet Standard"
         spreadsheet_excel: "Spreadsheet Excel"
         gps_waypoint: "GPS Waypoint"
+        tomtom: "Send to TomTom"
       zoning:
         none: "None"
         apply: "Apply zoning"
@@ -343,6 +350,9 @@ en:
           in_progress: "Please wait, optimization in progress."
           attempts: "Attempts:"
           error: "Compute fail."
+        tomtom:
+          title: "TomTom"
+          in_progress: "Please wait, sending planning to TomTom GPS."
     new:
       title: "New planning"
     export_file:

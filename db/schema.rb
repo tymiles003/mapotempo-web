@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140315155331) do
+ActiveRecord::Schema.define(version: 20140601115136) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -24,6 +24,9 @@ ActiveRecord::Schema.define(version: 20140315155331) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.string   "tomtom_user"
+    t.string   "tomtom_password"
+    t.string   "tomtom_account"
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id"
@@ -186,6 +189,7 @@ ActiveRecord::Schema.define(version: 20140315155331) do
     t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "tomtom_id"
   end
 
   add_index "vehicles", ["customer_id"], name: "index_vehicles_on_customer_id"

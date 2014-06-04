@@ -94,9 +94,9 @@ class CustomersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def customer_params
       if current_user.admin?
-        params.require(:customer).permit(:name, :end_subscription, :max_vehicles, :take_over)
+        params.require(:customer).permit(:name, :end_subscription, :max_vehicles, :take_over, :tomtom_account, :tomtom_user, :tomtom_password)
       else
-        params.require(:customer).permit(:take_over)
+        params.require(:customer).permit(:take_over, :tomtom_account, :tomtom_user, :tomtom_password)
       end
     end
 end

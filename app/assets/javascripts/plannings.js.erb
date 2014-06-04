@@ -242,6 +242,22 @@ function plannings_edit(params) {
       });
     });
 
+    $(".route .export_tomtom a").click(function() {
+      var url = this.href;
+      $.ajax({
+        type: "get",
+        url: url,
+        beforeSend: function() {
+          $("#dialog-tomtom").dialog("open");
+        },
+        complete: function() {
+          $("#dialog-tomtom").dialog("close");
+        },
+        error: ajaxError
+      });
+      return false;
+    });
+
     $(".vehicle_select").change(function () {
       $.ajax({
         type: "patch",
@@ -392,6 +408,11 @@ function plannings_edit(params) {
   });
 
   $("#dialog-optimizer").dialog({
+    autoOpen: false,
+    modal: true
+  });
+
+  $("#dialog-tomtom").dialog({
     autoOpen: false,
     modal: true
   });

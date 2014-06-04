@@ -90,6 +90,9 @@ fr:
         take_over: "Durée de visite"
         name: "Nom"
         destinations : "Clients"
+        tomtom_account: "Compte WEBFLEET"
+        tomtom_user: "Nom d'utilisateur WEBFLEET"
+        tomtom_password: "Mot de passe WEBFLEET"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -165,6 +168,7 @@ fr:
         color: "Couleur"
         open: "Horaire début"
         close: "Horaire fin"
+        tomtom_id: "TomTom ID"
       zoning:
         name: "Nom"
       zones:
@@ -223,6 +227,8 @@ fr:
       title: "Nouveau compte client"
     form:
       take_over_help: "Durée de visite moyenne par client"
+      tomtom: "TomTom WEBFLEET"
+      tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
 
   destinations:
     default_store_name: "Départ véhicule"
@@ -303,6 +309,7 @@ fr:
         spreadsheet_standard: "Tableur standard"
         spreadsheet_excel: "Tableur Excel"
         gps_waypoint: "Points de passage GPS"
+        tomtom: "Envoyer sur TomTom"
       zoning:
         none: "Aucun"
         apply: "Appliquer zonage"
@@ -345,6 +352,9 @@ fr:
           in_progress: "Optimisation en cours, merci de patienter."
           attempts: "Tentatives :"
           error: "Impossible d'effectuer le calcul."
+        tomtom:
+          title: "TomTom"
+          in_progress: "Envoie vers GPS TomTom en cours, merci de patienter."
     new:
       title: "Nouveau planning"
     export_file:

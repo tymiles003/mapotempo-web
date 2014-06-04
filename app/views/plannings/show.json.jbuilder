@@ -30,6 +30,7 @@ else
     if route.vehicle
       json.vehicle_id route.vehicle.id
       json.icon asset_path("point-#{route.vehicle.color.gsub('#','')}.svg")
+      (json.tomtom true) if route.vehicle.tomtom_id && !route.vehicle.customer.tomtom_account.blank? && !route.vehicle.customer.tomtom_user.blank? && !route.vehicle.customer.tomtom_password.blank?
     end
     number = 0
     no_geocoding = out_of_window = out_of_capacity = out_of_drive_time = false

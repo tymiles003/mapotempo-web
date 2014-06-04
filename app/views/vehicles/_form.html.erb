@@ -16,6 +16,9 @@
   <%= f.number_field :capacity, min:1 do %>
     <p class="help-block"><%= t '.capacity_help' %></p>
   <% end %>
+  <% if !@vehicle.customer.tomtom_account.blank? && !@vehicle.customer.tomtom_user.blank? && !@vehicle.customer.tomtom_password.blank? %>
+    <%= f.text_field :tomtom_id %>
+  <% end %>
   <%= f.select :color, [], Vehicle.colors_table %>
   <%= f.actions do %>
     <%= f.submit %>
