@@ -134,11 +134,7 @@ class Importer
           }
         end
 
-        if replace
-          routes[row.key?("route")? row["route"] : nil] << destination
-        else
-          routes[nil] << destination
-        end
+        routes[row.key?("route")? row["route"] : nil] << destination
 
         destinations << destination
       }
@@ -163,16 +159,17 @@ class Importer
       if replace
         customer.destinations.destroy_all
         customer.destinations += destinations
-        if routes.size > 1 || !routes.key?(nil)
-          planning = Planning.new(name: name)
-          planning.customer = customer
-          planning.set_destinations(routes.values)
-          customer.plannings << planning
-        end
       else
         destinations.each { |destination|
           customer.destination_add(destination)
         }
+      end
+
+      if routes.size > 1 || !routes.key?(nil)
+        planning = Planning.new(name: name)
+        planning.customer = customer
+        planning.set_destinations(routes.values)
+        customer.plannings << planning
       end
     end
 
