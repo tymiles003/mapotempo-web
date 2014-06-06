@@ -29,8 +29,10 @@ class Planning < ActiveRecord::Base
 
   def set_destinations(destinations)
     default_empty_routes
-    routes[0].set_destinations([])
     if destinations.size <= routes.size-1
+      routes[0].set_destinations((customer.destinations - destinations.flatten).select{ |destination|
+        (destination.tags & tags).size == tags.size
+      })
       0.upto(destinations.size-1).each{ |i|
         routes[i+1].set_destinations(destinations[i].collect{ |d| [d, true] })
       }

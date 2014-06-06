@@ -25,6 +25,7 @@ class Importer
     end
 
     tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
+    common_tags = nil
     routes = Hash.new{ |h,k| h[k] = [] }
 
     contents = File.open(file, "r:bom|utf-8").read
@@ -63,6 +64,10 @@ class Importer
         'quantity' => I18n.t('destinations.import_file.quantity')
       }
       columns_name = columns.keys - ['route', 'tags']
+
+      if replace
+        customer.destinations.destroy_all
+      end
 
       CSV.parse(contents, col_sep: separator, headers: false) { |row|
         r = []
@@ -120,8 +125,8 @@ class Importer
         if r.key?('lng')
           r['lng'].gsub!(',', '.')
         end
+
         destination = Destination.new(r)
-        destination.customer = customer
 
         if row["tags"]
           destination.tags = row["tags"].split(',').select { |key|
@@ -134,8 +139,16 @@ class Importer
           }
         end
 
+        # Instersection of tags of all rows
+        if !common_tags
+            common_tags = destination.tags.dup
+        else
+            common_tags &= destination.tags
+        end
+
         routes[row.key?("route")? row["route"] : nil] << destination
 
+        destination.customer = customer # Link only when destination is complete
         destinations << destination
       }
 
@@ -156,18 +169,12 @@ class Importer
         }
       end
 
-      if replace
-        customer.destinations.destroy_all
-        customer.destinations += destinations
-      else
-        destinations.each { |destination|
-          customer.destination_add(destination)
-        }
-      end
+      destinations.each { |destination|
+        customer.destination_add(destination)
+      }
 
       if routes.size > 1 || !routes.key?(nil)
-        planning = Planning.new(name: name)
-        planning.customer = customer
+        planning = Planning.new(name: name, customer: customer, tags: common_tags || [])
         planning.set_destinations(routes.values)
         customer.plannings << planning
       end

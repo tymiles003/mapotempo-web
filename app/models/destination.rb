@@ -67,19 +67,23 @@ class Destination < ActiveRecord::Base
     end
 
     def update_add_tag(tag)
-      customer.plannings.select{ |planning|
-        planning.tags.include?(tag)
-      }.each{ |planning|
-        planning.destination_add(self)
-      }
+      if customer
+        customer.plannings.select{ |planning|
+          planning.tags.include?(tag)
+        }.each{ |planning|
+          planning.destination_add(self)
+        }
+      end
     end
 
     def update_remove_tag(tag)
-      customer.plannings.select{ |planning|
-        planning.tags.include?(tag)
-      }.each{ |planning|
-        planning.destination_remove(self)
-      }
+      if customer
+        customer.plannings.select{ |planning|
+          planning.tags.include?(tag)
+        }.each{ |planning|
+          planning.destination_remove(self)
+        }
+      end
     end
 
     def out_of_date
