@@ -43,15 +43,21 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to destinations_path
   end
 
-  test "should stop job matrix" do
-    # TODO
+  test "should geocode reverse" do
+    # TODO geocode_reverse
   end
 
-  test "should stop job optimizer" do
-    # TODO
+  test "should geocode complete" do
+    # TODO geocode_complete
   end
 
-  test "should stop job geocoding" do
-    # TODO
+  test "should show import" do
+    # TODO import
+  end
+
+  test "should upload" do
+    file = Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/import_one.csv"), 'text/csv')
+    post :upload, destinations_import_model: { file: file }
+    assert_redirected_to destinations_path
   end
 end

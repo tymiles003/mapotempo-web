@@ -4,8 +4,3 @@ planning_one:
   name: MyString
   customer: customer_one
   zoning: zoning_one
-
-planning_two:
-  name: MyString
-  customer: customer_one
-  zoning: zoning_one

@@ -10,7 +10,7 @@ store_one:
   quantity: 1
   open: 2013-08-07 21:59:40
   close: 2013-08-07 21:59:40
-  customer: customer_one
+  customer:
   detail: MyString
   comment: MyString
 
