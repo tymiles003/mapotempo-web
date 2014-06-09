@@ -43,12 +43,19 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to destinations_path
   end
 
+  test "should geocode" do
+    patch :geocode_reverse, format: :json, id: @destination.id, destination: { city: "Montpellier", street: "Rue de la Chaînerais" }
+    assert_response :success
+  end
+
   test "should geocode reverse" do
-    # TODO geocode_reverse
+    patch :geocode_reverse, format: :json, id: @destination.id, destination: { lat: 45.0, lon: 0.0 }
+    assert_response :success
   end
 
   test "should geocode complete" do
-    # TODO geocode_complete
+    patch :geocode_reverse, format: :json, id: @destination.id, destination: { city: "Montpellier", street: "Rue de la Chaînerais" }
+    assert_response :success
   end
 
   test "should show import" do
