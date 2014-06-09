@@ -56,8 +56,12 @@ class DestinationsControllerTest < ActionController::TestCase
   end
 
   test "should upload" do
-    file = Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/import_one.csv"), 'text/csv')
-    post :upload, destinations_import_model: { file: file }
+    file = ActionDispatch::Http::UploadedFile.new({
+      tempfile: File.new(Rails.root.join("test/fixtures/files/import_one.csv")),
+      original_filename: "import_one.csv"
+    })
+    file.original_filename = "import_one.csv"
+    post :upload, destinations_import_model: { replace: true, file: file }
     assert_redirected_to destinations_path
   end
 end
