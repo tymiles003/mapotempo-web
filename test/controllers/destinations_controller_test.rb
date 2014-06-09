@@ -52,7 +52,8 @@ class DestinationsControllerTest < ActionController::TestCase
   end
 
   test "should show import" do
-    # TODO import
+    get :import
+    assert_response :success
   end
 
   test "should upload" do
