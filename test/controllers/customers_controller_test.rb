@@ -18,14 +18,20 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test "should stop job matrix" do
-    # TODO
+    assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
+      delete :stop_job_matrix
+    end
   end
 
   test "should stop job optimizer" do
-    # TODO
+    assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
+      delete :stop_job_optimizer
+    end
   end
 
   test "should stop job geocoding" do
-    # TODO
+    assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
+      delete :stop_job_geocoding
+    end
   end
 end
