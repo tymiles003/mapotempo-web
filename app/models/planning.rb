@@ -21,7 +21,7 @@ class Planning < ActiveRecord::Base
   has_many :routes, -> { order('id')}, :autosave => true, :dependent => :destroy
   has_and_belongs_to_many :tags, -> { order('label')}, :autosave => true
 
-#  validates :customer, presence: true
+  validates :customer, presence: true
   validates :name, presence: true
 
   before_create :update_zoning

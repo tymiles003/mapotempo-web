@@ -20,7 +20,7 @@ class Vehicle < ActiveRecord::Base
   has_many :routes, :autosave => true
   has_and_belongs_to_many :zones
 
-#  validates :customer, presence: true
+  validates :customer, presence: true
   validates :name, presence: true
   validates :emission, presence: true, numericality: {only_float: true}
   validates :consumption, presence: true, numericality: {only_float: true}

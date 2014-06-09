@@ -22,12 +22,12 @@ class Destination < ActiveRecord::Base
   has_many :stops, dependent: :destroy
   has_and_belongs_to_many :tags, after_add: :update_add_tag, after_remove: :update_remove_tag
 
-#  validates :customer, presence: true
+#  validates :customer, presence: true # not for store
   validates :name, presence: true
 #  validates :street, presence: true
   validates :city, presence: true
-#  validates :lat, presence: true, numericality: {only_float: true}
-#  validates :lng, presence: true, numericality: {only_float: true}
+#  validates :lat, numericality: {only_float: true} # maybe nil
+#  validates :lng, numericality: {only_float: true} # maybe nil
 
   before_update :update_out_of_date, :update_geocode
 

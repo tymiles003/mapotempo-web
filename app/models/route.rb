@@ -22,8 +22,8 @@ class Route < ActiveRecord::Base
   belongs_to :vehicle
   has_many :stops, :autosave => true, :dependent => :destroy, :order=>"\"index\" ASC", :include=>:destination
 
-#  validates :planning, presence: true
-#  validates :vehicle, presence: true
+  validates :planning, presence: true
+#  validates :vehicle, presence: true # nil on unplanned route
   validate :validate_stops_length
 
   after_initialize :assign_defaults, if: 'new_record?'
