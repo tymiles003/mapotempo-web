@@ -16,17 +16,6 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 @font-face {
-    font-family: 'comfortaabold';
-    src: url(font_path('comfortaa_bold-webfont.eot'));
-    src: url(font_path('comfortaa_bold-webfont.eot') + '?#iefix') format('embedded-opentype'),
-         url(font_path('comfortaa_bold-webfont.woff')) format('woff'),
-         url(font_path('comfortaa_bold-webfont.ttf')) format('truetype'),
-         url(font_path('comfortaa_bold-webfont.svg') + '#comfortaabold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
     font-family: 'mapotempo';
     src: url(font_path('mapotempo-webfont.eot'));
     src: url(font_path('mapotempo-webfont.eot') + '?#iefix') format('embedded-opentype'),
@@ -89,18 +78,7 @@ label {
 }
 
 .navbar-brand {
-  font-size: 200%;
-}
-
-.mapotempo-logo {
-  font-family: 'comfortaabold';
-
-  span:nth-child(1) {
-    color: #729fcf;
-  }
-  span:nth-child(2) {
-    color: #73d216;
-  }
+  padding: 5px;
 }
 
 [data-controller='plannings'][data-action='edit'],

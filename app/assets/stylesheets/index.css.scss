@@ -21,9 +21,10 @@
 
 [data-controller='index'] {
   .mapotempo-logo {
-    text-align: center;
-    font-size: 120pt;
-    font-size: 10vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
   }
 
   .mapotempo-icons {
