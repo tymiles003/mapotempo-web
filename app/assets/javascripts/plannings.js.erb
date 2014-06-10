@@ -200,13 +200,14 @@ function plannings_edit(params) {
         layers[route.route_id].addTo(map);
       }
 
-      var color;
+      var color, vehicle_name;
       if (route.vehicle) {
         $(".route[data-route_id=" + route.route_id + "] .vehicle_select").select2('val', {
           'id': route.vehicle.id,
           'name': route.vehicle.name
         }).trigger("change");
         color = route.vehicle.color;
+        vehicle_name = route.vehicle.name;
       }
 
       $.each(route.stops, function (index, stop) {
@@ -222,6 +223,7 @@ function plannings_edit(params) {
           } else {
             stop.i18n = mustache_i18n;
             stop.color = color;
+            stop.vehicle_name = vehicle_name;
             var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
               icon: new L.NumberedDivIcon({
                 number: stop.number,
