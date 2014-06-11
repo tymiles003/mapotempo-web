@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'rest_client'
+require 'net/http'
 require 'json'
 
 
@@ -36,18 +36,11 @@ module TomtomWebfleet
     })
   end
 
-  def self.sendDestinationOrderExtern(account, username, password, lang, objectuid, stop)
+  def self.sendDestinationOrderExtern(account, username, password, lang, objectuid, stop, orderid, description, waypoints = nil)
     params = {
       objectuid: objectuid,
-      orderid: stop.id,
-      ordertext: [
-        '',
-        stop.destination.name,
-        stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil,
-        stop.destination.open || stop.destination.close ? (stop.destination.open ? stop.destination.open : '') + '-' + (stop.destination.close ? stop.destination.close : '') : nil,
-        stop.destination.detail,
-        stop.destination.comment,
-      ].select{ |s| s }.join(' ').strip[0..499],
+      orderid: orderid,
+      ordertext: description.strip[0..499],
       latitude: (stop.destination.lat*1e6).round.to_s,
       longitude: (stop.destination.lng*1e6).round.to_s,
     }
@@ -55,18 +48,25 @@ module TomtomWebfleet
     (params[:zip] = stop.destination.postalcode[0.9]) if stop.destination.postalcode
     (params[:city] = stop.destination.city[0..49]) if stop.destination.city
     (params[:street] = stop.destination.street[0..49]) if stop.destination.street
+    if waypoints
+      params[:wp] = waypoints.collect{ |waypoint|
+        [(waypoint[:lat]*1e6).round.to_s, (waypoint[:lng]*1e6).round.to_s, waypoint[:description].gsub(',', ' ')[0..19]].join(',')
+      }
+    end
     self.get(:sendDestinationOrderExtern, account, username, password, lang, params)
   end
 
   private
     def self.get(action, account, username, password, lang, params = {})
       params = {account: account, username: username, password: password, lang: lang, action: action, useUTF8: true, outputformat: :json}.merge(params)
-      result = RestClient.get(@url, {params: params})
+      uri = URI(@url)
+      uri.query = URI.encode_www_form(params)
+      result = Net::HTTP.get_response(uri)
 
-      if result && result.code != 200
-        raise result.to_s
+      if result && result.code != '200'
+        raise result.message
       else
-        jdata = JSON.parse(result)
+        jdata = JSON.parse(result.body)
         if jdata.is_a?(Hash) && jdata['errorMsg']
           Rails::logger.info params.inspect
           raise jdata['errorMsg']

@@ -19,13 +19,38 @@ require 'tomtom_webfleet'
 
 class Tomtom
 
-  def self.export_route(customer, route)
-    lang = 'fr' ############################################################### FIXME
+  def self.export_route_as_orders(customer, route)
+    lang = 'fr' # FIXME
 
     TomtomWebfleet.clearOrdersExtern(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, lang, route.vehicle.tomtom_id)
 
     route.stops.each{ |stop|
-      TomtomWebfleet.sendDestinationOrderExtern(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, lang, route.vehicle.tomtom_id, stop)
+      description = [
+        '',
+        stop.destination.name,
+        stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil,
+        stop.destination.open || stop.destination.close ? (stop.destination.open ? stop.destination.open : '') + '-' + (stop.destination.close ? stop.destination.close : '') : nil,
+        stop.destination.detail,
+        stop.destination.comment,
+      ].select{ |s| s }.join(' ').strip
+      TomtomWebfleet.sendDestinationOrderExtern(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, lang, route.vehicle.tomtom_id, stop, stop.id, description)
     }
+  end
+
+  def self.export_route_as_waypoints(customer, route)
+    lang = 'fr' # FIXME
+
+    TomtomWebfleet.clearOrdersExtern(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, lang, route.vehicle.tomtom_id)
+
+    waypoints = route.stops.collect{ |stop|
+      description = [
+        '',
+        stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil,
+        stop.destination.name,
+        stop.destination.comment
+      ].select{ |s| s }.join(' ').strip
+      {lat: stop.destination.lat, lng: stop.destination.lng, description: description}
+    }
+    TomtomWebfleet.sendDestinationOrderExtern(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, lang, route.vehicle.tomtom_id, route.stops[-1], route.vehicle.id, route.stops[-1].destination.name, waypoints)
   end
 end
