@@ -136,7 +136,7 @@ fr:
         updated_at: "Mise à jour"
       route:
         distance: "Distance"
-        emission: "Emissions"
+        emission: "Émissions"
         out_of_date: "Périmé"
         start: "Début"
         end: "Fin"
@@ -162,7 +162,7 @@ fr:
         remember_me: "Se rappeler de moi"
       vehicle:
         name: "Nom"
-        emission: "Emissions"
+        emission: "Émissions"
         consumption: "Consommation"
         capacity: "Capacité"
         color: "Couleur"
@@ -184,7 +184,7 @@ fr:
         customer:
           attributes:
             destinations:
-              over_max_limit: "dépassement du monbre maximal"
+              over_max_limit: "dépassement du nombre maximal"
         zone:
           attributes:
             vehicles:
@@ -192,11 +192,11 @@ fr:
         route:
           attributes:
             stops:
-              over_max_limit: "Dépassement du monbre maximal d'arrêts dans une tournée"
+              over_max_limit: "Dépassement du nombre maximal d'arrêts dans une tournée"
 
   errors:
     planning:
-      import_too_routes: "Tentative d'importer de plus de tournées que de véhicles disponibles."
+      import_too_routes: "Tentative d'importer de plus de tournées que de véhicules disponibles."
 
   admin:
     users:
@@ -318,12 +318,12 @@ fr:
       open_planning_panel: "Déployer le panneau du planning"
       refresh: "Actualiser"
       refresh_help: "Des paramètres ou des clients utilisés par ce planning ont été modifié, il est nécessaire de le recalculer"
-      out_of_road: "Non plannifiés"
+      out_of_road: "Non planifiés"
       toggle_help: "Affiche ou cache les clients sur la carte"
       vehicle_help: "Paramétrer le véhicule"
       optimize_help: "Optimiser la tournée"
       export_help: "Exporter la tournée"
-      drag_help: "Glisser-déposer pour ordonner le client dans les trounées"
+      drag_help: "Glisser-déposer pour ordonner le client dans les tournées"
       active_help: "Prendre en compte ou non un client dans la tournée"
       edit_help: "Modifier les informations du client"
       marker_help: "Visualiser sur la carte"
@@ -401,7 +401,7 @@ fr:
       title: "Paramètres utilisateurs"
 
   vehicles:
-    default_name: "Véhicle %{n}"
+    default_name: "Véhicule %{n}"
     emissions_nothing: "Aucun - %{n}"
     emissions_petrol: "Essence - %{n}"
     emissions_diesel: "Gazole - %{n}"
