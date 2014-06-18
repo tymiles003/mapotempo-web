@@ -62,7 +62,8 @@
             <li><a href="/routes/{{route_id}}.excel"><i class="icon-table icon-fixed-width"></i> {{#i18n}}plannings.edit.export.spreadsheet_excel{{/i18n}}</a></li>
             <li><a href="/routes/{{route_id}}.gpx"><i class="icon-mobile-phone icon-fixed-width"></i> {{#i18n}}plannings.edit.export.gps_waypoint{{/i18n}}</a></li>
             {{#tomtom}}
-              <li class="export_tomtom"><a href="/routes/{{route_id}}.tomtom"><i class="icon-mobile-phone icon-fixed-width"></i> {{#i18n}}plannings.edit.export.tomtom{{/i18n}}</a></li>
+              <li class="export_tomtom"><a href="/routes/{{route_id}}.tomtom?type=orders"><i class="icon-mobile-phone icon-fixed-width"></i> {{#i18n}}plannings.edit.export.tomtom_orders{{/i18n}}</a></li>
+              <li class="export_tomtom"><a href="/routes/{{route_id}}.tomtom?type=waypoints"><i class="icon-mobile-phone icon-fixed-width"></i> {{#i18n}}plannings.edit.export.tomtom_waypoints{{/i18n}}</a></li>
             {{/tomtom}}
           </ul>
         </div>

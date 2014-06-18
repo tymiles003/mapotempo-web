@@ -307,7 +307,8 @@ en:
         spreadsheet_standard: "Spreadsheet Standard"
         spreadsheet_excel: "Spreadsheet Excel"
         gps_waypoint: "GPS Waypoint"
-        tomtom: "Send to TomTom"
+        tomtom_orders: "Send to TomTom as Orders"
+        tomtom_waypoints: "Send to TomTom as Waypoints"
       zoning:
         none: "None"
         apply: "Apply zoning"

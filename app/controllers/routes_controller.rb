@@ -39,8 +39,11 @@ class RoutesController < ApplicationController
       end
       format.tomtom do
         begin
-#          Tomtom.export_route_as_orders(current_user.customer, @route)
-          Tomtom.export_route_as_waypoints(current_user.customer, @route)
+          if params[:type] == 'waypoints'
+            Tomtom.export_route_as_waypoints(current_user.customer, @route)
+          else
+            Tomtom.export_route_as_orders(current_user.customer, @route)
+          end
           head :no_content
         rescue StandardError => e
           render json: e.message, status: :unprocessable_entity

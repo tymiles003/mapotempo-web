@@ -15,64 +15,90 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'net/http'
-require 'json'
+require 'savon'
 
 
 module TomtomWebfleet
 
-  @url = Mapotempo::Application.config.tomtom_api_url
-
-  def self.showObjectReportExtern(account, username, password, lang, group)
-    self.get(:showObjectReportExtern, account, username, password, lang, {
-      'objectgroup-name' => group,
-    })
+  @client = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api + '/ordersService?wsdl', multipart: true, soap_version: 2) do
+    #log true
+    #pretty_print_xml true
+    convert_request_keys_to :none
   end
 
-  def self.clearOrdersExtern(account, username, password, lang, objectuid)
-    self.get(:clearOrdersExtern, account, username, password, lang, {
-      objectuid: objectuid,
-      mark_deleted: 1,
-    })
-  end
-
-  def self.sendDestinationOrderExtern(account, username, password, lang, objectuid, stop, orderid, description, waypoints = nil)
-    params = {
-      objectuid: objectuid,
-      orderid: orderid,
-      ordertext: description.strip[0..499],
-      latitude: (stop.destination.lat*1e6).round.to_s,
-      longitude: (stop.destination.lng*1e6).round.to_s,
-    }
-    (params[:ordertime] = stop.time.strftime("%H:%M")) if stop.time
-    (params[:zip] = stop.destination.postalcode[0.9]) if stop.destination.postalcode
-    (params[:city] = stop.destination.city[0..49]) if stop.destination.city
-    (params[:street] = stop.destination.street[0..49]) if stop.destination.street
-    if waypoints
-      params[:wp] = waypoints.collect{ |waypoint|
-        [(waypoint[:lat]*1e6).round.to_s, (waypoint[:lng]*1e6).round.to_s, waypoint[:description].gsub(',', ' ')[0..19]].join(',')
+  def self.clearOrders(account, username, password, objectuid)
+    self.get(:clear_orders, account, username, password, {
+      deviceToClear: {
+        markDeleted: 'true',
+      },
+      :attributes! => {
+        deviceToClear: {
+          objectUid: objectuid,
+        }
       }
+   })
+  end
+
+  def self.sendDestinationOrder(account, username, password, objectuid, stop, orderid, description, waypoints = nil)
+    params = {
+      object: '',
+      dstOrderToSend: {
+        orderText: description.strip[0..499],
+        explicitDestination: {
+          geoPosition: '',
+          :attributes! => {
+            geoPosition: {
+              latitude: (stop.destination.lat*1e6).round.to_s,
+              longitude: (stop.destination.lng*1e6).round.to_s,
+            }
+          }
+        }
+      },
+      :attributes! => {
+        object: {
+          objectUid: objectuid,
+        },
+        dstOrderToSend: {
+          orderNo: orderid,
+        }
+      }
+    }
+
+    (params[:dstOrderToSend][:explicitDestination][:street] = stop.destination.street[0..49]) if stop.destination.street
+    (params[:dstOrderToSend][:explicitDestination][:zip] = stop.destination.postalcode[0..9]) if stop.destination.postalcode
+    (params[:dstOrderToSend][:explicitDestination][:city] = stop.destination.city[0..49]) if stop.destination.city
+    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = Time.now.strftime('%Y-%m-%dT') + stop.time.strftime('%H:%M:%S')) if stop.time
+
+    if waypoints
+      params[:advancedSendDestinationOrderParm] = {waypoints: waypoints.collect{ |waypoint|
+        {
+          latitude: (waypoint[:lat]*1e6).round.to_s,
+          longitude: (waypoint[:lng]*1e6).round.to_s,
+          description: waypoint[:description].gsub(',', ' ')[0..19]
+        }
+      }}
     end
-    self.get(:sendDestinationOrderExtern, account, username, password, lang, params)
+    self.get(:send_destination_order, account, username, password, params)
   end
 
   private
-    def self.get(action, account, username, password, lang, params = {})
-      params = {account: account, username: username, password: password, lang: lang, action: action, useUTF8: true, outputformat: :json}.merge(params)
-      uri = URI(@url)
-      uri.query = URI.encode_www_form(params)
-      result = Net::HTTP.get_response(uri)
+    def self.get(operation, account, username, password, message = {})
+      message[:aParm] = {
+        accountName: account,
+        userName: username,
+        password: password,
+      }
+      message[:gParm] = {}
+      response = @client.call(operation, message: message)
 
-      if result && result.code != '200'
-        raise result.message
-      else
-        jdata = JSON.parse(result.body)
-        if jdata.is_a?(Hash) && jdata['errorMsg']
-          Rails::logger.info params.inspect
-          raise jdata['errorMsg']
-        else
-          jdata
-        end
+      if response.body.first[1][:return][:status_code] != '0'
+        raise response.body.first[1][:return][:status_message]
       end
+    rescue Savon::SOAPFault => error
+      fault_code = error.to_hash[:fault][:faultcode]
+      raise fault_code
+    rescue Savon::HTTPError => error
+      Rails::logger.info error.http.code
+      raise
     end
 end
