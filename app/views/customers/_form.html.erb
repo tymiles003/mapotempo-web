@@ -6,13 +6,23 @@
   <%= f.text_field :take_over, {value: @customer.take_over ? @customer.take_over.strftime("%H:%M:%S") : nil, input_group: t('all.unit.hour_minute_second')} do %>
     <p class="help-block"><%= t '.take_over_help' %></p>
   <% end %>
-  <fieldset>
-    <legend><%= t '.tomtom' %></legend>
-    <p class="help-block"><%= t '.tomtom_help' %></p>
-    <%= f.text_field :tomtom_account %>
-    <%= f.text_field :tomtom_user %>
-    <%= f.text_field :tomtom_password %>
-  </fieldset>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">
+        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomtom">
+          <%= t '.tomtom' %>
+        </a>
+      </h2>
+    </div>
+    <div id="collapseTomtom" class="panel-collapse collapse">
+      <div class="panel-body">
+        <p class="help-block"><%= t '.tomtom_help' %></p>
+        <%= f.text_field :tomtom_account %>
+        <%= f.text_field :tomtom_user %>
+        <%= f.text_field :tomtom_password %>
+      </div>
+    </div>
+  </div>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

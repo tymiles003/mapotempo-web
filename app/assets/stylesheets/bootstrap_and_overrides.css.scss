@@ -89,3 +89,15 @@ hr {
     }
   }
 }
+
+/* Add Open and Close cheron to accordion */
+
+.panel-heading .accordion-toggle:after {
+    font-family: 'FontAwesome';
+    content: "";
+    float: right;
+    color: black;
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    content: "";
+}
