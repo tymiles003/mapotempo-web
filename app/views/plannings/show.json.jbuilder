@@ -30,6 +30,7 @@ else
     if route.vehicle
       json.vehicle_id route.vehicle.id
       json.icon asset_path("point-#{route.vehicle.color.gsub('#','')}.svg")
+      json.work_time "%i:%02i" % [(route.vehicle.close - route.vehicle.open)/60/60, (route.vehicle.close - route.vehicle.open)/60%60]
       (json.tomtom true) if route.vehicle.tomtom_id && !route.vehicle.customer.tomtom_account.blank? && !route.vehicle.customer.tomtom_user.blank? && !route.vehicle.customer.tomtom_password.blank?
     end
     number = 0
