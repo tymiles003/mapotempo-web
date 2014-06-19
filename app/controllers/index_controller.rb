@@ -18,4 +18,7 @@
 class IndexController < ApplicationController
   def index
   end
+
+  def unsupported_browser
+  end
 end

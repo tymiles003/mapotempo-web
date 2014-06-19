@@ -42,6 +42,8 @@ Mapotempo::Application.routes.draw do
     get 'planning/:planning_id' => 'zonings#show'
   end
 
+  get '/unsupported_browser' => 'index#unsupported_browser'
+
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   # The priority is based upon order of creation: first created -> highest priority.

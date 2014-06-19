@@ -291,6 +291,12 @@ en:
       not_csv: "Imported file is not a CSV"
       too_many_errors: "Stop import, too many errors."
 
+  index:
+    unsupported_browser:
+      unsupported_browser: "Unsupported Browser"
+      unsupported_browser_ie: "Internet Explorer is not a supported, please use Firefox, Chrome or any other modern browser."
+      unsupported_browser_modern: "Your browser is too old, please use any modern browser (except Internet Explorer)."
+
   plannings:
     menu:
       plannings: "Plannings"
