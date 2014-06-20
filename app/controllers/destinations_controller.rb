@@ -83,13 +83,15 @@ class DestinationsController < ApplicationController
   def update
     respond_to do |format|
       begin
-        @destination.assign_attributes(destination_params)
-        !params[:reverse] or @destination.reverse_geocode
-        @destination.save!
-        current_user.save!
+        Destination.transaction do
+          @destination.assign_attributes(destination_params)
+          !params[:reverse] or @destination.reverse_geocode
+          @destination.save!
+          @destination.customer and @destination.customer.save!
 
-        format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
-        format.json { render action: 'show', location: @destination }
+          format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
+          format.json { render action: 'show', location: @destination }
+        end
       rescue StandardError => e
         format.html { render action: 'edit' }
         format.json { render json: @destination.errors, status: :unprocessable_entity }
