@@ -311,6 +311,7 @@ function destinations_index(params) {
           success: function (data) {
             row.remove();
             markersLayers.removeLayer(markers[id]);
+            cluster.removeLayer(markers[id]);
             delete markers[id];
             count_dec();
           },
@@ -585,6 +586,14 @@ function destinations_index(params) {
       }
     }).bind('filterEnd', function (e, filter) {
       count();
+
+      markersLayers.clearLayers();
+      cluster.clearLayers();
+      $('.destinations tr:visible').each(function (i, e) {
+        var marker = markers[$(e).attr('data-destination_id')];
+        markersLayers.addLayer(marker);
+        cluster.addLayer(marker);
+      });
     });
     $(".tablesorter-filter").addClass("form-control input-sm"); // filter_cssFilter not support setting multiple class at once
   }
