@@ -316,7 +316,7 @@ fr:
         spreadsheet_excel: "Tableur Excel"
         gps_waypoint: "Points de passage GPS"
         tomtom_orders: "Envoyer commandes sur TomTom"
-        tomtom_waypoints: "Envoyer points de passages sur TomTom"
+        tomtom_waypoints: "Envoyer points de passage sur TomTom"
       zoning:
         none: "Aucun"
         apply: "Appliquer zonage"
@@ -324,7 +324,7 @@ fr:
         new: "Nouveau zonage"
       open_planning_panel: "Déployer le panneau du planning"
       refresh: "Actualiser"
-      refresh_help: "Des paramètres ou des clients utilisés par ce planning ont été modifié, il est nécessaire de le recalculer"
+      refresh_help: "Des paramètres ou des clients utilisés par ce planning ont été modifiés, il est nécessaire de le recalculer"
       out_of_road: "Non planifiés"
       toggle_help: "Affiche ou cache les clients sur la carte"
       vehicle_help: "Paramétrer le véhicule"
