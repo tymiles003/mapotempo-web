@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class VehiclesController < ApplicationController
+  include LinkBack
+
   load_and_authorize_resource :except => :create
   before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
@@ -56,7 +58,7 @@ class VehiclesController < ApplicationController
   def update
     respond_to do |format|
       if @vehicle.update(vehicle_params)
-        format.html { redirect_to vehicles_path, notice: t('activerecord.successful.messages.updated', model: @vehicle.class.model_name.human) }
+        format.html { redirect_to link_back || vehicles_path, notice: t('activerecord.successful.messages.updated', model: @vehicle.class.model_name.human) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

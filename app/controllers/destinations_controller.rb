@@ -19,6 +19,8 @@ require 'csv'
 require 'importer'
 
 class DestinationsController < ApplicationController
+  include LinkBack
+
   load_and_authorize_resource :except => [:create, :upload]
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
@@ -66,7 +68,7 @@ class DestinationsController < ApplicationController
           current_user.customer.destination_add(@destination)
 
           current_user.customer.save!
-          format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
+          format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
           format.json { render action: 'show', status: :created, location: @destination }
         end
       rescue StandardError => e
@@ -86,7 +88,7 @@ class DestinationsController < ApplicationController
         @destination.save!
         current_user.save!
 
-        format.html { redirect_to edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
+        format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         format.json { render action: 'show', location: @destination }
       rescue StandardError => e
         format.html { render action: 'edit' }

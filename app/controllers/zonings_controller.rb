@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ZoningsController < ApplicationController
+  include LinkBack
+
   load_and_authorize_resource :except => :create
   before_action :set_zoning, only: [:show, :edit, :update, :destroy]
 
@@ -64,7 +66,7 @@ class ZoningsController < ApplicationController
   def update
     respond_to do |format|
       if @zoning.update(zoning_params)
-        format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
+        format.html { redirect_to link_back || edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
         format.json { head :no_content }
       else
         @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
