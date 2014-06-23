@@ -212,6 +212,8 @@ function zonings_edit(params) {
       set_color(geom, zone.vehicles);
       add_zone(zone, geom);
     });
+
+    map.fitBounds(featureGroup.getBounds());
   }
 
   $.ajax({

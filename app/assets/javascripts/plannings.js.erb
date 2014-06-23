@@ -48,7 +48,11 @@ function plannings_edit(params) {
     map = L.map('map').setView([map_lat, map_lng], 13),
     layer_zoning,
     markers = {},
-    layers = {};
+    layers = {},
+    routes_layers;
+
+  routes_layers = L.featureGroup();
+  map.addLayer(routes_layers);
 
   L.tileLayer(map_layer_url, {
     maxZoom: 18,
@@ -56,7 +60,7 @@ function plannings_edit(params) {
   }).addTo(map);
 
   $.each(routes_id, function (i, id) {
-    layers[id] = L.layerGroup();
+    layers[id] = L.featureGroup();
   });
 
   function display_zoning(zoning) {
@@ -194,10 +198,10 @@ function plannings_edit(params) {
     });
 
     $.each(data.routes, function (i, route) {
-      map.removeLayer(layers[route.route_id]);
-      layers[route.route_id] = L.layerGroup();
+      routes_layers.removeLayer(layers[route.route_id]);
+      layers[route.route_id] = L.featureGroup();
       if (!route.hidden) {
-        layers[route.route_id].addTo(map);
+        routes_layers.addLayer(layers[route.route_id]);
       }
 
       var color, vehicle_name;
@@ -339,10 +343,10 @@ function plannings_edit(params) {
         var i = $("i", this);
         if (hidden) {
           i.removeClass("icon-eye-open").addClass("icon-eye-close");
-          map.removeLayer(layers[id]);
+          routes_layers.removeLayer(layers[id]);
         } else {
           i.removeClass("icon-eye-close").addClass("icon-eye-open");
-          layers[id].addTo(map);
+          routes_layers.addLayer(layers[id]);
         }
       })
       .on("click", ".marker", function (event, ui) {
@@ -383,6 +387,8 @@ function plannings_edit(params) {
         error: ajaxError
       });
     });
+
+    map.fitBounds(routes_layers.getBounds());
   }
 
   $.ajax({

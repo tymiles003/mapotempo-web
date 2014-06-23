@@ -221,7 +221,7 @@ function destinations_index(params) {
   }).addTo(map);
 
   var markers = {};
-  var markersLayers = L.layerGroup();
+  var markersLayers = L.featureGroup();
 
   var cluster = new L.MarkerClusterGroup({
     showCoverageOnHover: false
@@ -505,6 +505,8 @@ function destinations_index(params) {
         addMarker(destination.id, destination.lat, destination.lng);
       }
     });
+
+    map.fitBounds(markersLayers.getBounds());
 
     count();
 
