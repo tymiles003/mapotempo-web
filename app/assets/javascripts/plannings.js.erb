@@ -49,7 +49,8 @@ function plannings_edit(params) {
     layer_zoning,
     markers = {},
     layers = {},
-    routes_layers;
+    routes_layers,
+    initial_zoning = $("#planning_zoning_id").val();
 
   routes_layers = L.featureGroup();
   map.addLayer(routes_layers);
@@ -423,6 +424,14 @@ function plannings_edit(params) {
   $("#dialog-tomtom").dialog({
     autoOpen: false,
     modal: true
+  });
+
+  $("form").submit(function (event) {
+    if (initial_zoning != $("#planning_zoning_id").val()) {
+      $("#dialog-zoning").dialog({
+        modal: true
+      });
+    }
   });
 }
 

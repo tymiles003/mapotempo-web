@@ -362,6 +362,9 @@ fr:
         tomtom:
           title: "TomTom"
           in_progress: "Envoie vers GPS TomTom en cours, merci de patienter."
+        zoning:
+          title: "Zonage"
+          in_progress: "Application du nouveau zonage en cours, merci de patienter."
     new:
       title: "Nouveau planning"
     export_file:

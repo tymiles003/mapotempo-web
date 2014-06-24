@@ -360,6 +360,9 @@ en:
         tomtom:
           title: "TomTom"
           in_progress: "Please wait, sending planning to TomTom GPS."
+        zoning:
+          title: "Zoning"
+          in_progress: "Please wait, applying new zoning in progress."
     new:
       title: "New planning"
     export_file:
