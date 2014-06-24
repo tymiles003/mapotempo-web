@@ -35,7 +35,7 @@
               <span class="name" title="{{name}}">{{name}}</span><br />
             </div>
             <div class="btn-group pull-right">
-              <a href="/destinations/{{id}}/edit" class="marker_edit btn btn-inverse btn-xs"><i class="icon icon-pencil"></i></a>
+              <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs"><i class="icon icon-pencil"></i></a>
               {{#lat}}<a href="#" class="marker btn btn-inverse btn-xs"><i class="icon icon-map-marker"></i></a>{{/lat}}
             </div>
             <div class="clearfix"></div>
@@ -122,7 +122,7 @@
           </div>
           <div class="btn-group pull-right">
             {{^is_store}}
-               <a href="/destinations/{{id}}/edit" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="icon icon-pencil"></i></a>
+               <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="icon icon-pencil"></i></a>
             {{/is_store}}
             {{#lat}}
               <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="icon icon-map-marker"></i></a>

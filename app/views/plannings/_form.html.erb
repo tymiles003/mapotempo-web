@@ -7,8 +7,8 @@
     <% end %>
   <% end %>
   <%= f.collection_select :zoning_id, [], current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {} do %>
-    <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_edit"<% if !@planning.id || !@planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.edit' %></a>
-    <a href="/zonings/new/planning/<%= @planning.id %>" class="btn btn-primary btn-sm" id="zoning_new"<% if !@planning.id || @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.new' %></a>
+    <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_edit"<% if !@planning.id || !@planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.edit' %></a>
+    <a href="/zonings/new/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_new"<% if !@planning.id || @planning.zoning %> style="display: none;"<% end %>><i class="icon-pencil icon-fixed-width"></i> <%= t 'plannings.edit.zoning.new' %></a>
   <% end %>
   <%= f.actions do %>
     <%= f.submit %>

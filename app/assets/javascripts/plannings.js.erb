@@ -86,7 +86,7 @@ function plannings_edit(params) {
 
       $("#zoning_edit")
         .show()
-        .attr("href", "/zonings/" + id + "/edit/planning/" + planning_id);
+        .attr("href", "/zonings/" + id + "/edit/planning/" + planning_id + "?back=true");
 
       $.ajax({
         type: "get",
@@ -145,7 +145,7 @@ function plannings_edit(params) {
     $.each(data.routes, function (i, route) {
       if (route.vehicle_id) {
         route.vehicle = vehicles_map[route.vehicle_id];
-        route.path = '/vehicles/' + route.vehicle_id + '/edit';
+        route.path = '/vehicles/' + route.vehicle_id + '/edit?back=true';
       }
     });
 
