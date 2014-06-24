@@ -213,7 +213,9 @@ function zonings_edit(params) {
       add_zone(zone, geom);
     });
 
-    map.fitBounds(featureGroup.getBounds());
+    var bounds = featureGroup.getBounds()
+    // Add 30% on right side to move away from panel
+    map.fitBounds(bounds.extend(L.latLng(bounds.getNorth(), bounds.getEast() + (bounds.getEast() - bounds.getWest()) * 0.3)));
   }
 
   $.ajax({
