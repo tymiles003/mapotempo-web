@@ -389,6 +389,18 @@ function plannings_edit(params) {
       });
     });
 
+    $(".automatic_insert").click(function (event, ui) {
+      var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+      $.ajax({
+        type: "patch",
+        url: '/plannings/' + planning_id + '/automatic_insert/' + destination_id + '.json',
+        beforeSend: beforeSendWaiting,
+        success: display_planning,
+        complete: completeWaiting,
+        error: ajaxError
+      });
+    });
+
     var bounds = routes_layers.getBounds();
     // Add 30% on right side to move away from panel
     map.fitBounds(bounds.extend(L.latLng(bounds.getNorth(), bounds.getEast() + (bounds.getEast() - bounds.getWest()) * 0.3)));

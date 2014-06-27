@@ -334,6 +334,7 @@ fr:
       active_help: "Prendre en compte ou non un client dans la tournée"
       edit_help: "Modifier les informations du client"
       marker_help: "Visualiser sur la carte"
+      automatic_insert_help: "Propose un endroit pour insérer ce client dans une tournée"
       popup:
         open: "Horaire début : "
         close: "Horaire fin : "

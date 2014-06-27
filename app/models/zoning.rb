@@ -28,9 +28,14 @@ class Zoning < ActiveRecord::Base
 
   def apply(destinations)
     destinations.group_by{ |destination|
-      zones.find{ |zone|
-        zone.inside?(destination.lat, destination.lng)
-      }
+      inside(destination)
+    }
+  end
+
+  # Return the zone corresponding to destination location
+  def inside(destination)
+    zones.find{ |zone|
+      zone.inside?(destination.lat, destination.lng)
     }
   end
 end

@@ -19,7 +19,7 @@ require 'matrix_job'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource :except => :create
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :update_stop, :optimize_route]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route]
 
   # GET /plannings
   # GET /plannings.json
@@ -155,6 +155,26 @@ class PlanningsController < ApplicationController
           format.json { render action: 'show', location: @planning }
         else
           format.json { render json: @planning.errors, status: :unprocessable_entity }
+        end
+      rescue StandardError => e
+        format.json { render json: e.message, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def automatic_insert
+    respond_to do |format|
+      begin
+        @stop = Stop.where(route: @planning.routes[0], destination_id: params[:destination_id]).first
+        if @stop
+          Planning.transaction do
+            @planning.automatic_insert(@stop)
+            @planning.save
+          end
+          @planning.reload
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @stop.errors, status: :unprocessable_entity }
         end
       rescue StandardError => e
         format.json { render json: e.message, status: :unprocessable_entity }

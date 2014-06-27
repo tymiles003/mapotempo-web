@@ -96,6 +96,48 @@ class Planning < ActiveRecord::Base
     end
   end
 
+  def automatic_insert(stop)
+    # If zoning, get appropriate route
+    if zoning
+      zone = zoning.inside(stop.destination)
+      if zone && zone.vehicles.size > 0
+        route = routes.find{ |route|
+          route.vehicle == zone.vehicles[0]
+        }
+        (available_routes = [route]) if route
+      end
+    end
+
+    # It still no route get all routes
+    if !available_routes
+      available_routes = routes.select{ |route|
+          route.vehicle
+      }
+    end
+
+    # Take the closest routes destination and eval insert
+    route, index = available_routes.collect{ |route|
+      route.stops[1..-1].map{ |stop| [stop, route] }
+    }.flatten(1).sort{ |a,b|
+      a[0].destination.distance(stop.destination) <=> b[0].destination.distance(stop.destination)
+    }[0..9].collect{ |stop_route|
+        if stop_route[0].destination == customer.store
+          [[stop_route[1], stop_route[0].index]]
+        else
+          [[stop_route[1], stop_route[0].index], [stop_route[1], stop_route[0].index+1]]
+        end
+    }.flatten(1).uniq.min_by{ |ri|
+      r = ri[0].amoeba_dup
+      r.add(stop.destination, ri[1], true)
+      r.compute
+      (r.end - r.start) - (ri[0].end - ri[0].start)
+    } || [routes[1], 2]
+
+    route.add(stop.destination, index || 2, true)
+    route.compute
+    stop.destroy
+  end
+
   def out_of_date
     (zoning && updated_at < zoning.updated_at) || routes.inject(false){ |acc, route|
       acc or route.out_of_date

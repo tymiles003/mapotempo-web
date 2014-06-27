@@ -332,6 +332,7 @@ en:
       active_help: "Take or not customer into route"
       edit_help: "Edit customer information"
       marker_help: "Show on map"
+      automatic_insert_help: "Guess a place for inserting this destination into route"
       popup:
         open: "Open:"
         close: "Close:"

@@ -49,6 +49,10 @@ class Destination < ActiveRecord::Base
     end
   end
 
+  def distance(destination)
+    Math.hypot(destination.lat - lat, destination.lng - lng)
+  end
+
   def destroy
     out_of_date # Too late to do this in before_destroy callback, children already destroyed
     super

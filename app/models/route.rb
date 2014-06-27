@@ -29,6 +29,11 @@ class Route < ActiveRecord::Base
 
   after_initialize :assign_defaults, if: 'new_record?'
 
+  amoeba do
+    enable
+    clone :stops
+  end
+
   def default_stops
     i = 0
     stops.clear
@@ -55,7 +60,7 @@ class Route < ActiveRecord::Base
       last = stops[0]
       last.time = self.end
       quantity = 0
-      stops.sort{ |a,b| a.index <=> b.index }[1..-1].each{ |stop|
+      stops.sort_by(&:index)[1..-1].each{ |stop|
         destination = stop.destination
         if stop.active && destination.lat && destination.lng
           stop.distance, time, stop.trace = Trace.compute(last.destination.lat, last.destination.lng, destination.lat, destination.lng)
@@ -99,8 +104,16 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def add(destination)
-    stops << Stop.new(destination: destination, route: self)
+  def add(destination, index = nil, active = false)
+    if index
+      stops.partition{ |stop|
+        stop.index < index
+      }[1].each{ |stop|
+        stop.index += 1
+      }
+    end
+    stops << Stop.new(destination: destination, route: self, index: index, active: active)
+
     if self.vehicle
       self.out_of_date = true
     end

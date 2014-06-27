@@ -81,6 +81,7 @@ gem 'rgeo'
 gem 'rgeo-geojson'
 
 gem 'nilify_blanks'
+gem 'amoeba'
 
 gem 'charlock_holmes'
 gem 'savon', '~> 2.0'
