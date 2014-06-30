@@ -130,6 +130,13 @@ class Route < ActiveRecord::Base
     }
   end
 
+  def sum_out_of_window
+    stops.sum{ |stop|
+      (stop.time && stop.destination.open && stop.time < stop.destination.open ? stop.destination.open - stop.time : 0) +
+      (stop.time && stop.destination.close && stop.time > stop.destination.close ? stop.time - stop.destination.close : 0)
+    }
+  end
+
   def matrix_size
     stops_segregate.size
   end

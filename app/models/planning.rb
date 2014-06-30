@@ -115,6 +115,8 @@ class Planning < ActiveRecord::Base
       }
     end
 
+    cache_sum_out_of_window = Hash.new{ |h,k| h[k] = k.sum_out_of_window }
+
     # Take the closest routes destination and eval insert
     route, index = available_routes.collect{ |route|
       route.stops[1..-1].map{ |stop| [stop, route] }
@@ -130,7 +132,10 @@ class Planning < ActiveRecord::Base
       r = ri[0].amoeba_dup
       r.add(stop.destination, ri[1], true)
       r.compute
-      (r.end - r.start) - (ri[0].end - ri[0].start)
+
+      # Difference of total time + difference of sum of out_of_window time
+      ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
+      (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
     } || [routes[1], 2]
 
     route.add(stop.destination, index || 2, true)
