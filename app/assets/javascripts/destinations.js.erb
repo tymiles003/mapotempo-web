@@ -119,7 +119,7 @@ function destinations_form(params) {
     $('[name=destination\\[lat\\]]', row).val(destination.lat);
     $('[name=destination\\[lng\\]]', row).val(destination.lng);
     markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
-    if (!map.getBounds().contains(markers[destination_id].getLatLng())) {
+    if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
       map.setView(markers[destination_id].getLatLng(), 16);
     }
   }
@@ -353,7 +353,7 @@ function destinations_index(params) {
       } else {
         addMarker(destination.id, destination.lat, destination.lng);
       }
-      if (!map.getBounds().contains(markers[destination.id].getLatLng())) {
+      if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination.id].getLatLng())) {
         map.setView(markers[destination.id].getLatLng(), 16);
       }
     } else {
@@ -407,7 +407,7 @@ function destinations_index(params) {
     // new over
     if (id in markers) {
       if (move) {
-        if (!map.getBounds().contains(markers[id].getLatLng())) {
+        if (map.getZoom() != 16 || !map.getBounds().contains(markers[id].getLatLng())) {
           map.setView(markers[id].getLatLng(), 16);
         }
       }
