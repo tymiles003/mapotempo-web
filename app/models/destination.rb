@@ -22,6 +22,7 @@ class Destination < ActiveRecord::Base
   has_many :stops, dependent: :destroy
   has_and_belongs_to_many :tags, after_add: :update_add_tag, after_remove: :update_remove_tag
 
+  nilify_blanks
 #  validates :customer, presence: true # not for store
   validates :name, presence: true
 #  validates :street, presence: true

@@ -27,6 +27,7 @@ class Customer < ActiveRecord::Base
   has_many :users
   has_many :zonings
 
+  nilify_blanks
   validates :name, presence: true
   validates :destinations, length: { maximum: 2000, message: :over_max_limit }
 

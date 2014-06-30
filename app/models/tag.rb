@@ -20,5 +20,6 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many :destinations
   has_and_belongs_to_many :plannings
 
+  nilify_blanks
   validates :label, presence: true
 end

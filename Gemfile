@@ -80,6 +80,8 @@ gem 'rest-client'
 gem 'rgeo'
 gem 'rgeo-geojson'
 
+gem 'nilify_blanks'
+
 gem 'charlock_holmes'
 gem 'savon', '~> 2.0'
 gem 'savon-multipart', '~> 2.0.1'

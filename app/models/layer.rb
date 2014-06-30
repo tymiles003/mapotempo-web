@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Layer < ActiveRecord::Base
+  nilify_blanks
   validates :name, presence: true
   validates :url, presence: true
   validates :urlssl, presence: true

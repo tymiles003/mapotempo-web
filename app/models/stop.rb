@@ -19,6 +19,7 @@ class Stop < ActiveRecord::Base
   belongs_to :route, touch: true
   belongs_to :destination
 
+  nilify_blanks
   validates :route, presence: true
   validates :destination, presence: true
 end

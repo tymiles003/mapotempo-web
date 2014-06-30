@@ -163,6 +163,9 @@ GEM
     multi_json (1.8.4)
     mustache (0.99.5)
     nested_form (0.3.2)
+    nilify_blanks (1.0.3)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     nori (2.4.0)
@@ -311,6 +314,7 @@ DEPENDENCIES
   leaflet_numbered_markers-rails!
   macaddr (= 1.6.1)
   mustache
+  nilify_blanks
   paloma!
   pg
   rails (= 4.0.0)

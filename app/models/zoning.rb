@@ -23,6 +23,7 @@ class Zoning < ActiveRecord::Base
   accepts_nested_attributes_for :zones, allow_destroy: true
   validates_associated_bubbling :zones
 
+  nilify_blanks
   validates :name, presence: true
 
   def apply(destinations)
