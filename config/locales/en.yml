@@ -455,6 +455,7 @@ en:
       send: "Send"
       destroy: "Destroy"
       destroy_confirm: "Are you sure?"
+      duplicate: "Duplicate"
     unit:
       km: "km"
       second: "s"

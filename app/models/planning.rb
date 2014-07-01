@@ -28,6 +28,18 @@ class Planning < ActiveRecord::Base
   before_create :update_zoning
   before_update :update_zoning
 
+  amoeba do
+    enable
+
+    customize(lambda { |original, copy|
+      copy.routes.each{ |route|
+        route.planning = copy
+      }
+    })
+
+    append :name => Time.now.strftime(" %Y-%m-%d %H:%M")
+  end
+
   def set_destinations(destinations)
     default_empty_routes
     if destinations.size <= routes.size-1
@@ -129,6 +141,10 @@ class Planning < ActiveRecord::Base
           [[stop_route[1], stop_route[0].index], [stop_route[1], stop_route[0].index+1]]
         end
     }.flatten(1).uniq.min_by{ |ri|
+      ri[0].class.amoeba do
+        clone :stops # No need to duplicate stop juste for compute evaluation
+      end
+
       r = ri[0].amoeba_dup
       r.add(stop.destination, ri[1], true)
       r.compute

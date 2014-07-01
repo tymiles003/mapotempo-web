@@ -31,7 +31,12 @@ class Route < ActiveRecord::Base
 
   amoeba do
     enable
-    clone :stops
+
+    customize(lambda { |original, copy|
+      copy.stops.each{ |stop|
+        stop.route = copy
+      }
+    })
   end
 
   def default_stops

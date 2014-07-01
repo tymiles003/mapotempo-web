@@ -460,6 +460,7 @@ fr:
       send: "Envoyer"
       destroy: "Supprimer"
       destroy_confirm: "Êtes-vous sûr ?"
+      duplicate: "Dupliquer"
     unit:
       km: "km"
       second: "s"
