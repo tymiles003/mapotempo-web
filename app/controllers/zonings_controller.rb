@@ -19,7 +19,7 @@ class ZoningsController < ApplicationController
   include LinkBack
 
   load_and_authorize_resource :except => :create
-  before_action :set_zoning, only: [:show, :edit, :update, :destroy]
+  before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate]
 
   # GET /zonings
   # GET /zonings.json
@@ -83,6 +83,19 @@ class ZoningsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to zonings_url }
       format.json { head :no_content }
+    end
+  end
+
+  def duplicate
+    respond_to do |format|
+      begin
+        @zoning = @zoning.amoeba_dup
+        @zoning.save!
+        format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
+      rescue StandardError => e
+        flash[:error] = e.message
+        format.html { render action: 'index' }
+      end
     end
   end
 

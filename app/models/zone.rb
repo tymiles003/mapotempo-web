@@ -23,6 +23,10 @@ class Zone < ActiveRecord::Base
   validates :polygon, presence: true
   validate :valide_vehicles_from_customer
 
+  amoeba do
+    enable
+  end
+
   def inside?(lat, lng)
     point = RGeo::Cartesian.factory.point(lng, lat)
     (@geom || decode_geom).geometry().contains?(point)

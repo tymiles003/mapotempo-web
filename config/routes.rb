@@ -42,6 +42,7 @@ Mapotempo::Application.routes.draw do
   resources :zonings do
     get 'edit/planning/:planning_id' => 'zonings#edit'
     get 'planning/:planning_id' => 'zonings#show'
+    patch 'duplicate'
   end
 
   get '/unsupported_browser' => 'index#unsupported_browser'

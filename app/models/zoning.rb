@@ -26,6 +26,19 @@ class Zoning < ActiveRecord::Base
   nilify_blanks
   validates :name, presence: true
 
+  amoeba do
+    enable
+    exclude_field :plannings
+
+    customize(lambda { |original, copy|
+      copy.zones.each{ |zone|
+        zone.zoning = copy
+      }
+    })
+
+    append :name => Time.now.strftime(" %Y-%m-%d %H:%M")
+  end
+
   def apply(destinations)
     destinations.group_by{ |destination|
       inside(destination)
