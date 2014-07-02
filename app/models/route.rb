@@ -197,6 +197,10 @@ class Route < ActiveRecord::Base
     compute
   end
 
+  def out_of_date
+    self.vehicle && @out_of_date
+  end
+
   private
     def assign_defaults
       self.hidden = false
