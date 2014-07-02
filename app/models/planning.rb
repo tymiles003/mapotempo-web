@@ -35,6 +35,10 @@ class Planning < ActiveRecord::Base
       copy.routes.each{ |route|
         route.planning = copy
       }
+
+      def copy.update_zoning
+        # No make zoning on duplication
+      end
     })
 
     append :name => Time.now.strftime(" %Y-%m-%d %H:%M")

@@ -72,4 +72,12 @@ class PlanningsControllerTest < ActionController::TestCase
     get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one).id
     assert_response :success
   end
+
+  test "should duplicate" do
+    assert_difference('Planning.count') do
+      patch :duplicate, planning_id: @planning
+    end
+
+    assert_redirected_to edit_planning_path(assigns(:planning))
+  end
 end

@@ -47,4 +47,12 @@ class ZoningsControllerTest < ActionController::TestCase
 
     assert_redirected_to zonings_path
   end
+
+  test "should duplicate" do
+    assert_difference('Zoning.count') do
+      patch :duplicate, zoning_id: @zoning
+    end
+
+    assert_redirected_to edit_zoning_path(assigns(:zoning))
+  end
 end
