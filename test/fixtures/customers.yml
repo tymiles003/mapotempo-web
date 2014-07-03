@@ -5,9 +5,9 @@ customer_one:
   max_vehicles: 1
   take_over: 0000-01-01 00:05:00
   store: store_one
-  job_geocoding: job_one
-  job_matrix: job_one
-  job_optimizer: job_one
+  job_geocoding: job_geocoding
+  job_matrix: job_matrix
+  job_optimizer: job_optimizer
   name: MyString
 
 customer_two:
@@ -15,7 +15,7 @@ customer_two:
   max_vehicles: 1
   take_over: 0000-01-01 00:05:00
   store: store_one
-  job_geocoding: job_one
-  job_matrix: job_one
-  job_optimizer: job_one
+  job_geocoding: job_geocoding
+  job_matrix: job_matrix
+  job_optimizer: job_optimizer
   name: MyString

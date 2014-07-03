@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class TagsControllerTest < ActionController::TestCase
+  set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
+
   setup do
     @tag = tags(:tag_one)
     sign_in users(:user_one)

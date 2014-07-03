@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class RoutesControllerTest < ActionController::TestCase
+  set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
+
   setup do
     @route = routes(:route_one)
     sign_in users(:user_one)
