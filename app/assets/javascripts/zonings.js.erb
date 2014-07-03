@@ -32,7 +32,7 @@ function zonings_edit(params) {
     attribution: map_attribution
   }).addTo(map);
 
-  var markersLayers = L.layerGroup();
+  var markersLayers = L.featureGroup();
   var hasPlanning = false;
   var geoJsonLayers = {};
 
@@ -213,7 +213,7 @@ function zonings_edit(params) {
       add_zone(zone, geom);
     });
 
-    var bounds = featureGroup.getBounds()
+    var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
     // Add 30% on right side to move away from panel
     map.fitBounds(bounds.extend(L.latLng(bounds.getNorth(), bounds.getEast() + (bounds.getEast() - bounds.getWest()) * 0.3)));
   }
