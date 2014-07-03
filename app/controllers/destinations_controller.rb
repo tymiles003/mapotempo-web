@@ -49,8 +49,9 @@ class DestinationsController < ApplicationController
 
   # GET /destinations/new
   def new
-    @destination = current_user.customer.store.dup
-    @destination.name = ""
+    @destination = Destination.new
+    @destination.postalcode = current_user.customer.store.postalcode
+    @destination.city = current_user.customer.store.city
   end
 
   # GET /destinations/1/edit
