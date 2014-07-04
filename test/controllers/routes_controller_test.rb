@@ -14,7 +14,7 @@ class RoutesControllerTest < ActionController::TestCase
   end
 
   test "should update route" do
-    patch :update, id: @route, route: { distance: @route.distance, emission: @route.emission }
+    patch :update, id: @route, route: { hidden: @route.hidden, locked: @route.locked }
     assert_redirected_to route_path(assigns(:route))
   end
 end

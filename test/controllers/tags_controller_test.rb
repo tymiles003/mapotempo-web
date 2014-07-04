@@ -27,6 +27,16 @@ class TagsControllerTest < ActionController::TestCase
     assert_redirected_to tags_path
   end
 
+  test "should not create tag" do
+    assert_difference('Tag.count', 0) do
+      post :create, tag: { label: "", customer: @tag.customer }
+    end
+
+    assert_template :new
+    tag = assigns(:tag)
+    assert tag.errors.any?
+  end
+
   test "should get edit" do
     get :edit, id: @tag
     assert_response :success
@@ -35,6 +45,13 @@ class TagsControllerTest < ActionController::TestCase
   test "should update tag" do
     patch :update, id: @tag, tag: { label: @tag.label, customer: @tag.customer }
     assert_redirected_to tags_path
+  end
+
+  test "should not update tag" do
+    patch :update, id: @tag, tag: { label: "", customer: @tag.customer }
+    assert_template :edit
+    tag = assigns(:tag)
+    assert tag.errors.any?
   end
 
   test "should destroy tag" do

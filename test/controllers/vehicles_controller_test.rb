@@ -23,4 +23,12 @@ class VehiclesControllerTest < ActionController::TestCase
     patch :update, id: @vehicle, vehicle: { capacity: @vehicle.capacity, close: @vehicle.close, color: @vehicle.color, consumption: @vehicle.consumption, emission: @vehicle.emission, name: @vehicle.name, open: @vehicle.open, customer: @vehicle.customer }
     assert_redirected_to vehicles_path
   end
+
+  test "should not update vehicle" do
+    patch :update, id: @vehicle, vehicle: { name: "", customer: @vehicle.customer }
+
+    assert_template :edit
+    vehicle = assigns(:vehicle)
+    assert vehicle.errors.any?
+  end
 end

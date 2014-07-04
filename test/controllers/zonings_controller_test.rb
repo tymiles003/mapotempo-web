@@ -27,6 +27,16 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
+  test "should not create zoning" do
+    assert_difference('Zoning.count', 0) do
+      post :create, zoning: { name: "", customer: @zoning.customer }
+    end
+
+    assert_template :new
+    zoning = assigns(:zoning)
+    assert zoning.errors.any?
+  end
+
   test "should show zoning" do
     get :show, id: @zoning, format: :josm
     assert_response :success
@@ -40,6 +50,14 @@ class ZoningsControllerTest < ActionController::TestCase
   test "should update zoning" do
     patch :update, id: @zoning, zoning: { name: @zoning.name, customer: @zoning.customer }
     assert_redirected_to edit_zoning_path(assigns(:zoning))
+  end
+
+  test "should not update zoning" do
+    patch :update, id: @zoning, zoning: { name: "", customer: @zoning.customer }
+
+    assert_template :edit
+    zoning = assigns(:zoning)
+    assert zoning.errors.any?
   end
 
   test "should destroy zoning" do

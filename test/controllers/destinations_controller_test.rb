@@ -27,6 +27,16 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to edit_destination_path(assigns(:destination))
   end
 
+  test "should not create destination" do
+    assert_difference('Destination.count', 0) do
+      post :create, destination: { name: "" }
+    end
+
+    assert_template :new
+    destination = assigns(:destination)
+    assert destination.errors.any?
+  end
+
   test "should get edit" do
     get :edit, id: @destination
     assert_response :success
@@ -35,6 +45,14 @@ class DestinationsControllerTest < ActionController::TestCase
   test "should update destination" do
     patch :update, id: @destination, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, customer: @destination.customer, detail: @destination.detail, comment: @destination.comment }
     assert_redirected_to edit_destination_path(assigns(:destination))
+  end
+
+  test "should not update destination" do
+    patch :update, id: @destination, destination: { name: "", customer: @destination.customer }
+
+    assert_template :edit
+    destination = assigns(:destination)
+    assert destination.errors.any?
   end
 
   test "should destroy destination" do

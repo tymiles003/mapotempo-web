@@ -27,6 +27,16 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
+  test "should not create planning" do
+    assert_difference('Planning.count', 0) do
+      post :create, planning: { name: "", customer: @planning.customer }
+    end
+
+    assert_template :new
+    planning = assigns(:planning)
+    assert planning.errors.any?
+  end
+
   test "should show planning" do
     get :show, id: @planning
     assert_response :success
@@ -40,6 +50,14 @@ class PlanningsControllerTest < ActionController::TestCase
   test "should update planning" do
     patch :update, id: @planning, planning: { name: @planning.name, customer: @planning.customer, zoning: @planning.zoning }
     assert_redirected_to edit_planning_path(assigns(:planning))
+  end
+
+  test "should not update planning" do
+    patch :update, id: @planning, planning: { name: "", customer: @planning.customer }
+
+    assert_template :edit
+    planning = assigns(:planning)
+    assert planning.errors.any?
   end
 
   test "should destroy planning" do
