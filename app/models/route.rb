@@ -198,7 +198,7 @@ class Route < ActiveRecord::Base
   end
 
   def out_of_date
-    self.vehicle && @out_of_date
+    self.vehicle && self[:out_of_date]
   end
 
   private
