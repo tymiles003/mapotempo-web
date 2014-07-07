@@ -315,8 +315,8 @@ fr:
         spreadsheet_standard: "Tableur standard"
         spreadsheet_excel: "Tableur Excel"
         gps_waypoint: "Points de passage GPS"
-        tomtom_orders: "Envoyer commandes sur TomTom"
-        tomtom_waypoints: "Envoyer points de passage sur TomTom"
+        tomtom_orders: "Commandes vers TomTom"
+        tomtom_waypoints: "Points de passage vers TomTom"
       zoning:
         none: "Aucun"
         apply: "Appliquer zonage"

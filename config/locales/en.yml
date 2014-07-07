@@ -226,7 +226,7 @@ en:
     form:
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
-      tomtom__help: "Allows sending plannings to TomTom Pro with WEBFLEET."
+      tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
 
   destinations:
     default_store_name: "Store"
