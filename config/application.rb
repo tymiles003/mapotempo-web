@@ -21,6 +21,28 @@ module Mapotempo
     # config.i18n.default_locale = :de
 
     config.assets.initialize_on_precompile = true
+
+    # Application config
+
+    config.optimize_cache =  ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10)
+    config.optimize_url = 'http://localhost:4567/0.1/optimize_tsptw'
+
+    config.geocode_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode', expires_in: 60*60*24*10)
+    config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_reverse', expires_in: 60*60*24*10)
+    config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_complete', expires_in: 60*60*24*10)
+    config.geocode_ign_referer = 'localhost'
+    config.geocode_ign_key = nil
+    config.geocode_complete = false # Build time setting
+
+    config.trace_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_request', expires_in: 60*60*24*10)
+    config.trace_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_result', expires_in: 60*60*24*10)
+    config.trace_osrm_url = 'http://router.project-osrm.org'
+
+    config.tomtom_api = 'https://soap.business.tomtom.com/v1.20'
+
+    config.delayed_job_use = false
+
+    config.help_url = nil
   end
 end
 
@@ -55,23 +77,3 @@ module ActiveRecord
     end
   end
 end
-
-Mapotempo::Application.config.optimize_cache =  ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10)
-Mapotempo::Application.config.optimize_url = 'http://localhost:4567/0.1/optimize_tsptw'
-
-Mapotempo::Application.config.geocode_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode', expires_in: 60*60*24*10)
-Mapotempo::Application.config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_reverse', expires_in: 60*60*24*10)
-Mapotempo::Application.config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_complete', expires_in: 60*60*24*10)
-Mapotempo::Application.config.geocode_ign_referer = "localhost"
-Mapotempo::Application.config.geocode_ign_key = nil
-Mapotempo::Application.config.geocode_complete = false # Build time setting
-
-Mapotempo::Application.config.trace_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_request', expires_in: 60*60*24*10)
-Mapotempo::Application.config.trace_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_result', expires_in: 60*60*24*10)
-Mapotempo::Application.config.trace_osrm_url = "http://router.project-osrm.org"
-
-Mapotempo::Application.config.tomtom_api = 'https://soap.business.tomtom.com/v1.20'
-
-Mapotempo::Application.config.delayed_job_use = false
-
-Mapotempo::Application.config.help_url = nil

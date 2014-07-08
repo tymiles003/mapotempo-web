@@ -33,4 +33,9 @@ Mapotempo::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # Application config
+
+  config.delayed_job_use = false
+  config.geocode_complete = true
 end

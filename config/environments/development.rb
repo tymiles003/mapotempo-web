@@ -26,4 +26,8 @@ Mapotempo::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
+  # Application config
+
+  config.delayed_job_use = true
 end
