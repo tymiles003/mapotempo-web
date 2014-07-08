@@ -14,7 +14,7 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test "should update customer" do
-    patch :update, id: @customer, customer: { take_over: @customer.take_over }
+    patch :update, id: @customer, customer: { take_over: 123 }
 
     assert_redirected_to edit_customer_path(assigns(:customer))
   end

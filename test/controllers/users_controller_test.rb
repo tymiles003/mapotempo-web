@@ -14,7 +14,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should update_settings user" do
-    patch :update_settings, id: @user, user: { layer: @user.layer }
+    patch :update_settings, id: @user, user: { layer_id: @user.layer.id }
     assert_redirected_to edit_user_settings_path(assigns(:user))
   end
 end

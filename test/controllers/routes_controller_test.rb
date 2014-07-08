@@ -13,6 +13,11 @@ class RoutesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should show route as csv" do
+    get :show, id: @route, type: :csv
+    assert_response :success
+  end
+
   test "should show route as excel" do
     get :show, id: @route, format: :excel
     assert_response :success

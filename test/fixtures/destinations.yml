@@ -41,6 +41,7 @@ destination_one:
   customer: customer_one
   detail: MyString
   comment: MyString
+  tags: tag_one
 
 destination_two:
   name: MyString

@@ -53,6 +53,11 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to edit_destination_path(assigns(:destination))
   end
 
+  test "should update destination tags" do
+    patch :update, id: @destination, destination: { tag_ids: [tags(:tag_two).id] }
+    assert_redirected_to edit_destination_path(assigns(:destination))
+  end
+
   test "should not update destination" do
     patch :update, id: @destination, destination: { name: "", customer: @destination.customer }
 
