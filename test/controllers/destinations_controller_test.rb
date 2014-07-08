@@ -14,6 +14,12 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:destinations)
   end
 
+  test "should get index in excel" do
+    get :index, format: :excel
+    assert_response :success
+    assert_not_nil assigns(:destinations)
+  end
+
   test "should get new" do
     get :new
     assert_response :success
@@ -64,8 +70,13 @@ class DestinationsControllerTest < ActionController::TestCase
   end
 
   test "should geocode" do
-    patch :geocode_reverse, format: :json, id: @destination.id, destination: { city: "Montpellier", street: "Rue de la Chaînerais" }
+    patch :geocode, format: :json, destination: { city: @destination.city, name: @destination.name, postalcode: @destination.postalcode, street: @destination.street }
     assert_response :success
+  end
+
+  test "should not geocode" do
+    patch :geocode, format: :json, destination: { name: @destination.name }
+    assert_response :unprocessable_entity
   end
 
   test "should geocode reverse" do
@@ -73,12 +84,22 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should not geocode reverse" do
+    patch :geocode_reverse, format: :json, id: @destination.id, destination: { }
+    assert_response :unprocessable_entity
+  end
+
   test "should geocode complete" do
-    patch :geocode_reverse, format: :json, id: @destination.id, destination: { city: "Montpellier", street: "Rue de la Chaînerais" }
+    patch :geocode_complete, format: :json, id: @destination.id, destination: { city: "Montpellier", street: "Rue de la Chaînerais" }
     assert_response :success
   end
 
-  test "should show import" do
+  test "should clear" do
+    delete :clear
+    assert_redirected_to destinations_path
+  end
+
+  test "should import" do
     get :import
     assert_response :success
   end
@@ -86,10 +107,27 @@ class DestinationsControllerTest < ActionController::TestCase
   test "should upload" do
     file = ActionDispatch::Http::UploadedFile.new({
       tempfile: File.new(Rails.root.join("test/fixtures/files/import_one.csv")),
-      original_filename: "import_one.csv"
     })
     file.original_filename = "import_one.csv"
-    post :upload, destinations_import_model: { replace: true, file: file }
+
+    assert_difference('Destination.count') do
+      post :upload, destinations_import_model: { replace: false, file: file }
+    end
+
     assert_redirected_to destinations_path
+  end
+
+  test "should not upload" do
+    file = ActionDispatch::Http::UploadedFile.new({
+      tempfile: File.new(Rails.root.join("test/fixtures/files/import_invalid.csv")),
+    })
+    file.original_filename = "import_invalid.csv"
+
+    assert_difference('Destination.count', 0) do
+      post :upload, destinations_import_model: { replace: false, file: file }
+    end
+
+    assert_template :import
+    assert_not_nil flash[:error]
   end
 end
