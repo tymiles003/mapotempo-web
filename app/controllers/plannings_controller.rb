@@ -169,12 +169,12 @@ class PlanningsController < ApplicationController
         if @stop
           Planning.transaction do
             @planning.automatic_insert(@stop)
-            @planning.save
+            @planning.save!
+            @planning.reload
+            format.json { render action: 'show', location: @planning }
           end
-          @planning.reload
-          format.json { render action: 'show', location: @planning }
         else
-          format.json { render json: @stop.errors, status: :unprocessable_entity }
+          format.json { render nothing: true , status: :unprocessable_entity }
         end
       rescue StandardError => e
         format.json { render json: e.message, status: :unprocessable_entity }
@@ -186,17 +186,13 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       begin
         @route = Route.where(planning: @planning, id: params[:route_id]).first
-        if @route
-          @stop = Stop.where(route: @route, destination_id: params[:destination_id]).first
-          if @stop
-            if @stop.update(stop_params)
-              @planning.compute
-              @planning.save
-              format.json { render action: 'show', location: @planning }
-            else
-              format.json { render json: @stop.errors, status: :unprocessable_entity }
-            end
-          end
+        @stop = Stop.where(route_id: params[:route_id], destination_id: params[:destination_id]).first
+        if @route && @stop && @stop.update(stop_params)
+          @planning.compute
+          @planning.save!
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render nothing: true , status: :unprocessable_entity }
         end
       rescue StandardError => e
         format.json { render json: e.message, status: :unprocessable_entity }
