@@ -4,6 +4,10 @@ class PlanningsControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   setup do
+    def Trace.compute(from_lat, from_lng, to_lat, to_lng)
+      [1000, 60, "trace"]
+    end
+
     @planning = plannings(:planning_one)
     sign_in users(:user_one)
   end
@@ -39,6 +43,21 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test "should show planning" do
     get :show, id: @planning
+    assert_response :success
+  end
+
+  test "should show planning as excel" do
+    get :show, id: @planning, format: :excel
+    assert_response :success
+  end
+
+  test "should show planning as gpx" do
+    get :show, id: @planning, format: :gpx
+    assert_response :success
+  end
+
+  test "should show planning as csv" do
+    get :show, id: @planning, format: :csv
     assert_response :success
   end
 
@@ -83,6 +102,11 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success, id: @planning
   end
 
+  test "should not switch" do
+    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one).id, vehicle_id: 666
+    assert_response :unprocessable_entity
+  end
+
   test "should update stop" do
     patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one).id, destination_id: destinations(:destination_one).id, stop: { active: false }
     assert_response :success
@@ -99,5 +123,10 @@ class PlanningsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to edit_planning_path(assigns(:planning))
+  end
+
+  test "should automatic insert" do
+    patch :automatic_insert, planning_id: @planning, format: :json, destination_id: destinations(:destination_unaffected_one).id
+    assert_response :success
   end
 end
