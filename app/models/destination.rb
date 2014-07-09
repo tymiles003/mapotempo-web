@@ -30,7 +30,7 @@ class Destination < ActiveRecord::Base
 #  validates :lat, numericality: {only_float: true} # maybe nil
 #  validates :lng, numericality: {only_float: true} # maybe nil
 
-  before_update :update_out_of_date, :update_geocode
+  before_update :update_geocode, :update_out_of_date
 
   def geocode
     address = Geocode.code(street, postalcode, city)
