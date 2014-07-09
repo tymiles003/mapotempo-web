@@ -8,6 +8,10 @@ class PlanningsControllerTest < ActionController::TestCase
       [1000, 60, "trace"]
     end
 
+    def Ort.optimize(capacity, matrix, time_window)
+      (1..(matrix.size-1)).to_a
+    end
+
     @planning = plannings(:planning_one)
     sign_in users(:user_one)
   end

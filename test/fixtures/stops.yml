@@ -37,7 +37,19 @@ stop_one_one:
   out_of_drive_time: false
 
 stop_one_two:
-  index: 3
+  index: 2
+  active: true
+  distance: 1.5
+  trace: MyString
+  route: route_one
+  destination: destination_two
+  time: 0000-01-01 00:00:30
+  out_of_window: false
+  out_of_capacity: false
+  out_of_drive_time: false
+
+stop_one_three:
+  index: 4
   active: true
   distance: 1.5
   trace: MyString
