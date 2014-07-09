@@ -13,3 +13,17 @@ route_one:
   planning: planning_one
   out_of_date: false
   vehicle: vehicle_one
+
+route_two:
+  distance: 1.5
+  emission: 1.5
+  planning: planning_two
+  out_of_date: false
+  vehicle:
+
+route_three:
+  distance: 1.5
+  emission: 1.5
+  planning: planning_two
+  out_of_date: false
+  vehicle: vehicle_one

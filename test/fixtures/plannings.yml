@@ -1,7 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 planning_one:
-  name: MyString
+  name: planning1
   customer: customer_one
   zoning: zoning_one
   tags: tag_one
+
+planning_two:
+  name: planning2
+  customer: customer_one
+  zoning: zoning_one
+  tags: tag_two

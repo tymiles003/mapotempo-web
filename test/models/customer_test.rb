@@ -17,4 +17,41 @@ class CustomerTest < ActiveSupport::TestCase
       @customer.job_matrix.destroy
     end
   end
+
+  test "should destination add" do
+    o = customers(:customer_one)
+    assert_equal 3, o.destinations.size
+    o.destination_add(Destination.new(:name=>'new', tags: [tags(:tag_one)]))
+    assert_equal 4, o.destinations.size
+  end
+
+  test "should update_out_of_date" do
+    o = customers(:customer_one)
+    o.take_over = 123
+    o.plannings.each{ |p|
+      p.routes.select{ |r| r.vehicle }.each{ |r|
+        assert_not r.out_of_date
+    }}
+    o.save!
+    o.plannings.each{ |p|
+      p.routes.select{ |r| r.vehicle }.each{ |r|
+        assert r.out_of_date
+    }}
+  end
+
+  test "should update_max_vehicles up" do
+    o = customers(:customer_one)
+    assert_difference('Vehicle.count') do
+      o.max_vehicles += 1
+      o.save!
+    end
+  end
+
+  test "should update_max_vehicles down" do
+    o = customers(:customer_one)
+    assert_difference('Vehicle.count', -1) do
+      o.max_vehicles -= 1
+      o.save!
+    end
+  end
 end
