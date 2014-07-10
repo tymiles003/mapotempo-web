@@ -82,6 +82,7 @@ class Planning < ActiveRecord::Base
   end
 
   def default_empty_routes
+    routes.clear
     routes << Route.new(planning: self)
     customer.vehicles.each { |vehicle|
       vehicle_add(vehicle)
