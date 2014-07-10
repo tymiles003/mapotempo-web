@@ -116,4 +116,13 @@ class RouteTest < ActiveSupport::TestCase
     o.stops[1].destination.save
     assert_equal 30, o.sum_out_of_window
   end
+
+  test "should matrix_size" do
+    o = routes(:route_one)
+
+    assert_equal o.stops.size - 1, o.matrix_size
+
+    o.stops[1].active = false
+    assert_equal o.stops.size - 1 - 1, o.matrix_size
+  end
 end
