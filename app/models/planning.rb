@@ -18,7 +18,7 @@
 class Planning < ActiveRecord::Base
   belongs_to :customer
   belongs_to :zoning
-  has_many :routes, -> { order('vehicle_id, id')}, :autosave => true, :dependent => :destroy
+  has_many :routes, -> { order('CASE WHEN vehicle_id IS NULL THEN 0 ELSE id END')}, :autosave => true, :dependent => :destroy
   has_and_belongs_to_many :tags, -> { order('label')}, :autosave => true
 
   nilify_blanks
