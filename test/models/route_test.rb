@@ -61,4 +61,26 @@ class RouteTest < ActiveSupport::TestCase
     o.compute
     assert_equal 1, o.distance
   end
+
+  test "should set destinations" do
+    o = routes(:route_one)
+    o.stops.clear
+    assert_difference('Stop.count', 3) do
+      o.set_destinations([[destinations(:destination_two), true]])
+    end
+  end
+
+  test "should add" do
+    o = routes(:route_zero)
+    o.add(destinations(:destination_two))
+    o.reload
+    assert o.stops.collect(&:destination).include?(destinations(:destination_two))
+  end
+
+  test "should add index" do
+    o = routes(:route_one)
+    o.add(destinations(:destination_two), 1)
+    o.reload
+    assert_equal destinations(:destination_two), o.stops[1].destination
+  end
 end
