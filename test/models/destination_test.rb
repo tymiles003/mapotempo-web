@@ -55,4 +55,21 @@ class DestinationTest < ActiveSupport::TestCase
       o.tags = []
     end
   end
+
+  test "should update tag" do
+    o = destinations(:destination_one)
+    p = plannings(:planning_one)
+    p.tags = [tags(:tag_one), tags(:tag_two)]
+
+    routes(:route_one).default_store
+    o.tags = []
+
+    assert_difference('Stop.count', 0) do
+      o.tags = [tags(:tag_one)]
+    end
+
+    assert_difference('Stop.count', 1) do
+      o.tags = [tags(:tag_one), tags(:tag_two)]
+    end
+  end
 end
