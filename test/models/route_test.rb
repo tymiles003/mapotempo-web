@@ -83,4 +83,37 @@ class RouteTest < ActiveSupport::TestCase
     o.reload
     assert_equal destinations(:destination_two), o.stops[1].destination
   end
+
+  test "should not add without index" do
+    o = routes(:route_one)
+    assert_raises(RuntimeError) {
+      o.add(destinations(:destination_two))
+    }
+  end
+
+  test "should remove" do
+    o = routes(:route_one)
+    assert_difference('Stop.count', -1) do
+      o.remove(destinations(:destination_two))
+    end
+  end
+
+  test "should sum_out_of_window" do
+    o = routes(:route_one)
+
+    o.stops.each { |s|
+      s.destination.open = s.destination.close = nil
+      s.destination.save
+    }
+    o.vehicle.open = Time.new(2000, 01, 01, 00, 00, 00, "+00:00")
+    o.planning.customer.take_over = 0
+    o.planning.customer.save
+
+    assert_equal 0, o.sum_out_of_window
+
+    o.stops[1].destination.open = Time.new(2000, 01, 01, 00, 00, 00, "+00:00")
+    o.stops[1].destination.close = Time.new(2000, 01, 01, 00, 00, 00, "+00:00")
+    o.stops[1].destination.save
+    assert_equal 30, o.sum_out_of_window
+  end
 end

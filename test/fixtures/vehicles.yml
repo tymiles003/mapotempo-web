@@ -6,8 +6,8 @@ vehicle_one:
   consumption: 1.5
   capacity: 1
   color: MyString
-  open: 0000-01-01 10:00:00
-  close: 0000-01-01 15:00:00
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 15:00:00
   customer: customer_one
 
 vehicle_two:
@@ -16,6 +16,6 @@ vehicle_two:
   consumption: 1.5
   capacity: 1
   color: MyString
-  open: 0000-01-01 10:00:00
-  close: 0000-01-01 15:00:00
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 15:00:00
   customer: customer_two

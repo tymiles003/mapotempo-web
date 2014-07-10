@@ -7,7 +7,7 @@ stop_unaffected:
   trace: MyString
   route: route_zero
   destination: destination_unaffected_one
-  time: 0000-01-01 00:00:30
+  time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -19,7 +19,7 @@ stop_one_zero:
   trace: MyString
   route: route_one
   destination: store_one
-  time: 0000-01-01 00:00:30
+  time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -31,7 +31,7 @@ stop_one_one:
   trace: MyString
   route: route_one
   destination: destination_one
-  time: 0000-01-01 00:00:30
+  time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -43,7 +43,7 @@ stop_one_two:
   trace: MyString
   route: route_one
   destination: destination_two
-  time: 0000-01-01 00:00:30
+  time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -55,7 +55,7 @@ stop_one_three:
   trace: MyString
   route: route_one
   destination: store_one
-  time: 0000-01-01 00:00:30
+  time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -67,7 +67,7 @@ stop_two_zero:
   trace: MyString
   route: route_three
   destination: store_one
-  time: 0000-01-01 00:00:30
+  time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -79,7 +79,7 @@ stop_two_one:
   trace: MyString
   route: route_three
   destination: destination_two
-  time: 0000-01-01 00:00:30
+  time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -91,7 +91,7 @@ stop_two_two:
   trace: MyString
   route: route_three
   destination: store_one
-  time: 0000-01-01 00:00:30
+  time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false

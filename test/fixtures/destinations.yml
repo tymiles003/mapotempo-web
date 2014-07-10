@@ -8,8 +8,8 @@ store_one:
   lat: 1.5
   lng: 1.5
   quantity: 1
-  open: 2013-08-07 21:59:40
-  close: 2013-08-07 21:59:40
+  open: 2000-01-01 7:00:00
+  close: 2000-01-01 19:00:00
   customer:
   detail: MyString
   comment: MyString
@@ -23,8 +23,8 @@ destination_unaffected_one:
   lat: 1.5
   lng: 1.5
   quantity: 1
-  open: 2013-08-07 21:59:40
-  close: 2013-08-07 21:59:40
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 11:00:00
   customer: customer_one
   detail: MyString
   comment: MyString
@@ -38,8 +38,8 @@ destination_one:
   lat: 49.1857
   lng: -0.3735
   quantity: 1
-  open: 2013-08-07 21:59:40
-  close: 2013-08-07 21:59:40
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 11:00:00
   customer: customer_one
   detail: MyString
   comment: MyString
@@ -53,8 +53,8 @@ destination_two:
   lat: 1.5
   lng: 1.5
   quantity: 1
-  open: 2013-08-07 21:59:40
-  close: 2013-08-07 21:59:40
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 11:00:00
   customer: customer_one
   detail: MyString
   comment: MyString
