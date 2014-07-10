@@ -116,6 +116,8 @@ class Route < ActiveRecord::Base
       }[1].each{ |stop|
         stop.index += 1
       }
+    elsif vehicle
+      raise
     end
     stops << Stop.new(destination: destination, route: self, index: index, active: active)
 
