@@ -46,6 +46,7 @@ class DestinationTest < ActiveSupport::TestCase
     o = destinations(:destination_one)
     assert_difference('Stop.count') do
       o.tags << tags(:tag_two)
+      o.save
     end
   end
 
@@ -53,6 +54,7 @@ class DestinationTest < ActiveSupport::TestCase
     o = destinations(:destination_one)
     assert_difference('Stop.count', -1) do
       o.tags = []
+      o.save
     end
   end
 
@@ -66,10 +68,13 @@ class DestinationTest < ActiveSupport::TestCase
 
     assert_difference('Stop.count', 0) do
       o.tags = [tags(:tag_one)]
+      o.save
     end
 
-    assert_difference('Stop.count', 1) do
+    assert_difference('Stop.count', 2) do
       o.tags = [tags(:tag_one), tags(:tag_two)]
+      o.save
+      true
     end
   end
 end
