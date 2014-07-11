@@ -196,7 +196,7 @@ fr:
 
   errors:
     planning:
-      import_too_routes: "Tentative d'importer de plus de tournées que de véhicules disponibles."
+      import_too_routes: "Tentative d'importer plus de tournées que de véhicules disponibles."
 
   admin:
     users:
