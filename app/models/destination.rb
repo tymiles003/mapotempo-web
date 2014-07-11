@@ -20,7 +20,7 @@ require 'geocode'
 class Destination < ActiveRecord::Base
   belongs_to :customer
   has_many :stops, dependent: :destroy
-  has_and_belongs_to_many :tags, after_add: :update_add_tag, after_remove: :update_remove_tag
+  has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
 
   nilify_blanks
 #  validates :customer, presence: true # not for store
@@ -30,6 +30,7 @@ class Destination < ActiveRecord::Base
 #  validates :lat, numericality: {only_float: true} # maybe nil
 #  validates :lng, numericality: {only_float: true} # maybe nil
 
+  before_save :update_tags
   before_update :update_geocode, :update_out_of_date
 
   def geocode
@@ -71,24 +72,35 @@ class Destination < ActiveRecord::Base
       end
     end
 
-    def update_add_tag(tag)
-      if customer
-        customer.plannings.select{ |planning|
-          planning.tags.include?(tag)
+    def update_tags_track(tag)
+      @tags_updated = true
+    end
+
+    def update_tags
+      if customer && @tags_updated
+        match = customer.plannings.group_by{ |planning|
+          planning.tags & tags == planning.tags
+        }
+
+        plannings = stops.collect{ |stop| stop.route.planning }
+
+        # Linked planning with no more match
+        plannings.select{ |planning|
+          planning.tags & tags != planning.tags
+        }.each{ |planning|
+          planning.destination_remove(self)
+        }
+
+        # Linked planning with new match
+        (customer.plannings - plannings).select{ |planning|
+          planning.tags & tags == planning.tags
         }.each{ |planning|
           planning.destination_add(self)
         }
       end
-    end
+      @tags_updated = false
 
-    def update_remove_tag(tag)
-      if customer
-        customer.plannings.select{ |planning|
-          planning.tags.include?(tag)
-        }.each{ |planning|
-          planning.destination_remove(self)
-        }
-      end
+      true
     end
 
     def out_of_date
