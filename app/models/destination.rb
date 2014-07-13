@@ -78,6 +78,8 @@ class Destination < ActiveRecord::Base
 
     def update_tags
       if customer && @tags_updated
+        @tags_updated = false
+
         match = customer.plannings.group_by{ |planning|
           planning.tags & tags == planning.tags
         }
@@ -98,7 +100,6 @@ class Destination < ActiveRecord::Base
           planning.destination_add(self)
         }
       end
-      @tags_updated = false
 
       true
     end
