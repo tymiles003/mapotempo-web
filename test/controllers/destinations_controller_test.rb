@@ -27,7 +27,7 @@ class DestinationsControllerTest < ActionController::TestCase
 
   test "should create destination" do
     assert_difference('Destination.count') do
-      post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, customer: @destination.customer, detail: @destination.detail, comment: @destination.comment }
+      post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, customer: @destination.customer, detail: @destination.detail, comment: @destination.comment, tag_ids: [tags(:tag_one).id] }
     end
 
     assert_redirected_to edit_destination_path(assigns(:destination))

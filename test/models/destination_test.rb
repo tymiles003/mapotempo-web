@@ -8,6 +8,11 @@ class DestinationTest < ActiveSupport::TestCase
     assert_not o.save, "Saved without required fields"
   end
 
+  test "should save" do
+    o = Destination.new(name: "plop", city: "Bordeaux", lat: 1, lng: 1, tags: [tags(:tag_one)])
+    assert o.save
+  end
+
   test "should geocode" do
     o = destinations(:destination_one)
     lat, lng = o.lat, o.lng
