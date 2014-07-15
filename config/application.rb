@@ -42,6 +42,7 @@ module Mapotempo
 
     config.delayed_job_use = false
 
+    config.self_care = true # Allow subscription and resiliation by the user himself
     config.help_url = nil
   end
 end

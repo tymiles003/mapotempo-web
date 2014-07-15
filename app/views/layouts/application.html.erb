@@ -128,7 +128,9 @@
               <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="icon-off icon-fixed-width"></i> <%= t 'users.menu.sign_out' %><% end %></li>
             <% else %>
               <li><%= link_to new_user_session_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> <%= t 'devise.sessions.new.sign_in' %><% end %></li>
-              <li><%= link_to new_user_registration_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> <%= t 'devise.registrations.new.sign_up' %><% end %></li>
+              <% if Mapotempo::Application.config.self_care %>
+                <li><%= link_to new_user_registration_path, :class=>"btn" do %><i class="icon-user icon-fixed-width"></i> <%= t 'devise.registrations.new.sign_up' %><% end %></li>
+              <% end %>
             <% end %>
           </ul>
         </div>
