@@ -400,6 +400,10 @@ function plannings_edit(params) {
         error: ajaxError
       });
     });
+  }
+
+  function display_planning_first_time (data) {
+    display_planning(data);
 
     var bounds = routes_layers.getBounds();
     // Add 30% on right side to move away from panel
@@ -409,7 +413,7 @@ function plannings_edit(params) {
   $.ajax({
     url: '/plannings/' + planning_id + '.json',
     beforeSend: beforeSendWaiting,
-    success: display_planning,
+    success: display_planning_first_time,
     complete: completeWaiting,
     error: ajaxError
   });
