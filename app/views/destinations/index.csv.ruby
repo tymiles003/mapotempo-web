@@ -10,7 +10,8 @@ CSV.generate { |csv|
     I18n.t('destinations.import_file.quantity'),
     I18n.t('destinations.import_file.open'),
     I18n.t('destinations.import_file.close'),
-    I18n.t('destinations.import_file.comment')
+    I18n.t('destinations.import_file.comment'),
+    I18n.t('destinations.import_file.tags')
   ]
   Destination.where(customer_id: current_user.customer.id).each { |destination|
     csv << [
@@ -24,7 +25,8 @@ CSV.generate { |csv|
       destination.quantity,
       destination.open && destination.open.strftime('%H:%M'),
       destination.close && destination.close.strftime('%H:%M'),
-      destination.comment
+      destination.comment,
+      destination.tags.collect(&:label).join(',')
     ]
   }
 }
