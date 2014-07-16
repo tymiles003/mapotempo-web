@@ -29,11 +29,13 @@ class Importer
     routes = Hash.new{ |h,k| h[k] = [] }
 
     contents = File.open(file, "r:bom|utf-8").read
-    detection = CharlockHolmes::EncodingDetector.detect(contents)
-    if !contents || !detection[:encoding]
-      raise I18n.t('destinations.import_file.not_csv')
+    if ! contents.valid_encoding?
+      detection = CharlockHolmes::EncodingDetector.detect(contents)
+      if !contents || !detection[:encoding]
+        raise I18n.t('destinations.import_file.not_csv')
+      end
+      contents = CharlockHolmes::Converter.convert(contents, detection[:encoding], 'UTF-8')
     end
-    contents = CharlockHolmes::Converter.convert(contents, detection[:encoding], 'UTF-8')
 
     separator = ','
     line = contents.lines.first
