@@ -87,5 +87,5 @@ gem 'amoeba'
 
 gem 'charlock_holmes'
 gem 'savon', '~> 2.0'
-gem 'savon-multipart', '~> 2.0.1'
+gem 'savon-multipart', '~> 2.0.2'
 gem 'macaddr', '=1.6.1' # FIXME force version, 1.7.1 have dependency problem with gem systemu on ruby 1.9.3
