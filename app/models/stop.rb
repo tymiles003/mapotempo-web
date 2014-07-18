@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Stop < ActiveRecord::Base
-  belongs_to :route, touch: true
+  belongs_to :route
   belongs_to :destination
 
   nilify_blanks

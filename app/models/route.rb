@@ -18,7 +18,7 @@
 require 'trace'
 
 class Route < ActiveRecord::Base
-  belongs_to :planning, touch: true
+  belongs_to :planning
   belongs_to :vehicle
   has_many :stops, :autosave => true, :dependent => :destroy, :order=>"\"index\" ASC", :include=>:destination
 
