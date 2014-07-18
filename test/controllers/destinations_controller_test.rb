@@ -18,7 +18,7 @@ class DestinationsControllerTest < ActionController::TestCase
     get :index, format: :excel
     assert_response :success
     assert_not_nil assigns(:destinations)
-    assert_equal "MyString;Rue des Lilas;MyString;33200;Bordeau;49.1857;-0.3735;1;10:00;11:00;MyString;tag1", response.body.split("\n")[2]
+    assert_equal "destination_one;Rue des Lilas;MyString;33200;Bordeau;49.1857;-0.3735;1;10:00;11:00;MyString;tag1", response.body.split("\n")[2]
   end
 
   test "should get new" do
@@ -117,7 +117,9 @@ class DestinationsControllerTest < ActionController::TestCase
     file.original_filename = "import_one.csv"
 
     assert_difference('Destination.count') do
-      post :upload, destinations_import_model: { replace: false, file: file }
+      assert_difference('Stop.count', 1 + 3 + 3) do
+        post :upload, destinations_import_model: { replace: false, file: file }
+      end
     end
 
     assert_redirected_to destinations_path

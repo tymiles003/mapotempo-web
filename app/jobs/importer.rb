@@ -145,7 +145,7 @@ class Importer
 
         # Instersection of tags of all rows
         if !common_tags
-            common_tags = destination.tags.dup
+            common_tags = destination.tags.to_a
         else
             common_tags &= destination.tags
         end
@@ -171,9 +171,8 @@ class Importer
       end
 
       if routes.size > 1 || !routes.key?(nil)
-        planning = Planning.new(name: name, customer: customer, tags: common_tags || [])
+        planning = customer.plannings.build(name: name, tags: common_tags || [])
         planning.set_destinations(routes.values)
-        customer.plannings << planning
       end
     end
 
@@ -181,7 +180,8 @@ class Importer
       customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id, planning ? planning.id : nil))
     end
 
-    return true
+    customer.save!
+    true
   end
 
 end

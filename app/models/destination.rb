@@ -80,10 +80,6 @@ class Destination < ActiveRecord::Base
       if customer && @tags_updated
         @tags_updated = false
 
-        match = customer.plannings.group_by{ |planning|
-          planning.tags & tags == planning.tags
-        }
-
         plannings = stops.collect{ |stop| stop.route.planning }
 
         # Linked planning with no more match
