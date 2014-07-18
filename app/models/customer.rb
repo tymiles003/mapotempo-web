@@ -35,15 +35,6 @@ class Customer < ActiveRecord::Base
   before_create :update_max_vehicles
   before_update :update_out_of_date, :update_max_vehicles
 
-  def destination_add(destination)
-    self.destinations << destination
-    self.plannings.each { |planning|
-      if planning.tags & destination.tags == planning.tags
-        planning.destination_add(destination)
-      end
-    }
-  end
-
   private
     def assign_defaults
       self.store = Destination.create(

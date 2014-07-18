@@ -64,10 +64,7 @@ class DestinationsController < ApplicationController
     respond_to do |format|
       begin
         Destination.transaction do
-          @destination = Destination.new(destination_params)
-          @destination.customer = current_user.customer
-          current_user.customer.destination_add(@destination)
-
+          @destination = current_user.customer.destinations.build(destination_params)
           current_user.customer.save!
           format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
           format.json { render action: 'show', status: :created, location: @destination }

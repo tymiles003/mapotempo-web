@@ -131,7 +131,7 @@ class Importer
         destination = Destination.new(r)
 
         if row["tags"]
-          destination.tags = row["tags"].split(',').select { |key|
+          r["tags"] = row["tags"].split(',').select { |key|
             not key.empty?
           }.collect { |key|
             if not tags.key?(key)
@@ -141,6 +141,8 @@ class Importer
           }
         end
 
+        destination = customer.destinations.build(r) # Link only when destination is complete
+
         # Instersection of tags of all rows
         if !common_tags
             common_tags = destination.tags.dup
@@ -149,9 +151,6 @@ class Importer
         end
 
         routes[row.key?("route")? row["route"] : nil] << destination
-
-        destination.customer = customer # Link only when destination is complete
-        destinations << destination
       }
 
       if errors.length > 0
@@ -170,10 +169,6 @@ class Importer
           }
         }
       end
-
-      destinations.each { |destination|
-        customer.destination_add(destination)
-      }
 
       if routes.size > 1 || !routes.key?(nil)
         planning = Planning.new(name: name, customer: customer, tags: common_tags || [])
