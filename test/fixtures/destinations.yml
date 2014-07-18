@@ -16,7 +16,7 @@ store_one:
   tags:
 
 destination_unaffected_one:
-  name: MyString
+  name: unaffected_one
   street: MyString
   postalcode: MyString
   city: MyString
@@ -31,7 +31,7 @@ destination_unaffected_one:
   tags: tag_one
 
 destination_one:
-  name: MyString
+  name: destination_one
   street: Rue des Lilas
   postalcode: 33200
   city: Bordeau
@@ -46,7 +46,7 @@ destination_one:
   tags: tag_one
 
 destination_two:
-  name: MyString
+  name: destination_two
   street: MyString
   postalcode: MyString
   city: MyString
