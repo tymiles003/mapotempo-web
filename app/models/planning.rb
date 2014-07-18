@@ -95,9 +95,8 @@ class Planning < ActiveRecord::Base
   end
 
   def compute
-    if zoning && updated_at < zoning.updated_at
+    if zoning_out_of_date
       split_by_zones
-      self.touch # Force update date for no more on out_of_date without waiting for before_update
     end
     routes.select{ |route| route.vehicle }.each(&:compute)
   end
@@ -165,7 +164,7 @@ class Planning < ActiveRecord::Base
   end
 
   def out_of_date
-    (zoning && updated_at < zoning.updated_at) || routes.inject(false){ |acc, route|
+    zoning_out_of_date || routes.inject(false){ |acc, route|
       acc or route.out_of_date
     }
   end
@@ -184,30 +183,34 @@ class Planning < ActiveRecord::Base
 
   private
     def split_by_zones
-      z = {}
-      unaffected = []
-      zoning.apply(destinations).each{ |zone, destinations|
-        if zone && zone.vehicles && zone.vehicles.size > 0
-          z[zone.vehicles[0]] = destinations
-        else
-          unaffected += destinations
-        end
-      }
-      z = Hash[z]
-      routes[0].set_destinations(unaffected)
-      routes[1..-1].each{ |route|
-        if route.vehicle && z.has_key?(route.vehicle)
-          route.set_destinations(z[route.vehicle].collect{ |d| [d,true]})
-        else
-          route.set_destinations([])
-        end
-        route.out_of_date = true
-      }
+      if zoning
+        z = {}
+        unaffected = []
+        zoning.apply(destinations).each{ |zone, destinations|
+          if zone && zone.vehicles && zone.vehicles.size > 0
+            z[zone.vehicles[0]] = destinations
+          else
+            unaffected += destinations
+          end
+        }
+        z = Hash[z]
+        routes[0].set_destinations(unaffected)
+        routes[1..-1].each{ |route|
+          if route.vehicle && z.has_key?(route.vehicle)
+            route.set_destinations(z[route.vehicle].collect{ |d| [d,true]})
+          else
+            route.set_destinations([])
+          end
+          route.out_of_date = true
+        }
+      end
+      self.zoning_out_of_date = false
     end
 
     def update_zoning
       if zoning && zoning_id_changed?
         split_by_zones
       end
+      true
     end
 end

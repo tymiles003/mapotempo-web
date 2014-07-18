@@ -17,7 +17,7 @@
 #
 class Zoning < ActiveRecord::Base
   belongs_to :customer
-  has_many :zones, dependent: :destroy, autosave: true
+  has_many :zones, dependent: :destroy, autosave: true, after_add: :touch_zones, after_remove: :touch_zones
   has_many :plannings, dependent: :nullify, autosave: true
 
   accepts_nested_attributes_for :zones, allow_destroy: true
@@ -25,6 +25,9 @@ class Zoning < ActiveRecord::Base
 
   nilify_blanks
   validates :name, presence: true
+
+  before_create :update_out_of_date
+  before_save :update_out_of_date
 
   amoeba do
     enable
@@ -51,4 +54,21 @@ class Zoning < ActiveRecord::Base
       zone.inside?(destination.lat, destination.lng)
     }
   end
+
+  def flag_out_of_date
+    plannings.each{ |planning|
+      planning.zoning_out_of_date = true
+    }
+  end
+
+  private
+    def update_out_of_date
+      if @collection_touched
+        flag_out_of_date
+      end
+    end
+
+    def touch_zones(zone)
+      @collection_touched = true
+    end
 end

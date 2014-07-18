@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140601115136) do
+ActiveRecord::Schema.define(version: 20140717114641) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20140601115136) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "zoning_id"
+    t.boolean  "zoning_out_of_date"
   end
 
   add_index "plannings", ["customer_id"], name: "index_plannings_on_customer_id"

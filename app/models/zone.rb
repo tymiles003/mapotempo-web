@@ -16,12 +16,15 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Zone < ActiveRecord::Base
-  belongs_to :zoning, touch: true
+  belongs_to :zoning
   has_and_belongs_to_many :vehicles, after_add: :touch_vehicles, after_remove: :touch_vehicles
 
   nilify_blanks
   validates :polygon, presence: true
   validate :valide_vehicles_from_customer
+
+  before_create :update_out_of_date
+  before_save :update_out_of_date
 
   amoeba do
     enable
@@ -46,9 +49,13 @@ class Zone < ActiveRecord::Base
       }
     end
 
-    def touch_vehicles(t)
-      if id
-        touch
+    def update_out_of_date
+      if self.changed? || @collection_changed
+        zoning.flag_out_of_date
       end
+    end
+
+    def touch_vehicles(t)
+      @collection_changed = true
     end
 end
