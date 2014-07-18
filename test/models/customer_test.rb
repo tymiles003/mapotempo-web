@@ -20,9 +20,9 @@ class CustomerTest < ActiveSupport::TestCase
 
   test "should destination add" do
     o = customers(:customer_one)
-    assert_equal 3, o.destinations.size
-    o.destination_add(Destination.new(:name=>'new', tags: [tags(:tag_one)]))
-    assert_equal 4, o.destinations.size
+    assert_difference('Destination.count') do
+      o.destinations.build(name: 'new', city: 'Parlà', tags: [tags(:tag_one)]).save!
+    end
   end
 
   test "should update_out_of_date" do
