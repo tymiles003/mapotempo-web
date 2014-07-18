@@ -106,6 +106,15 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should refresh zoning" do
+    @planning.zoning_out_of_date = true
+    @planning.save!
+    get :refresh, planning_id: @planning, format: :json
+    assert_response :success
+    planning = assigns(:planning)
+    assert_not planning.zoning_out_of_date
+  end
+
   test "should switch" do
     patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one).id, vehicle_id: vehicles(:vehicle_one).id
     assert_response :success, id: @planning

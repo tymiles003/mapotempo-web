@@ -14,6 +14,12 @@ class PlanningTest < ActiveSupport::TestCase
     assert_not o.save, "Saved without required fields"
   end
 
+  test "should save" do
+    o = Planning.new(customer: customers(:customer_one), name: "plop", zoning: zonings(:zoning_one))
+    o.default_routes
+    o.save!
+  end
+
   test "should dup" do
     o = plannings(:planning_one)
     oo = o.amoeba_dup
@@ -70,10 +76,12 @@ class PlanningTest < ActiveSupport::TestCase
 
   test "should compute" do
     o = plannings(:planning_one)
+    o.zoning_out_of_date = true
     o.compute
     o.routes.select{ |r| r.vehicle }.each{ |r|
-      assert_not  r.out_of_date
+      assert_not r.out_of_date
     }
+    assert_not o.zoning_out_of_date
   end
 
   test "should out_of_date" do

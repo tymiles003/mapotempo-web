@@ -26,4 +26,11 @@ class ZoningTest < ActiveSupport::TestCase
     oo = o.amoeba_dup
     assert oo.zones[0].zoning == oo
   end
+
+  test "should flag_out_of_date" do
+    o = zonings(:zoning_one)
+    assert_not o.plannings[0].zoning_out_of_date
+    o.flag_out_of_date
+    assert o.plannings[0].zoning_out_of_date
+  end
 end
