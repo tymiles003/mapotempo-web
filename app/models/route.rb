@@ -119,7 +119,8 @@ class Route < ActiveRecord::Base
     elsif vehicle
       raise
     end
-    stops << Stop.new(destination: destination, route: self, index: index, active: active)
+    s = stops.build(destination: destination, index: index, active: active)
+    destination.stops << s
 
     if self.vehicle
       self.out_of_date = true
