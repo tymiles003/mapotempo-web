@@ -13,6 +13,8 @@ class ImporterTest < ActionController::TestCase
         end
       end
     end
+
+    assert_equal [tags(:tag_one)], Destination.where(name: "BF").first.tags.to_a
   end
 
   test "shoud import many-utf-8" do
