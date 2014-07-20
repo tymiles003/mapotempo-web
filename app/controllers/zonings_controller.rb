@@ -46,8 +46,7 @@ class ZoningsController < ApplicationController
   # POST /zonings
   # POST /zonings.json
   def create
-    @zoning = Zoning.new(zoning_params)
-    @zoning.customer = current_user.customer
+    @zoning = current_user.customer.zonings.build(zoning_params)
 
     respond_to do |format|
       if @zoning.save

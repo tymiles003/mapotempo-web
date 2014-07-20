@@ -63,8 +63,7 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       begin
         Planning.transaction do
-          @planning = Planning.new(planning_params)
-          @planning.customer = current_user.customer
+          @planning = current_user.customer.plannings.build(planning_params)
           @planning.default_routes
           @planning.save!
         end

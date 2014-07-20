@@ -39,8 +39,7 @@ class VehiclesController < ApplicationController
   # POST /vehicles
   # POST /vehicles.json
   def create
-    @vehicle = Vehicle.new(vehicle_params)
-    @vehicle.customer = current_user.customer
+    @vehicle = current_user.customer.vehicles.build(vehicle_params)
 
     respond_to do |format|
       if @vehicle.save

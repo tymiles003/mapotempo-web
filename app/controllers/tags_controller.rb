@@ -37,8 +37,7 @@ class TagsController < ApplicationController
   # POST /tags
   # POST /tags.json
   def create
-    @tag = Tag.new(tag_params)
-    @tag.customer = current_user.customer
+    @tag = current_user.customer.tags.build(tag_params)
 
     respond_to do |format|
       if @tag.save
