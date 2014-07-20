@@ -62,9 +62,7 @@ class Customer < ActiveRecord::Base
         if vehicles.size < max_vehicles
           # Add new
           (max_vehicles - vehicles.size).times{ |i|
-            vehicle = Vehicle.new(name: I18n.t('vehicles.default_name', n:vehicles.size+1))
-            vehicle.customer = self
-            vehicles << vehicle
+            vehicle = vehicles.build(name: I18n.t('vehicles.default_name', n:vehicles.size+1))
             plannings.each{ |planning|
               planning.vehicle_add(vehicle)
             }
