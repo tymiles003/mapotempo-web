@@ -385,6 +385,7 @@ fr:
       quantity: "quantité"
       open: "horaire début"
       close: "horaire fin"
+      tags: "libellés"
       out_of_window: "hors créneau client"
       out_of_capacity: "hors capacité véhicule"
       out_of_drive_time: "hors créneau véhicule"

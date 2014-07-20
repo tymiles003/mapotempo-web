@@ -15,6 +15,7 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('plannings.export_file.quantity'),
     I18n.t('plannings.export_file.open'),
     I18n.t('plannings.export_file.close'),
+    I18n.t('plannings.export_file.tags'),
     I18n.t('plannings.export_file.out_of_window'),
     I18n.t('plannings.export_file.out_of_capacity'),
     I18n.t('plannings.export_file.out_of_drive_time')

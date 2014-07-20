@@ -16,6 +16,7 @@ route.stops.each { |stop|
     stop.destination.quantity,
     (stop.destination.open.strftime("%H:%M") if stop.destination.open),
     (stop.destination.close.strftime("%H:%M") if stop.destination.close),
+    stop.destination.tags.collect(&:label).join(','),
     stop.out_of_window ? 'x' : '',
     stop.out_of_capacity ? 'x' : '',
     stop.out_of_drive_time ? 'x' : ''
