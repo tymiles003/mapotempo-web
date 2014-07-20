@@ -128,14 +128,12 @@ class Importer
           r['lng'].gsub!(',', '.')
         end
 
-        destination = Destination.new(r)
-
         if row["tags"]
           r["tags"] = row["tags"].split(',').select { |key|
             not key.empty?
           }.collect { |key|
             if not tags.key?(key)
-              customer.tags << tags[key] = Tag.new(label: key, customer: customer)
+              tags[key] = customer.tags.build(label: key)
             end
             tags[key]
           }
