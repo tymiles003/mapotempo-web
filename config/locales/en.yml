@@ -106,6 +106,7 @@ en:
         comment: "Comment"
         tags: "Tags"
         tag_ids: "Tags"
+        ref: "Reference"
       # Duplicate for nested errors with autosave
       destinations:
         name: "Name"
@@ -122,6 +123,7 @@ en:
         comment: "Comment"
         tags: "Tags"
         tag_ids: "Tags"
+        ref: "Reference"
       layer:
         name: "Name"
         url: "URL"
@@ -273,6 +275,7 @@ en:
     new:
       title: "New destination"
     import_file:
+      ref: "reference"
       route: "route"
       name: "name"
       street: "street"
@@ -368,6 +371,7 @@ en:
     new:
       title: "New planning"
     export_file:
+      ref: "reference"
       route: "route"
       order: "order"
       time: "time"

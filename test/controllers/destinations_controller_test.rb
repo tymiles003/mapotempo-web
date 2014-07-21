@@ -18,7 +18,7 @@ class DestinationsControllerTest < ActionController::TestCase
     get :index, format: :excel
     assert_response :success
     assert_not_nil assigns(:destinations)
-    assert_equal "destination_one;Rue des Lilas;MyString;33200;Bordeau;49.1857;-0.3735;1;10:00;11:00;MyString;tag1", response.body.split("\n")[2]
+    assert_equal "a;destination_one;Rue des Lilas;MyString;33200;Bordeau;49.1857;-0.3735;1;10:00;11:00;MyString;tag1", response.body.split("\n")[2]
   end
 
   test "should get new" do

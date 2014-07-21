@@ -51,6 +51,7 @@ class Importer
       errors = []
       destinations = []
       columns = {
+        'ref' => I18n.t('destinations.import_file.ref'),
         'route' => I18n.t('destinations.import_file.route'),
         'name' => I18n.t('destinations.import_file.name'),
         'street' => I18n.t('destinations.import_file.street'),

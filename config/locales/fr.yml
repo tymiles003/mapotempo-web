@@ -108,6 +108,7 @@ fr:
         comment: "Commentaire"
         tags: "Libellés"
         tag_ids: "Libellés"
+        ref: "Référence"
       # Duplicate for nested errors with autosave
       destinations:
         name: "Nom"
@@ -124,6 +125,7 @@ fr:
         comment: "Commentaire"
         tags: "Libellés"
         tag_ids: "Libellés"
+        ref: "Référence"
       layer:
         name: "Nom"
         url: "URL"
@@ -275,6 +277,7 @@ fr:
     new:
       title: "Nouveau client"
     import_file:
+      ref: "référence"
       route: "tournée"
       name: "nom"
       street: "voie"
@@ -370,6 +373,7 @@ fr:
     new:
       title: "Nouveau planning"
     export_file:
+      ref: "référence"
       route: "tournée"
       order: "ordre"
       time: "heure"

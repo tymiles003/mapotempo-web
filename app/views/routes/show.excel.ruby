@@ -4,6 +4,7 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('plannings.export_file.order'),
     I18n.t('plannings.export_file.time'),
     I18n.t('plannings.export_file.distance'),
+    I18n.t('plannings.export_file.ref'),
     I18n.t('plannings.export_file.name'),
     I18n.t('plannings.export_file.street'),
     I18n.t('plannings.export_file.detail'),

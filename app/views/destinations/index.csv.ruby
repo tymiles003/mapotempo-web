@@ -1,5 +1,6 @@
 CSV.generate { |csv|
   csv << [
+    I18n.t('destinations.import_file.ref'),
     I18n.t('destinations.import_file.name'),
     I18n.t('destinations.import_file.street'),
     I18n.t('destinations.import_file.detail'),
@@ -15,6 +16,7 @@ CSV.generate { |csv|
   ]
   Destination.where(customer_id: current_user.customer.id).each { |destination|
     csv << [
+      destination.ref,
       destination.name,
       destination.street,
       destination.detail,

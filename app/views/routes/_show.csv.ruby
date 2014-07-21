@@ -5,6 +5,7 @@ route.stops.each { |stop|
     index+=1,
     (stop.time.strftime("%H:%M") if stop.time),
     stop.distance,
+    stop.destination.ref,
     stop.destination.name,
     stop.destination.street,
     stop.destination.detail,

@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 store_one:
+  ref:
   name: store
   street: MyString
   postalcode: MyString
@@ -16,6 +17,7 @@ store_one:
   tags:
 
 destination_unaffected_one:
+  ref: a
   name: unaffected_one
   street: MyString
   postalcode: MyString
@@ -31,6 +33,7 @@ destination_unaffected_one:
   tags: tag_one
 
 destination_one:
+  ref: a
   name: destination_one
   street: Rue des Lilas
   postalcode: 33200
@@ -46,6 +49,7 @@ destination_one:
   tags: tag_one
 
 destination_two:
+  ref: a
   name: destination_two
   street: MyString
   postalcode: MyString
