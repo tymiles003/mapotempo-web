@@ -15,7 +15,7 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test "should save" do
-    o = Planning.new(customer: customers(:customer_one), name: "plop", zoning: zonings(:zoning_one))
+    o = customers(:customer_one).plannings.build(name: "plop", zoning: zonings(:zoning_one))
     o.default_routes
     o.save!
   end
@@ -47,6 +47,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_difference('Stop.count', 2) do
       assert_difference('Route.count', 1) do
         o.vehicle_add(vehicles(:vehicle_two))
+        o.save!
       end
     end
   end
@@ -56,6 +57,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_difference('Stop.count', -4) do
       assert_difference('Route.count', -1) do
         o.vehicle_remove(vehicles(:vehicle_one))
+        o.save!
       end
     end
   end
@@ -64,6 +66,7 @@ class PlanningTest < ActiveSupport::TestCase
     o = plannings(:planning_one)
     assert_difference('Stop.count') do
       o.destination_add(destinations(:destination_two))
+      o.save!
     end
   end
 
@@ -71,6 +74,7 @@ class PlanningTest < ActiveSupport::TestCase
     o = plannings(:planning_one)
     assert_difference('Stop.count', -1) do
       o.destination_remove(destinations(:destination_one))
+      o.save!
     end
   end
 

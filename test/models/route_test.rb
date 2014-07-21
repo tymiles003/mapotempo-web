@@ -22,10 +22,13 @@ class RouteTest < ActiveSupport::TestCase
 
   test "should default_stops" do
     o = routes(:route_one)
-    o.planning.tags = []
+    o.planning.tags.clear
     o.stops.clear
-    o.default_stops
-    assert_equal Destination.all.size - 1, o.stops.size
+    o.save!
+    assert_difference('Stop.count', Destination.all.size - 1) do
+      o.default_stops
+      o.save!
+    end
   end
 
   test "should default_store" do
@@ -67,6 +70,7 @@ class RouteTest < ActiveSupport::TestCase
     o.stops.clear
     assert_difference('Stop.count', 3) do
       o.set_destinations([[destinations(:destination_two), true]])
+      o.save!
     end
   end
 
@@ -95,6 +99,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one)
     assert_difference('Stop.count', -1) do
       o.remove(destinations(:destination_two))
+      o.save!
     end
   end
 
