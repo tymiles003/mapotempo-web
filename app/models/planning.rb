@@ -59,7 +59,7 @@ class Planning < ActiveRecord::Base
   end
 
   def vehicle_add(vehicle)
-    route = routes.build(vehicle: vehicle, out_of_date:true)
+    route = routes.build(vehicle: vehicle, out_of_date:false)
     route.default_store
   end
 
