@@ -20,7 +20,7 @@ require 'trace'
 class Route < ActiveRecord::Base
   belongs_to :planning
   belongs_to :vehicle
-  has_many :stops, :autosave => true, :dependent => :destroy, :order=>"\"index\" ASC", :include=>:destination
+  has_many :stops, inverse_of: :route, :autosave => true, :dependent => :destroy, :order=>"\"index\" ASC", :include=>:destination
 
   nilify_blanks
   validates :planning, presence: true
@@ -43,7 +43,7 @@ class Route < ActiveRecord::Base
     i = 0
     stops.clear
     planning.destinations.each { |c|
-      stops << Stop.new(destination:c, route:self, active:true, index:i+=1)
+      stops.build(destination:c, active:true, index:i+=1)
     }
 
     compute
@@ -51,8 +51,8 @@ class Route < ActiveRecord::Base
 
   def default_store
     stops.clear
-    stops << Stop.new(destination:planning.customer.store, route:self, active:true, index:0)
-    stops << Stop.new(destination:planning.customer.store, route:self, active:true, index:1)
+    stops.build(destination:planning.customer.store, active:true, index:0)
+    stops.build(destination:planning.customer.store, active:true, index:1)
   end
 
   def compute
@@ -103,7 +103,7 @@ class Route < ActiveRecord::Base
       i = 0
       destinations.each{ |stop|
         destination, active = stop
-        stops << Stop.new(destination:destination, route:self, active:active, index:i+=1)
+        stops.build(destination:destination, active:active, index:i+=1)
       }
       compute
     end

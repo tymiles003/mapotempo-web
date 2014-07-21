@@ -18,7 +18,7 @@
 class Planning < ActiveRecord::Base
   belongs_to :customer
   belongs_to :zoning
-  has_many :routes, -> { order('CASE WHEN vehicle_id IS NULL THEN 0 ELSE id END')}, :autosave => true, :dependent => :destroy
+  has_many :routes, -> { order('CASE WHEN vehicle_id IS NULL THEN 0 ELSE id END')}, inverse_of: :planning, :autosave => true, :dependent => :destroy
   has_and_belongs_to_many :tags, -> { order('label')}, :autosave => true
 
   nilify_blanks
@@ -59,9 +59,8 @@ class Planning < ActiveRecord::Base
   end
 
   def vehicle_add(vehicle)
-    route = Route.new(planning: self, vehicle: vehicle, out_of_date:true)
+    route = routes.build(vehicle: vehicle, out_of_date:true)
     route.default_store
-    routes << route
   end
 
   def vehicle_remove(vehicle)
@@ -87,7 +86,7 @@ class Planning < ActiveRecord::Base
 
   def default_empty_routes
     routes.clear
-    routes << Route.new(planning: self)
+    r = routes.build
     customer.vehicles.each { |vehicle|
       vehicle_add(vehicle)
     }
