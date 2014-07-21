@@ -118,7 +118,9 @@ class DestinationsControllerTest < ActionController::TestCase
 
     assert_difference('Destination.count') do
       assert_difference('Stop.count', 1 + 3 + 3) do
-        post :upload, destinations_import_model: { replace: false, file: file }
+        assert_difference('Planning.count') do
+          post :upload, destinations_import_model: { replace: false, file: file }
+        end
       end
     end
 
