@@ -103,7 +103,8 @@ class Route < ActiveRecord::Base
       i = 0
       destinations.each{ |stop|
         destination, active = stop
-        stops.build(destination:destination, active:active, index:i+=1)
+        s = stops.build(destination:destination, active:active, index:i+=1)
+        destination.stops << s
       }
       compute
     end

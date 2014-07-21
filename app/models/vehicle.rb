@@ -17,7 +17,7 @@
 #
 class Vehicle < ActiveRecord::Base
   belongs_to :customer
-  has_many :routes, :autosave => true
+  has_many :routes, inverse_of: :vehicle, :autosave => true
   has_and_belongs_to_many :zones
 
   nilify_blanks

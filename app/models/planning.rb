@@ -186,7 +186,7 @@ class Planning < ActiveRecord::Base
 
   private
     def split_by_zones
-      if zoning
+      if zoning && !routes.empty?
         z = {}
         unaffected = []
         zoning.apply(destinations).each{ |zone, destinations|

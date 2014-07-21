@@ -64,6 +64,7 @@ class PlanningsController < ApplicationController
       begin
         Planning.transaction do
           @planning = current_user.customer.plannings.build(planning_params)
+          @planning.save! # FIXME workaround, avoid create a second empty planning
           @planning.default_routes
           @planning.save!
         end

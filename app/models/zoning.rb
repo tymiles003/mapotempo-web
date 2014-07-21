@@ -17,8 +17,8 @@
 #
 class Zoning < ActiveRecord::Base
   belongs_to :customer
-  has_many :zones, dependent: :destroy, autosave: true, after_add: :touch_zones, after_remove: :touch_zones
-  has_many :plannings, dependent: :nullify, autosave: true
+  has_many :zones, inverse_of: :zoning, dependent: :destroy, autosave: true, after_add: :touch_zones, after_remove: :touch_zones
+  has_many :plannings, inverse_of: :zoning, dependent: :nullify, autosave: true
 
   accepts_nested_attributes_for :zones, allow_destroy: true
   validates_associated_bubbling :zones
