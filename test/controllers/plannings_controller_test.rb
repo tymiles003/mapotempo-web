@@ -29,7 +29,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test "should create planning" do
     assert_difference('Planning.count') do
-      post :create, planning: { name: @planning.name, customer: @planning.customer, zoning_id: @planning.zoning.id }
+      post :create, planning: { name: @planning.name, zoning_id: @planning.zoning.id }
     end
 
     assert_redirected_to edit_planning_path(assigns(:planning))
@@ -37,7 +37,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test "should not create planning" do
     assert_difference('Planning.count', 0) do
-      post :create, planning: { name: "", customer: @planning.customer }
+      post :create, planning: { name: "" }
     end
 
     assert_template :new
@@ -71,17 +71,17 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should update planning" do
-    patch :update, id: @planning, planning: { name: @planning.name, customer: @planning.customer, zoning_id: @planning.zoning.id }
+    patch :update, id: @planning, planning: { name: @planning.name, zoning_id: @planning.zoning.id }
     assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
   test "should update planning and change zoning" do
-    patch :update, id: @planning, planning: { customer: @planning.customer, zoning_id: zonings(:zoning_two).id }
+    patch :update, id: @planning, planning: { zoning_id: zonings(:zoning_two).id }
     assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
   test "should not update planning" do
-    patch :update, id: @planning, planning: { name: "", customer: @planning.customer }
+    patch :update, id: @planning, planning: { name: "" }
 
     assert_template :edit
     planning = assigns(:planning)
@@ -97,7 +97,7 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should move" do
-    patch :move, planning_id: @planning, format: :json, planning: { name: @planning.name, customer: @planning.customer, zoning_id: @planning.zoning.id }
+    patch :move, planning_id: @planning, format: :json, planning: { name: @planning.name, zoning_id: @planning.zoning.id }
     assert_response :success
   end
 

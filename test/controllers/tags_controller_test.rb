@@ -21,7 +21,7 @@ class TagsControllerTest < ActionController::TestCase
 
   test "should create tag" do
     assert_difference('Tag.count') do
-      post :create, tag: { label: @tag.label, customer: @tag.customer }
+      post :create, tag: { label: @tag.label }
     end
 
     assert_redirected_to tags_path
@@ -29,7 +29,7 @@ class TagsControllerTest < ActionController::TestCase
 
   test "should not create tag" do
     assert_difference('Tag.count', 0) do
-      post :create, tag: { label: "", customer: @tag.customer }
+      post :create, tag: { label: "" }
     end
 
     assert_template :new
@@ -43,12 +43,12 @@ class TagsControllerTest < ActionController::TestCase
   end
 
   test "should update tag" do
-    patch :update, id: @tag, tag: { label: @tag.label, customer: @tag.customer }
+    patch :update, id: @tag, tag: { label: @tag.label }
     assert_redirected_to tags_path
   end
 
   test "should not update tag" do
-    patch :update, id: @tag, tag: { label: "", customer: @tag.customer }
+    patch :update, id: @tag, tag: { label: "" }
     assert_template :edit
     tag = assigns(:tag)
     assert tag.errors.any?

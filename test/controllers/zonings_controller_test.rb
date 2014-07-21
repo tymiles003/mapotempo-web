@@ -21,7 +21,7 @@ class ZoningsControllerTest < ActionController::TestCase
 
   test "should create zoning" do
     assert_difference('Zoning.count') do
-      post :create, zoning: { name: @zoning.name, customer: @zoning.customer }
+      post :create, zoning: { name: @zoning.name }
     end
 
     assert_redirected_to edit_zoning_path(assigns(:zoning))
@@ -29,7 +29,7 @@ class ZoningsControllerTest < ActionController::TestCase
 
   test "should not create zoning" do
     assert_difference('Zoning.count', 0) do
-      post :create, zoning: { name: "", customer: @zoning.customer }
+      post :create, zoning: { name: "" }
     end
 
     assert_template :new
@@ -48,12 +48,12 @@ class ZoningsControllerTest < ActionController::TestCase
   end
 
   test "should update zoning" do
-    patch :update, id: @zoning, zoning: { name: @zoning.name, customer: @zoning.customer }
+    patch :update, id: @zoning, zoning: { name: @zoning.name }
     assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
   test "should not update zoning" do
-    patch :update, id: @zoning, zoning: { name: "", customer: @zoning.customer }
+    patch :update, id: @zoning, zoning: { name: "" }
 
     assert_template :edit
     zoning = assigns(:zoning)
