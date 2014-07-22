@@ -1,6 +1,8 @@
 <%= twitter_bootstrap_form_for(@destination, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: current_user.customer %>
-  <%= f.text_field :ref %>
+  <% if @destination != current_user.customer.store %>
+    <%= f.text_field :ref %>
+  <% end %>
   <%= f.text_field :name %>
   <%= f.text_field :street, {input_group: content_tag('i', '', {class: 'icon-screenshot', title: t('.locate_manually')})} %>
   <%= f.text_field :detail do %>
