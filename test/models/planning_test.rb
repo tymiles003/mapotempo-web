@@ -95,4 +95,12 @@ class PlanningTest < ActiveSupport::TestCase
     o.routes[1].out_of_date = true
     assert o.out_of_date
   end
+
+  test "should update zoning" do
+    o = plannings(:planning_one)
+    assert_not o.zoning_out_of_date
+    o.zoning = zonings(:zoning_two)
+    o.save!
+    assert_not o.out_of_date
+  end
 end

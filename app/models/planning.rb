@@ -204,7 +204,6 @@ class Planning < ActiveRecord::Base
           else
             route.set_destinations([])
           end
-          route.out_of_date = true
         }
       end
       self.zoning_out_of_date = false
