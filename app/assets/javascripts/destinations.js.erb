@@ -528,11 +528,8 @@ function destinations_index(params) {
 
     $("#destination_box table").tablesorter({
       headers: {
-        2: {
-          sorter: "digit"
-        },
         3: {
-          sorter: false
+          sorter: "digit"
         },
         4: {
           sorter: false
@@ -542,10 +539,13 @@ function destinations_index(params) {
         },
         6: {
           sorter: false
+        },
+        7: {
+          sorter: false
         }
       },
       textExtraction: function (node, table, cellIndex) {
-        if (cellIndex == 5) {
+        if (cellIndex == 6) {
           return $.map($("[name=destination\\[tag_ids\\]\\[\\]] :selected", node), function (e, i) {
             return e.text;
           }).join(",");
@@ -566,8 +566,9 @@ function destinations_index(params) {
         filter_functions: {
           0: filter_text,
           1: filter_text,
-          2: filter_number,
-          3: function(e, n, f, i, $r) {
+          2: filter_text,
+          3: filter_number,
+          4: function(e, n, f, i, $r) {
             n = n.split(',');
             n[0] = n[0].split(':');
             n[0] = new Date(2000, 01, 01, n[0][0], n[0][1]);
@@ -580,11 +581,11 @@ function destinations_index(params) {
 
             return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
           },
-          4: filter_text,
-          5: filter_text
+          5: filter_text,
+          6: filter_text
         },
         filter_formatter: {
-          3: function ($cell, indx) {
+          4: function ($cell, indx) {
             return $.tablesorter.filterFormatter.uiRange($cell, indx, {
               values: [0, 24],
               min: 0,
@@ -593,7 +594,7 @@ function destinations_index(params) {
               valueToHeader: false
             });
           },
-          6: function ($cell, indx) {
+          7: function ($cell, indx) {
             return false;
           }
         }

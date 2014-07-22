@@ -107,6 +107,7 @@ en:
         tags: "Tags"
         tag_ids: "Tags"
         ref: "Reference"
+        ref_small: "Ref."
       # Duplicate for nested errors with autosave
       destinations:
         name: "Name"

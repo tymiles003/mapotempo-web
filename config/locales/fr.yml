@@ -109,6 +109,7 @@ fr:
         tags: "Libellés"
         tag_ids: "Libellés"
         ref: "Référence"
+        ref_small: "Réf."
       # Duplicate for nested errors with autosave
       destinations:
         name: "Nom"
