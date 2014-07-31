@@ -2,12 +2,12 @@
 
 layer_one:
   name: MyString
-  url: MyString
+  url: /favicon.ico
   attribution: MyString
-  urlssl: MyString
+  urlssl: /favicon.ico
 
 layer_two:
   name: MyString
-  url: MyString
+  url: /favicon.ico
   attribution: MyString
-  urlssl: MyString
+  urlssl: /favicon.ico

@@ -41,7 +41,13 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'simplecov', require: false, group: :test
+group :test do
+  gem 'simplecov', require: false
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'capybara-webkit'
+  gem 'database_cleaner'
+end
 
 gem 'rails-i18n'
 gem 'execjs'
