@@ -64,9 +64,10 @@ class Importer
         'close' => I18n.t('destinations.import_file.close'),
         'comment' => I18n.t('destinations.import_file.comment'),
         'tags' => I18n.t('destinations.import_file.tags'),
-        'quantity' => I18n.t('destinations.import_file.quantity')
+        'quantity' => I18n.t('destinations.import_file.quantity'),
+        'active' => I18n.t('destinations.import_file.active')
       }
-      columns_name = columns.keys - ['route', 'tags']
+      columns_name = columns.keys - ['route', 'tags', 'active']
 
       if replace
         customer.destinations.destroy_all
@@ -149,7 +150,7 @@ class Importer
             common_tags &= destination.tags
         end
 
-        routes[row.key?("route")? row["route"] : nil] << destination
+        routes[row.key?('route')? row['route'] : nil] << [destination, ! row.key?('active') || row['active'].strip != '0']
       }
 
       if errors.length > 0
@@ -158,10 +159,10 @@ class Importer
 
       if need_geocode && ! Mapotempo::Application.config.delayed_job_use
         routes.each{ |key, destinations|
-          destinations.each{ |destination|
-            if not(destination.lat and destination.lng)
+          destinations.each{ |destination_active|
+            if not(destination_active[0].lat and destination_active[0].lng)
               begin
-                destination.geocode
+                destination_active[0].geocode
               rescue StandardError => e
               end
             end

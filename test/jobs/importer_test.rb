@@ -17,6 +17,22 @@ class ImporterTest < ActionController::TestCase
     assert_equal [tags(:tag_one)], Destination.where(name: "BF").first.tags.to_a
   end
 
+  test "shoud import tow" do
+    assert_difference('Planning.count') do
+      assert_difference('Destination.count', 2) do
+        assert_difference('Stop.count', 1 + 4 + 4) do
+          Importer.import(false, @customer, "test/fixtures/files/import_two.csv", "text")
+        end
+      end
+    end
+
+    stops = Planning.where(name: "text").first.routes[1].stops
+    assert 'a', stops[1].destination.ref
+    assert stops[1].active
+    assert 'b', stops[2].destination.ref
+    assert_not stops[2].active
+  end
+
   test "shoud import many-utf-8" do
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all

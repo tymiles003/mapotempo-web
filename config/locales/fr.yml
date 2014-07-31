@@ -288,6 +288,7 @@ fr:
       lat: "lat"
       lng: "lng"
       quantity: "quantité"
+      active: "livré"
       open: "horaire début"
       close: "horaire fin"
       comment: "commentaire"

@@ -286,6 +286,7 @@ en:
       lat: "lat"
       lng: "lng"
       quantity: "quantity"
+      active: "active"
       open: "open"
       close: "close"
       comment: "comment"
