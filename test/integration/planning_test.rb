@@ -47,7 +47,21 @@ class PlanningTest < ActionDispatch::IntegrationTest
     # Check out of date
     assert_selector '#refresh'
     find('#refresh').click
-    sleep 0.2
+    sleep 1
+    assert_not first(:css, '#refresh')
+
+    # Edit zoning
+    find('#zoning_edit').click
+    find('.zone:last-child .delete').click
+    submit
+
+    # Back
+    assert_selector '[data-controller=plannings]'
+
+    # Check out of date
+    assert_selector '#refresh'
+    find('#refresh').click
+    sleep 1
     assert_not first(:css, '#refresh')
   end
 end
