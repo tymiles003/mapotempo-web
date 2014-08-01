@@ -1,10 +1,10 @@
 index = -1
 route.stops.each { |stop|
   csv << [
-    route.vehicle.name,
-    index+=1,
-    (stop.time.strftime("%H:%M") if stop.time),
-    stop.distance,
+    (route.vehicle.name if route.vehicle),
+    (index+=1 if route.vehicle),
+    (stop.time.strftime("%H:%M") if route.vehicle && stop.time),
+    (stop.distance if route.vehicle),
     stop.destination.ref,
     stop.destination.name,
     stop.destination.street,
@@ -15,7 +15,7 @@ route.stops.each { |stop|
     stop.destination.lng,
     stop.destination.comment,
     stop.destination.quantity,
-    stop.active ? '1' : '0',
+    ((stop.active ? '1' : '0') if route.vehicle),
     (stop.destination.open.strftime("%H:%M") if stop.destination.open),
     (stop.destination.close.strftime("%H:%M") if stop.destination.close),
     stop.destination.tags.collect(&:label).join(','),

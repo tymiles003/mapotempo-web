@@ -23,7 +23,7 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('plannings.export_file.out_of_drive_time')
   ]
   @planning.routes.select { |route|
-    route.vehicle && route.stops.size > 2
+    !route.vehicle || route.stops.size > 2
   }.collect { |route|
     render partial: 'routes/show', formats: [:csv], locals: {route: route, csv: csv}
   }.join('')
