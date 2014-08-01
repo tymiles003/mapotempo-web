@@ -389,6 +389,7 @@ fr:
       lng: "lng"
       comment: "commentaire"
       quantity: "quantité"
+      active: "livré"
       open: "horaire début"
       close: "horaire fin"
       tags: "libellés"

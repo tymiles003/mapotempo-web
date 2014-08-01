@@ -15,6 +15,7 @@ route.stops.each { |stop|
     stop.destination.lng,
     stop.destination.comment,
     stop.destination.quantity,
+    stop.active ? '1' : '0',
     (stop.destination.open.strftime("%H:%M") if stop.destination.open),
     (stop.destination.close.strftime("%H:%M") if stop.destination.close),
     stop.destination.tags.collect(&:label).join(','),

@@ -386,6 +386,8 @@ en:
       lat: "lat"
       lng: "lng"
       comment: "comment"
+      quantity: "quantity"
+      active: "active"
       tags: "tags"
       out_of_window: "out of customer's time window"
       out_of_capacity: "out of capacity"
