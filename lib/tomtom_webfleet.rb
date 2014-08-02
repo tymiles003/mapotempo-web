@@ -41,40 +41,44 @@ module TomtomWebfleet
 
   def self.sendDestinationOrder(account, username, password, objectuid, stop, orderid, description, waypoints = nil)
     params = {
-      object: '',
       dstOrderToSend: {
         orderText: description.strip[0..499],
         explicitDestination: {
+          street: (stop.destination.street[0..49] if stop.destination.street),
+          postcode: (stop.destination.postalcode[0..9] if stop.destination.postalcode),
+          city: (stop.destination.city[0..49] if stop.destination.city),
           geoPosition: '',
           :attributes! => {
             geoPosition: {
               latitude: (stop.destination.lat*1e6).round.to_s,
               longitude: (stop.destination.lng*1e6).round.to_s,
             }
-          }
+          },
+          :order! => [:street, :postcode, :city, :geoPosition]
         }
       },
+      object: '',
       :attributes! => {
         object: {
           objectUid: objectuid,
         },
         dstOrderToSend: {
           orderNo: orderid,
+          orderType: 'DELIVERY_ORDER',
         }
       }
     }
 
-    (params[:dstOrderToSend][:explicitDestination][:street] = stop.destination.street[0..49]) if stop.destination.street
-    (params[:dstOrderToSend][:explicitDestination][:zip] = stop.destination.postalcode[0..9]) if stop.destination.postalcode
-    (params[:dstOrderToSend][:explicitDestination][:city] = stop.destination.city[0..49]) if stop.destination.city
     (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = Time.now.strftime('%Y-%m-%dT') + stop.time.strftime('%H:%M:%S')) if stop.time
 
     if waypoints
-      params[:advancedSendDestinationOrderParm] = {waypoints: waypoints.collect{ |waypoint|
-        {
-          latitude: (waypoint[:lat]*1e6).round.to_s,
-          longitude: (waypoint[:lng]*1e6).round.to_s,
-          description: waypoint[:description].gsub(',', ' ')[0..19]
+      params[:advancedSendDestinationOrderParm] = {waypoints: {
+        waypoint: waypoints.collect{ |waypoint|
+          {
+            latitude: (waypoint[:lat]*1e6).round.to_s,
+            longitude: (waypoint[:lng]*1e6).round.to_s,
+            description: waypoint[:description].gsub(',', ' ')[0..19]
+          }
         }
       }}
     end
@@ -83,6 +87,7 @@ module TomtomWebfleet
 
   private
     def self.get(operation, account, username, password, message = {})
+      message[:order!] = [:aParm, :gParm] + (message[:order!] || (message.keys - [:attributes!]))
       message[:aParm] = {
         accountName: account,
         userName: username,
