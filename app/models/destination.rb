@@ -77,21 +77,21 @@ class Destination < ActiveRecord::Base
     end
 
     def update_tags
-      if customer && @tags_updated
+      if customer && (@tags_updated || new_record?)
         @tags_updated = false
 
         plannings = stops.collect{ |stop| stop.route.planning }
 
         # Linked planning with no more match
         plannings.select{ |planning|
-          planning.tags & tags != planning.tags
+          planning.tags.to_a & tags.to_a != planning.tags.to_a
         }.each{ |planning|
           planning.destination_remove(self)
         }
 
         # Linked planning with new match
         (customer.plannings - plannings).select{ |planning|
-          planning.tags & tags == planning.tags
+          planning.tags.to_a & tags.to_a == planning.tags.to_a
         }.each{ |planning|
           planning.destination_add(self)
         }

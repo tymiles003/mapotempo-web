@@ -181,7 +181,7 @@ class Planning < ActiveRecord::Base
     customer.destinations.select{ |c|
       c != customer.store
     }.select{ |c|
-      tags & c.tags == tags
+      tags.to_a & c.tags.to_a == tags.to_a
     }
   end
 

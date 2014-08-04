@@ -27,8 +27,23 @@ class DestinationsControllerTest < ActionController::TestCase
   end
 
   test "should create destination" do
-    assert_difference('Destination.count') do
-      post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment, tag_ids: [tags(:tag_one).id] }
+    assert_difference('Stop.count', 1) do
+      assert_difference('Destination.count') do
+        post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment, tag_ids: [tags(:tag_one).id] }
+      end
+    end
+
+    assert_redirected_to edit_destination_path(assigns(:destination))
+  end
+
+  test "should create destination and touch planning" do
+    d = Planning.find_by(name: 'planning1')
+    d.tags = []
+    d.save!
+    assert_difference('Stop.count', 1) do
+      assert_difference('Destination.count') do
+        post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment }
+      end
     end
 
     assert_redirected_to edit_destination_path(assigns(:destination))
