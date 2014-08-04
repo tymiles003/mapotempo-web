@@ -8,7 +8,7 @@ class ImporterTest < ActionController::TestCase
   test "shoud import" do
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', 1 + 3 + 3) do
+        assert_difference('Stop.count', 1 + 0 + (3 + 2 + 1)) do
           Importer.import(false, @customer, "test/fixtures/files/import_one.csv", "text")
         end
       end
@@ -61,5 +61,13 @@ class ImporterTest < ActionController::TestCase
         Importer.import(false, @customer, "test/fixtures/files/import_invalid.csv", "text")
       end
     end
+  end
+
+  test "shoud update" do
+    assert_difference('Destination.count', 1) do
+      Importer.import(false, @customer, "test/fixtures/files/import_update.csv", "text")
+    end
+    assert_equal 'unaffected_one_update', Destination.find_by(ref:'a').name
+    assert_equal 'unaffected_two_update', Destination.find_by(ref:'d').name
   end
 end

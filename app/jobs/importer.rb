@@ -141,7 +141,15 @@ class Importer
           }
         end
 
-        destination = customer.destinations.build(r) # Link only when destination is complete
+        if r.key?('ref') && !r['ref'].strip.empty?
+          destination = customer.destinations.find{ |destination|
+            destination.ref && destination.ref == r['ref']
+          }
+          destination.assign_attributes(r) if destination
+        end
+        if !destination
+          destination = customer.destinations.build(r) # Link only when destination is complete
+        end
 
         # Instersection of tags of all rows
         if !common_tags
