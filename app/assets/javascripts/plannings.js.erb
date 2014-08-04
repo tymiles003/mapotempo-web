@@ -283,9 +283,15 @@ function plannings_edit(params) {
 
     $('.btn.extend').click(function () {
       $('.container').toggleClass('box-extended');
+      if ($('.container').hasClass('box-extended')) {
+        $(".routes").sortable( "enable" );
+      } else {
+        $(".routes").sortable( "disable" );
+      }
     });
 
     $(".routes").sortable({
+      disabled: true,
       items: "li.route"
     }).disableSelection();
 
