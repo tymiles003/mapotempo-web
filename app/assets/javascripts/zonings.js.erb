@@ -41,7 +41,7 @@ function zonings_edit(params) {
   });
   map.addLayer(cluster);
 
-  map.on('zoomend ', function (e) {
+  map.on('zoomend', function (e) {
     if (map.getZoom() > 12) {
       map.removeLayer(cluster);
       map.addLayer(markersLayers);

@@ -50,11 +50,24 @@ function plannings_edit(params) {
     layer_zoning,
     markers = {},
     layers = {},
+    layers_cluster = {},
     routes_layers,
+    routes_layers_cluster,
     initial_zoning = $("#planning_zoning_id").val();
 
   routes_layers = L.featureGroup();
+  routes_layers_cluster = L.featureGroup();
   map.addLayer(routes_layers);
+
+  map.on('zoomend', function (e) {
+    if (map.getZoom() >= 17) {
+      map.removeLayer(routes_layers);
+      map.addLayer(routes_layers_cluster);
+    } else {
+      map.removeLayer(routes_layers_cluster);
+      map.addLayer(routes_layers);
+    }
+  });
 
   L.tileLayer(map_layer_url, {
     maxZoom: 18,
@@ -63,6 +76,7 @@ function plannings_edit(params) {
 
   $.each(routes_id, function (i, id) {
     layers[id] = L.featureGroup();
+    layers_cluster[id] = L.featureGroup();
   });
 
   function display_zoning(zoning) {
@@ -201,10 +215,35 @@ function plannings_edit(params) {
 
     $.each(data.routes, function (i, route) {
       routes_layers.removeLayer(layers[route.route_id]);
+      routes_layers_cluster.removeLayer(layers_cluster[route.route_id]);
       layers[route.route_id] = L.featureGroup();
-      if (!route.hidden) {
-        routes_layers.addLayer(layers[route.route_id]);
-      }
+      layers_cluster[route.route_id] = new L.MarkerClusterGroup({
+        showCoverageOnHover: false,
+        maxClusterRadius: 1,
+        spiderfyDistanceMultiplier: 0.5,
+        iconCreateFunction: function (cluster) {
+          var markers = cluster.getAllChildMarkers();
+          var n = [];
+          for (var i = 0; i < markers.length; i++) {
+            if (markers[i].number) {
+              if (n.length < 2) {
+                n.push(markers[i].number);
+              } else {
+                n = [n[0], "…"]
+                break;
+              }
+            }
+          }
+          return new L.NumberedDivIcon({
+            number: n.join(","),
+            iconUrl: markers[0].icon_large ? markers[0].icon_large : '<%= asset_path("point_large-000000.svg") %>',
+            iconSize: new L.Point(24, 24),
+            iconAnchor: new L.Point(12, 12),
+            popupAnchor: new L.Point(0, -12),
+            className: "large"
+          });
+        },
+      });
 
       var color, vehicle_name;
       if (route.vehicle) {
@@ -221,7 +260,7 @@ function plannings_edit(params) {
           var polyline = new L.Polyline(L.PolylineUtil.decode(stop.trace, 6));
           L.polyline(polyline.getLatLngs(), {
             color: color
-          }).addTo(layers[route.route_id]);
+          }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]);
         }
         if (stop.destination.lat && stop.destination.lng) {
           if (stop.is_store) {
@@ -236,9 +275,12 @@ function plannings_edit(params) {
                 iconUrl: color ? route.icon : '<%= asset_path("point-000000.svg") %>',
                 iconSize: new L.Point(12, 12),
                 iconAnchor: new L.Point(6, 6),
-                popupAnchor: new L.Point(0, -6)
+                popupAnchor: new L.Point(0, -6),
+                className: "small"
               })
-            }).addTo(layers[route.route_id]).bindPopup(SMT['stops/show'](stop));
+            }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show'](stop));
+            m.number = stop.number;
+            m.icon_large = route.icon_large;
             m.on('mouseover', function(e){
               m.openPopup();
             }).on('mouseout', function(e){
@@ -248,6 +290,11 @@ function plannings_edit(params) {
           }
         }
       });
+
+      if (!route.hidden) {
+        routes_layers_cluster.addLayer(layers_cluster[route.route_id]);
+        routes_layers.addLayer(layers[route.route_id]);
+      }
     });
 
     $(".route .export_tomtom a").click(function() {
@@ -352,16 +399,23 @@ function plannings_edit(params) {
         if (hidden) {
           i.removeClass("icon-eye-open").addClass("icon-eye-close");
           routes_layers.removeLayer(layers[id]);
+          routes_layers_cluster.removeLayer(layers_cluster[id]);
         } else {
           i.removeClass("icon-eye-close").addClass("icon-eye-open");
           routes_layers.addLayer(layers[id]);
+          routes_layers_cluster.addLayer(layers_cluster[id]);
         }
       })
       .on("click", ".marker", function (event, ui) {
-        var id = $(this).closest("[data-destination_id]").attr("data-destination_id");
-        if (id in markers) {
-          map.setView(markers[id].getLatLng(), 16);
-          markers[id].openPopup();
+        var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+        if (destination_id in markers) {
+          map.removeLayer(routes_layers);
+          map.addLayer(routes_layers_cluster);
+          var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
+          layers_cluster[route_id].zoomToShowLayer(markers[destination_id], function () {
+            map.setView(markers[destination_id].getLatLng());
+            markers[destination_id].openPopup();
+          });
         }
         return false;
       })
