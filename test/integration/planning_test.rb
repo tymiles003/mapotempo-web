@@ -64,4 +64,18 @@ class PlanningTest < ActionDispatch::IntegrationTest
     sleep 1
     assert_not first(:css, '#refresh')
   end
+
+  test 'automatic insert' do
+    # Open planning
+    visit plannings_path
+    assert_not first(:css, '#refresh')
+    find('tr', text: 'planning1').find('.icon-edit').click
+
+    # Automatic insert
+    assert_selector '.route:nth-child(1) .stops li', count: 1
+    assert_selector '.route:nth-child(2) .stops li', count: 4
+    find('.route:nth-child(1) .stops li:nth-child(1) button:nth-child(1)').click
+    assert_selector '.route:nth-child(1) .stops li', count: 0
+    assert_selector '.route:nth-child(2) .stops li', count: 5
+  end
 end

@@ -118,6 +118,7 @@ class Planning < ActiveRecord::Base
 
   def automatic_insert(stop)
     # If zoning, get appropriate route
+    available_routes = nil
     if zoning
       zone = zoning.inside(stop.destination)
       if zone && zone.vehicles.size > 0
@@ -151,15 +152,21 @@ class Planning < ActiveRecord::Base
     }.flatten(1).uniq.min_by{ |ri|
       ri[0].class.amoeba do
         clone :stops # No need to duplicate stop juste for compute evaluation
+        nullify :planning_id
       end
 
-      r = ri[0].amoeba_dup
-      r.add(stop.destination, ri[1], true)
-      r.compute
+      ret = nil
+      Planning.transaction do # FIXME workaround, transaction needed cause of workaround into route#add
+        r = ri[0].amoeba_dup
+        r.add(stop.destination, ri[1], true)
+        r.compute
 
-      # Difference of total time + difference of sum of out_of_window time
-      ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
-      (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
+        # Difference of total time + difference of sum of out_of_window time
+        ret = ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
+        (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
+        raise ActiveRecord::Rollback # Ensures nothing is really saved
+      end
+      ret
     } || [routes[1], 2]
 
     route.add(stop.destination, index || 2, true)

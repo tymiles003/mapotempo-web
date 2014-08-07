@@ -121,7 +121,7 @@ class Route < ActiveRecord::Base
       raise
     end
     s = stops.build(destination: destination, index: index, active: active)
-    destination.stops << s
+    destination.stops << s # FIXME workaround, this line is not needed
 
     if self.vehicle
       self.out_of_date = true
