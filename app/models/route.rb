@@ -76,12 +76,12 @@ class Route < ActiveRecord::Base
           stop.out_of_window = (destination.open && stop.time < destination.open) || (destination.close && stop.time > destination.close)
 
           self.distance += stop.distance
-          self.end = stop.time + (stop.destination != planning.customer.store && planning.customer.take_over ? planning.customer.take_over.seconds_since_midnight : 0)
+          self.end = stop.time + (destination.customer && destination.customer.take_over ? destination.customer.take_over.seconds_since_midnight : 0)
 
           quantity += (destination.quantity or 1)
-          stop.out_of_capacity = destination != planning.customer.store && vehicle.capacity && quantity > vehicle.capacity
+          stop.out_of_capacity = destination.customer && vehicle.capacity && quantity > vehicle.capacity
 
-          stop.out_of_drive_time = destination != planning.customer.store && stop.time > vehicle.close
+          stop.out_of_drive_time = destination.customer && stop.time > vehicle.close
 
           last = stop
         else
@@ -182,13 +182,13 @@ class Route < ActiveRecord::Base
 
   def size
     stops.to_a.sum(0) { |stop|
-      stop.destination != planning.customer.store && (stop.active || ! vehicle) ? 1 : 0
+      stop.destination.customer && (stop.active || ! vehicle) ? 1 : 0
     }
   end
 
   def quantity
     stops.to_a.sum(0) { |stop|
-      stop.destination != planning.customer.store && (stop.active || ! vehicle) ? (stop.destination.quantity or 1) : 0
+      stop.destination.customer && (stop.active || ! vehicle) ? (stop.destination.quantity or 1) : 0
     }
   end
 
