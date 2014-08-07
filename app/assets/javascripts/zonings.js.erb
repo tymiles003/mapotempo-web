@@ -26,7 +26,7 @@ function zonings_edit(params) {
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map;
 
-  var map = L.map('map').setView([map_lat, map_lng], 13);
+  var map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
     maxZoom: 18,
     attribution: map_attribution
@@ -214,8 +214,7 @@ function zonings_edit(params) {
     });
 
     var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
-    // Add 30% on right side to move away from panel
-    map.fitBounds(bounds.extend(L.latLng(bounds.getNorth(), bounds.getEast() + (bounds.getEast() - bounds.getWest()) * 0.3)));
+    map.fitBounds(bounds);
   }
 
   $.ajax({

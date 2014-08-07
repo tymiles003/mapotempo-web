@@ -6,6 +6,12 @@ GIT
       railties (>= 3.1.0)
 
 GIT
+  remote: git://github.com/frodrigo/leaflet-active-area-rails.git
+  revision: c208a506f39a746de0d2fe629de6e8d74d2994b3
+  specs:
+    leaflet-active-area-rails (0.0.1)
+
+GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
   revision: b654421a6138ee39fc85b61a749e238e89a1b134
   specs:
@@ -341,6 +347,7 @@ DEPENDENCIES
   jquery-tablesorter
   jquery-timeentry-rails!
   jquery-ui-rails
+  leaflet-active-area-rails!
   leaflet-draw-rails!
   leaflet-markercluster-rails!
   leaflet-rails

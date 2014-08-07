@@ -17,6 +17,7 @@
 //
 
 //= require leaflet_numbered_markers
+//= require L.activearea
 //= require Polyline.encoded.js
 
 function plannings_form() {
@@ -45,7 +46,7 @@ function plannings_edit(params) {
     routes_id = params.routes_id,
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map,
-    map = L.map('map').setView([map_lat, map_lng], 13),
+    map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13),
     layer_zoning,
     markers = {},
     layers = {},
@@ -410,10 +411,7 @@ function plannings_edit(params) {
 
   function display_planning_first_time (data) {
     display_planning(data);
-
-    var bounds = routes_layers.getBounds();
-    // Add 30% on right side to move away from panel
-    map.fitBounds(bounds.extend(L.latLng(bounds.getNorth(), bounds.getEast() + (bounds.getEast() - bounds.getWest()) * 0.3)));
+    map.fitBounds(routes_layers.getBounds());
   }
 
   $.ajax({
