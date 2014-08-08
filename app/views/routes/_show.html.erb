@@ -39,6 +39,7 @@
           <% end %>
         </div>
         <div class="col-md-5 col-sm-8 col-xs-9">
+          <span class="ref"><%= stop.destination.ref %></span>
           <span class="name"><%= stop.destination.name %></span><br/>
           <span class="address">
             <%= stop.destination.street %><% if stop.destination.detail && !stop.destination.detail.empty? %>, <%= stop.destination.detail %><% end %>
