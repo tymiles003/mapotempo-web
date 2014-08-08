@@ -1,7 +1,7 @@
 {{#destination}}
 <p>
   <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>{{vehicle_name}}</br>
-  <b>{{name}}</b></br>
+  <b>{{#ref}}{{ref}} {{/ref}}{{name}}</b></br>
   {{street}}</br>
   {{#detail}}
     {{detail}}</br>
