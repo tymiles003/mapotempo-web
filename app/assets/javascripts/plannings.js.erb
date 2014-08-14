@@ -350,6 +350,7 @@ function plannings_edit(params) {
 
     var sortableUpdate = false;
     $(".stops").sortable({
+      distance: 8,
       connectWith: ".sortable",
       items: "li",
       cancel: "li.store",
