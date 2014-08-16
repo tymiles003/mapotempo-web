@@ -21,17 +21,16 @@ module Trace
 
   @cache_request = Mapotempo::Application.config.trace_cache_request
   @cache_result = Mapotempo::Application.config.trace_cache_result
-  @osrm_url = Mapotempo::Application.config.trace_osrm_url
 
-  def self.compute(from_lat, from_lng, to_lat, to_lng)
-    key = [from_lat, from_lng, to_lat, to_lng]
+  def self.compute(osrm_url, from_lat, from_lng, to_lat, to_lng)
+    key = [osrm_url, from_lat, from_lng, to_lat, to_lng]
 
     result = @cache_result.read(key)
     if !result
       request = @cache_request.read(key)
       if !request
         begin
-          uri = URI(url = "#{@osrm_url}/viaroute")
+          uri = URI(url = "#{osrm_url}/viaroute")
           uri.query = "loc=#{from_lat},#{from_lng}&loc=#{to_lat},#{to_lng}&alt=false&output=json"
           Rails.logger.info "get #{uri}"
           res = Net::HTTP.get_response(uri)

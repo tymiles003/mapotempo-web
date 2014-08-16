@@ -9,6 +9,7 @@ customer_one:
   job_matrix: job_matrix
   job_optimizer: job_optimizer
   name: MyString
+  router: router_one
 
 customer_two:
   end_subscription:
@@ -19,3 +20,4 @@ customer_two:
   job_matrix: job_matrix
   job_optimizer: job_optimizer
   name: MyString
+  router: router_one

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140721160736) do
+ActiveRecord::Schema.define(version: 20140816113900) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140721160736) do
     t.string   "tomtom_user"
     t.string   "tomtom_password"
     t.string   "tomtom_account"
+    t.integer  "router_id"
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id"
@@ -113,6 +114,13 @@ ActiveRecord::Schema.define(version: 20140721160736) do
   end
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories"
+
+  create_table "routers", force: true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "routes", force: true do |t|
     t.float    "distance"

@@ -36,7 +36,6 @@ module Mapotempo
 
     config.trace_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_request', expires_in: 60*60*24*10)
     config.trace_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_result', expires_in: 60*60*24*10)
-    config.trace_osrm_url = 'http://router.project-osrm.org'
 
     config.tomtom_api = 'https://soap.business.tomtom.com/v1.20'
 

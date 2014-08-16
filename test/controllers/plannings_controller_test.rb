@@ -4,7 +4,7 @@ class PlanningsControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   setup do
-    def Trace.compute(from_lat, from_lng, to_lat, to_lng)
+    def Trace.compute(url, from_lat, from_lng, to_lat, to_lng)
       [1000, 60, "trace"]
     end
 

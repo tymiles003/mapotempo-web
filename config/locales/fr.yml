@@ -93,6 +93,8 @@ fr:
         tomtom_account: "Compte WEBFLEET"
         tomtom_user: "Nom d'utilisateur WEBFLEET"
         tomtom_password: "Mot de passe WEBFLEET"
+        router: "Calculateur d'itinéraire"
+        router_id: "Calculateur d'itinéraire"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -229,6 +231,7 @@ fr:
     new:
       title: "Nouveau compte client"
     form:
+      router_help: "Profil utilisé pour les calculs d'itinéraires"
       take_over_help: "Durée de visite moyenne par client"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."

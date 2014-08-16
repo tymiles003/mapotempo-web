@@ -91,6 +91,8 @@ en:
         tomtom_account: "WEBFLEET account name"
         tomtom_user: "WEBFLEET Username"
         tomtom_password: "WEBFLEET Password"
+        router: "Route planner"
+        router_id: "Route planner"
       destination:
         name: "Name"
         address: "Address"
@@ -227,6 +229,7 @@ en:
     new:
       title: "New customer"
     form:
+      router_help: "Profile used for route planning"
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."

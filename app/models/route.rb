@@ -65,10 +65,16 @@ class Route < ActiveRecord::Base
       last = stops[0]
       last.time = self.end
       quantity = 0
-      stops.sort_by(&:index)[1..-1].each{ |stop|
+      stops_sort = stops.sort_by(&:index)[1..-1]
+      router_url = stops_sort[0].destination.customer && stops_sort[0].destination.customer.router.url
+      stops_sort.each{ |stop|
         destination = stop.destination
         if stop.active && destination.lat && destination.lng
-          stop.distance, time, stop.trace = Trace.compute(last.destination.lat, last.destination.lng, destination.lat, destination.lng)
+          stop.distance, time, stop.trace = if router_url
+            Trace.compute(router_url, last.destination.lat, last.destination.lng, destination.lat, destination.lng)
+          else
+            [0, 0, nil]
+          end
           stop.time = self.end + time
           if destination.open && stop.time < destination.open
             stop.time = destination.open
@@ -152,9 +158,10 @@ class Route < ActiveRecord::Base
 
   def matrix
     stops_on = stops_segregate[true]
+    router_url = stops_on[1].destination.customer.router.url
     stops_on.collect{ |stop1|
       stops_on.collect{ |stop2|
-        distance, time, trace = Trace.compute(stop1.destination.lat, stop1.destination.lng, stop2.destination.lat, stop2.destination.lng)
+        distance, time, trace = Trace.compute(router_url, stop1.destination.lat, stop1.destination.lng, stop2.destination.lat, stop2.destination.lng)
         yield if block_given?
         [distance, time]
       }

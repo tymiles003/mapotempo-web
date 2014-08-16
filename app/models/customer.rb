@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Customer < ActiveRecord::Base
+  belongs_to :router
   belongs_to :store, :class_name => "Destination", :autosave => true, :dependent => :destroy
   belongs_to :job_geocoding, :class_name => "Delayed::Backend::ActiveRecord::Job", :dependent => :destroy
   belongs_to :job_matrix, :class_name => "Delayed::Backend::ActiveRecord::Job", :dependent => :destroy
@@ -28,6 +29,7 @@ class Customer < ActiveRecord::Base
   has_many :zonings, inverse_of: :customer, :dependent => :destroy
 
   nilify_blanks
+  validates :router, presence: true
   validates :name, presence: true
   validates :destinations, length: { maximum: 2000, message: :over_max_limit }
 
