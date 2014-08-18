@@ -414,8 +414,7 @@ function plannings_edit(params) {
       .on("click", ".marker", function (event, ui) {
         var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
         if (destination_id in markers) {
-          map.removeLayer(routes_layers);
-          map.addLayer(routes_layers_cluster);
+          map.setZoom(17);
           var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
           layers_cluster[route_id].zoomToShowLayer(markers[destination_id], function () {
             map.setView(markers[destination_id].getLatLng());
