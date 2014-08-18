@@ -27,6 +27,10 @@ function zonings_edit(params) {
     vehicles_map = params.vehicles_map;
 
   var map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13);
+  L.control.scale({
+    imperial: false
+  }).addTo(map);
+
   L.tileLayer(map_layer_url, {
     maxZoom: 18,
     attribution: map_attribution

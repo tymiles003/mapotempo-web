@@ -55,6 +55,10 @@ function plannings_edit(params) {
     routes_layers_cluster,
     initial_zoning = $("#planning_zoning_id").val();
 
+  L.control.scale({
+    imperial: false
+  }).addTo(map);
+
   routes_layers = L.featureGroup();
   routes_layers_cluster = L.featureGroup();
   map.addLayer(routes_layers);
