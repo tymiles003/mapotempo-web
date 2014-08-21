@@ -490,7 +490,7 @@ function destinations_index(params) {
   });
 
   function filter_text(exactText, normalizedValue, filter, index) {
-    return !!normalizedValue.match(new RegExp(filter, 'i'));
+    return !!String(normalizedValue).match(new RegExp(filter, 'i'));
   }
 
   function filter_number(exactText, normalizedValue, filter, index) {
