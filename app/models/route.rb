@@ -82,7 +82,9 @@ class Route < ActiveRecord::Base
           stop.out_of_window = (destination.open && stop.time < destination.open) || (destination.close && stop.time > destination.close)
 
           self.distance += stop.distance
-          self.end = stop.time + (destination.customer && destination.customer.take_over ? destination.customer.take_over.seconds_since_midnight : 0)
+          take_over = destination.take_over ? destination.take_over : destination.customer && destination.customer.take_over
+          take_over = take_over ? take_over.seconds_since_midnight : 0
+          self.end = stop.time + take_over
 
           quantity += (destination.quantity or 1)
           stop.out_of_capacity = destination.customer && vehicle.capacity && quantity > vehicle.capacity
