@@ -28,13 +28,7 @@
           <% end %>
           <% if stop.destination.quantity && stop.destination.quantity > 1 %>
             <div class="quantity visible-xs">
-              <% if stop.destination.quantity <= 3 %>
-                <% stop.destination.quantity.times do |i| %>
-                  <i class="icon icon-archive icon-fixed-width"></i>
-                <% end %>
-              <% else %>
-                <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
-              <% end %>
+              <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
             </div>
           <% end %>
           <% if stop.destination.take_over %>
@@ -64,13 +58,7 @@
           <% end %>
           <% if stop.destination.quantity && stop.destination.quantity > 1 %>
             <div class="quantity">
-              <% if stop.destination.quantity <= 3 %>
-                <% stop.destination.quantity.times do |i| %>
-                  <i class="icon icon-archive icon-fixed-width"></i>
-                <% end %>
-              <% else %>
-                <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
-              <% end %>
+              <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
             </div>
           <% end %>
         </div>
