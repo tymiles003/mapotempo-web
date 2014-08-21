@@ -25,6 +25,7 @@ destination_unaffected_one:
   lat: 1.5
   lng: 1.5
   quantity: 1
+  take_over: 2000-01-01 00:01:00
   open: 2000-01-01 10:00:00
   close: 2000-01-01 11:00:00
   customer: customer_one
@@ -41,6 +42,7 @@ destination_one:
   lat: 49.1857
   lng: -0.3735
   quantity: 1
+  take_over: 2000-01-01 00:05:33
   open: 2000-01-01 10:00:00
   close: 2000-01-01 11:00:00
   customer: customer_one

@@ -55,6 +55,7 @@ else
       json.destination do
          destination = stop.destination
          json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment, :quantity
+         (json.take_over destination.take_over.strftime("%H:%M:%S")) if destination.take_over
          (json.open destination.open.strftime("%H:%M")) if destination.open
          (json.close destination.close.strftime("%H:%M")) if destination.close
       end

@@ -13,6 +13,7 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('plannings.export_file.lat'),
     I18n.t('plannings.export_file.lng'),
     I18n.t('plannings.export_file.comment'),
+    I18n.t('plannings.export_file.take_over'),
     I18n.t('plannings.export_file.quantity'),
     I18n.t('plannings.export_file.active'),
     I18n.t('plannings.export_file.open'),

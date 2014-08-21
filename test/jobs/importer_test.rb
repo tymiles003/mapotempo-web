@@ -28,6 +28,7 @@ class ImporterTest < ActionController::TestCase
 
     stops = Planning.where(name: "text").first.routes[1].stops
     assert 'a', stops[1].destination.ref
+    assert stops[1].destination.take_over
     assert stops[1].active
     assert 'b', stops[2].destination.ref
     assert_not stops[2].active

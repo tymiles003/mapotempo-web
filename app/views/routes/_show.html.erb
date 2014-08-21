@@ -37,6 +37,9 @@
               <% end %>
             </div>
           <% end %>
+          <% if stop.destination.take_over %>
+            <span class="take_over">(<%= stop.destination.take_over.strftime("%H:%M:%S") %>)</span>
+          <% end %>
         </div>
         <div class="col-md-5 col-sm-8 col-xs-9">
           <span class="ref"><%= stop.destination.ref %></span>

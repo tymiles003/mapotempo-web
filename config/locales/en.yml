@@ -1,4 +1,3 @@
-# Files in the config/locales directory are used for internationalization
 # and are automatically loaded by Rails. If you want to use locales other
 # than English, add the necessary files in this directory.
 #
@@ -102,6 +101,8 @@ en:
         city: "City"
         quantity: "Quantity"
         quantity_small: "Qty."
+        take_over: "Take over"
+        take_over_small: "Take over"
         open: "Open"
         close: "Close"
         open_close_small: "Open/Close"
@@ -252,6 +253,7 @@ en:
       submit_store: "Edit store"
       detail_help: "Non geocoded addresse complement; like flat number"
       quantity_help: "Quantity to be delivered"
+      take_over_help: "If empty uses the default value"
       tags_help: "Customer's categories"
       comment_help: "Delivery required information"
       locate_manually: "Locate manually on the map"
@@ -288,6 +290,7 @@ en:
       city: "city"
       lat: "lat"
       lng: "lng"
+      take_over: "take over"
       quantity: "quantity"
       active: "active"
       open: "open"
@@ -347,6 +350,7 @@ en:
         close: "Close:"
         time: "Arrival:"
         quantity: "Quantity:"
+        take_over: "Take over:"
       error:
         no_geocoding: "No geocoding"
         no_geocoding_help: "Adresse could not be converted to geographic coordinates"
@@ -389,6 +393,7 @@ en:
       lat: "lat"
       lng: "lng"
       comment: "comment"
+      take_over: "take over"
       quantity: "quantity"
       active: "active"
       tags: "tags"

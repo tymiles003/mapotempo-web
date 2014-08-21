@@ -106,6 +106,14 @@ function destinations_form(params) {
       width: '100%'
     });
 
+    $('#destination_take_over').timeEntry({
+      show24Hours: true,
+      showSeconds: true,
+      initialField: 1,
+      defaultTime: new Date(0, 0, 0, 0, 0, 0),
+      spinnerImage: ''
+    });
+
     $('#destination_open, #destination_close').timeEntry({
       show24Hours: true,
       spinnerImage: ''
@@ -542,10 +550,13 @@ function destinations_index(params) {
         },
         7: {
           sorter: false
+        },
+        8: {
+          sorter: false
         }
       },
       textExtraction: function (node, table, cellIndex) {
-        if (cellIndex == 6) {
+        if (cellIndex == 7) {
           return $.map($("[name=destination\\[tag_ids\\]\\[\\]] :selected", node), function (e, i) {
             return e.text;
           }).join(",");
@@ -568,7 +579,8 @@ function destinations_index(params) {
           1: filter_text,
           2: filter_text,
           3: filter_number,
-          4: function(e, n, f, i, $r) {
+          4: filter_text,
+          5: function(e, n, f, i, $r) {
             n = n.split(',');
             n[0] = n[0].split(':');
             n[0] = new Date(2000, 01, 01, n[0][0], n[0][1]);
@@ -581,11 +593,11 @@ function destinations_index(params) {
 
             return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
           },
-          5: filter_text,
-          6: filter_text
+          6: filter_text,
+          7: filter_text
         },
         filter_formatter: {
-          4: function ($cell, indx) {
+          5: function ($cell, indx) {
             return $.tablesorter.filterFormatter.uiRange($cell, indx, {
               values: [0, 24],
               min: 0,
@@ -594,7 +606,7 @@ function destinations_index(params) {
               valueToHeader: false
             });
           },
-          7: function ($cell, indx) {
+          8: function ($cell, indx) {
             return false;
           }
         }

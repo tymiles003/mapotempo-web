@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140816113900) do
+ActiveRecord::Schema.define(version: 20140820163401) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20140816113900) do
     t.string   "detail"
     t.string   "comment"
     t.string   "ref"
+    t.time     "take_over"
   end
 
   add_index "destinations", ["customer_id"], name: "index_destinations_on_customer_id"

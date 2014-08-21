@@ -11,7 +11,13 @@ route.stops.each{ |stop|
   if stop.active and stop.destination.lat
 %>
     <rtept lat="<%= stop.destination.lat %>" lon="<%= stop.destination.lng %>">
-      <name><%= index += 1%>-<%= stop.destination.name %><% if stop.destination.quantity && stop.destination.quantity > 1 %> ⨯<%= stop.destination.quantity %><% end %></name>
+      <name>
+        <%= index += 1%>-
+        <%= stop.destination.ref %>
+        <%= stop.destination.name %>
+        <% if stop.destination.quantity && stop.destination.quantity > 1 %> ⨯<%= stop.destination.quantity %><% end %>
+        <% if stop.destination.take_over %>(<%= stop.destination.take_over.strftime("%H:%M:%S") %>)<% end %>
+      </name>
       <desc><%= stop.time.strftime("%H:%M") if stop.time %>
       <% if stop.destination.open or stop.destination.close %>
 <%= stop.destination.open.strftime("%H:%M") if stop.destination.open %>-<%= stop.destination.close.strftime("%H:%M") if stop.destination.close %>

@@ -14,6 +14,7 @@ route.stops.each { |stop|
     stop.destination.lat,
     stop.destination.lng,
     stop.destination.comment,
+    (stop.destination.take_over.strftime("%H:%M:%S") if stop.destination.take_over),
     stop.destination.quantity,
     ((stop.active ? '1' : '0') if route.vehicle),
     (stop.destination.open.strftime("%H:%M") if stop.destination.open),

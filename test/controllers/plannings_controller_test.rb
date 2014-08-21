@@ -1,5 +1,8 @@
 require 'test_helper'
 
+require 'rexml/document'
+include REXML
+
 class PlanningsControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
@@ -58,13 +61,14 @@ class PlanningsControllerTest < ActionController::TestCase
   test "should show planning as gpx" do
     get :show, id: @planning, format: :gpx
     assert_response :success
+    assert Document.new(response.body)
   end
 
   test "should show planning as csv" do
     get :show, id: @planning, format: :csv
     assert_response :success
-    assert_equal ',,,,a,unaffected_one,MyString,MyString,MyString,MyString,1.5,1.5,MyString,1,,10:00,11:00,tag1,"","",""', response.body.split("\n")[1]
-    assert_equal 'vehicle_one,1,00:00,1.5,c,destination_two,MyString,MyString,MyString,MyString,1.5,1.5,MyString,3,1,10:00,11:00,tag1,"","",""', response.body.split("\n")[3]
+    assert_equal ',,,,a,unaffected_one,MyString,MyString,MyString,MyString,1.5,1.5,MyString,00:01:00,1,,10:00,11:00,tag1,"","",""', response.body.split("\n")[1]
+    assert_equal 'vehicle_one,1,00:00,1.5,c,destination_two,MyString,MyString,MyString,MyString,1.5,1.5,MyString,,3,1,10:00,11:00,tag1,"","",""', response.body.split("\n")[3]
   end
 
   test "should get edit" do
