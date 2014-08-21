@@ -30,10 +30,10 @@
             <div class="quantity visible-xs">
               <% if stop.destination.quantity <= 3 %>
                 <% stop.destination.quantity.times do |i| %>
-                  <i class="icon icon-gift icon-fixed-width"></i>
+                  <i class="icon icon-archive icon-fixed-width"></i>
                 <% end %>
               <% else %>
-                <i class="icon icon-gift icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
+                <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
               <% end %>
             </div>
           <% end %>
@@ -66,10 +66,10 @@
             <div class="quantity">
               <% if stop.destination.quantity <= 3 %>
                 <% stop.destination.quantity.times do |i| %>
-                  <i class="icon icon-gift icon-fixed-width"></i>
+                  <i class="icon icon-archive icon-fixed-width"></i>
                 <% end %>
               <% else %>
-                <i class="icon icon-gift icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
+                <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
               <% end %>
             </div>
           <% end %>
@@ -83,7 +83,7 @@
               <span><i class="icon icon-time icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_window' %></span>
             <% end %>
             <% if stop.out_of_capacity %>
-              <span><i class="icon icon-gift icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_capacity' %></span>
+              <span><i class="icon icon-archive icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_capacity' %></span>
             <% end %>
             <% if stop.out_of_drive_time %>
               <span><i class="icon icon-power-off icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
