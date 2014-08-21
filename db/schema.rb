@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140820163401) do
+ActiveRecord::Schema.define(version: 20140821142548) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20140820163401) do
     t.string   "tomtom_password"
     t.string   "tomtom_account"
     t.integer  "router_id"
+    t.boolean  "print_planning_annotating"
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id"

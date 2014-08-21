@@ -95,6 +95,7 @@ fr:
         tomtom_password: "Mot de passe WEBFLEET"
         router: "Calculateur d'itinéraire"
         router_id: "Calculateur d'itinéraire"
+        print_planning_annotating: "Émargement des feuilles de routes"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -237,6 +238,9 @@ fr:
       take_over_help: "Durée de visite moyenne par client"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
+      print:
+        title: "Impressions"
+        planning_annotating: "Émargement des feuilles de routes"
 
   destinations:
     default_store_name: "Départ véhicule"
@@ -407,6 +411,12 @@ fr:
       out_of_drive_time: "hors créneau véhicule"
     form:
       tags_help: "Restreint les clients pris en compte à ces catégories"
+
+  routes:
+    show:
+      annotating:
+        hour: "Heure de passage :"
+        signature: "Signature :"
 
   shared:
     error_messages:

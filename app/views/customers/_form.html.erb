@@ -14,6 +14,20 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h2 class="panel-title">
+        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePrint">
+          <%= t '.print.title' %>
+        </a>
+      </h2>
+    </div>
+    <div id="collapsePrint" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= f.check_box :print_planning_annotating, t('.print.planning_annotating') %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">
         <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomtom">
           <%= t '.tomtom' %>
         </a>

@@ -91,6 +91,18 @@
           </span>
         </div>
        <% end %>
+
+      <% if stop.destination.customer && current_user.customer.print_planning_annotating %>
+        <div class="row annotating">
+          <hr/>
+          <div class="col-md-6 col-sm-6" >
+            <span><%= t '.annotating.hour' %></span>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <span><%= t '.annotating.signature' %></span>
+          </div>
+        <div>
+      <% end %>
     </li>
   <%
     end

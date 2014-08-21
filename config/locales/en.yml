@@ -92,6 +92,7 @@ en:
         tomtom_password: "WEBFLEET Password"
         router: "Route planner"
         router_id: "Route planner"
+        print_planning_annotating: "Planning annotating"
       destination:
         name: "Name"
         address: "Address"
@@ -234,6 +235,9 @@ en:
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
+      print:
+        title: "Printing"
+        planning_annotating: "Planning annotating"
 
   destinations:
     default_store_name: "Store"
@@ -402,6 +406,12 @@ en:
       out_of_drive_time: "out of vehicle's time window"
     form:
       tags_help: "Restrict customer to this categories"
+
+  routes:
+    show:
+      annotating:
+        hour: "Passing Time:"
+        signature: "Signature:"
 
   shared:
     error_messages:
