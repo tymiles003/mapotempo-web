@@ -1,5 +1,5 @@
-<li class="route_print" style="border-left: 6px solid <%= route.vehicle.color %>">
-  <h1><%= route.planning.name %> - <%= route.vehicle.name %></h1>
+<li class="route_print">
+  <h1><i class="icon icon-calendar icon-fixed-width"></i><%= route.planning.name %> - <i class="icon icon-truck icon-fixed-width"></i><%= route.vehicle.name %></h1>
   <span>
     <i class="icon icon-check-sign icon-fixed-width"></i> <%= route.size %> <%= I18n.t 'plannings.edit.stops' %>
     <i class="icon icon-time icon-fixed-width"></i> <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
@@ -11,8 +11,9 @@
   route.stops.each{ |stop|
     if stop.active and stop.destination.lat
   %>
-    <li class="list-group-item">
-      <div class="row">
+    <li class="list-group-item" style="border-left: 3px solid <%= route.vehicle.color %>">
+      <div class="row no-gutter">
+
         <div class="title col-md-2 col-sm-2 col-xs-3">
           <span class="number">#<%= index += 1 %></span>
           <span class="time"><%= stop.time.strftime("%H:%M") if stop.time %></span>
@@ -22,12 +23,14 @@
             </span>
           <% end %>
           <% if stop.destination.tags.size > 0 %>
-            <div class="tags visible-xs">
-              <%= stop.destination.tags.collect { |tag| tag.label }.join(', ') %>
+            <div class="tags">
+              <% stop.destination.tags.each { |tag| %>
+                <i class="icon icon-tag icon-fixed-width"></i><%= tag.label %>
+              <% } %>
             </div>
           <% end %>
           <% if stop.destination.quantity && stop.destination.quantity > 1 %>
-            <div class="quantity visible-xs">
+            <div class="quantity">
               <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
             </div>
           <% end %>
@@ -35,7 +38,12 @@
             <span class="take_over">(<%= stop.destination.take_over.strftime("%H:%M:%S") %>)</span>
           <% end %>
         </div>
-        <div class="col-md-5 col-sm-8 col-xs-9">
+
+        <% if stop.destination.customer && current_user.customer.print_planning_annotating %>
+          <div class="col-md-5 col-sm-6 col-xs-6">
+        <% else %>
+          <div class="col-md-6 col-sm-6 col-xs-9">
+        <% end %>
           <span class="ref"><%= stop.destination.ref %></span>
           <span class="name"><%= stop.destination.name %></span><br/>
           <span class="address">
@@ -49,19 +57,19 @@
             <div class="comment visible-sm visible-xs"><%= stop.destination.comment %></div>
           <% end %>
         </div>
-        <div class="comment col-md-3 hidden-sm hidden-xs"><%= stop.destination.comment %></div>
-        <div class="devilery col-md-2 col-sm-2 hidden-xs">
-          <% if stop.destination.tags.size > 0 %>
-            <div class="tags">
-              <%= stop.destination.tags.collect { |tag| tag.label }.join(', ') %>
-            </div>
-          <% end %>
-          <% if stop.destination.quantity && stop.destination.quantity > 1 %>
-            <div class="quantity">
-              <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
-            </div>
-          <% end %>
-        </div>
+
+        <% if stop.destination.customer && current_user.customer.print_planning_annotating %>
+          <div class="comment col-md-2 hidden-sm hidden-xs"><%= stop.destination.comment %></div>
+        <% else %>
+          <div class="comment col-md-4 col-sm-4 hidden-xs"><%= stop.destination.comment %></div>
+        <% end %>
+
+        <% if stop.destination.customer && current_user.customer.print_planning_annotating %>
+          <div class="annotating col-md-3 col-sm-3 col-xs-3">
+            <div><%= t '.annotating.hour' %></div>
+            <div class="signature"><%= t '.annotating.signature' %></div>
+          </div>
+        <% end %>
       </div>
 
       <% if stop.out_of_window || stop.out_of_capacity || stop.out_of_capacity %>
@@ -79,18 +87,6 @@
           </span>
         </div>
        <% end %>
-
-      <% if stop.destination.customer && current_user.customer.print_planning_annotating %>
-        <div class="row annotating">
-          <hr/>
-          <div class="col-md-6 col-sm-6" >
-            <span><%= t '.annotating.hour' %></span>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <span><%= t '.annotating.signature' %></span>
-          </div>
-        <div>
-      <% end %>
     </li>
   <%
     end
