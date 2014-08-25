@@ -189,10 +189,6 @@ fr:
 
     errors:
       models:
-        customer:
-          attributes:
-            destinations:
-              over_max_limit: "dépassement du nombre maximal"
         zone:
           attributes:
             vehicles:

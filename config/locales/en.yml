@@ -186,10 +186,6 @@ en:
 
     errors:
       models:
-        customer:
-          attributes:
-            destinations:
-              over_max_limit: "over maximum number"
         zone:
           attributes:
             vehicles:

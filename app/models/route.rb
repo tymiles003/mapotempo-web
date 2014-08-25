@@ -25,7 +25,6 @@ class Route < ActiveRecord::Base
   nilify_blanks
   validates :planning, presence: true
 #  validates :vehicle, presence: true # nil on unplanned route
-  validate :validate_stops_length
 
   after_initialize :assign_defaults, if: 'new_record?'
 
@@ -222,11 +221,5 @@ class Route < ActiveRecord::Base
 
     def stops_segregate
       stops[0..-2].group_by{ |stop| !!(stop.active && stop.destination.lat && stop.destination.lng) }
-    end
-
-    def validate_stops_length
-      if vehicle && stops.length > 300
-        errors.add(:stops, :over_max_limit)
-      end
     end
 end
