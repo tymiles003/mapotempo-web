@@ -84,7 +84,7 @@ class RouteTest < ActiveSupport::TestCase
   test "should add index" do
     o = routes(:route_one)
     o.add(destinations(:destination_two), 1)
-    o.reload
+    o.stops.reload
     assert_equal destinations(:destination_two), o.stops[1].destination
   end
 
@@ -111,7 +111,7 @@ class RouteTest < ActiveSupport::TestCase
       s.destination.save
     }
     o.vehicle.open = Time.new(2000, 01, 01, 00, 00, 00, "+00:00")
-    o.planning.customer.take_over = 0
+    o.planning.customer.take_over = Time.new(2000, 01, 01, 00, 00, 00, "+00:00")
     o.planning.customer.save
 
     assert_equal 0, o.sum_out_of_window
