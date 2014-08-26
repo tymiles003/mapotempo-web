@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821142548) do
+ActiveRecord::Schema.define(version: 20140826131538) do
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -29,12 +29,11 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.string   "tomtom_account"
     t.integer  "router_id"
     t.boolean  "print_planning_annotating"
+    t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
+    t.index ["job_matrix_id"], :name => "index_customers_on_job_matrix_id"
+    t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
+    t.index ["store_id"], :name => "index_customers_on_store_id"
   end
-
-  add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id"
-  add_index "customers", ["job_matrix_id"], name: "index_customers_on_job_matrix_id"
-  add_index "customers", ["job_optimizer_id"], name: "index_customers_on_job_optimizer_id"
-  add_index "customers", ["store_id"], name: "index_customers_on_store_id"
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -49,9 +48,8 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.integer  "progress",   default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["priority", "run_at"], :name => "delayed_jobs_priority"
   end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
   create_table "destinations", force: true do |t|
     t.string   "name"
@@ -70,13 +68,26 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.string   "comment"
     t.string   "ref"
     t.time     "take_over"
+    t.index ["customer_id"], :name => "index_destinations_on_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_customer_id"
   end
 
-  add_index "destinations", ["customer_id"], name: "index_destinations_on_customer_id"
+  create_table "tags", force: true do |t|
+    t.string   "label"
+    t.integer  "customer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["customer_id"], :name => "index_tags_on_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_tags_customer_id"
+  end
 
   create_table "destinations_tags", id: false, force: true do |t|
     t.integer "destination_id"
     t.integer "tag_id"
+    t.index ["destination_id"], :name => "fk__destinations_tags_destination_id"
+    t.index ["tag_id"], :name => "fk__destinations_tags_tag_id"
+    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_tags_destination_id"
+    t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_tags_tag_id"
   end
 
   create_table "layers", force: true do |t|
@@ -88,6 +99,15 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.string   "urlssl"
   end
 
+  create_table "zonings", force: true do |t|
+    t.string   "name"
+    t.integer  "customer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["customer_id"], :name => "index_zonings_on_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zonings_customer_id"
+  end
+
   create_table "plannings", force: true do |t|
     t.string   "name"
     t.integer  "customer_id"
@@ -95,13 +115,19 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.datetime "updated_at"
     t.integer  "zoning_id"
     t.boolean  "zoning_out_of_date"
+    t.index ["customer_id"], :name => "index_plannings_on_customer_id"
+    t.index ["zoning_id"], :name => "fk__plannings_zoning_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_customer_id"
+    t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_zoning_id"
   end
-
-  add_index "plannings", ["customer_id"], name: "index_plannings_on_customer_id"
 
   create_table "plannings_tags", id: false, force: true do |t|
     t.integer "planning_id"
     t.integer "tag_id"
+    t.index ["planning_id"], :name => "fk__plannings_tags_planning_id"
+    t.index ["tag_id"], :name => "fk__plannings_tags_tag_id"
+    t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_tags_planning_id"
+    t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_tags_tag_id"
   end
 
   create_table "rails_admin_histories", force: true do |t|
@@ -110,18 +136,33 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.integer  "item"
     t.string   "table"
     t.integer  "month",      limit: 2
-    t.integer  "year",       limit: 5
+    t.integer  "year",       limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
   end
-
-  add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories"
 
   create_table "routers", force: true do |t|
     t.string   "name"
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "vehicles", force: true do |t|
+    t.string   "name"
+    t.float    "emission"
+    t.float    "consumption"
+    t.integer  "capacity"
+    t.string   "color"
+    t.time     "open"
+    t.time     "close"
+    t.integer  "customer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "tomtom_id"
+    t.index ["customer_id"], :name => "index_vehicles_on_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_customer_id"
   end
 
   create_table "routes", force: true do |t|
@@ -137,10 +178,11 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.boolean  "locked"
     t.datetime "build_at"
     t.boolean  "out_of_date"
+    t.index ["planning_id"], :name => "index_routes_on_planning_id"
+    t.index ["vehicle_id"], :name => "index_routes_on_vehicle_id"
+    t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_routes_planning_id"
+    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_routes_vehicle_id"
   end
-
-  add_index "routes", ["planning_id"], name: "index_routes_on_planning_id"
-  add_index "routes", ["vehicle_id"], name: "index_routes_on_vehicle_id"
 
   create_table "stops", force: true do |t|
     t.integer  "index"
@@ -155,19 +197,11 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.boolean  "out_of_window"
     t.boolean  "out_of_capacity"
     t.boolean  "out_of_drive_time"
+    t.index ["destination_id"], :name => "index_stops_on_destination_id"
+    t.index ["route_id"], :name => "index_stops_on_route_id"
+    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_destination_id"
+    t.foreign_key ["route_id"], "routes", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_route_id"
   end
-
-  add_index "stops", ["destination_id"], name: "index_stops_on_destination_id"
-  add_index "stops", ["route_id"], name: "index_stops_on_route_id"
-
-  create_table "tags", force: true do |t|
-    t.string   "label"
-    t.integer  "customer_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "tags", ["customer_id"], name: "index_tags_on_customer_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -185,30 +219,12 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.integer  "layer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-
-  create_table "vehicles", force: true do |t|
-    t.string   "name"
-    t.float    "emission"
-    t.float    "consumption"
-    t.integer  "capacity"
-    t.string   "color"
-    t.time     "open"
-    t.time     "close"
-    t.integer  "customer_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "tomtom_id"
-  end
-
-  add_index "vehicles", ["customer_id"], name: "index_vehicles_on_customer_id"
-
-  create_table "vehicles_zones", id: false, force: true do |t|
-    t.integer "vehicle_id"
-    t.integer "zone_id"
+    t.index ["customer_id"], :name => "fk__users_customer_id"
+    t.index ["email"], :name => "index_users_on_email", :unique => true
+    t.index ["layer_id"], :name => "fk__users_layer_id"
+    t.index ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_users_customer_id"
+    t.foreign_key ["layer_id"], "layers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_users_layer_id"
   end
 
   create_table "zones", force: true do |t|
@@ -216,17 +232,17 @@ ActiveRecord::Schema.define(version: 20140821142548) do
     t.integer  "zoning_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["zoning_id"], :name => "index_zones_on_zoning_id"
+    t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zones_zoning_id"
   end
 
-  add_index "zones", ["zoning_id"], name: "index_zones_on_zoning_id"
-
-  create_table "zonings", force: true do |t|
-    t.string   "name"
-    t.integer  "customer_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "vehicles_zones", id: false, force: true do |t|
+    t.integer "vehicle_id"
+    t.integer "zone_id"
+    t.index ["vehicle_id"], :name => "fk__vehicles_zones_vehicle_id"
+    t.index ["zone_id"], :name => "fk__vehicles_zones_zone_id"
+    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_zones_vehicle_id"
+    t.foreign_key ["zone_id"], "zones", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_zones_zone_id"
   end
-
-  add_index "zonings", ["customer_id"], name: "index_zonings_on_customer_id"
 
 end

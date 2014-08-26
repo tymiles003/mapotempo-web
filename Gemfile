@@ -49,6 +49,7 @@ group :test do
   gem 'database_cleaner'
 end
 
+gem 'schema_plus'
 gem 'rails-i18n'
 gem 'execjs'
 gem 'therubyracer'

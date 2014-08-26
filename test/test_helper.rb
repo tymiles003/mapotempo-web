@@ -58,3 +58,25 @@ Capybara.configure do |config|
   config.javascript_driver = :webkit
   config.current_driver = Capybara.javascript_driver
 end
+
+if ActiveRecord::ConnectionAdapters.const_defined?(:PostgreSQLAdapter)
+  class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
+    alias_method :old_delete, :delete
+    alias_method :old_insert_fixture, :insert_fixture
+
+    def delete(*args)
+      @defered |= defered
+      old_delete(*args)
+    end
+
+    def insert_fixture(*args)
+      @defered |= defered
+      old_insert_fixture(*args)
+    end
+
+    private
+      def defered
+        execute("SET CONSTRAINTS ALL DEFERRED")
+      end
+  end
+end
