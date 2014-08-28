@@ -103,6 +103,12 @@ class Route < ActiveRecord::Base
   def set_destinations(destinations)
     Stop.transaction do
       stops.clear
+      add_destinations(destinations)
+    end
+  end
+
+  def add_destinations(destinations)
+    Stop.transaction do
       destinations.select!{ |d| d[0] != planning.customer.store }
       if vehicle
         destinations = [[planning.customer.store, true]] + destinations + [[planning.customer.store, true]]

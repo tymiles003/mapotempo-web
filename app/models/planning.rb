@@ -195,22 +195,24 @@ class Planning < ActiveRecord::Base
   private
     def split_by_zones
       if zoning && !routes.empty?
+        vehicles_map = Hash[routes.group_by(&:vehicle).map { |vehicle, routes| [vehicle, routes[0]]}]
         z = {}
         unaffected = []
-        zoning.apply(destinations).each{ |zone, destinations|
-          if zone && zone.vehicles && zone.vehicles.size > 0
-            z[zone.vehicles[0]] = destinations
-          else
-            unaffected += destinations
-          end
+        destinations_free = routes.select{ |route|
+          !route.locked
+        }.collect{ |route|
+          route.vehicle ? route.stops[1..-2] : route.stops
+        }.flatten.map(&:destination)
+
+        routes.each{ |route|
+          route.locked || route.set_destinations([])
         }
-        z = Hash[z]
-        routes[0].set_destinations(unaffected)
-        routes[1..-1].each{ |route|
-          if route.vehicle && z.has_key?(route.vehicle)
-            route.set_destinations(z[route.vehicle].collect{ |d| [d,true]})
+        zoning.apply(destinations_free).each{ |zone, destinations|
+          if zone && zone.vehicles && zone.vehicles.size > 0 && !vehicles_map[zone.vehicles[0]].locked
+            vehicles_map[zone.vehicles[0]].set_destinations(destinations.collect{ |d| [d,true]})
           else
-            route.set_destinations([])
+            # Add to unplanned route even if the route is locked
+            routes[0].add_destinations(destinations.collect{ |d| [d,true]})
           end
         }
       end

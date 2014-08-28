@@ -23,7 +23,7 @@
           {{#i18n}}plannings.edit.out_of_road{{/i18n}}
           <div class="btn-group">
             <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="icon-eye-{{#hidden}}close{{/hidden}}{{^hidden}}open{{/hidden}} icon-fixed-width"></i></button>
-            <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+            <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_unplanned_help{{/i18n}}"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
           </div>
         </div>
         <div class="panel-body">
@@ -62,7 +62,7 @@
           <a href="{{path}}" class="btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.vehicle_help{{/i18n}}"><i class="icon-truck icon-fixed-width"></i></a>
           <button type="button" class="optimize btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"><i class="icon-gear icon-fixed-width"></i></button>
           <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="icon-eye-{{#hidden}}close{{/hidden}}{{^hidden}}open{{/hidden}} icon-fixed-width"></i></button>
-          <button type="button" class="lock btn btn-default btn-xs"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+          <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_help{{/i18n}}"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
           <div class="btn-group">
             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.export_help{{/i18n}}"><i class="icon-share icon-fixed-width"></i><span class="caret"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">

@@ -337,6 +337,8 @@ en:
       out_of_date_zoning: "Zoning changed. Please refresh."
       out_of_road: "Out of route"
       toggle_help: "Toogle view of clients on map"
+      locked_unplanned_help: "Lock the out of route on global planning operations"
+      locked_help: "Lock the route on global planning operations"
       vehicle_help: "Vehicle parameters"
       optimize_help: "Optimize route"
       export_help: "Export route"

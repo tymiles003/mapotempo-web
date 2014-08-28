@@ -340,6 +340,8 @@ fr:
       out_of_date_zoning: "Le Zonage a été modifié. Veuillez actualiser."
       out_of_road: "Non planifiés"
       toggle_help: "Affiche ou cache les clients sur la carte"
+      locked_unplanned_help: "Verrouille les non planifiés pour les opérations globales sur le planning"
+      locked_help: "Verrouille la tournée pour les opérations globales sur le planning"
       vehicle_help: "Paramétrer le véhicule"
       optimize_help: "Optimiser la tournée"
       export_help: "Exporter la tournée"

@@ -440,6 +440,8 @@ function plannings_edit(params) {
       var i = $("i", this);
       i.toggleClass("icon-lock");
       i.toggleClass("icon-unlock");
+      $(this).toggleClass("btn-default");
+      $(this).toggleClass("btn-warning");
       var locked = i.hasClass("icon-lock");
       $.ajax({
         type: "patch",
