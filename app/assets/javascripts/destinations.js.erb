@@ -526,7 +526,9 @@ function destinations_index(params) {
       }
     });
 
-    map.fitBounds(markersLayers.getBounds());
+    if (markersLayers.getLayers().length > 0) {
+      map.fitBounds(markersLayers.getBounds());
+    }
 
     count();
 
