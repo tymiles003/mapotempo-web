@@ -58,8 +58,12 @@
     }
 
     .vehicle_select {
-      width: 165px;
+      width: 163px;
       vertical-align: middle;
+    }
+
+    .panel-heading {
+      min-height: 28px;
     }
 
     .stops {

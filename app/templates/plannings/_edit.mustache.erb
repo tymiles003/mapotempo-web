@@ -21,7 +21,7 @@
         <div class="panel-heading">
           <i class="icon icon-resize-horizontal"></i>
           {{#i18n}}plannings.edit.out_of_road{{/i18n}}
-          <div class="btn-group">
+          <div class="btn-group pull-right">
             <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="icon-eye-{{#hidden}}close{{/hidden}}{{^hidden}}open{{/hidden}} icon-fixed-width"></i></button>
             <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_unplanned_help{{/i18n}}"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
           </div>
@@ -58,7 +58,7 @@
       <div class="panel-heading">
         <i class="icon icon-resize-horizontal"></i>
         <input type="hidden" class="vehicle_select" />
-        <div class="btn-group">
+        <div class="btn-group pull-right">
           <a href="{{path}}" class="btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.vehicle_help{{/i18n}}"><i class="icon-truck icon-fixed-width"></i></a>
           <button type="button" class="optimize btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"><i class="icon-gear icon-fixed-width"></i></button>
           <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="icon-eye-{{#hidden}}close{{/hidden}}{{^hidden}}open{{/hidden}} icon-fixed-width"></i></button>
