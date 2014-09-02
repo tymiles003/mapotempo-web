@@ -171,7 +171,7 @@ GEM
     kaminari (0.15.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    leaflet-rails (0.7.1)
+    leaflet-rails (0.7.3)
     libv8 (3.16.14.3)
     macaddr (1.6.1)
       systemu (~> 2.5.0)
