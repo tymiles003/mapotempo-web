@@ -77,6 +77,7 @@ class RouteTest < ActiveSupport::TestCase
   test "should add" do
     o = routes(:route_zero)
     o.add(destinations(:destination_two))
+    o.save!
     o.reload
     assert o.stops.collect(&:destination).include?(destinations(:destination_two))
   end
@@ -84,8 +85,9 @@ class RouteTest < ActiveSupport::TestCase
   test "should add index" do
     o = routes(:route_one)
     o.add(destinations(:destination_two), 1)
+    o.save!
     o.stops.reload
-    assert_equal destinations(:destination_two), o.stops[1].destination
+    assert_equal destinations(:destination_two), o.stops.find{ |s| s.destination.name == 'destination_two' }.destination
   end
 
   test "should not add without index" do
