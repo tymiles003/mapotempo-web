@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140826131538) do
+ActiveRecord::Schema.define(version: 20140903151616) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "customers", force: true do |t|
     t.date     "end_subscription"
@@ -74,7 +77,7 @@ ActiveRecord::Schema.define(version: 20140826131538) do
 
   create_table "tags", force: true do |t|
     t.string   "label"
-    t.integer  "customer_id"
+    t.integer  "customer_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["customer_id"], :name => "index_tags_on_customer_id"
@@ -82,8 +85,8 @@ ActiveRecord::Schema.define(version: 20140826131538) do
   end
 
   create_table "destinations_tags", id: false, force: true do |t|
-    t.integer "destination_id"
-    t.integer "tag_id"
+    t.integer "destination_id", null: false
+    t.integer "tag_id",         null: false
     t.index ["destination_id"], :name => "fk__destinations_tags_destination_id"
     t.index ["tag_id"], :name => "fk__destinations_tags_tag_id"
     t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_tags_destination_id"
@@ -101,7 +104,7 @@ ActiveRecord::Schema.define(version: 20140826131538) do
 
   create_table "zonings", force: true do |t|
     t.string   "name"
-    t.integer  "customer_id"
+    t.integer  "customer_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["customer_id"], :name => "index_zonings_on_customer_id"
@@ -110,7 +113,7 @@ ActiveRecord::Schema.define(version: 20140826131538) do
 
   create_table "plannings", force: true do |t|
     t.string   "name"
-    t.integer  "customer_id"
+    t.integer  "customer_id",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "zoning_id"
@@ -122,8 +125,8 @@ ActiveRecord::Schema.define(version: 20140826131538) do
   end
 
   create_table "plannings_tags", id: false, force: true do |t|
-    t.integer "planning_id"
-    t.integer "tag_id"
+    t.integer "planning_id", null: false
+    t.integer "tag_id",      null: false
     t.index ["planning_id"], :name => "fk__plannings_tags_planning_id"
     t.index ["tag_id"], :name => "fk__plannings_tags_tag_id"
     t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_tags_planning_id"
@@ -157,7 +160,7 @@ ActiveRecord::Schema.define(version: 20140826131538) do
     t.string   "color"
     t.time     "open"
     t.time     "close"
-    t.integer  "customer_id"
+    t.integer  "customer_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "tomtom_id"
@@ -168,7 +171,7 @@ ActiveRecord::Schema.define(version: 20140826131538) do
   create_table "routes", force: true do |t|
     t.float    "distance"
     t.float    "emission"
-    t.integer  "planning_id"
+    t.integer  "planning_id", null: false
     t.integer  "vehicle_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -189,8 +192,8 @@ ActiveRecord::Schema.define(version: 20140826131538) do
     t.boolean  "active"
     t.float    "distance"
     t.text     "trace"
-    t.integer  "route_id"
-    t.integer  "destination_id"
+    t.integer  "route_id",          null: false
+    t.integer  "destination_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "time"
@@ -216,7 +219,7 @@ ActiveRecord::Schema.define(version: 20140826131538) do
     t.string   "last_sign_in_ip"
     t.boolean  "admin"
     t.integer  "customer_id"
-    t.integer  "layer_id"
+    t.integer  "layer_id",                            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["customer_id"], :name => "fk__users_customer_id"
@@ -229,7 +232,7 @@ ActiveRecord::Schema.define(version: 20140826131538) do
 
   create_table "zones", force: true do |t|
     t.text     "polygon"
-    t.integer  "zoning_id"
+    t.integer  "zoning_id",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["zoning_id"], :name => "index_zones_on_zoning_id"
@@ -237,8 +240,8 @@ ActiveRecord::Schema.define(version: 20140826131538) do
   end
 
   create_table "vehicles_zones", id: false, force: true do |t|
-    t.integer "vehicle_id"
-    t.integer "zone_id"
+    t.integer "vehicle_id", null: false
+    t.integer "zone_id",    null: false
     t.index ["vehicle_id"], :name => "fk__vehicles_zones_vehicle_id"
     t.index ["zone_id"], :name => "fk__vehicles_zones_zone_id"
     t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_zones_vehicle_id"
