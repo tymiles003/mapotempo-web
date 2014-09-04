@@ -80,20 +80,17 @@ class Destination < ActiveRecord::Base
       if customer && (@tags_updated || new_record?)
         @tags_updated = false
 
-        plannings = stops.collect{ |stop| stop.route.planning }
-
-        # Linked planning with no more match
-        plannings.select{ |planning|
-          planning.tags.to_a & tags.to_a != planning.tags.to_a
-        }.each{ |planning|
-          planning.destination_remove(self)
-        }
-
-        # Linked planning with new match
-        (customer.plannings - plannings).select{ |planning|
-          planning.tags.to_a & tags.to_a == planning.tags.to_a
-        }.each{ |planning|
-          planning.destination_add(self)
+        # Don't use local collection here, not set when save new record
+        customer.plannings.each{ |planning|
+          if planning.destinations.include?(self)
+            if planning.tags.to_a & tags.to_a != planning.tags.to_a
+              planning.destination_remove(self)
+            end
+          else
+            if planning.tags.to_a & tags.to_a == planning.tags.to_a
+              planning.destination_add(self)
+            end
+          end
         }
       end
 

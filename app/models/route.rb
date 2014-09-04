@@ -41,7 +41,7 @@ class Route < ActiveRecord::Base
   def default_stops
     i = 0
     stops.clear
-    planning.destinations.each { |c|
+    planning.destinations_compatibles.each { |c|
       stops.build(destination:c, active:true, index:i+=1)
     }
 
@@ -117,7 +117,6 @@ class Route < ActiveRecord::Base
       dests.each{ |stop|
         destination, active = stop
         s = stops.build(destination:destination, active:active, index:i+=1)
-        destination.stops << s
       }
       compute
     end
@@ -134,7 +133,6 @@ class Route < ActiveRecord::Base
       raise
     end
     s = stops.build(destination: destination, index: index, active: active)
-    destination.stops << s # FIXME workaround, this line is not needed
 
     if self.vehicle
       self.out_of_date = true

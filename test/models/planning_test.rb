@@ -112,6 +112,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal 4, o.routes[1].stops.size
     assert_difference('Stop.count', 0) do
       o.automatic_insert(o.routes[0].stops[0])
+      o.save!
       o.customer.save!
     end
     o.reload

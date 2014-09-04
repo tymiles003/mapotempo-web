@@ -155,18 +155,13 @@ class Planning < ActiveRecord::Base
         nullify :planning_id
       end
 
-      ret = nil
-      Planning.transaction do # FIXME workaround, transaction needed cause of workaround into route#add
-        r = ri[0].amoeba_dup
-        r.add(stop.destination, ri[1], true)
-        r.compute
+      r = ri[0].amoeba_dup
+      r.add(stop.destination, ri[1], true)
+      r.compute
 
-        # Difference of total time + difference of sum of out_of_window time
-        ret = ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
+      # Difference of total time + difference of sum of out_of_window time
+      ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
         (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
-        raise ActiveRecord::Rollback # Ensures nothing is really saved
-      end
-      ret
     } || [routes[1], 2]
 
     route.add(stop.destination, index || 2, true)
@@ -184,12 +179,18 @@ class Planning < ActiveRecord::Base
     routes.each(&:active_all)
   end
 
-  def destinations
+  def destinations_compatibles
     customer.destinations.select{ |c|
       c != customer.store
     }.select{ |c|
       tags.to_a & c.tags.to_a == tags.to_a
     }
+  end
+
+  def destinations
+    routes.collect{ |route|
+      route.stops.collect(&:destination)
+    }.flatten
   end
 
   private
