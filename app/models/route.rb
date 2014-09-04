@@ -100,21 +100,21 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def set_destinations(destinations)
+  def set_destinations(dests)
     Stop.transaction do
       stops.clear
-      add_destinations(destinations)
+      add_destinations(dests)
     end
   end
 
-  def add_destinations(destinations)
+  def add_destinations(dests)
     Stop.transaction do
-      destinations.select!{ |d| d[0] != planning.customer.store }
+      dests.select!{ |d| d[0] != planning.customer.store }
       if vehicle
-        destinations = [[planning.customer.store, true]] + destinations + [[planning.customer.store, true]]
+        dests = [[planning.customer.store, true]] + dests + [[planning.customer.store, true]]
       end
       i = 0
-      destinations.each{ |stop|
+      dests.each{ |stop|
         destination, active = stop
         s = stops.build(destination:destination, active:active, index:i+=1)
         destination.stops << s
