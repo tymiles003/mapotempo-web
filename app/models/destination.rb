@@ -19,7 +19,7 @@ require 'geocode'
 
 class Destination < ActiveRecord::Base
   belongs_to :customer
-  has_many :stops, inverse_of: :destination, dependent: :destroy
+  has_many :stops, inverse_of: :destination, dependent: :delete_all
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
 
   nilify_blanks
