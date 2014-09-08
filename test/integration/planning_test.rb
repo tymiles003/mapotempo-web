@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PlanningTest < ActionDispatch::IntegrationTest
+class PlanningsTest < ActionDispatch::IntegrationTest
   setup do
     DatabaseCleaner.clean
     Capybara.reset!
