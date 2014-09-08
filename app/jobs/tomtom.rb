@@ -20,8 +20,7 @@ require 'tomtom_webfleet'
 class Tomtom
 
   def self.export_route_as_orders(customer, route)
-    TomtomWebfleet.clearOrders(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id)
-
+    order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
     route.stops.each{ |stop|
       description = [
         '',
@@ -32,13 +31,11 @@ class Tomtom
         stop.destination.detail,
         stop.destination.comment,
       ].select{ |s| s }.join(' ').strip
-      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, stop, stop.id, description)
+      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, stop, order_id_base+stop.id.to_s, description)
     }
   end
 
   def self.export_route_as_waypoints(customer, route)
-    TomtomWebfleet.clearOrders(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id)
-
     waypoints = route.stops.collect{ |stop|
       description = [
         '',
@@ -48,6 +45,7 @@ class Tomtom
       ].select{ |s| s }.join(' ').strip
       {lat: stop.destination.lat, lng: stop.destination.lng, description: description}
     }
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.stops[-1], route.vehicle.id, route.stops[-1].destination.name, waypoints)
+    order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.stops[-1], order_id_base+route.vehicle.id.to_s, route.stops[-1].destination.name, waypoints)
   end
 end
