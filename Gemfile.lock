@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/leaflet-active-area-rails.git
-  revision: 2f1300b26b8d371cf22f856da9d7d754e12c6251
+  revision: c25c4953f852582d7d04843a5cceca93abff4acf
   specs:
     leaflet-active-area-rails (0.0.1)
 
