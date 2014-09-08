@@ -30,9 +30,9 @@
     <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, input_group: content_tag('i', '', class: 'icon-tags')} do %>
       <p class="help-block"><%= t '.tags_help' %></p>
     <% end %>
-  <% end %>
-  <%= f.text_field :comment do %>
-    <p class="help-block"><%= t '.comment_help' %></p>
+    <%= f.text_field :comment do %>
+      <p class="help-block"><%= t '.comment_help' %></p>
+    <% end %>
   <% end %>
   <%= f.actions do %>
     <% if @destination != current_user.customer.store %>
