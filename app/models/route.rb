@@ -100,14 +100,14 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def set_destinations(dests)
+  def set_destinations(dests, recompute = true)
     Stop.transaction do
       stops.clear
-      add_destinations(dests)
+      add_destinations(dests, recompute)
     end
   end
 
-  def add_destinations(dests)
+  def add_destinations(dests, recompute = true)
     Stop.transaction do
       dests.select!{ |d| d[0] != planning.customer.store }
       if vehicle
@@ -116,9 +116,9 @@ class Route < ActiveRecord::Base
       i = 0
       dests.each{ |stop|
         destination, active = stop
-        s = stops.build(destination:destination, active:active, index:i+=1)
+        stops.build(destination:destination, active:active, index:i+=1)
       }
-      compute
+      compute if recompute
     end
   end
 
@@ -132,7 +132,7 @@ class Route < ActiveRecord::Base
     elsif vehicle
       raise
     end
-    s = stops.build(destination: destination, index: index, active: active)
+    stops.build(destination: destination, index: index, active: active)
 
     if self.vehicle
       self.out_of_date = true

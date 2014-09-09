@@ -42,7 +42,7 @@ class GeocoderJob < Struct.new(:customer_id, :planning_id)
       if planning_id
         planning = Planning.where(customer_id: customer_id, id: planning_id).first
         if planning
-          planning.active_all
+          planning.compute
           planning.save
         end
       end

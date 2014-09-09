@@ -181,12 +181,15 @@ class Importer
 
       if routes.size > 1 || !routes.key?(nil)
         planning = customer.plannings.build(name: name, tags: common_tags || [])
-        planning.set_destinations(routes.values)
+        planning.set_destinations(routes.values, false)
+        planning.save!
       end
     end
 
     if need_geocode && Mapotempo::Application.config.delayed_job_use
       customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id, planning ? planning.id : nil))
+    else
+      planning.compute if planning
     end
 
     customer.save!

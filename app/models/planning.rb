@@ -44,7 +44,7 @@ class Planning < ActiveRecord::Base
     append :name => Time.now.strftime(" %Y-%m-%d %H:%M")
   end
 
-  def set_destinations(destination_actives)
+  def set_destinations(destination_actives, recompute = true)
     default_empty_routes
     if destination_actives.size <= routes.size-1
       destinations = destination_actives.flatten(1).collect{ |destination_active| destination_active[0] }
@@ -52,7 +52,7 @@ class Planning < ActiveRecord::Base
         (destination.tags & tags).size == tags.size
       })
       0.upto(destination_actives.size-1).each{ |i|
-        routes[i+1].set_destinations(destination_actives[i])
+        routes[i+1].set_destinations(destination_actives[i], recompute)
       }
     else
       raise I18n.t('errors.planning.import_too_routes')
@@ -173,10 +173,6 @@ class Planning < ActiveRecord::Base
     zoning_out_of_date || routes.inject(false){ |acc, route|
       acc or route.out_of_date
     }
-  end
-
-  def active_all
-    routes.each(&:active_all)
   end
 
   def destinations_compatibles
