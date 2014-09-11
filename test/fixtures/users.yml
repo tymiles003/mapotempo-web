@@ -6,6 +6,7 @@ user_one:
   admin: false
   customer: customer_one
   layer: layer_one
+  api_key: testkey1
 
 user_two:
   email: u2@plop.com
@@ -13,3 +14,4 @@ user_two:
   admin: false
   customer: customer_one
   layer: layer_one
+  api_key: testkey2

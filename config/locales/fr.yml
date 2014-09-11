@@ -168,6 +168,7 @@ fr:
         password_confirmation: "Confirmation mot de passe"
         current_password: "Mot de passe actuel"
         remember_me: "Se rappeler de moi"
+        api_key: "Clé d'API"
       vehicle:
         name: "Nom"
         emission: "Émissions"

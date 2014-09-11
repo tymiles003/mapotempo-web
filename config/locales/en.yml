@@ -165,6 +165,7 @@ en:
         password_confirmation: "Password confirmation"
         current_password: "Current password"
         remember_me: "Remember me"
+        api_key: "API Key"
       vehicle:
         name: "Name"
         emission: "Emission"

@@ -210,6 +210,7 @@ ActiveRecord::Schema.define(version: 20140917145632) do
     t.integer  "layer_id",                            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "api_key",                             null: false
     t.index ["customer_id"], :name => "fk__users_customer_id"
     t.index ["email"], :name => "index_users_on_email", :unique => true
     t.index ["layer_id"], :name => "fk__users_layer_id"
