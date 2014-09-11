@@ -154,10 +154,10 @@ function plannings_edit(params) {
     if ($("#dialog-matrix").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
-    if (!progress_dialog(data.matrix, $("#dialog-matrix"), display_planning, '/plannings/' + planning_id + '.json', '/customer/job_matrix.json')) {
+    if (!progress_dialog(data.matrix, $("#dialog-matrix"), display_planning, '/plannings/' + planning_id + '.json', '/api/0.1/customers/job_matrix.json?api_key='+api_key)) {
       return;
     }
-    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json', '/customer/job_optimizer.json')) {
+    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json', '/api/0.1/customers/job_optimizer.json?api_key='+api_key)) {
       return;
     }
 
