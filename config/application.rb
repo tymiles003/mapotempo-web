@@ -24,6 +24,24 @@ module Mapotempo
 
     config.assets.initialize_on_precompile = true
 
+    config.middleware.use Rack::Config do |env|
+      env['api.tilt.root'] = Rails.root.join 'app', 'api', 'views'
+    end
+
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        # location of your API
+        resource '/api/*', headers: :any, methods: [:get, :post, :options, :put, :delete, :patch]
+      end
+    end
+
+    config.paths.add File.join('app', 'jobs'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'jobs', '*')]
+
+    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
+
     # Application config
 
     config.optimize_cache =  ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10)
