@@ -156,10 +156,10 @@ module Geocode
    <GeocodeRequest returnFreeForm='false'>
      <Address countryCode='StreetAddress'>
        <StreetAddress>
-         <Street>#{street.encode(xml: :text)}</Street>
+         <Street>#{street ? street.encode(xml: :text) : ''}</Street>
        </StreetAddress>
-       <Place type='Municipality'>#{city.encode(xml: :text)}</Place>
-       <PostalCode>#{postalcode.encode(xml: :text)}</PostalCode>
+       <Place type='Municipality'>#{city ? city.encode(xml: :text) : ''}</Place>
+       <PostalCode>#{postalcode ? postalcode.encode(xml: :text) : ''}</PostalCode>
      </Address>
    </GeocodeRequest>
   </Request>

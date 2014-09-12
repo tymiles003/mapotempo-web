@@ -49,7 +49,7 @@ function destinations_form(params) {
           $.ajax({
             type: "patch",
             data: $(":input", $row).serialize(),
-            url: '/destination/geocode_complete.json',
+            url: '/api/0.1/destinations/geocode_complete.json?api_key=' + api_key,
             beforeSend: beforeSendWaiting,
             success: function (data) {
               add($.map(data, function (val, i) {
@@ -73,9 +73,9 @@ function destinations_form(params) {
     $row.on("change", ":input", function (event) {
       var url;
       if (['destination[street]', 'destination[postalcode]', 'destination[city]'].indexOf(event.currentTarget.name) >= 0) {
-        url = '/destination/geocode.json';
+        url = '/api/0.1/destinations/geocode.json?api_key=' + api_key;
       } else if (['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) {
-        url = '/destination/geocode_reverse.json';
+        url = '/api/0.1/destinations/geocode_reverse.json?api_key=' + api_key;
       } else {
         return;
       }
@@ -279,7 +279,7 @@ function destinations_index(params) {
           $.ajax({
             type: "patch",
             data: $(":input", $row).serialize(),
-            url: '/destination/geocode_complete.json',
+            url: '/api/0.1/destinations/geocode_complete.json?api_key=' + api_key,
             beforeSend: beforeSendWaiting,
             success: function (data) {
               add($.map(data, function (val, i) {
@@ -304,7 +304,7 @@ function destinations_index(params) {
       $.ajax({
         type: "put",
         data: $(":input", $row).serialize(),
-        url: '/destinations/' + id + '.json' + ((['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) ? '?reverse=true': ''),
+        url: '/api/0.1/destinations/' + id + '.json?api_key=' + api_key + ((['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) ? '&reverse=true': ''),
         beforeSend: beforeSendWaiting,
         success: function (data) {
           update(id, data);
@@ -326,7 +326,7 @@ function destinations_index(params) {
       if (confirm(I18n.t('all.verb.destroy_confirm'))) {
         $.ajax({
           type: "delete",
-          url: '/destinations/' + id + '.json',
+          url: '/api/0.1/destinations/' + id + '.json?api_key=' + api_key,
           beforeSend: beforeSendWaiting,
           success: function (data) {
             row.remove();
@@ -357,7 +357,7 @@ function destinations_index(params) {
       t.push({
         id: tag.id,
         label: tag.label,
-        active: $.inArray(tag.id, destination.tags) >= 0
+        active: $.inArray(tag.id, destination.tag_ids) >= 0
       });
     });
     destination.tags = t;
@@ -470,11 +470,9 @@ function destinations_index(params) {
     };
     $.ajax({
       type: "post",
-      data: JSON.stringify({
-        destination: destination
-      }),
+      data: JSON.stringify(destination),
       contentType: 'application/json',
-      url: '/destinations.json',
+      url: '/api/0.1/destinations.json?api_key=' + api_key,
       beforeSend: beforeSendWaiting,
       success: function (data) {
         update(id, data);
@@ -515,7 +513,7 @@ function destinations_index(params) {
         t.push({
           id: tag.id,
           label: tag.label,
-          active: $.inArray(tag.id, destination.tags) >= 0
+          active: $.inArray(tag.id, destination.tag_ids) >= 0
         });
       });
       destination.tags = t;

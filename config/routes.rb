@@ -20,11 +20,6 @@ Mapotempo::Application.routes.draw do
   get 'destination/import' => 'destinations#import'
   post 'destinations/upload' => 'destinations#upload', :as => 'destinations_import_models'
   delete 'destinations' => 'destinations#clear'
-  patch 'destination/geocode' => 'destinations#geocode'
-  patch 'destination/geocode_reverse' => 'destinations#geocode_reverse'
-  if Mapotempo::Application.config.geocode_complete
-    patch 'destination/geocode_complete' => 'destinations#geocode_complete'
-  end
 
   resources :plannings do
     patch 'move'
