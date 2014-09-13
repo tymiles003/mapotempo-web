@@ -21,58 +21,43 @@ class VehiclesController < ApplicationController
   load_and_authorize_resource :except => :create
   before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
-  # GET /vehicles
-  # GET /vehicles.json
   def index
     @vehicles = Vehicle.where(customer_id: current_user.customer.id)
   end
 
-  # GET /vehicles/new
   def new
     @vehicle = Vehicle.new
   end
 
-  # GET /vehicles/1/edit
   def edit
   end
 
-  # POST /vehicles
-  # POST /vehicles.json
   def create
     @vehicle = current_user.customer.vehicles.build(vehicle_params)
 
     respond_to do |format|
       if @vehicle.save
         format.html { redirect_to vehicles_path, notice: t('activerecord.successful.messages.created', model: @vehicle.class.model_name.human) }
-        format.json { head :no_content }
       else
         format.html { render action: 'new' }
-        format.json { render json: @vehicle.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /vehicles/1
-  # PATCH/PUT /vehicles/1.json
   def update
     respond_to do |format|
       if @vehicle.update(vehicle_params)
         format.html { redirect_to link_back || vehicles_path, notice: t('activerecord.successful.messages.updated', model: @vehicle.class.model_name.human) }
-        format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @vehicle.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /vehicles/1
-  # DELETE /vehicles/1.json
   def destroy
     @vehicle.destroy
     respond_to do |format|
       format.html { redirect_to vehicles_url }
-      format.json { head :no_content }
     end
   end
 

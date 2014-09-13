@@ -55,7 +55,10 @@ class V01::Vehicles < Grape::API
       params: V01::Entities::Vehicle.documentation.except(:id)
     }
     put ':id' do
-      current_customer.vehicles.find(params[:id]).update(vehicle_params)
+      vehicle = current_customer.vehicles.find(params[:id])
+      vehicle.update(vehicle_params)
+      vehicle.save!
+      present vehicle, with: V01::Entities::Vehicle
     end
   end
 end
