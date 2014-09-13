@@ -389,14 +389,12 @@ function plannings_edit(params) {
         li.toggle();
         var hidden = !li.is(":visible");
         $.ajax({
-          type: "patch",
+          type: "put",
           data: JSON.stringify({
-            route: {
-              hidden: hidden
-            }
+            hidden: hidden
           }),
           contentType: 'application/json',
-          url: '/routes/' + id + '.json',
+          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json?api_key=' + api_key,
           error: ajaxError
         });
 
@@ -445,14 +443,12 @@ function plannings_edit(params) {
       $(this).toggleClass("btn-warning");
       var locked = i.hasClass("fa-lock");
       $.ajax({
-        type: "patch",
+        type: "put",
         data: JSON.stringify({
-          route: {
-            locked: locked
-          }
+          locked: locked
         }),
         contentType: 'application/json',
-        url: '/routes/' + id + '.json',
+        url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json?api_key=' + api_key,
         error: ajaxError
       });
     });

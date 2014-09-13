@@ -25,7 +25,6 @@ class RoutesController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json
       format.gpx do
         response.headers['Content-Disposition'] = 'attachment; filename="'+(@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.gpx"'
       end
@@ -53,16 +52,12 @@ class RoutesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /routes/1
-  # PATCH/PUT /routes/1.json
   def update
     respond_to do |format|
       if @route.update(route_params)
         format.html { redirect_to @route, notice: t('activerecord.successful.messages.updated', model: @route.class.model_name.human) }
-        format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @route.errors, status: :unprocessable_entity }
       end
     end
   end
