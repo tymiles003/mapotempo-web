@@ -22,14 +22,10 @@ class PlanningsController < ApplicationController
   load_and_authorize_resource :except => :create
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :duplicate]
 
-  # GET /plannings
-  # GET /plannings.json
   def index
     @plannings = Planning.where(customer_id: current_user.customer.id)
   end
 
-  # GET /plannings/1
-  # GET /plannings/1.json
   def show
     respond_to do |format|
       format.html
@@ -49,17 +45,13 @@ class PlanningsController < ApplicationController
     end
   end
 
-  # GET /plannings/new
   def new
     @planning = Planning.new
   end
 
-  # GET /plannings/1/edit
   def edit
   end
 
-  # POST /plannings
-  # POST /plannings.json
   def create
     respond_to do |format|
       begin
@@ -71,35 +63,26 @@ class PlanningsController < ApplicationController
         end
 
         format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
-        format.json { head :no_content }
       rescue
         format.html { render action: 'new' }
-        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /plannings/1
-  # PATCH/PUT /plannings/1.json
   def update
     respond_to do |format|
       if @planning.update(planning_params)
         format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
-        format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /plannings/1
-  # DELETE /plannings/1.json
   def destroy
     @planning.destroy
     respond_to do |format|
       format.html { redirect_to plannings_url }
-      format.json { head :no_content }
     end
   end
 
