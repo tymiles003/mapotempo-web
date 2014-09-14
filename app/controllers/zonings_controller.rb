@@ -21,67 +21,50 @@ class ZoningsController < ApplicationController
   load_and_authorize_resource :except => :create
   before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate]
 
-  # GET /zonings
-  # GET /zonings.json
   def index
     @zonings = Zoning.where(customer_id: current_user.customer.id)
   end
 
-  # GET /zonings/1
-  # GET /zonings/1.json
   def show
   end
 
-  # GET /zonings/new
   def new
     @zoning = Zoning.new
     @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
   end
 
-  # GET /zonings/1/edit
   def edit
     @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
   end
 
-  # POST /zonings
-  # POST /zonings.json
   def create
     @zoning = current_user.customer.zonings.build(zoning_params)
 
     respond_to do |format|
       if @zoning.save
         format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
-        format.json { render action: 'show', status: :created, location: @zoning }
       else
         @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
         format.html { render action: 'new' }
-        format.json { render json: @zoning.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /zonings/1
-  # PATCH/PUT /zonings/1.json
   def update
     respond_to do |format|
       if @zoning.update(zoning_params)
         format.html { redirect_to link_back || edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
-        format.json { head :no_content }
       else
         @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
         format.html { render action: 'edit' }
-        format.json { render json: @zoning.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /zonings/1
-  # DELETE /zonings/1.json
   def destroy
     @zoning.destroy
     respond_to do |format|
       format.html { redirect_to zonings_url }
-      format.json { head :no_content }
     end
   end
 

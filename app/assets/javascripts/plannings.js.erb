@@ -89,9 +89,9 @@ function plannings_edit(params) {
     }
     layer_zoning = new L.LayerGroup();
     $.each(zoning.zones, function (index, zone) {
-      var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
+      var geom = L.geoJson(zone.polygon).getLayers()[0];
       geom.setStyle({
-        color: (zone.vehicles.length > 0 ? vehicles_map[zone.vehicles[0].id].color : '#000000')
+        color: (zone.vehicle_ids.length > 0 ? vehicles_map[zone.vehicle_ids[0]].color : '#000000')
       });
       geom.addTo(layer_zoning);
     });
@@ -109,7 +109,7 @@ function plannings_edit(params) {
 
       $.ajax({
         type: "get",
-        url: "/zonings/" + id + ".json",
+        url: "/api/0.1/zonings/" + id + ".json?api_key=" + api_key,
         beforeSend: beforeSendWaiting,
         success: display_zoning,
         complete: completeWaiting,
@@ -482,7 +482,7 @@ function plannings_edit(params) {
   if (zoning_id) {
     $.ajax({
       type: "get",
-      url: "/zonings/" + zoning_id + ".json",
+      url: "/api/0.1/zonings/" + zoning_id + ".json?api_key=" + api_key,
       beforeSend: beforeSendWaiting,
       success: display_zoning,
       complete: completeWaiting,

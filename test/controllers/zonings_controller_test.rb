@@ -37,11 +37,6 @@ class ZoningsControllerTest < ActionController::TestCase
     assert zoning.errors.any?
   end
 
-  test "should show zoning" do
-    get :show, id: @zoning, format: :josm
-    assert_response :success
-  end
-
   test "should get edit" do
     get :edit, id: @zoning
     assert_response :success

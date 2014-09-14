@@ -4,4 +4,5 @@ class ApiV01 < Grape::API
   mount V01::Routes
   mount V01::Tags
   mount V01::Vehicles
+  mount V01::Zonings
 end
