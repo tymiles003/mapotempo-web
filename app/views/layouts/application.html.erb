@@ -30,6 +30,7 @@
 
     <script type="text/javascript">
       var defaultLocale = "<%= I18n.default_locale %>";
+      var api_key;
       <% if user_signed_in? %>
         request = new XMLHttpRequest();
         request.open('GET', '<%= show_user_path(current_user, format: :json) %>', false);

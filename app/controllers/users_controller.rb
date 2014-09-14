@@ -17,7 +17,10 @@
 #
 class UsersController < ApplicationController
   load_and_authorize_resource
-  before_action :set_user, only: [:edit_settings, :update_settings]
+  before_action :set_user, only: [:show, :edit_settings, :update_settings]
+
+  def show
+  end
 
   def edit_settings
   end
