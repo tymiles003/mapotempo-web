@@ -42,6 +42,7 @@ end
 # gem 'debugger', group: [:development, :test]
 
 group :test do
+  gem 'minitest-focus'
   gem 'simplecov', require: false
   gem 'capybara'
   gem 'selenium-webdriver'

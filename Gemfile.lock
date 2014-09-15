@@ -181,6 +181,8 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
+    minitest-focus (1.1.0)
+      minitest (>= 4, < 6)
     multi_json (1.8.4)
     mustache (0.99.5)
     nested_form (0.3.2)
@@ -357,6 +359,7 @@ DEPENDENCIES
   leaflet-rails
   leaflet_numbered_markers-rails!
   macaddr (= 1.6.1)
+  minitest-focus
   mustache
   nilify_blanks
   paloma!
