@@ -6,7 +6,7 @@
 
 <% if current_user.admin? %>
   <p>
-    <%= link_to new_admin_user_path(customer: @customer), class:"btn btn-default btn-sm" do %><i class="icon icon-plus icon-fixed-width"></i> <%= t '.user.new' %><% end %>
+    <%= link_to new_admin_user_path(customer: @customer), class:"btn btn-default btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.user.new' %><% end %>
   </p>
 <% end %>
 
@@ -26,8 +26,8 @@
         <td><%= user.email %></td>
         <% if current_user.admin? %>
           <td class="text-right">
-            <%= link_to edit_admin_user_path(user), :class => "btn btn-primary btn-sm" do %><i class="icon icon-edit icon-fixed-width"></i> <%= t 'all.verb.edit' %><% end %>
-            <%= link_to admin_user_path(user), :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="icon icon-trash icon-fixed-width"></i> <%= t 'all.verb.destroy' %><% end %>
+            <%= link_to edit_admin_user_path(user), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
+            <%= link_to admin_user_path(user), :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
           </td>
         <% end %>
       </tr>

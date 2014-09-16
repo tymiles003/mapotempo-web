@@ -32,7 +32,7 @@ class PlanningsTest < ActionDispatch::IntegrationTest
     # Open planning
     visit plannings_path
     assert_not first(:css, '#refresh')
-    find('tr', text: 'planning1').find('.icon-edit').click
+    find('tr', text: 'planning1').find('.fa-edit').click
 
     # Edit destination
     find('.route:nth-child(2) .stops li:nth-child(2) a:nth-child(1)').click
@@ -69,7 +69,7 @@ class PlanningsTest < ActionDispatch::IntegrationTest
     # Open planning
     visit plannings_path
     assert_not first(:css, '#refresh')
-    find('tr', text: 'planning1').find('.icon-edit').click
+    find('tr', text: 'planning1').find('.fa-edit').click
 
     # Automatic insert
     assert_selector '.route:nth-child(1) .stops li', count: 1

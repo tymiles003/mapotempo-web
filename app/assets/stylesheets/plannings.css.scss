@@ -53,12 +53,12 @@
       min-height: 10px;
     }
 
-    .icon-resize-horizontal {
+    .fa-arrows-h {
       display: none;
     }
 
     .vehicle_select {
-      width: 163px;
+      width: 173px;
       vertical-align: middle;
     }
 
@@ -75,11 +75,11 @@
         line-height: 26px;
         padding: 2px 2px 2px 6px;
 
-        .icon-reorder {
+        .fa-reorder {
           color: #ccc;
         }
 
-        .icon-reorder:hover {
+        .fa-reorder:hover {
           cursor: move;
         }
 
@@ -109,7 +109,7 @@
 
         .btn-inverse {
           border-color: #ccc;
-          .icon {
+          .fa {
             color: #333;
           }
         }
@@ -118,7 +118,7 @@
         .btn-inverse:focus,
         .btn-inverse.active {
           background-color: #efefef;
-          .icon {
+          .fa {
             color: #333;
           }
         }
@@ -161,7 +161,7 @@
         display: inline-block;
       }
 
-      .icon-resize-horizontal {
+      .fa-arrows-h {
         display: inline-block;
         cursor: move;
       }

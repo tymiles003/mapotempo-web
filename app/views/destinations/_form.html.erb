@@ -4,7 +4,7 @@
     <%= f.text_field :ref %>
   <% end %>
   <%= f.text_field :name %>
-  <%= f.text_field :street, {input_group: content_tag('i', '', {class: 'icon-screenshot', title: t('.locate_manually')})} %>
+  <%= f.text_field :street, {input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
   <%= f.text_field :detail do %>
     <p class="help-block"><%= t '.detail_help' %></p>
   <% end %>
@@ -27,7 +27,7 @@
     <% end %>
     <%= f.text_field :open, {value: @destination.open ? @destination.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
     <%= f.text_field :close, {value: @destination.close ? @destination.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, input_group: content_tag('i', '', class: 'icon-tags')} do %>
+    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
       <p class="help-block"><%= t '.tags_help' %></p>
     <% end %>
     <%= f.text_field :comment do %>

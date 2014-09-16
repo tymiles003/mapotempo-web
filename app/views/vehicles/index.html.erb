@@ -24,7 +24,7 @@
         <td><%= vehicle.consumption %> <%= t 'all.unit.l_100km' %></td>
         <td><%= vehicle.capacity %></td>
         <td><div class="vehicle_color" style="background:<%= vehicle.color %>"/></td>
-        <td><%= link_to edit_vehicle_path(vehicle), :class => 'btn btn-primary btn-sm' do %><i class="icon icon-edit icon-fixed-width"></i> <%= t 'all.verb.edit' %><% end %></td>
+        <td><%= link_to edit_vehicle_path(vehicle), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %></td>
       </tr>
     <% end %>
   </tbody>

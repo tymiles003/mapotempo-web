@@ -1,9 +1,9 @@
 <li class="route_print">
-  <h1><i class="icon icon-calendar icon-fixed-width"></i><%= route.planning.name %> - <i class="icon icon-truck icon-fixed-width"></i><%= route.vehicle.name %></h1>
+  <h1><i class="fa fa-calendar fa-fw"></i><%= route.planning.name %> - <i class="fa fa-truck fa-fw"></i><%= route.vehicle.name %></h1>
   <span>
-    <i class="icon icon-check-sign icon-fixed-width"></i> <%= route.size %> <%= I18n.t 'plannings.edit.stops' %>
-    <i class="icon icon-time icon-fixed-width"></i> <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
-    <i class="icon icon-road icon-fixed-width"></i> <%= number_to_human(route.distance, units: :distance, precision: 3) %>
+    <i class="fa fa-check-square fa-fw"></i> <%= route.size %> <%= I18n.t 'plannings.edit.stops' %>
+    <i class="fa fa-clock-o fa-fw"></i> <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
+    <i class="fa fa-road fa-fw"></i> <%= number_to_human(route.distance, units: :distance, precision: 3) %>
   </span>
   <ol class="stops" start="0">
   <%
@@ -25,13 +25,13 @@
           <% if stop.destination.tags.size > 0 %>
             <div class="tags">
               <% stop.destination.tags.each { |tag| %>
-                <i class="icon icon-tag icon-fixed-width"></i><%= tag.label %>
+                <i class="fa fa-tag fa-fw"></i><%= tag.label %>
               <% } %>
             </div>
           <% end %>
           <% if stop.destination.quantity && stop.destination.quantity > 1 %>
             <div class="quantity">
-              <i class="icon icon-archive icon-fixed-width"></i>⨯<%= stop.destination.quantity %>
+              <i class="fa fa-archive fa-fw"></i>⨯<%= stop.destination.quantity %>
             </div>
           <% end %>
           <% if stop.destination.take_over %>
@@ -76,13 +76,13 @@
         <div class="row">
           <span class="col-md-offset-1 col-md-11 ui-state-error">
             <% if stop.out_of_window %>
-              <span><i class="icon icon-time icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_window' %></span>
+              <span><i class="fa fa-clock-o fa-fw"></i> <%= t 'plannings.edit.error.out_of_window' %></span>
             <% end %>
             <% if stop.out_of_capacity %>
-              <span><i class="icon icon-archive icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_capacity' %></span>
+              <span><i class="fa fa-archive fa-fw"></i> <%= t 'plannings.edit.error.out_of_capacity' %></span>
             <% end %>
             <% if stop.out_of_drive_time %>
-              <span><i class="icon icon-power-off icon-fixed-width"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
+              <span><i class="fa fa-power-off fa-fw"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
             <% end %>
           </span>
         </div>

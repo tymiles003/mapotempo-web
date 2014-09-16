@@ -1,7 +1,7 @@
 <h1><%= t '.title' %></h1>
 
 <p>
-  <%= link_to new_zoning_path, class:"btn btn-primary btn-sm" do %><i class="icon icon-plus icon-fixed-width"></i> <%= t '.new' %><% end %>
+  <%= link_to new_zoning_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
 </p>
 
 <table class="table table-striped table-hover">
@@ -17,9 +17,9 @@
       <tr>
         <td><%= zoning.name %></td>
         <td class="text-right">
-          <%= link_to zoning_duplicate_path(zoning), :class => "btn btn-default btn-sm", method: :patch do %><i class="icon icon-copy icon-fixed-width"></i> <%= t 'all.verb.duplicate' %><% end %>
-          <%= link_to edit_zoning_path(zoning), :class => "btn btn-primary btn-sm" do %><i class="icon icon-edit icon-fixed-width"></i> <%= t 'all.verb.edit' %><% end %>
-          <%= link_to zoning, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="icon icon-trash icon-fixed-width"></i> <%= t 'all.verb.destroy' %><% end %>
+          <%= link_to zoning_duplicate_path(zoning), :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
+          <%= link_to edit_zoning_path(zoning), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
+          <%= link_to zoning, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
         </td>
       </tr>
     <% end %>

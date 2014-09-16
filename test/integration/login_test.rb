@@ -7,10 +7,10 @@ class LoginTest < ActionDispatch::IntegrationTest
   end
 
   test 'login' do
-    assert_not page.has_selector? '.icon-off'
+    assert_not page.has_selector? '.fa-power-off'
     login
-    assert page.has_selector? '.icon-off'
+    assert page.has_selector? '.fa-power-off'
     logout
-    assert_not page.has_selector? '.icon-off'
+    assert_not page.has_selector? '.fa-power-off'
   end
 end

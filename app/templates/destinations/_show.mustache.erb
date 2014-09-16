@@ -1,4 +1,4 @@
-<tr data-destination_id="{{id}}" class="destination form-inline{{^lat}} has-error{{/lat}}">
+<tr data-destination_id="{{id}}" class="destination{{^lat}} has-error{{/lat}}">
   <td>
     <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}" style="width:6em"/>
   </td>
@@ -19,7 +19,7 @@
       <span>
         <div class="input-group">
           <input class="form-control input-sm" type="text" name="destination[city]" value="{{city}}"/>
-          <span class="input-group-addon input-sm pointing" title="{{#i18n}}destinations.form.locate_manually{{/i18n}}"><i class="icon-screenshot"></i></span>
+          <span class="input-group-addon input-sm pointing" title="{{#i18n}}destinations.form.locate_manually{{/i18n}}"><i class="fa fa-crosshairs"></i></span>
         </div>
       </span>
     </span>
@@ -47,12 +47,12 @@
    <div class="input-group input-group-tags">
      <input type="hidden" value="" name="destination[tag_ids][]">
      <select multiple="multiple" name="destination[tag_ids][]">{{#tags}}<option value="{{id}}" {{#active}} selected="selected"{{/active}}>{{label}}</option>{{/tags}}</select>
-     <span class="input-group-addon input-sm"><i class="icon-tags"></i></span>
+     <span class="input-group-addon input-sm"><i class="fa fa-tags"></i></span>
    </div>
   </td>
   <td>
     <input type="hidden" name="destination[lat]" value="{{lat}}" />
     <input type="hidden" name="destination[lng]" value="{{lng}}" />
-    <button type="button" class="destroy btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="icon icon-trash icon-fixed-width"></i></button>
+    <button type="button" class="destroy btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
   </td>
 </tr>

@@ -17,6 +17,6 @@ class EditUserTest < ActionDispatch::IntegrationTest
     logout
 
     login('u1@plop.com', 'pwd123456789')
-    assert page.has_selector? '.icon-off'
+    assert page.has_selector? '.fa-power-off'
   end
 end

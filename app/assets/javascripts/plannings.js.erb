@@ -402,11 +402,11 @@ function plannings_edit(params) {
 
         var i = $("i", this);
         if (hidden) {
-          i.removeClass("icon-eye-open").addClass("icon-eye-close");
+          i.removeClass("fa-eye").addClass("fa-eye-slash");
           routes_layers.removeLayer(layers[id]);
           routes_layers_cluster.removeLayer(layers_cluster[id]);
         } else {
-          i.removeClass("icon-eye-close").addClass("icon-eye-open");
+          i.removeClass("fa-eye-slash").addClass("fa-eye");
           routes_layers.addLayer(layers[id]);
           routes_layers_cluster.addLayer(layers_cluster[id]);
         }
@@ -439,11 +439,11 @@ function plannings_edit(params) {
     $(".lock").click(function (event, ui) {
       var id = $(this).closest("[data-route_id]").attr("data-route_id");
       var i = $("i", this);
-      i.toggleClass("icon-lock");
-      i.toggleClass("icon-unlock");
+      i.toggleClass("fa-lock");
+      i.toggleClass("fa-unlock");
       $(this).toggleClass("btn-default");
       $(this).toggleClass("btn-warning");
-      var locked = i.hasClass("icon-lock");
+      var locked = i.hasClass("fa-lock");
       $.ajax({
         type: "patch",
         data: JSON.stringify({

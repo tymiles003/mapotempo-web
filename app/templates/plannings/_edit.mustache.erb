@@ -1,11 +1,11 @@
 <p class="global_info">
-  <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
-  <i class="icon icon-road icon-fixed-width"></i>{{distance}}
-  <i class="icon icon-beaker icon-fixed-width"></i>{{emission}} {{#i18n}}all.unit.kgco2e_html{{/i18n}}
+  <i class="fa fa-check-square fa-fw"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
+  <i class="fa fa-road fa-fw"></i>{{distance}}
+  <i class="fa fa-flask fa-fw"></i>{{emission}} {{#i18n}}all.unit.kgco2e_html{{/i18n}}
 </p>
 {{#out_of_date}}
 <p class="text-center">
-  <button type="button" class="btn btn-warning btn-sm" id="refresh" title="{{#i18n}}plannings.edit.refresh_help{{/i18n}}"><i class="icon-refresh icon-fixed-width"></i> {{#i18n}}plannings.edit.refresh{{/i18n}}</button>
+  <button type="button" class="btn btn-warning btn-sm" id="refresh" title="{{#i18n}}plannings.edit.refresh_help{{/i18n}}"><i class="fa fa-refresh fa-fw"></i> {{#i18n}}plannings.edit.refresh{{/i18n}}</button>
 </p>
 {{/out_of_date}}
 {{#zoning_out_of_date}}
@@ -19,32 +19,32 @@
   {{^vehicle}}
       <div class="panel panel-danger">
         <div class="panel-heading">
-          <i class="icon icon-resize-horizontal"></i>
+          <i class="fa fa-arrows-h"></i>
           {{#i18n}}plannings.edit.out_of_road{{/i18n}}
           <div class="btn-group pull-right">
-            <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="icon-eye-{{#hidden}}close{{/hidden}}{{^hidden}}open{{/hidden}} icon-fixed-width"></i></button>
-            <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_unplanned_help{{/i18n}}"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+            <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="fa fa-eye{{#hidden}}-slash{{/hidden}}"></i></button>
+            <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_unplanned_help{{/i18n}}"><i class="fa fa-{{^locked}}un{{/locked}}lock"></i></button>
           </div>
         </div>
         <div class="panel-body">
           <p>
-            <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
-            <i class="icon icon-archive icon-fixed-width"></i>{{quantity}}
+            <i class="fa fa-check-square fa-fw"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
+            <i class="fa fa-archive fa-fw"></i>{{quantity}}
           </p>
         </div>
         <ul id="out_of_road" class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
         {{#stops}}
           {{#destination}}
           <li data-destination_id="{{id}}" class="waypoint ui-state-error list-group-item">
-            <i class="icon icon-reorder icon-fixed-width" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
+            <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
             <input type="checkbox" checked="checked" style="display: none"/>
             <div class="title">
               <span class="name" title="{{name}}">{{name}}</span><br />
             </div>
             <div class="btn-group pull-right">
-              <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="icon icon-lightbulb"></i></button>
-              <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="icon icon-pencil"></i></a>
-              {{#lat}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="icon icon-map-marker"></i></a>{{/lat}}
+              <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+              <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+              {{#lat}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/lat}}
             </div>
             <div class="clearfix"></div>
           </li>
@@ -56,23 +56,23 @@
   {{#vehicle}}
     <div class="panel panel-default">
       <div class="panel-heading">
-        <i class="icon icon-resize-horizontal"></i>
+        <i class="fa fa-arrows-h"></i>
         <input type="hidden" class="vehicle_select" />
         <div class="btn-group pull-right">
-          <a href="{{path}}" class="btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.vehicle_help{{/i18n}}"><i class="icon-truck icon-fixed-width"></i></a>
-          <button type="button" class="optimize btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"><i class="icon-gear icon-fixed-width"></i></button>
-          <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="icon-eye-{{#hidden}}close{{/hidden}}{{^hidden}}open{{/hidden}} icon-fixed-width"></i></button>
-          <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_help{{/i18n}}"><i class="icon-{{^locked}}un{{/locked}}lock icon-fixed-width"></i></button>
+          <a href="{{path}}" class="btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.vehicle_help{{/i18n}}"><i class="fa fa-truck"></i></a>
+          <button type="button" class="optimize btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"><i class="fa fa-gear"></i></button>
+          <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="fa fa-eye{{#hidden}}-slash{{/hidden}}"></i></button>
+          <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_help{{/i18n}}"><i class="fa fa-{{^locked}}un{{/locked}}lock"></i></button>
           <div class="btn-group">
-            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.export_help{{/i18n}}"><i class="icon-share icon-fixed-width"></i><span class="caret"></span></button>
+            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.export_help{{/i18n}}"><i class="fa fa-share-square-o"></i><span class="caret"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
-              <li><a href="/routes/{{route_id}}"><i class="icon-print icon-fixed-width"></i> {{#i18n}}plannings.edit.export.print{{/i18n}}</a></li>
-              <li><a href="/routes/{{route_id}}.csv"><i class="icon-table icon-fixed-width"></i> {{#i18n}}plannings.edit.export.spreadsheet_standard{{/i18n}}</a></li>
-              <li><a href="/routes/{{route_id}}.excel"><i class="icon-table icon-fixed-width"></i> {{#i18n}}plannings.edit.export.spreadsheet_excel{{/i18n}}</a></li>
-              <li><a href="/routes/{{route_id}}.gpx"><i class="icon-mobile-phone icon-fixed-width"></i> {{#i18n}}plannings.edit.export.gps_waypoint{{/i18n}}</a></li>
+              <li><a href="/routes/{{route_id}}"><i class="fa fa-print fa-fw"></i> {{#i18n}}plannings.edit.export.print{{/i18n}}</a></li>
+              <li><a href="/routes/{{route_id}}.csv"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet_standard{{/i18n}}</a></li>
+              <li><a href="/routes/{{route_id}}.excel"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet_excel{{/i18n}}</a></li>
+              <li><a href="/routes/{{route_id}}.gpx"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gps_waypoint{{/i18n}}</a></li>
               {{#tomtom}}
-                <li class="export_tomtom"><a href="/routes/{{route_id}}.tomtom?type=orders"><i class="icon-mobile-phone icon-fixed-width"></i> {{#i18n}}plannings.edit.export.tomtom_orders{{/i18n}}</a></li>
-                <li class="export_tomtom"><a href="/routes/{{route_id}}.tomtom?type=waypoints"><i class="icon-mobile-phone icon-fixed-width"></i> {{#i18n}}plannings.edit.export.tomtom_waypoints{{/i18n}}</a></li>
+                <li class="export_tomtom"><a href="/routes/{{route_id}}.tomtom?type=orders"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_orders{{/i18n}}</a></li>
+                <li class="export_tomtom"><a href="/routes/{{route_id}}.tomtom?type=waypoints"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_waypoints{{/i18n}}</a></li>
               {{/tomtom}}
             </ul>
           </div>
@@ -80,24 +80,24 @@
       </div>
       <div class="panel-body">
         <p>
-          <i class="icon icon-check-sign icon-fixed-width"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
-          <i class="icon icon-time icon-fixed-width"></i>{{duration}}/{{work_time}}
-          <i class="icon icon-road icon-fixed-width"></i>{{distance}}
-          <i class="icon icon-archive icon-fixed-width"></i>{{quantity}}/{{capacity}}
+          <i class="fa fa-check-square fa-fw"></i>{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}
+          <i class="fa fa-clock-o fa-fw"></i>{{duration}}/{{work_time}}
+          <i class="fa fa-road fa-fw"></i>{{distance}}
+          <i class="fa fa-archive fa-fw"></i>{{quantity}}/{{capacity}}
         </p>
         {{#route_error}}
           <ul class="ui-state-error">
             {{#route_no_geocoding}}
-              <li title="{{#i18n}}plannings.edit.error.no_geocoding_help{{/i18n}}"><i class="icon icon-map-marker icon-fixed-width"></i> {{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}</li>
+              <li title="{{#i18n}}plannings.edit.error.no_geocoding_help{{/i18n}}"><i class="fa fa-map-marker fa-fw"></i> {{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}</li>
             {{/route_no_geocoding}}
             {{#route_out_of_window}}
-              <li title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"><i class="icon icon-time icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_window{{/i18n}}</li>
+              <li title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_window{{/i18n}}</li>
             {{/route_out_of_window}}
             {{#route_out_of_capacity}}
-              <li title="{{#i18n}}plannings.edit.error.out_of_capacity_help{{/i18n}}"><i class="icon icon-archive icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_capacity{{/i18n}}</li>
+              <li title="{{#i18n}}plannings.edit.error.out_of_capacity_help{{/i18n}}"><i class="fa fa-archive fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_capacity{{/i18n}}</li>
             {{/route_out_of_capacity}}
             {{#route_out_of_drive_time}}
-              <li title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"><i class="icon icon-power-off icon-fixed-width"></i> {{#i18n}}plannings.edit.error.out_of_drive_time{{/i18n}}</li>
+              <li title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"><i class="fa fa-power-off fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_drive_time{{/i18n}}</li>
             {{/route_out_of_drive_time}}
           </ul>
         {{/route_error}}
@@ -107,35 +107,35 @@
         {{#destination}}
         <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           {{#is_store}}
-            <i class="icon icon-home icon-fixed-width"></i>
+            <i class="fa fa-home fa-fw"></i>
           {{/is_store}}
           {{^is_store}}
-            <i class="icon icon-reorder icon-fixed-width" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
+            <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
             <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
             <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
           {{/is_store}}
           <div class="title">
             {{#no_geocoding}}
-              <i class="icon icon-map-marker icon-fixed-width" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>
+              <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>
             {{/no_geocoding}}
             {{#out_of_window}}
-              <i class="icon icon-time icon-fixed-width" title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"></i>
+              <i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"></i>
             {{/out_of_window}}
             {{#out_of_capacity}}
-              <i class="icon icon-archive icon-fixed-width" title="{{#i18n}}plannings.edit.error.out_of_capacity_help{{/i18n}}"></i>
+              <i class="fa fa-archive fa-fw" title="{{#i18n}}plannings.edit.error.out_of_capacity_help{{/i18n}}"></i>
             {{/out_of_capacity}}
             {{#out_of_drive_time}}
-              <i class="icon icon-power-off icon-fixed-width" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
+              <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
             {{/out_of_drive_time}}
             <span class="info">{{#active}}{{#lat}}{{time}} - {{/lat}}{{/active}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
           <div class="btn-group pull-right">
             {{^is_store}}
-               <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="icon icon-pencil"></i></a>
+               <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
             {{/is_store}}
             {{#lat}}
-              <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="icon icon-map-marker"></i></a>
+              <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
             {{/lat}}
           </div>
           <div class="clearfix"></div>
