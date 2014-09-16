@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'matrix_job'
+require 'csv'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource :except => :create

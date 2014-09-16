@@ -46,7 +46,7 @@ class ActionDispatch::IntegrationTest
   def alert_accept
     if Capybara.current_driver == Capybara.javascript_driver
       if Capybara.javascript_driver == :webkit
-        page.driver.accept_js_confirms!
+        page.driver.accept_confirms!
       elsif Capybara.javascript_driver == :selenium
         page.driver.browser.switch_to.alert.accept
       end

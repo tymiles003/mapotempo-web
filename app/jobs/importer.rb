@@ -15,6 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'csv'
 require 'geocoder_job'
 
 class Importer

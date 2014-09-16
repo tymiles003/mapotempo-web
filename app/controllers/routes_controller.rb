@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'tomtom'
+require 'csv'
 
 class RoutesController < ApplicationController
   load_and_authorize_resource
