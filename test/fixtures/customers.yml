@@ -16,8 +16,8 @@ customer_two:
   max_vehicles: 1
   take_over: 2000-01-01 00:05:00
   store: store_one
-  job_geocoding: job_geocoding
-  job_matrix: job_matrix
-  job_optimizer: job_optimizer
+  job_geocoding:
+  job_matrix:
+  job_optimizer:
   name: MyString
   router: router_one

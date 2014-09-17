@@ -18,22 +18,4 @@ class CustomersControllerTest < ActionController::TestCase
 
     assert_redirected_to edit_customer_path(assigns(:customer))
   end
-
-  test "should stop job matrix" do
-    assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
-      delete :stop_job_matrix
-    end
-  end
-
-  test "should stop job optimizer" do
-    assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
-      delete :stop_job_optimizer
-    end
-  end
-
-  test "should stop job geocoding" do
-    assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
-      delete :stop_job_geocoding
-    end
-  end
 end
