@@ -58,7 +58,6 @@ gem 'devise'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'cancan'
-gem 'rails_admin'
 gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', branch: 'bootstrap3'
 gem 'twitter_bootstrap_form_for', github: 'frodrigo/twitter_bootstrap_form_for' # FIXME wait for pull request
 gem 'bootstrap-filestyle-rails'

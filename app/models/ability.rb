@@ -21,8 +21,6 @@ class Ability
   def initialize(user)
     if user
       if user.admin?
-        can :access, :rails_admin       # only allow admin users to access Rails Admin
-        can :dashboard                  # allow access to dashboard
         can :manage, :all
       else
         can [:edit, :update], User, :id => user.id

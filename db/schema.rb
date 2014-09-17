@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140903151616) do
+ActiveRecord::Schema.define(version: 20140917145632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,18 +131,6 @@ ActiveRecord::Schema.define(version: 20140903151616) do
     t.index ["tag_id"], :name => "fk__plannings_tags_tag_id"
     t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_tags_planning_id"
     t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_tags_tag_id"
-  end
-
-  create_table "rails_admin_histories", force: true do |t|
-    t.text     "message"
-    t.string   "username"
-    t.integer  "item"
-    t.string   "table"
-    t.integer  "month",      limit: 2
-    t.integer  "year",       limit: 8
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
   end
 
   create_table "routers", force: true do |t|
