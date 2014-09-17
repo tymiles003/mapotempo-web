@@ -95,11 +95,6 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should not geocode" do
-    patch :geocode, format: :json, destination: { name: @destination.name }
-    assert_response :unprocessable_entity
-  end
-
   test "should geocode reverse" do
     patch :geocode_reverse, format: :json, id: @destination.id, destination: { lat: 45.0, lon: 0.0 }
     assert_response :success
