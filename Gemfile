@@ -50,6 +50,10 @@ group :test do
   gem 'database_cleaner'
 end
 
+group :test do
+  gem 'rspec-rails', '~> 3.0.0'
+end
+
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger'
