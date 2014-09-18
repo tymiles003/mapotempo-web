@@ -1,13 +1,14 @@
-require 'test_helper'
+require 'rails_helper'
+require 'capybara_helper'
 
-class EditUserTest < ActionDispatch::IntegrationTest
-  setup do
-    DatabaseCleaner.clean
-    Capybara.reset!
+feature :edit_user do
+  fixtures :all
+
+  before :each do
     login
   end
 
-  test 'change password' do
+  scenario 'change password' do
     visit edit_user_registration_path
     fill_in 'user[password]', with: 'pwd123456789'
     fill_in 'user[password_confirmation]', with: 'pwd123456789'
@@ -17,6 +18,6 @@ class EditUserTest < ActionDispatch::IntegrationTest
     logout
 
     login('u1@plop.com', 'pwd123456789')
-    assert page.has_selector? '.fa-power-off'
+    expect(page).to have_selector('.fa-power-off')
   end
 end
