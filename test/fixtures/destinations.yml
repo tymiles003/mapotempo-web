@@ -1,21 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-store_one:
-  ref:
-  name: store
-  street: MyString
-  postalcode: MyString
-  city: MyString
-  lat: 1.5
-  lng: 1.5
-  quantity: 1
-  open: 2000-01-01 7:00:00
-  close: 2000-01-01 19:00:00
-  customer:
-  detail: MyString
-  comment: MyString
-  tags:
-
 destination_unaffected_one:
   ref: a
   name: unaffected_one

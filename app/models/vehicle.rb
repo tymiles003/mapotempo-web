@@ -17,11 +17,15 @@
 #
 class Vehicle < ActiveRecord::Base
   belongs_to :customer
+  belongs_to :store_start, :class_name => 'Store', inverse_of: :vehicle_starts
+  belongs_to :store_stop, :class_name => 'Store', inverse_of: :vehicle_stops
   has_many :routes, inverse_of: :vehicle, :autosave => true
   has_and_belongs_to_many :zones
 
   nilify_blanks
   validates :customer, presence: true
+  validates :store_start, presence: true
+  validates :store_stop, presence: true
   validates :name, presence: true
   validates :emission, presence: true, numericality: {only_float: true}
   validates :consumption, presence: true, numericality: {only_float: true}
@@ -31,6 +35,7 @@ class Vehicle < ActiveRecord::Base
   validates :close, presence: true
 
   after_initialize :assign_defaults, if: 'new_record?'
+  before_save :set_stores
   before_update :update_out_of_date
 
   def self.emissions_table
@@ -47,6 +52,11 @@ class Vehicle < ActiveRecord::Base
   end
 
   private
+    def set_stores
+      self.store_start = customer.stores[0] unless self.store_start
+      self.store_stop = self.store_start # TODO deal with diff start and stop in optimizer
+    end
+
     def assign_defaults
       self.emission = 0
       self.consumption = 0
@@ -57,7 +67,7 @@ class Vehicle < ActiveRecord::Base
     end
 
     def update_out_of_date
-      if emission_changed? or consumption_changed? or capacity_changed? or open_changed? or close_changed?
+      if emission_changed? or consumption_changed? or capacity_changed? or open_changed? or close_changed? or store_start_id_changed? or store_stop_id_changed?
         routes.each{ |route|
           route.out_of_date = true
         }

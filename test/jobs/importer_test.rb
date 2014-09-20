@@ -1,5 +1,3 @@
-require "test/unit"
-
 class ImporterTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
@@ -8,7 +6,7 @@ class ImporterTest < ActionController::TestCase
   test "shoud import" do
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', 1 + 0 + (3 + 2 + 1)) do
+        assert_difference('Stop.count', 1 + 0 + (1 + 2 + 1)) do
           Importer.import(false, @customer, "test/fixtures/files/import_one.csv", "text")
         end
       end
@@ -20,7 +18,7 @@ class ImporterTest < ActionController::TestCase
   test "shoud import tow" do
     assert_difference('Planning.count') do
       assert_difference('Destination.count', 2) do
-        assert_difference('Stop.count', 1 + 4 + 4) do
+        assert_difference('Stop.count', 1 + 4 + 2) do
           Importer.import(false, @customer, "test/fixtures/files/import_two.csv", "text")
         end
       end

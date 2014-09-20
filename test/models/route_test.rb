@@ -25,17 +25,10 @@ class RouteTest < ActiveSupport::TestCase
     o.planning.tags.clear
     o.stops.clear
     o.save!
-    assert_difference('Stop.count', Destination.all.size - 1) do
+    assert_difference('Stop.count', Destination.all.size) do
       o.default_stops
       o.save!
     end
-  end
-
-  test "should default_store" do
-    o = routes(:route_one)
-    o.stops.clear
-    o.default_store
-    assert_equal 2, o.stops.size
   end
 
   test "should compute" do
@@ -48,16 +41,16 @@ class RouteTest < ActiveSupport::TestCase
     assert o.emission
     assert o.start
     assert o.end
-    assert_equal o.stops.size - 1, o.distance
+    assert_equal o.stops.size + 1, o.distance
   end
 
   test "should compute empty" do
     o = routes(:route_one)
-    assert o.stops.size > 3
+    assert o.stops.size > 1
     o.compute
-    assert_equal o.stops.size - 1, o.distance
+    assert_equal o.stops.size + 1, o.distance
 
-    o.stops[1..-2].each{ |stop|
+    o.stops.each{ |stop|
       stop.active = false
     }
 
@@ -68,7 +61,7 @@ class RouteTest < ActiveSupport::TestCase
   test "should set destinations" do
     o = routes(:route_one)
     o.stops.clear
-    assert_difference('Stop.count', 3) do
+    assert_difference('Stop.count', 1) do
       o.set_destinations([[destinations(:destination_two), true]])
       o.save!
     end
@@ -127,9 +120,9 @@ class RouteTest < ActiveSupport::TestCase
   test "should matrix_size" do
     o = routes(:route_one)
 
-    assert_equal o.stops.size - 1, o.matrix_size
+    assert_equal o.stops.size + 2, o.matrix_size
 
     o.stops[1].active = false
-    assert_equal o.stops.size - 1 - 1, o.matrix_size
+    assert_equal o.stops.size + 2 - 1, o.matrix_size
   end
 end

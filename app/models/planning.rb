@@ -61,14 +61,11 @@ class Planning < ActiveRecord::Base
 
   def vehicle_add(vehicle)
     route = routes.build(vehicle: vehicle, out_of_date:false)
-    route.default_store
   end
 
   def vehicle_remove(vehicle)
     route = routes.find{ |route| route.vehicle == vehicle }
-    route.stops.select{ |stop|
-      stop.destination != customer.store
-    }.collect{ |stop|
+    route.stops.collect{ |stop|
       routes[0].stops.build(destination: stop.destination)
       routes[0].out_of_date = true
     }
@@ -140,15 +137,12 @@ class Planning < ActiveRecord::Base
 
     # Take the closest routes destination and eval insert
     route, index = available_routes.collect{ |route|
-      route.stops[1..-1].map{ |stop| [stop, route] }
+      route.stops.map{ |stop| [stop.destination, route, stop.index] } +
+        [[route.vehicle.store_start, route, 0], [route.vehicle.store_stop, route, route.size-1]]
     }.flatten(1).sort{ |a,b|
-      a[0].destination.distance(stop.destination) <=> b[0].destination.distance(stop.destination)
-    }[0..9].collect{ |stop_route|
-        if stop_route[0].destination == customer.store
-          [[stop_route[1], stop_route[0].index]]
-        else
-          [[stop_route[1], stop_route[0].index], [stop_route[1], stop_route[0].index+1]]
-        end
+      a[0].distance(stop.destination) <=> b[0].distance(stop.destination)
+    }[0..9].collect{ |destination_route_index|
+        [[destination_route_index[1], destination_route_index[2]], [destination_route_index[1], destination_route_index[2]+1]]
     }.flatten(1).uniq.min_by{ |ri|
       ri[0].class.amoeba do
         clone :stops # No need to duplicate stop juste for compute evaluation
@@ -177,8 +171,6 @@ class Planning < ActiveRecord::Base
 
   def destinations_compatibles
     customer.destinations.select{ |c|
-      c != customer.store
-    }.select{ |c|
       tags.to_a & c.tags.to_a == tags.to_a
     }
   end
@@ -197,9 +189,7 @@ class Planning < ActiveRecord::Base
         unaffected = []
         destinations_free = routes.select{ |route|
           !route.locked
-        }.collect{ |route|
-          route.vehicle ? route.stops[1..-2] : route.stops
-        }.flatten.map(&:destination)
+        }.collect(&:stops).flatten.map(&:destination)
 
         routes.each{ |route|
           route.locked || route.set_destinations([])

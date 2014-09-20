@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140917145632) do
+ActiveRecord::Schema.define(version: 20140919125039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(version: 20140917145632) do
     t.date     "end_subscription"
     t.integer  "max_vehicles"
     t.time     "take_over"
-    t.integer  "store_id"
     t.integer  "job_geocoding_id"
     t.integer  "job_matrix_id"
     t.integer  "job_optimizer_id"
@@ -35,7 +34,6 @@ ActiveRecord::Schema.define(version: 20140917145632) do
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
     t.index ["job_matrix_id"], :name => "index_customers_on_job_matrix_id"
     t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
-    t.index ["store_id"], :name => "index_customers_on_store_id"
   end
 
   create_table "delayed_jobs", force: true do |t|
@@ -64,7 +62,7 @@ ActiveRecord::Schema.define(version: 20140917145632) do
     t.integer  "quantity"
     t.time     "open"
     t.time     "close"
-    t.integer  "customer_id"
+    t.integer  "customer_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "detail"
@@ -140,6 +138,21 @@ ActiveRecord::Schema.define(version: 20140917145632) do
     t.datetime "updated_at"
   end
 
+  create_table "stores", force: true do |t|
+    t.string   "name"
+    t.string   "street"
+    t.string   "postalcode"
+    t.string   "city"
+    t.float    "lat", null: false
+    t.float    "lng", null: false
+    t.time     "open"
+    t.time     "close"
+    t.integer  "customer_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["customer_id"], :name => "fk__stores_customer_id"
+  end
+
   create_table "vehicles", force: true do |t|
     t.string   "name"
     t.float    "emission"
@@ -148,12 +161,18 @@ ActiveRecord::Schema.define(version: 20140917145632) do
     t.string   "color"
     t.time     "open"
     t.time     "close"
-    t.integer  "customer_id", null: false
+    t.integer  "customer_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "tomtom_id"
+    t.integer  "store_start_id", null: false
+    t.integer  "store_stop_id",  null: false
     t.index ["customer_id"], :name => "index_vehicles_on_customer_id"
+    t.index ["store_start_id"], :name => "fk__vehicles_store_start_id"
+    t.index ["store_stop_id"], :name => "fk__vehicles_store_stop_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_customer_id"
+    t.foreign_key ["store_start_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_store_start_id"
+    t.foreign_key ["store_stop_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_store_stop_id"
   end
 
   create_table "routes", force: true do |t|
@@ -169,6 +188,9 @@ ActiveRecord::Schema.define(version: 20140917145632) do
     t.boolean  "locked"
     t.datetime "build_at"
     t.boolean  "out_of_date"
+    t.text     "stop_trace"
+    t.boolean  "stop_out_of_drive_time"
+    t.float    "stop_distance"
     t.index ["planning_id"], :name => "index_routes_on_planning_id"
     t.index ["vehicle_id"], :name => "index_routes_on_vehicle_id"
     t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_routes_planning_id"
@@ -192,6 +214,15 @@ ActiveRecord::Schema.define(version: 20140917145632) do
     t.index ["route_id"], :name => "index_stops_on_route_id"
     t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_destination_id"
     t.foreign_key ["route_id"], "routes", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_route_id"
+  end
+
+  create_table "stores_vehicules", id: false, force: true do |t|
+    t.integer "store_id",   null: false
+    t.integer "vehicle_id", null: false
+    t.index ["store_id"], :name => "index_stores_vehicules_on_store_id"
+    t.index ["vehicle_id"], :name => "index_stores_vehicules_on_vehicle_id"
+    t.foreign_key ["store_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_vehicules_store_id"
+    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "fk_stores_vehicules_vehicle_id"
   end
 
   create_table "users", force: true do |t|

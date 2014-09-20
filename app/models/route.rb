@@ -48,32 +48,21 @@ class Route < ActiveRecord::Base
     compute
   end
 
-  def default_store
-    stops.clear
-    stops.build(destination:planning.customer.store, active:true, index:0)
-    stops.build(destination:planning.customer.store, active:true, index:1)
-  end
-
   def compute
     self.out_of_date = false
     self.distance = 0
     self.emission = 0
     self.start = self.end = nil
-    if vehicle
+    if vehicle && stops.size > 0
       self.end = self.start = vehicle.open
-      last = stops[0]
-      last.time = self.end
+      last = vehicle.store_start
       quantity = 0
-      stops_sort = stops.sort_by(&:index)[1..-1]
-      router_url = stops_sort[0].destination.customer && stops_sort[0].destination.customer.router.url
+      stops_sort = stops.sort_by(&:index)
+      router_url = stops_sort[0].destination.customer.router.url
       stops_sort.each{ |stop|
         destination = stop.destination
         if stop.active && destination.lat && destination.lng
-          stop.distance, time, stop.trace = if router_url
-            Trace.compute(router_url, last.destination.lat, last.destination.lng, destination.lat, destination.lng)
-          else
-            [0, 0, nil]
-          end
+          stop.distance, time, stop.trace = Trace.compute(router_url, last.lat, last.lng, destination.lat, destination.lng)
           stop.time = self.end + time
           if destination.open && stop.time < destination.open
             stop.time = destination.open
@@ -90,13 +79,21 @@ class Route < ActiveRecord::Base
 
           stop.out_of_drive_time = destination.customer && stop.time > vehicle.close
 
-          last = stop
+          last = stop.destination
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = false
           stop.distance = stop.trace = stop.time = nil
         end
-        self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
       }
+
+      distance, time, trace = Trace.compute(router_url, last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_start.lng)
+      self.distance += distance
+      self.end += time
+      self.stop_distance = distance
+      self.stop_trace = trace
+      self.stop_out_of_drive_time = self.end > vehicle.close
+
+      self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
     end
   end
 
@@ -109,10 +106,6 @@ class Route < ActiveRecord::Base
 
   def add_destinations(dests, recompute = true)
     Stop.transaction do
-      dests.select!{ |d| d[0] != planning.customer.store }
-      if vehicle
-        dests = [[planning.customer.store, true]] + dests + [[planning.customer.store, true]]
-      end
       i = 0
       dests.each{ |stop|
         destination, active = stop
@@ -158,15 +151,16 @@ class Route < ActiveRecord::Base
   end
 
   def matrix_size
-    stops_segregate[true].size
+    stops_segregate[true].size + 2
   end
 
   def matrix
     stops_on = stops_segregate[true]
     router_url = stops_on[1].destination.customer.router.url
-    stops_on.collect{ |stop1|
-      stops_on.collect{ |stop2|
-        distance, time, trace = Trace.compute(router_url, stop1.destination.lat, stop1.destination.lng, stop2.destination.lat, stop2.destination.lng)
+    positions = [vehicle.store_start] + stops_on.collect(&:destination) + [vehicle.store_stop]
+    positions.collect{ |position1|
+      positions.collect{ |position2|
+        distance, time, trace = Trace.compute(router_url, position1.lat, position1.lng, position2.lat, position2.lng)
         yield if block_given?
         [distance, time]
       }
@@ -175,16 +169,16 @@ class Route < ActiveRecord::Base
 
   def order(o)
     stops_ = stops_segregate
-    a = o[0..-2].collect{ |i|
+    a = o.collect{ |i|
       stops_[true][i].out_of_window = false
       stops_[true][i]
     }
-    a = a + ((1..stops_[true].size-1).to_a - o[1..-2]).collect{ |i|
+    a += ((0..stops_[true].size-1).to_a - o).collect{ |i|
       stops_[true][i].active = false
       stops_[true][i].out_of_window = true
       stops_[true][i]
     }
-    a = a + (stops_[false] || []) + stops[-1..-1]
+    a += (stops_[false] || [])
     i = 0
     a.each{ |stop|
       stop.index = i
@@ -224,6 +218,6 @@ class Route < ActiveRecord::Base
     end
 
     def stops_segregate
-      stops[0..-2].group_by{ |stop| !!(stop.active && stop.destination.lat && stop.destination.lng) }
+      stops.group_by{ |stop| !!(stop.active && stop.destination.lat && stop.destination.lng) }
     end
 end

@@ -32,7 +32,7 @@ class Optimizer
         customer.job_matrix = Delayed::Job.enqueue(MatrixJob.new(planning.id, route.id))
       end
     else
-      tws = route.stops[0..-2].select{ |stop| stop.active }.collect{ |stop|
+      tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop| # TODO support diff start and stop on route into optimizer
         open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
         close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
         if open && close && open > close
@@ -44,7 +44,7 @@ class Optimizer
       }
       optimum = Ort.optimize(route.vehicle.capacity, route.matrix, tws)
       if optimum
-        route.order(optimum)
+        route.order(optimum[1..-2].map{ |n| n-1 })
         route.save && route.reload # Refresh stops order
         planning.compute
         planning.save

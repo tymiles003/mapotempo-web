@@ -17,7 +17,7 @@
 #
 class Customer < ActiveRecord::Base
   belongs_to :router
-  belongs_to :store, :class_name => "Destination", :autosave => true, :dependent => :destroy
+  has_many :stores, -> { order('id')}, inverse_of: :customer, :autosave => true, :dependent => :destroy
   belongs_to :job_geocoding, :class_name => "Delayed::Backend::ActiveRecord::Job", :dependent => :destroy
   belongs_to :job_matrix, :class_name => "Delayed::Backend::ActiveRecord::Job", :dependent => :destroy
   belongs_to :job_optimizer, :class_name => "Delayed::Backend::ActiveRecord::Job", :dependent => :destroy
@@ -39,11 +39,11 @@ class Customer < ActiveRecord::Base
 
   private
     def assign_defaults
-      self.store = Destination.create(
-        name: I18n.t('destinations.default_store_name'),
-        city: I18n.t('destinations.default_store_city'),
-        lat: Float(I18n.t('destinations.default_store_lat')),
-        lng: Float(I18n.t('destinations.default_store_lng'))
+      self.stores.build(
+        name: I18n.t('stores.default.name'),
+        city: I18n.t('stores.default.city'),
+        lat: Float(I18n.t('stores.default.lat')),
+        lng: Float(I18n.t('stores.default.lng'))
       )
     end
 

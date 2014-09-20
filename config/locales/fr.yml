@@ -66,6 +66,10 @@ fr:
       stops:
         one: "arrêt"
         other: "arrêts"
+      store: "Client"
+      stores:
+        one: "dépôt"
+        other: "dépôts"
       tag: "Libellé"
       tags:
         one: "libellé"
@@ -96,6 +100,7 @@ fr:
         router: "Calculateur d'itinéraire"
         router_id: "Calculateur d'itinéraire"
         print_planning_annotating: "Émargement des feuilles de routes"
+        stores: "Dépôts"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -156,6 +161,17 @@ fr:
         end: "Fin"
         distance: "Distance"
         time: "Durée"
+      store:
+        name: "Nom"
+        address: "Adresse"
+        street: "Voie"
+        detail: "Complément"
+        postalcode: "Code postal"
+        city: "Ville"
+        open: "Horaire début"
+        close: "Horaire fin"
+        store_start: "Dépôt début"
+        store_end: "Dépôt fin"
       tag:
         label: "Libellé"
       user:
@@ -194,10 +210,12 @@ fr:
           attributes:
             vehicles:
               bad_customer: "non associé au compte client"
-        route:
+        customer:
           attributes:
-            stops:
+            destinations:
               over_max_limit: "Dépassement du nombre maximal d'arrêts dans une tournée"
+            stores:
+              at_least_one: "Au moins un dépôt est requis"
 
   errors:
     planning:
@@ -240,10 +258,6 @@ fr:
         planning_annotating: "Émargement des feuilles de routes"
 
   destinations:
-    default_store_name: "Départ véhicule"
-    default_store_lat: "44.83423"
-    default_store_lng: "-0.60068"
-    default_store_city: "Bordeaux"
     menu:
       destinations: "Clients"
       import: "Importer"
@@ -422,6 +436,13 @@ fr:
       form_contains_error:
         one: "Le formulaire contient une erreur."
         other: "Le formulaire contient des erreurs."
+
+  stores:
+    default:
+      name: "Départ véhicule"
+      lat: "44.83423"
+      lng: "-0.60068"
+      city: "Bordeaux"
 
   tags:
     edit:

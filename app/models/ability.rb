@@ -29,8 +29,8 @@ class Ability
         can [:stop_job_matrix, :stop_job_optimizer, :stop_job_geocoding], Customer
         can [:index, :edit, :update], Vehicle, :customer_id => user.customer.id
         can :manage, Tag, :customer_id => user.customer.id
-        can :manage, Destination, :id => user.customer.store_id
         can :manage, Destination, :customer_id => user.customer.id
+        can :manage, Store, :customer_id => user.customer.id
         can :manage, Zoning, :customer_id => user.customer.id
         if not user.customer.end_subscription or user.customer.end_subscription > Time.now
           can :manage, Planning, :customer_id => user.customer.id

@@ -1,0 +1,34 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+store_one:
+  name: store
+  street: MyString
+  postalcode: MyString
+  city: MyString
+  lat: 46.56860
+  lng: 0.35462
+  open: 2000-01-01 7:00:00
+  close: 2000-01-01 19:00:00
+  customer: customer_one
+
+store_one_bis:
+  name: store
+  street: MyString
+  postalcode: MyString
+  city: MyString
+  lat: 46.56860
+  lng: 0.35462
+  open: 2000-01-01 7:00:00
+  close: 2000-01-01 19:00:00
+  customer: customer_one
+
+store_two:
+  name: store
+  street: MyString
+  postalcode: MyString
+  city: MyString
+  lat: 48.09385
+  lng: -1.64694
+  open: 2000-01-01 7:00:00
+  close: 2000-01-01 19:00:00
+  customer: customer_two

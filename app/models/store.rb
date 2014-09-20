@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2014
 #
 # This file is part of Mapotempo.
 #
@@ -17,21 +17,22 @@
 #
 require 'geocode'
 
-class Destination < ActiveRecord::Base
+class Store < ActiveRecord::Base
   belongs_to :customer
-  has_many :stops, inverse_of: :destination, dependent: :delete_all
-  has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
+  has_many :vehicle_starts, :class_name => 'Vehicle', inverse_of: :store_start, foreign_key: 'store_start_id'
+  has_many :vehicle_stops, :class_name => 'Vehicle', inverse_of: :store_stop, foreign_key: 'store_stop_id'
 
   nilify_blanks
   validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true
   validates :city, presence: true
-#  validates :lat, numericality: {only_float: true} # maybe nil
-#  validates :lng, numericality: {only_float: true} # maybe nil
+  validates :lat, numericality: {only_float: true}
+  validates :lng, numericality: {only_float: true}
 
-  before_save :update_tags
-  before_update :update_geocode, :update_out_of_date
+  before_update :update_geocode
+  before_save :update_out_of_date
+  before_destroy :destroy_vehicle_store
 
   def geocode
     address = Geocode.code(street, postalcode, city)
@@ -60,8 +61,12 @@ class Destination < ActiveRecord::Base
   end
 
   private
+    def vehicles
+      (vehicle_starts.to_a + vehicle_stops.to_a).uniq
+    end
+
     def update_out_of_date
-      if lat_changed? or lng_changed? or open_changed? or close_changed? or quantity_changed? or take_over_changed?
+      if lat_changed? or lng_changed? or open_changed? or close_changed?
         out_of_date
       end
     end
@@ -72,37 +77,30 @@ class Destination < ActiveRecord::Base
       end
     end
 
-    def update_tags_track(tag)
-      @tags_updated = true
-    end
-
-    def update_tags
-      if customer && (@tags_updated || new_record?)
-        @tags_updated = false
-
-        # Don't use local collection here, not set when save new record
-        customer.plannings.each{ |planning|
-          if planning.destinations.include?(self)
-            if planning.tags.to_a & tags.to_a != planning.tags.to_a
-              planning.destination_remove(self)
-            end
-          else
-            if planning.tags.to_a & tags.to_a == planning.tags.to_a
-              planning.destination_add(self)
-            end
-          end
-        }
-      end
-
-      true
-    end
-
     def out_of_date
       Route.transaction do
-        stops.each{ |stop|
-          stop.route.out_of_date = true
-          stop.route.save
+        vehicles.each{ |vehicle|
+          vehicle.routes.each{ |route|
+            route.out_of_date = true
+            route.save
+          }
         }
+      end
+    end
+
+    def destroy_vehicle_store
+      default = customer.stores.find{ |store| store != self }
+      if default
+        vehicle_starts.each{ |vehicle|
+          vehicle.store_start = default
+        }
+        vehicle_stops.each{ |vehicle|
+          vehicle.store_stop = default
+        }
+        vehicles.each(&:save!)
+        true
+      else
+        raise I18n.t('activerecord.errors.models.stores.at_least_one')
       end
     end
 end

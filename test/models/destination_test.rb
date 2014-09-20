@@ -9,7 +9,7 @@ class DestinationTest < ActiveSupport::TestCase
   end
 
   test "should save" do
-    o = Destination.new(name: "plop", city: "Bordeaux", lat: 1, lng: 1, tags: [tags(:tag_one)])
+    o = customers(:customer_one).destinations.build(name: "plop", city: "Bordeaux", lat: 1, lng: 1, tags: [tags(:tag_one)])
     assert o.save
   end
 
@@ -70,7 +70,7 @@ class DestinationTest < ActiveSupport::TestCase
     p = plannings(:planning_one)
     p.tags = [tags(:tag_one), tags(:tag_two)]
 
-    routes(:route_one).default_store
+    routes(:route_one).stops.clear
     o.tags = []
 
     assert_difference('Stop.count', 0) do

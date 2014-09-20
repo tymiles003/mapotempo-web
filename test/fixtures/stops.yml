@@ -12,18 +12,6 @@ stop_unaffected:
   out_of_capacity: false
   out_of_drive_time: false
 
-stop_one_zero:
-  index: 1
-  active: true
-  distance: 1.5
-  trace: MyString
-  route: route_one
-  destination: store_one
-  time: 2000-01-01 00:00:30
-  out_of_window: false
-  out_of_capacity: false
-  out_of_drive_time: false
-
 stop_one_one:
   index: 2
   active: true
@@ -48,30 +36,6 @@ stop_one_two:
   out_of_capacity: false
   out_of_drive_time: false
 
-stop_one_three:
-  index: 4
-  active: true
-  distance: 1.5
-  trace: MyString
-  route: route_one
-  destination: store_one
-  time: 2000-01-01 00:00:30
-  out_of_window: false
-  out_of_capacity: false
-  out_of_drive_time: false
-
-stop_two_zero:
-  index: 1
-  active: true
-  distance: 1.5
-  trace: MyString
-  route: route_three
-  destination: store_one
-  time: 2000-01-01 00:00:30
-  out_of_window: false
-  out_of_capacity: false
-  out_of_drive_time: false
-
 stop_two_one:
   index: 2
   active: false
@@ -79,18 +43,6 @@ stop_two_one:
   trace: MyString
   route: route_three
   destination: destination_two
-  time: 2000-01-01 00:00:30
-  out_of_window: false
-  out_of_capacity: false
-  out_of_drive_time: false
-
-stop_two_two:
-  index: 3
-  active: true
-  distance: 1.5
-  trace: MyString
-  route: route_three
-  destination: store_one
   time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
