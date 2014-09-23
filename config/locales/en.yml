@@ -191,6 +191,10 @@ en:
         open: "Open"
         close: "Close"
         tomtom_id: "TomTom ID"
+        store_start: "Store Start"
+        store_start_id: "Store Start"
+        store_stop: "Store Stop"
+        store_stop_id: "Store Stop"
       zoning:
         name: "Name"
       zones:
@@ -211,8 +215,8 @@ en:
           attributes:
             destinations:
               over_max_limit: "Over maximum number of route's stops"
-            stores:
-              at_least_one: "At least one store needed"
+        stores:
+          at_least_one: "At least one store needed"
 
   errors:
     planning:
@@ -260,12 +264,11 @@ en:
       import: "Import"
       export_spreadsheet_standard: "Export Spreadsheet Standard"
       export_spreadsheet_excel: "Export Spreadsheet Excel"
-      store: "Store"
+      stores: "Starts / Stops"
       tags: "Tags"
       clear: "Clear all destinations"
       clear_confirm: "Are you sure to want to delete all destinations?"
     form:
-      submit_store: "Edit store"
       detail_help: "Non geocoded addresse complement; like flat number"
       quantity_help: "Quantity to be delivered"
       take_over_help: "If empty uses the default value"
@@ -274,7 +277,6 @@ en:
       locate_manually: "Locate manually on the map"
     edit:
       title: "Editing destination"
-      title_store: "Editing store"
     import:
       title: "Import destinations"
       replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost."
@@ -438,6 +440,15 @@ en:
         lat: "44.83423"
         lng: "-0.60068"
         city: "Bordeaux"
+    form:
+      locate_manually: "Locate manually on the map"
+    edit:
+      title: "Editing Store"
+    index:
+      title: "Listing Stores"
+      new: "New Store"
+    new:
+      title: "New Store"
 
   tags:
     edit:
@@ -466,6 +477,7 @@ en:
       title: "Editing vehicle"
     index:
       title: "Listing vehicles"
+      stores: "Stores"
     new:
       title: "New vehicle"
     form:

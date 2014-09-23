@@ -12,7 +12,7 @@ class PlanningsControllerTest < ActionController::TestCase
     end
 
     def Ort.optimize(capacity, matrix, time_window)
-      (1..(matrix.size-1)).to_a
+      (0..(matrix.size-1)).to_a
     end
 
     @planning = plannings(:planning_one)

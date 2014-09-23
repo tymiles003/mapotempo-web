@@ -6,8 +6,30 @@
     <i class="fa fa-road fa-fw"></i> <%= number_to_human(route.distance, units: :distance, precision: 3) %>
   </span>
   <ol class="stops" start="0">
+
+    <li class="list-group-item" style="border-left: 3px solid <%= route.vehicle.color %>">
+      <div class="row no-gutter">
+        <div class="title col-md-2 col-sm-2 col-xs-3">
+          <span class="time"><%= route.start.strftime("%H:%M") if route.start %></span>
+        </div>
+
+        <% if current_user.customer.print_planning_annotating %>
+          <div class="col-md-5 col-sm-6 col-xs-6">
+        <% else %>
+          <div class="col-md-6 col-sm-6 col-xs-9">
+        <% end %>
+          <span class="name"><%= route.vehicle.store_start.name %></span><br/>
+          <span class="address">
+            <%= route.vehicle.store_start.street %>
+            </br>
+            <%= route.vehicle.store_start.postalcode %> <%= route.vehicle.store_start.city %>
+          </span>
+        </div>
+      </div>
+    </li>
+
   <%
-  index = -1
+  index = 0
   route.stops.each{ |stop|
     if stop.active and stop.destination.lat
   %>
@@ -39,7 +61,7 @@
           <% end %>
         </div>
 
-        <% if stop.destination.customer && current_user.customer.print_planning_annotating %>
+        <% if current_user.customer.print_planning_annotating %>
           <div class="col-md-5 col-sm-6 col-xs-6">
         <% else %>
           <div class="col-md-6 col-sm-6 col-xs-9">
@@ -58,13 +80,13 @@
           <% end %>
         </div>
 
-        <% if stop.destination.customer && current_user.customer.print_planning_annotating %>
+        <% if current_user.customer.print_planning_annotating %>
           <div class="comment col-md-2 hidden-sm hidden-xs"><%= stop.destination.comment %></div>
         <% else %>
           <div class="comment col-md-4 col-sm-4 hidden-xs"><%= stop.destination.comment %></div>
         <% end %>
 
-        <% if stop.destination.customer && current_user.customer.print_planning_annotating %>
+        <% if current_user.customer.print_planning_annotating %>
           <div class="annotating col-md-3 col-sm-3 col-xs-3">
             <div><%= t '.annotating.hour' %></div>
             <div class="signature"><%= t '.annotating.signature' %></div>
@@ -72,7 +94,7 @@
         <% end %>
       </div>
 
-      <% if stop.out_of_window || stop.out_of_capacity || stop.out_of_capacity %>
+      <% if stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time %>
         <div class="row">
           <span class="col-md-offset-1 col-md-11 ui-state-error">
             <% if stop.out_of_window %>
@@ -92,5 +114,37 @@
     end
   }
   %>
+
+    <li class="list-group-item" style="border-left: 3px solid <%= route.vehicle.color %>">
+      <div class="row no-gutter">
+
+        <div class="title col-md-2 col-sm-2 col-xs-3">
+          <span class="time"><%= route.end.strftime("%H:%M") if route.end %></span>
+        </div>
+
+        <% if current_user.customer.print_planning_annotating %>
+          <div class="col-md-5 col-sm-6 col-xs-6">
+        <% else %>
+          <div class="col-md-6 col-sm-6 col-xs-9">
+        <% end %>
+          <span class="name"><%= route.vehicle.store_stop.name %></span><br/>
+          <span class="address">
+            <%= route.vehicle.store_stop.street %>
+            </br>
+            <%= route.vehicle.store_stop.postalcode %> <%= route.vehicle.store_stop.city %>
+          </span>
+        </div>
+
+        <% if route.stop_out_of_drive_time %>
+          <div class="row">
+            <span class="col-md-offset-1 col-md-11 ui-state-error">
+              <% if route.stop_out_of_drive_time %>
+                <span><i class="fa fa-power-off fa-fw"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
+              <% end %>
+            </span>
+          </div>
+       <% end %>
+    </li>
+
   </ol>
 </li>

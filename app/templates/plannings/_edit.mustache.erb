@@ -102,18 +102,28 @@
           </ul>
         {{/route_error}}
       </div>
+      <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
+      {{#store_start}}
+        <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
+          <i class="fa fa-home fa-fw"></i>
+          <div class="title">
+            <span class="info">{{#lat}}{{time}} - {{/lat}}</span>
+            <span class="name" title="{{name}}">{{name}}</span>
+          </div>
+          <div class="btn-group pull-right">
+            <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
+          </div>
+          <div class="clearfix"></div>
+        </li>
+      {{/store_start}}
+      </ul>
       <ul class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
       {{#stops}}
         {{#destination}}
         <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
-          {{#is_store}}
-            <i class="fa fa-home fa-fw"></i>
-          {{/is_store}}
-          {{^is_store}}
-            <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
-            <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
-            <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
-          {{/is_store}}
+          <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
+          <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
+          <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
           <div class="title">
             {{#no_geocoding}}
               <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>
@@ -142,6 +152,24 @@
         </li>
         {{/destination}}
       {{/stops}}
+      </ul>
+      {{#store_stop}}
+      <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
+        <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
+          <i class="fa fa-home fa-fw"></i>
+          <div class="title">
+            {{#stop_out_of_drive_time}}
+              <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
+            {{/stop_out_of_drive_time}}
+            <span class="info">{{#lat}}{{time}} - {{/lat}}</span>
+            <span class="name" title="{{name}}">{{name}}</span>
+          </div>
+          <div class="btn-group pull-right">
+            <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
+          </div>
+          <div class="clearfix"></div>
+        </li>
+      {{/store_stop}}
       </ul>
     </div>
   {{/vehicle}}

@@ -15,15 +15,15 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function destinations_form(params) {
+function destinations_form(params, api) {
 
   var destination_id = params.destination_id,
     map_layer_url = params.map_layer_url,
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
-    marker_lat = $(":input[name=destination\\[lat\\]]").val(),
-    marker_lng = $(":input[name=destination\\[lng\\]]").val();
+    marker_lat = $(":input[name$=\\[lat\\]]").val(),
+    marker_lng = $(":input[name$=\\[lng\\]]").val();
 
   var map = L.map('map').setView([marker_lat || map_lat, marker_lng || map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -42,14 +42,14 @@ function destinations_form(params) {
       id = $row.attr('data-destination_id');
 
     <% if Mapotempo::Application.config.geocode_complete %>
-    $row.one("focus", ":input[name=destination\\[street\\]]", function () {
+    $row.one("focus", ":input[name$=\\[street\\]]", function () {
       $(this).autocomplete({
         delay: 500,
         source: function (req, add) {
           $.ajax({
             type: "patch",
             data: $(":input", $row).serialize(),
-            url: '/api/0.1/destinations/geocode_complete.json?api_key=' + api_key,
+            url: '/api/0.1/' + api + '/geocode_complete.json?api_key=' + api_key,
             beforeSend: beforeSendWaiting,
             success: function (data) {
               add($.map(data, function (val, i) {
@@ -72,10 +72,10 @@ function destinations_form(params) {
     <% end %>
     $row.on("change", ":input", function (event) {
       var url;
-      if (['destination[street]', 'destination[postalcode]', 'destination[city]'].indexOf(event.currentTarget.name) >= 0) {
-        url = '/api/0.1/destinations/geocode.json?api_key=' + api_key;
-      } else if (['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) {
-        url = '/api/0.1/destinations/geocode_reverse.json?api_key=' + api_key;
+      if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
+        url = '/api/0.1/' + api + '/geocode.json?api_key=' + api_key;
+      } else if (event.currentTarget.name.match(/\[lat\]|\[lng\]/)) {
+        url = '/api/0.1/' + api + '/geocode_reverse.json?api_key=' + api_key;
       } else {
         return;
       }
@@ -91,7 +91,7 @@ function destinations_form(params) {
         error: ajaxError
       });
     })
-    .on("click", "input[name='destination\\[street\\]'] + .input-group-addon", function (event) {
+    .on("click", "input[name$=\\[street\\]] + .input-group-addon", function (event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
@@ -99,7 +99,7 @@ function destinations_form(params) {
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
-    $('select[name=destination\\[tag_ids\\]\\[\\]]').select2({
+    $('select[name$=\\[tag_ids\\]\\[\\]]').select2({
       formatNoMatches: function () {
         return formatNoMatches;
       },
@@ -122,12 +122,12 @@ function destinations_form(params) {
 
   function update(destination_id, destination) {
     var row = $('[data-destination_id=' + destination_id + ']');
-    $('[name=destination\\[name\\]]', row).val(destination.name);
-    $('[name=destination\\[street\\]]', row).val(destination.street);
-    $('[name=destination\\[postalcode\\]]', row).val(destination.postalcode);
-    $('[name=destination\\[city\\]]', row).val(destination.city);
-    $('[name=destination\\[lat\\]]', row).val(destination.lat);
-    $('[name=destination\\[lng\\]]', row).val(destination.lng);
+    $('[name$=\\[name\\]]', row).val(destination.name);
+    $('[name$=\\[street\\]]', row).val(destination.street);
+    $('[name$=\\[postalcode\\]]', row).val(destination.postalcode);
+    $('[name$=\\[city\\]]', row).val(destination.city);
+    $('[name$=\\[lat\\]]', row).val(destination.lat);
+    $('[name$=\\[lng\\]]', row).val(destination.lng);
     if (destination_id in markers) {
       markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
     } else {
@@ -140,8 +140,8 @@ function destinations_form(params) {
 
   function sendMove(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
-    $('[name=destination\\[lat\\]]', row).val(latLng.lat);
-    $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
+    $('[name$=\\[lat\\]]', row).val(latLng.lat);
+    $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change');
   }
 
   map.on('click', function (mouseEvent) {
@@ -177,27 +177,43 @@ function destinations_form(params) {
   }
 }
 
-function destinations_new(params) {
-  destinations_form(params);
+function destinations_new(params, api) {
+  destinations_form(params, api);
 }
 
-function destinations_edit(params) {
-  destinations_form(params);
+function destinations_edit(params, api) {
+  destinations_form(params, api);
 }
 
 Paloma.controller('Destination').prototype.new = function () {
-  destinations_new(this.params);
+  destinations_new(this.params, 'destinations');
 };
 
 Paloma.controller('Destination').prototype.create = function () {
-  destinations_new(this.params);
+  destinations_new(this.params, 'destinations');
 };
 
 Paloma.controller('Destination').prototype.edit = function () {
-  destinations_edit(this.params);
+  destinations_edit(this.params, 'destinations');
 };
 
 Paloma.controller('Destination').prototype.update = function () {
+  destinations_edit(this.params, 'destinations');
+};
+
+Paloma.controller('Store').prototype.new = function () {
+  destinations_new(this.params, 'stores');
+};
+
+Paloma.controller('Store').prototype.create = function () {
+  destinations_new(this.params, 'stores');
+};
+
+Paloma.controller('Store').prototype.edit = function () {
+  destinations_edit(this.params, 'stores');
+};
+
+Paloma.controller('Store').prototype.update = function () {
   destinations_edit(this.params);
 };
 
@@ -272,7 +288,7 @@ function destinations_index(params) {
       id = $row.attr('data-destination_id');
 
     <% if Mapotempo::Application.config.geocode_complete %>
-    $row.one("focus", ":input[name=destination\\[street\\]]", function () {
+    $row.one("focus", ":input[name$=\\[street\\]]", function () {
       $(this).autocomplete({
         delay: 500,
         source: function (req, add) {
@@ -313,7 +329,7 @@ function destinations_index(params) {
         error: ajaxError
       });
     })
-    .on("click", "input[name='destination\\[city\\]'] + .input-group-addon", function (event) {
+    .on("click", "input[name$=\\[city\\]] + .input-group-addon", function (event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
@@ -342,7 +358,7 @@ function destinations_index(params) {
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
-    $('select[name=destination\\[tag_ids\\]\\[\\]]', $row).select2({
+    $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
       formatNoMatches: function () {
         return formatNoMatches;
       },
@@ -396,8 +412,8 @@ function destinations_index(params) {
 
   function sendMove(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
-    $('[name=destination\\[lat\\]]', row).val(latLng.lat);
-    $('[name=destination\\[lng\\]]', row).val(latLng.lng).trigger('change');
+    $('[name$=\\[lat\\]]', row).val(latLng.lat);
+    $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change');
   }
 
   map.on('click', function (mouseEvent) {
@@ -557,7 +573,7 @@ function destinations_index(params) {
       },
       textExtraction: function (node, table, cellIndex) {
         if (cellIndex == 7) {
-          return $.map($("[name=destination\\[tag_ids\\]\\[\\]] :selected", node), function (e, i) {
+          return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function (e, i) {
             return e.text;
           }).join(",");
         } else {

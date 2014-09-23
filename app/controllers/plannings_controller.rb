@@ -90,7 +90,6 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       begin
         destinations = Hash[current_user.customer.destinations.map{ |d| [d.id, d] }]
-        destinations[current_user.customer.store_id] = current_user.customer.store
         routes = Hash[@planning.routes.map{ |route| [String(route.id), route] }]
         Planning.transaction do
           params["_json"] and params["_json"].each{ |r|
@@ -188,7 +187,7 @@ class PlanningsController < ApplicationController
     @route = Route.where(planning: @planning, id: params[:route_id]).first
     if @route
       respond_to do |format|
-        if @route.stops.size <= 2 or (Optimizer::optimize(current_user.customer, @planning, @route) && current_user.save)
+        if @route.stops.size == 0 or (Optimizer::optimize(current_user.customer, @planning, @route) && current_user.save)
           format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
           format.json { render action: 'show', location: @planning }
         else

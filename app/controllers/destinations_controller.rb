@@ -45,8 +45,8 @@ class DestinationsController < ApplicationController
 
   def new
     @destination = Destination.new
-    @destination.postalcode = current_user.customer.store.postalcode
-    @destination.city = current_user.customer.store.city
+    @destination.postalcode = current_user.customer.stores[0].postalcode
+    @destination.city = current_user.customer.stores[0].city
   end
 
   def edit
@@ -70,7 +70,7 @@ class DestinationsController < ApplicationController
         Destination.transaction do
           @destination.update(destination_params)
           @destination.save!
-          @destination.customer and @destination.customer.save!
+          @destination.customer.save!
           format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         end
       rescue StandardError => e

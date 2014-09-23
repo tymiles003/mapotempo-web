@@ -66,7 +66,7 @@ fr:
       stops:
         one: "arrêt"
         other: "arrêts"
-      store: "Client"
+      store: "Dépôt"
       stores:
         one: "dépôt"
         other: "dépôts"
@@ -194,6 +194,10 @@ fr:
         open: "Horaire début"
         close: "Horaire fin"
         tomtom_id: "TomTom ID"
+        store_start: "Dépôt départ"
+        store_start_id: "Dépôt départ"
+        store_stop: "Dépôt arrivé"
+        store_stop_id: "Dépôt arrivée"
       zoning:
         name: "Nom"
       zones:
@@ -214,8 +218,8 @@ fr:
           attributes:
             destinations:
               over_max_limit: "Dépassement du nombre maximal d'arrêts dans une tournée"
-            stores:
-              at_least_one: "Au moins un dépôt est requis"
+        stores:
+          at_least_one: "Au moins un dépôt est requis"
 
   errors:
     planning:
@@ -263,12 +267,11 @@ fr:
       import: "Importer"
       export_spreadsheet_standard: "Export tableur standard"
       export_spreadsheet_excel: "Export tableur Excel"
-      store: "Départ véhicule"
+      stores: "Départs / Arrivées"
       tags: "Libellés"
       clear: "Supprimer tous les clients"
       clear_confirm: "Êtes-vous sûr de vouloir supprimer tous les clients ?"
     form:
-      submit_store: "Enregistrer départ véhicule"
       detail_help: "Complément d'adresse non géocodable, ex. numéro d'escalier"
       quantity_help: "Quantité à livrer"
       take_over_help: "Si vide utilise la valeur par défaut"
@@ -277,7 +280,6 @@ fr:
       locate_manually: "Positionner manuellement sur la carte"
     edit:
       title: "Modifier client"
-      title_store: "Enregistrer départ véhicule"
     import:
       title: "Importer des clients"
       replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus."
@@ -443,6 +445,15 @@ fr:
       lat: "44.83423"
       lng: "-0.60068"
       city: "Bordeaux"
+    form:
+      locate_manually: "Positionner manuellement sur la carte"
+    edit:
+      title: "Modifier dépôt"
+    index:
+      title: "Liste dépôts"
+      new: "Nouveau dépôt"
+    new:
+      title: "Nouveau dépôt"
 
   tags:
     edit:
@@ -451,7 +462,7 @@ fr:
       title: "Liste libellés"
       new: "Nouveau libellé"
     new:
-      title: "Nouveau Libellé"
+      title: "Nouveau libellé"
 
   users:
     menu:
@@ -471,6 +482,7 @@ fr:
       title: "Modifier véhicules"
     index:
       title: "Liste véhicules"
+      stores: "Dépôts"
     new:
       title: "Nouveau véhicules"
     form:

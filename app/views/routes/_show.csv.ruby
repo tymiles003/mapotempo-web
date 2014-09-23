@@ -1,4 +1,31 @@
-index = -1
+if route.vehicle
+  csv << [
+    (route.vehicle.name if route.vehicle),
+    0,
+    (route.start.strftime("%H:%M") if route.start),
+    0,
+    nil,
+    route.vehicle.store_start.name,
+    route.vehicle.store_start.street,
+    nil,
+    route.vehicle.store_start.postalcode,
+    route.vehicle.store_start.city,
+    route.vehicle.store_start.lat,
+    route.vehicle.store_start.lng,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil
+  ]
+end
+
+index = 0
 route.stops.each { |stop|
   csv << [
     (route.vehicle.name if route.vehicle),
@@ -25,3 +52,30 @@ route.stops.each { |stop|
     stop.out_of_drive_time ? 'x' : ''
   ]
 }
+
+if route.vehicle
+  csv << [
+    (route.vehicle.name if route.vehicle),
+    index+1,
+    (route.end.strftime("%H:%M") if route.end),
+    route.stop_distance,
+    nil,
+    route.vehicle.store_stop.name,
+    route.vehicle.store_stop.street,
+    nil,
+    route.vehicle.store_stop.postalcode,
+    route.vehicle.store_stop.city,
+    route.vehicle.store_stop.lat,
+    route.vehicle.store_stop.lng,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    nil,
+    route.stop_out_of_drive_time ? 'x' : ''
+  ]
+end

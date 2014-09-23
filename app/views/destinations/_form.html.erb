@@ -1,8 +1,5 @@
 <%= twitter_bootstrap_form_for(@destination, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: current_user.customer %>
-  <% if @destination != current_user.customer.store %>
-    <%= f.text_field :ref %>
-  <% end %>
   <%= f.text_field :name %>
   <%= f.text_field :street, {input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
   <%= f.text_field :detail do %>
@@ -15,39 +12,33 @@
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
-  <% if @destination != current_user.customer.store %>
-    <%= f.number_field :quantity, {placeholder: 1} do %>
-      <p class="help-block"><%= t '.quantity_help' %></p>
-    <% end %>
-    <%= f.text_field :take_over, {
-      value: @destination.take_over ? @destination.take_over.strftime("%H:%M:%S") : nil,
-      placeholder: current_user.customer.take_over ? current_user.customer.take_over.strftime("%H:%M:%S") : nil,
-      input_group: t('all.unit.hour_minute_second')} do %>
-      <p class="help-block"><%= t '.take_over_help' %></p>
-    <% end %>
-    <%= f.text_field :open, {value: @destination.open ? @destination.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-    <%= f.text_field :close, {value: @destination.close ? @destination.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-    <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
-      <p class="help-block"><%= t '.tags_help' %></p>
-    <% end %>
-    <%= f.text_field :comment do %>
-      <p class="help-block"><%= t '.comment_help' %></p>
-    <% end %>
+  <%= f.number_field :quantity, {placeholder: 1} do %>
+    <p class="help-block"><%= t '.quantity_help' %></p>
+  <% end %>
+  <%= f.text_field :take_over, {
+    value: @destination.take_over ? @destination.take_over.strftime("%H:%M:%S") : nil,
+    placeholder: current_user.customer.take_over ? current_user.customer.take_over.strftime("%H:%M:%S") : nil,
+    input_group: t('all.unit.hour_minute_second')} do %>
+    <p class="help-block"><%= t '.take_over_help' %></p>
+  <% end %>
+  <%= f.text_field :open, {value: @destination.open ? @destination.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
+  <%= f.text_field :close, {value: @destination.close ? @destination.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
+  <%= f.collection_select :tag_ids, [], current_user.customer.tags, :id, :label, {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+    <p class="help-block"><%= t '.tags_help' %></p>
+  <% end %>
+  <%= f.text_field :comment do %>
+    <p class="help-block"><%= t '.comment_help' %></p>
   <% end %>
   <%= f.actions do %>
-    <% if @destination != current_user.customer.store %>
-      <%= f.submit %>
-    <% else %>
-      <%= f.submit t('.submit_store') %>
-    <% end %>
+    <%= f.submit %>
   <% end %>
 <% end %>
 <%
 controller.js(
   destination_id: @destination.id || 0,
   map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
-  map_lat: current_user.customer.store.lat,
-  map_lng: current_user.customer.store.lng,
+  map_lat: current_user.customer.stores[0].lat,
+  map_lng: current_user.customer.stores[0].lng,
   map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution)
 )
 %>

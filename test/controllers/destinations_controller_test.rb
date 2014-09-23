@@ -107,7 +107,7 @@ class DestinationsControllerTest < ActionController::TestCase
     file.original_filename = "import_one.csv"
 
     assert_difference('Destination.count') do
-      assert_difference('Stop.count', 1 + 3 + 3) do
+      assert_difference('Stop.count', 1 + 1 + 3) do
         assert_difference('Planning.count') do
           post :upload, destinations_import_model: { replace: false, file: file }
         end

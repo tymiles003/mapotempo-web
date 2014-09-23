@@ -16,6 +16,7 @@
   <%= f.number_field :capacity, min:1 do %>
     <p class="help-block"><%= t '.capacity_help' %></p>
   <% end %>
+  <%= f.collection_select :store_start_id, [], current_user.customer.stores, :id, :name, {}, {} %>
   <% if !@vehicle.customer.tomtom_account.blank? && !@vehicle.customer.tomtom_user.blank? && !@vehicle.customer.tomtom_password.blank? %>
     <%= f.text_field :tomtom_id %>
   <% end %>

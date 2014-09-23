@@ -1,0 +1,24 @@
+<%= twitter_bootstrap_form_for(@store, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@store.id or 0)}) do |f| %>
+  <%= render 'shared/error_messages', model: current_user.customer %>
+  <%= f.text_field :name %>
+  <%= f.text_field :street, {input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
+  <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
+  <%= f.text_field :city %>
+  <input type="hidden" name="store[lat]" value="<%= @store.lat %>" />
+  <input type="hidden" name="store[lng]" value="<%= @store.lng %>" />
+  <div class="form-group">
+    <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
+  </div>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
+<%
+controller.js(
+  destination_id: @store.id || 0,
+  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
+  map_lat: current_user.customer.stores[0].lat,
+  map_lng: current_user.customer.stores[0].lng,
+  map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution)
+)
+%>

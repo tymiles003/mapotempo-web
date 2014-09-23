@@ -113,7 +113,7 @@
                     <li><%= link_to edit_vehicle_path(vehicle) do %><i class="fa fa-truck fa-fw"></i> <%= vehicle.name %><% end %></li>
                   <% end %>
                   <li class="divider"></li>
-                  <li><%= link_to edit_destination_path(current_user.customer.store) do %><i class="fa fa-home fa-fw"></i> <%= t 'destinations.menu.store' %></a><% end %></li>
+                  <li><%= link_to stores_path do %><i class="fa fa-home fa-fw"></i> <%= t 'destinations.menu.stores' %></a><% end %></li>
                 </ul>
               </li>
             <% end %>

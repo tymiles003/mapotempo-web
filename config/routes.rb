@@ -21,6 +21,8 @@ Mapotempo::Application.routes.draw do
   post 'destinations/upload' => 'destinations#upload', :as => 'destinations_import_models'
   delete 'destinations' => 'destinations#clear'
 
+  resources :stores
+
   resources :plannings do
     patch 'move'
     get 'refresh'

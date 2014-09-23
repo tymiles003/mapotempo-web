@@ -24,7 +24,7 @@ CSV.generate { |csv|
     I18n.t('plannings.export_file.out_of_drive_time')
   ]
   @planning.routes.select { |route|
-    !route.vehicle || route.stops.size > 2
+    !route.vehicle || route.stops.size > 0
   }.collect { |route|
     render 'routes/show', route: route, csv: csv
   }.join('')

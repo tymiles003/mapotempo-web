@@ -66,8 +66,8 @@ controller.js(
   planning_id: @planning.id,
   zoning_id: @planning.zoning ? @planning.zoning.id : nil,
   map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
-  map_lat: current_user.customer.store.lat,
-  map_lng: current_user.customer.store.lng,
+  map_lat: current_user.customer.stores[0].lat,
+  map_lng: current_user.customer.stores[0].lng,
   map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution),
   routes_id: @planning.routes.collect{ |route| route.id },
   vehicles_array: current_user.customer.vehicles.collect{ |vehicle|

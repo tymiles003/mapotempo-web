@@ -127,7 +127,7 @@ function plannings_edit(params) {
     var data = $('#planning > ol > li').map(function () {
       return {
         'route': $(this).attr("data-route_id"),
-        'destinations': $('li[data-destination_id]', this).map(function () {
+        'destinations': $('ul.sortable li[data-destination_id]', this).map(function () {
           return {
             'id': parseInt($(this).attr("data-destination_id")),
             'active': $('input', this).is(':checked')
@@ -191,14 +191,17 @@ function plannings_edit(params) {
       });
     });
 
-    var store_marker = L.marker(new L.LatLng(data.store.lat, data.store.lng), {
-      icon: L.icon({
-        iconUrl: data.store.icon,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
-      })
+    var stores_marker = L.featureGroup();
+    $.each(data.stores, function(i, store) {
+      L.marker(new L.LatLng(store.lat, store.lng), {
+        icon: L.icon({
+          iconUrl: store.icon,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        })
+      }).addTo(stores_marker);
     });
-    store_marker.addTo(map);
+    stores_marker.addTo(map);
 
     function formatVehicles(state) {
       return "<span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
@@ -267,33 +270,35 @@ function plannings_edit(params) {
           }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]);
         }
         if (stop.destination.lat && stop.destination.lng) {
-          if (stop.is_store) {
-            markers[stop.destination.id] = store_marker;
-          } else {
-            stop.i18n = mustache_i18n;
-            stop.color = color;
-            stop.vehicle_name = vehicle_name;
-            var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
-              icon: new L.NumberedDivIcon({
-                number: stop.number,
-                iconUrl: color ? route.icon : '<%= asset_path("point-000000.svg") %>',
-                iconSize: new L.Point(12, 12),
-                iconAnchor: new L.Point(6, 6),
-                popupAnchor: new L.Point(0, -6),
-                className: "small"
-              })
-            }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show'](stop));
-            m.number = stop.number;
-            m.icon_large = route.icon_large;
-            m.on('mouseover', function(e){
-              m.openPopup();
-            }).on('mouseout', function(e){
-              m.closePopup();
-            });
-            markers[stop.destination.id] = m;
-          }
+          stop.i18n = mustache_i18n;
+          stop.color = color;
+          stop.vehicle_name = vehicle_name;
+          var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
+            icon: new L.NumberedDivIcon({
+              number: stop.number,
+              iconUrl: color ? route.icon : '<%= asset_path("point-000000.svg") %>',
+              iconSize: new L.Point(12, 12),
+              iconAnchor: new L.Point(6, 6),
+              popupAnchor: new L.Point(0, -6),
+              className: "small"
+            })
+          }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show'](stop));
+          m.number = stop.number;
+          m.icon_large = route.icon_large;
+          m.on('mouseover', function(e){
+            m.openPopup();
+          }).on('mouseout', function(e){
+            m.closePopup();
+          });
+          markers[stop.destination.id] = m;
         }
       });
+      if (route.store_stop && route.store_stop.stop_trace) {
+        var polyline = new L.Polyline(L.PolylineUtil.decode(route.store_stop.stop_trace, 6));
+        L.polyline(polyline.getLatLngs(), {
+          color: color
+        }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]);
+      }
 
       if (!route.hidden) {
         routes_layers_cluster.addLayer(layers_cluster[route.route_id]);
@@ -347,13 +352,13 @@ function plannings_edit(params) {
       items: "li.route"
     }).disableSelection();
 
-    $("#out_of_road").sortable({
+    $("#out_of_road .sortable").sortable({
       connectWith: ".sortable",
       update: update_planning
     }).disableSelection();
 
     var sortableUpdate = false;
-    $(".stops").sortable({
+    $(".stops.sortable").sortable({
       distance: 8,
       connectWith: ".sortable",
       items: "li",

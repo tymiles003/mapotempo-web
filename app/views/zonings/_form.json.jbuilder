@@ -14,11 +14,8 @@ if @planning
     end
     json.stops do
       json.array! route.stops.collect do |stop|
-        if stop.destination != current_user.customer.store
-          destination = stop.destination
-          json.extract! destination, :lat, :lng
-          json.active route.vehicle && stop.active
-        end
+        json.extract! stop.destination, :lat, :lng
+        json.active route.vehicle && stop.active
       end
     end
   end

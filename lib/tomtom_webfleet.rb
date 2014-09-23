@@ -39,19 +39,19 @@ module TomtomWebfleet
    })
   end
 
-  def self.sendDestinationOrder(account, username, password, objectuid, stop, orderid, description, waypoints = nil)
+  def self.sendDestinationOrder(account, username, password, objectuid, position, orderid, description, time, waypoints = nil)
     params = {
       dstOrderToSend: {
         orderText: description.strip[0..499],
         explicitDestination: {
-          street: (stop.destination.street[0..49] if stop.destination.street),
-          postcode: (stop.destination.postalcode[0..9] if stop.destination.postalcode),
-          city: (stop.destination.city[0..49] if stop.destination.city),
+          street: (position.street[0..49] if position.street),
+          postcode: (position.postalcode[0..9] if position.postalcode),
+          city: (position.city[0..49] if position.city),
           geoPosition: '',
           :attributes! => {
             geoPosition: {
-              latitude: (stop.destination.lat*1e6).round.to_s,
-              longitude: (stop.destination.lng*1e6).round.to_s,
+              latitude: (position.lat*1e6).round.to_s,
+              longitude: (position.lng*1e6).round.to_s,
             }
           },
           :order! => [:street, :postcode, :city, :geoPosition]
@@ -69,7 +69,7 @@ module TomtomWebfleet
       }
     }
 
-    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = Time.now.strftime('%Y-%m-%dT') + stop.time.strftime('%H:%M:%S')) if stop.time
+    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = Time.now.strftime('%Y-%m-%dT') + time.strftime('%H:%M:%S')) if time
 
     if waypoints
       params[:advancedSendDestinationOrderParm] = {waypoints: {

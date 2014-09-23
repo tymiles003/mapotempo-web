@@ -21,6 +21,7 @@ class Tomtom
 
   def self.export_route_as_orders(customer, route)
     order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_start, order_id_base+'_0', route.vehicle.store_start.name, route.start)
     route.stops.each{ |stop|
       description = [
         '',
@@ -31,21 +32,36 @@ class Tomtom
         stop.destination.detail,
         stop.destination.comment,
       ].select{ |s| s }.join(' ').strip
-      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, stop, order_id_base+stop.id.to_s, description)
+      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, stop.destination, order_id_base+stop.id.to_s, description, stop.time)
     }
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, order_id_base+'_1', route.vehicle.store_stop.name, route.end)
   end
 
   def self.export_route_as_waypoints(customer, route)
-    waypoints = route.stops.collect{ |stop|
-      description = [
+    waypoints = ([[
+        route.vehicle.store_start.lat,
+        route.vehicle.store_start.lng,
         '',
-        stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil,
-        stop.destination.name,
-        stop.destination.comment
-      ].select{ |s| s }.join(' ').strip
-      {lat: stop.destination.lat, lng: stop.destination.lng, description: description}
-    }
+        route.vehicle.store_start.name
+      ]] + route.stops.collect{ |stop|
+        description = [
+          stop.destination.lat,
+          stop.destination.lng,
+          '',
+          stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil,
+          stop.destination.name,
+          stop.destination.comment
+        ]
+      } + [[
+        route.vehicle.store_stop.lat,
+        route.vehicle.store_stop.lng,
+        '',
+        route.vehicle.store_stop.name
+      ]]).map{ |l|
+        description = l.select{ |s| s }.join(' ').strip
+        {lat: l[0], lng: l[1], description: description}
+      }
     order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.stops[-1], order_id_base+route.vehicle.id.to_s, route.stops[-1].destination.name, waypoints)
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, order_id_base+route.vehicle.id.to_s, route.vehicle.store_stop.name, route.end, waypoints)
   end
 end
