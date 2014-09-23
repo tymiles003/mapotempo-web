@@ -9,4 +9,7 @@ class V01::Entities::Route < Grape::Entity
   expose(:locked, documentation: { type: 'Boolean' })
   expose(:out_of_date, documentation: { type: 'Boolean' })
   expose(:stops, using: V01::Entities::Stop, documentation: { type: 'Json' })
+  expose(:stop_trace, documentation: { type: 'String' })
+  expose(:stop_out_of_drive_time, documentation: { type: 'Boolean' })
+  expose(:stop_distance, documentation: { type: 'Float' })
 end

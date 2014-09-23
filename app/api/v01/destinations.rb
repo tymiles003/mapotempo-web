@@ -101,7 +101,7 @@ class V01::Destinations < Grape::API
       }
       patch 'geocode_complete' do
         p = destination_params
-        address_list = Geocode.complete(current_customer.store.lat, current_customer.store.lng, 40000, p[:street], p[:postalcode], p[:city])
+        address_list = Geocode.complete(current_customer.stores[0].lat, current_customer.stores[0].lng, 40000, p[:street], p[:postalcode], p[:city])
         address_list = address_list.collect{ |i| {street: i[0], postalcode: i[1], city: i[2]} }
         address_list
       end

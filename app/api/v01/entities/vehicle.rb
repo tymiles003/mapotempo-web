@@ -8,4 +8,5 @@ class V01::Entities::Vehicle < Grape::Entity
   expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M:%S') }
   expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
   expose(:tomtom_id, documentation: { type: 'String' })
+  expose(:store_start_id, documentation: { type: 'Integer' })
 end
