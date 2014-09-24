@@ -40,21 +40,6 @@ function zonings_edit(params) {
   var hasPlanning = false;
   var geoJsonLayers = {};
 
-  var cluster = new L.MarkerClusterGroup({
-    showCoverageOnHover: false
-  });
-  map.addLayer(cluster);
-
-  map.on('zoomend', function (e) {
-    if (map.getZoom() > 12) {
-      map.removeLayer(cluster);
-      map.addLayer(markersLayers);
-    } else {
-      map.removeLayer(markersLayers);
-      map.addLayer(cluster);
-    }
-  });
-
   var zone_map = {};
 
   var featureGroup = L.featureGroup().addTo(map);
@@ -206,10 +191,11 @@ function zonings_edit(params) {
                 iconAnchor: new L.Point(6, 6),
                 popupAnchor: new L.Point(1, 11)
               })
-            }).addTo(markersLayers).addTo(cluster);
+            }).addTo(markersLayers);
           }
         });
       });
+      markersLayers.addTo(map);
     }
     $.each(data.zoning, function (index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon));
