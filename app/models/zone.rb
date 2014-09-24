@@ -31,8 +31,10 @@ class Zone < ActiveRecord::Base
   end
 
   def inside?(lat, lng)
-    point = RGeo::Cartesian.factory.point(lng, lat)
-    (@geom || decode_geom).geometry().contains?(point)
+    if lat && lng
+      point = RGeo::Cartesian.factory.point(lng, lat)
+      (@geom || decode_geom).geometry().contains?(point)
+    end
   end
 
   private

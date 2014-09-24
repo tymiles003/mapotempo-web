@@ -88,6 +88,18 @@ class PlanningTest < ActiveSupport::TestCase
     assert_not o.zoning_out_of_date
   end
 
+  test "should compute with non geocoded" do
+    o = plannings(:planning_one)
+    o.zoning_out_of_date = true
+    d0 = o.routes[0].stops[0].destination
+    d0.lat = d0.lng = nil
+    o.compute
+    o.routes.select{ |r| r.vehicle }.each{ |r|
+      assert_not r.out_of_date
+    }
+    assert_not o.zoning_out_of_date
+  end
+
   test "should out_of_date" do
     o = plannings(:planning_one)
     assert_not o.out_of_date
