@@ -51,6 +51,9 @@ class Route < ActiveRecord::Base
   def compute
     self.out_of_date = false
     self.distance = 0
+    self.stop_distance = 0
+    self.stop_trace = nil
+    self.stop_out_of_drive_time = nil
     self.emission = 0
     self.start = self.end = nil
     if vehicle && stops.size > 0
