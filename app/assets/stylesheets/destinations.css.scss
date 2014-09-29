@@ -84,6 +84,7 @@
 
       > span {
         display: table-cell;
+        vertical-align: top;
       }
 
       > span:not(:first-child) input {

@@ -31,11 +31,11 @@
  *= require jquery-ui/dialog
  *= require jquery-ui/slider
  *= require select2
- *= require bootstrap_and_overrides
  *= require jquery-tablesorter/theme.bootstrap
  *= require jquery.simplecolorpicker
  *= require jquery.simplecolorpicker-fontawesome
  *= require jquery.timeentry
  *= require leaflet.draw
+ *= require bootstrap_and_overrides
  *= require_tree .
  */

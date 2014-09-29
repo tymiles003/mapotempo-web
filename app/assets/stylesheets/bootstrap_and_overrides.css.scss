@@ -105,3 +105,18 @@ hr {
 .panel-heading .accordion-toggle.collapsed:after {
     content: "";
 }
+
+/* Table sorter */
+.tablesorter-bootstrap {
+  .tablesorter-header {
+    text-align: center;
+
+    i {
+      right: 0;
+      width: 10px;
+    }
+  }
+  .tablesorter-header-inner {
+    padding: 0px 12px 0px 0px;
+  }
+}
