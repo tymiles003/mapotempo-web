@@ -2,7 +2,12 @@ class V01::Zonings < Grape::API
   version '0.1', using: :path
 
   helpers do
+    def warden
+      env['warden']
+    end
+
     def current_customer
+      @current_user ||= warden.authenticated? && warden.user
       @current_user ||= params[:api_key] && User.find_by(api_key: params[:api_key])
       @current_customer ||= @current_user && @current_user.customer
     end

@@ -109,7 +109,7 @@ function plannings_edit(params) {
 
       $.ajax({
         type: "get",
-        url: "/api/0.1/zonings/" + id + ".json?api_key=" + api_key,
+        url: "/api/0.1/zonings/" + id + ".json",
         beforeSend: beforeSendWaiting,
         success: display_zoning,
         complete: completeWaiting,
@@ -154,10 +154,10 @@ function plannings_edit(params) {
     if ($("#dialog-matrix").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
-    if (!progress_dialog(data.matrix, $("#dialog-matrix"), display_planning, '/plannings/' + planning_id + '.json', '/api/0.1/customers/job_matrix.json?api_key='+api_key)) {
+    if (!progress_dialog(data.matrix, $("#dialog-matrix"), display_planning, '/plannings/' + planning_id + '.json', '/api/0.1/customers/job_matrix.json')) {
       return;
     }
-    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json', '/api/0.1/customers/job_optimizer.json?api_key='+api_key)) {
+    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json', '/api/0.1/customers/job_optimizer.json')) {
       return;
     }
 
@@ -399,7 +399,7 @@ function plannings_edit(params) {
             hidden: hidden
           }),
           contentType: 'application/json',
-          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json?api_key=' + api_key,
+          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
           error: ajaxError
         });
 
@@ -453,7 +453,7 @@ function plannings_edit(params) {
           locked: locked
         }),
         contentType: 'application/json',
-        url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json?api_key=' + api_key,
+        url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
         error: ajaxError
       });
     });
@@ -489,7 +489,7 @@ function plannings_edit(params) {
   if (zoning_id) {
     $.ajax({
       type: "get",
-      url: "/api/0.1/zonings/" + zoning_id + ".json?api_key=" + api_key,
+      url: "/api/0.1/zonings/" + zoning_id + ".json",
       beforeSend: beforeSendWaiting,
       success: display_zoning,
       complete: completeWaiting,

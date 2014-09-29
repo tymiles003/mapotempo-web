@@ -49,7 +49,7 @@ function destinations_form(params, api) {
           $.ajax({
             type: "patch",
             data: $(":input", $row).serialize(),
-            url: '/api/0.1/' + api + '/geocode_complete.json?api_key=' + api_key,
+            url: '/api/0.1/' + api + '/geocode_complete.json',
             beforeSend: beforeSendWaiting,
             success: function (data) {
               add($.map(data, function (val, i) {
@@ -73,9 +73,9 @@ function destinations_form(params, api) {
     $row.on("change", ":input", function (event) {
       var url;
       if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
-        url = '/api/0.1/' + api + '/geocode.json?api_key=' + api_key;
+        url = '/api/0.1/' + api + '/geocode.json';
       } else if (event.currentTarget.name.match(/\[lat\]|\[lng\]/)) {
-        url = '/api/0.1/' + api + '/geocode_reverse.json?api_key=' + api_key;
+        url = '/api/0.1/' + api + '/geocode_reverse.json';
       } else {
         return;
       }
@@ -295,7 +295,7 @@ function destinations_index(params) {
           $.ajax({
             type: "patch",
             data: $(":input", $row).serialize(),
-            url: '/api/0.1/destinations/geocode_complete.json?api_key=' + api_key,
+            url: '/api/0.1/destinations/geocode_complete.json',
             beforeSend: beforeSendWaiting,
             success: function (data) {
               add($.map(data, function (val, i) {
@@ -320,7 +320,7 @@ function destinations_index(params) {
       $.ajax({
         type: "put",
         data: $(":input", $row).serialize(),
-        url: '/api/0.1/destinations/' + id + '.json?api_key=' + api_key + ((['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) ? '&reverse=true': ''),
+        url: '/api/0.1/destinations/' + id + '.json' + ((['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) ? '?reverse=true': ''),
         beforeSend: beforeSendWaiting,
         success: function (data) {
           update(id, data);
@@ -342,7 +342,7 @@ function destinations_index(params) {
       if (confirm(I18n.t('all.verb.destroy_confirm'))) {
         $.ajax({
           type: "delete",
-          url: '/api/0.1/destinations/' + id + '.json?api_key=' + api_key,
+          url: '/api/0.1/destinations/' + id + '.json',
           beforeSend: beforeSendWaiting,
           success: function (data) {
             row.remove();
@@ -488,7 +488,7 @@ function destinations_index(params) {
       type: "post",
       data: JSON.stringify(destination),
       contentType: 'application/json',
-      url: '/api/0.1/destinations.json?api_key=' + api_key,
+      url: '/api/0.1/destinations.json',
       beforeSend: beforeSendWaiting,
       success: function (data) {
         update(id, data);
@@ -515,7 +515,7 @@ function destinations_index(params) {
     if ($("#dialog-geocoding").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
-    if (!progress_dialog(data.geocoding, $("#dialog-geocoding"), display_destinations, '/destinations.json', '/api/0.1/customers/job_geocoding.json?api_key='+api_key)) {
+    if (!progress_dialog(data.geocoding, $("#dialog-geocoding"), display_destinations, '/destinations.json', '/api/0.1/customers/job_geocoding.json')) {
       return;
     }
 
