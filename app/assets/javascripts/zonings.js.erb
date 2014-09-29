@@ -212,7 +212,9 @@ function zonings_edit(params) {
     });
 
     var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
-    map.fitBounds(bounds);
+    if (bounds && bounds.isValid()) {
+      map.fitBounds(bounds);
+    }
   }
 
   $.ajax({
