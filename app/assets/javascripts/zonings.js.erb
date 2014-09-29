@@ -95,17 +95,18 @@ function zonings_edit(params) {
     }
   }
 
-  function set_color(polygon, vehicles) {
-    vehicles = $.grep(vehicles, function (vehicle, index) {
-      return vehicle.selected;
-    });
+  function set_color(polygon, vehicle_id) {
     polygon.setStyle({
-      color: (vehicles.length > 0 ? vehicles_map[vehicles[0].id].color : '#000000')
+      color: (vehicle_id ? vehicles_map[vehicle_id].color : '#000000')
     });
   }
 
   function format(state) {
-    return "<span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
+    if (state.id) {
+      return "<span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
+    } else {
+      return I18n.t('web.select2.empty_entry');
+    }
   }
 
   function add_zone(zone, geom) {
@@ -122,6 +123,13 @@ function zonings_edit(params) {
     featureGroup.addLayer(geom);
 
     zone.i18n = mustache_i18n;
+    zone.vehicles = $.map(vehicles_map, function (val, i) {
+      return {
+        id: val.id,
+        selected: val.id == zone.vehicle_id,
+        name: val.name
+      }
+    });
     $('#zones').append(SMT['zones/show'](zone));
     var ele = $('#zones .zone:last');
     ele.data('feature', zone);
@@ -199,7 +207,7 @@ function zonings_edit(params) {
     }
     $.each(data.zoning, function (index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon));
-      set_color(geom, zone.vehicles);
+      set_color(geom, zone.vehicle_id);
       add_zone(zone, geom);
     });
 

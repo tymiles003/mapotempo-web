@@ -200,8 +200,8 @@ fr:
         store_stop_id: "Dépôt arrivée"
       zoning:
         name: "Nom"
-      zones:
-        vehicles: "Véhicules"
+      zone:
+        vehicle: "Véhicule"
 
     successful:
       messages:
@@ -505,6 +505,7 @@ fr:
 
   web:
     select2:
+      empty_entry: "- Vide -"
       empty_result: "Pas de résultats"
     dialog:
       close: "Fermer"

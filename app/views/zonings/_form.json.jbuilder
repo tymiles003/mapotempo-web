@@ -1,11 +1,5 @@
 json.zoning @zoning.zones do |zone|
-  json.extract! zone, :id, :polygon
-  json.vehicles current_user.customer.vehicles do |vehicle|
-    json.extract! vehicle, :id, :name
-    if zone.vehicles.include? vehicle
-      json.selected true
-    end
-  end
+  json.extract! zone, :id, :vehicle_id, :polygon
 end
 if @planning
   json.planning @planning.routes do |route|

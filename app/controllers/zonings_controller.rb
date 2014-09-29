@@ -52,7 +52,7 @@ class ZoningsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @zoning.update(zoning_params)
+      if @zoning.update_attributes(zoning_params) && @zoning.save
         format.html { redirect_to link_back || edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
       else
         @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
@@ -89,6 +89,6 @@ class ZoningsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def zoning_params
-      params.require(:zoning).permit(:name, zones_attributes: [:id, :polygon, :_destroy, vehicle_ids: []])
+      params.require(:zoning).permit(:name, zones_attributes: [:id, :polygon, :_destroy, :vehicle_id])
     end
 end

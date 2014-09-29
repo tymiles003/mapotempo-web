@@ -197,8 +197,8 @@ en:
         store_stop_id: "Store Stop"
       zoning:
         name: "Name"
-      zones:
-        vehicles: "Véhicules"
+      zone:
+        vehicle: "Véhicule"
 
     successful:
       messages:
@@ -500,6 +500,7 @@ en:
 
   web:
     select2:
+      empty_entry: "- Empty -"
       empty_result: "No results matched"
     dialog:
       close: "Close"

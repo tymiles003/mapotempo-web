@@ -91,7 +91,7 @@ function plannings_edit(params) {
     $.each(zoning.zones, function (index, zone) {
       var geom = L.geoJson(zone.polygon).getLayers()[0];
       geom.setStyle({
-        color: (zone.vehicle_ids.length > 0 ? vehicles_map[zone.vehicle_ids[0]].color : '#000000')
+        color: (zone.vehicle_id ? vehicles_map[zone.vehicle_id].color : '#000000')
       });
       geom.addTo(layer_zoning);
     });

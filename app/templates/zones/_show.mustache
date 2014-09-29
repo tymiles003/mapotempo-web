@@ -2,9 +2,10 @@
   <div class="panel-heading">
     <input name="zoning[zones_attributes][][id]" type="hidden" value="{{id}}" />
     <input name="zoning[zones_attributes][][polygon]" type="hidden" value="{{polygon}}" />
-    <select name="zoning[zones_attributes][][vehicle_ids][]" multiple="multiple" class="vehicle_select">
+    <select name="zoning[zones_attributes][][vehicle_id]" class="vehicle_select">
+        <option value=""></option>
       {{#vehicles}}
-        <option value={{id}}{{#selected}} selected="selected"{{/selected}}>{{name}}</option>
+        <option value="{{id}}"{{#selected}} selected="selected"{{/selected}}>{{name}}</option>
       {{/vehicles}}
     </select>
     <button type="button" class="delete btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
