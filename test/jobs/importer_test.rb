@@ -15,7 +15,7 @@ class ImporterTest < ActionController::TestCase
     assert_equal [tags(:tag_one)], Destination.where(name: "BF").first.tags.to_a
   end
 
-  test "shoud import tow" do
+  test "shoud import two" do
     assert_difference('Planning.count') do
       assert_difference('Destination.count', 2) do
         assert_difference('Stop.count', 1 + 4 + 2) do
@@ -25,11 +25,11 @@ class ImporterTest < ActionController::TestCase
     end
 
     stops = Planning.where(name: "text").first.routes[1].stops
-    assert 'a', stops[1].destination.ref
-    assert stops[1].destination.take_over
-    assert stops[1].active
-    assert 'b', stops[2].destination.ref
-    assert_not stops[2].active
+    assert_equal 'z', stops[0].destination.ref
+    assert stops[0].destination.take_over
+    assert stops[0].active
+    assert_equal 'x', stops[1].destination.ref
+    assert_not stops[1].active
   end
 
   test "shoud import many-utf-8" do
