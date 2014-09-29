@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919125039) do
+ActiveRecord::Schema.define(version: 20140926130501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,9 +26,9 @@ ActiveRecord::Schema.define(version: 20140919125039) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.string   "tomtom_account"
     t.string   "tomtom_user"
     t.string   "tomtom_password"
-    t.string   "tomtom_account"
     t.integer  "router_id"
     t.boolean  "print_planning_annotating"
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 20140919125039) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["customer_id"], :name => "fk__stores_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_customer_id"
   end
 
   create_table "vehicles", force: true do |t|
@@ -222,7 +223,7 @@ ActiveRecord::Schema.define(version: 20140919125039) do
     t.index ["store_id"], :name => "index_stores_vehicules_on_store_id"
     t.index ["vehicle_id"], :name => "index_stores_vehicules_on_vehicle_id"
     t.foreign_key ["store_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_vehicules_store_id"
-    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "fk_stores_vehicules_vehicle_id"
+    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_vehicules_vehicle_id"
   end
 
   create_table "users", force: true do |t|
@@ -255,17 +256,11 @@ ActiveRecord::Schema.define(version: 20140919125039) do
     t.integer  "zoning_id",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "vehicle_id"
+    t.index ["vehicle_id"], :name => "fk__zones_vehicle_id"
     t.index ["zoning_id"], :name => "index_zones_on_zoning_id"
+    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zones_vehicle_id"
     t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zones_zoning_id"
-  end
-
-  create_table "vehicles_zones", id: false, force: true do |t|
-    t.integer "vehicle_id", null: false
-    t.integer "zone_id",    null: false
-    t.index ["vehicle_id"], :name => "fk__vehicles_zones_vehicle_id"
-    t.index ["zone_id"], :name => "fk__vehicles_zones_zone_id"
-    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_zones_vehicle_id"
-    t.foreign_key ["zone_id"], "zones", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_zones_zone_id"
   end
 
 end

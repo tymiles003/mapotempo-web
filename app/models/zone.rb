@@ -16,14 +16,13 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Zone < ActiveRecord::Base
-  belongs_to :zoning
-  has_and_belongs_to_many :vehicles, after_add: :touch_vehicles, after_remove: :touch_vehicles
+  belongs_to :zoning, inverse_of: :zones
+  belongs_to :vehicle, inverse_of: :zones
 
   nilify_blanks
   validates :polygon, presence: true
-  validate :valide_vehicles_from_customer
+  validate :valide_vehicle_from_customer
 
-  before_create :update_out_of_date
   before_save :update_out_of_date
 
   amoeba do
@@ -42,22 +41,18 @@ class Zone < ActiveRecord::Base
       @geom = RGeo::GeoJSON.decode(polygon, :json_parser => :json)
     end
 
-    def valide_vehicles_from_customer
-      vehicles.each { |vehicle|
-        if vehicle.customer != zoning.customer
-          errors.add(:vehicles, :bad_customer)
-          return
-        end
-      }
-    end
-
-    def update_out_of_date
-      if self.changed? || @collection_changed
-        zoning.flag_out_of_date
+    def valide_vehicle_from_customer
+      if vehicle && vehicle.customer != zoning.customer
+        errors.add(:vehicle, :bad_customer)
+        false
+      else
+        true
       end
     end
 
-    def touch_vehicles(t)
-      @collection_changed = true
+    def update_out_of_date
+      if self.changed?
+        zoning.flag_out_of_date
+      end
     end
 end

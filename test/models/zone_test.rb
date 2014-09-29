@@ -19,9 +19,11 @@ class ZoneTest < ActiveSupport::TestCase
   test "should touch planning collection changed" do
     o = zones(:zone_one)
     assert_not o.zoning.plannings[0].zoning_out_of_date
-    assert_not_equal 0, o.vehicles.size
-    o.vehicles.clear
+    assert o.vehicle
+    o.vehicle = nil
     o.save!
+    o.zoning.save!
+    o.reload
     assert o.zoning.plannings[0].zoning_out_of_date
   end
 end

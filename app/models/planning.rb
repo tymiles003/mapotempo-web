@@ -118,9 +118,9 @@ class Planning < ActiveRecord::Base
     available_routes = nil
     if zoning
       zone = zoning.inside(stop.destination)
-      if zone && zone.vehicles.size > 0
+      if zone && zone.vehicle
         route = routes.find{ |route|
-          route.vehicle == zone.vehicles[0]
+          route.vehicle == zone.vehicle
         }
         (available_routes = [route]) if route
       end
@@ -195,8 +195,8 @@ class Planning < ActiveRecord::Base
           route.locked || route.set_destinations([])
         }
         zoning.apply(destinations_free).each{ |zone, destinations|
-          if zone && zone.vehicles && zone.vehicles.size > 0 && !vehicles_map[zone.vehicles[0]].locked
-            vehicles_map[zone.vehicles[0]].set_destinations(destinations.collect{ |d| [d,true]})
+          if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked
+            vehicles_map[zone.vehicle].set_destinations(destinations.collect{ |d| [d,true]})
           else
             # Add to unplanned route even if the route is locked
             routes[0].add_destinations(destinations.collect{ |d| [d,true]})

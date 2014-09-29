@@ -20,7 +20,7 @@ class Vehicle < ActiveRecord::Base
   belongs_to :store_start, :class_name => 'Store', inverse_of: :vehicle_starts
   belongs_to :store_stop, :class_name => 'Store', inverse_of: :vehicle_stops
   has_many :routes, inverse_of: :vehicle, :autosave => true
-  has_and_belongs_to_many :zones
+  has_many :zones, inverse_of: :vehicle, dependent: :nullify, :autosave => true
 
   nilify_blanks
   validates :customer, presence: true
