@@ -585,7 +585,7 @@ function destinations_index(params) {
       theme: "bootstrap",
       // Show order icon v and ^
       headerTemplate: '{content} {icon}',
-      widgets: ["uitheme", "filter"],
+      widgets: ["uitheme", "filter", "columnSelector"],
       widgetOptions: {
         filter_childRows: true,
         // class name applied to filter row and each input
@@ -625,7 +625,20 @@ function destinations_index(params) {
           8: function ($cell, indx) {
             return false;
           }
-        }
+        },
+        columnSelector_container : $('#columnSelector'),
+        columnSelector_layout : '<li role="presentation"><label><input type="checkbox">{name}</label></li>',
+        columnSelector_columns : {
+          0: true,
+          1: 'disable',
+          2: 'disable',
+          3: true,
+          4: false,
+          5: true,
+          6: true,
+          7: true,
+          8: 'disable'
+        },
       }
     }).bind('filterEnd', function (e, filter) {
       count();

@@ -39,6 +39,8 @@
 //= require jquery-ui/slider
 //= require jquery-tablesorter
 //= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
+//= require jquery-tablesorter/jquery.tablesorter.widgets.js
+//= require jquery-tablesorter/widgets/widget-columnSelector
 //= require jquery.simplecolorpicker.js
 //= require jquery.timeentry
 //= require i18n

@@ -22,6 +22,16 @@
 
 [data-controller='destinations'] {
 
+  #columnSelector li {
+    label {
+      margin-left: 1em;
+    }
+
+    input {
+      margin-right: 0.3em;
+    }
+  }
+
   input[name='destination\[street\]'] + .input-group-addon,
   input[name='destination\[city\]'] + .input-group-addon {
     cursor: pointer;

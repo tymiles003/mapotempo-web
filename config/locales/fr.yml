@@ -292,6 +292,7 @@ fr:
       new: "Nouveau client"
       default_name: "Nouveau client"
       count: "Nombre de clients :"
+      columns: "Colonnes"
       dialog:
         geocoding:
           title: "Géocodage"

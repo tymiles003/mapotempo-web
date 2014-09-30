@@ -1,11 +1,18 @@
 <h1><%= t '.title' %></h1>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-6">
     <button id="add" type="button" class="btn btn-primary btn-sm"><i class="fa fa-plus fa-fw"></i> <%= t '.new' %></button>
   </div>
   <div class="col-md-4">
     <%= t '.count' %> <span id="count"></span>
+  </div>
+  <div class="col-md-2">
+    <div class="pull-right">
+      <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"><%= t '.columns' %> <span class="caret"></span></button>
+      <ul id="columnSelector" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      </ul>
+    </div>
   </div>
 </div>
 

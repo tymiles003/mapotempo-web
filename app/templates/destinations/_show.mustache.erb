@@ -1,24 +1,24 @@
-<tr data-destination_id="{{id}}" class="destination{{^lat}} has-error{{/lat}}">
+<tr data-destination_id="{{id}}" class="destination{{^lat}} has-error{{/lat}}{{#bad_geocoding_accuracy}} has-warning{{/bad_geocoding_accuracy}}">
   <td>
     <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}" style="width:6em"/>
   </td>
   <td>
-    <input class="form-control input-sm" type="text" name="destination[name]" value="{{name}}"/>
+    <input class="form-control input-sm" type="text" name="destination[name]" value="{{name}}" size="99"/>
   </td>
   <td>
     <span class="block">
       <span>
-        <input class="form-control input-sm" type="text" name="destination[street]" value="{{street}}"/>
+        <input class="form-control input-sm" type="text" name="destination[street]" value="{{street}}" size="99"/>
       </span>
       <span>
-        <input class="form-control input-sm" type="text" name="destination[detail]" value="{{detail}}"/>
+        <input class="form-control input-sm" type="text" name="destination[detail]" value="{{detail}}" size="99"/>
       </span>
       <span style="width:4em">
         <input class="form-control input-sm" type="text" maxlength="7" width="7" name="destination[postalcode]" value="{{postalcode}}"/>
       </span>
       <span>
         <div class="input-group">
-          <input class="form-control input-sm" type="text" name="destination[city]" value="{{city}}"/>
+          <input class="form-control input-sm" type="text" name="destination[city]" value="{{city}}" size="99"/>
           <span class="input-group-addon input-sm pointing" title="{{#i18n}}destinations.form.locate_manually{{/i18n}}"><i class="fa fa-crosshairs"></i></span>
         </div>
       </span>
@@ -41,7 +41,7 @@
     </span>
   </td>
   <td>
-    <input class="form-control input-sm" type="text" name="destination[comment]" value="{{comment}}"/>
+    <input class="form-control input-sm" type="text" name="destination[comment]" value="{{comment}}" size="99"/>
   </td>
   <td>
    <div class="input-group input-group-tags">
