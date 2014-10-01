@@ -63,6 +63,9 @@ module Mapotempo
 
     config.self_care = true # Allow subscription and resiliation by the user himself
     config.help_url = nil
+
+    config.geocoding_accuracy_success = 0.98
+    config.geocoding_accuracy_warning = 0.9
   end
 end
 

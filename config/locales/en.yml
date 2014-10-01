@@ -117,6 +117,8 @@ en:
         tag_ids: "Tags"
         ref: "Reference"
         ref_small: "Ref."
+        geocoding_accuracy: "Geocoding accuracy"
+        geocoding_accuracy_small: "Geoc."
       # Duplicate for nested errors with autosave
       destinations:
         name: "Name"
@@ -134,6 +136,7 @@ en:
         tags: "Tags"
         tag_ids: "Tags"
         ref: "Reference"
+        geocoding_accuracy: "Geocoding accuracy"
       layer:
         name: "Name"
         url: "URL"
@@ -275,6 +278,8 @@ en:
       tags_help: "Customer's categories"
       comment_help: "Delivery required information"
       locate_manually: "Locate manually on the map"
+      geocoding_accuracy_none: "Not applicable"
+      geocoding_accuracy_help: "Conversion quality of the address to the geographical position"
     edit:
       title: "Editing destination"
     import:

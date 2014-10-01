@@ -37,6 +37,10 @@
     cursor: pointer;
   }
 
+  .progress {
+    margin-bottom: 0px;
+  }
+
   #destination_box {
     height: 300px;
     overflow-y: scroll;
@@ -68,7 +72,7 @@
     }
 
     .tablesorter-headerRow {
-      th:nth-of-type(9) div {
+      th:nth-of-type(10) div {
         display: none;
       }
     }

@@ -37,6 +37,20 @@ function destinations_form(params, api) {
   var pointing_cursor;
   var icon_default = new L.Icon.Default();
 
+  function geocoding_accuracy(destination) {
+    if (destination.geocoding_accuracy) {
+      if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_success %>) {
+        destination.geocoding_status = 'success';
+      } else if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_warning %>) {
+        destination.geocoding_status = 'warning';
+      } else {
+        destination.geocoding_status = 'danger';
+      }
+      destination.geocoding_accuracy_percent = Math.round(destination.geocoding_accuracy * 100);
+    }
+    return destination;
+  }
+
   function wire(row) {
     var $row = $(row),
       id = $row.attr('data-destination_id');
@@ -135,6 +149,19 @@ function destinations_form(params, api) {
     }
     if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
       map.setView(markers[destination_id].getLatLng(), 16);
+    }
+    if (destination.geocoding_accuracy) {
+      destination = geocoding_accuracy(destination);
+      var progress = $('.progress div');
+      $('#geocoding_accuracy').show();
+      $('#no_geocoding_accuracy').hide();
+      progress.css('width', destination.geocoding_accuracy_percent + '%');
+      progress.removeClass('progress-bar-success progress-bar-warning progress-bar-danger');
+      progress.addClass('progress-bar-' + destination.geocoding_status);
+      $('.progress div span').html(destination.geocoding_accuracy_percent + '%');
+    } else {
+      $('#geocoding_accuracy').hide();
+      $('#no_geocoding_accuracy').show();
     }
   }
 
@@ -283,6 +310,30 @@ function destinations_index(params) {
   });
   var icon_over_stack = [];
 
+  function prepare_display_destination(destination) {
+    var t = [];
+    $.each(tags, function (i, tag) {
+      t.push({
+        id: tag.id,
+        label: tag.label,
+        active: $.inArray(tag.id, destination.tag_ids) >= 0
+      });
+    });
+    destination.tags = t;
+    destination.i18n = mustache_i18n;
+    if (destination.geocoding_accuracy) {
+      if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_success %>) {
+        destination.geocoding_status = 'success';
+      } else if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_warning %>) {
+        destination.geocoding_status = 'warning';
+      } else {
+        destination.geocoding_status = 'danger';
+      }
+      destination.geocoding_accuracy_percent = Math.round(destination.geocoding_accuracy * 100);
+    }
+    return destination;
+  }
+
   function wire(row) {
     var $row = $(row),
       id = $row.attr('data-destination_id');
@@ -368,16 +419,7 @@ function destinations_index(params) {
 
   function update(destination_id, destination) {
     var row = $('[data-destination_id=' + destination_id + ']'),
-      t = [];
-    $.each(tags, function (i, tag) {
-      t.push({
-        id: tag.id,
-        label: tag.label,
-        active: $.inArray(tag.id, destination.tag_ids) >= 0
-      });
-    });
-    destination.tags = t;
-    destination.i18n = mustache_i18n;
+    destination = prepare_display_destination(destination);
     $(row).replaceWith(SMT['destinations/show'](destination));
     row = $('[data-destination_id=' + destination.id + ']');
     wire(row);
@@ -524,16 +566,7 @@ function destinations_index(params) {
       tags[tag.id] = tag;
     });
     $.each(data.destinations, function (i, destination) {
-      var t = [];
-      $.each(tags, function (i, tag) {
-        t.push({
-          id: tag.id,
-          label: tag.label,
-          active: $.inArray(tag.id, destination.tag_ids) >= 0
-        });
-      });
-      destination.tags = t;
-      destination.i18n = mustache_i18n;
+      destination = prepare_display_destination(destination);
       $(table).append(SMT['destinations/show'](destination));
       if (destination.lat && destination.lng) {
         addMarker(destination.id, destination.lat, destination.lng);
@@ -568,6 +601,9 @@ function destinations_index(params) {
           sorter: false
         },
         8: {
+          sorter: "digit"
+        },
+        9: {
           sorter: false
         }
       },
@@ -624,6 +660,9 @@ function destinations_index(params) {
           },
           8: function ($cell, indx) {
             return false;
+          },
+          9: function ($cell, indx) {
+            return false;
           }
         },
         columnSelector_container : $('#columnSelector'),
@@ -637,7 +676,8 @@ function destinations_index(params) {
           5: true,
           6: true,
           7: true,
-          8: 'disable'
+          8: true,
+          9: 'disable'
         },
       }
     }).bind('filterEnd', function (e, filter) {

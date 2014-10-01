@@ -51,6 +51,19 @@
    </div>
   </td>
   <td>
+    {{#geocoding_accuracy}}
+      <input class="form-control input-sm" type="hidden" value="{{geocoding_accuracy}}"/>
+        <div class="progress" style="width:6em">
+          <div class="progress-bar progress-bar-{{geocoding_status}}" style="width: {{geocoding_accuracy_percent}}%;">
+            <span>{{geocoding_accuracy_percent}}%</span>
+          </div>
+        </div>
+    {{/geocoding_accuracy}}
+    {{^geocoding_accuracy}}
+      <input class="form-control input-sm" type="hidden" value="101"/>
+    {{/geocoding_accuracy}}
+  </td>
+  <td>
     <input type="hidden" name="destination[lat]" value="{{lat}}" />
     <input type="hidden" name="destination[lng]" value="{{lng}}" />
     <button type="button" class="destroy btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>

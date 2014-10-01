@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140926130501) do
+ActiveRecord::Schema.define(version: 20140930130558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20140926130501) do
     t.string   "comment"
     t.string   "ref"
     t.time     "take_over"
+    t.float    "geocoding_accuracy"
     t.index ["customer_id"], :name => "index_destinations_on_customer_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_customer_id"
   end
