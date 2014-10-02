@@ -35,6 +35,7 @@
  *= require jquery.simplecolorpicker
  *= require jquery.simplecolorpicker-fontawesome
  *= require jquery.timeentry
+ *= require bootstrap-wysihtml5
  *= require leaflet.draw
  *= require bootstrap_and_overrides
  *= require_tree .

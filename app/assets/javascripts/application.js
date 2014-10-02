@@ -32,6 +32,8 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require bootstrap-filestyle
+//= require bootstrap-wysihtml5
+//= require bootstrap-wysihtml5/locales
 //= require turbolinks
 //= require jquery-ui/sortable
 //= require jquery-ui/autocomplete

@@ -22,9 +22,9 @@ class V01::Customers < Grape::API
       p = ActionController::Parameters.new(params)
       p = p[:customer] if p.has_key?(:customer)
       if @current_user.admin?
-        p.permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :tomtom_account, :tomtom_user, :tomtom_password, :router_id)
+        p.permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :router_id)
       else
-        p.permit(:take_over, :print_planning_annotating, :tomtom_account, :tomtom_user, :tomtom_password)
+        p.permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password)
       end
     end
   end

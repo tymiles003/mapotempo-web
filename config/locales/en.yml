@@ -97,6 +97,7 @@ en:
         router: "Route planner"
         router_id: "Route planner"
         print_planning_annotating: "Planning annotating"
+        print_header: "Routes header"
         stores: "Stores"
       destination:
         name: "Name"
@@ -257,6 +258,7 @@ en:
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
+      print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
         planning_annotating: "Planning annotating"

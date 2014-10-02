@@ -13,4 +13,5 @@ class V01::Entities::Customer < Grape::Entity
   expose(:tomtom_account, documentation: { type: 'String' })
   expose(:router_id, documentation: { type: 'Integer' })
   expose(:print_planning_annotating, documentation: { type: 'Integer' })
+  expose(:print_header, documentation: { type: 'String' })
 end

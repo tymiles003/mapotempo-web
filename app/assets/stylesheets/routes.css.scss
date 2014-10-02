@@ -32,34 +32,38 @@
 .route_print {
   list-style: none;
 
-  h1 {
+  > h1 {
     text-align: center;
   }
-  ol, li {
+  > ol {
     padding: 0px;
-  }
-  li:nth-child(odd) {
-    background: lightgray;
-  }
-  .title {
-    .window {
-      display: block;
-    }
-  }
-  .ref {
-    font-weight: bold;
-  }
-  .name {
-    font-weight: bold;
-  }
-  .quantity {
-    font-weight: bold;
-  }
-  .comment {
-    font-style: italic;
-  }
 
-  .annotating .signature {
-    height: 4em;
+    li {
+      padding: 0px;
+    }
+    li:nth-child(odd) {
+      background: lightgray;
+    }
+    .title {
+      .window {
+        display: block;
+      }
+    }
+    .ref {
+      font-weight: bold;
+    }
+    .name {
+      font-weight: bold;
+    }
+    .quantity {
+      font-weight: bold;
+    }
+    .comment {
+      font-style: italic;
+    }
+
+    .annotating .signature {
+      height: 4em;
+    }
   }
 }

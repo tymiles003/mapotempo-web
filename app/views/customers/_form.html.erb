@@ -11,7 +11,7 @@
   <%= f.text_field :take_over, {value: @customer.take_over ? @customer.take_over.strftime("%H:%M:%S") : nil, input_group: t('all.unit.hour_minute_second')} do %>
     <p class="help-block"><%= t '.take_over_help' %></p>
   <% end %>
-  <div class="panel panel-default">
+  <div id="accordion" class="panel panel-default">
     <div class="panel-heading">
       <h2 class="panel-title">
         <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePrint">
@@ -22,6 +22,9 @@
     <div id="collapsePrint" class="panel-collapse collapse">
       <div class="panel-body">
         <%= f.check_box :print_planning_annotating, t('.print.planning_annotating') %>
+        <%= f.text_area :print_header do %>
+          <p class="help-block"><%= t '.print_header_help' %></p>
+        <% end %>
       </div>
     </div>
   </div>

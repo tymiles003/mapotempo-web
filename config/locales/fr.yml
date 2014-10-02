@@ -100,6 +100,7 @@ fr:
         router: "Calculateur d'itinéraire"
         router_id: "Calculateur d'itinéraire"
         print_planning_annotating: "Émargement des feuilles de routes"
+        print_header: "Entête des tournées"
         stores: "Dépôts"
       destination:
         name: "Nom"
@@ -260,6 +261,7 @@ fr:
       take_over_help: "Durée de visite moyenne par client"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
+      print_header_help: "Bloc de texte ajouté avant chaque tournée"
       print:
         title: "Impressions"
         planning_annotating: "Émargement des feuilles de routes"

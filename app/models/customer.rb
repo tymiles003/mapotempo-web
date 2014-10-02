@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'sanitize'
+
 class Customer < ActiveRecord::Base
   belongs_to :router
   has_many :stores, -> { order('id')}, inverse_of: :customer, :autosave => true, :dependent => :delete_all
@@ -36,6 +38,7 @@ class Customer < ActiveRecord::Base
   after_initialize :assign_defaults, if: 'new_record?'
   before_create :update_max_vehicles
   before_update :update_out_of_date, :update_max_vehicles
+  before_save :sanitize_print_header
 
   private
     def assign_defaults
@@ -80,5 +83,9 @@ class Customer < ActiveRecord::Base
           }
         end
       end
+    end
+
+    def sanitize_print_header
+      self.print_header = Sanitize.fragment(self.print_header, Sanitize::Config::RELAXED)
     end
 end

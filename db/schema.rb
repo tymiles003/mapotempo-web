@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930130558) do
+ActiveRecord::Schema.define(version: 20141002125341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20140930130558) do
     t.string   "tomtom_password"
     t.integer  "router_id"
     t.boolean  "print_planning_annotating"
+    t.text     "print_header"
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
     t.index ["job_matrix_id"], :name => "index_customers_on_job_matrix_id"
     t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
