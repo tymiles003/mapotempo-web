@@ -7,4 +7,9 @@ class UserTest < ActiveSupport::TestCase
     o = User.new
     assert_not o.save, "Saved without required fields"
   end
+
+  test "should destroy" do
+    o = users(:user_one)
+    o.destroy
+  end
 end

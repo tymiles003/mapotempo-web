@@ -55,4 +55,10 @@ class CustomerTest < ActiveSupport::TestCase
       o.save!
     end
   end
+
+  test "should create and destroy" do
+    customer = Customer.new(name: 'plop', router: routers(:router_one))
+    customer.save!
+    customer.destroy
+  end
 end
