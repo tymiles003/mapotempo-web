@@ -346,6 +346,8 @@ fr:
       title: "Modifier planning"
       stops: "arrêts"
       optimize: "Optimiser"
+      optimize_confirm: "Lancer un calcul d'optimisation ?"
+      zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
       exports: "Exporter"
       export:
         print: "Imprimer"

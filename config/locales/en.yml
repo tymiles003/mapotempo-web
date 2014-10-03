@@ -343,6 +343,8 @@ en:
       title: "Editing planning"
       stops: "stops"
       optimize: "Optimize"
+      optimize_confirm: "Run an optimization calculation?"
+      zoning_confirm: "Save and apply the new zoning?"
       exports: "Export"
       export:
         print: "Print"

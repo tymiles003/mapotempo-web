@@ -428,6 +428,9 @@ function plannings_edit(params) {
         return false;
       })
       .on("click", ".optimize", function (event, ui) {
+        if (!confirm(I18n.t('plannings.edit.optimize_confirm'))) {
+          return;
+        }
         var id = $(this).closest("[data-route_id]").attr("data-route_id");
         $.ajax({
           type: "get",
@@ -514,6 +517,9 @@ function plannings_edit(params) {
 
   $("form").submit(function (event) {
     if (initial_zoning != $("#planning_zoning_id").val()) {
+      if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) {
+        return false;
+      }
       $("#dialog-zoning").dialog({
         modal: true
       });
