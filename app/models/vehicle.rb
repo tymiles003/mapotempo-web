@@ -62,8 +62,8 @@ class Vehicle < ActiveRecord::Base
       self.consumption = 0
       self.capacity = 999
       self.color = Vehicle.colors_table[0]
-      self.open = Time.new(2000, 1, 1, 8, 0)
-      self.close = Time.new(2000, 1, 1, 12, 0)
+      self.open = Time.utc(2000, 1, 1, 8, 0)
+      self.close = Time.utc(2000, 1, 1, 12, 0)
     end
 
     def update_out_of_date
