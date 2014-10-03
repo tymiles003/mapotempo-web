@@ -145,7 +145,7 @@ function plannings_edit(params) {
       complete: completeWaiting,
       error: function (request, status, error) {
         ajaxError(request, status, error);
-        $("#out_of_road, .stops").sortable('cancel');
+        $("#out_of_route, .stops").sortable('cancel');
       }
     });
   }
@@ -352,7 +352,7 @@ function plannings_edit(params) {
       items: "li.route"
     }).disableSelection();
 
-    $("#out_of_road .sortable").sortable({
+    $("#out_of_route .sortable").sortable({
       connectWith: ".sortable",
       update: update_planning
     }).disableSelection();
