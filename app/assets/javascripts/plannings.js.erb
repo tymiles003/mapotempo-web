@@ -476,8 +476,9 @@ function plannings_edit(params) {
 
   function display_planning_first_time (data) {
     display_planning(data);
-    if (routes_layers.getLayers().length > 0) {
-      map.fitBounds(routes_layers.getBounds());
+    var bounds = routes_layers.getBounds();
+    if (bounds && bounds.isValid()) {
+      map.fitBounds(bounds);
     }
   }
 
