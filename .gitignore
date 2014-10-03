@@ -18,3 +18,4 @@ coverage
 /doc/dependencies.csv
 /doc/dependencies.html
 /doc/dependencies_detailed.csv
+/app/assets/javascripts/i18n/translations.js
