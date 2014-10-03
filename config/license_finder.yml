@@ -2,8 +2,12 @@
 whitelist:
 - MIT
 - BSD
+- BSD 2-Clause
+- New BSD
+- Apache
 - Apache-2.0
 - Ruby
+- GPL
 - GPL-2
 - PD
 ignore_groups: []
