@@ -261,7 +261,6 @@ en:
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
-        planning_annotating: "Planning annotating"
 
   destinations:
     menu:

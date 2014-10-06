@@ -264,7 +264,6 @@ fr:
       print_header_help: "Bloc de texte ajouté avant chaque tournée"
       print:
         title: "Impressions"
-        planning_annotating: "Émargement des feuilles de routes"
 
   destinations:
     menu:

@@ -21,7 +21,9 @@
     </div>
     <div id="collapsePrint" class="panel-collapse collapse">
       <div class="panel-body">
-        <%= f.check_box :print_planning_annotating, t('.print.planning_annotating') %>
+        <%= f.toggles t 'activerecord.attributes.customer.print_planning_annotating' do %>
+          <%= f.check_box :print_planning_annotating %>
+        <% end %>
         <%= f.text_area :print_header do %>
           <p class="help-block"><%= t '.print_header_help' %></p>
         <% end %>
