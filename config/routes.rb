@@ -44,6 +44,13 @@ Mapotempo::Application.routes.draw do
 
   get '/unsupported_browser' => 'index#unsupported_browser'
 
+  get '/images/marker' => 'images#marker'
+  get '/images/marker-:color' => 'images#marker'
+  get '/images/point' => 'images#point'
+  get '/images/point-:color' => 'images#point'
+  get '/images/point_large' => 'images#point_large'
+  get '/images/point_large-:color' => 'images#point_large'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

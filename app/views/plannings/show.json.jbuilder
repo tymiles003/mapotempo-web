@@ -29,8 +29,8 @@ else
     json.quantity route.quantity
     if route.vehicle
       json.vehicle_id route.vehicle.id
-      json.icon asset_path("point-#{route.vehicle.color.gsub('#','')}.svg")
-      json.icon_large asset_path("point_large-#{route.vehicle.color.gsub('#','')}.svg")
+      json.icon "/images/point-#{route.vehicle.color.gsub('#','')}.svg"
+      json.icon_large "/images/point_large-#{route.vehicle.color.gsub('#','')}.svg"
       json.work_time "%i:%02i" % [(route.vehicle.close - route.vehicle.open)/60/60, (route.vehicle.close - route.vehicle.open)/60%60]
       (json.tomtom true) if route.vehicle.tomtom_id && !route.vehicle.customer.tomtom_account.blank? && !route.vehicle.customer.tomtom_user.blank? && !route.vehicle.customer.tomtom_password.blank?
     end

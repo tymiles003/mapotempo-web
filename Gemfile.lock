@@ -124,6 +124,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    color (1.7.1)
     crass (0.2.1)
     daemons (1.1.9)
     database_cleaner (1.3.0)
@@ -373,6 +374,7 @@ DEPENDENCIES
   capybara
   capybara-webkit
   charlock_holmes
+  color
   daemons
   database_cleaner
   delayed_job

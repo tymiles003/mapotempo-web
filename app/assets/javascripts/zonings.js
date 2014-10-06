@@ -50,7 +50,7 @@ function zonings_edit(params) {
       polygon: {
         allowIntersection: false, // Restricts shapes to simple polygons
         shapeOptions: {
-          color: '#000000'
+          color: '#707070'
         }
       },
       rectangle: false,
@@ -97,7 +97,7 @@ function zonings_edit(params) {
 
   function set_color(polygon, vehicle_id) {
     polygon.setStyle({
-      color: (vehicle_id ? vehicles_map[vehicle_id].color : '#000000')
+      color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070')
     });
   }
 
@@ -165,7 +165,7 @@ function zonings_edit(params) {
       }
       var val = e.val || e.target.value;
       geom.setStyle({
-        color: (val.length > 0 ? vehicles_map[val].color : '#000000')
+        color: (val.length > 0 ? vehicles_map[val].color : '#707070')
       });
     });
 
@@ -194,7 +194,7 @@ function zonings_edit(params) {
           if (stop.lat && stop.lng) {
             L.marker(new L.LatLng(stop.lat, stop.lng), {
               icon: L.icon({
-                iconUrl: stop.active && route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].marker : '<%= asset_path("point-000000.svg") %>',
+                iconUrl: stop.active && route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].marker : '/images/point-707070.svg',
                 iconSize: new L.Point(12, 12),
                 iconAnchor: new L.Point(6, 6),
                 popupAnchor: new L.Point(1, 11)

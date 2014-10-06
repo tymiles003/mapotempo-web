@@ -91,7 +91,7 @@ function plannings_edit(params) {
     $.each(zoning.zones, function (index, zone) {
       var geom = L.geoJson(zone.polygon).getLayers()[0];
       geom.setStyle({
-        color: (zone.vehicle_id ? vehicles_map[zone.vehicle_id].color : '#000000')
+        color: (zone.vehicle_id ? vehicles_map[zone.vehicle_id].color : '#707070')
       });
       geom.addTo(layer_zoning);
     });
@@ -243,7 +243,7 @@ function plannings_edit(params) {
           }
           return new L.NumberedDivIcon({
             number: n.join(","),
-            iconUrl: markers[0].icon_large ? markers[0].icon_large : '<%= asset_path("point_large-000000.svg") %>',
+            iconUrl: markers[0].icon_large ? markers[0].icon_large : '/images/point_large-707070.svg',
             iconSize: new L.Point(24, 24),
             iconAnchor: new L.Point(12, 12),
             popupAnchor: new L.Point(0, -12),
@@ -272,7 +272,7 @@ function plannings_edit(params) {
           var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
             icon: new L.NumberedDivIcon({
               number: stop.number,
-              iconUrl: color ? route.icon : '<%= asset_path("point-000000.svg") %>',
+              iconUrl: color ? route.icon : '/images/point-707070.svg',
               iconSize: new L.Point(12, 12),
               iconAnchor: new L.Point(6, 6),
               popupAnchor: new L.Point(0, -6),

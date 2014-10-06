@@ -92,6 +92,7 @@ gem 'mustache'
 gem 'smt_rails'
 gem 'paloma', github: 'frodrigo/paloma', branch: '3.0'
 gem 'browser'
+gem 'color'
 
 gem 'daemons'
 gem 'delayed_job'
