@@ -2,8 +2,12 @@
 
 tag_one:
   label: tag1
+  color: #FF0000
+  icon:
   customer: customer_one
 
 tag_two:
   label: tag2
+  color:
+  icon: diamon
   customer: customer_one

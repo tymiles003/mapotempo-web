@@ -5,7 +5,7 @@ vehicle_one:
   emission: 1.5
   consumption: 1.5
   capacity: 1
-  color: 004499
+  color: "#004499"
   open: 2000-01-01 10:00:00
   close: 2000-01-01 15:00:00
   customer: customer_one
@@ -17,7 +17,7 @@ vehicle_two:
   emission: 1.5
   consumption: 1.5
   capacity: 1
-  color: 004499
+  color: "#004499"
   open: 2000-01-01 10:00:00
   close: 2000-01-01 15:00:00
   customer: customer_two

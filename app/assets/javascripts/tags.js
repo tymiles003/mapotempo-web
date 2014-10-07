@@ -18,3 +18,45 @@
 
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
+
+function tags_form() {
+  $('#tag_color').simplecolorpicker({
+    theme: 'fontawesome'
+  });
+
+  function format(state) {
+    if (state.id) {
+      return "<img src='/images/" + state.id + ".svg'/>";
+    } else {
+      return I18n.t('tags.form.icon_default');
+    }
+  }
+
+  var formatNoMatches = I18n.t('web.select2.empty_result');
+  $('#tag_icon').select2({
+    formatResult: format,
+    formatSelection: format,
+    formatNoMatches: function () {
+      return formatNoMatches;
+    },
+    escapeMarkup: function (m) {
+      return m;
+    }
+  });
+}
+
+Paloma.controller('Tag').prototype.new = function () {
+  tags_form();
+}
+
+Paloma.controller('Tag').prototype.create = function () {
+  tags_form();
+}
+
+Paloma.controller('Tag').prototype.edit = function () {
+  tags_form();
+}
+
+Paloma.controller('Tag').prototype.update = function () {
+  tags_form();
+}

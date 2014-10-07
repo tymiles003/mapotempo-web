@@ -26,6 +26,18 @@ class ImagesController < ApplicationController
     @pal = pal(image_params[:color])
   end
 
+  def square
+    @pal = pal(image_params[:color])
+  end
+
+  def diamon
+    @pal = pal(image_params[:color])
+  end
+
+  def star
+    @pal = pal(image_params[:color])
+  end
+
   def point_large
     @pal = pal(image_params[:color])
   end

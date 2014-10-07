@@ -175,6 +175,8 @@ en:
         store_end: "End store"
       tag:
         label: "Label"
+        color: "Color"
+        icon: "Icon"
       user:
         email: "Email"
         customer: "Customer"
@@ -467,6 +469,11 @@ en:
       new: "New Tag"
     new:
       title: "New Tag"
+    form:
+      color_default: "Default"
+      icon_default: "Default"
+      color_help: "Force usage of this color"
+      icon_help: "Force usage of this symbol"
 
   users:
     menu:

@@ -48,6 +48,12 @@ Mapotempo::Application.routes.draw do
   get '/images/marker-:color' => 'images#marker'
   get '/images/point' => 'images#point'
   get '/images/point-:color' => 'images#point'
+  get '/images/square' => 'images#square'
+  get '/images/square-:color' => 'images#square'
+  get '/images/diamon' => 'images#diamon'
+  get '/images/diamon-:color' => 'images#diamon'
+  get '/images/star' => 'images#star'
+  get '/images/star-:color' => 'images#star'
   get '/images/point_large' => 'images#point_large'
   get '/images/point_large-:color' => 'images#point_large'
 

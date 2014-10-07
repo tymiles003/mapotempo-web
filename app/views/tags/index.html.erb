@@ -8,6 +8,8 @@
   <thead>
     <tr>
       <th><%= t 'activerecord.attributes.tag.label' %></th>
+      <th><%= t 'activerecord.attributes.tag.color' %></th>
+      <th><%= t 'activerecord.attributes.tag.icon' %></th>
       <th></th>
     </tr>
   </thead>
@@ -16,6 +18,16 @@
     <% @tags.each do |tag| %>
       <tr>
         <td><%= tag.label %></td>
+        <td>
+          <% if tag.color %>
+            <span class="simplecolorpicker"><span class="color" style="background-color: <%= tag.color %>;" title="<%= tag.color %>"></span></span>
+          <% end %>
+        </td>
+        <td>
+          <% if tag.icon %>
+            <img src="/images/<%= tag.icon %>.svg" />
+          <% end %>
+        </td>
         <td class="text-right">
           <%= link_to edit_tag_path(tag), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to tag, :class => 'btn btn-danger btn-sm', method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>

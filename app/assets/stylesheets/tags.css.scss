@@ -18,3 +18,17 @@
 // Place all the styles related to the Tags controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+[data-controller='tags'] {
+
+  span.color[data-color=''] {
+    border: 1px solid gray;
+  }
+  span.color[data-color='']:after {
+    content: "";
+    font-family: "FontAwesome";
+    margin-left: 3px;
+    margin-right: 3px;
+    color: inherit;
+  }
+}

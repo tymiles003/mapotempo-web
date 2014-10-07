@@ -33,6 +33,7 @@ class Vehicle < ActiveRecord::Base
   validates :color, presence: true
   validates :open, presence: true
   validates :close, presence: true
+  validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
 
   after_initialize :assign_defaults, if: 'new_record?'
   before_save :set_stores
