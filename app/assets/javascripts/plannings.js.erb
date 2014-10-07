@@ -195,7 +195,7 @@ function plannings_edit(params) {
     $.each(data.stores, function(i, store) {
       L.marker(new L.LatLng(store.lat, store.lng), {
         icon: L.icon({
-          iconUrl: store.icon,
+          iconUrl: '<%= asset_path("marker-home.svg") %>',
           iconSize: [32, 32],
           iconAnchor: [16, 16]
         })
@@ -221,6 +221,12 @@ function plannings_edit(params) {
     });
 
     $.each(data.routes, function (i, route) {
+      var color = route.vehicle? route.vehicle.color : '#707070';
+      var vehicle_name;
+      if (route.vehicle) {
+        vehicle_name = route.vehicle.name;
+      }
+
       routes_layers.removeLayer(layers[route.route_id]);
       routes_layers_cluster.removeLayer(layers_cluster[route.route_id]);
       layers[route.route_id] = L.featureGroup();
@@ -243,7 +249,7 @@ function plannings_edit(params) {
           }
           return new L.NumberedDivIcon({
             number: n.join(","),
-            iconUrl: markers[0].icon_large ? markers[0].icon_large : '/images/point_large-707070.svg',
+            iconUrl: '/images/point_large-' + color.substr(1) + '.svg',
             iconSize: new L.Point(24, 24),
             iconAnchor: new L.Point(12, 12),
             popupAnchor: new L.Point(0, -12),
@@ -251,12 +257,6 @@ function plannings_edit(params) {
           });
         },
       });
-
-      var color, vehicle_name;
-      if (route.vehicle) {
-        color = route.vehicle.color;
-        vehicle_name = route.vehicle.name;
-      }
 
       $.each(route.stops, function (index, stop) {
         if (stop.trace) {
@@ -272,7 +272,7 @@ function plannings_edit(params) {
           var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
             icon: new L.NumberedDivIcon({
               number: stop.number,
-              iconUrl: color ? route.icon : '/images/point-707070.svg',
+              iconUrl: '/images/point-' + color.substr(1) + '.svg',
               iconSize: new L.Point(12, 12),
               iconAnchor: new L.Point(6, 6),
               popupAnchor: new L.Point(0, -6),
@@ -280,7 +280,6 @@ function plannings_edit(params) {
             })
           }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show'](stop));
           m.number = stop.number;
-          m.icon_large = route.icon_large;
           m.on('mouseover', function(e){
             m.openPopup();
           }).on('mouseout', function(e){

@@ -17,7 +17,6 @@ else
   json.size @planning.routes.to_a.sum(0){ |route| route.vehicle ? route.size : 0 }
   json.stores current_user.customer.stores do |store|
     json.extract! store, :id, :lat, :lng
-    json.icon asset_path("marker-home.svg")
   end
   json.routes @planning.routes do |route|
     json.route_id route.id
@@ -29,8 +28,6 @@ else
     json.quantity route.quantity
     if route.vehicle
       json.vehicle_id route.vehicle.id
-      json.icon "/images/point-#{route.vehicle.color.gsub('#','')}.svg"
-      json.icon_large "/images/point_large-#{route.vehicle.color.gsub('#','')}.svg"
       json.work_time "%i:%02i" % [(route.vehicle.close - route.vehicle.open)/60/60, (route.vehicle.close - route.vehicle.open)/60%60]
       (json.tomtom true) if route.vehicle.tomtom_id && !route.vehicle.customer.tomtom_account.blank? && !route.vehicle.customer.tomtom_user.blank? && !route.vehicle.customer.tomtom_password.blank?
     end
