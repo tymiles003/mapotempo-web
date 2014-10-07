@@ -267,12 +267,12 @@ function plannings_edit(params) {
         }
         if (stop.destination.lat && stop.destination.lng) {
           stop.i18n = mustache_i18n;
-          stop.color = color;
+          stop.color = stop.destination.color || color;
           stop.vehicle_name = vehicle_name;
           var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
             icon: new L.NumberedDivIcon({
               number: stop.number,
-              iconUrl: '/images/point-' + color.substr(1) + '.svg',
+              iconUrl: '/images/' + (stop.destination.icon || 'point') + '-' + stop.color.substr(1) + '.svg',
               iconSize: new L.Point(12, 12),
               iconAnchor: new L.Point(6, 6),
               popupAnchor: new L.Point(0, -6),

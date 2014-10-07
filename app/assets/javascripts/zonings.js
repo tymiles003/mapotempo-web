@@ -194,7 +194,7 @@ function zonings_edit(params) {
           if (stop.lat && stop.lng) {
             L.marker(new L.LatLng(stop.lat, stop.lng), {
               icon: L.icon({
-                iconUrl: '/images/point-' + (route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].color.substr(1) : '707070') + '.svg',
+                iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
                 iconSize: new L.Point(12, 12),
                 iconAnchor: new L.Point(6, 6),
                 popupAnchor: new L.Point(1, 11)
