@@ -23,6 +23,12 @@
 function plannings_form() {
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
+    formatSelection: function (item) {
+      return format_tag(item);
+    },
+    formatResult: function (item) {
+      return format_tag(item);
+    },
     formatNoMatches: function () {
       return formatNoMatches;
     },

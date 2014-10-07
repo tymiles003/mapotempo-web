@@ -44,11 +44,15 @@
     <input class="form-control input-sm" type="text" name="destination[comment]" value="{{comment}}" size="99"/>
   </td>
   <td>
-   <div class="input-group input-group-tags">
-     <input type="hidden" value="" name="destination[tag_ids][]">
-     <select multiple="multiple" name="destination[tag_ids][]">{{#tags}}<option value="{{id}}" {{#active}} selected="selected"{{/active}}>{{label}}</option>{{/tags}}</select>
-     <span class="input-group-addon input-sm"><i class="fa fa-tags"></i></span>
-   </div>
+    <div class="input-group input-group-tags">
+      <input type="hidden" value="" name="destination[tag_ids][]">
+      <select multiple="multiple" name="destination[tag_ids][]">
+        {{#tags}}
+          <option value="{{id}}" {{#active}} selected="selected"{{/active}}{{#color}} data-color="{{color}}"{{/color}}{{#icon}} data-icon="{{icon}}"{{/icon}}>{{label}}</option>
+        {{/tags}}
+      </select>
+      <span class="input-group-addon input-sm"><i class="fa fa-tags"></i></span>
+    </div>
   </td>
   <td>
     {{#geocoding_accuracy}}

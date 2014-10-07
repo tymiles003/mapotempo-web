@@ -60,3 +60,17 @@ Paloma.controller('Tag').prototype.edit = function () {
 Paloma.controller('Tag').prototype.update = function () {
   tags_form();
 }
+
+function format_tag (item) {
+  var color = $(item.element).attr('data-color');
+  var icon = $(item.element).attr('data-icon');
+  if (icon && color) {
+    return '<img src="/images/' + icon + '-' + color.substr(1) + '.svg" />&nbsp;' + item.text;
+  } else if (icon) {
+    return '<img src="/images/' + icon + '.svg" />&nbsp;' + item.text;
+  } else if (color) {
+    return '<i style="color:' + color + '" class="fa fa-flag" ></i>&nbsp;' + item.text;
+  } else {
+    return item.text;
+  }
+}

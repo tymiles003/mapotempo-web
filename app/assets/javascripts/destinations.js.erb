@@ -114,6 +114,12 @@ function destinations_form(params, api) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name$=\\[tag_ids\\]\\[\\]]').select2({
+      formatSelection: function (item) {
+        return format_tag(item);
+      },
+      formatResult: function (item) {
+        return format_tag(item);
+      },
       formatNoMatches: function () {
         return formatNoMatches;
       },
@@ -316,6 +322,8 @@ function destinations_index(params) {
       t.push({
         id: tag.id,
         label: tag.label,
+        color: tag.color,
+        icon: tag.icon,
         active: $.inArray(tag.id, destination.tag_ids) >= 0
       });
     });
@@ -410,6 +418,12 @@ function destinations_index(params) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
+      formatSelection: function (item) {
+        return format_tag(item);
+      },
+      formatResult: function (item) {
+        return format_tag(item);
+      },
       formatNoMatches: function () {
         return formatNoMatches;
       },
