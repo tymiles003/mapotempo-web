@@ -375,6 +375,9 @@ en:
       edit_help: "Edit customer information"
       marker_help: "Show on map"
       automatic_insert_help: "Guess a place for inserting this destination into route"
+      active_all: "All"
+      active_reverse: "Reverse"
+      active_none: "None"
       popup:
         open: "Open:"
         close: "Close:"

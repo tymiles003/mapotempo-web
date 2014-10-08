@@ -378,6 +378,9 @@ fr:
       edit_help: "Modifier les informations du client"
       marker_help: "Visualiser sur la carte"
       automatic_insert_help: "Propose un endroit pour insérer ce client dans une tournée"
+      active_all: "Tous"
+      active_reverse: "Inverser"
+      active_none: "Aucun"
       popup:
         open: "Horaire début : "
         close: "Horaire fin : "

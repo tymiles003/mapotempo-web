@@ -175,6 +175,7 @@ function plannings_edit(params) {
     });
 
     data.i18n = mustache_i18n;
+    data.planning_id = data.id;
     $("#planning").html(SMT['plannings/edit'](data));
 
     $(".routes").on('change', 'input:checkbox', function (event, ui) {
@@ -441,7 +442,18 @@ function plannings_edit(params) {
           complete: completeWaiting,
           error: ajaxError
         });
+      })
+      .on("click", ".active_all, .active_reverse, .active_none", function (event, ui) {
+        var url = this.href;
+        $.ajax({
+          type: "patch",
+          url: url,
+          success: display_planning,
+          error: ajaxError
+        });
+        return false;
       });
+
 
     $(".lock").click(function (event, ui) {
       var id = $(this).closest("[data-route_id]").attr("data-route_id");

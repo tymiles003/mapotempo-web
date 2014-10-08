@@ -125,4 +125,18 @@ class RouteTest < ActiveSupport::TestCase
     o.stops[1].active = false
     assert_equal o.stops.size + 2 - 1, o.matrix_size
   end
+
+  test "should chnage active" do
+    o = routes(:route_one)
+
+    assert_equal 2, o.size_active
+    o.active(:none)
+    assert_equal 0, o.size_active
+    o.active(:all)
+    assert_equal 2, o.size_active
+    o.stops[0].active = false
+    assert_equal 1, o.size_active
+    o.active(:foo_bar)
+    assert_equal 1, o.size_active
+  end
 end

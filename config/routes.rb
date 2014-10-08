@@ -29,6 +29,7 @@ Mapotempo::Application.routes.draw do
     patch 'switch'
     patch 'duplicate'
     patch 'automatic_insert/:destination_id' => 'plannings#automatic_insert'
+    patch ':route_id/active/:active' => 'plannings#active'
     patch ':route_id/:destination_id' => 'plannings#update_stop'
     get ':route_id/optimize' => 'plannings#optimize_route'
   end

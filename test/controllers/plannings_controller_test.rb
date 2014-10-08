@@ -153,4 +153,9 @@ class PlanningsControllerTest < ActionController::TestCase
     patch :automatic_insert, planning_id: @planning, format: :json, destination_id: destinations(:destination_unaffected_one).id
     assert_response :success
   end
+
+  test "should update active" do
+    patch :active, planning_id: @planning, format: :json, route_id: routes(:route_one).id, active: :none
+    assert_response :success
+  end
 end

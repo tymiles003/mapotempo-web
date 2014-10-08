@@ -20,7 +20,7 @@ require 'csv'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource :except => :create
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :duplicate]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :duplicate]
 
   def index
     @plannings = Planning.where(customer_id: current_user.customer.id)
@@ -188,11 +188,21 @@ class PlanningsController < ApplicationController
     if @route
       respond_to do |format|
         if @route.stops.size == 0 or (Optimizer::optimize(current_user.customer, @planning, @route) && current_user.save)
-          format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
           format.json { render action: 'show', location: @planning }
         else
           format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
+      end
+    end
+  end
+
+  def active
+    route = @planning.routes.find{ |route| route.id == params[:route_id].to_i }
+    respond_to do |format|
+      if route && route.active(params[:active].to_s.to_sym) && @planning.compute && @planning.save
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end

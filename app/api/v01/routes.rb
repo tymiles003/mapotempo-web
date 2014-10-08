@@ -68,6 +68,18 @@ class V01::Routes < Grape::API
           route.save!
           present route, with: V01::Entities::Route
         end
+
+        desc "Change stops activation."
+        params {
+          requires :active, type: String, desc: "Value in liste : all, reverse, none"
+        }
+        patch ':id/active/:active' do
+          planning = current_customer.plannings.find(params[:planning_id])
+          route = planning.routes.find{ |route| route.id == params[:id].to_i }
+          if route && route.active(params[:active].to_s.to_sym) && planning.compute && planning.save
+            present(route, with: V01::Entities::Route)
+          end
+        end
       end
     end
   end

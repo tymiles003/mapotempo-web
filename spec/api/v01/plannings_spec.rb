@@ -103,6 +103,15 @@ describe V01::Plannings do
 #    end
 #  end
 
+  describe :active do
+    it 'Change stops activation' do
+      patch api("#{@planning.id}/routes/#{@planning.routes[1].id}/active/all")
+      expect(response.status).to eq(200)
+      patch api("#{@planning.id}/routes/#{@planning.routes[1].id}/active/reverse")
+      expect(response.status).to eq(200)
+    end
+  end
+
   describe :duplicate do
     it 'Clone the planning' do
       expect{

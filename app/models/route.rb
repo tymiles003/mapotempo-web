@@ -189,6 +189,22 @@ class Route < ActiveRecord::Base
     }
   end
 
+  def active(action)
+    if action == :reverse
+      stops.each{ |stop|
+        stop.active = !stop.active
+      }
+      true
+    elsif action == :all || action == :none
+      stops.each{ |stop|
+        stop.active = action == :all
+      }
+      true
+    else
+      false
+    end
+  end
+
   def size_active
     stops.to_a.sum(0) { |stop|
       stop.destination.customer && (stop.active || ! vehicle) ? 1 : 0
