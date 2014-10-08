@@ -6,3 +6,4 @@ json.close destination.close && destination.close.strftime('%H:%M')
 json.tag_ids do
   json.array! destination.tags.collect{ |t| t.id }
 end
+json.has_error destination.lat == nil || destination.lng == nil

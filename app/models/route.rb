@@ -64,7 +64,7 @@ class Route < ActiveRecord::Base
       router_url = stops_sort[0].destination.customer.router.url
       stops_sort.each{ |stop|
         destination = stop.destination
-        if stop.active && destination.lat && destination.lng
+        if stop.active && destination.lat != nil && destination.lng != nil
           stop.distance, time, stop.trace = Trace.compute(router_url, last.lat, last.lng, destination.lat, destination.lng)
           stop.time = self.end + time
           if destination.open && stop.time < destination.open
@@ -219,7 +219,7 @@ class Route < ActiveRecord::Base
 
   def active_all
     stops.each { |stop|
-      if stop.destination.lat && stop.destination.lng
+      if stop.destination.lat != nil && stop.destination.lng != nil
         stop.active = true
       end
     }
@@ -237,6 +237,6 @@ class Route < ActiveRecord::Base
     end
 
     def stops_segregate
-      stops.group_by{ |stop| !!(stop.active && stop.destination.lat && stop.destination.lng) }
+      stops.group_by{ |stop| !!(stop.active && stop.destination.lat != nil && stop.destination.lng != nil) }
     end
 end

@@ -1,4 +1,4 @@
-<tr data-destination_id="{{id}}" class="destination{{^lat}} has-error{{/lat}}{{#bad_geocoding_accuracy}} has-warning{{/bad_geocoding_accuracy}}">
+<tr data-destination_id="{{id}}" class="destination{{#has_error}} has-error{{/has_error}}">
   <td>
     <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}" style="width:6em"/>
   </td>

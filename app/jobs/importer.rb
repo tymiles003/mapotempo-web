@@ -170,7 +170,7 @@ class Importer
       if need_geocode && ! Mapotempo::Application.config.delayed_job_use
         routes.each{ |key, destinations|
           destinations.each{ |destination_active|
-            if not(destination_active[0].lat and destination_active[0].lng)
+            if destination_active[0].lat == nil || destination_active[0].lng == nil
               begin
                 destination_active[0].geocode
               rescue StandardError => e

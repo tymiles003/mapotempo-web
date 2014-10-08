@@ -205,7 +205,7 @@ function destinations_form(params, api) {
     markers[id] = marker;
   }
 
-  if (marker_lat && marker_lng) {
+  if ($.isNumeric(marker_lat) && $.isNumeric(marker_lng)) {
     addMarker(destination_id, marker_lat, marker_lng);
   }
 }
@@ -439,7 +439,7 @@ function destinations_index(params) {
     wire(row);
     $('.destinations').trigger('update');
 
-    if(destination.lat && destination.lng) {
+    if($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
       if (destination.id in markers) {
         markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
       } else {
@@ -582,7 +582,7 @@ function destinations_index(params) {
     $.each(data.destinations, function (i, destination) {
       destination = prepare_display_destination(destination);
       $(table).append(SMT['destinations/show'](destination));
-      if (destination.lat && destination.lng) {
+      if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
         addMarker(destination.id, destination.lat, destination.lng);
       }
     });
@@ -701,8 +701,10 @@ function destinations_index(params) {
       cluster.clearLayers();
       $('.destinations tr:visible').each(function (i, e) {
         var marker = markers[$(e).attr('data-destination_id')];
-        markersLayers.addLayer(marker);
-        cluster.addLayer(marker);
+        if (marker) {
+          markersLayers.addLayer(marker);
+          cluster.addLayer(marker);
+        }
       });
     });
     $(".tablesorter-filter").addClass("form-control input-sm"); // filter_cssFilter not support setting multiple class at once

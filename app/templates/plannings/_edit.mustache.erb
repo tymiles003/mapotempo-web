@@ -39,12 +39,15 @@
             <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
             <input type="checkbox" checked="checked" style="display: none"/>
             <div class="title">
+              {{^geocoded}}
+                <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>
+              {{/geocoded}}
               <span class="name" title="{{name}}">{{name}}</span><br />
             </div>
             <div class="btn-group pull-right">
               <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
               <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
-              {{#lat}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/lat}}
+              {{#geocoded}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/geocoded}}
             </div>
             <div class="clearfix"></div>
           </li>
@@ -112,7 +115,7 @@
         <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa fa-home fa-fw"></i>
           <div class="title">
-            <span class="info">{{#lat}}{{time}} - {{/lat}}</span>
+            <span class="info">{{#geocoded}}}{{time}} - {{/geocoded}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
           <div class="btn-group pull-right">
@@ -128,11 +131,11 @@
         <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
           <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
-          <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^lat}}disabled="disabled"{{/lat}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
+          <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^geocoded}}disabled="disabled"{{/geocoded}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
           <div class="title">
-            {{#no_geocoding}}
+            {{^geocoded}}
               <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>
-            {{/no_geocoding}}
+            {{/geocoded}}
             {{#out_of_window}}
               <i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"></i>
             {{/out_of_window}}
@@ -142,16 +145,16 @@
             {{#out_of_drive_time}}
               <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
             {{/out_of_drive_time}}
-            <span class="info">{{#active}}{{#lat}}{{time}} - {{/lat}}{{/active}}</span>
+            <span class="info">{{#active}}{{#geocoded}}{{time}} - {{/geocoded}}{{/active}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
           <div class="btn-group pull-right">
             {{^is_store}}
                <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
             {{/is_store}}
-            {{#lat}}
+            {{#geocoded}}
               <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
-            {{/lat}}
+            {{/geocoded}}
           </div>
           <div class="clearfix"></div>
         </li>
@@ -166,7 +169,7 @@
             {{#stop_out_of_drive_time}}
               <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
             {{/stop_out_of_drive_time}}
-            <span class="info">{{#lat}}{{time}} - {{/lat}}</span>
+            <span class="info">{{#geocoded}}{{time}} - {{/geocoded}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
           <div class="btn-group pull-right">

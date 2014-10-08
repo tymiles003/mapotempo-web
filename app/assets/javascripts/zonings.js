@@ -191,7 +191,7 @@ function zonings_edit(params) {
       hasPlanning = true;
       $.each(data.planning, function (index, route) {
         $.each(route.stops, function (index, stop) {
-          if (stop.lat && stop.lng) {
+          if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
             L.marker(new L.LatLng(stop.lat, stop.lng), {
               icon: L.icon({
                 iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
