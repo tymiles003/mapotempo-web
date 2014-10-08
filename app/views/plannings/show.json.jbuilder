@@ -14,7 +14,8 @@ else
   json.emission number_to_human(@planning.routes.to_a.sum(0){ |route| route.emission or 0 }, precision: 4)
   (json.out_of_date true) if @planning.out_of_date
   (json.zoning_out_of_date true) if @planning.zoning_out_of_date
-  json.size @planning.routes.to_a.sum(0){ |route| route.vehicle ? route.size : 0 }
+  json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
+  json.size_active @planning.routes.to_a.sum(0){ |route| route.vehicle ? route.size_active : 0 }
   json.stores current_user.customer.stores do |store|
     json.extract! store, :id, :lat, :lng
   end
@@ -24,7 +25,8 @@ else
     (json.hidden true) if route.hidden
     (json.locked) if route.locked
     json.distance number_to_human((route.distance or 0), units: :distance, precision: 3)
-    json.size route.size
+    json.size route.stops.size
+    json.size_active route.size_active
     json.quantity route.quantity
     if route.vehicle
       json.vehicle_id route.vehicle.id

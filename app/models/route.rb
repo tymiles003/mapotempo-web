@@ -189,7 +189,7 @@ class Route < ActiveRecord::Base
     }
   end
 
-  def size
+  def size_active
     stops.to_a.sum(0) { |stop|
       stop.destination.customer && (stop.active || ! vehicle) ? 1 : 0
     }
