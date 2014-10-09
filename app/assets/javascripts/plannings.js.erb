@@ -241,13 +241,13 @@ function plannings_edit(params) {
         spiderfyDistanceMultiplier: 0.5,
         iconCreateFunction: function(cluster) {
           var markers = cluster.getAllChildMarkers();
-          var n = [];
-          for (var i = 0; i < markers.length; i++) {
+          var n = [], i;
+          for (i = 0; i < markers.length; i++) {
             if (markers[i].number) {
               if (n.length < 2) {
                 n.push(markers[i].number);
               } else {
-                n = [n[0], "…"]
+                n = [n[0], "…"];
                 break;
               }
             }
@@ -260,7 +260,7 @@ function plannings_edit(params) {
             popupAnchor: new L.Point(0, -12),
             className: "large"
           });
-        },
+        }
       });
 
       $.each(route.stops, function(index, stop) {

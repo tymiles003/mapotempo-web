@@ -55,11 +55,11 @@ function ajaxError(request, status, error) {
 function mustache_i18n() {
   return function(text) {
     return I18n.t(text);
-  }
+  };
 }
 
 function progress_dialog(data, dialog, callback, load_url, stop_url) {
-  if (typeof data != 'undefined') {
+  if (data !== undefined) {
     dialog.dialog("open");
     $(".progress-bar", dialog).css("width", "" + data.progress + "%");
     if (data.attempts) {
@@ -98,7 +98,7 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
             ajaxError(request, status, error);
           }
         });
-      }
+      };
       dialog.dialog({
         buttons: buttons
       });
@@ -114,6 +114,6 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
     return false;
   } else {
     dialog.dialog("close");
+    return true;
   }
-  return true;
 }

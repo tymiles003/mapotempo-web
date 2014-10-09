@@ -44,7 +44,7 @@ function zonings_edit(params) {
 
   var featureGroup = L.featureGroup().addTo(map);
 
-  var drawControl = new L.Control.Draw({
+  new L.Control.Draw({
     draw: {
       polyline: false,
       polygon: {
@@ -128,7 +128,7 @@ function zonings_edit(params) {
         id: val.id,
         selected: val.id == zone.vehicle_id,
         name: val.name
-      }
+      };
     });
     $('#zones').append(SMT['zones/show'](zone));
     var ele = $('#zones .zone:last');

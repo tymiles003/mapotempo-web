@@ -45,19 +45,19 @@ function tags_form() {
 
 Paloma.controller('Tag').prototype.new = function() {
   tags_form();
-}
+};
 
 Paloma.controller('Tag').prototype.create = function() {
   tags_form();
-}
+};
 
 Paloma.controller('Tag').prototype.edit = function() {
   tags_form();
-}
+};
 
 Paloma.controller('Tag').prototype.update = function() {
   tags_form();
-}
+};
 
 function format_tag(item) {
   var color = $(item.element).attr('data-color');

@@ -269,11 +269,11 @@ function destinations_import(params) {
 
 Paloma.controller('Destination').prototype.import = function() {
   destinations_import(this.params);
-}
+};
 
 Paloma.controller('Destination').prototype.upload = function() {
   destinations_import(this.params);
-}
+};
 
 function destinations_index(params) {
 
@@ -651,13 +651,13 @@ function destinations_index(params) {
           5: function(e, n, f, i, $r) {
             n = n.split(',');
             n[0] = n[0].split(':');
-            n[0] = new Date(2000, 01, 01, n[0][0], n[0][1]);
+            n[0] = new Date(2000, 1, 1, n[0][0], n[0][1]);
             n[1] = n[1].split(':');
-            n[1] = new Date(2000, 01, 01, n[1][0], n[1][1]);
+            n[1] = new Date(2000, 1, 1, n[1][0], n[1][1]);
 
             f = f.split(' - ');
-            f[0] = new Date(2000, 01, 01, f[0]);
-            f[1] = new Date(2000, 01, 01, f[1]);
+            f[0] = new Date(2000, 1, 1, f[0]);
+            f[1] = new Date(2000, 1, 1, f[1]);
 
             return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
           },
@@ -694,7 +694,7 @@ function destinations_index(params) {
           7: true,
           8: true,
           9: 'disable'
-        },
+        }
       }
     }).bind('filterEnd', function(e, filter) {
       count();
