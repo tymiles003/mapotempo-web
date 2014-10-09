@@ -139,4 +139,25 @@ class RouteTest < ActiveSupport::TestCase
     o.active(:foo_bar)
     assert_equal 1, o.size_active
   end
+
+  test "move stop inside route" do
+    o = routes(:route_one)
+    s = o.stops[1]
+    assert s.index = 2
+    o.move_destination(s.destination, 1)
+    assert s.index = 1
+  end
+
+  test "move stop to affected route" do
+    o = routes(:route_zero)
+    s = o.stops[0]
+    assert_not s.index
+    routes(:route_one).move_destination(s.destination, 1)
+  end
+
+  test "move stop o unaffected route" do
+    o = routes(:route_one)
+    s = o.stops[1]
+    routes(:route_zero).move_destination(s.destination, 1)
+  end
 end

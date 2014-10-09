@@ -41,4 +41,11 @@ describe V01::Routes do
       expect(JSON.parse(response.body)['locked']).to eq @route.locked
     end
   end
+
+  describe :move do
+    it 'Move destination position in routes' do
+      patch api(@route.planning.id, "#{@route.id}/destinations/#{@route.planning.routes[0].stops[0].destination.id}/move/1"), @route.attributes
+      expect(response.status).to eq(200)
+    end
+  end
 end

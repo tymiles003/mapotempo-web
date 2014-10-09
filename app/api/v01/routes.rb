@@ -80,6 +80,24 @@ class V01::Routes < Grape::API
             present(route, with: V01::Entities::Route)
           end
         end
+
+        desc "Move destination position in routes."
+        params {
+          requires :destination_id, type: Integer, desc: "Destination id to move"
+          requires :index, type: Integer, desc: "New position in the route"
+        }
+        patch ':id/destinations/:destination_id/move/:index' do
+          Route.transaction do
+            params[:planning_id] = params[:planning_id].to_i
+            planning = current_customer.plannings.find{ |planning| planning.id == params[:planning_id] }
+            params[:id] = params[:id].to_i
+            route = planning.routes.find{ |route| route.id == params[:id] }
+            params[:destination_id] = params[:destination_id].to_i
+            destination = current_customer.destinations.find{ |destination| destination.id == params[:destination_id] }
+
+            route.move_destination(destination, params[:index].to_i + 1) && planning.save
+          end
+        end
       end
     end
   end

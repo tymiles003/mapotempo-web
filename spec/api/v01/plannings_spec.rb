@@ -61,13 +61,6 @@ describe V01::Plannings do
     end
   end
 
-#  describe :move do
-#    it 'Move a stop between routes' do
-#      patch api("#{@planning.id}/move")
-#      expect(response.status).to eq(200)
-#    end
-#  end
-
   describe :refresh do
     it 'Force recompute the planning after parameter update' do
       get api("#{@planning.id}/refresh")

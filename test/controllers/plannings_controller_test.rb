@@ -103,7 +103,7 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should move" do
-    patch :move, planning_id: @planning, format: :json, planning: { name: @planning.name, zoning_id: @planning.zoning.id }
+    patch :move, planning_id: @planning, route_id: @planning.routes[1], destination_id: @planning.routes[0].stops[0].destination, index: 1, format: :json
     assert_response :success
   end
 

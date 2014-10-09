@@ -60,9 +60,8 @@ class Route < ActiveRecord::Base
       self.end = self.start = vehicle.open
       last = vehicle.store_start
       quantity = 0
-      stops_sort = stops.sort_by(&:index)
-      router_url = stops_sort[0].destination.customer.router.url
-      stops_sort.each{ |stop|
+      router_url = stops[0].destination.customer.router.url
+      stops.sort_by(&:index).each{ |stop|
         destination = stop.destination
         if stop.active && destination.lat != nil && destination.lng != nil
           stop.distance, time, stop.trace = Trace.compute(router_url, last.lat, last.lng, destination.lat, destination.lng)
@@ -120,11 +119,7 @@ class Route < ActiveRecord::Base
 
   def add(destination, index = nil, active = false)
     if index
-      stops.partition{ |stop|
-        stop.index < index
-      }[1].each{ |stop|
-        stop.index += 1
-      }
+      shift_index(index)
     elsif vehicle
       raise
     end
@@ -144,6 +139,46 @@ class Route < ActiveRecord::Base
         end
       end
     }
+  end
+
+  def move_destination(destination, index)
+    stop = nil
+    planning.routes.find{ |route|
+      route.stops.find{ |s|
+        if s.destination == destination
+          stop = s
+        end
+      }
+    }
+    if stop
+      move_stop(stop, index)
+    end
+  end
+
+  def move_stop(stop, index)
+    if stop.route != self
+      destination, active = stop.destination, stop.active
+      stop.route.move_stop_out(stop)
+      shift_index(index)
+      add(destination, index, active)
+    else
+      if stop.index
+        if index < stop.index
+          shift_index(index, 1, stop.index - 1)
+        else
+          shift_index(stop.index + 1, -1, index)
+        end
+        stop.index = index
+      end
+    end
+    compute
+  end
+
+  def move_stop_out(stop)
+    shift_index(stop.index, -1)
+    stop.active = false
+    compute
+    stop.destroy
   end
 
   def sum_out_of_window
@@ -238,5 +273,13 @@ class Route < ActiveRecord::Base
 
     def stops_segregate
       stops.group_by{ |stop| !!(stop.active && stop.destination.lat != nil && stop.destination.lng != nil) }
+    end
+
+    def shift_index(from, by = 1, to = nil)
+      stops.partition{ |stop|
+        stop.index == nil || stop.index < from || (to && stop.index > to)
+      }[1].each{ |stop|
+        stop.index += by
+      }
     end
 end

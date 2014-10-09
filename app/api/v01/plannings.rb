@@ -80,12 +80,6 @@ class V01::Plannings < Grape::API
       current_customer.plannings.find(params[:id]).destroy
     end
 
-    desc "Move a stop between routes."
-    patch ':id/move' do
-      # TODO
-      error!('501 Not Implemented', 501)
-    end
-
     desc "Force recompute the planning after parameter update."
     get ':id/refresh' do
       planning = current_customer.plannings.find(params[:id])

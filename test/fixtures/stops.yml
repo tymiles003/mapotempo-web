@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 stop_unaffected:
-  index: 1
+  index:
   active: false
   distance: 1.5
   trace: MyString

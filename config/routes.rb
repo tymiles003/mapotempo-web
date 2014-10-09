@@ -24,7 +24,7 @@ Mapotempo::Application.routes.draw do
   resources :stores
 
   resources :plannings do
-    patch 'move'
+    patch ':route_id/:destination_id/move/:index' => 'plannings#move'
     get 'refresh'
     patch 'switch'
     patch 'duplicate'

@@ -89,21 +89,18 @@ class PlanningsController < ApplicationController
   def move
     respond_to do |format|
       begin
-        destinations = Hash[current_user.customer.destinations.map{ |d| [d.id, d] }]
-        routes = Hash[@planning.routes.map{ |route| [String(route.id), route] }]
         Planning.transaction do
-          params["_json"] and params["_json"].each{ |r|
-            route = routes[r[:route]]
-            if r[:destinations]
-              route.set_destinations(r[:destinations].collect{ |d| [destinations[d[:id]], !!d[:active]] })
-            else
-              route.set_destinations([])
-            end
-          }
+          params[:route_id] = params[:route_id].to_i
+          route = @planning.routes.find{ |route| route.id == params[:route_id] }
+          params[:destination_id] = params[:destination_id].to_i
+          destination = current_user.customer.destinations.find{ |destination| destination.id == params[:destination_id] }
 
+          route.move_destination(destination, params[:index].to_i + 1)
           if @planning.save
+            @planning.reload
             format.json { render action: 'show', location: @planning }
           else
+            @planning.reload
             format.json { render json: @planning.errors, status: :unprocessable_entity }
           end
         end

@@ -128,22 +128,13 @@ function plannings_edit(params) {
   });
 
   function update_planning(event, ui) {
-    var data = $('#planning > ol > li').map(function() {
-      return {
-        'route': $(this).attr("data-route_id"),
-        'destinations': $('ul.sortable li[data-destination_id]', this).map(function() {
-          return {
-            'id': parseInt($(this).attr("data-destination_id")),
-            'active': $('input', this).is(':checked')
-          };
-        }).get()
-      };
-    }).get();
+    var item = $(ui.item),
+      index = item.index(),
+      route_id = item.closest('[data-route_id]').attr('data-route_id'),
+      destination_id = item.closest("[data-destination_id]").attr("data-destination_id");
     $.ajax({
-      type: "patch",
-      data: JSON.stringify(data),
-      contentType: 'application/json',
-      url: '/plannings/' + planning_id + '/move.json',
+      type: 'patch',
+      url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '/move/' + index + '.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting,
