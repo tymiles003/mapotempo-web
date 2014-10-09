@@ -37,7 +37,7 @@ function destinations_form(params, api) {
   var pointing_cursor;
   var icon_default = new L.Icon.Default();
 
-  function geocoding_accuracy(destination) {
+  function prepare_display_destination(destination) {
     if (destination.geocoding_accuracy) {
       if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_success %>) {
         destination.geocoding_status = 'success';
@@ -86,10 +86,10 @@ function destinations_form(params, api) {
     <% end %>
     $row.on("change", ":input", function(event) {
       var url;
-      if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
-        url = '/api/0.1/' + api + '/geocode.json';
-      } else if (event.currentTarget.name.match(/\[lat\]|\[lng\]/)) {
+      if (event.currentTarget.name.match(/\[lat\]|\[lng\]/)) {
         url = '/api/0.1/' + api + '/geocode_reverse.json';
+      } else if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
+        url = '/api/0.1/' + api + '/geocode.json';
       } else {
         return;
       }
@@ -105,7 +105,7 @@ function destinations_form(params, api) {
         error: ajaxError
       });
     })
-    .on("click", "input[name$=\\[street\\]] + .input-group-addon", function(event) {
+    .on("click", ".pointing + span", function(event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
@@ -113,7 +113,7 @@ function destinations_form(params, api) {
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
-    $('select[name$=\\[tag_ids\\]\\[\\]]').select2({
+    $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
       formatSelection: function(item) {
         return format_tag(item);
       },
@@ -148,16 +148,18 @@ function destinations_form(params, api) {
     $('[name$=\\[city\\]]', row).val(destination.city);
     $('[name$=\\[lat\\]]', row).val(destination.lat);
     $('[name$=\\[lng\\]]', row).val(destination.lng);
-    if (destination_id in markers) {
-      markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
-    } else {
-      addMarker(destination_id, destination.lat, destination.lng);
-    }
-    if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
-      map.setView(markers[destination_id].getLatLng(), 16);
+    if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
+      if (destination_id in markers) {
+        markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
+      } else {
+        addMarker(destination_id, destination.lat, destination.lng);
+      }
+      if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
+        map.setView(markers[destination_id].getLatLng(), 16);
+      }
     }
     if (destination.geocoding_accuracy) {
-      destination = geocoding_accuracy(destination);
+      destination = prepare_display_destination(destination);
       var progress = $('.progress div');
       $('#geocoding_accuracy').show();
       $('#no_geocoding_accuracy').hide();
@@ -275,7 +277,7 @@ Paloma.controller('Destination').prototype.upload = function() {
   destinations_import(this.params);
 };
 
-function destinations_index(params) {
+function destinations_index(params, api) {
 
   var map_layer_url = params.map_layer_url,
     map_lat = params.map_lat,
@@ -354,7 +356,7 @@ function destinations_index(params) {
           $.ajax({
             type: "patch",
             data: $(":input", $row).serialize(),
-            url: '/api/0.1/destinations/geocode_complete.json',
+            url: '/api/0.1/' + api + '/geocode_complete.json',
             beforeSend: beforeSendWaiting,
             success: function(data) {
               add($.map(data, function(val, i) {
@@ -376,10 +378,16 @@ function destinations_index(params) {
     });
     <% end %>
     $row.on("change", ":input", function(event) {
+      var url;
+      if (event.currentTarget.name.match(/\[lat\]|\[lng\]/)) {
+        url = '/api/0.1/' + api + '/' + id + '.json?reverse=true';
+      } else {
+        url = '/api/0.1/' + api + '/' + id + '.json';
+      }
       $.ajax({
         type: "put",
         data: $(":input", $row).serialize(),
-        url: '/api/0.1/destinations/' + id + '.json' + ((['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) ? '?reverse=true': ''),
+        url: url,
         beforeSend: beforeSendWaiting,
         success: function(data) {
           update(id, data);
@@ -388,7 +396,7 @@ function destinations_index(params) {
         error: ajaxError
       });
     })
-    .on("click", "input[name$=\\[city\\]] + .input-group-addon", function(event) {
+    .on("click", ".pointing + span", function(event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
@@ -401,7 +409,7 @@ function destinations_index(params) {
       if (confirm(I18n.t('all.verb.destroy_confirm'))) {
         $.ajax({
           type: "delete",
-          url: '/api/0.1/destinations/' + id + '.json',
+          url: '/api/0.1/' + api + '/' + id + '.json',
           beforeSend: beforeSendWaiting,
           success: function(data) {
             row.remove();
@@ -435,21 +443,21 @@ function destinations_index(params) {
     var row = $('[data-destination_id=' + destination_id + ']'),
       destination = prepare_display_destination(destination);
     $(row).replaceWith(SMT['destinations/show'](destination));
-    row = $('[data-destination_id=' + destination.id + ']');
+    row = $('[data-destination_id=' + destination_id + ']');
     wire(row);
     $('.destinations').trigger('update');
 
     if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
-      if (destination.id in markers) {
+      if (destination_id in markers) {
         markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
       } else {
-        addMarker(destination.id, destination.lat, destination.lng);
+        addMarker(destination_id, destination.lat, destination.lng);
       }
-      if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination.id].getLatLng())) {
-        map.setView(markers[destination.id].getLatLng(), 16);
+      if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
+        map.setView(markers[destination_id].getLatLng(), 16);
       }
     } else {
-      delete markers[destination.id];
+      delete markers[destination_id];
     }
   }
 
@@ -549,7 +557,7 @@ function destinations_index(params) {
       url: '/api/0.1/destinations.json',
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        update(id, data);
+        update(data.id, data);
         destination.i18n = mustache_i18n;
         $(".destinations").append(SMT['destinations/show'](data));
         wire($('[data-destination_id=' + data.id + ']'));
@@ -727,5 +735,5 @@ function destinations_index(params) {
 }
 
 Paloma.controller('Destination').prototype.index = function() {
-  destinations_index(this.params);
+  destinations_index(this.params, 'destinations');
 };

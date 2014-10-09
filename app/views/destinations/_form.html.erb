@@ -2,7 +2,7 @@
   <%= render 'shared/error_messages', model: current_user.customer %>
   <%= f.text_field :ref %>
   <%= f.text_field :name %>
-  <%= f.text_field :street, {input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
+  <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
   <%= f.text_field :detail do %>
     <p class="help-block"><%= t '.detail_help' %></p>
   <% end %>
