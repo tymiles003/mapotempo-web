@@ -53,7 +53,7 @@ function ajaxError(request, status, error) {
 }
 
 function mustache_i18n() {
-  return function (text) {
+  return function(text) {
     return I18n.t(text);
   }
 }
@@ -72,12 +72,12 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
       var buttons = {};
-      buttons[I18n.t('web.dialog.close')] = function () {
+      buttons[I18n.t('web.dialog.close')] = function() {
         $.ajax({
           type: "delete",
           url: stop_url,
           beforeSend: beforeSendWaiting,
-          complete: function () {
+          complete: function() {
             dialog.dialog("close");
             completeWaiting();
             $.ajax({
@@ -94,7 +94,7 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
               buttons: {}
             });
           },
-          error: function (request, status, error) {
+          error: function(request, status, error) {
             ajaxError(request, status, error);
           }
         });
@@ -103,7 +103,7 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
         buttons: buttons
       });
     } else {
-      setTimeout(function () {
+      setTimeout(function() {
         $.ajax({
           url: load_url,
           success: callback,

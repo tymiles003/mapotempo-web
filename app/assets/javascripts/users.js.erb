@@ -28,7 +28,7 @@ function user_edit_settings(params) {
     attribution: map_attribution
   }).addTo(map);
 
-  $('[name=user\\[layer_id\\]]').change(function (event) {
+  $('[name=user\\[layer_id\\]]').change(function(event) {
     map.removeLayer(layer);
     layer = L.tileLayer(layers[event.target.value].url, {
         maxZoom: 18,
@@ -38,16 +38,16 @@ function user_edit_settings(params) {
   });
 }
 
-Paloma.controller('Devise/Registration').prototype.edit = function () {
+Paloma.controller('Devise/Registration').prototype.edit = function() {
 };
 
-Paloma.controller('Devise/Registration').prototype.update = function () {
+Paloma.controller('Devise/Registration').prototype.update = function() {
 };
 
-Paloma.controller('User').prototype.edit_settings = function () {
+Paloma.controller('User').prototype.edit_settings = function() {
   user_edit_settings(this.params);
 };
 
-Paloma.controller('User').prototype.update_settings = function () {
+Paloma.controller('User').prototype.update_settings = function() {
   user_edit_settings(this.params);
 };

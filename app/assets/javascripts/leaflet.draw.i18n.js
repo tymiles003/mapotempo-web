@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-(function (window, document, undefined) {
+(function(window, document, undefined) {
 
 L.drawLocal = {
 	draw: {

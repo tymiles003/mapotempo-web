@@ -36,28 +36,28 @@ function tags_form() {
   $('#tag_icon').select2({
     formatResult: format,
     formatSelection: format,
-    formatNoMatches: function () {
+    formatNoMatches: function() {
       return formatNoMatches;
     },
-    escapeMarkup: function (m) {
+    escapeMarkup: function(m) {
       return m;
     }
   });
 }
 
-Paloma.controller('Tag').prototype.new = function () {
+Paloma.controller('Tag').prototype.new = function() {
   tags_form();
 }
 
-Paloma.controller('Tag').prototype.create = function () {
+Paloma.controller('Tag').prototype.create = function() {
   tags_form();
 }
 
-Paloma.controller('Tag').prototype.edit = function () {
+Paloma.controller('Tag').prototype.edit = function() {
   tags_form();
 }
 
-Paloma.controller('Tag').prototype.update = function () {
+Paloma.controller('Tag').prototype.update = function() {
   tags_form();
 }
 

@@ -56,17 +56,17 @@ function destinations_form(params, api) {
       id = $row.attr('data-destination_id');
 
     <% if Mapotempo::Application.config.geocode_complete %>
-    $row.one("focus", ":input[name$=\\[street\\]]", function () {
+    $row.one("focus", ":input[name$=\\[street\\]]", function() {
       $(this).autocomplete({
         delay: 500,
-        source: function (req, add) {
+        source: function(req, add) {
           $.ajax({
             type: "patch",
             data: $(":input", $row).serialize(),
             url: '/api/0.1/' + api + '/geocode_complete.json',
             beforeSend: beforeSendWaiting,
-            success: function (data) {
-              add($.map(data, function (val, i) {
+            success: function(data) {
+              add($.map(data, function(val, i) {
                 return {
                   label: val.street + ' ' + val.postalcode + ' ' + val.city,
                   value: val.street
@@ -77,14 +77,14 @@ function destinations_form(params, api) {
             error: ajaxError
           });
         },
-        select: function (event, ui) {
+        select: function(event, ui) {
           event.target.value = ui.item.value;
           $(event.target).trigger('change');
         }
       });
     });
     <% end %>
-    $row.on("change", ":input", function (event) {
+    $row.on("change", ":input", function(event) {
       var url;
       if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
         url = '/api/0.1/' + api + '/geocode.json';
@@ -98,14 +98,14 @@ function destinations_form(params, api) {
         data: $(":input", $row).serialize(),
         url: url,
         beforeSend: beforeSendWaiting,
-        success: function (data) {
+        success: function(data) {
           update(id, data);
         },
         complete: completeWaiting,
         error: ajaxError
       });
     })
-    .on("click", "input[name$=\\[street\\]] + .input-group-addon", function (event) {
+    .on("click", "input[name$=\\[street\\]] + .input-group-addon", function(event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
@@ -114,13 +114,13 @@ function destinations_form(params, api) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name$=\\[tag_ids\\]\\[\\]]').select2({
-      formatSelection: function (item) {
+      formatSelection: function(item) {
         return format_tag(item);
       },
-      formatResult: function (item) {
+      formatResult: function(item) {
         return format_tag(item);
       },
-      formatNoMatches: function () {
+      formatNoMatches: function() {
         return formatNoMatches;
       },
       width: '100%'
@@ -177,7 +177,7 @@ function destinations_form(params, api) {
     $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change');
   }
 
-  map.on('click', function (mouseEvent) {
+  map.on('click', function(mouseEvent) {
     if (pointing !== false) {
       if (pointing in markers) {
         markers[pointing].setLatLng(mouseEvent.latlng);
@@ -199,7 +199,7 @@ function destinations_form(params, api) {
       draggable: true,
       destination: id
     }).addTo(map);
-    marker.on('dragend', function (event) {
+    marker.on('dragend', function(event) {
       sendMove(event.target.options.destination, event.target.getLatLng());
     });
     markers[id] = marker;
@@ -218,35 +218,35 @@ function destinations_edit(params, api) {
   destinations_form(params, api);
 }
 
-Paloma.controller('Destination').prototype.new = function () {
+Paloma.controller('Destination').prototype.new = function() {
   destinations_new(this.params, 'destinations');
 };
 
-Paloma.controller('Destination').prototype.create = function () {
+Paloma.controller('Destination').prototype.create = function() {
   destinations_new(this.params, 'destinations');
 };
 
-Paloma.controller('Destination').prototype.edit = function () {
+Paloma.controller('Destination').prototype.edit = function() {
   destinations_edit(this.params, 'destinations');
 };
 
-Paloma.controller('Destination').prototype.update = function () {
+Paloma.controller('Destination').prototype.update = function() {
   destinations_edit(this.params, 'destinations');
 };
 
-Paloma.controller('Store').prototype.new = function () {
+Paloma.controller('Store').prototype.new = function() {
   destinations_new(this.params, 'stores');
 };
 
-Paloma.controller('Store').prototype.create = function () {
+Paloma.controller('Store').prototype.create = function() {
   destinations_new(this.params, 'stores');
 };
 
-Paloma.controller('Store').prototype.edit = function () {
+Paloma.controller('Store').prototype.edit = function() {
   destinations_edit(this.params, 'stores');
 };
 
-Paloma.controller('Store').prototype.update = function () {
+Paloma.controller('Store').prototype.update = function() {
   destinations_edit(this.params);
 };
 
@@ -262,16 +262,16 @@ function destinations_import(params) {
     buttonText: I18n.t('web.choose_file')
   });
 
-  $("form").submit(function () {
+  $("form").submit(function() {
     $("#dialog-upload").dialog("open");
   });
 }
 
-Paloma.controller('Destination').prototype.import = function () {
+Paloma.controller('Destination').prototype.import = function() {
   destinations_import(this.params);
 }
 
-Paloma.controller('Destination').prototype.upload = function () {
+Paloma.controller('Destination').prototype.upload = function() {
   destinations_import(this.params);
 }
 
@@ -297,7 +297,7 @@ function destinations_index(params) {
   });
   map.addLayer(cluster);
 
-  map.on('zoomend ', function (e) {
+  map.on('zoomend ', function(e) {
     if (map.getZoom() > 14) {
       map.removeLayer(cluster);
       map.addLayer(markersLayers);
@@ -318,7 +318,7 @@ function destinations_index(params) {
 
   function prepare_display_destination(destination) {
     var t = [];
-    $.each(tags, function (i, tag) {
+    $.each(tags, function(i, tag) {
       t.push({
         id: tag.id,
         label: tag.label,
@@ -347,17 +347,17 @@ function destinations_index(params) {
       id = $row.attr('data-destination_id');
 
     <% if Mapotempo::Application.config.geocode_complete %>
-    $row.one("focus", ":input[name$=\\[street\\]]", function () {
+    $row.one("focus", ":input[name$=\\[street\\]]", function() {
       $(this).autocomplete({
         delay: 500,
-        source: function (req, add) {
+        source: function(req, add) {
           $.ajax({
             type: "patch",
             data: $(":input", $row).serialize(),
             url: '/api/0.1/destinations/geocode_complete.json',
             beforeSend: beforeSendWaiting,
-            success: function (data) {
-              add($.map(data, function (val, i) {
+            success: function(data) {
+              add($.map(data, function(val, i) {
                 return {
                   label: val.street + ' ' + val.postalcode + ' ' + val.city,
                   value: val.street
@@ -368,42 +368,42 @@ function destinations_index(params) {
             error: ajaxError
           });
         },
-        select: function (event, ui) {
+        select: function(event, ui) {
           event.target.value = ui.item.value;
           $(event.target).trigger('change');
         }
       });
     });
     <% end %>
-    $row.on("change", ":input", function (event) {
+    $row.on("change", ":input", function(event) {
       $.ajax({
         type: "put",
         data: $(":input", $row).serialize(),
         url: '/api/0.1/destinations/' + id + '.json' + ((['destination[lat]', 'destination[lng]'].indexOf(event.currentTarget.name) >= 0) ? '?reverse=true': ''),
         beforeSend: beforeSendWaiting,
-        success: function (data) {
+        success: function(data) {
           update(id, data);
         },
         complete: completeWaiting,
         error: ajaxError
       });
     })
-    .on("click", "input[name$=\\[city\\]] + .input-group-addon", function (event) {
+    .on("click", "input[name$=\\[city\\]] + .input-group-addon", function(event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
       pointing_cursor = $('.leaflet-container').css('cursor');
       $('.leaflet-container').css('cursor', 'crosshair');
     })
-    .click(function (event) {
+    .click(function(event) {
       over(id, true);
     })
-    .on("click", ".destroy", function (event) {
+    .on("click", ".destroy", function(event) {
       if (confirm(I18n.t('all.verb.destroy_confirm'))) {
         $.ajax({
           type: "delete",
           url: '/api/0.1/destinations/' + id + '.json',
           beforeSend: beforeSendWaiting,
-          success: function (data) {
+          success: function(data) {
             row.remove();
             markersLayers.removeLayer(markers[id]);
             cluster.removeLayer(markers[id]);
@@ -418,13 +418,13 @@ function destinations_index(params) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
-      formatSelection: function (item) {
+      formatSelection: function(item) {
         return format_tag(item);
       },
-      formatResult: function (item) {
+      formatResult: function(item) {
         return format_tag(item);
       },
-      formatNoMatches: function () {
+      formatNoMatches: function() {
         return formatNoMatches;
       },
       width: '100%'
@@ -472,7 +472,7 @@ function destinations_index(params) {
     $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change');
   }
 
-  map.on('click', function (mouseEvent) {
+  map.on('click', function(mouseEvent) {
     if (pointing !== false) {
       if (pointing in markers) {
         markers[pointing].setLatLng(mouseEvent.latlng);
@@ -519,10 +519,10 @@ function destinations_index(params) {
       draggable: true,
       destination: id
     }).addTo(markersLayers).addTo(cluster);
-    marker.on('dragend', function (event) {
+    marker.on('dragend', function(event) {
       sendMove(event.target.options.destination, event.target.getLatLng());
     });
-    marker.on('mouseover', function (mouseEvent) {
+    marker.on('mouseover', function(mouseEvent) {
       if (!pointing) {
         over(mouseEvent.target.options.destination, false);
       }
@@ -530,7 +530,7 @@ function destinations_index(params) {
     markers[id] = marker;
   }
 
-  $("#add").click(function (event) {
+  $("#add").click(function(event) {
     var id = 0;
     var center = map.getCenter();
     var destination = {
@@ -546,7 +546,7 @@ function destinations_index(params) {
       contentType: 'application/json',
       url: '/api/0.1/destinations.json',
       beforeSend: beforeSendWaiting,
-      success: function (data) {
+      success: function(data) {
         update(id, data);
         destination.i18n = mustache_i18n;
         $(".destinations").append(SMT['destinations/show'](data));
@@ -576,10 +576,10 @@ function destinations_index(params) {
     }
 
     var table = $('.destinations');
-    $.each(data.tags, function (i, tag) {
+    $.each(data.tags, function(i, tag) {
       tags[tag.id] = tag;
     });
-    $.each(data.destinations, function (i, destination) {
+    $.each(data.destinations, function(i, destination) {
       destination = prepare_display_destination(destination);
       $(table).append(SMT['destinations/show'](destination));
       if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
@@ -593,7 +593,7 @@ function destinations_index(params) {
 
     count();
 
-    $('tr', table).each(function (index, element) {
+    $('tr', table).each(function(index, element) {
       wire(element);
     });
 
@@ -621,13 +621,13 @@ function destinations_index(params) {
           sorter: false
         }
       },
-      textExtraction: function (node, table, cellIndex) {
+      textExtraction: function(node, table, cellIndex) {
         if (cellIndex == 7) {
-          return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function (e, i) {
+          return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).join(",");
         } else {
-          return $.map($(":input", node), function (e, i) {
+          return $.map($(":input", node), function(e, i) {
             return e.value;
           }).join(",");
         }
@@ -663,7 +663,7 @@ function destinations_index(params) {
           7: filter_text
         },
         filter_formatter: {
-          5: function ($cell, indx) {
+          5: function($cell, indx) {
             return $.tablesorter.filterFormatter.uiRange($cell, indx, {
               values: [0, 24],
               min: 0,
@@ -672,10 +672,10 @@ function destinations_index(params) {
               valueToHeader: false
             });
           },
-          8: function ($cell, indx) {
+          8: function($cell, indx) {
             return false;
           },
-          9: function ($cell, indx) {
+          9: function($cell, indx) {
             return false;
           }
         },
@@ -694,12 +694,12 @@ function destinations_index(params) {
           9: 'disable'
         },
       }
-    }).bind('filterEnd', function (e, filter) {
+    }).bind('filterEnd', function(e, filter) {
       count();
 
       markersLayers.clearLayers();
       cluster.clearLayers();
-      $('.destinations tr:visible').each(function (i, e) {
+      $('.destinations tr:visible').each(function(i, e) {
         var marker = markers[$(e).attr('data-destination_id')];
         if (marker) {
           markersLayers.addLayer(marker);
@@ -724,6 +724,6 @@ function destinations_index(params) {
   });
 }
 
-Paloma.controller('Destination').prototype.index = function () {
+Paloma.controller('Destination').prototype.index = function() {
   destinations_index(this.params);
 };

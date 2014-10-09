@@ -40,18 +40,18 @@ function customers_edit(params) {
   });
 }
 
-Paloma.controller('Customer').prototype.new = function () {
+Paloma.controller('Customer').prototype.new = function() {
   customers_edit(this.params);
 };
 
-Paloma.controller('Customer').prototype.create = function () {
+Paloma.controller('Customer').prototype.create = function() {
   customers_edit(this.params);
 };
 
-Paloma.controller('Customer').prototype.edit = function () {
+Paloma.controller('Customer').prototype.edit = function() {
   customers_edit(this.params);
 };
 
-Paloma.controller('Customer').prototype.update = function () {
+Paloma.controller('Customer').prototype.update = function() {
   customers_edit(this.params);
 };

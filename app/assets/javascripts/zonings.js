@@ -62,21 +62,21 @@ function zonings_edit(params) {
     }
   }).addTo(map);
 
-  map.on('draw:created', function (e) {
+  map.on('draw:created', function(e) {
     add_zone({
       'vehicles': vehicles_array,
       'polygon': JSON.stringify(e.layer.toGeoJSON())
     }, e.layer);
   });
 
-  map.on('draw:edited', function (e) {
-    e.layers.eachLayer(function (layer) {
+  map.on('draw:edited', function(e) {
+    e.layers.eachLayer(function(layer) {
       update_zone(layer);
     });
   });
 
-  map.on('draw:deleted', function (e) {
-    e.layers.eachLayer(function (layer) {
+  map.on('draw:deleted', function(e) {
+    e.layers.eachLayer(function(layer) {
       del_zone(layer);
     });
   });
@@ -85,7 +85,7 @@ function zonings_edit(params) {
     if (hasPlanning) {
       geoJsonLayer = geoJsonLayers[layer_id];
       var n = 0;
-      markersLayers.eachLayer(function (markerLayer) {
+      markersLayers.eachLayer(function(markerLayer) {
         if (leafletPip.pointInLayer(markerLayer.getLatLng(), geoJsonLayer, true).length > 0) {
           n += 1;
         }
@@ -123,7 +123,7 @@ function zonings_edit(params) {
     featureGroup.addLayer(geom);
 
     zone.i18n = mustache_i18n;
-    zone.vehicles = $.map(vehicles_map, function (val, i) {
+    zone.vehicles = $.map(vehicles_map, function(val, i) {
       return {
         id: val.id,
         selected: val.id == zone.vehicle_id,
@@ -143,17 +143,17 @@ function zonings_edit(params) {
     $('select', ele).select2({
       formatResult: format,
       formatSelection: format,
-      formatNoMatches: function () {
+      formatNoMatches: function() {
         return formatNoMatches;
       },
-      escapeMarkup: function (m) {
+      escapeMarkup: function(m) {
         return m;
       }
     });
 
-    $('select', ele).change(function (e) {
+    $('select', ele).change(function(e) {
       if (e.added) {
-        $.each($('#zones .zone select option[value=' + e.added.id + ']'), function (index, option) {
+        $.each($('#zones .zone select option[value=' + e.added.id + ']'), function(index, option) {
           option = $(option);
           var select = option.closest('select');
           var ee = option.closest('.zone');
@@ -169,7 +169,7 @@ function zonings_edit(params) {
       });
     });
 
-    $('.delete', ele).click(function (event) {
+    $('.delete', ele).click(function(event) {
       del_zone(geom);
     });
   }
@@ -189,8 +189,8 @@ function zonings_edit(params) {
   function display_zoning(data) {
     if (data.planning) {
       hasPlanning = true;
-      $.each(data.planning, function (index, route) {
-        $.each(route.stops, function (index, stop) {
+      $.each(data.planning, function(index, route) {
+        $.each(route.stops, function(index, stop) {
           if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
             L.marker(new L.LatLng(stop.lat, stop.lng), {
               icon: L.icon({
@@ -205,7 +205,7 @@ function zonings_edit(params) {
       });
       markersLayers.addTo(map);
     }
-    $.each(data.zoning, function (index, zone) {
+    $.each(data.zoning, function(index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon));
       set_color(geom, zone.vehicle_id);
       add_zone(zone, geom);
@@ -226,16 +226,16 @@ function zonings_edit(params) {
   });
 }
 
-Paloma.controller('Zoning').prototype.new = function () {
+Paloma.controller('Zoning').prototype.new = function() {
 };
 
-Paloma.controller('Zoning').prototype.create = function () {
+Paloma.controller('Zoning').prototype.create = function() {
 };
 
-Paloma.controller('Zoning').prototype.edit = function () {
+Paloma.controller('Zoning').prototype.edit = function() {
   zonings_edit(this.params);
 };
 
-Paloma.controller('Zoning').prototype.update = function () {
+Paloma.controller('Zoning').prototype.update = function() {
   zonings_edit(this.params);
 };

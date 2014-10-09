@@ -26,18 +26,18 @@ function vehicles_form() {
   });
 }
 
-Paloma.controller('Vehicle').prototype.new = function () {
+Paloma.controller('Vehicle').prototype.new = function() {
   vehicles_form();
 }
 
-Paloma.controller('Vehicle').prototype.create = function () {
+Paloma.controller('Vehicle').prototype.create = function() {
   vehicles_form();
 }
 
-Paloma.controller('Vehicle').prototype.edit = function () {
+Paloma.controller('Vehicle').prototype.edit = function() {
   vehicles_form();
 }
 
-Paloma.controller('Vehicle').prototype.update = function () {
+Paloma.controller('Vehicle').prototype.update = function() {
   vehicles_form();
 }
