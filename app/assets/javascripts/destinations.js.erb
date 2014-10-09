@@ -433,13 +433,13 @@ function destinations_index(params) {
 
   function update(destination_id, destination) {
     var row = $('[data-destination_id=' + destination_id + ']'),
-    destination = prepare_display_destination(destination);
+      destination = prepare_display_destination(destination);
     $(row).replaceWith(SMT['destinations/show'](destination));
     row = $('[data-destination_id=' + destination.id + ']');
     wire(row);
     $('.destinations').trigger('update');
 
-    if($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
+    if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
       if (destination.id in markers) {
         markers[destination_id].setLatLng(new L.LatLng(destination.lat, destination.lng));
       } else {
@@ -509,7 +509,9 @@ function destinations_index(params) {
     var row = $('[data-destination_id=' + id + ']');
     row.addClass('highlight');
     if (row.position().top < $("#destination_box").scrollTop() || row.position().top > $("#destination_box").scrollTop() + $("#destination_box").height()) {
-      $("#destination_box").animate({scrollTop: row.position().top - 100});
+      $("#destination_box").animate({
+        scrollTop: row.position().top - 100
+      });
     }
   }
 
@@ -679,9 +681,9 @@ function destinations_index(params) {
             return false;
           }
         },
-        columnSelector_container : $('#columnSelector'),
-        columnSelector_layout : '<li role="presentation"><label><input type="checkbox">{name}</label></li>',
-        columnSelector_columns : {
+        columnSelector_container: $('#columnSelector'),
+        columnSelector_layout: '<li role="presentation"><label><input type="checkbox">{name}</label></li>',
+        columnSelector_columns: {
           0: true,
           1: 'disable',
           2: 'disable',

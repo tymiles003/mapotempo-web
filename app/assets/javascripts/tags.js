@@ -15,10 +15,8 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-
 function tags_form() {
   $('#tag_color').simplecolorpicker({
     theme: 'fontawesome'
@@ -61,7 +59,7 @@ Paloma.controller('Tag').prototype.update = function() {
   tags_form();
 }
 
-function format_tag (item) {
+function format_tag(item) {
   var color = $(item.element).attr('data-color');
   var icon = $(item.element).attr('data-icon');
   if (icon && color) {

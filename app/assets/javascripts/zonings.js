@@ -226,11 +226,9 @@ function zonings_edit(params) {
   });
 }
 
-Paloma.controller('Zoning').prototype.new = function() {
-};
+Paloma.controller('Zoning').prototype.new = function() {};
 
-Paloma.controller('Zoning').prototype.create = function() {
-};
+Paloma.controller('Zoning').prototype.create = function() {};
 
 Paloma.controller('Zoning').prototype.edit = function() {
   zonings_edit(this.params);

@@ -15,11 +15,9 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-
 //= require leaflet_numbered_markers
 //= require leaflet.activearea
 //= require Polyline.encoded.js
-
 function plannings_form() {
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
@@ -228,7 +226,7 @@ function plannings_edit(params) {
     });
 
     $.each(data.routes, function(i, route) {
-      var color = route.vehicle? route.vehicle.color : '#707070';
+      var color = route.vehicle ? route.vehicle.color : '#707070';
       var vehicle_name;
       if (route.vehicle) {
         vehicle_name = route.vehicle.name;
@@ -287,9 +285,9 @@ function plannings_edit(params) {
             })
           }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show'](stop));
           m.number = stop.number;
-          m.on('mouseover', function(e){
+          m.on('mouseover', function(e) {
             m.openPopup();
-          }).on('mouseout', function(e){
+          }).on('mouseout', function(e) {
             m.closePopup();
           });
           markers[stop.destination.id] = m;
@@ -343,9 +341,9 @@ function plannings_edit(params) {
     $('.btn.extend').click(function() {
       $('.container').toggleClass('box-extended');
       if ($('.container').hasClass('box-extended')) {
-        $(".routes").sortable( "enable" );
+        $(".routes").sortable("enable");
       } else {
-        $(".routes").sortable( "disable" );
+        $(".routes").sortable("disable");
       }
     });
 
@@ -454,7 +452,6 @@ function plannings_edit(params) {
         return false;
       });
 
-
     $(".lock").click(function(event, ui) {
       var id = $(this).closest("[data-route_id]").attr("data-route_id");
       var i = $("i", this);
@@ -487,7 +484,7 @@ function plannings_edit(params) {
     });
   }
 
-  function display_planning_first_time (data) {
+  function display_planning_first_time(data) {
     display_planning(data);
     var bounds = routes_layers.getBounds();
     if (bounds && bounds.isValid()) {
