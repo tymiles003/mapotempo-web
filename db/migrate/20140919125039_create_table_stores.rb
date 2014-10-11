@@ -27,9 +27,11 @@ class CreateTableStores < ActiveRecord::Migration
     end
 
     Route.all.each{ |route|
-      route.stop_trace = route.stops[-1].trace
-      route.stop_out_of_drive_time = route.stops[-1].out_of_drive_time
-      route.stop_distance = route.stops[-1].distance
+      if route.stops.size >= 1
+        route.stop_trace = route.stops[-1].trace
+        route.stop_out_of_drive_time = route.stops[-1].out_of_drive_time
+        route.stop_distance = route.stops[-1].distance
+      end
     }
 
     Customer.all.each{ |customer|
