@@ -76,4 +76,65 @@ module Trace
 
     result
   end
+
+  def self.matrix(osrm_url, vector)
+    i = -1
+    vector.map!{ |a| a << i+=1 }
+    vector.sort!{ |a,b|
+      a[0] != b[0] ? a[0] <=> b[0] : a[1] <=> b[1]
+    }
+
+    key = [osrm_url, vector.map{ |v| v[0..1] }.hash]
+
+    result = @cache_result.read(key)
+    if !result
+      request = @cache_request.read(key)
+      if !request
+        begin
+          uri = URI(url = "#{osrm_url}/table")
+          uri.query = vector.map{ |a| "loc=#{a[0]},#{a[1]}" }.join('&')
+          Rails.logger.info "get #{uri}"
+          res = Net::HTTP.get_response(uri)
+          if res.is_a?(Net::HTTPSuccess)
+            request = JSON.parse(res.body)
+            @cache_request.write(key, request)
+          else
+            raise http.message
+          end
+        rescue OpenSSL::SSL::SSLError
+          raise "Unable to communicate over SSL"
+        rescue Errno::ECONNREFUSED
+          raise "Connection was refused"
+        rescue Errno::ETIMEDOUT
+          raise "Timed out connecting"
+        rescue Errno::EHOSTDOWN
+          raise "The host not responding to requests"
+        rescue Errno::EHOSTUNREACH
+          raise "Possible network issue communicating"
+        rescue SocketError
+          raise "Couldn't make sense of the host destination"
+        rescue JSON::ParserError
+          raise "The host returned a non-JSON response"
+        rescue StandardError => e
+          raise e.message
+        end
+      end
+
+      result = request["distance_table"]
+      @cache_result.write(key, result)
+    end
+
+    # Restore original order
+    size = vector.size
+    column = []
+    size.times{ |i|
+      line = []
+      size.times{ |j|
+        line[vector[j][2]] = (result[i][j]/10).round # TODO >= 2147483647 ? nil : (result[i][j]/10).round
+      }
+      column[vector[i][2]] = line
+    }
+
+    column
+  end
 end

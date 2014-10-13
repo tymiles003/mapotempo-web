@@ -192,17 +192,10 @@ class Route < ActiveRecord::Base
     stops_segregate[true].size + 2
   end
 
-  def matrix
+  def matrix(&block)
     stops_on = stops_segregate[true]
-    router_url = stops_on[1].destination.customer.router.url
     positions = [vehicle.store_start] + stops_on.collect(&:destination) + [vehicle.store_stop]
-    positions.collect{ |position1|
-      positions.collect{ |position2|
-        distance, time, trace = Trace.compute(router_url, position1.lat, position1.lng, position2.lat, position2.lng)
-        yield if block_given?
-        [distance, time]
-      }
-    }
+    stops_on[0].destination.customer.router.matrix(positions, &block)
   end
 
   def order(o)
