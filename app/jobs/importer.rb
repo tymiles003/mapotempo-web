@@ -40,8 +40,8 @@ class Importer
 
     separator = ','
     line = contents.lines.first
-    splitComma, splitSemicolon = line.split(','), line.split(';')
-    split, separator = splitComma.size() > splitSemicolon.size() ? [splitComma, ','] : [splitSemicolon, ';']
+    splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
+    split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a,b| a[2] <=> b[2] }
 
     planning = nil
     need_geocode = false
