@@ -71,7 +71,6 @@ class V01::Destinations < Grape::API
     put ':id' do
       destination = current_customer.destinations.find(params[:id])
       destination.assign_attributes(destination_params)
-      destination.reverse_geocode if params.has_key?(:reverse)
       destination.save!
       destination.customer.save! if destination.customer
       present destination, with: V01::Entities::Destination
@@ -88,15 +87,6 @@ class V01::Destinations < Grape::API
     patch 'geocode' do
       destination = Destination.new(destination_params)
       destination.geocode
-      present destination, with: V01::Entities::Destination
-    end
-
-    desc "Reverse geocode a destination.", {
-      params: V01::Entities::Destination.documentation.except(:id)
-    }
-    patch 'geocode_reverse' do
-      destination = Destination.new(destination_params)
-      destination.reverse_geocode
       present destination, with: V01::Entities::Destination
     end
 

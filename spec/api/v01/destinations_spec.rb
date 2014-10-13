@@ -54,13 +54,6 @@ describe V01::Destinations do
     end
   end
 
-  describe :stop_job_optimizer do
-    it 'Geocode reverse' do
-      patch api('geocode_reverse'), format: :json, id: @destination.id, destination: { lat: 45.0, lon: 0.0 }
-      expect(response.status).to eq(200)
-    end
-  end
-
   describe :geocode_complete do
     it 'Geocode complete' do
       patch api('geocode_complete'), format: :json, id: @destination.id, destination: { city: 'Montpellier', street: 'Rue de la Chaînerais' }

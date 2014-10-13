@@ -64,14 +64,6 @@ class StoreTest < ActiveSupport::TestCase
     assert_not_equal lng, o.lng
   end
 
-  test "should reverse_geocode" do
-    o = stores(:store_one)
-    city = o.city
-    o.reverse_geocode
-    assert o.city
-    assert_not_equal city, o.city
-  end
-
   test "should distance" do
     o = stores(:store_one)
     assert_equal 2.51647173560523, o.distance(stores(:store_two))

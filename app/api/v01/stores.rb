@@ -71,7 +71,6 @@ class V01::Stores < Grape::API
     put ':id' do
       store = current_customer.stores.find(params[:id])
       store.assign_attributes(store_params)
-      store.reverse_geocode if params.has_key?(:reverse)
       store.save!
       store.customer.save! if store.customer
       present store, with: V01::Entities::Store
@@ -88,15 +87,6 @@ class V01::Stores < Grape::API
     patch 'geocode' do
       store = Store.new(store_params)
       store.geocode
-      present store, with: V01::Entities::Store
-    end
-
-    desc "Reverse geocode a store.", {
-      params: V01::Entities::Store.documentation.except(:id)
-    }
-    patch 'geocode_reverse' do
-      store = Store.new(store_params)
-      store.reverse_geocode
       present store, with: V01::Entities::Store
     end
 

@@ -86,9 +86,7 @@ function destinations_form(params, api) {
     <% end %>
     $row.on("change", ":input", function(event) {
       var url;
-      if (event.currentTarget.name.match(/\[lat\]|\[lng\]/)) {
-        url = '/api/0.1/' + api + '/geocode_reverse.json';
-      } else if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
+      if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
         url = '/api/0.1/' + api + '/geocode.json';
       } else {
         return;
@@ -379,11 +377,7 @@ function destinations_index(params, api) {
     <% end %>
     $row.on("change", ":input", function(event) {
       var url;
-      if (event.currentTarget.name.match(/\[lat\]|\[lng\]/)) {
-        url = '/api/0.1/' + api + '/' + id + '.json?reverse=true';
-      } else {
-        url = '/api/0.1/' + api + '/' + id + '.json';
-      }
+      url = '/api/0.1/' + api + '/' + id + '.json';
       $.ajax({
         type: "put",
         data: $(":input", $row).serialize(),
