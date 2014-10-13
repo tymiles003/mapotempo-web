@@ -23,7 +23,7 @@ module Ort
   @url = Mapotempo::Application.config.optimize_url
 
   def self.optimize(capacity, matrix, time_window)
-    key = {capacity: capacity, matrix: matrix.hash, time_window: time_window}.to_json
+    key = [capacity, matrix.hash, time_window.hash]
 
     result = @cache.read(key)
     if !result
