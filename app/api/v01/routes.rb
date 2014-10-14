@@ -76,7 +76,7 @@ class V01::Routes < Grape::API
         patch ':id/active/:active' do
           planning = current_customer.plannings.find(params[:planning_id])
           route = planning.routes.find{ |route| route.id == params[:id].to_i }
-          if route && route.active(params[:active].to_s.to_sym) && planning.compute && planning.save
+          if route && route.active(params[:active].to_s.to_sym) && route.compute && planning.save
             present(route, with: V01::Entities::Route)
           end
         end

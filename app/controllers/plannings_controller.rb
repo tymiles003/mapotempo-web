@@ -196,7 +196,7 @@ class PlanningsController < ApplicationController
   def active
     route = @planning.routes.find{ |route| route.id == params[:route_id].to_i }
     respond_to do |format|
-      if route && route.active(params[:active].to_s.to_sym) && @planning.compute && @planning.save
+      if route && route.active(params[:active].to_s.to_sym) && route.compute && @planning.save
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
