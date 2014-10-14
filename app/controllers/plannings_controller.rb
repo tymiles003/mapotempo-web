@@ -165,11 +165,11 @@ class PlanningsController < ApplicationController
   def update_stop
     respond_to do |format|
       begin
-        @route = Route.where(planning: @planning, id: params[:route_id]).first
-        @stop = Stop.where(route_id: params[:route_id], destination_id: params[:destination_id]).first
-        if @route && @stop && @stop.update(stop_params)
-          @planning.compute
-          @planning.save!
+        params[:route_id] = params[:route_id].to_i
+        @route = @planning.routes.find{ |route| route.id == params[:route_id] }
+        params[:destination_id] = params[:destination_id].to_i
+        @stop = @route.stops.find{ |stop| stop.destination_id == params[:destination_id] }
+        if @route && @stop && @stop.update(stop_params) && @route.compute&& @planning.save
           format.json { render action: 'show', location: @planning }
         else
           format.json { render nothing: true , status: :unprocessable_entity }
