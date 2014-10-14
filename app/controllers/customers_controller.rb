@@ -70,7 +70,7 @@ class CustomersController < ApplicationController
       if current_user.admin?
         params.require(:customer).permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :router_id)
       else
-        params.require(:customer).permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password)
+        params.require(:customer).permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :router_id)
       end
     end
 end
