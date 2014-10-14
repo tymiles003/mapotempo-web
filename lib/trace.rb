@@ -54,8 +54,6 @@ module Trace
           raise "Couldn't make sense of the host destination"
         rescue JSON::ParserError
           raise "The host returned a non-JSON response"
-        rescue StandardError => e
-          raise e.message
         end
       end
 
@@ -115,8 +113,6 @@ module Trace
           raise "Couldn't make sense of the host destination"
         rescue JSON::ParserError
           raise "The host returned a non-JSON response"
-        rescue StandardError => e
-          raise e.message
         end
       end
 
