@@ -4,13 +4,12 @@
   <thead>
     <tr>
       <th><%= t 'activerecord.attributes.vehicle.name' %></th>
-      <th><%= t 'activerecord.attributes.vehicle.open' %></th>
-      <th><%= t 'activerecord.attributes.vehicle.close' %></th>
+      <th><%= t '.time' %></th>
       <th><%= t 'activerecord.attributes.vehicle.emission' %></th>
       <th><%= t 'activerecord.attributes.vehicle.consumption' %></th>
       <th><%= t 'activerecord.attributes.vehicle.capacity' %></th>
+      <th><%= t '.router' %></th>
       <th><%= t '.stores' %></th>
-      <th><%= t 'activerecord.attributes.vehicle.color' %></th>
       <th></th>
     </tr>
   </thead>
@@ -18,14 +17,20 @@
   <tbody>
     <% @vehicles.each do |vehicle| %>
       <tr>
-        <td><%= vehicle.name %></td>
-        <td><%= if(vehicle.open) then vehicle.open.strftime("%H:%M") end %></td>
-        <td><%= if(vehicle.close) then vehicle.close.strftime("%H:%M") end %></td>
+        <td>
+            <div class="vehicle_color" style="background:<%= vehicle.color %>"></div>
+            <%= vehicle.name %>
+        </td>
+        <td>
+            <%= if(vehicle.open) then vehicle.open.strftime("%H:%M") end %>
+            -
+            <%= if(vehicle.close) then vehicle.close.strftime("%H:%M") end %>
+        </td>
         <td><%= vehicle.emission %> <%= t 'all.unit.kgco2e_l_html' %></td>
         <td><%= vehicle.consumption %> <%= t 'all.unit.l_100km' %></td>
         <td><%= vehicle.capacity %></td>
+        <td><%= vehicle.router && vehicle.router.name %></td>
         <td><%= vehicle.store_start.name %><% if vehicle.store_start != vehicle.store_stop %> <i class="fa fa-long-arrow-right fa-fw"></i> <%= vehicle.store_stop.name %><% end %></td>
-        <td><div class="vehicle_color" style="background:<%= vehicle.color %>"/></td>
         <td><%= link_to edit_vehicle_path(vehicle), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %></td>
       </tr>
     <% end %>

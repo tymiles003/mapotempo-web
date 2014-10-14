@@ -15,8 +15,6 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'trace'
-
 class Route < ActiveRecord::Base
   belongs_to :planning
   belongs_to :vehicle
@@ -60,11 +58,11 @@ class Route < ActiveRecord::Base
       self.end = self.start = vehicle.open
       last = vehicle.store_start
       quantity = 0
-      router_url = stops[0].destination.customer.router.url
+      router = vehicle.router || stops[0].destination.customer.router
       stops.sort_by(&:index).each{ |stop|
         destination = stop.destination
         if stop.active && destination.lat != nil && destination.lng != nil
-          stop.distance, time, stop.trace = Trace.compute(router_url, last.lat, last.lng, destination.lat, destination.lng)
+          stop.distance, time, stop.trace = router.trace(last.lat, last.lng, destination.lat, destination.lng)
           stop.time = self.end + time
           if destination.open && stop.time < destination.open
             stop.time = destination.open
@@ -88,7 +86,7 @@ class Route < ActiveRecord::Base
         end
       }
 
-      distance, time, trace = Trace.compute(router_url, last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_start.lng)
+      distance, time, trace = router.trace(last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_start.lng)
       self.distance += distance
       self.end += time
       self.stop_distance = distance
@@ -195,7 +193,8 @@ class Route < ActiveRecord::Base
   def matrix(&block)
     stops_on = stops_segregate[true]
     positions = [vehicle.store_start] + stops_on.collect(&:destination) + [vehicle.store_stop]
-    stops_on[0].destination.customer.router.matrix(positions, &block)
+    router = vehicle.router || stops_on[0].destination.customer.router
+    router.matrix(positions, &block)
   end
 
   def order(o)

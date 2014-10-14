@@ -204,6 +204,7 @@ fr:
         store_start_id: "Dépôt départ"
         store_stop: "Dépôt arrivé"
         store_stop_id: "Dépôt arrivée"
+        router_id: "Calculateur d'itinéraire"
       zoning:
         name: "Nom"
       zone:
@@ -259,7 +260,7 @@ fr:
     new:
       title: "Nouveau compte client"
     form:
-      router_help: "Profil utilisé pour les calculs d'itinéraires"
+      router_help: "Profil utilisé pour les calculs d'itinéraires par défaut"
       take_over_help: "Durée de visite moyenne par client"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
@@ -502,6 +503,8 @@ fr:
     index:
       title: "Liste véhicules"
       stores: "Dépôts"
+      time: "Début - Fin"
+      router: "Calculateur"
     new:
       title: "Nouveau véhicules"
     form:
@@ -510,6 +513,8 @@ fr:
       emissions_help: "Type de carburant"
       consumption_help: "Consommation moyenne aux 100 km en litres de carburant"
       capacity_help: "Capacité maximum du véhicule"
+      router_default: "Défaut"
+      router_help: "Forcer l'utilisation de ce calculateur d'itinéraire"
 
   zonings:
     menu:

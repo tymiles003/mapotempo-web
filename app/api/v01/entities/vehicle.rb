@@ -9,4 +9,5 @@ class V01::Entities::Vehicle < Grape::Entity
   expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
   expose(:tomtom_id, documentation: { type: 'String' })
   expose(:store_start_id, documentation: { type: 'Integer' })
+  expose(:router_id, documentation: { type: 'Integer' })
 end

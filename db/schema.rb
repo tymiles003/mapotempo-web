@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006140959) do
+ActiveRecord::Schema.define(version: 20141014092855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -172,10 +172,12 @@ ActiveRecord::Schema.define(version: 20141006140959) do
     t.string   "tomtom_id"
     t.integer  "store_start_id", null: false
     t.integer  "store_stop_id",  null: false
+    t.integer  "router_id"
     t.index ["customer_id"], :name => "index_vehicles_on_customer_id"
     t.index ["store_start_id"], :name => "fk__vehicles_store_start_id"
     t.index ["store_stop_id"], :name => "fk__vehicles_store_stop_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_customer_id"
+    t.foreign_key ["router_id"], "routers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_router_id"
     t.foreign_key ["store_start_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_store_start_id"
     t.foreign_key ["store_stop_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_store_stop_id"
   end

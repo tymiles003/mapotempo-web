@@ -15,10 +15,16 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'trace'
+
 class Router < ActiveRecord::Base
   nilify_blanks
   validates :name, presence: true
   validates :url, presence: true
+
+  def trace(lat1, lng1, lat2, lng2)
+    Trace.compute(url, lat1, lng1, lat2, lng2)
+  end
 
   def matrix(positions, &block)
     if true

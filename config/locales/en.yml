@@ -201,6 +201,7 @@ en:
         store_start_id: "Store Start"
         store_stop: "Store Stop"
         store_stop_id: "Store Stop"
+        router_id: "Route planner"
       zoning:
         name: "Name"
       zone:
@@ -256,7 +257,7 @@ en:
     new:
       title: "New customer"
     form:
-      router_help: "Profile used for route planning"
+      router_help: "Profile used for route planning by default"
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
@@ -497,6 +498,8 @@ en:
     index:
       title: "Listing vehicles"
       stores: "Stores"
+      time: "Open - Close"
+      router: "Route planner"
     new:
       title: "New vehicle"
     form:
@@ -505,6 +508,8 @@ en:
       emissions_help: "Fuel Type"
       consumption_help: "Average fuel consumption in liters per 100 km"
       capacity_help: "Maximun vehicle's capacity"
+      router_default: "Default"
+      router_help: "Force usage of this router"
 
   zonings:
     menu:

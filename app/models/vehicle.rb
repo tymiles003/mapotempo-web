@@ -17,6 +17,7 @@
 #
 class Vehicle < ActiveRecord::Base
   belongs_to :customer
+  belongs_to :router
   belongs_to :store_start, :class_name => 'Store', inverse_of: :vehicle_starts
   belongs_to :store_stop, :class_name => 'Store', inverse_of: :vehicle_stops
   has_many :routes, inverse_of: :vehicle, :autosave => true
