@@ -3,7 +3,7 @@
   <%= f.text_field :name, disabled:!current_user.admin? %>
   <%= f.date_field :end_subscription, disabled:!current_user.admin? %>
   <%= f.number_field :max_vehicles, disabled:!current_user.admin? %>
-  <%= f.collection_select :router_id, [], Router.all, :id, :name, {}, {} do %>
+  <%= f.collection_select :router_id, [], Router.all, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} do %>
     <p class="help-block"><%= t '.router_help' %></p>
   <% end %>
   <%= f.text_field :take_over, {value: @customer.take_over ? @customer.take_over.strftime("%H:%M:%S") : nil, input_group: t('all.unit.hour_minute_second')} do %>

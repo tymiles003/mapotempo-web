@@ -4,7 +4,7 @@
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
-  <%= f.text_field :api_key, readonly: true %>
+  <%= f.text_field :api_key, {readonly: true, input_group: content_tag('i', '', class: 'fa fa-key fa-fw')} %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
