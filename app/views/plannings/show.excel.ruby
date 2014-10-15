@@ -2,6 +2,7 @@ CSV.generate({col_sep: ';'}) { |csv|
   csv << [
     I18n.t('plannings.export_file.route'),
     I18n.t('plannings.export_file.order'),
+    I18n.t('plannings.export_file.wait_time'),
     I18n.t('plannings.export_file.time'),
     I18n.t('plannings.export_file.distance'),
     I18n.t('plannings.export_file.ref'),

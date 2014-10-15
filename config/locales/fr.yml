@@ -165,6 +165,7 @@ fr:
         end: "Fin"
         distance: "Distance"
         time: "Durée"
+        wait_time: "Temps d'attente"
       store:
         name: "Nom"
         address: "Adresse"
@@ -382,6 +383,7 @@ fr:
       active_all: "Tous"
       active_reverse: "Inverser"
       active_none: "Aucun"
+      wait: "Temps d'attente :"
       popup:
         open: "Horaire début : "
         close: "Horaire fin : "
@@ -420,6 +422,7 @@ fr:
       ref: "référence"
       route: "tournée"
       order: "ordre"
+      wait_time: "attente"
       time: "heure"
       distance: "distance"
       name: "nom"
@@ -444,6 +447,7 @@ fr:
 
   routes:
     show:
+      wait: "Temps d'attente :"
       annotating:
         hour: "Heure de passage :"
         signature: "Signature :"

@@ -162,6 +162,7 @@ en:
         end: "End"
         distance: "Distance"
         time: "Time"
+        wait_time: "Waiting time"
       store:
         name: "Name"
         address: "Address"
@@ -379,6 +380,7 @@ en:
       active_all: "All"
       active_reverse: "Reverse"
       active_none: "None"
+      wait: "Waiting time:"
       popup:
         open: "Open:"
         close: "Close:"
@@ -417,6 +419,7 @@ en:
       ref: "reference"
       route: "route"
       order: "order"
+      wait_time: "wait"
       time: "time"
       distance: "distance"
       name: "name"
@@ -439,6 +442,7 @@ en:
 
   routes:
     show:
+      wait: "Waiting time:"
       annotating:
         hour: "Passing Time:"
         signature: "Signature:"

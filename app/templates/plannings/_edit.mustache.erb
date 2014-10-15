@@ -127,6 +127,11 @@
       </ul>
       <ul class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
       {{#stops}}
+        {{#wait_time}}
+          <li class="wait ui-state-disabled list-group-item">
+            <i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.wait{{/i18n}} {{wait_time}}
+          </li>
+        {{/wait_time}}
         {{#destination}}
         <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>

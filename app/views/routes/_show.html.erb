@@ -39,6 +39,14 @@
     if stop.active && stop.destination.lat != nil && stop.destination.lng != nil
   %>
     <li class="list-group-item" style="border-left: 3px solid <%= route.vehicle.color %>">
+      <% if stop.wait_time && stop.wait_time > 60 %>
+        <div class="row no-gutter">
+          <div class="col-md-12">
+            <i class="fa fa-clock-o fa-fw"></i><%= t'.wait' %> <%= "%i:%02i" % [stop.wait_time/60/60, stop.wait_time/60%60] %>
+          </div>
+        </div>
+        <hr/>
+      <% end %>
       <div class="row no-gutter">
 
         <div class="title col-md-2 col-sm-2 col-xs-3">

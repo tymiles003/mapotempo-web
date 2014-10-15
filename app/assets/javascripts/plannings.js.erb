@@ -129,9 +129,14 @@ function plannings_edit(params) {
 
   function update_planning(event, ui) {
     var item = $(ui.item),
-      index = item.index(),
-      route_id = item.closest('[data-route_id]').attr('data-route_id'),
+      index = 0,
+      route = item.closest('[data-route_id]'),
+      stops = $('.sortable li[data-destination_id]', route),
+      route_id = route.attr('data-route_id'),
       destination_id = item.closest("[data-destination_id]").attr("data-destination_id");
+    while (stops[index].attributes['data-destination_id'].value != destination_id) {
+      index++;
+    }
     $.ajax({
       type: 'patch',
       url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '/move/' + index + '.json',
@@ -353,7 +358,7 @@ function plannings_edit(params) {
       distance: 8,
       connectWith: ".sortable",
       items: "li",
-      cancel: "li.store",
+      cancel: '.wait',
       start: function(event, ui) {
         sortableUpdate = false;
       },

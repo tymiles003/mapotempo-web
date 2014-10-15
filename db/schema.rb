@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014092855) do
+ActiveRecord::Schema.define(version: 20141015093756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 20141014092855) do
     t.boolean  "out_of_window"
     t.boolean  "out_of_capacity"
     t.boolean  "out_of_drive_time"
+    t.integer  "wait_time"
     t.index ["destination_id"], :name => "index_stops_on_destination_id"
     t.index ["route_id"], :name => "index_stops_on_route_id"
     t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_destination_id"

@@ -65,7 +65,10 @@ class Route < ActiveRecord::Base
           stop.distance, time, stop.trace = router.trace(last.lat, last.lng, destination.lat, destination.lng)
           stop.time = self.end + time
           if destination.open && stop.time < destination.open
+            stop.wait_time = destination.open - stop.time
             stop.time = destination.open
+          else
+            stop.wait_time = nil
           end
           stop.out_of_window = (destination.open && stop.time < destination.open) || (destination.close && stop.time > destination.close)
 
@@ -82,7 +85,7 @@ class Route < ActiveRecord::Base
           last = stop.destination
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = false
-          stop.distance = stop.trace = stop.time = nil
+          stop.distance = stop.trace = stop.time = stop.wait_time = nil
         end
       }
 

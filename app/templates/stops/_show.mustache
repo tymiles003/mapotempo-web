@@ -9,6 +9,7 @@
   {{postalcode}} {{city}}
 </p>
 <ul>
+  {{#wait_time}}<li>{{#i18n}}plannings.edit.wait{{/i18n}} <i class="fa fa-clock-o fa-fw"></i> {{wait_time}}</li>{{/wait_time}}
   {{#open}}<li>{{#i18n}}plannings.edit.popup.open{{/i18n}} {{open}}</li>{{/open}}
   {{#close}}<li>{{#i18n}}plannings.edit.popup.close{{/i18n}} {{close}}</li>{{/close}}
   {{#time}}<li> {{#i18n}}plannings.edit.popup.time{{/i18n}} <i class="fa fa-clock-o fa-fw"></i> {{time}}</li>{{/time}}
