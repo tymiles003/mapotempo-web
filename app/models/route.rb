@@ -46,7 +46,7 @@ class Route < ActiveRecord::Base
     compute
   end
 
-  def compute
+  def plan(departure = nil)
     self.out_of_date = false
     self.distance = 0
     self.stop_distance = 0
@@ -55,14 +55,17 @@ class Route < ActiveRecord::Base
     self.emission = 0
     self.start = self.end = nil
     if vehicle && stops.size > 0
-      self.end = self.start = vehicle.open
+      self.end = self.start = departure || vehicle.open
       last = vehicle.store_start
       quantity = 0
       router = vehicle.router || stops[0].destination.customer.router
-      stops.sort_by(&:index).each{ |stop|
+      stops_time = {}
+      stops_sort = stops.sort_by(&:index)
+      stops_sort.each{ |stop|
         destination = stop.destination
         if stop.active && destination.lat != nil && destination.lng != nil
           stop.distance, time, stop.trace = router.trace(last.lat, last.lng, destination.lat, destination.lng)
+          stops_time[stop] = time
           stop.time = self.end + time
           if destination.open && stop.time < destination.open
             stop.wait_time = destination.open - stop.time
@@ -97,8 +100,47 @@ class Route < ActiveRecord::Base
       self.stop_out_of_drive_time = self.end > vehicle.close
 
       self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
+
+      [stops_sort, stops_time]
     end
   end
+
+  def compute
+    stops_sort, stops_time = plan
+
+    if stops_sort
+      # Try to minimize waiting time by a later begin
+      time = self.end
+      stops_sort.reverse_each{ |stop|
+        destination = stop.destination
+        if stop.active && destination.lat != nil && destination.lng != nil
+          if stop.out_of_window
+            time = stop.time
+          else
+            # Latest departure time
+            time = destination.close ? [time, destination.close].min : time
+
+            take_over = destination.take_over ? destination.take_over : destination.customer.take_over
+            take_over = take_over ? take_over.seconds_since_midnight : 0
+
+            # New arrival stop time
+            time -= take_over
+          end
+
+          # Previous departure time
+          time -= stops_time[stop]
+        end
+      }
+
+      if time > self.start
+        # We can sleep a bit more on morning, shift departure
+        plan(time)
+      end
+    end
+
+    true
+  end
+
 
   def set_destinations(dests, recompute = true)
     Stop.transaction do
