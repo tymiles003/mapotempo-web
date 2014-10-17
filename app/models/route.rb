@@ -202,7 +202,6 @@ class Route < ActiveRecord::Base
     if stop.route != self
       destination, active = stop.destination, stop.active
       stop.route.move_stop_out(stop)
-      shift_index(index)
       add(destination, index, active)
     else
       if stop.index
@@ -218,7 +217,7 @@ class Route < ActiveRecord::Base
   end
 
   def move_stop_out(stop)
-    shift_index(stop.index, -1)
+    shift_index(stop.index + 1, -1)
     stop.active = false
     compute
     stop.destroy
@@ -256,8 +255,7 @@ class Route < ActiveRecord::Base
     a += (stops_[false] || [])
     i = 0
     a.each{ |stop|
-      stop.index = i
-      i += 1
+      stop.index = i+=1
     }
   end
 
