@@ -20,7 +20,7 @@ class TagsController < ApplicationController
   before_action :set_tag, only: [:edit, :update, :destroy]
 
   def index
-    @tags = Tag.where(customer_id: current_user.customer.id)
+    @tags = current_user.customer.tags
   end
 
   def new
