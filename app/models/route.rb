@@ -217,7 +217,9 @@ class Route < ActiveRecord::Base
   end
 
   def move_stop_out(stop)
-    shift_index(stop.index + 1, -1)
+    if vehicle
+      shift_index(stop.index + 1, -1)
+    end
     stop.active = false
     compute
     stop.destroy
