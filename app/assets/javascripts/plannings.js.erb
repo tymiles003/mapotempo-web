@@ -346,7 +346,7 @@ function plannings_edit(params) {
     $(".routes").sortable({
       disabled: true,
       items: "li.route"
-    }).disableSelection();
+    });
 
     $("#out_of_route .sortable").sortable({
       connectWith: ".sortable",
@@ -446,6 +446,19 @@ function plannings_edit(params) {
           error: ajaxError
         });
         return false;
+      })
+      .on("change", "[name=route\\\[ref\\\]]", function() {
+        var id = $(this).closest("[data-route_id]").attr("data-route_id");
+        var ref = this.value;
+        $.ajax({
+          type: "put",
+          data: JSON.stringify({
+            ref: ref
+          }),
+          contentType: 'application/json',
+          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
+          error: ajaxError
+        });
       });
 
     $(".lock").click(function(event, ui) {

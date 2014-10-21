@@ -12,4 +12,5 @@ class V01::Entities::Route < Grape::Entity
   expose(:stop_trace, documentation: { type: 'String' })
   expose(:stop_out_of_drive_time, documentation: { type: 'Boolean' })
   expose(:stop_distance, documentation: { type: 'Float' })
+  expose(:ref, documentation: { type: 'String' })
 end

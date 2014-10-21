@@ -182,7 +182,7 @@ class Importer
 
       if routes.size > 1 || !routes.key?(nil)
         planning = customer.plannings.build(name: name, tags: common_tags || [])
-        planning.set_destinations(routes.values, false)
+        planning.set_destinations(routes, false)
         planning.save!
       end
     end

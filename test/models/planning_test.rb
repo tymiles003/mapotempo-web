@@ -30,7 +30,7 @@ class PlanningTest < ActiveSupport::TestCase
   test "should set_destinations" do
     o = plannings(:planning_one)
 
-    o.set_destinations([[destinations(:destination_one)]])
+    o.set_destinations({'route_one' => [destinations(:destination_one)]})
     assert o.routes[1].stops.collect(&:destination).include?(destinations(:destination_one))
   end
 
@@ -38,7 +38,7 @@ class PlanningTest < ActiveSupport::TestCase
     o = plannings(:planning_one)
 
     assert_raises(RuntimeError) {
-      o.set_destinations([[destinations(:destination_one)]] * (o.routes.size+1))
+      o.set_destinations(Hash[0.upto(o.routes.size).collect{ |i| ["route#{i}", [destinations(:destination_one)]] }])
     }
   end
 

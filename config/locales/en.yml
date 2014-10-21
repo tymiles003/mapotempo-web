@@ -156,6 +156,7 @@ en:
         end: "End"
         hidden: "Hidden"
         locked: "Locked"
+        ref: "Reference"
       stop:
         active: "Active"
         begin: "Begin"
@@ -417,6 +418,7 @@ en:
       title: "New planning"
     export_file:
       ref: "reference"
+      vehicle: "vehicle"
       route: "route"
       order: "order"
       wait_time: "wait"

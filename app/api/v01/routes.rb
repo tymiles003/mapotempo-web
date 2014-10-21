@@ -21,7 +21,7 @@ class V01::Routes < Grape::API
     def route_params
       p = ActionController::Parameters.new(params)
       p = p[:route] if p.has_key?(:route)
-      p.permit(:hidden, :locked)
+      p.permit(:hidden, :locked, :ref)
     end
   end
 

@@ -1,6 +1,7 @@
 if route.vehicle
   csv << [
     (route.vehicle.name if route.vehicle),
+    route.ref,
     0,
     nil,
     (route.start.strftime("%H:%M") if route.start),
@@ -30,6 +31,7 @@ index = 0
 route.stops.each { |stop|
   csv << [
     (route.vehicle.name if route.vehicle),
+    route.ref,
     (index+=1 if route.vehicle),
     ("%i:%02i" % [stop.wait_time/60/60, stop.wait_time/60%60] if route.vehicle && stop.wait_time),
     (stop.time.strftime("%H:%M") if route.vehicle && stop.time),
@@ -58,6 +60,7 @@ route.stops.each { |stop|
 if route.vehicle
   csv << [
     (route.vehicle.name if route.vehicle),
+    route.ref,
     index+1,
     nil,
     (route.end.strftime("%H:%M") if route.end),

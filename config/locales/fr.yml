@@ -159,6 +159,7 @@ fr:
         end: "Fin"
         hidden: "Masqué"
         locked: "Verrouillé"
+        ref: "Référence"
       stop:
         active: "Actif"
         begin: "Début"
@@ -420,6 +421,7 @@ fr:
       title: "Nouveau planning"
     export_file:
       ref: "référence"
+      vehicle: "véhicule"
       route: "tournée"
       order: "ordre"
       wait_time: "attente"

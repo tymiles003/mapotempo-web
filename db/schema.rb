@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141015093756) do
+ActiveRecord::Schema.define(version: 20141021085750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(version: 20141015093756) do
     t.text     "stop_trace"
     t.boolean  "stop_out_of_drive_time"
     t.float    "stop_distance"
+    t.string   "ref"
     t.index ["planning_id"], :name => "index_routes_on_planning_id"
     t.index ["vehicle_id"], :name => "index_routes_on_vehicle_id"
     t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_routes_planning_id"

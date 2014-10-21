@@ -64,6 +64,12 @@
 
     .panel-heading {
       min-height: 28px;
+
+      [name=route\[ref\]] {
+        color: inherit;
+        font-size: 150%;
+        margin-bottom: 2px;
+      }
     }
 
     .panel-body {

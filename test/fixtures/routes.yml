@@ -13,6 +13,7 @@ route_one:
   planning: planning_one
   out_of_date: false
   vehicle: vehicle_one
+  ref: "route_one"
 
 route_two:
   distance: 1.5
@@ -20,6 +21,7 @@ route_two:
   planning: planning_two
   out_of_date: false
   vehicle:
+  ref:
 
 route_three:
   distance: 1.5
@@ -27,3 +29,4 @@ route_three:
   planning: planning_two
   out_of_date: false
   vehicle: vehicle_one
+  ref: "route 33"

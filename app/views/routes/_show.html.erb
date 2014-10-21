@@ -1,5 +1,11 @@
 <li class="route_print">
-  <h1><i class="fa fa-calendar fa-fw"></i><%= route.planning.name %> - <i class="fa fa-truck fa-fw"></i><%= route.vehicle.name %></h1>
+  <h1><i class="fa fa-calendar fa-fw"></i>
+    <%= route.planning.name %> -
+    <% if route.ref %>
+      <%= route.ref %> -
+    <% end %>
+    <i class="fa fa-truck fa-fw"></i><%= route.vehicle.name %>
+  </h1>
   <% if route.planning.customer.print_header %>
     <div>
       <%= raw(route.planning.customer.print_header) %>

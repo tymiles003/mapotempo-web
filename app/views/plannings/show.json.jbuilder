@@ -26,8 +26,7 @@ else
     (json.locked) if route.locked
     json.distance number_to_human((route.distance or 0), units: :distance, precision: 3, format: '%n %u')
     json.size route.stops.size
-    json.size_active route.size_active
-    json.quantity route.quantity
+    json.extract! route, :ref, :size_active, :quantity
     if route.vehicle
       json.vehicle_id route.vehicle.id
       json.work_time "%i:%02i" % [(route.vehicle.close - route.vehicle.open)/60/60, (route.vehicle.close - route.vehicle.open)/60%60]

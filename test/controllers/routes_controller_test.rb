@@ -29,7 +29,7 @@ class RoutesControllerTest < ActionController::TestCase
   end
 
   test "should update route" do
-    patch :update, id: @route, route: { hidden: @route.hidden, locked: @route.locked }
+    patch :update, id: @route, route: { hidden: @route.hidden, locked: @route.locked, ref: "ref8" }
     assert_redirected_to route_path(assigns(:route))
   end
 end

@@ -47,12 +47,14 @@ class Planning < ActiveRecord::Base
   def set_destinations(destination_actives, recompute = true)
     default_empty_routes
     if destination_actives.size <= routes.size-1
-      destinations = destination_actives.flatten(1).collect{ |destination_active| destination_active[0] }
+      destinations = destination_actives.values.flatten(1).collect{ |destination_active| destination_active[0] }
       routes[0].set_destinations((customer.destinations - destinations).select{ |destination|
         (destination.tags & tags).size == tags.size
       })
-      0.upto(destination_actives.size-1).each{ |i|
-        routes[i+1].set_destinations(destination_actives[i], recompute)
+      i = 0
+      destination_actives.each{ |ref, destination|
+        routes[i+=1].ref = ref
+        routes[i].set_destinations(destination, recompute)
       }
     else
       raise I18n.t('errors.planning.import_too_routes')
