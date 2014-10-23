@@ -112,12 +112,8 @@ function destinations_form(params, api) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
-      formatSelection: function(item) {
-        return format_tag(item);
-      },
-      formatResult: function(item) {
-        return format_tag(item);
-      },
+      formatSelection: format_tag,
+      formatResult: format_tag,
       formatNoMatches: function() {
         return formatNoMatches;
       },
@@ -322,7 +318,7 @@ function destinations_index(params, api) {
       t.push({
         id: tag.id,
         label: tag.label,
-        color: tag.color,
+        color: tag.color ? tag.color.substr(1) : undefined,
         icon: tag.icon,
         active: $.inArray(tag.id, destination.tag_ids) >= 0
       });
@@ -419,17 +415,23 @@ function destinations_index(params, api) {
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
-    $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
-      formatSelection: function(item) {
-        return format_tag(item);
-      },
-      formatResult: function(item) {
-        return format_tag(item);
-      },
-      formatNoMatches: function() {
-        return formatNoMatches;
-      },
-      width: '100%'
+    $('.fake', $row).on('click', function(e){
+      // On the first click on select2-look like div, initialize select2, remove the placeholder and resend the click
+      $('.fake', $row).hide();
+      $('select[name$=\\[tag_ids\\]\\[\\]]', $row).show();
+      $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
+        formatSelection: format_tag,
+        formatResult: format_tag,
+        formatNoMatches: function() {
+          return formatNoMatches;
+        },
+        width: '100%'
+      });
+      e.stopPropagation();
+      $('.fake', $row).off();
+      if(e.clientX && e.clientY) {
+        $(document.elementFromPoint(e.clientX, e.clientY)).click();
+      }
     });
   }
 
