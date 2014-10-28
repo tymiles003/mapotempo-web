@@ -26,7 +26,7 @@ class Destination < ActiveRecord::Base
   validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true
-  validates :city, presence: true
+#  validates :city, presence: true
 #  validates :lat, numericality: {only_float: true} # maybe nil
 #  validates :lng, numericality: {only_float: true} # maybe nil
 

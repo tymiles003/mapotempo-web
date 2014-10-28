@@ -84,8 +84,8 @@ class Importer
         }
         row = r
 
-        if !row.include?('name') || !row.include?('city')
-          errors << I18n.t('destinations.import_file.missing_header_name_city')
+        if !row.include?('name') || !(row.include?('city') || row.include?('postalcode') || (row.include?('lat') && row.include?('lng')))
+          errors << I18n.t('destinations.import_file.missing_header')
         end
         break
       }
@@ -116,8 +116,8 @@ class Importer
           next # Skip empty line
         end
 
-        if !r.key?('name') || !r.key?('city')
-          errors << I18n.t('destinations.import_file.missing_name_city', line: line)
+        if !r.key?('name') || !(r.key?('city') || r.key?('postalcode') || (r.key?('lat') && r.key?('lng')))
+          errors << I18n.t('destinations.import_file.missing_data', line: line)
           next
         end
 
