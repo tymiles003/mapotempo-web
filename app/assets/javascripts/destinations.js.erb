@@ -293,7 +293,7 @@ function destinations_index(params, api) {
   });
   map.addLayer(cluster);
 
-  map.on('zoomend ', function(e) {
+  map.on('zoomend', function(e) {
     if (map.getZoom() > 14) {
       map.removeLayer(cluster);
       map.addLayer(markersLayers);
