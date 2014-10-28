@@ -21,13 +21,19 @@ module Ort
 
   @cache = Mapotempo::Application.config.optimize_cache
   @url = Mapotempo::Application.config.optimize_url
+  @optimize_time = Mapotempo::Application.config.optimize_time
 
   def self.optimize(capacity, matrix, time_window)
     key = [capacity, matrix.hash, time_window.hash]
 
     result = @cache.read(key)
     if !result
-      data = {capacity: capacity, matrix: matrix, time_window: time_window}.to_json
+      data = {
+        capacity: capacity,
+        matrix: matrix,
+        time_window: time_window,
+        optimize_time: @optimize_time
+      }.to_json
       result = RestClient.post @url, data: data, content_type: :json, accept: :json
       @cache.write(key, result)
     end
