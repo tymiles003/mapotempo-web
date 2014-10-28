@@ -1,9 +1,4 @@
-if current_user.customer.job_matrix
-  json.matrix do
-    json.extract! current_user.customer.job_matrix, :progress, :attempts
-    json.error !!current_user.customer.job_matrix.failed_at
-  end
-elsif current_user.customer.job_optimizer
+if current_user.customer.job_optimizer
   json.optimizer do
     json.extract! current_user.customer.job_optimizer, :progress, :attempts
     json.error !!current_user.customer.job_optimizer.failed_at

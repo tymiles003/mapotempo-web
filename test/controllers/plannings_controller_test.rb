@@ -3,6 +3,8 @@ require 'test_helper'
 require 'rexml/document'
 include REXML
 
+require 'ort'
+
 class PlanningsControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 

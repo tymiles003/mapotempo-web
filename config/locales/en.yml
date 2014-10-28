@@ -398,11 +398,6 @@ en:
         out_of_drive_time: "Out of vehicle's time window"
         out_of_drive_time_help: "Vehicle time window activity exceeded"
       dialog:
-        matrix:
-          title: "Distance matrix"
-          in_progress: "Please wait, computing distance matrix."
-          attempts: "Attempts:"
-          error: "Compute fail."
         optimizer:
           title: "Optimization"
           in_progress: "Please wait, optimization in progress."

@@ -27,13 +27,6 @@ class V01::Customers < Grape::API
       present current_customer, with: V01::Entities::Customer
     end
 
-    desc "Cancel matrix computation"
-    delete 'job_matrix' do
-      if current_customer.job_matrix
-        current_customer.job_matrix.destroy
-      end
-    end
-
     desc "Cancel optimization computation"
     delete 'job_optimizer' do
       if current_customer.job_optimizer

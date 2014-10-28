@@ -5,7 +5,6 @@ class V01::Entities::Customer < Grape::Entity
   expose(:take_over, documentation: { type: 'DateTime' }) { |m| m.take_over && m.take_over.strftime('%H:%M:%S') }
   expose(:store_ids, documentation: { type: 'Array' }) { |m| m.stores.collect(&:id) }
   expose(:job_geocoding_id, documentation: { type: 'Integer' })
-  expose(:job_matrix_id, documentation: { type: 'Integer' })
   expose(:job_optimizer_id, documentation: { type: 'Integer' })
   expose(:name, documentation: { type: 'String' })
   expose(:tomtom_user, documentation: { type: 'String' })

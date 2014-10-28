@@ -21,7 +21,6 @@ class Customer < ActiveRecord::Base
   belongs_to :router
   has_many :stores, -> { order('id')}, inverse_of: :customer, :autosave => true, :dependent => :delete_all
   belongs_to :job_geocoding, :class_name => "Delayed::Backend::ActiveRecord::Job", :dependent => :destroy
-  belongs_to :job_matrix, :class_name => "Delayed::Backend::ActiveRecord::Job", :dependent => :destroy
   belongs_to :job_optimizer, :class_name => "Delayed::Backend::ActiveRecord::Job", :dependent => :destroy
   has_many :vehicles, -> { order('id')}, inverse_of: :customer, :autosave => true, :dependent => :destroy
   has_many :destinations, -> { order('id')}, inverse_of: :customer, :autosave => true, :dependent => :destroy

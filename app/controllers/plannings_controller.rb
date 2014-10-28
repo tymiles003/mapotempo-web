@@ -15,7 +15,6 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'matrix_job'
 require 'csv'
 
 class PlanningsController < ApplicationController

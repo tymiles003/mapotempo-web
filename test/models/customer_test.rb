@@ -12,9 +12,9 @@ class CustomerTest < ActiveSupport::TestCase
     assert_not o.save, "Saved without required fields"
   end
 
-  test "should stop job matrix" do
+  test "should stop job optimizer" do
     assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
-      @customer.job_matrix.destroy
+      @customer.job_optimizer.destroy
     end
   end
 

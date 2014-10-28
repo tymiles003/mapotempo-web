@@ -6,12 +6,6 @@ job_geocoding:
   handler: ""
   progress: 0
 
-job_matrix:
-  priority: 0
-  attempts: 0
-  handler: ""
-  progress: 0
-
 job_optimizer:
   priority: 0
   attempts: 0

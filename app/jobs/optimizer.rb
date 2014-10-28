@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'ort'
-require 'matrix_job'
+require 'optimizer_job'
 
 class Optimizer
 
@@ -25,11 +25,11 @@ class Optimizer
         # Nothing to optimize
         true
     elsif Mapotempo::Application.config.delayed_job_use
-      if customer.job_matrix
+      if customer.job_optimizer
         # Customer already run an optimization
         false
       else
-        customer.job_matrix = Delayed::Job.enqueue(MatrixJob.new(planning.id, route.id))
+        customer.job_optimizer = Delayed::Job.enqueue(OptimizerJob.new(planning.id, route.id))
       end
     else
       tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop| # TODO support diff start and stop on route into optimizer

@@ -17,9 +17,9 @@
 #
 require 'ort'
 
-class MatrixJob < Struct.new(:planning_id, :route_id)
+class OptimizerJob < Struct.new(:planning_id, :route_id)
   def perform
-    Delayed::Worker.logger.info "MatrixJob planning_id=#{planning_id} perform"
+    Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} perform"
     route = Route.where(id: route_id, planning_id: planning_id).first
     customer = route.planning.customer
     count = route.matrix_size
@@ -28,14 +28,14 @@ class MatrixJob < Struct.new(:planning_id, :route_id)
     matrix = route.matrix {
       i += 1
       if i % 50 == 0
-        customer.job_matrix.progress = Integer(i * 100 / count)
-        customer.job_matrix.save
-        Delayed::Worker.logger.info "MatrixJob planning_id=#{planning_id} #{customer.job_matrix.progress}%"
+        customer.job_optimizer.progress = Integer(i * 100 / count)
+        customer.job_optimizer.save
+        Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}%"
       end
     }
-    customer.job_matrix.progress = 100
-    customer.job_matrix.save
-    Delayed::Worker.logger.info "MatrixJob planning_id=#{planning_id} #{customer.job_matrix.progress}%"
+    customer.job_optimizer.progress = 100
+    customer.job_optimizer.save
+    Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}%"
 
     # Optimize
     tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop| # TODO support diff start and stop on route into optimizer

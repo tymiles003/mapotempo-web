@@ -34,15 +34,6 @@ describe V01::Customers do
     end
   end
 
-  describe :stop_job_matrix do
-    it 'Stop job matrix' do
-      expect{
-        delete api('job_matrix')
-        expect(response.status).to eq(200)
-      }.to change{Delayed::Backend::ActiveRecord::Job.count}.by(-1)
-    end
-  end
-
   describe :stop_job_optimizer do
     it 'Stop job optimizer' do
       expect{

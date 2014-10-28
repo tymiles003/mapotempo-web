@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141021085750) do
+ActiveRecord::Schema.define(version: 20141028150022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 20141021085750) do
     t.integer  "max_vehicles"
     t.time     "take_over"
     t.integer  "job_geocoding_id"
-    t.integer  "job_matrix_id"
     t.integer  "job_optimizer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -33,7 +32,6 @@ ActiveRecord::Schema.define(version: 20141021085750) do
     t.boolean  "print_planning_annotating"
     t.text     "print_header"
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
-    t.index ["job_matrix_id"], :name => "index_customers_on_job_matrix_id"
     t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
   end
 

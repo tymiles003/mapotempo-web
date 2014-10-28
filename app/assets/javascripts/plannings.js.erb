@@ -147,11 +147,8 @@ function plannings_edit(params) {
   }
 
   function display_planning(data) {
-    if ($("#dialog-matrix").size() == 0) {
+    if ($("#dialog-optimizer").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
-    }
-    if (!progress_dialog(data.matrix, $("#dialog-matrix"), display_planning, '/plannings/' + planning_id + '.json', '/api/0.1/customers/job_matrix.json')) {
-      return;
     }
     if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json', '/api/0.1/customers/job_optimizer.json')) {
       return;
@@ -515,11 +512,6 @@ function plannings_edit(params) {
       error: ajaxError
     });
   }
-
-  $("#dialog-matrix").dialog({
-    autoOpen: false,
-    modal: true
-  });
 
   $("#dialog-optimizer").dialog({
     autoOpen: false,

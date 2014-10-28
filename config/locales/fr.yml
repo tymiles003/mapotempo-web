@@ -401,11 +401,6 @@ fr:
         out_of_drive_time: "Hors créneau véhicule"
         out_of_drive_time_help: "Planifié en dehors des créneaux d'activité du véhicule"
       dialog:
-        matrix:
-          title: "Distancier"
-          in_progress: "Calcul du distancier en cours, merci de patienter."
-          attempts: "Tentatives :"
-          error: "Impossible d'effectuer le calcul."
         optimizer:
           title: "Optimisation"
           in_progress: "Optimisation en cours, merci de patienter."
