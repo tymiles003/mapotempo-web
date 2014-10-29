@@ -60,8 +60,35 @@ function mustache_i18n() {
 
 function progress_dialog(data, dialog, callback, load_url, stop_url) {
   if (data !== undefined) {
+    var timeout;
     dialog.dialog("open");
-    $(".progress-bar", dialog).css("width", "" + data.progress + "%");
+    var progress = data.progress && data.progress.split(';');
+    $(".progress-bar", dialog).each(function(i, e) {
+      if (!progress || !progress[i]) {
+        $(e).parent().removeClass("active");
+        $(e).css("transition", "linear 0s");
+        $(e).css("width", "0%");
+      } else if (progress[i] == 100) {
+        $(e).parent().removeClass("active");
+        $(e).css("transition", "linear 0s");
+        $(e).css("width", "100%");
+      } else if (progress[i] == -1) {
+        $(e).parent().addClass("active");
+        $(e).css("transition", "linear 0s");
+        $(e).css("width", "100%");
+      } else if (progress[i].substr(progress[i].length - 2) == "ms") {
+        if (parseInt($(e).css("width")) == 0) {
+          timeout = parseInt(progress[i].substr(0, progress[i].length - 2));
+          $(e).parent().removeClass("active");
+          $(e).css("transition", "linear " + (timeout / 1000) + "s");
+          $(e).css("width", "100%");
+        }
+      } else {
+        $(e).parent().removeClass("active");
+        $(e).css("transition", "linear 2s");
+        $(e).css("width", "" + progress[i] + "%");
+      }
+    });
     if (data.attempts) {
       $(".dialog-attempts-number", dialog).html(data.attempts);
       $(".dialog-attempts", dialog).show();
@@ -109,11 +136,12 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
           success: callback,
           error: ajaxError
         });
-      }, 2000);
+      }, 2000 + (timeout || 0));
     }
     return false;
   } else {
     dialog.dialog("close");
+    $($(".progress-bar", dialog)).css("width", "0%");
     return true;
   }
 }

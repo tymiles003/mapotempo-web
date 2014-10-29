@@ -32,7 +32,7 @@ class GeocoderJob < Struct.new(:customer_id, :planning_id)
           destination.save
           i += 1
         }
-        customer.job_geocoding.progress = Integer(i * 100 / count)
+        customer.job_geocoding.progress = Integer(i * 100 / count).to_s
         customer.job_geocoding.save
         Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} #{customer.job_geocoding.progress}%"
       end

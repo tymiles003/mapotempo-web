@@ -400,7 +400,9 @@ en:
       dialog:
         optimizer:
           title: "Optimization"
-          in_progress: "Please wait, optimization in progress."
+          in_progress: "Please wait, process in progress."
+          matrix: "Distance matrix"
+          optimize: "Optimizing"
           attempts: "Attempts:"
           error: "Compute fail."
         tomtom:

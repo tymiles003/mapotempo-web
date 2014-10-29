@@ -403,7 +403,9 @@ fr:
       dialog:
         optimizer:
           title: "Optimisation"
-          in_progress: "Optimisation en cours, merci de patienter."
+          in_progress: "Processus en cours, merci de patienter."
+          matrix: "Calcul du distancier"
+          optimize: "Optimisation"
           attempts: "Tentatives :"
           error: "Impossible d'effectuer le calcul."
         tomtom:

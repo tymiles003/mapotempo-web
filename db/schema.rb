@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141028150022) do
+ActiveRecord::Schema.define(version: 20141028165002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20141028150022) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.integer  "progress",   default: 0, null: false
+    t.string   "progress",   default: "0", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], :name => "delayed_jobs_priority"
