@@ -19,9 +19,9 @@ class GeocoderJob < Struct.new(:customer_id, :planning_id)
   def perform
     customer = Customer.find(customer_id)
     Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} perform"
-    count = Destination.where(customer_id: customer_id, lat: nil).count
+    count = customer.destinations.where(lat: nil).count
     i = 0
-    Destination.where(customer_id: customer_id, lat: nil).each_slice(50){ |destinations|
+    customer.destinations.where(lat: nil).each_slice(50){ |destinations|
       Destination.transaction do
         destinations.each { |destination|
           begin
@@ -40,7 +40,7 @@ class GeocoderJob < Struct.new(:customer_id, :planning_id)
 
     Destination.transaction do
       if planning_id
-        planning = Planning.where(customer_id: customer_id, id: planning_id).first
+        planning = customer.plannings.find(planning_id)
         if planning
           planning.compute
           planning.save
