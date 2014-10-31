@@ -46,4 +46,11 @@
       content: "a";
     }
   }
+
+  iframe {
+    width: 100%;
+    min-height: 10em;
+    height: 80vh;
+    border: none;
+  }
 }

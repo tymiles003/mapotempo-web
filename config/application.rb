@@ -63,6 +63,7 @@ module Mapotempo
     config.delayed_job_use = false
 
     config.self_care = true # Allow subscription and resiliation by the user himself
+    config.welcome_url = nil
     config.help_url = nil
 
     config.geocoding_accuracy_success = 0.98
