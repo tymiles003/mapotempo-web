@@ -46,6 +46,7 @@ class Planning < ActiveRecord::Base
 
   def set_destinations(destination_actives, recompute = true)
     default_empty_routes
+    destination_actives = destination_actives.select{ |ref, d| ref }
     if destination_actives.size <= routes.size-1
       destinations = destination_actives.values.flatten(1).collect{ |destination_active| destination_active[0] }
       routes[0].set_destinations((customer.destinations - destinations).select{ |destination|

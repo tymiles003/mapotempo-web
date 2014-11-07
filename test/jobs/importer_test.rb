@@ -55,12 +55,16 @@ class ImporterTest < ActionController::TestCase
   test "shoud import many-utf-8" do
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all
-    assert_difference('Destination.count', 5) do
-      Importer.import(false, @customer, "test/fixtures/files/import_many-utf-8.csv", "text")
+    assert_difference('Planning.count') do
+      assert_difference('Destination.count', 5) do
+        Importer.import(false, @customer, "test/fixtures/files/import_many-utf-8.csv", "text")
+      end
     end
     o = Destination.find{|d| d.customer_id}
     assert_equal "Point 1", o.name
     assert_equal ["Nantes"], o.tags.collect(&:label)
+    p = Planning.first
+    assert_equal 2, p.routes[0].stops.size
   end
 
   test "shoud import many-iso" do
