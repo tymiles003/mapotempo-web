@@ -295,6 +295,20 @@ function plannings_edit(params) {
       }
     });
 
+    if (data.destination_id_enlighten) {
+      var e = $("[data-destination_id='" + data.destination_id_enlighten + "']");
+      e.css("background", "orange");
+      setTimeout(function() {
+        e.css("background", "");
+      }, 1500);
+
+      if (e.offset().top < 0 || e.offset().top > $(".box").height()) {
+        $(".box").animate({
+          scrollTop: e.offset().top + $(".box").scrollTop() - 100
+        });
+      }
+    }
+
     $(".route .export_tomtom a").click(function() {
       var url = this.href;
       $.ajax({
@@ -479,7 +493,10 @@ function plannings_edit(params) {
         type: "patch",
         url: '/plannings/' + planning_id + '/automatic_insert/' + destination_id + '.json',
         beforeSend: beforeSendWaiting,
-        success: display_planning,
+        success: function(data) {
+          data.destination_id_enlighten = destination_id;
+          display_planning(data);
+        },
         complete: completeWaiting,
         error: ajaxError
       });
