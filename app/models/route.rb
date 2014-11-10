@@ -173,15 +173,20 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def remove(destination)
+  def remove_destination(destination)
     stops.each{ |stop|
-      if(stop.destination ==  destination)
-        stop.destroy
-        if self.vehicle
-          self.out_of_date = true
-        end
+      if(stop.destination == destination)
+        remove_stop(stop)
       end
     }
+  end
+
+  def remove_stop(stop)
+    shift_index(stop.index + 1, -1)
+    stop.destroy
+    if self.vehicle
+      self.out_of_date = true
+    end
   end
 
   def move_destination(destination, index)

@@ -33,6 +33,14 @@ else
       json.extract! route.vehicle.store_start, :id, :name, :street, :postalcode, :city, :lat, :lng
       (json.time route.start.strftime("%H:%M")) if route.start
     end if route.vehicle
+    first_active_free = nil
+    route.stops.reverse_each{ |stop|
+      if !stop.active
+        first_active_free = stop
+      else
+        break
+      end
+    }
     json.stops route.stops do |stop|
       out_of_window |= stop.out_of_window
       out_of_capacity |= stop.out_of_capacity
@@ -46,6 +54,10 @@ else
       (json.active true) if stop.active
       (json.number number+=1) if stop.active
       json.distance (stop.distance or 0)/1000
+      if first_active_free == true || first_active_free == stop
+        json.automatic_insert true
+        first_active_free = true
+      end
       json.destination do
          destination = stop.destination
          json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment, :quantity

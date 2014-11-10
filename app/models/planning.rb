@@ -83,7 +83,7 @@ class Planning < ActiveRecord::Base
 
   def destination_remove(destination)
     routes.each{ |route|
-      route.remove(destination)
+      route.remove_destination(destination)
     }
   end
 
@@ -143,7 +143,7 @@ class Planning < ActiveRecord::Base
     # Take the closest routes destination and eval insert
     route, index = available_routes.collect{ |route|
       route.stops.map{ |stop| [stop.destination, route, stop.index] } +
-        [[route.vehicle.store_start, route, 0], [route.vehicle.store_stop, route, route.size_active-1]]
+        [[route.vehicle.store_start, route, 0], [route.vehicle.store_stop, route, route.stops.size-1]]
     }.flatten(1).sort{ |a,b|
       a[0].distance(stop.destination) <=> b[0].distance(stop.destination)
     }[0..9].collect{ |destination_route_index|
@@ -161,11 +161,10 @@ class Planning < ActiveRecord::Base
       # Difference of total time + difference of sum of out_of_window time
       ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
         (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
-    } || [routes[1], 2]
+    } || [routes[1], 1]
 
-    route.add(stop.destination, index || 2, true)
-    route.compute
-    stop.destroy
+    stop.active = true
+    route.move_stop(stop, index || 1)
   end
 
   def out_of_date

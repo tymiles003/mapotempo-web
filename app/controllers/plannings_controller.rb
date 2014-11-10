@@ -144,7 +144,9 @@ class PlanningsController < ApplicationController
   def automatic_insert
     respond_to do |format|
       begin
-        @stop = Stop.where(route: @planning.routes[0], destination_id: params[:destination_id]).first
+        stop_id = Integer(params[:destination_id])
+        @stop = @planning.routes.collect{ |route| route.stops.find{ |stop| stop.destination.id == stop_id } }.select{ |i| i }[0]
+
         if @stop
           Planning.transaction do
             @planning.automatic_insert(@stop)
