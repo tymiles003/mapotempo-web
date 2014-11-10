@@ -69,7 +69,7 @@ class Vehicle < ActiveRecord::Base
     end
 
     def update_out_of_date
-      if emission_changed? or consumption_changed? or capacity_changed? or open_changed? or close_changed? or store_start_id_changed? or store_stop_id_changed?
+      if emission_changed? or consumption_changed? or capacity_changed? or open_changed? or close_changed? or store_start_id_changed? or store_stop_id_changed? or router_id_changed?
         routes.each{ |route|
           route.out_of_date = true
         }
