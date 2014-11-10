@@ -53,9 +53,11 @@ class Planning < ActiveRecord::Base
         (destination.tags & tags).size == tags.size
       })
       i = 0
-      destination_actives.each{ |ref, destination|
+      destination_actives.each{ |ref, destinations|
         routes[i+=1].ref = ref
-        routes[i].set_destinations(destination, recompute)
+        routes[i].set_destinations(destinations.select{ |destination|
+          (destination[0].tags & tags).size == tags.size
+        }, recompute)
       }
     else
       raise I18n.t('errors.planning.import_too_routes')

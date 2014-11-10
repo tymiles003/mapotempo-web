@@ -30,11 +30,19 @@ class PlanningTest < ActiveSupport::TestCase
   test "should set_destinations" do
     o = plannings(:planning_one)
 
-    o.set_destinations({'route_one' => [destinations(:destination_one)]})
+    o.set_destinations({'route_one' => [[destinations(:destination_one)]]})
     assert o.routes[1].stops.collect(&:destination).include?(destinations(:destination_one))
   end
 
-  test "should not set_destinations" do
+  test "should not set_destinations for tags" do
+    o = plannings(:planning_one)
+    o.tags << tags(:tag_two)
+
+    o.set_destinations({'route_one' => [[destinations(:destination_one)]]})
+    assert_not o.routes[1].stops.collect(&:destination).include?(destinations(:destination_one))
+  end
+
+  test "should not set_destinations for size" do
     o = plannings(:planning_one)
 
     assert_raises(RuntimeError) {
