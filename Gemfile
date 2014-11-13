@@ -72,6 +72,7 @@ gem 'twitter_bootstrap_form_for', github: 'frodrigo/twitter_bootstrap_form_for' 
 gem 'bootstrap-filestyle-rails'
 gem 'bootstrap-wysihtml5-rails'
 gem 'sanitize'
+gem 'iconv'
 
 gem 'pg', group: :production
 gem 'rails_12factor', group: :production

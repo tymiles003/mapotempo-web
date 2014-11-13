@@ -33,8 +33,8 @@ class PlanningsController < ApplicationController
         response.headers['Content-Disposition'] = 'attachment; filename="'+@planning.name.gsub('"', '')+'.gpx"'
       end
       format.excel do
-        data = render_to_string
-        send_data data.encode('ISO-8859-1'),
+        data = render_to_string.gsub('\n', '\r\n')
+        send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
             filename: @planning.name.gsub('"','')+'.csv'
       end

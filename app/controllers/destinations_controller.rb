@@ -31,8 +31,8 @@ class DestinationsController < ApplicationController
       format.html
       format.json
       format.excel do
-        data = render_to_string
-        send_data data.encode('ISO-8859-1'),
+        data = render_to_string.gsub('\n', '\r\n')
+        send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
             filename: 'destinations.csv'
       end
