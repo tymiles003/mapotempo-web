@@ -519,6 +519,7 @@ en:
       zonings: "Zonings"
     edit:
       title: "Editing zoning"
+      vehicleless_confirm: "Really save some zones without a vehicle?"
     index:
       title: "Listing zonings"
       new: "New Zoning"
