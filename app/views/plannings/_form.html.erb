@@ -1,4 +1,5 @@
-<%= twitter_bootstrap_form_for @planning, layout: :horizontal do |f| %>
+<% options = @planning.id ? {layout: :horizontal, default_div_class: 'col-lg-10'} : {layout: :horizontal} %>
+<%= twitter_bootstrap_form_for @planning, options do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
   <%= f.text_field :name %>
   <%= f.select :tag_ids, t('activerecord.attributes.planning.tag_ids'), options_for_select(current_user.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @planning.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
