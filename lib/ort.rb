@@ -34,7 +34,8 @@ module Ort
         time_window: time_window,
         optimize_time: @optimize_time
       }.to_json
-      result = RestClient.post @url, data: data, content_type: :json, accept: :json
+      resource = RestClient::Resource.new(@url, timeout: -1)
+      result = resource.post({data: data}, {content_type: :json, accept: :json})
       @cache.write(key, result)
     end
 
