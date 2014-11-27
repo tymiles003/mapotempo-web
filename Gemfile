@@ -82,6 +82,7 @@ gem 'leaflet-markercluster-rails', github: 'gordonk/leaflet-markercluster-rails'
 gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for https://github.com/zentrification/leaflet-draw-rails/pull/1
 gem 'leaflet_numbered_markers-rails', github: 'frodrigo/leaflet_numbered_markers-rails'
 gem 'leaflet-active-area-rails', github: 'frodrigo/leaflet-active-area-rails'
+gem 'leaflet-control-geocoder-rails', github: 'frodrigo/leaflet-control-geocoder-rails'
 
 gem 'jquery-ui-rails'
 gem 'jquery-tablesorter'

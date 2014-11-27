@@ -12,6 +12,12 @@ GIT
     leaflet-active-area-rails (0.0.1)
 
 GIT
+  remote: git://github.com/frodrigo/leaflet-control-geocoder-rails.git
+  revision: 1455832514d8d2f9a6841ebfe021317cd50d830f
+  specs:
+    leaflet-control-geocoder-rails (1.0.0.1)
+
+GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
   revision: b654421a6138ee39fc85b61a749e238e89a1b134
   specs:
@@ -396,6 +402,7 @@ DEPENDENCIES
   jquery-timeentry-rails!
   jquery-ui-rails
   leaflet-active-area-rails!
+  leaflet-control-geocoder-rails!
   leaflet-draw-rails!
   leaflet-markercluster-rails!
   leaflet-rails

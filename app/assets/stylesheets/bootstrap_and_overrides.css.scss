@@ -125,3 +125,12 @@ hr {
 .ui-dialog-titlebar-close {
   display: none;
 }
+
+/* Leaflet geocoder */
+.leaflet-control-geocoder-expanded input, .leaflet-control-geocoder-error {
+  width: 350px;
+}
+
+ul.leaflet-control-geocoder-alternatives {
+  width: inherit;
+}

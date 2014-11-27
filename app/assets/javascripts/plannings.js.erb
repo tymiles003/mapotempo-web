@@ -59,6 +59,18 @@ function plannings_edit(params) {
     imperial: false
   }).addTo(map);
 
+  var geocoder = L.Control.geocoder({
+    geocoder: L.Control.Geocoder.nominatim({
+      serviceUrl: "/api/0.1/geocoder/"
+    }),
+    position: 'topleft',
+    placeholder: I18n.t('web.geocoder.search'),
+    errorMessage: I18n.t('web.geocoder.empty_result')
+  }).addTo(map);
+  geocoder.markGeocode = function(result) {
+    this._map.fitBounds(result.bbox);
+  };
+
   routes_layers = L.featureGroup();
   routes_layers_cluster = L.featureGroup();
   map.addLayer(routes_layers);

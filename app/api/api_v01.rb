@@ -46,4 +46,7 @@ class ApiV01 < Grape::API
   mount V01::Tags
   mount V01::Vehicles
   mount V01::Zonings
+
+  # Tools
+  mount V01::Geocoder
 end

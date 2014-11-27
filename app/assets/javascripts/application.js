@@ -51,6 +51,7 @@
 //= require leaflet
 //= require leaflet.markercluster
 //= require leaflet.draw
+//= require Control.Geocoder
 //= require mustache
 //= require select2.js
 //= require_tree ../../templates

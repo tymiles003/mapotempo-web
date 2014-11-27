@@ -541,6 +541,9 @@ fr:
       close: "Fermer"
     help: "Aide"
     choose_file: "Sélectionner fichier"
+    geocoder:
+      search: "Recherche d'adresse"
+      empty_result: "Pas de résultats"
 
   all:
     osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"

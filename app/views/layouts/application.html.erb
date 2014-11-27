@@ -137,7 +137,7 @@
 
       <div class="main container" data-controller="<%= controller.controller_name %>" data-action="<%= controller.action_name %>">
         <div class="flash">
-          <%= bootstrap_flash %>
+          <%= bootstrap_flash.gsub('alert-dismissable', '').html_safe %>
         </div>
         <%= yield %>
       </div>

@@ -194,4 +194,64 @@ module Geocode
       nil
     end
   end
+
+  def self.code_free(q)
+    key = q
+
+    result = @cache.read(key)
+    if !result
+      url = URI.parse("http://gpp3-wxs.ign.fr/#{@ign_key}/geoportail/ols")
+      http = Net::HTTP.new(url.host)
+      request = Net::HTTP::Post.new(url.path)
+      request['Referer'] = @ign_referer
+      request['Content-Type'] = 'application/xml'
+      request.body = "<?xml version='1.0' encoding='UTF-8'?>
+<XLS
+    xmlns:xls='http://www.opengis.net/xls'
+    xmlns:gml='http://www.opengis.net/gml'
+    xmlns='http://www.opengis.net/xls'
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    version='1.2'
+    xsi:schemaLocation='http://www.opengis.net/xls http://schemas.opengis.net/ols/1.2/olsAll.xsd'>
+  <RequestHeader/>
+    <Request maximumResponses='10' methodName='GeocodeRequest' requestID='1' version='1.2'>
+      <GeocodeRequest returnFreeForm='true'>
+        <Address countryCode='StreetAddress'>
+          <freeFormAddress>#{q.encode(xml: :text)}</freeFormAddress>
+        </Address>
+      </GeocodeRequest>
+    </Request>
+</XLS>"
+
+      response = http.request(request)
+      if response.code == "200"
+        result = response.body # => The body (HTML, XML, blob, whatever)
+        @cache.write(key, result)
+      else
+        Rails.logger.info request.body
+        Rails.logger.info response.code
+        Rails.logger.info response.body
+        raise response.body
+      end
+    end
+
+    begin
+      doc = Document.new(result)
+      root = doc.root
+      root.elements['Response'].elements['GeocodeResponse'].elements['GeocodeResponseList'].elements.collect{ |geocodedAddress|
+        pos = geocodedAddress.elements['gml:Point'].elements['gml:pos'].text
+        free = geocodedAddress.elements['Address'].elements['freeFormAddress'].text
+        pos = pos.split(' ')
+
+        geocodeMatchCode = geocodedAddress.elements['GeocodeMatchCode']
+        matchType = geocodeMatchCode.attribute('matchType').value
+        accuracy = Float(geocodeMatchCode.attribute('accuracy').value)
+
+        {lat: pos[0], lng: pos[1], quality: matchType, accuracy: accuracy, free: free}
+      }
+    rescue Exception => e
+      Rails.logger.info e
+      nil
+    end
+  end
 end
