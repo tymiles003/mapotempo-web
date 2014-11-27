@@ -25,31 +25,13 @@ include REXML
 
 module Geocode
 
-  @cache = Mapotempo::Application.config.geocode_cache
+  @cache_code = Mapotempo::Application.config.geocode_code_cache
   @cache_reverse = Mapotempo::Application.config.geocode_reverse_cache
   @cache_complete = Mapotempo::Application.config.geocode_complete_cache
   @ign_referer = Mapotempo::Application.config.geocode_ign_referer
   @ign_key = Mapotempo::Application.config.geocode_ign_key
 
   def self.reverse(lat, lng)
-    self.reverse_ign(lat, lng)
-  end
-
-  def self.reverse_gisgraphy(lat, lng)
-    key = [lat, lng]
-
-    result = @cache.read(key)
-    if !result
-      url="http://services.gisgraphy.com/street/streetsearch?format=json&lat=#{lat}&lng=#{lng}&from=1&to=1" # FIXME filtrer les types de route, mais comment
-      Rails.logger.info "get #{url}"
-      result = JSON.parse(open(url).read)
-      @cache.write(key, result)
-    end
-
-    {street: result["result"][0]["name"], postal_code: "0", city: result["result"][0]["isIn"]}
-  end
-
-  def self.reverse_ign(lat, lng)
     key = [lat, lng]
 
     result = @cache_reverse.read(key)
@@ -79,7 +61,7 @@ module Geocode
       response = http.request(request)
       if response.code == "200"
         result = response.body # => The body (HTML, XML, blob, whatever)
-        @cache.write(key, result)
+        @cache_reverse.write(key, result)
       else
         Rails.logger.info request.body
         Rails.logger.info response.code
@@ -136,7 +118,7 @@ module Geocode
   def self.code(street, postalcode, city)
     key = [street, postalcode, city]
 
-    result = @cache.read(key)
+    result = @cache_code.read(key)
     if !result
       url = URI.parse("http://gpp3-wxs.ign.fr/#{@ign_key}/geoportail/ols")
       http = Net::HTTP.new(url.host)
@@ -168,7 +150,7 @@ module Geocode
       response = http.request(request)
       if response.code == "200"
         result = response.body # => The body (HTML, XML, blob, whatever)
-        @cache.write(key, result)
+        @cache_code.write(key, result)
       else
         Rails.logger.info request.body
         Rails.logger.info response.code
@@ -198,7 +180,7 @@ module Geocode
   def self.code_free(q)
     key = q
 
-    result = @cache.read(key)
+    result = @cache_code.read(key)
     if !result
       url = URI.parse("http://gpp3-wxs.ign.fr/#{@ign_key}/geoportail/ols")
       http = Net::HTTP.new(url.host)
@@ -226,7 +208,7 @@ module Geocode
       response = http.request(request)
       if response.code == "200"
         result = response.body # => The body (HTML, XML, blob, whatever)
-        @cache.write(key, result)
+        @cache_code.write(key, result)
       else
         Rails.logger.info request.body
         Rails.logger.info response.code
