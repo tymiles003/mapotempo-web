@@ -463,21 +463,21 @@ en:
     form:
       locate_manually: "Locate manually on the map"
     edit:
-      title: "Editing Store"
+      title: "Editing store"
     index:
-      title: "Listing Stores"
-      new: "New Store"
+      title: "Listing stores"
+      new: "New store"
     new:
-      title: "New Store"
+      title: "New store"
 
   tags:
     edit:
-      title: "Editing Tag"
+      title: "Editing tag"
     index:
       title: "Listing tags"
-      new: "New Tag"
+      new: "New tag"
     new:
-      title: "New Tag"
+      title: "New tag"
     form:
       color_default: "Default"
       icon_default: "Default"
