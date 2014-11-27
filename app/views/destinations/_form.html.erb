@@ -24,11 +24,11 @@
       </div>
     </div>
   </div>
-  <input type="hidden" name="destination[lat]" value="<%= @destination.lat %>" />
-  <input type="hidden" name="destination[lng]" value="<%= @destination.lng %>" />
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
+  <%= f.text_field :lat, {readonly: true} %>
+  <%= f.text_field :lng, {readonly: true} %>
   <%= f.number_field :quantity, {placeholder: 1} do %>
     <p class="help-block"><%= t '.quantity_help' %></p>
   <% end %>

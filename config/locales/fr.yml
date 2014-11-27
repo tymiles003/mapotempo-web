@@ -109,6 +109,8 @@ fr:
         detail: "Complément"
         postalcode: "Code postal"
         city: "Ville"
+        lat: "Latitude"
+        lng: "Longitude"
         quantity: "Quantité"
         quantity_small: "Qté."
         take_over: "Durée de visite"

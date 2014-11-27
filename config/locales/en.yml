@@ -106,6 +106,8 @@ en:
         detail: "Detail"
         postalcode: "Postalcode"
         city: "City"
+        lat: "Latitude"
+        lng: "Longitude"
         quantity: "Quantity"
         quantity_small: "Qty."
         take_over: "Take over"
