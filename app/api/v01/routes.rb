@@ -12,7 +12,7 @@ class V01::Routes < Grape::API
     segment '/:planning_id' do
 
       resource :routes do
-        desc "Return customer's routes."
+        desc "Return planning's routes."
         get do
           present current_customer.plannings.find(params[:planning_id]).routes.load, with: V01::Entities::Route
         end
