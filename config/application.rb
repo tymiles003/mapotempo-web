@@ -55,8 +55,8 @@ module Mapotempo
     config.geocode_ign_key = nil
     config.geocode_complete = false # Build time setting
 
-    config.trace_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_request', expires_in: 60*60*24*10)
-    config.trace_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_result', expires_in: 60*60*24*10)
+    config.trace_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_request', expires_in: 60*60*24*1)
+    config.trace_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'trace_result', expires_in: 60*60*24*1)
 
     config.tomtom_api = 'https://soap.business.tomtom.com/v1.20'
 
