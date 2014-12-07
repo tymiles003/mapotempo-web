@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/leaflet-control-geocoder-rails.git
-  revision: 1455832514d8d2f9a6841ebfe021317cd50d830f
+  revision: 178e6f338a1c660c69af5881b42c4495f40fc8f6
   specs:
     leaflet-control-geocoder-rails (1.0.0.1)
 
