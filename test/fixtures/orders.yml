@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+order_one:
+  order_array: order_array_one
+  destination: destination_one
+  shift: 0
+
+order_two:
+  order_array: order_array_one
+  destination: destination_two
+  shift: 0

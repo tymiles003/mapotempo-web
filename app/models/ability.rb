@@ -36,8 +36,11 @@ class Ability
           can :manage, Planning, :customer_id => user.customer.id
         end
         can :manage, Route, :planning => {:customer_id => user.customer.id}
+        if user.customer.enable_orders
+          can :manage, OrderArray, :customer_id => user.customer.id
+          can :manage, Product, :customer_id => user.customer.id
+        end
       end
     end
   end
 end
-

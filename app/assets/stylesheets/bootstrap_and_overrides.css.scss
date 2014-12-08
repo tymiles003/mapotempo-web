@@ -111,7 +111,39 @@ hr {
   .tablesorter-header {
     text-align: center;
 
+    // FIXME Waiting for https://github.com/Mottie/tablesorter/pull/773 and then
+    // Waiting for integreation into https://github.com/themilkman/jquery-tablesorter-rails (after tablesorter version: 2.18.3)
     i {
+      font-size: inherit;
+      position: inherit;
+      right: inherit;
+      top: inherit;
+      margin-top:  inherit;
+      //width: inherit;
+      height: inherit;
+      background-repeat: inherit;
+      line-height: inherit;
+      //display: inherit;
+    }
+    i.tablesorter-icon {
+      font-size: 11px;
+      position: absolute;
+      right: 2px;
+      top: 50%;
+      margin-top: -7px; /* half the icon height; older IE doesn't like this */
+      width: 14px;
+      height: 14px;
+      background-repeat: no-repeat;
+      line-height: 14px;
+      display: inline-block;
+    }
+    // end waiting
+
+    .btn-group {
+      text-align: left;
+    }
+
+    i.tablesorter-icon {
       right: 0;
       width: 10px;
     }

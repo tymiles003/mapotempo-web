@@ -9,6 +9,11 @@
   <%= f.text_field :take_over, {value: @customer.take_over ? @customer.take_over.strftime("%H:%M:%S") : nil, input_group: t('all.unit.hour_minute_second')} do %>
     <p class="help-block"><%= t '.take_over_help' %></p>
   <% end %>
+  <% if current_user.admin? %>
+    <%= f.toggles t 'activerecord.attributes.customer.enable_orders' do %>
+      <%= f.check_box :enable_orders %>
+    <% end %>
+  <% end %>
   <div id="accordion" class="panel panel-default">
     <div class="panel-heading">
       <h2 class="panel-title">

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+product_one:
+  name: product1
+  code: P1
+  customer: customer_one
+
+product_two:
+  name: product2
+  code: P2
+  customer: customer_one

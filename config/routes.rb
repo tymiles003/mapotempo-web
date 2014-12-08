@@ -35,12 +35,18 @@ Mapotempo::Application.routes.draw do
     get ':route_id/optimize' => 'plannings#optimize_route'
   end
 
+  resources :products
+
   resources :routes
 
   get '/zonings/new/planning/:planning_id' => 'zonings#new'
   resources :zonings do
     get 'edit/planning/:planning_id' => 'zonings#edit'
     get 'planning/:planning_id' => 'zonings#show'
+    patch 'duplicate'
+  end
+
+  resources :order_arrays do
     patch 'duplicate'
   end
 

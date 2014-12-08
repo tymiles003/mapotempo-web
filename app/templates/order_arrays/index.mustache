@@ -1,0 +1,111 @@
+<table class="tablesorter">
+  <thead>
+    <tr>
+      <th></th>
+      <th>{{#i18n}}order_arrays.edit.name{{/i18n}}</th>
+      <th>{{#i18n}}order_arrays.edit.comment{{/i18n}}</th>
+      {{#columns}}
+      <th class="order">
+        {{date}}<br/>
+        {{week_day}}
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear fa-fw"></i><span class="caret"></span></button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a class="empty_column" href="javascript:void(0);"><i class="fa fa-times-circle fa-fw"></i> {{#i18n}}order_arrays.edit.empty_column{{/i18n}}</a></li>
+            <li><a class="copy_column" href="javascript:void(0);"><i class="fa fa-copy fa-fw"></i> {{#i18n}}order_arrays.edit.copy{{/i18n}}</a></li>
+            <li><a class="paste_column" href="javascript:void(0);"><i class="fa fa-paste fa-fw"></i> {{#i18n}}order_arrays.edit.paste{{/i18n}}</a></li>
+            <li class="divider"></li>
+          </ul>
+        </div>
+      </th>
+      {{/columns}}
+      {{#products}}
+      <th data-product_id="{{id}}" class="th-number" rowspan="2"><div><i class="fa fa-cube fa-fw"></i> {{code}}</div></th>
+      {{/products}}
+      <th class="th-number" rowspan="2"><div><i class="fa fa-cubes fa-fw"></i> {{#i18n}}order_arrays.edit.total{{/i18n}}</div></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#rows}}
+    <tr>
+      <th>
+        <div class="btn-group">
+          <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear fa-fw"></i><span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a class="empty_row" href="javascript:void(0);"><i class="fa fa-times-circle fa-fw"></i> {{#i18n}}order_arrays.edit.empty_row{{/i18n}}</a></li>
+            <li><a class="copy_row" href="javascript:void(0);"><i class="fa fa-copy fa-fw"></i> {{#i18n}}order_arrays.edit.copy{{/i18n}}</a></li>
+            <li><a class="paste_row" href="javascript:void(0);"><i class="fa fa-paste fa-fw"></i> {{#i18n}}order_arrays.edit.paste{{/i18n}}</a></li>
+            <li class="divider"></li>
+            {{#products}}
+              <li><a class="add_product_row" href="javascript:void(0);" data-product_id="{{id}}"><i class="fa fa-plus-circle fa-fw"></i><i class="fa fa-cube fa-fw"></i> {{code}} - {{name}}</a></li>
+            {{/products}}
+            <li class="divider"></li>
+            {{#products}}
+              <li><a class="remove_product_row" href="javascript:void(0);" data-product_id="{{id}}"><i class="fa fa-minus-circle fa-fw"></i><i class="fa fa-cube fa-fw"></i> {{code}} - {{name}}</a> </li>
+            {{/products}}
+          </ul>
+        </div>
+      </th>
+      <th>{{name}}</th>
+      <td>{{comment}}</td>
+      {{#orders}}
+      <td data-id="{{id}}" tabindex="0">
+        <input type="hidden" value="" name="order[product_ids][]">
+        <div class="fake select2-container select2-container-multi" style="width: 100%">
+          <ul class="select2-choices">
+            {{#products}}
+              {{#active}}
+                <li class="select2-search-choice">
+                  {{code}}
+                  <a class="select2-search-choice-close" tabindex="-1" href="javascript:void(0)"></a>
+                </li>
+              {{/active}}
+            {{/products}}
+            <li class="select2-search-field">
+              <input type="text" style="width: 10px;" autocomplete="off"/>
+            </li>
+          </ul>
+        </div>
+        <select multiple="multiple" name="order[product_ids][]" style="display:none">
+          {{#products}}
+            <option value="{{id}}" {{#active}} selected="selected"{{/active}}>{{code}}</option>
+          {{/products}}
+        </select>
+      </td>
+      {{/orders}}
+      {{#products}}
+      <td data-sum-product-id="{{id}}" class="number"></td>
+      {{/products}}
+      <td class="number total-products"></td>
+    </tr>
+    {{/rows}}
+  </tbody>
+  <tfoot>
+    {{#products}}
+    <tr>
+      <th></th>
+      <th data-product_id="{{id}}"><i class="fa fa-cube fa-fw"></i> {{code}}</th>
+      <td>{{name}}</td>
+      {{#columns}}
+      <td class="number"></td>
+      {{/columns}}
+      {{#products}}
+      <td class="number"></td>
+      {{/products}}
+      <td class="number"></td>
+    </tr>
+    {{/products}}
+    <tr>
+      <th></th>
+      <th class="th-number" rowspan="2"><div><i class="fa fa-cubes fa-fw"></i> {{#i18n}}order_arrays.edit.total{{/i18n}}</div></th>
+      <td></td>
+      {{#columns}}
+      <td class="number total-products"></td>
+      {{/columns}}
+      {{#products}}
+      <td class="number"></td>
+      {{/products}}
+      <td class="number"></td>
+    </tr>
+  </tfoot>
+</table>

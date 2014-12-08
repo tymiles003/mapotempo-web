@@ -1,0 +1,8 @@
+<%= twitter_bootstrap_form_for @product, layout: :horizontal do |f| %>
+  <%= render 'shared/error_messages', model: @product %>
+  <%= f.text_field :code %>
+  <%= f.text_field :name %>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
+<% end %>

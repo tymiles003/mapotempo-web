@@ -1,0 +1,111 @@
+// Copyright © Mapotempo, 2013-2014
+//
+// This file is part of Mapotempo.
+//
+// Mapotempo is free software. You can redistribute it and/or
+// modify since you respect the terms of the GNU Affero General
+// Public License as published by the Free Software Foundation,
+// either version 3 of the License, or (at your option) any later version.
+//
+// Mapotempo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE.  See the Licenses for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with Mapotempo. If not, see:
+// <http://www.gnu.org/licenses/agpl.html>
+//
+// Place all the styles related to the Plannings controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+// = require leaflet
+// = require leaflet_numbered_markers
+// = require leaflet.markercluster
+// = require leaflet.markercluster.default
+// = require leaflet.markercluster.default.ie
+
+[data-controller='order_arrays'] {
+  #order_array td {
+    padding: 0;
+
+    ul {
+      background: transparent;
+    }
+  }
+
+  thead {
+    .tablesorter-filter-row {
+      td:nth-of-type(2) input {
+        width: 15em;
+      }
+
+      td:nth-of-type(3) input {
+        width: 10em;
+      }
+    }
+
+    th.order {
+      .tablesorter-header-inner {
+        padding: 0px;
+      }
+
+      .btn-group {
+        float: right;
+        padding: 0px;
+
+        .btn-default {
+          background: inherit;
+          border-width: 0;
+        }
+      }
+    }
+
+    .th-number {
+      max-width: 3em;
+
+      div {
+        white-space: nowrap;
+        transform: rotate(90deg);
+        writing-mode:tb-rl;
+      }
+    }
+  }
+
+  tbody {
+    th:nth-of-type(1) {
+      padding: 0px;
+
+      .btn-default {
+        background: inherit;
+        border-width: 0;
+      }
+    }
+
+    th:nth-of-type(2) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 15em;
+    }
+
+    td:nth-of-type(1) {
+      font-size: 75%;
+    }
+
+    td:focus {
+      border: 1px solid #5897fb;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      outline:medium none;
+    }
+  }
+
+  tfoot {
+    td:nth-of-type(1) {
+      font-size: 75%;
+    }
+  }
+
+  .number {
+    text-align: right;
+  }
+}

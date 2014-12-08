@@ -51,10 +51,22 @@ en:
       layers:
         one: "layer"
         other: "layers"
+      order: "Order"
+      orders:
+        one: "Order"
+        other: "Orders"
+      order_array: "Order array"
+      order_arrays:
+        one: "Order array"
+        other: "Orders arrays"
       planning: "Planning"
       plannings:
         one: "planning"
         other: "plannings"
+      product: "Product"
+      products:
+        one: "Product"
+        other: "Products"
       route: "Route"
       routes:
         one: "route"
@@ -102,6 +114,7 @@ en:
         print_planning_annotating: "Planning annotating"
         print_header: "Routes header"
         stores: "Stores"
+        enable_orders: "Enable orders"
       destination:
         name: "Name"
         address: "Address"
@@ -147,12 +160,24 @@ en:
         name: "Name"
         url: "URL"
         attribution: "Attribution"
+      order:
+        date: "Date"
+        destination_id: "Destination"
+        order_array_id: "Order array"
+      order_array:
+        name: "Name"
+        base_date: "Base date"
+        length: "Period"
+        customer_id: "Customer"
       planning:
         name: "Name"
         tag_ids: "Tags"
         zoning_id: "Zoning"
         created_at: "Created"
         updated_at: "Updated"
+      product:
+        code: "Code"
+        name: "Name"
       route:
         distance: "Distance"
         emission: "Emission"
@@ -346,6 +371,27 @@ en:
       unsupported_browser_modern: "Your browser is too old, please use any modern browser (except Internet Explorer)."
       download_browser: "You can download the last version of free browser Firefox at: "
 
+  order_arrays:
+    menu:
+      order_arrays: "Orders"
+    form:
+      week: "Week"
+      month: "Month"
+    index:
+      title: "Listing orders arrays"
+      new: "New orders array"
+    edit:
+      title: "Editing orders array"
+      name: "Name"
+      comment: "Comment"
+      empty_row: "Empty row"
+      empty_column: "Empty column"
+      copy: "Copy"
+      paste: "Paste"
+      total: "Total"
+    new:
+      title: "New orders array"
+
   plannings:
     menu:
       plannings: "Plannings"
@@ -483,6 +529,17 @@ en:
       new: "New store"
     new:
       title: "New store"
+
+  products:
+    menu:
+      products: "Products"
+    edit:
+      title: "Editing product"
+    index:
+      title: "Listing products"
+      new: "New product"
+    new:
+      title: "New product"
 
   tags:
     edit:

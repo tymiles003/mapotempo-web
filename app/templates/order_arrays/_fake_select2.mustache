@@ -1,0 +1,20 @@
+      <div class="fake select2-container select2-container-multi" style="width: 100%">
+        <ul class="select2-choices">
+          {{#products}}
+            {{#active}}
+              <li class="select2-search-choice">
+                {{code}}
+                <a class="select2-search-choice-close" tabindex="-1" href="javascript:void(0)"></a>
+              </li>
+            {{/active}}
+          {{/products}}
+          <li class="select2-search-field">
+            <input type="text" style="width: 10px;" autocomplete="off"/>
+          </li>
+        </ul>
+      </div>
+      <select multiple="multiple" name="order[product_ids][]" style="display:none">
+        {{#products}}
+          <option value="{{id}}" {{#active}} selected="selected"{{/active}}>{{code}}</option>
+        {{/products}}
+      </select>

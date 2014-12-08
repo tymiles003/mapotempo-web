@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210144628) do
+ActiveRecord::Schema.define(version: 20141210144629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20141210144628) do
     t.string   "masternaut_account"
     t.string   "masternaut_user"
     t.string   "masternaut_password"
+    t.boolean  "enable_orders", default: false, null: false
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
     t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
   end
@@ -103,6 +104,48 @@ ActiveRecord::Schema.define(version: 20141210144628) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "urlssl"
+  end
+
+  create_table "order_arrays", force: true do |t|
+    t.string   "name",        null: false
+    t.date     "base_date",   null: false
+    t.integer  "length",      null: false
+    t.integer  "customer_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["customer_id"], :name => "index_order_arrays_on_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_order_arrays_customer_id"
+  end
+
+  create_table "orders", force: true do |t|
+    t.integer  "shift",          null: false
+    t.integer  "destination_id", null: false
+    t.integer  "order_array_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["destination_id"], :name => "index_orders_on_destination_id"
+    t.index ["order_array_id"], :name => "index_orders_on_order_array_id"
+    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_destination_id"
+    t.foreign_key ["order_array_id"], "order_arrays", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_order_array_id"
+  end
+
+  create_table "products", force: true do |t|
+    t.string   "name",        null: false
+    t.string   "code",        null: false
+    t.integer  "customer_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["customer_id"], :name => "index_products_on_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_products_customer_id"
+  end
+
+  create_table "orders_products", id: false, force: true do |t|
+    t.integer "order_id",   null: false
+    t.integer "product_id", null: false
+    t.index ["order_id"], :name => "fk__orders_products_order_id"
+    t.index ["product_id"], :name => "fk__orders_products_product_id"
+    t.foreign_key ["order_id"], "orders", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_products_order_id"
+    t.foreign_key ["product_id"], "products", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_products_product_id"
   end
 
   create_table "zonings", force: true do |t|

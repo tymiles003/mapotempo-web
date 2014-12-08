@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+order_array_one:
+  customer: customer_one
+  name: order_array1
+  base_date: 2014-10-10
+  length: 7
+
+order_array_two:
+  customer: customer_one
+  name: order_array2
+  base_date: 2014-10-10
+  length: 7

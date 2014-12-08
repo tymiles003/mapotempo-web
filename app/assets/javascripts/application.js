@@ -34,6 +34,7 @@
 //= require bootstrap-filestyle
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales
+//= require bootstrap-datepicker
 //= require turbolinks
 //= require jquery-ui/sortable
 //= require jquery-ui/autocomplete

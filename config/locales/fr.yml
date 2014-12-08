@@ -54,10 +54,22 @@ fr:
       layers:
         one: "fond de carte"
         other: "fond de cartes"
+      order: "Commande"
+      orders:
+        one: "Commande"
+        other: "Commandes"
+      order_array: "Tableau de commandes"
+      order_arrays:
+        one: "Tableau de commandes"
+        other: "Tableaux de commandes"
       planning: "Planning"
       plannings:
         one: "planning"
         other: "plannings"
+      product: "Produit"
+      products:
+        one: "Produit"
+        other: "Produits"
       route: "Tournée"
       routes:
         one: "tournée"
@@ -105,6 +117,7 @@ fr:
         print_planning_annotating: "Émargement des feuilles de routes"
         print_header: "Entête des tournées"
         stores: "Dépôts"
+        enable_orders: "Activer les commandes"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -150,12 +163,24 @@ fr:
         name: "Nom"
         url: "URL"
         attribution: "Attribution"
+      order:
+        date: "Date"
+        destination_id: "Client"
+        order_array_id: "Tableau de commandes"
+      order_array:
+        name: "Nom"
+        base_date: "Date de base"
+        length: "Période"
+        customer_id: "Compte client"
       planning:
         name: "Nom"
         tag_ids: "Libellés"
         zoning_id: "Zonage"
         created_at: "Création"
         updated_at: "Mise à jour"
+      product:
+        code: "Code"
+        name: "Name"
       route:
         distance: "Distance"
         emission: "Émissions"
@@ -349,6 +374,27 @@ fr:
       unsupported_browser_modern: "Votre navigateur est trop ancien, s'il vous plaît utiliser n'importe quel navigateur moderne (sauf Internet Explorer)."
       download_browser: "Vous pouvez télécharger la dernière version du navigateur libre Firefox à cette adresse : "
 
+  order_arrays:
+    menu:
+      order_arrays: "Commandes"
+    form:
+      week: "Semaine"
+      month: "Mois"
+    index:
+      title: "Liste tableaux de commandes"
+      new: "Nouveau tableaux de commandes"
+    edit:
+      title: "Modifier tableaux de commandes"
+      name: "Nom"
+      comment: "Commentaire"
+      empty_row: "Vider la ligne"
+      empty_column: "Vider la colonne"
+      copy: "Copier"
+      paste: "Coller"
+      total: "Total"
+    new:
+      title: "Nouveau tableaux de commandes"
+
   plannings:
     menu:
       plannings: "Plannings"
@@ -488,6 +534,17 @@ fr:
       new: "Nouveau dépôt"
     new:
       title: "Nouveau dépôt"
+
+  products:
+    menu:
+      products: "Produits"
+    edit:
+      title: "Modifier produit"
+    index:
+      title: "Liste produits"
+      new: "Nouveau produit"
+    new:
+      title: "Nouveau produit"
 
   tags:
     edit:

@@ -71,6 +71,7 @@ gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', branc
 gem 'twitter_bootstrap_form_for', github: 'frodrigo/twitter_bootstrap_form_for' # FIXME wait for pull request
 gem 'bootstrap-filestyle-rails'
 gem 'bootstrap-wysihtml5-rails'
+gem 'bootstrap-datepicker-rails'
 gem 'sanitize'
 gem 'iconv'
 

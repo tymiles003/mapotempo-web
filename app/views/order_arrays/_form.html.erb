@@ -1,0 +1,10 @@
+<% options = @order_array.id ? {layout: :horizontal, default_div_class: 'col-lg-10'} : {layout: :horizontal} %>
+<%= twitter_bootstrap_form_for @order_array, options do |f| %>
+  <%= render 'shared/error_messages', model: @order_array %>
+  <%= f.text_field :name %>
+  <%= f.text_field :base_date, {input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
+  <%= f.select :length, [], OrderArray.lengths.collect{ |key, id| [t('.'+key), key] }, {}, {} %>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
