@@ -49,6 +49,7 @@ function plannings_edit(params) {
     map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13),
     layer_zoning,
     markers = {},
+    stores = {},
     layers = {},
     layers_cluster = {},
     routes_layers,
@@ -198,6 +199,7 @@ function plannings_edit(params) {
     });
 
     var stores_marker = L.featureGroup();
+    stores = {};
     $.each(data.stores, function(i, store) {
       var m = L.marker(new L.LatLng(store.lat, store.lng), {
         icon: L.icon({
@@ -212,6 +214,7 @@ function plannings_edit(params) {
       }).on('mouseout', function(e) {
         m.closePopup();
       });
+      stores[store.id] = m;
     });
     stores_marker.addTo(map);
 
@@ -445,6 +448,14 @@ function plannings_edit(params) {
           layers_cluster[route_id].zoomToShowLayer(markers[destination_id], function() {
             markers[destination_id].openPopup();
           });
+        } else {
+          var store_id = $(this).closest("[data-store_id]").attr("data-store_id");
+          if (store_id in stores) {
+            map.setView(stores[store_id].getLatLng(), 17, {
+              reset: true
+            });
+            stores[store_id].openPopup();
+          }
         }
         return false;
       })
