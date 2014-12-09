@@ -20,16 +20,16 @@ require 'optimizer_job'
 
 class Optimizer
 
-  def self.optimize(customer, planning, route)
+  def self.optimize(planning, route)
     if route.size_active <= 1
         # Nothing to optimize
         true
     elsif Mapotempo::Application.config.delayed_job_use
-      if customer.job_optimizer
+      if planning.customer.job_optimizer
         # Customer already run an optimization
         false
       else
-        customer.job_optimizer = Delayed::Job.enqueue(OptimizerJob.new(planning.id, route.id))
+        planning.customer.job_optimizer = Delayed::Job.enqueue(OptimizerJob.new(planning.id, route.id))
       end
     else
       tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop| # TODO support diff start and stop on route into optimizer
@@ -38,7 +38,7 @@ class Optimizer
         if open && close && open > close
           close = open
         end
-        take_over = stop.destination.take_over ? stop.destination.take_over : customer.take_over
+        take_over = stop.destination.take_over ? stop.destination.take_over : planning.customer.take_over
         take_over = take_over ? take_over.seconds_since_midnight : 0
         [open, close, take_over]
       }

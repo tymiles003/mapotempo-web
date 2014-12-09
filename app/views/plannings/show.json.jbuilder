@@ -1,7 +1,7 @@
-if current_user.customer.job_optimizer
+if @planning.customer.job_optimizer
   json.optimizer do
-    json.extract! current_user.customer.job_optimizer, :progress, :attempts
-    json.error !!current_user.customer.job_optimizer.failed_at
+    json.extract! @planning.customer.job_optimizer, :progress, :attempts
+    json.error !!@planning.customer.job_optimizer.failed_at
   end
 else
   json.extract! @planning, :id
@@ -11,7 +11,7 @@ else
   (json.zoning_out_of_date true) if @planning.zoning_out_of_date
   json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
   json.size_active @planning.routes.to_a.sum(0){ |route| route.vehicle ? route.size_active : 0 }
-  json.stores current_user.customer.stores do |store|
+  json.stores @planning.customer.stores do |store|
     json.extract! store, :id, :name, :street, :postalcode, :city, :lat, :lng
   end
   json.routes @planning.routes do |route|

@@ -184,14 +184,12 @@ class PlanningsController < ApplicationController
   end
 
   def optimize_route
-    @route = Route.where(planning: @planning, id: params[:route_id]).first
-    if @route
-      respond_to do |format|
-        if @route.stops.size == 0 or (Optimizer::optimize(current_user.customer, @planning, @route) && current_user.save)
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
-        end
+    respond_to do |format|
+      route = @planning.routes.find{ |route| route.id == params[:route_id].to_i }
+      if route && Optimizer::optimize(@planning, route) && @planning.customer.save
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end

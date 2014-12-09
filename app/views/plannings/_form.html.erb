@@ -2,12 +2,12 @@
 <%= twitter_bootstrap_form_for @planning, options do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
   <%= f.text_field :name %>
-  <%= f.select :tag_ids, t('activerecord.attributes.planning.tag_ids'), options_for_select(current_user.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @planning.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+  <%= f.select :tag_ids, t('activerecord.attributes.planning.tag_ids'), options_for_select(@planning.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @planning.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
     <% if not @planning.id %>
       <p class="help-block"><%= t '.tags_help' %></p>
     <% end %>
   <% end %>
-  <%= f.collection_select :zoning_id, [], current_user.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {} do %>
+  <%= f.collection_select :zoning_id, [], @planning.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {} do %>
     <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_edit"<% if !@planning.id || !@planning.zoning %> style="display: none;"<% end %>><i class="fa fa-pencil fa-fw"></i> <%= t 'plannings.edit.zoning.edit' %></a>
     <a href="/zonings/new/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_new"<% if !@planning.id || @planning.zoning %> style="display: none;"<% end %>><i class="fa fa-pencil fa-fw"></i> <%= t 'plannings.edit.zoning.new' %></a>
   <% end %>
