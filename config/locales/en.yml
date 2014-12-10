@@ -348,7 +348,9 @@ en:
     edit:
       title: "Editing planning"
       stops: "stops"
-      optimize: "Optimize"
+      optimize_all: "Optimize the whole"
+      optimize_each: "Optimize all routes"
+      optimize_each_confirm: "Run an optimization calculation on each road?"
       optimize_confirm: "Run an optimization calculation?"
       zoning_confirm: "Save and apply the new zoning?"
       exports: "Export"
@@ -405,6 +407,7 @@ en:
           in_progress: "Please wait, process in progress."
           matrix: "Distance matrix"
           optimize: "Optimizing"
+          routes: "Routes"
           attempts: "Attempts:"
           error: "Compute fail."
         tomtom:

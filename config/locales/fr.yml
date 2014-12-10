@@ -351,7 +351,9 @@ fr:
     edit:
       title: "Modifier planning"
       stops: "arrêts"
-      optimize: "Optimiser"
+      optimize_all: "Optimiser l'ensemble"
+      optimize_each: "Optimiser toutes les tournées"
+      optimize_each_confirm: "Lancer un calcul d'optimisation pour chacune des tournées ?"
       optimize_confirm: "Lancer un calcul d'optimisation ?"
       zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
       exports: "Exporter"
@@ -408,6 +410,7 @@ fr:
           in_progress: "Processus en cours, merci de patienter."
           matrix: "Calcul du distancier"
           optimize: "Optimisation"
+          routes: "Tournées"
           attempts: "Tentatives :"
           error: "Impossible d'effectuer le calcul."
         tomtom:

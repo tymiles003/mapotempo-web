@@ -64,6 +64,12 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
     dialog.dialog("open");
     var progress = data.progress && data.progress.split(';');
     $(".progress-bar", dialog).each(function(i, e) {
+      if (progress == undefined || progress == '' || progress[i] == undefined || progress[i] == '') {
+        $(e).parent().parent().hide();
+      } else {
+        $(e).parent().parent().show();
+      }
+
       if (!progress || !progress[i]) {
         $(e).parent().removeClass("active");
         $(e).css("transition", "linear 0s");
@@ -76,13 +82,26 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
         $(e).parent().addClass("active");
         $(e).css("transition", "linear 0s");
         $(e).css("width", "100%");
-      } else if (progress[i].substr(progress[i].length - 2) == "ms") {
+      } else if (progress[i].indexOf('ms') > -1) {
+        var v = progress[i].split('ms');
+        var iteration = $(e).data('iteration');
+        if (iteration != v[1]) {
+          $(e).data('iteration', iteration);
+          $(e).css("transition", "linear 0s");
+          $(e).css("width", "0%");
+        }
         if (parseInt($(e).css("width")) == 0) {
-          timeout = parseInt(progress[i].substr(0, progress[i].length - 2));
+          timeout = parseInt(v[0]);
           $(e).parent().removeClass("active");
           $(e).css("transition", "linear " + (timeout / 1000) + "s");
           $(e).css("width", "100%");
         }
+      } else if (progress[i].indexOf('/') > -1) {
+        var v = progress[i].split('/');
+        $(e).parent().removeClass("active");
+        $(e).css("transition", "linear 0.5s");
+        $(e).css("width", "" + (100 * v[0] / v[1]) + "%");
+        $(e).html(progress[i]);
       } else {
         $(e).parent().removeClass("active");
         $(e).css("transition", "linear 2s");

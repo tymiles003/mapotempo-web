@@ -136,6 +136,20 @@ function plannings_edit(params) {
     }
   });
 
+  $("#optimize_each").click( function(event, ui) {
+    if (!confirm(I18n.t('plannings.edit.optimize_each_confirm'))) {
+      return false;
+    }
+    $.ajax({
+      type: "get",
+      url: '/plannings/' + planning_id + '/optimize_each.json',
+      beforeSend: beforeSendWaiting,
+      success: display_planning,
+      complete: completeWaiting,
+      error: ajaxError
+    });
+  });
+
   function update_planning(event, ui) {
     var item = $(ui.item),
       index = 0,

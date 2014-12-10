@@ -238,7 +238,7 @@ class Route < ActiveRecord::Base
   end
 
   def matrix_size
-    stops_segregate[true].size + 2
+    stops_segregate[true] ? stops_segregate[true].size + 2 : 0
   end
 
   def matrix(&block)

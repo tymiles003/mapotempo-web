@@ -31,6 +31,7 @@ Mapotempo::Application.routes.draw do
     patch 'automatic_insert/:destination_id' => 'plannings#automatic_insert'
     patch ':route_id/active/:active' => 'plannings#active'
     patch ':route_id/:destination_id' => 'plannings#update_stop'
+    get 'optimize_each' => 'plannings#optimize_each_routes'
     get ':route_id/optimize' => 'plannings#optimize_route'
   end
 

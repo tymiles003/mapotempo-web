@@ -19,7 +19,7 @@ require 'csv'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource :except => :create
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :duplicate]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate]
 
   def index
     @plannings = Planning.where(customer_id: current_user.customer.id)
@@ -179,6 +179,16 @@ class PlanningsController < ApplicationController
         end
       rescue StandardError => e
         format.json { render json: e.message, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def optimize_each_routes
+    respond_to do |format|
+      if Optimizer::optimize_each(@planning) && @planning.customer.save
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
