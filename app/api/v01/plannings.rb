@@ -69,8 +69,8 @@ class V01::Plannings < Grape::API
       error!('501 Not Implemented', 501)
     end
 
-    desc "Starts asynchronous route optimization."
-    get ':id/optimize_route' do
+    desc "Starts asynchronous routes optimization."
+    get ':id/optimize_each_routes' do
       # TODO
       error!('501 Not Implemented', 501)
     end

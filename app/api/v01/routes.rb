@@ -59,6 +59,12 @@ class V01::Routes < Grape::API
 
           route.move_destination(destination, params[:index].to_i + 1) && planning.save
         end
+
+        desc "Starts asynchronous route optimization."
+        get ':id/optimize' do
+          # TODO
+          error!('501 Not Implemented', 501)
+        end
       end
     end
   end
