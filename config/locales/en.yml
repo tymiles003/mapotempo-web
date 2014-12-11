@@ -338,6 +338,7 @@ en:
       unsupported_browser: "Unsupported Browser"
       unsupported_browser_ie: "Internet Explorer is not a supported, please use Firefox, Chrome or any other modern browser."
       unsupported_browser_modern: "Your browser is too old, please use any modern browser (except Internet Explorer)."
+      download_browser: "You can download the last version of free browser Firefox at: "
 
   plannings:
     menu:

@@ -341,6 +341,7 @@ fr:
       unsupported_browser: "Navigateur non pris en charge"
       unsupported_browser_ie: "Internet Explorer n'est pas pris en charge, s'il vous plaît utiliser Firefox, Chrome ou tout autre navigateur moderne."
       unsupported_browser_modern: "Votre navigateur est trop ancien, s'il vous plaît utiliser n'importe quel navigateur moderne (sauf Internet Explorer)."
+      download_browser: "Vous pouvez télécharger la dernière version du navigateur libre Firefox à cette adresse : "
 
   plannings:
     menu:
