@@ -45,7 +45,7 @@ class PlanningsController < ApplicationController
   end
 
   def new
-    @planning = Planning.new
+    @planning = current_user.customer.plannings.build()
   end
 
   def edit

@@ -56,7 +56,7 @@ class DestinationsController < ApplicationController
     @destination = current_user.customer.destinations.build(destination_params)
 
     respond_to do |format|
-      if current_user.customer.save
+      if @destination.save && current_user.customer.save
         format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
       else
         format.html { render action: 'new' }

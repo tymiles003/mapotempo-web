@@ -93,7 +93,7 @@ class RouteTest < ActiveSupport::TestCase
   test "should remove" do
     o = routes(:route_one)
     assert_difference('Stop.count', -1) do
-      o.remove(destinations(:destination_two))
+      o.remove_destination(destinations(:destination_two))
       o.save!
     end
   end

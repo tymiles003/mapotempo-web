@@ -9,8 +9,14 @@ class DestinationTest < ActiveSupport::TestCase
   end
 
   test "should save" do
-    o = customers(:customer_one).destinations.build(name: "plop", city: "Bordeaux", lat: 1, lng: 1, tags: [tags(:tag_one)])
-    assert o.save
+    assert_difference('Stop.count', 1) do
+      assert_difference('Destination.count') do
+        customer = customers(:customer_one)
+        o = customer.destinations.build(name: "plop", city: "Bordeaux", lat: 1, lng: 1, tags: [tags(:tag_one)])
+        assert o.save
+        assert customer.save
+      end
+    end
   end
 
   test "should geocode" do
