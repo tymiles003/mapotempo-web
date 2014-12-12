@@ -40,9 +40,9 @@ class RoutesController < ApplicationController
       format.tomtom do
         begin
           if params[:type] == 'waypoints'
-            Tomtom.export_route_as_waypoints(current_user.customer, @route)
+            Tomtom.export_route_as_waypoints(@route)
           else
-            Tomtom.export_route_as_orders(current_user.customer, @route)
+            Tomtom.export_route_as_orders(@route)
           end
           head :no_content
         rescue StandardError => e

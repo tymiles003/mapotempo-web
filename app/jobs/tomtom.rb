@@ -19,8 +19,9 @@ require 'tomtom_webfleet'
 
 class Tomtom
 
-  def self.export_route_as_orders(customer, route)
+  def self.export_route_as_orders(route)
     order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
+    customer = route.planning.customer
     TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_start, order_id_base+'_0', route.vehicle.store_start.name, route.start)
     route.stops.select(&:active).each{ |stop|
       description = [
@@ -34,10 +35,11 @@ class Tomtom
       ].select{ |s| s }.join(' ').strip
       TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, stop.destination, order_id_base+stop.id.to_s, description, stop.time)
     }
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, order_id_base+'_1', route.vehicle.store_stop.name, route.end)
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, order_id_base+'_1', route.vehicle.store_stop.name, route.start)
   end
 
-  def self.export_route_as_waypoints(customer, route)
+  def self.export_route_as_waypoints(route)
+    customer = route.planning.customer
     waypoints = ([[
         route.vehicle.store_start.lat,
         route.vehicle.store_start.lng,
@@ -62,6 +64,6 @@ class Tomtom
         {lat: l[0], lng: l[1], description: description}
       }
     order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, order_id_base+route.vehicle.id.to_s, route.vehicle.store_stop.name, route.end, waypoints)
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, order_id_base+route.vehicle.id.to_s, route.vehicle.store_stop.name, route.start, waypoints)
   end
 end
