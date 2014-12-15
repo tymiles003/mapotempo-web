@@ -19,7 +19,8 @@ require 'geocode'
 
 class Destination < ActiveRecord::Base
   belongs_to :customer
-  has_many :stops, inverse_of: :destination, dependent: :delete_all
+  has_many :stops, inverse_of: :destination, dependent: :destroy
+  has_many :orders, inverse_of: :destination, dependent: :destroy
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
 
   nilify_blanks
@@ -30,7 +31,7 @@ class Destination < ActiveRecord::Base
 #  validates :lat, numericality: {only_float: true} # maybe nil
 #  validates :lng, numericality: {only_float: true} # maybe nil
 
-  before_save :update_tags
+  before_save :update_tags, :create_orders
   before_update :update_geocode, :update_out_of_date
 
   def geocode
@@ -90,6 +91,14 @@ class Destination < ActiveRecord::Base
       end
 
       true
+    end
+
+    def create_orders
+      if customer && new_record?
+        customer.order_arrays.each{ |order_array|
+          order_array.add_destination(self)
+        }
+      end
     end
 
     def out_of_date

@@ -43,10 +43,8 @@ class OrderArray < ActiveRecord::Base
   end
 
   def default_orders
-    days.times{ |i|
-      customer.destinations.each{ |destination|
-        orders.build(date: base_date + i, destination: destination)
-      }
+    customer.destinations.each{ |destination|
+      add_destination(destination)
     }
   end
 
