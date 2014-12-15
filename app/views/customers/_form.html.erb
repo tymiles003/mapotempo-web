@@ -45,6 +45,23 @@
       </div>
     </div>
   </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">
+        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseMasternaut">
+          <%= t '.masternaut' %>
+        </a>
+      </h2>
+    </div>
+    <div id="collapseMasternaut" class="panel-collapse collapse">
+      <div class="panel-body">
+        <p class="help-block"><%= t '.masternaut_help' %></p>
+        <%= f.text_field :masternaut_account %>
+        <%= f.text_field :masternaut_user %>
+        <%= f.text_field :masternaut_password %>
+      </div>
+    </div>
+  </div>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

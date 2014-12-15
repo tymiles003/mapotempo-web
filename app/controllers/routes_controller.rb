@@ -49,6 +49,14 @@ class RoutesController < ApplicationController
           render json: e.message, status: :unprocessable_entity
         end
       end
+      format.masternaut do
+        begin
+          Masternaut.export_route(@route)
+          head :no_content
+        rescue StandardError => e
+          render json: e.message, status: :unprocessable_entity
+        end
+      end
     end
   end
 

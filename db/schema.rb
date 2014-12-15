@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141028165002) do
+ActiveRecord::Schema.define(version: 20141210144628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,9 @@ ActiveRecord::Schema.define(version: 20141028165002) do
     t.integer  "router_id"
     t.boolean  "print_planning_annotating"
     t.text     "print_header"
+    t.string   "masternaut_account"
+    t.string   "masternaut_user"
+    t.string   "masternaut_password"
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
     t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
   end
@@ -171,6 +174,7 @@ ActiveRecord::Schema.define(version: 20141028165002) do
     t.integer  "store_start_id", null: false
     t.integer  "store_stop_id",  null: false
     t.integer  "router_id"
+    t.string   "masternaut_ref"
     t.index ["customer_id"], :name => "index_vehicles_on_customer_id"
     t.index ["store_start_id"], :name => "fk__vehicles_store_start_id"
     t.index ["store_stop_id"], :name => "fk__vehicles_store_stop_id"

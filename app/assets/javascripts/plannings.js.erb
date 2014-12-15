@@ -360,6 +360,22 @@ function plannings_edit(params) {
       return false;
     });
 
+    $(".route .export_masternaut a").click(function() {
+      var url = this.href;
+      $.ajax({
+        type: "get",
+        url: url,
+        beforeSend: function() {
+          $("#dialog-masternaut").dialog("open");
+        },
+        complete: function() {
+          $("#dialog-masternaut").dialog("close");
+        },
+        error: ajaxError
+      });
+      return false;
+    });
+
     $(".vehicle_select").change(function() {
       $.ajax({
         type: "patch",
@@ -579,6 +595,11 @@ function plannings_edit(params) {
   });
 
   $("#dialog-tomtom").dialog({
+    autoOpen: false,
+    modal: true
+  });
+
+  $("#dialog-masternaut").dialog({
     autoOpen: false,
     modal: true
   });

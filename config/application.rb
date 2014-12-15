@@ -61,6 +61,8 @@ module Mapotempo
     config.tomtom_api_url = 'https://soap.business.tomtom.com/v1.20'
     config.tomtom_api_key = nil
 
+    config.masternaut_api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
+
     config.delayed_job_use = false
 
     config.self_care = true # Allow subscription and resiliation by the user himself

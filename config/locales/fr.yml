@@ -97,6 +97,9 @@ fr:
         tomtom_account: "Compte WEBFLEET"
         tomtom_user: "Nom d'utilisateur WEBFLEET"
         tomtom_password: "Mot de passe WEBFLEET"
+        masternaut_account: "Nom de client"
+        masternaut_user: "Nom d'utilisateur"
+        masternaut_password: "Mot de passe"
         router: "Calculateur d'itinéraire"
         router_id: "Calculateur d'itinéraire"
         print_planning_annotating: "Émargement des feuilles de routes"
@@ -204,6 +207,7 @@ fr:
         open: "Horaire début"
         close: "Horaire fin"
         tomtom_id: "TomTom ID"
+        masternaut_ref: "Ref. véhicule Masternaut"
         store_start: "Dépôt départ"
         store_start_id: "Dépôt départ"
         store_stop: "Dépôt arrivé"
@@ -268,6 +272,8 @@ fr:
       take_over_help: "Durée de visite moyenne par client"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
+      masternaut: "Masternaut"
+      masternaut_help: "Permet d'envoyer les plannings vers les appareils Masternaut."
       print_header_help: "Bloc de texte ajouté avant chaque tournée"
       print:
         title: "Impressions"
@@ -365,6 +371,7 @@ fr:
         gps_waypoint: "Points de passage GPS"
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
+        masternaut: "Envoyer vers Masternaut"
       zoning:
         none: "Aucun"
         apply: "Appliquer zonage"
@@ -417,6 +424,9 @@ fr:
         tomtom:
           title: "TomTom"
           in_progress: "Envoie vers GPS TomTom en cours, merci de patienter."
+        masternaut:
+          title: "Masternaut"
+          in_progress: "Envoie vers Masternaut en cours, merci de patienter."
         zoning:
           title: "Zonage"
           in_progress: "Application du nouveau zonage en cours, merci de patienter."

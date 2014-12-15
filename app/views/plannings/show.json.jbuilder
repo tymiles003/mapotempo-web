@@ -26,6 +26,7 @@ else
       json.vehicle_id route.vehicle.id
       json.work_time "%i:%02i" % [(route.vehicle.close - route.vehicle.open)/60/60, (route.vehicle.close - route.vehicle.open)/60%60]
       (json.tomtom true) if route.vehicle.tomtom_id && !route.vehicle.customer.tomtom_account.blank? && !route.vehicle.customer.tomtom_user.blank? && !route.vehicle.customer.tomtom_password.blank?
+      (json.masternaut true) if route.vehicle.masternaut_ref && !route.vehicle.customer.masternaut_account.blank? && !route.vehicle.customer.masternaut_user.blank? && !route.vehicle.customer.masternaut_password.blank?
     end
     number = 0
     no_geocoding = out_of_window = out_of_capacity = out_of_drive_time = false

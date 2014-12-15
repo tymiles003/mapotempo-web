@@ -94,6 +94,9 @@ en:
         tomtom_account: "WEBFLEET account name"
         tomtom_user: "WEBFLEET Username"
         tomtom_password: "WEBFLEET Password"
+        masternaut_account: "Customer name"
+        masternaut_user: "Username"
+        masternaut_password: "Password"
         router: "Route planner"
         router_id: "Route planner"
         print_planning_annotating: "Planning annotating"
@@ -201,6 +204,7 @@ en:
         open: "Open"
         close: "Close"
         tomtom_id: "TomTom ID"
+        masternaut_ref: "Masternaut vehicle ref."
         store_start: "Store Start"
         store_start_id: "Store Start"
         store_stop: "Store Stop"
@@ -265,6 +269,8 @@ en:
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
+      masternaut: "Masternaut"
+      masternaut_help: "Allows sending plannings to Masternaut device."
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
@@ -362,6 +368,7 @@ en:
         gps_waypoint: "GPS Waypoint"
         tomtom_orders: "Send to TomTom as Orders"
         tomtom_waypoints: "Send to TomTom as Waypoints"
+        masternaut: "Send to Masternaut"
       zoning:
         none: "None"
         apply: "Apply zoning"
@@ -414,6 +421,9 @@ en:
         tomtom:
           title: "TomTom"
           in_progress: "Please wait, sending planning to TomTom GPS."
+        masternaut:
+          title: "Masternaut"
+          in_progress: "Please wait, sending planning to Masternaut device."
         zoning:
           title: "Zoning"
           in_progress: "Please wait, applying new zoning in progress."
