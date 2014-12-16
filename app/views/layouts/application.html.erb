@@ -68,7 +68,7 @@
                     <li><%= link_to order_arrays_path do %><i class="fa fa-check-square-o fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
                     <li class="divider"></li>
                     <% current_user.customer.order_arrays.select(&:id).each do |order_array| %>
-                      <li><%= link_to edit_order_array_path(order_array) do %><i class="fa fa-calendar fa-fw"></i> <%= order_array.name %><% end %></li>
+                      <li><%= link_to edit_order_array_path(order_array) do %><i class="fa fa-check-square-o fa-fw"></i> <%= order_array.name %><% end %></li>
                     <% end %>
                     <li class="divider"></li>
                     <li><%= link_to products_path do %><i class="fa fa-cubes fa-fw"></i> <%= t 'products.menu.products' %><% end %></li>

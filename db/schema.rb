@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210144629) do
+ActiveRecord::Schema.define(version: 20141216163507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,9 +164,13 @@ ActiveRecord::Schema.define(version: 20141210144629) do
     t.datetime "updated_at"
     t.integer  "zoning_id"
     t.boolean  "zoning_out_of_date"
+    t.integer  "order_array_id"
+    t.integer  "order_array_shift"
     t.index ["customer_id"], :name => "index_plannings_on_customer_id"
+    t.index ["order_array_id"], :name => "fk__plannings_order_array_id"
     t.index ["zoning_id"], :name => "fk__plannings_zoning_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_customer_id"
+    t.foreign_key ["order_array_id"], "order_arrays", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_order_array_id"
     t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_zoning_id"
   end
 

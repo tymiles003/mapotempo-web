@@ -178,6 +178,8 @@ fr:
         zoning_id: "Zonage"
         created_at: "Création"
         updated_at: "Mise à jour"
+        order_array_id: "Tableau de commandes"
+        order_array_shift: Colonne du tableau de commandes
       product:
         code: "Code"
         name: "Name"
@@ -506,6 +508,8 @@ fr:
       out_of_drive_time: "hors créneau véhicule"
     form:
       tags_help: "Restreint les clients pris en compte à ces catégories"
+      order_array: "Comm."
+      order_array_shift: "Date"
 
   routes:
     show:

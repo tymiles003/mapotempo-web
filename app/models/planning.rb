@@ -20,6 +20,7 @@ class Planning < ActiveRecord::Base
   belongs_to :zoning
   has_many :routes, -> { order('CASE WHEN vehicle_id IS NULL THEN 0 ELSE id END')}, inverse_of: :planning, :autosave => true, :dependent => :destroy
   has_and_belongs_to_many :tags, -> { order('label')}, :autosave => true
+  belongs_to :order_array
 
   nilify_blanks
   validates :customer, presence: true
@@ -198,6 +199,9 @@ class Planning < ActiveRecord::Base
         stop.active = orders.has_key?(stop.destination_id) && !orders[stop.destination_id].empty?
       }
     }
+
+    self.order_array = order_array
+    self.order_array_shift = shift
   end
 
   private

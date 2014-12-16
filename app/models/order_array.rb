@@ -18,6 +18,7 @@
 class OrderArray < ActiveRecord::Base
   belongs_to :customer
   has_many :orders, -> {includes :products}, inverse_of: :order_array, :autosave => true, :dependent => :destroy
+  has_many :planning, inverse_of: :order_array, :dependent => :nullify
   enum length: {week: 7, month: 31}
 
   nilify_blanks

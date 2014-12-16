@@ -175,6 +175,8 @@ en:
         zoning_id: "Zoning"
         created_at: "Created"
         updated_at: "Updated"
+        order_array_id: "Order array"
+        order_array_shift: "Order array column"
       product:
         code: "Code"
         name: "Name"
@@ -501,6 +503,8 @@ en:
       out_of_drive_time: "out of vehicle's time window"
     form:
       tags_help: "Restrict customer to this categories"
+      order_array: "Orders"
+      order_array_shift: "Date"
 
   routes:
     show:

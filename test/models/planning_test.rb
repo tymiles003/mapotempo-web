@@ -151,4 +151,13 @@ class PlanningTest < ActiveSupport::TestCase
     assert o.routes[1].stops[0].active
     assert_not o.routes[1].stops[1].active
   end
+
+  test "should apply orders and destroy" do
+    o = plannings(:planning_one)
+    oa = order_arrays(:order_array_one)
+    o.apply_orders(oa, 0)
+    o.save!
+    oa.destroy
+    o.save!
+  end
 end
