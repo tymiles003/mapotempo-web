@@ -8,17 +8,16 @@ class V01::Orders < Grape::API
     end
   end
 
-
   resource :order_arrays do
     segment '/:order_array_id' do
 
       resource :orders do
-        desc "Return customer's orders."
+        desc "Return order_array's orders."
         get do
           present current_customer.order_arrays.find(params[:order_array_id]).orders.load, with: V01::Entities::Order
         end
 
-        desc "Orders mass asignement."
+        desc "Orders mass assignment."
         put do
           if params[:orders]
             order_array = current_customer.order_arrays.find(params[:order_array_id])
