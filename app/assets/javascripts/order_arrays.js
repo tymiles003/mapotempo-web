@@ -30,7 +30,8 @@ function order_arrays_new(params) {
 
 function order_arrays_edit(params) {
   var order_array_id = params.order_array_id,
-    block_save_select_change = false;
+    block_save_select_change = false,
+    table_neeed_update = false;
 
   function filter_text(exactText, normalizedValue, filter, index) {
     return !!String(normalizedValue).match(new RegExp(filter, 'i'));
@@ -72,7 +73,7 @@ function order_arrays_edit(params) {
         return;
       }
 
-      // $("#order_array table").trigger("update");
+      table_neeed_update = true;
       build_total(undefined, $('#order_array table'));
 
       var id = select.parent().data('id');
@@ -231,7 +232,6 @@ function order_arrays_edit(params) {
         return false;
       };
     }
-    //.bind("updateComplete", build_total)
     $("#order_array table").bind("tablesorter-initialized", build_total).tablesorter({
       textExtraction: function(node, table, cellIndex) {
         if (cellIndex >= 3) {
@@ -253,6 +253,13 @@ function order_arrays_edit(params) {
         filter_cssFilter: "tablesorter-filter",
         filter_functions: filter_functions,
         filter_formatter: filter_formatter
+      }
+    });
+
+    $('#order_array table thead input').focusin(function() {
+      if (table_neeed_update) {
+        table_neeed_update = false;
+        $("#order_array table").trigger("update");
       }
     });
 
@@ -286,7 +293,7 @@ function order_arrays_edit(params) {
       });
       active_fake_select2($('.fake', selector));
       block_save_select_change = false;
-      //      $("#order_array table").trigger("update");
+      table_neeed_update = true;
       build_total(undefined, $('#order_array table'));
 
       $.ajax({
