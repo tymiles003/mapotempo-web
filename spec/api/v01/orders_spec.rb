@@ -41,15 +41,4 @@ describe V01::Orders do
       expect(JSON.parse(response.body)['product_ids']).to eq @order.products.collect(&:id)
     end
   end
-
-  describe :mass_assignment do
-    it 'Do orders mass assignment' do
-      @order.product_ids = [products(:product_two).id]
-      put api(@order.order_array.id), {@order.id => @order.attributes}
-      expect(response.status).to eq(200)
-
-      @order.reload
-      expect(@order.product_ids).to eq([products(:product_two).id])
-    end
-  end
 end

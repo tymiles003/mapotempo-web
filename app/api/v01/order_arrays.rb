@@ -50,5 +50,22 @@ class V01::OrderArrays < Grape::API
       order_array.save!
       present order_array, with: V01::Entities::OrderArray
     end
+
+    desc "Orders mass assignment."
+    patch ':id' do
+      if params[:orders]
+        order_array = current_customer.order_arrays.find(params[:id])
+        orders = Hash[order_array.orders.load.map{ |order| [order.id, order] }]
+        params[:orders].each{ |id, order|
+          id = id.to_i
+          order[:product_ids] ||= []
+          if orders.has_key?(id)
+            orders[id].product_ids = order[:product_ids].map{ |product_id| Integer(product_id) } & current_customer.product_ids
+          end
+        }
+        order_array.save!
+      end
+      return
+    end
   end
 end

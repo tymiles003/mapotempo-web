@@ -290,12 +290,12 @@ function order_arrays_edit(params) {
       build_total(undefined, $('#order_array table'));
 
       $.ajax({
-        type: "put",
+        type: "patch",
         data: JSON.stringify({
           orders: orders
         }),
         contentType: "application/json",
-        url: '/api/0.1/order_arrays/' + order_array_id + '/orders.json',
+        url: '/api/0.1/order_arrays/' + order_array_id + '.json',
         beforeSend: beforeSendWaiting,
         complete: completeWaiting,
         error: ajaxError
