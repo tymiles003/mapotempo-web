@@ -140,4 +140,15 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal 0, o.routes[0].stops.size
     assert_equal 3, o.routes[1].stops.size
   end
+
+  test "should apply orders" do
+    o = plannings(:planning_one)
+    assert o.routes[1].stops[0].active
+    assert o.routes[1].stops[1].active
+
+    oa = order_arrays(:order_array_one)
+    o.apply_orders(oa, 0)
+    assert o.routes[1].stops[0].active
+    assert_not o.routes[1].stops[1].active
+  end
 end

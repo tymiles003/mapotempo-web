@@ -389,6 +389,7 @@ en:
       copy: "Copy"
       paste: "Paste"
       total: "Total"
+      planning: "Use"
     new:
       title: "New orders array"
 

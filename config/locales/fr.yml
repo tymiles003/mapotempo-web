@@ -392,6 +392,7 @@ fr:
       copy: "Copier"
       paste: "Coller"
       total: "Total"
+      planning: "Utiliser"
     new:
       title: "Nouveau tableaux de commandes"
 

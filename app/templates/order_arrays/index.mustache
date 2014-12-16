@@ -15,6 +15,9 @@
             <li><a class="copy_column" href="javascript:void(0);"><i class="fa fa-copy fa-fw"></i> {{#i18n}}order_arrays.edit.copy{{/i18n}}</a></li>
             <li><a class="paste_column" href="javascript:void(0);"><i class="fa fa-paste fa-fw"></i> {{#i18n}}order_arrays.edit.paste{{/i18n}}</a></li>
             <li class="divider"></li>
+            {{#plannings}}
+            <li><a class="planning" data-planning_id="{{id}}" href="javascript:void(0);"><i class="fa fa-calendar fa-fw"></i> {{#i18n}}order_arrays.edit.planning{{/i18n}} {{name}}</a></li>
+            {{/plannings}}
           </ul>
         </div>
       </th>

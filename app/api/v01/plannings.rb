@@ -82,5 +82,15 @@ class V01::Plannings < Grape::API
       planning.save!
       present planning, with: V01::Entities::Planning
     end
+
+    desc "Use order_array in the planning."
+    patch ':id/orders/:order_array_id/:shift' do
+      planning = current_customer.plannings.find(params[:id])
+      order_array = current_customer.order_arrays.find(params[:order_array_id])
+      shift = params[:shift].to_i
+      planning.apply_orders(order_array, shift)
+      planning.save!
+      present planning, with: V01::Entities::Planning
+    end
   end
 end

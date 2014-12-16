@@ -185,6 +185,21 @@ class Planning < ActiveRecord::Base
     }.flatten
   end
 
+  def apply_orders(order_array, shift)
+    orders = order_array.orders.select{ |order|
+      order.shift == shift && !order.products.empty?
+    }.collect{ |order|
+      [order.destination_id, order.products]
+    }
+    orders = Hash[orders]
+
+    routes.select(&:vehicle).each{ |route|
+      route.stops.each{ |stop|
+        stop.active = orders.has_key?(stop.destination_id) && !orders[stop.destination_id].empty?
+      }
+    }
+  end
+
   private
     def split_by_zones
       if zoning && !routes.empty?

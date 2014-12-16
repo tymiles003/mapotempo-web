@@ -343,6 +343,19 @@ function order_arrays_edit(params) {
       selector = $('tbody tr td:nth-child(' + td_index + ')', $(this).closest('table'));
       change_order(product_id, add_product, remove_product, paste, copy_column, selector);
     });
+
+    $('.planning').click(function(e) {
+      var index = $(this).closest('th').index('th') - 3,
+        planning_id = $(this).data('planning_id').toString();
+      $.ajax({
+        type: "patch",
+        contentType: "application/json",
+        url: '/api/0.1/plannings/' + planning_id + '/orders/' + order_array_id + '/' + index + '.json',
+        beforeSend: beforeSendWaiting,
+        complete: completeWaiting,
+        error: ajaxError
+      });
+    });
   }
 
   $.ajax({

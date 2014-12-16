@@ -113,4 +113,17 @@ describe V01::Plannings do
       }.to change{Planning.count}.by(1)
     end
   end
+
+  describe :orders do
+    it 'Apply orders' do
+      expect(@planning.routes[1].stops[0].active).to eq(true)
+      expect(@planning.routes[1].stops[1].active).to eq(true)
+      @order_array = order_arrays(:order_array_one)
+      patch api("#{@planning.id}/orders/#{@order_array.id}/0")
+
+      @planning.reload
+      expect(@planning.routes[1].stops[0].active).to eq(true)
+      expect(@planning.routes[1].stops[1].active).to eq(false)
+    end
+  end
 end

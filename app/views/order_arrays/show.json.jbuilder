@@ -1,3 +1,9 @@
+json.plannings do
+  json.array! @order_array.customer.plannings.each{ |planning|
+    json.extract! planning, :id, :name
+  }
+end
+
 json.products do
   json.array! @order_array.customer.products, :id, :code, :name
 end
