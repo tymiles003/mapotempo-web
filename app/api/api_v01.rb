@@ -42,6 +42,7 @@ class ApiV01 < Grape::API
   mount V01::Destinations
   mount V01::Orders
   mount V01::Plannings
+  mount V01::Products
   mount V01::Routes
   mount V01::Stores
   mount V01::Tags
