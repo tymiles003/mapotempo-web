@@ -7,4 +7,17 @@ class StopTest < ActiveSupport::TestCase
     o = Stop.new
     assert_not o.save, "Saved without required fields"
   end
+
+  test "get order" do
+    o = routes(:route_one)
+    o.planning.customer.enable_orders = true
+    assert_not o.stops[0].order
+    assert_not o.stops[1].order
+
+    o.planning.apply_orders(order_arrays(:order_array_one), 0)
+    o.planning.save!
+
+    assert_equal [products(:product_one)], o.stops[0].order.products.to_a
+    assert o.stops[1].order.products.empty?
+  end
 end

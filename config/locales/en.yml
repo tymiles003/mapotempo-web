@@ -496,6 +496,7 @@ en:
       comment: "comment"
       take_over: "take over"
       quantity: "quantity"
+      orders: "Orders"
       active: "active"
       tags: "tags"
       out_of_window: "out of customer's time window"

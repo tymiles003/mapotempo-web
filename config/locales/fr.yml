@@ -499,6 +499,7 @@ fr:
       comment: "commentaire"
       take_over: "durée visite"
       quantity: "quantité"
+      orders: "commandes"
       active: "livré"
       open: "horaire début"
       close: "horaire fin"

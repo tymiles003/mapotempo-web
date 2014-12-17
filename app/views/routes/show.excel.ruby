@@ -16,7 +16,7 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('plannings.export_file.lng'),
     I18n.t('plannings.export_file.comment'),
     I18n.t('plannings.export_file.take_over'),
-    I18n.t('plannings.export_file.quantity'),
+    @route.planning.customer.enable_orders ? I18n.t('plannings.export_file.orders') : I18n.t('plannings.export_file.quantity'),
     I18n.t('plannings.export_file.active'),
     I18n.t('plannings.export_file.open'),
     I18n.t('plannings.export_file.close'),

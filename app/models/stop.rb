@@ -22,4 +22,11 @@ class Stop < ActiveRecord::Base
   nilify_blanks
   validates :route, presence: true
   validates :destination, presence: true
+
+  def order
+    planning = route.planning
+    if planning.customer.enable_orders && planning.order_array
+      planning.order_array.orders.where(destination_id: destination.id, shift: planning.order_array_shift).first
+    end
+  end
 end

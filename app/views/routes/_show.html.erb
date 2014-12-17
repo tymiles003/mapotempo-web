@@ -9,7 +9,7 @@
       -
       <i class="fa fa-check-square-o fa-fw"></i>
       <%= route.planning.order_array.name %>
-      <%= l(@planning.order_array.base_date + route.planning.order_array_shift) %>
+      <%= l(route.planning.order_array.base_date + route.planning.order_array_shift) %>
     <% end %>
   </h1>
   <% if route.planning.customer.print_header %>
@@ -76,10 +76,20 @@
               <% } %>
             </div>
           <% end %>
-          <% if stop.destination.quantity && stop.destination.quantity > 1 %>
-            <div class="quantity">
-              <i class="fa fa-archive fa-fw"></i>⨯<%= stop.destination.quantity %>
-            </div>
+          <% if route.planning.customer.enable_orders %>
+            <% order = stop.order %>
+            <% if order %>
+              <% products = order.products.collect(&:code).join(', ') %>
+              <% if products && products.length > 0 %>
+                <i class="fa fa-cube fa-fw"></i> <%= products %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <% if stop.destination.quantity && stop.destination.quantity > 1 %>
+              <div class="quantity">
+                <i class="fa fa-archive fa-fw"></i>⨯<%= stop.destination.quantity %>
+              </div>
+            <% end %>
           <% end %>
           <% if stop.destination.take_over %>
             <span class="take_over">(<%= stop.destination.take_over.strftime("%H:%M:%S") %>)</span>
