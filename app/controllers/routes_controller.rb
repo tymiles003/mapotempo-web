@@ -26,16 +26,16 @@ class RoutesController < ApplicationController
     respond_to do |format|
       format.html
       format.gpx do
-        response.headers['Content-Disposition'] = 'attachment; filename="'+(@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.gpx"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.gpx"'
       end
       format.excel do
         data = render_to_string
         send_data data.encode('ISO-8859-1'),
           type: 'text/csv',
-          filename: (@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.csv'
+          filename: filename + '.csv'
       end
       format.csv do
-        response.headers['Content-Disposition'] = 'attachment; filename="'+(@route.planning.name+' - '+@route.vehicle.name).gsub('"','')+'.csv"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
       end
       format.tomtom do
         begin
@@ -79,5 +79,11 @@ class RoutesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def route_params
       params.require(:route).permit(:hidden, :locked, :ref)
+    end
+
+    def filename
+      (@route.planning.name + '_' + (@route.ref || @route.vehicle.name) + (@route.planning.customer.enable_orders && @route.planning.order_array ?
+        ('_' + @route.planning.order_array.name + '_' + l(@route.planning.order_array.base_date + @route.planning.order_array_shift).gsub('/', '-')) :
+        '')).gsub('"', '')
     end
 end

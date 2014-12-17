@@ -30,16 +30,16 @@ class PlanningsController < ApplicationController
       format.html
       format.json
       format.gpx do
-        response.headers['Content-Disposition'] = 'attachment; filename="'+@planning.name.gsub('"', '')+'.gpx"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.gpx"'
       end
       format.excel do
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
-            filename: @planning.name.gsub('"','')+'.csv'
+            filename: filename + '.csv'
       end
       format.csv do
-        response.headers['Content-Disposition'] = 'attachment; filename="'+@planning.name.gsub('"', '')+'.csv"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
       end
     end
   end
@@ -241,5 +241,11 @@ class PlanningsController < ApplicationController
 
     def stop_params
       params.require(:stop).permit(:active)
+    end
+
+    def filename
+      (@planning.name + (@planning.customer.enable_orders && @planning.order_array ?
+        ('_' + @planning.order_array.name + '_' + l(@planning.order_array.base_date + @planning.order_array_shift).gsub('/', '-')) :
+        '')).gsub('"', '')
     end
 end
