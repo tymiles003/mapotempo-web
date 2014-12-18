@@ -31,10 +31,11 @@ class CustomersController < ApplicationController
   end
 
   def create
-    @customer = Customer.new(customer_params)
+    # Can set max_vehicles on creation
+    @customer = Customer.new(customer_params.except('max_vehicles'))
 
     respond_to do |format|
-      if @customer.save
+      if @customer.save && @customer.update(customer_params) && @customer.save
         format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.created', model: @customer.class.model_name.human) }
       else
         format.html { render action: 'new' }

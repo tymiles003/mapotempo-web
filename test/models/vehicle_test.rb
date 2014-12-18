@@ -4,8 +4,13 @@ class VehicleTest < ActiveSupport::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   test "should not save" do
-    o = Vehicle.new
+    o = customers(:customer_one).vehicles.build
     assert_not o.save, "Saved without required fields"
+  end
+
+  test "should save" do
+    o = customers(:customer_one).vehicles.build(name: "1")
+    o.save!
   end
 
   test "should update out_of_date for capacity" do

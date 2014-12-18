@@ -12,6 +12,13 @@ class CustomerTest < ActiveSupport::TestCase
     assert_not o.save, "Saved without required fields"
   end
 
+  test "should save" do
+    o = Customer.new(name: 'test', router: routers(:router_one))
+    o.save!
+    o.max_vehicles = 5
+    o.save!
+  end
+
   test "should stop job optimizer" do
     assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
       @customer.job_optimizer.destroy

@@ -37,7 +37,6 @@ class Vehicle < ActiveRecord::Base
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
 
   after_initialize :assign_defaults, if: 'new_record?'
-  before_save :set_stores
   before_update :update_out_of_date
 
   def self.emissions_table
@@ -54,12 +53,10 @@ class Vehicle < ActiveRecord::Base
   end
 
   private
-    def set_stores
+    def assign_defaults
       self.store_start = customer.stores[0] unless self.store_start
       self.store_stop = self.store_start # TODO deal with diff start and stop in optimizer
-    end
 
-    def assign_defaults
       self.emission = 0
       self.consumption = 0
       self.capacity = 999
