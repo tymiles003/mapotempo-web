@@ -207,7 +207,7 @@ class Route < ActiveRecord::Base
     if stop.route != self
       destination, active = stop.destination, stop.active
       stop.route.move_stop_out(stop)
-      add(destination, index, active)
+      add(destination, index, active || stop.route.vehicle == nil)
     else
       if stop.index
         if index < stop.index
