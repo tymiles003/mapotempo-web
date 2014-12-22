@@ -6,6 +6,11 @@ class V01::OrderArrays < Grape::API
       p = p[:order_array] if p.has_key?(:order_array)
       p.permit(:name, :base_date, :length)
     end
+
+    def authorize!
+      ability = Ability.new(@current_user)
+      error!('401 Unauthorized', 401) unless ability.can?(:manage, OrderArray)
+    end
   end
 
   resource :order_arrays do

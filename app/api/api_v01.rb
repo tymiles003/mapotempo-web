@@ -16,10 +16,14 @@ class ApiV01 < Grape::API
       error!('401 Unauthorized', 401) unless current_customer
       error!('402 Payment Required', 402) if @current_customer.end_subscription && @current_customer.end_subscription > Time.now
     end
+
+    def authorize!
+    end
   end
 
   before do
     authenticate!
+    authorize!
     ActiveRecord::Base.connection.begin_transaction
   end
 
