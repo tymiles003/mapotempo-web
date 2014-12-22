@@ -448,6 +448,7 @@ en:
         close: "Close:"
         time: "Arrival:"
         quantity: "Quantity:"
+        orders: "Orders:"
         take_over: "Take over:"
       error:
         no_geocoding: "No geocoding"

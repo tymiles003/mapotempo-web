@@ -21,7 +21,8 @@ else
     (json.locked) if route.locked
     json.distance number_to_human((route.distance or 0), units: :distance, precision: 3, format: '%n %u')
     json.size route.stops.size
-    json.extract! route, :ref, :size_active, :quantity
+    json.extract! route, :ref, :size_active
+    (json.quantity route.quantity) if !@planning.customer.enable_orders
     if route.vehicle
       json.vehicle_id route.vehicle.id
       json.work_time "%i:%02i" % [(route.vehicle.close - route.vehicle.open)/60/60, (route.vehicle.close - route.vehicle.open)/60%60]
@@ -62,6 +63,12 @@ else
       json.destination do
          destination = stop.destination
          json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment, :quantity
+         if @planning.customer.enable_orders
+           order = stop.order
+           if order
+             json.orders order.products.collect(&:code).join(', ')
+           end
+         end
          (json.take_over destination.take_over.strftime("%H:%M:%S")) if destination.take_over
          (json.open destination.open.strftime("%H:%M")) if destination.open
          (json.close destination.close.strftime("%H:%M")) if destination.close

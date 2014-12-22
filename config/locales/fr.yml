@@ -451,6 +451,7 @@ fr:
         close: "Horaire fin : "
         time: "Passage : "
         quantity: "Quantité : "
+        orders: "Commandes : "
         take_over: "Durée de visite : "
       error:
         no_geocoding: "Pas de géocodage"

@@ -29,7 +29,7 @@
         <div class="panel-body">
           <p>
             <i class="fa fa-check-square fa-fw"></i>{{size}}&nbsp;{{#i18n}}plannings.edit.stops{{/i18n}}
-            <i class="fa fa-archive fa-fw"></i>{{quantity}}
+            {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity}}{{/quantity}}
           </p>
         </div>
         <ul id="out_of_route" class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
@@ -96,7 +96,7 @@
           </div>
           <i class="fa fa-clock-o fa-fw"></i>{{duration}}/{{work_time}}
           <i class="fa fa-road fa-fw"></i>{{distance}}
-          <i class="fa fa-archive fa-fw"></i>{{quantity}}/{{capacity}}
+          {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity}}/{{capacity}}{{/quantity}}
         {{#route_error}}
           <ul class="ui-state-error">
             {{#route_no_geocoding}}
