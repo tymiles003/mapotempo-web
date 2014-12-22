@@ -40,7 +40,7 @@ class OrderArray < ActiveRecord::Base
   end
 
   def days
-    length = week? ? 7 : ((base_date >> 1) - base_date).numerator
+    length = !base_date ? 0 : week? ? 7 : ((base_date >> 1) - base_date).numerator
   end
 
   def default_orders
