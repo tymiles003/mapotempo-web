@@ -17,7 +17,7 @@ class StopTest < ActiveSupport::TestCase
     o.planning.apply_orders(order_arrays(:order_array_one), 0)
     o.planning.save!
 
-    assert_equal [products(:product_one)], o.stops[0].order.products.to_a
+    assert_equal [products(:product_one), products(:product_two)], o.stops[0].order.products.to_a
     assert o.stops[1].order.products.empty?
   end
 end

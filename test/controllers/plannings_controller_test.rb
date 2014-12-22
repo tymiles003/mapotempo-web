@@ -67,10 +67,15 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should show planning as csv" do
+    o = plannings(:planning_one)
+    oa = order_arrays(:order_array_one)
+    o.apply_orders(oa, 0)
+    o.save!
+
     get :show, id: @planning, format: :csv
     assert_response :success
-    assert_equal ',,,,,,a,unaffected_one,MyString,MyString,MyString,MyString,1.5,1.5,MyString,00:01:00,1,,10:00,11:00,tag1,"","",""', response.body.split("\n")[1]
-    assert_equal 'vehicle_one,route_one,2,,00:00,1.5,c,destination_two,MyString,MyString,MyString,MyString,1.5,1.5,MyString,,3,1,10:00,11:00,tag1,"","",""', response.body.split("\n").select{ |l| l.include?('vehicle_one') }[2]
+    assert_equal ',,,,,,a,unaffected_one,MyString,MyString,MyString,MyString,1.5,1.5,MyString,00:01:00,,,10:00,11:00,tag1,"","",""', response.body.split("\n")[1]
+    assert_equal 'vehicle_one,route_one,1,,00:00,1.5,b,destination_one,Rue des Lilas,MyString,33200,Bordeau,49.1857,-0.3735,MyString,00:05:33,P1/P2,1,10:00,11:00,tag1,"","",""', response.body.split("\n").select{ |l| l.include?('vehicle_one') }[1]
   end
 
   test "should get edit" do

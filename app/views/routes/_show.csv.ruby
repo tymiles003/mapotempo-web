@@ -47,7 +47,7 @@ route.stops.each { |stop|
     stop.destination.lng,
     stop.destination.comment,
     (stop.destination.take_over.strftime("%H:%M:%S") if stop.destination.take_over),
-    route.planning.customer.enable_orders ? (order ? order.products.collect(&:code).join('/') : nil) : stop.destination.quantity,
+    route.planning.customer.enable_orders ? (order && order.products.length > 0 ? order.products.collect(&:code).join('/') : nil) : stop.destination.quantity,
     ((stop.active ? '1' : '0') if route.vehicle),
     (stop.destination.open.strftime("%H:%M") if stop.destination.open),
     (stop.destination.close.strftime("%H:%M") if stop.destination.close),
