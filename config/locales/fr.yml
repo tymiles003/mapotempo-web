@@ -182,7 +182,7 @@ fr:
         order_array_shift: Colonne du tableau de commandes
       product:
         code: "Code"
-        name: "Name"
+        name: "Nom"
       route:
         distance: "Distance"
         emission: "Émissions"
@@ -552,6 +552,9 @@ fr:
       new: "Nouveau produit"
     new:
       title: "Nouveau produit"
+    form:
+      name_help: "Nom long du produit"
+      code_help: "Code court, quelques lettres"
 
   tags:
     edit:

@@ -547,6 +547,9 @@ en:
       new: "New product"
     new:
       title: "New product"
+    form:
+      name_help: "Long name of the product"
+      code_help: "Short code, few letters"
 
   tags:
     edit:
