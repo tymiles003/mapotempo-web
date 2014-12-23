@@ -165,15 +165,15 @@ function order_arrays_edit(params) {
       $('td[data-sum-product-id]', $tr).each(function(i, td) {
         var pid = $(td).data('sum-product-id');
         td.innerHTML = sum_row[pid] || '-';
-        grand_total[pid] = (grand_total[pid] || 0) + sum_row[pid];
-        total += sum_row[pid];
+        grand_total[pid] = (grand_total[pid] || 0) + (sum_row[pid] || 0);
+        total += sum_row[pid] || 0;
       });
       $('td.total-products', $tr).html(total || '-');
     });
 
     // Columns
     var product_length = $('tfoot tr').length - 1;
-    var column_length = $('tr:first .order', $table).length;
+    var row_length = $('tr:first .order', $table).length;
     grand_total[undefined] = 0;
     $('tfoot tr').each(function(i, tr) {
       var $tr = $(tr),
@@ -183,7 +183,7 @@ function order_arrays_edit(params) {
         td.innerHTML = sum_column[j] && sum_column[j][pid] || '-';
         sum_column[j][undefined] += sum_column[j][pid] || 0;
       });
-      $('td:nth-child(' + (column_length + 4 + i) + ')', $tr).html(grand_total[pid] || '-');
+      $('td:nth-child(' + (row_length + 4 + i) + ')', $tr).html(grand_total[pid] || '-');
       grand_total[undefined] += grand_total[pid] || 0;
     });
   }
