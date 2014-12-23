@@ -365,11 +365,19 @@ function order_arrays_edit(params) {
     });
   }
 
+  $("#dialog-loading").dialog({
+    autoOpen: true,
+    modal: true
+  });
+
   $.ajax({
     url: '/order_arrays/' + order_array_id + '.json',
     beforeSend: beforeSendWaiting,
     success: display_order_array,
-    complete: completeWaiting,
+    complete: function(data) {
+      completeWaiting(data);
+      $("#dialog-loading").dialog('close');
+    },
     error: ajaxError
   });
 }

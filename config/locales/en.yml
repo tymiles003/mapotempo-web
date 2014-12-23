@@ -393,6 +393,10 @@ en:
       paste: "Paste"
       total: "Total"
       planning: "Use"
+      dialog:
+        loading:
+          title: "Loading"
+          in_progress: "Loading in progress, please wait."
     new:
       title: "New orders array"
 

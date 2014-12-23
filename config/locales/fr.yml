@@ -396,6 +396,10 @@ fr:
       paste: "Coller"
       total: "Total"
       planning: "Utiliser"
+      dialog:
+        loading:
+          title: "Chargement"
+          in_progress: "Chargement en cours, merci de patienter."
     new:
       title: "Nouveau tableaux de commandes"
 
