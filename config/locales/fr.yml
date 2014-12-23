@@ -381,6 +381,7 @@ fr:
       order_arrays: "Commandes"
     form:
       week: "Semaine"
+      week2: "2 Semaines"
       month: "Mois"
     index:
       title: "Liste tableaux de commandes"

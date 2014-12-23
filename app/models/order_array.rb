@@ -19,7 +19,7 @@ class OrderArray < ActiveRecord::Base
   belongs_to :customer
   has_many :orders, -> {includes :products}, inverse_of: :order_array, :autosave => true, :dependent => :destroy
   has_many :planning, inverse_of: :order_array, :dependent => :nullify
-  enum length: {week: 7, month: 31}
+  enum length: {week: 7, week2: 14, month: 31}
 
   nilify_blanks
   validates :customer, presence: true
@@ -40,7 +40,7 @@ class OrderArray < ActiveRecord::Base
   end
 
   def days
-    length = !base_date ? 0 : week? ? 7 : ((base_date >> 1) - base_date).numerator
+    length = !base_date ? 0 : week? ? 7 : week2? ? 14 : ((base_date >> 1) - base_date).numerator
   end
 
   def default_orders

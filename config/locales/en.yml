@@ -378,6 +378,7 @@ en:
       order_arrays: "Orders"
     form:
       week: "Week"
+      week2: "2 Weeks"
       month: "Month"
     index:
       title: "Listing orders arrays"
