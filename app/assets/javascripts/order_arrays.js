@@ -173,7 +173,7 @@ function order_arrays_edit(params) {
 
     // Columns
     var product_length = $('tfoot tr').length - 1;
-    var row_length = $('tr:first .order', $table).length;
+    var row_length = $('thead:not(.tablesorter-stickyHeader) tr:first .order', $table).length;
     grand_total[undefined] = 0;
     $('tfoot tr').each(function(i, tr) {
       var $tr = $(tr),
