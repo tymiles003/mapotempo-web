@@ -60,7 +60,7 @@ class Tomtom
         '',
         route.vehicle.store_stop.name
       ]]).map{ |l|
-        description = l.select{ |s| s }.join(' ').strip
+        description = l[2..-1].select{ |s| s }.join(' ').strip
         {lat: l[0], lng: l[1], description: description}
       }
     order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
