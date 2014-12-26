@@ -1,10 +1,12 @@
   <rte>
     <name>
-      <%= route.planning.name %> -
-      <% if route.ref %>
-        <%= route.ref %> -
-      <% end %>
-      <%= route.vehicle.name %>
+      <%= [
+        route.planning.name,
+        ' - ',
+        route.ref ? route.ref + ' - ' : '',
+        route.vehicle.name,
+      ].join.gsub(/\s+/, ' ').strip
+    %>
     </name>
     <desc>
       <%= route.size_active %> <%= I18n.t 'plannings.edit.stops' %>
@@ -29,11 +31,18 @@ route.stops.each{ |stop|
 %>
     <rtept lat="<%= stop.destination.lat %>" lon="<%= stop.destination.lng %>">
       <name>
-        <%= index += 1%>-
-        <%= stop.destination.ref %>
-        <%= stop.destination.name %>
-        <% if stop.destination.quantity && stop.destination.quantity > 1 %> ⨯<%= stop.destination.quantity %><% end %>
-        <% if stop.destination.take_over %>(<%= stop.destination.take_over.strftime("%H:%M:%S") %>)<% end %>
+        <%= [
+          index += 1,
+          '-',
+          stop.destination.ref,
+          ' ',
+          stop.destination.name,
+          ' ',
+          stop.destination.quantity && stop.destination.quantity > 1 ? "⨯#{stop.destination.quantity}" : '',
+          ' ',
+          stop.destination.take_over ? '(' + stop.destination.take_over.strftime("%H:%M:%S") + ')' : '',
+        ].join.gsub(/\s+/, ' ').strip
+        %>
       </name>
       <desc><%= stop.time.strftime("%H:%M") if stop.time %>
       <% if stop.destination.open or stop.destination.close %>
