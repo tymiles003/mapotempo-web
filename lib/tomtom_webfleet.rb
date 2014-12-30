@@ -20,7 +20,7 @@ require 'savon'
 
 module TomtomWebfleet
 
-  @client = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api + '/ordersService?wsdl', multipart: true, soap_version: 2) do
+  @client = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api_url + '/ordersService?wsdl', multipart: true, soap_version: 2) do
     #log true
     #pretty_print_xml true
     convert_request_keys_to :none
@@ -89,6 +89,7 @@ module TomtomWebfleet
     def self.get(operation, account, username, password, message = {})
       message[:order!] = [:aParm, :gParm] + (message[:order!] || (message.keys - [:attributes!]))
       message[:aParm] = {
+        apiKey: Mapotempo::Application.config.tomtom_api_key,
         accountName: account,
         userName: username,
         password: password,
