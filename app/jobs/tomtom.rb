@@ -20,7 +20,7 @@ require 'tomtom_webfleet'
 class Tomtom
 
   def self.export_route_as_orders(route)
-    order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
+    order_id_base = Time.now.strftime("%y%m%d%H%M%S")
     customer = route.planning.customer
     TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_start, order_id_base+'_0', route.vehicle.store_start.name, route.start)
     route.stops.select(&:active).each{ |stop|
@@ -63,7 +63,7 @@ class Tomtom
         description = l[2..-1].select{ |s| s }.join(' ').strip
         {lat: l[0], lng: l[1], description: description}
       }
-    order_id_base = Time.now.strftime("%Y%m%d%H%M%S")
+    order_id_base = Time.now.strftime("%y%m%d%H%M%S")
     TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, order_id_base+route.vehicle.id.to_s, route.vehicle.store_stop.name, route.start, waypoints)
   end
 end

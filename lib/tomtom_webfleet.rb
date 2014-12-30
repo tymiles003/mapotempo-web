@@ -63,7 +63,7 @@ module TomtomWebfleet
           objectUid: objectuid,
         },
         dstOrderToSend: {
-          orderNo: orderid,
+          orderNo: orderid[-16..-1] || orderid,
           orderType: 'DELIVERY_ORDER',
         }
       }
