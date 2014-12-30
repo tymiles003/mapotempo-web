@@ -15,6 +15,14 @@
             <li><a class="copy_column" href="javascript:void(0);"><i class="fa fa-copy fa-fw"></i> {{#i18n}}order_arrays.edit.copy{{/i18n}}</a></li>
             <li><a class="paste_column" href="javascript:void(0);"><i class="fa fa-paste fa-fw"></i> {{#i18n}}order_arrays.edit.paste{{/i18n}}</a></li>
             <li class="divider"></li>
+            {{#products}}
+              <li><a class="add_product_column" href="javascript:void(0);" data-product_id="{{id}}"><i class="fa fa-plus-circle fa-fw"></i><i class="fa fa-cube fa-fw"></i> {{code}} - {{name}}</a></li>
+            {{/products}}
+            <li class="divider"></li>
+            {{#products}}
+              <li><a class="remove_product_column" href="javascript:void(0);" data-product_id="{{id}}"><i class="fa fa-minus-circle fa-fw"></i><i class="fa fa-cube fa-fw"></i> {{code}} - {{name}}</a> </li>
+            {{/products}}
+            <li class="divider"></li>
             {{#plannings}}
             <li><a class="planning" data-planning_id="{{id}}" href="javascript:void(0);"><i class="fa fa-calendar fa-fw"></i> {{#i18n}}order_arrays.edit.planning{{/i18n}} {{name}}</a></li>
             {{/plannings}}
