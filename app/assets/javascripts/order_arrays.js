@@ -188,6 +188,13 @@ function order_arrays_edit(params) {
     });
   }
 
+  function table_trigger_update() {
+    if (table_neeed_update) {
+      table_neeed_update = false;
+      $("#order_array table").trigger("update");
+    }
+  }
+
   var products = {};
 
   function display_order_array(data) {
@@ -220,7 +227,7 @@ function order_arrays_edit(params) {
       headers[i + 3] = {
         sorter: false
       };
-      filter_functions[i] = filter_text;
+      filter_functions[i + 3] = filter_text;
     }
     var filter_formatter = {
       0: function($cell, indx) {
@@ -234,7 +241,7 @@ function order_arrays_edit(params) {
     }
     $("#order_array table").bind("tablesorter-initialized", build_total).tablesorter({
       textExtraction: function(node, table, cellIndex) {
-        if (cellIndex >= 3) {
+        if (cellIndex >= 3 && cellIndex < data.columns.length + 3) {
           return $.map($("[name$=\\[product_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).join(",");
@@ -256,12 +263,8 @@ function order_arrays_edit(params) {
       }
     });
 
-    $('#order_array table thead input').focusin(function() {
-      if (table_neeed_update) {
-        table_neeed_update = false;
-        $("#order_array table").trigger("update");
-      }
-    });
+    $('#order_array table thead input').focusin(table_trigger_update);
+    $('#order_array table thead .tablesorter-icon').click(table_trigger_update);
 
     active_fake_select2($('td[data-id]'));
 
