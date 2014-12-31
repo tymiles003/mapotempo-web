@@ -217,7 +217,7 @@ function order_arrays_edit(params) {
       });
     });
     data.i18n = mustache_i18n;
-    $(container).html(SMT['order_arrays/index'](data));
+    $(container).html(SMT['order_arrays/edit'](data));
 
     var headers = {
       0: {
