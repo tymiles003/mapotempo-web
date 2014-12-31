@@ -31,7 +31,7 @@ function order_arrays_new(params) {
 function order_arrays_edit(params) {
   var order_array_id = params.order_array_id,
     block_save_select_change = false,
-    table_neeed_update = false;
+    table_neeed_update = true;
 
   function filter_text(exactText, normalizedValue, filter, index) {
     return !!String(normalizedValue).match(new RegExp(filter, 'i'));
@@ -186,6 +186,8 @@ function order_arrays_edit(params) {
       $('td:nth-child(' + (row_length + 4 + i) + ')', $tr).html(grand_total[pid] || '-');
       grand_total[undefined] += grand_total[pid] || 0;
     });
+
+    table_trigger_update();
   }
 
   function table_trigger_update() {
