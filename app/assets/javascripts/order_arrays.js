@@ -33,6 +33,8 @@ function order_arrays_edit(params) {
     block_save_select_change = false,
     table_neeed_update = true;
 
+  order_arrays_form();
+
   function filter_text(exactText, normalizedValue, filter, index) {
     return !!String(normalizedValue).match(new RegExp(filter, 'i'));
   }

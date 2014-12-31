@@ -43,6 +43,7 @@ class OrderArraysController < ApplicationController
 
   def new
     @order_array = OrderArray.new
+    @order_array.base_date = Date.new
   end
 
   def edit
