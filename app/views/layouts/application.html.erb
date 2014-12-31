@@ -60,20 +60,6 @@
               <% end %>
             <% end %>
             <% if user_signed_in? and current_user.customer %>
-              <% if can?(:manage, OrderArray) %>
-                <li class="dropdown">
-                  <%= link_to order_arrays_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-check-square-o fa-fw"></i> <%= t 'order_arrays.menu.order_arrays' %> <span class="caret"></span><% end %>
-                  <ul class="dropdown-menu">
-                    <li><%= link_to new_order_array_path do %><i class="fa fa-plus fa-fw"></i> <%= t 'all.verb.new' %><% end %></li>
-                    <li><%= link_to order_arrays_path do %><i class="fa fa-check-square-o fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
-                    <li class="divider"></li>
-                    <% current_user.customer.order_arrays.select(&:id).each do |order_array| %>
-                      <li><%= link_to edit_order_array_path(order_array) do %><i class="fa fa-check-square-o fa-fw"></i> <%= order_array.name %><% end %></li>
-                    <% end %>
-                    <li class="divider"></li>
-                    <li><%= link_to products_path do %><i class="fa fa-cubes fa-fw"></i> <%= t 'products.menu.products' %><% end %></li>
-                  </ul>
-              <% end %>
               <% if can?(:manage, Planning) %>
                 <li class="dropdown">
                   <%= link_to plannings_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-calendar-o fa-fw"></i> <%= t 'plannings.menu.plannings' %> <span class="caret"></span><% end %>
@@ -91,6 +77,21 @@
                 <li class="disabled"><a href="#"><i class="fa fa-calendar-o fa-fw"></i> <%= t 'plannings.menu.plannings' %></a></li>
               <% end %>
               </li>
+              <% if can?(:manage, OrderArray) %>
+                <li class="dropdown">
+                  <%= link_to order_arrays_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-check-square-o fa-fw"></i> <%= t 'order_arrays.menu.order_arrays' %> <span class="caret"></span><% end %>
+                  <ul class="dropdown-menu">
+                    <li><%= link_to new_order_array_path do %><i class="fa fa-plus fa-fw"></i> <%= t 'all.verb.new' %><% end %></li>
+                    <li><%= link_to order_arrays_path do %><i class="fa fa-check-square-o fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
+                    <li class="divider"></li>
+                    <% current_user.customer.order_arrays.select(&:id).each do |order_array| %>
+                      <li><%= link_to edit_order_array_path(order_array) do %><i class="fa fa-check-square-o fa-fw"></i> <%= order_array.name %><% end %></li>
+                    <% end %>
+                    <li class="divider"></li>
+                    <li><%= link_to products_path do %><i class="fa fa-cubes fa-fw"></i> <%= t 'products.menu.products' %><% end %></li>
+                  </ul>
+                </li>
+              <% end %>
               <li class="dropdown">
                 <%= link_to destinations_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-map-marker fa-fw"></i> <%= t 'destinations.menu.destinations' %> <span class="caret"></span><% end %>
                 <ul class="dropdown-menu">
