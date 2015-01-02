@@ -298,7 +298,7 @@ function order_arrays_edit(params) {
           product_ids: val
         };
       });
-      active_fake_select2($('.fake', selector));
+      active_fake_select2(selector);
       block_save_select_change = false;
       table_neeed_update = true;
       build_total(undefined, $('#order_array table'));
