@@ -380,6 +380,10 @@ en:
       week: "Week"
       week2: "2 Weeks"
       month: "Month"
+      export:
+        menu: "Export"
+        spreadsheet_standard: "Spreadsheet Standard"
+        spreadsheet_excel: "Spreadsheet Excel"
     index:
       title: "Listing orders arrays"
       new: "New orders array"
@@ -399,6 +403,10 @@ en:
           in_progress: "Loading in progress, please wait."
     new:
       title: "New orders array"
+    export_file:
+      name: "name"
+      comment: "comment"
+      total: "total"
 
   plannings:
     menu:

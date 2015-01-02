@@ -383,6 +383,10 @@ fr:
       week: "Semaine"
       week2: "2 Semaines"
       month: "Mois"
+      export:
+        menu: "Exporter"
+        spreadsheet_standard: "Tableur standard"
+        spreadsheet_excel: "Tableur Excel"
     index:
       title: "Liste tableaux de commandes"
       new: "Nouveau tableaux de commandes"
@@ -402,6 +406,10 @@ fr:
           in_progress: "Chargement en cours, merci de patienter."
     new:
       title: "Nouveau tableaux de commandes"
+    export_file:
+      name: "nom"
+      comment: "commentaire"
+      total: "total"
 
   plannings:
     menu:

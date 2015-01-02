@@ -5,5 +5,15 @@
   <%= f.select :length, [], OrderArray.lengths.collect{ |key, id| [t('.'+key), key] }, {}, {disabled: !!@order_array.id} %>
   <%= f.actions do %>
     <%= f.submit %>
+    <% if @order_array.id %>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><%= t '.export.menu' %> <span class="caret"></span></button>
+        <ul class="dropdown-menu pull-right" role="menu">
+          <!--<li><a href="/order_arrays/<%= @order_array.id %>"><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %></a></li>-->
+          <li><a href="/order_arrays/<%= @order_array.id %>.csv"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard' %></a></li>
+          <li><a href="/order_arrays/<%= @order_array.id %>.excel"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %></a></li>
+        </ul>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
