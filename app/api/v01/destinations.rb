@@ -24,6 +24,7 @@ class V01::Destinations < Grape::API
     }
     post  do
       destination = current_customer.destinations.build(destination_params)
+      destination.save!
       current_customer.save!
       present destination, with: V01::Entities::Destination
     end

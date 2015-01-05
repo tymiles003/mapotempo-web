@@ -29,12 +29,19 @@ describe V01::Destinations do
   end
 
   describe :create do
-    it 'Create a destination' do
-      expect{
+    subject { -> {
         @destination.name = 'new dest'
-        post api(), @destination.attributes
+        post api(), @destination.attributes.update({tag_ids: [tags(:tag_one).id]})
         expect(response.status).to eq(201)
-      }.to change{Destination.count}.by(1)
+      }
+    }
+
+    it "change destination count" do
+      should change{Destination.count}.by(1)
+    end
+
+    it "change stop count" do
+      should change{Stop.count}.by(1)
     end
   end
 
