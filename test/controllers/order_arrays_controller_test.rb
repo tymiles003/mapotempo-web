@@ -40,11 +40,6 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert order_array.errors.any?
   end
 
-  test "should show order_array" do
-    get :show, id: @order_array
-    assert_response :success
-  end
-
   test "should show order_array as excel" do
     get :show, id: @order_array, format: :excel
     assert_response :success
@@ -53,8 +48,7 @@ class OrderArraysControllerTest < ActionController::TestCase
   test "should show order_array as csv" do
     get :show, id: @order_array, format: :csv
     assert_response :success
-    assert_equal ',,,,,,a,unaffected_one,MyString,MyString,MyString,MyString,1.5,1.5,MyString,00:01:00,1,,10:00,11:00,tag1,"","",""', response.body.split("\n")[1]
-    assert_equal 'vehicle_one,route_one,2,,00:00,1.5,c,destination_two,MyString,MyString,MyString,MyString,1.5,1.5,MyString,,3,1,10:00,11:00,tag1,"","",""', response.body.split("\n").select{ |l| l.include?('vehicle_one') }[2]
+    assert_equal 'destination_one,MyString,P1/P2,1,1,2', response.body.split("\n")[1]
   end
 
   test "should get edit" do
