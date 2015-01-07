@@ -30,4 +30,15 @@ class VehicleTest < ActiveSupport::TestCase
     o.save!
     assert o.routes[-1].out_of_date
   end
+
+  test "should change store" do
+    s = stores(:store_one).dup
+    s.name = "s2"
+    s.save!
+    o = vehicles(:vehicle_one)
+    o.store_start = s
+    o.save!
+    assert_equal s, o.store_start
+    assert_equal s, o.store_stop
+  end
 end

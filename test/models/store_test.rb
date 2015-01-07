@@ -19,6 +19,16 @@ class StoreTest < ActiveSupport::TestCase
     assert o.stores[1].destroy
     o.reload
     assert_equal 1, o.stores.size
+    assert_equal stores(:store_one), vehicles(:vehicle_one).store_start
+  end
+
+  test "should destroy in unse" do
+    o = customers(:customer_one)
+    assert_equal 2, o.stores.size
+    assert o.stores[0].destroy
+    o.reload
+    assert_equal 1, o.stores.size
+    assert_equal stores(:store_one_bis), vehicles(:vehicle_one).store_start
   end
 
   test "should not desroy" do
