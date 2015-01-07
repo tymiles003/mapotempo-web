@@ -24,7 +24,7 @@
 // = require leaflet.markercluster.default
 // = require leaflet.markercluster.default.ie
 
-[data-controller='order_arrays'] {
+[data-controller='order_arrays'][data-action='edit'] {
   #order_array td {
     padding: 0;
 
