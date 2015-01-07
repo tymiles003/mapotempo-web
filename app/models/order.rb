@@ -25,6 +25,10 @@ class Order < ActiveRecord::Base
   validates :destination, presence: true
   validates :shift, presence: true
 
+  amoeba do
+    enable
+  end
+
   private
 
 end

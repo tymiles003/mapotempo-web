@@ -26,4 +26,12 @@ class OrderArrayTest < ActiveSupport::TestCase
     assert o.days, 7
     o.length = 7
   end
+
+  test "should suplicate" do
+    o = order_arrays(:order_array_one)
+    assert 2, o.orders[0].products.size
+
+    oo = o.amoeba_dup
+    assert 2, oo.orders[0].products.size
+  end
 end
