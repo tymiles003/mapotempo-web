@@ -328,13 +328,15 @@ function order_arrays_edit(params) {
     });
 
     $('.empty_row, .paste_row, .add_product_row, .remove_product_row').click(function(e) {
-      var tr = $(this).closest('tr'),
-        add_product = $(this).hasClass('add_product_row'),
-        remove_product = $(this).hasClass('remove_product_row'),
-        paste = $(this).hasClass('paste_row'),
-        product_id = ($(this).data('product_id') || 0).toString(),
-        selector = $('td[data-id]', tr);
-      change_order(product_id, add_product, remove_product, paste, copy_row, selector);
+      if (confirm(I18n.t('order_arrays.edit.confirm_ovewrite_row'))) {
+        var tr = $(this).closest('tr'),
+          add_product = $(this).hasClass('add_product_row'),
+          remove_product = $(this).hasClass('remove_product_row'),
+          paste = $(this).hasClass('paste_row'),
+          product_id = ($(this).data('product_id') || 0).toString(),
+          selector = $('td[data-id]', tr);
+        change_order(product_id, add_product, remove_product, paste, copy_row, selector);
+      }
     });
 
     var copy_column;
@@ -349,13 +351,15 @@ function order_arrays_edit(params) {
     });
 
     $('.empty_column, .paste_column, .add_product_column, .remove_product_column').click(function(e) {
-      var td_index = $(this).closest('th').index('th') + 1,
-        add_product = $(this).hasClass('add_product_column'),
-        remove_product = $(this).hasClass('remove_product_column'),
-        paste = $(this).hasClass('paste_column'),
-        product_id = ($(this).data('product_id') || 0).toString();
-      selector = $('tbody tr td:nth-child(' + td_index + ')', $(this).closest('table'));
-      change_order(product_id, add_product, remove_product, paste, copy_column, selector);
+      if (confirm(I18n.t('order_arrays.edit.confirm_ovewrite_column'))) {
+        var td_index = $(this).closest('th').index('th') + 1,
+          add_product = $(this).hasClass('add_product_column'),
+          remove_product = $(this).hasClass('remove_product_column'),
+          paste = $(this).hasClass('paste_column'),
+          product_id = ($(this).data('product_id') || 0).toString();
+        selector = $('tbody tr td:nth-child(' + td_index + ')', $(this).closest('table'));
+        change_order(product_id, add_product, remove_product, paste, copy_column, selector);
+      }
     });
 
     $('.planning').click(function(e) {

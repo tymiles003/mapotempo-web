@@ -399,7 +399,9 @@ fr:
       copy: "Copier"
       paste: "Coller"
       total: "Total"
-      planning: "Utiliser"
+      planning: "Appliquer au planning"
+      confirm_ovewrite_column: "Êtes-vous sûr de vouloir modifier les données de la colonne ?"
+      confirm_ovewrite_row: "Êtes-vous sûr de vouloir modifier les données de la ligne ?"
       dialog:
         loading:
           title: "Chargement"

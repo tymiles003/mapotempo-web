@@ -396,7 +396,9 @@ en:
       copy: "Copy"
       paste: "Paste"
       total: "Total"
-      planning: "Use"
+      planning: "Apply to planning"
+      confirm_ovewrite_column: "Are you sure you want to overwrite the column data?"
+      confirm_ovewrite_row: "Are you sure you want to overwrite the row data?"
       dialog:
         loading:
           title: "Loading"
