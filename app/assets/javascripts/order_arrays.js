@@ -370,6 +370,9 @@ function order_arrays_edit(params) {
         contentType: "application/json",
         url: '/api/0.1/plannings/' + planning_id + '/orders/' + order_array_id + '/' + index + '.json',
         beforeSend: beforeSendWaiting,
+        success: function() {
+          window.location = '/plannings/' + planning_id +'/edit';
+        },
         complete: completeWaiting,
         error: ajaxError
       });
