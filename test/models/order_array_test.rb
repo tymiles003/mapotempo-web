@@ -27,11 +27,19 @@ class OrderArrayTest < ActiveSupport::TestCase
     o.length = 7
   end
 
-  test "should suplicate" do
+  test "should duplicate" do
     o = order_arrays(:order_array_one)
     assert 2, o.orders[0].products.size
 
     oo = o.amoeba_dup
     assert 2, oo.orders[0].products.size
+  end
+
+  test "should add destination" do
+    o = order_arrays(:order_array_one)
+    s = o.orders.size
+
+    o.add_destination(destinations(:destination_two))
+    assert_equal s + o.days, o.orders.size
   end
 end
