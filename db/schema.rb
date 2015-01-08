@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216163507) do
+ActiveRecord::Schema.define(version: 20150108103218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.time     "take_over"
     t.float    "geocoding_accuracy"
     t.index ["customer_id"], :name => "fk__destinations_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_destinations_customer_id"
   end
 
   create_table "tags", force: true do |t|
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.string   "color"
     t.string   "icon"
     t.index ["customer_id"], :name => "fk__tags_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_tags_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_tags_customer_id"
   end
 
   create_table "destinations_tags", id: false, force: true do |t|
@@ -93,8 +93,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer "tag_id",         null: false
     t.index ["destination_id"], :name => "fk__destinations_tags_destination_id"
     t.index ["tag_id"], :name => "fk__destinations_tags_tag_id"
-    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_tags_destination_id"
-    t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_tags_tag_id"
+    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_destinations_tags_destination_id"
+    t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_destinations_tags_tag_id"
   end
 
   create_table "layers", force: true do |t|
@@ -114,7 +114,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["customer_id"], :name => "fk__order_arrays_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_order_arrays_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_order_arrays_customer_id"
   end
 
   create_table "orders", force: true do |t|
@@ -125,8 +125,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.datetime "updated_at"
     t.index ["destination_id"], :name => "fk__orders_destination_id"
     t.index ["order_array_id"], :name => "fk__orders_order_array_id"
-    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_destination_id"
-    t.foreign_key ["order_array_id"], "order_arrays", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_order_array_id"
+    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_orders_destination_id"
+    t.foreign_key ["order_array_id"], "order_arrays", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_orders_order_array_id"
   end
 
   create_table "products", force: true do |t|
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["customer_id"], :name => "fk__products_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_products_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_products_customer_id"
   end
 
   create_table "orders_products", id: false, force: true do |t|
@@ -144,8 +144,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer "product_id", null: false
     t.index ["order_id"], :name => "fk__orders_products_order_id"
     t.index ["product_id"], :name => "fk__orders_products_product_id"
-    t.foreign_key ["order_id"], "orders", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_products_order_id"
-    t.foreign_key ["product_id"], "products", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_products_product_id"
+    t.foreign_key ["order_id"], "orders", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_orders_products_order_id"
+    t.foreign_key ["product_id"], "products", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_orders_products_product_id"
   end
 
   create_table "zonings", force: true do |t|
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["customer_id"], :name => "fk__zonings_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zonings_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_zonings_customer_id"
   end
 
   create_table "plannings", force: true do |t|
@@ -169,7 +169,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.index ["customer_id"], :name => "fk__plannings_customer_id"
     t.index ["order_array_id"], :name => "fk__plannings_order_array_id"
     t.index ["zoning_id"], :name => "fk__plannings_zoning_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_plannings_customer_id"
     t.foreign_key ["order_array_id"], "order_arrays", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_order_array_id"
     t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_zoning_id"
   end
@@ -179,8 +179,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer "tag_id",      null: false
     t.index ["planning_id"], :name => "fk__plannings_tags_planning_id"
     t.index ["tag_id"], :name => "fk__plannings_tags_tag_id"
-    t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_tags_planning_id"
-    t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_tags_tag_id"
+    t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_plannings_tags_planning_id"
+    t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_plannings_tags_tag_id"
   end
 
   create_table "routers", force: true do |t|
@@ -203,7 +203,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["customer_id"], :name => "fk__stores_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stores_customer_id"
   end
 
   create_table "vehicles", force: true do |t|
@@ -226,7 +226,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.index ["router_id"], :name => "fk__vehicles_router_id"
     t.index ["store_start_id"], :name => "fk__vehicles_store_start_id"
     t.index ["store_stop_id"], :name => "fk__vehicles_store_stop_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_customer_id"
+    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_vehicles_customer_id"
     t.foreign_key ["router_id"], "routers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_router_id"
     t.foreign_key ["store_start_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_store_start_id"
     t.foreign_key ["store_stop_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_store_stop_id"
@@ -251,8 +251,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.string   "ref"
     t.index ["planning_id"], :name => "fk__routes_planning_id"
     t.index ["vehicle_id"], :name => "fk__routes_vehicle_id"
-    t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_routes_planning_id"
-    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_routes_vehicle_id"
+    t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_routes_planning_id"
+    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_routes_vehicle_id"
   end
 
   create_table "stops", force: true do |t|
@@ -271,8 +271,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer  "wait_time"
     t.index ["destination_id"], :name => "fk__stops_destination_id"
     t.index ["route_id"], :name => "fk__stops_route_id"
-    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_destination_id"
-    t.foreign_key ["route_id"], "routes", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_route_id"
+    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stops_destination_id"
+    t.foreign_key ["route_id"], "routes", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stops_route_id"
   end
 
   create_table "stores_vehicules", id: false, force: true do |t|
@@ -280,8 +280,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer "vehicle_id", null: false
     t.index ["store_id"], :name => "fk__stores_vehicules_store_id"
     t.index ["vehicle_id"], :name => "fk__stores_vehicules_vehicle_id"
-    t.foreign_key ["store_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_vehicules_store_id"
-    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_vehicules_vehicle_id"
+    t.foreign_key ["store_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stores_vehicules_store_id"
+    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stores_vehicules_vehicle_id"
   end
 
   create_table "users", force: true do |t|
@@ -318,7 +318,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.index ["vehicle_id"], :name => "fk__zones_vehicle_id"
     t.index ["zoning_id"], :name => "fk__zones_zoning_id"
     t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zones_vehicle_id"
-    t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zones_zoning_id"
+    t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_zones_zoning_id"
   end
 
 end
