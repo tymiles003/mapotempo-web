@@ -49,9 +49,9 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.string   "progress",   default: "0", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "progress",   default: "0", null: false
     t.index ["priority", "run_at"], :name => "delayed_jobs_priority"
   end
 
@@ -79,11 +79,11 @@ ActiveRecord::Schema.define(version: 20141216163507) do
 
   create_table "tags", force: true do |t|
     t.string   "label"
-    t.string   "color"
-    t.string   "icon"
     t.integer  "customer_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "color"
+    t.string   "icon"
     t.index ["customer_id"], :name => "index_tags_on_customer_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_tags_customer_id"
   end
