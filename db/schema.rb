@@ -34,15 +34,15 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.string   "masternaut_account"
     t.string   "masternaut_user"
     t.string   "masternaut_password"
-    t.boolean  "enable_orders", default: false, null: false
+    t.boolean  "enable_orders",             default: false, null: false
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
     t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
   end
 
   create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
+    t.integer  "priority",               default: 0,   null: false
+    t.integer  "attempts",               default: 0,   null: false
+    t.text     "handler",                              null: false
     t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "progress",   default: "0", null: false
+    t.string   "progress",   limit: nil, default: "0", null: false
     t.index ["priority", "run_at"], :name => "delayed_jobs_priority"
   end
 
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer  "quantity"
     t.time     "open"
     t.time     "close"
-    t.integer  "customer_id", null: false
+    t.integer  "customer_id",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "detail"
@@ -195,8 +195,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.string   "street"
     t.string   "postalcode"
     t.string   "city"
-    t.float    "lat", null: false
-    t.float    "lng", null: false
+    t.float    "lat",         null: false
+    t.float    "lng",         null: false
     t.time     "open"
     t.time     "close"
     t.integer  "customer_id", null: false
@@ -234,7 +234,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
   create_table "routes", force: true do |t|
     t.float    "distance"
     t.float    "emission"
-    t.integer  "planning_id", null: false
+    t.integer  "planning_id",            null: false
     t.integer  "vehicle_id"
     t.datetime "created_at"
     t.datetime "updated_at"
