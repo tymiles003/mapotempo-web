@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.string   "ref"
     t.time     "take_over"
     t.float    "geocoding_accuracy"
-    t.index ["customer_id"], :name => "index_destinations_on_customer_id"
+    t.index ["customer_id"], :name => "fk__destinations_customer_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_destinations_customer_id"
   end
 
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.datetime "updated_at"
     t.string   "color"
     t.string   "icon"
-    t.index ["customer_id"], :name => "index_tags_on_customer_id"
+    t.index ["customer_id"], :name => "fk__tags_customer_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_tags_customer_id"
   end
 
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer  "customer_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["customer_id"], :name => "index_order_arrays_on_customer_id"
+    t.index ["customer_id"], :name => "fk__order_arrays_customer_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_order_arrays_customer_id"
   end
 
@@ -123,8 +123,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer  "order_array_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["destination_id"], :name => "index_orders_on_destination_id"
-    t.index ["order_array_id"], :name => "index_orders_on_order_array_id"
+    t.index ["destination_id"], :name => "fk__orders_destination_id"
+    t.index ["order_array_id"], :name => "fk__orders_order_array_id"
     t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_destination_id"
     t.foreign_key ["order_array_id"], "order_arrays", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_orders_order_array_id"
   end
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer  "customer_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["customer_id"], :name => "index_products_on_customer_id"
+    t.index ["customer_id"], :name => "fk__products_customer_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_products_customer_id"
   end
 
@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer  "customer_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["customer_id"], :name => "index_zonings_on_customer_id"
+    t.index ["customer_id"], :name => "fk__zonings_customer_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zonings_customer_id"
   end
 
@@ -166,7 +166,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.boolean  "zoning_out_of_date"
     t.integer  "order_array_id"
     t.integer  "order_array_shift"
-    t.index ["customer_id"], :name => "index_plannings_on_customer_id"
+    t.index ["customer_id"], :name => "fk__plannings_customer_id"
     t.index ["order_array_id"], :name => "fk__plannings_order_array_id"
     t.index ["zoning_id"], :name => "fk__plannings_zoning_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_customer_id"
@@ -222,7 +222,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.integer  "store_stop_id",  null: false
     t.integer  "router_id"
     t.string   "masternaut_ref"
-    t.index ["customer_id"], :name => "index_vehicles_on_customer_id"
+    t.index ["customer_id"], :name => "fk__vehicles_customer_id"
+    t.index ["router_id"], :name => "fk__vehicles_router_id"
     t.index ["store_start_id"], :name => "fk__vehicles_store_start_id"
     t.index ["store_stop_id"], :name => "fk__vehicles_store_stop_id"
     t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_customer_id"
@@ -248,8 +249,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.boolean  "stop_out_of_drive_time"
     t.float    "stop_distance"
     t.string   "ref"
-    t.index ["planning_id"], :name => "index_routes_on_planning_id"
-    t.index ["vehicle_id"], :name => "index_routes_on_vehicle_id"
+    t.index ["planning_id"], :name => "fk__routes_planning_id"
+    t.index ["vehicle_id"], :name => "fk__routes_vehicle_id"
     t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_routes_planning_id"
     t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_routes_vehicle_id"
   end
@@ -268,8 +269,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.boolean  "out_of_capacity"
     t.boolean  "out_of_drive_time"
     t.integer  "wait_time"
-    t.index ["destination_id"], :name => "index_stops_on_destination_id"
-    t.index ["route_id"], :name => "index_stops_on_route_id"
+    t.index ["destination_id"], :name => "fk__stops_destination_id"
+    t.index ["route_id"], :name => "fk__stops_route_id"
     t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_destination_id"
     t.foreign_key ["route_id"], "routes", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stops_route_id"
   end
@@ -277,8 +278,8 @@ ActiveRecord::Schema.define(version: 20141216163507) do
   create_table "stores_vehicules", id: false, force: true do |t|
     t.integer "store_id",   null: false
     t.integer "vehicle_id", null: false
-    t.index ["store_id"], :name => "index_stores_vehicules_on_store_id"
-    t.index ["vehicle_id"], :name => "index_stores_vehicules_on_vehicle_id"
+    t.index ["store_id"], :name => "fk__stores_vehicules_store_id"
+    t.index ["vehicle_id"], :name => "fk__stores_vehicules_vehicle_id"
     t.foreign_key ["store_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_vehicules_store_id"
     t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_stores_vehicules_vehicle_id"
   end
@@ -315,7 +316,7 @@ ActiveRecord::Schema.define(version: 20141216163507) do
     t.datetime "updated_at"
     t.integer  "vehicle_id"
     t.index ["vehicle_id"], :name => "fk__zones_vehicle_id"
-    t.index ["zoning_id"], :name => "index_zones_on_zoning_id"
+    t.index ["zoning_id"], :name => "fk__zones_zoning_id"
     t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zones_vehicle_id"
     t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zones_zoning_id"
   end
