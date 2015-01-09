@@ -605,7 +605,8 @@ function plannings_edit(params) {
   });
 
   $("form").submit(function(event) {
-    if (initial_zoning != $("#planning_zoning_id").val()) {
+    var new_zoning = $("#planning_zoning_id").val();
+    if (new_zoning && initial_zoning != new_zoning) {
       if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) {
         return false;
       }
