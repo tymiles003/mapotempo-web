@@ -115,6 +115,7 @@ en:
         print_header: "Routes header"
         stores: "Stores"
         enable_orders: "Enable orders"
+        test: "Test"
       destination:
         name: "Name"
         address: "Address"

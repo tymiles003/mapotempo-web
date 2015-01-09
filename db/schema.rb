@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108103218) do
+ActiveRecord::Schema.define(version: 20150109130251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150108103218) do
     t.string   "masternaut_user"
     t.string   "masternaut_password"
     t.boolean  "enable_orders",             default: false, null: false
+    t.boolean  "test",                      default: false, null: false
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
     t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
   end

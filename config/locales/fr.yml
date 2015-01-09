@@ -118,6 +118,7 @@ fr:
         print_header: "Entête des tournées"
         stores: "Dépôts"
         enable_orders: "Activer les commandes"
+        test: "Test"
       destination:
         name: "Nom"
         address: "Adresse"
