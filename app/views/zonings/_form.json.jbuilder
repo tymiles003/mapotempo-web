@@ -1,4 +1,4 @@
-json.stores @planning ? @planning.routes.select(&:vehicle).collect(&:vehicle).collect(&:store_start) : @zoning.customer.stores do |store|
+json.stores @planning ? (@planning.routes.select(&:vehicle).collect(&:vehicle).collect(&:store_start) + @planning.routes.select(&:vehicle).collect(&:vehicle).collect(&:store_stop)).uniq : @zoning.customer.stores do |store|
   json.extract! store, :id, :name, :street, :postalcode, :city, :lat, :lng
 end
 json.zoning @zoning.zones do |zone|

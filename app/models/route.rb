@@ -92,7 +92,7 @@ class Route < ActiveRecord::Base
         end
       }
 
-      distance, time, trace = router.trace(last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_start.lng)
+      distance, time, trace = router.trace(last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_stop.lng)
       self.distance += distance
       self.end += time
       self.stop_distance = distance

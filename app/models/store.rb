@@ -83,13 +83,11 @@ class Store < ActiveRecord::Base
     def destroy_vehicle_store
       default = customer.stores.find{ |store| store != self }
       if default
-        vehicle_starts.each{ |vehicle|
-          vehicle.store_start = default
+        vehicles.each{ |vehicle|
+          vehicle.store_start = default if vehicle.store_start = self
+          vehicle.store_stop = default if vehicle.store_stop = self
+          vehicle.save!
         }
-        vehicle_stops.each{ |vehicle|
-          vehicle.store_stop = default
-        }
-        vehicles.each(&:save!)
         true
       else
         raise I18n.t('activerecord.errors.models.stores.at_least_one')

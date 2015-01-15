@@ -39,6 +39,6 @@ class VehicleTest < ActiveSupport::TestCase
     o.store_start = s
     o.save!
     assert_equal s, o.store_start
-    assert_equal s, o.store_stop
+    assert_not_equal s, o.store_stop
   end
 end
