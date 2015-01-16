@@ -61,7 +61,7 @@ class Optimizer
         take_over = take_over ? take_over.seconds_since_midnight : 0
         [open, close, take_over]
       }
-      optimum = Ort.optimize(route.vehicle.capacity, route.matrix, tws)
+      optimum = Ort.optimize(route.vehicle.capacity, route.matrix, tws, 5)
       if optimum
         route.order(optimum[1..-2].map{ |n| n-1 })
         route.save && route.reload # Refresh stops order

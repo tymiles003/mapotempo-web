@@ -15,6 +15,11 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'ai4r'
+include Ai4r::Data
+require 'complete_linkage_max_distance'
+include Ai4r::Clusterers
+
 require 'rest_client'
 
 module Ort
@@ -23,8 +28,11 @@ module Ort
   @url = Mapotempo::Application.config.optimize_url
   @optimize_time = Mapotempo::Application.config.optimize_time
 
-  def self.optimize(capacity, matrix, time_window)
+  def self.optimize(capacity, matrix, time_window, time_threshold)
     key = [capacity, matrix.hash, time_window.hash]
+
+    original_matrix = matrix
+    matrix, time_window, zip_key = self.zip(matrix, time_window, time_threshold)
 
     result = @cache.read(key)
     if !result
@@ -40,6 +48,75 @@ module Ort
     end
 
     jdata = JSON.parse(result)
-    jdata['optim']
+    result = jdata['optim']
+
+    unzip(result, zip_key, original_matrix)
   end
+
+  private
+    def self.zip(matrix, time_window, time_threshold)
+      data_set = DataSet.new(:data_items => (1..(matrix.length-2)).collect{ |i| [i] })
+      c = CompleteLinkageMaxDistance.new
+      c.distance_function = lambda do |a,b|
+        time_window[a[0]] == time_window[b[0]] ? matrix[a[0]][b[0]][0] : Float::INFINITY
+      end
+      clusterer = c.build(data_set, time_threshold)
+
+      new_size = clusterer.clusters.size
+
+      # Build replacement list
+      ptr = Array.new(new_size + 2)
+      ptr[0] = 0
+      ptr[new_size + 1] = matrix.size - 1
+      new_time_window = Array.new(new_size + 1)
+      new_time_window[0] = time_window[0]
+
+      clusterer.clusters.each_with_index do |cluster, i|
+        oi = cluster.data_items[0][0]
+        ptr[i+1] = oi
+        new_time_window[i+1] = time_window[oi]
+      end
+
+      # Fill new matrix
+      new_matrix = Array.new(new_size + 2) { Array.new(new_size + 2) }
+      (new_size + 2).times{ |i|
+        (new_size + 2).times{ |j|
+          new_matrix[i][j] = matrix[ptr[i]][ptr[j]]
+        }
+      }
+
+      [new_matrix, new_time_window, clusterer.clusters]
+    end
+
+    def self.unzip(result, zip_key, original_matrix)
+      ret = []
+      result.collect{ |i|
+        if i == 0
+          ret << 0
+        elsif i == zip_key.length + 1
+          ret << original_matrix.length - 1
+        elsif zip_key[i-1].data_items.length > 1
+          sub = zip_key[i-1].data_items.collect{ |i| i[0] }
+          sub_size = sub.length
+          sub_matrix = Array.new(sub_size) { Array.new(sub_size) }
+          sub_size.times.each{ |i|
+            sub_size.times.each{ |j|
+              sub_matrix[i][j] = original_matrix[sub[i]][sub[j]]
+            }
+          }
+          min_order = sub.permutation(sub_size).collect{ |p|
+            last = ret[-1]
+            s = p.sum { |s|
+              a, last = last, s
+              original_matrix[a][s]
+            }
+            [s, p]
+          }.min{ |a, b| a[0] <=> b[0] }[1]
+          ret += min_order
+        else
+          ret << zip_key[i-1].data_items[0][0]
+        end
+      }.flatten
+      ret
+    end
 end

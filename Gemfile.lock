@@ -92,6 +92,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    ai4r (1.13)
     akami (1.2.2)
       gyoku (>= 0.4.0)
       nokogiri
@@ -375,6 +376,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ai4r
   amoeba
   bootstrap-datepicker-rails
   bootstrap-filestyle-rails

@@ -105,6 +105,8 @@ gem 'rest-client'
 gem 'rgeo'
 gem 'rgeo-geojson'
 
+gem 'ai4r'
+
 gem 'nilify_blanks'
 gem 'amoeba'
 
