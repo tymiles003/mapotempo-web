@@ -94,6 +94,7 @@ class Route < ActiveRecord::Base
 
       distance, time, trace = router.trace(last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_stop.lng)
       self.distance += distance
+      stops_time[:stop] = time
       self.end += time
       self.stop_distance = distance
       self.stop_trace = trace
@@ -110,7 +111,7 @@ class Route < ActiveRecord::Base
 
     if stops_sort
       # Try to minimize waiting time by a later begin
-      time = self.end
+      time = self.end - stops_time[:stop]
       stops_sort.reverse_each{ |stop|
         destination = stop.destination
         if stop.active && destination.lat != nil && destination.lng != nil
