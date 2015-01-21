@@ -14,30 +14,37 @@ class V01::Customers < Grape::API
 
   resource :customers do
     desc "Return a customer."
-    get do
-      present current_customer, with: V01::Entities::Customer
+    get ':id' do
+      present current_customer(params[:id]), with: V01::Entities::Customer
     end
 
     desc "Update a customer.", {
       params: V01::Entities::Customer.documentation.except(:id)
     }
-    put do
-      current_customer.update(customer_params)
-      current_customer.save!
-      present current_customer, with: V01::Entities::Customer
+    put ':id' do
+      current_customer(params[:id])
+      @current_customer.update(customer_params)
+      @current_customer.save!
+      present @current_customer, with: V01::Entities::Customer
     end
 
-    desc "Cancel optimization computation"
-    delete 'job_optimizer' do
-      if current_customer.job_optimizer
-        current_customer.job_optimizer.destroy
+    desc "Return a job"
+    get ':id/job/:job_id' do
+      current_customer(params[:id])
+      if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
+        @current_customer.job_optimizer
+      elsif @current_customer.job_geocoding && @current_customer.job_geocoding_id = params[:job_id]
+        @current_customer.job_geocoding
       end
     end
 
-    desc "Cancel optimization computation"
-    delete 'job_geocoding' do
-      if current_customer.job_geocoding
-        current_customer.job_geocoding.destroy
+    desc "Cancel job"
+    delete ':id/job/:job_id' do
+      current_customer(params[:id])
+      if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
+        @current_customer.job_optimizer.destroy
+      elsif @current_customer.job_geocoding && @current_customer.job_geocoding_id = params[:job_id]
+        @current_customer.job_geocoding.destroy
       end
     end
   end

@@ -10,6 +10,7 @@
       <th><%= t 'activerecord.attributes.customer.name' %></th>
       <th><%= t 'activerecord.attributes.customer.max_vehicles' %></th>
       <th><%= t 'activerecord.attributes.customer.test' %></th>
+      <th><%= t 'activerecord.attributes.customer.jobs' %></th>
       <th><%= t 'activerecord.attributes.customer.end_subscription' %></th>
       <th></th>
     </tr>
@@ -21,6 +22,10 @@
         <td><%= customer.name %></td>
         <td><%= customer.max_vehicles %></td>
         <td><%= customer.test ? '✓' : '' %></td>
+        <td>
+          <%= render 'job', customer: customer, job: customer.job_optimizer %>
+          <%= render 'job', customer: customer, job: customer.job_geocoding %>
+        </td>
         <td><%= customer.end_subscription %></td>
         <td class="text-right">
           <%= link_to edit_customer_path(customer), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>

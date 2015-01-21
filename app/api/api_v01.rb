@@ -6,15 +6,16 @@ class ApiV01 < Grape::API
       env['warden']
     end
 
-    def current_customer
+    def current_customer(custimer_id = nil)
       @current_user ||= warden.authenticated? && warden.user
       @current_user ||= params[:api_key] && User.find_by(api_key: params[:api_key])
-      @current_customer ||= @current_user && @current_user.customer
+      @current_customer ||= @current_user && (@current_user.admin? && custimer_id ? Customer.find(custimer_id.to_i) : @current_user.customer)
     end
 
     def authenticate!
-      error!('401 Unauthorized', 401) unless current_customer
-      error!('402 Payment Required', 402) if @current_customer.end_subscription && @current_customer.end_subscription > Time.now
+      current_customer
+      error!('401 Unauthorized', 401) unless @current_user
+      error!('402 Payment Required', 402) if @current_customer && @current_customer.end_subscription && @current_customer.end_subscription > Time.now
     end
 
     def authorize!

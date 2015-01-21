@@ -14,7 +14,7 @@ describe V01::Customers do
 
   describe :get do
     it 'Return a customer' do
-      get api()
+      get api(@customer.id)
       expect(response.status).to eq(200)
       expect(JSON.parse(response.body)['name']).to eq @customer.name
     end
@@ -23,30 +23,28 @@ describe V01::Customers do
   describe :update do
     it 'Update a customer' do
       @customer.tomtom_user, = 'new name'
-      put api(), @customer.attributes
+      put api(@customer.id), @customer.attributes
       expect(response.status).to eq(200)
     end
 
     it 'Return a the customer' do
-      get api()
+      get api(@customer.id)
       expect(response.status).to eq(200)
       expect(JSON.parse(response.body)['tomtom_user']).to eq @customer.tomtom_user
     end
   end
 
-  describe :stop_job_optimizer do
-    it 'Stop job optimizer' do
-      expect{
-        delete api('job_optimizer')
-        expect(response.status).to eq(200)
-      }.to change{Delayed::Backend::ActiveRecord::Job.count}.by(-1)
+  describe :get_job do
+    it 'Get job' do
+      get api("#{@customer.id}/job/#{@customer.job_optimizer_id}")
+      expect(response.status).to eq(200)
     end
   end
 
-  describe :stop_job_geocoding do
-    it 'Stop job geocoding' do
+  describe :delete_job do
+    it 'Delete job' do
       expect{
-        delete api('job_geocoding')
+        delete api("#{@customer.id}/job/#{@customer.job_geocoding_id}")
         expect(response.status).to eq(200)
       }.to change{Delayed::Backend::ActiveRecord::Job.count}.by(-1)
     end

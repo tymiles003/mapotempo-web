@@ -119,6 +119,7 @@ fr:
         stores: "Dépôts"
         enable_orders: "Activer les commandes"
         test: "Test"
+        jobs: "Tâches"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -649,6 +650,7 @@ fr:
     verb:
       new: "Nouveau"
       list: "Liste"
+      show: "Afficher"
       edit: "Modifier"
       send: "Envoyer"
       destroy: "Supprimer"

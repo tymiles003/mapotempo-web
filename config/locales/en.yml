@@ -116,6 +116,7 @@ en:
         stores: "Stores"
         enable_orders: "Enable orders"
         test: "Test"
+        jobs: "Jobs"
       destination:
         name: "Name"
         address: "Address"
@@ -643,7 +644,9 @@ en:
     osm_attribution_html: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{layer_attribution}"
     verb:
       new: "New"
+      new: "New"
       list: "List"
+      show: "Show"
       edit: "Edit"
       send: "Send"
       destroy: "Destroy"
