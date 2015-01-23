@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014
+# Copyright © Mapotempo, 2014-2015
 #
 # This file is part of Mapotempo.
 #
@@ -20,14 +20,31 @@ require 'savon'
 
 module TomtomWebfleet
 
-  @client = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api_url + '/ordersService?wsdl', multipart: true, soap_version: 2) do
+  @client_objects = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2) do
     #log true
     #pretty_print_xml true
     convert_request_keys_to :none
   end
 
+  @client_orders = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api_url + '/ordersService?wsdl', multipart: true, soap_version: 2) do
+    #log true
+    #pretty_print_xml true
+    convert_request_keys_to :none
+  end
+
+  def self.showObjectReport(account, username, password)
+    objects = self.get(@client_objects, :show_object_report, account, username, password, {})
+    objects = [objects] if objects.is_a?(Hash)
+    objects.collect{ |object|
+      {
+        objectUid: object[:@object_uid],
+        objectName: object[:object_name],
+      }
+    }
+  end
+
   def self.clearOrders(account, username, password, objectuid)
-    self.get(:clear_orders, account, username, password, {
+    self.get(@client_orders, :clear_orders, account, username, password, {
       deviceToClear: {
         markDeleted: 'true',
       },
@@ -82,11 +99,11 @@ module TomtomWebfleet
         }
       }}
     end
-    self.get(:send_destination_order, account, username, password, params)
+    self.get(@client_orders, :send_destination_order, account, username, password, params)
   end
 
   private
-    def self.get(operation, account, username, password, message = {})
+    def self.get(client, operation, account, username, password, message = {})
       message[:order!] = [:aParm, :gParm] + (message[:order!] || (message.keys - [:attributes!]))
       message[:aParm] = {
         apiKey: Mapotempo::Application.config.tomtom_api_key,
@@ -95,10 +112,12 @@ module TomtomWebfleet
         password: password,
       }
       message[:gParm] = {}
-      response = @client.call(operation, message: message)
+      response = client.call(operation, message: message)
 
       if response.body.first[1][:return][:status_code] != '0'
         raise response.body.first[1][:return][:status_message]
+      elsif response.body[:show_object_report_response]
+        response.body[:show_object_report_response][:return][:results][:result_item]
       end
     rescue Savon::SOAPFault => error
       fault_code = error.to_hash[:fault][:faultcode]

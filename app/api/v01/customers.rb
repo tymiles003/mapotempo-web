@@ -1,3 +1,5 @@
+require 'tomtom'
+
 class V01::Customers < Grape::API
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -46,6 +48,14 @@ class V01::Customers < Grape::API
       elsif @current_customer.job_geocoding && @current_customer.job_geocoding_id = params[:job_id]
         @current_customer.job_geocoding.destroy
       end
+    end
+
+    desc "Fetch tomtom ids."
+    get ':id/tomtom_ids' do
+      current_customer(params[:id])
+      Hash[Tomtom.fetch_device_id(@current_customer).collect{ |tomtom|
+        [tomtom[:objectUid], "#{tomtom[:objectUid]} - #{tomtom[:objectName]}"]
+      }]
     end
   end
 end

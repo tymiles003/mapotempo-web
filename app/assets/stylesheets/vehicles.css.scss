@@ -19,6 +19,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+[data-controller='vehicles'] {
+
 .vehicle_color {
   display: inline-block;
   width: 20px;
@@ -40,4 +42,10 @@
   -webkit-border-radius: 2px;
   -o-border-radius: 2px;
   vertical-align: middle;
+}
+
+#vehicle_tomtom_id_input > div > div {
+  border: 0px;
+}
+
 }

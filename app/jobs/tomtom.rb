@@ -19,6 +19,9 @@ require 'tomtom_webfleet'
 
 class Tomtom
 
+  def self.fetch_device_id(customer)
+    TomtomWebfleet.showObjectReport(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password)
+  end
 
   def self.clear(route)
     customer = route.planning.customer

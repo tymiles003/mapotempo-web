@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2013-2014
+// Copyright © Mapotempo, 2013-2015
 //
 // This file is part of Mapotempo.
 //
@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function vehicles_form() {
+function vehicles_form(params) {
   $('#vehicle_open, #vehicle_close').timeEntry({
     show24Hours: true,
     spinnerImage: ''
@@ -24,20 +24,47 @@ function vehicles_form() {
   $('#vehicle_color').simplecolorpicker({
     theme: 'fontawesome'
   });
+
+  $('#vehicle_tomtom_id').select2({
+    minimumResultsForSearch: -1,
+    initSelection: function (element, callback) {
+      var data = {
+        id: element.val(),
+        text: element.val()
+      };
+      callback(data);
+    },
+    ajax: {
+      url: '/api/0.1/customers/' + params.customer_id + '/tomtom_ids',
+      dataType: 'json',
+      results: function (data, page) {
+        data[''] = ' ';
+        return {
+          results: $.map(data, function(o, k) {
+            return {
+              id: k,
+              text: o
+            };
+          })
+        };
+      },
+      cache: true
+    },
+  });
 }
 
 Paloma.controller('Vehicle').prototype.new = function() {
-  vehicles_form();
+  vehicles_form(this.params);
 };
 
 Paloma.controller('Vehicle').prototype.create = function() {
-  vehicles_form();
+  vehicles_form(this.params);
 };
 
 Paloma.controller('Vehicle').prototype.edit = function() {
-  vehicles_form();
+  vehicles_form(this.params);
 };
 
 Paloma.controller('Vehicle').prototype.update = function() {
-  vehicles_form();
+  vehicles_form(this.params);
 };
