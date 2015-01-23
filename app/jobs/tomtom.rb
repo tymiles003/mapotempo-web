@@ -19,6 +19,12 @@ require 'tomtom_webfleet'
 
 class Tomtom
 
+
+  def self.clear(route)
+    customer = route.planning.customer
+    TomtomWebfleet.clearOrders(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id)
+  end
+
   def self.export_route_as_orders(route)
     order_id_base = Time.now.strftime("%y%m%d%H%M%S")
     customer = route.planning.customer

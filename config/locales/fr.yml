@@ -439,6 +439,7 @@ fr:
         gps_waypoint: "Points de passage GPS"
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
+        tomtom_empty: "Vider TomTom"
         masternaut: "Envoyer vers Masternaut"
       zoning:
         none: "Aucun"

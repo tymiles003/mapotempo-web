@@ -436,6 +436,7 @@ en:
         gps_waypoint: "GPS Waypoint"
         tomtom_orders: "Send to TomTom as Orders"
         tomtom_waypoints: "Send to TomTom as Waypoints"
+        tomtom_empty: "Clear TomTom"
         masternaut: "Send to Masternaut"
       zoning:
         none: "None"
