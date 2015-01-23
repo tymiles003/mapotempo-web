@@ -5,7 +5,7 @@ Layer.create!(name: "Mapnik B&W", url: "http://{s}.toolserver.org/tiles/bw-mapni
 Layer.create!(name: "MapQuest", url: "http://otile2.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", urlssl: "https://otile2-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", attribution: "Tiles by MapQuest")
 Layer.create!(name: "Stamen B&W", url: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", urlssl: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png", attribution: "Tiles by Stamen Design")
 osrm = Router.create!(name: "project-osrm.org", url:"http://router.project-osrm.org")
-customer = Customer.create!(name: "Toto", max_vehicles: 3, router: osrm, test: true)
+customer = Customer.create!(name: "Toto", router: osrm, test: true)
 admin = User.create!(email: "admin@admin.com", password: "123456789", admin: true)
 fred = User.create!(email: "user@user.com", password: "123456789", layer: mapbox, customer: customer)
 toto = User.create!(email: "toto@toto.com", password: "123456789", customer: customer)
