@@ -376,6 +376,22 @@ function plannings_edit(params) {
       return false;
     });
 
+    $(".route .export_alyacom a").click(function() {
+      var url = this.href;
+      $.ajax({
+        type: "get",
+        url: url,
+        beforeSend: function() {
+          $("#dialog-alyacom").dialog("open");
+        },
+        complete: function() {
+          $("#dialog-alyacom").dialog("close");
+        },
+        error: ajaxError
+      });
+      return false;
+    });
+
     $(".vehicle_select").change(function() {
       $.ajax({
         type: "patch",
@@ -600,6 +616,11 @@ function plannings_edit(params) {
   });
 
   $("#dialog-masternaut").dialog({
+    autoOpen: false,
+    modal: true
+  });
+
+  $("#dialog-alyacom").dialog({
     autoOpen: false,
     modal: true
   });

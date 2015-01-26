@@ -14,6 +14,7 @@ route_one:
   out_of_date: false
   vehicle: vehicle_one
   ref: "route_one"
+  start: 2000-01-01 08:00
 
 route_two:
   distance: 1.5
@@ -22,6 +23,7 @@ route_two:
   out_of_date: false
   vehicle:
   ref:
+  start: 2000-01-01 16:00
 
 route_three:
   distance: 1.5
@@ -30,3 +32,4 @@ route_three:
   out_of_date: false
   vehicle: vehicle_one
   ref: "route 33"
+  start: 2000-01-01 07:00

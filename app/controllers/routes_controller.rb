@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'tomtom'
+require 'masternaut'
+require 'alyacom'
 require 'csv'
 
 class RoutesController < ApplicationController
@@ -54,6 +56,14 @@ class RoutesController < ApplicationController
       format.masternaut do
         begin
           Masternaut.export_route(@route)
+          head :no_content
+        rescue StandardError => e
+          render json: e.message, status: :unprocessable_entity
+        end
+      end
+      format.alyacom do
+        begin
+          Alyacom.export_route(@route)
           head :no_content
         rescue StandardError => e
           render json: e.message, status: :unprocessable_entity

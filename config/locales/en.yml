@@ -109,6 +109,7 @@ en:
         masternaut_account: "Customer name"
         masternaut_user: "Username"
         masternaut_password: "Password"
+        alyacom_association: "AlyaCom identifier"
         router: "Route planner"
         router_id: "Route planner"
         print_planning_annotating: "Planning annotating"
@@ -300,6 +301,8 @@ en:
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
       masternaut: "Masternaut"
       masternaut_help: "Allows sending plannings to Masternaut device."
+      alyacom: "AlyaCom"
+      alyacom_help: "Allows sending plannings to AlyaCom device."
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
@@ -438,6 +441,7 @@ en:
         tomtom_waypoints: "Send to TomTom as Waypoints"
         tomtom_empty: "Clear TomTom"
         masternaut: "Send to Masternaut"
+        alyacom: "Send to AlyaCom"
       zoning:
         none: "None"
         apply: "Apply zoning"
@@ -494,6 +498,9 @@ en:
         masternaut:
           title: "Masternaut"
           in_progress: "Please wait, sending planning to Masternaut device."
+        alyacom:
+          title: "AlyaCom"
+          in_progress: "Please wait, sending planning to AlyaCom."
         zoning:
           title: "Zoning"
           in_progress: "Please wait, applying new zoning in progress."

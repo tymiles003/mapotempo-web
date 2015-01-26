@@ -70,6 +70,21 @@
       </div>
     </div>
   </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">
+        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAlyacom">
+          <%= t '.alyacom' %>
+        </a>
+      </h2>
+    </div>
+    <div id="collapseAlyacom" class="panel-collapse collapse">
+      <div class="panel-body">
+        <p class="help-block"><%= t '.alyacom_help' %></p>
+        <%= f.text_field :alyacom_association %>
+      </div>
+    </div>
+  </div>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

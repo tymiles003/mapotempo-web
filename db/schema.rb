@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150109130251) do
+ActiveRecord::Schema.define(version: 20150121150634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,14 +36,15 @@ ActiveRecord::Schema.define(version: 20150109130251) do
     t.string   "masternaut_password"
     t.boolean  "enable_orders",             default: false, null: false
     t.boolean  "test",                      default: false, null: false
+    t.string   "alyacom_association"
     t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
     t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
   end
 
   create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",               default: 0,   null: false
-    t.integer  "attempts",               default: 0,   null: false
-    t.text     "handler",                              null: false
+    t.integer  "priority",   default: 0,   null: false
+    t.integer  "attempts",   default: 0,   null: false
+    t.text     "handler",                  null: false
     t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
@@ -52,7 +53,7 @@ ActiveRecord::Schema.define(version: 20150109130251) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "progress",   limit: nil, default: "0", null: false
+    t.string   "progress",   default: "0", null: false
     t.index ["priority", "run_at"], :name => "delayed_jobs_priority"
   end
 
