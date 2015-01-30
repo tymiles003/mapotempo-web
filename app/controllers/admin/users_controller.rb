@@ -33,12 +33,12 @@ class Admin::UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    @customers = Customer.all
+    @customers = Customer.order(:name)
   end
 
   # GET /users/1/edit
   def edit
-    @customers = Customer.all
+    @customers = Customer.order(:name)
   end
 
   # POST /users
@@ -51,7 +51,7 @@ class Admin::UsersController < ApplicationController
         format.html { redirect_to edit_customer_path(@user.customer), notice: t('activerecord.successful.messages.created', model: @user.class.model_name.human) }
         format.json { render action: 'show', status: :created, location: @user }
       else
-        @customers = Customer.all
+        @customers = Customer.order(:name)
         format.html { render action: 'new' }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -66,7 +66,7 @@ class Admin::UsersController < ApplicationController
         format.html { redirect_to edit_customer_path(@user.customer), notice: t('activerecord.successful.messages.updated', model: @user.class.model_name.human) }
         format.json { head :no_content }
       else
-        @customers = Customer.all
+        @customers = Customer.order(:name)
         format.html { render action: 'edit' }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
