@@ -23,6 +23,7 @@ class Route < ActiveRecord::Base
   nilify_blanks
   validates :planning, presence: true
 #  validates :vehicle, presence: true # nil on unplanned route
+  validate :stop_index_validation
 
   after_initialize :assign_defaults, if: 'new_record?'
 
@@ -184,7 +185,7 @@ class Route < ActiveRecord::Base
 
   def remove_stop(stop)
     shift_index(stop.index + 1, -1)
-    stop.destroy
+    stops.destroy(stop)
     if self.vehicle
       self.out_of_date = true
     end
@@ -228,7 +229,7 @@ class Route < ActiveRecord::Base
     end
     stop.active = false
     compute
-    stop.destroy
+    stop.route.stops.destroy(stop)
   end
 
   def sum_out_of_window
@@ -324,5 +325,11 @@ class Route < ActiveRecord::Base
       }[1].each{ |stop|
         stop.index += by
       }
+    end
+
+    def stop_index_validation
+      if self.vehicle_id && self.stops.length > 0 && self.stops.collect(&:index).sum != (self.stops.length * (self.stops.length + 1)) / 2
+        errors.add(:stops, :bad_index)
+      end
     end
 end

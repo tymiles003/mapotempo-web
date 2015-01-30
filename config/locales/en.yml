@@ -262,6 +262,10 @@ en:
               over_max_limit: "Over maximum number of route's stops"
         stores:
           at_least_one: "At least one store needed"
+        route:
+          attributes:
+            stops:
+              bad_index: "Bad index"
 
   errors:
     planning:

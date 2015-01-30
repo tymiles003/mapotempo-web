@@ -144,11 +144,11 @@ class Planning < ActiveRecord::Base
     # Take the closest routes destination and eval insert
     route, index = available_routes.collect{ |route|
       route.stops.map{ |stop| [stop.destination, route, stop.index] } +
-        [[route.vehicle.store_start, route, 0], [route.vehicle.store_stop, route, route.stops.size-1]]
+        [[route.vehicle.store_start, route, 1], [route.vehicle.store_stop, route, route.stops.size+1]]
     }.flatten(1).sort{ |a,b|
       a[0].distance(stop.destination) <=> b[0].distance(stop.destination)
     }[0..9].collect{ |destination_route_index|
-        [[destination_route_index[1], destination_route_index[2]], [destination_route_index[1], destination_route_index[2]+1]]
+      [[destination_route_index[1], destination_route_index[2]], [destination_route_index[1], destination_route_index[2]+1]]
     }.flatten(1).uniq.min_by{ |ri|
       ri[0].class.amoeba do
         clone :stops # No need to duplicate stop juste for compute evaluation

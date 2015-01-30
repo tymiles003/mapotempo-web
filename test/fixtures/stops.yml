@@ -13,7 +13,7 @@ stop_unaffected:
   out_of_drive_time: false
 
 stop_one_one:
-  index: 2
+  index: 1
   active: true
   distance: 1.5
   trace: MyString
@@ -37,7 +37,7 @@ stop_one_two:
   out_of_drive_time: false
 
 stop_two_one:
-  index: 2
+  index: 1
   active: false
   distance: 1.5
   trace: MyString

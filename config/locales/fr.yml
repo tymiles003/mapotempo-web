@@ -265,6 +265,10 @@ fr:
               over_max_limit: "Dépassement du nombre maximal d'arrêts dans une tournée"
         stores:
           at_least_one: "Au moins un dépôt est requis"
+        route:
+          attributes:
+            stops:
+              bad_index: "Mauvais index"
 
   errors:
     planning:

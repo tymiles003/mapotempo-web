@@ -97,15 +97,12 @@ class PlanningsController < ApplicationController
           destination = current_user.customer.destinations.find{ |destination| destination.id == params[:destination_id] }
 
           route.move_destination(destination, params[:index].to_i + 1)
-          if @planning.save
-            @planning.reload
-            format.json { render action: 'show', location: @planning }
-          else
-            @planning.reload
-            format.json { render json: @planning.errors, status: :unprocessable_entity }
-          end
+          @planning.save!
+          @planning.reload
+          format.json { render action: 'show', location: @planning }
         end
       rescue StandardError => e
+        @planning.reload
         format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
