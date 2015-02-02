@@ -55,7 +55,7 @@ else
       (json.geocoded true) if stop.destination.lat != nil && stop.destination.lng != nil
       (json.time stop.time.strftime("%H:%M")) if stop.time
       (json.active true) if stop.active
-      (json.number number+=1) if stop.active
+      (json.number number+=1) if route.vehicle && stop.active
       json.distance (stop.distance or 0)/1000
       if first_active_free == true || first_active_free == stop
         json.automatic_insert true
