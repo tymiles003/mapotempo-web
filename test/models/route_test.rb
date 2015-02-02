@@ -18,6 +18,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one)
     oo = o.amoeba_dup
     assert_equal oo, oo.stops[0].route
+    oo.save!
   end
 
   test "should default_stops" do
@@ -42,6 +43,7 @@ class RouteTest < ActiveSupport::TestCase
     assert o.start
     assert o.end
     assert_equal o.stops.size + 1, o.distance
+    o.save!
   end
 
   test "should compute empty" do
@@ -56,6 +58,7 @@ class RouteTest < ActiveSupport::TestCase
 
     o.compute
     assert_equal 1, o.distance
+    o.save!
   end
 
   test "should set destinations" do
@@ -129,35 +132,81 @@ class RouteTest < ActiveSupport::TestCase
   test "should change active" do
     o = routes(:route_one)
 
-    assert_equal 2, o.size_active
+    assert_equal 3, o.size_active
     o.active(:none)
     assert_equal 0, o.size_active
     o.active(:all)
-    assert_equal 2, o.size_active
+    assert_equal 3, o.size_active
     o.stops[0].active = false
-    assert_equal 1, o.size_active
+    assert_equal 2, o.size_active
     o.active(:foo_bar)
-    assert_equal 1, o.size_active
+    assert_equal 2, o.size_active
+
+    o.save!
   end
 
-  test "move stop inside route" do
+  test "move stop on same route from inside to start" do
     o = routes(:route_one)
     s = o.stops[1]
-    assert s.index = 2
+    assert_equal 2, s.index
     o.move_destination(s.destination, 1)
-    assert s.index = 1
+    o.save!
+    s.reload
+    assert_equal 1, s.index
   end
 
-  test "move stop to affected route" do
+  test "move stop on same route from inside to end" do
+    o = routes(:route_one)
+    s = o.stops[1]
+    assert_equal 2, s.index
+    o.move_destination(s.destination, 3)
+    o.save!
+    s.reload
+    assert_equal 3, s.index
+  end
+
+  test "move stop on same route from start to inside" do
+    o = routes(:route_one)
+    s = o.stops[0]
+    assert_equal 1, s.index
+    o.move_destination(s.destination, 2)
+    o.save!
+    s.reload
+    assert_equal 2, s.index
+  end
+
+  test "move stop on same route from end to inside" do
+    o = routes(:route_one)
+    s = o.stops[2]
+    assert_equal 3,  s.index
+    o.move_destination(s.destination, 2)
+    o.save!
+    s.reload
+    assert_equal 2, s.index
+  end
+
+  test "move stop from unaffected to affected route" do
     o = routes(:route_zero)
     s = o.stops[0]
     assert_not s.index
     routes(:route_one).move_destination(s.destination, 1)
+
+    o.save!
   end
 
-  test "move stop o unaffected route" do
+  test "move stop from affected to affected route" do
+    o = routes(:route_two)
+    s = o.stops[0]
+    routes(:route_one).move_destination(s.destination, 2)
+
+    o.save!
+  end
+
+  test "move stop of unaffected route" do
     o = routes(:route_one)
     s = o.stops[1]
     routes(:route_zero).move_destination(s.destination, 1)
+
+    o.save!
   end
 end

@@ -36,12 +36,24 @@ stop_one_two:
   out_of_capacity: false
   out_of_drive_time: false
 
+stop_one_three:
+  index: 3
+  active: true
+  distance: 1.5
+  trace: MyString
+  route: route_one
+  destination: destination_three
+  time: 2000-01-01 00:00:30
+  out_of_window: false
+  out_of_capacity: false
+  out_of_drive_time: false
+
 stop_two_one:
   index: 1
   active: false
   distance: 1.5
   trace: MyString
-  route: route_three
+  route: route_two
   destination: destination_two
   time: 2000-01-01 00:00:30
   out_of_window: false

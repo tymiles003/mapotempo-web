@@ -194,7 +194,7 @@ class Route < ActiveRecord::Base
   def move_destination(destination, index)
     stop = nil
     planning.routes.find{ |route|
-      route.stops.find{ |s|
+      (route != self ? route : self).stops.find{ |s|
         if s.destination == destination
           stop = s
         end

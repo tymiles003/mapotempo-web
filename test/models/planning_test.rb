@@ -25,6 +25,7 @@ class PlanningTest < ActiveSupport::TestCase
     oo = o.amoeba_dup
 
     assert_equal oo, oo.routes[0].planning
+    oo.save!
   end
 
   test "should set_destinations" do
@@ -32,6 +33,7 @@ class PlanningTest < ActiveSupport::TestCase
 
     o.set_destinations({'route_one' => [[destinations(:destination_one)]]})
     assert o.routes[1].stops.collect(&:destination).include?(destinations(:destination_one))
+    o.save!
   end
 
   test "should not set_destinations for tags" do
@@ -40,6 +42,7 @@ class PlanningTest < ActiveSupport::TestCase
 
     o.set_destinations({'route_one' => [[destinations(:destination_one)]]})
     assert_not o.routes[1].stops.collect(&:destination).include?(destinations(:destination_one))
+    o.save!
   end
 
   test "should not set_destinations for size" do
@@ -48,6 +51,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_raises(RuntimeError) {
       o.set_destinations(Hash[0.upto(o.routes.size).collect{ |i| ["route#{i}", [destinations(:destination_one)]] }])
     }
+    o.save!
   end
 
   test "should vehicle_add" do
@@ -94,6 +98,7 @@ class PlanningTest < ActiveSupport::TestCase
       assert_not r.out_of_date
     }
     assert_not o.zoning_out_of_date
+    o.save!
   end
 
   test "should compute with non geocoded" do
@@ -129,7 +134,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.zoning = nil
     assert_equal 2, o.routes.size
     assert_equal 1, o.routes[0].stops.size
-    assert_equal 2, o.routes[1].stops.size
+    assert_equal 3, o.routes[1].stops.size
     assert_difference('Stop.count', 0) do
       o.automatic_insert(o.routes[0].stops[0])
       o.save!
@@ -138,7 +143,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.reload
     assert_equal 2, o.routes.size
     assert_equal 0, o.routes[0].stops.size
-    assert_equal 3, o.routes[1].stops.size
+    assert_equal 4, o.routes[1].stops.size
   end
 
   test "should apply orders" do
@@ -150,6 +155,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.apply_orders(oa, 0)
     assert o.routes[1].stops[0].active
     assert_not o.routes[1].stops[1].active
+    o.save!
   end
 
   test "should apply orders and destroy" do
