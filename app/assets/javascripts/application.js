@@ -55,6 +55,7 @@
 //= require Control.Geocoder
 //= require mustache
 //= require select2.js
+//= require select2_locale_fr.js
 //= require_tree ../../templates
 //= require paloma
 //= require leaflet-pip
