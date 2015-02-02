@@ -48,7 +48,13 @@ class Destination < ActiveRecord::Base
   end
 
   def destroy
-    out_of_date # Too late to do this in before_destroy callback, children already destroyed
+    # Too late to do this in before_destroy callback, children already destroyed
+    Route.transaction do
+      stops.each{ |stop|
+        stop.route.remove_stop(stop)
+        stop.route.save
+      }
+    end
     super
   end
 

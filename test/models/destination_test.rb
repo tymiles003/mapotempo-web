@@ -85,4 +85,19 @@ class DestinationTest < ActiveSupport::TestCase
       o.customer.save!
     end
   end
+
+  test "should destroy and reindex stops" do
+    r = routes(:route_one)
+    o = destinations(:destination_one)
+
+    r.touch
+    r.save!
+
+    assert o.stops
+    o.destroy
+
+    r.reload
+    r.touch
+    r.save!
+  end
 end
