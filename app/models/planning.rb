@@ -26,8 +26,7 @@ class Planning < ActiveRecord::Base
   validates :customer, presence: true
   validates :name, presence: true
 
-  before_create :update_zoning
-  before_update :update_zoning
+  before_save :update_zoning
 
   amoeba do
     enable

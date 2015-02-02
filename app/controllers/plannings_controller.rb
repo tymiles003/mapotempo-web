@@ -56,8 +56,7 @@ class PlanningsController < ApplicationController
       begin
         Planning.transaction do
           @planning = current_user.customer.plannings.build(planning_params)
-          # FIXME workaround, avoid create a second empty planning
-          if @planning.save && @planning.default_routes && @planning.save
+          if @planning.default_routes && @planning.save
             format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
           else
             format.html { render action: 'new' }
