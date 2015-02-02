@@ -80,7 +80,7 @@ class Customer < ActiveRecord::Base
             plannings.each{ |planning|
               planning.vehicle_remove(vehicle)
             }
-            vehicle.destroy
+            vehicles.destroy(vehicle)
           }
         end
       end

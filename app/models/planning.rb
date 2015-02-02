@@ -75,7 +75,7 @@ class Planning < ActiveRecord::Base
       routes[0].stops.build(destination: stop.destination)
       routes[0].out_of_date = true
     }
-    route.destroy
+    routes.destroy(route)
   end
 
   def destination_add(destination)
