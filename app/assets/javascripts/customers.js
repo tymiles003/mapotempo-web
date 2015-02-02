@@ -16,6 +16,12 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 function customers_edit(params) {
+  $('#customer_end_subscription').datepicker({
+    language: defaultLocale,
+    autoclose: true,
+    todayHighlight: true
+  });
+
   $('#customer_take_over').timeEntry({
     show24Hours: true,
     showSeconds: true,

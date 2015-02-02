@@ -26,7 +26,7 @@
           <%= render 'job', customer: customer, job: customer.job_optimizer %>
           <%= render 'job', customer: customer, job: customer.job_geocoding %>
         </td>
-        <td><%= customer.end_subscription %></td>
+        <td><%= customer.end_subscription ? l(customer.end_subscription) : nil %></td>
         <td class="text-right">
           <%= link_to edit_customer_path(customer), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to customer, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>

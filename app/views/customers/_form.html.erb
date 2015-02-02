@@ -1,7 +1,7 @@
 <%= twitter_bootstrap_form_for @customer, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
   <%= f.text_field :name, disabled:!current_user.admin? %>
-  <%= f.date_field :end_subscription, disabled:!current_user.admin? %>
+  <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
   <%= f.number_field :max_vehicles, disabled:!current_user.admin? %>
   <%= f.collection_select :router_id, [], Router.all, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} do %>
     <p class="help-block"><%= t '.router_help' %></p>
