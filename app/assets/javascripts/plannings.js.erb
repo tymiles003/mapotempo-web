@@ -408,15 +408,6 @@ function plannings_edit(params) {
       });
     });
 
-    $('.btn.extend').click(function() {
-      $('.container').toggleClass('box-extended');
-      if ($('.container').hasClass('box-extended')) {
-        $(".routes").sortable("enable");
-      } else {
-        $(".routes").sortable("disable");
-      }
-    });
-
     $(".routes").sortable({
       disabled: true,
       items: "li.route"
@@ -585,6 +576,15 @@ function plannings_edit(params) {
       map.fitBounds(bounds);
     }
   }
+
+  $('.btn.extend').click(function() {
+    $('.container').toggleClass('box-extended');
+    if ($('.container').hasClass('box-extended')) {
+      $(".routes").sortable("enable");
+    } else {
+      $(".routes").sortable("disable");
+    }
+  });
 
   $.ajax({
     url: '/plannings/' + planning_id + '.json',
