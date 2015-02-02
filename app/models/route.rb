@@ -184,11 +184,11 @@ class Route < ActiveRecord::Base
   end
 
   def remove_stop(stop)
-    shift_index(stop.index + 1, -1)
-    stops.destroy(stop)
     if self.vehicle
+      shift_index(stop.index + 1, -1)
       self.out_of_date = true
     end
+    stops.destroy(stop)
   end
 
   def move_destination(destination, index)
