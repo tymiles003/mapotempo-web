@@ -51,7 +51,7 @@ class Optimizer
         planning.customer.job_optimizer.save!
       end
     else
-      tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop| # TODO support diff start and stop on route into optimizer
+      tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop|
         open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
         close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
         if open && close && open > close
