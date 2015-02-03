@@ -24,7 +24,7 @@ class ProductsController < ApplicationController
   end
 
   def new
-    @product = Product.new
+    @product = current_user.customer.products.build
   end
 
   def edit

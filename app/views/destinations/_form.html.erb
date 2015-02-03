@@ -1,5 +1,5 @@
 <%= twitter_bootstrap_form_for(@destination, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
-  <%= render 'shared/error_messages', model: current_user.customer %>
+  <%= render 'shared/error_messages', model: @destination %>
   <%= f.text_field :ref %>
   <%= f.text_field :name %>
   <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
@@ -34,13 +34,13 @@
   <% end %>
   <%= f.text_field :take_over, {
     value: @destination.take_over ? @destination.take_over.strftime("%H:%M:%S") : nil,
-    placeholder: current_user.customer.take_over ? current_user.customer.take_over.strftime("%H:%M:%S") + ' (' + t('.take_over_default') + ')' : nil,
+    placeholder: @destination.customer.take_over ? @destination.customer.take_over.strftime("%H:%M:%S") + ' (' + t('.take_over_default') + ')' : nil,
     input_group: t('all.unit.hour_minute_second')} do %>
     <p class="help-block"><%= t '.take_over_help' %></p>
   <% end %>
   <%= f.text_field :open, {value: @destination.open ? @destination.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
   <%= f.text_field :close, {value: @destination.close ? @destination.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-  <%= f.select :tag_ids, t('activerecord.attributes.destination.tag_ids'), options_for_select(current_user.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @destination.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+  <%= f.select :tag_ids, t('activerecord.attributes.destination.tag_ids'), options_for_select(@destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @destination.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
     <p class="help-block"><%= t '.tags_help' %></p>
   <% end %>
   <%= f.text_field :comment do %>
@@ -54,8 +54,8 @@
 controller.js(
   destination_id: @destination.id || 0,
   map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
-  map_lat: current_user.customer.stores[0].lat,
-  map_lng: current_user.customer.stores[0].lng,
+  map_lat: @destination.customer.stores[0].lat,
+  map_lng: @destination.customer.stores[0].lng,
   map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution)
 )
 %>

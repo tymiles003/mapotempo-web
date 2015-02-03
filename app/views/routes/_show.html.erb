@@ -30,7 +30,7 @@
           <span class="time"><%= route.start.strftime("%H:%M") if route.start %></span>
         </div>
 
-        <% if current_user.customer.print_planning_annotating %>
+        <% if route.planning.customer.print_planning_annotating %>
           <div class="col-md-5 col-sm-6 col-xs-6">
         <% else %>
           <div class="col-md-6 col-sm-6 col-xs-9">
@@ -96,7 +96,7 @@
           <% end %>
         </div>
 
-        <% if current_user.customer.print_planning_annotating %>
+        <% if route.planning.customer.print_planning_annotating %>
           <div class="col-md-5 col-sm-6 col-xs-6">
         <% else %>
           <div class="col-md-6 col-sm-6 col-xs-9">
@@ -115,13 +115,13 @@
           <% end %>
         </div>
 
-        <% if current_user.customer.print_planning_annotating %>
+        <% if route.planning.customer.print_planning_annotating %>
           <div class="comment col-md-2 hidden-sm hidden-xs"><%= stop.destination.comment %></div>
         <% else %>
           <div class="comment col-md-4 col-sm-4 hidden-xs"><%= stop.destination.comment %></div>
         <% end %>
 
-        <% if current_user.customer.print_planning_annotating %>
+        <% if route.planning.customer.print_planning_annotating %>
           <div class="annotating col-md-3 col-sm-3 col-xs-3">
             <div><%= t '.annotating.hour' %></div>
             <div class="signature"><%= t '.annotating.signature' %></div>
@@ -157,7 +157,7 @@
           <span class="time"><%= route.end.strftime("%H:%M") if route.end %></span>
         </div>
 
-        <% if current_user.customer.print_planning_annotating %>
+        <% if route.planning.customer.print_planning_annotating %>
           <div class="col-md-5 col-sm-6 col-xs-6">
         <% else %>
           <div class="col-md-6 col-sm-6 col-xs-9">

@@ -15,13 +15,13 @@ controller.js(
   zoning_id: @zoning.id,
   planning_id: @planning ? @planning.id : nil,
   map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
-  map_lat: current_user.customer.stores[0].lat,
-  map_lng: current_user.customer.stores[0].lng,
+  map_lat: @zoning.customer.stores[0].lat,
+  map_lng: @zoning.customer.stores[0].lng,
   map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution),
-  vehicles_array: current_user.customer.vehicles.collect{ |vehicle|
+  vehicles_array: @zoning.customer.vehicles.collect{ |vehicle|
     {id: vehicle.id, name: vehicle.name, color: vehicle.color}
   },
-  vehicles_map: Hash[current_user.customer.vehicles.collect{ |vehicle|
+  vehicles_map: Hash[@zoning.customer.vehicles.collect{ |vehicle|
     [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color}]
   }]
 )

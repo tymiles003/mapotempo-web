@@ -15,7 +15,7 @@ CSV.generate { |csv|
     I18n.t('destinations.import_file.comment'),
     I18n.t('destinations.import_file.tags')
   ]
-  Destination.where(customer_id: current_user.customer.id).each { |destination|
+  @destinations.each { |destination|
     csv << [
       destination.ref,
       destination.name,

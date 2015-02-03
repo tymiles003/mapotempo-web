@@ -1,7 +1,7 @@
-if current_user.customer.job_geocoding
+if @customer.job_geocoding
   json.geocoding do
-    json.extract! current_user.customer.job_geocoding, :progress, :attempts
-    json.error !!current_user.customer.job_geocoding.failed_at
+    json.extract! @customer.job_geocoding, :progress, :attempts
+    json.error !!@customer.job_geocoding.failed_at
   end
 else
   json.tags do

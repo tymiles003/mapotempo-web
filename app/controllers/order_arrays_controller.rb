@@ -22,7 +22,7 @@ class OrderArraysController < ApplicationController
   before_action :set_order_array, only: [:show, :edit, :update, :destroy, :duplicate]
 
   def index
-    @order_arrays = OrderArray.where(customer_id: current_user.customer.id)
+    @order_arrays = current_user.customer.order_arrays
   end
 
   def show
@@ -42,7 +42,7 @@ class OrderArraysController < ApplicationController
   end
 
   def new
-    @order_array = OrderArray.new
+    @order_array = current_user.customer.order_arrays.build
     @order_array.base_date = Date.today
   end
 

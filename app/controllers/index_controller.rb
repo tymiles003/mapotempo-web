@@ -17,6 +17,7 @@
 #
 class IndexController < ApplicationController
   def index
+    @customer = current_user && current_user.customer
   end
 
   def unsupported_browser

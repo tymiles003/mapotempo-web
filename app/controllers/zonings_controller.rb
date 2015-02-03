@@ -22,19 +22,19 @@ class ZoningsController < ApplicationController
   before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate]
 
   def index
-    @zonings = Zoning.where(customer_id: current_user.customer.id)
+    @zonings = current_user.customer.zonings
   end
 
   def show
   end
 
   def new
-    @zoning = Zoning.new
-    @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
+    @zoning = current_user.customer.zonings.build
+    @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
   end
 
   def edit
-    @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
+    @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
   end
 
   def create
@@ -44,7 +44,7 @@ class ZoningsController < ApplicationController
       if @zoning.save
         format.html { redirect_to edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.created', model: @zoning.class.model_name.human) }
       else
-        @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
+        @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
         format.html { render action: 'new' }
       end
     end
@@ -55,7 +55,7 @@ class ZoningsController < ApplicationController
       if @zoning.update_attributes(zoning_params) && @zoning.save
         format.html { redirect_to link_back || edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
       else
-        @planning = params.key?(:planning_id) ? Planning.where(customer_id: current_user.customer.id, id: params[:planning_id]).first : nil
+        @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
         format.html { render action: 'edit' }
       end
     end

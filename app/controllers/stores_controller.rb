@@ -25,7 +25,7 @@ class StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
 
   def index
-    @stores = Store.where(customer_id: current_user.customer.id)
+    @stores = current_user.customer.stores
     respond_to do |format|
       format.html
     end
@@ -35,7 +35,7 @@ class StoresController < ApplicationController
   end
 
   def new
-    @store = Store.new
+    @store = current_user.customer.stores.build
     @store.postalcode = current_user.customer.stores[0].postalcode
     @store.city = current_user.customer.stores[0].city
   end

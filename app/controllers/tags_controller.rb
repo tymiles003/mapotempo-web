@@ -24,7 +24,7 @@ class TagsController < ApplicationController
   end
 
   def new
-    @tag = Tag.new
+    @tag = current_user.customer.tags.build
   end
 
   def edit

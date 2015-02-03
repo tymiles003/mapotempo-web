@@ -22,11 +22,11 @@ class VehiclesController < ApplicationController
   before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
   def index
-    @vehicles = Vehicle.where(customer_id: current_user.customer.id)
+    @vehicles = current_user.customer.vehicles
   end
 
   def new
-    @vehicle = Vehicle.new
+    @vehicle = current_user.customer.vehicles.build
   end
 
   def edit

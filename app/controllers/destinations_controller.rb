@@ -25,7 +25,8 @@ class DestinationsController < ApplicationController
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
   def index
-    @destinations = Destination.where(customer_id: current_user.customer.id)
+    @customer = current_user.customer
+    @destinations = current_user.customer.destinations
     @tags = current_user.customer.tags
     respond_to do |format|
       format.html
@@ -44,7 +45,7 @@ class DestinationsController < ApplicationController
   end
 
   def new
-    @destination = Destination.new
+    @destination = current_user.customer.destinations.build
     @destination.postalcode = current_user.customer.stores[0].postalcode
     @destination.city = current_user.customer.stores[0].city
   end
