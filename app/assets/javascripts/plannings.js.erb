@@ -226,7 +226,18 @@ function plannings_edit(params) {
       m.on('mouseover', function(e) {
         m.openPopup();
       }).on('mouseout', function(e) {
-        m.closePopup();
+        if (!m.click) {
+          m.closePopup();
+        }
+      }).off('click').on('click', function(e) {
+        if (m.click) {
+          m.closePopup();
+        } else {
+          m.click = true;
+          m.openPopup();
+        }
+      }).on('popupclose', function(e) {
+        m.click = false;
       });
       stores[store.id] = m;
     });
@@ -312,7 +323,18 @@ function plannings_edit(params) {
           m.on('mouseover', function(e) {
             m.openPopup();
           }).on('mouseout', function(e) {
-            m.closePopup();
+            if (!m.click) {
+              m.closePopup();
+            }
+          }).off('click').on('click', function(e) {
+            if (m.click) {
+              m.closePopup();
+            } else {
+              m.click = true;
+              m.openPopup();
+            }
+          }).on('popupclose', function(e) {
+            m.click = false;
           });
           markers[stop.destination.id] = m;
         }
