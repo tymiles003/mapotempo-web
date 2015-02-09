@@ -626,6 +626,26 @@ function plannings_edit(params) {
     });
   });
 
+  $(".main").on('change', 'input:checkbox.stop_active', function(event, ui) {
+    var route_id = $(event.target).closest("[data-route_id]").attr("data-route_id");
+    var destination_id = $(event.target).closest("[data-destination_id]").attr("data-destination_id");
+    var active = $(event.target).is(':checked');
+    $.ajax({
+      type: "patch",
+      data: JSON.stringify({
+        stop: {
+          active: active
+        }
+      }),
+      contentType: 'application/json',
+      url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '.json',
+      beforeSend: beforeSendWaiting,
+      success: display_planning,
+      complete: completeWaiting,
+      error: ajaxError
+    });
+  });
+
   function display_planning_first_time(data) {
     display_planning(data);
     var bounds = routes_layers.getBounds();
