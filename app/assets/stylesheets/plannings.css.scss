@@ -41,6 +41,28 @@
     min-height: 200px;
   }
 
+  .destination-tools {
+    .btn-inverse {
+      border-color: #ccc;
+      .fa {
+        color: #333;
+      }
+    }
+
+    .btn-inverse:hover,
+    .btn-inverse:focus,
+    .btn-inverse.active {
+      background-color: #efefef;
+      .fa {
+        color: #333;
+      }
+    }
+
+    button {
+      background-color: transparent;
+    }
+  }
+
 .routes {
   padding: 0px;
   margin: 0px;
@@ -119,26 +141,6 @@
 
           .info {
             color: #777;
-          }
-        }
-
-        .automatic_insert {
-          background-color: transparent;
-        }
-
-        .btn-inverse {
-          border-color: #ccc;
-          .fa {
-            color: #333;
-          }
-        }
-
-        .btn-inverse:hover,
-        .btn-inverse:focus,
-        .btn-inverse.active {
-          background-color: #efefef;
-          .fa {
-            color: #333;
           }
         }
       }

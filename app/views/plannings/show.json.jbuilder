@@ -57,7 +57,7 @@ else
       (json.active true) if stop.active
       (json.number number+=1) if route.vehicle && stop.active
       json.distance (stop.distance or 0)/1000
-      if first_active_free == true || first_active_free == stop
+      if first_active_free == true || first_active_free == stop || !route.vehicle
         json.automatic_insert true
         first_active_free = true
       end

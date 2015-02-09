@@ -189,6 +189,7 @@ function zonings_edit(params) {
   function display_zoning(data) {
     var stores_marker = L.featureGroup();
     $.each(data.stores, function(i, store) {
+      store.store = true;
       var m = L.marker(new L.LatLng(store.lat, store.lng), {
         icon: L.icon({
           iconUrl: '<%= asset_path("marker-home.svg") %>',

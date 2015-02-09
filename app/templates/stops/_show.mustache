@@ -1,4 +1,12 @@
 {{#destination}}
+{{^store}}
+<div class="btn-group pull-right destination-tools" data-destination_id="{{id}}">
+  {{#automatic_insert}}
+  <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+  {{/automatic_insert}}
+  <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+</div>
+{{/store}}
 <p>
   {{#number}}<span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>{{/number}}{{#vehicle_name}}{{vehicle_name}}</br>{{/vehicle_name}}
   <b>{{#ref}}{{ref}} {{/ref}}{{name}}</b></br>
