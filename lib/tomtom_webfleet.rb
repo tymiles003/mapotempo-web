@@ -57,6 +57,7 @@ module TomtomWebfleet
   end
 
   def self.sendDestinationOrder(account, username, password, objectuid, position, orderid, description, time, waypoints = nil)
+    unique_base_oder_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
       dstOrderToSend: {
         orderText: description.strip[0..499],
@@ -80,7 +81,7 @@ module TomtomWebfleet
           objectUid: objectuid,
         },
         dstOrderToSend: {
-          orderNo: orderid[-16..-1] || orderid,
+          orderNo: (description.gsub(/[^a-z0-9\s]/i, '')[0..(19-unique_base_oder_id.length)] + unique_base_oder_id).upcase,
           orderType: 'DELIVERY_ORDER',
         }
       }
