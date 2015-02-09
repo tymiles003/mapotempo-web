@@ -144,7 +144,7 @@
         <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
           <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
-          <input type="checkbox"{{#active}} checked="checked"{{/active}} {{^geocoded}}disabled="disabled"{{/geocoded}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
+          <input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} {{^geocoded}}disabled="disabled"{{/geocoded}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
           <div class="title">
             {{^geocoded}}
               <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>

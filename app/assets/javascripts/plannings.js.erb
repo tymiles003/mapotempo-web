@@ -206,25 +206,6 @@ function plannings_edit(params) {
     data.planning_id = data.id;
     $("#planning").html(SMT['plannings/edit'](data));
 
-    $(".routes").on('change', 'input:checkbox', function(event, ui) {
-      var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
-      var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
-      var active = $(this).is(':checked');
-      $.ajax({
-        type: "patch",
-        data: JSON.stringify({
-          stop: {
-            active: active
-          }
-        }),
-        contentType: 'application/json',
-        url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '.json',
-        beforeSend: beforeSendWaiting,
-        success: display_planning,
-        complete: completeWaiting,
-        error: ajaxError
-      });
-    });
 
     var stores_marker = L.featureGroup();
     stores = {};
@@ -328,6 +309,7 @@ function plannings_edit(params) {
           stop.i18n = mustache_i18n;
           stop.color = stop.destination.color || color;
           stop.vehicle_name = vehicle_name;
+          stop.route_id = route.route_id;
           var m = L.marker(new L.LatLng(stop.destination.lat, stop.destination.lng), {
             icon: new L.NumberedDivIcon({
               number: stop.number,
@@ -599,6 +581,26 @@ function plannings_edit(params) {
         data.destination_id_enlighten = destination_id;
         display_planning(data);
       },
+      complete: completeWaiting,
+      error: ajaxError
+    });
+  });
+
+  $(".main").on('change', 'input:checkbox.stop_active', function(event, ui) {
+    var route_id = $(event.target).closest("[data-route_id]").attr("data-route_id");
+    var destination_id = $(event.target).closest("[data-destination_id]").attr("data-destination_id");
+    var active = $(event.target).is(':checked');
+    $.ajax({
+      type: "patch",
+      data: JSON.stringify({
+        stop: {
+          active: active
+        }
+      }),
+      contentType: 'application/json',
+      url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '.json',
+      beforeSend: beforeSendWaiting,
+      success: display_planning,
       complete: completeWaiting,
       error: ajaxError
     });

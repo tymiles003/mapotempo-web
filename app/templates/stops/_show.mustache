@@ -1,6 +1,7 @@
 {{#destination}}
+<div data-route_id="{{route_id}}" data-destination_id="{{id}}">
 {{^store}}
-<div class="btn-group pull-right destination-tools" data-destination_id="{{id}}">
+<div class="btn-group pull-right destination-tools">
   {{#automatic_insert}}
   <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
   {{/automatic_insert}}
@@ -8,7 +9,9 @@
 </div>
 {{/store}}
 <p>
-  {{#number}}<span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>{{/number}}{{#vehicle_name}}{{vehicle_name}}</br>{{/vehicle_name}}
+  {{#vehicle_name}}{{vehicle_name}}</br>{{/vehicle_name}}
+  {{#number}}<span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>{{/number}}
+  {{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}
   <b>{{#ref}}{{ref}} {{/ref}}{{name}}</b></br>
   {{street}}</br>
   {{#detail}}
@@ -41,4 +44,5 @@
     {{/out_of_drive_time}}
   </ul>
 {{/error}}
+</div>
 {{/destination}}
