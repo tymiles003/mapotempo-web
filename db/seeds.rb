@@ -4,7 +4,7 @@ Layer.create!(name: "Mapnik-fr", url: "http://{s}.tile.openstreetmap.fr/osmfr/{z
 Layer.create!(name: "Mapnik B&W", url: "http://{s}.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png", urlssl: "https://{s}.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png", attribution: "Tiles by Wikimedia")
 Layer.create!(name: "MapQuest", url: "http://otile2.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", urlssl: "https://otile2-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", attribution: "Tiles by MapQuest")
 Layer.create!(name: "Stamen B&W", url: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", urlssl: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png", attribution: "Tiles by Stamen Design")
-osrm = Router.create!(name: "project-osrm.org", url:"http://router.project-osrm.org")
+osrm = RouterOsrm.create!(name: "project-osrm.org", url:"http://router.project-osrm.org")
 customer = Customer.create!(name: "Toto", router: osrm, test: true)
 admin = User.create!(email: "admin@admin.com", password: "123456789", admin: true)
 fred = User.create!(email: "user@user.com", password: "123456789", layer: mapbox, customer: customer)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150121150634) do
+ActiveRecord::Schema.define(version: 20150209173255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 20150121150634) do
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type",       default: "RouterOsrm", null: false
   end
 
   create_table "stores", force: true do |t|

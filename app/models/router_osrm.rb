@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014
+# Copyright © Mapotempo, 2014-2015
 #
 # This file is part of Mapotempo.
 #
@@ -15,28 +15,26 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'trace'
+require 'osrm'
 
-class Router < ActiveRecord::Base
-  nilify_blanks
-  validates :name, presence: true
+class RouterOsrm < Router
   validates :url, presence: true
 
   def trace(lat1, lng1, lat2, lng2)
-    Trace.compute(url, lat1, lng1, lat2, lng2)
+    Osrm.compute(url, lat1, lng1, lat2, lng2)
   end
 
   def matrix(positions, &block)
     if true
       # Engine support matrix computation
       vector = positions.map{ |position| [position.lat, position.lng] }
-      Trace.matrix(url, vector).map{ |row|
+      Osrm.matrix(url, vector).map{ |row|
         row.map{ |v| [v, v] }
       }
     else
       positions.collect{ |position1|
         positions.collect{ |position2|
-          distance, time, trace = Trace.compute(url, position1.lat, position1.lng, position2.lat, position2.lng)
+          distance, time, trace = Osrm.compute(url, position1.lat, position1.lng, position2.lat, position2.lng)
           block.call if block
           [distance, time]
         }

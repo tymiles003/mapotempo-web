@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -17,10 +17,10 @@
 #
 require 'json'
 
-module Trace
+module Osrm
 
-  @cache_request = Mapotempo::Application.config.trace_cache_request
-  @cache_result = Mapotempo::Application.config.trace_cache_result
+  @cache_request = Mapotempo::Application.config.osrm_cache_request
+  @cache_result = Mapotempo::Application.config.osrm_cache_result
 
   def self.compute(osrm_url, from_lat, from_lng, to_lat, to_lng)
     key = [osrm_url, from_lat, from_lng, to_lat, to_lng]
@@ -77,7 +77,7 @@ module Trace
 
   def self.matrix(osrm_url, vector)
     i = -1
-    vector.map!{ |a| a << i+=1 }
+    vector.map!{ |a| a << i+=1 } # TODO factorize order
     vector.sort!{ |a,b|
       a[0] != b[0] ? a[0] <=> b[0] : a[1] <=> b[1]
     }

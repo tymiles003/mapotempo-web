@@ -1,6 +1,6 @@
 class OptimizerTest < ActionController::TestCase
   setup do
-    def Trace.compute(url, from_lat, from_lng, to_lat, to_lng)
+    def Osrm.compute(url, from_lat, from_lng, to_lat, to_lng)
       [1000, 60, "trace"]
     end
 
