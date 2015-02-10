@@ -166,3 +166,15 @@ hr {
 ul.leaflet-control-geocoder-alternatives {
   width: inherit;
 }
+
+/* jquery-simplecolorpicker */
+span.color[data-color] {
+  line-height: 1.3;
+  border: 1px solid lightgray;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+}

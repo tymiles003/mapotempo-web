@@ -19,33 +19,31 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-[data-controller='vehicles'] {
-
-.vehicle_color {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -o-border-radius: 4px;
-  vertical-align: middle;
-}
-
 .vehicle_color_small {
   display: inline-block !important; // override select2 2.1 css
   margin-right: 0px !important; // override select2 2.1 css
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  -o-border-radius: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
   vertical-align: middle;
 }
 
-#vehicle_tomtom_id_input > div > div {
-  border: 0px;
-}
+[data-controller='vehicles'] {
+  .vehicle_color {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -o-border-radius: 50%;
+    vertical-align: middle;
+  }
 
+  #vehicle_tomtom_id_input > div > div {
+    border: 0px;
+  }
 }
