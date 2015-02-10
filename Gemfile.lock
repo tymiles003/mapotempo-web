@@ -53,6 +53,13 @@ GIT
       railties (>= 3.1)
 
 GIT
+  remote: git://github.com/roadtrippers/polylines.git
+  revision: 1be4b6a0c35ec25f94566f07e27c3ec3a7848378
+  branch: rt-arbitrary_precision_polylines
+  specs:
+    polylines (0.2.1)
+
+GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: 1d93c5a77049b3d21d17c847ad0531d7714fa229
   branch: bootstrap3
@@ -418,6 +425,7 @@ DEPENDENCIES
   nilify_blanks
   paloma!
   pg
+  polylines!
   rack-cors
   rails (= 4.1.5)
   rails-i18n
