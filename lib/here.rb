@@ -58,7 +58,7 @@ module Here
     result
   end
 
-  def self.matrix(vector)
+  def self.matrix(vector, &block)
     raise "More than 100x100 matrix, not possible with Here" if vector.size > 100
 
     key = [vector.map{ |v| v[0..1] }.hash]
@@ -74,9 +74,9 @@ module Here
       # ensure a response time of 30 seconds each. The number of the destinations in one request is limited
       # to 100.
 
-      # Limit of 7Ko by URL request
-
-      split_size = (100 / vector.size).round
+      # Request should not contain more than 15 starts per request
+      # 500 to get response before 30 seconds timeout
+      split_size = [15, (1000 / vector.size).round].min
 
       result = Array.new(vector.size) { Array.new(vector.size) }
 
@@ -110,6 +110,7 @@ module Here
         }
 
         column_start = column_start + split_size
+        block.call(vector.size * split_size) if block
       end
 
       @cache_result.write(key, result)
@@ -129,7 +130,7 @@ module Here
       url = "#{@api_url}/#{object.to_s}.json"
       params = {app_id: @api_app_id, app_code: @api_app_code}.merge(params)
 
-      key = [url, params]
+      key = [url, params].hash
       request = @cache_request.read(key)
       if !request
         begin

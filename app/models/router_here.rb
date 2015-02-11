@@ -26,7 +26,7 @@ class RouterHere < Router
     vector = pack_vector(positions.map{ |position|
       [position.lat, position.lng]
     })
-    matrix = Here.matrix(vector)
+    matrix = Here.matrix(vector, &block)
     unpack_vector(vector, matrix)
   end
 end

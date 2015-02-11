@@ -40,7 +40,7 @@ class RouterOsrm < Router
       positions.collect{ |position1|
         positions.collect{ |position2|
           distance, time, trace = Osrm.compute(url, position1.lat, position1.lng, position2.lat, position2.lng)
-          block.call if block
+          block.call(1) if block
           [distance, time]
         }
       }

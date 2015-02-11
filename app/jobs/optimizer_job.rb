@@ -31,13 +31,14 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
       customer = route.planning.customer
       count = route.matrix_size
       count *= count
-      i = 0
-      matrix = route.matrix {
-        i += 1
-        if i % 50 == 0
+      i = ii = 0
+      matrix = route.matrix { |computed|
+        i += computed
+        if i > ii + 50
           customer.job_optimizer.progress = "#{i * 100 / count};0;" + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
           customer.job_optimizer.save
           Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
+          ii = i
         end
       }
       customer.job_optimizer.progress = '100;0;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
