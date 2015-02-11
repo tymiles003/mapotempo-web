@@ -27,8 +27,13 @@ class RouterOsrm < Router
   def matrix(positions, &block)
     if true
       # Engine support matrix computation
-      vector = positions.map{ |position| [position.lat, position.lng] }
-      Osrm.matrix(url, vector).map{ |row|
+      vector = pack_vector(positions.map{ |position|
+        [position.lat, position.lng]
+      })
+
+      matrix = Osrm.matrix(url, vector)
+      matrix = unpack_vector(vector, matrix)
+      matrix.map{ |row|
         row.map{ |v| [v, v] }
       }
     else

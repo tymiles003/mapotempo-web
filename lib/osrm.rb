@@ -76,12 +76,6 @@ module Osrm
   end
 
   def self.matrix(osrm_url, vector)
-    i = -1
-    vector.map!{ |a| a << i+=1 } # TODO factorize order
-    vector.sort!{ |a,b|
-      a[0] != b[0] ? a[0] <=> b[0] : a[1] <=> b[1]
-    }
-
     key = [osrm_url, vector.map{ |v| v[0..1] }.hash]
 
     result = @cache_result.read(key)
@@ -116,21 +110,14 @@ module Osrm
         end
       end
 
-      result = request["distance_table"]
+      result = request["distance_table"].collect{ |r|
+        r.collect{ |rr|
+          (rr/10).round # TODO >= 2147483647 ? nil : (rr/10).round
+        }
+      }
       @cache_result.write(key, result)
     end
 
-    # Restore original order
-    size = vector.size
-    column = []
-    size.times{ |i|
-      line = []
-      size.times{ |j|
-        line[vector[j][2]] = (result[i][j]/10).round # TODO >= 2147483647 ? nil : (result[i][j]/10).round
-      }
-      column[vector[i][2]] = line
-    }
-
-    column
+    result
   end
 end
