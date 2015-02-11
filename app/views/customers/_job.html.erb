@@ -4,7 +4,7 @@
       <% if job.last_error %>
         <i class="fa fa-exclamation-triangle"></i>
       <% end %>
-      <%= job.handler || job.handler.split(' ')[1].split(':')[1] %>#<%= job.id %>
+      <%= job.handler && job.handler.split(' ')[1].split(':')[1] %>#<%= job.id %>
       <% if job.attempts > 0 %>
         ×<%= job.attempts %>
       <% end %>
