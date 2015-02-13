@@ -1,7 +1,8 @@
 if @planning.customer.job_optimizer
   json.optimizer do
-    json.extract! @planning.customer.job_optimizer, :progress, :attempts
+    json.extract! @planning.customer.job_optimizer, :id, :progress, :attempts
     json.error !!@planning.customer.job_optimizer.failed_at
+    json.customer_id @planning.customer.id
   end
 else
   json.extract! @planning, :id

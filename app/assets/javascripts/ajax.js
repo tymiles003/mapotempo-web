@@ -58,7 +58,7 @@ function mustache_i18n() {
   };
 }
 
-function progress_dialog(data, dialog, callback, load_url, stop_url) {
+function progress_dialog(data, dialog, callback, load_url) {
   if (data !== undefined) {
     var timeout;
     dialog.dialog("open");
@@ -121,7 +121,7 @@ function progress_dialog(data, dialog, callback, load_url, stop_url) {
       buttons[I18n.t('web.dialog.close')] = function() {
         $.ajax({
           type: "delete",
-          url: stop_url,
+          url: "/api/0.1/customers/" + data.customer_id + "/job/" + data.id + ".json",
           beforeSend: beforeSendWaiting,
           complete: function() {
             dialog.dialog("close");
