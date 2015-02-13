@@ -91,7 +91,7 @@ module Osrm
             request = JSON.parse(res.body)
             @cache_request.write(key, request)
           else
-            raise http.message
+            raise res.message
           end
         rescue OpenSSL::SSL::SSLError
           raise "Unable to communicate over SSL"
