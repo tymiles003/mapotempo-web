@@ -1,4 +1,8 @@
 require 'test_helper'
+require 'osrm'
+
+class D < Struct.new(:lat, :lng, :open, :close)
+end
 
 class RouteTest < ActiveSupport::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
@@ -6,6 +10,10 @@ class RouteTest < ActiveSupport::TestCase
   setup do
     def Osrm.compute(url, from_lat, from_lng, to_lat, to_lng)
       [1, 1, "trace"]
+    end
+
+    def Osrm.matrix(url, vector)
+      Array.new(vector.size, Array.new(vector.size, 0))
     end
   end
 
@@ -120,15 +128,6 @@ class RouteTest < ActiveSupport::TestCase
     assert_equal 30, o.sum_out_of_window
   end
 
-  test "should matrix_size" do
-    o = routes(:route_one)
-
-    assert_equal o.stops.size + 2, o.matrix_size
-
-    o.stops[1].active = false
-    assert_equal o.stops.size + 2 - 1, o.matrix_size
-  end
-
   test "should change active" do
     o = routes(:route_one)
 
@@ -208,5 +207,43 @@ class RouteTest < ActiveSupport::TestCase
     routes(:route_zero).move_destination(s.destination, 1)
 
     o.save!
+  end
+
+  test "should no amalgamate point at same position" do
+    o = routes(:route_one)
+
+    positions = [D.new(1,1), D.new(2,2), D.new(3,3)]
+    ret = o.send(:amalgamate_same_position, positions) { |positions|
+      assert_equal 3, positions.size
+      pos = positions.sort
+      pos.collect{ |p|
+        positions.index(p)
+      }
+    }
+    assert_equal positions.size, ret.size
+    assert_equal 0.upto(positions.size-1).to_a, ret
+  end
+
+  test "should amalgamate point at same position" do
+    o = routes(:route_one)
+
+    positions = [D.new(1,1), D.new(2,2), D.new(2,2), D.new(3,3)]
+    ret = o.send(:amalgamate_same_position, positions) { |positions|
+      assert_equal 3, positions.size
+      pos = positions.sort
+      pos.collect{ |p|
+        positions.index(p)
+      }
+    }
+    assert_equal positions.size, ret.size
+    assert_equal 0.upto(positions.size-1).to_a, ret
+  end
+
+  test "should optimize" do
+    o = routes(:route_one)
+    optim = o.optimize(nil) { |matrix|
+      0.upto(matrix.size-1).to_a
+    }
+    assert_equal 0.upto(o.stops.size-1).to_a, optim
   end
 end

@@ -239,15 +239,14 @@ class Route < ActiveRecord::Base
     }
   end
 
-  def matrix_size
-    stops_segregate[true] ? stops_segregate[true].size + 2 : 0
-  end
-
-  def matrix(&block)
+  def optimize(matrix_progress, &optimizer)
     stops_on = stops_segregate[true]
-    positions = [vehicle.store_start] + stops_on.collect(&:destination) + [vehicle.store_stop]
     router = vehicle.router || stops_on[0].destination.customer.router
-    router.matrix(positions, &block)
+    amalgamate_same_position(stops_on.collect(&:destination)) { |positions|
+      positions = [[vehicle.store_start.lat, vehicle.store_start.lng]] + positions + [[vehicle.store_stop.lat, vehicle.store_stop.lng]]
+      matrix = router.matrix(positions, &matrix_progress)
+      optimizer.call(matrix)[1..-2].collect{ |i| i-1 }
+    }
   end
 
   def order(o)
@@ -331,5 +330,24 @@ class Route < ActiveRecord::Base
       if self.vehicle_id && self.stops.length > 0 && self.stops.collect(&:index).sum != (self.stops.length * (self.stops.length + 1)) / 2
         errors.add(:stops, :bad_index)
       end
+    end
+
+    def amalgamate_same_position(positions)
+      # Reduce psoitions vector size by amalgamate points in same position
+      stock = Hash.new { Array.new }
+      i = -1
+      positions.each{ |p|
+        stock[[p.lat, p.lng, p.open, p.close]] += [[p, i+=1]]
+      }
+
+      positions_uniq = stock.keys
+
+      optim_uniq = yield(positions_uniq)
+
+      optim_uniq.collect{ |ou|
+        stock[positions_uniq[ou]]
+      }.flatten(1).collect{ |pa|
+        pa[1]
+      }
     end
 end

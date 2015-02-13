@@ -22,10 +22,8 @@ class RouterHere < Router
     Here.compute(lat1, lng1, lat2, lng2)
   end
 
-  def matrix(positions, &block)
-    vector = pack_vector(positions.map{ |position|
-      [position.lat, position.lng]
-    })
+  def matrix(vector, &block)
+    vector = pack_vector(vector)
     matrix = Here.matrix(vector, &block)
     unpack_vector(vector, matrix)
   end

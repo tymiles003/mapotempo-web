@@ -24,23 +24,21 @@ class RouterOsrm < Router
     Osrm.compute(url, lat1, lng1, lat2, lng2)
   end
 
-  def matrix(positions, &block)
+  def matrix(vector, &block)
     if true
       # Engine support matrix computation
-      vector = pack_vector(positions.map{ |position|
-        [position.lat, position.lng]
-      })
-
+      vector = pack_vector(vector)
       matrix = Osrm.matrix(url, vector)
       matrix = unpack_vector(vector, matrix)
       matrix.map{ |row|
         row.map{ |v| [v, v] }
       }
     else
-      positions.collect{ |position1|
-        positions.collect{ |position2|
-          distance, time, trace = Osrm.compute(url, position1.lat, position1.lng, position2.lat, position2.lng)
-          block.call(1) if block
+      total = positions**2
+      vector.collect{ |v1|
+        vector.collect{ |v2|
+          distance, time, trace = Osrm.compute(url, v1[0], v1[1], v2[0], v2[1])
+          block.call(1, total) if block
           [distance, time]
         }
       }

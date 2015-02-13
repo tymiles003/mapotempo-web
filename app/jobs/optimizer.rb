@@ -51,19 +51,21 @@ class Optimizer
         planning.customer.job_optimizer.save!
       end
     else
-      tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop|
-        open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
-        close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
-        if open && close && open > close
-          close = open
-        end
-        take_over = stop.destination.take_over ? stop.destination.take_over : planning.customer.take_over
-        take_over = take_over ? take_over.seconds_since_midnight : 0
-        [open, close, take_over]
+      optimum = route.optimize(nil) { |matrix|
+        tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop|
+          open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
+          close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
+          if open && close && open > close
+            close = open
+          end
+          take_over = stop.destination.take_over ? stop.destination.take_over : planning.customer.take_over
+          take_over = take_over ? take_over.seconds_since_midnight : 0
+          [open, close, take_over]
+        }
+        Ort.optimize(route.vehicle.capacity, matrix, tws, 5)
       }
-      optimum = Ort.optimize(route.vehicle.capacity, route.matrix, tws, 5)
       if optimum
-        route.order(optimum[1..-2].map{ |n| n-1 })
+        route.order(optimum)
         route.save && route.reload # Refresh stops order
         planning.compute
         planning.save

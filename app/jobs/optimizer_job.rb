@@ -29,10 +29,8 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
       route.vehicle && route.size_active > 1
     }.each{ |route|
       customer = route.planning.customer
-      count = route.matrix_size
-      count *= count
       i = ii = 0
-      matrix = route.matrix { |computed|
+      optimum = route.optimize(Proc.new { |computed, count|
         i += computed
         if i > ii + 50
           customer.job_optimizer.progress = "#{i * 100 / count};0;" + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
@@ -40,33 +38,35 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
           Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
           ii = i
         end
-      }
-      customer.job_optimizer.progress = '100;0;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
-      customer.job_optimizer.save
-      Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
+      }) { |matrix|
+        customer.job_optimizer.progress = '100;0;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
+        customer.job_optimizer.save
+        Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
 
-      # Optimize
-      customer.job_optimizer.progress = "100;#{@@optimize_time}ms#{routes_count};" + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
-      customer.job_optimizer.save
-      Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
-      tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop|
-        open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
-        close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
-        if open && close && open > close
-          close = open
-        end
-        take_over = stop.destination.take_over ? stop.destination.take_over : customer.take_over
-        take_over = take_over ? take_over.seconds_since_midnight : 0
-        [open, close, take_over]
+        # Optimize
+        customer.job_optimizer.progress = "100;#{@@optimize_time}ms#{routes_count};" + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
+        customer.job_optimizer.save
+        Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
+        tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop|
+          open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
+          close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
+          if open && close && open > close
+            close = open
+          end
+          take_over = stop.destination.take_over ? stop.destination.take_over : customer.take_over
+          take_over = take_over ? take_over.seconds_since_midnight : 0
+          [open, close, take_over]
+        }
+        optimum = Ort.optimize(route.vehicle.capacity, matrix, tws, 5)
+        customer.job_optimizer.progress = '100;100;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
+        customer.job_optimizer.save
+        Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
+        optimum
       }
-      optimum = Ort.optimize(route.vehicle.capacity, matrix, tws, 5)
-      customer.job_optimizer.progress = '100;100;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
-      customer.job_optimizer.save
-      Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
 
       # Apply result
       if optimum
-        route.order(optimum[1..-2].map{ |n| n-1 })
+        route.order(optimum)
         route.save && route.reload # Refresh stops order
         route.planning.compute
         route.planning.save

@@ -92,6 +92,7 @@ module Here
         commons_param["destination#{i}"] = "#{vector[i][0].round(5)},#{vector[i][1].round(5)}"
       }
 
+      total = vector.size**2
       column_start = 0
       while column_start <= vector.size do
         request = @cache_result.read([key, column_start, split_size])
@@ -110,7 +111,7 @@ module Here
         }
 
         column_start = column_start + split_size
-        block.call(vector.size * split_size) if block
+        block.call(vector.size * split_size, total) if block
       end
 
       @cache_result.write(key, result)
