@@ -31,30 +31,34 @@ module Ort
   def self.optimize(capacity, matrix, time_window, time_threshold)
     key = [capacity, matrix.hash, time_window.hash]
 
-    original_matrix = matrix
-    matrix, time_window, zip_key = self.zip(matrix, time_window, time_threshold)
+    self.cluster(matrix, time_window, time_threshold) { |matrix, time_window|
+      result = @cache.read(key)
+      if !result
+        data = {
+          capacity: capacity,
+          matrix: matrix,
+          time_window: time_window,
+          optimize_time: @optimize_time
+        }.to_json
+        resource = RestClient::Resource.new(@url, timeout: -1)
+        result = resource.post({data: data}, {content_type: :json, accept: :json})
+        @cache.write(key, result)
+      end
 
-    result = @cache.read(key)
-    if !result
-      data = {
-        capacity: capacity,
-        matrix: matrix,
-        time_window: time_window,
-        optimize_time: @optimize_time
-      }.to_json
-      resource = RestClient::Resource.new(@url, timeout: -1)
-      result = resource.post({data: data}, {content_type: :json, accept: :json})
-      @cache.write(key, result)
-    end
-
-    jdata = JSON.parse(result)
-    result = jdata['optim']
-
-    unzip(result, zip_key, original_matrix)
+      jdata = JSON.parse(result)
+      jdata['optim']
+    }
   end
 
   private
-    def self.zip(matrix, time_window, time_threshold)
+    def self.cluster(matrix, time_window, time_threshold)
+      original_matrix = matrix
+      matrix, time_window, zip_key = self.zip_cluster(matrix, time_window, time_threshold)
+      result = yield(matrix, time_window)
+      self.unzip_cluster(result, zip_key, original_matrix)
+    end
+
+    def self.zip_cluster(matrix, time_window, time_threshold)
       data_set = DataSet.new(:data_items => (1..(matrix.length-2)).collect{ |i| [i] })
       c = CompleteLinkageMaxDistance.new
       c.distance_function = lambda do |a,b|
@@ -88,7 +92,7 @@ module Ort
       [new_matrix, new_time_window, clusterer.clusters]
     end
 
-    def self.unzip(result, zip_key, original_matrix)
+    def self.unzip_cluster(result, zip_key, original_matrix)
       ret = []
       result.collect{ |i|
         if i == 0
@@ -104,6 +108,7 @@ module Ort
               sub_matrix[i][j] = original_matrix[sub[i]][sub[j]]
             }
           }
+          # TODO not compute permutation on larger dataset
           min_order = sub.permutation(sub_size).collect{ |p|
             last = ret[-1]
             s = p.sum { |s|
