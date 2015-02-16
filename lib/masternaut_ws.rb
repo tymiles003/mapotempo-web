@@ -51,7 +51,7 @@ module MasternautWs
     }.collect{ |r|
       s = r.split(':')
       begin
-        [Integer(s[0]), DateTime.strptime(s[1], '%Y%m%d%H%M%S')]
+        [s[0].to_i, DateTime.strptime(s[1].to_i(36).to_s, '%s')]
       rescue
       end
     }.select{ |r|
@@ -77,7 +77,7 @@ module MasternautWs
         latitude: waypoint[:lat],
         longitude: waypoint[:lng],
         name: waypoint[:name],
-        reference: [waypoint[:id], waypoint[:updated_at].strftime('%Y%m%d%H%M%S')].join(':'),
+        reference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
       },
       overwrite: true
     }
@@ -125,7 +125,7 @@ module MasternautWs
       params = {
         job: {
           description: waypoint[:description][0..255],
-          poiReference: [waypoint[:id], waypoint[:updated_at].strftime('%Y%m%d%H%M%S')].join(':'),
+          poiReference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
           scheduledBegin: Time.now.strftime('%Y-%m-%dT') + waypoint[:time].strftime('%H:%M:%S'),
           type: 'job',
           vehicleRef: vehicleRef,
@@ -145,7 +145,7 @@ module MasternautWs
 #          latitude: waypoint[:lat],
 #          longitude: waypoint[:lng],
 #          name: waypoint[:name],
-##          reference: [waypoint[:id], waypoint[:updated_at].strftime('%Y%m%d%H%M%S')].join(':'),
+##          reference: [waypoint[:id], waypoint[:updated_at].to_s(36)].join(':'),
 #        },
         jobRouteRef: reference,
       }
