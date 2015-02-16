@@ -21,7 +21,7 @@ class Masternaut
 
   def self.export_route(route)
     order_id_base = Time.now.strftime("%y%m%d%H%M%S") + '_' + route.id.to_s
-    waypoints = route.stops.collect{ |stop|
+    waypoints = route.stops.select(&:active).collect{ |stop|
       {
         street: stop.destination.street,
         city: stop.destination.city,
