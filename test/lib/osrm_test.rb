@@ -19,14 +19,15 @@ class OsrmTest < ActionController::TestCase
   end
 
   test "should compute large matrix" do
+    SIZE = 999
     prng = Random.new
-    vector = 1000.times.collect{ [prng.rand(48.811159..48.911218), prng.rand(2.270393..2.435532)] } # Some points in Paris
+    vector = SIZE.times.collect{ [prng.rand(48.811159..48.911218), prng.rand(2.270393..2.435532)] } # Some points in Paris
     #start = Time.now
     matrix = Osrm.matrix(routers(:router_one).url, vector)
     #finish = Time.now
     #puts finish - start
 
-    assert_equal 1000, matrix.size
-    assert_equal 1000, matrix[0].size
+    assert_equal SIZE, matrix.size
+    assert_equal SIZE, matrix[0].size
   end
 end
