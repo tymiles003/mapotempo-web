@@ -24,7 +24,7 @@
   <% if !@vehicle.customer.tomtom_account.blank? && !@vehicle.customer.tomtom_user.blank? && !@vehicle.customer.tomtom_password.blank? %>
     <%= f.text_field :tomtom_id %>
   <% end %>
-  <% if !@vehicle.customer.masternaut_account.blank? && !@vehicle.customer.masternaut_user.blank? && !@vehicle.customer.masternaut_password.blank? %>
+  <% if !@vehicle.customer.masternaut_user.blank? && !@vehicle.customer.masternaut_password.blank? %>
     <%= f.text_field :masternaut_ref %>
   <% end %>
   <%= f.select :color, [], Vehicle.colors_table %>

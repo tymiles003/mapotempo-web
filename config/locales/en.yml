@@ -106,7 +106,6 @@ en:
         tomtom_account: "WEBFLEET account name"
         tomtom_user: "WEBFLEET Username"
         tomtom_password: "WEBFLEET Password"
-        masternaut_account: "Customer name"
         masternaut_user: "Username"
         masternaut_password: "Password"
         alyacom_association: "AlyaCom identifier"

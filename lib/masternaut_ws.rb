@@ -20,7 +20,7 @@ require 'savon'
 
 module MasternautWs
 
-  def self.createPOICategory(client_poi, account, username, password)
+  def self.createPOICategory(client_poi, username, password)
     params = {
       category: {
         logo: 'client_green',
@@ -29,10 +29,10 @@ module MasternautWs
       }
     }
 
-    self.get(client_poi, nil, :create_poi_category, account, username, password, params)
+    self.get(client_poi, nil, :create_poi_category, username, password, params)
   end
 
-  def self.fetchPOI(client_poi, account, username, password)
+  def self.fetchPOI(client_poi, username, password)
     params = {
       filter: {
         categoryReference: 'mapotempo',
@@ -40,7 +40,7 @@ module MasternautWs
       maxResults: 999999,
     }
 
-    response = self.get(client_poi, nil, :search_poi, account, username, password, params)
+    response = self.get(client_poi, nil, :search_poi, username, password, params)
 
     fetch = (response[:multi_ref] || []).select{ |e|
       e[:'@xsi:type'].end_with?(':POI')
@@ -60,7 +60,7 @@ module MasternautWs
     fetch = Hash[fetch]
   end
 
-  def self.createPOI(client_poi, account, username, password, waypoint)
+  def self.createPOI(client_poi, username, password, waypoint)
     params = {
       poi: {
         address: {
@@ -82,26 +82,26 @@ module MasternautWs
       overwrite: true
     }
 
-    self.get(client_poi, 200, :create_poi, account, username, password, params)
+    self.get(client_poi, 200, :create_poi, username, password, params)
   end
 
-  def self.createJobRoute(account, username, password, vehicleRef, reference, description, begin_time, end_time, waypoints)
+  def self.createJobRoute(username, password, vehicleRef, reference, description, begin_time, end_time, waypoints)
     client_poi = Savon.client(basic_auth: [username, password], wsdl: Mapotempo::Application.config.masternaut_api_url + '/POI?wsdl', soap_version: 1) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
     end
 
-    existing_waypoints = self.fetchPOI(client_poi, account, username, password)
+    existing_waypoints = self.fetchPOI(client_poi, username, password)
     if existing_waypoints.empty? then
-      self.createPOICategory(client_poi, account, username, password)
+      self.createPOICategory(client_poi, username, password)
     end
 
     waypoints.select{ |waypoint|
       # Send only non existing waypoints or updated
       !existing_waypoints[waypoint[:id]] || waypoint[:updated_at].change(:usec => 0) > existing_waypoints[waypoint[:id]]
     }.each{ |waypoint|
-      self.createPOI(client_poi, account, username, password, waypoint)
+      self.createPOI(client_poi, username, password, waypoint)
     }
 
     params = {
@@ -118,7 +118,7 @@ module MasternautWs
       #pretty_print_xml true
       convert_request_keys_to :none
     end
-    self.get(client_Job, 1, :create_job_route, account, username, password, params)
+    self.get(client_Job, 1, :create_job_route, username, password, params)
 
 
     waypoints.each{ |waypoint|
@@ -150,12 +150,12 @@ module MasternautWs
         jobRouteRef: reference,
       }
 
-      self.get(client_Job, 1, :create_job, account, username, password, params)
+      self.get(client_Job, 1, :create_job, username, password, params)
     }
   end
 
   private
-    def self.get(client, no_error_code, operation, account, username, password, message = {})
+    def self.get(client, no_error_code, operation, username, password, message = {})
       response = client.call(operation, message: message)
 
       _response = (operation.to_s + '_response').to_sym

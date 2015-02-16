@@ -46,6 +46,6 @@ class Masternaut
     }
 
     customer = route.planning.customer
-    MasternautWs.createJobRoute(customer.masternaut_account, customer.masternaut_user, customer.masternaut_password, route.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle.name, route.start, route.end, waypoints)
+    MasternautWs.createJobRoute(customer.masternaut_user, customer.masternaut_password, route.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle.name, route.start, route.end, waypoints)
   end
 end
