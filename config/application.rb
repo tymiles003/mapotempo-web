@@ -42,6 +42,14 @@ module Mapotempo
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
 
+    config.lograge.enabled = true
+    config.lograge.custom_options = lambda do |event|
+      unwanted_keys = %w[format action controller]
+      params = event.payload[:params].reject { |key,_| unwanted_keys.include? key }
+
+      {time: event.time, params: params}
+    end
+
     # Application config
 
     config.optimize_cache =  ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10)
