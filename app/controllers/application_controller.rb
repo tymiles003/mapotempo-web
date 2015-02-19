@@ -20,6 +20,12 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  def append_info_to_payload(payload)
+    super
+    # More info for Lograge
+    payload[:customer_id] = @customer && @customer.id
+  end
+
   protected
     def devise_parameter_sanitizer
       if resource_class == User

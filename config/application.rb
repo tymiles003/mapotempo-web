@@ -45,9 +45,10 @@ module Mapotempo
     config.lograge.enabled = true
     config.lograge.custom_options = lambda do |event|
       unwanted_keys = %w[format action controller]
+      customer_id = event.payload[:customer_id]
       params = event.payload[:params].reject { |key,_| unwanted_keys.include? key }
 
-      {time: event.time, params: params}
+      {customer_id: customer_id, time: event.time, params: params}
     end
 
     # Application config
