@@ -39,8 +39,8 @@ class RoutesController < ApplicationController
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
       end
-      format.tomtom do
-        begin
+      begin
+        format.tomtom do
           if params[:type] == 'waypoints'
             Tomtom.export_route_as_waypoints(@route)
           elsif params[:type] == 'orders'
@@ -49,25 +49,17 @@ class RoutesController < ApplicationController
             Tomtom.clear(@route)
           end
           head :no_content
-        rescue => e
-          render json: e.message, status: :unprocessable_entity
         end
-      end
-      format.masternaut do
-        begin
+        format.masternaut do
           Masternaut.export_route(@route)
           head :no_content
-        rescue => e
-          render json: e.message, status: :unprocessable_entity
         end
-      end
-      format.alyacom do
-        begin
+        format.alyacom do
           Alyacom.export_route(@route)
           head :no_content
-        rescue => e
-          render json: e.message, status: :unprocessable_entity
         end
+      rescue => e
+        render json: e.message, status: :unprocessable_entity
       end
     end
   end
