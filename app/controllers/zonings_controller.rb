@@ -70,14 +70,9 @@ class ZoningsController < ApplicationController
 
   def duplicate
     respond_to do |format|
-      begin
-        @zoning = @zoning.amoeba_dup
-        @zoning.save!
-        format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
-      rescue => e
-        flash[:error] = e.message
-        format.html { render action: 'index' }
-      end
+      @zoning = @zoning.amoeba_dup
+      @zoning.save!
+      format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
     end
   end
 

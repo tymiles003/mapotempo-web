@@ -134,8 +134,9 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should not switch" do
-    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one).id, vehicle_id: 666
-    assert_response :unprocessable_entity
+    assert_raises ActiveRecord::RecordNotFound do
+      patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one).id, vehicle_id: 666
+    end
   end
 
   test "should update stop" do

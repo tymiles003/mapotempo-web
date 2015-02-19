@@ -51,16 +51,14 @@ class OrderArraysController < ApplicationController
 
   def create
     respond_to do |format|
-      begin
-        OrderArray.transaction do
-          @order_array = current_user.customer.order_arrays.build(order_array_params)
-          @order_array.default_orders
-          @order_array.save!
+      OrderArray.transaction do
+        @order_array = current_user.customer.order_arrays.build(order_array_params)
+        @order_array.default_orders
+        if @order_array.save
+          format.html { redirect_to edit_order_array_path(@order_array), notice: t('activerecord.successful.messages.created', model: @order_array.class.model_name.human) }
+        else
+          format.html { render action: 'new' }
         end
-        format.html { redirect_to edit_order_array_path(@order_array), notice: t('activerecord.successful.messages.created', model: @order_array.class.model_name.human) }
-      rescue => e
-        flash[:error] = e.message
-        format.html { render action: 'new' }
       end
     end
   end
@@ -84,14 +82,9 @@ class OrderArraysController < ApplicationController
 
   def duplicate
     respond_to do |format|
-      begin
-        @order_array = @order_array.amoeba_dup
-        @order_array.save!
-        format.html { redirect_to edit_order_array_path(@order_array), notice: t('activerecord.successful.messages.updated', model: @order_array.class.model_name.human) }
-      rescue => e
-        flash[:error] = e.message
-        format.html { render action: 'index' }
-      end
+      @order_array = @order_array.amoeba_dup
+      @order_array.save!
+      format.html { redirect_to edit_order_array_path(@order_array), notice: t('activerecord.successful.messages.updated', model: @order_array.class.model_name.human) }
     end
   end
 

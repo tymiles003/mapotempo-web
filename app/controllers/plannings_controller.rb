@@ -53,18 +53,13 @@ class PlanningsController < ApplicationController
 
   def create
     respond_to do |format|
-      begin
-        Planning.transaction do
-          @planning = current_user.customer.plannings.build(planning_params)
-          if @planning.default_routes && @planning.save
-            format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
-          else
-            format.html { render action: 'new' }
-          end
+      Planning.transaction do
+        @planning = current_user.customer.plannings.build(planning_params)
+        if @planning.default_routes && @planning.save
+          format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
+        else
+          format.html { render action: 'new' }
         end
-      rescue => e
-        flash[:error] = e.message
-        format.html { render action: 'new' }
       end
     end
   end
@@ -109,72 +104,56 @@ class PlanningsController < ApplicationController
 
   def refresh
     respond_to do |format|
-      begin
-        @planning.compute
-        if @planning.save
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
-        end
-      rescue => e
-        format.json { render json: e.message, status: :unprocessable_entity }
+      @planning.compute
+      if @planning.save
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def switch
     respond_to do |format|
-      begin
-        route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
-        vehicle = @planning.customer.vehicles.find(Integer(params["vehicle_id"]))
-        if route and vehicle and @planning.switch(route, vehicle) and @planning.compute and @planning.save
-          format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
-        end
-      rescue => e
-        format.json { render json: e.message, status: :unprocessable_entity }
+      route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
+      vehicle = @planning.customer.vehicles.find(Integer(params["vehicle_id"]))
+      if route and vehicle and @planning.switch(route, vehicle) and @planning.compute and @planning.save
+        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def automatic_insert
     respond_to do |format|
-      begin
-        stop_id = Integer(params[:destination_id])
-        @stop = @planning.routes.collect{ |route| route.stops.find{ |stop| stop.destination.id == stop_id } }.select{ |i| i }[0]
+      stop_id = Integer(params[:destination_id])
+      @stop = @planning.routes.collect{ |route| route.stops.find{ |stop| stop.destination.id == stop_id } }.select{ |i| i }[0]
 
-        if @stop
-          Planning.transaction do
-            @planning.automatic_insert(@stop)
-            @planning.save!
-            @planning.reload
-            format.json { render action: 'show', location: @planning }
-          end
-        else
-          format.json { render nothing: true , status: :unprocessable_entity }
+      if @stop
+        Planning.transaction do
+          @planning.automatic_insert(@stop)
+          @planning.save!
+          @planning.reload
+          format.json { render action: 'show', location: @planning }
         end
-      rescue => e
-        format.json { render json: e.message, status: :unprocessable_entity }
+      else
+        format.json { render nothing: true , status: :unprocessable_entity }
       end
     end
   end
 
   def update_stop
     respond_to do |format|
-      begin
-        params[:route_id] = params[:route_id].to_i
-        @route = @planning.routes.find{ |route| route.id == params[:route_id] }
-        params[:destination_id] = params[:destination_id].to_i
-        @stop = @route.stops.find{ |stop| stop.destination_id == params[:destination_id] }
-        if @route && @stop && @stop.update(stop_params) && @route.compute&& @planning.save
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render nothing: true , status: :unprocessable_entity }
-        end
-      rescue => e
-        format.json { render json: e.message, status: :unprocessable_entity }
+      params[:route_id] = params[:route_id].to_i
+      @route = @planning.routes.find{ |route| route.id == params[:route_id] }
+      params[:destination_id] = params[:destination_id].to_i
+      @stop = @route.stops.find{ |stop| stop.destination_id == params[:destination_id] }
+      if @route && @stop && @stop.update(stop_params) && @route.compute&& @planning.save
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render nothing: true , status: :unprocessable_entity }
       end
     end
   end
@@ -213,14 +192,9 @@ class PlanningsController < ApplicationController
 
   def duplicate
     respond_to do |format|
-      begin
-        @planning = @planning.amoeba_dup
-        @planning.save!
-        format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
-      rescue => e
-        flash[:error] = e.message
-        format.html { render action: 'index' }
-      end
+      @planning = @planning.amoeba_dup
+      @planning.save!
+      format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
     end
   end
 
