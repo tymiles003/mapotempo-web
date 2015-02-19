@@ -26,7 +26,7 @@ class GeocoderJob < Struct.new(:customer_id, :planning_id)
         destinations.each { |destination|
           begin
             destination.geocode
-          rescue StandardError => e
+          rescue
           end
           Delayed::Worker.logger.info destination.inspect
           destination.save

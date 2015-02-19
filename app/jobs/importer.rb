@@ -173,7 +173,7 @@ class Importer
             if destination_active[0].lat == nil || destination_active[0].lng == nil
               begin
                 destination_active[0].geocode
-              rescue StandardError => e
+              rescue
               end
             end
           }

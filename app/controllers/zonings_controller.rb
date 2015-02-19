@@ -74,7 +74,7 @@ class ZoningsController < ApplicationController
         @zoning = @zoning.amoeba_dup
         @zoning.save!
         format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { render action: 'index' }
       end

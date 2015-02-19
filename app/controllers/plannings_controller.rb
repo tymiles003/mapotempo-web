@@ -62,7 +62,7 @@ class PlanningsController < ApplicationController
             format.html { render action: 'new' }
           end
         end
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { render action: 'new' }
       end
@@ -100,7 +100,7 @@ class PlanningsController < ApplicationController
           @planning.reload
           format.json { render action: 'show', location: @planning }
         end
-      rescue StandardError => e
+      rescue => e
         @planning.reload
         format.json { render json: e.message, status: :unprocessable_entity }
       end
@@ -116,7 +116,7 @@ class PlanningsController < ApplicationController
         else
           format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
-      rescue StandardError => e
+      rescue => e
         format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
@@ -133,7 +133,7 @@ class PlanningsController < ApplicationController
         else
           format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
-      rescue StandardError => e
+      rescue => e
         format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
@@ -155,7 +155,7 @@ class PlanningsController < ApplicationController
         else
           format.json { render nothing: true , status: :unprocessable_entity }
         end
-      rescue StandardError => e
+      rescue => e
         format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
@@ -173,7 +173,7 @@ class PlanningsController < ApplicationController
         else
           format.json { render nothing: true , status: :unprocessable_entity }
         end
-      rescue StandardError => e
+      rescue => e
         format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
@@ -217,7 +217,7 @@ class PlanningsController < ApplicationController
         @planning = @planning.amoeba_dup
         @planning.save!
         format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { render action: 'index' }
       end

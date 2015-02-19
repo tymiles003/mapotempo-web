@@ -49,7 +49,7 @@ class RoutesController < ApplicationController
             Tomtom.clear(@route)
           end
           head :no_content
-        rescue StandardError => e
+        rescue => e
           render json: e.message, status: :unprocessable_entity
         end
       end
@@ -57,7 +57,7 @@ class RoutesController < ApplicationController
         begin
           Masternaut.export_route(@route)
           head :no_content
-        rescue StandardError => e
+        rescue => e
           render json: e.message, status: :unprocessable_entity
         end
       end
@@ -65,7 +65,7 @@ class RoutesController < ApplicationController
         begin
           Alyacom.export_route(@route)
           head :no_content
-        rescue StandardError => e
+        rescue => e
           render json: e.message, status: :unprocessable_entity
         end
       end

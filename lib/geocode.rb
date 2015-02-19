@@ -84,7 +84,7 @@ module Geocode
       end
 
       {street: street, postal_code: postal_code, city: city}
-    rescue Exception => e
+    rescue => e
       Rails.logger.info e
       nil
     end
@@ -171,7 +171,7 @@ module Geocode
       accuracy = Float(geocodeMatchCode.attribute('accuracy').value)
 
       {lat: pos[0], lng: pos[1], quality:matchType, accuracy:accuracy}
-    rescue Exception => e
+    rescue => e
       Rails.logger.info e
       nil
     end
@@ -231,7 +231,7 @@ module Geocode
 
         {lat: pos[0], lng: pos[1], quality: matchType, accuracy: accuracy, free: free}
       }
-    rescue Exception => e
+    rescue => e
       Rails.logger.info e
       nil
     end

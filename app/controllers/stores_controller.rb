@@ -64,7 +64,7 @@ class StoresController < ApplicationController
           @store.customer.save!
           format.html { redirect_to link_back || edit_store_path(@store), notice: t('activerecord.successful.messages.updated', model: @store.class.model_name.human) }
         end
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { render action: 'edit' }
       end
@@ -76,7 +76,7 @@ class StoresController < ApplicationController
       begin
         @store.destroy
         format.html { redirect_to stores_url }
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { redirect_to stores_path }
       end

@@ -58,7 +58,7 @@ class OrderArraysController < ApplicationController
           @order_array.save!
         end
         format.html { redirect_to edit_order_array_path(@order_array), notice: t('activerecord.successful.messages.created', model: @order_array.class.model_name.human) }
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { render action: 'new' }
       end
@@ -88,7 +88,7 @@ class OrderArraysController < ApplicationController
         @order_array = @order_array.amoeba_dup
         @order_array.save!
         format.html { redirect_to edit_order_array_path(@order_array), notice: t('activerecord.successful.messages.updated', model: @order_array.class.model_name.human) }
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { render action: 'index' }
       end

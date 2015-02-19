@@ -74,7 +74,7 @@ class DestinationsController < ApplicationController
           @destination.customer.save!
           format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         end
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { render action: 'edit' }
       end
@@ -100,7 +100,7 @@ class DestinationsController < ApplicationController
         @destinations_import.valid? or raise
         Importer.import(@destinations_import.replace, current_user.customer, @destinations_import.tempfile, @destinations_import.name)
         format.html { redirect_to action: 'index' }
-      rescue StandardError => e
+      rescue => e
         flash[:error] = e.message
         format.html { render action: 'import', status: :unprocessable_entity }
       end
