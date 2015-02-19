@@ -24,6 +24,7 @@ class Optimizer
     if Mapotempo::Application.config.delayed_job_use
       if planning.customer.job_optimizer
         # Customer already run an optimization
+        planning.errors.add(:base, I18n.t('errors.planning.already_optimizing'))
         false
       else
         planning.customer.job_optimizer = Delayed::Job.enqueue(OptimizerJob.new(planning.id, nil))
@@ -32,7 +33,7 @@ class Optimizer
       end
     else
       planning.select(&:vehicle).each{ |route|
-        self.optimize(planning.customer, planning, route)
+        self.optimize(planning, route)
       }
     end
   end
@@ -44,6 +45,7 @@ class Optimizer
     elsif Mapotempo::Application.config.delayed_job_use
       if planning.customer.job_optimizer
         # Customer already run an optimization
+        planning.errors.add(:base, I18n.t('errors.planning.already_optimizing'))
         false
       else
         planning.customer.job_optimizer = Delayed::Job.enqueue(OptimizerJob.new(planning.id, route.id))

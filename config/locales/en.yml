@@ -269,6 +269,7 @@ en:
   errors:
     planning:
       import_too_routes: "Try to import more routes than available vehicles."
+      already_optimizing: "A planning optimization is already in progress"
 
   admin:
     users:
