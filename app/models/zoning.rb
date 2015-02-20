@@ -31,7 +31,7 @@ class Zoning < ActiveRecord::Base
 
   amoeba do
     enable
-    exclude_field :plannings
+    exclude_association :plannings
 
     customize(lambda { |original, copy|
       copy.zones.each{ |zone|

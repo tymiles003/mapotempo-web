@@ -29,7 +29,7 @@ class OrderArray < ActiveRecord::Base
 
   amoeba do
     enable
-    exclude_field :planning
+    exclude_association :planning
 
     customize(lambda { |original, copy|
       copy.orders.each{ |order|

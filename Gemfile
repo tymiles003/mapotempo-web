@@ -113,7 +113,7 @@ gem 'nilify_blanks'
 gem 'amoeba'
 
 gem 'charlock_holmes'
-gem 'savon', '~> 2.0'
+gem 'savon'
 gem 'savon-multipart', '~> 2.0.2'
 gem 'rest-client'
 gem 'macaddr'
