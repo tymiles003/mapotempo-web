@@ -102,7 +102,6 @@ gem 'color'
 gem 'daemons'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
-gem 'rest-client'
 
 gem 'rgeo'
 gem 'rgeo-geojson'
