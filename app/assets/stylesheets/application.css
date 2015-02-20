@@ -41,5 +41,9 @@
  *= require leaflet.draw
  *= require Control.Geocoder
  *= require bootstrap_and_overrides
+ *= require leaflet
+ *= require leaflet_numbered_markers
+ *= require leaflet.markercluster
+ *= require leaflet.markercluster.default
  *= require_tree .
  */

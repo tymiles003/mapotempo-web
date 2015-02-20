@@ -46,13 +46,6 @@ GIT
       railties (~> 4)
 
 GIT
-  remote: git://github.com/gordonk/leaflet-markercluster-rails.git
-  revision: b81adc2735ff53f2582abdd3c1cbd4d53e8283b8
-  specs:
-    leaflet-markercluster-rails (0.6.0)
-      railties (>= 3.1)
-
-GIT
   remote: git://github.com/roadtrippers/polylines.git
   revision: 1be4b6a0c35ec25f94566f07e27c3ec3a7848378
   branch: rt-arbitrary_precision_polylines
@@ -195,6 +188,8 @@ GEM
     jquery-ui-rails (5.0.3)
       railties (>= 3.2.16)
     json (1.8.2)
+    leaflet-markercluster-rails (0.7.0)
+      railties (>= 3.1)
     leaflet-rails (0.7.4)
     libv8 (3.16.14.7)
     lograge (0.3.1)
@@ -416,7 +411,7 @@ DEPENDENCIES
   leaflet-active-area-rails!
   leaflet-control-geocoder-rails!
   leaflet-draw-rails!
-  leaflet-markercluster-rails!
+  leaflet-markercluster-rails
   leaflet-rails
   leaflet_numbered_markers-rails!
   lograge

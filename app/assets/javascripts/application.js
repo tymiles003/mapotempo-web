@@ -52,11 +52,14 @@
 //= require leaflet
 //= require leaflet.markercluster
 //= require leaflet.draw
+//= require leaflet_numbered_markers
+//= require leaflet.activearea
+//= require leaflet-pip
 //= require Control.Geocoder
+//= require Polyline.encoded.js
 //= require mustache
 //= require select2.js
 //= require select2_locale_fr.js
 //= require_tree ../../templates
 //= require paloma
-//= require leaflet-pip
 //= require_tree .
