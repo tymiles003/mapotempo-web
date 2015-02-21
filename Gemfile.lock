@@ -429,6 +429,7 @@ DEPENDENCIES
   capybara
   capybara-webkit
   charlock_holmes
+  coffee-rails (~> 4.1.0)
   color
   daemons
   database_cleaner
