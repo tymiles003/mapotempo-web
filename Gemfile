@@ -59,7 +59,6 @@ gem 'grape-entity'
 gem 'grape-swagger'
 gem 'rack-cors'
 
-gem 'schema_plus'
 gem 'rails-i18n'
 gem 'execjs'
 gem 'therubyracer'

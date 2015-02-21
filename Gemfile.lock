@@ -335,9 +335,6 @@ GEM
     savon-multipart (2.0.2)
       mail (~> 2.5.4)
       savon (~> 2)
-    schema_plus (1.8.7)
-      activerecord (>= 3.2, < 4.3)
-      valuable
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -393,7 +390,6 @@ GEM
       json (>= 1.8.0)
     uuid (2.3.7)
       macaddr (~> 1.0)
-    valuable (0.9.9)
     virtus (1.0.4)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -476,7 +472,6 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   savon
   savon-multipart (~> 2.0.2)
-  schema_plus
   sdoc (~> 0.4.0)
   select2-rails
   selenium-webdriver

@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20150216164130) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "customers", force: true do |t|
+  create_table "customers", force: :cascade do |t|
     t.date     "end_subscription"
     t.integer  "max_vehicles"
     t.time     "take_over"
@@ -24,220 +24,154 @@ ActiveRecord::Schema.define(version: 20150216164130) do
     t.integer  "job_optimizer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
-    t.string   "tomtom_account"
-    t.string   "tomtom_user"
-    t.string   "tomtom_password"
+    t.string   "name",                      limit: 255
+    t.string   "tomtom_account",            limit: 255
+    t.string   "tomtom_user",               limit: 255
+    t.string   "tomtom_password",           limit: 255
     t.integer  "router_id"
     t.boolean  "print_planning_annotating"
     t.text     "print_header"
-    t.string   "masternaut_user"
-    t.string   "masternaut_password"
-    t.boolean  "enable_orders",             default: false, null: false
-    t.boolean  "test",                      default: false, null: false
-    t.string   "alyacom_association"
-    t.index ["job_geocoding_id"], :name => "index_customers_on_job_geocoding_id"
-    t.index ["job_optimizer_id"], :name => "index_customers_on_job_optimizer_id"
+    t.string   "masternaut_user",           limit: 255
+    t.string   "masternaut_password",       limit: 255
+    t.boolean  "enable_orders",                         default: false, null: false
+    t.boolean  "test",                                  default: false, null: false
+    t.string   "alyacom_association",       limit: 255
   end
 
-  create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0,   null: false
-    t.integer  "attempts",   default: 0,   null: false
-    t.text     "handler",                  null: false
+  add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree
+  add_index "customers", ["job_optimizer_id"], name: "index_customers_on_job_optimizer_id", using: :btree
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",               default: 0,   null: false
+    t.integer  "attempts",               default: 0,   null: false
+    t.text     "handler",                              null: false
     t.text     "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
+    t.string   "locked_by",  limit: 255
+    t.string   "queue",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "progress",   default: "0", null: false
-    t.index ["priority", "run_at"], :name => "delayed_jobs_priority"
+    t.string   "progress",   limit: 255, default: "0", null: false
   end
 
-  create_table "destinations", force: true do |t|
-    t.string   "name"
-    t.string   "street"
-    t.string   "postalcode"
-    t.string   "city"
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "destinations", force: :cascade do |t|
+    t.string   "name",               limit: 255
+    t.string   "street",             limit: 255
+    t.string   "postalcode",         limit: 255
+    t.string   "city",               limit: 255
     t.float    "lat"
     t.float    "lng"
     t.integer  "quantity"
     t.time     "open"
     t.time     "close"
-    t.integer  "customer_id",        null: false
+    t.integer  "customer_id",                    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "detail"
-    t.string   "comment"
-    t.string   "ref"
+    t.string   "detail",             limit: 255
+    t.string   "comment",            limit: 255
+    t.string   "ref",                limit: 255
     t.time     "take_over"
     t.float    "geocoding_accuracy"
-    t.index ["customer_id"], :name => "fk__destinations_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_destinations_customer_id"
   end
 
-  create_table "tags", force: true do |t|
-    t.string   "label"
-    t.integer  "customer_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "color"
-    t.string   "icon"
-    t.index ["customer_id"], :name => "fk__tags_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_tags_customer_id"
-  end
+  add_index "destinations", ["customer_id"], name: "fk__destinations_customer_id", using: :btree
 
-  create_table "destinations_tags", id: false, force: true do |t|
+  create_table "destinations_tags", id: false, force: :cascade do |t|
     t.integer "destination_id", null: false
     t.integer "tag_id",         null: false
-    t.index ["destination_id"], :name => "fk__destinations_tags_destination_id"
-    t.index ["tag_id"], :name => "fk__destinations_tags_tag_id"
-    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_destinations_tags_destination_id"
-    t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_destinations_tags_tag_id"
   end
 
-  create_table "layers", force: true do |t|
-    t.string   "name"
-    t.string   "url"
-    t.string   "attribution"
+  add_index "destinations_tags", ["destination_id"], name: "fk__destinations_tags_destination_id", using: :btree
+  add_index "destinations_tags", ["tag_id"], name: "fk__destinations_tags_tag_id", using: :btree
+
+  create_table "layers", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.string   "url",         limit: 255
+    t.string   "attribution", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "urlssl"
+    t.string   "urlssl",      limit: 255
   end
 
-  create_table "order_arrays", force: true do |t|
-    t.string   "name",        null: false
-    t.date     "base_date",   null: false
-    t.integer  "length",      null: false
-    t.integer  "customer_id", null: false
+  create_table "order_arrays", force: :cascade do |t|
+    t.string   "name",        limit: 255, null: false
+    t.date     "base_date",               null: false
+    t.integer  "length",                  null: false
+    t.integer  "customer_id",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["customer_id"], :name => "fk__order_arrays_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_order_arrays_customer_id"
   end
 
-  create_table "orders", force: true do |t|
+  add_index "order_arrays", ["customer_id"], name: "fk__order_arrays_customer_id", using: :btree
+
+  create_table "orders", force: :cascade do |t|
     t.integer  "shift",          null: false
     t.integer  "destination_id", null: false
     t.integer  "order_array_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["destination_id"], :name => "fk__orders_destination_id"
-    t.index ["order_array_id"], :name => "fk__orders_order_array_id"
-    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_orders_destination_id"
-    t.foreign_key ["order_array_id"], "order_arrays", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_orders_order_array_id"
   end
 
-  create_table "products", force: true do |t|
-    t.string   "name",        null: false
-    t.string   "code",        null: false
-    t.integer  "customer_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["customer_id"], :name => "fk__products_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_products_customer_id"
-  end
+  add_index "orders", ["destination_id"], name: "fk__orders_destination_id", using: :btree
+  add_index "orders", ["order_array_id"], name: "fk__orders_order_array_id", using: :btree
 
-  create_table "orders_products", id: false, force: true do |t|
+  create_table "orders_products", id: false, force: :cascade do |t|
     t.integer "order_id",   null: false
     t.integer "product_id", null: false
-    t.index ["order_id"], :name => "fk__orders_products_order_id"
-    t.index ["product_id"], :name => "fk__orders_products_product_id"
-    t.foreign_key ["order_id"], "orders", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_orders_products_order_id"
-    t.foreign_key ["product_id"], "products", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_orders_products_product_id"
   end
 
-  create_table "zonings", force: true do |t|
-    t.string   "name"
-    t.integer  "customer_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["customer_id"], :name => "fk__zonings_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_zonings_customer_id"
-  end
+  add_index "orders_products", ["order_id"], name: "fk__orders_products_order_id", using: :btree
+  add_index "orders_products", ["product_id"], name: "fk__orders_products_product_id", using: :btree
 
-  create_table "plannings", force: true do |t|
-    t.string   "name"
-    t.integer  "customer_id",        null: false
+  create_table "plannings", force: :cascade do |t|
+    t.string   "name",               limit: 255
+    t.integer  "customer_id",                    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "zoning_id"
     t.boolean  "zoning_out_of_date"
     t.integer  "order_array_id"
     t.integer  "order_array_shift"
-    t.index ["customer_id"], :name => "fk__plannings_customer_id"
-    t.index ["order_array_id"], :name => "fk__plannings_order_array_id"
-    t.index ["zoning_id"], :name => "fk__plannings_zoning_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_plannings_customer_id"
-    t.foreign_key ["order_array_id"], "order_arrays", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_order_array_id"
-    t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_plannings_zoning_id"
   end
 
-  create_table "plannings_tags", id: false, force: true do |t|
+  add_index "plannings", ["customer_id"], name: "fk__plannings_customer_id", using: :btree
+  add_index "plannings", ["order_array_id"], name: "fk__plannings_order_array_id", using: :btree
+  add_index "plannings", ["zoning_id"], name: "fk__plannings_zoning_id", using: :btree
+
+  create_table "plannings_tags", id: false, force: :cascade do |t|
     t.integer "planning_id", null: false
     t.integer "tag_id",      null: false
-    t.index ["planning_id"], :name => "fk__plannings_tags_planning_id"
-    t.index ["tag_id"], :name => "fk__plannings_tags_tag_id"
-    t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_plannings_tags_planning_id"
-    t.foreign_key ["tag_id"], "tags", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_plannings_tags_tag_id"
   end
 
-  create_table "routers", force: true do |t|
-    t.string   "name"
-    t.string   "url"
+  add_index "plannings_tags", ["planning_id"], name: "fk__plannings_tags_planning_id", using: :btree
+  add_index "plannings_tags", ["tag_id"], name: "fk__plannings_tags_tag_id", using: :btree
+
+  create_table "products", force: :cascade do |t|
+    t.string   "name",        limit: 255, null: false
+    t.string   "code",        limit: 255, null: false
+    t.integer  "customer_id",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type",       default: "RouterOsrm", null: false
   end
 
-  create_table "stores", force: true do |t|
-    t.string   "name"
-    t.string   "street"
-    t.string   "postalcode"
-    t.string   "city"
-    t.float    "lat",         null: false
-    t.float    "lng",         null: false
-    t.time     "open"
-    t.time     "close"
-    t.integer  "customer_id", null: false
+  add_index "products", ["customer_id"], name: "fk__products_customer_id", using: :btree
+
+  create_table "routers", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "url",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["customer_id"], :name => "fk__stores_customer_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stores_customer_id"
+    t.string   "type",       limit: 255, default: "RouterOsrm", null: false
   end
 
-  create_table "vehicles", force: true do |t|
-    t.string   "name"
-    t.float    "emission"
-    t.float    "consumption"
-    t.integer  "capacity"
-    t.string   "color"
-    t.time     "open"
-    t.time     "close"
-    t.integer  "customer_id",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "tomtom_id"
-    t.integer  "store_start_id", null: false
-    t.integer  "store_stop_id",  null: false
-    t.integer  "router_id"
-    t.string   "masternaut_ref"
-    t.index ["customer_id"], :name => "fk__vehicles_customer_id"
-    t.index ["router_id"], :name => "fk__vehicles_router_id"
-    t.index ["store_start_id"], :name => "fk__vehicles_store_start_id"
-    t.index ["store_stop_id"], :name => "fk__vehicles_store_stop_id"
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_vehicles_customer_id"
-    t.foreign_key ["router_id"], "routers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_router_id"
-    t.foreign_key ["store_start_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_store_start_id"
-    t.foreign_key ["store_stop_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_vehicles_store_stop_id"
-  end
-
-  create_table "routes", force: true do |t|
+  create_table "routes", force: :cascade do |t|
     t.float    "distance"
     t.float    "emission"
-    t.integer  "planning_id",            null: false
+    t.integer  "planning_id",                        null: false
     t.integer  "vehicle_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -250,14 +184,13 @@ ActiveRecord::Schema.define(version: 20150216164130) do
     t.text     "stop_trace"
     t.boolean  "stop_out_of_drive_time"
     t.float    "stop_distance"
-    t.string   "ref"
-    t.index ["planning_id"], :name => "fk__routes_planning_id"
-    t.index ["vehicle_id"], :name => "fk__routes_vehicle_id"
-    t.foreign_key ["planning_id"], "plannings", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_routes_planning_id"
-    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_routes_vehicle_id"
+    t.string   "ref",                    limit: 255
   end
 
-  create_table "stops", force: true do |t|
+  add_index "routes", ["planning_id"], name: "fk__routes_planning_id", using: :btree
+  add_index "routes", ["vehicle_id"], name: "fk__routes_vehicle_id", using: :btree
+
+  create_table "stops", force: :cascade do |t|
     t.integer  "index"
     t.boolean  "active"
     t.float    "distance"
@@ -271,56 +204,142 @@ ActiveRecord::Schema.define(version: 20150216164130) do
     t.boolean  "out_of_capacity"
     t.boolean  "out_of_drive_time"
     t.integer  "wait_time"
-    t.index ["destination_id"], :name => "fk__stops_destination_id"
-    t.index ["route_id"], :name => "fk__stops_route_id"
-    t.foreign_key ["destination_id"], "destinations", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stops_destination_id"
-    t.foreign_key ["route_id"], "routes", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stops_route_id"
   end
 
-  create_table "stores_vehicules", id: false, force: true do |t|
-    t.integer "store_id",   null: false
-    t.integer "vehicle_id", null: false
-    t.index ["store_id"], :name => "fk__stores_vehicules_store_id"
-    t.index ["vehicle_id"], :name => "fk__stores_vehicules_vehicle_id"
-    t.foreign_key ["store_id"], "stores", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stores_vehicules_store_id"
-    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_stores_vehicules_vehicle_id"
-  end
+  add_index "stops", ["destination_id"], name: "fk__stops_destination_id", using: :btree
+  add_index "stops", ["route_id"], name: "fk__stops_route_id", using: :btree
 
-  create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.boolean  "admin"
-    t.integer  "customer_id"
-    t.integer  "layer_id",                            null: false
+  create_table "stores", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.string   "street",      limit: 255
+    t.string   "postalcode",  limit: 255
+    t.string   "city",        limit: 255
+    t.float    "lat",                     null: false
+    t.float    "lng",                     null: false
+    t.time     "open"
+    t.time     "close"
+    t.integer  "customer_id",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "api_key",                             null: false
-    t.index ["customer_id"], :name => "fk__users_customer_id"
-    t.index ["email"], :name => "index_users_on_email", :unique => true
-    t.index ["layer_id"], :name => "fk__users_layer_id"
-    t.index ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-    t.foreign_key ["customer_id"], "customers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_users_customer_id"
-    t.foreign_key ["layer_id"], "layers", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_users_layer_id"
   end
 
-  create_table "zones", force: true do |t|
+  add_index "stores", ["customer_id"], name: "fk__stores_customer_id", using: :btree
+
+  create_table "stores_vehicules", id: false, force: :cascade do |t|
+    t.integer "store_id",   null: false
+    t.integer "vehicle_id", null: false
+  end
+
+  add_index "stores_vehicules", ["store_id"], name: "fk__stores_vehicules_store_id", using: :btree
+  add_index "stores_vehicules", ["vehicle_id"], name: "fk__stores_vehicules_vehicle_id", using: :btree
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "label",       limit: 255
+    t.integer  "customer_id",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "color",       limit: 255
+    t.string   "icon",        limit: 255
+  end
+
+  add_index "tags", ["customer_id"], name: "fk__tags_customer_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                      default: 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.boolean  "admin"
+    t.integer  "customer_id"
+    t.integer  "layer_id",                                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "api_key",                limit: 255,              null: false
+  end
+
+  add_index "users", ["customer_id"], name: "fk__users_customer_id", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["layer_id"], name: "fk__users_layer_id", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "vehicles", force: :cascade do |t|
+    t.string   "name",           limit: 255
+    t.float    "emission"
+    t.float    "consumption"
+    t.integer  "capacity"
+    t.string   "color",          limit: 255
+    t.time     "open"
+    t.time     "close"
+    t.integer  "customer_id",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "tomtom_id",      limit: 255
+    t.integer  "store_start_id",             null: false
+    t.integer  "store_stop_id",              null: false
+    t.integer  "router_id"
+    t.string   "masternaut_ref", limit: 255
+  end
+
+  add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree
+  add_index "vehicles", ["router_id"], name: "fk__vehicles_router_id", using: :btree
+  add_index "vehicles", ["store_start_id"], name: "fk__vehicles_store_start_id", using: :btree
+  add_index "vehicles", ["store_stop_id"], name: "fk__vehicles_store_stop_id", using: :btree
+
+  create_table "zones", force: :cascade do |t|
     t.text     "polygon"
     t.integer  "zoning_id",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "vehicle_id"
-    t.index ["vehicle_id"], :name => "fk__zones_vehicle_id"
-    t.index ["zoning_id"], :name => "fk__zones_zoning_id"
-    t.foreign_key ["vehicle_id"], "vehicles", ["id"], :on_update => :no_action, :on_delete => :no_action, :deferrable => true, :name => "fk_zones_vehicle_id"
-    t.foreign_key ["zoning_id"], "zonings", ["id"], :on_update => :no_action, :on_delete => :cascade, :deferrable => true, :name => "fk_zones_zoning_id"
   end
 
+  add_index "zones", ["vehicle_id"], name: "fk__zones_vehicle_id", using: :btree
+  add_index "zones", ["zoning_id"], name: "fk__zones_zoning_id", using: :btree
+
+  create_table "zonings", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.integer  "customer_id",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "zonings", ["customer_id"], name: "fk__zonings_customer_id", using: :btree
+
+  add_foreign_key "destinations", "customers", name: "fk_destinations_customer_id", on_delete: :cascade
+  add_foreign_key "destinations_tags", "destinations", name: "fk_destinations_tags_destination_id", on_delete: :cascade
+  add_foreign_key "destinations_tags", "tags", name: "fk_destinations_tags_tag_id", on_delete: :cascade
+  add_foreign_key "order_arrays", "customers", name: "fk_order_arrays_customer_id", on_delete: :cascade
+  add_foreign_key "orders", "destinations", name: "fk_orders_destination_id", on_delete: :cascade
+  add_foreign_key "orders", "order_arrays", name: "fk_orders_order_array_id", on_delete: :cascade
+  add_foreign_key "orders_products", "orders", name: "fk_orders_products_order_id", on_delete: :cascade
+  add_foreign_key "orders_products", "products", name: "fk_orders_products_product_id", on_delete: :cascade
+  add_foreign_key "plannings", "customers", name: "fk_plannings_customer_id", on_delete: :cascade
+  add_foreign_key "plannings", "order_arrays", name: "fk_plannings_order_array_id"
+  add_foreign_key "plannings", "zonings", name: "fk_plannings_zoning_id"
+  add_foreign_key "plannings_tags", "plannings", name: "fk_plannings_tags_planning_id", on_delete: :cascade
+  add_foreign_key "plannings_tags", "tags", name: "fk_plannings_tags_tag_id", on_delete: :cascade
+  add_foreign_key "products", "customers", name: "fk_products_customer_id", on_delete: :cascade
+  add_foreign_key "routes", "plannings", name: "fk_routes_planning_id", on_delete: :cascade
+  add_foreign_key "routes", "vehicles", name: "fk_routes_vehicle_id", on_delete: :cascade
+  add_foreign_key "stops", "destinations", name: "fk_stops_destination_id", on_delete: :cascade
+  add_foreign_key "stops", "routes", name: "fk_stops_route_id", on_delete: :cascade
+  add_foreign_key "stores", "customers", name: "fk_stores_customer_id", on_delete: :cascade
+  add_foreign_key "stores_vehicules", "stores", name: "fk_stores_vehicules_store_id", on_delete: :cascade
+  add_foreign_key "stores_vehicules", "vehicles", name: "fk_stores_vehicules_vehicle_id", on_delete: :cascade
+  add_foreign_key "tags", "customers", name: "fk_tags_customer_id", on_delete: :cascade
+  add_foreign_key "users", "customers", name: "fk_users_customer_id"
+  add_foreign_key "users", "layers", name: "fk_users_layer_id"
+  add_foreign_key "vehicles", "customers", name: "fk_vehicles_customer_id", on_delete: :cascade
+  add_foreign_key "vehicles", "routers", name: "fk_vehicles_router_id"
+  add_foreign_key "vehicles", "stores", column: "store_start_id", name: "fk_vehicles_store_start_id"
+  add_foreign_key "vehicles", "stores", column: "store_stop_id", name: "fk_vehicles_store_stop_id"
+  add_foreign_key "zones", "vehicles", name: "fk_zones_vehicle_id"
+  add_foreign_key "zones", "zonings", name: "fk_zones_zoning_id", on_delete: :cascade
+  add_foreign_key "zonings", "customers", name: "fk_zonings_customer_id", on_delete: :cascade
 end
