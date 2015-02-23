@@ -160,7 +160,7 @@ class PlanningsController < ApplicationController
 
   def optimize_each_routes
     respond_to do |format|
-      if Optimizer::optimize_each(@planning) && @planning.customer.save
+      if Optimizer.optimize_each(@planning) && @planning.customer.save
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -171,7 +171,7 @@ class PlanningsController < ApplicationController
   def optimize_route
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == params[:route_id].to_i }
-      if route && Optimizer::optimize(@planning, route) && @planning.customer.save
+      if route && Optimizer.optimize(@planning, route) && @planning.customer.save
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }

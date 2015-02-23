@@ -39,7 +39,7 @@ class ApiV01 < Grape::API
 
   rescue_from :all do |e|
     @error = e
-    Rails::logger.error "\n\n#{e.class} (#{e.message}):\n    " + e.backtrace.join("\n    ") + "\n\n"
+    Rails.logger.error "\n\n#{e.class} (#{e.message}):\n    " + e.backtrace.join("\n    ") + "\n\n"
     error_response({message: e.message})
   end
 
