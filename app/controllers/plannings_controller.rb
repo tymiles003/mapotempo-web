@@ -18,7 +18,7 @@
 require 'csv'
 
 class PlanningsController < ApplicationController
-  load_and_authorize_resource :except => :create
+  load_and_authorize_resource except: :create
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate]
 
   def index
@@ -206,7 +206,7 @@ class PlanningsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def planning_params
-      params.require(:planning).permit(:name, :zoning_id, :tag_ids => [])
+      params.require(:planning).permit(:name, :zoning_id, tag_ids: [])
     end
 
     def stop_params

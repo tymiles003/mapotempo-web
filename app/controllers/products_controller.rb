@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ProductsController < ApplicationController
-  load_and_authorize_resource :except => :create
+  load_and_authorize_resource except: :create
   before_action :set_product, only: [:edit, :update, :destroy]
 
   def index

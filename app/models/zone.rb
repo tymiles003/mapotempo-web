@@ -38,7 +38,7 @@ class Zone < ActiveRecord::Base
 
   private
     def decode_geom
-      @geom = RGeo::GeoJSON.decode(polygon, :json_parser => :json)
+      @geom = RGeo::GeoJSON.decode(polygon, json_parser: :json)
     end
 
     def valide_vehicle_from_customer

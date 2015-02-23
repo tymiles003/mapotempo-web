@@ -39,7 +39,7 @@ class Zoning < ActiveRecord::Base
       }
     })
 
-    append :name => Time.now.strftime(' %Y-%m-%d %H:%M')
+    append name: Time.now.strftime(' %Y-%m-%d %H:%M')
   end
 
   def apply(destinations)

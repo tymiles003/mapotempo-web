@@ -18,8 +18,8 @@
 class Planning < ActiveRecord::Base
   belongs_to :customer
   belongs_to :zoning
-  has_many :routes, -> { includes(:stops).order('CASE WHEN vehicle_id IS NULL THEN 0 ELSE id END')}, inverse_of: :planning, :autosave => true, :dependent => :delete_all
-  has_and_belongs_to_many :tags, -> { order('label')}, :autosave => true
+  has_many :routes, -> { includes(:stops).order('CASE WHEN vehicle_id IS NULL THEN 0 ELSE id END')}, inverse_of: :planning, autosave: true, dependent: :delete_all
+  has_and_belongs_to_many :tags, -> { order('label')}, autosave: true
   belongs_to :order_array
 
   nilify_blanks
@@ -41,7 +41,7 @@ class Planning < ActiveRecord::Base
       end
     })
 
-    append :name => Time.now.strftime(' %Y-%m-%d %H:%M')
+    append name: Time.now.strftime(' %Y-%m-%d %H:%M')
   end
 
   def set_destinations(destination_actives, recompute = true)

@@ -18,7 +18,7 @@
 class Order < ActiveRecord::Base
   belongs_to :order_array
   belongs_to :destination
-  has_and_belongs_to_many :products, -> { order('code')}, :autosave => true
+  has_and_belongs_to_many :products, -> { order('code')}, autosave: true
 
   nilify_blanks
   validates :order_array, presence: true

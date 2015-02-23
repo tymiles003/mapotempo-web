@@ -21,7 +21,7 @@ require 'importer'
 class DestinationsController < ApplicationController
   include LinkBack
 
-  load_and_authorize_resource :except => [:create, :upload]
+  load_and_authorize_resource except: [:create, :upload]
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -124,7 +124,7 @@ class DestinationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def destination_params
-      params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :quantity, :take_over, :open, :close, :comment, :tag_ids => [])
+      params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

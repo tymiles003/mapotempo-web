@@ -21,7 +21,7 @@ require 'importer'
 class StoresController < ApplicationController
   include LinkBack
 
-  load_and_authorize_resource :except => [:create, :upload]
+  load_and_authorize_resource except: [:create, :upload]
   before_action :set_store, only: [:show, :edit, :update, :destroy]
 
   def index

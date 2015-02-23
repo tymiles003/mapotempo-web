@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  belongs_to :customer, :autosave => true
+  belongs_to :customer, autosave: true
   belongs_to :layer
 
   after_initialize :assign_defaults, if: 'new_record?'

@@ -4,7 +4,7 @@ class V01::Plannings < Grape::API
     def planning_params
       p = ActionController::Parameters.new(params)
       p = p[:planning] if p.has_key?(:planning)
-      p.permit(:name, :zoning_id, :tag_ids => [])
+      p.permit(:name, :zoning_id, tag_ids: [])
     end
   end
 

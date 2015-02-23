@@ -4,7 +4,7 @@ class V01::Orders < Grape::API
     def order_params
       p = ActionController::Parameters.new(params)
       p = p[:order] if p.has_key?(:order)
-      p.permit(:product_ids => [])
+      p.permit(product_ids: [])
     end
 
     def authorize!

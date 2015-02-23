@@ -18,7 +18,7 @@
 require 'csv'
 
 class OrderArraysController < ApplicationController
-  load_and_authorize_resource :except => :create
+  load_and_authorize_resource except: :create
   before_action :set_order_array, only: [:show, :edit, :update, :destroy, :duplicate]
 
   def index

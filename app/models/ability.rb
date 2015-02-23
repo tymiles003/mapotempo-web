@@ -23,22 +23,22 @@ class Ability
       if user.admin?
         can :manage, :all
       else
-        can [:edit, :update], User, :id => user.id
-        can [:show, :edit_settings, :update_settings], User, :id => user.id
-        can [:edit, :update], Customer, :id => user.customer.id
+        can [:edit, :update], User, id: user.id
+        can [:show, :edit_settings, :update_settings], User, id: user.id
+        can [:edit, :update], Customer, id: user.customer.id
         can [:stop_job_optimizer, :stop_job_geocoding], Customer
-        can [:index, :edit, :update], Vehicle, :customer_id => user.customer.id
-        can :manage, Tag, :customer_id => user.customer.id
-        can :manage, Destination, :customer_id => user.customer.id
-        can :manage, Store, :customer_id => user.customer.id
-        can :manage, Zoning, :customer_id => user.customer.id
+        can [:index, :edit, :update], Vehicle, customer_id: user.customer.id
+        can :manage, Tag, customer_id: user.customer.id
+        can :manage, Destination, customer_id: user.customer.id
+        can :manage, Store, customer_id: user.customer.id
+        can :manage, Zoning, customer_id: user.customer.id
         if not user.customer.end_subscription or user.customer.end_subscription > Time.now
-          can :manage, Planning, :customer_id => user.customer.id
+          can :manage, Planning, customer_id: user.customer.id
         end
-        can :manage, Route, :planning => {:customer_id => user.customer.id}
+        can :manage, Route, planning: {customer_id: user.customer.id}
         if user.customer.enable_orders
-          can :manage, OrderArray, :customer_id => user.customer.id
-          can :manage, Product, :customer_id => user.customer.id
+          can :manage, OrderArray, customer_id: user.customer.id
+          can :manage, Product, customer_id: user.customer.id
         end
       end
     end

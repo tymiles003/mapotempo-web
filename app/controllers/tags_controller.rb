@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class TagsController < ApplicationController
-  load_and_authorize_resource :except => :create
+  load_and_authorize_resource except: :create
   before_action :set_tag, only: [:edit, :update, :destroy]
 
   def index
