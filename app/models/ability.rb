@@ -32,7 +32,7 @@ class Ability
         can :manage, Destination, customer_id: user.customer.id
         can :manage, Store, customer_id: user.customer.id
         can :manage, Zoning, customer_id: user.customer.id
-        if not user.customer.end_subscription or user.customer.end_subscription > Time.now
+        if !user.customer.end_subscription or user.customer.end_subscription > Time.now
           can :manage, Planning, customer_id: user.customer.id
         end
         can :manage, Route, planning: {customer_id: user.customer.id}

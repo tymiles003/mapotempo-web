@@ -134,9 +134,9 @@ class Importer
 
         if row['tags']
           r['tags'] = row['tags'].split(',').select { |key|
-            not key.empty?
+            !key.empty?
           }.collect { |key|
-            if not tags.key?(key)
+            if !tags.key?(key)
               tags[key] = customer.tags.build(label: key)
             end
             tags[key]
