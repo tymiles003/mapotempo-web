@@ -29,4 +29,8 @@ class Stop < ActiveRecord::Base
       planning.order_array.orders.where(destination_id: destination.id, shift: planning.order_array_shift).first
     end
   end
+
+  def to_s
+    "#{active ? 'x' : '_'} #{destination.name}"
+  end
 end

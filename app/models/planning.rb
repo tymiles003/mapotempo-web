@@ -203,6 +203,10 @@ class Planning < ActiveRecord::Base
     self.order_array_shift = shift
   end
 
+  def to_s
+    "#{name}=>" + routes.collect(&:to_s).join(' ')
+  end
+
   private
     def split_by_zones
       if zoning && !routes.empty?

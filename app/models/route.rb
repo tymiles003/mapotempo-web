@@ -308,6 +308,10 @@ class Route < ActiveRecord::Base
     self.vehicle && self[:out_of_date]
   end
 
+  def to_s
+    "#{ref}:#{vehicle and vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + "]"
+  end
+
   private
     def assign_defaults
       self.hidden = false
