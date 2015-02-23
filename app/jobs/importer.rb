@@ -160,7 +160,7 @@ class Importer
             common_tags &= destination.tags
         end
 
-        routes[row.key?('route')? row['route'] : nil] << [destination, ! row.key?('active') || row['active'].strip != '0']
+        routes[row.key?('route') ? row['route'] : nil] << [destination, ! row.key?('active') || row['active'].strip != '0']
       }
 
       if errors.length > 0

@@ -47,14 +47,14 @@ class Planning < ActiveRecord::Base
   def set_destinations(destination_actives, recompute = true)
     default_empty_routes
     destination_actives = destination_actives.select{ |ref, d| ref }
-    if destination_actives.size <= routes.size-1
+    if destination_actives.size <= routes.size - 1
       destinations = destination_actives.values.flatten(1).collect{ |destination_active| destination_active[0] }
       routes[0].set_destinations((customer.destinations - destinations).select{ |destination|
         (destination.tags & tags).size == tags.size
       })
       i = 0
       destination_actives.each{ |ref, destinations|
-        routes[i+=1].ref = ref
+        routes[i += 1].ref = ref
         routes[i].set_destinations(destinations.select{ |destination|
           (destination[0].tags & tags).size == tags.size
         }, recompute)
@@ -141,11 +141,11 @@ class Planning < ActiveRecord::Base
     # Take the closest routes destination and eval insert
     route, index = available_routes.collect{ |route|
       route.stops.map{ |stop| [stop.destination, route, stop.index] } +
-        [[route.vehicle.store_start, route, 1], [route.vehicle.store_stop, route, route.stops.size+1]]
+        [[route.vehicle.store_start, route, 1], [route.vehicle.store_stop, route, route.stops.size + 1]]
     }.flatten(1).sort{ |a,b|
       a[0].distance(stop.destination) <=> b[0].distance(stop.destination)
     }[0..9].collect{ |destination_route_index|
-      [[destination_route_index[1], destination_route_index[2]], [destination_route_index[1], destination_route_index[2]+1]]
+      [[destination_route_index[1], destination_route_index[2]], [destination_route_index[1], destination_route_index[2] + 1]]
     }.flatten(1).uniq.min_by{ |ri|
       ri[0].class.amoeba do
         clone :stops # No need to duplicate stop juste for compute evaluation

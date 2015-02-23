@@ -24,7 +24,7 @@ class Router < ActiveRecord::Base
     def pack_vector(vector)
       # Sort vector for caching
       i = -1
-      vector = vector.map{ |a| [a[0], a[1], i+=1] }
+      vector = vector.map{ |a| [a[0], a[1], i += 1] }
       vector.sort!{ |a,b|
         a[0] != b[0] ? a[0] <=> b[0] : a[1] <=> b[1]
       }

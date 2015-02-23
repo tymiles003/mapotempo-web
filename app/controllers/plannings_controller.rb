@@ -150,7 +150,7 @@ class PlanningsController < ApplicationController
       @route = @planning.routes.find{ |route| route.id == params[:route_id] }
       params[:destination_id] = params[:destination_id].to_i
       @stop = @route.stops.find{ |stop| stop.destination_id == params[:destination_id] }
-      if @route && @stop && @stop.update(stop_params) && @route.compute&& @planning.save
+      if @route && @stop && @stop.update(stop_params) && @route.compute && @planning.save
         format.json { render action: 'show', location: @planning }
       else
         format.json { render nothing: true , status: :unprocessable_entity }

@@ -72,7 +72,7 @@ class ImagesController < ApplicationController
       b_down.s = range(b_down.s - 0.102)
       b_down.l = range(b_down.l - 0.142)
 
-      [['#'+a_up.to_rgb.hex, '#'+a_down.to_rgb.hex], ['#'+b_up.to_rgb.hex, '#'+b_down.to_rgb.hex]]
+      [['#' + a_up.to_rgb.hex, '#' + a_down.to_rgb.hex], ['#' + b_up.to_rgb.hex, '#' + b_down.to_rgb.hex]]
     end
 
     def image_params

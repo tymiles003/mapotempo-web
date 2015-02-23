@@ -68,7 +68,7 @@ class Customer < ActiveRecord::Base
         if vehicles.size < max_vehicles
           # Add new
           (max_vehicles - vehicles.size).times{ |i|
-            vehicle = vehicles.build(name: I18n.t('vehicles.default_name', n:vehicles.size+1))
+            vehicle = vehicles.build(name: I18n.t('vehicles.default_name', n:vehicles.size + 1))
             plannings.each{ |planning|
               planning.vehicle_add(vehicle)
             }
@@ -76,7 +76,7 @@ class Customer < ActiveRecord::Base
         elsif vehicles.size > max_vehicles
           # Delete
           (vehicles.size - max_vehicles).times{ |i|
-            vehicle = vehicles[vehicles.size-i-1]
+            vehicle = vehicles[vehicles.size - i - 1]
             plannings.each{ |planning|
               planning.vehicle_remove(vehicle)
             }

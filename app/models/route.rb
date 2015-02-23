@@ -41,7 +41,7 @@ class Route < ActiveRecord::Base
     i = 0
     stops.clear
     planning.destinations_compatibles.each { |c|
-      stops.build(destination:c, active:true, index:i+=1)
+      stops.build(destination:c, active:true, index:i += 1)
     }
 
     compute
@@ -156,7 +156,7 @@ class Route < ActiveRecord::Base
       i = 0
       dests.each{ |stop|
         destination, active = stop
-        stops.build(destination:destination, active:active, index:i+=1)
+        stops.build(destination:destination, active:active, index:i += 1)
       }
       compute if recompute
     end
@@ -245,7 +245,7 @@ class Route < ActiveRecord::Base
     amalgamate_same_position(stops_on.collect(&:destination)) { |positions|
       positions = [[vehicle.store_start.lat, vehicle.store_start.lng]] + positions + [[vehicle.store_stop.lat, vehicle.store_stop.lng]]
       matrix = router.matrix(positions, &matrix_progress)
-      optimizer.call(matrix)[1..-2].collect{ |i| i-1 }
+      optimizer.call(matrix)[1..-2].collect{ |i| i - 1 }
     }
   end
 
@@ -255,7 +255,7 @@ class Route < ActiveRecord::Base
       stops_[true][i].out_of_window = false
       stops_[true][i]
     }
-    a += ((0..stops_[true].size-1).to_a - o).collect{ |i|
+    a += ((0..stops_[true].size - 1).to_a - o).collect{ |i|
       stops_[true][i].active = false
       stops_[true][i].out_of_window = true
       stops_[true][i]
@@ -263,7 +263,7 @@ class Route < ActiveRecord::Base
     a += (stops_[false] || [])
     i = 0
     a.each{ |stop|
-      stop.index = i+=1
+      stop.index = i += 1
     }
   end
 
@@ -341,7 +341,7 @@ class Route < ActiveRecord::Base
       stock = Hash.new { Array.new }
       i = -1
       positions.each{ |p|
-        stock[[p.lat, p.lng, p.open, p.close]] += [[p, i+=1]]
+        stock[[p.lat, p.lng, p.open, p.close]] += [[p, i += 1]]
       }
 
       positions_uniq = stock.keys
