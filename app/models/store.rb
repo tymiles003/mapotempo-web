@@ -53,6 +53,7 @@ class Store < ActiveRecord::Base
   end
 
   private
+
     def vehicles
       (vehicle_starts.to_a + vehicle_stops.to_a).uniq
     end

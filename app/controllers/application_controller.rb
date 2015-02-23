@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
     def devise_parameter_sanitizer
       if resource_class == User
         User::ParameterSanitizer.new(User, :user, params)

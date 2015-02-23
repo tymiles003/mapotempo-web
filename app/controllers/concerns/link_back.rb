@@ -8,6 +8,7 @@ module LinkBack
   end
 
   private
+
     def save_link_back
       # session[:previous_url] is a Rails built-in variable to save last url.
       if request.format == Mime::HTML

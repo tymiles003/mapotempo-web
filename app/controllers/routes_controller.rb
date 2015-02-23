@@ -75,6 +75,7 @@ class RoutesController < ApplicationController
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_route
       @route = Route.find(params[:id])

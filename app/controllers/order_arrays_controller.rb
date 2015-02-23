@@ -89,6 +89,7 @@ class OrderArraysController < ApplicationController
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_order_array
       @order_array = OrderArray.find(params[:id] || params[:order_array_id])

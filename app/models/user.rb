@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
   validates :layer, presence: true
 
   private
+
     def assign_defaults
       self.layer = Layer.first
       self.api_key = SecureRandom.hex

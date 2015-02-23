@@ -21,6 +21,7 @@ class Router < ActiveRecord::Base
   validates :name, presence: true
 
   private
+
     def pack_vector(vector)
       # Sort vector for caching
       i = -1

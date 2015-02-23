@@ -42,6 +42,7 @@ class Customer < ActiveRecord::Base
   before_save :sanitize_print_header
 
   private
+
     def assign_defaults
       self.stores.build(
         name: I18n.t('stores.default.name'),

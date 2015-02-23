@@ -43,6 +43,7 @@ class ImagesController < ApplicationController
   end
 
   private
+
     def range(x)
       x < 0 ? 0 : x > 1 ? 1 : x
     end

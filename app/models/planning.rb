@@ -206,6 +206,7 @@ class Planning < ActiveRecord::Base
   end
 
   private
+
     def split_by_zones
       if zoning && !routes.empty?
         vehicles_map = Hash[routes.group_by(&:vehicle).map { |vehicle, routes| [vehicle, routes[0]]}]

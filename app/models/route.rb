@@ -313,6 +313,7 @@ class Route < ActiveRecord::Base
   end
 
   private
+
     def assign_defaults
       self.hidden = false
       self.locked = false

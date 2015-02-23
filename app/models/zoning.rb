@@ -62,6 +62,7 @@ class Zoning < ActiveRecord::Base
   end
 
   private
+
     def update_out_of_date
       if @collection_touched
         flag_out_of_date

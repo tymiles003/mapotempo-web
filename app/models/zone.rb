@@ -37,6 +37,7 @@ class Zone < ActiveRecord::Base
   end
 
   private
+
     def decode_geom
       @geom = RGeo::GeoJSON.decode(polygon, json_parser: :json)
     end

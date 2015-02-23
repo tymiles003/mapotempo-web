@@ -59,6 +59,7 @@ class Destination < ActiveRecord::Base
   end
 
   private
+
     def update_out_of_date
       if lat_changed? || lng_changed? || open_changed? || close_changed? || quantity_changed? || take_over_changed?
         out_of_date
