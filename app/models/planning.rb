@@ -136,13 +136,13 @@ class Planning < ActiveRecord::Base
       available_routes = routes.select(&:vehicle)
     end
 
-    cache_sum_out_of_window = Hash.new{ |h,k| h[k] = k.sum_out_of_window }
+    cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
     # Take the closest routes destination and eval insert
     route, index = available_routes.collect{ |route|
       route.stops.map{ |stop| [stop.destination, route, stop.index] } +
         [[route.vehicle.store_start, route, 1], [route.vehicle.store_stop, route, route.stops.size + 1]]
-    }.flatten(1).sort{ |a,b|
+    }.flatten(1).sort{ |a, b|
       a[0].distance(stop.destination) <=> b[0].distance(stop.destination)
     }[0..9].collect{ |destination_route_index|
       [[destination_route_index[1], destination_route_index[2]], [destination_route_index[1], destination_route_index[2] + 1]]
@@ -221,10 +221,10 @@ class Planning < ActiveRecord::Base
         }
         zoning.apply(destinations_free).each{ |zone, destinations|
           if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked
-            vehicles_map[zone.vehicle].set_destinations(destinations.collect{ |d| [d,true]})
+            vehicles_map[zone.vehicle].set_destinations(destinations.collect{ |d| [d, true]})
           else
             # Add to unplanned route even if the route is locked
-            routes[0].add_destinations(destinations.collect{ |d| [d,true]})
+            routes[0].add_destinations(destinations.collect{ |d| [d, true]})
           end
         }
       end

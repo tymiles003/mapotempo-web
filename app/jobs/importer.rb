@@ -27,7 +27,7 @@ class Importer
 
     tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
     common_tags = nil
-    routes = Hash.new{ |h,k| h[k] = [] }
+    routes = Hash.new{ |h, k| h[k] = [] }
 
     contents = File.open(file, 'r:bom|utf-8').read
     if ! contents.valid_encoding?
@@ -41,7 +41,7 @@ class Importer
     separator = ','
     line = contents.lines.first
     splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
-    split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a,b| a[2] <=> b[2] }
+    split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
 
     planning = nil
     need_geocode = false
@@ -77,7 +77,7 @@ class Importer
 
       CSV.parse(contents, col_sep: separator, headers: false) { |row|
         r = []
-        columns.each{ |k,v|
+        columns.each{ |k, v|
           if row.include?(v)
             r << k
           end
@@ -101,7 +101,7 @@ class Importer
 
         # Switch from locale to internal column name
         r = {}
-        columns.each{ |k,v|
+        columns.each{ |k, v|
           if row.key?(v) && row[v]
             r[k] = row[v]
           end
