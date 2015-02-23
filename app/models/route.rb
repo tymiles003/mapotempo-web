@@ -285,13 +285,13 @@ class Route < ActiveRecord::Base
 
   def size_active
     stops.to_a.sum(0) { |stop|
-      (stop.active || ! vehicle) ? 1 : 0
+      (stop.active || !vehicle) ? 1 : 0
     }
   end
 
   def quantity
     stops.to_a.sum(0) { |stop|
-      (stop.active || ! vehicle) ? (stop.destination.quantity || 1) : 0
+      (stop.active || !vehicle) ? (stop.destination.quantity || 1) : 0
     }
   end
 

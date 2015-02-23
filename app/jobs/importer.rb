@@ -30,7 +30,7 @@ class Importer
     routes = Hash.new{ |h, k| h[k] = [] }
 
     contents = File.open(file, 'r:bom|utf-8').read
-    if ! contents.valid_encoding?
+    if !contents.valid_encoding?
       detection = CharlockHolmes::EncodingDetector.detect(contents)
       if !contents || !detection[:encoding]
         raise I18n.t('destinations.import_file.not_csv')
@@ -160,14 +160,14 @@ class Importer
           common_tags &= destination.tags
         end
 
-        routes[row.key?('route') ? row['route'] : nil] << [destination, ! row.key?('active') || row['active'].strip != '0']
+        routes[row.key?('route') ? row['route'] : nil] << [destination, !row.key?('active') || row['active'].strip != '0']
       }
 
       if errors.length > 0
         raise errors.join(' ')
       end
 
-      if need_geocode && ! Mapotempo::Application.config.delayed_job_use
+      if need_geocode && !Mapotempo::Application.config.delayed_job_use
         routes.each{ |key, destinations|
           destinations.each{ |destination_active|
             if destination_active[0].lat.nil? || destination_active[0].lng.nil?
