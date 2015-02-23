@@ -116,7 +116,7 @@ module AlyacomApi
         response = JSON.parse(response)
         data += response['data']
         next_ = response['next']
-      end while next_ != nil
+      end while !next_.nil?
       data
     end
 

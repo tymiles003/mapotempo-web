@@ -48,7 +48,7 @@
   <%
   index = 0
   route.stops.each{ |stop|
-    if stop.active && stop.destination.lat != nil && stop.destination.lng != nil
+    if stop.active && !stop.destination.lat.nil? && !stop.destination.lng.nil?
   %>
     <li class="list-group-item" style="border-left: 3px solid <%= route.vehicle.color %>">
       <% if stop.wait_time && stop.wait_time > 60 %>

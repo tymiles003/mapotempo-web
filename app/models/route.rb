@@ -64,7 +64,7 @@ class Route < ActiveRecord::Base
       stops_sort = stops.sort_by(&:index)
       stops_sort.each{ |stop|
         destination = stop.destination
-        if stop.active && destination.lat != nil && destination.lng != nil
+        if stop.active && !destination.lat.nil? && !destination.lng.nil?
           stop.distance, time, stop.trace = router.trace(last.lat, last.lng, destination.lat, destination.lng)
           stops_time[stop] = time
           stop.time = self.end + time
@@ -115,7 +115,7 @@ class Route < ActiveRecord::Base
       time = self.end - stops_time[:stop]
       stops_sort.reverse_each{ |stop|
         destination = stop.destination
-        if stop.active && destination.lat != nil && destination.lng != nil
+        if stop.active && !destination.lat.nil? && !destination.lng.nil?
           if stop.out_of_window
             time = stop.time
           else
@@ -209,7 +209,7 @@ class Route < ActiveRecord::Base
     if stop.route != self
       destination, active = stop.destination, stop.active
       stop.route.move_stop_out(stop)
-      add(destination, index, active || stop.route.vehicle == nil)
+      add(destination, index, active || stop.route.vehicle.nil?)
     else
       if stop.index
         if index < stop.index
@@ -297,7 +297,7 @@ class Route < ActiveRecord::Base
 
   def active_all
     stops.each { |stop|
-      if stop.destination.lat != nil && stop.destination.lng != nil
+      if !stop.destination.lat.nil? && !stop.destination.lng.nil?
         stop.active = true
       end
     }
@@ -319,12 +319,12 @@ class Route < ActiveRecord::Base
     end
 
     def stops_segregate
-      stops.group_by{ |stop| !!(stop.active && stop.destination.lat != nil && stop.destination.lng != nil) }
+      stops.group_by{ |stop| !!(stop.active && !stop.destination.lat.nil? && !stop.destination.lng.nil?) }
     end
 
     def shift_index(from, by = 1, to = nil)
       stops.partition{ |stop|
-        stop.index == nil || stop.index < from || (to && stop.index > to)
+        stop.index.nil? || stop.index < from || (to && stop.index > to)
       }[1].each{ |stop|
         stop.index += by
       }

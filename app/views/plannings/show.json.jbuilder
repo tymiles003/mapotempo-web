@@ -49,11 +49,11 @@ else
       out_of_window |= stop.out_of_window
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
-      no_geocoding |= stop.destination.lat == nil || stop.destination.lng == nil
-      (json.error true) if stop.destination.lat == nil || stop.destination.lng == nil || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+      no_geocoding |= stop.destination.lat.nil? || stop.destination.lng.nil?
+      (json.error true) if stop.destination.lat.nil? || stop.destination.lng.nil? || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.extract! stop, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
       (json.wait_time "%i:%02i" % [stop.wait_time/60/60, stop.wait_time/60%60]) if stop.wait_time && stop.wait_time > 60
-      (json.geocoded true) if stop.destination.lat != nil && stop.destination.lng != nil
+      (json.geocoded true) if !stop.destination.lat.nil? && !stop.destination.lng.nil?
       (json.time stop.time.strftime("%H:%M")) if stop.time
       (json.active true) if stop.active
       (json.number number+=1) if route.vehicle && stop.active
