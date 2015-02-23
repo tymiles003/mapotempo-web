@@ -4,6 +4,6 @@ json.take_over_default destination.customer.take_over && destination.customer.ta
 json.open destination.open && destination.open.strftime('%H:%M')
 json.close destination.close && destination.close.strftime('%H:%M')
 json.tag_ids do
-  json.array! destination.tags.collect{ |t| t.id }
+  json.array! destination.tags.collect(&:id)
 end
 json.has_error destination.lat.nil? || destination.lng.nil?

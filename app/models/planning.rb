@@ -104,7 +104,7 @@ class Planning < ActiveRecord::Base
     if zoning_out_of_date
       split_by_zones
     end
-    routes.select{ |route| route.vehicle }.each(&:compute)
+    routes.select(&:vehicle).each(&:compute)
   end
 
   def switch(route, vehicle)
@@ -133,9 +133,7 @@ class Planning < ActiveRecord::Base
 
     # It still no route get all routes
     if !available_routes
-      available_routes = routes.select{ |route|
-          route.vehicle
-      }
+      available_routes = routes.select(&:vehicle)
     end
 
     cache_sum_out_of_window = Hash.new{ |h,k| h[k] = k.sum_out_of_window }

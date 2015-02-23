@@ -13,9 +13,9 @@ if @planning
       json.array! route.stops.collect do |stop|
         json.extract! stop.destination, :lat, :lng
         json.active route.vehicle && stop.active
-        color = stop.destination.tags.find{ |tag| tag.color }
+        color = stop.destination.tags.find(&:color)
         (json.color color.color) if color
-        icon = stop.destination.tags.find{ |tag| tag.icon }
+        icon = stop.destination.tags.find(&:icon)
         (json.icon icon.icon) if icon
       end
     end

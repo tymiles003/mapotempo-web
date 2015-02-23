@@ -74,9 +74,9 @@ else
          (json.take_over destination.take_over.strftime("%H:%M:%S")) if destination.take_over
          (json.open destination.open.strftime("%H:%M")) if destination.open
          (json.close destination.close.strftime("%H:%M")) if destination.close
-         color = destination.tags.find{ |tag| tag.color }
+         color = destination.tags.find(&:color)
          (json.color color.color) if color
-         icon = destination.tags.find{ |tag| tag.icon }
+         icon = destination.tags.find(&:icon)
          (json.icon icon.icon) if icon
       end
     end

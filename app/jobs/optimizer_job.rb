@@ -47,7 +47,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
         customer.job_optimizer.progress = "100;#{@@optimize_time}ms#{routes_count};" + (routes_size > 1 ? "#{routes_count}/#{routes_size}": '')
         customer.job_optimizer.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
-        tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop|
+        tws = [[nil, nil, 0]] + route.stops.select(&:active).collect{ |stop|
           open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
           close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
           if open && close && open > close

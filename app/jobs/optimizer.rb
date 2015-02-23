@@ -54,7 +54,7 @@ class Optimizer
       end
     else
       optimum = route.optimize(nil) { |matrix|
-        tws = [[nil, nil, 0]] + route.stops.select{ |stop| stop.active }.collect{ |stop|
+        tws = [[nil, nil, 0]] + route.stops.select(&:active).collect{ |stop|
           open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
           close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
           if open && close && open > close
