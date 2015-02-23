@@ -41,7 +41,7 @@ class Route < ActiveRecord::Base
     i = 0
     stops.clear
     planning.destinations_compatibles.each { |c|
-      stops.build(destination:c, active:true, index:i += 1)
+      stops.build(destination: c, active: true, index: i += 1)
     }
 
     compute
@@ -156,7 +156,7 @@ class Route < ActiveRecord::Base
       i = 0
       dests.each{ |stop|
         destination, active = stop
-        stops.build(destination:destination, active:active, index:i += 1)
+        stops.build(destination: destination, active: active, index: i += 1)
       }
       compute if recompute
     end
