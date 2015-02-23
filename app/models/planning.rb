@@ -41,7 +41,7 @@ class Planning < ActiveRecord::Base
       end
     })
 
-    append :name => Time.now.strftime(" %Y-%m-%d %H:%M")
+    append :name => Time.now.strftime(' %Y-%m-%d %H:%M')
   end
 
   def set_destinations(destination_actives, recompute = true)

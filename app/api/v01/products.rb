@@ -14,12 +14,12 @@ class V01::Products < Grape::API
       present current_customer.products.load, with: V01::Entities::Product
     end
 
-    desc "Return a product."
+    desc 'Return a product.'
     get ':id' do
       present current_customer.products.find(params[:id]), with: V01::Entities::Product
     end
 
-    desc "Create a product.", {
+    desc 'Create a product.', {
       params: V01::Entities::Product.documentation.except(:id)
     }
     post  do
@@ -28,7 +28,7 @@ class V01::Products < Grape::API
       present product, with: V01::Entities::Product
     end
 
-    desc "Update a product.", {
+    desc 'Update a product.', {
       params: V01::Entities::Product.documentation.except(:id)
     }
     put ':id' do
@@ -38,7 +38,7 @@ class V01::Products < Grape::API
       present product, with: V01::Entities::Product
     end
 
-    desc "Destroy a product."
+    desc 'Destroy a product.'
     delete ':id' do
       current_customer.products.find(params[:id]).destroy
     end

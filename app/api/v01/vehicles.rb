@@ -14,12 +14,12 @@ class V01::Vehicles < Grape::API
       present current_customer.vehicles.load, with: V01::Entities::Vehicle
     end
 
-    desc "Return a vehicle."
+    desc 'Return a vehicle.'
     get ':id' do
       present current_customer.vehicles.find(params[:id]), with: V01::Entities::Vehicle
     end
 
-    desc "Update a vehicle.", {
+    desc 'Update a vehicle.', {
       params: V01::Entities::Vehicle.documentation.except(:id)
     }
     put ':id' do

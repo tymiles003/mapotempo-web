@@ -32,7 +32,7 @@ class Alyacom
     }
 
     base_date = route.planning.order_array_id ? route.planning.order_array.base_date + route.planning.order_array_shift : Date.today
-    planning_id_base = base_date.strftime("%y%m%d")
+    planning_id_base = base_date.strftime('%y%m%d')
     base_time = base_date.to_time
     waypoints = route.stops.select(&:active).collect{ |stop|
       take_over = stop.destination.take_over ? stop.destination.take_over : customer.take_over

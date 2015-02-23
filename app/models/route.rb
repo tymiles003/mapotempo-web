@@ -309,7 +309,7 @@ class Route < ActiveRecord::Base
   end
 
   def to_s
-    "#{ref}:#{vehicle and vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + "]"
+    "#{ref}:#{vehicle and vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
   end
 
   private

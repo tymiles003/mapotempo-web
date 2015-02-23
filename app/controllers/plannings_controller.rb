@@ -115,8 +115,8 @@ class PlanningsController < ApplicationController
 
   def switch
     respond_to do |format|
-      route = @planning.routes.find{ |route| route.id == Integer(params["route_id"]) }
-      vehicle = @planning.customer.vehicles.find(Integer(params["vehicle_id"]))
+      route = @planning.routes.find{ |route| route.id == Integer(params['route_id']) }
+      vehicle = @planning.customer.vehicles.find(Integer(params['vehicle_id']))
       if route and vehicle and @planning.switch(route, vehicle) and @planning.compute and @planning.save
         format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
         format.json { render action: 'show', location: @planning }

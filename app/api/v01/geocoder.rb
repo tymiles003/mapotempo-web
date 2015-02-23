@@ -11,7 +11,7 @@ class V01::Geocoder < Grape::API
   end
 
   resource :geocoder do
-    desc "Geocode."
+    desc 'Geocode.'
     get 'search' do
       json = Geocode.code_free(params[:q]).collect{ |result|
         {
@@ -32,7 +32,7 @@ class V01::Geocoder < Grape::API
       }
 
       if params[:json_callback]
-        content_type "text/plain"
+        content_type 'text/plain'
         "#{params[:json_callback]}(#{json.to_json})"
       else
         json

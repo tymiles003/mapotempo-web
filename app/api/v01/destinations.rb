@@ -14,12 +14,12 @@ class V01::Destinations < Grape::API
       present current_customer.destinations.load, with: V01::Entities::Destination
     end
 
-    desc "Return a destination."
+    desc 'Return a destination.'
     get ':id' do
       present current_customer.destinations.find(params[:id]), with: V01::Entities::Destination
     end
 
-    desc "Create a destination.", {
+    desc 'Create a destination.', {
       params: V01::Entities::Destination.documentation.except(:id)
     }
     post  do
@@ -29,7 +29,7 @@ class V01::Destinations < Grape::API
       present destination, with: V01::Entities::Destination
     end
 
-    desc "Update a destination.", {
+    desc 'Update a destination.', {
       params: V01::Entities::Destination.documentation.except(:id)
     }
     put ':id' do
@@ -40,12 +40,12 @@ class V01::Destinations < Grape::API
       present destination, with: V01::Entities::Destination
     end
 
-    desc "Destroy a destination."
+    desc 'Destroy a destination.'
     delete ':id' do
       current_customer.destinations.find(params[:id]).destroy
     end
 
-    desc "Geocode a destination.", {
+    desc 'Geocode a destination.', {
       params: V01::Entities::Destination.documentation.except(:id)
     }
     patch 'geocode' do
@@ -55,7 +55,7 @@ class V01::Destinations < Grape::API
     end
 
     if Mapotempo::Application.config.geocode_complete
-      desc "Auto completion on destination.", {
+      desc 'Auto completion on destination.', {
         params: V01::Entities::Destination.documentation.except(:id)
       }
       patch 'geocode_complete' do

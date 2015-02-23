@@ -22,12 +22,12 @@ class V01::Orders < Grape::API
           present current_customer.order_arrays.find(params[:order_array_id]).orders.load, with: V01::Entities::Order
         end
 
-        desc "Return a order."
+        desc 'Return a order.'
         get ':id' do
           present current_customer.order_arrays.find(params[:order_array_id]).orders.find(params[:id]), with: V01::Entities::Order
         end
 
-        desc "Update a order.", {
+        desc 'Update a order.', {
           params: V01::Entities::Order.documentation.except(:id)
         }
         put ':id' do

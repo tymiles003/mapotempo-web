@@ -14,12 +14,12 @@ class V01::Zonings < Grape::API
       present current_customer.zonings.load, with: V01::Entities::Zoning
     end
 
-    desc "Return a zoning."
+    desc 'Return a zoning.'
     get ':id' do
       present current_customer.zonings.find(params[:id]), with: V01::Entities::Zoning
     end
 
-    desc "Create a zoning.", {
+    desc 'Create a zoning.', {
       params: V01::Entities::Zoning.documentation.except(:id)
     }
     post  do
@@ -28,7 +28,7 @@ class V01::Zonings < Grape::API
       present zoning, with: V01::Entities::Zoning
     end
 
-    desc "Update a zoning.", {
+    desc 'Update a zoning.', {
       params: V01::Entities::Zoning.documentation.except(:id)
     }
     put ':id' do
@@ -38,7 +38,7 @@ class V01::Zonings < Grape::API
       present zoning, with: V01::Entities::Zoning
     end
 
-    desc "Destroy a zoning."
+    desc 'Destroy a zoning.'
     delete ':id' do
       current_customer.zonings.find(params[:id]).destroy
     end

@@ -29,7 +29,7 @@ class Importer
     common_tags = nil
     routes = Hash.new{ |h,k| h[k] = [] }
 
-    contents = File.open(file, "r:bom|utf-8").read
+    contents = File.open(file, 'r:bom|utf-8').read
     if ! contents.valid_encoding?
       detection = CharlockHolmes::EncodingDetector.detect(contents)
       if !contents || !detection[:encoding]
@@ -132,8 +132,8 @@ class Importer
           r['lng'].gsub!(',', '.')
         end
 
-        if row["tags"]
-          r["tags"] = row["tags"].split(',').select { |key|
+        if row['tags']
+          r['tags'] = row['tags'].split(',').select { |key|
             not key.empty?
           }.collect { |key|
             if not tags.key?(key)

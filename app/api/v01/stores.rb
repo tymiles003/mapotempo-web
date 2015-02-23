@@ -14,12 +14,12 @@ class V01::Stores < Grape::API
       present current_customer.stores.load, with: V01::Entities::Store
     end
 
-    desc "Return a store."
+    desc 'Return a store.'
     get ':id' do
       present current_customer.stores.find(params[:id]), with: V01::Entities::Store
     end
 
-    desc "Create a store.", {
+    desc 'Create a store.', {
       params: V01::Entities::Store.documentation.except(:id)
     }
     post  do
@@ -28,7 +28,7 @@ class V01::Stores < Grape::API
       present store, with: V01::Entities::Store
     end
 
-    desc "Update a store.", {
+    desc 'Update a store.', {
       params: V01::Entities::Store.documentation.except(:id)
     }
     put ':id' do
@@ -39,12 +39,12 @@ class V01::Stores < Grape::API
       present store, with: V01::Entities::Store
     end
 
-    desc "Destroy a store."
+    desc 'Destroy a store.'
     delete ':id' do
       current_customer.stores.find(params[:id]).destroy
     end
 
-    desc "Geocode a store.", {
+    desc 'Geocode a store.', {
       params: V01::Entities::Store.documentation.except(:id)
     }
     patch 'geocode' do
@@ -54,7 +54,7 @@ class V01::Stores < Grape::API
     end
 
     if Mapotempo::Application.config.geocode_complete
-      desc "Auto completion on store.", {
+      desc 'Auto completion on store.', {
         params: V01::Entities::Store.documentation.except(:id)
       }
       patch 'geocode_complete' do

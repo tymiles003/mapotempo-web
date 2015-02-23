@@ -19,12 +19,12 @@ class V01::OrderArrays < Grape::API
       present current_customer.order_arrays.load, with: V01::Entities::OrderArray
     end
 
-    desc "Return a order_array."
+    desc 'Return a order_array.'
     get ':id' do
       present current_customer.order_arrays.find(params[:id]), with: V01::Entities::OrderArray
     end
 
-    desc "Create a order_array.", {
+    desc 'Create a order_array.', {
       params: V01::Entities::OrderArray.documentation.except(:id)
     }
     post  do
@@ -33,7 +33,7 @@ class V01::OrderArrays < Grape::API
       present order_array, with: V01::Entities::OrderArray
     end
 
-    desc "Update a order_array.", {
+    desc 'Update a order_array.', {
       params: V01::Entities::OrderArray.documentation.except(:id)
     }
     put ':id' do
@@ -43,12 +43,12 @@ class V01::OrderArrays < Grape::API
       present order_array, with: V01::Entities::OrderArray
     end
 
-    desc "Destroy a order_array."
+    desc 'Destroy a order_array.'
     delete ':id' do
       current_customer.order_arrays.find(params[:id]).destroy
     end
 
-    desc "Clone the order_array."
+    desc 'Clone the order_array.'
     patch ':id/duplicate' do
       order_array = current_customer.order_arrays.find(params[:id])
       order_array = order_array.amoeba_dup
@@ -56,7 +56,7 @@ class V01::OrderArrays < Grape::API
       present order_array, with: V01::Entities::OrderArray
     end
 
-    desc "Orders mass assignment."
+    desc 'Orders mass assignment.'
     patch ':id' do
       if params[:orders]
         order_array = current_customer.order_arrays.find(params[:id])

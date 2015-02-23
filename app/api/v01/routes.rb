@@ -17,12 +17,12 @@ class V01::Routes < Grape::API
           present current_customer.plannings.find(params[:planning_id]).routes.load, with: V01::Entities::Route
         end
 
-        desc "Return a route."
+        desc 'Return a route.'
         get ':id' do
           present current_customer.plannings.find(params[:planning_id]).routes.find(params[:id]), with: V01::Entities::Route
         end
 
-        desc "Update a route.", {
+        desc 'Update a route.', {
           params: V01::Entities::Route.documentation.slice(:hidden, :locked)
         }
         put ':id' do
@@ -32,9 +32,9 @@ class V01::Routes < Grape::API
           present route, with: V01::Entities::Route
         end
 
-        desc "Change stops activation."
+        desc 'Change stops activation.'
         params {
-          requires :active, type: String, desc: "Value in liste : all, reverse, none"
+          requires :active, type: String, desc: 'Value in liste : all, reverse, none'
         }
         patch ':id/active/:active' do
           planning = current_customer.plannings.find(params[:planning_id])
@@ -44,10 +44,10 @@ class V01::Routes < Grape::API
           end
         end
 
-        desc "Move destination position in routes."
+        desc 'Move destination position in routes.'
         params {
-          requires :destination_id, type: Integer, desc: "Destination id to move"
-          requires :index, type: Integer, desc: "New position in the route"
+          requires :destination_id, type: Integer, desc: 'Destination id to move'
+          requires :index, type: Integer, desc: 'New position in the route'
         }
         patch ':id/destinations/:destination_id/move/:index' do
           params[:planning_id] = params[:planning_id].to_i
@@ -60,7 +60,7 @@ class V01::Routes < Grape::API
           route.move_destination(destination, params[:index].to_i + 1) && planning.save
         end
 
-        desc "Starts asynchronous route optimization."
+        desc 'Starts asynchronous route optimization.'
         get ':id/optimize' do
           # TODO
           error!('501 Not Implemented', 501)

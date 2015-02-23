@@ -22,7 +22,7 @@ class Admin::UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.where("admin IS NULL")
+    @users = User.where('admin IS NULL')
   end
 
   # GET /users/1

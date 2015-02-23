@@ -14,12 +14,12 @@ class V01::Tags < Grape::API
       present current_customer.tags.load, with: V01::Entities::Tag
     end
 
-    desc "Return a tag."
+    desc 'Return a tag.'
     get ':id' do
       present current_customer.tags.find(params[:id]), with: V01::Entities::Tag
     end
 
-    desc "Create a tag.", {
+    desc 'Create a tag.', {
       params: V01::Entities::Tag.documentation.except(:id)
     }
     post  do
@@ -28,7 +28,7 @@ class V01::Tags < Grape::API
       present tag, with: V01::Entities::Tag
     end
 
-    desc "Update a tag.", {
+    desc 'Update a tag.', {
       params: V01::Entities::Tag.documentation.except(:id)
     }
     put ':id' do
@@ -38,7 +38,7 @@ class V01::Tags < Grape::API
       present tag, with: V01::Entities::Tag
     end
 
-    desc "Destroy a tag."
+    desc 'Destroy a tag.'
     delete ':id' do
       current_customer.tags.find(params[:id]).destroy
     end
