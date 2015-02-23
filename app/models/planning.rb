@@ -167,7 +167,7 @@ class Planning < ActiveRecord::Base
 
   def out_of_date
     zoning_out_of_date || routes.inject(false){ |acc, route|
-      acc or route.out_of_date
+      acc || route.out_of_date
     }
   end
 

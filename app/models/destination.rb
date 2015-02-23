@@ -60,16 +60,16 @@ class Destination < ActiveRecord::Base
 
   private
     def update_out_of_date
-      if lat_changed? or lng_changed? or open_changed? or close_changed? or quantity_changed? or take_over_changed?
+      if lat_changed? || lng_changed? || open_changed? || close_changed? || quantity_changed? || take_over_changed?
         out_of_date
       end
     end
 
     def update_geocode
-      if !@is_gecoded and (lat_changed? or lng_changed?)
+      if !@is_gecoded && (lat_changed? || lng_changed?)
         self.geocoding_accuracy = nil
       end
-      if !@is_gecoded and (street_changed? or postalcode_changed? or city_changed?)
+      if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed?)
         geocode
       end
     end

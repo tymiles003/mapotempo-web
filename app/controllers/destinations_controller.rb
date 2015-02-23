@@ -97,7 +97,7 @@ class DestinationsController < ApplicationController
     respond_to do |format|
       begin
         @destinations_import.assign_attributes(destinations_import_params)
-        @destinations_import.valid? or raise
+        @destinations_import.valid? || raise
         Importer.import(@destinations_import.replace, current_user.customer, @destinations_import.tempfile, @destinations_import.name)
         format.html { redirect_to action: 'index' }
       rescue => e

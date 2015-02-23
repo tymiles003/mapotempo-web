@@ -81,7 +81,7 @@ class Route < ActiveRecord::Base
           take_over = take_over ? take_over.seconds_since_midnight : 0
           self.end = stop.time + take_over
 
-          quantity += (destination.quantity or 1)
+          quantity += (destination.quantity || 1)
           stop.out_of_capacity = vehicle.capacity && quantity > vehicle.capacity
 
           stop.out_of_drive_time = stop.time > vehicle.close
@@ -291,7 +291,7 @@ class Route < ActiveRecord::Base
 
   def quantity
     stops.to_a.sum(0) { |stop|
-      (stop.active || ! vehicle) ? (stop.destination.quantity or 1) : 0
+      (stop.active || ! vehicle) ? (stop.destination.quantity || 1) : 0
     }
   end
 
@@ -309,7 +309,7 @@ class Route < ActiveRecord::Base
   end
 
   def to_s
-    "#{ref}:#{vehicle and vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
+    "#{ref}:#{vehicle && vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
   end
 
   private

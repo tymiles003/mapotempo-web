@@ -6,8 +6,8 @@ if @planning.customer.job_optimizer
   end
 else
   json.extract! @planning, :id
-  json.distance number_to_human(@planning.routes.to_a.sum(0){ |route| route.distance or 0 }, units: :distance, precision: 3, format: '%n %u')
-  json.emission number_to_human(@planning.routes.to_a.sum(0){ |route| route.emission or 0 }, precision: 4)
+  json.distance number_to_human(@planning.routes.to_a.sum(0){ |route| route.distance || 0 }, units: :distance, precision: 3, format: '%n %u')
+  json.emission number_to_human(@planning.routes.to_a.sum(0){ |route| route.emission || 0 }, precision: 4)
   (json.out_of_date true) if @planning.out_of_date
   (json.zoning_out_of_date true) if @planning.zoning_out_of_date
   json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
@@ -20,7 +20,7 @@ else
     (json.duration '%i:%02i' % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end
     (json.hidden true) if route.hidden
     (json.locked) if route.locked
-    json.distance number_to_human((route.distance or 0), units: :distance, precision: 3, format: '%n %u')
+    json.distance number_to_human((route.distance || 0), units: :distance, precision: 3, format: '%n %u')
     json.size route.stops.size
     json.extract! route, :ref, :size_active
     (json.quantity route.quantity) if !@planning.customer.enable_orders
@@ -57,7 +57,7 @@ else
       (json.time stop.time.strftime('%H:%M')) if stop.time
       (json.active true) if stop.active
       (json.number number+=1) if route.vehicle && stop.active
-      json.distance (stop.distance or 0)/1000
+      json.distance (stop.distance || 0)/1000
       if first_active_free == true || first_active_free == stop || !route.vehicle
         json.automatic_insert true
         first_active_free = true
@@ -86,7 +86,7 @@ else
       json.stop_trace route.stop_trace
       (json.error true) if route.stop_out_of_drive_time
       json.stop_out_of_drive_time route.stop_out_of_drive_time
-      json.stop_distance (route.stop_distance or 0)/1000
+      json.stop_distance (route.stop_distance || 0)/1000
     end if route.vehicle
     (json.route_no_geocoding no_geocoding) if no_geocoding
     (json.route_out_of_window out_of_window) if out_of_window

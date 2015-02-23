@@ -21,7 +21,7 @@ require 'geocoder_job'
 class Importer
 
   def self.import(replace, customer, file, name)
-    if Mapotempo::Application.config.delayed_job_use and customer.job_geocoding
+    if Mapotempo::Application.config.delayed_job_use && customer.job_geocoding
       return false
     end
 
@@ -90,7 +90,7 @@ class Importer
         break
       }
 
-      errors.empty? and CSV.parse(contents, col_sep: separator, headers: true) { |row|
+      errors.empty? && CSV.parse(contents, col_sep: separator, headers: true) { |row|
         row = row.to_hash
 
         line += 1
