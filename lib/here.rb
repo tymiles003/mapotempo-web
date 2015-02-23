@@ -18,7 +18,7 @@
 require 'json'
 require 'polylines'
 
-RestClient.log = $stdout
+#RestClient.log = $stdout
 
 
 module Here

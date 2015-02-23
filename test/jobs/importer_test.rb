@@ -6,7 +6,7 @@ class ImporterTest < ActionController::TestCase
   test "shoud import" do
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', 1 + 0 + (1 + 2 + 1)) do
+        assert_difference('Stop.count', 1 + 5) do
           Importer.import(false, @customer, "test/fixtures/files/import_one.csv", "text")
         end
       end
@@ -18,7 +18,7 @@ class ImporterTest < ActionController::TestCase
   test "shoud import postalcode" do
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', 1 + 0 + (1 + 2 + 1)) do
+        assert_difference('Stop.count', 1 + 5) do
           Importer.import(false, @customer, "test/fixtures/files/import_one_postalcode.csv", "text")
         end
       end
@@ -28,7 +28,7 @@ class ImporterTest < ActionController::TestCase
   test "shoud import coord" do
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', 1 + 0 + (1 + 2 + 1)) do
+        assert_difference('Stop.count', 1 + 5) do
           Importer.import(false, @customer, "test/fixtures/files/import_one_coord.csv", "text")
         end
       end
@@ -38,7 +38,7 @@ class ImporterTest < ActionController::TestCase
   test "shoud import two" do
     assert_difference('Planning.count') do
       assert_difference('Destination.count', 2) do
-        assert_difference('Stop.count', 1 + 4 + 2) do
+        assert_difference('Stop.count', 2 + 6) do
           Importer.import(false, @customer, "test/fixtures/files/import_two.csv", "text")
         end
       end

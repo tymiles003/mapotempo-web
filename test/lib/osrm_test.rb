@@ -19,7 +19,7 @@ class OsrmTest < ActionController::TestCase
   end
 
   test "should compute large matrix" do
-    SIZE = 999
+    SIZE = 110
     prng = Random.new
     vector = SIZE.times.collect{ [prng.rand(48.811159..48.911218), prng.rand(2.270393..2.435532)] } # Some points in Paris
     #start = Time.now

@@ -25,7 +25,7 @@ class DestinationsImportModel
   validates :file, presence: true
 
   def replace=(value)
-    @replace = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value)
+    @replace = TRUE_VALUES.include?(value)
   end
 
   def tempfile
@@ -35,4 +35,7 @@ class DestinationsImportModel
   def name
     file.original_filename.split('.')[0..-2].join('.')
   end
+
+  private
+    TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE', 'on', 'ON'].to_set
 end
