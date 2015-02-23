@@ -51,8 +51,8 @@ class OrderArray < ActiveRecord::Base
   end
 
   def destinations_orders
-    self.orders.joins(:products)
-    self.orders.group_by(&:destination_id).values.sort_by{ |destination_orders|
+    orders.joins(:products)
+    orders.group_by(&:destination_id).values.sort_by{ |destination_orders|
       destination_orders[0].destination.name
     }.collect{ |destination_orders|
       destination_orders.sort_by(&:shift)

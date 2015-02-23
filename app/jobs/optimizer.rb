@@ -33,7 +33,7 @@ class Optimizer
       end
     else
       planning.select(&:vehicle).each{ |route|
-        self.optimize(planning, route)
+        optimize(planning, route)
       }
     end
   end

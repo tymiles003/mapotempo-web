@@ -56,8 +56,8 @@ class Vehicle < ActiveRecord::Base
   private
 
   def set_stores
-    self.store_start = customer.stores[0] unless self.store_start
-    self.store_stop = self.store_start unless self.store_stop
+    self.store_start = customer.stores[0] unless store_start
+    self.store_stop = store_start unless store_stop
   end
 
   def assign_defaults

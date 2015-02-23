@@ -44,7 +44,7 @@ class Customer < ActiveRecord::Base
   private
 
   def assign_defaults
-    self.stores.build(
+    stores.build(
       name: I18n.t('stores.default.name'),
       city: I18n.t('stores.default.city'),
       lat: Float(I18n.t('stores.default.lat')),
@@ -88,6 +88,6 @@ class Customer < ActiveRecord::Base
   end
 
   def sanitize_print_header
-    self.print_header = Sanitize.fragment(self.print_header, Sanitize::Config::RELAXED)
+    self.print_header = Sanitize.fragment(print_header, Sanitize::Config::RELAXED)
   end
 end

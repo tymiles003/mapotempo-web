@@ -134,7 +134,7 @@ class Route < ActiveRecord::Base
         end
       }
 
-      if time > self.start
+      if time > start
         # We can sleep a bit more on morning, shift departure
         plan(time)
       end
@@ -170,7 +170,7 @@ class Route < ActiveRecord::Base
     end
     stops.build(destination: destination, index: index, active: active)
 
-    if self.vehicle
+    if vehicle
       self.out_of_date = true
     end
   end
@@ -184,7 +184,7 @@ class Route < ActiveRecord::Base
   end
 
   def remove_stop(stop)
-    if self.vehicle
+    if vehicle
       shift_index(stop.index + 1, -1)
       self.out_of_date = true
     end
@@ -305,7 +305,7 @@ class Route < ActiveRecord::Base
   end
 
   def out_of_date
-    self.vehicle && self[:out_of_date]
+    vehicle && self[:out_of_date]
   end
 
   def to_s
@@ -332,7 +332,7 @@ class Route < ActiveRecord::Base
   end
 
   def stop_index_validation
-    if self.vehicle_id && self.stops.length > 0 && self.stops.collect(&:index).sum != (self.stops.length * (self.stops.length + 1)) / 2
+    if vehicle_id && stops.length > 0 && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
       errors.add(:stops, :bad_index)
     end
   end
