@@ -54,44 +54,44 @@ class Store < ActiveRecord::Base
 
   private
 
-    def vehicles
-      (vehicle_starts.to_a + vehicle_stops.to_a).uniq
-    end
+  def vehicles
+    (vehicle_starts.to_a + vehicle_stops.to_a).uniq
+  end
 
-    def update_out_of_date
-      if lat_changed? || lng_changed? || open_changed? || close_changed?
-        out_of_date
-      end
+  def update_out_of_date
+    if lat_changed? || lng_changed? || open_changed? || close_changed?
+      out_of_date
     end
+  end
 
-    def update_geocode
-      if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed?)
-        geocode
-      end
+  def update_geocode
+    if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed?)
+      geocode
     end
+  end
 
-    def out_of_date
-      Route.transaction do
-        vehicles.each{ |vehicle|
-          vehicle.routes.each{ |route|
-            route.out_of_date = true
-            route.save
-          }
+  def out_of_date
+    Route.transaction do
+      vehicles.each{ |vehicle|
+        vehicle.routes.each{ |route|
+          route.out_of_date = true
+          route.save
         }
-      end
+      }
     end
+  end
 
-    def destroy_vehicle_store
-      default = customer.stores.find{ |store| store != self }
-      if default
-        vehicles.each{ |vehicle|
-          vehicle.store_start = default if vehicle.store_start = self
-          vehicle.store_stop = default if vehicle.store_stop = self
-          vehicle.save!
-        }
-        true
-      else
-        raise I18n.t('activerecord.errors.models.stores.at_least_one')
-      end
+  def destroy_vehicle_store
+    default = customer.stores.find{ |store| store != self }
+    if default
+      vehicles.each{ |vehicle|
+        vehicle.store_start = default if vehicle.store_start = self
+        vehicle.store_stop = default if vehicle.store_stop = self
+        vehicle.save!
+      }
+      true
+    else
+      raise I18n.t('activerecord.errors.models.stores.at_least_one')
     end
+  end
 end

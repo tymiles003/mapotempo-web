@@ -32,8 +32,8 @@ class User < ActiveRecord::Base
 
   private
 
-    def assign_defaults
-      self.layer = Layer.first
-      self.api_key = SecureRandom.hex
-    end
+  def assign_defaults
+    self.layer = Layer.first
+    self.api_key = SecureRandom.hex
+  end
 end

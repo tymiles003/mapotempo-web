@@ -41,7 +41,7 @@ class Optimizer
   def self.optimize(planning, route)
     if route.size_active <= 1
         # Nothing to optimize
-        true
+      true
     elsif Mapotempo::Application.config.delayed_job_use
       if planning.customer.job_optimizer
         # Customer already run an optimization

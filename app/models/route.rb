@@ -314,45 +314,45 @@ class Route < ActiveRecord::Base
 
   private
 
-    def assign_defaults
-      self.hidden = false
-      self.locked = false
+  def assign_defaults
+    self.hidden = false
+    self.locked = false
+  end
+
+  def stops_segregate
+    stops.group_by{ |stop| !!(stop.active && !stop.destination.lat.nil? && !stop.destination.lng.nil?) }
+  end
+
+  def shift_index(from, by = 1, to = nil)
+    stops.partition{ |stop|
+      stop.index.nil? || stop.index < from || (to && stop.index > to)
+    }[1].each{ |stop|
+      stop.index += by
+    }
+  end
+
+  def stop_index_validation
+    if self.vehicle_id && self.stops.length > 0 && self.stops.collect(&:index).sum != (self.stops.length * (self.stops.length + 1)) / 2
+      errors.add(:stops, :bad_index)
     end
+  end
 
-    def stops_segregate
-      stops.group_by{ |stop| !!(stop.active && !stop.destination.lat.nil? && !stop.destination.lng.nil?) }
-    end
+  def amalgamate_same_position(positions)
+    # Reduce psoitions vector size by amalgamate points in same position
+    stock = Hash.new { Array.new }
+    i = -1
+    positions.each{ |p|
+      stock[[p.lat, p.lng, p.open, p.close]] += [[p, i += 1]]
+    }
 
-    def shift_index(from, by = 1, to = nil)
-      stops.partition{ |stop|
-        stop.index.nil? || stop.index < from || (to && stop.index > to)
-      }[1].each{ |stop|
-        stop.index += by
-      }
-    end
+    positions_uniq = stock.keys
 
-    def stop_index_validation
-      if self.vehicle_id && self.stops.length > 0 && self.stops.collect(&:index).sum != (self.stops.length * (self.stops.length + 1)) / 2
-        errors.add(:stops, :bad_index)
-      end
-    end
+    optim_uniq = yield(positions_uniq)
 
-    def amalgamate_same_position(positions)
-      # Reduce psoitions vector size by amalgamate points in same position
-      stock = Hash.new { Array.new }
-      i = -1
-      positions.each{ |p|
-        stock[[p.lat, p.lng, p.open, p.close]] += [[p, i += 1]]
-      }
-
-      positions_uniq = stock.keys
-
-      optim_uniq = yield(positions_uniq)
-
-      optim_uniq.collect{ |ou|
-        stock[positions_uniq[ou]]
-      }.flatten(1).collect{ |pa|
-        pa[1]
-      }
-    end
+    optim_uniq.collect{ |ou|
+      stock[positions_uniq[ou]]
+    }.flatten(1).collect{ |pa|
+      pa[1]
+    }
+  end
 end

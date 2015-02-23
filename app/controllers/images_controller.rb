@@ -44,39 +44,39 @@ class ImagesController < ApplicationController
 
   private
 
-    def range(x)
-      x < 0 ? 0 : x > 1 ? 1 : x
+  def range(x)
+    x < 0 ? 0 : x > 1 ? 1 : x
+  end
+
+  def pal(hex)
+    begin
+      rgb = Color::RGB.by_hex(hex)
+    rescue
+      rgb = Color::RGB.by_hex('2d86cb')
     end
+    hsl = rgb.to_hsl
 
-    def pal(hex)
-      begin
-        rgb = Color::RGB.by_hex(hex)
-      rescue
-        rgb = Color::RGB.by_hex('2d86cb')
-      end
-      hsl = rgb.to_hsl
+    a_up = hsl.dup
+    a_up.h = (a_up.h + 0.002) % 1
+    a_up.s = range(a_up.s + 0.121)
+    a_up.l = range(a_up.l - 0.066)
 
-      a_up = hsl.dup
-      a_up.h = (a_up.h + 0.002) % 1
-      a_up.s = range(a_up.s + 0.121)
-      a_up.l = range(a_up.l - 0.066)
+    a_down = hsl.dup
+    a_down.h = (a_down.h - 0.002) % 1
+    a_down.s = range(a_down.s - 0.121)
+    a_down.l = range(a_down.l + 0.066)
 
-      a_down = hsl.dup
-      a_down.h = (a_down.h - 0.002) % 1
-      a_down.s = range(a_down.s - 0.121)
-      a_down.l = range(a_down.l + 0.066)
+    b_up = hsl.dup
+    b_up.s = range(b_up.s - 0.102)
 
-      b_up = hsl.dup
-      b_up.s = range(b_up.s - 0.102)
+    b_down = hsl.dup
+    b_down.s = range(b_down.s - 0.102)
+    b_down.l = range(b_down.l - 0.142)
 
-      b_down = hsl.dup
-      b_down.s = range(b_down.s - 0.102)
-      b_down.l = range(b_down.l - 0.142)
+    [['#' + a_up.to_rgb.hex, '#' + a_down.to_rgb.hex], ['#' + b_up.to_rgb.hex, '#' + b_down.to_rgb.hex]]
+  end
 
-      [['#' + a_up.to_rgb.hex, '#' + a_down.to_rgb.hex], ['#' + b_up.to_rgb.hex, '#' + b_down.to_rgb.hex]]
-    end
-
-    def image_params
-      params.permit(:color)
-    end
+  def image_params
+    params.permit(:color)
+  end
 end

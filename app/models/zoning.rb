@@ -63,13 +63,13 @@ class Zoning < ActiveRecord::Base
 
   private
 
-    def update_out_of_date
-      if @collection_touched
-        flag_out_of_date
-      end
+  def update_out_of_date
+    if @collection_touched
+      flag_out_of_date
     end
+  end
 
-    def touch_zones(zone)
-      @collection_touched = true
-    end
+  def touch_zones(zone)
+    @collection_touched = true
+  end
 end

@@ -109,27 +109,27 @@ class DestinationsController < ApplicationController
 
   def clear
     Destination.transaction do
-        current_user.customer.destinations.delete_all
+      current_user.customer.destinations.delete_all
     end
     respond_to do |format|
-        format.html { redirect_to action: 'index' }
+      format.html { redirect_to action: 'index' }
     end
   end
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_destination
-      @destination = Destination.find(params[:id] || params[:destination_id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_destination
+    @destination = Destination.find(params[:id] || params[:destination_id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def destination_params
-      params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def destination_params
+    params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def destinations_import_params
-      params.require(:destinations_import_model).permit(:replace, :file)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def destinations_import_params
+    params.require(:destinations_import_model).permit(:replace, :file)
+  end
 end

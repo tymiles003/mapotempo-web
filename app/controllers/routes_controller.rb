@@ -76,19 +76,19 @@ class RoutesController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_route
-      @route = Route.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_route
+    @route = Route.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def route_params
-      params.require(:route).permit(:hidden, :locked, :ref)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def route_params
+    params.require(:route).permit(:hidden, :locked, :ref)
+  end
 
-    def filename
-      (@route.planning.name + '_' + (@route.ref || @route.vehicle.name) + (@route.planning.customer.enable_orders && @route.planning.order_array ?
-        ('_' + @route.planning.order_array.name + '_' + l(@route.planning.order_array.base_date + @route.planning.order_array_shift).gsub('/', '-')) :
-        '')).gsub('"', '')
-    end
+  def filename
+    (@route.planning.name + '_' + (@route.ref || @route.vehicle.name) + (@route.planning.customer.enable_orders && @route.planning.order_array ?
+      ('_' + @route.planning.order_array.name + '_' + l(@route.planning.order_array.base_date + @route.planning.order_array_shift).gsub('/', '-')) :
+      '')).gsub('"', '')
+  end
 end

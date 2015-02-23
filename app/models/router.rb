@@ -22,27 +22,27 @@ class Router < ActiveRecord::Base
 
   private
 
-    def pack_vector(vector)
-      # Sort vector for caching
-      i = -1
-      vector = vector.map{ |a| [a[0], a[1], i += 1] }
-      vector.sort!{ |a, b|
-        a[0] != b[0] ? a[0] <=> b[0] : a[1] <=> b[1]
-      }
-    end
+  def pack_vector(vector)
+    # Sort vector for caching
+    i = -1
+    vector = vector.map{ |a| [a[0], a[1], i += 1] }
+    vector.sort!{ |a, b|
+      a[0] != b[0] ? a[0] <=> b[0] : a[1] <=> b[1]
+    }
+  end
 
-    def unpack_vector(vector, matrix)
-      # Restore original order
-      size = vector.size
-      column = []
-      size.times{ |i|
-        line = []
-        size.times{ |j|
-          line[vector[j][2]] = matrix[i][j]
-        }
-        column[vector[i][2]] = line
+  def unpack_vector(vector, matrix)
+    # Restore original order
+    size = vector.size
+    column = []
+    size.times{ |i|
+      line = []
+      size.times{ |j|
+        line[vector[j][2]] = matrix[i][j]
       }
+      column[vector[i][2]] = line
+    }
 
-      column
-    end
+    column
+  end
 end

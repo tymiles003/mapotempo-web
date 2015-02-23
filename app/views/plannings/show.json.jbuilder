@@ -63,7 +63,7 @@ else
         first_active_free = true
       end
       json.destination do
-         destination = stop.destination
+        destination = stop.destination
          json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment, :quantity
          if @planning.customer.enable_orders
            order = stop.order

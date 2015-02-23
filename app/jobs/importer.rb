@@ -155,9 +155,9 @@ class Importer
 
         # Instersection of tags of all rows
         if !common_tags
-            common_tags = destination.tags.to_a
+          common_tags = destination.tags.to_a
         else
-            common_tags &= destination.tags
+          common_tags &= destination.tags
         end
 
         routes[row.key?('route') ? row['route'] : nil] << [destination, ! row.key?('active') || row['active'].strip != '0']

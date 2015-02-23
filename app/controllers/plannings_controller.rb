@@ -200,23 +200,23 @@ class PlanningsController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_planning
-      @planning = Planning.find(params[:id] || params[:planning_id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_planning
+    @planning = Planning.find(params[:id] || params[:planning_id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def planning_params
-      params.require(:planning).permit(:name, :zoning_id, tag_ids: [])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def planning_params
+    params.require(:planning).permit(:name, :zoning_id, tag_ids: [])
+  end
 
-    def stop_params
-      params.require(:stop).permit(:active)
-    end
+  def stop_params
+    params.require(:stop).permit(:active)
+  end
 
-    def filename
-      (@planning.name + (@planning.customer.enable_orders && @planning.order_array ?
-        ('_' + @planning.order_array.name + '_' + l(@planning.order_array.base_date + @planning.order_array_shift).gsub('/', '-')) :
-        '')).gsub('"', '')
-    end
+  def filename
+    (@planning.name + (@planning.customer.enable_orders && @planning.order_array ?
+      ('_' + @planning.order_array.name + '_' + l(@planning.order_array.base_date + @planning.order_array_shift).gsub('/', '-')) :
+      '')).gsub('"', '')
+  end
 end

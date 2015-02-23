@@ -41,12 +41,12 @@ class Vehicle < ActiveRecord::Base
   before_update :update_out_of_date
 
   def self.emissions_table
-  [
-    [I18n.t('vehicles.emissions_nothing', n:0), '0'],
-    [I18n.t('vehicles.emissions_petrol', n:2.71), '2.71'],
-    [I18n.t('vehicles.emissions_diesel', n:3.07), '3.07'],
-    [I18n.t('vehicles.emissions_lgp', n:1.77), '1.77'],
-  ]
+    [
+      [I18n.t('vehicles.emissions_nothing', n:0), '0'],
+      [I18n.t('vehicles.emissions_petrol', n:2.71), '2.71'],
+      [I18n.t('vehicles.emissions_diesel', n:3.07), '3.07'],
+      [I18n.t('vehicles.emissions_lgp', n:1.77), '1.77'],
+    ]
   end
 
   def self.colors_table
@@ -55,26 +55,26 @@ class Vehicle < ActiveRecord::Base
 
   private
 
-    def set_stores
-      self.store_start = customer.stores[0] unless self.store_start
-      self.store_stop = self.store_start unless self.store_stop
-    end
+  def set_stores
+    self.store_start = customer.stores[0] unless self.store_start
+    self.store_stop = self.store_start unless self.store_stop
+  end
 
-    def assign_defaults
-      set_stores
-      self.emission = 0
-      self.consumption = 0
-      self.capacity = 999
-      self.color = Vehicle.colors_table[0]
-      self.open = Time.utc(2000, 1, 1, 8, 0)
-      self.close = Time.utc(2000, 1, 1, 12, 0)
-    end
+  def assign_defaults
+    set_stores
+    self.emission = 0
+    self.consumption = 0
+    self.capacity = 999
+    self.color = Vehicle.colors_table[0]
+    self.open = Time.utc(2000, 1, 1, 8, 0)
+    self.close = Time.utc(2000, 1, 1, 12, 0)
+  end
 
-    def update_out_of_date
-      if emission_changed? || consumption_changed? || capacity_changed? || open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || router_id_changed?
-        routes.each{ |route|
-          route.out_of_date = true
-        }
-      end
+  def update_out_of_date
+    if emission_changed? || consumption_changed? || capacity_changed? || open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || router_id_changed?
+      routes.each{ |route|
+        route.out_of_date = true
+      }
     end
+  end
 end

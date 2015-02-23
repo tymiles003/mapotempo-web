@@ -38,22 +38,22 @@ class Zone < ActiveRecord::Base
 
   private
 
-    def decode_geom
-      @geom = RGeo::GeoJSON.decode(polygon, json_parser: :json)
-    end
+  def decode_geom
+    @geom = RGeo::GeoJSON.decode(polygon, json_parser: :json)
+  end
 
-    def valide_vehicle_from_customer
-      if vehicle && vehicle.customer != zoning.customer
-        errors.add(:vehicle, :bad_customer)
-        false
-      else
-        true
-      end
+  def valide_vehicle_from_customer
+    if vehicle && vehicle.customer != zoning.customer
+      errors.add(:vehicle, :bad_customer)
+      false
+    else
+      true
     end
+  end
 
-    def update_out_of_date
-      if self.changed?
-        zoning.flag_out_of_date
-      end
+  def update_out_of_date
+    if self.changed?
+      zoning.flag_out_of_date
     end
+  end
 end

@@ -63,13 +63,13 @@ class VehiclesController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_vehicle
-      @vehicle = Vehicle.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_vehicle
+    @vehicle = Vehicle.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def vehicle_params
-      params.require(:vehicle).permit(:name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :masternaut_ref, :store_start_id, :store_stop_id, :router_id)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def vehicle_params
+    params.require(:vehicle).permit(:name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :masternaut_ref, :store_start_id, :store_stop_id, :router_id)
+  end
 end

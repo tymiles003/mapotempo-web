@@ -43,51 +43,51 @@ class Customer < ActiveRecord::Base
 
   private
 
-    def assign_defaults
-      self.stores.build(
-        name: I18n.t('stores.default.name'),
-        city: I18n.t('stores.default.city'),
-        lat: Float(I18n.t('stores.default.lat')),
-        lng: Float(I18n.t('stores.default.lng'))
-      )
-    end
+  def assign_defaults
+    self.stores.build(
+      name: I18n.t('stores.default.name'),
+      city: I18n.t('stores.default.city'),
+      lat: Float(I18n.t('stores.default.lat')),
+      lng: Float(I18n.t('stores.default.lng'))
+    )
+  end
 
-    def update_out_of_date
-      if take_over_changed? || router_id_changed?
-        Route.transaction do
+  def update_out_of_date
+    if take_over_changed? || router_id_changed?
+      Route.transaction do
+        plannings.each{ |planning|
+          planning.routes.each{ |route|
+            route.out_of_date = true
+          }
+        }
+      end
+    end
+  end
+
+  def update_max_vehicles
+    if max_vehicles_changed?
+      if vehicles.size < max_vehicles
+        # Add new
+        (max_vehicles - vehicles.size).times{ |i|
+          vehicle = vehicles.build(name: I18n.t('vehicles.default_name', n:vehicles.size + 1))
           plannings.each{ |planning|
-            planning.routes.each{ |route|
-              route.out_of_date = true
-            }
+            planning.vehicle_add(vehicle)
           }
-        end
+        }
+      elsif vehicles.size > max_vehicles
+        # Delete
+        (vehicles.size - max_vehicles).times{ |i|
+          vehicle = vehicles[vehicles.size - i - 1]
+          plannings.each{ |planning|
+            planning.vehicle_remove(vehicle)
+          }
+          vehicles.destroy(vehicle)
+        }
       end
     end
+  end
 
-    def update_max_vehicles
-      if max_vehicles_changed?
-        if vehicles.size < max_vehicles
-          # Add new
-          (max_vehicles - vehicles.size).times{ |i|
-            vehicle = vehicles.build(name: I18n.t('vehicles.default_name', n:vehicles.size + 1))
-            plannings.each{ |planning|
-              planning.vehicle_add(vehicle)
-            }
-          }
-        elsif vehicles.size > max_vehicles
-          # Delete
-          (vehicles.size - max_vehicles).times{ |i|
-            vehicle = vehicles[vehicles.size - i - 1]
-            plannings.each{ |planning|
-              planning.vehicle_remove(vehicle)
-            }
-            vehicles.destroy(vehicle)
-          }
-        end
-      end
-    end
-
-    def sanitize_print_header
-      self.print_header = Sanitize.fragment(self.print_header, Sanitize::Config::RELAXED)
-    end
+  def sanitize_print_header
+    self.print_header = Sanitize.fragment(self.print_header, Sanitize::Config::RELAXED)
+  end
 end

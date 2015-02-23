@@ -90,13 +90,13 @@ class OrderArraysController < ApplicationController
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_order_array
-      @order_array = OrderArray.find(params[:id] || params[:order_array_id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_order_array
+    @order_array = OrderArray.find(params[:id] || params[:order_array_id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def order_array_params
-      params.require(:order_array).permit(:name, :base_date, :length)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def order_array_params
+    params.require(:order_array).permit(:name, :base_date, :length)
+  end
 end

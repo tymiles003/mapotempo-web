@@ -207,34 +207,34 @@ class Planning < ActiveRecord::Base
 
   private
 
-    def split_by_zones
-      if zoning && !routes.empty?
-        vehicles_map = Hash[routes.group_by(&:vehicle).map { |vehicle, routes| [vehicle, routes[0]]}]
-        z = {}
-        unaffected = []
-        destinations_free = routes.select{ |route|
-          !route.locked
-        }.collect(&:stops).flatten.map(&:destination)
+  def split_by_zones
+    if zoning && !routes.empty?
+      vehicles_map = Hash[routes.group_by(&:vehicle).map { |vehicle, routes| [vehicle, routes[0]]}]
+      z = {}
+      unaffected = []
+      destinations_free = routes.select{ |route|
+        !route.locked
+      }.collect(&:stops).flatten.map(&:destination)
 
-        routes.each{ |route|
-          route.locked || route.set_destinations([])
-        }
-        zoning.apply(destinations_free).each{ |zone, destinations|
-          if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked
-            vehicles_map[zone.vehicle].set_destinations(destinations.collect{ |d| [d, true]})
-          else
-            # Add to unplanned route even if the route is locked
-            routes[0].add_destinations(destinations.collect{ |d| [d, true]})
-          end
-        }
-      end
-      self.zoning_out_of_date = false
+      routes.each{ |route|
+        route.locked || route.set_destinations([])
+      }
+      zoning.apply(destinations_free).each{ |zone, destinations|
+        if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked
+          vehicles_map[zone.vehicle].set_destinations(destinations.collect{ |d| [d, true]})
+        else
+          # Add to unplanned route even if the route is locked
+          routes[0].add_destinations(destinations.collect{ |d| [d, true]})
+        end
+      }
     end
+    self.zoning_out_of_date = false
+  end
 
-    def update_zoning
-      if zoning && zoning_id_changed?
-        split_by_zones
-      end
-      true
+  def update_zoning
+    if zoning && zoning_id_changed?
+      split_by_zones
     end
+    true
+  end
 end

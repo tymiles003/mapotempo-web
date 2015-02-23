@@ -60,60 +60,60 @@ class Destination < ActiveRecord::Base
 
   private
 
-    def update_out_of_date
-      if lat_changed? || lng_changed? || open_changed? || close_changed? || quantity_changed? || take_over_changed?
-        out_of_date
-      end
+  def update_out_of_date
+    if lat_changed? || lng_changed? || open_changed? || close_changed? || quantity_changed? || take_over_changed?
+      out_of_date
     end
+  end
 
-    def update_geocode
-      if !@is_gecoded && (lat_changed? || lng_changed?)
-        self.geocoding_accuracy = nil
-      end
-      if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed?)
-        geocode
-      end
+  def update_geocode
+    if !@is_gecoded && (lat_changed? || lng_changed?)
+      self.geocoding_accuracy = nil
     end
-
-    def update_tags_track(tag)
-      @tags_updated = true
+    if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed?)
+      geocode
     end
+  end
 
-    def update_tags
-      if customer && (@tags_updated || new_record?)
-        @tags_updated = false
+  def update_tags_track(tag)
+    @tags_updated = true
+  end
 
-        # Don't use local collection here, not set when save new record
-        customer.plannings.each{ |planning|
-          if planning.destinations.include?(self)
-            if planning.tags.to_a & tags.to_a != planning.tags.to_a
-              planning.destination_remove(self)
-            end
-          else
-            if planning.tags.to_a & tags.to_a == planning.tags.to_a
-              planning.destination_add(self)
-            end
+  def update_tags
+    if customer && (@tags_updated || new_record?)
+      @tags_updated = false
+
+      # Don't use local collection here, not set when save new record
+      customer.plannings.each{ |planning|
+        if planning.destinations.include?(self)
+          if planning.tags.to_a & tags.to_a != planning.tags.to_a
+            planning.destination_remove(self)
           end
-        }
-      end
-
-      true
+        else
+          if planning.tags.to_a & tags.to_a == planning.tags.to_a
+            planning.destination_add(self)
+          end
+        end
+      }
     end
 
-    def create_orders
-      if customer && new_record?
-        customer.order_arrays.each{ |order_array|
-          order_array.add_destination(self)
-        }
-      end
-    end
+    true
+  end
 
-    def out_of_date
-      Route.transaction do
-        stops.each{ |stop|
-          stop.route.out_of_date = true
-          stop.route.save
-        }
-      end
+  def create_orders
+    if customer && new_record?
+      customer.order_arrays.each{ |order_array|
+        order_array.add_destination(self)
+      }
     end
+  end
+
+  def out_of_date
+    Route.transaction do
+      stops.each{ |stop|
+        stop.route.out_of_date = true
+        stop.route.save
+      }
+    end
+  end
 end
