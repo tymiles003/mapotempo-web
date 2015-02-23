@@ -14,6 +14,6 @@ class V01::Entities::Destination < Grape::Entity
   expose(:ref, documentation: { type: 'String' })
   expose(:take_over, documentation: { type: 'DateTime' }) { |m| m.take_over && m.take_over.strftime('%H:%M:%S') }
   expose(:take_over_default, documentation: { type: 'DateTime' }) { |m| m.customer && m.customer.take_over && m.customer.take_over.strftime('%H:%M:%S') }
-  expose(:tag_ids, documentation: { type: 'Array' }) { |m| m.tags.collect &:id }
+  expose(:tag_ids, documentation: { type: 'Array' }) { |m| m.tags.collect(&:id) }
   expose(:geocoding_accuracy, documentation: { type: 'Float' })
 end
