@@ -5,7 +5,7 @@ class V01::Customers < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def customer_params
       p = ActionController::Parameters.new(params)
-      p = p[:customer] if p.has_key?(:customer)
+      p = p[:customer] if p.key?(:customer)
       if @current_user.admin?
         p.permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :enable_orders, :test, :alyacom_association)
       else

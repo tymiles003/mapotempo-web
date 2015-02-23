@@ -3,7 +3,7 @@ class V01::Stores < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
       p = ActionController::Parameters.new(params)
-      p = p[:store] if p.has_key?(:store)
+      p = p[:store] if p.key?(:store)
       p.permit(:name, :street, :postalcode, :city, :lat, :lng, :open, :close)
     end
   end

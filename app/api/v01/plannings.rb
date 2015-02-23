@@ -3,7 +3,7 @@ class V01::Plannings < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def planning_params
       p = ActionController::Parameters.new(params)
-      p = p[:planning] if p.has_key?(:planning)
+      p = p[:planning] if p.key?(:planning)
       p.permit(:name, :zoning_id, tag_ids: [])
     end
   end

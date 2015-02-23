@@ -3,7 +3,7 @@ class V01::Products < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
       p = ActionController::Parameters.new(params)
-      p = p[:product] if p.has_key?(:product)
+      p = p[:product] if p.key?(:product)
       p.permit(:name, :code)
     end
   end

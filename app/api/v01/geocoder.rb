@@ -5,7 +5,7 @@ class V01::Geocoder < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def destination_params
       p = ActionController::Parameters.new(params)
-      p = p[:destination] if p.has_key?(:destination)
+      p = p[:destination] if p.key?(:destination)
       p.permit(:q, :json_callback)
     end
   end

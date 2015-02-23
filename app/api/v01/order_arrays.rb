@@ -3,7 +3,7 @@ class V01::OrderArrays < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_array_params
       p = ActionController::Parameters.new(params)
-      p = p[:order_array] if p.has_key?(:order_array)
+      p = p[:order_array] if p.key?(:order_array)
       p.permit(:name, :base_date, :length)
     end
 
@@ -64,7 +64,7 @@ class V01::OrderArrays < Grape::API
         params[:orders].each{ |id, order|
           id = id.to_i
           order[:product_ids] ||= []
-          if orders.has_key?(id)
+          if orders.key?(id)
             orders[id].product_ids = order[:product_ids].map{ |product_id| Integer(product_id) } & current_customer.product_ids
           end
         }

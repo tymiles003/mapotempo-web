@@ -3,7 +3,7 @@ class V01::Tags < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def tag_params
       p = ActionController::Parameters.new(params)
-      p = p[:tag] if p.has_key?(:tag)
+      p = p[:tag] if p.key?(:tag)
       p.permit(:label)
     end
   end

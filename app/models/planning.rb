@@ -193,7 +193,7 @@ class Planning < ActiveRecord::Base
 
     routes.select(&:vehicle).each{ |route|
       route.stops.each{ |stop|
-        stop.active = orders.has_key?(stop.destination_id) && !orders[stop.destination_id].empty?
+        stop.active = orders.key?(stop.destination_id) && !orders[stop.destination_id].empty?
       }
     }
 

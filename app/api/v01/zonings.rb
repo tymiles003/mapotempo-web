@@ -3,7 +3,7 @@ class V01::Zonings < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def zoning_params
       p = ActionController::Parameters.new(params)
-      p = p[:zoning] if p.has_key?(:zoning)
+      p = p[:zoning] if p.key?(:zoning)
       p.permit(:name, zones_attributes: [:id, :polygon, :_destroy, vehicle_ids: []])
     end
   end

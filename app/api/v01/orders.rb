@@ -3,7 +3,7 @@ class V01::Orders < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
       p = ActionController::Parameters.new(params)
-      p = p[:order] if p.has_key?(:order)
+      p = p[:order] if p.key?(:order)
       p.permit(product_ids: [])
     end
 

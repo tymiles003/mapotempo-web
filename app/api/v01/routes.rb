@@ -3,7 +3,7 @@ class V01::Routes < Grape::API
     # Never trust parameters from the scary internet, only allow the white list through.
     def route_params
       p = ActionController::Parameters.new(params)
-      p = p[:route] if p.has_key?(:route)
+      p = p[:route] if p.key?(:route)
       p.permit(:hidden, :locked, :ref)
     end
   end
