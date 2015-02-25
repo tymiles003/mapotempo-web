@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -29,7 +29,7 @@ module Ort
   @optimize_time = Mapotempo::Application.config.optimize_time
 
   def self.optimize(capacity, matrix, time_window, time_threshold)
-    key = [capacity, matrix.hash, time_window.hash]
+    key = [capacity, matrix.hash, time_window.hash, time_threshold]
 
     self.cluster(matrix, time_window, time_threshold) { |matrix, time_window|
       result = @cache.read(key)
