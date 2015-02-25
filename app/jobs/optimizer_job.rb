@@ -57,7 +57,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
           take_over = take_over ? take_over.seconds_since_midnight : 0
           [open, close, take_over]
         }
-        optimum = Ort.optimize(route.vehicle.capacity, matrix, tws, 5)
+        optimum = Ort.optimize(route.vehicle.capacity, matrix, tws, route.planning.customer.optimization_cluster_size)
         customer.job_optimizer.progress = '100;100;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         customer.job_optimizer.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"

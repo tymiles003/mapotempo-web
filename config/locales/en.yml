@@ -117,6 +117,7 @@ en:
         enable_orders: "Enable orders"
         test: "Test"
         jobs: "Jobs"
+        optimization_cluster_size: "Optimization cluster size"
       destination:
         name: "Name"
         address: "Address"
@@ -307,6 +308,7 @@ en:
       masternaut_help: "Allows sending plannings to Masternaut device."
       alyacom: "AlyaCom"
       alyacom_help: "Allows sending plannings to AlyaCom device."
+      optimization_cluster_size_default: "(default value)"
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"

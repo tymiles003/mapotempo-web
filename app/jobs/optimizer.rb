@@ -64,7 +64,7 @@ class Optimizer
           take_over = take_over ? take_over.seconds_since_midnight : 0
           [open, close, take_over]
         }
-        Ort.optimize(route.vehicle.capacity, matrix, tws, 5)
+        Ort.optimize(route.vehicle.capacity, matrix, tws, planning.customer.optimization_cluster_size)
       }
       if optimum
         route.order(optimum)

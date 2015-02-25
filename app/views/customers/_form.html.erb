@@ -16,6 +16,7 @@
     <%= f.toggles t 'activerecord.attributes.customer.test' do %>
       <%= f.check_box :test %>
     <% end %>
+    <%= f.number_field :optimization_cluster_size, { placeholder: t('.optimization_cluster_size_default'), min: 0 } %>
   <% end %>
   <div id="accordion" class="panel panel-default">
     <div class="panel-heading">

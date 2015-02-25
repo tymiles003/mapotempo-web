@@ -29,6 +29,7 @@ module Ort
   @optimize_time = Mapotempo::Application.config.optimize_time
 
   def self.optimize(capacity, matrix, time_window, time_threshold)
+    time_threshold ||= 5
     key = [capacity, matrix.hash, time_window.hash, time_threshold]
 
     self.cluster(matrix, time_window, time_threshold) { |matrix, time_window|
