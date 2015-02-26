@@ -64,10 +64,10 @@ module MasternautWs
     params = {
       poi: {
         address: {
-           road: waypoint[:street],
-           city: waypoint[:city],
-           zipCode: waypoint[:postalcode],
-           country: '_',
+          road: waypoint[:street],
+          city: waypoint[:city],
+          zipCode: waypoint[:postalcode],
+          country: '_',
         },
         category: {
           logo: 'client_green',
@@ -155,20 +155,21 @@ module MasternautWs
   end
 
   private
-    def self.get(client, no_error_code, operation, username, password, message = {})
-      response = client.call(operation, message: message)
 
-      _response = (operation.to_s + '_response').to_sym
-      _return = (operation.to_s + '_return').to_sym
-      if no_error_code && response.body[_response] && response.body[_response][_return] != no_error_code.to_s
-        raise "#{operation} returns error code #{response.body[_response][_return]}"
-      end
-      response.body
-    rescue Savon::SOAPFault => error
-      fault_code = error.to_hash[:fault][:faultcode]
-      raise fault_code
-    rescue Savon::HTTPError => error
-      Rails::logger.info error.http.code
-      raise
+  def self.get(client, no_error_code, operation, username, password, message = {})
+    response = client.call(operation, message: message)
+
+    _response = (operation.to_s + '_response').to_sym
+    _return = (operation.to_s + '_return').to_sym
+    if no_error_code && response.body[_response] && response.body[_response][_return] != no_error_code.to_s
+      raise "#{operation} returns error code #{response.body[_response][_return]}"
     end
+    response.body
+  rescue Savon::SOAPFault => error
+    fault_code = error.to_hash[:fault][:faultcode]
+    raise fault_code
+  rescue Savon::HTTPError => error
+    Rails::logger.info error.http.code
+    raise
+  end
 end

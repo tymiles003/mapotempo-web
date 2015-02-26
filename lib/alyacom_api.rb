@@ -95,36 +95,37 @@ module AlyacomApi
   end
 
   private
-    @base_api_url = Mapotempo::Application.config.alyacom_api_url
-    @api_key = Mapotempo::Application.config.alyacom_api_key
 
-    def self.get(association_id, object, params = {})
-      url = "#{@base_api_url}/#{association_id}/#{object}"
-      self.get_row(url, {enc: :json, apiKey: @api_key}.merge(params))
-    end
+  @base_api_url = Mapotempo::Application.config.alyacom_api_url
+  @api_key = Mapotempo::Application.config.alyacom_api_key
 
-    def self.get_row(url, params)
-      data = []
-      next_ = nil
+  def self.get(association_id, object, params = {})
+    url = "#{@base_api_url}/#{association_id}/#{object}"
+    self.get_row(url, {enc: :json, apiKey: @api_key}.merge(params))
+  end
+
+  def self.get_row(url, params)
+    data = []
+    next_ = nil
+    begin
       begin
-        begin
-          response = RestClient.get(next_ || url, next_ ? nil : {params: params})
-        rescue => e
-          Rails.logger.info e.response
-          raise e
-        end
-        response = JSON.parse(response)
-        data += response['data']
-        next_ = response['next']
-      end while !next_.nil?
-      data
-    end
+        response = RestClient.get(next_ || url, next_ ? nil : {params: params})
+      rescue => e
+        Rails.logger.info e.response
+        raise e
+      end
+      response = JSON.parse(response)
+      data += response['data']
+      next_ = response['next']
+    end while !next_.nil?
+    data
+  end
 
-    def self.post(association_id, object, data)
-      url = "#{@base_api_url}/#{association_id}/#{object}"
-      response = RestClient.post(url, data.to_json, {content_type: :json, params: {enc: :json, apiKey: @api_key}})
-    rescue => e
-      Rails.logger.info e.response
-      raise e
-    end
+  def self.post(association_id, object, data)
+    url = "#{@base_api_url}/#{association_id}/#{object}"
+    response = RestClient.post(url, data.to_json, {content_type: :json, params: {enc: :json, apiKey: @api_key}})
+  rescue => e
+    Rails.logger.info e.response
+    raise e
+  end
 end
