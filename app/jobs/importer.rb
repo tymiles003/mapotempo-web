@@ -189,7 +189,6 @@ class Importer
       customer.save!
     end
 
-
     if need_geocode && Mapotempo::Application.config.delayed_job_use
       customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id, planning ? planning.id : nil))
     else

@@ -64,20 +64,20 @@ else
       end
       json.destination do
         destination = stop.destination
-         json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment, :quantity
-         if @planning.customer.enable_orders
-           order = stop.order
-           if order
-             json.orders order.products.collect(&:code).join(', ')
-           end
-         end
-         (json.take_over destination.take_over.strftime('%H:%M:%S')) if destination.take_over
-         (json.open destination.open.strftime('%H:%M')) if destination.open
-         (json.close destination.close.strftime('%H:%M')) if destination.close
-         color = destination.tags.find(&:color)
-         (json.color color.color) if color
-         icon = destination.tags.find(&:icon)
-         (json.icon icon.icon) if icon
+        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment, :quantity
+        if @planning.customer.enable_orders
+          order = stop.order
+          if order
+            json.orders order.products.collect(&:code).join(', ')
+          end
+        end
+        (json.take_over destination.take_over.strftime('%H:%M:%S')) if destination.take_over
+        (json.open destination.open.strftime('%H:%M')) if destination.open
+        (json.close destination.close.strftime('%H:%M')) if destination.close
+        color = destination.tags.find(&:color)
+        (json.color color.color) if color
+        icon = destination.tags.find(&:icon)
+        (json.icon icon.icon) if icon
       end
     end
     json.store_stop do

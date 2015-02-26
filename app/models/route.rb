@@ -143,7 +143,6 @@ class Route < ActiveRecord::Base
     true
   end
 
-
   def set_destinations(dests, recompute = true)
     Stop.transaction do
       stops.clear

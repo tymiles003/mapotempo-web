@@ -139,7 +139,7 @@ class PlanningsController < ApplicationController
           format.json { render action: 'show', location: @planning }
         end
       else
-        format.json { render nothing: true , status: :unprocessable_entity }
+        format.json { render nothing: true, status: :unprocessable_entity }
       end
     end
   end
@@ -153,7 +153,7 @@ class PlanningsController < ApplicationController
       if @route && @stop && @stop.update(stop_params) && @route.compute && @planning.save
         format.json { render action: 'show', location: @planning }
       else
-        format.json { render nothing: true , status: :unprocessable_entity }
+        format.json { render nothing: true, status: :unprocessable_entity }
       end
     end
   end
