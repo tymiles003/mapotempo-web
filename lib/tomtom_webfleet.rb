@@ -104,27 +104,27 @@ module TomtomWebfleet
 
   private
 
-    def self.get(client, operation, account, username, password, message = {})
-      message[:order!] = [:aParm, :gParm] + (message[:order!] || (message.keys - [:attributes!]))
-      message[:aParm] = {
-        apiKey: Mapotempo::Application.config.tomtom_api_key,
-        accountName: account,
-        userName: username,
-        password: password,
-      }
-      message[:gParm] = {}
-      response = client.call(operation, message: message)
+  def self.get(client, operation, account, username, password, message = {})
+    message[:order!] = [:aParm, :gParm] + (message[:order!] || (message.keys - [:attributes!]))
+    message[:aParm] = {
+      apiKey: Mapotempo::Application.config.tomtom_api_key,
+      accountName: account,
+      userName: username,
+      password: password,
+    }
+    message[:gParm] = {}
+    response = client.call(operation, message: message)
 
-      if response.body.first[1][:return][:status_code] != '0'
-        raise response.body.first[1][:return][:status_message]
-      elsif response.body[:show_object_report_response]
-        response.body[:show_object_report_response][:return][:results][:result_item]
-      end
-    rescue Savon::SOAPFault => error
-      fault_code = error.to_hash[:fault][:faultcode]
-      raise fault_code
-    rescue Savon::HTTPError => error
-      Rails.logger.info error.http.code
-      raise
+    if response.body.first[1][:return][:status_code] != '0'
+      raise response.body.first[1][:return][:status_message]
+    elsif response.body[:show_object_report_response]
+      response.body[:show_object_report_response][:return][:results][:result_item]
     end
+  rescue Savon::SOAPFault => error
+    fault_code = error.to_hash[:fault][:faultcode]
+    raise fault_code
+  rescue Savon::HTTPError => error
+    Rails.logger.info error.http.code
+    raise
+  end
 end

@@ -121,29 +121,29 @@ module Here
 
   private
 
-    @cache_request = Mapotempo::Application.config.here_cache_request
+  @cache_request = Mapotempo::Application.config.here_cache_request
 
-    @api_url = Mapotempo::Application.config.here_api_url
-    @api_app_id = Mapotempo::Application.config.here_api_app_id
-    @api_app_code = Mapotempo::Application.config.here_api_app_code
+  @api_url = Mapotempo::Application.config.here_api_url
+  @api_app_id = Mapotempo::Application.config.here_api_app_id
+  @api_app_code = Mapotempo::Application.config.here_api_app_code
 
-    def self.get(object, params = {})
-      url = "#{@api_url}/#{object}.json"
-      params = {app_id: @api_app_id, app_code: @api_app_code}.merge(params)
+  def self.get(object, params = {})
+    url = "#{@api_url}/#{object}.json"
+    params = {app_id: @api_app_id, app_code: @api_app_code}.merge(params)
 
-      key = [url, params].hash
-      request = @cache_request.read(key)
-      if !request
-        begin
-          response = RestClient.get(url, {params: params})
-        rescue => e
-          Rails.logger.info e.response
-          raise e
-        end
-        request = JSON.parse(response)
-        @cache_request.write(key, request)
+    key = [url, params].hash
+    request = @cache_request.read(key)
+    if !request
+      begin
+        response = RestClient.get(url, {params: params})
+      rescue => e
+        Rails.logger.info e.response
+        raise e
       end
-
-      request
+      request = JSON.parse(response)
+      @cache_request.write(key, request)
     end
+
+    request
+  end
 end
