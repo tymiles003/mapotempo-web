@@ -39,7 +39,7 @@ module AlyacomApi
     }
 
     if !missing.empty?
-      self.post(association_id, 'staff', missing)
+      post(association_id, 'staff', missing)
     end
   end
 
@@ -62,13 +62,13 @@ module AlyacomApi
     }
 
     if !missing.empty?
-      self.post(association_id, 'users', missing)
+      post(association_id, 'users', missing)
     end
   end
 
   def self.createJobRoute(association_id, date, staff, waypoints)
-    self.update_staffs(association_id, [staff])
-    self.update_users(association_id, waypoints.collect{ |w| w[:user] })
+    update_staffs(association_id, [staff])
+    update_users(association_id, waypoints.collect{ |w| w[:user] })
 
     get = Hash[self.get(association_id, 'planning', {fromDate: date.to_time.to_i, idStaff: staff[:id]}).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
@@ -91,7 +91,7 @@ module AlyacomApi
       planning
     }
 
-    self.post(association_id, 'planning', plannings)
+    post(association_id, 'planning', plannings)
   end
 
   private
@@ -101,7 +101,7 @@ module AlyacomApi
 
   def self.get(association_id, object, params = {})
     url = "#{@base_api_url}/#{association_id}/#{object}"
-    self.get_row(url, {enc: :json, apiKey: @api_key}.merge(params))
+    get_row(url, {enc: :json, apiKey: @api_key}.merge(params))
   end
 
   def self.get_row(url, params)

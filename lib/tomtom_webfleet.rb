@@ -33,7 +33,7 @@ module TomtomWebfleet
   end
 
   def self.showObjectReport(account, username, password)
-    objects = self.get(@client_objects, :show_object_report, account, username, password, {})
+    objects = get(@client_objects, :show_object_report, account, username, password, {})
     objects = [objects] if objects.is_a?(Hash)
     objects.collect{ |object|
       {
@@ -44,7 +44,7 @@ module TomtomWebfleet
   end
 
   def self.clearOrders(account, username, password, objectuid)
-    self.get(@client_orders, :clear_orders, account, username, password, {
+    get(@client_orders, :clear_orders, account, username, password, {
       deviceToClear: {
         markDeleted: 'true',
       },
@@ -100,7 +100,7 @@ module TomtomWebfleet
         }
       }}
     end
-    self.get(@client_orders, :send_destination_order, account, username, password, params)
+    get(@client_orders, :send_destination_order, account, username, password, params)
   end
 
   private

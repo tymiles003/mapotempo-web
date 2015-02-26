@@ -29,7 +29,7 @@ module MasternautWs
       }
     }
 
-    self.get(client_poi, nil, :create_poi_category, username, password, params)
+    get(client_poi, nil, :create_poi_category, username, password, params)
   end
 
   def self.fetchPOI(client_poi, username, password)
@@ -40,7 +40,7 @@ module MasternautWs
       maxResults: 999999,
     }
 
-    response = self.get(client_poi, nil, :search_poi, username, password, params)
+    response = get(client_poi, nil, :search_poi, username, password, params)
 
     fetch = (response[:multi_ref] || []).select{ |e|
       e[:'@xsi:type'].end_with?(':POI')
@@ -82,7 +82,7 @@ module MasternautWs
       overwrite: true
     }
 
-    self.get(client_poi, 200, :create_poi, username, password, params)
+    get(client_poi, 200, :create_poi, username, password, params)
   end
 
   def self.createJobRoute(username, password, vehicleRef, reference, description, begin_time, end_time, waypoints)
@@ -92,16 +92,16 @@ module MasternautWs
       convert_request_keys_to :none
     end
 
-    existing_waypoints = self.fetchPOI(client_poi, username, password)
+    existing_waypoints = fetchPOI(client_poi, username, password)
     if existing_waypoints.empty? then
-      self.createPOICategory(client_poi, username, password)
+      createPOICategory(client_poi, username, password)
     end
 
     waypoints.select{ |waypoint|
       # Send only non existing waypoints or updated
       !existing_waypoints[waypoint[:id]] || waypoint[:updated_at].change(:usec => 0) > existing_waypoints[waypoint[:id]]
     }.each{ |waypoint|
-      self.createPOI(client_poi, username, password, waypoint)
+      createPOI(client_poi, username, password, waypoint)
     }
 
     params = {
@@ -118,7 +118,7 @@ module MasternautWs
       #pretty_print_xml true
       convert_request_keys_to :none
     end
-    self.get(client_Job, 1, :create_job_route, username, password, params)
+    get(client_Job, 1, :create_job_route, username, password, params)
 
 
     waypoints.each{ |waypoint|
@@ -150,7 +150,7 @@ module MasternautWs
         jobRouteRef: reference,
       }
 
-      self.get(client_Job, 1, :create_job, username, password, params)
+      get(client_Job, 1, :create_job, username, password, params)
     }
   end
 

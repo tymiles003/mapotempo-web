@@ -32,7 +32,7 @@ module Ort
     time_threshold ||= 5
     key = [capacity, matrix.hash, time_window.hash, time_threshold]
 
-    self.cluster(matrix, time_window, time_threshold) { |matrix, time_window|
+    cluster(matrix, time_window, time_threshold) { |matrix, time_window|
       result = @cache.read(key)
       if !result
         data = {
@@ -55,9 +55,9 @@ module Ort
 
   def self.cluster(matrix, time_window, time_threshold)
     original_matrix = matrix
-    matrix, time_window, zip_key = self.zip_cluster(matrix, time_window, time_threshold)
+    matrix, time_window, zip_key = zip_cluster(matrix, time_window, time_threshold)
     result = yield(matrix, time_window)
-    self.unzip_cluster(result, zip_key, original_matrix)
+    unzip_cluster(result, zip_key, original_matrix)
   end
 
   def self.zip_cluster(matrix, time_window, time_threshold)

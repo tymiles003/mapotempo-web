@@ -30,7 +30,7 @@ module Here
 
     result = @cache_result.read(key)
     if !result
-      request = self.get('7.2/calculateroute', {
+      request = get('7.2/calculateroute', {
         waypoint0: "geo!#{from_lat},#{from_lng}",
         waypoint1: "geo!#{to_lat},#{to_lng}",
         mode: "fastest;truck;traffic:disabled",
@@ -101,7 +101,7 @@ module Here
           column_start.upto([column_start + split_size - 1, vector.size - 1].min).each{ |i|
             param["start#{i - column_start}"] = "#{vector[i][0].round(5)},#{vector[i][1].round(5)}"
           }
-          request = self.get('6.2/calculatematrix', param)
+          request = get('6.2/calculatematrix', param)
           @cache_result.write([key, column_start, split_size], request)
         end
 
