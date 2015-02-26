@@ -17,7 +17,6 @@
 #
 require 'savon'
 
-
 module MasternautWs
 
   def self.createPOICategory(client_poi, username, password)
@@ -119,7 +118,6 @@ module MasternautWs
       convert_request_keys_to :none
     end
     get(client_Job, 1, :create_job_route, username, password, params)
-
 
     waypoints.each{ |waypoint|
       params = {

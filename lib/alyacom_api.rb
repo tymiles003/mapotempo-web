@@ -19,7 +19,6 @@ require 'rest_client'
 
 #RestClient.log = $stdout
 
-
 module AlyacomApi
 
   def self.update_staffs(association_id, staffs)

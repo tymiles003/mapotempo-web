@@ -20,7 +20,6 @@ require 'polylines'
 
 #RestClient.log = $stdout
 
-
 module Here
 
   @cache_result = Mapotempo::Application.config.here_cache_result
@@ -121,6 +120,7 @@ module Here
   end
 
   private
+
     @cache_request = Mapotempo::Application.config.here_cache_request
 
     @api_url = Mapotempo::Application.config.here_api_url
@@ -128,7 +128,7 @@ module Here
     @api_app_code = Mapotempo::Application.config.here_api_app_code
 
     def self.get(object, params = {})
-      url = "#{@api_url}/#{object.to_s}.json"
+      url = "#{@api_url}/#{object}.json"
       params = {app_id: @api_app_id, app_code: @api_app_code}.merge(params)
 
       key = [url, params].hash
