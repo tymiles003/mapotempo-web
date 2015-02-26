@@ -168,7 +168,7 @@ class Importer
       end
 
       if need_geocode && !Mapotempo::Application.config.delayed_job_use
-        routes.each{ |key, destinations|
+        routes.each{ |_key, destinations|
           destinations.each{ |destination_active|
             if destination_active[0].lat.nil? || destination_active[0].lng.nil?
               begin

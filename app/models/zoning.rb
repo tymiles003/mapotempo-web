@@ -33,7 +33,7 @@ class Zoning < ActiveRecord::Base
     enable
     exclude_association :plannings
 
-    customize(lambda { |original, copy|
+    customize(lambda { |_original, copy|
       copy.zones.each{ |zone|
         zone.zoning = copy
       }
@@ -69,7 +69,7 @@ class Zoning < ActiveRecord::Base
     end
   end
 
-  def touch_zones(zone)
+  def touch_zones(_zone)
     @collection_touched = true
   end
 end

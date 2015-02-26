@@ -31,7 +31,7 @@ class OrderArray < ActiveRecord::Base
     enable
     exclude_association :planning
 
-    customize(lambda { |original, copy|
+    customize(lambda { |_original, copy|
       copy.orders.each{ |order|
         order.order_array = copy
       }

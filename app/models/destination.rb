@@ -75,7 +75,7 @@ class Destination < ActiveRecord::Base
     end
   end
 
-  def update_tags_track(tag)
+  def update_tags_track(_tag)
     @tags_updated = true
   end
 
