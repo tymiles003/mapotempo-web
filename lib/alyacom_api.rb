@@ -38,7 +38,7 @@ module AlyacomApi
       }
     }
 
-    if ! missing.empty?
+    if !missing.empty?
       self.post(association_id, 'staff', missing)
     end
   end
@@ -61,7 +61,7 @@ module AlyacomApi
       }
     }
 
-    if ! missing.empty?
+    if !missing.empty?
       self.post(association_id, 'users', missing)
     end
   end

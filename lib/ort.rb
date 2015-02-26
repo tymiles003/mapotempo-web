@@ -61,7 +61,7 @@ module Ort
   end
 
   def self.zip_cluster(matrix, time_window, time_threshold)
-    data_set = DataSet.new(:data_items => (1..(matrix.length-2)).collect{ |i| [i] })
+    data_set = DataSet.new(:data_items => (1..(matrix.length - 2)).collect{ |i| [i] })
     c = CompleteLinkageMaxDistance.new
     c.distance_function = lambda do |a,b|
       time_window[a[0]] == time_window[b[0]] ? matrix[a[0]][b[0]][0] : Float::INFINITY
@@ -79,8 +79,8 @@ module Ort
 
     clusterer.clusters.each_with_index do |cluster, i|
       oi = cluster.data_items[0][0]
-      ptr[i+1] = oi
-      new_time_window[i+1] = time_window[oi]
+      ptr[i + 1] = oi
+      new_time_window[i + 1] = time_window[oi]
     end
 
     # Fill new matrix
@@ -101,8 +101,8 @@ module Ort
         ret << 0
       elsif i == zip_key.length + 1
         ret << original_matrix.length - 1
-      elsif zip_key[i-1].data_items.length > 1
-        sub = zip_key[i-1].data_items.collect{ |i| i[0] }
+      elsif zip_key[i - 1].data_items.length > 1
+        sub = zip_key[i - 1].data_items.collect{ |i| i[0] }
         sub_size = sub.length
         sub_matrix = Array.new(sub_size) { Array.new(sub_size) }
         sub_size.times.each{ |i|
@@ -121,7 +121,7 @@ module Ort
         }.min{ |a, b| a[0] <=> b[0] }[1]
         ret += min_order
       else
-        ret << zip_key[i-1].data_items[0][0]
+        ret << zip_key[i - 1].data_items[0][0]
       end
     }.flatten
     ret

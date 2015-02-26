@@ -64,7 +64,7 @@ module Osrm
       else
         # TODO : throw "no route" to the UI
         distance = 1000000
-        time = 60*60*12
+        time = 60 * 60 * 12
         trace = nil
       end
 
@@ -112,7 +112,7 @@ module Osrm
 
       result = request["distance_table"].collect{ |r|
         r.collect{ |rr|
-          (rr/10).round # TODO >= 2147483647 ? nil : (rr/10).round
+          (rr / 10).round # TODO >= 2147483647 ? nil : (rr / 10).round
         }
       }
       @cache_result.write(key, result)

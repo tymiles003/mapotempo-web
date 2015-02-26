@@ -88,7 +88,7 @@ module Here
         #width: # Truck routing only, vehicle width in meters.
         #length: # Truck routing only, vehicle length in meters.
       }
-      0.upto(vector.size-1).each{ |i|
+      0.upto(vector.size - 1).each{ |i|
         commons_param["destination#{i}"] = "#{vector[i][0].round(5)},#{vector[i][1].round(5)}"
       }
 
@@ -99,7 +99,7 @@ module Here
         if !request
           param = commons_param.dup
           column_start.upto([column_start + split_size - 1, vector.size - 1].min).each{ |i|
-            param["start#{i-column_start}"] = "#{vector[i][0].round(5)},#{vector[i][1].round(5)}"
+            param["start#{i - column_start}"] = "#{vector[i][0].round(5)},#{vector[i][1].round(5)}"
           }
           request = self.get('6.2/calculatematrix', param)
           @cache_result.write([key, column_start, split_size], request)

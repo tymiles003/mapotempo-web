@@ -68,8 +68,8 @@ module TomtomWebfleet
           geoPosition: '',
           :attributes! => {
             geoPosition: {
-              latitude: (position.lat*1e6).round.to_s,
-              longitude: (position.lng*1e6).round.to_s,
+              latitude: (position.lat * 1e6).round.to_s,
+              longitude: (position.lng * 1e6).round.to_s,
             }
           },
           :order! => [:street, :postcode, :city, :geoPosition]
@@ -81,7 +81,7 @@ module TomtomWebfleet
           objectUid: objectuid,
         },
         dstOrderToSend: {
-          orderNo: (description.gsub(/[^a-z0-9\s]/i, '')[0..(19-unique_base_oder_id.length)] + unique_base_oder_id).upcase,
+          orderNo: (description.gsub(/[^a-z0-9\s]/i, '')[0..(19 - unique_base_oder_id.length)] + unique_base_oder_id).upcase,
           orderType: 'DELIVERY_ORDER',
         }
       }
@@ -93,8 +93,8 @@ module TomtomWebfleet
       params[:advancedSendDestinationOrderParm] = {waypoints: {
         waypoint: waypoints.collect{ |waypoint|
           {
-            latitude: (waypoint[:lat]*1e6).round.to_s,
-            longitude: (waypoint[:lng]*1e6).round.to_s,
+            latitude: (waypoint[:lat] * 1e6).round.to_s,
+            longitude: (waypoint[:lng] * 1e6).round.to_s,
             description: waypoint[:description].gsub(',', ' ')[0..19]
           }
         }
