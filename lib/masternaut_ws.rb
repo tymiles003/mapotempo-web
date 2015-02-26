@@ -154,13 +154,13 @@ module MasternautWs
 
   private
 
-  def self.get(client, no_error_code, operation, username, password, message = {})
+  def self.get(client, no_error_code, operation, _username, _password, message = {})
     response = client.call(operation, message: message)
 
-    _response = (operation.to_s + '_response').to_sym
-    _return = (operation.to_s + '_return').to_sym
-    if no_error_code && response.body[_response] && response.body[_response][_return] != no_error_code.to_s
-      raise "#{operation} returns error code #{response.body[_response][_return]}"
+    op_response = (operation.to_s + '_response').to_sym
+    op_return = (operation.to_s + '_return').to_sym
+    if no_error_code && response.body[op_response] && response.body[op_response][op_return] != no_error_code.to_s
+      raise "#{operation} returns error code #{response.body[op_response][op_return]}"
     end
     response.body
   rescue Savon::SOAPFault => error

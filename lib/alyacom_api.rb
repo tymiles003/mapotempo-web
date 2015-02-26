@@ -85,7 +85,7 @@ module AlyacomApi
       }
     }
 
-    plannings += get.collect{ |k, planning|
+    plannings += get.collect{ |_k, planning|
       planning['deleted'] = true
       planning
     }
