@@ -95,15 +95,15 @@ module Geocode
 
     result = @cache_complete.read(key)
     if !result
-      url = URI::HTTP.build(:host => "services.gisgraphy.com", :path => "/street/streetsearch", :query => {
-        :format => "json",
-        :lat => lat,
-        :lng => lng,
-        :from => 1,
-        :to => 20,
-        :radius => radius,
-#        :name => "#{street}, #{postalcode} #{city}",
-        :name => street,
+      url = URI::HTTP.build(host: "services.gisgraphy.com", path: "/street/streetsearch", query: {
+        format: "json",
+        lat: lat,
+        lng: lng,
+        from: 1,
+        to: 20,
+        radius: radius,
+#        name: "#{street}, #{postalcode} #{city}",
+        name: street,
       }.to_query)
       Rails.logger.info "get #{url}"
       result = JSON.parse(open(url).read)

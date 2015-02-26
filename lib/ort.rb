@@ -61,7 +61,7 @@ module Ort
   end
 
   def self.zip_cluster(matrix, time_window, time_threshold)
-    data_set = DataSet.new(:data_items => (1..(matrix.length - 2)).collect{ |i| [i] })
+    data_set = DataSet.new(data_items: (1..(matrix.length - 2)).collect{ |i| [i] })
     c = CompleteLinkageMaxDistance.new
     c.distance_function = lambda do |a,b|
       time_window[a[0]] == time_window[b[0]] ? matrix[a[0]][b[0]][0] : Float::INFINITY

@@ -99,7 +99,7 @@ module MasternautWs
 
     waypoints.select{ |waypoint|
       # Send only non existing waypoints or updated
-      !existing_waypoints[waypoint[:id]] || waypoint[:updated_at].change(:usec => 0) > existing_waypoints[waypoint[:id]]
+      !existing_waypoints[waypoint[:id]] || waypoint[:updated_at].change(usec: 0) > existing_waypoints[waypoint[:id]]
     }.each{ |waypoint|
       createPOI(client_poi, username, password, waypoint)
     }
