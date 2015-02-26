@@ -37,7 +37,7 @@ class RouterOsrm < Router
       total = positions**2
       vector.collect{ |v1|
         vector.collect{ |v2|
-          distance, time, trace = Osrm.compute(url, v1[0], v1[1], v2[0], v2[1])
+          distance, time, _trace = Osrm.compute(url, v1[0], v1[1], v2[0], v2[1])
           block.call(1, total) if block
           [distance, time]
         }

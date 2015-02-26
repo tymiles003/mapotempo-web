@@ -41,7 +41,7 @@ class Importer
     separator = ','
     line = contents.lines.first
     splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
-    split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
+    _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
 
     planning = nil
     need_geocode = false
@@ -50,7 +50,6 @@ class Importer
 
       line = 1
       errors = []
-      destinations = []
       columns = {
         'ref' => I18n.t('destinations.import_file.ref'),
         'route' => I18n.t('destinations.import_file.route'),

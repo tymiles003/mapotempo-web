@@ -65,7 +65,7 @@ class Planning < ActiveRecord::Base
   end
 
   def vehicle_add(vehicle)
-    route = routes.build(vehicle: vehicle, out_of_date: false)
+    routes.build(vehicle: vehicle, out_of_date: false)
   end
 
   def vehicle_remove(vehicle)
@@ -89,7 +89,7 @@ class Planning < ActiveRecord::Base
 
   def default_empty_routes
     routes.clear
-    r = routes.build
+    routes.build
     customer.vehicles.each { |vehicle|
       vehicle_add(vehicle)
     }
@@ -210,8 +210,6 @@ class Planning < ActiveRecord::Base
   def split_by_zones
     if zoning && !routes.empty?
       vehicles_map = Hash[routes.group_by(&:vehicle).map { |vehicle, routes| [vehicle, routes[0]]}]
-      z = {}
-      unaffected = []
       destinations_free = routes.select{ |route|
         !route.locked
       }.collect(&:stops).flatten.map(&:destination)

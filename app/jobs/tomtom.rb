@@ -54,7 +54,7 @@ class Tomtom
         '',
         route.vehicle.store_start.name
       ]] + route.stops.select(&:active).collect{ |stop|
-        description = [
+        [
           stop.destination.lat,
           stop.destination.lng,
           '',
