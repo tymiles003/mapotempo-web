@@ -23,10 +23,10 @@ require 'rest_client'
 module AlyacomApi
 
   def self.update_staffs(association_id, staffs)
-    get = Hash[self.get(association_id, 'staff').select{ |s| s.has_key?('idExt') }.map{ |s| [s['idExt'], s] }]
+    get = Hash[self.get(association_id, 'staff').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     missing = staffs.select{ |s|
-      !get.has_key?(s[:id])
+      !get.key?(s[:id])
     }.collect{ |s|
       {
         idExt: s[:id],
@@ -44,10 +44,10 @@ module AlyacomApi
   end
 
   def self.update_users(association_id, users)
-    get = Hash[self.get(association_id, 'users').select{ |s| s.has_key?('idExt') }.map{ |s| [s['idExt'], s] }]
+    get = Hash[self.get(association_id, 'users').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     missing = users.select{ |s|
-      !get.has_key?(s[:name])
+      !get.key?(s[:name])
     }.collect{ |s|
       {
         idExt: s[:id],
@@ -70,7 +70,7 @@ module AlyacomApi
     self.update_staffs(association_id, [staff])
     self.update_users(association_id, waypoints.collect{ |w| w[:user] })
 
-    get = Hash[self.get(association_id, 'planning', {fromDate: date.to_time.to_i, idStaff: staff[:id]}).select{ |s| s.has_key?('idExt') }.map{ |s| [s['idExt'], s] }]
+    get = Hash[self.get(association_id, 'planning', {fromDate: date.to_time.to_i, idStaff: staff[:id]}).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     plannings = waypoints.collect{ |waypoint|
       planning = waypoint[:planning]
