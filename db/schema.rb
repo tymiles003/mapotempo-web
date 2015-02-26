@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226142752) do
+ActiveRecord::Schema.define(version: 20150226143646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,12 +90,12 @@ ActiveRecord::Schema.define(version: 20150226142752) do
   add_index "destinations_tags", ["tag_id"], name: "fk__destinations_tags_tag_id", using: :btree
 
   create_table "layers", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.string   "url",         limit: 255
-    t.string   "attribution", limit: 255
+    t.string   "name",        null: false
+    t.string   "url",         null: false
+    t.string   "attribution", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "urlssl",      limit: 255
+    t.string   "urlssl",      null: false
   end
 
   create_table "order_arrays", force: :cascade do |t|
