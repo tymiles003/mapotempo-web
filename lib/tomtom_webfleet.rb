@@ -124,7 +124,7 @@ module TomtomWebfleet
       fault_code = error.to_hash[:fault][:faultcode]
       raise fault_code
     rescue Savon::HTTPError => error
-      Rails::logger.info error.http.code
+      Rails.logger.info error.http.code
       raise
     end
 end
