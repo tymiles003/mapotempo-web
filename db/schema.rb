@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225160957) do
+ActiveRecord::Schema.define(version: 20150226142752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,7 +180,6 @@ ActiveRecord::Schema.define(version: 20150225160957) do
     t.datetime "end"
     t.boolean  "hidden"
     t.boolean  "locked"
-    t.datetime "build_at"
     t.boolean  "out_of_date"
     t.text     "stop_trace"
     t.boolean  "stop_out_of_drive_time"
