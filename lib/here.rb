@@ -32,12 +32,12 @@ module Here
       request = get('7.2/calculateroute', {
         waypoint0: "geo!#{from_lat},#{from_lng}",
         waypoint1: "geo!#{to_lat},#{to_lng}",
-        mode: "fastest;truck;traffic:disabled",
+        mode: 'fastest;truck;traffic:disabled',
         alternatives: 0,
         resolution: 1,
-        representation: "display",
-        routeAttributes: "summary,shape",
-        truckType: "truck",
+        representation: 'display',
+        routeAttributes: 'summary,shape',
+        truckType: 'truck',
         #limitedWeight: # Truck routing only, vehicle weight including trailers and shipped goods, in tons. 
         #weightPerAxle: # Truck routing only, vehicle weight per axle in tons.
         #height: # Truck routing only, vehicle height in meters.
@@ -58,7 +58,7 @@ module Here
   end
 
   def self.matrix(vector, &block)
-    raise "More than 100x100 matrix, not possible with Here" if vector.size > 100
+    raise 'More than 100x100 matrix, not possible with Here' if vector.size > 100
 
     key = [vector.map{ |v| v[0..1] }.hash]
 
@@ -80,7 +80,7 @@ module Here
       result = Array.new(vector.size) { Array.new(vector.size) }
 
       commons_param = {
-        mode: "fastest;truck;traffic:disabled",
+        mode: 'fastest;truck;traffic:disabled',
         #limitedWeight: # Truck routing only, vehicle weight including trailers and shipped goods, in tons.
         #weightPerAxle: # Truck routing only, vehicle weight per axle in tons.
         #height: # Truck routing only, vehicle height in meters.

@@ -41,26 +41,26 @@ module Osrm
             raise http.message
           end
         rescue OpenSSL::SSL::SSLError
-          raise "Unable to communicate over SSL"
+          raise 'Unable to communicate over SSL'
         rescue Errno::ECONNREFUSED
-          raise "Connection was refused"
+          raise 'Connection was refused'
         rescue Errno::ETIMEDOUT
-          raise "Timed out connecting"
+          raise 'Timed out connecting'
         rescue Errno::EHOSTDOWN
-          raise "The host not responding to requests"
+          raise 'The host not responding to requests'
         rescue Errno::EHOSTUNREACH
-          raise "Possible network issue communicating"
+          raise 'Possible network issue communicating'
         rescue SocketError
           raise "Couldn't make sense of the host destination"
         rescue JSON::ParserError
-          raise "The host returned a non-JSON response"
+          raise 'The host returned a non-JSON response'
         end
       end
 
-      if request["route_summary"]
-        distance = request["route_summary"]["total_distance"]
-        time = request["route_summary"]["total_time"]
-        trace = request["route_geometry"]
+      if request['route_summary']
+        distance = request['route_summary']['total_distance']
+        time = request['route_summary']['total_time']
+        trace = request['route_geometry']
       else
         # TODO : throw "no route" to the UI
         distance = 1000000
@@ -94,23 +94,23 @@ module Osrm
             raise res.message
           end
         rescue OpenSSL::SSL::SSLError
-          raise "Unable to communicate over SSL"
+          raise 'Unable to communicate over SSL'
         rescue Errno::ECONNREFUSED
-          raise "Connection was refused"
+          raise 'Connection was refused'
         rescue Errno::ETIMEDOUT
-          raise "Timed out connecting"
+          raise 'Timed out connecting'
         rescue Errno::EHOSTDOWN
-          raise "The host not responding to requests"
+          raise 'The host not responding to requests'
         rescue Errno::EHOSTUNREACH
-          raise "Possible network issue communicating"
+          raise 'Possible network issue communicating'
         rescue SocketError
           raise "Couldn't make sense of the host destination"
         rescue JSON::ParserError
-          raise "The host returned a non-JSON response"
+          raise 'The host returned a non-JSON response'
         end
       end
 
-      result = request["distance_table"].collect{ |r|
+      result = request['distance_table'].collect{ |r|
         r.collect{ |rr|
           (rr / 10).round # TODO >= 2147483647 ? nil : (rr / 10).round
         }

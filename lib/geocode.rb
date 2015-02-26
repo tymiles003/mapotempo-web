@@ -59,7 +59,7 @@ module Geocode
 </XLS>"
 
       response = http.request(request)
-      if response.code == "200"
+      if response.code == '200'
         result = response.body # => The body (HTML, XML, blob, whatever)
         @cache_reverse.write(key, result)
       else
@@ -95,8 +95,8 @@ module Geocode
 
     result = @cache_complete.read(key)
     if !result
-      url = URI::HTTP.build(host: "services.gisgraphy.com", path: "/street/streetsearch", query: {
-        format: "json",
+      url = URI::HTTP.build(host: 'services.gisgraphy.com', path: '/street/streetsearch', query: {
+        format: 'json',
         lat: lat,
         lng: lng,
         from: 1,
@@ -110,8 +110,8 @@ module Geocode
       @cache_complete.write(key, result)
     end
 
-    result["result"].collect{ |r|
-      [r["name"], "0", r["isIn"]]
+    result['result'].collect{ |r|
+      [r['name'], '0', r['isIn']]
     }
   end
 
@@ -148,7 +148,7 @@ module Geocode
 </XLS>"
 
       response = http.request(request)
-      if response.code == "200"
+      if response.code == '200'
         result = response.body # => The body (HTML, XML, blob, whatever)
         @cache_code.write(key, result)
       else
@@ -206,7 +206,7 @@ module Geocode
 </XLS>"
 
       response = http.request(request)
-      if response.code == "200"
+      if response.code == '200'
         result = response.body # => The body (HTML, XML, blob, whatever)
         @cache_code.write(key, result)
       else
