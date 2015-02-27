@@ -63,3 +63,16 @@
 //= require_tree ../../templates
 //= require paloma
 //= require_tree .
+
+Turbolinks.enableProgressBar();
+
+$( document ).ready(function() {
+  startSpinner = function() {
+    $('body').addClass('turbolinks_waiting');
+  }
+  stopSpinner = function() {
+    $('body').removeClass('turbolinks_waiting');
+  }
+  $(document).on("page:fetch", startSpinner);
+  $(document).on("page:receive", stopSpinner);
+});

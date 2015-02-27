@@ -15,6 +15,10 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-.waiting {
-    cursor: progress;
+.turbolinks_waiting, .turbolinks_waiting * {
+    cursor: progress !important;
+}
+
+.ajax_waiting, .ajax_waiting * {
+    cursor: progress !important;
 }

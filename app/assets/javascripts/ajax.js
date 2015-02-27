@@ -19,7 +19,7 @@ var ajaxWaitingGlobal = 0;
 
 function beforeSendWaiting() {
   if (ajaxWaitingGlobal == 0) {
-    $('body').addClass('waiting');
+    $('body').addClass('ajax_waiting');
   }
   ajaxWaitingGlobal++;
 }
@@ -27,7 +27,7 @@ function beforeSendWaiting() {
 function completeWaiting() {
   ajaxWaitingGlobal--;
   if (ajaxWaitingGlobal == 0) {
-    $('body').removeClass('waiting');
+    $('body').removeClass('ajax_waiting');
   }
 }
 

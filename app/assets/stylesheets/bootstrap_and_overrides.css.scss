@@ -150,3 +150,8 @@ span.color[data-color] {
   -webkit-border-radius: 50%;
   -o-border-radius: 50%;
 }
+
+/* tubolinks */
+html.turbolinks-progress-bar::before {
+  background-color: #13B0CA !important;
+}
