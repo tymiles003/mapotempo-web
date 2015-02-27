@@ -109,4 +109,26 @@ class OrtTest < ActionController::TestCase
     assert_equal [[nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0]], b
     assert_equal [0, 2, 3, 4, 1, 5], Ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m)
   end
+
+  test "shoud zip large cluster case" do
+    m = [
+      [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7]],
+      [[1, 1], [0, 0], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7]],
+      [[1, 1], [2, 2], [0, 0], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7]],
+      [[1, 1], [2, 2], [3, 3], [0, 0], [4, 4], [5, 5], [6, 6], [7, 7]],
+      [[1, 1], [2, 2], [3, 3], [4, 4], [0, 0], [5, 5], [6, 6], [7, 7]],
+      [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [0, 0], [6, 6], [7, 7]],
+      [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [0, 0], [7, 7]],
+      [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [0, 0]]]
+    t = [[nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0]]
+
+    a, b, c = Ort.send(:zip_cluster, m, t, 100)
+
+    assert_equal [
+      [[0, 0], [2, 2], [7, 7]],
+      [[1, 1], [0, 0], [7, 7]],
+      [[1, 1], [3, 3], [0, 0]]], a
+    assert_equal [[nil, nil, 0], [nil, nil, 0]], b
+    assert_equal m.size, Ort.send(:unzip_cluster, [0, 1, 2], c, m).size
+  end
 end

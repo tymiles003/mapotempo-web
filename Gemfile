@@ -107,6 +107,7 @@ gem 'rgeo-geojson'
 gem 'polylines', github: 'roadtrippers/polylines', branch: 'rt-arbitrary_precision_polylines' # FIXME wait for https://github.com/joshuaclayton/polylines/pull/5
 
 gem 'ai4r'
+gem 'sim_annealing'
 
 gem 'nilify_blanks'
 gem 'amoeba'

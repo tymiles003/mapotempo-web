@@ -104,26 +104,36 @@ module Ort
       elsif zip_key[i - 1].data_items.length > 1
         sub = zip_key[i - 1].data_items.collect{ |i| i[0] }
         sub_size = sub.length
-        sub_matrix = Array.new(sub_size) { Array.new(sub_size) }
-        sub_size.times.each{ |i|
-          sub_size.times.each{ |j|
-            sub_matrix[i][j] = original_matrix[sub[i]][sub[j]]
-          }
-        }
-        # TODO not compute permutation on larger dataset
-        min_order = sub.permutation(sub_size).collect{ |p|
-          last = ret[-1]
-          s = p.sum { |s|
-            a, last = last, s
-            original_matrix[a][s]
-          }
-          [s, p]
-        }.min{ |a, b| a[0] <=> b[0] }[1]
+        min_order = if sub_size <= 5
+          sub.permutation(sub_size).collect{ |p|
+            last = ret[-1]
+            s = p.sum { |s|
+              a, last = last, s
+              original_matrix[a][s]
+            }
+            [s, p]
+          }.min{ |a, b| a[0] <=> b[0] }[1]
+        else
+          sim_annealing = SimAnnealing::SimAnnealing.new
+          sim_annealing.matrix = original_matrix
+          r = sim_annealing.search(sub, 120, 100000.0, 0.98)[:vector] # 120 = 5!
+          r.collect{ |i| sub[i] }
+        end
         ret += min_order
       else
         ret << zip_key[i - 1].data_items[0][0]
       end
     }.flatten
     ret
+  end
+end
+
+module SimAnnealing
+  class SimAnnealing
+    attr_accessor :matrix
+
+    def euc_2d(c1, c2)
+      return matrix[c1][c2][0]
+    end
   end
 end
