@@ -112,6 +112,7 @@ function destinations_form(params, api) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
+      minimumResultsForSearch: -1,
       templateSelection: templateTag,
       templateResult: templateTag,
       formatNoMatches: function() {
@@ -420,6 +421,7 @@ function destinations_index(params, api) {
       $('.fake', $row).hide();
       $('select[name$=\\[tag_ids\\]\\[\\]]', $row).show();
       $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
+        minimumResultsForSearch: -1,
         templateSelection: templateTag,
         templateResult: templateTag,
         formatNoMatches: function() {

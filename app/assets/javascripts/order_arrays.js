@@ -64,6 +64,7 @@ function order_arrays_edit(params) {
     var select = $('select[name$=\\[product_ids\\]\\[\\]]', fake.parent());
     select.show();
     select.select2({
+      minimumResultsForSearch: -1,
       formatNoMatches: function() {
         return formatNoMatches;
       },

@@ -18,6 +18,7 @@
 function plannings_form() {
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
+    minimumResultsForSearch: -1,
     templateSelection: templateTag,
     templateResult: templateTag,
     formatNoMatches: function() {
@@ -250,6 +251,7 @@ function plannings_edit(params) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $(".vehicle_select").select2({
+      minimumResultsForSearch: -1,
       data: vehicles_array,
       templateSelection: templateVehicles,
       templateResult: templateVehicles,

@@ -141,6 +141,7 @@ function zonings_edit(params) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select', ele).select2({
+      minimumResultsForSearch: -1,
       templateResult: template,
       templateSelection: template,
       formatNoMatches: function() {
