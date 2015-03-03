@@ -101,9 +101,9 @@ function zonings_edit(params) {
     });
   }
 
-  function format(state) {
+  function template(state) {
     if (state.id) {
-      return "<span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
+      return $("<span><span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
     } else {
       return I18n.t('web.select2.empty_entry');
     }
@@ -141,8 +141,8 @@ function zonings_edit(params) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select', ele).select2({
-      formatResult: format,
-      formatSelection: format,
+      templateResult: template,
+      templateSelection: template,
       formatNoMatches: function() {
         return formatNoMatches;
       },

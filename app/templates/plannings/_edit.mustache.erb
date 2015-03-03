@@ -61,7 +61,9 @@
       <div class="panel-heading">
         <i class="fa fa-arrows-h"></i>
         <input id="route_ref" class="form-control" type="text" value="{{ref}}" name="route[ref]" />
-        <input type="hidden" class="vehicle_select" value="{{vehicle_id}}" />
+        <select class="vehicle_select select2-xs" value="{{vehicle_id}}">
+          <option value="{{vehicle_id}}" selected="selected">{{vehicle_id}}</option>
+        </select>
         <div class="btn-group pull-right">
           <a href="{{path}}" class="btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.vehicle_help{{/i18n}}"><i class="fa fa-truck"></i></a>
           <button type="button" class="optimize btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"><i class="fa fa-gear"></i></button>

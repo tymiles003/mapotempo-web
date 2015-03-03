@@ -18,8 +18,8 @@
 function plannings_form() {
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
-    formatSelection: format_tag,
-    formatResult: format_tag,
+    templateSelection: templateTag,
+    templateResult: templateTag,
     formatNoMatches: function() {
       return formatNoMatches;
     },
@@ -240,18 +240,19 @@ function plannings_edit(params) {
     stores_marker.addTo(map);
 
 
-    function formatVehicles(state) {
-      return "<span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'/>&nbsp;" + vehicles_map[state.id].name;
+    function templateVehicles(state) {
+      if(state.id){
+        return $("<span><span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
+      } else {
+        console.log(state);
+      }
     }
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $(".vehicle_select").select2({
-      data: {
-        results: vehicles_array,
-        text: 'name'
-      },
-      formatSelection: formatVehicles,
-      formatResult: formatVehicles,
+      data: vehicles_array,
+      templateSelection: templateVehicles,
+      templateResult: templateVehicles,
       formatNoMatches: function() {
         return formatNoMatches;
       }

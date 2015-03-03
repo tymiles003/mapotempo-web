@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <input name="zoning[zones_attributes][][id]" type="hidden" value="{{id}}" />
     <input name="zoning[zones_attributes][][polygon]" type="hidden" value="{{polygon}}" />
-    <select name="zoning[zones_attributes][][vehicle_id]" class="vehicle_select">
+    <select name="zoning[zones_attributes][][vehicle_id]" class="vehicle_select select2-xs">
         <option value=""></option>
       {{#vehicles}}
         <option value="{{id}}"{{#selected}} selected="selected"{{/selected}}>{{name}}</option>

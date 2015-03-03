@@ -22,9 +22,9 @@ function tags_form() {
     theme: 'fontawesome'
   });
 
-  function format(state) {
+  function template(state) {
     if (state.id) {
-      return "<img src='/images/" + state.id + ".svg'/>";
+      return $("<img src='/images/" + state.id + ".svg'/>");
     } else {
       return I18n.t('tags.form.icon_default');
     }
@@ -33,8 +33,8 @@ function tags_form() {
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('#tag_icon').select2({
     width: '10em',
-    formatResult: format,
-    formatSelection: format,
+    templateResult: template,
+    templateSelection: template,
     formatNoMatches: function() {
       return formatNoMatches;
     },
@@ -60,15 +60,15 @@ Paloma.controller('Tag').prototype.update = function() {
   tags_form();
 };
 
-function format_tag(item) {
+function templateTag(item) {
   var color = $(item.element).attr('data-color');
   var icon = $(item.element).attr('data-icon');
   if (icon && color) {
-    return '<img src="/images/' + icon + '-' + color + '.svg" />&nbsp;' + item.text;
+    return $('<span><img src="/images/' + icon + '-' + color + '.svg" />&nbsp;' + item.text + '</span>');
   } else if (icon) {
-    return '<img src="/images/' + icon + '.svg" />&nbsp;' + item.text;
+    return $('<span><img src="/images/' + icon + '.svg" />&nbsp;' + item.text + '</span>');
   } else if (color) {
-    return '<i style="color:#' + color + '" class="fa fa-flag" ></i>&nbsp;' + item.text;
+    return $('<span><i style="color:#' + color + '" class="fa fa-flag" ></i>&nbsp;' + item.text + '</span>');
   } else {
     return item.text;
   }

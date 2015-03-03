@@ -94,7 +94,7 @@ controller.js(
   map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution),
   routes_id: @planning.routes.collect{ |route| route.id },
   vehicles_array: @planning.customer.vehicles.collect{ |vehicle|
-    {id: vehicle.id, name: vehicle.name, color: vehicle.color}
+    {id: vehicle.id, text: vehicle.name, color: vehicle.color}
   },
   vehicles_map: Hash[@planning.customer.vehicles.collect{ |vehicle|
     [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]

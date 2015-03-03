@@ -1,18 +1,26 @@
-      <div class="fake select2-container select2-container-multi" style="width: 100%">
-        <ul class="select2-choices">
-          {{#products}}
-            {{#active}}
-              <li class="select2-search-choice">
-                {{code}}
-                <a class="select2-search-choice-close" tabindex="-1" href="javascript:void(0)"></a>
+      <span class="fake select2 select2-container select2-container--default select2-container--below" dir="ltr" style="width: 100%;">
+        <span class="selection">
+          <span class="select2-selection select2-selection--multiple" aria-expanded="false" aria-haspopup="true" aria-autocomplete="list" role="combobox" tabindex="0" aria-owns="select2-destination[tag_ids][]-do-results">
+            <ul class="select2-selection__rendered">
+              {{#products}}
+                {{#active}}
+                  <li class="select2-selection__choice" title="{{code}}">
+                    <span class="select2-selection__choice__remove" role="presentation">×</span>
+                    <span>
+                      {{code}}
+                      <a class="select2-search-choice-close" tabindex="-1" href="javascript:void(0)"></a>
+                    </span>
+                  </li>
+                {{/active}}
+              {{/products}}
+              <li class="select2-search select2-search--inline">
+               <input class="select2-search__field" type="search" role="textbox" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" tabindex="-1" placeholder="" style="width: 0.75em;">
               </li>
-            {{/active}}
-          {{/products}}
-          <li class="select2-search-field">
-            <input type="text" style="width: 10px;" autocomplete="off"/>
-          </li>
-        </ul>
-      </div>
+            </ul>
+          </span>
+        </span>
+        <span class="dropdown-wrapper" aria-hidden="true"></span>
+      </span>
       <select multiple="multiple" name="order[product_ids][]" style="display:none">
         {{#products}}
           <option value="{{id}}" {{#active}} selected="selected"{{/active}}>{{code}}</option>

@@ -79,7 +79,7 @@ function order_arrays_edit(params) {
       build_total(undefined, $('#order_array table'));
 
       var id = select.parent().data('id');
-      var product_ids = e.val;
+      var product_ids = select.val();
       $.ajax({
         type: "put",
         data: {

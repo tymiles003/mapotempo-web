@@ -22,7 +22,7 @@
   <%= f.collection_select :store_start_id, [], @vehicle.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
   <%= f.collection_select :store_stop_id, [], @vehicle.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
   <% if !@vehicle.customer.tomtom_account.blank? && !@vehicle.customer.tomtom_user.blank? && !@vehicle.customer.tomtom_password.blank? %>
-    <%= f.text_field :tomtom_id %>
+    <%= f.select :tomtom_id, t('.tomtom_id'), [@vehicle.tomtom_id] %>
   <% end %>
   <% if !@vehicle.customer.masternaut_user.blank? && !@vehicle.customer.masternaut_password.blank? %>
     <%= f.text_field :masternaut_ref %>

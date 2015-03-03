@@ -26,18 +26,12 @@ function vehicles_form(params) {
   });
 
   $('#vehicle_tomtom_id').select2({
+    width: '100%',
     minimumResultsForSearch: -1,
-    initSelection: function (element, callback) {
-      var data = {
-        id: element.val(),
-        text: element.val()
-      };
-      callback(data);
-    },
     ajax: {
       url: '/api/0.1/customers/' + params.customer_id + '/tomtom_ids',
       dataType: 'json',
-      results: function (data, page) {
+      processResults: function (data, page) {
         data[''] = ' ';
         return {
           results: $.map(data, function(o, k) {
