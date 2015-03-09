@@ -8,7 +8,7 @@ class V01::Plannings < Grape::API
     end
   end
 
-  resource :plannings do
+  resource :plannings, desc: "Operations about plannings and routes. On url parameter, id can be a ref field value, then use 'ref:[value]' as id." do
     desc "Return customer's plannings."
     get do
       present current_customer.plannings.load, with: V01::Entities::Planning
@@ -16,7 +16,8 @@ class V01::Plannings < Grape::API
 
     desc 'Return a planning.'
     get ':id' do
-      present current_customer.plannings.find(params[:id]), with: V01::Entities::Planning
+      id = read_id(params[:id])
+      present current_customer.plannings.where(id).first, with: V01::Entities::Planning
     end
 
     desc 'Create a planning.', {
@@ -32,7 +33,8 @@ class V01::Plannings < Grape::API
       params: V01::Entities::Planning.documentation.except(:id)
     }
     put ':id' do
-      planning = current_customer.plannings.find(params[:id])
+      id = read_id(params[:id])
+      planning = current_customer.plannings.where(id).first
       planning.update(planning_params)
       planning.save!
       present planning, with: V01::Entities::Planning
@@ -40,12 +42,14 @@ class V01::Plannings < Grape::API
 
     desc 'Destroy a planning.'
     delete ':id' do
-      current_customer.plannings.find(params[:id]).destroy
+      id = read_id(params[:id])
+      current_customer.plannings.where(id).first.destroy
     end
 
     desc 'Force recompute the planning after parameter update.'
     get ':id/refresh' do
-      planning = current_customer.plannings.find(params[:id])
+      id = read_id(params[:id])
+      planning = current_customer.plannings.where(id).first
       planning.compute
       planning.save!
       present planning, with: V01::Entities::Planning
@@ -77,7 +81,8 @@ class V01::Plannings < Grape::API
 
     desc 'Clone the planning.'
     patch ':id/duplicate' do
-      planning = current_customer.plannings.find(params[:id])
+      id = read_id(params[:id])
+      planning = current_customer.plannings.where(id).first
       planning = planning.amoeba_dup
       planning.save!
       present planning, with: V01::Entities::Planning
@@ -85,7 +90,8 @@ class V01::Plannings < Grape::API
 
     desc 'Use order_array in the planning.'
     patch ':id/orders/:order_array_id/:shift' do
-      planning = current_customer.plannings.find(params[:id])
+      id = read_id(params[:id])
+      planning = current_customer.plannings.where(id).first
       order_array = current_customer.order_arrays.find(params[:order_array_id])
       shift = params[:shift].to_i
       planning.apply_orders(order_array, shift)

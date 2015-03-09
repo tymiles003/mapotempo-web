@@ -48,4 +48,18 @@ describe V01::Routes do
       expect(response.status).to eq(200)
     end
   end
+
+  describe :active do
+    it 'Change stops activation' do
+      patch api(@route.planning.id, "#{@route.id}/active/reverse")
+      expect(response.status).to eq(200)
+    end
+  end
+
+  describe :move_ref do
+    it 'Move destination position in routes by refs' do
+      patch api("ref:#{@route.planning.ref}", "ref:#{@route.ref}/destinations/ref:#{@route.planning.routes[0].stops[0].destination.ref}/move/1"), @route.attributes
+      expect(response.status).to eq(200)
+    end
+  end
 end

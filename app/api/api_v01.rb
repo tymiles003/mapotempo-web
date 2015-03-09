@@ -20,6 +20,14 @@ class ApiV01 < Grape::API
 
     def authorize!
     end
+
+    def read_id(raw_id)
+      if raw_id.start_with?('ref:')
+        {ref: raw_id[4..-1]}
+      else
+        {id: raw_id.to_i}
+      end
+    end
   end
 
   before do

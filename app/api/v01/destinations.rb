@@ -8,7 +8,7 @@ class V01::Destinations < Grape::API
     end
   end
 
-  resource :destinations do
+  resource :destinations, desc: "Operations about destinations. On url parameter, id can be a ref field value, then use 'ref:[value]' as id." do
     desc "Return customer's destinations."
     get do
       present current_customer.destinations.load, with: V01::Entities::Destination
@@ -16,7 +16,8 @@ class V01::Destinations < Grape::API
 
     desc 'Return a destination.'
     get ':id' do
-      present current_customer.destinations.find(params[:id]), with: V01::Entities::Destination
+      id = read_id(params[:id])
+      present current_customer.destinations.where(id).first, with: V01::Entities::Destination
     end
 
     desc 'Create a destination.', {
@@ -33,7 +34,8 @@ class V01::Destinations < Grape::API
       params: V01::Entities::Destination.documentation.except(:id)
     }
     put ':id' do
-      destination = current_customer.destinations.find(params[:id])
+      id = read_id(params[:id])
+      destination = current_customer.destinations.where(id).first
       destination.assign_attributes(destination_params)
       destination.save!
       destination.customer.save! if destination.customer
@@ -42,7 +44,8 @@ class V01::Destinations < Grape::API
 
     desc 'Destroy a destination.'
     delete ':id' do
-      current_customer.destinations.find(params[:id]).destroy
+      id = read_id(params[:id])
+      current_customer.destinations.where(id).first.destroy
     end
 
     desc 'Geocode a destination.', {

@@ -28,6 +28,14 @@ describe V01::Destinations do
     end
   end
 
+  describe :get_ref do
+    it 'Return a destination by ref' do
+      get api("ref:#{@destination.ref}")
+      expect(response.status).to eq(200)
+      expect(JSON.parse(response.body)['ref']).to eq @destination.ref
+    end
+  end
+
   describe :create do
     subject { -> {
         @destination.name = 'new dest'

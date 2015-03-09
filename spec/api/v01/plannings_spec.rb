@@ -28,6 +28,14 @@ describe V01::Plannings do
     end
   end
 
+  describe :get_ref do
+    it 'Return a planning by ref' do
+      get api("ref:#{@planning.ref}")
+      expect(response.status).to eq(200)
+      expect(JSON.parse(response.body)['ref']).to eq @planning.ref
+    end
+  end
+
   describe :create do
     it 'Create a planning' do
       expect{
