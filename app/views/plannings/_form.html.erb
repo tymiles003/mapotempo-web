@@ -2,6 +2,11 @@
 <%= twitter_bootstrap_form_for @planning, options do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
   <%= f.text_field :name %>
+  <% if @planning.id %>
+    <%= f.text_field :ref, t('activerecord.attributes.planning.ref_small') %>
+  <% else %>
+    <%= f.text_field :ref %>
+  <% end %>
   <% if (@planning.id && !@planning.tags.empty?) || !@planning.id %>
     <%= f.select :tag_ids, t('activerecord.attributes.planning.tag_ids'), options_for_select(@planning.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @planning.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw'), disabled: @planning.id} do %>
       <% if not @planning.id %>

@@ -2,12 +2,14 @@
 
 planning_one:
   name: planning1
+  ref: r1
   customer: customer_one
   zoning: zoning_one
   tags: tag_one
 
 planning_two:
   name: planning2
+  ref: r2
   customer: customer_one
   zoning: zoning_one
   tags: tag_two

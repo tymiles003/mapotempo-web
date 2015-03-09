@@ -8,6 +8,7 @@
   <thead>
     <tr>
       <th><%= t 'activerecord.attributes.planning.name' %></th>
+      <th><%= t 'activerecord.attributes.planning.ref' %></th>
       <th><%= t 'activerecord.attributes.planning.tags' %></th>
       <th><%= t 'activerecord.attributes.planning.created_at' %></th>
       <th><%= t 'activerecord.attributes.planning.updated_at' %></th>
@@ -19,6 +20,7 @@
     <% @plannings.each do |planning| %>
       <tr>
         <td><%= planning.name %></td>
+        <td><%= planning.ref %></td>
         <td>
         <% planning.tags.each{ |tag| %>
           <%= tag.label %>

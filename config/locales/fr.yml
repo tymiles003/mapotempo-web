@@ -177,6 +177,8 @@ fr:
         customer_id: "Compte client"
       planning:
         name: "Nom"
+        ref: "Référence"
+        ref_small: "Réf."
         tag_ids: "Libellés"
         zoning_id: "Zonage"
         created_at: "Création"

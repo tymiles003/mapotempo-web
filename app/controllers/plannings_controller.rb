@@ -207,7 +207,7 @@ class PlanningsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def planning_params
-    params.require(:planning).permit(:name, :zoning_id, tag_ids: [])
+    params.require(:planning).permit(:name, :ref, :zoning_id, tag_ids: [])
   end
 
   def stop_params
@@ -215,7 +215,7 @@ class PlanningsController < ApplicationController
   end
 
   def filename
-    (@planning.name + (@planning.customer.enable_orders && @planning.order_array ?
+    (@planning.name + (@planning.ref ? '_' + @planning.ref : '') + (@planning.customer.enable_orders && @planning.order_array ?
       ('_' + @planning.order_array.name + '_' + l(@planning.order_array.base_date + @planning.order_array_shift).gsub('/', '-')) :
       '')).gsub('"', '')
   end
