@@ -42,9 +42,9 @@
 //= require jquery-ui/slider
 //= require jquery-tablesorter
 //= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
-//= require jquery-tablesorter/jquery.tablesorter.widgets.js
+//= require jquery-tablesorter/jquery.tablesorter.widgets
 //= require jquery-tablesorter/widgets/widget-columnSelector
-//= require jquery.simplecolorpicker.js
+//= require jquery.simplecolorpicker
 //= require jquery.timeentry
 //= require i18n
 //= require i18n/translations
@@ -56,10 +56,10 @@
 //= require leaflet.activearea
 //= require leaflet-pip
 //= require Control.Geocoder
-//= require Polyline.encoded.js
+//= require Polyline.encoded
 //= require mustache
-//= require select2.js
-//= require select2_locale_fr.js
+//= require select2
+//= require select2_locale_fr
 //= require_tree ../../templates
 //= require paloma
 //= require_tree .
