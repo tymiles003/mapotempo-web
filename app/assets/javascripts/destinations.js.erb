@@ -373,8 +373,7 @@ function destinations_index(params, api) {
     });
     <% end %>
     $row.on("change", ":input", function(event) {
-      var url;
-      url = '/api/0.1/' + api + '/' + id + '.json';
+      var url = '/api/0.1/' + api + '/' + id + '.json';
       $.ajax({
         type: "put",
         data: $(":input", $row).serialize(),
@@ -416,11 +415,8 @@ function destinations_index(params, api) {
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
-    $('.fake', $row).on('click', function(e){
-      // On the first click on select2-look like div, initialize select2, remove the placeholder and resend the click
-      $('.fake', $row).hide();
-      $('select[name$=\\[tag_ids\\]\\[\\]]', $row).show();
-      $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
+    fake_select2($('select[name$=\\[tag_ids\\]\\[\\]]', $row), function(select) {
+      select.select2({
         minimumResultsForSearch: -1,
         templateSelection: templateTag,
         templateResult: templateTag,
@@ -429,11 +425,6 @@ function destinations_index(params, api) {
         },
         width: '100%'
       });
-      e.stopPropagation();
-      $('.fake', $row).off();
-      if(e.clientX && e.clientY) {
-        $(document.elementFromPoint(e.clientX, e.clientY)).click();
-      }
     });
   }
 

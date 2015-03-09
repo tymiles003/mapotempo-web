@@ -164,3 +164,40 @@ function progress_dialog(data, dialog, callback, load_url) {
     return true;
   }
 }
+
+
+function fake_select2(selector, callback) {
+  function fake_select2_replace(fake_select) {
+    var select = fake_select.prev();
+    fake_select.hide();
+    select.show();
+    callback(select);
+    fake_select.off();
+  }
+
+  function fake_select2_click(e) {
+    // On the first click on select2-look like div, initialize select2, remove the placeholder and resend the click
+    var fake_select = $(this);
+    e.stopPropagation();
+    fake_select2_replace(fake_select);
+    if (e.clientX && e.clientY) {
+      $(document.elementFromPoint(e.clientX, e.clientY)).click();
+    }
+  }
+
+  function fake_select2_key_event(e) {
+    var fake_select = $(this).closest('.fake');
+    e.stopPropagation();
+    var parent = $(this).parent();
+    fake_select2_replace(fake_select);
+    var input = $('input', parent);
+    input.focus();
+    // var ee = jQuery.Event('keydown');
+    // ee.which = e.which;
+    // $('input', $(this)).trigger(ee);
+  }
+
+  selector.next()
+    .on('click', fake_select2_click)
+    .on('keydown', fake_select2_key_event);
+}

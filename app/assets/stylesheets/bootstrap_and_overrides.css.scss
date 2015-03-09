@@ -106,6 +106,12 @@ hr {
   min-height: inherit;
 }
 
+.fake .select2-selection:focus {
+  border: 1px solid #5897fb;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  outline:medium none;
+}
+
 /* Add Open and Close cheron to accordion */
 
 .panel-heading .accordion-toggle:after {

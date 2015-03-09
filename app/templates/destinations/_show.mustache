@@ -46,6 +46,11 @@
   <td>
     <div class="input-group input-group-tags">
       <input type="hidden" value="" name="destination[tag_ids][]">
+      <select multiple="multiple" name="destination[tag_ids][]" class="select2" style="display:none">
+        {{#tags}}
+          <option value="{{id}}" {{#active}} selected="selected"{{/active}}{{#color}} data-color="{{color}}"{{/color}}{{#icon}} data-icon="{{icon}}"{{/icon}}>{{label}}</option>
+        {{/tags}}
+      </select>
       <span class="fake select2 select2-container select2-container--default select2-container--below" dir="ltr" style="width: 100%;">
         <span class="selection">
           <span class="select2-selection select2-selection--multiple" aria-expanded="false" aria-haspopup="true" aria-autocomplete="list" role="combobox" tabindex="0" aria-owns="select2-destination[tag_ids][]-do-results">
@@ -71,11 +76,6 @@
         </span>
         <span class="dropdown-wrapper" aria-hidden="true"></span>
       </span>
-      <select multiple="multiple" name="destination[tag_ids][]" style="display:none">
-        {{#tags}}
-          <option value="{{id}}" {{#active}} selected="selected"{{/active}}{{#color}} data-color="{{color}}"{{/color}}{{#icon}} data-icon="{{icon}}"{{/icon}}>{{label}}</option>
-        {{/tags}}
-      </select>
       <span class="input-group-addon input-sm"><i class="fa fa-tags"></i></span>
     </div>
   </td>

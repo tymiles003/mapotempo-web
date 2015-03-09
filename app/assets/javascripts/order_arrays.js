@@ -39,92 +39,40 @@ function order_arrays_edit(params) {
     return !!String(normalizedValue).match(new RegExp(filter, 'i'));
   }
 
-  var arrows = {
-    "Right": [1, 0],
-    "Left": [-1, 0],
-    "Up": [0, -1],
-    "Down": [0, 1]
-  }
-
-  function arrow_move_focus(td, e) {
-    if (e.type == "keydown" && (e.key == "Right" || e.key == "Left" || e.key == "Up" || e.key == "Down")) {
-      var tr = $(td).parent();
-      var target = $('#order_array table tbody tr:nth-child(' + (tr.index() + arrows[e.key][1] + 1) + ') td:nth-child(' + (td.index() + arrows[e.key][0] + 1) + ')');
-      target.focus();
-      e.preventDefault();
-      return true;
-    }
-  }
-
   var formatNoMatches = I18n.t('web.select2.empty_result');
 
-  function replace_fake_select2(fake) {
-    // On the first click on select2-look like div, initialize select2, remove the placeholder and resend the click
-    fake.hide();
-    var select = $('select[name$=\\[product_ids\\]\\[\\]]', fake.parent());
-    select.show();
-    select.select2({
-      minimumResultsForSearch: -1,
-      formatNoMatches: function() {
-        return formatNoMatches;
-      },
-      width: '100%'
-    });
-
-    select.change(function(e) {
-      if (block_save_select_change) {
-        return;
-      }
-
-      table_neeed_update = true;
-      build_total(undefined, $('#order_array table'));
-
-      var id = select.parent().data('id');
-      var product_ids = select.val();
-      $.ajax({
-        type: "put",
-        data: {
-          product_ids: product_ids
+  function set_fake_select2(selector) {
+    fake_select2(selector, function(select) {
+      select.select2({
+        minimumResultsForSearch: -1,
+        formatNoMatches: function() {
+          return formatNoMatches;
         },
-        url: '/api/0.1/order_arrays/' + order_array_id + '/orders/' + id + '.json',
-        beforeSend: beforeSendWaiting,
-        complete: completeWaiting,
-        error: ajaxError
+        width: '100%'
+      });
+
+      select.change(function(e) {
+        if (block_save_select_change) {
+          return;
+        }
+
+        table_neeed_update = true;
+        build_total(undefined, $('#order_array table'));
+
+        var id = select.parent().data('id');
+        var product_ids = select.val();
+        $.ajax({
+          type: "put",
+          data: {
+            product_ids: product_ids
+          },
+          url: '/api/0.1/order_arrays/' + order_array_id + '/orders/' + id + '.json',
+          beforeSend: beforeSendWaiting,
+          complete: completeWaiting,
+          error: ajaxError
+        });
       });
     });
-    fake.remove();
-  }
-
-  function fake_select2_key_event(e) {
-    e.stopPropagation();
-
-    if (arrow_move_focus($(this), e)) {
-      $('select', $(this)).select2('close');
-      return;
-    } else {
-      var fake = $('.fake', $(this));
-      if (fake) {
-        replace_fake_select2(fake);
-        var input = $('input', $(this));
-        input.focus();
-        // var ee = jQuery.Event('keydown');
-        // ee.which = e.which;
-        // $('input', $(this)).trigger(ee);
-      }
-    }
-  }
-
-  function fake_select2_click_event(e) {
-    e.stopPropagation();
-    replace_fake_select2($(this));
-    if (e.type == "click" && e.clientX && e.clientY) {
-      $(document.elementFromPoint(e.clientX, e.clientY)).click();
-    }
-  }
-
-  function active_fake_select2(selector) {
-    $('.fake', selector).on('click', fake_select2_click_event);
-    selector.on('keydown', fake_select2_key_event);
   }
 
   function build_fake_select2(container, products, product_ids) {
@@ -271,7 +219,7 @@ function order_arrays_edit(params) {
     $('#order_array table thead input').focusin(table_trigger_update);
     $('#order_array table thead .tablesorter-icon').click(table_trigger_update);
 
-    active_fake_select2($('td[data-id]'));
+    set_fake_select2($('td[data-id] select'));
 
     function change_order(product_id, add_product, remove_product, paste, copy, selector) {
       var orders = {};
@@ -299,7 +247,7 @@ function order_arrays_edit(params) {
           product_ids: val
         };
       });
-      active_fake_select2(selector);
+      set_fake_select2(selector);
       block_save_select_change = false;
       table_neeed_update = true;
       build_total(undefined, $('#order_array table'));
@@ -335,7 +283,7 @@ function order_arrays_edit(params) {
           remove_product = $(this).hasClass('remove_product_row'),
           paste = $(this).hasClass('paste_row'),
           product_id = ($(this).data('product_id') || 0).toString(),
-          selector = $('td[data-id]', tr);
+          selector = $('td[data-id] select', tr);
         change_order(product_id, add_product, remove_product, paste, copy_row, selector);
       }
     });
@@ -358,7 +306,7 @@ function order_arrays_edit(params) {
           remove_product = $(this).hasClass('remove_product_column'),
           paste = $(this).hasClass('paste_column'),
           product_id = ($(this).data('product_id') || 0).toString();
-        selector = $('tbody tr td:nth-child(' + td_index + ')', $(this).closest('table'));
+        selector = $('tbody tr td:nth-child(' + td_index + ') select', $(this).closest('table'));
         change_order(product_id, add_product, remove_product, paste, copy_column, selector);
       }
     });
