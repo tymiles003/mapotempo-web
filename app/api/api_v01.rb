@@ -28,6 +28,12 @@ class ApiV01 < Grape::API
         {id: raw_id.to_i}
       end
     end
+
+    def error!(*args)
+      # Workaround for close transaction on error!
+      ActiveRecord::Base.connection.rollback_transaction
+      super.error!(*args)
+    end
   end
 
   before do
@@ -38,7 +44,11 @@ class ApiV01 < Grape::API
 
   after do
     begin
-      ActiveRecord::Base.connection.commit_transaction unless @error
+      if @error
+        ActiveRecord::Base.connection.rollback_transaction
+      else
+        ActiveRecord::Base.connection.commit_transaction
+      end
     rescue Exception
       ActiveRecord::Base.connection.rollback_transaction
       raise
