@@ -53,6 +53,47 @@ describe V01::Destinations do
     end
   end
 
+  describe :create_bulk_from_csv do
+    subject { -> {
+        put api(), replace: false, file: fixture_file_upload('test/fixtures/files/import_one.csv', 'text/csv')
+        expect(response.status).to eq(204)
+      }
+    }
+
+    it "change destination count" do
+      should change{Destination.count}.by(1)
+    end
+  end
+
+  describe :create_bulk_from_json do
+    subject { -> {
+        put api(), {destinations: [{
+          name: "Nouveau client",
+          street: nil,
+          postalcode: nil,
+          city: "Tule",
+          lat: 43.5710885456786,
+          lng: 3.89636993408203,
+          quantity: nil,
+          open: nil,
+          close: nil,
+          detail: nil,
+          comment: nil,
+          ref: nil,
+          take_over: nil,
+          tag_ids: [],
+          geocoding_accuracy: nil,
+          foo: 'bar'
+        }]}
+        expect(response.status).to eq(204)
+      }
+    }
+
+    it "change destination count" do
+      should change{Destination.count}.by(1)
+    end
+  end
+
   describe :destroy do
     it 'Destroy a destination' do
       expect{

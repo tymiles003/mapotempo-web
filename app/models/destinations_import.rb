@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 
-class DestinationsImportModel
+class DestinationsImport
   include ActiveModel::Model
   include ActiveRecord::AttributeAssignment
   extend ActiveModel::Translation
@@ -33,7 +33,7 @@ class DestinationsImportModel
   end
 
   def name
-    file.original_filename.split('.')[0..-2].join('.')
+    (file.original_filename || file.filename).split('.')[0..-2].join('.')
   end
 
   private

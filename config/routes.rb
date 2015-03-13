@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   resources :destinations
   get 'destination/import' => 'destinations#import'
-  post 'destinations/upload' => 'destinations#upload', :as => 'destinations_import_models'
+  post 'destinations/upload' => 'destinations#upload', :as => 'destinations_imports'
   delete 'destinations' => 'destinations#clear'
 
   resources :stores

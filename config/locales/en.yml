@@ -33,7 +33,7 @@ en:
       import: "Import"
       imports: "Imports"
     attributes:
-      destinations_import_model:
+      destinations_import:
         file: "File"
         replace: "Replace"
 
@@ -376,8 +376,7 @@ en:
       close: "close"
       comment: "comment"
       tags: "tags"
-      missing_header: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing in the header."
-      missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at line %{line}."
+      missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
       not_csv: "Imported file is not a CSV"
       too_many_errors: "Stop import, too many errors."
 

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -20,14 +20,10 @@ require 'geocoder_job'
 
 class Importer
 
-  def self.import(replace, customer, file, name)
-    if Mapotempo::Application.config.delayed_job_use && customer.job_geocoding
+  def self.import_csv(replace, customer, file, name, synchronous=false)
+    if !synchronous && Mapotempo::Application.config.delayed_job_use && customer.job_geocoding
       return false
     end
-
-    tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
-    common_tags = nil
-    routes = Hash.new{ |h, k| h[k] = [] }
 
     contents = File.open(file, 'r:bom|utf-8').read
     if !contents.valid_encoding?
@@ -43,130 +39,137 @@ class Importer
     splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
     _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
 
+    data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
+
+    tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
+    columns = {
+      ref: I18n.t('destinations.import_file.ref'),
+      route: I18n.t('destinations.import_file.route'),
+      name: I18n.t('destinations.import_file.name'),
+      street: I18n.t('destinations.import_file.street'),
+      detail: I18n.t('destinations.import_file.detail'),
+      postalcode: I18n.t('destinations.import_file.postalcode'),
+      city: I18n.t('destinations.import_file.city'),
+      lat: I18n.t('destinations.import_file.lat'),
+      lng: I18n.t('destinations.import_file.lng'),
+      open: I18n.t('destinations.import_file.open'),
+      close: I18n.t('destinations.import_file.close'),
+      comment: I18n.t('destinations.import_file.comment'),
+      tags: I18n.t('destinations.import_file.tags'),
+      take_over: I18n.t('destinations.import_file.take_over'),
+      quantity: I18n.t('destinations.import_file.quantity'),
+      active: I18n.t('destinations.import_file.active')
+    }
+
+    self.import(replace, customer, data, name, synchronous) { |row|
+      # Switch from locale to internal column name
+      r, row = row, {}
+      columns.each{ |k, v|
+        if r.key?(v) && r[v]
+          row[k] = r[v]
+        end
+      }
+
+      if !row[:lat].nil?
+        row[:lat] = Float(row[:lat].gsub(',', '.'))
+      end
+      if !row[:lng].nil?
+        row[:lng] = Float(row[:lng].gsub(',', '.'))
+      end
+
+      if !row[:tags].nil?
+        row[:tags] = row[:tags].split(',').select { |key|
+          !key.empty?
+        }.collect { |key|
+          if !tags.key?(key)
+            tags[key] = customer.tags.build(label: key)
+          end
+          tags[key]
+        }
+      end
+
+      row
+    }
+  end
+
+  def self.import_hash(replace, customer, data)
+    tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
+    key = %w(ref route name street detail postalcode city lat lng open close comment tags take_over quantity active)
+
+    self.import(replace, customer, data, nil, true) { |row|
+      r, row = row, {}
+      r.each{ |k, v|
+        if key.include?(k)
+          row[k.to_sym] = v
+        end
+      }
+
+      if !row[:tag_ids].nil?
+        row[:tags] = row[:tag_ids].collect { |id|
+          tags[id]
+        }
+      end
+
+      row
+    }
+  end
+
+  private
+
+  def self.import(replace, customer, data, name, synchronous)
+    common_tags = nil
+    routes = Hash.new{ |h, k| h[k] = [] }
+
     planning = nil
     need_geocode = false
 
+    line = 0
+
     Destination.transaction do
-
-      line = 1
-      errors = []
-      columns = {
-        'ref' => I18n.t('destinations.import_file.ref'),
-        'route' => I18n.t('destinations.import_file.route'),
-        'name' => I18n.t('destinations.import_file.name'),
-        'street' => I18n.t('destinations.import_file.street'),
-        'detail' => I18n.t('destinations.import_file.detail'),
-        'postalcode' => I18n.t('destinations.import_file.postalcode'),
-        'city' => I18n.t('destinations.import_file.city'),
-        'lat' => I18n.t('destinations.import_file.lat'),
-        'lng' => I18n.t('destinations.import_file.lng'),
-        'open' => I18n.t('destinations.import_file.open'),
-        'close' => I18n.t('destinations.import_file.close'),
-        'comment' => I18n.t('destinations.import_file.comment'),
-        'tags' => I18n.t('destinations.import_file.tags'),
-        'take_over' => I18n.t('destinations.import_file.take_over'),
-        'quantity' => I18n.t('destinations.import_file.quantity'),
-        'active' => I18n.t('destinations.import_file.active')
-      }
-      columns_name = columns.keys - ['route', 'tags', 'active']
-
       if replace
         customer.destinations.destroy_all
       end
 
-      CSV.parse(contents, col_sep: separator, headers: false) { |row|
-        r = []
-        columns.each{ |k, v|
-          if row.include?(v)
-            r << k
-          end
-        }
-        row = r
+      data.each{ |row|
+        row = yield(row)
 
-        if !row.include?('name') || !(row.include?('city') || row.include?('postalcode') || (row.include?('lat') && row.include?('lng')))
-          errors << I18n.t('destinations.import_file.missing_header')
-        end
-        break
-      }
-
-      errors.empty? && CSV.parse(contents, col_sep: separator, headers: true) { |row|
-        row = row.to_hash
-
-        line += 1
-        if errors.length > 10
-          errors << I18n.t('destinations.import_file.too_many_errors')
-          break
-        end
-
-        # Switch from locale to internal column name
-        r = {}
-        columns.each{ |k, v|
-          if row.key?(v) && row[v]
-            r[k] = row[v]
-          end
-        }
-        row = r
-
-        r = row.to_hash.select{ |k|
-          columns_name.include?(k)
-        }
-
-        if r.size == 0
+        if row.size == 0
           next # Skip empty line
         end
 
-        if !r.key?('name') || !(r.key?('city') || r.key?('postalcode') || (r.key?('lat') && r.key?('lng')))
-          errors << I18n.t('destinations.import_file.missing_data', line: line)
-          next
+        line += 1
+
+        if row[:name].nil? || (row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?))
+          raise I18n.t('destinations.import_file.missing_data', line: line)
         end
 
-        if !r.key?('lat') || !r.key?('lng')
+        if row[:lat].nil? || row[:lng].nil?
           need_geocode = true
         end
 
-        if r.key?('lat')
-          r['lat'].gsub!(',', '.')
-        end
-        if r.key?('lng')
-          r['lng'].gsub!(',', '.')
-        end
-
-        if row['tags']
-          r['tags'] = row['tags'].split(',').select { |key|
-            !key.empty?
-          }.collect { |key|
-            if !tags.key?(key)
-              tags[key] = customer.tags.build(label: key)
-            end
-            tags[key]
-          }
-        end
-
-        if r.key?('ref') && !r['ref'].strip.empty?
+        if !row[:ref].nil? && !row[:ref].strip.empty?
           destination = customer.destinations.find{ |destination|
-            destination.ref && destination.ref == r['ref']
+            destination.ref && destination.ref == row[:ref]
           }
-          destination.assign_attributes(r) if destination
+          destination.assign_attributes(row) if destination
         end
         if !destination
-          destination = customer.destinations.build(r) # Link only when destination is complete
+          destination = customer.destinations.build(row.except(:route, :active)) # Link only when destination is complete
         end
 
-        # Instersection of tags of all rows
-        if !common_tags
-          common_tags = destination.tags.to_a
-        else
-          common_tags &= destination.tags
+        if !name.nil?
+          # Instersection of tags of all rows for tags of new planning
+          if !common_tags
+            common_tags = destination.tags.to_a
+          else
+            common_tags &= destination.tags
+          end
         end
 
-        routes[row.key?('route') ? row['route'] : nil] << [destination, !row.key?('active') || row['active'].strip != '0']
+        routes[row.key?(:route) ? row[:route] : nil] << [destination, !row.key?(:active) || row[:active].strip != '0']
       }
 
-      if errors.length > 0
-        raise errors.join(' ')
-      end
-
-      if need_geocode && !Mapotempo::Application.config.delayed_job_use
+      if need_geocode && (synchronous || !Mapotempo::Application.config.delayed_job_use)
         routes.each{ |_key, destinations|
           destinations.each{ |destination_active|
             if destination_active[0].lat.nil? || destination_active[0].lng.nil?
@@ -179,7 +182,7 @@ class Importer
         }
       end
 
-      if routes.size > 1 || !routes.key?(nil)
+      if !name.nil? && (routes.size > 1 || !routes.key?(nil))
         planning = customer.plannings.build(name: name, tags: common_tags || [])
         planning.set_destinations(routes, false)
         planning.save!
@@ -188,7 +191,7 @@ class Importer
       customer.save!
     end
 
-    if need_geocode && Mapotempo::Application.config.delayed_job_use
+    if need_geocode && (!synchronous || Mapotempo::Application.config.delayed_job_use)
       customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id, planning ? planning.id : nil))
     else
       planning.compute if planning

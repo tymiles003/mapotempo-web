@@ -36,7 +36,7 @@ fr:
         one: "Import"
         other: "Imports"
     attributes:
-      destinations_import_model:
+      destinations_import:
         file: "Fichier"
         replace: "Remplacer"
 
@@ -379,8 +379,7 @@ fr:
       close: "horaire fin"
       comment: "commentaire"
       tags: "libellés"
-      missing_header: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant dans l'entête."
-      missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à la ligne %{line}."
+      missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
       not_csv: "Le fichier importé n'est pas au format CSV."
       too_many_errors: "Import stoppé, trop d'erreurs."
 

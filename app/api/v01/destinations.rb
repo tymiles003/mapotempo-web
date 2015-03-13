@@ -6,6 +6,11 @@ class V01::Destinations < Grape::API
       p = p[:destination] if p.key?(:destination)
       p.permit(:ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
     end
+
+    def destinations_import_params
+      p = ActionController::Parameters.new(params)
+      p.permit(:replace, :file)
+    end
   end
 
   resource :destinations, desc: "Operations about destinations. On url parameter, id can be a ref field value, then use 'ref:[value]' as id." do
@@ -23,11 +28,35 @@ class V01::Destinations < Grape::API
     desc 'Create a destination.', {
       params: V01::Entities::Destination.documentation.except(:id)
     }
-    post  do
+    post do
       destination = current_customer.destinations.build(destination_params)
       destination.save!
       current_customer.save!
       present destination, with: V01::Entities::Destination
+    end
+
+    desc 'Create destinations by upload a CSV file or by JSON', {
+      params: V01::Entities::DestinationsImport.documentation
+    }
+    params do
+      optional :destinations, type: Array, desc: "JSON content in mutual exclusion with CSV file upload"
+    end
+    put '' do
+      if params['destinations']
+        destinations_import = DestinationsImport.new
+        destinations_import.assign_attributes({replace: params[:replace]})
+        Importer.import_hash(destinations_import.replace, current_customer, params[:destinations])
+        status 204
+      else
+        destinations_import = DestinationsImport.new
+        destinations_import.assign_attributes({replace: params[:replace], file: params[:file]})
+        if destinations_import.valid?
+          Importer.import_csv(destinations_import.replace, current_customer, destinations_import.tempfile, destinations_import.name, synchronous=true)
+          status 204
+        else
+          error!({error: destinations_import.errors.full_messages}, 422)
+        end
+      end
     end
 
     desc 'Update a destination.', {

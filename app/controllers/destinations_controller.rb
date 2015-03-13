@@ -89,16 +89,16 @@ class DestinationsController < ApplicationController
   end
 
   def import
-    @destinations_import = DestinationsImportModel.new
+    @destinations_import = DestinationsImport.new
   end
 
   def upload
-    @destinations_import = DestinationsImportModel.new
+    @destinations_import = DestinationsImport.new
     respond_to do |format|
       begin
         @destinations_import.assign_attributes(destinations_import_params)
         @destinations_import.valid? || raise
-        Importer.import(@destinations_import.replace, current_user.customer, @destinations_import.tempfile, @destinations_import.name)
+        Importer.import_csv(@destinations_import.replace, current_user.customer, @destinations_import.tempfile, @destinations_import.name)
         format.html { redirect_to action: 'index' }
       rescue => e
         flash[:error] = e.message
@@ -130,6 +130,6 @@ class DestinationsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def destinations_import_params
-    params.require(:destinations_import_model).permit(:replace, :file)
+    params.require(:destinations_import).permit(:replace, :file)
   end
 end

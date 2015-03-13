@@ -11,10 +11,10 @@ feature :import do
   scenario 'import', js: true do
     visit destination_import_path
     if Capybara.javascript_driver == :webkit
-      evaluate_script("$('#destinations_import_model_file').attr('style','')") # capybara-webkit workaround
+      evaluate_script("$('#destinations_import_file').attr('style','')") # capybara-webkit workaround
     end
-    attach_file 'destinations_import_model[file]', Rails.root.join('spec/fixtures/files/import_many-utf-8.csv')
-    check 'destinations_import_model[replace]'
+    attach_file 'destinations_import[file]', Rails.root.join('spec/fixtures/files/import_many-utf-8.csv')
+    check 'destinations_import[replace]'
     submit
 
     first 'tbody tr'
