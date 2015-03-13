@@ -643,6 +643,9 @@ en:
     new:
       title: "New zoning"
 
+  unauthorized:
+    default: "You are not authorized to access this page"
+
   web:
     select2:
       empty_entry: "- Empty -"

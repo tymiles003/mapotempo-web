@@ -648,6 +648,9 @@ fr:
     new:
       title: "Nouveau zonage"
 
+  unauthorized:
+    default: "Vous n'êtes pas autorisé à accéder à cette page"
+
   web:
     select2:
       empty_entry: "- Vide -"
