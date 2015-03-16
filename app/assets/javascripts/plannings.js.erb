@@ -303,7 +303,11 @@ function plannings_edit(params) {
           var polyline = new L.Polyline(L.PolylineUtil.decode(stop.trace, 6));
           L.polyline(polyline.getLatLngs(), {
             color: color
-          }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]);
+          }).addTo(layers[route.route_id]);
+          L.polyline(polyline.getLatLngs(), {
+            offset: 3,
+            color: color
+          }).addTo(layers_cluster[route.route_id]);
         }
         if ($.isNumeric(stop.destination.lat) && $.isNumeric(stop.destination.lng)) {
           stop.i18n = mustache_i18n;

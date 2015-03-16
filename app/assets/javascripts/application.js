@@ -62,6 +62,7 @@
 //= require select2_locale_fr
 //= require_tree ../../templates
 //= require paloma
+//= require leaflet.polylineoffset
 //= require_tree .
 
 Turbolinks.enableProgressBar();
