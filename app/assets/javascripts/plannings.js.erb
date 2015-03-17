@@ -365,7 +365,7 @@ function plannings_edit(params) {
       enlighten_destination(data.destination_id_enlighten);
     }
 
-    $(".route .export_tomtom a").click(function() {
+    $(".export_tomtom a").click(function() {
       var url = this.href;
       $.ajax({
         type: "get",
@@ -381,7 +381,7 @@ function plannings_edit(params) {
       return false;
     });
 
-    $(".route .export_masternaut a").click(function() {
+    $(".export_masternaut a").click(function() {
       var url = this.href;
       $.ajax({
         type: "get",
@@ -397,7 +397,7 @@ function plannings_edit(params) {
       return false;
     });
 
-    $(".route .export_alyacom a").click(function() {
+    $(".export_alyacom a").click(function() {
       var url = this.href;
       $.ajax({
         type: "get",

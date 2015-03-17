@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -40,6 +40,30 @@ class PlanningsController < ApplicationController
       end
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
+      end
+      begin
+        @planning.routes.select(&:vehicle).each{ |route|
+          format.tomtom do
+            if params[:type] == 'waypoints'
+              Tomtom.export_route_as_waypoints(route) if route.vehicle.tomtom_id
+            elsif params[:type] == 'orders'
+              Tomtom.export_route_as_orders(route) if route.vehicle.tomtom_id
+            else
+              Tomtom.clear(route) if route.vehicle.tomtom_id
+            end
+            head :no_content
+          end
+          format.masternaut do
+            Masternaut.export_route(route) if route.vehicle.masternaut_ref
+            head :no_content
+          end
+          format.alyacom do
+            Alyacom.export_route(route) if route.vehicle.customer.alyacom_association
+            head :no_content
+          end
+        }
+      rescue => e
+        render json: e.message, status: :unprocessable_entity
       end
     end
   end
