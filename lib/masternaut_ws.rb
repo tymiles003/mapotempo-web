@@ -84,7 +84,7 @@ module MasternautWs
     get(client_poi, 200, :create_poi, username, password, params)
   end
 
-  def self.createJobRoute(username, password, vehicleRef, reference, description, begin_time, end_time, waypoints)
+  def self.createJobRoute(username, password, vehicleRef, reference, description, date, begin_time, end_time, waypoints)
     client_poi = Savon.client(basic_auth: [username, password], wsdl: Mapotempo::Application.config.masternaut_api_url + '/POI?wsdl', soap_version: 1) do
       #log true
       #pretty_print_xml true
@@ -105,9 +105,9 @@ module MasternautWs
 
     params = {
       jobRoute: {
-        begin: Time.now.strftime('%Y-%m-%dT') + begin_time.strftime('%H:%M:%S'),
+        begin: date.strftime('%Y-%m-%dT') + begin_time.strftime('%H:%M:%S'),
         description: description ? description.strip[0..50] : nil,
-        end: Time.now.strftime('%Y-%m-%dT') + end_time.strftime('%H:%M:%S'),
+        end: date.strftime('%Y-%m-%dT') + end_time.strftime('%H:%M:%S'),
         reference: reference,
       }
     }
@@ -124,7 +124,7 @@ module MasternautWs
         job: {
           description: waypoint[:description][0..255],
           poiReference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
-          scheduledBegin: Time.now.strftime('%Y-%m-%dT') + waypoint[:time].strftime('%H:%M:%S'),
+          scheduledBegin: date.strftime('%Y-%m-%dT') + waypoint[:time].strftime('%H:%M:%S'),
           type: 'job',
           vehicleRef: vehicleRef,
         },

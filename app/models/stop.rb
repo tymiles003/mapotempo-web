@@ -25,8 +25,8 @@ class Stop < ActiveRecord::Base
 
   def order
     planning = route.planning
-    if planning.customer.enable_orders && planning.order_array
-      planning.order_array.orders.where(destination_id: destination.id, shift: planning.order_array_shift).first
+    if planning.customer.enable_orders && planning.order_array && planning.date
+      planning.order_array.orders.where(destination_id: destination.id, shift: planning.date - planning.order_array.base_date).first
     end
   end
 

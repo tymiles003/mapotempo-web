@@ -181,7 +181,7 @@ en:
         created_at: "Created"
         updated_at: "Updated"
         order_array_id: "Order array"
-        order_array_shift: "Order array column"
+        date: "Date"
       product:
         code: "Code"
         name: "Name"
@@ -540,7 +540,6 @@ en:
     form:
       tags_help: "Restrict customer to this categories"
       order_array: "Orders"
-      order_array_shift: "Date"
 
   routes:
     show:

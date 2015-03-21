@@ -2,11 +2,11 @@
     <name>
       <%= [
         route.planning.name,
-        ' - ',
-        route.ref ? route.ref + ' - ' : '',
+        route.ref,
         route.vehicle.name,
-        route.planning.customer.enable_orders && route.planning.order_array ? " - #{route.planning.order_array.name} " + l(route.planning.order_array.base_date + route.planning.order_array_shift) : '',
-      ].join.gsub(/\s+/, ' ').strip
+        route.planning.customer.enable_orders && route.planning.order_array ? route.planning.order_array.name : nil,
+        route.planning.date ? l(route.planning.date) : nil,
+      ].select{ |i| i }.join(' - ').gsub(/\s+/, ' ').strip
     %>
     </name>
     <desc>

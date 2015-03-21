@@ -16,6 +16,13 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 function plannings_form() {
+  $('#planning_date').datepicker({
+    language: defaultLocale,
+    autoclose: true,
+    calendarWeeks: true,
+    todayHighlight: true
+  });
+
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
     minimumResultsForSearch: -1,

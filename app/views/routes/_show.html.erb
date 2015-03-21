@@ -9,7 +9,10 @@
       -
       <i class="fa fa-check-square-o fa-fw"></i>
       <%= route.planning.order_array.name %>
-      <%= l(route.planning.order_array.base_date + route.planning.order_array_shift) %>
+    <% end %>
+    <% if route.planning.date %>
+      -
+      <%= l(route.planning.date) %>
     <% end %>
   </h1>
   <% if route.planning.customer.print_header %>

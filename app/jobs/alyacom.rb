@@ -31,9 +31,9 @@ class Alyacom
       city: store.city,
     }
 
-    base_date = route.planning.order_array_id ? route.planning.order_array.base_date + route.planning.order_array_shift : Date.today
-    planning_id_base = base_date.strftime('%y%m%d')
-    base_time = base_date.to_time
+    date = route.planning.date || Date.today
+    planning_id_base = date.strftime('%y%m%d')
+    base_time = date.to_time
     waypoints = route.stops.select(&:active).collect{ |stop|
       take_over = stop.destination.take_over ? stop.destination.take_over : customer.take_over
       take_over = take_over ? take_over.seconds_since_midnight : 0
@@ -66,6 +66,6 @@ class Alyacom
       }
     }
     customer = route.planning.customer
-    AlyacomApi.createJobRoute(customer.alyacom_association, base_date, staff, waypoints)
+    AlyacomApi.createJobRoute(customer.alyacom_association, date, staff, waypoints)
   end
 end

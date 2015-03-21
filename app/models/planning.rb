@@ -198,7 +198,7 @@ class Planning < ActiveRecord::Base
     }
 
     self.order_array = order_array
-    self.order_array_shift = shift
+    self.date = order_array.base_date + shift
   end
 
   def to_s

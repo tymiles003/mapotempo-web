@@ -29,8 +29,9 @@ class Tomtom
   end
 
   def self.export_route_as_orders(route)
+    date = route.planning.date || Time.now
     customer = route.planning.customer
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_start, -1, route.vehicle.store_start.name, route.start)
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, route.vehicle.store_start, -1, route.vehicle.store_start.name, route.start)
     route.stops.select(&:active).each{ |stop|
       description = [
         '',
@@ -41,12 +42,13 @@ class Tomtom
         stop.destination.detail,
         stop.destination.comment,
       ].select{ |s| s }.join(' ').strip
-      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, stop.destination, stop.id, description, stop.time)
+      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, stop.destination, stop.id, description, stop.time)
     }
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, -2, route.vehicle.store_stop.name, route.start)
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, route.vehicle.store_stop, -2, route.vehicle.store_stop.name, route.start)
   end
 
   def self.export_route_as_waypoints(route)
+    date = route.planning.date || Time.now
     customer = route.planning.customer
     waypoints = ([[
         route.vehicle.store_start.lat,
@@ -71,6 +73,6 @@ class Tomtom
         description = l[2..-1].select{ |s| s }.join(' ').strip
         {lat: l[0], lng: l[1], description: description}
       }
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, route.vehicle.store_stop, route.vehicle.id, route.vehicle.store_stop.name, route.start, waypoints)
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, route.vehicle.store_stop, route.vehicle.id, route.vehicle.store_stop.name, route.start, waypoints)
   end
 end

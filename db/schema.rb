@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150309125918) do
+ActiveRecord::Schema.define(version: 20150318172400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,8 +136,8 @@ ActiveRecord::Schema.define(version: 20150309125918) do
     t.integer  "zoning_id"
     t.boolean  "zoning_out_of_date"
     t.integer  "order_array_id"
-    t.integer  "order_array_shift"
     t.string   "ref"
+    t.date     "date"
   end
 
   add_index "plannings", ["customer_id"], name: "fk__plannings_customer_id", using: :btree

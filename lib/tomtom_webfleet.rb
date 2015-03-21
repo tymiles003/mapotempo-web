@@ -55,7 +55,7 @@ module TomtomWebfleet
    })
   end
 
-  def self.sendDestinationOrder(account, username, password, objectuid, position, orderid, description, time, waypoints = nil)
+  def self.sendDestinationOrder(account, username, password, objectuid, date, position, orderid, description, time, waypoints = nil)
     unique_base_oder_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
       dstOrderToSend: {
@@ -86,7 +86,7 @@ module TomtomWebfleet
       }
     }
 
-    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = Time.now.strftime('%Y-%m-%dT') + time.strftime('%H:%M:%S')) if time
+    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = date.strftime('%Y-%m-%dT') + time.strftime('%H:%M:%S')) if time
 
     if waypoints
       params[:advancedSendDestinationOrderParm] = {waypoints: {

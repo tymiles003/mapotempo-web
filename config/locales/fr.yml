@@ -184,7 +184,7 @@ fr:
         created_at: "Création"
         updated_at: "Mise à jour"
         order_array_id: "Tableau de commandes"
-        order_array_shift: Colonne du tableau de commandes
+        date: "Date"
       product:
         code: "Code"
         name: "Nom"
@@ -545,7 +545,6 @@ fr:
     form:
       tags_help: "Restreint les clients pris en compte à ces catégories"
       order_array: "Comm."
-      order_array_shift: "Date"
 
   routes:
     show:

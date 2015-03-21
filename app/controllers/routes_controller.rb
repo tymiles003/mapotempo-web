@@ -87,8 +87,9 @@ class RoutesController < ApplicationController
   end
 
   def filename
-    (@route.planning.name + '_' + (@route.ref || @route.vehicle.name) + (@route.planning.customer.enable_orders && @route.planning.order_array ?
-      ('_' + @route.planning.order_array.name + '_' + l(@route.planning.order_array.base_date + @route.planning.order_array_shift).gsub('/', '-')) :
-      '')).gsub('"', '')
+    (@route.planning.name + '_' + (@route.ref || @route.vehicle.name) +
+      (@route.planning.customer.enable_orders && @route.planning.order_array ? '_' + @route.planning.order_array.name : '') +
+      (@route.planning.date ? '_' + l(@route.planning.date) : '')
+    ).gsub('/', '-').gsub('"', '')
   end
 end

@@ -9,9 +9,8 @@
     <tr>
       <th><%= t 'activerecord.attributes.planning.name' %></th>
       <th><%= t 'activerecord.attributes.planning.ref' %></th>
+      <th><%= t 'activerecord.attributes.planning.date' %></th>
       <th><%= t 'activerecord.attributes.planning.tags' %></th>
-      <th><%= t 'activerecord.attributes.planning.created_at' %></th>
-      <th><%= t 'activerecord.attributes.planning.updated_at' %></th>
       <th></th>
     </tr>
   </thead>
@@ -21,13 +20,12 @@
       <tr>
         <td><%= planning.name %></td>
         <td><%= planning.ref %></td>
+        <td><%= planning.date && l(planning.date) %></td>
         <td>
         <% planning.tags.each{ |tag| %>
           <%= tag.label %>
         <% } %>
         </td>
-        <td><%= l planning.created_at %></td>
-        <td><%= l planning.updated_at %></td>
         <td class="text-right">
           <%= link_to planning_duplicate_path(planning), :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
           <%= link_to edit_planning_path(planning), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
