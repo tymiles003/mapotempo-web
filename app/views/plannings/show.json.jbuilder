@@ -64,12 +64,14 @@ else
       end
       json.destination do
         destination = stop.destination
-        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment, :quantity
+        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment
         if @planning.customer.enable_orders
           order = stop.order
           if order
             json.orders order.products.collect(&:code).join(', ')
           end
+        else
+          json.extract! destination, :quantity
         end
         (json.take_over destination.take_over.strftime('%H:%M:%S')) if destination.take_over
         (json.open destination.open.strftime('%H:%M')) if destination.open
