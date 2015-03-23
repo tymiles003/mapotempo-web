@@ -195,6 +195,7 @@ class Planning < ActiveRecord::Base
       route.stops.each{ |stop|
         stop.active = orders.key?(stop.destination_id) && !orders[stop.destination_id].empty?
       }
+      route.out_of_date = true
     }
 
     self.order_array = order_array
