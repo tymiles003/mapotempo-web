@@ -30,19 +30,30 @@
   .mapotempo-icons {
     font-family: 'mapotempo';
     color: lightgray;
-    align: center;
     font-size: 150pt;
     font-size: 15vw;
+    text-align: center;
 
-    #mapotempo-map:before {
+    .mapotempo-icon {
+      position: relative;
+      right: -0.25em;
+      font-style: normal;
+      font-weight: normal;
+    }
+
+    .mapotempo-icon::before {
+      box-sizing: border-box;
+    }
+
+    .mapotempo-map:before {
       content: "b";
     }
 
-    #mapotempo-car:before {
+    .mapotempo-car:before {
       content: "c";
     }
 
-    #mapotempo-clock:before {
+    .mapotempo-clock:before {
       content: "a";
     }
   }
