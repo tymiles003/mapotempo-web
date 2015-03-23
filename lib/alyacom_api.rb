@@ -85,7 +85,9 @@ module AlyacomApi
       }
     }
 
-    plannings += get.collect{ |_k, planning|
+    plannings += get.select{ |_k, planning|
+      Date.parse(planning['start']) == date
+    }.collect{ |_k, planning|
       planning['deleted'] = true
       planning
     }
