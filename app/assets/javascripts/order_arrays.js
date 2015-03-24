@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2014
+// Copyright © Mapotempo, 2014-2015
 //
 // This file is part of Mapotempo.
 //
@@ -221,13 +221,15 @@ function order_arrays_edit(params) {
 
     set_fake_select2($('td[data-id] select'));
 
-    function change_order(product_id, add_product, remove_product, paste, copy, selector) {
+    function change_order(product_id, add_product, remove_product, paste, copy, selector_function) {
       var orders = {};
       block_save_select_change = true;
-      selector.each(function(i, td) {
+      selector_function().each(function(i, select) {
+        var $select = $(select),
+          $td = $select.parent();
         var val = [];
         if (add_product || remove_product) {
-          val = $('select', $(this)).val() || [];
+          val = $select.val() || [];
           var index = val.indexOf(product_id);
           if (add_product) {
             if (index < 0) {
@@ -241,13 +243,13 @@ function order_arrays_edit(params) {
         } else if (paste && copy) {
           val = copy[i];
         }
-        build_fake_select2($(td), products, val);
+        build_fake_select2($td, products, val);
 
-        orders[$(this).data('id')] = {
+        orders[$td.data('id')] = {
           product_ids: val
         };
       });
-      set_fake_select2(selector);
+      set_fake_select2(selector_function());
       block_save_select_change = false;
       table_neeed_update = true;
       build_total(undefined, $('#order_array table'));
@@ -283,8 +285,10 @@ function order_arrays_edit(params) {
           remove_product = $(this).hasClass('remove_product_row'),
           paste = $(this).hasClass('paste_row'),
           product_id = ($(this).data('product_id') || 0).toString(),
-          selector = $('td[data-id] select', tr);
-        change_order(product_id, add_product, remove_product, paste, copy_row, selector);
+          selector_function = function() {
+            return $('td[data-id] select', tr);
+          };
+        change_order(product_id, add_product, remove_product, paste, copy_row, selector_function);
       }
     });
 
@@ -301,13 +305,16 @@ function order_arrays_edit(params) {
 
     $('.empty_column, .paste_column, .add_product_column, .remove_product_column').click(function(e) {
       if (confirm(I18n.t('order_arrays.edit.confirm_ovewrite_column'))) {
-        var td_index = $(this).closest('th').index('th') + 1,
-          add_product = $(this).hasClass('add_product_column'),
-          remove_product = $(this).hasClass('remove_product_column'),
-          paste = $(this).hasClass('paste_column'),
-          product_id = ($(this).data('product_id') || 0).toString();
-        selector = $('tbody tr td:nth-child(' + td_index + ') select', $(this).closest('table'));
-        change_order(product_id, add_product, remove_product, paste, copy_column, selector);
+        var $this = $(this),
+          td_index = $this.closest('th').index('th') + 1,
+          add_product = $this.hasClass('add_product_column'),
+          remove_product = $this.hasClass('remove_product_column'),
+          paste = $this.hasClass('paste_column'),
+          product_id = ($this.data('product_id') || 0).toString(),
+          selector_function = function() {
+            return $('tbody tr td:nth-child(' + td_index + ') select', $this.closest('table'));
+          };
+        change_order(product_id, add_product, remove_product, paste, copy_column, selector_function);
       }
     });
 
