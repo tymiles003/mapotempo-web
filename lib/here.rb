@@ -137,8 +137,13 @@ module Here
       begin
         response = RestClient.get(url, {params: params})
       rescue => e
-        Rails.logger.info e.response
-        raise e
+        error = JSON.parse(e.response)
+        if error['type'] == 'ApplicationError'
+          raise [error['subtype'], error['details']].join(' ')
+        else
+          Rails.logger.info error
+        end
+        raise ['Here', error['type']].join(' ')
       end
       request = JSON.parse(response)
       @cache_request.write(key, request)
