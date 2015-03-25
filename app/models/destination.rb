@@ -44,7 +44,7 @@ class Destination < ActiveRecord::Base
   end
 
   def distance(position)
-    Math.hypot(position.lat - lat, position.lng - lng)
+    lat && lng && position.lat && position.lng && Math.hypot(position.lat - lat, position.lng - lng)
   end
 
   def destroy

@@ -45,7 +45,9 @@
               <span class="name" title="{{name}}">{{name}}</span><br />
             </div>
             <div class="btn-group pull-right destination-tools">
-              <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+              {{#geocoded}}
+                <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+              {{/geocoded}}
               <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
               {{#geocoded}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/geocoded}}
             </div>
@@ -165,7 +167,9 @@
           </div>
           <div class="btn-group pull-right destination-tools">
             {{#automatic_insert}}
-              <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+              {{#geocoded}}
+                <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+              {{/geocoded}}
             {{/automatic_insert}}
             <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
             {{#geocoded}}
