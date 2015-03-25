@@ -1,6 +1,14 @@
 class ApiV01 < Grape::API
   version '0.1', using: :path
 
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    rack_response(nil, 404)
+  end
+
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    rack_response({error: e.to_s}.to_json, 400)
+  end
+
   helpers do
     def warden
       env['warden']
