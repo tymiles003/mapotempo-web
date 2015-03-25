@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   def append_info_to_payload(payload)
     super
     # More info for Lograge
-    payload[:customer_id] = @customer && @customer.id
+    payload[:customer_id] = current_user && current_user.customer && current_user.customer.id
   end
 
   protected
