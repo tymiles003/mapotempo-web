@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/api/swagger_doc.json/:all(*format)' => redirect('/api/swagger_doc/%{all}%{format}') # Workaround for silly swagger-codegen
   mount ApiRoot => '/api'
 
   devise_for :users
