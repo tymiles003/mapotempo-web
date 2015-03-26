@@ -14,9 +14,11 @@ class ApiLogger
 
     ActiveSupport::Notifications.instrument "grape.request", payload do
       @app.call(env).tap do |response|
-        payload[:params] = env["api.endpoint"].params.to_hash
-        payload[:params].delete("route_info")
-        payload[:params].delete("format")
+        if env["api.endpoint"]
+          payload[:params] = env["api.endpoint"].params.to_hash
+          payload[:params].delete("route_info")
+          payload[:params].delete("format")
+        end
         payload[:response_status] = response[0]
       end
     end
