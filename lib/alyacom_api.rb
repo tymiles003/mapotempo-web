@@ -102,18 +102,31 @@ module AlyacomApi
 
   def self.get(association_id, object, params = {})
     url = "#{@base_api_url}/#{association_id}/#{object}"
-    get_row(url, {enc: :json, apiKey: @api_key}.merge(params))
+    get_raw(url, {enc: :json, apiKey: @api_key}.merge(params))
   end
 
-  def self.get_row(url, params)
+  def self.get_raw(url, params)
     data = []
     next_ = nil
     begin
       begin
         response = RestClient.get(next_ || url, next_ ? nil : {params: params})
       rescue => e
-        Rails.logger.info e.response
-        raise e
+        Rails.logger.info next_ || url
+        begin
+          # Parse malformed Json, replace key by string, simple quote by double quote
+          response = JSON.parse(e.response.gsub('\'', '"').gsub(/([\'\"])?([a-zA-Z0-9_]+)([\'\"])?:/, '"\2":'))
+        rescue
+          Rails.logger.info e
+          raise e
+        end
+        if !response['message'].empty?
+          Rails.logger.info response['message']
+          raise response['message']
+        else
+          Rails.logger.info e
+          raise e
+        end
       end
       response = JSON.parse(response)
       data += response['data']

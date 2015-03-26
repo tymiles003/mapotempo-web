@@ -41,9 +41,9 @@ class PlanningsController < ApplicationController
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
       end
-      begin
-        @planning.routes.select(&:vehicle).each{ |route|
-          format.tomtom do
+      format.tomtom do
+        begin
+          @planning.routes.select(&:vehicle).each{ |route|
             if params[:type] == 'waypoints'
               Tomtom.export_route_as_waypoints(route) if route.vehicle.tomtom_id
             elsif params[:type] == 'orders'
@@ -51,19 +51,31 @@ class PlanningsController < ApplicationController
             else
               Tomtom.clear(route) if route.vehicle.tomtom_id
             end
-            head :no_content
-          end
-          format.masternaut do
+          }
+          head :no_content
+        rescue => e
+          render json: e.message, status: :unprocessable_entity
+        end
+      end
+      format.masternaut do
+        begin
+          @planning.routes.select(&:vehicle).each{ |route|
             Masternaut.export_route(route) if route.vehicle.masternaut_ref
-            head :no_content
-          end
-          format.alyacom do
+          }
+          head :no_content
+        rescue => e
+          render json: e.message, status: :unprocessable_entity
+        end
+      end
+      format.alyacom do
+        begin
+          @planning.routes.select(&:vehicle).each{ |route|
             Alyacom.export_route(route) if route.vehicle.customer.alyacom_association
-            head :no_content
-          end
-        }
-      rescue => e
-        render json: e.message, status: :unprocessable_entity
+          }
+          head :no_content
+        rescue => e
+          render json: e.message, status: :unprocessable_entity
+        end
       end
     end
   end

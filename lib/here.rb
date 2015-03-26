@@ -141,6 +141,7 @@ module Here
         if error['type'] == 'ApplicationError'
           raise [error['subtype'], error['details']].join(' ')
         else
+          Rails.logger.info [url, params]
           Rails.logger.info error
         end
         raise ['Here', error['type']].join(' ')
