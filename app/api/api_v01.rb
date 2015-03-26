@@ -39,7 +39,9 @@ class ApiV01 < Grape::API
 
     def error!(*args)
       # Workaround for close transaction on error!
-      ActiveRecord::Base.connection.rollback_transaction
+      if !ActiveRecord::Base.connection.transaction_manager.current_transaction.is_a?(ActiveRecord::ConnectionAdapters::NullTransaction)
+        ActiveRecord::Base.connection.rollback_transaction
+      end
       super.error!(*args)
     end
   end
