@@ -26,7 +26,9 @@ class V01::Plannings < Grape::API
 
     desc 'Create planning.', {
       nickname: 'createPlanning',
-      params: V01::Entities::Planning.documentation.except(:id)
+      params: V01::Entities::Planning.documentation.except(:id).merge({
+        name: { required: true }
+      })
     }
     post  do
       planning = current_customer.plannings.build(planning_params)

@@ -25,7 +25,9 @@ class V01::Tags < Grape::API
 
     desc 'Create tag.', {
       nickname: 'createTag',
-      params: V01::Entities::Tag.documentation.except(:id)
+      params: V01::Entities::Tag.documentation.except(:id).merge({
+        label: { required: true }
+      })
     }
     post  do
       tag = current_customer.tags.build(tag_params)

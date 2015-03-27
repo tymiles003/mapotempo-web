@@ -46,7 +46,7 @@ class V01::Routes < Grape::API
           nickname: 'activationStops'
         }
         params {
-          requires :active, type: String, desc: 'Value in liste : all, reverse, none'
+          requires :active, type: String, values: ['all', 'reverse', 'none']
         }
         patch ':id/active/:active' do
           planning_id = read_id(params[:planning_id])

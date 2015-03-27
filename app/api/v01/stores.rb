@@ -25,7 +25,10 @@ class V01::Stores < Grape::API
 
     desc 'Create store.', {
       nickname: 'createStore',
-      params: V01::Entities::Store.documentation.except(:id)
+      params: V01::Entities::Store.documentation.except(:id).merge({
+        name: { required: true },
+        city: { required: true }
+      })
     }
     post  do
       store = current_customer.stores.build(store_params)

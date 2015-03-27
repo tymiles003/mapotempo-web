@@ -31,7 +31,9 @@ class V01::Destinations < Grape::API
 
     desc 'Create destination.', {
       nickname: 'createDestination',
-      params: V01::Entities::Destination.documentation.except(:id)
+      params: V01::Entities::Destination.documentation.except(:id).merge({
+        name: { required: true }
+      })
     }
     post do
       destination = current_customer.destinations.build(destination_params)

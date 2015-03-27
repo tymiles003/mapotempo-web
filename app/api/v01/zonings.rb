@@ -25,7 +25,9 @@ class V01::Zonings < Grape::API
 
     desc 'Create zoning.', {
       nickname: 'createZoning',
-      params: V01::Entities::Zoning.documentation.except(:id)
+      params: V01::Entities::Zoning.documentation.except(:id).merge({
+        name: { required: true }
+      })
     }
     post  do
       zoning = current_customer.zonings.build(zoning_params)
