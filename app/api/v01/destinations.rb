@@ -13,7 +13,7 @@ class V01::Destinations < Grape::API
     end
   end
 
-  resource :destinations, desc: "Operations about destinations. On url parameter, id can be a ref field value, then use 'ref:[value]' as id." do
+  resource :destinations, desc: 'Operations about destinations. On url parameter, id can be a ref field value, then use "ref:[value]" as id.' do
     desc 'Fetch customer''s destinations.', {
       nickname: 'getDestinations'
     }
@@ -45,7 +45,7 @@ class V01::Destinations < Grape::API
       params: V01::Entities::DestinationsImport.documentation
     }
     params do
-      optional :destinations, type: Array, desc: "JSON content in mutual exclusion with CSV file upload"
+      optional :destinations, type: Array, desc: 'JSON content in mutual exclusion with CSV file upload'
     end
     put '' do
       if params['destinations']
