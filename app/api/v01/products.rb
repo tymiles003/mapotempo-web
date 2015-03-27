@@ -9,17 +9,22 @@ class V01::Products < Grape::API
   end
 
   resource :products do
-    desc "Return customer's products."
+    desc 'Fetch customer''s products.', {
+      nickname: 'getProducts'
+    }
     get do
       present current_customer.products.load, with: V01::Entities::Product
     end
 
-    desc 'Return a product.'
+    desc 'Fetch product.', {
+      nickname: 'getProduct'
+    }
     get ':id' do
       present current_customer.products.find(params[:id]), with: V01::Entities::Product
     end
 
-    desc 'Create a product.', {
+    desc 'Create product.', {
+      nickname: 'createProduct',
       params: V01::Entities::Product.documentation.except(:id)
     }
     post  do
@@ -28,7 +33,8 @@ class V01::Products < Grape::API
       present product, with: V01::Entities::Product
     end
 
-    desc 'Update a product.', {
+    desc 'Update product.', {
+      nickname: 'updateProduct',
       params: V01::Entities::Product.documentation.except(:id)
     }
     put ':id' do
@@ -38,7 +44,9 @@ class V01::Products < Grape::API
       present product, with: V01::Entities::Product
     end
 
-    desc 'Destroy a product.'
+    desc 'Delete product.', {
+      nickname: 'deleteProduct'
+    }
     delete ':id' do
       current_customer.products.find(params[:id]).destroy
     end

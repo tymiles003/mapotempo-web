@@ -9,17 +9,22 @@ class V01::Tags < Grape::API
   end
 
   resource :tags do
-    desc "Return customer's tags."
+    desc 'Fetch customer''s tags.', {
+      nickname: 'getTags'
+    }
     get do
       present current_customer.tags.load, with: V01::Entities::Tag
     end
 
-    desc 'Return a tag.'
+    desc 'Fetch tag.', {
+      nickname: 'getTag'
+    }
     get ':id' do
       present current_customer.tags.find(params[:id]), with: V01::Entities::Tag
     end
 
-    desc 'Create a tag.', {
+    desc 'Create tag.', {
+      nickname: 'createTag',
       params: V01::Entities::Tag.documentation.except(:id)
     }
     post  do
@@ -28,7 +33,8 @@ class V01::Tags < Grape::API
       present tag, with: V01::Entities::Tag
     end
 
-    desc 'Update a tag.', {
+    desc 'Update tag.', {
+      nickname: 'updateTag',
       params: V01::Entities::Tag.documentation.except(:id)
     }
     put ':id' do
@@ -38,7 +44,9 @@ class V01::Tags < Grape::API
       present tag, with: V01::Entities::Tag
     end
 
-    desc 'Destroy a tag.'
+    desc 'Delete tag.', {
+      nickname: 'deleteTag'
+    }
     delete ':id' do
       current_customer.tags.find(params[:id]).destroy
     end

@@ -12,20 +12,25 @@ class V01::Routes < Grape::API
     segment '/:planning_id' do
 
       resource :routes do
-        desc "Return planning's routes."
+        desc 'Fetch planning''s routes.', {
+          nickname: 'getRoutes'
+        }
         get do
           planning_id = read_id(params[:planning_id])
           present current_customer.plannings.where(planning_id).first.routes.load, with: V01::Entities::Route
         end
 
-        desc 'Return a route.'
+        desc 'Fetch route.', {
+          nickname: 'getRoute'
+        }
         get ':id' do
           planning_id = read_id(params[:planning_id])
           id = read_id(params[:id])
           present current_customer.plannings.where(planning_id).first.routes.where(id).first, with: V01::Entities::Route
         end
 
-        desc 'Update a route.', {
+        desc 'Update route.', {
+          nickname: 'updateRoute',
           params: V01::Entities::Route.documentation.slice(:hidden, :locked)
         }
         put ':id' do
@@ -37,7 +42,9 @@ class V01::Routes < Grape::API
           present route, with: V01::Entities::Route
         end
 
-        desc 'Change stops activation.'
+        desc 'Change stops activation.', {
+          nickname: 'activationStops'
+        }
         params {
           requires :active, type: String, desc: 'Value in liste : all, reverse, none'
         }
@@ -51,7 +58,9 @@ class V01::Routes < Grape::API
           end
         end
 
-        desc 'Move destination position in routes.'
+        desc 'Move destination position in routes.', {
+          nickname: 'moveStop'
+        }
         params {
           requires :destination_id, type: String, desc: 'Destination id to move'
           requires :index, type: Integer, desc: 'New position in the route'
@@ -67,7 +76,9 @@ class V01::Routes < Grape::API
           route.move_destination(destination, params[:index].to_i + 1) && planning.save
         end
 
-        desc 'Starts asynchronous route optimization.'
+        desc 'Starts asynchronous route optimization.', {
+          nickname: 'optimizeRoute'
+        }
         get ':id/optimize' do
           # TODO
           error!('501 Not Implemented', 501)

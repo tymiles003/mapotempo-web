@@ -11,7 +11,9 @@ class V01::Geocoder < Grape::API
   end
 
   resource :geocoder do
-    desc 'Geocode.'
+    desc 'Geocode.', {
+      nickname: 'geocode'
+    }
     get 'search' do
       json = Geocode.code_free(params[:q]).collect{ |result|
         {

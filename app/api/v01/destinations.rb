@@ -14,18 +14,23 @@ class V01::Destinations < Grape::API
   end
 
   resource :destinations, desc: "Operations about destinations. On url parameter, id can be a ref field value, then use 'ref:[value]' as id." do
-    desc "Return customer's destinations."
+    desc 'Fetch customer''s destinations.', {
+      nickname: 'getDestinations'
+    }
     get do
       present current_customer.destinations.load, with: V01::Entities::Destination
     end
 
-    desc 'Return a destination.'
+    desc 'Fetch destination.', {
+      nickname: 'getDestination'
+    }
     get ':id' do
       id = read_id(params[:id])
       present current_customer.destinations.where(id).first, with: V01::Entities::Destination
     end
 
-    desc 'Create a destination.', {
+    desc 'Create destination.', {
+      nickname: 'createDestination',
       params: V01::Entities::Destination.documentation.except(:id)
     }
     post do
@@ -35,7 +40,8 @@ class V01::Destinations < Grape::API
       present destination, with: V01::Entities::Destination
     end
 
-    desc 'Create destinations by upload a CSV file or by JSON', {
+    desc 'Import destinations by upload a CSV file or by JSON', {
+      nickname: 'importDestinations',
       params: V01::Entities::DestinationsImport.documentation
     }
     params do
@@ -59,7 +65,8 @@ class V01::Destinations < Grape::API
       end
     end
 
-    desc 'Update a destination.', {
+    desc 'Update destination.', {
+      nickname: 'updateDestination',
       params: V01::Entities::Destination.documentation.except(:id)
     }
     put ':id' do
@@ -71,13 +78,16 @@ class V01::Destinations < Grape::API
       present destination, with: V01::Entities::Destination
     end
 
-    desc 'Destroy a destination.'
+    desc 'Delete destination.', {
+      nickname: 'deleteDestination'
+    }
     delete ':id' do
       id = read_id(params[:id])
       current_customer.destinations.where(id).first.destroy
     end
 
-    desc 'Geocode a destination.', {
+    desc 'Geocode destination.', {
+      nickname: 'geocodeDestination',
       params: V01::Entities::Destination.documentation.except(:id)
     }
     patch 'geocode' do
@@ -88,6 +98,7 @@ class V01::Destinations < Grape::API
 
     if Mapotempo::Application.config.geocode_complete
       desc 'Auto completion on destination.', {
+        nickname: 'autocompleteDestination',
         params: V01::Entities::Destination.documentation.except(:id)
       }
       patch 'geocode_complete' do

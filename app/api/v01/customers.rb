@@ -15,12 +15,15 @@ class V01::Customers < Grape::API
   end
 
   resource :customers do
-    desc 'Return a customer.'
+    desc 'Fetch customer.', {
+      nickname: 'getCustomer'
+    }
     get ':id' do
       present current_customer(params[:id]), with: V01::Entities::Customer
     end
 
-    desc 'Update a customer.', {
+    desc 'Update customer.', {
+      nickname: 'updateCustomer',
       params: V01::Entities::Customer.documentation.except(:id)
     }
     put ':id' do
@@ -30,7 +33,9 @@ class V01::Customers < Grape::API
       present @current_customer, with: V01::Entities::Customer
     end
 
-    desc 'Return a job'
+    desc 'Return a job', {
+      nickname: 'getJob'
+    }
     get ':id/job/:job_id' do
       current_customer(params[:id])
       if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
@@ -40,7 +45,9 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Cancel job'
+    desc 'Cancel job', {
+      nickname: 'deleteJob'
+    }
     delete ':id/job/:job_id' do
       current_customer(params[:id])
       if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
@@ -50,7 +57,9 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Fetch tomtom ids.'
+    desc 'Fetch tomtom ids.', {
+      nickname: 'getTomtomIds'
+    }
     get ':id/tomtom_ids' do
       current_customer(params[:id])
       Hash[Tomtom.fetch_device_id(@current_customer).collect{ |tomtom|

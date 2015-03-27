@@ -9,17 +9,22 @@ class V01::Vehicles < Grape::API
   end
 
   resource :vehicles do
-    desc "Return customer's vehicles."
+    desc 'Fetch customer\'s vehicles.', {
+      nickname: 'getVehicles'
+    }
     get do
       present current_customer.vehicles.load, with: V01::Entities::Vehicle
     end
 
-    desc 'Return a vehicle.'
+    desc 'Fetch vehicle.', {
+      nickname: 'getVehicle'
+    }
     get ':id' do
       present current_customer.vehicles.find(params[:id]), with: V01::Entities::Vehicle
     end
 
-    desc 'Update a vehicle.', {
+    desc 'Update vehicle.', {
+      nickname: 'updateVehicle',
       params: V01::Entities::Vehicle.documentation.except(:id)
     }
     put ':id' do

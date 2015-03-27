@@ -9,18 +9,23 @@ class V01::Plannings < Grape::API
   end
 
   resource :plannings, desc: "Operations about plannings and routes. On url parameter, id can be a ref field value, then use 'ref:[value]' as id." do
-    desc "Return customer's plannings."
+    desc 'Fetch customer''s plannings.', {
+      nickname: 'getPlannings'
+    }
     get do
       present current_customer.plannings.load, with: V01::Entities::Planning
     end
 
-    desc 'Return a planning.'
+    desc 'Fetch planning.', {
+      nickname: 'getPlanning'
+    }
     get ':id' do
       id = read_id(params[:id])
       present current_customer.plannings.where(id).first, with: V01::Entities::Planning
     end
 
-    desc 'Create a planning.', {
+    desc 'Create planning.', {
+      nickname: 'createPlanning',
       params: V01::Entities::Planning.documentation.except(:id)
     }
     post  do
@@ -29,7 +34,8 @@ class V01::Plannings < Grape::API
       present planning, with: V01::Entities::Planning
     end
 
-    desc 'Update a planning.', {
+    desc 'Update planning.', {
+      nickname: 'updatePLanning',
       params: V01::Entities::Planning.documentation.except(:id)
     }
     put ':id' do
@@ -40,13 +46,17 @@ class V01::Plannings < Grape::API
       present planning, with: V01::Entities::Planning
     end
 
-    desc 'Destroy a planning.'
+    desc 'Delete planning.', {
+      nickname: 'deletePlanning'
+    }
     delete ':id' do
       id = read_id(params[:id])
       current_customer.plannings.where(id).first.destroy
     end
 
-    desc 'Force recompute the planning after parameter update.'
+    desc 'Force recompute the planning after parameter update.', {
+      nickname: 'refreshPlanning'
+    }
     get ':id/refresh' do
       id = read_id(params[:id])
       planning = current_customer.plannings.where(id).first
@@ -55,31 +65,41 @@ class V01::Plannings < Grape::API
       present planning, with: V01::Entities::Planning
     end
 
-    desc 'Switch two vehicles.'
+    desc 'Switch two vehicles.', {
+      nickname: 'switchVehicles'
+    }
     patch ':id/switch' do
       # TODO
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Suggest a place for an unaffected destination.'
+    desc 'Suggest a place for an unaffected destination.', {
+      nickname: 'automaticInsertDestination'
+    }
     patch ':id/automatic_insert' do
       # TODO
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Set stop status.'
+    desc 'Set stop status.', {
+      nickname: 'updateStop'
+    }
     patch ':id/update_stop' do
       # TODO
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Starts asynchronous routes optimization.'
+    desc 'Starts asynchronous routes optimization.', {
+      nickname: 'optimizeRoutes'
+    }
     get ':id/optimize_each_routes' do
       # TODO
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Clone the planning.'
+    desc 'Clone the planning.', {
+      nickname: 'clonePlanning'
+    }
     patch ':id/duplicate' do
       id = read_id(params[:id])
       planning = current_customer.plannings.where(id).first
@@ -88,7 +108,9 @@ class V01::Plannings < Grape::API
       present planning, with: V01::Entities::Planning
     end
 
-    desc 'Use order_array in the planning.'
+    desc 'Use order_array in the planning.', {
+      nickname: 'useOrderArray'
+    }
     patch ':id/orders/:order_array_id/:shift' do
       id = read_id(params[:id])
       planning = current_customer.plannings.where(id).first
