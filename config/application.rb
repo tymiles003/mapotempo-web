@@ -53,6 +53,9 @@ module Mapotempo
 
     # Application config
 
+    config.product_name = 'Mapotempo'
+    config.product_contact = 'frederic@mapotempo.com'
+
     config.optimize_cache =  ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10)
     config.optimize_url = 'http://localhost:4567/0.1/optimize_tsptw'
     config.optimize_time = 30000
