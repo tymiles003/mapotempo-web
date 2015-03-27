@@ -10,14 +10,17 @@ class V01::Zonings < Grape::API
 
   resource :zonings do
     desc 'Fetch customer\'s zonings.', {
-      nickname: 'getZonings'
+      nickname: 'getZonings',
+      is_array: true,
+      entity: V01::Entities::Zoning
     }
     get do
       present current_customer.zonings.load, with: V01::Entities::Zoning
     end
 
     desc 'Fetch zoning.', {
-      nickname: 'getZoning'
+      nickname: 'getZoning',
+      entity: V01::Entities::Zoning
     }
     params {
       requires :id, type: Integer
@@ -30,9 +33,10 @@ class V01::Zonings < Grape::API
       nickname: 'createZoning',
       params: V01::Entities::Zoning.documentation.except(:id).merge({
         name: { required: true }
-      })
+      }),
+      entity: V01::Entities::Zoning
     }
-    post  do
+    post do
       zoning = current_customer.zonings.build(zoning_params)
       zoning.save!
       present zoning, with: V01::Entities::Zoning
@@ -40,7 +44,8 @@ class V01::Zonings < Grape::API
 
     desc 'Update zoning.', {
       nickname: 'updateZoning',
-      params: V01::Entities::Zoning.documentation.except(:id)
+      params: V01::Entities::Zoning.documentation.except(:id),
+      entity: V01::Entities::Zoning
     }
     params {
       requires :id, type: Integer

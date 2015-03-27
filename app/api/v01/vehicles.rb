@@ -10,14 +10,17 @@ class V01::Vehicles < Grape::API
 
   resource :vehicles do
     desc 'Fetch customer\'s vehicles.', {
-      nickname: 'getVehicles'
+      nickname: 'getVehicles',
+      is_array: true,
+      entity: V01::Entities::Vehicle
     }
     get do
       present current_customer.vehicles.load, with: V01::Entities::Vehicle
     end
 
     desc 'Fetch vehicle.', {
-      nickname: 'getVehicle'
+      nickname: 'getVehicle',
+      entity: V01::Entities::Vehicle
     }
     params {
       requires :id, type: Integer
@@ -28,7 +31,8 @@ class V01::Vehicles < Grape::API
 
     desc 'Update vehicle.', {
       nickname: 'updateVehicle',
-      params: V01::Entities::Vehicle.documentation.except(:id)
+      params: V01::Entities::Vehicle.documentation.except(:id),
+      entity: V01::Entities::Vehicle
     }
     params {
       requires :id, type: Integer

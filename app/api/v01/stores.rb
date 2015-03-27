@@ -10,14 +10,17 @@ class V01::Stores < Grape::API
 
   resource :stores do
     desc 'Fetch customer\'s stores.', {
-      nickname: 'getStores'
+      nickname: 'getStores',
+      is_array: true,
+      entity: V01::Entities::Store
     }
     get do
       present current_customer.stores.load, with: V01::Entities::Store
     end
 
     desc 'Fetch store.', {
-      nickname: 'getStore'
+      nickname: 'getStore',
+      entity: V01::Entities::Store
     }
     params {
       requires :id, type: Integer
@@ -31,9 +34,10 @@ class V01::Stores < Grape::API
       params: V01::Entities::Store.documentation.except(:id).merge({
         name: { required: true },
         city: { required: true }
-      })
+      }),
+      entity: V01::Entities::Store
     }
-    post  do
+    post do
       store = current_customer.stores.build(store_params)
       current_customer.save!
       present store, with: V01::Entities::Store
@@ -41,7 +45,8 @@ class V01::Stores < Grape::API
 
     desc 'Update store.', {
       nickname: 'updateStore',
-      params: V01::Entities::Store.documentation.except(:id)
+      params: V01::Entities::Store.documentation.except(:id),
+      entity: V01::Entities::Store
     }
     params {
       requires :id, type: Integer
@@ -66,7 +71,8 @@ class V01::Stores < Grape::API
 
     desc 'Geocode store.', {
       nickname: 'geocodeStore',
-      params: V01::Entities::Store.documentation.except(:id)
+      params: V01::Entities::Store.documentation.except(:id),
+      entity: V01::Entities::Store
     }
     patch 'geocode' do
       store = Store.new(store_params)

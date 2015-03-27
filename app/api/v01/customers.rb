@@ -16,7 +16,9 @@ class V01::Customers < Grape::API
 
   resource :customers do
     desc 'Fetch customer.', {
-      nickname: 'getCustomer'
+      nickname: 'getCustomer',
+      is_array: true,
+      entity: V01::Entities::Customer
     }
     params {
       requires :id, type: Integer
@@ -27,7 +29,8 @@ class V01::Customers < Grape::API
 
     desc 'Update customer.', {
       nickname: 'updateCustomer',
-      params: V01::Entities::Customer.documentation.except(:id)
+      params: V01::Entities::Customer.documentation.except(:id),
+      entity: V01::Entities::Customer
     }
     params {
       requires :id, type: Integer

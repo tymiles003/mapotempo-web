@@ -17,14 +17,17 @@ class V01::Destinations < Grape::API
 
   resource :destinations do
     desc 'Fetch customer\'s destinations.', {
-      nickname: 'getDestinations'
+      nickname: 'getDestinations',
+      is_array: true,
+      entity: V01::Entities::Destination
     }
     get do
       present current_customer.destinations.load, with: V01::Entities::Destination
     end
 
     desc 'Fetch destination.', {
-      nickname: 'getDestination'
+      nickname: 'getDestination',
+      entity: V01::Entities::Destination
     }
     params {
       requires :id, type: String, desc: Id_desc
@@ -38,7 +41,8 @@ class V01::Destinations < Grape::API
       nickname: 'createDestination',
       params: V01::Entities::Destination.documentation.except(:id).merge({
         name: { required: true }
-      })
+      }),
+      entity: V01::Entities::Destination
     }
     post do
       destination = current_customer.destinations.build(destination_params)
@@ -74,7 +78,8 @@ class V01::Destinations < Grape::API
 
     desc 'Update destination.', {
       nickname: 'updateDestination',
-      params: V01::Entities::Destination.documentation.except(:id)
+      params: V01::Entities::Destination.documentation.except(:id),
+      entity: V01::Entities::Destination
     }
     params {
       requires :id, type: String, desc: Id_desc
@@ -101,7 +106,8 @@ class V01::Destinations < Grape::API
 
     desc 'Geocode destination.', {
       nickname: 'geocodeDestination',
-      params: V01::Entities::Destination.documentation.except(:id)
+      params: V01::Entities::Destination.documentation.except(:id),
+      entity: V01::Entities::Destination
     }
     patch 'geocode' do
       destination = Destination.new(destination_params)

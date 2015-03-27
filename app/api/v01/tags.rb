@@ -10,14 +10,17 @@ class V01::Tags < Grape::API
 
   resource :tags do
     desc 'Fetch customer\'s tags.', {
-      nickname: 'getTags'
+      nickname: 'getTags',
+      is_array: true,
+      entity: V01::Entities::Tag
     }
     get do
       present current_customer.tags.load, with: V01::Entities::Tag
     end
 
     desc 'Fetch tag.', {
-      nickname: 'getTag'
+      nickname: 'getTag',
+      entity: V01::Entities::Tag
     }
     params {
       requires :id, type: Integer
@@ -30,9 +33,10 @@ class V01::Tags < Grape::API
       nickname: 'createTag',
       params: V01::Entities::Tag.documentation.except(:id).merge({
         label: { required: true }
-      })
+      }),
+      entity: V01::Entities::Tag
     }
-    post  do
+    post do
       tag = current_customer.tags.build(tag_params)
       tag.save!
       present tag, with: V01::Entities::Tag
@@ -40,7 +44,8 @@ class V01::Tags < Grape::API
 
     desc 'Update tag.', {
       nickname: 'updateTag',
-      params: V01::Entities::Tag.documentation.except(:id)
+      params: V01::Entities::Tag.documentation.except(:id),
+      entity: V01::Entities::Tag
     }
     params {
       requires :id, type: Integer

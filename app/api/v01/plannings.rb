@@ -12,14 +12,17 @@ class V01::Plannings < Grape::API
 
   resource :plannings do
     desc 'Fetch customer\'s plannings.', {
-      nickname: 'getPlannings'
+      nickname: 'getPlannings',
+      is_array: true,
+      entity: V01::Entities::Planning
     }
     get do
       present current_customer.plannings.load, with: V01::Entities::Planning
     end
 
     desc 'Fetch planning.', {
-      nickname: 'getPlanning'
+      nickname: 'getPlanning',
+      entity: V01::Entities::Planning
     }
     params {
       requires :id, type: String, desc: Id_desc
@@ -33,9 +36,10 @@ class V01::Plannings < Grape::API
       nickname: 'createPlanning',
       params: V01::Entities::Planning.documentation.except(:id).merge({
         name: { required: true }
-      })
+      }),
+      entity: V01::Entities::Planning
     }
-    post  do
+    post do
       planning = current_customer.plannings.build(planning_params)
       planning.save!
       present planning, with: V01::Entities::Planning
@@ -43,7 +47,8 @@ class V01::Plannings < Grape::API
 
     desc 'Update planning.', {
       nickname: 'updatePLanning',
-      params: V01::Entities::Planning.documentation.except(:id)
+      params: V01::Entities::Planning.documentation.except(:id),
+      entity: V01::Entities::Planning
     }
     params {
       requires :id, type: String, desc: Id_desc
@@ -68,7 +73,8 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Force recompute the planning after parameter update.', {
-      nickname: 'refreshPlanning'
+      nickname: 'refreshPlanning',
+      entity: V01::Entities::Planning
     }
     params {
       requires :id, type: String, desc: Id_desc
@@ -126,7 +132,8 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Clone the planning.', {
-      nickname: 'clonePlanning'
+      nickname: 'clonePlanning',
+      entity: V01::Entities::Planning
     }
     params {
       requires :id, type: String, desc: Id_desc
@@ -140,7 +147,8 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Use order_array in the planning.', {
-      nickname: 'useOrderArray'
+      nickname: 'useOrderArray',
+      entity: V01::Entities::Planning
     }
     params {
       requires :id, type: String, desc: Id_desc

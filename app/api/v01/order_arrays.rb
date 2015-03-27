@@ -15,14 +15,17 @@ class V01::OrderArrays < Grape::API
 
   resource :order_arrays do
     desc 'Fetch customer\'s order_arrays.', {
-      nickname: 'getOrderArrays'
+      nickname: 'getOrderArrays',
+      is_array: true,
+      entity: V01::Entities::OrderArray
     }
     get do
       present current_customer.order_arrays.load, with: V01::Entities::OrderArray
     end
 
     desc 'Fetch order_array.', {
-      nickname: 'getOrderArray'
+      nickname: 'getOrderArray',
+      entity: V01::Entities::OrderArray
     }
     params {
       requires :id, type: Integer
@@ -37,9 +40,10 @@ class V01::OrderArrays < Grape::API
         name: { required: true },
         base_date: { required: true },
         length: { required: true }
-      })
+      }),
+      entity: V01::Entities::OrderArray
     }
-    post  do
+    post do
       order_array = current_customer.order_arrays.build(order_array_params)
       order_array.save!
       present order_array, with: V01::Entities::OrderArray
@@ -47,7 +51,8 @@ class V01::OrderArrays < Grape::API
 
     desc 'Update order_array.', {
       nickname: 'updateOrderArray',
-      params: V01::Entities::OrderArray.documentation.except(:id, :orders)
+      params: V01::Entities::OrderArray.documentation.except(:id, :orders),
+      entity: V01::Entities::OrderArray
     }
     params {
       requires :id, type: Integer
@@ -70,7 +75,8 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Clone the order_array.', {
-      nickname: 'cloneOrderArray'
+      nickname: 'cloneOrderArray',
+      entity: V01::Entities::OrderArray
     }
     params {
       requires :id, type: Integer

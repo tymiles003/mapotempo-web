@@ -10,14 +10,17 @@ class V01::Products < Grape::API
 
   resource :products do
     desc 'Fetch customer\'s products.', {
-      nickname: 'getProducts'
+      nickname: 'getProducts',
+      is_array: true,
+      entity: V01::Entities::Product
     }
     get do
       present current_customer.products.load, with: V01::Entities::Product
     end
 
     desc 'Fetch product.', {
-      nickname: 'getProduct'
+      nickname: 'getProduct',
+      entity: V01::Entities::Product
     }
     params {
       requires :id, type: Integer
@@ -31,9 +34,10 @@ class V01::Products < Grape::API
       params: V01::Entities::Product.documentation.except(:id).merge({
         code: { required: true },
         name: { required: true }
-      })
+      }),
+      entity: V01::Entities::Product
     }
-    post  do
+    post do
       product = current_customer.products.build(product_params)
       product.save!
       present product, with: V01::Entities::Product
@@ -41,7 +45,8 @@ class V01::Products < Grape::API
 
     desc 'Update product.', {
       nickname: 'updateProduct',
-      params: V01::Entities::Product.documentation.except(:id)
+      params: V01::Entities::Product.documentation.except(:id),
+      entity: V01::Entities::Product
     }
     params {
       requires :id, type: Integer

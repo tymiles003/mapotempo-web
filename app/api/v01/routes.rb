@@ -18,7 +18,9 @@ class V01::Routes < Grape::API
 
       resource :routes do
         desc 'Fetch planning\'s routes.', {
-          nickname: 'getRoutes'
+          nickname: 'getRoutes',
+          is_array: true,
+          entity: V01::Entities::Route
         }
         get do
           planning_id = read_id(params[:planning_id])
@@ -26,7 +28,8 @@ class V01::Routes < Grape::API
         end
 
         desc 'Fetch route.', {
-          nickname: 'getRoute'
+          nickname: 'getRoute',
+          entity: V01::Entities::Route
         }
         params {
           requires :id, type: Integer
@@ -39,7 +42,8 @@ class V01::Routes < Grape::API
 
         desc 'Update route.', {
           nickname: 'updateRoute',
-          params: V01::Entities::Route.documentation.slice(:hidden, :locked)
+          params: V01::Entities::Route.documentation.slice(:hidden, :locked),
+          entity: V01::Entities::Route
         }
         params {
           requires :id, type: Integer
@@ -54,7 +58,8 @@ class V01::Routes < Grape::API
         end
 
         desc 'Change stops activation.', {
-          nickname: 'activationStops'
+          nickname: 'activationStops',
+          entity: V01::Entities::Route
         }
         params {
           requires :id, type: Integer
