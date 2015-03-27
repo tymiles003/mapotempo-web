@@ -5,6 +5,6 @@ class V01::Entities::Planning < Grape::Entity
   expose(:date, documentation: { type: Date })
   expose(:zoning_id, documentation: { type: Integer })
   expose(:out_of_date, documentation: { type: 'Boolean' })
-  expose(:route_ids, documentation: { type: Array }) { |m| m.routes.collect(&:id) }
-  expose(:tag_ids, documentation: { type: Array }) { |m| m.tags.collect(&:id) }
+  expose(:route_ids, documentation: { type: Integer, is_array: true })
+  expose(:tag_ids, documentation: { type: Integer, is_array: true })
 end
