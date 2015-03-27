@@ -24,6 +24,9 @@ class V01::OrderArrays < Grape::API
     desc 'Fetch order_array.', {
       nickname: 'getOrderArray'
     }
+    params {
+      requires :id, type: Integer
+    }
     get ':id' do
       present current_customer.order_arrays.find(params[:id]), with: V01::Entities::OrderArray
     end
@@ -46,6 +49,9 @@ class V01::OrderArrays < Grape::API
       nickname: 'updateOrderArray',
       params: V01::Entities::OrderArray.documentation.except(:id, :orders)
     }
+    params {
+      requires :id, type: Integer
+    }
     put ':id' do
       order_array = current_customer.order_arrays.find(params[:id])
       order_array.update(order_array_params)
@@ -56,12 +62,18 @@ class V01::OrderArrays < Grape::API
     desc 'Delete order_array.', {
       nickname: 'deleteOrderArray'
     }
+    params {
+      requires :id, type: Integer
+    }
     delete ':id' do
       current_customer.order_arrays.find(params[:id]).destroy
     end
 
     desc 'Clone the order_array.', {
       nickname: 'cloneOrderArray'
+    }
+    params {
+      requires :id, type: Integer
     }
     patch ':id/duplicate' do
       order_array = current_customer.order_arrays.find(params[:id])
@@ -72,6 +84,9 @@ class V01::OrderArrays < Grape::API
 
     desc 'Orders mass assignment.', {
       nickname: 'massAssignmentOrder'
+    }
+    params {
+      requires :id, type: Integer
     }
     patch ':id' do
       if params[:orders]

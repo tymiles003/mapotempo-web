@@ -19,6 +19,9 @@ class V01::Stores < Grape::API
     desc 'Fetch store.', {
       nickname: 'getStore'
     }
+    params {
+      requires :id, type: Integer
+    }
     get ':id' do
       present current_customer.stores.find(params[:id]), with: V01::Entities::Store
     end
@@ -40,6 +43,9 @@ class V01::Stores < Grape::API
       nickname: 'updateStore',
       params: V01::Entities::Store.documentation.except(:id)
     }
+    params {
+      requires :id, type: Integer
+    }
     put ':id' do
       store = current_customer.stores.find(params[:id])
       store.assign_attributes(store_params)
@@ -50,6 +56,9 @@ class V01::Stores < Grape::API
 
     desc 'Delete store.', {
       nickname: 'deleteStore'
+    }
+    params {
+      requires :id, type: Integer
     }
     delete ':id' do
       current_customer.stores.find(params[:id]).destroy

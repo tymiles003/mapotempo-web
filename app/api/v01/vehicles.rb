@@ -19,6 +19,9 @@ class V01::Vehicles < Grape::API
     desc 'Fetch vehicle.', {
       nickname: 'getVehicle'
     }
+    params {
+      requires :id, type: Integer
+    }
     get ':id' do
       present current_customer.vehicles.find(params[:id]), with: V01::Entities::Vehicle
     end
@@ -26,6 +29,9 @@ class V01::Vehicles < Grape::API
     desc 'Update vehicle.', {
       nickname: 'updateVehicle',
       params: V01::Entities::Vehicle.documentation.except(:id)
+    }
+    params {
+      requires :id, type: Integer
     }
     put ':id' do
       vehicle = current_customer.vehicles.find(params[:id])

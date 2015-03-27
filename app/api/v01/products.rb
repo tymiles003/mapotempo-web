@@ -19,6 +19,9 @@ class V01::Products < Grape::API
     desc 'Fetch product.', {
       nickname: 'getProduct'
     }
+    params {
+      requires :id, type: Integer
+    }
     get ':id' do
       present current_customer.products.find(params[:id]), with: V01::Entities::Product
     end
@@ -40,6 +43,9 @@ class V01::Products < Grape::API
       nickname: 'updateProduct',
       params: V01::Entities::Product.documentation.except(:id)
     }
+    params {
+      requires :id, type: Integer
+    }
     put ':id' do
       product = current_customer.products.find(params[:id])
       product.update(product_params)
@@ -49,6 +55,9 @@ class V01::Products < Grape::API
 
     desc 'Delete product.', {
       nickname: 'deleteProduct'
+    }
+    params {
+      requires :id, type: Integer
     }
     delete ':id' do
       current_customer.products.find(params[:id]).destroy

@@ -19,6 +19,9 @@ class V01::Tags < Grape::API
     desc 'Fetch tag.', {
       nickname: 'getTag'
     }
+    params {
+      requires :id, type: Integer
+    }
     get ':id' do
       present current_customer.tags.find(params[:id]), with: V01::Entities::Tag
     end
@@ -39,6 +42,9 @@ class V01::Tags < Grape::API
       nickname: 'updateTag',
       params: V01::Entities::Tag.documentation.except(:id)
     }
+    params {
+      requires :id, type: Integer
+    }
     put ':id' do
       tag = current_customer.tags.find(params[:id])
       tag.update(tag_params)
@@ -48,6 +54,9 @@ class V01::Tags < Grape::API
 
     desc 'Delete tag.', {
       nickname: 'deleteTag'
+    }
+    params {
+      requires :id, type: Integer
     }
     delete ':id' do
       current_customer.tags.find(params[:id]).destroy

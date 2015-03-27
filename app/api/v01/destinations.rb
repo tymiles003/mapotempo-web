@@ -11,9 +11,11 @@ class V01::Destinations < Grape::API
       p = ActionController::Parameters.new(params)
       p.permit(:replace, :file)
     end
+
+    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
   end
 
-  resource :destinations, desc: 'Operations about destinations. On url parameter, id can be a ref field value, then use "ref:[value]" as id.' do
+  resource :destinations do
     desc 'Fetch customer\'s destinations.', {
       nickname: 'getDestinations'
     }
@@ -23,6 +25,9 @@ class V01::Destinations < Grape::API
 
     desc 'Fetch destination.', {
       nickname: 'getDestination'
+    }
+    params {
+      requires :id, type: String, desc: Id_desc
     }
     get ':id' do
       id = read_id(params[:id])
@@ -46,9 +51,9 @@ class V01::Destinations < Grape::API
       nickname: 'importDestinations',
       params: V01::Entities::DestinationsImport.documentation
     }
-    params do
-      optional :destinations, type: Array, desc: 'JSON content in mutual exclusion with CSV file upload'
-    end
+    params {
+      optional :destinations, type: Array, desc: 'JSON content in mutual exclusion with CSV file upload.'
+    }
     put do
       if params['destinations']
         destinations_import = DestinationsImport.new
@@ -71,6 +76,9 @@ class V01::Destinations < Grape::API
       nickname: 'updateDestination',
       params: V01::Entities::Destination.documentation.except(:id)
     }
+    params {
+      requires :id, type: String, desc: Id_desc
+    }
     put ':id' do
       id = read_id(params[:id])
       destination = current_customer.destinations.where(id).first
@@ -82,6 +90,9 @@ class V01::Destinations < Grape::API
 
     desc 'Delete destination.', {
       nickname: 'deleteDestination'
+    }
+    params {
+      requires :id, type: String, desc: Id_desc
     }
     delete ':id' do
       id = read_id(params[:id])

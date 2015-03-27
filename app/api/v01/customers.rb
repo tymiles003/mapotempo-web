@@ -18,6 +18,9 @@ class V01::Customers < Grape::API
     desc 'Fetch customer.', {
       nickname: 'getCustomer'
     }
+    params {
+      requires :id, type: Integer
+    }
     get ':id' do
       present current_customer(params[:id]), with: V01::Entities::Customer
     end
@@ -25,6 +28,9 @@ class V01::Customers < Grape::API
     desc 'Update customer.', {
       nickname: 'updateCustomer',
       params: V01::Entities::Customer.documentation.except(:id)
+    }
+    params {
+      requires :id, type: Integer
     }
     put ':id' do
       current_customer(params[:id])
@@ -35,6 +41,10 @@ class V01::Customers < Grape::API
 
     desc 'Return a job', {
       nickname: 'getJob'
+    }
+    params {
+      requires :id, type: Integer
+      requires :job_id, type: Integer
     }
     get ':id/job/:job_id' do
       current_customer(params[:id])
@@ -48,6 +58,10 @@ class V01::Customers < Grape::API
     desc 'Cancel job', {
       nickname: 'deleteJob'
     }
+    params {
+      requires :id, type: Integer
+      requires :job_id, type: Integer
+    }
     delete ':id/job/:job_id' do
       current_customer(params[:id])
       if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
@@ -59,6 +73,9 @@ class V01::Customers < Grape::API
 
     desc 'Fetch tomtom ids.', {
       nickname: 'getTomtomIds'
+    }
+    params {
+      requires :id, type: Integer
     }
     get ':id/tomtom_ids' do
       current_customer(params[:id])

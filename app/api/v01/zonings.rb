@@ -19,6 +19,9 @@ class V01::Zonings < Grape::API
     desc 'Fetch zoning.', {
       nickname: 'getZoning'
     }
+    params {
+      requires :id, type: Integer
+    }
     get ':id' do
       present current_customer.zonings.find(params[:id]), with: V01::Entities::Zoning
     end
@@ -39,6 +42,9 @@ class V01::Zonings < Grape::API
       nickname: 'updateZoning',
       params: V01::Entities::Zoning.documentation.except(:id)
     }
+    params {
+      requires :id, type: Integer
+    }
     put ':id' do
       zoning = current_customer.zonings.find(params[:id])
       zoning.update(zoning_params)
@@ -48,6 +54,9 @@ class V01::Zonings < Grape::API
 
     desc 'Delete zoning.', {
       nickname: 'deleteZoning'
+    }
+    params {
+      requires :id, type: Integer
     }
     delete ':id' do
       current_customer.zonings.find(params[:id]).destroy

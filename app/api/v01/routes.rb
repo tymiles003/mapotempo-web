@@ -6,9 +6,14 @@ class V01::Routes < Grape::API
       p = p[:route] if p.key?(:route)
       p.permit(:hidden, :locked, :ref)
     end
+
+    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :plannings do
+    params {
+      requires :planning_id, type: String, desc: Id_desc
+    }
     segment '/:planning_id' do
 
       resource :routes do
@@ -23,6 +28,9 @@ class V01::Routes < Grape::API
         desc 'Fetch route.', {
           nickname: 'getRoute'
         }
+        params {
+          requires :id, type: Integer
+        }
         get ':id' do
           planning_id = read_id(params[:planning_id])
           id = read_id(params[:id])
@@ -32,6 +40,9 @@ class V01::Routes < Grape::API
         desc 'Update route.', {
           nickname: 'updateRoute',
           params: V01::Entities::Route.documentation.slice(:hidden, :locked)
+        }
+        params {
+          requires :id, type: Integer
         }
         put ':id' do
           planning_id = read_id(params[:planning_id])
@@ -46,6 +57,7 @@ class V01::Routes < Grape::API
           nickname: 'activationStops'
         }
         params {
+          requires :id, type: Integer
           requires :active, type: String, values: ['all', 'reverse', 'none']
         }
         patch ':id/active/:active' do
@@ -62,6 +74,7 @@ class V01::Routes < Grape::API
           nickname: 'moveStop'
         }
         params {
+          requires :id, type: Integer
           requires :destination_id, type: String, desc: 'Destination id to move'
           requires :index, type: Integer, desc: 'New position in the route'
         }
@@ -78,6 +91,9 @@ class V01::Routes < Grape::API
 
         desc 'Starts asynchronous route optimization.', {
           nickname: 'optimizeRoute'
+        }
+        params {
+          requires :id, type: Integer
         }
         get ':id/optimize' do
           # TODO

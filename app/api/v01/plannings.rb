@@ -6,9 +6,11 @@ class V01::Plannings < Grape::API
       p = p[:planning] if p.key?(:planning)
       p.permit(:name, :ref, :date, :zoning_id, tag_ids: [])
     end
+
+    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
   end
 
-  resource :plannings, desc: 'Operations about plannings and routes. On url parameter, id can be a ref field value, then use "ref:[value]" as id.' do
+  resource :plannings do
     desc 'Fetch customer\'s plannings.', {
       nickname: 'getPlannings'
     }
@@ -18,6 +20,9 @@ class V01::Plannings < Grape::API
 
     desc 'Fetch planning.', {
       nickname: 'getPlanning'
+    }
+    params {
+      requires :id, type: String, desc: Id_desc
     }
     get ':id' do
       id = read_id(params[:id])
@@ -40,6 +45,9 @@ class V01::Plannings < Grape::API
       nickname: 'updatePLanning',
       params: V01::Entities::Planning.documentation.except(:id)
     }
+    params {
+      requires :id, type: String, desc: Id_desc
+    }
     put ':id' do
       id = read_id(params[:id])
       planning = current_customer.plannings.where(id).first
@@ -51,6 +59,9 @@ class V01::Plannings < Grape::API
     desc 'Delete planning.', {
       nickname: 'deletePlanning'
     }
+    params {
+      requires :id, type: String, desc: Id_desc
+    }
     delete ':id' do
       id = read_id(params[:id])
       current_customer.plannings.where(id).first.destroy
@@ -58,6 +69,9 @@ class V01::Plannings < Grape::API
 
     desc 'Force recompute the planning after parameter update.', {
       nickname: 'refreshPlanning'
+    }
+    params {
+      requires :id, type: String, desc: Id_desc
     }
     get ':id/refresh' do
       id = read_id(params[:id])
@@ -70,6 +84,9 @@ class V01::Plannings < Grape::API
     desc 'Switch two vehicles.', {
       nickname: 'switchVehicles'
     }
+    params {
+      requires :id, type: String, desc: Id_desc
+    }
     patch ':id/switch' do
       # TODO
       error!('501 Not Implemented', 501)
@@ -77,6 +94,9 @@ class V01::Plannings < Grape::API
 
     desc 'Suggest a place for an unaffected destination.', {
       nickname: 'automaticInsertDestination'
+    }
+    params {
+      requires :id, type: String, desc: Id_desc
     }
     patch ':id/automatic_insert' do
       # TODO
@@ -86,6 +106,9 @@ class V01::Plannings < Grape::API
     desc 'Set stop status.', {
       nickname: 'updateStop'
     }
+    params {
+      requires :id, type: String, desc: Id_desc
+    }
     patch ':id/update_stop' do
       # TODO
       error!('501 Not Implemented', 501)
@@ -94,6 +117,9 @@ class V01::Plannings < Grape::API
     desc 'Starts asynchronous routes optimization.', {
       nickname: 'optimizeRoutes'
     }
+    params {
+      requires :id, type: String, desc: Id_desc
+    }
     get ':id/optimize_each_routes' do
       # TODO
       error!('501 Not Implemented', 501)
@@ -101,6 +127,9 @@ class V01::Plannings < Grape::API
 
     desc 'Clone the planning.', {
       nickname: 'clonePlanning'
+    }
+    params {
+      requires :id, type: String, desc: Id_desc
     }
     patch ':id/duplicate' do
       id = read_id(params[:id])
@@ -112,6 +141,11 @@ class V01::Plannings < Grape::API
 
     desc 'Use order_array in the planning.', {
       nickname: 'useOrderArray'
+    }
+    params {
+      requires :id, type: String, desc: Id_desc
+      requires :order_array_id, type: String
+      requires :shift, type: Integer
     }
     patch ':id/orders/:order_array_id/:shift' do
       id = read_id(params[:id])
