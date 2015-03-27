@@ -7,8 +7,8 @@ class V01::Entities::Destination < Grape::Entity
   expose(:lat, documentation: { type: Float })
   expose(:lng, documentation: { type: Float })
   expose(:quantity, documentation: { type: Integer })
-  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M') }
-  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M') }
+  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M:%S') }
+  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
   expose(:detail, documentation: { type: String })
   expose(:comment, documentation: { type: String })
   expose(:ref, documentation: { type: String })
