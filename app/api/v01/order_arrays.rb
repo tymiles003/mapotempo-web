@@ -14,7 +14,7 @@ class V01::OrderArrays < Grape::API
   end
 
   resource :order_arrays do
-    desc 'Fetch customer''s order_arrays.', {
+    desc 'Fetch customer\'s order_arrays.', {
       nickname: 'getOrderArrays'
     }
     get do

@@ -9,7 +9,7 @@ class V01::Tags < Grape::API
   end
 
   resource :tags do
-    desc 'Fetch customer''s tags.', {
+    desc 'Fetch customer\'s tags.', {
       nickname: 'getTags'
     }
     get do

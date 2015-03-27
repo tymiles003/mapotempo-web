@@ -9,7 +9,7 @@ class V01::Plannings < Grape::API
   end
 
   resource :plannings, desc: 'Operations about plannings and routes. On url parameter, id can be a ref field value, then use "ref:[value]" as id.' do
-    desc 'Fetch customer''s plannings.', {
+    desc 'Fetch customer\'s plannings.', {
       nickname: 'getPlannings'
     }
     get do

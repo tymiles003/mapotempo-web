@@ -17,7 +17,7 @@ class V01::Orders < Grape::API
     segment '/:order_array_id' do
 
       resource :orders do
-        desc 'Fetch order_array''s orders.', {
+        desc 'Fetch order_array\'s orders.', {
           nickname: 'getOrders'
         }
         get do

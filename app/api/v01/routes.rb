@@ -12,7 +12,7 @@ class V01::Routes < Grape::API
     segment '/:planning_id' do
 
       resource :routes do
-        desc 'Fetch planning''s routes.', {
+        desc 'Fetch planning\'s routes.', {
           nickname: 'getRoutes'
         }
         get do

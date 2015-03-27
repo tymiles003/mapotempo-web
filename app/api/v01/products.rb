@@ -9,7 +9,7 @@ class V01::Products < Grape::API
   end
 
   resource :products do
-    desc 'Fetch customer''s products.', {
+    desc 'Fetch customer\'s products.', {
       nickname: 'getProducts'
     }
     get do

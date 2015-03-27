@@ -14,7 +14,7 @@ class V01::Destinations < Grape::API
   end
 
   resource :destinations, desc: 'Operations about destinations. On url parameter, id can be a ref field value, then use "ref:[value]" as id.' do
-    desc 'Fetch customer''s destinations.', {
+    desc 'Fetch customer\'s destinations.', {
       nickname: 'getDestinations'
     }
     get do
@@ -47,7 +47,7 @@ class V01::Destinations < Grape::API
     params do
       optional :destinations, type: Array, desc: 'JSON content in mutual exclusion with CSV file upload'
     end
-    put '' do
+    put do
       if params['destinations']
         destinations_import = DestinationsImport.new
         destinations_import.assign_attributes({replace: params[:replace]})
