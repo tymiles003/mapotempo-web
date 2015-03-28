@@ -30,7 +30,7 @@ class ApiV01 < Grape::API
     end
 
     def read_id(raw_id)
-      if raw_id.start_with?('ref:')
+      if !raw_id.is_a?(Fixnum) && raw_id.start_with?('ref:')
         {ref: raw_id[4..-1]}
       else
         {id: raw_id.to_i}
