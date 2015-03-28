@@ -1,14 +1,6 @@
 class ApiV01 < Grape::API
   version '0.1', using: :path
 
-  rescue_from ActiveRecord::RecordNotFound do |e|
-    rack_response(nil, 404)
-  end
-
-  rescue_from ActiveRecord::RecordInvalid do |e|
-    rack_response({error: e.to_s}.to_json, 400)
-  end
-
   helpers do
     def warden
       env['warden']
@@ -66,9 +58,15 @@ class ApiV01 < Grape::API
   end
 
   rescue_from :all do |e|
+    ActiveRecord::Base.connection.rollback_transaction
+    if e.is_a?(ActiveRecord::RecordNotFound)
+      rack_response(nil, 404)
+    elsif e.is_a?(ActiveRecord::RecordInvalid)
+      rack_response({error: e.to_s}.to_json, 400)
+    end
     @error = e
     Rails.logger.error "\n\n#{e.class} (#{e.message}):\n    " + e.backtrace.join("\n    ") + "\n\n"
-    error_response({message: e.message})
+    rack_response({message: e.message}.to_json, 500)
   end
 
   mount V01::Customers
