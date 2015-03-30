@@ -1,4 +1,8 @@
 class V01::Entities::Route < Grape::Entity
+  def self.entity_name
+    'V01_Route'
+  end
+
   expose(:id, documentation: { type: Integer })
   expose(:distance, documentation: { type: Float })
   expose(:emission, documentation: { type: Float })

@@ -1,4 +1,8 @@
 class V01::Entities::Planning < Grape::Entity
+  def self.entity_name
+    'V01_Planning'
+  end
+
   expose(:id, documentation: { type: Integer })
   expose(:name, documentation: { type: String })
   expose(:ref, documentation: { type: String })

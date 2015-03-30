@@ -1,4 +1,8 @@
 class V01::Entities::Vehicle < Grape::Entity
+  def self.entity_name
+    'V01_Vehicle'
+  end
+
   expose(:id, documentation: { type: Integer })
   expose(:name, documentation: { type: String })
   expose(:emission, documentation: { type: Integer })

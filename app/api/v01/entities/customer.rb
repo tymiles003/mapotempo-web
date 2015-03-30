@@ -1,4 +1,8 @@
 class V01::Entities::Customer < Grape::Entity
+  def self.entity_name
+    'V01_Customer'
+  end
+
   expose(:id, documentation: { type: Integer })
   expose(:end_subscription, documentation: { type: Date })
   expose(:max_vehicles, documentation: { type: Integer })

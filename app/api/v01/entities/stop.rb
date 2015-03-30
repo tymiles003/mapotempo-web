@@ -1,4 +1,8 @@
 class V01::Entities::Stop < Grape::Entity
+  def self.entity_name
+    'V01_Stop'
+  end
+
   expose(:index, documentation: { type: Integer })
   expose(:active, documentation: { type: 'Boolean' })
   expose(:distance, documentation: { type: Float })
