@@ -151,7 +151,7 @@ class Importer
           destination = customer.destinations.find{ |destination|
             destination.ref && destination.ref == row[:ref]
           }
-          destination.assign_attributes(row) if destination
+          destination.assign_attributes(row.except(:route, :active)) if destination
         end
         if !destination
           destination = customer.destinations.build(row.except(:route, :active)) # Link only when destination is complete
