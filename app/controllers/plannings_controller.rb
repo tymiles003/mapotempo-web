@@ -125,8 +125,7 @@ class PlanningsController < ApplicationController
           route = @planning.routes.find{ |route| route.id == params[:route_id] }
           params[:destination_id] = params[:destination_id].to_i
           destination = current_user.customer.destinations.find{ |destination| destination.id == params[:destination_id] }
-
-          route.move_destination(destination, params[:index].to_i + 1)
+          route.move_destination(destination, params[:index].to_i)
           @planning.save!
           @planning.reload
           format.json { render action: 'show', location: @planning }

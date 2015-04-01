@@ -162,6 +162,7 @@ class Route < ActiveRecord::Base
   end
 
   def add(destination, index = nil, active = false)
+    index = stops.size + 1 if index < 0
     if index
       shift_index(index)
     elsif vehicle
@@ -210,6 +211,7 @@ class Route < ActiveRecord::Base
       stop.route.move_stop_out(stop)
       add(destination, index, active || stop.route.vehicle.nil?)
     else
+      index = stops.size if index < 0
       if stop.index
         if index < stop.index
           shift_index(index, 1, stop.index - 1)
