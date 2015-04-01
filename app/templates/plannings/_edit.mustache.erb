@@ -50,6 +50,19 @@
               {{/geocoded}}
               <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
               {{#geocoded}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/geocoded}}
+              <div class="btn-group">
+                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.send_to_route_help{{/i18n}}"><i class="fa fa-truck fa-fw"></i><span class="caret"></span></button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                  {{#routes}}
+                    {{^vehicle}}
+                      <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{#destination}}{{id}}{{/destination}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
+                    {{/vehicle}}
+                    {{#vehicle}}
+                      <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{#destination}}{{id}}{{/destination}}/move/-1.json" class="send_to_route"><div class="vehicle_color_small" style="background:{{color}}"></div> {{name}}</a></li>
+                    {{/vehicle}}
+                  {{/routes}}
+                </ul>
+              </div>
             </div>
             <div class="clearfix"></div>
           </li>
