@@ -24,7 +24,7 @@ class V01::Routes < Grape::API
         }
         get do
           planning_id = read_id(params[:planning_id])
-          present current_customer.plannings.where(planning_id).first.routes.load, with: V01::Entities::Route
+          present current_customer.plannings.where(planning_id).first!.routes.load, with: V01::Entities::Route
         end
 
         desc 'Fetch route.', {
@@ -37,7 +37,7 @@ class V01::Routes < Grape::API
         get ':id' do
           planning_id = read_id(params[:planning_id])
           id = read_id(params[:id])
-          present current_customer.plannings.where(planning_id).first.routes.where(id).first, with: V01::Entities::Route
+          present current_customer.plannings.where(planning_id).first!.routes.where(id).first!, with: V01::Entities::Route
         end
 
         desc 'Update route.', {
@@ -51,7 +51,7 @@ class V01::Routes < Grape::API
         put ':id' do
           planning_id = read_id(params[:planning_id])
           id = read_id(params[:id])
-          route = current_customer.plannings.where(planning_id).first.routes.where(id).first
+          route = current_customer.plannings.where(planning_id).first!.routes.where(id).first!
           route.update(route_params)
           route.save!
           present route, with: V01::Entities::Route
@@ -67,7 +67,7 @@ class V01::Routes < Grape::API
         }
         patch ':id/active/:active' do
           planning_id = read_id(params[:planning_id])
-          planning = current_customer.plannings.where(planning_id).first
+          planning = current_customer.plannings.where(planning_id).first!
           id = read_id(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
           if route && route.active(params[:active].to_s.to_sym) && route.compute && planning.save

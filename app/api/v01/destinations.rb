@@ -34,7 +34,7 @@ class V01::Destinations < Grape::API
     }
     get ':id' do
       id = read_id(params[:id])
-      present current_customer.destinations.where(id).first, with: V01::Entities::Destination
+      present current_customer.destinations.where(id).first!, with: V01::Entities::Destination
     end
 
     desc 'Create destination.', {
@@ -86,7 +86,7 @@ class V01::Destinations < Grape::API
     }
     put ':id' do
       id = read_id(params[:id])
-      destination = current_customer.destinations.where(id).first
+      destination = current_customer.destinations.where(id).first!
       destination.assign_attributes(destination_params)
       destination.save!
       destination.customer.save! if destination.customer
@@ -101,7 +101,7 @@ class V01::Destinations < Grape::API
     }
     delete ':id' do
       id = read_id(params[:id])
-      current_customer.destinations.where(id).first.destroy
+      current_customer.destinations.where(id).first!.destroy
     end
 
     desc 'Geocode destination.', {

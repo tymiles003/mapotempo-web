@@ -29,7 +29,7 @@ class V01::Plannings < Grape::API
     }
     get ':id' do
       id = read_id(params[:id])
-      present current_customer.plannings.where(id).first, with: V01::Entities::Planning
+      present current_customer.plannings.where(id).first!, with: V01::Entities::Planning
     end
 
     desc 'Create planning.', {
@@ -55,7 +55,7 @@ class V01::Plannings < Grape::API
     }
     put ':id' do
       id = read_id(params[:id])
-      planning = current_customer.plannings.where(id).first
+      planning = current_customer.plannings.where(id).first!
       planning.update(planning_params)
       planning.save!
       present planning, with: V01::Entities::Planning
@@ -69,7 +69,7 @@ class V01::Plannings < Grape::API
     }
     delete ':id' do
       id = read_id(params[:id])
-      current_customer.plannings.where(id).first.destroy
+      current_customer.plannings.where(id).first!.destroy
     end
 
     desc 'Force recompute the planning after parameter update.', {
@@ -81,7 +81,7 @@ class V01::Plannings < Grape::API
     }
     get ':id/refresh' do
       id = read_id(params[:id])
-      planning = current_customer.plannings.where(id).first
+      planning = current_customer.plannings.where(id).first!
       planning.compute
       planning.save!
       present planning, with: V01::Entities::Planning
@@ -140,7 +140,7 @@ class V01::Plannings < Grape::API
     }
     patch ':id/duplicate' do
       id = read_id(params[:id])
-      planning = current_customer.plannings.where(id).first
+      planning = current_customer.plannings.where(id).first!
       planning = planning.amoeba_dup
       planning.save!
       present planning, with: V01::Entities::Planning
@@ -157,7 +157,7 @@ class V01::Plannings < Grape::API
     }
     patch ':id/orders/:order_array_id/:shift' do
       id = read_id(params[:id])
-      planning = current_customer.plannings.where(id).first
+      planning = current_customer.plannings.where(id).first!
       order_array = current_customer.order_arrays.find(params[:order_array_id])
       shift = params[:shift].to_i
       planning.apply_orders(order_array, shift)
