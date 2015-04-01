@@ -2,7 +2,7 @@ require 'grape-swagger'
 
 class ApiRootDef < Grape::API
   mount ApiV01
-  add_swagger_documentation base_path: 'api', info: {
+  documentation_class = add_swagger_documentation base_path: 'api', hide_documentation_path: true, info: {
     title: Mapotempo::Application.config.product_name + ' API',
     description: 'API access require an api_key.',
     contact: Mapotempo::Application.config.product_contact
