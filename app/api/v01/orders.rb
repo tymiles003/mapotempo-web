@@ -51,8 +51,13 @@ class V01::Orders < Grape::API
         put ':id' do
           order = current_customer.order_arrays.find(params[:order_array_id]).orders.find(params[:id])
           p = order_params
-          p[:product_ids] = p[:product_ids] || [] # Empty :product_ids if no parameter set, workaround, no way to send empty array through HTTP PUT
+          products = Hash[current_customer.products.collect{ |product| [product.id, product] }]
+          products = (p[:product_ids] || []).collect{ |product_id| products[product_id.to_i] }.select{ |i| i }
+
           order.update(p)
+          # Workaround for multiple values need add values and not affect
+          order.products.clear
+          order.products += products
           order.save!
           present order, with: V01::Entities::Order
         end

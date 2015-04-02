@@ -98,11 +98,14 @@ class V01::OrderArrays < Grape::API
       if params[:orders]
         order_array = current_customer.order_arrays.find(params[:id])
         orders = Hash[order_array.orders.load.map{ |order| [order.id, order] }]
+        products = Hash[current_customer.products.collect{ |product| [product.id, product] }]
         params[:orders].each{ |id, order|
           id = id.to_i
           order[:product_ids] ||= []
           if orders.key?(id)
-            orders[id].product_ids = order[:product_ids].map{ |product_id| Integer(product_id) } & current_customer.product_ids
+            # Workaround for multiple values need add values and not affect
+            orders[id].products.clear
+            orders[id].products += order[:product_ids].map{ |product_id| products[product_id.to_i] }.select{ |i| i }
           end
         }
         order_array.save!
