@@ -39,10 +39,10 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/select2-rails.git
-  revision: 6e6b31277b129beab766a484adc421a240612337
+  revision: 6c7402352c1f605cd74e10589fa771796b28094a
   branch: v4
   specs:
-    select2-rails (4.0.0.rc1)
+    select2-rails (4.0.0.rc2)
       thor (~> 0.14)
 
 GIT
