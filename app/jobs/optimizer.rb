@@ -53,15 +53,7 @@ class Optimizer
         planning.customer.job_optimizer.save!
       end
     else
-      optimum = route.optimize(nil) { |matrix|
-        tws = [[nil, nil, 0]] + route.stops.select(&:active).collect{ |stop|
-          open = stop.destination.open ? Integer(stop.destination.open - route.vehicle.open) : nil
-          close = stop.destination.close ? Integer(stop.destination.close - route.vehicle.open) : nil
-          if open && close && open > close
-            close = open
-          end
-          [open, close, stop.take_over]
-        }
+      optimum = route.optimize(nil) { |matrix, tws|
         Ort.optimize(route.vehicle.capacity, matrix, tws, planning.customer.optimization_cluster_size)
       }
       if optimum

@@ -1,7 +1,10 @@
 require 'test_helper'
 require 'osrm'
 
-class D < Struct.new(:lat, :lng, :open, :close)
+class D < Struct.new(:lat, :lng, :open, :close, :take_over)
+  def destination
+    self
+  end
 end
 
 class RouteTest < ActiveSupport::TestCase
@@ -213,7 +216,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one)
 
     positions = [D.new(1,1), D.new(2,2), D.new(3,3)]
-    ret = o.send(:amalgamate_same_position, positions) { |positions|
+    ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
       pos.collect{ |p|
@@ -227,13 +230,25 @@ class RouteTest < ActiveSupport::TestCase
   test "should amalgamate point at same position" do
     o = routes(:route_one)
 
-    positions = [D.new(1,1), D.new(2,2), D.new(2,2), D.new(3,3)]
-    ret = o.send(:amalgamate_same_position, positions) { |positions|
+    positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(2,2,nil,nil,0), D.new(3,3,nil,nil,0)]
+    ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
       pos.collect{ |p|
         positions.index(p)
       }
+    }
+    assert_equal positions.size, ret.size
+    assert_equal 0.upto(positions.size-1).to_a, ret
+  end
+
+  test "should amalgamate point at same position, tw" do
+    o = routes(:route_one)
+
+    positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(2,2,10,20,0), D.new(3,3,nil,nil,0)]
+    ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
+      assert_equal 4, positions.size
+      (0..(positions.size-1)).to_a
     }
     assert_equal positions.size, ret.size
     assert_equal 0.upto(positions.size-1).to_a, ret

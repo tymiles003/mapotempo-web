@@ -238,10 +238,21 @@ class Route < ActiveRecord::Base
   def optimize(matrix_progress, &optimizer)
     stops_on = stops_segregate[true]
     router = vehicle.router || stops_on[0].destination.customer.router
-    amalgamate_same_position(stops_on.collect(&:destination)) { |positions|
+    amalgamate_stops_same_position(stops_on) { |positions|
+      tws = [[nil, nil, 0]] + positions.collect{ |position|
+        open, close, take_over = position[2..4]
+        open = open ? Integer(open - vehicle.open) : nil
+        close = close ? Integer(close - vehicle.open) : nil
+        if open && close && open > close
+          close = open
+        end
+        [open, close, take_over]
+      }
+
       positions = [[vehicle.store_start.lat, vehicle.store_start.lng]] + positions + [[vehicle.store_stop.lat, vehicle.store_stop.lng]]
       matrix = router.matrix(positions, &matrix_progress)
-      optimizer.call(matrix)[1..-2].collect{ |i| i - 1 }
+
+      optimizer.call(matrix, tws)[1..-2].collect{ |i| i - 1 }
     }
   end
 
@@ -333,22 +344,39 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def amalgamate_same_position(positions)
-    # Reduce psoitions vector size by amalgamate points in same position
-    stock = Hash.new { Array.new }
-    i = -1
-    positions.each{ |p|
-      stock[[p.lat, p.lng, p.open, p.close]] += [[p, i += 1]]
+  def amalgamate_stops_same_position(stops)
+    tws = stops.find{ |stop|
+      stop.destination.open || stop.destination.close
     }
 
-    positions_uniq = stock.keys
+    if tws
+      # Can't reduce cause of time windows
+      positions_uniq = stops.collect{ |stop|
+        position = stop.destination
+        [position.lat, position.lng, position.open, position.close, stop.take_over]
+      }
 
-    optim_uniq = yield(positions_uniq)
+      yield(positions_uniq)
+    else
+      # Reduce positions vector size by amalgamate points in same position
+      stock = Hash.new { Array.new }
+      i = -1
+      stops.each{ |stop|
+        position = stop.destination
+        stock[[position.lat, position.lng]] += [[stop, i += 1]]
+      }
 
-    optim_uniq.collect{ |ou|
-      stock[positions_uniq[ou]]
-    }.flatten(1).collect{ |pa|
-      pa[1]
-    }
+      positions_uniq = stock.collect{ |k, v|
+        k + [nil, nil, v.sum{ |vs| vs[0].take_over }]
+      }
+
+      optim_uniq = yield(positions_uniq)
+
+      optim_uniq.collect{ |ou|
+        stock[positions_uniq[ou][0..1]]
+      }.flatten(1).collect{ |pa|
+        pa[1]
+      }
+    end
   end
 end
