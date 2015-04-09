@@ -27,6 +27,12 @@ class OrtTest < ActionController::TestCase
       [[ 1,  1], [10, 10], [ 0,  0], [ 1,  1]],
       [[ 0,  0], [10, 10], [ 1,  1], [ 0,  0]],
     ], a
+    assert_equal [
+      [nil, nil, 0],
+      [nil, nil, 0],
+      [nil, nil, 0],
+    ], b
+
     assert_equal [0, 3, 2, 1, 4], Ort.send(:unzip_cluster, [0, 1, 2, 3], c, m)
   end
 
@@ -48,6 +54,7 @@ class OrtTest < ActionController::TestCase
     a, b, c = Ort.send(:zip_cluster, m, t, 5)
 
     assert_equal m, a
+    assert_equal b, t
     assert_equal [0, 1, 2, 3, 4], Ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m)
   end
 
@@ -68,6 +75,7 @@ class OrtTest < ActionController::TestCase
     a, b, c = Ort.send(:zip_cluster, m, t, 5)
 
     assert_equal m, a
+    assert_equal b, t
     assert_equal [0, 1, 2, 3, 4], Ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m)
   end
 
