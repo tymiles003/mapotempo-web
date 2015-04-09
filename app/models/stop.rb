@@ -30,6 +30,11 @@ class Stop < ActiveRecord::Base
     end
   end
 
+  def take_over
+    to = destination.take_over ? destination.take_over : destination.customer.take_over
+    to ? to.seconds_since_midnight : 0
+  end
+
   def to_s
     "#{active ? 'x' : '_'} #{destination.name}"
   end

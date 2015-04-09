@@ -35,8 +35,6 @@ class Alyacom
     planning_id_base = date.strftime('%y%m%d')
     base_time = date.to_time
     waypoints = route.stops.select(&:active).collect{ |stop|
-      take_over = stop.destination.take_over ? stop.destination.take_over : customer.take_over
-      take_over = take_over ? take_over.seconds_since_midnight : 0
       destination = stop.destination
 
       {
@@ -61,7 +59,7 @@ class Alyacom
             route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil,
           ].select{ |s| s }.join(' ').strip,
           start: base_time + stop.time.seconds_since_midnight.seconds,
-          end: base_time + (stop.time.seconds_since_midnight + take_over).seconds,
+          end: base_time + (stop.time.seconds_since_midnight + stop.take_over).seconds,
         }
       }
     }

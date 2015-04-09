@@ -53,9 +53,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
           if open && close && open > close
             close = open
           end
-          take_over = stop.destination.take_over ? stop.destination.take_over : customer.take_over
-          take_over = take_over ? take_over.seconds_since_midnight : 0
-          [open, close, take_over]
+          [open, close, stop.take_over]
         }
         optimum = Ort.optimize(route.vehicle.capacity, matrix, tws, route.planning.customer.optimization_cluster_size)
         customer.job_optimizer.progress = '100;100;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')

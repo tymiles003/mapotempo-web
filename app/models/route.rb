@@ -77,9 +77,7 @@ class Route < ActiveRecord::Base
           stop.out_of_window = (destination.open && stop.time < destination.open) || (destination.close && stop.time > destination.close)
 
           self.distance += stop.distance
-          take_over = destination.take_over ? destination.take_over : destination.customer.take_over
-          take_over = take_over ? take_over.seconds_since_midnight : 0
-          self.end = stop.time + take_over
+          self.end = stop.time + stop.take_over
 
           quantity += (destination.quantity || 1)
           stop.out_of_capacity = vehicle.capacity && quantity > vehicle.capacity
@@ -122,11 +120,8 @@ class Route < ActiveRecord::Base
             # Latest departure time
             time = destination.close ? [time, destination.close].min : time
 
-            take_over = destination.take_over ? destination.take_over : destination.customer.take_over
-            take_over = take_over ? take_over.seconds_since_midnight : 0
-
             # New arrival stop time
-            time -= take_over
+            time -= stop.take_over
           end
 
           # Previous departure time

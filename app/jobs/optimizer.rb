@@ -60,9 +60,7 @@ class Optimizer
           if open && close && open > close
             close = open
           end
-          take_over = stop.destination.take_over ? stop.destination.take_over : planning.customer.take_over
-          take_over = take_over ? take_over.seconds_since_midnight : 0
-          [open, close, take_over]
+          [open, close, stop.take_over]
         }
         Ort.optimize(route.vehicle.capacity, matrix, tws, planning.customer.optimization_cluster_size)
       }
