@@ -79,7 +79,7 @@ class V01::Routes < Grape::API
           nickname: 'moveStop'
         }
         params {
-          requires :id, type: Integer
+          requires :id, type: String
           requires :destination_id, type: String, desc: 'Destination id to move'
           requires :index, type: Integer, desc: 'New position in the route'
         }
