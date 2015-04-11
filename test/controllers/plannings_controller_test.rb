@@ -13,7 +13,7 @@ class PlanningsControllerTest < ActionController::TestCase
       [1000, 60, "trace"]
     end
 
-    def Ort.optimize(optimize_time, capacity, matrix, time_window, time_threshold)
+    def Ort.optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, time_threshold)
       (0..(matrix.size-1)).to_a
     end
 

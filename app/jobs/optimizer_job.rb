@@ -19,11 +19,14 @@ require 'ort'
 
 class OptimizerJob < Struct.new(:planning_id, :route_id)
   @@optimize_time = Mapotempo::Application.config.optimize_time
+  @@soft_upper_bound = Mapotempo::Application.config.optimize_soft_upper_bound
 
   def perform
     Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} perform"
     routes = route_id ? Route.where(id: route_id, planning_id: planning_id) : Route.where(planning_id: planning_id)
     optimize_time = routes[0].planning.customer.optimization_time || @@optimize_time
+    soft_upper_bound = routes[0].planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
+
     routes_size = routes.length - 1
     routes_count = 0
     routes.select{ |route|
@@ -48,7 +51,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
         customer.job_optimizer.progress = "100;#{optimize_time}ms#{routes_count};" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         customer.job_optimizer.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
-        optimum = Ort.optimize(optimize_time, route.vehicle.capacity, matrix, tws, route.planning.customer.optimization_cluster_size)
+        optimum = Ort.optimize(optimize_time, soft_upper_bound, route.vehicle.capacity, matrix, tws, route.planning.customer.optimization_cluster_size)
         customer.job_optimizer.progress = '100;100;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         customer.job_optimizer.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"

@@ -119,6 +119,7 @@ en:
         jobs: "Jobs"
         optimization_cluster_size: "Optimization cluster size"
         optimization_time: "Optimization time"
+        optimization_soft_upper_bound: "Optimization soft upper bound multiplicator"
       destination:
         name: "Name"
         address: "Address"
@@ -313,6 +314,8 @@ en:
       alyacom_help: "Allows sending plannings to AlyaCom device."
       optimization_cluster_size_default: "%{n} (default value)"
       optimization_time_default: "%{n} (default value)"
+      optimization_soft_upper_bound_default: "%{n} (default value)"
+      optimization_soft_upper_bound_help: "0 to disable"
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"

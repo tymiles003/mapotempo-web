@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411114213) do
+ActiveRecord::Schema.define(version: 20150411191047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,20 +24,21 @@ ActiveRecord::Schema.define(version: 20150411114213) do
     t.integer  "job_optimizer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name",                      limit: 255
-    t.string   "tomtom_account",            limit: 255
-    t.string   "tomtom_user",               limit: 255
-    t.string   "tomtom_password",           limit: 255
+    t.string   "name",                          limit: 255
+    t.string   "tomtom_account",                limit: 255
+    t.string   "tomtom_user",                   limit: 255
+    t.string   "tomtom_password",               limit: 255
     t.integer  "router_id"
     t.boolean  "print_planning_annotating"
     t.text     "print_header"
-    t.string   "masternaut_user",           limit: 255
-    t.string   "masternaut_password",       limit: 255
-    t.boolean  "enable_orders",                         default: false, null: false
-    t.boolean  "test",                                  default: false, null: false
-    t.string   "alyacom_association",       limit: 255
+    t.string   "masternaut_user",               limit: 255
+    t.string   "masternaut_password",           limit: 255
+    t.boolean  "enable_orders",                             default: false, null: false
+    t.boolean  "test",                                      default: false, null: false
+    t.string   "alyacom_association",           limit: 255
     t.integer  "optimization_cluster_size"
     t.integer  "optimization_time"
+    t.integer  "optimization_soft_upper_bound"
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree

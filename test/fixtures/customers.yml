@@ -10,6 +10,7 @@ customer_one:
   router: router_one
   enable_orders: true
   optimization_time: 10
+  optimization_soft_upper_bound: 3
 
 customer_two:
   end_subscription:

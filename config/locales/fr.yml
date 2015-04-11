@@ -122,6 +122,7 @@ fr:
         jobs: "Tâches"
         optimization_cluster_size: "Taille des clusters d'optimisation"
         optimization_time: "Temps d'optimisation"
+        optimization_soft_upper_bound: "Multiplicateur de l'approche de limite supérieure de l'optimisation"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -316,6 +317,8 @@ fr:
       alyacom_help: "Permet d'envoyer les plannings vers les appareils AlyaCom."
       optimization_cluster_size_default: "%{n} (valeur par défaut)"
       optimization_time_default: "%{n} (valeur par défaut)"
+      optimization_soft_upper_bound_default: "%{n} (valeur par défaut)"
+      optimization_soft_upper_bound_help: "0 pour désactiver"
       print_header_help: "Bloc de texte ajouté avant chaque tournée"
       print:
         title: "Impressions"

@@ -28,9 +28,9 @@ module Ort
   @url = Mapotempo::Application.config.optimize_url
   @time_threshold = Mapotempo::Application.config.optimize_cluster_size
 
-  def self.optimize(optimize_time, capacity, matrix, time_window, time_threshold)
+  def self.optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, time_threshold)
     time_threshold ||= @time_threshold
-    key = [capacity, matrix.hash, time_window.hash, time_threshold]
+    key = [soft_upper_bound, capacity, matrix.hash, time_window.hash, time_threshold]
 
     cluster(matrix, time_window, time_threshold) { |matrix, time_window|
       result = @cache.read(key)
@@ -39,7 +39,8 @@ module Ort
           capacity: capacity,
           matrix: matrix,
           time_window: time_window,
-          optimize_time: optimize_time
+          optimize_time: optimize_time,
+          soft_upper_bound: soft_upper_bound
         }.to_json
         resource = RestClient::Resource.new(@url, timeout: -1)
         result = resource.post({data: data}, {content_type: :json, accept: :json})
