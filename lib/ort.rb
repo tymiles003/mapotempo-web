@@ -26,9 +26,8 @@ module Ort
 
   @cache = Mapotempo::Application.config.optimize_cache
   @url = Mapotempo::Application.config.optimize_url
-  @optimize_time = Mapotempo::Application.config.optimize_time
 
-  def self.optimize(capacity, matrix, time_window, time_threshold)
+  def self.optimize(optimize_time, capacity, matrix, time_window, time_threshold)
     time_threshold ||= 5
     key = [capacity, matrix.hash, time_window.hash, time_threshold]
 
@@ -39,7 +38,7 @@ module Ort
           capacity: capacity,
           matrix: matrix,
           time_window: time_window,
-          optimize_time: @optimize_time
+          optimize_time: optimize_time
         }.to_json
         resource = RestClient::Resource.new(@url, timeout: -1)
         result = resource.post({data: data}, {content_type: :json, accept: :json})

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -23,6 +23,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
   def perform
     Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} perform"
     routes = route_id ? Route.where(id: route_id, planning_id: planning_id) : Route.where(planning_id: planning_id)
+    optimize_time = routes[0].planning.customer.optimization_time || @@optimize_time
     routes_size = routes.length - 1
     routes_count = 0
     routes.select{ |route|
@@ -44,10 +45,10 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
 
         # Optimize
-        customer.job_optimizer.progress = "100;#{@@optimize_time}ms#{routes_count};" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
+        customer.job_optimizer.progress = "100;#{optimize_time}ms#{routes_count};" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         customer.job_optimizer.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"
-        optimum = Ort.optimize(route.vehicle.capacity, matrix, tws, route.planning.customer.optimization_cluster_size)
+        optimum = Ort.optimize(optimize_time, route.vehicle.capacity, matrix, tws, route.planning.customer.optimization_cluster_size)
         customer.job_optimizer.progress = '100;100;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         customer.job_optimizer.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{customer.job_optimizer.progress}"

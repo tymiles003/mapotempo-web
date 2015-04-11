@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -19,6 +19,7 @@ require 'ort'
 require 'optimizer_job'
 
 class Optimizer
+  @@optimize_time = Mapotempo::Application.config.optimize_time
 
   def self.optimize_each(planning)
     if Mapotempo::Application.config.delayed_job_use
@@ -39,6 +40,7 @@ class Optimizer
   end
 
   def self.optimize(planning, route)
+    optimize_time = planning.customer.optimization_time || @@optimize_time
     if route.size_active <= 1
         # Nothing to optimize
       true
@@ -54,7 +56,7 @@ class Optimizer
       end
     else
       optimum = route.optimize(nil) { |matrix, tws|
-        Ort.optimize(route.vehicle.capacity, matrix, tws, planning.customer.optimization_cluster_size)
+        Ort.optimize(optimize_time, route.vehicle.capacity, matrix, tws, planning.customer.optimization_cluster_size)
       }
       if optimum
         route.order(optimum)

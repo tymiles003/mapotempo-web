@@ -17,6 +17,7 @@
       <%= f.check_box :test %>
     <% end %>
     <%= f.number_field :optimization_cluster_size, { placeholder: t('.optimization_cluster_size_default'), min: 0 } %>
+    <%= f.text_field :optimization_time, { placeholder: t('.optimization_time_default', n: Mapotempo::Application.config.optimize_time), min: 0, input_group: t('all.unit.millisecond')} %>
   <% end %>
   <div id="accordion" class="panel panel-default">
     <div class="panel-heading">

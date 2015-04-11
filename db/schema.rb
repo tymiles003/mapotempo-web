@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150328151059) do
+ActiveRecord::Schema.define(version: 20150411114213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20150328151059) do
     t.boolean  "test",                                  default: false, null: false
     t.string   "alyacom_association",       limit: 255
     t.integer  "optimization_cluster_size"
+    t.integer  "optimization_time"
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree

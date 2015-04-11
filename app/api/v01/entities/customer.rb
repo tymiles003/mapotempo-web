@@ -20,5 +20,5 @@ class V01::Entities::Customer < Grape::Entity
   expose(:print_planning_annotating, documentation: { type: Integer })
   expose(:print_header, documentation: { type: String })
   expose(:alyacom_association, documentation: { type: String })
-  # hidden admin only field :enable_orders, :test, :optimization_cluster_size
+  # hidden admin only field :enable_orders, :test, :optimization_cluster_size, :optimization_time
 end

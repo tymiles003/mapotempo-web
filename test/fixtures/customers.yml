@@ -9,6 +9,7 @@ customer_one:
   name: MyString
   router: router_one
   enable_orders: true
+  optimization_time: 10
 
 customer_two:
   end_subscription:

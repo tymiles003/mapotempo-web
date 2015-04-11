@@ -118,6 +118,7 @@ en:
         test: "Test"
         jobs: "Jobs"
         optimization_cluster_size: "Optimization cluster size"
+        optimization_time: "Optimization time"
       destination:
         name: "Name"
         address: "Address"
@@ -311,6 +312,7 @@ en:
       alyacom: "AlyaCom"
       alyacom_help: "Allows sending plannings to AlyaCom device."
       optimization_cluster_size_default: "(default value)"
+      optimization_time_default: "%{n} (default value)"
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
@@ -673,6 +675,7 @@ en:
     unit:
       km: "km"
       second: "s"
+      millisecond: "ms"
       minute: "min"
       kgco2e_html: "kgCO<sub>2</sub>e"
       kgco2e_l_html: "kgCO<sub>2</sub>e/l"
