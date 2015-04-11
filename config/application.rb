@@ -59,6 +59,7 @@ module Mapotempo
     config.optimize_cache =  ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10)
     config.optimize_url = 'http://localhost:4567/0.1/optimize_tsptw'
     config.optimize_time = 30000
+    config.optimize_cluster_size = 5
 
     config.geocode_code_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode', expires_in: 60*60*24*10)
     config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_reverse', expires_in: 60*60*24*10)

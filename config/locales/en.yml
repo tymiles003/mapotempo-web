@@ -311,7 +311,7 @@ en:
       masternaut_help: "Allows sending plannings to Masternaut device."
       alyacom: "AlyaCom"
       alyacom_help: "Allows sending plannings to AlyaCom device."
-      optimization_cluster_size_default: "(default value)"
+      optimization_cluster_size_default: "%{n} (default value)"
       optimization_time_default: "%{n} (default value)"
       print_header_help: "Block of text added before each route"
       print:

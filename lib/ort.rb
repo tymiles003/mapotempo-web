@@ -26,9 +26,10 @@ module Ort
 
   @cache = Mapotempo::Application.config.optimize_cache
   @url = Mapotempo::Application.config.optimize_url
+  @time_threshold = Mapotempo::Application.config.optimize_cluster_size
 
   def self.optimize(optimize_time, capacity, matrix, time_window, time_threshold)
-    time_threshold ||= 5
+    time_threshold ||= @time_threshold
     key = [capacity, matrix.hash, time_window.hash, time_threshold]
 
     cluster(matrix, time_window, time_threshold) { |matrix, time_window|
