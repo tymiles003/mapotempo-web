@@ -67,6 +67,10 @@ en:
       products:
         one: "Product"
         other: "Products"
+      profile: "Profile"
+      profiles:
+        one: "Profile"
+        other: "Profiles"
       route: "Route"
       routes:
         one: "route"
@@ -120,6 +124,8 @@ en:
         optimization_cluster_size: "Optimization cluster size"
         optimization_time: "Optimization time"
         optimization_soft_upper_bound: "Optimization soft upper bound multiplicator"
+        profile: "Profile"
+        profile_id: "Profile"
       destination:
         name: "Name"
         address: "Address"
@@ -184,6 +190,10 @@ en:
         updated_at: "Updated"
         order_array_id: "Order array"
         date: "Date"
+      profile:
+        name: "Name"
+        layers: "Layers"
+        routers: "Routers"
       product:
         code: "Code"
         name: "Name"
@@ -575,6 +585,12 @@ en:
       new: "New store"
     new:
       title: "New store"
+
+  profiles:
+    menu:
+      profiles: "Profiles"
+    index:
+      title: "Listing profiles"
 
   products:
     menu:

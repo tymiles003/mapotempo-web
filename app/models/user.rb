@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   belongs_to :layer
 
   after_initialize :assign_defaults, if: 'new_record?'
+  before_validation :assign_defaults_layer, if: 'new_record?'
 
   validates :customer, presence: true, unless: :admin
   validates :layer, presence: true
@@ -33,7 +34,14 @@ class User < ActiveRecord::Base
   private
 
   def assign_defaults
-    self.layer = Layer.first
     self.api_key = SecureRandom.hex
+  end
+
+  def assign_defaults_layer
+    if admin
+      self.layer = Layer.first
+    else
+      self.layer = customer && customer.profile.layers.first
+    end
   end
 end

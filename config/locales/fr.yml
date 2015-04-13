@@ -66,6 +66,10 @@ fr:
       plannings:
         one: "planning"
         other: "plannings"
+      profile: "Profil"
+      profiles:
+        one: "Profil"
+        other: "Profils"
       product: "Produit"
       products:
         one: "Produit"
@@ -123,6 +127,8 @@ fr:
         optimization_cluster_size: "Taille des clusters d'optimisation"
         optimization_time: "Temps d'optimisation"
         optimization_soft_upper_bound: "Multiplicateur de l'approche de limite supérieure de l'optimisation"
+        profile: "Profil"
+        profile_id: "Profil"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -187,6 +193,10 @@ fr:
         updated_at: "Mise à jour"
         order_array_id: "Tableau de commandes"
         date: "Date"
+      profile:
+        name: "Nom"
+        layers: "Fond de carte"
+        routers: "Calculateur d'itinéraire"
       product:
         code: "Code"
         name: "Nom"
@@ -280,6 +290,12 @@ fr:
       already_optimizing: "Une optimisation de planning est déjà en cours"
 
   admin:
+    profiles:
+      menu:
+        profiles: "Profils"
+      index:
+        title: "Liste profils"
+
     users:
       menu:
         users : "Utilisateurs"

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
+    resources :profiles
   end
 
   resources :tags

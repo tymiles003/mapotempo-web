@@ -1,0 +1,36 @@
+<h1><%= t '.title' %></h1>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th><%= t 'activerecord.attributes.profile.name' %></th>
+      <th><%= t 'activerecord.attributes.profile.layers' %></th>
+      <th><%= t 'activerecord.attributes.profile.routers' %></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @profiles.each do |profile| %>
+      <tr>
+        <td><%= profile.name %></td>
+        <td>
+          <ul>
+          <% profile.layers.each { |layer| %>
+            <li><%= layer.name %></li>
+          <% } %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+          <% profile.routers.each { |router| %>
+            <li><%= router.name %></li>
+          <% } %>
+          </ul>
+        </td>
+        <td class="text-right">
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

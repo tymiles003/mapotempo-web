@@ -8,6 +8,7 @@
   <thead>
     <tr>
       <th><%= t 'activerecord.attributes.customer.name' %></th>
+      <th><%= t 'activerecord.attributes.customer.profile' %></th>
       <th><%= t 'activerecord.attributes.customer.max_vehicles' %></th>
       <th><%= t 'activerecord.attributes.customer.test' %></th>
       <th><%= t 'activerecord.attributes.customer.jobs' %></th>
@@ -20,6 +21,7 @@
     <% @customers.each do |customer| %>
       <tr>
         <td><%= customer.name %></td>
+        <td><%= customer.profile.name %></td>
         <td><%= customer.max_vehicles %></td>
         <td><%= customer.test ? '✓' : '' %></td>
         <td>

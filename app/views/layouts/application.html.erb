@@ -57,6 +57,7 @@
               <% if can?(:manage, Customer) %>
                 <li><%= link_to customers_path do %><i class="fa fa-user fa-fw"></i> <%= t 'customers.menu.customers' %><% end %></li>
                 <li><%= link_to admin_users_path do %><i class="fa fa-user fa-fw"></i> <%= t 'admin.users.menu.users' %><% end %></li>
+                <li><%= link_to admin_profiles_path do %><i class="fa fa-gear fa-fw"></i> <%= t 'admin.profiles.menu.profiles' %><% end %></li>
               <% end %>
             <% end %>
             <% if user_signed_in? and current_user.customer %>

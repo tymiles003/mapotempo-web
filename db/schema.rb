@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411191047) do
+ActiveRecord::Schema.define(version: 20150413102143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20150411191047) do
     t.string   "tomtom_account",                limit: 255
     t.string   "tomtom_user",                   limit: 255
     t.string   "tomtom_password",               limit: 255
-    t.integer  "router_id"
+    t.integer  "router_id",                                                 null: false
     t.boolean  "print_planning_annotating"
     t.text     "print_header"
     t.string   "masternaut_user",               limit: 255
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150411191047) do
     t.integer  "optimization_cluster_size"
     t.integer  "optimization_time"
     t.integer  "optimization_soft_upper_bound"
+    t.integer  "profile_id",                                                null: false
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree
@@ -98,6 +99,11 @@ ActiveRecord::Schema.define(version: 20150411191047) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "urlssl",      null: false
+  end
+
+  create_table "layers_profiles", id: false, force: :cascade do |t|
+    t.integer "profile_id"
+    t.integer "layer_id"
   end
 
   create_table "order_arrays", force: :cascade do |t|
@@ -163,6 +169,15 @@ ActiveRecord::Schema.define(version: 20150411191047) do
   end
 
   add_index "products", ["customer_id"], name: "fk__products_customer_id", using: :btree
+
+  create_table "profiles", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "profiles_routers", id: false, force: :cascade do |t|
+    t.integer "profile_id"
+    t.integer "router_id"
+  end
 
   create_table "routers", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -315,6 +330,7 @@ ActiveRecord::Schema.define(version: 20150411191047) do
 
   add_index "zonings", ["customer_id"], name: "fk__zonings_customer_id", using: :btree
 
+  add_foreign_key "customers", "profiles"
   add_foreign_key "destinations", "customers", name: "fk_destinations_customer_id", on_delete: :cascade
   add_foreign_key "destinations_tags", "destinations", name: "fk_destinations_tags_destination_id", on_delete: :cascade
   add_foreign_key "destinations_tags", "tags", name: "fk_destinations_tags_tag_id", on_delete: :cascade

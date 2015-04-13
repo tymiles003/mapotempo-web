@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+profile_one:
+  name: Prof1
+  layers: layer_one
+  routers: router_one
+
+profile_two:
+  name: MyString
+  layers: layer_two
+  routers: router_two

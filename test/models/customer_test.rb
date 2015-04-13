@@ -13,7 +13,7 @@ class CustomerTest < ActiveSupport::TestCase
   end
 
   test "should save" do
-    o = Customer.new(name: 'test', router: routers(:router_one))
+    o = Customer.new(name: 'test', router: routers(:router_one), profile: profiles(:profile_one))
     o.save!
     o.max_vehicles = 5
     o.save!
@@ -64,7 +64,7 @@ class CustomerTest < ActiveSupport::TestCase
   end
 
   test "should create and destroy" do
-    customer = Customer.new(name: 'plop', router: routers(:router_one))
+    customer = Customer.new(name: 'plop', router: routers(:router_one), profile: profiles(:profile_one))
     customer.save!
     customer.destroy
   end

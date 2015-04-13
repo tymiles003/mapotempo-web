@@ -18,6 +18,7 @@
 require 'sanitize'
 
 class Customer < ActiveRecord::Base
+  belongs_to :profile
   belongs_to :router
   belongs_to :job_geocoding, class_name: 'Delayed::Backend::ActiveRecord::Job', dependent: :destroy
   belongs_to :job_optimizer, class_name: 'Delayed::Backend::ActiveRecord::Job', dependent: :destroy

@@ -3,3 +3,7 @@
 router_one:
   name: MyString
   url: http://localhost:5000
+
+router_two:
+  name: MyString
+  url: http://localhost:5000
