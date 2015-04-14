@@ -336,6 +336,12 @@ function destinations_index(params, api) {
       }
       destination.geocoding_accuracy_percent = Math.round(destination.geocoding_accuracy * 100);
     }
+    if (destination.open) {
+      destination.open = destination.open.split(':').slice(0, 2).join(':');
+    }
+    if (destination.close) {
+      destination.close = destination.close.split(':').slice(0, 2).join(':');
+    }
     return destination;
   }
 
