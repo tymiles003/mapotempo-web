@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413102143) do
+ActiveRecord::Schema.define(version: 20150414091637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 20150413102143) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "urlssl",      null: false
+    t.string   "source",      null: false
   end
 
   create_table "layers_profiles", id: false, force: :cascade do |t|

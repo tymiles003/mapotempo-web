@@ -685,7 +685,9 @@ fr:
       empty_result: "Pas de résultats"
 
   all:
-    osm_attribution_html: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{layer_attribution}"
+    map_attribution:
+      osm: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{attribution}"
+      here: "Here"
     verb:
       new: "Nouveau"
       list: "Liste"

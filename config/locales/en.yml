@@ -680,7 +680,9 @@ en:
       empty_result: "No results found"
 
   all:
-    osm_attribution_html: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{layer_attribution}"
+    map_attribution:
+      osm: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{attribution}"
+      here: "Here"
     verb:
       new: "New"
       new: "New"

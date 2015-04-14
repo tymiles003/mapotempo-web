@@ -32,7 +32,7 @@ function user_edit_settings(params) {
     map.removeLayer(layer);
     layer = L.tileLayer(layers[event.target.value].url, {
       maxZoom: 18,
-      attribution: '<%= I18n.t 'all.osm_attribution_html', layer_attribution: '' %>' + layers[event.target.value].attribution
+      attribution: layers[event.target.value].attribution
     });
     map.addLayer(layer);
   });

@@ -56,6 +56,6 @@ controller.js(
   map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
   map_lat: @destination.customer.stores[0].lat,
   map_lng: @destination.customer.stores[0].lng,
-  map_attribution: t('all.osm_attribution_html', layer_attribution: current_user.layer.attribution)
+  map_attribution: current_user.layer.map_attribution
 )
 %>

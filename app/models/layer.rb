@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -17,8 +17,13 @@
 #
 class Layer < ActiveRecord::Base
   nilify_blanks
+  validates :source, presence: true
   validates :name, presence: true
   validates :url, presence: true
   validates :urlssl, presence: true
   validates :attribution, presence: true
+
+  def map_attribution
+    I18n.t("all.map_attribution.#{source}", attribution: attribution)
+  end
 end

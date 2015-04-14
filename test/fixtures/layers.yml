@@ -1,12 +1,14 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 layer_one:
+  source: osm
   name: MyString
   url: /favicon.ico
   attribution: MyString
   urlssl: /favicon.ico
 
 layer_two:
+  source: here
   name: MyString
   url: /favicon.ico
   attribution: MyString
