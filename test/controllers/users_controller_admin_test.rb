@@ -62,4 +62,12 @@ class UsersControllerAdminTest < ActionController::TestCase
 
     assert_redirected_to admin_users_path
   end
+
+  test "should destroy multiple user" do
+    assert_difference('User.count', -2) do
+      delete :destroy_multiple, users: { users(:user_one).id => 1, users(:user_two).id => 1 }
+    end
+
+    assert_redirected_to admin_users_path
+  end
 end

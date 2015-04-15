@@ -4,9 +4,11 @@
   <%= link_to new_planning_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
 </p>
 
+<%= form_tag plannings_path, method: :delete do %>
 <table class="table table-striped table-hover">
   <thead>
     <tr>
+      <th><button id="add" type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
       <th><%= t 'activerecord.attributes.planning.name' %></th>
       <th><%= t 'activerecord.attributes.planning.ref' %></th>
       <th><%= t 'activerecord.attributes.planning.date' %></th>
@@ -18,6 +20,7 @@
   <tbody>
     <% @plannings.each do |planning| %>
       <tr>
+        <td><%= check_box_tag("plannings[#{planning.id}]") %></td>
         <td><%= planning.name %></td>
         <td><%= planning.ref %></td>
         <td><%= planning.date && l(planning.date) %></td>
@@ -35,3 +38,6 @@
     <% end %>
   </tbody>
 </table>
+
+<%= button_tag type: :submit, class: "btn btn-danger btn-sm", data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %><% end %>
+<% end %>

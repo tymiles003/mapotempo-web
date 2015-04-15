@@ -695,8 +695,10 @@ fr:
       edit: "Modifier"
       send: "Envoyer"
       destroy: "Supprimer"
+      destroy_selection: "Supprimer sélection"
       destroy_confirm: "Êtes-vous sûr ?"
       duplicate: "Dupliquer"
+      toggle_selection: "Inverser sélection"
     unit:
       km: "km"
       millisecond: "ms"

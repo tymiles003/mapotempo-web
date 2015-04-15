@@ -77,6 +77,14 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert_redirected_to order_arrays_path
   end
 
+  test "should destroy multiple order_array" do
+    assert_difference('OrderArray.count', -2) do
+      delete :destroy_multiple, order_arrays: { order_arrays(:order_array_one).id => 1, order_arrays(:order_array_two).id => 1 }
+    end
+
+    assert_redirected_to order_arrays_path
+  end
+
   test "should duplicate" do
     assert_difference('OrderArray.count') do
       patch :duplicate, order_array_id: @order_array

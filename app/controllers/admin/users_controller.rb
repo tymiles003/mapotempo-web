@@ -90,6 +90,16 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def destroy_multiple
+    User.transaction do
+      ids = params['users'].keys.collect(&:to_i)
+      User.find(ids).each(&:destroy)
+      respond_to do |format|
+        format.html { redirect_to admin_users_path }
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

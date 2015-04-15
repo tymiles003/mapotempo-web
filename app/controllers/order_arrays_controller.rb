@@ -80,6 +80,16 @@ class OrderArraysController < ApplicationController
     end
   end
 
+  def destroy_multiple
+    OrderArray.transaction do
+      ids = params['order_arrays'].keys.collect(&:to_i)
+      current_user.customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }.each(&:destroy)
+      respond_to do |format|
+        format.html { redirect_to order_arrays_url }
+      end
+    end
+  end
+
   def duplicate
     respond_to do |format|
       @order_array = @order_array.amoeba_dup

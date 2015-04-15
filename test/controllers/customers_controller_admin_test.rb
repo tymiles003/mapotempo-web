@@ -32,4 +32,12 @@ class CustomersControllerAdminTest < ActionController::TestCase
 
     assert_redirected_to customers_path
   end
+
+  test "should destroy multiple customer" do
+    assert_difference('Customer.count', -2) do
+      delete :destroy_multiple, customers: { customers(:customer_one).id => 1, customers(:customer_two).id => 1 }
+    end
+
+    assert_redirected_to customers_path
+  end
 end

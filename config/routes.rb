@@ -9,12 +9,15 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
+    delete 'users' => 'users#destroy_multiple'
     resources :profiles
   end
 
   resources :tags
+  delete 'tags' => 'tags#destroy_multiple'
 
   resources :customers
+  delete 'customers' => 'customers#destroy_multiple'
 
   resources :vehicles
 
@@ -24,6 +27,7 @@ Rails.application.routes.draw do
   delete 'destinations' => 'destinations#clear'
 
   resources :stores
+  delete 'stores' => 'stores#destroy_multiple'
 
   resources :plannings do
     patch ':route_id/:destination_id/move/:index' => 'plannings#move'
@@ -36,8 +40,10 @@ Rails.application.routes.draw do
     get 'optimize_each' => 'plannings#optimize_each_routes'
     get ':route_id/optimize' => 'plannings#optimize_route'
   end
+  delete 'plannings' => 'plannings#destroy_multiple'
 
   resources :products
+  delete 'products' => 'products#destroy_multiple'
 
   resources :routes
 
@@ -47,10 +53,12 @@ Rails.application.routes.draw do
     get 'planning/:planning_id' => 'zonings#show'
     patch 'duplicate'
   end
+  delete 'zonings' => 'zonings#destroy_multiple'
 
   resources :order_arrays do
     patch 'duplicate'
   end
+  delete 'order_arrays' => 'order_arrays#destroy_multiple'
 
   get '/unsupported_browser' => 'index#unsupported_browser'
 

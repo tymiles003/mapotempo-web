@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014
+# Copyright © Mapotempo, 2014-2015
 #
 # This file is part of Mapotempo.
 #
@@ -76,6 +76,21 @@ class StoresController < ApplicationController
       begin
         @store.destroy
         format.html { redirect_to stores_url }
+      rescue => e
+        flash[:error] = e.message
+        format.html { redirect_to stores_path }
+      end
+    end
+  end
+
+  def destroy_multiple
+    respond_to do |format|
+      begin
+        Store.transaction do
+          ids = params['stores'].keys.collect(&:to_i)
+          current_user.customer.stores.select{ |store| ids.include?(store.id) }.each(&:destroy)
+          format.html { redirect_to stores_url }
+        end
       rescue => e
         flash[:error] = e.message
         format.html { redirect_to stores_path }

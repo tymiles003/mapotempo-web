@@ -60,6 +60,16 @@ class CustomersController < ApplicationController
     end
   end
 
+  def destroy_multiple
+    Customer.transaction do
+      ids = params['customers'].keys.collect(&:to_i)
+      Customer.find(ids).each(&:destroy)
+      respond_to do |format|
+        format.html { redirect_to customers_url }
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

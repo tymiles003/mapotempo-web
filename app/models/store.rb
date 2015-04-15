@@ -82,7 +82,7 @@ class Store < ActiveRecord::Base
   end
 
   def destroy_vehicle_store
-    default = customer.stores.find{ |store| store != self }
+    default = customer.stores.find{ |store| store != self && !store.destroyed? }
     if default
       vehicles.each{ |vehicle|
         vehicle.store_start = default if vehicle.store_start = self

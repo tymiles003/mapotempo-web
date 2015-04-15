@@ -109,6 +109,14 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_redirected_to plannings_path
   end
 
+  test "should destroy multiple planning" do
+    assert_difference('Planning.count', -2) do
+      delete :destroy_multiple, plannings: { plannings(:planning_one).id => 1, plannings(:planning_two).id => 1 }
+    end
+
+    assert_redirected_to plannings_path
+  end
+
   test "should move" do
     patch :move, planning_id: @planning, route_id: @planning.routes[1], destination_id: @planning.routes[0].stops[0].destination, index: 1, format: :json
     assert_response :success

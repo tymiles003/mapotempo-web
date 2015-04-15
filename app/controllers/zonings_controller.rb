@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -65,6 +65,16 @@ class ZoningsController < ApplicationController
     @zoning.destroy
     respond_to do |format|
       format.html { redirect_to zonings_url }
+    end
+  end
+
+  def destroy_multiple
+    Zoning.transaction do
+      ids = params['zonings'].keys.collect(&:to_i)
+      current_user.customer.zonings.select{ |zoning| ids.include?(zoning.id) }.each(&:destroy)
+      respond_to do |format|
+        format.html { redirect_to zonings_url }
+      end
     end
   end
 

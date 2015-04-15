@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -56,6 +56,16 @@ class TagsController < ApplicationController
     @tag.destroy
     respond_to do |format|
       format.html { redirect_to tags_url }
+    end
+  end
+
+  def destroy_multiple
+    Tag.transaction do
+      ids = params['tags'].keys.collect(&:to_i)
+      current_user.customer.tags.select{ |tag| ids.include?(tag.id) }.each(&:destroy)
+      respond_to do |format|
+        format.html { redirect_to tags_url }
+      end
     end
   end
 

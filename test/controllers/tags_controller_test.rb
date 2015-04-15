@@ -61,4 +61,12 @@ class TagsControllerTest < ActionController::TestCase
 
     assert_redirected_to tags_path
   end
+
+  test "should destroy multiple tag" do
+    assert_difference('Tag.count', -2) do
+      delete :destroy_multiple, tags: { tags(:tag_one).id => 1, tags(:tag_two).id => 1 }
+    end
+
+    assert_redirected_to tags_path
+  end
 end

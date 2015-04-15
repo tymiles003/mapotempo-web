@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014
+# Copyright © Mapotempo, 2014-2015
 #
 # This file is part of Mapotempo.
 #
@@ -56,6 +56,16 @@ class ProductsController < ApplicationController
     @product.destroy
     respond_to do |format|
       format.html { redirect_to products_url }
+    end
+  end
+
+  def destroy_multiple
+    Product.transaction do
+      ids = params['products'].keys.collect(&:to_i)
+      current_user.customer.products.select{ |product| ids.include?(product.id) }.each(&:destroy)
+      respond_to do |format|
+        format.html { redirect_to products_url }
+      end
     end
   end
 

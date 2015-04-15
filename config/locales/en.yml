@@ -691,8 +691,10 @@ en:
       edit: "Edit"
       send: "Send"
       destroy: "Destroy"
+      destroy_selection: "Destroy selected"
       destroy_confirm: "Are you sure?"
       duplicate: "Duplicate"
+      toggle_selection: "Toggle selection"
     unit:
       km: "km"
       second: "s"
