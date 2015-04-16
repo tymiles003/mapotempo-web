@@ -60,6 +60,13 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should destroy multiple plannings' do
+    assert_difference('Planning.count', -2) do
+      delete api + "&ids[]=#{plannings(:planning_one).id}&ids[]=#{plannings(:planning_two).id}"
+      assert last_response.ok?, last_response.body
+    end
+  end
+
   test 'should force recompute the planning after parameter update' do
     get api("#{@planning.id}/refresh")
     assert last_response.ok?, last_response.body

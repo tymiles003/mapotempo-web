@@ -67,5 +67,18 @@ class V01::Products < Grape::API
     delete ':id' do
       current_customer.products.find(params[:id]).destroy
     end
+
+    desc 'Delete multiple products.', {
+      nickname: 'deleteMaultipleProducts'
+    }
+    params {
+      requires :ids, type: Array[Integer]
+    }
+    delete do
+      Product.transaction do
+        ids = params[:ids].collect(&:to_i)
+        current_customer.products.select{ |product| ids.include?(product.id) }.each(&:destroy)
+      end
+    end
   end
 end

@@ -74,6 +74,19 @@ class V01::OrderArrays < Grape::API
       current_customer.order_arrays.find(params[:id]).destroy
     end
 
+    desc 'Delete multiple order_arrays.', {
+      nickname: 'deleteMaultipleOrderArrays'
+    }
+    params {
+      requires :ids, type: Array[Integer]
+    }
+    delete do
+      OrderArray.transaction do
+        ids = params[:ids].collect(&:to_i)
+        current_customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }.each(&:destroy)
+      end
+    end
+
     desc 'Clone the order_array.', {
       nickname: 'cloneOrderArray',
       entity: V01::Entities::OrderArray

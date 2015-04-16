@@ -69,6 +69,19 @@ class V01::Stores < Grape::API
       current_customer.stores.find(params[:id]).destroy
     end
 
+    desc 'Delete multiple stores.', {
+      nickname: 'deleteMaultipleStores'
+    }
+    params {
+      requires :ids, type: Array[Integer]
+    }
+    delete do
+      Store.transaction do
+        ids = params[:ids].collect(&:to_i)
+        current_customer.stores.select{ |store| ids.include?(store.id) }.each(&:destroy)
+      end
+    end
+
     desc 'Geocode store.', {
       nickname: 'geocodeStore',
       params: V01::Entities::Store.documentation.except(:id),

@@ -44,6 +44,20 @@ class V01::StoresTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should destroy multiple stores' do
+    assert_difference('Store.count', -1) do
+      delete api + "&ids[]=#{stores(:store_one).id}"
+      assert last_response.ok?, last_response.body
+    end
+  end
+
+  test 'should not destroy multiple all stores' do
+    assert_difference('Store.count', 0) do
+      delete api + "&ids[]=#{stores(:store_one).id}&ids[]=#{stores(:store_one_bis).id}"
+      assert_not last_response.ok?
+    end
+  end
+
   test 'should geocode' do
     patch api('geocode'), format: :json, store: { city: @store.city, name: @store.name, postalcode: @store.postalcode, street: @store.street }
     assert last_response.ok?, last_response.body

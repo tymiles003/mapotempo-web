@@ -52,6 +52,13 @@ class V01::OrderArraysTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should destroy multiple order_arrays' do
+    assert_difference('OrderArray.count', -2) do
+      delete api + "&ids[]=#{order_arrays(:order_array_one).id}&ids[]=#{order_arrays(:order_array_two).id}"
+      assert last_response.ok?, last_response.body
+    end
+  end
+
   test 'should clone the order_array' do
     assert_difference('OrderArray.count', 1) do
       patch api("#{@order_array.id}/duplicate")

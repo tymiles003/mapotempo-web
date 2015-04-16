@@ -72,6 +72,19 @@ class V01::Plannings < Grape::API
       current_customer.plannings.where(id).first!.destroy
     end
 
+    desc 'Delete multiple plannings.', {
+      nickname: 'deleteMaultiplePlannings'
+    }
+    params {
+      requires :ids, type: Array[Integer]
+    }
+    delete do
+      Planning.transaction do
+        ids = params[:ids].collect(&:to_i)
+        current_customer.plannings.select{ |planning| ids.include?(planning.id) }.each(&:destroy)
+      end
+    end
+
     desc 'Force recompute the planning after parameter update.', {
       nickname: 'refreshPlanning',
       entity: V01::Entities::Planning

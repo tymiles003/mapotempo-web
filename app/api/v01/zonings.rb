@@ -66,5 +66,18 @@ class V01::Zonings < Grape::API
     delete ':id' do
       current_customer.zonings.find(params[:id]).destroy
     end
+
+    desc 'Delete multiple zonings.', {
+      nickname: 'deleteMaultipleZonings'
+    }
+    params {
+      requires :ids, type: Array[Integer]
+    }
+    delete do
+      Zoning.transaction do
+        ids = params[:ids].collect(&:to_i)
+        current_customer.zonings.select{ |zoning| ids.include?(zoning.id) }.each(&:destroy)
+      end
+    end
   end
 end

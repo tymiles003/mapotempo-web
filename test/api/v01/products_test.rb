@@ -54,4 +54,11 @@ class V01::ProductsTest < ActiveSupport::TestCase
       assert last_response.ok?, last_response.body
     end
   end
+
+  test 'should destroy multiple products' do
+    assert_difference('Product.count', -2) do
+      delete api + "&ids[]=#{products(:product_one).id}&ids[]=#{products(:product_two).id}"
+      assert last_response.ok?, last_response.body
+    end
+  end
 end

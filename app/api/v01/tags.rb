@@ -66,5 +66,18 @@ class V01::Tags < Grape::API
     delete ':id' do
       current_customer.tags.find(params[:id]).destroy
     end
+
+    desc 'Delete multiple tags.', {
+      nickname: 'deleteMaultipleTags'
+    }
+    params {
+      requires :ids, type: Array[Integer]
+    }
+    delete do
+      Tag.transaction do
+        ids = params[:ids].collect(&:to_i)
+        current_customer.tags.select{ |tag| ids.include?(tag.id) }.each(&:destroy)
+      end
+    end
   end
 end
