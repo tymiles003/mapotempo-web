@@ -378,7 +378,7 @@ function destinations_index(params, api) {
       });
     });
     <% end %>
-    $row.on("change", ":input", function(event) {
+    $row.on("change", ":input:not(:checkbox)", function(event) {
       var url = '/api/0.1/' + api + '/' + id + '.json';
       $.ajax({
         type: "put",
@@ -602,13 +602,65 @@ function destinations_index(params, api) {
       wire(element);
     });
 
+    $('#destination_box table').on('tablesorter-initialized', function() {
+      var
+        $table = $(this),
+        c = this.config,
+        wo = c && c.widgetOptions,
+        // include sticky header checkbox; if installed
+        $sticky = c && wo.$sticky || '',
+        doChecky = function(c, col) {
+          $table
+            .children('tbody')
+            .children('tr:visible')
+            .children('td:nth-child( ' + (parseInt(col, 10) + 1) + ' )')
+            .find('input[type=checkbox]')
+            .each(function() {
+              this.checked = c;
+              $(this).trigger('change');
+            });
+        };
+
+      $table
+        .children('tbody')
+        .on('change', 'input[type=checkbox]', function() {
+          // ignore change if updating all rows
+          if ($table[0].ignoreChange) {
+            return;
+          }
+          var col, $this = $(this);
+          // uncheck header if any checkboxes are unchecked
+          if (!this.checked) {
+            $table.add($sticky).find('thead input[type=checkbox]').prop('checked', false);
+          }
+        })
+        .end()
+        .add($sticky)
+        .find('thead input[type=checkbox]')
+        // Click on checkbox in table header to toggle all inputs
+        .on('change', function() {
+          // prevent updateCell for every cell
+          $table[0].ignoreChange = true;
+          var c = this.checked,
+            col = $(this).closest('th').attr('data-column');
+          doChecky(c, col);
+          // update main & sticky header
+          $table.add($sticky).find('th[data-column=' + col + '] input[type=checkbox]').prop('checked', c);
+          // update all at once
+          $table[0].ignoreChange = false;
+        })
+        .on('mouseup', function() {
+          return false;
+        });
+    });
+
     $("#destination_box table").tablesorter({
       headers: {
-        3: {
-          sorter: "digit"
+        0: {
+          sorter: false
         },
         4: {
-          sorter: false
+          sorter: "digit"
         },
         5: {
           sorter: false
@@ -620,9 +672,12 @@ function destinations_index(params, api) {
           sorter: false
         },
         8: {
-          sorter: "digit"
+          sorter: false
         },
         9: {
+          sorter: "digit"
+        },
+        10: {
           sorter: false
         }
       },
@@ -646,12 +701,12 @@ function destinations_index(params, api) {
         // class name applied to filter row and each input
         filter_cssFilter: "tablesorter-filter",
         filter_functions: {
-          0: filter_text,
           1: filter_text,
           2: filter_text,
-          3: filter_number,
-          4: filter_text,
-          5: function(e, n, f, i, $r) {
+          3: filter_text,
+          4: filter_number,
+          5: filter_text,
+          6: function(e, n, f, i, $r) {
             n = n.split(',');
             n[0] = n[0].split(':');
             n[0] = new Date(2000, 1, 1, n[0][0], n[0][1]);
@@ -664,11 +719,11 @@ function destinations_index(params, api) {
 
             return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
           },
-          6: filter_text,
-          7: filter_text
+          7: filter_text,
+          8: filter_text
         },
         filter_formatter: {
-          5: function($cell, indx) {
+          6: function($cell, indx) {
             return $.tablesorter.filterFormatter.uiRange($cell, indx, {
               values: [0, 24],
               min: 0,
@@ -677,26 +732,27 @@ function destinations_index(params, api) {
               valueToHeader: false
             });
           },
-          8: function($cell, indx) {
+          9: function($cell, indx) {
             return false;
           },
-          9: function($cell, indx) {
+          10: function($cell, indx) {
             return false;
           }
         },
         columnSelector_container: $('#columnSelector'),
         columnSelector_layout: '<li role="presentation"><label><input type="checkbox">{name}</label></li>',
         columnSelector_columns: {
-          0: true,
-          1: 'disable',
+          0: 'disable',
+          1: true,
           2: 'disable',
-          3: true,
-          4: false,
-          5: true,
+          3: 'disable',
+          4: true,
+          5: false,
           6: true,
           7: true,
           8: true,
-          9: 'disable'
+          9: true,
+          10: 'disable'
         }
       }
     }).bind('filterEnd', function(e, filter) {
@@ -713,6 +769,33 @@ function destinations_index(params, api) {
       });
     });
     $(".tablesorter-filter").addClass("form-control input-sm"); // filter_cssFilter not support setting multiple class at once
+
+    $("#multiple-delete").on("click", function(event) {
+      if (confirm(I18n.t('all.verb.destroy_confirm'))) {
+        var destination_ids = $.map($('table tbody :checkbox:checked').closest('tr'), function(val, i) {
+          return $(val).data('destination_id');
+        });
+
+        $.ajax({
+          type: "delete",
+          url: '/api/0.1/' + api + '.json?' + $.param({ids: destination_ids}),
+          beforeSend: beforeSendWaiting,
+          success: function(data) {
+            $.map($('table tbody :checkbox:checked').closest('tr'), function(row, i) {
+              var row = $(row)
+              var id = row.data('destination_id');
+              row.remove();
+              markersLayers.removeLayer(markers[id]);
+              cluster.removeLayer(markers[id]);
+              delete markers[id];
+              count_dec();
+            });
+          },
+          complete: completeWaiting,
+          error: ajaxError
+        });
+      }
+    });
   }
 
   $.ajax({

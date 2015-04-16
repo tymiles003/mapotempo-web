@@ -1,5 +1,8 @@
 <tr data-destination_id="{{id}}" class="destination{{#has_error}} has-error{{/has_error}}">
   <td>
+    <input id="destination_{{id}}" type="checkbox" value="1" name="destinations[{{id}}]"></input>
+  </td>
+  <td>
     <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}" style="width:6em"/>
   </td>
   <td>

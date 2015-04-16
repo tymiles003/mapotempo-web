@@ -104,6 +104,19 @@ class V01::Destinations < Grape::API
       current_customer.destinations.where(id).first!.destroy
     end
 
+    desc 'Delete multiple destinations.', {
+      nickname: 'deleteMaultipleDestinations'
+    }
+    params {
+      requires :ids, type: Array[Integer]
+    }
+    delete do
+      Destination.transaction do
+        ids = params[:ids].collect(&:to_i)
+        current_customer.destinations.select{ |destination| ids.include?(destination.id) }.each(&:destroy)
+      end
+    end
+
     desc 'Geocode destination.', {
       nickname: 'geocodeDestination',
       params: V01::Entities::Destination.documentation.except(:id),

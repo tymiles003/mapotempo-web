@@ -64,15 +64,31 @@
     }
 
     .tablesorter-filter-row {
-      td:nth-of-type(1) input,
-      td:nth-of-type(4) input,
-      td:nth-of-type(5) input {
+      td:nth-of-type(1) input {
+        display: none;
+      }
+
+      td:nth-of-type(2) input,
+      td:nth-of-type(5) input,
+      td:nth-of-type(6) input {
         width: 6em;
       }
     }
 
     .tablesorter-headerRow {
-      th:nth-of-type(10) div {
+      th:nth-of-type(1) {
+        padding-left: 0px;
+        padding-right: 0px;
+
+        div {
+          padding: 0px;
+        }
+        .tablesorter-icon {
+          display: none;
+        }
+      }
+
+      th:nth-of-type(11) div {
         display: none;
       }
     }
