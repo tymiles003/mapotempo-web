@@ -119,9 +119,15 @@ class Planning < ActiveRecord::Base
   end
 
   def automatic_insert(stop)
-    # If zoning, get appropriate route
     available_routes = nil
-    if zoning
+
+    # If already in route, stay in route
+    if stop.route.vehicle
+      available_routes = [stop.route]
+    end
+
+    # If zoning, get appropriate route
+    if !available_routes && zoning
       zone = zoning.inside(stop.destination)
       if zone && zone.vehicle
         route = routes.find{ |route|
