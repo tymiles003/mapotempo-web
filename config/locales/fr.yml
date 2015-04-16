@@ -366,6 +366,8 @@ fr:
       title: "Importer des clients"
       replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus."
       file_help: "Import de fichier CSV uniquement."
+      template_csv: "Modèle import tableur standard"
+      template_excel: "Modèle import tableur Excel"
       dialog:
         title: "Import des clients"
         import_in_progress: "Import des clients en cours, merci de patienter."

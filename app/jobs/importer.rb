@@ -20,6 +20,27 @@ require 'geocoder_job'
 
 class Importer
 
+  def self.columns
+    {
+      ref: I18n.t('destinations.import_file.ref'),
+      route: I18n.t('destinations.import_file.route'),
+      name: I18n.t('destinations.import_file.name'),
+      street: I18n.t('destinations.import_file.street'),
+      detail: I18n.t('destinations.import_file.detail'),
+      postalcode: I18n.t('destinations.import_file.postalcode'),
+      city: I18n.t('destinations.import_file.city'),
+      lat: I18n.t('destinations.import_file.lat'),
+      lng: I18n.t('destinations.import_file.lng'),
+      open: I18n.t('destinations.import_file.open'),
+      close: I18n.t('destinations.import_file.close'),
+      comment: I18n.t('destinations.import_file.comment'),
+      tags: I18n.t('destinations.import_file.tags'),
+      take_over: I18n.t('destinations.import_file.take_over'),
+      quantity: I18n.t('destinations.import_file.quantity'),
+      active: I18n.t('destinations.import_file.active')
+    }
+  end
+
   def self.import_csv(replace, customer, file, name, synchronous=false)
     if !synchronous && Mapotempo::Application.config.delayed_job_use && customer.job_geocoding
       return false
@@ -42,24 +63,6 @@ class Importer
     data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
 
     tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
-    columns = {
-      ref: I18n.t('destinations.import_file.ref'),
-      route: I18n.t('destinations.import_file.route'),
-      name: I18n.t('destinations.import_file.name'),
-      street: I18n.t('destinations.import_file.street'),
-      detail: I18n.t('destinations.import_file.detail'),
-      postalcode: I18n.t('destinations.import_file.postalcode'),
-      city: I18n.t('destinations.import_file.city'),
-      lat: I18n.t('destinations.import_file.lat'),
-      lng: I18n.t('destinations.import_file.lng'),
-      open: I18n.t('destinations.import_file.open'),
-      close: I18n.t('destinations.import_file.close'),
-      comment: I18n.t('destinations.import_file.comment'),
-      tags: I18n.t('destinations.import_file.tags'),
-      take_over: I18n.t('destinations.import_file.take_over'),
-      quantity: I18n.t('destinations.import_file.quantity'),
-      active: I18n.t('destinations.import_file.active')
-    }
 
     self.import(replace, customer, data, name, synchronous) { |row|
       # Switch from locale to internal column name

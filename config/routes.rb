@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :vehicles
 
   resources :destinations
+  get 'destination/import_template' => 'destinations#import_template'
   get 'destination/import' => 'destinations#import'
   post 'destinations/upload' => 'destinations#upload', :as => 'destinations_imports'
   delete 'destinations' => 'destinations#clear'

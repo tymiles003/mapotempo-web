@@ -95,6 +95,11 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to destinations_path
   end
 
+  test "should show import_template" do
+    get :import_template, format: :csv
+    assert_response :success
+  end
+
   test "should import" do
     get :import
     assert_response :success

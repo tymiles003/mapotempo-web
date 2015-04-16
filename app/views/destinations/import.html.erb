@@ -12,6 +12,12 @@
   <%= f.actions do %>
     <%= f.submit t 'all.verb.send' %>
   <% end %>
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-6">
+      <a href="import_template.csv" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t '.template_csv' %></a>
+      <a href="import_template.excel" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t '.template_excel' %></a>
+    </div>
+  </div>
 <% end %>
 
 <div id="dialog-upload" title="<%= t '.dialog.title' %>" style="display:none">
