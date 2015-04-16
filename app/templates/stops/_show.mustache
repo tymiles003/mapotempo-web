@@ -1,5 +1,6 @@
 {{#destination}}
 <div data-route_id="{{route_id}}" data-destination_id="{{id}}">
+{{#planning_id}}
 {{^store}}
 <div class="btn-group pull-right destination-tools">
   {{#automatic_insert}}
@@ -21,6 +22,7 @@
   </div>
 </div>
 {{/store}}
+{{/planning_id}}
 <p>
   {{#vehicle_name}}{{vehicle_name}}</br>{{/vehicle_name}}
   {{#number}}<span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>{{/number}}

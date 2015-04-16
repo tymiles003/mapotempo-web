@@ -216,6 +216,7 @@ function plannings_edit(params) {
     stores = {};
     $.each(data.stores, function(i, store) {
       store.store = true;
+      store.planning_id = data.planning_id;
       var m = L.marker(new L.LatLng(store.lat, store.lng), {
         icon: L.icon({
           iconUrl: '<%= asset_path("marker-home.svg") %>',

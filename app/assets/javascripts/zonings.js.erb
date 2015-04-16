@@ -191,6 +191,7 @@ function zonings_edit(params) {
     var stores_marker = L.featureGroup();
     $.each(data.stores, function(i, store) {
       store.store = true;
+      store.i18n = mustache_i18n;
       var m = L.marker(new L.LatLng(store.lat, store.lng), {
         icon: L.icon({
           iconUrl: '<%= asset_path("marker-home.svg") %>',
@@ -213,15 +214,18 @@ function zonings_edit(params) {
       hasPlanning = true;
       $.each(data.planning, function(index, route) {
         $.each(route.stops, function(index, stop) {
+          stop.i18n = mustache_i18n;
           if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
             L.marker(new L.LatLng(stop.lat, stop.lng), {
               icon: L.icon({
                 iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
                 iconSize: new L.Point(12, 12),
                 iconAnchor: new L.Point(6, 6),
-                popupAnchor: new L.Point(1, 11)
+                popupAnchor: new L.Point(0, -6),
               })
-            }).addTo(markersLayers);
+            }).addTo(stores_marker).bindPopup(SMT['stops/show']({
+              destination: stop
+            })).addTo(markersLayers);
           }
         });
       });
