@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2013-2014
+// Copyright © Mapotempo, 2013-2015
 //
 // This file is part of Mapotempo.
 //
@@ -36,13 +36,17 @@ function zonings_edit(params) {
     attribution: map_attribution
   }).addTo(map);
 
-  var markersLayers = L.featureGroup();
+  var markersLayers = L.featureGroup(),
+    stores_marker = L.featureGroup(),
+    featureGroup = L.featureGroup();
+
+  map.addLayer(featureGroup).addLayer(stores_marker).addLayer(markersLayers);
+
   var hasPlanning = false;
   var geoJsonLayers = {};
 
   var zone_map = {};
 
-  var featureGroup = L.featureGroup().addTo(map);
 
   new L.Control.Draw({
     draw: {
@@ -188,7 +192,7 @@ function zonings_edit(params) {
   }
 
   function display_zoning(data) {
-    var stores_marker = L.featureGroup();
+    stores_marker.clearLayers();
     $.each(data.stores, function(i, store) {
       store.store = true;
       store.i18n = mustache_i18n;
@@ -208,9 +212,9 @@ function zonings_edit(params) {
         m.closePopup();
       });
     });
-    stores_marker.addTo(map);
 
     if (data.planning) {
+      markersLayers.clearLayers();
       hasPlanning = true;
       $.each(data.planning, function(index, route) {
         $.each(route.stops, function(index, stop) {
@@ -229,8 +233,10 @@ function zonings_edit(params) {
           }
         });
       });
-      markersLayers.addTo(map);
     }
+
+    $('#zones').empty();
+    featureGroup.clearLayers();
     $.each(data.zoning, function(index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon));
       set_color(geom, zone.vehicle_id);
