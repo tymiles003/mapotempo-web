@@ -19,7 +19,7 @@ class ZoningsController < ApplicationController
   include LinkBack
 
   load_and_authorize_resource except: :create
-  before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate]
+  before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning]
 
   def index
     @zonings = current_user.customer.zonings
@@ -83,6 +83,28 @@ class ZoningsController < ApplicationController
       @zoning = @zoning.amoeba_dup
       @zoning.save!
       format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
+    end
+  end
+
+  def automatic
+    respond_to do |format|
+      @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+      if @planning
+        @zoning.automatic_clustering(@planning, params[:n] ? params[:n].to_i : nil)
+        @zoning.save
+      end
+      format.json { render action: 'edit' }
+    end
+  end
+
+  def from_planning
+    respond_to do |format|
+      @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+      if @planning
+        @zoning.from_planning(@planning)
+        @zoning.save
+      end
+      format.json { render action: 'edit' }
     end
   end
 

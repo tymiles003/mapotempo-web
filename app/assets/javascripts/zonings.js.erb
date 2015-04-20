@@ -266,6 +266,28 @@ function zonings_edit(params) {
     }
   });
 
+  $('.automatic').click(function () {
+    $.ajax({
+      type: "patch",
+      url: '/zonings/' + zoning_id + '/automatic' + (planning_id ? '/planning/' + planning_id : '') + '.json?n=' + $(this).data('n'),
+      beforeSend: beforeSendWaiting,
+      success: display_zoning,
+      complete: completeWaiting,
+      error: ajaxError
+    });
+  });
+
+  $('#from_planning').click(function () {
+    $.ajax({
+      type: "patch",
+      url: '/zonings/' + zoning_id + '/from_planning' + (planning_id ? '/planning/' + planning_id : '') + '.json',
+      beforeSend: beforeSendWaiting,
+      success: display_zoning,
+      complete: completeWaiting,
+      error: ajaxError
+    });
+  });
+
   $.ajax({
     url: '/zonings/' + (zoning_id ? zoning_id + '/edit' : 'new') + (planning_id ? '/planning/' + planning_id : '') + '.json',
     beforeSend: beforeSendWaiting,

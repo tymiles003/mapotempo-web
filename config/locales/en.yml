@@ -665,6 +665,12 @@ en:
       new: "New Zoning"
     new:
       title: "New zoning"
+    form:
+      generate: "Generate"
+      automatic:
+        one: "Automatic: 1 zone"
+        other: "Automatic: %{count} zones"
+      from_planning: "From planning"
 
   unauthorized:
     default: "You are not authorized to access this page"

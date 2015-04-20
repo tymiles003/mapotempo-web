@@ -61,6 +61,39 @@ class Zoning < ActiveRecord::Base
     }
   end
 
+  def automatic_clustering(planning, n)
+    positions = planning.routes.collect{ |route| route.stops }.flatten.collect{ |stop|
+      if !stop.destination.lat.nil? && !stop.destination.lng.nil?
+        [stop.destination.lat, stop.destination.lng]
+      end
+    }.select{ |i| i }.uniq
+
+    vehciles = planning.customer.vehicles.to_a
+    clusters = Clustering.clustering(positions, n || vehciles.size)
+    zones.clear
+    Clustering.hulls(clusters).each{ |hull|
+      zones.build({polygon: hull, vehicle: vehciles.shift})
+    }
+  end
+
+  def from_planning(planning)
+    zones.clear
+    clusters = planning.routes.select(&:vehicle).collect{ |route|
+      route.stops.collect{ |stop|
+        if !stop.destination.lat.nil? && !stop.destination.lng.nil?
+          [stop.destination.lat, stop.destination.lng]
+        end
+      }.select{ |i| i }.uniq
+    }
+    vehicles = planning.routes.select(&:vehicle).collect(&:vehicle)
+    Clustering.hulls(clusters).each{ |hull|
+      vehicle = vehicles.shift
+      if hull
+        zones.build({polygon: hull, vehicle: vehicle})
+      end
+    }
+  end
+
   private
 
   def update_out_of_date

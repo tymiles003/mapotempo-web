@@ -670,6 +670,12 @@ fr:
       new: "Nouveau zonage"
     new:
       title: "Nouveau zonage"
+    form:
+      generate: "Générer"
+      automatic:
+        one: "Automatique : 1 zone"
+        other: "Automatique : %{count} zones"
+      from_planning: "Depuis le planning"
 
   unauthorized:
     default: "Vous n'êtes pas autorisé à accéder à cette page"

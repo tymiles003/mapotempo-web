@@ -78,4 +78,14 @@ class ZoningsControllerTest < ActionController::TestCase
 
     assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
+
+  test "should generate from planning" do
+    patch :from_planning, format: :json, zoning_id: @zoning, planning_id: plannings(:planning_one)
+    assert_response :success
+  end
+
+  test "should generate automatic" do
+    patch :automatic, format: :json, zoning_id: @zoning, planning_id: plannings(:planning_one)
+    assert_response :success
+  end
 end

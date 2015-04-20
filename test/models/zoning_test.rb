@@ -33,4 +33,14 @@ class ZoningTest < ActiveSupport::TestCase
     o.flag_out_of_date
     assert o.plannings[0].zoning_out_of_date
   end
+
+  test "should generate automatic clustering" do
+    o = zonings(:zoning_one)
+    o.automatic_clustering(plannings(:planning_one), 2)
+  end
+
+  test "should generate from planning" do
+    o = zonings(:zoning_one)
+    o.from_planning(plannings(:planning_one))
+  end
 end
