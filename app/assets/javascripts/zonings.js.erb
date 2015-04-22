@@ -220,7 +220,7 @@ function zonings_edit(params) {
         $.each(route.stops, function(index, stop) {
           stop.i18n = mustache_i18n;
           if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
-            L.marker(new L.LatLng(stop.lat, stop.lng), {
+            var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
               icon: L.icon({
                 iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
                 iconSize: new L.Point(12, 12),
@@ -230,6 +230,11 @@ function zonings_edit(params) {
             }).addTo(stores_marker).bindPopup(SMT['stops/show']({
               destination: stop
             })).addTo(markersLayers);
+            m.on('mouseover', function(e) {
+              m.openPopup();
+            }).on('mouseout', function(e) {
+              m.closePopup();
+            });
           }
         });
       });
