@@ -631,9 +631,9 @@ en:
   vehicles:
     default_name: "Vehcile %{n}"
     emissions_nothing: "Nothing - %{n}"
-    emissions_petrol: "Petrol - %{n}"
-    emissions_diesel: "Diesel - %{n}"
-    emissions_lgp: "LGP - %{n}"
+    emissions_light_petrol: "Light - Petrol - %{n}"
+    emissions_light_diesel: "Light - Diesel - %{n}"
+    emissions_light_lgp: "Light - LGP - %{n}"
     menu:
       vehicles: "Vehicles"
     edit:
