@@ -139,7 +139,11 @@ module Here
       rescue => e
         error = JSON.parse(e.response)
         if error['type'] == 'ApplicationError'
-          raise [error['subtype'], error['details']].join(' ')
+          if error['additionalData'].include?({'key' => 'error_code', 'value' => 'NGEO_ERROR_GRAPH_DISCONNECTED'})
+            raise 'Points are unreachable'
+          else
+            raise [error['subtype'], error['details']].join(' ')
+          end
         else
           Rails.logger.info [url, params]
           Rails.logger.info error
