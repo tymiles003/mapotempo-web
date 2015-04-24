@@ -97,13 +97,17 @@ module Ort
 
   def self.unzip_cluster(result, zip_key, original_matrix)
     ret = []
-    result.collect{ |i|
+    result.size.times.collect{ |ii|
+      i = result[ii]
       if i == 0
         ret << 0
       elsif i == zip_key.length + 1
         ret << original_matrix.length - 1
       elsif zip_key[i - 1].data_items.length > 1
         sub = zip_key[i - 1].data_items.collect{ |i| i[0] }
+        start = result[ii - 1] - 1 >= 0 ? zip_key[result[ii - 1] - 1].data_items[0][0] : 0
+        stop = result[ii + 1] - 1 < zip_key.length ? zip_key[result[ii + 1] - 1].data_items[0][0] : original_matrix.length - 1
+        sub = [start] + sub + [stop]
         sub_size = sub.length
         min_order = if sub_size <= 5
           sub.permutation(sub_size).collect{ |p|
@@ -116,10 +120,20 @@ module Ort
           }.min{ |a, b| a[0] <=> b[0] }[1]
         else
           sim_annealing = SimAnnealing::SimAnnealing.new
+          sim_annealing.start = start
+          sim_annealing.stop = stop
           sim_annealing.matrix = original_matrix
-          r = sim_annealing.search(sub, 120, 100000.0, 0.98)[:vector] # 120 = 5!
+          r = sim_annealing.search(sub,  (1..[sub_size, 8].min).reduce(1, :*), 100000.0, 0.999)[:vector] # Yes, compute factorial
           r.collect{ |i| sub[i] }
         end
+
+        index = min_order.index(start)
+        if min_order[(index + 1) % sub_size] == stop
+          min_order = min_order.reverse
+          index = sub_size - 1 - index
+        end
+        min_order = index == 0 ? min_order : min_order[index..-1] + min_order[0..index-1] # shift to replace start at beginning
+        min_order = min_order[1..-2] # remove start and stop
         ret += min_order
       else
         ret << zip_key[i - 1].data_items[0][0]
@@ -131,10 +145,14 @@ end
 
 module SimAnnealing
   class SimAnnealing
-    attr_accessor :matrix
+    attr_accessor :start, :stop, :matrix
 
     def euc_2d(c1, c2)
-      return matrix[c1][c2][0]
+      if (c1 == start || c1 == stop) && (c2 == start || c2 == stop)
+        0
+      else
+        matrix[c1][c2][0]
+      end
     end
   end
 end
