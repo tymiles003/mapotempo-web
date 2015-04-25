@@ -56,3 +56,7 @@ Start standalone rails server with
     rails server
 
 Enjoy at [http://localhost:3000](http://localhost:3000)
+
+Start the background jobs runner with
+
+    ./bin/delayed_job run
