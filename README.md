@@ -37,7 +37,7 @@ Default project configuration is in `config/application.rb` you can override any
 
 Delayed job (background task) can be activated by setting `Mapotempo::Application.config.delayed_job_use = true` it's allow asynchronous running of import geocoder and optimization computation.
 
-`Mapotempo::Application.config.trace_osrm_url` point on public [OSRM](http://project-osrm.org) API but matrix computation heavily discouraged on it. So point on your own instance.
+Default configuration point on public [OSRM](http://project-osrm.org) API but matrix computation heavily discouraged on it. So point on your own instance.
 
 Initialization
 ==============
