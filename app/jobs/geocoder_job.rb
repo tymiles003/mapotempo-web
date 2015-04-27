@@ -16,6 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class GeocoderJob < Struct.new(:customer_id, :planning_id)
+
+  def before(job)
+    @job = job
+  end
+
   def perform
     customer = Customer.find(customer_id)
     Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} perform"
@@ -32,9 +37,9 @@ class GeocoderJob < Struct.new(:customer_id, :planning_id)
           destination.save
           i += 1
         }
-        customer.job_geocoding.progress = Integer(i * 100 / count).to_s
-        customer.job_geocoding.save
-        Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} #{customer.job_geocoding.progress}%"
+        @job.progress = Integer(i * 100 / count).to_s
+        @job.save
+        Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} #{@job.progress}%"
       end
     }
 
