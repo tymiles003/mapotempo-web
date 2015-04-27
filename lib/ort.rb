@@ -42,7 +42,7 @@ module Ort
           optimize_time: optimize_time,
           soft_upper_bound: soft_upper_bound
         }.to_json
-        resource = RestClient::Resource.new(@url, timeout: -1)
+        resource = RestClient::Resource.new(@url, timeout: nil)
         result = resource.post({data: data}, {content_type: :json, accept: :json})
         @cache.write(key, result)
       end
