@@ -60,4 +60,16 @@ class V01::ZoningsTest < ActiveSupport::TestCase
       assert last_response.ok?, last_response.body
     end
   end
+
+  test 'should generate zoning from planning' do
+    patch api("#{@zoning.id}/from_planning/#{plannings(:planning_one).id}")
+    assert last_response.ok?, last_response.body
+    assert_equal @zoning.name, JSON.parse(last_response.body)['name']
+  end
+
+  test 'should generate zoning automatically' do
+    patch api("#{@zoning.id}/automatic/#{plannings(:planning_one).id}")
+    assert last_response.ok?, last_response.body
+    assert_equal @zoning.name, JSON.parse(last_response.body)['name']
+  end
 end

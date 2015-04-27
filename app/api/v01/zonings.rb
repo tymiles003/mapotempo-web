@@ -79,5 +79,46 @@ class V01::Zonings < Grape::API
         current_customer.zonings.select{ |zoning| ids.include?(zoning.id) }.each(&:destroy)
       end
     end
+
+    desc 'Generate zoning from planning.', {
+      nickname: 'generateFromPlanning'
+    }
+    params {
+      requires :id, type: Integer
+      requires :planning_id, type: Integer
+    }
+    patch ':id/from_planning/:planning_id' do
+      Zoning.transaction do
+        zoning = current_customer.zonings.find(params[:id])
+        planning = current_customer.plannings.find(params[:planning_id])
+        n = params[:n] ? params[:n].to_i : nil
+        if zoning && planning
+          zoning.from_planning(planning)
+          zoning.save!
+          present zoning, with: V01::Entities::Zoning
+        end
+      end
+    end
+
+    desc 'Generate zoning automatically.', {
+      nickname: 'generateAutomatic'
+    }
+    params {
+      requires :id, type: Integer
+      requires :planning_id, type: Integer
+      optional :n, type: Integer, desc: 'Number of produced zones. Default to vehicles number.'
+    }
+    patch ':id/automatic/:planning_id' do
+      Zoning.transaction do
+        zoning = current_customer.zonings.find(params[:id])
+        planning = current_customer.plannings.find(params[:planning_id])
+        n = params[:n] ? params[:n].to_i : nil
+        if zoning && planning
+          zoning.automatic_clustering(planning, n)
+          zoning.save!
+          present zoning, with: V01::Entities::Zoning
+        end
+      end
+    end
   end
 end
