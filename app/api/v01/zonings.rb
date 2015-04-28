@@ -68,7 +68,7 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Delete multiple zonings.', {
-      nickname: 'deleteMaultipleZonings'
+      nickname: 'deleteZonings'
     }
     params {
       requires :ids, type: Array[Integer]

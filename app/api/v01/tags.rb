@@ -68,7 +68,7 @@ class V01::Tags < Grape::API
     end
 
     desc 'Delete multiple tags.', {
-      nickname: 'deleteMaultipleTags'
+      nickname: 'deleteTags'
     }
     params {
       requires :ids, type: Array[Integer]

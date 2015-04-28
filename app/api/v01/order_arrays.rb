@@ -75,7 +75,7 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Delete multiple order_arrays.', {
-      nickname: 'deleteMaultipleOrderArrays'
+      nickname: 'deleteOrderArrays'
     }
     params {
       requires :ids, type: Array[Integer]

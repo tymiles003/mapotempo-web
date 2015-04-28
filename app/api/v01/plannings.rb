@@ -73,7 +73,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Delete multiple plannings.', {
-      nickname: 'deleteMaultiplePlannings'
+      nickname: 'deletePlannings'
     }
     params {
       requires :ids, type: Array[Integer]

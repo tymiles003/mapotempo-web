@@ -55,9 +55,6 @@ class V01::Destinations < Grape::API
       nickname: 'importDestinations',
       params: V01::Entities::DestinationsImport.documentation
     }
-    params {
-      optional :destinations, type: Array, desc: 'JSON content in mutual exclusion with CSV file upload.'
-    }
     put do
       if params['destinations']
         destinations_import = DestinationsImport.new
@@ -105,7 +102,7 @@ class V01::Destinations < Grape::API
     end
 
     desc 'Delete multiple destinations.', {
-      nickname: 'deleteMaultipleDestinations'
+      nickname: 'deleteDestinations'
     }
     params {
       requires :ids, type: Array[Integer]

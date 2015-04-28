@@ -69,7 +69,7 @@ class V01::Products < Grape::API
     end
 
     desc 'Delete multiple products.', {
-      nickname: 'deleteMaultipleProducts'
+      nickname: 'deleteProducts'
     }
     params {
       requires :ids, type: Array[Integer]
