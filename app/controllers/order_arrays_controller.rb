@@ -28,7 +28,19 @@ class OrderArraysController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json
+      format.json do
+        @destinations_orders = @order_array.destinations_orders
+        planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+        if planning
+          i = -1
+          destination_index = Hash[planning.routes.collect{ |route|
+            route.stops.collect{ |stop|
+              stop.destination.id
+            }
+          }.flatten.collect{ |id| [id, i+=1] }]
+          @destinations_orders = @destinations_orders.sort_by{ |destination_order| destination_index[destination_order[0].destination.id] || Float::Infinity }
+        end
+      end
       format.excel do
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),

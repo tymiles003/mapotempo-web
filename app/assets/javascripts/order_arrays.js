@@ -30,6 +30,7 @@ function order_arrays_new(params) {
 
 function order_arrays_edit(params) {
   var order_array_id = params.order_array_id,
+    planning_id = params.planning_id,
     block_save_select_change = false,
     table_neeed_update = true;
 
@@ -364,7 +365,7 @@ function order_arrays_edit(params) {
   });
 
   $.ajax({
-    url: '/order_arrays/' + order_array_id + '.json',
+    url: '/order_arrays/' + order_array_id + '.json' + (planning_id ? '?planning_id=' + planning_id : ''),
     beforeSend: beforeSendWaiting,
     success: display_order_array,
     complete: function(data) {

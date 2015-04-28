@@ -471,6 +471,8 @@ en:
         apply: "Apply zoning"
         edit: "Edit zoning"
         new: "New zoning"
+      order_array:
+        edit: "Edit orders array"
       open_planning_panel: "Open planning panel"
       refresh: "Refresh"
       refresh_help: "Planning parameters or customer has been changed, it is necessary to recalculate"

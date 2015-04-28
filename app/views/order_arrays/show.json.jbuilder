@@ -16,7 +16,7 @@ json.columns do
 end
 
 json.rows do
-  json.array! @order_array.destinations_orders do |destination_orders|
+  json.array! @destinations_orders do |destination_orders|
     json.name destination_orders[0].destination.name
     json.comment destination_orders[0].destination.comment
     json.orders do

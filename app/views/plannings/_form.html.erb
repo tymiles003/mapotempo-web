@@ -8,7 +8,9 @@
     <%= f.text_field :ref %>
   <% end %>
   <% if @planning.customer.enable_orders && @planning.order_array %>
-    <%= f.select :order_array_id, t('.order_array'), options_for_select(@planning.customer.order_arrays.map{ |oa| [oa.name, oa.id] }, @planning.order_array.id), {}, {disabled: true, input_group: content_tag('i', '', class: 'fa fa-check-square-o fa-fw')} %>
+    <%= f.select :order_array_id, t('.order_array'), options_for_select(@planning.customer.order_arrays.map{ |oa| [oa.name, oa.id] }, @planning.order_array.id), {div_class: 'col-lg-8 col-md-8'}, {disabled: true} do %>
+      <a href="/order_arrays/<%= @planning.order_array.id %>/edit?planning_id=<%= @planning.id %>" class="btn btn-primary btn-sm" title="<%= t 'plannings.edit.order_array.edit' %>"><i class="fa fa-pencil fa-fw"></i></a>
+    <% end %>
   <% end %>
   <%= f.text_field :date, {value: @planning.date ? l(@planning.date) : nil, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
   <% if (@planning.id && !@planning.tags.empty?) || !@planning.id %>
@@ -19,8 +21,8 @@
     <% end %>
   <% end %>
   <%= f.collection_select :zoning_id, [], @planning.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {} do %>
-    <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_edit"<% if !@planning.id || !@planning.zoning %> style="display: none;"<% end %>><i class="fa fa-pencil fa-fw"></i> <%= t 'plannings.edit.zoning.edit' %></a>
-    <a href="/zonings/new/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_new"<% if !@planning.id || @planning.zoning %> style="display: none;"<% end %>><i class="fa fa-pencil fa-fw"></i> <%= t 'plannings.edit.zoning.new' %></a>
+    <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_edit"<% if !@planning.id || !@planning.zoning %> style="display: none;"<% end %> title="<%= t 'plannings.edit.zoning.edit' %>"><i class="fa fa-pencil fa-fw"></i></a>
+    <a href="/zonings/new/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_new"<% if !@planning.id || @planning.zoning %> style="display: none;"<% end %> title="<%= t 'plannings.edit.zoning.new' %>"><i class="fa fa-pencil fa-fw"></i></a>
   <% end %>
   <%= f.actions do %>
     <%= f.submit %>

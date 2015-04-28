@@ -36,6 +36,12 @@
     min-height: 200px;
   }
 
+  #planning_order_array_id,
+  #planning_zoning_id {
+    width: 80%;
+    display: inline;
+  }
+
   .destination-tools {
     .btn-inverse {
       border-color: #ccc;
