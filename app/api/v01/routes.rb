@@ -94,6 +94,31 @@ class V01::Routes < Grape::API
           route.move_destination(destination, params[:index].to_i + 1) && planning.save
         end
 
+        desc 'Move destination to routes. Append in order at end.', {
+          nickname: 'moveStops'
+        }
+        params {
+          requires :id, type: String
+          requires :destination_ids, type: Array[Integer]
+        }
+        patch ':id/destinations/moves' do
+          planning_id = read_id(params[:planning_id])
+          planning = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
+          id = read_id(params[:id])
+          route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
+
+
+          ids = params[:destination_ids].collect(&:to_i)
+          destinations = current_customer.destinations.select{ |destination| ids.include?(destination.id) }
+
+          Planning.transaction do
+            destinations.each{ |destination|
+              route.move_destination(destination, route.stops.size)
+            }
+            planning.save
+          end
+        end
+
         desc 'Starts asynchronous route optimization.', {
           nickname: 'optimizeRoute'
         }

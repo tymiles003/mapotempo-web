@@ -40,7 +40,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
   end
 
   test 'should move destination position in routes' do
-    patch api(@route.planning.id, "#{@route.id}/destinations/#{@route.planning.routes[0].stops[0].destination.id}/move/1"), @route.attributes
+    patch api(@route.planning.id, "#{@route.id}/destinations/#{@route.planning.routes[0].stops[0].destination.id}/move/1")
     assert last_response.ok?, last_response.body
   end
 
@@ -50,7 +50,12 @@ class V01::RoutesTest < ActiveSupport::TestCase
   end
 
   test 'should move destination position in routes by refs' do
-    patch api("ref:#{@route.planning.ref}", "ref:#{@route.ref}/destinations/ref:#{@route.planning.routes[0].stops[0].destination.ref}/move/1"), @route.attributes
+    patch api("ref:#{@route.planning.ref}", "ref:#{@route.ref}/destinations/ref:#{@route.planning.routes[0].stops[0].destination.ref}/move/1")
+    assert last_response.ok?, last_response.body
+  end
+
+  test 'should move destinations in routes' do
+    patch api(@route.planning.id, "#{@route.id}/destinations/moves"), destination_ids: [destinations(:destination_one).id, destinations(:destination_two).id]
     assert last_response.ok?, last_response.body
   end
 end
