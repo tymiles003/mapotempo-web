@@ -21,3 +21,21 @@ jQuery(function() {
   $("a[rel~=tooltip], .has-tooltip").tooltip();
 });
 */
+
+function bootstrap_alert(status, message, timeout) {
+  $('.flash').append('<div class="alert fade in alert-' + status + '"><button class="close" data-dismiss="alert">×</button>' + message + '</div>');
+
+  if (timeout || timeout === 0) {
+    setTimeout(function() { 
+      $(elem).alert('close');
+    }, timeout);
+  }
+};
+
+function bootstrap_alert_success(message, timeout) {
+  bootstrap_alert('success', message, timeout);
+};
+
+function bootstrap_alert_danger(message, timeout) {
+  bootstrap_alert('danger', message, timeout);
+};

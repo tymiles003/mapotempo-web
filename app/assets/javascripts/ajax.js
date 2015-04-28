@@ -45,11 +45,7 @@ function ajaxError(request, status, error) {
   if (!text) {
     text = status;
   }
-  $(".main .flash").prepend(
-    '<div class="alert fade in alert-danger">' +
-    '<button class="close" data-dismiss="alert">×</button>' +
-    $('<div/>').text(text).html() +
-    '</div>');
+  bootstrap_alert_danger(text);
 }
 
 function mustache_i18n() {
