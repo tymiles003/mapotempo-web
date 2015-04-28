@@ -4,7 +4,7 @@
   <%= devise_error_messages! %>
   <%= f.email_field :email %>
   <%= f.actions do %>
-    <%= f.submit t('.resend_unlock_instructions', default: "Resend unlock instructions") %>
+    <%= f.submit t('.resend_unlock_instructions', default: "Resend unlock instructions"), {}, 'fa-envelope-o' %>
   <% end %>
 <% end %>
 

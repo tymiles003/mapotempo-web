@@ -4,7 +4,7 @@
   <%= devise_error_messages! %>
   <%= f.email_field :email %>
   <%= f.actions do %>
-    <%= f.submit t('.resend_confirmation_instructions', default: 'Resend confirmation instructions') %>
+    <%= f.submit t('.resend_confirmation_instructions', default: 'Resend confirmation instructions'), {}, 'fa-check' %>
   <% end %>
 <% end %>
 

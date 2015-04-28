@@ -128,3 +128,19 @@ module ActiveRecord
     end
   end
 end
+
+class TwitterBootstrapFormFor::FormBuilder
+  def submit(value=nil, options={}, icon=false)
+    value, options = nil, value if value.is_a?(Hash)
+    options[:class] ||= 'btn btn-primary'
+    value ||= submit_default_value
+    @template.button_tag(options) {
+      if icon != nil
+        icon ||= 'fa-floppy-o'
+        @template.concat @template.content_tag('i', nil, class: "fa #{icon} fa-fw")
+      end
+      @template.concat ' '
+      @template.concat value
+    }
+  end
+end

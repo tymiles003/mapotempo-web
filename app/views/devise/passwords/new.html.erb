@@ -4,7 +4,7 @@
   <%= devise_error_messages! %>
   <%= f.email_field :email %>
   <%= f.actions do %>
-    <%= f.submit t('.send_me_reset_password_instructions', default: 'Send me reset password instructions') %>
+    <%= f.submit t('.send_me_reset_password_instructions', default: 'Send me reset password instructions'), {}, 'fa-envelope-o' %>
   <% end %>
 <% end %>
 
