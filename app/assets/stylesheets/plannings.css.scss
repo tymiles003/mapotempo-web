@@ -133,7 +133,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          width: 175px;
+          max-width: 174px;
           display: inline-block;
 
           .name {
