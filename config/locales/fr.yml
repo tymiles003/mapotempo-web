@@ -473,8 +473,11 @@ fr:
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
         tomtom_empty: "Vider TomTom"
+        tomtom_success: "Envoi vers TomTom terminé avec succès"
         masternaut: "Envoyer vers Masternaut"
+        masternaut_success: "Envoi vers Masternaut terminé avec succès"
         alyacom: "Envoyer vers AlyaCom"
+        alyacom_success: "Envoi vers AlyaCom terminé avec succès"
       zoning:
         none: "Aucun"
         apply: "Appliquer zonage"

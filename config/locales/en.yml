@@ -464,8 +464,11 @@ en:
         tomtom_orders: "Send to TomTom as Orders"
         tomtom_waypoints: "Send to TomTom as Waypoints"
         tomtom_empty: "Clear TomTom"
+        tomtom_success: "Sent to TomTom with success"
         masternaut: "Send to Masternaut"
+        masternaut_success: "Sent to Masternaut with success"
         alyacom: "Send to AlyaCom"
+        alyacom_success: "Sent to AlyaCom with success"
       zoning:
         none: "None"
         apply: "Apply zoning"

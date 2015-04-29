@@ -385,6 +385,7 @@ function plannings_edit(params) {
         },
         complete: function() {
           $("#dialog-tomtom").dialog("close");
+          bootstrap_alert_success(I18n.t('plannings.edit.export.tomtom_success'));
         },
         error: ajaxError
       });
@@ -402,6 +403,7 @@ function plannings_edit(params) {
         },
         complete: function() {
           $("#dialog-masternaut").dialog("close");
+          bootstrap_alert_success(I18n.t('plannings.edit.export.masternaut_success'));
         },
         error: ajaxError
       });
@@ -419,6 +421,7 @@ function plannings_edit(params) {
         },
         complete: function() {
           $("#dialog-alyacom").dialog("close");
+          bootstrap_alert_success(I18n.t('plannings.edit.export.alyacom_success'));
         },
         error: ajaxError
       });
