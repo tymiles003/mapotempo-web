@@ -36,7 +36,8 @@ controller.js(
     {id: vehicle.id, name: vehicle.name, color: vehicle.color}
   },
   vehicles_map: Hash[@zoning.customer.vehicles.collect{ |vehicle|
-    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color}]
-  }]
+    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]
+  }],
+  show_capacity: @planning && !@planning.customer.enable_orders
 )
 %>

@@ -24,7 +24,8 @@ function zonings_edit(params) {
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
     vehicles_array = params.vehicles_array,
-    vehicles_map = params.vehicles_map;
+    vehicles_map = params.vehicles_map,
+    show_capacity = params.show_capacity;
 
   var map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13);
   L.control.scale({
@@ -88,13 +89,18 @@ function zonings_edit(params) {
   function count_point_in_polygon(layer_id, ele) {
     if (hasPlanning) {
       geoJsonLayer = geoJsonLayers[layer_id];
-      var n = 0;
+      var n = 0,
+        quantity = 0;
       markersLayers.eachLayer(function(markerLayer) {
         if (leafletPip.pointInLayer(markerLayer.getLatLng(), geoJsonLayer, true).length > 0) {
           n += 1;
+          if (markerLayer.data && markerLayer.data.quantity) {
+            quantity += markerLayer.data.quantity;
+          }
         }
       });
       $('.stop_number', ele).html(n);
+      $('.quantity_number', ele).html(quantity);
       $('.stop').show(); // Display all
     }
   }
@@ -134,6 +140,14 @@ function zonings_edit(params) {
         name: val.name
       };
     });
+    zone.show_capacity = show_capacity;
+    if (show_capacity) {
+      if (zone.vehicle_id && vehicles_map[zone.vehicle_id].capacity) {
+        zone.capacity = vehicles_map[zone.vehicle_id].capacity;
+      } else {
+        zone.capacity = '-';
+      }
+    }
     $('#zones').append(SMT['zones/show'](zone));
     var ele = $('#zones .zone:last');
     ele.data('feature', zone);
@@ -172,6 +186,14 @@ function zonings_edit(params) {
       geom.setStyle({
         color: (val.length > 0 ? vehicles_map[val].color : '#707070')
       });
+
+      if (show_capacity) {
+        if (this.value && vehicles_map[this.value].capacity) {
+          $('.capacity_number', $(this).closest('.zone')).html(vehicles_map[this.value].capacity);
+        } else {
+          $('.capacity_number', $(this).closest('.zone')).html('-');
+        }
+      }
     });
 
     $('.delete', ele).click(function(event) {
@@ -230,6 +252,7 @@ function zonings_edit(params) {
             }).addTo(stores_marker).bindPopup(SMT['stops/show']({
               destination: stop
             })).addTo(markersLayers);
+            m.data = stop;
             m.on('mouseover', function(e) {
               m.openPopup();
             }).on('mouseout', function(e) {

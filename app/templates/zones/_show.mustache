@@ -12,5 +12,6 @@
   </div>
   <div class="panel-body">
     <span class="stop" style="display: none"><i class="fa fa-check-square fa-fw"></i> <span class="stop_number"></span> {{#i18n}}plannings.edit.stops{{/i18n}}</span>
+    {{#show_capacity}}<span class="stop" style="display: none"><i class="fa fa-archive fa-fw"></i> <span class="quantity_number"></span>/<span class="capacity_number">{{capacity}}</span></span>{{/show_capacity}}
   </div>
 </div>
