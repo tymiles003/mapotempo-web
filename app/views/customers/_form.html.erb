@@ -2,7 +2,7 @@
   <%= render 'shared/error_messages', model: @customer %>
   <%= f.text_field :name, disabled:!current_user.admin? %>
   <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
-  <%= f.number_field :max_vehicles, disabled:!current_user.admin? %>
+  <%= f.number_field :max_vehicles, {min:1, disabled:!current_user.admin?}  %>
   <% if current_user.admin? %>
     <%= f.collection_select :profile_id, [], Profile.all, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} %>
   <% end %>
@@ -20,7 +20,7 @@
       <%= f.check_box :test %>
     <% end %>
     <%= f.number_field :optimization_cluster_size, { placeholder: t('.optimization_cluster_size_default', n: Mapotempo::Application.config.optimize_cluster_size), min: 0, input_group: t('all.unit.second')} %>
-    <%= f.text_field :optimization_time, { placeholder: t('.optimization_time_default', n: Mapotempo::Application.config.optimize_time), min: 0, input_group: t('all.unit.millisecond')} %>
+    <%= f.number_field :optimization_time, { placeholder: t('.optimization_time_default', n: Mapotempo::Application.config.optimize_time), min: 0, input_group: t('all.unit.millisecond')} %>
     <%= f.number_field :optimization_soft_upper_bound, { placeholder: t('.optimization_soft_upper_bound_default', n: Mapotempo::Application.config.optimize_soft_upper_bound), min: 0, input_group: '×'} do %>
       <p class="help-block"><%= t '.optimization_soft_upper_bound_help' %></p>
     <% end %>
