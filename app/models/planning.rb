@@ -131,7 +131,7 @@ class Planning < ActiveRecord::Base
       zone = zoning.inside(stop.destination)
       if zone && zone.vehicle
         route = routes.find{ |route|
-          route.vehicle == zone.vehicle
+          route.vehicle == zone.vehicle && !route.locked
         }
         (available_routes = [route]) if route
       end
@@ -139,7 +139,14 @@ class Planning < ActiveRecord::Base
 
     # It still no route get all routes
     if !available_routes
-      available_routes = routes.select(&:vehicle)
+      available_routes = routes.select{ |route|
+        route.vehicle && !route.locked
+      }
+    end
+
+    # So, no target route, nothing to do
+    if !available_routes.empty?
+      return
     end
 
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
@@ -165,10 +172,12 @@ class Planning < ActiveRecord::Base
       # Difference of total time + difference of sum of out_of_window time
       ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
         (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
-    } || [routes[1], 1]
+    }
 
-    stop.active = true
-    route.move_stop(stop, index || 1)
+    if route
+      stop.active = true
+      route.move_stop(stop, index || 1)
+    end
   end
 
   def out_of_date
