@@ -116,11 +116,13 @@ module TomtomWebfleet
     response = client.call(operation, message: message)
 
     if response.body.first[1][:return][:status_code] != '0'
-      raise response.body.first[1][:return][:status_message]
+      Rails.logger.info response.body.first[1][:return]
+      raise "TomTom WEBFLEET operation #{operation} return error: #{response.body.first[1][:return][:status_message]}"
     elsif response.body[:show_object_report_response]
       response.body[:show_object_report_response][:return][:results][:result_item]
     end
   rescue Savon::SOAPFault => error
+    Rails.logger.info error
     fault_code = error.to_hash[:fault][:faultcode]
     raise fault_code
   rescue Savon::HTTPError => error
