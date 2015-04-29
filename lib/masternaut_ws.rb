@@ -19,6 +19,57 @@ require 'savon'
 
 module MasternautWs
 
+  @@error_code_poi = {
+    '200' => 'request has been successful',
+    '403' => 'POI name or reference already exists',
+    '404' => 'category has not been found',
+    '405' => 'no coordinates given and address does not contain at least town and country',
+    '406' => 'category reference already exists',
+    '407' => 'category reference is too long',
+    '408' => 'POI reference is too long',
+    '409' => 'POI has not been found',
+    '410' => 'POI logo has not been found',
+    '411' => 'an error occurred while creating the category',
+    '412' => 'an error occurred while creating the POI',
+    '413' => 'an error occurred while deleting the POI',
+    '414' => 'category reference already exists',
+    '415' => 'category is not empty and the user tries to delete it',
+    '416' => 'an unhandled exception occurs during POI category deletion',
+    '417' => 'an error occured while it exists an incoherence between the fields temporary, startTemporary and endTemporary',
+    '418' => 'The user attempt the update a reference, that it\'s not allowed.',
+    '419' => 'poi reference missing',
+    '420' => 'poi reference already exist on another POI',
+  }
+
+  @@error_code_job = {
+    '1' => 'request has been successful',
+    '2' => 'POI has not been found',
+    '3' => 'driver has not been found',
+    '4' => 'vehicle has not been found',
+    '5' => 'neither driver nor vehicle has been set',
+    '6' => 'no type has been set',
+    '7' => 'the length of the job type is bigger than 30 characters',
+    '8' => 'job route has already started',
+    '9' => 'job route has not been found',
+    '10' => 'job has not been found',
+    '11' => 'job is already started. Its last job event code is greater or equals than 30 (ACCEPTED).',
+    '12' => 'an error occurred while sending a message to the resource',
+    '13' => 'an error occurred while creating the job',
+    '14' => 'job reference already exists',
+    '15' => 'job route reference already exists',
+    '16' => 'both driver and vehicle references have been set',
+    '17' => 'the length of the job route description is bigger than 50',
+    '18' => 'item reference is missing',
+    '19' => 'the length of the item reference is bigger than 50 characters',
+    '20' => 'item label is missing',
+    '21' => 'the length of the item label is bigger than 255 characters',
+    '22' => 'item unit has not been set',
+    '23' => 'the length of the item unit is bigger than 10 characters',
+    '24' => 'item label already exists',
+    '25' => 'item reference already exists',
+    '26' => 'an error occurred while creating the job item',
+  }
+
   def self.createPOICategory(client_poi, username, password)
     params = {
       category: {
@@ -28,7 +79,7 @@ module MasternautWs
       }
     }
 
-    get(client_poi, nil, :create_poi_category, username, password, params)
+    get(client_poi, nil, :create_poi_category, username, password, params, @@error_code_poi)
   end
 
   def self.fetchPOI(client_poi, username, password)
@@ -39,7 +90,7 @@ module MasternautWs
       maxResults: 999999,
     }
 
-    response = get(client_poi, nil, :search_poi, username, password, params)
+    response = get(client_poi, nil, :search_poi, username, password, params, @@error_code_poi)
 
     fetch = (response[:multi_ref] || []).select{ |e|
       e[:'@xsi:type'].end_with?(':POI')
@@ -81,7 +132,7 @@ module MasternautWs
       overwrite: true
     }
 
-    get(client_poi, 200, :create_poi, username, password, params)
+    get(client_poi, 200, :create_poi, username, password, params, @@error_code_poi)
   end
 
   def self.createJobRoute(username, password, vehicleRef, reference, description, date, begin_time, end_time, waypoints)
@@ -112,12 +163,12 @@ module MasternautWs
       }
     }
 
-    client_Job = Savon.client(basic_auth: [username, password], wsdl: Mapotempo::Application.config.masternaut_api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
+    client_job = Savon.client(basic_auth: [username, password], wsdl: Mapotempo::Application.config.masternaut_api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
     end
-    get(client_Job, 1, :create_job_route, username, password, params)
+    get(client_job, 1, :create_job_route, username, password, params, @@error_code_job)
 
     waypoints.each{ |waypoint|
       params = {
@@ -148,24 +199,26 @@ module MasternautWs
         jobRouteRef: reference,
       }
 
-      get(client_Job, 1, :create_job, username, password, params)
+      get(client_job, 1, :create_job, username, password, params, @@error_code_job)
     }
   end
 
   private
 
-  def self.get(client, no_error_code, operation, _username, _password, message = {})
+  def self.get(client, no_error_code, operation, _username, _password, message = {}, error_code)
     response = client.call(operation, message: message)
 
     op_response = (operation.to_s + '_response').to_sym
     op_return = (operation.to_s + '_return').to_sym
     if no_error_code && response.body[op_response] && response.body[op_response][op_return] != no_error_code.to_s
-      raise "#{operation} returns error code #{response.body[op_response][op_return]}"
+      Rails.logger.info response.body[op_response]
+      raise "Masternaut operation #{operation} returns error: #{error_code[response.body[op_response][op_return]] || response.body[op_response][op_return]}"
     end
     response.body
   rescue Savon::SOAPFault => error
+    Rails.logger.info error
     fault_code = error.to_hash[:fault][:faultcode]
-    raise fault_code
+    raise "Masternaut: " + fault_code
   rescue Savon::HTTPError => error
     Rails.logger.info error.http.code
     raise
