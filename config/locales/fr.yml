@@ -510,6 +510,7 @@ fr:
         quantity: "Quantité : "
         orders: "Commandes : "
         take_over: "Durée de visite : "
+        tags: "Libellés : "
       error:
         no_geocoding: "Pas de géocodage"
         no_geocoding_help: "L'adresse n'a pas pu être converti en coordonnées géographiques"

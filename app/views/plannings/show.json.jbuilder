@@ -65,6 +65,15 @@ else
       json.destination do
         destination = stop.destination
         json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment
+        if !destination.tags.empty?
+          json.tags_present do
+            json.tags do
+              json.array! destination.tags do |tag|
+                json.extract! tag, :label
+              end
+            end
+          end
+        end
         if @planning.customer.enable_orders
           order = stop.order
           if order

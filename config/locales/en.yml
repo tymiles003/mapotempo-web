@@ -501,6 +501,7 @@ en:
         quantity: "Quantity:"
         orders: "Orders:"
         take_over: "Take over:"
+        tags: "Tags:"
       error:
         no_geocoding: "No geocoding"
         no_geocoding_help: "Adresse could not be converted to geographic coordinates"
