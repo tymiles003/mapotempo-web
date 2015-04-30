@@ -19,9 +19,9 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
-  revision: b654421a6138ee39fc85b61a749e238e89a1b134
+  revision: 4b7fef8893af08f9e225e9265c07cb1e1191d459
   specs:
-    leaflet-draw-rails (0.0.1)
+    leaflet-draw-rails (0.2.4.1)
 
 GIT
   remote: git://github.com/frodrigo/leaflet_numbered_markers-rails.git
