@@ -41,7 +41,8 @@
 //= require jquery-ui/dialog
 //= require jquery-ui/slider
 //= require jquery-tablesorter
-//= require jquery-tablesorter/jquery.tablesorter.widgets-filter-formatter
+//= require jquery-tablesorter/widgets/widget-filter-formatter-html5
+//= require jquery-tablesorter/widgets/widget-filter-formatter-jui
 //= require jquery-tablesorter/jquery.tablesorter.widgets
 //= require jquery-tablesorter/widgets/widget-columnSelector
 //= require jquery.simplecolorpicker
