@@ -157,6 +157,25 @@ ul.leaflet-control-geocoder-alternatives {
   width: inherit;
 }
 
+/* Leaflet draw */
+.leaflet-draw-actions {
+  a {
+    background-color: #3071A9;
+    border-color: #285E8E;
+    color: #FFF;
+  }
+
+  a:hover {
+    background-color: #3071A9;
+    text-decoration: none;
+    color: #FFF;
+  }
+
+  li a {
+    color: #FFF;
+  }
+}
+
 /* jquery-simplecolorpicker */
 span.color[data-color] {
   line-height: 1.3;

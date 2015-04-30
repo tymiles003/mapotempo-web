@@ -63,7 +63,13 @@ function zonings_edit(params) {
       marker: false
     },
     edit: {
-      featureGroup: featureGroup
+      featureGroup: featureGroup,
+      edit: {
+        selectedPathOptions: {
+          maintainColor: true,
+          dashArray: '10, 10'
+        }
+      }
     }
   }).addTo(map);
 
