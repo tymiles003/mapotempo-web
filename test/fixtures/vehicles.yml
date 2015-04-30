@@ -11,6 +11,7 @@ vehicle_one:
   customer: customer_one
   store_start: store_one
   store_stop: store_one
+  speed_multiplicator:
 
 vehicle_two:
   name: vehicle_two
@@ -23,3 +24,4 @@ vehicle_two:
   customer: customer_two
   store_start: store_two
   store_stop: store_two
+  speed_multiplicator: 0.9

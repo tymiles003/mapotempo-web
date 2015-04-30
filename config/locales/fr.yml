@@ -129,6 +129,7 @@ fr:
         optimization_soft_upper_bound: "Multiplicateur de l'approche de limite supérieure de l'optimisation"
         profile: "Profil"
         profile_id: "Profil"
+        speed_multiplicator: "Ajustement de la vitesse"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -257,6 +258,7 @@ fr:
         store_stop: "Dépôt arrivé"
         store_stop_id: "Dépôt arrivée"
         router_id: "Calculateur d'itinéraire"
+        speed_multiplicator: "Ajustement de la vitesse"
       zoning:
         name: "Nom"
       zone:
@@ -338,6 +340,8 @@ fr:
       print_header_help: "Bloc de texte ajouté avant chaque tournée"
       print:
         title: "Impressions"
+      speed_multiplicator_default: "%{n} (valeur par défaut)"
+      speed_multiplicator_help: "Une valeur spérieure à 100% signifie une vitesse plus élevée."
 
   destinations:
     menu:
@@ -664,6 +668,8 @@ fr:
       capacity_help: "Capacité maximum du véhicule"
       router_default: "Défaut"
       router_help: "Forcer l'utilisation de ce calculateur d'itinéraire"
+      speed_multiplicator_default: "%{n} (valeur par défaut)"
+      speed_multiplicator_help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du compte client est également utilisé lors des calculs."
 
   zonings:
     menu:

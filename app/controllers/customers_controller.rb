@@ -33,6 +33,7 @@ class CustomersController < ApplicationController
   def create
     # Can set max_vehicles on creation
     @customer = Customer.new(customer_params.except('max_vehicles'))
+    @customer.speed_multiplicator /= 100 if @customer.speed_multiplicator
 
     respond_to do |format|
       if @customer.save && @customer.update(customer_params) && @customer.save
@@ -45,7 +46,10 @@ class CustomersController < ApplicationController
 
   def update
     respond_to do |format|
-      if @customer.update(customer_params)
+      p = customer_params
+      @customer.assign_attributes(p)
+      @customer.speed_multiplicator /= 100 if @customer.speed_multiplicator
+      if @customer.save
         format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.updated', model: @customer.class.model_name.human) }
       else
         format.html { render action: 'edit' }
@@ -75,14 +79,15 @@ class CustomersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_customer
     @customer = Customer.find(params[:id])
+    @customer.speed_multiplicator *= 100 if @customer.speed_multiplicator
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def customer_params
     if current_user.admin?
-      params.require(:customer).permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id)
+      params.require(:customer).permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id)
     else
-      params.require(:customer).permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :alyacom_association)
+      params.require(:customer).permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :alyacom_association)
     end
   end
 end

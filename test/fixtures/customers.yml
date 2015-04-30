@@ -12,6 +12,7 @@ customer_one:
   optimization_time: 10
   optimization_soft_upper_bound: 3
   profile: profile_one
+  speed_multiplicator:
 
 customer_two:
   end_subscription:
@@ -23,3 +24,4 @@ customer_two:
   router: router_one
   enable_orders: false
   profile: profile_two
+  speed_multiplicator: 1.1

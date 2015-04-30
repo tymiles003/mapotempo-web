@@ -32,4 +32,5 @@ class V01::Entities::Vehicle < Grape::Entity
   expose(:store_start_id, documentation: { type: Integer })
   expose(:store_stop_id, documentation: { type: Integer })
   expose(:router_id, documentation: { type: Integer })
+  expose(:speed_multiplicator, documentation: { type: Float })
 end

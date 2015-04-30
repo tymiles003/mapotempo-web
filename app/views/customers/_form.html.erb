@@ -9,6 +9,9 @@
   <%= f.collection_select :router_id, [], @customer.id ? @customer.profile.routers : Router.all, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} do %>
     <p class="help-block"><%= t '.router_help' %></p>
   <% end %>
+  <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('.speed_multiplicator_default', n: 100), input_group: '%'} do %>
+    <p class="help-block"><%= t '.speed_multiplicator_help' %></p>
+  <% end %>
   <%= f.text_field :take_over, {value: @customer.take_over ? @customer.take_over.strftime("%H:%M:%S") : nil, input_group: t('all.unit.hour_minute_second')} do %>
     <p class="help-block"><%= t '.take_over_help' %></p>
   <% end %>

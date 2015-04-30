@@ -57,6 +57,7 @@ class Route < ActiveRecord::Base
     self.start = self.end = nil
     if vehicle && stops.size > 0
       self.end = self.start = departure || vehicle.open
+      speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1)
       last = vehicle.store_start
       quantity = 0
       router = vehicle.router || stops[0].destination.customer.router
@@ -65,7 +66,7 @@ class Route < ActiveRecord::Base
       stops_sort.each{ |stop|
         destination = stop.destination
         if stop.active && !destination.lat.nil? && !destination.lng.nil?
-          stop.distance, time, stop.trace = router.trace(last.lat, last.lng, destination.lat, destination.lng)
+          stop.distance, time, stop.trace = router.trace(speed_multiplicator, last.lat, last.lng, destination.lat, destination.lng)
           stops_time[stop] = time
           stop.time = self.end + time
           if destination.open && stop.time < destination.open
@@ -91,7 +92,7 @@ class Route < ActiveRecord::Base
         end
       }
 
-      distance, time, trace = router.trace(last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_stop.lng)
+      distance, time, trace = router.trace(speed_multiplicator, last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_stop.lng)
       self.distance += distance
       stops_time[:stop] = time
       self.end += time
@@ -250,7 +251,8 @@ class Route < ActiveRecord::Base
       }
 
       positions = [[vehicle.store_start.lat, vehicle.store_start.lng]] + positions + [[vehicle.store_stop.lat, vehicle.store_stop.lng]]
-      matrix = router.matrix(positions, &matrix_progress)
+      speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1)
+      matrix = router.matrix(positions, speed_multiplicator, &matrix_progress)
 
       optimizer.call(matrix, tws)[1..-2].collect{ |i| i - 1 }
     }

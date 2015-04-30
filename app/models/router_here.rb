@@ -18,13 +18,21 @@
 require 'here'
 
 class RouterHere < Router
-  def trace(lat1, lng1, lat2, lng2)
-    Here.compute(lat1, lng1, lat2, lng2)
+  def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
+    distance, time, trace = Here.compute(lat1, lng1, lat2, lng2)
+    time *= 1.0 / speed_multiplicator
+    [distance, time, trace]
   end
 
-  def matrix(vector, &block)
+  def matrix(vector, speed_multiplicator, &block)
+    time_multiplicator = 1.0 / speed_multiplicator
     vector = pack_vector(vector)
     matrix = Here.matrix(vector, &block)
+    matrix = matrix.collect{ |row|
+      row.collect{ |distance, time|
+        [distance, time * time_multiplicator]
+      }
+    }
     unpack_vector(vector, matrix)
   end
 end

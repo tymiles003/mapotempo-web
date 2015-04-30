@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414091637) do
+ActiveRecord::Schema.define(version: 20150430120526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20150414091637) do
     t.integer  "optimization_time"
     t.integer  "optimization_soft_upper_bound"
     t.integer  "profile_id",                                                null: false
+    t.float    "speed_multiplicator"
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree
@@ -289,21 +290,22 @@ ActiveRecord::Schema.define(version: 20150414091637) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "vehicles", force: :cascade do |t|
-    t.string   "name",           limit: 255
+    t.string   "name",                limit: 255
     t.float    "emission"
     t.float    "consumption"
     t.integer  "capacity"
-    t.string   "color",          limit: 255
+    t.string   "color",               limit: 255
     t.time     "open"
     t.time     "close"
-    t.integer  "customer_id",                null: false
+    t.integer  "customer_id",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "tomtom_id",      limit: 255
-    t.integer  "store_start_id",             null: false
-    t.integer  "store_stop_id",              null: false
+    t.string   "tomtom_id",           limit: 255
+    t.integer  "store_start_id",                  null: false
+    t.integer  "store_stop_id",                   null: false
     t.integer  "router_id"
-    t.string   "masternaut_ref", limit: 255
+    t.string   "masternaut_ref",      limit: 255
+    t.float    "speed_multiplicator"
   end
 
   add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree

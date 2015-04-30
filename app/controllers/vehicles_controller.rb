@@ -34,6 +34,7 @@ class VehiclesController < ApplicationController
 
   def create
     @vehicle = current_user.customer.vehicles.build(vehicle_params)
+    @vehicle.speed_multiplicator /= 100 if @vehicle.speed_multiplicator
 
     respond_to do |format|
       if @vehicle.save
@@ -46,7 +47,10 @@ class VehiclesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @vehicle.update(vehicle_params)
+      p = vehicle_params
+      @vehicle.assign_attributes(p)
+      @vehicle.speed_multiplicator /= 100 if @vehicle.speed_multiplicator
+      if @vehicle.save
         format.html { redirect_to link_back || vehicles_path, notice: t('activerecord.successful.messages.updated', model: @vehicle.class.model_name.human) }
       else
         format.html { render action: 'edit' }
@@ -66,10 +70,11 @@ class VehiclesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_vehicle
     @vehicle = Vehicle.find(params[:id])
+    @vehicle.speed_multiplicator *= 100 if @vehicle.speed_multiplicator
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def vehicle_params
-    params.require(:vehicle).permit(:name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :masternaut_ref, :store_start_id, :store_stop_id, :router_id)
+    params.require(:vehicle).permit(:name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :masternaut_ref, :store_start_id, :store_stop_id, :router_id, :speed_multiplicator)
   end
 end
