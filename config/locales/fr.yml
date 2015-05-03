@@ -430,9 +430,9 @@ fr:
         spreadsheet_excel: "Tableur Excel"
     index:
       title: "Liste tableaux de commandes"
-      new: "Nouveau tableaux de commandes"
+      new: "Nouveau tableau de commandes"
     edit:
-      title: "Modifier tableaux de commandes"
+      title: "Modifier tableau de commandes"
       name: "Nom"
       comment: "Commentaire"
       empty_row: "Vider la ligne"
@@ -448,7 +448,7 @@ fr:
           title: "Chargement"
           in_progress: "Chargement en cours, merci de patienter."
     new:
-      title: "Nouveau tableaux de commandes"
+      title: "Nouveau tableau de commandes"
     export_file:
       name: "nom"
       comment: "commentaire"
@@ -538,13 +538,13 @@ fr:
           error: "Impossible d'effectuer le calcul."
         tomtom:
           title: "TomTom"
-          in_progress: "Envoie vers GPS TomTom en cours, merci de patienter."
+          in_progress: "Envoi vers GPS TomTom en cours, merci de patienter."
         masternaut:
           title: "Masternaut"
-          in_progress: "Envoie vers Masternaut en cours, merci de patienter."
+          in_progress: "Envoi vers Masternaut en cours, merci de patienter."
         alyacom:
           title: "AlyaCom"
-          in_progress: "Envoie vers AlyaCom en cours, merci de patienter."
+          in_progress: "Envoi vers AlyaCom en cours, merci de patienter."
         zoning:
           title: "Zonage"
           in_progress: "Application du nouveau zonage en cours, merci de patienter."
