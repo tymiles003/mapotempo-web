@@ -8,7 +8,7 @@ csv << [
 ]
 
 sum_column = Hash.new { |h,k| h[k] = {} }
-@order_array.destinations_orders.collect { |destination_orders|
+@destinations_orders.collect { |destination_orders|
   sum = {}
   total = 0
   csv << [

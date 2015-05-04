@@ -10,8 +10,8 @@
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><%= t '.export.menu' %> <span class="caret"></span></button>
         <ul class="dropdown-menu pull-right" role="menu">
           <!--<li><a href="/order_arrays/<%= @order_array.id %>"><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %></a></li>-->
-          <li><a href="/order_arrays/<%= @order_array.id %>.csv"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard' %></a></li>
-          <li><a href="/order_arrays/<%= @order_array.id %>.excel"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %></a></li>
+          <li><a href="/order_arrays/<%= @order_array.id %>.csv<%= params[:planning_id] ? "?planning_id=#{params[:planning_id]}": "" %>"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard' %></a></li>
+          <li><a href="/order_arrays/<%= @order_array.id %>.excel<%= params[:planning_id] ? "?planning_id=#{params[:planning_id]}": "" %>"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %></a></li>
         </ul>
       </div>
     <% end %>
