@@ -32,7 +32,7 @@ else
       (json.alyacom true) if !route.vehicle.customer.alyacom_association.blank?
     end
     number = 0
-    no_geocoding = out_of_window = out_of_capacity = out_of_drive_time = false
+    no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = false
     json.store_start do
       json.extract! route.vehicle.store_start, :id, :name, :street, :postalcode, :city, :lat, :lng
       (json.time route.start.strftime('%H:%M')) if route.start
@@ -49,7 +49,7 @@ else
       out_of_window |= stop.out_of_window
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
-      no_geocoding |= stop.destination.lat.nil? || stop.destination.lng.nil?
+      no_geolocalization |= stop.destination.lat.nil? || stop.destination.lng.nil?
       (json.error true) if stop.destination.lat.nil? || stop.destination.lng.nil? || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.extract! stop, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
@@ -99,10 +99,10 @@ else
       json.stop_out_of_drive_time route.stop_out_of_drive_time
       json.stop_distance (route.stop_distance || 0) / 1000
     end if route.vehicle
-    (json.route_no_geocoding no_geocoding) if no_geocoding
+    (json.route_no_geolocalization no_geolocalization) if no_geolocalization
     (json.route_out_of_window out_of_window) if out_of_window
     (json.route_out_of_capacity out_of_capacity) if out_of_capacity
     (json.route_out_of_drive_time out_of_drive_time) if out_of_drive_time
-    (json.route_error true) if no_geocoding || out_of_window || out_of_capacity || out_of_drive_time
+    (json.route_error true) if no_geolocalization || out_of_window || out_of_capacity || out_of_drive_time
   end
 end

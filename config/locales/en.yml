@@ -510,8 +510,8 @@ en:
         take_over: "Take over:"
         tags: "Tags:"
       error:
-        no_geocoding: "No geocoding"
-        no_geocoding_help: "Adresse could not be converted to geographic coordinates"
+        no_geolocalization: "No geolocalization"
+        no_geolocalization_help: "No geographical coordinates or address could not be located"
         out_of_window: "Out of customer's time window"
         out_of_window_help: "Customer planned out of his time window"
         out_of_capacity: "Out of capacity"

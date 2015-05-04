@@ -40,7 +40,7 @@
             <input type="checkbox" checked="checked" style="display: none"/>
             <div class="title">
               {{^geocoded}}
-                <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>
+                <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geolocalization{{/i18n}}"></i>
               {{/geocoded}}
               <span class="name" title="{{name}}">{{name}}</span><br />
             </div>
@@ -120,9 +120,9 @@
           {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity}}/{{capacity}}{{/quantity}}
         {{#route_error}}
           <ul class="ui-state-error">
-            {{#route_no_geocoding}}
-              <li title="{{#i18n}}plannings.edit.error.no_geocoding_help{{/i18n}}"><i class="fa fa-map-marker fa-fw"></i> {{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}</li>
-            {{/route_no_geocoding}}
+            {{#route_no_geolocalization}}
+              <li title="{{#i18n}}plannings.edit.error.no_geolocalization_help{{/i18n}}"><i class="fa fa-map-marker fa-fw"></i> {{#i18n}}plannings.edit.error.no_geolocalization{{/i18n}}</li>
+            {{/route_no_geolocalization}}
             {{#route_out_of_window}}
               <li title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_window{{/i18n}}</li>
             {{/route_out_of_window}}
@@ -164,7 +164,7 @@
           <input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} {{^geocoded}}disabled="disabled"{{/geocoded}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
           <div class="title">
             {{^geocoded}}
-              <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geocoding{{/i18n}}"></i>
+              <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geolocalization{{/i18n}}"></i>
             {{/geocoded}}
             {{#out_of_window}}
               <i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"></i>
