@@ -66,28 +66,27 @@ class Route < ActiveRecord::Base
       stops_time = {}
       stops_sort = stops.sort_by(&:index)
       stops_sort.each{ |stop|
-        destination = stop.destination
         if stop.active && stop.position?
-          stop.distance, time, stop.trace = router.trace(speed_multiplicator, last.lat, last.lng, destination.lat, destination.lng)
+          stop.distance, time, stop.trace = router.trace(speed_multiplicator, last.lat, last.lng, stop.lat, stop.lng)
           stops_time[stop] = time
           stop.time = self.end + time
-          if destination.open && stop.time < destination.open
-            stop.wait_time = destination.open - stop.time
-            stop.time = destination.open
+          if stop.destination.open && stop.time < stop.destination.open
+            stop.wait_time = stop.destination.open - stop.time
+            stop.time = stop.destination.open
           else
             stop.wait_time = nil
           end
-          stop.out_of_window = (destination.open && stop.time < destination.open) || (destination.close && stop.time > destination.close)
+          stop.out_of_window = (stop.destination.open && stop.time < stop.destination.open) || (stop.destination.close && stop.time > stop.destination.close)
 
           self.distance += stop.distance
           self.end = stop.time + stop.duration
 
-          quantity += (destination.quantity || 1)
+          quantity += (stop.destination.quantity || 1)
           stop.out_of_capacity = vehicle.capacity && quantity > vehicle.capacity
 
           stop.out_of_drive_time = stop.time > vehicle.close
 
-          last = stop.destination
+          last = stop
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = false
           stop.distance = stop.trace = stop.time = stop.wait_time = nil
@@ -357,7 +356,7 @@ class Route < ActiveRecord::Base
       # Can't reduce cause of time windows
       positions_uniq = stops.collect{ |stop|
         position = stop.destination
-        [position.lat, position.lng, position.open, position.close, stop.duration]
+        [stop.lat, stop.lng, position.open, position.close, stop.duration]
       }
 
       yield(positions_uniq)
@@ -366,8 +365,7 @@ class Route < ActiveRecord::Base
       stock = Hash.new { Array.new }
       i = -1
       stops.each{ |stop|
-        position = stop.destination
-        stock[[position.lat, position.lng]] += [[stop, i += 1]]
+        stock[[stop.lat, stop.lng]] += [[stop, i += 1]]
       }
 
       positions_uniq = stock.collect{ |k, v|

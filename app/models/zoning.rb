@@ -65,7 +65,7 @@ class Zoning < ActiveRecord::Base
   def automatic_clustering(planning, n)
     positions = planning.routes.collect{ |route| route.stops }.flatten.collect{ |stop|
       if stop.position?
-        [stop.destination.lat, stop.destination.lng]
+        [stop.lat, stop.lng]
       end
     }.select{ |i| i }.uniq
 
@@ -82,7 +82,7 @@ class Zoning < ActiveRecord::Base
     clusters = planning.routes.select(&:vehicle).collect{ |route|
       route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
         if stop.position?
-          [stop.destination.lat, stop.destination.lng]
+          [stop.lat, stop.lng]
         end
       }.select{ |i| i }.uniq
     }

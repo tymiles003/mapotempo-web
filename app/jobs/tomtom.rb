@@ -57,8 +57,8 @@ class Tomtom
         route.vehicle.store_start.name
       ]] + route.stops.select(&:active).collect{ |stop|
         [
-          stop.destination.lat,
-          stop.destination.lng,
+          stop.lat,
+          stop.lng,
           '',
           route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil,
           stop.destination.name,

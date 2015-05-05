@@ -53,7 +53,7 @@ else
       out_of_drive_time |= stop.out_of_drive_time
       no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
       (json.error true) if no_geolocalization || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
-      json.extract! stop, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+      json.extract! stop, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
       (json.geocoded true) if !no_geolocalization
       (json.time stop.time.strftime('%H:%M')) if stop.time
@@ -66,7 +66,7 @@ else
       end
       json.destination do
         destination = stop.destination
-        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment
+        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment
         if !destination.tags.empty?
           json.tags_present do
             json.tags do

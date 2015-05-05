@@ -30,7 +30,7 @@ index = 0
 route.stops.each{ |stop|
   if stop.active && stop.position?
 %>
-    <rtept lat="<%= stop.destination.lat %>" lon="<%= stop.destination.lng %>">
+    <rtept lat="<%= stop.lat %>" lon="<%= stop.lng %>">
       <name>
         <%= [
           index += 1,
