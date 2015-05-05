@@ -70,13 +70,13 @@ class Route < ActiveRecord::Base
           stop.distance, time, stop.trace = router.trace(speed_multiplicator, last.lat, last.lng, stop.lat, stop.lng)
           stops_time[stop] = time
           stop.time = self.end + time
-          if stop.destination.open && stop.time < stop.destination.open
-            stop.wait_time = stop.destination.open - stop.time
-            stop.time = stop.destination.open
+          if stop.open && stop.time < stop.open
+            stop.wait_time = stop.open - stop.time
+            stop.time = stop.open
           else
             stop.wait_time = nil
           end
-          stop.out_of_window = (stop.destination.open && stop.time < stop.destination.open) || (stop.destination.close && stop.time > stop.destination.close)
+          stop.out_of_window = (stop.open && stop.time < stop.open) || (stop.close && stop.time > stop.close)
 
           self.distance += stop.distance
           self.end = stop.time + stop.duration
@@ -114,13 +114,12 @@ class Route < ActiveRecord::Base
       # Try to minimize waiting time by a later begin
       time = self.end - stops_time[:stop]
       stops_sort.reverse_each{ |stop|
-        destination = stop.destination
         if stop.active && stop.position?
           if stop.out_of_window
             time = stop.time
           else
             # Latest departure time
-            time = destination.close ? [time, destination.close].min : time
+            time = stop.close ? [time, stop.close].min : time
 
             # New arrival stop time
             time -= stop.duration
@@ -232,8 +231,8 @@ class Route < ActiveRecord::Base
 
   def sum_out_of_window
     stops.to_a.sum{ |stop|
-      (stop.time && stop.destination.open && stop.time < stop.destination.open ? stop.destination.open - stop.time : 0) +
-      (stop.time && stop.destination.close && stop.time > stop.destination.close ? stop.time - stop.destination.close : 0)
+      (stop.time && stop.open && stop.time < stop.open ? stop.open - stop.time : 0) +
+      (stop.time && stop.close && stop.time > stop.close ? stop.time - stop.close : 0)
     }
   end
 
@@ -349,14 +348,13 @@ class Route < ActiveRecord::Base
 
   def amalgamate_stops_same_position(stops)
     tws = stops.find{ |stop|
-      stop.destination.open || stop.destination.close
+      stop.is_a?(StopRest) || stop.open || stop.close
     }
 
     if tws
       # Can't reduce cause of time windows
       positions_uniq = stops.collect{ |stop|
-        position = stop.destination
-        [stop.lat, stop.lng, position.open, position.close, stop.duration]
+        [stop.lat, stop.lng, stop.open, stop.close, stop.duration]
       }
 
       yield(positions_uniq)

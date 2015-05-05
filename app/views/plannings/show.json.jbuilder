@@ -54,6 +54,8 @@ else
       no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
       (json.error true) if no_geolocalization || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.extract! stop, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+      (json.open stop.open.strftime('%H:%M')) if stop.open
+      (json.close stop.close.strftime('%H:%M')) if stop.close
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
       (json.geocoded true) if !no_geolocalization
       (json.time stop.time.strftime('%H:%M')) if stop.time
@@ -84,8 +86,6 @@ else
         else
           json.extract! destination, :quantity
         end
-        (json.open destination.open.strftime('%H:%M')) if destination.open
-        (json.close destination.close.strftime('%H:%M')) if destination.close
         (json.duration destination.take_over.strftime('%H:%M:%S')) if destination.take_over
         color = destination.tags.find(&:color)
         (json.color color.color) if color

@@ -46,8 +46,8 @@ route.stops.each{ |stop|
         %>
       </name>
       <desc><%= stop.time.strftime("%H:%M") if stop.time %>
-      <% if stop.destination.open or stop.destination.close %>
-<%= stop.destination.open.strftime("%H:%M") if stop.destination.open %>-<%= stop.destination.close.strftime("%H:%M") if stop.destination.close %>
+      <% if stop.open || stop.close %>
+<%= stop.open.strftime("%H:%M") if stop.open %>-<%= stop.close.strftime("%H:%M") if stop.close %>
       <% end %>
 <%= [stop.destination.street, stop.destination.detail, stop.destination.postalcode, stop.destination.city, stop.destination.country].select{ |i| i && i.length > 0 }.join(', ') %>.
       <% if stop.destination.comment && stop.destination.comment.length > 0 %>

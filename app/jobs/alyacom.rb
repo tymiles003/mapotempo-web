@@ -47,7 +47,7 @@ class Alyacom
           detail: destination.detail,
           comment: [
             stop.destination.ref,
-            stop.destination.open || stop.destination.close ? (stop.destination.open ? stop.destination.open.strftime('%H:%M') : '') + '-' + (stop.destination.close ? stop.destination.close.strftime('%H:%M') : '') : nil,
+            stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
             stop.destination.comment,
           ].select{ |s| s }.join(' ').strip
         },

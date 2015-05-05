@@ -67,9 +67,9 @@
         <div class="title col-md-2 col-sm-2 col-xs-3">
           <span class="number">#<%= index += 1 %></span>
           <span class="time"><%= stop.time.strftime("%H:%M") if stop.time %></span>
-          <% if stop.destination.open or stop.destination.close %>
+          <% if stop.open || stop.close %>
             <span class="window">
-              <%= stop.destination.open.strftime("%H:%M") if stop.destination.open %>-<%= stop.destination.close.strftime("%H:%M") if stop.destination.close %>
+              <%= stop.open.strftime("%H:%M") if stop.open %>-<%= stop.close.strftime("%H:%M") if stop.close %>
             </span>
           <% end %>
           <% if stop.destination.tags.size > 0 %>
