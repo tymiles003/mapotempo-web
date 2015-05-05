@@ -12,6 +12,10 @@ vehicle_one:
   store_start: store_one
   store_stop: store_one
   speed_multiplicator:
+  rest_start: 2000-01-01 12:00:00
+  rest_stop: 2000-01-01 14:00:00
+  rest_duration: 2000-01-01 00:45:00
+  store_rest: store_one
 
 vehicle_two:
   name: vehicle_two
@@ -25,3 +29,7 @@ vehicle_two:
   store_start: store_two
   store_stop: store_two
   speed_multiplicator: 0.9
+  rest_start: 2000-01-01 12:00:00
+  rest_stop: 2000-01-01 14:00:00
+  rest_duration: 2000-01-01 00:45:00
+  store_rest:

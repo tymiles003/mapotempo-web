@@ -21,6 +21,7 @@ class Store < ActiveRecord::Base
   belongs_to :customer
   has_many :vehicle_starts, class_name: 'Vehicle', inverse_of: :store_start, foreign_key: 'store_start_id'
   has_many :vehicle_stops, class_name: 'Vehicle', inverse_of: :store_stop, foreign_key: 'store_stop_id'
+  has_many :vehicle_rests, class_name: 'Vehicle', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
 
   nilify_blanks
   auto_strip_attributes :name, :street, :postalcode, :city

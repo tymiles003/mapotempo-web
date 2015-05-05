@@ -269,6 +269,10 @@ fr:
         store_stop_id: "Dépôt arrivée"
         router_id: "Calculateur d'itinéraire"
         speed_multiplicator: "Ajustement de la vitesse"
+        rest_start: "Début plage repos"
+        rest_stop: "Fin plage repos"
+        rest_duration: "Durée du repos"
+        store_rest_id: "Lieu du repos"
       zoning:
         name: "Nom"
       zone:
@@ -702,6 +706,8 @@ fr:
       router_help: "Forcer l'utilisation de ce calculateur d'itinéraire"
       speed_multiplicator_default: "%{n} (valeur par défaut)"
       speed_multiplicator_help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du compte client est également utilisé lors des calculs."
+      store_rest:
+        none: "Aucun"
 
   zonings:
     menu:

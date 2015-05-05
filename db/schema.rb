@@ -313,6 +313,10 @@ ActiveRecord::Schema.define(version: 20150715120003) do
     t.string   "masternaut_ref",      limit: 255
     t.float    "speed_multiplicator"
     t.string   "ref"
+    t.time     "rest_start"
+    t.time     "rest_stop"
+    t.time     "rest_duration"
+    t.integer  "store_rest_id"
   end
 
   add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree
@@ -367,6 +371,7 @@ ActiveRecord::Schema.define(version: 20150715120003) do
   add_foreign_key "users", "layers", name: "fk_users_layer_id"
   add_foreign_key "vehicles", "customers", name: "fk_vehicles_customer_id", on_delete: :cascade
   add_foreign_key "vehicles", "routers", name: "fk_vehicles_router_id"
+  add_foreign_key "vehicles", "stores", column: "store_rest_id"
   add_foreign_key "vehicles", "stores", column: "store_start_id", name: "fk_vehicles_store_start_id"
   add_foreign_key "vehicles", "stores", column: "store_stop_id", name: "fk_vehicles_store_stop_id"
   add_foreign_key "zones", "vehicles", name: "fk_zones_vehicle_id"

@@ -34,4 +34,8 @@ class V01::Entities::Vehicle < Grape::Entity
   expose(:store_stop_id, documentation: { type: Integer })
   expose(:router_id, documentation: { type: Integer })
   expose(:speed_multiplicator, documentation: { type: Float })
+  expose(:rest_start, documentation: { type: DateTime }) { |m| m.rest_start && m.rest_start.strftime('%H:%M:%S') }
+  expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop && m.rest_stop.strftime('%H:%M:%S') }
+  expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration && m.rest_duration.strftime('%H:%M:%S') }
+  expose(:store_rest_id, documentation: { type: Integer })
 end

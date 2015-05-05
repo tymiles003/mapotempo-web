@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 function vehicles_form(params) {
-  $('#vehicle_open, #vehicle_close').timeEntry({
+  $('#vehicle_open, #vehicle_close, #vehicle_rest_start, #vehicle_rest_stop, #vehicle_rest_duration').timeEntry({
     show24Hours: true,
     spinnerImage: ''
   });
