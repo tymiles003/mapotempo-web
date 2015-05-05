@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'osrm'
 
-class D < Struct.new(:lat, :lng, :open, :close, :take_over)
+class D < Struct.new(:lat, :lng, :open, :close, :duration)
   def destination
     self
   end
@@ -116,8 +116,13 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one)
 
     o.stops.each { |s|
-      s.destination.open = s.destination.close = nil
-      s.destination.save
+      if s.is_a?(StopDestination)
+        s.destination.open = s.destination.close = nil
+        s.destination.save
+      else
+        s.time = s.open
+        s.save
+      end
     }
     o.vehicle.open = Time.new(2000, 01, 01, 00, 00, 00, "+00:00")
     o.planning.customer.take_over = Time.new(2000, 01, 01, 00, 00, 00, "+00:00")

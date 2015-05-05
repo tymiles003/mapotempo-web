@@ -43,7 +43,7 @@ class Route < ActiveRecord::Base
     i = 0
     stops.clear
     planning.destinations_compatibles.each { |c|
-      stops.build(destination: c, active: true, index: i += 1)
+      stops.build(type: StopDestination.name, destination: c, active: true, index: i += 1)
     }
 
     compute
@@ -80,7 +80,7 @@ class Route < ActiveRecord::Base
           stop.out_of_window = (destination.open && stop.time < destination.open) || (destination.close && stop.time > destination.close)
 
           self.distance += stop.distance
-          self.end = stop.time + stop.take_over
+          self.end = stop.time + stop.duration
 
           quantity += (destination.quantity || 1)
           stop.out_of_capacity = vehicle.capacity && quantity > vehicle.capacity
@@ -124,7 +124,7 @@ class Route < ActiveRecord::Base
             time = destination.close ? [time, destination.close].min : time
 
             # New arrival stop time
-            time -= stop.take_over
+            time -= stop.duration
           end
 
           # Previous departure time
@@ -153,7 +153,7 @@ class Route < ActiveRecord::Base
       i = 0
       dests.each{ |stop|
         destination, active = stop
-        stops.build(destination: destination, active: active, index: i += 1)
+        stops.build(type: StopDestination.name, destination: destination, active: active, index: i += 1)
       }
       compute if recompute
     end
@@ -166,7 +166,7 @@ class Route < ActiveRecord::Base
     elsif vehicle
       raise
     end
-    stops.build(destination: destination, index: index, active: active)
+    stops.build(type: StopDestination.name, destination: destination, index: index, active: active)
 
     if vehicle
       self.out_of_date = true
@@ -175,7 +175,7 @@ class Route < ActiveRecord::Base
 
   def remove_destination(destination)
     stops.each{ |stop|
-      if(stop.destination == destination)
+      if(stop.is_a?(StopDestination) && stop.destination == destination)
         remove_stop(stop)
       end
     }
@@ -243,13 +243,13 @@ class Route < ActiveRecord::Base
     router = vehicle.router || stops_on[0].destination.customer.router
     amalgamate_stops_same_position(stops_on) { |positions|
       tws = [[nil, nil, 0]] + positions.collect{ |position|
-        open, close, take_over = position[2..4]
+        open, close, duration = position[2..4]
         open = open ? Integer(open - vehicle.open) : nil
         close = close ? Integer(close - vehicle.open) : nil
         if open && close && open > close
           close = open
         end
-        [open, close, take_over]
+        [open, close, duration]
       }
 
       positions = [[vehicle.store_start.lat, vehicle.store_start.lng]] + positions + [[vehicle.store_stop.lat, vehicle.store_stop.lng]]
@@ -357,7 +357,7 @@ class Route < ActiveRecord::Base
       # Can't reduce cause of time windows
       positions_uniq = stops.collect{ |stop|
         position = stop.destination
-        [position.lat, position.lng, position.open, position.close, stop.take_over]
+        [position.lat, position.lng, position.open, position.close, stop.duration]
       }
 
       yield(positions_uniq)
@@ -371,7 +371,7 @@ class Route < ActiveRecord::Base
       }
 
       positions_uniq = stock.collect{ |k, v|
-        k + [nil, nil, v.sum{ |vs| vs[0].take_over }]
+        k + [nil, nil, v.sum{ |vs| vs[0].duration }]
       }
 
       optim_uniq = yield(positions_uniq)

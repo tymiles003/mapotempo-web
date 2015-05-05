@@ -80,7 +80,7 @@ class Zoning < ActiveRecord::Base
   def from_planning(planning)
     zones.clear
     clusters = planning.routes.select(&:vehicle).collect{ |route|
-      route.stops.collect{ |stop|
+      route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
         if !stop.destination.lat.nil? && !stop.destination.lng.nil?
           [stop.destination.lat, stop.destination.lng]
         end

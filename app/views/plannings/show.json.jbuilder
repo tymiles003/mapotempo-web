@@ -84,9 +84,9 @@ else
         else
           json.extract! destination, :quantity
         end
-        (json.take_over destination.take_over.strftime('%H:%M:%S')) if destination.take_over
         (json.open destination.open.strftime('%H:%M')) if destination.open
         (json.close destination.close.strftime('%H:%M')) if destination.close
+        (json.duration destination.take_over.strftime('%H:%M:%S')) if destination.take_over
         color = destination.tags.find(&:color)
         (json.color color.color) if color
         icon = destination.tags.find(&:icon)

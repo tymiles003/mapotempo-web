@@ -93,7 +93,7 @@ class DestinationTest < ActiveSupport::TestCase
     r.touch
     r.save!
 
-    assert o.stops
+    assert o.stop_destinations
     o.destroy
 
     r.reload

@@ -549,7 +549,7 @@ fr:
         time: "Passage : "
         quantity: "Quantité : "
         orders: "Commandes : "
-        take_over: "Durée de visite : "
+        duration: "Durée : "
         tags: "Libellés : "
       error:
         no_geolocalization: "Pas de géolocalisation"
@@ -600,7 +600,7 @@ fr:
       lat: "lat"
       lng: "lng"
       comment: "commentaire"
-      take_over: "durée visite"
+      duration: "durée visite"
       quantity: "quantité"
       orders: "commandes"
       active: "livré"

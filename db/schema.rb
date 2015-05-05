@@ -220,8 +220,8 @@ ActiveRecord::Schema.define(version: 20150715120003) do
     t.boolean  "active"
     t.float    "distance"
     t.text     "trace"
-    t.integer  "route_id",                      null: false
-    t.integer  "destination_id",                null: false
+    t.integer  "route_id",                                      null: false
+    t.integer  "destination_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "time"
@@ -229,7 +229,8 @@ ActiveRecord::Schema.define(version: 20150715120003) do
     t.boolean  "out_of_capacity"
     t.boolean  "out_of_drive_time"
     t.integer  "wait_time"
-    t.integer  "lock_version",      default: 0, null: false
+    t.integer  "lock_version",      default: 0,                 null: false
+    t.string   "type",              default: "StopDestination", null: false
   end
 
   add_index "stops", ["destination_id"], name: "fk__stops_destination_id", using: :btree

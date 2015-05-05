@@ -41,7 +41,7 @@ route.stops.each{ |stop|
           ' ',
           route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "⨯#{stop.destination.quantity}" : '',
           ' ',
-          stop.destination.take_over ? '(' + stop.destination.take_over.strftime("%H:%M:%S") + ')' : '',
+          stop.is_a?(StopDestination) && stop.destination.take_over ? '(' + stop.destination.take_over.strftime("%H:%M:%S") + ')' : '',
         ].join.gsub(/\s+/, ' ').strip
         %>
       </name>

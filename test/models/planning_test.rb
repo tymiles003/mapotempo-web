@@ -66,7 +66,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test "should vehicle_remove" do
     o = plannings(:planning_one)
-    assert_difference('Stop.count', 0) do
+    assert_difference('Stop.count', -1) do
       assert_difference('Route.count', -1) do
         o.vehicle_remove(vehicles(:vehicle_one))
         o.save!

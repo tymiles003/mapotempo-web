@@ -59,7 +59,7 @@ class Alyacom
             route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil,
           ].select{ |s| s }.join(' ').strip,
           start: base_time + stop.time.seconds_since_midnight.seconds,
-          end: base_time + (stop.time.seconds_since_midnight + stop.take_over).seconds,
+          end: base_time + (stop.time.seconds_since_midnight + stop.duration).seconds,
         }
       }
     }

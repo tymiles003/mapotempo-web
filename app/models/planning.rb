@@ -71,8 +71,8 @@ class Planning < ActiveRecord::Base
 
   def vehicle_remove(vehicle)
     route = routes.find{ |route| route.vehicle == vehicle }
-    route.stops.collect{ |stop|
-      routes[0].stops.build(destination: stop.destination)
+    route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
+      routes[0].stops.build(type: StopDestination.name, destination: stop.destination)
       routes[0].out_of_date = true
     }
     routes.destroy(route)
@@ -195,7 +195,7 @@ class Planning < ActiveRecord::Base
 
   def destinations
     routes.collect{ |route|
-      route.stops.collect(&:destination)
+      route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect(&:destination)
     }.flatten
   end
 

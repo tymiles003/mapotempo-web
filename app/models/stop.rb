@@ -17,25 +17,7 @@
 #
 class Stop < ActiveRecord::Base
   belongs_to :route
-  belongs_to :destination
 
   nilify_blanks
   validates :route, presence: true
-  validates :destination, presence: true
-
-  def order
-    planning = route.planning
-    if planning.customer.enable_orders && planning.order_array && planning.date
-      planning.order_array.orders.where(destination_id: destination.id, shift: planning.date - planning.order_array.base_date).first
-    end
-  end
-
-  def take_over
-    to = destination.take_over ? destination.take_over : destination.customer.take_over
-    to ? to.seconds_since_midnight : 0
-  end
-
-  def to_s
-    "#{active ? 'x' : '_'} #{destination.name}"
-  end
 end

@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 stop_unaffected:
+  type: StopDestination
   index:
   active: false
   distance: 1.5
@@ -13,6 +14,7 @@ stop_unaffected:
   out_of_drive_time: false
 
 stop_one_one:
+  type: StopDestination
   index: 1
   active: true
   distance: 1.5
@@ -25,6 +27,7 @@ stop_one_one:
   out_of_drive_time: false
 
 stop_one_two:
+  type: StopDestination
   index: 2
   active: true
   distance: 1.5
@@ -37,6 +40,7 @@ stop_one_two:
   out_of_drive_time: false
 
 stop_one_three:
+  type: StopDestination
   index: 3
   active: true
   distance: 1.5
@@ -49,6 +53,7 @@ stop_one_three:
   out_of_drive_time: false
 
 stop_two_one:
+  type: StopDestination
   index: 1
   active: false
   distance: 1.5

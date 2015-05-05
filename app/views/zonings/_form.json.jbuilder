@@ -10,14 +10,14 @@ if @planning
       json.vehicle_id route.vehicle.id
     end
     json.stops do
-      json.array! route.stops.collect do |stop|
+      json.array! route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect do |stop|
         destination = stop.destination
         json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment
         json.active route.vehicle && stop.active
         if !@planning.customer.enable_orders
           json.extract! destination, :quantity
         end
-        (json.take_over destination.take_over.strftime('%H:%M:%S')) if destination.take_over
+        (json.duration destination.take_over.strftime('%H:%M:%S')) if destination.take_over
         (json.open destination.open.strftime('%H:%M')) if destination.open
         (json.close destination.close.strftime('%H:%M')) if destination.close
         color = stop.destination.tags.find(&:color)

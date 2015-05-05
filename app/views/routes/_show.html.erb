@@ -94,7 +94,7 @@
               </div>
             <% end %>
           <% end %>
-          <% if stop.destination.take_over %>
+          <% if stop.is_a?(StopDestination) && stop.destination.take_over %>
             <span class="take_over">(<%= stop.destination.take_over.strftime("%H:%M:%S") %>)</span>
           <% end %>
         </div>

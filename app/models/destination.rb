@@ -19,7 +19,7 @@ require 'geocode'
 
 class Destination < ActiveRecord::Base
   belongs_to :customer
-  has_many :stops, inverse_of: :destination, dependent: :delete_all
+  has_many :stop_destinations, inverse_of: :destination, dependent: :delete_all
   has_many :orders, inverse_of: :destination, dependent: :delete_all
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
 
@@ -53,7 +53,7 @@ class Destination < ActiveRecord::Base
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed
     Route.transaction do
-      stops.each{ |stop|
+      stop_destinations.each{ |stop|
         stop.route.remove_stop(stop)
         stop.route.save
       }
@@ -113,7 +113,7 @@ class Destination < ActiveRecord::Base
 
   def out_of_date
     Route.transaction do
-      stops.each{ |stop|
+      stop_destinations.each{ |stop|
         stop.route.out_of_date = true
         stop.route.save
       }
