@@ -424,6 +424,7 @@ en:
       new: "New orders array"
     edit:
       title: "Editing orders array"
+      vehicle: "Vehicle"
       name: "Name"
       comment: "Comment"
       empty_row: "Empty row"
@@ -441,6 +442,7 @@ en:
     new:
       title: "New orders array"
     export_file:
+      vehicle: "vehicle"
       name: "name"
       comment: "comment"
       total: "total"

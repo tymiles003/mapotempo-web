@@ -32,10 +32,19 @@ class OrderArraysController < ApplicationController
       i = -1
       destination_index = Hash[planning.routes.collect{ |route|
         route.stops.collect{ |stop|
-          stop.destination.id
+          [stop.destination.id, route.vehicle]
         }
-      }.flatten.collect{ |id| [id, i+=1] }]
-      @destinations_orders = @destinations_orders.sort_by{ |destination_order| destination_index[destination_order[0].destination.id] || Float::Infinity }
+      }.flatten(1).collect{ |id, vehicule| [id, [i+=1, vehicule]] }]
+
+      @destinations_orders = @destinations_orders.sort_by{ |destination_orders|
+        destination_index[destination_orders[0].destination.id] ? destination_index[destination_orders[0].destination.id][0] : Float::INFINITY
+      }.collect{ |destination_orders|
+        [destination_orders, destination_index[destination_orders[0].destination.id][1]]
+      }
+    else
+      @destinations_orders = @destinations_orders.collect{ |destination_orders|
+        [destination_orders]
+      }
     end
 
     respond_to do |format|

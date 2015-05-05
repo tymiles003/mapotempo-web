@@ -8,6 +8,10 @@ json.products do
   json.array! @order_array.customer.products, :id, :code, :name
 end
 
+if params[:planning_id]
+  json.vehicle true
+end
+
 json.columns do
   json.array! @order_array.days.times do |i|
     json.week_day l(@order_array.base_date + i, format: '%a')
@@ -16,7 +20,11 @@ json.columns do
 end
 
 json.rows do
-  json.array! @destinations_orders do |destination_orders|
+  json.array! @destinations_orders do |destination_orders, vehicle|
+    if vehicle
+      json.vehicle_name vehicle.name
+      json.vehicle_color vehicle.color
+    end
     json.name destination_orders[0].destination.name
     json.comment destination_orders[0].destination.comment
     json.orders do

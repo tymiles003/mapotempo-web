@@ -1,4 +1,8 @@
-csv << [
+header = []
+if params[:planning_id]
+  header << I18n.t('order_arrays.export_file.vehicle')
+end
+header += [
     I18n.t('order_arrays.export_file.name'),
     I18n.t('order_arrays.export_file.comment'),
 ] + @order_array.days.times.collect { |i|
@@ -6,12 +10,17 @@ csv << [
 } + @order_array.customer.products.collect(&:code) + [
   I18n.t('order_arrays.export_file.total')
 ]
+csv << header
 
 sum_column = Hash.new { |h,k| h[k] = {} }
-@destinations_orders.collect { |destination_orders|
+@destinations_orders.collect { |destination_orders, vehicle|
   sum = {}
   total = 0
-  csv << [
+  line = []
+  if params[:planning_id]
+    line << (vehicle.nil? ? '' : vehicle.name)
+  end
+  line += [
     destination_orders[0].destination.name,
     destination_orders[0].destination.comment,
   ] + destination_orders.collect { |order|
@@ -26,6 +35,7 @@ sum_column = Hash.new { |h,k| h[k] = {} }
   } + [
     total > 0 ? total : nil
   ]
+  csv << line
 }
 
 total_column = []

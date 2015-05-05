@@ -62,7 +62,7 @@ function order_arrays_edit(params) {
     return data_products;
   }
 
-  function set_fake_select2(products, selector) {
+  function set_fake_select2(products, selector, shift) {
     fake_select2(selector, function(select) {
       var data = $.map(select[0].options || [], function(option) {
         return {
@@ -86,7 +86,7 @@ function order_arrays_edit(params) {
         }
 
         table_neeed_update = true;
-        build_total(undefined, $('#order_array table'));
+        build_total(undefined, $('#order_array table'), shift);
 
         var id = select.parent().data('id');
         var product_ids = $.map(select.val() || [], function(val, i) {
@@ -117,7 +117,7 @@ function order_arrays_edit(params) {
     }));
   }
 
-  function build_total(e, table) {
+  function build_total(e, table, shift) {
     var $table = $(table),
       sum_column = [],
       grand_total = {};
@@ -163,7 +163,7 @@ function order_arrays_edit(params) {
         td.innerHTML = sum_column[j] && sum_column[j][pid] || '-';
         sum_column[j][undefined] += sum_column[j][pid] || 0;
       });
-      $('td:nth-child(' + (row_length + 4 + i) + ')', $tr).html(grand_total[pid] || '-');
+      $('td:nth-child(' + (row_length + 4 + shift + i) + ')', $tr).html(grand_total[pid] || '-');
       grand_total[undefined] += grand_total[pid] || 0;
     });
 
@@ -192,31 +192,39 @@ function order_arrays_edit(params) {
     data.i18n = mustache_i18n;
     $(container).html(SMT['order_arrays/edit'](data));
 
-    var headers = {
-      0: {
-        sorter: false
-      }
+    var false_formater = function($cell, indx) {
+      return false;
     };
+    var no_sorter = {
+      sorter: false
+    };
+
+    var headers = {
+      0 : no_sorter
+    };
+    var filter_formatter = {
+      0: false_formater
+    };
+
+    var shift = 0;
+    if (planning_id) {
+      shift = 2;
+      headers[1] = no_sorter;
+      filter_formatter[1] = false_formater;
+    }
+
     var filter_functions = {};
     for (var i = 0; i < data.columns.length; i++) {
-      headers[i + 3] = {
-        sorter: false
-      };
-      filter_functions[i + 3] = filter_text;
+      headers[i + 3 + shift] = no_sorter;
+      filter_functions[i + 3 + shift] = filter_text;
     }
-    var filter_formatter = {
-      0: function($cell, indx) {
-        return false;
-      }
-    };
     for (var i = 0; i < data.products.length + 1; i++) {
-      filter_formatter[i + data.columns.length + 3] = function($cell, indx) {
-        return false;
-      };
+      filter_formatter[i + data.columns.length + 3 + shift] = false_formater;
     }
-    $("#order_array table").bind("tablesorter-initialized", build_total).tablesorter({
+
+    $("#order_array table").bind("tablesorter-initialized", function(e, table) { build_total(e, table, shift); }).tablesorter({
       textExtraction: function(node, table, cellIndex) {
-        if (cellIndex >= 3 && cellIndex < data.columns.length + 3) {
+        if (cellIndex >= 3 + shift && cellIndex < data.columns.length + 3 + shift) {
           return $.map($("[name$=\\[product_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).join(",");
@@ -238,10 +246,16 @@ function order_arrays_edit(params) {
       }
     });
 
+    // Workaround rowspan and tablesorter-filter
+    $('.tablesorter-filter-row td:last-child').remove();
+    for (var i = 0; i < data.products.length; i++) {
+      $('.tablesorter-filter-row td:last-child').remove();
+    }
+
     $('#order_array table thead input').focusin(table_trigger_update);
     $('#order_array table thead .tablesorter-icon').click(table_trigger_update);
 
-    set_fake_select2(products, $('td[data-id] select'));
+    set_fake_select2(products, $('td[data-id] select'), shift);
 
     function change_order(product_id, add_product, remove_product, paste, copy, selector_function) {
       var orders = {};
@@ -273,10 +287,10 @@ function order_arrays_edit(params) {
           product_ids: val
         };
       });
-      set_fake_select2(products, selector_function());
+      set_fake_select2(products, selector_function(), shift);
       block_save_select_change = false;
       table_neeed_update = true;
-      build_total(undefined, $('#order_array table'));
+      build_total(undefined, $('#order_array table'), shift);
 
       $.ajax({
         type: "patch",

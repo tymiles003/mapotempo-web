@@ -1,7 +1,11 @@
 <table class="tablesorter">
-  <thead>
+  <thead class="{{^vehicle}}no_{{/vehicle}}vehicle">
     <tr>
       <th></th>
+      {{#vehicle}}
+      <th></th>
+      <th>{{#i18n}}order_arrays.edit.vehicle{{/i18n}}</th>
+      {{/vehicle}}
       <th>{{#i18n}}order_arrays.edit.name{{/i18n}}</th>
       <th>{{#i18n}}order_arrays.edit.comment{{/i18n}}</th>
       {{#columns}}
@@ -57,8 +61,12 @@
           </ul>
         </div>
       </th>
-      <th>{{name}}</th>
-      <td>{{comment}}</td>
+      {{#vehicle}}
+      <th{{#vehicle_color}} style="background: {{vehicle_color}}"{{/vehicle_color}}>&nbsp;</th>
+      <th class="vehicle">{{vehicle_name}}</th>
+      {{/vehicle}}
+      <th class="name">{{name}}</th>
+      <td class="comment">{{comment}}</td>
       {{#orders}}
       <td data-id="{{id}}">
         <input type="hidden" value="" name="order[product_ids][]">
@@ -103,8 +111,12 @@
     {{#products}}
     <tr>
       <th></th>
+      {{#vehicle}}
+      <th></th>
+      <th></th>
+      {{/vehicle}}
       <th data-product_id="{{id}}"><i class="fa fa-cube fa-fw"></i> {{code}}</th>
-      <td>{{name}}</td>
+      <td class="comment">{{name}}</td>
       {{#columns}}
       <td class="number"></td>
       {{/columns}}
@@ -116,6 +128,10 @@
     {{/products}}
     <tr>
       <th></th>
+      {{#vehicle}}
+      <th></th>
+      <th></th>
+      {{/vehicle}}
       <th class="th-number" rowspan="2"><div><i class="fa fa-cubes fa-fw"></i> {{#i18n}}order_arrays.edit.total{{/i18n}}</div></th>
       <td></td>
       {{#columns}}

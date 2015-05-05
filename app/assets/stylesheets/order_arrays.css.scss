@@ -28,7 +28,7 @@
     }
   }
 
-  thead {
+  thead.no_vehicle {
     .tablesorter-filter-row {
       td:nth-of-type(2) input {
         width: 15em;
@@ -38,7 +38,21 @@
         width: 10em;
       }
     }
+  }
 
+  thead.vehicle {
+    .tablesorter-filter-row {
+      td:nth-of-type(4) input {
+        width: 15em;
+      }
+
+      td:nth-of-type(5) input {
+        width: 10em;
+      }
+    }
+  }
+
+  thead {
     th.order {
       .tablesorter-header-inner {
         padding: 0px;
@@ -76,14 +90,14 @@
       }
     }
 
-    th:nth-of-type(2) {
+    th.name {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       max-width: 15em;
     }
 
-    td:nth-of-type(1) {
+    th.vehicle, td.comment {
       font-size: 75%;
     }
 
@@ -94,7 +108,7 @@
   }
 
   tfoot {
-    td:nth-of-type(1) {
+    td.comment {
       font-size: 75%;
     }
   }

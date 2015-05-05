@@ -433,6 +433,7 @@ fr:
       new: "Nouveau tableau de commandes"
     edit:
       title: "Modifier tableau de commandes"
+      vehicle: "Véhicule"
       name: "Nom"
       comment: "Commentaire"
       empty_row: "Vider la ligne"
@@ -450,6 +451,7 @@ fr:
     new:
       title: "Nouveau tableau de commandes"
     export_file:
+      vehicle: "véhicule"
       name: "nom"
       comment: "commentaire"
       total: "total"
