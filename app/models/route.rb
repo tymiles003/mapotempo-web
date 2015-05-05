@@ -67,7 +67,7 @@ class Route < ActiveRecord::Base
       stops_sort = stops.sort_by(&:index)
       stops_sort.each{ |stop|
         destination = stop.destination
-        if stop.active && !destination.lat.nil? && !destination.lng.nil?
+        if stop.active && stop.position?
           stop.distance, time, stop.trace = router.trace(speed_multiplicator, last.lat, last.lng, destination.lat, destination.lng)
           stops_time[stop] = time
           stop.time = self.end + time
@@ -116,7 +116,7 @@ class Route < ActiveRecord::Base
       time = self.end - stops_time[:stop]
       stops_sort.reverse_each{ |stop|
         destination = stop.destination
-        if stop.active && !destination.lat.nil? && !destination.lng.nil?
+        if stop.active && stop.position?
           if stop.out_of_window
             time = stop.time
           else
@@ -308,7 +308,7 @@ class Route < ActiveRecord::Base
 
   def active_all
     stops.each { |stop|
-      if !stop.destination.lat.nil? && !stop.destination.lng.nil?
+      if stop.position?
         stop.active = true
       end
     }
@@ -331,7 +331,7 @@ class Route < ActiveRecord::Base
   end
 
   def stops_segregate
-    stops.group_by{ |stop| !!(stop.active && !stop.destination.lat.nil? && !stop.destination.lng.nil?) }
+    stops.group_by{ |stop| !!(stop.active && stop.position?) }
   end
 
   def shift_index(from, by = 1, to = nil)

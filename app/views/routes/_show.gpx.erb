@@ -28,7 +28,7 @@
 <%
 index = 0
 route.stops.each{ |stop|
-  if stop.active && !stop.destination.lat.nil? && !stop.destination.lng.nil?
+  if stop.active && stop.position?
 %>
     <rtept lat="<%= stop.destination.lat %>" lon="<%= stop.destination.lng %>">
       <name>
