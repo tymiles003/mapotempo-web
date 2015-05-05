@@ -112,6 +112,10 @@ hr {
   outline:medium none;
 }
 
+.select2-hidden-accessible {
+  display: none !important;
+}
+
 /* Add Open and Close cheron to accordion */
 
 .panel-heading .accordion-toggle:after {
