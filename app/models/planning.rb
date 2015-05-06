@@ -119,7 +119,7 @@ class Planning < ActiveRecord::Base
   end
 
   def automatic_insert(stop)
-    available_routes = nil
+    available_routes = []
 
     # If already in route, stay in route
     if stop.route.vehicle
@@ -127,7 +127,7 @@ class Planning < ActiveRecord::Base
     end
 
     # If zoning, get appropriate route
-    if !available_routes && zoning
+    if available_routes.empty? && zoning
       zone = zoning.inside(stop.destination)
       if zone && zone.vehicle
         route = routes.find{ |route|
@@ -138,14 +138,14 @@ class Planning < ActiveRecord::Base
     end
 
     # It still no route get all routes
-    if !available_routes
+    if available_routes.empty?
       available_routes = routes.select{ |route|
         route.vehicle && !route.locked
       }
     end
 
     # So, no target route, nothing to do
-    if !available_routes.empty?
+    if available_routes.empty?
       return
     end
 
