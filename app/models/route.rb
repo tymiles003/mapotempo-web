@@ -41,7 +41,6 @@ class Route < ActiveRecord::Base
 
   def default_stops
     i = 0
-    stops.clear
     planning.destinations_compatibles.each { |c|
       stops.build(type: StopDestination.name, destination: c, active: true, index: i += 1)
     }
@@ -143,7 +142,9 @@ class Route < ActiveRecord::Base
 
   def set_destinations(dests, recompute = true)
     Stop.transaction do
-      stops.clear
+      stops.select{ |stop| stop.is_a?(StopDestination) }.each{ |stop|
+        remove_stop(stop)
+      }
       add_destinations(dests, recompute)
     end
   end
@@ -193,7 +194,7 @@ class Route < ActiveRecord::Base
     stop = nil
     planning.routes.find{ |route|
       (route != self ? route : self).stops.find{ |s|
-        if s.destination == destination
+        if s.is_a?(StopDestination) && s.destination == destination
           stop = s
         end
       }
@@ -205,9 +206,11 @@ class Route < ActiveRecord::Base
 
   def move_stop(stop, index)
     if stop.route != self
-      destination, active = stop.destination, stop.active
-      stop.route.move_stop_out(stop)
-      add(destination, index, active || stop.route.vehicle.nil?)
+      if stop.is_a?(StopDestination)
+        destination, active = stop.destination, stop.active
+        stop.route.move_stop_out(stop)
+        add(destination, index, active || stop.route.vehicle.nil?)
+      end
     else
       index = stops.size if index < 0
       if stop.index
@@ -223,12 +226,14 @@ class Route < ActiveRecord::Base
   end
 
   def move_stop_out(stop)
-    if vehicle
-      shift_index(stop.index + 1, -1)
+    if stop.is_a?(StopDestination)
+      if vehicle
+        shift_index(stop.index + 1, -1)
+      end
+      stop.active = false
+      compute
+      stop.route.stops.destroy(stop)
     end
-    stop.active = false
-    compute
-    stop.route.stops.destroy(stop)
   end
 
   def sum_out_of_window
