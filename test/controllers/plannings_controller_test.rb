@@ -55,6 +55,11 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should show planning as json" do
+    get :show, format: :json, id: @planning
+    assert_response :success
+  end
+
   test "should show planning as excel" do
     get :show, id: @planning, format: :excel
     assert_response :success
