@@ -83,6 +83,12 @@ class StopRest < Stop
     end
   end
 
+  def country
+    if position?
+      route.vehicle.store_rest.country
+    end
+  end
+
   def detail
     nil
   end

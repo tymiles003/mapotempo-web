@@ -24,26 +24,26 @@ class Masternaut
     customer = route.planning.customer
     waypoints = route.stops.select(&:active).collect{ |stop|
       {
-        street: stop.destination.street,
-        city: stop.destination.city,
-        country: stop.destination.country || customer.default_country,
-        postalcode: stop.destination.postalcode,
+        street: stop.street,
+        city: stop.city,
+        postalcode: stop.postalcode,
+        country: stop.country || customer.default_country,
         lat: stop.lat,
         lng: stop.lng,
-        ref: stop.destination.ref,
-        name: stop.destination.name,
-        id: stop.destination.id,
+        ref: stop.ref,
+        name: stop.name,
+        id: stop.base_id,
         description: [
-          stop.destination.name,
-          stop.destination.ref,
+          stop.name,
+          stop.base_ref,
           stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
           stop.is_a?(StopDestination) ? stop.destination.take_over ? '(' + stop.destination.take_over.strftime('%H:%M:%S') + ')' : nil : nil,
           stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
-          stop.destination.detail,
-          stop.destination.comment,
+          stop.detail,
+          stop.comment,
         ].select{ |s| s }.join(' ').strip,
         time: stop.time,
-        updated_at: stop.destination.updated_at,
+        updated_at: stop.base_updated_at,
       }
     }
 

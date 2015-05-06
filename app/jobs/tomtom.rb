@@ -35,12 +35,12 @@ class Tomtom
     route.stops.select(&:active).each{ |stop|
       description = [
         '',
-        stop.destination.name,
+        stop.name,
         stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
         stop.is_a?(StopDestination) ? stop.destination.take_over ? '(' + stop.destination.take_over.strftime('%H:%M:%S') + ')' : nil : nil,
         stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
-        stop.destination.detail,
-        stop.destination.comment,
+        stop.detail,
+        stop.comment,
       ].select{ |s| s }.join(' ').strip
       TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, stop.destination, stop.id, description, stop.time)
     }
@@ -61,8 +61,8 @@ class Tomtom
           stop.lng,
           '',
           stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
-          stop.destination.name,
-          stop.destination.comment
+          stop.name,
+          stop.comment
         ]
       } + [[
         route.vehicle.store_stop.lat,

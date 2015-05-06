@@ -104,24 +104,24 @@
         <% else %>
           <div class="col-md-6 col-sm-6 col-xs-9">
         <% end %>
-          <span class="ref"><%= stop.destination.ref %></span>
-          <span class="name"><%= stop.destination.name %></span><br/>
+          <span class="ref"><%= stop.ref %></span>
+          <span class="name"><%= stop.name %></span><br/>
           <span class="address">
-            <%= stop.destination.street %><% if stop.destination.detail && !stop.destination.detail.empty? %>, <%= stop.destination.detail %><% end %>
-            <% if (stop.destination.street && !stop.destination.street.empty?) || (stop.destination.detail && !stop.destination.detail.empty?) %>
+            <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
+            <% if (stop.street && !stop.street.empty?) || (stop.detail && !stop.detail.empty?) %>
               </br>
             <% end %>
-            <%= stop.destination.postalcode %> <%= stop.destination.city %> <%= stop.destination.country %>
+            <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
           </span>
-          <% if stop.destination.comment && stop.destination.comment.length > 0 %>
-            <div class="comment wrapped-text visible-sm visible-xs"><%= stop.destination.comment %></div>
+          <% if stop.comment && stop.comment.length > 0 %>
+            <div class="comment wrapped-text visible-sm visible-xs"><%= stop.comment %></div>
           <% end %>
         </div>
 
         <% if route.planning.customer.print_planning_annotating %>
-          <div class="comment wrapped-text col-md-2 hidden-sm hidden-xs"><%= stop.destination.comment %></div>
+          <div class="comment wrapped-text col-md-2 hidden-sm hidden-xs"><%= stop.comment %></div>
         <% else %>
-          <div class="comment wrapped-text col-md-4 col-sm-4 hidden-xs"><%= stop.destination.comment %></div>
+          <div class="comment wrapped-text col-md-4 col-sm-4 hidden-xs"><%= stop.comment %></div>
         <% end %>
 
         <% if route.planning.customer.print_planning_annotating %>

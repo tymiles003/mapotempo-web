@@ -35,9 +35,9 @@ route.stops.each{ |stop|
         <%= [
           index += 1,
           '-',
-          stop.destination.ref,
+          stop.ref,
           ' ',
-          stop.destination.name,
+          stop.name,
           ' ',
           stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "⨯#{stop.destination.quantity}" : '') : '',
           ' ',
@@ -49,9 +49,9 @@ route.stops.each{ |stop|
       <% if stop.open || stop.close %>
 <%= stop.open.strftime("%H:%M") if stop.open %>-<%= stop.close.strftime("%H:%M") if stop.close %>
       <% end %>
-<%= [stop.destination.street, stop.destination.detail, stop.destination.postalcode, stop.destination.city, stop.destination.country].select{ |i| i && i.length > 0 }.join(', ') %>.
-      <% if stop.destination.comment && stop.destination.comment.length > 0 %>
-<%= stop.destination.comment %>
+<%= [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].select{ |i| i && i.length > 0 }.join(', ') %>.
+      <% if stop.comment && stop.comment.length > 0 %>
+<%= stop.comment %>
       <% end %>
       <% if stop.destination.tags.size > 0 %>
 <%= stop.destination.tags.collect { |tag| tag.label }.join(', ') %>

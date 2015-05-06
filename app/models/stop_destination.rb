@@ -80,6 +80,10 @@ class StopDestination < Stop
     destination.city
   end
 
+  def country
+    destination.country
+  end
+
   def detail
     destination.detail
   end

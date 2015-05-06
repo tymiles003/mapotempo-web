@@ -35,26 +35,24 @@ class Alyacom
     planning_id_base = date.strftime('%y%m%d')
     base_time = date.to_time
     waypoints = route.stops.select(&:active).collect{ |stop|
-      destination = stop.destination
-
       {
         user: {
-          id: destination.id,
-          name: destination.name,
-          street: destination.street,
-          postalcode: destination.postalcode,
-          city: destination.city,
-          detail: destination.detail,
+          id: stop_base_id,
+          name: stop.name,
+          street: stop.street,
+          postalcode: stop.postalcode,
+          city: stop.city,
+          detail: stop.detail,
           comment: [
-            stop.destination.ref,
+            stop.ref,
             stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
-            stop.destination.comment,
+            stop.comment,
           ].select{ |s| s }.join(' ').strip
         },
         planning: {
-          id: planning_id_base + '_' + stop.destination.id.to_s,
+          id: planning_id_base + '_' + stop.base_id.to_s,
           staff_id: route.vehicle.name,
-          destination_id: stop.destination.id,
+          destination_id: stop.base_id,
           comment: [
             stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
           ].select{ |s| s }.join(' ').strip,
