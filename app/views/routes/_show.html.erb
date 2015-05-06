@@ -88,7 +88,7 @@
               <% end %>
             <% end %>
           <% else %>
-            <% if stop.destination.quantity && stop.destination.quantity > 1 %>
+            <% if stop.is_a?(StopDestination) && stop.destination.quantity && stop.destination.quantity > 1 %>
               <div class="quantity">
                 <i class="fa fa-archive fa-fw"></i>⨯<%= stop.destination.quantity %>
               </div>

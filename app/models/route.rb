@@ -81,8 +81,10 @@ class Route < ActiveRecord::Base
           self.distance += stop.distance
           self.end = stop.time + stop.duration
 
-          quantity += (stop.destination.quantity || 1)
-          stop.out_of_capacity = vehicle.capacity && quantity > vehicle.capacity
+          if stop.is_a?(StopDestination)
+            quantity += (stop.destination.quantity || 1)
+            stop.out_of_capacity = vehicle.capacity && quantity > vehicle.capacity
+          end
 
           stop.out_of_drive_time = stop.time > vehicle.close
 
@@ -300,7 +302,7 @@ class Route < ActiveRecord::Base
 
   def quantity
     stops.to_a.sum(0) { |stop|
-      (stop.active || !vehicle) ? (stop.destination.quantity || 1) : 0
+      stop.is_a?(StopDestination) && (stop.active || !vehicle) ? (stop.destination.quantity || 1) : 0
     }
   end
 
