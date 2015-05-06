@@ -62,7 +62,7 @@ class Route < ActiveRecord::Base
       speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1)
       last = vehicle.store_start
       quantity = 0
-      router = vehicle.router || stops[0].destination.customer.router
+      router = vehicle.router || planning.customer.router
       stops_time = {}
       stops_sort = stops.sort_by(&:index)
       stops_sort.each{ |stop|
@@ -238,7 +238,7 @@ class Route < ActiveRecord::Base
 
   def optimize(matrix_progress, &optimizer)
     stops_on = stops_segregate[true]
-    router = vehicle.router || stops_on[0].destination.customer.router
+    router = vehicle.router || planning.customer.router
     amalgamate_stops_same_position(stops_on) { |positions|
       tws = [[nil, nil, 0]] + positions.collect{ |position|
         open, close, duration = position[2..4]
