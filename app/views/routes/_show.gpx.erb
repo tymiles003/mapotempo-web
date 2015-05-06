@@ -53,7 +53,7 @@ route.stops.each{ |stop|
       <% if stop.comment && stop.comment.length > 0 %>
 <%= stop.comment %>
       <% end %>
-      <% if stop.destination.tags.size > 0 %>
+      <% if stop.is_a?(StopDestination) && stop.destination.tags.size > 0 %>
 <%= stop.destination.tags.collect { |tag| tag.label }.join(', ') %>
       <% end %>
       <% if stop.out_of_window %>

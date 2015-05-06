@@ -72,7 +72,7 @@
               <%= stop.open.strftime("%H:%M") if stop.open %>-<%= stop.close.strftime("%H:%M") if stop.close %>
             </span>
           <% end %>
-          <% if stop.destination.tags.size > 0 %>
+          <% if stop.is_a?(StopDestination) && stop.destination.tags.size > 0 %>
             <div class="tags">
               <% stop.destination.tags.each { |tag| %>
                 <i class="fa fa-tag fa-fw"></i><%= tag.label %>
