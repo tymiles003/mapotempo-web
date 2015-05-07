@@ -164,7 +164,7 @@ class Route < ActiveRecord::Base
 
   def add_destinations(dests, recompute = true)
     Stop.transaction do
-      i = 0
+      i = stops.size
       dests.each{ |stop|
         destination, active = stop
         stops.build(type: StopDestination.name, destination: destination, active: active, index: i += 1)

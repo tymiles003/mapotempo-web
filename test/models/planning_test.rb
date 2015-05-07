@@ -32,7 +32,7 @@ class PlanningTest < ActiveSupport::TestCase
     o = plannings(:planning_one)
 
     o.set_destinations({'route_one' => [[destinations(:destination_one)]]})
-    assert o.routes[1].stops.collect(&:destination).include?(destinations(:destination_one))
+    assert o.routes[1].stops.select{ |stop| stop.is_a?(StopDestination) }.collect(&:destination).include?(destinations(:destination_one))
     o.save!
   end
 
@@ -41,7 +41,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.tags << tags(:tag_two)
 
     o.set_destinations({'route_one' => [[destinations(:destination_one)]]})
-    assert_not o.routes[1].stops.collect(&:destination).include?(destinations(:destination_one))
+    assert_not o.routes[1].stops.select{ |stop| stop.is_a?(StopDestination) }.collect(&:destination).include?(destinations(:destination_one))
     o.save!
   end
 
@@ -56,7 +56,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test "should vehicle_add" do
     o = plannings(:planning_one)
-    assert_difference('Stop.count', 0) do
+    assert_difference('Stop.count', 1) do # One StopRest
       assert_difference('Route.count', 1) do
         o.vehicle_add(vehicles(:vehicle_two))
         o.save!

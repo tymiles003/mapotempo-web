@@ -1,12 +1,16 @@
 class ImporterTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
+    @destinations_count = @customer.destinations.count
+    @plannings_count = @customer.plannings.select{ |planning| planning.tags == [tags(:tag_one)] }.count
   end
 
   test "shoud import" do
+    import_count = 1
+    rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', 1 + 5) do
+        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + import_count * @plannings_count) do
           Importer.import_csv(false, @customer, "test/fixtures/files/import_one.csv", "text")
         end
       end
@@ -16,9 +20,11 @@ class ImporterTest < ActionController::TestCase
   end
 
   test "shoud import postalcode" do
+    import_count = 1
+    rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', 1 + 5) do
+        assert_difference('Stop.count',  (@destinations_count + import_count + rest_count) + import_count * @plannings_count) do
           Importer.import_csv(false, @customer, "test/fixtures/files/import_one_postalcode.csv", "text")
         end
       end
@@ -26,9 +32,11 @@ class ImporterTest < ActionController::TestCase
   end
 
   test "shoud import coord" do
+    import_count = 1
+    rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', 1 + 5) do
+        assert_difference('Stop.count',  (@destinations_count + import_count + rest_count) + import_count * @plannings_count) do
           Importer.import_csv(false, @customer, "test/fixtures/files/import_one_coord.csv", "text")
         end
       end
@@ -36,20 +44,22 @@ class ImporterTest < ActionController::TestCase
   end
 
   test "shoud import two" do
+    import_count = 2
+    rest_count = 1
     assert_difference('Planning.count') do
-      assert_difference('Destination.count', 2) do
-        assert_difference('Stop.count', 2 + 6) do
+      assert_difference('Destination.count', import_count) do
+        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + import_count * @plannings_count) do
           Importer.import_csv(false, @customer, "test/fixtures/files/import_two.csv", "text")
         end
       end
     end
 
     stops = Planning.where(name: "text").first.routes[1].stops
-    assert_equal 'z', stops[0].destination.ref
-    assert stops[0].destination.take_over
-    assert stops[0].active
-    assert_equal 'x', stops[1].destination.ref
-    assert_not stops[1].active
+    assert_equal 'z', stops[1].destination.ref
+    assert stops[1].destination.take_over
+    assert stops[1].active
+    assert_equal 'x', stops[2].destination.ref
+    assert_not stops[2].active
   end
 
   test "shoud import many-utf-8" do

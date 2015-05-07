@@ -111,8 +111,13 @@ class DestinationsControllerTest < ActionController::TestCase
     })
     file.original_filename = "import_one.csv"
 
+    destinations_count = @destination.customer.destinations.count
+    plannings_count = @destination.customer.plannings.select{ |planning| planning.tags == [tags(:tag_one)] }.count
+    import_count = 1
+    rest_count = 1
+
     assert_difference('Destination.count') do
-      assert_difference('Stop.count', 1 + 5) do
+      assert_difference('Stop.count', (destinations_count + import_count + rest_count) + import_count * plannings_count) do
         assert_difference('Planning.count') do
           post :upload, destinations_import: { replace: false, file: file }
         end

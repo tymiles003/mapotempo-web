@@ -230,7 +230,7 @@ class Planning < ActiveRecord::Base
       vehicles_map = Hash[routes.group_by(&:vehicle).map { |vehicle, routes| [vehicle, routes[0]]}]
       destinations_free = routes.select{ |route|
         !route.locked
-      }.collect(&:stops).flatten.map(&:destination)
+      }.collect(&:stops).flatten.select{ |stop| stop.is_a?(StopDestination) }.map(&:destination)
 
       routes.each{ |route|
         route.locked || route.set_destinations([])
