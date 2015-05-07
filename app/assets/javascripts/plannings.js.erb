@@ -318,7 +318,7 @@ function plannings_edit(params) {
             color: color
           }).addTo(layers_cluster[route.route_id]);
         }
-        if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
+        if (stop.destination &&$.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
           stop.i18n = mustache_i18n;
           stop.color = stop.destination.color || color;
           stop.vehicle_name = vehicle_name;

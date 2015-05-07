@@ -158,6 +158,30 @@
             <i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.wait{{/i18n}} {{wait_time}}
           </li>
         {{/wait_time}}
+        {{#rest}}
+        <li data-stop_id="{{stop_id}}" data-store_id="{{store_id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
+          <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
+          <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
+          <input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
+          <div class="title">
+            {{#out_of_window}}
+              <i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"></i>
+            {{/out_of_window}}
+            {{#out_of_drive_time}}
+              <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
+            {{/out_of_drive_time}}
+            <span class="info">{{#active}}{{time}} - {{/active}}</span>
+            <span class="name" title="{{name}}"><i class="fa fa-coffee fa-fw"></i> {{name}}</span>
+          </div>
+          <div class="btn-group pull-right stop-tools">
+            {{#automatic_insert}}
+              <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+            {{/automatic_insert}}
+            {{#geocoded}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/geocoded}}
+          </div>
+          <div class="clearfix"></div>
+        </li>
+        {{/rest}}
         {{#destination}}
         <li data-stop_id="{{stop_id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>

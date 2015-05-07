@@ -39,13 +39,20 @@ class Route < ActiveRecord::Base
     })
   end
 
+  def init_stops
+    stops.clear
+    if vehicle && vehicle.rest_duration
+      stops.build(type: StopRest.name, active: true, index: 1)
+    end
+
+    compute
+  end
+
   def default_stops
-    i = 0
+    i = stops.size
     planning.destinations_compatibles.each { |c|
       stops.build(type: StopDestination.name, destination: c, active: true, index: i += 1)
     }
-
-    compute
   end
 
   def plan(departure = nil)
@@ -59,14 +66,18 @@ class Route < ActiveRecord::Base
     if vehicle && stops.size > 0
       self.end = self.start = departure || vehicle.open
       speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1)
-      last = vehicle.store_start
+      last_lat, last_lng = vehicle.store_start.lat, vehicle.store_start.lng
       quantity = 0
       router = vehicle.router || planning.customer.router
       stops_time = {}
       stops_sort = stops.sort_by(&:index)
       stops_sort.each{ |stop|
-        if stop.active && stop.position?
-          stop.distance, time, stop.trace = router.trace(speed_multiplicator, last.lat, last.lng, stop.lat, stop.lng)
+        if stop.active && (stop.position? || stop.is_a?(StopRest))
+          if stop.position?
+            stop.distance, time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
+          else
+            stop.distance, time, stop.trace = 0, 0, nil
+          end
           stops_time[stop] = time
           stop.time = self.end + time
           if stop.open && stop.time < stop.open
@@ -87,14 +98,16 @@ class Route < ActiveRecord::Base
 
           stop.out_of_drive_time = stop.time > vehicle.close
 
-          last = stop
+          if stop.position?
+            last_lat, last_lng = stop.lat, stop.lng
+          end
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = false
           stop.distance = stop.trace = stop.time = stop.wait_time = nil
         end
       }
 
-      distance, time, trace = router.trace(speed_multiplicator, last.lat, last.lng, vehicle.store_stop.lat, vehicle.store_stop.lng)
+      distance, time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle.store_stop.lat, vehicle.store_stop.lng)
       self.distance += distance
       stops_time[:stop] = time
       self.end += time

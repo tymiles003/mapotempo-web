@@ -66,7 +66,8 @@ class Planning < ActiveRecord::Base
   end
 
   def vehicle_add(vehicle)
-    routes.build(vehicle: vehicle, out_of_date: false)
+    route = routes.build(vehicle: vehicle, out_of_date: false)
+    route.init_stops
   end
 
   def vehicle_remove(vehicle)

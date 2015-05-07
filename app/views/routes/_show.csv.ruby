@@ -30,7 +30,6 @@ end
 
 index = 0
 route.stops.each { |stop|
-  order = stop.order
   csv << [
     (route.vehicle.name if route.vehicle),
     route.ref || (route.vehicle && route.vehicle.name),
@@ -48,8 +47,8 @@ route.stops.each { |stop|
     stop.lat,
     stop.lng,
     stop.comment,
-    (stop.destination.take_over.strftime("%H:%M:%S") if stop.is_a?(StopDestination) && stop.destination.take_over),
-    ((route.planning.customer.enable_orders ? (order && order.products.length > 0 ? order.products.collect(&:code).join('/') : nil) : stop.destination.quantity) if stop.is_a?(StopDestination)),
+    stop.is_a?(StopDestination) ? (stop.destination.take_over ? stop.destination.take_over.strftime("%H:%M:%S") : nil) : route.vehicle.rest_duration.strftime("%H:%M:%S"),
+    ((route.planning.customer.enable_orders ? (stop.order && stop.order.products.length > 0 ? stop.order.products.collect(&:code).join('/') : nil) : stop.destination.quantity) if stop.is_a?(StopDestination)),
     ((stop.active ? '1' : '0') if route.vehicle),
     (stop.open.strftime("%H:%M") if stop.open),
     (stop.close.strftime("%H:%M") if stop.close),

@@ -52,13 +52,13 @@ else
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
       no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
-      (json.error true) if no_geolocalization || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+      (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.stop_id stop.id
       json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
       (json.open stop.open.strftime('%H:%M')) if stop.open
       (json.close stop.close.strftime('%H:%M')) if stop.close
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
-      (json.geocoded true) if !no_geolocalization
+      (json.geocoded true) if stop.position?
       (json.time stop.time.strftime('%H:%M')) if stop.time
       (json.active true) if stop.active
       (json.number number += 1) if route.vehicle && stop.active
@@ -93,6 +93,11 @@ else
           (json.color color.color) if color
           icon = destination.tags.find(&:icon)
           (json.icon icon.icon) if icon
+        end
+      elsif stop.is_a?(StopRest)
+        json.rest do
+          (json.duration route.vehicle.rest_duration.strftime('%H:%M:%S')) if route.vehicle.rest_duration
+          (json.store_id route.vehicle.store_rest.id) if route.vehicle.store_rest
         end
       end
     end

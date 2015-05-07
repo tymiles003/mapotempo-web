@@ -72,30 +72,35 @@
               <%= stop.open.strftime("%H:%M") if stop.open %>-<%= stop.close.strftime("%H:%M") if stop.close %>
             </span>
           <% end %>
-          <% if stop.is_a?(StopDestination) && stop.destination.tags.size > 0 %>
-            <div class="tags">
-              <% stop.destination.tags.each { |tag| %>
-                <i class="fa fa-tag fa-fw"></i><%= tag.label %>
-              <% } %>
-            </div>
-          <% end %>
-          <% if route.planning.customer.enable_orders %>
-            <% order = stop.order %>
-            <% if order %>
-              <% products = order.products.collect(&:code).join(', ') %>
-              <% if products && products.length > 0 %>
-                <i class="fa fa-cube fa-fw"></i> <%= products %>
-              <% end %>
-            <% end %>
-          <% else %>
-            <% if stop.is_a?(StopDestination) && stop.destination.quantity && stop.destination.quantity > 1 %>
-              <div class="quantity">
-                <i class="fa fa-archive fa-fw"></i>⨯<%= stop.destination.quantity %>
+          <% if stop.is_a?(StopDestination) %>
+            <% if stop.destination.tags.size > 0 %>
+              <div class="tags">
+                <% stop.destination.tags.each { |tag| %>
+                  <i class="fa fa-tag fa-fw"></i><%= tag.label %>
+                <% } %>
               </div>
             <% end %>
+            <% if route.planning.customer.enable_orders %>
+              <% order = stop.order %>
+              <% if order %>
+                <% products = order.products.collect(&:code).join(', ') %>
+                <% if products && products.length > 0 %>
+                  <i class="fa fa-cube fa-fw"></i> <%= products %>
+                <% end %>
+              <% end %>
+            <% else %>
+              <% if stop.destination.quantity && stop.destination.quantity > 1 %>
+                <div class="quantity">
+                  <i class="fa fa-archive fa-fw"></i>⨯<%= stop.destination.quantity %>
+                </div>
+              <% end %>
+            <% end %>
+            <% if stop.destination.take_over %>
+              <span class="duration">(<%= stop.destination.take_over.strftime("%H:%M:%S") %>)</span>
+            <% end %>
           <% end %>
-          <% if stop.is_a?(StopDestination) && stop.destination.take_over %>
-            <span class="take_over">(<%= stop.destination.take_over.strftime("%H:%M:%S") %>)</span>
+          <% if stop.is_a?(StopRest) %>
+            <span class="duration">(<%= route.vehicle.rest_duration.strftime("%H:%M:%S") %>)</span>
           <% end %>
         </div>
 
@@ -105,7 +110,7 @@
           <div class="col-md-6 col-sm-6 col-xs-9">
         <% end %>
           <span class="ref"><%= stop.ref %></span>
-          <span class="name"><%= stop.name %></span><br/>
+          <span class="name"><% if stop.is_a?(StopRest) %><i class="fa fa-coffee fa-fw"></i> <% end %><%= stop.name %></span><br/>
           <span class="address">
             <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
             <% if (stop.street && !stop.street.empty?) || (stop.detail && !stop.detail.empty?) %>
