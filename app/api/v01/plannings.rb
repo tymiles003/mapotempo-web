@@ -128,8 +128,8 @@ class V01::Plannings < Grape::API
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Suggest a place for an unaffected destination.', {
-      nickname: 'automaticInsertDestination'
+    desc 'Suggest a place for an unaffected stop.', {
+      nickname: 'automaticInsertStop'
     }
     params {
       requires :id, type: String, desc: Id_desc

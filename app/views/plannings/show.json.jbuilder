@@ -53,6 +53,7 @@ else
       out_of_drive_time |= stop.out_of_drive_time
       no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
       (json.error true) if no_geolocalization || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+      json.stop_id stop.id
       json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
       (json.open stop.open.strftime('%H:%M')) if stop.open
       (json.close stop.close.strftime('%H:%M')) if stop.close
@@ -66,31 +67,33 @@ else
         json.automatic_insert true
         first_active_free = true
       end
-      json.destination do
-        destination = stop.destination
-        json.id destination.id
-        if !destination.tags.empty?
-          json.tags_present do
-            json.tags do
-              json.array! destination.tags do |tag|
-                json.extract! tag, :label
+      if stop.is_a?(StopDestination)
+        json.destination do
+          destination = stop.destination
+          json.id destination.id
+          if !destination.tags.empty?
+            json.tags_present do
+              json.tags do
+                json.array! destination.tags do |tag|
+                  json.extract! tag, :label
+                end
               end
             end
           end
-        end
-        if @planning.customer.enable_orders
-          order = stop.order
-          if order
-            json.orders order.products.collect(&:code).join(', ')
+          if @planning.customer.enable_orders
+            order = stop.order
+            if order
+              json.orders order.products.collect(&:code).join(', ')
+            end
+          else
+            json.extract! destination, :quantity
           end
-        else
-          json.extract! destination, :quantity
+          (json.duration destination.take_over.strftime('%H:%M:%S')) if destination.take_over
+          color = destination.tags.find(&:color)
+          (json.color color.color) if color
+          icon = destination.tags.find(&:icon)
+          (json.icon icon.icon) if icon
         end
-        (json.duration destination.take_over.strftime('%H:%M:%S')) if destination.take_over
-        color = destination.tags.find(&:color)
-        (json.color color.color) if color
-        icon = destination.tags.find(&:icon)
-        (json.icon icon.icon) if icon
       end
     end
     json.store_stop do

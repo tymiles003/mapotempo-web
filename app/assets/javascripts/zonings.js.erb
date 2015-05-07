@@ -232,7 +232,9 @@ function zonings_edit(params) {
           popupAnchor: new L.Point(0, -12)
         })
       }).addTo(stores_marker).bindPopup(SMT['stops/show']({
-        destination:store
+        stop: {
+          destination: store
+        }
       }));
       m.on('mouseover', function(e) {
         m.openPopup();
@@ -256,7 +258,9 @@ function zonings_edit(params) {
                 popupAnchor: new L.Point(0, -6),
               })
             }).addTo(stores_marker).bindPopup(SMT['stops/show']({
-              destination: stop
+              stop: {
+                destination: stop
+              }
             })).addTo(markersLayers);
             m.data = stop;
             m.on('mouseover', function(e) {

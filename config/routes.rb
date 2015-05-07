@@ -31,13 +31,13 @@ Rails.application.routes.draw do
   delete 'stores' => 'stores#destroy_multiple'
 
   resources :plannings do
-    patch ':route_id/:destination_id/move/:index' => 'plannings#move'
+    patch ':route_id/:stop_id/move/:index' => 'plannings#move'
     get 'refresh'
     patch 'switch'
     patch 'duplicate'
-    patch 'automatic_insert/:destination_id' => 'plannings#automatic_insert'
+    patch 'automatic_insert/:stop_id' => 'plannings#automatic_insert'
     patch ':route_id/active/:active' => 'plannings#active'
-    patch ':route_id/:destination_id' => 'plannings#update_stop'
+    patch ':route_id/:stop_id' => 'plannings#update_stop'
     get 'optimize_each' => 'plannings#optimize_each_routes'
     get ':route_id/optimize' => 'plannings#optimize_route'
   end

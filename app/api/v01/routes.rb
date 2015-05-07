@@ -92,27 +92,28 @@ class V01::Routes < Grape::API
           end
         end
 
-        desc 'Move destination position in routes.', {
+        desc 'Move stop position in routes.', {
           nickname: 'moveStop'
         }
         params {
           requires :id, type: String
-          requires :destination_id, type: String, desc: 'Destination id to move'
+          requires :stop_id, type: Integer, desc: 'Stop id to move'
           requires :index, type: Integer, desc: 'New position in the route'
         }
-        patch ':id/destinations/:destination_id/move/:index' do
+        patch ':id/stops/:stop_id/move/:index' do
           planning_id = read_id(params[:planning_id])
           planning = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
           id = read_id(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
-          destination_id = read_id(params[:destination_id])
-          destination = current_customer.destinations.find{ |destination| destination_id[:ref] ? destination.ref == destination_id[:ref] : destination.id == id[:id] }
+          stop_id = params[:stop_id].to_i
+          stop = nil
+          planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == stop_id } }
 
-          route.move_destination(destination, params[:index].to_i + 1) && planning.save
+          route.move_stop(stop, params[:index].to_i + 1) && planning.save
         end
 
         desc 'Move destination to routes. Append in order at end.', {
-          nickname: 'moveStops'
+          nickname: 'moveDestinations'
         }
         params {
           requires :id, type: String

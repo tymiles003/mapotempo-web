@@ -137,9 +137,10 @@ class PlanningsController < ApplicationController
         Planning.transaction do
           params[:route_id] = params[:route_id].to_i
           route = @planning.routes.find{ |route| route.id == params[:route_id] }
-          params[:destination_id] = params[:destination_id].to_i
-          destination = current_user.customer.destinations.find{ |destination| destination.id == params[:destination_id] }
-          route.move_destination(destination, params[:index].to_i)
+          params[:stop_id] = params[:stop_id].to_i
+          stop = nil
+          @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == params[:stop_id] } }
+          route.move_stop(stop, params[:index].to_i)
           @planning.save!
           @planning.reload
           format.json { render action: 'show', location: @planning }
@@ -177,8 +178,8 @@ class PlanningsController < ApplicationController
 
   def automatic_insert
     respond_to do |format|
-      stop_id = Integer(params[:destination_id])
-      @stop = @planning.routes.collect{ |route| route.stops.find{ |stop| stop.destination.id == stop_id } }.select{ |i| i }[0]
+      stop_id = Integer(params[:stop_id])
+      @stop = @planning.routes.collect{ |route| route.stops.find{ |stop| stop.id == stop_id } }.select{ |i| i }[0]
 
       if @stop
         Planning.transaction do
@@ -197,8 +198,8 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       params[:route_id] = params[:route_id].to_i
       @route = @planning.routes.find{ |route| route.id == params[:route_id] }
-      params[:destination_id] = params[:destination_id].to_i
-      @stop = @route.stops.find{ |stop| stop.destination_id == params[:destination_id] }
+      params[:stop_id] = params[:stop_id].to_i
+      @stop = @route.stops.find{ |stop| stop.id == params[:stop_id] }
       if @route && @stop && @stop.update(stop_params) && @route.compute && @planning.save
         format.json { render action: 'show', location: @planning }
       else

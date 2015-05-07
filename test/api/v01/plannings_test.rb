@@ -77,7 +77,7 @@ class V01::PlanningsTest < ActiveSupport::TestCase
 #    assert last_response.ok?, last_response.body
 #  end
 
-#  test 'should suggest a place for an unaffected destination' do
+#  test 'should suggest a place for an unaffected stop' do
 #    patch api("#{@planning.id}/automatic_insert")
 #    assert last_response.ok?, last_response.body
 #  end

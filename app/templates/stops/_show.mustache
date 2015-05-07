@@ -1,21 +1,22 @@
+{{#stop}}
 {{#destination}}
-<div data-route_id="{{route_id}}" data-destination_id="{{id}}">
+<div data-route_id="{{route_id}}" data-stop_id="{{stop_id}}">
 {{#planning_id}}
 {{^store}}
-<div class="btn-group pull-right destination-tools">
+<div class="btn-group pull-right stop-tools">
   {{#automatic_insert}}
   <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
   {{/automatic_insert}}
-  <a href="/destinations/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+  <a href="/destinations/{{#destination}}{{id}}{{/destination}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
   <div class="btn-group">
     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.send_to_route_help{{/i18n}}"><i class="fa fa-truck fa-fw"></i><span class="caret"></span></button>
     <ul class="dropdown-menu pull-right" role="menu">
       {{#routes}}
         {{^vehicle}}
-          <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{#destination}}{{id}}{{/destination}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
+          <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
         {{/vehicle}}
         {{#vehicle}}
-          <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{#destination}}{{id}}{{/destination}}/move/-1.json" class="send_to_route"><div class="vehicle_color_small" style="background:{{color}}"></div> {{name}}</a></li>
+          <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"><div class="vehicle_color_small" style="background:{{color}}"></div> {{name}}</a></li>
         {{/vehicle}}
       {{/routes}}
     </ul>
@@ -62,3 +63,4 @@
 {{/error}}
 </div>
 {{/destination}}
+{{/stop}}

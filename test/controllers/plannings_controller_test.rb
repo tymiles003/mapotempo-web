@@ -123,7 +123,7 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should move" do
-    patch :move, planning_id: @planning, route_id: @planning.routes[1], destination_id: @planning.routes[0].stops[0].destination, index: 1, format: :json
+    patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 1, format: :json
     assert_response :success
   end
 
@@ -153,7 +153,7 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should update stop" do
-    patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one).id, destination_id: destinations(:destination_one).id, stop: { active: false }
+    patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
     assert_response :success
   end
 
@@ -171,7 +171,7 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should automatic insert" do
-    patch :automatic_insert, planning_id: @planning, format: :json, destination_id: destinations(:destination_unaffected_one).id
+    patch :automatic_insert, planning_id: @planning, format: :json, stop_id: stops(:stop_unaffected).id
     assert_response :success
   end
 

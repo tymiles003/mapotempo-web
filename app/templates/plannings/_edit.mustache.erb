@@ -36,7 +36,7 @@
         <ul id="out_of_route" class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
         {{#stops}}
           {{#destination}}
-          <li data-destination_id="{{id}}" class="waypoint ui-state-error list-group-item">
+          <li data-stop_id="{{stop_id}}" class="waypoint ui-state-error list-group-item">
             <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
             <input type="checkbox" checked="checked" style="display: none"/>
             <div class="title">
@@ -45,7 +45,7 @@
               {{/geocoded}}
               <span class="name" title="{{name}}">{{name}}</span><br />
             </div>
-            <div class="btn-group pull-right destination-tools">
+            <div class="btn-group pull-right stop-tools">
               {{#geocoded}}
                 <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
               {{/geocoded}}
@@ -56,10 +56,10 @@
                 <ul class="dropdown-menu pull-right" role="menu">
                   {{#routes}}
                     {{^vehicle}}
-                      <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{#destination}}{{id}}{{/destination}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
+                      <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
                     {{/vehicle}}
                     {{#vehicle}}
-                      <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{#destination}}{{id}}{{/destination}}/move/-1.json" class="send_to_route"><div class="vehicle_color_small" style="background:{{color}}"></div> {{name}}</a></li>
+                      <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"><div class="vehicle_color_small" style="background:{{color}}"></div> {{name}}</a></li>
                     {{/vehicle}}
                   {{/routes}}
                 </ul>
@@ -144,7 +144,7 @@
             <span class="info">{{#time}}{{time}} - {{/time}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
-          <div class="btn-group pull-right destination-tools">
+          <div class="btn-group pull-right stop-tools">
             <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
           </div>
           <div class="clearfix"></div>
@@ -159,7 +159,7 @@
           </li>
         {{/wait_time}}
         {{#destination}}
-        <li data-destination_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
+        <li data-stop_id="{{stop_id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}"></i>
           <span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>
           <input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} {{^geocoded}}disabled="disabled"{{/geocoded}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
@@ -179,7 +179,7 @@
             <span class="info">{{#active}}{{#geocoded}}{{time}} - {{/geocoded}}{{/active}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
-          <div class="btn-group pull-right destination-tools">
+          <div class="btn-group pull-right stop-tools">
             {{#automatic_insert}}
               {{#geocoded}}
                 <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
@@ -206,7 +206,7 @@
             <span class="info">{{#time}}{{time}} - {{/time}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
-          <div class="btn-group pull-right destination-tools">
+          <div class="btn-group pull-right stop-tools">
             <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
           </div>
           <div class="clearfix"></div>

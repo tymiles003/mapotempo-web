@@ -156,7 +156,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one)
     s = o.stops[1]
     assert_equal 2, s.index
-    o.move_destination(s.destination, 1)
+    o.move_stop(s, 1)
     o.save!
     s.reload
     assert_equal 1, s.index
@@ -166,7 +166,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one)
     s = o.stops[1]
     assert_equal 2, s.index
-    o.move_destination(s.destination, 3)
+    o.move_stop(s, 3)
     o.save!
     s.reload
     assert_equal 3, s.index
@@ -176,7 +176,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one)
     s = o.stops[0]
     assert_equal 1, s.index
-    o.move_destination(s.destination, 2)
+    o.move_stop(s, 2)
     o.save!
     s.reload
     assert_equal 2, s.index
@@ -186,7 +186,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one)
     s = o.stops[2]
     assert_equal 3,  s.index
-    o.move_destination(s.destination, 2)
+    o.move_stop(s, 2)
     o.save!
     s.reload
     assert_equal 2, s.index
@@ -196,7 +196,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_zero)
     s = o.stops[0]
     assert_not s.index
-    routes(:route_one).move_destination(s.destination, 1)
+    routes(:route_one).move_stop(s, 1)
 
     o.save!
   end
@@ -204,7 +204,7 @@ class RouteTest < ActiveSupport::TestCase
   test "move stop from affected to affected route" do
     o = routes(:route_two)
     s = o.stops[0]
-    routes(:route_one).move_destination(s.destination, 2)
+    routes(:route_one).move_stop(s, 2)
 
     o.save!
   end
@@ -212,7 +212,7 @@ class RouteTest < ActiveSupport::TestCase
   test "move stop of unaffected route" do
     o = routes(:route_one)
     s = o.stops[1]
-    routes(:route_zero).move_destination(s.destination, 1)
+    routes(:route_zero).move_stop(s, 1)
 
     o.save!
   end

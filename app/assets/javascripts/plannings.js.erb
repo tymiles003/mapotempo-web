@@ -102,8 +102,8 @@ function plannings_edit(params) {
     layers_cluster[id] = L.featureGroup();
   });
 
-  function enlighten_destination(destination_id) {
-    var e = $(".routes [data-destination_id='" + destination_id + "']");
+  function enlighten_stop(stop_id) {
+    var e = $(".routes [data-stop_id='" + stop_id + "']");
     e.css("background", "orange");
     setTimeout(function() {
       e.css("background", "");
@@ -174,15 +174,15 @@ function plannings_edit(params) {
     var item = $(ui.item),
       index = 0,
       route = item.closest('[data-route_id]'),
-      stops = $('.sortable li[data-destination_id]', route),
+      stops = $('.sortable li[data-stop_id]', route),
       route_id = route.attr('data-route_id'),
-      destination_id = item.closest("[data-destination_id]").attr("data-destination_id");
-    while (stops[index].attributes['data-destination_id'].value != destination_id) {
+      stop_id = item.closest("[data-stop_id]").attr("data-stop_id");
+    while (stops[index].attributes['data-stop_id'].value != stop_id) {
       index++;
     }
     $.ajax({
       type: 'patch',
-      url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '/move/' + (index + 1) + '.json',
+      url: '/plannings/' + planning_id + '/' + route_id + '/' + stop_id + '/move/' + (index + 1) + '.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting,
@@ -225,7 +225,7 @@ function plannings_edit(params) {
           iconAnchor: new L.Point(16, 16),
           popupAnchor: new L.Point(0, -12)
         })
-      }).addTo(stores_marker).bindPopup(SMT['stops/show']({destination:store}), {
+      }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: {destination: store}}), {
         minWidth: 200,
         autoPan: false
       });
@@ -334,7 +334,7 @@ function plannings_edit(params) {
               popupAnchor: new L.Point(0, -6),
               className: "small"
             })
-          }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show'](stop), {
+          }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show']({stop: {destination: stop}}), {
             minWidth: 200,
             autoPan: false
           });
@@ -351,12 +351,12 @@ function plannings_edit(params) {
             } else {
               m.click = true;
               m.openPopup();
-              enlighten_destination(stop.destination.id);
+              enlighten_stop(stop.stop_id);
             }
           }).on('popupclose', function(e) {
             m.click = false;
           });
-          markers[stop.destination.id] = m;
+          markers[stop.stop_id] = m;
         }
       });
       if (route.store_stop && route.store_stop.stop_trace) {
@@ -372,8 +372,8 @@ function plannings_edit(params) {
       }
     });
 
-    if (data.destination_id_enlighten) {
-      enlighten_destination(data.destination_id_enlighten);
+    if (data.stop_id_enlighten) {
+      enlighten_stop(data.stop_id_enlighten);
     }
 
     $(".export_tomtom a").click(function() {
@@ -520,14 +520,14 @@ function plannings_edit(params) {
         }
       })
       .on("click", ".marker", function(event, ui) {
-        var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
-        if (destination_id in markers) {
-          map.setView(markers[destination_id].getLatLng(), 17, {
+        var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
+        if (stop_id in markers) {
+          map.setView(markers[stop_id].getLatLng(), 17, {
             reset: true
           });
           var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
-          layers_cluster[route_id].zoomToShowLayer(markers[destination_id], function() {
-            markers[destination_id].openPopup();
+          layers_cluster[route_id].zoomToShowLayer(markers[stop_id], function() {
+            markers[stop_id].openPopup();
           });
         } else {
           var store_id = $(this).closest("[data-store_id]").attr("data-store_id");
@@ -599,13 +599,13 @@ function plannings_edit(params) {
   }
 
   $(".main").on("click", ".automatic_insert", function(event, ui) {
-    var destination_id = $(this).closest("[data-destination_id]").attr("data-destination_id");
+    var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
     $.ajax({
       type: "patch",
-      url: '/plannings/' + planning_id + '/automatic_insert/' + destination_id + '.json',
+      url: '/plannings/' + planning_id + '/automatic_insert/' + stop_id + '.json',
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        data.destination_id_enlighten = destination_id;
+        data.stop_id_enlighten = stop_id;
         display_planning(data);
       },
       complete: completeWaiting,
@@ -615,7 +615,7 @@ function plannings_edit(params) {
 
   $(".main").on('change', 'input:checkbox.stop_active', function(event, ui) {
     var route_id = $(event.target).closest("[data-route_id]").attr("data-route_id");
-    var destination_id = $(event.target).closest("[data-destination_id]").attr("data-destination_id");
+    var stop_id = $(event.target).closest("[data-stop_id]").attr("data-stop_id");
     var active = $(event.target).is(':checked');
     $.ajax({
       type: "patch",
@@ -625,7 +625,7 @@ function plannings_edit(params) {
         }
       }),
       contentType: 'application/json',
-      url: '/plannings/' + planning_id + '/' + route_id + '/' + destination_id + '.json',
+      url: '/plannings/' + planning_id + '/' + route_id + '/' + stop_id + '.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
       complete: completeWaiting,
