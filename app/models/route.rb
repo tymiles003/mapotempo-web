@@ -187,6 +187,12 @@ class Route < ActiveRecord::Base
     end
   end
 
+  def add_rest
+    index = stops.size + 1
+    stops.build(type: StopRest.name, index: index, active: true)
+    self.out_of_date = true
+  end
+
   def remove_destination(destination)
     stops.each{ |stop|
       if(stop.is_a?(StopDestination) && stop.destination == destination)
