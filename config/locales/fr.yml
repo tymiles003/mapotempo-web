@@ -189,6 +189,7 @@ fr:
         ref: "Référence"
         ref_small: "Réf."
         tag_ids: "Libellés"
+        tags: "Libellés"
         zoning_id: "Zonage"
         created_at: "Création"
         updated_at: "Mise à jour"

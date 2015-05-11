@@ -186,6 +186,7 @@ en:
         ref: "Reference"
         ref_small: "Ref."
         tag_ids: "Tags"
+        tags: "Tags"
         zoning_id: "Zoning"
         created_at: "Created"
         updated_at: "Updated"
