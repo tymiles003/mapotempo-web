@@ -28,7 +28,7 @@ module Ort
   @url = Mapotempo::Application.config.optimize_url
   @time_threshold = Mapotempo::Application.config.optimize_cluster_size
 
-  def self.optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, time_threshold)
+  def self.optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, rest_window, time_threshold)
     time_threshold ||= @time_threshold
     key = [soft_upper_bound, capacity, matrix.hash, time_window.hash, time_threshold]
 
@@ -39,6 +39,7 @@ module Ort
           capacity: capacity,
           matrix: matrix,
           time_window: time_window,
+          rest_window: rest_window,
           optimize_time: optimize_time,
           soft_upper_bound: soft_upper_bound
         }.to_json
@@ -101,12 +102,16 @@ module Ort
       i = result[ii]
       if i == 0
         ret << 0
-      elsif i == zip_key.length + 1
-        ret << original_matrix.length - 1
+      elsif i - 1 >= zip_key.length
+        ret << i - 1 - zip_key.length + original_matrix.length - 1
       elsif zip_key[i - 1].data_items.length > 1
         sub = zip_key[i - 1].data_items.collect{ |i| i[0] }
-        start = result[ii - 1] - 1 >= 0 ? zip_key[result[ii - 1] - 1].data_items[0][0] : 0
-        stop = result[ii + 1] - 1 < zip_key.length ? zip_key[result[ii + 1] - 1].data_items[0][0] : original_matrix.length - 1
+        n = ii - 1
+        while(n - 1 >= 0 && result[n - 1] - 1 >= zip_key.length) do n -= 1 end
+        start = n - 1 >= 0 && result[n - 1] - 1 >= 0 ? zip_key[result[n - 1] - 1].data_items[0][0] : 0
+        n = ii + 1
+        while(n + 1 < result.length && result[n + 1] - 1 >= zip_key.length) do n += 1 end
+        stop = n + 1 < result.length && result[n + 1] - 1 < zip_key.length ? zip_key[result[n + 1] - 1].data_items[0][0] : original_matrix.length - 1
         sub = [start] + sub + [stop]
         sub_size = sub.length
         min_order = if sub_size <= 5

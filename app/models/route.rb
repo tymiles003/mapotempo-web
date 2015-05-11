@@ -128,7 +128,7 @@ class Route < ActiveRecord::Base
       # Try to minimize waiting time by a later begin
       time = self.end - stops_time[:stop]
       stops_sort.reverse_each{ |stop|
-        if stop.active && stop.position?
+        if stop.active && (stop.position? || stop.is_a?(StopRest))
           if stop.out_of_window
             time = stop.time
           else
@@ -279,9 +279,11 @@ class Route < ActiveRecord::Base
 
       positions = [[vehicle.store_start.lat, vehicle.store_start.lng]] + positions + [[vehicle.store_stop.lat, vehicle.store_stop.lng]]
       speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1)
-      matrix = router.matrix(positions, speed_multiplicator, &matrix_progress)
-
-      optimizer.call(matrix, tws)[1..-2].collect{ |i| i - 1 }
+      order = unnil_positions(positions, tws){ |positions, tws, rest_tws|
+        matrix = router.matrix(positions, speed_multiplicator, &matrix_progress)
+        optimizer.call(matrix, tws, rest_tws)
+      }
+      order[1..-2].collect{ |i| i - 1 }
     }
   end
 
@@ -356,7 +358,7 @@ class Route < ActiveRecord::Base
   end
 
   def stops_segregate
-    stops.group_by{ |stop| !!(stop.active && stop.position?) }
+    stops.group_by{ |stop| !!(stop.active && (stop.position? || stop.is_a?(StopRest))) }
   end
 
   def shift_index(from, by = 1, to = nil)
@@ -405,5 +407,31 @@ class Route < ActiveRecord::Base
         pa[1]
       }
     end
+  end
+
+  def unnil_positions(positions, tws)
+    not_nil_position_index = positions.each_with_index.group_by{ |position, index| !position[0].nil? && !position[1].nil? }
+
+    if not_nil_position_index.key?(true)
+      not_nil_position = not_nil_position_index[true].collect{ |position, index| position }
+      not_nil_tws = not_nil_position_index[true][0..-2].collect{ |position, index| tws[index] }
+      not_nil_index = not_nil_position_index[true].collect{ |position, index| index }
+    else
+      not_nil_position = []
+      not_nil_tws = []
+      not_nil_index = []
+    end
+    if not_nil_position_index.key?(false)
+      nil_tws = not_nil_position_index[false].collect{ |position, index| tws[index] }
+      nil_index = not_nil_position_index[false].collect{ |position, index| index }
+    else
+      nil_tws = []
+      nil_index = []
+    end
+
+    order = yield(not_nil_position, not_nil_tws, nil_tws)
+
+    all_index = not_nil_index + nil_index
+    order.collect{ |o| all_index[o] }
   end
 end
