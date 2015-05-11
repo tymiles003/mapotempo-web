@@ -627,6 +627,10 @@ fr:
         one: "Le formulaire contient une erreur."
         other: "Le formulaire contient des erreurs."
 
+  stops:
+    default:
+      name_rest: "Pause"
+
   stores:
     default:
       name: "Départ véhicule"

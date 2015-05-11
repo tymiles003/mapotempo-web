@@ -616,6 +616,10 @@ en:
         one: "The form contains one error."
         other: "The form contains errors."
 
+  stops:
+    default:
+      name_rest: "Rest"
+
   stores:
     default:
         name: "Store"
