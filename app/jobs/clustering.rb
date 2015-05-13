@@ -28,49 +28,58 @@ class Clustering
 
   # Cluster non duplicate points
   def self.clustering(vector, n)
-    data_set = DataSet.new(data_items: vector.size.times.collect{ |i| [i] })
-    c = KMeansSameSize.new
-    c.set_parameters(max_iterations: 100)
-    c.centroid_function = lambda do |data_sets|
-      data_sets.collect{ |data_set|
-        data_set.data_items.min_by{ |i|
-          data_set.data_items.sum{ |j|
-            c.distance_function.call(i, j) ** 2
+    if vector.size == 0
+      []
+    else
+      data_set = DataSet.new(data_items: vector.size.times.collect{ |i| [i] })
+      c = KMeansSameSize.new
+      c.set_parameters(max_iterations: 100)
+      c.centroid_function = lambda do |data_sets|
+        data_sets.collect{ |data_set|
+          data_set.data_items.min_by{ |i|
+            data_set.data_items.sum{ |j|
+              c.distance_function.call(i, j) ** 2
+            }
           }
+        }
+      end
+
+      c.distance_function = lambda do |a, b|
+        a = a[0]
+        b = b[0]
+        Math::sqrt((vector[a][0] - vector[b][0])**2 + (vector[a][1] - vector[b][1])**2)
+      end
+
+      clusterer = c.build(data_set, n)
+
+      clusterer.clusters.collect { |cluster|
+        cluster.data_items.collect{ |i|
+          vector[i[0]]
         }
       }
     end
-
-    c.distance_function = lambda do |a, b|
-      a = a[0]
-      b = b[0]
-      Math::sqrt((vector[a][0] - vector[b][0])**2 + (vector[a][1] - vector[b][1])**2)
-    end
-
-    clusterer = c.build(data_set, n)
-
-    clusterer.clusters.collect { |cluster|
-      cluster.data_items.collect{ |i|
-        vector[i[0]]
-      }
-    }
   end
 
   def self.hulls(clusters)
-    min, max = clusters.flatten(1).minmax_by{ |i| i[0] }
-    buffer = (max[0] - min[0]) * 0.002
+    clusters = clusters.flatten(1)
+    if clusters.size == 0
+      []
+    else
+      min, max = clusters.minmax_by{ |i| i[0] }
+      buffer = (max[0] - min[0]) * 0.002
 
-    factory = Cartesian.preferred_factory
+      factory = Cartesian.preferred_factory
 
-    multi_points = clusters.collect{ |cluster|
-      factory.multi_point(cluster.collect{ |p|
-        factory.point(p[1], p[0])
-      })
-    }
+      multi_points = clusters.collect{ |cluster|
+        factory.multi_point(cluster.collect{ |p|
+          factory.point(p[1], p[0])
+        })
+      }
 
-    clusters.size.times.collect{ |i|
-      hull(factory, clusters[i], multi_points[i], (i > 0 ? multi_points[0..i-1] : []) + (i < clusters.size - 1 ? multi_points[i+1..-1] : []), buffer)
-    }
+      clusters.size.times.collect{ |i|
+        hull(factory, clusters[i], multi_points[i], (i > 0 ? multi_points[0..i-1] : []) + (i < clusters.size - 1 ? multi_points[i+1..-1] : []), buffer)
+      }
+    end
   end
 
   private
