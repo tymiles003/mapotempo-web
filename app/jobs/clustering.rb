@@ -61,12 +61,12 @@ class Clustering
   end
 
   def self.hulls(clusters)
-    clusters = clusters.flatten(1)
-    if clusters.size == 0
+    clusters_flatten = clusters.flatten(1)
+    if clusters_flatten.size == 0
       []
     else
-      min, max = clusters.minmax_by{ |i| i[0] }
-      buffer = (max[0] - min[0]) * 0.002
+      min, max = clusters_flatten.minmax_by{ |i| i[0] }
+      buffer = [(max[0] - min[0]) * 0.002, 1e-04].max
 
       factory = Cartesian.preferred_factory
 
@@ -77,7 +77,7 @@ class Clustering
       }
 
       clusters.size.times.collect{ |i|
-        hull(factory, clusters[i], multi_points[i], (i > 0 ? multi_points[0..i-1] : []) + (i < clusters.size - 1 ? multi_points[i+1..-1] : []), buffer)
+        hull(factory, clusters[i], multi_points[i], (i > 0 ? multi_points[0..i-1] : []) + multi_points[i+1..multi_points.length-1], buffer)
       }
     end
   end
