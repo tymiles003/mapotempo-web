@@ -25,6 +25,7 @@ class RoutesController < ApplicationController
   before_action :set_route, only: [:update]
 
   def show
+    @export_stores = ValueToBoolean.value_to_boolean(params['stores'], true)
     respond_to do |format|
       format.html
       format.gpx do

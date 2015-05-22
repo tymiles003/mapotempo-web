@@ -1,4 +1,4 @@
-if route.vehicle
+if route.vehicle && @export_stores
   csv << [
     (route.vehicle.name if route.vehicle),
     route.ref,
@@ -58,7 +58,7 @@ route.stops.each { |stop|
   ]
 }
 
-if route.vehicle
+if route.vehicle && @export_stores
   csv << [
     (route.vehicle.name if route.vehicle),
     route.ref,

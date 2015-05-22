@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2015
 #
 # This file is part of Mapotempo.
 #
@@ -15,25 +15,18 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'value_to_boolean'
 
-class DestinationsImport
-  include ActiveModel::Model
-  include ActiveRecord::AttributeAssignment
-  extend ActiveModel::Translation
-
-  attr_accessor :replace, :file
-  validates :file, presence: true
-
-  def replace=(value)
-    @replace = ValueToBoolean.value_to_boolean(value)
+class ValueToBoolean
+  # convert something to a boolean
+  def self.value_to_boolean(value, default = false)
+    if value.nil? || (value.is_a?(String) && value.empty?)
+      default
+    else
+      TRUE_VALUES.include?(value)
+    end
   end
 
-  def tempfile
-    file.tempfile
-  end
+  private
 
-  def name
-    (file.original_filename || file.filename).split('.')[0..-2].join('.')
-  end
+  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE', 'on', 'ON'].to_set
 end

@@ -467,6 +467,7 @@ en:
       export:
         print: "Print"
         spreadsheet_standard: "Spreadsheet Standard"
+        spreadsheet_standard_without_stores: "Spreadsheet Standard without stores"
         spreadsheet_excel: "Spreadsheet Excel"
         gps_waypoint: "GPS Waypoint"
         tomtom_orders: "Send to TomTom as Orders"

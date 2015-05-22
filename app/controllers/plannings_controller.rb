@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'csv'
+require 'value_to_boolean'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource except: :create
@@ -26,6 +27,7 @@ class PlanningsController < ApplicationController
   end
 
   def show
+    @export_stores = ValueToBoolean.value_to_boolean(params['stores'], true)
     respond_to do |format|
       format.html
       format.json
