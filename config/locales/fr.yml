@@ -369,7 +369,8 @@ fr:
       title: "Modifier client"
     import:
       title: "Importer des clients"
-      replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus."
+      replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus. Dans la cas contraire une mise à jour des clients existants est faite et les nouveaux sont ajoutés."
+      replace_confirm: "Supprimer tous les clients et leurs modifications pour les remplacer par ceux importés ?"
       file_help: "Import de fichier CSV uniquement."
       template_csv: "Modèle import tableur standard"
       template_excel: "Modèle import tableur Excel"

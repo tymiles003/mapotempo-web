@@ -360,7 +360,8 @@ en:
       title: "Editing destination"
     import:
       title: "Import destinations"
-      replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost."
+      replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost. In the opposite case an update of existing customers is made and the new ones are added."
+      replace_confirm: "Delete all clients and their amendments to replace them with imported ones?"
       file_help: "Import only CSV files."
       template_csv: "Import Template Spreadsheet Standard"
       template_excel: "Import Template Spreadsheet Excel"

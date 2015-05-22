@@ -260,6 +260,9 @@ function destinations_import(params) {
   });
 
   $("form").submit(function() {
+    if ($('#destinations_import_replace').is(':checked') && !confirm(I18n.t('destinations.import.replace_confirm'))) {
+      return false;
+    }
     $("#dialog-upload").dialog("open");
   });
 }
