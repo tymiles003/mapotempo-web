@@ -1,7 +1,7 @@
 if route.vehicle && @export_stores
   csv << [
     (route.vehicle.name if route.vehicle),
-    route.ref,
+    route.ref || (route.vehicle && route.vehicle.name),
     0,
     nil,
     (route.start.strftime("%H:%M") if route.start),
@@ -32,7 +32,7 @@ route.stops.each { |stop|
   order = stop.order
   csv << [
     (route.vehicle.name if route.vehicle),
-    route.ref,
+    route.ref || (route.vehicle && route.vehicle.name),
     (index+=1 if route.vehicle),
     ("%i:%02i" % [stop.wait_time/60/60, stop.wait_time/60%60] if route.vehicle && stop.wait_time),
     (stop.time.strftime("%H:%M") if route.vehicle && stop.time),
@@ -61,7 +61,7 @@ route.stops.each { |stop|
 if route.vehicle && @export_stores
   csv << [
     (route.vehicle.name if route.vehicle),
-    route.ref,
+    route.ref || (route.vehicle && route.vehicle.name),
     index+1,
     nil,
     (route.end.strftime("%H:%M") if route.end),
