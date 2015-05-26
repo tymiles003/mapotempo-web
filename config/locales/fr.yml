@@ -60,20 +60,20 @@ fr:
         other: "Commandes"
       order_array: "Tableau de commandes"
       order_arrays:
-        one: "Tableau de commandes"
-        other: "Tableaux de commandes"
+        one: "tableau de commandes"
+        other: "tableaux de commandes"
       planning: "Planning"
       plannings:
         one: "planning"
         other: "plannings"
       profile: "Profil"
       profiles:
-        one: "Profil"
-        other: "Profils"
+        one: "profil"
+        other: "profils"
       product: "Produit"
       products:
-        one: "Produit"
-        other: "Produits"
+        one: "produit"
+        other: "produits"
       route: "Tournée"
       routes:
         one: "tournée"
@@ -389,7 +389,6 @@ fr:
       title: "Liste clients"
       new: "Nouveau client"
       default_name: "Nouveau client"
-      count: "Nombre de clients :"
       columns: "Colonnes"
       dialog:
         geocoding:

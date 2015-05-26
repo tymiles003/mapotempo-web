@@ -6,7 +6,7 @@
     <button id="multiple-delete" class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %></button>
   </div>
   <div class="col-md-4">
-    <%= t '.count' %> <span id="count"></span>
+    <span id="count"></span> <%= t 'activerecord.models.destinations', count: 10 %>
   </div>
   <div class="col-md-2">
     <div class="pull-right">

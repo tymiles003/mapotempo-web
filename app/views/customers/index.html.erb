@@ -1,8 +1,15 @@
 <h1><%= t '.title' %></h1>
 
-<p>
-  <%= link_to new_customer_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
-</p>
+<div class="row">
+  <div class="col-md-6">
+    <%= link_to new_customer_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
+  </div>
+  <div class="col-md-6">
+    <div class="pull-right">
+      <%= @customers.count %> <%= t 'activerecord.models.customers', count: @customers.count %> (<%= t 'activerecord.attributes.customer.test' %> : <%= @customers.select(&:test).count %>)
+    </div>
+  </div>
+</div>
 
 <%= form_tag customers_path, method: :delete do %>
 <table class="table table-striped table-hover">

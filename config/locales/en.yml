@@ -57,20 +57,20 @@ en:
         other: "Orders"
       order_array: "Order array"
       order_arrays:
-        one: "Order array"
-        other: "Orders arrays"
+        one: "order array"
+        other: "orders arrays"
       planning: "Planning"
       plannings:
         one: "planning"
         other: "plannings"
       product: "Product"
       products:
-        one: "Product"
-        other: "Products"
+        one: "product"
+        other: "products"
       profile: "Profile"
       profiles:
-        one: "Profile"
-        other: "Profiles"
+        one: "profile"
+        other: "profiles"
       route: "Route"
       routes:
         one: "route"
@@ -380,7 +380,6 @@ en:
       title: "Listing destinations"
       new: "New Destination"
       default_name: "New Destination"
-      count: "Destinations number:"
       columns: "Columns"
       dialog:
         geocoding:
