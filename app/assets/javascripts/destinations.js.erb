@@ -112,6 +112,7 @@ function destinations_form(params, api) {
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
+      theme: 'bootstrap',
       minimumResultsForSearch: -1,
       templateSelection: templateTag,
       templateResult: templateTag,
@@ -426,6 +427,7 @@ function destinations_index(params, api) {
     var formatNoMatches = I18n.t('web.select2.empty_result');
     fake_select2($('select[name$=\\[tag_ids\\]\\[\\]]', $row), function(select) {
       select.select2({
+        theme: 'bootstrap',
         minimumResultsForSearch: -1,
         templateSelection: templateTag,
         templateResult: templateTag,
@@ -434,6 +436,7 @@ function destinations_index(params, api) {
         },
         width: '100%'
       });
+      select.next('.select2-container--bootstrap').addClass('input-sm');
     });
   }
 

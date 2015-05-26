@@ -39,7 +39,7 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/select2-rails.git
-  revision: bbdff84ae4e798acb9ba2b96b830c692888c2772
+  revision: e7ae16593ab1f2f3d91b77b97d0f6f1b74c6c517
   branch: v4
   specs:
     select2-rails (4.0.0)
@@ -47,7 +47,7 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/twitter_bootstrap_form_for.git
-  revision: 85fc69857efd701771c05bf24bcfd5d656d700c2
+  revision: 8d774e449d146afcfac4c0e72d9c970ab3b372dc
   specs:
     twitter_bootstrap_form_for (2.0.0.beta)
       actionpack (~> 4)

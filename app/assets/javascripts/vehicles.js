@@ -26,6 +26,7 @@ function vehicles_form(params) {
   });
 
   $('#vehicle_tomtom_id').select2({
+    theme: 'bootstrap',
     width: '100%',
     minimumResultsForSearch: -1,
     ajax: {

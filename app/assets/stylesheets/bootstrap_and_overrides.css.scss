@@ -74,46 +74,14 @@ hr {
 
 /* Select2 */
 
-.select2-container .select2-selection {
-  border: 1px solid #ccc;
-  min-height: 34px;
-}
-
-.select2-container .select2-selection--multiple {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-}
-
-.select2-container--default.select2-container--focus .select2-selection {
-  border-color: #66afe9;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
-}
-
-.input-group {
-  .select2-container .select2-selection {
-    -webkit-border-radius: 4px 0 0 4px;
-    -moz-border-radius: 4px 0 0 4px;
-    border-radius: 4px 0 0 4px;
-  }
-}
-
-.has-error {
-  .select2-container .select2-selection {
-    border-color: #a94442;
-  }
-}
-
-.select2-xs + .select2-container .select2-selection {
-  min-height: inherit;
-}
-
 .fake .select2-selection:focus {
   border: 1px solid #5897fb;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
   outline:medium none;
 }
 
-.select2-hidden-accessible {
-  display: none !important;
+.select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field  {
+  min-width: 0em;
 }
 
 /* Add Open and Close cheron to accordion */

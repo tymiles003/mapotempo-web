@@ -31,6 +31,7 @@
  *= require jquery-ui/dialog
  *= require jquery-ui/slider
  *= require select2
+ *= require select2-bootstrap
  *= require jquery-tablesorter/theme.bootstrap
  *= require jquery.simplecolorpicker
  *= require jquery.simplecolorpicker-fontawesome

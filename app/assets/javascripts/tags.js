@@ -32,6 +32,7 @@ function tags_form() {
 
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('#tag_icon').select2({
+    theme: 'bootstrap',
     minimumResultsForSearch: -1,
     width: '10em',
     templateResult: template,

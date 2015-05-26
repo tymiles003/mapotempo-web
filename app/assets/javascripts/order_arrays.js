@@ -72,6 +72,7 @@ function order_arrays_edit(params) {
       });
 
       select.select2({
+        theme: 'bootstrap',
         data: data,
         minimumResultsForSearch: -1,
         formatNoMatches: function() {
@@ -79,6 +80,7 @@ function order_arrays_edit(params) {
         },
         width: '100%'
       });
+      select.next('.select2-container--bootstrap').addClass('input-sm');
 
       select.change(function(e) {
         if (block_save_select_change) {
