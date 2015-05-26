@@ -290,6 +290,8 @@ en:
           attributes:
             close:
               after: "Must be after the open time"
+            rest_stop:
+              after: "Must be after the open time"
         zone:
           attributes:
             vehicles:

@@ -37,6 +37,8 @@ class Vehicle < ActiveRecord::Base
   validates_time :open, presence: true
   validates_time :close, presence: true, after: :open
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
+  validates_time :rest_start, if: :rest_start
+  validates_time :rest_stop, presence: false, after: :rest_start, if: :rest_stop
 
   after_initialize :assign_defaults, if: 'new_record?'
   before_save :set_stores
