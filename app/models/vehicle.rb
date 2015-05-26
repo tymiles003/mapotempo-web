@@ -32,8 +32,8 @@ class Vehicle < ActiveRecord::Base
   validates :consumption, presence: true, numericality: {only_float: true}
   validates :capacity, presence: true, numericality: {only_integer: true}
   validates :color, presence: true
-  validates :open, presence: true
-  validates :close, presence: true
+  validates_time :open, presence: true
+  validates_time :close, presence: true, after: :open
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
 
   after_initialize :assign_defaults, if: 'new_record?'

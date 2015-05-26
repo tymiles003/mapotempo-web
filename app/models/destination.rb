@@ -30,6 +30,8 @@ class Destination < ActiveRecord::Base
 #  validates :city, presence: true
 #  validates :lat, numericality: {only_float: true} # maybe nil
 #  validates :lng, numericality: {only_float: true} # maybe nil
+  validates_time :open, if: :open
+  validates_time :close, presence: false, after: :open, if: :close
 
   before_save :update_tags, :create_orders
   before_update :update_geocode, :update_out_of_date

@@ -272,6 +272,14 @@ fr:
 
     errors:
       models:
+        destination:
+          attributes:
+            close:
+              after: "Doit être après l'horaire de début"
+        vehicle:
+          attributes:
+            close:
+              after: "Doit être après l'horaire de début"
         zone:
           attributes:
             vehicles:

@@ -67,6 +67,7 @@ gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'cancan'
 gem 'lograge'
+gem 'validates_timeliness'
 
 gem 'twitter-bootstrap-rails'
 gem 'twitter_bootstrap_form_for', github: 'frodrigo/twitter_bootstrap_form_for' # FIXME wait for pull request

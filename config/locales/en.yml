@@ -269,6 +269,14 @@ en:
 
     errors:
       models:
+        destination:
+          attributes:
+            close:
+              after: "Must be after the open time"
+        vehicle:
+          attributes:
+            close:
+              after: "Must be after the open time"
         zone:
           attributes:
             vehicles:
