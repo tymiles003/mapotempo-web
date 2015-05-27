@@ -18,3 +18,10 @@
 // Place all the styles related to the user controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+[data-controller='customers'] {
+  #map {
+    min-height: 400px;
+    width: 100%;
+  }
+}

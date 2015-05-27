@@ -333,6 +333,7 @@ fr:
     index:
       title: "Liste comptes client"
       new: "Nouveau compte client"
+      map: "Carte"
     new:
       title: "Nouveau compte client"
     form:

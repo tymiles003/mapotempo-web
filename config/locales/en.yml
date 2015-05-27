@@ -324,6 +324,7 @@ en:
     index:
       title: "Listing customers"
       new: "New Customer"
+      map: "Map"
     new:
       title: "New customer"
     form:

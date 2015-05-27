@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2013-2014
+// Copyright © Mapotempo, 2013-2015
 //
 // This file is part of Mapotempo.
 //
@@ -15,6 +15,53 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+function customers_index(params) {
+  var map_layer_url = params.map_layer_url,
+    map_attribution = params.map_attribution;
+
+  var is_map_init = false;
+
+  function map_init() {
+    var map = L.map('map').setView([0, 0], 13);
+    L.tileLayer(map_layer_url, {
+      maxZoom: 18,
+      attribution: map_attribution
+    }).addTo(map);
+
+    var cluster = new L.MarkerClusterGroup({
+      showCoverageOnHover: false
+    });
+    map.addLayer(cluster);
+
+    function display_customers(data) {
+      $.each(data.customers, function(i, customer) {
+        var marker = L.marker(new L.LatLng(customer.lat, customer.lng), {
+        }).addTo(cluster);
+      });
+
+      map.invalidateSize();
+      if (cluster.getLayers().length > 0) {
+        map.fitBounds(cluster.getBounds());
+      }
+    }
+
+    $.ajax({
+      url: '/customers.json',
+      beforeSend: beforeSendWaiting,
+      success: display_customers,
+      complete: completeWaiting,
+      error: ajaxError
+    });
+  };
+
+  $('#accordion').on('show.bs.collapse', function(event, ui) {
+    if (!is_map_init) {
+      is_map_init = true;
+      map_init();
+    }
+  });
+}
+
 function customers_edit(params) {
   $('#customer_end_subscription').datepicker({
     language: defaultLocale,
@@ -45,6 +92,10 @@ function customers_edit(params) {
     });
   });
 }
+
+Paloma.controller('Customer').prototype.index = function() {
+  customers_index(this.params);
+};
 
 Paloma.controller('Customer').prototype.new = function() {
   customers_edit(this.params);

@@ -1,5 +1,20 @@
 <h1><%= t '.title' %></h1>
 
+<div id="accordion" class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">
+      <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseMap">
+        <%= t '.map' %>
+      </a>
+    </h2>
+  </div>
+  <div id="collapseMap" class="panel-collapse collapse">
+    <div class="panel-body">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-6">
     <%= link_to new_customer_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
@@ -50,3 +65,9 @@
 
 <%= button_tag type: :submit, class: "btn btn-danger btn-sm", data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %><% end %>
 <% end %>
+<%
+controller.js(
+  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
+  map_attribution: current_user.layer.map_attribution
+)
+%>
