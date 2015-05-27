@@ -241,6 +241,8 @@ en:
         current_password: "Current password"
         remember_me: "Remember me"
         api_key: "API Key"
+        sign_in_count: "Connections count"
+        sign_in_at: "Last connection"
       vehicle:
         name: "Name"
         emission: "Emission"

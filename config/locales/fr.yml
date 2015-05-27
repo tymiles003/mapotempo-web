@@ -244,6 +244,8 @@ fr:
         current_password: "Mot de passe actuel"
         remember_me: "Se rappeler de moi"
         api_key: "Clé d'API"
+        sign_in_count: "Nombre de connexions"
+        sign_in_at: "Dernière connexion"
       vehicle:
         name: "Nom"
         emission: "Émissions"

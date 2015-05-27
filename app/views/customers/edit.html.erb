@@ -14,6 +14,8 @@
   <thead>
     <tr>
       <th><%= t 'activerecord.attributes.users.email' %></th>
+      <th class="text-right"><%= t 'activerecord.attributes.user.sign_in_count' %></th>
+      <th><%= t 'activerecord.attributes.user.sign_in_at' %></th>
       <% if current_user.admin? %>
         <th></th>
       <% end %>
@@ -24,6 +26,8 @@
     <% @customer.users.each do |user| %>
       <tr>
         <td><%= user.email %></td>
+        <td class="text-right"><%= user.sign_in_count %></td>
+        <td><%= user.current_sign_in_at && l(user.current_sign_in_at) %></td>
         <% if current_user.admin? %>
           <td class="text-right">
             <%= link_to edit_admin_user_path(user), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>

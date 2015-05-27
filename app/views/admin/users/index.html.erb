@@ -18,6 +18,8 @@
       <th><button id="add" type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
       <th><%= t 'activerecord.attributes.user.email' %></th>
       <th><%= t 'activerecord.attributes.user.customer' %></th>
+      <th class="text-right"><%= t 'activerecord.attributes.user.sign_in_count' %></th>
+      <th><%= t 'activerecord.attributes.user.sign_in_at' %></th>
       <th></th>
     </tr>
   </thead>
@@ -34,6 +36,8 @@
             <% end %>
           <% end %>
         </td>
+        <td class="text-right"><%= user.sign_in_count %></td>
+        <td><%= user.current_sign_in_at && l(user.current_sign_in_at) %></td>
         <td class="text-right">
           <%= link_to edit_admin_user_path(user), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to admin_user_path(user), :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
