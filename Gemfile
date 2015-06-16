@@ -105,7 +105,7 @@ gem 'delayed_job_active_record'
 
 gem 'rgeo'
 gem 'rgeo-geojson'
-gem 'polylines', github: 'roadtrippers/polylines', branch: 'rt-arbitrary_precision_polylines' # FIXME wait for https://github.com/joshuaclayton/polylines/pull/5
+gem 'polylines'
 
 gem 'ai4r'
 gem 'sim_annealing'

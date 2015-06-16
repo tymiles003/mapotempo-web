@@ -54,13 +54,6 @@ GIT
       railties (~> 4)
 
 GIT
-  remote: git://github.com/roadtrippers/polylines.git
-  revision: 1be4b6a0c35ec25f94566f07e27c3ec3a7848378
-  branch: rt-arbitrary_precision_polylines
-  specs:
-    polylines (0.2.1)
-
-GIT
   remote: git://github.com/tim-vandecasteele/grape-swagger.git
   revision: 768454bac676417ad1fce0d1da2bf82835fbc6c6
   specs:
@@ -257,6 +250,7 @@ GEM
     orm_adapter (0.5.0)
     pg (0.18.1)
     polyglot (0.3.5)
+    polylines (0.3.0)
     rack (1.6.0)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -473,7 +467,7 @@ DEPENDENCIES
   nilify_blanks
   paloma!
   pg
-  polylines!
+  polylines
   rack-cors
   rails (= 4.2.0)
   rails-i18n
