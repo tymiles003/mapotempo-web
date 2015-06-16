@@ -35,7 +35,7 @@ class Customer < ActiveRecord::Base
   nilify_blanks
   validates :router, presence: true
   validates :name, presence: true
-  validates :destinations, length: { maximum: 2000, message: :over_max_limit }
+  validates :destinations, length: { maximum: 3000, message: :over_max_limit }
   validates :optimization_cluster_size, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
   after_initialize :assign_defaults, if: 'new_record?'
