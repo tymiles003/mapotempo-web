@@ -70,8 +70,10 @@ class ZoningsController < ApplicationController
 
   def destroy_multiple
     Zoning.transaction do
-      ids = params['zonings'].keys.collect(&:to_i)
-      current_user.customer.zonings.select{ |zoning| ids.include?(zoning.id) }.each(&:destroy)
+      if params['zonings']
+        ids = params['zonings'].keys.collect(&:to_i)
+        current_user.customer.zonings.select{ |zoning| ids.include?(zoning.id) }.each(&:destroy)
+      end
       respond_to do |format|
         format.html { redirect_to zonings_url }
       end

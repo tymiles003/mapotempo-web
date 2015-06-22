@@ -61,8 +61,10 @@ class TagsController < ApplicationController
 
   def destroy_multiple
     Tag.transaction do
-      ids = params['tags'].keys.collect(&:to_i)
-      current_user.customer.tags.select{ |tag| ids.include?(tag.id) }.each(&:destroy)
+      if params['tags']
+        ids = params['tags'].keys.collect(&:to_i)
+        current_user.customer.tags.select{ |tag| ids.include?(tag.id) }.each(&:destroy)
+      end
       respond_to do |format|
         format.html { redirect_to tags_url }
       end

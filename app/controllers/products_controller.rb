@@ -61,8 +61,10 @@ class ProductsController < ApplicationController
 
   def destroy_multiple
     Product.transaction do
-      ids = params['products'].keys.collect(&:to_i)
-      current_user.customer.products.select{ |product| ids.include?(product.id) }.each(&:destroy)
+      if params['products']
+        ids = params['products'].keys.collect(&:to_i)
+        current_user.customer.products.select{ |product| ids.include?(product.id) }.each(&:destroy)
+      end
       respond_to do |format|
         format.html { redirect_to products_url }
       end

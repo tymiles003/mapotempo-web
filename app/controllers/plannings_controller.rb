@@ -121,8 +121,10 @@ class PlanningsController < ApplicationController
 
   def destroy_multiple
     Planning.transaction do
-      ids = params['plannings'].keys.collect(&:to_i)
-      current_user.customer.plannings.select{ |planning| ids.include?(planning.id) }.each(&:destroy)
+      if params['plannings']
+        ids = params['plannings'].keys.collect(&:to_i)
+        current_user.customer.plannings.select{ |planning| ids.include?(planning.id) }.each(&:destroy)
+      end
       respond_to do |format|
         format.html { redirect_to plannings_url }
       end

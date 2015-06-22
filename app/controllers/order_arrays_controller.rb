@@ -104,8 +104,10 @@ class OrderArraysController < ApplicationController
 
   def destroy_multiple
     OrderArray.transaction do
-      ids = params['order_arrays'].keys.collect(&:to_i)
-      current_user.customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }.each(&:destroy)
+      if params['order_arrays']
+        ids = params['order_arrays'].keys.collect(&:to_i)
+        current_user.customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }.each(&:destroy)
+      end
       respond_to do |format|
         format.html { redirect_to order_arrays_url }
       end

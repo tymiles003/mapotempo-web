@@ -66,8 +66,10 @@ class CustomersController < ApplicationController
 
   def destroy_multiple
     Customer.transaction do
-      ids = params['customers'].keys.collect(&:to_i)
-      Customer.find(ids).each(&:destroy)
+      if params['customers'].keys
+        ids = params['customers'].keys.collect(&:to_i)
+        Customer.find(ids).each(&:destroy)
+      end
       respond_to do |format|
         format.html { redirect_to customers_url }
       end

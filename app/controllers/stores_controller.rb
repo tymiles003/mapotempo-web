@@ -87,8 +87,10 @@ class StoresController < ApplicationController
     respond_to do |format|
       begin
         Store.transaction do
-          ids = params['stores'].keys.collect(&:to_i)
-          current_user.customer.stores.select{ |store| ids.include?(store.id) }.each(&:destroy)
+          if params['stores']
+            ids = params['stores'].keys.collect(&:to_i)
+            current_user.customer.stores.select{ |store| ids.include?(store.id) }.each(&:destroy)
+          end
           format.html { redirect_to stores_url }
         end
       rescue => e

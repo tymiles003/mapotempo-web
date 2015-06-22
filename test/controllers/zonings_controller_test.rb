@@ -71,6 +71,14 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to zonings_path
   end
 
+  test "should destroy multiple zoning, 0 item" do
+    assert_difference('Zoning.count', 0) do
+      delete :destroy_multiple
+    end
+
+    assert_redirected_to zonings_path
+  end
+
   test "should duplicate" do
     assert_difference('Zoning.count') do
       patch :duplicate, zoning_id: @zoning
