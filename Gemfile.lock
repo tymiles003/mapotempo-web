@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/frodrigo/grape-swagger.git
+  revision: 4b036fd05750de3425026a289c543c53e4b7ec50
+  specs:
+    grape-swagger (0.10.2)
+      grape (>= 0.8.0)
+      grape-entity
+
+GIT
   remote: git://github.com/frodrigo/jquery-timeentry-rails.git
   revision: ccecc885d334b772d065bb722e2d4528a9f9a40c
   specs:
@@ -52,14 +60,6 @@ GIT
     twitter_bootstrap_form_for (2.0.0.beta)
       actionpack (~> 4)
       railties (~> 4)
-
-GIT
-  remote: git://github.com/tim-vandecasteele/grape-swagger.git
-  revision: 768454bac676417ad1fce0d1da2bf82835fbc6c6
-  specs:
-    grape-swagger (0.10.2)
-      grape (>= 0.8.0)
-      grape-entity
 
 GEM
   remote: https://rubygems.org/
