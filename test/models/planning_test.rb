@@ -134,7 +134,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.zoning = nil
     assert_equal 2, o.routes.size
     assert_equal 1, o.routes[0].stops.size
-    assert_equal 3, o.routes[1].stops.size
+    assert_equal 4, o.routes[1].stops.size
     assert_difference('Stop.count', 0) do
       o.automatic_insert(o.routes[0].stops[0])
       o.save!
@@ -143,7 +143,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.reload
     assert_equal 2, o.routes.size
     assert_equal 0, o.routes[0].stops.size
-    assert_equal 4, o.routes[1].stops.size
+    assert_equal 5, o.routes[1].stops.size
   end
 
   test "should apply orders" do

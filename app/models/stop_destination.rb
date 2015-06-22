@@ -31,6 +31,10 @@ class StopDestination < Stop
     !destination.lat.nil? && !destination.lng.nil?
   end
 
+  def position
+    destination
+  end
+
   def lat
     destination.lat
   end

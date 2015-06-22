@@ -20,6 +20,10 @@ class StopRest < Stop
     !route.vehicle.store_rest.nil?
   end
 
+  def position
+    route.vehicle.store_rest
+  end
+
   def lat
     if position?
       route.vehicle.store_rest.lat
