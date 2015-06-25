@@ -19,6 +19,7 @@ require 'tomtom'
 require 'masternaut'
 require 'alyacom'
 require 'csv'
+require 'value_to_boolean'
 
 class RoutesController < ApplicationController
   load_and_authorize_resource
