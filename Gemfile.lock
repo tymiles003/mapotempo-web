@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/frodrigo/grape-swagger.git
-  revision: 4b036fd05750de3425026a289c543c53e4b7ec50
+  revision: fe96c95d38c0d62a3f8d621b0c4eff7c41d83ce0
+  branch: v0.10.2-patchs
   specs:
     grape-swagger (0.10.2)
       grape (>= 0.8.0)
