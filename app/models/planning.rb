@@ -115,6 +115,16 @@ class Planning < ActiveRecord::Base
       vehicle_prec = route.vehicle
       route.vehicle = vehicle
       route_prec.vehicle = vehicle_prec
+
+      # Rest sticky with vehicle
+      stops_prec = route_prec.stops.select{ |stop| stop.is_a?(StopRest) }
+      stops = route.stops.select{ |stop| stop.is_a?(StopRest) }
+      stops_prec.each{ |stop|
+        route.move_stop(stop, -1, true)
+      }
+      stops.each{ |stop|
+        route_prec.move_stop(stop, -1, true)
+      }
     else
       false
     end

@@ -187,9 +187,9 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def add_rest
+  def add_rest(active = true, stop_id = nil)
     index = stops.size + 1
-    stops.build(type: StopRest.name, index: index, active: true)
+    stops.build(type: StopRest.name, index: index, active: active, id: stop_id)
     self.out_of_date = true
   end
 
@@ -223,13 +223,18 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def move_stop(stop, index)
+  def move_stop(stop, index, force = false)
     if stop.route != self
       if stop.is_a?(StopDestination)
         destination, active = stop.destination, stop.active
         stop_id = stop.id
         stop.route.move_stop_out(stop)
         add(destination, index, active || stop.route.vehicle.nil?, stop_id)
+      elsif force && stop.is_a?(StopRest)
+        active = stop.active
+        stop_id = stop.id
+        stop.route.move_stop_out(stop, force)
+        add_rest(active, stop_id)
       end
     else
       index = stops.size if index < 0
@@ -245,8 +250,8 @@ class Route < ActiveRecord::Base
     compute
   end
 
-  def move_stop_out(stop)
-    if stop.is_a?(StopDestination)
+  def move_stop_out(stop, force = false)
+    if force || stop.is_a?(StopDestination)
       if vehicle
         shift_index(stop.index + 1, -1)
       end
