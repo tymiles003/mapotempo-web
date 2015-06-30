@@ -24,6 +24,7 @@ class Vehicle < ActiveRecord::Base
   has_many :zones, inverse_of: :vehicle, dependent: :nullify, autosave: true
 
   nilify_blanks
+  auto_strip_attributes :name, :tomtom_id, :masternaut_ref
   validates :customer, presence: true
   validates :store_start, presence: true
   validates :store_stop, presence: true

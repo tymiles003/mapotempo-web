@@ -17,6 +17,7 @@
 #
 class Layer < ActiveRecord::Base
   nilify_blanks
+  auto_strip_attributes :name, :url, :attribution, :urlssl, :source
   validates :source, presence: true
   validates :name, presence: true
   validates :url, presence: true

@@ -23,6 +23,7 @@ class Planning < ActiveRecord::Base
   belongs_to :order_array
 
   nilify_blanks
+  auto_strip_attributes :name, :ref
   validates :customer, presence: true
   validates :name, presence: true
 

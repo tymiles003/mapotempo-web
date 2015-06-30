@@ -22,6 +22,7 @@ class OrderArray < ActiveRecord::Base
   enum length: {week: 7, week2: 14, month: 31}
 
   nilify_blanks
+  auto_strip_attributes :name
   validates :customer, presence: true
   validates :name, presence: true
   validates :base_date, presence: true

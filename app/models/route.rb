@@ -21,6 +21,7 @@ class Route < ActiveRecord::Base
   has_many :stops, -> { order(:index) }, inverse_of: :route, autosave: true, dependent: :delete_all
 
   nilify_blanks
+  auto_strip_attributes :ref
   validates :planning, presence: true
 #  validates :vehicle, presence: true # nil on unplanned route
   validate :stop_index_validation

@@ -20,5 +20,6 @@ class Profile < ActiveRecord::Base
   has_and_belongs_to_many :routers, -> { order('name')}
 
   nilify_blanks
+  auto_strip_attributes :name
   validates :name, presence: true
 end

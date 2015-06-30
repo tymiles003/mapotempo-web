@@ -24,6 +24,7 @@ class Zoning < ActiveRecord::Base
   validates_associated_bubbling :zones
 
   nilify_blanks
+  auto_strip_attributes :name
   validates :name, presence: true
 
   before_create :update_out_of_date

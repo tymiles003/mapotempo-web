@@ -25,6 +25,7 @@ class Tag < ActiveRecord::Base
   end
 
   nilify_blanks
+  auto_strip_attributes :label
   validates :label, presence: true
   validates_format_of :color, with: /\A(|\#[A-Fa-f0-9]{6})\Z/, allow_nil: true
   validates_inclusion_of :icon, in: [''] + icons_table, allow_nil: true

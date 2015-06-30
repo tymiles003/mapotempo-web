@@ -23,6 +23,7 @@ class Store < ActiveRecord::Base
   has_many :vehicle_stops, class_name: 'Vehicle', inverse_of: :store_stop, foreign_key: 'store_stop_id'
 
   nilify_blanks
+  auto_strip_attributes :name, :street, :postalcode, :city
   validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true

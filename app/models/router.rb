@@ -18,6 +18,7 @@
 
 class Router < ActiveRecord::Base
   nilify_blanks
+  auto_strip_attributes :name, :url
   validates :name, presence: true
 
   private
