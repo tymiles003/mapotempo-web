@@ -114,14 +114,14 @@
             <%= stop.destination.postalcode %> <%= stop.destination.city %>
           </span>
           <% if stop.destination.comment && stop.destination.comment.length > 0 %>
-            <div class="comment visible-sm visible-xs"><%= stop.destination.comment %></div>
+            <div class="comment wrapped-text visible-sm visible-xs"><%= stop.destination.comment %></div>
           <% end %>
         </div>
 
         <% if route.planning.customer.print_planning_annotating %>
-          <div class="comment col-md-2 hidden-sm hidden-xs"><%= stop.destination.comment %></div>
+          <div class="comment wrapped-text col-md-2 hidden-sm hidden-xs"><%= stop.destination.comment %></div>
         <% else %>
-          <div class="comment col-md-4 col-sm-4 hidden-xs"><%= stop.destination.comment %></div>
+          <div class="comment wrapped-text col-md-4 col-sm-4 hidden-xs"><%= stop.destination.comment %></div>
         <% end %>
 
         <% if route.planning.customer.print_planning_annotating %>

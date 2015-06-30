@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150430120526) do
+ActiveRecord::Schema.define(version: 20150630115249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20150430120526) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "detail",             limit: 255
-    t.string   "comment",            limit: 255
+    t.text     "comment"
     t.string   "ref",                limit: 255
     t.time     "take_over"
     t.float    "geocoding_accuracy"

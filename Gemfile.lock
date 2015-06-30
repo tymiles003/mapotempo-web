@@ -107,6 +107,8 @@ GEM
     amoeba (3.0.0)
       activerecord (>= 3.2.6)
     arel (6.0.0)
+    auto_strip_attributes (2.0.6)
+      activerecord (>= 3.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -425,6 +427,7 @@ PLATFORMS
 DEPENDENCIES
   ai4r
   amoeba
+  auto_strip_attributes
   bootstrap-datepicker-rails
   bootstrap-filestyle-rails
   bootstrap-wysihtml5-rails

@@ -111,6 +111,7 @@ gem 'ai4r'
 gem 'sim_annealing'
 
 gem 'nilify_blanks'
+gem 'auto_strip_attributes'
 gem 'amoeba'
 
 gem 'charlock_holmes'

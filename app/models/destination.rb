@@ -24,6 +24,7 @@ class Destination < ActiveRecord::Base
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
 
   nilify_blanks
+  auto_strip_attributes :comment
   validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true
