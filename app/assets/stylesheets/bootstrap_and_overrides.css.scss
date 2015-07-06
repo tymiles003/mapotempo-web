@@ -104,14 +104,31 @@ hr {
     .btn-group {
       text-align: left;
     }
-
-    i.tablesorter-icon {
-      right: 0;
-      width: 10px;
-    }
   }
   .tablesorter-header-inner {
     padding: 0px 12px 0px 0px;
+
+    .tablesorter-icon {
+      display: none !important;
+    }
+  }
+
+  .tablesorter-header .tablesorter-header-inner:after {
+    font-family: FontAwesome;
+    float: right;
+    content: "\f0dc";
+  }
+
+  .tablesorter-header.sorter-false .tablesorter-header-inner:after {
+    display: none;
+  }
+
+  .tablesorter-headerAsc .tablesorter-header-inner:after {
+    content: "\f0de";
+  }
+
+  .tablesorter-headerDesc .tablesorter-header-inner:after {
+    content: "\f0dd";
   }
 }
 
