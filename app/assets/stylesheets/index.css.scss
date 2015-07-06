@@ -22,9 +22,10 @@
 [data-controller='index'] {
   .mapotempo-logo {
     display: block;
+    margin-top: 40px;
     margin-left: auto;
     margin-right: auto;
-    width: 80vw;
+    width: 60vw;
   }
 
   .mapotempo-icons {
@@ -32,17 +33,12 @@
     color: lightgray;
     font-size: 150pt;
     font-size: 15vw;
+    line-height: 17vw;
     text-align: center;
 
     .mapotempo-icon {
-      position: relative;
-      right: -0.25em;
       font-style: normal;
       font-weight: normal;
-    }
-
-    .mapotempo-icon::before {
-      box-sizing: border-box;
     }
 
     .mapotempo-map:before {
