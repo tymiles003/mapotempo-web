@@ -34,7 +34,6 @@ function destinations_form(params, api) {
   var markers = {};
 
   var pointing = false;
-  var pointing_cursor;
   var icon_default = new L.Icon.Default();
 
   function prepare_display_destination(destination) {
@@ -106,7 +105,6 @@ function destinations_form(params, api) {
     .on("click", ".pointing + span", function(event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
-      pointing_cursor = $('.leaflet-container').css('cursor');
       $('.leaflet-container').css('cursor', 'crosshair');
     });
 
@@ -184,8 +182,7 @@ function destinations_form(params, api) {
       }
       sendMove(pointing, mouseEvent.latlng);
       pointing = false;
-      $('body').css('cursor', '');
-      $('.leaflet-container').css('cursor', pointing_cursor);
+      $('body, .leaflet-container').css('cursor', '');
     }
   });
 
@@ -310,7 +307,6 @@ function destinations_index(params, api) {
 
   var tags = {};
   var pointing = false;
-  var pointing_cursor;
   var icon_default = new L.Icon.Default();
   var icon_over = new L.Icon.Default({
     iconUrl: '/images/marker-FFBB00.svg'
@@ -399,7 +395,6 @@ function destinations_index(params, api) {
     .on("click", ".pointing + span", function(event) {
       pointing = id;
       $('body').css('cursor', 'crosshair');
-      pointing_cursor = $('.leaflet-container').css('cursor');
       $('.leaflet-container').css('cursor', 'crosshair');
     })
     .click(function(event) {
@@ -490,8 +485,7 @@ function destinations_index(params, api) {
       }
       sendMove(pointing, mouseEvent.latlng);
       pointing = false;
-      $('body').css('cursor', '');
-      $('.leaflet-container').css('cursor', pointing_cursor);
+      $('body, .leaflet-container').css('cursor', '');
     }
   });
 
