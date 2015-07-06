@@ -20,6 +20,7 @@ class V01::Entities::Stop < Grape::Entity
     'V01_Stop'
   end
 
+  expose(:id, documentation: { type: Integer })
   expose(:index, documentation: { type: Integer })
   expose(:active, documentation: { type: 'Boolean' })
   expose(:distance, documentation: { type: Float })
