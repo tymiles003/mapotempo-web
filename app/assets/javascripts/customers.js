@@ -77,19 +77,16 @@ function customers_edit(params) {
     spinnerImage: ''
   });
 
-  $('#accordion').on('show.bs.collapse', function(event, ui) {
-    $.fn.wysihtml5.locale['fr'] = $.fn.wysihtml5.locale['fr-FR'];
-    // .wysihtml5 not working on hidden textarea
-    $('#customer_print_header').wysihtml5({
-      toolbar: {
-        link: false,
-        image: false,
-        blockquote: false,
-        size: 'sm',
-        fa: true
-      },
-      locale: defaultLocale
-    });
+  $.fn.wysihtml5.locale['fr'] = $.fn.wysihtml5.locale['fr-FR'];
+  $('#customer_print_header').wysihtml5({
+    toolbar: {
+      link: false,
+      image: false,
+      blockquote: false,
+      size: 'sm',
+      fa: true
+    },
+    locale: defaultLocale
   });
 }
 
