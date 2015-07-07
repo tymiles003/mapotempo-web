@@ -56,7 +56,7 @@ end
 
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', github: 'frodrigo/grape-swagger', branch: 'v0.10.2-patchs' # FIXME wait for v0.10.2, FIXME wait for https://github.com/tim-vandecasteele/grape-swagger/issues/237 https://github.com/tim-vandecasteele/grape-swagger/pull/266
+gem 'grape-swagger', github: 'tim-vandecasteele/grape-swagger' # FIXME wait for v0.10.2
 gem 'rack-cors'
 
 gem 'rails-i18n'
