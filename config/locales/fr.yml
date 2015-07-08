@@ -713,6 +713,7 @@ fr:
       empty_result: "Pas de résultats"
     dialog:
       close: "Fermer"
+    placeholder_filter: "filtrer"
     help: "Aide"
     choose_file: "Sélectionner fichier"
     geocoder:

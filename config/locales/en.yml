@@ -708,6 +708,7 @@ en:
       empty_result: "No results matched"
     dialog:
       close: "Close"
+    placeholder_filter: "filter"
     help: "Help"
     choose_file: "Choose file"
     geocoder:

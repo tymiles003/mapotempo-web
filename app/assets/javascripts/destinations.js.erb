@@ -654,7 +654,7 @@ function destinations_index(params, api) {
         });
     });
 
-    $("#destination_box table").tablesorter({
+    var tableOptions = {
       headers: {
         0: {
           sorter: false
@@ -693,13 +693,24 @@ function destinations_index(params, api) {
         }
       },
       theme: "bootstrap",
+      // show an indeterminate timer icon in the header when the table is sorted or filtered.
+      showProcessing: true,
       // Show order icon v and ^
       headerTemplate: '{content} {icon}',
-      widgets: ["uitheme", "filter", "columnSelector"],
+      widgets: ["uitheme", "filter", "columnSelector", "scroller"],
       widgetOptions: {
+        scroller_height: 120,
+        // scroll tbody to top after sorting
+        scroller_upAfterSort: true,
+        // pop table header into view while scrolling up the page
+        scroller_jumpToHeader: true,
+        // In tablesorter v2.19.0 the scroll bar width is auto-detected
+        // add a value here to override the auto-detected setting
+        scroller_barWidth: null,
         filter_childRows: true,
         // class name applied to filter row and each input
         filter_cssFilter: "tablesorter-filter",
+        filter_placeholder: {search: I18n.t('web.placeholder_filter')},
         filter_functions: {
           1: filter_text,
           2: filter_text,
@@ -755,7 +766,8 @@ function destinations_index(params, api) {
           10: 'disable'
         }
       }
-    }).bind('filterEnd', function(e, filter) {
+    };
+    $("#destination_box table").tablesorter(tableOptions).bind('filterEnd', function(e, filter) {
       count();
 
       markersLayers.clearLayers();
