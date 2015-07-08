@@ -5,6 +5,8 @@ Delivery optimization in urban area with numerous stops. Based on [OpenStreetMap
 Installation
 ============
 
+For the following installation, your current working directory needs to be the mapotempo-web root directory.
+
 # On Fedora
 
 Install ruby, bundler and some dependencies from system package.
