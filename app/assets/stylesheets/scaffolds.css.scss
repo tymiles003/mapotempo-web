@@ -80,6 +80,23 @@ label {
   padding: 5px;
 }
 
+::-webkit-input-placeholder {
+  color: #ccc !important;
+  font-weight: normal;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #ccc !important;
+  font-weight: normal;
+}
+:-ms-input-placeholder {
+  color: #ccc !important;
+  font-weight: normal;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #ccc !important;
+  font-weight: normal;
+}
+
 [data-controller='plannings'][data-action='edit'],
 [data-controller='plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],

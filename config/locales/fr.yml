@@ -482,6 +482,7 @@ fr:
       optimize_each_confirm: "Lancer un calcul d'optimisation pour chacune des tournées ?"
       optimize_confirm: "Lancer un calcul d'optimisation ?"
       zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
+      route_placeholder: "Réf. de la tournée"
       exports: "Exporter"
       export:
         print: "Imprimer"

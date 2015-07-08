@@ -473,6 +473,7 @@ en:
       optimize_each_confirm: "Run an optimization calculation on each road?"
       optimize_confirm: "Run an optimization calculation?"
       zoning_confirm: "Save and apply the new zoning?"
+      route_placeholder: "Route ref."
       exports: "Export"
       export:
         print: "Print"
