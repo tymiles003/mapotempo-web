@@ -262,7 +262,7 @@ en:
       zoning:
         name: "Name"
       zone:
-        vehicle: "Véhicule"
+        vehicle: "Vehicle"
 
     successful:
       messages:
