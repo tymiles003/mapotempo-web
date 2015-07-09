@@ -314,9 +314,9 @@ fr:
         users : "Utilisateurs"
       index:
         title: "Modifier utilisateurs"
-        new: "Nouveau utilisateur"
+        new: "Nouvel utilisateur"
       new:
-        title: "Nouveau utilisateur"
+        title: "Nouvel utilisateur"
 
   customers:
     menu:
@@ -329,7 +329,7 @@ fr:
       title: "Modifier compte client"
       user:
         list: "Liste des utilisateurs"
-        new: "Nouveau utilisateur"
+        new: "Nouvel utilisateur"
     index:
       title: "Liste comptes client"
       new: "Nouveau compte client"
