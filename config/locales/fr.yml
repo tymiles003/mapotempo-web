@@ -130,6 +130,7 @@ fr:
         profile: "Profil"
         profile_id: "Profil"
         speed_multiplicator: "Ajustement de la vitesse"
+        default_country: "Pays par défaut"
       destination:
         name: "Nom"
         address: "Adresse"
@@ -319,6 +320,8 @@ fr:
         title: "Nouvel utilisateur"
 
   customers:
+    default:
+      country: "France"
     menu:
       parameters: "Paramètres"
       customer: "Compte client"

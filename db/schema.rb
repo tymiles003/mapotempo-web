@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150630115249) do
+ActiveRecord::Schema.define(version: 20150708163226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20150630115249) do
     t.integer  "optimization_soft_upper_bound"
     t.integer  "profile_id",                                                null: false
     t.float    "speed_multiplicator"
+    t.string   "default_country",                                           null: false
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree
@@ -81,6 +82,7 @@ ActiveRecord::Schema.define(version: 20150630115249) do
     t.string   "ref",                limit: 255
     t.time     "take_over"
     t.float    "geocoding_accuracy"
+    t.string   "country"
   end
 
   add_index "destinations", ["customer_id"], name: "fk__destinations_customer_id", using: :btree
@@ -242,6 +244,7 @@ ActiveRecord::Schema.define(version: 20150630115249) do
     t.integer  "customer_id",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "country"
   end
 
   add_index "stores", ["customer_id"], name: "fk__stores_customer_id", using: :btree

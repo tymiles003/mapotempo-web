@@ -87,9 +87,9 @@ class CustomersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def customer_params
     if current_user.admin?
-      params.require(:customer).permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id)
+      params.require(:customer).permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id, :default_country)
     else
-      params.require(:customer).permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :alyacom_association)
+      params.require(:customer).permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :alyacom_association, :default_country)
     end
   end
 end

@@ -33,9 +33,10 @@ class Customer < ActiveRecord::Base
   has_many :users, inverse_of: :customer, dependent: :nullify
 
   nilify_blanks
-  auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association
+  auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association, :default_country
   validates :router, presence: true
   validates :name, presence: true
+  validates :default_country, presence: true
   validates :destinations, length: { maximum: 3000, message: :over_max_limit }
   validates :optimization_cluster_size, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
@@ -47,6 +48,7 @@ class Customer < ActiveRecord::Base
   private
 
   def assign_defaults
+    default_country = I18n.t('customers.default.country')
     stores.build(
       name: I18n.t('stores.default.name'),
       city: I18n.t('stores.default.city'),

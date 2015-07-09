@@ -127,6 +127,7 @@ en:
         profile: "Profile"
         profile_id: "Profile"
         speed_multiplicator: "Speed tuning"
+        default_country: "Default country"
       destination:
         name: "Name"
         address: "Address"
@@ -310,6 +311,8 @@ en:
         title: "New user"
 
   customers:
+    default:
+      country: "England"
     menu:
       parameters: "Parameters"
       customer: "Customer"
@@ -601,9 +604,9 @@ en:
   stores:
     default:
         name: "Store"
-        lat: "44.83423"
-        lng: "-0.60068"
-        city: "Bordeaux"
+        lat: "51.4899"
+        lng: "-0.2596"
+        city: "London"
     form:
       locate_manually: "Locate manually on the map"
     edit:
