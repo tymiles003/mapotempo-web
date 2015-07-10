@@ -492,7 +492,7 @@ fr:
         spreadsheet_standard: "Tableur standard"
         spreadsheet_standard_without_stores: "Tableur standard sans dépôts"
         spreadsheet_excel: "Tableur Excel"
-        gps_waypoint: "Points de passage GPS"
+        gps_waypoint: "GPX Route"
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
         tomtom_empty: "Vider TomTom"
