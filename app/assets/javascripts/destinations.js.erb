@@ -511,9 +511,12 @@ function destinations_index(params, api) {
     }
     var row = $('[data-destination_id=' + id + ']');
     row.addClass('highlight');
-    if (row.position().top < $("#destination_box").scrollTop() || row.position().top > $("#destination_box").scrollTop() + $("#destination_box").height()) {
-      $("#destination_box").animate({
-        scrollTop: row.position().top - 100
+    var locRowPositionTop = $(".tablesorter-scroller-table table").height();
+    if (row.position().top != 0)
+      locRowPositionTop = row.position().top - $(".tablesorter-scroller-header").height() + $(".tablesorter-scroller-table").scrollTop();
+    if (locRowPositionTop < $(".tablesorter-scroller-table").scrollTop() || locRowPositionTop > $(".tablesorter-scroller-table").scrollTop() + $(".tablesorter-scroller-table").height()) {
+      $(".tablesorter-scroller-table").animate({
+        scrollTop: locRowPositionTop - 25
       });
     }
   }
@@ -527,7 +530,7 @@ function destinations_index(params, api) {
     marker.on('dragend', function(event) {
       sendMove(event.target.options.destination, event.target.getLatLng());
     });
-    marker.on('mouseover', function(mouseEvent) {
+    marker.on('click', function(mouseEvent) {
       if (!pointing) {
         over(mouseEvent.target.options.destination, false);
       }
@@ -699,7 +702,7 @@ function destinations_index(params, api) {
       headerTemplate: '{content} {icon}',
       widgets: ["uitheme", "filter", "columnSelector", "scroller"],
       widgetOptions: {
-        scroller_height: 120,
+        scroller_height: 220,
         // scroll tbody to top after sorting
         scroller_upAfterSort: true,
         // pop table header into view while scrolling up the page
