@@ -309,6 +309,8 @@ en:
         new: "New user"
       new:
         title: "New user"
+      edit:
+        title: "Edit user"
 
   customers:
     default:

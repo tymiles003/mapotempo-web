@@ -318,6 +318,8 @@ fr:
         new: "Nouvel utilisateur"
       new:
         title: "Nouvel utilisateur"
+      edit:
+        title: "Modifier utilisateur"
 
   customers:
     default:
