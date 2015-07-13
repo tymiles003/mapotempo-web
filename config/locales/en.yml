@@ -677,6 +677,7 @@ en:
     new:
       title: "New vehicle"
     form:
+      ref_help: "A free reference"
       open_help: "Deliveryman's working hours"
       close_help: "Deliveryman's working hours"
       emissions_help: "Fuel Type"

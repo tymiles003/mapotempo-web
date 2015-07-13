@@ -682,6 +682,7 @@ fr:
     new:
       title: "Nouveau véhicules"
     form:
+      ref_help: "Référence libre"
       open_help: "Horaire de travail livreur"
       close_help: "Horaire de travail livreur"
       emissions_help: "Type de carburant"
