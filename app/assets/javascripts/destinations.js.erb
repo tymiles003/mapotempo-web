@@ -88,6 +88,18 @@ function destinations_form(params, api) {
       if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
         url = '/api/0.1/' + api + '/geocode.json';
       } else {
+        if (event.currentTarget.name.match(/\[lat\]|\[lng\]$/)) {
+          var latChg = $(":input[id$=_lat]").val(),
+              lngChg = $(":input[id$=_lng]").val();
+          if (destination_id in markers) {
+            markers[destination_id].setLatLng(new L.LatLng(latChg, lngChg));
+          } else {
+            addMarker(destination_id, latChg, lngChg);
+          }
+          if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
+            map.setView(markers[destination_id].getLatLng(), 16);
+          }
+        }
         return;
       }
       $.ajax({
