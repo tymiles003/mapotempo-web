@@ -42,7 +42,7 @@
           <span class="address">
             <%= route.vehicle.store_start.street %>
             </br>
-            <%= route.vehicle.store_start.postalcode %> <%= route.vehicle.store_start.city %>
+            <%= route.vehicle.store_start.postalcode %> <%= route.vehicle.store_start.city %>  <%= route.vehicle.store_start.country %>
           </span>
         </div>
       </div>
@@ -111,7 +111,7 @@
             <% if (stop.destination.street && !stop.destination.street.empty?) || (stop.destination.detail && !stop.destination.detail.empty?) %>
               </br>
             <% end %>
-            <%= stop.destination.postalcode %> <%= stop.destination.city %>
+            <%= stop.destination.postalcode %> <%= stop.destination.city %> <%= stop.destination.country %>
           </span>
           <% if stop.destination.comment && stop.destination.comment.length > 0 %>
             <div class="comment wrapped-text visible-sm visible-xs"><%= stop.destination.comment %></div>
@@ -169,7 +169,7 @@
           <span class="address">
             <%= route.vehicle.store_stop.street %>
             </br>
-            <%= route.vehicle.store_stop.postalcode %> <%= route.vehicle.store_stop.city %>
+            <%= route.vehicle.store_stop.postalcode %> <%= route.vehicle.store_stop.city %> <%= route.vehicle.store_stop.country %>
           </span>
         </div>
 

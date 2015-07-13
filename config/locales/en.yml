@@ -138,6 +138,7 @@ en:
         detail: "Detail"
         postalcode: "Postalcode"
         city: "City"
+        country: "Country"
         lat: "Latitude"
         lng: "Longitude"
         quantity: "Quantity"
@@ -162,6 +163,7 @@ en:
         detail: "Detail"
         postalcode: "Postalcode"
         city: "City"
+        country: "Country"
         quantity: "Quantity"
         quantity_small: "Qty."
         open: "Time window open"
@@ -226,6 +228,7 @@ en:
         detail: "Detail"
         postalcode: "Postalcode"
         city: "City"
+        country: "Country"
         open: "Open"
         close: "Close"
         store_start: "Start store"
@@ -375,6 +378,7 @@ en:
       geocoding_accuracy_help: "Conversion quality of the address to the geographical position"
       quantity_default: "default"
       take_over_default: "default"
+      country_default: "%{n} (default value)"
     edit:
       title: "Editing destination"
     import:
@@ -408,6 +412,7 @@ en:
       detail: "detail"
       postalcode: "postalcode"
       city: "city"
+      country: "country"
       lat: "lat"
       lng: "lng"
       take_over: "take over"
@@ -578,6 +583,7 @@ en:
       detail: "detail"
       postalcode: "postalcode"
       city: "city"
+      country: "country"
       lat: "lat"
       lng: "lng"
       comment: "comment"
@@ -614,6 +620,7 @@ en:
         city: "London"
     form:
       locate_manually: "Locate manually on the map"
+      country_default: "%{n} (default value)"
     edit:
       title: "Editing store"
     index:

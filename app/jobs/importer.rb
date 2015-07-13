@@ -29,6 +29,7 @@ class Importer
       detail: I18n.t('destinations.import_file.detail'),
       postalcode: I18n.t('destinations.import_file.postalcode'),
       city: I18n.t('destinations.import_file.city'),
+      country: I18n.t('destinations.import_file.country'),
       lat: I18n.t('destinations.import_file.lat'),
       lng: I18n.t('destinations.import_file.lng'),
       open: I18n.t('destinations.import_file.open'),

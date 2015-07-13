@@ -117,7 +117,7 @@ module MasternautWs
           road: waypoint[:street],
           city: waypoint[:city],
           zipCode: waypoint[:postalcode],
-          country: '_',
+          country: waypoint[:country],
         },
         category: {
           logo: 'client_green',
@@ -184,7 +184,7 @@ module MasternautWs
 #            road: waypoint[:street],
 #            city: waypoint[:city],
 #            zipCode: waypoint[:postalcode],
-#            country: '_',
+#            country: waypoint[:country],
 #          },
 ##          category: {
 ##            logo: 'client_green',

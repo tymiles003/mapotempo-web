@@ -21,10 +21,12 @@ class Masternaut
 
   def self.export_route(route)
     order_id_base = Time.now.to_i.to_s(36) + '_' + route.id.to_s
+    customer = route.planning.customer
     waypoints = route.stops.select(&:active).collect{ |stop|
       {
         street: stop.destination.street,
         city: stop.destination.city,
+        country: stop.destination.country || customer.default_country,
         postalcode: stop.destination.postalcode,
         lat: stop.destination.lat,
         lng: stop.destination.lng,
@@ -45,7 +47,6 @@ class Masternaut
       }
     }
 
-    customer = route.planning.customer
     MasternautWs.createJobRoute(customer.masternaut_user, customer.masternaut_password, route.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle.name, route.planning.date || Time.now, route.start, route.end, waypoints)
   end
 end

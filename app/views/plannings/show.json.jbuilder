@@ -15,7 +15,7 @@ else
   json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
   json.size_active @planning.routes.to_a.sum(0){ |route| route.vehicle ? route.size_active : 0 }
   json.stores @planning.customer.stores do |store|
-    json.extract! store, :id, :name, :street, :postalcode, :city, :lat, :lng
+    json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
   end
   json.routes @planning.routes do |route|
     json.route_id route.id
@@ -36,7 +36,7 @@ else
     number = 0
     no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = false
     json.store_start do
-      json.extract! route.vehicle.store_start, :id, :name, :street, :postalcode, :city, :lat, :lng
+      json.extract! route.vehicle.store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
       (json.time route.start.strftime('%H:%M')) if route.start
     end if route.vehicle
     first_active_free = nil
@@ -66,7 +66,7 @@ else
       end
       json.destination do
         destination = stop.destination
-        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :comment
+        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment
         if !destination.tags.empty?
           json.tags_present do
             json.tags do
@@ -94,7 +94,7 @@ else
       end
     end
     json.store_stop do
-      json.extract! route.vehicle.store_stop, :id, :name, :street, :postalcode, :city, :lat, :lng
+      json.extract! route.vehicle.store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
       (json.time route.end.strftime('%H:%M')) if route.end
       json.stop_trace route.stop_trace
       (json.error true) if route.stop_out_of_drive_time

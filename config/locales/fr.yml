@@ -141,6 +141,7 @@ fr:
         detail: "Complément"
         postalcode: "Code postal"
         city: "Ville"
+        country: "Pays"
         lat: "Latitude"
         lng: "Longitude"
         quantity: "Quantité"
@@ -165,6 +166,7 @@ fr:
         detail: "Complément"
         postalcode: "Code postal"
         city: "Ville"
+        country: "Pays"
         quantity: "Quantité"
         quantity_small: "Qté."
         open: "Plage horaire début"
@@ -229,6 +231,7 @@ fr:
         detail: "Complément"
         postalcode: "Code postal"
         city: "Ville"
+        country: "Pays"
         open: "Horaire début"
         close: "Horaire fin"
         store_start: "Dépôt début"
@@ -384,6 +387,7 @@ fr:
       geocoding_accuracy_help: "Qualité de la conversion de l'adresse vers la position géographique"
       quantity_default: "défaut"
       take_over_default: "défaut"
+      country_default: "%{n} (valeur par défaut)"
     edit:
       title: "Modifier client"
     import:
@@ -417,6 +421,7 @@ fr:
       detail: "complément"
       postalcode: "code postal"
       city: "ville"
+      country: "pays"
       lat: "lat"
       lng: "lng"
       take_over: "durée visite"
@@ -587,6 +592,7 @@ fr:
       detail: "complément"
       postalcode: "code postal"
       city: "ville"
+      country: "pays"
       lat: "lat"
       lng: "lng"
       comment: "commentaire"
@@ -625,6 +631,7 @@ fr:
       city: "Bordeaux"
     form:
       locate_manually: "Positionner manuellement sur la carte"
+      country_default: "%{n} (valeur par défaut)"
     edit:
       title: "Modifier dépôt"
     index:

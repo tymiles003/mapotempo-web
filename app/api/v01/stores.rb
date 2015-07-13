@@ -21,7 +21,7 @@ class V01::Stores < Grape::API
     def store_params
       p = ActionController::Parameters.new(params)
       p = p[:store] if p.key?(:store)
-      p.permit(:name, :street, :postalcode, :city, :lat, :lng, :open, :close)
+      p.permit(:name, :street, :postalcode, :city, :country, :lat, :lng, :open, :close)
     end
   end
 

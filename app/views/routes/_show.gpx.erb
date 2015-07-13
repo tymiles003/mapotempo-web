@@ -19,7 +19,7 @@
         <%= route.vehicle.store_start.name %>
       </name>
       <desc><%= route.start.strftime("%H:%M") if route.start %>
-<%= [route.vehicle.store_start.street, route.vehicle.store_start.postalcode, route.vehicle.store_start.city].select{ |i| i && i.length > 0 }.join(', ') %>.
+<%= [route.vehicle.store_start.street, route.vehicle.store_start.postalcode, route.vehicle.store_start.city, route.vehicle.store_start.country].select{ |i| i && i.length > 0 }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
       <% end %>
@@ -49,7 +49,7 @@ route.stops.each{ |stop|
       <% if stop.destination.open or stop.destination.close %>
 <%= stop.destination.open.strftime("%H:%M") if stop.destination.open %>-<%= stop.destination.close.strftime("%H:%M") if stop.destination.close %>
       <% end %>
-<%= [stop.destination.street, stop.destination.detail, stop.destination.postalcode, stop.destination.city].select{ |i| i && i.length > 0 }.join(', ') %>.
+<%= [stop.destination.street, stop.destination.detail, stop.destination.postalcode, stop.destination.city, stop.destination.country].select{ |i| i && i.length > 0 }.join(', ') %>.
       <% if stop.destination.comment && stop.destination.comment.length > 0 %>
 <%= stop.destination.comment %>
       <% end %>
@@ -76,7 +76,7 @@ route.stops.each{ |stop|
         <%= route.vehicle.store_stop.name %>
       </name>
       <desc><%= route.end.strftime("%H:%M") if route.end %>
-<%= [route.vehicle.store_stop.street, route.vehicle.store_stop.postalcode, route.vehicle.store_stop.city].select{ |i| i && i.length > 0 }.join(', ') %>.
+<%= [route.vehicle.store_stop.street, route.vehicle.store_stop.postalcode, route.vehicle.store_stop.city, route.vehicle.store_stop.country].select{ |i| i && i.length > 0 }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
       <% end %>
