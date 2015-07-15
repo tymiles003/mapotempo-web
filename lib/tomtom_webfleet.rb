@@ -59,7 +59,7 @@ module TomtomWebfleet
     unique_base_oder_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
       dstOrderToSend: {
-        orderText: description.gsub(/\r/, ' ').gsub(/\n/, ' ').gsub!(/\s+/, ' ').strip[0..499],
+        orderText: description.gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..499],
         explicitDestination: {
           street: (position.street[0..49] if position.street),
           postcode: (position.postalcode[0..9] if position.postalcode),
@@ -94,7 +94,7 @@ module TomtomWebfleet
           {
             latitude: (waypoint[:lat] * 1e6).round.to_s,
             longitude: (waypoint[:lng] * 1e6).round.to_s,
-            description: waypoint[:description].gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(',', ' ').gsub!(/\s+/, ' ').strip[0..19]
+            description: waypoint[:description].gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(',', ' ').gsub(/\s+/, ' ').strip[0..19]
           }
         }
       }}
