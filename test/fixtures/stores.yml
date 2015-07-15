@@ -14,7 +14,7 @@ store_one:
   ref: b
   name: store 1
   street: MyString
-  postalcode: MyString
+  postalcode: 75001
   city: MyString
   lat: 46.56860
   lng: 0.35462
@@ -24,7 +24,7 @@ store_one_bis:
   ref: c
   name: store 1b
   street: MyString
-  postalcode: MyString
+  postalcode: 11000
   city: MyString
   lat: 46.56860
   lng: 0.35462
@@ -34,7 +34,7 @@ store_two:
   ref: c
   name: store 2
   street: MyString
-  postalcode: MyString
+  postalcode: 66000
   city: MyString
   lat: 48.09385
   lng: -1.64694
