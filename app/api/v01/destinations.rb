@@ -135,7 +135,7 @@ class V01::Destinations < Grape::API
       params: V01::Entities::Destination.documentation.except(:id),
       entity: V01::Entities::Destination
     patch 'geocode' do
-      destination = Destination.new(destination_params)
+      destination = current_customer.destinations.build(destination_params)
       destination.geocode
       present destination, with: V01::Entities::Destination
     end

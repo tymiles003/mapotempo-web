@@ -135,7 +135,7 @@ class V01::Stores < Grape::API
       params: V01::Entities::Store.documentation.except(:id),
       entity: V01::Entities::Store
     patch 'geocode' do
-      store = Store.new(store_params)
+      store = current_customer.stores.build(store_params)
       store.geocode
       present store, with: V01::Entities::Store
     end
