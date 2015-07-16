@@ -74,11 +74,10 @@ module Mapotempo
     config.optimize_cluster_size = 5
     config.optimize_soft_upper_bound = 3
 
+    config.geocode_geocoder = nil
     config.geocode_code_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode'), namespace: 'geocode', expires_in: 60*60*24*10)
     config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode_reverse'), namespace: 'geocode_reverse', expires_in: 60*60*24*10)
     config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode_complete'), namespace: 'geocode_complete', expires_in: 60*60*24*10)
-    config.geocode_ign_referer = 'localhost'
-    config.geocode_ign_key = nil
     config.geocode_complete = false # Build time setting
 
     config.osrm = Osrm.new(

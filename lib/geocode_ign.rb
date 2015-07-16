@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -23,15 +23,18 @@ require 'json'
 require 'rexml/document'
 include REXML
 
-module Geocode
+class GeocodeIgn
 
-  @cache_code = Mapotempo::Application.config.geocode_code_cache
-  @cache_reverse = Mapotempo::Application.config.geocode_reverse_cache
-  @cache_complete = Mapotempo::Application.config.geocode_complete_cache
-  @ign_referer = Mapotempo::Application.config.geocode_ign_referer
-  @ign_key = Mapotempo::Application.config.geocode_ign_key
+  def initialize(key, referer)
+    @ign_key = key
+    @ign_referer = referer
 
-  def self.reverse(lat, lng)
+    @cache_code = Mapotempo::Application.config.geocode_code_cache
+    @cache_reverse = Mapotempo::Application.config.geocode_reverse_cache
+    @cache_complete = Mapotempo::Application.config.geocode_complete_cache
+  end
+
+  def reverse(lat, lng)
     key = [lat, lng]
 
     result = @cache_reverse.read(key)
@@ -90,11 +93,11 @@ module Geocode
     end
   end
 
-  def self.complete(lat, lng, radius, street, postalcode, city)
+  def complete(street, postalcode, city, country, lat = nil, lng = nil)
     []
   end
 
-  def self.code(street, postalcode, city)
+  def code(street, postalcode, city, country, lat = nil, lng = nil)
     key = [street, postalcode, city]
 
     result = @cache_code.read(key)
@@ -156,7 +159,7 @@ module Geocode
     end
   end
 
-  def self.code_free(q)
+  def code_free(q, country, limit = 10, lat = nil, lng = nil)
     key = q
 
     result = @cache_code.read(key)

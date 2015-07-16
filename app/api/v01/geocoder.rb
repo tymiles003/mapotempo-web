@@ -15,8 +15,6 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'geocode'
-
 class V01::Geocoder < Grape::API
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -32,9 +30,12 @@ class V01::Geocoder < Grape::API
       nickname: 'geocode'
     params do
       requires :q, type: String, desc: 'Free query string.'
+      optional :lat, type: Float, desc: 'Prioritize results around this latitude.'
+      optional :lng, type: Float, desc: 'Prioritize results around this longitude.'
+      optional :limit, type: Integer, desc: 'Max results numbers. (default and upper max 10)'
     end
     get 'search' do
-      json = Geocode.code_free(params[:q]).collect{ |result|
+      json = Mapotempo::Application.config.geocode_geocoder.code_free(params[:q], current_customer.default_country, params[:limit] || 10, params[:lat], params[:lng]).collect{ |result|
         {
           address: {
             city: result[:free]

@@ -47,8 +47,8 @@ class Store < ActiveRecord::Base
   before_destroy :destroy_vehicle_store
 
   def geocode
-    address = Geocode.code(street, postalcode, city)
-    Rails.logger.info address
+    address = Mapotempo::Application.config.geocode_geocoder.code(street, postalcode, city, country || customer.default_country)
+    Rails.logger.info address.inspect
     if address
       self.lat, self.lng, self.geocoding_accuracy = address[:lat], address[:lng], address[:accuracy]
     end
