@@ -354,7 +354,7 @@ en:
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
-      speed_multiplicator_default: "%{n} (default value}"
+      speed_multiplicator_default: "%{n} (default value)"
       speed_multiplicator_help: "A value higher than 100% mean higher speed."
 
   destinations:
@@ -695,7 +695,7 @@ en:
       capacity_help: "Maximun vehicle's capacity"
       router_default: "Default"
       router_help: "Force usage of this router"
-      speed_multiplicator_default: "%{n} (default value}"
+      speed_multiplicator_default: "%{n} (default value)"
       speed_multiplicator_help: "A value higher than 100% mean higher speed. The global tune up set on customer is also used on computation."
 
   zonings:
