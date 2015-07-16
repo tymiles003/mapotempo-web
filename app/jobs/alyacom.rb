@@ -34,14 +34,16 @@ class Alyacom
     date = route.planning.date || Date.today
     planning_id_base = date.strftime('%y%m%d')
     base_time = date.to_time
+    position = route.vehicle.store_start
     waypoints = route.stops.select(&:active).collect{ |stop|
+      position = stop.position? ? stop : position
       {
         user: {
           id: stop_base_id,
           name: stop.name,
-          street: stop.street,
-          postalcode: stop.postalcode,
-          city: stop.city,
+          street: position.street,
+          postalcode: position.postalcode,
+          city: position.city,
           detail: stop.detail,
           comment: [
             stop.ref,

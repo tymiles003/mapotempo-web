@@ -22,14 +22,16 @@ class Masternaut
   def self.export_route(route)
     order_id_base = Time.now.to_i.to_s(36) + '_' + route.id.to_s
     customer = route.planning.customer
+    position = route.vehicle.store_start
     waypoints = route.stops.select(&:active).collect{ |stop|
+      position = stop.position? ? stop : position
       {
-        street: stop.street,
-        city: stop.city,
-        postalcode: stop.postalcode,
-        country: stop.country || customer.default_country,
-        lat: stop.lat,
-        lng: stop.lng,
+        street: position.street,
+        city: position.city,
+        postalcode: position.postalcode,
+        country: position.country || customer.default_country,
+        lat: position.lat,
+        lng: position.lng,
         ref: stop.ref,
         name: stop.name,
         id: stop.base_id,

@@ -32,7 +32,9 @@ class Tomtom
     date = route.planning.date || Date.today.to_time
     customer = route.planning.customer
     TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, route.vehicle.store_start, -1, route.vehicle.store_start.name, route.start)
+    position = route.vehicle.store_start
     route.stops.select(&:active).each{ |stop|
+      position = stop.position? ? stop : position
       description = [
         '',
         stop.name,
@@ -42,7 +44,7 @@ class Tomtom
         stop.detail,
         stop.comment,
       ].select{ |s| s }.join(' ').strip
-      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, stop.is_a?(StopDestination) ? stop.destination : route.vehicle.store_rest, stop.id, description, stop.time)
+      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, stop.position? ? stop : position, stop.id, description, stop.time)
     }
     TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, route.vehicle.store_stop, -2, route.vehicle.store_stop.name, route.start)
   end
@@ -50,15 +52,17 @@ class Tomtom
   def self.export_route_as_waypoints(route)
     date = route.planning.date || Date.today
     customer = route.planning.customer
+    position = route.vehicle.store_start
     waypoints = ([[
         route.vehicle.store_start.lat,
         route.vehicle.store_start.lng,
         '',
         route.vehicle.store_start.name
       ]] + route.stops.select(&:active).collect{ |stop|
+        position = stop.position? ? stop : position
         [
-          stop.lat,
-          stop.lng,
+          position.lat,
+          position.lng,
           '',
           stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
           stop.name,
