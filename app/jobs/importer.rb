@@ -131,7 +131,7 @@ class Importer
 
     Destination.transaction do
       if replace
-        customer.destinations.destroy_all
+        customer.destinations_destroy_all
       end
 
       data.each{ |row|

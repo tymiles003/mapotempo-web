@@ -261,6 +261,13 @@ class Route < ActiveRecord::Base
     end
   end
 
+  def force_reindex
+    # Force reindex after customers.destination.destroy_all
+    stops.each_with_index{ |stop, index|
+      stop.index = index + 1
+    }
+  end
+
   def sum_out_of_window
     stops.to_a.sum{ |stop|
       (stop.time && stop.open && stop.time < stop.open ? stop.open - stop.time : 0) +
