@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150710144116) do
+ActiveRecord::Schema.define(version: 20150715120003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,9 @@ ActiveRecord::Schema.define(version: 20150710144116) do
     t.integer  "profile_id",                                                null: false
     t.float    "speed_multiplicator"
     t.string   "default_country",                                           null: false
+    t.boolean  "enable_tomtom",                             default: false, null: false
+    t.boolean  "enable_masternaut",                         default: false, null: false
+    t.boolean  "enable_alyacom",                            default: false, null: false
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree
