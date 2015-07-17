@@ -21,7 +21,7 @@ class V01::Destinations < Grape::API
     def destination_params
       p = ActionController::Parameters.new(params)
       p = p[:destination] if p.key?(:destination)
-      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
+      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
     end
 
     def destinations_import_params

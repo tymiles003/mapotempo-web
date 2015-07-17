@@ -4,11 +4,14 @@
   <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
   <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
   <%= f.text_field :city %>
+  <%= f.text_field :country, {placeholder: t('.country_default', n: @store.customer.default_country)} %>
   <input type="hidden" name="store[lat]" value="<%= @store.lat %>" />
   <input type="hidden" name="store[lng]" value="<%= @store.lng %>" />
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
+  <%= f.text_field :lat %>
+  <%= f.text_field :lng %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

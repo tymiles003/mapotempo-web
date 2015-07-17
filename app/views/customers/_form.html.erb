@@ -48,54 +48,75 @@
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h2 class="panel-title">
-        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomtom">
-          <%= t '.tomtom' %>
-        </a>
-      </h2>
-    </div>
-    <div id="collapseTomtom" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p class="help-block"><%= t '.tomtom_help' %></p>
-        <%= f.text_field :tomtom_account %>
-        <%= f.text_field :tomtom_user %>
-        <%= f.text_field :tomtom_password %>
+  <% if current_user.admin? %>
+    <%= f.toggles t 'activerecord.attributes.customer.enable_tomtom' do %>
+      <%= f.check_box :enable_tomtom %>
+    <% end %>
+  <% end %>
+  <% if @customer.enable_tomtom? %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">
+          <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomtom">
+            <%= t '.tomtom' %>
+          </a>
+        </h2>
+      </div>
+      <div id="collapseTomtom" class="panel-collapse collapse">
+        <div class="panel-body">
+          <p class="help-block"><%= t '.tomtom_help' %></p>
+          <%= f.text_field :tomtom_account %>
+          <%= f.text_field :tomtom_user %>
+          <%= f.text_field :tomtom_password %>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h2 class="panel-title">
-        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseMasternaut">
-          <%= t '.masternaut' %>
-        </a>
-      </h2>
-    </div>
-    <div id="collapseMasternaut" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p class="help-block"><%= t '.masternaut_help' %></p>
-        <%= f.text_field :masternaut_user %>
-        <%= f.text_field :masternaut_password %>
+  <% end %>
+  <% if current_user.admin? %>
+    <%= f.toggles t 'activerecord.attributes.customer.enable_masternaut' do %>
+      <%= f.check_box :enable_masternaut %>
+    <% end %>
+  <% end %>
+  <% if @customer.enable_masternaut? %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">
+          <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseMasternaut">
+            <%= t '.masternaut' %>
+          </a>
+        </h2>
+      </div>
+      <div id="collapseMasternaut" class="panel-collapse collapse">
+        <div class="panel-body">
+          <p class="help-block"><%= t '.masternaut_help' %></p>
+          <%= f.text_field :masternaut_user %>
+          <%= f.text_field :masternaut_password %>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h2 class="panel-title">
-        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAlyacom">
-          <%= t '.alyacom' %>
-        </a>
-      </h2>
-    </div>
-    <div id="collapseAlyacom" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p class="help-block"><%= t '.alyacom_help' %></p>
-        <%= f.text_field :alyacom_association %>
+  <% end %>
+  <% if current_user.admin? %>
+    <%= f.toggles t 'activerecord.attributes.customer.enable_alyacom' do %>
+      <%= f.check_box :enable_alyacom %>
+    <% end %>
+  <% end %>
+  <% if @customer.enable_alyacom? %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">
+          <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAlyacom">
+            <%= t '.alyacom' %>
+          </a>
+        </h2>
+      </div>
+      <div id="collapseAlyacom" class="panel-collapse collapse">
+        <div class="panel-body">
+          <p class="help-block"><%= t '.alyacom_help' %></p>
+          <%= f.text_field :alyacom_association %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

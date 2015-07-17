@@ -21,6 +21,7 @@ class V01::Entities::Vehicle < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
+  expose(:ref, documentation: { type: String })
   expose(:name, documentation: { type: String })
   expose(:emission, documentation: { type: Integer })
   expose(:consumption, documentation: { type: Integer })

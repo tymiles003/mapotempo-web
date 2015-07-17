@@ -25,6 +25,7 @@ class V01::Entities::Destination < Grape::Entity
   expose(:street, documentation: { type: String })
   expose(:postalcode, documentation: { type: String })
   expose(:city, documentation: { type: String })
+  expose(:country, documentation: { type: String })
   expose(:lat, documentation: { type: Float })
   expose(:lng, documentation: { type: Float })
   expose(:quantity, documentation: { type: Integer })

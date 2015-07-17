@@ -44,6 +44,7 @@
 //= require jquery-tablesorter/widgets/widget-filter-formatter-html5
 //= require jquery-tablesorter/widgets/widget-filter-formatter-jui
 //= require jquery-tablesorter/jquery.tablesorter.widgets
+//= require jquery-tablesorter/widgets/widget-scroller
 //= require jquery-tablesorter/widgets/widget-columnSelector
 //= require jquery.simplecolorpicker
 //= require jquery.timeentry

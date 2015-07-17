@@ -88,6 +88,18 @@ function destinations_form(params, api) {
       if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
         url = '/api/0.1/' + api + '/geocode.json';
       } else {
+        if (event.currentTarget.name.match(/\[lat\]|\[lng\]$/)) {
+          var latChg = $(":input[id$=_lat]").val(),
+              lngChg = $(":input[id$=_lng]").val();
+          if (destination_id in markers) {
+            markers[destination_id].setLatLng(new L.LatLng(latChg, lngChg));
+          } else {
+            addMarker(destination_id, latChg, lngChg);
+          }
+          if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
+            map.setView(markers[destination_id].getLatLng(), 16);
+          }
+        }
         return;
       }
       $.ajax({
@@ -511,9 +523,12 @@ function destinations_index(params, api) {
     }
     var row = $('[data-destination_id=' + id + ']');
     row.addClass('highlight');
-    if (row.position().top < $("#destination_box").scrollTop() || row.position().top > $("#destination_box").scrollTop() + $("#destination_box").height()) {
-      $("#destination_box").animate({
-        scrollTop: row.position().top - 100
+    var locRowPositionTop = $(".tablesorter-scroller-table table").height();
+    if (row.position().top != 0)
+      locRowPositionTop = row.position().top - $(".tablesorter-scroller-header").height() + $(".tablesorter-scroller-table").scrollTop();
+    if (locRowPositionTop < $(".tablesorter-scroller-table").scrollTop() || locRowPositionTop > $(".tablesorter-scroller-table").scrollTop() + $(".tablesorter-scroller-table").height()) {
+      $(".tablesorter-scroller-table").animate({
+        scrollTop: locRowPositionTop - 25
       });
     }
   }
@@ -527,7 +542,7 @@ function destinations_index(params, api) {
     marker.on('dragend', function(event) {
       sendMove(event.target.options.destination, event.target.getLatLng());
     });
-    marker.on('mouseover', function(mouseEvent) {
+    marker.on('click', function(mouseEvent) {
       if (!pointing) {
         over(mouseEvent.target.options.destination, false);
       }
@@ -659,11 +674,8 @@ function destinations_index(params, api) {
         0: {
           sorter: false
         },
-        4: {
-          sorter: "digit"
-        },
         5: {
-          sorter: false
+          sorter: "digit"
         },
         6: {
           sorter: false
@@ -675,14 +687,17 @@ function destinations_index(params, api) {
           sorter: false
         },
         9: {
-          sorter: "digit"
+          sorter: false
         },
         10: {
+          sorter: "digit"
+        },
+        11: {
           sorter: false
         }
       },
       textExtraction: function(node, table, cellIndex) {
-        if (cellIndex == 7) {
+        if (cellIndex == 8) {
           return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).join(",");
@@ -699,7 +714,7 @@ function destinations_index(params, api) {
       headerTemplate: '{content} {icon}',
       widgets: ["uitheme", "filter", "columnSelector", "scroller"],
       widgetOptions: {
-        scroller_height: 120,
+        scroller_height: 220,
         // scroll tbody to top after sorting
         scroller_upAfterSort: true,
         // pop table header into view while scrolling up the page
@@ -715,9 +730,10 @@ function destinations_index(params, api) {
           1: filter_text,
           2: filter_text,
           3: filter_text,
-          4: filter_number,
-          5: filter_text,
-          6: function(e, n, f, i, $r) {
+          4: filter_text,
+          5: filter_number,
+          6: filter_text,
+          7: function(e, n, f, i, $r) {
             n = n.split(',');
             n[0] = n[0].split(':');
             n[0] = new Date(2000, 1, 1, n[0][0], n[0][1]);
@@ -730,11 +746,11 @@ function destinations_index(params, api) {
 
             return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
           },
-          7: filter_text,
-          8: filter_text
+          8: filter_text,
+          9: filter_text
         },
         filter_formatter: {
-          6: function($cell, indx) {
+          7: function($cell, indx) {
             return $.tablesorter.filterFormatter.uiRange($cell, indx, {
               values: [0, 24],
               min: 0,
@@ -743,27 +759,22 @@ function destinations_index(params, api) {
               valueToHeader: false
             });
           },
-          9: function($cell, indx) {
+          10: function($cell, indx) {
             return false;
           },
-          10: function($cell, indx) {
+          11: function($cell, indx) {
             return false;
           }
         },
         columnSelector_container: $('#columnSelector'),
+        columnSelector_name: 'data-selector-name',
+        columnSelector_priority: 'data-priority',
         columnSelector_layout: '<li role="presentation"><label><input type="checkbox">{name}</label></li>',
         columnSelector_columns: {
           0: 'disable',
-          1: true,
           2: 'disable',
           3: 'disable',
-          4: true,
-          5: false,
-          6: true,
-          7: true,
-          8: true,
-          9: true,
-          10: 'disable'
+          11: 'disable'
         }
       }
     };

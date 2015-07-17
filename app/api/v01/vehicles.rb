@@ -21,7 +21,7 @@ class V01::Vehicles < Grape::API
     def vehicle_params
       p = ActionController::Parameters.new(params)
       p = p[:vehicle] if p.key?(:vehicle)
-      p.permit(:name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :store_start_id, :store_stop_id, :router_id)
+      p.permit(:ref, :name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :store_start_id, :store_stop_id, :router_id)
     end
   end
 

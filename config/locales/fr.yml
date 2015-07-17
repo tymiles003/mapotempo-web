@@ -110,6 +110,9 @@ fr:
         take_over: "Durée de visite"
         name: "Nom"
         destinations : "Clients"
+        enable_tomtom: "Activer TomTom WEBFLEET"
+        enable_masternaut: "Activer Masternaut"
+        enable_alyacom: "Activer Alyacom"
         tomtom_account: "Compte WEBFLEET"
         tomtom_user: "Nom d'utilisateur WEBFLEET"
         tomtom_password: "Mot de passe WEBFLEET"
@@ -138,6 +141,7 @@ fr:
         detail: "Complément"
         postalcode: "Code postal"
         city: "Ville"
+        country: "Pays"
         lat: "Latitude"
         lng: "Longitude"
         quantity: "Quantité"
@@ -162,6 +166,7 @@ fr:
         detail: "Complément"
         postalcode: "Code postal"
         city: "Ville"
+        country: "Pays"
         quantity: "Quantité"
         quantity_small: "Qté."
         open: "Plage horaire début"
@@ -226,6 +231,7 @@ fr:
         detail: "Complément"
         postalcode: "Code postal"
         city: "Ville"
+        country: "Pays"
         open: "Horaire début"
         close: "Horaire fin"
         store_start: "Dépôt début"
@@ -318,6 +324,8 @@ fr:
         new: "Nouvel utilisateur"
       new:
         title: "Nouvel utilisateur"
+      edit:
+        title: "Modifier utilisateur"
 
   customers:
     default:
@@ -379,11 +387,12 @@ fr:
       geocoding_accuracy_help: "Qualité de la conversion de l'adresse vers la position géographique"
       quantity_default: "défaut"
       take_over_default: "défaut"
+      country_default: "%{n} (valeur par défaut)"
     edit:
       title: "Modifier client"
     import:
       title: "Importer des clients"
-      replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus. Dans la cas contraire une mise à jour des clients existants est faite et les nouveaux sont ajoutés."
+      replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus. Dans le cas contraire une mise à jour des clients existants est faite et les nouveaux sont ajoutés."
       replace_confirm: "Supprimer tous les clients et leurs modifications pour les remplacer par ceux importés ?"
       file_help: "Import de fichier CSV uniquement."
       template_csv: "Modèle import tableur standard"
@@ -412,6 +421,7 @@ fr:
       detail: "complément"
       postalcode: "code postal"
       city: "ville"
+      country: "pays"
       lat: "lat"
       lng: "lng"
       take_over: "durée visite"
@@ -492,7 +502,7 @@ fr:
         spreadsheet_standard: "Tableur standard"
         spreadsheet_standard_without_stores: "Tableur standard sans dépôts"
         spreadsheet_excel: "Tableur Excel"
-        gps_waypoint: "Points de passage GPS"
+        gps_waypoint: "GPX Route"
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
         tomtom_empty: "Vider TomTom"
@@ -582,6 +592,7 @@ fr:
       detail: "complément"
       postalcode: "code postal"
       city: "ville"
+      country: "pays"
       lat: "lat"
       lng: "lng"
       comment: "commentaire"
@@ -620,6 +631,7 @@ fr:
       city: "Bordeaux"
     form:
       locate_manually: "Positionner manuellement sur la carte"
+      country_default: "%{n} (valeur par défaut)"
     edit:
       title: "Modifier dépôt"
     index:
@@ -680,6 +692,7 @@ fr:
     new:
       title: "Nouveau véhicules"
     form:
+      ref_help: "Référence libre"
       open_help: "Horaire de travail livreur"
       close_help: "Horaire de travail livreur"
       emissions_help: "Type de carburant"

@@ -107,6 +107,9 @@ en:
         take_over: "Take over"
         name: "Name"
         destinations: "Destinations"
+        enable_tomtom: "Enable TomTom WEBFLEET"
+        enable_masternaut: "Enable Masternaut"
+        enable_alyacom: "Enable Alyacom"
         tomtom_account: "WEBFLEET account name"
         tomtom_user: "WEBFLEET Username"
         tomtom_password: "WEBFLEET Password"
@@ -135,6 +138,7 @@ en:
         detail: "Detail"
         postalcode: "Postalcode"
         city: "City"
+        country: "Country"
         lat: "Latitude"
         lng: "Longitude"
         quantity: "Quantity"
@@ -159,6 +163,7 @@ en:
         detail: "Detail"
         postalcode: "Postalcode"
         city: "City"
+        country: "Country"
         quantity: "Quantity"
         quantity_small: "Qty."
         open: "Time window open"
@@ -223,6 +228,7 @@ en:
         detail: "Detail"
         postalcode: "Postalcode"
         city: "City"
+        country: "Country"
         open: "Open"
         close: "Close"
         store_start: "Start store"
@@ -309,6 +315,8 @@ en:
         new: "New user"
       new:
         title: "New user"
+      edit:
+        title: "Edit user"
 
   customers:
     default:
@@ -346,7 +354,7 @@ en:
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
-      speed_multiplicator_default: "%{n} (default value}"
+      speed_multiplicator_default: "%{n} (default value)"
       speed_multiplicator_help: "A value higher than 100% mean higher speed."
 
   destinations:
@@ -370,6 +378,7 @@ en:
       geocoding_accuracy_help: "Conversion quality of the address to the geographical position"
       quantity_default: "default"
       take_over_default: "default"
+      country_default: "%{n} (default value)"
     edit:
       title: "Editing destination"
     import:
@@ -403,6 +412,7 @@ en:
       detail: "detail"
       postalcode: "postalcode"
       city: "city"
+      country: "country"
       lat: "lat"
       lng: "lng"
       take_over: "take over"
@@ -483,7 +493,7 @@ en:
         spreadsheet_standard: "Spreadsheet Standard"
         spreadsheet_standard_without_stores: "Spreadsheet Standard without stores"
         spreadsheet_excel: "Spreadsheet Excel"
-        gps_waypoint: "GPS Waypoint"
+        gps_waypoint: "GPX Route"
         tomtom_orders: "Send to TomTom as Orders"
         tomtom_waypoints: "Send to TomTom as Waypoints"
         tomtom_empty: "Clear TomTom"
@@ -573,6 +583,7 @@ en:
       detail: "detail"
       postalcode: "postalcode"
       city: "city"
+      country: "country"
       lat: "lat"
       lng: "lng"
       comment: "comment"
@@ -609,6 +620,7 @@ en:
         city: "London"
     form:
       locate_manually: "Locate manually on the map"
+      country_default: "%{n} (default value)"
     edit:
       title: "Editing store"
     index:
@@ -675,6 +687,7 @@ en:
     new:
       title: "New vehicle"
     form:
+      ref_help: "A free reference"
       open_help: "Deliveryman's working hours"
       close_help: "Deliveryman's working hours"
       emissions_help: "Fuel Type"
@@ -682,7 +695,7 @@ en:
       capacity_help: "Maximun vehicle's capacity"
       router_default: "Default"
       router_help: "Force usage of this router"
-      speed_multiplicator_default: "%{n} (default value}"
+      speed_multiplicator_default: "%{n} (default value)"
       speed_multiplicator_help: "A value higher than 100% mean higher speed. The global tune up set on customer is also used on computation."
 
   zonings:
