@@ -63,7 +63,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Update planning.', {
-      nickname: 'updatePLanning',
+      nickname: 'updatePlanning',
       params: V01::Entities::Planning.documentation.except(:id),
       entity: V01::Entities::Planning
     }
