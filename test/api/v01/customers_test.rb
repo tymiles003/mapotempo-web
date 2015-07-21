@@ -17,6 +17,11 @@ class V01::CustomerTest < ActiveSupport::TestCase
     "/api/0.1/customers#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
   end
 
+  def api_admin(part = nil)
+    part = part ? '/' + part.to_s : ''
+    "/api/0.1/customers#{part}.json?api_key=adminkey"
+  end
+
   test 'should return a customer' do
     get api(@customer.id)
     assert last_response.ok?, last_response.body
@@ -31,6 +36,20 @@ class V01::CustomerTest < ActiveSupport::TestCase
     get api(@customer.id)
     assert last_response.ok?, last_response.body
     assert_equal @customer.tomtom_user, JSON.parse(last_response.body)['tomtom_user']
+  end
+
+  test 'should create a customer' do
+    assert_difference('Customer.count', 1) do
+      post api_admin, {name: 'new cust', default_country: 'France', router_id: @customer.router_id, profile_id: @customer.profile_id}
+      assert last_response.created?, last_response.body
+    end
+  end
+
+  test 'should destroy a customer' do
+    assert_difference('Customer.count', -1) do
+      delete api_admin(@customer.id)
+      assert last_response.ok?, last_response.body
+    end
   end
 
   test 'should get job' do

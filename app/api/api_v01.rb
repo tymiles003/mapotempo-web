@@ -24,8 +24,9 @@ class ApiV01 < Grape::API
     end
 
     def current_customer(customer_id = nil)
+      params = Rack::Utils.parse_nested_query(request.query_string)
       @current_user ||= warden.authenticated? && warden.user
-      @current_user ||= params[:api_key] && User.find_by(api_key: params[:api_key])
+      @current_user ||= params['api_key'] && User.find_by(api_key: params['api_key'])
       @current_customer ||= @current_user && (@current_user.admin? && customer_id ? @current_user.reseller.customers.find(customer_id.to_i) : @current_user.customer)
     end
 
@@ -92,14 +93,18 @@ class ApiV01 < Grape::API
 
   mount V01::Customers
   mount V01::Destinations
+  mount V01::Layers
   mount V01::OrderArrays
   mount V01::Orders
   mount V01::Plannings
   mount V01::Products
+  mount V01::Profiles
+  mount V01::Routers
   mount V01::Routes
   mount V01::Stops
   mount V01::Stores
   mount V01::Tags
+  mount V01::Users
   mount V01::Vehicles
   mount V01::Zonings
 

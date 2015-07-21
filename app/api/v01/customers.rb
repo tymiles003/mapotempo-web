@@ -24,9 +24,9 @@ class V01::Customers < Grape::API
       p = ActionController::Parameters.new(params)
       p = p[:customer] if p.key?(:customer)
       if @current_user.admin?
-        p.permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :enable_tomtom, :enable_masternaut, :enable_alyacom, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound)
+        p.permit(:name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :enable_tomtom, :enable_masternaut, :enable_alyacom, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id, :default_country)
       else
-        p.permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :alyacom_association)
+        p.permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :alyacom_association, :default_country)
       end
     end
   end
@@ -57,6 +57,36 @@ class V01::Customers < Grape::API
       @current_customer.update(customer_params)
       @current_customer.save!
       present @current_customer, with: V01::Entities::Customer
+    end
+
+    desc 'Create customer.', {
+      nickname: 'createCustomer',
+      params: V01::Entities::Customer.documentation.except(:id).merge({
+        name: { required: true },
+        default_country: { required: true },
+        router_id: { required: true },
+        profile_id: { required: true }
+      }),
+      entity: V01::Entities::Customer
+    }
+    post do
+      if @current_user.admin?
+        customer = Customer.new(customer_params)
+        customer.save!
+        present customer, with: V01::Entities::Customer
+      end
+    end
+
+    desc 'Delete customer.', {
+      nickname: 'deleteCustomer'
+    }
+    params {
+      requires :id, type: Integer
+    }
+    delete ':id' do
+      if @current_user.admin?
+        Customer.find(params[:id]).destroy
+      end
     end
 
     desc 'Return a job', {
