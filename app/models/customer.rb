@@ -35,6 +35,7 @@ class Customer < ActiveRecord::Base
 
   nilify_blanks
   auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association, :default_country
+  validates :profile, presence: true
   validates :router, presence: true
   validates :name, presence: true
   validates :default_country, presence: true
