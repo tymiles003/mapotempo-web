@@ -239,6 +239,8 @@ en:
         postalcode: "Postalcode"
         city: "City"
         country: "Country"
+        lat: "Latitude"
+        lng: "Longitude"
         open: "Open"
         close: "Close"
         store_start: "Start store"

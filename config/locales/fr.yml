@@ -242,6 +242,8 @@ fr:
         postalcode: "Code postal"
         city: "Ville"
         country: "Pays"
+        lat: "Latitude"
+        lng: "Longitude"
         open: "Horaire début"
         close: "Horaire fin"
         store_start: "Dépôt début"
