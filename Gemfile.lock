@@ -226,6 +226,9 @@ GEM
       railties (>= 3.1.0)
     jquery-tablesorter (1.16.5)
       railties (>= 3.2, < 5)
+    jquery-turbolinks (2.1.0)
+      railties (>= 3.1.0)
+      turbolinks
     jquery-ui-rails (5.0.3)
       railties (>= 3.2.16)
     json (1.8.2)
@@ -469,6 +472,7 @@ DEPENDENCIES
   jquery-simplecolorpicker-rails
   jquery-tablesorter
   jquery-timeentry-rails!
+  jquery-turbolinks
   jquery-ui-rails
   leaflet-active-area-rails!
   leaflet-control-geocoder-rails!

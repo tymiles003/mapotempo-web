@@ -89,6 +89,7 @@ gem 'leaflet_numbered_markers-rails', github: 'frodrigo/leaflet_numbered_markers
 gem 'leaflet-active-area-rails', github: 'frodrigo/leaflet-active-area-rails'
 gem 'leaflet-control-geocoder-rails', github: 'frodrigo/leaflet-control-geocoder-rails'
 
+gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
 gem 'jquery-tablesorter'
 gem 'jquery-simplecolorpicker-rails'

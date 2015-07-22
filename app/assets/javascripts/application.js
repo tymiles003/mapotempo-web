@@ -29,13 +29,13 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require bootstrap-filestyle
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales
 //= require bootstrap-datepicker
-//= require turbolinks
 //= require jquery-ui/sortable
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog
@@ -66,6 +66,8 @@
 //= require paloma
 //= require leaflet.polylineoffset
 //= require_tree .
+// jQuery Turbolinks documentation informs to load all scripts before turbolinks
+//= require turbolinks
 
 Turbolinks.enableProgressBar();
 
