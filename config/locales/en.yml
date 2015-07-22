@@ -656,6 +656,7 @@ en:
         lng: "-0.2596"
         city: "London"
     form:
+      ref_help: "A free reference"
       locate_manually: "Locate manually on the map"
       country_default: "%{n} (default value)"
     edit:

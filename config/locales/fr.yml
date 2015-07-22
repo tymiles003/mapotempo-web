@@ -667,6 +667,7 @@ fr:
       lng: "-0.60068"
       city: "Bordeaux"
     form:
+      ref_help: "Référence libre"
       locate_manually: "Positionner manuellement sur la carte"
       country_default: "%{n} (valeur par défaut)"
     edit:

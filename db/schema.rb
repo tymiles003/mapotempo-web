@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(version: 20150814165916) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "country"
+    t.string   "ref"
   end
 
   add_index "stores", ["customer_id"], name: "fk__stores_customer_id", using: :btree
