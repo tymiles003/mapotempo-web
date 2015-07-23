@@ -31,7 +31,7 @@ class OrderArraysController < ApplicationController
     if planning
       i = -1
       destination_index = Hash[planning.routes.collect{ |route|
-        route.stops.collect{ |stop|
+        route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
           [stop.destination.id, route.vehicle]
         }
       }.flatten(1).collect{ |id, vehicule| [id, [i+=1, vehicule]] }]
