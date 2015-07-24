@@ -53,6 +53,10 @@
   }
 
   thead {
+    .tablesorter-header-inner:after {
+      display: none;
+    }
+
     th.order {
       .tablesorter-header-inner {
         padding: 0px;
