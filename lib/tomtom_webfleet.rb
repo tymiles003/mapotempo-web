@@ -18,6 +18,7 @@
 require 'savon'
 
 module TomtomWebfleet
+  TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
   @client_objects = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
     #log true
@@ -86,7 +87,7 @@ module TomtomWebfleet
       }
     }
 
-    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = date.strftime('%Y-%m-%dT') + time.strftime('%H:%M:%S')) if time
+    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = (date.to_time + (time.to_i - TIME_2000)).strftime('%Y-%m-%dT%H:%M:%S')) if time
 
     if waypoints
       params[:advancedSendDestinationOrderParm] = {waypoints: {

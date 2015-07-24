@@ -26,7 +26,9 @@ class V01::RoutesTest < ActiveSupport::TestCase
   test 'should return a route' do
     get api(@route.planning.id, @route.id)
     assert last_response.ok?, last_response.body
-    assert @route.stops.size, JSON.parse(last_response.body)['stops'].size
+    stops = JSON.parse(last_response.body)['stops']
+    assert_equal @route.stops.size, stops.size
+    assert_equal '2015-10-10T00:00:30', stops[0]['time']
   end
 
   test 'should update a route' do

@@ -3,6 +3,7 @@
 planning_one:
   name: planning1
   ref: r1
+  date: 2015-10-10 00:00:00
   customer: customer_one
   zoning: zoning_one
   tags: tag_one

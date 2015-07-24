@@ -29,7 +29,7 @@ class Tomtom
   end
 
   def self.export_route_as_orders(route)
-    date = route.planning.date || Time.now
+    date = route.planning.date || Date.today.to_time
     customer = route.planning.customer
     TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, route.vehicle.store_start, -1, route.vehicle.store_start.name, route.start)
     route.stops.select(&:active).each{ |stop|
@@ -48,7 +48,7 @@ class Tomtom
   end
 
   def self.export_route_as_waypoints(route)
-    date = route.planning.date || Time.now
+    date = route.planning.date || Date.today
     customer = route.planning.customer
     waypoints = ([[
         route.vehicle.store_start.lat,

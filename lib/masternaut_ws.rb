@@ -18,6 +18,7 @@
 require 'savon'
 
 module MasternautWs
+  TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
   @@error_code_poi = {
     '200' => 'request has been successful',
@@ -156,9 +157,9 @@ module MasternautWs
 
     params = {
       jobRoute: {
-        begin: date.strftime('%Y-%m-%dT') + begin_time.strftime('%H:%M:%S'),
+        begin: (date.to_time + (begin_time.to_i - TIME_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
         description: description ? description.gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..50] : nil,
-        end: date.strftime('%Y-%m-%dT') + end_time.strftime('%H:%M:%S'),
+        end: (date.to_time + (end_time.to_i - TIME_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
         reference: reference,
       }
     }
@@ -175,7 +176,7 @@ module MasternautWs
         job: {
           description: waypoint[:description].gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..255],
           poiReference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
-          scheduledBegin: date.strftime('%Y-%m-%dT') + waypoint[:time].strftime('%H:%M:%S'),
+          scheduledBegin: (date.to_time + (waypoint[:time].to_i - TIME_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
           type: 'job',
           vehicleRef: vehicleRef,
         },
