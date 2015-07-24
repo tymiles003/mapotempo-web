@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class V01::Entities::Route < Grape::Entity
+  TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
+
   def self.entity_name
     'V01_Route'
   end
@@ -24,8 +26,18 @@ class V01::Entities::Route < Grape::Entity
   expose(:distance, documentation: { type: Float })
   expose(:emission, documentation: { type: Float })
   expose(:vehicle_id, documentation: { type: Integer })
-  expose(:start, documentation: { type: DateTime } ) { |m| m.start && m.start.strftime('%H:%M:%S') }
-  expose(:end, documentation: { type: DateTime } ) { |m| m.end && m.end.strftime('%H:%M:%S') }
+  expose(:start, documentation: { type: DateTime } ) { |m|
+    if m.start
+      date = (m.planning.date || Date.today).to_time + (m.start.to_i - TIME_2000)
+      date.strftime('%Y-%m-%dT%H:%M:%S')
+    end
+  }
+  expose(:end, documentation: { type: DateTime } ) { |m|
+    if m.end
+      date = (m.planning.date || Date.today).to_time + (m.end.to_i - TIME_2000)
+      date.strftime('%Y-%m-%dT%H:%M:%S')
+    end
+  }
   expose(:hidden, documentation: { type: 'Boolean' })
   expose(:locked, documentation: { type: 'Boolean' })
   expose(:out_of_date, documentation: { type: 'Boolean' })
