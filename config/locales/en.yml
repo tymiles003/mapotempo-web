@@ -670,7 +670,7 @@ en:
       title: "User's Settings"
 
   vehicles:
-    default_name: "Vehcile %{n}"
+    default_name: "Vehicle %{n}"
     emissions_nothing: "Nothing - %{n}"
     emissions_light_petrol: "Light - Petrol - %{n}"
     emissions_light_diesel: "Light - Diesel - %{n}"

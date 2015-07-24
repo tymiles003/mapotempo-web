@@ -69,11 +69,11 @@ class Zoning < ActiveRecord::Base
       end
     }.select{ |i| i }.uniq
 
-    vehciles = planning.customer.vehicles.to_a
-    clusters = Clustering.clustering(positions, n || vehciles.size)
+    vehicles = planning.customer.vehicles.to_a
+    clusters = Clustering.clustering(positions, n || vehicles.size)
     zones.clear
     Clustering.hulls(clusters).each{ |hull|
-      zones.build({polygon: hull, vehicle: vehciles.shift})
+      zones.build({polygon: hull, vehicle: vehicles.shift})
     }
   end
 
