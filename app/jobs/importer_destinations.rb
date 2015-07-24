@@ -15,10 +15,10 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'csv'
-require 'geocoder_job'
+require 'importer_base'
+require 'geocoder_destinations_job'
 
-class Importer
+class ImporterDestinations < ImporterBase
 
   def self.columns
     {
@@ -39,59 +39,6 @@ class Importer
       take_over: I18n.t('destinations.import_file.take_over'),
       quantity: I18n.t('destinations.import_file.quantity'),
       active: I18n.t('destinations.import_file.active')
-    }
-  end
-
-  def self.import_csv(replace, customer, file, name, synchronous=false)
-    if !synchronous && Mapotempo::Application.config.delayed_job_use && customer.job_geocoding
-      return false
-    end
-
-    contents = File.open(file, 'r:bom|utf-8').read
-    if !contents.valid_encoding?
-      detection = CharlockHolmes::EncodingDetector.detect(contents)
-      if !contents || !detection[:encoding]
-        raise I18n.t('destinations.import_file.not_csv')
-      end
-      contents = CharlockHolmes::Converter.convert(contents, detection[:encoding], 'UTF-8')
-    end
-
-    separator = ','
-    line = contents.lines.first
-    splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
-    _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
-
-    data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
-
-    self.import(replace, customer, data, name, synchronous) { |row|
-      # Switch from locale to internal column name
-      r, row = row, {}
-      columns.each{ |k, v|
-        if r.key?(v) && r[v]
-          row[k] = r[v]
-        end
-      }
-
-      row
-    }
-  end
-
-  def self.import_hash(replace, customer, data)
-    key = %w(ref route name street detail postalcode city lat lng open close comment tags take_over quantity active)
-
-    self.import(replace, customer, data, nil, true) { |row|
-      r, row = row, {}
-      r.each{ |k, v|
-        if key.include?(k)
-          row[k.to_sym] = v
-        end
-      }
-
-      if !row[:tags].nil?
-        row[:tags] = row[:tags].join(',')
-      end
-
-      row
     }
   end
 
@@ -192,7 +139,7 @@ class Importer
     end
 
     if need_geocode && (!synchronous || Mapotempo::Application.config.delayed_job_use)
-      customer.job_geocoding = Delayed::Job.enqueue(GeocoderJob.new(customer.id, planning ? planning.id : nil))
+      customer.job_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(customer.id, planning ? planning.id : nil))
     else
       planning.compute if planning
     end

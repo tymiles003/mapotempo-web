@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'csv'
-require 'importer'
+require 'importer_destinations'
 
 class DestinationsController < ApplicationController
   include LinkBack
@@ -110,7 +110,7 @@ class DestinationsController < ApplicationController
       begin
         @destinations_import.assign_attributes(destinations_import_params)
         @destinations_import.valid? || raise
-        Importer.import_csv(@destinations_import.replace, current_user.customer, @destinations_import.tempfile, @destinations_import.name)
+        ImporterDestinations.import_csv(@destinations_import.replace, current_user.customer, @destinations_import.tempfile, @destinations_import.name)
         format.html { redirect_to action: 'index' }
       rescue => e
         flash.now[:error] = e.message

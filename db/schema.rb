@@ -256,8 +256,8 @@ ActiveRecord::Schema.define(version: 20150814165916) do
     t.string   "street",      limit: 255
     t.string   "postalcode",  limit: 255
     t.string   "city",        limit: 255
-    t.float    "lat",                     null: false
-    t.float    "lng",                     null: false
+    t.float    "lat"
+    t.float    "lng"
     t.time     "open"
     t.time     "close"
     t.integer  "customer_id",             null: false

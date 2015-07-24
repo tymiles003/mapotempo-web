@@ -302,6 +302,7 @@ fr:
           attributes:
             close:
               after: "Doit être après l'horaire de début"
+          missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
         vehicle:
           attributes:
             close:
@@ -318,6 +319,7 @@ fr:
               over_max_limit: "Dépassement du nombre maximal d'arrêts dans une tournée"
         stores:
           at_least_one: "Au moins un dépôt est requis"
+          missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
         route:
           attributes:
             stops:
@@ -327,6 +329,16 @@ fr:
     planning:
       import_too_routes: "Tentative d'importer plus de tournées que de véhicules disponibles."
       already_optimizing: "Une optimisation de planning est déjà en cours"
+    import_file:
+      not_csv: "Le fichier importé n'est pas au format CSV."
+      too_many_errors: "Import stoppé, trop d'erreurs."
+
+  import:
+    template_csv: "Modèle import tableur standard"
+    template_excel: "Modèle import tableur Excel"
+    dialog:
+      title: "Import des clients"
+      import_in_progress: "Import des clients en cours, merci de patienter."
 
   admin:
     profiles:
@@ -406,6 +418,7 @@ fr:
       export_spreadsheet_standard: "Export tableur standard"
       export_spreadsheet_excel: "Export tableur Excel"
       stores: "Départs / Arrivées"
+      import_stores: "Importer Départs / Arrivées"
       tags: "Libellés"
       clear: "Supprimer tous les clients"
       clear_confirm: "Êtes-vous sûr de vouloir supprimer tous les clients ?"
@@ -428,11 +441,6 @@ fr:
       replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus. Dans le cas contraire une mise à jour des clients existants est faite et les nouveaux sont ajoutés."
       replace_confirm: "Supprimer tous les clients et leurs modifications pour les remplacer par ceux importés ?"
       file_help: "Import de fichier CSV uniquement."
-      template_csv: "Modèle import tableur standard"
-      template_excel: "Modèle import tableur Excel"
-      dialog:
-        title: "Import des clients"
-        import_in_progress: "Import des clients en cours, merci de patienter."
     index:
       title: "Liste clients"
       new: "Nouveau client"
@@ -465,8 +473,6 @@ fr:
       comment: "commentaire"
       tags: "libellés"
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
-      not_csv: "Le fichier importé n'est pas au format CSV."
-      too_many_errors: "Import stoppé, trop d'erreurs."
 
   index:
     unsupported_browser:
@@ -672,11 +678,30 @@ fr:
       country_default: "%{n} (valeur par défaut)"
     edit:
       title: "Modifier dépôt"
+    import:
+      title: "Importer des dépôts"
+      replace_help: "Remplacer les dépôts par ceux de l'import. Efface et remplace tous les dépôts. Dans le cas contraire une mise à jour des dépôts existants est faite et les nouveaux sont ajoutés."
+      replace_confirm: "Supprimer tous les dépôts et leurs modifications pour les remplacer par ceux importés ?"
+      file_help: "Import de fichier CSV uniquement."
     index:
       title: "Liste dépôts"
       new: "Nouveau dépôt"
     new:
       title: "Nouveau dépôt"
+    import_file:
+      ref: "référence"
+      name: "nom"
+      street: "voie"
+      detail: "complément"
+      postalcode: "code postal"
+      city: "ville"
+      country: "pays"
+      lat: "lat"
+      lng: "lng"
+      active: "livré"
+      open: "horaire début"
+      close: "horaire fin"
+      missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
 
   products:
     menu:

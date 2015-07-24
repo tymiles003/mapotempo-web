@@ -17,6 +17,14 @@
 #
 require 'geocode'
 
+class LocalizationStoreValidator < ActiveModel::Validator
+  def validate(record)
+    if record.postalcode.nil? && record.city.nil? && (record.lat.nil? || record.lng.nil?)
+      record.errors[:base] << I18n.t('activerecord.errors.models.stores.missing_address_or_latlng')
+    end
+  end
+end
+
 class Store < ActiveRecord::Base
   belongs_to :customer
   has_many :vehicle_starts, class_name: 'Vehicle', inverse_of: :store_start, foreign_key: 'store_start_id'
@@ -28,9 +36,10 @@ class Store < ActiveRecord::Base
   validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true
-  validates :city, presence: true
-  validates :lat, numericality: {only_float: true}
-  validates :lng, numericality: {only_float: true}
+#  validates :city, presence: true
+  validates :lat, numericality: {only_float: true}, :allow_nil => true
+  validates :lng, numericality: {only_float: true}, :allow_nil => true
+  validates_with LocalizationStoreValidator, fields: [:street, :city, :lat, :lng]
 
   before_update :update_geocode
   before_save :update_out_of_date

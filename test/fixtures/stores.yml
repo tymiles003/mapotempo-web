@@ -1,6 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
+store_zero:
+  ref: a
+  name: store 0
+  street: MyString
+  postalcode: MyString
+  city: MyString
+  lat: 1.5
+  lng: 1.5
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 11:00:00
+  customer: customer_one
+
 store_one:
+  ref: b
   name: store 1
   street: MyString
   postalcode: MyString
@@ -12,6 +25,7 @@ store_one:
   customer: customer_one
 
 store_one_bis:
+  ref: c
   name: store 1b
   street: MyString
   postalcode: MyString
@@ -23,6 +37,7 @@ store_one_bis:
   customer: customer_one
 
 store_two:
+  ref: c
   name: store 2
   street: MyString
   postalcode: MyString

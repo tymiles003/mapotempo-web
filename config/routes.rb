@@ -45,6 +45,9 @@ Rails.application.routes.draw do
   delete 'destinations' => 'destinations#clear'
 
   resources :stores
+  get 'store/import_template' => 'stores#import_template'
+  get 'store/import' => 'stores#import'
+  post 'stores/upload' => 'stores#upload', :as => 'stores_imports'
   delete 'stores' => 'stores#destroy_multiple'
 
   resources :plannings do

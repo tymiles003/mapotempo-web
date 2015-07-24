@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class GeocoderJob < Struct.new(:customer_id, :planning_id)
+class GeocoderStoresJob < Struct.new(:customer_id)
 
   def before(job)
     @job = job
@@ -23,34 +23,24 @@ class GeocoderJob < Struct.new(:customer_id, :planning_id)
 
   def perform
     customer = Customer.find(customer_id)
-    Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} perform"
-    count = customer.destinations.where(lat: nil).count
+    Delayed::Worker.logger.info "GeocoderStoresJob customer_id=#{customer_id} perform"
+    count = customer.stores.where(lat: nil).count
     i = 0
-    customer.destinations.where(lat: nil).each_slice(50){ |destinations|
-      Destination.transaction do
-        destinations.each { |destination|
+    customer.stores.where(lat: nil).each_slice(50){ |stores|
+      Store.transaction do
+        stores.each { |store|
           begin
-            destination.geocode
+            store.geocode
           rescue
           end
-          Delayed::Worker.logger.info destination.inspect
-          destination.save
+          Delayed::Worker.logger.info store.inspect
+          store.save
           i += 1
         }
         @job.progress = Integer(i * 100 / count).to_s
         @job.save
-        Delayed::Worker.logger.info "GeocoderJob customer_id=#{customer_id} #{@job.progress}%"
+        Delayed::Worker.logger.info "GeocoderStoresJob customer_id=#{customer_id} #{@job.progress}%"
       end
     }
-
-    Destination.transaction do
-      if planning_id
-        planning = customer.plannings.find(planning_id)
-        if planning
-          planning.compute
-          planning.save
-        end
-      end
-    end
   end
 end

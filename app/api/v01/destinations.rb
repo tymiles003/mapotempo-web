@@ -24,11 +24,6 @@ class V01::Destinations < Grape::API
       p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
     end
 
-    def destinations_import_params
-      p = ActionController::Parameters.new(params)
-      p.permit(:replace, :file)
-    end
-
     Id_desc = 'Id or the ref field value, then use "ref:[value]".'
   end
 
@@ -85,13 +80,13 @@ class V01::Destinations < Grape::API
       if params['destinations']
         destinations_import = DestinationsImport.new
         destinations_import.assign_attributes({replace: params[:replace]})
-        Importer.import_hash(destinations_import.replace, current_customer, params[:destinations])
+        ImporterDestinations.import_hash(destinations_import.replace, current_customer, params[:destinations])
         status 204
       else
         destinations_import = DestinationsImport.new
         destinations_import.assign_attributes({replace: params[:replace], file: params[:file]})
         if destinations_import.valid?
-          Importer.import_csv(destinations_import.replace, current_customer, destinations_import.tempfile, destinations_import.name, synchronous=true)
+          ImporterDestinations.import_csv(destinations_import.replace, current_customer, destinations_import.tempfile, destinations_import.name, synchronous=true)
           status 204
         else
           error!({error: destinations_import.errors.full_messages}, 422)

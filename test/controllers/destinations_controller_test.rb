@@ -108,9 +108,9 @@ class DestinationsControllerTest < ActionController::TestCase
 
   test "should upload" do
     file = ActionDispatch::Http::UploadedFile.new({
-      tempfile: File.new(Rails.root.join("test/fixtures/files/import_one.csv")),
+      tempfile: File.new(Rails.root.join("test/fixtures/files/import_destinations_one.csv")),
     })
-    file.original_filename = "import_one.csv"
+    file.original_filename = "import_destinations_one.csv"
 
     destinations_count = @destination.customer.destinations.count
     plannings_count = @destination.customer.plannings.select{ |planning| planning.tags == [tags(:tag_one)] }.count

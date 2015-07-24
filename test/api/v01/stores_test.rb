@@ -2,6 +2,7 @@ require 'test_helper'
 
 class V01::StoresTest < ActiveSupport::TestCase
   include Rack::Test::Methods
+  include ActionDispatch::TestProcess
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   def app
@@ -44,6 +45,38 @@ class V01::StoresTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should create bulk from csv' do
+    assert_difference('Store.count', 1) do
+      put api(), replace: false, file: fixture_file_upload('files/import_stores_one.csv', 'text/csv')
+      assert_equal 204, last_response.status, 'Bad response ' + last_response.body
+    end
+  end
+
+  test 'should replace from csv' do
+    put api(), replace: true, file: fixture_file_upload('files/import_stores_one.csv', 'text/csv')
+    assert_equal 204, last_response.status, 'Bad response ' + last_response.body
+    assert_equal Store.where("customer_id='#{customers(:customer_one).id}'").count, 1
+  end
+
+  test 'should create bulk from json' do
+    assert_difference('Store.count', 1) do
+      put api(), {stores: [{
+        name: "Nouveau dépôt",
+        street: nil,
+        postalcode: nil,
+        city: "Tule",
+        lat: 43.5710885456786,
+        lng: 3.89636993408203,
+        open: nil,
+        close: nil,
+        ref: nil,
+        geocoding_accuracy: nil,
+        foo: 'bar'
+      }]}
+      assert_equal 204, last_response.status, 'Bad response ' + last_response.body
+    end
+  end
+
   test 'should destroy a store' do
     assert_difference('Store.count', -1) do
       delete api(@store.id)
@@ -52,16 +85,9 @@ class V01::StoresTest < ActiveSupport::TestCase
   end
 
   test 'should destroy multiple stores' do
-    assert_difference('Store.count', -1) do
-      delete api + "&ids[]=#{stores(:store_one).id}"
-      assert last_response.ok?, last_response.body
-    end
-  end
-
-  test 'should not destroy multiple all stores' do
-    assert_difference('Store.count', 0) do
+    assert_difference('Store.count', -2) do
       delete api + "&ids[]=#{stores(:store_one).id}&ids[]=#{stores(:store_one_bis).id}"
-      assert_not last_response.ok?
+      assert last_response.ok?, last_response.body
     end
   end
 

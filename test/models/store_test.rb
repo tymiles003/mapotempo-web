@@ -15,26 +15,30 @@ class StoreTest < ActiveSupport::TestCase
 
   test "should destroy" do
     o = customers(:customer_one)
-    assert_equal 2, o.stores.size
-    assert o.stores[1].destroy
+    assert_equal 3, o.stores.size
+    store = o.stores.find{ |store| store[:name] == 'store 0' }
+    assert store.destroy
     o.reload
-    assert_equal 1, o.stores.size
+    assert_equal 2, o.stores.size
     assert_equal stores(:store_one), vehicles(:vehicle_one).store_start
   end
 
-  test "should destroy in unse" do
+  test "should destroy in use for vehicle" do
     o = customers(:customer_one)
-    assert_equal 2, o.stores.size
-    assert o.stores[0].destroy
+    assert_equal 3, o.stores.size
+    store = o.stores.find{ |store| store[:name] == 'store 1' }
+    assert store.destroy
     o.reload
-    assert_equal 1, o.stores.size
-    assert_equal stores(:store_one_bis), vehicles(:vehicle_one).store_start
+    assert_equal 2, o.stores.size
+    assert_not_equal store, vehicles(:vehicle_one).store_start
   end
 
-  test "should not desroy" do
+  test "should not destroy last store" do
     o = customers(:customer_one)
-    assert_equal 2, o.stores.size
-    assert o.stores[0].destroy
+    assert_equal 3, o.stores.size
+    for i in 0..(o.stores.size - 2)
+      assert o.stores[i].destroy
+    end
     o.reload
     begin
       o.stores[0].destroy

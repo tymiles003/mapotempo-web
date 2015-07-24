@@ -21,8 +21,10 @@ class V01::Stores < Grape::API
     def store_params
       p = ActionController::Parameters.new(params)
       p = p[:store] if p.key?(:store)
-      p.permit(:name, :street, :postalcode, :city, :country, :lat, :lng, :open, :close)
+      p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng, :open, :close)
     end
+
+    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :stores do
@@ -49,10 +51,11 @@ class V01::Stores < Grape::API
       entity: V01::Entities::Store
     }
     params {
-      requires :id, type: Integer
+      requires :id, type: String, desc: Id_desc
     }
     get ':id' do
-      present current_customer.stores.find(params[:id]), with: V01::Entities::Store
+      id = read_id(params[:id])
+      present current_customer.stores.where(id).first!, with: V01::Entities::Store
     end
 
     desc 'Create store.', {
@@ -69,16 +72,39 @@ class V01::Stores < Grape::API
       present store, with: V01::Entities::Store
     end
 
+    desc 'Import stores by upload a CSV file or by JSON', {
+      nickname: 'importStores',
+      params: V01::Entities::StoresImport.documentation
+    }
+    put do
+      if params[:stores]
+        stores_import = DestinationsImport.new
+        stores_import.assign_attributes({replace: params[:replace]})
+        ImporterStores.import_hash(stores_import.replace, current_customer, params[:stores])
+        status 204
+      else
+        stores_import = DestinationsImport.new
+        stores_import.assign_attributes({replace: params[:replace], file: params[:file]})
+        if stores_import.valid?
+          ImporterStores.import_csv(stores_import.replace, current_customer, stores_import.tempfile, stores_import.name, synchronous=true)
+          status 204
+        else
+          error!({error: stores_import.errors.full_messages}, 422)
+        end
+      end
+    end
+
     desc 'Update store.', {
       nickname: 'updateStore',
       params: V01::Entities::Store.documentation.except(:id),
       entity: V01::Entities::Store
     }
     params {
-      requires :id, type: Integer
+      requires :id, type: String, desc: Id_desc
     }
     put ':id' do
-      store = current_customer.stores.find(params[:id])
+      id = read_id(params[:id])
+      store = current_customer.stores.where(id).first!
       store.assign_attributes(store_params)
       store.save!
       store.customer.save! if store.customer
@@ -89,10 +115,11 @@ class V01::Stores < Grape::API
       nickname: 'deleteStore'
     }
     params {
-      requires :id, type: Integer
+      requires :id, type: String, desc: Id_desc
     }
     delete ':id' do
-      current_customer.stores.find(params[:id]).destroy
+      id = read_id(params[:id])
+      current_customer.stores.where(id).first!.destroy
     end
 
     desc 'Delete multiple stores.', {

@@ -286,6 +286,14 @@ Paloma.controller('Destination').prototype.upload = function() {
   destinations_import(this.params);
 };
 
+Paloma.controller('Store').prototype.import = function() {
+  destinations_import(this.params);
+};
+
+Paloma.controller('Store').prototype.upload = function() {
+  destinations_import(this.params);
+};
+
 function destinations_index(params, api) {
 
   var map_layer_url = params.map_layer_url,

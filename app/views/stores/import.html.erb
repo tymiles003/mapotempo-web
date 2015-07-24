@@ -1,11 +1,11 @@
 <h1><%= t '.title' %></h1>
 
-<%= twitter_bootstrap_form_for(@destinations_import, {layout: :horizontal, multipart: true}) do |f| %>
-  <%= render 'shared/error_messages', model: @destinations_import %>
+<%= twitter_bootstrap_form_for(@stores_import, {url: stores_imports_path, layout: :horizontal, multipart: true}) do |f| %>
+  <%= render 'shared/error_messages', model: @stores_import %>
   <%= f.file_field :file do %>
     <p class="help-block"><%= t '.file_help' %></p>
   <% end %>
-  <%= f.toggles t 'activemodel.attributes.destinations_import.replace' do %>
+  <%= f.toggles t 'activemodel.attributes.stores_import.replace' do %>
     <%= f.check_box :replace %>
     <p class="help-block"><%= t '.replace_help' %></p>
   <% end %>

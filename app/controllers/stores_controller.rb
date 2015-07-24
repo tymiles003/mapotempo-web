@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'csv'
-require 'importer'
+require 'importer_stores'
 
 class StoresController < ApplicationController
   include LinkBack
@@ -100,6 +100,37 @@ class StoresController < ApplicationController
     end
   end
 
+  def import_template
+    respond_to do |format|
+      format.excel do
+        data = render_to_string.gsub('\n', '\r\n')
+        send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
+            type: 'text/csv',
+            filename: 'import_template.csv'
+      end
+      format.csv
+    end
+  end
+
+  def import
+    @stores_import = DestinationsImport.new
+  end
+
+  def upload
+    @stores_import = DestinationsImport.new
+    respond_to do |format|
+      begin
+        @stores_import.assign_attributes(stores_import_params)
+        @stores_import.valid? || raise
+        ImporterStores.import_csv(@stores_import.replace, current_user.customer, @stores_import.tempfile, @stores_import.name)
+        format.html { redirect_to action: 'index' }
+      rescue => e
+        flash[:error] = e.message
+        format.html { render action: 'import', status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -110,5 +141,10 @@ class StoresController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def store_params
     params.require(:store).permit(:name, :street, :postalcode, :city, :country, :lat, :lng, :open, :close, :ref)
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def stores_import_params
+    params.require(:destinations_import).permit(:replace, :file)
   end
 end

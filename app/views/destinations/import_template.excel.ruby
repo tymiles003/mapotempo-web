@@ -1,4 +1,4 @@
-require 'importer'
+require 'importer_destinations'
 CSV.generate({col_sep: ';'}) { |csv|
-  csv << Importer.columns.values
+  csv << ImporterDestinations.columns.values
 }

@@ -17,6 +17,14 @@
 #
 require 'geocode'
 
+class LocalizationDestinationValidator < ActiveModel::Validator
+  def validate(record)
+    if record.postalcode.nil? && record.city.nil? && (record.lat.nil? || record.lng.nil?)
+      record.errors[:base] << I18n.t('activerecord.errors.models.destination.missing_address_or_latlng')
+    end
+  end
+end
+
 class Destination < ActiveRecord::Base
   belongs_to :customer
   has_many :stop_destinations, inverse_of: :destination, dependent: :delete_all
@@ -29,8 +37,9 @@ class Destination < ActiveRecord::Base
   validates :name, presence: true
 #  validates :street, presence: true
 #  validates :city, presence: true
-#  validates :lat, numericality: {only_float: true} # maybe nil
-#  validates :lng, numericality: {only_float: true} # maybe nil
+  validates :lat, numericality: {only_float: true}, :allow_nil => true
+  validates :lng, numericality: {only_float: true}, :allow_nil => true
+  validates_with LocalizationDestinationValidator, fields: [:street, :city, :lat, :lng]
   validates_time :open, if: :open
   validates_time :close, presence: false, after: :open, if: :close
 

@@ -299,6 +299,7 @@ en:
           attributes:
             close:
               after: "Must be after the open time"
+          missing_address_or_latlng: "Postalcode and city cannot be empty if lat/lng are empty"
         vehicle:
           attributes:
             close:
@@ -315,6 +316,7 @@ en:
               over_max_limit: "Over maximum number of route's stops"
         stores:
           at_least_one: "At least one store needed"
+          missing_address_or_latlng: "Postalcode and city cannot be empty if lat/lng are empty"
         route:
           attributes:
             stops:
@@ -324,6 +326,17 @@ en:
     planning:
       import_too_routes: "Try to import more routes than available vehicles."
       already_optimizing: "A planning optimization is already in progress"
+    import_file:
+      not_csv: "Imported file is not a CSV"
+      too_many_errors: "Stop import, too many errors."
+      missing_columns_translation: "Missing "
+
+  import:
+    template_csv: "Import Template Spreadsheet Standard"
+    template_excel: "Import Template Spreadsheet Excel"
+    dialog:
+      title: "Import"
+      import_in_progress: "Please wait, import in progress."
 
   admin:
     resellers:
@@ -397,6 +410,7 @@ en:
       export_spreadsheet_standard: "Export Spreadsheet Standard"
       export_spreadsheet_excel: "Export Spreadsheet Excel"
       stores: "Starts / Stops"
+      import_stores: "Import Starts / Stops"
       tags: "Tags"
       clear: "Clear all destinations"
       clear_confirm: "Are you sure to want to delete all destinations?"
@@ -419,11 +433,6 @@ en:
       replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost. In the opposite case an update of existing customers is made and the new ones are added."
       replace_confirm: "Delete all clients and their amendments to replace them with imported ones?"
       file_help: "Import only CSV files."
-      template_csv: "Import Template Spreadsheet Standard"
-      template_excel: "Import Template Spreadsheet Excel"
-      dialog:
-        title: "Import"
-        import_in_progress: "Please wait, import in progress."
     index:
       title: "Listing destinations"
       new: "New Destination"
@@ -456,8 +465,6 @@ en:
       comment: "comment"
       tags: "tags"
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
-      not_csv: "Imported file is not a CSV"
-      too_many_errors: "Stop import, too many errors."
 
   index:
     unsupported_browser:
@@ -661,11 +668,30 @@ en:
       country_default: "%{n} (default value)"
     edit:
       title: "Editing store"
+    import:
+      title: "Import stores"
+      replace_help: "Replace stores with import ones. Overwrite all stores. In the opposite case an update of existing stores is made and the new ones are added."
+      replace_confirm: "Delete all stores and their amendments to replace them with imported ones?"
+      file_help: "Import only CSV files."
     index:
       title: "Listing stores"
       new: "New store"
     new:
       title: "New store"
+    import_file:
+      ref: "reference"
+      name: "name"
+      street: "street"
+      detail: "detail"
+      postalcode: "postalcode"
+      city: "city"
+      country: "country"
+      lat: "lat"
+      lng: "lng"
+      active: "active"
+      open: "open"
+      close: "close"
+      missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
 
   profiles:
     menu:
