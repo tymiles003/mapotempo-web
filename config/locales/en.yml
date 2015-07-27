@@ -270,6 +270,7 @@ en:
         rest_stop: "Rest window stop"
         rest_duration: "Rest duration"
         store_rest_id: "Rest place"
+        ref: "Reference"
       zoning:
         name: "Name"
       zone:
@@ -697,6 +698,7 @@ en:
     new:
       title: "New vehicle"
     form:
+      ref: "Reference"
       ref_help: "A free reference"
       open_help: "Deliveryman's working hours"
       close_help: "Deliveryman's working hours"

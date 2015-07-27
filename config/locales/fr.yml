@@ -273,6 +273,7 @@ fr:
         rest_stop: "Fin plage repos"
         rest_duration: "Durée du repos"
         store_rest_id: "Lieu du repos"
+        ref: "Référence"
       zoning:
         name: "Nom"
       zone:
@@ -702,6 +703,7 @@ fr:
     new:
       title: "Nouveau véhicules"
     form:
+      ref: "Référence"
       ref_help: "Référence libre"
       open_help: "Horaire de travail livreur"
       close_help: "Horaire de travail livreur"
