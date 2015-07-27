@@ -39,6 +39,8 @@ class Destination < ActiveRecord::Base
 #  validates :city, presence: true
   validates :lat, numericality: {only_float: true}, :allow_nil => true
   validates :lng, numericality: {only_float: true}, :allow_nil => true
+  validates_inclusion_of :lat, in: -90..90, :allow_nil => true, message: I18n.t('activerecord.errors.models.destination.lat_outside_range')
+  validates_inclusion_of :lng, in: -180..180, :allow_nil => true, message: I18n.t('activerecord.errors.models.destination.lng_outside_range')
   validates_with LocalizationDestinationValidator, fields: [:street, :city, :lat, :lng]
   validates_time :open, if: :open
   validates_time :close, presence: false, after: :open, if: :close

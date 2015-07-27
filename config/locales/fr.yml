@@ -303,6 +303,8 @@ fr:
             close:
               after: "Doit être après l'horaire de début"
           missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
+          lat_outside_range: "doit être comprise entre -90..90"
+          lng_outside_range: "doit être comprise entre -180..180"
         vehicle:
           attributes:
             close:
@@ -320,6 +322,8 @@ fr:
         stores:
           at_least_one: "Au moins un dépôt est requis"
           missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
+          lat_outside_range: "doit être comprise entre -90..90"
+          lng_outside_range: "doit être comprise entre -180..180"
         route:
           attributes:
             stops:

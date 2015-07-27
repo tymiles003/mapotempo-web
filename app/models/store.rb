@@ -39,6 +39,8 @@ class Store < ActiveRecord::Base
 #  validates :city, presence: true
   validates :lat, numericality: {only_float: true}, :allow_nil => true
   validates :lng, numericality: {only_float: true}, :allow_nil => true
+  validates_inclusion_of :lat, in: -90..90, :allow_nil => true, message: I18n.t('activerecord.errors.models.stores.lat_outside_range')
+  validates_inclusion_of :lng, in: -180..180, :allow_nil => true, message: I18n.t('activerecord.errors.models.stores.lng_outside_range')
   validates_with LocalizationStoreValidator, fields: [:street, :city, :lat, :lng]
 
   before_update :update_geocode
