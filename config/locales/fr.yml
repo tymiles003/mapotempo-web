@@ -271,8 +271,8 @@ fr:
         speed_multiplicator: "Ajustement de la vitesse"
         rest_start: "Début plage repos"
         rest_stop: "Fin plage repos"
-        rest_duration: "Durée du repos"
-        store_rest_id: "Lieu du repos"
+        rest_duration: "Durée de repos"
+        store_rest_id: "Lieu de repos"
         ref: "Référence"
       zoning:
         name: "Nom"
