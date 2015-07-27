@@ -178,7 +178,11 @@ class Planning < ActiveRecord::Base
       end
 
       r = ri[0].amoeba_dup
-      r.add(stop.destination, ri[1], true)
+      if stop.is_a?(StopDestination)
+        r.add(stop.destination, ri[1], true)
+      else
+        r.add_rest(ri[1], true)
+      end
       r.compute
 
       # Difference of total time + difference of sum of out_of_window time
