@@ -23,6 +23,8 @@ class V01::Vehicles < Grape::API
       p = p[:vehicle] if p.key?(:vehicle)
       p.permit(:ref, :name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :masternaut_ref, :store_start_id, :store_stop_id, :router_id, :speed_multiplicator, :rest_start, :rest_stop, :rest_duration, :store_rest_id)
     end
+
+    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :vehicles do
@@ -49,10 +51,11 @@ class V01::Vehicles < Grape::API
       entity: V01::Entities::Vehicle
     }
     params {
-      requires :id, type: Integer
+      requires :id, type: String, desc: Id_desc
     }
     get ':id' do
-      present current_customer.vehicles.find(params[:id]), with: V01::Entities::Vehicle
+      id = read_id(params[:id])
+      present current_customer.vehicles.where(id).first!, with: V01::Entities::Vehicle
     end
 
     desc 'Update vehicle.', {
@@ -61,10 +64,11 @@ class V01::Vehicles < Grape::API
       entity: V01::Entities::Vehicle
     }
     params {
-      requires :id, type: Integer
+      requires :id, type: String, desc: Id_desc
     }
     put ':id' do
-      vehicle = current_customer.vehicles.find(params[:id])
+      id = read_id(params[:id])
+      vehicle = current_customer.vehicles.where(id).first!
       vehicle.update(vehicle_params)
       vehicle.save!
       present vehicle, with: V01::Entities::Vehicle
