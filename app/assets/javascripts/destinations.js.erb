@@ -523,12 +523,9 @@ function destinations_index(params, api) {
     }
     var row = $('[data-destination_id=' + id + ']');
     row.addClass('highlight');
-    var locRowPositionTop = $(".tablesorter-scroller-table table").height();
-    if (row.position().top != 0)
-      locRowPositionTop = row.position().top - $(".tablesorter-scroller-header").height() + $(".tablesorter-scroller-table").scrollTop();
-    if (locRowPositionTop < $(".tablesorter-scroller-table").scrollTop() || locRowPositionTop > $(".tablesorter-scroller-table").scrollTop() + $(".tablesorter-scroller-table").height()) {
-      $(".tablesorter-scroller-table").animate({
-        scrollTop: locRowPositionTop - 25
+    if (row.position().top < $("#destination_box").scrollTop() || row.position().top > $("#destination_box").scrollTop() + $("#destination_box").height()) {
+      $("#destination_box").animate({
+        scrollTop: row.position().top - 100
       });
     }
   }
