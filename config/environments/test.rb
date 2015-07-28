@@ -45,3 +45,6 @@ Rails.application.configure do
   config.delayed_job_use = false
   config.geocode_complete = true
 end
+
+I18n.enforce_available_locales = false
+I18n.default_locale = :fr

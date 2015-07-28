@@ -15,12 +15,15 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class V01::Entities::DestinationsImport < Grape::Entity
+class V01::Entities::DestinationImportJson < V01::Entities::Destination
   def self.entity_name
-    'V01_DestinationImport'
+    'V01_DestinationImportJson'
   end
 
-  expose(:replace, documentation: { type: 'Boolean' })
-  expose(:file, documentation: { type: Rack::Multipart::UploadedFile, desc: 'CSV file, encoding, separator and line return automatically detected, with localized CSV header according to HTTP header Accept-Language' })
-  expose(:destinations, using: V01::Entities::DestinationImportJson, documentation: { type: V01::Entities::DestinationImportJson, is_array: true , desc: 'In mutual exclusion with CSV file upload.'})
+  unexpose(:tag_ids)
+  expose(:tags, documentation: { type: String, is_array: true, desc: 'If tags don\'t exist they will be created' })
+  unexpose(:geocoding_accuracy)
+  unexpose(:take_over_default)
+  expose(:route, documentation: { type: String, desc: 'Route reference. If route reference is specified, a new planning will be created with a route using the specified reference' })
+  expose(:active, documentation: { type: String, desc: 'In order to specify is stop is active in planning or not (\'0\' if inactive)' })
 end

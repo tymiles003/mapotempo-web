@@ -63,8 +63,6 @@ class Importer
 
     data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
 
-    tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
-
     self.import(replace, customer, data, name, synchronous) { |row|
       # Switch from locale to internal column name
       r, row = row, {}
@@ -74,30 +72,11 @@ class Importer
         end
       }
 
-      if !row[:lat].nil?
-        row[:lat] = Float(row[:lat].gsub(',', '.'))
-      end
-      if !row[:lng].nil?
-        row[:lng] = Float(row[:lng].gsub(',', '.'))
-      end
-
-      if !row[:tags].nil?
-        row[:tags] = row[:tags].split(',').select { |key|
-          !key.empty?
-        }.collect { |key|
-          if !tags.key?(key)
-            tags[key] = customer.tags.build(label: key)
-          end
-          tags[key]
-        }
-      end
-
       row
     }
   end
 
   def self.import_hash(replace, customer, data)
-    tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
     key = %w(ref route name street detail postalcode city lat lng open close comment tags take_over quantity active)
 
     self.import(replace, customer, data, nil, true) { |row|
@@ -108,10 +87,8 @@ class Importer
         end
       }
 
-      if !row[:tag_ids].nil?
-        row[:tags] = row[:tag_ids].collect { |id|
-          tags[id]
-        }
+      if !row[:tags].nil?
+        row[:tags] = row[:tags].join(',')
       end
 
       row
@@ -122,6 +99,7 @@ class Importer
 
   def self.import(replace, customer, data, name, synchronous)
     common_tags = nil
+    tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
     routes = Hash.new{ |h, k| h[k] = [] }
 
     planning = nil
@@ -147,8 +125,26 @@ class Importer
           raise I18n.t('destinations.import_file.missing_data', line: line)
         end
 
+        if !row[:lat].nil?
+          row[:lat] = Float(row[:lat].gsub(',', '.'))
+        end
+        if !row[:lng].nil?
+          row[:lng] = Float(row[:lng].gsub(',', '.'))
+        end
+
         if row[:lat].nil? || row[:lng].nil?
           need_geocode = true
+        end
+
+        if !row[:tags].nil?
+          row[:tags] = row[:tags].split(',').select { |key|
+            !key.empty?
+          }.collect { |key|
+            if !tags.key?(key)
+              tags[key] = customer.tags.build(label: key)
+            end
+            tags[key]
+          }
         end
 
         if !row[:ref].nil? && !row[:ref].strip.empty?
@@ -186,8 +182,8 @@ class Importer
         }
       end
 
-      if !name.nil? && (routes.size > 1 || !routes.key?(nil))
-        planning = customer.plannings.build(name: name, tags: common_tags || [])
+      if routes.size > 1 || !routes.key?(nil)
+        planning = customer.plannings.build(name: name || I18n.t('activerecord.models.planning') + ' ' + Time.now.strftime(' %Y-%m-%d %H:%M'), tags: common_tags || [])
         planning.set_destinations(routes, false)
         planning.save!
       end

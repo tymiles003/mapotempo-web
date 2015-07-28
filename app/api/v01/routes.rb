@@ -127,7 +127,7 @@ class V01::Routes < Grape::API
           planning_id = read_id(params[:planning_id])
           id = read_id(params[:id])
           route = current_customer.plannings.where(planning_id).first!.routes.where(id).first!
-          if !Optimizer.optimize(route.planning, route, false)
+          if !Optimizer.optimize(route.planning, route, true)
             status 304
           else
             route.planning.customer.save!

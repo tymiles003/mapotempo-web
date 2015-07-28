@@ -48,32 +48,38 @@ class V01::DestinationsTest < ActiveSupport::TestCase
 
   test 'should create bulk from csv' do
     assert_difference('Destination.count', 1) do
-      put api(), replace: false, file: fixture_file_upload('files/import_one.csv', 'text/csv')
-      assert_equal 204, last_response.status
+      assert_difference('Planning.count', 1) do
+        put api(), replace: false, file: fixture_file_upload('files/import_one.csv', 'text/csv')
+        assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
+      end
     end
   end
 
   test 'should create bulk from json' do
     assert_difference('Destination.count', 1) do
-      put api(), {destinations: [{
-        name: "Nouveau client",
-        street: nil,
-        postalcode: nil,
-        city: "Tule",
-        lat: 43.5710885456786,
-        lng: 3.89636993408203,
-        quantity: nil,
-        open: nil,
-        close: nil,
-        detail: nil,
-        comment: nil,
-        ref: nil,
-        take_over: nil,
-        tag_ids: [],
-        geocoding_accuracy: nil,
-        foo: 'bar'
-      }]}
-      assert_equal 204, last_response.status
+      assert_difference('Planning.count', 1) do
+        put api(), {destinations: [{
+          name: "Nouveau client",
+          street: nil,
+          postalcode: nil,
+          city: "Tule",
+          lat: 43.5710885456786,
+          lng: 3.89636993408203,
+          quantity: nil,
+          open: nil,
+          close: nil,
+          detail: nil,
+          comment: nil,
+          ref: "z",
+          take_over: nil,
+          tags: ['tag1'],
+          geocoding_accuracy: nil,
+          foo: 'bar',
+          route: "1",
+          active: "1"
+        }]}
+        assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
+      end
     end
   end
 
