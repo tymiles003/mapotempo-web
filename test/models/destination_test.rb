@@ -13,9 +13,11 @@ class DestinationTest < ActiveSupport::TestCase
       assert_difference('Destination.count') do
         assert_difference('Order.count', 7 * 2) do
           customer = customers(:customer_one)
-          o = customer.destinations.build(name: "plop", city: "Bordeaux", lat: 1, lng: 1, tags: [tags(:tag_one)])
-          assert o.save
-          assert customer.save
+          o = customer.destinations.build(name: "plop", city: "Bordeaux", tags: [tags(:tag_one)])
+          assert o.save!
+          assert customer.save!
+          o.reload
+          assert !o.lat.nil?, 'Latitude not built'
         end
       end
     end

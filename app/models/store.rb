@@ -43,6 +43,7 @@ class Store < ActiveRecord::Base
   validates_inclusion_of :lng, in: -180..180, :allow_nil => true, message: I18n.t('activerecord.errors.models.stores.lng_outside_range')
   validates_with LocalizationStoreValidator, fields: [:street, :city, :lat, :lng]
 
+  before_create :create_geocode
   before_update :update_geocode
   before_save :update_out_of_date
   before_destroy :destroy_vehicle_store
@@ -74,6 +75,12 @@ class Store < ActiveRecord::Base
   def update_out_of_date
     if lat_changed? || lng_changed? || open_changed? || close_changed?
       out_of_date
+    end
+  end
+
+  def create_geocode
+    if !@is_gecoded && (lat.nil? || lng.nil?)
+      geocode
     end
   end
 

@@ -46,6 +46,7 @@ class Destination < ActiveRecord::Base
   validates_time :close, presence: false, after: :open, if: :close
 
   before_save :update_tags, :create_orders
+  before_create :create_geocode
   before_update :update_geocode, :update_out_of_date
 
   def geocode
@@ -77,6 +78,12 @@ class Destination < ActiveRecord::Base
   def update_out_of_date
     if lat_changed? || lng_changed? || open_changed? || close_changed? || quantity_changed? || take_over_changed?
       out_of_date
+    end
+  end
+
+  def create_geocode
+    if !@is_gecoded && (lat.nil? || lng.nil?)
+      geocode
     end
   end
 

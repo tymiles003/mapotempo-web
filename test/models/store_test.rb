@@ -9,8 +9,10 @@ class StoreTest < ActiveSupport::TestCase
   end
 
   test "should save" do
-    o = customers(:customer_one).stores.build(name: "plop", city: "Bordeaux", lat: 1, lng: 1)
-    assert o.save
+    o = customers(:customer_one).stores.build(name: "plop", city: "Bordeaux")
+    assert o.save!
+    o.reload
+    assert !o.lat.nil?, 'Latitude not built'
   end
 
   test "should destroy" do
