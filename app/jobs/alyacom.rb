@@ -39,7 +39,7 @@ class Alyacom
       position = stop.position? ? stop : position
       {
         user: {
-          id: stop_base_id,
+          id: stop.base_id,
           name: stop.name,
           street: position.street,
           postalcode: position.postalcode,
