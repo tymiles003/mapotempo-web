@@ -68,8 +68,8 @@
 <%
 controller.js(
   map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
-  map_lat: @customer.stores[0].lat,
-  map_lng: @customer.stores[0].lng,
+  map_lat: @customer.default_position[:lat],
+  map_lng: @customer.default_position[:lng],
   map_attribution: current_user.layer.map_attribution,
   default_city: @customer.stores[0].city,
   default_country: @customer.default_country,

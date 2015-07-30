@@ -25,9 +25,9 @@
 
   <tbody>
     <% @stores.each do |store| %>
-      <tr>
+      <tr<%= ' class="ui-state-error"'.html_safe if store.lat.nil? || store.lng.nil? %>>
         <td><%= check_box_tag("stores[#{store.id}]") %></td>
-        <td><%= store.name %></td>
+        <td><%= content_tag :i, nil, class: "fa fa-map-marker fa-fw", title: t('plannings.edit.error.no_geolocalization') if store.lat.nil? || store.lng.nil? %><%= store.name %></td>
         <td><%= store.street %></td>
         <td><%= store.city %></td>
         <td class="text-right">

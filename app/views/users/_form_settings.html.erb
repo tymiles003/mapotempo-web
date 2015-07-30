@@ -12,8 +12,8 @@
 <%
 controller.js(
   map_layer_url: request.ssl? ? @user.layer.urlssl : @user.layer.url,
-  map_lat: @user.customer.stores[0].lat,
-  map_lng: @user.customer.stores[0].lng,
+  map_lat: @user.customer.default_position[:lat],
+  map_lng: @user.customer.default_position[:lng],
   map_attribution: @user.layer.map_attribution,
   layers: Hash[Layer.all.collect{ |layer|
     [layer.id, {url: request.ssl? ? layer.urlssl : layer.url, attribution: layer.map_attribution}]

@@ -38,6 +38,8 @@ else
     json.store_start do
       json.extract! route.vehicle.store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
       (json.time route.start.strftime('%H:%M')) if route.start
+      (json.geocoded true) if !route.vehicle.store_start.lat.nil? && !route.vehicle.store_start.lng.nil?
+      (json.error true) if route.vehicle.store_start.lat.nil? || route.vehicle.store_start.lng.nil?
     end if route.vehicle
     first_active_free = nil
     route.stops.reverse_each{ |stop|
@@ -104,6 +106,8 @@ else
     json.store_stop do
       json.extract! route.vehicle.store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
       (json.time route.end.strftime('%H:%M')) if route.end
+      (json.geocoded true) if !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil?
+      (json.error true) if route.vehicle.store_stop.lat.nil? || route.vehicle.store_stop.lng.nil?
       json.stop_trace route.stop_trace
       (json.error true) if route.stop_out_of_drive_time
       json.stop_out_of_drive_time route.stop_out_of_drive_time

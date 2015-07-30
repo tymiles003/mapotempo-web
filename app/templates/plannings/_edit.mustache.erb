@@ -141,6 +141,9 @@
         <li data-store_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa fa-home fa-fw"></i>
           <div class="title">
+            {{^geocoded}}
+              <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geolocalization{{/i18n}}"></i>
+            {{/geocoded}}
             <span class="info">{{#time}}{{time}} - {{/time}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
@@ -224,6 +227,9 @@
         <li data-store_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa fa-home fa-fw"></i>
           <div class="title">
+            {{^geocoded}}
+              <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geolocalization{{/i18n}}"></i>
+            {{/geocoded}}
             {{#stop_out_of_drive_time}}
               <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
             {{/stop_out_of_drive_time}}

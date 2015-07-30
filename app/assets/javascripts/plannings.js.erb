@@ -218,34 +218,36 @@ function plannings_edit(params) {
     $.each(data.stores, function(i, store) {
       store.store = true;
       store.planning_id = data.planning_id;
-      var m = L.marker(new L.LatLng(store.lat, store.lng), {
-        icon: L.icon({
-          iconUrl: '<%= asset_path("marker-home.svg") %>',
-          iconSize: new L.Point(32, 32),
-          iconAnchor: new L.Point(16, 16),
-          popupAnchor: new L.Point(0, -12)
-        })
-      }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
-        minWidth: 200,
-        autoPan: false
-      });
-      m.on('mouseover', function(e) {
-        m.openPopup();
-      }).on('mouseout', function(e) {
-        if (!m.click) {
-          m.closePopup();
-        }
-      }).off('click').on('click', function(e) {
-        if (m.click) {
-          m.closePopup();
-        } else {
-          m.click = true;
+      if (store.lat !== null && store.lng !== null) {
+        var m = L.marker(new L.LatLng(store.lat, store.lng), {
+          icon: L.icon({
+            iconUrl: '<%= asset_path("marker-home.svg") %>',
+            iconSize: new L.Point(32, 32),
+            iconAnchor: new L.Point(16, 16),
+            popupAnchor: new L.Point(0, -12)
+          })
+        }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
+          minWidth: 200,
+          autoPan: false
+        });
+        m.on('mouseover', function(e) {
           m.openPopup();
-        }
-      }).on('popupclose', function(e) {
-        m.click = false;
-      });
-      stores[store.id] = m;
+        }).on('mouseout', function(e) {
+          if (!m.click) {
+            m.closePopup();
+          }
+        }).off('click').on('click', function(e) {
+          if (m.click) {
+            m.closePopup();
+          } else {
+            m.click = true;
+            m.openPopup();
+          }
+        }).on('popupclose', function(e) {
+          m.click = false;
+        });
+        stores[store.id] = m;
+      }
     });
     stores_marker.addTo(map);
 

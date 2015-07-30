@@ -55,8 +55,8 @@
 controller.js(
   destination_id: @destination.id || 0,
   map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
-  map_lat: @destination.customer.stores[0].lat,
-  map_lng: @destination.customer.stores[0].lng,
+  map_lat: @destination.customer.default_position[:lat],
+  map_lng: @destination.customer.default_position[:lng],
   map_attribution: current_user.layer.map_attribution
 )
 %>
