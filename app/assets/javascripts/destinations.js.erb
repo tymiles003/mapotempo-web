@@ -67,7 +67,7 @@ function destinations_form(params, api) {
             success: function(data) {
               add($.map(data, function(val, i) {
                 return {
-                  label: val.street + ' ' + val.postalcode + ' ' + val.city,
+                  label: val.street + ' ' + val.postalcode + ' ' + val.city + ' ' + val.country,
                   value: val.street
                 };
               }));
@@ -85,7 +85,7 @@ function destinations_form(params, api) {
     <% end %>
     $row.on("change", ":input", function(event) {
       var url;
-      if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]$/)) {
+      if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]|\[country\]$/)) {
         url = '/api/0.1/' + api + '/geocode.json';
       } else {
         if (event.currentTarget.name.match(/\[lat\]|\[lng\]$/)) {
@@ -152,6 +152,7 @@ function destinations_form(params, api) {
     $('[name$=\\[street\\]]', row).val(destination.street);
     $('[name$=\\[postalcode\\]]', row).val(destination.postalcode);
     $('[name$=\\[city\\]]', row).val(destination.city);
+    $('[name$=\\[country\\]]', row).val(destination.country);
     $('[name$=\\[lat\\]]', row).val(destination.lat);
     $('[name$=\\[lng\\]]', row).val(destination.lng);
     if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
@@ -374,7 +375,7 @@ function destinations_index(params, api) {
             success: function(data) {
               add($.map(data, function(val, i) {
                 return {
-                  label: val.street + ' ' + val.postalcode + ' ' + val.city,
+                  label: val.street + ' ' + val.postalcode + ' ' + val.city + ' ' + val.country,
                   value: val.street
                 };
               }));
