@@ -71,6 +71,8 @@ controller.js(
   map_lat: @customer.stores[0].lat,
   map_lng: @customer.stores[0].lng,
   map_attribution: current_user.layer.map_attribution,
-  default_city: @customer.stores[0].city
+  default_city: @customer.stores[0].city,
+  default_country: @customer.default_country,
+  take_over_default: (@customer.take_over && @customer.take_over.strftime('%H:%M:%S'))
 )
 %>

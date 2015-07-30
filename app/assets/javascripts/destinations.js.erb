@@ -47,6 +47,8 @@ function destinations_form(params, api) {
       }
       destination.geocoding_accuracy_percent = Math.round(destination.geocoding_accuracy * 100);
     }
+    destination.default_country = default_country;
+    destination.take_over_default = take_over_default;
     return destination;
   }
 
@@ -292,7 +294,9 @@ function destinations_index(params, api) {
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
-    default_city = params.default_city;
+    default_city = params.default_city,
+    default_country = params.default_country,
+    take_over_default = params.take_over_default;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -355,6 +359,8 @@ function destinations_index(params, api) {
     if (destination.close) {
       destination.close = destination.close.split(':').slice(0, 2).join(':');
     }
+    destination.default_country = default_country;
+    destination.take_over_default = take_over_default;
     return destination;
   }
 
@@ -555,8 +561,10 @@ function destinations_index(params, api) {
       id: id,
       name: I18n.t('destinations.index.default_name'),
       city: default_city,
+      default_country: default_country,
       lat: center.lat,
-      lng: center.lng
+      lng: center.lng,
+      take_over_default: take_over_default
     };
     $.ajax({
       type: "post",
