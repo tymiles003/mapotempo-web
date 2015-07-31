@@ -54,9 +54,9 @@ function destinations_form(params, api) {
 
   function prepare_display_destination(destination) {
     if (destination.geocoding_accuracy) {
-      if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_success %>) {
+      if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocode_geocoder.accuracy_success %>) {
         destination.geocoding_status = 'success';
-      } else if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_warning %>) {
+      } else if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocode_geocoder.accuracy_warning %>) {
         destination.geocoding_status = 'warning';
       } else {
         destination.geocoding_status = 'danger';
@@ -386,9 +386,9 @@ function destinations_index(params, api) {
     destination.tags = t;
     destination.i18n = mustache_i18n;
     if (destination.geocoding_accuracy) {
-      if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_success %>) {
+      if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocode_geocoder.accuracy_success %>) {
         destination.geocoding_status = 'success';
-      } else if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocoding_accuracy_warning %>) {
+      } else if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocode_geocoder.accuracy_warning %>) {
         destination.geocoding_status = 'warning';
       } else {
         destination.geocoding_status = 'danger';

@@ -16,7 +16,7 @@
     <div class="col-md-6">
       <div id="geocoding_accuracy"<% if ! @destination.geocoding_accuracy %> style="display: none"<% end %>>
         <div class="progress">
-          <div class="progress-bar<% if @destination.geocoding_accuracy %> progress-bar-<%= @destination.geocoding_accuracy > Mapotempo::Application.config.geocoding_accuracy_success ? 'success' : @destination.geocoding_accuracy > Mapotempo::Application.config.geocoding_accuracy_warning ? 'warning' : 'danger' %><% end %>" style="width: <%= @destination.geocoding_accuracy ? (@destination.geocoding_accuracy * 100).round : 0 %>%;">
+          <div class="progress-bar<% if @destination.geocoding_accuracy %> progress-bar-<%= @destination.geocoding_accuracy > Mapotempo::Application.config.geocode_geocoder.accuracy_success ? 'success' : @destination.geocoding_accuracy > Mapotempo::Application.config.geocode_geocoder.accuracy_warning ? 'warning' : 'danger' %><% end %>" style="width: <%= @destination.geocoding_accuracy ? (@destination.geocoding_accuracy * 100).round : 0 %>%;">
             <span><%= @destination.geocoding_accuracy ? (@destination.geocoding_accuracy * 100).round.to_s + '%' : '' %></span>
           </div>
         </div>

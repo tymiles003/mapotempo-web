@@ -19,6 +19,14 @@ require 'rest_client'
 
 class GeocodeAddokWrapper
 
+  def accuracy_success
+    0.8
+  end
+
+  def accuracy_warning
+    0.5
+  end
+
   def initialize(url, api_key)
     @url = url
     @api_key = api_key

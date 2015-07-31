@@ -25,6 +25,14 @@ include REXML
 
 class GeocodeIgn
 
+  def accuracy_success
+    0.98
+  end
+
+  def accuracy_warning
+    0.9
+  end
+
   def initialize(key, referer)
     @ign_key = key
     @ign_referer = referer
