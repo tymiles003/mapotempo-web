@@ -405,7 +405,7 @@ function destinations_index(params, api) {
         url: url,
         beforeSend: beforeSendWaiting,
         success: function(data) {
-          update(id, data);
+          update(id, data, false);
         },
         complete: completeWaiting,
         error: ajaxError
@@ -454,7 +454,7 @@ function destinations_index(params, api) {
     });
   }
 
-  function update(destination_id, destination) {
+  function update(destination_id, destination, move) {
     var row = $('[data-destination_id=' + destination_id + ']'),
       destination = prepare_display_destination(destination);
     $(row).replaceWith(SMT['destinations/show'](destination));
@@ -468,8 +468,10 @@ function destinations_index(params, api) {
       } else {
         addMarker(destination_id, destination.lat, destination.lng);
       }
-      if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
-        map.setView(markers[destination_id].getLatLng(), 16);
+      if (move) {
+        if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
+          map.setView(markers[destination_id].getLatLng(), 16);
+        }
       }
     } else {
       delete markers[destination_id];
@@ -509,6 +511,9 @@ function destinations_index(params, api) {
   });
 
   function over(id, move) {
+    if (icon_over_stack.indexOf(id) != -1)
+      move = false;
+
     // clean over
     $('.destination').removeClass('highlight');
     var i;
@@ -573,7 +578,7 @@ function destinations_index(params, api) {
       url: '/api/0.1/destinations.json',
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        update(data.id, data);
+        update(data.id, data, true);
         destination.i18n = mustache_i18n;
         $(".destinations").append(SMT['destinations/show'](data));
         wire($('[data-destination_id=' + data.id + ']'));
