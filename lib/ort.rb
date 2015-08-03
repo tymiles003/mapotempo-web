@@ -106,39 +106,41 @@ module Ort
         ret << i - 1 - zip_key.length + original_matrix.length - 1
       elsif zip_key[i - 1].data_items.length > 1
         sub = zip_key[i - 1].data_items.collect{ |i| i[0] }
-        n = ii - 1
-        while(n - 1 >= 0 && result[n - 1] - 1 >= zip_key.length) do n -= 1 end
-        start = n - 1 >= 0 && result[n - 1] - 1 >= 0 ? zip_key[result[n - 1] - 1].data_items[0][0] : 0
-        n = ii + 1
-        while(n + 1 < result.length && result[n + 1] - 1 >= zip_key.length) do n += 1 end
-        stop = n + 1 < result.length && result[n + 1] - 1 < zip_key.length ? zip_key[result[n + 1] - 1].data_items[0][0] : original_matrix.length - 1
-        sub = [start] + sub + [stop]
+        start = ret[-1]
+        stop = i < zip_key.length ? zip_key[i].data_items[0][0] : original_matrix.length - 1
         sub_size = sub.length
         min_order = if sub_size <= 5
-          sub.permutation(sub_size).collect{ |p|
-            last = ret[-1]
+          sub.permutation.collect{ |p|
+            last = start
             s = p.sum { |s|
               a, last = last, s
-              original_matrix[a][s]
-            }
+              original_matrix[a][s][0]
+            } + original_matrix[p[-1]][stop][0]
             [s, p]
-          }.min{ |a, b| a[0] <=> b[0] }[1]
+          }.min_by{ |a| a[0] }[1]
         else
           sim_annealing = SimAnnealing::SimAnnealing.new
           sim_annealing.start = start
           sim_annealing.stop = stop
           sim_annealing.matrix = original_matrix
-          r = sim_annealing.search(sub,  (1..[sub_size, 8].min).reduce(1, :*), 100000.0, 0.999)[:vector] # Yes, compute factorial
-          r.collect{ |i| sub[i] }
+          fact = (1..[sub_size, 8].min).reduce(1, :*) # Yes, compute factorial
+          initial_order = [start] + sub + [stop]
+          sub_size += 2
+          r = sim_annealing.search(initial_order, fact, 100000.0, 0.999)[:vector]
+          r = r.collect{ |i| initial_order[i] }
+          index = r.index(start)
+          if r[(index + 1) % sub_size] != stop && r[(index - 1) % sub_size] != stop
+            # Not stop and start following
+            sub
+          else
+            if r[(index + 1) % sub_size] == stop
+              r.reverse!
+              index = sub_size - 1 - index
+            end
+            r = index == 0 ? r : r[index..-1] + r[0..index-1] # shift to replace start at beginning
+            r[1..-2] # remove start and stop
+          end
         end
-
-        index = min_order.index(start)
-        if min_order[(index + 1) % sub_size] == stop
-          min_order = min_order.reverse
-          index = sub_size - 1 - index
-        end
-        min_order = index == 0 ? min_order : min_order[index..-1] + min_order[0..index-1] # shift to replace start at beginning
-        min_order = min_order[1..-2] # remove start and stop
         ret += min_order
       else
         ret << zip_key[i - 1].data_items[0][0]
