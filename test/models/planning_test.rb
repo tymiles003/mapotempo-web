@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'osrm'
 
 class PlanningTest < ActiveSupport::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
@@ -31,7 +32,7 @@ class PlanningTest < ActiveSupport::TestCase
   test "should set_destinations" do
     o = plannings(:planning_one)
 
-    o.set_destinations({'route_one' => [[destinations(:destination_one)]]})
+    o.set_destinations({'route_one_one' => [[destinations(:destination_one)]]})
     assert o.routes[1].stops.select{ |stop| stop.is_a?(StopDestination) }.collect(&:destination).include?(destinations(:destination_one))
     o.save!
   end
@@ -40,7 +41,7 @@ class PlanningTest < ActiveSupport::TestCase
     o = plannings(:planning_one)
     o.tags << tags(:tag_two)
 
-    o.set_destinations({'route_one' => [[destinations(:destination_one)]]})
+    o.set_destinations({'route_one_one' => [[destinations(:destination_one)]]})
     assert_not o.routes[1].stops.select{ |stop| stop.is_a?(StopDestination) }.collect(&:destination).include?(destinations(:destination_one))
     o.save!
   end
@@ -84,7 +85,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test "should destination_remove" do
     o = plannings(:planning_one)
-    assert_difference('Stop.count', -1) do
+    assert_difference('Stop.count', -2) do
       o.destination_remove(destinations(:destination_one))
       o.save!
     end
@@ -132,29 +133,33 @@ class PlanningTest < ActiveSupport::TestCase
   test "should automatic insert" do
     o = plannings(:planning_one)
     o.zoning = nil
-    assert_equal 2, o.routes.size
-    assert_equal 1, o.routes[0].stops.size
-    assert_equal 4, o.routes[1].stops.size
+    assert_equal 3, o.routes.size
+    assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_zero' }.stops.size
+    assert_equal 4, o.routes.find{ |ro| ro.ref == 'route_one' }.stops.size
+    assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_three' }.stops.size
     assert_difference('Stop.count', 0) do
-      o.automatic_insert(o.routes[0].stops[0])
+      # route_zero has not any vehicle => stop will be affected to another route
+      o.automatic_insert(o.routes.find{ |ro| ro.ref == 'route_zero' }.stops[0])
       o.save!
       o.customer.save!
     end
     o.reload
-    assert_equal 2, o.routes.size
-    assert_equal 0, o.routes[0].stops.size
-    assert_equal 5, o.routes[1].stops.size
+    assert_equal 3, o.routes.size
+    assert_equal 0, o.routes.find{ |ro| ro.ref == 'route_zero' }.stops.size
+    assert_equal 5, o.routes.find{ |ro| ro.ref == 'route_one' }.stops.size
+    assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_three' }.stops.size
   end
 
   test "should apply orders" do
     o = plannings(:planning_one)
-    assert o.routes[1].stops[0].active
-    assert o.routes[1].stops[1].active
+    r = o.routes.find{ |ro| ro.ref == 'route_one' }
+    assert r.stops[0].active
+    assert r.stops[1].active
 
     oa = order_arrays(:order_array_one)
     o.apply_orders(oa, 0)
-    assert o.routes[1].stops[0].active
-    assert_not o.routes[1].stops[1].active
+    assert r.stops[0].active
+    assert_not r.stops[1].active
     o.save!
   end
 

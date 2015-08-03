@@ -5,7 +5,7 @@ class AlyacomTest < ActionController::TestCase
     def AlyacomApi.createJobRoute(association_id, staff, waypoints)
     end
 
-    @route = routes(:route_one)
+    @route = routes(:route_one_one)
   end
 
   test "should export route" do

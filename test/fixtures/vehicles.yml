@@ -33,3 +33,20 @@ vehicle_two:
   rest_stop: 2000-01-01 14:00:00
   rest_duration: 2000-01-01 00:45:00
   store_rest:
+
+vehicle_three:
+  name: vehicle_three
+  emission: 1.5
+  consumption: 1.5
+  capacity: 1
+  color: "#004499"
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 15:00:00
+  customer: customer_one
+  store_start: store_without_geo
+  store_stop: store_without_geo
+  speed_multiplicator:
+  rest_start: 2000-01-01 12:00:00
+  rest_stop: 2000-01-01 14:00:00
+  rest_duration: 2000-01-01 00:45:00
+  store_rest:

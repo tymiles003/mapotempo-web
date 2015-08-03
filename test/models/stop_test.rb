@@ -9,7 +9,7 @@ class StopTest < ActiveSupport::TestCase
   end
 
   test "get order" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     o.planning.customer.enable_orders = true
     assert_not o.stops[0].order
     assert_not o.stops[1].order

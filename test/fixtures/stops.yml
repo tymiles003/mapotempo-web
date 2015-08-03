@@ -6,7 +6,7 @@ stop_unaffected:
   active: false
   distance: 1.5
   trace: MyString
-  route: route_zero
+  route: route_zero_one
   destination: destination_unaffected_one
   time: 2000-01-01 00:00:30
   out_of_window: false
@@ -19,7 +19,7 @@ stop_one_one:
   active: true
   distance: 1.5
   trace: MyString
-  route: route_one
+  route: route_one_one
   destination: destination_one
   time: 2000-01-01 00:00:30
   out_of_window: false
@@ -32,7 +32,7 @@ stop_one_two:
   active: true
   distance: 1.5
   trace: MyString
-  route: route_one
+  route: route_one_one
   destination: destination_two
   time: 2000-01-01 00:00:30
   out_of_window: false
@@ -45,7 +45,7 @@ stop_one_three:
   active: true
   distance: 1.5
   trace: MyString
-  route: route_one
+  route: route_one_one
   destination: destination_three
   time: 2000-01-01 00:00:30
   out_of_window: false
@@ -58,7 +58,7 @@ stop_one_four:
   active: true
   distance: 1.5
   trace: MyString
-  route: route_one
+  route: route_one_one
   time: 2000-01-01 00:00:30
 
 stop_two_one:
@@ -67,8 +67,21 @@ stop_two_one:
   active: false
   distance: 1.5
   trace: MyString
-  route: route_two
+  route: route_zero_two
   destination: destination_two
+  time: 2000-01-01 00:00:30
+  out_of_window: false
+  out_of_capacity: false
+  out_of_drive_time: false
+
+stop_three_one:
+  type: StopDestination
+  index: 1
+  active: true
+  distance: 1.5
+  trace: MyString
+  route: route_three_one
+  destination: destination_one
   time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false

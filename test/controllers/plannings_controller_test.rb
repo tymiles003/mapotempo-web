@@ -80,7 +80,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
     get :show, id: @planning, format: :csv
     assert_response :success
-    assert_equal ',,,,,,a,unaffected_one,MyString,MyString,MyString,MyString,,1.5,1.5,MyString,00:01:00,,,10:00,11:00,tag1,"","",""', response.body.split("\n")[1]
+    assert_equal ',route_zero,,,,,a,unaffected_one,MyString,MyString,MyString,MyString,,1.5,1.5,MyString,00:01:00,,,10:00,11:00,tag1,"","",""', response.body.split("\n")[1]
     assert_equal 'vehicle_one,route_one,1,,00:00,1.5,b,destination_one,Rue des Lilas,MyString,33200,Bordeau,,49.1857,-0.3735,MyString,00:05:33,P1/P2,1,10:00,11:00,tag1,"","",""', response.body.split("\n").select{ |l| l.include?('vehicle_one') }[1]
   end
 
@@ -143,23 +143,23 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should switch" do
-    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one).id, vehicle_id: vehicles(:vehicle_one).id
+    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_id: vehicles(:vehicle_one).id
     assert_response :success, id: @planning
   end
 
   test "should not switch" do
     assert_raises ActiveRecord::RecordNotFound do
-      patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one).id, vehicle_id: 666
+      patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_id: 666
     end
   end
 
   test "should update stop" do
-    patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
+    patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
     assert_response :success
   end
 
   test "should optimize route" do
-    get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one).id
+    get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
     assert_response :success
   end
 
@@ -177,7 +177,7 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test "should update active" do
-    patch :active, planning_id: @planning, format: :json, route_id: routes(:route_one).id, active: :none
+    patch :active, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, active: :none
     assert_response :success
   end
 end

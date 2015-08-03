@@ -24,7 +24,10 @@ class Masternaut
     customer = route.planning.customer
     position = route.vehicle.store_start
     waypoints = route.stops.select(&:active).collect{ |stop|
-      position = stop.position? ? stop : position
+      position = stop if stop.position?
+      if position.nil? || position.lat.nil? || position.lng.nil?
+        next
+      end
       {
         street: position.street,
         city: position.city,
@@ -47,8 +50,10 @@ class Masternaut
         time: stop.time,
         updated_at: stop.base_updated_at,
       }
-    }
+    }.compact
 
-    MasternautWs.createJobRoute(customer.masternaut_user, customer.masternaut_password, route.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle.name, route.planning.date || Date.today, route.start, route.end, waypoints)
+    if !position.nil? && !position.lat.nil? && !position.lng.nil?
+      MasternautWs.createJobRoute(customer.masternaut_user, customer.masternaut_password, route.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle.name, route.planning.date || Date.today, route.start, route.end, waypoints)
+    end
   end
 end

@@ -8,7 +8,7 @@ class OptimizerTest < ActionController::TestCase
       (0..(matrix.size-1)).to_a
     end
 
-    @route = routes(:route_one)
+    @route = routes(:route_one_one)
   end
 
   test "should optimize" do

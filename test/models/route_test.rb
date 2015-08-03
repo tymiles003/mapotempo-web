@@ -26,14 +26,14 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should dup" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     oo = o.amoeba_dup
     assert_equal oo, oo.stops[0].route
     oo.save!
   end
 
   test "should default_stops" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     o.planning.tags.clear
     o.stops.clear
     o.save!
@@ -44,7 +44,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should compute" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     o.out_of_date = true
     o.distance = o.emission = o.start = o.end = nil
     o.compute
@@ -58,7 +58,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should compute empty" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     assert o.stops.size > 1
     o.compute
     assert_equal o.stops.size + 1, o.distance
@@ -73,7 +73,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should set destinations" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     o.stops.clear
     assert_difference('Stop.count', 1) do
       o.set_destinations([[destinations(:destination_two), true]])
@@ -82,7 +82,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should add" do
-    o = routes(:route_zero)
+    o = routes(:route_zero_one)
     o.add(destinations(:destination_two))
     o.save!
     o.reload
@@ -90,7 +90,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should add index" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     o.add(destinations(:destination_two), 1)
     o.save!
     o.stops.reload
@@ -98,14 +98,14 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should not add without index" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     assert_raises(RuntimeError) {
       o.add(destinations(:destination_two))
     }
   end
 
   test "should remove" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     assert_difference('Stop.count', -1) do
       o.remove_destination(destinations(:destination_two))
       o.save!
@@ -113,7 +113,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should sum_out_of_window" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
 
     o.stops.each { |s|
       if s.is_a?(StopDestination)
@@ -137,23 +137,23 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should change active" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
 
-    assert_equal 3, o.size_active
+    assert_equal 4, o.size_active
     o.active(:none)
     assert_equal 0, o.size_active
     o.active(:all)
-    assert_equal 3, o.size_active
+    assert_equal 4, o.size_active
     o.stops[0].active = false
-    assert_equal 2, o.size_active
+    assert_equal 3, o.size_active
     o.active(:foo_bar)
-    assert_equal 2, o.size_active
+    assert_equal 3, o.size_active
 
     o.save!
   end
 
   test "move stop on same route from inside to start" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     s = o.stops[1]
     assert_equal 2, s.index
     o.move_stop(s, 1)
@@ -163,7 +163,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "move stop on same route from inside to end" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     s = o.stops[1]
     assert_equal 2, s.index
     o.move_stop(s, 3)
@@ -173,7 +173,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "move stop on same route from start to inside" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     s = o.stops[0]
     assert_equal 1, s.index
     o.move_stop(s, 2)
@@ -183,7 +183,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "move stop on same route from end to inside" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     s = o.stops[2]
     assert_equal 3,  s.index
     o.move_stop(s, 2)
@@ -193,32 +193,32 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "move stop from unaffected to affected route" do
-    o = routes(:route_zero)
+    o = routes(:route_zero_one)
     s = o.stops[0]
     assert_not s.index
-    routes(:route_one).move_stop(s, 1)
+    routes(:route_one_one).move_stop(s, 1)
 
     o.save!
   end
 
   test "move stop from affected to affected route" do
-    o = routes(:route_two)
+    o = routes(:route_zero_two)
     s = o.stops[0]
-    routes(:route_one).move_stop(s, 2)
+    routes(:route_one_one).move_stop(s, 2)
 
     o.save!
   end
 
   test "move stop of unaffected route" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     s = o.stops[1]
-    routes(:route_zero).move_stop(s, 1)
+    routes(:route_zero_one).move_stop(s, 1)
 
     o.save!
   end
 
   test "should no amalgamate point at same position" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
 
     positions = [D.new(1,1), D.new(2,2), D.new(3,3)]
     ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
@@ -233,7 +233,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should amalgamate point at same position" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
 
     positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(2,2,nil,nil,0), D.new(3,3,nil,nil,0)]
     ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
@@ -248,7 +248,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should amalgamate point at same position, tw" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
 
     positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(2,2,10,20,0), D.new(3,3,nil,nil,0)]
     ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
@@ -260,10 +260,56 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test "should optimize" do
-    o = routes(:route_one)
+    o = routes(:route_one_one)
     optim = o.optimize(nil) { |matrix|
-      0.upto(matrix.size-1).to_a
+      (0..(matrix.size-1)).to_a
     }
-    assert_equal 0.upto(o.stops.size-1).to_a, optim
+    assert_equal (0..(o.stops.size-1)).to_a, optim
+  end
+
+  test "should optimize whithout store" do
+    o = routes(:route_three_one)
+    optim = o.optimize(nil) { |matrix|
+      (0..(matrix.size-1)).to_a
+    }
+    assert_equal (0..(o.stops.size-1)).to_a, optim
+  end
+
+  test "should unnil_positions" do
+    o = routes(:route_one_one)
+
+    positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(nil,nil,nil,nil,0), D.new(2,2,10,20,0), D.new(3,3,nil,nil,0)]
+    tws = [[nil, nil, 0]] + positions.collect{ |position|
+        open, close, duration = position[:open], position[:close], position[:duration]
+        open = open ? open - o.vehicle.open.to_i : nil
+        close = close ? close - o.vehicle.open.to_i : nil
+        if open && close && open > close
+          close = open
+        end
+        [open, close, duration]
+      }
+    ret = o.send(:unnil_positions, positions, tws){ |positions_loc, tws_loc, rest_tws|
+      [0, 1, 2, 3, 4]
+    }
+    assert_equal ret, [0, 1, 3, 4, 2]
+  end
+
+  test "should unnil_positions except start/stop" do
+    o = routes(:route_one_one)
+
+    positions = [D.new(nil,nil,nil,nil,0), D.new(2,2,nil,nil,0), D.new(nil,nil,nil,nil,0), D.new(2,2,10,20,0), D.new(nil,nil,nil,nil,0)]
+    tws = [[nil, nil, 0]] + positions.collect{ |position|
+        open, close, duration = position[:open], position[:close], position[:duration]
+        open = open ? open - o.vehicle.open.to_i : nil
+        close = close ? close - o.vehicle.open.to_i : nil
+        if open && close && open > close
+          close = open
+        end
+        [open, close, duration]
+      }
+    ret = o.send(:unnil_positions, positions, tws){ |positions_loc, tws_loc, rest_tws|
+      [0, 1, 2, 3, 4]
+    }
+    assert_equal ret, [0, 1, 3, 4, 2]
   end
 end

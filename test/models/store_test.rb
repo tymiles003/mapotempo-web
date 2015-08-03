@@ -17,27 +17,27 @@ class StoreTest < ActiveSupport::TestCase
 
   test "should destroy" do
     o = customers(:customer_one)
-    assert_equal 3, o.stores.size
-    store = o.stores.find{ |store| store[:name] == 'store 0' }
-    assert store.destroy
-    o.reload
-    assert_equal 2, o.stores.size
-    assert_equal stores(:store_one), vehicles(:vehicle_one).store_start
+    assert_difference('o.stores.size', -1) do
+      store = o.stores.find{ |store| store[:name] == 'store 0' }
+      assert store.destroy
+      o.reload
+      assert_equal stores(:store_one), vehicles(:vehicle_one).store_start
+    end
   end
 
   test "should destroy in use for vehicle" do
     o = customers(:customer_one)
-    assert_equal 3, o.stores.size
-    store = o.stores.find{ |store| store[:name] == 'store 1' }
-    assert store.destroy
-    o.reload
-    assert_equal 2, o.stores.size
-    assert_not_equal store, vehicles(:vehicle_one).store_start
+    assert_difference('o.stores.size', -1) do
+      store = o.stores.find{ |store| store[:name] == 'store 1' }
+      assert store.destroy
+      o.reload
+      assert_not_equal store, vehicles(:vehicle_one).store_start
+    end
   end
 
   test "should not destroy last store" do
     o = customers(:customer_one)
-    assert_equal 3, o.stores.size
+    assert_not_equal 0, o.stores.size
     for i in 0..(o.stores.size - 2)
       assert o.stores[i].destroy
     end
@@ -52,11 +52,11 @@ class StoreTest < ActiveSupport::TestCase
 
   test "should out_of_date" do
     o = stores(:store_one)
-    assert_not o.customer.plannings[0].out_of_date
+    assert_not o.customer.plannings.where(name: 'planning1').first.out_of_date
     o.lat = 10.1
     o.save!
     o.reload
-    assert o.customer.plannings[0].out_of_date
+    assert o.customer.plannings.where(name: 'planning1').first.out_of_date
   end
 
   test "should geocode" do

@@ -1,13 +1,14 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-route_zero:
+route_zero_one:
   distance: 1.5
   emission: 1.5
   planning: planning_one
   out_of_date: false
   vehicle:
+  ref: "route_zero"
 
-route_one:
+route_one_one:
   distance: 1.5
   emission: 1.5
   planning: planning_one
@@ -16,7 +17,16 @@ route_one:
   ref: "route_one"
   start: 2000-01-01 08:00
 
-route_two:
+route_three_one:
+  distance: 1.5
+  emission: 1.5
+  planning: planning_one
+  out_of_date: false
+  vehicle: vehicle_three
+  ref: "route_three"
+  start: 2000-01-01 07:00
+
+route_zero_two:
   distance: 1.5
   emission: 1.5
   planning: planning_two
@@ -25,11 +35,19 @@ route_two:
   ref:
   start: 2000-01-01 16:00
 
-route_three:
+route_one_two:
   distance: 1.5
   emission: 1.5
   planning: planning_two
   out_of_date: false
   vehicle: vehicle_one
   ref: "route 33"
+  start: 2000-01-01 08:00
+
+route_three_two:
+  distance: 1.5
+  emission: 1.5
+  planning: planning_two
+  out_of_date: false
+  vehicle: vehicle_three
   start: 2000-01-01 07:00

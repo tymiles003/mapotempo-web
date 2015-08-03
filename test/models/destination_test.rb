@@ -51,6 +51,7 @@ class DestinationTest < ActiveSupport::TestCase
 
   test "should update add tag" do
     o = destinations(:destination_one)
+    stops(:stop_three_one).destroy
     assert_difference('Stop.count') do
       o.tags << tags(:tag_two)
       o.save!
@@ -60,6 +61,7 @@ class DestinationTest < ActiveSupport::TestCase
 
   test "should update remove tag" do
     o = destinations(:destination_one)
+    stops(:stop_three_one).destroy
     assert_difference('Stop.count', -1) do
       o.tags = []
       o.save!
@@ -70,9 +72,10 @@ class DestinationTest < ActiveSupport::TestCase
   test "should update tag" do
     o = destinations(:destination_one)
     p = plannings(:planning_one)
+    stops(:stop_three_one).destroy
     p.tags = [tags(:tag_one), tags(:tag_two)]
 
-    routes(:route_one).stops.clear
+    routes(:route_one_one).stops.clear
     o.tags = []
 
     assert_difference('Stop.count', 0) do
@@ -89,7 +92,7 @@ class DestinationTest < ActiveSupport::TestCase
   end
 
   test "should destroy and reindex stops" do
-    r = routes(:route_one)
+    r = routes(:route_one_one)
     o = destinations(:destination_one)
 
     r.touch

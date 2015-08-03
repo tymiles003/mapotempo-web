@@ -5,7 +5,7 @@ class RoutesControllerTest < ActionController::TestCase
 
   setup do
     @request.env['reseller'] = resellers(:reseller_one)
-    @route = routes(:route_one)
+    @route = routes(:route_one_one)
     sign_in users(:user_one)
   end
 

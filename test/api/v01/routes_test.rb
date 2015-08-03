@@ -17,7 +17,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
       (0..(matrix.size-1)).to_a
     end
 
-    @route = routes(:route_one)
+    @route = routes(:route_one_one)
   end
 
   def api(planning_id, part = nil, param = {})

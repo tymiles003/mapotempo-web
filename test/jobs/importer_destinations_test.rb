@@ -10,7 +10,7 @@ class ImporterTest < ActionController::TestCase
     rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + import_count * @plannings_count) do
+        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
           ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_one.csv", "text")
         end
       end
@@ -24,7 +24,7 @@ class ImporterTest < ActionController::TestCase
     rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count',  (@destinations_count + import_count + rest_count) + import_count * @plannings_count) do
+        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
           ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_one_postalcode.csv", "text")
         end
       end
@@ -36,7 +36,7 @@ class ImporterTest < ActionController::TestCase
     rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count',  (@destinations_count + import_count + rest_count) + import_count * @plannings_count) do
+        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
           ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_one_coord.csv", "text")
         end
       end
@@ -48,7 +48,7 @@ class ImporterTest < ActionController::TestCase
     rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
-        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + import_count * @plannings_count) do
+        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
           ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_two.csv", "text")
         end
       end

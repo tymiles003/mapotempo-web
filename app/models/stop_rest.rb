@@ -17,7 +17,7 @@
 #
 class StopRest < Stop
   def position?
-    !route.vehicle.store_rest.nil?
+    !route.vehicle.store_rest.nil? && !route.vehicle.store_rest.lat.nil? && !route.vehicle.store_rest.lng.nil?
   end
 
   def position

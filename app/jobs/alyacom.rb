@@ -26,9 +26,9 @@ class Alyacom
     staff = {
       id: route.vehicle.name,
       name: route.vehicle.name,
-      street: store.street,
-      postalcode: store.postalcode,
-      city: store.city,
+      street: (store) ? store.street : nil,
+      postalcode: (store) ? store.postalcode : nil,
+      city: (store) ? store.city : nil,
     }
 
     date = route.planning.date || Date.today
@@ -36,7 +36,10 @@ class Alyacom
     base_time = date.to_time
     position = route.vehicle.store_start
     waypoints = route.stops.select(&:active).collect{ |stop|
-      position = stop.position? ? stop : position
+      position = stop if stop.position?
+      if position.nil? || position.lat.nil? || position.lng.nil?
+        next
+      end
       {
         user: {
           id: stop.base_id,
@@ -62,7 +65,7 @@ class Alyacom
           end: base_time + (stop.time.seconds_since_midnight + stop.duration).seconds,
         }
       }
-    }
+    }.compact
     customer = route.planning.customer
     AlyacomApi.createJobRoute(customer.alyacom_association, date, staff, waypoints)
   end
