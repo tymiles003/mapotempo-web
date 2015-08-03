@@ -73,6 +73,9 @@ module Mapotempo
     config.osrm_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'osrm_request', expires_in: 60*60*24*1)
     config.osrm_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'osrm_result', expires_in: 60*60*24*1)
 
+    config.otp_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'otp_request', expires_in: 60*60*24*1)
+    config.otp_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'otp_result', expires_in: 60*60*24*1)
+
     config.here_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'here_request', expires_in: 60*60*24*1)
     config.here_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'here_result', expires_in: 60*60*24*1)
     config.here_api_url = 'https://route.nlp.nokia.com/routing'
