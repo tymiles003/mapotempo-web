@@ -38,6 +38,10 @@ class RouterOtp < Router
     }
   end
 
+  def isochrone(lat, lng, size)
+    Otp.isochrone(url, ref, lat, lng, size, monday_morning)
+  end
+
   private
 
   def monday_morning

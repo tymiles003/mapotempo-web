@@ -7,25 +7,86 @@
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
-  <% if @planning %>
+  <% if @zoning.id && (@zoning.isochrone? || @planning) %>
     <div id="zoning_div_input" class="form-group">
       <div class="col-md-offset-2 col-md-6">
-        <% if @zoning.id %>
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-magic fa-fw"></i> <%= t '.generate' %> <span class="caret"></span></button>
-          <ul class="dropdown-menu" role="menu">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-magic fa-fw"></i> <%= t '.generate' %> <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
+          <% if @zoning.isochrone? %>
+            <li><a data-toggle="modal" data-target="#isochrone-modal" href="#"><i class="fa fa-clock-o fa-fw"></i> <%= t '.isochrone' %></a></li>
+          <% end %>
+          <% if @planning %>
+            <li class="divider"></li>
             <li><a href="#" id="from_planning"><i class="fa fa-magic fa-fw"></i> <%= t '.from_planning' %></a></li>
             <li class="divider"></li>
             <% @zoning.customer.vehicles.size.times{ |n| %>
             <li><a href="#" class="automatic" data-n="<%= n + 1 %>"><i class="fa fa-magic fa-fw"></i> <%= t('.automatic', count: n + 1) %></a></li>
             <% } %>
-          </ul>
-        <% end %>
+          <% end %>
+        </ul>
       </div>
     </div>
   <% end %>
 
   <div id="zones"></div>
 <% end %>
+
+<div class="modal fade" id="isochrone-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= t 'zonings.form.dialog.isochrone.title' %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <form>
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="size"><%= t 'zonings.form.dialog.isochrone.size' %></label>
+                <div class="col-md-8 input-append">
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="isochrone_size" value="00:20"/>
+                    <span class="input-group-addon">
+                      <%= t('all.unit.hour_minute') %>
+                    </span>
+                  </div>
+                  <p class="help-block">
+                    <%= t 'zonings.form.dialog.isochrone.size_help' %>
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'all.verb.dismiss' %></button>
+        <button type="button" class="btn btn-primary" id="isochrone"><%= t 'zonings.form.dialog.validate' %></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="isochrone-progress-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><%= t 'zonings.form.dialog.isochrone-progress.title' %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active" style="width: 100%">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%
 controller.js(
   zoning_id: @zoning.id,

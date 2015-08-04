@@ -79,4 +79,10 @@ class V01::ZoningsTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     assert_equal @zoning.name, JSON.parse(last_response.body)['name']
   end
+
+  test 'should generate isochrone' do
+    patch api("#{@zoning.id}/isochrone", size: 5)
+    assert last_response.ok?, last_response.body
+    assert_equal @zoning.name, JSON.parse(last_response.body)['name']
+  end
 end

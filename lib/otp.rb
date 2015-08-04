@@ -29,7 +29,7 @@ module Otp
 
     result = @cache_result.read(key)
     if !result
-      request = @cache_result.read(key)
+      request = @cache_request.read(key)
       if !request
         request = RestClient.get(otp_url + '/otp/routers/' + router_id + '/plan', {
           accept: :json,
@@ -69,5 +69,49 @@ module Otp
     end
 
     result
+  end
+
+  def self.isochrone(otp_url, router_id, lat, lng, size, datetime)
+    key = [otp_url, router_id, lat, lng, nil, nil, size, datetime]
+
+    request = @cache_request.read(key)
+    if !request
+      params = {
+        requestTimespanHours: 2,
+        radiusMeters: 500,
+        nContours: 1,
+        contourSpacingMinutes: size,
+        crs: 'EPSG:2154', # FIXME France only
+        fromPlace: [lat, lng].join(','),
+        maxTransfers: 2,
+        batch: true,
+        # Warning, full english fashion date and time
+        time: datetime.strftime('%I:%M%p'),
+        date: datetime.strftime('%m-%d-%Y'),
+        arriveBy: false,
+        wheelchair: false,
+        showIntermediateStops: false
+      }
+      resource = RestClient::Resource.new(otp_url + '/otp/routers/' + router_id + '/simpleIsochrone', timeout: nil)
+      request = resource.get(params: params) { |response, request, result, &block|
+        case response.code
+        when 200
+          response
+        when 500
+        else
+          response.return!(request, result, &block)
+        end
+      }
+
+      @cache_request.write(key, request)
+    end
+
+    if request
+      data = JSON.parse(request)
+      request = data['features']
+      if request != []
+        request.to_json
+      end
+    end
   end
 end

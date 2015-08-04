@@ -146,5 +146,24 @@ class V01::Zonings < Grape::API
         end
       end
     end
+
+    desc 'Generate isochrone.', {
+      nickname: 'generateIsochrone'
+    }
+    params {
+      requires :id, type: Integer
+      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time.'
+    }
+    patch ':id/isochrone' do
+      Zoning.transaction do
+        zoning = current_customer.zonings.find(params[:id])
+        size = params[:size].to_i
+        if zoning
+          zoning.isochrone(size)
+          zoning.save!
+          present zoning, with: V01::Entities::Zoning
+        end
+      end
+    end
   end
 end

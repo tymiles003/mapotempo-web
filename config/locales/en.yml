@@ -729,6 +729,15 @@ en:
         one: "Automatic: 1 zone"
         other: "Automatic: %{count} zones"
       from_planning: "From planning"
+      isochrone: "Isochrone"
+      dialog:
+        isochrone:
+          title: "Isochrone"
+          validate: "Generate"
+          size: "Time"
+          size_help: "Area accessible from the start store by this travel time."
+        isochrone-progress:
+          title: "Isochrones computation in progress"
 
   unauthorized:
     default: "You are not authorized to access this page"
@@ -762,6 +771,7 @@ en:
       destroy_confirm: "Are you sure?"
       duplicate: "Duplicate"
       toggle_selection: "Toggle selection"
+      dismiss: "Dismiss"
     unit:
       km: "km"
       second: "s"

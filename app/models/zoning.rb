@@ -103,6 +103,29 @@ class Zoning < ActiveRecord::Base
     }
   end
 
+  def isochrone?
+    customer.vehicles.find{ |vehicle|
+      router = (vehicle.router || customer.router)
+      if router.respond_to?(:isochrone) && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
+        true
+      end
+    }
+  end
+
+  def isochrone(size)
+    zones.clear
+    z = customer.vehicles.collect{ |vehicle|
+      router = (vehicle.router || customer.router)
+      if router.respond_to?(:isochrone) && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
+        geom = router.isochrone(vehicle.store_start.lat, vehicle.store_start.lng, size)
+        [vehicle, geom]
+      end
+    }.compact
+    Hash[z].each{ |vehicle, geom|
+      zones.build({polygon: geom, vehicle: vehicle}) if geom
+    }
+  end
+
   private
 
   def update_out_of_date

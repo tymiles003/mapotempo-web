@@ -96,4 +96,9 @@ class ZoningsControllerTest < ActionController::TestCase
     patch :automatic, format: :json, zoning_id: @zoning, planning_id: plannings(:planning_one)
     assert_response :success
   end
+
+  test "should generate isochrone" do
+    patch :isochrone, format: :json, zoning_id: @zoning
+    assert_response :success
+  end
 end

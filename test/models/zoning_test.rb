@@ -43,4 +43,9 @@ class ZoningTest < ActiveSupport::TestCase
     o = zonings(:zoning_one)
     o.from_planning(plannings(:planning_one))
   end
+
+  test "should generate isochrone" do
+    o = zonings(:zoning_one)
+    o.isochrone(5)
+  end
 end
