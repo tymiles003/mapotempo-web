@@ -334,7 +334,7 @@ function plannings_edit(params) {
               popupAnchor: new L.Point(0, -6),
               className: "small"
             })
-          }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show']({stop: {destination: stop}}), {
+          }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show']({stop: stop}), {
             minWidth: 200,
             autoPan: false
           });

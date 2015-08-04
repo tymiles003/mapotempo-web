@@ -1,5 +1,4 @@
 {{#stop}}
-{{#destination}}
 <div data-route_id="{{route_id}}" data-stop_id="{{stop_id}}">
 {{#planning_id}}
 {{^store}}
@@ -43,7 +42,9 @@
   {{#quantity}}<li>{{#i18n}}plannings.edit.popup.quantity{{/i18n}} <i class="fa fa-archive fa-fw"></i> {{quantity}}</li>{{/quantity}}
   {{#orders}}<li>{{#i18n}}plannings.edit.popup.orders{{/i18n}} <i class="fa fa-cube fa-fw"></i> {{orders}}</li>{{/orders}}
   {{#duration}}<li>{{#i18n}}plannings.edit.popup.duration{{/i18n}} <i class="fa fa-clock-o fa-fw"></i> {{duration}}</li>{{/duration}}
-  {{#tags_present}}<li>{{#i18n}}plannings.edit.popup.tags{{/i18n}} {{#tags}}<i class="fa fa-tag fa-fw"></i> {{label}} {{/tags}}</li>{{/tags_present}}
+  {{#destination}}
+    {{#tags_present}}<li>{{#i18n}}plannings.edit.popup.tags{{/i18n}} {{#tags}}<i class="fa fa-tag fa-fw"></i> {{label}} {{/tags}}</li>{{/tags_present}}
+  {{/destination}}
 </ul>
 {{#comment}}
   <p class="wrapped-text">{{comment}}</p>
@@ -62,5 +63,4 @@
   </ul>
 {{/error}}
 </div>
-{{/destination}}
 {{/stop}}
