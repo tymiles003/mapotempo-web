@@ -93,6 +93,7 @@ class ApiV01 < Grape::API
   mount V01::Plannings
   mount V01::Products
   mount V01::Routes
+  mount V01::Stops
   mount V01::Stores
   mount V01::Tags
   mount V01::Vehicles

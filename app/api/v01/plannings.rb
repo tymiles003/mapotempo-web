@@ -139,17 +139,6 @@ class V01::Plannings < Grape::API
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Set stop status.', {
-      nickname: 'updateStop'
-    }
-    params {
-      requires :id, type: String, desc: Id_desc
-    }
-    patch ':id/update_stop' do
-      # TODO
-      error!('501 Not Implemented', 501)
-    end
-
     desc 'Starts asynchronous routes optimization.', {
       nickname: 'optimizeRoutes'
     }
