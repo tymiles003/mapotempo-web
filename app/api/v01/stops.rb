@@ -55,6 +55,26 @@ class V01::Stops < Grape::API
               route.compute && planning.save!
               status 204
             end
+
+            desc 'Move stop position in routes.', {
+              nickname: 'moveStop'
+            }
+            params {
+              requires :id, type: Integer, desc: 'Stop id to move'
+              requires :index, type: Integer, desc: 'New position in the route'
+            }
+            patch ':id/move/:index' do
+              planning_id = params[:planning_id].to_i
+              route_id = params[:route_id].to_i
+              stop_id = params[:id].to_i
+              planning = current_customer.plannings.find{ |planning| planning.id == planning_id }
+              route = planning.routes.find{ |route| route.id == route_id }
+              stop = nil
+              planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == stop_id } }
+
+              route.move_stop(stop, params[:index].to_i + 1) && planning.save!
+              status 204
+            end
           end
         end
       end

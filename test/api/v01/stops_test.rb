@@ -21,4 +21,9 @@ class V01::StopsTest < ActiveSupport::TestCase
     put api(@stop.route.planning.id, @stop.route.id, @stop.id)
     assert_equal 204, last_response.status, last_response.body
   end
+
+  test 'should move stop position in routes' do
+    patch api(@stop.route.planning.id, @stop.route.id, "#{@stop.route.planning.routes[0].stops[0].id}/move/1")
+    assert_equal 204, last_response.status, last_response.body
+  end
 end
