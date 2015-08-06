@@ -16,6 +16,9 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'json'
+require 'rest_client'
+#RestClient.log = $stdout
+
 
 module Osrm
 
@@ -119,5 +122,37 @@ module Osrm
     end
 
     result
+  end
+
+  def self.isochrone(osrm_isochrone_url, lat, lng, size)
+    key = [osrm_isochrone_url, lat, lng, size]
+
+    request = @cache_request.read(key)
+    if !request
+      params = {
+        lat: lat,
+        lng: lng,
+        size: size * 60 # Osrm isochrone is in seconds
+      }
+      resource = RestClient::Resource.new(osrm_isochrone_url + '/0.1/isochrone', timeout: nil)
+      request = resource.get(params: params) { |response, request, result, &block|
+        case response.code
+        when 200
+          response
+        else
+          response.return!(request, result, &block)
+        end
+      }
+
+      @cache_request.write(key, request)
+    end
+
+    if request
+      data = JSON.parse(request)
+      request = data['features']
+      if request != []
+        request.to_json
+      end
+    end
   end
 end

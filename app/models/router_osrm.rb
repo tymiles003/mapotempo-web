@@ -47,4 +47,8 @@ class RouterOsrm < Router
       }
     end
   end
+
+  def isochrone(lat, lng, size)
+    Osrm.isochrone(url_isochrone, lat, lng, size)
+  end
 end

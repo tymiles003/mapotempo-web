@@ -4,7 +4,7 @@ mapnik_fr = Layer.create!(source: "osm", name: "Mapnik-fr", url: "http://{s}.til
 mapquest = Layer.create!(source: "osm", name: "MapQuest", url: "http://otile2.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", urlssl: "https://otile2-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", attribution: "Tiles by MapQuest")
 stamen_bw = Layer.create!(source: "osm", name: "Stamen B&W", url: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", urlssl: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png", attribution: "Tiles by Stamen Design")
 here_layer = Layer.create!(source: "here", name: "Here", url: "http://4.base.maps.cit.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?app_id=yihiGwg1ibLi0q6BfBOa&app_code=5GEGWZnjPAA-ZIwc7DF3Mw", urlssl: "https://4.base.maps.cit.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?app_id=yihiGwg1ibLi0q6BfBOa&app_code=5GEGWZnjPAA-ZIwc7DF3Mw", attribution: "Here")
-osrm = RouterOsrm.create!(name: "project-osrm.org", url:"http://router.project-osrm.org")
+osrm = RouterOsrm.create!(name: "project-osrm.org", url:"http://router.project-osrm.org", url_isochrone:"http://localhost:1723")
 here_router = RouterHere.create!(name: "Here")
 otp_router = RouterOtp.create!(name: "OpenTripPlanner-Bordeaux", url:"http://localhost:8080", ref:"bordeaux")
 profile_osm = Profile.create!(name: "OSM", layers: [mapbox, mapnik, mapnik_fr, mapquest, stamen_bw], routers: [osrm])
