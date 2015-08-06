@@ -22,8 +22,8 @@ class Optimizer
   @@optimize_time = Mapotempo::Application.config.optimize_time
   @@soft_upper_bound = Mapotempo::Application.config.optimize_soft_upper_bound
 
-  def self.optimize_each(planning)
-    if Mapotempo::Application.config.delayed_job_use
+  def self.optimize_each(planning, synchronous = false)
+    if !synchronous && Mapotempo::Application.config.delayed_job_use
       if planning.customer.job_optimizer
         # Customer already run an optimization
         planning.errors.add(:base, I18n.t('errors.planning.already_optimizing'))
@@ -40,13 +40,13 @@ class Optimizer
     end
   end
 
-  def self.optimize(planning, route)
+  def self.optimize(planning, route, synchronous = false)
     optimize_time = planning.customer.optimization_time || @@optimize_time
     soft_upper_bound = planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
     if route.size_active <= 1
         # Nothing to optimize
       true
-    elsif Mapotempo::Application.config.delayed_job_use
+    elsif !synchronous && Mapotempo::Application.config.delayed_job_use
       if planning.customer.job_optimizer
         # Customer already run an optimization
         planning.errors.add(:base, I18n.t('errors.planning.already_optimizing'))

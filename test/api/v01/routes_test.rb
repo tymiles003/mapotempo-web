@@ -9,6 +9,14 @@ class V01::RoutesTest < ActiveSupport::TestCase
   end
 
   setup do
+    def Osrm.compute(url, from_lat, from_lng, to_lat, to_lng)
+      [1000, 60, "trace"]
+    end
+
+    def Ort.optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, time_window_rest, time_threshold)
+      (0..(matrix.size-1)).to_a
+    end
+
     @route = routes(:route_one)
   end
 
@@ -54,5 +62,10 @@ class V01::RoutesTest < ActiveSupport::TestCase
   test 'should move destinations in routes' do
     patch api(@route.planning.id, "#{@route.id}/destinations/moves"), destination_ids: [destinations(:destination_one).id, destinations(:destination_two).id]
     assert last_response.ok?, last_response.body
+  end
+
+  test 'should optimize route' do
+    patch api(@route.planning.id, "#{@route.id}/optimize")
+    assert_equal 204, last_response.status, last_response.body
   end
 end

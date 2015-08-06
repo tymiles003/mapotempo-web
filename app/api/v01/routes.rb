@@ -123,9 +123,16 @@ class V01::Routes < Grape::API
         params {
           requires :id, type: Integer
         }
-        get ':id/optimize' do
-          # TODO
-          error!('501 Not Implemented', 501)
+        patch ':id/optimize' do
+          planning_id = read_id(params[:planning_id])
+          id = read_id(params[:id])
+          route = current_customer.plannings.where(planning_id).first!.routes.where(id).first!
+          if !Optimizer.optimize(route.planning, route, false)
+            status 304
+          else
+            route.planning.customer.save!
+            status 204
+          end
         end
       end
     end
