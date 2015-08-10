@@ -12,9 +12,9 @@ class V01::StopsTest < ActiveSupport::TestCase
     @stop = stops(:stop_one_one)
   end
 
-  def api(planning_id, route_id, part = nil)
+  def api(planning_id, route_id, part = nil, param = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/plannings/#{planning_id}/routes/#{route_id}/stops#{part}.json?api_key=testkey1"
+    "/api/0.1/plannings/#{planning_id}/routes/#{route_id}/stops#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
   end
 
   test 'should return customer''s routes' do

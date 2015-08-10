@@ -12,9 +12,9 @@ class V01::CustomerTest < ActiveSupport::TestCase
     @customer = customers(:customer_one)
   end
 
-  def api(part = nil)
+  def api(part = nil, param = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/customers#{part}.json?api_key=testkey1"
+    "/api/0.1/customers#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
   end
 
   test 'should return a customer' do

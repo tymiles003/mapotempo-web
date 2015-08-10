@@ -12,9 +12,9 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     @planning = plannings(:planning_one)
   end
 
-  def api(part = nil)
+  def api(part = nil, param = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/plannings#{part}.json?api_key=testkey1"
+    "/api/0.1/plannings#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
   end
 
   test 'should return customer''s plannings' do

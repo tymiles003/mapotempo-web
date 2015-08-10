@@ -12,9 +12,9 @@ class V01::OrderArraysTest < ActiveSupport::TestCase
     @order_array = order_arrays(:order_array_one)
   end
 
-  def api(part = nil)
+  def api(part = nil, param = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/order_arrays#{part}.json?api_key=testkey1"
+    "/api/0.1/order_arrays#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
   end
 
   test 'should return customer''s order_arrays' do
