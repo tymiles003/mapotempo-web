@@ -23,6 +23,13 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     assert_equal @vehicle.customer.vehicles.size, JSON.parse(last_response.body).size
   end
 
+  test 'should return customer''s vehicles by ids' do
+    get api(nil, 'ids[]': @vehicle.id)
+    assert last_response.ok?, last_response.body
+    assert_equal 1, JSON.parse(last_response.body).size
+    assert_equal @vehicle.id, JSON.parse(last_response.body)[0]['id']
+  end
+
   test 'should return a vehicle' do
     get api(@vehicle.id)
     assert last_response.ok?, last_response.body

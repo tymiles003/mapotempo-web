@@ -31,8 +31,17 @@ class V01::Vehicles < Grape::API
       is_array: true,
       entity: V01::Entities::Vehicle
     }
+    params {
+      optional :ids, type: Array[Integer], desc: 'Select returned vehicles by id.'
+    }
     get do
-      present current_customer.vehicles.load, with: V01::Entities::Vehicle
+      vehicles = if params.key?(:ids)
+        ids = params[:ids].collect(&:to_i)
+        current_customer.vehicles.select{ |vehicle| ids.include?(vehicle.id) }
+      else
+        current_customer.vehicles.load
+      end
+      present vehicles, with: V01::Entities::Vehicle
     end
 
     desc 'Fetch vehicle.', {

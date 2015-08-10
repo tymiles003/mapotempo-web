@@ -31,8 +31,17 @@ class V01::Products < Grape::API
       is_array: true,
       entity: V01::Entities::Product
     }
+    params {
+      optional :ids, type: Array[Integer], desc: 'Select returned products by id.'
+    }
     get do
-      present current_customer.products.load, with: V01::Entities::Product
+      products = if params.key?(:ids)
+        ids = params[:ids].collect(&:to_i)
+        current_customer.products.select{ |product| ids.include?(product.id) }
+      else
+        current_customer.products.load
+      end
+      present products, with: V01::Entities::Product
     end
 
     desc 'Fetch product.', {

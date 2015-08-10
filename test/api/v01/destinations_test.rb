@@ -24,6 +24,13 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_equal @destination.customer.destinations.size, JSON.parse(last_response.body).size
   end
 
+  test 'should return customer''s destinations by ids' do
+    get api(nil, 'ids[]': @destination.id)
+    assert last_response.ok?, last_response.body
+    assert_equal 1, JSON.parse(last_response.body).size
+    assert_equal @destination.id, JSON.parse(last_response.body)[0]['id']
+  end
+
   test 'should return a destination' do
     get api(@destination.id)
     assert last_response.ok?, last_response.body

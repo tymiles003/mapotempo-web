@@ -31,8 +31,17 @@ class V01::Stores < Grape::API
       is_array: true,
       entity: V01::Entities::Store
     }
+    params {
+      optional :ids, type: Array[Integer], desc: 'Select returned stores by id.'
+    }
     get do
-      present current_customer.stores.load, with: V01::Entities::Store
+      stores = if params.key?(:ids)
+        ids = params[:ids].collect(&:to_i)
+        current_customer.stores.select{ |store| ids.include?(store.id) }
+      else
+        current_customer.stores.load
+      end
+      present stores, with: V01::Entities::Store
     end
 
     desc 'Fetch store.', {

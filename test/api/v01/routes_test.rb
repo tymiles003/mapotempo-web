@@ -31,6 +31,13 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert_equal @route.planning.routes.size, JSON.parse(last_response.body).size
   end
 
+  test 'should return customer''s routes by ids' do
+    get api(@route.planning.id, nil, 'ids[]': @route.id)
+    assert last_response.ok?, last_response.body
+    assert_equal 1, JSON.parse(last_response.body).size
+    assert_equal @route.id, JSON.parse(last_response.body)[0]['id']
+  end
+
   test 'should return a route' do
     get api(@route.planning.id, @route.id)
     assert last_response.ok?, last_response.body

@@ -38,8 +38,17 @@ class V01::Destinations < Grape::API
       is_array: true,
       entity: V01::Entities::Destination
     }
+    params {
+      optional :ids, type: Array[Integer], desc: 'Select returned destinations by id.'
+    }
     get do
-      present current_customer.destinations.load, with: V01::Entities::Destination
+      destinations = if params.key?(:ids)
+        ids = params[:ids].collect(&:to_i)
+        current_customer.destinations.select{ |destination| ids.include?(destination.id) }
+      else
+        current_customer.destinations.load
+      end
+      present destinations, with: V01::Entities::Destination
     end
 
     desc 'Fetch destination.', {

@@ -31,8 +31,17 @@ class V01::Zonings < Grape::API
       is_array: true,
       entity: V01::Entities::Zoning
     }
+    params {
+      optional :ids, type: Array[Integer], desc: 'Select returned zonings by id.'
+    }
     get do
-      present current_customer.zonings.load, with: V01::Entities::Zoning
+      zonings = if params.key?(:ids)
+        ids = params[:ids].collect(&:to_i)
+        current_customer.zonings.select{ |zoning| ids.include?(zoning.id) }
+      else
+        current_customer.zonings.load
+      end
+      present zonings, with: V01::Entities::Zoning
     end
 
     desc 'Fetch zoning.', {

@@ -36,8 +36,17 @@ class V01::OrderArrays < Grape::API
       is_array: true,
       entity: V01::Entities::OrderArray
     }
+    params {
+      optional :ids, type: Array[Integer], desc: 'Select returned order_arrays by id.'
+    }
     get do
-      present current_customer.order_arrays.load, with: V01::Entities::OrderArray
+      order_arrays = if params.key?(:ids)
+        ids = params[:ids].collect(&:to_i)
+        current_customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }
+      else
+        current_customer.order_arrays.load
+      end
+      present order_arrays, with: V01::Entities::OrderArray
     end
 
     desc 'Fetch order_array.', {

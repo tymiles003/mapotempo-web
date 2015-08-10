@@ -33,8 +33,17 @@ class V01::Plannings < Grape::API
       is_array: true,
       entity: V01::Entities::Planning
     }
+    params {
+      optional :ids, type: Array[Integer], desc: 'Select returned plannings by id.'
+    }
     get do
-      present current_customer.plannings.load, with: V01::Entities::Planning
+      plannings = if params.key?(:ids)
+        ids = params[:ids].collect(&:to_i)
+        current_customer.plannings.select{ |planning| ids.include?(planning.id) }
+      else
+        current_customer.plannings.load
+      end
+      present plannings, with: V01::Entities::Planning
     end
 
     desc 'Fetch planning.', {

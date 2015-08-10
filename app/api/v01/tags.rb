@@ -31,8 +31,17 @@ class V01::Tags < Grape::API
       is_array: true,
       entity: V01::Entities::Tag
     }
+    params {
+      optional :ids, type: Array[Integer], desc: 'Select returned tags by id.'
+    }
     get do
-      present current_customer.tags.load, with: V01::Entities::Tag
+      tags = if params.key?(:ids)
+        ids = params[:ids].collect(&:to_i)
+        current_customer.tags.select{ |tag| ids.include?(tag.id) }
+      else
+        current_customer.tags.load
+      end
+      present tags, with: V01::Entities::Tag
     end
 
     desc 'Fetch tag.', {
