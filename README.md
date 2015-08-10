@@ -9,22 +9,21 @@ For the following installation, your current working directory needs to be the m
 
 # On Fedora
 
-Install ruby, bundler and some dependencies from system package.
+Install ruby (>2.0 is needed), bundler and some dependencies from system package.
 
-    yum install ruby ruby-devel rubygem-bundler postgresql-devel qt-devel qt5-qtwebkit-devel
-
-And finally install gem project dependencies with :
-
-    export QMAKE=/usr/bin/qmake-qt5
-    bundle install
+    yum install ruby ruby-devel rubygem-bundler postgresql-devel libgeos++-dev
 
 # On other systems
 
-Install ruby from system package.
+Install ruby (>2.0 is needed) and other dependencies from system package. For exemple for Ubuntu:
+    sudo apt-get install ruby2.0 ruby2.0-dev libz-dev libicu-dev build-essential g++ postgresql-server-dev-9.3 libgeos++-dev
+
 Install ruby bundle gem by :
 
     export GEM_HOME=~/.gem/ruby/2.0.0
     gem install bundler
+
+# All systems
 
 Now add gem bin directory to path with :
 
@@ -45,6 +44,16 @@ Default configuration point on public [OSRM](http://project-osrm.org) API but ma
 Initialization
 ==============
 Check database configuration in `config/database.yml` and from project directory create a database for your environment with :
+
+As postgres user:
+
+    createuser -s [username]
+
+    createdb -E UTF8 -T template0 -O [username] mapotempo-dev
+
+    createdb -E UTF8 -T template0 -O [username] mapotempo-test
+
+As normal user:
 
     rake db:schema:load RAILS_ENV=development
 
