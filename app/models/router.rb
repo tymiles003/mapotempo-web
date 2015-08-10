@@ -21,6 +21,10 @@ class Router < ActiveRecord::Base
   auto_strip_attributes :name, :url
   validates :name, presence: true
 
+  def isochrone?
+    false
+  end
+
   private
 
   def pack_vector(vector)
