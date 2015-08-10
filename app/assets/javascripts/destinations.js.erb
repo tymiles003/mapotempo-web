@@ -47,8 +47,6 @@ function destinations_form(params, api) {
       }
       destination.geocoding_accuracy_percent = Math.round(destination.geocoding_accuracy * 100);
     }
-    destination.default_country = default_country;
-    destination.take_over_default = take_over_default;
     return destination;
   }
 
