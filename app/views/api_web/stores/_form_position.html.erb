@@ -1,0 +1,20 @@
+<%= twitter_bootstrap_form_for(@store, url: api_web_update_positiion_store_path(@store), layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@store.id or 0)}) do |f| %>
+  <%= render 'shared/error_messages', model: @store %>
+  <div class="form-group">
+    <span class="col-md-12"><div id="map" style="width: 100%; height: 200px;"></div></span>
+  </div>
+  <%= f.text_field :lat %>
+  <%= f.text_field :lng %>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
+<%
+controller.js(
+  destination_id: @store.id || 0,
+  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
+  map_lat: @store.customer.stores[0].lat,
+  map_lng: @store.customer.stores[0].lng,
+  map_attribution: current_user.layer.map_attribution
+)
+%>

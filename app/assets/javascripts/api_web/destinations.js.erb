@@ -23,13 +23,21 @@ Paloma.controller('ApiWeb/Destination').prototype.update_position = function() {
   destinations_edit(this.params, 'destinations');
 };
 
+Paloma.controller('ApiWeb/Store').prototype.edit_position = function() {
+  destinations_edit(this.params, 'stores');
+};
+
+Paloma.controller('ApiWeb/Store').prototype.update_position = function() {
+  destinations_edit(this.params, 'stores');
+};
+
 function api_web_destinations_index(params, api) {
 
   var map_layer_url = params.map_layer_url,
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
-    destination_ids = params.destination_ids;
+    ids = params.ids;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -83,7 +91,7 @@ function api_web_destinations_index(params, api) {
     $.each(data.tags, function(i, tag) {
       tags[tag.id] = tag;
     });
-    $.each(data.destinations, function(i, destination) {
+    $.each(data[api], function(i, destination) {
       destination = prepare_display_destination(destination);
       if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
         addMarker(destination.id, destination.lat, destination.lng);
@@ -96,7 +104,7 @@ function api_web_destinations_index(params, api) {
   }
 
   $.ajax({
-    url: '/api-web/0.1/destinations.json?' + $.param({ids: destination_ids}),
+    url: '/api-web/0.1/' + api + '.json?' + $.param({ids: ids}),
     beforeSend: beforeSendWaiting,
     success: display_destinations,
     complete: completeWaiting,
@@ -106,4 +114,8 @@ function api_web_destinations_index(params, api) {
 
 Paloma.controller('ApiWeb/Destination').prototype.index = function() {
   api_web_destinations_index(this.params, 'destinations');
+};
+
+Paloma.controller('ApiWeb/Store').prototype.index = function() {
+  api_web_destinations_index(this.params, 'stores');
 };
