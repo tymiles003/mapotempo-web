@@ -13,6 +13,12 @@ Rails.application.routes.draw do
     resources :profiles
   end
 
+  namespace :api_web, path: 'api-web/0.1' do
+    get 'destinations' => 'destinations#index', :as => 'destinations'
+    get 'destinations/:id/edit_position' => 'destinations#edit_position', :as => 'edit_position_destination'
+    patch 'destinations/:id/update_position' => 'destinations#update_position', :as => 'update_positiion_destination'
+  end
+
   resources :tags
   delete 'tags' => 'tags#destroy_multiple'
 

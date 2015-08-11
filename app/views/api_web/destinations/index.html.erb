@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-md-12 map-container">
+    <div id="map"></div>
+  </div>
+</div>
+<%
+controller.js(
+  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
+  map_lat: @customer.stores[0].lat,
+  map_lng: @customer.stores[0].lng,
+  map_attribution: current_user.layer.map_attribution,
+  destination_ids: @destinations.collect(&:id)
+)
+%>

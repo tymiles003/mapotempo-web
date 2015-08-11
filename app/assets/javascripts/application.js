@@ -66,6 +66,7 @@
 //= require paloma
 //= require leaflet.polylineoffset
 //= require_tree .
+//= require_tree ./api_web
 
 Turbolinks.enableProgressBar();
 

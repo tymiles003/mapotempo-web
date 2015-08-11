@@ -1,0 +1,109 @@
+// Copyright © Mapotempo, 2015
+//
+// This file is part of Mapotempo.
+//
+// Mapotempo is free software. You can redistribute it and/or
+// modify since you respect the terms of the GNU Affero General
+// Public License as published by the Free Software Foundation,
+// either version 3 of the License, or (at your option) any later version.
+//
+// Mapotempo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE.  See the Licenses for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with Mapotempo. If not, see:
+// <http://www.gnu.org/licenses/agpl.html>
+//
+Paloma.controller('ApiWeb/Destination').prototype.edit_position = function() {
+  destinations_edit(this.params, 'destinations');
+};
+
+Paloma.controller('ApiWeb/Destination').prototype.update_position = function() {
+  destinations_edit(this.params, 'destinations');
+};
+
+function api_web_destinations_index(params, api) {
+
+  var map_layer_url = params.map_layer_url,
+    map_lat = params.map_lat,
+    map_lng = params.map_lng,
+    map_attribution = params.map_attribution,
+    destination_ids = params.destination_ids;
+
+  var map = L.map('map').setView([map_lat, map_lng], 13);
+  L.tileLayer(map_layer_url, {
+    maxZoom: 18,
+    attribution: map_attribution
+  }).addTo(map);
+
+  var markers = {};
+  var markersLayers = L.featureGroup();
+
+  var cluster = new L.MarkerClusterGroup({
+    showCoverageOnHover: false
+  });
+  map.addLayer(cluster);
+
+  map.on('zoomend', function(e) {
+    if (map.getZoom() > 14) {
+      map.removeLayer(cluster);
+      map.addLayer(markersLayers);
+    } else {
+      map.removeLayer(markersLayers);
+      map.addLayer(cluster);
+    }
+  });
+
+  var tags = {};
+  var icon_default = new L.Icon.Default();
+
+  function prepare_display_destination(destination) {
+    var t = [];
+    $.each(tags, function(i, tag) {
+      t.push({
+        id: tag.id,
+        label: tag.label,
+        color: tag.color ? tag.color.substr(1) : undefined,
+        icon: tag.icon
+      });
+    });
+    destination.tags = t;
+    destination.i18n = mustache_i18n;
+    return destination;
+  }
+
+  function addMarker(id, lat, lng) {
+    var marker = L.marker(new L.LatLng(lat, lng), {
+      icon: icon_default
+    }).addTo(markersLayers).addTo(cluster);
+  }
+
+  function display_destinations(data) {
+    $.each(data.tags, function(i, tag) {
+      tags[tag.id] = tag;
+    });
+    $.each(data.destinations, function(i, destination) {
+      destination = prepare_display_destination(destination);
+      if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
+        addMarker(destination.id, destination.lat, destination.lng);
+      }
+    });
+
+    if (markersLayers.getLayers().length > 0) {
+      map.fitBounds(markersLayers.getBounds());
+    }
+  }
+
+  $.ajax({
+    url: '/api-web/0.1/destinations.json?' + $.param({ids: destination_ids}),
+    beforeSend: beforeSendWaiting,
+    success: display_destinations,
+    complete: completeWaiting,
+    error: ajaxError
+  });
+}
+
+Paloma.controller('ApiWeb/Destination').prototype.index = function() {
+  api_web_destinations_index(this.params, 'destinations');
+};
