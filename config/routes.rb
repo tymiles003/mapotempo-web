@@ -13,16 +13,18 @@ Rails.application.routes.draw do
     resources :profiles
   end
 
-  namespace :api_web, path: 'api-web/0.1' do
-    get 'destinations' => 'destinations#index', :as => 'destinations'
-    get 'destinations/:id/edit_position' => 'destinations#edit_position', :as => 'edit_position_destination'
-    patch 'destinations/:id/update_position' => 'destinations#update_position', :as => 'update_positiion_destination'
+  namespace :api_web, path: 'api-web' do
+    namespace :v01, path: '0.1' do
+      get 'destinations' => 'destinations#index', :as => 'destinations'
+      get 'destinations/:id/edit_position' => 'destinations#edit_position', :as => 'edit_position_destination'
+      patch 'destinations/:id/update_position' => 'destinations#update_position', :as => 'update_positiion_destination'
 
-    get 'stores' => 'stores#index', :as => 'stores'
-    get 'stores/:id/edit_position' => 'stores#edit_position', :as => 'edit_position_store'
-    patch 'stores/:id/update_position' => 'stores#update_position', :as => 'update_positiion_store'
+      get 'stores' => 'stores#index', :as => 'stores'
+      get 'stores/:id/edit_position' => 'stores#edit_position', :as => 'edit_position_store'
+      patch 'stores/:id/update_position' => 'stores#update_position', :as => 'update_positiion_store'
 
-    get 'zonings/:zoning_id/zones' => 'zones#index', :as => 'show_zones'
+      get 'zonings/:zoning_id/zones' => 'zones#index', :as => 'show_zones'
+    end
   end
 
   resources :tags

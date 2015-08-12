@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApiWeb::ZonesControllerTest < ActionController::TestCase
+class ApiWeb::V01::ZonesControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   setup do

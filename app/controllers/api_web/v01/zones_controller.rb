@@ -15,11 +15,11 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class ApiWeb::ZonesController < ApplicationController
+class ApiWeb::V01::ZonesController < ApplicationController
   load_and_authorize_resource
   before_action :set_zoning, only: [:index]
   before_action :set_zone, only: []
-  layout 'api_web'
+  layout 'api_web/v01'
 
   def index
     @zones = if params.key?(:ids) && params[:ids].kind_of?(Array)

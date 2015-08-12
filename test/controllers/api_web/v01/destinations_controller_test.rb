@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApiWeb::DestinationsControllerTest < ActionController::TestCase
+class ApiWeb::V01::DestinationsControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   setup do
@@ -21,6 +21,6 @@ class ApiWeb::DestinationsControllerTest < ActionController::TestCase
 
   test "should update position" do
     patch :update_position, id: @destination, destination: { lat: 6, lng: 6 }
-    assert_redirected_to api_web_edit_position_destination_path(assigns(:destination))
+    assert_redirected_to api_web_v01_edit_position_destination_path(assigns(:destination))
   end
 end

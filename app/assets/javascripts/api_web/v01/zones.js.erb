@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function api_web_zones_index(params) {
+function api_web_v01_zones_index(params) {
 
   var zoning_id = params.zoning_id,
     zone_ids = params.zone_ids,
@@ -104,6 +104,6 @@ function api_web_zones_index(params) {
   });
 }
 
-Paloma.controller('ApiWeb/Zone').prototype.index = function() {
-  api_web_zones_index(this.params);
+Paloma.controller('ApiWeb/V01/Zone').prototype.index = function() {
+  api_web_v01_zones_index(this.params);
 };

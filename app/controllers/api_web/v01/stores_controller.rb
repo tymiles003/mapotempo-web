@@ -15,18 +15,18 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class ApiWeb::DestinationsController < ApplicationController
+class ApiWeb::V01::StoresController < ApplicationController
   load_and_authorize_resource
-  before_action :set_destination, only: [:edit_position, :update_position]
-  layout 'api_web'
+  before_action :set_store, only: [:edit_position, :update_position]
+  layout 'api_web/v01'
 
   def index
     @customer = current_user.customer
-    @destinations = if params.key?(:ids) && params[:ids].kind_of?(Array)
+    @stores = if params.key?(:ids) && params[:ids].kind_of?(Array)
       ids = params[:ids].collect(&:to_i)
-      current_user.customer.destinations.select{ |destination| ids.include?(destination.id) }
+      current_user.customer.stores.select{ |store| ids.include?(store.id) }
     else
-      current_user.customer.destinations.load
+      current_user.customer.stores.load
     end
     @tags = current_user.customer.tags
   end
@@ -37,11 +37,11 @@ class ApiWeb::DestinationsController < ApplicationController
   def update_position
     respond_to do |format|
       begin
-        Destination.transaction do
-          @destination.update(destination_params)
-          @destination.save!
-          @destination.customer.save!
-          format.html { redirect_to api_web_edit_position_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
+        Store.transaction do
+          @store.update(store_params)
+          @store.save!
+          @store.customer.save!
+          format.html { redirect_to api_web_v01_edit_position_store_path(@store), notice: t('activerecord.successful.messages.updated', model: @store.class.model_name.human) }
         end
       rescue => e
         flash[:error] = e.message
@@ -53,12 +53,12 @@ class ApiWeb::DestinationsController < ApplicationController
   private
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_destination
-    @destination = Destination.find(params[:id] || params[:destination_id])
+  def set_store
+    @store = Store.find(params[:id] || params[:store_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def destination_params
-    params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
+  def store_params
+    params.require(:store).permit(:name, :street, :postalcode, :city, :country, :lat, :lng, :open, :close)
   end
 end

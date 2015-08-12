@@ -15,13 +15,11 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-// Place all the styles related to the Destinations controller here.
+// Place all the styles related to the zonings controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-
-[data-controller='api_web_destinations'],
-[data-controller='api_web_stores'] {
+[data-controller='api_web_v01_zones'][data-action='index'] {
   #map {
     position: absolute;
     z-index: -1;
