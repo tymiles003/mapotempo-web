@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     get 'stores' => 'stores#index', :as => 'stores'
     get 'stores/:id/edit_position' => 'stores#edit_position', :as => 'edit_position_store'
     patch 'stores/:id/update_position' => 'stores#update_position', :as => 'update_positiion_store'
+
+    get 'zonings/:zoning_id/zones' => 'zones#index', :as => 'show_zones'
   end
 
   resources :tags

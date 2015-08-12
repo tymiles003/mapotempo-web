@@ -1,8 +1,6 @@
+<div id="map"></div>
 <%= twitter_bootstrap_form_for(@destination, url: api_web_update_positiion_destination_path(@destination), layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: @destination %>
-  <div class="form-group">
-    <span class="col-md-12"><div id="map" style="width: 100%; height: 200px;"></div></span>
-  </div>
   <%= f.text_field :lat %>
   <%= f.text_field :lng %>
   <%= f.actions do %>

@@ -1,0 +1,109 @@
+// Copyright © Mapotempo, 2015
+//
+// This file is part of Mapotempo.
+//
+// Mapotempo is free software. You can redistribute it and/or
+// modify since you respect the terms of the GNU Affero General
+// Public License as published by the Free Software Foundation,
+// either version 3 of the License, or (at your option) any later version.
+//
+// Mapotempo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE.  See the Licenses for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with Mapotempo. If not, see:
+// <http://www.gnu.org/licenses/agpl.html>
+//
+function api_web_zones_index(params) {
+
+  var zoning_id = params.zoning_id,
+    zone_ids = params.zone_ids,
+    map_layer_url = params.map_layer_url,
+    map_lat = params.map_lat,
+    map_lng = params.map_lng,
+    map_attribution = params.map_attribution,
+    vehicles_map = params.vehicles_map;
+
+  var map = new L.Map('map').setView([map_lat, map_lng], 13);
+  L.control.scale({
+    imperial: false
+  }).addTo(map);
+
+  L.tileLayer(map_layer_url, {
+    maxZoom: 18,
+    attribution: map_attribution
+  }).addTo(map);
+
+  var markersLayers = L.featureGroup(),
+    stores_marker = L.featureGroup(),
+    featureGroup = L.featureGroup();
+
+  map.addLayer(featureGroup).addLayer(stores_marker).addLayer(markersLayers);
+
+  function set_color(polygon, vehicle_id) {
+    polygon.setStyle({
+      color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070')
+    });
+  }
+
+  function add_zone(zone, geom) {
+    var geoJsonLayer;
+    if (geom instanceof L.GeoJSON) {
+      geoJsonLayer = geom;
+      geom = geom.getLayers()[0];
+    } else {
+      geoJsonLayer = L.geoJson();
+      geoJsonLayer.addLayer(geom);
+    }
+    featureGroup.addLayer(geom);
+  }
+
+  function display_zoning(data) {
+    stores_marker.clearLayers();
+    $.each(data.stores, function(i, store) {
+      store.store = true;
+      store.i18n = mustache_i18n;
+      var m = L.marker(new L.LatLng(store.lat, store.lng), {
+        icon: L.icon({
+          iconUrl: '<%= asset_path("marker-home.svg") %>',
+          iconSize: new L.Point(32, 32),
+          iconAnchor: new L.Point(16, 16),
+          popupAnchor: new L.Point(0, -12)
+        })
+      }).addTo(stores_marker).bindPopup(SMT['stops/show']({
+        stop: {
+          destination: store
+        }
+      }));
+      m.on('mouseover', function(e) {
+        m.openPopup();
+      }).on('mouseout', function(e) {
+        m.closePopup();
+      });
+    });
+
+    $.each(data.zoning, function(index, zone) {
+      var geom = L.geoJson(JSON.parse(zone.polygon));
+      set_color(geom, zone.vehicle_id);
+      add_zone(zone, geom);
+    });
+
+    var bounds = featureGroup.getBounds();
+    if (bounds && bounds.isValid()) {
+      map.fitBounds(bounds);
+    }
+  }
+
+  $.ajax({
+    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json?' + $.param({ids: zone_ids}),
+    beforeSend: beforeSendWaiting,
+    success: display_zoning,
+    complete: completeWaiting,
+    error: ajaxError
+  });
+}
+
+Paloma.controller('ApiWeb/Zone').prototype.index = function() {
+  api_web_zones_index(this.params);
+};
