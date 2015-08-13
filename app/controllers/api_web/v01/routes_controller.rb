@@ -15,36 +15,36 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
+class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
   load_and_authorize_resource
-  before_action :set_zoning, only: [:index]
-  before_action :set_zone, only: []
+  before_action :set_planning, only: [:index]
+  before_action :set_route, only: []
 
-  swagger_controller :zones, 'Zones'
+  swagger_controller :routes, 'Routes'
 
   swagger_api :index do
-    summary 'Display all or some zones of one zoning.'
-    param :path, :zoning_id, :integer, :required, 'Zonning ids'
-    param :query, :ids, :array, :optional, 'Zoning''s zones ids to be displayed', { 'items' => { 'type' => 'integer' } }
+    summary 'Display all or some routes of one planning.'
+    param :path, :planning_id, :integer, :required, 'Zonning ids'
+    param :query, :ids, :array, :optional, 'Planning''s routes ids to be displayed', { 'items' => { 'type' => 'integer' } }
   end
 
   def index
-    @zones = if params.key?(:ids) && params[:ids].kind_of?(Array)
+    @routes = if params.key?(:ids) && params[:ids].kind_of?(Array)
       ids = params[:ids].collect(&:to_i)
-      @zoning.zones.select{ |zone| ids.include?(zone.id) }
+      @planning.routes.select{ |route| ids.include?(route.id) }
     else
-      zones = @zoning.zones
+      routes = @planning.routes
     end
   end
 
   private
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_zoning
-    @zoning = Zoning.find(params[:zoning_id])
+  def set_planning
+    @planning = Planning.find(params[:planning_id])
   end
 
-  def set_zone
-    @zone = Zone.find(params[:id] || params[:zone_id])
+  def set_route
+    @route = Route.find(params[:id] || params[:route_id])
   end
 end

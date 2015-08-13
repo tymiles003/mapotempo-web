@@ -49,7 +49,7 @@ function plannings_edit(params) {
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
-    routes_id = params.routes_id,
+    route_ids = params.route_ids,
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map,
     map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13),
@@ -97,7 +97,7 @@ function plannings_edit(params) {
     attribution: map_attribution
   }).addTo(map);
 
-  $.each(routes_id, function(i, id) {
+  $.each(route_ids, function(i, id) {
     layers[id] = L.featureGroup();
     layers_cluster[id] = L.featureGroup();
   });
@@ -318,7 +318,7 @@ function plannings_edit(params) {
             color: color
           }).addTo(layers_cluster[route.route_id]);
         }
-        if (stop.destination &&$.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
+        if (stop.destination && $.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
           stop.i18n = mustache_i18n;
           stop.color = stop.destination.color || color;
           stop.vehicle_name = vehicle_name;
