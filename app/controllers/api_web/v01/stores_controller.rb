@@ -20,6 +20,25 @@ class ApiWeb::V01::StoresController < ApplicationController
   before_action :set_store, only: [:edit_position, :update_position]
   layout 'api_web/v01'
 
+  swagger_controller :stores, 'Stores'
+
+  swagger_api :index do
+    summary 'Display all or some stores.'
+    param :query, :ids, :array, :optional, 'Store ids to be displayed', { 'items' => { 'type' => 'integer' } }
+  end
+
+  swagger_api :edit_position do
+    summary 'Display a movable position marker of the store.'
+    param :path, :id, :integer, :required
+  end
+
+  swagger_api :update_position, method: :patch do
+    summary 'Save the store position.'
+    param :path, :id, :integer, :required
+    param :query, :lat, :float, :optional
+    param :query, :lng, :float, :optional
+  end
+
   def index
     @customer = current_user.customer
     @stores = if params.key?(:ids) && params[:ids].kind_of?(Array)

@@ -34,11 +34,10 @@ module Mapotempo
       env['api.tilt.root'] = Rails.root.join 'app', 'api', 'views'
     end
 
-    config.middleware.use Rack::Cors do
+    config.middleware.insert_before 0, 'Rack::Cors' do
       allow do
         origins '*'
-        # location of your API
-        resource '/api/*', headers: :any, methods: [:get, :post, :options, :put, :delete, :patch]
+        resource '/api-web/*', headers: :any, methods: [:get, :post, :options, :put, :delete, :patch]
       end
     end
 

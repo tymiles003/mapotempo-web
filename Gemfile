@@ -58,6 +58,7 @@ gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger', github: 'tim-vandecasteele/grape-swagger' # FIXME wait for v0.10.2
 gem 'rack-cors'
+gem 'swagger-docs', github: 'richhollis/swagger-docs' # FIXME wait after v0.1.9
 
 gem 'rails-i18n'
 gem 'execjs'

@@ -21,6 +21,14 @@ class ApiWeb::V01::ZonesController < ApplicationController
   before_action :set_zone, only: []
   layout 'api_web/v01'
 
+  swagger_controller :zones, 'Zones'
+
+  swagger_api :index do
+    summary 'Display all or some zones of one zoning.'
+    param :path, :zoning_id, :integer, :required, 'Zonning ids'
+    param :query, :ids, :array, :optional, 'Zonning''s zones ids to be displayed', { 'items' => { 'type' => 'integer' } }
+  end
+
   def index
     @zones = if params.key?(:ids) && params[:ids].kind_of?(Array)
       ids = params[:ids].collect(&:to_i)

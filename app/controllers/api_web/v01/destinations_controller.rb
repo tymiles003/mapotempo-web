@@ -20,6 +20,25 @@ class ApiWeb::V01::DestinationsController < ApplicationController
   before_action :set_destination, only: [:edit_position, :update_position]
   layout 'api_web/v01'
 
+  swagger_controller :stores, 'Destinations'
+
+  swagger_api :index do
+    summary 'Display all or some destinations.'
+    param :query, :ids, :array, :optional, 'Destination ids to be displayed', { 'items' => { 'type' => 'integer' } }
+  end
+
+  swagger_api :edit_position do
+    summary 'Display a movable position marker of the destination.'
+    param :path, :id, :integer, :required
+  end
+
+  swagger_api :update_position, method: :patch do
+    summary 'Save the destination position.'
+    param :path, :id, :integer, :required
+    param :query, :lat, :float, :optional
+    param :query, :lng, :float, :optional
+  end
+
   def index
     @customer = current_user.customer
     @destinations = if params.key?(:ids) && params[:ids].kind_of?(Array)

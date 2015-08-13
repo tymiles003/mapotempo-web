@@ -54,6 +54,14 @@ GIT
       railties (~> 4)
 
 GIT
+  remote: git://github.com/richhollis/swagger-docs.git
+  revision: 102003e7bc42c4b490a9cbcbccc9a9bcd0293378
+  specs:
+    swagger-docs (0.1.10)
+      activesupport (>= 3, < 5)
+      rails (>= 3, < 5)
+
+GIT
   remote: git://github.com/tim-vandecasteele/grape-swagger.git
   revision: ef7a99d06a58fe54c02dfbd2d5fef6b830d36f28
   specs:
@@ -485,6 +493,7 @@ DEPENDENCIES
   sim_annealing
   simplecov
   smt_rails
+  swagger-docs!
   therubyracer
   turbolinks
   twitter-bootstrap-rails
@@ -492,6 +501,3 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   validates_timeliness
   web-console (~> 2.0)
-
-BUNDLED WITH
-   1.10.6
