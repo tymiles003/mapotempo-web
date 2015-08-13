@@ -52,7 +52,7 @@ class Store < ActiveRecord::Base
     address = Geocode.code(street, postalcode, city)
     Rails.logger.info address
     if address
-      self.lat, self.lng = address[:lat], address[:lng]
+      self.lat, self.lng, self.geocoding_accuracy = address[:lat], address[:lng], address[:accuracy]
     end
     @is_gecoded = true
   end
@@ -85,6 +85,9 @@ class Store < ActiveRecord::Base
   end
 
   def update_geocode
+    if !@is_gecoded && (lat_changed? || lng_changed?)
+      self.geocoding_accuracy = nil
+    end
     if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed?)
       geocode
     end

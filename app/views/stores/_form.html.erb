@@ -8,8 +8,22 @@
   <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
   <%= f.text_field :city %>
   <%= f.text_field :country, {placeholder: t('.country_default', n: @store.customer.default_country)} %>
-  <input type="hidden" name="store[lat]" value="<%= @store.lat %>" />
-  <input type="hidden" name="store[lng]" value="<%= @store.lng %>" />
+  <div id="store_city_input" class="form-group">
+    <label class="col-md-2 control-label" for="store_city"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
+    <div class="col-md-6">
+      <div id="geocoding_accuracy"<% if ! @store.geocoding_accuracy %> style="display: none"<% end %>>
+        <div class="progress">
+          <div class="progress-bar<% if @store.geocoding_accuracy %> progress-bar-<%= @store.geocoding_accuracy > Mapotempo::Application.config.geocoding_accuracy_success ? 'success' : @store.geocoding_accuracy > Mapotempo::Application.config.geocoding_accuracy_warning ? 'warning' : 'danger' %><% end %>" style="width: <%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round : 0 %>%;">
+            <span><%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round.to_s + '%' : '' %></span>
+          </div>
+        </div>
+        <p class="help-block"><%= t 'destinations.form.geocoding_accuracy_help' %></p>
+      </div>
+      <div id="no_geocoding_accuracy"<% if @store.geocoding_accuracy %> style="display: none"<% end %>>
+        <%= t 'destinations.form.geocoding_accuracy_none' %>
+      </div>
+    </div>
+  </div>
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
