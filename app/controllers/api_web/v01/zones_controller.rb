@@ -15,11 +15,10 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class ApiWeb::V01::ZonesController < ApplicationController
+class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
   load_and_authorize_resource
   before_action :set_zoning, only: [:index]
   before_action :set_zone, only: []
-  layout 'api_web/v01'
 
   swagger_controller :zones, 'Zones'
 

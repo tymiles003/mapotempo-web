@@ -15,10 +15,9 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class ApiWeb::V01::StoresController < ApplicationController
+class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
   load_and_authorize_resource
   before_action :set_store, only: [:edit_position, :update_position]
-  layout 'api_web/v01'
 
   swagger_controller :stores, 'Stores'
 
