@@ -81,7 +81,7 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
           format.html { redirect_to api_web_v01_edit_position_store_path(@store), notice: t('activerecord.successful.messages.updated', model: @store.class.model_name.human) }
         end
       rescue => e
-        flash[:error] = e.message
+        flash.now[:error] = e.message
         format.html { render action: 'edit_position' }
       end
     end

@@ -81,7 +81,7 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
           format.html { redirect_to api_web_v01_edit_position_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         end
       rescue => e
-        flash[:error] = e.message
+        flash.now[:error] = e.message
         format.html { render action: 'edit_position' }
       end
     end
