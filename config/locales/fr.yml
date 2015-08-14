@@ -676,6 +676,8 @@ fr:
       lat: "44.83423"
       lng: "-0.60068"
       city: "Bordeaux"
+    geocoding:
+      geocoding_in_progress: "Geocodage en cours."
     form:
       ref_help: "Référence libre"
       locate_manually: "Positionner manuellement sur la carte"

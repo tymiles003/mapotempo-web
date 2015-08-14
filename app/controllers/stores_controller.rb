@@ -25,6 +25,9 @@ class StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
 
   def index
+    if current_user.customer.job_store_geocoding
+      flash.now[:info] = t('stores.geocoding.geocoding_in_progress')
+    end
     @stores = current_user.customer.stores
     respond_to do |format|
       format.html

@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20150814165916) do
     t.date     "end_subscription"
     t.integer  "max_vehicles"
     t.time     "take_over"
-    t.integer  "job_geocoding_id"
+    t.integer  "job_destination_geocoding_id"
     t.integer  "job_optimizer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -46,10 +46,12 @@ ActiveRecord::Schema.define(version: 20150814165916) do
     t.boolean  "enable_masternaut",                         default: false, null: false
     t.boolean  "enable_alyacom",                            default: false, null: false
     t.integer  "reseller_id",                                               null: false
+    t.integer  "job_store_geocoding_id"
   end
 
-  add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree
+  add_index "customers", ["job_destination_geocoding_id"], name: "index_customers_on_job_destination_geocoding_id", using: :btree
   add_index "customers", ["job_optimizer_id"], name: "index_customers_on_job_optimizer_id", using: :btree
+  add_index "customers", ["job_store_geocoding_id"], name: "index_customers_on_job_store_geocoding_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",               default: 0,   null: false

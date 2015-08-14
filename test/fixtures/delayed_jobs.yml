@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-job_geocoding:
+job_destination_geocoding:
   priority: 0
   attempts: 0
   handler: "A:A B:B"

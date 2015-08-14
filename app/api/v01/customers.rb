@@ -100,8 +100,10 @@ class V01::Customers < Grape::API
       current_customer(params[:id])
       if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
         @current_customer.job_optimizer
-      elsif @current_customer.job_geocoding && @current_customer.job_geocoding_id = params[:job_id]
-        @current_customer.job_geocoding
+      elsif @current_customer.job_destination_geocoding && @current_customer.job_destination_geocoding_id = params[:job_id]
+        @current_customer.job_destination_geocoding
+      elsif @current_customer.job_store_geocoding && @current_customer.job_store_geocoding_id = params[:job_id]
+        @current_customer.job_store_geocoding
       end
     end
 
@@ -116,8 +118,10 @@ class V01::Customers < Grape::API
       current_customer(params[:id])
       if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
         @current_customer.job_optimizer.destroy
-      elsif @current_customer.job_geocoding && @current_customer.job_geocoding_id = params[:job_id]
-        @current_customer.job_geocoding.destroy
+      elsif @current_customer.job_destination_geocoding && @current_customer.job_destination_geocoding_id = params[:job_id]
+        @current_customer.job_destination_geocoding.destroy
+      elsif @current_customer.job_store_geocoding && @current_customer.job_store_geocoding_id = params[:job_id]
+        @current_customer.job_store_geocoding.destroy
       end
     end
 

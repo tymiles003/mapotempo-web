@@ -20,10 +20,6 @@ require 'csv'
 class ImporterBase
 
   def self.import_csv(replace, customer, file, name, synchronous=false)
-    if !synchronous && Mapotempo::Application.config.delayed_job_use && customer.job_geocoding
-      return false
-    end
-
     contents = File.open(file, 'r:bom|utf-8').read
     if !contents.valid_encoding?
       detection = CharlockHolmes::EncodingDetector.detect(contents)

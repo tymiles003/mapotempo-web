@@ -51,7 +51,8 @@
         <td><%= customer.test ? '✓' : '' %></td>
         <td>
           <%= render 'job', customer: customer, job: customer.job_optimizer %>
-          <%= render 'job', customer: customer, job: customer.job_geocoding %>
+          <%= render 'job', customer: customer, job: customer.job_destination_geocoding %>
+          <%= render 'job', customer: customer, job: customer.job_store_geocoding %>
         </td>
         <td><%= customer.end_subscription ? l(customer.end_subscription) : nil %></td>
         <td class="text-right">

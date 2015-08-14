@@ -666,6 +666,8 @@ en:
         lat: "51.4899"
         lng: "-0.2596"
         city: "London"
+    geocoding:
+      geocoding_in_progress: "Geocoding in progress."
     form:
       ref_help: "A free reference"
       locate_manually: "Locate manually on the map"

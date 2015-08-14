@@ -25,7 +25,8 @@ class V01::Entities::Customer < Grape::Entity
   expose(:max_vehicles, documentation: { type: Integer })
   expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.strftime('%H:%M:%S') }
   expose(:store_ids, documentation: { type: Integer, is_array: true })
-  expose(:job_geocoding_id, documentation: { type: Integer })
+  expose(:job_destination_geocoding_id, documentation: { type: Integer })
+  expose(:job_store_geocoding_id, documentation: { type: Integer })
   expose(:job_optimizer_id, documentation: { type: Integer })
   expose(:name, documentation: { type: String })
   expose(:tomtom_user, documentation: { type: String })

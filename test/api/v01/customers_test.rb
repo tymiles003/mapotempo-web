@@ -59,7 +59,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
   test 'Delete job' do
     assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
-      delete api("#{@customer.id}/job/#{@customer.job_geocoding_id}")
+      delete api("#{@customer.id}/job/#{@customer.job_destination_geocoding_id}")
       assert last_response.ok?, last_response.body
     end
   end

@@ -113,7 +113,7 @@ class ImporterStores < ImporterBase
     end
 
     if need_geocode && (!synchronous || Mapotempo::Application.config.delayed_job_use)
-      customer.job_geocoding = Delayed::Job.enqueue(GeocoderStoresJob.new(customer.id))
+      customer.job_store_geocoding = Delayed::Job.enqueue(GeocoderStoresJob.new(customer.id))
     end
 
     customer.save!
