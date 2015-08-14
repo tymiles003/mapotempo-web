@@ -1,0 +1,18 @@
+<%= twitter_bootstrap_form_for [:admin, @reseller], layout: :horizontal do |f| %>
+  <%= render 'shared/error_messages', model: @reseller %>
+  <%= f.text_field :host do %>
+    <p class="help-block"><%= t '.host_help' %></p>
+  <% end %>
+  <%= f.text_field :name do %>
+    <p class="help-block"><%= t '.name_help' %></p>
+  <% end %>
+  <%= f.text_field :welcome_url do %>
+    <p class="help-block"><%= t '.welcome_url_help' %></p>
+  <% end %>
+  <%= f.text_field :help_url do %>
+    <p class="help-block"><%= t '.help_url_help' %></p>
+  <% end %>
+  <%= f.actions do %>
+    <%= f.submit %>
+  <% end %>
+<% end %>

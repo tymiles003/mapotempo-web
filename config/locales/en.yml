@@ -321,6 +321,17 @@ en:
       already_optimizing: "A planning optimization is already in progress"
 
   admin:
+    resellers:
+      menu:
+        reseller: "Reseller"
+      edit:
+        title: "Editing reseller"
+      form:
+        host_help: "Web URL hostname and port used to match with this reseller."
+        name_help: "Reseller's brand name."
+        welcome_url_help: "Web page included as html as \"iframe\" on welcome page."
+        help_url_help: "Web page with help content."
+
     users:
       menu:
         users : "Users"

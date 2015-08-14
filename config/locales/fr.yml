@@ -330,6 +330,17 @@ fr:
       index:
         title: "Liste profils"
 
+    resellers:
+      menu:
+        reseller: "Revendeur"
+      edit:
+        title: "Modifier revendeur"
+      form:
+        host_help: "Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur."
+        name_help: "Marque du revendeur."
+        welcome_url_help: "Page web html incluse comme comme «iframe» dans la page de bienvenue."
+        help_url_help: "Page web contenant l'aide."
+
     users:
       menu:
         users : "Utilisateurs"

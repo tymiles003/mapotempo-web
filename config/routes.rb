@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :users
     delete 'users' => 'users#destroy_multiple'
     resources :profiles
+    resources :resellers
   end
 
   namespace :api_web, path: 'api-web' do
