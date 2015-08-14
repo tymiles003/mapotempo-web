@@ -502,6 +502,7 @@ DEPENDENCIES
   sim_annealing
   simplecov
   smt_rails
+  sprockets (~> 2)
   swagger-docs!
   therubyracer
   turbolinks
@@ -510,3 +511,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   validates_timeliness
   web-console (~> 2.0)
+
+BUNDLED WITH
+   1.10.6
