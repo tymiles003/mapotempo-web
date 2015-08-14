@@ -25,7 +25,7 @@ class RegistrationsController < Devise::RegistrationsController
     if Mapotempo::Application.config.self_care
       # Create a customer in same time as user
       profile = Profile.first
-      customer = Customer.create(name: params['email'], router: profile.routers.first, profile: profile)
+      customer = request.env['reseller'].customers.create(name: params['email'], router: profile.routers.first, profile: profile)
       params[:customer] = customer
     end
 

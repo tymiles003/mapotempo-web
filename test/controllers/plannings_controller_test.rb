@@ -17,6 +17,7 @@ class PlanningsControllerTest < ActionController::TestCase
       (0..(matrix.size-1)).to_a
     end
 
+    @request.env['reseller'] = resellers(:reseller_one)
     @planning = plannings(:planning_one)
     sign_in users(:user_one)
   end

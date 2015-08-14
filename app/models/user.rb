@@ -22,14 +22,19 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :token_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  belongs_to :reseller
   belongs_to :customer, autosave: true
   belongs_to :layer
 
   after_initialize :assign_defaults, if: 'new_record?'
   before_validation :assign_defaults_layer, if: 'new_record?'
 
-  validates :customer, presence: true, unless: :admin
+  validates :customer, presence: true, unless: :admin?
   validates :layer, presence: true
+
+  def admin?
+    !reseller_id.nil?
+  end
 
   private
 
@@ -38,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def assign_defaults_layer
-    if admin
+    if admin?
       self.layer = Layer.first
     else
       self.layer = customer && customer.profile.layers.first

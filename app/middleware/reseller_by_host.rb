@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2015
 #
 # This file is part of Mapotempo.
 #
@@ -15,17 +15,20 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'grape-swagger'
+class ResellerByHost
+  def initialize(app)
+    @app = app
+    @cache = {}
+  end
 
-class ApiRootDef < Grape::API
-  mount ApiV01
-  documentation_class = add_swagger_documentation base_path: 'api', hide_documentation_path: true, info: {
-    title: 'API',
-    description: 'API access require an api_key.',
-  }
-end
+  def call(env)
+    env['reseller'] = reseller(env['HTTP_HOST'])
+    @app.call(env)
+  end
 
-ApiRoot = Rack::Builder.new do
-  use ApiLogger
-  run ApiRootDef
+  private
+
+  def reseller(host)
+    @cache[host] ||= Reseller.where(host: host).first
+  end
 end

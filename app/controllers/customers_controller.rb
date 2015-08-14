@@ -20,11 +20,11 @@ class CustomersController < ApplicationController
   before_action :set_customer, only: [:edit, :update]
 
   def index
-    @customers = Customer.order(:name)
+    @customers = current_user.reseller.customers.order(:name)
   end
 
   def new
-    @customer = Customer.new
+    @customer = current_user.reseller.customers.build
   end
 
   def edit
@@ -32,7 +32,7 @@ class CustomersController < ApplicationController
 
   def create
     # Can set max_vehicles on creation
-    @customer = Customer.new(customer_params.except('max_vehicles'))
+    @customer = current_user.reseller.customers.build(customer_params.except('max_vehicles'))
     @customer.speed_multiplicator /= 100 if @customer.speed_multiplicator
 
     respond_to do |format|
@@ -68,7 +68,7 @@ class CustomersController < ApplicationController
     Customer.transaction do
       if params['customers'].keys
         ids = params['customers'].keys.collect(&:to_i)
-        Customer.find(ids).each(&:destroy)
+        current_user.reseller.customers.select{ |customer| ids.include?(customer.id) }.each(&:destroy)
       end
       respond_to do |format|
         format.html { redirect_to customers_url }
@@ -80,7 +80,11 @@ class CustomersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_customer
-    @customer = Customer.find(params[:id])
+    @customer = if current_user.admin?
+      current_user.reseller.customers.find(params[:id])
+    else
+      current_user.customer
+    end
     @customer.speed_multiplicator *= 100 if @customer.speed_multiplicator
   end
 

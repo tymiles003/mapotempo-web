@@ -22,7 +22,7 @@ class Admin::UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.where('admin IS NULL')
+    @users = User.joins(:customer).where(customers: {reseller_id: current_user.reseller_id})
   end
 
   # GET /users/1
@@ -33,12 +33,12 @@ class Admin::UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    @customers = Customer.order(:name)
+    @customers = current_user.reseller.customers.order(:name)
   end
 
   # GET /users/1/edit
   def edit
-    @customers = Customer.order(:name)
+    @customers = current_user.reseller.customers.order(:name)
   end
 
   # POST /users
@@ -51,7 +51,7 @@ class Admin::UsersController < ApplicationController
         format.html { redirect_to edit_customer_path(@user.customer), notice: t('activerecord.successful.messages.created', model: @user.class.model_name.human) }
         format.json { render action: 'show', status: :created, location: @user }
       else
-        @customers = Customer.order(:name)
+        @customers = current_user.reseller.customers.order(:name)
         format.html { render action: 'new' }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -66,7 +66,7 @@ class Admin::UsersController < ApplicationController
         format.html { redirect_to edit_customer_path(@user.customer), notice: t('activerecord.successful.messages.updated', model: @user.class.model_name.human) }
         format.json { head :no_content }
       else
-        @customers = Customer.order(:name)
+        @customers = current_user.reseller.customers.order(:name)
         format.html { render action: 'edit' }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -76,7 +76,7 @@ class Admin::UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    if !@user.admin
+    if !@user.admin?
       @user.destroy
       respond_to do |format|
         format.html { redirect_to admin_users_path }
@@ -104,7 +104,7 @@ class Admin::UsersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_user
-    @user = User.find(params[:id] || params[:user_id])
+    User.joins(:customer).where(id: params[:id] || params[:user_id], customers: {reseller_id: current_user.reseller_id}).first!
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
   <head>
-    <title><%= content_for?(:title) ? yield(:title) : Mapotempo::Application.config.product_name %></title>
+    <title><%= content_for?(:title) ? yield(:title) : request.env['reseller'].name %></title>
     <%= csrf_meta_tags %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,7 +47,7 @@
           </button>
 
           <!-- Be sure to leave the brand out there if you want it shown -->
-          <a class="navbar-brand mapotempo-logo" href="/"><%= image_tag "logo_mapotempo.svg", width: 150, height: 40, alt: Mapotempo::Application.config.product_name %></a>
+          <a class="navbar-brand mapotempo-logo" href="/"><%= image_tag "logo_mapotempo.svg", width: 150, height: 40, alt: request.env['reseller'].name %></a>
         </div>
 
         <!-- Place everything within .navbar-collapse to hide it until above 768px -->
@@ -127,8 +127,8 @@
             <li>
             <% if user_signed_in? %>
               <% if !current_user.admin? %>
-                <% if Mapotempo::Application.config.help_url %>
-                  <li><%= link_to Mapotempo::Application.config.help_url, target: '_blank' do %><i class="fa fa-info-circle fa-fw"></i> <%= t 'web.help' %><% end %></li>
+                <% if request.env['reseller'].help_url %>
+                  <li><%= link_to request.env['reseller'].help_url, target: '_blank' do %><i class="fa fa-info-circle fa-fw"></i> <%= t 'web.help' %><% end %></li>
                 <% end %>
                 <li class="dropdown">
                   <%= link_to customers_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-wrench fa-fw"></i> <%= t 'customers.menu.parameters' %> <span class="caret"></span><% end %>

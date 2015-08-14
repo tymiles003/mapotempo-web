@@ -4,6 +4,7 @@ class UsersControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   setup do
+    @request.env['reseller'] = resellers(:reseller_one)
     @user = users(:user_one)
     sign_in users(:user_one)
   end

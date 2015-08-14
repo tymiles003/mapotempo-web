@@ -1,3 +1,3 @@
-<% if Mapotempo::Application.config.welcome_url %>
-  <iframe src="<%= Mapotempo::Application.config.welcome_url %>"></iframe>
+<% if request.env['reseller'].welcome_url %>
+  <iframe src="<%= request.env['reseller'].welcome_url %>"></iframe>
 <% end %>

@@ -74,6 +74,8 @@ fr:
       products:
         one: "produit"
         other: "produits"
+      reseller: "Revendeur"
+      resellers: "Revendeurs"
       route: "Tournée"
       routes:
         one: "tournée"
@@ -208,6 +210,11 @@ fr:
       product:
         code: "Code"
         name: "Nom"
+      reseller:
+        host: "Hôte"
+        name: "Nom"
+        welcome_url: "URL d'accueil"
+        help_url: "URL d'aide"
       route:
         distance: "Distance"
         emission: "Émissions"

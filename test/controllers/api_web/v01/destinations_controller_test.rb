@@ -4,6 +4,7 @@ class ApiWeb::V01::DestinationsControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   setup do
+    @request.env['reseller'] = resellers(:reseller_one)
     @destination = destinations(:destination_one)
     sign_in users(:user_one)
   end

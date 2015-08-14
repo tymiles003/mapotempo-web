@@ -39,5 +39,5 @@ class V01::Entities::Customer < Grape::Entity
   expose(:print_planning_annotating, documentation: { type: Integer })
   expose(:print_header, documentation: { type: String })
   expose(:alyacom_association, documentation: { type: String })
-  # hidden admin only field :enable_orders, :enable_tomtom, :enable_masternaut, :enable_alyacom, :test, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id
+  # hidden admin only field :reseller_id, :enable_orders, :enable_tomtom, :enable_masternaut, :enable_alyacom, :test, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id
 end

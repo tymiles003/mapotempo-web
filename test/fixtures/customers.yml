@@ -14,6 +14,7 @@ customer_one:
   profile: profile_one
   speed_multiplicator:
   default_country: France
+  reseller: reseller_one
 
 customer_two:
   end_subscription:
@@ -27,3 +28,4 @@ customer_two:
   profile: profile_two
   speed_multiplicator: 1.1
   default_country: France
+  reseller: reseller_two

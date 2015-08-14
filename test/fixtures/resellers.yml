@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+reseller_one:
+  host: localhost:3000
+  name: Test&Co Ltd.
+  welcome_url:
+  help_url:
+
+reseller_two:
+  host: localhost:3000
+  name: International Test Trust.
+  welcome_url:
+  help_url:

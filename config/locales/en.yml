@@ -71,6 +71,8 @@ en:
       profiles:
         one: "profile"
         other: "profiles"
+      reseller: "Reseller"
+      resellers: "Resellers"
       route: "Route"
       routes:
         one: "route"
@@ -205,6 +207,11 @@ en:
       product:
         code: "Code"
         name: "Name"
+      reseller:
+        host: "Host"
+        name: "Name"
+        welcome_url: "Welcome URL"
+        help_url: "Help URL"
       route:
         distance: "Distance"
         emission: "Emission"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150806133149) do
+ActiveRecord::Schema.define(version: 20150814084849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20150806133149) do
     t.boolean  "enable_tomtom",                             default: false, null: false
     t.boolean  "enable_masternaut",                         default: false, null: false
     t.boolean  "enable_alyacom",                            default: false, null: false
+    t.integer  "reseller_id",                                               null: false
   end
 
   add_index "customers", ["job_geocoding_id"], name: "index_customers_on_job_geocoding_id", using: :btree
@@ -186,6 +187,15 @@ ActiveRecord::Schema.define(version: 20150806133149) do
     t.integer "router_id"
   end
 
+  create_table "resellers", force: :cascade do |t|
+    t.string   "host",        null: false
+    t.string   "name",        null: false
+    t.string   "welcome_url"
+    t.string   "help_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "routers", force: :cascade do |t|
     t.string   "name",          limit: 255
     t.string   "url",           limit: 255
@@ -285,12 +295,12 @@ ActiveRecord::Schema.define(version: 20150806133149) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
-    t.boolean  "admin"
     t.integer  "customer_id"
     t.integer  "layer_id",                                        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "api_key",                limit: 255,              null: false
+    t.integer  "reseller_id"
   end
 
   add_index "users", ["customer_id"], name: "fk__users_customer_id", using: :btree

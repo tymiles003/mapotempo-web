@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require './app/middleware/reseller_by_host'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -41,6 +42,8 @@ module Mapotempo
       end
     end
 
+    config.middleware.use ::ResellerByHost
+
     config.lograge.enabled = true
     config.lograge.custom_options = lambda do |event|
       unwanted_keys = %w[format action controller]
@@ -51,9 +54,6 @@ module Mapotempo
     end
 
     # Application config
-
-    config.product_name = 'Mapotempo'
-    config.product_contact = 'frederic@mapotempo.com'
 
     config.action_mailer.default_url_options = {host: 'localhost'}
 
@@ -93,8 +93,6 @@ module Mapotempo
     config.delayed_job_use = false
 
     config.self_care = true # Allow subscription and resiliation by the user himself
-    config.welcome_url = nil
-    config.help_url = nil
 
     config.geocoding_accuracy_success = 0.98
     config.geocoding_accuracy_warning = 0.9
