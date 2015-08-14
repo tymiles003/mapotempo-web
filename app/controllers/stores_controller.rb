@@ -128,7 +128,7 @@ class StoresController < ApplicationController
         ImporterStores.import_csv(@stores_import.replace, current_user.customer, @stores_import.tempfile, @stores_import.name)
         format.html { redirect_to action: 'index' }
       rescue => e
-        flash[:error] = e.message
+        flash.now[:error] = e.message
         format.html { render action: 'import', status: :unprocessable_entity }
       end
     end
