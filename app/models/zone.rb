@@ -29,10 +29,13 @@ class Zone < ActiveRecord::Base
     enable
   end
 
-  def inside?(lat, lng)
+  def inside_distance(lat, lng)
     if !lat.nil? && !lng.nil?
       point = RGeo::Cartesian.factory.point(lng, lat)
-      (@geom || decode_geom).geometry().contains?(point)
+      inside = (@geom || decode_geom).geometry().contains?(point)
+      if inside
+        @geom.geometry().exterior_ring.distance(point)
+      end
     end
   end
 

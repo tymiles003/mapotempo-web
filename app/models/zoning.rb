@@ -51,9 +51,17 @@ class Zoning < ActiveRecord::Base
 
   # Return the zone corresponding to destination location
   def inside(destination)
-    zones.find{ |zone|
-      zone.inside?(destination.lat, destination.lng)
+    a = zones.collect{ |zone|
+      [zone, zone.inside_distance(destination.lat, destination.lng)]
     }
+    z = zones.collect{ |zone|
+      [zone, zone.inside_distance(destination.lat, destination.lng)]
+    }.select{ |zone, d|
+      d
+    }.max_by{ |zone, d|
+      d
+    }
+    z[0] if z
   end
 
   def flag_out_of_date
