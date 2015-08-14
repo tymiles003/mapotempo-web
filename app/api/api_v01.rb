@@ -23,10 +23,10 @@ class ApiV01 < Grape::API
       env['warden']
     end
 
-    def current_customer(custimer_id = nil)
+    def current_customer(customer_id = nil)
       @current_user ||= warden.authenticated? && warden.user
       @current_user ||= params[:api_key] && User.find_by(api_key: params[:api_key])
-      @current_customer ||= @current_user && (@current_user.admin? && custimer_id ? @current_user.reseller.customers.find(custimer_id.to_i) : @current_user.customer)
+      @current_customer ||= @current_user && (@current_user.admin? && customer_id ? @current_user.reseller.customers.find(customer_id.to_i) : @current_user.customer)
     end
 
     def authenticate!

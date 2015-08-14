@@ -17,11 +17,11 @@ Rails.application.routes.draw do
     namespace :v01, path: '0.1' do
       get 'destinations' => 'destinations#index', :as => 'destinations'
       get 'destinations/:id/edit_position' => 'destinations#edit_position', :as => 'edit_position_destination'
-      patch 'destinations/:id/update_position' => 'destinations#update_position', :as => 'update_positiion_destination'
+      patch 'destinations/:id/update_position' => 'destinations#update_position', :as => 'update_position_destination'
 
       get 'stores' => 'stores#index', :as => 'stores'
       get 'stores/:id/edit_position' => 'stores#edit_position', :as => 'edit_position_store'
-      patch 'stores/:id/update_position' => 'stores#update_position', :as => 'update_positiion_store'
+      patch 'stores/:id/update_position' => 'stores#update_position', :as => 'update_position_store'
 
       get 'zonings/:zoning_id/zones' => 'zones#index', :as => 'zones'
 
