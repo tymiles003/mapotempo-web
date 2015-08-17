@@ -141,6 +141,11 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
     charlock_holmes (0.7.3)
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
@@ -441,6 +446,7 @@ DEPENDENCIES
   byebug
   cancan
   capybara
+  carrierwave
   charlock_holmes
   coffee-rails (~> 4.1.0)
   color

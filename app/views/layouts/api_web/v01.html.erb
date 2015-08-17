@@ -26,7 +26,7 @@
 
     <!-- For all other devices -->
     <!-- Size should be 32 x 32 pixels -->
-    <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
+    <%= favicon_link_tag request.env['reseller'].favicon.url || 'favicon.ico', :rel => 'shortcut icon' %>
 
     <script type="text/javascript">
       var defaultLocale = "<%= I18n.default_locale %>";

@@ -12,6 +12,36 @@
   <%= f.text_field :help_url do %>
     <p class="help-block"><%= t '.help_url_help' %></p>
   <% end %>
+  <%= f.file_field :logo_large do %>
+    <p class="help-block"><%= t '.logo_large_help' %></p>
+  <% end %>
+  <% if @reseller.logo_large.url %>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-6">
+        <%= image_tag @reseller.logo_large.url, width: '100%' %>
+      </div>
+    </div>
+  <% end %>
+  <%= f.file_field :logo_small do %>
+    <p class="help-block"><%= t '.logo_small_help' %></p>
+  <% end %>
+  <% if @reseller.logo_small.url %>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-6">
+        <%= image_tag @reseller.logo_small.url, style: "max-width:150px; max-height:40px;" %>
+      </div>
+    </div>
+  <% end %>
+  <%= f.file_field :favicon do %>
+    <p class="help-block"><%= t '.favicon_help' %></p>
+  <% end %>
+  <% if @reseller.favicon.url %>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-6">
+        <%= image_tag @reseller.favicon.url, width: 16, height: 16 %>
+      </div>
+    </div>
+  <% end %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

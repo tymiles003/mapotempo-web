@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150814084849) do
+ActiveRecord::Schema.define(version: 20150814165916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,9 @@ ActiveRecord::Schema.define(version: 20150814084849) do
     t.string   "help_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "logo_large"
+    t.string   "logo_small"
+    t.string   "favicon"
   end
 
   create_table "routers", force: :cascade do |t|

@@ -115,6 +115,7 @@ gem 'sim_annealing'
 gem 'nilify_blanks'
 gem 'auto_strip_attributes'
 gem 'amoeba'
+gem 'carrierwave'
 
 gem 'charlock_holmes'
 gem 'savon'

@@ -212,6 +212,9 @@ en:
         name: "Name"
         welcome_url: "Welcome URL"
         help_url: "Help URL"
+        logo_large: "Large logo"
+        logo_small: "Small logo"
+        favicon: "Favicon"
       route:
         distance: "Distance"
         emission: "Emission"
@@ -331,6 +334,9 @@ en:
         name_help: "Reseller's brand name."
         welcome_url_help: "Web page included as html as \"iframe\" on welcome page."
         help_url_help: "Web page with help content."
+        logo_large_help: "Full page resizable logo, preferably in SVG, alternatively in PNG format."
+        logo_small_help: "Head menu logo, 150×40 pixels in SVG or PNG format."
+        favicon_help: "Website icon, 16×16 pixels in PNG or ICO format."
 
     users:
       menu:

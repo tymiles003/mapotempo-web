@@ -1,5 +1,5 @@
 <div class="row">
-  <%= image_tag "logo_mapotempo.svg", alt: "mapotempo", class: "mapotempo-logo" %>
+  <%= image_tag request.env['reseller'].logo_large.url || "logo_mapotempo.svg", alt: request.env['reseller'].name, class: "mapotempo-logo" %>
 </div>
 <div class="row mapotempo-icons">
   <div class="col-xs-10 col-xs-offset-1">

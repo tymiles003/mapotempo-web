@@ -15,17 +15,14 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'sanitize'
+class Admin::FaviconUploader < CarrierWave::Uploader::Base
+  storage :file
 
-class Reseller < ActiveRecord::Base
-  has_many :customers, -> { order('id')}, inverse_of: :reseller, autosave: true, dependent: :delete_all
+  def store_dir
+    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  end
 
-  nilify_blanks
-  auto_strip_attributes :host, :name, :welcome_url, :help_url
-  validates :host, presence: true
-  validates :name, presence: true
-
-  mount_uploader :logo_large, Admin::LogoLargeUploader
-  mount_uploader :logo_small, Admin::LogoSmallUploader
-  mount_uploader :favicon, Admin::FaviconUploader
+  def extension_white_list
+     %w(ico png)
+  end
 end
