@@ -23,7 +23,7 @@ function api_web_v01_routes_index(params) {
     map_attribution = params.map_attribution,
     route_ids = params.route_ids,
     vehicles_map = params.vehicles_map,
-    map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13),
+    map = new L.Map('map').setView([map_lat, map_lng], 13),
     markers = {},
     stores = {},
     layers = {},

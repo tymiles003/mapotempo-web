@@ -1,3 +1,5 @@
+json.planning_id @planning.id
+
 json.stores @routes.select{ |route| route.vehicle }.collect{ |route| [route.vehicle.store_start, route.vehicle.store_stop, route.vehicle.store_rest] }.flatten.compact.uniq do |store|
   json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
 end
