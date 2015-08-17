@@ -21,7 +21,9 @@ class Ability
   def initialize(user)
     if user
       if user.admin?
-        can :manage, :all
+        can :manage, Customer, reseller_id: user.reseller_id
+        can :manage, User, customer: {reseller_id: user.reseller_id}
+        can :manage, Reseller, id: user.reseller_id
       else
         can [:edit, :update], User, id: user.id
         can [:show, :edit_settings, :update_settings], User, id: user.id
