@@ -25,12 +25,6 @@ Swagger::Docs::Config.register_apis({
 
 
 module Swagger::Docs
-  class ApiDeclarationFileMetadata
-    def path
-      '/' + @path
-    end
-  end
-
   class ApiDeclarationFile
     alias_method :old_generate_resource, :generate_resource
 
@@ -43,7 +37,7 @@ module Swagger::Docs
     end
 
     def path
-      '/' + @metadata.path.gsub('api_web', 'api-web').gsub('v01', 'swagger_doc')
+      @metadata.path.gsub('api_web', 'api-web').gsub('v01', 'swagger_doc')
     end
 
     def resource_file_path
