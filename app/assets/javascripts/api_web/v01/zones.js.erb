@@ -72,9 +72,7 @@ function api_web_v01_zones_index(params) {
           popupAnchor: new L.Point(0, -12)
         })
       }).addTo(stores_marker).bindPopup(SMT['stops/show']({
-        stop: {
-          destination: store
-        }
+        stop: store
       }));
       m.on('mouseover', function(e) {
         m.openPopup();
