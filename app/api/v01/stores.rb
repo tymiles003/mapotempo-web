@@ -54,7 +54,7 @@ class V01::Stores < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     get ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       present current_customer.stores.where(id).first!, with: V01::Entities::Store
     end
 
@@ -103,7 +103,7 @@ class V01::Stores < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     put ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       store = current_customer.stores.where(id).first!
       store.assign_attributes(store_params)
       store.save!
@@ -118,7 +118,7 @@ class V01::Stores < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     delete ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       current_customer.stores.where(id).first!.destroy
     end
 

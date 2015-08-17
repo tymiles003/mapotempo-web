@@ -43,7 +43,7 @@ class V01::Routes < Grape::API
           optional :ids, type: Array[Integer], desc: 'Select returned routes by id.'
         }
         get do
-          planning_id = read_id(params[:planning_id])
+          planning_id = ParseIdsRefs.read(params[:planning_id])
           routes = if params.key?(:ids)
             ids = params[:ids].collect(&:to_i)
             current_customer.plannings.where(planning_id).first!.routes.select{ |route| ids.include?(route.id) }
@@ -61,8 +61,8 @@ class V01::Routes < Grape::API
           requires :id, type: Integer
         }
         get ':id' do
-          planning_id = read_id(params[:planning_id])
-          id = read_id(params[:id])
+          planning_id = ParseIdsRefs.read(params[:planning_id])
+          id = ParseIdsRefs.read(params[:id])
           present current_customer.plannings.where(planning_id).first!.routes.where(id).first!, with: V01::Entities::Route
         end
 
@@ -75,8 +75,8 @@ class V01::Routes < Grape::API
           requires :id, type: Integer
         }
         put ':id' do
-          planning_id = read_id(params[:planning_id])
-          id = read_id(params[:id])
+          planning_id = ParseIdsRefs.read(params[:planning_id])
+          id = ParseIdsRefs.read(params[:id])
           route = current_customer.plannings.where(planning_id).first!.routes.where(id).first!
           route.update(route_params)
           route.save!
@@ -92,9 +92,9 @@ class V01::Routes < Grape::API
           requires :active, type: String, values: ['all', 'reverse', 'none']
         }
         patch ':id/active/:active' do
-          planning_id = read_id(params[:planning_id])
+          planning_id = ParseIdsRefs.read(params[:planning_id])
           planning = current_customer.plannings.where(planning_id).first!
-          id = read_id(params[:id])
+          id = ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
           if route && route.active(params[:active].to_s.to_sym) && route.compute && planning.save
             present(route, with: V01::Entities::Route)
@@ -109,9 +109,9 @@ class V01::Routes < Grape::API
           requires :destination_ids, type: Array[Integer]
         }
         patch ':id/destinations/moves' do
-          planning_id = read_id(params[:planning_id])
+          planning_id = ParseIdsRefs.read(params[:planning_id])
           planning = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
-          id = read_id(params[:id])
+          id = ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
 
 
@@ -133,8 +133,8 @@ class V01::Routes < Grape::API
           requires :id, type: Integer
         }
         patch ':id/optimize' do
-          planning_id = read_id(params[:planning_id])
-          id = read_id(params[:id])
+          planning_id = ParseIdsRefs.read(params[:planning_id])
+          id = ParseIdsRefs.read(params[:id])
           route = current_customer.plannings.where(planning_id).first!.routes.where(id).first!
           if !Optimizer.optimize(route.planning, route, true)
             status 304

@@ -54,7 +54,7 @@ class V01::Destinations < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     get ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       present current_customer.destinations.where(id).first!, with: V01::Entities::Destination
     end
 
@@ -103,7 +103,7 @@ class V01::Destinations < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     put ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       destination = current_customer.destinations.where(id).first!
       destination.assign_attributes(destination_params)
       destination.save!
@@ -118,7 +118,7 @@ class V01::Destinations < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     delete ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       current_customer.destinations.where(id).first!.destroy
     end
 

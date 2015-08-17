@@ -54,7 +54,7 @@ class V01::Plannings < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     get ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       present current_customer.plannings.where(id).first!, with: V01::Entities::Planning
     end
 
@@ -80,7 +80,7 @@ class V01::Plannings < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     put ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       planning.update(planning_params)
       planning.save!
@@ -94,7 +94,7 @@ class V01::Plannings < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     delete ':id' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       current_customer.plannings.where(id).first!.destroy
     end
 
@@ -119,7 +119,7 @@ class V01::Plannings < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     get ':id/refresh' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       planning.compute
       planning.save!
@@ -167,7 +167,7 @@ class V01::Plannings < Grape::API
       requires :id, type: String, desc: Id_desc
     }
     patch ':id/duplicate' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       planning = planning.amoeba_dup
       planning.save!
@@ -184,7 +184,7 @@ class V01::Plannings < Grape::API
       requires :shift, type: Integer
     }
     patch ':id/orders/:order_array_id/:shift' do
-      id = read_id(params[:id])
+      id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       order_array = current_customer.order_arrays.find(params[:order_array_id])
       shift = params[:shift].to_i

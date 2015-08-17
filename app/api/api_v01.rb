@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'parse_ids_refs'
+
 class ApiV01 < Grape::API
   version '0.1', using: :path
 
@@ -37,14 +39,6 @@ class ApiV01 < Grape::API
     end
 
     def authorize!
-    end
-
-    def read_id(raw_id)
-      if !raw_id.is_a?(Fixnum) && raw_id.start_with?('ref:')
-        {ref: raw_id[4..-1]}
-      else
-        {id: raw_id.to_i}
-      end
     end
 
     def error!(*args)
