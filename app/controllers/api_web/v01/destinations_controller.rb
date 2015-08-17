@@ -23,7 +23,7 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
 
   swagger_api :index do
     summary 'Display all or some destinations.'
-    param :query, :ids, :array, :optional, 'Destination ids to be displayed', { 'items' => { 'type' => 'integer' } }
+    param :query, :ids, :array, :optional, 'Destination ids or refs (as "ref:[VALUE]") to be displayed', { 'items' => { 'type' => 'string' } }
   end
 
   swagger_api :edit_position do
@@ -60,8 +60,7 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
   def index
     @customer = current_user.customer
     @destinations = if params.key?(:ids) && params[:ids].kind_of?(Array)
-      ids = params[:ids].collect(&:to_i)
-      current_user.customer.destinations.select{ |destination| ids.include?(destination.id) }
+      current_user.customer.destinations.where(ParseIdsRefs.where(Destination, params[:ids]))
     else
       current_user.customer.destinations.load
     end

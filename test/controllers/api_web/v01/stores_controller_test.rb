@@ -15,6 +15,12 @@ class ApiWeb::V01::StoresControllerTest < ActionController::TestCase
     assert_not_nil assigns(:stores)
   end
 
+  test "should get index with ref" do
+    get :index, 'ids[]' => 'ref:b'
+    assert_response :success
+    assert_not_nil assigns(:stores)
+  end
+
   test "should get edit position" do
     get :edit_position, id: @store
     assert_response :success

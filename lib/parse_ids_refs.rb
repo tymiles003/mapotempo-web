@@ -15,15 +15,24 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'parse_ids_refs'
+class ParseIdsRefs
+  def self.read(raw_id)
+    if !raw_id.is_a?(Fixnum) && raw_id.start_with?('ref:')
+      {ref: raw_id[4..-1]}
+    else
+      {id: raw_id.to_i}
+    end
+  end
 
-class ApiWeb::V01::ApiWebController < ApplicationController
-  before_filter :skip_trackable
-  layout 'api_web/v01'
-
-  private
-
-  def skip_trackable
-   request.env['devise.skip_trackable'] = true
+  def self.where(clazz, param)
+    ids = Hash[param.collect{ |id|
+      read(id)
+    }.group_by{ |e|
+      e.keys[0]
+    }.collect{ |k, v|
+      [k, v.collect{ |vv| vv[k] }]
+    }]
+    table = clazz.arel_table
+    table[:id].in(ids[:id]).or(table[:ref].in(ids[:ref]))
   end
 end

@@ -15,6 +15,12 @@ class ApiWeb::V01::DestinationsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:destinations)
   end
 
+  test "should get index with ref" do
+    get :index, 'ids[]' => 'ref:a'
+    assert_response :success
+    assert_not_nil assigns(:destinations)
+  end
+
   test "should get edit position" do
     get :edit_position, id: @destination
     assert_response :success

@@ -25,13 +25,12 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
   swagger_api :index do
     summary 'Display all or some routes of one planning.'
     param :path, :planning_id, :integer, :required, 'Zonning ids'
-    param :query, :ids, :array, :optional, 'Planning''s routes ids to be displayed', { 'items' => { 'type' => 'integer' } }
+    param :query, :ids, :array, :optional, 'Planning''s routes ids or refs (as "ref:[VALUE]") to be displayed', { 'items' => { 'type' => 'string' } }
   end
 
   def index
     @routes = if params.key?(:ids) && params[:ids].kind_of?(Array)
-      ids = params[:ids].collect(&:to_i)
-      @planning.routes.select{ |route| ids.include?(route.id) }
+      @planning.routes.where(ParseIdsRefs.where(Route, params[:ids]))
     else
       routes = @planning.routes
     end

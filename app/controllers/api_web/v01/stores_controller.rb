@@ -23,7 +23,7 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
 
   swagger_api :index do
     summary 'Display all or some stores.'
-    param :query, :ids, :array, :optional, 'Store ids to be displayed', { 'items' => { 'type' => 'integer' } }
+    param :query, :ids, :array, :optional, 'Store ids or refs (as "ref:[VALUE]") to be displayed', { 'items' => { 'type' => 'string' } }
   end
 
   swagger_api :edit_position do
@@ -60,8 +60,7 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
   def index
     @customer = current_user.customer
     @stores = if params.key?(:ids) && params[:ids].kind_of?(Array)
-      ids = params[:ids].collect(&:to_i)
-      current_user.customer.stores.select{ |store| ids.include?(store.id) }
+      current_user.customer.stores.where(ParseIdsRefs.where(Store, params[:ids]))
     else
       current_user.customer.stores.load
     end
