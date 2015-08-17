@@ -1,6 +1,6 @@
 {{#stop}}
-<div data-route_id="{{route_id}}" data-stop_id="{{stop_id}}">
 {{#planning_id}}
+<div data-route_id="{{route_id}}" data-stop_id="{{stop_id}}">
 {{^store}}
 <div class="btn-group pull-right stop-tools">
   {{#automatic_insert}}
@@ -62,5 +62,7 @@
     {{/out_of_drive_time}}
   </ul>
 {{/error}}
+{{#planning_id}}
 </div>
+{{/planning_id}}
 {{/stop}}

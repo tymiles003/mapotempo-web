@@ -82,7 +82,7 @@ function api_web_v01_destinations_index(params, api) {
   }
 
   function addMarker(id, lat, lng) {
-    var marker = L.marker(new L.LatLng(lat, lng), {
+    return L.marker(new L.LatLng(lat, lng), {
       icon: icon_default
     }).addTo(markersLayers).addTo(cluster);
   }
@@ -96,7 +96,9 @@ function api_web_v01_destinations_index(params, api) {
     $.each(data[api], function(i, destination) {
       destination = prepare_display_destination(destination);
       if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
-        addMarker(destination.id, destination.lat, destination.lng);
+        addMarker(destination.id, destination.lat, destination.lng).bindPopup(SMT['stops/show']({
+          stop: destination
+        }));
       }
     });
 
