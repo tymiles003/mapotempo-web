@@ -225,7 +225,7 @@ function plannings_edit(params) {
           iconAnchor: new L.Point(16, 16),
           popupAnchor: new L.Point(0, -12)
         })
-      }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: {destination: store}}), {
+      }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
         minWidth: 200,
         autoPan: false
       });
