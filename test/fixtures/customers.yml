@@ -16,6 +16,22 @@ customer_one:
   default_country: France
   reseller: reseller_one
 
+customer_one_other:
+  end_subscription:
+  max_vehicles: 2
+  take_over: 2000-01-01 00:05:00
+  job_destination_geocoding: job_destination_geocoding
+  job_optimizer: job_optimizer
+  name: MyString
+  router: router_one
+  enable_orders: true
+  optimization_time: 10
+  optimization_soft_upper_bound: 3
+  profile: profile_one
+  speed_multiplicator:
+  default_country: France
+  reseller: reseller_one
+
 customer_two:
   end_subscription:
   max_vehicles: 1

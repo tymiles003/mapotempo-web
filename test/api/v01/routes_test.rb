@@ -59,7 +59,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
 
   test 'should move stop position in routes' do
     patch api(@route.planning.id, "#{@route.id}/stops/#{@route.planning.routes[0].stops[0].id}/move/1")
-    assert last_response.ok?, last_response.body
+    assert_equal 204, last_response.status, last_response.body
   end
 
   test 'should change stops activation' do

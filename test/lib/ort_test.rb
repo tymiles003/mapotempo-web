@@ -116,7 +116,7 @@ class OrtTest < ActionController::TestCase
       [[609, 609], [416, 416], [2070, 2070], [0, 0], [609, 609]],
       [[0, 0], [655, 655], [1948, 1948], [693, 693], [0, 0]]], a
     assert_equal [[nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0]], b
-    assert_equal [0, 2, 3, 1, 4, 5], @ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m)
+    assert_equal [0, 2, 3, 4, 1, 5], @ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m)
   end
 
   test "shoud zip large cluster case" do
