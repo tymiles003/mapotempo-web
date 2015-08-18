@@ -20,11 +20,17 @@ require 'polylines'
 
 #RestClient.log = $stdout
 
-module Here
+class Here
 
-  @cache_result = Mapotempo::Application.config.here_cache_result
+  attr_accessor :cache_request, :cache_result
+  attr_accessor :url, :app_id, :app_code
 
-  def self.compute(from_lat, from_lng, to_lat, to_lng)
+  def initialize(cache_request, cache_result, url, app_id, app_code)
+    @cache_request, @cache_result = cache_request, cache_result
+    @url, @app_id, @app_code = url, app_id, app_code
+  end
+
+  def compute(from_lat, from_lng, to_lat, to_lng)
     key = [from_lat, from_lng, to_lat, to_lng]
 
     result = @cache_result.read(key)
@@ -57,7 +63,7 @@ module Here
     result
   end
 
-  def self.matrix(vector, &block)
+  def matrix(vector, &block)
     raise 'More than 100x100 matrix, not possible with Here' if vector.size > 100
 
     key = [vector.map{ |v| v[0..1] }.hash]
@@ -121,15 +127,9 @@ module Here
 
   private
 
-  @cache_request = Mapotempo::Application.config.here_cache_request
-
-  @api_url = Mapotempo::Application.config.here_api_url
-  @api_app_id = Mapotempo::Application.config.here_api_app_id
-  @api_app_code = Mapotempo::Application.config.here_api_app_code
-
-  def self.get(object, params = {})
-    url = "#{@api_url}/#{object}.json"
-    params = {app_id: @api_app_id, app_code: @api_app_code}.merge(params)
+  def get(object, params = {})
+    url = "#{@url}/#{object}.json"
+    params = {app_id: @app_id, app_code: @app_code}.merge(params)
 
     key = [url, params].hash
     request = @cache_request.read(key)

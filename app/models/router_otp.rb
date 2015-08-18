@@ -21,7 +21,7 @@ class RouterOtp < Router
   validates :url, presence: true
 
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
-    distance, time, trace = Otp.compute(url, ref, lat1, lng1, lat2, lng2, monday_morning)
+    distance, time, trace = Mapotempo::Application.config.otp.compute(url, ref, lat1, lng1, lat2, lng2, monday_morning)
     time *= 1.0 / speed_multiplicator
     [distance, time, trace]
   end
@@ -31,7 +31,7 @@ class RouterOtp < Router
     total = positions**2
     vector.collect{ |v1|
       vector.collect{ |v2|
-        distance, time, _trace = Ort.compute(url, ref, v1[0], v1[1], v2[0], v2[1], monday_morning)
+        distance, time, _trace = Mapotempo::Application.config.otp.compute(url, ref, v1[0], v1[1], v2[0], v2[1], monday_morning)
         block.call(1, total) if block
         [distance, time * time_multiplicator]
       }
@@ -43,7 +43,7 @@ class RouterOtp < Router
   end
 
   def isochrone(lat, lng, size)
-    Otp.isochrone(url, ref, lat, lng, size, monday_morning)
+    Mapotempo::Application.config.otp.isochrone(url, ref, lat, lng, size, monday_morning)
   end
 
   private

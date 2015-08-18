@@ -10,13 +10,11 @@ end
 class RouteTest < ActiveSupport::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
-  setup do
-    def Osrm.compute(url, from_lat, from_lng, to_lat, to_lng)
-      [1, 1, "trace"]
-    end
-
-    def Osrm.matrix(url, vector)
-      Array.new(vector.size, Array.new(vector.size, 0))
+  def around
+    Osrm.stub_any_instance(:compute, [1, 1, "trace"]) do
+      Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
+        yield
+      end
     end
   end
 

@@ -1,14 +1,12 @@
 class OptimizerTest < ActionController::TestCase
-  setup do
-    def Osrm.compute(url, from_lat, from_lng, to_lat, to_lng)
-      [1000, 60, "trace"]
-    end
-
-    def Ort.optimize(capacity, matrix, time_window, time_threshold)
-      (0..(matrix.size-1)).to_a
-    end
-
+  def around
     @route = routes(:route_one_one)
+
+    Osrm.stub_any_instance(:compute, [1000, 60, "trace"]) do
+      Osrm.stub_any_instance(:optimize, lambda{ |capacity, matrix, time_window, time_threshold| (0..(matrix.size-1)).to_a }) do
+        yield
+      end
+    end
   end
 
   test "should optimize" do

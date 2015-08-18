@@ -4,9 +4,9 @@ require 'osrm'
 class PlanningTest < ActiveSupport::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
-  setup do
-    def Osrm.compute(url, from_lat, from_lng, to_lat, to_lng)
-      [1, 1, "trace"]
+  def around
+    Osrm.stub_any_instance(:compute, [1, 1, "trace"]) do
+      yield
     end
   end
 

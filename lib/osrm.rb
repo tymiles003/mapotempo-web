@@ -20,12 +20,15 @@ require 'rest_client'
 #RestClient.log = $stdout
 
 
-module Osrm
+class Osrm
 
-  @cache_request = Mapotempo::Application.config.osrm_cache_request
-  @cache_result = Mapotempo::Application.config.osrm_cache_result
+  attr_accessor :cache_request, :cache_result
 
-  def self.compute(osrm_url, from_lat, from_lng, to_lat, to_lng)
+  def initialize(cache_request, cache_result)
+    @cache_request, @cache_result = cache_request, cache_result
+  end
+
+  def compute(osrm_url, from_lat, from_lng, to_lat, to_lng)
     key = [osrm_url, from_lat, from_lng, to_lat, to_lng]
 
     result = @cache_result.read(key)
@@ -78,7 +81,7 @@ module Osrm
     result
   end
 
-  def self.matrix(osrm_url, vector)
+  def matrix(osrm_url, vector)
     key = [osrm_url, vector.map{ |v| v[0..1] }.hash]
 
     result = @cache_result.read(key)
@@ -124,7 +127,7 @@ module Osrm
     result
   end
 
-  def self.isochrone(osrm_isochrone_url, lat, lng, size)
+  def isochrone(osrm_isochrone_url, lat, lng, size)
     key = [osrm_isochrone_url, lat, lng, size]
 
     request = @cache_request.read(key)

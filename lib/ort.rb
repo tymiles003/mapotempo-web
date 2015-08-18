@@ -17,19 +17,20 @@
 #
 require 'ai4r'
 include Ai4r::Data
-require 'complete_linkage_max_distance'
+require './lib/complete_linkage_max_distance'
 include Ai4r::Clusterers
 
 require 'rest_client'
 
-module Ort
+class Ort
 
-  @cache = Mapotempo::Application.config.optimize_cache
-  @url = Mapotempo::Application.config.optimize_url
-  @time_threshold = Mapotempo::Application.config.optimize_cluster_size
+  attr_accessor :cache, :url
 
-  def self.optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, rest_window, time_threshold)
-    time_threshold ||= @time_threshold
+  def initialize(cache, url)
+    @cache, @url, @time_threshold = cache, url
+  end
+
+  def optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, rest_window, time_threshold)
     key = [soft_upper_bound, capacity, matrix.hash, time_window.hash, time_threshold]
 
     cluster(matrix, time_window, time_threshold) { |matrix, time_window|
@@ -55,14 +56,14 @@ module Ort
 
   private
 
-  def self.cluster(matrix, time_window, time_threshold)
+  def cluster(matrix, time_window, time_threshold)
     original_matrix = matrix
     matrix, time_window, zip_key = zip_cluster(matrix, time_window, time_threshold)
     result = yield(matrix, time_window)
     unzip_cluster(result, zip_key, original_matrix)
   end
 
-  def self.zip_cluster(matrix, time_window, time_threshold)
+  def zip_cluster(matrix, time_window, time_threshold)
     data_set = DataSet.new(data_items: (1..(matrix.length - 2)).collect{ |i| [i] })
     c = CompleteLinkageMaxDistance.new
     c.distance_function = lambda do |a, b|
@@ -96,7 +97,7 @@ module Ort
     [new_matrix, new_time_window, clusterer.clusters]
   end
 
-  def self.unzip_cluster(result, zip_key, original_matrix)
+  def unzip_cluster(result, zip_key, original_matrix)
     ret = []
     result.size.times.collect{ |ii|
       i = result[ii]

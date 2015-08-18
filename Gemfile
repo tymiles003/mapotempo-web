@@ -43,6 +43,8 @@ end
 
 group :test do
   gem 'minitest-focus'
+  gem 'minitest-around'
+  gem 'minitest-stub_any_instance'
   gem 'simplecov', require: false
   gem 'capybara'
   gem 'selenium-webdriver'

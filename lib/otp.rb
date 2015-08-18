@@ -19,12 +19,15 @@ require 'rest_client'
 #RestClient.log = $stdout
 
 
-module Otp
+class Otp
 
-  @cache_result = Mapotempo::Application.config.otp_cache_result
-  @cache_request = Mapotempo::Application.config.otp_cache_request
+  attr_accessor :cache_request, :cache_result
 
-  def self.compute(otp_url, router_id, from_lat, from_lng, to_lat, to_lng, datetime)
+  def initialize(cache_request, cache_result)
+    @cache_request, @cache_result = cache_request, cache_result
+  end
+
+  def compute(otp_url, router_id, from_lat, from_lng, to_lat, to_lng, datetime)
     key = [otp_url, router_id, from_lat, from_lng, to_lat, to_lng, datetime]
 
     result = @cache_result.read(key)
@@ -71,7 +74,7 @@ module Otp
     result
   end
 
-  def self.isochrone(otp_url, router_id, lat, lng, size, datetime)
+  def isochrone(otp_url, router_id, lat, lng, size, datetime)
     key = [otp_url, router_id, lat, lng, nil, nil, size, datetime]
 
     request = @cache_request.read(key)

@@ -9,15 +9,16 @@ class V01::RoutesTest < ActiveSupport::TestCase
   end
 
   setup do
-    def Osrm.compute(url, from_lat, from_lng, to_lat, to_lng)
-      [1000, 60, "trace"]
-    end
-
-    def Ort.optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, time_window_rest, time_threshold)
-      (0..(matrix.size-1)).to_a
-    end
-
     @route = routes(:route_one_one)
+  end
+
+  def around
+    Osrm.stub_any_instance(:compute, [1000, 60, "trace"]) do
+      matrix = []
+      Ort.stub_any_instance(:optimize, lambda { |optimize_time, soft_upper_bound, capacity, matrix, time_window, time_window_rest, time_threshold| (0..(matrix.size-1)).to_a }) do
+        yield
+      end
+    end
   end
 
   def api(planning_id, part = nil, param = {})

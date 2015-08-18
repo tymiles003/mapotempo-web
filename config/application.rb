@@ -2,6 +2,10 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 require './app/middleware/reseller_by_host'
+require './lib/osrm'
+require './lib/otp'
+require './lib/here'
+require './lib/ort'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -57,8 +61,10 @@ module Mapotempo
 
     config.action_mailer.default_url_options = {host: 'localhost'}
 
-    config.optimize_cache =  ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10)
-    config.optimize_url = 'http://localhost:4567/0.1/optimize_tsptw'
+    config.optimize = Ort.new(
+      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10),
+      'http://localhost:4567/0.1/optimize_tsptw'
+    )
     config.optimize_time = 30000
     config.optimize_cluster_size = 5
     config.optimize_soft_upper_bound = 3
@@ -70,17 +76,21 @@ module Mapotempo
     config.geocode_ign_key = nil
     config.geocode_complete = false # Build time setting
 
-    config.osrm_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'osrm_request', expires_in: 60*60*24*1)
-    config.osrm_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'osrm_result', expires_in: 60*60*24*1)
+    config.osrm = Osrm.new(
+      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'osrm_request', expires_in: 60*60*24*1),
+      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'osrm_result', expires_in: 60*60*24*1)
+    )
 
-    config.otp_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'otp_request', expires_in: 60*60*24*1)
-    config.otp_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'otp_result', expires_in: 60*60*24*1)
+    config.otp = Otp.new(
+      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'otp_request', expires_in: 60*60*24*1),
+      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'otp_result', expires_in: 60*60*24*1)
+    )
 
-    config.here_cache_request = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'here_request', expires_in: 60*60*24*1)
-    config.here_cache_result = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'here_result', expires_in: 60*60*24*1)
-    config.here_api_url = 'https://route.nlp.nokia.com/routing'
-    config.here_api_app_id = nil
-    config.here_api_app_code = nil
+    config.here = Here.new(
+      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'here_request', expires_in: 60*60*24*1),
+      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'here_result', expires_in: 60*60*24*1),
+      'https://route.nlp.nokia.com/routing', nil, nil
+    )
 
     config.tomtom_api_url = 'https://soap.business.tomtom.com/v1.23'
     config.tomtom_api_key = nil

@@ -9,17 +9,17 @@ class PlanningsControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   setup do
-    def Osrm.compute(url, from_lat, from_lng, to_lat, to_lng)
-      [1000, 60, "trace"]
-    end
-
-    def Ort.optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, time_window_rest, time_threshold)
-      (0..(matrix.size-1)).to_a
-    end
-
     @request.env['reseller'] = resellers(:reseller_one)
     @planning = plannings(:planning_one)
     sign_in users(:user_one)
+  end
+
+  def around
+    Osrm.stub_any_instance(:compute, [1000, 60, "trace"]) do
+      Ort.stub_any_instance(:optimize, lambda { |optimize_time, soft_upper_bound, capacity, matrix, time_window, time_window_rest, time_threshold| (0..(matrix.size-1)).to_a }) do
+        yield
+      end
+    end
   end
 
   test "should get index" do
