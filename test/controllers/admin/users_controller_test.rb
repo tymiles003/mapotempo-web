@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UsersControllerAdminTest < ActionController::TestCase
+class Admin::UsersControllerTest < ActionController::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   setup do
