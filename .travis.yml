@@ -1,0 +1,28 @@
+# Git
+branches:
+  only:
+    - master
+    - dev
+language: ruby
+
+
+# Environment
+rvm:
+ - 2.0
+services:
+ - postgresql
+sudo: false
+addons:
+  apt:
+    packages:
+    - libgeos++-dev
+
+# Setup
+before_script:
+  - psql -c 'create database mapotempo;' -U postgres
+  - cp config/database.yml.travis config/database.yml
+
+
+# Run
+script:
+  - bundle exec rake test
