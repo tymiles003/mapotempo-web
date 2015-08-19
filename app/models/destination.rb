@@ -15,8 +15,6 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'geocode'
-
 class LocalizationDestinationValidator < ActiveModel::Validator
   def validate(record)
     if record.postalcode.nil? && record.city.nil? && (record.lat.nil? || record.lng.nil?)
