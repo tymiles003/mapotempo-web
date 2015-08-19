@@ -110,6 +110,7 @@ controller.js(
   },
   vehicles_map: Hash[@planning.customer.vehicles.collect{ |vehicle|
     [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]
-  }]
+  }],
+  colors: Vehicle.colors_table
 )
 %>

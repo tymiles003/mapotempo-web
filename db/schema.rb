@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150814165916) do
+ActiveRecord::Schema.define(version: 20150818110546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(version: 20150814165916) do
     t.boolean  "stop_out_of_drive_time"
     t.float    "stop_distance"
     t.string   "ref",                    limit: 255
+    t.string   "color"
   end
 
   add_index "routes", ["planning_id"], name: "fk__routes_planning_id", using: :btree
@@ -254,19 +255,20 @@ ActiveRecord::Schema.define(version: 20150814165916) do
   add_index "stops", ["route_id"], name: "fk__stops_route_id", using: :btree
 
   create_table "stores", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.string   "street",      limit: 255
-    t.string   "postalcode",  limit: 255
-    t.string   "city",        limit: 255
+    t.string   "name",               limit: 255
+    t.string   "street",             limit: 255
+    t.string   "postalcode",         limit: 255
+    t.string   "city",               limit: 255
     t.float    "lat"
     t.float    "lng"
     t.time     "open"
     t.time     "close"
-    t.integer  "customer_id",             null: false
+    t.integer  "customer_id",                    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "country"
     t.string   "ref"
+    t.float    "geocoding_accuracy"
   end
 
   add_index "stores", ["customer_id"], name: "fk__stores_customer_id", using: :btree

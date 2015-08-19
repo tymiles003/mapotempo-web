@@ -21,7 +21,7 @@ class V01::Routes < Grape::API
     def route_params
       p = ActionController::Parameters.new(params)
       p = p[:route] if p.key?(:route)
-      p.permit(:hidden, :locked, :ref)
+      p.permit(:hidden, :locked, :ref, :color)
     end
 
     Id_desc = 'Id or the ref field value, then use "ref:[value]".'

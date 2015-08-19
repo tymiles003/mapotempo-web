@@ -52,6 +52,7 @@ function plannings_edit(params) {
     route_ids = params.route_ids,
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map,
+    colors = params.colors,
     map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13),
     layer_zoning,
     markers = {},
@@ -193,86 +194,8 @@ function plannings_edit(params) {
     });
   }
 
-  function display_planning(data) {
-    if ($("#dialog-optimizer").size() == 0) {
-      return; // Avoid render and loop with turbolink when page is over
-    }
-    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json')) {
-      return;
-    }
-
-    $.each(data.routes, function(i, route) {
-      if (route.vehicle_id) {
-        route.vehicle = vehicles_map[route.vehicle_id];
-        route.path = '/vehicles/' + route.vehicle_id + '/edit?back=true';
-      }
-    });
-
-    data.i18n = mustache_i18n;
-    data.planning_id = data.id;
-    $("#planning").html(SMT['plannings/edit'](data));
-
-
-    var stores_marker = L.featureGroup();
-    stores = {};
-    $.each(data.stores, function(i, store) {
-      store.store = true;
-      store.planning_id = data.planning_id;
-      if (store.lat !== null && store.lng !== null) {
-        var m = L.marker(new L.LatLng(store.lat, store.lng), {
-          icon: L.icon({
-            iconUrl: '<%= asset_path("marker-home.svg") %>',
-            iconSize: new L.Point(32, 32),
-            iconAnchor: new L.Point(16, 16),
-            popupAnchor: new L.Point(0, -12)
-          })
-        }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
-          minWidth: 200,
-          autoPan: false
-        });
-        m.on('mouseover', function(e) {
-          m.openPopup();
-        }).on('mouseout', function(e) {
-          if (!m.click) {
-            m.closePopup();
-          }
-        }).off('click').on('click', function(e) {
-          if (m.click) {
-            m.closePopup();
-          } else {
-            m.click = true;
-            m.openPopup();
-          }
-        }).on('popupclose', function(e) {
-          m.click = false;
-        });
-        stores[store.id] = m;
-      }
-    });
-    stores_marker.addTo(map);
-
-
-    function templateVehicles(state) {
-      if(state.id){
-        return $("<span><span class='vehicle_color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
-      } else {
-        console.log(state);
-      }
-    }
-
-    var formatNoMatches = I18n.t('web.select2.empty_result');
-    $(".vehicle_select").select2({
-      minimumResultsForSearch: -1,
-      data: vehicles_array,
-      templateSelection: templateVehicles,
-      templateResult: templateVehicles,
-      formatNoMatches: function() {
-        return formatNoMatches;
-      }
-    });
-
-    $.each(data.routes, function(i, route) {
-      var color = route.vehicle ? route.vehicle.color : '#707070';
+  function display_route(data, route) {
+      var color = route.color || (route.vehicle && route.vehicle.color) || '#707070';
       var vehicle_name;
       if (route.vehicle) {
         vehicle_name = route.vehicle.name;
@@ -372,6 +295,143 @@ function plannings_edit(params) {
         routes_layers_cluster.addLayer(layers_cluster[route.route_id]);
         routes_layers.addLayer(layers[route.route_id]);
       }
+  }
+
+  function display_planning(data) {
+    if ($("#dialog-optimizer").size() == 0) {
+      return; // Avoid render and loop with turbolink when page is over
+    }
+    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json')) {
+      return;
+    }
+
+    $.each(data.routes, function(i, route) {
+      if (route.vehicle_id) {
+        route.vehicle = vehicles_map[route.vehicle_id];
+        route.path = '/vehicles/' + route.vehicle_id + '/edit?back=true';
+      }
+    });
+
+    data.i18n = mustache_i18n;
+    data.planning_id = data.id;
+
+    var empty_colors = colors.slice();
+    empty_colors.unshift('');
+    $.each(data.routes, function(i, route) {
+      route.colors = $.map(empty_colors, function(color) {
+        return {
+          color: color,
+          selected: route.color == color
+        };
+      });
+      $.each(route.stops, function(i, stop) {
+        if(stop.destination && stop.destination.color) {
+          stop.destination.color_force = true;
+        } else {
+          stop.color = route.color;
+        }
+      });
+    });
+
+    $("#planning").html(SMT['plannings/edit'](data));
+
+
+    var stores_marker = L.featureGroup();
+    stores = {};
+    $.each(data.stores, function(i, store) {
+      store.store = true;
+      store.planning_id = data.planning_id;
+      if (store.lat !== null && store.lng !== null) {
+        var m = L.marker(new L.LatLng(store.lat, store.lng), {
+          icon: L.icon({
+            iconUrl: '<%= asset_path("marker-home.svg") %>',
+            iconSize: new L.Point(32, 32),
+            iconAnchor: new L.Point(16, 16),
+            popupAnchor: new L.Point(0, -12)
+          })
+        }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
+          minWidth: 200,
+          autoPan: false
+        });
+        m.on('mouseover', function(e) {
+          m.openPopup();
+        }).on('mouseout', function(e) {
+          if (!m.click) {
+            m.closePopup();
+          }
+        }).off('click').on('click', function(e) {
+          if (m.click) {
+            m.closePopup();
+          } else {
+            m.click = true;
+            m.openPopup();
+          }
+        }).on('popupclose', function(e) {
+          m.click = false;
+        });
+        stores[store.id] = m;
+      }
+    });
+    stores_marker.addTo(map);
+
+
+    function templateSelectionColor(state) {
+      if(state.id){
+        return $("<span class='color_small' style='background:" + state.id + "'></span>");
+      } else {
+      }
+    }
+
+    function templateResultColor(state) {
+      if(state.id){
+        return $("<span class='color_small' style='background:" + state.id + "'></span>");
+      } else {
+        return $("<span class='color_small' data-color=''></span>");
+      }
+    }
+
+    var formatNoMatches = I18n.t('web.select2.empty_result');
+    $(".color_select").select2({
+      minimumResultsForSearch: -1,
+      templateSelection: templateSelectionColor,
+      templateResult: templateResultColor,
+      formatNoMatches: function() {
+        return formatNoMatches;
+      }
+    });
+
+    function templateSelectionVehicles(state) {
+      if(state.id) {
+        var color = $('.color_select', $(state.element).parent().parent()).val();
+        if(color) {
+          return $("<span>" + vehicles_map[state.id].name + "</span>");
+        } else {
+          return $("<span><span class='color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
+        }
+      }
+    }
+
+    function templateResultVehicles(state) {
+      if(state.id){
+        return $("<span><span class='color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
+      } else {
+        console.log(state);
+      }
+    }
+
+    var formatNoMatches = I18n.t('web.select2.empty_result');
+    $(".vehicle_select").select2({
+      minimumResultsForSearch: -1,
+      data: vehicles_array,
+      templateSelection: templateSelectionVehicles,
+      templateResult: templateResultVehicles,
+      formatNoMatches: function() {
+        return formatNoMatches;
+      }
+    });
+
+    $.each(data.routes, function(i, route) {
+      display_route(data, route);
     });
 
     if (data.stop_id_enlighten) {
@@ -439,19 +499,23 @@ function plannings_edit(params) {
     });
 
     $(".vehicle_select").change(function() {
-      $.ajax({
-        type: "patch",
-        data: JSON.stringify({
-          route_id: $(this).closest("[data-route_id]").attr("data-route_id"),
-          vehicle_id: $(this).val()
-        }),
-        contentType: 'application/json',
-        url: '/plannings/' + planning_id + '/switch.json',
-        beforeSend: beforeSendWaiting,
-        success: display_planning,
-        complete: completeWaiting,
-        error: ajaxError
-      });
+      var $this = $(this);
+      var initial_value = $this.data("initial-value");
+      if(initial_value != $this.val()) {
+        $.ajax({
+          type: "patch",
+          data: JSON.stringify({
+            route_id: $this.closest("[data-route_id]").attr("data-route_id"),
+            vehicle_id: $this.val()
+          }),
+          contentType: 'application/json',
+          url: '/plannings/' + planning_id + '/switch.json',
+          beforeSend: beforeSendWaiting,
+          success: display_planning,
+          complete: completeWaiting,
+          error: ajaxError
+        });
+      }
     });
 
     $(".routes").sortable({
@@ -578,6 +642,27 @@ function plannings_edit(params) {
           url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
           error: ajaxError
         });
+      })
+      .on("change", "[name=route\\\[color\\\]]", function() {
+        var vehicle_select = $('.vehicle_select', $(this).closest("[data-route_id]"));
+        vehicle_select.trigger('change');
+        var id = $(this).closest("[data-route_id]").attr("data-route_id");
+        var color = this.value;
+        $.ajax({
+          type: "put",
+          data: JSON.stringify({
+            color: color
+          }),
+          contentType: 'application/json',
+          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
+          error: ajaxError
+        });
+        var route = data.routes.reduce(function(found, el) {
+          return found || (el.route_id == id && el);
+        }, null);
+        route.color = color;
+        display_route(data, route);
+        $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
       });
 
     $(".lock").click(function(event, ui) {

@@ -27,7 +27,7 @@
   </span>
 
   <ol class="stops" start="0">
-    <li class="list-group-item" style="border-left: 3px solid <%= route.vehicle.color %>">
+    <li class="list-group-item" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
       <div class="row no-gutter">
         <div class="title col-md-2 col-sm-2 col-xs-3">
           <span class="time"><%= route.start.strftime("%H:%M") if route.start %></span>
@@ -53,7 +53,7 @@
   route.stops.each{ |stop|
     if stop.active && stop.position?
   %>
-    <li class="list-group-item" style="border-left: 3px solid <%= route.vehicle.color %>">
+    <li class="list-group-item" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
       <% if stop.wait_time && stop.wait_time > 60 %>
         <div class="row no-gutter">
           <div class="col-md-12">
@@ -158,7 +158,7 @@
   }
   %>
 
-    <li class="list-group-item" style="border-left: 3px solid <%= route.vehicle.color %>">
+    <li class="list-group-item" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
       <div class="row no-gutter">
 
         <div class="title col-md-2 col-sm-2 col-xs-3">

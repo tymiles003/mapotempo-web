@@ -97,6 +97,53 @@ label {
   font-weight: normal;
 }
 
+/* Colors */
+
+.color_small {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  vertical-align: middle;
+}
+
+[data-color=''] {
+  border: 1px solid gray;
+}
+
+._color_small[data-color=''] {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+span.color[data-color='']:after,
+span.color[data-color=''][data-selected]:after,
+.color_small[data-color='']:after,
+.color_small[data-color=''][data-selected]:after {
+  content: "";
+  font-family: "FontAwesome";
+  color: inherit;
+}
+
+span.color[data-color='']:after,
+span.color[data-color=''][data-selected]:after {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.color_small[data-color='']:after,
+.color_small[data-color=''][data-selected]:after {
+  line-height: 11px;
+  font-size: 10px;
+  vertical-align: top;
+  padding-left: 2px;
+}
+
+
+
 [data-controller='plannings'][data-action='edit'],
 [data-controller='plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],

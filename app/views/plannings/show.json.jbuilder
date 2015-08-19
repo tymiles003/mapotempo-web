@@ -24,7 +24,7 @@ else
     (json.locked true) if route.locked
     json.distance number_to_human((route.distance || 0), units: :distance, precision: 3, format: '%n %u')
     json.size route.stops.size
-    json.extract! route, :ref, :size_active
+    json.extract! route, :ref, :color, :size_active
     (json.quantity route.quantity) if !@planning.customer.enable_orders
     if route.vehicle
       json.vehicle_id route.vehicle.id

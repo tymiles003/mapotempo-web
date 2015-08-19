@@ -30,16 +30,4 @@
     -o-border-radius: 50%;
     vertical-align: middle;
   }
-
-  span.color[data-color=''] {
-    border-color: gray;
-  }
-
-  span.color[data-color='']:after {
-    content: "";
-    font-family: "FontAwesome";
-    margin-left: 3px;
-    margin-right: 3px;
-    color: inherit;
-  }
 }
