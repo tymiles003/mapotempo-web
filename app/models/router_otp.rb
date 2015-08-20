@@ -38,7 +38,7 @@ class RouterOtp < Router
     }
   end
 
-  def isochrone?(lat, lng, size)
+  def isochrone?
     true
   end
 
