@@ -5,6 +5,14 @@ class ImporterTest < ActionController::TestCase
     @plannings_count = @customer.plannings.select{ |planning| planning.tags == [tags(:tag_one)] }.count
   end
 
+  def around
+    Osrm.stub_any_instance(:compute, [1, 1, "trace"]) do
+      Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
+        yield
+      end
+    end
+  end
+
   test "shoud import" do
     import_count = 1
     rest_count = 1

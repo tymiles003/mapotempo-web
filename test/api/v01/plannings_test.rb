@@ -12,6 +12,16 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     @planning = plannings(:planning_one)
   end
 
+  def around
+    Osrm.stub_any_instance(:compute, [1000, 60, "trace"]) do
+      Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
+        Ort.stub_any_instance(:optimize, lambda { |optimize_time, soft_upper_bound, capacity, matrix, time_window, time_window_rest, time_threshold| (0..(matrix.size-1)).to_a }) do
+          yield
+        end
+      end
+    end
+  end
+
   def api(part = nil, param = {})
     part = part ? '/' + part.to_s : ''
     "/api/0.1/plannings#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')

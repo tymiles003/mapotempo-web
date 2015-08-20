@@ -16,8 +16,10 @@ class PlanningsControllerTest < ActionController::TestCase
 
   def around
     Osrm.stub_any_instance(:compute, [1000, 60, "trace"]) do
-      Ort.stub_any_instance(:optimize, lambda { |optimize_time, soft_upper_bound, capacity, matrix, time_window, time_window_rest, time_threshold| (0..(matrix.size-1)).to_a }) do
-        yield
+      Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
+        Ort.stub_any_instance(:optimize, lambda { |optimize_time, soft_upper_bound, capacity, matrix, time_window, time_window_rest, time_threshold| (0..(matrix.size-1)).to_a }) do
+          yield
+        end
       end
     end
   end

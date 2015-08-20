@@ -13,6 +13,12 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     @destination = destinations(:destination_one)
   end
 
+  def around
+    Osrm.stub_any_instance(:compute, [1000, 60, "trace"]) do
+      yield
+    end
+  end
+
   def api(part = nil, param = {})
     part = part ? '/' + part.to_s : ''
     "/api/0.1/destinations#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
