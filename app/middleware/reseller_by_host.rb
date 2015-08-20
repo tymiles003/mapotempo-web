@@ -29,6 +29,6 @@ class ResellerByHost
   private
 
   def reseller(host)
-    @cache[host] ||= Reseller.where(host: host).first
+    @cache[host] ||= Reseller.where(host: host).first || Reseller.first
   end
 end
