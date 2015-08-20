@@ -1,11 +1,11 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-require './app/middleware/reseller_by_host'
-require './lib/osrm'
-require './lib/otp'
-require './lib/here'
-require './lib/ort'
+require_relative '../app/middleware/reseller_by_host'
+require_relative '../lib/osrm'
+require_relative '../lib/otp'
+require_relative '../lib/here'
+require_relative '../lib/ort'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.

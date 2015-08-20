@@ -17,7 +17,7 @@
 #
 require 'ai4r'
 include Ai4r::Data
-require './lib/complete_linkage_max_distance'
+require_relative 'complete_linkage_max_distance'
 include Ai4r::Clusterers
 
 require 'rest_client'
