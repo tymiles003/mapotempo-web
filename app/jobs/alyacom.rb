@@ -26,9 +26,9 @@ class Alyacom
     staff = {
       id: route.vehicle.name,
       name: route.vehicle.name,
-      street: (store) ? store.street : nil,
-      postalcode: (store) ? store.postalcode : nil,
-      city: (store) ? store.city : nil,
+      street: store && store.street,
+      postalcode: store && store.postalcode,
+      city: store && store.city,
     }
 
     date = route.planning.date || Date.today
