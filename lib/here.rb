@@ -99,7 +99,7 @@ class Here
 
       total = vector.size**2
       column_start = 0
-      while column_start <= vector.size do
+      while column_start < vector.size do
         request = @cache_result.read([key, column_start, split_size])
         if !request
           param = commons_param.dup
@@ -115,7 +115,7 @@ class Here
           result[column_start + e['StartIndex']][e['DestinationIndex']] = [s['Distance'].round, s['BaseTime'].round]
         }
 
-        column_start = column_start + split_size
+        column_start += split_size
         block.call(vector.size * split_size, total) if block
       end
 
@@ -139,10 +139,10 @@ class Here
       rescue => e
         error = JSON.parse(e.response)
         if error['type'] == 'ApplicationError'
-          if error['additionalData'].include?({'key' => 'error_code', 'value' => 'NGEO_ERROR_GRAPH_DISCONNECTED'})
+          if error['AdditionalData'].include?({'key' => 'error_code', 'value' => 'NGEO_ERROR_GRAPH_DISCONNECTED'})
             raise 'Points are unreachable'
           else
-            raise [error['subtype'], error['details']].join(' ')
+            raise [error['subtype'], error['Details']].join(' ')
           end
         else
           Rails.logger.info [url, params]
