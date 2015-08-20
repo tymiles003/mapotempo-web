@@ -61,6 +61,8 @@ module Mapotempo
 
     config.action_mailer.default_url_options = {host: 'localhost'}
 
+    config.swagger_docs_base_path = 'http://localhost:3000/'
+
     config.optimize = Ort.new(
       ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10),
       'http://localhost:4567/0.1/optimize_tsptw'
