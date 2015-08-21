@@ -9,6 +9,12 @@ class DestinationsControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
+  def around
+    Osrm.stub_any_instance(:compute, [1000, 60, "trace"]) do
+      yield
+    end
+  end
+
   test "should get index" do
     get :index
     assert_response :success
