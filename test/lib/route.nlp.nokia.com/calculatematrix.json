@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=86400
+Content-Type: application/json;charset=utf-8
+Date: Fri, 21 Aug 2015 13:14:38 GMT
+Expires: Sat, 22 Aug 2015 13:14:38 GMT
+matrix_calculation_size: 3x3
+Server: api.here.com
+Content-Length: 1565
+Connection: keep-alive
+
+{"Response":{"MetaInfo":{"Timestamp":"2015-08-21T13:14:38.785Z","AdditionalData":[{"value":"2015-08-21T13:14:00.048+0000","key":"CurrentTrafficLastUpdate"},{"value":"11352172","key":"CurrentTrafficElementsCount"},{"value":"2015-08-21T13:14:03.256+0000","key":"LongTermClosureLastUpdate"},{"value":"41887","key":"LongTermClosureElementsCount"},{"value":"2015-08-21T13:14:03.256+0000","key":"ShortTermClosureLastUpdate"},{"value":"6094","key":"ShortTermClosureElementsCount"},{"value":"2015Q1","key":"Map0"},{"value":"routeserver,9.3-2015.06.19","key":"Module0"},{"value":"51","key":"Module0ExecTime"},{"value":"51063","key":"Module0ExecTimeMicro"},{"value":"routing-route-service,6.2.59.0","key":"Service"}]},"MatrixEntry":[{"StartIndex":2,"DestinationIndex":0,"Route":{"Summary":{"Distance":1404.0,"BaseTime":332.0}}},{"StartIndex":2,"DestinationIndex":1,"Route":{"Summary":{"Distance":1352.0,"BaseTime":309.0}}},{"StartIndex":2,"DestinationIndex":2,"Route":{"Summary":{"Distance":0.0,"BaseTime":0.0}}},{"StartIndex":1,"DestinationIndex":0,"Route":{"Summary":{"Distance":2448.0,"BaseTime":473.0}}},{"StartIndex":1,"DestinationIndex":1,"Route":{"Summary":{"Distance":0.0,"BaseTime":0.0}}},{"StartIndex":1,"DestinationIndex":2,"Route":{"Summary":{"Distance":1371.0,"BaseTime":249.0}}},{"StartIndex":0,"DestinationIndex":0,"Route":{"Summary":{"Distance":0.0,"BaseTime":0.0}}},{"StartIndex":0,"DestinationIndex":1,"Route":{"Summary":{"Distance":2783.0,"BaseTime":605.0}}},{"StartIndex":0,"DestinationIndex":2,"Route":{"Summary":{"Distance":1970.0,"BaseTime":454.0}}}]}}

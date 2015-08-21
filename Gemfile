@@ -50,6 +50,7 @@ group :test do
   gem 'selenium-webdriver'
   # gem 'capybara-webkit'
   gem 'database_cleaner'
+  gem 'webmock'
 end
 
 group :test do
