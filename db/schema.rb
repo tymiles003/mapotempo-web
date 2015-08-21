@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818110546) do
+ActiveRecord::Schema.define(version: 20150821152256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 20150818110546) do
     t.boolean  "enable_tomtom",                             default: false, null: false
     t.boolean  "enable_masternaut",                         default: false, null: false
     t.boolean  "enable_alyacom",                            default: false, null: false
-    t.integer  "reseller_id",                                               null: false
     t.integer  "job_store_geocoding_id"
+    t.integer  "reseller_id",                                               null: false
   end
 
   add_index "customers", ["job_destination_geocoding_id"], name: "index_customers_on_job_destination_geocoding_id", using: :btree
@@ -311,6 +311,7 @@ ActiveRecord::Schema.define(version: 20150818110546) do
     t.integer  "reseller_id"
   end
 
+  add_index "users", ["api_key"], name: "index_users_on_api_key", using: :btree
   add_index "users", ["customer_id"], name: "fk__users_customer_id", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["layer_id"], name: "fk__users_layer_id", using: :btree
