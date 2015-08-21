@@ -1,4 +1,12 @@
 <div id="map"></div>
+<div id="zones-caption" class="map-caption">
+  <% @zones.each{ |zone| %>
+  <div class="map-caption-item">
+    <span class="color_small" style="background: <%= zone.vehicle.color %>"></span>
+    <%= zone.vehicle.name %>
+  </div>
+  <% } %>
+</div>
 <%
 controller.js(
   zoning_id: @zoning.id,

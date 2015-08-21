@@ -35,6 +35,21 @@ function api_web_v01_zones_index(params) {
     attribution: map_attribution
   }).addTo(map);
 
+  var caption = L.DomUtil.get('zones-caption');
+  if (caption) {
+    caption.classList.add('leaflet-bar');
+    var control_caption = L.Control.extend({
+      options: {
+          position: 'bottomright'
+      },
+      onAdd: function (map) {
+          var container = caption;
+          return container;
+      }
+    });
+    map.addControl(new control_caption());
+  }
+
   var markersLayers = L.featureGroup(),
     stores_marker = L.featureGroup(),
     featureGroup = L.featureGroup();

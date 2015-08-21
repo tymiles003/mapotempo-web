@@ -47,6 +47,21 @@ function api_web_v01_routes_index(params) {
     this._map.fitBounds(result.bbox);
   };
 
+  var caption = L.DomUtil.get('routes-caption');
+  if (caption) {
+    caption.classList.add('leaflet-bar');
+    var control_caption = L.Control.extend({
+      options: {
+          position: 'bottomright'
+      },
+      onAdd: function (map) {
+          var container = caption;
+          return container;
+      }
+    });
+    map.addControl(new control_caption());
+  }
+
   routes_layers = L.featureGroup();
   routes_layers_cluster = L.featureGroup();
   map.addLayer(routes_layers);
