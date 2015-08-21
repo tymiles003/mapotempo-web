@@ -91,6 +91,6 @@ class Tomtom
         {lat: l[0], lng: l[1], description: description}
       }
     position = route.vehicle.store_stop if !route.vehicle.store_stop.nil? && !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil?
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, route.vehicle.id, route.vehicle.store_stop.name, route.start, waypoints)
+    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, route.vehicle.id, route.ref || route.vehicle.store_stop.name, route.start, waypoints)
   end
 end
