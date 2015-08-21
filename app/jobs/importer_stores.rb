@@ -29,9 +29,7 @@ class ImporterStores < ImporterBase
       city: I18n.t('stores.import_file.city'),
       country: I18n.t('stores.import_file.country'),
       lat: I18n.t('stores.import_file.lat'),
-      lng: I18n.t('stores.import_file.lng'),
-      open: I18n.t('stores.import_file.open'),
-      close: I18n.t('stores.import_file.close')
+      lng: I18n.t('stores.import_file.lng')
     }
   end
 
