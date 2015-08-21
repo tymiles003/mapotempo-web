@@ -29,10 +29,6 @@
   <ol class="stops" start="0">
     <li class="list-group-item" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
       <div class="row no-gutter">
-        <div class="title col-md-2 col-sm-2 col-xs-3">
-          <span class="time"><%= route.start.strftime("%H:%M") if route.start %></span>
-        </div>
-
         <% if route.planning.customer.print_planning_annotating %>
           <div class="col-md-5 col-sm-6 col-xs-6">
         <% else %>
@@ -44,6 +40,10 @@
             </br>
             <%= route.vehicle.store_start.postalcode %> <%= route.vehicle.store_start.city %>  <%= route.vehicle.store_start.country %>
           </span>
+        </div>
+
+        <div class="title col-md-2 col-sm-2 col-xs-3">
+          <span class="time"><%= route.start.strftime("%H:%M") if route.start %></span>
         </div>
       </div>
     </li>
@@ -63,9 +63,30 @@
         <hr/>
       <% end %>
       <div class="row no-gutter">
+        <% if route.planning.customer.print_planning_annotating %>
+          <div class="col-md-5 col-sm-6 col-xs-6">
+        <% else %>
+          <div class="col-md-6 col-sm-6 col-xs-9">
+        <% end %>
+          <span class="number">#<%= index += 1 %></span>
+          <span class="name"><% if stop.is_a?(StopRest) %><i class="fa fa-coffee fa-fw"></i> <% end %><%= stop.name %></span>
+          <% if stop.ref %>
+            (<span class="ref"><%= stop.ref %></span>)
+          <% end %>
+          <br/>
+          <span class="address">
+            <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
+            <% if (stop.street && !stop.street.empty?) || (stop.detail && !stop.detail.empty?) %>
+              </br>
+            <% end %>
+            <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
+          </span>
+          <% if stop.comment && stop.comment.length > 0 %>
+            <div class="comment wrapped-text visible-sm visible-xs"><%= stop.comment %></div>
+          <% end %>
+        </div>
 
         <div class="title col-md-2 col-sm-2 col-xs-3">
-          <span class="number">#<%= index += 1 %></span>
           <span class="time"><%= stop.time.strftime("%H:%M") if stop.time %></span>
           <% if stop.open || stop.close %>
             <span class="window">
@@ -101,25 +122,6 @@
           <% end %>
           <% if stop.is_a?(StopRest) %>
             <span class="duration">(<%= route.vehicle.rest_duration.strftime("%H:%M:%S") %>)</span>
-          <% end %>
-        </div>
-
-        <% if route.planning.customer.print_planning_annotating %>
-          <div class="col-md-5 col-sm-6 col-xs-6">
-        <% else %>
-          <div class="col-md-6 col-sm-6 col-xs-9">
-        <% end %>
-          <span class="ref"><%= stop.ref %></span>
-          <span class="name"><% if stop.is_a?(StopRest) %><i class="fa fa-coffee fa-fw"></i> <% end %><%= stop.name %></span><br/>
-          <span class="address">
-            <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
-            <% if (stop.street && !stop.street.empty?) || (stop.detail && !stop.detail.empty?) %>
-              </br>
-            <% end %>
-            <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
-          </span>
-          <% if stop.comment && stop.comment.length > 0 %>
-            <div class="comment wrapped-text visible-sm visible-xs"><%= stop.comment %></div>
           <% end %>
         </div>
 
@@ -161,10 +163,6 @@
     <li class="list-group-item" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
       <div class="row no-gutter">
 
-        <div class="title col-md-2 col-sm-2 col-xs-3">
-          <span class="time"><%= route.end.strftime("%H:%M") if route.end %></span>
-        </div>
-
         <% if route.planning.customer.print_planning_annotating %>
           <div class="col-md-5 col-sm-6 col-xs-6">
         <% else %>
@@ -176,6 +174,10 @@
             </br>
             <%= route.vehicle.store_stop.postalcode %> <%= route.vehicle.store_stop.city %> <%= route.vehicle.store_stop.country %>
           </span>
+        </div>
+
+        <div class="title col-md-2 col-sm-2 col-xs-3">
+          <span class="time"><%= route.end.strftime("%H:%M") if route.end %></span>
         </div>
 
         <% if route.stop_out_of_drive_time %>

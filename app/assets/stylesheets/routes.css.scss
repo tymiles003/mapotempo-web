@@ -44,15 +44,16 @@
     li:nth-child(odd) {
       background: lightgray;
     }
+    .number, .name {
+      font-size: 200%;
+      font-weight: bold;
+    }
     .title {
       .window {
         display: block;
       }
     }
     .ref {
-      font-weight: bold;
-    }
-    .name {
       font-weight: bold;
     }
     .quantity {
