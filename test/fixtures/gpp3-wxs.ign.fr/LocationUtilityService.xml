@@ -1,0 +1,491 @@
+HTTP/1.1 200 OK
+
+<?xml version="1.0" encoding="UTF-8"?>
+<XLS version="1.2" xmlns="http://www.opengis.net/xls"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:xls="http://www.opengis.net/xls"
+  xmlns:xlsext="http://www.opengis.net/xlsext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://wxs.ign.fr/schemas/olsAll.xsd">
+  <ResponseHeader/>
+  <Response requestID="1" version="1.2">
+    <GeocodeResponse>
+      <GeocodeResponseList numberOfGeocodedAddresses="25">
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>44.828075 2.172624</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parlan</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">15</Place>
+            <Place type="Bbox">2.127299;44.790404;2.214731;44.852125</Place>
+            <Place type="Commune">Parlan</Place>
+            <Place type="INSEE">15147</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>15290</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.9923240862445306" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.764589 3.348714</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parly</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">89</Place>
+            <Place type="Bbox">3.299300;47.727317;3.382317;47.788552</Place>
+            <Place type="Commune">Parly</Place>
+            <Place type="INSEE">89286</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>89240</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.990936537653899" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>44.712474 2.761406</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Huparlac</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">12</Place>
+            <Place type="Bbox">2.704603;44.680518;2.788849;44.756142</Place>
+            <Place type="Commune">Huparlac</Place>
+            <Place type="INSEE">12116</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>12460</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.8932779518539904" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>44.221134 1.093613</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Montbarla</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">82</Place>
+            <Place type="Bbox">1.054258;44.200595;1.100979;44.231602</Place>
+            <Place type="Commune">Montbarla</Place>
+            <Place type="INSEE">82122</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>82110</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.8405182263337536" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>43.944868 0.012814</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parleboscq</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">40</Place>
+            <Place type="Bbox">-0.023938;43.896774;0.076508;43.976178</Place>
+            <Place type="Commune">Parleboscq</Place>
+            <Place type="INSEE">40218</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>40310</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.8326418732884674" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>43.251857 2.831613</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paraza</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">11</Place>
+            <Place type="Bbox">2.779771;43.237559;2.846733;43.274600</Place>
+            <Place type="Commune">Paraza</Place>
+            <Place type="INSEE">11273</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>11200</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>45.933311 0.414612</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parzac</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">16</Place>
+            <Place type="Bbox">0.392061;45.906475;0.452140;45.946420</Place>
+            <Place type="Commune">Parzac</Place>
+            <Place type="INSEE">16255</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>16450</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>46.851602 2.569001</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parnay</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">18</Place>
+            <Place type="Bbox">2.513317;46.831262;2.598392;46.876041</Place>
+            <Place type="Commune">Parnay</Place>
+            <Place type="INSEE">18177</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>18130</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>42.369909 9.408949</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parata</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">2B</Place>
+            <Place type="Bbox">9.402110;42.354765;9.432608;42.376766</Place>
+            <Place type="Commune">Parata</Place>
+            <Place type="INSEE">2B202</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>20229</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>46.201480 2.153018</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parsac</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">23</Place>
+            <Place type="Bbox">2.080088;46.163291;2.205213;46.230001</Place>
+            <Place type="Commune">Parsac</Place>
+            <Place type="INSEE">23149</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>23140</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>46.454105 1.443275</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parnac</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">36</Place>
+            <Place type="Bbox">1.392804;46.405517;1.528545;46.476485</Place>
+            <Place type="Commune">Parnac</Place>
+            <Place type="INSEE">36150</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>36170</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>44.490040 1.315024</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parnac</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">46</Place>
+            <Place type="Bbox">1.302190;44.464272;1.338035;44.500799</Place>
+            <Place type="Commune">Parnac</Place>
+            <Place type="INSEE">46214</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>46140</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.230997 0.011988</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parnay</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">49</Place>
+            <Place type="Bbox">-0.012164;47.199254;0.022363;47.242495</Place>
+            <Place type="Commune">Parnay</Place>
+            <Place type="INSEE">49235</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>49730</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>43.115422 0.023254</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paréac</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">65</Place>
+            <Place type="Bbox">0.001335;43.105996;0.039151;43.125894</Place>
+            <Place type="Commune">Paréac</Place>
+            <Place type="INSEE">65355</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>65100</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7935034947256812" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.043423 5.880933</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paroy</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">25</Place>
+            <Place type="Bbox">5.869830;47.019163;5.901019;47.049037</Place>
+            <Place type="Commune">Paroy</Place>
+            <Place type="INSEE">25445</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>25440</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.273101 -1.201766</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parcé</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">35</Place>
+            <Place type="Bbox">-1.231503;48.245305;-1.157770;48.300037</Place>
+            <Place type="Commune">Parcé</Place>
+            <Place type="INSEE">35214</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>35210</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.538951 6.922747</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Parux</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">54</Place>
+            <Place type="Bbox">6.904929;48.530041;6.939031;48.555803</Place>
+            <Place type="Commune">Parux</Place>
+            <Place type="INSEE">54419</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>54480</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.856617 2.352240</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paris</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">75</Place>
+            <Place type="Bbox">2.224217;48.815562;2.469851;48.902148</Place>
+            <Place type="Commune">Paris</Place>
+            <Place type="INSEE">75056</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>75000</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.860059 2.341383</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paris</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">75</Place>
+            <Place type="Bbox">2.320934;48.854089;2.350947;48.869914</Place>
+            <Place type="Commune">Paris 1er Arrondissement</Place>
+            <Place type="INSEE">75101</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>75001</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.866797 2.340532</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paris</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">75</Place>
+            <Place type="Bbox">2.328001;48.863404;2.354243;48.871987</Place>
+            <Place type="Commune">Paris 2e Arrondissement</Place>
+            <Place type="INSEE">75102</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>75002</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.863863 2.361672</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paris</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">75</Place>
+            <Place type="Bbox">2.350162;48.855817;2.368484;48.869329</Place>
+            <Place type="Commune">Paris 3e Arrondissement</Place>
+            <Place type="INSEE">75103</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>75003</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.856073 2.355976</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paris</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">75</Place>
+            <Place type="Bbox">2.344634;48.846186;2.369124;48.861980</Place>
+            <Place type="Commune">Paris 4e Arrondissement</Place>
+            <Place type="INSEE">75104</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>75004</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.846144 2.344414</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paris</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">75</Place>
+            <Place type="Bbox">2.336682;48.836805;2.366088;48.854089</Place>
+            <Place type="Commune">Paris 5e Arrondissement</Place>
+            <Place type="INSEE">75105</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>75005</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.850805 2.332362</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paris</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">75</Place>
+            <Place type="Bbox">2.316722;48.839666;2.344634;48.859336</Place>
+            <Place type="Commune">Paris 6e Arrondissement</Place>
+            <Place type="INSEE">75106</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>75006</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>48.857236 2.320325</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <StreetAddress>
+              <Street/>
+            </StreetAddress>
+            <Place type="Municipality">Paris</Place>
+            <Place type="Qualite">30.0</Place>
+            <Place type="Departement">75</Place>
+            <Place type="Bbox">2.289696;48.845943;2.333282;48.863723</Place>
+            <Place type="Commune">Paris 7e Arrondissement</Place>
+            <Place type="INSEE">75107</Place>
+            <Place type="Territoire">FXX</Place>
+            <PostalCode>75007</PostalCode>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7789104638188968" matchType="City"/>
+        </GeocodedAddress>
+      </GeocodeResponseList>
+    </GeocodeResponse>
+  </Response>
+</XLS>

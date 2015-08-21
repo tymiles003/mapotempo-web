@@ -1,0 +1,106 @@
+HTTP/1.1 200 OK
+
+<?xml version="1.0" encoding="UTF-8"?>
+<XLS version="1.2" xmlns="http://www.opengis.net/xls"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:xls="http://www.opengis.net/xls"
+  xmlns:xlsext="http://www.opengis.net/xlsext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://wxs.ign.fr/schemas/olsAll.xsd">
+  <ResponseHeader/>
+  <Response requestID="1" version="1.2">
+    <GeocodeResponse>
+      <GeocodeResponseList numberOfGeocodedAddresses="10">
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.269319 -1.516850</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>r des moissons , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.9801" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.198879 -1.590718</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>che poisson , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.9025000000000001" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.213247 -1.553686</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>r des poissonniers , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.7741019921231576" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.205700 -1.575539</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>r bisson , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.74659405910325" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.212365 -1.551394</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>r paul pelisson , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.6826885026500682" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.204449 -1.582145</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>r ferdinand buisson , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.6641789896197351" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.209186 -1.610382</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>all des pinsons , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.6597559180438044" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.191411 -1.523856</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>rte de clisson , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.6454008150138938" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.224184 -1.589442</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>r ernest meissonnier , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.6273205778414545" matchType="Street"/>
+        </GeocodedAddress>
+        <GeocodedAddress>
+          <gml:Point>
+            <gml:pos>47.208751 -1.569918</gml:pos>
+          </gml:Point>
+          <Address countryCode="StreetAddress">
+            <freeFormAddress>r mathurin brissonneau , 44000 Nantes</freeFormAddress>
+          </Address>
+          <GeocodeMatchCode accuracy="0.6273205778414545" matchType="Street"/>
+        </GeocodedAddress>
+      </GeocodeResponseList>
+    </GeocodeResponse>
+  </Response>
+</XLS>
