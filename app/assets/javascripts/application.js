@@ -55,8 +55,9 @@
 //= require leaflet.markercluster
 //= require leaflet.draw
 //= require leaflet_numbered_markers
-//= require leaflet.activearea
+//= require Leaflet.ControlledBounds
 //= require leaflet-pip
+//= require L.Control.Sidebar
 //= require Control.Geocoder
 //= require Polyline.encoded
 //= require mustache

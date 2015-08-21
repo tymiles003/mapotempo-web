@@ -36,6 +36,72 @@
     min-height: 200px;
   }
 
+  .sidebar-extended {
+    width: 100% !important;
+    padding: 0px;
+
+    #edit-planning {
+      .box {
+        white-space: nowrap;
+
+        h1,
+        form,
+        .btn {
+          display: none;
+        }
+
+        .btn.extend {
+          display: inline-block;
+        }
+
+        .fa-arrows-h {
+          display: inline-block;
+          cursor: move;
+        }
+
+        #planning {
+          margin: 10px;
+        }
+
+        .routes {
+          .route {
+            display: inline-block;
+            vertical-align: top;
+            margin: 2px;
+          }
+        }
+      }
+    }
+  }
+
+  .sidebar-collapse {
+    width: 70px !important;
+    padding: 10px 18px 0px 0px !important;
+    .leaflet-sidebar {
+
+    }
+    .leaflet-control {
+      padding: 10px !important;
+      box-shadow: 0 1px 7px rgba(0,0,0,0.65) !important;
+      -webkit-border-radius: 4px !important;
+      border-radius: 4px !important;
+    }
+    #edit-planning {
+      height: 50px;
+      margin-left: 10px;
+    }
+    .box {
+      margin-left: 10px;
+    }
+    overflow: hidden;
+    .btn.extend {
+      display: none;
+    }
+    .box-content {
+      display: none;
+    }
+  }
+
   #planning_order_array_id,
   #planning_zoning_id {
     width: 80%;
@@ -153,38 +219,4 @@
     }
   }
 }
-}
-
-[data-controller='plannings'].box-extended {
-  .box-wrapper {
-    width: auto !important;
-    left: 20px;
-
-    .box {
-      white-space: nowrap;
-
-      h1,
-      form,
-      .btn {
-        display: none;
-      }
-
-      .btn.extend {
-        display: inline-block;
-      }
-
-      .fa-arrows-h {
-        display: inline-block;
-        cursor: move;
-      }
-
-      .routes {
-        .route {
-          display: inline-block;
-          vertical-align: top;
-          margin: 2px;
-        }
-      }
-    }
-  }
 }

@@ -27,10 +27,18 @@ function zonings_edit(params) {
     vehicles_map = params.vehicles_map,
     show_capacity = params.show_capacity;
 
-  var map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13);
+  var map = new L.Map('map', {attributionControl: false}).setView([map_lat, map_lng], 13);
+  L.control.attribution({position: 'bottomleft'}).addTo(map);
   L.control.scale({
     imperial: false
   }).addTo(map);
+
+  var sidebar = L.control.sidebar('edit-zoning', {
+    position: 'right',
+    closeButton: false
+  });
+  map.addControl(sidebar);
+  sidebar.show();
 
   L.tileLayer(map_layer_url, {
     maxZoom: 18,

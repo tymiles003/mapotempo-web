@@ -1,15 +1,15 @@
 GIT
+  remote: git://github.com/Mapotempo/leaflet-controlledbounds-rails.git
+  revision: ed306c23e5fba964384ceab8f9cc5e2e468f196d
+  specs:
+    leaflet-controlledbounds-rails (0.0.1)
+
+GIT
   remote: git://github.com/frodrigo/jquery-timeentry-rails.git
   revision: ccecc885d334b772d065bb722e2d4528a9f9a40c
   specs:
     jquery-timeentry-rails (1.5.2)
       railties (>= 3.1.0)
-
-GIT
-  remote: git://github.com/frodrigo/leaflet-active-area-rails.git
-  revision: c25c4953f852582d7d04843a5cceca93abff4acf
-  specs:
-    leaflet-active-area-rails (0.0.1)
 
 GIT
   remote: git://github.com/frodrigo/leaflet-control-geocoder-rails.git
@@ -235,6 +235,7 @@ GEM
     leaflet-markercluster-rails (0.7.0)
       railties (>= 3.1)
     leaflet-rails (0.7.4)
+    leaflet-sidebar-rails (0.0.3)
     libv8 (3.16.14.7)
     lograge (0.3.1)
       actionpack (>= 3)
@@ -477,11 +478,12 @@ DEPENDENCIES
   jquery-timeentry-rails!
   jquery-turbolinks
   jquery-ui-rails
-  leaflet-active-area-rails!
   leaflet-control-geocoder-rails!
+  leaflet-controlledbounds-rails!
   leaflet-draw-rails!
   leaflet-markercluster-rails
   leaflet-rails
+  leaflet-sidebar-rails
   leaflet_numbered_markers-rails!
   lograge
   macaddr
@@ -520,3 +522,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   validates_timeliness
   web-console (~> 2.0)
+
+BUNDLED WITH
+   1.10.6

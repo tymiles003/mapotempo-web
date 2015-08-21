@@ -89,8 +89,9 @@ gem 'leaflet-markercluster-rails'
 gem 'sprockets', '~> 2' # FIXME wait for https://github.com/rails/sprockets/issues/104
 gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for https://github.com/zentrification/leaflet-draw-rails/pull/1
 gem 'leaflet_numbered_markers-rails', github: 'frodrigo/leaflet_numbered_markers-rails'
-gem 'leaflet-active-area-rails', github: 'frodrigo/leaflet-active-area-rails'
 gem 'leaflet-control-geocoder-rails', github: 'frodrigo/leaflet-control-geocoder-rails'
+gem 'leaflet-controlledbounds-rails', github: 'Mapotempo/leaflet-controlledbounds-rails'
+gem 'leaflet-sidebar-rails'
 
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'

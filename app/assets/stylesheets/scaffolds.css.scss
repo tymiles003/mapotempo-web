@@ -157,13 +157,21 @@ span.color[data-color=''][data-selected]:after {
     bottom: 0;
   }
 
-  .box-wrapper {
-    width: 350px;
-    position: fixed;
-    right: 20px;
-    top: 70px;
-    bottom: 30px;
+  @media(min-width:768px) and (max-width:991px){
+    .leaflet-sidebar {
+      width: 360px;
+    }
 
+    .leaflet-sidebar.left.visible ~ .leaflet-left {
+      left: 360px;
+    }
+
+    .leaflet-sidebar.right.visible ~ .leaflet-right {
+      right: 360px;
+    }
+  }
+
+  .box-wrapper {
     .box {
       position: absolute;
       left: 0;
@@ -173,10 +181,6 @@ span.color[data-color=''][data-selected]:after {
       overflow: auto;
       background-color: #fff;
       padding: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-      -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-      -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-      -o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 
       .form-horizontal .form-group {
         margin-left: -10px;
@@ -189,14 +193,6 @@ span.color[data-color=''][data-selected]:after {
         padding: 2px 5px;
       }
     }
-  }
-
-  .map-active-area {
-    position: fixed;
-    bottom: 0px;
-    right: 370px;
-    top: 51px;
-    left: 0px;
   }
 
   .flash {

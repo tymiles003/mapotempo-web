@@ -53,7 +53,7 @@ function plannings_edit(params) {
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map,
     colors = params.colors,
-    map = new L.Map('map').setActiveArea('map-active-area').setView([map_lat, map_lng], 13),
+    map = new L.Map('map', {attributionControl: false}).setView([map_lat, map_lng], 13),
     layer_zoning,
     markers = {},
     stores = {},
@@ -62,6 +62,15 @@ function plannings_edit(params) {
     routes_layers,
     routes_layers_cluster,
     initial_zoning = $("#planning_zoning_id").val();
+
+  L.control.attribution({position: 'bottomleft'}).addTo(map);
+
+  var sidebar = L.control.sidebar('edit-planning', {
+    position: 'right',
+    closeButton: false
+  });
+  map.addControl(sidebar);
+  sidebar.show();
 
   L.control.scale({
     imperial: false
@@ -742,12 +751,17 @@ function plannings_edit(params) {
   }
 
   $('.btn.extend').click(function() {
-    $('.container').toggleClass('box-extended');
-    if ($('.container').hasClass('box-extended')) {
+    $('.leaflet-sidebar').removeClass('sidebar-collapse');
+    $('.leaflet-sidebar').toggleClass('sidebar-extended');
+    if ($('.leaflet-sidebar').hasClass('sidebar-extended')) {
       $(".routes").sortable("enable");
     } else {
       $(".routes").sortable("disable");
     }
+  });
+  $('.btn.box-btn-collapse').click(function() {
+    $('.leaflet-sidebar').removeClass('sidebar-extended');
+    $('.leaflet-sidebar').toggleClass('sidebar-collapse');
   });
 
   $.ajax({
