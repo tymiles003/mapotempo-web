@@ -554,6 +554,7 @@ en:
       order_array:
         edit: "Edit orders array"
       open_planning_panel: "Open planning panel"
+      collapse_planning_panel: "Collapse planning panel"
       refresh: "Refresh"
       refresh_help: "Planning parameters or customer has been changed, it is necessary to recalculate"
       out_of_date_zoning: "Zoning changed. Please refresh."

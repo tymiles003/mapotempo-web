@@ -562,6 +562,7 @@ fr:
       order_array:
         edit: "Modifier tableau de commandes"
       open_planning_panel: "Déployer le panneau du planning"
+      collapse_planning_panel: "Minifier le panneau du planning"
       refresh: "Actualiser"
       refresh_help: "Des paramètres ou des clients utilisés par ce planning ont été modifiés, il est nécessaire de le recalculer"
       out_of_date_zoning: "Le Zonage a été modifié. Veuillez actualiser."
