@@ -26,7 +26,7 @@ class StoresController < ApplicationController
 
   def index
     if current_user.customer.job_store_geocoding
-      flash.now[:info] = t('stores.geocoding.geocoding_in_progress')
+      flash.now[:warning] = t('stores.geocoding.geocoding_in_progress')
     end
     @stores = current_user.customer.stores
     respond_to do |format|
