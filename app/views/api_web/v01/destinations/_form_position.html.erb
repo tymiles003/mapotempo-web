@@ -1,5 +1,5 @@
-<div id="map"></div>
-<%= twitter_bootstrap_form_for(@destination, url: api_web_v01_update_position_destination_path(@destination), layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
+<div id="edit-position">
+<%= twitter_bootstrap_form_for(@destination, url: api_web_v01_update_position_destination_path(@destination), default_label_class: 'col-md-3', div_label_class: 'col-md-9', layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: @destination %>
   <%= f.text_field :lat %>
   <%= f.text_field :lng %>
@@ -7,6 +7,8 @@
     <%= f.submit %>
   <% end %>
 <% end %>
+</div>
+<div id="map"></div>
 <%
 controller.js(
   destination_id: @destination.id || 0,

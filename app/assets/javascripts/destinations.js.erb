@@ -31,6 +31,22 @@ function destinations_form(params, api) {
     attribution: map_attribution
   }).addTo(map);
 
+  // api-web
+  var form_popup = L.DomUtil.get('edit-position');
+  if (form_popup) {
+    form_popup.classList.add('leaflet-bar');
+    var control_position = L.Control.extend({
+      options: {
+          position: 'topright'
+      },
+      onAdd: function (map) {
+          var container = form_popup;
+          return container;
+      }
+    });
+    map.addControl(new control_position());
+  }
+
   var markers = {};
 
   var pointing = false;
