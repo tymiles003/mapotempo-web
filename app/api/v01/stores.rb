@@ -58,10 +58,10 @@ class V01::Stores < Grape::API
 
     desc 'Create store.',
       nickname: 'createStore',
-      params: V01::Entities::Store.documentation.except(:id).merge({
+      params: V01::Entities::Store.documentation.except(:id).merge(
         name: { required: true },
         city: { required: true }
-      }),
+      ),
       entity: V01::Entities::Store
     post do
       store = current_customer.stores.build(store_params)
@@ -75,14 +75,14 @@ class V01::Stores < Grape::API
     put do
       if params[:stores]
         stores_import = DestinationsImport.new
-        stores_import.assign_attributes({replace: params[:replace]})
+        stores_import.assign_attributes(replace: params[:replace])
         ImporterStores.import_hash(stores_import.replace, current_customer, params[:stores])
         status 204
       else
         stores_import = DestinationsImport.new
-        stores_import.assign_attributes({replace: params[:replace], file: params[:file]})
+        stores_import.assign_attributes(replace: params[:replace], file: params[:file])
         if stores_import.valid?
-          ImporterStores.import_csv(stores_import.replace, current_customer, stores_import.tempfile, stores_import.name, synchronous=true)
+          ImporterStores.import_csv(stores_import.replace, current_customer, stores_import.tempfile, stores_import.name, true)
           status 204
         else
           error!({error: stores_import.errors.full_messages}, 422)

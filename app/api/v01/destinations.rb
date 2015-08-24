@@ -58,9 +58,9 @@ class V01::Destinations < Grape::API
 
     desc 'Create destination.',
       nickname: 'createDestination',
-      params: V01::Entities::Destination.documentation.except(:id).merge({
+      params: V01::Entities::Destination.documentation.except(:id).merge(
         name: { required: true }
-      }),
+      ),
       entity: V01::Entities::Destination
     post do
       destination = current_customer.destinations.build(destination_params)
@@ -75,14 +75,14 @@ class V01::Destinations < Grape::API
     put do
       if params['destinations']
         destinations_import = DestinationsImport.new
-        destinations_import.assign_attributes({replace: params[:replace]})
+        destinations_import.assign_attributes(replace: params[:replace])
         ImporterDestinations.import_hash(destinations_import.replace, current_customer, params[:destinations])
         status 204
       else
         destinations_import = DestinationsImport.new
-        destinations_import.assign_attributes({replace: params[:replace], file: params[:file]})
+        destinations_import.assign_attributes(replace: params[:replace], file: params[:file])
         if destinations_import.valid?
-          ImporterDestinations.import_csv(destinations_import.replace, current_customer, destinations_import.tempfile, destinations_import.name, synchronous=true)
+          ImporterDestinations.import_csv(destinations_import.replace, current_customer, destinations_import.tempfile, destinations_import.name, true)
           status 204
         else
           error!({error: destinations_import.errors.full_messages}, 422)

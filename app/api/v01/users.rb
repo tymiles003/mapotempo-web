@@ -54,12 +54,12 @@ class V01::Users < Grape::API
 
     desc 'Create user.',
       nickname: 'createUser',
-      params: V01::Entities::User.documentation.except(:id).merge({
+      params: V01::Entities::User.documentation.except(:id).merge(
         email: { required: true },
         password: { required: true },
         customer_id: { required: true },
         layer_id: { required: true }
-      }),
+      ),
       entity: V01::Entities::User
     post do
       if @current_user.admin?

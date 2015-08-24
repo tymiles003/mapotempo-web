@@ -55,10 +55,10 @@ class V01::Products < Grape::API
 
     desc 'Create product.',
       nickname: 'createProduct',
-      params: V01::Entities::Product.documentation.except(:id).merge({
+      params: V01::Entities::Product.documentation.except(:id).merge(
         code: { required: true },
         name: { required: true }
-      }),
+      ),
       entity: V01::Entities::Product
     post do
       product = current_customer.products.build(product_params)

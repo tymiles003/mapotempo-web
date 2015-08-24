@@ -59,12 +59,12 @@ class V01::Customers < Grape::API
 
     desc 'Create customer.',
       nickname: 'createCustomer',
-      params: V01::Entities::Customer.documentation.except(:id).merge({
+      params: V01::Entities::Customer.documentation.except(:id).merge(
         name: { required: true },
         default_country: { required: true },
         router_id: { required: true },
         profile_id: { required: true }
-      }),
+      ),
       entity: V01::Entities::Customer
     post do
       if @current_user.admin?
