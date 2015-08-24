@@ -814,6 +814,12 @@ en:
       search: "Search an address..."
       empty_result: "No results found"
 
+  api_web:
+    v01:
+      zones:
+        index:
+          without_vehicle: "Without Vehicle"
+
   all:
     map_attribution:
       osm: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{attribution}"

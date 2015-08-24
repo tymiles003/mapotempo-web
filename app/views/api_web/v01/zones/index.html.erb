@@ -2,8 +2,12 @@
 <div id="zones-caption" class="map-caption">
   <% @zones.each{ |zone| %>
   <div class="map-caption-item">
-    <span class="color_small" style="background: <%= zone.vehicle.color %>"></span>
-    <%= zone.vehicle.name %>
+    <span class="color_small" style="background: <%= zone.vehicle ? zone.vehicle.color : '#707070' %>"></span>
+    <% if zone.vehicle %>
+      <%= zone.vehicle.name %>
+    <% else %>
+      <i><%= t('.without_vehicle') %></i>
+    <% end %>
   </div>
   <% } %>
 </div>

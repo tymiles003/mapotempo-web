@@ -818,6 +818,12 @@ fr:
       search: "Recherche d'adresse"
       empty_result: "Pas de résultats"
 
+  api_web:
+    v01:
+      zones:
+        index:
+          without_vehicle: Sans véhicule
+
   all:
     map_attribution:
       osm: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{attribution}"
