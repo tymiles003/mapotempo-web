@@ -9,12 +9,12 @@ class Admin::ResellersControllerTest < ActionController::TestCase
     sign_in users(:user_admin)
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @reseller
     assert_response :success
   end
 
-  test "should update reseller" do
+  test 'should update reseller' do
     patch :update, id: @reseller, reseller: { name: @reseller.name }
     assert_redirected_to edit_admin_reseller_path(@reseller)
   end

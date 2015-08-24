@@ -5,23 +5,23 @@ class PlanningTest < ActiveSupport::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
   def around
-    Osrm.stub_any_instance(:compute, [1, 1, "trace"]) do
+    Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
       yield
     end
   end
 
-  test "should not save" do
+  test 'should not save' do
     o = Planning.new
-    assert_not o.save, "Saved without required fields"
+    assert_not o.save, 'Saved without required fields'
   end
 
-  test "should save" do
-    o = customers(:customer_one).plannings.build(name: "plop", zoning: zonings(:zoning_one))
+  test 'should save' do
+    o = customers(:customer_one).plannings.build(name: 'plop', zoning: zonings(:zoning_one))
     o.default_routes
     o.save!
   end
 
-  test "should dup" do
+  test 'should dup' do
     o = plannings(:planning_one)
     oo = o.amoeba_dup
 
@@ -29,7 +29,7 @@ class PlanningTest < ActiveSupport::TestCase
     oo.save!
   end
 
-  test "should set_destinations" do
+  test 'should set_destinations' do
     o = plannings(:planning_one)
 
     o.set_destinations({'route_one_one' => [[destinations(:destination_one)]]})
@@ -37,7 +37,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.save!
   end
 
-  test "should not set_destinations for tags" do
+  test 'should not set_destinations for tags' do
     o = plannings(:planning_one)
     o.tags << tags(:tag_two)
 
@@ -46,7 +46,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.save!
   end
 
-  test "should not set_destinations for size" do
+  test 'should not set_destinations for size' do
     o = plannings(:planning_one)
 
     assert_raises(RuntimeError) {
@@ -55,7 +55,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.save!
   end
 
-  test "should vehicle_add" do
+  test 'should vehicle_add' do
     o = plannings(:planning_one)
     assert_difference('Stop.count', 1) do # One StopRest
       assert_difference('Route.count', 1) do
@@ -65,7 +65,7 @@ class PlanningTest < ActiveSupport::TestCase
     end
   end
 
-  test "should vehicle_remove" do
+  test 'should vehicle_remove' do
     o = plannings(:planning_one)
     assert_difference('Stop.count', -1) do
       assert_difference('Route.count', -1) do
@@ -75,7 +75,7 @@ class PlanningTest < ActiveSupport::TestCase
     end
   end
 
-  test "should destination_add" do
+  test 'should destination_add' do
     o = plannings(:planning_one)
     assert_difference('Stop.count') do
       o.destination_add(destinations(:destination_two))
@@ -83,7 +83,7 @@ class PlanningTest < ActiveSupport::TestCase
     end
   end
 
-  test "should destination_remove" do
+  test 'should destination_remove' do
     o = plannings(:planning_one)
     assert_difference('Stop.count', -2) do
       o.destination_remove(destinations(:destination_one))
@@ -91,7 +91,7 @@ class PlanningTest < ActiveSupport::TestCase
     end
   end
 
-  test "should compute" do
+  test 'should compute' do
     o = plannings(:planning_one)
     o.zoning_out_of_date = true
     o.compute
@@ -102,7 +102,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.save!
   end
 
-  test "should compute with non geocoded" do
+  test 'should compute with non geocoded' do
     o = plannings(:planning_one)
     o.zoning_out_of_date = true
     d0 = o.routes[0].stops[0].destination
@@ -114,7 +114,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_not o.zoning_out_of_date
   end
 
-  test "should out_of_date" do
+  test 'should out_of_date' do
     o = plannings(:planning_one)
     assert_not o.out_of_date
 
@@ -122,7 +122,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert o.out_of_date
   end
 
-  test "should update zoning" do
+  test 'should update zoning' do
     o = plannings(:planning_one)
     assert_not o.zoning_out_of_date
     o.zoning = zonings(:zoning_two)
@@ -130,7 +130,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_not o.out_of_date
   end
 
-  test "should automatic insert" do
+  test 'should automatic insert' do
     o = plannings(:planning_one)
     o.zoning = nil
     assert_equal 3, o.routes.size
@@ -150,7 +150,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_three' }.stops.size
   end
 
-  test "should apply orders" do
+  test 'should apply orders' do
     o = plannings(:planning_one)
     r = o.routes.find{ |ro| ro.ref == 'route_one' }
     assert r.stops[0].active
@@ -163,7 +163,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.save!
   end
 
-  test "should apply orders and destroy" do
+  test 'should apply orders and destroy' do
     o = plannings(:planning_one)
     oa = order_arrays(:order_array_one)
     o.apply_orders(oa, 0)

@@ -3,17 +3,17 @@ require 'test_helper'
 class DestinationTest < ActiveSupport::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
-  test "should not save" do
+  test 'should not save' do
     o = Destination.new
-    assert_not o.save, "Saved without required fields"
+    assert_not o.save, 'Saved without required fields'
   end
 
-  test "should save" do
+  test 'should save' do
     assert_difference('Stop.count', 1) do
       assert_difference('Destination.count') do
         assert_difference('Order.count', 7 * 2) do
           customer = customers(:customer_one)
-          o = customer.destinations.build(name: "plop", city: "Bordeaux", tags: [tags(:tag_one)])
+          o = customer.destinations.build(name: 'plop', city: 'Bordeaux', tags: [tags(:tag_one)])
           assert o.save!
           assert customer.save!
           o.reload
@@ -23,7 +23,7 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
-  test "should geocode" do
+  test 'should geocode' do
     o = destinations(:destination_one)
     lat, lng = o.lat, o.lng
     o.geocode
@@ -33,9 +33,9 @@ class DestinationTest < ActiveSupport::TestCase
     assert_not_equal lng, o.lng
   end
 
-  test "should update_geocode" do
+  test 'should update_geocode' do
     o = destinations(:destination_one)
-    o.city = "Toulouse"
+    o.city = 'Toulouse'
     lat, lng = o.lat, o.lng
     o.save!
     assert o.lat
@@ -44,12 +44,12 @@ class DestinationTest < ActiveSupport::TestCase
     assert_not_equal lng, o.lng
   end
 
-  test "should distance" do
+  test 'should distance' do
     o = destinations(:destination_one)
     assert_equal 47.72248931834969, o.distance(destinations(:destination_two))
   end
 
-  test "should update add tag" do
+  test 'should update add tag' do
     o = destinations(:destination_one)
     stops(:stop_three_one).destroy
     assert_difference('Stop.count') do
@@ -59,7 +59,7 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
-  test "should update remove tag" do
+  test 'should update remove tag' do
     o = destinations(:destination_one)
     stops(:stop_three_one).destroy
     assert_difference('Stop.count', -1) do
@@ -69,7 +69,7 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
-  test "should update tag" do
+  test 'should update tag' do
     o = destinations(:destination_one)
     p = plannings(:planning_one)
     stops(:stop_three_one).destroy
@@ -91,7 +91,7 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
-  test "should destroy and reindex stops" do
+  test 'should destroy and reindex stops' do
     r = routes(:route_one_one)
     o = destinations(:destination_one)
 

@@ -10,23 +10,23 @@ class Admin::CustomersControllerTest < ActionController::TestCase
     sign_in users(:user_admin)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @customer
     assert_response :success
   end
 
-  test "should update customer" do
+  test 'should update customer' do
     patch :update, id: @customer, customer: { take_over: 123, enable_orders: !@customer.enable_orders }
 
     assert_redirected_to edit_customer_path(assigns(:customer))
   end
 
-  test "should destroy customer" do
+  test 'should destroy customer' do
     assert_difference('Customer.count', -1) do
       delete :destroy, id: @customer
     end
@@ -34,7 +34,7 @@ class Admin::CustomersControllerTest < ActionController::TestCase
     assert_redirected_to customers_path
   end
 
-  test "should destroy multiple customer" do
+  test 'should destroy multiple customer' do
     assert_difference('Customer.count', -2) do
       delete :destroy_multiple, customers: { customers(:customer_one).id => 1, customers(:customer_one_other).id => 1 }
     end

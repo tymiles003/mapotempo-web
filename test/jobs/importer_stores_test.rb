@@ -3,57 +3,57 @@ class ImporterTest < ActionController::TestCase
     @customer = customers(:customer_one)
   end
 
-  test "should import store" do
+  test 'should import store' do
     assert_difference('Store.count') do
-      ImporterStores.import_csv(false, @customer, "test/fixtures/files/import_stores_one.csv", "text")
+      ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_one.csv', 'text')
     end
   end
 
-  test "should import store with postalcode" do
+  test 'should import store with postalcode' do
     assert_difference('Store.count') do
-      ImporterStores.import_csv(false, @customer, "test/fixtures/files/import_stores_one_postalcode.csv", "text")
+      ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_one_postalcode.csv', 'text')
     end
   end
 
-  test "should import store with coord" do
+  test 'should import store with coord' do
     assert_difference('Store.count') do
-      ImporterStores.import_csv(false, @customer, "test/fixtures/files/import_stores_one_coord.csv", "text")
+      ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_one_coord.csv', 'text')
     end
   end
 
-  test "should import store two" do
+  test 'should import store two' do
     assert_difference('Store.count', 2) do
-      ImporterStores.import_csv(false, @customer, "test/fixtures/files/import_stores_two.csv", "text")
+      ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_two.csv', 'text')
     end
   end
 
-  test "should import many-utf-8 stores" do
+  test 'should import many-utf-8 stores' do
     assert_difference('Store.count', 5) do
-      ImporterStores.import_csv(false, @customer, "test/fixtures/files/import_stores_many-utf-8.csv", "text")
+      ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_many-utf-8.csv', 'text')
     end
     # o = Store.find{|s| s.customer_id} # many items since we cannot destroy previous
-    # assert_equal "Point 1", o.name
+    # assert_equal 'Point 1', o.name
   end
 
-  test "should import many-iso stores" do
+  test 'should import many-iso stores' do
     assert_difference('Store.count', 6) do
-      ImporterStores.import_csv(false, @customer, "test/fixtures/files/import_stores_many-iso.csv", "text")
+      ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_many-iso.csv', 'text')
     end
     # o = Store.find{|s| s.customer_id} # many items since we cannot destroy previous
-    # assert_equal "Point 1", o.name
+    # assert_equal 'Point 1', o.name
   end
 
-  test "should not import store" do
+  test 'should not import store' do
     assert_difference('Store.count', 0) do
       assert_raise RuntimeError do
-        ImporterStores.import_csv(false, @customer, "test/fixtures/files/import_invalid.csv", "text")
+        ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_invalid.csv', 'text')
       end
     end
   end
 
-  test "should update store" do
+  test 'should update store' do
     assert_difference('Store.count', 1) do
-      ImporterStores.import_csv(false, @customer, "test/fixtures/files/import_stores_update.csv", "text")
+      ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_update.csv', 'text')
     end
     assert_equal 'unaffected_one_update', Store.find_by(ref:'a').name
     assert_equal 'unaffected_two_update', Store.find_by(ref:'d').name

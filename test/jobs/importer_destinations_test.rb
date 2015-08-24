@@ -6,63 +6,63 @@ class ImporterTest < ActionController::TestCase
   end
 
   def around
-    Osrm.stub_any_instance(:compute, [1, 1, "trace"]) do
+    Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
       Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
         yield
       end
     end
   end
 
-  test "shoud import" do
+  test 'shoud import' do
     import_count = 1
     rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
-          ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_one.csv", "text")
+          ImporterDestinations.import_csv(false, @customer, 'test/fixtures/files/import_destinations_one.csv', 'text')
         end
       end
     end
 
-    assert_equal [tags(:tag_one)], Destination.where(name: "BF").first.tags.to_a
+    assert_equal [tags(:tag_one)], Destination.where(name: 'BF').first.tags.to_a
   end
 
-  test "shoud import postalcode" do
+  test 'shoud import postalcode' do
     import_count = 1
     rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
-          ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_one_postalcode.csv", "text")
+          ImporterDestinations.import_csv(false, @customer, 'test/fixtures/files/import_destinations_one_postalcode.csv', 'text')
         end
       end
     end
   end
 
-  test "shoud import coord" do
+  test 'shoud import coord' do
     import_count = 1
     rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
-          ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_one_coord.csv", "text")
+          ImporterDestinations.import_csv(false, @customer, 'test/fixtures/files/import_destinations_one_coord.csv', 'text')
         end
       end
     end
   end
 
-  test "shoud import two" do
+  test 'shoud import two' do
     import_count = 2
     rest_count = 1
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
-          ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_two.csv", "text")
+          ImporterDestinations.import_csv(false, @customer, 'test/fixtures/files/import_destinations_two.csv', 'text')
         end
       end
     end
 
-    stops = Planning.where(name: "text").first.routes[1].stops
+    stops = Planning.where(name: 'text').first.routes[1].stops
     assert_equal 'z', stops[1].destination.ref
     assert stops[1].destination.take_over
     assert stops[1].active
@@ -70,43 +70,43 @@ class ImporterTest < ActionController::TestCase
     assert_not stops[2].active
   end
 
-  test "shoud import many-utf-8" do
+  test 'shoud import many-utf-8' do
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all
     assert_difference('Planning.count') do
       assert_difference('Destination.count', 5) do
-        ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_many-utf-8.csv", "text")
+        ImporterDestinations.import_csv(false, @customer, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
       end
     end
     o = Destination.find{|d| d.customer_id}
-    assert_equal "Point 1", o.name
-    assert_equal ["Nantes"], o.tags.collect(&:label)
+    assert_equal 'Point 1', o.name
+    assert_equal ['Nantes'], o.tags.collect(&:label)
     p = Planning.first
     assert_equal 2, p.routes[0].stops.size
   end
 
-  test "shoud import many-iso" do
+  test 'shoud import many-iso' do
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all
     assert_difference('Destination.count', 6) do
-      ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_many-iso.csv", "text")
+      ImporterDestinations.import_csv(false, @customer, 'test/fixtures/files/import_destinations_many-iso.csv', 'text')
     end
     o = Destination.find{|d| d.customer_id}
-    assert_equal "Point 1", o.name
-    assert_equal ["Nantes"], o.tags.collect(&:label)
+    assert_equal 'Point 1', o.name
+    assert_equal ['Nantes'], o.tags.collect(&:label)
   end
 
-  test "shoud not import" do
+  test 'shoud not import' do
     assert_difference('Destination.count', 0) do
       assert_raise RuntimeError do
-        ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_invalid.csv", "text")
+        ImporterDestinations.import_csv(false, @customer, 'test/fixtures/files/import_invalid.csv', 'text')
       end
     end
   end
 
-  test "shoud update" do
+  test 'shoud update' do
     assert_difference('Destination.count', 1) do
-      ImporterDestinations.import_csv(false, @customer, "test/fixtures/files/import_destinations_update.csv", "text")
+      ImporterDestinations.import_csv(false, @customer, 'test/fixtures/files/import_destinations_update.csv', 'text')
     end
     assert_equal 'unaffected_one_update', Destination.find_by(ref:'a').name
     assert_equal 'unaffected_two_update', Destination.find_by(ref:'d').name

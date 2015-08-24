@@ -7,7 +7,7 @@ class IndexControllerTest < ActionController::TestCase
     @request.env['reseller'] = resellers(:reseller_one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
   end

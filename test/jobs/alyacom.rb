@@ -8,7 +8,7 @@ class AlyacomTest < ActionController::TestCase
     @route = routes(:route_one_one)
   end
 
-  test "should export route" do
+  test 'should export route' do
     Alyacom.export_route(@route)
   end
 end

@@ -9,24 +9,24 @@ class ApiWeb::V01::DestinationsControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:destinations)
   end
 
-  test "should get index with ref" do
+  test 'should get index with ref' do
     get :index, 'ids[]' => 'ref:a'
     assert_response :success
     assert_not_nil assigns(:destinations)
   end
 
-  test "should get edit position" do
+  test 'should get edit position' do
     get :edit_position, id: @destination
     assert_response :success
   end
 
-  test "should update position" do
+  test 'should update position' do
     patch :update_position, id: @destination, destination: { lat: 6, lng: 6 }
     assert_redirected_to api_web_v01_edit_position_destination_path(assigns(:destination))
   end

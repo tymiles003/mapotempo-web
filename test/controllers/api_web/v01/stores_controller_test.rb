@@ -9,24 +9,24 @@ class ApiWeb::V01::StoresControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:stores)
   end
 
-  test "should get index with ref" do
+  test 'should get index with ref' do
     get :index, 'ids[]' => 'ref:b'
     assert_response :success
     assert_not_nil assigns(:stores)
   end
 
-  test "should get edit position" do
+  test 'should get edit position' do
     get :edit_position, id: @store
     assert_response :success
   end
 
-  test "should update position" do
+  test 'should update position' do
     patch :update_position, id: @store, store: { lat: 6, lng: 6 }
     assert_redirected_to api_web_v01_edit_position_store_path(assigns(:store))
   end

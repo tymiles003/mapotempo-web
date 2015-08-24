@@ -9,28 +9,28 @@ class RoutesControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
-  test "should show route" do
+  test 'should show route' do
     get :show, id: @route
     assert_response :success
   end
 
-  test "should show route as csv" do
+  test 'should show route as csv' do
     get :show, id: @route, type: :csv
     assert_response :success
   end
 
-  test "should show route as excel" do
+  test 'should show route as excel' do
     get :show, id: @route, format: :excel
     assert_response :success
   end
 
-  test "should show route as gpx" do
+  test 'should show route as gpx' do
     get :show, id: @route, format: :gpx
     assert_response :success
   end
 
-  test "should update route" do
-    patch :update, id: @route, route: { hidden: @route.hidden, locked: @route.locked, ref: "ref8" }
+  test 'should update route' do
+    patch :update, id: @route, route: { hidden: @route.hidden, locked: @route.locked, ref: 'ref8' }
     assert_redirected_to route_path(assigns(:route))
   end
 end

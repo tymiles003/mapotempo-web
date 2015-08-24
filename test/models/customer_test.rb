@@ -7,25 +7,25 @@ class CustomerTest < ActiveSupport::TestCase
     @customer = customers(:customer_one)
   end
 
-  test "should not save" do
+  test 'should not save' do
     o = Customer.new
-    assert_not o.save, "Saved without required fields"
+    assert_not o.save, 'Saved without required fields'
   end
 
-  test "should save" do
+  test 'should save' do
     o = Customer.new(reseller: resellers(:reseller_one), name: 'test', default_country: 'France', router: routers(:router_one), profile: profiles(:profile_one))
     o.save!
     o.max_vehicles = 5
     o.save!
   end
 
-  test "should stop job optimizer" do
+  test 'should stop job optimizer' do
     assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
       @customer.job_optimizer.destroy
     end
   end
 
-  test "should destination add" do
+  test 'should destination add' do
     o = customers(:customer_one)
     assert_difference('Destination.count') do
       o.destinations.build(name: 'new', city: 'Parlà', tags: [tags(:tag_one)]).save!
@@ -33,9 +33,9 @@ class CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test "should update_out_of_date" do
+  test 'should update_out_of_date' do
     o = customers(:customer_one)
-    o.take_over = Time.new(2000, 01, 01, 00, 10, 00, "+00:00")
+    o.take_over = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
     o.plannings.each{ |p|
       p.routes.select{ |r| r.vehicle }.each{ |r|
         assert_not r.out_of_date
@@ -47,7 +47,7 @@ class CustomerTest < ActiveSupport::TestCase
     }}
   end
 
-  test "should update_max_vehicles up" do
+  test 'should update_max_vehicles up' do
     o = customers(:customer_one)
     assert_difference('Vehicle.count') do
       o.max_vehicles += 1
@@ -55,7 +55,7 @@ class CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test "should update_max_vehicles down" do
+  test 'should update_max_vehicles down' do
     o = customers(:customer_one)
     assert_difference('Vehicle.count', -1) do
       o.max_vehicles -= 1
@@ -63,7 +63,7 @@ class CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test "should create and destroy" do
+  test 'should create and destroy' do
     customer = Customer.new(reseller: resellers(:reseller_one), name: 'plop', default_country: 'France', router: routers(:router_one), profile: profiles(:profile_one))
     customer.save!
     customer.destroy

@@ -9,18 +9,18 @@ class ZoningsControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:zonings)
   end
 
-  test "should get new" do
+  test 'should get new' do
     get :new
     assert_response :success
   end
 
-  test "should create zoning" do
+  test 'should create zoning' do
     assert_difference('Zoning.count') do
       post :create, zoning: { name: @zoning.name }
     end
@@ -28,9 +28,9 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
-  test "should not create zoning" do
+  test 'should not create zoning' do
     assert_difference('Zoning.count', 0) do
-      post :create, zoning: { name: "" }
+      post :create, zoning: { name: '' }
     end
 
     assert_template :new
@@ -38,25 +38,25 @@ class ZoningsControllerTest < ActionController::TestCase
     assert zoning.errors.any?
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @zoning
     assert_response :success
   end
 
-  test "should update zoning" do
+  test 'should update zoning' do
     patch :update, id: @zoning, zoning: { name: @zoning.name }
     assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
-  test "should not update zoning" do
-    patch :update, id: @zoning, zoning: { name: "" }
+  test 'should not update zoning' do
+    patch :update, id: @zoning, zoning: { name: '' }
 
     assert_template :edit
     zoning = assigns(:zoning)
     assert zoning.errors.any?
   end
 
-  test "should destroy zoning" do
+  test 'should destroy zoning' do
     assert_difference('Zoning.count', -1) do
       delete :destroy, id: @zoning
     end
@@ -64,7 +64,7 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to zonings_path
   end
 
-  test "should destroy multiple zoning" do
+  test 'should destroy multiple zoning' do
     assert_difference('Zoning.count', -2) do
       delete :destroy_multiple, zonings: { zonings(:zoning_one).id => 1, zonings(:zoning_two).id => 1 }
     end
@@ -72,7 +72,7 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to zonings_path
   end
 
-  test "should destroy multiple zoning, 0 item" do
+  test 'should destroy multiple zoning, 0 item' do
     assert_difference('Zoning.count', 0) do
       delete :destroy_multiple
     end
@@ -80,7 +80,7 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to zonings_path
   end
 
-  test "should duplicate" do
+  test 'should duplicate' do
     assert_difference('Zoning.count') do
       patch :duplicate, zoning_id: @zoning
     end
@@ -88,17 +88,17 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_zoning_path(assigns(:zoning))
   end
 
-  test "should generate from planning" do
+  test 'should generate from planning' do
     patch :from_planning, format: :json, zoning_id: @zoning, planning_id: plannings(:planning_one)
     assert_response :success
   end
 
-  test "should generate automatic" do
+  test 'should generate automatic' do
     patch :automatic, format: :json, zoning_id: @zoning, planning_id: plannings(:planning_one)
     assert_response :success
   end
 
-  test "should generate isochrone" do
+  test 'should generate isochrone' do
     patch :isochrone, format: :json, zoning_id: @zoning
     assert_response :success
   end

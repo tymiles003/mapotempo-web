@@ -9,18 +9,18 @@ class TagsControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:tags)
   end
 
-  test "should get new" do
+  test 'should get new' do
     get :new
     assert_response :success
   end
 
-  test "should create tag" do
+  test 'should create tag' do
     assert_difference('Tag.count') do
       post :create, tag: { label: @tag.label }
     end
@@ -28,9 +28,9 @@ class TagsControllerTest < ActionController::TestCase
     assert_redirected_to tags_path
   end
 
-  test "should not create tag" do
+  test 'should not create tag' do
     assert_difference('Tag.count', 0) do
-      post :create, tag: { label: "" }
+      post :create, tag: { label: '' }
     end
 
     assert_template :new
@@ -38,24 +38,24 @@ class TagsControllerTest < ActionController::TestCase
     assert tag.errors.any?
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @tag
     assert_response :success
   end
 
-  test "should update tag" do
+  test 'should update tag' do
     patch :update, id: @tag, tag: { label: @tag.label }
     assert_redirected_to tags_path
   end
 
-  test "should not update tag" do
-    patch :update, id: @tag, tag: { label: "" }
+  test 'should not update tag' do
+    patch :update, id: @tag, tag: { label: '' }
     assert_template :edit
     tag = assigns(:tag)
     assert tag.errors.any?
   end
 
-  test "should destroy tag" do
+  test 'should destroy tag' do
     assert_difference('Tag.count', -1) do
       delete :destroy, id: @tag
     end
@@ -63,7 +63,7 @@ class TagsControllerTest < ActionController::TestCase
     assert_redirected_to tags_path
   end
 
-  test "should destroy multiple tag" do
+  test 'should destroy multiple tag' do
     assert_difference('Tag.count', -2) do
       delete :destroy_multiple, tags: { tags(:tag_one).id => 1, tags(:tag_two).id => 1 }
     end

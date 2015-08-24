@@ -9,7 +9,7 @@ class ApiWeb::V01::ZonesControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
-  test "should get zones" do
+  test 'should get zones' do
     get :index, zoning_id: @zone.zoning_id
     assert_response :success
   end

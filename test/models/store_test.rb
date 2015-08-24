@@ -3,19 +3,19 @@ require 'test_helper'
 class StoreTest < ActiveSupport::TestCase
   set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
 
-  test "should not save" do
+  test 'should not save' do
     o = Store.new
-    assert_not o.save, "Saved without required fields"
+    assert_not o.save, 'Saved without required fields'
   end
 
-  test "should save" do
-    o = customers(:customer_one).stores.build(name: "plop", city: "Bordeaux")
+  test 'should save' do
+    o = customers(:customer_one).stores.build(name: 'plop', city: 'Bordeaux')
     assert o.save!
     o.reload
     assert !o.lat.nil?, 'Latitude not built'
   end
 
-  test "should destroy" do
+  test 'should destroy' do
     o = customers(:customer_one)
     assert_difference('o.stores.size', -1) do
       store = o.stores.find{ |store| store[:name] == 'store 0' }
@@ -25,7 +25,7 @@ class StoreTest < ActiveSupport::TestCase
     end
   end
 
-  test "should destroy in use for vehicle" do
+  test 'should destroy in use for vehicle' do
     o = customers(:customer_one)
     assert_difference('o.stores.size', -1) do
       store = o.stores.find{ |store| store[:name] == 'store 1' }
@@ -35,7 +35,7 @@ class StoreTest < ActiveSupport::TestCase
     end
   end
 
-  test "should not destroy last store" do
+  test 'should not destroy last store' do
     o = customers(:customer_one)
     assert_not_equal 0, o.stores.size
     for i in 0..(o.stores.size - 2)
@@ -50,7 +50,7 @@ class StoreTest < ActiveSupport::TestCase
     end
   end
 
-  test "should out_of_date" do
+  test 'should out_of_date' do
     o = stores(:store_one)
     assert_not o.customer.plannings.where(name: 'planning1').first.out_of_date
     o.lat = 10.1
@@ -59,7 +59,7 @@ class StoreTest < ActiveSupport::TestCase
     assert o.customer.plannings.where(name: 'planning1').first.out_of_date
   end
 
-  test "should geocode" do
+  test 'should geocode' do
     o = stores(:store_one)
     lat, lng = o.lat, o.lng
     o.geocode
@@ -69,9 +69,9 @@ class StoreTest < ActiveSupport::TestCase
     assert_not_equal lng, o.lng
   end
 
-  test "should update_geocode" do
+  test 'should update_geocode' do
     o = stores(:store_one)
-    o.city = "Toulouse"
+    o.city = 'Toulouse'
     lat, lng = o.lat, o.lng
     o.save!
     assert o.lat
@@ -80,7 +80,7 @@ class StoreTest < ActiveSupport::TestCase
     assert_not_equal lng, o.lng
   end
 
-  test "should distance" do
+  test 'should distance' do
     o = stores(:store_one)
     assert_equal 2.51647173560523, o.distance(stores(:store_two))
   end

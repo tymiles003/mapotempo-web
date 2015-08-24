@@ -1,7 +1,7 @@
 require 'concave_hull.rb'
 
 class ConcaveHullTest < ActionController::TestCase
-  test "should compute route" do
+  test 'should compute route' do
     srand(2)
     vector = 50.times.collect{ |i| [rand(0..0.1), rand] }
     vector += 50.times.collect{ |i| [rand, rand(0..0.1)] }

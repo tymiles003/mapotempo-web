@@ -14,7 +14,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   end
 
   def around
-    Osrm.stub_any_instance(:compute, [1000, 60, "trace"]) do
+    Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
       yield
     end
   end
@@ -72,10 +72,10 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
         put api(), {destinations: [{
-          name: "Nouveau client",
+          name: 'Nouveau client',
           street: nil,
           postalcode: nil,
-          city: "Tule",
+          city: 'Tule',
           lat: 43.5710885456786,
           lng: 3.89636993408203,
           quantity: nil,
@@ -83,13 +83,13 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           close: nil,
           detail: nil,
           comment: nil,
-          ref: "z",
+          ref: 'z',
           take_over: nil,
           tags: ['tag1'],
           geocoding_accuracy: nil,
           foo: 'bar',
-          route: "1",
-          active: "1"
+          route: '1',
+          active: '1'
         }]}
         assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
       end

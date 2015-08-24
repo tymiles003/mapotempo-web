@@ -12,18 +12,18 @@ class OrderArraysControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:order_arrays)
   end
 
-  test "should get new" do
+  test 'should get new' do
     get :new
     assert_response :success
   end
 
-  test "should create order_array" do
+  test 'should create order_array' do
     assert_difference('OrderArray.count') do
       post :create, order_array: { name: 'test', length: 'week', base_date: '10/10/2014' }
     end
@@ -31,9 +31,9 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert_redirected_to edit_order_array_path(assigns(:order_array))
   end
 
-  test "should not create order_array" do
+  test 'should not create order_array' do
     assert_difference('OrderArray.count', 0) do
-      post :create, order_array: { name: "" }
+      post :create, order_array: { name: '' }
     end
 
     assert_template :new
@@ -41,36 +41,36 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert order_array.errors.any?
   end
 
-  test "should show order_array as excel" do
+  test 'should show order_array as excel' do
     get :show, id: @order_array, format: :excel
     assert_response :success
   end
 
-  test "should show order_array as csv" do
+  test 'should show order_array as csv' do
     get :show, id: @order_array, format: :csv
     assert_response :success
     assert_equal 'destination_one,MyString,P1/P2,1,1,2', response.body.split("\n")[1]
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @order_array
     assert_response :success
   end
 
-  test "should update order_array" do
+  test 'should update order_array' do
     patch :update, id: @order_array, order_array: { name: @order_array.name, base_date: Date.new(2018,10,10) }
     assert_redirected_to edit_order_array_path(assigns(:order_array))
   end
 
-  test "should not update order_array" do
-    patch :update, id: @order_array, order_array: { name: "" }
+  test 'should not update order_array' do
+    patch :update, id: @order_array, order_array: { name: '' }
 
     assert_template :edit
     order_array = assigns(:order_array)
     assert order_array.errors.any?
   end
 
-  test "should destroy order_array" do
+  test 'should destroy order_array' do
     assert_difference('OrderArray.count', -1) do
       delete :destroy, id: @order_array
     end
@@ -78,7 +78,7 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert_redirected_to order_arrays_path
   end
 
-  test "should destroy multiple order_array" do
+  test 'should destroy multiple order_array' do
     assert_difference('OrderArray.count', -2) do
       delete :destroy_multiple, order_arrays: { order_arrays(:order_array_one).id => 1, order_arrays(:order_array_two).id => 1 }
     end
@@ -86,7 +86,7 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert_redirected_to order_arrays_path
   end
 
-  test "should duplicate" do
+  test 'should duplicate' do
     assert_difference('OrderArray.count') do
       patch :duplicate, order_array_id: @order_array
     end

@@ -8,7 +8,7 @@ class TomtomWebfleetTest < ActionController::TestCase
     @tomtom = Mapotempo::Application.config.tomtom
   end
 
-  test "shoud showObjectReport" do
+  test 'shoud showObjectReport' do
     begin
       uri_template = Addressable::Template.new('https://soap.business.tomtom.com/{version}/objectsAndPeopleReportingService?wsdl')
       stub_wsdl = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../', __FILE__) + '/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl').read)

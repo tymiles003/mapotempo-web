@@ -9,12 +9,12 @@ class UsersControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
-  test "should get edit_settings" do
+  test 'should get edit_settings' do
     get :edit_settings, id: @user
     assert_response :success
   end
 
-  test "should update_settings user" do
+  test 'should update_settings user' do
     patch :update_settings, id: @user, user: { layer_id: @user.layer.id }
     assert_redirected_to edit_user_settings_path(assigns(:user))
   end
