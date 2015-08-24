@@ -43,9 +43,9 @@ class V01::Users < Grape::API
       nickname: 'getUser',
       entity: V01::Entities::User
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     get ':id' do
       if @current_user.admin?
         present User.find(params[:id]), with: V01::Entities::User
@@ -81,9 +81,9 @@ class V01::Users < Grape::API
       params: V01::Entities::User.documentation.except(:id),
       entity: V01::Entities::User
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     put ':id' do
       user = @current_user.admin? ? User.find(params[:id]) : @current_user
       user.update(user_params)
@@ -94,9 +94,9 @@ class V01::Users < Grape::API
     desc 'Delete user.', {
       nickname: 'deleteUser'
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     delete ':id' do
       if @current_user.admin?
         user = User.find(params[:id])
@@ -109,9 +109,9 @@ class V01::Users < Grape::API
     desc 'Delete multiple users.', {
       nickname: 'deleteUsers'
     }
-    params {
+    params do
       requires :ids, type: Array[Integer]
-    }
+    end
     delete do
       if @current_user.admin?
         User.transaction do

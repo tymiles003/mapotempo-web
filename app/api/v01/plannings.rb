@@ -33,9 +33,9 @@ class V01::Plannings < Grape::API
       is_array: true,
       entity: V01::Entities::Planning
     }
-    params {
+    params do
       optional :ids, type: Array[Integer], desc: 'Select returned plannings by id.'
-    }
+    end
     get do
       plannings = if params.key?(:ids)
         ids = params[:ids].collect(&:to_i)
@@ -50,9 +50,9 @@ class V01::Plannings < Grape::API
       nickname: 'getPlanning',
       entity: V01::Entities::Planning
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
       present current_customer.plannings.where(id).first!, with: V01::Entities::Planning
@@ -76,9 +76,9 @@ class V01::Plannings < Grape::API
       params: V01::Entities::Planning.documentation.except(:id),
       entity: V01::Entities::Planning
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
@@ -90,9 +90,9 @@ class V01::Plannings < Grape::API
     desc 'Delete planning.', {
       nickname: 'deletePlanning'
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       current_customer.plannings.where(id).first!.destroy
@@ -101,9 +101,9 @@ class V01::Plannings < Grape::API
     desc 'Delete multiple plannings.', {
       nickname: 'deletePlannings'
     }
-    params {
+    params do
       requires :ids, type: Array[Integer]
-    }
+    end
     delete do
       Planning.transaction do
         ids = params[:ids].collect(&:to_i)
@@ -115,9 +115,9 @@ class V01::Plannings < Grape::API
       nickname: 'refreshPlanning',
       entity: V01::Entities::Planning
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     get ':id/refresh' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
@@ -129,9 +129,9 @@ class V01::Plannings < Grape::API
     desc 'Switch two vehicles.', {
       nickname: 'switchVehicles'
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     patch ':id/switch' do
       # TODO
       error!('501 Not Implemented', 501)
@@ -140,9 +140,9 @@ class V01::Plannings < Grape::API
     desc 'Suggest a place for an unaffected stop.', {
       nickname: 'automaticInsertStop'
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     patch ':id/automatic_insert' do
       # TODO
       error!('501 Not Implemented', 501)
@@ -151,9 +151,9 @@ class V01::Plannings < Grape::API
     desc 'Starts asynchronous routes optimization.', {
       nickname: 'optimizeRoutes'
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     get ':id/optimize_each_routes' do
       # TODO
       error!('501 Not Implemented', 501)
@@ -163,9 +163,9 @@ class V01::Plannings < Grape::API
       nickname: 'clonePlanning',
       entity: V01::Entities::Planning
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     patch ':id/duplicate' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
@@ -178,11 +178,11 @@ class V01::Plannings < Grape::API
       nickname: 'useOrderArray',
       entity: V01::Entities::Planning
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
       requires :order_array_id, type: String
       requires :shift, type: Integer
-    }
+    end
     patch ':id/orders/:order_array_id/:shift' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!

@@ -25,15 +25,15 @@ class V01::Stops < Grape::API
   end
 
   resource :plannings do
-    params {
+    params do
       requires :planning_id, type: Integer
-    }
+    end
     segment '/:planning_id' do
 
       resource :routes do
-        params {
+        params do
           requires :route_id, type: Integer
-        }
+        end
         segment '/:route_id' do
 
           resource :stops do
@@ -41,9 +41,9 @@ class V01::Stops < Grape::API
               nickname: 'updateStop',
               params: V01::Entities::Stop.documentation.slice(:active),
             }
-            params {
+            params do
               requires :id, type: Integer
-            }
+            end
             put ':id' do
               planning_id = params[:planning_id].to_i
               route_id = params[:route_id].to_i
@@ -59,10 +59,10 @@ class V01::Stops < Grape::API
             desc 'Move stop position in routes.', {
               nickname: 'moveStop'
             }
-            params {
+            params do
               requires :id, type: Integer, desc: 'Stop id to move'
               requires :index, type: Integer, desc: 'New position in the route'
-            }
+            end
             patch ':id/move/:index' do
               planning_id = params[:planning_id].to_i
               route_id = params[:route_id].to_i

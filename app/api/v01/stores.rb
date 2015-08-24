@@ -33,9 +33,9 @@ class V01::Stores < Grape::API
       is_array: true,
       entity: V01::Entities::Store
     }
-    params {
+    params do
       optional :ids, type: Array[Integer], desc: 'Select returned stores by id.'
-    }
+    end
     get do
       stores = if params.key?(:ids)
         ids = params[:ids].collect(&:to_i)
@@ -50,9 +50,9 @@ class V01::Stores < Grape::API
       nickname: 'getStore',
       entity: V01::Entities::Store
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
       present current_customer.stores.where(id).first!, with: V01::Entities::Store
@@ -99,9 +99,9 @@ class V01::Stores < Grape::API
       params: V01::Entities::Store.documentation.except(:id),
       entity: V01::Entities::Store
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
       store = current_customer.stores.where(id).first!
@@ -114,9 +114,9 @@ class V01::Stores < Grape::API
     desc 'Delete store.', {
       nickname: 'deleteStore'
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       current_customer.stores.where(id).first!.destroy
@@ -125,9 +125,9 @@ class V01::Stores < Grape::API
     desc 'Delete multiple stores.', {
       nickname: 'deleteStores'
     }
-    params {
+    params do
       requires :ids, type: Array[Integer]
-    }
+    end
     delete do
       Store.transaction do
         ids = params[:ids].collect(&:to_i)

@@ -37,9 +37,9 @@ class V01::Customers < Grape::API
       is_array: true,
       entity: V01::Entities::Customer
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     get ':id' do
       present current_customer(params[:id]), with: V01::Entities::Customer
     end
@@ -49,9 +49,9 @@ class V01::Customers < Grape::API
       params: V01::Entities::Customer.documentation.except(:id),
       entity: V01::Entities::Customer
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     put ':id' do
       current_customer(params[:id])
       @current_customer.update(customer_params)
@@ -80,9 +80,9 @@ class V01::Customers < Grape::API
     desc 'Delete customer.', {
       nickname: 'deleteCustomer'
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     delete ':id' do
       if @current_user.admin?
         Customer.find(params[:id]).destroy
@@ -92,10 +92,10 @@ class V01::Customers < Grape::API
     desc 'Return a job', {
       nickname: 'getJob'
     }
-    params {
+    params do
       requires :id, type: Integer
       requires :job_id, type: Integer
-    }
+    end
     get ':id/job/:job_id' do
       current_customer(params[:id])
       if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
@@ -110,10 +110,10 @@ class V01::Customers < Grape::API
     desc 'Cancel job', {
       nickname: 'deleteJob'
     }
-    params {
+    params do
       requires :id, type: Integer
       requires :job_id, type: Integer
-    }
+    end
     delete ':id/job/:job_id' do
       current_customer(params[:id])
       if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
@@ -128,9 +128,9 @@ class V01::Customers < Grape::API
     desc 'Fetch tomtom ids.', {
       nickname: 'getTomtomIds'
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     get ':id/tomtom_ids' do
       current_customer(params[:id])
       Hash[Tomtom.fetch_device_id(@current_customer).collect{ |tomtom|

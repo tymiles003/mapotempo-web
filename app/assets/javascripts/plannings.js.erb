@@ -746,6 +746,7 @@ function plannings_edit(params) {
     display_planning(data);
     var bounds = routes_layers.getBounds();
     if (bounds && bounds.isValid()) {
+      map.invalidateSize();
       map.fitBounds(bounds);
     }
   }

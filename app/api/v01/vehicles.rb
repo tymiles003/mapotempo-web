@@ -33,9 +33,9 @@ class V01::Vehicles < Grape::API
       is_array: true,
       entity: V01::Entities::Vehicle
     }
-    params {
+    params do
       optional :ids, type: Array[Integer], desc: 'Select returned vehicles by id.'
-    }
+    end
     get do
       vehicles = if params.key?(:ids)
         ids = params[:ids].collect(&:to_i)
@@ -50,9 +50,9 @@ class V01::Vehicles < Grape::API
       nickname: 'getVehicle',
       entity: V01::Entities::Vehicle
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
       present current_customer.vehicles.where(id).first!, with: V01::Entities::Vehicle
@@ -63,9 +63,9 @@ class V01::Vehicles < Grape::API
       params: V01::Entities::Vehicle.documentation.except(:id),
       entity: V01::Entities::Vehicle
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
       vehicle = current_customer.vehicles.where(id).first!

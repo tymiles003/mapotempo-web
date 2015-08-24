@@ -31,9 +31,9 @@ class V01::Tags < Grape::API
       is_array: true,
       entity: V01::Entities::Tag
     }
-    params {
+    params do
       optional :ids, type: Array[Integer], desc: 'Select returned tags by id.'
-    }
+    end
     get do
       tags = if params.key?(:ids)
         ids = params[:ids].collect(&:to_i)
@@ -48,9 +48,9 @@ class V01::Tags < Grape::API
       nickname: 'getTag',
       entity: V01::Entities::Tag
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     get ':id' do
       present current_customer.tags.find(params[:id]), with: V01::Entities::Tag
     end
@@ -73,9 +73,9 @@ class V01::Tags < Grape::API
       params: V01::Entities::Tag.documentation.except(:id),
       entity: V01::Entities::Tag
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     put ':id' do
       tag = current_customer.tags.find(params[:id])
       tag.update(tag_params)
@@ -86,9 +86,9 @@ class V01::Tags < Grape::API
     desc 'Delete tag.', {
       nickname: 'deleteTag'
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     delete ':id' do
       current_customer.tags.find(params[:id]).destroy
     end
@@ -96,9 +96,9 @@ class V01::Tags < Grape::API
     desc 'Delete multiple tags.', {
       nickname: 'deleteTags'
     }
-    params {
+    params do
       requires :ids, type: Array[Integer]
-    }
+    end
     delete do
       Tag.transaction do
         ids = params[:ids].collect(&:to_i)

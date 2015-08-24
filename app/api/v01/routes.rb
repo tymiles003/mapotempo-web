@@ -28,9 +28,9 @@ class V01::Routes < Grape::API
   end
 
   resource :plannings do
-    params {
+    params do
       requires :planning_id, type: String, desc: ID_DESC
-    }
+    end
     segment '/:planning_id' do
 
       resource :routes do
@@ -39,9 +39,9 @@ class V01::Routes < Grape::API
           is_array: true,
           entity: V01::Entities::Route
         }
-        params {
+        params do
           optional :ids, type: Array[Integer], desc: 'Select returned routes by id.'
-        }
+        end
         get do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           routes = if params.key?(:ids)
@@ -57,9 +57,9 @@ class V01::Routes < Grape::API
           nickname: 'getRoute',
           entity: V01::Entities::Route
         }
-        params {
+        params do
           requires :id, type: Integer
-        }
+        end
         get ':id' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           id = ParseIdsRefs.read(params[:id])
@@ -71,9 +71,9 @@ class V01::Routes < Grape::API
           params: V01::Entities::Route.documentation.slice(:hidden, :locked),
           entity: V01::Entities::Route
         }
-        params {
+        params do
           requires :id, type: Integer
-        }
+        end
         put ':id' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           id = ParseIdsRefs.read(params[:id])
@@ -87,10 +87,10 @@ class V01::Routes < Grape::API
           nickname: 'activationStops',
           entity: V01::Entities::Route
         }
-        params {
+        params do
           requires :id, type: Integer
           requires :active, type: String, values: ['all', 'reverse', 'none']
-        }
+        end
         patch ':id/active/:active' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           planning = current_customer.plannings.where(planning_id).first!
@@ -104,10 +104,10 @@ class V01::Routes < Grape::API
         desc 'Move destination to routes. Append in order at end.', {
           nickname: 'moveDestinations'
         }
-        params {
+        params do
           requires :id, type: String
           requires :destination_ids, type: Array[Integer]
-        }
+        end
         patch ':id/destinations/moves' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           planning = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
@@ -129,9 +129,9 @@ class V01::Routes < Grape::API
         desc 'Starts asynchronous route optimization.', {
           nickname: 'optimizeRoute'
         }
-        params {
+        params do
           requires :id, type: Integer
-        }
+        end
         patch ':id/optimize' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           id = ParseIdsRefs.read(params[:id])

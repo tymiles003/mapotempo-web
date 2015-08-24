@@ -31,9 +31,9 @@ class V01::Orders < Grape::API
   end
 
   resource :order_arrays do
-    params {
+    params do
       requires :order_array_id, type: Integer
-    }
+    end
     segment '/:order_array_id' do
 
       resource :orders do
@@ -42,9 +42,9 @@ class V01::Orders < Grape::API
           is_array: true,
           entity: V01::Entities::Order
         }
-        params {
+        params do
           optional :ids, type: Array[Integer], desc: 'Select returned orders by id.'
-        }
+        end
         get do
           orders = if params.key?(:ids)
             ids = params[:ids].collect(&:to_i)
@@ -59,9 +59,9 @@ class V01::Orders < Grape::API
           nickname: 'getOrder',
           entity: V01::Entities::Order
         }
-        params {
+        params do
           requires :id, type: Integer
-        }
+        end
         get ':id' do
           present current_customer.order_arrays.find(params[:order_array_id]).orders.find(params[:id]), with: V01::Entities::Order
         end
@@ -71,9 +71,9 @@ class V01::Orders < Grape::API
           params: V01::Entities::Order.documentation.except(:id),
           entity: V01::Entities::Order
         }
-        params {
+        params do
           requires :id, type: Integer
-        }
+        end
         put ':id' do
           order = current_customer.order_arrays.find(params[:order_array_id]).orders.find(params[:id])
           p = order_params

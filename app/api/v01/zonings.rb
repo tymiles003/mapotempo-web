@@ -31,9 +31,9 @@ class V01::Zonings < Grape::API
       is_array: true,
       entity: V01::Entities::Zoning
     }
-    params {
+    params do
       optional :ids, type: Array[Integer], desc: 'Select returned zonings by id.'
-    }
+    end
     get do
       zonings = if params.key?(:ids)
         ids = params[:ids].collect(&:to_i)
@@ -48,9 +48,9 @@ class V01::Zonings < Grape::API
       nickname: 'getZoning',
       entity: V01::Entities::Zoning
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     get ':id' do
       present current_customer.zonings.find(params[:id]), with: V01::Entities::Zoning
     end
@@ -73,9 +73,9 @@ class V01::Zonings < Grape::API
       params: V01::Entities::Zoning.documentation.except(:id),
       entity: V01::Entities::Zoning
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     put ':id' do
       zoning = current_customer.zonings.find(params[:id])
       zoning.update(zoning_params)
@@ -86,9 +86,9 @@ class V01::Zonings < Grape::API
     desc 'Delete zoning.', {
       nickname: 'deleteZoning'
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     delete ':id' do
       current_customer.zonings.find(params[:id]).destroy
     end
@@ -96,9 +96,9 @@ class V01::Zonings < Grape::API
     desc 'Delete multiple zonings.', {
       nickname: 'deleteZonings'
     }
-    params {
+    params do
       requires :ids, type: Array[Integer]
-    }
+    end
     delete do
       Zoning.transaction do
         ids = params[:ids].collect(&:to_i)
@@ -109,10 +109,10 @@ class V01::Zonings < Grape::API
     desc 'Generate zoning from planning.', {
       nickname: 'generateFromPlanning'
     }
-    params {
+    params do
       requires :id, type: Integer
       requires :planning_id, type: Integer
-    }
+    end
     patch ':id/from_planning/:planning_id' do
       Zoning.transaction do
         zoning = current_customer.zonings.find(params[:id])
@@ -129,11 +129,11 @@ class V01::Zonings < Grape::API
     desc 'Generate zoning automatically.', {
       nickname: 'generateAutomatic'
     }
-    params {
+    params do
       requires :id, type: Integer
       requires :planning_id, type: Integer
       optional :n, type: Integer, desc: 'Number of produced zones. Default to vehicles number.'
-    }
+    end
     patch ':id/automatic/:planning_id' do
       Zoning.transaction do
         zoning = current_customer.zonings.find(params[:id])
@@ -150,10 +150,10 @@ class V01::Zonings < Grape::API
     desc 'Generate isochrone.', {
       nickname: 'generateIsochrone'
     }
-    params {
+    params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time.'
-    }
+    end
     patch ':id/isochrone' do
       Zoning.transaction do
         zoning = current_customer.zonings.find(params[:id])

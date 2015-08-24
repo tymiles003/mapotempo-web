@@ -35,9 +35,9 @@ class V01::Profiles < Grape::API
       is_array: true,
       entity: V01::Entities::Router
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     get ':id/routers' do
       if @current_user.admin?
         profile = Profile.find(params[:id])

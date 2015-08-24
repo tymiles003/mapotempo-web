@@ -33,9 +33,9 @@ class V01::Destinations < Grape::API
       is_array: true,
       entity: V01::Entities::Destination
     }
-    params {
+    params do
       optional :ids, type: Array[Integer], desc: 'Select returned destinations by id.'
-    }
+    end
     get do
       destinations = if params.key?(:ids)
         ids = params[:ids].collect(&:to_i)
@@ -50,9 +50,9 @@ class V01::Destinations < Grape::API
       nickname: 'getDestination',
       entity: V01::Entities::Destination
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
       present current_customer.destinations.where(id).first!, with: V01::Entities::Destination
@@ -99,9 +99,9 @@ class V01::Destinations < Grape::API
       params: V01::Entities::Destination.documentation.except(:id),
       entity: V01::Entities::Destination
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
       destination = current_customer.destinations.where(id).first!
@@ -114,9 +114,9 @@ class V01::Destinations < Grape::API
     desc 'Delete destination.', {
       nickname: 'deleteDestination'
     }
-    params {
+    params do
       requires :id, type: String, desc: ID_DESC
-    }
+    end
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       current_customer.destinations.where(id).first!.destroy
@@ -125,9 +125,9 @@ class V01::Destinations < Grape::API
     desc 'Delete multiple destinations.', {
       nickname: 'deleteDestinations'
     }
-    params {
+    params do
       requires :ids, type: Array[Integer]
-    }
+    end
     delete do
       Destination.transaction do
         ids = params[:ids].collect(&:to_i)

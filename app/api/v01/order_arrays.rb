@@ -36,9 +36,9 @@ class V01::OrderArrays < Grape::API
       is_array: true,
       entity: V01::Entities::OrderArray
     }
-    params {
+    params do
       optional :ids, type: Array[Integer], desc: 'Select returned order_arrays by id.'
-    }
+    end
     get do
       order_arrays = if params.key?(:ids)
         ids = params[:ids].collect(&:to_i)
@@ -53,9 +53,9 @@ class V01::OrderArrays < Grape::API
       nickname: 'getOrderArray',
       entity: V01::Entities::OrderArray
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     get ':id' do
       present current_customer.order_arrays.find(params[:id]), with: V01::Entities::OrderArray
     end
@@ -80,9 +80,9 @@ class V01::OrderArrays < Grape::API
       params: V01::Entities::OrderArray.documentation.except(:id, :orders),
       entity: V01::Entities::OrderArray
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     put ':id' do
       order_array = current_customer.order_arrays.find(params[:id])
       order_array.update(order_array_params)
@@ -93,9 +93,9 @@ class V01::OrderArrays < Grape::API
     desc 'Delete order_array.', {
       nickname: 'deleteOrderArray'
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     delete ':id' do
       current_customer.order_arrays.find(params[:id]).destroy
     end
@@ -103,9 +103,9 @@ class V01::OrderArrays < Grape::API
     desc 'Delete multiple order_arrays.', {
       nickname: 'deleteOrderArrays'
     }
-    params {
+    params do
       requires :ids, type: Array[Integer]
-    }
+    end
     delete do
       OrderArray.transaction do
         ids = params[:ids].collect(&:to_i)
@@ -117,9 +117,9 @@ class V01::OrderArrays < Grape::API
       nickname: 'cloneOrderArray',
       entity: V01::Entities::OrderArray
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     patch ':id/duplicate' do
       order_array = current_customer.order_arrays.find(params[:id])
       order_array = order_array.amoeba_dup
@@ -130,9 +130,9 @@ class V01::OrderArrays < Grape::API
     desc 'Orders mass assignment.', {
       nickname: 'massAssignmentOrder'
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     patch ':id' do
       if params[:orders]
         order_array = current_customer.order_arrays.find(params[:id])

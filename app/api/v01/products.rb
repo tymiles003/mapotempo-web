@@ -31,9 +31,9 @@ class V01::Products < Grape::API
       is_array: true,
       entity: V01::Entities::Product
     }
-    params {
+    params do
       optional :ids, type: Array[Integer], desc: 'Select returned products by id.'
-    }
+    end
     get do
       products = if params.key?(:ids)
         ids = params[:ids].collect(&:to_i)
@@ -48,9 +48,9 @@ class V01::Products < Grape::API
       nickname: 'getProduct',
       entity: V01::Entities::Product
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     get ':id' do
       present current_customer.products.find(params[:id]), with: V01::Entities::Product
     end
@@ -74,9 +74,9 @@ class V01::Products < Grape::API
       params: V01::Entities::Product.documentation.except(:id),
       entity: V01::Entities::Product
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     put ':id' do
       product = current_customer.products.find(params[:id])
       product.update(product_params)
@@ -87,9 +87,9 @@ class V01::Products < Grape::API
     desc 'Delete product.', {
       nickname: 'deleteProduct'
     }
-    params {
+    params do
       requires :id, type: Integer
-    }
+    end
     delete ':id' do
       current_customer.products.find(params[:id]).destroy
     end
@@ -97,9 +97,9 @@ class V01::Products < Grape::API
     desc 'Delete multiple products.', {
       nickname: 'deleteProducts'
     }
-    params {
+    params do
       requires :ids, type: Array[Integer]
-    }
+    end
     delete do
       Product.transaction do
         ids = params[:ids].collect(&:to_i)
