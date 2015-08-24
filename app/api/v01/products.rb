@@ -26,11 +26,10 @@ class V01::Products < Grape::API
   end
 
   resource :products do
-    desc 'Fetch customer\'s products.', {
+    desc 'Fetch customer\'s products.',
       nickname: 'getProducts',
       is_array: true,
       entity: V01::Entities::Product
-    }
     params do
       optional :ids, type: Array[Integer], desc: 'Select returned products by id.'
     end
@@ -44,10 +43,9 @@ class V01::Products < Grape::API
       present products, with: V01::Entities::Product
     end
 
-    desc 'Fetch product.', {
+    desc 'Fetch product.',
       nickname: 'getProduct',
       entity: V01::Entities::Product
-    }
     params do
       requires :id, type: Integer
     end
@@ -55,25 +53,23 @@ class V01::Products < Grape::API
       present current_customer.products.find(params[:id]), with: V01::Entities::Product
     end
 
-    desc 'Create product.', {
+    desc 'Create product.',
       nickname: 'createProduct',
       params: V01::Entities::Product.documentation.except(:id).merge({
         code: { required: true },
         name: { required: true }
       }),
       entity: V01::Entities::Product
-    }
     post do
       product = current_customer.products.build(product_params)
       product.save!
       present product, with: V01::Entities::Product
     end
 
-    desc 'Update product.', {
+    desc 'Update product.',
       nickname: 'updateProduct',
       params: V01::Entities::Product.documentation.except(:id),
       entity: V01::Entities::Product
-    }
     params do
       requires :id, type: Integer
     end
@@ -84,9 +80,8 @@ class V01::Products < Grape::API
       present product, with: V01::Entities::Product
     end
 
-    desc 'Delete product.', {
+    desc 'Delete product.',
       nickname: 'deleteProduct'
-    }
     params do
       requires :id, type: Integer
     end
@@ -94,9 +89,8 @@ class V01::Products < Grape::API
       current_customer.products.find(params[:id]).destroy
     end
 
-    desc 'Delete multiple products.', {
+    desc 'Delete multiple products.',
       nickname: 'deleteProducts'
-    }
     params do
       requires :ids, type: Array[Integer]
     end

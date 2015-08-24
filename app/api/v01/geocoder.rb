@@ -28,9 +28,8 @@ class V01::Geocoder < Grape::API
   end
 
   resource :geocoder do
-    desc 'Geocode.', {
+    desc 'Geocode.',
       nickname: 'geocode'
-    }
     params do
       requires :q, type: String, desc: 'Free query string.'
     end

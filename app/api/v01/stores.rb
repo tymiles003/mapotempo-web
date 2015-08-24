@@ -28,11 +28,10 @@ class V01::Stores < Grape::API
   end
 
   resource :stores do
-    desc 'Fetch customer\'s stores.', {
+    desc 'Fetch customer\'s stores.',
       nickname: 'getStores',
       is_array: true,
       entity: V01::Entities::Store
-    }
     params do
       optional :ids, type: Array[Integer], desc: 'Select returned stores by id.'
     end
@@ -46,10 +45,9 @@ class V01::Stores < Grape::API
       present stores, with: V01::Entities::Store
     end
 
-    desc 'Fetch store.', {
+    desc 'Fetch store.',
       nickname: 'getStore',
       entity: V01::Entities::Store
-    }
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -58,24 +56,22 @@ class V01::Stores < Grape::API
       present current_customer.stores.where(id).first!, with: V01::Entities::Store
     end
 
-    desc 'Create store.', {
+    desc 'Create store.',
       nickname: 'createStore',
       params: V01::Entities::Store.documentation.except(:id).merge({
         name: { required: true },
         city: { required: true }
       }),
       entity: V01::Entities::Store
-    }
     post do
       store = current_customer.stores.build(store_params)
       current_customer.save!
       present store, with: V01::Entities::Store
     end
 
-    desc 'Import stores by upload a CSV file or by JSON', {
+    desc 'Import stores by upload a CSV file or by JSON',
       nickname: 'importStores',
       params: V01::Entities::StoresImport.documentation
-    }
     put do
       if params[:stores]
         stores_import = DestinationsImport.new
@@ -94,11 +90,10 @@ class V01::Stores < Grape::API
       end
     end
 
-    desc 'Update store.', {
+    desc 'Update store.',
       nickname: 'updateStore',
       params: V01::Entities::Store.documentation.except(:id),
       entity: V01::Entities::Store
-    }
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -111,9 +106,8 @@ class V01::Stores < Grape::API
       present store, with: V01::Entities::Store
     end
 
-    desc 'Delete store.', {
+    desc 'Delete store.',
       nickname: 'deleteStore'
-    }
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -122,9 +116,8 @@ class V01::Stores < Grape::API
       current_customer.stores.where(id).first!.destroy
     end
 
-    desc 'Delete multiple stores.', {
+    desc 'Delete multiple stores.',
       nickname: 'deleteStores'
-    }
     params do
       requires :ids, type: Array[Integer]
     end
@@ -135,11 +128,10 @@ class V01::Stores < Grape::API
       end
     end
 
-    desc 'Geocode store.', {
+    desc 'Geocode store.',
       nickname: 'geocodeStore',
       params: V01::Entities::Store.documentation.except(:id),
       entity: V01::Entities::Store
-    }
     patch 'geocode' do
       store = Store.new(store_params)
       store.geocode
@@ -147,10 +139,9 @@ class V01::Stores < Grape::API
     end
 
     if Mapotempo::Application.config.geocode_complete
-      desc 'Auto completion on store.', {
+      desc 'Auto completion on store.',
         nickname: 'autocompleteStore',
         params: V01::Entities::Store.documentation.except(:id)
-      }
       patch 'geocode_complete' do
         p = store_params
         address_list = Geocode.complete(current_customer.stores[0].lat, current_customer.stores[0].lng, 40000, p[:street], p[:postalcode], p[:city])

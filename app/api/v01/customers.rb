@@ -32,11 +32,10 @@ class V01::Customers < Grape::API
   end
 
   resource :customers do
-    desc 'Fetch customer.', {
+    desc 'Fetch customer.',
       nickname: 'getCustomer',
       is_array: true,
       entity: V01::Entities::Customer
-    }
     params do
       requires :id, type: Integer
     end
@@ -44,11 +43,10 @@ class V01::Customers < Grape::API
       present current_customer(params[:id]), with: V01::Entities::Customer
     end
 
-    desc 'Update customer.', {
+    desc 'Update customer.',
       nickname: 'updateCustomer',
       params: V01::Entities::Customer.documentation.except(:id),
       entity: V01::Entities::Customer
-    }
     params do
       requires :id, type: Integer
     end
@@ -59,7 +57,7 @@ class V01::Customers < Grape::API
       present @current_customer, with: V01::Entities::Customer
     end
 
-    desc 'Create customer.', {
+    desc 'Create customer.',
       nickname: 'createCustomer',
       params: V01::Entities::Customer.documentation.except(:id).merge({
         name: { required: true },
@@ -68,7 +66,6 @@ class V01::Customers < Grape::API
         profile_id: { required: true }
       }),
       entity: V01::Entities::Customer
-    }
     post do
       if @current_user.admin?
         customer = Customer.new(customer_params)
@@ -77,9 +74,8 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Delete customer.', {
+    desc 'Delete customer.',
       nickname: 'deleteCustomer'
-    }
     params do
       requires :id, type: Integer
     end
@@ -89,9 +85,8 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Return a job', {
+    desc 'Return a job',
       nickname: 'getJob'
-    }
     params do
       requires :id, type: Integer
       requires :job_id, type: Integer
@@ -107,9 +102,8 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Cancel job', {
+    desc 'Cancel job',
       nickname: 'deleteJob'
-    }
     params do
       requires :id, type: Integer
       requires :job_id, type: Integer
@@ -125,9 +119,8 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Fetch tomtom ids.', {
+    desc 'Fetch tomtom ids.',
       nickname: 'getTomtomIds'
-    }
     params do
       requires :id, type: Integer
     end

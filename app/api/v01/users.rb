@@ -30,19 +30,17 @@ class V01::Users < Grape::API
   end
 
   resource :users do
-    desc 'Fetch customer\'s users.', {
+    desc 'Fetch customer\'s users.',
       nickname: 'getUsers',
       is_array: true,
       entity: V01::Entities::User
-    }
     get do
       present current_customer.users.load, with: V01::Entities::User
     end
 
-    desc 'Fetch user.', {
+    desc 'Fetch user.',
       nickname: 'getUser',
       entity: V01::Entities::User
-    }
     params do
       requires :id, type: Integer
     end
@@ -54,7 +52,7 @@ class V01::Users < Grape::API
       end
     end
 
-    desc 'Create user.', {
+    desc 'Create user.',
       nickname: 'createUser',
       params: V01::Entities::User.documentation.except(:id).merge({
         email: { required: true },
@@ -63,7 +61,6 @@ class V01::Users < Grape::API
         layer_id: { required: true }
       }),
       entity: V01::Entities::User
-    }
     post do
       if @current_user.admin?
         customer = Customer.find(params[:customer_id])
@@ -76,11 +73,10 @@ class V01::Users < Grape::API
       end
     end
 
-    desc 'Update user.', {
+    desc 'Update user.',
       nickname: 'updateUser',
       params: V01::Entities::User.documentation.except(:id),
       entity: V01::Entities::User
-    }
     params do
       requires :id, type: Integer
     end
@@ -91,9 +87,8 @@ class V01::Users < Grape::API
       present user, with: V01::Entities::User
     end
 
-    desc 'Delete user.', {
+    desc 'Delete user.',
       nickname: 'deleteUser'
-    }
     params do
       requires :id, type: Integer
     end
@@ -106,9 +101,8 @@ class V01::Users < Grape::API
       end
     end
 
-    desc 'Delete multiple users.', {
+    desc 'Delete multiple users.',
       nickname: 'deleteUsers'
-    }
     params do
       requires :ids, type: Array[Integer]
     end

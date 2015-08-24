@@ -17,11 +17,10 @@
 #
 class V01::Layers < Grape::API
   resource :layers do
-    desc 'Fetch layers.', {
+    desc 'Fetch layers.',
       nickname: 'getLayers',
       is_array: true,
       entity: V01::Entities::Layer
-    }
     get do
       present current_customer.profile.layers.load, with: V01::Entities::Layer
     end

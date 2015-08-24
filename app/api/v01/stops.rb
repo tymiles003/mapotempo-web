@@ -37,10 +37,9 @@ class V01::Stops < Grape::API
         segment '/:route_id' do
 
           resource :stops do
-            desc 'Update stop.', {
+            desc 'Update stop.',
               nickname: 'updateStop',
-              params: V01::Entities::Stop.documentation.slice(:active),
-            }
+              params: V01::Entities::Stop.documentation.slice(:active)
             params do
               requires :id, type: Integer
             end
@@ -56,9 +55,8 @@ class V01::Stops < Grape::API
               status 204
             end
 
-            desc 'Move stop position in routes.', {
+            desc 'Move stop position in routes.',
               nickname: 'moveStop'
-            }
             params do
               requires :id, type: Integer, desc: 'Stop id to move'
               requires :index, type: Integer, desc: 'New position in the route'

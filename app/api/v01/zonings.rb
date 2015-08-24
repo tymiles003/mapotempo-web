@@ -26,11 +26,10 @@ class V01::Zonings < Grape::API
   end
 
   resource :zonings do
-    desc 'Fetch customer\'s zonings.', {
+    desc 'Fetch customer\'s zonings.',
       nickname: 'getZonings',
       is_array: true,
       entity: V01::Entities::Zoning
-    }
     params do
       optional :ids, type: Array[Integer], desc: 'Select returned zonings by id.'
     end
@@ -44,10 +43,9 @@ class V01::Zonings < Grape::API
       present zonings, with: V01::Entities::Zoning
     end
 
-    desc 'Fetch zoning.', {
+    desc 'Fetch zoning.',
       nickname: 'getZoning',
       entity: V01::Entities::Zoning
-    }
     params do
       requires :id, type: Integer
     end
@@ -55,24 +53,22 @@ class V01::Zonings < Grape::API
       present current_customer.zonings.find(params[:id]), with: V01::Entities::Zoning
     end
 
-    desc 'Create zoning.', {
+    desc 'Create zoning.',
       nickname: 'createZoning',
       params: V01::Entities::Zoning.documentation.except(:id).merge({
         name: { required: true }
       }),
       entity: V01::Entities::Zoning
-    }
     post do
       zoning = current_customer.zonings.build(zoning_params)
       zoning.save!
       present zoning, with: V01::Entities::Zoning
     end
 
-    desc 'Update zoning.', {
+    desc 'Update zoning.',
       nickname: 'updateZoning',
       params: V01::Entities::Zoning.documentation.except(:id),
       entity: V01::Entities::Zoning
-    }
     params do
       requires :id, type: Integer
     end
@@ -83,9 +79,8 @@ class V01::Zonings < Grape::API
       present zoning, with: V01::Entities::Zoning
     end
 
-    desc 'Delete zoning.', {
+    desc 'Delete zoning.',
       nickname: 'deleteZoning'
-    }
     params do
       requires :id, type: Integer
     end
@@ -93,9 +88,8 @@ class V01::Zonings < Grape::API
       current_customer.zonings.find(params[:id]).destroy
     end
 
-    desc 'Delete multiple zonings.', {
+    desc 'Delete multiple zonings.',
       nickname: 'deleteZonings'
-    }
     params do
       requires :ids, type: Array[Integer]
     end
@@ -106,9 +100,8 @@ class V01::Zonings < Grape::API
       end
     end
 
-    desc 'Generate zoning from planning.', {
+    desc 'Generate zoning from planning.',
       nickname: 'generateFromPlanning'
-    }
     params do
       requires :id, type: Integer
       requires :planning_id, type: Integer
@@ -126,9 +119,8 @@ class V01::Zonings < Grape::API
       end
     end
 
-    desc 'Generate zoning automatically.', {
+    desc 'Generate zoning automatically.',
       nickname: 'generateAutomatic'
-    }
     params do
       requires :id, type: Integer
       requires :planning_id, type: Integer
@@ -147,9 +139,8 @@ class V01::Zonings < Grape::API
       end
     end
 
-    desc 'Generate isochrone.', {
+    desc 'Generate isochrone.',
       nickname: 'generateIsochrone'
-    }
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time.'

@@ -31,11 +31,10 @@ class V01::OrderArrays < Grape::API
   end
 
   resource :order_arrays do
-    desc 'Fetch customer\'s order_arrays.', {
+    desc 'Fetch customer\'s order_arrays.',
       nickname: 'getOrderArrays',
       is_array: true,
       entity: V01::Entities::OrderArray
-    }
     params do
       optional :ids, type: Array[Integer], desc: 'Select returned order_arrays by id.'
     end
@@ -49,10 +48,9 @@ class V01::OrderArrays < Grape::API
       present order_arrays, with: V01::Entities::OrderArray
     end
 
-    desc 'Fetch order_array.', {
+    desc 'Fetch order_array.',
       nickname: 'getOrderArray',
       entity: V01::Entities::OrderArray
-    }
     params do
       requires :id, type: Integer
     end
@@ -60,7 +58,7 @@ class V01::OrderArrays < Grape::API
       present current_customer.order_arrays.find(params[:id]), with: V01::Entities::OrderArray
     end
 
-    desc 'Create order_array.', {
+    desc 'Create order_array.',
       nickname: 'createOrderArray',
       params: V01::Entities::OrderArray.documentation.except(:id, :orders).merge({
         name: { required: true },
@@ -68,18 +66,16 @@ class V01::OrderArrays < Grape::API
         length: { required: true }
       }),
       entity: V01::Entities::OrderArray
-    }
     post do
       order_array = current_customer.order_arrays.build(order_array_params)
       order_array.save!
       present order_array, with: V01::Entities::OrderArray
     end
 
-    desc 'Update order_array.', {
+    desc 'Update order_array.',
       nickname: 'updateOrderArray',
       params: V01::Entities::OrderArray.documentation.except(:id, :orders),
       entity: V01::Entities::OrderArray
-    }
     params do
       requires :id, type: Integer
     end
@@ -90,9 +86,8 @@ class V01::OrderArrays < Grape::API
       present order_array, with: V01::Entities::OrderArray
     end
 
-    desc 'Delete order_array.', {
+    desc 'Delete order_array.',
       nickname: 'deleteOrderArray'
-    }
     params do
       requires :id, type: Integer
     end
@@ -100,9 +95,8 @@ class V01::OrderArrays < Grape::API
       current_customer.order_arrays.find(params[:id]).destroy
     end
 
-    desc 'Delete multiple order_arrays.', {
+    desc 'Delete multiple order_arrays.',
       nickname: 'deleteOrderArrays'
-    }
     params do
       requires :ids, type: Array[Integer]
     end
@@ -113,10 +107,9 @@ class V01::OrderArrays < Grape::API
       end
     end
 
-    desc 'Clone the order_array.', {
+    desc 'Clone the order_array.',
       nickname: 'cloneOrderArray',
       entity: V01::Entities::OrderArray
-    }
     params do
       requires :id, type: Integer
     end
@@ -127,9 +120,8 @@ class V01::OrderArrays < Grape::API
       present order_array, with: V01::Entities::OrderArray
     end
 
-    desc 'Orders mass assignment.', {
+    desc 'Orders mass assignment.',
       nickname: 'massAssignmentOrder'
-    }
     params do
       requires :id, type: Integer
     end

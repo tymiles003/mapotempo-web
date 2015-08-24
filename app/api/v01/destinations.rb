@@ -28,11 +28,10 @@ class V01::Destinations < Grape::API
   end
 
   resource :destinations do
-    desc 'Fetch customer\'s destinations.', {
+    desc 'Fetch customer\'s destinations.',
       nickname: 'getDestinations',
       is_array: true,
       entity: V01::Entities::Destination
-    }
     params do
       optional :ids, type: Array[Integer], desc: 'Select returned destinations by id.'
     end
@@ -46,10 +45,9 @@ class V01::Destinations < Grape::API
       present destinations, with: V01::Entities::Destination
     end
 
-    desc 'Fetch destination.', {
+    desc 'Fetch destination.',
       nickname: 'getDestination',
       entity: V01::Entities::Destination
-    }
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -58,13 +56,12 @@ class V01::Destinations < Grape::API
       present current_customer.destinations.where(id).first!, with: V01::Entities::Destination
     end
 
-    desc 'Create destination.', {
+    desc 'Create destination.',
       nickname: 'createDestination',
       params: V01::Entities::Destination.documentation.except(:id).merge({
         name: { required: true }
       }),
       entity: V01::Entities::Destination
-    }
     post do
       destination = current_customer.destinations.build(destination_params)
       destination.save!
@@ -72,10 +69,9 @@ class V01::Destinations < Grape::API
       present destination, with: V01::Entities::Destination
     end
 
-    desc 'Import destinations by upload a CSV file or by JSON', {
+    desc 'Import destinations by upload a CSV file or by JSON',
       nickname: 'importDestinations',
       params: V01::Entities::DestinationsImport.documentation
-    }
     put do
       if params['destinations']
         destinations_import = DestinationsImport.new
@@ -94,11 +90,10 @@ class V01::Destinations < Grape::API
       end
     end
 
-    desc 'Update destination.', {
+    desc 'Update destination.',
       nickname: 'updateDestination',
       params: V01::Entities::Destination.documentation.except(:id),
       entity: V01::Entities::Destination
-    }
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -111,9 +106,8 @@ class V01::Destinations < Grape::API
       present destination, with: V01::Entities::Destination
     end
 
-    desc 'Delete destination.', {
+    desc 'Delete destination.',
       nickname: 'deleteDestination'
-    }
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -122,9 +116,8 @@ class V01::Destinations < Grape::API
       current_customer.destinations.where(id).first!.destroy
     end
 
-    desc 'Delete multiple destinations.', {
+    desc 'Delete multiple destinations.',
       nickname: 'deleteDestinations'
-    }
     params do
       requires :ids, type: Array[Integer]
     end
@@ -135,11 +128,10 @@ class V01::Destinations < Grape::API
       end
     end
 
-    desc 'Geocode destination.', {
+    desc 'Geocode destination.',
       nickname: 'geocodeDestination',
       params: V01::Entities::Destination.documentation.except(:id),
       entity: V01::Entities::Destination
-    }
     patch 'geocode' do
       destination = Destination.new(destination_params)
       destination.geocode
@@ -147,10 +139,9 @@ class V01::Destinations < Grape::API
     end
 
     if Mapotempo::Application.config.geocode_complete
-      desc 'Auto completion on destination.', {
+      desc 'Auto completion on destination.',
         nickname: 'autocompleteDestination',
         params: V01::Entities::Destination.documentation.except(:id)
-      }
       patch 'geocode_complete' do
         p = destination_params
         address_list = Geocode.complete(current_customer.stores[0].lat, current_customer.stores[0].lng, 40000, p[:street], p[:postalcode], p[:city])

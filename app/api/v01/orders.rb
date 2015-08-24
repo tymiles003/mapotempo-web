@@ -37,11 +37,10 @@ class V01::Orders < Grape::API
     segment '/:order_array_id' do
 
       resource :orders do
-        desc 'Fetch order_array\'s orders.', {
+        desc 'Fetch order_array\'s orders.',
           nickname: 'getOrders',
           is_array: true,
           entity: V01::Entities::Order
-        }
         params do
           optional :ids, type: Array[Integer], desc: 'Select returned orders by id.'
         end
@@ -55,10 +54,9 @@ class V01::Orders < Grape::API
           present orders, with: V01::Entities::Order
         end
 
-        desc 'Fetch order.', {
+        desc 'Fetch order.',
           nickname: 'getOrder',
           entity: V01::Entities::Order
-        }
         params do
           requires :id, type: Integer
         end
@@ -66,11 +64,10 @@ class V01::Orders < Grape::API
           present current_customer.order_arrays.find(params[:order_array_id]).orders.find(params[:id]), with: V01::Entities::Order
         end
 
-        desc 'Update order.', {
+        desc 'Update order.',
           nickname: 'updateOrder',
           params: V01::Entities::Order.documentation.except(:id),
           entity: V01::Entities::Order
-        }
         params do
           requires :id, type: Integer
         end

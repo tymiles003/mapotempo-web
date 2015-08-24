@@ -28,11 +28,10 @@ class V01::Vehicles < Grape::API
   end
 
   resource :vehicles do
-    desc 'Fetch customer\'s vehicles.', {
+    desc 'Fetch customer\'s vehicles.',
       nickname: 'getVehicles',
       is_array: true,
       entity: V01::Entities::Vehicle
-    }
     params do
       optional :ids, type: Array[Integer], desc: 'Select returned vehicles by id.'
     end
@@ -46,10 +45,9 @@ class V01::Vehicles < Grape::API
       present vehicles, with: V01::Entities::Vehicle
     end
 
-    desc 'Fetch vehicle.', {
+    desc 'Fetch vehicle.',
       nickname: 'getVehicle',
       entity: V01::Entities::Vehicle
-    }
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -58,11 +56,10 @@ class V01::Vehicles < Grape::API
       present current_customer.vehicles.where(id).first!, with: V01::Entities::Vehicle
     end
 
-    desc 'Update vehicle.', {
+    desc 'Update vehicle.',
       nickname: 'updateVehicle',
       params: V01::Entities::Vehicle.documentation.except(:id),
       entity: V01::Entities::Vehicle
-    }
     params do
       requires :id, type: String, desc: ID_DESC
     end

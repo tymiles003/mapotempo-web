@@ -34,11 +34,10 @@ class V01::Routes < Grape::API
     segment '/:planning_id' do
 
       resource :routes do
-        desc 'Fetch planning\'s routes.', {
+        desc 'Fetch planning\'s routes.',
           nickname: 'getRoutes',
           is_array: true,
           entity: V01::Entities::Route
-        }
         params do
           optional :ids, type: Array[Integer], desc: 'Select returned routes by id.'
         end
@@ -53,10 +52,9 @@ class V01::Routes < Grape::API
           present routes, with: V01::Entities::Route
         end
 
-        desc 'Fetch route.', {
+        desc 'Fetch route.',
           nickname: 'getRoute',
           entity: V01::Entities::Route
-        }
         params do
           requires :id, type: Integer
         end
@@ -66,11 +64,10 @@ class V01::Routes < Grape::API
           present current_customer.plannings.where(planning_id).first!.routes.where(id).first!, with: V01::Entities::Route
         end
 
-        desc 'Update route.', {
+        desc 'Update route.',
           nickname: 'updateRoute',
           params: V01::Entities::Route.documentation.slice(:hidden, :locked),
           entity: V01::Entities::Route
-        }
         params do
           requires :id, type: Integer
         end
@@ -83,10 +80,9 @@ class V01::Routes < Grape::API
           present route, with: V01::Entities::Route
         end
 
-        desc 'Change stops activation.', {
+        desc 'Change stops activation.',
           nickname: 'activationStops',
           entity: V01::Entities::Route
-        }
         params do
           requires :id, type: Integer
           requires :active, type: String, values: ['all', 'reverse', 'none']
@@ -101,9 +97,8 @@ class V01::Routes < Grape::API
           end
         end
 
-        desc 'Move destination to routes. Append in order at end.', {
+        desc 'Move destination to routes. Append in order at end.',
           nickname: 'moveDestinations'
-        }
         params do
           requires :id, type: String
           requires :destination_ids, type: Array[Integer]
@@ -126,9 +121,8 @@ class V01::Routes < Grape::API
           end
         end
 
-        desc 'Starts asynchronous route optimization.', {
+        desc 'Starts asynchronous route optimization.',
           nickname: 'optimizeRoute'
-        }
         params do
           requires :id, type: Integer
         end

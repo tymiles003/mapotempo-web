@@ -17,11 +17,10 @@
 #
 class V01::Profiles < Grape::API
   resource :profiles do
-    desc 'Fetch profiles.', {
+    desc 'Fetch profiles.',
       nickname: 'getProfiles',
       is_array: true,
       entity: V01::Entities::Profile
-    }
     get do
       if @current_user.admin?
         present Profile.all, with: V01::Entities::Profile
@@ -30,11 +29,10 @@ class V01::Profiles < Grape::API
       end
     end
 
-    desc 'Fetch routers in the profile', {
+    desc 'Fetch routers in the profile',
       nickname: 'getProfileRouters',
       is_array: true,
       entity: V01::Entities::Router
-    }
     params do
       requires :id, type: Integer
     end
