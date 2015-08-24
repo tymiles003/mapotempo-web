@@ -21,9 +21,6 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 
   def setup
-    uri_template = Addressable::Template.new('services.gisgraphy.com/street/streetsearch{?format}{&other*}')
-    @stub_gisgraphy = stub_request(:get, uri_template).to_return(:status => 503, :body => '503 Service Temporarily Unavailable', :headers => {})
-
     uri_template = Addressable::Template.new('gpp3-wxs.ign.fr/{api_key}/geoportail/ols')
     @stub_GeocodeRequest = stub_request(:post, uri_template).with { |request|
       request.body.include?("methodName='GeocodeRequest'")
@@ -36,7 +33,6 @@ class ActiveSupport::TestCase
   end
 
   def teardown
-    remove_request_stub(@stub_gisgraphy)
     remove_request_stub(@stub_GeocodeRequest)
     remove_request_stub(@stub_LocationUtilityService)
   end

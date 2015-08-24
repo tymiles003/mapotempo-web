@@ -91,28 +91,7 @@ module Geocode
   end
 
   def self.complete(lat, lng, radius, street, postalcode, city)
-    key = [lat, lng, radius, street, postalcode, city]
-
-    result = @cache_complete.read(key)
-    if !result
-      url = URI::HTTP.build(host: 'services.gisgraphy.com', path: '/street/streetsearch', query: {
-        format: 'json',
-        lat: lat,
-        lng: lng,
-        from: 1,
-        to: 20,
-        radius: radius,
-#        name: "#{street}, #{postalcode} #{city}",
-        name: street,
-      }.to_query)
-      Rails.logger.info "get #{url}"
-      result = JSON.parse(open(url).read)
-      @cache_complete.write(key, result)
-    end
-
-    result['result'].collect{ |r|
-      [r['name'], '0', r['isIn']]
-    }
+    []
   end
 
   def self.code(street, postalcode, city)
