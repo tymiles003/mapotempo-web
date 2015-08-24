@@ -22,5 +22,5 @@ class V01::Entities::DestinationsImport < Grape::Entity
 
   expose(:replace, documentation: { type: 'Boolean' })
   expose(:file, documentation: { type: Rack::Multipart::UploadedFile, desc: 'CSV file, encoding, separator and line return automatically detected, with localized CSV header according to HTTP header Accept-Language' })
-  expose(:destinations, using: V01::Entities::DestinationImportJson, documentation: { type: V01::Entities::DestinationImportJson, is_array: true , desc: 'In mutual exclusion with CSV file upload.'})
+  expose(:destinations, using: V01::Entities::DestinationImportJson, documentation: { type: V01::Entities::DestinationImportJson, is_array: true, desc: 'In mutual exclusion with CSV file upload.'})
 end
