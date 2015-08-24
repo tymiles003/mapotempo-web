@@ -24,12 +24,12 @@ class V01::Routes < Grape::API
       p.permit(:hidden, :locked, :ref, :color)
     end
 
-    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :plannings do
     params {
-      requires :planning_id, type: String, desc: Id_desc
+      requires :planning_id, type: String, desc: ID_DESC
     }
     segment '/:planning_id' do
 

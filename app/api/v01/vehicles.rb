@@ -24,7 +24,7 @@ class V01::Vehicles < Grape::API
       p.permit(:ref, :name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :masternaut_ref, :store_start_id, :store_stop_id, :router_id, :speed_multiplicator, :rest_start, :rest_stop, :rest_duration, :store_rest_id)
     end
 
-    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :vehicles do
@@ -51,7 +51,7 @@ class V01::Vehicles < Grape::API
       entity: V01::Entities::Vehicle
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -64,7 +64,7 @@ class V01::Vehicles < Grape::API
       entity: V01::Entities::Vehicle
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     put ':id' do
       id = ParseIdsRefs.read(params[:id])

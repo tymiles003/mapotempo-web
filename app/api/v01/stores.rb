@@ -24,7 +24,7 @@ class V01::Stores < Grape::API
       p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng, :open, :close)
     end
 
-    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :stores do
@@ -51,7 +51,7 @@ class V01::Stores < Grape::API
       entity: V01::Entities::Store
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -100,7 +100,7 @@ class V01::Stores < Grape::API
       entity: V01::Entities::Store
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -115,7 +115,7 @@ class V01::Stores < Grape::API
       nickname: 'deleteStore'
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])

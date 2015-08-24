@@ -24,7 +24,7 @@ class V01::Plannings < Grape::API
       p.permit(:name, :ref, :date, :zoning_id, tag_ids: [])
     end
 
-    Id_desc = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :plannings do
@@ -51,7 +51,7 @@ class V01::Plannings < Grape::API
       entity: V01::Entities::Planning
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -77,7 +77,7 @@ class V01::Plannings < Grape::API
       entity: V01::Entities::Planning
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -91,7 +91,7 @@ class V01::Plannings < Grape::API
       nickname: 'deletePlanning'
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -116,7 +116,7 @@ class V01::Plannings < Grape::API
       entity: V01::Entities::Planning
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     get ':id/refresh' do
       id = ParseIdsRefs.read(params[:id])
@@ -130,7 +130,7 @@ class V01::Plannings < Grape::API
       nickname: 'switchVehicles'
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     patch ':id/switch' do
       # TODO
@@ -141,7 +141,7 @@ class V01::Plannings < Grape::API
       nickname: 'automaticInsertStop'
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     patch ':id/automatic_insert' do
       # TODO
@@ -152,7 +152,7 @@ class V01::Plannings < Grape::API
       nickname: 'optimizeRoutes'
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     get ':id/optimize_each_routes' do
       # TODO
@@ -164,7 +164,7 @@ class V01::Plannings < Grape::API
       entity: V01::Entities::Planning
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
     }
     patch ':id/duplicate' do
       id = ParseIdsRefs.read(params[:id])
@@ -179,7 +179,7 @@ class V01::Plannings < Grape::API
       entity: V01::Entities::Planning
     }
     params {
-      requires :id, type: String, desc: Id_desc
+      requires :id, type: String, desc: ID_DESC
       requires :order_array_id, type: String
       requires :shift, type: Integer
     }
