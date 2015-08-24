@@ -28,20 +28,26 @@ function customers_index(params) {
       attribution: map_attribution
     }).addTo(map);
 
-    var cluster = new L.MarkerClusterGroup({
-      showCoverageOnHover: false
-    });
-    map.addLayer(cluster);
+    var layer = L.featureGroup();
+    map.addLayer(layer);
 
     function display_customers(data) {
       $.each(data.customers, function(i, customer) {
         var marker = L.marker(new L.LatLng(customer.lat, customer.lng), {
-        }).addTo(cluster);
+          icon: new L.NumberedDivIcon({
+            number: customer.max_vehicles,
+            iconUrl: '/images/point-' + (customer.test ? '004499' : '707070') + '.svg',
+            iconSize: new L.Point(12, 12),
+            iconAnchor: new L.Point(6, 6),
+            popupAnchor: new L.Point(0, -6),
+            className: "small"
+          })
+        }).addTo(layer);
       });
 
       map.invalidateSize();
-      if (cluster.getLayers().length > 0) {
-        map.fitBounds(cluster.getBounds());
+      if (layer.getLayers().length > 0) {
+        map.fitBounds(layer.getBounds());
       }
     }
 
