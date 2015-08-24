@@ -4,7 +4,7 @@ require 'rexml/document'
 include REXML
 
 class OrderArraysControllerTest < ActionController::TestCase
-  set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
+  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   setup do
     @request.env['reseller'] = resellers(:reseller_one)

@@ -8,7 +8,7 @@ class D < Struct.new(:lat, :lng, :open, :close, :duration)
 end
 
 class RouteTest < ActiveSupport::TestCase
-  set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
+  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
     Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do

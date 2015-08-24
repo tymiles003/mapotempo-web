@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ApiWeb::V01::ZonesControllerTest < ActionController::TestCase
-  set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
+  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   setup do
     @request.env['reseller'] = resellers(:reseller_one)

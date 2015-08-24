@@ -3,7 +3,7 @@ require 'test_helper'
 class V01::StoresTest < ActiveSupport::TestCase
   include Rack::Test::Methods
   include ActionDispatch::TestProcess
-  set_fixture_class :delayed_jobs => Delayed::Backend::ActiveRecord::Job
+  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def app
     Rails.application
