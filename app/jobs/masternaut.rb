@@ -46,7 +46,7 @@ class Masternaut
           stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
           stop.detail,
           stop.comment,
-        ].select{ |s| s }.join(' ').strip,
+        ].compact.join(' ').strip,
         time: stop.time,
         updated_at: stop.base_updated_at,
       }

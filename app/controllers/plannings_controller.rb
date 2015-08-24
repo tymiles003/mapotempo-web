@@ -179,7 +179,7 @@ class PlanningsController < ApplicationController
   def automatic_insert
     respond_to do |format|
       stop_id = Integer(params[:stop_id])
-      @stop = @planning.routes.collect{ |route| route.stops.find{ |stop| stop.id == stop_id } }.select{ |i| i }[0]
+      @stop = @planning.routes.collect{ |route| route.stops.find{ |stop| stop.id == stop_id } }.compact[0]
 
       if @stop
         Planning.transaction do

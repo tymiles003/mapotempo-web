@@ -78,7 +78,7 @@ class V01::Orders < Grape::API
           order = current_customer.order_arrays.find(params[:order_array_id]).orders.find(params[:id])
           p = order_params
           products = Hash[current_customer.products.collect{ |product| [product.id, product] }]
-          products = (p[:product_ids] || []).collect{ |product_id| products[product_id.to_i] }.select{ |i| i }
+          products = (p[:product_ids] || []).collect{ |product_id| products[product_id.to_i] }.compact
 
           order.update(p)
           # Workaround for multiple values need add values and not affect

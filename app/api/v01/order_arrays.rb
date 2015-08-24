@@ -144,7 +144,7 @@ class V01::OrderArrays < Grape::API
           if orders.key?(id)
             # Workaround for multiple values need add values and not affect
             orders[id].products.clear
-            orders[id].products += order[:product_ids].map{ |product_id| products[product_id.to_i] }.select{ |i| i }
+            orders[id].products += order[:product_ids].map{ |product_id| products[product_id.to_i] }.compact
           end
         }
         order_array.save!

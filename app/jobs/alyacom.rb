@@ -52,7 +52,7 @@ class Alyacom
             stop.ref,
             stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
             stop.comment,
-          ].select{ |s| s }.join(' ').strip
+          ].compact.join(' ').strip
         },
         planning: {
           id: planning_id_base + '_' + stop.base_id.to_s,
@@ -60,7 +60,7 @@ class Alyacom
           destination_id: stop.base_id,
           comment: [
             stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
-          ].select{ |s| s }.join(' ').strip,
+          ].compact.join(' ').strip,
           start: base_time + stop.time.seconds_since_midnight.seconds,
           end: base_time + (stop.time.seconds_since_midnight + stop.duration).seconds,
         }
