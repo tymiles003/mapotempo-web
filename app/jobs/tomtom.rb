@@ -15,17 +15,15 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'tomtom_webfleet'
-
 class Tomtom
 
   def self.fetch_device_id(customer)
-    TomtomWebfleet.showObjectReport(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password)
+    Mapotempo::Application.config.tomtom.showObjectReport(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password)
   end
 
   def self.clear(route)
     customer = route.planning.customer
-    TomtomWebfleet.clearOrders(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id)
+    Mapotempo::Application.config.tomtom.clearOrders(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id)
   end
 
   def self.export_route_as_orders(route)
@@ -33,7 +31,7 @@ class Tomtom
     customer = route.planning.customer
     position = route.vehicle.store_start
     if !position.nil? && !position.lat.nil? && !position.lng.nil?
-      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, -1, route.vehicle.store_start.name, route.start)
+      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, -1, route.vehicle.store_start.name, route.start)
     end
     route.stops.select(&:active).each{ |stop|
       position = stop if stop.position?
@@ -47,12 +45,12 @@ class Tomtom
           stop.detail,
           stop.comment,
         ].select{ |s| s }.join(' ').strip
-        TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, stop.id, description, stop.time)
+        Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, stop.id, description, stop.time)
       end
     }
     position = route.vehicle.store_stop
     if !position.nil? && !position.lat.nil? && !position.lng.nil?
-      TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, -2, route.vehicle.store_stop.name, route.start)
+      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, -2, route.vehicle.store_stop.name, route.start)
     end
   end
 
@@ -91,6 +89,6 @@ class Tomtom
         {lat: l[0], lng: l[1], description: description}
       }
     position = route.vehicle.store_stop if !route.vehicle.store_stop.nil? && !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil?
-    TomtomWebfleet.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, route.vehicle.id, route.ref || route.vehicle.store_stop.name, route.start, waypoints)
+    Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, route.vehicle.id, route.ref || route.vehicle.store_stop.name, route.start, waypoints)
   end
 end

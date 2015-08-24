@@ -6,6 +6,8 @@ require_relative '../lib/osrm'
 require_relative '../lib/otp'
 require_relative '../lib/here'
 require_relative '../lib/ort'
+require_relative '../lib/tomtom_webfleet'
+
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -94,8 +96,7 @@ module Mapotempo
       'https://route.nlp.nokia.com/routing', nil, nil
     )
 
-    config.tomtom_api_url = 'https://soap.business.tomtom.com/v1.23'
-    config.tomtom_api_key = nil
+    config.tomtom = TomtomWebfleet.new('https://soap.business.tomtom.com/v1.23', nil)
 
     config.masternaut_api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
 

@@ -17,22 +17,28 @@
 #
 require 'savon'
 
-module TomtomWebfleet
+class TomtomWebfleet
   TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
-  @client_objects = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
-    #log true
-    #pretty_print_xml true
-    convert_request_keys_to :none
+  attr_accessor :client_objects, :client_orders, :api_key
+
+  def initialize(url, api_key)
+    @api_key = api_key
+
+    @client_objects = Savon.client(wsdl: url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+      #log true
+      #pretty_print_xml true
+      convert_request_keys_to :none
+    end
+
+    @client_orders = Savon.client(wsdl: url + '/ordersService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+      #log true
+      #pretty_print_xml true
+      convert_request_keys_to :none
+    end
   end
 
-  @client_orders = Savon.client(wsdl: Mapotempo::Application.config.tomtom_api_url + '/ordersService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
-    #log true
-    #pretty_print_xml true
-    convert_request_keys_to :none
-  end
-
-  def self.showObjectReport(account, username, password)
+  def showObjectReport(account, username, password)
     objects = get(@client_objects, :show_object_report, account, username, password, {})
     objects = [objects] if objects.is_a?(Hash)
     objects.collect{ |object|
@@ -43,7 +49,7 @@ module TomtomWebfleet
     }
   end
 
-  def self.clearOrders(account, username, password, objectuid)
+  def clearOrders(account, username, password, objectuid)
     get(@client_orders, :clear_orders, account, username, password, {
       deviceToClear: {
         markDeleted: 'true',
@@ -56,7 +62,7 @@ module TomtomWebfleet
    })
   end
 
-  def self.sendDestinationOrder(account, username, password, objectuid, date, position, orderid, description, time, waypoints = nil)
+  def sendDestinationOrder(account, username, password, objectuid, date, position, orderid, description, time, waypoints = nil)
     unique_base_oder_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
       dstOrderToSend: {
@@ -105,10 +111,10 @@ module TomtomWebfleet
 
   private
 
-  def self.get(client, operation, account, username, password, message = {})
+  def get(client, operation, account, username, password, message = {})
     message[:order!] = [:aParm, :gParm] + (message[:order!] || (message.keys - [:attributes!]))
     message[:aParm] = {
-      apiKey: Mapotempo::Application.config.tomtom_api_key,
+      apiKey: @api_key,
       accountName: account,
       userName: username,
       password: password,
