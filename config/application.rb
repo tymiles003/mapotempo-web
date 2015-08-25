@@ -45,6 +45,7 @@ module Mapotempo
       allow do
         origins '*'
         resource '/api-web/*', headers: :any, methods: [:get, :post, :options, :put, :delete, :patch]
+        resource '/api/*', headers: :any, methods: [:get, :post, :options, :put, :delete, :patch]
       end
     end
 
