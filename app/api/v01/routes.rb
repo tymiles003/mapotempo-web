@@ -66,7 +66,7 @@ class V01::Routes < Grape::API
 
         desc 'Update route.',
           nickname: 'updateRoute',
-          params: V01::Entities::Route.documentation.slice(:hidden, :locked),
+          params: V01::Entities::Route.documentation.slice(:hidden, :locked, :color),
           entity: V01::Entities::Route
         params do
           requires :id, type: Integer
