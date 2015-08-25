@@ -19,7 +19,7 @@ require 'csv'
 require 'value_to_boolean'
 
 class PlanningsController < ApplicationController
-  load_and_authorize_resource except: :create
+  load_and_authorize_resource
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate]
 
   def index

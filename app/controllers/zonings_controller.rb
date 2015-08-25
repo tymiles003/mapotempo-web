@@ -18,7 +18,7 @@
 class ZoningsController < ApplicationController
   include LinkBack
 
-  load_and_authorize_resource except: :create
+  load_and_authorize_resource
   before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning, :isochrone]
 
   def index

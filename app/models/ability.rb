@@ -22,6 +22,7 @@ class Ability
     if user
       if user.admin?
         can :manage, Customer, reseller_id: user.reseller_id
+        can [:new, :create], Customer
         can :manage, User, customer: {reseller_id: user.reseller_id}
         can [:new, :create], User
         can :manage, Reseller, id: user.reseller_id
@@ -32,17 +33,24 @@ class Ability
         can [:stop_job_optimizer, :stop_job_destination_geocoding, :stop_job_store_geocoding], Customer
         can [:index, :edit, :update], Vehicle, customer_id: user.customer.id
         can :manage, Tag, customer_id: user.customer.id
+        can [:new, :create], Tag
         can :manage, Destination, customer_id: user.customer.id
+        can [:new, :create, :upload], Destination
         can :manage, Store, customer_id: user.customer.id
+        can [:new, :create], Store
         can :manage, Zoning, customer_id: user.customer.id
+        can [:new, :create], Zoning
         can :manage, Zone, zoning: {customer_id: user.customer.id}
         if !user.customer.end_subscription or user.customer.end_subscription > Time.now
           can :manage, Planning, customer_id: user.customer.id
+          can [:new, :create], Planning
         end
         can :manage, Route, planning: {customer_id: user.customer.id}
         if user.customer.enable_orders
           can :manage, OrderArray, customer_id: user.customer.id
+          can [:new, :create], OrderArray
           can :manage, Product, customer_id: user.customer.id
+          can [:new, :create], Product
         end
       end
     end

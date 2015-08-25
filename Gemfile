@@ -70,7 +70,7 @@ gem 'devise'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'devise-token_authenticatable'
-gem 'cancan'
+gem 'cancancan'
 gem 'lograge'
 gem 'validates_timeliness'
 

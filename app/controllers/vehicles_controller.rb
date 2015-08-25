@@ -18,7 +18,7 @@
 class VehiclesController < ApplicationController
   include LinkBack
 
-  load_and_authorize_resource except: :create
+  load_and_authorize_resource
   before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
 
   def index

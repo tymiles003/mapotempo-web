@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Admin::ProfilesController < ApplicationController
-  load_and_authorize_resource except: :create
+  load_and_authorize_resource
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
   def index

@@ -21,7 +21,7 @@ require 'importer_destinations'
 class DestinationsController < ApplicationController
   include LinkBack
 
-  load_and_authorize_resource except: [:create, :upload]
+  load_and_authorize_resource
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
 
   def index
