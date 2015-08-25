@@ -96,7 +96,7 @@ module Mapotempo
       'https://route.nlp.nokia.com/routing', nil, nil
     )
 
-    config.tomtom = TomtomWebfleet.new('https://soap.business.tomtom.com/v1.23', nil)
+    config.tomtom = TomtomWebfleet.new('https://soap.business.tomtom.com/v1.25', nil)
 
     config.masternaut_api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
 
