@@ -20,6 +20,8 @@ require 'geocoder_destinations_job'
 
 class ImporterDestinations < ImporterBase
 
+  @max_lines = Mapotempo::Application.config.max_destinations
+
   def self.columns
     {
       ref: I18n.t('destinations.import_file.ref'),

@@ -109,6 +109,8 @@ module Mapotempo
 
     config.geocoding_accuracy_success = 0.98
     config.geocoding_accuracy_warning = 0.9
+
+    config.max_destinations = 3000
   end
 end
 

@@ -35,6 +35,9 @@ class ImporterBase
     _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
 
     data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
+    if data.length > @max_lines + 1
+      raise I18n.t('errors.import_file.too_many_lines', n: @max_lines)
+    end
 
     self.import(replace, customer, data, name, synchronous) { |row|
       # Switch from locale to internal column name

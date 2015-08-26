@@ -318,7 +318,9 @@ fr:
         customer:
           attributes:
             destinations:
-              over_max_limit: "Dépassement du nombre maximal d'arrêts dans une tournée"
+              over_max_limit: "Dépassement du nombre maximal de clients"
+            stores:
+              over_max_limit: "Dépassement du nombre maximal de dépôts"
         stores:
           at_least_one: "Au moins un dépôt est requis"
           missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
@@ -335,6 +337,7 @@ fr:
       already_optimizing: "Une optimisation de planning est déjà en cours"
     import_file:
       not_csv: "Le fichier importé n'est pas au format CSV."
+      too_many_lines: "Import stoppé, trop de lignes (max: %{n})."
       too_many_errors: "Import stoppé, trop d'erreurs."
 
   import:

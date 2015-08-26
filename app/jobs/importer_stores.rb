@@ -20,6 +20,8 @@ require 'geocoder_stores_job'
 
 class ImporterStores < ImporterBase
 
+  @max_lines = Mapotempo::Application.config.max_destinations / 10
+
   def self.columns
     {
       ref: I18n.t('stores.import_file.ref'),

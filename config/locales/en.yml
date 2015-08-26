@@ -315,7 +315,9 @@ en:
         customers:
           attributes:
             destinations:
-              over_max_limit: "Over maximum number of route's stops"
+              over_max_limit: "Over maximum number of destinations"
+            stores:
+              over_max_limit: "Over maximum number of stores"
         stores:
           at_least_one: "At least one store needed"
           missing_address_or_latlng: "Postalcode and city cannot be empty if lat/lng are empty"
@@ -332,6 +334,7 @@ en:
       already_optimizing: "A planning optimization is already in progress"
     import_file:
       not_csv: "Imported file is not a CSV"
+      too_many_lines: "Stop import, too many lines (max: %{n})."
       too_many_errors: "Stop import, too many errors."
       missing_columns_translation: "Missing "
 

@@ -51,6 +51,26 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
+  test 'shoud import too many stores' do
+    def ImporterStores.max_lines=(max_lines)
+      @max_lines = max_lines
+    end
+    def ImporterStores.max_lines
+      @max_lines
+    end
+    old_max = ImporterStores.max_lines
+    begin
+      ImporterStores.max_lines= 2
+      assert_difference('Store.count', 0) do
+        assert_raise RuntimeError do
+          ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_many-utf-8.csv', 'text')
+        end
+      end
+    ensure
+      ImporterStores.max_lines= old_max
+    end
+  end
+
   test 'should update store' do
     assert_difference('Store.count', 1) do
       ImporterStores.import_csv(false, @customer, 'test/fixtures/files/import_stores_update.csv', 'text')
