@@ -222,7 +222,8 @@ span.color[data-color=''][data-selected]:after {
       top: $navbar-height;
     }
   }
-  .sidebar-tabs > li:hover, .sidebar-tabs > ul > li:hover, .sidebar-tabs > ul > li > a:hover, .sidebar-tabs > ul > li > a > i:hover {
+  .sidebar-tabs > li:hover, .sidebar-tabs > ul > li:hover, .sidebar-tabs > ul > li > a:hover, .sidebar-tabs > ul > li > a > i:hover,
+  .sidebar-tabs > li.active, .sidebar-tabs > ul > li.active, .sidebar-tabs > ul > li > a.active, .sidebar-tabs > ul > li > a > i.active {
     background-color: #eee;
   }
   .sidebar-map {
