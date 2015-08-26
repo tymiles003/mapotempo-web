@@ -37,7 +37,7 @@
           <span class="name"><%= route.vehicle.store_start.name %></span><br/>
           <span class="address">
             <%= route.vehicle.store_start.street %>
-            </br>
+            <br/>
             <%= route.vehicle.store_start.postalcode %> <%= route.vehicle.store_start.city %>  <%= route.vehicle.store_start.country %>
           </span>
         </div>
@@ -77,7 +77,7 @@
           <span class="address">
             <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
             <% if (stop.street && !stop.street.empty?) || (stop.detail && !stop.detail.empty?) %>
-              </br>
+              <br/>
             <% end %>
             <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
           </span>
@@ -171,7 +171,7 @@
           <span class="name"><%= route.vehicle.store_stop.name %></span><br/>
           <span class="address">
             <%= route.vehicle.store_stop.street %>
-            </br>
+            <br/>
             <%= route.vehicle.store_stop.postalcode %> <%= route.vehicle.store_stop.city %> <%= route.vehicle.store_stop.country %>
           </span>
         </div>
@@ -188,7 +188,8 @@
               <% end %>
             </span>
           </div>
-       <% end %>
+        <% end %>
+      </div>
     </li>
 
   </ol>

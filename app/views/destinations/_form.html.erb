@@ -6,10 +6,10 @@
   <%= f.text_field :detail do %>
     <p class="help-block"><%= t '.detail_help' %></p>
   <% end %>
-  <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
+  <%= f.text_field :postalcode, {maxlength: 7} %>
   <%= f.text_field :city %>
   <%= f.text_field :country, {placeholder: t('.country_default', n: @destination.customer.default_country)} %>
-  <div id="destination_city_input" class="form-group">
+  <div class="form-group">
     <label class="col-md-2 control-label" for="destination_city"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
     <div class="col-md-6">
       <div id="geocoding_accuracy"<% if ! @destination.geocoding_accuracy %> style="display: none"<% end %>>
@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="form-group">
-    <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
+    <div class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></div>
   </div>
   <%= f.text_field :lat %>
   <%= f.text_field :lng %>
