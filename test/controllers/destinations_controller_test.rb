@@ -19,6 +19,7 @@ class DestinationsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:destinations)
+    assert_valid response
   end
 
   test 'should get index in excel' do
@@ -31,6 +32,7 @@ class DestinationsControllerTest < ActionController::TestCase
   test 'should get new' do
     get :new
     assert_response :success
+    assert_valid response
   end
 
   test 'should create destination' do
@@ -64,11 +66,13 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_template :new
     destination = assigns(:destination)
     assert destination.errors.any?
+    assert_valid response
   end
 
   test 'should get edit' do
     get :edit, id: @destination
     assert_response :success
+    assert_valid response
   end
 
   test 'should update destination' do
@@ -87,6 +91,7 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_template :edit
     destination = assigns(:destination)
     assert destination.errors.any?
+    assert_valid response
   end
 
   test 'should destroy destination' do
@@ -110,6 +115,7 @@ class DestinationsControllerTest < ActionController::TestCase
   test 'should import' do
     get :import
     assert_response :success
+    assert_valid response
   end
 
   test 'should upload' do
@@ -146,5 +152,6 @@ class DestinationsControllerTest < ActionController::TestCase
 
     assert_template :import
     assert_not_nil flash[:error]
+    assert_valid response
   end
 end

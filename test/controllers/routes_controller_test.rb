@@ -12,6 +12,7 @@ class RoutesControllerTest < ActionController::TestCase
   test 'should show route' do
     get :show, id: @route
     assert_response :success
+    assert_valid response
   end
 
   test 'should show route as csv' do

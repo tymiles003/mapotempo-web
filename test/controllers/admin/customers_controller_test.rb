@@ -13,11 +13,13 @@ class Admin::CustomersControllerTest < ActionController::TestCase
   test 'should get index' do
     get :index
     assert_response :success
+    assert_valid response
   end
 
   test 'should get edit' do
     get :edit, id: @customer
     assert_response :success
+    assert_valid response
   end
 
   test 'should update customer' do

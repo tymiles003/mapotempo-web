@@ -12,6 +12,7 @@ class CustomersControllerTest < ActionController::TestCase
   test 'should get edit' do
     get :edit, id: @customer
     assert_response :success
+    assert_valid response
   end
 
   test 'should update customer' do

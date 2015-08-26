@@ -12,5 +12,6 @@ class ApiWeb::V01::RoutesControllerTest < ActionController::TestCase
   test 'should get routes' do
     get :index, planning_id: @route.planning_id
     assert_response :success
+    assert_valid response
   end
 end

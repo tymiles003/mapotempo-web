@@ -12,6 +12,7 @@ class Admin::ResellersControllerTest < ActionController::TestCase
   test 'should get edit' do
     get :edit, id: @reseller
     assert_response :success
+    assert_valid response
   end
 
   test 'should update reseller' do

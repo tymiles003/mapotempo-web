@@ -7,11 +7,13 @@ class UsersControllerTest < ActionController::TestCase
     @request.env['reseller'] = resellers(:reseller_one)
     @user = users(:user_one)
     sign_in users(:user_one)
+    assert_valid response
   end
 
   test 'should get edit_settings' do
     get :edit_settings, id: @user
     assert_response :success
+    assert_valid response
   end
 
   test 'should update_settings user' do

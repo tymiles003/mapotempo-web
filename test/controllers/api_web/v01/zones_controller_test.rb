@@ -12,5 +12,6 @@ class ApiWeb::V01::ZonesControllerTest < ActionController::TestCase
   test 'should get zones' do
     get :index, zoning_id: @zone.zoning_id
     assert_response :success
+    assert_valid response
   end
 end

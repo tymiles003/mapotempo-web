@@ -60,6 +60,12 @@ GIT
       railties (~> 4)
 
 GIT
+  remote: git://github.com/moneyadviceservice/tidy-html5-gem.git
+  revision: 54b78c66e94b32ab73d9907508857f4ceee5e032
+  specs:
+    tidy-html5 (0.1.1)
+
+GIT
   remote: git://github.com/richhollis/swagger-docs.git
   revision: 102003e7bc42c4b490a9cbcbccc9a9bcd0293378
   specs:
@@ -217,6 +223,7 @@ GEM
       builder (>= 2.1.2)
     hashie (3.4.2)
     hike (1.2.3)
+    html_validation (1.1.3)
     httpi (2.3.0)
       rack
     i18n (0.7.0)
@@ -481,6 +488,7 @@ DEPENDENCIES
   grape
   grape-entity
   grape-swagger!
+  html_validation
   i18n-js
   iconv
   jbuilder (~> 2.0)
@@ -528,6 +536,7 @@ DEPENDENCIES
   sprockets (~> 2)
   swagger-docs!
   therubyracer
+  tidy-html5!
   turbolinks
   twitter-bootstrap-rails
   twitter_bootstrap_form_for!

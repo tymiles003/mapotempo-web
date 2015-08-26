@@ -13,11 +13,13 @@ class ZoningsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:zonings)
+    assert_valid response
   end
 
   test 'should get new' do
     get :new
     assert_response :success
+    assert_valid response
   end
 
   test 'should create zoning' do
@@ -36,11 +38,13 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_template :new
     zoning = assigns(:zoning)
     assert zoning.errors.any?
+    assert_valid response
   end
 
   test 'should get edit' do
     get :edit, id: @zoning
     assert_response :success
+    assert_valid response
   end
 
   test 'should update zoning' do
@@ -54,6 +58,7 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_template :edit
     zoning = assigns(:zoning)
     assert zoning.errors.any?
+    assert_valid response
   end
 
   test 'should destroy zoning' do

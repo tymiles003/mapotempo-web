@@ -51,6 +51,8 @@ group :test do
   # gem 'capybara-webkit'
   gem 'database_cleaner'
   gem 'webmock'
+  gem 'tidy-html5', github: 'moneyadviceservice/tidy-html5-gem'
+  gem 'html_validation'
 end
 
 group :test do

@@ -9,6 +9,9 @@ require 'webmock/minitest'
 #WebMock.allow_net_connect!
 WebMock.disable_net_connect!
 
+require 'html_validation'
+#PageValidations::HTMLValidation.show_warnings = false
+
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
 
@@ -35,6 +38,12 @@ class ActiveSupport::TestCase
   def teardown
     remove_request_stub(@stub_GeocodeRequest)
     remove_request_stub(@stub_LocationUtilityService)
+  end
+
+  def assert_valid(response)
+#    html_validation = PageValidations::HTMLValidation.new
+#    validation = html_validation.validation(response.body, response.to_s)
+#    assert validation.valid?, validation.exceptions
   end
 end
 

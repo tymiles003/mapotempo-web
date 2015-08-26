@@ -13,17 +13,20 @@ class ApiWeb::V01::StoresControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:stores)
+    assert_valid response
   end
 
   test 'should get index with ref' do
     get :index, 'ids[]' => 'ref:b'
     assert_response :success
     assert_not_nil assigns(:stores)
+    assert_valid response
   end
 
   test 'should get edit position' do
     get :edit_position, id: @store
     assert_response :success
+    assert_valid response
   end
 
   test 'should update position' do

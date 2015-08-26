@@ -13,11 +13,13 @@ class TagsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:tags)
+    assert_valid response
   end
 
   test 'should get new' do
     get :new
     assert_response :success
+    assert_valid response
   end
 
   test 'should create tag' do
@@ -36,11 +38,13 @@ class TagsControllerTest < ActionController::TestCase
     assert_template :new
     tag = assigns(:tag)
     assert tag.errors.any?
+    assert_valid response
   end
 
   test 'should get edit' do
     get :edit, id: @tag
     assert_response :success
+    assert_valid response
   end
 
   test 'should update tag' do
@@ -53,6 +57,7 @@ class TagsControllerTest < ActionController::TestCase
     assert_template :edit
     tag = assigns(:tag)
     assert tag.errors.any?
+    assert_valid response
   end
 
   test 'should destroy tag' do

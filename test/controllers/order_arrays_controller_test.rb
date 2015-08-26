@@ -16,11 +16,13 @@ class OrderArraysControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:order_arrays)
+    assert_valid response
   end
 
   test 'should get new' do
     get :new
     assert_response :success
+    assert_valid response
   end
 
   test 'should create order_array' do
@@ -39,6 +41,7 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert_template :new
     order_array = assigns(:order_array)
     assert order_array.errors.any?
+    assert_valid response
   end
 
   test 'should show order_array as excel' do
@@ -55,6 +58,7 @@ class OrderArraysControllerTest < ActionController::TestCase
   test 'should get edit' do
     get :edit, id: @order_array
     assert_response :success
+    assert_valid response
   end
 
   test 'should update order_array' do
@@ -68,6 +72,7 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert_template :edit
     order_array = assigns(:order_array)
     assert order_array.errors.any?
+    assert_valid response
   end
 
   test 'should destroy order_array' do
