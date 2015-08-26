@@ -1,4 +1,4 @@
-<ol>
+<ol class="routes-print">
 <% @planning.routes.select{ |route| route.vehicle && route.size_active > 0 }.each{ |route| %>
 <%=  render 'routes/show', route: route %>
 <% } %>

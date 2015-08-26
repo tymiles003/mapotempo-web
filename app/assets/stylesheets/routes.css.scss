@@ -20,7 +20,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 @media print {
-  .route_print {
+  .route-print {
     page-break-after: always;
   }
 
@@ -29,7 +29,10 @@
   }
 }
 
-.route_print {
+ol.routes-print {
+  padding: 0px;
+}
+.route-print {
   list-style: none;
 
   > h1 {
