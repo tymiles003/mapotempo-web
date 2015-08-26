@@ -22,6 +22,13 @@
 @media print {
   .route-print {
     page-break-after: always;
+    page-break-inside: avoid;
+  }
+  .route-print:last-of-type {
+    page-break-after: avoid !important;
+  }
+  li {
+    page-break-inside: avoid;
   }
 
   [data-controller='plannings'].container {
@@ -45,16 +52,19 @@ ol.routes-print {
       padding: 0px;
     }
     li:nth-child(odd) {
-      background: lightgray;
+      background: lightgray !important;
+      -webkit-print-color-adjust: exact;
     }
     li.store, li.stop {
       padding-left: 5px;
     }
     .number {
-      background: #333;
+      background: #111 !important;
       padding: 0px 6px;
+      border: 1px solid #222;
       border-radius: 20px;
-      color: white;
+      color: white !important;
+      -webkit-print-color-adjust: exact;
     }
     .number, .name {
       font-size: 150%;
