@@ -17,7 +17,7 @@ class ApiWeb::V01::StoresControllerTest < ActionController::TestCase
   end
 
   test 'should get index with ref' do
-    get :index, 'ids[]' => 'ref:b'
+    get :index, 'ids' => 'ref:b'
     assert_response :success
     assert_not_nil assigns(:stores)
     assert_valid response

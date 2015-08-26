@@ -109,7 +109,7 @@ function api_web_v01_zones_index(params) {
   }
 
   $.ajax({
-    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json?' + $.param({ids: zone_ids}),
+    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json?' + $.param({ids: zone_ids.join(',')}),
     beforeSend: beforeSendWaiting,
     success: display_zoning,
     complete: completeWaiting,

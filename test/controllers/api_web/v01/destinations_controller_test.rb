@@ -16,8 +16,15 @@ class ApiWeb::V01::DestinationsControllerTest < ActionController::TestCase
     assert_valid response
   end
 
+  test 'should get index by ids' do
+    get :index, ids: [destinations(:destination_one).id, destinations(:destination_two).id].join(',')
+    assert_response :success
+    assert_not_nil assigns(:destinations)
+    assert_valid response
+  end
+
   test 'should get index with ref' do
-    get :index, 'ids[]' => 'ref:a'
+    get :index, 'ids' => 'ref:a'
     assert_response :success
     assert_not_nil assigns(:destinations)
     assert_valid response

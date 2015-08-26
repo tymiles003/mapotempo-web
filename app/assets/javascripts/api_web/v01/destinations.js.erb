@@ -108,7 +108,7 @@ function api_web_v01_destinations_index(params, api) {
   }
 
   $.ajax({
-    url: '/api-web/0.1/' + api + '.json?' + $.param({ids: ids}),
+    url: '/api-web/0.1/' + api + '.json?' + $.param({ids: ids.join(',')}),
     beforeSend: beforeSendWaiting,
     success: display_destinations,
     complete: completeWaiting,
