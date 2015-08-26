@@ -39,6 +39,9 @@ fr:
       destinations_import:
         file: "Fichier"
         replace: "Remplacer"
+      stores_import:
+        file: "Fichier"
+        replace: "Remplacer"
 
   activerecord:
     models:
@@ -66,14 +69,14 @@ fr:
       plannings:
         one: "planning"
         other: "plannings"
-      profile: "Profil"
-      profiles:
-        one: "profil"
-        other: "profils"
       product: "Produit"
       products:
         one: "produit"
         other: "produits"
+      profile: "Profil"
+      profiles:
+        one: "profil"
+        other: "profils"
       reseller: "Revendeur"
       resellers: "Revendeurs"
       route: "Tournée"
@@ -111,7 +114,7 @@ fr:
         max_vehicles: "Forfait"
         take_over: "Durée de visite"
         name: "Nom"
-        destinations : "Clients"
+        destinations: "Clients"
         enable_tomtom: "Activer TomTom WEBFLEET"
         enable_masternaut: "Activer Masternaut"
         enable_alyacom: "Activer Alyacom"
@@ -321,7 +324,7 @@ fr:
               over_max_limit: "Dépassement du nombre maximal de clients"
             stores:
               over_max_limit: "Dépassement du nombre maximal de dépôts"
-        stores:
+        store:
           at_least_one: "Au moins un dépôt est requis"
           missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
           lat_outside_range: "doit être comprise entre -90..90"
