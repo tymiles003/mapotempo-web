@@ -27,7 +27,7 @@
   </span>
 
   <ol class="stops" start="0">
-    <li class="list-group-item" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
+    <li class="list-group-item store" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
       <div class="row no-gutter">
         <% if route.planning.customer.print_planning_annotating %>
           <div class="col-md-5 col-sm-6 col-xs-6">
@@ -37,7 +37,6 @@
           <span class="name"><%= route.vehicle.store_start.name %></span><br/>
           <span class="address">
             <%= route.vehicle.store_start.street %>
-            <br/>
             <%= route.vehicle.store_start.postalcode %> <%= route.vehicle.store_start.city %>  <%= route.vehicle.store_start.country %>
           </span>
         </div>
@@ -53,7 +52,7 @@
   route.stops.each{ |stop|
     if stop.active && stop.position?
   %>
-    <li class="list-group-item" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
+    <li class="list-group-item stop" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
       <% if stop.wait_time && stop.wait_time > 60 %>
         <div class="row no-gutter">
           <div class="col-md-12">
@@ -68,7 +67,7 @@
         <% else %>
           <div class="col-md-6 col-sm-6 col-xs-9">
         <% end %>
-          <span class="number">#<%= index += 1 %></span>
+          <span class="number"><%= index += 1 %></span>
           <span class="name"><% if stop.is_a?(StopRest) %><i class="fa fa-coffee fa-fw"></i> <% end %><%= stop.name %></span>
           <% if stop.ref %>
             (<span class="ref"><%= stop.ref %></span>)
@@ -76,9 +75,6 @@
           <br/>
           <span class="address">
             <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
-            <% if (stop.street && !stop.street.empty?) || (stop.detail && !stop.detail.empty?) %>
-              <br/>
-            <% end %>
             <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
           </span>
           <% if stop.comment && stop.comment.length > 0 %>
@@ -160,7 +156,7 @@
   }
   %>
 
-    <li class="list-group-item" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
+    <li class="list-group-item store" style="border-left: 3px solid <%= route.color || route.vehicle.color %>">
       <div class="row no-gutter">
 
         <% if route.planning.customer.print_planning_annotating %>
@@ -171,7 +167,6 @@
           <span class="name"><%= route.vehicle.store_stop.name %></span><br/>
           <span class="address">
             <%= route.vehicle.store_stop.street %>
-            <br/>
             <%= route.vehicle.store_stop.postalcode %> <%= route.vehicle.store_stop.city %> <%= route.vehicle.store_stop.country %>
           </span>
         </div>
