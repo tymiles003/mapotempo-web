@@ -1,12 +1,15 @@
-<div id="map"></div>
-
-<div id="edit-planning" class="box-wrapper">
-  <div class="box">
-    <div class="pull-right">
-      <button type="button" class="btn btn-default btn-sm box-btn-collapse" title="<%= t '.collapse_planning_panel' %>"><i class="fa fa-thumb-tack"></i></button>
-      <button type="button" class="btn btn-default btn-sm extend" title="<%= t '.open_planning_panel' %>"><i class="fa fa-arrows-alt"></i></button>
-    </div>
-    <div class="box-content">
+<div id="edit-planning" class="sidebar">
+  <div class="sidebar-tabs">
+    <ul role="tablist">
+      <li><a href="#planning-pane" role="tab"><i class="fa fa-caret-left"></i></a></li>
+    </ul>
+  </div>
+  <div class="sidebar-content">
+    <div class="sidebar-pane" id="planning-pane">
+      <div class="pull-right">
+        <button type="button" class="btn btn-default btn-sm extend" title="<%= t '.open_planning_panel' %>"><i class="fa fa-arrows-alt"></i></button>
+        <button type="button" class="btn btn-default btn-sm sidebar-close" title="<%= t '.collapse_planning_panel' %>"><i class="fa fa-caret-right"></i></button>
+      </div>
       <h1><%= t '.title' %></h1>
 
       <%= render 'form' %>
@@ -37,6 +40,8 @@
     </div>
   </div>
 </div>
+
+<div id="map" class="sidebar-map"></div>
 
 <div id="dialog-optimizer" title="<%= t '.dialog.optimizer.title' %>" style="display:none">
   <div class="dialog-progress">

@@ -781,6 +781,7 @@ fr:
       zonings: "Zonages"
     edit:
       title: "Modifier zonage"
+      collapse_zoning_panel: "Minifier le panneau de zonage"
       vehicleless_confirm: "Confirmer l'enregistrement de zones sans véhicules ?"
     index:
       title: "Liste zonages"

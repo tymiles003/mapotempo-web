@@ -92,7 +92,7 @@ gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for
 gem 'leaflet_numbered_markers-rails', github: 'frodrigo/leaflet_numbered_markers-rails'
 gem 'leaflet-control-geocoder-rails', github: 'frodrigo/leaflet-control-geocoder-rails'
 gem 'leaflet-controlledbounds-rails', github: 'Mapotempo/leaflet-controlledbounds-rails'
-gem 'leaflet-sidebar-rails'
+gem 'sidebar-v2-gh-pages-rails', github: 'Mapotempo/sidebar-v2-gh-pages-rails'
 
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'

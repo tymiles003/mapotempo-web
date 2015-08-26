@@ -5,6 +5,12 @@ GIT
     leaflet-controlledbounds-rails (0.0.1)
 
 GIT
+  remote: git://github.com/Mapotempo/sidebar-v2-gh-pages-rails.git
+  revision: 11f7717f4eca02b4be4567142d2df6e0274c8fc1
+  specs:
+    sidebar-v2-gh-pages-rails (0.0.1)
+
+GIT
   remote: git://github.com/frodrigo/jquery-timeentry-rails.git
   revision: ccecc885d334b772d065bb722e2d4528a9f9a40c
   specs:
@@ -238,7 +244,6 @@ GEM
     leaflet-markercluster-rails (0.7.0)
       railties (>= 3.1)
     leaflet-rails (0.7.4)
-    leaflet-sidebar-rails (0.0.3)
     libv8 (3.16.14.7)
     lograge (0.3.1)
       actionpack (>= 3)
@@ -490,7 +495,6 @@ DEPENDENCIES
   leaflet-draw-rails!
   leaflet-markercluster-rails
   leaflet-rails
-  leaflet-sidebar-rails
   leaflet_numbered_markers-rails!
   lograge
   macaddr
@@ -517,6 +521,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   select2-rails!
   selenium-webdriver
+  sidebar-v2-gh-pages-rails!
   sim_annealing
   simplecov
   smt_rails

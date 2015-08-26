@@ -46,6 +46,6 @@
  *= require leaflet_numbered_markers
  *= require leaflet.markercluster
  *= require leaflet.markercluster.default
- *= require L.Control.Sidebar
+ *= require leaflet-sidebar
  *= require_tree .
  */

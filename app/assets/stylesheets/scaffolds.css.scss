@@ -26,6 +26,9 @@
     font-style: normal;
 }
 
+$navbar-height: 50px;
+$sidebar-margins: 10px;
+
 body {
   background-color: #fff;
   color: #333;
@@ -148,56 +151,92 @@ span.color[data-color=''][data-selected]:after {
 [data-controller='plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],
 [data-controller='zonings'][data-action='update'] {
+  $transition-duration: 0.5s;
+
   #map {
     position: absolute;
     z-index: -1;
-    top: 50px;
+    top: $navbar-height;
     left: 0;
     right: 0;
     bottom: 0;
   }
 
-  @media(min-width:768px) and (max-width:991px){
-    .leaflet-sidebar {
-      width: 360px;
-    }
+  .sidebar {
+    top: $navbar-height + $sidebar-margins;
+    transition: right $transition-duration, top $transition-duration, width $transition-duration, height $transition-duration;
+    z-index: 3;
 
-    .leaflet-sidebar.left.visible ~ .leaflet-left {
-      left: 360px;
+    .sidebar-tabs {
+      width: 0px;
     }
+    .sidebar-content {
+      right: 0px;
+      background-color: white;
 
-    .leaflet-sidebar.right.visible ~ .leaflet-right {
-      right: 360px;
+      .sidebar-pane {
+        padding: 10px;
+        min-width: 100%;
+
+        h1 {
+          margin-top: 30px;
+        }
+        .form-horizontal .form-group {
+          margin-left: -10px;
+          margin-right: -10px;
+        }
+        .panel .panel-heading {
+            padding: 2px 5px;
+        }
+      }
+      .sidebar-close {
+        position: relative;
+        width: auto;
+        height: auto;
+      }
     }
   }
-
-  .box-wrapper {
-    .box {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      overflow: auto;
-      background-color: #fff;
-      padding: 10px;
-
-      .form-horizontal .form-group {
-        margin-left: -10px;
-        margin-right: -10px;
-      }
+  .collapsed {
+    &.sidebar {
+      width: 40px !important;
+      height: 40px !important;
+      top: $navbar-height + $sidebar-margins !important;
+      right: $sidebar-margins !important;
+      border-radius: 4px !important;
     }
-
-    .panel {
-      .panel-heading {
-        padding: 2px 5px;
-      }
+    .sidebar-tabs {
+      width: 100%;
+      border-radius: 4px !important;
     }
+    .sidebar-content {
+      right: 500px;
+    }
+  }
+  @media(min-width:768px) {
+    .sidebar {
+      width: 350px;
+    }
+  }
+  @media(max-width:768px) {
+    .sidebar {
+      top: $navbar-height;
+    }
+  }
+  .sidebar-tabs > li:hover, .sidebar-tabs > ul > li:hover, .sidebar-tabs > ul > li > a:hover, .sidebar-tabs > ul > li > a > i:hover {
+    background-color: #eee;
+  }
+  .sidebar-map {
+    margin-right: 0px !important;
   }
 
   .flash {
     left: 56px;
     position: fixed;
     right: 390px;
+  }
+  @media(max-width:768px) {
+    .flash {
+      right: 56px;
+    }
   }
 }

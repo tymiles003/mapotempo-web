@@ -65,12 +65,12 @@ function plannings_edit(params) {
 
   L.control.attribution({position: 'bottomleft'}).addTo(map);
 
-  var sidebar = L.control.sidebar('edit-planning', {
-    position: 'right',
-    closeButton: false
-  });
-  map.addControl(sidebar);
-  sidebar.show();
+  var sidebar = L.control.sidebar('edit-planning', {position: 'right'}).addTo(map);
+  sidebar.open('planning-pane');
+  // waiting initial css transition
+  setTimeout(function() {
+    map.invalidateSize();
+  }, 550);
 
   L.control.scale({
     imperial: false
@@ -752,17 +752,12 @@ function plannings_edit(params) {
   }
 
   $('.btn.extend').click(function() {
-    $('.leaflet-sidebar').removeClass('sidebar-collapse');
-    $('.leaflet-sidebar').toggleClass('sidebar-extended');
-    if ($('.leaflet-sidebar').hasClass('sidebar-extended')) {
+    $('.sidebar').toggleClass('extended');
+    if ($('.sidebar').hasClass('extended')) {
       $(".routes").sortable("enable");
     } else {
       $(".routes").sortable("disable");
     }
-  });
-  $('.btn.box-btn-collapse').click(function() {
-    $('.leaflet-sidebar').removeClass('sidebar-extended');
-    $('.leaflet-sidebar').toggleClass('sidebar-collapse');
   });
 
   $.ajax({

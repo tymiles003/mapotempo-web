@@ -1,9 +1,19 @@
-<div id="map"></div>
+<div id="edit-zoning" class="sidebar">
+  <div class="sidebar-tabs">
+    <ul role="tablist">
+      <li><a href="#zoning" role="tab"><i class="fa fa-caret-left"></i></a></li>
+    </ul>
+  </div>
+  <div class="sidebar-content">
+    <div class="sidebar-pane" id="zoning">
+      <div class="pull-right">
+        <button type="button" class="btn btn-default btn-sm sidebar-close" title="<%= t '.collapse_zoning_panel' %>"><i class="fa fa-caret-right"></i></button>
+      </div>
+      <h1><%= t '.title' %></h1>
 
-<div id="edit-zoning" class="box-wrapper">
-  <div class="box">
-    <h1><%= t '.title' %></h1>
-
-    <%= render 'form' %>
+      <%= render 'form' %>
+    </div>
   </div>
 </div>
+
+<div id="map" class="sidebar-map"></div>

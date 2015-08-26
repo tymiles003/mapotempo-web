@@ -33,12 +33,12 @@ function zonings_edit(params) {
     imperial: false
   }).addTo(map);
 
-  var sidebar = L.control.sidebar('edit-zoning', {
-    position: 'right',
-    closeButton: false
-  });
-  map.addControl(sidebar);
-  sidebar.show();
+  var sidebar = L.control.sidebar('edit-zoning', {position: 'right'}).addTo(map);
+  sidebar.open('zoning');
+  // waiting initial css transition
+  setTimeout(function() {
+    map.invalidateSize();
+  }, 550);
 
   L.tileLayer(map_layer_url, {
     maxZoom: 18,
@@ -287,6 +287,7 @@ function zonings_edit(params) {
 
     var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
     if (bounds && bounds.isValid()) {
+      map.invalidateSize();
       map.fitBounds(bounds);
     }
   }

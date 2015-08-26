@@ -57,7 +57,7 @@
 //= require leaflet_numbered_markers
 //= require Leaflet.ControlledBounds
 //= require leaflet-pip
-//= require L.Control.Sidebar
+//= require leaflet-sidebar
 //= require Control.Geocoder
 //= require Polyline.encoded
 //= require mustache
