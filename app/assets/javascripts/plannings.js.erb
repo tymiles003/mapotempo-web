@@ -53,7 +53,6 @@ function plannings_edit(params) {
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map,
     colors = params.colors,
-    map = new L.Map('map', {attributionControl: false}).setView([map_lat, map_lng], 13),
     layer_zoning,
     markers = {},
     stores = {},
@@ -63,18 +62,17 @@ function plannings_edit(params) {
     routes_layers_cluster,
     initial_zoning = $("#planning_zoning_id").val();
 
-  L.control.attribution({position: 'bottomleft'}).addTo(map);
-
-  var sidebar = L.control.sidebar('edit-planning', {position: 'right'}).addTo(map);
+  // sidebar has to be created before map
+  var sidebar = L.control.sidebar('edit-planning', {position: 'right'});
   sidebar.open('planning-pane');
-  // waiting initial css transition
-  setTimeout(function() {
-    map.invalidateSize();
-  }, 550);
 
+  var map = new L.Map('map', {attributionControl: false}).setView([map_lat, map_lng], 13);
+  L.control.attribution({position: 'bottomleft'}).addTo(map);
   L.control.scale({
     imperial: false
   }).addTo(map);
+
+  sidebar.addTo(map);
 
   var geocoder = L.Control.geocoder({
     geocoder: L.Control.Geocoder.nominatim({
@@ -747,7 +745,7 @@ function plannings_edit(params) {
     var bounds = routes_layers.getBounds();
     if (bounds && bounds.isValid()) {
       map.invalidateSize();
-      map.fitBounds(bounds);
+      map.fitBounds(bounds, {animate: false});
     }
   }
 

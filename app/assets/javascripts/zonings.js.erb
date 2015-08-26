@@ -27,18 +27,17 @@ function zonings_edit(params) {
     vehicles_map = params.vehicles_map,
     show_capacity = params.show_capacity;
 
+  // sidebar has to be created before map
+  var sidebar = L.control.sidebar('edit-zoning', {position: 'right'})
+  sidebar.open('zoning');
+
   var map = new L.Map('map', {attributionControl: false}).setView([map_lat, map_lng], 13);
   L.control.attribution({position: 'bottomleft'}).addTo(map);
   L.control.scale({
     imperial: false
   }).addTo(map);
 
-  var sidebar = L.control.sidebar('edit-zoning', {position: 'right'}).addTo(map);
-  sidebar.open('zoning');
-  // waiting initial css transition
-  setTimeout(function() {
-    map.invalidateSize();
-  }, 550);
+  sidebar.addTo(map);
 
   L.tileLayer(map_layer_url, {
     maxZoom: 18,
@@ -288,7 +287,7 @@ function zonings_edit(params) {
     var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
     if (bounds && bounds.isValid()) {
       map.invalidateSize();
-      map.fitBounds(bounds);
+      map.fitBounds(bounds, {animate: false});
     }
   }
 
