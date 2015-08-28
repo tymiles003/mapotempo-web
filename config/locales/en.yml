@@ -432,6 +432,7 @@ en:
       clear: "Clear all destinations"
       clear_confirm: "Are you sure to want to delete all destinations?"
     form:
+      ref_help: "A free reference"
       detail_help: "Non geocoded addresse complement; like flat number"
       quantity_help: "Quantity to be delivered"
       take_over_help: "If empty uses the default value"
@@ -656,6 +657,7 @@ en:
       out_of_capacity: "out of capacity"
       out_of_drive_time: "out of vehicle's time window"
     form:
+      ref_help: "A free reference"
       tags_help: "Restrict customer to this categories"
       order_array: "Orders"
 
@@ -685,6 +687,7 @@ en:
     geocoding:
       geocoding_in_progress: "Geocoding in progress."
     form:
+      ref: "Reference"
       ref_help: "A free reference"
       locate_manually: "Locate manually on the map"
       country_default: "%{n} (default value)"

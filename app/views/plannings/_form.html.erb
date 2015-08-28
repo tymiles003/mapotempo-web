@@ -5,7 +5,9 @@
   <% if @planning.id %>
     <%= f.text_field :ref, t('activerecord.attributes.planning.ref_small') %>
   <% else %>
-    <%= f.text_field :ref %>
+    <%= f.text_field :ref do %>
+      <p class="help-block"><%= t '.ref_help' %></p>
+    <% end %>
   <% end %>
   <% if @planning.customer.enable_orders && @planning.order_array %>
     <%= f.select :order_array_id, t('.order_array'), options_for_select(@planning.customer.order_arrays.map{ |oa| [oa.name, oa.id] }, @planning.order_array.id), {div_class: 'col-lg-8 col-md-8'}, {disabled: true} do %>

@@ -433,6 +433,7 @@ fr:
       clear: "Supprimer tous les clients"
       clear_confirm: "Êtes-vous sûr de vouloir supprimer tous les clients ?"
     form:
+      ref_help: "Référence libre"
       detail_help: "Complément d'adresse non géocodable, ex. numéro d'escalier"
       quantity_help: "Quantité à livrer"
       take_over_help: "Si vide utilise la valeur par défaut"
@@ -657,6 +658,7 @@ fr:
       out_of_capacity: "hors capacité véhicule"
       out_of_drive_time: "hors créneau véhicule"
     form:
+      ref_help: "Référence libre"
       tags_help: "Restreint les clients pris en compte à ces catégories"
       order_array: "Comm."
 
@@ -686,6 +688,7 @@ fr:
     geocoding:
       geocoding_in_progress: "Geocodage en cours."
     form:
+      ref: "Référence"
       ref_help: "Référence libre"
       locate_manually: "Positionner manuellement sur la carte"
       country_default: "%{n} (valeur par défaut)"
