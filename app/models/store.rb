@@ -71,7 +71,7 @@ class Store < ActiveRecord::Base
   end
 
   def update_out_of_date
-    if lat_changed? || lng_changed? || open_changed? || close_changed?
+    if lat_changed? || lng_changed?
       out_of_date
     end
   end

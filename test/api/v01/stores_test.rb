@@ -67,8 +67,6 @@ class V01::StoresTest < ActiveSupport::TestCase
         city: 'Tule',
         lat: 43.5710885456786,
         lng: 3.89636993408203,
-        open: nil,
-        close: nil,
         ref: nil,
         geocoding_accuracy: nil,
         foo: 'bar'

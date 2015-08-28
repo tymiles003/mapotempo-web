@@ -28,7 +28,5 @@ class V01::Entities::Store < Grape::Entity
   expose(:country, documentation: { type: String })
   expose(:lat, documentation: { type: Float })
   expose(:lng, documentation: { type: Float })
-  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M:%S') }
-  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
   expose(:geocoding_accuracy, documentation: { type: Float })
 end

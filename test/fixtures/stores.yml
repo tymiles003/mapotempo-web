@@ -8,8 +8,6 @@ store_zero:
   city: MyString
   lat: 1.5
   lng: 1.5
-  open: 2000-01-01 10:00:00
-  close: 2000-01-01 11:00:00
   customer: customer_one
 
 store_one:
@@ -20,8 +18,6 @@ store_one:
   city: MyString
   lat: 46.56860
   lng: 0.35462
-  open: 2000-01-01 7:00:00
-  close: 2000-01-01 19:00:00
   customer: customer_one
 
 store_one_bis:
@@ -32,8 +28,6 @@ store_one_bis:
   city: MyString
   lat: 46.56860
   lng: 0.35462
-  open: 2000-01-01 7:00:00
-  close: 2000-01-01 19:00:00
   customer: customer_one
 
 store_two:
@@ -44,8 +38,6 @@ store_two:
   city: MyString
   lat: 48.09385
   lng: -1.64694
-  open: 2000-01-01 7:00:00
-  close: 2000-01-01 19:00:00
   customer: customer_two
 
 store_without_geo:
@@ -56,6 +48,4 @@ store_without_geo:
   city: MyString
   lat:
   lng:
-  open: 2000-01-01 7:00:00
-  close: 2000-01-01 19:00:00
   customer: customer_one
