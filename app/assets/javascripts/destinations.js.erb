@@ -99,7 +99,9 @@ function destinations_form(params, api) {
       });
     });
     <% end %>
-    $row.on("change", ":input", function(event) {
+    $row.on("change", ":input", function(event, move) {
+      if (move === undefined && event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]|\[country\]|\[lat\]|\[lng\]$/))
+        move = true;
       var url;
       if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]|\[country\]$/)) {
         url = '/api/0.1/' + api + '/geocode.json';
@@ -112,8 +114,10 @@ function destinations_form(params, api) {
           } else {
             addMarker(destination_id, latChg, lngChg);
           }
-          if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
-            map.setView(markers[destination_id].getLatLng(), 16);
+          if (move) {
+            if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
+              map.setView(markers[destination_id].getLatLng(), 16);
+            }
           }
         }
         return;
@@ -124,7 +128,7 @@ function destinations_form(params, api) {
         url: url,
         beforeSend: beforeSendWaiting,
         success: function(data) {
-          update(id, data);
+          update(id, data, move);
         },
         complete: completeWaiting,
         error: ajaxError
@@ -162,7 +166,7 @@ function destinations_form(params, api) {
     });
   }
 
-  function update(destination_id, destination) {
+  function update(destination_id, destination, move) {
     var row = $('[data-destination_id=' + destination_id + ']');
     $('[name$=\\[name\\]]', row).val(destination.name);
     $('[name$=\\[street\\]]', row).val(destination.street);
@@ -177,8 +181,10 @@ function destinations_form(params, api) {
       } else {
         addMarker(destination_id, destination.lat, destination.lng);
       }
-      if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
-        map.setView(markers[destination_id].getLatLng(), 16);
+      if (move) {
+        if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
+          map.setView(markers[destination_id].getLatLng(), 16);
+        }
       }
     }
     if (destination.geocoding_accuracy) {
@@ -196,10 +202,10 @@ function destinations_form(params, api) {
     }
   }
 
-  function sendMove(id, latLng) {
+  function markerChange(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     $('[name$=\\[lat\\]]', row).val(latLng.lat);
-    $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change');
+    $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change', false);
   }
 
   map.on('click', function(mouseEvent) {
@@ -209,7 +215,7 @@ function destinations_form(params, api) {
       } else {
         addMarker(pointing, mouseEvent.latlng.lat, mouseEvent.latlng.lng);
       }
-      sendMove(pointing, mouseEvent.latlng);
+      markerChange(pointing, mouseEvent.latlng);
       pointing = false;
       $('body, .leaflet-container').css('cursor', '');
     }
@@ -224,7 +230,7 @@ function destinations_form(params, api) {
       destination: id
     }).addTo(map);
     marker.on('dragend', function(event) {
-      sendMove(event.target.options.destination, event.target.getLatLng());
+      markerChange(event.target.options.destination, event.target.getLatLng());
     });
     markers[id] = marker;
   }
@@ -419,7 +425,9 @@ function destinations_index(params, api) {
       });
     });
     <% end %>
-    $row.on("change", ":input:not(:checkbox)", function(event) {
+    $row.on("change", ":input:not(:checkbox)", function(event, move) {
+      if (move === undefined && event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]|\[country\]|\[lat\]|\[lng\]$/))
+        move = true;
       var url = '/api/0.1/' + api + '/' + id + '.json';
       $.ajax({
         type: "put",
@@ -427,7 +435,7 @@ function destinations_index(params, api) {
         url: url,
         beforeSend: beforeSendWaiting,
         success: function(data) {
-          update(id, data, false);
+          update(id, data, move);
         },
         complete: completeWaiting,
         error: ajaxError
@@ -513,10 +521,10 @@ function destinations_index(params, api) {
     $("#count").html(parseInt($("#count").text()) - 1);
   }
 
-  function sendMove(id, latLng) {
+  function markerChange(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     $('[name$=\\[lat\\]]', row).val(latLng.lat);
-    $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change');
+    $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change', false);
   }
 
   map.on('click', function(mouseEvent) {
@@ -526,7 +534,7 @@ function destinations_index(params, api) {
       } else {
         addMarker(pointing, mouseEvent.latlng.lat, mouseEvent.latlng.lng);
       }
-      sendMove(pointing, mouseEvent.latlng);
+      markerChange(pointing, mouseEvent.latlng);
       pointing = false;
       $('body, .leaflet-container').css('cursor', '');
     }
@@ -571,7 +579,7 @@ function destinations_index(params, api) {
       destination: id
     }).addTo(markersLayers).addTo(cluster);
     marker.on('dragend', function(event) {
-      sendMove(event.target.options.destination, event.target.getLatLng());
+      markerChange(event.target.options.destination, event.target.getLatLng());
     });
     marker.on('click', function(mouseEvent) {
       if (!pointing) {
