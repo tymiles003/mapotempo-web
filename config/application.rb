@@ -67,33 +67,33 @@ module Mapotempo
     config.swagger_docs_base_path = 'http://localhost:3000/'
 
     config.optimize = Ort.new(
-      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'optimizer', expires_in: 60*60*24*10),
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'optimizer'), namespace: 'optimizer', expires_in: 60*60*24*10),
       'http://localhost:4567/0.1/optimize_tsptw'
     )
     config.optimize_time = 30000
     config.optimize_cluster_size = 5
     config.optimize_soft_upper_bound = 3
 
-    config.geocode_code_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode', expires_in: 60*60*24*10)
-    config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_reverse', expires_in: 60*60*24*10)
-    config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'geocode_complete', expires_in: 60*60*24*10)
+    config.geocode_code_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode'), namespace: 'geocode', expires_in: 60*60*24*10)
+    config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode_reverse'), namespace: 'geocode_reverse', expires_in: 60*60*24*10)
+    config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode_complete'), namespace: 'geocode_complete', expires_in: 60*60*24*10)
     config.geocode_ign_referer = 'localhost'
     config.geocode_ign_key = nil
     config.geocode_complete = false # Build time setting
 
     config.osrm = Osrm.new(
-      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'osrm_request', expires_in: 60*60*24*1),
-      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'osrm_result', expires_in: 60*60*24*1)
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'osrm_request'), namespace: 'osrm_request', expires_in: 60*60*24*1),
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'osrm_result'), namespace: 'osrm_result', expires_in: 60*60*24*1)
     )
 
     config.otp = Otp.new(
-      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'otp_request', expires_in: 60*60*24*1),
-      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'otp_result', expires_in: 60*60*24*1)
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'otp_request'), namespace: 'otp_request', expires_in: 60*60*24*1),
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'otp_result'), namespace: 'otp_result', expires_in: 60*60*24*1)
     )
 
     config.here = Here.new(
-      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'here_request', expires_in: 60*60*24*1),
-      ActiveSupport::Cache::FileStore.new(Dir.tmpdir, namespace: 'here_result', expires_in: 60*60*24*1),
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'here_request'), namespace: 'here_request', expires_in: 60*60*24*1),
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'here_result'), namespace: 'here_result', expires_in: 60*60*24*1),
       'https://route.nlp.nokia.com/routing', nil, nil
     )
 
