@@ -27,7 +27,7 @@ class Ort
   attr_accessor :cache, :url
 
   def initialize(cache, url)
-    @cache, @url, @time_threshold = cache, url
+    @cache, @url = cache, url
   end
 
   def optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, rest_window, time_threshold)

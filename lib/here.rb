@@ -44,7 +44,7 @@ class Here
         representation: 'display',
         routeAttributes: 'summary,shape',
         truckType: 'truck',
-        #limitedWeight: # Truck routing only, vehicle weight including trailers and shipped goods, in tons. 
+        #limitedWeight: # Truck routing only, vehicle weight including trailers and shipped goods, in tons.
         #weightPerAxle: # Truck routing only, vehicle weight per axle in tons.
         #height: # Truck routing only, vehicle height in meters.
         #width: # Truck routing only, vehicle width in meters.
