@@ -53,6 +53,6 @@ class RouterOsrm < Router
   end
 
   def isochrone(lat, lng, size)
-    Osrm.isochrone(url_isochrone, lat, lng, size)
+    Mapotempo::Application.config.osrm.isochrone(url_isochrone, lat, lng, size)
   end
 end
