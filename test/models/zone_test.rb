@@ -11,7 +11,7 @@ class ZoneTest < ActiveSupport::TestCase
   test 'should touch planning changed' do
     o = zones(:zone_one)
     assert_not o.zoning.plannings[0].zoning_out_of_date
-    o.polygon = 'plop'
+    o.polygon = '{"plop": "plop"}'
     o.save!
     assert o.zoning.plannings[0].zoning_out_of_date
   end
