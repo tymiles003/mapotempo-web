@@ -21,7 +21,7 @@ class V01::Zonings < Grape::API
     def zoning_params
       p = ActionController::Parameters.new(params)
       p = p[:zoning] if p.key?(:zoning)
-      p.permit(:name, zones_attributes: [:id, :polygon, :_destroy, vehicle_ids: []])
+      p.permit(:name, zones_attributes: [:id, :polygon, :_destroy, :vehicle_id])
     end
   end
 
