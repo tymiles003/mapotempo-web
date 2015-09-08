@@ -139,15 +139,19 @@ class Here
       rescue => e
         error = JSON.parse(e.response)
         if error['type'] == 'ApplicationError'
-          if error['AdditionalData'].include?({'key' => 'error_code', 'value' => 'NGEO_ERROR_GRAPH_DISCONNECTED'})
-            raise 'Points are unreachable'
-          else
-            raise [error['subtype'], error['Details']].join(' ')
+          additional_data = error['AdditionalData'] || error['additionalData']
+          if additional_data
+            if additional_data.include?({'key' => 'error_code', 'value' => 'NGEO_ERROR_GRAPH_DISCONNECTED'})
+              return
+            elsif additional_data.include?({'key' => 'error_code', 'value' => 'NGEO_ERROR_ROUTE_NO_START_POINT'})
+              raise UnreachablePointError
+            else
+              raise
+            end
           end
-        else
-          Rails.logger.info [url, params]
-          Rails.logger.info error
         end
+        Rails.logger.info [url, params]
+        Rails.logger.info error
         raise ['Here', error['type']].join(' ')
       end
       request = JSON.parse(response)
