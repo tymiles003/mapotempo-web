@@ -44,7 +44,7 @@ class ApiV01 < Grape::API
     def error!(*args)
       # Workaround for close transaction on error!
       if !ActiveRecord::Base.connection.transaction_manager.current_transaction.is_a?(ActiveRecord::ConnectionAdapters::NullTransaction)
-        ActiveRecord::Base.connection.rollback_transaction
+        ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
       end
       super.error!(*args)
     end
@@ -53,24 +53,24 @@ class ApiV01 < Grape::API
   before do
     authenticate!
     authorize!
-    ActiveRecord::Base.connection.begin_transaction
+    ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.begin_transaction
   end
 
   after do
     begin
       if @error
-        ActiveRecord::Base.connection.rollback_transaction
+        ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
       else
-        ActiveRecord::Base.connection.commit_transaction
+        ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.commit_transaction
       end
     rescue Exception
-      ActiveRecord::Base.connection.rollback_transaction
+      ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
       raise
     end
   end
 
   rescue_from :all do |e|
-    ActiveRecord::Base.connection.rollback_transaction
+    ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
     if e.is_a?(ActiveRecord::RecordNotFound)
       rack_response(nil, 404)
     elsif e.is_a?(ActiveRecord::RecordInvalid)
