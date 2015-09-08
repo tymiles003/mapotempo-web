@@ -316,8 +316,10 @@ fr:
               after: "Doit être après l'horaire de début"
         zone:
           attributes:
-            vehicles:
+            vehicle:
               bad_customer: "non associé au compte client"
+            polygon:
+              invalid_json: "n'est pas au format json"
         customer:
           attributes:
             destinations:

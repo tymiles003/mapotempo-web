@@ -21,7 +21,8 @@ class Zone < ActiveRecord::Base
 
   nilify_blanks
   validates :polygon, presence: true
-  validate :valide_vehicle_from_customer
+  validate :polygon_json_format_validation
+  validate :vehicle_from_customer_validation
 
   before_save :update_out_of_date
 
@@ -45,7 +46,16 @@ class Zone < ActiveRecord::Base
     @geom = RGeo::GeoJSON.decode(polygon, json_parser: :json)
   end
 
-  def valide_vehicle_from_customer
+  def polygon_json_format_validation
+    begin
+      !!JSON.parse(polygon)
+    rescue
+      errors.add(:polygon, :invalid_json)
+      false
+    end
+  end
+
+  def vehicle_from_customer_validation
     if vehicle && vehicle.customer != zoning.customer
       errors.add(:vehicle, :bad_customer)
       false

@@ -315,8 +315,10 @@ en:
               after: "Must be after the open time"
         zone:
           attributes:
-            vehicles:
+            vehicle:
               bad_customer: "not associated with customer"
+            polygon:
+              invalid_json: "is not a valid json"
         customer:
           attributes:
             destinations:
