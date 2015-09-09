@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/Mapotempo/grape-swagger.git
+  revision: f9d0631edf748a6b7add778008bd22d1df58485b
+  specs:
+    grape-swagger (0.10.3)
+      grape (>= 0.8.0)
+      grape-entity
+
+GIT
   remote: git://github.com/Mapotempo/leaflet-controlledbounds-rails.git
   revision: ed306c23e5fba964384ceab8f9cc5e2e468f196d
   specs:
@@ -72,14 +80,6 @@ GIT
     swagger-docs (0.1.10)
       activesupport (>= 3, < 5)
       rails (>= 3, < 5)
-
-GIT
-  remote: git://github.com/tim-vandecasteele/grape-swagger.git
-  revision: ef7a99d06a58fe54c02dfbd2d5fef6b830d36f28
-  specs:
-    grape-swagger (0.10.2)
-      grape (>= 0.8.0)
-      grape-entity
 
 GEM
   remote: https://rubygems.org/
@@ -544,3 +544,6 @@ DEPENDENCIES
   validates_timeliness
   web-console (~> 2.0)
   webmock
+
+BUNDLED WITH
+   1.10.6
