@@ -442,6 +442,7 @@ en:
       comment_help: "Delivery required information"
       locate_manually: "Locate manually on the map"
       geocoding_accuracy_none: "Not applicable"
+      geocoding_fail: "Geocoding has failed"
       geocoding_accuracy_help: "Conversion quality of the address to the geographical position"
       quantity_default: "default"
       take_over_default: "default"

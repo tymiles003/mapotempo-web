@@ -140,6 +140,12 @@ function destinations_form(params, api) {
       $('.leaflet-container').css('cursor', 'crosshair');
     });
 
+    $('a.pointing').click(function(event) {
+      pointing = id;
+      $('body').css('cursor', 'crosshair');
+      $('.leaflet-container').css('cursor', 'crosshair');
+    });
+
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
       theme: 'bootstrap',
@@ -187,18 +193,26 @@ function destinations_form(params, api) {
         }
       }
     }
-    if (destination.geocoding_accuracy) {
-      destination = prepare_display_destination(destination);
-      var progress = $('.progress div');
-      $('#geocoding_accuracy').show();
+    if (destination.street || destination.postalcode || destination.city) {
       $('#no_geocoding_accuracy').hide();
-      progress.css('width', destination.geocoding_accuracy_percent + '%');
-      progress.removeClass('progress-bar-success progress-bar-warning progress-bar-danger');
-      progress.addClass('progress-bar-' + destination.geocoding_status);
-      $('.progress div span').html(destination.geocoding_accuracy_percent + '%');
-    } else {
-      $('#geocoding_accuracy').hide();
+      if (destination.geocoding_accuracy) {
+        destination = prepare_display_destination(destination);
+        var progress = $('.progress div');
+        $('#geocoding_accuracy').show();
+        $('#geocoding_fail').hide();
+        progress.css('width', destination.geocoding_accuracy_percent + '%');
+        progress.removeClass('progress-bar-success progress-bar-warning progress-bar-danger');
+        progress.addClass('progress-bar-' + destination.geocoding_status);
+        $('.progress div span').html(destination.geocoding_accuracy_percent + '%');
+      } else {
+        $('#geocoding_accuracy').hide();
+        $('#geocoding_fail').show();
+      }
+    }
+    else {
       $('#no_geocoding_accuracy').show();
+      $('#geocoding_accuracy').hide();
+      $('#geocoding_fail').hide();
     }
   }
 

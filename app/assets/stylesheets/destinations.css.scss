@@ -41,6 +41,16 @@
     margin-bottom: 0px;
   }
 
+  #no_geocoding_accuracy {
+    padding-top: 7px;
+  }
+
+  #geocoding_fail {
+    padding-top: 7px;
+    color: red;
+    font-weight: bold;
+  }
+
   #destination_box {
     height: 300px;
     overflow-y: scroll;

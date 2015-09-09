@@ -19,6 +19,9 @@
         </div>
         <p class="help-block"><%= t 'destinations.form.geocoding_accuracy_help' %></p>
       </div>
+      <div id="geocoding_fail" style="display: none">
+        <%= t 'destinations.form.geocoding_fail' %> - <a href="#" role="button" class="pointing"><i class="fa fa-crosshairs fa-fw"></i> <%= t '.locate_manually' %></a>
+      </div>
       <div id="no_geocoding_accuracy"<% if @store.geocoding_accuracy %> style="display: none"<% end %>>
         <%= t 'destinations.form.geocoding_accuracy_none' %>
       </div>
