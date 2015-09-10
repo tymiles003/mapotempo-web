@@ -36,7 +36,7 @@ function customers_index(params) {
         var marker = L.marker(new L.LatLng(customer.lat, customer.lng), {
           icon: new L.NumberedDivIcon({
             number: customer.max_vehicles,
-            iconUrl: '/images/point-' + (customer.test ? '004499' : '707070') + '.svg',
+            iconUrl: '/images/point-' + (customer.test ? '707070' : '004499') + '.svg',
             iconSize: new L.Point(12, 12),
             iconAnchor: new L.Point(6, 6),
             popupAnchor: new L.Point(0, -6),
