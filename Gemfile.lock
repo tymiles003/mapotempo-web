@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/Mapotempo/grape-swagger.git
-  revision: f9d0631edf748a6b7add778008bd22d1df58485b
+  revision: 9f89ca9f951590c7a2d975d90e5d97c0ee871eef
   specs:
     grape-swagger (0.10.3)
       grape (>= 0.8.0)
@@ -544,6 +544,3 @@ DEPENDENCIES
   validates_timeliness
   web-console (~> 2.0)
   webmock
-
-BUNDLED WITH
-   1.10.6
