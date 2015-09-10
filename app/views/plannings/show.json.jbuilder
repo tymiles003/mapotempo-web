@@ -101,7 +101,7 @@ else
           (json.duration route.vehicle.rest_duration.strftime('%H:%M:%S')) if route.vehicle.rest_duration
           (json.store_id route.vehicle.store_rest.id) if route.vehicle.store_rest
           (json.geocoded true) if !route.vehicle.store_rest.nil? && !route.vehicle.store_rest.lat.nil? && !route.vehicle.store_rest.lng.nil?
-          (json.error true) if route.vehicle.store_rest.nil? || route.vehicle.store_rest.lat.nil? || route.vehicle.store_rest.lng.nil?
+          (json.error true) if !route.vehicle.store_rest.nil? && (route.vehicle.store_rest.lat.nil? || route.vehicle.store_rest.lng.nil?)
         end
       end
     end
