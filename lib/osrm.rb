@@ -152,7 +152,7 @@ class Osrm
 
     if request
       data = JSON.parse(request)
-      request = data['features']
+      request = data['features'][0]
       if request != []
         request.to_json
       end
