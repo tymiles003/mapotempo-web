@@ -117,9 +117,9 @@ function plannings_edit(params) {
       e.css("background", "");
     }, 1500);
 
-    if (e.offset().top < 0 || e.offset().top > $(".box").height()) {
-      $(".box").animate({
-        scrollTop: e.offset().top + $(".box").scrollTop() - 100
+    if (e.offset().top < 0 || e.offset().top > $(".sidebar-content").height()) {
+      $(".sidebar-content").animate({
+        scrollTop: e.offset().top + $(".sidebar-content").scrollTop() - 100
       });
     }
   }
