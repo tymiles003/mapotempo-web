@@ -445,7 +445,7 @@ class Route < ActiveRecord::Base
 
     if not_nil_position_index.key?(true)
       not_nil_position = not_nil_position_index[true].collect{ |position, index| position }
-      not_nil_tws = not_nil_position_index[true][0..-2].collect{ |position, index| tws[index + 1] }
+      not_nil_tws = not_nil_position_index[true][0..-1].collect{ |position, index| tws[index + 1] }
       not_nil_index = not_nil_position_index[true].collect{ |position, index| index + 1 }
     else
       not_nil_position = []
@@ -460,7 +460,7 @@ class Route < ActiveRecord::Base
       nil_index = []
     end
 
-    order = yield([positions[0]] + not_nil_position + [positions[-1]], [tws[0]] + not_nil_tws + [tws[-1]], nil_tws)
+    order = yield([positions[0]] + not_nil_position + [positions[-1]], [tws[0]] + not_nil_tws, nil_tws)
 
     all_index = [0] + not_nil_index + [positions.length - 1] + nil_index
     order.collect{ |o| all_index[o] }
