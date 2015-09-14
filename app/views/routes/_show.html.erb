@@ -50,7 +50,7 @@
   <%
   index = 0
   route.stops.each{ |stop|
-    if stop.active && stop.position?
+    if stop.active && (stop.position? || stop.is_a?(StopRest))
   %>
     <li class="list-group-item stop" style="border-left: 5px solid <%= route.color || route.vehicle.color %>">
       <% if stop.wait_time && stop.wait_time > 60 %>
