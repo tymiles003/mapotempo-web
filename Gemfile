@@ -61,7 +61,7 @@ end
 
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', github: 'Mapotempo/grape-swagger' # FIXME wait for pull request (param_type support)
+gem 'grape-swagger', github: 'ruby-grape/grape-swagger' # FIXME wait v0.10.3
 gem 'rack-cors'
 gem 'swagger-docs', github: 'richhollis/swagger-docs' # FIXME wait after v0.1.9
 
