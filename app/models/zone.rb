@@ -35,7 +35,11 @@ class Zone < ActiveRecord::Base
       point = RGeo::Cartesian.factory.point(lng, lat)
       inside = (@geom || decode_geom).geometry().contains?(point)
       if inside
-        @geom.geometry().exterior_ring.distance(point)
+        if @geom.geometry.respond_to?(:exterior_ring)
+          @geom.geometry.exterior_ring.distance(point)
+        else
+          @geom.geometry.collect { |geo| geo.exterior_ring.distance(point) }.min
+        end
       end
     end
   end

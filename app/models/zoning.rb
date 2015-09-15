@@ -51,9 +51,6 @@ class Zoning < ActiveRecord::Base
 
   # Return the zone corresponding to destination location
   def inside(destination)
-    a = zones.collect{ |zone|
-      [zone, zone.inside_distance(destination.lat, destination.lng)]
-    }
     z = zones.collect{ |zone|
       [zone, zone.inside_distance(destination.lat, destination.lng)]
     }.select{ |zone, d|
