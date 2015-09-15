@@ -101,7 +101,7 @@ gem 'jquery-ui-rails'
 gem 'jquery-tablesorter'
 gem 'jquery-simplecolorpicker-rails'
 gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
-gem 'select2-rails', github: 'frodrigo/select2-rails', branch: 'v4' # FIXME wait for https://github.com/argerim/select2-rails/pull/114
+gem 'select2-rails'
 gem 'i18n-js'
 gem 'mustache'
 gem 'smt_rails'
