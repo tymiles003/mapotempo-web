@@ -47,11 +47,13 @@ class Zone < ActiveRecord::Base
   end
 
   def polygon_json_format_validation
-    begin
-      !!JSON.parse(polygon)
-    rescue
-      errors.add(:polygon, :invalid_json)
-      false
+    if polygon
+      begin
+        !!JSON.parse(polygon)
+      rescue
+        errors.add(:polygon, :invalid_json)
+        false
+      end
     end
   end
 
