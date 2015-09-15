@@ -37,7 +37,7 @@ class V01::Vehicles < Grape::API
     end
     get do
       vehicles = if params.key?(:ids)
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.vehicles.select{ |vehicle| ids.include?(vehicle.id) }
       else
         current_customer.vehicles.load

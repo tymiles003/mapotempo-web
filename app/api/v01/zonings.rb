@@ -38,7 +38,7 @@ class V01::Zonings < Grape::API
     end
     get do
       zonings = if params.key?(:ids)
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.zonings.select{ |zoning| ids.include?(zoning.id) }
       else
         current_customer.zonings.load
@@ -98,7 +98,7 @@ class V01::Zonings < Grape::API
     end
     delete do
       Zoning.transaction do
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.zonings.select{ |zoning| ids.include?(zoning.id) }.each(&:destroy)
       end
     end
@@ -113,7 +113,7 @@ class V01::Zonings < Grape::API
       Zoning.transaction do
         zoning = current_customer.zonings.find(params[:id])
         planning = current_customer.plannings.find(params[:planning_id])
-        n = params[:n] ? params[:n].to_i : nil
+        n = params.key?(:n) ? Integer(params[:n]) : nil
         if zoning && planning
           zoning.from_planning(planning)
           zoning.save!
@@ -133,7 +133,7 @@ class V01::Zonings < Grape::API
       Zoning.transaction do
         zoning = current_customer.zonings.find(params[:id])
         planning = current_customer.plannings.find(params[:planning_id])
-        n = params[:n] ? params[:n].to_i : nil
+        n = params.key?(:n) ? Integer(params[:n]) : nil
         if zoning && planning
           zoning.automatic_clustering(planning, n)
           zoning.save!
@@ -151,7 +151,7 @@ class V01::Zonings < Grape::API
     patch ':id/isochrone' do
       Zoning.transaction do
         zoning = current_customer.zonings.find(params[:id])
-        size = params[:size].to_i
+        size = Integer(params[:size])
         if zoning
           zoning.isochrone(size)
           zoning.save!

@@ -37,7 +37,7 @@ class V01::Stores < Grape::API
     end
     get do
       stores = if params.key?(:ids)
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.stores.select{ |store| ids.include?(store.id) }
       else
         current_customer.stores.load
@@ -123,7 +123,7 @@ class V01::Stores < Grape::API
     end
     delete do
       Store.transaction do
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.stores.select{ |store| ids.include?(store.id) }.each(&:destroy)
       end
     end

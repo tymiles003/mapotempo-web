@@ -20,7 +20,7 @@ class ParseIdsRefs
     if !raw_id.is_a?(Fixnum) && raw_id.start_with?('ref:')
       {ref: raw_id[4..-1]}
     else
-      {id: raw_id.to_i}
+      {id: Integer(raw_id)}
     end
   end
 

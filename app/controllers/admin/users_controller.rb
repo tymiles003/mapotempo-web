@@ -92,7 +92,7 @@ class Admin::UsersController < ApplicationController
 
   def destroy_multiple
     User.transaction do
-      ids = params['users'].keys.collect(&:to_i)
+      ids = params['users'].keys.collect{ |i| Integer(i) }
       User.find(ids).each(&:destroy)
       respond_to do |format|
         format.html { redirect_to admin_users_path }

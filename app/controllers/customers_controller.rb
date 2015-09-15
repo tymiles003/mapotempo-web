@@ -67,7 +67,7 @@ class CustomersController < ApplicationController
   def destroy_multiple
     Customer.transaction do
       if params['customers'].keys
-        ids = params['customers'].keys.collect(&:to_i)
+        ids = params['customers'].keys.collect{ |i| Integer(i) }
         current_user.reseller.customers.select{ |customer| ids.include?(customer.id) }.each(&:destroy)
       end
       respond_to do |format|

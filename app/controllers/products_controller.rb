@@ -62,7 +62,7 @@ class ProductsController < ApplicationController
   def destroy_multiple
     Product.transaction do
       if params['products']
-        ids = params['products'].keys.collect(&:to_i)
+        ids = params['products'].keys.collect{ |i| Integer(i) }
         current_user.customer.products.select{ |product| ids.include?(product.id) }.each(&:destroy)
       end
       respond_to do |format|

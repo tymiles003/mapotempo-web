@@ -105,7 +105,7 @@ class OrderArraysController < ApplicationController
   def destroy_multiple
     OrderArray.transaction do
       if params['order_arrays']
-        ids = params['order_arrays'].keys.collect(&:to_i)
+        ids = params['order_arrays'].keys.collect{ |i| Integer(i) }
         current_user.customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }.each(&:destroy)
       end
       respond_to do |format|

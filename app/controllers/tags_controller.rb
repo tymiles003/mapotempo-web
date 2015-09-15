@@ -62,7 +62,7 @@ class TagsController < ApplicationController
   def destroy_multiple
     Tag.transaction do
       if params['tags']
-        ids = params['tags'].keys.collect(&:to_i)
+        ids = params['tags'].keys.collect{ |i| Integer(i) }
         current_user.customer.tags.select{ |tag| ids.include?(tag.id) }.each(&:destroy)
       end
       respond_to do |format|

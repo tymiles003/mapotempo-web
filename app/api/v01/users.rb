@@ -109,7 +109,7 @@ class V01::Users < Grape::API
     delete do
       if @current_user.admin?
         User.transaction do
-          ids = params[:ids].collect(&:to_i)
+          ids = params[:ids].collect{ |i| Integer(i) }
           User.select{ |user| ids.include?(user.id) }.each(&:destroy)
         end
       else

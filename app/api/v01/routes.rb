@@ -44,7 +44,7 @@ class V01::Routes < Grape::API
         get do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           routes = if params.key?(:ids)
-            ids = params[:ids].collect(&:to_i)
+            ids = params[:ids].collect{ |i| Integer(i) }
             current_customer.plannings.where(planning_id).first!.routes.select{ |route| ids.include?(route.id) }
           else
             current_customer.plannings.where(planning_id).first!.routes.load
@@ -110,7 +110,7 @@ class V01::Routes < Grape::API
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
 
 
-          ids = params[:destination_ids].collect(&:to_i)
+          ids = params[:destination_ids].collect{ |i| Integer(i) }
           destinations = current_customer.destinations.select{ |destination| ids.include?(destination.id) }
 
           Planning.transaction do

@@ -122,7 +122,7 @@ class PlanningsController < ApplicationController
   def destroy_multiple
     Planning.transaction do
       if params['plannings']
-        ids = params['plannings'].keys.collect(&:to_i)
+        ids = params['plannings'].keys.collect{ |i| Integer(i) }
         current_user.customer.plannings.select{ |planning| ids.include?(planning.id) }.each(&:destroy)
       end
       respond_to do |format|
@@ -135,12 +135,12 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       begin
         Planning.transaction do
-          params[:route_id] = params[:route_id].to_i
+          params[:route_id] = Integer(params[:route_id])
           route = @planning.routes.find{ |route| route.id == params[:route_id] }
-          params[:stop_id] = params[:stop_id].to_i
+          params[:stop_id] = Integer(params[:stop_id])
           stop = nil
           @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == params[:stop_id] } }
-          route.move_stop(stop, params[:index].to_i)
+          route.move_stop(stop, Integer(params[:index]))
           @planning.save!
           @planning.reload
           format.json { render action: 'show', location: @planning }
@@ -196,9 +196,9 @@ class PlanningsController < ApplicationController
 
   def update_stop
     respond_to do |format|
-      params[:route_id] = params[:route_id].to_i
+      params[:route_id] = Integer(params[:route_id])
       @route = @planning.routes.find{ |route| route.id == params[:route_id] }
-      params[:stop_id] = params[:stop_id].to_i
+      params[:stop_id] = Integer(params[:stop_id])
       @stop = @route.stops.find{ |stop| stop.id == params[:stop_id] }
       if @route && @stop && @stop.update(stop_params) && @route.compute && @planning.save
         format.json { render action: 'show', location: @planning }
@@ -220,7 +220,7 @@ class PlanningsController < ApplicationController
 
   def optimize_route
     respond_to do |format|
-      route = @planning.routes.find{ |route| route.id == params[:route_id].to_i }
+      route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
       if route && Optimizer.optimize(@planning, route) && @planning.customer.save
         format.json { render action: 'show', location: @planning }
       else
@@ -230,7 +230,7 @@ class PlanningsController < ApplicationController
   end
 
   def active
-    route = @planning.routes.find{ |route| route.id == params[:route_id].to_i }
+    route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
     respond_to do |format|
       if route && route.active(params[:active].to_s.to_sym) && route.compute && @planning.save
         format.json { render action: 'show', location: @planning }

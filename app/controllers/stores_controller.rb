@@ -91,7 +91,7 @@ class StoresController < ApplicationController
       begin
         Store.transaction do
           if params['stores']
-            ids = params['stores'].keys.collect(&:to_i)
+            ids = params['stores'].keys.collect{ |i| Integer(i) }
             current_user.customer.stores.select{ |store| ids.include?(store.id) }.each(&:destroy)
           end
           format.html { redirect_to stores_url }

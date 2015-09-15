@@ -71,7 +71,7 @@ class ZoningsController < ApplicationController
   def destroy_multiple
     Zoning.transaction do
       if params['zonings']
-        ids = params['zonings'].keys.collect(&:to_i)
+        ids = params['zonings'].keys.collect{ |i| Integer(i) }
         current_user.customer.zonings.select{ |zoning| ids.include?(zoning.id) }.each(&:destroy)
       end
       respond_to do |format|
@@ -92,7 +92,7 @@ class ZoningsController < ApplicationController
     respond_to do |format|
       @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
       if @planning
-        @zoning.automatic_clustering(@planning, params[:n] ? params[:n].to_i : nil)
+        @zoning.automatic_clustering(@planning, params[:n] ? Integer(params[:n]) : nil)
         @zoning.save
       end
       format.json { render action: 'edit' }
@@ -112,7 +112,7 @@ class ZoningsController < ApplicationController
 
   def isochrone
     respond_to do |format|
-      size = params[:size].to_i || 10
+      size = params.key?(:size) ? Integer(params[:size]) : 10
       if size
         @zoning.isochrone(size)
         @zoning.save

@@ -102,7 +102,7 @@ module MasternautWs
     }.collect{ |r|
       s = r.split(':')
       begin
-        [s[0].to_i, DateTime.strptime(s[1].to_i(36).to_s, '%s')]
+        [Integer(s[0]), DateTime.strptime(s[1].to_i(36).to_s, '%s')]
       rescue
       end
     }.select{ |r|

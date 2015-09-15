@@ -37,7 +37,7 @@ class V01::Plannings < Grape::API
     end
     get do
       plannings = if params.key?(:ids)
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.plannings.select{ |planning| ids.include?(planning.id) }
       else
         current_customer.plannings.load
@@ -100,7 +100,7 @@ class V01::Plannings < Grape::API
     end
     delete do
       Planning.transaction do
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.plannings.select{ |planning| ids.include?(planning.id) }.each(&:destroy)
       end
     end
@@ -175,7 +175,7 @@ class V01::Plannings < Grape::API
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       order_array = current_customer.order_arrays.find(params[:order_array_id])
-      shift = params[:shift].to_i
+      shift = Integer(params[:shift])
       planning.apply_orders(order_array, shift)
       planning.save!
       present planning, with: V01::Entities::Planning

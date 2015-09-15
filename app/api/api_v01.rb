@@ -29,7 +29,7 @@ class ApiV01 < Grape::API
       params = Rack::Utils.parse_nested_query(request.query_string)
       @current_user ||= warden.authenticated? && warden.user
       @current_user ||= params['api_key'] && User.find_by(api_key: params['api_key'])
-      @current_customer ||= @current_user && (@current_user.admin? && customer_id ? @current_user.reseller.customers.find(customer_id.to_i) : @current_user.customer)
+      @current_customer ||= @current_user && (@current_user.admin? && customer_id ? @current_user.reseller.customers.find(Integer(customer_id)) : @current_user.customer)
     end
 
     def authenticate!

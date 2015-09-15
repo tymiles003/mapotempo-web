@@ -40,7 +40,7 @@ class V01::OrderArrays < Grape::API
     end
     get do
       order_arrays = if params.key?(:ids)
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }
       else
         current_customer.order_arrays.load
@@ -102,7 +102,7 @@ class V01::OrderArrays < Grape::API
     end
     delete do
       OrderArray.transaction do
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }.each(&:destroy)
       end
     end
@@ -131,12 +131,12 @@ class V01::OrderArrays < Grape::API
         orders = Hash[order_array.orders.load.map{ |order| [order.id, order] }]
         products = Hash[current_customer.products.collect{ |product| [product.id, product] }]
         params[:orders].each{ |id, order|
-          id = id.to_i
+          id = Integer(id)
           order[:product_ids] ||= []
           if orders.key?(id)
             # Workaround for multiple values need add values and not affect
             orders[id].products.clear
-            orders[id].products += order[:product_ids].map{ |product_id| products[product_id.to_i] }.compact
+            orders[id].products += order[:product_ids].map{ |product_id| products[Integer(product_id)] }.compact
           end
         }
         order_array.save!

@@ -35,7 +35,7 @@ class V01::Tags < Grape::API
     end
     get do
       tags = if params.key?(:ids)
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.tags.select{ |tag| ids.include?(tag.id) }
       else
         current_customer.tags.load
@@ -95,7 +95,7 @@ class V01::Tags < Grape::API
     end
     delete do
       Tag.transaction do
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.tags.select{ |tag| ids.include?(tag.id) }.each(&:destroy)
       end
     end

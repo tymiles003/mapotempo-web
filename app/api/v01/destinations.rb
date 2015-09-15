@@ -37,7 +37,7 @@ class V01::Destinations < Grape::API
     end
     get do
       destinations = if params.key?(:ids)
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.destinations.select{ |destination| ids.include?(destination.id) }
       else
         current_customer.destinations.load
@@ -123,7 +123,7 @@ class V01::Destinations < Grape::API
     end
     delete do
       Destination.transaction do
-        ids = params[:ids].collect(&:to_i)
+        ids = params[:ids].collect{ |i| Integer(i) }
         current_customer.destinations.select{ |destination| ids.include?(destination.id) }.each(&:destroy)
       end
     end
