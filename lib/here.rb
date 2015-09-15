@@ -55,7 +55,7 @@ class Here
       r = request['response']['route'][0]
       s = r['summary']
       result = [s['distance'], s['trafficTime'], Polylines::Encoder.encode_points(r['shape'].collect{ |p|
-        p.split(',').collect(&:to_f)
+        p.split(',').collect{ |f| Float(f) }
       }, 1e6)]
       @cache_result.write(key, result)
     end
