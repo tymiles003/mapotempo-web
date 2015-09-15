@@ -130,7 +130,7 @@ function plannings_edit(params) {
     }
     layer_zoning = new L.LayerGroup();
     $.each(zoning.zones, function(index, zone) {
-      var geom = L.geoJson(zone.polygon).getLayers()[0];
+      var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
       geom.setStyle({
         color: (zone.vehicle_id ? vehicles_map[zone.vehicle_id].color : '#707070')
       });
