@@ -319,7 +319,7 @@ fr:
             vehicle:
               bad_customer: "non associé au compte client"
             polygon:
-              invalid_json: "n'est pas au format json"
+              invalid_json: "n'est pas une chaine de caractère json valide"
         customer:
           attributes:
             destinations:

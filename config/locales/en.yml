@@ -318,7 +318,7 @@ en:
             vehicle:
               bad_customer: "not associated with customer"
             polygon:
-              invalid_json: "is not a valid json"
+              invalid_json: "is not a valid stringified json"
         customer:
           attributes:
             destinations:
