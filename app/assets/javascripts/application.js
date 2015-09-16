@@ -71,6 +71,13 @@
 //= require turbolinks
 
 Turbolinks.enableProgressBar();
+// bug in Firefox 40 when printing multi pages with progress bar
+window.onbeforeprint = function() {
+  Turbolinks.enableProgressBar(false);
+};
+window.onafterprint = function() {
+  Turbolinks.enableProgressBar();
+};
 
 $( document ).ready(function() {
   startSpinner = function() {
