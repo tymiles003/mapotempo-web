@@ -15,7 +15,11 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+
 function api_web_v01_routes_index(params) {
+  var progressBar = Turbolinks.enableProgressBar();
+  progressBar.advanceTo(25);
+
   var planning_id = params.planning_id,
     map_layer_url = params.map_layer_url,
     map_lat = params.map_lat,
@@ -242,8 +246,10 @@ function api_web_v01_routes_index(params) {
     if (bounds && bounds.isValid()) {
       map.fitBounds(bounds);
     }
+    progressBar.done();
   }
 
+  progressBar.advanceTo(50);
   $.ajax({
     url: '/api-web/0.1/plannings/' + planning_id + '/routes.json?' + $.param({ids: route_ids.join(',')}),
     beforeSend: beforeSendWaiting,

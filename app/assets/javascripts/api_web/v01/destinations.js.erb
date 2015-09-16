@@ -32,6 +32,8 @@ Paloma.controller('ApiWeb/V01/Store').prototype.update_position = function() {
 };
 
 function api_web_v01_destinations_index(params, api) {
+  var progressBar = Turbolinks.enableProgressBar();
+  progressBar.advanceTo(25);
 
   var map_layer_url = params.map_layer_url,
     map_lat = params.map_lat,
@@ -105,8 +107,10 @@ function api_web_v01_destinations_index(params, api) {
     if (markersLayers.getLayers().length > 0) {
       map.fitBounds(markersLayers.getBounds());
     }
+    progressBar.done();
   }
 
+  progressBar.advanceTo(50);
   $.ajax({
     url: '/api-web/0.1/' + api + '.json?' + $.param({ids: ids.join(',')}),
     beforeSend: beforeSendWaiting,

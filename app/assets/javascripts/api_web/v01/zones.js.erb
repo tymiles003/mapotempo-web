@@ -16,6 +16,8 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 function api_web_v01_zones_index(params) {
+  var progressBar = Turbolinks.enableProgressBar();
+  progressBar.advanceTo(25);
 
   var zoning_id = params.zoning_id,
     zone_ids = params.zone_ids,
@@ -106,8 +108,10 @@ function api_web_v01_zones_index(params) {
     if (bounds && bounds.isValid()) {
       map.fitBounds(bounds);
     }
+    progressBar.done();
   }
 
+  progressBar.advanceTo(50);
   $.ajax({
     url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json?' + $.param({ids: zone_ids.join(',')}),
     beforeSend: beforeSendWaiting,
