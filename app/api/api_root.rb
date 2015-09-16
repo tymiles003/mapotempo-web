@@ -19,10 +19,6 @@ require 'grape-swagger'
 
 class ApiRootDef < Grape::API
   mount ApiV01
-  documentation_class = add_swagger_documentation base_path: 'api', hide_documentation_path: true, info: {
-    title: 'API',
-    description: 'API access require an api_key.',
-  }
 end
 
 ApiRoot = Rack::Builder.new do

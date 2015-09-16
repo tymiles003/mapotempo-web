@@ -15,93 +15,13 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'parse_ids_refs'
-
 class ApiV01 < Grape::API
   version '0.1', using: :path
 
-  helpers do
-    def warden
-      env['warden']
-    end
+  mount V01::Api
 
-    def current_customer(customer_id = nil)
-      params = Rack::Utils.parse_nested_query(request.query_string)
-      @current_user ||= warden.authenticated? && warden.user
-      @current_user ||= params['api_key'] && User.find_by(api_key: params['api_key'])
-      @current_customer ||= @current_user && (@current_user.admin? && customer_id ? @current_user.reseller.customers.find(Integer(customer_id)) : @current_user.customer)
-    end
-
-    def authenticate!
-      current_customer
-      error!('401 Unauthorized', 401) unless @current_user
-      error!('402 Payment Required', 402) if @current_customer && @current_customer.end_subscription && @current_customer.end_subscription < Time.now
-    end
-
-    def authorize!
-    end
-
-    def error!(*args)
-      # Workaround for close transaction on error!
-      if !ActiveRecord::Base.connection.transaction_manager.current_transaction.is_a?(ActiveRecord::ConnectionAdapters::NullTransaction)
-        ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
-      end
-      super.error!(*args)
-    end
-  end
-
-  before do
-    authenticate!
-    authorize!
-    ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.begin_transaction
-  end
-
-  after do
-    begin
-      if @error
-        ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
-      else
-        ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.commit_transaction
-      end
-    rescue Exception
-      ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
-      raise
-    end
-  end
-
-  rescue_from :all do |e|
-    ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
-    if e.is_a?(ActiveRecord::RecordNotFound)
-      rack_response(nil, 404)
-    elsif e.is_a?(ActiveRecord::RecordInvalid)
-      rack_response({error: e.to_s}.to_json, 400)
-    end
-    @error = e
-    Rails.logger.error "\n\n#{e.class} (#{e.message}):\n    " + e.backtrace.join("\n    ") + "\n\n"
-    response = {message: e.message}
-    if ENV['RAILS_ENV'] == 'test'
-      response[:backtrace] = e.backtrace[0..10].join("\n    ")
-    end
-    rack_response(response.to_json, 500)
-  end
-
-  mount V01::Customers
-  mount V01::Destinations
-  mount V01::Layers
-  mount V01::OrderArrays
-  mount V01::Orders
-  mount V01::Plannings
-  mount V01::Products
-  mount V01::Profiles
-  mount V01::Routers
-  mount V01::Routes
-  mount V01::Stops
-  mount V01::Stores
-  mount V01::Tags
-  mount V01::Users
-  mount V01::Vehicles
-  mount V01::Zonings
-
-  # Tools
-  mount V01::Geocoder
+  documentation_class = add_swagger_documentation base_path: 'api', hide_documentation_path: true, info: {
+    title: 'API',
+    description: 'API access require an api_key.',
+  }
 end
