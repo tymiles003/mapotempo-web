@@ -44,7 +44,7 @@ module Mapotempo
     config.middleware.insert_before 0, 'Rack::Cors' do
       allow do
         origins '*'
-        resource '/api-web/*', headers: :any, methods: [:get, :post, :options, :put, :delete, :patch]
+        resource '/api-web/0.1/*', headers: :any, methods: [:get, :post, :options, :put, :delete, :patch]
         resource '/api/0.1/*', headers: :any, methods: [:get, :post, :options, :put, :delete, :patch]
       end
     end

@@ -4,7 +4,7 @@ Swagger::Docs::Config.register_apis({
     :api_extension_type => :html,
     # the output location where your .json files are written to
     api_file_path: 'public',
-    api_file_name: 'api-web/swagger_doc.json',
+    api_file_name: 'api-web/0.1/swagger_doc.json',
     # the URL base path to your API
     base_path: Mapotempo::Application.config.swagger_docs_base_path,
     # if you want to delete all .json files at each generation
@@ -37,7 +37,7 @@ module Swagger::Docs
     end
 
     def path
-      @metadata.path.gsub('api_web', 'api-web').gsub('v01', 'swagger_doc')
+      @metadata.path.gsub('api_web', 'api-web').gsub('v01', '0.1')
     end
 
     def resource_file_path
@@ -47,7 +47,7 @@ module Swagger::Docs
 
   class Config
     def self.transform_path(path, api_version)
-     '/' +  path.gsub('api_web', 'api-web').gsub('v01', 'swagger_doc')
+     '/' +  path.gsub('api_web', 'api-web').gsub('v01', '0.1')
     end
   end
 end
