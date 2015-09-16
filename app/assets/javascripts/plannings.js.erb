@@ -72,6 +72,8 @@ function plannings_edit(params) {
     imperial: false
   }).addTo(map);
 
+  new L.Hash(map);
+
   sidebar.addTo(map);
 
   var geocoder = L.Control.geocoder({

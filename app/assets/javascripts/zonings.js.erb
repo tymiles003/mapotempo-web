@@ -37,6 +37,8 @@ function zonings_edit(params) {
     imperial: false
   }).addTo(map);
 
+  new L.Hash(map);
+
   sidebar.addTo(map);
 
   L.tileLayer(map_layer_url, {

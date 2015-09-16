@@ -30,6 +30,13 @@ GIT
     leaflet-draw-rails (0.2.4.1)
 
 GIT
+  remote: git://github.com/frodrigo/leaflet-hash-rails.git
+  revision: 02989ba2649e632f64a83d7392b44d6055a7bed9
+  specs:
+    leaflet-hash-rails (0.2.1)
+      railties (>= 3.1.0)
+
+GIT
   remote: git://github.com/frodrigo/leaflet_numbered_markers-rails.git
   revision: 1f88c5329c3d5a4c866ceb4f7100a96a2a71a51a
   specs:
@@ -495,6 +502,7 @@ DEPENDENCIES
   leaflet-control-geocoder-rails!
   leaflet-controlledbounds-rails!
   leaflet-draw-rails!
+  leaflet-hash-rails!
   leaflet-markercluster-rails
   leaflet-rails
   leaflet_numbered_markers-rails!

@@ -63,6 +63,7 @@
 //= require Leaflet.ControlledBounds
 //= require leaflet-pip
 //= require leaflet-sidebar
+//= require leaflet-hash
 //= require Control.Geocoder
 //= require Polyline.encoded
 //= require mustache
