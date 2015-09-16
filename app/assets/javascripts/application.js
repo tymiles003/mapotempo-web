@@ -34,8 +34,13 @@
 //= require twitter/bootstrap
 //= require bootstrap-filestyle
 //= require bootstrap-wysihtml5
-//= require bootstrap-wysihtml5/locales
-//= require bootstrap-datepicker
+//= require bootstrap-wysihtml5/locales/fr-FR.js
+//= require bootstrap-wysihtml5/locales/fr-NL.js
+//= require bootstrap-wysihtml5/locales/en-US.js
+//= require bootstrap-datepicker/core.js
+//= require bootstrap-datepicker/locales/bootstrap-datepicker.fr.js
+//= require bootstrap-datepicker/locales/bootstrap-datepicker.fr-CH.js
+//= require bootstrap-datepicker/locales/bootstrap-datepicker.en-GB.js
 //= require jquery-ui/sortable
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog
@@ -63,6 +68,7 @@
 //= require mustache
 //= require select2
 //= require select2_locale_fr
+//= require select2_locale_en
 //= require_tree ../../templates
 //= require paloma
 //= require leaflet.polylineoffset
