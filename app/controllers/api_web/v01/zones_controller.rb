@@ -31,7 +31,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
   def index
     @zones = if params.key?(:ids)
       ids = params[:ids].split(',')
-      @zoning.zones.select{ |zone| ids.include?(zone.id) }
+      @zoning.zones.select{ |zone| ids.include?(zone.id.to_s) }
     else
       zones = @zoning.zones
     end
