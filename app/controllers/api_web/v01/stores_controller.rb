@@ -46,6 +46,7 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
     else
       current_user.customer.stores.load
     end
+    flash.now[:error] = t('api_web.v01.stores.index.none_stores') if @stores.count == 0
     @tags = current_user.customer.tags
   end
 

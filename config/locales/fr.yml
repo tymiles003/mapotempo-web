@@ -834,8 +834,18 @@ fr:
 
   api_web:
     v01:
+      destinations:
+        index:
+          none_destinations: "Aucune destination n'a été chargée"
+      routes:
+        index:
+          none_zones: "Aucune route n'a été chargée"
+      stores:
+        index:
+          none_stores: "Aucun dépôt n'a été chargée"
       zones:
         index:
+          none_zones: "Aucune zone n'a été chargée"
           without_vehicle: Sans véhicule
 
   all:

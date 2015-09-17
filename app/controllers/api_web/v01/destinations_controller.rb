@@ -46,6 +46,7 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
     else
       current_user.customer.destinations.load
     end
+    flash.now[:error] = t('api_web.v01.destinations.index.none_destinations') if @destinations.count == 0
     @tags = current_user.customer.tags
   end
 

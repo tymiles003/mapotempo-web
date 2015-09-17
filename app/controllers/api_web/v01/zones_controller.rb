@@ -33,8 +33,9 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
       ids = params[:ids].split(',')
       @zoning.zones.select{ |zone| ids.include?(zone.id.to_s) }
     else
-      zones = @zoning.zones
+      @zoning.zones
     end
+    flash.now[:error] = t('api_web.v01.zones.index.none_zones') if @zones.count == 0
   end
 
   private

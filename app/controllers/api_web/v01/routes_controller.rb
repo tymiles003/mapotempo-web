@@ -33,8 +33,9 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
       ids = params[:ids].split(',')
       @planning.routes.where(ParseIdsRefs.where(Route, ids))
     else
-      routes = @planning.routes
+      @planning.routes
     end
+    flash.now[:error] = t('api_web.v01.routes.index.none_routes') if @routes.count == 0
   end
 
   private
