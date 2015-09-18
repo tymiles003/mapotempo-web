@@ -37,7 +37,7 @@ module Swagger::Docs
     end
 
     def path
-      @metadata.path.gsub('api_web', 'api-web').gsub('v01', '0.1')
+      @metadata.path.gsub('api_web', 'api-web').gsub('v01', '0.1/swagger_doc')
     end
 
     def resource_file_path
@@ -47,7 +47,7 @@ module Swagger::Docs
 
   class Config
     def self.transform_path(path, api_version)
-     '/' +  path.gsub('api_web', 'api-web').gsub('v01', '0.1')
+     '/' +  path.gsub('api_web', 'api-web').gsub('v01', '0.1/swagger_doc')
     end
   end
 end
