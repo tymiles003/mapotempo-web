@@ -12,6 +12,7 @@
     <label class="col-md-2 control-label" for="store_city"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
     <div class="col-md-6">
       <div id="geocoding_accuracy"<% if ! @store.geocoding_accuracy %> style="display: none"<% end %>>
+        <input type="hidden" name="store[geocoding_accuracy]" value="<%= @store.geocoding_accuracy %>">
         <div id="geocoding-progress" class="progress">
           <div class="progress-bar<% if @store.geocoding_accuracy %> progress-bar-<%= @store.geocoding_accuracy > Mapotempo::Application.config.geocoding_accuracy_success ? 'success' : @store.geocoding_accuracy > Mapotempo::Application.config.geocoding_accuracy_warning ? 'warning' : 'danger' %><% end %>" style="width: <%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round : 0 %>%;">
             <span><%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round.to_s + '%' : '' %></span>

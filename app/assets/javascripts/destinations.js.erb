@@ -195,6 +195,7 @@ function destinations_form(params, api) {
     }
     else
       $('#geocoding_accuracy').hide();
+    $('[name$=\\[geocoding_accuracy\\]]').val(accuracy_percent / 100);
     if (level == 'point')
       $('#no_geocoding_accuracy').show();
     else
@@ -234,6 +235,7 @@ function destinations_form(params, api) {
       } else {
         $('#no_geocoding_accuracy').hide();
         $('#geocoding_accuracy').hide();
+        $('[name$=\\[geocoding_accuracy\\]]').val(null);
         $('#geocoding_level').hide();
         $('[name$=\\[geocoding_level\\]]', row).val(null);
         $('#geocoding_fail').show();
@@ -242,6 +244,7 @@ function destinations_form(params, api) {
     else {
       $('#no_geocoding_accuracy').show();
       $('#geocoding_accuracy').hide();
+      $('[name$=\\[geocoding_accuracy\\]]').val(null);
       $('#geocoding_fail').hide();
       $('#geocoding_level').hide();
       $('[name$=\\[geocoding_level\\]]', row).val(null);
