@@ -26,11 +26,17 @@ class RouterOsrm < Router
     [distance, time, trace]
   end
 
-  def matrix(vector, speed_multiplicator, &block)
+  def matrix(row, column, speed_multiplicator, &block)
     time_multiplicator = 1.0 / speed_multiplicator
-    vector = pack_vector(vector)
+    row, column = pack_vector(row, column)
+    vector = row != column ? row + column : row
     matrix = Mapotempo::Application.config.osrm.matrix(url, vector)
-    matrix = unpack_vector(vector, matrix)
+    if row != column
+      matrix = matrix[row.size..-1].collect{ |row|
+        row[0..row.size - 1]
+      }
+    end
+    matrix = unpack_vector(row, column, matrix)
     matrix.map{ |row|
       row.map{ |v| [v, v * time_multiplicator] }
     }

@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=86400
+Content-Type: application/json;charset=utf-8
+Date: Mon, 21 Sep 2015 13:36:30 GMT
+Expires: Tue, 22 Sep 2015 13:36:30 GMT
+matrix_calculation_size: 1x3
+Server: api.here.com
+X-NLP-IRT: 647001
+X-NLP-TID: 9ed5c928-10db-4978-88d6-69ddbd574357
+X-Proxied-By: i-fca60151.eu-west-1b
+X-Served-By: i-d6fb8a77.eu-west-1a
+Content-Length: 1021
+Connection: keep-alive
+
+{"Response":{"MetaInfo":{"Timestamp":"2015-09-21T13:36:30.344Z","AdditionalData":[{"value":"2015-09-21T13:35:00.048+0000","key":"CurrentTrafficLastUpdate"},{"value":"11347870","key":"CurrentTrafficElementsCount"},{"value":"2015-09-21T13:35:03.296+0000","key":"LongTermClosureLastUpdate"},{"value":"47632","key":"LongTermClosureElementsCount"},{"value":"2015-09-21T13:35:03.296+0000","key":"ShortTermClosureLastUpdate"},{"value":"1873","key":"ShortTermClosureElementsCount"},{"value":"2015Q1","key":"Map0"},{"value":"routeserver,9.3-2015.06.19","key":"Module0"},{"value":"644","key":"Module0ExecTime"},{"value":"644462","key":"Module0ExecTimeMicro"},{"value":"routing-route-service,6.2.59.0","key":"Service"}]},"MatrixEntry":[{"StartIndex":0,"DestinationIndex":0,"Route":{"Summary":{"Distance":191003.0,"BaseTime":8370.0}}},{"StartIndex":0,"DestinationIndex":1,"Route":{"Summary":{"Distance":192631.0,"BaseTime":8578.0}}},{"StartIndex":0,"DestinationIndex":2,"Route":{"Summary":{"Distance":192316.0,"BaseTime":8543.0}}}]}}

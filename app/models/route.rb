@@ -302,7 +302,7 @@ class Route < ActiveRecord::Base
       speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1)
       order = unnil_positions(positions, tws){ |positions, tws, rest_tws|
         positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)]
-        matrix = router.matrix(positions, speed_multiplicator, &matrix_progress)
+        matrix = router.matrix(positions, positions, speed_multiplicator, &matrix_progress)
         if position_start == [nil, nil]
           matrix = [[[0, 0]] * matrix.length] + matrix
           matrix.collect!{ |x| [[0, 0]] + x }

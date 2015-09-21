@@ -26,11 +26,11 @@ class RouterOtp < Router
     [distance, time, trace]
   end
 
-  def matrix(vector, speed_multiplicator, &block)
+  def matrix(row, column, speed_multiplicator, &block)
     time_multiplicator = 1.0 / speed_multiplicator
     total = positions**2
-    vector.collect{ |v1|
-      vector.collect{ |v2|
+    row.collect{ |v1|
+      column.collect{ |v2|
         distance, time, _trace = Mapotempo::Application.config.otp.compute(url, ref, v1[0], v1[1], v2[0], v2[1], monday_morning)
         block.call(1, total) if block
         [distance, time * time_multiplicator]

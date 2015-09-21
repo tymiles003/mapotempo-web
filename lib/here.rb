@@ -63,10 +63,13 @@ class Here
     result
   end
 
-  def matrix(vector, &block)
-    raise 'More than 100x100 matrix, not possible with Here' if vector.size > 100
+  def matrix(row, column, &block)
+    raise 'More than 100x100 matrix, not possible with Here' if row.size > 100 || column.size > 100
 
-    key = [vector.map{ |v| v[0..1] }.hash]
+    row.collect!{ |r| [r[0].round(5), r[1].round(5)] }
+    column.collect!{ |c| [c[0].round(5), c[1].round(5)] }
+
+    key = [row.hash, column.hash]
 
     result = @cache_result.read(key)
     if !result
@@ -81,9 +84,9 @@ class Here
 
       # Request should not contain more than 15 starts per request
       # 500 to get response before 30 seconds timeout
-      split_size = [15, (1000 / vector.size).round].min
+      split_size = [15, (1000 / row.size).round].min
 
-      result = Array.new(vector.size) { Array.new(vector.size) }
+      result = Array.new(row.size) { Array.new(column.size) }
 
       commons_param = {
         mode: 'fastest;truck;traffic:disabled',
@@ -93,30 +96,30 @@ class Here
         #width: # Truck routing only, vehicle width in meters.
         #length: # Truck routing only, vehicle length in meters.
       }
-      0.upto(vector.size - 1).each{ |i|
-        commons_param["destination#{i}"] = "#{vector[i][0].round(5)},#{vector[i][1].round(5)}"
+      0.upto(column.size - 1).each{ |i|
+        commons_param["destination#{i}"] = column[i].join(',')
       }
 
-      total = vector.size**2
-      column_start = 0
-      while column_start < vector.size do
-        request = @cache_result.read([key, column_start, split_size])
+      total = row.size * column.size
+      row_start = 0
+      while row_start < row.size do
+        request = @cache_result.read([key, row_start, split_size])
         if !request
           param = commons_param.dup
-          column_start.upto([column_start + split_size - 1, vector.size - 1].min).each{ |i|
-            param["start#{i - column_start}"] = "#{vector[i][0].round(5)},#{vector[i][1].round(5)}"
+          row_start.upto([row_start + split_size - 1, row.size - 1].min).each{ |i|
+            param["start#{i - row_start}"] = row[i].join(',')
           }
           request = get('6.2/calculatematrix', param)
-          @cache_result.write([key, column_start, split_size], request)
+          @cache_result.write([key, row_start, split_size], request)
         end
 
         request['Response']['MatrixEntry'].each{ |e|
           s = e['Route']['Summary']
-          result[column_start + e['StartIndex']][e['DestinationIndex']] = [s['Distance'].round, s['BaseTime'].round]
+          result[row_start + e['StartIndex']][e['DestinationIndex']] = [s['Distance'].round, s['BaseTime'].round]
         }
 
-        column_start += split_size
-        block.call(vector.size * split_size, total) if block
+        row_start += split_size
+        block.call(column.size * split_size, total) if block
       end
 
       @cache_result.write(key, result)

@@ -24,15 +24,15 @@ class RouterHere < Router
     [distance, time, trace]
   end
 
-  def matrix(vector, speed_multiplicator, &block)
+  def matrix(row, column, speed_multiplicator, &block)
     time_multiplicator = 1.0 / speed_multiplicator
-    vector = pack_vector(vector)
-    matrix = Mapotempo::Application.config.here.matrix(vector, &block)
-    matrix = matrix.collect{ |row|
+    row, column = pack_vector(row, column)
+    matrix = Mapotempo::Application.config.here.matrix(row, column, &block)
+    matrix = unpack_vector(row, column, matrix)
+    matrix.collect{ |row|
       row.collect{ |distance, time|
         [distance, time * time_multiplicator]
       }
     }
-    unpack_vector(vector, matrix)
   end
 end

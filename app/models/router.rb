@@ -27,27 +27,34 @@ class Router < ActiveRecord::Base
 
   private
 
-  def pack_vector(vector)
+  def pack_vector(row, column)
     # Sort vector for caching
     i = -1
-    vector = vector.map{ |a| [a[0], a[1], i += 1] }
-    vector.sort!{ |a, b|
+    row = row.map{ |a| [a[0], a[1], i += 1] }
+    row = row.sort!{ |a, b|
       a[0] != b[0] ? a[0] <=> b[0] : a[1] <=> b[1]
     }
-  end
 
-  def unpack_vector(vector, matrix)
-    # Restore original order
-    size = vector.size
-    column = []
-    size.times{ |i|
-      line = []
-      size.times{ |j|
-        line[vector[j][2]] = matrix[i][j]
-      }
-      column[vector[i][2]] = line
+    i = -1
+    column = column.map{ |a| [a[0], a[1], i += 1] }
+    column = column.sort!{ |a, b|
+      a[0] != b[0] ? a[0] <=> b[0] : a[1] <=> b[1]
     }
 
-    column
+    [row, column]
+  end
+
+  def unpack_vector(row, column, matrix)
+    # Restore original order
+    out = []
+    row.size.times{ |i|
+      line = []
+      column.size.times{ |j|
+        line[column[j][2]] = matrix[i][j]
+      }
+      out[row[i][2]] = line
+    }
+
+    out
   end
 end

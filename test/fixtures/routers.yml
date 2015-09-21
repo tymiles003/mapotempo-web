@@ -7,3 +7,12 @@ router_one:
 router_two:
   name: MyString
   url: http://localhost:5000
+
+router_osrm:
+  type: RouterOsrm
+  name: OSRM
+  url: http://localhost:5000
+
+router_here:
+  type: RouterHere
+  name: HERE
