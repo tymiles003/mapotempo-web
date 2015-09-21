@@ -28,6 +28,7 @@ class Store < ActiveRecord::Base
   has_many :vehicle_starts, class_name: 'Vehicle', inverse_of: :store_start, foreign_key: 'store_start_id'
   has_many :vehicle_stops, class_name: 'Vehicle', inverse_of: :store_stop, foreign_key: 'store_stop_id'
   has_many :vehicle_rests, class_name: 'Vehicle', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
+  enum geocoding_level: {point: 1, house: 2, intersection: 3, street: 4, city: 5}
 
   nilify_blanks
   auto_strip_attributes :name, :street, :postalcode, :city
@@ -50,7 +51,7 @@ class Store < ActiveRecord::Base
     address = Mapotempo::Application.config.geocode_geocoder.code(street, postalcode, city, !country.nil? && !country.empty? ? country : customer.default_country)
     Rails.logger.info address.inspect
     if address
-      self.lat, self.lng, self.geocoding_accuracy = address[:lat], address[:lng], address[:accuracy]
+      self.lat, self.lng, self.geocoding_accuracy, self.geocoding_level = address[:lat], address[:lng], address[:accuracy], address[:quality]
     end
     @is_gecoded = true
   end
@@ -83,10 +84,14 @@ class Store < ActiveRecord::Base
   end
 
   def update_geocode
+    # when lat/lng are specified manually, geocoding_accuracy has no sense
     if !@is_gecoded && (lat_changed? || lng_changed?)
       self.geocoding_accuracy = nil
     end
-    if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed?)
+    if !lat.nil? && !lng.nil?
+      @is_gecoded = true
+    end
+    if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed? || country_changed?)
       geocode
     end
   end

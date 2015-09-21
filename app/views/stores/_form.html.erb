@@ -12,7 +12,7 @@
     <label class="col-md-2 control-label" for="store_city"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
     <div class="col-md-6">
       <div id="geocoding_accuracy"<% if ! @store.geocoding_accuracy %> style="display: none"<% end %>>
-        <div class="progress">
+        <div id="geocoding-progress" class="progress">
           <div class="progress-bar<% if @store.geocoding_accuracy %> progress-bar-<%= @store.geocoding_accuracy > Mapotempo::Application.config.geocoding_accuracy_success ? 'success' : @store.geocoding_accuracy > Mapotempo::Application.config.geocoding_accuracy_warning ? 'warning' : 'danger' %><% end %>" style="width: <%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round : 0 %>%;">
             <span><%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round.to_s + '%' : '' %></span>
           </div>
@@ -24,6 +24,17 @@
       </div>
       <div id="no_geocoding_accuracy"<% if @store.geocoding_accuracy %> style="display: none"<% end %>>
         <%= t 'destinations.form.geocoding_accuracy_none' %>
+      </div>
+      <div id="geocoding_level"<% if ! @store.geocoding_level %> style="display: none"<% end %>>
+        <input type="hidden" name="store[geocoding_level]" value="<%= @store.geocoding_level %>">
+        <i id="geocoding-level-point" class="fa fa-map-marker fa-fw geocoding-level"<% if ! @store.point? %> style="display: none"<% end %>></i>
+        <i id="geocoding-level-house" class="fa fa-home fa-fw geocoding-level"<% if ! @store.house? %> style="display: none"<% end %>></i>
+        <i id="geocoding-level-intersection" class="fa fa-times fa-fw geocoding-level"<% if ! @store.intersection? %> style="display: none"<% end %>></i>
+        <i id="geocoding-level-street" class="fa fa-road fa-fw geocoding-level"<% if ! @store.street? %> style="display: none"<% end %>></i>
+        <i id="geocoding-level-city" class="fa fa-exclamation-triangle fa-fw geocoding-level"<% if ! @store.city? %> style="display: none"<% end %>></i>
+        <span><%= t 'activerecord.attributes.destination.geocoding_level' %>: <span id="geocoding-level-value"><%= if @store.geocoding_level
+          t 'destinations.form.geocoding_level.' + @store.geocoding_level 
+          end %></span></span>
       </div>
     </div>
   </div>

@@ -162,6 +162,7 @@ en:
         ref_small: "Ref."
         geocoding_accuracy: "Geocoding accuracy"
         geocoding_accuracy_small: "Geoc."
+        geocoding_level: "Geocoding level"
       # Duplicate for nested errors with autosave
       destinations:
         name: "Name"
@@ -447,6 +448,14 @@ en:
       quantity_default: "default"
       take_over_default: "default"
       country_default: "%{n} (default value)"
+      geocoding_level:
+        point: "Point"
+        house: "House"
+        street: "Street"
+        intersection: "Intersection"
+        city: "City"
+      dialog:
+        confirm_overwrite_point: "It seems you have previously set position manually on map. Do you want to replace previous position with the result of geocoding?"
     edit:
       title: "Editing destination"
     import:
@@ -459,6 +468,8 @@ en:
       new: "New Destination"
       default_name: "New Destination"
       columns: "Columns"
+      no_position: "missing"
+      geocoding_level: "Geocoding level"
       dialog:
         geocoding:
           title: "Geocoding"

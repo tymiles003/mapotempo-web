@@ -24,6 +24,7 @@ require 'rexml/document'
 include REXML
 
 class GeocodeIgn
+  MATCHTYPE = {'street number' => 'house', 'street enhanced' => 'street'}
 
   def accuracy_success
     0.98
@@ -157,10 +158,11 @@ class GeocodeIgn
       pos = pos.split(' ')
 
       geocodeMatchCode = geocodedAddress.elements['GeocodeMatchCode']
-      matchType = geocodeMatchCode.attribute('matchType').value
+      quality = geocodeMatchCode.attribute('matchType').value.downcase
+      MATCHTYPE.each { |k, v| quality.gsub!(k, v) }
       accuracy = Float(geocodeMatchCode.attribute('accuracy').value)
 
-      {lat: pos[0], lng: pos[1], quality:matchType, accuracy:accuracy}
+      {lat: pos[0], lng: pos[1], quality: quality, accuracy: accuracy}
     rescue => e
       Rails.logger.info e
       nil

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150827161221) do
+ActiveRecord::Schema.define(version: 20150917130606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20150827161221) do
     t.time     "take_over"
     t.float    "geocoding_accuracy"
     t.string   "country"
+    t.integer  "geocoding_level"
   end
 
   add_index "destinations", ["customer_id"], name: "fk__destinations_customer_id", using: :btree
@@ -267,6 +268,7 @@ ActiveRecord::Schema.define(version: 20150827161221) do
     t.string   "country"
     t.string   "ref"
     t.float    "geocoding_accuracy"
+    t.integer  "geocoding_level"
   end
 
   add_index "stores", ["customer_id"], name: "fk__stores_customer_id", using: :btree

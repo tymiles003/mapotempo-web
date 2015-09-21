@@ -38,4 +38,5 @@ class V01::Entities::Destination < Grape::Entity
   expose(:take_over_default, documentation: { type: DateTime }) { |m| m.customer && m.customer.take_over && m.customer.take_over.strftime('%H:%M:%S') }
   expose(:tag_ids, documentation: { type: Integer, is_array: true })
   expose(:geocoding_accuracy, documentation: { type: Float })
+  expose(:geocoding_level, documentation: { type: String, values: ['point', 'house', 'street', 'intersection', 'city'] })
 end

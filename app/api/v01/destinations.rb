@@ -21,7 +21,7 @@ class V01::Destinations < Grape::API
     def destination_params
       p = ActionController::Parameters.new(params)
       p = p[:destination] if p.key?(:destination)
-      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, tag_ids: [])
+      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, :geocoding_level, tag_ids: [])
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
@@ -92,6 +92,7 @@ class V01::Destinations < Grape::API
     end
 
     desc 'Update destination.',
+      detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
       nickname: 'updateDestination',
       params: V01::Entities::Destination.documentation.except(:id),
       entity: V01::Entities::Destination

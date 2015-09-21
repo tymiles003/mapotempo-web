@@ -15,7 +15,7 @@
     <label class="col-md-2 control-label" for="destination_city"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
     <div class="col-md-6">
       <div id="geocoding_accuracy"<% if ! @destination.geocoding_accuracy %> style="display: none"<% end %>>
-        <div class="progress">
+        <div id="geocoding-progress" class="progress">
           <div class="progress-bar<% if @destination.geocoding_accuracy %> progress-bar-<%= @destination.geocoding_accuracy > Mapotempo::Application.config.geocode_geocoder.accuracy_success ? 'success' : @destination.geocoding_accuracy > Mapotempo::Application.config.geocode_geocoder.accuracy_warning ? 'warning' : 'danger' %><% end %>" style="width: <%= @destination.geocoding_accuracy ? (@destination.geocoding_accuracy * 100).round : 0 %>%;">
             <span><%= @destination.geocoding_accuracy ? (@destination.geocoding_accuracy * 100).round.to_s + '%' : '' %></span>
           </div>
@@ -27,6 +27,17 @@
       </div>
       <div id="no_geocoding_accuracy"<% if @destination.geocoding_accuracy %> style="display: none"<% end %>>
         <%= t '.geocoding_accuracy_none' %>
+      </div>
+      <div id="geocoding_level"<% if ! @destination.geocoding_level %> style="display: none"<% end %>>
+        <input type="hidden" name="destination[geocoding_level]" value="<%= @destination.geocoding_level %>">
+        <i id="geocoding-level-point" class="fa fa-map-marker fa-fw geocoding-level"<% if ! @destination.point? %> style="display: none"<% end %>></i>
+        <i id="geocoding-level-house" class="fa fa-home fa-fw geocoding-level"<% if ! @destination.house? %> style="display: none"<% end %>></i>
+        <i id="geocoding-level-intersection" class="fa fa-times fa-fw geocoding-level"<% if ! @destination.intersection? %> style="display: none"<% end %>></i>
+        <i id="geocoding-level-street" class="fa fa-road fa-fw geocoding-level"<% if ! @destination.street? %> style="display: none"<% end %>></i>
+        <i id="geocoding-level-city" class="fa fa-exclamation-triangle fa-fw geocoding-level"<% if ! @destination.city? %> style="display: none"<% end %>></i>
+        <span><%= t 'activerecord.attributes.destination.geocoding_level' %>: <span id="geocoding-level-value"><%= if @destination.geocoding_level
+          t 'destinations.form.geocoding_level.' + @destination.geocoding_level 
+          end %></span></span>
       </div>
     </div>
   </div>

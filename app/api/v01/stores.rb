@@ -21,7 +21,7 @@ class V01::Stores < Grape::API
     def store_params
       p = ActionController::Parameters.new(params)
       p = p[:store] if p.key?(:store)
-      p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng)
+      p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng, :geocoding_level)
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
@@ -92,6 +92,7 @@ class V01::Stores < Grape::API
     end
 
     desc 'Update store.',
+      detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
       nickname: 'updateStore',
       params: V01::Entities::Store.documentation.except(:id),
       entity: V01::Entities::Store

@@ -163,6 +163,7 @@ fr:
         ref_small: "Réf."
         geocoding_accuracy: "Qualité du géocodage"
         geocoding_accuracy_small: "Géoc."
+        geocoding_level: "Niveau de géocodage"
       # Duplicate for nested errors with autosave
       destinations:
         name: "Nom"
@@ -448,6 +449,14 @@ fr:
       quantity_default: "défaut"
       take_over_default: "défaut"
       country_default: "%{n} (valeur par défaut)"
+      geocoding_level:
+        point: "Point"
+        house: "Maison"
+        street: "Voie"
+        intersection: "Intersection"
+        city: "Commune"
+      dialog:
+        confirm_overwrite_point: "La position précédente a été définie manuellement sur la carte. Voulez-vous la remplacer avec le résultat du géocodage automatique ?"
     edit:
       title: "Modifier client"
     import:
@@ -460,6 +469,8 @@ fr:
       new: "Nouveau client"
       default_name: "Nouveau client"
       columns: "Colonnes"
+      no_position: "manquant"
+      geocoding_level: "Niveau de géocodage"
       dialog:
         geocoding:
           title: "Géocodage"

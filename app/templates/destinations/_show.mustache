@@ -1,4 +1,4 @@
-<tr data-destination_id="{{id}}" class="destination{{#has_error}} has-error{{/has_error}}">
+<tr data-destination_id="{{id}}" class="destination{{#has_no_position}} has-error{{/has_no_position}}">
   <td>
     <input id="destination_{{id}}" type="checkbox" value="1" name="destinations[{{id}}]"></input>
   </td>
@@ -88,17 +88,44 @@
     </div>
   </td>
   <td>
-    {{#geocoding_accuracy}}
-      <input class="form-control input-sm" type="hidden" value="{{geocoding_accuracy}}"/>
-        <div class="progress" style="width:6em">
-          <div class="progress-bar progress-bar-{{geocoding_status}}" style="width: {{geocoding_accuracy_percent}}%;">
-            <span>{{geocoding_accuracy_percent}}%</span>
-          </div>
-        </div>
-    {{/geocoding_accuracy}}
-    {{^geocoding_accuracy}}
-      <input class="form-control input-sm" type="hidden" value="101"/>
-    {{/geocoding_accuracy}}
+    <span class="block">
+      <span class="geocoding_level" title="{{geocoding_level_title}}">
+        <input type="hidden" name="destination[geocoding_level]" value="{{geocoding_level}}">
+        {{#geocoding_level}}
+          {{#geocoding_level_point}}
+            <i class="fa fa-map-marker fa-fw geocoding-level"></i>
+          {{/geocoding_level_point}}
+          {{#geocoding_level_house}}
+            <i class="fa fa-home fa-fw geocoding-level"></i>
+          {{/geocoding_level_house}}
+          {{#geocoding_level_street}}
+            <i class="fa fa-road fa-fw geocoding-level"></i>
+          {{/geocoding_level_street}}
+          {{#geocoding_level_intersection}}
+            <i class="fa fa-times fa-fw geocoding-level"></i>
+          {{/geocoding_level_intersection}}
+          {{#geocoding_level_city}}
+            <i class="fa fa-exclamation-triangle fa-fw geocoding-level"></i>
+          {{/geocoding_level_city}}
+        {{/geocoding_level}}
+      </span>
+      <span>
+        {{#geocoding_accuracy}}
+          <input class="form-control input-sm" type="hidden" value="{{geocoding_accuracy}}"/>
+            <div class="progress" style="width:5em">
+              <div class="progress-bar progress-bar-{{geocoding_status}}" style="width: {{geocoding_accuracy_percent}}%;">
+                <span>{{geocoding_accuracy_percent}}%</span>
+              </div>
+            </div>
+        {{/geocoding_accuracy}}
+        {{^geocoding_accuracy}}
+          <input class="form-control input-sm" type="hidden" value="101"/>
+        {{/geocoding_accuracy}}
+      <span>
+      {{#has_no_position}}
+        <span class="no_position">missing</span>
+      {{/has_no_position}}
+    </span>
   </td>
   <td>
     <input type="hidden" name="destination[lat]" value="{{lat}}" />

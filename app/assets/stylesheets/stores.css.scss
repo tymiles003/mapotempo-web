@@ -26,11 +26,26 @@
     cursor: pointer;
   }
 
-  .progress {
+  #geocoding_accuracy, #no_geocoding_accuracy, #geocoding_level {
+    display: table-cell;
+    padding-right: 5px;
+    vertical-align: top;
+  }
+  #geocoding_accuracy {
+    width: 66%;
+    padding-top: 5px;
+  }
+  #geocoding-progress {
     margin-bottom: 0px;
   }
+  #geocoding-level {
+    width: 33%;
+  }
+  #geocoding-level span {
+    line-height: 1;
+  }
 
-  #no_geocoding_accuracy {
+  #no_geocoding_accuracy, #geocoding_level {
     padding-top: 7px;
   }
 
