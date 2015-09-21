@@ -435,6 +435,9 @@ function destinations_index(params, api) {
       destination['geocoding_level_' + destination.geocoding_level] = true;
       destination['geocoding_level_title'] = I18n.t('destinations.index.geocoding_level') + ' : ' + I18n.t('destinations.form.geocoding_level.' + destination.geocoding_level);
     }
+    if (destination.lat === null || destination.lng === null) {
+      destination.has_no_position = I18n.t('destinations.index.no_position');
+    }
     if (destination.open) {
       destination.open = destination.open.split(':').slice(0, 2).join(':');
     }

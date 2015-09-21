@@ -52,6 +52,8 @@ class Store < ActiveRecord::Base
     Rails.logger.info address.inspect
     if address
       self.lat, self.lng, self.geocoding_accuracy, self.geocoding_level = address[:lat], address[:lng], address[:accuracy], address[:quality]
+    else
+      self.lat = self.lng = self.geocoding_accuracy = self.geocoding_level = nil
     end
     @is_gecoded = true
   end
