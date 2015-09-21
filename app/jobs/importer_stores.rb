@@ -31,7 +31,9 @@ class ImporterStores < ImporterBase
       city: I18n.t('stores.import_file.city'),
       country: I18n.t('stores.import_file.country'),
       lat: I18n.t('stores.import_file.lat'),
-      lng: I18n.t('stores.import_file.lng')
+      lng: I18n.t('stores.import_file.lng'),
+      geocoding_accuracy: I18n.t('stores.import_file.geocoding_accuracy'),
+      geocoding_level: I18n.t('stores.import_file.geocoding_level')
     }
   end
 

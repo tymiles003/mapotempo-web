@@ -34,6 +34,8 @@ class ImporterDestinations < ImporterBase
       country: I18n.t('destinations.import_file.country'),
       lat: I18n.t('destinations.import_file.lat'),
       lng: I18n.t('destinations.import_file.lng'),
+      geocoding_accuracy: I18n.t('destinations.import_file.geocoding_accuracy'),
+      geocoding_level: I18n.t('destinations.import_file.geocoding_level'),
       open: I18n.t('destinations.import_file.open'),
       close: I18n.t('destinations.import_file.close'),
       comment: I18n.t('destinations.import_file.comment'),

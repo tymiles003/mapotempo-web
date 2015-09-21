@@ -490,6 +490,8 @@ fr:
       country: "pays"
       lat: "lat"
       lng: "lng"
+      geocoding_accuracy: "qualité géocodage"
+      geocoding_level: "niveau géocodage"
       take_over: "durée visite"
       quantity: "quantité"
       active: "livré"

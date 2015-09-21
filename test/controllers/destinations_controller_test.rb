@@ -26,7 +26,7 @@ class DestinationsControllerTest < ActionController::TestCase
     get :index, format: :excel
     assert_response :success
     assert_not_nil assigns(:destinations)
-    assert_equal 'b;destination_one;Rue des Lilas;MyString;33200;Bordeau;;49.1857;-0.3735;00:05:33;1;10:00;11:00;MyString;tag1', response.body.split("\n").find{ |l| l[0] == 'b' }
+    assert_equal 'b;destination_one;Rue des Lilas;MyString;33200;Bordeau;;49.1857;-0.3735;;;00:05:33;1;10:00;11:00;MyString;tag1', response.body.split("\n").find{ |l| l[0] == 'b' }
   end
 
   test 'should get new' do
