@@ -59,7 +59,7 @@ group :test do
   gem 'rspec-rails', '~> 3.0.0'
 end
 
-gem 'grape'
+gem 'grape', github: 'ruby-grape/grape' # FIXME wait v0.14
 gem 'grape-entity'
 gem 'grape-swagger', github: 'ruby-grape/grape-swagger' # FIXME wait v0.10.3
 gem 'rack-cors'
