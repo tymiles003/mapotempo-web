@@ -28,24 +28,12 @@ class RouterOsrm < Router
 
   def matrix(vector, speed_multiplicator, &block)
     time_multiplicator = 1.0 / speed_multiplicator
-    if true
-      # Engine support matrix computation
-      vector = pack_vector(vector)
-      matrix = Mapotempo::Application.config.osrm.matrix(url, vector)
-      matrix = unpack_vector(vector, matrix)
-      matrix.map{ |row|
-        row.map{ |v| [v, v * time_multiplicator] }
-      }
-    else
-      total = positions**2
-      vector.collect{ |v1|
-        vector.collect{ |v2|
-          distance, time, _trace = Mapotempo::Application.config.osrm.compute(url, v1[0], v1[1], v2[0], v2[1])
-          block.call(1, total) if block
-          [distance, time * time_multiplicator]
-        }
-      }
-    end
+    vector = pack_vector(vector)
+    matrix = Mapotempo::Application.config.osrm.matrix(url, vector)
+    matrix = unpack_vector(vector, matrix)
+    matrix.map{ |row|
+      row.map{ |v| [v, v * time_multiplicator] }
+    }
   end
 
   def isochrone?
