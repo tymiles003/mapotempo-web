@@ -46,7 +46,7 @@ group :test do
   gem 'minitest-around'
   gem 'minitest-stub_any_instance'
   gem 'simplecov', require: false
-  gem 'capybara'
+  # gem 'capybara'
   gem 'selenium-webdriver'
   # gem 'capybara-webkit'
   gem 'database_cleaner'
