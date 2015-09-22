@@ -135,6 +135,7 @@ class V01::Destinations < Grape::API
     end
 
     desc 'Geocode destination.',
+      detail: 'Result of geocoding is not saved with this operation. You can use update operation to save the result of geocoding.',
       nickname: 'geocodeDestination',
       params: V01::Entities::Destination.documentation.except(:id).deep_merge(
         geocoding_accuracy: { values: 0..1 }
