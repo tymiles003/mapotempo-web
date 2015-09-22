@@ -97,12 +97,11 @@ class V01::OrderArrays < Grape::API
     desc 'Delete multiple order_arrays.',
       nickname: 'deleteOrderArrays'
     params do
-      requires :ids, type: Array[Integer]
+      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
     end
     delete do
       OrderArray.transaction do
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.order_arrays.select{ |order_array| ids.include?(order_array.id) }.each(&:destroy)
+        current_customer.order_arrays.select{ |order_array| params[:ids].include?(order_array.id) }.each(&:destroy)
       end
     end
 

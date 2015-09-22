@@ -118,12 +118,11 @@ class V01::Stores < Grape::API
     desc 'Delete multiple stores.',
       nickname: 'deleteStores'
     params do
-      requires :ids, type: Array[Integer]
+      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
     end
     delete do
       Store.transaction do
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.stores.select{ |store| ids.include?(store.id) }.each(&:destroy)
+        current_customer.stores.select{ |store| params[:ids].include?(store.id) }.each(&:destroy)
       end
     end
 

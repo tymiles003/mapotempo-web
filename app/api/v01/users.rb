@@ -104,13 +104,12 @@ class V01::Users < Grape::API
     desc 'Delete multiple users.',
       nickname: 'deleteUsers'
     params do
-      requires :ids, type: Array[Integer]
+      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
     end
     delete do
       if @current_user.admin?
         User.transaction do
-          ids = params[:ids].collect{ |i| Integer(i) }
-          User.select{ |user| ids.include?(user.id) }.each(&:destroy)
+          User.select{ |user| params[:ids].include?(user.id) }.each(&:destroy)
         end
       else
         error! 'Forbidden', 403

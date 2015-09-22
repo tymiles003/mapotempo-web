@@ -90,12 +90,11 @@ class V01::Tags < Grape::API
     desc 'Delete multiple tags.',
       nickname: 'deleteTags'
     params do
-      requires :ids, type: Array[Integer]
+      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
     end
     delete do
       Tag.transaction do
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.tags.select{ |tag| ids.include?(tag.id) }.each(&:destroy)
+        current_customer.tags.select{ |tag| params[:ids].include?(tag.id) }.each(&:destroy)
       end
     end
   end

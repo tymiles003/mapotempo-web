@@ -91,12 +91,11 @@ class V01::Products < Grape::API
     desc 'Delete multiple products.',
       nickname: 'deleteProducts'
     params do
-      requires :ids, type: Array[Integer]
+      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
     end
     delete do
       Product.transaction do
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.products.select{ |product| ids.include?(product.id) }.each(&:destroy)
+        current_customer.products.select{ |product| params[:ids].include?(product.id) }.each(&:destroy)
       end
     end
   end

@@ -79,7 +79,7 @@ class V01::PlanningsTest < ActiveSupport::TestCase
 
   test 'should destroy multiple plannings' do
     assert_difference('Planning.count', -2) do
-      delete api + "&ids[]=#{plannings(:planning_one).id}&ids[]=#{plannings(:planning_two).id}"
+      delete api + "&ids=#{plannings(:planning_one).id},#{plannings(:planning_two).id}"
       assert last_response.ok?, last_response.body
     end
   end

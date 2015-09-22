@@ -856,7 +856,7 @@ function destinations_index(params, api) {
 
         $.ajax({
           type: "delete",
-          url: '/api/0.1/' + api + '.json?' + $.param({ids: destination_ids}),
+          url: '/api/0.1/' + api + '.json?' + $.param({ids: destination_ids.join()}),
           beforeSend: beforeSendWaiting,
           success: function(data) {
             $.map($('table tbody :checkbox:checked').closest('tr'), function(row, i) {

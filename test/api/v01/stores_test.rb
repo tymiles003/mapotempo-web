@@ -84,7 +84,7 @@ class V01::StoresTest < ActiveSupport::TestCase
 
   test 'should destroy multiple stores' do
     assert_difference('Store.count', -2) do
-      delete api + "&ids[]=#{stores(:store_one).id}&ids[]=#{stores(:store_one_bis).id}"
+      delete api + "&ids=#{stores(:store_one).id},#{stores(:store_one_bis).id}"
       assert last_response.ok?, last_response.body
     end
   end

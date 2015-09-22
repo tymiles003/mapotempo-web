@@ -63,7 +63,7 @@ class V01::ZoningsTest < ActiveSupport::TestCase
 
   test 'should destroy multiple zonings' do
     assert_difference('Zoning.count', -2) do
-      delete api + "&ids[]=#{zonings(:zoning_one).id}&ids[]=#{zonings(:zoning_two).id}"
+      delete api + "&ids=#{zonings(:zoning_one).id},#{zonings(:zoning_two).id}"
       assert last_response.ok?, last_response.body
     end
   end

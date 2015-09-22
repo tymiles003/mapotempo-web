@@ -118,12 +118,11 @@ class V01::Destinations < Grape::API
     desc 'Delete multiple destinations.',
       nickname: 'deleteDestinations'
     params do
-      requires :ids, type: Array[Integer]
+      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
     end
     delete do
       Destination.transaction do
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.destinations.select{ |destination| ids.include?(destination.id) }.each(&:destroy)
+        current_customer.destinations.select{ |destination| params[:ids].include?(destination.id) }.each(&:destroy)
       end
     end
 

@@ -93,12 +93,11 @@ class V01::Zonings < Grape::API
     desc 'Delete multiple zonings.',
       nickname: 'deleteZonings'
     params do
-      requires :ids, type: Array[Integer]
+      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
     end
     delete do
       Zoning.transaction do
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.zonings.select{ |zoning| ids.include?(zoning.id) }.each(&:destroy)
+        current_customer.zonings.select{ |zoning| params[:ids].include?(zoning.id) }.each(&:destroy)
       end
     end
 

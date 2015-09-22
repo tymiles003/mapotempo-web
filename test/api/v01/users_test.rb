@@ -61,7 +61,7 @@ class V01::UsersTest < ActiveSupport::TestCase
 
   test 'should destroy multiple users' do
     assert_difference('User.count', -2) do
-      delete api_admin + "&ids[]=#{users(:user_one).id}&ids[]=#{users(:user_two).id}"
+      delete api_admin + "&ids=#{users(:user_one).id},#{users(:user_two).id}"
       assert last_response.ok?, last_response.body
     end
   end

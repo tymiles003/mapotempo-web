@@ -95,12 +95,11 @@ class V01::Plannings < Grape::API
     desc 'Delete multiple plannings.',
       nickname: 'deletePlannings'
     params do
-      requires :ids, type: Array[Integer]
+      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
     end
     delete do
       Planning.transaction do
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.plannings.select{ |planning| ids.include?(planning.id) }.each(&:destroy)
+        current_customer.plannings.select{ |planning| params[:ids].include?(planning.id) }.each(&:destroy)
       end
     end
 

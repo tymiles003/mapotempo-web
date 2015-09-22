@@ -61,7 +61,7 @@ class V01::OrderArraysTest < ActiveSupport::TestCase
 
   test 'should destroy multiple order_arrays' do
     assert_difference('OrderArray.count', -2) do
-      delete api + "&ids[]=#{order_arrays(:order_array_one).id}&ids[]=#{order_arrays(:order_array_two).id}"
+      delete api + "&ids=#{order_arrays(:order_array_one).id},#{order_arrays(:order_array_two).id}"
       assert last_response.ok?, last_response.body
     end
   end
