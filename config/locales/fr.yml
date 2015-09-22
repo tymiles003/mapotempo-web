@@ -309,6 +309,7 @@ fr:
           missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
           lat_outside_range: "doit être comprise entre -90..90"
           lng_outside_range: "doit être comprise entre -180..180"
+          geocoding_accuracy_outside_range: "doit être comprise entre 0..1"
         vehicle:
           attributes:
             close:

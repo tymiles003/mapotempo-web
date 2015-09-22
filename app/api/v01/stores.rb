@@ -21,7 +21,7 @@ class V01::Stores < Grape::API
     def store_params
       p = ActionController::Parameters.new(params)
       p = p[:store] if p.key?(:store)
-      p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng, :geocoding_level)
+      p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng, :geocoding_accuracy, :geocoding_level)
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
@@ -59,9 +59,10 @@ class V01::Stores < Grape::API
 
     desc 'Create store.',
       nickname: 'createStore',
-      params: V01::Entities::Store.documentation.except(:id).merge(
+      params: V01::Entities::Store.documentation.except(:id).deep_merge(
         name: { required: true },
-        city: { required: true }
+        city: { required: true },
+        geocoding_accuracy: { values: 0..1 }
       ),
       entity: V01::Entities::Store
     post do
@@ -94,7 +95,9 @@ class V01::Stores < Grape::API
     desc 'Update store.',
       detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
       nickname: 'updateStore',
-      params: V01::Entities::Store.documentation.except(:id),
+      params: V01::Entities::Store.documentation.except(:id).deep_merge(
+        geocoding_accuracy: { values: 0..1 }
+      ),
       entity: V01::Entities::Store
     params do
       requires :id, type: String, desc: ID_DESC
@@ -133,7 +136,9 @@ class V01::Stores < Grape::API
 
     desc 'Geocode store.',
       nickname: 'geocodeStore',
-      params: V01::Entities::Store.documentation.except(:id),
+      params: V01::Entities::Store.documentation.except(:id).deep_merge(
+        geocoding_accuracy: { values: 0..1 }
+      ),
       entity: V01::Entities::Store
     patch 'geocode' do
       store = current_customer.stores.build(store_params)

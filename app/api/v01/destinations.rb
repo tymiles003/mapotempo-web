@@ -21,7 +21,7 @@ class V01::Destinations < Grape::API
     def destination_params
       p = ActionController::Parameters.new(params)
       p = p[:destination] if p.key?(:destination)
-      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, :geocoding_level, tag_ids: [])
+      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, :geocoding_accuracy, :geocoding_level, tag_ids: [])
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
@@ -59,8 +59,9 @@ class V01::Destinations < Grape::API
 
     desc 'Create destination.',
       nickname: 'createDestination',
-      params: V01::Entities::Destination.documentation.except(:id).merge(
-        name: { required: true }
+      params: V01::Entities::Destination.documentation.except(:id).deep_merge(
+        name: { required: true },
+        geocoding_accuracy: { values: 0..1 }
       ),
       entity: V01::Entities::Destination
     post do
@@ -94,7 +95,9 @@ class V01::Destinations < Grape::API
     desc 'Update destination.',
       detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
       nickname: 'updateDestination',
-      params: V01::Entities::Destination.documentation.except(:id),
+      params: V01::Entities::Destination.documentation.except(:id).deep_merge(
+        geocoding_accuracy: { values: 0..1 }
+      ),
       entity: V01::Entities::Destination
     params do
       requires :id, type: String, desc: ID_DESC
@@ -133,7 +136,9 @@ class V01::Destinations < Grape::API
 
     desc 'Geocode destination.',
       nickname: 'geocodeDestination',
-      params: V01::Entities::Destination.documentation.except(:id),
+      params: V01::Entities::Destination.documentation.except(:id).deep_merge(
+        geocoding_accuracy: { values: 0..1 }
+      ),
       entity: V01::Entities::Destination
     patch 'geocode' do
       destination = current_customer.destinations.build(destination_params)

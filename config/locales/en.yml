@@ -308,6 +308,7 @@ en:
           missing_address_or_latlng: "Postalcode and city cannot be empty if lat/lng are empty"
           lat_outside_range: "must be inside range -90..90"
           lng_outside_range: "must be inside range -180..180"
+          geocoding_accuracy_outside_range: "must be inside range 0..1"
         vehicle:
           attributes:
             close:
