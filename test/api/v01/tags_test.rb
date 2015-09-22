@@ -28,7 +28,7 @@ class V01::TagsTest < ActiveSupport::TestCase
   end
 
   test 'should return customer''s tags by ids' do
-    get api(nil, 'ids[]' => @tag.id)
+    get api(nil, 'ids' => @tag.id)
     assert last_response.ok?, last_response.body
     assert_equal 1, JSON.parse(last_response.body).size
     assert_equal @tag.id, JSON.parse(last_response.body)[0]['id']

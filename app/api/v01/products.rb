@@ -31,12 +31,11 @@ class V01::Products < Grape::API
       is_array: true,
       entity: V01::Entities::Product
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned products by id.'
+      optional :ids, type: Array[Integer], desc: 'Select returned products by id.', coerce_with: V01::CoerceArrayInteger
     end
     get do
       products = if params.key?(:ids)
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.products.select{ |product| ids.include?(product.id) }
+        current_customer.products.select{ |product| params[:ids].include?(product.id) }
       else
         current_customer.products.load
       end

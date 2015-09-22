@@ -42,12 +42,11 @@ class V01::Orders < Grape::API
           is_array: true,
           entity: V01::Entities::Order
         params do
-          optional :ids, type: Array[Integer], desc: 'Select returned orders by id.'
+          optional :ids, type: Array[Integer], desc: 'Select returned orders by id.', coerce_with: V01::CoerceArrayInteger
         end
         get do
           orders = if params.key?(:ids)
-            ids = params[:ids].collect{ |i| Integer(i) }
-            current_customer.order_arrays.find(params[:order_array_id]).orders.select{ |order| ids.include?(order.id) }
+            current_customer.order_arrays.find(params[:order_array_id]).orders.select{ |order| params[:ids].include?(order.id) }
           else
             current_customer.order_arrays.find(params[:order_array_id]).orders.load
           end

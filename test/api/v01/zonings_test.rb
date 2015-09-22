@@ -24,7 +24,7 @@ class V01::ZoningsTest < ActiveSupport::TestCase
   end
 
   test 'should return customer''s zonings by ids' do
-    get api(nil, 'ids[]' => @zoning.id)
+    get api(nil, 'ids' => @zoning.id)
     assert last_response.ok?, last_response.body
     assert_equal 1, JSON.parse(last_response.body).size
     assert_equal @zoning.id, JSON.parse(last_response.body)[0]['id']

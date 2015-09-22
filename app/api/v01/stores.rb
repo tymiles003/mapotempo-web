@@ -33,12 +33,11 @@ class V01::Stores < Grape::API
       is_array: true,
       entity: V01::Entities::Store
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned stores by id.'
+      optional :ids, type: Array[Integer], desc: 'Select returned stores by id.', coerce_with: V01::CoerceArrayInteger
     end
     get do
       stores = if params.key?(:ids)
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.stores.select{ |store| ids.include?(store.id) }
+        current_customer.stores.select{ |store| params[:ids].include?(store.id) }
       else
         current_customer.stores.load
       end

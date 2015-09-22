@@ -17,6 +17,12 @@
 #
 require 'parse_ids_refs'
 
+class V01::CoerceArrayInteger
+  def self.parse(s)
+    s.split(',').collect{ |i| Integer(i) }
+  end
+end
+
 class V01::Api < Grape::API
   helpers do
     def warden

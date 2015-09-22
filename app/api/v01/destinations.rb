@@ -33,12 +33,11 @@ class V01::Destinations < Grape::API
       is_array: true,
       entity: V01::Entities::Destination
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned destinations by id.'
+      optional :ids, type: Array[Integer], desc: 'Select returned destinations by id.', coerce_with: V01::CoerceArrayInteger
     end
     get do
       destinations = if params.key?(:ids)
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.destinations.select{ |destination| ids.include?(destination.id) }
+        current_customer.destinations.select{ |destination| params[:ids].include?(destination.id) }
       else
         current_customer.destinations.load
       end

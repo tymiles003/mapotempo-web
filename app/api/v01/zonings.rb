@@ -34,12 +34,11 @@ class V01::Zonings < Grape::API
       is_array: true,
       entity: V01::Entities::Zoning
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned zonings by id.'
+      optional :ids, type: Array[Integer], desc: 'Select returned zonings by id.', coerce_with: V01::CoerceArrayInteger
     end
     get do
       zonings = if params.key?(:ids)
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.zonings.select{ |zoning| ids.include?(zoning.id) }
+        current_customer.zonings.select{ |zoning| params[:ids].include?(zoning.id) }
       else
         current_customer.zonings.load
       end

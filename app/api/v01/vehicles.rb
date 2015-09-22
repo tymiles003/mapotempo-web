@@ -33,12 +33,11 @@ class V01::Vehicles < Grape::API
       is_array: true,
       entity: V01::Entities::Vehicle
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned vehicles by id.'
+      optional :ids, type: Array[Integer], desc: 'Select returned vehicles by id.', coerce_with: V01::CoerceArrayInteger
     end
     get do
       vehicles = if params.key?(:ids)
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.vehicles.select{ |vehicle| ids.include?(vehicle.id) }
+        current_customer.vehicles.select{ |vehicle| params[:ids].include?(vehicle.id) }
       else
         current_customer.vehicles.load
       end

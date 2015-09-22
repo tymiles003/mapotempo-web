@@ -31,12 +31,11 @@ class V01::Tags < Grape::API
       is_array: true,
       entity: V01::Entities::Tag
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned tags by id.'
+      optional :ids, type: Array[Integer], desc: 'Select returned tags by id.', coerce_with: V01::CoerceArrayInteger
     end
     get do
       tags = if params.key?(:ids)
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.tags.select{ |tag| ids.include?(tag.id) }
+        current_customer.tags.select{ |tag| params[:ids].include?(tag.id) }
       else
         current_customer.tags.load
       end

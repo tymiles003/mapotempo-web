@@ -24,7 +24,7 @@ class V01::OrdersTest < ActiveSupport::TestCase
   end
 
   test 'should return customer''s orders by ids' do
-    get api(@order.order_array.id, nil, 'ids[]' => @order.id)
+    get api(@order.order_array.id, nil, 'ids' => @order.id)
     assert last_response.ok?, last_response.body
     assert_equal 1, JSON.parse(last_response.body).size
     assert_equal @order.id, JSON.parse(last_response.body)[0]['id']

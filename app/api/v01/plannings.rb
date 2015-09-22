@@ -33,12 +33,11 @@ class V01::Plannings < Grape::API
       is_array: true,
       entity: V01::Entities::Planning
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned plannings by id.'
+      optional :ids, type: Array[Integer], desc: 'Select returned plannings by id.', coerce_with: V01::CoerceArrayInteger
     end
     get do
       plannings = if params.key?(:ids)
-        ids = params[:ids].collect{ |i| Integer(i) }
-        current_customer.plannings.select{ |planning| ids.include?(planning.id) }
+        current_customer.plannings.select{ |planning| params[:ids].include?(planning.id) }
       else
         current_customer.plannings.load
       end
