@@ -573,6 +573,8 @@ function destinations_index(params, api) {
     } else {
       delete markers[destination_id];
     }
+    if ($('tr.highlight').length == 0)
+      row.addClass('highlight');
   }
 
   function count() {
