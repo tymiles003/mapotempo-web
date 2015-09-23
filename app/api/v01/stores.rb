@@ -33,11 +33,13 @@ class V01::Stores < Grape::API
       is_array: true,
       entity: V01::Entities::Store
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned stores by id.', coerce_with: V01::CoerceArrayInteger
+      optional :ids, type: Array[String], desc: 'Select returned stores by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
     end
     get do
       stores = if params.key?(:ids)
-        current_customer.stores.select{ |store| params[:ids].include?(store.id) }
+        current_customer.stores.select{ |store|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, store) }
+        }
       else
         current_customer.stores.load
       end
@@ -118,11 +120,13 @@ class V01::Stores < Grape::API
     desc 'Delete multiple stores.',
       nickname: 'deleteStores'
     params do
-      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
+      requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
     end
     delete do
       Store.transaction do
-        current_customer.stores.select{ |store| params[:ids].include?(store.id) }.each(&:destroy)
+        current_customer.stores.select{ |store|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, store) }
+        }.each(&:destroy)
       end
     end
 

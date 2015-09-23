@@ -23,6 +23,12 @@ class V01::CoerceArrayInteger
   end
 end
 
+class V01::CoerceArrayString
+  def self.parse(str)
+    str.split(',').collect{ |s| String(s) }
+  end
+end
+
 class V01::Api < Grape::API
   helpers do
     def warden

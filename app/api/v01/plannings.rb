@@ -33,11 +33,13 @@ class V01::Plannings < Grape::API
       is_array: true,
       entity: V01::Entities::Planning
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned plannings by id.', coerce_with: V01::CoerceArrayInteger
+      optional :ids, type: Array[String], desc: 'Select returned plannings by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
     end
     get do
       plannings = if params.key?(:ids)
-        current_customer.plannings.select{ |planning| params[:ids].include?(planning.id) }
+        current_customer.plannings.select{ |planning|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, planning) }
+        }
       else
         current_customer.plannings.load
       end
@@ -95,11 +97,13 @@ class V01::Plannings < Grape::API
     desc 'Delete multiple plannings.',
       nickname: 'deletePlannings'
     params do
-      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
+      requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
     end
     delete do
       Planning.transaction do
-        current_customer.plannings.select{ |planning| params[:ids].include?(planning.id) }.each(&:destroy)
+        current_customer.plannings.select{ |planning|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, planning) }
+        }.each(&:destroy)
       end
     end
 

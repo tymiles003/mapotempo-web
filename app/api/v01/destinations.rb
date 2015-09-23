@@ -33,11 +33,13 @@ class V01::Destinations < Grape::API
       is_array: true,
       entity: V01::Entities::Destination
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned destinations by id.', coerce_with: V01::CoerceArrayInteger
+      optional :ids, type: Array[String], desc: 'Select returned destinations by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
     end
     get do
       destinations = if params.key?(:ids)
-        current_customer.destinations.select{ |destination| params[:ids].include?(destination.id) }
+        current_customer.destinations.select{ |destination|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, destination) }
+        }
       else
         current_customer.destinations.load
       end
@@ -118,11 +120,13 @@ class V01::Destinations < Grape::API
     desc 'Delete multiple destinations.',
       nickname: 'deleteDestinations'
     params do
-      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
+      requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
     end
     delete do
       Destination.transaction do
-        current_customer.destinations.select{ |destination| params[:ids].include?(destination.id) }.each(&:destroy)
+        current_customer.destinations.select{ |destination|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, destination) }
+        }.each(&:destroy)
       end
     end
 

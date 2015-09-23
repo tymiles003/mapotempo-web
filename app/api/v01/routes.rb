@@ -39,12 +39,14 @@ class V01::Routes < Grape::API
           is_array: true,
           entity: V01::Entities::Route
         params do
-          optional :ids, type: Array[Integer], desc: 'Select returned routes by id.', coerce_with: V01::CoerceArrayInteger
+          optional :ids, type: Array[String], desc: 'Select returned routes by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
         end
         get do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           routes = if params.key?(:ids)
-            current_customer.plannings.where(planning_id).first!.routes.select{ |route| params[:ids].include?(route.id) }
+            current_customer.plannings.where(planning_id).first!.routes.select{ |route|
+              params[:ids].any?{ |s| ParseIdsRefs.match(s, route) }
+            }
           else
             current_customer.plannings.where(planning_id).first!.routes.load
           end

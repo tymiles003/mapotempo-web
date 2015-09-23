@@ -24,6 +24,11 @@ class ParseIdsRefs
     end
   end
 
+  def self.match(raw_id, obj)
+    o = read(raw_id)
+    o[:id] == obj.id || (o.key?(:ref) && o[:ref] == obj.ref)
+  end
+
   def self.where(clazz, param)
     ids = Hash[param.collect{ |id|
       read(id)

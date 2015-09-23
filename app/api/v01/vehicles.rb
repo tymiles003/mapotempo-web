@@ -33,11 +33,13 @@ class V01::Vehicles < Grape::API
       is_array: true,
       entity: V01::Entities::Vehicle
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned vehicles by id.', coerce_with: V01::CoerceArrayInteger
+      optional :ids, type: Array[String], desc: 'Select returned vehicles by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
     end
     get do
       vehicles = if params.key?(:ids)
-        current_customer.vehicles.select{ |vehicle| params[:ids].include?(vehicle.id) }
+        current_customer.vehicles.select{ |vehicle|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
+        }
       else
         current_customer.vehicles.load
       end
