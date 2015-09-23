@@ -95,23 +95,23 @@ class V01::Api < Grape::API
     rack_response(response.to_json, 500)
   end
 
-  mount Customers
-  mount Destinations
-  mount Layers
-  mount OrderArrays
-  mount Orders
-  mount Plannings
-  mount Products
-  mount Profiles
-  mount Routers
-  mount Routes
-  mount Stops
-  mount Stores
-  mount Tags
-  mount Users
-  mount Vehicles
-  mount Zonings
+  mount V01::Customers
+  mount V01::Destinations
+  mount V01::Layers
+  mount V01::OrderArrays
+  mount V01::Orders
+  mount V01::Plannings
+  mount V01::Products
+  mount V01::Profiles
+  mount V01::Routers
+  mount V01::Routes
+  mount V01::Stops
+  mount V01::Stores
+  mount V01::Tags
+  mount V01::Users
+  mount V01::Vehicles
+  mount V01::Zonings
 
   # Tools
-  mount Geocoder
+  mount V01::Geocoder
 end
