@@ -1,7 +1,8 @@
 Swagger::Docs::Config.register_apis({
   '0.1' => {
+    base_api_controller: ApiWeb::V01::ApiWebController,
     # the extension used for the API
-    :api_extension_type => :html,
+    api_extension_type: :html,
     # the output location where your .json files are written to
     api_file_path: 'public',
     api_file_name: 'api-web/0.1/swagger_doc.json',
@@ -23,6 +24,9 @@ Swagger::Docs::Config.register_apis({
   }
 })
 
+# Anticipates enhancement of controllers because of plugin decortator preload controller.
+# But always active the real_methods doc in place of impotent methods.
+Swagger::Docs::Generator.set_real_methods
 
 module Swagger::Docs
   class ApiDeclarationFile
