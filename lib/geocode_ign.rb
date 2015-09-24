@@ -44,7 +44,7 @@ class GeocodeIgn
   end
 
   def reverse(lat, lng)
-    key = [lat, lng]
+    key = ['ign', lat, lng]
 
     result = @cache_reverse.read(key)
     if !result
@@ -107,7 +107,7 @@ class GeocodeIgn
   end
 
   def code(street, postalcode, city, country, lat = nil, lng = nil)
-    key = [street, postalcode, city]
+    key = ['ign', street, postalcode, city]
 
     result = @cache_code.read(key)
     if !result
