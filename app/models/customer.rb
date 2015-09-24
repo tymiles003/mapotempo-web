@@ -43,9 +43,10 @@ class Customer < ActiveRecord::Base
   validates :stores, length: { maximum: Mapotempo::Application.config.max_destinations / 10, message: :over_max_limit }
   validates :destinations, length: { maximum: Mapotempo::Application.config.max_destinations, message: :over_max_limit }
   validates :optimization_cluster_size, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :max_vehicles, numericality: { greater_than: 0 }
 
   after_initialize :assign_defaults, if: 'new_record?'
-  before_create :update_max_vehicles
+  after_create :create_default_store, :update_max_vehicles
   before_update :update_out_of_date, :update_max_vehicles
   before_save :sanitize_print_header
 
@@ -69,6 +70,9 @@ class Customer < ActiveRecord::Base
 
   def assign_defaults
     default_country = I18n.t('customers.default.country')
+  end
+
+  def create_default_store
     stores.build(
       name: I18n.t('stores.default.name'),
       city: I18n.t('stores.default.city'),

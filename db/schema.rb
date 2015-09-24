@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917130606) do
+ActiveRecord::Schema.define(version: 20150924095144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "customers", force: :cascade do |t|
     t.date     "end_subscription"
-    t.integer  "max_vehicles"
+    t.integer  "max_vehicles",                                              null: false
     t.time     "take_over"
     t.integer  "job_destination_geocoding_id"
     t.integer  "job_optimizer_id"

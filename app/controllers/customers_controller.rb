@@ -31,8 +31,7 @@ class CustomersController < ApplicationController
   end
 
   def create
-    # Can set max_vehicles on creation
-    @customer = current_user.reseller.customers.build(customer_params.except('max_vehicles'))
+    @customer = current_user.reseller.customers.build(customer_params)
     @customer.speed_multiplicator /= 100 if @customer.speed_multiplicator
 
     respond_to do |format|
