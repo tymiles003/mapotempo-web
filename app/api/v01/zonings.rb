@@ -157,5 +157,23 @@ class V01::Zonings < Grape::API
         end
       end
     end
+
+    desc 'Generate isodistance.',
+      nickname: 'generateIsodistance'
+    params do
+      requires :id, type: Integer
+      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time.'
+    end
+    patch ':id/isodistance' do
+      Zoning.transaction do
+        zoning = current_customer.zonings.find(params[:id])
+        size = Integer(params[:size])
+        if zoning
+          zoning.isodistance(size)
+          zoning.save!
+          present zoning, with: V01::Entities::Zoning
+        end
+      end
+    end
   end
 end

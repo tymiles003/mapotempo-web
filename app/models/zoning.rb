@@ -101,24 +101,19 @@ class Zoning < ActiveRecord::Base
   end
 
   def isochrone?
-    customer.vehicles.find{ |vehicle|
-      router = (vehicle.router || customer.router)
-      router.isochrone? && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
-    }
+    isowhat?(:isochrone?)
   end
 
   def isochrone(size)
-    zones.clear
-    z = customer.vehicles.collect{ |vehicle|
-      router = (vehicle.router || customer.router)
-      if router.isochrone? && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
-        geom = router.isochrone(vehicle.store_start.lat, vehicle.store_start.lng, size)
-        [vehicle, geom]
-      end
-    }.compact
-    Hash[z].each{ |vehicle, geom|
-      zones.build({polygon: geom, vehicle: vehicle}) if geom
-    }
+    isowhat(:isochrone?, :isochrone, size)
+  end
+
+  def isodistance?
+    isowhat?(:isodistance?)
+  end
+
+  def isodistance(size)
+    isowhat(:isodistance?, :isodistance, size)
   end
 
   private
@@ -131,5 +126,26 @@ class Zoning < ActiveRecord::Base
 
   def touch_zones(_zone)
     @collection_touched = true
+  end
+
+  def isowhat?(what)
+    customer.vehicles.find{ |vehicle|
+      router = (vehicle.router || customer.router)
+      router.method(what).call && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
+    }
+  end
+
+  def isowhat(what_qm, what, size)
+    zones.clear
+    z = customer.vehicles.collect{ |vehicle|
+      router = (vehicle.router || customer.router)
+      if router.method(what_qm).call && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
+        geom = router.method(what).call(vehicle.store_start.lat, vehicle.store_start.lng, size)
+        [vehicle, geom]
+      end
+    }.compact
+    Hash[z].each{ |vehicle, geom|
+      zones.build({polygon: geom, vehicle: vehicle}) if geom
+    }
   end
 end

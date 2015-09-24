@@ -19,7 +19,7 @@ class ZoningsController < ApplicationController
   include LinkBack
 
   load_and_authorize_resource
-  before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning, :isochrone]
+  before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning, :isochrone, :isodistance]
 
   def index
     @zonings = current_user.customer.zonings
@@ -115,6 +115,17 @@ class ZoningsController < ApplicationController
       size = params.key?(:size) ? Integer(params[:size]) : 10
       if size
         @zoning.isochrone(size)
+        @zoning.save
+      end
+      format.json { render action: 'edit' }
+    end
+  end
+
+  def isodistance
+    respond_to do |format|
+      size = params.key?(:size) ? Integer(params[:size]) : 1000
+      if size
+        @zoning.isodistance(size)
         @zoning.save
       end
       format.json { render action: 'edit' }

@@ -25,6 +25,10 @@ class Router < ActiveRecord::Base
     false
   end
 
+  def isodistance?
+    false
+  end
+
   private
 
   def pack_vector(row, column)

@@ -76,6 +76,7 @@ Rails.application.routes.draw do
     patch 'automatic/planning/:planning_id' => 'zonings#automatic'
     patch 'from_planning/planning/:planning_id' => 'zonings#from_planning'
     patch 'isochrone' => 'zonings#isochrone'
+    patch 'isodistance' => 'zonings#isodistance'
   end
   delete 'zonings' => 'zonings#destroy_multiple'
 

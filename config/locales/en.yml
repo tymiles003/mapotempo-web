@@ -824,6 +824,7 @@ en:
         other: "Automatic: %{count} zones"
       from_planning: "From planning"
       isochrone: "Isochrone"
+      isodistance: "Isodistance"
       dialog:
         isochrone:
           title: "Isochrone"
@@ -832,6 +833,13 @@ en:
           size_help: "Area accessible from the start store by this travel time."
         isochrone-progress:
           title: "Isochrones computation in progress"
+        isodistance:
+          title: "Isodistance"
+          validate: "Generate"
+          size: "Distance"
+          size_help: "Area accessible from the start store by this travel distance."
+        isodistance-progress:
+          title: "Isodistances computation in progress"
 
   unauthorized:
     default: "You are not authorized to access this page"
@@ -882,6 +890,7 @@ en:
       toggle_selection: "Toggle selection"
       dismiss: "Dismiss"
     unit:
+      m: "m"
       km: "km"
       millisecond: "ms"
       second: "s"

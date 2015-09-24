@@ -353,6 +353,26 @@ function zonings_edit(params) {
     });
   });
 
+  $('#isodistance').click(function () {
+    var size = $('#isodistance_size').val();
+    $('#isodistance-progress-modal').modal({
+      backdrop: 'static',
+      keyboard: true
+    });
+    $('#isodistance-modal').modal('hide');
+    $.ajax({
+      type: "patch",
+      url: '/zonings/' + zoning_id + '/isodistance.json?size=' + size,
+      beforeSend: beforeSendWaiting,
+      success: display_zoning,
+      complete: function() {
+        completeWaiting();
+        $('#isodistance-progress-modal').modal('hide');
+      },
+      error: ajaxError
+    });
+  });
+
   $.ajax({
     url: '/zonings/' + (zoning_id ? zoning_id + '/edit' : 'new') + (planning_id ? '/planning/' + planning_id : '') + '.json',
     beforeSend: beforeSendWaiting,

@@ -73,3 +73,59 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="isodistance-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= t 'zonings.form.dialog.isodistance.title' %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <form>
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="size"><%= t 'zonings.form.dialog.isodistance.size' %></label>
+                <div class="col-md-8 input-append">
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="isodistance_size" value="1000"/>
+                    <span class="input-group-addon">
+                      <%= t('all.unit.m') %>
+                    </span>
+                  </div>
+                  <p class="help-block">
+                    <%= t 'zonings.form.dialog.isodistance.size_help' %>
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'all.verb.dismiss' %></button>
+        <button type="button" class="btn btn-primary" id="isodistance"><%= t 'zonings.form.dialog.validate' %></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="isodistance-progress-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><%= t 'zonings.form.dialog.isodistance-progress.title' %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active" style="width: 100%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
