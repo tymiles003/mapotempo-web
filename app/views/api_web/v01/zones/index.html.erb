@@ -22,5 +22,6 @@ controller.js(
   vehicles_map: Hash[@zoning.customer.vehicles.collect{ |vehicle|
     [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]
   }],
+  destinations: !!@destinations.nil?,
 )
 %>

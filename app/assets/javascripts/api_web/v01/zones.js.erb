@@ -25,7 +25,8 @@ function api_web_v01_zones_index(params) {
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
-    vehicles_map = params.vehicles_map;
+    vehicles_map = params.vehicles_map,
+    destinations = params.destinations;
 
   var map = new L.Map('map').setView([map_lat, map_lng], 13);
   L.control.scale({
@@ -77,6 +78,8 @@ function api_web_v01_zones_index(params) {
   }
 
   function display_zoning(data) {
+    api_web_v01_display_destinations_('destinations', map, markersLayers, undefined, data);
+
     stores_marker.clearLayers();
     $.each(data.stores, function(i, store) {
       store.store = true;
@@ -108,14 +111,16 @@ function api_web_v01_zones_index(params) {
     if (bounds && bounds.isValid()) {
       map.fitBounds(bounds);
     }
-    progressBar.done();
   }
 
   progressBar.advanceTo(50);
   $.ajax({
-    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json?' + $.param({ids: zone_ids.join(',')}),
+    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json?' + $.param({ids: zone_ids.join(','), destinations: destinations}),
     beforeSend: beforeSendWaiting,
-    success: display_zoning,
+    success: function(data) {
+      display_zoning(data);
+      progressBar.done();
+    },
     complete: completeWaiting,
     error: ajaxError
   });

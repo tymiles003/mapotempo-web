@@ -31,6 +31,50 @@ Paloma.controller('ApiWeb/V01/Store').prototype.update_position = function() {
   destinations_edit(this.params, 'stores');
 };
 
+function api_web_v01_display_destinations_(api, map, markersLayers, cluster, data) {
+  var tags = {};
+  var icon_default = new L.Icon.Default();
+
+  function prepare_display_destination(destination) {
+    var t = [];
+    $.each(tags, function(i, tag) {
+      t.push({
+        id: tag.id,
+        label: tag.label,
+        color: tag.color ? tag.color.substr(1) : undefined,
+        icon: tag.icon
+      });
+    });
+    destination.tags = t;
+    destination.i18n = mustache_i18n;
+    return destination;
+  }
+
+  function addMarker(id, lat, lng) {
+    var marker = L.marker(new L.LatLng(lat, lng), {
+      icon: icon_default
+    }).addTo(markersLayers);
+    if(cluster) {
+      marker.addTo(cluster);
+    }
+    return marker;
+  }
+
+  if (data.tags) {
+    $.each(data.tags, function(i, tag) {
+      tags[tag.id] = tag;
+    });
+  }
+  $.each(data[api], function(i, destination) {
+    destination = prepare_display_destination(destination);
+    if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
+      addMarker(destination.id, destination.lat, destination.lng).bindPopup(SMT['stops/show']({
+        stop: destination
+      }));
+    }
+  });
+}
+
 function api_web_v01_destinations_index(params, api) {
   var progressBar = Turbolinks.enableProgressBar();
   progressBar.advanceTo(25);
@@ -59,7 +103,6 @@ function api_web_v01_destinations_index(params, api) {
     }).addTo(map);
   }
 
-  var markers = {};
   var markersLayers = L.featureGroup();
 
   var cluster = new L.MarkerClusterGroup({
@@ -77,56 +120,21 @@ function api_web_v01_destinations_index(params, api) {
     }
   });
 
-  var tags = {};
-  var icon_default = new L.Icon.Default();
-
-  function prepare_display_destination(destination) {
-    var t = [];
-    $.each(tags, function(i, tag) {
-      t.push({
-        id: tag.id,
-        label: tag.label,
-        color: tag.color ? tag.color.substr(1) : undefined,
-        icon: tag.icon
-      });
-    });
-    destination.tags = t;
-    destination.i18n = mustache_i18n;
-    return destination;
-  }
-
-  function addMarker(id, lat, lng) {
-    return L.marker(new L.LatLng(lat, lng), {
-      icon: icon_default
-    }).addTo(markersLayers).addTo(cluster);
-  }
-
   function display_destinations(data) {
-    if (data.tags) {
-      $.each(data.tags, function(i, tag) {
-        tags[tag.id] = tag;
-      });
-    }
-    $.each(data[api], function(i, destination) {
-      destination = prepare_display_destination(destination);
-      if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
-        addMarker(destination.id, destination.lat, destination.lng).bindPopup(SMT['stops/show']({
-          stop: destination
-        }));
-      }
-    });
-
+    api_web_v01_display_destinations_(api, map, markersLayers, cluster, data);
     if (markersLayers.getLayers().length > 0) {
       map.fitBounds(markersLayers.getBounds());
     }
-    progressBar.done();
   }
 
   progressBar.advanceTo(50);
   $.ajax({
     url: '/api-web/0.1/' + api + '.json?' + $.param({ids: ids.join(',')}),
     beforeSend: beforeSendWaiting,
-    success: display_destinations,
+    success: function(data) {
+      display_destinations(data);
+      progressBar.done();
+    },
     complete: completeWaiting,
     error: ajaxError
   });

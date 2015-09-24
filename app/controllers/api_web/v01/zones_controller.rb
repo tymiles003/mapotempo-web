@@ -26,6 +26,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     summary 'Display all or some zones of one zoning.'
     param :path, :zoning_id, :integer, :required, 'Zonning ids'
     param :query, :ids, :array, :optional, 'Zoning''s zones ids to be displayed, separated by commas', { 'items' => { 'type' => 'integer' } }
+    param :query, :destinations, :boolean, :optional, 'Destinations displayed or not, no destinations by default'
   end
 
   def index
@@ -36,6 +37,9 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
       @zoning.zones
     end
     flash.now[:error] = t('api_web.v01.zones.index.none_zones') if @zones.count == 0
+    if params[:destinations]
+      @destinations = current_user.customer.destinations
+    end
   end
 
   private
