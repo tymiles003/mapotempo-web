@@ -36,6 +36,7 @@ class DestinationTest < ActiveSupport::TestCase
   test 'should update_geocode' do
     o = destinations(:destination_one)
     o.city = 'Toulouse'
+    o.lat = o.lng = nil
     lat, lng = o.lat, o.lng
     o.save!
     assert o.lat
