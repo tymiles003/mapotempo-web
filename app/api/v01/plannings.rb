@@ -59,7 +59,7 @@ class V01::Plannings < Grape::API
 
     desc 'Create planning.',
       nickname: 'createPlanning',
-      params: V01::Entities::Planning.documentation.except(:id).merge(
+      params: V01::Entities::Planning.documentation.except(:id).deep_merge(
         name: { required: true }
       ),
       entity: V01::Entities::Planning

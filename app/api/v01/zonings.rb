@@ -57,7 +57,7 @@ class V01::Zonings < Grape::API
 
     desc 'Create zoning.',
       nickname: 'createZoning',
-      params: V01::Entities::Zoning.documentation.except(:id).merge(
+      params: V01::Entities::Zoning.documentation.except(:id).deep_merge(
         name: { required: true }
       ),
       entity: V01::Entities::Zoning

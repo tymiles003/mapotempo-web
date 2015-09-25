@@ -54,7 +54,7 @@ class V01::Products < Grape::API
 
     desc 'Create product.',
       nickname: 'createProduct',
-      params: V01::Entities::Product.documentation.except(:id).merge(
+      params: V01::Entities::Product.documentation.except(:id).deep_merge(
         code: { required: true },
         name: { required: true }
       ),

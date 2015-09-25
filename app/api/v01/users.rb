@@ -54,7 +54,7 @@ class V01::Users < Grape::API
 
     desc 'Create user.',
       nickname: 'createUser',
-      params: V01::Entities::User.documentation.except(:id).merge(
+      params: V01::Entities::User.documentation.except(:id).deep_merge(
         email: { required: true },
         password: { required: true },
         customer_id: { required: true },

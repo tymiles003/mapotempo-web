@@ -59,7 +59,7 @@ class V01::OrderArrays < Grape::API
 
     desc 'Create order_array.',
       nickname: 'createOrderArray',
-      params: V01::Entities::OrderArray.documentation.except(:id, :orders).merge(
+      params: V01::Entities::OrderArray.documentation.except(:id, :orders).deep_merge(
         name: { required: true },
         base_date: { required: true },
         length: { required: true }
