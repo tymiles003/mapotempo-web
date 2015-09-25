@@ -486,6 +486,13 @@ function destinations_index(params, api) {
       if (move === undefined && event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]|\[country\]|\[lat\]|\[lng\]$/))
         move = true;
       var url = '/api/0.1/' + api + '/' + id + '.json';
+      var geocode = false;
+      if (event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]|\[country\]$/)) {
+        if ($('[name$=\\[geocoding_level\\]]', row).val() == 'point')
+          geocode = 'confirm';
+        else
+          geocode = true;
+      }
       confirmGeocode({
         type: "put",
         data: $(":input", $row),
@@ -496,7 +503,7 @@ function destinations_index(params, api) {
         },
         complete: completeWaiting,
         error: ajaxError
-      }, row, event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]|\[country\]$/) && $('[name$=\\[geocoding_level\\]]', row).val() == 'point');
+      }, row, geocode);
     })
     .on("click", ".pointing + span", function(event) {
       pointing = id;
@@ -541,12 +548,16 @@ function destinations_index(params, api) {
     });
   }
 
-  function confirmGeocode(ajaxParams, row, conf) {
-    if (conf) {
+  function confirmGeocode(ajaxParams, row, geocode) {
+    if (geocode == 'confirm') {
       if (confirm(I18n.t('destinations.form.dialog.confirm_overwrite_point'))) {
         $('[name$=\\[lat\\]]', row).val(null);
         $('[name$=\\[lng\\]]', row).val(null);
       }
+    }
+    else if (geocode) {
+      $('[name$=\\[lat\\]]', row).val(null);
+      $('[name$=\\[lng\\]]', row).val(null);
     }
     $.ajax(ajaxParams);
   }
