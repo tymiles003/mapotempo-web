@@ -32,6 +32,9 @@ class RoutesController < ApplicationController
       format.gpx do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.gpx"'
       end
+      format.kml do
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
+      end
       format.excel do
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),

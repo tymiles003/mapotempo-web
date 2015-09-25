@@ -1,0 +1,72 @@
+<Placemark>
+  <name>
+    <%= [
+      route.planning.name,
+      route.ref,
+      route.vehicle.name,
+      route.planning.customer.enable_orders && route.planning.order_array ? route.planning.order_array.name : nil,
+      route.planning.date ? l(route.planning.date) : nil,
+    ].select{ |i| i }.join(' - ').gsub(/\s+/, ' ').strip
+  %>
+  </name>
+  <description>
+    <%= route.size_active %> <%= I18n.t 'plannings.edit.stops' %>
+    <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
+    <%= number_to_human(route.distance, units: :distance, precision: 3) %>
+  </description>
+  <styleUrl>#route-<%= route.id %></styleUrl>
+  <LineString>
+    <tessellate>1</tessellate>
+    <altitudeMode>clampToGround</altitudeMode>
+    <coordinates>
+      <% route.stops.each do |stop| 
+        if stop.active && stop.position?
+          Polylines::Decoder.decode_polyline(stop.trace, 1e6).each do |v| %>
+        <%= v[1].to_s + ',' + v[0].to_s %>
+      <%  end
+        end
+      end %>
+      <% Polylines::Decoder.decode_polyline(route.stop_trace, 1e6).each do |v| %>
+        <%= v[1].to_s + ',' + v[0].to_s %>
+      <% end %>
+    </coordinates>
+  </LineString>
+</Placemark>
+<% if route.vehicle.store_start && !route.vehicle.store_start.lat.nil? && !route.vehicle.store_start.lng.nil? %>
+<Placemark>
+  <name><%= route.vehicle.store_start.name %></name>
+  <styleUrl>#route-<%= route.id %>-point</styleUrl>
+  <Point>
+    <altitudeMode>clampToGround</altitudeMode>
+    <coordinates>
+      <%= route.vehicle.store_start.lng.to_s + ',' + route.vehicle.store_start.lat.to_s %>
+    </coordinates>
+  </Point>
+</Placemark>
+<% end %>
+<% route.stops.each do |stop| 
+  if stop.active && stop.position? %>
+<Placemark>
+  <name><%= stop.name %></name>
+  <styleUrl>#route-<%= route.id %>-point</styleUrl>
+  <Point>
+    <altitudeMode>clampToGround</altitudeMode>
+    <coordinates>
+      <%= stop.lng.to_s + ',' + stop.lat.to_s %>
+    </coordinates>
+  </Point>
+</Placemark>
+<% end
+end %>
+<% if route.vehicle.store_stop && !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil? %>
+<Placemark>
+  <name><%= route.vehicle.store_stop.name %></name>
+  <styleUrl>#route-<%= route.id %>-point</styleUrl>
+  <Point>
+    <altitudeMode>clampToGround</altitudeMode>
+    <coordinates>
+      <%= route.vehicle.store_stop.lng.to_s + ',' + route.vehicle.store_stop.lat.to_s %>
+    </coordinates>
+  </Point>
+</Placemark>
+<% end %>

@@ -23,6 +23,7 @@
           <li><%= link_to planning_path(@planning, format: :csv, stores: false) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard_without_stores' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :excel) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gps_waypoint' %><% end %></li>
+          <li><%= link_to planning_path(@planning, format: :kml) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kml_route' %><% end %></li>
           <% if @planning.customer.enable_tomtom && !@planning.customer.tomtom_account.blank? && !@planning.customer.tomtom_user.blank? && !@planning.customer.tomtom_password.blank? %>
             <li class="export_tomtom"><%= link_to planning_path(@planning, format: :tomtom, type: 'orders') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_orders' %><% end %></li>
             <li class="export_tomtom"><%= link_to planning_path(@planning, format: :tomtom, type: 'waypoints') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_waypoints' %><% end %></li>
