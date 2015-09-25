@@ -322,6 +322,7 @@ fr:
               bad_customer: "non associé au compte client"
             polygon:
               invalid_json: "n'est pas une chaine de caractère json valide"
+          at_least_one: "Au moins un véhicule est requis"
         customer:
           attributes:
             destinations:

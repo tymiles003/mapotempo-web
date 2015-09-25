@@ -112,6 +112,7 @@ module Mapotempo
     config.geocoding_accuracy_warning = 0.9
 
     config.max_destinations = 3000
+    config.manage_vehicles_only_admin = false
   end
 end
 

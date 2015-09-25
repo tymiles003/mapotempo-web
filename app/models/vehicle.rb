@@ -43,6 +43,7 @@ class Vehicle < ActiveRecord::Base
   after_initialize :assign_defaults, if: 'new_record?'
   before_save :set_stores
   before_update :update_out_of_date
+  before_destroy :destroy_vehicle
 
   def self.emissions_table
     [
@@ -95,6 +96,13 @@ class Vehicle < ActiveRecord::Base
       routes.each{ |route|
         route.out_of_date = true
       }
+    end
+  end
+
+  def destroy_vehicle
+    default = customer.vehicles.find{ |vehicle| vehicle != self && !vehicle.destroyed? }
+    if !default
+      raise I18n.t('activerecord.errors.models.vehicles.at_least_one')
     end
   end
 end

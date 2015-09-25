@@ -71,5 +71,73 @@ class V01::Vehicles < Grape::API
       vehicle.save!
       present vehicle, with: V01::Entities::Vehicle
     end
+
+    desc 'Create vehicle.',
+      nickname: 'createVehicle',
+      params: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
+        name: { required: true },
+        store_start_id: { required: true },
+        store_stop_id: { required: true }
+      ),
+      entity: V01::Entities::Vehicle
+    if Mapotempo::Application.config.manage_vehicles_only_admin
+      requires :customer_id, type: Integer
+    end
+    post do
+      if Mapotempo::Application.config.manage_vehicles_only_admin
+        if @current_user.admin?
+          customer = Customer.where(id: params[:customer_id]).first!
+          vehicle = customer.vehicles.build(vehicle_params)
+          vehicle.save!
+        else
+          error! 'Forbidden', 403
+        end
+      else
+        vehicle = current_customer.vehicles.build(vehicle_params)
+        vehicle.save!
+      end
+      present vehicle, with: V01::Entities::Vehicle
+    end
+
+    desc 'Delete vehicle.',
+      nickname: 'deleteVehicle'
+    params do
+      requires :id, type: String, desc: ID_DESC
+    end
+    delete ':id' do
+      id = ParseIdsRefs.read(params[:id])
+      if Mapotempo::Application.config.manage_vehicles_only_admin
+        if @current_user.admin?
+          Vehicle.where(id).first!.destroy
+        else
+          error! 'Forbidden', 403
+        end
+      else
+        current_customer.vehicles.where(id).first!.destroy
+      end
+    end
+
+    desc 'Delete multiple vehicles.',
+      nickname: 'deleteVehicles'
+    params do
+      requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: V01::CoerceArrayString
+    end
+    delete do
+      Vehicle.transaction do
+        if Mapotempo::Application.config.manage_vehicles_only_admin
+          if @current_user.admin?
+            Vehicle.select{ |vehicle|
+              params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
+            }.each(&:destroy)
+          else
+            error! 'Forbidden', 403
+          end
+        else
+          current_customer.vehicles.select{ |vehicle|
+            params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
+          }.each(&:destroy)
+        end
+      end
+    end
   end
 end

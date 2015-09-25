@@ -315,6 +315,7 @@ en:
               after: "Must be after the open time"
             rest_stop:
               after: "Must be after the open time"
+          at_least_one: "At least one vehicle needed"
         zone:
           attributes:
             vehicle:
