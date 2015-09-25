@@ -102,7 +102,7 @@ class V01::Routes < Grape::API
           nickname: 'moveDestinations'
         params do
           requires :id, type: String
-          requires :destination_ids, type: Array[Integer]
+          requires :destination_ids, type: Array[Integer], documentation: {param_type: 'form'}
         end
         patch ':id/destinations/moves' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
@@ -110,16 +110,19 @@ class V01::Routes < Grape::API
           id = ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
 
+          if route
+            ids = params[:destination_ids].collect{ |i| Integer(i) }
+            destinations = current_customer.destinations.select{ |destination| ids.include?(destination.id) }
 
-          ids = params[:destination_ids].collect{ |i| Integer(i) }
-          destinations = current_customer.destinations.select{ |destination| ids.include?(destination.id) }
-
-          Planning.transaction do
-            destinations.each{ |destination|
-              route.move_destination(destination, route.stops.size)
-            }
-            planning.save
+            Planning.transaction do
+              destinations.each{ |destination|
+                route.move_destination(destination, route.stops.size)
+              }
+              planning.save
+            end
           end
+
+          status 204
         end
 
         desc 'Starts asynchronous route optimization.',

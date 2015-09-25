@@ -70,7 +70,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
 
   test 'should move destinations in routes' do
     patch api(@route.planning.id, "#{@route.id}/destinations/moves"), destination_ids: [destinations(:destination_one).id, destinations(:destination_two).id]
-    assert last_response.ok?, last_response.body
+    assert_equal 204, last_response.status, last_response.body
   end
 
   test 'should optimize route' do
