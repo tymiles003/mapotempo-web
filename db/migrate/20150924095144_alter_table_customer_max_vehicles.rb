@@ -2,11 +2,7 @@ class AlterTableCustomerMaxVehicles < ActiveRecord::Migration
   def up
     Customer.all.each { |c|
       c.max_vehicles = c.vehicles.count
-      begin
-        c.save!
-      rescue => e
-        puts 'Exception during migration: ' + e.message
-      end
+      c.save!
     }
     change_column :customers, :max_vehicles, :integer, null: false
   end
