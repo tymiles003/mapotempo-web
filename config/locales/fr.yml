@@ -571,7 +571,7 @@ fr:
         spreadsheet_standard_without_stores: "Tableur standard sans dépôts"
         spreadsheet_excel: "Tableur Excel"
         gps_waypoint: "GPX Route"
-        kml_route: "KML Route"
+        kml_track: "Tracé KML"
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
         tomtom_empty: "Vider TomTom"
