@@ -44,9 +44,15 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
       ids = params[:ids].split(',')
       current_user.customer.destinations.where(ParseIdsRefs.where(Destination, ids))
     else
-      current_user.customer.destinations.load
+      respond_to do |format|
+        format.html do
+          nil
+        end
+        format.json do
+          current_user.customer.destinations.load
+        end
+      end
     end
-    flash.now[:error] = t('api_web.v01.destinations.index.none_destinations') if @destinations.count == 0
     @tags = current_user.customer.tags
   end
 

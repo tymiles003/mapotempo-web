@@ -128,11 +128,17 @@ function api_web_v01_destinations_index(params, api) {
   }
 
   progressBar.advanceTo(50);
+  queryParam = (ids) ? ('?' + $.param({ids: ids.join(',')})) : '';
   $.ajax({
-    url: '/api-web/0.1/' + api + '.json?' + $.param({ids: ids.join(',')}),
+    url: '/api-web/0.1/' + api + '.json' + queryParam,
     beforeSend: beforeSendWaiting,
     success: function(data) {
-      display_destinations(data);
+      if (data.destinations.length) {
+        display_destinations(data);
+      }
+      else {
+        bootstrap_alert_danger(I18n.t('api_web.v01.destinations.index.none_destinations'));
+      }
       progressBar.done();
     },
     complete: completeWaiting,

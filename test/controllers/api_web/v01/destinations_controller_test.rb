@@ -12,7 +12,7 @@ class ApiWeb::V01::DestinationsControllerTest < ActionController::TestCase
   test 'should get index' do
     get :index
     assert_response :success
-    assert_not_nil assigns(:destinations)
+    assert_nil assigns(:destinations)
     assert_valid response
   end
 

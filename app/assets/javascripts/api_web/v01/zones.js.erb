@@ -114,11 +114,17 @@ function api_web_v01_zones_index(params) {
   }
 
   progressBar.advanceTo(50);
+  queryParam = (zone_ids || destinations) ? ('?' + $.param({ids: zone_ids.join(','), destinations: destinations})) : '';
   $.ajax({
-    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json?' + $.param({ids: zone_ids.join(','), destinations: destinations}),
+    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json' + queryParam,
     beforeSend: beforeSendWaiting,
     success: function(data) {
-      display_zoning(data);
+      if (data.zones.length) {
+        display_zoning(data);
+      }
+      else {
+        bootstrap_alert_danger(I18n.t('api_web.v01.zones.index.none_zones'));
+      }
       progressBar.done();
     },
     complete: completeWaiting,

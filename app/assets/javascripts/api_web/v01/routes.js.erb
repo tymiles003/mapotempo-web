@@ -85,11 +85,6 @@ function api_web_v01_routes_index(params) {
     attribution: map_attribution
   }).addTo(map);
 
-  $.each(route_ids, function(i, id) {
-    layers[id] = L.featureGroup();
-    layers_cluster[id] = L.featureGroup();
-  });
-
   function display_planning(data) {
     $.each(data.routes, function(i, route) {
       if (route.vehicle_id) {
@@ -241,19 +236,31 @@ function api_web_v01_routes_index(params) {
   }
 
   function display_planning_first_time(data) {
+    $.each(data.routes, function(i, route) {
+      layers[route.route_id] = L.featureGroup();
+      layers_cluster[route.route_id] = L.featureGroup();
+    });
     display_planning(data);
     var bounds = routes_layers.getBounds();
     if (bounds && bounds.isValid()) {
       map.fitBounds(bounds);
     }
-    progressBar.done();
   }
 
   progressBar.advanceTo(50);
+  queryParam = (route_ids) ? ('?' + $.param({ids: route_ids.join(',')})) : '';
   $.ajax({
-    url: '/api-web/0.1/plannings/' + planning_id + '/routes.json?' + $.param({ids: route_ids.join(',')}),
+    url: '/api-web/0.1/plannings/' + planning_id + '/routes.json' + queryParam,
     beforeSend: beforeSendWaiting,
-    success: display_planning_first_time,
+    success: function(data) {
+      if (data.routes.length) {
+        display_planning_first_time(data);
+      }
+      else {
+        bootstrap_alert_danger(I18n.t('api_web.v01.routes.index.none_routes'));
+      }
+      progressBar.done();
+    },
     complete: completeWaiting,
     error: ajaxError
   });

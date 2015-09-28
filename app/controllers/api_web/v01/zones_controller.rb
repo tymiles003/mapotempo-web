@@ -36,7 +36,6 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     else
       @zoning.zones
     end
-    flash.now[:error] = t('api_web.v01.zones.index.none_zones') if @zones.count == 0
     if params[:destinations]
       @destinations = current_user.customer.destinations
     end

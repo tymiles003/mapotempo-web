@@ -35,7 +35,6 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
     else
       @planning.routes
     end
-    flash.now[:error] = t('api_web.v01.routes.index.none_routes') if @routes.count == 0
   end
 
   private

@@ -5,6 +5,6 @@ controller.js(
   map_lat: @customer.default_position[:lat],
   map_lng: @customer.default_position[:lng],
   map_attribution: current_user.layer.map_attribution,
-  ids: @destinations.collect(&:id)
+  ids: @destinations ? @destinations.collect(&:id) : nil
 )
 %>

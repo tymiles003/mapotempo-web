@@ -1,6 +1,6 @@
 <div id="map"></div>
 <div id="routes-caption" class="map-caption">
-  <% @routes.each do |route| %>
+  <% @routes && @routes.each do |route| %>
     <% if route.vehicle %>
       <div class="map-caption-item">
         <span class="color_small" style="background: <%= route.color || route.vehicle.color %>"></span>
@@ -12,7 +12,7 @@
 <%
 controller.js(
   planning_id: @planning.id,
-  route_ids: @routes.collect(&:id),
+  route_ids: @routes ? @routes.collect(&:id) : nil,
   map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
   map_lat: @planning.customer.default_position[:lat],
   map_lng: @planning.customer.default_position[:lng],

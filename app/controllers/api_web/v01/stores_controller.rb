@@ -44,9 +44,15 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
       ids = params[:ids].split(',')
       current_user.customer.stores.where(ParseIdsRefs.where(Store, ids))
     else
-      current_user.customer.stores.load
+      respond_to do |format|
+        format.html do
+          nil
+        end
+        format.json do
+          current_user.customer.stores.load
+        end
+      end
     end
-    flash.now[:error] = t('api_web.v01.stores.index.none_stores') if @stores.count == 0
     @tags = current_user.customer.tags
   end
 
