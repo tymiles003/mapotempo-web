@@ -20,22 +20,24 @@
     <altitudeMode>clampToGround</altitudeMode>
     <coordinates>
       <% route.stops.each do |stop| 
-        if stop.active && stop.position?
+        if stop.active && stop.trace
           Polylines::Decoder.decode_polyline(stop.trace, 1e6).each do |v| %>
         <%= v[1].to_s + ',' + v[0].to_s %>
       <%  end
         end
       end %>
-      <% Polylines::Decoder.decode_polyline(route.stop_trace, 1e6).each do |v| %>
+      <% if route.stop_trace
+        Polylines::Decoder.decode_polyline(route.stop_trace, 1e6).each do |v| %>
         <%= v[1].to_s + ',' + v[0].to_s %>
-      <% end %>
+      <% end
+      end %>
     </coordinates>
   </LineString>
 </Placemark>
 <% if route.vehicle.store_start && !route.vehicle.store_start.lat.nil? && !route.vehicle.store_start.lng.nil? %>
 <Placemark>
   <name><%= route.vehicle.store_start.name %></name>
-  <styleUrl>#route-<%= route.id %>-point</styleUrl>
+  <styleUrl>#route-<%= route.id %>-store</styleUrl>
   <Point>
     <altitudeMode>clampToGround</altitudeMode>
     <coordinates>
@@ -61,7 +63,7 @@ end %>
 <% if route.vehicle.store_stop && !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil? %>
 <Placemark>
   <name><%= route.vehicle.store_stop.name %></name>
-  <styleUrl>#route-<%= route.id %>-point</styleUrl>
+  <styleUrl>#route-<%= route.id %>-store</styleUrl>
   <Point>
     <altitudeMode>clampToGround</altitudeMode>
     <coordinates>
