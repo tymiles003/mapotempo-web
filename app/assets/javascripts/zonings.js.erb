@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function zonings_edit(params) {
+var zonings_edit = function(params) {
 
   var zoning_id = params.zoning_id,
     planning_id = params.planning_id,
@@ -101,7 +101,7 @@ function zonings_edit(params) {
     });
   });
 
-  function count_point_in_polygon(layer_id, ele) {
+  var count_point_in_polygon = function(layer_id, ele) {
     if (hasPlanning) {
       geoJsonLayer = geoJsonLayers[layer_id];
       var n = 0,
@@ -120,13 +120,13 @@ function zonings_edit(params) {
     }
   }
 
-  function set_color(polygon, vehicle_id) {
+  var set_color = function(polygon, vehicle_id) {
     polygon.setStyle({
       color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070')
     });
   }
 
-  function template(state) {
+  var template = function(state) {
     if (state.id) {
       return $("<span><span class='color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
     } else {
@@ -134,7 +134,7 @@ function zonings_edit(params) {
     }
   }
 
-  function add_zone(zone, geom) {
+  var add_zone = function(zone, geom) {
     var geoJsonLayer;
     if (geom instanceof L.GeoJSON) {
       geoJsonLayer = geom;
@@ -216,19 +216,19 @@ function zonings_edit(params) {
     });
   }
 
-  function del_zone(geom) {
+  var del_zone = function(geom) {
     featureGroup.removeLayer(geom);
     var ele = zone_map[geom._leaflet_id].ele;
     ele.hide();
     ele.append('<input type="hidden" name="zoning[zones_attributes][][_destroy]" value="1"/>');
   }
 
-  function update_zone(geom) {
+  var update_zone = function(geom) {
     $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[polygon\\]]', zone_map[geom._leaflet_id].ele).attr('value', JSON.stringify(geom.toGeoJSON()));
     count_point_in_polygon(geom._leaflet_id, zone_map[geom._leaflet_id].ele);
   }
 
-  function display_zoning(data) {
+  var display_zoning = function(data) {
     stores_marker.clearLayers();
     $.each(data.stores, function(i, store) {
       store.store = true;

@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function order_arrays_form() {
+var order_arrays_form = function() {
   $('#order_array_base_date').datepicker({
     language: defaultLocale,
     autoclose: true,
@@ -24,11 +24,11 @@ function order_arrays_form() {
   });
 }
 
-function order_arrays_new(params) {
+var order_arrays_new = function(params) {
   order_arrays_form();
 }
 
-function order_arrays_edit(params) {
+var order_arrays_edit = function(params) {
   var order_array_id = params.order_array_id,
     planning_id = params.planning_id,
     block_save_select_change = false,
@@ -36,13 +36,13 @@ function order_arrays_edit(params) {
 
   order_arrays_form();
 
-  function filter_text(exactText, normalizedValue, filter, index) {
+  var filter_text = function(exactText, normalizedValue, filter, index) {
     return !!String(normalizedValue).match(new RegExp(filter, 'i'));
   }
 
   var formatNoMatches = I18n.t('web.select2.empty_result');
 
-  function select2_build_options(products, product_ids) {
+  var select2_build_options = function(products, product_ids) {
     var data_products = [];
     $.each(products, function(i, product) {
       data_products.push({
@@ -62,7 +62,7 @@ function order_arrays_edit(params) {
     return data_products;
   }
 
-  function set_fake_select2(products, selector, shift) {
+  var set_fake_select2 = function(products, selector, shift) {
     fake_select2(selector, function(select) {
       var data = $.map(select[0].options || [], function(option) {
         return {
@@ -113,13 +113,13 @@ function order_arrays_edit(params) {
     });
   }
 
-  function build_fake_select2(container, products, product_ids) {
+  var build_fake_select2 = function(container, products, product_ids) {
     return container.html(SMT['order_arrays/fake_select2']({
       products: select2_build_options(products, product_ids)
     }));
   }
 
-  function build_total(e, table, shift) {
+  var build_total = function(e, table, shift) {
     var $table = $(table),
       sum_column = [],
       grand_total = {};
@@ -172,7 +172,7 @@ function order_arrays_edit(params) {
     table_trigger_update();
   }
 
-  function table_trigger_update() {
+  var table_trigger_update = function() {
     if (table_neeed_update) {
       table_neeed_update = false;
       $("#order_array table").trigger("update");
@@ -181,7 +181,7 @@ function order_arrays_edit(params) {
 
   var products = {};
 
-  function display_order_array(data) {
+  var display_order_array = function(data) {
     var container = $('#order_array div');
     $.each(data.products, function(i, product) {
       products[product.id] = product;
@@ -259,7 +259,7 @@ function order_arrays_edit(params) {
 
     set_fake_select2(products, $('td[data-id] select'), shift);
 
-    function change_order(product_id, add_product, remove_product, paste, copy, selector_function) {
+    var change_order = function(product_id, add_product, remove_product, paste, copy, selector_function) {
       var orders = {};
       block_save_select_change = true;
       selector_function().each(function(i, select) {

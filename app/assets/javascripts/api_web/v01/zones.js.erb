@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function api_web_v01_zones_index(params) {
+var api_web_v01_zones_index = function(params) {
   var progressBar = Turbolinks.enableProgressBar();
   progressBar.advanceTo(25);
 
@@ -59,13 +59,13 @@ function api_web_v01_zones_index(params) {
 
   map.addLayer(featureGroup).addLayer(stores_marker).addLayer(markersLayers);
 
-  function set_color(polygon, vehicle_id) {
+  var set_color = function(polygon, vehicle_id) {
     polygon.setStyle({
       color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070')
     });
   }
 
-  function add_zone(zone, geom) {
+  var add_zone = function(zone, geom) {
     var geoJsonLayer;
     if (geom instanceof L.GeoJSON) {
       geoJsonLayer = geom;
@@ -77,7 +77,7 @@ function api_web_v01_zones_index(params) {
     featureGroup.addLayer(geom);
   }
 
-  function display_zoning(data) {
+  var display_zoning = function(data) {
     api_web_v01_display_destinations_('destinations', map, markersLayers, undefined, data);
 
     stores_marker.clearLayers();

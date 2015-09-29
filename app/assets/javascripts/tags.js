@@ -17,12 +17,12 @@
 //
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-function tags_form() {
+var tags_form = function() {
   $('#tag_color').simplecolorpicker({
     theme: 'fontawesome'
   });
 
-  function template(state) {
+  var template = function(state) {
     if (state.id) {
       return $("<img src='/images/" + state.id + ".svg'/>");
     } else {
@@ -62,7 +62,7 @@ Paloma.controller('Tag').prototype.update = function() {
   tags_form();
 };
 
-function templateTag(item) {
+var templateTag = function(item) {
   var color = $(item.element).attr('data-color');
   var icon = $(item.element).attr('data-icon');
   if (icon && color) {

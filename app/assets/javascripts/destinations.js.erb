@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function destinations_form(params, api) {
+var destinations_form = function(params, api) {
 
   var destination_id = params.destination_id,
     map_layer_url = params.map_layer_url,
@@ -52,7 +52,7 @@ function destinations_form(params, api) {
   var pointing = false;
   var icon_default = new L.Icon.Default();
 
-  function prepare_display_destination(destination) {
+  var prepare_display_destination = function(destination) {
     if (destination.geocoding_accuracy) {
       if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocode_geocoder.accuracy_success %>) {
         destination.geocoding_status = 'success';
@@ -66,7 +66,7 @@ function destinations_form(params, api) {
     return destination;
   }
 
-  function wire(row) {
+  var wire = function(row) {
     var $row = $(row),
       id = $row.attr('data-destination_id');
 
@@ -173,7 +173,7 @@ function destinations_form(params, api) {
     });
   }
 
-  function confirmGeocode(ajaxParams) {
+  var confirmGeocode = function(ajaxParams) {
     if ($('[name$=\\[geocoding_level\\]]').val() == 'point') {
       if (confirm(I18n.t('destinations.form.dialog.confirm_overwrite_point'))) {
         $.ajax(ajaxParams);
@@ -183,7 +183,7 @@ function destinations_form(params, api) {
       $.ajax(ajaxParams);
   }
 
-  function displayGeocoding(accuracy_percent, status, level) {
+  var displayGeocoding = function(accuracy_percent, status, level) {
     $('#geocoding_fail').hide();
     if (accuracy_percent != 0 && status) {
       $('#geocoding_accuracy').show();
@@ -207,7 +207,7 @@ function destinations_form(params, api) {
     $('#geocoding-level-value').html(I18n.t('destinations.form.geocoding_level.' + level));
   }
 
-  function update(destination_id, destination, move) {
+  var update = function(destination_id, destination, move) {
     var row = $('[data-destination_id=' + destination_id + ']');
     $('[name$=\\[name\\]]', row).val(destination.name);
     $('[name$=\\[street\\]]', row).val(destination.street);
@@ -251,7 +251,7 @@ function destinations_form(params, api) {
     }
   }
 
-  function markerChange(id, latLng) {
+  var markerChange = function(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     displayGeocoding(0, null, 'point');
     $('[name$=\\[lat\\]]', row).val(latLng.lat);
@@ -273,7 +273,7 @@ function destinations_form(params, api) {
 
   wire($("form"));
 
-  function addMarker(id, lat, lng) {
+  var addMarker = function(id, lat, lng) {
     var marker = L.marker(new L.LatLng(lat, lng), {
       icon: icon_default,
       draggable: true,
@@ -290,11 +290,11 @@ function destinations_form(params, api) {
   }
 }
 
-function destinations_new(params, api) {
+var destinations_new = function(params, api) {
   destinations_form(params, api);
 }
 
-function destinations_edit(params, api) {
+var destinations_edit = function(params, api) {
   destinations_form(params, api);
 }
 
@@ -330,7 +330,7 @@ Paloma.controller('Store').prototype.update = function() {
   destinations_edit(this.params);
 };
 
-function destinations_import(params) {
+var destinations_import = function(params) {
   $("#dialog-upload").dialog({
     autoOpen: false,
     modal: true
@@ -366,7 +366,7 @@ Paloma.controller('Store').prototype.upload = function() {
   destinations_import(this.params);
 };
 
-function destinations_index(params, api) {
+var destinations_index = function(params, api) {
 
   var map_layer_url = params.map_layer_url,
     map_lat = params.map_lat,
@@ -408,7 +408,7 @@ function destinations_index(params, api) {
   });
   var icon_over_stack = [];
 
-  function prepare_display_destination(destination) {
+  var prepare_display_destination = function(destination) {
     var t = [];
     $.each(tags, function(i, tag) {
       t.push({
@@ -449,7 +449,7 @@ function destinations_index(params, api) {
     return destination;
   }
 
-  function wire(row) {
+  var wire = function(row) {
     var $row = $(row),
       id = $row.attr('data-destination_id');
 
@@ -548,7 +548,7 @@ function destinations_index(params, api) {
     });
   }
 
-  function confirmGeocode(ajaxParams, row, geocode) {
+  var confirmGeocode = function(ajaxParams, row, geocode) {
     if (geocode == 'confirm') {
       if (confirm(I18n.t('destinations.form.dialog.confirm_overwrite_point'))) {
         $('[name$=\\[lat\\]]', row).val(null);
@@ -562,7 +562,7 @@ function destinations_index(params, api) {
     $.ajax(ajaxParams);
   }
 
-  function update(destination_id, destination, move) {
+  var update = function(destination_id, destination, move) {
     var row = $('[data-destination_id=' + destination_id + ']'),
       destination = prepare_display_destination(destination);
     $(row).replaceWith(SMT['destinations/show'](destination));
@@ -588,20 +588,20 @@ function destinations_index(params, api) {
       row.addClass('highlight');
   }
 
-  function count() {
+  var count = function() {
     var n = $('.destinations tr:visible').length;
     $("#count").html(n);
   }
 
-  function count_inc() {
+  var count_inc = function() {
     $("#count").html(parseInt($("#count").text()) + 1);
   }
 
-  function count_dec() {
+  var count_dec = function() {
     $("#count").html(parseInt($("#count").text()) - 1);
   }
 
-  function markerChange(id, latLng) {
+  var markerChange = function(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     $('[name$=\\[geocoding_level\\]]', row).val('point');
     $('[name$=\\[lat\\]]', row).val(latLng.lat);
@@ -621,7 +621,7 @@ function destinations_index(params, api) {
     }
   });
 
-  function over(id, move) {
+  var over = function(id, move) {
     if (icon_over_stack.indexOf(id) != -1)
       move = false;
 
@@ -653,7 +653,7 @@ function destinations_index(params, api) {
     }
   }
 
-  function addMarker(id, lat, lng) {
+  var addMarker = function(id, lat, lng) {
     var marker = L.marker(new L.LatLng(lat, lng), {
       icon: icon_default,
       draggable: true,
@@ -701,15 +701,15 @@ function destinations_index(params, api) {
     });
   });
 
-  function filter_text(exactText, normalizedValue, filter, index) {
+  var filter_text = function(exactText, normalizedValue, filter, index) {
     return !!String(normalizedValue).match(new RegExp(filter, 'i'));
   }
 
-  function filter_number(exactText, normalizedValue, filter, index) {
+  var filter_number = function(exactText, normalizedValue, filter, index) {
     return normalizedValue == filter;
   }
 
-  function display_destinations(data) {
+  var display_destinations = function(data) {
     if ($("#dialog-geocoding").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }

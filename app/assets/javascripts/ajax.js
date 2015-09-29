@@ -17,21 +17,21 @@
 //
 var ajaxWaitingGlobal = 0;
 
-function beforeSendWaiting() {
+var beforeSendWaiting = function() {
   if (ajaxWaitingGlobal == 0) {
     $('body').addClass('ajax_waiting');
   }
   ajaxWaitingGlobal++;
 }
 
-function completeWaiting() {
+var completeWaiting = function() {
   ajaxWaitingGlobal--;
   if (ajaxWaitingGlobal == 0) {
     $('body').removeClass('ajax_waiting');
   }
 }
 
-function ajaxError(request, status, error) {
+var ajaxError = function(request, status, error) {
   var otext = request.responseText;
   var text;
   try {
@@ -48,13 +48,13 @@ function ajaxError(request, status, error) {
   bootstrap_alert_danger(text);
 }
 
-function mustache_i18n() {
+var mustache_i18n = function() {
   return function(text) {
     return I18n.t(text);
   };
 }
 
-function progress_dialog(data, dialog, callback, load_url) {
+var progress_dialog = function(data, dialog, callback, load_url) {
   if (data !== undefined) {
     var timeout;
     dialog.dialog("open");
@@ -162,8 +162,8 @@ function progress_dialog(data, dialog, callback, load_url) {
 }
 
 
-function fake_select2(selector, callback) {
-  function fake_select2_replace(fake_select) {
+var fake_select2 = function(selector, callback) {
+  var fake_select2_replace = function(fake_select) {
     var select = fake_select.prev();
     fake_select.hide();
     select.show();
@@ -171,7 +171,7 @@ function fake_select2(selector, callback) {
     fake_select.off();
   }
 
-  function fake_select2_click(e) {
+  var fake_select2_click = function(e) {
     // On the first click on select2-look like div, initialize select2, remove the placeholder and resend the click
     var fake_select = $(this);
     e.stopPropagation();
@@ -181,7 +181,7 @@ function fake_select2(selector, callback) {
     }
   }
 
-  function fake_select2_key_event(e) {
+  var fake_select2_key_event = function(e) {
     var fake_select = $(this).closest('.fake');
     e.stopPropagation();
     var parent = $(this).parent();

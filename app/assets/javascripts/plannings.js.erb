@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function plannings_form() {
+var plannings_form = function() {
   $('#planning_date').datepicker({
     language: defaultLocale,
     autoclose: true,
@@ -36,11 +36,11 @@ function plannings_form() {
   });
 }
 
-function plannings_new(params) {
+var plannings_new = function(params) {
   plannings_form();
 }
 
-function plannings_edit(params) {
+var plannings_edit = function(params) {
   plannings_form();
 
   var planning_id = params.planning_id,
@@ -112,7 +112,7 @@ function plannings_edit(params) {
     layers_cluster[id] = L.featureGroup();
   });
 
-  function enlighten_stop(stop_id) {
+  var enlighten_stop = function(stop_id) {
     var e = $(".routes [data-stop_id='" + stop_id + "']");
     e.css("background", "orange");
     setTimeout(function() {
@@ -126,7 +126,7 @@ function plannings_edit(params) {
     }
   }
 
-  function display_zoning(zoning) {
+  var display_zoning = function(zoning) {
     if (layer_zoning) {
       map.removeLayer(layer_zoning);
     }
@@ -180,7 +180,7 @@ function plannings_edit(params) {
     });
   });
 
-  function update_planning(event, ui) {
+  var update_planning = function(event, ui) {
     var item = $(ui.item),
       index = 0,
       route = item.closest('[data-route_id]'),
@@ -203,7 +203,7 @@ function plannings_edit(params) {
     });
   }
 
-  function display_route(data, route) {
+  var display_route = function(data, route) {
       var color = route.color || (route.vehicle && route.vehicle.color) || '#707070';
       var vehicle_name;
       if (route.vehicle) {
@@ -306,7 +306,7 @@ function plannings_edit(params) {
       }
   }
 
-  function display_planning(data) {
+  var display_planning = function(data) {
     if ($("#dialog-optimizer").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
@@ -384,14 +384,14 @@ function plannings_edit(params) {
     stores_marker.addTo(map);
 
 
-    function templateSelectionColor(state) {
+    var templateSelectionColor = function(state) {
       if(state.id){
         return $("<span class='color_small' style='background:" + state.id + "'></span>");
       } else {
       }
     }
 
-    function templateResultColor(state) {
+    var templateResultColor = function(state) {
       if(state.id){
         return $("<span class='color_small' style='background:" + state.id + "'></span>");
       } else {
@@ -409,7 +409,7 @@ function plannings_edit(params) {
       }
     });
 
-    function templateSelectionVehicles(state) {
+    var templateSelectionVehicles = function(state) {
       if(state.id) {
         var color = $('.color_select', $(state.element).parent().parent()).val();
         if(color) {
@@ -420,7 +420,7 @@ function plannings_edit(params) {
       }
     }
 
-    function templateResultVehicles(state) {
+    var templateResultVehicles = function(state) {
       if(state.id){
         return $("<span><span class='color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
       } else {
@@ -742,7 +742,7 @@ function plannings_edit(params) {
     return false;
   });
 
-  function display_planning_first_time(data) {
+  var display_planning_first_time = function(data) {
     display_planning(data);
     var bounds = routes_layers.getBounds();
     if (bounds && bounds.isValid()) {

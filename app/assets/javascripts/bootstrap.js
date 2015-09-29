@@ -22,7 +22,7 @@ jQuery(function() {
 });
 */
 
-function bootstrap_alert(status, message, timeout) {
+var bootstrap_alert = function(status, message, timeout) {
   $('.flash').append('<div class="alert fade in alert-' + status + '"><button class="close" data-dismiss="alert">×</button>' + message + '</div>');
 
   if (timeout || timeout === 0) {
@@ -30,15 +30,15 @@ function bootstrap_alert(status, message, timeout) {
   }
 };
 
-function bootstrap_alert_success(message, timeout) {
+var bootstrap_alert_success = function(message, timeout) {
   bootstrap_alert('success', message, timeout);
 };
 
-function bootstrap_alert_danger(message, timeout) {
+var bootstrap_alert_danger = function(message, timeout) {
   bootstrap_alert('danger', message, timeout);
 };
 
-function hide_alert(elem, timeout) {
+var hide_alert = function(elem, timeout) {
   setTimeout(function() { 
     $(elem).alert('close');
   }, timeout);

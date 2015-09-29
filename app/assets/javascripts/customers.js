@@ -15,13 +15,13 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function customers_index(params) {
+var customers_index = function(params) {
   var map_layer_url = params.map_layer_url,
     map_attribution = params.map_attribution;
 
   var is_map_init = false;
 
-  function map_init() {
+  var map_init = function() {
     var map = L.map('map').setView([0, 0], 13);
     L.tileLayer(map_layer_url, {
       maxZoom: 18,
@@ -31,7 +31,7 @@ function customers_index(params) {
     var layer = L.featureGroup();
     map.addLayer(layer);
 
-    function display_customers(data) {
+    var display_customers = function(data) {
       $.each(data.customers, function(i, customer) {
         var marker = L.marker(new L.LatLng(customer.lat, customer.lng), {
           icon: new L.NumberedDivIcon({
@@ -68,7 +68,7 @@ function customers_index(params) {
   });
 }
 
-function customers_edit(params) {
+var customers_edit = function(params) {
   $('#customer_end_subscription').datepicker({
     language: defaultLocale,
     autoclose: true,

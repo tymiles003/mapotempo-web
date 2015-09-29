@@ -31,11 +31,11 @@ Paloma.controller('ApiWeb/V01/Store').prototype.update_position = function() {
   destinations_edit(this.params, 'stores');
 };
 
-function api_web_v01_display_destinations_(api, map, markersLayers, cluster, data) {
+var api_web_v01_display_destinations_ = function(api, map, markersLayers, cluster, data) {
   var tags = {};
   var icon_default = new L.Icon.Default();
 
-  function prepare_display_destination(destination) {
+  var prepare_display_destination = function(destination) {
     var t = [];
     $.each(tags, function(i, tag) {
       t.push({
@@ -50,7 +50,7 @@ function api_web_v01_display_destinations_(api, map, markersLayers, cluster, dat
     return destination;
   }
 
-  function addMarker(id, lat, lng) {
+  var addMarker = function(id, lat, lng) {
     var marker = L.marker(new L.LatLng(lat, lng), {
       icon: icon_default
     }).addTo(markersLayers);
@@ -75,7 +75,7 @@ function api_web_v01_display_destinations_(api, map, markersLayers, cluster, dat
   });
 }
 
-function api_web_v01_destinations_index(params, api) {
+var api_web_v01_destinations_index = function(params, api) {
   var progressBar = Turbolinks.enableProgressBar();
   progressBar.advanceTo(25);
 
@@ -120,7 +120,7 @@ function api_web_v01_destinations_index(params, api) {
     }
   });
 
-  function display_destinations(data) {
+  var display_destinations = function(data) {
     api_web_v01_display_destinations_(api, map, markersLayers, cluster, data);
     if (markersLayers.getLayers().length > 0) {
       map.fitBounds(markersLayers.getBounds());

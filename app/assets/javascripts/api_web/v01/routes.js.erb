@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 
-function api_web_v01_routes_index(params) {
+var api_web_v01_routes_index = function(params) {
   var progressBar = Turbolinks.enableProgressBar();
   progressBar.advanceTo(25);
 
@@ -85,7 +85,7 @@ function api_web_v01_routes_index(params) {
     attribution: map_attribution
   }).addTo(map);
 
-  function display_planning(data) {
+  var display_planning = function(data) {
     $.each(data.routes, function(i, route) {
       if (route.vehicle_id) {
         route.vehicle = vehicles_map[route.vehicle_id];
@@ -235,7 +235,7 @@ function api_web_v01_routes_index(params) {
     });
   }
 
-  function display_planning_first_time(data) {
+  var display_planning_first_time = function(data) {
     $.each(data.routes, function(i, route) {
       layers[route.route_id] = L.featureGroup();
       layers_cluster[route.route_id] = L.featureGroup();
