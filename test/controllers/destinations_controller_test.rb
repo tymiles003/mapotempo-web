@@ -15,6 +15,16 @@ class DestinationsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'user can only view destinations from its customer' do
+    ability = Ability.new(users(:user_one))
+    assert ability.can? :manage, destinations(:destination_one)
+    ability = Ability.new(users(:user_three))
+    assert ability.cannot? :manage, destinations(:destination_one)
+    sign_in users(:user_three)
+    get :edit, id: @destination
+    assert_response :redirect
+  end
+
   test 'should get index' do
     get :index
     assert_response :success

@@ -9,6 +9,16 @@ class RoutesControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
+  test 'user can only view routes from its customer' do
+    ability = Ability.new(users(:user_one))
+    assert ability.can? :manage, routes(:route_one_one)
+    ability = Ability.new(users(:user_three))
+    assert ability.cannot? :manage, routes(:route_one_one)
+    sign_in users(:user_three)
+    get :show, id: @route
+    assert_response :redirect
+  end
+
   test 'should show route' do
     get :show, id: @route
     assert_response :success

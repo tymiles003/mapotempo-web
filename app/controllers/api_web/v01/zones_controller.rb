@@ -16,7 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
-  load_and_authorize_resource
+  load_and_authorize_resource :zoning
+  load_and_authorize_resource :zone, through: :zoning
   before_action :set_zoning, only: [:index]
   before_action :set_zone, only: []
 
@@ -44,6 +45,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
   private
 
   # Use callbacks to share common setup or constraints between actions.
+  # rights should be checked before thanks to CanCan::Ability
   def set_zoning
     @zoning = Zoning.find(params[:zoning_id])
   end

@@ -10,6 +10,18 @@ class VehiclesControllerTest < ActionController::TestCase
     assert_valid response
   end
 
+  test 'user can only view vehicles from its customer' do
+    ability = Ability.new(users(:user_one))
+    assert ability.can? :index, vehicles(:vehicle_one)
+    assert ability.can? :edit, vehicles(:vehicle_one)
+    assert ability.can? :update, vehicles(:vehicle_one)
+    ability = Ability.new(users(:user_three))
+    assert ability.cannot? :manage, vehicles(:vehicle_one)
+    sign_in users(:user_three)
+    get :edit, id: @vehicle
+    assert_response :redirect
+  end
+
   test 'should get index' do
     get :index
     assert_response :success
