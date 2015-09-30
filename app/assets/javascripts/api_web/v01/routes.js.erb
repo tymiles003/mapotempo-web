@@ -39,18 +39,6 @@ var api_web_v01_routes_index = function(params) {
     imperial: false
   }).addTo(map);
 
-  var geocoder = L.Control.geocoder({
-    geocoder: L.Control.Geocoder.nominatim({
-      serviceUrl: "/api/0.1/geocoder/"
-    }),
-    position: 'topleft',
-    placeholder: I18n.t('web.geocoder.search'),
-    errorMessage: I18n.t('web.geocoder.empty_result')
-  }).addTo(map);
-  geocoder.markGeocode = function(result) {
-    this._map.fitBounds(result.bbox);
-  };
-
   var caption = L.DomUtil.get('routes-caption');
   if (caption) {
     caption.classList.add('leaflet-bar');
