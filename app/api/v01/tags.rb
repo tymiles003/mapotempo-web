@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'coerce'
+
 class V01::Tags < Grape::API
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
