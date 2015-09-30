@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_WXfwgO0tEeK4OK_Q4NUGmA" name="NewModel">
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_xFFNcO0tEeK4OK_Q4NUGmA" name="Consulter planning">
+    <include xmi:id="_fs-x0O0wEeK4OK_Q4NUGmA" addition="_dzmOUO0wEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_2zvZYO0tEeK4OK_Q4NUGmA" name="Modifier planning">
+    <include xmi:id="_IBthQO0uEeK4OK_Q4NUGmA" addition="_C8fT4O0uEeK4OK_Q4NUGmA"/>
+    <include xmi:id="_If2OwO0uEeK4OK_Q4NUGmA" addition="_FbaNYO0uEeK4OK_Q4NUGmA"/>
+    <include xmi:id="__izT0O30EeKlQaI670NIjw" addition="_dzmOUO0wEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_ABQ44O0uEeK4OK_Q4NUGmA" name="Connection utilisateur"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_C8fT4O0uEeK4OK_Q4NUGmA" name="Placer point sur la carte"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_FbaNYO0uEeK4OK_Q4NUGmA" name="Recherche d'adresse">
+    <include xmi:id="_XzHSkO0wEeK4OK_Q4NUGmA" addition="_VZHVUO0wEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_OH-U4O0uEeK4OK_Q4NUGmA" name="Importer fichier client">
+    <include xmi:id="_XPavoO0wEeK4OK_Q4NUGmA" addition="_VZHVUO0wEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_P78M4O0uEeK4OK_Q4NUGmA" name="Exporter fichier client"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_Rh3o4O0uEeK4OK_Q4NUGmA" name="Exporter tourné">
+    <include xmi:id="_W9XBMO0uEeK4OK_Q4NUGmA" addition="_TPg2cO0uEeK4OK_Q4NUGmA"/>
+    <include xmi:id="_XXUZUO0uEeK4OK_Q4NUGmA" addition="_VExH4O0uEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_TPg2cO0uEeK4OK_Q4NUGmA" name="Exporter roadmap"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_VExH4O0uEeK4OK_Q4NUGmA" name="Exporter vers GPS"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_a6wD0O0uEeK4OK_Q4NUGmA" name="Éditer cluster manuel"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_mjPJ4O0uEeK4OK_Q4NUGmA" name="TSP">
+    <include xmi:id="_gdclcO0wEeK4OK_Q4NUGmA" addition="_dzmOUO0wEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_nmmEUO0uEeK4OK_Q4NUGmA" name="TSP-TW">
+    <extend xmi:id="_r1VVoO0uEeK4OK_Q4NUGmA" extendedCase="_mjPJ4O0uEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_pMiucO0uEeK4OK_Q4NUGmA" name="multi-TSP-TW">
+    <extend xmi:id="_sX53MO0uEeK4OK_Q4NUGmA" extendedCase="_nmmEUO0uEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_1GeJ0O0uEeK4OK_Q4NUGmA" name="Éditer zone vitesse / travaux"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_6JND4O0uEeK4OK_Q4NUGmA" name="API">
+    <include xmi:id="_IueEIO0vEeK4OK_Q4NUGmA" addition="_mjPJ4O0uEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_7Wy4YO0uEeK4OK_Q4NUGmA" name="Utilisateur"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_8gpcYO0uEeK4OK_Q4NUGmA" name="Système externe"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="__kirMO0uEeK4OK_Q4NUGmA" name="Association_Système externe_to_API" memberEnd="__kj5UO0uEeK4OK_Q4NUGmA __klHcO0uEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="__kj5UO0uEeK4OK_Q4NUGmA" type="_8gpcYO0uEeK4OK_Q4NUGmA" association="__kirMO0uEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="__klHcO0uEeK4OK_Q4NUGmA" type="_6JND4O0uEeK4OK_Q4NUGmA" association="__kirMO0uEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_ALhysO0vEeK4OK_Q4NUGmA" name="Association_Utilisateur_to_Connection utilisateur" memberEnd="_ALiZwO0vEeK4OK_Q4NUGmA _ALjA0O0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_ALiZwO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_ALhysO0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_ALjA0O0vEeK4OK_Q4NUGmA" type="_ABQ44O0uEeK4OK_Q4NUGmA" association="_ALhysO0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_BFHtIO0vEeK4OK_Q4NUGmA" name="Association_Utilisateur_to_Consulter tourné" memberEnd="_BFI7QO0vEeK4OK_Q4NUGmA _BFJiUO0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_BFI7QO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_BFHtIO0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_BFJiUO0vEeK4OK_Q4NUGmA" type="_xFFNcO0tEeK4OK_Q4NUGmA" association="_BFHtIO0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_BglhIO0vEeK4OK_Q4NUGmA" name="Association_Utilisateur_to_Éditer cluster manuel" memberEnd="_BgmIMO0vEeK4OK_Q4NUGmA _BgnWUO0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_BgmIMO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_BglhIO0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_BgnWUO0vEeK4OK_Q4NUGmA" type="_a6wD0O0uEeK4OK_Q4NUGmA" association="_BglhIO0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Crz-IO0vEeK4OK_Q4NUGmA" name="Association_Utilisateur_to_Exporter tourné" memberEnd="_Cr0lMO0vEeK4OK_Q4NUGmA _Cr1MQO0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_Cr0lMO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_Crz-IO0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_Cr1MQO0vEeK4OK_Q4NUGmA" type="_Rh3o4O0uEeK4OK_Q4NUGmA" association="_Crz-IO0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_DK6U8O0vEeK4OK_Q4NUGmA" name="Association_Utilisateur_to_Exporter fichier client" memberEnd="_DK68AO0vEeK4OK_Q4NUGmA _DK68Ae0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_DK68AO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_DK6U8O0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_DK68Ae0vEeK4OK_Q4NUGmA" type="_P78M4O0uEeK4OK_Q4NUGmA" association="_DK6U8O0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_D6KAkO0vEeK4OK_Q4NUGmA" name="Association_Importer fichier client_to_Utilisateur" memberEnd="_D6LOsO0vEeK4OK_Q4NUGmA _D6L1wO0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_D6LOsO0vEeK4OK_Q4NUGmA" type="_OH-U4O0uEeK4OK_Q4NUGmA" association="_D6KAkO0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_D6L1wO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_D6KAkO0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_jHniIO0vEeK4OK_Q4NUGmA" name="Association_Utilisateur_to_Éditer zone vitesse / travaux" memberEnd="_jHoJMO0vEeK4OK_Q4NUGmA _jHowQO0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_jHoJMO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_jHniIO0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_jHowQO0vEeK4OK_Q4NUGmA" type="_1GeJ0O0uEeK4OK_Q4NUGmA" association="_jHniIO0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_oc9PIO0vEeK4OK_Q4NUGmA" name="Association_Utilisateur_to_Modifier tourné" memberEnd="_oc92MO0vEeK4OK_Q4NUGmA _oc-dQO0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_oc92MO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_oc9PIO0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_oc-dQO0vEeK4OK_Q4NUGmA" type="_2zvZYO0tEeK4OK_Q4NUGmA" association="_oc9PIO0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_v0pOYO0vEeK4OK_Q4NUGmA" name="Effectuer optimisation">
+    <include xmi:id="_yaUQIO0vEeK4OK_Q4NUGmA" addition="_mjPJ4O0uEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_xnH4oO0vEeK4OK_Q4NUGmA" name="Association_Utilisateur_to_Effectuer optimisation" memberEnd="_xnIfsO0vEeK4OK_Q4NUGmA _xnJt0O0vEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_xnIfsO0vEeK4OK_Q4NUGmA" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_xnH4oO0vEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_xnJt0O0vEeK4OK_Q4NUGmA" type="_v0pOYO0vEeK4OK_Q4NUGmA" association="_xnH4oO0vEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_VZHVUO0wEeK4OK_Q4NUGmA" name="Géocoder"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_dzmOUO0wEeK4OK_Q4NUGmA" name="Calculer distancier"/>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_9MzF0O0wEeK4OK_Q4NUGmA" name="Administrateur"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_-e0HUO0wEeK4OK_Q4NUGmA" name="Aboner un utilisateur"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_CBwpoO0xEeK4OK_Q4NUGmA" name="Association_Administrateur_to_Aboner un utilisateur" memberEnd="_CBxQsO0xEeK4OK_Q4NUGmA _CBx3wO0xEeK4OK_Q4NUGmA">
+    <ownedEnd xmi:id="_CBxQsO0xEeK4OK_Q4NUGmA" type="_9MzF0O0wEeK4OK_Q4NUGmA" association="_CBwpoO0xEeK4OK_Q4NUGmA"/>
+    <ownedEnd xmi:id="_CBx3wO0xEeK4OK_Q4NUGmA" type="_-e0HUO0wEeK4OK_Q4NUGmA" association="_CBwpoO0xEeK4OK_Q4NUGmA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_oBMAoO4VEeK7-P7gAK-eFQ" name="Modifier paramétrage utilisateur">
+    <include xmi:id="_xkEScPUjEeKbRepaJt5bkA" addition="_uRRsAPUjEeKbRepaJt5bkA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_q0qN0O4VEeK7-P7gAK-eFQ" name="Association_Utilisateur_to_Modifier paramétrage utilisateur" memberEnd="_q0q04O4VEeK7-P7gAK-eFQ _q0sqEO4VEeK7-P7gAK-eFQ">
+    <ownedEnd xmi:id="_q0q04O4VEeK7-P7gAK-eFQ" type="_7Wy4YO0uEeK4OK_Q4NUGmA" association="_q0qN0O4VEeK7-P7gAK-eFQ"/>
+    <ownedEnd xmi:id="_q0sqEO4VEeK7-P7gAK-eFQ" type="_oBMAoO4VEeK7-P7gAK-eFQ" association="_q0qN0O4VEeK7-P7gAK-eFQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="_uRRsAPUjEeKbRepaJt5bkA" name="Modifier véhicules"/>
+</uml:Model>
