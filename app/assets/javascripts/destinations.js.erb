@@ -819,7 +819,7 @@ var destinations_index = function(params, api) {
         }
       },
       textExtraction: function(node, table, cellIndex) {
-        if (cellIndex == 8) {
+        if (cellIndex == 9) {
           return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).join(",");
