@@ -133,7 +133,7 @@ var api_web_v01_destinations_index = function(params, api) {
     url: '/api-web/0.1/' + api + '.json' + queryParam,
     beforeSend: beforeSendWaiting,
     success: function(data) {
-      if (data.destinations.length) {
+      if ((data.destinations && data.destinations.length) || (data.stores && data.stores.length)) {
         display_destinations(data);
       }
       else {

@@ -253,7 +253,7 @@ var api_web_v01_routes_index = function(params) {
     url: '/api-web/0.1/plannings/' + planning_id + '/routes.json' + queryParam,
     beforeSend: beforeSendWaiting,
     success: function(data) {
-      if (data.routes.length) {
+      if (data.routes && data.routes.length) {
         display_planning_first_time(data);
       }
       else {

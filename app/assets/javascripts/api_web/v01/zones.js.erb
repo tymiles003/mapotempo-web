@@ -119,7 +119,7 @@ var api_web_v01_zones_index = function(params) {
     url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json' + queryParam,
     beforeSend: beforeSendWaiting,
     success: function(data) {
-      if (data.zones.length) {
+      if (data.zoning && data.zoning.length) {
         display_zoning(data);
       }
       else {
