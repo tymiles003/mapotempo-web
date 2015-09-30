@@ -92,6 +92,10 @@ var api_web_v01_destinations_index = function(params, api) {
     attribution: map_attribution
   }).addTo(map);
 
+  L.control.scale({
+    imperial: false
+  }).addTo(map);
+
   if(display_home) {
     L.marker([map_lat, map_lng], {
       icon: L.icon({
