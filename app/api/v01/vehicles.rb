@@ -83,7 +83,9 @@ class V01::Vehicles < Grape::API
       ),
       entity: V01::Entities::Vehicle
     if Mapotempo::Application.config.manage_vehicles_only_admin
-      requires :customer_id, type: Integer
+      params do
+        requires :customer_id, type: Integer
+      end
     end
     post do
       if Mapotempo::Application.config.manage_vehicles_only_admin
