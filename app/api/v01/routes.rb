@@ -93,7 +93,7 @@ class V01::Routes < Grape::API
           planning = current_customer.plannings.where(planning_id).first!
           id = ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
-          if route && route.active(params[:active].to_s.to_sym) && route.compute && planning.save
+          if route && route.active(params[:active].to_s.to_sym) && route.compute && planning.save!
             present(route, with: V01::Entities::Route)
           end
         end
@@ -109,20 +109,21 @@ class V01::Routes < Grape::API
           planning = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
           id = ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
+          ids = params[:destination_ids].collect{ |i| Integer(i) }
+          destinations = current_customer.destinations.select{ |destination| ids.include?(destination.id) }
 
-          if route
-            ids = params[:destination_ids].collect{ |i| Integer(i) }
-            destinations = current_customer.destinations.select{ |destination| ids.include?(destination.id) }
-
+          if route && planning && destinations
             Planning.transaction do
               destinations.each{ |destination|
-                route.move_destination(destination, route.stops.size)
+                route.move_destination(destination, -1)
               }
-              planning.save
+              planning.save!
             end
-          end
 
-          status 204
+            status 204
+          else
+            status 400
+          end
         end
 
         desc 'Starts asynchronous route optimization.',
