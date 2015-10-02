@@ -111,7 +111,7 @@
       </span>
       <span>
         {{#geocoding_accuracy}}
-          <input class="form-control input-sm" type="hidden" value="{{geocoding_accuracy}}"/>
+          <input name="destination[geocoding_accuracy]" class="form-control input-sm" type="hidden" value="{{geocoding_accuracy}}"/>
             <div class="progress" style="width:5em">
               <div class="progress-bar progress-bar-{{geocoding_status}}" style="width: {{geocoding_accuracy_percent}}%;">
                 <span>{{geocoding_accuracy_percent}}%</span>

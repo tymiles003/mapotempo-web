@@ -823,7 +823,30 @@ var destinations_index = function(params, api) {
           return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).join(",");
-        } else {
+        } else if (cellIndex == 10) {
+          var ret = 0;
+          switch ($("[name$=\\[geocoding_level\\]]", node).val()) {
+            case 'point':
+              ret = 1000;
+              break;
+            case 'house':
+              ret = 2000;
+              break;
+            case 'street':
+              ret = 3000;
+              break;
+            case 'intersection':
+              ret = 4000;
+              break;
+            case 'city':
+              ret = 5000;
+              break;
+          }
+          if ($("[name$=\\[geocoding_accuracy\\]]", node).val())
+            ret += parseFloat($("[name$=\\[geocoding_accuracy\\]]", node).val()) * 100;
+          return ret;
+        }
+        else {
           return $.map($(":input", node), function(e, i) {
             return e.value;
           }).join(",");
