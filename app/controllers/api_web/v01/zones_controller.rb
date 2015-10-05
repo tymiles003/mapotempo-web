@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'value_to_boolean'
+
 class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
   load_and_authorize_resource :zoning
   load_and_authorize_resource :zone, through: :zoning
@@ -37,7 +39,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     else
       @zoning.zones
     end
-    if params[:destinations]
+    if params[:destinations] && ValueToBoolean.value_to_boolean(params[:destinations], true)
       @destinations = current_user.customer.destinations
     end
   end

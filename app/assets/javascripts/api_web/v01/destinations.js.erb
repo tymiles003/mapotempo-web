@@ -65,14 +65,16 @@ var api_web_v01_display_destinations_ = function(api, map, markersLayers, cluste
       tags[tag.id] = tag;
     });
   }
-  $.each(data[api], function(i, destination) {
-    destination = prepare_display_destination(destination);
-    if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
-      addMarker(destination.id, destination.lat, destination.lng).bindPopup(SMT['stops/show']({
-        stop: destination
-      }));
-    }
-  });
+  if (data[api]) {
+    $.each(data[api], function(i, destination) {
+      destination = prepare_display_destination(destination);
+      if ($.isNumeric(destination.lat) && $.isNumeric(destination.lng)) {
+        addMarker(destination.id, destination.lat, destination.lng).bindPopup(SMT['stops/show']({
+          stop: destination
+        }));
+      }
+    });
+  }
 }
 
 var api_web_v01_destinations_index = function(params, api) {
