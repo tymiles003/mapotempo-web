@@ -27,6 +27,7 @@ class Planning < ActiveRecord::Base
   validates :customer, presence: true
   validates :name, presence: true
 
+  before_create :default_routes
   before_save :update_zoning
 
   amoeba do
@@ -98,8 +99,10 @@ class Planning < ActiveRecord::Base
   end
 
   def default_routes
-    default_empty_routes
-    routes[0].default_stops
+    if routes.length != customer.vehicles.length + 1
+      default_empty_routes
+      routes[0].default_stops
+    end
   end
 
   def compute

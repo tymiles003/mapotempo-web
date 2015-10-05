@@ -96,7 +96,7 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       Planning.transaction do
         @planning = current_user.customer.plannings.build(planning_params)
-        if @planning.default_routes && @planning.save
+        if @planning.save
           format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.created', model: @planning.class.model_name.human) }
         else
           format.html { render action: 'new' }
