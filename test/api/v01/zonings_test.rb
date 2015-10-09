@@ -81,8 +81,12 @@ class V01::ZoningsTest < ActiveSupport::TestCase
   end
 
   test 'should generate isochrone' do
+    store_one = stores(:store_one)
+    uri_template = Addressable::Template.new('localhost:1723/0.1/isochrone?lat=' + store_one.lat.to_s + '&lng=' + store_one.lng.to_s + '&time=300')
+    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
     patch api("#{@zoning.id}/isochrone", size: 5)
     assert last_response.ok?, last_response.body
-    assert_equal @zoning.name, JSON.parse(last_response.body)['name']
+    assert_equal 1, JSON.parse(last_response.body)['zones'].length
+    assert_not_nil JSON.parse(last_response.body)['zones'][0]['polygon']
   end
 end

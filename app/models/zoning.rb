@@ -104,16 +104,24 @@ class Zoning < ActiveRecord::Base
     isowhat?(:isochrone?)
   end
 
-  def isochrone(size)
-    isowhat(:isochrone?, :isochrone, size)
+  def isochrone(size, vehicle_id = nil)
+    if vehicle_id
+      isowhat(:isochrone?, :isochrone, size, customer.vehicles.find(vehicle_id))
+    else
+      isowhat(:isochrone?, :isochrone, size)
+    end
   end
 
   def isodistance?
     isowhat?(:isodistance?)
   end
 
-  def isodistance(size)
-    isowhat(:isodistance?, :isodistance, size)
+  def isodistance(size, vehicle_id = nil)
+    if vehicle_id
+      isowhat_vehicle(:isodistance?, :isodistance, size, customer.vehicles.find(vehicle_id))
+    else
+      isowhat(:isodistance?, :isodistance, size)
+    end
   end
 
   private
@@ -137,15 +145,25 @@ class Zoning < ActiveRecord::Base
 
   def isowhat(what_qm, what, size)
     zones.clear
-    z = customer.vehicles.collect{ |vehicle|
+    customer.vehicles.each{ |vehicle|
+      isowhat_vehicle(what_qm, what, size, vehicle)
+    }
+  end
+
+  def isowhat_vehicle(what_qm, what, size, vehicle)
+    if vehicle
       router = (vehicle.router || customer.router)
       if router.method(what_qm).call && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
         geom = router.method(what).call(vehicle.store_start.lat, vehicle.store_start.lng, size)
-        [vehicle, geom]
       end
-    }.compact
-    Hash[z].each{ |vehicle, geom|
-      zones.build({polygon: geom, vehicle: vehicle}) if geom
-    }
+      if geom
+        zone = zones.where({vehicle_id: vehicle.id}).first
+        if zone
+          zone.polygon = geom
+        else
+          zones.build({polygon: geom, vehicle: vehicle})
+        end
+      end
+    end
   end
 end
