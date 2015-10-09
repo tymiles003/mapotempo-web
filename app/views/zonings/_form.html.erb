@@ -7,15 +7,22 @@
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
-  <% if @zoning.id && (@zoning.isochrone? || @zoning.isodistance? || @planning) %>
+  <%
+  isochrone = @zoning.customer.router.isochrone? || @zoning.customer.vehicles.collect { |v|
+    !v.router.nil? && v.router.isochrone?
+  }.include?(true)
+  isodistance = @zoning.customer.router.isodistance? || @zoning.customer.vehicles.collect { |v|
+    !v.router.nil? && v.router.isodistance?
+  }.include?(true)
+  if @zoning.id && (isochrone || isodistance || @planning) %>
     <div id="zoning_div_input" class="form-group">
       <div class="col-md-offset-2 col-md-6">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-magic fa-fw"></i> <%= t '.generate' %> <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
-          <% if @zoning.isochrone? %>
+          <% if isochrone %>
             <li><a data-toggle="modal" data-target="#isochrone-modal" href="#"><i class="fa fa-clock-o fa-fw"></i> <%= t '.isochrone' %></a></li>
           <% end %>
-          <% if @zoning.isodistance? %>
+          <% if isodistance %>
             <li><a data-toggle="modal" data-target="#isodistance-modal" href="#"><i class="fa fa-road fa-fw"></i> <%= t '.isodistance' %></a></li>
           <% end %>
           <% if @planning %>
@@ -29,6 +36,16 @@
         </ul>
       </div>
     </div>
+  <% end %>
+  <% if @zoning.id && !@zoning.customer.router.isochrone? && @zoning.customer.vehicles.collect { |v|
+    !v.router.nil? && v.router.isochrone?
+  }.include?(false) %>
+  <p class="help-block"><%= t '.isochrone_missing_vehicle' %></p>
+  <% end %>
+  <% if @zoning.id && !@zoning.customer.router.isodistance? && @zoning.customer.vehicles.collect { |v|
+    !v.router.nil? && v.router.isodistance?
+  }.include?(false) %>
+  <p class="help-block"><%= t '.isodistance_missing_vehicle' %></p>
   <% end %>
 
   <div id="zones"></div>

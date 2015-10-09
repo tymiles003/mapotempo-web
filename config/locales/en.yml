@@ -826,6 +826,8 @@ en:
       from_planning: "From planning"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
+      isochrone_missing_vehicle: "Isochrone cannot be generated for at least one vehicle due to router restriction"
+      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to router restriction"
       dialog:
         isochrone:
           title: "Isochrone"
