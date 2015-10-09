@@ -122,7 +122,7 @@ class RouteTest < ActiveSupport::TestCase
         s.save
       end
     }
-    o.vehicle.open = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
+    o.vehicle_usage.open = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
     o.planning.customer.take_over = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
     o.planning.customer.save
 
@@ -279,8 +279,8 @@ class RouteTest < ActiveSupport::TestCase
     positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(nil,nil,nil,nil,0), D.new(2,2,10,20,0), D.new(3,3,nil,nil,0)]
     tws = [[nil, nil, 0]] + positions.collect{ |position|
         open, close, duration = position[:open], position[:close], position[:duration]
-        open = open ? open - o.vehicle.open.to_i : nil
-        close = close ? close - o.vehicle.open.to_i : nil
+        open = open ? open - o.vehicle_usage.open.to_i : nil
+        close = close ? close - o.vehicle_usage.open.to_i : nil
         if open && close && open > close
           close = open
         end
@@ -298,8 +298,8 @@ class RouteTest < ActiveSupport::TestCase
     positions = [D.new(nil,nil,nil,nil,0), D.new(2,2,nil,nil,0), D.new(nil,nil,nil,nil,0), D.new(2,2,10,20,0), D.new(nil,nil,nil,nil,0)]
     tws = [[nil, nil, 0]] + positions.collect{ |position|
         open, close, duration = position[:open], position[:close], position[:duration]
-        open = open ? open - o.vehicle.open.to_i : nil
-        close = close ? close - o.vehicle.open.to_i : nil
+        open = open ? open - o.vehicle_usage.open.to_i : nil
+        close = close ? close - o.vehicle_usage.open.to_i : nil
         if open && close && open > close
           close = open
         end

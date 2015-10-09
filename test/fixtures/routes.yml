@@ -5,7 +5,7 @@ route_zero_one:
   emission: 1.5
   planning: planning_one
   out_of_date: false
-  vehicle:
+  vehicle_usage:
   ref: "route_zero"
 
 route_one_one:
@@ -13,7 +13,7 @@ route_one_one:
   emission: 1.5
   planning: planning_one
   out_of_date: false
-  vehicle: vehicle_one
+  vehicle_usage: vehicle_usage_one_one
   ref: "route_one"
   start: 2000-01-01 08:00
 
@@ -22,7 +22,7 @@ route_three_one:
   emission: 1.5
   planning: planning_one
   out_of_date: false
-  vehicle: vehicle_three
+  vehicle_usage: vehicle_usage_one_three
   ref: "route_three"
   start: 2000-01-01 07:00
 
@@ -31,7 +31,7 @@ route_zero_two:
   emission: 1.5
   planning: planning_two
   out_of_date: false
-  vehicle:
+  vehicle_usage:
   ref:
   start: 2000-01-01 16:00
 
@@ -40,7 +40,7 @@ route_one_two:
   emission: 1.5
   planning: planning_two
   out_of_date: false
-  vehicle: vehicle_one
+  vehicle_usage: vehicle_usage_three_one
   ref: "route 33"
   start: 2000-01-01 08:00
 
@@ -49,5 +49,5 @@ route_three_two:
   emission: 1.5
   planning: planning_two
   out_of_date: false
-  vehicle: vehicle_three
+  vehicle_usage: vehicle_usage_three_two
   start: 2000-01-01 07:00

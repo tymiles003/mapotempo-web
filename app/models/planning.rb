@@ -18,14 +18,16 @@
 class Planning < ActiveRecord::Base
   belongs_to :customer
   belongs_to :zoning
-  has_many :routes, -> { includes(:stops).order('CASE WHEN vehicle_id IS NULL THEN 0 ELSE routes.id END')}, inverse_of: :planning, autosave: true, dependent: :delete_all
+  has_many :routes, -> { includes(:stops).order('vehicle_usage_id ASC NULLS FIRST')}, inverse_of: :planning, autosave: true, dependent: :delete_all
   has_and_belongs_to_many :tags, -> { order('label')}, autosave: true
   belongs_to :order_array
+  belongs_to :vehicle_usage_set, inverse_of: :plannings
 
   nilify_blanks
   auto_strip_attributes :name, :ref
   validates :customer, presence: true
   validates :name, presence: true
+  validates :vehicle_usage_set, presence: true
 
   before_create :default_routes
   before_save :update_zoning
@@ -66,13 +68,13 @@ class Planning < ActiveRecord::Base
    end
   end
 
-  def vehicle_add(vehicle)
-    route = routes.build(vehicle: vehicle, out_of_date: false)
+  def vehicle_usage_add(vehicle_usage)
+    route = routes.build(vehicle_usage: vehicle_usage, out_of_date: false)
     route.init_stops
   end
 
-  def vehicle_remove(vehicle)
-    route = routes.find{ |route| route.vehicle == vehicle }
+  def vehicle_usage_remove(vehicle_usage)
+    route = routes.find{ |route| route.vehicle_usage == vehicle_usage }
     route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
       routes[0].stops.build(type: StopDestination.name, destination: stop.destination)
       routes[0].out_of_date = true
@@ -93,13 +95,13 @@ class Planning < ActiveRecord::Base
   def default_empty_routes
     routes.clear
     routes.build
-    customer.vehicles.each { |vehicle|
-      vehicle_add(vehicle)
+    vehicle_usage_set.vehicle_usages.each { |vehicle_usage|
+      vehicle_usage_add(vehicle_usage)
     }
   end
 
   def default_routes
-    if routes.length != customer.vehicles.length + 1
+    if routes.length != vehicle_usage_set.vehicle_usages.length + 1
       default_empty_routes
       routes[0].default_stops
     end
@@ -109,17 +111,17 @@ class Planning < ActiveRecord::Base
     if zoning_out_of_date
       split_by_zones
     end
-    routes.select(&:vehicle).each(&:compute)
+    routes.select(&:vehicle_usage).each(&:compute)
   end
 
-  def switch(route, vehicle)
-    route_prec = routes.find{ |route| route.vehicle == vehicle }
+  def switch(route, vehicle_usage)
+    route_prec = routes.find{ |route| route.vehicle_usage == vehicle_usage }
     if route_prec
-      vehicle_prec = route.vehicle
-      route.vehicle = vehicle
-      route_prec.vehicle = vehicle_prec
+      vehicle_usage_prec = route.vehicle_usage
+      route.vehicle_usage = vehicle_usage
+      route_prec.vehicle_usage = vehicle_usage_prec
 
-      # Rest sticky with vehicle
+      # Rest sticky with vehicle_usage
       stops_prec = route_prec.stops.select{ |stop| stop.is_a?(StopRest) }
       stops = route.stops.select{ |stop| stop.is_a?(StopRest) }
       stops_prec.each{ |stop|
@@ -137,16 +139,16 @@ class Planning < ActiveRecord::Base
     available_routes = []
 
     # If already in route, stay in route
-    if stop.route.vehicle
+    if stop.route.vehicle_usage
       available_routes = [stop.route]
     end
 
     # If zoning, get appropriate route
     if available_routes.empty? && zoning
       zone = zoning.inside(stop.destination)
-      if zone && zone.vehicle
+      if zone && zone.vehicle_usage
         route = routes.find{ |route|
-          route.vehicle == zone.vehicle && !route.locked
+          route.vehicle_usage.vehicle == zone.vehicle && !route.locked
         }
         (available_routes = [route]) if route
       end
@@ -155,7 +157,7 @@ class Planning < ActiveRecord::Base
     # It still no route get all routes
     if available_routes.empty?
       available_routes = routes.select{ |route|
-        route.vehicle && !route.locked
+        route.vehicle_usage && !route.locked
       }
     end
 
@@ -169,8 +171,8 @@ class Planning < ActiveRecord::Base
     # Take the closest routes destination and eval insert
     route, index = available_routes.collect{ |route|
       route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
-        [(route.vehicle.store_start && !route.vehicle.store_start.lat.nil? && !route.vehicle.store_start.lng.nil?) ? [route.vehicle.store_start, route, 1] : nil, 
-        (route.vehicle.store_stop && !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil?) ? [route.vehicle.store_stop, route, route.stops.size + 1] : nil]
+        [(route.vehicle_usage.store_start && !route.vehicle_usage.store_start.lat.nil? && !route.vehicle_usage.store_start.lng.nil?) ? [route.vehicle_usage.store_start, route, 1] : nil, 
+        (route.vehicle_usage.store_stop && !route.vehicle_usage.store_stop.lat.nil? && !route.vehicle_usage.store_stop.lng.nil?) ? [route.vehicle_usage.store_stop, route, route.stops.size + 1] : nil]
     }.flatten(1).compact.sort{ |a, b|
       a[0].distance(stop.position) <=> b[0].distance(stop.position)
     }[0..9].collect{ |destination_route_index|
@@ -226,7 +228,7 @@ class Planning < ActiveRecord::Base
     }
     orders = Hash[orders]
 
-    routes.select(&:vehicle).each{ |route|
+    routes.select(&:vehicle_usage).each{ |route|
       route.stops.each{ |stop|
         stop.active = orders.key?(stop.destination_id) && !orders[stop.destination_id].empty?
       }
@@ -245,7 +247,7 @@ class Planning < ActiveRecord::Base
 
   def split_by_zones
     if zoning && !routes.empty?
-      vehicles_map = Hash[routes.group_by(&:vehicle).map { |vehicle, routes| [vehicle, routes[0]]}]
+      vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes| [vehicle_usage && vehicle_usage.vehicle, routes[0]]}]
       destinations_free = routes.select{ |route|
         !route.locked
       }.collect(&:stops).flatten.select{ |stop| stop.is_a?(StopDestination) }.map(&:destination)

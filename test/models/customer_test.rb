@@ -3,6 +3,12 @@ require 'test_helper'
 class CustomerTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
+  def around
+    Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
+      yield
+    end
+  end
+
   setup do
     @customer = customers(:customer_one)
   end
@@ -37,12 +43,12 @@ class CustomerTest < ActiveSupport::TestCase
     o = customers(:customer_one)
     o.take_over = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
     o.plannings.each{ |p|
-      p.routes.select{ |r| r.vehicle }.each{ |r|
+      p.routes.select{ |r| r.vehicle_usage }.each{ |r|
         assert_not r.out_of_date
     }}
     o.save!
     o.plannings.each{ |p|
-      p.routes.select{ |r| r.vehicle }.each{ |r|
+      p.routes.select{ |r| r.vehicle_usage }.each{ |r|
         assert r.out_of_date
     }}
   end

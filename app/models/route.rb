@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -17,7 +17,7 @@
 #
 class Route < ActiveRecord::Base
   belongs_to :planning
-  belongs_to :vehicle
+  belongs_to :vehicle_usage
   has_many :stops, -> { order(:index) }, inverse_of: :route, autosave: true, dependent: :delete_all
 
   nilify_blanks
@@ -41,7 +41,7 @@ class Route < ActiveRecord::Base
 
   def init_stops
     stops.clear
-    if vehicle && vehicle.rest_duration
+    if vehicle_usage && vehicle_usage.rest_duration
       stops.build(type: StopRest.name, active: true, index: 1)
     end
 
@@ -64,14 +64,14 @@ class Route < ActiveRecord::Base
     self.emission = 0
     self.start = self.end = nil
     last_lat, last_lng = nil, nil
-    if vehicle && stops.size > 0
-      self.end = self.start = departure || vehicle.open
-      speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1)
-      if !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
-        last_lat, last_lng = vehicle.store_start.lat, vehicle.store_start.lng
+    if vehicle_usage && stops.size > 0
+      self.end = self.start = departure || vehicle_usage.open
+      speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1)
+      if !vehicle_usage.store_start.nil? && !vehicle_usage.store_start.lat.nil? && !vehicle_usage.store_start.lng.nil?
+        last_lat, last_lng = vehicle_usage.store_start.lat, vehicle_usage.store_start.lng
       end
       quantity = 0
-      router = vehicle.router || planning.customer.router
+      router = vehicle_usage.vehicle.router || planning.customer.router
       stops_time = {}
       stops_sort = stops.sort_by(&:index)
       stops_sort.each{ |stop|
@@ -96,10 +96,10 @@ class Route < ActiveRecord::Base
 
           if stop.is_a?(StopDestination)
             quantity += (stop.destination.quantity || 1)
-            stop.out_of_capacity = vehicle.capacity && quantity > vehicle.capacity
+            stop.out_of_capacity = vehicle_usage.vehicle.capacity && quantity > vehicle_usage.vehicle.capacity
           end
 
-          stop.out_of_drive_time = stop.time > vehicle.close
+          stop.out_of_drive_time = stop.time > vehicle_usage.close
 
           if stop.position?
             last_lat, last_lng = stop.lat, stop.lng
@@ -110,8 +110,8 @@ class Route < ActiveRecord::Base
         end
       }
 
-      if !last_lat.nil? && !last_lng.nil? && !vehicle.store_stop.nil? && !vehicle.store_stop.lat.nil? && !vehicle.store_stop.lng.nil?
-        distance, time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle.store_stop.lat, vehicle.store_stop.lng)
+      if !last_lat.nil? && !last_lng.nil? && !vehicle_usage.store_stop.nil? && !vehicle_usage.store_stop.lat.nil? && !vehicle_usage.store_stop.lng.nil?
+        distance, time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.store_stop.lat, vehicle_usage.store_stop.lng)
       else
         distance, time, trace = 0, 0, nil
       end
@@ -120,9 +120,9 @@ class Route < ActiveRecord::Base
       self.end += time
       self.stop_distance = distance
       self.stop_trace = trace
-      self.stop_out_of_drive_time = self.end > vehicle.close
+      self.stop_out_of_drive_time = self.end > vehicle_usage.close
 
-      self.emission = self.distance / 1000 * vehicle.emission * vehicle.consumption / 100
+      self.emission = self.distance / 1000 * vehicle_usage.vehicle.emission * vehicle_usage.vehicle.consumption / 100
 
       [stops_sort, stops_time]
     end
@@ -184,12 +184,12 @@ class Route < ActiveRecord::Base
     index = stops.size + 1 if index && index < 0
     if index
       shift_index(index)
-    elsif vehicle
+    elsif vehicle_usage
       raise
     end
     stops.build(type: StopDestination.name, destination: destination, index: index, active: active, id: stop_id)
 
-    if vehicle
+    if vehicle_usage
       self.out_of_date = true
     end
   end
@@ -209,7 +209,7 @@ class Route < ActiveRecord::Base
   end
 
   def remove_stop(stop)
-    if vehicle
+    if vehicle_usage
       shift_index(stop.index + 1, -1)
       self.out_of_date = true
     end
@@ -236,7 +236,7 @@ class Route < ActiveRecord::Base
         destination, active = stop.destination, stop.active
         stop_id = stop.id
         stop.route.move_stop_out(stop)
-        add(destination, index, active || stop.route.vehicle.nil?, stop_id)
+        add(destination, index, active || stop.route.vehicle_usage.nil?, stop_id)
       elsif force && stop.is_a?(StopRest)
         active = stop.active
         stop_id = stop.id
@@ -259,7 +259,7 @@ class Route < ActiveRecord::Base
 
   def move_stop_out(stop, force = false)
     if force || stop.is_a?(StopDestination)
-      if vehicle
+      if vehicle_usage
         shift_index(stop.index + 1, -1)
       end
       stop.active = false
@@ -284,14 +284,14 @@ class Route < ActiveRecord::Base
 
   def optimize(matrix_progress, &optimizer)
     stops_on = stops_segregate[true]
-    router = vehicle.router || planning.customer.router
-    position_start = (!vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?) ? [vehicle.store_start.lat, vehicle.store_start.lng] : [nil, nil]
-    position_stop = (!vehicle.store_stop.nil? && !vehicle.store_stop.lat.nil? && !vehicle.store_stop.lng.nil?) ? [vehicle.store_stop.lat, vehicle.store_stop.lng] : [nil, nil]
+    router = vehicle_usage.vehicle.router || planning.customer.router
+    position_start = (!vehicle_usage.store_start.nil? && !vehicle_usage.store_start.lat.nil? && !vehicle_usage.store_start.lng.nil?) ? [vehicle_usage.store_start.lat, vehicle_usage.store_start.lng] : [nil, nil]
+    position_stop = (!vehicle_usage.store_stop.nil? && !vehicle_usage.store_stop.lat.nil? && !vehicle_usage.store_stop.lng.nil?) ? [vehicle_usage.store_stop.lat, vehicle_usage.store_stop.lng] : [nil, nil]
     amalgamate_stops_same_position(stops_on) { |positions|
       tws = [[nil, nil, 0]] + positions.collect{ |position|
         open, close, duration = position[2..4]
-        open = open ? Integer(open - vehicle.open) : nil
-        close = close ? Integer(close - vehicle.open) : nil
+        open = open ? Integer(open - vehicle_usage.open) : nil
+        close = close ? Integer(close - vehicle_usage.open) : nil
         if open && close && open > close
           close = open
         end
@@ -299,7 +299,7 @@ class Route < ActiveRecord::Base
       }
 
       positions = [position_start] + positions + [position_stop]
-      speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1)
+      speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1)
       order = unnil_positions(positions, tws){ |positions, tws, rest_tws|
         positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)]
         matrix = router.matrix(positions, positions, speed_multiplicator, 'time', &matrix_progress)
@@ -353,13 +353,13 @@ class Route < ActiveRecord::Base
 
   def size_active
     stops.to_a.sum(0) { |stop|
-      (stop.active || !vehicle) ? 1 : 0
+      (stop.active || !vehicle_usage) ? 1 : 0
     }
   end
 
   def quantity
     stops.to_a.sum(0) { |stop|
-      stop.is_a?(StopDestination) && (stop.active || !vehicle) ? (stop.destination.quantity || 1) : 0
+      stop.is_a?(StopDestination) && (stop.active || !vehicle_usage) ? (stop.destination.quantity || 1) : 0
     }
   end
 
@@ -373,11 +373,11 @@ class Route < ActiveRecord::Base
   end
 
   def out_of_date
-    vehicle && self[:out_of_date]
+    vehicle_usage && self[:out_of_date]
   end
 
   def to_s
-    "#{ref}:#{vehicle && vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
+    "#{ref}:#{vehicle_usage && vehicle_usage.vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
   end
 
   private
@@ -400,7 +400,7 @@ class Route < ActiveRecord::Base
   end
 
   def stop_index_validation
-    if vehicle_id && stops.length > 0 && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
+    if vehicle_usage_id && stops.length > 0 && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
       errors.add(:stops, :bad_index)
     end
   end

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -28,6 +28,8 @@ class Customer < ActiveRecord::Base
   has_many :products, -> { order('code')}, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :plannings, -> { includes(:tags).order('id')}, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :zonings, inverse_of: :customer, dependent: :delete_all
+  before_destroy :destroy_disable_vehicle_usage_sets_validation # Declare and run before has_many :vehicle_usage_sets
+  has_many :vehicle_usage_sets, -> { order('id')}, inverse_of: :customer, autosave: true, dependent: :destroy
   has_many :vehicles, -> { order('id')}, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :stores, -> { order('id')}, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :destinations, -> {includes(:tags).order('id')}, inverse_of: :customer, autosave: true, dependent: :delete_all
@@ -98,18 +100,12 @@ class Customer < ActiveRecord::Base
       if vehicles.size < max_vehicles
         # Add new
         (max_vehicles - vehicles.size).times{ |_i|
-          vehicle = vehicles.build(name: I18n.t('vehicles.default_name', n: vehicles.size + 1))
-          plannings.each{ |planning|
-            planning.vehicle_add(vehicle)
-          }
+          vehicles.build(name: I18n.t('vehicles.default_name', n: vehicles.size + 1))
         }
       elsif vehicles.size > max_vehicles
         # Delete
         (vehicles.size - max_vehicles).times{ |i|
           vehicle = vehicles[vehicles.size - i - 1]
-          plannings.each{ |planning|
-            planning.vehicle_remove(vehicle)
-          }
           vehicles.destroy(vehicle)
         }
       end
@@ -118,5 +114,13 @@ class Customer < ActiveRecord::Base
 
   def sanitize_print_header
     self.print_header = Sanitize.fragment(print_header, Sanitize::Config::RELAXED)
+  end
+
+  def destroy_disable_vehicle_usage_sets_validation
+    vehicle_usage_sets.each{ |vehicle_usage_set|
+      def vehicle_usage_set.destroy_vehicle_usage_set
+        # Avoid validation of at least one vehicle_usage_set by customer
+      end
+    }
   end
 end

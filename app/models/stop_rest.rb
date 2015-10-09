@@ -17,44 +17,44 @@
 #
 class StopRest < Stop
   def position?
-    !route.vehicle.store_rest.nil? && !route.vehicle.store_rest.lat.nil? && !route.vehicle.store_rest.lng.nil?
+    !route.vehicle_usage.store_rest.nil? && !route.vehicle_usage.store_rest.lat.nil? && !route.vehicle_usage.store_rest.lng.nil?
   end
 
   def position
-    route.vehicle.store_rest
+    route.vehicle_usage.store_rest
   end
 
   def lat
     if position?
-      route.vehicle.store_rest.lat
+      route.vehicle_usage.store_rest.lat
     end
   end
 
   def lng
     if position?
-      route.vehicle.store_rest.lng
+      route.vehicle_usage.store_rest.lng
     end
   end
 
   def open
-    route.vehicle.rest_start
+    route.vehicle_usage.rest_start
   end
 
   def close
-    route.vehicle.rest_stop
+    route.vehicle_usage.rest_stop
   end
 
   def duration
-    to = route.vehicle.rest_duration
+    to = route.vehicle_usage.rest_duration
     to ? to.seconds_since_midnight : 0
   end
 
   def base_id
-    "r#{route.vehicle.id}"
+    "r#{route.vehicle_usage.id}"
   end
 
   def base_updated_at
-    route.vehicle.updated_at
+    route.vehicle_usage.updated_at
   end
 
   def ref
@@ -63,7 +63,7 @@ class StopRest < Stop
 
   def name
     if position?
-      route.vehicle.store_rest.name
+      route.vehicle_usage.store_rest.name
     else
       I18n.t('stops.default.name_rest')
     end
@@ -71,25 +71,25 @@ class StopRest < Stop
 
   def street
     if position?
-      route.vehicle.store_rest.street
+      route.vehicle_usage.store_rest.street
     end
   end
 
   def postalcode
     if position?
-      route.vehicle.store_rest.postalcode
+      route.vehicle_usage.store_rest.postalcode
     end
   end
 
   def city
     if position?
-      route.vehicle.store_rest.city
+      route.vehicle_usage.store_rest.city
     end
   end
 
   def country
     if position?
-      route.vehicle.store_rest.country
+      route.vehicle_usage.store_rest.country
     end
   end
 

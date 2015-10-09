@@ -84,18 +84,18 @@ class Zoning < ActiveRecord::Base
 
   def from_planning(planning)
     zones.clear
-    clusters = planning.routes.select(&:vehicle).collect{ |route|
+    clusters = planning.routes.select(&:vehicle_usage).collect{ |route|
       route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
         if stop.position?
           [stop.lat, stop.lng]
         end
       }.compact.uniq
     }
-    vehicles = planning.routes.select(&:vehicle).collect(&:vehicle)
+    vehicle_usages = planning.routes.select(&:vehicle_usage).collect(&:vehicle_usage)
     Clustering.hulls(clusters).each{ |hull|
-      vehicle = vehicles.shift
+      vehicle_usage = vehicle_usages.shift
       if hull
-        zones.build({polygon: hull, vehicle: vehicle})
+        zones.build({polygon: hull, vehicle: vehicle_usage.vehicle})
       end
     }
   end

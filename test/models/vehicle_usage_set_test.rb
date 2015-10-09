@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class VehicleTest < ActiveSupport::TestCase
+class VehicleUsageSetTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
@@ -10,18 +10,18 @@ class VehicleTest < ActiveSupport::TestCase
   end
 
   test 'should not save' do
-    o = customers(:customer_one).vehicles.build
+    o = customers(:customer_one).vehicle_usage_sets.build
     assert_not o.save, 'Saved without required fields'
   end
 
   test 'should save' do
-    o = customers(:customer_one).vehicles.build(name: '1')
+    o = customers(:customer_one).vehicle_usage_sets.build(name: '1')
     o.save!
   end
 
-  test 'should update out_of_date for capacity' do
-    o = vehicles(:vehicle_one)
-    o.capacity = 123
+  test 'should update out_of_date for open' do
+    o = vehicle_usage_sets(:vehicle_usage_set_one)
+    o.open = '2000-01-01 09:00:00'
     assert_not o.vehicle_usages[0].routes[-1].out_of_date
     o.save!
     assert o.vehicle_usages[0].routes[-1].out_of_date

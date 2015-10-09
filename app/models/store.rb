@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014
+# Copyright © Mapotempo, 2014-2015
 #
 # This file is part of Mapotempo.
 #
@@ -25,9 +25,12 @@ end
 
 class Store < ActiveRecord::Base
   belongs_to :customer
-  has_many :vehicle_starts, class_name: 'Vehicle', inverse_of: :store_start, foreign_key: 'store_start_id'
-  has_many :vehicle_stops, class_name: 'Vehicle', inverse_of: :store_stop, foreign_key: 'store_stop_id'
-  has_many :vehicle_rests, class_name: 'Vehicle', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
+  has_many :vehicle_usage_set_starts, class_name: 'VehicleUsageSet', inverse_of: :store_start, foreign_key: 'store_start_id'
+  has_many :vehicle_usage_set_stops, class_name: 'VehicleUsageSet', inverse_of: :store_stop, foreign_key: 'store_stop_id'
+  has_many :vehicle_usage_set_rests, class_name: 'VehicleUsageSet', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
+  has_many :vehicle_usage_starts, class_name: 'VehicleUsage', inverse_of: :store_start, foreign_key: 'store_start_id', dependent: :nullify
+  has_many :vehicle_usage_stops, class_name: 'VehicleUsage', inverse_of: :store_stop, foreign_key: 'store_stop_id', dependent: :nullify
+  has_many :vehicle_usage_rests, class_name: 'VehicleUsage', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
   enum geocoding_level: {point: 1, house: 2, intersection: 3, street: 4, city: 5}
 
   nilify_blanks
@@ -70,10 +73,6 @@ class Store < ActiveRecord::Base
 
   private
 
-  def vehicles
-    (vehicle_starts.to_a + vehicle_stops.to_a).uniq
-  end
-
   def update_out_of_date
     if lat_changed? || lng_changed?
       out_of_date
@@ -101,11 +100,21 @@ class Store < ActiveRecord::Base
 
   def out_of_date
     Route.transaction do
-      vehicles.each{ |vehicle|
-        vehicle.routes.each{ |route|
-          route.out_of_date = true
-          route.save
-        }
+      routes_usage_set = vehicle_usage_set_starts.collect{ |vehicle_usage_set_start|
+        vehicle_usage_set_start.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_start }.collect(&:routes)
+      } +
+      vehicle_usage_set_stops.collect{ |vehicle_usage_set_stop|
+        vehicle_usage_set_stop.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_stop }.collect(&:routes)
+      } +
+      vehicle_usage_set_rests.collect{ |vehicle_usage_set_rest|
+        vehicle_usage_set_rest.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_rest }.collect(&:routes)
+      }
+
+      routes_usage = (vehicle_usage_starts + vehicle_usage_stops + vehicle_usage_rests).collect(&:routes)
+
+      (routes_usage_set + routes_usage).flatten.uniq.each{ |route|
+        route.out_of_date = true
+        route.save!
       }
     end
   end
@@ -113,10 +122,13 @@ class Store < ActiveRecord::Base
   def destroy_vehicle_store
     default = customer.stores.find{ |store| store != self && !store.destroyed? }
     if default
-      vehicles.each{ |vehicle|
-        vehicle.store_start = default if vehicle.store_start = self
-        vehicle.store_stop = default if vehicle.store_stop = self
-        vehicle.save!
+      vehicle_usage_set_starts.each{ |vehicle_usage_set|
+        vehicle_usage_set.store_start = default
+        vehicle_usage_set.save!
+      }
+      vehicle_usage_set_stops.each{ |vehicle_usage_set|
+        vehicle_usage_set.store_stop = default
+        vehicle_usage_set.save!
       }
       true
     else

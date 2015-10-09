@@ -16,7 +16,7 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should save' do
-    o = customers(:customer_one).plannings.build(name: 'plop', zoning: zonings(:zoning_one))
+    o = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zoning: zonings(:zoning_one))
     o.default_routes
     o.save!
   end
@@ -55,21 +55,21 @@ class PlanningTest < ActiveSupport::TestCase
     o.save!
   end
 
-  test 'should vehicle_add' do
+  test 'should vehicle_usage_add' do
     o = plannings(:planning_one)
     assert_difference('Stop.count', 1) do # One StopRest
       assert_difference('Route.count', 1) do
-        o.vehicle_add(vehicles(:vehicle_two))
+        o.vehicle_usage_add(vehicle_usages(:vehicle_usage_one_three))
         o.save!
       end
     end
   end
 
-  test 'should vehicle_remove' do
+  test 'should vehicle_usage_remove' do
     o = plannings(:planning_one)
     assert_difference('Stop.count', -1) do
       assert_difference('Route.count', -1) do
-        o.vehicle_remove(vehicles(:vehicle_one))
+        o.vehicle_usage_remove(vehicle_usages(:vehicle_usage_one_one))
         o.save!
       end
     end
@@ -95,7 +95,7 @@ class PlanningTest < ActiveSupport::TestCase
     o = plannings(:planning_one)
     o.zoning_out_of_date = true
     o.compute
-    o.routes.select{ |r| r.vehicle }.each{ |r|
+    o.routes.select{ |r| r.vehicle_usage }.each{ |r|
       assert_not r.out_of_date
     }
     assert_not o.zoning_out_of_date
@@ -108,7 +108,7 @@ class PlanningTest < ActiveSupport::TestCase
     d0 = o.routes[0].stops[0].destination
     d0.lat = d0.lng = nil
     o.compute
-    o.routes.select{ |r| r.vehicle }.each{ |r|
+    o.routes.select{ |r| r.vehicle_usage }.each{ |r|
       assert_not r.out_of_date
     }
     assert_not o.zoning_out_of_date
@@ -138,7 +138,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal 4, o.routes.find{ |ro| ro.ref == 'route_one' }.stops.size
     assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_three' }.stops.size
     assert_difference('Stop.count', 0) do
-      # route_zero has not any vehicle => stop will be affected to another route
+      # route_zero has not any vehicle_usage => stop will be affected to another route
       o.automatic_insert(o.routes.find{ |ro| ro.ref == 'route_zero' }.stops[0])
       o.save!
       o.customer.save!

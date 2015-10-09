@@ -148,8 +148,8 @@ ActiveRecord::Schema.define(version: 20151013142818) do
   add_index "orders_products", ["product_id"], name: "fk__orders_products_product_id", using: :btree
 
   create_table "plannings", force: :cascade do |t|
-    t.string   "name",               limit: 255
-    t.integer  "customer_id",                    null: false
+    t.string   "name",                 limit: 255
+    t.integer  "customer_id",                      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "zoning_id"
@@ -157,10 +157,12 @@ ActiveRecord::Schema.define(version: 20151013142818) do
     t.integer  "order_array_id"
     t.string   "ref"
     t.date     "date"
+    t.integer  "vehicle_usage_set_id",             null: false
   end
 
   add_index "plannings", ["customer_id"], name: "fk__plannings_customer_id", using: :btree
   add_index "plannings", ["order_array_id"], name: "fk__plannings_order_array_id", using: :btree
+  add_index "plannings", ["vehicle_usage_set_id"], name: "index_plannings_on_vehicle_usage_set_id", using: :btree
   add_index "plannings", ["zoning_id"], name: "fk__plannings_zoning_id", using: :btree
 
   create_table "plannings_tags", id: false, force: :cascade do |t|
@@ -218,7 +220,6 @@ ActiveRecord::Schema.define(version: 20151013142818) do
     t.float    "distance"
     t.float    "emission"
     t.integer  "planning_id",                        null: false
-    t.integer  "vehicle_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "start"
@@ -231,10 +232,11 @@ ActiveRecord::Schema.define(version: 20151013142818) do
     t.float    "stop_distance"
     t.string   "ref",                    limit: 255
     t.string   "color"
+    t.integer  "vehicle_usage_id"
   end
 
   add_index "routes", ["planning_id"], name: "fk__routes_planning_id", using: :btree
-  add_index "routes", ["vehicle_id"], name: "fk__routes_vehicle_id", using: :btree
+  add_index "routes", ["vehicle_usage_id"], name: "index_routes_on_vehicle_usage_id", using: :btree
 
   create_table "stops", force: :cascade do |t|
     t.integer  "index"
@@ -319,34 +321,61 @@ ActiveRecord::Schema.define(version: 20151013142818) do
   add_index "users", ["layer_id"], name: "fk__users_layer_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "vehicle_usage_sets", force: :cascade do |t|
+    t.integer "customer_id",    null: false
+    t.string  "name",           null: false
+    t.time    "open",           null: false
+    t.time    "close",          null: false
+    t.integer "store_start_id", null: false
+    t.integer "store_stop_id",  null: false
+    t.integer "store_rest_id"
+    t.time    "rest_start"
+    t.time    "rest_stop"
+    t.time    "rest_duration"
+  end
+
+  add_index "vehicle_usage_sets", ["customer_id"], name: "index_vehicle_usage_sets_on_customer_id", using: :btree
+  add_index "vehicle_usage_sets", ["store_rest_id"], name: "index_vehicle_usage_sets_on_store_rest_id", using: :btree
+  add_index "vehicle_usage_sets", ["store_start_id"], name: "index_vehicle_usage_sets_on_store_start_id", using: :btree
+  add_index "vehicle_usage_sets", ["store_stop_id"], name: "index_vehicle_usage_sets_on_store_stop_id", using: :btree
+
+  create_table "vehicle_usages", force: :cascade do |t|
+    t.integer "vehicle_usage_set_id", null: false
+    t.integer "vehicle_id",           null: false
+    t.time    "open"
+    t.time    "close"
+    t.integer "store_start_id"
+    t.integer "store_stop_id"
+    t.integer "store_rest_id"
+    t.time    "rest_start"
+    t.time    "rest_stop"
+    t.time    "rest_duration"
+  end
+
+  add_index "vehicle_usages", ["store_rest_id"], name: "index_vehicle_usages_on_store_rest_id", using: :btree
+  add_index "vehicle_usages", ["store_start_id"], name: "index_vehicle_usages_on_store_start_id", using: :btree
+  add_index "vehicle_usages", ["store_stop_id"], name: "index_vehicle_usages_on_store_stop_id", using: :btree
+  add_index "vehicle_usages", ["vehicle_id"], name: "index_vehicle_usages_on_vehicle_id", using: :btree
+  add_index "vehicle_usages", ["vehicle_usage_set_id"], name: "index_vehicle_usages_on_vehicle_usage_set_id", using: :btree
+
   create_table "vehicles", force: :cascade do |t|
     t.string   "name",                limit: 255
     t.float    "emission"
     t.float    "consumption"
     t.integer  "capacity"
     t.string   "color",               limit: 255
-    t.time     "open"
-    t.time     "close"
     t.integer  "customer_id",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "tomtom_id",           limit: 255
-    t.integer  "store_start_id",                  null: false
-    t.integer  "store_stop_id",                   null: false
     t.integer  "router_id"
     t.string   "masternaut_ref",      limit: 255
     t.float    "speed_multiplicator"
-    t.time     "rest_start"
-    t.time     "rest_stop"
-    t.time     "rest_duration"
-    t.integer  "store_rest_id"
     t.string   "ref"
   end
 
   add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree
   add_index "vehicles", ["router_id"], name: "fk__vehicles_router_id", using: :btree
-  add_index "vehicles", ["store_start_id"], name: "fk__vehicles_store_start_id", using: :btree
-  add_index "vehicles", ["store_stop_id"], name: "fk__vehicles_store_stop_id", using: :btree
 
   create_table "zones", force: :cascade do |t|
     t.text     "polygon"
@@ -379,12 +408,13 @@ ActiveRecord::Schema.define(version: 20151013142818) do
   add_foreign_key "orders_products", "products", name: "fk_orders_products_product_id", on_delete: :cascade
   add_foreign_key "plannings", "customers", name: "fk_plannings_customer_id", on_delete: :cascade
   add_foreign_key "plannings", "order_arrays", name: "fk_plannings_order_array_id"
+  add_foreign_key "plannings", "vehicle_usage_sets"
   add_foreign_key "plannings", "zonings", name: "fk_plannings_zoning_id"
   add_foreign_key "plannings_tags", "plannings", name: "fk_plannings_tags_planning_id", on_delete: :cascade
   add_foreign_key "plannings_tags", "tags", name: "fk_plannings_tags_tag_id", on_delete: :cascade
   add_foreign_key "products", "customers", name: "fk_products_customer_id", on_delete: :cascade
   add_foreign_key "routes", "plannings", name: "fk_routes_planning_id", on_delete: :cascade
-  add_foreign_key "routes", "vehicles", name: "fk_routes_vehicle_id", on_delete: :cascade
+  add_foreign_key "routes", "vehicle_usages"
   add_foreign_key "stops", "destinations", name: "fk_stops_destination_id", on_delete: :cascade
   add_foreign_key "stops", "routes", name: "fk_stops_route_id", on_delete: :cascade
   add_foreign_key "stores", "customers", name: "fk_stores_customer_id", on_delete: :cascade
@@ -393,11 +423,17 @@ ActiveRecord::Schema.define(version: 20151013142818) do
   add_foreign_key "tags", "customers", name: "fk_tags_customer_id", on_delete: :cascade
   add_foreign_key "users", "customers", name: "fk_users_customer_id"
   add_foreign_key "users", "layers", name: "fk_users_layer_id"
+  add_foreign_key "vehicle_usage_sets", "customers"
+  add_foreign_key "vehicle_usage_sets", "stores", column: "store_rest_id"
+  add_foreign_key "vehicle_usage_sets", "stores", column: "store_start_id"
+  add_foreign_key "vehicle_usage_sets", "stores", column: "store_stop_id"
+  add_foreign_key "vehicle_usages", "stores", column: "store_rest_id"
+  add_foreign_key "vehicle_usages", "stores", column: "store_start_id"
+  add_foreign_key "vehicle_usages", "stores", column: "store_stop_id"
+  add_foreign_key "vehicle_usages", "vehicle_usage_sets"
+  add_foreign_key "vehicle_usages", "vehicles"
   add_foreign_key "vehicles", "customers", name: "fk_vehicles_customer_id", on_delete: :cascade
   add_foreign_key "vehicles", "routers", name: "fk_vehicles_router_id"
-  add_foreign_key "vehicles", "stores", column: "store_rest_id"
-  add_foreign_key "vehicles", "stores", column: "store_start_id", name: "fk_vehicles_store_start_id"
-  add_foreign_key "vehicles", "stores", column: "store_stop_id", name: "fk_vehicles_store_stop_id"
   add_foreign_key "zones", "vehicles", name: "fk_zones_vehicle_id"
   add_foreign_key "zones", "zonings", name: "fk_zones_zoning_id", on_delete: :cascade
   add_foreign_key "zonings", "customers", name: "fk_zonings_customer_id", on_delete: :cascade

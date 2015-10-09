@@ -7,6 +7,7 @@ planning_one:
   customer: customer_one
   zoning: zoning_one
   tags: tag_one
+  vehicle_usage_set: vehicle_usage_set_one
 
 planning_two:
   name: planning2
@@ -14,3 +15,4 @@ planning_two:
   customer: customer_one
   zoning: zoning_one
   tags: tag_two
+  vehicle_usage_set: vehicle_usage_set_three

@@ -62,7 +62,7 @@ en:
         other: "Orders"
       order_array: "Order array"
       order_arrays:
-        one: "order array"
+        one: "orders array"
         other: "orders arrays"
       planning: "Planning"
       plannings:
@@ -102,6 +102,14 @@ en:
       vehicles:
         one: "vehicle"
         other: "vehicles"
+      vehicle_usage: "Vehicle usage"
+      vehicle_usages:
+        one: "vehicle usage"
+        other: "vehicle usages"
+      vehicle_usage_set: "Vehicle usage set"
+      vehicle_usage_sets:
+        one: "vehicle usage set"
+        other: "vehicle usage sets"
       zoning: "Zoning"
       zonings:
         one: "zoning"
@@ -206,6 +214,8 @@ en:
         updated_at: "Updated"
         order_array_id: "Order array"
         date: "Date"
+        vehicle_usage_set: "Vehicle usage set"
+        vehicle_usage_set_id: "Vehicle usage set"
       profile:
         name: "Name"
         layers: "Layers"
@@ -274,21 +284,35 @@ en:
         consumption: "Consumption"
         capacity: "Capacity"
         color: "Color"
-        open: "Open"
-        close: "Close"
         tomtom_id: "TomTom ID"
         masternaut_ref: "Masternaut vehicle ref."
+        router_id: "Route planner"
+        speed_multiplicator: "Speed tuning"
+        ref: "Reference"
+      vehicle_usage:
+        vehicle_id: "Vehicle"
+        open: "Open"
+        close: "Close"
         store_start: "Store Start"
         store_start_id: "Store Start"
         store_stop: "Store Stop"
         store_stop_id: "Store Stop"
-        router_id: "Route planner"
-        speed_multiplicator: "Speed tuning"
         rest_start: "Rest window start"
         rest_stop: "Rest window stop"
         rest_duration: "Rest duration"
         store_rest_id: "Rest place"
-        ref: "Reference"
+      vehicle_usage_set:
+        name: "Name"
+        open: "Open"
+        close: "Close"
+        store_start: "Store Start"
+        store_start_id: "Store Start"
+        store_stop: "Store Stop"
+        store_stop_id: "Store Stop"
+        rest_start: "Rest window start"
+        rest_stop: "Rest window stop"
+        rest_duration: "Rest duration"
+        store_rest_id: "Rest place"
       zoning:
         name: "Name"
       zone:
@@ -310,12 +334,20 @@ en:
           lng_outside_range: "must be inside range -180..180"
           geocoding_accuracy_outside_range: "must be inside range 0..1"
         vehicle:
+          at_least_one: "At least one vehicle needed"
+        vehicle_usages:
           attributes:
             close:
               after: "Must be after the open time"
             rest_stop:
               after: "Must be after the open time"
-          at_least_one: "At least one vehicle needed"
+        vehicle_usage_sets:
+          attributes:
+            close:
+              after: "Must be after the open time"
+            rest_stop:
+              after: "Must be after the open time"
+          at_least_one: "At least one vehicle usage set needed"
         zone:
           attributes:
             vehicle:
@@ -787,15 +819,12 @@ en:
     index:
       title: "Listing vehicles"
       stores: "Stores"
-      time: "Open - Close"
       router: "Route planner"
     new:
       title: "New vehicle"
     form:
       ref: "Reference"
       ref_help: "A free reference"
-      open_help: "Deliveryman's working hours"
-      close_help: "Deliveryman's working hours"
       emissions_help: "Fuel Type"
       consumption_help: "Average fuel consumption in liters per 100 km"
       capacity_help: "Maximun vehicle's capacity"
@@ -803,6 +832,38 @@ en:
       router_help: "Force usage of this router"
       speed_multiplicator_default: "%{n} (default value)"
       speed_multiplicator_help: "A value higher than 100% mean higher speed. The global tune up set on customer is also used on computation."
+
+  vehicle_usages:
+    menu:
+      vehicle_usages: "Vehicle Usages"
+    edit:
+      title: "Editing vehicle usage"
+    index:
+      title: "Listing vehicle usages"
+      stores: "Stores"
+      time: "Open - Close"
+    new:
+      title: "New vehicle usage"
+    form:
+      open_help: "Deliveryman's working hours"
+      close_help: "Deliveryman's working hours"
+      store_rest:
+        none: "None"
+
+  vehicle_usage_sets:
+    menu:
+      vehicle_usage_sets: "Vehicle Usage Sets"
+    edit:
+      title: "Editing vehicle usage set"
+    index:
+      title: "Listing vehicle usage sets"
+      stores: "Stores"
+      time: "Open - Close"
+    new:
+      title: "New vehicle usage set"
+    form:
+      open_help: "Deliveryman's working hours"
+      close_help: "Deliveryman's working hours"
       store_rest:
         none: "None"
 

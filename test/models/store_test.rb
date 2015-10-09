@@ -21,17 +21,17 @@ class StoreTest < ActiveSupport::TestCase
       store = o.stores.find{ |store| store[:name] == 'store 0' }
       assert store.destroy
       o.reload
-      assert_equal stores(:store_one), vehicles(:vehicle_one).store_start
+      assert_equal stores(:store_one), vehicle_usages(:vehicle_usage_one_one).store_start
     end
   end
 
-  test 'should destroy in use for vehicle' do
+  test 'should destroy in use for vehicle_usage' do
     o = customers(:customer_one)
     assert_difference('o.stores.size', -1) do
       store = o.stores.find{ |store| store[:name] == 'store 1' }
       assert store.destroy
       o.reload
-      assert_not_equal store, vehicles(:vehicle_one).store_start
+      assert_not_equal store, vehicle_usages(:vehicle_usage_one_one).store_start
     end
   end
 
