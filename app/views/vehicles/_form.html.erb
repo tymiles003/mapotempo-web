@@ -4,12 +4,6 @@
     <p class="help-block"><%= t '.ref_help' %></p>
   <% end %>
   <%= f.text_field :name %>
-  <%= f.text_field :open, {value: @vehicle.open ? @vehicle.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
-    <p class="help-block"><%= t '.open_help' %></p>
-  <% end %>
-  <%= f.text_field :close, {value: @vehicle.close ? @vehicle.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
-    <p class="help-block"><%= t '.close_help' %></p>
-  <% end %>
   <%= f.select :emission, [], Vehicle.emissions_table, {}, {input_group: t('all.unit.kgco2e_l_html')} do %>
     <p class="help-block"><%= t '.emissions_help' %></p>
   <% end %>
@@ -25,12 +19,6 @@
   <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('.speed_multiplicator_default', n: 100), input_group: '%'} do %>
     <p class="help-block"><%= t '.speed_multiplicator_help' %></p>
   <% end %>
-  <%= f.collection_select :store_start_id, [], @vehicle.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
-  <%= f.collection_select :store_stop_id, [], @vehicle.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
-  <%= f.text_field :rest_start, {value: @vehicle.rest_start ? @vehicle.rest_start.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-  <%= f.text_field :rest_stop, {value: @vehicle.rest_stop ? @vehicle.rest_stop.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-  <%= f.text_field :rest_duration, {value: @vehicle.rest_duration ? @vehicle.rest_duration.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-  <%= f.collection_select :store_rest_id, [], @vehicle.customer.stores, :id, :name, {include_blank: t('vehicles.form.store_rest.none')}, {input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
   <% if @vehicle.customer.enable_tomtom && !@vehicle.customer.tomtom_account.blank? && !@vehicle.customer.tomtom_user.blank? && !@vehicle.customer.tomtom_password.blank? %>
     <%= f.select :tomtom_id, t('.tomtom_id'), [@vehicle.tomtom_id] %>
   <% end %>

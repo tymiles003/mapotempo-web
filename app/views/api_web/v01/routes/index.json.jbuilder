@@ -1,6 +1,6 @@
 json.planning_id @planning.id
 
-json.stores @routes.select{ |route| route.vehicle }.collect{ |route| [route.vehicle.store_start, route.vehicle.store_stop, route.vehicle.store_rest] }.flatten.compact.uniq do |store|
+json.stores @routes.select{ |route| route.vehicle_usage }.collect{ |route| [route.vehicle_usage.store_start, route.vehicle_usage.store_stop, route.vehicle_usage.store_rest] }.flatten.compact.uniq do |store|
   json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
 end
 
@@ -14,19 +14,19 @@ json.routes @routes do |route|
   json.size route.stops.size
   json.extract! route, :ref, :size_active
   (json.quantity route.quantity) if !@planning.customer.enable_orders
-  if route.vehicle
-    json.vehicle_id route.vehicle.id
-    json.work_time '%i:%02i' % [(route.vehicle.close - route.vehicle.open) / 60 / 60, (route.vehicle.close - route.vehicle.open) / 60 % 60]
-    (json.tomtom true) if route.vehicle.tomtom_id && route.vehicle.customer.enable_tomtom && !route.vehicle.customer.tomtom_account.blank? && !route.vehicle.customer.tomtom_user.blank? && !route.vehicle.customer.tomtom_password.blank?
-    (json.masternaut true) if route.vehicle.masternaut_ref && route.vehicle.customer.enable_masternaut && !route.vehicle.customer.masternaut_user.blank? && !route.vehicle.customer.masternaut_password.blank?
-    (json.alyacom true) if route.vehicle.customer.enable_alyacom && !route.vehicle.customer.alyacom_association.blank?
+  if route.vehicle_usage
+    json.vehicle_id route.vehicle_usage.vehicle.id
+    json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
+    (json.tomtom true) if route.vehicle_usage.vehicle.tomtom_id && route.planning.customer.enable_tomtom && !route.planning.customer.tomtom_account.blank? && !route.planning.customer.tomtom_user.blank? && !route.planning.customer.tomtom_password.blank?
+    (json.masternaut true) if route.vehicle_usage.vehicle.masternaut_ref && route.planning.customer.enable_masternaut && !route.planning.customer.masternaut_user.blank? && !route.planning.customer.masternaut_password.blank?
+    (json.alyacom true) if route.planning.customer.enable_alyacom && !route.planning.customer.alyacom_association.blank?
   end
   number = 0
   no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = false
   json.store_start do
-    json.extract! route.vehicle.store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+    json.extract! route.vehicle_usage.store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.start.strftime('%H:%M')) if route.start
-  end if route.vehicle
+  end if route.vehicle_usage
   first_active_free = nil
   route.stops.reverse_each{ |stop|
     if !stop.active
@@ -49,9 +49,9 @@ json.routes @routes do |route|
     (json.geocoded true) if stop.position?
     (json.time stop.time.strftime('%H:%M')) if stop.time
     (json.active true) if stop.active
-    (json.number number += 1) if route.vehicle && stop.active
+    (json.number number += 1) if route.vehicle_usage && stop.active
     json.distance (stop.distance || 0) / 1000
-    if first_active_free == true || first_active_free == stop || !route.vehicle
+    if first_active_free == true || first_active_free == stop || !route.vehicle_usage
       json.automatic_insert true
       first_active_free = true
     end
@@ -84,19 +84,19 @@ json.routes @routes do |route|
       end
     elsif stop.is_a?(StopRest)
       json.rest do
-        (json.duration route.vehicle.rest_duration.strftime('%H:%M:%S')) if route.vehicle.rest_duration
-        (json.store_id route.vehicle.store_rest.id) if route.vehicle.store_rest
+        (json.duration route.vehicle_usage.rest_duration.strftime('%H:%M:%S')) if route.vehicle_usage.rest_duration
+        (json.store_id route.vehicle_usage.store_rest.id) if route.vehicle_usage.store_rest
       end
     end
   end
   json.store_stop do
-    json.extract! route.vehicle.store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+    json.extract! route.vehicle_usage.store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.end.strftime('%H:%M')) if route.end
     json.stop_trace route.stop_trace
     (json.error true) if route.stop_out_of_drive_time
     json.stop_out_of_drive_time route.stop_out_of_drive_time
     json.stop_distance (route.stop_distance || 0) / 1000
-  end if route.vehicle
+  end if route.vehicle_usage
   (json.route_no_geolocalization no_geolocalization) if no_geolocalization
   (json.route_out_of_window out_of_window) if out_of_window
   (json.route_out_of_capacity out_of_capacity) if out_of_capacity

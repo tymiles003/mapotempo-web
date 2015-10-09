@@ -3,7 +3,7 @@
     <%= [
       route.planning.name,
       route.ref,
-      route.vehicle.name,
+      route.vehicle_usage.vehicle.name,
       route.planning.customer.enable_orders && route.planning.order_array ? route.planning.order_array.name : nil,
       route.planning.date ? l(route.planning.date) : nil,
     ].select{ |i| i }.join(' - ').gsub(/\s+/, ' ').strip
@@ -34,14 +34,14 @@
     </coordinates>
   </LineString>
 </Placemark>
-<% if route.vehicle.store_start && !route.vehicle.store_start.lat.nil? && !route.vehicle.store_start.lng.nil? %>
+<% if route.vehicle_usage.store_start && !route.vehicle_usage.store_start.lat.nil? && !route.vehicle_usage.store_start.lng.nil? %>
 <Placemark>
-  <name><%= route.vehicle.store_start.name %></name>
+  <name><%= route.vehicle_usage.store_start.name %></name>
   <styleUrl>#route-<%= route.id %>-store</styleUrl>
   <Point>
     <altitudeMode>clampToGround</altitudeMode>
     <coordinates>
-      <%= route.vehicle.store_start.lng.to_s + ',' + route.vehicle.store_start.lat.to_s %>
+      <%= route.vehicle_usage.store_start.lng.to_s + ',' + route.vehicle_usage.store_start.lat.to_s %>
     </coordinates>
   </Point>
 </Placemark>
@@ -60,14 +60,14 @@
 </Placemark>
 <% end
 end %>
-<% if route.vehicle.store_stop && !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil? %>
+<% if route.vehicle_usage.store_stop && !route.vehicle_usage.store_stop.lat.nil? && !route.vehicle_usage.store_stop.lng.nil? %>
 <Placemark>
-  <name><%= route.vehicle.store_stop.name %></name>
+  <name><%= route.vehicle_usage.store_stop.name %></name>
   <styleUrl>#route-<%= route.id %>-store</styleUrl>
   <Point>
     <altitudeMode>clampToGround</altitudeMode>
     <coordinates>
-      <%= route.vehicle.store_stop.lng.to_s + ',' + route.vehicle.store_stop.lat.to_s %>
+      <%= route.vehicle_usage.store_stop.lng.to_s + ',' + route.vehicle_usage.store_stop.lat.to_s %>
     </coordinates>
   </Point>
 </Placemark>

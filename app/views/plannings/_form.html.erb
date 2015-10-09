@@ -2,6 +2,11 @@
 <%= twitter_bootstrap_form_for @planning, options do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
   <%= f.text_field :name %>
+  <% if @planning.customer.vehicle_usage_sets.size > 1 %>
+    <%= f.collection_select :vehicle_usage_set_id, [], @planning.customer.vehicle_usage_sets, :id, :name, {}, {} %>
+  <% else %>
+    <%= f.hidden_field :vehicle_usage_set_id, value: @planning.customer.vehicle_usage_sets[0].id %>
+  <% end %>
   <% if @planning.id %>
     <%= f.text_field :ref, t('activerecord.attributes.planning.ref_small') %>
   <% else %>

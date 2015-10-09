@@ -1,4 +1,4 @@
-json.stores @planning ? (@planning.routes.select(&:vehicle).collect(&:vehicle).collect(&:store_start) + @planning.routes.select(&:vehicle).collect(&:vehicle).collect(&:store_stop)).uniq : @zoning.customer.stores do |store|
+json.stores @planning ? (@planning.routes.select(&:vehicle_usage).collect(&:vehicle_usage).collect(&:store_start) + @planning.routes.select(&:vehicle_usage).collect(&:vehicle_usage).collect(&:store_stop)).uniq : @zoning.customer.stores do |store|
   json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
 end
 json.zoning @zoning.zones do |zone|
@@ -6,14 +6,14 @@ json.zoning @zoning.zones do |zone|
 end
 if @planning
   json.planning @planning.routes do |route|
-    if route.vehicle
-      json.vehicle_id route.vehicle.id
+    if route.vehicle_usage
+      json.vehicle_id route.vehicle_usage.vehicle.id
     end
     json.stops do
       json.array! route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect do |stop|
         destination = stop.destination
         json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment
-        json.active route.vehicle && stop.active
+        json.active route.vehicle_usage && stop.active
         if !@planning.customer.enable_orders
           json.extract! destination, :quantity
         end

@@ -62,7 +62,7 @@ class ImporterTest < ActionController::TestCase
       end
     end
 
-    stops = Planning.where(name: 'text').first.routes[1].stops
+    stops = Planning.where(name: 'text').first.routes.find{ |route| route.ref == '1' }.stops
     assert_equal 'z', stops[1].destination.ref
     assert stops[1].destination.take_over
     assert stops[1].active

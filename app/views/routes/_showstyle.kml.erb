@@ -1,6 +1,6 @@
 <Style id="route-<%= route.id %>">
   <LineStyle>
-    <color>cc<%= (route.color || (route.vehicle && route.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
+    <color>cc<%= (route.color || (route.vehicle_usage && route.vehicle_usage.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
     <width>3</width>
   </LineStyle>
 </Style>
@@ -9,16 +9,16 @@
     <Icon>
       <href>https://app.mapotempo.com/assets/marker-home-89f4b5db22d633ede83fa11722c214a8.svg</href>
     </Icon>
-    <color>cc<%= (route.color || (route.vehicle && route.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
+    <color>cc<%= (route.color || (route.vehicle_usage && route.vehicle_usage.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
     <width>3</width>
   </IconStyle>
 </Style>
 <Style id="route-<%= route.id %>-point">
   <IconStyle>
     <Icon>
-      <href>https://app.mapotempo.com/images/point-<%= (route.color || (route.vehicle && route.vehicle.color) || '#707070')[1..-1] %>.svg</href>
+      <href>https://app.mapotempo.com/images/point-<%= (route.color || (route.vehicle_usage && route.vehicle_usage.vehicle.color) || '#707070')[1..-1] %>.svg</href>
     </Icon>
-    <color>cc<%= (route.color || (route.vehicle && route.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
+    <color>cc<%= (route.color || (route.vehicle_usage && route.vehicle_usage.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
     <width>3</width>
   </IconStyle>
 </Style>

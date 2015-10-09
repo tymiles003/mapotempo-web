@@ -100,7 +100,7 @@ class RoutesController < ApplicationController
   end
 
   def filename
-    (@route.planning.name + '_' + (@route.ref || @route.vehicle.name) +
+    (@route.planning.name + '_' + (@route.ref || @route.vehicle_usage.vehicle.name) +
       (@route.planning.customer.enable_orders && @route.planning.order_array ? '_' + @route.planning.order_array.name : '') +
       (@route.planning.date ? '_' + l(@route.planning.date) : '')
     ).gsub('/', '-').gsub('"', '')

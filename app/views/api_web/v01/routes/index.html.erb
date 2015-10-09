@@ -1,11 +1,11 @@
 <div id="map"></div>
-<% if !@routes.select{ |route| route.vehicle && route.stops.size > 0 }.empty? %>
+<% if !@routes.select{ |route| route.vehicle_usage && route.stops.size > 0 }.empty? %>
   <div id="routes-caption" class="map-caption">
     <% @routes && @routes.each do |route| %>
-      <% if route.vehicle && route.stops.size > 0 %>
+      <% if route.vehicle_usage && route.stops.size > 0 %>
         <div class="map-caption-item">
-          <span class="color_small" style="background: <%= route.color || route.vehicle.color %>"></span>
-          <%= route.vehicle.name %>
+          <span class="color_small" style="background: <%= route.color || route.vehicle_usage.vehicle.color %>"></span>
+          <%= route.vehicle_usage.vehicle.name %>
         </div>
       <% end %>
     <% end %>

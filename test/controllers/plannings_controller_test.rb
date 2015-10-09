@@ -49,7 +49,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'should create planning' do
     assert_difference('Planning.count') do
-      post :create, planning: { name: @planning.name, zoning_id: @planning.zoning.id }
+      post :create, planning: { name: @planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_id: @planning.zoning.id }
     end
 
     assert_redirected_to edit_planning_path(assigns(:planning))
@@ -161,13 +161,13 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should switch' do
-    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_id: vehicles(:vehicle_one).id
+    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: vehicle_usages(:vehicle_usage_one_one).id
     assert_response :success, id: @planning
   end
 
   test 'should not switch' do
     assert_raises ActiveRecord::RecordNotFound do
-      patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_id: 666
+      patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: 666
     end
   end
 

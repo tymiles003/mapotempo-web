@@ -23,15 +23,15 @@ class Tomtom
 
   def self.clear(route)
     customer = route.planning.customer
-    Mapotempo::Application.config.tomtom.clearOrders(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id)
+    Mapotempo::Application.config.tomtom.clearOrders(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id)
   end
 
   def self.export_route_as_orders(route)
     date = route.planning.date || Date.today.to_time
     customer = route.planning.customer
-    position = route.vehicle.store_start
+    position = route.vehicle_usage.store_start
     if !position.nil? && !position.lat.nil? && !position.lng.nil?
-      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, -1, route.vehicle.store_start.name, route.start)
+      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, -1, route.vehicle_usage.store_start.name, route.start)
     end
     route.stops.select(&:active).each{ |stop|
       position = stop if stop.position?
@@ -40,35 +40,35 @@ class Tomtom
           '',
           stop.name,
           stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
-          stop.is_a?(StopDestination) ? (stop.destination.take_over ? '(' + stop.destination.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle.rest_duration.strftime("%H:%M:%S"),
+          stop.is_a?(StopDestination) ? (stop.destination.take_over ? '(' + stop.destination.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle_usage.rest_duration.strftime("%H:%M:%S"),
           stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
           stop.detail,
           stop.comment,
         ].compact.join(' ').strip
-        Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, stop.id, description, stop.time)
+        Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, stop.id, description, stop.time)
       end
     }
-    position = route.vehicle.store_stop
+    position = route.vehicle_usage.vehicle.store_stop
     if !position.nil? && !position.lat.nil? && !position.lng.nil?
-      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, -2, route.vehicle.store_stop.name, route.start)
+      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, -2, route.vehicle_usage.store_stop.name, route.start)
     end
   end
 
   def self.export_route_as_waypoints(route)
     date = route.planning.date || Date.today
     customer = route.planning.customer
-    position = route.vehicle.store_start
-    waypoint_start = (!route.vehicle.store_start.nil? && !route.vehicle.store_start.lat.nil? && !route.vehicle.store_start.lng.nil?) ? [[
-        route.vehicle.store_start.lat,
-        route.vehicle.store_start.lng,
+    position = route.vehicle_usage.store_start
+    waypoint_start = (!route.vehicle_usage.store_start.nil? && !route.vehicle_usage.store_start.lat.nil? && !route.vehicle_usage.store_start.lng.nil?) ? [[
+        route.vehicle_usage.store_start.lat,
+        route.vehicle_usage.store_start.lng,
         '',
-        route.vehicle.store_start.name
+        route.vehicle_usage.store_start.name
       ]] : []
-    waypoint_stop = (!route.vehicle.store_stop.nil? && !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil?) ? [[
-        route.vehicle.store_stop.lat,
-        route.vehicle.store_stop.lng,
+    waypoint_stop = (!route.vehicle_usage.store_stop.nil? && !route.vehicle_usage.store_stop.lat.nil? && !route.vehicle_usage.store_stop.lng.nil?) ? [[
+        route.vehicle_usage.store_stop.lat,
+        route.vehicle_usage.store_stop.lng,
         '',
-        route.vehicle.store_stop.name
+        route.vehicle_usage.store_stop.name
       ]] : []
     waypoints = route.stops.select(&:active).collect{ |stop|
         position = stop if stop.position?
@@ -88,7 +88,7 @@ class Tomtom
         description = l[2..-1].compact.join(' ').strip
         {lat: l[0], lng: l[1], description: description}
       }
-    position = route.vehicle.store_stop if !route.vehicle.store_stop.nil? && !route.vehicle.store_stop.lat.nil? && !route.vehicle.store_stop.lng.nil?
-    Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle.tomtom_id, date, position, route.vehicle.id, route.ref || route.vehicle.store_stop.name, route.start, waypoints)
+    position = route.vehicle_usage.store_stop if !route.vehicle_usage.store_stop.nil? && !route.vehicle_usage.store_stop.lat.nil? && !route.vehicle_usage.store_stop.lng.nil?
+    Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, route.vehicle_usage.id, route.ref || route.vehicle_usage.store_stop.name, route.start, waypoints)
   end
 end

@@ -134,7 +134,7 @@ class ImporterDestinations < ImporterBase
       end
 
       if routes.size > 1 || !routes.key?(nil)
-        planning = customer.plannings.build(name: name || I18n.t('activerecord.models.planning') + ' ' + Time.now.strftime(' %Y-%m-%d %H:%M'), tags: common_tags || [])
+        planning = customer.plannings.build(name: name || I18n.t('activerecord.models.planning') + ' ' + Time.now.strftime(' %Y-%m-%d %H:%M'), vehicle_usage_set: customer.vehicle_usage_sets[0], tags: common_tags || [])
         planning.set_destinations(routes, false)
         planning.save!
       end

@@ -36,7 +36,7 @@ class VehiclesControllerTest < ActionController::TestCase
   end
 
   test 'should update vehicle' do
-    patch :update, id: @vehicle, vehicle: { capacity: 123, close: @vehicle.close, color: @vehicle.color, consumption: @vehicle.consumption, emission: @vehicle.emission, name: @vehicle.name, open: @vehicle.open }
+    patch :update, id: @vehicle, vehicle: { capacity: 123, color: @vehicle.color, consumption: @vehicle.consumption, emission: @vehicle.emission, name: @vehicle.name }
     assert_redirected_to vehicles_path
   end
 

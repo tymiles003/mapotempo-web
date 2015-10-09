@@ -48,13 +48,13 @@ class PlanningsController < ApplicationController
       end
       format.tomtom do
         begin
-          @planning.routes.select(&:vehicle).each{ |route|
+          @planning.routes.select(&:vehicle_usage).each{ |route|
             if params[:type] == 'waypoints'
-              Tomtom.export_route_as_waypoints(route) if route.vehicle.tomtom_id
+              Tomtom.export_route_as_waypoints(route) if route.vehicle_usage.vehicle.tomtom_id
             elsif params[:type] == 'orders'
-              Tomtom.export_route_as_orders(route) if route.vehicle.tomtom_id
+              Tomtom.export_route_as_orders(route) if route.vehicle_usage.vehicle.tomtom_id
             else
-              Tomtom.clear(route) if route.vehicle.tomtom_id
+              Tomtom.clear(route) if route.vehicle_usage.vehicle.tomtom_id
             end
           }
           head :no_content
@@ -64,8 +64,8 @@ class PlanningsController < ApplicationController
       end
       format.masternaut do
         begin
-          @planning.routes.select(&:vehicle).each{ |route|
-            Masternaut.export_route(route) if route.vehicle.masternaut_ref
+          @planning.routes.select(&:vehicle_usage).each{ |route|
+            Masternaut.export_route(route) if route.vehicle_usage.vehicle.masternaut_ref
           }
           head :no_content
         rescue => e
@@ -74,8 +74,8 @@ class PlanningsController < ApplicationController
       end
       format.alyacom do
         begin
-          @planning.routes.select(&:vehicle).each{ |route|
-            Alyacom.export_route(route) if route.vehicle.customer.alyacom_association
+          @planning.routes.select(&:vehicle_usage).each{ |route|
+            Alyacom.export_route(route) if route.vehicle_usage.vehicle.customer.alyacom_association
           }
           head :no_content
         rescue => e
@@ -169,8 +169,8 @@ class PlanningsController < ApplicationController
   def switch
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == Integer(params['route_id']) }
-      vehicle = @planning.customer.vehicles.find(Integer(params['vehicle_id']))
-      if route && vehicle && @planning.switch(route, vehicle) && @planning.compute && @planning.save
+      vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params['vehicle_usage_id']))
+      if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.compute && @planning.save
         format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
         format.json { render action: 'show', location: @planning }
       else
@@ -260,7 +260,7 @@ class PlanningsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def planning_params
-    params.require(:planning).permit(:name, :ref, :date, :zoning_id, tag_ids: [])
+    params.require(:planning).permit(:name, :ref, :date, :vehicle_usage_set_id, :zoning_id, tag_ids: [])
   end
 
   def stop_params

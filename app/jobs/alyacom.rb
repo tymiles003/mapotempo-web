@@ -22,10 +22,10 @@ class Alyacom
   def self.export_route(route)
     customer = route.planning.customer
 
-    store = route.vehicle.store_start
+    store = route.vehicle_usage.store_start
     staff = {
-      id: route.vehicle.name,
-      name: route.vehicle.name,
+      id: route.vehicle_usage.vehicle.name,
+      name: route.vehicle_usage.vehicle.name,
       street: store && store.street,
       postalcode: store && store.postalcode,
       city: store && store.city,
@@ -34,7 +34,7 @@ class Alyacom
     date = route.planning.date || Date.today
     planning_id_base = date.strftime('%y%m%d')
     base_time = date.to_time
-    position = route.vehicle.store_start
+    position = route.vehicle_usage.store_start
     waypoints = route.stops.select(&:active).collect{ |stop|
       position = stop if stop.position?
       if position.nil? || position.lat.nil? || position.lng.nil?
@@ -56,7 +56,7 @@ class Alyacom
         },
         planning: {
           id: planning_id_base + '_' + stop.base_id.to_s,
-          staff_id: route.vehicle.name,
+          staff_id: route.vehicle_usage.vehicle.name,
           destination_id: stop.base_id,
           comment: [
             stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,

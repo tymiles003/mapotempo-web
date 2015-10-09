@@ -53,9 +53,9 @@ class ImporterStores < ImporterBase
           lat: Float(I18n.t('stores.default.lat')),
           lng: Float(I18n.t('stores.default.lng'))
         )
-        customer.vehicles.each{ |vehicle|
-          vehicle.store_start = tmp_store
-          vehicle.store_stop = tmp_store
+        customer.vehicle_usage_sets.each{ |vehicle_usage_set|
+          vehicle_usage_set.store_start = tmp_store
+          vehicle_usage_set.store_stop = tmp_store
         }
         customer.save!
         customer.stores.each{ |store|
@@ -102,10 +102,10 @@ class ImporterStores < ImporterBase
 
       if replace
         if !customer.stores[1].nil?
-          customer.vehicles.each{ |vehicle|
-            vehicle.store_start = customer.stores[1]
-            vehicle.store_stop = customer.stores[1]
-            vehicle.save!
+          customer.vehicle_usage_sets.each{ |vehicle_usage_set|
+            vehicle_usage_set.store_start = customer.stores[1]
+            vehicle_usage_set.store_stop = customer.stores[1]
+            vehicle_usage_set.save!
           }
         end
         customer.stores.destroy(tmp_store)

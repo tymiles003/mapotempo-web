@@ -22,7 +22,7 @@ class Masternaut
   def self.export_route(route)
     order_id_base = Time.now.to_i.to_s(36) + '_' + route.id.to_s
     customer = route.planning.customer
-    position = route.vehicle.store_start
+    position = route.vehicle_usage.store_start
     waypoints = route.stops.select(&:active).collect{ |stop|
       position = stop if stop.position?
       if position.nil? || position.lat.nil? || position.lng.nil?
@@ -42,7 +42,7 @@ class Masternaut
           stop.name,
           stop.ref,
           stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
-          stop.is_a?(StopDestination) ? (stop.destination.take_over ? '(' + stop.destination.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle.rest_duration.strftime("%H:%M:%S"),
+          stop.is_a?(StopDestination) ? (stop.destination.take_over ? '(' + stop.destination.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle_usage.rest_duration.strftime("%H:%M:%S"),
           stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
           stop.detail,
           stop.comment,
@@ -53,7 +53,7 @@ class Masternaut
     }.compact
 
     if !position.nil? && !position.lat.nil? && !position.lng.nil?
-      MasternautWs.createJobRoute(customer.masternaut_user, customer.masternaut_password, route.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle.name, route.planning.date || Date.today, route.start, route.end, waypoints)
+      MasternautWs.createJobRoute(customer.masternaut_user, customer.masternaut_password, route.vehicle_usage.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle_usage.vehicle.name, route.planning.date || Date.today, route.start, route.end, waypoints)
     end
   end
 end
