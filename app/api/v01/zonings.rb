@@ -146,7 +146,7 @@ class V01::Zonings < Grape::API
       nickname: 'generateIsochrone'
     params do
       requires :id, type: Integer
-      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time.'
+      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
     end
     patch ':id/isochrone' do
       Zoning.transaction do
@@ -166,7 +166,7 @@ class V01::Zonings < Grape::API
       nickname: 'generateIsochroneVehicle'
     params do
       requires :id, type: Integer
-      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time.'
+      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
       requires :vehicle_id, type: Integer
     end
     patch ':id/vehicle/:vehicle_id/isochrone' do
@@ -187,7 +187,7 @@ class V01::Zonings < Grape::API
       nickname: 'generateIsodistance'
     params do
       requires :id, type: Integer
-      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time.'
+      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
     end
     patch ':id/isodistance' do
       Zoning.transaction do
@@ -207,7 +207,7 @@ class V01::Zonings < Grape::API
       nickname: 'generateIsochroneVehicle'
     params do
       requires :id, type: Integer
-      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time.'
+      requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
       requires :vehicle_id, type: Integer
     end
     patch ':id/vehicle/:vehicle_id/isodistance' do

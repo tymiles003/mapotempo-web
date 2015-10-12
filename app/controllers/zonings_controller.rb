@@ -112,7 +112,7 @@ class ZoningsController < ApplicationController
 
   def isochrone
     respond_to do |format|
-      size = params.key?(:size) ? Integer(params[:size]) : 10
+      size = params.key?(:size) ? Integer(params[:size]) * 60 : 600
       if size
         @zoning.isochrone(size)
         @zoning.save
@@ -123,7 +123,7 @@ class ZoningsController < ApplicationController
 
   def isodistance
     respond_to do |format|
-      size = params.key?(:size) ? Integer(params[:size]) : 1000
+      size = params.key?(:size) ? Integer(params[:size]) * 1000 : 1000
       if size
         @zoning.isodistance(size)
         @zoning.save

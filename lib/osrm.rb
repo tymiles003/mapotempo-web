@@ -135,7 +135,7 @@ class Osrm
       params = {
         lat: lat,
         lng: lng,
-        time: size * 60 # Osrm isochrone is in seconds
+        time: size
       }
       resource = RestClient::Resource.new(osrm_isochrone_url + '/0.1/isochrone', timeout: nil)
       request = resource.get(params: params) { |response, request, result, &block|
