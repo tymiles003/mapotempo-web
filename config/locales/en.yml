@@ -831,18 +831,17 @@ en:
       dialog:
         isochrone:
           title: "Isochrone"
-          validate: "Generate"
           size: "Time"
           size_help: "Area accessible from the start store by this travel time."
         isochrone-progress:
           title: "Isochrones computation in progress"
         isodistance:
           title: "Isodistance"
-          validate: "Generate"
           size: "Distance"
           size_help: "Area accessible from the start store by this travel distance."
         isodistance-progress:
           title: "Isodistances computation in progress"
+        validate: "Generate"
 
   unauthorized:
     default: "You are not authorized to access this page"
