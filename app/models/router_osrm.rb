@@ -32,8 +32,8 @@ class RouterOsrm < Router
     vector = row != column ? row + column : row
     matrix = Mapotempo::Application.config.osrm.matrix(url, vector)
     if row != column
-      matrix = matrix[row.size..-1].collect{ |row|
-        row[0..row.size - 1]
+      matrix = matrix[0..row.size-1].collect{ |l|
+        l[row.size..-1]
       }
     end
     matrix = unpack_vector(row, column, matrix)

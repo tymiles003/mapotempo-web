@@ -4,14 +4,6 @@ require 'osrm'
 class RouterTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
-  def around
-    Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
-      Here.stub_any_instance(:matrix, lambda{ |row, column| Array.new(row.size, Array.new(column.size, [0, 0])) }) do
-        yield
-      end
-    end
-  end
-
   test 'should pack and unpack sorted vector' do
     router = routers(:router_one)
     r = [[1, 1], [2, 2]]
@@ -37,20 +29,23 @@ class RouterTest < ActiveSupport::TestCase
   end
 
   test 'should compute matrix with OSRM' do
-    router = routers(:router_osrm)
-    row = [[47.3174, 5.0336]]
-    column = [[45.750569, 4.839445], [45.763661, 4.851408], [45.755932, 4.850413]]
-    matrix = router.matrix(row, column, 1)
-    assert_equal 1, matrix.size
-    assert_equal 3, matrix[0].size
+    Osrm.stub_any_instance(:matrix, [[0,68212,69314,69167],[68257,0,2545,1878],[69494,2065,0,1093],[69515,1370,1596,0]]) do
+      router = routers(:router_osrm)
+      row = [[47.3174, 5.0336]]
+      column = [[45.750569, 4.839445], [45.763661, 4.851408], [45.755932, 4.850413]]
+      matrix = router.matrix(row, column, 1)
+      assert_equal [[[68212, 68212.0], [69167, 69167.0], [69314, 69314.0]]], matrix
+    end
   end
 
   test 'should compute matrix with HERE' do
-    router = routers(:router_here)
-    row = [[47.3174, 5.0336]]
-    column = [[45.750569, 4.839445], [45.763661, 4.851408], [45.755932, 4.850413]]
-    matrix = router.matrix(row, column, 1)
-    assert_equal 1, matrix.size
-    assert_equal 3, matrix[0].size
+    Here.stub_any_instance(:matrix, lambda{ |row, column| Array.new(row.size, Array.new(column.size, [0, 0])) }) do
+      router = routers(:router_here)
+      row = [[47.3174, 5.0336]]
+      column = [[45.750569, 4.839445], [45.763661, 4.851408], [45.755932, 4.850413]]
+      matrix = router.matrix(row, column, 1)
+      assert_equal 1, matrix.size
+      assert_equal 3, matrix[0].size
+    end
   end
 end
