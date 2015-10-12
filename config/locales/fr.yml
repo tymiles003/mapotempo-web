@@ -812,6 +812,8 @@ fr:
       title: "Modifier zonage"
       collapse_zoning_panel: "Minifier le panneau de zonage"
       vehicleless_confirm: "Confirmer l'enregistrement de zones sans véhicules ?"
+      isochrone_missing_vehicle: "Un isochrone ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
+      isodistance_missing_vehicle: "Un isodistance ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
     index:
       title: "Liste zonages"
       new: "Nouveau zonage"
@@ -825,8 +827,6 @@ fr:
       from_planning: "Depuis le planning"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
-      isochrone_missing_vehicle: "Un isochrone ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
-      isodistance_missing_vehicle: "Un isodistance ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
       dialog:
         isochrone:
           title: "Isochrone"

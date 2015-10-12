@@ -813,6 +813,8 @@ en:
       title: "Editing zoning"
       collapse_zoning_panel: "Collapse zoning panel"
       vehicleless_confirm: "Really save some zones without a vehicle?"
+      isochrone_missing_vehicle: "Isochrone cannot be generated for at least one vehicle due to router restriction"
+      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to router restriction"
     index:
       title: "Listing zonings"
       new: "New Zoning"
@@ -826,8 +828,6 @@ en:
       from_planning: "From planning"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
-      isochrone_missing_vehicle: "Isochrone cannot be generated for at least one vehicle due to router restriction"
-      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to router restriction"
       dialog:
         isochrone:
           title: "Isochrone"

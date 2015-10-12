@@ -37,17 +37,6 @@
       </div>
     </div>
   <% end %>
-  <% if @zoning.id && !@zoning.customer.router.isochrone? && @zoning.customer.vehicles.collect { |v|
-    !v.router.nil? && v.router.isochrone?
-  }.include?(false) %>
-  <p class="help-block"><%= t '.isochrone_missing_vehicle' %></p>
-  <% end %>
-  <% if @zoning.id && !@zoning.customer.router.isodistance? && @zoning.customer.vehicles.collect { |v|
-    !v.router.nil? && v.router.isodistance?
-  }.include?(false) %>
-  <p class="help-block"><%= t '.isodistance_missing_vehicle' %></p>
-  <% end %>
-
   <div id="zones"></div>
 <% end %>
 

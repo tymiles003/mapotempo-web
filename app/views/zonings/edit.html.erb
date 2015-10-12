@@ -41,6 +41,9 @@
                   <p class="help-block">
                     <%= t 'zonings.form.dialog.isochrone.size_help' %>
                   </p>
+                  <% if @zoning.id && @zoning.customer.vehicles.find{ |vehicle| vehicle.router && !vehicle.router.isochrone? || !@zoning.customer.router.isochrone? } %>
+                    <p class="help-block"><%= t '.isochrone_missing_vehicle' %></p>
+                  <% end %>
                 </div>
               </div>
             </form>
@@ -97,6 +100,9 @@
                   <p class="help-block">
                     <%= t 'zonings.form.dialog.isodistance.size_help' %>
                   </p>
+                  <% if @zoning.id && @zoning.customer.vehicles.find{ |vehicle| vehicle.router && !vehicle.router.isodistance? || !@zoning.customer.router.isodistance? } %>
+                    <p class="help-block"><%= t '.isodistance_missing_vehicle' %></p>
+                  <% end %>
                 </div>
               </div>
             </form>
