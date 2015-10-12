@@ -153,17 +153,15 @@ class Osrm
     if request
       data = JSON.parse(request)
       if data['features']
-        mulipoly_coord = data['features'].collect { |feat|
+        # MultiPolygon not supported by Leaflet.Draw
+        data['features'].collect! { |feat|
           if feat['geometry']['type'] == 'LineString'
-            [feat['geometry']['coordinates']]
-          elsif feat['geometry']['type'] == 'Polygon'
-            feat['geometry']['coordinates']
+            feat['geometry']['type'] = 'Polygon'
+            feat['geometry']['coordinates'] = [feat['geometry']['coordinates']]
           end
+          feat
         }
-        request = data['features'][0]
-        request['geometry']['type'] = 'MultiPolygon'
-        request['geometry']['coordinates'] = mulipoly_coord
-        request.to_json
+        data.to_json
       else
         raise 'No polygon for this zone'
       end
