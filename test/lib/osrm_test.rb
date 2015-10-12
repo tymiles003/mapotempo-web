@@ -16,7 +16,7 @@ class OsrmTest < ActionController::TestCase
         stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../', __FILE__) + '/osrm/table-1.json').read)
       }
 
-      matrix = @osrm.matrix(routers(:router_one).url, points)
+      matrix = @osrm.matrix(routers(:router_one).url_time, points)
       assert_equal 3, matrix.size
       assert_equal 3, matrix[0].size
     ensure
@@ -39,10 +39,10 @@ class OsrmTest < ActionController::TestCase
         [stub_viaroute, stub_table]
       }
 
-      impassable = @osrm.compute(routers(:router_one).url, *points.flatten)
+      impassable = @osrm.compute(routers(:router_one).url_time, *points.flatten)
       assert_not impassable[2] # no trace
 
-      matrix = @osrm.matrix(routers(:router_one).url, points)
+      matrix = @osrm.matrix(routers(:router_one).url_time, points)
     ensure
       stubs.each{ |stub|
         remove_request_stub(stub[0])
@@ -56,7 +56,7 @@ class OsrmTest < ActionController::TestCase
 #    prng = Random.new
 #    vector = SIZE.times.collect{ [prng.rand(48.811159..48.911218), prng.rand(2.270393..2.435532)] } # Some points in Paris
 #    #start = Time.now
-#    matrix = @osrm.matrix(routers(:router_one).url, vector)
+#    matrix = @osrm.matrix(routers(:router_one).url_time, vector)
 #    #finish = Time.now
 #    #puts finish - start
 #

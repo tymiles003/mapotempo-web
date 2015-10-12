@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150924152721) do
+ActiveRecord::Schema.define(version: 20151009165039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,13 +204,14 @@ ActiveRecord::Schema.define(version: 20150924152721) do
 
   create_table "routers", force: :cascade do |t|
     t.string   "name",            limit: 255
-    t.string   "url",             limit: 255
+    t.string   "url_time",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type",            limit: 255, default: "RouterOsrm", null: false
     t.string   "ref"
     t.string   "url_isochrone"
     t.string   "url_isodistance"
+    t.string   "url_distance"
   end
 
   create_table "routes", force: :cascade do |t|

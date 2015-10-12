@@ -24,7 +24,7 @@ class RouterHere < Router
     [distance, time, trace]
   end
 
-  def matrix(row, column, speed_multiplicator, &block)
+  def matrix(row, column, speed_multiplicator, mode = nil, &block)
     time_multiplicator = 1.0 / speed_multiplicator
     row, column = pack_vector(row, column)
     matrix = Mapotempo::Application.config.here.matrix(row, column, &block)

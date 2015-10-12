@@ -2,17 +2,17 @@
 
 router_one:
   name: MyString
-  url: http://localhost:5000
+  url_time: http://localhost:5000
   url_isochrone: http://localhost:1723
 
 router_two:
   name: MyString
-  url: http://localhost:5000
+  url_time: http://localhost:5000
 
 router_osrm:
   type: RouterOsrm
   name: OSRM
-  url: http://localhost:5000
+  url_time: http://localhost:5000
 
 router_here:
   type: RouterHere
