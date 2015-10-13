@@ -25,7 +25,7 @@ class V01::Entities::Route < Grape::Entity
   expose(:id, documentation: { type: Integer })
   expose(:distance, documentation: { type: Float })
   expose(:emission, documentation: { type: Float })
-  expose(:vehicle_id, documentation: { type: Integer })
+  expose(:vehicle_usage_id, documentation: { type: Integer })
   expose(:start, documentation: { type: DateTime }) { |m|
     if m.start
       date = (m.planning.date || Date.today).to_time + (m.start.to_i - TIME_2000)

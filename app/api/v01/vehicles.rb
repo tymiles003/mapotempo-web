@@ -23,7 +23,7 @@ class V01::Vehicles < Grape::API
     def vehicle_params
       p = ActionController::Parameters.new(params)
       p = p[:vehicle] if p.key?(:vehicle)
-      p.permit(:ref, :name, :emission, :consumption, :capacity, :color, :open, :close, :tomtom_id, :masternaut_ref, :store_start_id, :store_stop_id, :router_id, :speed_multiplicator, :rest_start, :rest_stop, :rest_duration, :store_rest_id)
+      p.permit(:ref, :name, :emission, :consumption, :capacity, :color, :tomtom_id, :masternaut_ref, :router_id, :speed_multiplicator)
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'

@@ -27,15 +27,7 @@ class V01::Entities::Vehicle < Grape::Entity
   expose(:consumption, documentation: { type: Integer })
   expose(:capacity, documentation: { type: Integer })
   expose(:color, documentation: { type: String })
-  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M:%S') }
-  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
   expose(:tomtom_id, documentation: { type: String })
-  expose(:store_start_id, documentation: { type: Integer })
-  expose(:store_stop_id, documentation: { type: Integer })
   expose(:router_id, documentation: { type: Integer })
   expose(:speed_multiplicator, documentation: { type: Float })
-  expose(:rest_start, documentation: { type: DateTime }) { |m| m.rest_start && m.rest_start.strftime('%H:%M:%S') }
-  expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop && m.rest_stop.strftime('%H:%M:%S') }
-  expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration && m.rest_duration.strftime('%H:%M:%S') }
-  expose(:store_rest_id, documentation: { type: Integer })
 end

@@ -8,6 +8,12 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     Rails.application
   end
 
+  def around
+    Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
+      yield
+    end
+  end
+
   setup do
     @vehicle = vehicles(:vehicle_one)
   end
