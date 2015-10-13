@@ -33,7 +33,7 @@ class V01::Products < Grape::API
       is_array: true,
       entity: V01::Entities::Product
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned products by id.', coerce_with: V01::CoerceArrayInteger
+      optional :ids, type: Array[Integer], desc: 'Select returned products by id.', coerce_with: CoerceArrayInteger
     end
     get do
       products = if params.key?(:ids)
@@ -93,7 +93,7 @@ class V01::Products < Grape::API
     desc 'Delete multiple products.',
       nickname: 'deleteProducts'
     params do
-      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
+      requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger
     end
     delete do
       Product.transaction do

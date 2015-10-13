@@ -44,7 +44,7 @@ class V01::Orders < Grape::API
           is_array: true,
           entity: V01::Entities::Order
         params do
-          optional :ids, type: Array[Integer], desc: 'Select returned orders by id.', coerce_with: V01::CoerceArrayInteger
+          optional :ids, type: Array[Integer], desc: 'Select returned orders by id.', coerce_with: CoerceArrayInteger
         end
         get do
           orders = if params.key?(:ids)

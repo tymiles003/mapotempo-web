@@ -33,7 +33,7 @@ class V01::Tags < Grape::API
       is_array: true,
       entity: V01::Entities::Tag
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned tags by id.', coerce_with: V01::CoerceArrayInteger
+      optional :ids, type: Array[Integer], desc: 'Select returned tags by id.', coerce_with: CoerceArrayInteger
     end
     get do
       tags = if params.key?(:ids)
@@ -92,7 +92,7 @@ class V01::Tags < Grape::API
     desc 'Delete multiple tags.',
       nickname: 'deleteTags'
     params do
-      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
+      requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger
     end
     delete do
       Tag.transaction do

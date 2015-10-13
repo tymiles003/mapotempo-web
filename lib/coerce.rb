@@ -17,13 +17,13 @@
 #
 require 'parse_ids_refs'
 
-class V01::CoerceArrayInteger
+class CoerceArrayInteger
   def self.parse(s)
     s.split(',').collect{ |i| Integer(i) }
   end
 end
 
-class V01::CoerceArrayString
+class CoerceArrayString
   def self.parse(str)
     str.split(',').collect{ |s| String(s) }
   end

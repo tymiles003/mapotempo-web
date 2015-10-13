@@ -106,7 +106,7 @@ class V01::Users < Grape::API
     desc 'Delete multiple users.',
       nickname: 'deleteUsers'
     params do
-      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
+      requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger
     end
     delete do
       if @current_user.admin?

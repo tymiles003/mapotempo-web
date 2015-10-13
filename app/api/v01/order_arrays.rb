@@ -38,7 +38,7 @@ class V01::OrderArrays < Grape::API
       is_array: true,
       entity: V01::Entities::OrderArray
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned order_arrays by id.', coerce_with: V01::CoerceArrayInteger
+      optional :ids, type: Array[Integer], desc: 'Select returned order_arrays by id.', coerce_with: CoerceArrayInteger
     end
     get do
       order_arrays = if params.key?(:ids)
@@ -99,7 +99,7 @@ class V01::OrderArrays < Grape::API
     desc 'Delete multiple order_arrays.',
       nickname: 'deleteOrderArrays'
     params do
-      requires :ids, type: Array[Integer], coerce_with: V01::CoerceArrayInteger
+      requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger
     end
     delete do
       OrderArray.transaction do
