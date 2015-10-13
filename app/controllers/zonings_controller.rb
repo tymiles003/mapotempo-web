@@ -123,7 +123,7 @@ class ZoningsController < ApplicationController
 
   def isodistance
     respond_to do |format|
-      size = params.key?(:size) ? Integer(params[:size]) * 1000 : 1000
+      size = params.key?(:size) ? Float(params[:size].gsub(',', '.')) * 1000 : 1000
       if size
         @zoning.isodistance(size)
         @zoning.save
