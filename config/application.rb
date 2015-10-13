@@ -78,8 +78,10 @@ module Mapotempo
     config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode_reverse'), namespace: 'geocode_reverse', expires_in: 60*60*24*10)
     config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode_complete'), namespace: 'geocode_complete', expires_in: 60*60*24*10)
     config.geocode_complete = false # Build time setting
-    require 'geocode_ign'
-    config.geocode_geocoder = GeocodeIgn.new('secret_api_key', 'localhost')
+    # require 'geocode_ign'
+    # config.geocode_geocoder = GeocodeIgn.new('secret_api_key', 'localhost')
+    require 'geocode_addok_wrapper'
+    Mapotempo::Application.config.geocode_geocoder = GeocodeAddokWrapper.new('https://geocode.mapotempo.com/0.1', 'secret_api_key')
 
     config.osrm = Osrm.new(
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'osrm_request'), namespace: 'osrm_request', expires_in: 60*60*24*1),

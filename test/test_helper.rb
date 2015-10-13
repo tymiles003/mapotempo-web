@@ -33,6 +33,9 @@ class ActiveSupport::TestCase
     @stub_LocationUtilityService = stub_request(:post, uri_template).with { |request|
       request.body.include?("methodName='LocationUtilityService'")
     }.to_return(File.new(File.expand_path('../', __FILE__) + '/fixtures/gpp3-wxs.ign.fr/LocationUtilityService.xml').read)
+
+    stub_request(:get, "geocode.mapotempo.com/0.1/geocode").with(:query => hash_including({})).
+      to_return(File.new(File.expand_path('../', __FILE__) + '/fixtures/geocode.mapotempo.com/geocode.json').read)
   end
 
   def teardown

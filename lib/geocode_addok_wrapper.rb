@@ -18,6 +18,7 @@
 require 'rest_client'
 
 class GeocodeAddokWrapper
+  RESULTTYPE = {'city' => 'city', 'street' => 'street', 'locality' => 'street', 'intersection' => 'intersection', 'house' => 'house', 'poi' => 'house'}
 
   def accuracy_success
     0.8
@@ -60,8 +61,9 @@ class GeocodeAddokWrapper
     if data['features'].size > 0
       data = data['features'][0]
       score = data['properties']['geocoding']['score']
+      type = data['properties']['geocoding']['type']
       coordinates = data['geometry']['coordinates']
-      {lat: coordinates[1], lng: coordinates[0], accuracy: score}
+      {lat: coordinates[1], lng: coordinates[0], quality: RESULTTYPE[type], accuracy: score}
     end
   end
 
@@ -89,9 +91,10 @@ class GeocodeAddokWrapper
     features = data['features']
     features.collect{ |feature|
       score = feature['properties']['geocoding']['score']
+      type = feature['properties']['geocoding']['type']
       label = feature['properties']['geocoding']['label']
       coordinates = feature['geometry']['coordinates']
-      {lat: coordinates[1], lng: coordinates[0], quality: nil, accuracy: score, free: label}
+      {lat: coordinates[1], lng: coordinates[0], quality: RESULTTYPE[type], accuracy: score, free: label}
     }
   end
 

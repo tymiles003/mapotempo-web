@@ -1,0 +1,3 @@
+HTTP/1.1 200 OK
+
+{"type":"FeatureCollection","geocoding":{"version":"draft#namespace#score","licence":"ODbL","attribution":"BANO","query":"Rue des Lilas 33200 Bordeau"},"features":[{"properties":{"geocoding":{"score":0.9027390572390571,"type":"street","label":"Rue des Lilas 33200 Bordeaux","name":"Rue des Lilas","postcode":"33200","city":"Bordeaux"}},"type":"Feature","geometry":{"coordinates":[-0.629369,44.850154],"type":"Point"}}]}
