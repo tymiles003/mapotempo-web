@@ -350,7 +350,7 @@ var plannings_edit = function(params) {
     $.each(data.stores, function(i, store) {
       store.store = true;
       store.planning_id = data.planning_id;
-      if (store.lat !== null && store.lng !== null) {
+      if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
         var m = L.marker(new L.LatLng(store.lat, store.lng), {
           icon: L.icon({
             iconUrl: '<%= asset_path("marker-home.svg") %>',
