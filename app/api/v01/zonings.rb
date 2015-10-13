@@ -26,7 +26,7 @@ class V01::Zonings < Grape::API
       if p[:zones]
         p[:zones_attributes] = p[:zones]
       end
-      p.permit(:name, zones_attributes: [:id, :polygon, :_destroy, :vehicle_id])
+      p.permit(:name, zones_attributes: [:id, :polygon, :_destroy, :vehicle_id, :store_id])
     end
   end
 
@@ -162,19 +162,19 @@ class V01::Zonings < Grape::API
       end
     end
 
-    desc 'Generate isochrone for only one vehicle.',
-      nickname: 'generateIsochroneVehicle'
+    desc 'Generate isochrone for only one store.',
+      nickname: 'generateIsochroneStore'
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
-      requires :vehicle_id, type: Integer
+      requires :store_id, type: Integer
     end
-    patch ':id/vehicle/:vehicle_id/isochrone' do
+    patch ':id/store/:store_id/isochrone' do
       Zoning.transaction do
         zoning = current_customer.zonings.where(id: params[:id]).first
         size = Integer(params[:size])
         if zoning
-          zoning.isochrone_vehicle(size, Integer(params[:vehicle_id]))
+          zoning.isochrone(size, Integer(params[:store_id]))
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
@@ -203,19 +203,19 @@ class V01::Zonings < Grape::API
       end
     end
 
-    desc 'Generate isodistance for only one vehicle.',
-      nickname: 'generateIsochroneVehicle'
+    desc 'Generate isodistance for only one store.',
+      nickname: 'generateIsochroneStore'
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
-      requires :vehicle_id, type: Integer
+      requires :store_id, type: Integer
     end
-    patch ':id/vehicle/:vehicle_id/isodistance' do
+    patch ':id/store/:store_id/isodistance' do
       Zoning.transaction do
         zoning = current_customer.zonings.where(id: params[:id]).first
         size = Integer(params[:size])
         if zoning
-          zoning.isodistance_vehicle(size, Integer(params[:vehicle_id]))
+          zoning.isodistance(size, Integer(params[:store_id]))
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else

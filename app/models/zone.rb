@@ -18,6 +18,7 @@
 class Zone < ActiveRecord::Base
   belongs_to :zoning, inverse_of: :zones
   belongs_to :vehicle, inverse_of: :zones
+  belongs_to :store, inverse_of: :zones
 
   nilify_blanks
   validates :polygon, presence: true

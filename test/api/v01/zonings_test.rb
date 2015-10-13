@@ -81,12 +81,24 @@ class V01::ZoningsTest < ActiveSupport::TestCase
   end
 
   test 'should generate isochrone' do
+    [stores(:store_zero), stores(:store_one), stores(:store_one_bis)].each { |store|
+      uri_template = Addressable::Template.new('localhost:1723/0.1/isochrone?lat=' + store.lat.to_s + '&lng=' + store.lng.to_s + '&time=5')
+      stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
+    }
+    patch api("#{@zoning.id}/isochrone", size: 5)
+    assert last_response.ok?, last_response.body
+    assert_equal 3, JSON.parse(last_response.body)['zones'].length
+    assert_not_nil JSON.parse(last_response.body)['zones'][0]['polygon']
+  end
+
+  test 'should generate isochrone for one store' do
     store_one = stores(:store_one)
     uri_template = Addressable::Template.new('localhost:1723/0.1/isochrone?lat=' + store_one.lat.to_s + '&lng=' + store_one.lng.to_s + '&time=5')
     stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
-    patch api("#{@zoning.id}/isochrone", size: 5)
-    assert last_response.ok?, last_response.body
-    assert_equal 1, JSON.parse(last_response.body)['zones'].length
-    assert_not_nil JSON.parse(last_response.body)['zones'][0]['polygon']
+    assert_difference('Zone.count', 1) do
+      patch api("#{@zoning.id}/store/#{store_one.id}/isochrone", size: 5)
+      assert last_response.ok?, last_response.body
+      assert_not_nil JSON.parse(last_response.body)['zones'][0]['polygon']
+    end
   end
 end
