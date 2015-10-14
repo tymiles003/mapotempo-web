@@ -18,7 +18,7 @@
 require 'osrm'
 
 class RouterOsrm < Router
-  validates :url, presence: true
+  validates :url_time, presence: true
 
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
     distance, time, trace = Mapotempo::Application.config.osrm.compute(url_time, lat1, lng1, lat2, lng2)

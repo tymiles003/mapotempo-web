@@ -18,7 +18,7 @@
 
 class Router < ActiveRecord::Base
   nilify_blanks
-  auto_strip_attributes :name, :url
+  auto_strip_attributes :name, :url_time, :url_distance
   validates :name, presence: true
 
   def isochrone?
