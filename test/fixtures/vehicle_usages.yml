@@ -48,7 +48,7 @@ vehicle_usage_three_one:
   rest_duration: 2000-01-01 00:45:00
   store_rest: store_one
 
-vehicle_usage_three_tow:
+vehicle_usage_three_two:
   vehicle_usage_set: vehicle_usage_set_three
   vehicle: vehicle_three
   open:

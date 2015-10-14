@@ -21,6 +21,7 @@ class VehicleUsageSet < ActiveRecord::Base
   belongs_to :store_stop, class_name: 'Store', inverse_of: :vehicle_usage_set_stops
   belongs_to :store_rest, class_name: 'Store', inverse_of: :vehicle_usage_set_rests
   has_many :plannings, inverse_of: :vehicle_usage_set
+  before_destroy :destroy_vehicle_usage_set # Update planning.vehicle_usage_set before destroy self
   has_many :vehicle_usages, inverse_of: :vehicle_usage_set, dependent: :delete_all, autosave: true
 
   nilify_blanks
@@ -37,7 +38,6 @@ class VehicleUsageSet < ActiveRecord::Base
   after_initialize :assign_defaults, if: 'new_record?'
   before_save :set_stores
   before_update :update_out_of_date
-  before_destroy :destroy_vehicle_usage_set
 
   private
 
@@ -89,6 +89,7 @@ class VehicleUsageSet < ActiveRecord::Base
     else
       customer.plannings.select{ |planning| planning.vehicle_usage_set == self }.each{ |planning|
         planning.vehicle_usage_set = default
+        planning.save!
       }
     end
   end

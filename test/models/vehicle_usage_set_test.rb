@@ -26,4 +26,18 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     o.save!
     assert o.vehicle_usages[0].routes[-1].out_of_date
   end
+
+  test 'should delete in use' do
+    assert_difference('VehicleUsageSet.count', -1) do
+      customers(:customer_one).vehicle_usage_sets.delete(vehicle_usage_sets(:vehicle_usage_set_one))
+    end
+  end
+
+  test 'should keep at least one' do
+    o = customers(:customer_one)
+    assert_raises RuntimeError do
+      o.vehicle_usage_sets.each(&:destroy)
+      o.save!
+    end
+  end
 end

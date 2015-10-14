@@ -23,8 +23,10 @@ class Route < ActiveRecord::Base
   nilify_blanks
   auto_strip_attributes :ref
   validates :planning, presence: true
-#  validates :vehicle, presence: true # nil on unplanned route
+#  validates :vehicle_usage, presence: true # nil on unplanned route
   validate :stop_index_validation
+
+  before_save :update_vehicle_usage
 
   after_initialize :assign_defaults, if: 'new_record?'
 
@@ -464,5 +466,11 @@ class Route < ActiveRecord::Base
 
     all_index = [0] + not_nil_index + [positions.length - 1] + nil_index
     order.collect{ |o| all_index[o] }
+  end
+
+  def update_vehicle_usage
+    if vehicle_usage_id_changed?
+      out_of_date = true
+    end
   end
 end
