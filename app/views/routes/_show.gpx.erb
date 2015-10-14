@@ -14,13 +14,13 @@
       <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
       <%= number_to_human(route.distance, units: :distance, precision: 3) %>
     </desc>
-    <% if !route.vehicle_usage.store_start.nil? && !route.vehicle_usage.store_start.lat.nil? && !route.vehicle_usage.store_start.lng.nil? %>
-    <rtept lat="<%= route.vehicle_usage.store_start.lat %>" lon="<%= route.vehicle_usage.store_start.lng %>">
+    <% if !route.vehicle_usage.default_store_start.nil? && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil? %>
+    <rtept lat="<%= route.vehicle_usage.default_store_start.lat %>" lon="<%= route.vehicle_usage.default_store_start.lng %>">
       <name>
-        <%= route.vehicle_usage.store_start.name %>
+        <%= route.vehicle_usage.default_store_start.name %>
       </name>
       <desc><%= route.start.strftime("%H:%M") if route.start %>
-<%= [route.vehicle_usage.store_start.street, route.vehicle_usage.store_start.postalcode, route.vehicle_usage.store_start.city, route.vehicle_usage.store_start.country].select{ |i| i && i.length > 0 }.join(', ') %>.
+<%= [route.vehicle_usage.default_store_start.street, route.vehicle_usage.default_store_start.postalcode, route.vehicle_usage.default_store_start.city, route.vehicle_usage.default_store_start.country].select{ |i| i && i.length > 0 }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
       <% end %>
@@ -45,7 +45,7 @@ route.stops.each{ |stop|
           ' ',
           stop.is_a?(StopDestination) ?
             (stop.destination.take_over ? '(' + stop.destination.take_over.strftime("%H:%M:%S") + ')' : '') :
-            '(' + route.vehicle_usage.rest_duration.strftime("%H:%M:%S") + ')'
+            '(' + route.vehicle_usage.default_rest_duration.strftime("%H:%M:%S") + ')'
         ].join.gsub(/\s+/, ' ').strip
         %>
       </name>
@@ -75,13 +75,13 @@ route.stops.each{ |stop|
   end
 }
 %>
-    <% if !route.vehicle_usage.store_stop.nil? && !route.vehicle_usage.store_stop.lat.nil? && !route.vehicle_usage.store_stop.lng.nil? %>
-    <rtept lat="<%= route.vehicle_usage.store_stop.lat %>" lon="<%= route.vehicle_usage.store_stop.lng %>">
+    <% if !route.vehicle_usage.default_store_stop.nil? && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? %>
+    <rtept lat="<%= route.vehicle_usage.default_store_stop.lat %>" lon="<%= route.vehicle_usage.default_store_stop.lng %>">
       <name>
-        <%= route.vehicle_usage.store_stop.name %>
+        <%= route.vehicle_usage.default_store_stop.name %>
       </name>
       <desc><%= route.end.strftime("%H:%M") if route.end %>
-<%= [route.vehicle_usage.store_stop.street, route.vehicle_usage.store_stop.postalcode, route.vehicle_usage.store_stop.city, route.vehicle_usage.store_stop.country].select{ |i| i && i.length > 0 }.join(', ') %>.
+<%= [route.vehicle_usage.default_store_stop.street, route.vehicle_usage.default_store_stop.postalcode, route.vehicle_usage.default_store_stop.city, route.vehicle_usage.default_store_stop.country].select{ |i| i && i.length > 0 }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
       <% end %>

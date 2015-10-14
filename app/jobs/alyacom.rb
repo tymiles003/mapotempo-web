@@ -22,7 +22,7 @@ class Alyacom
   def self.export_route(route)
     customer = route.planning.customer
 
-    store = route.vehicle_usage.store_start
+    store = route.vehicle_usage.default_store_start
     staff = {
       id: route.vehicle_usage.vehicle.name,
       name: route.vehicle_usage.vehicle.name,
@@ -34,7 +34,7 @@ class Alyacom
     date = route.planning.date || Date.today
     planning_id_base = date.strftime('%y%m%d')
     base_time = date.to_time
-    position = route.vehicle_usage.store_start
+    position = route.vehicle_usage.default_store_start
     waypoints = route.stops.select(&:active).collect{ |stop|
       position = stop if stop.position?
       if position.nil? || position.lat.nil? || position.lng.nil?

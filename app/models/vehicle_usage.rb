@@ -31,35 +31,35 @@ class VehicleUsage < ActiveRecord::Base
 
   before_update :update_out_of_date
 
-  def open
+  def default_open
     self[:open] || vehicle_usage_set.open
   end
 
-  def close
+  def default_close
     self[:close] || vehicle_usage_set.close
   end
 
-  def store_start
+  def default_store_start
     self[:store_start] || vehicle_usage_set.store_start
   end
 
-  def store_stop
+  def default_store_stop
     self[:store_stop] || vehicle_usage_set.store_stop
   end
 
-  def store_rest
+  def default_store_rest
     self[:store_rest] || vehicle_usage_set.store_rest
   end
 
-  def rest_start
+  def default_rest_start
     self[:rest_start] || vehicle_usage_set.rest_start
   end
 
-  def rest_stop
+  def default_rest_stop
     self[:rest_stop] || vehicle_usage_set.rest_stop
   end
 
-  def rest_duration
+  def default_rest_duration
     self[:rest_duration] || vehicle_usage_set.rest_duration
   end
 

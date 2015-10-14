@@ -171,8 +171,8 @@ class Planning < ActiveRecord::Base
     # Take the closest routes destination and eval insert
     route, index = available_routes.collect{ |route|
       route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
-        [(route.vehicle_usage.store_start && !route.vehicle_usage.store_start.lat.nil? && !route.vehicle_usage.store_start.lng.nil?) ? [route.vehicle_usage.store_start, route, 1] : nil, 
-        (route.vehicle_usage.store_stop && !route.vehicle_usage.store_stop.lat.nil? && !route.vehicle_usage.store_stop.lng.nil?) ? [route.vehicle_usage.store_stop, route, route.stops.size + 1] : nil]
+        [(route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?) ? [route.vehicle_usage.default_store_start, route, 1] : nil,
+        (route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.flatten(1).compact.sort{ |a, b|
       a[0].distance(stop.position) <=> b[0].distance(stop.position)
     }[0..9].collect{ |destination_route_index|

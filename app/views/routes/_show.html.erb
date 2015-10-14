@@ -34,10 +34,10 @@
         <% else %>
           <div class="col-md-6 col-sm-6 col-xs-9">
         <% end %>
-          <span class="name"><%= route.vehicle_usage.store_start.name %></span><br/>
+          <span class="name"><%= route.vehicle_usage.default_store_start.name %></span><br/>
           <span class="address">
-            <%= route.vehicle_usage.store_start.street %>
-            <%= route.vehicle_usage.store_start.postalcode %> <%= route.vehicle_usage.store_start.city %>  <%= route.vehicle_usage.store_start.country %>
+            <%= route.vehicle_usage.default_store_start.street %>
+            <%= route.vehicle_usage.default_store_start.postalcode %> <%= route.vehicle_usage.default_store_start.city %>  <%= route.vehicle_usage.default_store_start.country %>
           </span>
         </div>
 
@@ -117,7 +117,7 @@
             <% end %>
           <% end %>
           <% if stop.is_a?(StopRest) %>
-            <span class="duration">(<%= route.vehicle_usage.rest_duration.strftime("%H:%M:%S") %>)</span>
+            <span class="duration">(<%= route.vehicle_usage.default_rest_duration.strftime("%H:%M:%S") %>)</span>
           <% end %>
         </div>
 
@@ -164,10 +164,10 @@
         <% else %>
           <div class="col-md-6 col-sm-6 col-xs-9">
         <% end %>
-          <span class="name"><%= route.vehicle_usage.store_stop.name %></span><br/>
+          <span class="name"><%= route.vehicle_usage.default_store_stop.name %></span><br/>
           <span class="address">
-            <%= route.vehicle_usage.store_stop.street %>
-            <%= route.vehicle_usage.store_stop.postalcode %> <%= route.vehicle_usage.store_stop.city %> <%= route.vehicle_usage.store_stop.country %>
+            <%= route.vehicle_usage.default_store_stop.street %>
+            <%= route.vehicle_usage.default_store_stop.postalcode %> <%= route.vehicle_usage.default_store_stop.city %> <%= route.vehicle_usage.default_store_stop.country %>
           </span>
         </div>
 

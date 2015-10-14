@@ -1,17 +1,17 @@
 <%= twitter_bootstrap_form_for @vehicle_usage, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @vehicle_usage %>
-  <%= f.text_field :open, {value: @vehicle_usage.open ? @vehicle_usage.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
+  <%= f.text_field :open, {value: @vehicle_usage.default_open ? @vehicle_usage.default_open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
     <p class="help-block"><%= t '.open_help' %></p>
   <% end %>
-  <%= f.text_field :close, {value: @vehicle_usage.close ? @vehicle_usage.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
+  <%= f.text_field :close, {value: @vehicle_usage.default_close ? @vehicle_usage.default_close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
     <p class="help-block"><%= t '.close_help' %></p>
   <% end %>
-  <%= f.collection_select :store_start_id, [], @vehicle_usage.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
-  <%= f.collection_select :store_stop_id, [], @vehicle_usage.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
+  <%= f.collection_select :store_start_id, [], @vehicle_usage.vehicle_usage_set.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
+  <%= f.collection_select :store_stop_id, [], @vehicle_usage.vehicle_usage_set.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
   <%= f.text_field :rest_start, {value: @vehicle_usage.rest_start ? @vehicle_usage.rest_start.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
   <%= f.text_field :rest_stop, {value: @vehicle_usage.rest_stop ? @vehicle_usage.rest_stop.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
   <%= f.text_field :rest_duration, {value: @vehicle_usage.rest_duration ? @vehicle_usage.rest_duration.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-  <%= f.collection_select :store_rest_id, [], @vehicle_usage.customer.stores, :id, :name, {include_blank: t('vehicles_usage.form.store_rest.none')}, {input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
+  <%= f.collection_select :store_rest_id, [], @vehicle_usage.vehicle_usage_set.customer.stores, :id, :name, {include_blank: t('vehicles_usage.form.store_rest.none')}, {input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

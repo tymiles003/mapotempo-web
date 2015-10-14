@@ -101,13 +101,13 @@ class Store < ActiveRecord::Base
   def out_of_date
     Route.transaction do
       routes_usage_set = vehicle_usage_set_starts.collect{ |vehicle_usage_set_start|
-        vehicle_usage_set_start.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_start }.collect(&:routes)
+        vehicle_usage_set_start.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.default_store_start }.collect(&:routes)
       } +
       vehicle_usage_set_stops.collect{ |vehicle_usage_set_stop|
-        vehicle_usage_set_stop.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_stop }.collect(&:routes)
+        vehicle_usage_set_stop.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.default_store_stop }.collect(&:routes)
       } +
       vehicle_usage_set_rests.collect{ |vehicle_usage_set_rest|
-        vehicle_usage_set_rest.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_rest }.collect(&:routes)
+        vehicle_usage_set_rest.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.default_store_rest }.collect(&:routes)
       }
 
       routes_usage = (vehicle_usage_starts + vehicle_usage_stops + vehicle_usage_rests).collect(&:routes)

@@ -41,7 +41,7 @@ class Route < ActiveRecord::Base
 
   def init_stops
     stops.clear
-    if vehicle_usage && vehicle_usage.rest_duration
+    if vehicle_usage && vehicle_usage.default_rest_duration
       stops.build(type: StopRest.name, active: true, index: 1)
     end
 
@@ -65,10 +65,10 @@ class Route < ActiveRecord::Base
     self.start = self.end = nil
     last_lat, last_lng = nil, nil
     if vehicle_usage && stops.size > 0
-      self.end = self.start = departure || vehicle_usage.open
+      self.end = self.start = departure || vehicle_usage.default_open
       speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1)
-      if !vehicle_usage.store_start.nil? && !vehicle_usage.store_start.lat.nil? && !vehicle_usage.store_start.lng.nil?
-        last_lat, last_lng = vehicle_usage.store_start.lat, vehicle_usage.store_start.lng
+      if !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
+        last_lat, last_lng = vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng
       end
       quantity = 0
       router = vehicle_usage.vehicle.router || planning.customer.router
@@ -99,7 +99,7 @@ class Route < ActiveRecord::Base
             stop.out_of_capacity = vehicle_usage.vehicle.capacity && quantity > vehicle_usage.vehicle.capacity
           end
 
-          stop.out_of_drive_time = stop.time > vehicle_usage.close
+          stop.out_of_drive_time = stop.time > vehicle_usage.default_close
 
           if stop.position?
             last_lat, last_lng = stop.lat, stop.lng
@@ -110,8 +110,8 @@ class Route < ActiveRecord::Base
         end
       }
 
-      if !last_lat.nil? && !last_lng.nil? && !vehicle_usage.store_stop.nil? && !vehicle_usage.store_stop.lat.nil? && !vehicle_usage.store_stop.lng.nil?
-        distance, time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.store_stop.lat, vehicle_usage.store_stop.lng)
+      if !last_lat.nil? && !last_lng.nil? && !vehicle_usage.default_store_stop.nil? && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
+        distance, time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng)
       else
         distance, time, trace = 0, 0, nil
       end
@@ -120,7 +120,7 @@ class Route < ActiveRecord::Base
       self.end += time
       self.stop_distance = distance
       self.stop_trace = trace
-      self.stop_out_of_drive_time = self.end > vehicle_usage.close
+      self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
 
       self.emission = self.distance / 1000 * vehicle_usage.vehicle.emission * vehicle_usage.vehicle.consumption / 100
 
@@ -285,13 +285,13 @@ class Route < ActiveRecord::Base
   def optimize(matrix_progress, &optimizer)
     stops_on = stops_segregate[true]
     router = vehicle_usage.vehicle.router || planning.customer.router
-    position_start = (!vehicle_usage.store_start.nil? && !vehicle_usage.store_start.lat.nil? && !vehicle_usage.store_start.lng.nil?) ? [vehicle_usage.store_start.lat, vehicle_usage.store_start.lng] : [nil, nil]
-    position_stop = (!vehicle_usage.store_stop.nil? && !vehicle_usage.store_stop.lat.nil? && !vehicle_usage.store_stop.lng.nil?) ? [vehicle_usage.store_stop.lat, vehicle_usage.store_stop.lng] : [nil, nil]
+    position_start = (!vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
+    position_stop = (!vehicle_usage.default_store_stop.nil? && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
     amalgamate_stops_same_position(stops_on) { |positions|
       tws = [[nil, nil, 0]] + positions.collect{ |position|
         open, close, duration = position[2..4]
-        open = open ? Integer(open - vehicle_usage.open) : nil
-        close = close ? Integer(close - vehicle_usage.open) : nil
+        open = open ? Integer(open - vehicle_usage.default_open) : nil
+        close = close ? Integer(close - vehicle_usage.default_open) : nil
         if open && close && open > close
           close = open
         end

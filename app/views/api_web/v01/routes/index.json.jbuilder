@@ -1,6 +1,6 @@
 json.planning_id @planning.id
 
-json.stores @routes.select{ |route| route.vehicle_usage }.collect{ |route| [route.vehicle_usage.store_start, route.vehicle_usage.store_stop, route.vehicle_usage.store_rest] }.flatten.compact.uniq do |store|
+json.stores @routes.select{ |route| route.vehicle_usage }.collect{ |route| [route.vehicle_usage.default_store_start, route.vehicle_usage.default_store_stop, route.vehicle_usage.default_store_rest] }.flatten.compact.uniq do |store|
   json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
 end
 
@@ -24,7 +24,7 @@ json.routes @routes do |route|
   number = 0
   no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = false
   json.store_start do
-    json.extract! route.vehicle_usage.store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+    json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.start.strftime('%H:%M')) if route.start
   end if route.vehicle_usage
   first_active_free = nil
@@ -84,13 +84,13 @@ json.routes @routes do |route|
       end
     elsif stop.is_a?(StopRest)
       json.rest do
-        (json.duration route.vehicle_usage.rest_duration.strftime('%H:%M:%S')) if route.vehicle_usage.rest_duration
-        (json.store_id route.vehicle_usage.store_rest.id) if route.vehicle_usage.store_rest
+        (json.duration route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S')) if route.vehicle_usage.default_rest_duration
+        (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
       end
     end
   end
   json.store_stop do
-    json.extract! route.vehicle_usage.store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+    json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.end.strftime('%H:%M')) if route.end
     json.stop_trace route.stop_trace
     (json.error true) if route.stop_out_of_drive_time

@@ -36,10 +36,10 @@ else
     number = 0
     no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = false
     json.store_start do
-      json.extract! route.vehicle_usage.store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+      json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
       (json.time route.start.strftime('%H:%M')) if route.start
-      (json.geocoded true) if !route.vehicle_usage.store_start.lat.nil? && !route.vehicle_usage.store_start.lng.nil?
-      (json.error true) if route.vehicle_usage.store_start.lat.nil? || route.vehicle_usage.store_start.lng.nil?
+      (json.geocoded true) if !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?
+      (json.error true) if route.vehicle_usage.default_store_start.lat.nil? || route.vehicle_usage.default_store_start.lng.nil?
     end if route.vehicle_usage
     first_active_free = nil
     route.stops.reverse_each{ |stop|
@@ -98,18 +98,18 @@ else
         end
       elsif stop.is_a?(StopRest)
         json.rest do
-          (json.duration route.vehicle_usage.rest_duration.strftime('%H:%M:%S')) if route.vehicle_usage.rest_duration
-          (json.store_id route.vehicle_usage.store_rest.id) if route.vehicle_usage.store_rest
-          (json.geocoded true) if !route.vehicle_usage.store_rest.nil? && !route.vehicle_usage.store_rest.lat.nil? && !route.vehicle_usage.store_rest.lng.nil?
-          (json.error true) if !route.vehicle_usage.store_rest.nil? && (route.vehicle_usage.store_rest.lat.nil? || route.vehicle_usage.store_rest.lng.nil?)
+          (json.duration route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S')) if route.vehicle_usage.default_rest_duration
+          (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
+          (json.geocoded true) if !route.vehicle_usage.default_store_rest.nil? && !route.vehicle_usage.default_store_rest.lat.nil? && !route.vehicle_usage.default_store_rest.lng.nil?
+          (json.error true) if !route.vehicle_usage.default_store_rest.nil? && (route.vehicle_usage.default_store_rest.lat.nil? || route.vehicle_usage.default_store_rest.lng.nil?)
         end
       end
     end
     json.store_stop do
-      json.extract! route.vehicle_usage.store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+      json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
       (json.time route.end.strftime('%H:%M')) if route.end
-      (json.geocoded true) if !route.vehicle_usage.store_stop.lat.nil? && !route.vehicle_usage.store_stop.lng.nil?
-      (json.error true) if route.vehicle_usage.store_stop.lat.nil? || route.vehicle_usage.store_stop.lng.nil?
+      (json.geocoded true) if !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?
+      (json.error true) if route.vehicle_usage.default_store_stop.lat.nil? || route.vehicle_usage.default_store_stop.lng.nil?
       json.stop_trace route.stop_trace
       (json.error true) if route.stop_out_of_drive_time
       json.stop_out_of_drive_time route.stop_out_of_drive_time
