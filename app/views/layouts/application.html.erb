@@ -69,11 +69,11 @@
                     <li><%= link_to new_planning_path do %><i class="fa fa-plus fa-fw"></i> <%= t 'all.verb.new' %><% end %></li>
                     <li><%= link_to plannings_path do %><i class="fa fa-calendar-o fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
                     <li class="divider"></li>
+                    <li><%= link_to zonings_path do %><i class="fa fa-adjust fa-fw"></i> <%= t 'zonings.menu.zonings' %><% end %></li>
+                    <li class="divider"></li>
                     <% current_user.customer.plannings.select(&:id).each do |planning| %>
                       <li><%= link_to edit_planning_path(planning) do %><i class="fa fa-calendar fa-fw"></i> <%= planning.name %><% end %></li>
                     <% end %>
-                    <li class="divider"></li>
-                    <li><%= link_to zonings_path do %><i class="fa fa-adjust fa-fw"></i> <%= t 'zonings.menu.zonings' %><% end %></li>
                   </ul>
               <% else %>
                 <li class="disabled"><a href="#"><i class="fa fa-calendar-o fa-fw"></i> <%= t 'plannings.menu.plannings' %></a></li>
@@ -86,11 +86,11 @@
                     <li><%= link_to new_order_array_path do %><i class="fa fa-plus fa-fw"></i> <%= t 'all.verb.new' %><% end %></li>
                     <li><%= link_to order_arrays_path do %><i class="fa fa-check-square-o fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
                     <li class="divider"></li>
+                    <li><%= link_to products_path do %><i class="fa fa-cubes fa-fw"></i> <%= t 'products.menu.products' %><% end %></li>
+                    <li class="divider"></li>
                     <% current_user.customer.order_arrays.select(&:id).each do |order_array| %>
                       <li><%= link_to edit_order_array_path(order_array) do %><i class="fa fa-check-square-o fa-fw"></i> <%= order_array.name %><% end %></li>
                     <% end %>
-                    <li class="divider"></li>
-                    <li><%= link_to products_path do %><i class="fa fa-cubes fa-fw"></i> <%= t 'products.menu.products' %><% end %></li>
                   </ul>
                 </li>
               <% end %>
@@ -114,12 +114,12 @@
                 <ul class="dropdown-menu">
                   <li><%= link_to vehicles_path do %><i class="fa fa-truck fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
                   <li class="divider"></li>
+                  <li><%= link_to stores_path do %><i class="fa fa-home fa-fw"></i> <%= t 'destinations.menu.stores' %><% end %></li>
+                  <li><%= link_to store_import_path do %><i class="fa fa-upload fa-fw"></i> <%= t 'destinations.menu.import_stores' %><% end %></li>
+                  <li class="divider"></li>
                   <% current_user.customer.vehicles.each do |vehicle| %>
                     <li><%= link_to edit_vehicle_path(vehicle) do %><i class="fa fa-truck fa-fw"></i> <%= vehicle.name %><% end %></li>
                   <% end %>
-                  <li class="divider"></li>
-                  <li><%= link_to stores_path do %><i class="fa fa-home fa-fw"></i> <%= t 'destinations.menu.stores' %><% end %></li>
-                  <li><%= link_to store_import_path do %><i class="fa fa-upload fa-fw"></i> <%= t 'destinations.menu.import_stores' %><% end %></li>
                 </ul>
               </li>
             <% end %>
