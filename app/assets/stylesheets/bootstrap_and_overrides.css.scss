@@ -61,6 +61,9 @@ a.btn-primary:active { color:#FFFFFF; }
   max-height: 300px;
   overflow-y: auto;
 }
+.navbar .dropdown-menu {
+  max-height: 400px;
+}
 
 .leaflet-top, .leaflet-bottom {
     z-index: 999 !important; /* Bootstrap also use 1000 for control */
