@@ -72,3 +72,10 @@ Enjoy at [http://localhost:3000](http://localhost:3000)
 Start the background jobs runner with
 
     ./bin/delayed_job run
+
+Running in production
+=====================
+
+Setup assets:
+    rake i18n:js:export
+    rake assets:precompile
