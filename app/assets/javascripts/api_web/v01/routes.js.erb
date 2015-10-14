@@ -48,6 +48,7 @@ var api_web_v01_routes_index = function(params) {
       },
       onAdd: function (map) {
           var container = caption;
+          L.DomEvent.disableClickPropagation(container);
           return container;
       }
     });

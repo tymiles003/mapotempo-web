@@ -41,6 +41,7 @@ var destinations_form = function(params, api) {
       },
       onAdd: function (map) {
           var container = form_popup;
+          L.DomEvent.disableClickPropagation(container);
           return container;
       }
     });
