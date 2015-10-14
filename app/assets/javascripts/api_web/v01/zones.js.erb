@@ -111,7 +111,7 @@ var api_web_v01_zones_index = function(params) {
 
     var bounds = featureGroup.getBounds();
     if (bounds && bounds.isValid()) {
-      map.fitBounds(bounds);
+      map.fitBounds(bounds.pad(1.1));
     }
   }
 

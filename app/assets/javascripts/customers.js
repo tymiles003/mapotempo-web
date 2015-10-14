@@ -47,7 +47,7 @@ var customers_index = function(params) {
 
       map.invalidateSize();
       if (layer.getLayers().length > 0) {
-        map.fitBounds(layer.getBounds());
+        map.fitBounds(layer.getBounds().pad(1.1));
       }
     }
 

@@ -85,7 +85,7 @@ var plannings_edit = function(params) {
     errorMessage: I18n.t('web.geocoder.empty_result')
   }).addTo(map);
   geocoder.markGeocode = function(result) {
-    this._map.fitBounds(result.bbox);
+    this._map.fitBounds(result.bbox.pad(1.1));
   };
 
   routes_layers = L.featureGroup();
@@ -747,7 +747,7 @@ var plannings_edit = function(params) {
     var bounds = routes_layers.getBounds();
     if (bounds && bounds.isValid()) {
       map.invalidateSize();
-      map.fitBounds(bounds, {animate: false});
+      map.fitBounds(bounds.pad(1.1), {animate: false});
     }
   }
 
