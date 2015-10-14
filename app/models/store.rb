@@ -89,7 +89,7 @@ class Store < ActiveRecord::Base
 
   def update_geocode
     # when lat/lng are specified manually, geocoding_accuracy has no sense
-    if !@is_gecoded && (lat_changed? || lng_changed?)
+    if !@is_gecoded && self.point? && (lat_changed? || lng_changed?)
       self.geocoding_accuracy = nil
     end
     if !lat.nil? && !lng.nil?
