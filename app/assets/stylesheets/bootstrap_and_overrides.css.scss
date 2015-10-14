@@ -57,6 +57,11 @@ a.btn-primary:visited { color:#FFFFFF; }
 a.btn-primary:hover { color:#FFFFFF; }
 a.btn-primary:active { color:#FFFFFF; }
 
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
 .leaflet-top, .leaflet-bottom {
     z-index: 999 !important; /* Bootstrap also use 1000 for control */
 }
