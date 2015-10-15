@@ -66,10 +66,11 @@ class Here
   def matrix(row, column, &block)
     raise 'More than 100x100 matrix, not possible with Here' if row.size > 100 || column.size > 100
 
-    row.collect!{ |r| [r[0].round(5), r[1].round(5)] }
-    column.collect!{ |c| [c[0].round(5), c[1].round(5)] }
+    # do not modify row/column inputs if an index is used by pack_vector/unpack_vector
+    row = row.collect{ |r| [r[0].round(5), r[1].round(5)] }
+    column = column.collect{ |c| [c[0].round(5), c[1].round(5)] }
 
-    key = [row.hash, column.hash]
+    key = Digest::MD5.hexdigest(Marshal.dump([row, column]))
 
     result = @cache_result.read(key)
     if !result
