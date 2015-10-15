@@ -866,7 +866,7 @@ fr:
 
   vehicle_usage_sets:
     menu:
-      vehicle_usage_sets: "Groups d'utilisation des véhicules"
+      vehicle_usage_sets: "Groupe d'utilisation des véhicules"
     edit:
       title: "Modifier groupe d'utilisation de véhicules"
     index:
