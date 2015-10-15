@@ -276,7 +276,7 @@ class Planning < ActiveRecord::Base
   end
 
   def update_vehicle_usage_set
-    if vehicle_usage_set_id_changed? && !id.nil?
+    if vehicle_usage_set_id_changed? && !vehicle_usage_set_id_was.nil? && !id.nil?
       h = Hash[routes.select(&:vehicle_usage).collect{ |route| [route.vehicle_usage.vehicle, route] }]
       vehicle_usage_set.vehicle_usages.each{ |vehicle_usage|
         h[vehicle_usage.vehicle].vehicle_usage = vehicle_usage
