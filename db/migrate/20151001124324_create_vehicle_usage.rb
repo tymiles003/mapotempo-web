@@ -52,8 +52,8 @@ class CreateVehicleUsage < ActiveRecord::Migration
 
     # Move vehicle props values to vehicle_usage
 
-    stats = Hash.new{ |h, k| h[k] = Hash.new(0) }
     Customer.all.each{ |customer|
+      stats = Hash.new{ |h, k| h[k] = Hash.new(0) }
       vehicle_usage_set = customer.vehicle_usage_sets.build(name: 'Default')
       vehicle_usage_set.vehicle_usages = customer.vehicles.collect{ |vehicle|
         stats[:open][vehicle.open] += 1
