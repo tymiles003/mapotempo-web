@@ -111,9 +111,18 @@ class Otp
 
     if request
       data = JSON.parse(request)
-      request = data['features'][0]
-      if request != []
-        request.to_json
+      if data['features']
+        # MultiPolygon not supported by Leaflet.Draw
+        data['features'].collect! { |feat|
+          if feat['geometry']['type'] == 'LineString'
+            feat['geometry']['type'] = 'Polygon'
+            feat['geometry']['coordinates'] = [feat['geometry']['coordinates']]
+          end
+          feat
+        }
+        data.to_json
+      else
+        raise 'No polygon for this zone'
       end
     end
   end
