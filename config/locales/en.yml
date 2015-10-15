@@ -851,6 +851,8 @@ en:
         none: "None"
 
   vehicle_usage_sets:
+    default:
+      name: "Default"
     menu:
       vehicle_usage_sets: "Vehicle Usage Sets"
     edit:

@@ -865,6 +865,8 @@ fr:
         none: "Aucun"
 
   vehicle_usage_sets:
+    default:
+      name: "Défaut"
     menu:
       vehicle_usage_sets: "Groupe d'utilisation des véhicules"
     edit:

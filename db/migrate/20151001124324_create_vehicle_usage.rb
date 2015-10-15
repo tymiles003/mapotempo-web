@@ -54,7 +54,7 @@ class CreateVehicleUsage < ActiveRecord::Migration
 
     Customer.all.each{ |customer|
       stats = Hash.new{ |h, k| h[k] = Hash.new(0) }
-      vehicle_usage_set = customer.vehicle_usage_sets.build(name: 'Default')
+      vehicle_usage_set = customer.send(:create_default_vehicle_usage_set)
       vehicle_usage_set.vehicle_usages = customer.vehicles.collect{ |vehicle|
         stats[:open][vehicle.open] += 1
         stats[:close][vehicle.close] += 1
