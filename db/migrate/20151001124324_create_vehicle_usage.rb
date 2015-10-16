@@ -156,7 +156,7 @@ class CreateVehicleUsage < ActiveRecord::Migration
 
     Customer.all.each{ |customer|
       customer.plannings.each{ |planning|
-        planning.routes.select(&:vehicle).each{ |route|
+        planning.routes.select(&:vehicle_usage).each{ |route|
           route.vehicle = route.vehicle_usage.vehicle
           route.save!
         }
