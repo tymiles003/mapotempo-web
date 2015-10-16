@@ -33,19 +33,28 @@ class Zone < ActiveRecord::Base
 
   def inside_distance(lat, lng)
     if !lat.nil? && !lng.nil?
-      point = RGeo::Cartesian.factory.point(lng, lat)
-      inside = (@geom || decode_geom).geometry().contains?(point)
-      if inside
-        if @geom.geometry.respond_to?(:exterior_ring)
-          @geom.geometry.exterior_ring.distance(point)
-        else
-          @geom.geometry.collect { |geo| geo.exterior_ring.distance(point) }.min
-        end
+      if (@geom || decode_geom).class == RGeo::GeoJSON::Feature
+        inside_feature_distance(@geom.geometry, RGeo::Cartesian.factory.point(lng, lat))
+      elsif @geom.class == RGeo::GeoJSON::FeatureCollection
+        @geom.each { |feat|
+          inside_feature_distance(feat.geometry, RGeo::Cartesian.factory.point(lng, lat))
+        }.min
       end
     end
   end
 
   private
+
+  def inside_feature_distance(geom, point)
+    inside = geom.contains?(point)
+    if inside
+      if geom.respond_to?(:exterior_ring)
+        geom.exterior_ring.distance(point)
+      else
+        geom.collect { |geo| geo.exterior_ring.distance(point) }.min
+      end
+    end
+  end
 
   def decode_geom
     @geom = RGeo::GeoJSON.decode(polygon, json_parser: :json)
