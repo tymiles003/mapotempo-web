@@ -22,12 +22,11 @@
 @media print {
   .route-print {
     page-break-after: always;
-    page-break-inside: avoid;
   }
   .route-print:last-of-type {
     page-break-after: avoid !important;
   }
-  li {
+  li.list-group-item {
     page-break-inside: avoid;
   }
 
@@ -38,8 +37,10 @@
 
 ol.routes-print {
   padding: 0px;
+  position: relative;
 }
 .route-print {
+  position: relative;
   list-style: none;
 
   > h1 {
