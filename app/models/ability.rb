@@ -23,7 +23,7 @@ class Ability
       if user.admin?
         can :manage, Customer, reseller_id: user.reseller_id
         can [:new, :create], Customer
-        can :manage, User, customer: {reseller_id: user.reseller_id}
+        can :manage, User, id: user.id
         can [:new, :create], User
         can :manage, Reseller, id: user.reseller_id
         can [:index], Profile
