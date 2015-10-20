@@ -102,14 +102,14 @@ en:
       vehicles:
         one: "vehicle"
         other: "vehicles"
-      vehicle_usage: "Vehicle usage"
+      vehicle_usage: "Vehicle configuration"
       vehicle_usages:
-        one: "vehicle usage"
-        other: "vehicle usages"
-      vehicle_usage_set: "Vehicle usage set"
+        one: "vehicle configuration"
+        other: "vehicle configurations"
+      vehicle_usage_set: "Vehicles configuration"
       vehicle_usage_sets:
-        one: "vehicle usage set"
-        other: "vehicle usage sets"
+        one: "vehicles configuration"
+        other: "vehicle configurations"
       zoning: "Zoning"
       zonings:
         one: "zoning"
@@ -214,8 +214,8 @@ en:
         updated_at: "Updated"
         order_array_id: "Order array"
         date: "Date"
-        vehicle_usage_set: "Vehicle usage set"
-        vehicle_usage_set_id: "Vehicle usage set"
+        vehicle_usage_set: "Vehicles configuration"
+        vehicle_usage_set_id: "Vehicles configuration"
       profile:
         name: "Name"
         layers: "Layers"
@@ -347,7 +347,7 @@ en:
               after: "Must be after the open time"
             rest_stop:
               after: "Must be after the open time"
-          at_least_one: "At least one vehicle usage set needed"
+          at_least_one: "At least one vehicles configuration needed"
         zone:
           attributes:
             vehicle:
@@ -830,22 +830,22 @@ en:
 
   vehicle_usages:
     menu:
-      vehicle_usages: "Vehicle Usages"
+      vehicle_usages: "Vehicle configurations"
     edit:
-      title: "Editing vehicle usage"
+      title: "Editing vehicle and configuration"
     index:
-      title: "Listing vehicle usages"
+      title: "Listing vehicle configurations"
       stores: "Stores"
       time: "Open - Close"
     new:
-      title: "New vehicle usage"
+      title: "New vehicle configuration"
     form:
       vehicle:
         legend: "Vehicle"
-        help: "The following informations on the vehicle are common to all vehicle usages."
+        help: "The following informations on the vehicle are common to all vehicle configurations."
       vehicle_usage:
-        legend: "Vehicle Usage: \"%{s}\""
-        help: "The following informations are specific to the use of the vehicle."
+        legend: "Vehicle configuration: \"%{s}\""
+        help: "The following informations are specific to the configuration of the vehicle."
       open:
         default: "%{n} (default value)"
         help: "Deliveryman's working hours"
@@ -870,13 +870,14 @@ en:
     menu:
       vehicle_usage_sets: "Vehicles"
     edit:
-      title: "Editing vehicle usage set"
+      title: "Editing vehicles configuration"
     index:
-      title: "Listing vehicle usage sets"
+      title: "Listing vehicles configurations"
+      new: "New vehicles configuration"
       stores: "Stores"
       time: "Open - Close"
     new:
-      title: "New vehicle usage set"
+      title: "New vehicles configuration"
     form:
       open_help: "Deliveryman's working hours"
       close_help: "Deliveryman's working hours"
