@@ -153,7 +153,7 @@ class Zoning < ActiveRecord::Base
   def isowhat_store(what_qm, what, size, store)
     if store
       if customer.router.method(what_qm).call && !store.lat.nil? && !store.lng.nil?
-        geom = customer.router.method(what).call(store.lat, store.lng, size)
+        geom = customer.router.method(what).call(store.lat, store.lng, size, customer.speed_multiplicator || 1)
       end
       if geom
         zone = zones.where({store_id: store.id}).first

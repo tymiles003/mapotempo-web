@@ -46,15 +46,16 @@ class RouterOsrm < Router
     !url_isochrone.nil?
   end
 
-  def isochrone(lat, lng, size)
-    Mapotempo::Application.config.osrm.isochrone(url_isochrone, lat, lng, size)
+  def isochrone(lat, lng, size, speed_multiplicator)
+    Mapotempo::Application.config.osrm.isochrone(url_isochrone, lat, lng, size * speed_multiplicator)
   end
 
   def isodistance?
     !url_isodistance.nil?
   end
 
-  def isodistance(lat, lng, size)
+  def isodistance(lat, lng, size, speed_multiplicator)
+    # No speed_multiplicator
     Mapotempo::Application.config.osrm.isochrone(url_isodistance, lat, lng, size)
   end
 end
