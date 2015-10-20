@@ -39,17 +39,31 @@ class VehicleUsageSet < ActiveRecord::Base
   before_save :set_stores
   before_update :update_out_of_date
 
+  amoeba do
+    enable
+
+    customize(lambda { |_original, copy|
+      copy.vehicle_usages.each{ |vehicle_usage|
+        vehicle_usage.vehicle_usage_set = copy
+      }
+    })
+
+    append name: Time.now.strftime(' %Y-%m-%d %H:%M')
+  end
+
   private
 
   def set_stores
-    self.store_start = customer.stores[0] unless store_start
+    if customer
+      self.store_start = customer.stores[0] unless store_start
+    end
     self.store_stop = store_start unless store_stop
   end
 
   def assign_defaults
     set_stores
-    self.open = Time.utc(2000, 1, 1, 8, 0)
-    self.close = Time.utc(2000, 1, 1, 12, 0)
+    self.open = Time.utc(2000, 1, 1, 8, 0) unless open
+    self.close = Time.utc(2000, 1, 1, 12, 0) unless close
   end
 
   def update_out_of_date

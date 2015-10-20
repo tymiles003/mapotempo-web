@@ -48,7 +48,7 @@ class Customer < ActiveRecord::Base
   validates :max_vehicles, numericality: { greater_than: 0 }
 
   after_initialize :assign_defaults, if: 'new_record?'
-  after_create :create_default_store, :update_max_vehicles
+  after_create :create_default_store, :update_max_vehicles, :create_default_vehicle_usage_set
   before_update :update_out_of_date, :update_max_vehicles
   before_save :sanitize_print_header
 
@@ -80,6 +80,12 @@ class Customer < ActiveRecord::Base
       city: I18n.t('stores.default.city'),
       lat: Float(I18n.t('stores.default.lat')),
       lng: Float(I18n.t('stores.default.lng'))
+    )
+  end
+
+  def create_default_vehicle_usage_set
+    vehicle_usage_sets.build(
+      name: I18n.t('vehicle_usage_sets.default.name')
     )
   end
 

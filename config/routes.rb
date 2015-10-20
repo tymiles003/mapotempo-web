@@ -38,6 +38,12 @@ Rails.application.routes.draw do
 
   resources :vehicles
 
+  resources :vehicle_usage_sets do
+    patch 'duplicate'
+  end
+  delete 'vehicle_usage_sets' => 'vehicle_usage_sets#destroy_multiple'
+  resources :vehicle_usage
+
   resources :destinations
   get 'destination/import_template' => 'destinations#import_template'
   get 'destination/import' => 'destinations#import'
