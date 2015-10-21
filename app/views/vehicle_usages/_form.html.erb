@@ -2,7 +2,7 @@
   <%= render 'shared/error_messages', model: @vehicle_usage %>
   <fieldset>
     <legend class="scheduler-border"><%= t('activerecord.models.vehicle') %></legend>
-    <%= f.fields_for @vehicle_usage.vehicle do |f| %>
+    <%= twitter_bootstrap_fields_for :vehicle_usage_vehicle, @vehicle_usage.vehicle, layout: :horizontal do |f| %>
       <%= f.hidden_field :id %>
       <%= f.text_field :ref do %>
         <p class="help-block"><%= t 'vehicles.form.ref_help' %></p>
