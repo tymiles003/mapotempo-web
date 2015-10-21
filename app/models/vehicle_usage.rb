@@ -23,6 +23,9 @@ class VehicleUsage < ActiveRecord::Base
   belongs_to :store_rest, class_name: 'Store', inverse_of: :vehicle_usage_rests
   has_many :routes, inverse_of: :vehicle_usage, dependent: :delete_all, autosave: true
 
+  accepts_nested_attributes_for :vehicle, update_only: true
+  validates_associated_bubbling :vehicle
+
   nilify_blanks
   validates_time :open, if: :open
   validates_time :close, after: :open, if: lambda { |vu| vu.open && vu.close }

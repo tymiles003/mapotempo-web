@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2015
 #
 # This file is part of Mapotempo.
 #
@@ -15,66 +15,41 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class VehiclesController < ApplicationController
+class VehicleUsagesController < ApplicationController
   include LinkBack
 
   load_and_authorize_resource
-  before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
-
-  def index
-    @vehicles = current_user.customer.vehicles
-  end
-
-  def new
-    @vehicle = current_user.customer.vehicles.build
-  end
+  before_action :set_vehicle_usage, only: [:show, :edit, :update, :destroy]
 
   def edit
   end
 
-  def create
-    @vehicle = current_user.customer.vehicles.build(vehicle_params)
-    @vehicle.speed_multiplicator /= 100 if @vehicle.speed_multiplicator
-
-    respond_to do |format|
-      if @vehicle.save
-        format.html { redirect_to vehicles_path, notice: t('activerecord.successful.messages.created', model: @vehicle.class.model_name.human) }
-      else
-        format.html { render action: 'new' }
-      end
-    end
-  end
-
   def update
     respond_to do |format|
-      p = vehicle_params
-      @vehicle.assign_attributes(p)
-      @vehicle.speed_multiplicator /= 100 if @vehicle.speed_multiplicator
-      if @vehicle.save
-        format.html { redirect_to link_back || vehicles_path, notice: t('activerecord.successful.messages.updated', model: @vehicle.class.model_name.human) }
+      @vehicle_usage.assign_attributes(vehicle_usage_params)
+      @vehicle_usage.vehicle.speed_multiplicator /= 100 if @vehicle_usage.vehicle.speed_multiplicator
+      if @vehicle_usage.save
+        format.html { redirect_to link_back || edit_vehicle_usage_path(@vehicle_usage), notice: t('activerecord.successful.messages.updated', model: @vehicle_usage.class.model_name.human) }
       else
         format.html { render action: 'edit' }
       end
     end
   end
 
-  def destroy
-    @vehicle.destroy
-    respond_to do |format|
-      format.html { redirect_to vehicles_url }
-    end
-  end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_vehicle
-    @vehicle = Vehicle.find(params[:id])
-    @vehicle.speed_multiplicator *= 100 if @vehicle.speed_multiplicator
+  def set_vehicle_usage
+    @vehicle_usage = VehicleUsage.find(params[:id])
+    @vehicle_usage.vehicle.speed_multiplicator *= 100 if @vehicle_usage.vehicle.speed_multiplicator
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def vehicle_params
-    params.require(:vehicle).permit(:color, :open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id)
+  def vehicle_usage_params
+    p = params.require(:vehicle_usage).permit(:open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, vehicle: [:ref, :name, :emission, :consumption, :capacity, :color, :tomtom_id, :masternaut_ref, :router_id, :speed_multiplicator])
+    if p.key?(:vehicle)
+      p[:vehicle_attributes] = p[:vehicle]
+      p.except(:vehicle)
+    end
   end
 end

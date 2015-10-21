@@ -15,17 +15,17 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-var vehicles_form = function(params) {
-  $('#vehicle_open, #vehicle_close, #vehicle_rest_start, #vehicle_rest_stop, #vehicle_rest_duration').timeEntry({
+var vehicle_usages_form = function(params) {
+  $('#vehicle_usage_open, #vehicle_usage_close, #vehicle_usage_rest_start, #vehicle_usage_rest_stop, #vehicle_usage_rest_duration').timeEntry({
     show24Hours: true,
     spinnerImage: ''
   });
 
-  $('#vehicle_color').simplecolorpicker({
+  $('#vehicle_usage_vehicle_color').simplecolorpicker({
     theme: 'fontawesome'
   });
 
-  $('#vehicle_tomtom_id').select2({
+  $('#vehicle_usage_vehicle_tomtom_id').select2({
     theme: 'bootstrap',
     width: '100%',
     minimumResultsForSearch: -1,
@@ -48,18 +48,18 @@ var vehicles_form = function(params) {
   });
 }
 
-Paloma.controller('Vehicle').prototype.new = function() {
-  vehicles_form(this.params);
+Paloma.controller('VehicleUsage').prototype.new = function() {
+  vehicle_usages_form(this.params);
 };
 
-Paloma.controller('Vehicle').prototype.create = function() {
-  vehicles_form(this.params);
+Paloma.controller('VehicleUsage').prototype.create = function() {
+  vehicle_usages_form(this.params);
 };
 
-Paloma.controller('Vehicle').prototype.edit = function() {
-  vehicles_form(this.params);
+Paloma.controller('VehicleUsage').prototype.edit = function() {
+  vehicle_usages_form(this.params);
 };
 
-Paloma.controller('Vehicle').prototype.update = function() {
-  vehicles_form(this.params);
+Paloma.controller('VehicleUsage').prototype.update = function() {
+  vehicle_usages_form(this.params);
 };

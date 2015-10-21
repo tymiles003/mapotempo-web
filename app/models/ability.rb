@@ -35,6 +35,7 @@ class Ability
         can [:stop_job_optimizer, :stop_job_destination_geocoding, :stop_job_store_geocoding], Customer
         can [:index, :edit, :update], Vehicle, customer_id: user.customer.id
         can :manage, VehicleUsageSet, customer_id: user.customer.id
+        can [:edit, :update], VehicleUsage, vehicle_usage_set: {customer_id: user.customer.id}
         can :manage, Tag, customer_id: user.customer.id
         can [:new, :create], Tag
         can :manage, Destination, customer_id: user.customer.id
