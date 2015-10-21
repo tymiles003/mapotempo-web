@@ -216,6 +216,7 @@ en:
         date: "Date"
         vehicle_usage_set: "Vehicles configuration"
         vehicle_usage_set_id: "Vehicles configuration"
+        vehicle_usage_set_small: "Conf."
       profile:
         name: "Name"
         layers: "Layers"

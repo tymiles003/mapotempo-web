@@ -22,7 +22,7 @@ class VehicleUsageSet < ActiveRecord::Base
   belongs_to :store_rest, class_name: 'Store', inverse_of: :vehicle_usage_set_rests
   has_many :plannings, inverse_of: :vehicle_usage_set
   before_destroy :destroy_vehicle_usage_set # Update planning.vehicle_usage_set before destroy self
-  has_many :vehicle_usages, inverse_of: :vehicle_usage_set, dependent: :delete_all, autosave: true
+  has_many :vehicle_usages, -> { order(:id) }, inverse_of: :vehicle_usage_set, dependent: :delete_all, autosave: true
 
   nilify_blanks
   auto_strip_attributes :name
@@ -40,7 +40,7 @@ class VehicleUsageSet < ActiveRecord::Base
   before_update :update_out_of_date
 
   amoeba do
-    enable
+    exclude_association :plannings
 
     customize(lambda { |_original, copy|
       copy.vehicle_usages.each{ |vehicle_usage|

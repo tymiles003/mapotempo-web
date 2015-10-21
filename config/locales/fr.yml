@@ -217,6 +217,7 @@ fr:
         date: "Date"
         vehicle_usage_set: "Configuration des véhicules"
         vehicle_usage_set_id: "Configuration des véhicules"
+        vehicle_usage_set_small: "Conf."
       profile:
         name: "Nom"
         layers: "Fond de carte"
