@@ -24,6 +24,7 @@
       <% end %>
       <th><%= t 'activerecord.attributes.vehicle_usage_set.name' %></th>
       <th><%= t 'vehicle_usage_sets.index.stores' %></th>
+      <th><%= t 'vehicle_usage_sets.index.time' %></th>
       <th></th>
     </tr>
   </thead>
@@ -46,6 +47,11 @@
         <td>
           <%= vehicle_usage_set.store_start && vehicle_usage_set.store_start.name %><% if vehicle_usage_set.store_start && vehicle_usage_set.store_start != vehicle_usage_set.store_stop %> <i class="fa fa-long-arrow-right fa-fw"></i> <%= vehicle_usage_set.store_stop && vehicle_usage_set.store_stop.name %><% end %>
         </td>
+        <td>
+          <%= if(vehicle_usage_set.open) then vehicle_usage_set.open.strftime("%H:%M") end %>
+          -
+          <%= if(vehicle_usage_set.close) then vehicle_usage_set.close.strftime("%H:%M") end %>
+        </td>
         <td class="text-right">
           <% if @customer.enable_multi_vehicle_usage_sets %>
             <%= link_to vehicle_usage_set_duplicate_path(vehicle_usage_set), :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
@@ -57,7 +63,7 @@
         </td>
       </tr>
       <tr class="vehicle_usages">
-        <td colspan="<%= @customer.enable_multi_vehicle_usage_sets ? 4 : 3 %>">
+        <td colspan="<%= @customer.enable_multi_vehicle_usage_sets ? 5 : 4 %>">
           <div id="collapseUsageSet<%= vehicle_usage_set.id %>" class="accordion-body collapse<% if i == 0 %> in<% end %>">
             <div class="accordion-inner">
               <%= render 'vehicle_usages/list', vehicle_usage_set: vehicle_usage_set %>
