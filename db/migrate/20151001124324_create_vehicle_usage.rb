@@ -88,6 +88,18 @@ class CreateVehicleUsage < ActiveRecord::Migration
       vehicle_usage_set.rest_stop = stats[:rest_stop].max_by(&:last)[0]
       vehicle_usage_set.rest_duration = stats[:rest_duration].max_by(&:last)[0]
 
+      # Remove values used in vehicle_usage_set
+      vehicle_usage_set.vehicle_usages.each{ |vehicle_usage|
+        vehicle_usage.open = nil if vehicle_usage_set.open == vehicle_usage.open
+        vehicle_usage.close = nil if vehicle_usage_set.close == vehicle_usage.close
+        vehicle_usage.store_start = nil if vehicle_usage_set.store_start == vehicle_usage.store_start
+        vehicle_usage.store_stop = nil if vehicle_usage_set.store_stop == vehicle_usage.store_stop
+        vehicle_usage.store_rest = nil if vehicle_usage_set.store_rest == vehicle_usage.store_rest
+        vehicle_usage.rest_start = nil if vehicle_usage_set.rest_start == vehicle_usage.rest_start
+        vehicle_usage.rest_stop = nil if vehicle_usage_set.rest_stop == vehicle_usage.rest_stop
+        vehicle_usage.rest_duration = nil if vehicle_usage_set.rest_duration == vehicle_usage.rest_duration
+      }
+
       customer.save!
     }
 
