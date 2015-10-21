@@ -828,19 +828,19 @@ var destinations_index = function(params, api) {
           var ret = 0;
           switch ($("[name$=\\[geocoding_level\\]]", node).val()) {
             case 'point':
-              ret = 1000;
+              ret = 5000;
               break;
             case 'house':
-              ret = 2000;
+              ret = 4000;
               break;
             case 'street':
               ret = 3000;
               break;
             case 'intersection':
-              ret = 4000;
+              ret = 2000;
               break;
             case 'city':
-              ret = 5000;
+              ret = 1000;
               break;
           }
           if ($("[name$=\\[geocoding_accuracy\\]]", node).val())
