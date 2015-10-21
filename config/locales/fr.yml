@@ -453,7 +453,7 @@ fr:
       country_default: "%{n} (valeur par défaut)"
       geocoding_level:
         point: "Point"
-        house: "Maison"
+        house: "Adresse"
         street: "Voie"
         intersection: "Intersection"
         city: "Commune"
