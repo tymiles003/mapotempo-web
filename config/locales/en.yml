@@ -840,6 +840,12 @@ en:
     new:
       title: "New vehicle usage"
     form:
+      vehicle:
+        legend: "Vehicle"
+        help: "The following informations on the vehicle are common to all vehicle usages."
+      vehicle_usage:
+        legend: "Vehicle Usage: \"%{s}\""
+        help: "The following informations are specific to the use of the vehicle."
       open:
         default: "%{n} (default value)"
         help: "Deliveryman's working hours"

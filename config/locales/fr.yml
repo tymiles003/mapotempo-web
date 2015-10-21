@@ -855,6 +855,12 @@ fr:
     new:
       title: "Nouvelle utilisation de véhicules"
     form:
+      vehicle:
+        legend: "Véhicule"
+        help: "Les informations ci-dessous sur le véhicule sont communes à toutes les utilisations du véhicule."
+      vehicle_usage:
+        legend: "Utilisation du véhicule : « %{s} »"
+        help: "Les informations ci-dessous sont spécifiques à l'utilisation du véhicule."
       open:
         default: "%{n} (valeur par défaut)"
         help: "Horaire de travail livreur"

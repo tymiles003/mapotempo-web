@@ -1,7 +1,8 @@
 <%= twitter_bootstrap_form_for @vehicle_usage, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @vehicle_usage %>
   <fieldset>
-    <legend class="scheduler-border"><%= t('activerecord.models.vehicle') %></legend>
+    <legend class="scheduler-border"><%= t 'vehicle_usages.form.vehicle.legend' %></legend>
+    <p class="help-block"><%= t 'vehicle_usages.form.vehicle.help' %></p>
     <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle]', @vehicle_usage.vehicle, layout: :horizontal do |f| %>
       <%= f.hidden_field :id %>
       <%= f.text_field :ref do %>
@@ -34,7 +35,8 @@
   </fieldset>
 
   <fieldset>
-    <legend class="scheduler-border"><%= t('activerecord.models.vehicle_usage') %></legend>
+    <legend class="scheduler-border"><%= t('vehicle_usages.form.vehicle_usage.legend', s: @vehicle_usage.vehicle_usage_set.name) %></legend>
+    <p class="help-block"><%= t 'vehicle_usages.form.vehicle_usage.help' %></p>
     <%= f.text_field :open, {
       value: @vehicle_usage.open ? @vehicle_usage.open.strftime("%H:%M") : nil,
       placeholder: t('vehicle_usages.form.open.default', n: @vehicle_usage.vehicle_usage_set.open.strftime("%H:%M")),
