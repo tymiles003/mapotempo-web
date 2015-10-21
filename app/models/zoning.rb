@@ -104,9 +104,9 @@ class Zoning < ActiveRecord::Base
     isowhat?(:isochrone?)
   end
 
-  def isochrone(size, store_id = nil)
-    if store_id
-      isowhat_store(:isochrone?, :isochrone, size, customer.stores.find(store_id))
+  def isochrone(size, vehicle_id = nil)
+    if vehicle_id
+      isowhat(:isochrone?, :isochrone, size, customer.vehicles.find(vehicle_id))
     else
       isowhat(:isochrone?, :isochrone, size)
     end
@@ -116,9 +116,9 @@ class Zoning < ActiveRecord::Base
     isowhat?(:isodistance?)
   end
 
-  def isodistance(size, store_id = nil)
-    if store_id
-      isowhat_store(:isodistance?, :isodistance, size, customer.stores.find(store_id))
+  def isodistance(size, vehicle_id = nil)
+    if vehicle_id
+      isowhat_vehicle(:isodistance?, :isodistance, size, customer.vehicles.find(vehicle_id))
     else
       isowhat(:isodistance?, :isodistance, size)
     end
@@ -145,22 +145,23 @@ class Zoning < ActiveRecord::Base
 
   def isowhat(what_qm, what, size)
     zones.clear
-    customer.stores.each{ |store|
-      isowhat_store(what_qm, what, size, store)
+    customer.vehicles.each{ |vehicle|
+      isowhat_vehicle(what_qm, what, size, vehicle)
     }
   end
 
-  def isowhat_store(what_qm, what, size, store)
-    if store
-      if customer.router.method(what_qm).call && !store.lat.nil? && !store.lng.nil?
-        geom = customer.router.method(what).call(store.lat, store.lng, size, customer.speed_multiplicator || 1)
+  def isowhat_vehicle(what_qm, what, size, vehicle)
+    if vehicle
+      router = (vehicle.router || customer.router)
+      if router.method(what_qm).call && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
+        geom = router.method(what).call(vehicle.store_start.lat, vehicle.store_start.lng, size, customer.speed_multiplicator || 1)
       end
       if geom
-        zone = zones.where({store_id: store.id}).first
+        zone = zones.where({vehicle_id: vehicle.id}).first
         if zone
           zone.polygon = geom
         else
-          zones.build({polygon: geom, store: store})
+          zones.build({polygon: geom, vehicle: vehicle})
         end
       end
     end
