@@ -23,6 +23,7 @@ class VehicleUsageSetsController < ApplicationController
 
   def index
     @vehicle_usage_sets = current_user.customer.vehicle_usage_sets
+    @customer = current_user.customer
   end
 
   def new

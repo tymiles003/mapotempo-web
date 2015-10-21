@@ -137,6 +137,7 @@ en:
         print_header: "Routes header"
         stores: "Stores"
         enable_orders: "Enable orders"
+        enable_multi_vehicle_usage_sets: "Enable more than one vehicles configurations"
         test: "Test"
         jobs: "Jobs"
         optimization_cluster_size: "Optimization cluster size"

@@ -11,42 +11,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151013142818) do
+ActiveRecord::Schema.define(version: 20151021141140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "customers", force: :cascade do |t|
     t.date     "end_subscription"
-    t.integer  "max_vehicles",                                              null: false
+    t.integer  "max_vehicles",                                                null: false
     t.time     "take_over"
     t.integer  "job_destination_geocoding_id"
     t.integer  "job_optimizer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name",                          limit: 255
-    t.string   "tomtom_account",                limit: 255
-    t.string   "tomtom_user",                   limit: 255
-    t.string   "tomtom_password",               limit: 255
-    t.integer  "router_id",                                                 null: false
+    t.string   "name",                            limit: 255
+    t.string   "tomtom_account",                  limit: 255
+    t.string   "tomtom_user",                     limit: 255
+    t.string   "tomtom_password",                 limit: 255
+    t.integer  "router_id",                                                   null: false
     t.boolean  "print_planning_annotating"
     t.text     "print_header"
-    t.string   "masternaut_user",               limit: 255
-    t.string   "masternaut_password",           limit: 255
-    t.boolean  "enable_orders",                             default: false, null: false
-    t.boolean  "test",                                      default: false, null: false
-    t.string   "alyacom_association",           limit: 255
+    t.string   "masternaut_user",                 limit: 255
+    t.string   "masternaut_password",             limit: 255
+    t.boolean  "enable_orders",                               default: false, null: false
+    t.boolean  "test",                                        default: false, null: false
+    t.string   "alyacom_association",             limit: 255
     t.integer  "optimization_cluster_size"
     t.integer  "optimization_time"
     t.integer  "optimization_soft_upper_bound"
-    t.integer  "profile_id",                                                null: false
+    t.integer  "profile_id",                                                  null: false
     t.float    "speed_multiplicator"
-    t.string   "default_country",                                           null: false
-    t.boolean  "enable_tomtom",                             default: false, null: false
-    t.boolean  "enable_masternaut",                         default: false, null: false
-    t.boolean  "enable_alyacom",                            default: false, null: false
+    t.string   "default_country",                                             null: false
+    t.boolean  "enable_tomtom",                               default: false, null: false
+    t.boolean  "enable_masternaut",                           default: false, null: false
+    t.boolean  "enable_alyacom",                              default: false, null: false
     t.integer  "job_store_geocoding_id"
-    t.integer  "reseller_id",                                               null: false
+    t.integer  "reseller_id",                                                 null: false
+    t.boolean  "enable_multi_vehicle_usage_sets",             default: true,  null: false
   end
 
   add_index "customers", ["job_destination_geocoding_id"], name: "index_customers_on_job_destination_geocoding_id", using: :btree
