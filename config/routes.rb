@@ -36,8 +36,6 @@ Rails.application.routes.draw do
   resources :customers
   delete 'customers' => 'customers#destroy_multiple'
 
-  resources :vehicles
-
   resources :vehicle_usage_sets do
     patch 'duplicate'
   end

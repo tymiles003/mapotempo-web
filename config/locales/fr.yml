@@ -821,17 +821,6 @@ fr:
     emissions_light_petrol: "VL - Essence - %{n}"
     emissions_light_diesel: "VL - Gazole - %{n}"
     emissions_light_lgp: "VL - GPL - %{n}"
-    menu:
-      vehicles: "Véhicules"
-    edit:
-      title: "Modifier véhicule"
-    index:
-      title: "Liste véhicules"
-      stores: "Dépôts"
-      time: "Début - Fin"
-      router: "Calculateur"
-    new:
-      title: "Nouveau véhicules"
     form:
       ref: "Référence"
       ref_help: "Référence libre"
@@ -868,7 +857,7 @@ fr:
     default:
       name: "Défaut"
     menu:
-      vehicle_usage_sets: "Groupe d'utilisation des véhicules"
+      vehicle_usage_sets: "Véhicules"
     edit:
       title: "Modifier groupe d'utilisation de véhicules"
     index:

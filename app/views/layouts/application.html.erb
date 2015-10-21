@@ -110,16 +110,10 @@
                 </ul>
               </li>
               <li class="dropdown">
-                <%= link_to vehicles_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-truck fa-fw"></i> <%= t 'vehicles.menu.vehicles' %> <span class="caret"></span><% end %>
+                <%= link_to vehicle_usage_sets_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-truck fa-fw"></i> <%= t 'vehicle_usage_sets.menu.vehicles' %> <span class="caret"></span><% end %>
                 <ul class="dropdown-menu">
-                  <li><%= link_to vehicles_path do %><i class="fa fa-truck fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
-                  <li class="divider"></li>
                   <li><%= link_to stores_path do %><i class="fa fa-home fa-fw"></i> <%= t 'destinations.menu.stores' %><% end %></li>
                   <li><%= link_to store_import_path do %><i class="fa fa-upload fa-fw"></i> <%= t 'destinations.menu.import_stores' %><% end %></li>
-                  <li class="divider"></li>
-                  <% current_user.customer.vehicles.each do |vehicle| %>
-                    <li><%= link_to edit_vehicle_path(vehicle) do %><i class="fa fa-truck fa-fw"></i> <%= vehicle.name %><% end %></li>
-                  <% end %>
                 </ul>
               </li>
             <% end %>

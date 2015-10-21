@@ -812,16 +812,6 @@ en:
     emissions_light_petrol: "Light - Petrol - %{n}"
     emissions_light_diesel: "Light - Diesel - %{n}"
     emissions_light_lgp: "Light - LGP - %{n}"
-    menu:
-      vehicles: "Vehicles"
-    edit:
-      title: "Editing vehicle"
-    index:
-      title: "Listing vehicles"
-      stores: "Stores"
-      router: "Route planner"
-    new:
-      title: "New vehicle"
     form:
       ref: "Reference"
       ref_help: "A free reference"
@@ -854,7 +844,7 @@ en:
     default:
       name: "Default"
     menu:
-      vehicle_usage_sets: "Vehicle Usage Sets"
+      vehicle_usage_sets: "Vehicles"
     edit:
       title: "Editing vehicle usage set"
     index:
