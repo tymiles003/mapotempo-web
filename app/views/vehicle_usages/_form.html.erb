@@ -2,26 +2,26 @@
   <%= render 'shared/error_messages', model: @vehicle_usage %>
   <fieldset>
     <legend class="scheduler-border"><%= t('activerecord.models.vehicle') %></legend>
-    <%= twitter_bootstrap_fields_for :vehicle_usage_vehicle, @vehicle_usage.vehicle, layout: :horizontal do |f| %>
+    <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle]', @vehicle_usage.vehicle, layout: :horizontal do |f| %>
       <%= f.hidden_field :id %>
       <%= f.text_field :ref do %>
-        <p class="help-block"><%= t 'vehicles.form.ref_help' %></p>
+        <p class="help-block"><%= t 'vehicles.form.ref.help' %></p>
       <% end %>
       <%= f.text_field :name %>
       <%= f.select :emission, [], Vehicle.emissions_table, {}, {input_group: t('all.unit.kgco2e_l_html')} do %>
-        <p class="help-block"><%= t 'vehicles.form.emissions_help' %></p>
+        <p class="help-block"><%= t 'vehicles.form.emissions.help' %></p>
       <% end %>
       <%= f.number_field :consumption, {input_group: t('all.unit.l_100km')} do %>
-        <p class="help-block"><%= t 'vehicles.form.consumption_help' %></p>
+        <p class="help-block"><%= t 'vehicles.form.consumption.help' %></p>
       <% end %>
       <%= f.number_field :capacity, {min:1, input_group: content_tag('i', '', class: 'fa fa-check-square fa-fw')} do %>
-        <p class="help-block"><%= t 'vehicles.form.capacity_help' %></p>
+        <p class="help-block"><%= t 'vehicles.form.capacity.help' %></p>
       <% end %>
-      <%= f.collection_select :router_id, [], @vehicle_usage.vehicle.customer.profile.routers, :id, :name, {include_blank: t('vehicles.form.router_default') + ' (' + @vehicle_usage.vehicle.customer.router.name + ')' }, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} do %>
-        <p class="help-block"><%= t 'vehicles.form.router_help' %></p>
+      <%= f.collection_select :router_id, [], @vehicle_usage.vehicle.customer.profile.routers, :id, :name, {include_blank: t('vehicles.form.router.default') + ' (' + @vehicle_usage.vehicle.customer.router.name + ')' }, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} do %>
+        <p class="help-block"><%= t 'vehicles.form.router.help' %></p>
       <% end %>
-      <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('vehicles.form.speed_multiplicator_default', n: 100), input_group: '%'} do %>
-        <p class="help-block"><%= t 'vehicles.form.speed_multiplicator_help' %></p>
+      <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('vehicles.form.speed_multiplicator.default', n: 100), input_group: '%'} do %>
+        <p class="help-block"><%= t 'vehicles.form.speed_multiplicator.help' %></p>
       <% end %>
       <% if @vehicle_usage.vehicle.customer.enable_tomtom && !@vehicle_usage.vehicle.customer.tomtom_account.blank? && !@vehicle_usage.vehicle.customer.tomtom_user.blank? && !@vehicle_usage.vehicle.customer.tomtom_password.blank? %>
         <%= f.select :tomtom_id, t('vehicles.form.tomtom_id'), [@vehicle_usage.vehicle.tomtom_id] %>
@@ -35,18 +35,39 @@
 
   <fieldset>
     <legend class="scheduler-border"><%= t('activerecord.models.vehicle_usage') %></legend>
-    <%= f.text_field :open, {value: @vehicle_usage.open ? @vehicle_usage.open.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
-      <p class="help-block"><%= t '.open_help' %></p>
+    <%= f.text_field :open, {
+      value: @vehicle_usage.open ? @vehicle_usage.open.strftime("%H:%M") : nil,
+      placeholder: t('vehicle_usages.form.open.default', n: @vehicle_usage.vehicle_usage_set.open.strftime("%H:%M")),
+      input_group: t('all.unit.hour_minute')} do %>
+      <p class="help-block"><%= t '.open.help' %></p>
     <% end %>
-    <%= f.text_field :close, {value: @vehicle_usage.close ? @vehicle_usage.close.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} do %>
-      <p class="help-block"><%= t '.close_help' %></p>
+    <%= f.text_field :close, {
+      value: @vehicle_usage.close ? @vehicle_usage.close.strftime("%H:%M") : nil,
+      placeholder: t('vehicle_usages.form.close.default', n: @vehicle_usage.vehicle_usage_set.close.strftime("%H:%M")),
+      input_group: t('all.unit.hour_minute')} do %>
+      <p class="help-block"><%= t '.close.help' %></p>
     <% end %>
-    <%= f.collection_select :store_start_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
-    <%= f.collection_select :store_stop_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
-    <%= f.text_field :rest_start, {value: @vehicle_usage.rest_start ? @vehicle_usage.rest_start.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-    <%= f.text_field :rest_stop, {value: @vehicle_usage.rest_stop ? @vehicle_usage.rest_stop.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-    <%= f.text_field :rest_duration, {value: @vehicle_usage.rest_duration ? @vehicle_usage.rest_duration.strftime("%H:%M") : nil, input_group: t('all.unit.hour_minute')} %>
-    <%= f.collection_select :store_rest_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {include_blank: t('vehicle_usages.form.store_rest.none')}, {input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
+    <%= f.collection_select :store_start_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {
+      include_blank: t('vehicle_usages.form.store_start.default') + ' (' + @vehicle_usage.vehicle_usage_set.store_start.name + ')' }, {
+      input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
+    <%= f.collection_select :store_stop_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {
+      include_blank: t('vehicle_usages.form.store_stop.default') + ' (' + @vehicle_usage.vehicle_usage_set.store_stop.name + ')' }, {
+      input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
+    <%= f.text_field :rest_start, {
+      value: @vehicle_usage.rest_start ? @vehicle_usage.rest_start.strftime("%H:%M") : nil,
+      placeholder: !@vehicle_usage.vehicle_usage_set.rest_start.nil? ? t('vehicle_usages.form.rest_start.default', n: @vehicle_usage.vehicle_usage_set.rest_start.strftime("%H:%M")) : nil,
+      input_group: t('all.unit.hour_minute')} %>
+    <%= f.text_field :rest_stop, {
+      value: @vehicle_usage.rest_stop ? @vehicle_usage.rest_stop.strftime("%H:%M") : nil,
+      placeholder: !@vehicle_usage.vehicle_usage_set.rest_stop.nil? ? t('vehicle_usages.form.rest_stop.default', n: @vehicle_usage.vehicle_usage_set.rest_stop.strftime("%H:%M")) : nil,
+      input_group: t('all.unit.hour_minute')} %>
+    <%= f.text_field :rest_duration, {
+      value: @vehicle_usage.rest_duration ? @vehicle_usage.rest_duration.strftime("%H:%M") : nil,
+      placeholder: !@vehicle_usage.vehicle_usage_set.rest_duration.nil? ? t('vehicle_usages.form.rest_duration.default', n: @vehicle_usage.vehicle_usage_set.rest_duration.strftime("%H:%M")) : nil,
+      input_group: t('all.unit.hour_minute')} %>
+    <%= f.collection_select :store_rest_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {
+      include_blank: t('vehicle_usages.form.store_rest.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_rest ? @vehicle_usage.vehicle_usage_set.store_rest.name : t('vehicle_usages.form.store_rest.none')) + ')' }, {
+      input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
   </fieldset>
 
   <%= f.actions do %>

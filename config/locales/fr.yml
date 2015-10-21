@@ -822,17 +822,24 @@ fr:
     emissions_light_diesel: "VL - Gazole - %{n}"
     emissions_light_lgp: "VL - GPL - %{n}"
     form:
-      ref: "Référence"
-      ref_help: "Référence libre"
-      open_help: "Horaire de travail livreur"
-      close_help: "Horaire de travail livreur"
-      emissions_help: "Type de carburant"
-      consumption_help: "Consommation moyenne aux 100 km en litres de carburant"
-      capacity_help: "Capacité maximum du véhicule"
-      router_default: "Défaut"
-      router_help: "Forcer l'utilisation de ce calculateur d'itinéraire"
-      speed_multiplicator_default: "%{n} (valeur par défaut)"
-      speed_multiplicator_help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du compte client est également utilisé lors des calculs."
+      ref:
+        help: "Référence libre"
+      open:
+        help: "Horaire de travail livreur"
+      close:
+        help: "Horaire de travail livreur"
+      emissions:
+        help: "Type de carburant"
+      consumption:
+        help: "Consommation moyenne aux 100 km en litres de carburant"
+      capacity:
+        help: "Capacité maximum du véhicule"
+      router:
+        default: "Défaut"
+        help: "Forcer l'utilisation de ce calculateur d'itinéraire"
+      speed_multiplicator:
+        default: "%{n} (valeur par défaut)"
+        help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du compte client est également utilisé lors des calculs."
       store_rest:
         none: "Aucun"
 
@@ -848,9 +855,22 @@ fr:
     new:
       title: "Nouvelle utilisation de véhicules"
     form:
-      open_help: "Horaire de travail livreur"
-      close_help: "Horaire de travail livreur"
+      open:
+        default: "%{n} (valeur par défaut)"
+        help: "Horaire de travail livreur"
+      close:
+        default: "%{n} (valeur par défaut)"
+        help: "Horaire de travail livreur"
+      store_start:
+        default: "Défaut"
+      rest_start:
+        default: "%{n} (valeur par défaut)"
+      rest_stop:
+        default: "%{n} (valeur par défaut)"
+      rest_duration:
+        default: "%{n} (valeur par défaut)"
       store_rest:
+        default: "Défaut"
         none: "Aucun"
 
   vehicle_usage_sets:

@@ -813,15 +813,20 @@ en:
     emissions_light_diesel: "Light - Diesel - %{n}"
     emissions_light_lgp: "Light - LGP - %{n}"
     form:
-      ref: "Reference"
-      ref_help: "A free reference"
-      emissions_help: "Fuel Type"
-      consumption_help: "Average fuel consumption in liters per 100 km"
-      capacity_help: "Maximun vehicle's capacity"
-      router_default: "Default"
-      router_help: "Force usage of this router"
-      speed_multiplicator_default: "%{n} (default value)"
-      speed_multiplicator_help: "A value higher than 100% mean higher speed. The global tune up set on customer is also used on computation."
+      ref:
+        help: "A free reference"
+      emissions:
+        help: "Fuel Type"
+      consumption:
+        help: "Average fuel consumption in liters per 100 km"
+      capacity:
+        help: "Maximun vehicle's capacity"
+      router:
+        default: "Default"
+        help: "Force usage of this router"
+      speed_multiplicator:
+        default: "%{n} (default value)"
+        help: "A value higher than 100% mean higher speed. The global tune up set on customer is also used on computation."
 
   vehicle_usages:
     menu:
@@ -835,9 +840,22 @@ en:
     new:
       title: "New vehicle usage"
     form:
-      open_help: "Deliveryman's working hours"
-      close_help: "Deliveryman's working hours"
+      open:
+        default: "%{n} (default value)"
+        help: "Deliveryman's working hours"
+      close:
+        default: "%{n} (default value)"
+        help: "Deliveryman's working hours"
+      store_start:
+        default: "Default"
+      rest_start:
+        default: "%{n} (default value)"
+      rest_stop:
+        default: "%{n} (default value)"
+      rest_duration:
+        default: "%{n} (default value)"
       store_rest:
+        default: "Default"
         none: "None"
 
   vehicle_usage_sets:
