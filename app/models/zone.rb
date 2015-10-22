@@ -35,7 +35,7 @@ class Zone < ActiveRecord::Base
       if (@geom || decode_geom).class == RGeo::GeoJSON::Feature
         inside_feature_distance(@geom.geometry, RGeo::Cartesian.factory.point(lng, lat))
       elsif @geom.class == RGeo::GeoJSON::FeatureCollection
-        @geom.each { |feat|
+        @geom.collect { |feat|
           inside_feature_distance(feat.geometry, RGeo::Cartesian.factory.point(lng, lat))
         }.min
       end
