@@ -29,7 +29,7 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody class="accordion-group">
     <% @vehicle_usage_sets.each_index do |i| vehicle_usage_set = @vehicle_usage_sets[i] %>
       <tr class="accordion-heading">
         <% if @customer.enable_multi_vehicle_usage_sets %>
@@ -56,7 +56,7 @@
           <% if @customer.enable_multi_vehicle_usage_sets %>
             <%= link_to vehicle_usage_set_duplicate_path(vehicle_usage_set), :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
           <% end %>
-          <%= link_to edit_vehicle_usage_set_path(vehicle_usage_set), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
+          <%= link_to edit_vehicle_usage_set_path(vehicle_usage_set) + '?back=true', :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <% if @vehicle_usage_sets.count > 1 %>
             <%= link_to vehicle_usage_set, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
           <% end %>

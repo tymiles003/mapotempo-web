@@ -20,7 +20,7 @@
         <td><%= vehicle_usage.vehicle.capacity %></td>
         <td><%= vehicle_usage.vehicle.router && vehicle_usage.vehicle.router.name %></td>
         <td><%= vehicle_usage.store_start && vehicle_usage.store_start.name %><% if vehicle_usage.store_start && vehicle_usage.store_start != vehicle_usage.store_stop %> <i class="fa fa-long-arrow-right fa-fw"></i> <%= vehicle_usage.store_stop && vehicle_usage.store_stop.name %><% end %></td>
-        <td><%= link_to edit_vehicle_usage_path(vehicle_usage), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %></td>
+        <td><%= link_to edit_vehicle_usage_path(vehicle_usage) + '?back=true', :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %></td>
       </tr>
     <% end %>
   </tbody>
