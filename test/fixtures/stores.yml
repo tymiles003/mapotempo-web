@@ -52,7 +52,7 @@ store_without_geo:
 
 store_one_other:
   ref: b
-  name: store other
+  name: store one other
   street: MyString
   postalcode: 75001
   city: MyString
