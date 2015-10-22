@@ -49,3 +49,13 @@ store_without_geo:
   lat:
   lng:
   customer: customer_one
+
+store_one_other:
+  ref: b
+  name: store other
+  street: MyString
+  postalcode: 75001
+  city: MyString
+  lat: 46.56860
+  lng: 0.35462
+  customer: customer_one_other
