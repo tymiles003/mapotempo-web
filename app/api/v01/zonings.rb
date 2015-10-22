@@ -174,7 +174,7 @@ class V01::Zonings < Grape::API
         zoning = current_customer.zonings.where(id: params[:id]).first
         size = Integer(params[:size])
         if zoning
-          zoning.isochrone_vehicle(size, Integer(params[:vehicle_id]))
+          zoning.isochrone(size, Integer(params[:vehicle_id]))
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
@@ -215,7 +215,7 @@ class V01::Zonings < Grape::API
         zoning = current_customer.zonings.where(id: params[:id]).first
         size = Integer(params[:size])
         if zoning
-          zoning.isodistance_vehicle(size, Integer(params[:vehicle_id]))
+          zoning.isodistance(size, Integer(params[:vehicle_id]))
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
