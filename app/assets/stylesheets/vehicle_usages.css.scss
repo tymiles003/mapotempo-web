@@ -25,11 +25,11 @@
       a {
         color: #333;
       }
-      a:after {
-        content: " ▾";
+      a:before {
+        content: "▾ ";
       }
-      a.collapsed:after {
-        content: " ▸";
+      a.collapsed:before {
+        content: "▸ ";
       }
     }
   }
