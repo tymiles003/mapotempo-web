@@ -154,7 +154,7 @@ class Zoning < ActiveRecord::Base
     if vehicle
       router = (vehicle.router || customer.router)
       if router.method(what_qm).call && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
-        geom = router.method(what).call(vehicle.store_start.lat, vehicle.store_start.lng, size, customer.speed_multiplicator || 1)
+        geom = router.method(what).call(vehicle.store_start.lat, vehicle.store_start.lng, size, (customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1))
       end
       if geom
         zone = zones.where({vehicle_id: vehicle.id}).first
