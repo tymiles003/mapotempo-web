@@ -100,27 +100,27 @@ class Zoning < ActiveRecord::Base
     }
   end
 
-  def isochrone?
-    isowhat?(:isochrone?)
+  def isochrone?(vehicle_usage_set)
+    isowhat?(:isochrone?, vehicle_usage_set)
   end
 
-  def isochrone(size, vehicle_id = nil)
-    if vehicle_id
-      isowhat(:isochrone?, :isochrone, size, customer.vehicles.find(vehicle_id))
+  def isochrone(size, vehicle_usage_set, vehicle_usage = nil)
+    if vehicle_usage
+      isowhat_vehicle_usage(:isochrone?, :isochrone, size, vehicle_usage)
     else
-      isowhat(:isochrone?, :isochrone, size)
+      isowhat(:isochrone?, :isochrone, size, vehicle_usage_set)
     end
   end
 
-  def isodistance?
-    isowhat?(:isodistance?)
+  def isodistance?(vehicle_usage_set)
+    isowhat?(:isodistance?, vehicle_usage_set)
   end
 
-  def isodistance(size, vehicle_id = nil)
-    if vehicle_id
-      isowhat_vehicle(:isodistance?, :isodistance, size, customer.vehicles.find(vehicle_id))
+  def isodistance(size, vehicle_usage_set, vehicle_usage = nil)
+    if vehicle_usage
+      isowhat_vehicle_usage(:isodistance?, :isodistance, size, vehicle_usage)
     else
-      isowhat(:isodistance?, :isodistance, size)
+      isowhat(:isodistance?, :isodistance, size, vehicle_usage_set)
     end
   end
 
@@ -136,32 +136,32 @@ class Zoning < ActiveRecord::Base
     @collection_touched = true
   end
 
-  def isowhat?(what)
-    customer.vehicles.find{ |vehicle|
-      router = (vehicle.router || customer.router)
-      router.method(what).call && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
+  def isowhat?(what, vehicle_usage_set)
+    vehicle_usage_set.vehicle_usages.find{ |vehicle_usage|
+      router = (vehicle_usage.vehicle.router || customer.router)
+      router.method(what).call && !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
     }
   end
 
-  def isowhat(what_qm, what, size)
+  def isowhat(what_qm, what, size, vehicle_usage_set)
     zones.clear
-    customer.vehicles.each{ |vehicle|
-      isowhat_vehicle(what_qm, what, size, vehicle)
+    vehicle_usage_set.vehicle_usages.each{ |vehicle_usage|
+      isowhat_vehicle_usage(what_qm, what, size, vehicle_usage)
     }
   end
 
-  def isowhat_vehicle(what_qm, what, size, vehicle)
-    if vehicle
-      router = (vehicle.router || customer.router)
-      if router.method(what_qm).call && !vehicle.store_start.nil? && !vehicle.store_start.lat.nil? && !vehicle.store_start.lng.nil?
-        geom = router.method(what).call(vehicle.store_start.lat, vehicle.store_start.lng, size, (customer.speed_multiplicator || 1) * (vehicle.speed_multiplicator || 1))
+  def isowhat_vehicle_usage(what_qm, what, size, vehicle_usage)
+    if vehicle_usage
+      router = (vehicle_usage.vehicle.router || customer.router)
+      if router.method(what_qm).call && !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
+        geom = router.method(what).call(vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng, size, (customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1))
       end
       if geom
-        zone = zones.where({vehicle_id: vehicle.id}).first
+        zone = zones.where({vehicle_id: vehicle_usage.vehicle.id}).first
         if zone
           zone.polygon = geom
         else
-          zones.build({polygon: geom, vehicle: vehicle})
+          zones.build({polygon: geom, vehicle: vehicle_usage.vehicle})
         end
       end
     end

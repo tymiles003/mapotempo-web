@@ -13,7 +13,7 @@ vehicle_usage_set_one:
   store_rest: store_one
 
 vehicle_usage_set_two:
-  name: vehicle_two
+  name: vehicle_usage_set_two
   open: 2000-01-01 10:00:00
   close: 2000-01-01 15:00:00
   customer: customer_two
@@ -25,7 +25,7 @@ vehicle_usage_set_two:
   store_rest:
 
 vehicle_usage_set_three:
-  name: vehicle_three
+  name: vehicle_usage_set_three
   open: 2000-01-01 10:00:00
   close: 2000-01-01 15:00:00
   customer: customer_one

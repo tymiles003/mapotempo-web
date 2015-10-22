@@ -29,6 +29,24 @@
         <div class="container-fluid">
           <div class="row">
             <form>
+              <% if @isochrone && @isochrone.size <= 1 %>
+                <input id="isochrone_vehicle_usage_set_id" type="hidden" value="<%= @zoning.customer.vehicle_usage_sets[0].id %>"/>
+              <% else %>
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="vehicle_use_set"><%= t 'zonings.form.dialog.isochrone.vehicle_usage_set' %></label>
+                  <div class="col-md-8 input-append">
+                    <div class="input-group">
+                      <%= select_tag :isochrone_vehicle_usage_set_id, options_for_select(Hash[@isochrone.collect{ |i| [i[0].name, i[0].id] }], disabled: @isochrone.select{ |i| i[-1] }.collect(&:first)), class: 'form-control' %>
+                      <span class="input-group-addon">
+                        <i class="fa fa-truck fa-fw"></i>
+                      </span>
+                    </div>
+                    <p class="help-block">
+                      <%= t 'zonings.form.dialog.isochrone.vehicle_usage_set_help' %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
               <div class="form-group">
                 <label class="col-md-4 control-label" for="size"><%= t 'zonings.form.dialog.isochrone.size' %></label>
                 <div class="col-md-8 input-append">
@@ -41,9 +59,6 @@
                   <p class="help-block">
                     <%= t 'zonings.form.dialog.isochrone.size_help' %>
                   </p>
-                  <% if @zoning.id && @zoning.customer.vehicles.find{ |vehicle| vehicle.router && !vehicle.router.isochrone? || !@zoning.customer.router.isochrone? } %>
-                    <p class="help-block"><%= t '.isochrone_missing_vehicle' %></p>
-                  <% end %>
                 </div>
               </div>
             </form>
@@ -88,6 +103,24 @@
         <div class="container-fluid">
           <div class="row">
             <form>
+              <% if @isodistance && @isodistance.size <= 1 %>
+                <input id="isodistance_vehicle_usage_set_id" type="hidden" value="<%= @zoning.customer.vehicle_usage_sets[0].id %>"/>
+              <% else %>
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="vehicle_use_set"><%= t 'zonings.form.dialog.isodistance.vehicle_usage_set' %></label>
+                  <div class="col-md-8 input-append">
+                    <div class="input-group">
+                      <%= select_tag :isodistance_vehicle_usage_set_id, options_for_select(Hash[@isodistance.collect{ |i| [i[0].name, i[0].id] }], disabled: @isodistance.select{ |i| i[-1] }.collect(&:first)), class: 'form-control' %>
+                      <span class="input-group-addon">
+                        <i class="fa fa-truck fa-fw"></i>
+                      </span>
+                    </div>
+                    <p class="help-block">
+                      <%= t 'zonings.form.dialog.isodistance.vehicle_usage_set_help' %>
+                    </p>
+                  </div>
+                </div>
+              <% end %>
               <div class="form-group">
                 <label class="col-md-4 control-label" for="size"><%= t 'zonings.form.dialog.isodistance.size' %></label>
                 <div class="col-md-8 input-append">

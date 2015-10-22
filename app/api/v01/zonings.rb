@@ -147,38 +147,47 @@ class V01::Zonings < Grape::API
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
+      optional :vehicle_usage_set_id, type: Integer, desc: 'If not provided, use one or the only one vehicle_usage_set.'
     end
     patch ':id/isochrone' do
       Zoning.transaction do
         zoning = current_customer.zonings.where(id: params[:id]).first
+        vehicle_usage_set = if params.key?(:vehicle_usage_set_id)
+          vehicle_usage_set_id = Integer(params[:vehicle_usage_set_id])
+          current_customer.vehicle_usage_sets.to_a.find{ |vehicle_usage_set| vehicle_usage_set.id == vehicle_usage_set_id }
+        else
+          current_customer.vehicle_usage_sets[0]
+        end
         size = Integer(params[:size])
-        if zoning
-          zoning.isochrone(size)
+        if zoning && vehicle_usage_set
+          zoning.isochrone(size, vehicle_usage_set)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
-          error! 'Zoning not found', 404
+          error! 'Zoning or VehicleUsageSet not found', 404
         end
       end
     end
 
-    desc 'Generate isochrone for only one vehicle.',
-      nickname: 'generateIsochroneVehicle'
+    desc 'Generate isochrone for only one vehicle usage.',
+      nickname: 'generateIsochroneVehicleUsage'
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
-      requires :vehicle_id, type: Integer
+      requires :vehicle_usage_id, type: Integer
     end
-    patch ':id/vehicle/:vehicle_id/isochrone' do
+    patch ':id/vehicle_usage/:vehicle_usage_id/isochrone' do
       Zoning.transaction do
         zoning = current_customer.zonings.where(id: params[:id]).first
+        vehicle_usage_id = Integer(params[:vehicle_usage_id])
+        vehicle_usage = current_customer.vehicle_usage_sets.collect(&:vehicle_usages).find{ |vehicle_usage| vehicle_usage.id == vehicle_usage_id }
         size = Integer(params[:size])
-        if zoning
-          zoning.isochrone(size, Integer(params[:vehicle_id]))
+        if zoning && vehicle_usage
+          zoning.isochrone_vehicle_usage(size, vehicle_usage)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
-          error! 'Zoning not found', 404
+          error! 'Zoning or VehicleUsage not found', 404
         end
       end
     end
@@ -188,38 +197,47 @@ class V01::Zonings < Grape::API
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
+      optional :vehicle_usage_set_id, type: Integer, desc: 'If not provided, use one or the only one vehicle_usage_set.'
     end
     patch ':id/isodistance' do
       Zoning.transaction do
         zoning = current_customer.zonings.where(id: params[:id]).first
+        vehicle_usage_set = if params.key?(:vehicle_usage_set_id)
+          vehicle_usage_set_id = Integer(params[:vehicle_usage_set_id])
+          current_customer.vehicle_usage_sets.to_a.find{ |vehicle_usage_set| vehicle_usage_set.id == vehicle_usage_set_id }
+        else
+          current_customer.vehicle_usage_sets[0]
+        end
         size = Integer(params[:size])
-        if zoning
-          zoning.isodistance(size)
+        if zoning && vehicle_usage_set
+          zoning.isodistance(size, vehicle_usage_set)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
-          error! 'Zoning not found', 404
+          error! 'Zoning or VehicleUsageSet not found', 404
         end
       end
     end
 
-    desc 'Generate isodistance for only one vehicle.',
-      nickname: 'generateIsochroneVehicle'
+    desc 'Generate isodistance for only one vehicle usage.',
+      nickname: 'generateIsochroneVehicleUsage'
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
-      requires :vehicle_id, type: Integer
+      requires :vehicle_usage_id, type: Integer
     end
-    patch ':id/vehicle/:vehicle_id/isodistance' do
+    patch ':id/vehicle_usage/:vehicle_usage_id/isodistance' do
       Zoning.transaction do
         zoning = current_customer.zonings.where(id: params[:id]).first
+        vehicle_usage_id = Integer(params[:vehicle_usage_id])
+        vehicle_usage = current_customer.vehicle_usage_sets.collect(&:vehicle_usages).find{ |vehicle_usage| vehicle_usage.id == vehicle_usage_id }
         size = Integer(params[:size])
-        if zoning
-          zoning.isodistance(size, Integer(params[:vehicle_id]))
+        if zoning && vehicle_usage
+          zoning.isodistance(size, vehicle_usage)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
-          error! 'Zoning not found', 404
+          error! 'Zoning or VehicleUsage not found', 404
         end
       end
     end

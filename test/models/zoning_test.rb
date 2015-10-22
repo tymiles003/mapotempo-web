@@ -50,7 +50,7 @@ class ZoningTest < ActiveSupport::TestCase
       stub_isochrone = stub_request(:get, 'localhost:1723/0.1/isochrone').with(:query => hash_including({})).
         to_return(File.new(File.expand_path('../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
       o = zonings(:zoning_one)
-      o.isochrone(5)
+      o.isochrone(5, o.customer.vehicle_usage_sets[0], vehicle_usages(:vehicle_usage_one_one))
     ensure
       remove_request_stub(stub_isochrone) if stub_isochrone
     end

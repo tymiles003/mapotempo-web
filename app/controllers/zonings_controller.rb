@@ -35,6 +35,7 @@ class ZoningsController < ApplicationController
 
   def edit
     @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+    capabilities
   end
 
   def create
@@ -56,6 +57,7 @@ class ZoningsController < ApplicationController
         format.html { redirect_to link_back || edit_zoning_path(@zoning, planning_id: params.key?(:planning_id) ? params[:planning_id] : nil), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
       else
         @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+        capabilities
         format.html { render action: 'edit' }
       end
     end
@@ -113,8 +115,10 @@ class ZoningsController < ApplicationController
   def isochrone
     respond_to do |format|
       size = params.key?(:size) ? Integer(params[:size]) * 60 : 600
-      if size
-        @zoning.isochrone(size)
+      vehicle_usage_set_id = Integer(params[:vehicle_usage_set_id])
+      vehicle_usage_set = current_user.customer.vehicle_usage_sets.to_a.find{ |vehicle_usage_set| vehicle_usage_set.id == vehicle_usage_set_id }
+      if size && vehicle_usage_set
+        @zoning.isochrone(size, vehicle_usage_set)
         @zoning.save
       end
       format.json { render action: 'edit' }
@@ -124,8 +128,10 @@ class ZoningsController < ApplicationController
   def isodistance
     respond_to do |format|
       size = params.key?(:size) ? Float(params[:size].gsub(',', '.')) * 1000 : 1000
-      if size
-        @zoning.isodistance(size)
+      vehicle_usage_set_id = Integer(params[:vehicle_usage_set_id])
+      vehicle_usage_set = current_user.customer.vehicle_usage_sets.to_a.find{ |vehicle_usage_set| vehicle_usage_set.id == vehicle_usage_set_id }
+      if size && vehicle_usage_set
+        @zoning.isodistance(size, vehicle_usage_set)
         @zoning.save
       end
       format.json { render action: 'edit' }
@@ -133,6 +139,18 @@ class ZoningsController < ApplicationController
   end
 
   private
+
+  def capabilities
+    vehicle_usage_sets = @planning ? [@planning.vehicle_usage_set] : @zoning.customer.vehicle_usage_sets
+    @isochrone = vehicle_usage_sets.collect { |vehicle_usage_set|
+      [vehicle_usage_set, @zoning.isochrone?(vehicle_usage_set)]
+    }
+    @isochrone_capability = @isochrone.find(&:last)
+    @isodistance = vehicle_usage_sets.collect { |vehicle_usage_set|
+      [vehicle_usage_set, @zoning.isodistance?(vehicle_usage_set)]
+    }
+    @isodistance_capability = @isodistance.find(&:last)
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_zoning
