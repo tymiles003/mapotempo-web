@@ -34,7 +34,7 @@ class Optimizer
         planning.customer.job_optimizer.save!
       end
     else
-      planning.select(&:vehicle).each{ |route|
+      planning.routes.select(&:vehicle).each{ |route|
         optimize(planning, route)
       }
     end
