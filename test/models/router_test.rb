@@ -39,7 +39,7 @@ class RouterTest < ActiveSupport::TestCase
   end
 
   test 'should compute matrix with HERE' do
-    Here.stub_any_instance(:matrix, lambda{ |row, column| Array.new(row.size, Array.new(column.size, [0, 0])) }) do
+    Here.stub_any_instance(:matrix, lambda{ |row, column, time| Array.new(row.size, Array.new(column.size, [0, 0])) }) do
       router = routers(:router_here)
       row = [[47.3174, 5.0336]]
       column = [[45.750569, 4.839445], [45.763661, 4.851408], [45.755932, 4.850413]]

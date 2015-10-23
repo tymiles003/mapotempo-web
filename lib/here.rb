@@ -63,14 +63,14 @@ class Here
     result
   end
 
-  def matrix(row, column, &block)
+  def matrix(row, column, mode, &block)
     raise 'More than 100x100 matrix, not possible with Here' if row.size > 100 || column.size > 100
 
     # do not modify row/column inputs if an index is used by pack_vector/unpack_vector
     row = row.collect{ |r| [r[0].round(5), r[1].round(5)] }
     column = column.collect{ |c| [c[0].round(5), c[1].round(5)] }
 
-    key = Digest::MD5.hexdigest(Marshal.dump([row, column]))
+    key = Digest::MD5.hexdigest(Marshal.dump([row, column, mode]))
 
     result = @cache_result.read(key)
     if !result
@@ -85,12 +85,14 @@ class Here
 
       # Request should not contain more than 15 starts per request
       # 500 to get response before 30 seconds timeout
-      split_size = [15, (1000 / row.size).round].min
+      split_size = [5, (1000 / row.size).round].min
 
       result = Array.new(row.size) { Array.new(column.size) }
 
       commons_param = {
         mode: 'fastest;truck;traffic:disabled',
+        truckType: 'truck',
+        summaryAttributes: (mode == :distance) ? mode.to_s : 'traveltime',
         #limitedWeight: # Truck routing only, vehicle weight including trailers and shipped goods, in tons.
         #weightPerAxle: # Truck routing only, vehicle weight per axle in tons.
         #height: # Truck routing only, vehicle height in meters.
@@ -110,13 +112,13 @@ class Here
           row_start.upto([row_start + split_size - 1, row.size - 1].min).each{ |i|
             param["start#{i - row_start}"] = row[i].join(',')
           }
-          request = get('6.2/calculatematrix', param)
+          request = get('7.2/calculatematrix', param)
           @cache_result.write([key, row_start, split_size], request)
         end
 
-        request['Response']['MatrixEntry'].each{ |e|
-          s = e['Route']['Summary']
-          result[row_start + e['StartIndex']][e['DestinationIndex']] = [s['Distance'].round, s['BaseTime'].round]
+        request['response']['matrixEntry'].each{ |e|
+          s = e['summary']
+          result[row_start + e['startIndex']][e['destinationIndex']] = [s['travelTime'].round, s['travelTime'].round]
         }
 
         row_start += split_size
