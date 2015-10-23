@@ -96,6 +96,8 @@ class V01::Api < Grape::API
   mount V01::Tags
   mount V01::Users
   mount V01::Vehicles
+  mount V01::VehicleUsages
+  mount V01::VehicleUsageSets
   mount V01::Zonings
 
   # Tools

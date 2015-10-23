@@ -8,10 +8,6 @@ class V01::TagsTest < ActiveSupport::TestCase
     Rails.application
   end
 
-  def app
-    Rails.application
-  end
-
   setup do
     @tag = tags(:tag_one)
   end

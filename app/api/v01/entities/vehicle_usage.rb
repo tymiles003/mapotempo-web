@@ -21,7 +21,7 @@ class V01::Entities::VehicleUsage < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
-  expose(:vehicle_id, documentation: { type: Integer })
+  expose(:vehicle, using: V01::Entities::Vehicle, documentation: { type: V01::Entities::Vehicle, is_array: true, param_type: 'form' })
   expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M:%S') }
   expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
   expose(:store_start_id, documentation: { type: Integer })
