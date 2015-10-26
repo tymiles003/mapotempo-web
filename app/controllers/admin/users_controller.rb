@@ -34,6 +34,7 @@ class Admin::UsersController < ApplicationController
   def new
     @user = User.new
     @customers = current_user.reseller.customers.order(:name)
+    @user.customer = @customers.select{ |c| c.id == Integer(params[:customer]) }.first if params.key?(:customer)
   end
 
   # GET /users/1/edit
