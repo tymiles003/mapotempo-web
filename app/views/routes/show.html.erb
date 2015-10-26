@@ -1,3 +1,4 @@
+<% content_for :title, @route.ref || @route.vehicle_usage.vehicle.name %>
 <ol class="routes-print">
 <%= render 'show', route: @route %>
 </ol>

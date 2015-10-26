@@ -1,3 +1,4 @@
+<% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
 <%= twitter_bootstrap_form_for(@stores_import, {url: stores_imports_path, layout: :horizontal, multipart: true}) do |f| %>
