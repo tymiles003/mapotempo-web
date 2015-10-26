@@ -111,7 +111,7 @@ class Customer < ActiveRecord::Base
       elsif vehicles.size > max_vehicles
         # Delete
         (vehicles.size - max_vehicles).times{ |i|
-          vehicle = vehicles[vehicles.size - i - 1]
+          vehicle = vehicles[vehicles.size - 1]
           vehicles.destroy(vehicle)
         }
       end
