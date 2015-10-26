@@ -93,6 +93,8 @@
           <div class="btn-group">
             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.export_help{{/i18n}}"><i class="fa fa-share-square-o"></i><span class="caret"></span></button>
             <ul class="dropdown-menu pull-right" role="menu">
+              <li><a class="reverse_order" href="/plannings/{{planning_id}}/{{route_id}}/reverse_order"><i class="fa fa-random fa-fw"></i> {{#i18n}}plannings.edit.reverse_order{{/i18n}}</a></li>
+              <li role="separator" class="divider"></li>
               <li><a href="/routes/{{route_id}}"><i class="fa fa-print fa-fw"></i> {{#i18n}}plannings.edit.export.print{{/i18n}}</a></li>
               <li><a href="/routes/{{route_id}}.csv"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet_standard{{/i18n}}</a></li>
               <li><a href="/routes/{{route_id}}.excel"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet_excel{{/i18n}}</a></li>

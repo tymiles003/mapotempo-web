@@ -621,6 +621,7 @@ en:
         new: "New zoning"
       order_array:
         edit: "Edit orders array"
+      reverse_order: "Reverse stops order"
       open_planning_panel: "Open planning panel"
       collapse_planning_panel: "Collapse planning panel"
       refresh: "Refresh"

@@ -310,4 +310,11 @@ class RouteTest < ActiveSupport::TestCase
     }
     assert_equal ret, [0, 1, 3, 4, 2]
   end
+
+  test 'should reverse stops' do
+    o = routes(:route_one_one)
+    ids = o.stops.collect(&:id)
+    o.reverse_order
+    assert_equal ids, o.stops.collect(&:id)
+  end
 end

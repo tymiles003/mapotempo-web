@@ -20,7 +20,7 @@ require 'value_to_boolean'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order]
 
   def index
     @plannings = current_user.customer.plannings
@@ -248,6 +248,17 @@ class PlanningsController < ApplicationController
       @planning = @planning.amoeba_dup
       @planning.save!
       format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
+    end
+  end
+
+  def reverse_order
+    route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
+    respond_to do |format|
+      if route && route.reverse_order && route.compute && @planning.save
+        format.json { render action: 'show', location: @planning }
+      else
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
+      end
     end
   end
 

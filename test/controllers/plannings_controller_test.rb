@@ -198,4 +198,9 @@ class PlanningsControllerTest < ActionController::TestCase
     patch :active, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, active: :none
     assert_response :success
   end
+
+  test 'should reverse route stops' do
+    patch :reverse_order, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
+    assert_response :success
+  end
 end

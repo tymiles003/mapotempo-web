@@ -67,6 +67,7 @@ Rails.application.routes.draw do
     patch 'duplicate'
     patch 'automatic_insert/:stop_id' => 'plannings#automatic_insert'
     patch ':route_id/active/:active' => 'plannings#active'
+    patch ':route_id/reverse_order' => 'plannings#reverse_order'
     patch ':route_id/:stop_id' => 'plannings#update_stop'
     get 'optimize_each' => 'plannings#optimize_each_routes'
     get ':route_id/optimize' => 'plannings#optimize_route'

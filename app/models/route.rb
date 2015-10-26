@@ -374,6 +374,12 @@ class Route < ActiveRecord::Base
     compute
   end
 
+  def reverse_order
+    stops.sort_by{ |stop| -stop.index }.each_with_index{ |stop, index|
+      stop.index = index + 1
+    }
+  end
+
   def out_of_date
     vehicle_usage && self[:out_of_date]
   end
