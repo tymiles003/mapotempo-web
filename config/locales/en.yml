@@ -604,7 +604,7 @@ en:
         spreadsheet_standard: "Spreadsheet Standard"
         spreadsheet_standard_without_stores: "Spreadsheet Standard without stores"
         spreadsheet_excel: "Spreadsheet Excel"
-        gps_waypoint: "GPX Route"
+        gpx_route: "GPX Route"
         kml_track: "KML Track"
         tomtom_orders: "Send to TomTom as Orders"
         tomtom_waypoints: "Send to TomTom as Waypoints"
