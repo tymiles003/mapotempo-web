@@ -83,7 +83,9 @@
         </div>
 
         <div class="title col-md-2 col-sm-2 col-xs-3">
-          <span class="time"><%= stop.time.strftime("%H:%M") if stop.time %></span>
+          <% if route.planning.customer.print_stop_time %>
+            <span class="time"><%= stop.time.strftime("%H:%M") if stop.time %></span>
+          <% end %>
           <% if stop.open || stop.close %>
             <span class="window">
               <%= stop.open.strftime("%H:%M") if stop.open %>-<%= stop.close.strftime("%H:%M") if stop.close %>
@@ -172,7 +174,9 @@
         </div>
 
         <div class="title col-md-2 col-sm-2 col-xs-3">
-          <span class="time"><%= route.end.strftime("%H:%M") if route.end %></span>
+          <% if route.planning.customer.print_stop_time %>
+            <span class="time"><%= route.end.strftime("%H:%M") if route.end %></span>
+          <% end %>
         </div>
 
         <% if route.stop_out_of_drive_time %>

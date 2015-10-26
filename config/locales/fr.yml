@@ -136,6 +136,7 @@ fr:
         router_id: "Calculateur d'itinéraire"
         print_planning_annotating: "Émargement des feuilles de routes"
         print_header: "Entête des tournées"
+        print_stop_time: "Inclure les horaires de passage"
         stores: "Dépôts"
         enable_orders: "Activer les commandes"
         enable_multi_vehicle_usage_sets: "Autoriser les multiples configurations de véhicules"

@@ -45,6 +45,9 @@
         <%= f.toggles t 'activerecord.attributes.customer.print_planning_annotating' do %>
           <%= f.check_box :print_planning_annotating %>
         <% end %>
+        <%= f.toggles t 'activerecord.attributes.customer.print_stop_time' do %>
+          <%= f.check_box :print_stop_time %>
+        <% end %>
         <%= f.text_area :print_header do %>
           <p class="help-block"><%= t '.print_header_help' %></p>
         <% end %>

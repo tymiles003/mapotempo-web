@@ -135,6 +135,7 @@ en:
         router_id: "Route planner"
         print_planning_annotating: "Planning annotating"
         print_header: "Routes header"
+        print_stop_time: "Include stop time"
         stores: "Stores"
         enable_orders: "Enable orders"
         enable_multi_vehicle_usage_sets: "Enable more than one vehicles configurations"
