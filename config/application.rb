@@ -70,7 +70,7 @@ module Mapotempo
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'optimizer'), namespace: 'optimizer', expires_in: 60*60*24*10),
       'http://localhost:4567/0.1/optimize_tsptw'
     )
-    config.optimize_time = 30000
+    config.optimize_time = 30
     config.optimize_cluster_size = 5
     config.optimize_soft_upper_bound = 3
 

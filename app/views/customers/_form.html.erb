@@ -27,7 +27,7 @@
       <%= f.check_box :test %>
     <% end %>
     <%= f.number_field :optimization_cluster_size, { placeholder: t('.optimization_cluster_size_default', n: Mapotempo::Application.config.optimize_cluster_size), min: 0, input_group: t('all.unit.second')} %>
-    <%= f.number_field :optimization_time, { placeholder: t('.optimization_time_default', n: Mapotempo::Application.config.optimize_time), min: 0, input_group: t('all.unit.millisecond')} %>
+    <%= f.number_field :optimization_time, { placeholder: t('.optimization_time_default', n: Mapotempo::Application.config.optimize_time), min: 0, input_group: t('all.unit.second')} %>
     <%= f.number_field :optimization_soft_upper_bound, { placeholder: t('.optimization_soft_upper_bound_default', n: Mapotempo::Application.config.optimize_soft_upper_bound), min: 0, input_group: '×'} do %>
       <p class="help-block"><%= t '.optimization_soft_upper_bound_help' %></p>
     <% end %>
