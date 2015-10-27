@@ -51,6 +51,7 @@ var plannings_edit = function(params) {
     route_ids = params.route_ids,
     vehicles_array = params.vehicles_array,
     vehicles_usages_map = params.vehicles_usages_map,
+    url_click2call = params.url_click2call,
     colors = params.colors,
     layer_zoning,
     markers = {},
@@ -303,6 +304,10 @@ var plannings_edit = function(params) {
               m.openPopup();
               enlighten_stop(stop.stop_id);
             }
+          }).on('popupopen', function(e) {
+            $('.phone_number', e.popup._container).click(function(e) {
+              phone_number_call(e.currentTarget.innerHTML, url_click2call, e.target);
+            });
           }).on('popupclose', function(e) {
             m.click = false;
           });

@@ -33,6 +33,7 @@ class V01::Entities::Destination < Grape::Entity
   expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
   expose(:detail, documentation: { type: String })
   expose(:comment, documentation: { type: String })
+  expose(:phone_number, documentation: { type: String })
   expose(:ref, documentation: { type: String })
   expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.strftime('%H:%M:%S') }
   expose(:take_over_default, documentation: { type: DateTime }) { |m| m.customer && m.customer.take_over && m.customer.take_over.strftime('%H:%M:%S') }

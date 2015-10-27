@@ -48,7 +48,7 @@ class DestinationsControllerTest < ActionController::TestCase
   test 'should create destination' do
     assert_difference('Stop.count', 1) do
       assert_difference('Destination.count') do
-        post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment, tag_ids: [tags(:tag_one).id] }
+        post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment, phone_number: @destination.phone_number, tag_ids: [tags(:tag_one).id] }
       end
     end
 
@@ -61,7 +61,7 @@ class DestinationsControllerTest < ActionController::TestCase
     d.save!
     assert_difference('Stop.count', 1) do
       assert_difference('Destination.count') do
-        post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment }
+        post :create, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment, phone_number: @destination.phone_number }
       end
     end
 
@@ -86,7 +86,7 @@ class DestinationsControllerTest < ActionController::TestCase
   end
 
   test 'should update destination' do
-    patch :update, id: @destination, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment }
+    patch :update, id: @destination, destination: { city: @destination.city, close: @destination.close, lat: @destination.lat, lng: @destination.lng, name: @destination.name, open: @destination.open, postalcode: @destination.postalcode, quantity: @destination.quantity, street: @destination.street, detail: @destination.detail, comment: @destination.comment, phone_number: @destination.phone_number }
     assert_redirected_to edit_destination_path(assigns(:destination))
   end
 

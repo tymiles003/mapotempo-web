@@ -44,6 +44,7 @@ class Tomtom
           stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
           stop.detail,
           stop.comment,
+          stop.phone_number,
         ].compact.join(' ').strip
         Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, stop.id, description, stop.time)
       end
@@ -81,7 +82,8 @@ class Tomtom
           '',
           stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
           stop.name,
-          stop.comment
+          stop.comment,
+          stop.phone_number
         ]
       }
     waypoints = (waypoint_start + waypoints.compact + waypoint_stop).map{ |l|

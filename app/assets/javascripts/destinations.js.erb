@@ -375,7 +375,8 @@ var destinations_index = function(params, api) {
     map_attribution = params.map_attribution,
     default_city = params.default_city,
     default_country = params.default_country,
-    take_over_default = params.take_over_default;
+    take_over_default = params.take_over_default,
+    url_click2call =  params.url_click2call;
 
   var map = L.map('map').setView([map_lat, map_lng], 13);
   L.tileLayer(map_layer_url, {
@@ -547,6 +548,9 @@ var destinations_index = function(params, api) {
       });
       select.next('.select2-container--bootstrap').addClass('input-sm');
     });
+    $('.phone_link', $row).click(function(e){
+      phone_number_call($( '.phone_number', $row).attr('value'), url_click2call, e.currentTarget);
+    });
   }
 
   var confirmGeocode = function(ajaxParams, row, geocode) {
@@ -710,6 +714,14 @@ var destinations_index = function(params, api) {
     return normalizedValue == filter;
   }
 
+  var filter_phone = function (exactText, normalizedValue, filter, index) {
+    return !!String(normalizedValue).match(new RegExp(simply_phone(filter), 'i'));
+  }
+
+  var simply_phone = function(number){
+    return number.replace(/^0|[-. ]/g, '');
+  }
+
   var display_destinations = function(data) {
     if ($("#dialog-geocoding").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
@@ -815,16 +827,20 @@ var destinations_index = function(params, api) {
         10: {
           sorter: "digit"
         },
-        11: {
+        12: {
           sorter: false
         }
       },
       textExtraction: function(node, table, cellIndex) {
         if (cellIndex == 9) {
+         if ($("[name$=\\[phone_number\\]]", node).val()) {
+           return simply_phone(($("[name$=\\[phone_number\\]]", node).attr('value')));
+         }
+        } else if (cellIndex == 10) {
           return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).join(",");
-        } else if (cellIndex == 10) {
+        } else if (cellIndex == 11) {
           var ret = 0;
           switch ($("[name$=\\[geocoding_level\\]]", node).val()) {
             case 'point':
@@ -893,7 +909,8 @@ var destinations_index = function(params, api) {
             return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
           },
           8: filter_text,
-          9: filter_text
+          9: filter_phone,
+          10: filter_text
         },
         filter_formatter: {
           7: function($cell, indx) {
@@ -905,10 +922,10 @@ var destinations_index = function(params, api) {
               valueToHeader: false
             });
           },
-          10: function($cell, indx) {
+          11: function($cell, indx) {
             return false;
           },
-          11: function($cell, indx) {
+          12: function($cell, indx) {
             return false;
           }
         },
@@ -920,7 +937,7 @@ var destinations_index = function(params, api) {
           0: 'disable',
           2: 'disable',
           3: 'disable',
-          11: 'disable'
+          12: 'disable'
         }
       }
     };

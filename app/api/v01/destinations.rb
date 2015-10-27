@@ -23,7 +23,7 @@ class V01::Destinations < Grape::API
     def destination_params
       p = ActionController::Parameters.new(params)
       p = p[:destination] if p.key?(:destination)
-      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, :geocoding_accuracy, :geocoding_level, tag_ids: [])
+      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [])
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'

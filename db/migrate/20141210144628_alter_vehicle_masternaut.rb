@@ -6,7 +6,7 @@ class AlterVehicleMasternaut < ActiveRecord::Migration
     add_column :customers, :masternaut_password, :string
   end
 
-  def donw
+  def down
     remove_column :vehicles, :masternaut_ref
     remove_column :customers, :masternaut_account
     remove_column :customers, :masternaut_user

@@ -125,6 +125,7 @@ controller.js(
   vehicles_usages_map: Hash[@planning.vehicle_usage_set.vehicle_usages.collect{ |vehicle_usage|
     [vehicle_usage.vehicle.id, {vehicle_usage_id: vehicle_usage.id, name: vehicle_usage.vehicle.name, color: vehicle_usage.vehicle.color, capacity: vehicle_usage.vehicle.capacity, vehicle_id: vehicle_usage.vehicle_id}]
   }],
-  colors: Vehicle.colors_table
+  colors: Vehicle.colors_table,
+  url_click2call: current_user.link_phone_number
 )
 %>

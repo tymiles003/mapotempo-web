@@ -96,6 +96,10 @@ class StopDestination < Stop
     destination.comment
   end
 
+  def phone_number
+    destination.phone_number
+  end
+
   def to_s
     "#{active ? 'x' : '_'} #{destination.name}"
   end

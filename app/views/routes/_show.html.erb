@@ -80,6 +80,9 @@
           <% if !stop.comment.blank? %>
             <div class="comment wrapped-text visible-sm visible-xs"><%= stop.comment %></div>
           <% end %>
+          <% if stop.phone_number && stop.phone_number.length > 0 %>
+            <div class="phone_number wrapped-text visible-sm visible-xs"><i class="fa fa-phone fa-fw"></i><%= stop.phone_number %></div>
+          <% end %>
         </div>
 
         <div class="title col-md-2 col-sm-2 col-xs-3">
@@ -124,9 +127,17 @@
         </div>
 
         <% if route.planning.customer.print_planning_annotating %>
-          <div class="comment wrapped-text col-md-2 hidden-sm hidden-xs"><%= stop.comment %></div>
+          <div class="comment col-md-2 hidden-sm hidden-xs">
+            <%= stop.comment %></br>
+            <% if stop.phone_number && stop.phone_number.length > 0 %>
+              <span class="fa fa-phone fa-fw"></span><%= stop.phone_number %>
+            <% end %>
+          </div>
         <% else %>
           <div class="comment wrapped-text col-md-4 col-sm-4 hidden-sm hidden-xs"><%= stop.comment %></div>
+          <% if stop.phone_number && stop.phone_number.length > 0 %>
+            <div class="phone_number wrapped-text col-md-4 col-sm-4 hidden-sm hidden-xs"><i class="fa fa-phone fa-fw"></i><%= stop.phone_number %></div>
+          <% end %>
         <% end %>
 
         <% if route.planning.customer.print_planning_annotating %>

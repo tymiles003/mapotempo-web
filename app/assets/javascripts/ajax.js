@@ -202,3 +202,7 @@ var fake_select2 = function(selector, callback) {
     .on('click', fake_select2_click)
     .on('keydown', fake_select2_key_event);
 }
+
+var phone_number_call = function(num, url_template, link) {
+    link.href = url_template.replace('{TEL}', num);
+}

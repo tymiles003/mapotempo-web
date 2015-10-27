@@ -57,7 +57,7 @@ else
       no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
       (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.stop_id stop.id
-      json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+      json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
       (json.open stop.open.strftime('%H:%M')) if stop.open
       (json.close stop.close.strftime('%H:%M')) if stop.close
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
@@ -65,6 +65,7 @@ else
       (json.time stop.time.strftime('%H:%M')) if stop.time
       (json.active true) if stop.active
       (json.number number += 1) if route.vehicle_usage && stop.active
+      (json.link_phone_number stop.link_phone_number(current_user.url_click2call)) if current_user.url_click2call
       json.distance (stop.distance || 0) / 1000
       if first_active_free == true || first_active_free == stop || !route.vehicle_usage
         json.automatic_insert true

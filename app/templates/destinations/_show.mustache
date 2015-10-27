@@ -1,6 +1,6 @@
 <tr data-destination_id="{{id}}" class="destination{{#has_no_position}} has-error{{/has_no_position}}">
   <td>
-    <input id="destination_{{id}}" type="checkbox" value="1" name="destinations[{{id}}]"></input>
+    <input id="destination_{{id}}" type="checkbox" value="1" name="destinations[{{id}}]"/>
   </td>
   <td>
     <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}" style="width:6em"/>
@@ -29,7 +29,7 @@
   </td>
   <td>
     <span>
-      <input class="form-control input-sm" type="text" name="destination[country]" value="{{country}}" placeholder="{{default_country}}" size="99"/>
+      <input class="form-control input-sm" type="text" name="destination[country]" value="{{country}}" placeholder="{{default_country}}"/>
     </span>
   </td>
   <td>
@@ -50,6 +50,12 @@
   </td>
   <td>
     <textarea class="form-control input-sm" name="destination[comment]" rows="1">{{comment}}</textarea>
+  </td>
+  <td>
+    <div class="input-group select2-bootstrap-append input-group-tags">
+      <input class="form-control input-sm phone_number" type="datetime" name="destination[phone_number]" value="{{phone_number}}" >
+      <a class="input-group-addon input-sm phone_link" target="click2call_iframe" href={{phone_number}}><i class="fa fa-phone" ></i></a>
+    </div>
   </td>
   <td>
     <div class="input-group select2-bootstrap-append input-group-tags">
@@ -133,3 +139,4 @@
     <button type="button" class="destroy btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
   </td>
 </tr>
+

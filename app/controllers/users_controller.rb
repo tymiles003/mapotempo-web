@@ -46,6 +46,6 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:layer_id)
+    params.require(:user).permit(:layer_id, :url_click2call)
   end
 end

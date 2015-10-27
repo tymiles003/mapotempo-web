@@ -24,6 +24,7 @@ var zonings_edit = function(params) {
     map_lng = params.map_lng,
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map,
+    url_click2call =  params.url_click2call,
     show_capacity = params.show_capacity;
 
   // sidebar has to be created before map
@@ -290,6 +291,10 @@ var zonings_edit = function(params) {
               m.openPopup();
             }).on('mouseout', function(e) {
               m.closePopup();
+            }).on('popupopen', function(e){
+              $('.phone_number', e.popup._container).click(function(e){
+                phone_number_call(e.currentTarget.innerHTML, url_click2call, e.target);
+              });
             });
           }
         });

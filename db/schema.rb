@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151026165111) do
+ActiveRecord::Schema.define(version: 20151014131247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 20151026165111) do
     t.time     "take_over"
     t.float    "geocoding_accuracy"
     t.string   "country"
+    t.string   "phone_number"
     t.integer  "geocoding_level"
   end
 
@@ -315,6 +316,7 @@ ActiveRecord::Schema.define(version: 20151026165111) do
     t.datetime "updated_at"
     t.string   "api_key",                limit: 255,              null: false
     t.integer  "reseller_id"
+    t.string   "url_click2call"
   end
 
   add_index "users", ["api_key"], name: "index_users_on_api_key", using: :btree

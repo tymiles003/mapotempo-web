@@ -16,6 +16,7 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('plannings.export_file.lat'),
     I18n.t('plannings.export_file.lng'),
     I18n.t('plannings.export_file.comment'),
+    I18n.t('plannings.export_file.phone_number'),
     I18n.t('plannings.export_file.duration'),
     @planning.customer.enable_orders ? I18n.t('plannings.export_file.orders') : I18n.t('plannings.export_file.quantity'),
     I18n.t('plannings.export_file.active'),

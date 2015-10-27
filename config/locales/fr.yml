@@ -166,6 +166,8 @@ fr:
         open: "Plage horaire début"
         close: "Plage horaire fin"
         open_close_small: "Début/Fin"
+        phone_number: "Numéro de téléphone"
+        phone_number_small: "Tél."
         comment: "Commentaire"
         tags: "Libellés"
         tag_ids: "Libellés"
@@ -188,6 +190,8 @@ fr:
         open: "Plage horaire début"
         close: "Plage horaire fin"
         open_close_small: "Début/Fin"
+        phone_number: "Numéro de téléphone"
+        phone_number_small: "Tél."
         comment: "Commentaire"
         tags: "Libellés"
         tag_ids: "Libellés"
@@ -280,6 +284,7 @@ fr:
         current_password: "Mot de passe actuel"
         remember_me: "Se rappeler de moi"
         api_key: "Clé d'API"
+        url_click2call: "URL Click2Call"
         sign_in_count: "Nombre de connexions"
         sign_in_at: "Dernière connexion"
       vehicle:
@@ -546,6 +551,7 @@ fr:
       open: "horaire début"
       close: "horaire fin"
       comment: "commentaire"
+      phone_number: "Numero de téléphone"
       tags: "libellés"
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
 
@@ -713,6 +719,7 @@ fr:
       lat: "lat"
       lng: "lng"
       comment: "commentaire"
+      phone_number: "Numero de téléphone"
       duration: "durée visite"
       quantity: "quantité"
       orders: "commandes"
@@ -818,6 +825,8 @@ fr:
       sign_out: "Déconnexion"
     edit_settings:
       title: "Paramètres utilisateurs"
+    form_settings:
+      url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
 
   vehicles:
     default_name: "Véhicule %{n}"

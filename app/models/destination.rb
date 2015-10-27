@@ -31,7 +31,7 @@ class Destination < ActiveRecord::Base
   enum geocoding_level: {point: 1, house: 2, intersection: 3, street: 4, city: 5}
 
   nilify_blanks
-  auto_strip_attributes :name, :street, :postalcode, :city, :country, :detail, :comment, :ref
+  auto_strip_attributes :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, :ref
   validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true

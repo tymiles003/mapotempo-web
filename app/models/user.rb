@@ -22,6 +22,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :token_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  nilify_blanks
+  auto_strip_attributes :url_click2call
   belongs_to :reseller
   belongs_to :customer, autosave: true
   belongs_to :layer
@@ -34,6 +36,14 @@ class User < ActiveRecord::Base
 
   def admin?
     !reseller_id.nil?
+  end
+
+  def link_phone_number
+    if self.url_click2call
+      self.url_click2call
+    else
+      'tel:+{TEL}'
+    end
   end
 
   private

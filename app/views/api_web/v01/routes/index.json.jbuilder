@@ -42,7 +42,7 @@ json.routes @routes do |route|
     no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
     (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
     json.stop_id stop.id
-    json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+    json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
     (json.open stop.open.strftime('%H:%M')) if stop.open
     (json.close stop.close.strftime('%H:%M')) if stop.close
     (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60

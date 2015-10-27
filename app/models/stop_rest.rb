@@ -101,6 +101,10 @@ class StopRest < Stop
     nil
   end
 
+  def phone_number
+    nil
+  end
+
   def to_s
     "#{active ? 'x' : '_'} [Rest]"
   end

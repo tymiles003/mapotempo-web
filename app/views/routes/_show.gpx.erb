@@ -57,6 +57,9 @@ route.stops.each{ |stop|
       <% if !stop.comment.blank? %>
 <%= stop.comment %>
       <% end %>
+      <% if stop.phone_number && stop.phone_number.length > 0 %>
+        <%= stop.phone_number %>
+      <% end %>
       <% if stop.is_a?(StopDestination) && stop.destination.tags.size > 0 %>
 <%= stop.destination.tags.collect { |tag| tag.label }.join(', ') %>
       <% end %>

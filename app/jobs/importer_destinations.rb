@@ -41,6 +41,7 @@ class ImporterDestinations < ImporterBase
       open: I18n.t('destinations.import_file.open'),
       close: I18n.t('destinations.import_file.close'),
       comment: I18n.t('destinations.import_file.comment'),
+      phone_number: I18n.t('destinations.import_file.phone_number'),
       tags: I18n.t('destinations.import_file.tags'),
       take_over: I18n.t('destinations.import_file.take_over'),
       quantity: I18n.t('destinations.import_file.quantity'),

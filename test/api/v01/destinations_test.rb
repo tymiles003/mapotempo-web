@@ -83,6 +83,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           close: nil,
           detail: nil,
           comment: nil,
+          phone_number: nil,
           ref: 'z',
           take_over: nil,
           tags: ['tag1'],

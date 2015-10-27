@@ -47,6 +47,7 @@ route.stops.each { |stop|
     stop.lat,
     stop.lng,
     stop.comment,
+    stop.phone_number,
     stop.is_a?(StopDestination) ? (stop.destination.take_over ? stop.destination.take_over.strftime("%H:%M:%S") : nil) : route.vehicle_usage.default_rest_duration.strftime("%H:%M:%S"),
     ((route.planning.customer.enable_orders ? (stop.order && stop.order.products.length > 0 ? stop.order.products.collect(&:code).join('/') : nil) : stop.destination.quantity) if stop.is_a?(StopDestination)),
     ((stop.active ? '1' : '0') if route.vehicle_usage),

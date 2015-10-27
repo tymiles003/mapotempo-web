@@ -137,7 +137,7 @@ class DestinationsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def destination_params
-    params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, :geocoding_accuracy, :geocoding_level, tag_ids: [])
+    params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :phone_number ,:comment, :geocoding_accuracy, :geocoding_level, tag_ids: [])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

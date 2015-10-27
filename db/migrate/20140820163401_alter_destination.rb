@@ -4,6 +4,6 @@ class AlterDestination < ActiveRecord::Migration
   end
 
   def down
-    remove_column :destination, :take_over
+    remove_column :destinations, :take_over
   end
 end

@@ -15,6 +15,7 @@ destination_unaffected_one:
   customer: customer_one
   detail: MyString
   comment: MyString
+  phone_number: MyString
   tags: tag_one
 
 destination_one:
@@ -32,6 +33,7 @@ destination_one:
   customer: customer_one
   detail: MyString
   comment: MyString
+  phone_number: MyString
   tags: tag_one
 
 destination_two:
@@ -48,6 +50,7 @@ destination_two:
   customer: customer_one
   detail: MyString
   comment: MyString
+  phone_number: MyString
   tags: tag_one
 
 destination_three:
@@ -64,4 +67,5 @@ destination_three:
   customer: customer_one
   detail: MyString
   comment: MyString
+  phone_number: MyString
   tags: tag_one

@@ -166,6 +166,8 @@ en:
         close: "Time window close"
         open_close_small: "Open/Close"
         comment: "Comment"
+        phone_number: "Phone number"
+        phone_number_small: "Phone number"
         tags: "Tags"
         tag_ids: "Tags"
         ref: "Reference"
@@ -188,6 +190,8 @@ en:
         close: "Time window close"
         open_close_small: "Open/Close"
         comment: "Comment"
+        phone_number: "Phone number"
+        phone_number_small: "Phone number"
         tags: "Tags"
         tag_ids: "Tags"
         ref: "Reference"
@@ -279,6 +283,7 @@ en:
         current_password: "Current password"
         remember_me: "Remember me"
         api_key: "API Key"
+        url_click2call: "URL click2call"
         sign_in_count: "Connections count"
         sign_in_at: "Last connection"
       vehicle:
@@ -535,6 +540,8 @@ en:
       open: "open"
       close: "close"
       comment: "comment"
+      phone_number: "Phone number"
+      phone_number_small: "Phone number"
       tags: "tags"
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
 
@@ -702,6 +709,8 @@ en:
       lat: "lat"
       lng: "lng"
       comment: "comment"
+      phone_number: "Phone number"
+      phone_number_small: "Phone number"
       duration: "duration"
       quantity: "quantity"
       orders: "orders"
@@ -809,6 +818,8 @@ en:
       sign_out: "Sign out"
     edit_settings:
       title: "User's Settings"
+    form_settings:
+      url_click2call_help: "URL of VOIP communications solution. In URL set '{TEL}' in place of the phone number"
 
   vehicles:
     default_name: "Vehicle %{n}"

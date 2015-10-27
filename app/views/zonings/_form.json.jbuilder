@@ -12,7 +12,7 @@ if @planning
     json.stops do
       json.array! route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect do |stop|
         destination = stop.destination
-        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment
+        json.extract! destination, :id, :ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :phone_number, :comment
         json.active route.vehicle_usage && stop.active
         if !@planning.customer.enable_orders
           json.extract! destination, :quantity
