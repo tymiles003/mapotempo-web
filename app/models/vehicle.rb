@@ -46,7 +46,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def self.colors_table
-    ['#004499', '#EEEE00', '#00CC00', '#DD0000', '#EEEEBB', '#CC1882', '#558800', '#FFBB00', '#00BBFF', '#BEE562']
+    ['#003880', '#9000EE', '#00CC00', '#DD0000', '#009EFF', '#CC1882', '#558800', '#FFBB00', '#0077A3', '#BEE562']
   end
 
   private
