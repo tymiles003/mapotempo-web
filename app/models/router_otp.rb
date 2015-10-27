@@ -18,7 +18,7 @@
 require 'otp'
 
 class RouterOtp < Router
-  validates :url, presence: true
+  validates :url_time, presence: true
 
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
     # No speed_multiplicator
