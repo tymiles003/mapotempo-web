@@ -111,10 +111,14 @@ controller.js(
   planning_id: @planning.id,
   route_ids: @planning.routes.collect(&:id),
   zoning_id: @planning.zoning ? @planning.zoning.id : nil,
-  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
+  map_layers: current_user.customer.profile.layers.collect{ |layer| {
+      name: layer.name,
+      url: request.ssl? ? layer.urlssl : layer.url,
+      attribution: layer.map_attribution,
+      default: layer == current_user.layer
+  }},
   map_lat: @planning.customer.default_position[:lat],
   map_lng: @planning.customer.default_position[:lng],
-  map_attribution: current_user.layer.map_attribution,
   vehicles_array: @planning.customer.vehicles.collect{ |vehicle|
     {id: vehicle.id, text: vehicle.name, color: vehicle.color}
   },

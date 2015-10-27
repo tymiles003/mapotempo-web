@@ -45,10 +45,9 @@ var plannings_edit = function(params) {
 
   var planning_id = params.planning_id,
     zoning_id = params.zoning_id,
-    map_layer_url = params.map_layer_url,
+    map_layers = params.map_layers,
     map_lat = params.map_lat,
     map_lng = params.map_lng,
-    map_attribution = params.map_attribution,
     route_ids = params.route_ids,
     vehicles_array = params.vehicles_array,
     vehicles_usages_map = params.vehicles_usages_map,
@@ -66,7 +65,29 @@ var plannings_edit = function(params) {
   var sidebar = L.control.sidebar('edit-planning', {position: 'right'});
   sidebar.open('planning-pane');
 
-  var map = new L.Map('map', {attributionControl: false}).setView([map_lat, map_lng], 13);
+  var map_layer;
+  map_layers = $.map(map_layers, function(layer, i) {
+    var l = L.tileLayer(layer.url, {
+      maxZoom: 18,
+      attribution: layer.attribution
+    });
+    l.name = layer.name;
+    if(layer.default) {
+      map_layer = l;
+    }
+    return l;
+  });
+
+  var map_layer_names = {};
+  $.each(map_layers, function(i, layer) {
+    map_layer_names[layer.name] = layer;
+  });
+
+  var map = new L.Map('map', {
+    attributionControl: false,
+    layers: map_layer
+  }).setView([map_lat, map_lng], 13);
+  //L.control.layers(map_layer_names).addTo(map);
   L.control.attribution({position: 'bottomleft'}).addTo(map);
   L.control.scale({
     imperial: false
@@ -101,11 +122,6 @@ var plannings_edit = function(params) {
       map.addLayer(routes_layers);
     }
   });
-
-  L.tileLayer(map_layer_url, {
-    maxZoom: 18,
-    attribution: map_attribution
-  }).addTo(map);
 
   $.each(route_ids, function(i, id) {
     layers[id] = L.featureGroup();

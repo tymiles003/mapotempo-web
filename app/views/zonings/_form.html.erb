@@ -38,10 +38,14 @@
 controller.js(
   zoning_id: @zoning.id,
   planning_id: @planning ? @planning.id : nil,
-  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
+  map_layers: current_user.customer.profile.layers.collect{ |layer| {
+      name: layer.name,
+      url: request.ssl? ? layer.urlssl : layer.url,
+      attribution: layer.map_attribution,
+      default: layer == current_user.layer
+  }},
   map_lat: @zoning.customer.default_position[:lat],
   map_lng: @zoning.customer.default_position[:lng],
-  map_attribution: current_user.layer.map_attribution,
   vehicles_array: @zoning.customer.vehicles.collect{ |vehicle|
     {id: vehicle.id, name: vehicle.name, color: vehicle.color}
   },
