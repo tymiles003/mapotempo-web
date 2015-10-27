@@ -20,7 +20,7 @@
         <%= route.vehicle_usage.default_store_start.name %>
       </name>
       <desc><%= route.start.strftime("%H:%M") if route.start %>
-<%= [route.vehicle_usage.default_store_start.street, route.vehicle_usage.default_store_start.postalcode, route.vehicle_usage.default_store_start.city, route.vehicle_usage.default_store_start.country].select{ |i| i && i.length > 0 }.join(', ') %>.
+<%= [route.vehicle_usage.default_store_start.street, route.vehicle_usage.default_store_start.postalcode, route.vehicle_usage.default_store_start.city, route.vehicle_usage.default_store_start.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
       <% end %>
@@ -53,8 +53,8 @@ route.stops.each{ |stop|
       <% if stop.open || stop.close %>
 <%= stop.open.strftime("%H:%M") if stop.open %>-<%= stop.close.strftime("%H:%M") if stop.close %>
       <% end %>
-<%= [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].select{ |i| i && i.length > 0 }.join(', ') %>.
-      <% if stop.comment && stop.comment.length > 0 %>
+<%= [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].select{ |i| !i.blank? }.join(', ') %>.
+      <% if !stop.comment.blank? %>
 <%= stop.comment %>
       <% end %>
       <% if stop.is_a?(StopDestination) && stop.destination.tags.size > 0 %>
@@ -81,7 +81,7 @@ route.stops.each{ |stop|
         <%= route.vehicle_usage.default_store_stop.name %>
       </name>
       <desc><%= route.end.strftime("%H:%M") if route.end %>
-<%= [route.vehicle_usage.default_store_stop.street, route.vehicle_usage.default_store_stop.postalcode, route.vehicle_usage.default_store_stop.city, route.vehicle_usage.default_store_stop.country].select{ |i| i && i.length > 0 }.join(', ') %>.
+<%= [route.vehicle_usage.default_store_stop.street, route.vehicle_usage.default_store_stop.postalcode, route.vehicle_usage.default_store_stop.city, route.vehicle_usage.default_store_stop.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
       <% end %>
