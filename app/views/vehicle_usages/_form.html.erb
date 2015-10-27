@@ -2,9 +2,9 @@
   <%= render 'shared/error_messages', model: @vehicle_usage %>
   <fieldset>
     <legend class="scheduler-border">
-      <a data-toggle="collapse" data-parent="" href="#collapseVehicle"><%= t 'vehicle_usages.form.vehicle.legend' %></a>
+      <a data-toggle="collapse" data-parent="" href="#collapseVehicle"<% if @vehicle_usage_sets.count > 1 %> class="collapsed"<% end %>><%= t 'vehicle_usages.form.vehicle.legend' %></a>
     </legend>
-    <div id="collapseVehicle" class="collapse in">
+    <div id="collapseVehicle" class="collapse<% if @vehicle_usage_sets.count < 2 %> in<% end %>">
       <p class="help-block"><%= t 'vehicle_usages.form.vehicle.help' %></p>
       <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle]', @vehicle_usage.vehicle, layout: :horizontal do |f| %>
         <%= f.hidden_field :id %>
