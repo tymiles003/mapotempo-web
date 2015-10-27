@@ -27,6 +27,7 @@ else
     json.extract! route, :ref, :color, :size_active
     (json.quantity route.quantity) if !@planning.customer.enable_orders
     if route.vehicle_usage
+      json.vehicle_usage_id route.vehicle_usage.id
       json.vehicle_id route.vehicle_usage.vehicle.id
       json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
       (json.tomtom true) if route.vehicle_usage.vehicle.tomtom_id && route.planning.customer.enable_tomtom && !route.vehicle_usage.vehicle.customer.tomtom_account.blank? && !route.vehicle_usage.vehicle.customer.tomtom_user.blank? && !route.vehicle_usage.vehicle.customer.tomtom_password.blank?

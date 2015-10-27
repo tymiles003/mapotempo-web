@@ -117,8 +117,8 @@ controller.js(
   vehicles_array: @planning.customer.vehicles.collect{ |vehicle|
     {id: vehicle.id, text: vehicle.name, color: vehicle.color}
   },
-  vehicles_map: Hash[@planning.customer.vehicles.collect{ |vehicle|
-    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]
+  vehicles_usages_map: Hash[@planning.vehicle_usage_set.vehicle_usages.collect{ |vehicle_usage|
+    [vehicle_usage.vehicle.id, {vehicle_usage_id: vehicle_usage.id, name: vehicle_usage.vehicle.name, color: vehicle_usage.vehicle.color, capacity: vehicle_usage.vehicle.capacity, vehicle_id: vehicle_usage.vehicle_id}]
   }],
   colors: Vehicle.colors_table
 )

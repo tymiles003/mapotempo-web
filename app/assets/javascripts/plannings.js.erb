@@ -51,7 +51,7 @@ var plannings_edit = function(params) {
     map_attribution = params.map_attribution,
     route_ids = params.route_ids,
     vehicles_array = params.vehicles_array,
-    vehicles_map = params.vehicles_map,
+    vehicles_usages_map = params.vehicles_usages_map,
     colors = params.colors,
     layer_zoning,
     markers = {},
@@ -134,7 +134,7 @@ var plannings_edit = function(params) {
     $.each(zoning.zones, function(index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
       geom.setStyle({
-        color: (zone.vehicle_id ? vehicles_map[zone.vehicle_id].color : '#707070')
+        color: (zone.vehicle_id ? vehicles_usages_map[zone.vehicle_id].color : '#707070')
       });
       geom.addTo(layer_zoning);
     });
@@ -316,8 +316,8 @@ var plannings_edit = function(params) {
 
     $.each(data.routes, function(i, route) {
       if (route.vehicle_id) {
-        route.vehicle = vehicles_map[route.vehicle_id];
-        route.path = '/vehicles/' + route.vehicle_id + '/edit?back=true';
+        route.vehicle = vehicles_usages_map[route.vehicle_id];
+        route.path = '/vehicle_usages/' + route.vehicle_usage_id + '/edit?back=true';
       }
     });
 
@@ -413,16 +413,16 @@ var plannings_edit = function(params) {
       if(state.id) {
         var color = $('.color_select', $(state.element).parent().parent()).val();
         if(color) {
-          return $("<span>" + vehicles_map[state.id].name + "</span>");
+          return $("<span>" + vehicles_usages_map[state.id].name + "</span>");
         } else {
-          return $("<span><span class='color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
+          return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;" + vehicles_usages_map[state.id].name + "</span>");
         }
       }
     }
 
     var templateResultVehicles = function(state) {
       if(state.id){
-        return $("<span><span class='color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
+        return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;" + vehicles_usages_map[state.id].name + "</span>");
       } else {
         console.log(state);
       }
@@ -515,7 +515,7 @@ var plannings_edit = function(params) {
           type: "patch",
           data: JSON.stringify({
             route_id: $this.closest("[data-route_id]").attr("data-route_id"),
-            vehicle_id: $this.val()
+            vehicle_usage_id: vehicles_usages_map[$this.val()].vehicle_usage_id
           }),
           contentType: 'application/json',
           url: '/plannings/' + planning_id + '/switch.json',
