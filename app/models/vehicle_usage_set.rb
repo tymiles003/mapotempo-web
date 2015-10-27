@@ -60,10 +60,13 @@ class VehicleUsageSet < ActiveRecord::Base
     self.store_stop = store_start unless store_stop
   end
 
-  def set_vehicle_usages
+  def create_vehicle_usages
     if customer
       customer.vehicles.each { |vehicle|
-        vehicle_usages.build(vehicle: vehicle)
+        # if vehicle is not yet saved, vehicle_usage will be created in vehicle callback
+        if vehicle.id
+          vehicle_usages.build(vehicle: vehicle)
+        end
       }
     end
   end
@@ -72,7 +75,7 @@ class VehicleUsageSet < ActiveRecord::Base
     set_stores
     self.open = Time.utc(2000, 1, 1, 8, 0) unless open
     self.close = Time.utc(2000, 1, 1, 12, 0) unless close
-    set_vehicle_usages
+    create_vehicle_usages
   end
 
   def update_out_of_date
