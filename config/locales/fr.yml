@@ -415,7 +415,7 @@ fr:
       form:
         host_help: "Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur."
         name_help: "Marque du revendeur."
-        welcome_url_help: "Page web html incluse comme comme «iframe» dans la page de bienvenue."
+        welcome_url_help: "Page web html incluse comme «iframe» dans la page de bienvenue."
         help_url_help: "Page web contenant l'aide."
         logo_large_help: "Logo pleine page redimensionnable, de préférence au format SVG, à défaut en PNG."
         logo_small_help: "Logo du menu, 150×40 pixels en SVG ou PNG."
