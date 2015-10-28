@@ -55,17 +55,21 @@ class CustomerTest < ActiveSupport::TestCase
 
   test 'should update_max_vehicles up' do
     o = customers(:customer_one)
-    assert_difference('Vehicle.count') do
-      o.max_vehicles += 1
-      o.save!
+    assert_difference('Vehicle.count', 1) do
+      assert_difference('VehicleUsage.count', o.vehicle_usage_sets.length) do
+        o.max_vehicles += 1
+        o.save!
+      end
     end
   end
 
   test 'should update_max_vehicles down' do
     o = customers(:customer_one)
     assert_difference('Vehicle.count', -1) do
-      o.max_vehicles -= 1
-      o.save!
+      assert_difference('VehicleUsage.count', -o.vehicle_usage_sets.length) do
+        o.max_vehicles -= 1
+        o.save!
+      end
     end
   end
 

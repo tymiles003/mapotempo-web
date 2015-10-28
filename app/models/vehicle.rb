@@ -61,7 +61,9 @@ class Vehicle < ActiveRecord::Base
   def create_vehicle_usage
     h = {}
     customer.vehicle_usage_sets.each{ |vehicle_usage_set|
-      h[vehicle_usage_set] = vehicle_usage_set.vehicle_usages.build(vehicle: self)
+      u = vehicle_usage_set.vehicle_usages.build(vehicle: self)
+      h[vehicle_usage_set] = u
+      vehicle_usages << u
     }
     customer.plannings.each{ |planning|
       planning.vehicle_usage_add(h[planning.vehicle_usage_set])
