@@ -111,7 +111,7 @@ controller.js(
   planning_id: @planning.id,
   route_ids: @planning.routes.collect(&:id),
   zoning_id: @planning.zoning ? @planning.zoning.id : nil,
-  map_layers: current_user.customer.profile.layers.collect{ |layer| {
+  map_layers: (current_user.customer.profile.layers + [current_user.layer]).sort_by(&:id).uniq.collect{ |layer| {
       name: layer.name,
       url: request.ssl? ? layer.urlssl : layer.url,
       attribution: layer.map_attribution,

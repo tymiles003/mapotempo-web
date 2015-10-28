@@ -38,7 +38,7 @@
 controller.js(
   zoning_id: @zoning.id,
   planning_id: @planning ? @planning.id : nil,
-  map_layers: current_user.customer.profile.layers.collect{ |layer| {
+  map_layers: (current_user.customer.profile.layers + [current_user.layer]).sort_by(&:id).uniq.collect{ |layer| {
       name: layer.name,
       url: request.ssl? ? layer.urlssl : layer.url,
       attribution: layer.map_attribution,
