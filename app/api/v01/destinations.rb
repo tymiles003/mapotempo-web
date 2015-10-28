@@ -80,13 +80,13 @@ class V01::Destinations < Grape::API
       if params['destinations']
         destinations_import = DestinationsImport.new
         destinations_import.assign_attributes(replace: params[:replace])
-        ImporterDestinations.import_hash(destinations_import.replace, current_customer, params[:destinations])
+        ImporterDestinations.new.import_hash(destinations_import.replace, current_customer, params[:destinations])
         status 204
       else
         destinations_import = DestinationsImport.new
         destinations_import.assign_attributes(replace: params[:replace], file: params[:file])
         if destinations_import.valid?
-          ImporterDestinations.import_csv(destinations_import.replace, current_customer, destinations_import.tempfile, destinations_import.name, true)
+          ImporterDestinations.new.import_csv(destinations_import.replace, current_customer, destinations_import.tempfile, destinations_import.name, true)
           status 204
         else
           error!({error: destinations_import.errors.full_messages}, 422)

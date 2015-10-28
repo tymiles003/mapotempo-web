@@ -20,9 +20,11 @@ require 'geocoder_stores_job'
 
 class ImporterStores < ImporterBase
 
-  @max_lines = Mapotempo::Application.config.max_destinations / 10
+  def max_lines
+    Mapotempo::Application.config.max_destinations / 10
+  end
 
-  def self.columns
+  def columns
     {
       ref: I18n.t('stores.import_file.ref'),
       name: I18n.t('stores.import_file.name'),
@@ -37,9 +39,7 @@ class ImporterStores < ImporterBase
     }
   end
 
-  private
-
-  def self.import(replace, customer, data, name, synchronous)
+  def import(replace, customer, data, name, synchronous)
     need_geocode = false
 
     line = 0
@@ -121,5 +121,4 @@ class ImporterStores < ImporterBase
     customer.save!
     true
   end
-
 end

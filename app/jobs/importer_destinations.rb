@@ -20,9 +20,11 @@ require 'geocoder_destinations_job'
 
 class ImporterDestinations < ImporterBase
 
-  @max_lines = Mapotempo::Application.config.max_destinations
+  def max_lines
+    Mapotempo::Application.config.max_destinations
+  end
 
-  def self.columns
+  def columns
     {
       ref: I18n.t('destinations.import_file.ref'),
       route: I18n.t('destinations.import_file.route'),
@@ -46,9 +48,7 @@ class ImporterDestinations < ImporterBase
     }
   end
 
-  private
-
-  def self.import(replace, customer, data, name, synchronous)
+  def import(replace, customer, data, name, synchronous)
     common_tags = nil
     tags = Hash[customer.tags.collect{ |tag| [tag.label, tag] }]
     routes = Hash.new{ |h, k| h[k] = [] }
@@ -151,5 +151,4 @@ class ImporterDestinations < ImporterBase
     customer.save!
     true
   end
-
 end

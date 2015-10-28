@@ -19,7 +19,7 @@ require 'csv'
 
 class ImporterBase
 
-  def self.import_csv(replace, customer, file, name, synchronous=false)
+  def import_csv(replace, customer, file, name, synchronous=false)
     contents = File.open(file, 'r:bom|utf-8').read
     if !contents.valid_encoding?
       detection = CharlockHolmes::EncodingDetector.detect(contents)
@@ -35,8 +35,8 @@ class ImporterBase
     _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
 
     data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
-    if data.length > @max_lines + 1
-      raise I18n.t('errors.import_file.too_many_lines', n: @max_lines)
+    if data.length > max_lines + 1
+      raise I18n.t('errors.import_file.too_many_lines', n: max_lines)
     end
 
     self.import(replace, customer, data, name, synchronous) { |row|
@@ -52,7 +52,7 @@ class ImporterBase
     }
   end
 
-  def self.import_hash(replace, customer, data)
+  def import_hash(replace, customer, data)
     key = %w(ref route name street detail postalcode city lat lng open close comment tags take_over quantity active)
 
     self.import(replace, customer, data, nil, true) { |row|
@@ -70,5 +70,4 @@ class ImporterBase
       row
     }
   end
-
 end

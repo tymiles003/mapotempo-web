@@ -125,7 +125,7 @@ class StoresController < ApplicationController
       begin
         @stores_import.assign_attributes(stores_import_params)
         @stores_import.valid? || raise
-        ImporterStores.import_csv(@stores_import.replace, current_user.customer, @stores_import.tempfile, @stores_import.name)
+        ImporterStores.new.import_csv(@stores_import.replace, current_user.customer, @stores_import.tempfile, @stores_import.name)
         format.html { redirect_to action: 'index' }
       rescue => e
         flash.now[:error] = e.message

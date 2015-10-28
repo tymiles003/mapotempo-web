@@ -1,4 +1,4 @@
 require 'importer_stores'
 CSV.generate { |csv|
-  csv << ImporterStores.columns.values
+  csv << ImporterStores.new.columns.values
 }
