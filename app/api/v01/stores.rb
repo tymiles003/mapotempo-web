@@ -73,7 +73,7 @@ class V01::Stores < Grape::API
       present store, with: V01::Entities::Store
     end
 
-    desc 'Import stores by upload a CSV file or by JSON',
+    desc 'Import stores by upload a CSV file or by JSON.',
       nickname: 'importStores',
       params: V01::Entities::StoresImport.documentation
     put do
