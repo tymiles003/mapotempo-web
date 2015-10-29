@@ -119,7 +119,7 @@ class ZoningsControllerTest < ActionController::TestCase
     stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
     patch :isochrone, format: :json, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_id: @zoning
     assert_response :success
-    assert_equal 2, JSON.parse(response.body)['zoning'].length
+    assert_equal 1, JSON.parse(response.body)['zoning'].length
     assert_not_nil JSON.parse(response.body)['zoning'][0]['polygon']
   end
 end
