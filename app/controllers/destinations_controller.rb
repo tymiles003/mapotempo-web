@@ -110,7 +110,7 @@ class DestinationsController < ApplicationController
       begin
         @destinations_import.assign_attributes(destinations_import_params)
         @destinations_import.valid? || raise
-        ImporterDestinations.new.import_csv(@destinations_import.replace, current_user.customer, @destinations_import.tempfile, @destinations_import.name)
+        ImporterDestinations.new(current_user.customer).import_csv(@destinations_import.replace, @destinations_import.tempfile, @destinations_import.name)
         format.html { redirect_to action: 'index' }
       rescue => e
         flash.now[:error] = e.message

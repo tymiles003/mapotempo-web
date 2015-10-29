@@ -19,7 +19,11 @@ require 'csv'
 
 class ImporterBase
 
-  def import_csv(replace, customer, file, name, synchronous=false)
+  def initialize(customer)
+    @customer = customer
+  end
+
+  def import_csv(replace, file, name, synchronous=false)
     contents = File.open(file, 'r:bom|utf-8').read
     if !contents.valid_encoding?
       detection = CharlockHolmes::EncodingDetector.detect(contents)
@@ -39,7 +43,7 @@ class ImporterBase
       raise I18n.t('errors.import_file.too_many_lines', n: max_lines)
     end
 
-    self.import(replace, customer, data, name, synchronous) { |row|
+    import(data, replace, name, synchronous) { |row|
       # Switch from locale to internal column name
       r, row = row, {}
       columns.each{ |k, v|
@@ -52,10 +56,10 @@ class ImporterBase
     }
   end
 
-  def import_hash(replace, customer, data)
+  def import_hash(replace, data)
     key = %w(ref route name street detail postalcode city lat lng open close comment tags take_over quantity active)
 
-    self.import(replace, customer, data, nil, true) { |row|
+    import(data, replace, nil, true) { |row|
       r, row = row, {}
       r.each{ |k, v|
         if key.include?(k)
@@ -69,5 +73,23 @@ class ImporterBase
 
       row
     }
+  end
+
+  def import(data, replace, name, synchronous)
+    Store.transaction do
+      before_import(replace, name, synchronous)
+
+      data.each_with_index{ |row, line|
+        row = yield(row)
+
+        if row.size == 0
+          next # Skip empty line
+        end
+
+        import_row(replace, name, row, line)
+      }
+      after_import(replace, name, synchronous)
+    end
+    finalize_import(replace, name, synchronous)
   end
 end

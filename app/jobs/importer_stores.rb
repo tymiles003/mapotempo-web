@@ -39,86 +39,78 @@ class ImporterStores < ImporterBase
     }
   end
 
-  def import(replace, customer, data, name, synchronous)
-    need_geocode = false
+  def before_import(replace, name, synchronous)
+    @need_geocode = false
 
-    line = 0
-
-    Store.transaction do
-      if replace
-        # vehicle is always linked to a store
-        tmp_store = customer.stores.build(
-          name: I18n.t('stores.default.name'),
-          city: I18n.t('stores.default.city'),
-          lat: Float(I18n.t('stores.default.lat')),
-          lng: Float(I18n.t('stores.default.lng'))
-        )
-        customer.vehicle_usage_sets.each{ |vehicle_usage_set|
-          vehicle_usage_set.store_start = tmp_store
-          vehicle_usage_set.store_stop = tmp_store
-        }
-        customer.save!
-        customer.stores.each{ |store|
-          if store != tmp_store
-            customer.stores.destroy(store)
-          end
-        }
-      end
-
-      data.each{ |row|
-        row = yield(row)
-
-        if row.size == 0
-          next # Skip empty line
-        end
-
-        line += 1
-
-        if row[:name].nil? || (row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?))
-          raise I18n.t('stores.import_file.missing_data', line: line)
-        end
-
-        if !row[:lat].nil?
-          row[:lat] = Float(row[:lat].gsub(',', '.'))
-        end
-        if !row[:lng].nil?
-          row[:lng] = Float(row[:lng].gsub(',', '.'))
-        end
-
-        if row[:lat].nil? || row[:lng].nil?
-          need_geocode = true
-        end
-
-        if !row[:ref].nil? && !row[:ref].strip.empty?
-          store = customer.stores.find{ |store|
-            store.ref && store.ref == row[:ref]
-          }
-          store.assign_attributes(row) if store
-        end
-        if !store
-          customer.stores.build(row) # Link only when store is complete
+    if replace
+      # vehicle is always linked to a store
+      @tmp_store = @customer.stores.build(
+        name: I18n.t('stores.default.name'),
+        city: I18n.t('stores.default.city'),
+        lat: Float(I18n.t('stores.default.lat')),
+        lng: Float(I18n.t('stores.default.lng'))
+      )
+      @customer.vehicle_usage_sets.each{ |vehicle_usage_set|
+        vehicle_usage_set.store_start = @tmp_store
+        vehicle_usage_set.store_stop = @tmp_store
+      }
+      @customer.save!
+      @customer.stores.each{ |store|
+        if store != @tmp_store
+          @customer.stores.destroy(store)
         end
       }
+    end
+  end
 
-      if replace
-        if !customer.stores[1].nil?
-          customer.vehicle_usage_sets.each{ |vehicle_usage_set|
-            vehicle_usage_set.store_start = customer.stores[1]
-            vehicle_usage_set.store_stop = customer.stores[1]
-            vehicle_usage_set.save!
-          }
-        end
-        customer.stores.destroy(tmp_store)
+  def import_row(replace, name, row, line)
+    if row[:name].nil? || (row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?))
+      raise I18n.t('stores.import_file.missing_data', line: line)
+    end
+
+    if !row[:lat].nil?
+      row[:lat] = Float(row[:lat].gsub(',', '.'))
+    end
+    if !row[:lng].nil?
+      row[:lng] = Float(row[:lng].gsub(',', '.'))
+    end
+
+    if row[:lat].nil? || row[:lng].nil?
+      @need_geocode = true
+    end
+
+    if !row[:ref].nil? && !row[:ref].strip.empty?
+      store = @customer.stores.find{ |store|
+        store.ref && store.ref == row[:ref]
+      }
+      store.assign_attributes(row) if store
+    end
+    if !store
+      @customer.stores.build(row) # Link only when store is complete
+    end
+  end
+
+  def after_import(replace, name, synchronous)
+    if replace
+      if !@customer.stores[1].nil?
+        @customer.vehicle_usage_sets.each{ |vehicle_usage_set|
+          vehicle_usage_set.store_start = @customer.stores[1]
+          vehicle_usage_set.store_stop = @customer.stores[1]
+          vehicle_usage_set.save!
+        }
       end
-
-      customer.save!
+      @customer.stores.destroy(@tmp_store)
     end
 
-    if need_geocode && (!synchronous || Mapotempo::Application.config.delayed_job_use)
-      customer.job_store_geocoding = Delayed::Job.enqueue(GeocoderStoresJob.new(customer.id))
+    @customer.save!
+  end
+
+  def finalize_import(replace, name, synchronous)
+    if @need_geocode && (!synchronous || Mapotempo::Application.config.delayed_job_use)
+      @customer.job_store_geocoding = Delayed::Job.enqueue(GeocoderStoresJob.new(@customer.id))
     end
 
-    customer.save!
+    @customer.save!
     true
   end
 end

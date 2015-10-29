@@ -19,7 +19,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
-          ImporterDestinations.new.import_csv(false, @customer, 'test/fixtures/files/import_destinations_one.csv', 'text')
+          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one.csv', 'text')
         end
       end
     end
@@ -33,7 +33,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
-          ImporterDestinations.new.import_csv(false, @customer, 'test/fixtures/files/import_destinations_one_postalcode.csv', 'text')
+          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one_postalcode.csv', 'text')
         end
       end
     end
@@ -45,7 +45,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
-          ImporterDestinations.new.import_csv(false, @customer, 'test/fixtures/files/import_destinations_one_coord.csv', 'text')
+          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one_coord.csv', 'text')
         end
       end
     end
@@ -57,7 +57,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
-          ImporterDestinations.new.import_csv(false, @customer, 'test/fixtures/files/import_destinations_two.csv', 'text')
+          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_two.csv', 'text')
         end
       end
     end
@@ -75,7 +75,7 @@ class ImporterTest < ActionController::TestCase
     @customer.destinations.destroy_all
     assert_difference('Planning.count') do
       assert_difference('Destination.count', 5) do
-        ImporterDestinations.new.import_csv(false, @customer, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
+        ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
       end
     end
     o = Destination.find{|d| d.customer_id}
@@ -89,7 +89,7 @@ class ImporterTest < ActionController::TestCase
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all
     assert_difference('Destination.count', 6) do
-      ImporterDestinations.new.import_csv(false, @customer, 'test/fixtures/files/import_destinations_many-iso.csv', 'text')
+      ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_many-iso.csv', 'text')
     end
     o = Destination.find{|d| d.customer_id}
     assert_equal 'Point 1', o.name
@@ -99,26 +99,26 @@ class ImporterTest < ActionController::TestCase
   test 'shoud not import' do
     assert_difference('Destination.count', 0) do
       assert_raise RuntimeError do
-        ImporterDestinations.new.import_csv(false, @customer, 'test/fixtures/files/import_invalid.csv', 'text')
+        ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_invalid.csv', 'text')
       end
     end
   end
 
   test 'shoud import too many' do
-    importer_destinations = ImporterDestinations.new
+    importer_destinations = ImporterDestinations.new(@customer)
     def importer_destinations.max_lines
       2
     end
     assert_difference('Destination.count', 0) do
       assert_raise RuntimeError do
-        importer_destinations.import_csv(false, @customer, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
+        importer_destinations.import_csv(false, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
       end
     end
   end
 
   test 'shoud update' do
     assert_difference('Destination.count', 1) do
-      ImporterDestinations.new.import_csv(false, @customer, 'test/fixtures/files/import_destinations_update.csv', 'text')
+      ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_update.csv', 'text')
     end
     assert_equal 'unaffected_one_update', Destination.find_by(ref:'a').name
     assert_equal 'unaffected_two_update', Destination.find_by(ref:'d').name
