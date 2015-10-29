@@ -124,6 +124,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Switch two vehicles.',
+      detail: 'Not Implemented',
       nickname: 'switchVehicles'
     params do
       requires :id, type: String, desc: ID_DESC
@@ -134,6 +135,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Suggest a place for an unaffected stop.',
+      detail: 'Not Implemented',
       nickname: 'automaticInsertStop'
     params do
       requires :id, type: String, desc: ID_DESC
@@ -144,6 +146,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Starts asynchronous routes optimization.',
+      detail: 'Not Implemented',
       nickname: 'optimizeRoutes'
     params do
       requires :id, type: String, desc: ID_DESC
