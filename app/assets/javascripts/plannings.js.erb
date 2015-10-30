@@ -650,7 +650,9 @@ var plannings_edit = function(params) {
         $.ajax({
           type: "patch",
           url: url,
+          beforeSend: beforeSendWaiting,
           success: display_planning,
+          complete: completeWaiting,
           error: ajaxError
         });
         return false;
