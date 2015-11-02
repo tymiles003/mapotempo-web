@@ -31,11 +31,12 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
     optimize_time = routes[0].planning.customer.optimization_time || @@optimize_time
     soft_upper_bound = routes[0].planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
 
-    routes_size = routes.length - 1
-    routes_count = 0
+    routes_size = routes.select{ |route|
+      route.vehicle_usage && route.size_active > 1
+    }.length
     routes.select{ |route|
       route.vehicle_usage && route.size_active > 1
-    }.each{ |route|
+    }.each_with_index { |route, routes_count|
       customer = route.planning.customer
       i = ii = 0
       optimum = route.optimize(Proc.new { |computed, count|
@@ -70,8 +71,6 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
         route.planning.save
         customer.save
       end
-
-      routes_count += 1
     }
   end
 end
