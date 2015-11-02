@@ -86,8 +86,10 @@ class ImporterStores < ImporterBase
       store.assign_attributes(row) if store
     end
     if !store
-      @customer.stores.build(row) # Link only when store is complete
+      store = @customer.stores.build(row) # Link only when store is complete
     end
+
+    store # For subclasses
   end
 
   def after_import(replace, name, synchronous)

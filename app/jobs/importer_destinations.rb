@@ -108,6 +108,8 @@ class ImporterDestinations < ImporterBase
     end
 
     @routes[row.key?(:route) ? row[:route] : nil] << [destination, !row.key?(:active) || row[:active].strip != '0']
+
+    destination # For subclasses
   end
 
   def after_import(replace, name, synchronous)
