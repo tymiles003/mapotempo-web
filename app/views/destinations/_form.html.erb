@@ -45,8 +45,8 @@
   <div class="form-group">
     <div class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></div>
   </div>
-  <%= f.text_field :lat %>
-  <%= f.text_field :lng %>
+  <%= f.number_field :lat, { step: 'any'} %>
+  <%= f.number_field :lng, { step: 'any'} %>
   <%= f.number_field :quantity, {min:1, placeholder: '1 (' + t('.quantity_default') + ')', step: 'any' } do %>
     <p class="help-block"><%= t '.quantity_help' %></p>
   <% end %>
