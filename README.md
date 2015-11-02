@@ -2,18 +2,17 @@ Mapotempo [![Build Status](https://travis-ci.org/Mapotempo/mapotempo-web.svg?bra
 =========
 Delivery optimization with numerous stops. Based on [OpenStreetMap](http://www.openstreetmap.org) and [OR-Tools](http://code.google.com).
 
-Installation
-============
+# Installation
 
 For the following installation, your current working directory needs to be the mapotempo-web root directory.
 
-# On Fedora
+## On Fedora
 
 Install ruby (>2.0 is needed), bundler and some dependencies from system package.
 
     yum install ruby ruby-devel rubygem-bundler postgresql-devel libgeos++-dev
 
-# On other systems
+## On other systems
 
 Install ruby (>2.0 is needed) and other dependencies from system package. For exemple for Ubuntu:
     sudo apt-get install ruby2.0 ruby2.0-dev libz-dev libicu-dev build-essential g++ postgresql-server-dev-9.3 libgeos++-dev
@@ -23,7 +22,7 @@ Install ruby bundle gem by :
     export GEM_HOME=~/.gem/ruby/2.0.0
     gem install bundler
 
-# All systems
+## All systems
 
 Now add gem bin directory to path with :
 
@@ -33,16 +32,16 @@ And finally install gem project dependencies with :
 
     bundle install
 
-Configuration
-=============
+# Configuration
+
 Default project configuration is in `config/application.rb` you can override any setting by create a `config/initializers/mapotempo.rb` file and override any variable. In particular you may need to override `Mapotempo::Application.config.trace_cache_dir` and `Mapotempo::Application.config.optimizer_exec`.
 
 Delayed job (background task) can be activated by setting `Mapotempo::Application.config.delayed_job_use = true` it's allow asynchronous running of import geocoder and optimization computation.
 
 Default configuration point on public [OSRM](http://project-osrm.org) API but matrix computation heavily discouraged on it. So point on your own instance.
 
-Initialization
-==============
+# Initialization
+
 Check database configuration in `config/database.yml` and from project directory create a database for your environment with :
 
 As postgres user:
@@ -61,8 +60,8 @@ You can load demo data from `db/seeds.rb` into database with :
 
     rake db:seed
 
-Running
-=======
+# Running
+
 Start standalone rails server with
 
     rails server
@@ -73,8 +72,7 @@ Start the background jobs runner with
 
     ./bin/delayed_job run
 
-Running in production
-=====================
+# Running in production
 
 Setup assets:
     rake i18n:js:export
