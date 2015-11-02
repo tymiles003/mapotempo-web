@@ -124,9 +124,9 @@
               <li><a class="active_all" href="/plannings/{{planning_id}}/{{route_id}}/active/all"><i class="fa fa-check-square-o fa-fw"></i> {{#i18n}}plannings.edit.active_all{{/i18n}}</a></li>
             </ul>
           </div>
-          <i class="fa fa-clock-o fa-fw"></i>{{duration}}/{{work_time}}
-          <i class="fa fa-road fa-fw"></i>{{distance}}
-          {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity}}{{#capacity}}/{{capacity}}{{/capacity}}{{/quantity}}
+          <i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.duration_help{{/i18n}}"></i>{{duration}}/{{work_time}}
+          <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.distance_help{{/i18n}}"></i>{{distance}}
+          {{#quantity}}<i class="fa fa-archive fa-fw" title="{{#i18n}}plannings.edit.quantity_help{{/i18n}}"></i>{{quantity}}{{#capacity}}/{{capacity}}{{/capacity}}{{/quantity}}
         {{#route_error}}
           <ul class="ui-state-error">
             {{#route_no_geolocalization}}
