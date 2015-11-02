@@ -171,7 +171,7 @@ var plannings_edit = function(params) {
         url: "/api/0.1/zonings/" + id + ".json",
         beforeSend: beforeSendWaiting,
         success: display_zoning,
-        complete: completeWaiting,
+        complete: completeAjaxMap,
         error: ajaxError
       });
     } else {
@@ -191,7 +191,7 @@ var plannings_edit = function(params) {
       url: '/plannings/' + planning_id + '/optimize_each.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
-      complete: completeWaiting,
+      complete: completeAjaxMap,
       error: ajaxError
     });
   });
@@ -211,7 +211,7 @@ var plannings_edit = function(params) {
       url: '/plannings/' + planning_id + '/' + route_id + '/' + stop_id + '/move/' + (index + 1) + '.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
-      complete: completeWaiting,
+      complete: completeAjaxMap,
       error: function(request, status, error) {
         ajaxError(request, status, error);
         $("#out_of_route, .stops").sortable('cancel');
@@ -537,7 +537,7 @@ var plannings_edit = function(params) {
           url: '/plannings/' + planning_id + '/switch.json',
           beforeSend: beforeSendWaiting,
           success: display_planning,
-          complete: completeWaiting,
+          complete: completeAjaxMap,
           error: ajaxError
         });
       }
@@ -578,7 +578,7 @@ var plannings_edit = function(params) {
         url: '/plannings/' + planning_id + '/refresh.json',
         beforeSend: beforeSendWaiting,
         success: display_planning,
-        complete: completeWaiting,
+        complete: completeAjaxMap,
         error: ajaxError
       });
     });
@@ -641,7 +641,7 @@ var plannings_edit = function(params) {
           url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
           beforeSend: beforeSendWaiting,
           success: display_planning,
-          complete: completeWaiting,
+          complete: completeAjaxMap,
           error: ajaxError
         });
       })
@@ -652,7 +652,7 @@ var plannings_edit = function(params) {
           url: url,
           beforeSend: beforeSendWaiting,
           success: display_planning,
-          complete: completeWaiting,
+          complete: completeAjaxMap,
           error: ajaxError
         });
         return false;
@@ -722,7 +722,7 @@ var plannings_edit = function(params) {
         data.stop_id_enlighten = stop_id;
         display_planning(data);
       },
-      complete: completeWaiting,
+      complete: completeAjaxMap,
       error: ajaxError
     });
   });
@@ -742,7 +742,7 @@ var plannings_edit = function(params) {
       url: '/plannings/' + planning_id + '/' + route_id + '/' + stop_id + '.json',
       beforeSend: beforeSendWaiting,
       success: display_planning,
-      complete: completeWaiting,
+      complete: completeAjaxMap,
       error: ajaxError
     });
   });
@@ -754,7 +754,7 @@ var plannings_edit = function(params) {
       url: url,
       beforeSend: beforeSendWaiting,
       success: display_planning,
-      complete: completeWaiting,
+      complete: completeAjaxMap,
       error: ajaxError
     });
     return false;
@@ -782,7 +782,7 @@ var plannings_edit = function(params) {
     url: '/plannings/' + planning_id + '.json',
     beforeSend: beforeSendWaiting,
     success: display_planning_first_time,
-    complete: completeWaiting,
+    complete: completeAjaxMap,
     error: ajaxError
   });
 
@@ -792,7 +792,7 @@ var plannings_edit = function(params) {
       url: "/api/0.1/zonings/" + zoning_id + ".json",
       beforeSend: beforeSendWaiting,
       success: display_zoning,
-      complete: completeWaiting,
+      complete: completeAjaxMap,
       error: ajaxError
     });
   }
@@ -829,7 +829,7 @@ var plannings_edit = function(params) {
     }
   });
 
-  hide_alert('.alert', 5000);
+  hideAlert('.alert', timeAlert);
 }
 
 Paloma.controller('Planning').prototype.new = function() {

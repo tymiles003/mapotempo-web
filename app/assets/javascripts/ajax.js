@@ -31,6 +31,11 @@ var completeWaiting = function() {
   }
 }
 
+var completeAjaxMap = function() {
+  completeWaiting();
+  hideAlert('.alert', timeAlert);
+}
+
 var ajaxError = function(request, status, error) {
   var otext = request.responseText;
   var text;

@@ -38,8 +38,22 @@ var bootstrap_alert_danger = function(message, timeout) {
   bootstrap_alert('danger', message, timeout);
 };
 
-var hide_alert = function(elem, timeout) {
-  setTimeout(function() { 
-    $(elem).alert('close');
-  }, timeout);
+var timeAlert = 5000;
+var hideAlert = function(elem, timeout) {
+  var $elem = $(elem);
+  if ($elem.length > 0) {
+    var delta = timeout/10,
+      tid;
+    tid = setInterval(function() {
+      if (window.blurred) { return; }
+      timeout -= delta;
+      if (timeout <= 0) {
+        clearInterval(tid);
+        $elem.alert('close');
+      }
+    }, delta);
+  }
 }
+
+window.onblur = function() { window.blurred = true; };
+window.onfocus = function() { window.blurred = false; };
