@@ -94,6 +94,7 @@ var plannings_edit = function(params) {
     imperial: false
   }).addTo(map);
 
+  var fitBounds = (window.location.hash) ? false : true;
   new L.Hash(map);
 
   sidebar.addTo(map);
@@ -767,10 +768,12 @@ var plannings_edit = function(params) {
 
   var display_planning_first_time = function(data) {
     display_planning(data);
-    var bounds = routes_layers.getBounds();
-    if (bounds && bounds.isValid()) {
-      map.invalidateSize();
-      map.fitBounds(bounds.pad(1.1), {animate: false});
+    if (fitBounds) {
+      var bounds = routes_layers.getBounds();
+      if (bounds && bounds.isValid()) {
+        map.invalidateSize();
+        map.fitBounds(bounds.pad(1.1), {animate: false});
+      }
     }
   }
 

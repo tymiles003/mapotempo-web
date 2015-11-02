@@ -59,6 +59,7 @@ var zonings_edit = function(params) {
     imperial: false
   }).addTo(map);
 
+  var fitBounds = (window.location.hash) ? false : true;
   new L.Hash(map);
 
   sidebar.addTo(map);
@@ -309,10 +310,12 @@ var zonings_edit = function(params) {
       add_zone(zone, geom);
     });
 
-    var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
-    if (bounds && bounds.isValid()) {
-      map.invalidateSize();
-      map.fitBounds(bounds.pad(1.1), {animate: false});
+    if (fitBounds) {
+      var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
+      if (bounds && bounds.isValid()) {
+        map.invalidateSize();
+        map.fitBounds(bounds.pad(1.1), {animate: false});
+      }
     }
   }
 
