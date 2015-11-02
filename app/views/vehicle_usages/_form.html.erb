@@ -5,7 +5,9 @@
       <a data-toggle="collapse" data-parent="" href="#collapseVehicle"<% if @vehicle_usage_sets.count > 1 %> class="collapsed"<% end %>><%= t 'vehicle_usages.form.vehicle.legend' %></a>
     </legend>
     <div id="collapseVehicle" class="collapse<% if @vehicle_usage_sets.count < 2 %> in<% end %>">
+      <% if @vehicle_usage_sets[0].customer.enable_multi_vehicle_usage_sets %>
       <p class="help-block"><%= t 'vehicle_usages.form.vehicle.help' %></p>
+      <% end %>
       <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle]', @vehicle_usage.vehicle, layout: :horizontal do |f| %>
         <%= f.hidden_field :id %>
         <%= f.text_field :ref do %>
@@ -40,7 +42,9 @@
 
   <fieldset>
     <legend class="scheduler-border"><%= t('vehicle_usages.form.vehicle_usage.legend', s: @vehicle_usage.vehicle_usage_set.name) %></legend>
+    <% if @vehicle_usage_sets[0].customer.enable_multi_vehicle_usage_sets %>
     <p class="help-block"><%= t 'vehicle_usages.form.vehicle_usage.help' %></p>
+    <% end %>
     <%= f.text_field :open, {
       value: @vehicle_usage.open ? @vehicle_usage.open.strftime("%H:%M") : nil,
       placeholder: t('vehicle_usages.form.open.default', n: @vehicle_usage.vehicle_usage_set.open.strftime("%H:%M")),
