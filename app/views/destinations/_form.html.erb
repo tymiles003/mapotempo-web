@@ -47,7 +47,7 @@
   </div>
   <%= f.text_field :lat %>
   <%= f.text_field :lng %>
-  <%= f.number_field :quantity, {min:1, placeholder: '1 (' + t('.quantity_default') + ')' } do %>
+  <%= f.number_field :quantity, {min:1, placeholder: '1 (' + t('.quantity_default') + ')', step: 'any' } do %>
     <p class="help-block"><%= t '.quantity_help' %></p>
   <% end %>
   <%= f.text_field :take_over, {

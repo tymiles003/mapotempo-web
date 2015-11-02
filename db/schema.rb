@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151027103159) do
+
+ActiveRecord::Schema.define(version: 20151102113505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,7 +80,7 @@ ActiveRecord::Schema.define(version: 20151027103159) do
     t.string   "city",               limit: 255
     t.float    "lat"
     t.float    "lng"
-    t.integer  "quantity"
+    t.float    "quantity"
     t.time     "open"
     t.time     "close"
     t.integer  "customer_id",                    null: false
