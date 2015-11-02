@@ -5,7 +5,7 @@
   <% end %>
   <%= f.text_field :name %>
   <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
-  <%= f.text_field :postalcode, {maxlength: 7, width: 7} %>
+  <%= f.text_field :postalcode, {maxlength: 17, width: 17} %>
   <%= f.text_field :city %>
   <%= f.text_field :country, {placeholder: t('.country_default', n: @store.customer.default_country)} %>
   <div id="store_city_input" class="form-group">
