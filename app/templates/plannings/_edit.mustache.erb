@@ -126,7 +126,7 @@
           </div>
           <i class="fa fa-clock-o fa-fw"></i>{{duration}}/{{work_time}}
           <i class="fa fa-road fa-fw"></i>{{distance}}
-          {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity}}/{{capacity}}{{/quantity}}
+          {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity}}{{#capacity}}/{{capacity}}{{/capacity}}{{/quantity}}
         {{#route_error}}
           <ul class="ui-state-error">
             {{#route_no_geolocalization}}

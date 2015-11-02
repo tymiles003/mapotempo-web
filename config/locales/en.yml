@@ -944,8 +944,9 @@ en:
     default: "You are not authorized to access this page"
 
   web:
+    form:
+      empty_entry: "- N/A -"
     select2:
-      empty_entry: "- Empty -"
       empty_result: "No results matched"
     dialog:
       close: "Close"

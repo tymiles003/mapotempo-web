@@ -14,7 +14,7 @@
           <p class="help-block"><%= t 'vehicles.form.ref.help' %></p>
         <% end %>
         <%= f.text_field :name %>
-        <%= f.select :emission, [], Vehicle.emissions_table, {}, {input_group: t('all.unit.kgco2e_l_html')} do %>
+        <%= f.select :emission, [], Vehicle.emissions_table, { include_blank: t('web.form.empty_entry') }, {input_group: t('all.unit.kgco2e_l_html')} do %>
           <p class="help-block"><%= t 'vehicles.form.emissions.help' %></p>
         <% end %>
         <%= f.number_field :consumption, {input_group: t('all.unit.l_100km')} do %>

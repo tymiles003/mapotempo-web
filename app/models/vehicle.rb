@@ -25,9 +25,9 @@ class Vehicle < ActiveRecord::Base
   auto_strip_attributes :name, :tomtom_id, :masternaut_ref
   validates :customer, presence: true
   validates :name, presence: true
-  validates :emission, presence: true, numericality: {only_float: true}
-  validates :consumption, presence: true, numericality: {only_float: true}
-  validates :capacity, presence: true, numericality: {only_integer: true}
+  validates :emission, numericality: {only_float: true}, :allow_nil => true
+  validates :consumption, numericality: {only_float: true}, :allow_nil => true
+  validates :capacity, numericality: {only_integer: true}, :allow_nil => true
   validates :color, presence: true
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
 
@@ -38,7 +38,7 @@ class Vehicle < ActiveRecord::Base
 
   def self.emissions_table
     [
-      [I18n.t('vehicles.emissions_nothing', n: 0), '0'],
+      [I18n.t('vehicles.emissions_nothing', n: 0), '0.0'],
       [I18n.t('vehicles.emissions_light_petrol', n: 2.71), '2.71'],
       [I18n.t('vehicles.emissions_light_diesel', n: 3.07), '3.07'],
       [I18n.t('vehicles.emissions_light_lgp', n: 1.77), '1.77'],
@@ -52,9 +52,6 @@ class Vehicle < ActiveRecord::Base
   private
 
   def assign_defaults
-    self.emission = 0
-    self.consumption = 0
-    self.capacity = 999
     self.color = Vehicle.colors_table[0]
   end
 

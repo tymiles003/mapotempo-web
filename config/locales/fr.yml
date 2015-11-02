@@ -957,8 +957,9 @@ fr:
     default: "Vous n'êtes pas autorisé à accéder à cette page"
 
   web:
+    form:
+      empty_entry: "- Non renseigné -"
     select2:
-      empty_entry: "- Vide -"
       empty_result: "Pas de résultats"
     dialog:
       close: "Fermer"
