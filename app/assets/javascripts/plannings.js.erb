@@ -842,6 +842,10 @@ var plannings_edit = function(params) {
   hideAlert('.alert-success', timeAlert);
 }
 
+var plannings_show = function(params){
+  window.print();
+}
+
 Paloma.controller('Planning').prototype.new = function() {
   plannings_new(this.params);
 };
@@ -856,4 +860,8 @@ Paloma.controller('Planning').prototype.edit = function() {
 
 Paloma.controller('Planning').prototype.update = function() {
   plannings_edit(this.params);
+};
+
+Paloma.controller('Planning').prototype.show = function() {
+  plannings_show(this.params);
 };
