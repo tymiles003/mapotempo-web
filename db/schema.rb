@@ -91,8 +91,8 @@ ActiveRecord::Schema.define(version: 20151102142302) do
     t.time     "take_over"
     t.float    "geocoding_accuracy"
     t.string   "country"
-    t.string   "phone_number"
     t.integer  "geocoding_level"
+    t.string   "phone_number"
   end
 
   add_index "destinations", ["customer_id"], name: "fk__destinations_customer_id", using: :btree
