@@ -255,8 +255,8 @@ var destinations_form = function(params, api) {
   var markerChange = function(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     displayGeocoding(0, null, 'point');
-    $('[name$=\\[lat\\]]', row).val(latLng.lat);
-    $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change', false);
+    $('[name$=\\[lat\\]]', row).val(latLng.lat.toFixed(6));
+    $('[name$=\\[lng\\]]', row).val(latLng.lng.toFixed(6)).trigger('change', false);
   }
 
   map.on('click', function(mouseEvent) {
@@ -609,8 +609,8 @@ var destinations_index = function(params, api) {
   var markerChange = function(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     $('[name$=\\[geocoding_level\\]]', row).val('point');
-    $('[name$=\\[lat\\]]', row).val(latLng.lat);
-    $('[name$=\\[lng\\]]', row).val(latLng.lng).trigger('change', false);
+    $('[name$=\\[lat\\]]', row).val(latLng.lat.toFixed(6));
+    $('[name$=\\[lng\\]]', row).val(latLng.lng.toFixed(6)).trigger('change', false);
   }
 
   map.on('click', function(mouseEvent) {
