@@ -17,7 +17,7 @@
 #
 class CustomersController < ApplicationController
   load_and_authorize_resource
-  before_action :set_customer, only: [:edit, :update]
+  before_action :set_customer, only: [:edit, :update, :delete_vehicle]
 
   def index
     @customers = current_user.reseller.customers.order(:name)
@@ -69,6 +69,17 @@ class CustomersController < ApplicationController
     end
   end
 
+  def delete_vehicle
+    if current_user.admin?
+      @customer.vehicles.find(params[:vehicle_id]).destroy
+      respond_to do |format|
+        format.html { redirect_to edit_customer_path(@customer) }
+      end
+    else
+      error! 'Forbidden', 403
+    end
+  end
+
   def destroy_multiple
     Customer.transaction do
       if params['customers'].keys
@@ -86,7 +97,7 @@ class CustomersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_customer
     @customer = if current_user.admin?
-      current_user.reseller.customers.find(params[:id])
+      current_user.reseller.customers.find(params[:id] || params[:customer_id])
     else
       current_user.customer
     end

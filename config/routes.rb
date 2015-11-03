@@ -33,7 +33,9 @@ Rails.application.routes.draw do
   resources :tags
   delete 'tags' => 'tags#destroy_multiple'
 
-  resources :customers
+  resources :customers do
+    delete 'vehicles/:vehicle_id' => 'customers#delete_vehicle'
+  end
   delete 'customers' => 'customers#destroy_multiple'
 
   resources :vehicle_usage_sets do

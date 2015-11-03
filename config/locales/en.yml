@@ -443,6 +443,8 @@ en:
         connect_as: "Connect as…"
         list: "Users list"
         new: "New user"
+      vehicles:
+        list: "Vehicles list"
     index:
       title: "Listing customers"
       new: "New Customer"

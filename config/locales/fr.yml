@@ -454,6 +454,8 @@ fr:
         connect_as: "Connecter en tant que…"
         list: "Liste des utilisateurs"
         new: "Nouvel utilisateur"
+      vehicles:
+        list: "Liste des véhicules"
     index:
       title: "Liste comptes client"
       new: "Nouveau compte client"
