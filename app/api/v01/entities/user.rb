@@ -24,4 +24,5 @@ class V01::Entities::User < Grape::Entity
   expose(:email, documentation: { type: String })
   expose(:customer_id, documentation: { type: Integer })
   expose(:layer_id, documentation: { type: Integer })
+  expose(:api_key, documentation: { type: String })
 end
