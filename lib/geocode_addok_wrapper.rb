@@ -40,7 +40,7 @@ class GeocodeAddokWrapper
     result = @cache_code.read(key)
     if !result
       begin
-        result = RestClient.get(@url + '/geocode', {
+        result = RestClient.get(@url + '/geocode.json', {
           params: {
             api_key: @api_key,
             limit: 1,
@@ -72,7 +72,7 @@ class GeocodeAddokWrapper
     result = @cache_code.read(key)
     if !result
       begin
-        result = RestClient.get(@url + '/geocode', {
+        result = RestClient.get(@url + '/geocode.json', {
           params: {
             api_key: @api_key,
             limit: limit,
