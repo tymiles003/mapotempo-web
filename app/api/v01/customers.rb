@@ -68,8 +68,8 @@ class V01::Customers < Grape::API
       entity: V01::Entities::Customer
     post do
       if @current_user.admin?
-        customer = Customer.new(customer_params)
-        customer.save!
+        customer = @current_user.reseller.customers.build(customer_params)
+        @current_user.reseller.save!
         present customer, with: V01::Entities::Customer
       end
     end
