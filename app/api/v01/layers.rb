@@ -22,7 +22,11 @@ class V01::Layers < Grape::API
       is_array: true,
       entity: V01::Entities::Layer
     get do
-      present current_customer.profile.layers.load, with: V01::Entities::Layer
+      if @current_user.admin?
+        error! 'Forbidden, empty customer', 403
+      else
+        present current_customer.profile.layers.load, with: V01::Entities::Layer
+      end
     end
   end
 end

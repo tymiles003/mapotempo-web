@@ -30,4 +30,11 @@ class V01::ProfilesTest < ActiveSupport::TestCase
     assert_equal @profile.routers.size, JSON.parse(last_response.body).size
     assert_equal @profile.routers.first.name, JSON.parse(last_response.body)[0]['name']
   end
+
+  test 'should return layers in profile_one' do
+    get api(@profile.id.to_s + '/layers')
+    assert last_response.ok?, last_response.body
+    assert_equal @profile.layers.size, JSON.parse(last_response.body).size
+    assert_equal @profile.layers.first.name, JSON.parse(last_response.body)[0]['name']
+  end
 end

@@ -44,5 +44,21 @@ class V01::Profiles < Grape::API
         error! 'Forbidden', 403
       end
     end
+
+    desc 'Fetch layers in the profile',
+      nickname: 'getProfileLayers',
+      is_array: true,
+      entity: V01::Entities::Layer
+    params do
+      requires :id, type: Integer
+    end
+    get ':id/layers' do
+      if @current_user.admin?
+        profile = Profile.find(params[:id])
+        present profile.layers.load, with: V01::Entities::Layer
+      else
+        error! 'Forbidden', 403
+      end
+    end
   end
 end
