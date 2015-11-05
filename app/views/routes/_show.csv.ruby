@@ -53,7 +53,7 @@ route.stops.each { |stop|
     ((stop.active ? '1' : '0') if route.vehicle_usage),
     (stop.open.strftime("%H:%M") if stop.open),
     (stop.close.strftime("%H:%M") if stop.close),
-    (stop.destination.tags.collect(&:label).join('/') if stop.is_a?(StopDestination)),
+    (stop.destination.tags.collect(&:label).join(',') if stop.is_a?(StopDestination)),
     stop.out_of_window ? 'x' : '',
     stop.out_of_capacity ? 'x' : '',
     stop.out_of_drive_time ? 'x' : ''
