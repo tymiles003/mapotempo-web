@@ -37,7 +37,7 @@ class V01::UsersTest < ActiveSupport::TestCase
   test 'should create a user' do
     assert_difference('User.count', 1) do
       # use a new hash here instead of @user.attributes to be able to send password
-      post api_admin(), {email: 'new@plop.com', password: 'password', customer_id: @user.customer_id, layer_id: @user.layer_id}
+      post api_admin(), {email: 'new@plop.com', password: 'password', customer_id: @user.customer_id, layer_id: @user.layer_id, url_click2call: '+77.78.988'}
       assert last_response.created?, last_response.body
     end
   end

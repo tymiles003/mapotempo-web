@@ -25,4 +25,5 @@ class V01::Entities::User < Grape::Entity
   expose(:customer_id, documentation: { type: Integer })
   expose(:layer_id, documentation: { type: Integer })
   expose(:api_key, documentation: { type: String })
+  expose(:url_click2call, documentation: { type: String })
 end

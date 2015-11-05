@@ -14,6 +14,7 @@ user_one:
   customer: customer_one
   layer: layer_one
   api_key: testkey1
+  url_click2call: +331245
 
 user_two:
   email: u2@plop.com
@@ -21,6 +22,7 @@ user_two:
   customer: customer_one
   layer: layer_one
   api_key: testkey2
+  url_click2call:
 
 user_three:
   email: u3@plop.com
@@ -28,3 +30,4 @@ user_three:
   customer: customer_two
   layer: layer_one
   api_key: testkey3
+  url_click2call:
