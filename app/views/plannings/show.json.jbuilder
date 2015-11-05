@@ -65,7 +65,7 @@ else
       (json.time stop.time.strftime('%H:%M')) if stop.time
       (json.active true) if stop.active
       (json.number number += 1) if route.vehicle_usage && stop.active
-      (json.link_phone_number stop.link_phone_number(current_user.url_click2call)) if current_user.url_click2call
+      (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
       json.distance (stop.distance || 0) / 1000
       if first_active_free == true || first_active_free == stop || !route.vehicle_usage
         json.automatic_insert true
