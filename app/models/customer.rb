@@ -75,7 +75,7 @@ class Customer < ActiveRecord::Base
   end
 
   def create_default_store
-    stores.build(
+    stores.create(
       name: I18n.t('stores.default.name'),
       city: I18n.t('stores.default.city'),
       lat: Float(I18n.t('stores.default.lat')),
@@ -84,7 +84,7 @@ class Customer < ActiveRecord::Base
   end
 
   def create_default_vehicle_usage_set
-    vehicle_usage_sets.build(
+    vehicle_usage_sets.create(
       name: I18n.t('vehicle_usage_sets.default.name')
     )
   end
