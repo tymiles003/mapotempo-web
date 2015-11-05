@@ -40,8 +40,12 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
   test 'should create a customer' do
     assert_difference('Customer.count', 1) do
-      post api_admin, {name: 'new cust', max_vehicles: 5, default_country: 'France', router_id: @customer.router_id, profile_id: @customer.profile_id}
-      assert last_response.created?, last_response.body
+      assert_difference('Store.count', 1) do
+      assert_difference('VehicleUsageSet.count', 1) do
+        post api_admin, {name: 'new cust', max_vehicles: 5, default_country: 'France', router_id: @customer.router_id, profile_id: @customer.profile_id}
+        assert last_response.created?, last_response.body
+      end
+      end
     end
   end
 
