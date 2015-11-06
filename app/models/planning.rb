@@ -71,6 +71,7 @@ class Planning < ActiveRecord::Base
 
   def vehicle_usage_add(vehicle_usage)
     route = routes.build(vehicle_usage: vehicle_usage, out_of_date: false)
+    vehicle_usage.routes << route if !vehicle_usage.id
     route.init_stops
   end
 

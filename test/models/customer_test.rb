@@ -57,8 +57,10 @@ class CustomerTest < ActiveSupport::TestCase
     o = customers(:customer_one)
     assert_difference('Vehicle.count', 1) do
       assert_difference('VehicleUsage.count', o.vehicle_usage_sets.length) do
-        o.max_vehicles += 1
-        o.save!
+        assert_difference('Route.count', o.plannings.length) do
+          o.max_vehicles += 1
+          o.save!
+        end
       end
     end
   end
@@ -67,8 +69,10 @@ class CustomerTest < ActiveSupport::TestCase
     o = customers(:customer_one)
     assert_difference('Vehicle.count', -1) do
       assert_difference('VehicleUsage.count', -o.vehicle_usage_sets.length) do
-        o.max_vehicles -= 1
-        o.save!
+        assert_difference('Route.count', -o.plannings.length) do
+          o.max_vehicles -= 1
+          o.save!
+        end
       end
     end
   end
