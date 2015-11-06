@@ -66,11 +66,11 @@ var templateTag = function(item) {
   var color = $(item.element).attr('data-color');
   var icon = $(item.element).attr('data-icon');
   if (icon && color) {
-    return $('<span><img src="/images/' + icon + '-' + color + '.svg" />&nbsp;' + item.text + '</span>');
+    return $('<span><img src="/images/' + icon + '-' + color + '.svg" />&nbsp;</span>').append($("<span/>").text(item.text));
   } else if (icon) {
-    return $('<span><img src="/images/' + icon + '.svg" />&nbsp;' + item.text + '</span>');
+    return $('<span><img src="/images/' + icon + '.svg" />&nbsp;</span>').append($("<span/>").text(item.text));
   } else if (color) {
-    return $('<span><i style="color:#' + color + '" class="fa fa-flag" ></i>&nbsp;' + item.text + '</span>');
+    return $('<span><i style="color:#' + color + '" class="fa fa-flag" ></i>&nbsp;</span>').append($("<span/>").text(item.text));
   } else {
     return item.text;
   }

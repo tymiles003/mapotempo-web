@@ -435,16 +435,16 @@ var plannings_edit = function(params) {
       if(state.id) {
         var color = $('.color_select', $(state.element).parent().parent()).val();
         if(color) {
-          return $("<span>" + vehicles_usages_map[state.id].name + "</span>");
+          return $("<span/>").text(vehicles_usages_map[state.id].name);
         } else {
-          return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;" + vehicles_usages_map[state.id].name + "</span>");
+          return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;</span>").append($("<span/>").text(vehicles_usages_map[state.id].name));
         }
       }
     }
 
     var templateResultVehicles = function(state) {
       if(state.id){
-        return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;" + vehicles_usages_map[state.id].name + "</span>");
+        return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;</span>").append($("<span/>").text(vehicles_usages_map[state.id].name));
       } else {
         console.log(state);
       }
