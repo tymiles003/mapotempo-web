@@ -978,7 +978,7 @@ en:
 
   all:
     map_attribution:
-      osm: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, %{attribution}"
+      osm: "Map data &copy; <a href=\"http://openstreetmap.org\" target=\"_blank\">OpenStreetMap</a> contributors, %{attribution}"
       here: "Here"
     verb:
       new: "New"

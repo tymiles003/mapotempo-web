@@ -991,7 +991,7 @@ fr:
 
   all:
     map_attribution:
-      osm: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, %{attribution}"
+      osm: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\" target=\"_blank\">OpenStreetMap</a>, %{attribution}"
       here: "Here"
     verb:
       new: "Nouveau"

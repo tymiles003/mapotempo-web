@@ -27,7 +27,10 @@ var api_web_v01_routes_index = function(params) {
     map_attribution = params.map_attribution,
     route_ids = params.route_ids,
     vehicles_map = params.vehicles_map,
-    map = new L.Map('map').setView([map_lat, map_lng], 13),
+    map = new L.Map('map', {
+      attributionControl: false
+    }).setView([map_lat, map_lng], 13),
+    L.control.attribution({prefix: false}).addTo(map);
     markers = {},
     stores = {},
     layers = {},

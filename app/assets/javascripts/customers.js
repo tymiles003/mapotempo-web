@@ -22,7 +22,10 @@ var customers_index = function(params) {
   var is_map_init = false;
 
   var map_init = function() {
-    var map = L.map('map').setView([0, 0], 13);
+    var map = L.map('map', {
+      attributionControl: false
+    }).setView([0, 0], 13);
+    L.control.attribution({prefix: false}).addTo(map);
     L.tileLayer(map_layer_url, {
       maxZoom: 18,
       attribution: map_attribution
