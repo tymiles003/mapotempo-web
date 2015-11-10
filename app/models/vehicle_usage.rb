@@ -30,7 +30,7 @@ class VehicleUsage < ActiveRecord::Base
   validates_time :open, if: :open
   validates_time :close, after: :open, if: lambda { |vu| vu.open && vu.close }
   validates_time :rest_start, if: :rest_start
-  validates_time :rest_stop, after: :rest_start, if: lambda { |vu| vu.rest_start && vu.rest_stop }
+  validates_time :rest_stop, on_or_after: :rest_start, if: lambda { |vu| vu.rest_start && vu.rest_stop }
 
   before_update :update_out_of_date
 

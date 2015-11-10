@@ -33,7 +33,7 @@ class VehicleUsageSet < ActiveRecord::Base
   validates_time :open, presence: true
   validates_time :close, presence: true, after: :open
   validates_time :rest_start, if: :rest_start
-  validates_time :rest_stop, after: :rest_start, if: :rest_stop
+  validates_time :rest_stop, on_or_after: :rest_start, if: :rest_stop
 
   after_initialize :assign_defaults, if: 'new_record?'
   before_save :set_stores

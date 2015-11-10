@@ -106,4 +106,10 @@ class DestinationTest < ActiveSupport::TestCase
     r.touch
     r.save!
   end
+
+  test 'should set same start and close' do
+    o = destinations(:destination_one)
+    o.open = o.close = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    o.save!
+  end
 end

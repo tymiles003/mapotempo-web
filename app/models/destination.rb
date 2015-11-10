@@ -43,7 +43,7 @@ class Destination < ActiveRecord::Base
   validates_inclusion_of :geocoding_accuracy, in: 0..1, :allow_nil => true, message: I18n.t('activerecord.errors.models.destination.geocoding_accuracy_outside_range')
   validates_with LocalizationDestinationValidator, fields: [:street, :city, :lat, :lng]
   validates_time :open, if: :open
-  validates_time :close, presence: false, after: :open, if: :close
+  validates_time :close, presence: false, on_or_after: :open, if: :close
 
   before_save :update_tags, :create_orders
   before_create :create_geocode
