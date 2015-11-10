@@ -25,8 +25,8 @@ class ApiV01 < Grape::API
     description: '
 <h2>Model</h2>
 
-<a href="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simple.svg">
-  <img src="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simple.svg" width="600"/><br/>
+<a href="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg">
+  <img src="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg" width="600"/><br/>
   Simplified view of domain model.
 </a>
 
