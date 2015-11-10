@@ -30,13 +30,14 @@ var api_web_v01_routes_index = function(params) {
     map = new L.Map('map', {
       attributionControl: false
     }).setView([map_lat, map_lng], 13),
-    L.control.attribution({prefix: false}).addTo(map);
     markers = {},
     stores = {},
     layers = {},
     layers_cluster = {},
     routes_layers,
     routes_layers_cluster;
+
+  L.control.attribution({prefix: false}).addTo(map);
 
   L.control.scale({
     imperial: false

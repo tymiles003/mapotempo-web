@@ -1,19 +1,23 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 router_one:
+  mode: car
   name: MyString
   url_time: http://localhost:5000
   url_isochrone: http://localhost:1723
 
 router_two:
+  mode: car
   name: MyString
   url_time: http://localhost:5000
 
 router_osrm:
+  mode: car
   type: RouterOsrm
   name: OSRM
   url_time: http://localhost:5000
 
 router_here:
+  mode: truck
   type: RouterHere
   name: HERE
