@@ -50,7 +50,7 @@ else
         break
       end
     }
-    json.stops route.stops.sort_by(&:index) do |stop|
+    json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
       out_of_window |= stop.out_of_window
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
