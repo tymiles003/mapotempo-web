@@ -22,4 +22,5 @@ class V01::Entities::Router < Grape::Entity
 
   expose(:id, documentation: { type: Integer })
   expose(:name, documentation: { type: String })
+  expose(:mode, documentation: { type: String })
 end
