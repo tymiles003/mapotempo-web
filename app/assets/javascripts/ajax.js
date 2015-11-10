@@ -33,7 +33,7 @@ var completeWaiting = function() {
 
 var completeAjaxMap = function() {
   completeWaiting();
-  hideAlert('.alert', timeAlert);
+  hideAlert('.alert-success', timeAlert);
 }
 
 var ajaxError = function(request, status, error) {
