@@ -34,15 +34,21 @@ Model is structured around four majors concepts the Customer account, Vehicles, 
 
 <ul>
 <li><b><code>Customer</code></b>: the customer account using the API. The customer have many users, each user have his own <code>api_key</code>.</li>
-<li><b><code>Vehicles</code></b>: Vehicles, VehicleUsage and VehicleUsageSet.</li>
-<li><b><code>Destinations</code></b>:</li>
-<li><b><code>Plannings</code></b>: Planning and routes.</li>
+<li><b><code>Vehicles</code></b>: vehicles definition are splited in two parts. The structural definition named <code>Vehicle</code> (car, truck, bike, consumption, etc.), and the vehicle usage <code>VehicleUsage</code>, a specific usage of a physical vehicle in a specific context. Vehicles can be used in many contexts called <code>VehicleUsageSet</code>. It''s a set of all vehicles usages under a context.</li>
+<li><b><code>Destinations</code></b>: location points to visit with constraints.</li>
+<li><b><code>Plannings</code></b>: <code>Planning</code> is a set of <code>Route</code>s to visit <code>Destination</code>s with <code>Vehicle</code> within a <code>VehicleUsageSet</code> context.</li>
 </ul>
 
 <h2>Technical access</h2>
+
+<h3>Swagger descriptor</h3>
 <p>This REST API is described with Swagger. The Swagger descriptor define the request end-points, the parameters and the return values. The API can be addressed by HTTP request or with a generated client using the Swagger descriptor.</p>
 
+<h3>API key</h3>
 <p>All access to the API are subject to an <code>api_key</code> parameter in order to authenticate the user.</p>
+
+<h3>I18n</h3>
+<p>Textual returns are subject to translation, including error messages, and depend of HTTP header <code>Accept-Language</code>.</p>
 
 <h2>Admin acces</h2>
 <p>Using an admin <code>api_key</code> allow opperations on <code>Customers</code> and <code>Reseller</code>.</p>
