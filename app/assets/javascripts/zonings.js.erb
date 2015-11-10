@@ -314,7 +314,10 @@ var zonings_edit = function(params) {
       var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
       if (bounds && bounds.isValid()) {
         map.invalidateSize();
-        map.fitBounds(bounds.pad(1.1), {animate: false});
+        map.fitBounds(bounds.pad(1.1), {
+          maxZoom: 15,
+          animate: false
+        });
       }
     }
   }

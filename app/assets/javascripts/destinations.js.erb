@@ -749,7 +749,9 @@ var destinations_index = function(params, api) {
     });
 
     if (markersLayers.getLayers().length > 0) {
-      map.fitBounds(markersLayers.getBounds().pad(1.1));
+      map.fitBounds(markersLayers.getBounds().pad(1.1), {
+        maxZoom: 15
+      });
     }
 
     count();

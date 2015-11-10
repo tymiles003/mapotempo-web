@@ -237,7 +237,9 @@ var api_web_v01_routes_index = function(params) {
     display_planning(data);
     var bounds = routes_layers.getBounds();
     if (bounds && bounds.isValid()) {
-      map.fitBounds(bounds.pad(1.1));
+      map.fitBounds(bounds.pad(1.1), {
+        maxZoom: 15
+      });
     }
   }
 
