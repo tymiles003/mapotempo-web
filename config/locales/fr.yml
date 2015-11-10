@@ -492,6 +492,7 @@ fr:
       detail_help: "Complément d'adresse non géocodable, ex. numéro d'escalier"
       quantity_help: "Quantité à livrer"
       take_over_help: "Si vide utilise la valeur par défaut"
+      close_help: "Sans tenir compte de la durée de visite"
       tags_help: "Catégories du client"
       comment_help: "Informations nécessaires pour la livraison"
       locate_manually: "Positionner manuellement sur la carte"

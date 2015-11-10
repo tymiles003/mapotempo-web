@@ -481,6 +481,7 @@ en:
       detail_help: "Non geocoded addresse complement; like flat number"
       quantity_help: "Quantity to be delivered"
       take_over_help: "If empty uses the default value"
+      close_help: "Without taking into account take over duration"
       tags_help: "Customer's categories"
       comment_help: "Delivery required information"
       locate_manually: "Locate manually on the map"

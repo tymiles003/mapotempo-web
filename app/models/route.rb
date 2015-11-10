@@ -138,11 +138,11 @@ class Route < ActiveRecord::Base
       time = self.end - stops_time[:stop]
       stops_sort.reverse_each{ |stop|
         if stop.active && (stop.position? || stop.is_a?(StopRest))
-          if stop.out_of_window
+          if stop.out_of_window || (stop.close && time > stop.close)
             time = stop.time
           else
             # Latest departure time
-            time = stop.close ? [time, stop.close].min : time
+            time = [time, stop.close].min if stop.close
 
             # New arrival stop time
             time -= stop.duration
