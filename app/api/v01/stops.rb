@@ -56,6 +56,7 @@ class V01::Stops < Grape::API
             end
 
             desc 'Move stop position in routes.',
+              detail: 'Set a new #N position for a stop in route which was in a previous #M position in the same route.',
               nickname: 'moveStop'
             params do
               requires :id, type: Integer, desc: 'Stop id to move'

@@ -40,6 +40,7 @@ class V01::Orders < Grape::API
 
       resource :orders do
         desc 'Fetch order_array\'s orders.',
+          detail: 'Only available if "order array" option is active for current customer.',
           nickname: 'getOrders',
           is_array: true,
           entity: V01::Entities::Order
@@ -56,6 +57,7 @@ class V01::Orders < Grape::API
         end
 
         desc 'Fetch order.',
+          detail: 'Only available if "order array" option is active for current customer.',
           nickname: 'getOrder',
           entity: V01::Entities::Order
         params do
@@ -66,6 +68,7 @@ class V01::Orders < Grape::API
         end
 
         desc 'Update order.',
+          detail: 'Only available if "order array" option is active for current customer.',
           nickname: 'updateOrder',
           params: V01::Entities::Order.documentation.except(:id),
           entity: V01::Entities::Order

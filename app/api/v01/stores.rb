@@ -114,6 +114,7 @@ class V01::Stores < Grape::API
     end
 
     desc 'Delete store.',
+      detail: 'At least one remaining store is required after deletion.',
       nickname: 'deleteStore'
     params do
       requires :id, type: String, desc: ID_DESC
@@ -124,6 +125,7 @@ class V01::Stores < Grape::API
     end
 
     desc 'Delete multiple stores.',
+      detail: 'At least one remaining store is required after deletion.',
       nickname: 'deleteStores'
     params do
       requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString

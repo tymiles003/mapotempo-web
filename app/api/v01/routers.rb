@@ -18,6 +18,7 @@
 class V01::Routers < Grape::API
   resource :routers do
     desc 'Fetch customer\'s routers.',
+      detail: 'Get the list of available routers which can be used for finding route.',
       nickname: 'getRouters',
       is_array: true,
       entity: V01::Entities::Router

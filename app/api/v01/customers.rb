@@ -58,6 +58,7 @@ class V01::Customers < Grape::API
     end
 
     desc 'Create customer.',
+      detail: 'Only available with an admin api_key.',
       nickname: 'createCustomer',
       params: V01::Entities::Customer.documentation.except(:id).deep_merge(
         name: { required: true },
@@ -75,6 +76,7 @@ class V01::Customers < Grape::API
     end
 
     desc 'Delete customer.',
+      detail: 'Only available with an admin api_key.',
       nickname: 'deleteCustomer'
     params do
       requires :id, type: Integer
@@ -86,6 +88,7 @@ class V01::Customers < Grape::API
     end
 
     desc 'Return a job',
+      detail: 'Return asynchronous job (like geocoding, optimizer) currently runned for the customer.',
       nickname: 'getJob'
     params do
       requires :id, type: Integer
@@ -103,6 +106,7 @@ class V01::Customers < Grape::API
     end
 
     desc 'Cancel job',
+      detail: 'Cancel asynchronous job (like geocoding, optimizer) currently runned for the customer.',
       nickname: 'deleteJob'
     params do
       requires :id, type: Integer
@@ -120,6 +124,7 @@ class V01::Customers < Grape::API
     end
 
     desc 'Fetch tomtom ids.',
+      detail: 'Get tomtom leaflet device ids if they are set for this customer.',
       nickname: 'getTomtomIds'
     params do
       requires :id, type: Integer

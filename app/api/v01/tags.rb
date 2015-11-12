@@ -55,6 +55,7 @@ class V01::Tags < Grape::API
     end
 
     desc 'Create tag.',
+      detail: 'By creating a tag, it will be possible to filter destinations and create a planning with only necessary destinations.',
       nickname: 'createTag',
       params: V01::Entities::Tag.documentation.except(:id).deep_merge(
         label: { required: true }

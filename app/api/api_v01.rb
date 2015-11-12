@@ -30,28 +30,45 @@ class ApiV01 < Grape::API
   Simplified view of domain model.
 </a>
 
-Model is structured around four majors concepts the Customer account, Vehicles, Destinations and Plannings.
+Model is structured around four majors concepts: the Customer account, Destinations, Vehicles and Plannings.
 
 <ul>
-<li><b><code>Customer</code></b>: the customer account using the API. The customer have many users, each user have his own <code>api_key</code>.</li>
-<li><b><code>Vehicles</code></b>: vehicles definition are splited in two parts. The structural definition named <code>Vehicle</code> (car, truck, bike, consumption, etc.), and the vehicle usage <code>VehicleUsage</code>, a specific usage of a physical vehicle in a specific context. Vehicles can be used in many contexts called <code>VehicleUsageSet</code>. It''s a set of all vehicles usages under a context.</li>
+<li><b><code>Customers</code></b>: many of objects are linked to a customer account (relating to the user calling API). <br>The customer has many users, each user has his own <code>api_key</code>.</li>
 <li><b><code>Destinations</code></b>: location points to visit with constraints.</li>
-<li><b><code>Plannings</code></b>: <code>Planning</code> is a set of <code>Route</code>s to visit <code>Destination</code>s with <code>Vehicle</code> within a <code>VehicleUsageSet</code> context.</li>
+<li><b><code>Vehicles</code></b>: vehicles definition are splited in two parts: <ul><li>the structural definition named <code>Vehicle</code> (car, truck, bike, consumption, etc.)</li> <li>and the vehicle usage <code>VehicleUsage</code>, a specific usage of a physical vehicle in a specific context.</li></ul> Vehicles can be used in many contexts called <code>VehicleUsageSet</code> (set of all vehicles usages under a context). Multiple values are only available if dedicated option for customer is active. For instance, if customer needs to use its vehicle 2 times per day (morning and evening), he needs 2 <code>VehicleUsageSet</code> called \'Morning\' and \'Evening\'. <code>VehicleUsageSet</code> defines default values for vehicle usage.</li>
+<li><b><code>Plannings</code></b>: <code>Planning</code> is a set of <code>Route</code>s to visit <code>Destination</code>s with <code>Vehicle</code> within a <code>VehicleUsageSet</code> context. <br>A route is a track between all destinations reached by a vehicle (a new route is created for each customer\'s vehicle and a route without vehicle is created for all out-of-route destinations). By default all customer\'s destinations are used in a planning.</li>
 </ul>
 
 <h2>Technical access</h2>
 
 <h3>Swagger descriptor</h3>
-<p>This REST API is described with Swagger. The Swagger descriptor define the request end-points, the parameters and the return values. The API can be addressed by HTTP request or with a generated client using the Swagger descriptor.</p>
+<p>This REST API is described with Swagger. The Swagger descriptor defines the request end-points, the parameters and the return values. The API can be addressed by HTTP request or with a generated client using the Swagger descriptor.</p>
 
 <h3>API key</h3>
 <p>All access to the API are subject to an <code>api_key</code> parameter in order to authenticate the user.</p>
 
+<h3>Return</h3>
+<p>The API supports several return formats: <code>json</code> and <code>xml</code> which depend of the requested extension used in url.</p>
+
 <h3>I18n</h3>
-<p>Textual returns are subject to translation, including error messages, and depend of HTTP header <code>Accept-Language</code>.</p>
+<p>Functionnal textual returns are subject to translation and depend of HTTP header <code>Accept-Language</code>. HTTP error codes are not translated.</p>
 
 <h2>Admin acces</h2>
-<p>Using an admin <code>api_key</code> allow opperations on <code>Customers</code> and <code>Reseller</code>.</p>
+<p>Using an admin <code>api_key</code> allows advanced opperations (on <code>Customer</code>, <code>User</code>, <code>Vehicle</code>, <code>Profile</code>).</p>
+
+<h2>More concepts</h2>
+
+<h3><code>Profiles</code>, <code>Layers</code>, <code>Routers</code></h3>
+<p><code>Profile</code> is a concept which allows to set several other concepts for the customer: 
+<ul><li><code>Layer</code>: which allows to choose the background map
+<li><code>Router</code>: which allows to build route\'s information.</li></ul></p>
+
+<h3><code>Tags</code></h3>
+<p><code>Tag</code> is a concept to filter destinations and create planning only for a subset of destinations. For instance, if some destinations are tagged \'Monday\', it allows to create a new planning for \'Monday\' tag and use only dedicated destinations.</p>
+
+<h3><code>Zonings</code></h3>
+<p><code>Zoning</code> is a concept which allows to define multiple <code>Zone</code>s (areas) around destinatons. A <code>Zone</code> can be affected to a <code>Vehicle</code> and if it is used into a <code>Planning</code>, all <code>Destinations</code> inside areas will be affected to the zone\'s vehicle (or <code>Route</code>). A polygon defining a <code>Zone</code> can be created outside the application or can be automatically generated from a planning.</p>
+
 ',
   }
 end

@@ -58,6 +58,7 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Create zoning.',
+      detail: 'Create a new zoning. Zones will can be created for this zoning thereafter.',
       nickname: 'createZoning',
       params: V01::Entities::Zoning.documentation.except(:id).deep_merge(
         name: { required: true }
@@ -104,7 +105,9 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate zoning from planning.',
-      nickname: 'generateFromPlanning'
+      detail: 'Create new automatic zones in current zoning for a dedicated planning. Only destinations in a route with vehicle are taken into account. All previous existing zones are cleared.',
+      nickname: 'generateFromPlanning',
+      entity: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :planning_id, type: Integer
@@ -113,7 +116,6 @@ class V01::Zonings < Grape::API
       Zoning.transaction do
         zoning = current_customer.zonings.find(params[:id])
         planning = current_customer.plannings.find(params[:planning_id])
-        n = params.key?(:n) ? Integer(params[:n]) : nil
         if zoning && planning
           zoning.from_planning(planning)
           zoning.save!
@@ -123,7 +125,9 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate zoning automatically.',
-      nickname: 'generateAutomatic'
+      detail: 'Create #N new automatic zones in current zoning for a dedicated planning. All planning\'s destinations are taken into account, even if they are out of route. All previous existing zones are cleared.',
+      nickname: 'generateAutomatic',
+      entity: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :planning_id, type: Integer
@@ -143,7 +147,9 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate isochrone.',
-      nickname: 'generateIsochrone'
+      detail: 'Generate isochrone polygon for all vehicles. All previous existing zones are cleared.',
+      nickname: 'generateIsochrone',
+      entity: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
@@ -170,7 +176,9 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate isochrone for only one vehicle usage.',
-      nickname: 'generateIsochroneVehicleUsage'
+      detail: 'Generate isochrone polygon for one vehicle.',
+      nickname: 'generateIsochroneVehicleUsage',
+      entity: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
@@ -193,7 +201,9 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate isodistance.',
-      nickname: 'generateIsodistance'
+      detail: 'Generate isodistance polygon for all vehicles. All previous existing zones are cleared.',
+      nickname: 'generateIsodistance',
+      entity: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
@@ -220,7 +230,9 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate isodistance for only one vehicle usage.',
-      nickname: 'generateIsochroneVehicleUsage'
+      detail: 'Generate isodistance polygon for one vehicle.',
+      nickname: 'generateIsochroneVehicleUsage',
+      entity: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'

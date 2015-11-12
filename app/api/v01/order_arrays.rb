@@ -34,6 +34,7 @@ class V01::OrderArrays < Grape::API
 
   resource :order_arrays do
     desc 'Fetch customer\'s order_arrays.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'getOrderArrays',
       is_array: true,
       entity: V01::Entities::OrderArray
@@ -50,6 +51,7 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Fetch order_array.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'getOrderArray',
       entity: V01::Entities::OrderArray
     params do
@@ -60,6 +62,7 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Create order_array.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'createOrderArray',
       params: V01::Entities::OrderArray.documentation.except(:id, :orders).deep_merge(
         name: { required: true },
@@ -74,6 +77,7 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Update order_array.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'updateOrderArray',
       params: V01::Entities::OrderArray.documentation.except(:id, :orders),
       entity: V01::Entities::OrderArray
@@ -88,6 +92,7 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Delete order_array.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'deleteOrderArray'
     params do
       requires :id, type: Integer
@@ -97,6 +102,7 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Delete multiple order_arrays.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'deleteOrderArrays'
     params do
       requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger
@@ -108,6 +114,7 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Clone the order_array.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'cloneOrderArray',
       entity: V01::Entities::OrderArray
     params do
@@ -121,6 +128,7 @@ class V01::OrderArrays < Grape::API
     end
 
     desc 'Orders mass assignment.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'massAssignmentOrder'
     params do
       requires :id, type: Integer

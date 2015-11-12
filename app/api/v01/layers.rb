@@ -18,6 +18,7 @@
 class V01::Layers < Grape::API
   resource :layers do
     desc 'Fetch layers.',
+      detail: 'Get the list of available layers which can be used for maps.',
       nickname: 'getLayers',
       is_array: true,
       entity: V01::Entities::Layer

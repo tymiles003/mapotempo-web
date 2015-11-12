@@ -74,7 +74,12 @@ class V01::Vehicles < Grape::API
       present vehicle, with: V01::Entities::Vehicle
     end
 
+    detailCreate = 'The number of vehicles should be less than customer\'s max_vehicles. <br>For each new created <code>Vehicle</code> and <code>VehicleUsageSet</code> a new <code>VehicleUsage</code> will be created at the same time (i.e. customer has 2 VehicleUsageSets \'Morning\' and \'Evening\', a new Vehicle is created: 2 new VehicleUsages will be automatically created with the new vehicle.)'
+    if Mapotempo::Application.config.manage_vehicles_only_admin
+      detailCreate = 'Only available with an admin api_key. <br>' + detailCreate
+    end
     desc 'Create vehicle.',
+      detail: detailCreate,
       nickname: 'createVehicle',
       params: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
         name: { required: true },
@@ -103,7 +108,9 @@ class V01::Vehicles < Grape::API
       present vehicle, with: V01::Entities::Vehicle
     end
 
+    detailDelete = Mapotempo::Application.config.manage_vehicles_only_admin ? 'Only available with an admin api_key.' : nil
     desc 'Delete vehicle.',
+      detail: detailDelete,
       nickname: 'deleteVehicle'
     params do
       requires :id, type: String, desc: ID_DESC
@@ -122,6 +129,7 @@ class V01::Vehicles < Grape::API
     end
 
     desc 'Delete multiple vehicles.',
+      detail: detailDelete,
       nickname: 'deleteVehicles'
     params do
       requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString

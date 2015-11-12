@@ -84,6 +84,7 @@ class V01::Routes < Grape::API
         end
 
         desc 'Change stops activation.',
+          detail: 'Allow to activate/deactivate a stop in a planning\'s route.',
           nickname: 'activationStops',
           entity: V01::Entities::Route
         params do
@@ -101,6 +102,7 @@ class V01::Routes < Grape::API
         end
 
         desc 'Move destination to routes. Append in order at end.',
+          detail: 'Set a new A route (or vehicle) for a destination which was in a previous B route in the same planning.',
           nickname: 'moveDestinations'
         params do
           requires :id, type: String
@@ -129,6 +131,7 @@ class V01::Routes < Grape::API
         end
 
         desc 'Starts asynchronous route optimization.',
+          detail: 'Get the shortest route in time.',
           nickname: 'optimizeRoute'
         params do
           requires :id, type: Integer

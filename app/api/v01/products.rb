@@ -29,6 +29,7 @@ class V01::Products < Grape::API
 
   resource :products do
     desc 'Fetch customer\'s products.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'getProducts',
       is_array: true,
       entity: V01::Entities::Product
@@ -45,6 +46,7 @@ class V01::Products < Grape::API
     end
 
     desc 'Fetch product.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'getProduct',
       entity: V01::Entities::Product
     params do
@@ -55,6 +57,7 @@ class V01::Products < Grape::API
     end
 
     desc 'Create product.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'createProduct',
       params: V01::Entities::Product.documentation.except(:id).deep_merge(
         code: { required: true },
@@ -68,6 +71,7 @@ class V01::Products < Grape::API
     end
 
     desc 'Update product.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'updateProduct',
       params: V01::Entities::Product.documentation.except(:id),
       entity: V01::Entities::Product
@@ -82,6 +86,7 @@ class V01::Products < Grape::API
     end
 
     desc 'Delete product.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'deleteProduct'
     params do
       requires :id, type: Integer
@@ -91,6 +96,7 @@ class V01::Products < Grape::API
     end
 
     desc 'Delete multiple products.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'deleteProducts'
     params do
       requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger

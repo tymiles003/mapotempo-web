@@ -55,6 +55,7 @@ class V01::Users < Grape::API
     end
 
     desc 'Create user.',
+      detail: 'Only available with an admin api_key.',
       nickname: 'createUser',
       params: V01::Entities::User.documentation.except(:id).deep_merge(
         email: { required: true },
@@ -90,6 +91,7 @@ class V01::Users < Grape::API
     end
 
     desc 'Delete user.',
+      detail: 'Only available with an admin api_key.',
       nickname: 'deleteUser'
     params do
       requires :id, type: Integer
@@ -104,6 +106,7 @@ class V01::Users < Grape::API
     end
 
     desc 'Delete multiple users.',
+      detail: 'Only available with an admin api_key.',
       nickname: 'deleteUsers'
     params do
       requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger

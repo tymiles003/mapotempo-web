@@ -110,6 +110,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Force recompute the planning after parameter update.',
+      detail: 'Refresh planning and routes infos if inputs have been changed (for instance stores, destinations, etc...)',
       nickname: 'refreshPlanning',
       entity: V01::Entities::Planning
     params do
@@ -171,6 +172,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Use order_array in the planning.',
+      detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'useOrderArray',
       entity: V01::Entities::Planning
     params do

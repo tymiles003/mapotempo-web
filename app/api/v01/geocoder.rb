@@ -27,6 +27,7 @@ class V01::Geocoder < Grape::API
 
   resource :geocoder do
     desc 'Geocode.',
+      detail: 'Return a list of address which match with input query.',
       nickname: 'geocode'
     params do
       requires :q, type: String, desc: 'Free query string.'

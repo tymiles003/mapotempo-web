@@ -55,6 +55,7 @@ class V01::VehicleUsageSets < Grape::API
     end
 
     desc 'Create vehicle_usage_set.',
+      detail: 'Only available if "multi usage set" option is active for current customer. <br>For instance, if customer needs to use its vehicle 2 times per day (morning and evening), he needs 2 VehicleUsageSet called \'Morning\' and \'Evening\'. The new VehicleUsageSet allows to define new default values for VehicleUsage.',
       nickname: 'createVehicleUsageSet',
       params: V01::Entities::VehicleUsageSet.documentation.except(:id).deep_merge(
         name: { required: true },
