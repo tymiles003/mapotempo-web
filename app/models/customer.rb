@@ -102,7 +102,7 @@ class Customer < ActiveRecord::Base
   end
 
   def update_max_vehicles
-    if max_vehicles_changed?
+    if max_vehicles_changed? && Mapotempo::Application.config.manage_vehicles_only_admin
       if vehicles.size < max_vehicles
         # Add new
         (max_vehicles - vehicles.size).times{ |_i|

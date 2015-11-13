@@ -106,6 +106,8 @@ class V01::Vehicles < Grape::API
             u.assign_attributes(vehicle_usage_params)
           }
           vehicle.save!
+          customer.max_vehicles += 1
+          customer.save!
         else
           error! 'Forbidden', 403
         end
