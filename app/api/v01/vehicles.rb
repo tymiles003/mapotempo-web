@@ -26,6 +26,13 @@ class V01::Vehicles < Grape::API
       p.permit(:ref, :name, :emission, :consumption, :capacity, :color, :tomtom_id, :masternaut_ref, :router_id, :speed_multiplicator)
     end
 
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def vehicle_usage_params
+      p = ActionController::Parameters.new(params)
+      p = p[:vehicle] if p.key?(:vehicle)
+      p.permit(:open, :close, :store_start_id, :store_stop_id, :store_rest_id, :rest_start, :rest_stop, :rest_duration)
+    end
+
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
   end
 
@@ -83,9 +90,7 @@ class V01::Vehicles < Grape::API
       nickname: 'createVehicle',
       params: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
         name: { required: true },
-        store_start_id: { required: true },
-        store_stop_id: { required: true }
-      ),
+      ).deep_merge(V01::Entities::VehicleUsage.documentation.except(:id).except(:vehicle_usage_set).except(:vehicle)),
       entity: V01::Entities::Vehicle
     if Mapotempo::Application.config.manage_vehicles_only_admin
       params do
@@ -96,13 +101,19 @@ class V01::Vehicles < Grape::API
       if Mapotempo::Application.config.manage_vehicles_only_admin
         if @current_user.admin?
           customer = Customer.where(id: params[:customer_id]).first!
-          vehicle = customer.vehicles.build(vehicle_params)
+          vehicle = customer.vehicles.create(vehicle_params)
+          vehicle.vehicle_usages.each { |u|
+            u.assign_attributes(vehicle_usage_params)
+          }
           vehicle.save!
         else
           error! 'Forbidden', 403
         end
       else
-        vehicle = current_customer.vehicles.build(vehicle_params)
+        vehicle = current_customer.vehicles.create(vehicle_params)
+        vehicle.vehicle_usages.each { |u|
+          u.assign_attributes(vehicle_usage_params)
+        }
         vehicle.save!
       end
       present vehicle, with: V01::Entities::Vehicle
