@@ -1,8 +1,8 @@
 class ImporterTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
-    @destinations_count = @customer.destinations.count
-    @plannings_count = @customer.plannings.select{ |planning| planning.tags == [tags(:tag_one)] }.count
+    @dest_tag1_count = @customer.destinations.select{ |d| d.tags == [tags(:tag_one)] }.count
+    @plan_tag1_count = @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.count
   end
 
   def around
@@ -13,12 +13,13 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
-  test 'shoud import' do
+  test 'shoud import in new planning' do
     import_count = 1
-    rest_count = 1
+    # vehicle_usage_sets for new planning is hardcoded...
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
+        assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one.csv', 'text')
         end
       end
@@ -27,36 +28,40 @@ class ImporterTest < ActionController::TestCase
     assert_equal [tags(:tag_one)], Destination.where(name: 'BF').first.tags.to_a
   end
 
-  test 'shoud import postalcode' do
+  test 'shoud import postalcode in new planning' do
     import_count = 1
-    rest_count = 1
+    # vehicle_usage_sets for new planning is hardcoded...
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
+        assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one_postalcode.csv', 'text')
         end
       end
     end
   end
 
-  test 'shoud import coord' do
+  test 'shoud import coord in new planning' do
     import_count = 1
-    rest_count = 1
+    # vehicle_usage_sets for new planning is hardcoded...
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
+        assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one_coord.csv', 'text')
         end
       end
     end
   end
 
-  test 'shoud import two' do
+  test 'shoud import two in new planning' do
+    p @dest_tag1_count.to_s
     import_count = 2
-    rest_count = 1
+    # vehicle_usage_sets for new planning is hardcoded...
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
-        assert_difference('Stop.count', (@destinations_count + import_count + rest_count) + (import_count + rest_count) * @plannings_count) do
+        assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_two.csv', 'text')
         end
       end
@@ -70,17 +75,25 @@ class ImporterTest < ActionController::TestCase
     assert_not stops[2].active
   end
 
-  test 'shoud import many-utf-8' do
+  test 'shoud import many-utf-8 in new planning' do
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all
+    # destinations with same ref are merged
+    import_count = 5
+    # vehicle_usage_sets for new planning is hardcoded...
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
+
     assert_difference('Planning.count') do
-      assert_difference('Destination.count', 5) do
-        ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
+      assert_difference('Destination.count', import_count) do
+        assert_difference('Stop.count', (import_count + rest_count) * (@customer.plannings.select{ |p| p.tags.any?{ |t| t.label == 'été' } }.count + 1)) do
+          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
+        end
       end
     end
+
     o = Destination.find{|d| d.customer_id}
     assert_equal 'Point 1', o.name
-    assert_equal ['Nantes'], o.tags.collect(&:label)
+    assert_equal ['été'], o.tags.collect(&:label)
     p = Planning.first
     assert_equal 2, p.routes[0].stops.size
   end
@@ -88,12 +101,15 @@ class ImporterTest < ActionController::TestCase
   test 'shoud import many-iso' do
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all
-    assert_difference('Destination.count', 6) do
+
+    # destinations with same ref are merged
+    assert_difference('Destination.count', 5) do
       ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_many-iso.csv', 'text')
     end
+
     o = Destination.find{|d| d.customer_id}
     assert_equal 'Point 1', o.name
-    assert_equal ['Nantes'], o.tags.collect(&:label)
+    assert_equal ['été'], o.tags.collect(&:label)
   end
 
   test 'shoud not import' do
