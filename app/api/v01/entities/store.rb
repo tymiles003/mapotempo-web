@@ -21,6 +21,7 @@ class V01::Entities::Store < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
+  expose(:ref, documentation: { type: String })
   expose(:name, documentation: { type: String })
   expose(:street, documentation: { type: String })
   expose(:postalcode, documentation: { type: String })
