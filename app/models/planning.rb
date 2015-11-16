@@ -283,6 +283,7 @@ class Planning < ActiveRecord::Base
         h[vehicle_usage.vehicle].vehicle_usage = vehicle_usage
         h[vehicle_usage.vehicle].save!
       }
+      compute
     end
   end
 end

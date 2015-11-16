@@ -12,6 +12,12 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
     @vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
   end
 
+  def around
+    Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
+      yield
+    end
+  end
+
   def api(part = nil, param = {})
     part = part ? '/' + part.to_s : ''
     "/api/0.1/vehicle_usage_sets#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')

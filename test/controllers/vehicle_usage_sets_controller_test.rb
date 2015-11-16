@@ -10,6 +10,12 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
     assert_valid response
   end
 
+  def around
+    Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
+      yield
+    end
+  end
+
   test 'user can only view vehicle_usage_sets from its customer' do
     ability = Ability.new(users(:user_one))
     assert ability.can? :edit, vehicle_usage_sets(:vehicle_usage_set_one)
