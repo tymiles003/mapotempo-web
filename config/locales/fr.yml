@@ -359,7 +359,7 @@ fr:
               after: "Doit être après l'horaire de début"
             rest_stop:
               after: "Doit être après l'horaire de début"
-        vehicle_usage_sets:
+        vehicle_usage_set:
           attributes:
             close:
               after: "Doit être après l'horaire de début"

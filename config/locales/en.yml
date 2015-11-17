@@ -349,7 +349,7 @@ en:
               after: "Must be after the open time"
             rest_stop:
               after: "Must be after the open time"
-        vehicle_usage_sets:
+        vehicle_usage_set:
           attributes:
             close:
               after: "Must be after the open time"
