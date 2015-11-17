@@ -79,8 +79,14 @@ class CreateVehicleUsage < ActiveRecord::Migration
       }
 
       # Set most fequent values as default
-      vehicle_usage_set.open = stats[:open].max_by(&:last)[0]
-      vehicle_usage_set.close = stats[:close].max_by(&:last)[0]
+      open = stats[:open].max_by{ |k, v| [v, -k.seconds_since_midnight] }[0]
+      close = stats[:close].max_by{ |k, v| [v, k] }[0]
+      if close < open
+        open = stats[:open].keys.min
+        close = stats[:close].keys.max
+      end
+      vehicle_usage_set.open = open
+      vehicle_usage_set.close = close
       vehicle_usage_set.store_start = stats[:store_start].max_by(&:last)[0]
       vehicle_usage_set.store_stop = stats[:store_stop].max_by(&:last)[0]
       vehicle_usage_set.store_rest = stats[:store_rest].max_by(&:last)[0]
