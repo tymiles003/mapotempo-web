@@ -50,6 +50,14 @@ class CreateVehicleUsage < ActiveRecord::Migration
     add_foreign_key :vehicle_usages, :stores, column: :store_stop_id
     add_foreign_key :vehicle_usages, :stores, column: :store_rest_id
 
+    add_column :plannings, :vehicle_usage_set_id, :integer
+    add_index :plannings, :vehicle_usage_set_id
+    add_foreign_key :plannings, :vehicle_usage_sets
+
+    add_column :routes, :vehicle_usage_id, :integer
+    add_index :routes, :vehicle_usage_id
+    add_foreign_key :routes, :vehicle_usages
+
     # Move vehicle props values to vehicle_usage
 
     Customer.all.each{ |customer|
@@ -119,14 +127,6 @@ class CreateVehicleUsage < ActiveRecord::Migration
     remove_column :vehicles, :rest_duration
 
     # Set default vehicle_usage_sets to plannings
-
-    add_column :plannings, :vehicle_usage_set_id, :integer
-    add_index :plannings, :vehicle_usage_set_id
-    add_foreign_key :plannings, :vehicle_usage_sets
-
-    add_column :routes, :vehicle_usage_id, :integer
-    add_index :routes, :vehicle_usage_id
-    add_foreign_key :routes, :vehicle_usages
 
     Customer.all.each{ |customer|
       vehicle_usage_set = customer.vehicle_usage_sets.first
