@@ -28,7 +28,7 @@ class VehicleUsage < ActiveRecord::Base
 
   nilify_blanks
   validates_time :open, if: :open
-  validates_time :close, after: :open, if: lambda { |vu| vu.open && vu.close }
+  validates_time :close, on_or_after: :open, if: lambda { |vu| vu.open && vu.close }
   validates_time :rest_start, if: :rest_start
   validates_time :rest_stop, on_or_after: :rest_start, if: lambda { |vu| vu.rest_start && vu.rest_stop }
 
