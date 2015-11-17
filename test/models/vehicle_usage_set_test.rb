@@ -19,6 +19,15 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     o.save!
   end
 
+  test 'should update out_of_date for rest' do
+    assert_difference('Stop.count', -1) do
+      o = vehicle_usage_sets(:vehicle_usage_set_one)
+      o.rest_duration = nil
+      o.save!
+      assert_not o.vehicle_usages[0].routes[-1].out_of_date
+    end
+  end
+
   test 'should update out_of_date for open' do
     o = vehicle_usage_sets(:vehicle_usage_set_one)
     o.open = '2000-01-01 09:00:00'

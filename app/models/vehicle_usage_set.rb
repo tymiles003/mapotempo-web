@@ -82,15 +82,19 @@ class VehicleUsageSet < ActiveRecord::Base
     if rest_duration_changed?
       if rest_duration.nil?
         # No more rest
-        routes.each{ |route|
-          route.stops.select{ |stop| stop.is_a?(StopRest) }.each{ |stop|
-            route.remove_stop(stop)
+        vehicle_usages.each{ |vehicle_usage|
+          vehicle_usage.routes.each{ |route|
+            route.stops.select{ |stop| stop.is_a?(StopRest) }.each{ |stop|
+              route.remove_stop(stop)
+            }
           }
         }
       elsif rest_duration_was.nil?
         # New rest
-        routes.each{ |route|
-          route.add_rest
+        vehicle_usages.each{ |vehicle_usage|
+          vehicle_usage.routes.each{ |route|
+            route.add_rest
+          }
         }
       end
     end
