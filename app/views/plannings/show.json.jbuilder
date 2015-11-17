@@ -56,6 +56,7 @@ else
       out_of_drive_time |= stop.out_of_drive_time
       no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
       (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+      json.edit_planning true
       json.stop_id stop.id
       json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
       (json.open stop.open.strftime('%H:%M')) if stop.open

@@ -26,7 +26,7 @@
 <p>
   {{#vehicle_name}}{{vehicle_name}}</br>{{/vehicle_name}}
   {{#number}}<span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>{{/number}}
-  {{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}
+  {{#edit_planning}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/edit_planning}}
   <b>{{#ref}}{{ref}} {{/ref}}{{name}}</b></br>
   {{street}}</br>
   {{#detail}}
