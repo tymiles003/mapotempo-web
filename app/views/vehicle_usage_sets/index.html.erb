@@ -67,7 +67,7 @@
         <td colspan="<%= @customer.enable_multi_vehicle_usage_sets ? 5 : 4 %>">
           <div id="collapseUsageSet<%= vehicle_usage_set.id %>" class="accordion-body collapse<% if i == 0 %> in<% end %>">
             <div class="accordion-inner">
-              <%= render 'vehicle_usages/list', vehicle_usage_set: vehicle_usage_set %>
+              <%= render 'vehicle_usages/index', vehicle_usage_set: vehicle_usage_set %>
             </div>
           </div>
         </td>
