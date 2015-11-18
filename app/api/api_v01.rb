@@ -22,7 +22,7 @@ class ApiV01 < Grape::API
 
   documentation_class = add_swagger_documentation base_path: 'api', hide_documentation_path: true, info: {
     title: 'API',
-    description: '
+    description: ('
 <h2>Model</h2>
 
 <a href="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg">
@@ -68,7 +68,6 @@ Model is structured around four majors concepts: the Customer account, Destinati
 
 <h3><code>Zonings</code></h3>
 <p><code>Zoning</code> is a concept which allows to define multiple <code>Zone</code>s (areas) around destinatons. A <code>Zone</code> can be affected to a <code>Vehicle</code> and if it is used into a <code>Planning</code>, all <code>Destinations</code> inside areas will be affected to the zone\'s vehicle (or <code>Route</code>). A polygon defining a <code>Zone</code> can be created outside the application or can be automatically generated from a planning.</p>
-
-',
+').gsub("\n", ''),
   }
 end
