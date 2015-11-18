@@ -21,6 +21,7 @@ class V01::Entities::User < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
+  expose(:ref, documentation: { type: String, desc: 'Only available in admin.' })
   expose(:email, documentation: { type: String })
   expose(:customer_id, documentation: { type: Integer })
   expose(:layer_id, documentation: { type: Integer })

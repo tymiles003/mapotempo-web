@@ -1,5 +1,8 @@
 <%= twitter_bootstrap_form_for @customer, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
+  <% if current_user.admin? %>
+    <%= f.text_field :ref %>
+  <% end %>
   <%= f.text_field :name, disabled:!current_user.admin? %>
   <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
   <%= f.number_field :max_vehicles, {min:1, disabled:!current_user.admin?}  %>

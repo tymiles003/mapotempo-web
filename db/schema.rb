@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110095625) do
+ActiveRecord::Schema.define(version: 20151118172552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20151110095625) do
     t.integer  "reseller_id",                                                 null: false
     t.boolean  "enable_multi_vehicle_usage_sets",             default: true,  null: false
     t.boolean  "print_stop_time",                             default: true,  null: false
+    t.string   "ref"
   end
 
   add_index "customers", ["job_destination_geocoding_id"], name: "index_customers_on_job_destination_geocoding_id", using: :btree
@@ -318,6 +319,7 @@ ActiveRecord::Schema.define(version: 20151110095625) do
     t.string   "api_key",                limit: 255,              null: false
     t.integer  "reseller_id"
     t.string   "url_click2call"
+    t.string   "ref"
   end
 
   add_index "users", ["api_key"], name: "index_users_on_api_key", using: :btree

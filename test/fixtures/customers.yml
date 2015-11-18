@@ -6,6 +6,7 @@ customer_one:
   take_over: 2000-01-01 00:05:00
   job_destination_geocoding: job_destination_geocoding
   job_optimizer: job_optimizer
+  ref: ref1
   name: MyString
   router: router_one
   enable_orders: true
@@ -22,6 +23,7 @@ customer_one_other:
   take_over: 2000-01-01 00:05:00
   job_destination_geocoding: job_destination_geocoding
   job_optimizer: job_optimizer
+  ref: ref_1_o
   name: MyString
   router: router_one
   enable_orders: true
@@ -38,6 +40,7 @@ customer_two:
   take_over: 2000-01-01 00:05:00
   job_destination_geocoding:
   job_optimizer:
+  ref: ref_2
   name: MyString
   router: router_one
   enable_orders: false

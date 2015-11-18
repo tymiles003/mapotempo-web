@@ -28,6 +28,7 @@ class V01::Entities::Customer < Grape::Entity
   expose(:job_destination_geocoding_id, documentation: { type: Integer })
   expose(:job_store_geocoding_id, documentation: { type: Integer })
   expose(:job_optimizer_id, documentation: { type: Integer })
+  expose(:ref, documentation: { type: String, desc: 'Only available in admin.' })
   expose(:name, documentation: { type: String })
   expose(:tomtom_user, documentation: { type: String })
   expose(:tomtom_password, documentation: { type: String })

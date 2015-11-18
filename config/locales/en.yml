@@ -148,6 +148,7 @@ en:
         profile_id: "Profile"
         speed_multiplicator: "Speed tuning"
         default_country: "Default country"
+        ref: "Reference"
       destination:
         name: "Name"
         address: "Address"
@@ -286,6 +287,7 @@ en:
         url_click2call: "URL click2call"
         sign_in_count: "Connections count"
         sign_in_at: "Last connection"
+        ref: "Reference"
       vehicle:
         name: "Name"
         emission: "Emission"

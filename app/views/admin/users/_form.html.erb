@@ -1,6 +1,7 @@
 <%= twitter_bootstrap_form_for [:admin, @user], layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @user %>
   <%= f.email_field :email %>
+  <%= f.text_field :ref %>
   <%= f.password_field :password %>
   <%= f.password_field :password_confirmation %>
   <%= f.collection_select :customer_id, [], @customers, :id, :name, {include_blank: t('plannings.edit.zoning.none')} %>

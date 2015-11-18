@@ -25,17 +25,30 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should return a customer' do
     get api(@customer.id)
     assert last_response.ok?, last_response.body
-    assert_equal @customer.name, JSON.parse(last_response.body)['name']
+    json = JSON.parse(last_response.body)
+    assert_equal @customer.name, json['name']
+    assert_equal @customer.ref, json['ref']
   end
 
   test 'should update a customer' do
     @customer.tomtom_user = 'new name'
+    @customer.ref = 'new ref'
     put api(@customer.id), @customer.attributes
     assert last_response.ok?, last_response.body
 
     get api(@customer.id)
     assert last_response.ok?, last_response.body
     assert_equal @customer.tomtom_user, JSON.parse(last_response.body)['tomtom_user']
+    assert 'new ref' != JSON.parse(last_response.body)['ref']
+  end
+
+  test 'should update a customer in admin' do
+    @customer.ref = 'new ref'
+    put api_admin(@customer.id), @customer.attributes
+
+    get api(@customer.id)
+    assert last_response.ok?, last_response.body
+    assert_equal 'new ref', JSON.parse(last_response.body)['ref']
   end
 
   test 'should create a customer' do
