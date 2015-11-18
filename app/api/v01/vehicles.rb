@@ -81,9 +81,9 @@ class V01::Vehicles < Grape::API
       present vehicle, with: V01::Entities::Vehicle
     end
 
-    detailCreate = 'The number of vehicles should be less than customer\'s max_vehicles. <br>For each new created <code>Vehicle</code> and <code>VehicleUsageSet</code> a new <code>VehicleUsage</code> will be created at the same time (i.e. customer has 2 VehicleUsageSets \'Morning\' and \'Evening\', a new Vehicle is created: 2 new VehicleUsages will be automatically created with the new vehicle.)'
+    detailCreate = 'For each new created <code>Vehicle</code> and <code>VehicleUsageSet</code> a new <code>VehicleUsage</code> will be created at the same time (i.e. customer has 2 VehicleUsageSets \'Morning\' and \'Evening\', a new Vehicle is created: 2 new VehicleUsages will be automatically created with the new vehicle.)'
     if Mapotempo::Application.config.manage_vehicles_only_admin
-      detailCreate = 'Only available with an admin api_key. <br>' + detailCreate
+      detailCreate = 'The number of vehicles should be less than customer\'s max_vehicles. <br>Only available with an admin api_key. <br>' + detailCreate
     end
     desc 'Create vehicle.',
       detail: detailCreate,
