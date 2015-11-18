@@ -38,7 +38,9 @@ class CustomersController < ApplicationController
       if @customer.save && @customer.update(customer_params) && @customer.save
         format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.created', model: @customer.class.model_name.human) }
       else
-        @customer.speed_multiplicator *= 100 if @customer.speed_multiplicator
+        if @customer.speed_multiplicator
+          @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
+        end
         format.html { render action: 'new' }
       end
     end
@@ -52,7 +54,9 @@ class CustomersController < ApplicationController
       if @customer.save
         format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.updated', model: @customer.class.model_name.human) }
       else
-        @customer.speed_multiplicator *= 100 if @customer.speed_multiplicator
+        if @customer.speed_multiplicator
+          @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
+        end
         format.html { render action: 'edit' }
       end
     end
@@ -86,7 +90,9 @@ class CustomersController < ApplicationController
     else
       current_user.customer
     end
-    @customer.speed_multiplicator *= 100 if @customer.speed_multiplicator
+    if @customer.speed_multiplicator
+      @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

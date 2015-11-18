@@ -33,7 +33,9 @@ class VehicleUsagesController < ApplicationController
       if @vehicle_usage.save
         format.html { redirect_to link_back || edit_vehicle_usage_path(@vehicle_usage), notice: t('activerecord.successful.messages.updated', model: @vehicle_usage.class.model_name.human) }
       else
-        @vehicle_usage.vehicle.speed_multiplicator *= 100 if @vehicle_usage.vehicle.speed_multiplicator
+        if @vehicle_usage.vehicle.speed_multiplicator
+          @vehicle_usage.vehicle.speed_multiplicator = (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i
+        end
         format.html { render action: 'edit' }
       end
     end
@@ -44,7 +46,9 @@ class VehicleUsagesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_vehicle_usage
     @vehicle_usage = VehicleUsage.find(params[:id])
-    @vehicle_usage.vehicle.speed_multiplicator *= 100 if @vehicle_usage.vehicle.speed_multiplicator
+    if @vehicle_usage.vehicle.speed_multiplicator
+      @vehicle_usage.vehicle.speed_multiplicator = (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
