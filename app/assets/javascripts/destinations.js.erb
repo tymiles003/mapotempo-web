@@ -832,7 +832,7 @@ var destinations_index = function(params, api) {
         9: {
           sorter: false
         },
-        10: {
+        11: {
           sorter: "digit"
         },
         12: {
@@ -847,7 +847,7 @@ var destinations_index = function(params, api) {
         } else if (cellIndex == 10) {
           return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
-          }).join(",");
+          }).sort().join(",")|| ',';
         } else if (cellIndex == 11) {
           var ret = 0;
           switch ($("[name$=\\[geocoding_level\\]]", node).val()) {
