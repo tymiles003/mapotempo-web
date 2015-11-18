@@ -92,3 +92,20 @@ route.stops.each{ |stop|
     </rtept>
     <% end %>
   </rte>
+<% if @gpx_track %>
+  <trk>
+    <trkseg>
+      <% route.stops.each{ |stop|
+        if stop.active && stop.position? %>
+          <% Polylines::Decoder.decode_polyline(stop.trace, 1e6).each do |v| %>
+            <trkpt lat="<%= v[0].to_s %>" lon="<%= v[1].to_s %>"></trkpt>
+          <% end %>
+        <% end } %>
+      <% if route.stop_trace
+           Polylines::Decoder.decode_polyline(route.stop_trace, 1e6).each do |v| %>
+          <trkpt lat="<%= v[0].to_s %>" lon="<%= v[1].to_s %>"></trkpt>
+        <% end %>
+      <% end %>
+    </trkseg>
+  </trk>
+<% end %>

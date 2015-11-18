@@ -32,6 +32,7 @@ class PlanningsController < ApplicationController
       format.html
       format.json
       format.gpx do
+        @gpx_track = !!params['track']
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.gpx"'
       end
       format.kml do
