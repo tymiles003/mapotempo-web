@@ -18,6 +18,7 @@
       <th class="text-right"><%= t 'activerecord.attributes.user.sign_in_count' %></th>
       <th><%= t 'activerecord.attributes.user.sign_in_at' %></th>
       <% if current_user.admin? %>
+        <th><%= t '.user.connect_as' %></th>
         <th></th>
       <% end %>
     </tr>
@@ -30,6 +31,7 @@
         <td class="text-right"><%= user.sign_in_count %></td>
         <td><%= user.current_sign_in_at && l(user.current_sign_in_at) %></td>
         <% if current_user.admin? %>
+          <td><a href="/?api_key=<%= user.api_key %>"><%= t '.user.connect_as' %></a></td>
           <td class="text-right">
             <%= link_to edit_admin_user_path(user), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
             <%= link_to admin_user_path(user), :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>

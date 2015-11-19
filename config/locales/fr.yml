@@ -451,6 +451,7 @@ fr:
     edit:
       title: "Modifier compte client"
       user:
+        connect_as: "Connecter en tant que…"
         list: "Liste des utilisateurs"
         new: "Nouvel utilisateur"
     index:

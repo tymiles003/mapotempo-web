@@ -440,6 +440,7 @@ en:
     edit:
       title: "Editing customer"
       user:
+        connect_as: "Connect as…"
         list: "Users list"
         new: "New user"
     index:
