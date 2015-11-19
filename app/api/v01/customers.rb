@@ -29,6 +29,8 @@ class V01::Customers < Grape::API
         p.permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :alyacom_association, :default_country, :print_stop_time)
       end
     end
+
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :customers do
@@ -37,7 +39,7 @@ class V01::Customers < Grape::API
       is_array: true,
       entity: V01::Entities::Customer
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     get ':id' do
       present current_customer(params[:id]), with: V01::Entities::Customer
@@ -48,7 +50,7 @@ class V01::Customers < Grape::API
       params: V01::Entities::Customer.documentation.except(:id),
       entity: V01::Entities::Customer
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     put ':id' do
       current_customer(params[:id])
@@ -79,11 +81,12 @@ class V01::Customers < Grape::API
       detail: 'Only available with an admin api_key.',
       nickname: 'deleteCustomer'
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     delete ':id' do
       if @current_user.admin?
-        Customer.find(params[:id]).destroy
+        id = ParseIdsRefs.read(params[:id])
+        Customer.where(id).first!.destroy
       end
     end
 
@@ -91,7 +94,7 @@ class V01::Customers < Grape::API
       detail: 'Return asynchronous job (like geocoding, optimizer) currently runned for the customer.',
       nickname: 'getJob'
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
       requires :job_id, type: Integer
     end
     get ':id/job/:job_id' do
@@ -109,7 +112,7 @@ class V01::Customers < Grape::API
       detail: 'Cancel asynchronous job (like geocoding, optimizer) currently runned for the customer.',
       nickname: 'deleteJob'
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
       requires :job_id, type: Integer
     end
     delete ':id/job/:job_id' do
@@ -127,7 +130,7 @@ class V01::Customers < Grape::API
       detail: 'Get tomtom leaflet device ids if they are set for this customer.',
       nickname: 'getTomtomIds'
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     get ':id/tomtom_ids' do
       current_customer(params[:id])

@@ -2,6 +2,7 @@
 
 user_admin:
   email: admin@plop.com
+  ref:
   encrypted_password: <%= User.new.send(:password_digest, '123456789') %>
   customer:
   layer: layer_one
@@ -10,6 +11,7 @@ user_admin:
 
 user_one:
   email: u1@plop.com
+  ref: ref1
   encrypted_password: <%= User.new.send(:password_digest, '123456789') %>
   customer: customer_one
   layer: layer_one
@@ -18,6 +20,7 @@ user_one:
 
 user_two:
   email: u2@plop.com
+  ref: ref2
   encrypted_password: <%= User.new.send(:password_digest, '123456789') %>
   customer: customer_one
   layer: layer_one
@@ -26,6 +29,7 @@ user_two:
 
 user_three:
   email: u3@plop.com
+  ref: ref3
   encrypted_password: <%= User.new.send(:password_digest, '123456789') %>
   customer: customer_two
   layer: layer_one

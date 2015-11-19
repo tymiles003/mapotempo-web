@@ -23,7 +23,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should return a customer' do
-    get api(@customer.id)
+    get api('ref:' + @customer.ref)
     assert last_response.ok?, last_response.body
     json = JSON.parse(last_response.body)
     assert_equal @customer.name, json['name']
@@ -64,7 +64,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
   test 'should destroy a customer' do
     assert_difference('Customer.count', -1) do
-      delete api_admin(@customer.id)
+      delete api_admin('ref:' + @customer.ref)
       assert last_response.ok?, last_response.body
     end
   end

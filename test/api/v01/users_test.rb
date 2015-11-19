@@ -29,7 +29,7 @@ class V01::UsersTest < ActiveSupport::TestCase
   end
 
   test 'should return a user' do
-    get api(@user.id)
+    get api('ref:' + @user.ref)
     assert last_response.ok?, last_response.body
     assert_equal @user.email, JSON.parse(last_response.body)['email']
   end
@@ -44,7 +44,7 @@ class V01::UsersTest < ActiveSupport::TestCase
 
   test 'should update a user' do
     @user.email = 'updated@plop.com'
-    put api_admin(@user.id), @user.attributes
+    put api_admin('ref:' + @user.ref), @user.attributes
     assert last_response.ok?, last_response.body
 
     get api_admin(@user.id)
@@ -54,14 +54,14 @@ class V01::UsersTest < ActiveSupport::TestCase
 
   test 'should destroy a user' do
     assert_difference('User.count', -1) do
-      delete api_admin(@user.id)
+      delete api_admin('ref:' + @user.ref)
       assert last_response.ok?, last_response.body
     end
   end
 
   test 'should destroy multiple users' do
     assert_difference('User.count', -2) do
-      delete api_admin + "&ids=#{users(:user_one).id},#{users(:user_two).id}"
+      delete api_admin + "&ids=#{users(:user_one).id},ref:#{users(:user_two).ref}"
       assert last_response.ok?, last_response.body
     end
   end

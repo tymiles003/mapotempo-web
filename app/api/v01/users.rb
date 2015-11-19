@@ -29,6 +29,8 @@ class V01::Users < Grape::API
         p.permit(:layer_id)
       end
     end
+
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
   end
 
   resource :users do
@@ -44,13 +46,14 @@ class V01::Users < Grape::API
       nickname: 'getUser',
       entity: V01::Entities::User
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     get ':id' do
+      id = ParseIdsRefs.read(params[:id])
       if @current_user.admin?
-        present User.find(params[:id]), with: V01::Entities::User
+        present User.where(id).first!, with: V01::Entities::User
       else
-        present current_customer.users.find(params[:id]), with: V01::Entities::User
+        present current_customer.users.where(id).first!, with: V01::Entities::User
       end
     end
 
@@ -81,10 +84,11 @@ class V01::Users < Grape::API
       params: V01::Entities::User.documentation.except(:id),
       entity: V01::Entities::User
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     put ':id' do
-      user = @current_user.admin? ? User.find(params[:id]) : @current_user
+      id = ParseIdsRefs.read(params[:id])
+      user = @current_user.admin? ? User.where(id).first! : @current_user
       user.update(user_params)
       user.save!
       present user, with: V01::Entities::User
@@ -94,11 +98,12 @@ class V01::Users < Grape::API
       detail: 'Only available with an admin api_key.',
       nickname: 'deleteUser'
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     delete ':id' do
       if @current_user.admin?
-        user = User.find(params[:id])
+        id = ParseIdsRefs.read(params[:id])
+        user = User.where(id).first!
         user.destroy!
       else
         error! 'Forbidden', 403
@@ -109,12 +114,14 @@ class V01::Users < Grape::API
       detail: 'Only available with an admin api_key.',
       nickname: 'deleteUsers'
     params do
-      requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger
+      requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
     delete do
       if @current_user.admin?
         User.transaction do
-          User.select{ |user| params[:ids].include?(user.id) }.each(&:destroy)
+          User.select{ |user|
+            params[:ids].any?{ |s| ParseIdsRefs.match(s, user) }
+          }.each(&:destroy)
         end
       else
         error! 'Forbidden', 403
