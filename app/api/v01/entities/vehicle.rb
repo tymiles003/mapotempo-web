@@ -30,5 +30,5 @@ class V01::Entities::Vehicle < Grape::Entity
   expose(:tomtom_id, documentation: { type: String })
   expose(:router_id, documentation: { type: Integer })
   expose(:speed_multiplicator, documentation: { type: Float })
-  expose(:vehicle_usage_by_vehicle_usage_set, documentation: { type: Hash }) { |m| Hash[m.vehicle_usages.collect{ |vu| [vu.vehicle_usage_set.id, vu.id] }] }
+  expose(:vehicle_usages, using: V01::Entities::VehicleUsage, documentation: { type: V01::Entities::VehicleUsage, is_array: true, param_type: 'form' })
 end

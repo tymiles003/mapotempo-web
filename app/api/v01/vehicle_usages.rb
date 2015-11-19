@@ -37,7 +37,7 @@ class V01::VehicleUsages < Grape::API
         desc 'Fetch customer\'s vehicle_usages.',
           nickname: 'getVehicleUsages',
           is_array: true,
-          entity: V01::Entities::VehicleUsage
+          entity: V01::Entities::VehicleUsageWithVehicle
         params do
           optional :ids, type: Array[Integer], desc: 'Select returned vehicle_usages by id.', coerce_with: CoerceArrayInteger
         end
@@ -49,7 +49,7 @@ class V01::VehicleUsages < Grape::API
             vehicle_usage_set.vehicle_usages.load
           end
           if vehicle_usage_set && vehicle_usages
-            present vehicle_usages, with: V01::Entities::VehicleUsage
+            present vehicle_usages, with: V01::Entities::VehicleUsageWithVehicle
           else
             error! 'VehicleUsageSet or VehicleUsage not found', 404
           end
@@ -57,7 +57,7 @@ class V01::VehicleUsages < Grape::API
 
         desc 'Fetch vehicle_usage.',
           nickname: 'getVehicleUsage',
-          entity: V01::Entities::VehicleUsage
+          entity: V01::Entities::VehicleUsageWithVehicle
         params do
           requires :id, type: Integer
         end
@@ -66,7 +66,7 @@ class V01::VehicleUsages < Grape::API
           if vehicle_usage_set
             vehicle_usage = vehicle_usage_set.vehicle_usages.find{ |vehicle_usage| vehicle_usage.id == params[:id] }
             if vehicle_usage
-              present vehicle_usage, with: V01::Entities::VehicleUsage
+              present vehicle_usage, with: V01::Entities::VehicleUsageWithVehicle
               return
             end
           end
@@ -75,8 +75,8 @@ class V01::VehicleUsages < Grape::API
 
         desc 'Update vehicle_usage.',
           nickname: 'updateVehicleUsage',
-          params: V01::Entities::VehicleUsage.documentation.except(:id),
-          entity: V01::Entities::VehicleUsage
+          params: V01::Entities::VehicleUsage.documentation.except(:id, :vehicle_usage_set_id),
+          entity: V01::Entities::VehicleUsageWithVehicle
         params do
           requires :id, type: Integer
         end
@@ -87,7 +87,7 @@ class V01::VehicleUsages < Grape::API
             if vehicle_usage
               vehicle_usage.update(vehicle_usage_params)
               vehicle_usage.save!
-              present vehicle_usage, with: V01::Entities::VehicleUsage
+              present vehicle_usage, with: V01::Entities::VehicleUsageWithVehicle
               return
             end
           end

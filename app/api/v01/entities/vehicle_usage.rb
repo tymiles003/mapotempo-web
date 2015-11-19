@@ -21,7 +21,7 @@ class V01::Entities::VehicleUsage < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
-  expose(:vehicle, using: V01::Entities::Vehicle, documentation: { type: V01::Entities::Vehicle, is_array: true, param_type: 'form' })
+  expose(:vehicle_usage_set_id, documentation: { type: Integer })
   expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M:%S') }
   expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
   expose(:store_start_id, documentation: { type: Integer })
@@ -30,4 +30,12 @@ class V01::Entities::VehicleUsage < Grape::Entity
   expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop && m.rest_stop.strftime('%H:%M:%S') }
   expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration && m.rest_duration.strftime('%H:%M:%S') }
   expose(:store_rest_id, documentation: { type: Integer })
+end
+
+class V01::Entities::VehicleUsageWithVehicle < V01::Entities::VehicleUsage
+  def self.entity_name
+    'V01_VehicleUsageWithVehicle'
+  end
+
+  expose(:vehicle, using: V01::Entities::Vehicle, documentation: { type: V01::Entities::Vehicle, is_array: true, param_type: 'form' })
 end

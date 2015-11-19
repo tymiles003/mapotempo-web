@@ -90,7 +90,7 @@ class V01::Vehicles < Grape::API
       nickname: 'createVehicle',
       params: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
         name: { required: true },
-      ).deep_merge(V01::Entities::VehicleUsage.documentation.except(:id).except(:vehicle_usage_set).except(:vehicle)),
+      ).deep_merge(V01::Entities::VehicleUsage.documentation.except(:id).except(:vehicle_usage_set)),
       entity: V01::Entities::Vehicle
     if Mapotempo::Application.config.manage_vehicles_only_admin
       params do
