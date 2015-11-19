@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118172553) do
+ActiveRecord::Schema.define(version: 20151118172554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -370,7 +370,7 @@ ActiveRecord::Schema.define(version: 20151118172553) do
     t.float    "emission"
     t.float    "consumption"
     t.integer  "capacity"
-    t.string   "color",               limit: 255
+    t.string   "color",                           null: false
     t.integer  "customer_id",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
