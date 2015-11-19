@@ -28,7 +28,4 @@ class Order < ActiveRecord::Base
   amoeba do
     enable
   end
-
-  private
-
 end

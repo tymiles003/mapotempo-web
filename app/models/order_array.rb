@@ -65,7 +65,4 @@ class OrderArray < ActiveRecord::Base
       orders.build(shift: i, destination: destination)
     }
   end
-
-  private
-
 end
