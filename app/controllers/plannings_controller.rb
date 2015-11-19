@@ -282,6 +282,6 @@ class PlanningsController < ApplicationController
     (@planning.name + (@planning.ref ? '_' + @planning.ref : '') +
       (@planning.customer.enable_orders && @planning.order_array ? '_' + @planning.order_array.name : '') +
       (@planning.date ? '_' + l(@planning.date) : '')
-    ).gsub('/', '-').gsub('"', '')
+    ).tr('/', '-').delete('"')
   end
 end

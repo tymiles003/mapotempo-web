@@ -69,10 +69,10 @@ class ImporterStores < ImporterBase
     end
 
     if !row[:lat].nil?
-      row[:lat] = Float(row[:lat].gsub(',', '.'))
+      row[:lat] = Float(row[:lat].tr(',', '.'))
     end
     if !row[:lng].nil?
-      row[:lng] = Float(row[:lng].gsub(',', '.'))
+      row[:lng] = Float(row[:lng].tr(',', '.'))
     end
 
     if row[:lat].nil? || row[:lng].nil?
