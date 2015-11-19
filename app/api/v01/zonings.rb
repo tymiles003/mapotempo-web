@@ -188,10 +188,14 @@ class V01::Zonings < Grape::API
       Zoning.transaction do
         zoning = current_customer.zonings.where(id: params[:id]).first
         vehicle_usage_id = Integer(params[:vehicle_usage_id])
-        vehicle_usage = current_customer.vehicle_usage_sets.collect(&:vehicle_usages).find{ |vehicle_usage| vehicle_usage.id == vehicle_usage_id }
+        vehicle_usage = current_customer.vehicle_usage_sets.collect{ |vehicle_usage_set|
+          vehicle_usage_set.vehicle_usages.find{ |vehicle_usage|
+            vehicle_usage.id == vehicle_usage_id
+          }
+        }.compact.first
         size = Integer(params[:size])
         if zoning && vehicle_usage
-          zoning.isochrone_vehicle_usage(size, vehicle_usage)
+          zoning.isochrone(size, vehicle_usage.vehicle_usage_set, vehicle_usage)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
@@ -242,10 +246,14 @@ class V01::Zonings < Grape::API
       Zoning.transaction do
         zoning = current_customer.zonings.where(id: params[:id]).first
         vehicle_usage_id = Integer(params[:vehicle_usage_id])
-        vehicle_usage = current_customer.vehicle_usage_sets.collect(&:vehicle_usages).find{ |vehicle_usage| vehicle_usage.id == vehicle_usage_id }
+        vehicle_usage = current_customer.vehicle_usage_sets.collect{ |vehicle_usage_set|
+          vehicle_usage_set.vehicle_usages.find{ |vehicle_usage|
+            vehicle_usage.id == vehicle_usage_id
+          }
+        }.compact.first
         size = Integer(params[:size])
         if zoning && vehicle_usage
-          zoning.isodistance(size, vehicle_usage)
+          zoning.isodistance(size, vehicle_usage.vehicle_usage_set, vehicle_usage)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else

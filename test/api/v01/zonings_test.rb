@@ -80,13 +80,27 @@ class V01::ZoningsTest < ActiveSupport::TestCase
     assert_equal @zoning.name, JSON.parse(last_response.body)['name']
   end
 
-  test 'should generate isochrone' do
+  test 'should generate isochrone and isodistance' do
     store_one = stores(:store_one)
-    uri_template = Addressable::Template.new('localhost:1723/0.1/isochrone?lat=' + store_one.lat.to_s + '&lng=' + store_one.lng.to_s + '&time=5')
-    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
-    patch api("#{@zoning.id}/isochrone", vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, size: 5)
-    assert last_response.ok?, last_response.body
-    assert_equal 1, JSON.parse(last_response.body)['zones'].length
-    assert_not_nil JSON.parse(last_response.body)['zones'][0]['polygon']
+    [:isochrone, :isodistance].each{ |isowhat|
+      uri_template = Addressable::Template.new('localhost:1723/0.1/' + isowhat.to_s + '?lat=' + store_one.lat.to_s + '&lng=' + store_one.lng.to_s + '&time=5')
+      stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
+      patch api("#{@zoning.id}/" + isowhat.to_s, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, size: 5)
+      assert last_response.ok?, last_response.body
+      assert_equal 1, JSON.parse(last_response.body)['zones'].length
+      assert_not_nil JSON.parse(last_response.body)['zones'][0]['polygon']
+    }
+  end
+
+  test 'should generate isochrone and isodistance for one vehicle' do
+    store_one = stores(:store_one)
+    [:isochrone, :isodistance].each{ |isowhat|
+      uri_template = Addressable::Template.new('localhost:1723/0.1/' + isowhat.to_s + '?lat=' + store_one.lat.to_s + '&lng=' + store_one.lng.to_s + '&time=5')
+      stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
+      patch api("#{@zoning.id}/vehicle_usage/" + vehicle_usages(:vehicle_usage_one_one).id.to_s + "/" + isowhat.to_s, size: 5)
+      assert last_response.ok?, last_response.body
+      assert_equal 2, JSON.parse(last_response.body)['zones'].length
+      assert_not_nil JSON.parse(last_response.body)['zones'][0]['polygon']
+    }
   end
 end

@@ -5,6 +5,7 @@ router_one:
   name: MyString
   url_time: http://localhost:5000
   url_isochrone: http://localhost:1723
+  url_isodistance: http://localhost:1723
 
 router_two:
   mode: car
