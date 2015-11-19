@@ -97,6 +97,16 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should update a destination' do
+    @destination.name = 'new name'
+    put api(@destination.id), @destination.attributes
+    assert last_response.ok?, last_response.body
+
+    get api(@destination.id)
+    assert last_response.ok?, last_response.body
+    assert_equal @destination.name, JSON.parse(last_response.body)['name']
+  end
+
   test 'should destroy a destination' do
     assert_difference('Destination.count', -1) do
       delete api(@destination.id)
@@ -111,7 +121,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should :geocode' do
+  test 'should geocode' do
     patch api('geocode'), format: :json, destination: { city: @destination.city, name: @destination.name, postalcode: @destination.postalcode, street: @destination.street }
     assert last_response.ok?, last_response.body
   end

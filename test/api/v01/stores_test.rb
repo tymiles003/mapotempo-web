@@ -75,6 +75,16 @@ class V01::StoresTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should update a store' do
+    @store.name = 'new name'
+    put api(@store.id), @store.attributes
+    assert last_response.ok?, last_response.body
+
+    get api(@store.id)
+    assert last_response.ok?, last_response.body
+    assert_equal @store.name, JSON.parse(last_response.body)['name']
+  end
+
   test 'should destroy a store' do
     assert_difference('Store.count', -1) do
       delete api(@store.id)
