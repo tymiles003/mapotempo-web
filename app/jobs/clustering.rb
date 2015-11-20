@@ -110,7 +110,7 @@ class Clustering
       })
       partial_concave_hull = concave_hull.union(empty_part)
 
-      {"type" => "Feature", "properties" => {}, "geometry" => RGeo::GeoJSON.encode(partial_concave_hull.buffer(buffer)) }.to_json
+      {'type' => 'Feature', 'properties' => {}, 'geometry' => RGeo::GeoJSON.encode(partial_concave_hull.buffer(buffer)) }.to_json
     end
   end
 end
