@@ -51,7 +51,7 @@ class GeocodeAddokWrapper
           }
         })
 
-        @cache_code.write(key, result)
+        @cache_code.write(key, String.new(result))
       rescue
         raise
       end
@@ -81,7 +81,7 @@ class GeocodeAddokWrapper
           }
         })
 
-        @cache_code.write(key, result)
+        @cache_code.write(key, String.new(result))
       rescue
         raise
       end
