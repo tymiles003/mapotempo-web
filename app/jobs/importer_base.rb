@@ -33,7 +33,6 @@ class ImporterBase
       contents = CharlockHolmes::Converter.convert(contents, detection[:encoding], 'UTF-8')
     end
 
-    separator = ','
     line = contents.lines.first
     splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
     _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }

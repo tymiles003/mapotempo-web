@@ -20,8 +20,6 @@ require 'alyacom_api'
 class Alyacom
 
   def self.export_route(route)
-    customer = route.planning.customer
-
     store = route.vehicle_usage.default_store_start
     staff = {
       id: route.vehicle_usage.vehicle.name,
@@ -66,7 +64,6 @@ class Alyacom
         }
       }
     }.compact
-    customer = route.planning.customer
     AlyacomApi.createJobRoute(customer.alyacom_association, date, staff, waypoints)
   end
 end

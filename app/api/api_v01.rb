@@ -20,7 +20,7 @@ class ApiV01 < Grape::API
 
   mount V01::Api
 
-  documentation_class = add_swagger_documentation base_path: 'api', hide_documentation_path: true, info: {
+  add_swagger_documentation base_path: 'api', hide_documentation_path: true, info: {
     title: 'API',
     description: ('
 <h2>Model</h2>
