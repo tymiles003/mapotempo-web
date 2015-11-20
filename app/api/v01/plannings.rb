@@ -62,7 +62,8 @@ class V01::Plannings < Grape::API
     desc 'Create planning.',
       nickname: 'createPlanning',
       params: V01::Entities::Planning.documentation.except(:id).deep_merge(
-        name: { required: true }
+        name: { required: true },
+        vehicle_usage_set_id: { required: true }
       ),
       entity: V01::Entities::Planning
     post do
