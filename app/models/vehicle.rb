@@ -25,9 +25,9 @@ class Vehicle < ActiveRecord::Base
   auto_strip_attributes :name, :tomtom_id, :masternaut_ref
   validates :customer, presence: true
   validates :name, presence: true
-  validates :emission, numericality: {only_float: true}, :allow_nil => true
-  validates :consumption, numericality: {only_float: true}, :allow_nil => true
-  validates :capacity, numericality: {only_integer: true}, :allow_nil => true
+  validates :emission, numericality: {only_float: true}, allow_nil: true
+  validates :consumption, numericality: {only_float: true}, allow_nil: true
+  validates :capacity, numericality: {only_integer: true}, allow_nil: true
   validates :color, presence: true
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
 
