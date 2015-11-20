@@ -30,6 +30,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     param :path, :zoning_id, :integer, :required, 'Zonning ids'
     param :query, :ids, :array, :optional, 'Zoning''s zones ids to be displayed, separated by commas', { 'items' => { 'type' => 'integer' } }
     param :query, :destinations, :boolean, :optional, 'Destinations displayed or not, no destinations by default'
+    param :query, :planning_id, :integer, :optional, 'Planning id (used to filter stores)'
   end
 
   def index
@@ -41,6 +42,9 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     end
     if params[:destinations] && ValueToBoolean.value_to_boolean(params[:destinations], true)
       @destinations = current_user.customer.destinations
+    end
+    if params[:planning_id]
+      @planning = current_user.customer.plannings.find(params[:planning_id])
     end
   end
 

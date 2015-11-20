@@ -26,7 +26,8 @@ var api_web_v01_zones_index = function(params) {
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
     vehicles_map = params.vehicles_map,
-    destinations = params.destinations;
+    destinations = params.destinations,
+    planning_id = params.planning_id;
 
   var map = new L.Map('map', {
     attributionControl: false
@@ -122,7 +123,12 @@ var api_web_v01_zones_index = function(params) {
   }
 
   progressBar.advanceTo(50);
-  queryParam = (zone_ids || destinations) ? ('?' + $.param({ids: zone_ids.join(','), destinations: destinations})) : '';
+  var paramsJson = {};
+  if (zone_ids) paramsJson.ids = zone_ids.join(',');
+  if (destinations) paramsJson.destinations = destinations;
+  if (planning_id) paramsJson.planning_id = planning_id;
+  var queryParam = $.param(paramsJson);
+  if (queryParam) queryParam = '?' + queryParam;
   $.ajax({
     url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json' + queryParam,
     beforeSend: beforeSendWaiting,

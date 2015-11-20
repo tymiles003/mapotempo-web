@@ -23,5 +23,6 @@ controller.js(
     [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]
   }],
   destinations: !@destinations.nil?,
+  planning_id: @planning ? @planning.id : nil
 )
 %>
