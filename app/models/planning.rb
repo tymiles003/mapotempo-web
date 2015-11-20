@@ -148,7 +148,7 @@ class Planning < ActiveRecord::Base
     # If zoning, get appropriate route
     if available_routes.empty? && zoning
       zone = zoning.inside(stop.destination)
-      if zone && zone.vehicle_usage
+      if zone && zone.vehicle
         route = routes.find{ |route|
           route.vehicle_usage.vehicle == zone.vehicle && !route.locked
         }
