@@ -310,7 +310,7 @@ class Route < ActiveRecord::Base
           matrix.collect!{ |x| [[0, 0]] + x }
         end
         if position_stop == [nil, nil]
-          matrix = matrix + [[[0, 0]] * matrix.length]
+          matrix += [[[0, 0]] * matrix.length]
           matrix.collect!{ |x| x + [[0, 0]] }
         end
         optimizer.call(matrix, tws, rest_tws)
@@ -427,7 +427,7 @@ class Route < ActiveRecord::Base
       yield(positions_uniq)
     else
       # Reduce positions vector size by amalgamate points in same position
-      stock = Hash.new { Array.new }
+      stock = Hash.new { [] }
       i = -1
       stops.each{ |stop|
         stock[[stop.lat, stop.lng]] += [[stop, i += 1]]
