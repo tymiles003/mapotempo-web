@@ -51,7 +51,13 @@ class V01::Users < Grape::API
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
       if @current_user.admin?
-        present User.where(id).first!, with: V01::Entities::User
+        user = (User.where(id.merge(reseller: @current_user.reseller)) +
+          User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id}))).first
+        if user
+          present user, with: V01::Entities::User
+        else
+          status 404
+        end
       else
         present current_customer.users.where(id).first!, with: V01::Entities::User
       end
@@ -69,7 +75,7 @@ class V01::Users < Grape::API
       entity: V01::Entities::User
     post do
       if @current_user.admin?
-        customer = Customer.find(params[:customer_id])
+        customer = @current_user.reseller.customers.where(id: params[:customer_id]).first!
         user = customer.users.build(user_params)
         user.password_confirmation = user.password
         user.save!
@@ -88,7 +94,8 @@ class V01::Users < Grape::API
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
-      user = @current_user.admin? ? User.where(id).first! : @current_user
+      user = (User.where(id.merge(reseller: @current_user.reseller)) +
+        User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id}))).first
       user.update(user_params)
       user.save!
       present user, with: V01::Entities::User
@@ -103,7 +110,8 @@ class V01::Users < Grape::API
     delete ':id' do
       if @current_user.admin?
         id = ParseIdsRefs.read(params[:id])
-        user = User.where(id).first!
+        user = (User.where(id.merge(reseller: @current_user.reseller)) +
+          User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id}))).first
         user.destroy!
       else
         error! 'Forbidden', 403
@@ -120,7 +128,7 @@ class V01::Users < Grape::API
       if @current_user.admin?
         User.transaction do
           User.select{ |user|
-            params[:ids].any?{ |s| ParseIdsRefs.match(s, user) }
+            params[:ids].any?{ |s| ParseIdsRefs.match(s, user) } && ((user.customer && user.customer.reseller == @current_user.reseller) || user.reseller == @current_user.reseller)
           }.each(&:destroy)
         end
       else

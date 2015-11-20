@@ -34,11 +34,28 @@ class V01::UsersTest < ActiveSupport::TestCase
     assert_equal @user.email, JSON.parse(last_response.body)['email']
   end
 
+  test 'should not return a user' do
+    get api('ref:' + users(:user_three).ref)
+    assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+  end
+
   test 'should create a user' do
     assert_difference('User.count', 1) do
       # use a new hash here instead of @user.attributes to be able to send password
-      post api_admin(), {email: 'new@plop.com', password: 'password', customer_id: @user.customer_id, layer_id: @user.layer_id, url_click2call: '+77.78.988'}
+      post api_admin(), {ref: 'u', email: 'new@plop.com', password: 'password', customer_id: @user.customer_id, layer_id: @user.layer_id, url_click2call: '+77.78.988'}
       assert last_response.created?, last_response.body
+      assert_equal 'new@plop.com', JSON.parse(last_response.body)['email']
+
+      get api_admin('ref:u')
+      assert last_response.ok?, last_response.body
+      assert_equal 'new@plop.com', JSON.parse(last_response.body)['email']
+    end
+  end
+
+  test 'should not create a user' do
+    assert_no_difference('User.count') do
+      post api_admin(), {email: 'new@plop.com', password: 'password', customer_id: customers(:customer_two).id, layer_id: @user.layer_id}
+      assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
     end
   end
 
@@ -52,10 +69,24 @@ class V01::UsersTest < ActiveSupport::TestCase
     assert_equal @user.email, JSON.parse(last_response.body)['email']
   end
 
+  test 'should not update a user' do
+    user = users(:user_three)
+    user.email = 'updated@plop.com'
+    put api_admin('ref:' + user.ref), user.attributes
+    assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+  end
+
   test 'should destroy a user' do
     assert_difference('User.count', -1) do
       delete api_admin('ref:' + @user.ref)
       assert last_response.ok?, last_response.body
+    end
+  end
+
+  test 'should not destroy a user' do
+    assert_no_difference('User.count') do
+      delete api_admin('ref:' + users(:user_three).ref)
+      assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
     end
   end
 

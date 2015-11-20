@@ -42,7 +42,13 @@ class V01::Customers < Grape::API
       requires :id, type: String, desc: ID_DESC
     end
     get ':id' do
-      present current_customer(params[:id]), with: V01::Entities::Customer
+      if @current_user.admin?
+        present current_customer(params[:id]), with: V01::Entities::Customer
+      elsif @current_user.customer.id == params[:id].to_i || (@current_user.customer.ref && 'ref:' + @current_user.customer.ref == params[:id])
+        present @current_user.customer, with: V01::Entities::Customer
+      else
+        status 404
+      end
     end
 
     desc 'Update customer.',
@@ -86,7 +92,7 @@ class V01::Customers < Grape::API
     delete ':id' do
       if @current_user.admin?
         id = ParseIdsRefs.read(params[:id])
-        Customer.where(id).first!.destroy
+        @current_user.reseller.customers.where(id).first!.destroy
       end
     end
 

@@ -30,6 +30,11 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert_equal @customer.ref, json['ref']
   end
 
+  test 'should not return a customer' do
+    get api(customers(:customer_two).id)
+    assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+  end
+
   test 'should update a customer' do
     @customer.tomtom_user = 'new name'
     @customer.ref = 'new ref'
@@ -51,6 +56,13 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert_equal 'new ref', JSON.parse(last_response.body)['ref']
   end
 
+  test 'should not update a customer in admin' do
+    customer = customers(:customer_two)
+    customer.ref = 'new ref'
+    put api_admin(customer.id), customer.attributes
+    assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+  end
+
   test 'should create a customer' do
     assert_difference('Customer.count', 1) do
       assert_difference('Store.count', 1) do
@@ -66,6 +78,13 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert_difference('Customer.count', -1) do
       delete api_admin('ref:' + @customer.ref)
       assert last_response.ok?, last_response.body
+    end
+  end
+
+  test 'should not destroy a customer' do
+    assert_no_difference('Customer.count') do
+      delete api_admin('ref:' + customers(:customer_two).ref)
+      assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
     end
   end
 
