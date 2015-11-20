@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2015
 #
 # This file is part of Mapotempo.
 #
@@ -157,7 +157,7 @@ class Zoning < ActiveRecord::Base
         geom = router.method(what).call(vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng, size, (customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1))
       end
       if geom
-        zone = zones.where({vehicle_id: vehicle_usage.vehicle.id}).first
+        zone = zones.to_a.find{ |zone| zone.vehicle_id == vehicle_usage.vehicle.id }
         if zone
           zone.polygon = geom
         else
