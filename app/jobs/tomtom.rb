@@ -85,11 +85,11 @@ class Tomtom
           stop.comment,
           stop.phone_number
         ]
-      }
+    }
     waypoints = (waypoint_start + waypoints.compact + waypoint_stop).map{ |l|
         description = l[2..-1].compact.join(' ').strip
         {lat: l[0], lng: l[1], description: description}
-      }
+    }
     position = route.vehicle_usage.default_store_stop if !route.vehicle_usage.default_store_stop.nil? && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?
     Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, route.vehicle_usage.id, route.ref || route.vehicle_usage.default_store_stop.name, route.start, waypoints)
   end
