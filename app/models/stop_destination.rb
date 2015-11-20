@@ -17,6 +17,7 @@
 #
 class StopDestination < Stop
   belongs_to :destination
+  delegate :lat, :lng, :open, :close, :ref, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :destination
 
   validates :destination, presence: true
 
@@ -35,22 +36,6 @@ class StopDestination < Stop
     destination
   end
 
-  def lat
-    destination.lat
-  end
-
-  def lng
-    destination.lng
-  end
-
-  def open
-    destination.open
-  end
-
-  def close
-    destination.close
-  end
-
   def duration
     to = destination.take_over ? destination.take_over : destination.customer.take_over
     to ? to.seconds_since_midnight : 0
@@ -62,42 +47,6 @@ class StopDestination < Stop
 
   def base_updated_at
     destination.updated_at
-  end
-
-  def ref
-    destination.ref
-  end
-
-  def name
-    destination.name
-  end
-
-  def street
-    destination.street
-  end
-
-  def postalcode
-    destination.postalcode
-  end
-
-  def city
-    destination.city
-  end
-
-  def country
-    destination.country
-  end
-
-  def detail
-    destination.detail
-  end
-
-  def comment
-    destination.comment
-  end
-
-  def phone_number
-    destination.phone_number
   end
 
   def to_s
