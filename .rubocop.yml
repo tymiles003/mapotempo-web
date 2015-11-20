@@ -1,0 +1,77 @@
+Metrics/LineLength:
+  Enabled: false
+
+Style/SpaceBeforeBlockBraces:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Style/AlignParameters:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/TrailingComma:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/SpaceInsideHashLiteralBraces:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
+
+Style/IndentHash:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/LeadingCommentSpace:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/CommentIndentation:
+  Enabled: false
+
+Style/IndentArray:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Style/IndentationWidth:
+  Enabled: false
+
+Lint/EndAlignment:
+  Enabled: false
+
+Style/ElseAlignment:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
