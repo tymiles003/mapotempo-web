@@ -38,7 +38,7 @@ class Clustering
         data_sets.collect{ |data_set|
           data_set.data_items.min_by{ |i|
             data_set.data_items.sum{ |j|
-              c.distance_function.call(i, j) ** 2
+              c.distance_function.call(i, j)**2
             }
           }
         }
@@ -77,7 +77,7 @@ class Clustering
       }
 
       clusters.size.times.collect{ |i|
-        hull(factory, clusters[i], multi_points[i], (i > 0 ? multi_points[0..i-1] : []) + multi_points[i+1..multi_points.length-1], buffer)
+        hull(factory, clusters[i], multi_points[i], (i > 0 ? multi_points[0..i - 1] : []) + multi_points[i + 1..multi_points.length - 1], buffer)
       }
     end
   end

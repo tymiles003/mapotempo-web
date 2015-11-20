@@ -108,7 +108,7 @@ class ImporterDestinations < ImporterBase
       end
     end
 
-    if destination.ref.nil? || @routes.size && !@routes.any?{ |k, r| r.any?{ |d| d && d[0]['ref'] == destination.ref }}
+    if destination.ref.nil? || @routes.size && !@routes.any?{ |k, r| r.any?{ |d| d && d[0]['ref'] == destination.ref } }
       @routes[row.key?(:route) ? row[:route] : nil] << [destination, !row.key?(:active) || row[:active].strip != '0']
     end
 

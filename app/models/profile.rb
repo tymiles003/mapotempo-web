@@ -16,8 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Profile < ActiveRecord::Base
-  has_and_belongs_to_many :layers, -> { order('name')}
-  has_and_belongs_to_many :routers, -> { order('name')}
+  has_and_belongs_to_many :layers, -> { order('name') }
+  has_and_belongs_to_many :routers, -> { order('name') }
 
   nilify_blanks
   auto_strip_attributes :name

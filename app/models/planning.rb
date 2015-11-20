@@ -18,8 +18,8 @@
 class Planning < ActiveRecord::Base
   belongs_to :customer
   belongs_to :zoning
-  has_many :routes, -> { includes(:stops).order('CASE WHEN vehicle_usage_id IS NULL THEN 0 ELSE routes.id END')}, inverse_of: :planning, autosave: true, dependent: :delete_all
-  has_and_belongs_to_many :tags, -> { order('label')}, autosave: true
+  has_many :routes, -> { includes(:stops).order('CASE WHEN vehicle_usage_id IS NULL THEN 0 ELSE routes.id END') }, inverse_of: :planning, autosave: true, dependent: :delete_all
+  has_and_belongs_to_many :tags, -> { order('label') }, autosave: true
   belongs_to :order_array
   belongs_to :vehicle_usage_set, inverse_of: :plannings
 
@@ -249,7 +249,7 @@ class Planning < ActiveRecord::Base
 
   def split_by_zones
     if zoning && !routes.empty?
-      vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes| [vehicle_usage && vehicle_usage.vehicle, routes[0]]}]
+      vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes| [vehicle_usage && vehicle_usage.vehicle, routes[0]] }]
       destinations_free = routes.select{ |route|
         !route.locked
       }.collect(&:stops).flatten.select{ |stop| stop.is_a?(StopDestination) }.map(&:destination)
@@ -259,10 +259,10 @@ class Planning < ActiveRecord::Base
       }
       zoning.apply(destinations_free).each{ |zone, destinations|
         if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked
-          vehicles_map[zone.vehicle].set_destinations(destinations.collect{ |d| [d, true]})
+          vehicles_map[zone.vehicle].set_destinations(destinations.collect{ |d| [d, true] })
         else
           # Add to unplanned route even if the route is locked
-          routes[0].add_destinations(destinations.collect{ |d| [d, true]})
+          routes[0].add_destinations(destinations.collect{ |d| [d, true] })
         end
       }
     end

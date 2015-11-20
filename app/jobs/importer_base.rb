@@ -23,7 +23,7 @@ class ImporterBase
     @customer = customer
   end
 
-  def import_csv(replace, file, name, synchronous=false)
+  def import_csv(replace, file, name, synchronous = false)
     contents = File.open(file, 'r:bom|utf-8').read
     if !contents.valid_encoding?
       detection = CharlockHolmes::EncodingDetector.detect(contents)

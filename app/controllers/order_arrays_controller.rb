@@ -34,7 +34,7 @@ class OrderArraysController < ApplicationController
         route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
           [stop.destination.id, route.vehicle_usage]
         }
-      }.flatten(1).collect{ |id, vehicle_usage| [id, [i+=1, vehicle_usage]] }]
+      }.flatten(1).collect{ |id, vehicle_usage| [id, [i += 1, vehicle_usage]] }]
 
       @destinations_orders = @destinations_orders.sort_by{ |destination_orders|
         destination_index[destination_orders[0].destination.id] ? destination_index[destination_orders[0].destination.id][0] : Float::INFINITY

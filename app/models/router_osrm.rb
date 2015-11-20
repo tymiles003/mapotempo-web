@@ -32,7 +32,7 @@ class RouterOsrm < Router
     vector = row != column ? row + column : row
     matrix = Mapotempo::Application.config.osrm.matrix(send('url_' + mode.to_s), vector)
     if row != column
-      matrix = matrix[0..row.size-1].collect{ |l|
+      matrix = matrix[0..row.size - 1].collect{ |l|
         l[row.size..-1]
       }
     end
