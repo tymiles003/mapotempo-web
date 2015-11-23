@@ -76,11 +76,10 @@ class StoresController < ApplicationController
 
   def destroy
     respond_to do |format|
-      begin
-        @store.destroy
+      if @store.destroy
         format.html { redirect_to stores_url }
-      rescue => e
-        flash.now[:error] = e.message
+      else
+        flash[:error] = @store.errors.full_messages
         format.html { redirect_to stores_path }
       end
     end
@@ -88,18 +87,18 @@ class StoresController < ApplicationController
 
   def destroy_multiple
     respond_to do |format|
-      begin
-        Store.transaction do
-          if params['stores']
-            ids = params['stores'].keys.collect{ |i| Integer(i) }
-            current_user.customer.stores.select{ |store| ids.include?(store.id) }.each(&:destroy)
-          end
-          format.html { redirect_to stores_url }
+      Store.transaction do
+        if params['stores']
+          ids = params['stores'].keys.collect{ |i| Integer(i) }
+          current_user.customer.stores.select{ |store| ids.include?(store.id) }.each{ |store|
+            if !store.destroy
+              flash[:error] = store.errors.full_messages
+              format.html { redirect_to stores_path and return }
+            end
+          }
         end
-      rescue => e
-        flash.now[:error] = e.message
-        format.html { redirect_to stores_path }
       end
+      format.html { redirect_to stores_url }
     end
   end
 

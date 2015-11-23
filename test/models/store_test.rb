@@ -43,7 +43,7 @@ class StoreTest < ActiveSupport::TestCase
     end
     o.reload
     begin
-      o.stores[0].destroy
+      o.stores[0].destroy!
       assert false
     rescue
       assert true

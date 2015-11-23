@@ -132,7 +132,8 @@ class Store < ActiveRecord::Base
       }
       true
     else
-      raise I18n.t('activerecord.errors.models.store.at_least_one')
+      errors[:base] << I18n.t('activerecord.errors.models.store.at_least_one')
+      false
     end
   end
 end
