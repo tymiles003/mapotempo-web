@@ -144,7 +144,7 @@ module MasternautWs
     end
 
     existing_waypoints = fetchPOI(client_poi, username, password)
-    if existing_waypoints.empty? then
+    if existing_waypoints.empty?
       createPOICategory(client_poi, username, password)
     end
 

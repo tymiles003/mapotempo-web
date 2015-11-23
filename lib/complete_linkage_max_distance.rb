@@ -37,7 +37,7 @@ module Ai4r
         end
         @clusters = build_clusters_from_index_clusters @index_clusters
 
-        return self
+        self
       end
     end
   end

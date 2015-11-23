@@ -21,25 +21,25 @@ module Ai4r
   module Clusterers
     class KMeansSameSize < KMeans
 
-      parameters_info :max_iterations => "Maximum number of iterations to " +
+      parameters_info :max_iterations => "Maximum number of iterations to " \
         "build the clusterer. By default it is uncapped.",
-        :distance_function => "Custom implementation of distance function. " +
-          "It must be a closure receiving two data items and return the " +
-          "distance between them. By default, this algorithm uses " +
+        :distance_function => "Custom implementation of distance function. " \
+          "It must be a closure receiving two data items and return the " \
+          "distance between them. By default, this algorithm uses " \
           "euclidean distance of numeric attributes to the power of 2.",
-        :centroid_function => "Custom implementation to calculate the " +
-          "centroid of a cluster. It must be a closure receiving an array of " +
-          "data sets, and return an array of data items, representing the " +
-          "centroids of for each data set. " +
-          "By default, this algorithm returns a data items using the mode "+
+        :centroid_function => "Custom implementation to calculate the " \
+          "centroid of a cluster. It must be a closure receiving an array of " \
+          "data sets, and return an array of data items, representing the " \
+          "centroids of for each data set. " \
+          "By default, this algorithm returns a data items using the mode "\
           "or mean of each attribute on each data set.",
-        :centroid_indices => "Indices of data items (indexed from 0) to be " +
-          "the initial centroids.  Otherwise, the initial centroids will be " +
+        :centroid_indices => "Indices of data items (indexed from 0) to be " \
+          "the initial centroids.  Otherwise, the initial centroids will be " \
           "assigned randomly from the data set.",
-        :on_empty => "Action to take if a cluster becomes empty, with values " +
-          "'eliminate' (the default action, eliminate the empty cluster), " +
-          "'terminate' (terminate with error), 'random' (relocate the " +
-          "empty cluster to a random point), 'outlier' (relocate the " +
+        :on_empty => "Action to take if a cluster becomes empty, with values " \
+          "'eliminate' (the default action, eliminate the empty cluster), " \
+          "'terminate' (terminate with error), 'random' (relocate the " \
+          "empty cluster to a random point), 'outlier' (relocate the " \
           "empty cluster to the point furthest from its centroid)."
 
       # Build a new clusterer, using data examples found in data_set.
@@ -61,7 +61,7 @@ module Ai4r
           recompute_centroids
         end
 
-        return self
+        self
       end
 
       # Classifies the given data item, returning the cluster index it belongs

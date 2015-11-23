@@ -134,7 +134,7 @@ module ConcaveHull
       return false
     end
 
-    return true
+    true
   end
 
   def self.point_in_polygon(point, polygon)
