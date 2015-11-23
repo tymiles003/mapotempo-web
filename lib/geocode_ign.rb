@@ -71,7 +71,9 @@ class GeocodeIgn
 </XLS>"
 
       response = http.request(request)
-      if response.code == '200'
+      if response.nil?
+        raise 'No connection to the host'
+      elsif response.code == '200'
         result = response.body # => The body (HTML, XML, blob, whatever)
         @cache_reverse.write(key, result)
       else
@@ -139,7 +141,9 @@ class GeocodeIgn
 </XLS>"
 
       response = http.request(request)
-      if response.code == '200'
+      if response.nil?
+        raise 'No connection to the host'
+      elsif response.code == '200'
         result = response.body # => The body (HTML, XML, blob, whatever)
         @cache_code.write(key, result)
       else
@@ -198,7 +202,9 @@ class GeocodeIgn
 </XLS>"
 
       response = http.request(request)
-      if response.code == '200'
+      if response.nil?
+        raise 'No connection to the host'
+      elsif response.code == '200'
         result = response.body # => The body (HTML, XML, blob, whatever)
         @cache_code.write(key, result)
       else

@@ -40,7 +40,9 @@ class Osrm
           uri.query = "loc=#{from_lat},#{from_lng}&loc=#{to_lat},#{to_lng}&alt=false&output=json"
           Rails.logger.info "get #{uri}"
           res = Net::HTTP.get_response(uri)
-          if res.is_a?(Net::HTTPSuccess)
+          if res.nil?
+            raise 'No connection to the host'
+          elsif res.is_a?(Net::HTTPSuccess)
             request = JSON.parse(res.body)
             @cache_request.write(key, request)
           else
@@ -93,7 +95,9 @@ class Osrm
           uri.query = vector.map{ |a| "loc=#{a[0]},#{a[1]}" }.join('&')
           Rails.logger.info "get #{uri}"
           res = Net::HTTP.get_response(uri)
-          if res.is_a?(Net::HTTPSuccess)
+          if res.nil?
+            raise 'No connection to the host'
+          elsif res.is_a?(Net::HTTPSuccess)
             request = JSON.parse(res.body)
             @cache_request.write(key, request)
           else
