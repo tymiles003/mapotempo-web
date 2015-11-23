@@ -501,9 +501,19 @@ var destinations_index = function(params, api) {
         else
           geocode = true;
       }
-      confirmGeocode({
+      if (geocode == 'confirm') {
+        if (confirm(I18n.t('destinations.form.dialog.confirm_overwrite_point'))) {
+          $('[name$=\\[lat\\]]', row).val(null);
+          $('[name$=\\[lng\\]]', row).val(null);
+        }
+      }
+      else if (geocode) {
+        $('[name$=\\[lat\\]]', row).val(null);
+        $('[name$=\\[lng\\]]', row).val(null);
+      }
+      $.ajax({
         type: "put",
-        data: $(":input", $row),
+        data: $(":input", $row).serialize(), // serialize is mandatory for multiple values in select2
         url: url,
         beforeSend: beforeSendWaiting,
         success: function(data) {
@@ -511,7 +521,7 @@ var destinations_index = function(params, api) {
         },
         complete: completeWaiting,
         error: ajaxError
-      }, row, geocode);
+      });
     })
     .on("click", ".pointing + span", function(event) {
       pointing = id;
@@ -557,20 +567,6 @@ var destinations_index = function(params, api) {
     $('.phone_link', $row).click(function(e){
       phone_number_call($( '.phone_number', $row).attr('value'), url_click2call, e.currentTarget);
     });
-  }
-
-  var confirmGeocode = function(ajaxParams, row, geocode) {
-    if (geocode == 'confirm') {
-      if (confirm(I18n.t('destinations.form.dialog.confirm_overwrite_point'))) {
-        $('[name$=\\[lat\\]]', row).val(null);
-        $('[name$=\\[lng\\]]', row).val(null);
-      }
-    }
-    else if (geocode) {
-      $('[name$=\\[lat\\]]', row).val(null);
-      $('[name$=\\[lng\\]]', row).val(null);
-    }
-    $.ajax(ajaxParams);
   }
 
   var update = function(destination_id, destination, move) {
