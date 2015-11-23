@@ -45,7 +45,7 @@ class Ort
           soft_upper_bound: soft_upper_bound
         }.to_json
         resource = RestClient::Resource.new(@url, timeout: nil)
-        result = resource.post({data: data}, {content_type: :json, accept: :json})
+        result = resource.post({data: data}, content_type: :json, accept: :json)
         @cache.write(key, result)
       end
 
@@ -138,7 +138,7 @@ class Ort
               r.reverse!
               index = sub_size - 1 - index
             end
-            r = index == 0 ? r : r[index..-1] + r[0..index-1] # shift to replace start at beginning
+            r = index == 0 ? r : r[index..-1] + r[0..index - 1] # shift to replace start at beginning
             r[1..-2] # remove start and stop
           end
         end

@@ -69,7 +69,7 @@ module AlyacomApi
     update_staffs(association_id, [staff])
     update_users(association_id, waypoints.collect{ |w| w[:user] })
 
-    get = Hash[self.get(association_id, 'planning', {fromDate: date.to_time.to_i * 1000, idStaff: staff[:id]}).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
+    get = Hash[self.get(association_id, 'planning', fromDate: date.to_time.to_i * 1000, idStaff: staff[:id]).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     plannings = waypoints.collect{ |waypoint|
       planning = waypoint[:planning]
@@ -137,7 +137,7 @@ module AlyacomApi
 
   def self.post(association_id, object, data)
     url = "#{@base_api_url}/#{association_id}/#{object}"
-    response = RestClient.post(url, data.to_json, {content_type: :json, params: {enc: :json, apiKey: @api_key}})
+    response = RestClient.post(url, data.to_json, content_type: :json, params: {enc: :json, apiKey: @api_key})
   rescue => e
     Rails.logger.info e.response
     raise e

@@ -50,16 +50,16 @@ class TomtomWebfleet
   end
 
   def clearOrders(account, username, password, objectuid)
-    get(@client_orders, :clear_orders, account, username, password, {
+    get(@client_orders, :clear_orders, account, username, password,
       deviceToClear: {
         markDeleted: 'true',
       },
-      :attributes! => {
+      attributes!: {
         deviceToClear: {
           objectUid: objectuid,
         }
       }
-   })
+    )
   end
 
   def sendDestinationOrder(account, username, password, objectuid, date, position, orderid, description, time, waypoints = nil)
@@ -72,17 +72,17 @@ class TomtomWebfleet
           postcode: (position.postalcode[0..9] if position.postalcode),
           city: (position.city[0..49] if position.city),
           geoPosition: '',
-          :attributes! => {
+          attributes!: {
             geoPosition: {
               latitude: (position.lat * 1e6).round.to_s,
               longitude: (position.lng * 1e6).round.to_s,
             }
           },
-          :order! => [:street, :postcode, :city, :geoPosition]
+          order!: [:street, :postcode, :city, :geoPosition]
         }
       },
       object: '',
-      :attributes! => {
+      attributes!: {
         object: {
           objectUid: objectuid,
         },

@@ -34,19 +34,16 @@ class Otp
     if !result
       request = @cache_request.read(key)
       if !request
-        request = RestClient.get(otp_url + '/otp/routers/' + router_id + '/plan', {
-          accept: :json,
-          params: {
-            fromPlace: [from_lat, from_lng].join(','),
-            toPlace: [to_lat, to_lng].join(','),
-            # Warning, full english fashion date and time
-            time: datetime.strftime('%I:%M%p'),
-            date: datetime.strftime('%m-%d-%Y'),
-            maxWalkDistance: 500,
-            arriveBy: false,
-            wheelchair: false,
-            showIntermediateStops: false
-          }
+        request = RestClient.get(otp_url + '/otp/routers/' + router_id + '/plan', accept: :json, params: {
+          fromPlace: [from_lat, from_lng].join(','),
+          toPlace: [to_lat, to_lng].join(','),
+          # Warning, full english fashion date and time
+          time: datetime.strftime('%I:%M%p'),
+          date: datetime.strftime('%m-%d-%Y'),
+          maxWalkDistance: 500,
+          arriveBy: false,
+          wheelchair: false,
+          showIntermediateStops: false
         })
         @cache_request.write(key, request)
       end

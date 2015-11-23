@@ -35,7 +35,7 @@ class Here
 
     result = @cache_result.read(key)
     if !result
-      request = get('7.2/calculateroute', {
+      request = get('7.2/calculateroute',
         waypoint0: "geo!#{from_lat},#{from_lng}",
         waypoint1: "geo!#{to_lat},#{to_lng}",
         mode: 'fastest;truck;traffic:disabled',
@@ -49,8 +49,8 @@ class Here
         #height: # Truck routing only, vehicle height in meters.
         #width: # Truck routing only, vehicle width in meters.
         #length: # Truck routing only, vehicle length in meters.
-        #tunnelCategory : # Specifies the tunnel category to restrict certain route links. The route will pass only through tunnels of a less strict category. Enum [B | C | D | E] 
-      })
+        #tunnelCategory : # Specifies the tunnel category to restrict certain route links. The route will pass only through tunnels of a less strict category. Enum [B | C | D | E]
+      )
 
       r = request['response']['route'][0]
       s = r['summary']
@@ -141,15 +141,15 @@ class Here
     request = @cache_request.read(key)
     if !request
       begin
-        response = RestClient.get(url, {params: params})
+        response = RestClient.get(url, params: params)
       rescue => e
         error = JSON.parse(e.response)
         if error['type'] == 'ApplicationError'
           additional_data = error['AdditionalData'] || error['additionalData']
           if additional_data
-            if additional_data.include?({'key' => 'error_code', 'value' => 'NGEO_ERROR_GRAPH_DISCONNECTED'})
+            if additional_data.include?('key' => 'error_code', 'value' => 'NGEO_ERROR_GRAPH_DISCONNECTED')
               return
-            elsif additional_data.include?({'key' => 'error_code', 'value' => 'NGEO_ERROR_ROUTE_NO_START_POINT'})
+            elsif additional_data.include?('key' => 'error_code', 'value' => 'NGEO_ERROR_ROUTE_NO_START_POINT')
               raise UnreachablePointError
             else
               raise

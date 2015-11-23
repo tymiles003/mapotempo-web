@@ -21,22 +21,22 @@ module Ai4r
   module Clusterers
     class KMeansSameSize < KMeans
 
-      parameters_info :max_iterations => "Maximum number of iterations to " \
+      parameters_info max_iterations: "Maximum number of iterations to " \
         "build the clusterer. By default it is uncapped.",
-        :distance_function => "Custom implementation of distance function. " \
+        distance_function: "Custom implementation of distance function. " \
           "It must be a closure receiving two data items and return the " \
           "distance between them. By default, this algorithm uses " \
           "euclidean distance of numeric attributes to the power of 2.",
-        :centroid_function => "Custom implementation to calculate the " \
+        centroid_function: "Custom implementation to calculate the " \
           "centroid of a cluster. It must be a closure receiving an array of " \
           "data sets, and return an array of data items, representing the " \
           "centroids of for each data set. " \
           "By default, this algorithm returns a data items using the mode "\
           "or mean of each attribute on each data set.",
-        :centroid_indices => "Indices of data items (indexed from 0) to be " \
+        centroid_indices: "Indices of data items (indexed from 0) to be " \
           "the initial centroids.  Otherwise, the initial centroids will be " \
           "assigned randomly from the data set.",
-        :on_empty => "Action to take if a cluster becomes empty, with values " \
+        on_empty: "Action to take if a cluster becomes empty, with values " \
           "'eliminate' (the default action, eliminate the empty cluster), " \
           "'terminate' (terminate with error), 'random' (relocate the " \
           "empty cluster to a random point), 'outlier' (relocate the " \
@@ -56,7 +56,7 @@ module Ai4r
 
         calc_initial_centroids
         calculate_membership_clusters
-        while(not stop_criteria_met)
+        while(!stop_criteria_met)
           move_data_indices_by_dist_to_centroid
           recompute_centroids
         end
@@ -86,9 +86,9 @@ module Ai4r
 
       def calculate_membership_clusters
         @clusters = Array.new(@number_of_clusters) do
-          Ai4r::Data::DataSet.new :data_labels => @data_set.data_labels
+          Ai4r::Data::DataSet.new data_labels: @data_set.data_labels
         end
-        @cluster_indices = Array.new(@number_of_clusters) {[]}
+        @cluster_indices = Array.new(@number_of_clusters) { [] }
 
         @data_set.data_items.each_with_index do |data_item, data_index|
           c = eval(data_item)
@@ -149,7 +149,7 @@ module Ai4r
 
         # Build new clusters
         @clusters = Array.new(@number_of_clusters) do
-          Ai4r::Data::DataSet.new :data_labels => @data_set.data_labels
+          Ai4r::Data::DataSet.new data_labels: @data_set.data_labels
         end
 
         @cluster_indices.each_with_index { |cluster_indices, c|

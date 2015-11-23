@@ -40,15 +40,13 @@ class GeocodeAddokWrapper
     result = @cache_code.read(key)
     if !result
       begin
-        result = RestClient.get(@url + '/geocode.json', {
-          params: {
-            api_key: @api_key,
-            limit: 1,
-            street: street,
-            postcode: postalcode,
-            city: city,
-            country: country
-          }
+        result = RestClient.get(@url + '/geocode.json', params: {
+          api_key: @api_key,
+          limit: 1,
+          street: street,
+          postcode: postalcode,
+          city: city,
+          country: country
         })
 
         @cache_code.write(key, String.new(result))
@@ -72,13 +70,11 @@ class GeocodeAddokWrapper
     result = @cache_code.read(key)
     if !result
       begin
-        result = RestClient.get(@url + '/geocode.json', {
-          params: {
-            api_key: @api_key,
-            limit: limit,
-            query: q,
-            country: country
-          }
+        result = RestClient.get(@url + '/geocode.json', params: {
+          api_key: @api_key,
+          limit: limit,
+          query: q,
+          country: country
         })
 
         @cache_code.write(key, String.new(result))

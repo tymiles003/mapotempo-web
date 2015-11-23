@@ -57,7 +57,7 @@ module ConcaveHull
         j = 1
         its = false
         while !its && j < hull.size - last_point do
-          its = intersect?(hull[-1], c_points[i], hull[-j-1], hull[-j])
+          its = intersect?(hull[-1], c_points[i], hull[-j - 1], hull[-j])
           j += 1
         end
       end
@@ -85,12 +85,12 @@ module ConcaveHull
 
   def self.nearestpoints(dataset, current_point, kk)
     dataset.sort_by { |d|
-      Math::sqrt((d[0] - current_point[0]) ** 2 + (d[1] - current_point[1]) ** 2)
+      Math.sqrt((d[0] - current_point[0])**2 + (d[1] - current_point[1])**2)
     }[0..kk]
   end
 
   def self.angle(point, current_point, previous_angle = 0)
-    (Math::atan2(point[1] - current_point[1], point[0] - current_point[0]) - previous_angle) % (Math::PI * 2) - Math::PI
+    (Math.atan2(point[1] - current_point[1], point[0] - current_point[0]) - previous_angle) % (Math::PI * 2) - Math::PI
   end
 
   def self.intersect?(s1p1, s1p2, s2p1, s2p2)
@@ -141,10 +141,10 @@ module ConcaveHull
     inside = false
     size = polygon.size
     size.times.each{ |i|
-      min, max = [polygon[i][0], polygon[(i+1) % size][0]].minmax
+      min, max = [polygon[i][0], polygon[(i + 1) % size][0]].minmax
       if min <= point[0] && point[0] <= max
-        p = (polygon[i][1] - polygon[(i+1) % size][1])
-        q = (polygon[i][0] - polygon[(i+1) % size][0])
+        p = (polygon[i][1] - polygon[(i + 1) % size][1])
+        q = (polygon[i][0] - polygon[(i + 1) % size][0])
         point_y = (point[0] - polygon[i][0]) * p / q + polygon[i][1]
         if point_y > point[1]
           inside = !inside
