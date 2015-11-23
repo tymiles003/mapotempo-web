@@ -32,7 +32,7 @@ class Vehicle < ActiveRecord::Base
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
 
   after_initialize :assign_defaults, if: 'new_record?'
-  before_create :create_vehicle_usage
+  before_create :increment_max_vehicles, :create_vehicle_usage
   before_update :update_out_of_date
   before_destroy :destroy_vehicle
 
@@ -53,6 +53,10 @@ class Vehicle < ActiveRecord::Base
 
   def assign_defaults
     self.color = Vehicle.colors_table[0]
+  end
+
+  def increment_max_vehicles
+    customer.max_vehicles += 1
   end
 
   def create_vehicle_usage

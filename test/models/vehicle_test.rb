@@ -16,7 +16,6 @@ class VehicleTest < ActiveSupport::TestCase
 
   test 'should save' do
     o = customers(:customer_one).vehicles.build(name: '1')
-    customers(:customer_one).max_vehicles += 1
     o.save!
   end
 

@@ -83,7 +83,7 @@ class V01::Vehicles < Grape::API
 
     detailCreate = 'For each new created <code>Vehicle</code> and <code>VehicleUsageSet</code> a new <code>VehicleUsage</code> will be created at the same time (i.e. customer has 2 VehicleUsageSets \'Morning\' and \'Evening\', a new Vehicle is created: 2 new VehicleUsages will be automatically created with the new vehicle.)'
     if Mapotempo::Application.config.manage_vehicles_only_admin
-      detailCreate = 'The number of vehicles should be less than customer\'s max_vehicles. <br>Only available with an admin api_key. <br>' + detailCreate
+      detailCreate = 'Only available with an admin api_key. <br>' + detailCreate
     end
     desc 'Create vehicle.',
       detail: detailCreate,
@@ -106,8 +106,6 @@ class V01::Vehicles < Grape::API
             u.assign_attributes(vehicle_usage_params)
           }
           vehicle.save!
-          customer.max_vehicles += 1
-          customer.save!
         else
           error! 'Forbidden', 403
         end

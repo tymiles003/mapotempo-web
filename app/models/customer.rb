@@ -68,6 +68,16 @@ class Customer < ActiveRecord::Base
     {lat: store ? store.lat : I18n.t('stores.default.lat'), lng: store ? store.lng : I18n.t('stores.default.lng')}
   end
 
+  def max_vehicles
+    @max_vehicles = @max_vehicles || vehicles.size
+  end
+
+  def max_vehicles=(max_vehicles)
+    if !max_vehicles.blank?
+      @max_vehicles = Integer(max_vehicles)
+    end
+  end
+
   private
 
   def assign_defaults
@@ -102,7 +112,7 @@ class Customer < ActiveRecord::Base
   end
 
   def update_max_vehicles
-    if max_vehicles_changed? && Mapotempo::Application.config.manage_vehicles_only_admin
+    if max_vehicles != vehicles.size
       if vehicles.size < max_vehicles
         # Add new
         (max_vehicles - vehicles.size).times{ |_i|
