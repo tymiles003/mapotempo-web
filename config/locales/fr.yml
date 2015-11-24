@@ -353,7 +353,7 @@ fr:
           lat_outside_range: "doit être comprise entre -90..90"
           lng_outside_range: "doit être comprise entre -180..180"
           geocoding_accuracy_outside_range: "doit être comprise entre 0..1"
-        vehicle:
+        vehicles:
           at_least_one: "Au moins un véhicle est requis"
         vehicle_usage:
           attributes:
@@ -834,7 +834,7 @@ fr:
     menu:
       sign_out: "Déconnexion"
     edit_settings:
-      title: "Paramètres utilisateurs"
+      title: "Paramètres utilisateur"
     form_settings:
       url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
 
