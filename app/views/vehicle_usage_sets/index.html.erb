@@ -1,7 +1,7 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
-<div class="row">
+<div class="row row-top">
   <div class="col-md-6">
     <% if @customer.enable_multi_vehicle_usage_sets %>
       <%= link_to new_vehicle_usage_set_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>

@@ -68,9 +68,8 @@
   }
 
   #destination_box {
-    height: 300px;
+    height: 320px;
     overflow-y: scroll;
-    margin-top: 20px;
 
     .col-md-12 {
       padding: 0;
@@ -191,7 +190,7 @@
 
     #map {
       position: absolute;
-      top: 491px;
+      top: 501px;
       bottom: 0;
       min-height: 200px;
       width: 100%;
