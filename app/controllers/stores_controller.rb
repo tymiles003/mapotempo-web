@@ -60,16 +60,14 @@ class StoresController < ApplicationController
 
   def update
     respond_to do |format|
-      begin
-        Store.transaction do
-          @store.update(store_params)
-          @store.save!
-          @store.customer.save!
+      Store.transaction do
+        @store.update(store_params)
+        if @store.save && @store.customer.save
           format.html { redirect_to link_back || edit_store_path(@store), notice: t('activerecord.successful.messages.updated', model: @store.class.model_name.human) }
+        else
+          flash.now[:error] = @store.errors || @store.customer.errors
+          format.html { render action: 'edit' }
         end
-      rescue => e
-        flash.now[:error] = e.message
-        format.html { render action: 'edit' }
       end
     end
   end

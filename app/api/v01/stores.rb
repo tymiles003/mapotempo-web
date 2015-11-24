@@ -121,7 +121,7 @@ class V01::Stores < Grape::API
     end
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
-      current_customer.stores.where(id).first!.destroy
+      current_customer.stores.where(id).first!.destroy!
     end
 
     desc 'Delete multiple stores.',
