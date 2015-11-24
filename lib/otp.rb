@@ -45,7 +45,7 @@ class Otp
           wheelchair: false,
           showIntermediateStops: false
         })
-        @cache_request.write(key, request)
+        @cache_request.write(key, String.new(request)) # String.new workaround waiting for RestClient 2.0
       end
 
       data = JSON.parse(request)
@@ -65,7 +65,7 @@ class Otp
       end
 
       result = [distance, time, trace]
-      @cache_result.write(key, result)
+      @cache_result.write(key, String.new(result)) # String.new workaround waiting for RestClient 2.0
     end
 
     result
@@ -103,7 +103,7 @@ class Otp
         end
       }
 
-      @cache_request.write(key, request)
+      @cache_request.write(key, String.new(request)) # String.new workaround waiting for RestClient 2.0
     end
 
     if request
