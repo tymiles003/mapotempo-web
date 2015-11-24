@@ -84,7 +84,8 @@ class Vehicle < ActiveRecord::Base
   def destroy_vehicle
     default = customer.vehicles.find{ |vehicle| vehicle != self && !vehicle.destroyed? }
     if !default
-      raise I18n.t('activerecord.errors.models.vehicles.at_least_one')
+      errors[:base] << I18n.t('activerecord.errors.models.vehicles.at_least_one')
+      false
     end
   end
 end

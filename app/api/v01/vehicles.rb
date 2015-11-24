@@ -125,17 +125,21 @@ class V01::Vehicles < Grape::API
       nickname: 'deleteVehicle'
     params do
       requires :id, type: String, desc: ID_DESC
+      if Mapotempo::Application.config.manage_vehicles_only_admin
+        requires :customer_id, type: Integer
+      end
     end
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       if Mapotempo::Application.config.manage_vehicles_only_admin
         if @current_user.admin?
-          Vehicle.where(id).first!.destroy
+          customer = Customer.where(id: params[:customer_id]).first!
+          customer.vehicles.where(id).first!.destroy!
         else
           error! 'Forbidden', 403
         end
       else
-        current_customer.vehicles.where(id).first!.destroy
+        current_customer.vehicles.where(id).first!.destroy!
       end
     end
 
@@ -144,21 +148,25 @@ class V01::Vehicles < Grape::API
       nickname: 'deleteVehicles'
     params do
       requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
+      if Mapotempo::Application.config.manage_vehicles_only_admin
+        requires :customer_id, type: Integer
+      end
     end
     delete do
       Vehicle.transaction do
         if Mapotempo::Application.config.manage_vehicles_only_admin
           if @current_user.admin?
-            Vehicle.select{ |vehicle|
+            customer = Customer.where(id: params[:customer_id]).first!
+            customer.vehicles.select{ |vehicle|
               params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
-            }.each(&:destroy)
+            }.each(&:destroy!)
           else
             error! 'Forbidden', 403
           end
         else
           current_customer.vehicles.select{ |vehicle|
             params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
-          }.each(&:destroy)
+          }.each(&:destroy!)
         end
       end
     end

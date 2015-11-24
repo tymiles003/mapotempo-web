@@ -343,7 +343,7 @@ en:
           lat_outside_range: "must be inside range -90..90"
           lng_outside_range: "must be inside range -180..180"
           geocoding_accuracy_outside_range: "must be inside range 0..1"
-        vehicle:
+        vehicles:
           at_least_one: "At least one vehicle needed"
         vehicle_usages:
           attributes:

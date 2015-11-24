@@ -71,9 +71,14 @@ class CustomersController < ApplicationController
 
   def delete_vehicle
     if current_user.admin?
-      @customer.vehicles.find(params[:vehicle_id]).destroy
       respond_to do |format|
-        format.html { redirect_to edit_customer_path(@customer) }
+        vehicle = @customer.vehicles.find(params[:vehicle_id])
+        if vehicle.destroy
+          format.html { redirect_to edit_customer_path(@customer) }
+        else
+          flash[:error] = vehicle.errors.full_messages
+          format.html { redirect_to edit_customer_path(@customer) }
+        end
       end
     else
       error! 'Forbidden', 403
