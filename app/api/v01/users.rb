@@ -127,8 +127,9 @@ class V01::Users < Grape::API
     delete do
       if @current_user.admin?
         User.transaction do
-          User.select{ |user|
-            params[:ids].any?{ |s| ParseIdsRefs.match(s, user) } && ((user.customer && user.customer.reseller == @current_user.reseller) || user.reseller == @current_user.reseller)
+          (User.where(reseller: @current_user.reseller) +
+            User.joins(:customer).where(customers: {reseller_id: @current_user.reseller.id})).select{ |user|
+            params[:ids].any?{ |s| ParseIdsRefs.match(s, user) }
           }.each(&:destroy)
         end
       else

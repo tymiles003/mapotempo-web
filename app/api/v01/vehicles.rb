@@ -100,7 +100,7 @@ class V01::Vehicles < Grape::API
     post do
       if Mapotempo::Application.config.manage_vehicles_only_admin
         if @current_user.admin?
-          customer = Customer.where(id: params[:customer_id]).first!
+          customer = @current_user.reseller.customers.where(id: params[:customer_id]).first!
           vehicle = customer.vehicles.create(vehicle_params)
           vehicle.vehicle_usages.each { |u|
             u.assign_attributes(vehicle_usage_params)
@@ -125,16 +125,13 @@ class V01::Vehicles < Grape::API
       nickname: 'deleteVehicle'
     params do
       requires :id, type: String, desc: ID_DESC
-      if Mapotempo::Application.config.manage_vehicles_only_admin
-        requires :customer_id, type: Integer
-      end
     end
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       if Mapotempo::Application.config.manage_vehicles_only_admin
         if @current_user.admin?
-          customer = Customer.where(id: params[:customer_id]).first!
-          customer.vehicles.where(id).first!.destroy!
+          vehicle = Vehicle.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id})).first!
+          vehicle.destroy!
         else
           error! 'Forbidden', 403
         end
@@ -148,16 +145,12 @@ class V01::Vehicles < Grape::API
       nickname: 'deleteVehicles'
     params do
       requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
-      if Mapotempo::Application.config.manage_vehicles_only_admin
-        requires :customer_id, type: Integer
-      end
     end
     delete do
       Vehicle.transaction do
         if Mapotempo::Application.config.manage_vehicles_only_admin
           if @current_user.admin?
-            customer = Customer.where(id: params[:customer_id]).first!
-            customer.vehicles.select{ |vehicle|
+            Vehicle.joins(:customer).where(customers: {reseller_id: @current_user.reseller.id}).select{ |vehicle|
               params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
             }.each(&:destroy!)
           else
