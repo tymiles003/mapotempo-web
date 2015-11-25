@@ -37,6 +37,10 @@
 <% if route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil? %>
 <Placemark>
   <name><%= route.vehicle_usage.default_store_start.name %></name>
+  <address>
+    <%= route.vehicle_usage.default_store_start.street %>
+    <%= route.vehicle_usage.default_store_start.postalcode %> <%= route.vehicle_usage.default_store_start.city %>  <%= route.vehicle_usage.default_store_start.country %>
+  </address>
   <styleUrl>#route-<%= route.id %>-store</styleUrl>
   <Point>
     <altitudeMode>clampToGround</altitudeMode>
@@ -46,10 +50,23 @@
   </Point>
 </Placemark>
 <% end %>
-<% route.stops.each do |stop| 
-  if stop.active && stop.position? %>
+<% i = 0
+route.stops.each do |stop| 
+  if stop.active && stop.position? 
+    i += 1
+%>
 <Placemark>
-  <name><%= stop.name %></name>
+  <name><%= i.to_s + '. ' + stop.name %></name>
+  <address>
+    <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
+    <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
+  </address>
+  <description>
+    <%= stop.comment %>
+    <% if stop.open %><%= t('plannings.edit.popup.open') + stop.open.to_s %><% end %>
+    <% if stop.close %><%= t('plannings.edit.popup.close') + stop.close.to_s %><% end %>
+    <% if stop.time %><%= t('plannings.edit.popup.time') + ((stop.route.planning.date || Date.today).to_time + (stop.time.to_i - Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i)).strftime('%Y-%m-%dT%H:%M:%S') %><% end %>
+  </description>
   <styleUrl>#route-<%= route.id %>-point</styleUrl>
   <Point>
     <altitudeMode>clampToGround</altitudeMode>
@@ -63,6 +80,10 @@ end %>
 <% if route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? %>
 <Placemark>
   <name><%= route.vehicle_usage.default_store_stop.name %></name>
+  <address>
+    <%= route.vehicle_usage.default_store_stop.street %>
+    <%= route.vehicle_usage.default_store_stop.postalcode %> <%= route.vehicle_usage.default_store_stop.city %> <%= route.vehicle_usage.default_store_stop.country %>
+  </address>
   <styleUrl>#route-<%= route.id %>-store</styleUrl>
   <Point>
     <altitudeMode>clampToGround</altitudeMode>

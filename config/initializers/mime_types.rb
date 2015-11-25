@@ -10,3 +10,4 @@ Mime::Type.register_alias :json, :masternaut
 Mime::Type.register_alias :json, :alyacom
 Mime::Type.register "image/svg+xml", :svg
 Mime::Type.register "application/vnd.google-earth.kml+xml", :kml
+Mime::Type.register "application/vnd.google-earth.kmz", :kmz

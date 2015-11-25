@@ -540,6 +540,7 @@ DEPENDENCIES
   rgeo-geojson
   rspec-rails (~> 3.0.0)
   rubocop
+  rubyzip
   sanitize
   sass-rails (~> 5.0)
   savon
@@ -562,3 +563,6 @@ DEPENDENCIES
   validates_timeliness
   web-console (~> 2.0)
   webmock
+
+BUNDLED WITH
+   1.10.6

@@ -20,6 +20,7 @@ require 'masternaut'
 require 'alyacom'
 require 'csv'
 require 'value_to_boolean'
+require 'zip'
 
 class RoutesController < ApplicationController
   load_and_authorize_resource
@@ -35,6 +36,23 @@ class RoutesController < ApplicationController
       end
       format.kml do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
+      end
+      format.kmz do
+        stringio = Zip::OutputStream.write_buffer do |zio|
+          zio.put_next_entry(filename + '.kml')
+          zio.write render_to_string(formats: :kml)
+          store_img_path = 'marker-home.png'
+          zio.put_next_entry(store_img_path)
+          zio.print IO.read('public/' + store_img_path)
+          (Vehicle.colors_table + ['#707070']).each { |color|
+            img_path = 'point-' + color[1..-1] + '.png'
+            zio.put_next_entry(img_path)
+            zio.print IO.read('public/' + img_path)
+          }
+        end
+        send_data stringio.string,
+          type: 'application/vnd.google-earth.kmz',
+          filename: filename + '.kmz'
       end
       format.excel do
         data = render_to_string.gsub('\n', '\r\n')
