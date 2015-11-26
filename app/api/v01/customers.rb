@@ -53,7 +53,13 @@ class V01::Customers < Grape::API
 
     desc 'Update customer.',
       nickname: 'updateCustomer',
-      params: V01::Entities::Customer.documentation.except(:id),
+      params: V01::Entities::Customer.documentation.except(
+        :id,
+        :store_ids,
+        :job_destination_geocoding_id,
+        :job_store_geocoding_id,
+        :job_optimizer_id
+      ),
       entity: V01::Entities::Customer
     params do
       requires :id, type: String, desc: ID_DESC
@@ -68,7 +74,13 @@ class V01::Customers < Grape::API
     desc 'Create customer.',
       detail: 'Only available with an admin api_key.',
       nickname: 'createCustomer',
-      params: V01::Entities::Customer.documentation.except(:id).deep_merge(
+      params: V01::Entities::Customer.documentation.except(
+        :id,
+        :store_ids,
+        :job_destination_geocoding_id,
+        :job_store_geocoding_id,
+        :job_optimizer_id
+      ).deep_merge(
         name: { required: true },
         default_country: { required: true },
         router_id: { required: true },

@@ -19,17 +19,18 @@ class V01::Entities::Customer < Grape::Entity
   def self.entity_name
     'V01_Customer'
   end
+  EDIT_ONLY_ADMIN = 'Only available in admin.'
 
   expose(:id, documentation: { type: Integer })
-  expose(:end_subscription, documentation: { type: Date })
-  expose(:max_vehicles, documentation: { type: Integer })
+  expose(:end_subscription, documentation: { type: Date, desc: EDIT_ONLY_ADMIN })
+  expose(:max_vehicles, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
   expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.strftime('%H:%M:%S') }
   expose(:store_ids, documentation: { type: Integer, is_array: true })
   expose(:job_destination_geocoding_id, documentation: { type: Integer })
   expose(:job_store_geocoding_id, documentation: { type: Integer })
   expose(:job_optimizer_id, documentation: { type: Integer })
-  expose(:ref, documentation: { type: String, desc: 'Only available in admin.' })
-  expose(:name, documentation: { type: String })
+  expose(:ref, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
+  expose(:name, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
   expose(:tomtom_user, documentation: { type: String })
   expose(:tomtom_password, documentation: { type: String })
   expose(:tomtom_account, documentation: { type: String })
@@ -41,6 +42,6 @@ class V01::Entities::Customer < Grape::Entity
   expose(:print_planning_annotating, documentation: { type: Integer })
   expose(:print_header, documentation: { type: String })
   expose(:alyacom_association, documentation: { type: String })
-  expose(:profile_id, documentation: { type: Integer })
+  expose(:profile_id, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
   # hidden admin only field :reseller_id, :enable_orders, :enable_tomtom, :enable_masternaut, :enable_alyacom, :test, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id
 end
