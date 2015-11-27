@@ -178,7 +178,7 @@ class V01::Zonings < Grape::API
     desc 'Generate isochrone for only one vehicle usage.',
       detail: 'Generate isochrone polygon for one vehicle.',
       nickname: 'generateIsochroneVehicleUsage',
-      entity: V01::Entities::Zoning
+      entity: V01::Entities::Zone
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
@@ -197,7 +197,7 @@ class V01::Zonings < Grape::API
         if zoning && vehicle_usage
           zoning.isochrone(size, vehicle_usage.vehicle_usage_set, vehicle_usage)
           zoning.save!
-          present zoning, with: V01::Entities::Zoning
+          present zoning.zones.find{ |z| z.vehicle == vehicle_usage.vehicle }, with: V01::Entities::Zone
         else
           error! 'Zoning or VehicleUsage not found', 404
         end
@@ -236,7 +236,7 @@ class V01::Zonings < Grape::API
     desc 'Generate isodistance for only one vehicle usage.',
       detail: 'Generate isodistance polygon for one vehicle.',
       nickname: 'generateIsochroneVehicleUsage',
-      entity: V01::Entities::Zoning
+      entity: V01::Entities::Zone
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
@@ -255,7 +255,7 @@ class V01::Zonings < Grape::API
         if zoning && vehicle_usage
           zoning.isodistance(size, vehicle_usage.vehicle_usage_set, vehicle_usage)
           zoning.save!
-          present zoning, with: V01::Entities::Zoning
+          present zoning.zones.find{ |z| z.vehicle == vehicle_usage.vehicle }, with: V01::Entities::Zone
         else
           error! 'Zoning or VehicleUsage not found', 404
         end

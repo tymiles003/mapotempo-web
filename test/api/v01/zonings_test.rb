@@ -99,8 +99,7 @@ class V01::ZoningsTest < ActiveSupport::TestCase
       stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
       patch api("#{@zoning.id}/vehicle_usage/" + vehicle_usages(:vehicle_usage_one_one).id.to_s + "/" + isowhat.to_s, size: 5)
       assert last_response.ok?, last_response.body
-      assert_equal 2, JSON.parse(last_response.body)['zones'].length
-      assert_not_nil JSON.parse(last_response.body)['zones'][0]['polygon']
+      assert_not_nil JSON.parse(last_response.body)['polygon']
     }
   end
 end
