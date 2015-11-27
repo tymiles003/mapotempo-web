@@ -74,7 +74,7 @@ gem 'devise'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'devise-token_authenticatable'
-gem 'cancancan'
+gem 'cancancan', '=1.11.0' # FIXME wait for ruby 2.0
 gem 'lograge'
 gem 'validates_timeliness'
 gem 'rails_engine_decorators'
