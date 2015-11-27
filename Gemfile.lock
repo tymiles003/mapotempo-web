@@ -274,7 +274,7 @@ GEM
     minitest-stub_any_instance (1.0.1)
     multi_json (1.11.2)
     multi_xml (0.5.5)
-    mustache (1.0.2)
+    mustache (0.99.8)
     netrc (0.11.0)
     nilify_blanks (1.2.1)
       activerecord (>= 3.0.0)
@@ -525,7 +525,7 @@ DEPENDENCIES
   minitest-around
   minitest-focus
   minitest-stub_any_instance
-  mustache
+  mustache (< 1.0.0)
   nilify_blanks
   paloma!
   pg
@@ -563,6 +563,3 @@ DEPENDENCIES
   validates_timeliness
   web-console (~> 2.0)
   webmock
-
-BUNDLED WITH
-   1.10.6

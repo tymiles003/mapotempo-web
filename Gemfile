@@ -107,7 +107,7 @@ gem 'jquery-simplecolorpicker-rails'
 gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
 gem 'select2-rails'
 gem 'i18n-js'
-gem 'mustache'
+gem 'mustache', '<1.0.0' # FIXME wait for ruby 2.0
 gem 'smt_rails'
 gem 'paloma', github: 'frodrigo/paloma', branch: '3.0'
 gem 'browser'
