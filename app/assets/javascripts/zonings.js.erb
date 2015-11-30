@@ -75,7 +75,6 @@ var zonings_edit = function(params) {
 
   var zone_map = {};
 
-
   new L.Control.Draw({
     draw: {
       polyline: false,
@@ -246,7 +245,34 @@ var zonings_edit = function(params) {
     count_point_in_polygon(geom._leaflet_id, zone_map[geom._leaflet_id].ele);
   }
 
+  var planning = undefined;
+
   var display_zoning = function(data) {
+    $('#zones').empty();
+    featureGroup.clearLayers();
+    $.each(data.zoning, function(index, zone) {
+      var geom = L.geoJson(JSON.parse(zone.polygon));
+      set_color(geom, zone.vehicle_id);
+      add_zone(zone, geom);
+    });
+
+    if (fitBounds) {
+      // var bounds = (planning ? markersLayers : featureGroup).getBounds();
+      var bounds = (featureGroup.getLayers().length ?
+        featureGroup :
+        (markersLayers.getLayers().length ? markersLayers : stores_marker)
+      ).getBounds();
+      if (bounds && bounds.isValid()) {
+        map.invalidateSize();
+        map.fitBounds(bounds.pad(1.1), {
+          maxZoom: 15,
+          animate: false
+        });
+      }
+    }
+  }
+
+  var display_zoning_first_time = function(data) {
     stores_marker.clearLayers();
     $.each(data.stores, function(i, store) {
       store.store = true;
@@ -300,26 +326,10 @@ var zonings_edit = function(params) {
           }
         });
       });
+      planning = data.planning;
     }
 
-    $('#zones').empty();
-    featureGroup.clearLayers();
-    $.each(data.zoning, function(index, zone) {
-      var geom = L.geoJson(JSON.parse(zone.polygon));
-      set_color(geom, zone.vehicle_id);
-      add_zone(zone, geom);
-    });
-
-    if (fitBounds) {
-      var bounds = (data.planning ? markersLayers : featureGroup).getBounds();
-      if (bounds && bounds.isValid()) {
-        map.invalidateSize();
-        map.fitBounds(bounds.pad(1.1), {
-          maxZoom: 15,
-          animate: false
-        });
-      }
-    }
+    display_zoning(data);
   }
 
   $('form').submit(function (e) {
@@ -407,7 +417,7 @@ var zonings_edit = function(params) {
   $.ajax({
     url: '/zonings/' + (zoning_id ? zoning_id + '/edit' : 'new') + (planning_id ? '/planning/' + planning_id : '') + '.json',
     beforeSend: beforeSendWaiting,
-    success: display_zoning,
+    success: display_zoning_first_time,
     complete: completeWaiting,
     error: ajaxError
   });
