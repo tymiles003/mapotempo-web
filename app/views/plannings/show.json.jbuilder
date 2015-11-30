@@ -41,7 +41,7 @@ else
       (json.time route.start.strftime('%H:%M')) if route.start
       (json.geocoded true) if !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?
       (json.error true) if route.vehicle_usage.default_store_start.lat.nil? || route.vehicle_usage.default_store_start.lng.nil?
-    end if route.vehicle_usage
+    end if route.vehicle_usage && route.vehicle_usage.default_store_start
     first_active_free = nil
     route.stops.reverse_each{ |stop|
       if !stop.active
@@ -117,7 +117,7 @@ else
       (json.error true) if route.stop_out_of_drive_time
       json.stop_out_of_drive_time route.stop_out_of_drive_time
       json.stop_distance (route.stop_distance || 0) / 1000
-    end if route.vehicle_usage
+    end if route.vehicle_usage && route.vehicle_usage.default_store_stop
     (json.route_no_geolocalization no_geolocalization) if no_geolocalization
     (json.route_out_of_window out_of_window) if out_of_window
     (json.route_out_of_capacity out_of_capacity) if out_of_capacity

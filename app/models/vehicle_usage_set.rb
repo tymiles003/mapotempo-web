@@ -28,7 +28,6 @@ class VehicleUsageSet < ActiveRecord::Base
   auto_strip_attributes :name
   validates :customer, presence: true
   validates :store_start, presence: true
-  validates :store_stop, presence: true
   validates :name, presence: true
   validates_time :open, presence: true
   validates_time :close, presence: true, after: :open
@@ -57,7 +56,6 @@ class VehicleUsageSet < ActiveRecord::Base
     if customer
       self.store_start = customer.stores[0] unless store_start
     end
-    self.store_stop = store_start unless store_stop
   end
 
   def create_vehicle_usages
@@ -101,8 +99,8 @@ class VehicleUsageSet < ActiveRecord::Base
 
     if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed?
       vehicle_usages.each{ |vehicle_usage|
-        if (open_changed? && vehicle_usage.default_open == open) || (close_changed? && vehicle_usage.default_close == close) || (store_start_id_changed? && vehicle_usage.default_store_start.id == store_start_id) ||
-          (store_stop_id_changed? && vehicle_usage.default_store_stop.id == store_stop_id) || (rest_start_changed? && vehicle_usage.default_rest_start == rest_start) || (rest_stop_changed? && vehicle_usage.default_rest_stop == rest_stop) ||
+        if (open_changed? && vehicle_usage.default_open == open) || (close_changed? && vehicle_usage.default_close == close) || (store_start_id_changed? && vehicle_usage.default_store_start && vehicle_usage.default_store_start.id == store_start_id) ||
+          (store_stop_id_changed? && vehicle_usage.default_store_stop && vehicle_usage.default_store_stop.id == store_stop_id) || (rest_start_changed? && vehicle_usage.default_rest_start == rest_start) || (rest_stop_changed? && vehicle_usage.default_rest_stop == rest_stop) ||
           (rest_duration_changed? && vehicle_usage.default_rest_duration == rest_duration) || (store_rest_id_changed? && vehicle_usage.default_store_rest.id == store_rest)
           vehicle_usage.routes.each{ |route|
             route.out_of_date = true

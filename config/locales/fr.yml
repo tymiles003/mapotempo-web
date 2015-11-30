@@ -890,8 +890,9 @@ fr:
       close:
         default: "%{n} (valeur par défaut)"
         help: "Horaire de travail livreur"
-      store_start:
+      store:
         default: "Défaut"
+        none: "Aucun"
       rest_start:
         default: "%{n} (valeur par défaut)"
       rest_stop:
@@ -919,6 +920,8 @@ fr:
     form:
       open_help: "Horaire de travail livreur"
       close_help: "Horaire de travail livreur"
+      store:
+        none: "Aucun"
       store_rest:
         none: "Aucun"
 

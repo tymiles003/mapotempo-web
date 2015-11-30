@@ -28,6 +28,8 @@ class VehicleUsageSetsController < ApplicationController
 
   def new
     @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build
+    @vehicle_usage_set.store_start = current_user.customer.stores[0]
+    @vehicle_usage_set.store_stop = current_user.customer.stores[0]
   end
 
   def edit

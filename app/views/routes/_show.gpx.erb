@@ -14,7 +14,7 @@
       <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
       <%= number_to_human(route.distance, units: :distance, precision: 3) %>
     </desc>
-    <% if !route.vehicle_usage.default_store_start.nil? && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil? %>
+    <% if route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil? %>
     <rtept lat="<%= route.vehicle_usage.default_store_start.lat %>" lon="<%= route.vehicle_usage.default_store_start.lng %>">
       <name>
         <%= route.vehicle_usage.default_store_start.name %>
@@ -78,7 +78,7 @@ route.stops.each{ |stop|
   end
 }
 %>
-    <% if !route.vehicle_usage.default_store_stop.nil? && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? %>
+    <% if route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? %>
     <rtept lat="<%= route.vehicle_usage.default_store_stop.lat %>" lon="<%= route.vehicle_usage.default_store_stop.lng %>">
       <name>
         <%= route.vehicle_usage.default_store_stop.name %>

@@ -877,8 +877,9 @@ en:
       close:
         default: "%{n} (default value)"
         help: "Deliveryman's working hours"
-      store_start:
+      store:
         default: "Default"
+        none: "None"
       rest_start:
         default: "%{n} (default value)"
       rest_stop:
@@ -906,6 +907,8 @@ en:
     form:
       open_help: "Deliveryman's working hours"
       close_help: "Deliveryman's working hours"
+      store:
+        none: "None"
       store_rest:
         none: "None"
 

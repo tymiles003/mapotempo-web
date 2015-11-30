@@ -58,10 +58,10 @@
       <p class="help-block"><%= t '.close.help' %></p>
     <% end %>
     <%= f.collection_select :store_start_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {
-      include_blank: t('vehicle_usages.form.store_start.default') + ' (' + @vehicle_usage.vehicle_usage_set.store_start.name + ')' }, {
+      include_blank: t('vehicle_usages.form.store.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_start ? @vehicle_usage.vehicle_usage_set.store_start.name : t('vehicle_usages.form.store.none')) + ')' }, {
       input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
     <%= f.collection_select :store_stop_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {
-      include_blank: t('vehicle_usages.form.store_stop.default') + ' (' + @vehicle_usage.vehicle_usage_set.store_stop.name + ')' }, {
+      include_blank: t('vehicle_usages.form.store.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_stop ? @vehicle_usage.vehicle_usage_set.store_stop.name : t('vehicle_usages.form.store.none')) + ')' }, {
       input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
     <%= f.text_field :rest_start, {
       value: @vehicle_usage.rest_start ? @vehicle_usage.rest_start.strftime("%H:%M") : nil,

@@ -28,25 +28,27 @@
   </span>
 
   <ol class="stops" start="0">
-    <li class="list-group-item store" style="border-left: 5px solid <%= route.color || route.vehicle_usage.vehicle.color %>">
-      <div class="row no-gutter">
-        <% if route.planning.customer.print_planning_annotating %>
-          <div class="col-md-5 col-sm-6 col-xs-6">
-        <% else %>
-          <div class="col-md-6 col-sm-6 col-xs-9">
-        <% end %>
-          <span class="name"><%= route.vehicle_usage.default_store_start.name %></span><br/>
-          <span class="address">
-            <%= route.vehicle_usage.default_store_start.street %>
-            <%= route.vehicle_usage.default_store_start.postalcode %> <%= route.vehicle_usage.default_store_start.city %>  <%= route.vehicle_usage.default_store_start.country %>
-          </span>
-        </div>
+    <% if route.vehicle_usage.default_store_start %>
+      <li class="list-group-item store" style="border-left: 5px solid <%= route.color || route.vehicle_usage.vehicle.color %>">
+        <div class="row no-gutter">
+          <% if route.planning.customer.print_planning_annotating %>
+            <div class="col-md-5 col-sm-6 col-xs-6">
+          <% else %>
+            <div class="col-md-6 col-sm-6 col-xs-9">
+          <% end %>
+            <span class="name"><%= route.vehicle_usage.default_store_start.name %></span><br/>
+            <span class="address">
+              <%= route.vehicle_usage.default_store_start.street %>
+              <%= route.vehicle_usage.default_store_start.postalcode %> <%= route.vehicle_usage.default_store_start.city %>  <%= route.vehicle_usage.default_store_start.country %>
+            </span>
+          </div>
 
-        <div class="title col-md-2 col-sm-2 col-xs-3">
-          <span class="time"><%= route.start.strftime("%H:%M") if route.start %></span>
+          <div class="title col-md-2 col-sm-2 col-xs-3">
+            <span class="time"><%= route.start.strftime("%H:%M") if route.start %></span>
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
+    <% end %>
 
   <%
   index = 0
@@ -170,38 +172,40 @@
   }
   %>
 
-    <li class="list-group-item store" style="border-left: 5px solid <%= route.color || route.vehicle_usage.vehicle.color %>">
-      <div class="row no-gutter">
+    <% if route.vehicle_usage.default_store_stop %>
+      <li class="list-group-item store" style="border-left: 5px solid <%= route.color || route.vehicle_usage.vehicle.color %>">
+        <div class="row no-gutter">
 
-        <% if route.planning.customer.print_planning_annotating %>
-          <div class="col-md-5 col-sm-6 col-xs-6">
-        <% else %>
-          <div class="col-md-6 col-sm-6 col-xs-9">
-        <% end %>
-          <span class="name"><%= route.vehicle_usage.default_store_stop.name %></span><br/>
-          <span class="address">
-            <%= route.vehicle_usage.default_store_stop.street %>
-            <%= route.vehicle_usage.default_store_stop.postalcode %> <%= route.vehicle_usage.default_store_stop.city %> <%= route.vehicle_usage.default_store_stop.country %>
-          </span>
-        </div>
-
-        <div class="title col-md-2 col-sm-2 col-xs-3">
-          <% if route.planning.customer.print_stop_time %>
-            <span class="time"><%= route.end.strftime("%H:%M") if route.end %></span>
+          <% if route.planning.customer.print_planning_annotating %>
+            <div class="col-md-5 col-sm-6 col-xs-6">
+          <% else %>
+            <div class="col-md-6 col-sm-6 col-xs-9">
           <% end %>
-        </div>
-
-        <% if route.stop_out_of_drive_time %>
-          <div class="row">
-            <span class="col-md-offset-1 col-md-11 ui-state-error">
-              <% if route.stop_out_of_drive_time %>
-                <span><i class="fa fa-power-off fa-fw"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
-              <% end %>
+            <span class="name"><%= route.vehicle_usage.default_store_stop.name %></span><br/>
+            <span class="address">
+              <%= route.vehicle_usage.default_store_stop.street %>
+              <%= route.vehicle_usage.default_store_stop.postalcode %> <%= route.vehicle_usage.default_store_stop.city %> <%= route.vehicle_usage.default_store_stop.country %>
             </span>
           </div>
-        <% end %>
-      </div>
-    </li>
+
+          <div class="title col-md-2 col-sm-2 col-xs-3">
+            <% if route.planning.customer.print_stop_time %>
+              <span class="time"><%= route.end.strftime("%H:%M") if route.end %></span>
+            <% end %>
+          </div>
+
+          <% if route.stop_out_of_drive_time %>
+            <div class="row">
+              <span class="col-md-offset-1 col-md-11 ui-state-error">
+                <% if route.stop_out_of_drive_time %>
+                  <span><i class="fa fa-power-off fa-fw"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
 
   </ol>
 </li>

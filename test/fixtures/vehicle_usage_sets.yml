@@ -30,7 +30,7 @@ vehicle_usage_set_three:
   close: 2000-01-01 15:00:00
   customer: customer_one
   store_start: store_without_geo
-  store_stop: store_without_geo
+  store_stop:
   rest_start: 2000-01-01 12:00:00
   rest_stop: 2000-01-01 14:00:00
   rest_duration: 2000-01-01 00:45:00
