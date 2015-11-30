@@ -20,10 +20,10 @@ json.columns do
 end
 
 json.rows do
-  json.array! @destinations_orders do |destination_orders, vehicle|
-    if vehicle
-      json.vehicle_name vehicle.name
-      json.vehicle_color vehicle.color
+  json.array! @destinations_orders do |destination_orders, vehicle_usage|
+    if vehicle_usage
+      json.vehicle_name vehicle_usage.vehicle.name
+      json.vehicle_color vehicle_usage.vehicle.color
     end
     json.name destination_orders[0].destination.name
     json.comment destination_orders[0].destination.comment

@@ -13,12 +13,12 @@ header += [
 csv << header
 
 sum_column = Hash.new { |h,k| h[k] = {} }
-@destinations_orders.collect { |destination_orders, vehicle|
+@destinations_orders.collect { |destination_orders, vehicle_usage|
   sum = {}
   total = 0
   line = []
   if params[:planning_id]
-    line << (vehicle.nil? ? '' : vehicle.name)
+    line << (vehicle_usage.nil? ? '' : vehicle_usage.vehicle.name)
   end
   line += [
     destination_orders[0].destination.name,
