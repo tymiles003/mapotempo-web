@@ -944,7 +944,7 @@ fr:
       automatic:
         one: "Automatique : 1 zone"
         other: "Automatique : %{count} zones"
-      from_planning: "Depuis le planning"
+      from_planning: "Depuis les tournées du planning"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
       dialog:

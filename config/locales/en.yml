@@ -931,7 +931,7 @@ en:
       automatic:
         one: "Automatic: 1 zone"
         other: "Automatic: %{count} zones"
-      from_planning: "From planning"
+      from_planning: "From planning's routes"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
       dialog:

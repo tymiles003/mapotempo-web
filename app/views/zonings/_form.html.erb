@@ -21,7 +21,7 @@
           <% end %>
           <% if @planning %>
             <li class="divider"></li>
-            <li><a href="#" id="from_planning"><i class="fa fa-magic fa-fw"></i> <%= t '.from_planning' %></a></li>
+            <li><a href="#" id="from_planning"><i class="fa fa-calendar fa-fw"></i> <%= t '.from_planning' %></a></li>
             <li class="divider"></li>
             <% @zoning.customer.vehicles.size.times{ |n| %>
             <li><a href="#" class="automatic" data-n="<%= n + 1 %>"><i class="fa fa-magic fa-fw"></i> <%= t('.automatic', count: n + 1) %></a></li>
