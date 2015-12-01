@@ -530,6 +530,7 @@ fr:
       no_position: "manquant"
       geocoding_level: "Niveau de géocodage"
       geocoding_column_help: "Niveau de géocodage et qualité. Ordonner d'abord par niveau puis par qualité."
+      geocoding_empty: "absent"
       dialog:
         geocoding:
           title: "Géocodage"

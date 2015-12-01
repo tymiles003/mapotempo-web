@@ -519,6 +519,7 @@ en:
       no_position: "missing"
       geocoding_level: "Geocoding level"
       geocoding_column_help: "Geocoding level and accuracy. Order first by level and then by accuracy."
+      geocoding_empty: "missing"
       dialog:
         geocoding:
           title: "Geocoding"
