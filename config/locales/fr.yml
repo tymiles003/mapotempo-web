@@ -559,6 +559,7 @@ fr:
       close: "horaire fin"
       comment: "commentaire"
       phone_number: "Numero de téléphone"
+      phone_number_small: "Tél."
       tags: "libellés"
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
 
@@ -731,6 +732,7 @@ fr:
       lng: "lng"
       comment: "commentaire"
       phone_number: "Numero de téléphone"
+      phone_number_small: "Tél."
       duration: "durée visite"
       quantity: "quantité"
       orders: "commandes"
