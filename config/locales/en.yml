@@ -863,6 +863,10 @@ en:
     index:
       title: "Listing vehicle configurations"
       stores: "Stores"
+      store:
+        no_start: "No start store"
+        no_stop: "No stop store: end of route is free"
+        same_start_stop: "Vehicle returns to its start store"
       time: "Open - Close"
     new:
       title: "New vehicle configuration"

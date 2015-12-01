@@ -878,6 +878,10 @@ fr:
     index:
       title: "Liste configurations de véhicule"
       stores: "Dépôts"
+      store:
+        no_start: "Pas de dépôt de départ"
+        no_stop: "Pas de dépôt d'arrivée : fin de tournée libre"
+        same_start_stop: "Véhicule retournant à son dépôt de départ"
       time: "Début - Fin"
     new:
       title: "Nouvelle configuration du véhicule"

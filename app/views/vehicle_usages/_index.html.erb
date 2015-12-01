@@ -25,17 +25,17 @@
             <% if vehicle_usage.default_store_start %>
               <%= vehicle_usage.default_store_start.name %>
             <% else %>
-              <i class="fa fa-ban fa-fw"></i>
+              <i class="fa fa-ban fa-fw" title="<%= t 'vehicle_usages.index.store.no_start' %>"></i>
             <% end %>
             <% if vehicle_usage.default_store_start != vehicle_usage.default_store_stop %>
               <i class="fa fa-long-arrow-right fa-fw"></i>
               <% if vehicle_usage.default_store_stop %>
                 <%= vehicle_usage.default_store_stop.name %>
               <% else %>
-                <i class="fa fa-ban fa-fw"></i>
+                <i class="fa fa-ban fa-fw" title="<%= t 'vehicle_usages.index.store.no_stop' %>"></i>
               <% end %>
             <% elsif vehicle_usage.default_store_start %>
-              <i class="fa fa-undo fa-flip-vertical fa-fw"></i>
+              <i class="fa fa-undo fa-flip-vertical fa-fw" title="<%= t 'vehicle_usages.index.store.same_start_stop' %>"></i>
             <% end %>
           <% end %>
         </td>
