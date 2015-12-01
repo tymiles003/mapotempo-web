@@ -204,8 +204,10 @@ var fake_select2 = function(selector, callback) {
 }
 
 var phone_number_call = function(num, url_template, link) {
-    link.href = url_template.replace('{TEL}', num);
-    if(document.location.protocol == 'https:' && !(link.href.substr(0,5) == 'https')){
-        link.target = link.target.replace('click2call_iframe', '_blank');
+    if(num){
+        link.href = url_template.replace('{TEL}', num);
+        if(document.location.protocol == 'http:' && !(link.href.substr(0,5) == 'https')){
+            link.target = link.target.replace('click2call_iframe', '_blank');
+        }
     }
 }
