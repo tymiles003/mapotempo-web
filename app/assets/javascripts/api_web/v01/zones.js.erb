@@ -27,7 +27,7 @@ var api_web_v01_zones_index = function(params) {
     map_attribution = params.map_attribution,
     vehicles_map = params.vehicles_map,
     destinations = params.destinations,
-    planning_id = params.planning_id;
+    vehicle_usage_set_id = params.vehicle_usage_set_id;
 
   var map = new L.Map('map', {
     attributionControl: false
@@ -126,7 +126,7 @@ var api_web_v01_zones_index = function(params) {
   var paramsJson = {};
   if (zone_ids) paramsJson.ids = zone_ids.join(',');
   if (destinations) paramsJson.destinations = destinations;
-  if (planning_id) paramsJson.planning_id = planning_id;
+  if (vehicle_usage_set_id) paramsJson.vehicle_usage_set_id = vehicle_usage_set_id;
   var queryParam = $.param(paramsJson);
   if (queryParam) queryParam = '?' + queryParam;
   $.ajax({

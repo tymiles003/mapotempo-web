@@ -1,4 +1,8 @@
-json.stores @planning ? (@planning.routes.select(&:vehicle_usage).collect(&:vehicle_usage).collect(&:default_store_start) + @planning.routes.select(&:vehicle_usage).collect(&:vehicle_usage).collect(&:default_store_stop)).compact.uniq : @zoning.customer.stores do |store|
+if @vehicle_usage_set
+  vehicle_vehicle_usages = Hash[@vehicle_usage_set.vehicle_usages.collect{ |vehicle_usage| [vehicle_usage.vehicle, vehicle_usage] }]
+  vehicle_usages = @zones.collect{ |zone| vehicle_vehicle_usages[zone.vehicle] }
+end
+json.stores vehicle_usages ? (vehicle_usages.collect(&:default_store_start) + vehicle_usages.collect(&:default_store_stop)).compact.uniq : @zoning.customer.stores do |store|
   json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
 end
 json.zoning @zones do |zone|
