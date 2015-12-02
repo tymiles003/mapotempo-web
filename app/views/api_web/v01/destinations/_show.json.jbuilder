@@ -20,3 +20,7 @@ json.destination do
   (json.icon icon.icon) if icon
 end
 json.error destination.lat.nil? || destination.lng.nil?
+color = destination.tags.find(&:color)
+(json.color color.color) if color
+icon = destination.tags.find(&:icon)
+(json.icon icon.icon) if icon
