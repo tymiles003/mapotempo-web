@@ -449,6 +449,7 @@ en:
       title: "Listing customers"
       new: "New Customer"
       map: "Map"
+      no_test: "not in test"
     new:
       title: "New customer"
     form:

@@ -460,6 +460,7 @@ fr:
       title: "Liste comptes client"
       new: "Nouveau compte client"
       map: "Carte"
+      no_test: "hors test"
     new:
       title: "Nouveau compte client"
     form:
