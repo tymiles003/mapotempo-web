@@ -67,16 +67,13 @@ class DestinationsController < ApplicationController
 
   def update
     respond_to do |format|
-      begin
-        Destination.transaction do
-          @destination.update(destination_params)
-          @destination.save!
-          @destination.customer.save!
+      Destination.transaction do
+        @destination.update(destination_params)
+        if @destination.save && @destination.customer.save
           format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
+        else
+          format.html { render action: 'edit' }
         end
-      rescue => e
-        flash.now[:error] = e.message
-        format.html { render action: 'edit' }
       end
     end
   end

@@ -160,21 +160,20 @@ class PlanningsController < ApplicationController
 
   def move
     respond_to do |format|
-      begin
-        Planning.transaction do
-          params[:route_id] = Integer(params[:route_id])
-          route = @planning.routes.find{ |route| route.id == params[:route_id] }
-          params[:stop_id] = Integer(params[:stop_id])
-          stop = nil
-          @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == params[:stop_id] } }
-          route.move_stop(stop, Integer(params[:index]))
-          @planning.save!
+      Planning.transaction do
+        params[:route_id] = Integer(params[:route_id])
+        route = @planning.routes.find{ |route| route.id == params[:route_id] }
+        params[:stop_id] = Integer(params[:stop_id])
+        stop = nil
+        @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == params[:stop_id] } }
+        route.move_stop(stop, Integer(params[:index]))
+        if @planning.save
           @planning.reload
           format.json { render action: 'show', location: @planning }
+        else
+          @planning.reload
+          format.json { render json: @planning.errors.full_messages, status: :unprocessable_entity }
         end
-      rescue => e
-        @planning.reload
-        format.json { render json: e.message, status: :unprocessable_entity }
       end
     end
   end
