@@ -3,7 +3,7 @@ class AlterTableCustomerDropMaxVehicles < ActiveRecord::Migration
     remove_column :customers, :max_vehicles
   end
 
-  def donw
+  def down
     add_column :customers, :max_vehicles, :integer, null: false
   end
 end
