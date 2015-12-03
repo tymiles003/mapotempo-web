@@ -102,7 +102,8 @@ var api_web_v01_destinations_index = function(params, api) {
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
     ids = params.ids,
-    display_home = params.display_home;
+    display_home = params.display_home,
+    method = params.method;
 
   var map = L.map('map', {
     attributionControl: false
@@ -155,9 +156,11 @@ var api_web_v01_destinations_index = function(params, api) {
   }
 
   progressBar.advanceTo(50);
-  queryParam = (ids) ? ('?' + $.param({ids: ids.join(',')})) : '';
+  var params = (ids) ? {ids: ids.join(',')} : {};
   $.ajax({
-    url: '/api-web/0.1/' + api + '.json' + queryParam,
+    url: '/api-web/0.1/' + api + '.json',
+    method: method,
+    data: params,
     beforeSend: beforeSendWaiting,
     success: function(data) {
       if ((data.destinations && data.destinations.length) || (data.stores && data.stores.length)) {

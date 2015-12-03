@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
+  skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource
   before_action :set_store, only: [:edit_position, :update_position]
 
@@ -54,6 +55,7 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
       end
     end
     @tags = current_user.customer.tags
+    @method = request.method_symbol
   end
 
   def edit_position
