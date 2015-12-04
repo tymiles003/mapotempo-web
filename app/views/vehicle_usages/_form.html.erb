@@ -26,7 +26,7 @@
         <%= f.collection_select :router_id, [], @vehicle_usage.vehicle.customer.profile.routers, :id, :name, {include_blank: t('vehicles.form.router.default') + ' (' + @vehicle_usage.vehicle.customer.router.name + ')' }, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} do %>
           <p class="help-block"><%= t 'vehicles.form.router.help' %></p>
         <% end %>
-        <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('vehicles.form.speed_multiplicator.default', n: 100), input_group: '%'} do %>
+        <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('vehicles.form.speed_multiplicator.default', n: (@vehicle_usage.vehicle.customer.speed_multiplicator * 100).to_i || 100), input_group: '%'} do %>
           <p class="help-block"><%= t 'vehicles.form.speed_multiplicator.help' %></p>
         <% end %>
         <% if @vehicle_usage.vehicle.customer.enable_tomtom && !@vehicle_usage.vehicle.customer.tomtom_account.blank? && !@vehicle_usage.vehicle.customer.tomtom_user.blank? && !@vehicle_usage.vehicle.customer.tomtom_password.blank? %>
