@@ -61,11 +61,14 @@ class V01::Plannings < Grape::API
 
     desc 'Create planning.',
       nickname: 'createPlanning',
-      params: V01::Entities::Planning.documentation.except(:id).deep_merge(
+      params: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids).deep_merge(
         name: { required: true },
         vehicle_usage_set_id: { required: true }
       ),
       entity: V01::Entities::Planning
+    params do
+      optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
+    end
     post do
       planning = current_customer.plannings.build(planning_params)
       planning.save!
@@ -74,7 +77,7 @@ class V01::Plannings < Grape::API
 
     desc 'Update planning.',
       nickname: 'updatePlanning',
-      params: V01::Entities::Planning.documentation.except(:id),
+      params: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tags_ids),
       entity: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC

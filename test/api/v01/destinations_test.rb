@@ -51,10 +51,11 @@ class V01::DestinationsTest < ActiveSupport::TestCase
 
   test 'should create' do
     assert_difference('Destination.count', 1) do
-      assert_difference('Stop.count', 1) do
+      assert_difference('Stop.count', 2) do
         @destination.name = 'new dest'
-        post api(), @destination.attributes.update({tag_ids: [tags(:tag_one).id]})
+        post api(), @destination.attributes.update({tag_ids: tags(:tag_one).id.to_s + ',' + tags(:tag_two).id.to_s})
         assert last_response.created?, last_response.body
+        assert_equal 2, JSON.parse(last_response.body)['tag_ids'].size
       end
     end
   end
@@ -64,6 +65,9 @@ class V01::DestinationsTest < ActiveSupport::TestCase
       assert_difference('Planning.count', 1) do
         put api(), replace: false, file: fixture_file_upload('files/import_destinations_one.csv', 'text/csv')
         assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
+
+        get api('ref:z')
+        assert_equal 1, JSON.parse(last_response.body)['tag_ids'].size
       end
     end
   end
@@ -86,13 +90,16 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           phone_number: nil,
           ref: 'z',
           take_over: nil,
-          tags: ['tag1'],
+          tags: ['tag1', 'tag2'],
           geocoding_accuracy: nil,
           foo: 'bar',
           route: '1',
           active: '1'
         }]}
         assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
+
+        get api('ref:z')
+        assert_equal 2, JSON.parse(last_response.body)['tag_ids'].size
       end
     end
   end

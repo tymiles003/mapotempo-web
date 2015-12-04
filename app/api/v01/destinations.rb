@@ -61,11 +61,14 @@ class V01::Destinations < Grape::API
 
     desc 'Create destination.',
       nickname: 'createDestination',
-      params: V01::Entities::Destination.documentation.except(:id).deep_merge(
+      params: V01::Entities::Destination.documentation.except(:id, :tag_ids).deep_merge(
         name: { required: true },
         geocoding_accuracy: { values: 0..1 }
       ),
       entity: V01::Entities::Destination
+    params do
+      optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
+    end
     post do
       destination = current_customer.destinations.build(destination_params)
       destination.save!
@@ -97,12 +100,13 @@ class V01::Destinations < Grape::API
     desc 'Update destination.',
       detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
       nickname: 'updateDestination',
-      params: V01::Entities::Destination.documentation.except(:id).deep_merge(
+      params: V01::Entities::Destination.documentation.except(:id, :tag_ids).deep_merge(
         geocoding_accuracy: { values: 0..1 }
       ),
       entity: V01::Entities::Destination
     params do
       requires :id, type: String, desc: ID_DESC
+      optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
