@@ -46,6 +46,11 @@ class PlanningsController < ApplicationController
           store_img_path = 'marker-home.png'
           zio.put_next_entry(store_img_path)
           zio.print IO.read('public/' + store_img_path)
+          (Vehicle.colors_table + ['#000000']).each { |color|
+            img_path = 'marker-home-' + color[1..-1] + '.png'
+            zio.put_next_entry(img_path)
+            zio.print IO.read('public/' + img_path)
+          }
           (Vehicle.colors_table + ['#707070']).each { |color|
             img_path = 'point-' + color[1..-1] + '.png'
             zio.put_next_entry(img_path)

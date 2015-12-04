@@ -100,6 +100,8 @@ Rails.application.routes.draw do
 
   get '/unsupported_browser' => 'index#unsupported_browser'
 
+  get '/images/marker-home' => 'images#marker_home'
+  get '/images/marker-home-:color' => 'images#marker_home'
   get '/images/marker' => 'images#marker'
   get '/images/marker-:color' => 'images#marker'
   get '/images/point' => 'images#point'

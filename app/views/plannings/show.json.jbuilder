@@ -15,7 +15,7 @@ else
   json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
   json.size_active @planning.routes.to_a.sum(0){ |route| route.vehicle_usage ? route.size_active : 0 }
   json.stores @planning.customer.stores do |store|
-    json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+    json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color
   end
   json.routes @planning.routes do |route|
     json.route_id route.id

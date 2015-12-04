@@ -51,6 +51,10 @@ var destinations_form = function(params, api) {
     map.addControl(new control_position());
   }
 
+  api == 'stores' && $('#store_color').simplecolorpicker({
+    theme: 'fontawesome'
+  });
+
   var markers = {};
 
   var pointing = false;

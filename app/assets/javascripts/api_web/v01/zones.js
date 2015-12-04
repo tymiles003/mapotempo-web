@@ -92,7 +92,7 @@ var api_web_v01_zones_index = function(params) {
       if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
         var m = L.marker(new L.LatLng(store.lat, store.lng), {
           icon: L.icon({
-            iconUrl: '<%= asset_path("marker-home.svg") %>',
+            iconUrl: '/images/marker-home' + (store.color ? ('-' + store.color.substr(1)) : '') + '.svg',
             iconSize: new L.Point(32, 32),
             iconAnchor: new L.Point(16, 16),
             popupAnchor: new L.Point(0, -12)

@@ -44,6 +44,7 @@
   </div>
   <%= f.number_field :lat, { step: 'any'} %>
   <%= f.number_field :lng, { step: 'any'} %>
+  <%= f.select :color, [], ['#000000'] + Vehicle.colors_table %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

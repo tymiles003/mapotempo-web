@@ -22,6 +22,10 @@ class ImagesController < ApplicationController
     @pal = pal(image_params[:color])
   end
 
+  def marker_home
+    @color = image_params[:color]
+  end
+
   def point
     @pal = pal(image_params[:color])
   end

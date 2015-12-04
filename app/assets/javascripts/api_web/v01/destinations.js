@@ -34,7 +34,7 @@ Paloma.controller('ApiWeb/V01/Store').prototype.update_position = function() {
 var api_web_v01_display_destinations_ = function(api, map, markersLayers, cluster, data) {
   var tags = {};
   var marker_home = L.icon({
-    iconUrl: '<%= asset_path("marker-home.svg") %>',
+    iconUrl: '/images/marker-home' + (store.color ? ('-' + store.color.substr(1)) : '') + '.svg',
     iconSize: new L.Point(32, 32),
     iconAnchor: new L.Point(16, 16),
     popupAnchor: new L.Point(0, -12)
@@ -121,7 +121,7 @@ var api_web_v01_destinations_index = function(params, api) {
   if(display_home) {
     L.marker([map_lat, map_lng], {
       icon: L.icon({
-        iconUrl: '<%= asset_path("marker-home.svg") %>',
+        iconUrl: '/images/marker-home' + (store.color ? ('-' + store.color.substr(1)) : '') + '.svg',
         iconSize: new L.Point(32, 32),
         iconAnchor: new L.Point(16, 16),
         popupAnchor: new L.Point(0, -12)
