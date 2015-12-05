@@ -81,30 +81,32 @@ class Route < ActiveRecord::Base
           if stop.position? && !last_lat.nil? && !last_lng.nil?
             stop.distance, time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
           else
-            stop.distance, time, stop.trace = 0, 0, nil
+            stop.distance, time, stop.trace = nil, nil, nil
           end
-          stops_time[stop] = time
-          stop.time = self.end + time
-          if stop.open && stop.time < stop.open
-            stop.wait_time = stop.open - stop.time
-            stop.time = stop.open
-          else
-            stop.wait_time = nil
-          end
-          stop.out_of_window = (stop.open && stop.time < stop.open) || (stop.close && stop.time > stop.close)
+          if time
+            stops_time[stop] = time
+            stop.time = self.end + time
+            if stop.open && stop.time < stop.open
+              stop.wait_time = stop.open - stop.time
+              stop.time = stop.open
+            else
+              stop.wait_time = nil
+            end
+            stop.out_of_window = (stop.open && stop.time < stop.open) || (stop.close && stop.time > stop.close)
 
-          self.distance += stop.distance
-          self.end = stop.time + stop.duration
+            self.distance += stop.distance
+            self.end = stop.time + stop.duration
 
-          if stop.is_a?(StopDestination)
-            quantity += (stop.destination.quantity || 1)
-            stop.out_of_capacity = vehicle_usage.vehicle.capacity && quantity > vehicle_usage.vehicle.capacity
-          end
+            if stop.is_a?(StopDestination)
+              quantity += (stop.destination.quantity || 1)
+              stop.out_of_capacity = vehicle_usage.vehicle.capacity && quantity > vehicle_usage.vehicle.capacity
+            end
 
-          stop.out_of_drive_time = stop.time > vehicle_usage.default_close
+            stop.out_of_drive_time = stop.time > vehicle_usage.default_close
 
-          if stop.position?
-            last_lat, last_lng = stop.lat, stop.lng
+            if stop.position?
+              last_lat, last_lng = stop.lat, stop.lng
+            end
           end
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = false
@@ -115,12 +117,14 @@ class Route < ActiveRecord::Base
       if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
         distance, time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng)
       else
-        distance, time, trace = 0, 0, nil
+        distance, time, trace = nil, nil, nil
       end
-      self.distance += distance
-      stops_time[:stop] = time
-      self.end += time
-      self.stop_distance = distance
+      if time
+        self.distance += distance
+        stops_time[:stop] = time
+        self.end += time
+        self.stop_distance = distance
+      end
       self.stop_trace = trace
       self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
 
@@ -135,7 +139,8 @@ class Route < ActiveRecord::Base
 
     if stops_sort
       # Try to minimize waiting time by a later begin
-      time = self.end - stops_time[:stop]
+      time = self.end
+      time -= stops_time[:stop] if stops_time[:stop]
       stops_sort.reverse_each{ |stop|
         if stop.active && (stop.position? || stop.is_a?(StopRest))
           if stop.out_of_window || (stop.close && time > stop.close)
@@ -149,7 +154,7 @@ class Route < ActiveRecord::Base
           end
 
           # Previous departure time
-          time -= stops_time[stop]
+          time -= stops_time[stop] if stops_time[stop]
         end
       }
 

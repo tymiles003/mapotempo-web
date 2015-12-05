@@ -22,7 +22,9 @@ class RouterOsrm < Router
 
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
     distance, time, trace = Mapotempo::Application.config.osrm.compute(url_time, lat1, lng1, lat2, lng2)
-    time *= 1.0 / speed_multiplicator
+    if time
+      time *= 1.0 / speed_multiplicator
+    end
     [distance, time, trace]
   end
 

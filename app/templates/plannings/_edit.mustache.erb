@@ -142,6 +142,9 @@
             {{#route_out_of_drive_time}}
               <li title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"><i class="fa fa-power-off fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_drive_time{{/i18n}}</li>
             {{/route_out_of_drive_time}}
+            {{#route_no_path}}
+              <li title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"><i class="fa fa-road fa-fw"></i> {{#i18n}}plannings.edit.error.no_path{{/i18n}}</li>
+            {{/route_no_path}}
           </ul>
         {{/route_error}}
       </div>
@@ -153,6 +156,9 @@
             {{^geocoded}}
               <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geolocalization{{/i18n}}"></i>
             {{/geocoded}}
+            {{#no_path}}
+              <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path{{/i18n}}"></i>
+            {{/no_path}}
             <span class="info">{{#time}}{{time}} - {{/time}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
@@ -182,6 +188,9 @@
             {{#out_of_drive_time}}
               <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
             {{/out_of_drive_time}}
+            {{#no_path}}
+              <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i>
+            {{/no_path}}
             <span class="info">{{#active}}{{time}} - {{/active}}</span>
             <span class="name" title="{{name}}"><i class="fa fa-coffee fa-fw"></i> {{name}}</span>
           </div>
@@ -212,7 +221,10 @@
             {{#out_of_drive_time}}
               <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
             {{/out_of_drive_time}}
-            <span class="info">{{#active}}{{#geocoded}}{{time}} - {{/geocoded}}{{/active}}</span>
+            {{#no_path}}
+              <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i>
+            {{/no_path}}
+            <span class="info">{{#active}}{{#geocoded}}{{^no_path}}{{time}} - {{/no_path}}{{/geocoded}}{{/active}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
           <div class="btn-group pull-right stop-tools">
@@ -242,6 +254,9 @@
             {{#stop_out_of_drive_time}}
               <i class="fa fa-power-off fa-fw" title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}"></i>
             {{/stop_out_of_drive_time}}
+            {{#no_path}}
+              <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i>
+            {{/no_path}}
             <span class="info">{{#time}}{{time}} - {{/time}}</span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>

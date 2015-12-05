@@ -35,7 +35,7 @@ else
       (json.alyacom true) if route.planning.customer.enable_alyacom && !route.planning.customer.alyacom_association.blank?
     end
     number = 0
-    no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = false
+    no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
     json.store_start do
       json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
       (json.time route.start.strftime('%H:%M')) if route.start
@@ -55,7 +55,8 @@ else
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
       no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
-      (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+      no_path |= stop.position? && !stop.trace
+      (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || (stop.position? && !stop.trace) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.edit_planning true
       json.stop_id stop.id
       json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
@@ -63,6 +64,7 @@ else
       (json.close stop.close.strftime('%H:%M')) if stop.close
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
       (json.geocoded true) if stop.position?
+      (json.no_path true) if stop.position? && !stop.trace
       (json.time stop.time.strftime('%H:%M')) if stop.time
       (json.active true) if stop.active
       (json.number number += 1) if route.vehicle_usage && stop.active
@@ -112,7 +114,8 @@ else
       json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
       (json.time route.end.strftime('%H:%M')) if route.end
       (json.geocoded true) if !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?
-      (json.error true) if route.vehicle_usage.default_store_stop.lat.nil? || route.vehicle_usage.default_store_stop.lng.nil?
+      (json.no_path true) if !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? && !route.stop_trace
+      (json.error true) if (route.vehicle_usage.default_store_stop.lat.nil? || route.vehicle_usage.default_store_stop.lng.nil?) || (!route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? && !route.stop_trace)
       json.stop_trace route.stop_trace
       (json.error true) if route.stop_out_of_drive_time
       json.stop_out_of_drive_time route.stop_out_of_drive_time
@@ -122,6 +125,7 @@ else
     (json.route_out_of_window out_of_window) if out_of_window
     (json.route_out_of_capacity out_of_capacity) if out_of_capacity
     (json.route_out_of_drive_time out_of_drive_time) if out_of_drive_time
+    (json.route_no_path no_path) if no_path
     (json.route_error true) if no_geolocalization || out_of_window || out_of_capacity || out_of_drive_time
   end
 end

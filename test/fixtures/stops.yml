@@ -43,8 +43,8 @@ stop_one_three:
   type: StopDestination
   index: 3
   active: true
-  distance: 1.5
-  trace: MyString
+  distance:
+  trace:
   route: route_one_one
   destination: destination_three
   time: 2000-01-01 00:00:30

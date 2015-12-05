@@ -50,13 +50,13 @@
   </Point>
 </Placemark>
 <% end %>
-<% i = 0
-route.stops.each do |stop| 
-  if stop.active && stop.position? 
-    i += 1
+<%
+index = 0
+route.stops.each do |stop|
+  if stop.active && stop.position?
 %>
 <Placemark>
-  <name><%= i.to_s + '. ' + stop.name %></name>
+  <name><%= "#{index += 1}. #{stop.name}" %></name>
   <address>
     <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
     <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
@@ -71,12 +71,14 @@ route.stops.each do |stop|
   <Point>
     <altitudeMode>clampToGround</altitudeMode>
     <coordinates>
-      <%= stop.lng.to_s + ',' + stop.lat.to_s %>
+      <%= "#{stop.lng},#{stop.lat}" %>
     </coordinates>
   </Point>
 </Placemark>
-<% end
-end %>
+<%
+  end
+end
+%>
 <% if route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? %>
 <Placemark>
   <name><%= route.vehicle_usage.default_store_stop.name %></name>

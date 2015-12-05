@@ -58,9 +58,8 @@ class Otp
         }.flatten(1)
         trace = Polylines::Encoder.encode_points(points, 1e6)
       else
-        # TODO : throw "no route" to the UI
-        distance = 1000000
-        time = 60 * 60 * 12
+        distance = nil
+        time = nil
         trace = nil
       end
 

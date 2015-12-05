@@ -681,6 +681,8 @@ en:
         out_of_capacity_help: "Vehicle capacity exceeded"
         out_of_drive_time: "Out of vehicle's time window"
         out_of_drive_time_help: "Vehicle time window activity exceeded"
+        no_path: "No path"
+        no_path_help: "No path to or from the destination"
       dialog:
         optimizer:
           title: "Optimization"

@@ -317,4 +317,18 @@ class RouteTest < ActiveSupport::TestCase
     o.reverse_order
     assert_equal ids, o.stops.collect(&:id)
   end
+
+  test 'compute route with impossible path' do
+    o = routes(:route_one_one)
+    o.stops[1].destination.lat = o.stops[1].destination.lng = 1 # Geocoded
+    o.save!
+    o.stops[1].distance = o.stops[1].trace = nil
+    o.save!
+    o.stop_distance = o.stop_trace = nil
+    o.save!
+    s = o.vehicle_usage.store_stop
+    s.lat = s.lng = 1 # Geocoded
+    s.save!
+    o.compute
+  end
 end

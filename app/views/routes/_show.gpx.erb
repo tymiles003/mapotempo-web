@@ -96,7 +96,7 @@ route.stops.each{ |stop|
   <trk>
     <trkseg>
       <% route.stops.each{ |stop|
-        if stop.active && stop.position? %>
+        if stop.active && stop.trace %>
           <% Polylines::Decoder.decode_polyline(stop.trace, 1e6).each do |v| %>
             <trkpt lat="<%= v[0].to_s %>" lon="<%= v[1].to_s %>"></trkpt>
           <% end %>
