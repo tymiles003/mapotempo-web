@@ -33,12 +33,6 @@ Paloma.controller('ApiWeb/V01/Store').prototype.update_position = function() {
 
 var api_web_v01_display_destinations_ = function(api, map, markersLayers, cluster, data) {
   var tags = {};
-  var marker_home = L.icon({
-    iconUrl: '/images/marker-home' + (store.color ? ('-' + store.color.substr(1)) : '') + '.svg',
-    iconSize: new L.Point(32, 32),
-    iconAnchor: new L.Point(16, 16),
-    popupAnchor: new L.Point(0, -12)
-  });
 
   var prepare_display_destination = function(destination) {
     var t = [];
@@ -58,7 +52,12 @@ var api_web_v01_display_destinations_ = function(api, map, markersLayers, cluste
   var addMarker = function(id, lat, lng, icon, color) {
     var licon;
     if (api == 'stores') {
-      licon = marker_home;
+      licon = L.icon({
+        iconUrl: '/images/marker-home' + (color ? ('-' + color.substr(1)) : '') + '.svg',
+        iconSize: new L.Point(32, 32),
+        iconAnchor: new L.Point(16, 16),
+        popupAnchor: new L.Point(0, -12)
+      });
     } else {
       licon = new L.icon({
         iconUrl: '/images/' + (icon || 'point') + (color ? '-' + color.substr(1) : '') + '.svg',
