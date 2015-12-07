@@ -805,6 +805,7 @@ fr:
       active: "livré"
       open: "horaire début"
       close: "horaire fin"
+      color: "couleur"
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
 
   products:

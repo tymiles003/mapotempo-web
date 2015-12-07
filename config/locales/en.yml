@@ -796,6 +796,7 @@ en:
       active: "active"
       open: "open"
       close: "close"
+      color: "color"
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
 
   products:
