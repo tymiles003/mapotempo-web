@@ -63,7 +63,6 @@ class ImporterTest < ActionController::TestCase
   end
 
   test 'shoud import two in new planning' do
-    p @dest_tag1_count.to_s
     import_count = 2
     # vehicle_usage_sets for new planning is hardcoded...
     rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
@@ -85,17 +84,21 @@ class ImporterTest < ActionController::TestCase
 
   test 'shoud import many-utf-8 in new planning' do
     Planning.all.each(&:destroy)
+    planning = @customer.plannings.build(name: 'plan été', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), tags: [@customer.tags.build(label: 'été')])
+    planning.save!
+    @customer.reload
     @customer.destinations.destroy_all
     # destinations with same ref are merged
     import_count = 5
     # vehicle_usage_sets for new planning is hardcoded...
     rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
 
-    assert_difference('Planning.count') do
+    assert_difference('Planning.count', 1) do
       assert_difference('Destination.count', import_count) do
-        assert_difference('Stop.count', (import_count + rest_count) * (@customer.plannings.select{ |p| p.tags.any?{ |t| t.label == 'été' } }.count + 1)) do
+        assert_difference('Stop.count', import_count * (@customer.plannings.select{ |p| p.tags.any?{ |t| t.label == 'été' } }.count + 1) + rest_count) do
           di = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-utf-8.csv', 'text.csv'))
           assert di.import, di.errors.messages
+          assert_equal 'été', @customer.plannings[0].tags[0].label
         end
       end
     end
@@ -104,7 +107,10 @@ class ImporterTest < ActionController::TestCase
     assert_equal 'Point 1', o.name
     assert_equal ['été'], o.tags.collect(&:label)
     p = Planning.first
+    assert_equal import_count, p.routes[0].stops.size
+    p = Planning.last
     assert_equal 2, p.routes[0].stops.size
+    assert_equal 4, p.routes[1].stops.size
   end
 
   test 'shoud import many-iso' do
