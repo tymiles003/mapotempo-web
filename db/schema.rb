@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203174336) do
+ActiveRecord::Schema.define(version: 20151207111057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20151203174336) do
     t.boolean  "enable_alyacom",                              default: false, null: false
     t.integer  "job_store_geocoding_id"
     t.integer  "reseller_id",                                                 null: false
-    t.boolean  "enable_multi_vehicle_usage_sets",             default: true,  null: false
+    t.boolean  "enable_multi_vehicle_usage_sets",             default: false, null: false
     t.boolean  "print_stop_time",                             default: true,  null: false
     t.string   "ref"
   end
