@@ -60,9 +60,13 @@ class VehicleUsageSetsController < ApplicationController
   end
 
   def destroy
-    @vehicle_usage_set.destroy
     respond_to do |format|
-      format.html { redirect_to vehicle_usage_sets_url }
+      if @vehicle_usage_set.destroy
+        format.html { redirect_to vehicle_usage_sets_url }
+      else
+        flash[:error] = @vehicle_usage_set.errors.full_messages
+        format.html { render action: 'index' }
+      end
     end
   end
 

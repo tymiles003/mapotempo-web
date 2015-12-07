@@ -44,9 +44,9 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
 
   test 'should keep at least one' do
     o = customers(:customer_one)
-    assert_raises RuntimeError do
-      o.vehicle_usage_sets.each(&:destroy)
-      o.save!
-    end
+    o.vehicle_usage_sets[0..-2].each(&:destroy)
+    o.reload
+    assert_equal 1, o.vehicle_usage_sets.size
+    assert !o.vehicle_usage_sets[0].destroy
   end
 end

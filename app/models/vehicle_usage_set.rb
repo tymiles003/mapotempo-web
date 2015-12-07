@@ -113,7 +113,8 @@ class VehicleUsageSet < ActiveRecord::Base
   def destroy_vehicle_usage_set
     default = customer.vehicle_usage_sets.find{ |vehicle_usage_set| vehicle_usage_set != self && !vehicle_usage_set.destroyed? }
     if !default
-      raise I18n.t('activerecord.errors.models.vehicle_usage_sets.at_least_one')
+      errors[:base] << I18n.t('activerecord.errors.models.vehicle_usage_set.at_least_one')
+      return false
     else
       customer.plannings.select{ |planning| planning.vehicle_usage_set == self }.each{ |planning|
         planning.vehicle_usage_set = default
