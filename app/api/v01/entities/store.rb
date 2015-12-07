@@ -29,6 +29,7 @@ class V01::Entities::Store < Grape::Entity
   expose(:country, documentation: { type: String })
   expose(:lat, documentation: { type: Float })
   expose(:lng, documentation: { type: Float })
+  expose(:color, documentation: { type: String })
   expose(:geocoding_accuracy, documentation: { type: Float })
   expose(:geocoding_level, documentation: { type: String, values: ['point', 'house', 'street', 'intersection', 'city'] })
 end
