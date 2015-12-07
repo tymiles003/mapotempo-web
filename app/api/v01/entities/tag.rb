@@ -22,6 +22,6 @@ class V01::Entities::Tag < Grape::Entity
 
   expose(:id, documentation: { type: Integer })
   expose(:label, documentation: { type: String })
-  expose(:color, documentation: { type: String })
+  expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
   expose(:icon, documentation: { type: String, values: ::Tag.icons_table })
 end
