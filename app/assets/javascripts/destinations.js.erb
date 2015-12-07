@@ -184,11 +184,16 @@ var destinations_form = function(params, api) {
   var confirmGeocode = function(ajaxParams) {
     if ($('[name$=\\[geocoding_level\\]]').val() == 'point') {
       if (confirm(I18n.t('destinations.form.dialog.confirm_overwrite_point'))) {
+        $('[name$=\\[lat\\]]').val('');
+        $('[name$=\\[lng\\]]').val('');
         $.ajax(ajaxParams);
       }
     }
-    else
+    else {
+      $('[name$=\\[lat\\]]').val('');
+      $('[name$=\\[lng\\]]').val('');
       $.ajax(ajaxParams);
+    }
   }
 
   var displayGeocoding = function(accuracy_percent, status, level) {
