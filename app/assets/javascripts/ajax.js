@@ -50,7 +50,8 @@ var ajaxError = function(request, status, error) {
   if (!text) {
     text = status;
   }
-  bootstrap_alert_danger(text);
+  if (request.readyState != 0)
+    bootstrap_alert_danger(text);
 }
 
 var mustache_i18n = function() {
