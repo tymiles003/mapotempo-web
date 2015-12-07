@@ -35,7 +35,7 @@ en:
         one: "Import"
         other: "Imports"
     attributes:
-      destinations_import:
+      import_csv:
         file: "File"
         replace: "Replace"
       stores_import:
@@ -385,10 +385,6 @@ en:
     planning:
       import_too_routes: "Try to import more routes than available vehicles."
       already_optimizing: "A planning optimization is already in progress"
-    import_file:
-      not_csv: "Imported file is not a CSV"
-      too_many_lines: "Stop import, too many lines (max: %{n})."
-      too_many_errors: "Stop import, too many errors."
 
   import:
     template_csv: "Import Template Spreadsheet Standard"
@@ -552,6 +548,8 @@ en:
       phone_number: "Phone number"
       phone_number_small: "Phone number"
       tags: "tags"
+      not_csv: "Imported file is not a CSV"
+      too_many_lines: "Stop import, too many lines (max: %{n})."
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
 
   index:

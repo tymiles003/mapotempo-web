@@ -1,12 +1,12 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
-<%= twitter_bootstrap_form_for(@destinations_import, {layout: :horizontal, multipart: true}) do |f| %>
-  <%= render 'shared/error_messages', model: @destinations_import %>
+<%= twitter_bootstrap_form_for(@import_csv, url: destinations_imports_path, layout: :horizontal, multipart: true) do |f| %>
+  <%= render 'shared/error_messages', model: @import_csv %>
   <%= f.file_field :file do %>
     <p class="help-block"><%= t '.file_help' %></p>
   <% end %>
-  <%= f.toggles t 'activemodel.attributes.destinations_import.replace' do %>
+  <%= f.toggles t 'activemodel.attributes.import_csv.replace' do %>
     <%= f.check_box :replace %>
     <p class="help-block"><%= t '.replace_help' %></p>
   <% end %>

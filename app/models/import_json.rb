@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2015
 #
 # This file is part of Mapotempo.
 #
@@ -17,23 +17,42 @@
 #
 require 'value_to_boolean'
 
-class DestinationsImport
+class ImportJson
   include ActiveModel::Model
   include ActiveRecord::AttributeAssignment
   extend ActiveModel::Translation
 
-  attr_accessor :replace, :file
-  validates :file, presence: true
+  attr_accessor :importer, :replace, :json
 
   def replace=(value)
     @replace = ValueToBoolean.value_to_boolean(value)
   end
 
-  def tempfile
-    file.tempfile
-  end
+  def import(synchronous = false)
+    if json
+      begin
+        Customer.transaction do
+          key = %w(ref route name street detail postalcode city lat lng open close comment tags take_over quantity active)
 
-  def name
-    (file.original_filename || file.filename).split('.')[0..-2].join('.')
+          @importer.import(json, replace, nil, synchronous) { |row|
+            r, row = row, {}
+            r.each{ |k, v|
+              if key.include?(k)
+                row[k.to_sym] = v
+              end
+            }
+
+            if !row[:tags].nil?
+              row[:tags] = row[:tags].join(',')
+            end
+
+            row
+          }
+        end
+      rescue => e
+        errors[:base] << e.message
+        return false
+      end
+    end
   end
 end

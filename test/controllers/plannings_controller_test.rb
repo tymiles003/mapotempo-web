@@ -146,6 +146,14 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should not move' do
+    patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 666, format: :json
+    planning = assigns(:planning)
+    assert planning.errors.any?
+    assert_valid response
+    assert_response 422
+  end
+
   test 'should refresh' do
     get :refresh, planning_id: @planning, format: :json
     assert_response :success

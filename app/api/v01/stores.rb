@@ -77,20 +77,16 @@ class V01::Stores < Grape::API
       nickname: 'importStores',
       params: V01::Entities::StoresImport.documentation
     put do
-      if params[:stores]
-        stores_import = DestinationsImport.new
-        stores_import.assign_attributes(replace: params[:replace])
-        ImporterStores.new(current_customer).import_hash(stores_import.replace, params[:stores])
+      import = if params[:stores]
+        ImportJson.new(importer: ImporterStores.new(current_customer), replace: params[:replace], json: params[:stores])
+      else
+        ImportCsv.new(importer: ImporterStores.new(current_customer), replace: params[:replace], file: params[:file])
+      end
+
+      if import.valid? && import.import(true)
         status 204
       else
-        stores_import = DestinationsImport.new
-        stores_import.assign_attributes(replace: params[:replace], file: params[:file])
-        if stores_import.valid?
-          ImporterStores.new(current_customer).import_csv(stores_import.replace, stores_import.tempfile, stores_import.name, true)
-          status 204
-        else
-          error!({error: stores_import.errors.full_messages}, 422)
-        end
+        error!({error: import.errors.full_messages}, 422)
       end
     end
 

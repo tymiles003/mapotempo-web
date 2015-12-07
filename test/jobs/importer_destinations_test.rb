@@ -13,6 +13,14 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
+  def tempfile(file, name)
+    file = ActionDispatch::Http::UploadedFile.new({
+      tempfile: File.new(Rails.root.join(file)),
+    })
+    file.original_filename = name
+    file
+  end
+
   test 'shoud import in new planning' do
     import_count = 1
     # vehicle_usage_sets for new planning is hardcoded...
@@ -20,7 +28,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
-          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one.csv', 'text')
+          assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one.csv', 'text.csv')).import
         end
       end
     end
@@ -35,7 +43,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
-          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one_postalcode.csv', 'text')
+          assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
         end
       end
     end
@@ -48,7 +56,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
         assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
-          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_one_coord.csv', 'text')
+          assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_coord.csv', 'text.csv')).import
         end
       end
     end
@@ -62,7 +70,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
-          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_two.csv', 'text')
+          assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_two.csv', 'text.csv')).import
         end
       end
     end
@@ -86,7 +94,8 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (import_count + rest_count) * (@customer.plannings.select{ |p| p.tags.any?{ |t| t.label == 'été' } }.count + 1)) do
-          ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
+          di = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-utf-8.csv', 'text.csv'))
+          assert di.import, di.errors.messages
         end
       end
     end
@@ -104,7 +113,7 @@ class ImporterTest < ActionController::TestCase
 
     # destinations with same ref are merged
     assert_difference('Destination.count', 5) do
-      ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_many-iso.csv', 'text')
+      assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-iso.csv', 'text.csv')).import
     end
 
     o = Destination.find{|d| d.customer_id}
@@ -114,27 +123,13 @@ class ImporterTest < ActionController::TestCase
 
   test 'shoud not import' do
     assert_difference('Destination.count', 0) do
-      assert_raise RuntimeError do
-        ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_invalid.csv', 'text')
-      end
-    end
-  end
-
-  test 'shoud import too many' do
-    importer_destinations = ImporterDestinations.new(@customer)
-    def importer_destinations.max_lines
-      2
-    end
-    assert_difference('Destination.count', 0) do
-      assert_raise RuntimeError do
-        importer_destinations.import_csv(false, 'test/fixtures/files/import_destinations_many-utf-8.csv', 'text')
-      end
+      assert !ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv')).import
     end
   end
 
   test 'shoud update' do
     assert_difference('Destination.count', 1) do
-      ImporterDestinations.new(@customer).import_csv(false, 'test/fixtures/files/import_destinations_update.csv', 'text')
+      assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
     end
     assert_equal 'unaffected_one_update', Destination.find_by(ref:'a').name
     assert_equal 'unaffected_two_update', Destination.find_by(ref:'d').name

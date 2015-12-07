@@ -98,20 +98,16 @@ class DestinationsController < ApplicationController
   end
 
   def import
-    @destinations_import = DestinationsImport.new
+    @import_csv = ImportCsv.new
   end
 
   def upload
-    @destinations_import = DestinationsImport.new
     respond_to do |format|
-      begin
-        @destinations_import.assign_attributes(destinations_import_params)
-        @destinations_import.valid? || raise
-        ImporterDestinations.new(current_user.customer).import_csv(@destinations_import.replace, @destinations_import.tempfile, @destinations_import.name)
+      @import_csv = ImportCsv.new(import_csv_params.merge(importer: ImporterDestinations.new(current_user.customer)))
+      if @import_csv.valid? && @import_csv.import
         format.html { redirect_to action: 'index' }
-      rescue => e
-        flash.now[:error] = e.message
-        format.html { render action: 'import', status: :unprocessable_entity }
+      else
+        format.html { render action: 'import' }
       end
     end
   end
@@ -138,7 +134,7 @@ class DestinationsController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def destinations_import_params
-    params.require(:destinations_import).permit(:replace, :file)
+  def import_csv_params
+    params.require(:import_csv).permit(:replace, :file)
   end
 end
