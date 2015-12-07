@@ -60,6 +60,10 @@ class Destination < ActiveRecord::Base
     @is_gecoded = true
   end
 
+  def delay_geocode
+    @is_gecoded = true
+  end
+
   def distance(position)
     lat && lng && position.lat && position.lng && Math.hypot(position.lat - lat, position.lng - lng)
   end

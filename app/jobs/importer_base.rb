@@ -34,7 +34,10 @@ class ImporterBase
           next # Skip empty line
         end
 
-        import_row(replace, name, row, line)
+        dest = import_row(replace, name, row, line)
+        if !synchronous || Mapotempo::Application.config.delayed_job_use
+          dest.delay_geocode
+        end
       }
       after_import(replace, name, synchronous)
     end

@@ -75,7 +75,7 @@ class ImporterDestinations < ImporterBase
     end
 
     if row[:lat].nil? || row[:lng].nil?
-      @eed_geocode = true
+      @need_geocode = true
     end
 
     if !row[:tags].nil?
