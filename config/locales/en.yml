@@ -269,6 +269,7 @@ en:
         close: "Close"
         store_start: "Start store"
         store_end: "End store"
+        color: "Color"
       tag:
         label: "Label"
         color: "Color"
