@@ -115,15 +115,15 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
   test 'should get tomtom ids' do
     uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl')
-    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/tomtom/tomtom-1-wsdl.xml').read)
+    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl').read)
 
     uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService')
     stub_table = stub_request(:post, uri_template).with { |request|
       request.body.include?("showObjectReport")
-    }.to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/tomtom/tomtom-1.xml').read)
+    }.to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/soap.business.tomtom.com/showObjectReportResponse.xml').read)
 
     get api("#{@customer.id}/tomtom_ids")
     assert last_response.ok?, last_response.body
-    assert_equal '1-44063-53040407D - GPS1 MAPOTEMPO', JSON.parse(last_response.body)['1-44063-53040407D']
+    assert_equal '1-44063-666E054E7 - MAPO1', JSON.parse(last_response.body)['1-44063-666E054E7']
   end
 end

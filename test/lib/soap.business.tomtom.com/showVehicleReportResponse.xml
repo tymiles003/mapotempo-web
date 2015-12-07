@@ -1,0 +1,32 @@
+HTTP/1.1 200 OK
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+   <soap:Body>
+      <ns3:showVehicleReportResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://connect.webfleet.tomtomwork.com/services">
+         <return>
+            <statusCode>0</statusCode>
+            <statusMessage>The operation *showVehicleReport* processed succesfully.</statusMessage>
+            <errors xsi:nil="true"/>
+            <resultSize>2</resultSize>
+            <results>
+               <resultItem xsi:type="ns4:MobileObject" objectNo="002" objectUid="1-44063-666E054E7" xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/objects">
+                  <objectName>MAPO1</objectName>
+                  <mobileObjectType>VEHICLE</mobileObjectType>
+                  <vehicleFuelType>DIESEL</vehicleFuelType>
+                  <fleetFuelType>DIESEL</fleetFuelType>
+                  <vehicleColor>BLUE</vehicleColor>
+                  <description>Pro 5250</description>
+               </resultItem>
+               <resultItem xsi:type="ns4:MobileObject" objectNo="004" objectUid="1-44063-666F24630" xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/objects">
+                  <objectName>MAPO2</objectName>
+                  <mobileObjectType>VEHICLE</mobileObjectType>
+                  <type>car</type>
+                  <vehicleFuelType>DIESEL</vehicleFuelType>
+                  <fleetFuelType>DIESEL</fleetFuelType>
+                  <vehicleColor>BLUE</vehicleColor>
+               </resultItem>
+            </results>
+         </return>
+      </ns3:showVehicleReportResponse>
+   </soap:Body>
+</soap:Envelope>

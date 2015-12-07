@@ -20,6 +20,26 @@ require 'savon'
 class TomtomWebfleet
   TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
+  VEHICLE_COLOR = {
+    'white': '#ffffff',
+    'grey': '#808080',
+    'black': '#000000',
+    'ivory': '#FFFFF0',
+    'red': '#FF0000',
+    'orange': '#FFA500',
+    'yellow': '#FFFF00',
+    'green': '#008000',
+    'blue': '#0000FF',
+  }
+
+  VEHICLE_TYPE = {
+    'truck': ['heavyweight_truck_trailer', 'tanker_truck', 'heavy_truck', 'medium_truck', 'dump_truck', 'pallet_truck', 'concrete_lorry', 'deposit_tipper', 'garbage_truck', 'loader', 'excavator', 'wrecker', 'truck_wrecker', 'heavyweight_truck', 'truck_with_trailer', 'bus', 'firetruck'],
+    'car': ['multicar', 'street_sweeper', 'tractor', 'ambulance', 'police', 'van', 'multivan', 'pickup', 'suv', 'taxi', 'car'],
+    'vespa': ['ape', 'vespa'],
+    'bike': ['bike'],
+    nil: [nil, 'trailer', 'truck_trailer', 'crane', 'caddy', 'car_station_wagon', 'containership', 'link'],
+  }
+
   attr_accessor :client_objects, :client_orders, :api_key
 
   def initialize(url, api_key)
@@ -41,10 +61,23 @@ class TomtomWebfleet
   def showObjectReport(account, username, password)
     objects = get(@client_objects, :show_object_report, account, username, password, {})
     objects = [objects] if objects.is_a?(Hash)
-    objects.collect{ |object|
+    objects.select{ |object| !object[:deleted] }.collect{ |object|
       {
         objectUid: object[:@object_uid],
         objectName: object[:object_name],
+      }
+    }
+  end
+
+  def showVehicleReport(account, username, password)
+    vehicles = get(@client_objects, :show_vehicle_report, account, username, password, {})
+    vehicles = [vehicles] if vehicles.is_a?(Hash)
+    vehicles.select{ |object| !object[:deleted] }.collect{ |vehicle|
+      {
+        uid: vehicle[:@object_uid],
+        name: vehicle[:object_name],
+#        type: ->(vehicle[:vehicletype]) { |type| VEHICLE_TYPE.find{ |k, v| v.include?(type) }.first },
+#        color: VEHICLE_COLOR[vehicle[:vehiclecolor]],
       }
     }
   end
@@ -122,11 +155,12 @@ class TomtomWebfleet
     message[:gParm] = {}
     response = client.call(operation, message: message)
 
-    if response.body.first[1][:return][:status_code] != '0'
+    ret = response.body.first[1][:return]
+    if ret[:status_code] != '0'
       Rails.logger.info response.body.first[1][:return]
       raise "TomTom WEBFLEET operation #{operation} return error: #{response.body.first[1][:return][:status_message]}"
-    elsif response.body[:show_object_report_response]
-      response.body[:show_object_report_response][:return][:results][:result_item]
+    else
+      ret[:results][:result_item]
     end
   rescue Savon::SOAPFault => error
     Rails.logger.info error
