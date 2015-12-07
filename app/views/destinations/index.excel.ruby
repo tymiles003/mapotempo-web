@@ -36,6 +36,7 @@ CSV.generate({col_sep: ';'}) { |csv|
       destination.open && destination.open.strftime('%H:%M'),
       destination.close && destination.close.strftime('%H:%M'),
       destination.comment,
+      destination.phone_number,
       destination.tags.collect(&:label).join(',')
     ]
   }
