@@ -64,13 +64,25 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should create a customer' do
-    assert_difference('Customer.count', 1) do
-      assert_difference('Store.count', 1) do
-      assert_difference('VehicleUsageSet.count', 1) do
-        post api_admin, {name: 'new cust', max_vehicles: 5, default_country: 'France', router_id: @customer.router_id, profile_id: @customer.profile_id}
-        assert last_response.created?, last_response.body
-      end
-      end
+    begin
+      # test with 2 different configs
+      manage_vehicles_only_admin = Mapotempo::Application.config.manage_vehicles_only_admin
+      [true, false].each { |v|
+        Mapotempo::Application.config.manage_vehicles_only_admin = v
+
+        assert_difference('Customer.count', 1) do
+          assert_difference('Store.count', 1) do
+            assert_difference('VehicleUsageSet.count', 1) do
+              assert_difference('Vehicle.count', 5) do
+                post api_admin, {name: 'new cust', max_vehicles: 5, default_country: 'France', router_id: @customer.router_id, profile_id: @customer.profile_id}
+                assert last_response.created?, last_response.body
+              end
+            end
+          end
+        end
+      }
+    ensure
+      Mapotempo::Application.config.manage_vehicles_only_admin = manage_vehicles_only_admin
     end
   end
 

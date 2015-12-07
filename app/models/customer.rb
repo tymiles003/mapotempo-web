@@ -47,8 +47,8 @@ class Customer < ActiveRecord::Base
   validates :optimization_cluster_size, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :max_vehicles, numericality: { greater_than: 0 }
 
-  after_initialize :assign_defaults, if: 'new_record?'
-  after_create :create_default_store, :update_max_vehicles, :create_default_vehicle_usage_set
+  after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
+  after_create :create_default_store, :create_default_vehicle_usage_set
   before_update :update_out_of_date, :update_max_vehicles
   before_save :sanitize_print_header
 
