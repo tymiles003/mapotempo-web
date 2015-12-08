@@ -21,22 +21,22 @@ class TomtomWebfleet
   TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
   VEHICLE_COLOR = {
-    'white': '#ffffff',
-    'grey': '#808080',
-    'black': '#000000',
-    'ivory': '#FFFFF0',
-    'red': '#FF0000',
-    'orange': '#FFA500',
-    'yellow': '#FFFF00',
-    'green': '#008000',
-    'blue': '#0000FF',
+    'white' => '#ffffff',
+    'grey' => '#808080',
+    'black' => '#000000',
+    'ivory' => '#FFFFF0',
+    'red' => '#FF0000',
+    'orange' => '#FFA500',
+    'yellow' => '#FFFF00',
+    'green' => '#008000',
+    'blue' => '#0000FF',
   }
 
   VEHICLE_TYPE = {
-    'truck': ['heavyweight_truck_trailer', 'tanker_truck', 'heavy_truck', 'medium_truck', 'dump_truck', 'pallet_truck', 'concrete_lorry', 'deposit_tipper', 'garbage_truck', 'loader', 'excavator', 'wrecker', 'truck_wrecker', 'heavyweight_truck', 'truck_with_trailer', 'bus', 'firetruck'],
-    'car': ['multicar', 'street_sweeper', 'tractor', 'ambulance', 'police', 'van', 'multivan', 'pickup', 'suv', 'taxi', 'car'],
-    'vespa': ['ape', 'vespa'],
-    'bike': ['bike'],
+    'truck' => ['heavyweight_truck_trailer', 'tanker_truck', 'heavy_truck', 'medium_truck', 'dump_truck', 'pallet_truck', 'concrete_lorry', 'deposit_tipper', 'garbage_truck', 'loader', 'excavator', 'wrecker', 'truck_wrecker', 'heavyweight_truck', 'truck_with_trailer', 'bus', 'firetruck'],
+    'car' => ['multicar', 'street_sweeper', 'tractor', 'ambulance', 'police', 'van', 'multivan', 'pickup', 'suv', 'taxi', 'car'],
+    'vespa' => ['ape', 'vespa'],
+    'bike' => ['bike'],
     nil: [nil, 'trailer', 'truck_trailer', 'crane', 'caddy', 'car_station_wagon', 'containership', 'link'],
   }
 
