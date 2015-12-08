@@ -49,14 +49,14 @@ class User < ActiveRecord::Base
   private
 
   def assign_defaults
-    self.api_key = SecureRandom.hex
+    self.api_key ||= SecureRandom.hex
   end
 
   def assign_defaults_layer
     if admin?
-      self.layer = Layer.first
+      self.layer ||= Layer.first
     else
-      self.layer = customer && customer.profile.layers.first
+      self.layer ||= customer && customer.profile.layers.first
     end
   end
 end

@@ -52,7 +52,7 @@ class Vehicle < ActiveRecord::Base
   private
 
   def assign_defaults
-    self.color = Vehicle.colors_table[0]
+    self.color ||= Vehicle.colors_table[0]
   end
 
   def increment_max_vehicles

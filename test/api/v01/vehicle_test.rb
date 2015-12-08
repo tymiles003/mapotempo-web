@@ -57,6 +57,28 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     assert_equal @vehicle.name, JSON.parse(last_response.body)['name']
   end
 
+  test 'should create a vehicle' do
+    begin
+      manage_vehicles_only_admin = Mapotempo::Application.config.manage_vehicles_only_admin
+      Mapotempo::Application.config.manage_vehicles_only_admin = false
+
+      customer = customers(:customer_one)
+
+      # test creation and callbacks
+      assert_difference('Vehicle.count', 1) do
+        assert_difference('VehicleUsage.count', customer.vehicle_usage_sets.length) do
+          assert_difference('Route.count', customer.plannings.length) do
+            post api, { ref: 'new', name: 'Vh1', open: '10:00:00', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id, color: '#bebeef' }
+            assert last_response.created?, last_response.body
+            assert_equal '#bebeef', JSON.parse(last_response.body)['color']
+          end
+        end
+      end
+    ensure
+      Mapotempo::Application.config.manage_vehicles_only_admin = manage_vehicles_only_admin
+    end
+  end
+
   test 'should create and destroy a vehicle' do
     begin
       customer = customers(:customer_one)

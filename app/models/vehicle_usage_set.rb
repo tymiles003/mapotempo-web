@@ -71,8 +71,8 @@ class VehicleUsageSet < ActiveRecord::Base
 
   def assign_defaults
     set_stores
-    self.open = Time.utc(2000, 1, 1, 8, 0) unless open
-    self.close = Time.utc(2000, 1, 1, 12, 0) unless close
+    self.open ||= Time.utc(2000, 1, 1, 8, 0) unless open
+    self.close ||= Time.utc(2000, 1, 1, 12, 0) unless close
     create_vehicle_usages
   end
 

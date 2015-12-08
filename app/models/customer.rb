@@ -85,7 +85,7 @@ class Customer < ActiveRecord::Base
   private
 
   def assign_defaults
-    default_country = I18n.t('customers.default.country')
+    default_country ||= I18n.t('customers.default.country')
   end
 
   def create_default_store
