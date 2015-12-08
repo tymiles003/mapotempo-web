@@ -1,0 +1,1276 @@
+HTTP/1.1 200 OK
+
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/services" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" name="addressService" targetNamespace="http://connect.webfleet.tomtomwork.com/services">
+  <wsdl:types>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/transfer" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://connect.webfleet.tomtomwork.com/parameters" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://connect.webfleet.tomtomwork.com/transfer">
+<import xmlns="http://www.w3.org/2001/XMLSchema" namespace="http://www.w3.org/2001/XMLSchema-instance"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/parameters"/>
+<xs:complexType name="TransferObjectBase">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="GenericServiceQueryOpResult">
+<xs:complexContent>
+<xs:extension base="tns:ServiceQueryOpResult">
+<xs:sequence>
+<xs:element minOccurs="0" name="results" nillable="true">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="resultItem" type="tns:TransferObjectBase"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ServiceQueryOpResult">
+<xs:complexContent>
+<xs:extension base="tns:ServiceOpResult">
+<xs:sequence>
+<xs:element default="0" name="resultSize" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="ServiceOpResult">
+<xs:complexContent>
+<xs:extension base="tns:TransferObjectBase">
+<xs:sequence>
+<xs:element default="-1" name="statusCode" type="xs:int"/>
+<xs:element minOccurs="0" name="statusMessage" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="errors" nillable="true">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="errorInfo" type="tns:ErrorInfo"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ErrorInfo">
+<xs:complexContent>
+<xs:extension base="tns:TransferObjectBase">
+<xs:sequence>
+<xs:element default="" name="msg" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="objectName" type="xs:string"/>
+<xs:attribute name="fieldName" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="RoutingData">
+<xs:complexContent>
+<xs:extension base="tns:TransferObjectBase">
+<xs:sequence>
+<xs:element name="endDateTime" type="xs:dateTime"/>
+<xs:element name="endDay" type="ns1:RouteDay"/>
+<xs:element name="distance" type="xs:long"/>
+<xs:element name="time" type="xs:int"/>
+<xs:element minOccurs="0" name="endTime" type="xs:string"/>
+<xs:element name="delay" type="xs:long"/>
+<xs:element name="timeZoneOffset" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="GenericServiceWriteOpResult">
+<xs:complexContent>
+<xs:extension base="tns:ServiceWriteOpResult">
+<xs:sequence>
+<xs:element minOccurs="0" name="failed" nillable="true" type="tns:TransferObjectBase"/>
+<xs:element minOccurs="0" name="succeeded" nillable="true" type="tns:TransferObjectBase"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ServiceWriteOpResult">
+<xs:complexContent>
+<xs:extension base="tns:ServiceOpResult">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="KeyValuePair">
+<xs:complexContent>
+<xs:extension base="tns:TransferObjectBase">
+<xs:sequence/>
+<xs:attribute name="key" type="xs:string"/>
+<xs:attribute name="value" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/parameters" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://connect.webfleet.tomtomwork.com/parameters">
+<import xmlns="http://www.w3.org/2001/XMLSchema" namespace="http://www.w3.org/2001/XMLSchema-instance"/>
+<xs:complexType name="AuthenticationParameters">
+<xs:complexContent>
+<xs:extension base="tns:ParameterBase">
+<xs:sequence>
+<xs:element default="" minOccurs="0" name="accountName" nillable="true" type="xs:string"/>
+<xs:element default="" minOccurs="0" name="sessionToken" nillable="true" type="xs:string"/>
+<xs:element default="" minOccurs="0" name="userName" nillable="true" type="xs:string"/>
+<xs:element default="" minOccurs="0" name="password" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="apiKey" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="ParameterBase">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="GeneralParameters">
+<xs:complexContent>
+<xs:extension base="tns:ParameterBase">
+<xs:sequence>
+<xs:element default="UK" minOccurs="0" name="locale" type="tns:KnownLocales"/>
+<xs:element default="Europe_London" minOccurs="0" name="timeZone" type="tns:KnownTimeZones"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="FilterParameter">
+<xs:complexContent>
+<xs:extension base="tns:ParameterBase">
+<xs:sequence>
+<xs:element default="" minOccurs="0" name="filterCriterion" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="AdvancedDeleteAddressGroupParameter">
+<xs:complexContent>
+<xs:extension base="tns:ParameterBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="deleteAddresses" nillable="true" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="DateRange">
+<xs:complexContent>
+<xs:extension base="tns:ParameterBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="from" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="to" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="year" nillable="true" type="xs:int"/>
+<xs:element minOccurs="0" name="month" nillable="true" type="xs:int"/>
+<xs:element minOccurs="0" name="day" nillable="true" type="xs:int"/>
+</xs:sequence>
+<xs:attribute name="rangePattern" type="tns:DateRangePattern"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="ResultQuantifierParameter">
+<xs:complexContent>
+<xs:extension base="tns:ParameterBase">
+<xs:sequence>
+<xs:element default="false" name="retrieveIdOnly" type="xs:boolean"/>
+<xs:element default="true" name="retrieveShallowestValues" type="xs:boolean"/>
+<xs:element default="false" name="retrieveMostCompleteValues" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ManagedEventLevelParameter">
+<xs:complexContent>
+<xs:extension base="tns:ParameterBase">
+<xs:sequence/>
+<xs:attribute name="value" type="tns:EventLevel"/>
+<xs:attribute name="setNull" type="xs:boolean" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="KnownLocales">
+<xs:restriction base="xs:string">
+<xs:enumeration value="UK"/>
+<xs:enumeration value="DE"/>
+<xs:enumeration value="FR"/>
+<xs:enumeration value="ES"/>
+<xs:enumeration value="DK"/>
+<xs:enumeration value="IT"/>
+<xs:enumeration value="NO"/>
+<xs:enumeration value="RU"/>
+<xs:enumeration value="PL"/>
+<xs:enumeration value="US"/>
+<xs:enumeration value="UAE"/>
+<xs:enumeration value="NL"/>
+<xs:enumeration value="ZA"/>
+<xs:enumeration value="NA"/>
+<xs:enumeration value="MZ"/>
+<xs:enumeration value="ZM"/>
+<xs:enumeration value="ZW"/>
+<xs:enumeration value="TZ"/>
+<xs:enumeration value="KE"/>
+<xs:enumeration value="AU"/>
+<xs:enumeration value="NZ"/>
+<xs:enumeration value="IN"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="KnownTimeZones">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Etc_UTC"/>
+<xs:enumeration value="Europe_Amsterdam"/>
+<xs:enumeration value="Europe_Andorra"/>
+<xs:enumeration value="Europe_Belgrade"/>
+<xs:enumeration value="Europe_Berlin"/>
+<xs:enumeration value="Europe_Bratislava"/>
+<xs:enumeration value="Europe_Brussels"/>
+<xs:enumeration value="Europe_Budapest"/>
+<xs:enumeration value="Europe_Copenhagen"/>
+<xs:enumeration value="Europe_Gibraltar"/>
+<xs:enumeration value="Europe_Ljubljana"/>
+<xs:enumeration value="Europe_Luxembourg"/>
+<xs:enumeration value="Europe_Madrid"/>
+<xs:enumeration value="Europe_Malta"/>
+<xs:enumeration value="Europe_Monaco"/>
+<xs:enumeration value="Europe_Oslo"/>
+<xs:enumeration value="Europe_Paris"/>
+<xs:enumeration value="Europe_Prague"/>
+<xs:enumeration value="Europe_Rome"/>
+<xs:enumeration value="Europe_San_Marino"/>
+<xs:enumeration value="Europe_Sarajevo"/>
+<xs:enumeration value="Europe_Skopje"/>
+<xs:enumeration value="Europe_Stockholm"/>
+<xs:enumeration value="Europe_Tirane"/>
+<xs:enumeration value="Europe_Vaduz"/>
+<xs:enumeration value="Europe_Vatican"/>
+<xs:enumeration value="Europe_Vienna"/>
+<xs:enumeration value="Europe_Warsaw"/>
+<xs:enumeration value="Europe_Zagreb"/>
+<xs:enumeration value="Europe_Zurich"/>
+<xs:enumeration value="Europe_Belfast"/>
+<xs:enumeration value="Europe_Dublin"/>
+<xs:enumeration value="Europe_Lisbon"/>
+<xs:enumeration value="Europe_London"/>
+<xs:enumeration value="Europe_Athens"/>
+<xs:enumeration value="Europe_Bucharest"/>
+<xs:enumeration value="Europe_Helsinki"/>
+<xs:enumeration value="Europe_Istanbul"/>
+<xs:enumeration value="Europe_Kiev"/>
+<xs:enumeration value="Europe_Minsk"/>
+<xs:enumeration value="Europe_Nicosia"/>
+<xs:enumeration value="Europe_Riga"/>
+<xs:enumeration value="Europe_Sofia"/>
+<xs:enumeration value="Europe_Tallinn"/>
+<xs:enumeration value="Europe_Vilnius"/>
+<xs:enumeration value="Europe_Moscow"/>
+<xs:enumeration value="Atlantic_Reykjavik"/>
+<xs:enumeration value="America_Halifax"/>
+<xs:enumeration value="America_Winnipeg"/>
+<xs:enumeration value="America_Toronto"/>
+<xs:enumeration value="America_Edmonton"/>
+<xs:enumeration value="America_St_Johns"/>
+<xs:enumeration value="America_Vancouver"/>
+<xs:enumeration value="America_Regina"/>
+<xs:enumeration value="America_Whitehorse"/>
+<xs:enumeration value="America_Puerto_Rico"/>
+<xs:enumeration value="America_Chicago"/>
+<xs:enumeration value="America_New_York"/>
+<xs:enumeration value="America_Denver"/>
+<xs:enumeration value="America_Los_Angeles"/>
+<xs:enumeration value="America_Anchorage"/>
+<xs:enumeration value="America_Adak"/>
+<xs:enumeration value="Pacific_Honolulu"/>
+<xs:enumeration value="Asia_Tokyo"/>
+<xs:enumeration value="Asia_Dubai"/>
+<xs:enumeration value="Asia_Hong_Kong"/>
+<xs:enumeration value="Asia_Shanghai"/>
+<xs:enumeration value="Asia_Taipei"/>
+<xs:enumeration value="Asia_Seoul"/>
+<xs:enumeration value="Asia_Jerusalem"/>
+<xs:enumeration value="Africa_Johannesburg"/>
+<xs:enumeration value="Africa_Windhoek"/>
+<xs:enumeration value="Africa_Maputo"/>
+<xs:enumeration value="Africa_Lusaka"/>
+<xs:enumeration value="Africa_Harare"/>
+<xs:enumeration value="Africa_Dar_es_Salaam"/>
+<xs:enumeration value="Africa_Nairobi"/>
+<xs:enumeration value="Australia_ACT"/>
+<xs:enumeration value="Australia_Adelaide"/>
+<xs:enumeration value="Australia_Brisbane"/>
+<xs:enumeration value="Australia_Broken_Hill"/>
+<xs:enumeration value="Australia_Canberra"/>
+<xs:enumeration value="Australia_Currie"/>
+<xs:enumeration value="Australia_Darwin"/>
+<xs:enumeration value="Australia_Eucla"/>
+<xs:enumeration value="Australia_Hobart"/>
+<xs:enumeration value="Australia_LHI"/>
+<xs:enumeration value="Australia_Lindeman"/>
+<xs:enumeration value="Australia_Lord_Howe"/>
+<xs:enumeration value="Australia_Melbourne"/>
+<xs:enumeration value="Australia_NSW"/>
+<xs:enumeration value="Australia_North"/>
+<xs:enumeration value="Australia_Perth"/>
+<xs:enumeration value="Australia_Queensland"/>
+<xs:enumeration value="Australia_South"/>
+<xs:enumeration value="Australia_Sydney"/>
+<xs:enumeration value="Australia_Tasmania"/>
+<xs:enumeration value="Australia_Victoria"/>
+<xs:enumeration value="Australia_West"/>
+<xs:enumeration value="Australia_Yancowinna"/>
+<xs:enumeration value="Pacific_Auckland"/>
+<xs:enumeration value="IST"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="RouteDay">
+<xs:restriction base="xs:string">
+<xs:enumeration value="today"/>
+<xs:enumeration value="tomorrow"/>
+<xs:enumeration value="mon"/>
+<xs:enumeration value="tue"/>
+<xs:enumeration value="wed"/>
+<xs:enumeration value="thu"/>
+<xs:enumeration value="fri"/>
+<xs:enumeration value="sat"/>
+<xs:enumeration value="sun"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="RouteType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Quickest"/>
+<xs:enumeration value="Shortest"/>
+<xs:enumeration value="AvoidMotorway"/>
+<xs:enumeration value="Walk"/>
+<xs:enumeration value="Bicycle"/>
+<xs:enumeration value="SpeedLimited"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="DateRangePattern">
+<xs:restriction base="xs:string">
+<xs:enumeration value="UD"/>
+<xs:enumeration value="D0"/>
+<xs:enumeration value="Dm1"/>
+<xs:enumeration value="Dm2"/>
+<xs:enumeration value="Dm3"/>
+<xs:enumeration value="Dm4"/>
+<xs:enumeration value="Dm5"/>
+<xs:enumeration value="Dm6"/>
+<xs:enumeration value="W0"/>
+<xs:enumeration value="Wm1"/>
+<xs:enumeration value="Wm2"/>
+<xs:enumeration value="Wm3"/>
+<xs:enumeration value="WF0"/>
+<xs:enumeration value="WFm1"/>
+<xs:enumeration value="WFm2"/>
+<xs:enumeration value="WFm3"/>
+<xs:enumeration value="M0"/>
+<xs:enumeration value="Mm1"/>
+<xs:enumeration value="Mm2"/>
+<xs:enumeration value="Mm3"/>
+<xs:enumeration value="Mm4"/>
+<xs:enumeration value="Mm5"/>
+<xs:enumeration value="Mm6"/>
+<xs:enumeration value="Mm7"/>
+<xs:enumeration value="Mm8"/>
+<xs:enumeration value="Mm9"/>
+<xs:enumeration value="Y0"/>
+<xs:enumeration value="Ym1"/>
+<xs:enumeration value="Ym2"/>
+<xs:enumeration value="Ym3"/>
+<xs:enumeration value="Ym4"/>
+<xs:enumeration value="Ym5"/>
+<xs:enumeration value="Ym6"/>
+<xs:enumeration value="Ym7"/>
+<xs:enumeration value="Ym8"/>
+<xs:enumeration value="Ym9"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="EventLevel">
+<xs:restriction base="xs:string">
+<xs:enumeration value="I"/>
+<xs:enumeration value="W"/>
+<xs:enumeration value="A_1"/>
+<xs:enumeration value="A_2"/>
+<xs:enumeration value="A_3"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/services" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns3="http://connect.webfleet.tomtomwork.com/transfer/addresses" xmlns:ns2="http://connect.webfleet.tomtomwork.com/parameters/addresses" xmlns:ns1="http://connect.webfleet.tomtomwork.com/transfer" xmlns:ns0="http://connect.webfleet.tomtomwork.com/parameters" xmlns="http://connect.webfleet.tomtomwork.com/services" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://connect.webfleet.tomtomwork.com/services">
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/parameters"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/transfer"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/parameters/addresses"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/transfer/addresses"/>
+<xs:complexType abstract="true" name="timeZone">
+<xs:sequence>
+<xs:element minOccurs="0" name="ID" type="xs:string"/>
+<xs:element name="rawOffset" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="showAddressGroupReport" type="showAddressGroupReport"/>
+<xs:complexType name="showAddressGroupReport">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="filter" type="ns0:FilterParameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="showAddressGroupReportResponse" type="showAddressGroupReportResponse"/>
+<xs:complexType name="showAddressGroupReportResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceQueryOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="calcRouteSimple" type="calcRouteSimple"/>
+<xs:complexType name="calcRouteSimple">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="routeToCalculate" type="ns2:RoutingParameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="calcRouteSimpleResponse" type="calcRouteSimpleResponse"/>
+<xs:complexType name="calcRouteSimpleResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceQueryOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="deleteAddress" type="deleteAddress"/>
+<xs:complexType name="deleteAddress">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="addressToDelete" type="ns3:AddressIdentity"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="deleteAddressResponse" type="deleteAddressResponse"/>
+<xs:complexType name="deleteAddressResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceWriteOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="showAddressGroupAddressReport" type="showAddressGroupAddressReport"/>
+<xs:complexType name="showAddressGroupAddressReport">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="filter" type="ns0:FilterParameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="showAddressGroupAddressReportResponse" type="showAddressGroupAddressReportResponse"/>
+<xs:complexType name="showAddressGroupAddressReportResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceQueryOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="geocodeLocation" type="geocodeLocation"/>
+<xs:complexType name="geocodeLocation">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="locationToGeocode" type="ns2:BasicLocationParameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="geocodeLocationResponse" type="geocodeLocationResponse"/>
+<xs:complexType name="geocodeLocationResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceQueryOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="deleteAddressGroup" type="deleteAddressGroup"/>
+<xs:complexType name="deleteAddressGroup">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="addressGroupToDelete" type="ns3:AddressGroup"/>
+<xs:element minOccurs="0" name="advancedDeleteAddressGroupParm" type="ns0:AdvancedDeleteAddressGroupParameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="deleteAddressGroupResponse" type="deleteAddressGroupResponse"/>
+<xs:complexType name="deleteAddressGroupResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceWriteOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="insertAddressGroup" type="insertAddressGroup"/>
+<xs:complexType name="insertAddressGroup">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="addressGroupToInsert" type="ns3:AddressGroup"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="insertAddressGroupResponse" type="insertAddressGroupResponse"/>
+<xs:complexType name="insertAddressGroupResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceWriteOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="updateAddress" type="updateAddress"/>
+<xs:complexType name="updateAddress">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="addressToUpdate" type="ns3:Address"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="updateAddressResponse" type="updateAddressResponse"/>
+<xs:complexType name="updateAddressResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceWriteOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="detachAddressFromGroup" type="detachAddressFromGroup"/>
+<xs:complexType name="detachAddressFromGroup">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="pairToSplit" type="ns3:AddressToGroupRelationship"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="detachAddressFromGroupResponse" type="detachAddressFromGroupResponse"/>
+<xs:complexType name="detachAddressFromGroupResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceWriteOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="showAddressReport" type="showAddressReport"/>
+<xs:complexType name="showAddressReport">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="addressFilter" type="ns2:AddressFilterParameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="showAddressReportResponse" type="showAddressReportResponse"/>
+<xs:complexType name="showAddressReportResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceQueryOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="attachAddressToGroup" type="attachAddressToGroup"/>
+<xs:complexType name="attachAddressToGroup">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="newPairToJoin" type="ns3:AddressToGroupRelationship"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="attachAddressToGroupResponse" type="attachAddressToGroupResponse"/>
+<xs:complexType name="attachAddressToGroupResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceWriteOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="geocodeAddress" type="geocodeAddress"/>
+<xs:complexType name="geocodeAddress">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="locationToGeocode" type="ns2:GeocodingByProviderParameter"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="geocodeAddressResponse" type="geocodeAddressResponse"/>
+<xs:complexType name="geocodeAddressResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceQueryOpResult"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="insertAddress" type="insertAddress"/>
+<xs:complexType name="insertAddress">
+<xs:sequence>
+<xs:element minOccurs="0" name="aParm" type="ns0:AuthenticationParameters"/>
+<xs:element minOccurs="0" name="gParm" type="ns0:GeneralParameters"/>
+<xs:element minOccurs="0" name="addressToInsert" type="ns3:Address"/>
+<xs:element minOccurs="0" name="groupToAttachTo" type="ns3:AddressGroup"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="insertAddressResponse" type="insertAddressResponse"/>
+<xs:complexType name="insertAddressResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="ns1:GenericServiceWriteOpResult"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/transfer/positions" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://connect.webfleet.tomtomwork.com/transfer" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://connect.webfleet.tomtomwork.com/transfer/positions">
+<import xmlns="http://www.w3.org/2001/XMLSchema" namespace="http://www.w3.org/2001/XMLSchema-instance"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/transfer"/>
+<xs:complexType name="GeoPosition">
+<xs:complexContent>
+<xs:extension base="tns:BasicGeoPosition">
+<xs:sequence>
+<xs:element minOccurs="0" name="latitudeHumanReadable" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="longitudeHumanReadable" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="BasicGeoPosition">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="latitude" nillable="true" type="xs:int"/>
+<xs:element minOccurs="0" name="longitude" nillable="true" type="xs:int"/>
+<xs:element minOccurs="0" name="mapcode" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="BasicStartAndEndPosition">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="startPosText" type="xs:string"/>
+<xs:element minOccurs="0" name="startDateAndTime" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="endPosText" type="xs:string"/>
+<xs:element minOccurs="0" name="endDateAndTime" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="duration" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="BasicStartAndEndPosWithCoordinates">
+<xs:complexContent>
+<xs:extension base="tns:BasicStartAndEndPosition">
+<xs:sequence>
+<xs:element minOccurs="0" name="startPos" nillable="true" type="tns:BasicGeoPosition"/>
+<xs:element minOccurs="0" name="endPos" nillable="true" type="tns:BasicGeoPosition"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="StartAndEndPosition">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="startOdometer" type="xs:int"/>
+<xs:element minOccurs="0" name="startPosText" type="xs:string"/>
+<xs:element minOccurs="0" name="startDateAndTime" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="endOdometer" type="xs:int"/>
+<xs:element minOccurs="0" name="endPosText" type="xs:string"/>
+<xs:element minOccurs="0" name="endDateAndTime" type="xs:dateTime"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="StartAndEndPosWithCoordinates">
+<xs:complexContent>
+<xs:extension base="tns:StartAndEndPosition">
+<xs:sequence>
+<xs:element minOccurs="0" name="startPos" nillable="true" type="tns:GeoPosition"/>
+<xs:element minOccurs="0" name="endPos" nillable="true" type="tns:GeoPosition"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Travel">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="speed" type="xs:int"/>
+<xs:element minOccurs="0" name="course" type="xs:int"/>
+<xs:element minOccurs="0" name="direction" type="tns:IntercardinalDirections"/>
+<xs:element minOccurs="0" name="odometer" type="xs:int"/>
+<xs:element minOccurs="0" name="estimatedArrivalTime" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="distance" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="GPSSignalStatus">
+<xs:restriction base="xs:string">
+<xs:enumeration value="OK"/>
+<xs:enumeration value="WARN"/>
+<xs:enumeration value="LAST"/>
+<xs:enumeration value="INVALID"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="IntercardinalDirections">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NORTH"/>
+<xs:enumeration value="NORTHEAST"/>
+<xs:enumeration value="EAST"/>
+<xs:enumeration value="SOUTHEAST"/>
+<xs:enumeration value="SOUTH"/>
+<xs:enumeration value="SOUTHWEST"/>
+<xs:enumeration value="WEST"/>
+<xs:enumeration value="NORTHWEST"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/services" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns2="http://connect.webfleet.tomtomwork.com/transfer" xmlns:ns1="http://connect.webfleet.tomtomwork.com/transfer/positions" xmlns="http://connect.webfleet.tomtomwork.com/transfer/orders" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://connect.webfleet.tomtomwork.com/transfer/orders">
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/transfer/positions"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/transfer"/>
+<xs:complexType name="BasicPosition">
+<xs:complexContent>
+<xs:extension base="ns2:TransferObjectBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="geoPosition" nillable="true" type="ns1:GeoPosition"/>
+<xs:element minOccurs="0" name="dateAndTime" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="textualRepresentation" type="xs:string"/>
+<xs:element minOccurs="0" name="shortTextualRepresentation" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="type" type="xs:int"/>
+<xs:attribute name="altitude" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="GPSFix">
+<xs:complexContent>
+<xs:extension base="ns2:TransferObjectBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="quality" type="xs:string"/>
+<xs:element minOccurs="0" name="satellite" type="xs:string"/>
+<xs:element minOccurs="0" name="signalStatus" type="ns1:GPSSignalStatus"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/parameters/addresses" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://connect.webfleet.tomtomwork.com/parameters" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://connect.webfleet.tomtomwork.com/parameters/addresses">
+<import xmlns="http://www.w3.org/2001/XMLSchema" namespace="http://www.w3.org/2001/XMLSchema-instance"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/parameters"/>
+<xs:complexType name="RoutingParameter">
+<xs:complexContent>
+<xs:extension base="ns1:ParameterBase">
+<xs:sequence>
+<xs:element name="startLongitude" type="xs:int"/>
+<xs:element name="startLatitude" type="xs:int"/>
+<xs:element name="endLongitude" type="xs:int"/>
+<xs:element name="endLatitude" type="xs:int"/>
+<xs:element minOccurs="0" name="startDateTime" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="useTraffic" nillable="true" type="xs:boolean"/>
+<xs:element minOccurs="0" name="useTollRoads" nillable="true" type="xs:boolean"/>
+<xs:element minOccurs="0" name="useIQR" nillable="true" type="xs:boolean"/>
+<xs:element minOccurs="0" name="startTime" nillable="true" type="xs:string"/>
+<xs:element default="today" minOccurs="0" name="startDay" nillable="true" type="ns1:RouteDay"/>
+<xs:element default="Quickest" minOccurs="0" name="routeType" nillable="true" type="ns1:RouteType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="BasicLocationParameter">
+<xs:complexContent>
+<xs:extension base="ns1:ParameterBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" nillable="true" type="xs:string"/>
+<xs:element default="" minOccurs="0" name="postcode" nillable="true" type="xs:string"/>
+<xs:element default="" minOccurs="0" name="city" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="country" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="streetNumber" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="AddressFilterParameter">
+<xs:complexContent>
+<xs:extension base="ns1:FilterParameter">
+<xs:sequence>
+<xs:element default="" minOccurs="0" name="addressNo" nillable="true" type="xs:string"/>
+<xs:element default="" minOccurs="0" name="addressGroupName" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="ungroupedOnly" nillable="true" type="xs:boolean"/>
+<xs:element default="" minOccurs="0" name="addressUid" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="GeocodingByProviderParameter">
+<xs:complexContent>
+<xs:extension base="ns1:ParameterBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="postcode" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="city" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="countryCode" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="streetNumber" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="provider" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="freeText" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ContactParameter">
+<xs:complexContent>
+<xs:extension base="ns1:ParameterBase">
+<xs:sequence/>
+<xs:attribute name="contactName" type="xs:string"/>
+<xs:attribute name="contactTel" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="GeoPositionParameter">
+<xs:complexContent>
+<xs:extension base="ns1:ParameterBase">
+<xs:sequence/>
+<xs:attribute name="latitude" type="xs:int" use="required"/>
+<xs:attribute name="longitude" type="xs:int" use="required"/>
+<xs:attribute name="mapcode" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="LocationParameter">
+<xs:complexContent>
+<xs:extension base="tns:BasicLocationParameter">
+<xs:sequence>
+<xs:element name="geoPosition" type="tns:GeoPositionParameter"/>
+<xs:element minOccurs="0" name="contact" nillable="true" type="tns:ContactParameter"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/transfer/addresses" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns2="http://connect.webfleet.tomtomwork.com/transfer/positions" xmlns:ns1="http://connect.webfleet.tomtomwork.com/transfer" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://connect.webfleet.tomtomwork.com/transfer/addresses">
+<import xmlns="http://www.w3.org/2001/XMLSchema" namespace="http://www.w3.org/2001/XMLSchema-instance"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/transfer"/>
+<xs:import namespace="http://connect.webfleet.tomtomwork.com/transfer/positions"/>
+<xs:complexType name="AddressGroup">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence/>
+<xs:attribute name="uniqueName" type="xs:string" use="required"/>
+<xs:attribute name="addressGroupUid" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="AddressIdentity">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence/>
+<xs:attribute name="addressNo" type="xs:string" use="required"/>
+<xs:attribute name="addressUid" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="AddressToGroupRelationship">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence>
+<xs:element name="address" type="tns:AddressIdentity"/>
+<xs:element name="group" type="tns:AddressGroup"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CompleteLocation">
+<xs:complexContent>
+<xs:extension base="tns:Location">
+<xs:sequence>
+<xs:element minOccurs="0" name="streetNumber" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="positionText" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Location">
+<xs:complexContent>
+<xs:extension base="tns:BasicLocation">
+<xs:sequence>
+<xs:element minOccurs="0" name="geoPosition" nillable="true" type="ns2:GeoPosition"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="BasicLocation">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="postcode" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="city" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="country" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Address">
+<xs:complexContent>
+<xs:extension base="tns:AddressIdentity">
+<xs:sequence>
+<xs:element name="name1" type="xs:string"/>
+<xs:element minOccurs="0" name="name2" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="name3" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="info" type="xs:string"/>
+<xs:element default="0" minOccurs="0" name="radius" type="xs:int"/>
+<xs:element default="1" minOccurs="0" name="visible" type="xs:int"/>
+<xs:element minOccurs="0" name="location" type="tns:DescribedLocation"/>
+<xs:element minOccurs="0" name="contact" type="tns:ContactData"/>
+<xs:element minOccurs="0" name="colour" nillable="true" type="tns:AddressColour"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="DescribedLocation">
+<xs:complexContent>
+<xs:extension base="tns:Location">
+<xs:sequence>
+<xs:element minOccurs="0" name="description" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="addrRegion" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="ContactData">
+<xs:complexContent>
+<xs:extension base="tns:PhoneContact">
+<xs:sequence>
+<xs:element minOccurs="0" name="contactName" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="fax" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="emailAddress" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="PhoneContact">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence>
+<xs:element minOccurs="0" name="phoneBusiness" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="phoneMobile" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="phonePersonal" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="CompleteLocationWithAdditionalInformation">
+<xs:complexContent>
+<xs:extension base="tns:CompleteLocation">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="additionalInformation" nillable="true" type="ns1:KeyValuePair"/>
+<xs:element minOccurs="0" name="countryCode" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="AddressToGroup">
+<xs:complexContent>
+<xs:extension base="ns1:TransferObjectBase">
+<xs:sequence>
+<xs:element name="address" type="tns:AddressIdentity"/>
+<xs:element name="group" type="tns:AddressGroup"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="AddressColour">
+<xs:restriction base="xs:string">
+<xs:enumeration value="brightblue"/>
+<xs:enumeration value="dullorange"/>
+<xs:enumeration value="brightorange"/>
+<xs:enumeration value="brightpalegreen"/>
+<xs:enumeration value="grassgreen"/>
+<xs:enumeration value="brightpurple"/>
+<xs:enumeration value="darkred"/>
+<xs:enumeration value="dullazure"/>
+<xs:enumeration value="deeppurple"/>
+<xs:enumeration value="brightazure"/>
+<xs:enumeration value="orangehighlight"/>
+<xs:enumeration value="brightgreen"/>
+<xs:enumeration value="brightorangehighlight"/>
+<xs:enumeration value="khaki"/>
+<xs:enumeration value="paleblue"/>
+<xs:enumeration value="turquoise"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="updateAddress">
+    <wsdl:part element="tns:updateAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="showAddressGroupAddressReportResponse">
+    <wsdl:part element="tns:showAddressGroupAddressReportResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="detachAddressFromGroup">
+    <wsdl:part element="tns:detachAddressFromGroup" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="showAddressGroupReport">
+    <wsdl:part element="tns:showAddressGroupReport" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteAddressResponse">
+    <wsdl:part element="tns:deleteAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="insertAddressGroupResponse">
+    <wsdl:part element="tns:insertAddressGroupResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="showAddressGroupAddressReport">
+    <wsdl:part element="tns:showAddressGroupAddressReport" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="attachAddressToGroup">
+    <wsdl:part element="tns:attachAddressToGroup" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateAddressResponse">
+    <wsdl:part element="tns:updateAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteAddressGroup">
+    <wsdl:part element="tns:deleteAddressGroup" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="geocodeLocationResponse">
+    <wsdl:part element="tns:geocodeLocationResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="geocodeLocation">
+    <wsdl:part element="tns:geocodeLocation" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="insertAddressGroup">
+    <wsdl:part element="tns:insertAddressGroup" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteAddressGroupResponse">
+    <wsdl:part element="tns:deleteAddressGroupResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calcRouteSimple">
+    <wsdl:part element="tns:calcRouteSimple" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="geocodeAddressResponse">
+    <wsdl:part element="tns:geocodeAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="attachAddressToGroupResponse">
+    <wsdl:part element="tns:attachAddressToGroupResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="showAddressReport">
+    <wsdl:part element="tns:showAddressReport" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="calcRouteSimpleResponse">
+    <wsdl:part element="tns:calcRouteSimpleResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="showAddressReportResponse">
+    <wsdl:part element="tns:showAddressReportResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="insertAddress">
+    <wsdl:part element="tns:insertAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="insertAddressResponse">
+    <wsdl:part element="tns:insertAddressResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="detachAddressFromGroupResponse">
+    <wsdl:part element="tns:detachAddressFromGroupResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteAddress">
+    <wsdl:part element="tns:deleteAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="showAddressGroupReportResponse">
+    <wsdl:part element="tns:showAddressGroupReportResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="geocodeAddress">
+    <wsdl:part element="tns:geocodeAddress" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="address">
+    <wsdl:operation name="showAddressGroupReport">
+      <wsdl:input message="tns:showAddressGroupReport" name="showAddressGroupReport">
+    </wsdl:input>
+      <wsdl:output message="tns:showAddressGroupReportResponse" name="showAddressGroupReportResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="calcRouteSimple">
+      <wsdl:input message="tns:calcRouteSimple" name="calcRouteSimple">
+    </wsdl:input>
+      <wsdl:output message="tns:calcRouteSimpleResponse" name="calcRouteSimpleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAddress">
+      <wsdl:input message="tns:deleteAddress" name="deleteAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteAddressResponse" name="deleteAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="showAddressGroupAddressReport">
+      <wsdl:input message="tns:showAddressGroupAddressReport" name="showAddressGroupAddressReport">
+    </wsdl:input>
+      <wsdl:output message="tns:showAddressGroupAddressReportResponse" name="showAddressGroupAddressReportResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="geocodeLocation">
+      <wsdl:input message="tns:geocodeLocation" name="geocodeLocation">
+    </wsdl:input>
+      <wsdl:output message="tns:geocodeLocationResponse" name="geocodeLocationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAddressGroup">
+      <wsdl:input message="tns:deleteAddressGroup" name="deleteAddressGroup">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteAddressGroupResponse" name="deleteAddressGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertAddressGroup">
+      <wsdl:input message="tns:insertAddressGroup" name="insertAddressGroup">
+    </wsdl:input>
+      <wsdl:output message="tns:insertAddressGroupResponse" name="insertAddressGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateAddress">
+      <wsdl:input message="tns:updateAddress" name="updateAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:updateAddressResponse" name="updateAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="detachAddressFromGroup">
+      <wsdl:input message="tns:detachAddressFromGroup" name="detachAddressFromGroup">
+    </wsdl:input>
+      <wsdl:output message="tns:detachAddressFromGroupResponse" name="detachAddressFromGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="showAddressReport">
+      <wsdl:input message="tns:showAddressReport" name="showAddressReport">
+    </wsdl:input>
+      <wsdl:output message="tns:showAddressReportResponse" name="showAddressReportResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="attachAddressToGroup">
+      <wsdl:input message="tns:attachAddressToGroup" name="attachAddressToGroup">
+    </wsdl:input>
+      <wsdl:output message="tns:attachAddressToGroupResponse" name="attachAddressToGroupResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="geocodeAddress">
+      <wsdl:input message="tns:geocodeAddress" name="geocodeAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:geocodeAddressResponse" name="geocodeAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertAddress">
+      <wsdl:input message="tns:insertAddress" name="insertAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:insertAddressResponse" name="insertAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="addressServiceSoapBinding" type="tns:address">
+    <soap12:binding style="document" transport="http://www.w3.org/2003/05/soap/bindings/HTTP/"/>
+    <wsdl:operation name="showAddressGroupReport">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="showAddressGroupReport">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="showAddressGroupReportResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="calcRouteSimple">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="calcRouteSimple">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="calcRouteSimpleResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAddress">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteAddress">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteAddressResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="showAddressGroupAddressReport">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="showAddressGroupAddressReport">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="showAddressGroupAddressReportResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="geocodeLocation">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="geocodeLocation">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="geocodeLocationResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAddressGroup">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteAddressGroup">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteAddressGroupResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertAddressGroup">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="insertAddressGroup">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="insertAddressGroupResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateAddress">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="updateAddress">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateAddressResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="detachAddressFromGroup">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="detachAddressFromGroup">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="detachAddressFromGroupResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="showAddressReport">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="showAddressReport">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="showAddressReportResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="attachAddressToGroup">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="attachAddressToGroup">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="attachAddressToGroupResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="geocodeAddress">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="geocodeAddress">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="geocodeAddressResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertAddress">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="insertAddress">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="insertAddressResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="addressService">
+    <wsdl:port binding="tns:addressServiceSoapBinding" name="addressPort">
+      <soap12:address location="https://soap.business.tomtom.com/v1.25/addressService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

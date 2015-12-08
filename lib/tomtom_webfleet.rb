@@ -51,6 +51,12 @@ class TomtomWebfleet
       convert_request_keys_to :none
     end
 
+    @client_address = Savon.client(wsdl: url + '/addressService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+      #log true
+      #pretty_print_xml true
+      convert_request_keys_to :none
+    end
+
     @client_orders = Savon.client(wsdl: url + '/ordersService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
       #pretty_print_xml true
@@ -78,6 +84,27 @@ class TomtomWebfleet
         name: vehicle[:object_name],
 #        type: ->(vehicle[:vehicletype]) { |type| VEHICLE_TYPE.find{ |k, v| v.include?(type) }.first },
 #        color: VEHICLE_COLOR[vehicle[:vehiclecolor]],
+      }
+    }
+  end
+
+  def showAddressReport(account, username, password)
+    addresss = get(@client_address, :show_address_report, account, username, password, {})
+    addresss = [addresss] if addresss.is_a?(Hash)
+    addresss.select{ |object| !object[:deleted] }.collect{ |address|
+      {
+        uid: address[:@object_uid],
+        name: address[:name1],
+        comment: [address[:info], address[:contact][:contactName]].compact.join(', '),
+        street: address[:location][:street],
+        postalcode: address[:location][:postcode],
+        city: address[:location][:city],
+        country: address[:location][:country],
+        lat: address[:location][:latitude],
+        lng: address[:location][:longitude],
+        detail: address[:location][:description],
+        state: address[:location][:addrRegion],
+        phone: address[:contact][:phoneBusiness] || address[:contact][:phoneMobile] || address[:contact][:phonePersonal],
       }
     }
   end

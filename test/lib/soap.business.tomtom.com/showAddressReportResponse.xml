@@ -1,0 +1,79 @@
+HTTP/1.1 200 OK
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+   <soap:Body>
+      <ns3:showAddressReportResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://connect.webfleet.tomtomwork.com/services">
+         <return>
+            <statusCode>0</statusCode>
+            <statusMessage>The operation *showAddressReport* processed succesfully.</statusMessage>
+            <errors xsi:nil="true"/>
+            <resultSize>2</resultSize>
+            <results>
+               <resultItem xsi:type="ns4:Address" addressNo="dfh" addressUid="1-44063-665E5506152" xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/addresses">
+                  <name1>dfgh</name1>
+                  <name2 xsi:nil="true"/>
+                  <name3 xsi:nil="true"/>
+                  <radius>250</radius>
+                  <visible>1</visible>
+                  <location>
+                     <street>dfgh</street>
+                     <postcode xsi:nil="true"/>
+                     <city>dfgh</city>
+                     <country>FR</country>
+                     <geoPosition>
+                        <latitude xsi:nil="true"/>
+                        <longitude xsi:nil="true"/>
+                        <mapcode xsi:nil="true"/>
+                        <latitudeHumanReadable xsi:nil="true"/>
+                        <longitudeHumanReadable xsi:nil="true"/>
+                     </geoPosition>
+                     <description xsi:nil="true"/>
+                     <addrRegion>état</addrRegion>
+                  </location>
+                  <contact>
+                     <phoneBusiness>dfgh</phoneBusiness>
+                     <phoneMobile xsi:nil="true"/>
+                     <phonePersonal xsi:nil="true"/>
+                     <contactName>dfgh</contactName>
+                     <fax xsi:nil="true"/>
+                     <emailAddress xsi:nil="true"/>
+                  </contact>
+                  <colour>brightpurple</colour>
+               </resultItem>
+               <resultItem xsi:type="ns4:Address" addressNo="1" addressUid="1-44063-465E54045B1" xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/addresses">
+                  <name1>a</name1>
+                  <name2>a</name2>
+                  <name3>a</name3>
+                  <info>a</info>
+                  <radius>0</radius>
+                  <visible>1</visible>
+                  <location>
+                     <street xsi:nil="true"/>
+                     <postcode xsi:nil="true"/>
+                     <city xsi:nil="true"/>
+                     <country xsi:nil="true"/>
+                     <geoPosition>
+                        <latitude xsi:nil="true"/>
+                        <longitude xsi:nil="true"/>
+                        <mapcode xsi:nil="true"/>
+                        <latitudeHumanReadable xsi:nil="true"/>
+                        <longitudeHumanReadable xsi:nil="true"/>
+                     </geoPosition>
+                     <description xsi:nil="true"/>
+                     <addrRegion xsi:nil="true"/>
+                  </location>
+                  <contact>
+                     <phoneBusiness xsi:nil="true"/>
+                     <phoneMobile xsi:nil="true"/>
+                     <phonePersonal xsi:nil="true"/>
+                     <contactName xsi:nil="true"/>
+                     <fax xsi:nil="true"/>
+                     <emailAddress xsi:nil="true"/>
+                  </contact>
+                  <colour xsi:nil="true"/>
+               </resultItem>
+            </results>
+         </return>
+      </ns3:showAddressReportResponse>
+   </soap:Body>
+</soap:Envelope>
