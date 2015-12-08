@@ -22,7 +22,7 @@ json.routes @routes do |route|
     (json.alyacom true) if route.planning.customer.enable_alyacom && !route.planning.customer.alyacom_association.blank?
   end
   number = 0
-  no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = false
+  no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
   json.store_start do
     json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.start.strftime('%H:%M')) if route.start
