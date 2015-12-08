@@ -44,8 +44,8 @@ controller.js(
       attribution: layer.map_attribution,
       default: layer == current_user.layer
   }},
-  map_lat: @zoning.customer.default_position[:lat],
-  map_lng: @zoning.customer.default_position[:lng],
+  map_lat: (@planning && @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lat }.lat) || @zoning.customer.default_position[:lat],
+  map_lng: (@planning && @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lng }.lng) || @zoning.customer.default_position[:lng],
   vehicles_array: @zoning.customer.vehicles.collect{ |vehicle|
     {id: vehicle.id, name: vehicle.name, color: vehicle.color}
   },

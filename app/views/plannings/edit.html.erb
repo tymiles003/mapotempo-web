@@ -118,8 +118,8 @@ controller.js(
       attribution: layer.map_attribution,
       default: layer == current_user.layer
   }},
-  map_lat: @planning.customer.default_position[:lat],
-  map_lng: @planning.customer.default_position[:lng],
+  map_lat: @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lat }.lat || @planning.customer.default_position[:lat],
+  map_lng: @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lng }.lng || @planning.customer.default_position[:lng],
   vehicles_array: @planning.customer.vehicles.collect{ |vehicle|
     {id: vehicle.id, text: vehicle.name, color: vehicle.color}
   },
