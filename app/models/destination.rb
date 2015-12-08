@@ -79,6 +79,10 @@ class Destination < ActiveRecord::Base
     super
   end
 
+  def changed?
+    @tags_updated || super
+  end
+
   private
 
   def update_out_of_date
