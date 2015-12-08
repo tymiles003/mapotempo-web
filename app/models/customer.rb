@@ -72,9 +72,9 @@ class Customer < ActiveRecord::Base
     @max_vehicles = @max_vehicles || vehicles.size
   end
 
-  def max_vehicles=(max_vehicles)
-    if !max_vehicles.blank?
-      @max_vehicles = Integer(max_vehicles)
+  def max_vehicles=(max)
+    if !max.blank?
+      @max_vehicles = Integer(max)
     end
   end
 
@@ -126,6 +126,7 @@ class Customer < ActiveRecord::Base
           vehicles.destroy(vehicle)
         }
       end
+      @max_vehicles = vehicles.size
     end
   end
 

@@ -31,8 +31,8 @@ class Vehicle < ActiveRecord::Base
   validates :color, presence: true
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
 
-  after_initialize :assign_defaults, if: 'new_record?'
-  before_create :increment_max_vehicles, :create_vehicle_usage
+  after_initialize :assign_defaults, :increment_max_vehicles, if: 'new_record?'
+  before_create :create_vehicle_usage
   before_update :update_out_of_date
   before_destroy :destroy_vehicle
 

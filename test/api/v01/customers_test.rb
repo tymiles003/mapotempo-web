@@ -76,6 +76,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
               assert_difference('Vehicle.count', 5) do
                 post api_admin, {name: 'new cust', max_vehicles: 5, default_country: 'France', router_id: @customer.router_id, profile_id: @customer.profile_id}
                 assert last_response.created?, last_response.body
+                assert_equal 5, JSON.parse(last_response.body)['max_vehicles']
               end
             end
           end
