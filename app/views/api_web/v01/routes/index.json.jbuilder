@@ -26,7 +26,7 @@ json.routes @routes do |route|
   json.store_start do
     json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.start.strftime('%H:%M')) if route.start
-  end if route.vehicle_usage
+  end if route.vehicle_usage && route.vehicle_usage.default_store_start
   first_active_free = nil
   route.stops.reverse_each{ |stop|
     if !stop.active
@@ -98,7 +98,7 @@ json.routes @routes do |route|
     (json.error true) if route.stop_out_of_drive_time
     json.stop_out_of_drive_time route.stop_out_of_drive_time
     json.stop_distance (route.stop_distance || 0) / 1000
-  end if route.vehicle_usage
+  end if route.vehicle_usage && route.vehicle_usage.default_store_stop
   (json.route_no_geolocalization no_geolocalization) if no_geolocalization
   (json.route_out_of_window out_of_window) if out_of_window
   (json.route_out_of_capacity out_of_capacity) if out_of_capacity
