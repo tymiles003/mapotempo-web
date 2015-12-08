@@ -1,7 +1,7 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
-<%= twitter_bootstrap_form_for(@import_csv, url: stores_imports_path, layout: :horizontal, multipart: true) do |f| %>
+<%= twitter_bootstrap_form_for(@import_csv, url: stores_import_csv_path, layout: :horizontal, multipart: true) do |f| %>
   <%= render 'shared/error_messages', model: @import_csv %>
   <%= f.file_field :file do %>
     <p class="help-block"><%= t '.file_help' %></p>

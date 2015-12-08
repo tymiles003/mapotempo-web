@@ -367,7 +367,11 @@ Paloma.controller('Destination').prototype.import = function() {
   destinations_import(this.params);
 };
 
-Paloma.controller('Destination').prototype.upload = function() {
+Paloma.controller('Destination').prototype.upload_csv = function() {
+  destinations_import(this.params);
+};
+
+Paloma.controller('Destination').prototype.upload_tomtom = function() {
   destinations_import(this.params);
 };
 

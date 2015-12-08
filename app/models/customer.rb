@@ -78,6 +78,10 @@ class Customer < ActiveRecord::Base
     end
   end
 
+  def tomtom?
+    enable_tomtom && !tomtom_account.blank? && !tomtom_user.blank? && !tomtom_password.blank?
+  end
+
   private
 
   def assign_defaults

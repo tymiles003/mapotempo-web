@@ -93,8 +93,8 @@ class TomtomWebfleet
     addresss = [addresss] if addresss.is_a?(Hash)
     addresss.select{ |object| !object[:deleted] }.collect{ |address|
       {
-        uid: address[:@object_uid],
-        name: address[:name1],
+        ref: address[:@address_uid] && 'tomtom:' + address[:@address_uid],
+        name: address[:name1] || address[:name2] || address[:name3],
         comment: [address[:info], address[:contact][:contactName]].compact.join(', '),
         street: address[:location][:street],
         postalcode: address[:location][:postcode],
@@ -103,8 +103,8 @@ class TomtomWebfleet
         lat: address[:location][:latitude],
         lng: address[:location][:longitude],
         detail: address[:location][:description],
-        state: address[:location][:addrRegion],
-        phone: address[:contact][:phoneBusiness] || address[:contact][:phoneMobile] || address[:contact][:phonePersonal],
+#        state: address[:location][:addrRegion],
+        phone_number: address[:contact][:phoneBusiness] || address[:contact][:phoneMobile] || address[:contact][:phonePersonal],
       }
     }
   end

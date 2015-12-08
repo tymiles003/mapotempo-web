@@ -23,7 +23,7 @@ class ImporterBase
     @customer = customer
   end
 
-  def import(data, replace, name, synchronous)
+  def import(data, replace, name, synchronous, ignore_error)
     Store.transaction do
       before_import(replace, name, synchronous)
 
@@ -34,9 +34,15 @@ class ImporterBase
           next # Skip empty line
         end
 
-        dest = import_row(replace, name, row, line)
-        if !synchronous || Mapotempo::Application.config.delayed_job_use
-          dest.delay_geocode
+        begin
+          dest = import_row(replace, name, row, line)
+          if !synchronous || Mapotempo::Application.config.delayed_job_use
+            dest.delay_geocode
+          end
+        rescue
+          if !ignore_error
+            raise
+          end
         end
       }
       after_import(replace, name, synchronous)

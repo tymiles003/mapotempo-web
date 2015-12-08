@@ -30,7 +30,7 @@ else
       json.vehicle_usage_id route.vehicle_usage.id
       json.vehicle_id route.vehicle_usage.vehicle.id
       json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
-      (json.tomtom true) if route.vehicle_usage.vehicle.tomtom_id && route.planning.customer.enable_tomtom && !route.vehicle_usage.vehicle.customer.tomtom_account.blank? && !route.vehicle_usage.vehicle.customer.tomtom_user.blank? && !route.vehicle_usage.vehicle.customer.tomtom_password.blank?
+      (json.tomtom true) if route.vehicle_usage.vehicle.tomtom_id && route.planning.customer.tomtom?
       (json.masternaut true) if route.vehicle_usage.vehicle.masternaut_ref && route.planning.customer.enable_masternaut && !route.planning.customer.masternaut_user.blank? && !route.planning.customer.masternaut_password.blank?
       (json.alyacom true) if route.planning.customer.enable_alyacom && !route.planning.customer.alyacom_association.blank?
     end

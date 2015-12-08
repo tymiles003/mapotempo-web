@@ -31,16 +31,19 @@ fr:
 
   activemodel:
     models:
-      import: "Import"
-      imports:
-        one: "Import"
-        other: "Imports"
+      import_csv: "Import CSV"
+      import_csvs:
+        one: "Import CSV"
+        other: "Imports CSV"
+      import_tomtom: "Import TomTom"
+      import_tomtoms:
+        one: "Import TomTom"
+        other: "Imports TomTom"
     attributes:
       import_csv:
         file: "Fichier"
         replace: "Remplacer"
-      stores_import:
-        file: "Fichier"
+      import_tomtom:
         replace: "Remplacer"
 
   activerecord:
@@ -519,7 +522,13 @@ fr:
       title: "Importer des clients"
       replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus. Dans le cas contraire une mise à jour des clients existants est faite et les nouveaux sont ajoutés."
       replace_confirm: "Supprimer tous les clients et leurs modifications pour les remplacer par ceux importés ?"
-      file_help: "Import de fichier CSV uniquement."
+      csv:
+        title: "Fichier CSV"
+        help: "Importe les clients depuis un fichier CSV. Les fichiers CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels."
+        file_help: "Import de fichier CSV uniquement."
+      tomtom:
+        title: "TomTom"
+        help: "Importe les adresses de TomTom WEBFLEET comme clients."
     index:
       title: "Liste clients"
       new: "Nouveau client"
@@ -1025,6 +1034,7 @@ fr:
       duplicate: "Dupliquer"
       toggle_selection: "Inverser sélection"
       dismiss: "Fermer"
+      import: "Importer"
     unit:
       m: "m"
       km: "km"

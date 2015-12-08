@@ -30,16 +30,19 @@ en:
 
   activemodel:
     models:
-      import: "Import"
-      imports:
-        one: "Import"
-        other: "Imports"
+      import_csv: "CSV Import"
+      import_csvs:
+        one: "CSV Import"
+        other: "CSV Imports"
+      import_tomtom: "Import TomTom"
+      import_tomtoms:
+        one: "Import TomTom"
+        other: "Imports TomTom"
     attributes:
       import_csv:
         file: "File"
         replace: "Replace"
-      stores_import:
-        file: "File"
+      import_tomtom:
         replace: "Replace"
 
   activerecord:
@@ -508,7 +511,13 @@ en:
       title: "Import destinations"
       replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost. In the opposite case an update of existing customers is made and the new ones are added."
       replace_confirm: "Delete all clients and their amendments to replace them with imported ones?"
-      file_help: "Import only CSV files."
+      csv:
+        title: "CSV File"
+        help: "Imports destinations from CSV file. CSV files can be exported from spreadsheet or other softwares."
+        file_help: "Import only CSV files."
+      tomtom:
+        title: "TomTom"
+        help: "Imports TomTom WEBFLEET address as destinations."
     index:
       title: "Listing destinations"
       new: "New Destination"
@@ -1010,6 +1019,7 @@ en:
       duplicate: "Duplicate"
       toggle_selection: "Toggle selection"
       dismiss: "Dismiss"
+      import: "Import"
     unit:
       m: "m"
       km: "km"

@@ -38,7 +38,7 @@ class ImportCsv
     if data
       begin
         Customer.transaction do
-          @importer.import(data, replace, name, synchronous) { |row|
+          @importer.import(data, replace, name, synchronous, false) { |row|
             # Switch from locale to internal column name
             r, row = row, {}
             @importer.columns.each{ |k, v|

@@ -53,13 +53,14 @@ Rails.application.routes.draw do
   resources :destinations
   get 'destination/import_template' => 'destinations#import_template'
   get 'destination/import' => 'destinations#import'
-  post 'destinations/upload' => 'destinations#upload', :as => 'destinations_imports'
+  post 'destinations/upload_csv' => 'destinations#upload_csv', :as => 'destinations_import_csv'
+  post 'destinations/upload_tomtom' => 'destinations#upload_tomtom', :as => 'destinations_import_tomtom'
   delete 'destinations' => 'destinations#clear'
 
   resources :stores
   get 'store/import_template' => 'stores#import_template'
   get 'store/import' => 'stores#import'
-  post 'stores/upload' => 'stores#upload', :as => 'stores_imports'
+  post 'stores/upload_csv' => 'stores#upload_csv', :as => 'stores_import_csv'
   delete 'stores' => 'stores#destroy_multiple'
 
   resources :plannings do

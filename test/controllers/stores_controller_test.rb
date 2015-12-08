@@ -103,7 +103,7 @@ class StoresControllerTest < ActionController::TestCase
     rest_count = 1
 
     assert_difference('Store.count') do
-      post :upload, import_csv: { replace: false, file: file }
+      post :upload_csv, import_csv: { replace: false, file: file }
     end
 
     assert_redirected_to stores_path
@@ -116,7 +116,7 @@ class StoresControllerTest < ActionController::TestCase
     file.original_filename = 'import_invalid.csv'
 
     assert_difference('Store.count', 0) do
-      post :upload, import_csv: { replace: false, file: file }
+      post :upload_csv, import_csv: { replace: false, file: file }
     end
 
     assert_template :import

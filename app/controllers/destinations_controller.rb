@@ -99,14 +99,28 @@ class DestinationsController < ApplicationController
 
   def import
     @import_csv = ImportCsv.new
+    @import_tomtom = ImportTomtom.new
   end
 
-  def upload
+  def upload_csv
     respond_to do |format|
       @import_csv = ImportCsv.new(import_csv_params.merge(importer: ImporterDestinations.new(current_user.customer)))
       if @import_csv.valid? && @import_csv.import
         format.html { redirect_to action: 'index' }
       else
+        @import_tomtom = ImportTomtom.new
+        format.html { render action: 'import' }
+      end
+    end
+  end
+
+  def upload_tomtom
+    respond_to do |format|
+      @import_tomtom = ImportTomtom.new(import_tomtom_params.merge(importer: ImporterDestinations.new(current_user.customer), customer: current_user.customer))
+      if current_user.customer.tomtom? && @import_tomtom.valid? && @import_tomtom.import
+        format.html { redirect_to action: 'index' }
+      else
+        @import_csv = ImportCsv.new
         format.html { render action: 'import' }
       end
     end
@@ -136,5 +150,10 @@ class DestinationsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def import_csv_params
     params.require(:import_csv).permit(:replace, :file)
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def import_tomtom_params
+    params.require(:import_tomtom).permit(:replace)
   end
 end

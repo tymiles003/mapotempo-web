@@ -116,7 +116,7 @@ class StoresController < ApplicationController
     @import_csv = ImportCsv.new
   end
 
-  def upload
+  def upload_csv
     respond_to do |format|
       @import_csv = ImportCsv.new(import_csv_params.merge(importer: ImporterStores.new(current_user.customer)))
       if @import_csv.valid? && @import_csv.import

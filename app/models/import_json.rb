@@ -34,7 +34,7 @@ class ImportJson
         Customer.transaction do
           key = %w(ref route name street detail postalcode city lat lng open close comment tags take_over quantity active)
 
-          @importer.import(json, replace, nil, synchronous) { |row|
+          @importer.import(json, replace, nil, synchronous, false) { |row|
             r, row = row, {}
             r.each{ |k, v|
               if key.include?(k)
