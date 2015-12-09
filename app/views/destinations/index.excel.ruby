@@ -16,6 +16,7 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('destinations.import_file.open'),
     I18n.t('destinations.import_file.close'),
     I18n.t('destinations.import_file.comment'),
+    I18n.t('destinations.import_file.phone_number'),
     I18n.t('destinations.import_file.tags')
   ]
   @destinations.each { |destination|
