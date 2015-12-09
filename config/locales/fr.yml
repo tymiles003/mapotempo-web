@@ -59,7 +59,7 @@ fr:
       layer: "Fond de carte"
       layers:
         one: "fond de carte"
-        other: "fond de cartes"
+        other: "fonds de cartes"
       order: "Commande"
       orders:
         one: "Commande"
@@ -488,8 +488,8 @@ fr:
       import: "Importer"
       export_spreadsheet_standard: "Export tableur standard"
       export_spreadsheet_excel: "Export tableur Excel"
-      stores: "Départs / Arrivées"
-      import_stores: "Importer Départs / Arrivées"
+      stores: "Dépôts"
+      import_stores: "Importer dépôts"
       tags: "Libellés"
       clear: "Supprimer tous les clients"
       clear_confirm: "Êtes-vous sûr de vouloir supprimer tous les clients ?"
