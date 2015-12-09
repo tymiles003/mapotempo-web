@@ -35,7 +35,7 @@
         <% if @vehicle_usage.vehicle.customer.enable_masternaut && !@vehicle_usage.vehicle.customer.masternaut_user.blank? && !@vehicle_usage.vehicle.customer.masternaut_password.blank? %>
           <%= f.text_field :masternaut_ref %>
         <% end %>
-        <%= f.select :color, [], Vehicle.colors_table %>
+        <%= f.select :color, [], (Vehicle.colors_table + [@vehicle_usage[:color]]).compact.uniq %>
       <% end %>
     </div>
   </fieldset>

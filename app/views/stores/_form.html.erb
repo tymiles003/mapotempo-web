@@ -44,7 +44,7 @@
   </div>
   <%= f.number_field :lat, { step: 'any'} %>
   <%= f.number_field :lng, { step: 'any'} %>
-  <%= f.select :color, [], ['#000000'] + Vehicle.colors_table %>
+  <%= f.select :color, [], (Vehicle.colors_table + [@store[:color]]).compact.uniq, include_blank: '#000000' %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
