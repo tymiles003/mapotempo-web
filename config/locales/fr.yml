@@ -25,9 +25,11 @@ fr:
     thousand: "km"
   time:
     formats:
-      default: "%d-%m-%Y"
-      short: "%b %d"
-      long: "%B %d, %Y"
+      default: "%d %B %Y %H:%M:%S"
+      long: "%A %d %B %Y %H:%M"
+      short: "%d %b %H:%M"
+      hour_minute: "%H:%M"
+      hour_minute_second: "%H:%M:%S"
 
   activemodel:
     models:

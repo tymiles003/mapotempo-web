@@ -38,7 +38,7 @@ else
     no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
     json.store_start do
       json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
-      (json.time route.start.strftime('%H:%M')) if route.start
+      (json.time l(route.start, format: :hour_minute)) if route.start
       (json.geocoded true) if !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?
       (json.error true) if route.vehicle_usage.default_store_start.lat.nil? || route.vehicle_usage.default_store_start.lng.nil?
     end if route.vehicle_usage && route.vehicle_usage.default_store_start
@@ -60,12 +60,12 @@ else
       json.edit_planning true
       json.stop_id stop.id
       json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
-      (json.open stop.open.strftime('%H:%M')) if stop.open
-      (json.close stop.close.strftime('%H:%M')) if stop.close
+      (json.open l(stop.open, format: :hour_minute)) if stop.open
+      (json.close l(stop.close, format: :hour_minute)) if stop.close
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
       (json.geocoded true) if stop.position?
       (json.no_path true) if stop.position? && route.vehicle_usage && !stop.trace
-      (json.time stop.time.strftime('%H:%M')) if stop.time
+      (json.time l(stop.time, format: :hour_minute)) if stop.time
       (json.active true) if stop.active
       (json.number number += 1) if route.vehicle_usage && stop.active
       (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
@@ -95,7 +95,7 @@ else
           else
             json.extract! destination, :quantity
           end
-          (json.duration destination.take_over.strftime('%H:%M:%S')) if destination.take_over
+          (json.duration l(destination.take_over, format: :hour_minute_second)) if destination.take_over
           color = destination.tags.find(&:color)
           (json.color color.color) if color
           icon = destination.tags.find(&:icon)
@@ -103,7 +103,7 @@ else
         end
       elsif stop.is_a?(StopRest)
         json.rest do
-          (json.duration route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S')) if route.vehicle_usage.default_rest_duration
+          (json.duration l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second)) if route.vehicle_usage.default_rest_duration
           (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
           (json.geocoded true) if !route.vehicle_usage.default_store_rest.nil? && !route.vehicle_usage.default_store_rest.lat.nil? && !route.vehicle_usage.default_store_rest.lng.nil?
           (json.error true) if !route.vehicle_usage.default_store_rest.nil? && (route.vehicle_usage.default_store_rest.lat.nil? || route.vehicle_usage.default_store_rest.lng.nil?)
@@ -112,7 +112,7 @@ else
     end
     json.store_stop do
       json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
-      (json.time route.end.strftime('%H:%M')) if route.end
+      (json.time l(route.end, format: :hour_minute)) if route.end
       (json.geocoded true) if !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?
       (json.no_path true) if !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? && !route.stop_trace
       (json.error true) if (route.vehicle_usage.default_store_stop.lat.nil? || route.vehicle_usage.default_store_stop.lng.nil?) || (!route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? && !route.stop_trace)

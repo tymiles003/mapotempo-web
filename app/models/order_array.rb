@@ -38,7 +38,7 @@ class OrderArray < ActiveRecord::Base
       }
     })
 
-    append name: Time.now.strftime(' %Y-%m-%d %H:%M')
+    append name: ' ' + I18n.l(Time.now, format: :long)
   end
 
   def days

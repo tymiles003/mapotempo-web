@@ -32,10 +32,10 @@ CSV.generate { |csv|
       destination.lng,
       destination.geocoding_accuracy,
       destination.geocoding_level,
-      destination.take_over && destination.take_over.strftime('%H:%M:%S'),
+      destination.take_over && l(destination.take_over, format: :hour_minute_second),
       destination.quantity,
-      destination.open && destination.open.strftime('%H:%M'),
-      destination.close && destination.close.strftime('%H:%M'),
+      destination.open && l(destination.open, format: :hour_minute),
+      destination.close && l(destination.close, format: :hour_minute),
       destination.comment,
       destination.phone_number,
       destination.tags.collect(&:label).join(',')

@@ -17,9 +17,9 @@ if @planning
         if !@planning.customer.enable_orders
           json.extract! destination, :quantity
         end
-        (json.duration destination.take_over.strftime('%H:%M:%S')) if destination.take_over
-        (json.open stop.open.strftime('%H:%M')) if stop.open
-        (json.close stop.close.strftime('%H:%M')) if stop.close
+        (json.duration l(destination.take_over, format: :hour_minute_second)) if destination.take_over
+        (json.open l(stop.open, format: :hour_minute)) if stop.open
+        (json.close l(stop.close, format: :hour_minute)) if stop.close
         color = stop.destination.tags.find(&:color)
         (json.color color.color) if color
         icon = stop.destination.tags.find(&:icon)

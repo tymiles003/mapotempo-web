@@ -19,7 +19,7 @@
       <name>
         <%= route.vehicle_usage.default_store_start.name %>
       </name>
-      <desc><%= route.start.strftime("%H:%M") if route.start %>
+      <desc><%= l(route.start, format: :hour_minute) if route.start %>
 <%= [route.vehicle_usage.default_store_start.street, route.vehicle_usage.default_store_start.postalcode, route.vehicle_usage.default_store_start.city, route.vehicle_usage.default_store_start.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
@@ -44,14 +44,14 @@ route.stops.each{ |stop|
           stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "⨯#{stop.destination.quantity}" : '') : '',
           ' ',
           stop.is_a?(StopDestination) ?
-            (stop.destination.take_over ? '(' + stop.destination.take_over.strftime("%H:%M:%S") + ')' : '') :
-            '(' + route.vehicle_usage.default_rest_duration.strftime("%H:%M:%S") + ')'
+            (stop.destination.take_over ? '(' + l(stop.destination.take_over, format: :hour_minute_second) + ')' : '') :
+            '(' + l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second) + ')'
         ].join.gsub(/\s+/, ' ').strip
         %>
       </name>
-      <desc><%= stop.time.strftime("%H:%M") if stop.time %>
+      <desc><%= l(stop.time, format: :hour_minute) if stop.time %>
       <% if stop.open || stop.close %>
-<%= stop.open.strftime("%H:%M") if stop.open %>-<%= stop.close.strftime("%H:%M") if stop.close %>
+<%= l(stop.open, format: :hour_minute) if stop.open %>-<%= l(stop.close, format: :hour_minute) if stop.close %>
       <% end %>
 <%= [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if !stop.comment.blank? %>
@@ -83,7 +83,7 @@ route.stops.each{ |stop|
       <name>
         <%= route.vehicle_usage.default_store_stop.name %>
       </name>
-      <desc><%= route.end.strftime("%H:%M") if route.end %>
+      <desc><%= l(route.end, format: :hour_minute) if route.end %>
 <%= [route.vehicle_usage.default_store_stop.street, route.vehicle_usage.default_store_stop.postalcode, route.vehicle_usage.default_store_stop.city, route.vehicle_usage.default_store_stop.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>

@@ -40,9 +40,9 @@
           <% end %>
         </td>
         <td>
-          <%= if vehicle_usage.open then vehicle_usage.open.strftime("%H:%M") end %>
+          <%= if vehicle_usage.open then l(vehicle_usage.open, format: :hour_minute) end %>
           <% if vehicle_usage.open || vehicle_usage.close %>-<% end %>
-          <%= if vehicle_usage.close then vehicle_usage.close.strftime("%H:%M") end %>
+          <%= if vehicle_usage.close then l(vehicle_usage.close, format: :hour_minute) end %>
         </td>
         <td><%= link_to edit_vehicle_usage_path(vehicle_usage) + '?back=true', :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %></td>
       </tr>
