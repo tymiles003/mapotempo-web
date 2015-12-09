@@ -46,6 +46,10 @@ class Customer < ActiveRecord::Base
   validates :destinations, length: { maximum: Mapotempo::Application.config.max_destinations, message: :over_max_limit }
   validates :optimization_cluster_size, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :max_vehicles, numericality: { greater_than: 0 }
+  validate do
+    errors.add(:max_vehicles, :not_an_integer) if @invalid_max_vehicle
+    !@invalid_max_vehicle
+  end
 
   after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
   after_create :create_default_store, :create_default_vehicle_usage_set
@@ -73,8 +77,12 @@ class Customer < ActiveRecord::Base
   end
 
   def max_vehicles=(max)
-    if !max.blank?
-      @max_vehicles = Integer(max)
+    begin
+      if !max.blank?
+        @max_vehicles = Integer(max.to_s, 10)
+      end
+    rescue ArgumentError
+      @invalid_max_vehicle = true
     end
   end
 
