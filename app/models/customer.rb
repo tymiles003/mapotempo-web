@@ -50,6 +50,7 @@ class Customer < ActiveRecord::Base
     errors.add(:max_vehicles, :not_an_integer) if @invalid_max_vehicle
     !@invalid_max_vehicle
   end
+  validates :speed_multiplicator, numericality: { greater_than_or_equal_to: 0.5, less_than_or_equal_to: 1.5 }, if: :speed_multiplicator
 
   after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
   after_create :create_default_store, :create_default_vehicle_usage_set
