@@ -21,4 +21,12 @@ $(document).on('ready page:load', function() {
       this.checked = !this.checked;
     });
   });
+
+  $('[data-toggle="dropdown"]').parent().on('show.bs.dropdown', function(e){
+    $(this).find('.dropdown-menu').first().stop(true, true).slideDown({duration: 200});
+  });
+
+  $('[data-toggle="dropdown"]').parent().on('hide.bs.dropdown', function(e){
+    $(this).find('.dropdown-menu').first().stop(true, true).slideUp({duration: 200});
+  });
 });
