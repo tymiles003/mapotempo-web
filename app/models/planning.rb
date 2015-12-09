@@ -29,7 +29,7 @@ class Planning < ActiveRecord::Base
   validates :name, presence: true
   validates :vehicle_usage_set, presence: true
 
-  before_create :default_routes
+  before_create :default_routes, :update_zoning
   before_save :update_zoning
   before_save :update_vehicle_usage_set
 
