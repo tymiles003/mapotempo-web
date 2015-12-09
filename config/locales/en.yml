@@ -782,7 +782,10 @@ en:
       title: "Import stores"
       replace_help: "Replace stores with import ones. Overwrite all stores. In the opposite case an update of existing stores is made and the new ones are added."
       replace_confirm: "Delete all stores and their amendments to replace them with imported ones?"
-      file_help: "Import only CSV files."
+      csv:
+        title: "CSV File"
+        help: "Imports stores from CSV file. CSV files can be exported from spreadsheet or other softwares."
+        file_help: "Import only CSV files."
     index:
       title: "Listing stores"
       new: "New store"

@@ -1,25 +1,39 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
 
-<%= twitter_bootstrap_form_for(@import_csv, url: stores_import_csv_path, layout: :horizontal, multipart: true) do |f| %>
-  <%= render 'shared/error_messages', model: @import_csv %>
-  <%= f.file_field :file do %>
-    <p class="help-block"><%= t '.file_help' %></p>
-  <% end %>
-  <%= f.toggles t 'activemodel.attributes.stores_import.replace' do %>
-    <%= f.check_box :replace %>
-    <p class="help-block"><%= t '.replace_help' %></p>
-  <% end %>
-  <%= f.actions do %>
-    <%= f.submit t('all.verb.send'), {}, 'fa-upload' %>
-  <% end %>
-  <div class="form-group">
-    <div class="col-md-offset-2 col-md-6">
-      <a href="import_template.csv" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_csv' %></a>
-      <a href="import_template.excel" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_excel' %></a>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">
+      <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseCsv">
+        <%= t '.csv.title' %>
+      </a>
+    </h2>
+  </div>
+  <div id="collapseCsv" class="panel-collapse collapse in">
+    <div class="panel-body">
+      <p class="help-block"><%= t '.csv.help' %></p>
+      <%= twitter_bootstrap_form_for(@import_csv, url: stores_import_csv_path, layout: :horizontal, multipart: true) do |f| %>
+        <%= render 'shared/error_messages', model: @import_csv %>
+        <%= f.file_field :file do %>
+          <p class="help-block"><%= t '.csv.file_help' %></p>
+        <% end %>
+        <%= f.toggles t 'activemodel.attributes.stores_import.replace' do %>
+          <%= f.check_box :replace %>
+          <p class="help-block"><%= t '.replace_help' %></p>
+        <% end %>
+        <%= f.actions do %>
+          <%= f.submit t('all.verb.import'), {}, 'fa-upload' %>
+        <% end %>
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-6">
+            <a href="import_template.csv" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_csv' %></a>
+            <a href="import_template.excel" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_excel' %></a>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
-<% end %>
+</div>
 
 <div id="dialog-upload" title="<%= t 'import.dialog.title' %>" style="display:none">
   <p><%= t 'import.dialog.import_in_progress' %></p>

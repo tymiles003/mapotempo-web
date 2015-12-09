@@ -793,7 +793,10 @@ fr:
       title: "Importer des dépôts"
       replace_help: "Remplacer les dépôts par ceux de l'import. Efface et remplace tous les dépôts. Dans le cas contraire une mise à jour des dépôts existants est faite et les nouveaux sont ajoutés."
       replace_confirm: "Supprimer tous les dépôts et leurs modifications pour les remplacer par ceux importés ?"
-      file_help: "Import de fichier CSV uniquement."
+      csv:
+        title: "Fichier CSV"
+        help: "Importe les dépôts depuis un fichier CSV. Les fichiers CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels."
+        file_help: "Import de fichier CSV uniquement."
     index:
       title: "Liste dépôts"
       new: "Nouveau dépôt"
