@@ -44,7 +44,7 @@ class RouterOtp < Router
 
   def isochrone(lat, lng, size, speed_multiplicator)
     # No speed_multiplicator
-    Mapotempo::Application.config.otp.isochrone(url, ref, lat, lng, size, monday_morning)
+    Mapotempo::Application.config.otp.isochrone(url_time, ref, lat, lng, size, monday_morning)
   end
 
   private
