@@ -108,7 +108,9 @@ class Customer < ActiveRecord::Base
 
   def create_default_vehicle_usage_set
     vehicle_usage_sets.create(
-      name: I18n.t('vehicle_usage_sets.default.name')
+      name: I18n.t('vehicle_usage_sets.default.name'),
+      store_start: stores[0],
+      store_stop: stores[0]
     )
   end
 
