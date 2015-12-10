@@ -76,20 +76,24 @@ class V01::Destinations < Grape::API
       present destination, with: V01::Entities::Destination
     end
 
-    desc 'Import destinations by upload a CSV file or by JSON',
+    desc 'Import destinations by upload a CSV file, by JSON or from TomTom',
       nickname: 'importDestinations',
       params: V01::Entities::DestinationsImport.documentation
     put do
-      import = if params['destinations']
+      import = if params[:destinations]
         ImportJson.new(importer: ImporterDestinations.new(current_customer), replace: params[:replace], json: params[:destinations])
+      elsif params[:remote]
+        case params[:remote]
+          when 'tomtom' then ImportTomtom.new(importer: ImporterDestinations.new(current_customer), customer: current_customer, replace: params[:replace])
+        end
       else
         ImportCsv.new(importer: ImporterDestinations.new(current_customer), replace: params[:replace], file: params[:file])
       end
 
-      if import.valid? && import.import(true)
+      if import && import.valid? && import.import(true)
         status 204
       else
-        error!({error: import.errors.full_messages}, 422)
+        error!({error: import && import.errors.full_messages}, 422)
       end
     end
 

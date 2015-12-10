@@ -104,6 +104,24 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should create bulk from tomtom' do
+    begin
+      uri_template = Addressable::Template.new('https://soap.business.tomtom.com/{version}/addressService?wsdl')
+      stub_address_wsdl = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../', __FILE__) + '/lib/soap.business.tomtom.com/addressService.wsdl').read)
+
+      uri_template = Addressable::Template.new('https://soap.business.tomtom.com/{version}/addressService')
+      stub = stub_request(:post, uri_template).to_return(File.new(File.expand_path('../../../', __FILE__) + '/lib/soap.business.tomtom.com/showAddressReportResponse.xml').read)
+
+      assert_difference('Destination.count', 1) do
+        put api(), replace: false, remote: :tomtom
+        assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
+      end
+    ensure
+      remove_request_stub(stub)
+      remove_request_stub(stub_address_wsdl)
+    end
+  end
+
   test 'should update a destination' do
     @destination.name = 'new name'
     put api(@destination.id), @destination.attributes
