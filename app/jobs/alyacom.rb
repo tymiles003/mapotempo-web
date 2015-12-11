@@ -64,6 +64,6 @@ class Alyacom
         }
       }
     }.compact
-    AlyacomApi.createJobRoute(customer.alyacom_association, date, staff, waypoints)
+    AlyacomApi.createJobRoute(route.planning.customer.alyacom_association, date, staff, waypoints)
   end
 end
