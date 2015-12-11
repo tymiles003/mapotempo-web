@@ -79,7 +79,7 @@ class Otp
         requestTimespanHours: 2,
         radiusMeters: 500,
         nContours: 1,
-        contourSpacingMinutes: size,
+        contourSpacingMinutes: size / 60,
         crs: 'EPSG:2154', # FIXME France only
         fromPlace: [lat, lng].join(','),
         maxTransfers: 2,
