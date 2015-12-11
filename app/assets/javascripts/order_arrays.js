@@ -102,6 +102,9 @@ var order_arrays_edit = function(params) {
           url: '/api/0.1/order_arrays/' + order_array_id + '/orders/' + id + '.json',
           beforeSend: beforeSendWaiting,
           complete: completeWaiting,
+          success: function() {
+            select.select2('close');
+          },
           error: ajaxError
         });
 
