@@ -25,6 +25,7 @@ else
     json.distance number_to_human((route.distance || 0), units: :distance, precision: 3, format: '%n %u')
     json.size route.stops.size
     json.extract! route, :ref, :color, :size_active
+    json.color_fake route.color
     (json.quantity route.quantity) if !@planning.customer.enable_orders
     if route.vehicle_usage
       json.vehicle_usage_id route.vehicle_usage.id

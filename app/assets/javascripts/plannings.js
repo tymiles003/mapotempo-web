@@ -424,13 +424,16 @@ var plannings_edit = function(params) {
     }
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
-    $(".color_select").select2({
-      minimumResultsForSearch: -1,
-      templateSelection: templateSelectionColor,
-      templateResult: templateResultColor,
-      formatNoMatches: function() {
-        return formatNoMatches;
-      }
+    fake_select2($(".color_select"), function(select) {
+      select.select2({
+        minimumResultsForSearch: -1,
+        templateSelection: templateSelectionColor,
+        templateResult: templateResultColor,
+        formatNoMatches: function() {
+          return formatNoMatches;
+        }
+      }).select2("open");
+      select.next('.select2-container--bootstrap').addClass('input-sm');
     });
 
     var templateSelectionVehicles = function(state) {
@@ -453,14 +456,17 @@ var plannings_edit = function(params) {
     }
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
-    $(".vehicle_select").select2({
-      minimumResultsForSearch: -1,
-      data: vehicles_array,
-      templateSelection: templateSelectionVehicles,
-      templateResult: templateResultVehicles,
-      formatNoMatches: function() {
-        return formatNoMatches;
-      }
+    fake_select2($(".vehicle_select"), function(select) {
+      select.select2({
+        minimumResultsForSearch: -1,
+        data: vehicles_array,
+        templateSelection: templateSelectionVehicles,
+        templateResult: templateResultVehicles,
+        formatNoMatches: function() {
+          return formatNoMatches;
+        }
+      }).select2("open");
+      select.next('.select2-container--bootstrap').addClass('input-sm');
     });
 
     $.each(data.routes, function(i, route) {
@@ -683,6 +689,10 @@ var plannings_edit = function(params) {
         vehicle_select.trigger('change');
         var id = $(this).closest("[data-route_id]").attr("data-route_id");
         var color = this.value;
+        if (color)
+          $('.color_small', $('.vehicle_select', $(this).parent()).next()).hide();
+        else
+          $('.color_small', $('.vehicle_select', $(this).parent()).next()).show();
         $.ajax({
           type: "put",
           data: JSON.stringify({
