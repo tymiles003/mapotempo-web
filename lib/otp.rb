@@ -64,7 +64,7 @@ class Otp
       end
 
       result = [distance, time, trace]
-      @cache_result.write(key, String.new(result)) # String.new workaround waiting for RestClient 2.0
+      @cache_result.write(key, result)
     end
 
     result
