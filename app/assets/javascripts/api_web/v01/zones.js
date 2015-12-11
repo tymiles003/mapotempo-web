@@ -27,6 +27,7 @@ var api_web_v01_zones_index = function(params) {
     map_attribution = params.map_attribution,
     vehicles_map = params.vehicles_map,
     destinations = params.destinations,
+    destination_ids = params.destination_ids,
     vehicle_usage_set_id = params.vehicle_usage_set_id;
 
   var map = new L.Map('map', {
@@ -126,6 +127,7 @@ var api_web_v01_zones_index = function(params) {
   var paramsJson = {};
   if (zone_ids) paramsJson.ids = zone_ids.join(',');
   if (destinations) paramsJson.destinations = destinations;
+  if (destination_ids) paramsJson.destination_ids = destination_ids.join(',');
   if (vehicle_usage_set_id) paramsJson.vehicle_usage_set_id = vehicle_usage_set_id;
   var queryParam = $.param(paramsJson);
   if (queryParam) queryParam = '?' + queryParam;

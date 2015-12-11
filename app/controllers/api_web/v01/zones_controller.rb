@@ -30,6 +30,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     param :path, :zoning_id, :integer, :required, 'Zonning ids'
     param :query, :ids, :array, :optional, 'Zoning''s zones ids to be displayed, separated by commas', { 'items' => { 'type' => 'integer' } }
     param :query, :destinations, :boolean, :optional, 'Destinations displayed or not, no destinations by default'
+    param :query, :destination_ids, :array, :optional, 'Destination ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
     param :query, :vehicle_usage_set_id, :integer, :optional, 'VehicleUsageSet id (used to filter stores)'
     param :query, :planning_id, :integer, :optional, 'Planning id (used to filter stores)'
   end
@@ -41,8 +42,12 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     else
       @zoning.zones
     end
-    if params[:destinations] && ValueToBoolean.value_to_boolean(params[:destinations], true)
+    if params.key?(:destination_ids)
+      destination_ids = params[:destination_ids].split(',')
+      @destinations = current_user.customer.destinations.where(ParseIdsRefs.where(Destination, destination_ids))
+    elsif params[:destinations] && ValueToBoolean.value_to_boolean(params[:destinations], true)
       @destinations = current_user.customer.destinations
+      @destinations_all = true
     end
     @vehicle_usage_set = if params[:vehicle_usage_set_id]
        current_user.customer.vehicle_usage_sets.find(params[:vehicle_usage_set_id])
