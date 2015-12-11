@@ -585,7 +585,8 @@ var destinations_index = function(params, api) {
   var update = function(destination_id, destination, move) {
     var row = $('[data-destination_id=' + destination_id + ']'),
       destination = prepare_display_destination(destination);
-    $('select[name$=\\[tag_ids\\]\\[\\]]', row).select2('close');
+    if ($('select[name$=\\[tag_ids\\]\\[\\]]', row).data('select2'))
+      $('select[name$=\\[tag_ids\\]\\[\\]]', row).select2('close');
     $(row).replaceWith(SMT['destinations/show'](destination));
     row = $('[data-destination_id=' + destination_id + ']');
     wire(row);
