@@ -18,7 +18,9 @@
     <tr>
       <th><button id="add" type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
       <th><%= t 'activerecord.attributes.planning.name' %></th>
+      <% if @customer.enable_references %>
       <th><%= t 'activerecord.attributes.planning.ref' %></th>
+      <% end %>
       <th><%= t 'activerecord.attributes.planning.date' %></th>
       <th><%= t 'activerecord.attributes.planning.tags' %></th>
       <th></th>
@@ -30,7 +32,9 @@
       <tr>
         <td><%= check_box_tag("plannings[#{planning.id}]") %></td>
         <td><%= planning.name %></td>
+        <% if @customer.enable_references %>
         <td><%= planning.ref %></td>
+        <% end %>
         <td><%= planning.date && l(planning.date) %></td>
         <td>
         <% planning.tags.each{ |tag| %>

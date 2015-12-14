@@ -1,7 +1,9 @@
 <%= twitter_bootstrap_form_for(@destination, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: @destination %>
-  <%= f.text_field :ref do %>
-    <p class="help-block"><%= t '.ref_help' %></p>
+  <% if @destination.customer.enable_references %>
+    <%= f.text_field :ref do %>
+      <p class="help-block"><%= t '.ref_help' %></p>
+    <% end %>
   <% end %>
   <%= f.text_field :name %>
   <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>

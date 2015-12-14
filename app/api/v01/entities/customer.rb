@@ -49,6 +49,7 @@ class V01::Entities::Customer < Grape::Entity
   expose(:enable_alyacom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:alyacom_association, documentation: { type: String })
   expose(:profile_id, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
+  expose(:enable_references, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   # expose(:optimization_cluster_size)
   # expose(:optimization_time)
   # expose(:optimization_soft_upper_bound)

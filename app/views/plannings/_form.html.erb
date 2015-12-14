@@ -7,11 +7,13 @@
   <% else %>
     <%= f.hidden_field :vehicle_usage_set_id, value: @planning.customer.vehicle_usage_sets[0].id %>
   <% end %>
-  <% if @planning.id %>
-    <%= f.text_field :ref, t('activerecord.attributes.planning.ref_small') %>
-  <% else %>
-    <%= f.text_field :ref do %>
-      <p class="help-block"><%= t '.ref_help' %></p>
+  <% if @planning.customer.enable_references %>
+    <% if @planning.id %>
+      <%= f.text_field :ref, t('activerecord.attributes.planning.ref_small') %>
+    <% else %>
+      <%= f.text_field :ref do %>
+        <p class="help-block"><%= t '.ref_help' %></p>
+      <% end %>
     <% end %>
   <% end %>
   <% if @planning.customer.enable_orders && @planning.order_array %>

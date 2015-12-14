@@ -1,4 +1,5 @@
-json.extract! destination, :ref, :id, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, :tag_ids
+json.extract! destination, :id, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, :tag_ids
+json.ref destination.ref if @customer.enable_references
 json.take_over destination.take_over && destination.take_over.strftime('%H:%M:%S')
 json.open destination.open && destination.open.strftime('%H:%M')
 json.close destination.close && destination.close.strftime('%H:%M')

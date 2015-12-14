@@ -5,6 +5,7 @@ if @customer.job_destination_geocoding
     json.customer_id @customer.id
   end
 else
+  json.enable_references @customer.enable_references
   json.tags do
     json.array! @tags, :id, :label, :color, :icon
   end

@@ -392,7 +392,8 @@ var destinations_index = function(params, api) {
     default_city = params.default_city,
     default_country = params.default_country,
     take_over_default = params.take_over_default,
-    url_click2call =  params.url_click2call;
+    url_click2call =  params.url_click2call,
+    enable_references = params.enable_references;
 
   var map = L.map('map', {
     attributionControl: false
@@ -441,6 +442,7 @@ var destinations_index = function(params, api) {
       });
     });
     destination.tags = t;
+    destination.enable_references = enable_references;
     destination.i18n = mustache_i18n;
     if (destination.geocoding_accuracy) {
       if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocode_geocoder.accuracy_success %>) {

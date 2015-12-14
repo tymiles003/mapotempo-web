@@ -10,8 +10,10 @@
       <% end %>
       <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle]', @vehicle_usage.vehicle, layout: :horizontal do |f| %>
         <%= f.hidden_field :id %>
-        <%= f.text_field :ref do %>
-          <p class="help-block"><%= t 'vehicles.form.ref.help' %></p>
+        <% if @vehicle_usage.vehicle.customer.enable_references %>
+          <%= f.text_field :ref do %>
+            <p class="help-block"><%= t 'vehicles.form.ref.help' %></p>
+          <% end %>
         <% end %>
         <%= f.text_field :name %>
         <%= f.select :emission, [], Vehicle.emissions_table, { include_blank: t('web.form.empty_entry') }, {input_group: t('all.unit.kgco2e_l_html')} do %>

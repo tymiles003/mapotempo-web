@@ -145,6 +145,7 @@ fr:
         stores: "Dépôts"
         enable_orders: "Activer les commandes"
         enable_multi_vehicle_usage_sets: "Autoriser les multiples configurations de véhicules"
+        enable_references: "Montrer les references"
         test: "Test"
         jobs: "Tâches"
         optimization_cluster_size: "Taille des clusters d'optimisation"

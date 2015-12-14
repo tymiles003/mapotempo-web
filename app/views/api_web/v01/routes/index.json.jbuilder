@@ -12,7 +12,8 @@ json.routes @routes do |route|
   (json.locked true) if route.locked
   json.distance number_to_human((route.distance || 0), units: :distance, precision: 3, format: '%n %u')
   json.size route.stops.size
-  json.extract! route, :ref, :size_active
+  json.extract! route, :size_active
+  json.ref route.ref if @planning.customer.enable_references
   (json.quantity route.quantity) if !@planning.customer.enable_orders
   if route.vehicle_usage
     json.vehicle_id route.vehicle_usage.vehicle.id
@@ -43,7 +44,8 @@ json.routes @routes do |route|
     no_path |= stop.position? && route.vehicle_usage && !stop.trace
     (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
     json.stop_id stop.id
-    json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+    json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+    json.ref stop.ref if @planning.customer.enable_references
     (json.open stop.open.strftime('%H:%M')) if stop.open
     (json.close stop.close.strftime('%H:%M')) if stop.close
     (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60

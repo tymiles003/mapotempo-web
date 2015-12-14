@@ -25,6 +25,7 @@ class PlanningsController < ApplicationController
 
   def index
     @plannings = current_user.customer.plannings
+    @customer = current_user.customer
   end
 
   def show

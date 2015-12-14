@@ -2,7 +2,7 @@
   <td>
     <input id="destination_{{id}}" type="checkbox" value="1" name="destinations[{{id}}]"/>
   </td>
-  <td>
+  <td{{^enable_references}} style="display: none;"{{/enable_references}}>
     <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}" style="width:6em"/>
   </td>
   <td>

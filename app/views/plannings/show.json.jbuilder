@@ -60,7 +60,8 @@ else
       (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.edit_planning true
       json.stop_id stop.id
-      json.extract! stop, :ref, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+      json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+      json.ref stop.ref if @planning.customer.enable_references
       (json.open l(stop.open, format: :hour_minute)) if stop.open
       (json.close l(stop.close, format: :hour_minute)) if stop.close
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
