@@ -38,6 +38,10 @@ class RouterOtp < Router
     }
   end
 
+  def time?
+    true
+  end
+
   def isochrone?
     true
   end

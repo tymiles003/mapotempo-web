@@ -32,16 +32,29 @@ class RouterOsrm < Router
     time_multiplicator = 1.0 / speed_multiplicator
     row, column = pack_vector(row, column)
     vector = row != column ? row + column : row
-    matrix = Mapotempo::Application.config.osrm.matrix(send('url_' + mode.to_s), vector)
-    if row != column
-      matrix = matrix[0..row.size - 1].collect{ |l|
-        l[row.size..-1]
+    url = send('url_' + mode.to_s)
+    if !url
+      nil
+    else
+      matrix = Mapotempo::Application.config.osrm.matrix(url, vector)
+      if row != column
+        matrix = matrix[0..row.size - 1].collect{ |l|
+          l[row.size..-1]
+        }
+      end
+      matrix = unpack_vector(row, column, matrix)
+      matrix.map{ |row|
+        row.map{ |v| [v, v * time_multiplicator] }
       }
     end
-    matrix = unpack_vector(row, column, matrix)
-    matrix.map{ |row|
-      row.map{ |v| [v, v * time_multiplicator] }
-    }
+  end
+
+  def time?
+    !url_time.nil?
+  end
+
+  def distance?
+    !url_distance.nil?
   end
 
   def isochrone?

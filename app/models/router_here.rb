@@ -35,4 +35,8 @@ class RouterHere < Router
       }
     }
   end
+
+  def time?
+    true
+  end
 end

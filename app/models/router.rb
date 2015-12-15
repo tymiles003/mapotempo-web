@@ -21,6 +21,14 @@ class Router < ActiveRecord::Base
   auto_strip_attributes :name, :url_time, :url_distance, :mode
   validates :name, presence: true
 
+  def time?
+    false
+  end
+
+  def distance?
+    false
+  end
+
   def isochrone?
     false
   end
