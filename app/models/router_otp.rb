@@ -28,7 +28,7 @@ class RouterOtp < Router
 
   def matrix(row, column, speed_multiplicator, mode = nil, &block)
     # No speed_multiplicator
-    total = positions**2
+    total = row.size * column.size
     row.collect{ |v1|
       column.collect{ |v2|
         distance, time, _trace = Mapotempo::Application.config.otp.compute(url_time, ref, v1[0], v1[1], v2[0], v2[1], monday_morning)
