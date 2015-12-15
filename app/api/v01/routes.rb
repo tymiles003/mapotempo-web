@@ -59,7 +59,7 @@ class V01::Routes < Grape::API
           nickname: 'getRoute',
           entity: V01::Entities::Route
         params do
-          requires :id, type: Integer
+          requires :id, type: String, desc: ID_DESC
         end
         get ':id' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
@@ -72,7 +72,7 @@ class V01::Routes < Grape::API
           params: V01::Entities::Route.documentation.slice(:hidden, :locked, :color),
           entity: V01::Entities::Route
         params do
-          requires :id, type: Integer
+          requires :id, type: String, desc: ID_DESC
         end
         put ':id' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
@@ -88,7 +88,7 @@ class V01::Routes < Grape::API
           nickname: 'activationStops',
           entity: V01::Entities::Route
         params do
-          requires :id, type: Integer
+          requires :id, type: String, desc: ID_DESC
           requires :active, type: String, values: ['all', 'reverse', 'none']
         end
         patch ':id/active/:active' do
@@ -105,7 +105,7 @@ class V01::Routes < Grape::API
           detail: 'Set a new A route (or vehicle) for a destination which was in a previous B route in the same planning.',
           nickname: 'moveDestinations'
         params do
-          requires :id, type: String
+          requires :id, type: String, desc: ID_DESC
           requires :destination_ids, type: Array[Integer], documentation: {param_type: 'form'}
         end
         patch ':id/destinations/moves' do
@@ -134,7 +134,7 @@ class V01::Routes < Grape::API
           detail: 'Get the shortest route in time.',
           nickname: 'optimizeRoute'
         params do
-          requires :id, type: Integer
+          requires :id, type: String, desc: ID_DESC
         end
         patch ':id/optimize' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
