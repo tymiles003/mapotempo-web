@@ -30,7 +30,7 @@ var api_web_v01_zones_index = function(params) {
     destination_ids = params.destination_ids,
     vehicle_usage_set_id = params.vehicle_usage_set_id;
 
-  var map_layer;
+  var map_layer, map_baselayers = {}, map_overlays = {};
   for (layer_name in map_layers) {
     var layer = map_layers[layer_name];
     var l = L.tileLayer(layer.url, {
@@ -41,14 +41,17 @@ var api_web_v01_zones_index = function(params) {
     if (layer.default) {
       map_layer = l;
     }
-    map_layers[layer_name] = l;
+    if (layer.overlay)
+      map_overlays[layer_name] = l;
+    else
+      map_baselayers[layer_name] = l;
   };
 
   var map = new L.Map('map', {
     attributionControl: false,
     layers: map_layer
   }).setView([map_lat, map_lng], 13);
-  L.control.layers(map_layers, null, {position: 'topleft'}).addTo(map);
+  L.control.layers(map_baselayers, map_overlays, {position: 'topleft'}).addTo(map);
   L.control.attribution({prefix: false}).addTo(map);
   L.control.scale({
     imperial: false
