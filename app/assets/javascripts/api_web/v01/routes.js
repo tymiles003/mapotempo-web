@@ -21,15 +21,12 @@ var api_web_v01_routes_index = function(params) {
   progressBar.advanceTo(25);
 
   var planning_id = params.planning_id,
-    map_layer_url = params.map_layer_url,
+    map_layers = params.map_layers,
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
     route_ids = params.route_ids,
     vehicles_map = params.vehicles_map,
-    map = new L.Map('map', {
-      attributionControl: false
-    }).setView([map_lat, map_lng], 13),
     markers = {},
     stores = {},
     layers = {},
@@ -37,8 +34,26 @@ var api_web_v01_routes_index = function(params) {
     routes_layers,
     routes_layers_cluster;
 
-  L.control.attribution({prefix: false}).addTo(map);
+  var map_layer;
+  for (layer_name in map_layers) {
+    var layer = map_layers[layer_name];
+    var l = L.tileLayer(layer.url, {
+      maxZoom: 18,
+      attribution: layer.attribution
+    });
+    l.name = layer.name;
+    if (layer.default) {
+      map_layer = l;
+    }
+    map_layers[layer_name] = l;
+  };
 
+  var map = new L.Map('map', {
+    attributionControl: false,
+    layers: map_layer
+  }).setView([map_lat, map_lng], 13);
+  L.control.layers(map_layers, null, {position: 'topleft'}).addTo(map);
+  L.control.attribution({prefix: false}).addTo(map);
   L.control.scale({
     imperial: false
   }).addTo(map);
@@ -72,11 +87,6 @@ var api_web_v01_routes_index = function(params) {
       map.addLayer(routes_layers);
     }
   });
-
-  L.tileLayer(map_layer_url, {
-    maxZoom: 18,
-    attribution: map_attribution
-  }).addTo(map);
 
   var display_planning = function(data) {
     $.each(data.routes, function(i, route) {

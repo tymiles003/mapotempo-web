@@ -32,28 +32,24 @@ var zonings_edit = function(params) {
   sidebar.open('zoning');
 
   var map_layer;
-  map_layers = $.map(map_layers, function(layer, i) {
+  for (layer_name in map_layers) {
+    var layer = map_layers[layer_name];
     var l = L.tileLayer(layer.url, {
       maxZoom: 18,
       attribution: layer.attribution
     });
     l.name = layer.name;
-    if(layer.default) {
+    if (layer.default) {
       map_layer = l;
     }
-    return l;
-  });
-
-  var map_layer_names = {};
-  $.each(map_layers, function(i, layer) {
-    map_layer_names[layer.name] = layer;
-  });
+    map_layers[layer_name] = l;
+  };
 
   var map = new L.Map('map', {
     attributionControl: false,
     layers: map_layer
   }).setView([map_lat, map_lng], 13);
-  //L.control.layers(map_layer_names).addTo(map);
+  L.control.layers(map_layers, null, {position: 'topleft'}).addTo(map);
   L.control.attribution({prefix: false, position: 'bottomleft'}).addTo(map);
   L.control.scale({
     imperial: false

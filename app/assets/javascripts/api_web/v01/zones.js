@@ -21,7 +21,7 @@ var api_web_v01_zones_index = function(params) {
 
   var zoning_id = params.zoning_id,
     zone_ids = params.zone_ids,
-    map_layer_url = params.map_layer_url,
+    map_layers = params.map_layers,
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
@@ -30,17 +30,28 @@ var api_web_v01_zones_index = function(params) {
     destination_ids = params.destination_ids,
     vehicle_usage_set_id = params.vehicle_usage_set_id;
 
+  var map_layer;
+  for (layer_name in map_layers) {
+    var layer = map_layers[layer_name];
+    var l = L.tileLayer(layer.url, {
+      maxZoom: 18,
+      attribution: layer.attribution
+    });
+    l.name = layer.name;
+    if (layer.default) {
+      map_layer = l;
+    }
+    map_layers[layer_name] = l;
+  };
+
   var map = new L.Map('map', {
-    attributionControl: false
+    attributionControl: false,
+    layers: map_layer
   }).setView([map_lat, map_lng], 13);
+  L.control.layers(map_layers, null, {position: 'topleft'}).addTo(map);
   L.control.attribution({prefix: false}).addTo(map);
   L.control.scale({
     imperial: false
-  }).addTo(map);
-
-  L.tileLayer(map_layer_url, {
-    maxZoom: 18,
-    attribution: map_attribution
   }).addTo(map);
 
   var caption = L.DomUtil.get('zones-caption');

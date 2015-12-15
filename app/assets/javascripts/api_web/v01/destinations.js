@@ -96,7 +96,7 @@ var api_web_v01_destinations_index = function(params, api) {
   var progressBar = Turbolinks.enableProgressBar();
   progressBar.advanceTo(25);
 
-  var map_layer_url = params.map_layer_url,
+  var map_layers = params.map_layers,
     map_lat = params.map_lat,
     map_lng = params.map_lng,
     map_attribution = params.map_attribution,
@@ -104,14 +104,26 @@ var api_web_v01_destinations_index = function(params, api) {
     display_home = params.display_home,
     method = params.method;
 
+  var map_layer;
+  for (layer_name in map_layers) {
+    var layer = map_layers[layer_name];
+    var l = L.tileLayer(layer.url, {
+      maxZoom: 18,
+      attribution: layer.attribution
+    });
+    l.name = layer.name;
+    if (layer.default) {
+      map_layer = l;
+    }
+    map_layers[layer_name] = l;
+  };
+
   var map = L.map('map', {
-    attributionControl: false
+    attributionControl: false,
+    layers: map_layer
   }).setView([map_lat, map_lng], 13);
+  L.control.layers(map_layers, null, {position: 'topleft'}).addTo(map);
   L.control.attribution({prefix: false}).addTo(map);
-  L.tileLayer(map_layer_url, {
-    maxZoom: 18,
-    attribution: map_attribution
-  }).addTo(map);
 
   L.control.scale({
     imperial: false

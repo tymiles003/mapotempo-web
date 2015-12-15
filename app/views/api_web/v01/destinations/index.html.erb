@@ -1,7 +1,15 @@
 <div id="map"></div>
 <%
+layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&:id).uniq.collect{ |layer|
+  {
+    name: layer.name,
+    url: request.ssl? ? layer.urlssl : layer.url,
+    attribution: layer.map_attribution,
+    default: layer == current_user.layer
+  }
+}
 controller.js(
-  map_layer_url: request.ssl? ? current_user.layer.urlssl : current_user.layer.url,
+  map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
   map_lat: @customer.default_position[:lat],
   map_lng: @customer.default_position[:lng],
   map_attribution: current_user.layer.map_attribution,
