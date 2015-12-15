@@ -672,8 +672,9 @@ en:
       send_to_route_help: "Move this stop at the end of a route"
       wait: "Waiting time:"
       popup:
-        open: "Time window open:"
-        close: "Time window close:"
+        open_close: "Time window:"
+        open: "open"
+        close: "close"
         time: "Arrival:"
         quantity: "Quantity:"
         orders: "Orders:"

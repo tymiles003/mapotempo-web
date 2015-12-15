@@ -21,19 +21,14 @@
 
 [data-controller='plannings'] {
 
-  .label {
-    display: inline-block;
-    margin-right: 4px;
-    width: 24px;
-    font-weight: 700;
-  }
-
-  .label-empty {
-    visibility: hidden;
-  }
-
   #map {
     min-height: 200px;
+  }
+
+  .leaflet-popup-content {
+    .route-select {
+      cursor: pointer;
+    }
   }
 
   .sidebar.extended {
@@ -111,6 +106,14 @@
     .route {
       list-style-type: none;
       margin-bottom: 1em;
+
+      ul.ui-state-error {
+        margin-top: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-color: #F5ADAD;
+        border-radius: 5px;
+      }
 
       .sortable {
         min-height: 10px;

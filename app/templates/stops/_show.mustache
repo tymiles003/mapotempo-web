@@ -1,73 +1,107 @@
 {{#stop}}
-{{#planning_id}}
+{{#route_id}}
 <div data-route_id="{{route_id}}" data-stop_id="{{stop_id}}">
-{{^store}}
-<div class="btn-group pull-right stop-tools">
-  {{#automatic_insert}}
-  <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
-  {{/automatic_insert}}
-  <a href="/destinations/{{#destination}}{{id}}{{/destination}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
-  <div class="btn-group">
-    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.send_to_route_help{{/i18n}}"><i class="fa fa-truck fa-fw"></i><span class="caret"></span></button>
-    <ul class="dropdown-menu pull-right" role="menu">
-      {{#routes}}
-        {{^vehicle}}
-          <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
-        {{/vehicle}}
-        {{#vehicle}}
-          <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"><div class="color_small" style="background:{{color}}"></div> {{name}}</a></li>
-        {{/vehicle}}
-      {{/routes}}
-    </ul>
+{{^one_route}}
+<div{{#planning_id}}{{^store}}{{^vehicle_name}} class="ui-state-error"{{/vehicle_name}}{{/store}}{{/planning_id}}>
+  {{#planning_id}}
+  {{^store}}
+  {{#edit_planning}}
+  <span class="dropdown route-select">
+  <span class="dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.send_to_route_help{{/i18n}}">
+  {{/edit_planning}}
+  {{/store}}
+  {{/planning_id}}
+  {{#vehicle_name}}{{vehicle_name}}{{/vehicle_name}}
+  {{^vehicle_name}}{{#i18n}}plannings.edit.out_of_route{{/i18n}}{{/vehicle_name}}
+  {{#planning_id}}
+  {{^store}}
+  {{#edit_planning}}
+  <span class="caret"></span>
+  </span>
+  <ul class="dropdown-menu" role="menu">
+    {{#routes}}
+      {{^vehicle}}
+        <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
+      {{/vehicle}}
+      {{#vehicle}}
+        <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"><div class="color_small" style="background:{{color}}"></div> {{name}}</a></li>
+      {{/vehicle}}
+    {{/routes}}
+  </ul>
+  </span>
+  <div class="btn-group stop-tools">
+    {{#automatic_insert}}
+    <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+    {{/automatic_insert}}
   </div>
+  {{/edit_planning}}
+  {{/store}}
+  {{/planning_id}}
 </div>
-{{/store}}
-{{/planning_id}}
-<p>
-  {{#vehicle_name}}{{vehicle_name}}</br>{{/vehicle_name}}
-  {{#number}}<span class="number label label-default{{^active}} label-empty{{/active}}" style="background-color: {{color}};">{{number}}</span>{{/number}}
-  {{#edit_planning}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/edit_planning}}
-  <b>{{#ref}}{{ref}} {{/ref}}{{name}}</b></br>
-  {{street}}</br>
+<hr>
+{{/one_route}}
+{{/route_id}}
+<div>
+  {{#planning_id}}
+  {{^store}}
+  {{#edit_planning}}
+  <div class="btn-group pull-right stop-tools">
+    <a href="/destinations/{{#destination}}{{id}}{{/destination}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+  </div>
+  {{/edit_planning}}
+  {{#vehicle_name}}<span class="number label label-default" style="background-color: {{color}};">{{#number}}{{number}}{{/number}}{{^number}}-{{/number}}</span>{{/vehicle_name}}
+  {{/store}}
+  {{/planning_id}}
+  {{#edit_planning}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/edit_planning}}
+  <b>{{#ref}}{{ref}} {{/ref}}{{name}}</b><br/>
+  {{#street}}{{street}}<br/>{{/street}}
   {{#detail}}
-    {{detail}}</br>
+    {{detail}}<br/>
   {{/detail}}
   {{postalcode}} {{city}} {{country}}
-</p>
+  {{#phone_number}}
+    <br/><i class="fa fa-phone fa-fw"></i><a class="phone_number" target="click2call_iframe" href={{phone_number}}>{{phone_number}}</a>
+  {{/phone_number}}
+  {{#comment}}
+    <p class="wrapped-text">{{comment}}</p>
+  {{/comment}}
+</div>
+{{^store}}
+<hr>
 <ul>
-  {{#wait_time}}<li>{{#i18n}}plannings.edit.wait{{/i18n}} <i class="fa fa-clock-o fa-fw"></i> {{wait_time}}</li>{{/wait_time}}
-  {{#open}}<li>{{#i18n}}plannings.edit.popup.open{{/i18n}} {{open}}</li>{{/open}}
-  {{#close}}<li>{{#i18n}}plannings.edit.popup.close{{/i18n}} {{close}}</li>{{/close}}
-  {{#time}}<li> {{#i18n}}plannings.edit.popup.time{{/i18n}} <i class="fa fa-clock-o fa-fw"></i> {{time}}</li>{{/time}}
-  {{#quantity}}<li>{{#i18n}}plannings.edit.popup.quantity{{/i18n}} <i class="fa fa-archive fa-fw"></i> {{quantity}}</li>{{/quantity}}
-  {{#orders}}<li>{{#i18n}}plannings.edit.popup.orders{{/i18n}} <i class="fa fa-cube fa-fw"></i> {{orders}}</li>{{/orders}}
-  {{#duration}}<li>{{#i18n}}plannings.edit.popup.duration{{/i18n}} <i class="fa fa-clock-o fa-fw"></i> {{duration}}</li>{{/duration}}
+  {{#open_close}}
+    <li><i class="fa fa-check-circle-o fa-fw"></i> {{#i18n}}plannings.edit.popup.open_close{{/i18n}}
+      {{open}} {{^close}}({{#i18n}}plannings.edit.popup.open{{/i18n}}){{/close}}
+      {{#open}}{{#close}}-{{/close}}{{/open}}
+      {{close}} {{^open}}({{#i18n}}plannings.edit.popup.close{{/i18n}}){{/open}}
+    </li>
+  {{/open_close}}
+  {{#wait_time}}<li><i class="fa fa-pause-circle-o fa-fw"></i> {{#i18n}}plannings.edit.wait{{/i18n}} {{wait_time}}</li>{{/wait_time}}
+  {{#time}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.time{{/i18n}} {{time}}</li>{{/time}}
+  {{#duration}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.duration{{/i18n}} <i class="fa fa-clock-o fa-fw"></i> {{duration}}</li>{{/duration}}
+  {{#quantity}}<li><i class="fa fa-archive fa-fw"></i> {{#i18n}}plannings.edit.popup.quantity{{/i18n}} {{quantity}}</li>{{/quantity}}
+  {{#orders}}<li><i class="fa fa-cube fa-fw"></i> {{#i18n}}plannings.edit.popup.orders{{/i18n}} {{orders}}</li>{{/orders}}
   {{#destination}}
-    {{#tags_present}}<li>{{#i18n}}plannings.edit.popup.tags{{/i18n}} {{#tags}}<i class="fa fa-tag fa-fw"></i> {{label}} {{/tags}}</li>{{/tags_present}}
+    {{#tags_present}}<li><i class="fa fa-tag fa-fw"></i> {{#i18n}}plannings.edit.popup.tags{{/i18n}} {{#tags}}{{label}} {{/tags}}</li>{{/tags_present}}
   {{/destination}}
 </ul>
-{{#comment}}
-  <p class="wrapped-text">{{comment}}</p>
-{{/comment}}
-{{#phone_number}}
-  <p class="wrapped-text"><i class="fa fa-phone fa-fw"></i><a class="phone_number" target="click2call_iframe" href={{phone_number}}>{{phone_number}}</a></p>
-{{/phone_number}}
 {{#error}}
   <ul class="ui-state-error">
     {{#out_of_window}}
-      <li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_window{{/i18n}}</li>
+      <li><i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.error.out_of_window_help{{/i18n}}"></i> {{#i18n}}plannings.edit.error.out_of_window{{/i18n}}</li>
     {{/out_of_window}}
     {{#out_of_capacity}}
-      <li><i class="fa fa-archive fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_capacity{{/i18n}}</li>
+      <li><i class="fa fa-archive fa-fw" title="{{#i18n}}plannings.edit.error.out_of_capacity_help{{/i18n}}"></i> {{#i18n}}plannings.edit.error.out_of_capacity{{/i18n}}</li>
     {{/out_of_capacity}}
     {{#out_of_drive_time}}
-      <li><i class="fa fa-power-off fa-fw"></i> {{#i18n}}plannings.edit.error.out_of_drive_time{{/i18n}}</li>
+      <li><i class="fa fa-power-off fa-fw title="{{#i18n}}plannings.edit.error.out_of_drive_time_help{{/i18n}}""></i> {{#i18n}}plannings.edit.error.out_of_drive_time{{/i18n}}</li>
     {{/out_of_drive_time}}
     {{#no_path}}
-      <li><i class="fa fa-road fa-fw"></i> {{#i18n}}plannings.edit.error.no_path{{/i18n}}</li>
+      <li><i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i> {{#i18n}}plannings.edit.error.no_path{{/i18n}}</li>
     {{/no_path}}
   </ul>
 {{/error}}
+{{/store}}
 {{#planning_id}}
 </div>
 {{/planning_id}}

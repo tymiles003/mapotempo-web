@@ -86,48 +86,7 @@ var api_web_v01_routes_index = function(params) {
     });
 
     data.i18n = mustache_i18n;
-    data.planning_id = data.id;
     $("#planning").html(SMT['plannings/edit'](data));
-
-
-    var stores_marker = L.featureGroup();
-    stores = {};
-    $.each(data.stores, function(i, store) {
-      store.store = true;
-      store.planning_id = data.planning_id;
-      if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
-        var m = L.marker(new L.LatLng(store.lat, store.lng), {
-          icon: L.icon({
-            iconUrl: '/images/marker-home' + (store.color ? ('-' + store.color.substr(1)) : '') + '.svg',
-            iconSize: new L.Point(32, 32),
-            iconAnchor: new L.Point(16, 16),
-            popupAnchor: new L.Point(0, -12)
-          })
-        }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
-          minWidth: 200,
-          autoPan: false
-        });
-        m.on('mouseover', function(e) {
-          m.openPopup();
-        }).on('mouseout', function(e) {
-          if (!m.click) {
-            m.closePopup();
-          }
-        }).off('click').on('click', function(e) {
-          if (m.click) {
-            m.closePopup();
-          } else {
-            m.click = true;
-            m.openPopup();
-          }
-        }).on('popupclose', function(e) {
-          m.click = false;
-        });
-        stores[store.id] = m;
-      }
-    });
-    stores_marker.addTo(map);
-
 
     $.each(data.routes, function(i, route) {
       var color = route.vehicle ? route.vehicle.color : '#707070';
@@ -184,6 +143,8 @@ var api_web_v01_routes_index = function(params) {
           stop.vehicle_name = vehicle_name;
           stop.route_id = route.route_id;
           stop.routes = data.routes;
+          if ((data.routes && data.routes.length == 1) || (route_ids && route_ids.length == 1))
+            stop.one_route = true;
           stop.planning_id = data.planning_id;
           var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
             icon: new L.NumberedDivIcon({
@@ -236,6 +197,45 @@ var api_web_v01_routes_index = function(params) {
       layers_cluster[route.route_id] = L.featureGroup();
     });
     display_planning(data);
+
+    var stores_marker = L.featureGroup();
+    stores = {};
+    $.each(data.stores, function(i, store) {
+      store.store = true;
+      store.planning_id = data.planning_id;
+      if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
+        var m = L.marker(new L.LatLng(store.lat, store.lng), {
+          icon: L.icon({
+            iconUrl: '/images/marker-home' + (store.color ? ('-' + store.color.substr(1)) : '') + '.svg',
+            iconSize: new L.Point(32, 32),
+            iconAnchor: new L.Point(16, 16),
+            popupAnchor: new L.Point(0, -12)
+          })
+        }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
+          minWidth: 200,
+          autoPan: false
+        });
+        m.on('mouseover', function(e) {
+          m.openPopup();
+        }).on('mouseout', function(e) {
+          if (!m.click) {
+            m.closePopup();
+          }
+        }).off('click').on('click', function(e) {
+          if (m.click) {
+            m.closePopup();
+          } else {
+            m.click = true;
+            m.openPopup();
+          }
+        }).on('popupclose', function(e) {
+          m.click = false;
+        });
+        stores[store.id] = m;
+      }
+    });
+    stores_marker.addTo(map);
+
     var bounds = routes_layers.getBounds();
     if (bounds && bounds.isValid()) {
       map.fitBounds(bounds.pad(1.1), {

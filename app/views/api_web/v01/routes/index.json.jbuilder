@@ -46,11 +46,12 @@ json.routes @routes do |route|
     json.stop_id stop.id
     json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
     json.ref stop.ref if @planning.customer.enable_references
+    json.open_close stop.open || stop.close
     (json.open stop.open.strftime('%H:%M')) if stop.open
     (json.close stop.close.strftime('%H:%M')) if stop.close
     (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
     (json.geocoded true) if stop.position?
-    (json.no_path true) if stop.position? && route.vehicle && !stop.trace
+    (json.no_path true) if stop.position? && route.vehicle_usage && !stop.trace
     (json.time stop.time.strftime('%H:%M')) if stop.time
     (json.active true) if stop.active
     (json.number number += 1) if route.vehicle_usage && stop.active

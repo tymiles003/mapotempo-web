@@ -686,8 +686,9 @@ fr:
       send_to_route_help: "Envoyer cet arrêt à la fin d'une tournée"
       wait: "Temps d'attente :"
       popup:
-        open: "Plage horaire début : "
-        close: "Plage horaire fin : "
+        open_close: "Plage horaire : "
+        open: "début"
+        close: "fin"
         time: "Passage : "
         quantity: "Quantité : "
         orders: "Commandes : "

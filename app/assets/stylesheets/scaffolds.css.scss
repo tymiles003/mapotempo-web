@@ -138,7 +138,38 @@ span.color[data-color=''][data-selected]:after {
   padding-left: 2px;
 }
 
+.leaflet-popup-content .ui-state-error {
+  border: 0px;
+}
 
+[data-controller='plannings'][data-action='edit'],
+[data-controller='plannings'][data-action='update'],
+[data-controller='api_web_v01_destinations'][data-action='index'],
+[data-controller='api_web_v01_routes'][data-action='index'],
+[data-controller='api_web_v01_zones'][data-action='index'] {
+  .number {
+    vertical-align: text-top;
+  }
+
+  .label {
+    display: inline-block;
+    margin-right: 4px;
+    width: 24px;
+    font-weight: 700;
+  }
+
+  .label-empty {
+    visibility: hidden;
+  }
+
+  .leaflet-popup-content {
+    ul {
+      list-style-type: none;
+      margin: 0px;
+      padding: 5px 10px;
+    }
+  }
+}
 
 [data-controller='plannings'][data-action='edit'],
 [data-controller='plannings'][data-action='update'],

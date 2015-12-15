@@ -47,6 +47,11 @@
     padding: 3px 5px;
 }
 
+input[type="radio"], input[type="checkbox"] {
+  vertical-align: sub;
+  margin-right: 3px;
+}
+
 .input-group-addon.input-sm {
     height: 25px;
     padding: 0 5px;
