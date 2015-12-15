@@ -17,7 +17,7 @@
 #
 class Tomtom
 
-  def self.fetch_device_id(customer)
+  def self.fetch_devices(customer)
     Mapotempo::Application.config.tomtom.showObjectReport(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password)
   end
 
