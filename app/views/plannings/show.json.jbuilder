@@ -52,6 +52,7 @@ else
       end
     }
     json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
+      duration = nil
       out_of_window |= stop.out_of_window
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
@@ -98,7 +99,7 @@ else
           else
             json.extract! destination, :quantity
           end
-          (json.duration l(destination.take_over, format: :hour_minute_second)) if destination.take_over
+          duration = l(destination.take_over, format: :hour_minute_second) if destination.take_over
           color = destination.tags.find(&:color)
           (json.color color.color) if color
           icon = destination.tags.find(&:icon)
@@ -106,12 +107,13 @@ else
         end
       elsif stop.is_a?(StopRest)
         json.rest do
-          (json.duration l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second)) if route.vehicle_usage.default_rest_duration
+          duration = l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second) if route.vehicle_usage.default_rest_duration
           (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
           (json.geocoded true) if !route.vehicle_usage.default_store_rest.nil? && !route.vehicle_usage.default_store_rest.lat.nil? && !route.vehicle_usage.default_store_rest.lng.nil?
           (json.error true) if !route.vehicle_usage.default_store_rest.nil? && (route.vehicle_usage.default_store_rest.lat.nil? || route.vehicle_usage.default_store_rest.lng.nil?)
         end
       end
+      json.duration = duration if duration
     end
     json.store_stop do
       json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng

@@ -36,6 +36,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
   end
 
   def index
+    @customer = current_user.customer
     @zones = if params.key?(:ids)
       ids = params[:ids].split(',')
       @zoning.zones.select{ |zone| ids.include?(zone.id.to_s) }

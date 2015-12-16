@@ -134,12 +134,20 @@ span.color[data-color=''][data-selected]:after {
   padding-left: 2px;
 }
 
-.leaflet-popup-content .ui-state-error {
-  border: 0px;
+.leaflet-popup-content {
+  .ui-state-error {
+    border: 0px;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 5px 10px;
+  }
 }
 
 [data-controller='plannings'][data-action='edit'],
 [data-controller='plannings'][data-action='update'],
+[data-controller='zonings'][data-action='edit'],
 [data-controller='api_web_v01_destinations'][data-action='index'],
 [data-controller='api_web_v01_routes'][data-action='index'],
 [data-controller='api_web_v01_zones'][data-action='index'] {
@@ -156,14 +164,6 @@ span.color[data-color=''][data-selected]:after {
 
   .label-empty {
     visibility: hidden;
-  }
-
-  .leaflet-popup-content {
-    ul {
-      list-style-type: none;
-      margin: 0px;
-      padding: 5px 10px;
-    }
   }
 }
 

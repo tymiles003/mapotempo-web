@@ -37,6 +37,7 @@ json.routes @routes do |route|
     end
   }
   json.stops route.stops do |stop|
+    duration = nil
     out_of_window |= stop.out_of_window
     out_of_capacity |= stop.out_of_capacity
     out_of_drive_time |= stop.out_of_drive_time
@@ -81,7 +82,7 @@ json.routes @routes do |route|
         else
           json.extract! destination, :quantity
         end
-        (json.duration destination.take_over.strftime('%H:%M:%S')) if destination.take_over
+        duration = destination.take_over.strftime('%H:%M:%S') if destination.take_over
         color = destination.tags.find(&:color)
         (json.color color.color) if color
         icon = destination.tags.find(&:icon)
@@ -89,10 +90,11 @@ json.routes @routes do |route|
       end
     elsif stop.is_a?(StopRest)
       json.rest do
-        (json.duration route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S')) if route.vehicle_usage.default_rest_duration
+        duration = route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S') if route.vehicle_usage.default_rest_duration
         (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
       end
     end
+    json.duration duration if duration
   end
   json.store_stop do
     json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
