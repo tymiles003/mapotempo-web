@@ -19,7 +19,7 @@
         <td><%= vehicle_usage.vehicle.router && vehicle_usage.vehicle.router.name %></td>
         <td><% if !vehicle_usage.vehicle.emission.nil? %><%= vehicle_usage.vehicle.emission %>&nbsp;<%= t 'all.unit.kgco2e_l_html' %><% end %></td>
         <td><% if !vehicle_usage.vehicle.consumption.nil? %><%= vehicle_usage.vehicle.consumption %>&nbsp;<%= t 'all.unit.l_100km' %><% end %></td>
-        <td><%= vehicle_usage.vehicle.capacity %></td>
+        <td><%= vehicle_usage.vehicle.capacity %>&nbsp;<%= vehicle_usage.vehicle.capacity_unit %></td>
         <td>
           <% if vehicle_usage.store_start || vehicle_usage.store_stop %>
             <% if vehicle_usage.default_store_start %>

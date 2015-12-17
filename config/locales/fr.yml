@@ -301,6 +301,7 @@ fr:
         emission: "Émissions"
         consumption: "Consommation"
         capacity: "Capacité"
+        capacity_unit: "Unité de la capacité"
         color: "Couleur"
         open: "Horaire début"
         close: "Horaire fin"
@@ -878,6 +879,8 @@ fr:
         help: "Consommation moyenne aux 100 km en litres de carburant"
       capacity:
         help: "Capacité maximum du véhicule"
+      capacity_unit:
+        help: "Unité de la capacité"
       router:
         default: "Défaut"
         help: "Forcer l'utilisation de ce calculateur d'itinéraire"

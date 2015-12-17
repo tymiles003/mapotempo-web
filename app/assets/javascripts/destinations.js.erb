@@ -823,6 +823,14 @@ var destinations_index = function(params, api) {
         .on('mouseup', function() {
           return false;
         });
+
+        $('.index_toggle_selection').click(function() {
+          $('tr.destination').not('.filtered').each(function(idx, row) {
+            $('input:checkbox', row).each(function() {
+              this.checked = !this.checked;
+            });
+          });
+        });
     });
 
     var tableOptions = {

@@ -297,6 +297,7 @@ en:
         emission: "Emission"
         consumption: "Consumption"
         capacity: "Capacity"
+        capacity_unit: "Capacity unit"
         color: "Color"
         tomtom_id: "TomTom ID"
         masternaut_ref: "Masternaut vehicle ref."
@@ -862,6 +863,8 @@ en:
         help: "Average fuel consumption in liters per 100 km"
       capacity:
         help: "Maximun vehicle's capacity"
+      capacity_unit:
+        help: "Unit of the capacity"
       router:
         default: "Default"
         help: "Force usage of this router"

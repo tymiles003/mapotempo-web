@@ -22,7 +22,7 @@
   <div class="col-md-12">
     <table class="tablesorter">
       <thead><tr>
-        <th><input type="checkbox" title="<%= t 'all.verb.toggle_selection' %>"></th>
+        <th><button type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
         <th<% if !@customer.enable_references %> style="display: none;"<% end %>><%= t 'activerecord.attributes.destination.ref_small' %></th>
         <th><%= t 'activerecord.attributes.destination.name' %></th>
         <th>

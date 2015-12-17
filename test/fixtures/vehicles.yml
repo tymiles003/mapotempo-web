@@ -5,6 +5,7 @@ vehicle_one:
   emission: 1.5
   consumption: 1.5
   capacity: 1
+  capacity_unit: L
   color: "#004499"
   customer: customer_one
   speed_multiplicator:
@@ -14,6 +15,7 @@ vehicle_two:
   emission: 1.5
   consumption: 1.5
   capacity: 1
+  capacity_unit:
   color: "#004499"
   customer: customer_two
   speed_multiplicator: 0.9
@@ -23,6 +25,7 @@ vehicle_three:
   emission: 1.5
   consumption: 1.5
   capacity: 1
+  capacity_unit: m2
   color: "#004499"
   customer: customer_one
   speed_multiplicator:
@@ -32,6 +35,7 @@ vehicle_four:
   emission: 1.5
   consumption: 1.5
   capacity: 1
+  capacity_unit: Kg
   color: "#004499"
   customer: customer_one_other
   speed_multiplicator:

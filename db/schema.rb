@@ -381,6 +381,7 @@ ActiveRecord::Schema.define(version: 20151215150205) do
     t.string   "masternaut_ref",      limit: 255
     t.float    "speed_multiplicator"
     t.string   "ref"
+    t.string   "capacity_unit"
   end
 
   add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree
