@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'coerce'
+require 'tomtom'
 
 class V01::Vehicles < Grape::API
   helpers do
@@ -53,6 +54,29 @@ class V01::Vehicles < Grape::API
         current_customer.vehicles.load
       end
       present vehicles, with: V01::Entities::Vehicle
+    end
+
+    desc 'Get vehicle\'s position.',
+      nickname: 'currentPosition',
+      is_array: true,
+      entity: V01::Entities::VehiclePosition
+    params do
+      optional :ids, type: Array[String], desc: 'Select vehicles by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
+    end
+    get 'current_position' do
+      puts params[:ids].inspect
+      vehicles = if params.key?(:ids)
+        current_customer.vehicles.select{ |vehicle|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
+        }
+      else
+        current_customer.vehicles.load
+      end
+      positions = Tomtom.current_position(current_customer).collect{ |o|
+        o[:vehicle_id] = vehicles.find{ |v| v.tomtom_id == o[:objectUid] }.try(:id)
+        o
+      }.select{ |o| o[:vehicle_id] }
+      present positions, with: V01::Entities::VehiclePosition
     end
 
     desc 'Fetch vehicle.',

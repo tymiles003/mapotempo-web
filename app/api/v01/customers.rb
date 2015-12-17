@@ -145,7 +145,7 @@ class V01::Customers < Grape::API
     end
 
     desc 'Fetch tomtom ids.',
-      detail: 'Get tomtom leaflet device ids if they are set for this customer.',
+      detail: 'Get tomtom webfleet device ids if they are set for this customer.',
       nickname: 'getTomtomIds'
     params do
       requires :id, type: String, desc: ID_DESC

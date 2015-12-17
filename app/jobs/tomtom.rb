@@ -93,4 +93,8 @@ class Tomtom
     position = route.vehicle_usage.default_store_stop if route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?
     Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, route.vehicle_usage.id, route.ref || (route.vehicle_usage.default_store_stop ? route.vehicle_usage.default_store_stop.name : ''), route.start, waypoints)
   end
+
+  def self.current_position(customer)
+    Mapotempo::Application.config.tomtom.showObjectReport(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password)
+  end
 end

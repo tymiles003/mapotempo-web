@@ -119,13 +119,13 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 }
 controller.js(
   planning_id: @planning.id,
-  route_ids: @planning.routes.collect(&:id),
+  routes_array: @planning.routes.collect{ |r| {route_id: r.id, color: r.color, vehicle_usage_id: r.vehicle_usage_id, ref: r.ref} },
   zoning_id: @planning.zoning ? @planning.zoning.id : nil,
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
   map_lat: @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lat }.lat || @planning.customer.default_position[:lat],
   map_lng: @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lng }.lng || @planning.customer.default_position[:lng],
   vehicles_array: @planning.customer.vehicles.collect{ |vehicle|
-    {id: vehicle.id, text: vehicle.name, color: vehicle.color}
+    {id: vehicle.id, text: vehicle.name, color: vehicle.color, available_position: vehicle.available_position?}
   },
   vehicles_usages_map: Hash[@planning.vehicle_usage_set.vehicle_usages.collect{ |vehicle_usage|
     [vehicle_usage.vehicle.id, {vehicle_usage_id: vehicle_usage.id, name: vehicle_usage.vehicle.name, color: vehicle_usage.vehicle.color, capacity: vehicle_usage.vehicle.capacity, vehicle_id: vehicle_usage.vehicle_id}]
