@@ -115,12 +115,12 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
   test 'should get tomtom ids' do
     uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl')
-    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl').read)
+    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks', __FILE__) + '/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl').read)
 
     uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService')
     stub_table = stub_request(:post, uri_template).with { |request|
       request.body.include?("showObjectReport")
-    }.to_return(File.new(File.expand_path('../../../lib/', __FILE__) + '/soap.business.tomtom.com/showObjectReportResponse.xml').read)
+    }.to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/soap.business.tomtom.com/showObjectReportResponse.xml').read)
 
     get api("#{@customer.id}/tomtom_ids")
     assert last_response.ok?, last_response.body

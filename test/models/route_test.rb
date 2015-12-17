@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'osrm'
+require 'routers/osrm'
 
 class D < Struct.new(:lat, :lng, :open, :close, :duration)
   def destination
@@ -11,8 +11,8 @@ class RouteTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
-    Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
-      Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
+    Routers::Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
+      Routers::Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
         yield
       end
     end

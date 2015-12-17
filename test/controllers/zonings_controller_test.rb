@@ -116,7 +116,7 @@ class ZoningsControllerTest < ActionController::TestCase
   test 'should generate isochrone' do
     store_one = stores(:store_one)
     uri_template = Addressable::Template.new('localhost:1723/0.1/isochrone?lat=' + store_one.lat.to_s + '&lng=' + store_one.lng.to_s + '&time=600')
-    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../lib/', __FILE__) + '/isochrone/isochrone-1.json').read)
+    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../web_mocks/', __FILE__) + '/isochrone/isochrone-1.json').read)
     patch :isochrone, format: :json, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_id: @zoning
     assert_response :success
     assert_equal 1, JSON.parse(response.body)['zoning'].length

@@ -15,11 +15,11 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'here'
+require 'routers/here'
 
 class RouterHere < Router
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
-    distance, time, trace = Mapotempo::Application.config.here.compute(lat1, lng1, lat2, lng2)
+    distance, time, trace = Mapotempo::Application.config.router_here.compute(lat1, lng1, lat2, lng2)
     time *= 1.0 / speed_multiplicator
     [distance, time, trace]
   end
@@ -27,7 +27,7 @@ class RouterHere < Router
   def matrix(row, column, speed_multiplicator, mode = :time, &block)
     time_multiplicator = 1.0 / speed_multiplicator
     row, column = pack_vector(row, column)
-    matrix = Mapotempo::Application.config.here.matrix(row, column, mode, &block)
+    matrix = Mapotempo::Application.config.router_here.matrix(row, column, mode, &block)
     matrix = unpack_vector(row, column, matrix)
     matrix.collect{ |row|
       row.collect{ |distance, time|

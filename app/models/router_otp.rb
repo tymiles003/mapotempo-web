@@ -15,14 +15,14 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'otp'
+require 'routers/otp'
 
 class RouterOtp < Router
   validates :url_time, presence: true
 
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
     # No speed_multiplicator
-    distance, time, trace = Mapotempo::Application.config.otp.compute(url_time, ref, lat1, lng1, lat2, lng2, monday_morning)
+    distance, time, trace = Mapotempo::Application.config.router_otp.compute(url_time, ref, lat1, lng1, lat2, lng2, monday_morning)
     [distance, time, trace]
   end
 
@@ -31,7 +31,7 @@ class RouterOtp < Router
     total = row.size * column.size
     row.collect{ |v1|
       column.collect{ |v2|
-        distance, time, _trace = Mapotempo::Application.config.otp.compute(url_time, ref, v1[0], v1[1], v2[0], v2[1], monday_morning)
+        distance, time, _trace = Mapotempo::Application.config.router_otp.compute(url_time, ref, v1[0], v1[1], v2[0], v2[1], monday_morning)
         block.call(1, total) if block
         [distance, time]
       }
@@ -48,7 +48,7 @@ class RouterOtp < Router
 
   def isochrone(lat, lng, size, speed_multiplicator)
     # No speed_multiplicator
-    Mapotempo::Application.config.otp.isochrone(url_time, ref, lat, lng, size, monday_morning)
+    Mapotempo::Application.config.router_otp.isochrone(url_time, ref, lat, lng, size, monday_morning)
   end
 
   private

@@ -11,7 +11,7 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
   end
 
   def around
-    Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
+    Routers::Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
       yield
     end
   end

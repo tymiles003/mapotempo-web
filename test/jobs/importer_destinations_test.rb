@@ -6,8 +6,8 @@ class ImporterTest < ActionController::TestCase
   end
 
   def around
-    Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
-      Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
+    Routers::Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
+      Routers::Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
         yield
       end
     end

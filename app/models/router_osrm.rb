@@ -15,13 +15,13 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'osrm'
+require 'routers/osrm'
 
 class RouterOsrm < Router
   validates :url_time, presence: true
 
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
-    distance, time, trace = Mapotempo::Application.config.osrm.compute(url_time, lat1, lng1, lat2, lng2)
+    distance, time, trace = Mapotempo::Application.config.router_osrm.compute(url_time, lat1, lng1, lat2, lng2)
     if time
       time *= 1.0 / speed_multiplicator
     end
@@ -36,7 +36,7 @@ class RouterOsrm < Router
     if !url
       nil
     else
-      matrix = Mapotempo::Application.config.osrm.matrix(url, vector)
+      matrix = Mapotempo::Application.config.router_osrm.matrix(url, vector)
       if row != column
         matrix = matrix[0..row.size - 1].collect{ |l|
           l[row.size..-1]
@@ -62,7 +62,7 @@ class RouterOsrm < Router
   end
 
   def isochrone(lat, lng, size, speed_multiplicator)
-    Mapotempo::Application.config.osrm.isochrone(url_isochrone, lat, lng, size * speed_multiplicator)
+    Mapotempo::Application.config.router_osrm.isochrone(url_isochrone, lat, lng, size * speed_multiplicator)
   end
 
   def isodistance?
@@ -71,6 +71,6 @@ class RouterOsrm < Router
 
   def isodistance(lat, lng, size, speed_multiplicator)
     # No speed_multiplicator
-    Mapotempo::Application.config.osrm.isochrone(url_isodistance, lat, lng, size)
+    Mapotempo::Application.config.router_osrm.isochrone(url_isodistance, lat, lng, size)
   end
 end

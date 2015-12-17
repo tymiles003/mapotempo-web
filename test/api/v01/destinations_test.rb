@@ -14,7 +14,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   end
 
   def around
-    Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
+    Routers::Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
       yield
     end
   end
@@ -107,10 +107,10 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   test 'should create bulk from tomtom' do
     begin
       uri_template = Addressable::Template.new('https://soap.business.tomtom.com/{version}/addressService?wsdl')
-      stub_address_wsdl = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../', __FILE__) + '/lib/soap.business.tomtom.com/addressService.wsdl').read)
+      stub_address_wsdl = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/soap.business.tomtom.com/addressService.wsdl').read)
 
       uri_template = Addressable::Template.new('https://soap.business.tomtom.com/{version}/addressService')
-      stub = stub_request(:post, uri_template).to_return(File.new(File.expand_path('../../../', __FILE__) + '/lib/soap.business.tomtom.com/showAddressReportResponse.xml').read)
+      stub = stub_request(:post, uri_template).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/soap.business.tomtom.com/showAddressReportResponse.xml').read)
 
       assert_difference('Destination.count', 1) do
         put api(), replace: false, remote: :tomtom

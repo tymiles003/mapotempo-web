@@ -9,7 +9,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
   end
 
   def around
-    Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
+    Routers::Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
       yield
     end
   end

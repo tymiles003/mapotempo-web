@@ -2,9 +2,9 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 require_relative '../app/middleware/reseller_by_host'
-require_relative '../lib/osrm'
-require_relative '../lib/otp'
-require_relative '../lib/here'
+require_relative '../lib/routers/osrm'
+require_relative '../lib/routers/otp'
+require_relative '../lib/routers/here'
 require_relative '../lib/ort'
 require_relative '../lib/tomtom_webfleet'
 
@@ -83,17 +83,17 @@ module Mapotempo
     require 'geocode_addok_wrapper'
     Mapotempo::Application.config.geocode_geocoder = GeocodeAddokWrapper.new('https://geocode.mapotempo.com/0.1', 'secret_api_key')
 
-    config.osrm = Osrm.new(
+    config.router_osrm = Routers::Osrm.new(
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'osrm_request'), namespace: 'osrm_request', expires_in: 60*60*24*1),
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'osrm_result'), namespace: 'osrm_result', expires_in: 60*60*24*1)
     )
 
-    config.otp = Otp.new(
+    config.router_otp = Routers::Otp.new(
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'otp_request'), namespace: 'otp_request', expires_in: 60*60*24*1),
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'otp_result'), namespace: 'otp_result', expires_in: 60*60*24*1)
     )
 
-    config.here = Here.new(
+    config.router_here = Routers::Here.new(
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'here_request'), namespace: 'here_request', expires_in: 60*60*24*1),
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'here_result'), namespace: 'here_result', expires_in: 60*60*24*1),
       'https://route.nlp.nokia.com/routing', nil, nil
