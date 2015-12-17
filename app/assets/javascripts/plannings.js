@@ -827,15 +827,15 @@ var plannings_edit = function(params) {
         var route = routes_array.filter(function(route) {
           return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id
         })[0];
-        var iconContent = '<span class="fa-stack fa-lg" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon' + (pos.speed ? ' pulse' : '') + '" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>';
-        if (pos.speed)
-          iconContent += '<i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) + 45) + 'deg);">';
-        iconContent += '</span>';
+        var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600);
+        var iconContent = isMoving ?
+          '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i><i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) + 45) + 'deg);"></span>' :
+          '<i class="fa fa-truck fa-lg vehicle-icon" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>';
         var m = L.marker(new L.LatLng(pos.lat, pos.lng), {
           icon: new L.divIcon({
             html: iconContent,
-            iconSize: new L.Point(32, 32),
-            iconAnchor: new L.Point(16, 16),
+            iconSize: new L.Point(24, 24),
+            iconAnchor: new L.Point(12, 12),
             popupAnchor: new L.Point(0, -12),
             className: 'vehicle-position'
           }),
