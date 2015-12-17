@@ -46,7 +46,7 @@ class Ort
         }.to_json
         resource = RestClient::Resource.new(@url, timeout: nil)
         result = resource.post({data: data}, content_type: :json, accept: :json)
-        @cache.write(key, String.new(result)) # String.new workaround waiting for RestClient 2.0
+        @cache.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
       end
 
       jdata = JSON.parse(result)

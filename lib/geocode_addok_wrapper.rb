@@ -49,7 +49,7 @@ class GeocodeAddokWrapper
           country: country
         })
 
-        @cache_code.write(key, String.new(result)) # String.new workaround waiting for RestClient 2.0
+        @cache_code.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
       rescue
         raise
       end
@@ -77,7 +77,7 @@ class GeocodeAddokWrapper
           country: country
         })
 
-        @cache_code.write(key, String.new(result)) # String.new workaround waiting for RestClient 2.0
+        @cache_code.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
       rescue
         raise
       end

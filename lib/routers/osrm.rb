@@ -151,7 +151,7 @@ module Routers
           end
         }
 
-        @cache_request.write(key, String.new(request)) # String.new workaround waiting for RestClient 2.0
+        @cache_request.write(key, request && String.new(request)) # String.new workaround waiting for RestClient 2.0
       end
 
       if request
