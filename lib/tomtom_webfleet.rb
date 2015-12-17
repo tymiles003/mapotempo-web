@@ -193,7 +193,7 @@ class TomtomWebfleet
       Rails.logger.info response.body.first[1][:return]
       raise "TomTom WEBFLEET operation #{operation} return error: #{response.body.first[1][:return][:status_message]}"
     else
-      ret[:results][:result_item]
+      ret[:results][:result_item] if ret.key?(:results)
     end
   rescue Savon::SOAPFault => error
     Rails.logger.info error
