@@ -51,6 +51,14 @@ GIT
       jquery-rails
 
 GIT
+  remote: git://github.com/frodrigo/swagger-docs.git
+  revision: 93c36d430d82318bdea049d2f691b6e73377cc6f
+  specs:
+    swagger-docs (0.1.10)
+      activesupport (>= 3, < 5)
+      rails (>= 3, < 5)
+
+GIT
   remote: git://github.com/frodrigo/twitter_bootstrap_form_for.git
   revision: 8d774e449d146afcfac4c0e72d9c970ab3b372dc
   specs:
@@ -63,14 +71,6 @@ GIT
   revision: 54b78c66e94b32ab73d9907508857f4ceee5e032
   specs:
     tidy-html5 (0.1.1)
-
-GIT
-  remote: git://github.com/richhollis/swagger-docs.git
-  revision: 102003e7bc42c4b490a9cbcbccc9a9bcd0293378
-  specs:
-    swagger-docs (0.1.10)
-      activesupport (>= 3, < 5)
-      rails (>= 3, < 5)
 
 GIT
   remote: git://github.com/ruby-grape/grape-swagger.git
