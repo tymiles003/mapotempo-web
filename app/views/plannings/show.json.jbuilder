@@ -58,8 +58,8 @@ else
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
       no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
-      no_path |= stop.position? && route.vehicle_usage && !stop.trace
-      (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+      no_path |= stop.position? && route.vehicle_usage && !stop.trace && stop.active
+      (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace && stop.active) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.edit_planning true
       json.stop_id stop.id
       json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
@@ -69,7 +69,7 @@ else
       (json.close l(stop.close, format: :hour_minute)) if stop.close
       (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
       (json.geocoded true) if stop.position?
-      (json.no_path true) if stop.position? && route.vehicle_usage && !stop.trace
+      (json.no_path true) if stop.position? && route.vehicle_usage && !stop.trace && stop.active
       (json.time l(stop.time, format: :hour_minute)) if stop.time
       (json.active true) if stop.active
       (json.number number += 1) if route.vehicle_usage && stop.active
