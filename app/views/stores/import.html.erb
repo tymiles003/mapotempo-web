@@ -17,7 +17,7 @@
         <%= f.file_field :file do %>
           <p class="help-block"><%= t '.csv.file_help' %></p>
         <% end %>
-        <%= f.toggles t 'activemodel.attributes.stores_import.replace' do %>
+        <%= f.toggles t 'activemodel.attributes.import_csv.replace' do %>
           <%= f.check_box :replace %>
           <p class="help-block"><%= t '.replace_help' %></p>
         <% end %>
