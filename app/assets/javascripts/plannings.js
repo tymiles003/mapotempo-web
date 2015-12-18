@@ -803,9 +803,9 @@ var plannings_edit = function(params) {
         var route = routes_array.filter(function(route) {
           return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id
         })[0];
-        var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600);
+        var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600 * 1000);
         var iconContent = isMoving ?
-          '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i><i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) + 45) + 'deg);"></span>' :
+          '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i><i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) - 45) + 'deg);"></span>' :
           '<i class="fa fa-truck fa-lg vehicle-icon" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>';
         var m = L.marker(new L.LatLng(pos.lat, pos.lng), {
           icon: new L.divIcon({
