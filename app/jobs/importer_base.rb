@@ -24,6 +24,7 @@ class ImporterBase
   end
 
   def import(data, replace, name, synchronous, ignore_error)
+    errors = []
     Store.transaction do
       before_import(replace, name, synchronous)
 
@@ -39,8 +40,10 @@ class ImporterBase
           if !synchronous || Mapotempo::Application.config.delayed_job_use
             dest.delay_geocode
           end
-        rescue
-          if !ignore_error
+        rescue => e
+          if ignore_error
+            errors << e if !errors.include?(e)
+          else
             raise
           end
         end
@@ -48,5 +51,9 @@ class ImporterBase
       after_import(replace, name, synchronous)
     end
     finalize_import(replace, name, synchronous)
+    if errors.size > 0
+      raise errors.join(', ')
+    end
+    true
   end
 end

@@ -67,10 +67,10 @@ class ImporterDestinations < ImporterBase
       raise I18n.t('destinations.import_file.missing_data', line: line)
     end
 
-    if !row[:lat].nil?
+    if !row[:lat].nil? && (row[:lat].is_a? String)
       row[:lat] = Float(row[:lat].tr(',', '.'))
     end
-    if !row[:lng].nil?
+    if !row[:lng].nil? && (row[:lng].is_a? String)
       row[:lng] = Float(row[:lng].tr(',', '.'))
     end
 
@@ -146,6 +146,5 @@ class ImporterDestinations < ImporterBase
     end
 
     @customer.save!
-    true
   end
 end
