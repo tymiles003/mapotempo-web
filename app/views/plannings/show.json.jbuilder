@@ -108,6 +108,7 @@ else
         end
       elsif stop.is_a?(StopRest)
         json.rest do
+          json.rest true
           duration = l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second) if route.vehicle_usage.default_rest_duration
           (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
           (json.geocoded true) if !route.vehicle_usage.default_store_rest.nil? && !route.vehicle_usage.default_store_rest.lat.nil? && !route.vehicle_usage.default_store_rest.lng.nil?
