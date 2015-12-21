@@ -13,7 +13,6 @@ controller.js(
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
   map_lat: @customer.default_position[:lat],
   map_lng: @customer.default_position[:lng],
-  map_attribution: current_user.layer.map_attribution,
   ids: @destinations ? @destinations.collect(&:id) : nil,
   method: @method
 )

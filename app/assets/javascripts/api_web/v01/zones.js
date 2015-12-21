@@ -21,37 +21,12 @@ var api_web_v01_zones_index = function(params) {
 
   var zoning_id = params.zoning_id,
     zone_ids = params.zone_ids,
-    map_layers = params.map_layers,
-    map_lat = params.map_lat,
-    map_lng = params.map_lng,
-    map_attribution = params.map_attribution,
     vehicles_map = params.vehicles_map,
     destinations = params.destinations,
     destination_ids = params.destination_ids,
     vehicle_usage_set_id = params.vehicle_usage_set_id;
 
-  var map_layer, map_baselayers = {}, map_overlays = {};
-  for (layer_name in map_layers) {
-    var layer = map_layers[layer_name];
-    var l = L.tileLayer(layer.url, {
-      maxZoom: 18,
-      attribution: layer.attribution
-    });
-    l.name = layer.name;
-    if (layer.default) {
-      map_layer = l;
-    }
-    if (layer.overlay)
-      map_overlays[layer_name] = l;
-    else
-      map_baselayers[layer_name] = l;
-  };
-
-  var map = new L.Map('map', {
-    attributionControl: false,
-    layers: map_layer
-  }).setView([map_lat, map_lng], 13);
-  L.control.layers(map_baselayers, map_overlays, {position: 'topleft'}).addTo(map);
+  var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
   L.control.scale({
     imperial: false

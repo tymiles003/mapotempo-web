@@ -30,3 +30,37 @@ $(document).on('ready page:load', function() {
     $(this).find('.dropdown-menu').first().stop(true, true).slideUp({duration: 200});
   });
 });
+
+var mapInitialize = function(params) {
+  var mapLayer, mapBaseLayers = {}, mapOverlays = {}, nbLayers = 0;
+  for (layer_name in params.map_layers) {
+    var layer = params.map_layers[layer_name];
+    var l = L.tileLayer(layer.url, {
+      maxZoom: 18,
+      attribution: layer.attribution
+    });
+    l.name = layer.name;
+    if (layer.default) {
+      mapLayer = l;
+    }
+    if (layer.overlay)
+      mapOverlays[layer_name] = l;
+    else
+      mapBaseLayers[layer_name] = l;
+    nbLayers++;
+  };
+
+  var map = L.map('map', {
+    attributionControl: false,
+    layers: mapLayer
+  }).setView([params.map_lat || 0, params.map_lng || 0], 13);
+  if (nbLayers > 1)
+    L.control.layers(mapBaseLayers, mapOverlays, {position: 'topleft'}).addTo(map);
+  else
+    map.tileLayer = L.tileLayer(mapLayer.url, {
+      maxZoom: 18,
+      attribution: mapLayer.attribution
+    });
+
+  return map;
+}

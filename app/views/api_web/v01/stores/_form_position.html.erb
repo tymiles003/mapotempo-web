@@ -22,8 +22,8 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 controller.js(
   destination_id: @store.id || 0,
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
-  map_lat: @store.customer.default_position[:lat],
-  map_lng: @store.customer.default_position[:lng],
+  map_lat: @store.lat || @store.customer.default_position[:lat],
+  map_lng: @store.lng || @store.customer.default_position[:lng],
   map_attribution: current_user.layer.map_attribution
 )
 %>

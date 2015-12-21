@@ -1,6 +1,18 @@
+<%
+layers = (@user.customer.profile.layers + [@user.layer]).sort_by(&:id).uniq.collect{ |layer|
+  {
+    id: layer.id,
+    name: layer.name,
+    url: request.ssl? ? layer.urlssl : layer.url,
+    attribution: layer.map_attribution,
+    default: layer == @user.layer,
+    overlay: layer.overlay
+  }
+}
+%>
 <%= twitter_bootstrap_form_for @user, url: update_user_settings_path(@user), layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @user %>
-  <%= f.collection_select :layer_id, [], (@user.admin? ? Layer.all : @user.customer.profile.layers), :id, :name, {}, {} %>
+  <%= f.collection_select :layer_id, [], (@user.admin? ? Layer.all.sort_by(&:id) : @user.customer.profile.layers).select{ |l| !l[:overlay] }, :id, :name, {}, {} %>
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
   </div>
@@ -14,12 +26,9 @@
 <% end %>
 <%
 controller.js(
-  map_layer_url: request.ssl? ? @user.layer.urlssl : @user.layer.url,
+  map_layers: Hash[['default'].zip(layers.select{ |l| l[:default] })],
   map_lat: @user.customer && @user.customer.default_position[:lat] || t('stores.default.lat'),
   map_lng: @user.customer && @user.customer.default_position[:lng] || t('stores.default.lng'),
-  map_attribution: @user.layer.map_attribution,
-  layers: Hash[Layer.all.collect{ |layer|
-    [layer.id, {url: request.ssl? ? layer.urlssl : layer.url, attribution: layer.map_attribution}]
-  }]
+  map_available_layers: Hash[layers.select{ |l| !l[:overlay] }.map{ |l| l[:id] }.zip(layers.select{ |l| !l[:overlay] })]
 )
 %>

@@ -16,20 +16,14 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 var customers_index = function(params) {
-  var map_layer_url = params.map_layer_url,
+  var map_layers = params.map_layers,
     map_attribution = params.map_attribution;
 
   var is_map_init = false;
 
   var map_init = function() {
-    var map = L.map('map', {
-      attributionControl: false
-    }).setView([0, 0], 13);
+    var map = mapInitialize(params);
     L.control.attribution({prefix: false}).addTo(map);
-    L.tileLayer(map_layer_url, {
-      maxZoom: 18,
-      attribution: map_attribution
-    }).addTo(map);
 
     var layer = L.featureGroup();
     map.addLayer(layer);

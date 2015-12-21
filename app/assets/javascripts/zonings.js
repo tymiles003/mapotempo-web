@@ -19,9 +19,6 @@ var zonings_edit = function(params) {
 
   var zoning_id = params.zoning_id,
     planning_id = params.planning_id,
-    map_layers = params.map_layers,
-    map_lat = params.map_lat,
-    map_lng = params.map_lng,
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map,
     url_click2call =  params.url_click2call,
@@ -31,28 +28,7 @@ var zonings_edit = function(params) {
   var sidebar = L.control.sidebar('edit-zoning', {position: 'right'})
   sidebar.open('zoning');
 
-  var map_layer, map_baselayers = {}, map_overlays = {};
-  for (layer_name in map_layers) {
-    var layer = map_layers[layer_name];
-    var l = L.tileLayer(layer.url, {
-      maxZoom: 18,
-      attribution: layer.attribution
-    });
-    l.name = layer.name;
-    if (layer.default) {
-      map_layer = l;
-    }
-    if (layer.overlay)
-      map_overlays[layer_name] = l;
-    else
-      map_baselayers[layer_name] = l;
-  };
-
-  var map = new L.Map('map', {
-    attributionControl: false,
-    layers: map_layer
-  }).setView([map_lat, map_lng], 13);
-  L.control.layers(map_baselayers, map_overlays, {position: 'topleft'}).addTo(map);
+  var map = mapInitialize(params);
   L.control.attribution({prefix: false, position: 'bottomleft'}).addTo(map);
   L.control.scale({
     imperial: false

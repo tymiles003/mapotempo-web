@@ -16,28 +16,18 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 var user_edit_settings = function(params) {
-  var map_layer_url = params.map_layer_url,
-    map_lat = params.map_lat,
-    map_lng = params.map_lng,
-    map_attribution = params.map_attribution,
-    layers = params.layers;
+  var available_layers = params.map_available_layers;
 
-  var map = L.map('map', {
-    attributionControl: false
-  }).setView([map_lat, map_lng], 13);
+  var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
-  var layer = L.tileLayer(map_layer_url, {
-    maxZoom: 18,
-    attribution: map_attribution
-  }).addTo(map);
 
   $('[name=user\\[layer_id\\]]').change(function(event) {
-    map.removeLayer(layer);
-    layer = L.tileLayer(layers[event.target.value].url, {
+    map.removeLayer(map.tileLayer);
+    map.tileLayer = L.tileLayer(available_layers[event.target.value].url, {
       maxZoom: 18,
-      attribution: layers[event.target.value].attribution
+      attribution: available_layers[event.target.value].attribution
     });
-    map.addLayer(layer);
+    map.addLayer(map.tileLayer);
   });
 }
 

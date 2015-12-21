@@ -18,21 +18,11 @@
 var destinations_form = function(params, api) {
 
   var destination_id = params.destination_id,
-    map_layer_url = params.map_layer_url,
-    map_lat = params.map_lat,
-    map_lng = params.map_lng,
-    map_attribution = params.map_attribution,
     marker_lat = $(":input[name$=\\[lat\\]]").val(),
     marker_lng = $(":input[name$=\\[lng\\]]").val();
 
-  var map = L.map('map', {
-    attributionControl: false
-  }).setView([marker_lat || map_lat, marker_lng || map_lng], 13);
+  var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
-  L.tileLayer(map_layer_url, {
-    maxZoom: 18,
-    attribution: map_attribution
-  }).addTo(map);
 
   // api-web
   var form_popup = L.DomUtil.get('edit-position');
@@ -385,24 +375,17 @@ Paloma.controller('Store').prototype.upload = function() {
 
 var destinations_index = function(params, api) {
 
-  var map_layer_url = params.map_layer_url,
-    map_lat = params.map_lat,
-    map_lng = params.map_lng,
-    map_attribution = params.map_attribution,
-    default_city = params.default_city,
+  var default_city = params.default_city,
     default_country = params.default_country,
     take_over_default = params.take_over_default,
     url_click2call =  params.url_click2call,
     enable_references = params.enable_references;
 
-  var map = L.map('map', {
-    attributionControl: false
-  }).setView([map_lat, map_lng], 13);
-  L.tileLayer(map_layer_url, {
-    maxZoom: 18,
-    attribution: map_attribution
-  }).addTo(map);
+  var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
+  L.control.scale({
+    imperial: false
+  }).addTo(map);
 
   var markers = {};
   var markersLayers = L.featureGroup();
