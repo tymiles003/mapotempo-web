@@ -18,7 +18,7 @@
 
 var api_web_v01_routes_index = function(params) {
   var progressBar = Turbolinks.enableProgressBar();
-  progressBar.advanceTo(25);
+  progressBar && progressBar.advanceTo(25);
 
   var planning_id = params.planning_id,
     route_ids = params.route_ids,
@@ -232,7 +232,7 @@ var api_web_v01_routes_index = function(params) {
     }
   }
 
-  progressBar.advanceTo(50);
+  progressBar && progressBar.advanceTo(50);
   queryParam = (route_ids) ? ('?' + $.param({ids: route_ids.join(',')})) : '';
   $.ajax({
     url: '/api-web/0.1/plannings/' + planning_id + '/routes.json' + queryParam,
@@ -244,7 +244,7 @@ var api_web_v01_routes_index = function(params) {
       else {
         bootstrap_alert_danger(I18n.t('api_web.v01.routes.index.none_routes'));
       }
-      progressBar.done();
+      progressBar && progressBar.done();
     },
     complete: completeWaiting,
     error: ajaxError

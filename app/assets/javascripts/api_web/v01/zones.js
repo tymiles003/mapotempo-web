@@ -17,7 +17,7 @@
 //
 var api_web_v01_zones_index = function(params) {
   var progressBar = Turbolinks.enableProgressBar();
-  progressBar.advanceTo(25);
+  progressBar && progressBar.advanceTo(25);
 
   var zoning_id = params.zoning_id,
     zone_ids = params.zone_ids,
@@ -112,7 +112,7 @@ var api_web_v01_zones_index = function(params) {
     }
   }
 
-  progressBar.advanceTo(50);
+  progressBar && progressBar.advanceTo(50);
   var paramsJson = {};
   if (zone_ids) paramsJson.ids = zone_ids.join(',');
   if (destinations) paramsJson.destinations = destinations;
@@ -130,7 +130,7 @@ var api_web_v01_zones_index = function(params) {
       else {
         bootstrap_alert_danger(I18n.t('api_web.v01.zones.index.none_zones'));
       }
-      progressBar.done();
+      progressBar && progressBar.done();
     },
     complete: completeWaiting,
     error: ajaxError

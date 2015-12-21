@@ -95,7 +95,7 @@ var api_web_v01_display_destinations_ = function(api, map, markersLayers, cluste
 
 var api_web_v01_destinations_index = function(params, api) {
   var progressBar = Turbolinks.enableProgressBar();
-  progressBar.advanceTo(25);
+  progressBar && progressBar.advanceTo(25);
 
   var map_lat = params.map_lat,
     map_lng = params.map_lng,
@@ -146,7 +146,7 @@ var api_web_v01_destinations_index = function(params, api) {
     }
   }
 
-  progressBar.advanceTo(50);
+  progressBar && progressBar.advanceTo(50);
   var params = (ids) ? {ids: ids.join(',')} : {};
   $.ajax({
     url: '/api-web/0.1/' + api + '.json',
@@ -160,7 +160,7 @@ var api_web_v01_destinations_index = function(params, api) {
       else {
         bootstrap_alert_danger(I18n.t('api_web.v01.destinations.index.none_destinations'));
       }
-      progressBar.done();
+      progressBar && progressBar.done();
     },
     complete: completeWaiting,
     error: ajaxError
