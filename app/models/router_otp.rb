@@ -20,22 +20,14 @@ require 'routers/otp'
 class RouterOtp < Router
   validates :url_time, presence: true
 
-  def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
+  def trace(speed_multiplicator, lat1, lng1, lat2, lng2, mode = :time, geometry = true)
     # No speed_multiplicator
-    distance, time, trace = Mapotempo::Application.config.router_otp.compute(url_time, ref, lat1, lng1, lat2, lng2, monday_morning)
-    [distance, time, trace]
+    Mapotempo::Application.config.router_otp.compute(url_time, ref, lat1, lng1, lat2, lng2, monday_morning)
   end
 
-  def matrix(row, column, speed_multiplicator, mode = nil, &block)
+  def matrix(row, column, speed_multiplicator, mode = :time, &block)
     # No speed_multiplicator
-    total = row.size * column.size
-    row.collect{ |v1|
-      column.collect{ |v2|
-        distance, time, _trace = Mapotempo::Application.config.router_otp.compute(url_time, ref, v1[0], v1[1], v2[0], v2[1], monday_morning)
-        block.call(1, total) if block
-        [distance, time]
-      }
-    }
+    matrix_iterate(row, column, speed_multiplicator, mode, &block)
   end
 
   def time?

@@ -20,7 +20,7 @@ require 'routers/osrm'
 class RouterOsrm < Router
   validates :url_time, presence: true
 
-  def trace(speed_multiplicator, lat1, lng1, lat2, lng2)
+  def trace(speed_multiplicator, lat1, lng1, lat2, lng2, mode = :time, geometry = true)
     distance, time, trace = Mapotempo::Application.config.router_osrm.compute(url_time, lat1, lng1, lat2, lng2)
     if time
       time *= 1.0 / speed_multiplicator
@@ -30,20 +30,13 @@ class RouterOsrm < Router
 
   def matrix(row, column, speed_multiplicator, mode = :time, &block)
     time_multiplicator = 1.0 / speed_multiplicator
-    row, column = pack_vector(row, column)
-    vector = row != column ? row + column : row
     url = send('url_' + mode.to_s)
     if !url
       nil
     else
-      matrix = Mapotempo::Application.config.router_osrm.matrix(url, vector)
-      if row != column
-        matrix = matrix[0..row.size - 1].collect{ |l|
-          l[row.size..-1]
-        }
-      end
-      matrix = unpack_vector(row, column, matrix)
-      matrix.map{ |row|
+      rectangular2square_matrix(row, column) { |vector|
+        Mapotempo::Application.config.router_osrm.matrix(url, vector)
+      }.map{ |row|
         row.map{ |v| [v, v * time_multiplicator] }
       }
     end
