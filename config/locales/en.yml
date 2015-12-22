@@ -1000,7 +1000,7 @@ en:
           none_destinations: 'None destination has been loaded'
       routes:
         index:
-          none_zones: 'None route has been loaded'
+          none_routes: 'None route has been loaded'
       stores:
         index:
           none_stores: 'None store has been loaded'

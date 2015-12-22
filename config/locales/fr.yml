@@ -1018,7 +1018,7 @@ fr:
           none_destinations: "Aucune destination n'a été chargée"
       routes:
         index:
-          none_zones: "Aucune route n'a été chargée"
+          none_routes: "Aucune route n'a été chargée"
       stores:
         index:
           none_stores: "Aucun dépôt n'a été chargée"
