@@ -45,4 +45,8 @@ class ImportTomtom
       return false
     end
   end
+
+  def warnings
+    @importer.warnings
+  end
 end

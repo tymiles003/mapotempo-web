@@ -21,11 +21,11 @@ class ImporterBase
 
   def initialize(customer)
     @customer = customer
+    @warnings = []
   end
 
   def import(data, replace, name, synchronous, ignore_error)
-    errors = []
-    Store.transaction do
+    Customer.transaction do
       before_import(replace, name, synchronous)
 
       data.each_with_index{ |row, line|
@@ -42,18 +42,22 @@ class ImporterBase
           end
         rescue => e
           if ignore_error
-            errors << e if !errors.include?(e)
+            @warnings << e if !@warnings.include?(e)
           else
             raise
           end
         end
       }
+
       after_import(replace, name, synchronous)
+
+      finalize_import(replace, name, synchronous)
     end
-    finalize_import(replace, name, synchronous)
-    if errors.size > 0
-      raise errors.join(', ')
-    end
+
     true
+  end
+
+  def warnings
+    @warnings
   end
 end

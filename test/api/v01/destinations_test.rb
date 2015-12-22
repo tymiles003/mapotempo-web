@@ -114,7 +114,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
 
       assert_difference('Destination.count', 1) do
         put api(), replace: false, remote: :tomtom
-        assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
+        assert_equal 202, last_response.status, 'Bad response: ' + last_response.body
       end
     ensure
       remove_request_stub(stub)

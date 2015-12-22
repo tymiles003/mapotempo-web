@@ -91,7 +91,10 @@ class V01::Destinations < Grape::API
       end
 
       if import && import.valid? && import.import(true)
-        status 204
+        case params[:remote]
+          when 'tomtom' then status 202
+          else status 204
+        end
       else
         error!({error: import && import.errors.full_messages}, 422)
       end

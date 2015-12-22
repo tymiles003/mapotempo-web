@@ -120,6 +120,7 @@ class DestinationsController < ApplicationController
     respond_to do |format|
       @import_tomtom = ImportTomtom.new(import_tomtom_params.merge(importer: ImporterDestinations.new(current_user.customer), customer: current_user.customer))
       if current_user.customer.tomtom? && @import_tomtom.valid? && @import_tomtom.import
+        flash[:warning] = @import_tomtom.warnings.join(', ') if @import_tomtom.warnings && @import_tomtom.warnings.length > 0
         format.html { redirect_to action: 'index' }
       else
         @import_csv = ImportCsv.new

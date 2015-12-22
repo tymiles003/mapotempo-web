@@ -18,7 +18,7 @@ HTTP/1.1 200 OK
                   <location>
                      <street>dfgh</street>
                      <postcode xsi:nil="true"/>
-                     <city>dfgh</city>
+                     <city>L'Haÿ-les-Roses</city>
                      <country>FR</country>
                      <geoPosition>
                         <latitude xsi:nil="true"/>
