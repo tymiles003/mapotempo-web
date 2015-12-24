@@ -925,6 +925,7 @@ fr:
         default: "%{n} (valeur par défaut)"
       rest_stop:
         default: "%{n} (valeur par défaut)"
+      rest_stop_help: "Sans tenir compte de la durée de pause"
       rest_duration:
         default: "%{n} (valeur par défaut)"
       store_rest:

@@ -907,6 +907,7 @@ en:
         default: "%{n} (default value)"
       rest_stop:
         default: "%{n} (default value)"
+      rest_stop_help: "Without taking into account rest duration"
       rest_duration:
         default: "%{n} (default value)"
       store_rest:
