@@ -100,9 +100,10 @@ json.routes @routes do |route|
     json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.end.strftime('%H:%M')) if route.end
     json.stop_trace route.stop_trace
-    (json.error true) if route.stop_out_of_drive_time
-    json.stop_out_of_drive_time route.stop_out_of_drive_time
     json.stop_distance (route.stop_distance || 0) / 1000
+    (json.error true) if route.stop_out_of_drive_time || (route.distance > 0 && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? && !route.stop_trace)
+    json.stop_out_of_drive_time route.stop_out_of_drive_time
+    (json.no_path true) if route.distance > 0 && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? && !route.stop_trace
   end if route.vehicle_usage && route.vehicle_usage.default_store_stop
   (json.route_no_geolocalization no_geolocalization) if no_geolocalization
   (json.route_out_of_window out_of_window) if out_of_window
