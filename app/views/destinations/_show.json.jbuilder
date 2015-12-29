@@ -8,9 +8,9 @@ json.geocoding_level_city destination.city?
 if destination.geocoding_level
   json.geocoding_level_title t('activerecord.attributes.destination.geocoding_level') + ' : ' + t('destinations.form.geocoding_level.' + destination.geocoding_level.to_s)
 end
-json.take_over destination.take_over && destination.take_over.strftime('%H:%M:%S')
-json.open destination.open && destination.open.strftime('%H:%M')
-json.close destination.close && destination.close.strftime('%H:%M')
+json.take_over destination.take_over && l(destination.take_over, format: :hour_minute_second)
+json.open destination.open && l(destination.open, format: :hour_minute)
+json.close destination.close && l(destination.close, format: :hour_minute)
 json.tag_ids do
   json.array! destination.tags.collect(&:id)
 end
