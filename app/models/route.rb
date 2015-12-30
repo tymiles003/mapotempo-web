@@ -77,7 +77,7 @@ class Route < ActiveRecord::Base
       stops_time = {}
       stops_sort = stops.sort_by(&:index)
       stops_sort.each{ |stop|
-        if stop.active && (stop.position? || stop.is_a?(StopRest))
+        if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
           if stop.position? && !last_lat.nil? && !last_lng.nil?
             stop.distance, time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
           else
@@ -86,6 +86,13 @@ class Route < ActiveRecord::Base
           if time
             stops_time[stop] = time
             stop.time = self.end + time
+          elsif stop.is_a?(StopRest)
+            stop.time = self.end
+          else
+            stop.time = nil
+          end
+
+          if stop.time
             if stop.open && stop.time < stop.open
               stop.wait_time = stop.open - stop.time
               stop.time = stop.open
@@ -94,7 +101,9 @@ class Route < ActiveRecord::Base
             end
             stop.out_of_window = (stop.open && stop.time < stop.open) || (stop.close && stop.time > stop.close)
 
-            self.distance += stop.distance
+            if stop.distance
+              self.distance += stop.distance
+            end
             self.end = stop.time + stop.duration
 
             if stop.is_a?(StopDestination)
@@ -107,9 +116,6 @@ class Route < ActiveRecord::Base
             if stop.position?
               last_lat, last_lng = stop.lat, stop.lng
             end
-          elsif stop.is_a?(StopRest) && stop.open && stop.close && stop.duration
-            stop.out_of_window = (stop.open && self.end < stop.open) || (stop.close && self.end > stop.close)
-            self.end += stop.duration
           end
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_window = false
