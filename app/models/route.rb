@@ -112,7 +112,7 @@ class Route < ActiveRecord::Base
             self.end += stop.duration if stop.duration
           end
         else
-          stop.active = stop.out_of_capacity = stop.out_of_drive_time = false
+          stop.active = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_window = false
           stop.distance = stop.trace = stop.time = stop.wait_time = nil
         end
       }
