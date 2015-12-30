@@ -107,9 +107,9 @@ class Route < ActiveRecord::Base
             if stop.position?
               last_lat, last_lng = stop.lat, stop.lng
             end
-          elsif stop.is_a?(StopRest) && stop.duration
+          elsif stop.is_a?(StopRest) && stop.open && stop.close && stop.duration
             stop.out_of_window = (stop.open && self.end < stop.open) || (stop.close && self.end > stop.close)
-            self.end += stop.duration if stop.duration
+            self.end += stop.duration
           end
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_window = false
