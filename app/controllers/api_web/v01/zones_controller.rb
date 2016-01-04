@@ -18,6 +18,7 @@
 require 'value_to_boolean'
 
 class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
+  skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource :zoning
   load_and_authorize_resource :zone, through: :zoning
   before_action :set_zoning, only: [:index]
@@ -57,6 +58,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     elsif current_user.customer.vehicle_usage_sets.size == 1
       current_user.customer.vehicle_usage_sets.first
     end
+    @method = request.method_symbol
   end
 
   private

@@ -24,7 +24,8 @@ var api_web_v01_zones_index = function(params) {
     vehicles_map = params.vehicles_map,
     destinations = params.destinations,
     destination_ids = params.destination_ids,
-    vehicle_usage_set_id = params.vehicle_usage_set_id;
+    vehicle_usage_set_id = params.vehicle_usage_set_id,
+    method = params.method;
 
   var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
@@ -113,15 +114,15 @@ var api_web_v01_zones_index = function(params) {
   }
 
   progressBar && progressBar.advanceTo(50);
-  var paramsJson = {};
-  if (zone_ids) paramsJson.ids = zone_ids.join(',');
-  if (destinations) paramsJson.destinations = destinations;
-  if (destination_ids) paramsJson.destination_ids = destination_ids.join(',');
-  if (vehicle_usage_set_id) paramsJson.vehicle_usage_set_id = vehicle_usage_set_id;
-  var queryParam = $.param(paramsJson);
-  if (queryParam) queryParam = '?' + queryParam;
+  var params = {};
+  if (zone_ids) params.ids = zone_ids.join(',');
+  if (destinations) params.destinations = destinations;
+  if (destination_ids) params.destination_ids = destination_ids.join(',');
+  if (vehicle_usage_set_id) params.vehicle_usage_set_id = vehicle_usage_set_id;
   $.ajax({
-    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json' + queryParam,
+    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json',
+    method: method,
+    data: params,
     beforeSend: beforeSendWaiting,
     success: function(data) {
       if (data.zoning && data.zoning.length) {

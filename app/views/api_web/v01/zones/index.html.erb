@@ -33,6 +33,7 @@ controller.js(
   }],
   destinations: !@destinations_all.nil?,
   destination_ids: @destinations ? @destinations.collect(&:id) : nil,
-  vehicle_usage_set_id: @vehicle_usage_set ? @vehicle_usage_set.id : nil
+  vehicle_usage_set_id: @vehicle_usage_set ? @vehicle_usage_set.id : nil,
+  method: @method
 )
 %>
