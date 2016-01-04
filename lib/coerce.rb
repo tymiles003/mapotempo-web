@@ -18,13 +18,21 @@
 require 'parse_ids_refs'
 
 class CoerceArrayInteger
-  def self.parse(s)
-    s.split(',').collect{ |i| Integer(i) }
+  def self.parse(str)
+    if str.is_a? String
+      str.split(',').collect{ |i| Integer(i) }
+    else
+      str
+    end
   end
 end
 
 class CoerceArrayString
   def self.parse(str)
-    str.split(',').collect{ |s| String(s) }
+    if str.is_a? String
+      str.split(',').collect{ |s| String(s) }
+    else
+      str
+    end
   end
 end
