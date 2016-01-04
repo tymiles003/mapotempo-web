@@ -16,9 +16,14 @@ customer = Customer.create!(reseller: reseller, name: "Toto", default_country: "
 admin = User.create!(email: "admin@example.com", password: "123456789", reseller: reseller, layer: mapbox)
 fred = User.create!(email: "test@example.com", password: "123456789", layer: mapbox, customer: customer)
 toto = User.create!(email: "toto@example.com", password: "123456789", customer: customer)
+
 store = Store.create!(name: "l1", street: "Place Picard", postalcode: "33000", city: "Bordeaux", lat: 44.81673, lng: -0.55115, customer: customer)
-Vehicle.create!(capacity: 100, customer: customer, name: "Renault Kangoo", store_start: store, store_stop: store)
-Vehicle.create!(capacity: 100, customer: customer, name: "Fiat Vito", store_start: store, store_stop: store)
+vehicle_usage_set = VehicleUsageSet.create!(name: "Vehicle Usage Set #{Time.now.to_i}", customer: customer, store_start: store, store_stop: store, store_rest: store)
+vehicle_1 = Vehicle.create!(capacity: 100, customer: customer, name: "Renault Kangoo")
+vehicle_2 = Vehicle.create!(capacity: 100, customer: customer, name: "Fiat Vito")
+vehicle_usage_1 = VehicleUsage.create!(vehicle_usage_set: vehicle_usage_set, vehicle: vehicle_1)
+vehicle_usage_2 = VehicleUsage.create!(vehicle_usage_set: vehicle_usage_set, vehicle: vehicle_2)
+
 Destination.create!(name: "l1", street: "Place Picard", postalcode: "33000", city: "Bordeaux", lat: 44.84512, lng: -0.578, quantity: 1, customer: customer)
 Destination.create!(name: "l2", street: "Rue Esprit des Lois", postalcode: "33000", city: "Bordeaux", lat: 44.83395, lng: -0.56545, quantity: 1, customer: customer)
 Destination.create!(name: "l3", street: "Rue de Nuits", postalcode: "33000", city: "Bordeaux", lat: 44.84272, lng: -0.55013, quantity: 1, customer: customer)
