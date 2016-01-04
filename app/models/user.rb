@@ -54,9 +54,9 @@ class User < ActiveRecord::Base
 
   def assign_defaults_layer
     if admin?
-      self.layer ||= Layer.select{ |l| !l.overlay }.sort_by(&:id).first
+      self.layer ||= Layer.order(:id).find_by!(overlay: false)
     else
-      self.layer ||= customer && customer.profile.layers.select{ |l| !l.overlay }.sort_by(&:id).first
+      self.layer ||= customer && customer.profile.layers.order(:id).find_by!(overlay: false)
     end
   end
 end
