@@ -35,7 +35,7 @@
           <p class="help-block"><%= t 'vehicles.form.speed_multiplicator.help' %></p>
         <% end %>
         <% if @vehicle_usage.vehicle.customer.tomtom? %>
-          <%= f.select :tomtom_id, t('vehicles.form.tomtom_id'), [@vehicle_usage.vehicle.tomtom_id] %>
+          <%= f.select :tomtom_id, t('vehicles.form.tomtom_id'), [] %>
         <% end %>
         <% if @vehicle_usage.vehicle.customer.enable_masternaut && !@vehicle_usage.vehicle.customer.masternaut_user.blank? && !@vehicle_usage.vehicle.customer.masternaut_password.blank? %>
           <%= f.text_field :masternaut_ref %>

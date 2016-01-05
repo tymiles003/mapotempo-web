@@ -25,27 +25,33 @@ var vehicle_usages_form = function(params) {
     theme: 'fontawesome'
   });
 
-  $('#vehicle_usage_vehicle_tomtom_id').select2({
-    theme: 'bootstrap',
-    width: '100%',
-    minimumResultsForSearch: -1,
-    ajax: {
-      url: '/api/0.1/customers/' + params.customer_id + '/tomtom_ids',
-      dataType: 'json',
-      processResults: function (data, page) {
-        data[''] = ' ';
-        return {
-          results: $.map(data, function(o, k) {
-            return {
-              id: k,
-              text: o
-            };
-          })
-        };
-      },
-      cache: true
-    },
+  $.ajax({
+    url: '/api/0.1/customers/' + params.customer_id + '/tomtom_ids',
+    dataType: 'json',
+    error: ajaxError,
+    success: function(data, textStatus, jqXHR) {
+
+      $('#vehicle_usage_vehicle_tomtom_id').select2({
+        data: $.map(data, function(name, id) {
+          return { id: id, text: name }
+        }),
+        theme: 'bootstrap',
+        width: '100%',
+        minimumResultsForSearch: -1,
+        templateResult: function(data_selection) {
+          return data_selection.text;
+        },
+        templateSelection: function(data_selection) {
+          return data_selection.text;
+        }
+      });
+
+      if (params.tomtom_id) {
+        $('#vehicle_usage_vehicle_tomtom_id').val(params.tomtom_id).trigger('change');
+      }
+    }
   });
+
 }
 
 Paloma.controller('VehicleUsage').prototype.new = function() {
