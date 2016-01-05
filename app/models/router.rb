@@ -82,11 +82,11 @@ class Router < ActiveRecord::Base
     unpack_vector(row, column, matrix)
   end
 
-  def matrix_iterate(row, column, speed_multiplicator, mode = :time, &block)
+  def matrix_iterate(row, column, speed_multiplicator, dimension = :time, &block)
     total = row.size * column.size
     row.collect{ |v1|
       column.collect{ |v2|
-        distance, time, trace = trace(speed_multiplicator, v1[0], v1[1], v2[0], v2[1], mode, false)
+        distance, time, trace = trace(speed_multiplicator, v1[0], v1[1], v2[0], v2[1], dimension, false)
         distance ||= 2147483647
         time ||= 2147483647
         block.call(1, total) if block
