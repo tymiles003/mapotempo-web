@@ -143,7 +143,7 @@ module Routers
       if !request
         begin
           response = RestClient.get(url, params: params)
-        rescue => e
+        rescue RestClient::Exception => e
           error = JSON.parse(e.response)
           if error['type'] == 'ApplicationError'
             additional_data = error['AdditionalData'] || error['additionalData']
