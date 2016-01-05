@@ -42,8 +42,9 @@ class TomtomWebfleet
 
   attr_accessor :client_objects, :client_orders, :api_key
 
-  def initialize(url, api_key)
+  def initialize(url, api_key, options)
     @api_key = api_key
+    @cache_object = options[:cache_object]
 
     @client_objects = Savon.client(wsdl: url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
@@ -65,20 +66,26 @@ class TomtomWebfleet
   end
 
   def showObjectReport(account, username, password)
-    objects = get(@client_objects, :show_object_report, account, username, password, {})
-    objects = [objects] if objects.is_a?(Hash)
-    objects.select{ |object| !object[:deleted] }.collect{ |object|
-      {
-        objectUid: object[:@object_uid],
-        objectName: object[:object_name],
-        lat: (object[:position][:latitude] && (object[:position][:latitude].to_i / 1e6)),
-        lng: (object[:position][:longitude] && (object[:position][:longitude].to_i / 1e6)),
-        speed: object[:speed],
-        direction: object[:course],
-#        quality: object[:quality],
-        time: object[:pos_time],
+    key = ['tomtom', account, username, password, @client_object]
+    result = @cache_object.read(key)
+    if !result
+      objects = get(@client_objects, :show_object_report, account, username, password, {})
+      objects = [objects] if objects.is_a?(Hash)
+      result = objects.select{ |object| !object[:deleted] }.collect{ |object|
+        {
+          objectUid: object[:@object_uid],
+          objectName: object[:object_name],
+          lat: (object[:position][:latitude] && (object[:position][:latitude].to_i / 1e6)),
+          lng: (object[:position][:longitude] && (object[:position][:longitude].to_i / 1e6)),
+          speed: object[:speed],
+          direction: object[:course],
+          # quality: object[:quality],
+          time: object[:pos_time],
+        }
       }
-    }
+      @cache_object.write(key, result)
+    end
+    result
   end
 
   def showVehicleReport(account, username, password)

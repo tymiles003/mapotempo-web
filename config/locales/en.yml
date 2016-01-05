@@ -672,6 +672,7 @@ en:
       active_none: "None"
       send_to_route_help: "Move this stop at the end of a route"
       wait: "Waiting time:"
+      vehicle_speed: "Speed:"
       vehicle_last_position_time: "Last position:"
       popup:
         open_close: "Time window:"

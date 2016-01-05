@@ -21,6 +21,7 @@ class V01::Entities::VehiclePosition < Grape::Entity
   end
 
   expose(:vehicle_id, documentation: { type: Integer })
+  expose(:device_name, documentation: { type: String })
   expose(:lat, documentation: { type: Float })
   expose(:lng, documentation: { type: Float })
   expose(:direction, documentation: { type: Float })
