@@ -23,7 +23,7 @@ class V01::Stores < Grape::API
     def store_params
       p = ActionController::Parameters.new(params)
       p = p[:store] if p.key?(:store)
-      p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng, :geocoding_accuracy, :geocoding_level, :color)
+      p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng, :geocoding_accuracy, :geocoding_level, :color, :icon)
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'

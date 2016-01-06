@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'font_awesome'
+
 class LocalizationStoreValidator < ActiveModel::Validator
   def validate(record)
     if record.postalcode.nil? && record.city.nil? && (record.lat.nil? || record.lng.nil?)
@@ -44,6 +46,7 @@ class Store < ActiveRecord::Base
   validates_inclusion_of :lat, in: -90..90, allow_nil: true, message: I18n.t('activerecord.errors.models.store.lat_outside_range')
   validates_inclusion_of :lng, in: -180..180, allow_nil: true, message: I18n.t('activerecord.errors.models.store.lng_outside_range')
   validates_inclusion_of :geocoding_accuracy, in: 0..1, allow_nil: true, message: I18n.t('activerecord.errors.models.destination.geocoding_accuracy_outside_range')
+  validates_inclusion_of :icon, in: FontAwesome::icons_table, allow_blank: true, message: I18n.t('activerecord.errors.models.store.icon_unknown')
   validates_with LocalizationStoreValidator, fields: [:street, :city, :lat, :lng]
 
   before_create :create_geocode

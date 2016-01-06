@@ -273,6 +273,7 @@ en:
         store_start: "Start store"
         store_end: "End store"
         color: "Color"
+        icon: "Icon"
       tag:
         label: "Label"
         color: "Color"
@@ -380,6 +381,7 @@ en:
           missing_address_or_latlng: "Postalcode and city cannot be empty if lat/lng are empty"
           lat_outside_range: "must be inside range -90..90"
           lng_outside_range: "must be inside range -180..180"
+          icon_unknown: "is not in font-awesome icon list"
         route:
           attributes:
             stops:

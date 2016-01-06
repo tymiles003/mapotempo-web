@@ -277,10 +277,11 @@ fr:
         store_start: "Dépôt début"
         store_end: "Dépôt fin"
         color: "Couleur"
+        icon: "Icône"
       tag:
         label: "Libellé"
         color: "Couleur"
-        icon: "Icone"
+        icon: "Icône"
       user:
         email: "Email"
         customer: "Compte client"
@@ -394,6 +395,7 @@ fr:
           missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
           lat_outside_range: "doit être comprise entre -90..90"
           lng_outside_range: "doit être comprise entre -180..180"
+          icon_unknown: "n'est pas une icône font-awesome autorisée"
         route:
           attributes:
             stops:

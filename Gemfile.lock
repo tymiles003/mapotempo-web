@@ -156,6 +156,7 @@ GEM
     bootstrap-datepicker-rails (1.5.0)
       railties (>= 3.0)
     bootstrap-filestyle-rails (1.1.2)
+    bootstrap-select-rails (1.6.3)
     bootstrap-wysihtml5-rails (0.3.3.7)
       railties (>= 3.0)
     browser (1.0.1)
@@ -181,7 +182,6 @@ GEM
     coffee-script-source (1.10.0)
     color (1.8)
     commonjs (0.2.7)
-    concurrent-ruby (1.0.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.2)
@@ -494,6 +494,7 @@ DEPENDENCIES
   auto_strip_attributes
   bootstrap-datepicker-rails
   bootstrap-filestyle-rails
+  bootstrap-select-rails
   bootstrap-wysihtml5-rails
   browser
   byebug
@@ -575,3 +576,6 @@ DEPENDENCIES
   validates_timeliness
   web-console (~> 2.0)
   webmock
+
+BUNDLED WITH
+   1.10.6

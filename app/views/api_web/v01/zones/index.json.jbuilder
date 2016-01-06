@@ -3,7 +3,7 @@ if @vehicle_usage_set
   vehicle_usages = @zones.select(&:vehicle).collect{ |zone| vehicle_vehicle_usages[zone.vehicle] }
 end
 json.stores vehicle_usages ? (vehicle_usages.collect(&:default_store_start) + vehicle_usages.collect(&:default_store_stop) + vehicle_usages.collect(&:default_store_rest)).compact.uniq : @zoning.customer.stores do |store|
-  json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color
+  json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon
 end
 json.zoning @zones do |zone|
   json.extract! zone, :id, :vehicle_id, :polygon

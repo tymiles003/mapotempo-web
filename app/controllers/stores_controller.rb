@@ -17,12 +17,14 @@
 #
 require 'csv'
 require 'importer_stores'
+require 'font_awesome'
 
 class StoresController < ApplicationController
   include LinkBack
 
   load_and_authorize_resource
   before_action :set_store, only: [:show, :edit, :update, :destroy]
+  before_action :icons_table
 
   def index
     if current_user.customer.job_store_geocoding
@@ -134,9 +136,13 @@ class StoresController < ApplicationController
     @store = Store.find(params[:id] || params[:store_id])
   end
 
+  def icons_table
+    @icons_table = FontAwesome::icons_table
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def store_params
-    params.require(:store).permit(:name, :street, :postalcode, :city, :country, :lat, :lng, :ref, :geocoding_accuracy, :geocoding_level, :color)
+    params.require(:store).permit(:name, :street, :postalcode, :city, :country, :lat, :lng, :ref, :geocoding_accuracy, :geocoding_level, :color, :icon)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

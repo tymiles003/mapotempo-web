@@ -137,5 +137,7 @@ gem 'rest-client'
 gem 'macaddr'
 gem 'rubyzip'
 
+gem 'bootstrap-select-rails'
+
 #gem 'mapotempo_web_by_time_distance', path: '../mapotempo_web_by_time_distance'
 #gem 'mapotempo_web_import_vehicle_store', path: '../mapotempo_web_import_vehicle_store'

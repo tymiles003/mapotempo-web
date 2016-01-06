@@ -70,6 +70,7 @@
 //= require select2
 //= require select2_locale_fr
 //= require select2_locale_en
+//= require bootstrap-select
 //= require_tree ../../templates
 //= require paloma
 //= require leaflet.polylineoffset

@@ -41,9 +41,17 @@ var destinations_form = function(params, api) {
     map.addControl(new control_position());
   }
 
-  api == 'stores' && $('#store_color').simplecolorpicker({
-    theme: 'fontawesome'
-  });
+  if (api == 'stores') {
+    $('#store_color').simplecolorpicker({
+      theme: 'fontawesome'
+    });
+    $('#store_icon option').each(function(elem, val) {
+      var $this = $(this);
+      if ($this.val())
+        $this.attr('data-content', '<i class="fa ' + $this.val() + '"></i> ' + $this.val());
+    })
+    $('#store_icon').attr('data-live-search', 'true').selectpicker();
+  }
 
   var markers = {};
 

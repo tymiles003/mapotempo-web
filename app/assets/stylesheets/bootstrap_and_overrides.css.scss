@@ -195,17 +195,25 @@ html.turbolinks-progress-bar::before {
   background-color: #13B0CA !important;
 }
 
-/* leaflet-marker-icon number */
+/* leaflet-marker-icon */
+.leaflet-marker-icon {
+  font-size: 16px;
+}
+
 .leaflet-marker-icon.small .number {
   background: none;
   color: #fff;
   right: -1px;
-  top: 3px;
+  top: 7px;
 }
 
 .leaflet-marker-icon.large .number {
   background: none;
   color: #fff;
   right: 8px;
-  top: 5px;
+  top: 9px;
+}
+
+.store-icon {
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }

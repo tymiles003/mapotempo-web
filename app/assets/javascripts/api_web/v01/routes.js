@@ -193,11 +193,12 @@ var api_web_v01_routes_index = function(params) {
       store.planning_id = data.planning_id;
       if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
         var m = L.marker(new L.LatLng(store.lat, store.lng), {
-          icon: L.icon({
-            iconUrl: '/images/marker-home' + (store.color ? ('-' + store.color.substr(1)) : '') + '.svg',
+          icon: L.divIcon({
+            html: '<i class="fa ' + (store.icon || 'fa-home') + ' fa-2x store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
             iconSize: new L.Point(32, 32),
             iconAnchor: new L.Point(16, 16),
-            popupAnchor: new L.Point(0, -12)
+            popupAnchor: new L.Point(0, -12),
+            className: 'store-icon-container'
           })
         }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
           minWidth: 200,

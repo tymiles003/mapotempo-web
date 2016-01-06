@@ -1,5 +1,5 @@
 json.stores @planning ? @planning.routes.select(&:vehicle_usage).collect{ |route| [route.vehicle_usage.default_store_start, route.vehicle_usage.default_store_stop, route.vehicle_usage.default_store_rest] }.flatten.compact.uniq : @zoning.customer.stores do |store|
-  json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color
+  json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon
 end
 json.zoning @zoning.zones do |zone|
   json.extract! zone, :id, :vehicle_id, :polygon

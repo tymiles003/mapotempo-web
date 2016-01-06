@@ -15,7 +15,7 @@ else
   json.size @planning.routes.to_a.sum(0){ |route| route.stops.size }
   json.size_active @planning.routes.to_a.sum(0){ |route| route.vehicle_usage ? route.size_active : 0 }
   json.stores (@planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start) + @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_stop) + @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_rest)).compact.uniq do |store|
-    json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color
+    json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon
   end
   json.routes @planning.routes do |route|
     json.route_id route.id
@@ -39,7 +39,7 @@ else
     number = 0
     no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
     json.store_start do
-      json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+      json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon
       (json.time l(route.start, format: :hour_minute)) if route.start
       (json.geocoded true) if !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?
       (json.error true) if route.vehicle_usage.default_store_start.lat.nil? || route.vehicle_usage.default_store_start.lng.nil?
@@ -118,7 +118,7 @@ else
       json.duration = duration if duration
     end
     json.store_stop do
-      json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
+      json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon
       (json.time l(route.end, format: :hour_minute)) if route.end
       (json.geocoded true) if !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?
       (json.no_path true) if route.distance > 0 && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? && !route.stop_trace

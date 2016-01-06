@@ -36,6 +36,7 @@
           <% else %>
             <div class="col-md-6 col-sm-6 col-xs-9">
           <% end %>
+            <i class="fa fa-2x <%= route.vehicle_usage.default_store_start.icon || 'fa-home' %>" style="color: <%= route.vehicle_usage.default_store_start.color || 'black' %>;"></i>
             <span class="name"><%= route.vehicle_usage.default_store_start.name %></span><br/>
             <span class="address">
               <%= route.vehicle_usage.default_store_start.street %>
@@ -181,6 +182,7 @@
           <% else %>
             <div class="col-md-6 col-sm-6 col-xs-9">
           <% end %>
+            <i class="fa fa-2x <%= route.vehicle_usage.default_store_stop.icon || 'fa-home' %>" style="color: <%= route.vehicle_usage.default_store_stop.color || 'black' %>;"></i>
             <span class="name"><%= route.vehicle_usage.default_store_stop.name %></span><br/>
             <span class="address">
               <%= route.vehicle_usage.default_store_stop.street %>

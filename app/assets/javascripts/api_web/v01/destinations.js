@@ -52,11 +52,12 @@ var api_web_v01_display_destinations_ = function(api, map, markersLayers, cluste
   var addMarker = function(id, lat, lng, icon, color) {
     var licon;
     if (api == 'stores') {
-      licon = L.icon({
-        iconUrl: '/images/marker-home' + (color ? ('-' + color.substr(1)) : '') + '.svg',
+      licon = L.divIcon({
+        html: '<i class="fa ' + (icon || 'fa-home') + ' fa-2x store-icon" style="color: ' + (color || 'black') + ';"></i>',
         iconSize: new L.Point(32, 32),
         iconAnchor: new L.Point(16, 16),
-        popupAnchor: new L.Point(0, -12)
+        popupAnchor: new L.Point(0, -12),
+        className: 'store-icon-container'
       });
     } else {
       licon = new L.icon({
@@ -109,10 +110,10 @@ var api_web_v01_destinations_index = function(params, api) {
     imperial: false
   }).addTo(map);
 
-  if(display_home) {
+  if (display_home) {
     L.marker([map_lat, map_lng], {
-      icon: L.icon({
-        iconUrl: '/images/marker-home' + (store.color ? ('-' + store.color.substr(1)) : '') + '.svg',
+      icon: L.divIcon({
+        html: '<i class="fa ' + (store.icon || 'fa-home') + ' fa-2x store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
         iconSize: new L.Point(32, 32),
         iconAnchor: new L.Point(16, 16),
         popupAnchor: new L.Point(0, -12)
