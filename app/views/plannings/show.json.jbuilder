@@ -126,6 +126,7 @@ else
       json.stop_trace route.stop_trace
       (json.error true) if route.stop_out_of_drive_time
       json.stop_out_of_drive_time route.stop_out_of_drive_time
+      out_of_drive_time |= route.stop_out_of_drive_time
       json.stop_distance (route.stop_distance || 0) / 1000
     end if route.vehicle_usage && route.vehicle_usage.default_store_stop
     (json.route_no_geolocalization no_geolocalization) if no_geolocalization
