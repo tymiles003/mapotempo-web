@@ -126,4 +126,13 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     assert_equal '1-44063-666E054E7 - MAPO1', JSON.parse(last_response.body)['1-44063-666E054E7']
   end
+
+  test 'should validate tomtom credentials' do
+    account_params = { account: "Account Name", user: "User Name", password: "User Password" }
+    uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl')
+    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks', __FILE__) + '/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl').read)
+    get api("#{@customer.id}/check_tomtom_credentials", account_params)
+    assert last_response.ok?, last_response.body
+  end
+
 end

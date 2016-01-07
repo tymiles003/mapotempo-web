@@ -17,7 +17,11 @@
 #
 class CustomersController < ApplicationController
   load_and_authorize_resource
+
   before_action :set_customer, only: [:edit, :update, :delete_vehicle]
+  before_action :clear_customer_params, only: [:create, :update]
+
+  helper_method :tomtom_default_password
 
   def index
     @customers = current_user.reseller.customers.order(:name)
@@ -109,6 +113,14 @@ class CustomersController < ApplicationController
     if @customer.speed_multiplicator
       @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
     end
+  end
+
+  def tomtom_default_password
+    '97!8Or748trp'
+  end
+
+  def clear_customer_params
+    params[:customer].delete(:tomtom_password) if params[:customer][:tomtom_password] == tomtom_default_password # Delete default password displayed in form
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

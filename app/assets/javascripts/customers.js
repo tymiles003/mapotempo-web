@@ -68,6 +68,77 @@ var customers_index = function(params) {
 }
 
 var customers_edit = function(params) {
+
+  var requests = [];
+  var timeoutId;
+
+  function tomtomSuccess() {
+    $("#tomtom_success").removeClass('hidden');
+    $("#tomtom_not_found").addClass('hidden');
+  }
+
+  function tomtomNotFound() {
+    $("#tomtom_success").addClass('hidden');
+    $("#tomtom_not_found").removeClass('hidden');
+  }
+
+  function checkTomTom() {
+    requests.push($.ajax({
+      url: '/api/0.1/customers/' + params.customer_id + '/tomtom_ids',
+      success: function(data, textStatus, jqXHR) {
+        tomtomSuccess();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        tomtomNotFound();
+      }
+    }));
+  }
+
+  function checkTomTomCredentials() {
+
+    function userTomTomCredentials() {
+      var userInputs = {
+        account: $('#customer_tomtom_account').val(),
+        user: $('#customer_tomtom_user').val()
+      }
+      /* Prevent submitting default password value */
+      var passwd = $('#customer_tomtom_password').val();
+      if (passwd != params.tomtom_default_password) userInputs['password'] = passwd;
+      return userInputs;
+    }
+
+    requests.push($.ajax({
+      url: '/api/0.1/customers/' + params.customer_id + '/check_tomtom_credentials',
+      data: userTomTomCredentials(),
+      beforeSend: function(jqXHR, settings) {
+        $.each(requests, function(i, request) {
+          request.abort();
+        });
+        beforeSendWaiting();
+      },
+      complete: function(jqXHR, textStatus) {
+        completeWaiting();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        tomtomNotFound();
+      },
+      success: function(data, textStatus, jqXHR) {
+        tomtomSuccess();
+      }
+    }));
+  }
+
+  function checkTomTomCredentialsWithDelay() {
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(checkTomTomCredentials, 750);
+  }
+
+  checkTomTom();
+
+  $('#customer_tomtom_account, #customer_tomtom_user, #customer_tomtom_password').keyup(function(e) {
+    checkTomTomCredentialsWithDelay();
+  });
+
   $('#customer_end_subscription').datepicker({
     language: defaultLocale,
     autoclose: true,

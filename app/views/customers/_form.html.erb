@@ -77,9 +77,21 @@
       <div id="collapseTomtom" class="panel-collapse collapse">
         <div class="panel-body">
           <p class="help-block"><%= t '.tomtom_help' %></p>
-          <%= f.text_field :tomtom_account %>
-          <%= f.text_field :tomtom_user %>
-          <%= f.text_field :tomtom_password %>
+          <div class="pull-left col-md-10">
+
+            <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
+            <input style="display:none" type="text" name="customer[tomtom_account]" />
+            <input style="display:none" type="text" name="customer[tomtom_user]" />
+            <input style="display:none" type="password" name="customer[tomtom_password]" />
+
+            <%= f.text_field :tomtom_account, autocomplete: "off" %>
+            <%= f.text_field :tomtom_user, autocomplete: "off" %>
+            <%= f.password_field :tomtom_password, value: tomtom_default_password, autocomplete: "off" %>
+          </div>
+          <div class="pull-right col-md-2">
+            <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "tomtom_success" %>
+            <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "tomtom_not_found" %>
+          </div>
         </div>
       </div>
     </div>
