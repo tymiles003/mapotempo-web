@@ -111,6 +111,7 @@ var customers_edit = function(params) {
       url: '/api/0.1/customers/' + params.customer_id + '/check_tomtom_credentials',
       data: userTomTomCredentials(),
       beforeSend: function(jqXHR, settings) {
+        hideAlert('.alert', 0);
         $.each(requests, function(i, request) {
           request.abort();
         });
@@ -120,6 +121,7 @@ var customers_edit = function(params) {
         completeWaiting();
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        ajaxError(jqXHR, textStatus, errorThrown);
         tomtomNotFound();
       },
       success: function(data, textStatus, jqXHR) {
