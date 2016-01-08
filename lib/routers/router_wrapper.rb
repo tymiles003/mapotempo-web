@@ -33,7 +33,6 @@ module Routers
     def compute(url, mode, from_lat, from_lng, to_lat, to_lng, speed_multiplicator = nil, dimension = nil)
       key = ['c', url, mode, dimension, from_lat, from_lng, to_lat, to_lng, speed_multiplicator]
 
-      no_path = false
       request = @cache_request.read(key)
       if !request
         params = {
@@ -49,8 +48,7 @@ module Routers
           when 200
             response
           when 417
-            response.code = 200
-            no_path = true
+            ''
           else
             response.return!(request, result, &block)
           end
@@ -59,7 +57,7 @@ module Routers
         @cache_request.write(key, request && String.new(request)) # String.new workaround waiting for RestClient 2.0
       end
 
-      if no_path
+      if request == ''
         [nil, nil, nil]
       else
         data = JSON.parse(request)
