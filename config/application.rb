@@ -100,12 +100,16 @@ module Mapotempo
       'https://route.nlp.nokia.com/routing', nil, nil
     )
 
-    config.tomtom = TomtomWebfleet.new('https://soap.business.tomtom.com/v1.25', nil, cache_object: ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'tomtom'), namespace: 'tomtom', expires_in: 30))
-
     config.router_wrapper = Routers::RouterWrapper.new(
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'router_wrapper_request'), namespace: 'router_wrapper_request', expires_in: 60*60*24*1),
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'router_wrapper_result'), namespace: 'router_wrapper_result', expires_in: 60*60*24*1),
       nil
+    )
+
+    config.tomtom = TomtomWebfleet.new(
+      'https://soap.business.tomtom.com/v1.25',
+      nil,
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'tomtom'), namespace: 'tomtom', expires_in: 30)
     )
 
     config.masternaut_api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -40,11 +40,11 @@ class TomtomWebfleet
     nil: [nil, 'trailer', 'truck_trailer', 'crane', 'caddy', 'car_station_wagon', 'containership', 'link'],
   }
 
-  attr_accessor :client_objects, :client_orders, :api_key
+  attr_accessor :client_objects, :client_orders, :api_key, :cache_object
 
-  def initialize(url, api_key, options)
+  def initialize(url, api_key, cache_object)
     @api_key = api_key
-    @cache_object = options[:cache_object]
+    @cache_object = cache_object
 
     @client_objects = Savon.client(wsdl: url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
