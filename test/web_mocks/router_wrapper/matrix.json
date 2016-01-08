@@ -1,0 +1,3 @@
+HTTP/1.1 200 OK
+
+{"router":{"version":"draft","licence":"ODbL","attribution":"Bordeaux Métropole"},"matrix":[[452,395,334],[395,null,740],[275,717,61]]}

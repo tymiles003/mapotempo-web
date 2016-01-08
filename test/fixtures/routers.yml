@@ -22,3 +22,9 @@ router_here:
   mode: truck
   type: RouterHere
   name: HERE
+
+router_wrapper_public_transport:
+  mode: public_transport
+  type: RouterWrapperPublicTransport
+  name: RouterWrapperPublicTransport
+  url_time: http://localhost:4899
