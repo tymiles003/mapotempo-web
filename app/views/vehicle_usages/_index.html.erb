@@ -16,35 +16,25 @@
           <div class="vehicle_color" style="background:<%= vehicle_usage.vehicle.color %>"></div>
           <%= vehicle_usage.vehicle.name %>
         </td>
-        <td><%= vehicle_usage.vehicle.router && vehicle_usage.vehicle.router.name %></td>
-        <td><% if !vehicle_usage.vehicle.emission.nil? %><%= vehicle_usage.vehicle.emission %>&nbsp;<%= t 'all.unit.kgco2e_l_html' %><% end %></td>
-        <td><% if !vehicle_usage.vehicle.consumption.nil? %><%= vehicle_usage.vehicle.consumption %>&nbsp;<%= t 'all.unit.l_100km' %><% end %></td>
-        <td><%= vehicle_usage.vehicle.capacity %>&nbsp;<%= vehicle_usage.vehicle.capacity_unit %></td>
         <td>
-          <% if vehicle_usage.store_start || vehicle_usage.store_stop %>
-            <% if vehicle_usage.default_store_start %>
-              <%= vehicle_usage.default_store_start.name %>
-            <% else %>
-              <i class="fa fa-ban fa-fw" title="<%= t 'vehicle_usages.index.store.no_start' %>"></i>
-            <% end %>
-            <% if vehicle_usage.default_store_start != vehicle_usage.default_store_stop %>
-              <i class="fa fa-long-arrow-right fa-fw"></i>
-              <% if vehicle_usage.default_store_stop %>
-                <%= vehicle_usage.default_store_stop.name %>
-              <% else %>
-                <i class="fa fa-ban fa-fw" title="<%= t 'vehicle_usages.index.store.no_stop' %>"></i>
-              <% end %>
-            <% elsif vehicle_usage.default_store_start %>
-              <i class="fa fa-exchange fa-fw" title="<%= t 'vehicle_usages.index.store.same_start_stop' %>"></i>
-            <% end %>
-          <% end %>
+          <%= vehicle_usage_router vehicle_usage %>
         </td>
         <td>
-          <%= if vehicle_usage.open then l(vehicle_usage.open, format: :hour_minute) end %>
-          <% if vehicle_usage.open || vehicle_usage.close %>-<% end %>
-          <%= if vehicle_usage.close then l(vehicle_usage.close, format: :hour_minute) end %>
+          <%= vehicle_usage_emission vehicle_usage %>
         </td>
-        <td><%= link_to edit_vehicle_usage_path(vehicle_usage) + '?back=true', :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %></td>
+        <td>
+          <%= vehicle_usage_consumption vehicle_usage %>
+        </td>
+        <td>
+          <%= vehicle_usage.vehicle.capacity %>&nbsp;<%= vehicle_usage.vehicle.capacity_unit %>
+        </td>
+        <td>
+          <%= vehicle_usage_store_name vehicle_usage %>
+        </td>
+        <td>
+          <%= vehicle_usage_store_hours vehicle_usage %>
+        </td>
+        <td><%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %></td>
       </tr>
     <% end %>
   </tbody>
