@@ -2,9 +2,11 @@
 <h1><%= t '.title' %></h1>
 
 <%= render 'form' %>
+
 <%
 controller.js(
   customer_id: @vehicle_usage.vehicle.customer.id,
+  enable_tomtom: current_user.customer.enable_tomtom?,
   tomtom_id: @vehicle_usage.vehicle.tomtom_id
 )
 %>
