@@ -114,25 +114,37 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should get tomtom ids' do
-    uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl')
-    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks', __FILE__) + '/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl').read)
+    begin
+      uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl')
+      stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks', __FILE__) + '/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl').read)
 
-    uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService')
-    stub_table = stub_request(:post, uri_template).with { |request|
-      request.body.include?("showObjectReport")
-    }.to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/soap.business.tomtom.com/showObjectReportResponse.xml').read)
+      uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService')
+      stub_table = stub_request(:post, uri_template).with { |request|
+        request.body.include?("showObjectReport")
+      }.to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/soap.business.tomtom.com/showObjectReportResponse.xml').read)
 
-    get api("#{@customer.id}/tomtom_ids")
-    assert last_response.ok?, last_response.body
-    assert_equal '1-44063-666E054E7 - MAPO1', JSON.parse(last_response.body)['1-44063-666E054E7']
+      get api("#{@customer.id}/tomtom_ids")
+      assert last_response.ok?, last_response.body
+      assert_equal '1-44063-666E054E7 - MAPO1', JSON.parse(last_response.body)['1-44063-666E054E7']
+    ensure
+      remove_request_stub(stub_table)
+    end
   end
 
   test 'should validate tomtom credentials' do
-    account_params = { account: "Account Name", user: "User Name", password: "User Password" }
-    uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl')
-    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks', __FILE__) + '/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl').read)
-    get api("#{@customer.id}/check_tomtom_credentials", account_params)
-    assert last_response.ok?, last_response.body
+    begin
+      uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl')
+      stub_table = stub_request(:get, uri_template).to_return(File.new(Rails.root.join("test/web_mocks/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl")).read)
+
+      uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService')
+      stub_table = stub_request(:post, uri_template).to_return(File.new(Rails.root.join("test/web_mocks/soap.business.tomtom.com/showObjectReportResponse.xml")).read)
+
+      account_params = { account: "Account Name", user: "User Name", password: "User Password" }
+      get api("#{@customer.id}/check_tomtom_credentials", account_params)
+      assert last_response.ok?, last_response.body
+    ensure
+     remove_request_stub(stub_table)
+    end
   end
 
 end
