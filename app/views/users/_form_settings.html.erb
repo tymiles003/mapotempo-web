@@ -14,7 +14,7 @@ layers = (@user.customer.profile.layers + [@user.layer]).sort_by(&:id).uniq.coll
   <%= render 'shared/error_messages', model: @user %>
   <%= f.collection_select :layer_id, [], (@user.admin? ? Layer.all.sort_by(&:id) : @user.customer.profile.layers).select{ |l| !l[:overlay] }, :id, :name, {}, {} %>
   <div class="form-group">
-    <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 200px;"></div></span>
+    <span class="col-md-offset-2 col-md-6"><div id="map" style="width: 100%; height: 250px;"></div></span>
   </div>
   <%= f.text_field :url_click2call do %>
     <p class="help-block"><%= t '.url_click2call_help' %></p>
