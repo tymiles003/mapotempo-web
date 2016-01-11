@@ -37,6 +37,7 @@ route.stops.each { |stop|
     ("%i:%02i" % [stop.wait_time/60/60, stop.wait_time/60%60] if route.vehicle_usage && stop.wait_time),
     (l(stop.time, format: :hour_minute) if route.vehicle_usage && stop.time),
     (stop.distance if route.vehicle_usage),
+    (stop.drive_time if route.vehicle_usage),
     stop.ref,
     stop.name,
     stop.street,

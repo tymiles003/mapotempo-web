@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160105154207) do
+ActiveRecord::Schema.define(version: 20160111102326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -239,6 +239,7 @@ ActiveRecord::Schema.define(version: 20160105154207) do
     t.string   "ref",                    limit: 255
     t.string   "color"
     t.integer  "vehicle_usage_id"
+    t.integer  "stop_drive_time"
   end
 
   add_index "routes", ["planning_id"], name: "fk__routes_planning_id", using: :btree
@@ -260,6 +261,7 @@ ActiveRecord::Schema.define(version: 20160105154207) do
     t.integer  "wait_time"
     t.integer  "lock_version",      default: 0,                 null: false
     t.string   "type",              default: "StopDestination", null: false
+    t.integer  "drive_time"
   end
 
   add_index "stops", ["destination_id"], name: "fk__stops_destination_id", using: :btree

@@ -704,6 +704,8 @@ fr:
         orders: "Commandes : "
         duration: "Durée : "
         tags: "Libellés : "
+        stop_drive_time: "Durée :"
+        stop_distance: "Distance :"
       error:
         no_geolocalization: "Pas de géolocalisation"
         no_geolocalization_help: "Pas de coordonnées géographiques renseignées ou l'adresse n'a pu être localisée"
@@ -746,6 +748,7 @@ fr:
       wait_time: "attente"
       time: "heure"
       distance: "distance"
+      drive_time: "temps trajet"
       name: "nom"
       street: "voie"
       detail: "complément"

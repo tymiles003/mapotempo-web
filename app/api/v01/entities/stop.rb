@@ -25,11 +25,12 @@ class V01::Entities::Stop < Grape::Entity
   expose(:id, documentation: { type: Integer })
   expose(:index, documentation: { type: Integer })
   expose(:active, documentation: { type: 'Boolean' })
-  expose(:distance, documentation: { type: Float })
-  expose(:trace, documentation: { type: String })
+  expose(:distance, documentation: { type: Float, desc: 'Distance between the stop and previous one.' })
+  expose(:drive_time, documentation: { type: Integer, desc: 'Time in seconds between the stop and previous one.' })
+  expose(:trace, documentation: { type: String, desc: 'Trace between the stop and previous one.' })
   expose(:destination_id, documentation: { type: Integer })
-  expose(:wait_time, documentation: { type: DateTime }) { |m| m.wait_time && ('%i:%02i:%02i' % [m.wait_time / 60 / 60, m.wait_time / 60 % 60, m.wait_time % 60]) }
-  expose(:time, documentation: { type: DateTime }) { |m|
+  expose(:wait_time, documentation: { type: DateTime, desc: 'Time before delivery.' }) { |m| m.wait_time && ('%i:%02i:%02i' % [m.wait_time / 60 / 60, m.wait_time / 60 % 60, m.wait_time % 60]) }
+  expose(:time, documentation: { type: DateTime, desc: 'Delivered at.' }) { |m|
     if m.time
       date = (m.route.planning.date || Date.today).to_time + (m.time.to_i - TIME_2000)
       date.strftime('%Y-%m-%dT%H:%M:%S')

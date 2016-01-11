@@ -66,6 +66,28 @@ var api_web_v01_routes_index = function(params) {
     }
   });
 
+  var routeStepTrace = L.Polyline.extend({
+    addDriveInfos: function(drive_time, distance) {
+      var color = this.options.color;
+      this.on('mouseover', function(e) {
+        var layer = e.target;
+        layer.setStyle({
+          opacity: 0.9,
+          weight: 7
+        });
+      });
+      this.on('mouseout', function(e) {
+        var layer = e.target;
+        layer.setStyle({
+          opacity: 0.5,
+          weight: 5
+        });
+      });
+      this.bindPopup('<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + ('0' + parseInt(drive_time / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(drive_time / 60) % 60).slice(-2) + ':' + ('0' + (drive_time % 60)).slice(-2) + '</div><div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance.toFixed(1) + ' km</div>');
+      return this;
+    }
+  });
+
   var display_planning = function(data) {
     $.each(data.routes, function(i, route) {
       if (route.vehicle_id) {
@@ -116,14 +138,13 @@ var api_web_v01_routes_index = function(params) {
 
       $.each(route.stops, function(index, stop) {
         if (stop.trace) {
-          var polyline = new L.Polyline(L.PolylineUtil.decode(stop.trace, 6));
-          L.polyline(polyline.getLatLngs(), {
+          (new routeStepTrace(L.PolylineUtil.decode(stop.trace, 6), {
             color: color
-          }).addTo(layers[route.route_id]);
-          L.polyline(polyline.getLatLngs(), {
+          })).addDriveInfos(stop.drive_time, stop.distance).addTo(layers[route.route_id]);
+          (new routeStepTrace(L.PolylineUtil.decode(stop.trace, 6), {
             offset: 3,
             color: color
-          }).addTo(layers_cluster[route.route_id]);
+          })).addDriveInfos(stop.drive_time, stop.distance).addTo(layers_cluster[route.route_id]);
         }
         if (stop.destination && $.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
           stop.i18n = mustache_i18n;
@@ -168,10 +189,13 @@ var api_web_v01_routes_index = function(params) {
         }
       });
       if (route.store_stop && route.store_stop.stop_trace) {
-        var polyline = new L.Polyline(L.PolylineUtil.decode(route.store_stop.stop_trace, 6));
-        L.polyline(polyline.getLatLngs(), {
+        (new routeStepTrace(L.PolylineUtil.decode(route.store_stop.stop_trace, 6), {
           color: color
-        }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]);
+        })).addDriveInfos(route.store_stop.stop_drive_time, route.store_stop.stop_distance).addTo(layers[route.route_id]);
+        (new routeStepTrace(L.PolylineUtil.decode(route.store_stop.stop_trace, 6), {
+          offset: 3,
+          color: color
+        })).addDriveInfos(route.store_stop.stop_drive_time, route.store_stop.stop_distance).addTo(layers_cluster[route.route_id]);
       }
 
       routes_layers_cluster.addLayer(layers_cluster[route.route_id]);

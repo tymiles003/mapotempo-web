@@ -690,6 +690,8 @@ en:
         orders: "Orders:"
         duration: "Take over:"
         tags: "Tags:"
+        stop_drive_time: "Duration:"
+        stop_distance: "Distance:"
       error:
         no_geolocalization: "No geolocalization"
         no_geolocalization_help: "No geographical coordinates or address could not be located"
@@ -732,6 +734,7 @@ en:
       wait_time: "wait"
       time: "time"
       distance: "distance"
+      drive_time: "drive time"
       name: "name"
       street: "street"
       detail: "detail"

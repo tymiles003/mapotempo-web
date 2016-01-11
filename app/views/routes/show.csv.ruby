@@ -6,6 +6,7 @@ CSV.generate { |csv|
     I18n.t('plannings.export_file.wait_time'),
     I18n.t('plannings.export_file.time'),
     I18n.t('plannings.export_file.distance'),
+    I18n.t('plannings.export_file.drive_time'),
     I18n.t('plannings.export_file.ref'),
     I18n.t('plannings.export_file.name'),
     I18n.t('plannings.export_file.street'),

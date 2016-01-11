@@ -45,7 +45,7 @@ json.routes @routes do |route|
     no_path |= stop.position? && route.vehicle_usage && !stop.trace && stop.active
     (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace && stop.active) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
     json.stop_id stop.id
-    json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
+    json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
     json.ref stop.ref if @planning.customer.enable_references
     json.open_close stop.open || stop.close
     (json.open stop.open.strftime('%H:%M')) if stop.open
@@ -101,6 +101,7 @@ json.routes @routes do |route|
     (json.time route.end.strftime('%H:%M')) if route.end
     json.stop_trace route.stop_trace
     json.stop_distance (route.stop_distance || 0) / 1000
+    json.stop_drive_time route.stop_drive_time
     (json.error true) if route.stop_out_of_drive_time || (route.distance > 0 && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? && !route.stop_trace)
     json.stop_out_of_drive_time route.stop_out_of_drive_time
     out_of_drive_time |= route.stop_out_of_drive_time

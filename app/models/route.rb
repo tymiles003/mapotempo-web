@@ -79,13 +79,13 @@ class Route < ActiveRecord::Base
       stops_sort.each{ |stop|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
           if stop.position? && !last_lat.nil? && !last_lng.nil?
-            stop.distance, time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
+            stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
           else
-            stop.distance, time, stop.trace = nil, nil, nil
+            stop.distance, stop.drive_time, stop.trace = nil, nil, nil
           end
-          if time
-            stops_time[stop] = time
-            stop.time = self.end + time
+          if stop.drive_time
+            stops_time[stop] = stop.drive_time
+            stop.time = self.end + stop.drive_time
           elsif stop.is_a?(StopRest)
             stop.time = self.end
           else
@@ -124,15 +124,15 @@ class Route < ActiveRecord::Base
       }
 
       if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
-        distance, time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng)
+        distance, drive_time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng)
       else
-        distance, time, trace = nil, nil, nil
+        distance, drive_time, trace = nil, nil, nil
       end
-      if time
+      if drive_time
         self.distance += distance
-        stops_time[:stop] = time
-        self.end += time
-        self.stop_distance = distance
+        stops_time[:stop] = drive_time
+        self.end += drive_time
+        self.stop_distance, self.stop_drive_time = distance, drive_time
       end
       self.stop_trace = trace
       self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
