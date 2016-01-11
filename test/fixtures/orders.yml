@@ -2,12 +2,12 @@
 
 order_one:
   order_array: order_array_one
-  destination: destination_one
+  visit: visit_one
   shift: 0
   products: product_one, product_two
 
 order_two:
   order_array: order_array_one
-  destination: destination_two
+  visit: visit_two
   shift: 0
   products:

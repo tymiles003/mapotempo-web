@@ -32,10 +32,11 @@ class CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should destination add' do
-    o = customers(:customer_one)
+    c = customers(:customer_one)
     assert_difference('Destination.count') do
-      o.destinations.build(name: 'new', city: 'Parlà', tags: [tags(:tag_one)]).save!
-      o.save!
+      d = c.destinations.build(name: 'new', city: 'Parlà')
+      d.visits.build(tags: [tags(:tag_one)])
+      c.save!
     end
   end
 

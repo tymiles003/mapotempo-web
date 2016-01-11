@@ -13,11 +13,12 @@ class DestinationTest < ActiveSupport::TestCase
       assert_difference('Destination.count') do
         assert_difference('Order.count', 7 * 2) do
           customer = customers(:customer_one)
-          o = customer.destinations.build(name: 'plop', city: 'Bordeaux', tags: [tags(:tag_one)])
-          assert o.save!
+          d = customer.destinations.build(name: 'plop', city: 'Bordeaux')
+          d.visits.build(tags: [tags(:tag_one)])
+          assert d.save!
           assert customer.save!
-          o.reload
-          assert !o.lat.nil?, 'Latitude not built'
+          d.reload
+          assert !d.lat.nil?, 'Latitude not built'
         end
       end
     end
@@ -50,66 +51,18 @@ class DestinationTest < ActiveSupport::TestCase
     assert_equal 47.72248931834969, o.distance(destinations(:destination_two))
   end
 
-  test 'should update add tag' do
-    o = destinations(:destination_one)
-    stops(:stop_three_one).destroy
-    assert_difference('Stop.count') do
-      o.tags << tags(:tag_two)
-      o.save!
-      o.customer.save!
-    end
-  end
-
-  test 'should update remove tag' do
-    o = destinations(:destination_one)
-    stops(:stop_three_one).destroy
-    assert_difference('Stop.count', -1) do
-      o.tags = []
-      o.save!
-      o.customer.save!
-    end
-  end
-
-  test 'should update tag' do
-    o = destinations(:destination_one)
-    p = plannings(:planning_one)
-    stops(:stop_three_one).destroy
-    p.tags = [tags(:tag_one), tags(:tag_two)]
-
-    routes(:route_one_one).stops.clear
-    o.tags = []
-
-    assert_difference('Stop.count', 0) do
-      o.tags = [tags(:tag_one)]
-      o.save!
-      o.customer.save!
-    end
-
-    assert_difference('Stop.count', 2) do
-      o.tags = [tags(:tag_one), tags(:tag_two)]
-      o.save!
-      o.customer.save!
-    end
-  end
-
   test 'should destroy and reindex stops' do
     r = routes(:route_one_one)
-    o = destinations(:destination_one)
+    d = destinations(:destination_one)
 
     r.touch
     r.save!
 
-    assert o.stop_destinations
-    o.destroy
+    assert d.visits
+    d.destroy
 
     r.reload
     r.touch
     r.save!
-  end
-
-  test 'should set same start and close' do
-    o = destinations(:destination_one)
-    o.open = o.close = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    o.save!
   end
 end

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -47,22 +47,24 @@ class OrderArray < ActiveRecord::Base
 
   def default_orders
     customer.destinations.each{ |destination|
-      add_destination(destination)
+      destination.visits.each{ |visit|
+        add_visit(visit)
+      }
     }
   end
 
-  def destinations_orders
+  def visits_orders
     orders.joins(:products)
-    orders.group_by(&:destination_id).values.sort_by{ |destination_orders|
-      destination_orders[0].destination.name
-    }.collect{ |destination_orders|
-      destination_orders.sort_by(&:shift)
+    orders.group_by(&:visit_id).values.sort_by{ |visit_orders|
+      visit_orders[0].visit.destination.name
+    }.collect{ |visit_orders|
+      visit_orders.sort_by(&:shift)
     }
   end
 
-  def add_destination(destination)
+  def add_visit(visit)
     days.times{ |i|
-      orders.build(shift: i, destination: destination)
+      orders.build(shift: i, visit: visit)
     }
   end
 end

@@ -9,7 +9,7 @@ class OrderTest < ActiveSupport::TestCase
   end
 
   test 'should save' do
-    o = order_arrays(:order_array_one).orders.build(order_array: order_arrays(:order_array_one) , destination: destinations(:destination_one), shift: 0)
+    o = order_arrays(:order_array_one).orders.build(order_array: order_arrays(:order_array_one) , visit: visits(:visit_one), shift: 0)
     assert o.save
   end
 

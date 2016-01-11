@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -43,9 +43,9 @@ class Zoning < ActiveRecord::Base
     append name: ' ' + I18n.l(Time.now, format: :long)
   end
 
-  def apply(destinations)
-    destinations.group_by{ |destination|
-      inside(destination)
+  def apply(visits)
+    visits.group_by{ |visit|
+      inside(visit.destination)
     }
   end
 
@@ -85,7 +85,7 @@ class Zoning < ActiveRecord::Base
   def from_planning(planning)
     zones.clear
     clusters = planning.routes.select(&:vehicle_usage).collect{ |route|
-      route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
+      route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
         if stop.position?
           [stop.lat, stop.lng]
         end

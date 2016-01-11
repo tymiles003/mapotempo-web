@@ -2,7 +2,7 @@ require 'test_helper'
 require 'routers/osrm'
 
 class D < Struct.new(:lat, :lng, :open, :close, :duration)
-  def destination
+  def visit
     self
   end
 end
@@ -35,7 +35,7 @@ class RouteTest < ActiveSupport::TestCase
     o.planning.tags.clear
     o.stops.clear
     o.save!
-    assert_difference('Stop.count', Destination.all.size) do
+    assert_difference('Stop.count', Visit.all.size) do
       o.default_stops
       o.save!
     end
@@ -70,42 +70,42 @@ class RouteTest < ActiveSupport::TestCase
     o.save!
   end
 
-  test 'should set destinations' do
+  test 'should set visits' do
     o = routes(:route_one_one)
     o.stops.clear
     assert_difference('Stop.count', 1) do
-      o.set_destinations([[destinations(:destination_two), true]])
+      o.set_visits([[visits(:visit_two), true]])
       o.save!
     end
   end
 
   test 'should add' do
     o = routes(:route_zero_one)
-    o.add(destinations(:destination_two))
+    o.add(visits(:visit_two))
     o.save!
     o.reload
-    assert o.stops.collect(&:destination).include?(destinations(:destination_two))
+    assert o.stops.collect(&:visit).include?(visits(:visit_two))
   end
 
   test 'should add index' do
     o = routes(:route_one_one)
-    o.add(destinations(:destination_two), 1)
+    o.add(visits(:visit_two), 1)
     o.save!
     o.stops.reload
-    assert_equal destinations(:destination_two), o.stops.find{ |s| s.destination.name == 'destination_two' }.destination
+    assert_equal visits(:visit_two), o.stops.find{ |s| s.visit.destination.name == 'destination_two' }.visit
   end
 
   test 'should not add without index' do
     o = routes(:route_one_one)
     assert_raises(RuntimeError) {
-      o.add(destinations(:destination_two))
+      o.add(visits(:visit_two))
     }
   end
 
   test 'should remove' do
     o = routes(:route_one_one)
     assert_difference('Stop.count', -1) do
-      o.remove_destination(destinations(:destination_two))
+      o.remove_visit(visits(:visit_two))
       o.save!
     end
   end
@@ -114,23 +114,23 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one_one)
 
     o.stops.each { |s|
-      if s.is_a?(StopDestination)
-        s.destination.open = s.destination.close = nil
-        s.destination.save
+      if s.is_a?(StopVisit)
+        s.visit.open = s.visit.close = nil
+        s.visit.save!
       else
         s.time = s.open
-        s.save
+        s.save!
       end
     }
     o.vehicle_usage.open = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
     o.planning.customer.take_over = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
-    o.planning.customer.save
+    o.planning.customer.save!
 
     assert_equal 0, o.sum_out_of_window
 
-    o.stops[1].destination.open = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
-    o.stops[1].destination.close = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
-    o.stops[1].destination.save
+    o.stops[1].visit.open = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
+    o.stops[1].visit.close = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
+    o.stops[1].visit.save!
     assert_equal 30, o.sum_out_of_window
   end
 
@@ -320,7 +320,7 @@ class RouteTest < ActiveSupport::TestCase
 
   test 'compute route with impossible path' do
     o = routes(:route_one_one)
-    o.stops[1].destination.lat = o.stops[1].destination.lng = 1 # Geocoded
+    o.stops[1].visit.destination.lat = o.stops[1].visit.destination.lng = 1 # Geocoded
     o.save!
     o.stops[1].distance = o.stops[1].trace = nil
     o.save!

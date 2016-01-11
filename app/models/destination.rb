@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -25,13 +25,11 @@ end
 
 class Destination < ActiveRecord::Base
   belongs_to :customer
-  has_many :stop_destinations, inverse_of: :destination, dependent: :delete_all
-  has_many :orders, inverse_of: :destination, dependent: :delete_all
-  has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
+  has_many :visits, inverse_of: :destination, dependent: :destroy, autosave: true
   enum geocoding_level: {point: 1, house: 2, intersection: 3, street: 4, city: 5}
 
   nilify_blanks
-  auto_strip_attributes :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, :ref
+  auto_strip_attributes :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number
   validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true
@@ -42,10 +40,7 @@ class Destination < ActiveRecord::Base
   validates_inclusion_of :lng, in: -180..180, allow_nil: true, message: I18n.t('activerecord.errors.models.destination.lng_outside_range')
   validates_inclusion_of :geocoding_accuracy, in: 0..1, allow_nil: true, message: I18n.t('activerecord.errors.models.destination.geocoding_accuracy_outside_range')
   validates_with LocalizationDestinationValidator, fields: [:street, :city, :lat, :lng]
-  validates_time :open, if: :open
-  validates_time :close, presence: false, on_or_after: :open, if: :close
 
-  before_save :update_tags, :create_orders
   before_create :create_geocode
   before_update :update_geocode, :update_out_of_date
 
@@ -68,25 +63,10 @@ class Destination < ActiveRecord::Base
     lat && lng && position.lat && position.lng && Math.hypot(position.lat - lat, position.lng - lng)
   end
 
-  def destroy
-    # Too late to do this in before_destroy callback, children already destroyed
-    Route.transaction do
-      stop_destinations.each{ |stop|
-        stop.route.remove_stop(stop)
-        stop.route.save
-      }
-    end
-    super
-  end
-
-  def changed?
-    @tags_updated || super
-  end
-
   private
 
   def update_out_of_date
-    if lat_changed? || lng_changed? || open_changed? || close_changed? || quantity_changed? || take_over_changed?
+    if lat_changed? || lng_changed?
       out_of_date
     end
   end
@@ -110,44 +90,10 @@ class Destination < ActiveRecord::Base
     end
   end
 
-  def update_tags_track(_tag)
-    @tags_updated = true
-  end
-
-  def update_tags
-    if customer && (@tags_updated || new_record?)
-      @tags_updated = false
-
-      # Don't use local collection here, not set when save new record
-      customer.plannings.each{ |planning|
-        if planning.destinations.include?(self)
-          if planning.tags.to_a & tags.to_a != planning.tags.to_a
-            planning.destination_remove(self)
-          end
-        else
-          if planning.tags.to_a & tags.to_a == planning.tags.to_a
-            planning.destination_add(self)
-          end
-        end
-      }
-    end
-
-    true
-  end
-
-  def create_orders
-    if customer && new_record?
-      customer.order_arrays.each{ |order_array|
-        order_array.add_destination(self)
-      }
-    end
-  end
-
   def out_of_date
     Route.transaction do
-      stop_destinations.each{ |stop|
-        stop.route.out_of_date = true
-        stop.route.save
+      visits.each{ |visit|
+        visit.out_of_date
       }
     end
   end

@@ -1,52 +1,52 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 stop_unaffected:
-  type: StopDestination
+  type: StopVisit
   index:
   active: false
   distance: 1.5
   trace: MyString
   route: route_zero_one
-  destination: destination_unaffected_one
+  visit: visit_unaffected_one
   time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
 
 stop_one_one:
-  type: StopDestination
+  type: StopVisit
   index: 1
   active: true
   distance: 1.5
   trace: MyString
   route: route_one_one
-  destination: destination_one
+  visit: visit_one
   time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
 
 stop_one_two:
-  type: StopDestination
+  type: StopVisit
   index: 2
   active: true
   distance: 1.5
   trace: MyString
   route: route_one_one
-  destination: destination_two
+  visit: visit_two
   time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
 
 stop_one_three:
-  type: StopDestination
+  type: StopVisit
   index: 3
   active: true
   distance:
   trace:
   route: route_one_one
-  destination: destination_three
+  visit: visit_three
   time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
@@ -62,26 +62,26 @@ stop_one_four:
   time: 2000-01-01 00:00:30
 
 stop_two_one:
-  type: StopDestination
+  type: StopVisit
   index: 1
   active: false
   distance: 1.5
   trace: MyString
   route: route_zero_two
-  destination: destination_two
+  visit: visit_two
   time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
 
 stop_three_one:
-  type: StopDestination
+  type: StopVisit
   index: 1
   active: true
   distance: 1.5
   trace: MyString
   route: route_three_one
-  destination: destination_one
+  visit: visit_one
   time: 2000-01-01 00:00:30
   out_of_window: false
   out_of_capacity: false

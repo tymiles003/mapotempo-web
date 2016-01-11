@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -17,12 +17,12 @@
 #
 class Order < ActiveRecord::Base
   belongs_to :order_array
-  belongs_to :destination
+  belongs_to :visit
   has_and_belongs_to_many :products, -> { order('code') }, autosave: true
 
   nilify_blanks
   validates :order_array, presence: true
-  validates :destination, presence: true
+  validates :visit, presence: true
   validates :shift, presence: true
 
   amoeba do

@@ -29,28 +29,28 @@ class PlanningTest < ActiveSupport::TestCase
     oo.save!
   end
 
-  test 'should set_destinations' do
+  test 'should set_visits' do
     o = plannings(:planning_one)
 
-    o.set_destinations({'route_one_one' => [[destinations(:destination_one)]]})
-    assert o.routes[1].stops.select{ |stop| stop.is_a?(StopDestination) }.collect(&:destination).include?(destinations(:destination_one))
+    o.set_visits({'route_one_one' => [[visits(:visit_one)]]})
+    assert o.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
     o.save!
   end
 
-  test 'should not set_destinations for tags' do
+  test 'should not set_visits for tags' do
     o = plannings(:planning_one)
     o.tags << tags(:tag_two)
 
-    o.set_destinations({'route_one_one' => [[destinations(:destination_one)]]})
-    assert_not o.routes[1].stops.select{ |stop| stop.is_a?(StopDestination) }.collect(&:destination).include?(destinations(:destination_one))
+    o.set_visits({'route_one_one' => [[visits(:visit_one)]]})
+    assert_not o.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
     o.save!
   end
 
-  test 'should not set_destinations for size' do
+  test 'should not set_visits for size' do
     o = plannings(:planning_one)
 
     assert_raises(RuntimeError) {
-      o.set_destinations(Hash[0.upto(o.routes.size).collect{ |i| ["route#{i}", [destinations(:destination_one)]] }])
+      o.set_visits(Hash[0.upto(o.routes.size).collect{ |i| ["route#{i}", [visits(:visit_one)]] }])
     }
     o.save!
   end
@@ -75,18 +75,18 @@ class PlanningTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should destination_add' do
+  test 'should visit_add' do
     o = plannings(:planning_one)
     assert_difference('Stop.count') do
-      o.destination_add(destinations(:destination_two))
+      o.visit_add(visits(:visit_two))
       o.save!
     end
   end
 
-  test 'should destination_remove' do
+  test 'should visit_remove' do
     o = plannings(:planning_one)
     assert_difference('Stop.count', -2) do
-      o.destination_remove(destinations(:destination_one))
+      o.visit_remove(visits(:visit_one))
       o.save!
     end
   end
@@ -105,7 +105,7 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should compute with non geocoded' do
     o = plannings(:planning_one)
     o.zoning_out_of_date = true
-    d0 = o.routes[0].stops[0].destination
+    d0 = o.routes[0].stops[0].visit.destination
     d0.lat = d0.lng = nil
     o.compute
     o.routes.select{ |r| r.vehicle_usage }.each{ |r|

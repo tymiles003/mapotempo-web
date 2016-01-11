@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -49,19 +49,19 @@ class Planning < ActiveRecord::Base
     append name: ' ' + I18n.l(Time.now, format: :long)
   end
 
-  def set_destinations(destination_actives, recompute = true)
+  def set_visits(visit_actives, recompute = true)
     default_empty_routes
-    destination_actives = destination_actives.select{ |ref, _d| ref }
-    if destination_actives.size <= routes.size - 1
-      destinations = destination_actives.values.flatten(1).collect{ |destination_active| destination_active[0] }
-      routes[0].set_destinations((customer.destinations - destinations).select{ |destination|
-        (destination.tags & tags).size == tags.size
+    visit_actives = visit_actives.select{ |ref, _d| ref }
+    if visit_actives.size <= routes.size - 1
+      visits = visit_actives.values.flatten(1).collect{ |visit_active| visit_active[0] }
+      routes[0].set_visits((customer.visits - visits).select{ |visit|
+        (visit.tags & tags).size == tags.size
       })
       i = 0
-      destination_actives.each{ |ref, destinations|
+      visit_actives.each{ |ref, visits|
         routes[i += 1].ref = ref
-        routes[i].set_destinations(destinations.select{ |destination|
-          (destination[0].tags & tags).size == tags.size
+        routes[i].set_visits(visits.select{ |visit|
+          (visit[0].tags & tags).size == tags.size
         }, recompute)
       }
     else
@@ -77,20 +77,20 @@ class Planning < ActiveRecord::Base
 
   def vehicle_usage_remove(vehicle_usage)
     route = routes.find{ |route| route.vehicle_usage == vehicle_usage }
-    route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
-      routes[0].stops.build(type: StopDestination.name, destination: stop.destination)
+    route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
+      routes[0].stops.build(type: StopVisit.name, visit: stop.visit)
       routes[0].out_of_date = true
     }
     routes.destroy(route)
   end
 
-  def destination_add(destination)
-    routes[0].add(destination)
+  def visit_add(visit)
+    routes[0].add(visit)
   end
 
-  def destination_remove(destination)
+  def visit_remove(visit)
     routes.each{ |route|
-      route.remove_destination(destination)
+      route.remove_visit(visit)
     }
   end
 
@@ -147,7 +147,7 @@ class Planning < ActiveRecord::Base
 
     # If zoning, get appropriate route
     if available_routes.empty? && zoning
-      zone = zoning.inside(stop.destination)
+      zone = zoning.inside(stop.visit.destination)
       if zone && zone.vehicle
         route = routes.find{ |route|
           route.vehicle_usage && route.vehicle_usage.vehicle == zone.vehicle && !route.locked
@@ -170,15 +170,15 @@ class Planning < ActiveRecord::Base
 
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
-    # Take the closest routes destination and eval insert
+    # Take the closest routes visit and eval insert
     route, index = available_routes.collect{ |route|
       route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
         [(route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?) ? [route.vehicle_usage.default_store_start, route, 1] : nil,
         (route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.flatten(1).compact.sort_by{ |a|
       a[0].distance(stop.position)
-    }[0..9].collect{ |destination_route_index|
-      [[destination_route_index[1], destination_route_index[2]], [destination_route_index[1], destination_route_index[2] + 1]]
+    }[0..9].collect{ |visit_route_index|
+      [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
     }.flatten(1).uniq.min_by{ |ri|
       ri[0].class.amoeba do
         clone :stops # No need to duplicate stop juste for compute evaluation
@@ -186,8 +186,8 @@ class Planning < ActiveRecord::Base
       end
 
       r = ri[0].amoeba_dup
-      if stop.is_a?(StopDestination)
-        r.add(stop.destination, ri[1], true)
+      if stop.is_a?(StopVisit)
+        r.add(stop.visit, ri[1], true)
       else
         r.add_rest(ri[1], true)
       end
@@ -210,15 +210,15 @@ class Planning < ActiveRecord::Base
     }
   end
 
-  def destinations_compatibles
-    customer.destinations.select{ |c|
-      tags.to_a & c.tags.to_a == tags.to_a
+  def visits_compatibles
+    customer.visits.select{ |visit|
+      tags.to_a & visit.tags.to_a == tags.to_a
     }
   end
 
-  def destinations
+  def visits
     routes.collect{ |route|
-      route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect(&:destination)
+      route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit)
     }.flatten
   end
 
@@ -226,13 +226,13 @@ class Planning < ActiveRecord::Base
     orders = order_array.orders.select{ |order|
       order.shift == shift && !order.products.empty?
     }.collect{ |order|
-      [order.destination_id, order.products]
+      [order.visit_id, order.products]
     }
     orders = Hash[orders]
 
     routes.select(&:vehicle_usage).each{ |route|
       route.stops.each{ |stop|
-        stop.active = orders.key?(stop.destination_id) && !orders[stop.destination_id].empty?
+        stop.active = orders.key?(stop.visit_id) && !orders[stop.visit_id].empty?
       }
       route.out_of_date = true
     }
@@ -250,19 +250,19 @@ class Planning < ActiveRecord::Base
   def split_by_zones
     if zoning && !routes.empty?
       vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes| [vehicle_usage && vehicle_usage.vehicle, routes[0]] }]
-      destinations_free = routes.select{ |route|
+      visits_free = routes.select{ |route|
         !route.locked
-      }.collect(&:stops).flatten.select{ |stop| stop.is_a?(StopDestination) }.map(&:destination)
+      }.collect(&:stops).flatten.select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
 
       routes.each{ |route|
-        route.locked || route.set_destinations([])
+        route.locked || route.set_visits([])
       }
-      zoning.apply(destinations_free).each{ |zone, destinations|
+      zoning.apply(visits_free).each{ |zone, visits|
         if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked
-          vehicles_map[zone.vehicle].set_destinations(destinations.collect{ |d| [d, true] })
+          vehicles_map[zone.vehicle].set_visits(visits.collect{ |d| [d, true] })
         else
           # Add to unplanned route even if the route is locked
-          routes[0].add_destinations(destinations.collect{ |d| [d, true] })
+          routes[0].add_visits(visits.collect{ |d| [d, true] })
         end
       }
     end

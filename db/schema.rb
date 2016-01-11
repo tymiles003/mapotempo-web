@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111102326) do
+ActiveRecord::Schema.define(version: 20160111093002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,16 +80,11 @@ ActiveRecord::Schema.define(version: 20160111102326) do
     t.string   "city",               limit: 255
     t.float    "lat"
     t.float    "lng"
-    t.float    "quantity"
-    t.time     "open"
-    t.time     "close"
     t.integer  "customer_id",                    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "detail",             limit: 255
     t.text     "comment"
-    t.string   "ref",                limit: 255
-    t.time     "take_over"
     t.float    "geocoding_accuracy"
     t.string   "country"
     t.integer  "geocoding_level"
@@ -97,14 +92,6 @@ ActiveRecord::Schema.define(version: 20160111102326) do
   end
 
   add_index "destinations", ["customer_id"], name: "fk__destinations_customer_id", using: :btree
-
-  create_table "destinations_tags", id: false, force: :cascade do |t|
-    t.integer "destination_id", null: false
-    t.integer "tag_id",         null: false
-  end
-
-  add_index "destinations_tags", ["destination_id"], name: "fk__destinations_tags_destination_id", using: :btree
-  add_index "destinations_tags", ["tag_id"], name: "fk__destinations_tags_tag_id", using: :btree
 
   create_table "layers", force: :cascade do |t|
     t.string   "name",                        null: false
@@ -135,14 +122,14 @@ ActiveRecord::Schema.define(version: 20160111102326) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "shift",          null: false
-    t.integer  "destination_id", null: false
     t.integer  "order_array_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "visit_id",       null: false
   end
 
-  add_index "orders", ["destination_id"], name: "fk__orders_destination_id", using: :btree
   add_index "orders", ["order_array_id"], name: "fk__orders_order_array_id", using: :btree
+  add_index "orders", ["visit_id"], name: "index_orders_on_visit_id", using: :btree
 
   create_table "orders_products", id: false, force: :cascade do |t|
     t.integer "order_id",   null: false
@@ -251,7 +238,6 @@ ActiveRecord::Schema.define(version: 20160111102326) do
     t.float    "distance"
     t.text     "trace"
     t.integer  "route_id",                                      null: false
-    t.integer  "destination_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "time"
@@ -262,10 +248,11 @@ ActiveRecord::Schema.define(version: 20160111102326) do
     t.integer  "lock_version",      default: 0,                 null: false
     t.string   "type",              default: "StopDestination", null: false
     t.integer  "drive_time"
+    t.integer  "visit_id"
   end
 
-  add_index "stops", ["destination_id"], name: "fk__stops_destination_id", using: :btree
   add_index "stops", ["route_id"], name: "fk__stops_route_id", using: :btree
+  add_index "stops", ["visit_id"], name: "index_stops_on_visit_id", using: :btree
 
   create_table "stores", force: :cascade do |t|
     t.string   "name",               limit: 255
@@ -305,6 +292,14 @@ ActiveRecord::Schema.define(version: 20160111102326) do
   end
 
   add_index "tags", ["customer_id"], name: "fk__tags_customer_id", using: :btree
+
+  create_table "tags_visits", id: false, force: :cascade do |t|
+    t.integer "visit_id", null: false
+    t.integer "tag_id",   null: false
+  end
+
+  add_index "tags_visits", ["tag_id"], name: "index_tags_visits_on_tag_id", using: :btree
+  add_index "tags_visits", ["visit_id"], name: "index_tags_visits_on_visit_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -394,6 +389,19 @@ ActiveRecord::Schema.define(version: 20160111102326) do
   add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree
   add_index "vehicles", ["router_id"], name: "fk__vehicles_router_id", using: :btree
 
+  create_table "visits", force: :cascade do |t|
+    t.float    "quantity"
+    t.time     "open"
+    t.time     "close"
+    t.string   "ref"
+    t.time     "take_over"
+    t.integer  "destination_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "visits", ["destination_id"], name: "index_visits_on_destination_id", using: :btree
+
   create_table "zones", force: :cascade do |t|
     t.text     "polygon"
     t.integer  "zoning_id",  null: false
@@ -416,11 +424,9 @@ ActiveRecord::Schema.define(version: 20160111102326) do
 
   add_foreign_key "customers", "profiles"
   add_foreign_key "destinations", "customers", name: "fk_destinations_customer_id", on_delete: :cascade
-  add_foreign_key "destinations_tags", "destinations", name: "fk_destinations_tags_destination_id", on_delete: :cascade
-  add_foreign_key "destinations_tags", "tags", name: "fk_destinations_tags_tag_id", on_delete: :cascade
   add_foreign_key "order_arrays", "customers", name: "fk_order_arrays_customer_id", on_delete: :cascade
-  add_foreign_key "orders", "destinations", name: "fk_orders_destination_id", on_delete: :cascade
   add_foreign_key "orders", "order_arrays", name: "fk_orders_order_array_id", on_delete: :cascade
+  add_foreign_key "orders", "visits"
   add_foreign_key "orders_products", "orders", name: "fk_orders_products_order_id", on_delete: :cascade
   add_foreign_key "orders_products", "products", name: "fk_orders_products_product_id", on_delete: :cascade
   add_foreign_key "plannings", "customers", name: "fk_plannings_customer_id", on_delete: :cascade
@@ -432,12 +438,14 @@ ActiveRecord::Schema.define(version: 20160111102326) do
   add_foreign_key "products", "customers", name: "fk_products_customer_id", on_delete: :cascade
   add_foreign_key "routes", "plannings", name: "fk_routes_planning_id", on_delete: :cascade
   add_foreign_key "routes", "vehicle_usages"
-  add_foreign_key "stops", "destinations", name: "fk_stops_destination_id", on_delete: :cascade
   add_foreign_key "stops", "routes", name: "fk_stops_route_id", on_delete: :cascade
+  add_foreign_key "stops", "visits"
   add_foreign_key "stores", "customers", name: "fk_stores_customer_id", on_delete: :cascade
   add_foreign_key "stores_vehicules", "stores", name: "fk_stores_vehicules_store_id", on_delete: :cascade
   add_foreign_key "stores_vehicules", "vehicles", name: "fk_stores_vehicules_vehicle_id", on_delete: :cascade
   add_foreign_key "tags", "customers", name: "fk_tags_customer_id", on_delete: :cascade
+  add_foreign_key "tags_visits", "tags", on_delete: :cascade
+  add_foreign_key "tags_visits", "visits", on_delete: :cascade
   add_foreign_key "users", "customers", name: "fk_users_customer_id"
   add_foreign_key "users", "layers", name: "fk_users_layer_id"
   add_foreign_key "vehicle_usage_sets", "customers"
@@ -451,6 +459,7 @@ ActiveRecord::Schema.define(version: 20160111102326) do
   add_foreign_key "vehicle_usages", "vehicles"
   add_foreign_key "vehicles", "customers", name: "fk_vehicles_customer_id", on_delete: :cascade
   add_foreign_key "vehicles", "routers", name: "fk_vehicles_router_id"
+  add_foreign_key "visits", "destinations", on_delete: :cascade
   add_foreign_key "zones", "vehicles", name: "fk_zones_vehicle_id"
   add_foreign_key "zones", "zonings", name: "fk_zones_zoning_id", on_delete: :cascade
   add_foreign_key "zonings", "customers", name: "fk_zonings_customer_id", on_delete: :cascade

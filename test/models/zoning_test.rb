@@ -17,8 +17,8 @@ class ZoningTest < ActiveSupport::TestCase
   test 'should apply' do
     o = zonings(:zoning_one)
     assert_equal(
-      {nil => [destinations(:destination_two)], zones(:zone_one) => [destinations(:destination_one)]},
-      o.apply([destinations(:destination_one), destinations(:destination_two)]))
+      {nil => [visits(:visit_two)], zones(:zone_one) => [visits(:visit_one)]},
+      o.apply([visits(:visit_one), visits(:visit_two)]))
   end
 
   test 'should dup' do

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -17,7 +17,7 @@
 #
 class Tag < ActiveRecord::Base
   belongs_to :customer
-  has_and_belongs_to_many :destinations
+  has_and_belongs_to_many :visits
   has_and_belongs_to_many :plannings
 
   def self.icons_table

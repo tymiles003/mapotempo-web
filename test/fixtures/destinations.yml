@@ -1,71 +1,49 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 destination_unaffected_one:
-  ref: a
   name: unaffected_one
   street: MyString
   postalcode: MyString
   city: MyString
   lat: 1.5
   lng: 1.5
-  quantity: 1
-  take_over: 2000-01-01 00:01:00
-  open: 2000-01-01 10:00:00
-  close: 2000-01-01 11:00:00
   customer: customer_one
   detail: MyString
   comment: MyString
   phone_number: MyString
-  tags: tag_one
 
 destination_one:
-  ref: b
   name: destination_one
   street: Rue des Lilas
   postalcode: 33200
   city: Bordeau
   lat: 49.1857
   lng: -0.3735
-  quantity: 1
-  take_over: 2000-01-01 00:05:33
-  open: 2000-01-01 10:00:00
-  close: 2000-01-01 11:00:00
   customer: customer_one
   detail: MyString
   comment: MyString
   phone_number: MyString
-  tags: tag_one
 
 destination_two:
-  ref: c
   name: destination_two
   street: MyString
   postalcode: MyString
   city: MyString
   lat: 1.5
   lng: 1.5
-  quantity: 3
-  open: 2000-01-01 10:00:00
-  close: 2000-01-01 11:00:00
   customer: customer_one
   detail: MyString
   comment: MyString
   phone_number: MyString
-  tags: tag_one
 
 destination_three:
-  ref: c
   name: destination_three
   street: MyString
   postalcode: MyString
   city: MyString
   lat: 1.5
   lng: 1.5
-  quantity: 3
-  open: 2000-01-01 10:00:00
-  close: 2000-01-01 11:00:00
   customer: customer_one
   detail: MyString
   comment: MyString
   phone_number: MyString
-  tags: tag_one

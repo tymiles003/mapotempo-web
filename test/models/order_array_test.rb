@@ -39,7 +39,7 @@ class OrderArrayTest < ActiveSupport::TestCase
     o = order_arrays(:order_array_one)
     s = o.orders.size
 
-    o.add_destination(destinations(:destination_two))
+    o.add_visit(visits(:visit_two))
     assert_equal s + o.days, o.orders.size
   end
 end

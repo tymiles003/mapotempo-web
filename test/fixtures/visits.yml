@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+visit_unaffected_one:
+  destination: destination_unaffected_one
+  ref: a
+  quantity: 1
+  take_over: 2000-01-01 00:01:00
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 11:00:00
+  tags: tag_one
+
+visit_one:
+  destination: destination_one
+  ref: b
+  quantity: 1
+  take_over: 2000-01-01 00:05:33
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 11:00:00
+  tags: tag_one
+
+visit_two:
+  destination: destination_two
+  ref: c
+  quantity: 3
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 11:00:00
+  tags: tag_one
+
+visit_three:
+  destination: destination_three
+  ref: c
+  quantity: 3
+  open: 2000-01-01 10:00:00
+  close: 2000-01-01 11:00:00
+  tags: tag_one

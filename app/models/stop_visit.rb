@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2015
+# Copyright © Mapotempo, 2015-2016
 #
 # This file is part of Mapotempo.
 #
@@ -15,41 +15,41 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class StopDestination < Stop
-  belongs_to :destination
-  delegate :lat, :lng, :open, :close, :ref, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :destination
+class StopVisit < Stop
+  belongs_to :visit
+  delegate :lat, :lng, :open, :close, :ref, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :visit
 
-  validates :destination, presence: true
+  validates :visit, presence: true
 
   def order
     planning = route.planning
     if planning.customer.enable_orders && planning.order_array && planning.date
-      planning.order_array.orders.where(destination_id: destination.id, shift: planning.date - planning.order_array.base_date).first
+      planning.order_array.orders.where(visit_id: visit.id, shift: planning.date - planning.order_array.base_date).first
     end
   end
 
   def position?
-    !destination.lat.nil? && !destination.lng.nil?
+    !visit.destination.lat.nil? && !visit.destination.lng.nil?
   end
 
   def position
-    destination
+    visit.destination
   end
 
   def duration
-    to = destination.take_over ? destination.take_over : destination.customer.take_over
+    to = visit.take_over ? visit.take_over : visit.destination.customer.take_over
     to ? to.seconds_since_midnight : 0
   end
 
   def base_id
-    "d#{destination.id}"
+    "d#{visit.id}"
   end
 
   def base_updated_at
-    destination.updated_at
+    [visit.updated_at, visit.destination.updated_at].max
   end
 
   def to_s
-    "#{active ? 'x' : '_'} #{destination.name}"
+    "#{active ? 'x' : '_'} #{visit.destination.name}"
   end
 end

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -52,8 +52,8 @@ class Route < ActiveRecord::Base
 
   def default_stops
     i = stops.size
-    planning.destinations_compatibles.each { |c|
-      stops.build(type: StopDestination.name, destination: c, active: true, index: i += 1)
+    planning.visits_compatibles.each { |visit|
+      stops.build(type: StopVisit.name, visit: visit, active: true, index: i += 1)
     }
   end
 
@@ -122,8 +122,8 @@ class Route < ActiveRecord::Base
             end
             self.end = stop.time + stop.duration
 
-            if stop.is_a?(StopDestination)
-              quantity += (stop.destination.quantity || 1)
+            if stop.is_a?(StopVisit)
+              quantity += (stop.visit.quantity || 1)
               stop.out_of_capacity = vehicle_usage.vehicle.capacity && quantity > vehicle_usage.vehicle.capacity
             end
 
@@ -200,34 +200,34 @@ class Route < ActiveRecord::Base
     true
   end
 
-  def set_destinations(dests, recompute = true)
+  def set_visits(visits, recompute = true)
     Stop.transaction do
-      stops.select{ |stop| stop.is_a?(StopDestination) }.each{ |stop|
+      stops.select{ |stop| stop.is_a?(StopVisit) }.each{ |stop|
         remove_stop(stop)
       }
-      add_destinations(dests, recompute)
+      add_visits(visits, recompute)
     end
   end
 
-  def add_destinations(dests, recompute = true)
+  def add_visits(visits, recompute = true)
     Stop.transaction do
       i = stops.size
-      dests.each{ |stop|
-        destination, active = stop
-        stops.build(type: StopDestination.name, destination: destination, active: active, index: i += 1)
+      visits.each{ |stop|
+        visit, active = stop
+        stops.build(type: StopVisit.name, visit: visit, active: active, index: i += 1)
       }
       compute if recompute
     end
   end
 
-  def add(destination, index = nil, active = false, stop_id = nil)
+  def add(visit, index = nil, active = false, stop_id = nil)
     index = stops.size + 1 if index && index < 0
     if index
       shift_index(index)
     elsif vehicle_usage
       raise
     end
-    stops.build(type: StopDestination.name, destination: destination, index: index, active: active, id: stop_id)
+    stops.build(type: StopVisit.name, visit: visit, index: index, active: active, id: stop_id)
 
     if vehicle_usage
       self.out_of_date = true
@@ -240,9 +240,9 @@ class Route < ActiveRecord::Base
     self.out_of_date = true
   end
 
-  def remove_destination(destination)
+  def remove_visit(visit)
     stops.each{ |stop|
-      if(stop.is_a?(StopDestination) && stop.destination == destination)
+      if(stop.is_a?(StopVisit) && stop.visit == visit)
         remove_stop(stop)
       end
     }
@@ -256,11 +256,11 @@ class Route < ActiveRecord::Base
     stops.destroy(stop)
   end
 
-  def move_destination(destination, index)
+  def move_visit(visit, index)
     stop = nil
     planning.routes.find{ |route|
       (route != self ? route : self).stops.find{ |s|
-        if s.is_a?(StopDestination) && s.destination == destination
+        if s.is_a?(StopVisit) && s.visit == visit
           stop = s
         end
       }
@@ -272,11 +272,11 @@ class Route < ActiveRecord::Base
 
   def move_stop(stop, index, force = false)
     if stop.route != self
-      if stop.is_a?(StopDestination)
-        destination, active = stop.destination, stop.active
+      if stop.is_a?(StopVisit)
+        visit, active = stop.visit, stop.active
         stop_id = stop.id
         stop.route.move_stop_out(stop)
-        add(destination, index, active || stop.route.vehicle_usage.nil?, stop_id)
+        add(visit, index, active || stop.route.vehicle_usage.nil?, stop_id)
       elsif force && stop.is_a?(StopRest)
         active = stop.active
         stop_id = stop.id
@@ -298,7 +298,7 @@ class Route < ActiveRecord::Base
   end
 
   def move_stop_out(stop, force = false)
-    if force || stop.is_a?(StopDestination)
+    if force || stop.is_a?(StopVisit)
       if vehicle_usage
         shift_index(stop.index + 1, -1)
       end
@@ -399,7 +399,7 @@ class Route < ActiveRecord::Base
 
   def quantity
     stops.to_a.sum(0) { |stop|
-      stop.is_a?(StopDestination) && (stop.active || !vehicle_usage) ? (stop.destination.quantity || 1) : 0
+      stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.quantity || 1) : 0
     }
   end
 
