@@ -91,6 +91,8 @@ module Routers
           case response.code
           when 200
             response
+          when 417
+            ''
           else
             response.return!(request, result, &block)
           end
@@ -127,6 +129,8 @@ module Routers
           case response.code
           when 200
             response
+          when 417
+            ''
           else
             response.return!(request, result, &block)
           end
