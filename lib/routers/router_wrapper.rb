@@ -101,13 +101,17 @@ module Routers
         @cache_request.write(key, request && String.new(request)) # String.new workaround waiting for RestClient 2.0
       end
 
-      data = JSON.parse(request)
-      if data.key?('matrix')
-        data['matrix'].collect{ |r|
-          r.collect{ |rr|
-            rr || 2147483647
+      if request == ''
+        Array.new(row.size) { Array.new(column.size) }
+      else
+        data = JSON.parse(request)
+        if data.key?('matrix')
+          data['matrix'].collect{ |r|
+            r.collect{ |rr|
+              rr || 2147483647
+            }
           }
-        }
+        end
       end
     end
 
@@ -139,7 +143,9 @@ module Routers
         @cache_request.write(key, request && String.new(request)) # String.new workaround waiting for RestClient 2.0
       end
 
-      if request
+      if request == ''
+        nil
+      else
         data = JSON.parse(request)
         if data['features']
           # MultiPolygon not supported by Leaflet.Draw
@@ -152,7 +158,7 @@ module Routers
           }
           data.to_json
         else
-          raise 'No polygon for this zone'
+          nil
         end
       end
     end
