@@ -14,7 +14,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
   def api(part = nil, param = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/customers#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
+    "/api/0.1/customers#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v) }.join('&')
   end
 
   def api_admin(part = nil)

@@ -13,7 +13,7 @@ class V01::GeocoderTest < ActiveSupport::TestCase
 
   def api(part, param = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/geocoder/#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
+    "/api/0.1/geocoder/#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v) }.join('&')
   end
 
   test 'should geocode' do

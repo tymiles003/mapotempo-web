@@ -24,7 +24,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
 
   def api(planning_id, part = nil, param = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/plannings/#{planning_id}/routes#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
+    "/api/0.1/plannings/#{planning_id}/routes#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v) }.join('&')
   end
 
   test 'should return customer''s routes' do

@@ -14,7 +14,7 @@ class V01::OrdersTest < ActiveSupport::TestCase
 
   def api(order_array_id, part = nil, param = {})
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/order_arrays/#{order_array_id}/orders#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=#{v}" }.join('&')
+    "/api/0.1/order_arrays/#{order_array_id}/orders#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v) }.join('&')
   end
 
   test 'should return order_array''s orders' do
