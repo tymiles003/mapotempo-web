@@ -103,8 +103,7 @@ class ImporterTest < ActionController::TestCase
       end
     end
 
-    o = Destination.find{|d| d.customer_id}
-    assert_equal 'Point 1', o.name
+    o = Destination.find{ |d| d.name == 'Point 1' }
     assert_equal ['été'], o.tags.collect(&:label)
     p = Planning.first
     assert_equal import_count, p.routes[0].stops.size
@@ -122,8 +121,7 @@ class ImporterTest < ActionController::TestCase
       assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-iso.csv', 'text.csv')).import
     end
 
-    o = Destination.find{|d| d.customer_id}
-    assert_equal 'Point 1', o.name
+    o = Destination.find{ |d| d.name == 'Point 1' }
     assert_equal ['été'], o.tags.collect(&:label)
   end
 
