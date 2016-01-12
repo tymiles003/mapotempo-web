@@ -36,7 +36,7 @@ Model is structured around four majors concepts: the Customer account, Destinati
 <li><b><code>Customers</code></b>: many of objects are linked to a customer account (relating to the user calling API). <br>The customer has many users, each user has his own <code>api_key</code>.</li>
 <li><b><code>Destinations</code></b>: location points to visit with constraints.</li>
 <li><b><code>Vehicles</code></b>: vehicles definition are splited in two parts: <ul><li>the structural definition named <code>Vehicle</code> (car, truck, bike, consumption, etc.)</li> <li>and the vehicle usage <code>VehicleUsage</code>, a specific usage of a physical vehicle in a specific context.</li></ul> Vehicles can be used in many contexts called <code>VehicleUsageSet</code> (set of all vehicles usages under a context). Multiple values are only available if dedicated option for customer is active. For instance, if customer needs to use its vehicle 2 times per day (morning and evening), he needs 2 <code>VehicleUsageSet</code> called \'Morning\' and \'Evening\'. <code>VehicleUsageSet</code> defines default values for vehicle usage.</li>
-<li><b><code>Plannings</code></b>: <code>Planning</code> is a set of <code>Route</code>s to visit <code>Destination</code>s with <code>Vehicle</code> within a <code>VehicleUsageSet</code> context. <br>A route is a track between all destinations reached by a vehicle (a new route is created for each customer\'s vehicle and a route without vehicle is created for all out-of-route destinations). By default all customer\'s destinations are used in a planning.</li>
+<li><b><code>Plannings</code></b>: <code>Planning</code> is a set of <code>Route</code>s to <code>Visit</code> <code>Destination</code>s with <code>Vehicle</code> within a <code>VehicleUsageSet</code> context. <br>A route is a track between all destinations reached by a vehicle (a new route is created for each customer\'s vehicle and a route without vehicle is created for all out-of-route destinations). By default all customer\'s visites are used in a planning.</li>
 </ul>
 
 <h2>Technical access</h2>
@@ -64,7 +64,7 @@ Model is structured around four majors concepts: the Customer account, Destinati
 <li><code>Router</code>: which allows to build route\'s information.</li></ul></p>
 
 <h3><code>Tags</code></h3>
-<p><code>Tag</code> is a concept to filter destinations and create planning only for a subset of destinations. For instance, if some destinations are tagged \'Monday\', it allows to create a new planning for \'Monday\' tag and use only dedicated destinations.</p>
+<p><code>Tag</code> is a concept to filter visits and create planning only for a subset of visits. For instance, if some visits are tagged \'Monday\', it allows to create a new planning for \'Monday\' tag and use only dedicated visits.</p>
 
 <h3><code>Zonings</code></h3>
 <p><code>Zoning</code> is a concept which allows to define multiple <code>Zone</code>s (areas) around destinatons. A <code>Zone</code> can be affected to a <code>Vehicle</code> and if it is used into a <code>Planning</code>, all <code>Destinations</code> inside areas will be affected to the zone\'s vehicle (or <code>Route</code>). A polygon defining a <code>Zone</code> can be created outside the application or can be automatically generated from a planning.</p>

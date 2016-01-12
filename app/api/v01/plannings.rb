@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -114,7 +114,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Force recompute the planning after parameter update.',
-      detail: 'Refresh planning and routes infos if inputs have been changed (for instance stores, destinations, etc...)',
+      detail: 'Refresh planning and routes infos if inputs have been changed (for instance stores, destinations, visits, etc...)',
       nickname: 'refreshPlanning',
       entity: V01::Entities::Planning
     params do

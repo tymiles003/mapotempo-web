@@ -100,6 +100,7 @@ class V01::Api < Grape::API
   mount V01::Vehicles
   mount V01::VehicleUsages
   mount V01::VehicleUsageSets
+  mount V01::Visits
   mount V01::Zonings
 
   # Tools

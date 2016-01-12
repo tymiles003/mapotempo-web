@@ -69,7 +69,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
   end
 
   test 'should move destinations in routes' do
-    patch api(@route.planning.id, "#{@route.id}/destinations/moves"), destination_ids: [destinations(:destination_one).id, destinations(:destination_two).id]
+    patch api(@route.planning.id, "#{@route.id}/visits/moves"), visit_ids: [visits(:visit_one).id, visits(:visit_two).id]
     assert_equal 204, last_response.status, last_response.body
   end
 

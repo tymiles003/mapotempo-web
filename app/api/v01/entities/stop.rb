@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -28,7 +28,9 @@ class V01::Entities::Stop < Grape::Entity
   expose(:distance, documentation: { type: Float, desc: 'Distance between the stop and previous one.' })
   expose(:drive_time, documentation: { type: Integer, desc: 'Time in seconds between the stop and previous one.' })
   expose(:trace, documentation: { type: String, desc: 'Trace between the stop and previous one.' })
-  expose(:destination_id, documentation: { type: Integer })
+  expose(:visit_id, documentation: { type: Integer })
+  # Deprecated
+  expose(:destination_id, documentation: { type: Integer }) { |m| m.is_a?(StopVisit) ? m.visit.destination.id : nil }
   expose(:wait_time, documentation: { type: DateTime, desc: 'Time before delivery.' }) { |m| m.wait_time && ('%i:%02i:%02i' % [m.wait_time / 60 / 60, m.wait_time / 60 % 60, m.wait_time % 60]) }
   expose(:time, documentation: { type: DateTime, desc: 'Delivered at.' }) { |m|
     if m.time

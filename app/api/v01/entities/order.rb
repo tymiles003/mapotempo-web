@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -21,7 +21,9 @@ class V01::Entities::Order < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
-  expose(:destination_id, documentation: { type: Integer })
+  expose(:visit_id, documentation: { type: Integer })
+  # Deprecated
+  expose(:destination_id, documentation: { type: Integer }) { |m| m.visit.destination.id }
   expose(:shift, documentation: { type: Integer })
   expose(:product_ids, documentation: { type: Integer, is_array: true })
 end

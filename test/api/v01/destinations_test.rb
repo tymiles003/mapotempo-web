@@ -43,26 +43,13 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_equal @destination.name, JSON.parse(last_response.body)['name']
   end
 
-  test 'should return a destination by ref' do
-    get api("ref:#{@destination.ref}")
-    assert last_response.ok?, last_response.body
-    assert_equal @destination.ref, JSON.parse(last_response.body)['ref']
-  end
-
-
   test 'should create' do
-    # tags can be a string separated by comma or an array
-    [
-      tags(:tag_one).id.to_s + ',' + tags(:tag_two).id.to_s,
-      [tags(:tag_one).id, tags(:tag_two).id]
-    ].each do |tags|
-      assert_difference('Destination.count', 1) do
-        assert_difference('Stop.count', 2) do
-          @destination.name = 'new dest'
-          post api(), @destination.attributes.update({tag_ids: tags})
-          assert last_response.created?, last_response.body
-          assert_equal 2, JSON.parse(last_response.body)['tag_ids'].size
-        end
+    assert_difference('Destination.count', 1) do
+      assert_difference('Stop.count', 0) do
+        @destination.name = 'new dest'
+        post api(), @destination.attributes.update({tag_ids: tags})
+        assert last_response.created?, last_response.body
+        assert_equal @destination.name, JSON.parse(last_response.body)['name']
       end
     end
   end
