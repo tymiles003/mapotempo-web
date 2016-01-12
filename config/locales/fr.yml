@@ -715,8 +715,8 @@ fr:
         out_of_capacity_help: "Capacité du véhicule dépassée"
         out_of_drive_time: "Hors créneau véhicule"
         out_of_drive_time_help: "Planifié en dehors des créneaux d'activité du véhicule"
-        no_path: "Voie d'accès manquante"
-        no_path_help: "Pas de voie d'accès pour aller ou partir de la destination"
+        no_path: "Destination inaccessible"
+        no_path_help: "Destination inaccessible : pas de voie d'accès ou itinéraire pour aller ou partir de la destination"
       dialog:
         optimizer:
           title: "Optimisation"
