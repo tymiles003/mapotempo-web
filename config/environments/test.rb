@@ -44,6 +44,8 @@ Rails.application.configure do
 
   config.delayed_job_use = false
   config.geocode_complete = true
+
+  config.router_wrapper.api_key = 'api_key'
 end
 
 I18n.enforce_available_locales = false
