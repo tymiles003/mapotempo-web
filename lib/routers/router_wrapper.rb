@@ -102,7 +102,7 @@ module Routers
       end
 
       if request == ''
-        Array.new(row.size) { Array.new(column.size) }
+        Array.new(row.size) { Array.new(column.size, 2147483647) }
       else
         data = JSON.parse(request)
         if data.key?('matrix')
