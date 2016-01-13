@@ -113,6 +113,8 @@ Rails.application.routes.draw do
   get '/images/diamon-:color' => 'images#diamon'
   get '/images/star' => 'images#star'
   get '/images/star-:color' => 'images#star'
+  get '/images/user' => 'images#user'
+  get '/images/user-:color' => 'images#user'
   get '/images/point_large' => 'images#point_large'
   get '/images/point_large-:color' => 'images#point_large'
 

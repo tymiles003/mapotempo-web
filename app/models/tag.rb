@@ -21,7 +21,7 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many :plannings
 
   def self.icons_table
-    ['square', 'diamon', 'star']
+    ['square', 'diamon', 'star', 'user']
   end
 
   nilify_blanks

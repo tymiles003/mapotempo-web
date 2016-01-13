@@ -42,6 +42,10 @@ class ImagesController < ApplicationController
     @pal = pal(image_params[:color])
   end
 
+  def user
+    @pal = pal(image_params[:color])
+  end
+
   def point_large
     @pal = pal(image_params[:color])
   end
