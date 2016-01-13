@@ -33,6 +33,8 @@ var vehicle_usages_form = function(params) {
       error: ajaxError,
       success: function(data, textStatus, jqXHR) {
 
+        data[''] = ' ';
+
         $('#vehicle_usage_vehicle_tomtom_id').select2({
           data: $.map(data, function(name, id) {
             return { id: id, text: name }
@@ -48,9 +50,7 @@ var vehicle_usages_form = function(params) {
           }
         });
 
-        if (params.tomtom_id) {
-          $('#vehicle_usage_vehicle_tomtom_id').val(params.tomtom_id).trigger('change');
-        }
+        $('#vehicle_usage_vehicle_tomtom_id').val(params.tomtom_id).trigger('change');
       }
     });
   }
