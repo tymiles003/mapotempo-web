@@ -19,14 +19,6 @@ var api_web_v01_zones_index = function(params) {
   var progressBar = Turbolinks.enableProgressBar();
   progressBar && progressBar.advanceTo(25);
 
-  var zoning_id = params.zoning_id,
-    zone_ids = params.zone_ids,
-    vehicles_map = params.vehicles_map,
-    destinations = params.destinations,
-    destination_ids = params.destination_ids,
-    vehicle_usage_set_id = params.vehicle_usage_set_id,
-    method = params.method;
-
   var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
   L.control.scale({
@@ -57,7 +49,7 @@ var api_web_v01_zones_index = function(params) {
 
   var set_color = function(polygon, vehicle_id) {
     polygon.setStyle({
-      color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070')
+      color: (vehicle_id ? params.vehicles_map[vehicle_id].color : '#707070')
     });
   }
 
@@ -115,15 +107,16 @@ var api_web_v01_zones_index = function(params) {
   }
 
   progressBar && progressBar.advanceTo(50);
-  var params = {};
-  if (zone_ids) params.ids = zone_ids.join(',');
-  if (destinations) params.destinations = destinations;
-  if (destination_ids) params.destination_ids = destination_ids.join(',');
-  if (vehicle_usage_set_id) params.vehicle_usage_set_id = vehicle_usage_set_id;
+  var ajaxParams = {};
+  if (params.zone_ids) ajaxParams.ids = params.zone_ids.join(',');
+  if (params.destinations) ajaxParams.destinations = params.destinations;
+  if (params.destination_ids) ajaxParams.destination_ids = params.destination_ids.join(',');
+  if (params.vehicle_usage_set_id) ajaxParams.vehicle_usage_set_id = params.vehicle_usage_set_id;
+  if (params.store_ids) ajaxParams.store_ids = params.store_ids.join(',');
   $.ajax({
-    url: '/api-web/0.1/zonings/' + zoning_id + '/zones.json',
-    method: method,
-    data: params,
+    url: '/api-web/0.1/zonings/' + params.zoning_id + '/zones.json',
+    method: params.method,
+    data: ajaxParams,
     beforeSend: beforeSendWaiting,
     success: function(data) {
       if (data.zoning && data.zoning.length) {

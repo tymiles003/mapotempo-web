@@ -14,6 +14,7 @@ controller.js(
   map_lat: @customer.default_position[:lat],
   map_lng: @customer.default_position[:lng],
   ids: @destinations ? @destinations.collect(&:id) : nil,
+  store_ids: @stores ? @stores.collect(&:id) : nil,
   method: @method
 )
 %>

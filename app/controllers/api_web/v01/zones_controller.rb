@@ -51,6 +51,9 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
       @destinations = current_user.customer.destinations
       @destinations_all = true
     end
+    if params.key?(:store_ids)
+      @stores = current_user.customer.stores.where(ParseIdsRefs.where(Store, params[:store_ids].split(',')))
+    end
     @vehicle_usage_set = if params[:vehicle_usage_set_id]
        current_user.customer.vehicle_usage_sets.find(params[:vehicle_usage_set_id])
     elsif params[:planning_id]

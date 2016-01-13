@@ -4,3 +4,6 @@ end
 json.destinations do
   json.array! @destinations, partial: 'api_web/v01/destinations/show', as: :destination
 end
+json.stores do
+  json.array! @stores
+end

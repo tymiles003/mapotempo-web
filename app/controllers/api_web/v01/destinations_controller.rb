@@ -55,6 +55,9 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
       end
     end
     @tags = current_user.customer.tags
+    if params.key?(:store_ids)
+      @stores = current_user.customer.stores.where(ParseIdsRefs.where(Store, params[:store_ids].split(',')))
+    end
     @method = request.method_symbol
   end
 
