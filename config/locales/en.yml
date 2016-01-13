@@ -389,6 +389,11 @@ en:
     planning:
       import_too_routes: "Try to import more routes than available vehicles."
       already_optimizing: "A planning optimization is already in progress"
+    tomtom:
+      access_denied: "Access denied. 'Full Access Orders' is not enabled. You have insufficient permissions to perform this function."
+      invalid_account: "User invalid (does not exist)."
+      external_requests_not_allowed: "External requests are not allowed for that account/user. Either the account has to be activated for external request or the user has no permission."
+      hostname_not_allowed: "Hostname not allowed."
 
   import:
     template_csv: "Import Template Spreadsheet Standard"

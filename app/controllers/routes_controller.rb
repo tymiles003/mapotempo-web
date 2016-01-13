@@ -73,7 +73,7 @@ class RoutesController < ApplicationController
             Tomtom.clear(@route)
           end
           head :no_content
-        rescue => e
+        rescue StandardError => e
           render json: e.message, status: :unprocessable_entity
         end
       end

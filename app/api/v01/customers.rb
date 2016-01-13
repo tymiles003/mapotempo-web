@@ -171,8 +171,8 @@ class V01::Customers < Grape::API
         params[:password] = customer.tomtom_password if !params.has_key?(:password)
         Mapotempo::Application.config.tomtom.showObjectReport params[:account], params[:user], params[:password]
         status 200
-      rescue
-        error! 'Not found', 404
+      rescue StandardError => e
+        error! e.message, 500
       end
     end
 
