@@ -51,14 +51,6 @@ GIT
       jquery-rails
 
 GIT
-  remote: git://github.com/frodrigo/swagger-docs.git
-  revision: 93c36d430d82318bdea049d2f691b6e73377cc6f
-  specs:
-    swagger-docs (0.1.10)
-      activesupport (>= 3, < 5)
-      rails (>= 3, < 5)
-
-GIT
   remote: git://github.com/frodrigo/twitter_bootstrap_form_for.git
   revision: 8d774e449d146afcfac4c0e72d9c970ab3b372dc
   specs:
@@ -435,6 +427,9 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    swagger-docs (0.1.9)
+      activesupport (>= 3, < 5)
+      rails (>= 3, < 5)
     systemu (2.6.5)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
@@ -566,7 +561,7 @@ DEPENDENCIES
   simplecov
   smt_rails
   sprockets (~> 2)
-  swagger-docs!
+  swagger-docs
   therubyracer
   tidy-html5!
   turbolinks
@@ -576,6 +571,3 @@ DEPENDENCIES
   validates_timeliness
   web-console (~> 2.0)
   webmock
-
-BUNDLED WITH
-   1.10.6
