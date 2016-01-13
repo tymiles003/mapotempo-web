@@ -123,6 +123,8 @@ module Mapotempo
 
     config.max_destinations = 3000
     config.manage_vehicles_only_admin = false
+
+    config.enable_references = true
   end
 end
 

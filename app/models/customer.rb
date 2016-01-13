@@ -95,6 +95,7 @@ class Customer < ActiveRecord::Base
 
   def assign_defaults
     default_country ||= I18n.t('customers.default.country')
+    enable_references = Mapotempo::Application.config.enable_references
   end
 
   def create_default_store
