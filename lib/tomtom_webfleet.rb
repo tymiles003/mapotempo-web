@@ -198,8 +198,8 @@ class TomtomWebfleet
     status_code = ret[:status_code].to_i
 
     if status_code != 0
-      Rails.logger.info response.body.first[1][:return]
-      raise "TomTom WEBFLEET operation %s return error: %s" % [ operation, parse_error_msg(status_code, response) ]
+      Rails.logger.info "%s: %s" % [ operation, response.body ]
+      raise "TomTom: %s" % [ parse_error_msg(status_code) ]
     else
       ret[:results][:result_item] if ret.key?(:results)
     end
@@ -213,7 +213,7 @@ class TomtomWebfleet
     raise
   end
 
-  def parse_error_msg status_code, response
+  def parse_error_msg status_code
     # https://uk.support.business.tomtom.com/ci/fattach/get/1331065/1450429305/redirect/1/session/L2F2LzEvdGltZS8xNDUyNjk2OTAzL3NpZC9yVVVpQ3FHbQ==/filename/WEBFLEET.connect-en-1.26.0.pdf
     case status_code
       when 45
@@ -224,8 +224,6 @@ class TomtomWebfleet
         I18n.t "errors.tomtom.external_requests_not_allowed"
       when 9126
         I18n.t "errors.tomtom.hostname_not_allowed"
-      else
-        return response.body.first[1][:return][:status_message]
     end
   end
 

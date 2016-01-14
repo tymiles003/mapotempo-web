@@ -406,9 +406,9 @@ fr:
       import_too_routes: "Tentative d'importer plus de tournées que de véhicules disponibles."
       already_optimizing: "Une optimisation de planning est déjà en cours"
     tomtom:
-      access_denied: "Non Autorisé. 'Accès complet aux commandes' n'est pas activé. Vous n'avez pas les permissions nécessaires pour effectuer cette action."
+      access_denied: "Non Autorisé. 'Accès complet aux commandes' n'est pas activé dans l'interface WebFLEET. Vous n'avez pas les permissions nécessaires pour effectuer cette action."
       invalid_account: "Utilisateur invalide (non existant)."
-      external_requests_not_allowed: "Non Autorisé. 'Accès à l'interface WebFLEET.connect' n'est pas activé. Les requêtes externes ne sont pas autorisées pour ce compte/utilisateur. Soit le compte a besoin d'être activé pour les requêtes externes soit l'utilisateur n'a pas les permissions."
+      external_requests_not_allowed: "Non Autorisé. 'Accès à l'interface WebFLEET.connect' n'est pas activé dans l'interface WebFLEET. Les requêtes externes ne sont pas autorisées pour ce compte/utilisateur."
       hostname_not_allowed: "Le nom de domaine n'est pas autorisé."
 
   import:
