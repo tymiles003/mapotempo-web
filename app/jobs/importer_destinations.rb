@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -24,10 +24,15 @@ class ImporterDestinations < ImporterBase
     Mapotempo::Application.config.max_destinations
   end
 
-  def columns
+  def columns_route
     {
-      ref: I18n.t('destinations.import_file.ref'),
       route: I18n.t('destinations.import_file.route'),
+      active: I18n.t('destinations.import_file.active')
+    }
+  end
+
+  def columns_destination
+    {
       name: I18n.t('destinations.import_file.name'),
       street: I18n.t('destinations.import_file.street'),
       detail: I18n.t('destinations.import_file.detail'),
@@ -38,15 +43,25 @@ class ImporterDestinations < ImporterBase
       lng: I18n.t('destinations.import_file.lng'),
       geocoding_accuracy: I18n.t('destinations.import_file.geocoding_accuracy'),
       geocoding_level: I18n.t('destinations.import_file.geocoding_level'),
+      phone_number: I18n.t('destinations.import_file.phone_number'),
+      comment: I18n.t('destinations.import_file.comment'),
+    }
+  end
+
+  def columns_visit
+    {
+      # Visit
+      ref: I18n.t('destinations.import_file.ref'),
       open: I18n.t('destinations.import_file.open'),
       close: I18n.t('destinations.import_file.close'),
-      comment: I18n.t('destinations.import_file.comment'),
-      phone_number: I18n.t('destinations.import_file.phone_number'),
       tags: I18n.t('destinations.import_file.tags'),
       take_over: I18n.t('destinations.import_file.take_over'),
       quantity: I18n.t('destinations.import_file.quantity'),
-      active: I18n.t('destinations.import_file.active')
     }
+  end
+
+  def columns
+    columns_route.merge(columns_destination).merge(columns_visit)
   end
 
   def before_import(replace, name, synchronous)
@@ -90,38 +105,43 @@ class ImporterDestinations < ImporterBase
     end
 
     if !row[:ref].nil? && !row[:ref].strip.empty?
-      destination = @customer.destinations.find{ |destination|
-        destination.ref && destination.ref == row[:ref]
+      visit = @customer.visits.find{ |visit|
+        visit.ref && visit.ref == row[:ref]
       }
-      destination.assign_attributes(row.except(:route, :active)) if destination
+      if visit
+        visit.destination.assign_attributes(row.slice(*(@@columns_destination_keys ||= columns_destination.keys)))
+        visit.assign_attributes(row.slice(*(@@columns_visit_keys ||= columns_visit.keys)))
+      end
     end
-    if !destination
-      destination = @customer.destinations.build(row.except(:route, :active)) # Link only when destination is complete
+    if !visit
+      # Link only when destination is complete
+      destination = @customer.destinations.build(row.slice(*(@@columns_destination_keys ||= columns_destination.keys)))
+      visit = destination.visits.build(row.slice(*(@@columns_visit_keys ||= columns_visit.keys)))
     end
 
     if !name.nil?
       # Instersection of tags of all rows for tags of new planning
       if !@common_tags
-        @common_tags = destination.tags.to_a
+        @common_tags = visit.tags.to_a
       else
-        @common_tags &= destination.tags
+        @common_tags &= visit.tags
       end
     end
 
-    if destination.ref.nil? || @routes.size && !@routes.any?{ |k, r| r.any?{ |d| d && d[0]['ref'] == destination.ref } }
-      @routes[row.key?(:route) ? row[:route] : nil] << [destination, !row.key?(:active) || row[:active].strip != '0']
+    if visit.ref.nil? || @routes.size && !@routes.any?{ |k, r| r.any?{ |d| d && d[0]['ref'] == visit.ref } }
+      @routes[row.key?(:route) ? row[:route] : nil] << [visit, !row.key?(:active) || row[:active].strip != '0']
     end
 
-    destination # For subclasses
+    visit.destination # For subclasses
   end
 
   def after_import(replace, name, synchronous)
     if @need_geocode && (synchronous || !Mapotempo::Application.config.delayed_job_use)
-      @routes.each{ |_key, destinations|
-        destinations.each{ |destination_active|
-          if destination_active[0].lat.nil? || destination_active[0].lng.nil?
+      @routes.each{ |_key, visits|
+        visits.each{ |visit_active|
+          if visit_active[0].destination.lat.nil? || visit_active[0].destination.lng.nil?
             begin
-              destination_active[0].geocode
+              visit_active[0].destination.geocode
             rescue
             end
           end
@@ -131,7 +151,7 @@ class ImporterDestinations < ImporterBase
 
     if @routes.size > 1 || !@routes.key?(nil)
       @planning = @customer.plannings.build(name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.now, format: :long), vehicle_usage_set: @customer.vehicle_usage_sets[0], tags: @common_tags || [])
-      @planning.set_destinations(@routes, false)
+      @planning.set_visits(@routes, false)
       @planning.save!
     end
 

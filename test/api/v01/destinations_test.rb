@@ -71,8 +71,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
         assert last_response.ok?, last_response.body
         assert_equal 1, JSON.parse(last_response.body).size
 
-        get api('ref:z')
-        assert_equal 1, JSON.parse(last_response.body)['tag_ids'].size
+        get api()
+        assert_equal 1, JSON.parse(last_response.body)[0]['visits'][0]['tag_ids'].size
       end
     end
   end
@@ -104,8 +104,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
         assert last_response.ok?, last_response.body
         assert_equal 1, JSON.parse(last_response.body).size
 
-        get api('ref:z')
-        assert_equal 2, JSON.parse(last_response.body)['tag_ids'].size
+        get api()
+        assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['visits'][0]['tag_ids'].size
       end
     end
   end
