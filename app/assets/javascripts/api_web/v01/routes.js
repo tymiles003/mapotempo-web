@@ -82,6 +82,7 @@ var api_web_v01_routes_index = function(params) {
           opacity: 0.5,
           weight: 5
         });
+        this.closePopup();
       });
       this.bindPopup('<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + ('0' + parseInt(drive_time / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(drive_time / 60) % 60).slice(-2) + ':' + ('0' + (drive_time % 60)).slice(-2) + '</div><div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance.toFixed(1) + ' km</div>');
       return this;
