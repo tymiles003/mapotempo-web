@@ -394,7 +394,7 @@ en:
     tomtom:
       access_denied: "Access denied. 'Full Access Orders' is not enabled. You have insufficient permissions to perform this function."
       invalid_account: "User invalid (does not exist)."
-      external_requests_not_allowed: "External requests are not allowed for that account/user. Either the account has to be activated for external request or the user has no permission."
+      external_requests_not_allowed: "Access denied. 'Access to interface WEBFLEET.connect' is not enabled. External requests are not allowed for that account/user. Either the account has to be activated for external request or the user has no permission."
       hostname_not_allowed: "Hostname not allowed."
 
   import:
