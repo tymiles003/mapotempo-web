@@ -145,6 +145,11 @@ span.color[data-color=''][data-selected]:after {
   }
 }
 
+.leaflet-control-layers-expanded {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
 [data-controller='plannings'][data-action='edit'],
 [data-controller='plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],
