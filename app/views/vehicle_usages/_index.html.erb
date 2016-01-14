@@ -7,6 +7,7 @@
     <th><%= t 'activerecord.attributes.vehicle.capacity' %></th>
     <th><%= t 'vehicle_usages.index.stores' %></th>
     <th><%= t 'activerecord.attributes.vehicle_usages.time' %></th>
+    <th><%= t 'vehicle_usage_sets.index.service_time' %></th>
     <th></th>
   </thead>
   <tbody>
@@ -34,7 +35,14 @@
         <td>
           <%= vehicle_usage_store_hours vehicle_usage %>
         </td>
-        <td><%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %></td>
+        <td>
+          <%= vehicle_usage_service_time vehicle_usage %>
+        </td>
+        <td>
+          <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>
+            <i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

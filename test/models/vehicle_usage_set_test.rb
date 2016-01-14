@@ -49,4 +49,23 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     assert_equal 1, o.vehicle_usage_sets.size
     assert !o.vehicle_usage_sets[0].destroy
   end
+
+  test 'changes on service time start should set route out of date' do
+    v = vehicle_usage_sets(:vehicle_usage_set_one)
+    assert v.service_time_start.nil?
+    r = v.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_start.nil? }.routes.take
+    assert !r.out_of_date
+    v.update! service_time_start: Time.utc(2000, 1, 1, 0, 0) + 10.minutes
+    assert r.reload.out_of_date
+  end
+
+
+  test 'changes on service time end should set route out of date' do
+    v = vehicle_usage_sets(:vehicle_usage_set_one)
+    assert v.service_time_end.nil?
+    r = v.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_end.nil? }.routes.take
+    assert !r.out_of_date
+    v.update! service_time_end: Time.utc(2000, 1, 1, 0, 0) + 10.minutes
+    assert r.reload.out_of_date
+  end
 end

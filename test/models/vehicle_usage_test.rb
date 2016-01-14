@@ -33,4 +33,22 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert_equal s, o.store_start
     assert_not_equal s, o.store_stop
   end
+
+  test 'changes on service time start should set route out of date' do
+    v = vehicle_usages(:vehicle_usage_one_one)
+    assert v.service_time_start.nil?
+    r = v.routes.take
+    assert !r.out_of_date
+    v.update! service_time_start: Time.utc(2000, 1, 1, 0, 0) + 10.minutes
+    assert r.reload.out_of_date
+  end
+
+  test 'changes on service time end should set route out of date' do
+    v = vehicle_usages(:vehicle_usage_one_one)
+    assert v.service_time_end.nil?
+    r = v.routes.take
+    assert !r.out_of_date
+    v.update! service_time_end: Time.utc(2000, 1, 1, 0, 0) + 10.minutes
+    assert r.reload.out_of_date
+  end
 end

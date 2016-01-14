@@ -24,6 +24,8 @@ fr:
     unit: "m"
     thousand: "km"
   time:
+    hour: "Heure"
+    minute: "Minute"
     formats:
       default: "%d %B %Y %H:%M:%S"
       long: "%A %d %B %Y %H:%M"
@@ -643,6 +645,9 @@ fr:
       optimize_confirm: "Lancer un calcul d'optimisation ?"
       zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
       route_placeholder: "Réf. de la tournée"
+      service_time_start: "Temps de service (début)"
+      service_time_end: "Temps de service (fin)"
+      service_time: "Temps de service"
       exports: "Exporter"
       export:
         print: "Imprimer"
@@ -955,6 +960,7 @@ fr:
       new: "Nouvelle configuration des véhicules"
       stores: "Dépôts"
       time: "Début - Fin"
+      service_time: "Temps de service"
     new:
       title: "Nouvelle configuration des véhicules"
     form:

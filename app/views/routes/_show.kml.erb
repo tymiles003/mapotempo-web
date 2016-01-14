@@ -10,9 +10,7 @@
   %>
   </name>
   <description>
-    <%= route.size_active %> <%= I18n.t 'plannings.edit.stops' %>
-    <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
-    <%= number_to_human(route.distance, units: :distance, precision: 3) %>
+    <%= route_description route %>
   </description>
   <styleUrl>#route-<%= route.id %></styleUrl>
   <LineString>

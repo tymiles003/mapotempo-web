@@ -34,9 +34,15 @@ class VehicleUsageSet < ActiveRecord::Base
   validates_time :rest_start, if: :rest_start
   validates_time :rest_stop, on_or_after: :rest_start, if: :rest_stop
 
-  after_initialize :assign_defaults, if: 'new_record?'
+  validates_time :service_time_start, if: :service_time_start
+  validates_time :service_time_end, if: :service_time_end
+
+  after_initialize :assign_defaults, if: :new_record?
   before_save :set_stores
   before_update :update_out_of_date
+
+  include TimeDuration
+  has_time_duration [:service_time_start, :service_time_end]
 
   amoeba do
     exclude_association :plannings
@@ -97,11 +103,25 @@ class VehicleUsageSet < ActiveRecord::Base
       end
     end
 
-    if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed?
+    if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? ||
+      rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed?
       vehicle_usages.each{ |vehicle_usage|
-        if (open_changed? && vehicle_usage.default_open == open) || (close_changed? && vehicle_usage.default_close == close) || (store_start_id_changed? && vehicle_usage.default_store_start == store_start) ||
-          (store_stop_id_changed? && vehicle_usage.default_store_stop == store_stop) || (rest_start_changed? && vehicle_usage.default_rest_start == rest_start) || (rest_stop_changed? && vehicle_usage.default_rest_stop == rest_stop) ||
-          (rest_duration_changed? && vehicle_usage.default_rest_duration == rest_duration) || (store_rest_id_changed? && vehicle_usage.default_store_rest == store_rest)
+        if (open_changed? && vehicle_usage.default_open == open) ||
+          (close_changed? && vehicle_usage.default_close == close) ||
+
+          (store_start_id_changed? && vehicle_usage.default_store_start == store_start) ||
+          (store_stop_id_changed? && vehicle_usage.default_store_stop == store_stop) ||
+
+          (rest_start_changed? && vehicle_usage.default_rest_start == rest_start) ||
+          (rest_stop_changed? && vehicle_usage.default_rest_stop == rest_stop) ||
+
+          (rest_duration_changed? && vehicle_usage.default_rest_duration == rest_duration) ||
+
+          (store_rest_id_changed? && vehicle_usage.default_store_rest == store_rest) ||
+
+          (service_time_start_changed? && vehicle_usage.default_service_time_start == service_time_start) ||
+          (service_time_end_changed? && vehicle_usage.default_service_time_end == service_time_end)
+
           vehicle_usage.routes.each{ |route|
             route.out_of_date = true
           }

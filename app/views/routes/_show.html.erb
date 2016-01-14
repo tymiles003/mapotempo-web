@@ -28,6 +28,16 @@
   </span>
 
   <ol class="stops" start="0">
+    <% if route.vehicle_usage.default_service_time_start %>
+      <li class="list-group-item service-time">
+        <%= fa_icon "square-o 2x" %>
+        <br />
+        <%= "%s: %s" % [
+          t("plannings.edit.service_time_start"),
+          display_duration_in_minutes(route.vehicle_usage.default_service_time_start_value)
+        ] %>
+      </li>
+    <% end %>
     <% if route.vehicle_usage.default_store_start %>
       <li class="list-group-item store" style="border-left: 5px solid <%= route.color || route.vehicle_usage.vehicle.color %>">
         <div class="row no-gutter">
@@ -209,5 +219,15 @@
       </li>
     <% end %>
 
+    <% if route.vehicle_usage.default_service_time_end %>
+      <li class="list-group-item service-time">
+        <%= fa_icon "square-o 2x" %>
+        <br />
+        <%= "%s: %s" % [
+          t("plannings.edit.service_time_end"),
+          display_duration_in_minutes(route.vehicle_usage.default_service_time_end_value)
+        ] %>
+      </li>
+    <% end %>
   </ol>
 </li>

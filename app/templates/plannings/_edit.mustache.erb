@@ -150,8 +150,9 @@
           </ul>
         {{/route_error}}
       </div>
-      <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
+
       {{#store_start}}
+      <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
         <li data-store_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
           <i class="fa {{icon}}{{^icon}}fa-home{{/icon}} fa-fw" style="color: {{color}}{{^color}}black{{/color}};"></i>
           <div class="title">
@@ -169,8 +170,16 @@
           </div>
           <div class="clearfix"></div>
         </li>
-      {{/store_start}}
       </ul>
+      {{/store_start}}
+
+      {{#service_time_start}}
+        <span class="service-time">
+          <i class="fa fa-square-o fa-fw"></i>
+          {{#i18n}}plannings.edit.service_time{{/i18n}}: {{service_time_start}}
+        </span>
+      {{/service_time_start}}
+
       <ul class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
       {{#stops}}
         {{#wait_time}}
@@ -245,6 +254,14 @@
         {{/destination}}
       {{/stops}}
       </ul>
+
+      {{#service_time_end}}
+        <span class="service-time">
+          <i class="fa fa-square-o fa-fw"></i>
+          {{#i18n}}plannings.edit.service_time{{/i18n}}: {{service_time_end}}
+        </span>
+      {{/service_time_end}}
+
       {{#store_stop}}
       <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
         <li data-store_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
@@ -267,8 +284,9 @@
           </div>
           <div class="clearfix"></div>
         </li>
-      {{/store_stop}}
       </ul>
+      {{/store_stop}}
+
     </div>
   {{/vehicle}}
 </li>

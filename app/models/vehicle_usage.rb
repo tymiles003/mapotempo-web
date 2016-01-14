@@ -32,7 +32,13 @@ class VehicleUsage < ActiveRecord::Base
   validates_time :rest_start, if: :rest_start
   validates_time :rest_stop, on_or_after: :rest_start, if: lambda { |vu| vu.rest_start && vu.rest_stop }
 
+  validates_time :service_time_start, if: :service_time_start
+  validates_time :service_time_end, if: :service_time_end
+
   before_update :update_out_of_date
+
+  include TimeDuration
+  has_time_duration [:service_time_start, :service_time_end]
 
   def default_open
     open || vehicle_usage_set.open
@@ -66,6 +72,22 @@ class VehicleUsage < ActiveRecord::Base
     rest_duration || vehicle_usage_set.rest_duration
   end
 
+  def default_service_time_start
+    service_time_start || vehicle_usage_set.service_time_start
+  end
+
+  def default_service_time_start_value
+    service_time_start ? service_time_start_value : vehicle_usage_set.service_time_start_value
+  end
+
+  def default_service_time_end
+    service_time_end || vehicle_usage_set.service_time_end
+  end
+
+  def default_service_time_end_value
+    service_time_end ? service_time_end_value : vehicle_usage_set.service_time_end_value
+  end
+
   private
 
   def update_out_of_date
@@ -85,7 +107,7 @@ class VehicleUsage < ActiveRecord::Base
       end
     end
 
-    if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed?
+    if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed?
       routes.each{ |route|
         route.out_of_date = true
       }

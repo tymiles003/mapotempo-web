@@ -23,6 +23,8 @@ en:
     unit: "m"
     thousand: "km"
   time:
+    hour: "Hour"
+    minute: "Minute"
     formats:
       hour_minute: "%H:%M"
       hour_minute_second: "%H:%M:%S"
@@ -629,6 +631,9 @@ en:
       optimize_confirm: "Run an optimization calculation?"
       zoning_confirm: "Save and apply the new zoning?"
       route_placeholder: "Route ref."
+      service_time_start: "Service Time (Start)"
+      service_time_end: "Service Time (End)"
+      service_time: "Service Time"
       exports: "Export"
       export:
         print: "Print"
@@ -937,6 +942,7 @@ en:
       new: "New vehicles configuration"
       stores: "Stores"
       time: "Open - Close"
+      service_time: "Service Time"
     new:
       title: "New vehicles configuration"
     form:

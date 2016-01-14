@@ -67,6 +67,7 @@ class Route < ActiveRecord::Base
     self.start = self.end = nil
     last_lat, last_lng = nil, nil
     if vehicle_usage && stops.size > 0
+      service_time = { start: vehicle_usage.default_service_time_start_value, end: vehicle_usage.default_service_time_end_value }
       self.end = self.start = departure || vehicle_usage.default_open
       speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1)
       if !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
@@ -76,7 +77,7 @@ class Route < ActiveRecord::Base
       router = vehicle_usage.vehicle.router || planning.customer.router
       stops_time = {}
       stops_sort = stops.sort_by(&:index)
-      stops_sort.each{ |stop|
+      stops_sort.each_with_index{ |stop, index|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
           if stop.position? && !last_lat.nil? && !last_lng.nil?
             stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
@@ -90,6 +91,11 @@ class Route < ActiveRecord::Base
             stop.time = self.end
           else
             stop.time = nil
+          end
+
+          # Add service time to 1st stop
+          if !departure && service_time[:start] > 0 && index == 0
+            stop.time += service_time[:start].minutes
           end
 
           if stop.time
@@ -134,6 +140,12 @@ class Route < ActiveRecord::Base
         self.end += drive_time
         self.stop_distance, self.stop_drive_time = distance, drive_time
       end
+
+      # Add service time to end point
+      if service_time[:end] > 0
+        self.end += service_time[:end].minutes
+      end
+
       self.stop_trace = trace
       self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
 

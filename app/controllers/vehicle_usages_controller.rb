@@ -53,7 +53,7 @@ class VehicleUsagesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def vehicle_usage_params
-    p = params.require(:vehicle_usage).permit(:open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, vehicle: [:ref, :name, :emission, :consumption, :capacity, :capacity_unit, :color, :tomtom_id, :masternaut_ref, :router_id, :speed_multiplicator])
+    p = params.require(:vehicle_usage).permit(:open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, :service_time_start, :service_time_end, vehicle: [:ref, :name, :emission, :consumption, :capacity, :capacity_unit, :color, :tomtom_id, :masternaut_ref, :router_id, :speed_multiplicator])
     if p.key?(:vehicle)
       p[:vehicle_attributes] = p[:vehicle]
       p.except(:vehicle)

@@ -10,9 +10,7 @@
     %>
     </name>
     <desc>
-      <%= route.size_active %> <%= I18n.t 'plannings.edit.stops' %>
-      <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
-      <%= number_to_human(route.distance, units: :distance, precision: 3) %>
+      <%= route_description route %>
     </desc>
     <% if route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil? %>
     <rtept lat="<%= route.vehicle_usage.default_store_start.lat %>" lon="<%= route.vehicle_usage.default_store_start.lng %>">

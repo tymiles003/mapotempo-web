@@ -171,4 +171,58 @@ class PlanningTest < ActiveSupport::TestCase
     oa.destroy
     o.save!
   end
+
+  test 'plan with service time' do
+    # A valid Route and Vehicle Usage
+    v = vehicle_usages(:vehicle_usage_one_one)
+    r = v.routes.take
+
+    # 1st computation, set Stop times
+    r.compute
+    stop_times = r.stops.map &:time
+    route_end = r.end
+
+    # Add Service Time
+    v.vehicle_usage_set.update!(
+      service_time_start: Time.utc(2000, 1, 1, 0, 0) + 10.minutes,
+      service_time_end: Time.utc(2000, 1, 1, 0, 0) + 25.minutes
+    )
+
+    # 2nd computation
+    r.compute
+    stop_times2 = r.stops.map &:time
+    route_end2 = r.end
+
+    # Make sure time has been added to first stop and route end
+    assert stop_times2[0] == stop_times[0] + 10.minutes
+    assert route_end2 == route_end + 25.minutes
+
+    # Vehicle Usage overrides Service Time values
+    v.update!(
+      service_time_start: Time.utc(2000, 1, 1, 0, 0) + 30.minutes,
+      service_time_end: Time.utc(2000, 1, 1, 0, 0) + 20.minutes
+    )
+
+    # 3rd computation
+    r.compute
+    stop_times3 = r.stops.map &:time
+    route_end3 = r.end
+
+    # Let's verify values for first stop and route end
+    assert stop_times3[0] == stop_times[0] + 30.minutes
+    assert route_end3 == route_end + 20.minutes
+
+    # Add Time Window to 1st Destination should set out of window flag
+    assert !r.stops[0].out_of_window
+
+    # Add a time window in service time start time (less than 30 minutes)
+    r.stops[0].destination.update!(
+      open: v.service_time_start + 5.minutes,
+      close: v.service_time_start + 10.minutes
+    )
+
+    # Compute a last time, this stop should be out of time window
+    r.compute
+    assert r.stops[0].out_of_window
+  end
 end
