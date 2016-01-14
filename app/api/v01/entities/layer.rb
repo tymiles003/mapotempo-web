@@ -26,4 +26,5 @@ class V01::Entities::Layer < Grape::Entity
   expose(:attribution, documentation: { type: String })
   expose(:urlssl, documentation: { type: String })
   expose(:source, documentation: { type: String })
+  expose(:overlay, documentation: { type: 'Boolean', desc: 'False if it is a base layer, true if it is just an overlay.' })
 end
