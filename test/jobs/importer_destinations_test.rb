@@ -1,7 +1,7 @@
 class ImporterTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
-    @dest_tag1_count = @customer.destinations.select{ |d| d.tags == [tags(:tag_one)] }.count
+    @visit_tag1_count = @customer.visits.select{ |v| v.tags == [tags(:tag_one)] }.count
     @plan_tag1_count = @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.count
   end
 
@@ -27,13 +27,13 @@ class ImporterTest < ActionController::TestCase
     rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
+        assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one.csv', 'text.csv')).import
         end
       end
     end
 
-    assert_equal [tags(:tag_one)], Destination.where(name: 'BF').first.tags.to_a
+    assert_equal [tags(:tag_one)], Destination.where(name: 'BF').first.visits.first.tags.to_a
   end
 
   test 'shoud import postalcode in new planning' do
@@ -42,7 +42,7 @@ class ImporterTest < ActionController::TestCase
     rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
+        assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
         end
       end
@@ -55,7 +55,7 @@ class ImporterTest < ActionController::TestCase
     rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
     assert_difference('Planning.count') do
       assert_difference('Destination.count') do
-        assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
+        assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_coord.csv', 'text.csv')).import
         end
       end
@@ -68,17 +68,17 @@ class ImporterTest < ActionController::TestCase
     rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
-        assert_difference('Stop.count', (@dest_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
+        assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_two.csv', 'text.csv')).import
         end
       end
     end
 
     stops = Planning.where(name: 'text').first.routes.find{ |route| route.ref == '1' }.stops
-    assert_equal 'z', stops[1].destination.ref
-    assert stops[1].destination.take_over
+    assert_equal 'z', stops[1].visit.ref
+    assert stops[1].visit.take_over
     assert stops[1].active
-    assert_equal 'x', stops[2].destination.ref
+    assert_equal 'x', stops[2].visit.ref
     assert_not stops[2].active
   end
 
@@ -104,7 +104,7 @@ class ImporterTest < ActionController::TestCase
     end
 
     o = Destination.find{ |d| d.name == 'Point 1' }
-    assert_equal ['été'], o.tags.collect(&:label)
+    assert_equal ['été'], o.visits.first.tags.collect(&:label)
     p = Planning.first
     assert_equal import_count, p.routes[0].stops.size
     p = Planning.last
@@ -121,7 +121,7 @@ class ImporterTest < ActionController::TestCase
       assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-iso.csv', 'text.csv')).import
     end
 
-    o = Destination.find{ |d| d.name == 'Point 1' }
+    o = Destination.find_by(name: 'Point 1').visits.first
     assert_equal ['été'], o.tags.collect(&:label)
   end
 
@@ -135,7 +135,7 @@ class ImporterTest < ActionController::TestCase
     assert_difference('Destination.count', 1) do
       assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
     end
-    assert_equal 'unaffected_one_update', Destination.find_by(ref:'a').name
-    assert_equal 'unaffected_two_update', Destination.find_by(ref:'d').name
+    assert_equal 'unaffected_one_update', Visit.find_by(ref:'a').destination.name
+    assert_equal 'unaffected_two_update', Visit.find_by(ref:'d').destination.name
   end
 end

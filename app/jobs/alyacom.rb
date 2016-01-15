@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2015
+# Copyright © Mapotempo, 2015-2016
 #
 # This file is part of Mapotempo.
 #
@@ -57,7 +57,7 @@ class Alyacom
           staff_id: route.vehicle_usage.vehicle.name,
           destination_id: stop.base_id,
           comment: [
-            stop.is_a?(StopDestination) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.destination.quantity && stop.destination.quantity > 1 ? "x#{stop.destination.quantity}" : nil) : nil,
+            stop.is_a?(StopVisit) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
           ].compact.join(' ').strip,
           start: base_time + stop.time.seconds_since_midnight.seconds,
           end: base_time + (stop.time.seconds_since_midnight + stop.duration).seconds,
