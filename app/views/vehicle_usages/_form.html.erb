@@ -19,7 +19,7 @@
         <%= f.select :emission, [], Vehicle.emissions_table, { include_blank: t('web.form.empty_entry') }, {input_group: t('all.unit.kgco2e_l_html')} do %>
           <p class="help-block"><%= t 'vehicles.form.emissions.help' %></p>
         <% end %>
-        <%= f.number_field :consumption, {input_group: t('all.unit.l_100km')} do %>
+        <%= f.number_field :consumption, { input_group: t('all.unit.l_100km'), step: 0.1 } do %>
           <p class="help-block"><%= t 'vehicles.form.consumption.help' %></p>
         <% end %>
         <%= f.number_field :capacity, {min:1, input_group: content_tag('i', '', class: 'fa fa-check-square fa-fw')} do %>
