@@ -125,7 +125,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
       get api("#{@customer.id}/tomtom_ids")
       assert last_response.ok?, last_response.body
-      assert_equal '1-44063-666E054E7 - MAPO1', JSON.parse(last_response.body)['1-44063-666E054E7']
+      assert_equal 'MAPO1', JSON.parse(last_response.body)['1-44063-666E054E7']
     ensure
       remove_request_stub(stub_table)
     end
