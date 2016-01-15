@@ -199,7 +199,7 @@ class TomtomWebfleet
 
     if status_code != 0
       Rails.logger.info "%s: %s" % [ operation, response.body ]
-      raise "TomTom: %s" % [ parse_error_msg(status_code) ]
+      raise "TomTom: %s" % [ parse_error_msg(status_code) || ret ]
     else
       ret[:results][:result_item] if ret.key?(:results)
     end
