@@ -153,7 +153,7 @@ class V01::Customers < Grape::API
     get ':id/tomtom_ids' do
       current_customer(params[:id])
       Hash[Tomtom.fetch_devices(@current_customer).collect{ |tomtom|
-        [tomtom[:objectUid], "#{tomtom[:objectUid]} - #{tomtom[:objectName]}"]
+        [tomtom[:objectUid], tomtom[:objectName]]
       }]
     end
 
