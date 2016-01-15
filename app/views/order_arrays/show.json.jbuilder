@@ -20,9 +20,9 @@ json.rows @destinations_orders do |destination_orders, vehicle_usage|
     json.vehicle_name vehicle_usage.vehicle.name
     json.vehicle_color vehicle_usage.vehicle.color
   end
-  json.name destination_orders[0].destination.name
-  json.comment destination_orders[0].destination.comment
-  json.orders destination_orders do |order|
+  json.name visit_orders[0].visit.destination.name
+  json.comment visit_orders[0].visit.destination.comment
+  json.orders visit_orders do |order|
     json.id order.id
     json.product_ids do
       json.array! order.products.collect(&:id)

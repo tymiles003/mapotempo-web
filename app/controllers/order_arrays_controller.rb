@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -26,24 +26,24 @@ class OrderArraysController < ApplicationController
   end
 
   def show
-    @destinations_orders = @order_array.destinations_orders
+    @visits_orders = @order_array.visits_orders
     planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
     if planning
       i = -1
-      destination_index = Hash[planning.routes.collect{ |route|
-        route.stops.select{ |stop| stop.is_a?(StopDestination) }.collect{ |stop|
-          [stop.destination.id, route.vehicle_usage]
+      visit_index = Hash[planning.routes.collect{ |route|
+        route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
+          [stop.visit.id, route.vehicle_usage]
         }
       }.flatten(1).collect{ |id, vehicle_usage| [id, [i += 1, vehicle_usage]] }]
 
-      @destinations_orders = @destinations_orders.sort_by{ |destination_orders|
-        destination_index[destination_orders[0].destination.id] ? destination_index[destination_orders[0].destination.id][0] : Float::INFINITY
-      }.collect{ |destination_orders|
-        [destination_orders, destination_index[destination_orders[0].destination.id][1]]
+      @visits_orders = @visits_orders.sort_by{ |visit_orders|
+        visit_index[visit_orders[0].visit.id] ? visit_index[visit_orders[0].visit.id][0] : Float::INFINITY
+      }.collect{ |visit_orders|
+        [visit_orders, visit_index[visit_orders[0].visit.id][1]]
       }
     else
-      @destinations_orders = @destinations_orders.collect{ |destination_orders|
-        [destination_orders]
+      @visits_orders = @visits_orders.collect{ |visit_orders|
+        [visit_orders]
       }
     end
 

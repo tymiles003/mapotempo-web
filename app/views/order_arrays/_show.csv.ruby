@@ -13,7 +13,7 @@ header += [
 csv << header
 
 sum_column = Hash.new { |h,k| h[k] = {} }
-@destinations_orders.collect { |destination_orders, vehicle_usage|
+@visits_orders.collect { |visit_orders, vehicle_usage|
   sum = {}
   total = 0
   line = []
@@ -21,9 +21,9 @@ sum_column = Hash.new { |h,k| h[k] = {} }
     line << (vehicle_usage.nil? ? '' : vehicle_usage.vehicle.name)
   end
   line += [
-    destination_orders[0].destination.name,
-    destination_orders[0].destination.comment,
-  ] + destination_orders.collect { |order|
+    visit_orders[0].visit.destination.name,
+    visit_orders[0].visit.destination.comment,
+  ] + visit_orders.collect { |order|
     order.products.each { |product|
       sum_column[order.shift][product] = (sum_column[order.shift][product] || 0) + 1
       sum[product] = (sum[product] || 0 ) + 1
