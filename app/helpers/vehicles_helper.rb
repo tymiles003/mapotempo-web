@@ -37,26 +37,27 @@ module VehiclesHelper
     end
   end
 
-  def vehicle_usage_store_name vehicle_usage
+  def vehicle_usage_store_name item
+    store_start = item.respond_to?(:default_store_start) ? item.default_store_start : item.store_start
+    store_stop = item.respond_to?(:default_store_stop) ? item.default_store_stop : item.store_stop
     capture do
-      if vehicle_usage.store_start || vehicle_usage.store_stop
-        if vehicle_usage.default_store_start
-          concat vehicle_usage.default_store_start.name
+      if store_start || store_stop
+        if store_start
+          concat "%s " % [ store_start.name ]
         else
           concat fa_icon("ban", title: t('vehicle_usages.index.store.no_start'))
         end
-        if vehicle_usage.default_store_start != vehicle_usage.default_store_stop
-          concat " "
+        if store_start != store_stop
           concat fa_icon("long-arrow-right")
           concat " "
+          if store_stop
+            concat " %s" % [ store_stop.name ]
+          else
+            concat fa_icon("ban", title: t('vehicle_usages.index.store.no_stop'))
+          end
+        elsif store_start
+          concat fa_icon("exchange", title: t('vehicle_usages.index.store.same_start_stop'))
         end
-        if vehicle_usage.default_store_stop
-          concat vehicle_usage.default_store_stop.name
-        else
-          concat fa_icon("ban", title: t('vehicle_usages.index.store.no_stop'))
-        end
-      elsif vehicle_usage.default_store_start
-        concat fa_icon("exchange", title: t('vehicle_usages.index.store.same_start_stop'))
       end
     end
   end
