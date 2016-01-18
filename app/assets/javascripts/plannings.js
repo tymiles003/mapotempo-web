@@ -445,24 +445,29 @@ var plannings_edit = function(params) {
       });
     });
 
-    $(".export_tomtom a").click(function() {
-      var url = this.href;
-      $.ajax({
-        type: "get",
-        url: url,
-        beforeSend: function() {
-          $("#dialog-tomtom").dialog("open");
-        },
-        success: function(data) {
-          bootstrap_alert_success(I18n.t('plannings.edit.export.tomtom_success'));
-        },
-        complete: function() {
-          $("#dialog-tomtom").dialog("close");
-        },
-        error: ajaxError
+    $.each(['send', 'clear'], function(i, name) {
+      $(".tomtom-" + name + " a").click(function(e) {
+
+        $.ajax({
+          type: "get",
+          url: $(e.target).attr("href"),
+          beforeSend: function() {
+            $("#dialog-tomtom").dialog("open");
+          },
+          success: function() {
+            bootstrap_alert_success(I18n.t('plannings.edit.export.' + name + '.success'));
+          },
+          complete: function() {
+            $("#dialog-tomtom").dialog("close");
+          },
+          error: ajaxError
+        });
+
+        // Reset Dropdown
+        $(e.target).closest(".dropdown-menu").dropdown("toggle");
+
+        return false;
       });
-      $(this).closest(".dropdown-menu").prev().dropdown("toggle");
-      return false;
     });
 
     $(".export_masternaut a").click(function() {

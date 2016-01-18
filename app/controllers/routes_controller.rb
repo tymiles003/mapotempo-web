@@ -74,7 +74,7 @@ class RoutesController < ApplicationController
             Tomtom.export_route_as_waypoints(@route)
           elsif params[:type] == 'orders'
             Tomtom.export_route_as_orders(@route)
-          else
+          elsif params[:type] == 'empty'
             Tomtom.clear(@route)
           end
           head :no_content

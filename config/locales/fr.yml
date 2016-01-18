@@ -654,6 +654,11 @@ fr:
       service_time: "Durées de service"
       exports: "Exporter"
       export:
+        clear:
+          action: "Vider TomTom"
+          success: "Les commandes TomTom ont été vidées avec succès"
+        send:
+          success: "Envoi vers TomTom terminé avec succès"
         print: "Imprimer"
         spreadsheet_standard: "Tableur standard"
         spreadsheet_standard_without_stores: "Tableur standard sans dépôts"
@@ -665,8 +670,6 @@ fr:
         kml_track: "Tracé KML"
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
-        tomtom_empty: "Vider TomTom"
-        tomtom_success: "Envoi vers TomTom terminé avec succès"
         masternaut: "Envoyer vers Masternaut"
         masternaut_success: "Envoi vers Masternaut terminé avec succès"
         alyacom: "Envoyer vers AlyaCom"
