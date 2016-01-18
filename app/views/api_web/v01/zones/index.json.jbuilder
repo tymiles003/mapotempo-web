@@ -16,7 +16,5 @@ json.zoning @zones do |zone|
   json.extract! zone, :id, :vehicle_id, :polygon
 end
 if @destinations
-  json.destinations do
-    json.array! @destinations, partial: 'api_web/v01/destinations/show', as: :destination
-  end
+  json.destinations @destinations, partial: 'api_web/v01/destinations/show', as: :destination
 end

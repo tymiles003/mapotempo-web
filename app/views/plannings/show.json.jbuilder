@@ -86,9 +86,7 @@ else
           if !destination.tags.empty?
             json.tags_present do
               json.tags do
-                json.array! destination.tags do |tag|
-                  json.extract! tag, :label
-                end
+                json.array! destination.tags, :label
               end
             end
           end

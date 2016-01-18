@@ -9,7 +9,5 @@ else
   json.tags do
     json.array! @tags, :id, :label, :color, :icon
   end
-  json.destinations do
-    json.array! @destinations, partial: 'destinations/show', as: :destination
-  end
+  json.destinations @destinations, partial: 'destinations/show', as: :destination
 end
