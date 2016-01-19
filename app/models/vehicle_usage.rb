@@ -37,9 +37,6 @@ class VehicleUsage < ActiveRecord::Base
 
   before_update :update_out_of_date
 
-  include TimeDuration
-  has_time_duration [:service_time_start, :service_time_end]
-
   def default_open
     open || vehicle_usage_set.open
   end
@@ -76,16 +73,8 @@ class VehicleUsage < ActiveRecord::Base
     service_time_start || vehicle_usage_set.service_time_start
   end
 
-  def default_service_time_start_value
-    service_time_start ? service_time_start_value : vehicle_usage_set.service_time_start_value
-  end
-
   def default_service_time_end
     service_time_end || vehicle_usage_set.service_time_end
-  end
-
-  def default_service_time_end_value
-    service_time_end ? service_time_end_value : vehicle_usage_set.service_time_end_value
   end
 
   private

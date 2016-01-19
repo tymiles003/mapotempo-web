@@ -41,9 +41,6 @@ class VehicleUsageSet < ActiveRecord::Base
   before_save :set_stores
   before_update :update_out_of_date
 
-  include TimeDuration
-  has_time_duration [:service_time_start, :service_time_end]
-
   amoeba do
     exclude_association :plannings
 

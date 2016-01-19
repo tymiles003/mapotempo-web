@@ -135,7 +135,10 @@ controller.js(
         color: vehicle_usage.vehicle.color,
         capacity: vehicle_usage.vehicle.capacity,
         vehicle_id: vehicle_usage.vehicle_id,
-        service_time: service_time_export(vehicle_usage)
+        service_time: {
+          start: (l(vehicle_usage.default_service_time_start, format: :hour_minute) if vehicle_usage.default_service_time_start),
+          end: (l(vehicle_usage.default_service_time_end, format: :hour_minute) if vehicle_usage.default_service_time_end)
+        }
       }
     ]
   }],

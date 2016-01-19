@@ -95,15 +95,6 @@ module VehicleUsagesHelper
     end
   end
 
-  def service_time_export vehicle_usage
-    return {
-      start_value: vehicle_usage.default_service_time_start_value,
-      start_str: (l(vehicle_usage.default_service_time_start, format: :hour_minute) if vehicle_usage.default_service_time_start),
-      end_value: vehicle_usage.default_service_time_end_value,
-      end_str: (l(vehicle_usage.default_service_time_end, format: :hour_minute) if vehicle_usage.default_service_time_end)
-    }
-  end
-
   def route_description route
     capture do
       concat [ route.size_active, t('plannings.edit.stops') ].join(' ')

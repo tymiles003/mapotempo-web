@@ -345,12 +345,12 @@ var plannings_edit = function(params) {
 
       if (route.stops.length > 0) {
         /* Service Time Start */
-        if (route.vehicle && route.vehicle.service_time && route.vehicle.service_time.start_value) {
-          route.service_time_start = route.vehicle.service_time.start_str;
+        if (route.vehicle && route.vehicle.service_time && route.vehicle.service_time.start) {
+          route.service_time_start = route.vehicle.service_time.start;
         }
         /* Service Time End */
-        if (route.vehicle && route.vehicle.service_time && route.vehicle.service_time.end_value) {
-          route.service_time_end = route.vehicle.service_time.end_str;
+        if (route.vehicle && route.vehicle.service_time && route.vehicle.service_time.end) {
+          route.service_time_end = route.vehicle.service_time.end;
         }
       }
     });
