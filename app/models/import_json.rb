@@ -32,13 +32,14 @@ class ImportJson
     if json
       begin
         Customer.transaction do
-          key = %w(ref route name street detail postalcode city lat lng open close comment tags take_over quantity active)
+          keys = @importer.columns.keys
 
           @importer.import(json, replace, nil, synchronous, false) { |row|
             r, row = row, {}
             r.each{ |k, v|
-              if key.include?(k)
-                row[k.to_sym] = v
+              ks = k.to_sym
+              if keys.include?(ks)
+                row[ks] = v
               end
             }
 

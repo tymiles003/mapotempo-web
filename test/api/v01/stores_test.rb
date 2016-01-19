@@ -49,7 +49,9 @@ class V01::StoresTest < ActiveSupport::TestCase
     assert_difference('Store.count', 1) do
       put api(), replace: false, file: fixture_file_upload('files/import_stores_one.csv', 'text/csv')
       assert last_response.ok?, last_response.body
-      assert_equal 1, JSON.parse(last_response.body).size
+      json = JSON.parse(last_response.body)
+      assert_equal 1, json.size
+      assert_equal 'fra', json[0]['country']
     end
   end
 
@@ -67,6 +69,7 @@ class V01::StoresTest < ActiveSupport::TestCase
         street: nil,
         postalcode: nil,
         city: 'Tule',
+        country: 'fra',
         lat: 43.5710885456786,
         lng: 3.89636993408203,
         ref: nil,
@@ -74,7 +77,9 @@ class V01::StoresTest < ActiveSupport::TestCase
         foo: 'bar'
       }]}
       assert last_response.ok?, last_response.body
-      assert_equal 1, JSON.parse(last_response.body).size
+      json = JSON.parse(last_response.body)
+      assert_equal 1, json.size
+      assert_equal 'fra', json[0]['country']
     end
   end
 

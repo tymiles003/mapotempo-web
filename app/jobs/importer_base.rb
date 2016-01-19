@@ -55,7 +55,6 @@ class ImporterBase
       after_import(replace, name, synchronous)
 
       finalize_import(replace, name, synchronous)
-
     end
 
     dests
