@@ -949,6 +949,10 @@ fr:
       store_rest:
         default: "Défaut"
         none: "Aucun"
+      service_time:
+        default: "%{n} (valeur par défaut)"
+        help_start: "Durée de préparation nécessaire. Ce temps sera ajouté avant le premier stop d'une tournée. Cette valeur peut aussi être définie sur la liste de configuration des véhicules."
+        help_end: "Durée requise à la fin d'une tournée. Ce temps sera ajouté après le dernier stop d'une tournée. Cette valeur peut aussi être définie sur la liste de configuration des véhicules."
 
   vehicle_usage_sets:
     default:
@@ -972,6 +976,9 @@ fr:
         none: "Aucun"
       store_rest:
         none: "Aucun"
+      service_time:
+        help_start: "Durée de préparation nécessaire. Ce temps sera ajouté avant le premier stop d'une tournée."
+        help_end: "Durée requise à la fin d'une tournée. Ce temps sera ajouté après le dernier stop d'une tournée."
 
   zonings:
     menu:

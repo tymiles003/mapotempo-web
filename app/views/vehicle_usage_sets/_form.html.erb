@@ -13,8 +13,16 @@
   <%= f.text_field :rest_stop, {value: @vehicle_usage_set.rest_stop && l(@vehicle_usage_set.rest_stop, format: :hour_minute), input_group: t('all.unit.hour_minute')} %>
   <%= f.text_field :rest_duration, {value: @vehicle_usage_set.rest_duration && l(@vehicle_usage_set.rest_duration, format: :hour_minute), input_group: t('all.unit.hour_minute')} %>
   <%= f.collection_select :store_rest_id, [], @vehicle_usage_set.customer.stores, :id, :name, {include_blank: t('vehicles_usage.form.store_rest.none')}, {input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
-  <%= f.text_field :service_time_start, { value: @vehicle_usage_set.service_time_start && l(@vehicle_usage_set.service_time_start, format: :hour_minute), input_group: t('all.unit.hour_minute')} %>
-  <%= f.text_field :service_time_end, { value: @vehicle_usage_set.service_time_end && l(@vehicle_usage_set.service_time_end, format: :hour_minute), input_group: t('all.unit.hour_minute')} %>
+  <%= f.text_field :service_time_start, {
+    value: f.object.service_time_start && l(f.object.service_time_start, format: :hour_minute),
+    input_group: t('all.unit.hour_minute') } do %>
+    <p class="help-block"><%= t 'vehicle_usage_sets.form.service_time.help_start' %></p>
+  <% end %>
+  <%= f.text_field :service_time_end, {
+    value: f.object.service_time_end && l(f.object.service_time_end, format: :hour_minute),
+    input_group: t('all.unit.hour_minute') } do %>
+    <p class="help-block"><%= t 'vehicle_usage_sets.form.service_time.help_end' %></p>
+  <% end %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

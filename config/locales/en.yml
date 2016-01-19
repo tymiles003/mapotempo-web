@@ -931,6 +931,10 @@ en:
       store_rest:
         default: "Default"
         none: "None"
+      service_time:
+        default: "%{n} (default value)"
+        help_start: "Necessary preparation time. This time will be added before the first stop of a tour. The value can also be defined at the vehicle configuration list level."
+        help_end: "Time required at the end of a tour. This time will be added after the last stop of a tour. The value can also be defined at the vehicle configuration list level."
 
   vehicle_usage_sets:
     default:
@@ -954,6 +958,9 @@ en:
         none: "None"
       store_rest:
         none: "None"
+      service_time:
+        help_start: "Necessary preparation time. This time will be added before the first stop of a tour."
+        help_end: "Time required at the end of a tour. This time will be added after the last stop of a tour."
 
   zonings:
     menu:
