@@ -41,11 +41,11 @@ var api_web_v01_zones_index = function(params) {
     map.addControl(new control_caption());
   }
 
-  var markersLayers = L.featureGroup(),
-    stores_marker = L.featureGroup(),
-    featureGroup = L.featureGroup();
+  map.markersLayers = L.featureGroup();
+  map.storesLayers = L.featureGroup();
+  var featureGroup = L.featureGroup();
 
-  map.addLayer(featureGroup).addLayer(stores_marker).addLayer(markersLayers);
+  map.addLayer(featureGroup).addLayer(map.storesLayers).addLayer(map.markersLayers);
 
   var set_color = function(polygon, vehicle_id) {
     polygon.setStyle({
@@ -66,9 +66,9 @@ var api_web_v01_zones_index = function(params) {
   }
 
   var display_zoning = function(data) {
-    api_web_v01_display_destinations_('destinations', map, markersLayers, undefined, data);
+    api_web_v01_display_destinations_('destinations', map, data);
 
-    stores_marker.clearLayers();
+    map.storesLayers.clearLayers();
     $.each(data.stores, function(i, store) {
       store.store = true;
       store.i18n = mustache_i18n;
@@ -81,7 +81,7 @@ var api_web_v01_zones_index = function(params) {
             popupAnchor: new L.Point(0, -12),
             className: 'store-icon-container'
           })
-        }).addTo(stores_marker).bindPopup(SMT['stops/show']({
+        }).addTo(map.storesLayers).bindPopup(SMT['stops/show']({
           stop: store
         }));
         m.on('mouseover', function(e) {
