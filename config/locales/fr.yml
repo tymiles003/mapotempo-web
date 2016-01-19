@@ -332,8 +332,8 @@ fr:
         rest_stop: "Fin plage repos"
         rest_duration: "Durée de repos"
         store_rest_id: "Lieu de repos"
-        service_time_start: "Temps de service avant"
-        service_time_end: "Temps de service après"
+        service_time_start: "Durée de service avant"
+        service_time_end: "Durée de service après"
       vehicle_usage_set:
         name: "Nom"
         open: "Horaire début"
@@ -346,8 +346,8 @@ fr:
         rest_stop: "Fin plage repos"
         rest_duration: "Durée de repos"
         store_rest_id: "Lieu de repos"
-        service_time_start: "Temps de service avant"
-        service_time_end: "Temps de service après"
+        service_time_start: "Durée de service avant"
+        service_time_end: "Durée de service après"
       zoning:
         name: "Nom"
       zone:
@@ -649,7 +649,7 @@ fr:
       optimize_confirm: "Lancer un calcul d'optimisation ?"
       zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
       route_placeholder: "Réf. de la tournée"
-      service_time: "Temps de service"
+      service_time: "Durées de service"
       exports: "Exporter"
       export:
         print: "Imprimer"
@@ -962,7 +962,7 @@ fr:
       new: "Nouvelle configuration des véhicules"
       stores: "Dépôts"
       time: "Début - Fin"
-      service_time: "Temps de service"
+      service_time: "Durées de service"
     new:
       title: "Nouvelle configuration des véhicules"
     form:
