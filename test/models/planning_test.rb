@@ -194,8 +194,8 @@ class PlanningTest < ActiveSupport::TestCase
     route_end2 = r.end
 
     # Make sure time has been added to first stop and route end
-    assert stop_times2[0] == stop_times[0] + 10.minutes
-    assert route_end2 == route_end + 25.minutes
+    assert_equal stop_times[0] + 10.minutes, stop_times2[0]
+    assert_equal route_end + 25.minutes, route_end2
 
     # Vehicle Usage overrides Service Time values
     v.update!(
@@ -209,8 +209,8 @@ class PlanningTest < ActiveSupport::TestCase
     route_end3 = r.end
 
     # Let's verify values for first stop and route end
-    assert stop_times3[0] == stop_times[0] + 30.minutes
-    assert route_end3 == route_end + 20.minutes
+    assert_equal stop_times[0] + 30.minutes, stop_times3[0]
+    assert_equal route_end + 20.minutes, route_end3
 
     # Add Time Window to 1st Destination should set out of window flag
     assert !r.stops[0].out_of_window

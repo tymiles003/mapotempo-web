@@ -77,6 +77,12 @@ class Route < ActiveRecord::Base
       quantity = 0
       router = vehicle_usage.vehicle.router || planning.customer.router
       stops_time = {}
+
+      # Add service time
+      if !service_time_start.nil?
+        self.end += service_time_start
+      end
+
       stops_sort = stops.sort_by(&:index)
       stops_sort.each_with_index{ |stop, index|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
@@ -92,11 +98,6 @@ class Route < ActiveRecord::Base
             stop.time = self.end
           else
             stop.time = nil
-          end
-
-          # Add service time to 1st stop
-          if !departure && !service_time_start.nil? && index == 0
-            stop.time += service_time_start
           end
 
           if stop.time
@@ -163,6 +164,7 @@ class Route < ActiveRecord::Base
       # Try to minimize waiting time by a later begin
       time = self.end
       time -= stops_time[:stop] if stops_time[:stop]
+      (time -= vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_end
       stops_sort.reverse_each{ |stop|
         if stop.active && (stop.position? || stop.is_a?(StopRest))
           if stop.time && (stop.out_of_window || (stop.close && time > stop.close))
@@ -180,6 +182,7 @@ class Route < ActiveRecord::Base
         end
       }
 
+      (time -= vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_start
       if time > start
         # We can sleep a bit more on morning, shift departure
         plan(time)
