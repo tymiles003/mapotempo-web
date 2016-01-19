@@ -48,13 +48,15 @@ class V01::StoresTest < ActiveSupport::TestCase
   test 'should create bulk from csv' do
     assert_difference('Store.count', 1) do
       put api(), replace: false, file: fixture_file_upload('files/import_stores_one.csv', 'text/csv')
-      assert_equal 204, last_response.status, 'Bad response ' + last_response.body
+      assert last_response.ok?, last_response.body
+      assert_equal 1, JSON.parse(last_response.body).size
     end
   end
 
   test 'should replace from csv' do
     put api(), replace: true, file: fixture_file_upload('files/import_stores_one.csv', 'text/csv')
-    assert_equal 204, last_response.status, 'Bad response ' + last_response.body
+    assert last_response.ok?, last_response.body
+    assert_equal 1, JSON.parse(last_response.body).size
     assert_equal Store.where("customer_id='#{customers(:customer_one).id}'").count, 1
   end
 
@@ -71,7 +73,8 @@ class V01::StoresTest < ActiveSupport::TestCase
         geocoding_accuracy: nil,
         foo: 'bar'
       }]}
-      assert_equal 204, last_response.status, 'Bad response ' + last_response.body
+      assert last_response.ok?, last_response.body
+      assert_equal 1, JSON.parse(last_response.body).size
     end
   end
 

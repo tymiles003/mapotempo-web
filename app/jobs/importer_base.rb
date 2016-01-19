@@ -25,10 +25,12 @@ class ImporterBase
   end
 
   def import(data, replace, name, synchronous, ignore_error)
+    dests = false
+
     Customer.transaction do
       before_import(replace, name, synchronous)
 
-      data.each_with_index{ |row, line|
+      dests = data.each_with_index.collect{ |row, line|
         row = yield(row)
 
         if row.size == 0
@@ -40,6 +42,7 @@ class ImporterBase
           if !synchronous || Mapotempo::Application.config.delayed_job_use
             dest.delay_geocode
           end
+          dest
         rescue => e
           if ignore_error
             @warnings << e if !@warnings.include?(e)
@@ -52,9 +55,10 @@ class ImporterBase
       after_import(replace, name, synchronous)
 
       finalize_import(replace, name, synchronous)
+
     end
 
-    true
+    dests
   end
 
   def warnings

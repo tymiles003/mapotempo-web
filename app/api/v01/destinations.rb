@@ -78,7 +78,9 @@ class V01::Destinations < Grape::API
 
     desc 'Import destinations by upload a CSV file, by JSON or from TomTom',
       nickname: 'importDestinations',
-      params: V01::Entities::DestinationsImport.documentation
+      params: V01::Entities::DestinationsImport.documentation,
+      is_array: true,
+      entity: V01::Entities::Destination
     put do
       import = if params[:destinations]
         ImportJson.new(importer: ImporterDestinations.new(current_customer), replace: params[:replace], json: params[:destinations])
@@ -90,10 +92,10 @@ class V01::Destinations < Grape::API
         ImportCsv.new(importer: ImporterDestinations.new(current_customer), replace: params[:replace], file: params[:file])
       end
 
-      if import && import.valid? && import.import(true)
+      if import && import.valid? && (destinations = import.import(true))
         case params[:remote]
           when 'tomtom' then status 202
-          else status 204
+          else present destinations, with: V01::Entities::Destination
         end
       else
         error!({error: import && import.errors.full_messages}, 422)

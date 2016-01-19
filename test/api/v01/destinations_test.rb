@@ -81,7 +81,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
         put api(), replace: false, file: fixture_file_upload('files/import_destinations_one.csv', 'text/csv')
-        assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
+        assert last_response.ok?, last_response.body
+        assert_equal 1, JSON.parse(last_response.body).size
 
         get api('ref:z')
         assert_equal 1, JSON.parse(last_response.body)['tag_ids'].size
@@ -113,7 +114,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           route: '1',
           active: '1'
         }]}
-        assert_equal 204, last_response.status, 'Bad response: ' + last_response.body
+        assert last_response.ok?, last_response.body
+        assert_equal 1, JSON.parse(last_response.body).size
 
         get api('ref:z')
         assert_equal 2, JSON.parse(last_response.body)['tag_ids'].size

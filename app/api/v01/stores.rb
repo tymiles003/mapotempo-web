@@ -75,7 +75,9 @@ class V01::Stores < Grape::API
 
     desc 'Import stores by upload a CSV file or by JSON.',
       nickname: 'importStores',
-      params: V01::Entities::StoresImport.documentation
+      params: V01::Entities::StoresImport.documentation,
+      is_array: true,
+      entity: V01::Entities::Store
     put do
       import = if params[:stores]
         ImportJson.new(importer: ImporterStores.new(current_customer), replace: params[:replace], json: params[:stores])
@@ -83,8 +85,8 @@ class V01::Stores < Grape::API
         ImportCsv.new(importer: ImporterStores.new(current_customer), replace: params[:replace], file: params[:file])
       end
 
-      if import.valid? && import.import(true)
-        status 204
+      if import && import.valid? && (stores = import.import(true))
+        present stores, with: V01::Entities::Store
       else
         error!({error: import.errors.full_messages}, 422)
       end
