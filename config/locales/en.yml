@@ -319,6 +319,8 @@ en:
         rest_stop: "Rest window stop"
         rest_duration: "Rest duration"
         store_rest_id: "Rest place"
+        service_time_start: "Service Time Before"
+        service_time_end: "Service Time After"
       vehicle_usage_set:
         name: "Name"
         open: "Open"
@@ -331,6 +333,8 @@ en:
         rest_stop: "Rest window stop"
         rest_duration: "Rest duration"
         store_rest_id: "Rest place"
+        service_time_start: "Service Time Before"
+        service_time_end: "Service Time After"
       zoning:
         name: "Name"
       zone:
@@ -631,8 +635,6 @@ en:
       optimize_confirm: "Run an optimization calculation?"
       zoning_confirm: "Save and apply the new zoning?"
       route_placeholder: "Route ref."
-      service_time_start: "Service Time (Start)"
-      service_time_end: "Service Time (End)"
       service_time: "Service Time"
       exports: "Export"
       export:

@@ -332,6 +332,8 @@ fr:
         rest_stop: "Fin plage repos"
         rest_duration: "Durée de repos"
         store_rest_id: "Lieu de repos"
+        service_time_start: "Temps de service avant"
+        service_time_end: "Temps de service après"
       vehicle_usage_set:
         name: "Nom"
         open: "Horaire début"
@@ -344,6 +346,8 @@ fr:
         rest_stop: "Fin plage repos"
         rest_duration: "Durée de repos"
         store_rest_id: "Lieu de repos"
+        service_time_start: "Temps de service avant"
+        service_time_end: "Temps de service après"
       zoning:
         name: "Nom"
       zone:
@@ -645,8 +649,6 @@ fr:
       optimize_confirm: "Lancer un calcul d'optimisation ?"
       zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
       route_placeholder: "Réf. de la tournée"
-      service_time_start: "Temps de service (début)"
-      service_time_end: "Temps de service (fin)"
       service_time: "Temps de service"
       exports: "Exporter"
       export:

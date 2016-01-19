@@ -123,13 +123,13 @@ module VehicleUsagesHelper
       concat number_to_human(route.distance, units: :distance, precision: 3)
       if route.vehicle_usage.default_service_time_start
         concat ' - %s: %s' % [
-          t('plannings.edit.service_time_start'),
+          t('activerecord.attributes.vehicle_usage.service_time_start'),
           display_duration_in_minutes(route.vehicle_usage.default_service_time_start_value)
         ]
       end
       if route.vehicle_usage.default_service_time_end
         concat ' - %s: %s' % [
-          t('plannings.edit.service_time_end'),
+          t('activerecord.attributes.vehicle_usage.service_time_end'),
           display_duration_in_minutes(route.vehicle_usage.default_service_time_end_value)
         ]
       end
