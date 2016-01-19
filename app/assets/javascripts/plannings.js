@@ -215,7 +215,8 @@ var plannings_edit = function(params) {
         });
         //this.closePopup(); // doesn't work with Firefox
       });
-      this.bindPopup('<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + ('0' + parseInt(drive_time / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(drive_time / 60) % 60).slice(-2) + ':' + ('0' + (drive_time % 60)).slice(-2) + '</div><div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance.toFixed(1) + ' km</div>');
+      var driveTime = (drive_time !== null) ? ('0' + parseInt(drive_time / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(drive_time / 60) % 60).slice(-2) + ':' + ('0' + (drive_time % 60)).slice(-2) : '';
+      this.bindPopup((driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance.toFixed(1) + ' km</div>');
       return this;
     }
   });
