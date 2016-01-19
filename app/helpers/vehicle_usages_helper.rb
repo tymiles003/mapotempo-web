@@ -98,17 +98,10 @@ module VehicleUsagesHelper
   def service_time_export vehicle_usage
     return {
       start_value: vehicle_usage.default_service_time_start_value,
-      start_str: display_duration_in_minutes(vehicle_usage.default_service_time_start_value),
+      start_str: (l(vehicle_usage.default_service_time_start, format: :hour_minute) if vehicle_usage.default_service_time_start),
       end_value: vehicle_usage.default_service_time_end_value,
-      end_str: display_duration_in_minutes(vehicle_usage.default_service_time_end_value)
+      end_str: (l(vehicle_usage.default_service_time_end, format: :hour_minute) if vehicle_usage.default_service_time_end)
     }
-  end
-
-  def display_duration_in_minutes value
-    return if !value
-    hours = value / 60 ; minutes = value % 60
-    return [ pluralize(minutes, t('time.minute')) ].join(' ') if value <= 60
-    return [ pluralize(hours, t('time.hour')), pluralize(minutes, t('time.minute')) ].join(' ')
   end
 
   def route_description route
@@ -124,13 +117,13 @@ module VehicleUsagesHelper
       if route.vehicle_usage.default_service_time_start
         concat ' - %s: %s' % [
           t('activerecord.attributes.vehicle_usage.service_time_start'),
-          display_duration_in_minutes(route.vehicle_usage.default_service_time_start_value)
+          l(route.vehicle_usage.default_service_time_start, format: :hour_minute)
         ]
       end
       if route.vehicle_usage.default_service_time_end
         concat ' - %s: %s' % [
           t('activerecord.attributes.vehicle_usage.service_time_end'),
-          display_duration_in_minutes(route.vehicle_usage.default_service_time_end_value)
+          l(route.vehicle_usage.default_service_time_end, format: :hour_minute)
         ]
       end
     end
