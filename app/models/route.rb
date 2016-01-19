@@ -57,6 +57,22 @@ class Route < ActiveRecord::Base
     }
   end
 
+  def service_time_start_value
+    vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage && vehicle_usage.default_service_time_start
+  end
+
+  def service_time_end_value
+    vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage && vehicle_usage.default_service_time_end
+  end
+
+  def display_start_time
+    self.start + service_time_start_value if self.start && service_time_start_value
+  end
+
+  def display_end_time
+    self.end + service_time_end_value if self.end && service_time_end_value
+  end
+
   def plan(departure = nil)
     self.out_of_date = false
     self.distance = 0
@@ -67,8 +83,8 @@ class Route < ActiveRecord::Base
     self.start = self.end = nil
     last_lat, last_lng = nil, nil
     if vehicle_usage && stops.size > 0
-      service_time_start = (vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_start
-      service_time_end = (vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_end
+      service_time_start = service_time_start_value
+      service_time_end = service_time_end_value
       self.end = self.start = departure || vehicle_usage.default_open
       speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1)
       if !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?

@@ -71,10 +71,14 @@
         <td>
           <% if vehicle_usage_set.service_time_start %>
             <%= l(vehicle_usage_set.service_time_start, format: :hour_minute) %>
+          <% else %>
+            --
           <% end %>
           <span style="color:grey;">/</span>
           <% if vehicle_usage_set.service_time_end %>
             <%= l(vehicle_usage_set.service_time_end, format: :hour_minute) %>
+          <% else %>
+            --
           <% end %>
         </td>
         <td class="text-right">

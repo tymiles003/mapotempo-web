@@ -162,7 +162,11 @@
             {{#no_path}}
               <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path{{/i18n}}"></i>
             {{/no_path}}
-            <span class="info">{{#time}}{{time}} - {{/time}}</span>
+            <span class="info">
+              {{#time}}
+                {{time}}{{#display_time}}&nbsp;&#8594;&nbsp;{{display_time}}{{/display_time}}
+              {{/time}}
+            </span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
           <div class="btn-group pull-right stop-tools">
@@ -172,13 +176,6 @@
         </li>
       </ul>
       {{/store_start}}
-
-      {{#service_time_start}}
-        <span class="service-time">
-          <i class="fa fa-square-o fa-fw"></i>
-          {{#i18n}}plannings.edit.service_time{{/i18n}}: {{service_time_start}}
-        </span>
-      {{/service_time_start}}
 
       <ul class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
       {{#stops}}
@@ -255,13 +252,6 @@
       {{/stops}}
       </ul>
 
-      {{#service_time_end}}
-        <span class="service-time">
-          <i class="fa fa-square-o fa-fw"></i>
-          {{#i18n}}plannings.edit.service_time{{/i18n}}: {{service_time_end}}
-        </span>
-      {{/service_time_end}}
-
       {{#store_stop}}
       <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
         <li data-store_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
@@ -276,7 +266,11 @@
             {{#no_path}}
               <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i>
             {{/no_path}}
-            <span class="info">{{#time}}{{time}} - {{/time}}</span>
+            <span class="info">
+              {{#time}}
+                {{time}}{{#display_time}}&nbsp;&#8594;&nbsp;{{display_time}}{{/display_time}}
+              {{/time}}
+            </span>
             <span class="name" title="{{name}}">{{name}}</span>
           </div>
           <div class="btn-group pull-right stop-tools">
