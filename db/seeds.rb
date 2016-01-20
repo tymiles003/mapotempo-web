@@ -1,6 +1,6 @@
 mapbox = Layer.create!(source: "osm", name: "MapBox Street", url: "http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png", urlssl: "https://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png", attribution: "Tiles by MapBox")
 mapnik = Layer.create!(source: "osm", name: "Mapnik", url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", urlssl: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "Tiles by OpenStreetMap")
-mapnik_fr = Layer.create!(source: "osm", name: "Mapnik-fr", url: "http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", urlssl: "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", attribution: "Tiles by OpenStreetMap-France")
+mapnik_fr = Layer.create!(source: "osm", name: "Mapnik-fr", url: "http://tile-{s}.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", urlssl: "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", attribution: "Tiles by OpenStreetMap-France")
 mapquest = Layer.create!(source: "osm", name: "MapQuest", url: "http://otile2.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", urlssl: "https://otile2-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", attribution: "Tiles by MapQuest")
 stamen_bw = Layer.create!(source: "osm", name: "Stamen B&W", url: "http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png", urlssl: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png", attribution: "Tiles by Stamen Design")
 
