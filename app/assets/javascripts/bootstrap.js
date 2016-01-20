@@ -26,7 +26,7 @@ var bootstrap_alert = function(status, message, timeout) {
   $('.flash').append('<div class="alert fade in alert-' + status + '"><button class="close" data-dismiss="alert">×</button>' + message + '</div>');
 
   if (timeout || timeout === 0) {
-    hide_alert('.alert', timeout);
+    hideAlert('.alert', timeout);
   }
 };
 

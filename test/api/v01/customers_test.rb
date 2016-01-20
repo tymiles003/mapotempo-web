@@ -131,20 +131,4 @@ class V01::CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should validate tomtom credentials' do
-    begin
-      uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl')
-      stub_table = stub_request(:get, uri_template).to_return(File.new(Rails.root.join("test/web_mocks/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl")).read)
-
-      uri_template = Addressable::Template.new('https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService')
-      stub_table = stub_request(:post, uri_template).to_return(File.new(Rails.root.join("test/web_mocks/soap.business.tomtom.com/showObjectReportResponse.xml")).read)
-
-      account_params = { account: "Account Name", user: "User Name", password: "User Password" }
-      get api("#{@customer.id}/check_tomtom_credentials", account_params)
-      assert last_response.ok?, last_response.body
-    ensure
-     remove_request_stub(stub_table)
-    end
-  end
-
 end

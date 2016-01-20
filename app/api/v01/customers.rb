@@ -156,25 +156,5 @@ class V01::Customers < Grape::API
         [tomtom[:objectUid], tomtom[:objectName]]
       }]
     end
-
-    desc 'Check TomTom Credentials',
-      detail: 'Validate TomTom WebFleet Credentials for Customer ID',
-      nickname: 'checkTomTomCredentials'
-    params do
-      requires :id, type: String, desc: ID_DESC
-      requires :account, type: String, desc: 'Account Name'
-      requires :user, type: String, desc: 'User Name'
-    end
-    get ':id/check_tomtom_credentials' do
-      begin
-        customer = @current_user.admin? ? @current_user.reseller.customers.find(params[:id]) : current_customer(params[:id])
-        params[:password] = customer.tomtom_password if !params.has_key?(:password)
-        Mapotempo::Application.config.tomtom.showObjectReport params[:account], params[:user], params[:password]
-        status 200
-      rescue StandardError => e
-        error! e.message, 500
-      end
-    end
-
   end
 end

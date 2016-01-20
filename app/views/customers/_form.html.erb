@@ -65,8 +65,8 @@
       <%= f.check_box :enable_tomtom %>
     <% end %>
   <% end %>
-  <% if @customer.enable_tomtom? %>
-    <div class="panel panel-default">
+  <% if current_user.admin? || @customer.enable_tomtom? %>
+    <div id="tomtom_container" class="panel panel-default">
       <div class="panel-heading">
         <h2 class="panel-title">
           <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomtom">
@@ -86,7 +86,7 @@
 
             <%= f.text_field :tomtom_account, autocomplete: "off" %>
             <%= f.text_field :tomtom_user, autocomplete: "off" %>
-            <%= f.password_field :tomtom_password, value: tomtom_default_password, autocomplete: "off" %>
+            <%= f.password_field :tomtom_password, value: f.object.new_record? ? nil : tomtom_default_password, autocomplete: "off" %>
           </div>
           <div class="pull-right col-md-2">
             <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "tomtom_success" %>
