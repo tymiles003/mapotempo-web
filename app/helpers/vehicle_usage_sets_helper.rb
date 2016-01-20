@@ -16,20 +16,19 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module VehicleUsageSetsHelper
-
-    def vehicle_usage_set_service_time vehicle_usage_set
-      capture do
-        if vehicle_usage_set.service_time_start
-          concat l(vehicle_usage_set.service_time_start, format: :hour_minute)
-        else
-          concat content_tag(:span, '--', style: 'color:grey')
-        end
-        concat content_tag(:span, ' / ', style: 'color:grey')
-        if vehicle_usage_set.service_time_end
-          concat l(vehicle_usage_set.service_time_end, format: :hour_minute)
-        else
-          concat content_tag(:span, '--', style: 'color:grey')
-        end
+  def vehicle_usage_set_service_time vehicle_usage_set
+    capture do
+      if vehicle_usage_set.service_time_start
+        concat l(vehicle_usage_set.service_time_start, format: :hour_minute)
+      else
+        concat content_tag(:span, '--', style: 'color:grey')
+      end
+      concat content_tag(:span, ' / ', style: 'color:grey')
+      if vehicle_usage_set.service_time_end
+        concat l(vehicle_usage_set.service_time_end, format: :hour_minute)
+      else
+        concat content_tag(:span, '--', style: 'color:grey')
       end
     end
+  end
 end
