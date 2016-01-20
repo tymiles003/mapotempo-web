@@ -266,7 +266,6 @@
             cursor: move;
           }
 
-
           .title {
             display: inline-block;
             line-height: 14px;
@@ -285,6 +284,10 @@
               color: #777;
             }
           }
+        }
+
+        *[data-store_id] .title {
+          max-width: 260px;
         }
       }
     }
