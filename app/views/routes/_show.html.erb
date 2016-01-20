@@ -28,15 +28,6 @@
   </span>
 
   <ol class="stops" start="0">
-    <% if route.vehicle_usage.default_service_time_start %>
-      <li class="list-group-item service-time">
-        <%= fa_icon "square-o 2x" %>
-        <br />
-        <% if route.vehicle_usage.default_service_time_start %>
-          <%= t('activerecord.attributes.vehicle_usage.service_time_start') %> : <%= l(route.vehicle_usage.default_service_time_start, format: :hour_minute) %>
-        <% end %>
-      </li>
-    <% end %>
     <% if route.vehicle_usage.default_store_start %>
       <li class="list-group-item store" style="border-left: 5px solid <%= route.color || route.vehicle_usage.vehicle.color %>">
         <div class="row no-gutter">
@@ -55,6 +46,9 @@
 
           <div class="title col-md-2 col-sm-2 col-xs-3">
             <span class="time"><%= l(route.start, format: :hour_minute) if route.start %></span>
+            <% if route.vehicle_usage.default_service_time_start %>
+              <span>&nbsp;&#8594;&nbsp;<%= l(route.vehicle_usage.default_service_time_start, format: :hour_minute) %></span>
+            <% end %>
           </div>
         </div>
       </li>
@@ -203,6 +197,9 @@
             <% if route.planning.customer.print_stop_time %>
               <span class="time"><%= l(route.end, format: :hour_minute) if route.end %></span>
             <% end %>
+            <% if route.vehicle_usage.default_service_time_end %>
+              <span>&nbsp;&#8594;&nbsp;<%= l(route.vehicle_usage.default_service_time_end, format: :hour_minute) %></span>
+            <% end %>
           </div>
 
           <% if route.stop_out_of_drive_time %>
@@ -218,14 +215,5 @@
       </li>
     <% end %>
 
-    <% if route.vehicle_usage.default_service_time_end %>
-      <li class="list-group-item service-time">
-        <%= fa_icon "square-o 2x" %>
-        <br />
-        <% if route.vehicle_usage.default_service_time_end %>
-          <%= t('activerecord.attributes.vehicle_usage.service_time_end') %> : <%= l(route.vehicle_usage.default_service_time_end, format: :hour_minute) %>
-        <% end %>
-      </li>
-    <% end %>
   </ol>
 </li>
