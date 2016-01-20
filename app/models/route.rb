@@ -65,14 +65,6 @@ class Route < ActiveRecord::Base
     vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage && vehicle_usage.default_service_time_end
   end
 
-  def display_start_time
-    self.start + service_time_start_value if self.start && service_time_start_value
-  end
-
-  def display_end_time
-    self.end + service_time_end_value if self.end && service_time_end_value
-  end
-
   def plan(departure = nil)
     self.out_of_date = false
     self.distance = 0

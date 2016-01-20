@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -16,4 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module RoutesHelper
+  def display_start_time(route)
+    route.start + route.service_time_start_value if route.start && route.service_time_start_value
+  end
+
+  def display_end_time(route)
+    route.end + route.service_time_end_value if route.end && route.service_time_end_value
+  end
 end
