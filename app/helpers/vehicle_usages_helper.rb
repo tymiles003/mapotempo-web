@@ -17,6 +17,10 @@
 #
 module VehicleUsagesHelper
 
+  def span_tag content
+    content_tag :span, content, class: 'default-color'
+  end
+
   def vehicle_usage_emission vehicle_usage
     return if !vehicle_usage.vehicle.emission
     '%s %s'.html_safe % [ vehicle_usage.vehicle.emission, t('all.unit.kgco2e_l_html') ]
@@ -32,7 +36,7 @@ module VehicleUsagesHelper
       if vehicle_usage.vehicle.router && vehicle_usage.vehicle.router.name
         concat vehicle_usage.vehicle.router.name
       elsif @customer.router
-        concat content_tag(:span, @customer.router.name, style: 'color:grey')
+        concat span_tag(@customer.router.name)
       end
     end
   end
@@ -68,13 +72,13 @@ module VehicleUsagesHelper
         concat l(vehicle_usage.open, format: :hour_minute)
         concat ' - '
       elsif vehicle_usage.vehicle_usage_set.open
-        concat content_tag(:span, l(vehicle_usage.vehicle_usage_set.open, format: :hour_minute), style: 'color:grey')
-        concat content_tag(:span, ' - ', style: 'color:grey')
+        concat span_tag(l(vehicle_usage.vehicle_usage_set.open, format: :hour_minute))
+        concat span_tag(' - ')
       end
       if vehicle_usage.close
         concat l(vehicle_usage.close, format: :hour_minute)
       elsif vehicle_usage.vehicle_usage_set.close
-        concat content_tag(:span, l(vehicle_usage.vehicle_usage_set.close, format: :hour_minute), style: 'color:grey')
+        concat span_tag(l(vehicle_usage.vehicle_usage_set.close, format: :hour_minute))
       end
     end
   end
@@ -84,17 +88,17 @@ module VehicleUsagesHelper
       if vehicle_usage.service_time_start
         concat l(vehicle_usage.service_time_start, format: :hour_minute)
       elsif vehicle_usage.vehicle_usage_set.service_time_start
-        concat content_tag(:span, l(vehicle_usage.vehicle_usage_set.service_time_start, format: :hour_minute), style: 'color:grey')
+        concat span_tag(l(vehicle_usage.vehicle_usage_set.service_time_start, format: :hour_minute))
       else
-        concat content_tag(:span, '--', style: 'color:grey')
+        concat span_tag('--')
       end
-      concat content_tag(:span, ' / ', style: 'color:grey')
+      concat span_tag(' / ')
       if vehicle_usage.service_time_end
         concat l(vehicle_usage.service_time_end, format: :hour_minute)
       elsif vehicle_usage.vehicle_usage_set.service_time_end
-        concat content_tag(:span, l(vehicle_usage.vehicle_usage_set.service_time_end, format: :hour_minute), style: 'color:grey')
+        concat span_tag(l(vehicle_usage.vehicle_usage_set.service_time_end, format: :hour_minute))
       else
-        concat content_tag(:span, '--', style: 'color:grey')
+        concat span_tag('--')
       end
     end
   end
