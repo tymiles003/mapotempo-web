@@ -152,31 +152,6 @@ var destinations_form = function(params, api) {
       $('body').css('cursor', 'crosshair');
       $('.leaflet-container').css('cursor', 'crosshair');
     });
-
-    var formatNoMatches = I18n.t('web.select2.empty_result');
-    $('select[name$=\\[tag_ids\\]\\[\\]]', $row).select2({
-      theme: 'bootstrap',
-      minimumResultsForSearch: -1,
-      templateSelection: templateTag,
-      templateResult: templateTag,
-      formatNoMatches: function() {
-        return formatNoMatches;
-      },
-      width: '100%'
-    });
-
-    $('#destination_take_over').timeEntry({
-      show24Hours: true,
-      showSeconds: true,
-      initialField: 1,
-      defaultTime: new Date(0, 0, 0, 0, 0, 0),
-      spinnerImage: ''
-    });
-
-    $('#destination_open, #destination_close').timeEntry({
-      show24Hours: true,
-      spinnerImage: ''
-    });
   }
 
   var confirmGeocode = function(ajaxParams) {
@@ -299,6 +274,59 @@ var destinations_form = function(params, api) {
   if ($.isNumeric(marker_lat) && $.isNumeric(marker_lng)) {
     addMarker(destination_id, marker_lat, marker_lng);
   }
+
+  $('#visit-new').click(function() {
+    var fieldsetVisit = $('#visit-fieldset-template');
+    $('#visits').append(fieldsetVisit.html()
+      .replace('#0', '#' + ($('#visits fieldset').length + 1))
+      .replace(/destination([\[_])visits([^0]+)0([\]_])/g, "destination$1visits$2" + ($('#visits fieldset').length + 1) + "$3")
+    );
+    initVisits($('#visits fieldset:last-child'));
+  });
+
+  $("label[for$='destroy']").hide();
+
+  var initVisits = function(parent) {
+    $("input:checkbox[id$='_destroy']", parent).change(function() {
+      var fieldset = $(this).closest('fieldset');
+      $("label[for$='destroy']", fieldset).toggle();
+      $("div.form-group", fieldset).toggle();
+    });
+    $('.flag-destroy', parent).click(function() {
+      var fieldset = $(this).closest('fieldset');
+      $("input:checkbox", fieldset).prop("checked", function(i, val) {
+        return !val;
+      });
+      $("label[for$='destroy']", fieldset).toggle();
+      $("div.form-group", fieldset).toggle();
+    });
+
+    $('[name$=\\[take_over\\]]', parent).timeEntry({
+      show24Hours: true,
+      showSeconds: true,
+      initialField: 1,
+      defaultTime: new Date(0, 0, 0, 0, 0, 0),
+      spinnerImage: ''
+    });
+
+    $('[name$=\\[open\\]], [name$=\\[close\\]]', parent).timeEntry({
+      show24Hours: true,
+      spinnerImage: ''
+    });
+
+    var formatNoMatches = I18n.t('web.select2.empty_result');
+    $('select[name$=\\[tag_ids\\]\\[\\]]', parent).select2({
+      theme: 'bootstrap',
+      minimumResultsForSearch: -1,
+      templateSelection: templateTag,
+      templateResult: templateTag,
+      formatNoMatches: function() {
+        return formatNoMatches;
+      },
+      width: '100%'
+    });
+  }
+  initVisits($('form'));
 }
 
 var destinations_new = function(params, api) {
@@ -422,17 +450,6 @@ var destinations_index = function(params, api) {
   var icon_over_stack = [];
 
   var prepare_display_destination = function(destination) {
-    var t = [];
-    $.each(tags, function(i, tag) {
-      t.push({
-        id: tag.id,
-        label: tag.label,
-        color: tag.color ? tag.color.substr(1) : undefined,
-        icon: tag.icon,
-        active: $.inArray(tag.id, destination.tag_ids) >= 0
-      });
-    });
-    destination.tags = t;
     destination.enable_references = enable_references;
     destination.i18n = mustache_i18n;
     if (destination.geocoding_accuracy) {
@@ -452,14 +469,29 @@ var destinations_index = function(params, api) {
     if (destination.lat === null || destination.lng === null) {
       destination.has_no_position = I18n.t('destinations.index.no_position');
     }
-    if (destination.open) {
-      destination.open = destination.open.split(':').slice(0, 2).join(':');
-    }
-    if (destination.close) {
-      destination.close = destination.close.split(':').slice(0, 2).join(':');
-    }
     destination.default_country = default_country;
-    destination.take_over_default = take_over_default;
+
+    $.each(destination.visits, function(i, visit) {
+      var t = [];
+      $.each(tags, function(j, tag) {
+        t.push({
+          id: tag.id,
+          label: tag.label,
+          color: tag.color ? tag.color.substr(1) : undefined,
+          icon: tag.icon,
+          active: $.inArray(tag.id, visit.tag_ids) >= 0
+        });
+      });
+      destination.visits[i].tags = t;
+      if (visit.open) {
+        destination.visits[i].open = visit.open.split(':').slice(0, 2).join(':');
+      }
+      if (visit.close) {
+        destination.visits[i].close = visit.close.split(':').slice(0, 2).join(':');
+      }
+      destination.visits[i].take_over_default = take_over_default;
+    });
+
     return destination;
   }
 
@@ -578,8 +610,9 @@ var destinations_index = function(params, api) {
   var update = function(destination_id, destination, move) {
     var row = $('[data-destination_id=' + destination_id + ']'),
       destination = prepare_display_destination(destination);
-    if ($('select[name$=\\[tag_ids\\]\\[\\]]', row).data('select2'))
-      $('select[name$=\\[tag_ids\\]\\[\\]]', row).select2('close');
+    $('select[name$=\\[tag_ids\\]\\[\\]]', row).each(function() {
+      $(this).data('select2') && $(this).select2('close');
+    });
     $(row).replaceWith(SMT['destinations/show'](destination));
     row = $('[data-destination_id=' + destination_id + ']');
     wire(row);
@@ -832,35 +865,19 @@ var destinations_index = function(params, api) {
         5: {
           sorter: "digit"
         },
-        6: {
-          sorter: false
-        },
         7: {
           sorter: false
         },
         8: {
           sorter: false
-        },
-        9: {
-          sorter: false
-        },
-        11: {
-          sorter: "digit"
-        },
-        12: {
-          sorter: false
         }
       },
       textExtraction: function(node, table, cellIndex) {
-        if (cellIndex == 9) {
-         if ($("[name$=\\[phone_number\\]]", node).val()) {
-           return simply_phone(($("[name$=\\[phone_number\\]]", node).attr('value')));
-         }
-        } else if (cellIndex == 10) {
-          return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
-            return e.text;
-          }).sort().join(",")|| ',';
-        } else if (cellIndex == 11) {
+        if (cellIndex == 5) {
+          if ($("[name$=\\[phone_number\\]]", node).val()) {
+            return simply_phone(($("[name$=\\[phone_number\\]]", node).attr('value')));
+          }
+        } else if (cellIndex == 6) {
           var ret = 0;
           switch ($("[name$=\\[geocoding_level\\]]", node).val()) {
             case 'point':
@@ -882,6 +899,12 @@ var destinations_index = function(params, api) {
           if ($("[name$=\\[geocoding_accuracy\\]]", node).val())
             ret += parseFloat($("[name$=\\[geocoding_accuracy\\]]", node).val()) * 100;
           return ret;
+        } else if (cellIndex == 7) {
+          return $.map($("input[type!=hidden]", node), function(e, i) {
+            return e.value;
+          }).sort().join(',') + $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
+            return e.text;
+          }).sort().join(',');
         }
         else {
           return $.map($(":input", node), function(e, i) {
@@ -913,41 +936,9 @@ var destinations_index = function(params, api) {
           2: filter_text,
           3: filter_text,
           4: filter_text,
-          5: filter_number,
+          5: filter_phone,
           6: filter_text,
-          7: function(e, n, f, i, $r) {
-            n = n.split(',');
-            n[0] = n[0].split(':');
-            n[0] = new Date(2000, 1, 1, n[0][0], n[0][1]);
-            n[1] = n[1].split(':');
-            n[1] = new Date(2000, 1, 1, n[1][0], n[1][1]);
-
-            f = f.split(' - ');
-            f[0] = new Date(2000, 1, 1, f[0]);
-            f[1] = new Date(2000, 1, 1, f[1]);
-
-            return (isNaN(n[0].getTime()) || f[0] <= n[0]) && (isNaN(n[0].getTime()) || n[1] <= f[1]);
-          },
-          8: filter_text,
-          9: filter_phone,
-          10: filter_text
-        },
-        filter_formatter: {
-          7: function($cell, indx) {
-            return $.tablesorter.filterFormatter.uiRange($cell, indx, {
-              values: [0, 24],
-              min: 0,
-              max: 24,
-              delayed: false,
-              valueToHeader: false
-            });
-          },
-          11: function($cell, indx) {
-            return false;
-          },
-          12: function($cell, indx) {
-            return false;
-          }
+          7: filter_text
         },
         columnSelector_container: $('#columnSelector'),
         columnSelector_name: 'data-selector-name',
@@ -955,9 +946,10 @@ var destinations_index = function(params, api) {
         columnSelector_layout: '<li role="presentation"><label><input type="checkbox">{name}</label></li>',
         columnSelector_columns: {
           0: 'disable',
+          1: 'disable',
           2: 'disable',
-          3: 'disable',
-          12: 'disable'
+          7: 'disable',
+          8: 'disable'
         }
       }
     };

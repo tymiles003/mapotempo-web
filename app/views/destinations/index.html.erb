@@ -22,28 +22,52 @@
   <div class="col-md-12">
     <table class="tablesorter">
       <thead><tr>
-        <th><button type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
-        <th<% if !@customer.enable_references %> style="display: none;"<% end %>><%= t 'activerecord.attributes.destination.ref_small' %></th>
-        <th><%= t 'activerecord.attributes.destination.name' %></th>
         <th>
-          <span><%= t 'activerecord.attributes.destination.street' %></span>,
-          <span><%= t 'activerecord.attributes.destination.detail' %></span>,
-          <span><%= t 'activerecord.attributes.destination.postalcode' %></span>,
-          <span><%= t 'activerecord.attributes.destination.city' %></span>
+          <button type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button>
+        </th>
+        <th>
+          <div class="col-title"><%= t 'activerecord.attributes.destination.name' %></div>
+        </th>
+        <th>
+          <div class="col-title">
+            <span><%= t 'activerecord.attributes.destination.street' %></span>,
+            <span><%= t 'activerecord.attributes.destination.detail' %></span>,
+            <span><%= t 'activerecord.attributes.destination.postalcode' %></span>,
+            <span><%= t 'activerecord.attributes.destination.city' %></span>
+          </div>
         </th>
         <% 
         # class="columnSelector-false" allows to uncheck columns in columnSelector
         # data-priority is used to hide columns depending the width of table
         # http://view.jquerymobile.com/1.3.2/dist/demos/widgets/table-column-toggle/ 
         %>
-        <th><%= t 'activerecord.attributes.destination.country' %></th>
-        <th><%= t 'activerecord.attributes.destination.quantity_small' %></th>
-        <th><%= t 'activerecord.attributes.destination.take_over_small' %></th>
-        <th><%= t 'activerecord.attributes.destination.open_close_small' %></th>
-        <th><%= t 'activerecord.attributes.destination.comment' %></th>
-        <th><%= t 'activerecord.attributes.destination.phone_number_small' %></th>
-        <th><%= t 'activerecord.attributes.destination.tags' %></th>
-        <th title="<%= t '.geocoding_column_help' %>"><%= t 'activerecord.attributes.destination.geocoding_accuracy_small' %></th>
+        <th>
+          <div class="col-title"><%= t 'activerecord.attributes.destination.country' %></div>
+        </th>
+        <th>
+          <div class="col-title"><%= t 'activerecord.attributes.destination.comment_small' %></div>
+        </th>
+        <th>
+          <div class="col-title"><%= t 'activerecord.attributes.destination.phone_number_small' %></div>
+        </th>
+        <th title="<%= t '.geocoding_column_help' %>">
+          <div class="col-title"><%= t 'activerecord.attributes.destination.geocoding_accuracy_small' %></div>
+        </th>
+        <th>
+          <div class="col-title"><%= t 'activerecord.models.visit' %></div>
+          <div id="visit-subtitles">
+            <% if @customer.enable_references %>
+              <div class="visit-subtitle" style="width: 3em;"><%= t 'activerecord.attributes.visit.ref_small' %></div>
+            <% end %>
+            <div class="visit-subtitle" style="width: 4em;"><%= t 'activerecord.attributes.visit.quantity_small' %></div>
+            <div class="visit-subtitle" style="width: 9em;"><%= t 'activerecord.attributes.visit.tags' %></div>
+            <div class="visit-subtitle" style="width: 5em;"><%= t 'activerecord.attributes.visit.take_over_small' %></div>
+
+            <div class="visit-subtitle" style="width: 4em;"><%= t 'activerecord.attributes.visit.open_small' %></div>
+
+            <div class="visit-subtitle" style="width: 4em;"><%= t 'activerecord.attributes.visit.close_small' %></div>
+          </div>
+        </th>
         <th></th>
       </tr></thead>
       <tbody class="destinations"></tbody>

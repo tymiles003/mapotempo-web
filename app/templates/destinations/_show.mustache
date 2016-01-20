@@ -2,9 +2,6 @@
   <td>
     <input id="destination_{{id}}" type="checkbox" value="1" name="destinations[{{id}}]"/>
   </td>
-  <td{{^enable_references}} style="display: none;"{{/enable_references}}>
-    <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}" style="width:6em"/>
-  </td>
   <td>
     <input class="form-control input-sm" type="text" name="destination[name]" value="{{name}}" size="99"/>
   </td>
@@ -13,7 +10,7 @@
       <span>
         <input class="form-control input-sm" type="text" name="destination[street]" value="{{street}}" size="99"/>
       </span>
-      <span>
+      <span style="width:3em">
         <input class="form-control input-sm" type="text" name="destination[detail]" value="{{detail}}" size="99"/>
       </span>
       <span style="width:4em">
@@ -33,68 +30,16 @@
     </span>
   </td>
   <td>
-    <input class="form-control input-sm" type="number" name="destination[quantity]" value="{{quantity}}" placeholder="1" style="width:6em"/>
-  </td>
-  <td>
-    <input class="form-control input-sm" type="datetime" name="destination[take_over]" value="{{take_over}}" placeholder="{{take_over_default}}" style="width:6em"/>
-  </td>
-  <td>
-    <span class="block">
-      <span style="width:4em">
-        <input class="form-control input-sm" type="datetime" maxlength="5" width="5" name="destination[open]" value="{{open}}"/>
-      </span>
-      <span style="width:4em">
-        <input class="form-control input-sm" type="datetime" maxlength="5" width="5" name="destination[close]" value="{{close}}"/>
-      </span>
-    </span>
-  </td>
-  <td>
     <textarea class="form-control input-sm" name="destination[comment]" rows="1">{{comment}}</textarea>
   </td>
   <td>
-    <div class="input-group select2-bootstrap-append input-group-tags">
-      <input class="form-control input-sm phone_number" type="datetime" name="destination[phone_number]" value="{{phone_number}}" >
+    <div class="input-group">
+      <input class="form-control input-sm phone_number" type="datetime" name="destination[phone_number]" value="{{phone_number}}"/>
       <a class="input-group-addon input-sm phone_link" target="click2call_iframe" href={{phone_number}}><i class="fa fa-phone" ></i></a>
     </div>
   </td>
   <td>
-    <div class="input-group select2-bootstrap-append input-group-tags">
-      <input type="hidden" value="" name="destination[tag_ids][]">
-      <select multiple="multiple" name="destination[tag_ids][]" class="select2" style="display:none">
-        {{#tags}}
-          <option value="{{id}}" {{#active}} selected="selected"{{/active}}{{#color}} data-color="{{color}}"{{/color}}{{#icon}} data-icon="{{icon}}"{{/icon}}>{{label}}</option>
-        {{/tags}}
-      </select>
-      <span class="fake select2 select2-container select2-container--bootstrap input-sm select2-container--below" dir="ltr" style="width: 100%;">
-        <span class="selection">
-          <span class="select2-selection select2-selection--multiple" aria-expanded="false" aria-haspopup="true" aria-autocomplete="list" role="combobox" tabindex="0" aria-owns="select2-destination[tag_ids][]-do-results">
-            <ul class="select2-selection__rendered">
-              {{#tags}}
-                {{#active}}
-                  <li class="select2-selection__choice" title="{{label}}">
-                    <span class="select2-selection__choice__remove" role="presentation">×</span>
-                    <span>
-                      {{#color}}{{#icon}}<img src="/images/{{icon}}-{{color}}.svg" />{{/icon}}{{/color}}
-                      {{^color}}{{#icon}}<img src="/images/{{icon}}.svg" />{{/icon}}{{/color}}
-                      {{#color}}{{^icon}}<i style="color:#{{color}}" class="fa fa-flag" ></i>{{/icon}}{{/color}}
-                      {{label}}
-                    </span>
-                  </li>
-                {{/active}}
-              {{/tags}}
-              <li class="select2-search select2-search--inline">
-               <input class="select2-search__field" type="search" role="textbox" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" tabindex="-1" placeholder="" style="width: 0.75em;">
-              </li>
-            </ul>
-          </span>
-        </span>
-        <span class="dropdown-wrapper" aria-hidden="true"></span>
-      </span>
-      <span class="input-group-addon input-sm"><i class="fa fa-tags"></i></span>
-    </div>
-  </td>
-  <td>
-    <span class="block">
+    <div class="block destination-geocoding">
       <span class="geocoding_level" title="{{geocoding_level_title}}">
         <input type="hidden" name="destination[geocoding_level]" value="{{geocoding_level}}">
         {{#geocoding_level}}
@@ -131,12 +76,77 @@
       {{#has_no_position}}
         <span class="no_position">{{#i18n}}destinations.index.geocoding_empty{{/i18n}}</span>
       {{/has_no_position}}
-    </span>
+    </div>
   </td>
   <td>
-    <input type="hidden" name="destination[lat]" value="{{lat}}" />
-    <input type="hidden" name="destination[lng]" value="{{lng}}" />
-    <button type="button" class="destroy btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
+    <div class="destination-visits">
+      {{#visits}}
+        <div data-visit_id="{{id}}" class="block" role="visit">
+          <input type="hidden" name="destination[visits_attributes][][id]" value="{{id}}"/>
+          {{#enable_references}}
+            <span>
+              <input class="form-control input-sm" type="text" name="destination[visits_attributes][][ref]" value="{{ref}}" style="width:3em"/>
+            </span>
+          {{/enable_references}}
+          <span>
+            <input class="form-control input-sm" type="number" name="destination[visits_attributes][][quantity]" value="{{quantity}}" placeholder="1" style="width:4em"/>
+          </span>
+          <span>
+            <div class="input-group select2-bootstrap-append input-group-tags">
+              <input type="hidden" value="" name="destination[visits_attributes][][tag_ids][]">
+              <select multiple="multiple" name="destination[visits_attributes][][tag_ids][]" class="select2" style="display:none">
+                {{#tags}}
+                  <option value="{{id}}" {{#active}} selected="selected"{{/active}}{{#color}} data-color="{{color}}"{{/color}}{{#icon}} data-icon="{{icon}}"{{/icon}}>{{label}}</option>
+                {{/tags}}
+              </select>
+              <span class="fake select2 select2-container select2-container--bootstrap input-sm select2-container--below" dir="ltr" style="width: 100%;">
+                <span class="selection">
+                  <span class="select2-selection select2-selection--multiple" aria-expanded="false" aria-haspopup="true" aria-autocomplete="list" role="combobox" tabindex="0" aria-owns="select2-destination[visits_attributes][][tag_ids][]-do-results">
+                    <ul class="select2-selection__rendered">
+                      {{#tags}}
+                        {{#active}}
+                          <li class="select2-selection__choice" title="{{label}}">
+                            <span class="select2-selection__choice__remove" role="presentation">×</span>
+                            <span>
+                              {{#color}}{{#icon}}<img src="/images/{{icon}}-{{color}}.svg" />{{/icon}}{{/color}}
+                              {{^color}}{{#icon}}<img src="/images/{{icon}}.svg" />{{/icon}}{{/color}}
+                              {{#color}}{{^icon}}<i style="color:#{{color}}" class="fa fa-flag" ></i>{{/icon}}{{/color}}
+                              {{label}}
+                            </span>
+                          </li>
+                        {{/active}}
+                      {{/tags}}
+                      <li class="select2-search select2-search--inline">
+                       <input class="select2-search__field" type="search" role="textbox" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" tabindex="-1" placeholder="" style="width: 0.75em;">
+                      </li>
+                    </ul>
+                  </span>
+                </span>
+                <span class="dropdown-wrapper" aria-hidden="true"></span>
+              </span>
+              <span class="input-group-addon input-sm"><i class="fa fa-tags"></i></span>
+            </div>
+          </span>
+          <span>
+            <input class="form-control input-sm" type="datetime" name="destination[visits_attributes][][take_over]" value="{{take_over}}" placeholder="{{take_over_default}}" style="width:5em"/>
+          </span>
+          <span>
+            <input class="form-control input-sm" type="datetime" maxlength="5" width="5" name="destination[visits_attributes][][open]" value="{{open}}" style="width:4em"/>
+          </span>
+          <span>
+            <input class="form-control input-sm" type="datetime" maxlength="5" width="5" name="destination[visits_attributes][][close]" value="{{close}}" style="width:4em"/>
+          </span>
+        </div>
+      {{/visits}}
+    </div>
+  </td>
+  <td>
+    <div class="destination-buttons">
+      <input type="hidden" name="destination[lat]" value="{{lat}}" />
+      <input type="hidden" name="destination[lng]" value="{{lng}}" />
+      <a href="destinations/{{id}}/edit" class="btn btn-primary btn-xs" title="{{#i18n}}all.verb.edit{{/i18n}}"><i class="fa fa-edit fa-fw"></i></a>
+      <button type="button" class="destroy btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
+    </div>
   </td>
 </tr>
 

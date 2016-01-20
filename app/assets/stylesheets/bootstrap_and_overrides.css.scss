@@ -97,6 +97,10 @@ hr {
   min-width: 0em;
 }
 
+.select2 img {
+  vertical-align: baseline; /* better for tags */
+}
+
 /* Add Open and Close cheron to accordion */
 
 .panel-heading .accordion-toggle:after {

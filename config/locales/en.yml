@@ -169,6 +169,7 @@ en:
         lat: "Latitude"
         lng: "Longitude"
         comment: "Comment"
+        comment_small: "Comment"
         phone_number: "Phone number"
         phone_number_small: "Phone number"
         geocoding_accuracy: "Geocoding accuracy"
@@ -321,17 +322,19 @@ en:
         service_time_start: "Service Time Before"
         service_time_end: "Service Time After"
       visit:
+        ref: "Reference"
+        ref_small: "Ref."
         quantity: "Quantity"
         quantity_small: "Qty."
         take_over: "Take over"
         take_over_small: "Take over"
         open: "Time window open"
+        open_small: "Open"
         close: "Time window close"
+        close_small: "Close"
         open_close_small: "Open/Close"
         tags: "Tags"
         tag_ids: "Tags"
-        ref: "Reference"
-        ref_small: "Ref."
       zoning:
         name: "Name"
       zone:
@@ -494,19 +497,12 @@ en:
       clear: "Clear all destinations"
       clear_confirm: "Are you sure to want to delete all destinations?"
     form:
-      ref_help: "A free reference"
       detail_help: "Non geocoded addresse complement; like flat number"
-      quantity_help: "Quantity to be delivered"
-      take_over_help: "If empty uses the default value"
-      close_help: "Without taking into account take over duration"
-      tags_help: "Customer's categories"
       comment_help: "Delivery required information"
       locate_manually: "Locate manually on the map"
       geocoding_accuracy_none: "Not applicable"
       geocoding_fail: "Geocoding has failed"
       geocoding_accuracy_help: "Conversion quality of the address to the geographical position"
-      quantity_default: "default"
-      take_over_default: "default"
       country_default: "%{n} (default value)"
       geocoding_level:
         point: "Point"
@@ -516,6 +512,9 @@ en:
         city: "City"
       dialog:
         confirm_overwrite_point: "It seems you have previously set position manually on map. Do you want to replace previous position with the result of geocoding?"
+      visit:
+        new: "New visit"
+        new_help: "New visit if you go to this destination several times."
     edit:
       title: "Editing destination"
     import:
@@ -761,7 +760,7 @@ en:
       out_of_drive_time: "out of vehicle's time window"
     form:
       ref_help: "A free reference"
-      tags_help: "Restrict customer to this categories"
+      tags_help: "Restrict visits/customers to these categories"
       order_array: "Orders"
 
   routes:
@@ -959,6 +958,20 @@ en:
       service_time:
         help_start: "Necessary preparation time. This time will be added before the first stop of a tour."
         help_end: "Time required at the end of a tour. This time will be added after the last stop of a tour."
+
+  visits:
+    form:
+      legend: "Visit #%{n}"
+      destroy: "If checked, visit will be destroyed by submiting this page. Click here to cancel."
+      ref_help: "A free reference"
+      quantity_help: "Quantity to be delivered"
+      take_over_help: "If empty uses the default value"
+      close_help: "Without taking into account take over duration"
+      tags_help: "Visit's categories"
+      quantity_default: "default"
+      take_over_default: "default"
+      delete: "Flag for delation"
+      delete_help: "Delete this visit (destination will be kept)"
 
   zonings:
     menu:

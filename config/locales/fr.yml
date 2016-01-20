@@ -118,10 +118,10 @@ fr:
       vehicle_usage_sets:
         one: "configuration des véhicules"
         other: "configurations des véhicules"
-      visit: "Visit"
+      visit: "Visite"
       visits:
-        one: "visit"
-        other: "visits"
+        one: "visite"
+        other: "visites"
       zoning: "Zonage"
       zonings:
         one: "zonage"
@@ -173,6 +173,7 @@ fr:
         lat: "Latitude"
         lng: "Longitude"
         comment: "Commentaire"
+        comment_small: "Comment."
         phone_number: "Numéro de téléphone"
         phone_number_small: "Tél."
         geocoding_accuracy: "Qualité du géocodage"
@@ -334,17 +335,19 @@ fr:
         service_time_start: "Durée de service avant"
         service_time_end: "Durée de service après"
       visit:
+        ref: "Référence"
+        ref_small: "Réf."
         quantity: "Quantité"
         quantity_small: "Qté."
         take_over: "Durée de visite"
-        take_over_small: "Visite"
+        take_over_small: "Durée"
         open: "Plage horaire début"
+        open_small: "Début"
         close: "Plage horaire fin"
+        close_small: "Fin"
         open_close_small: "Début/Fin"
         tags: "Libellés"
         tag_ids: "Libellés"
-        ref: "Référence"
-        ref_small: "Réf."
       zoning:
         name: "Nom"
       zone:
@@ -508,19 +511,12 @@ fr:
       clear: "Supprimer tous les clients"
       clear_confirm: "Êtes-vous sûr de vouloir supprimer tous les clients ?"
     form:
-      ref_help: "Référence libre"
       detail_help: "Complément d'adresse non géocodable, ex. numéro d'escalier"
-      quantity_help: "Quantité à livrer"
-      take_over_help: "Si vide utilise la valeur par défaut"
-      close_help: "Sans tenir compte de la durée de visite"
-      tags_help: "Catégories du client"
       comment_help: "Informations nécessaires pour la livraison"
       locate_manually: "Positionner manuellement sur la carte"
       geocoding_accuracy_none: "Non applicable"
       geocoding_fail: "Le géocodage a échoué"
       geocoding_accuracy_help: "Qualité de la conversion de l'adresse vers la position géographique"
-      quantity_default: "défaut"
-      take_over_default: "défaut"
       country_default: "%{n} (valeur par défaut)"
       geocoding_level:
         point: "Point"
@@ -530,6 +526,9 @@ fr:
         city: "Commune"
       dialog:
         confirm_overwrite_point: "La position précédente a été définie manuellement sur la carte. Voulez-vous la remplacer avec le résultat du géocodage automatique ?"
+      visit:
+        new: "Nouvelle visite"
+        new_help: "Nouvelle visite si vous vous rendez plusieurs fois chez ce client."
     edit:
       title: "Modifier client"
     import:
@@ -775,7 +774,7 @@ fr:
       out_of_drive_time: "hors créneau véhicule"
     form:
       ref_help: "Référence libre"
-      tags_help: "Restreint les clients pris en compte à ces catégories"
+      tags_help: "Restreint les visites/clients pris en compte à ces catégories"
       order_array: "Comm."
 
   routes:
@@ -977,6 +976,20 @@ fr:
       service_time:
         help_start: "Durée de préparation nécessaire. Ce temps sera ajouté avant le premier arrêt d'une tournée."
         help_end: "Durée requise à la fin d'une tournée. Ce temps sera ajouté après le dernier arrêt d'une tournée."
+
+  visits:
+    form:
+      legend: "Visite #%{n}"
+      destroy: "Si coché, la visite sera supprimée. Cliquez-ici pour annuler."
+      ref_help: "Référence libre"
+      quantity_help: "Quantité à livrer"
+      take_over_help: "Si vide utilise la valeur par défaut"
+      close_help: "Sans tenir compte de la durée de visite"
+      tags_help: "Catégories de la visite"
+      quantity_default: "défaut"
+      take_over_default: "défaut"
+      delete: "Marquer à supprimer"
+      delete_help: "Supprimer cette visite (le client sera conservé)"
 
   zonings:
     menu:

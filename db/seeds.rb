@@ -27,10 +27,13 @@ vehicle_2 = Vehicle.create!(capacity: 100, customer: customer, name: "Fiat Vito"
 vehicle_usage_1 = VehicleUsage.create!(vehicle_usage_set: vehicle_usage_set, vehicle: vehicle_1)
 vehicle_usage_2 = VehicleUsage.create!(vehicle_usage_set: vehicle_usage_set, vehicle: vehicle_2)
 
-Destination.create!(name: "l1", street: "Place Picard", postalcode: "33000", city: "Bordeaux", lat: 44.84512, lng: -0.578, quantity: 1, customer: customer)
-Destination.create!(name: "l2", street: "Rue Esprit des Lois", postalcode: "33000", city: "Bordeaux", lat: 44.83395, lng: -0.56545, quantity: 1, customer: customer)
-Destination.create!(name: "l3", street: "Rue de Nuits", postalcode: "33000", city: "Bordeaux", lat: 44.84272, lng: -0.55013, quantity: 1, customer: customer)
-Destination.create!(name: "l4", street: "Rue de New York", postalcode: "33000", city: "Bordeaux", lat: 44.86576, lng: -0.57577, quantity: 1, customer: customer)
 Tag.create!(label: "lundi", customer: customer)
 Tag.create!(label: "jeudi", customer: customer)
-Tag.create!(label: "frigo", customer: customer)
+frigo = Tag.create!(label: "frigo", customer: customer)
+
+Visit.create!(ref: 'v1', quantity: 1, destination: Destination.create!(name: "l1", street: "Place Picard", postalcode: "33000", city: "Bordeaux", lat: 44.84512, lng: -0.578, customer: customer))
+Visit.create!(ref: 'v2', quantity: 1, destination: Destination.create!(name: "l2", street: "Rue Esprit des Lois", postalcode: "33000", city: "Bordeaux", lat: 44.83395, lng: -0.56545, customer: customer))
+Visit.create!(ref: 'v3', quantity: 1, destination: Destination.create!(name: "l3", street: "Rue de Nuits", postalcode: "33000", city: "Bordeaux", lat: 44.84272, lng: -0.55013, customer: customer))
+destination_4 = Destination.create!(name: "l4", street: "Rue de New York", postalcode: "33000", city: "Bordeaux", lat: 44.86576, lng: -0.57577, customer: customer)
+Visit.create!(ref: 'v4.1', quantity: 0.5, destination: destination_4, tags: [frigo])
+Visit.create!(ref: 'v4.2', quantity: 0.5, destination: destination_4)

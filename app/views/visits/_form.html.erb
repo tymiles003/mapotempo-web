@@ -1,0 +1,35 @@
+<%= twitter_bootstrap_fields_for 'destination[visits_attributes]', visit, index: i, layout: :horizontal do |f| %>
+  <fieldset>
+    <a name="visit_id=<%= visit.id %>"></a>
+    <legend class="scheduler-border"><%= t('.legend', n: i) %></legend>
+    <div class="btn-group pull-right">
+      <button type="button" class="btn btn-default btn-sm flag-destroy" title="<%= t('.delete_help') %>"><i class="fa fa-trash-o fa-fw"></i> <%= t('.delete') %></button>
+    </div>
+    <%= f.hidden_field :id %>
+    <%= f.check_box :_destroy %>
+    <%= f.label :_destroy do %>
+      <%= t('.destroy') %>
+    <% end %>
+    <% if @destination.customer.enable_references %>
+      <%= f.text_field :ref do %>
+        <p class="help-block"><%= t '.ref_help' %></p>
+      <% end %>
+    <% end %>
+    <%= f.number_field :quantity, {placeholder: '1 (' + t('.quantity_default') + ')', step: 'any' } do %>
+      <p class="help-block"><%= t '.quantity_help' %></p>
+    <% end %>
+    <%= f.text_field :take_over, {
+      value: visit.take_over && l(visit.take_over, format: :hour_minute_second),
+      placeholder: visit.destination.customer.take_over ? l(visit.destination.customer.take_over, format: :hour_minute_second) + ' (' + t('.take_over_default') + ')' : nil,
+      input_group: t('all.unit.hour_minute_second')} do %>
+      <p class="help-block"><%= t '.take_over_help' %></p>
+    <% end %>
+    <%= f.text_field :open, {value: visit.open && l(visit.open, format: :hour_minute), input_group: t('all.unit.hour_minute')} %>
+    <%= f.text_field :close, {value: visit.close && l(visit.close, format: :hour_minute), input_group: t('all.unit.hour_minute')} do %>
+      <p class="help-block"><%= t '.close_help' %></p>
+    <% end %>
+    <%= f.select :tag_ids, t('activerecord.attributes.visit.tag_ids'), options_for_select(visit.destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, visit.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+      <p class="help-block"><%= t '.tags_help' %></p>
+    <% end %>
+  </fieldset>
+<% end %>

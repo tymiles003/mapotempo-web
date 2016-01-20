@@ -58,9 +58,9 @@ else
       out_of_window |= stop.out_of_window
       out_of_capacity |= stop.out_of_capacity
       out_of_drive_time |= stop.out_of_drive_time
-      no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
+      no_geolocalization |= stop.is_a?(StopVisit) && !stop.position?
       no_path |= stop.position? && route.vehicle_usage && !stop.trace && stop.active
-      (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace && stop.active) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+      (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace && stop.active) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
       json.edit_planning true
       json.stop_id stop.id
       json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
@@ -80,14 +80,15 @@ else
         json.automatic_insert true
         first_active_free = true
       end
-      if stop.is_a?(StopDestination)
+      if stop.is_a?(StopVisit)
         json.destination do
-          destination = stop.destination
+          visit = stop.visit
+          destination = visit.destination
           json.id destination.id
-          if !destination.tags.empty?
+          if !visit.tags.empty?
             json.tags_present do
               json.tags do
-                json.array! destination.tags, :label
+                json.array! visit.tags :label
               end
             end
           end
@@ -97,12 +98,12 @@ else
               json.orders order.products.collect(&:code).join(', ')
             end
           else
-            json.extract! destination, :quantity
+            json.extract! visit, :quantity
           end
-          duration = l(destination.take_over, format: :hour_minute_second) if destination.take_over
-          color = destination.tags.find(&:color)
+          duration = l(visit.take_over, format: :hour_minute_second) if visit.take_over
+          color = visit.tags.find(&:color)
           (json.color color.color) if color
-          icon = destination.tags.find(&:icon)
+          icon = visit.tags.find(&:icon)
           (json.icon icon.icon) if icon
         end
       elsif stop.is_a?(StopRest)
