@@ -82,9 +82,14 @@ class ImportCsv
     splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
     _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
 
-    data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
-    if data.length > @importer.max_lines + 1
-      errors[:file] << I18n.t('destinations.import_file.too_many_lines', n: @importer.max_lines)
+    begin
+      data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
+      if data.length > @importer.max_lines + 1
+        errors[:file] << I18n.t('destinations.import_file.too_many_lines', n: @importer.max_lines)
+        return false
+      end
+    rescue CSV::MalformedCSVError => e
+      errors[:file] << e.message
       return false
     end
 

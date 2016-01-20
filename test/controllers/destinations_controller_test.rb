@@ -163,4 +163,18 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_template :import
     assert_valid response
   end
+
+  test 'should display an error' do
+    file = ActionDispatch::Http::UploadedFile.new({
+      tempfile: File.new(Rails.root.join('test/fixtures/files/import_malformed.csv')),
+    })
+    file.original_filename = 'import_malformed.csv'
+
+    assert_difference('Destination.count', 0) do
+      post :upload_csv, import_csv: { replace: false, file: file }
+    end
+
+    assert_template :import
+    assert_valid response
+  end
 end
