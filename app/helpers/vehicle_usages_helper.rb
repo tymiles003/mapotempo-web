@@ -85,12 +85,16 @@ module VehicleUsagesHelper
         concat l(vehicle_usage.service_time_start, format: :hour_minute)
       elsif vehicle_usage.vehicle_usage_set.service_time_start
         concat content_tag(:span, l(vehicle_usage.vehicle_usage_set.service_time_start, format: :hour_minute), style: 'color:grey')
+      else
+        concat content_tag(:span, '--', style: 'color:grey')
       end
       concat content_tag(:span, ' / ', style: 'color:grey')
       if vehicle_usage.service_time_end
         concat l(vehicle_usage.service_time_end, format: :hour_minute)
       elsif vehicle_usage.vehicle_usage_set.service_time_end
         concat content_tag(:span, l(vehicle_usage.vehicle_usage_set.service_time_end, format: :hour_minute), style: 'color:grey')
+      else
+        concat content_tag(:span, '--', style: 'color:grey')
       end
     end
   end

@@ -69,17 +69,7 @@
           <%= if(vehicle_usage_set.close) then l(vehicle_usage_set.close, format: :hour_minute) end %>
         </td>
         <td>
-          <% if vehicle_usage_set.service_time_start %>
-            <%= l(vehicle_usage_set.service_time_start, format: :hour_minute) %>
-          <% else %>
-            --
-          <% end %>
-          <span style="color:grey;">/</span>
-          <% if vehicle_usage_set.service_time_end %>
-            <%= l(vehicle_usage_set.service_time_end, format: :hour_minute) %>
-          <% else %>
-            --
-          <% end %>
+          <%= vehicle_usage_set_service_time vehicle_usage_set %>
         </td>
         <td class="text-right">
           <% if @customer.enable_multi_vehicle_usage_sets %>
