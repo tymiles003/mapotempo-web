@@ -6,7 +6,7 @@
 <%
 controller.js(
   customer_id: @vehicle_usage.vehicle.customer.id,
-  enable_tomtom: current_user.customer.enable_tomtom?,
+  tomtom: current_user.customer.tomtom?,
   tomtom_id: @vehicle_usage.vehicle.tomtom_id
 )
 %>

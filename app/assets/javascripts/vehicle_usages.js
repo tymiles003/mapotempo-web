@@ -55,7 +55,7 @@ var vehicle_usages_form = function(params) {
     });
   }
 
-  if (params.enable_tomtom) observeTomTom(params);
+  if (params.tomtom) observeTomTom(params);
 
 }
 
