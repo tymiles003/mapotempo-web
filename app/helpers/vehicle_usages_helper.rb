@@ -17,10 +17,6 @@
 #
 module VehicleUsagesHelper
 
-  def span_tag content
-    content_tag :span, content, class: 'default-color'
-  end
-
   def vehicle_usage_emission vehicle_usage
     return if !vehicle_usage.vehicle.emission
     '%s %s'.html_safe % [ vehicle_usage.vehicle.emission, t('all.unit.kgco2e_l_html') ]

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2016
 #
 # This file is part of Mapotempo.
 #
@@ -16,4 +16,9 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module TagsHelper
+
+  def span_tag content
+    content_tag :span, content, class: 'default-color'
+  end
+
 end
