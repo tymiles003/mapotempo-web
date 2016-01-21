@@ -695,6 +695,7 @@ en:
         tags: "Tags:"
         stop_drive_time: "Duration:"
         stop_distance: "Distance:"
+        visit: "Visit"
       error:
         no_geolocalization: "No geolocalization"
         no_geolocalization_help: "No geographical coordinates or address could not be located"

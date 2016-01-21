@@ -46,7 +46,7 @@
   {{^store}}
   {{#edit_planning}}
   <div class="btn-group pull-right stop-tools">
-    <a href="/destinations/{{#destination}}{{id}}{{/destination}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+    <a href="/destinations/{{#destination}}{{destination_id}}{{/destination}}/edit?back=true#visit_id={{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
   </div>
   {{/edit_planning}}
   {{#vehicle_name}}<span class="number label label-default" style="background-color: {{color}};">{{#number}}{{number}}{{/number}}{{^number}}-{{/number}}</span>{{/vehicle_name}}
@@ -67,10 +67,14 @@
   {{/comment}}
 </div>
 {{^store}}
+{{#visits}}
 <hr>
+{{#num_visit}}
+{{#i18n}}plannings.edit.popup.visit{{/i18n}} #{{num_visit}}
+{{/num_visit}}
 <ul>
   {{#open_close}}
-    <li><i class="fa fa-check-circle-o fa-fw"></i> {{#i18n}}plannings.edit.popup.open_close{{/i18n}}
+    <li><i class="fa fa-sort fa-rotate-90 fa-fw"></i> {{#i18n}}plannings.edit.popup.open_close{{/i18n}}
       {{open}} {{^close}}({{#i18n}}plannings.edit.popup.open{{/i18n}}){{/close}}
       {{#open}}{{#close}}-{{/close}}{{/open}}
       {{close}} {{^open}}({{#i18n}}plannings.edit.popup.close{{/i18n}}){{/open}}
@@ -101,6 +105,7 @@
     {{/no_path}}
   </ul>
 {{/error}}
+{{/visits}}
 {{/store}}
 {{#planning_id}}
 </div>

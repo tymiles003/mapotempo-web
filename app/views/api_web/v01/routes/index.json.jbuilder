@@ -12,7 +12,7 @@ json.routes @routes do |route|
   (json.locked true) if route.locked
   json.distance number_to_human((route.distance || 0), units: :distance, precision: 3, format: '%n %u')
   json.size route.stops.size
-  json.extract! route, :size_active
+  json.extract! route, :color, :size_active
   json.ref route.ref if @planning.customer.enable_references
   (json.quantity route.quantity) if !@planning.customer.enable_orders
   if route.vehicle_usage
@@ -41,9 +41,9 @@ json.routes @routes do |route|
     out_of_window |= stop.out_of_window
     out_of_capacity |= stop.out_of_capacity
     out_of_drive_time |= stop.out_of_drive_time
-    no_geolocalization |= stop.is_a?(StopDestination) && !stop.position?
+    no_geolocalization |= stop.is_a?(StopVisit) && !stop.position?
     no_path |= stop.position? && route.vehicle_usage && !stop.trace && stop.active
-    (json.error true) if (stop.is_a?(StopDestination) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace && stop.active) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+    (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace && stop.active) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
     json.stop_id stop.id
     json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
     json.ref stop.ref if @planning.customer.enable_references
@@ -61,31 +61,33 @@ json.routes @routes do |route|
       json.automatic_insert true
       first_active_free = true
     end
-    if stop.is_a?(StopDestination)
+    if stop.is_a?(StopVisit)
+      json.visits true
+      visit = stop.visit
+      json.visit_id visit.id
       json.destination do
-        destination = stop.destination
-        json.id destination.id
-        if !destination.tags.empty?
-          json.tags_present do
-            json.tags do
-              json.array! destination.tags, :label
-            end
-          end
-        end
-        if @planning.customer.enable_orders
-          order = stop.order
-          if order
-            json.orders order.products.collect(&:code).join(', ')
-          end
-        else
-          json.extract! destination, :quantity
-        end
-        duration = destination.take_over.strftime('%H:%M:%S') if destination.take_over
-        color = destination.tags.find(&:color)
+        json.destination_id visit.destination.id
+        color = visit.tags.find(&:color)
         (json.color color.color) if color
-        icon = destination.tags.find(&:icon)
+        icon = visit.tags.find(&:icon)
         (json.icon icon.icon) if icon
       end
+      if !visit.tags.empty?
+        json.tags_present do
+          json.tags do
+            json.array! visit.tags, :label
+          end
+        end
+      end
+      if @planning.customer.enable_orders
+        order = stop.order
+        if order
+          json.orders order.products.collect(&:code).join(', ')
+        end
+      else
+        json.extract! visit, :quantity
+      end
+      duration = visit.take_over.strftime('%H:%M:%S') if visit.take_over
     elsif stop.is_a?(StopRest)
       json.rest do
         duration = route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S') if route.vehicle_usage.default_rest_duration

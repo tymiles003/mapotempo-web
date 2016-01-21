@@ -81,31 +81,32 @@ else
         first_active_free = true
       end
       if stop.is_a?(StopVisit)
+        json.visits true
+        visit = stop.visit
+        json.visit_id visit.id
         json.destination do
-          visit = stop.visit
-          destination = visit.destination
-          json.id destination.id
-          if !visit.tags.empty?
-            json.tags_present do
-              json.tags do
-                json.array! visit.tags :label
-              end
-            end
-          end
-          if @planning.customer.enable_orders
-            order = stop.order
-            if order
-              json.orders order.products.collect(&:code).join(', ')
-            end
-          else
-            json.extract! visit, :quantity
-          end
-          duration = l(visit.take_over, format: :hour_minute_second) if visit.take_over
+          json.destination_id visit.destination.id
           color = visit.tags.find(&:color)
           (json.color color.color) if color
           icon = visit.tags.find(&:icon)
           (json.icon icon.icon) if icon
         end
+        if !visit.tags.empty?
+          json.tags_present do
+            json.tags do
+              json.array! visit.tags :label
+            end
+          end
+        end
+        if @planning.customer.enable_orders
+          order = stop.order
+          if order
+            json.orders order.products.collect(&:code).join(', ')
+          end
+        else
+          json.extract! visit, :quantity
+        end
+        duration = l(visit.take_over, format: :hour_minute_second) if visit.take_over
       elsif stop.is_a?(StopRest)
         json.rest do
           json.rest true
@@ -115,7 +116,7 @@ else
           (json.error true) if !route.vehicle_usage.default_store_rest.nil? && (route.vehicle_usage.default_store_rest.lat.nil? || route.vehicle_usage.default_store_rest.lng.nil?)
         end
       end
-      json.duration = duration if duration
+      json.duration duration if duration
     end
     json.store_stop do
       json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon

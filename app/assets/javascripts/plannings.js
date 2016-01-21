@@ -271,7 +271,7 @@ var plannings_edit = function(params) {
       }
       if (stop.destination && $.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
         stop.i18n = mustache_i18n;
-        stop.color = stop.destination.color || color;
+        stop.color = color;
         stop.vehicle_name = vehicle_name;
         stop.route_id = route.route_id;
         stop.routes = data.routes;
@@ -279,7 +279,7 @@ var plannings_edit = function(params) {
         var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
           icon: new L.NumberedDivIcon({
             number: stop.number,
-            iconUrl: '/images/' + (stop.destination.icon || 'point') + '-' + stop.color.substr(1) + '.svg',
+            iconUrl: '/images/' + (stop.destination.icon || 'point') + '-' + (stop.destination.color || color).substr(1) + '.svg',
             iconSize: new L.Point(12, 12),
             iconAnchor: new L.Point(6, 6),
             popupAnchor: new L.Point(0, -6),
