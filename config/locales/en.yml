@@ -828,6 +828,7 @@ en:
       open: "open"
       close: "close"
       color: "color"
+      icon: "icon"
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
 
   products:

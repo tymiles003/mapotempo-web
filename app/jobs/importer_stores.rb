@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -35,6 +35,7 @@ class ImporterStores < ImporterBase
       lat: I18n.t('stores.import_file.lat'),
       lng: I18n.t('stores.import_file.lng'),
       color: I18n.t('stores.import_file.color'),
+      icon: I18n.t('stores.import_file.icon'),
       geocoding_accuracy: I18n.t('stores.import_file.geocoding_accuracy'),
       geocoding_level: I18n.t('stores.import_file.geocoding_level')
     }

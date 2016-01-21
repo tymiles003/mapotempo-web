@@ -1,2 +1,2 @@
-référence,nom,voie,complément,code postal,ville,lat,lng,pays
-z,BF,87 RUE DES FLEURS,,13010,Marseille,43.28,5.39,fra
+référence,nom,voie,complément,code postal,ville,lat,lng,pays,icone
+z,BF,87 RUE DES FLEURS,,13010,Marseille,43.28,5.39,fra,fa-car

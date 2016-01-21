@@ -52,6 +52,7 @@ class V01::StoresTest < ActiveSupport::TestCase
       json = JSON.parse(last_response.body)
       assert_equal 1, json.size
       assert_equal 'fra', json[0]['country']
+      assert_equal 'fa-car', json[0]['icon']
     end
   end
 
@@ -74,12 +75,14 @@ class V01::StoresTest < ActiveSupport::TestCase
         lng: 3.89636993408203,
         ref: nil,
         geocoding_accuracy: nil,
-        foo: 'bar'
+        foo: 'bar',
+        icon: 'fa-bars',
       }]}
       assert last_response.ok?, last_response.body
       json = JSON.parse(last_response.body)
       assert_equal 1, json.size
       assert_equal 'fra', json[0]['country']
+      assert_equal 'fa-bars', json[0]['icon']
     end
   end
 
