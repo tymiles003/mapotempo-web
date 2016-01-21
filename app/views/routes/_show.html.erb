@@ -45,10 +45,12 @@
           </div>
 
           <div class="title col-md-2 col-sm-2 col-xs-3">
-            <span class="time"><%= l(route.start, format: :hour_minute) if route.start %></span>
-            <% if route.vehicle_usage.default_service_time_start %>
-              <span>- <%= l(route.vehicle_usage.default_service_time_start, format: :hour_minute) %></span>
-            <% end %>
+            <span class="time">
+              <%= l(route.start, format: :hour_minute) if route.start %>
+              <% if display_start_time(route) %>
+                - <%= l(display_start_time(route), format: :hour_minute) %>
+              <% end %>
+            </span>
           </div>
         </div>
       </li>
@@ -195,10 +197,12 @@
 
           <div class="title col-md-2 col-sm-2 col-xs-3">
             <% if route.planning.customer.print_stop_time %>
-              <span class="time"><%= l(route.end, format: :hour_minute) if route.end %></span>
-            <% end %>
-            <% if route.vehicle_usage.default_service_time_end %>
-              <span>- <%= l(route.vehicle_usage.default_service_time_end, format: :hour_minute) %></span>
+              <span class="time">
+                <% if display_end_time(route) %>
+                  <%= l(display_end_time(route), format: :hour_minute) %> -
+                <% end %>
+                <%= l(route.end, format: :hour_minute) if route.end %>
+              </span>
             <% end %>
           </div>
 
