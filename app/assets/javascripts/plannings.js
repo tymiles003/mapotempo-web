@@ -342,17 +342,6 @@ var plannings_edit = function(params) {
         route.vehicle = vehicles_usages_map[route.vehicle_id];
         route.path = '/vehicle_usages/' + route.vehicle_usage_id + '/edit?back=true';
       }
-
-      if (route.stops.length > 0) {
-        /* Service Time Start */
-        if (route.vehicle && route.vehicle.service_time && route.vehicle.service_time.start) {
-          route.service_time_start = route.vehicle.service_time.start;
-        }
-        /* Service Time End */
-        if (route.vehicle && route.vehicle.service_time && route.vehicle.service_time.end) {
-          route.service_time_end = route.vehicle.service_time.end;
-        }
-      }
     });
 
     data.i18n = mustache_i18n;
