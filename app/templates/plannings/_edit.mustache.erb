@@ -268,7 +268,7 @@
             {{/no_path}}
             <span class="info">
               {{#time}}
-                {{time}}{{#with_service_time}}&nbsp;-&nbsp;{{with_service_time}}{{/with_service_time}}
+                {{#with_service_time}}{{with_service_time}}&nbsp;-&nbsp;{{/with_service_time}}{{time}}
               {{/time}}
             </span>
             <span class="name" title="{{name}}">{{name}}</span>

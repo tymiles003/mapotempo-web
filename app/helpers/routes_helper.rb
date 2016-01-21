@@ -21,6 +21,6 @@ module RoutesHelper
   end
 
   def display_end_time(route)
-    route.end + route.service_time_end_value if route.end && route.service_time_end_value
+    route.end - route.service_time_end_value if route.end && route.service_time_end_value
   end
 end
