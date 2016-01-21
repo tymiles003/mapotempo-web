@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -80,7 +80,7 @@ class V01::Destinations < Grape::API
       nickname: 'importDestinations',
       params: V01::Entities::DestinationsImport.documentation,
       is_array: true,
-      entity: V01::Entities::Destination
+      entity: [V01::Entities::Destination, V01::Entities::DestinationsImport]
     put do
       import = if params[:destinations]
         ImportJson.new(importer: ImporterDestinations.new(current_customer), replace: params[:replace], json: params[:destinations])

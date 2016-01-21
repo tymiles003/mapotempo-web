@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -21,7 +21,7 @@ class V01::Entities::DestinationsImport < Grape::Entity
   end
 
   expose(:replace, documentation: { type: 'Boolean' })
-  expose(:file, documentation: { type: Rack::Multipart::UploadedFile, desc: 'CSV file, encoding, separator and line return automatically detected, with localized CSV header according to HTTP header Accept-Language' })
-  expose(:destinations, using: V01::Entities::DestinationImportJson, documentation: { type: V01::Entities::DestinationImportJson, is_array: true, desc: 'In mutual exclusion with CSV file upload and remote.'})
+  expose(:file, documentation: { type: Rack::Multipart::UploadedFile, desc: 'CSV file, encoding, separator and line return automatically detected, with localized CSV header according to HTTP header Accept-Language.', param_type: 'form'})
+  expose(:destinations, using: V01::Entities::DestinationImportJson, documentation: { type: V01::Entities::DestinationImportJson, is_array: true, desc: 'In mutual exclusion with CSV file upload and remote.', param_type: 'form'})
   expose(:remote, documentation: { type: String, values: [:tomtom] })
 end

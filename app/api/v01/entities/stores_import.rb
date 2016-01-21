@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2014-2016
 #
 # This file is part of Mapotempo.
 #
@@ -21,6 +21,6 @@ class V01::Entities::StoresImport < Grape::Entity
   end
 
   expose(:replace, documentation: { type: 'Boolean' })
-  expose(:file, documentation: { type: Rack::Multipart::UploadedFile, desc: 'CSV file, encoding, separator and line return automatically detected, with localized CSV header according to HTTP header Accept-Language' })
-  expose(:stores, using: V01::Entities::Store, documentation: { type: V01::Entities::Store, is_array: true, desc: 'In mutual exclusion with CSV file upload.'})
+  expose(:file, documentation: { type: Rack::Multipart::UploadedFile, desc: 'CSV file, encoding, separator and line return automatically detected, with localized CSV header according to HTTP header Accept-Language.', param_type: 'form'})
+  expose(:stores, using: V01::Entities::Store, documentation: { type: V01::Entities::Store, is_array: true, desc: 'In mutual exclusion with CSV file upload.', param_type: 'form'})
 end
