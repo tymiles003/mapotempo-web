@@ -17,6 +17,8 @@
 #
 require 'savon'
 
+class TomTomError < StandardError ; end
+
 class TomtomWebfleet
   TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
@@ -199,7 +201,7 @@ class TomtomWebfleet
 
     if status_code != 0
       Rails.logger.info "%s: %s" % [ operation, response.body ]
-      raise "TomTom: %s" % [ parse_error_msg(status_code) || ret[:status_message] ]
+      raise TomTomError.new("TomTom: %s" % [ parse_error_msg(status_code) || ret[:status_message] ])
     else
       ret[:results][:result_item] if ret.key?(:results)
     end
@@ -207,10 +209,10 @@ class TomtomWebfleet
   rescue Savon::SOAPFault => error
     Rails.logger.info error
     fault_code = error.to_hash[:fault][:faultcode]
-    raise fault_code
+    raise "TomTomWebFleet: #{fault_code}"
   rescue Savon::HTTPError => error
     Rails.logger.info error.http.code
-    raise
+    raise error
   end
 
   def parse_error_msg status_code

@@ -83,7 +83,7 @@ class PlanningsController < ApplicationController
             end
           }
           head :no_content
-        rescue => e
+        rescue TomTomError => e
           render json: e.message, status: :unprocessable_entity
         end
       end
@@ -93,7 +93,7 @@ class PlanningsController < ApplicationController
             Masternaut.export_route(route) if route.vehicle_usage.vehicle.masternaut_ref
           }
           head :no_content
-        rescue => e
+        rescue MasternautError => e
           render json: e.message, status: :unprocessable_entity
         end
       end
@@ -103,7 +103,7 @@ class PlanningsController < ApplicationController
             Alyacom.export_route(route) if route.vehicle_usage.vehicle.customer.alyacom_association
           }
           head :no_content
-        rescue => e
+        rescue AlyacomError => e
           render json: e.message, status: :unprocessable_entity
         end
       end

@@ -17,6 +17,8 @@
 #
 require 'savon'
 
+class MasternautError < StandardError ; end
+
 module MasternautWs
   TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
@@ -213,15 +215,15 @@ module MasternautWs
     op_return = (operation.to_s + '_return').to_sym
     if no_error_code && response.body[op_response] && response.body[op_response][op_return] != no_error_code.to_s
       Rails.logger.info response.body[op_response]
-      raise "Masternaut operation #{operation} returns error: #{error_code[response.body[op_response][op_return]] || response.body[op_response][op_return]}"
+      raise MasternautError.new("Masternaut operation #{operation} returns error: #{error_code[response.body[op_response][op_return]] || response.body[op_response][op_return]}")
     end
     response.body
   rescue Savon::SOAPFault => error
     Rails.logger.info error
     fault_code = error.to_hash[:fault][:faultcode]
-    raise "Masternaut: " + fault_code
+    raise "Masternaut: #{fault_code}"
   rescue Savon::HTTPError => error
     Rails.logger.info error.http.code
-    raise
+    raise error
   end
 end

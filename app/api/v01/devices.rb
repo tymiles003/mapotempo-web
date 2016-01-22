@@ -30,7 +30,7 @@ class V01::Devices < Grape::API
         begin
           Mapotempo::Application.config.tomtom.showObjectReport account, user, passwd
           status 200
-        rescue StandardError => e
+        rescue TomTomError => e
           error! e.message, 200
         end
       end

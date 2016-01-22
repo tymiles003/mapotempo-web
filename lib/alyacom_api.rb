@@ -18,6 +18,7 @@
 require 'rest_client'
 
 #RestClient.log = $stdout
+class AlyacomError < StandardError ; end
 
 module AlyacomApi
 
@@ -120,9 +121,9 @@ module AlyacomApi
           Rails.logger.info e
           raise e
         end
-        if !response['message'].empty?
+        if !response['message'].blank?
           Rails.logger.info response['message']
-          raise response['message']
+          raise AlyacomError.new(response['message'])
         else
           Rails.logger.info e
           raise e
