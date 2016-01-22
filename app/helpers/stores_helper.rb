@@ -15,16 +15,10 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-module TagsHelper
-  def tag_icon tag
-    if tag.icon
-      if tag.color
-        image_tag "/images/%s.svg?color=%s" % [ tag.icon, tag.color.gsub("#","") ]
-      else
-        image_tag "/images/%s.svg" % [ tag.icon ]
-      end
-    elsif tag.color
-      content_tag :div, '', class: 'tag_color', style: 'background-color: %s' % [ tag.color ]
-    end
+module StoresHelper
+  def store_icon store
+    content_tag :i, '',
+      class: 'fa fa-lg %s' % [ store.icon ? store.icon : 'fa-home' ],
+      style: 'color: %s' % [ store.color ? store.color : '#000' ]
   end
 end

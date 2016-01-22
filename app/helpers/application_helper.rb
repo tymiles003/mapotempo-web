@@ -16,4 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module ApplicationHelper
+  def span_tag content
+    content_tag :span, content, class: 'default-color'
+  end
 end

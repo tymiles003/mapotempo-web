@@ -1,10 +1,10 @@
 <%= twitter_bootstrap_form_for @tag, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @tag %>
   <%= f.text_field :label %>
-  <%= f.select :color, [], (Vehicle.colors_table + [@tag[:color]]).compact.uniq, {include_blank: t('.color_default')} do %>
+  <%= f.select :color, [], (COLORS_TABLE + [@tag[:color]]).compact.uniq, { include_blank: t('.color_default') } do %>
     <p class="help-block"><%= t '.color_help' %></p>
   <% end %>
-  <%= f.select :icon, [], Tag.icons_table, {include_blank: t('.icon_default')} do %>
+  <%= f.select :icon, [], Tag.icons_table, { include_blank: t('.icon_default') } do %>
     <p class="help-block"><%= t '.icon_help' %></p>
   <% end %>
   <%= f.actions do %>

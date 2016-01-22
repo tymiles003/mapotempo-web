@@ -1,4 +1,5 @@
 <% content_for :title, t('.title') %>
+
 <h1><%= t '.title' %></h1>
 
 <div class="row row-top">
@@ -18,7 +19,6 @@
     <tr>
       <th><button id="add" type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
       <th><%= t 'activerecord.attributes.tag.label' %></th>
-      <th><%= t 'activerecord.attributes.tag.color' %></th>
       <th><%= t 'activerecord.attributes.tag.icon' %></th>
       <th></th>
     </tr>
@@ -29,16 +29,7 @@
       <tr>
         <td><%= check_box_tag("tags[#{tag.id}]") %></td>
         <td><%= tag.label %></td>
-        <td>
-          <% if tag.color %>
-            <div class="tag_color" style="background:<%= tag.color %>"></div>
-          <% end %>
-        </td>
-        <td>
-          <% if tag.icon %>
-            <img src="/images/<%= tag.icon %>.svg" />
-          <% end %>
-        </td>
+        <td><%= tag_icon tag %></td>
         <td class="text-right">
           <%= link_to edit_tag_path(tag), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to tag, :class => 'btn btn-danger btn-sm', method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
