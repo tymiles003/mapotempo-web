@@ -75,8 +75,8 @@ class TomtomWebfleet
         {
           objectUid: object[:@object_uid],
           objectName: object[:object_name],
-          lat: (object[:position][:latitude] && (object[:position][:latitude].to_i / 1e6)),
-          lng: (object[:position][:longitude] && (object[:position][:longitude].to_i / 1e6)),
+          lat: (object[:position] && object[:position][:latitude] && (object[:position][:latitude].to_i / 1e6)),
+          lng: (object[:position] && object[:position][:longitude] && (object[:position][:longitude].to_i / 1e6)),
           speed: object[:speed],
           direction: object[:course],
           # quality: object[:quality],
