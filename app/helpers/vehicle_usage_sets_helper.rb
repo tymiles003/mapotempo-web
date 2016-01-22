@@ -17,6 +17,29 @@
 #
 module VehicleUsageSetsHelper
 
+  def vehicle_usage_set_store_name vehicle_usage_set
+    capture do
+      if vehicle_usage_set.store_start || vehicle_usage_set.store_stop
+        if vehicle_usage_set.store_start
+          concat '%s ' % [ vehicle_usage_set.store_start.name ]
+        else
+          concat fa_icon('ban', title: t('vehicle_usages.index.store.no_start'))
+        end
+        if vehicle_usage_set.store_start != vehicle_usage_set.store_stop
+          concat fa_icon('long-arrow-right')
+          concat ' '
+          if vehicle_usage_set.store_stop
+            concat ' %s' % [ vehicle_usage_set.store_stop.name ]
+          else
+            concat fa_icon('ban', title: t('vehicle_usages.index.store.no_stop'))
+          end
+        elsif vehicle_usage_set.store_start
+          concat fa_icon('exchange', title: t('vehicle_usages.index.store.same_start_stop'))
+        end
+      end
+    end
+  end
+
   def vehicle_usage_set_service_time vehicle_usage_set
     capture do
       if vehicle_usage_set.service_time_start

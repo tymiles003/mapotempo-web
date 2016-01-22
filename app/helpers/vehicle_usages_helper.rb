@@ -37,26 +37,34 @@ module VehicleUsagesHelper
     end
   end
 
-  def vehicle_usage_store_name item
-    store_start = item.respond_to?(:default_store_start) ? item.default_store_start : item.store_start
-    store_stop = item.respond_to?(:default_store_stop) ? item.default_store_stop : item.store_stop
+  def vehicle_usage_store_name vehicle_usage
     capture do
-      if store_start || store_stop
-        if store_start
-          concat '%s ' % [ store_start.name ]
+      if vehicle_usage.default_store_start || vehicle_usage.default_store_stop
+        if vehicle_usage.store_start
+          concat '%s ' % [ vehicle_usage.store_start.name ]
+        elsif vehicle_usage.vehicle_usage_set.store_start
+          if vehicle_usage.store_stop
+            concat '%s ' % [ vehicle_usage.vehicle_usage_set.store_start.name ]
+          else
+            concat span_tag('%s ' % [ vehicle_usage.vehicle_usage_set.store_start.name ])
+          end
         else
           concat fa_icon('ban', title: t('vehicle_usages.index.store.no_start'))
         end
-        if store_start != store_stop
+        if vehicle_usage.default_store_start != vehicle_usage.default_store_stop
           concat fa_icon('long-arrow-right')
           concat ' '
-          if store_stop
-            concat ' %s' % [ store_stop.name ]
+          if vehicle_usage.store_stop
+            concat ' %s' % [ vehicle_usage.store_stop.name ]
+          elsif vehicle_usage.vehicle_usage_set.store_stop
+            concat '%s ' % [ vehicle_usage.vehicle_usage_set.store_stop.name ]
           else
             concat fa_icon('ban', title: t('vehicle_usages.index.store.no_stop'))
           end
-        elsif store_start
+        elsif vehicle_usage.store_start
           concat fa_icon('exchange', title: t('vehicle_usages.index.store.same_start_stop'))
+        elsif vehicle_usage.vehicle_usage_set.store_start
+          concat span_tag(fa_icon('exchange', title: t('vehicle_usages.index.store.same_start_stop')))
         end
       end
     end
