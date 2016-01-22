@@ -103,7 +103,7 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     # Move Visit into Destination
     Visit.all.each{ |visit|
       visit.destination.update(quantity: visit.quantity, open: visit.open, close: visit.close, ref: visit.ref, tags: visit.tags)
-      visit.stop_destinations.each{ |stop|
+      visit.stop_visits.each{ |stop|
         stop.destination_id = visit.destination.id
         stop.save!
       }
