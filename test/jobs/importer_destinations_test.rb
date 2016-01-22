@@ -1,8 +1,8 @@
 class ImporterTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
-    @visit_tag1_count = @customer.visits.select{ |v| v.tags == [tags(:tag_one)] }.count
-    @plan_tag1_count = @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.count
+    @visit_tag1_count = @customer.visits.select{ |v| v.tags == [tags(:tag_one)] }.size
+    @plan_tag1_count = @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size
   end
 
   def around
@@ -21,12 +21,20 @@ class ImporterTest < ActionController::TestCase
     file
   end
 
-  test 'shoud import in new planning' do
+  test 'should replace with new tag' do
+    assert_difference('Tag.count') do
+      assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: true, file: tempfile('test/fixtures/files/import_destinations_new_tag.csv', 'text.csv')).import
+      assert_equal 1, @customer.destinations.size
+      assert_equal 1, @customer.destinations.collect{ |d| d.visits.size }.reduce(&:+)
+    end
+  end
+
+  test 'should import in new planning' do
     import_count = 1
-    # vehicle_usage_sets for new planning is hardcoded...
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
+    # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
     assert_difference('Planning.count') do
-      assert_difference('Destination.count') do
+      assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one.csv', 'text.csv')).import
         end
@@ -36,12 +44,12 @@ class ImporterTest < ActionController::TestCase
     assert_equal [tags(:tag_one)], Destination.where(name: 'BF').first.visits.first.tags.to_a
   end
 
-  test 'shoud import postalcode in new planning' do
+  test 'should import postalcode in new planning' do
     import_count = 1
-    # vehicle_usage_sets for new planning is hardcoded...
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
+    # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
     assert_difference('Planning.count') do
-      assert_difference('Destination.count') do
+      assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
         end
@@ -49,12 +57,12 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
-  test 'shoud import coord in new planning' do
+  test 'should import coord in new planning' do
     import_count = 1
-    # vehicle_usage_sets for new planning is hardcoded...
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
+    # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
     assert_difference('Planning.count') do
-      assert_difference('Destination.count') do
+      assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_coord.csv', 'text.csv')).import
         end
@@ -62,10 +70,10 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
-  test 'shoud import two in new planning' do
+  test 'should import two in new planning' do
     import_count = 2
-    # vehicle_usage_sets for new planning is hardcoded...
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
+    # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
@@ -82,7 +90,19 @@ class ImporterTest < ActionController::TestCase
     assert_not stops[2].active
   end
 
-  test 'shoud import many-utf-8 in new planning' do
+  test 'should import without visit' do
+    dest_import_count = 2
+    visit_tag1_import_count = 1
+    assert_no_difference('Planning.count') do
+      assert_difference('Destination.count', dest_import_count) do
+        assert_difference('Stop.count', visit_tag1_import_count * @plan_tag1_count) do
+          assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_without_visit.csv', 'text.csv')).import
+        end
+      end
+    end
+  end
+
+  test 'should import many-utf-8 in new planning' do
     Planning.all.each(&:destroy)
     planning = @customer.plannings.build(name: 'plan été', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), tags: [@customer.tags.build(label: 'été')])
     planning.save!
@@ -90,12 +110,12 @@ class ImporterTest < ActionController::TestCase
     @customer.destinations.destroy_all
     # destinations with same ref are merged
     import_count = 5
-    # vehicle_usage_sets for new planning is hardcoded...
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.count
+    # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
 
     assert_difference('Planning.count', 1) do
       assert_difference('Destination.count', import_count) do
-        assert_difference('Stop.count', import_count * (@customer.plannings.select{ |p| p.tags.any?{ |t| t.label == 'été' } }.count + 1) + rest_count) do
+        assert_difference('Stop.count', import_count * (@customer.plannings.select{ |p| p.tags.any?{ |t| t.label == 'été' } }.size + 1) + rest_count) do
           di = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-utf-8.csv', 'text.csv'))
           assert di.import, di.errors.messages
           assert_equal 'été', @customer.plannings[0].tags[0].label
@@ -112,7 +132,7 @@ class ImporterTest < ActionController::TestCase
     assert_equal 4, p.routes[1].stops.size
   end
 
-  test 'shoud import many-iso' do
+  test 'should import many-iso' do
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all
 
@@ -125,13 +145,47 @@ class ImporterTest < ActionController::TestCase
     assert_equal ['été'], o.tags.collect(&:label)
   end
 
-  test 'shoud not import' do
+  test 'should import with many visits' do
+    dest_import_count = 6
+    visit_import_count = 7
+    visit_tag1_import_count = 1
+    visit_tag2_import_count = 3
+    assert_no_difference('Planning.count') do
+      assert_difference('Destination.count', dest_import_count) do
+        assert_difference('Stop.count',
+          visit_import_count * @customer.plannings.select{ |p| p.tags == [] }.size +
+          visit_tag1_import_count * @plan_tag1_count +
+          visit_tag2_import_count * @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size) do
+          assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_with_many_visits.csv', 'text.csv')).import
+        end
+      end
+    end
+  end
+
+  test 'should replace with many visits' do
+    dest_import_count = 6
+    visit_import_count = 7
+    visit_tag1_import_count = 1
+    visit_tag2_import_count = 3
+    stop_visit_count = @customer.plannings.collect{ |p| p.routes.collect{ |r| r.stops.select{ |s| s.is_a?(StopVisit) }.size }.reduce(&:+) }.reduce(&:+)
+    assert_no_difference('Planning.count') do
+      assert_difference('Stop.count', visit_import_count * @customer.plannings.select{ |p| p.tags == [] }.size +
+          visit_tag1_import_count * @plan_tag1_count +
+          visit_tag2_import_count * @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size -
+          stop_visit_count) do
+        assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: true, file: tempfile('test/fixtures/files/import_destinations_with_many_visits.csv', 'text.csv')).import
+        assert_equal dest_import_count, @customer.destinations.size
+      end
+    end
+  end
+
+  test 'should not import' do
     assert_difference('Destination.count', 0) do
       assert !ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv')).import
     end
   end
 
-  test 'shoud update' do
+  test 'should import and update' do
     assert_difference('Destination.count', 1) do
       assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
     end

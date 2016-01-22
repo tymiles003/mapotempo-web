@@ -57,16 +57,6 @@ class Customer < ActiveRecord::Base
   before_update :update_out_of_date, :update_max_vehicles
   before_save :sanitize_print_header
 
-  def destinations_destroy_all
-    destinations.destroy_all
-    plannings.each{ |planning|
-      planning.routes.each{ |route|
-        route.out_of_date = true
-        route.force_reindex
-      }
-    }
-  end
-
   def default_position
     store = stores.find{ |s| !s.lat.nil? && !s.lng.nil? }
     # store ? [store.lat, store.lng] : [I18n.t('stores.default.lat'), I18n.t('stores.default.lng')]

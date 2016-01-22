@@ -61,7 +61,7 @@ class ImporterDestinations < ImporterBase
   end
 
   def columns
-    columns_route.merge(columns_destination).merge(columns_visit)
+    columns_route.merge(columns_destination).merge(columns_visit).merge(without_visit: I18n.t('destinations.import_file.without_visit'))
   end
 
   def before_import(replace, name, synchronous)
@@ -74,7 +74,7 @@ class ImporterDestinations < ImporterBase
     @need_geocode = false
 
     if replace
-      @customer.destinations_destroy_all
+      @customer.destinations.delete_all
     end
   end
 
@@ -123,25 +123,37 @@ class ImporterDestinations < ImporterBase
       end
     end
     if !visit
-      # Link only when destination is complete
-      destination = @customer.destinations.build(row.slice(*(@@columns_destination_keys ||= columns_destination.keys)))
-      visit = destination.visits.build(row.slice(*(@@columns_visit_keys ||= columns_visit.keys)))
-    end
-
-    if !name.nil?
-      # Instersection of tags of all rows for tags of new planning
-      if !@common_tags
-        @common_tags = visit.tags.to_a
-      else
-        @common_tags &= visit.tags
+      destination_attributes = row.slice(*(@@columns_destination_keys ||= columns_destination.keys))
+      destination = @customer.destinations.find{ |d|
+        d.attributes.symbolize_keys.slice(*columns_destination.keys).except(:customer_id, :lat, :lng, :geocoding_accuracy, :geocoding_level) == Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten].merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level)
+      }
+      if !destination
+        destination = @customer.destinations.build(destination_attributes)
+      end
+      if row[:without_visit].nil? || row[:without_visit].strip.empty?
+        # Link only when destination is complete
+        visit = destination.visits.build(row.slice(*(@@columns_visit_keys ||= columns_visit.keys)))
       end
     end
 
-    if visit.ref.nil? || @routes.size && !@routes.any?{ |k, r| r.any?{ |d| d && d[0]['ref'] == visit.ref } }
-      @routes[row.key?(:route) ? row[:route] : nil] << [visit, !row.key?(:active) || row[:active].strip != '0']
-    end
+    if visit
+      if !name.nil?
+        # Instersection of tags of all rows for tags of new planning
+        if !@common_tags
+          @common_tags = visit.tags.to_a
+        else
+          @common_tags &= visit.tags
+        end
+      end
 
-    visit.destination # For subclasses
+      if visit.ref.nil? || @routes.size && !@routes.any?{ |k, r| r.any?{ |d| d && d[0]['ref'] == visit.ref } }
+        @routes[row.key?(:route) ? row[:route] : nil] << [visit, !row.key?(:active) || row[:active].strip != '0']
+      end
+
+      visit.save! && visit.destination # For subclasses
+    else
+      destination.save! && destination
+    end
   end
 
   def after_import(replace, name, synchronous)

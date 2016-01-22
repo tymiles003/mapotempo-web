@@ -216,7 +216,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert !r.stops[0].out_of_window
 
     # Add a time window in service time start time (less than 30 minutes)
-    r.stops[0].destination.update!(
+    r.stops[0].visit.update!(
       open: v.service_time_start + 5.minutes,
       close: v.service_time_start + 10.minutes
     )
