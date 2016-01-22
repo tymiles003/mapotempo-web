@@ -138,6 +138,21 @@ span.color[data-color=''][data-selected]:after {
   padding-left: 2px;
 }
 
+.map-fixed-size {
+  width: 100%;
+  height: 250px;
+
+  .leaflet-control-layers-expanded {
+    max-height: 150px;
+    overflow-y: auto;
+
+    label {
+      margin-bottom: 0px;
+      white-space: nowrap;
+    }
+  }
+}
+
 .leaflet-popup-content {
   .ui-state-error {
     border: 0px;
@@ -147,11 +162,6 @@ span.color[data-color=''][data-selected]:after {
     margin: 0px;
     padding: 5px 10px;
   }
-}
-
-.leaflet-control-layers-expanded {
-  max-height: 150px;
-  overflow-y: scroll;
 }
 
 [data-controller='plannings'][data-action='edit'],
