@@ -22,6 +22,12 @@
 
 [data-controller='destinations'] {
 
+  .accordion-toggle > span:before {
+    content: "▾ ";
+  }
+  .accordion-toggle.collapsed > span:before {
+    content: "▸ ";
+  }
   #visit-new {
     margin-bottom: 20px;
   }

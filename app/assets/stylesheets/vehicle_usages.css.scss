@@ -22,9 +22,6 @@
 [data-controller='vehicle_usages'] {
   fieldset {
     legend {
-      a {
-        color: #333;
-      }
       a:before {
         content: "▾ ";
       }

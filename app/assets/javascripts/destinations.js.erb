@@ -279,6 +279,7 @@ var destinations_form = function(params, api) {
     var fieldsetVisit = $('#visit-fieldset-template');
     $('#visits').append(fieldsetVisit.html()
       .replace('#0', '#' + ($('#visits fieldset').length + 1))
+      .replace(/isit0/g, 'isit' + ($('#visits fieldset').length + 1))
       .replace(/destination([\[_])visits([^0]+)0([\]_])/g, "destination$1visits$2" + ($('#visits fieldset').length + 1) + "$3")
     );
     initVisits($('#visits fieldset:last-child'));
@@ -289,16 +290,16 @@ var destinations_form = function(params, api) {
   var initVisits = function(parent) {
     $("input:checkbox[id$='_destroy']", parent).change(function() {
       var fieldset = $(this).closest('fieldset');
-      $("label[for$='destroy']", fieldset).toggle();
-      $("div.form-group", fieldset).toggle();
+      $("label[for$='destroy']", fieldset).toggle(200);
+      $("div.form-group", fieldset).toggle(200);
     });
     $('.flag-destroy', parent).click(function() {
       var fieldset = $(this).closest('fieldset');
       $("input:checkbox", fieldset).prop("checked", function(i, val) {
         return !val;
       });
-      $("label[for$='destroy']", fieldset).toggle();
-      $("div.form-group", fieldset).toggle();
+      $("label[for$='destroy']", fieldset).toggle(200);
+      $("div.form-group", fieldset).toggle(200);
     });
 
     $('[name$=\\[take_over\\]]', parent).timeEntry({
@@ -327,6 +328,15 @@ var destinations_form = function(params, api) {
     });
   }
   initVisits($('form'));
+
+  if (window.location.hash) {
+    $('#visits .collapse.in').each(function(index) {
+      var $this = $(this);
+      if (window.location.hash != '#' + $this.attr('id'))
+        $this.removeClass('in');
+    });
+    $("#visits .accordion-toggle[href!='" + window.location.hash + "']").addClass('collapsed');
+  }
 }
 
 var destinations_new = function(params, api) {

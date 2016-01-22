@@ -34,6 +34,7 @@ var vehicle_usage_sets_index = function(params) {
         $this.removeClass('in');
     });
     $(window.location.hash).addClass('in');
+    $(".accordion-toggle[href!='" + window.location.hash + "']").addClass('collapsed');
   }
 }
 

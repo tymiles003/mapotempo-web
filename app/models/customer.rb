@@ -32,7 +32,7 @@ class Customer < ActiveRecord::Base
   has_many :vehicle_usage_sets, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :destroy
   has_many :vehicles, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :stores, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :destinations, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :destinations, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :tags, -> { order('label') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :users, inverse_of: :customer, dependent: :nullify
 
