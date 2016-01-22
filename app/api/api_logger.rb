@@ -32,7 +32,7 @@ class ApiLogger
     ActiveSupport::Notifications.instrument 'grape.request', payload do
       @app.call(env).tap do |response|
         if env['api.endpoint']
-          payload[:params] = env['api.endpoint'].params.to_hash
+          payload[:params] = (env['api.endpoint'].params.nil? && env['api.endpoint'].params.to_hash) || {}
           payload[:params].delete('route_info')
           payload[:params].delete('format')
         end
