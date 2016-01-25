@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2015
+# Copyright © Mapotempo, 2016
 #
 # This file is part of Mapotempo.
 #
@@ -42,10 +42,6 @@ class ImportJson
                 row[ks] = v
               end
             }
-
-            if !row[:tags].nil?
-              row[:tags] = row[:tags].join(',')
-            end
 
             row
           }

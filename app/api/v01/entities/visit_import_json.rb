@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2016
 #
 # This file is part of Mapotempo.
 #
@@ -15,11 +15,13 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class V01::Entities::DestinationImportJson < V01::Entities::Destination
+class V01::Entities::VisitImportJson < V01::Entities::Visit
   def self.entity_name
-    'V01_DestinationImportJson'
+    'V01_VisitImportJson'
   end
 
-  unexpose(:visits)
-  expose(:visits, using: V01::Entities::VisitImportJson, documentation: { type: V01::Entities::VisitImportJson, is_array: true, param_type: 'form' })
+  unexpose(:destination_id)
+  unexpose(:take_over_default)
+  expose(:route, documentation: { type: String, desc: 'Route reference. If route reference is specified, a new planning will be created with a route using the specified reference' })
+  expose(:active, documentation: { type: 'Boolean', desc: 'In order to specify is stop is active in planning or not' })
 end

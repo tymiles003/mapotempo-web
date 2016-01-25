@@ -66,7 +66,8 @@ class ImporterDestinations < ImporterBase
 
   def before_import(replace, name, synchronous)
     @common_tags = nil
-    @tags = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
+    @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
+    @tag_ids = Hash[@customer.tags.collect{ |tag| [tag.id, tag] }]
     @routes = Hash.new{ |h, k| h[k] = [] }
 
     @planning = nil
@@ -94,14 +95,22 @@ class ImporterDestinations < ImporterBase
     end
 
     if !row[:tags].nil?
-      row[:tags] = row[:tags].split(',').select { |key|
-        !key.empty?
-      }.collect { |key|
-        if !@tags.key?(key)
-          @tags[key] = @customer.tags.build(label: key)
+      if row[:tags].is_a?(String)
+        row[:tags] = row[:tags].split(',').select{ |key|
+          !key.empty?
+        }
+      end
+
+      row[:tags] = row[:tags].collect{ |tag|
+        if tag.is_a?(Fixnum)
+          @tag_ids[tag]
+        else
+          if !@tag_labels.key?(tag)
+            @tag_labels[tag] = @customer.tags.build(label: tag)
+          end
+          @tag_labels[tag]
         end
-        @tags[key]
-      }
+      }.compact
     end
 
     if !row[:ref].nil? && !row[:ref].strip.empty?
