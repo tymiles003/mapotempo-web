@@ -17,7 +17,7 @@
     <tessellate>1</tessellate>
     <altitudeMode>clampToGround</altitudeMode>
     <coordinates>
-      <% route.stops.each do |stop| 
+      <% route.stops.each do |stop|
         if stop.active && stop.trace
           Polylines::Decoder.decode_polyline(stop.trace, 1e6).each do |v| %>
         <%= v[1].to_s + ',' + v[0].to_s %>

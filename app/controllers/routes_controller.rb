@@ -35,7 +35,12 @@ class RoutesController < ApplicationController
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.gpx"'
       end
       format.kml do
-        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
+        if params[:email]
+          RouteMailer.send_kml_route(@route, render_to_string("routes/show.kml")).deliver_now
+          return
+        else
+          response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
+        end
       end
       format.kmz do
         stringio = Zip::OutputStream.write_buffer do |zio|

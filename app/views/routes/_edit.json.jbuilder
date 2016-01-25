@@ -8,6 +8,7 @@ json.extract! route, :ref, :color, :size_active
 json.color_fake route.color
 (json.quantity route.quantity) if !@planning.customer.enable_orders
 if route.vehicle_usage
+  json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
   json.capacity_unit route.vehicle_usage.vehicle.capacity_unit
   json.vehicle_usage_id route.vehicle_usage.id
   json.vehicle_id route.vehicle_usage.vehicle.id

@@ -437,6 +437,14 @@ var plannings_edit = function(params) {
       enlighten_stop(data.stop_id_enlighten);
     }
 
+    // KML: Export Route via E-Mail
+    $("a.route-kml-email").click(function(e) {
+      e.preventDefault();
+      $.get($(e.target).attr("href"), function() {
+        bootstrap_alert_success(I18n.t('plannings.edit.export.kml_email_success'));
+      });
+    });
+
     $(".export_tomtom a").click(function() {
       var url = this.href;
       $.ajax({

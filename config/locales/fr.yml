@@ -307,6 +307,7 @@ fr:
         rest_duration: "Durée de repos"
         store_rest_id: "Lieu de repos"
         ref: "Référence"
+        contact_email: "Email"
       vehicle_usage:
         open: "Horaire début"
         close: "Horaire fin"
@@ -630,6 +631,11 @@ fr:
       comment: "commentaire"
       total: "total"
 
+  route_mailer:
+    send_kml_route:
+      subject: "Votre route pour le véhicule %{n}"
+      content: "L'export au format KML de votre route se trouve dans le fichier attaché à cet email."
+
   plannings:
     menu:
       plannings: "Plannings"
@@ -654,6 +660,8 @@ fr:
         spreadsheet_excel: "Tableur Excel"
         gpx_route: "Route GPX"
         gpx_trace: "Tracé GPX"
+        kml_email: "KML Envoyer par email"
+        kml_email_success: "Email envoyé avec succès"
         kml_track: "Tracé KML"
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
@@ -905,6 +913,8 @@ fr:
         help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du compte client est également utilisé lors des calculs."
       store_rest:
         none: "Aucun"
+      contact_email:
+        help: "Email du conducteur"
 
   vehicle_usages:
     menu:

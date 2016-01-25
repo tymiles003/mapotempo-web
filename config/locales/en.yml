@@ -293,6 +293,7 @@ en:
         router_id: "Route planner"
         speed_multiplicator: "Speed tuning"
         ref: "Reference"
+        contact_email: "E-Mail"
       vehicle_usage:
         vehicle_id: "Vehicle"
         open: "Open"
@@ -616,6 +617,11 @@ en:
       comment: "comment"
       total: "total"
 
+  route_mailer:
+    send_kml_route:
+      subject: "Your Route With Vehicle %{n}"
+      content: "Route informations have been exported using KML format in a file attached to this E-Mail."
+
   plannings:
     menu:
       plannings: "Plannings"
@@ -640,6 +646,8 @@ en:
         spreadsheet_excel: "Spreadsheet Excel"
         gpx_route: "GPX Route"
         gpx_trace: "GPX Track"
+        kml_email: "KML Send by E-Mail"
+        kml_email_success: "E-Mail sent successfully"
         kml_track: "KML Track"
         tomtom_orders: "Send to TomTom as Orders"
         tomtom_waypoints: "Send to TomTom as Waypoints"
@@ -887,6 +895,8 @@ en:
       speed_multiplicator:
         default: "%{n} (default value)"
         help: "A value higher than 100% mean higher speed. The global tune up set on customer is also used on computation."
+      contact_email:
+        help: "Driver E-Mail"
 
   vehicle_usages:
     menu:

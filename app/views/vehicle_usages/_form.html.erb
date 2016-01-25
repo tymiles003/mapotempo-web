@@ -16,6 +16,9 @@
           <% end %>
         <% end %>
         <%= f.text_field :name %>
+        <%= f.text_field :contact_email do %>
+          <p class="help-block"><%= t 'vehicles.form.contact_email.help' %></p>
+        <% end %>
         <%= f.select :emission, [], Vehicle.emissions_table, { include_blank: t('web.form.empty_entry') }, {input_group: t('all.unit.kgco2e_l_html')} do %>
           <p class="help-block"><%= t 'vehicles.form.emissions.help' %></p>
         <% end %>
