@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2015
+# Copyright © Mapotempo, 2015-2016
 #
 # This file is part of Mapotempo.
 #
@@ -25,6 +25,7 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
   swagger_api :index do
     summary 'Display all or some destinations.'
     param :query, :ids, :array, :optional, 'Destination ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
+    param :query, :store_ids, :array, :optional, 'Sotre ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
   end
 
   swagger_api :edit_position do

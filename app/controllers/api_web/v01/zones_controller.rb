@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2015
+# Copyright © Mapotempo, 2015-2016
 #
 # This file is part of Mapotempo.
 #
@@ -32,6 +32,7 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
     param :query, :ids, :array, :optional, 'Zoning''s zones ids to be displayed, separated by commas', { 'items' => { 'type' => 'integer' } }
     param :query, :destinations, :boolean, :optional, 'Destinations displayed or not, no destinations by default'
     param :query, :destination_ids, :array, :optional, 'Destination ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
+    param :query, :store_ids, :array, :optional, 'Store ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
     param :query, :vehicle_usage_set_id, :integer, :optional, 'VehicleUsageSet id (used to filter stores)'
     param :query, :planning_id, :integer, :optional, 'Planning id (used to filter stores)'
   end
