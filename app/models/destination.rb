@@ -25,7 +25,7 @@ end
 
 class Destination < ActiveRecord::Base
   belongs_to :customer
-  has_many :visits, -> { order(:id) }, inverse_of: :destination, dependent: :destroy, autosave: true
+  has_many :visits, -> { order(:id) }, inverse_of: :destination, dependent: :delete_all, autosave: true
   accepts_nested_attributes_for :visits, allow_destroy: true
   validates_associated_bubbling :visits
   enum geocoding_level: {point: 1, house: 2, intersection: 3, street: 4, city: 5}
@@ -63,6 +63,16 @@ class Destination < ActiveRecord::Base
 
   def distance(position)
     lat && lng && position.lat && position.lng && Math.hypot(position.lat - lat, position.lng - lng)
+  end
+
+  def destroy
+    # Too late to do this in before_destroy callback, children already destroyed
+    Visit.transaction do
+      visits.each{ |visit|
+        visit.destroy
+      }
+    end
+    super
   end
 
   private

@@ -427,7 +427,7 @@ ActiveRecord::Schema.define(version: 20160125093540) do
   add_foreign_key "destinations", "customers", name: "fk_destinations_customer_id", on_delete: :cascade
   add_foreign_key "order_arrays", "customers", name: "fk_order_arrays_customer_id", on_delete: :cascade
   add_foreign_key "orders", "order_arrays", name: "fk_orders_order_array_id", on_delete: :cascade
-  add_foreign_key "orders", "visits"
+  add_foreign_key "orders", "visits", on_delete: :cascade
   add_foreign_key "orders_products", "orders", name: "fk_orders_products_order_id", on_delete: :cascade
   add_foreign_key "orders_products", "products", name: "fk_orders_products_product_id", on_delete: :cascade
   add_foreign_key "plannings", "customers", name: "fk_plannings_customer_id", on_delete: :cascade
@@ -440,7 +440,7 @@ ActiveRecord::Schema.define(version: 20160125093540) do
   add_foreign_key "routes", "plannings", name: "fk_routes_planning_id", on_delete: :cascade
   add_foreign_key "routes", "vehicle_usages"
   add_foreign_key "stops", "routes", name: "fk_stops_route_id", on_delete: :cascade
-  add_foreign_key "stops", "visits"
+  add_foreign_key "stops", "visits", on_delete: :cascade
   add_foreign_key "stores", "customers", name: "fk_stores_customer_id", on_delete: :cascade
   add_foreign_key "stores_vehicules", "stores", name: "fk_stores_vehicules_store_id", on_delete: :cascade
   add_foreign_key "stores_vehicules", "vehicles", name: "fk_stores_vehicules_vehicle_id", on_delete: :cascade

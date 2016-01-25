@@ -31,11 +31,11 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
 
     # Link Stop and Order to Visit
     add_column :stops, :visit_id, :integer
-    add_foreign_key :stops, :visits
+    add_foreign_key :stops, :visits, on_delete: :cascade
     add_index :stops, :visit_id
 
     add_column :orders, :visit_id, :integer
-    add_foreign_key :orders, :visits
+    add_foreign_key :orders, :visits, on_delete: :cascade
     add_index :orders, :visit_id
 
     # Split Destination data
@@ -97,17 +97,17 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     end
 
     add_index :destinations_tags, :destination_id
-    add_foreign_key :destinations_tags, :destinations
+    add_foreign_key :destinations_tags, :destinations, on_delete: :cascade
     add_index :destinations_tags, :tag_id
-    add_foreign_key :destinations_tags, :tags
+    add_foreign_key :destinations_tags, :tags, on_delete: :cascade
 
     # Link Stop and Order to Destination
     add_column :stops, :destination_id, :integer
-    add_foreign_key :stops, :destinations
+    add_foreign_key :stops, :destinations, on_delete: :cascade
     add_index :stops, :destination_id
 
     add_column :orders, :destination_id, :integer
-    add_foreign_key :orders, :destinations
+    add_foreign_key :orders, :destinations, on_delete: :cascade
     add_index :orders, :destination_id
 
     # Move Visit into Destination
