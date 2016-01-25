@@ -110,7 +110,7 @@ class ImporterStores < ImporterBase
   end
 
   def finalize_import(replace, name, synchronous)
-    if @need_geocode && (!synchronous || Mapotempo::Application.config.delayed_job_use)
+    if @need_geocode && !synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_store_geocoding = Delayed::Job.enqueue(GeocoderStoresJob.new(@customer.id))
     end
 
