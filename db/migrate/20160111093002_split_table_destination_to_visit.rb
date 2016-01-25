@@ -39,17 +39,27 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     add_index :orders, :visit_id
 
     # Split Destination data
-    Destination.all.each{ |destination|
-      visit = destination.visits.create!(quantity: destination.quantity, open: destination.open, close: destination.close, ref: destination.ref, take_over: destination.take_over, tags: destination.tags)
-      destination.stop_destinations.each{ |stop|
-        stop.visit_id = visit.id
-        stop.save!
+    total = Destination.count
+    count = 0
+    Rails::logger.info "#{total} destinations"
+    puts "#{total} destinations"
+    Customer.find_each{ |customer|
+      customer.destinations.each{ |destination|
+        if (count += 1) % 100 == 0
+          Rails::logger.info "#{count} / #{total}"
+          puts "#{count} / #{total}"
+        end
+        visit = destination.visits.create!(quantity: destination.quantity, open: destination.open, close: destination.close, ref: destination.ref, take_over: destination.take_over, tag_ids: destination.tag_ids)
+        vid = visit.id
+        destination.stop_destinations.all.each{ |stop|
+          stop.visit_id = vid
+          stop.save!
+        }
+        destination.orders.all.each{ |order|
+          order.visit_id = vid
+          order.save!
+        }
       }
-      destination.orders.each{ |order|
-        order.visit_id = visit.id
-        order.save!
-      }
-      destination.save!
     }
 
     change_column :orders, :visit_id, :integer, null: false
@@ -101,15 +111,45 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     add_index :orders, :destination_id
 
     # Move Visit into Destination
-    Visit.all.each{ |visit|
-      visit.destination.update(quantity: visit.quantity, open: visit.open, close: visit.close, ref: visit.ref, tags: visit.tags)
-      visit.stop_visits.each{ |stop|
-        stop.destination_id = visit.destination.id
-        stop.save!
+    total = Visit.count
+    count = 0
+    Rails::logger.info "#{total} visits"
+    puts "#{total} visits"
+    Customer.find_each{ |customer|
+      customer.visits.each{ |visit|
+        if (count += 1) % 100 == 0
+          Rails::logger.info "#{count} / #{total}"
+          puts "#{count} / #{total}"
+        end
+        destination = visit.destination
+        destination.update(quantity: visit.quantity, open: visit.open, close: visit.close, ref: visit.ref, tags: visit.tags)
+        visit.stop_visits.each{ |stop|
+          stop.destination_id = destination.id
+          stop.save!
+        }
+        visit.orders.each{ |order|
+          order.destination_id = destination.id
+          order.save!
+        }
+        destination.save!
       }
-      visit.orders.each{ |order|
-        order.destination_id = visit.destination.id
-        order.save!
+
+      # Keep only one visit by planning
+      customer.plannings{ |planning|
+        destinations_ids = planning.routes.collect(&:stops).flatten.collect{ |stop| stop.is_a?(StopVisit) && stop.destination_id}.compact
+        duplicate_destinations = destinations_ids.detect{ |id| destinations_ids.count(id) > 1 }
+
+        if duplicate_destinations.size > 0
+          planning.routes.stops{ |stop|
+            destination_id = stop.destination_id
+            if duplicate_destinations.include?(destination_id)
+              route.remove_stop(stop)
+              duplicate_destinations.delete_at(duplicate_destinations.index(destination_id))
+            end
+          }
+
+          planning.save!
+        end
       }
     }
 
@@ -135,8 +175,8 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
       has_many :visits, inverse_of: :destination, dependent: :destroy
       has_and_belongs_to_many :tags
 
-      skip_callback :save, :before, :update_tags
-      skip_callback :save, :before, :create_orders
+      skip_callback :update, :before, :update_tags
+      skip_callback :update, :before, :create_orders
     end
 
     Visit.class_eval do
@@ -145,8 +185,8 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
       has_many :orders, inverse_of: :destination, dependent: :delete_all
       has_and_belongs_to_many :tags
 
-      skip_callback :save, :before, :update_tags
-      skip_callback :save, :before, :create_orders
+      skip_callback :update, :before, :update_tags
+      skip_callback :update, :before, :create_orders
     end
 
     Stop.class_eval do
