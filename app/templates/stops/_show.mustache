@@ -53,7 +53,7 @@
   {{/store}}
   {{/planning_id}}
   {{#edit_planning}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/edit_planning}}
-  <b>{{#ref}}{{ref}} {{/ref}}{{name}}</b><br/>
+  <b>{{name}}</b><br/>
   {{#street}}{{street}}<br/>{{/street}}
   {{#detail}}
     {{detail}}<br/>
@@ -70,8 +70,9 @@
 {{#visits}}
 <hr>
 {{#num_visit}}
-{{#i18n}}plannings.edit.popup.visit{{/i18n}} #{{num_visit}}
+{{#i18n}}plannings.edit.popup.visit{{/i18n}} #{{num_visit}} 
 {{/num_visit}}
+{{#ref}}<b>{{ref}}</b>{{/ref}}
 <ul>
   {{#open_close}}
     <li><i class="fa fa-sort fa-rotate-90 fa-fw"></i> {{#i18n}}plannings.edit.popup.open_close{{/i18n}}
@@ -85,9 +86,7 @@
   {{#duration}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.duration{{/i18n}} {{duration}}</li>{{/duration}}
   {{#quantity}}<li><i class="fa fa-archive fa-fw"></i> {{#i18n}}plannings.edit.popup.quantity{{/i18n}} {{quantity}}{{#capacity_unit}}&nbsp;{{capacity_unit}}{{/capacity_unit}}</li>{{/quantity}}
   {{#orders}}<li><i class="fa fa-cube fa-fw"></i> {{#i18n}}plannings.edit.popup.orders{{/i18n}} {{orders}}</li>{{/orders}}
-  {{#destination}}
-    {{#tags_present}}<li><i class="fa fa-tag fa-fw"></i> {{#i18n}}plannings.edit.popup.tags{{/i18n}} {{#tags}}{{label}} {{/tags}}</li>{{/tags_present}}
-  {{/destination}}
+  {{#tags_present}}<li><i class="fa fa-tag fa-fw"></i> {{#i18n}}plannings.edit.popup.tags{{/i18n}} {{#tags}}{{label}} {{/tags}}</li>{{/tags_present}}
 </ul>
 {{#error}}
   <ul class="ui-state-error">
