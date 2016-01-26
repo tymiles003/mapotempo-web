@@ -951,9 +951,10 @@ en:
         default: "%{n} (default value)"
       rest_stop:
         default: "%{n} (default value)"
-      rest_stop_help: "Without taking into account rest duration"
+        help: "Without taking into account rest duration"
       rest_duration:
         default: "%{n} (default value)"
+        help: "Requires rest start and stop times"
       store_rest:
         default: "Default"
         none: "None"

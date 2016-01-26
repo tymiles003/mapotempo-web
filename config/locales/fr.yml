@@ -969,9 +969,10 @@ fr:
         default: "%{n} (valeur par défaut)"
       rest_stop:
         default: "%{n} (valeur par défaut)"
-      rest_stop_help: "Sans tenir compte de la durée de pause"
+        help: "Sans tenir compte de la durée de pause"
       rest_duration:
         default: "%{n} (valeur par défaut)"
+        help: "Requiert un horaire de début et fin de pause"
       store_rest:
         default: "Défaut"
         none: "Aucun"

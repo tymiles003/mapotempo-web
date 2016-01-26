@@ -59,7 +59,6 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     assert r.reload.out_of_date
   end
 
-
   test 'changes on service time end should set route out of date' do
     v = vehicle_usage_sets(:vehicle_usage_set_one)
     assert v.service_time_end.nil?
@@ -67,5 +66,17 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     assert !r.out_of_date
     v.update! service_time_end: Time.utc(2000, 1, 1, 0, 0) + 10.minutes
     assert r.reload.out_of_date
+  end
+
+  test 'setting a time duration requires time start and stop' do
+    v = vehicle_usage_sets(:vehicle_usage_set_one)
+    v.update! rest_start: nil, rest_stop: nil, rest_duration: nil
+    assert v.valid?
+    v.rest_duration = Time.utc(2000, 1, 1, 0, 0) + 15.minutes
+    assert !v.valid?
+    assert_equal [:rest_start, :rest_stop], v.errors.keys
+    v.rest_start = Time.utc(2000, 1, 1, 0, 0) + 10.hours
+    v.rest_stop = Time.utc(2000, 1, 1, 0, 0) + 11.hours
+    assert v.valid?
   end
 end
