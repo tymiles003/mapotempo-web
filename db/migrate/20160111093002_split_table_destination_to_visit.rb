@@ -111,17 +111,18 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     add_index :orders, :destination_id
 
     # Move Visit into Destination
-    total = Visit.count
+    total = Destination.count
     count = 0
-    Rails::logger.info "#{total} visits"
-    puts "#{total} visits"
+    Rails::logger.info "#{total} destinations"
+    puts "#{total} destinations"
+    empty_visit = Visit.new
     Customer.find_each{ |customer|
-      customer.visits.each{ |visit|
+      customer.destinations.each{ |destination|
         if (count += 1) % 100 == 0
           Rails::logger.info "#{count} / #{total}"
           puts "#{count} / #{total}"
         end
-        destination = visit.destination
+        visit = destination.visits.first || empty_visit
         destination.update(quantity: visit.quantity, open: visit.open, close: visit.close, ref: visit.ref, tags: visit.tags)
         visit.stop_visits.each{ |stop|
           stop.destination_id = destination.id
@@ -131,26 +132,19 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
           order.destination_id = destination.id
           order.save!
         }
+
+        if destination.visits.size > 1
+          (destination.visits.to_a - [visit]).each{ |visit|
+            visit.stop_visits.each{ |stop|
+              stop.route.out_of_date = true
+              stop.route.save!
+            }
+          }
+        end
+
         destination.save!
       }
-
-      # Keep only one visit by planning
-      customer.plannings{ |planning|
-        destinations_ids = planning.routes.collect(&:stops).flatten.collect{ |stop| stop.is_a?(StopVisit) && stop.destination_id}.compact
-        duplicate_destinations = destinations_ids.detect{ |id| destinations_ids.count(id) > 1 }
-
-        if duplicate_destinations.size > 0
-          planning.routes.stops{ |stop|
-            destination_id = stop.destination_id
-            if duplicate_destinations.include?(destination_id)
-              route.remove_stop(stop)
-              duplicate_destinations.delete_at(duplicate_destinations.index(destination_id))
-            end
-          }
-
-          planning.save!
-        end
-      }
+      customer.save!
     }
 
     change_column :orders, :destination_id, :integer, null: false
