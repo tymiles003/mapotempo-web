@@ -123,7 +123,7 @@ var api_web_v01_zones_index = function(params) {
         display_zoning(data);
       }
       else {
-        bootstrap_alert_danger(I18n.t('api_web.v01.zones.index.none_zones'));
+        stickyError(I18n.t('api_web.v01.zones.index.none_zones'));
       }
       progressBar && progressBar.done();
     },

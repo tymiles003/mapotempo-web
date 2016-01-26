@@ -65,6 +65,13 @@ GIT
     tidy-html5 (0.1.1)
 
 GIT
+  remote: git://github.com/ngonzalez/pnotify-rails.git
+  revision: 937c5b00d1909d7bd240897770c9ab67a471c176
+  branch: 3.0.0
+  specs:
+    pnotify-rails (2.0.1.1)
+
+GIT
   remote: git://github.com/ruby-grape/grape-swagger.git
   revision: d0a59eb08eff57f740de7e112dfdab209487c968
   specs:
@@ -538,6 +545,7 @@ DEPENDENCIES
   nilify_blanks
   paloma!
   pg
+  pnotify-rails!
   polylines
   rack-cors
   rails (~> 4.2)
@@ -574,4 +582,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.10.6
+   1.11.2

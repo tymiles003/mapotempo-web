@@ -1,0 +1,12 @@
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    <% flash.each do |k, v| %>
+      <% if k == 'notice' %>
+        notice(<%= v.to_json.html_safe %>);
+      <% elsif k == 'error' %>
+        error(<%= v.to_json.html_safe %>);
+      <% end %>
+    <% end %>
+  });
+</script>

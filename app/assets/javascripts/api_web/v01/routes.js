@@ -268,7 +268,7 @@ var api_web_v01_routes_index = function(params) {
         display_planning_first_time(data);
       }
       else {
-        bootstrap_alert_danger(I18n.t('api_web.v01.routes.index.none_routes'));
+        stickyError(I18n.t('api_web.v01.routes.index.none_routes'));
       }
       progressBar && progressBar.done();
     },

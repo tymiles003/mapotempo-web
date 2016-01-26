@@ -48,5 +48,6 @@
  *= require leaflet.markercluster
  *= require leaflet.markercluster.default
  *= require leaflet-sidebar
+ *= require pnotify
  *= require_tree .
  */

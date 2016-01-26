@@ -398,7 +398,7 @@ var zonings_edit = function(params) {
     error: ajaxError
   });
 
-  hideAlert('.alert-success', timeAlert);
+  hideNotices();
 }
 
 Paloma.controller('Zoning').prototype.new = function() {};

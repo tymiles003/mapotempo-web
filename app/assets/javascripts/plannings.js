@@ -441,7 +441,7 @@ var plannings_edit = function(params) {
     $("a.route-kml-email").click(function(e) {
       e.preventDefault();
       $.get($(e.target).attr("href"), function() {
-        bootstrap_alert_success(I18n.t('plannings.edit.export.kml_email_success'));
+        notice(I18n.t('plannings.edit.export.kml_email_success'));
       });
     });
 
@@ -455,7 +455,7 @@ var plannings_edit = function(params) {
             $("#dialog-tomtom").dialog("open");
           },
           success: function() {
-            bootstrap_alert_success(I18n.t('plannings.edit.export.' + name + '.success'));
+            notice(I18n.t('plannings.edit.export.' + name + '.success'));
           },
           complete: function() {
             $("#dialog-tomtom").dialog("close");
@@ -479,7 +479,7 @@ var plannings_edit = function(params) {
           $("#dialog-masternaut").dialog("open");
         },
         success: function(data) {
-          bootstrap_alert_success(I18n.t('plannings.edit.export.masternaut_success'));
+          notice(I18n.t('plannings.edit.export.masternaut_success'));
         },
         complete: function() {
           $("#dialog-masternaut").dialog("close");
@@ -499,7 +499,7 @@ var plannings_edit = function(params) {
           $("#dialog-alyacom").dialog("open");
         },
         success: function(data) {
-          bootstrap_alert_success(I18n.t('plannings.edit.export.alyacom_success'));
+          notice(I18n.t('plannings.edit.export.alyacom_success'));
         },
         complete: function() {
           $("#dialog-alyacom").dialog("close");
@@ -919,7 +919,7 @@ var plannings_edit = function(params) {
     }
   });
 
-  hideAlert('.alert-success', timeAlert);
+  hideNotices();
 }
 
 var plannings_show = function(params){

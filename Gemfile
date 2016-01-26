@@ -139,5 +139,7 @@ gem 'rubyzip'
 
 gem 'bootstrap-select-rails'
 
+gem 'pnotify-rails', github: 'ngonzalez/pnotify-rails', branch: '3.0.0'
+
 #gem 'mapotempo_web_by_time_distance', path: '../mapotempo_web_by_time_distance'
 #gem 'mapotempo_web_import_vehicle_store', path: '../mapotempo_web_import_vehicle_store'

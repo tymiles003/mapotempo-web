@@ -156,7 +156,7 @@ var api_web_v01_destinations_index = function(params, api) {
         display_destinations(data);
       }
       else {
-        bootstrap_alert_danger(I18n.t('api_web.v01.destinations.index.none_destinations'));
+        stickyError(I18n.t('api_web.v01.destinations.index.none_destinations'));
       }
       progressBar && progressBar.done();
     },

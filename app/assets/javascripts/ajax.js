@@ -33,7 +33,7 @@ var completeWaiting = function() {
 
 var completeAjaxMap = function() {
   completeWaiting();
-  hideAlert('.alert-success', timeAlert);
+  hideNotices();
 }
 
 var ajaxError = function(request, status, error) {
@@ -51,7 +51,7 @@ var ajaxError = function(request, status, error) {
     text = status;
   }
   if (request.readyState != 0)
-    bootstrap_alert_danger(text);
+    stickyError(text);
 }
 
 var mustache_i18n = function() {

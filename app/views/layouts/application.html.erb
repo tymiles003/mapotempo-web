@@ -156,14 +156,13 @@
       </div>
 
       <div class="main container" data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
-        <div class="flash">
-          <%= bootstrap_flash.gsub('alert-dismissable', '').html_safe %>
-        </div>
         <div>
           <iframe name="click2call_iframe" style="display: none"></iframe>
         </div>
         <%= yield %>
       </div>
+
+      <%= render partial: "shared/flash_messages" %>
 
       <footer class="hidden-print">
         <div class="col-md-12">

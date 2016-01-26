@@ -127,7 +127,7 @@ function initTomTom(params) {
         data: userTomTomCredentials(),
         dataType: 'json',
         beforeSend: function(jqXHR, settings) {
-          hideAlert('.alert', 0);
+          hideNotices();
           $.each(requests, function(i, request) {
             request.abort();
           });
@@ -138,7 +138,7 @@ function initTomTom(params) {
         },
         success: function(data, textStatus, jqXHR) {
           if (data.error) {
-            bootstrap_alert_danger(data.error, textStatus, jqXHR);
+            error(data.error);
             tomTomError();
           } else {
             tomTomSuccess();
