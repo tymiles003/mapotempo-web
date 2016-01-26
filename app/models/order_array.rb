@@ -56,7 +56,7 @@ class OrderArray < ActiveRecord::Base
   def visits_orders
     orders.joins(:products)
     orders.group_by(&:visit_id).values.sort_by{ |visit_orders|
-      visit_orders[0].visit.destination.name
+      [visit_orders[0].visit.destination.name, visit_orders[0].visit.id]
     }.collect{ |visit_orders|
       visit_orders.sort_by(&:shift)
     }

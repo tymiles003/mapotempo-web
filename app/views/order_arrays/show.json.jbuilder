@@ -20,7 +20,7 @@ json.rows @visits_orders do |visit_orders, vehicle_usage|
     json.vehicle_name vehicle_usage.vehicle.name
     json.vehicle_color vehicle_usage.vehicle.color
   end
-  json.name visit_orders[0].visit.destination.name
+  json.name visit_orders[0].visit.destination.name + (visit_orders[0].visit.destination.visits.size > 1 ? ' - #' + (visit_orders[0].visit.destination.visits.index(visit_orders[0].visit) + 1).to_s + ' ' + (visit_orders[0].visit.ref || '') : '')
   json.comment visit_orders[0].visit.destination.comment
   json.orders visit_orders do |order|
     json.id order.id
