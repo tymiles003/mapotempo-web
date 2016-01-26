@@ -738,7 +738,8 @@ var destinations_index = function(params, api) {
       default_country: default_country,
       lat: center.lat,
       lng: center.lng,
-      take_over_default: take_over_default
+      take_over_default: take_over_default,
+      visits_attributes: [{}]
     };
     $.ajax({
       type: "post",
