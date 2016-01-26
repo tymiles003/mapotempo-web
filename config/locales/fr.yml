@@ -266,6 +266,16 @@ fr:
         store_end: "Dépôt fin"
         color: "Couleur"
         icon: "Icône"
+      # Duplicate for nested errors with autosave
+      stores:
+        name: "Nom"
+        address: "Adresse"
+        street: "Voie"
+        postalcode: "Code postal"
+        city: "Ville"
+        country: "Pays"
+        geocoding_accuracy: "Qualité du géocodage"
+        geocoding_level: "Niveau de géocodage"
       tag:
         label: "Libellé"
         color: "Couleur"

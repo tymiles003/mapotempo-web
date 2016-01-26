@@ -262,6 +262,16 @@ en:
         store_end: "End store"
         color: "Color"
         icon: "Icon"
+      # Duplicate for nested errors with autosave
+      stores:
+        name: "Name"
+        address: "Address"
+        street: "Street"
+        postalcode: "Postalcode"
+        city: "City"
+        country: "Country"
+        geocoding_accuracy: "Geocoding accuracy"
+        geocoding_level: "Geocoding level"
       tag:
         label: "Label"
         color: "Color"
