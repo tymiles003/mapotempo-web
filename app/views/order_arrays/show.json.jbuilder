@@ -15,7 +15,7 @@ json.columns @order_array.days.times do |i|
   json.date l @order_array.base_date + i
 end
 
-json.rows @destinations_orders do |destination_orders, vehicle_usage|
+json.rows @visits_orders do |visit_orders, vehicle_usage|
   if vehicle_usage
     json.vehicle_name vehicle_usage.vehicle.name
     json.vehicle_color vehicle_usage.vehicle.color
