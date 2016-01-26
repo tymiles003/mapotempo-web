@@ -128,11 +128,12 @@ class Route < ActiveRecord::Base
             end
 
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
-
-            if stop.position?
-              last_lat, last_lng = stop.lat, stop.lng
-            end
           end
+
+          if stop.position?
+            last_lat, last_lng = stop.lat, stop.lng
+          end
+
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_window = false
           stop.distance = stop.trace = stop.time = stop.wait_time = nil

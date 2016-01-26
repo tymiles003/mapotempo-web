@@ -225,4 +225,20 @@ class PlanningTest < ActiveSupport::TestCase
     r.compute
     assert r.stops[0].out_of_window
   end
+
+  test 'plan using stores without lat or lng' do
+    v = vehicle_usages(:vehicle_usage_one_one)
+    r = v.routes.take
+    r.planning.customer.stores.update_all lat: nil, lng: nil
+    r.compute
+    r.stops.sort_by(&:index).each_with_index do |stop, index|
+      if index.zero? || index == r.stops.length - 1
+        # Can't trace path, store has no lat / lng to start with
+        assert stop.distance.nil? && stop.trace.nil?
+      else
+        assert_equal 1.0, stop.distance
+        assert_equal 'trace', stop.trace
+      end
+    end
+  end
 end
