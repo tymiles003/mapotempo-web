@@ -75,10 +75,10 @@ var api_web_v01_zones_index = function(params) {
       if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
         var m = L.marker(new L.LatLng(store.lat, store.lng), {
           icon: L.divIcon({
-            html: '<i class="fa ' + (store.icon || 'fa-home') + ' fa-2x store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
-            iconSize: new L.Point(32, 32),
-            iconAnchor: new L.Point(16, 16),
-            popupAnchor: new L.Point(0, -12),
+            html: '<i class="fa ' + (store.icon || 'fa-home') + ' fa-lg store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
+            iconSize: new L.Point(20, 20),
+            iconAnchor: new L.Point(10, 10),
+            popupAnchor: new L.Point(0, -8),
             className: 'store-icon-container'
           })
         }).addTo(map.storesLayers).bindPopup(SMT['stops/show']({

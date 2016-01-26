@@ -53,10 +53,10 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
     var licon;
     if (options.store) {
       licon = L.divIcon({
-        html: '<i class="fa ' + (options.icon || 'fa-home') + ' fa-2x store-icon" style="color: ' + (options.color || 'black') + ';"></i>',
-        iconSize: new L.Point(32, 32),
-        iconAnchor: new L.Point(16, 16),
-        popupAnchor: new L.Point(0, -12),
+        html: '<i class="fa ' + (options.icon || 'fa-home') + ' fa-lg store-icon" style="color: ' + (options.color || 'black') + ';"></i>',
+        iconSize: new L.Point(20, 20),
+        iconAnchor: new L.Point(10, 10),
+        popupAnchor: new L.Point(0, -8),
         className: 'store-icon-container'
       });
     } else {
