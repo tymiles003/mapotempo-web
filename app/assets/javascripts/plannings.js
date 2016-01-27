@@ -880,6 +880,7 @@ var plannings_edit = function(params) {
   }).map(function(vehicle) {
     return vehicle.id
   });
+
   if (vehicleIdsPosition.length) {
     var vehicleLayer = L.featureGroup();
     map.addLayer(vehicleLayer);
@@ -918,8 +919,6 @@ var plannings_edit = function(params) {
       });
     }
   });
-
-  hideNotices();
 }
 
 var plannings_show = function(params){
