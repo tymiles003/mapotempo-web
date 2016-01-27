@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'value_to_boolean'
+
 class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
   skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource
@@ -25,7 +27,8 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
   swagger_api :index do
     summary 'Display all or some destinations.'
     param :query, :ids, :array, :optional, 'Destination ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
-    param :query, :store_ids, :array, :optional, 'Sotre ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
+    param :query, :store_ids, :array, :optional, 'Store ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
+    param :query, :disable_clusters, 'boolean', :optional, 'Set this disable_clusters to true/1 to disable clusters on map.'
   end
 
   swagger_api :edit_position do
@@ -59,6 +62,7 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
     if params.key?(:store_ids)
       @stores = current_user.customer.stores.where(ParseIdsRefs.where(Store, params[:store_ids].split(',')))
     end
+    @disable_clusters = ValueToBoolean.value_to_boolean(params[:disable_clusters], false)
     @method = request.method_symbol
   end
 

@@ -110,7 +110,7 @@ var api_web_v01_zones_index = function(params) {
   var ajaxParams = {};
   if (params.zone_ids) ajaxParams.ids = params.zone_ids.join(',');
   if (params.destinations) ajaxParams.destinations = params.destinations;
-  if (params.destination_ids) ajaxParams.destination_ids = params.destination_ids.join(',');
+  if (params.destination_ids && !params.destinations) ajaxParams.destination_ids = params.destination_ids.join(',');
   if (params.vehicle_usage_set_id) ajaxParams.vehicle_usage_set_id = params.vehicle_usage_set_id;
   if (params.store_ids) ajaxParams.store_ids = params.store_ids.join(',');
   $.ajax({

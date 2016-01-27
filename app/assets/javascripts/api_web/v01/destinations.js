@@ -114,20 +114,22 @@ var api_web_v01_destinations_index = function(params, api) {
   map.addLayer(markersLayers);
 
   if (api == 'destinations') {
-    var cluster = map.cluster = new L.MarkerClusterGroup({
-      showCoverageOnHover: false
-    });
-    map.addLayer(cluster);
+    if (!params.disable_clusters) {
+      var cluster = map.cluster = new L.MarkerClusterGroup({
+        showCoverageOnHover: false
+      });
+      map.addLayer(cluster);
 
-    map.on('zoomend', function(e) {
-      if (map.getZoom() > 14) {
-        map.removeLayer(cluster);
-        map.addLayer(markersLayers);
-      } else {
-        map.removeLayer(markersLayers);
-        map.addLayer(cluster);
-      }
-    });
+      map.on('zoomend', function(e) {
+        if (map.getZoom() > 14) {
+          map.removeLayer(cluster);
+          map.addLayer(markersLayers);
+        } else {
+          map.removeLayer(markersLayers);
+          map.addLayer(cluster);
+        }
+      });
+    }
 
     var storesLayers = map.storesLayers = L.featureGroup();
     storesLayers.addTo(map);

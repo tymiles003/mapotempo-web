@@ -15,6 +15,7 @@ controller.js(
   map_lng: @customer.default_position[:lng],
   ids: @destinations ? @destinations.collect(&:id) : nil,
   store_ids: @stores ? @stores.collect(&:id) : nil,
+  disable_clusters: @disable_clusters,
   method: @method
 )
 %>
