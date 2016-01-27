@@ -1,6 +1,6 @@
 
 <script type="text/javascript">
-  $(document).ready(function() {
+  $(document).on('page:change', function() {
     <% flash.each do |k, v| %>
       <% if k == 'notice' %>
         notice(<%= v.to_json.html_safe %>);
