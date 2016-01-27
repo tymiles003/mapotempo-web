@@ -650,6 +650,7 @@ en:
       optimize_each: "Optimize all routes"
       optimize_each_confirm: "Run an optimization calculation on each road?"
       optimize_confirm: "Run an optimization calculation?"
+      optimize_complete: "Optimization complete"
       zoning_confirm: "Save and apply the new zoning?"
       route_placeholder: "Route ref."
       service_time: "Service Time"

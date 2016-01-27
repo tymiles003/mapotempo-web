@@ -890,7 +890,10 @@ var plannings_edit = function(params) {
 
   $("#dialog-optimizer").dialog({
     autoOpen: false,
-    modal: true
+    modal: true,
+    close: function(event, ui) {
+      notice(I18n.t('plannings.edit.optimize_complete'));
+    }
   });
 
   $("#dialog-tomtom").dialog({
