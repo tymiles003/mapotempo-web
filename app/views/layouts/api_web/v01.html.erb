@@ -39,10 +39,16 @@
 
   <body>
     <div class="main container" data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
-      <div class="flash">
-        <%= bootstrap_flash.gsub('alert-dismissable', '').html_safe %>
-      </div>
       <%= yield %>
     </div>
+    <style type="text/css">
+      @media screen and (min-width: 800px) {
+        .ui-pnotify {
+          top: 20px;
+          right: 20px;
+        }
+      }
+    </style>
+    <%= render partial: "shared/flash_messages" %>
   </body>
 </html>

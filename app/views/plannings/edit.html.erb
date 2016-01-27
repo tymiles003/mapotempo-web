@@ -1,9 +1,11 @@
 <% content_for :title, t('.title') %>
 
 <style type="text/css">
-  .ui-pnotify {
-    top: 60px;
-    right: 370px;
+  @media screen and (min-width: 800px) {
+    .ui-pnotify {
+      top: 60px;
+      right: 370px; // SideMenu Width
+    }
   }
 </style>
 
