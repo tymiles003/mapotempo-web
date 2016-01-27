@@ -75,7 +75,7 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
     if !visit.tags.empty?
       json.tags_present do
         json.tags do
-          json.array! visit.tags :label
+          json.array! visit.tags, :label
         end
       end
     end

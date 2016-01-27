@@ -53,7 +53,7 @@
   {{/store}}
   {{/planning_id}}
   {{#edit_planning}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/edit_planning}}
-  <b>{{name}}</b><br/>
+  <b>{{#ref}}{{^visits}}{{ref}} {{/visits}}{{/ref}}{{name}}</b><br/>
   {{#street}}{{street}}<br/>{{/street}}
   {{#detail}}
     {{detail}}<br/>
