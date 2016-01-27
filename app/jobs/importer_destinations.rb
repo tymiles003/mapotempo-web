@@ -27,7 +27,8 @@ class ImporterDestinations < ImporterBase
   def columns_route
     {
       route: I18n.t('destinations.import_file.route'),
-      active: I18n.t('destinations.import_file.active')
+      active: I18n.t('destinations.import_file.active'),
+      stop_type: I18n.t('destinations.import_file.stop_type')
     }
   end
 
@@ -79,6 +80,10 @@ class ImporterDestinations < ImporterBase
   end
 
   def import_row(replace, name, row, line)
+    if !row[:stop_type].nil? && row[:stop_type] != I18n.t('destinations.import_file.stop_type_visit')
+      return
+    end
+
     if row[:name].nil? || (row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?))
       raise I18n.t('destinations.import_file.missing_data', line: line)
     end

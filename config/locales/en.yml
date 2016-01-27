@@ -559,6 +559,8 @@ en:
     import_file:
       ref: "reference"
       route: "route"
+      stop_type: "stop type"
+      stop_type_visit: "visit"
       name: "name"
       street: "street"
       detail: "detail"
