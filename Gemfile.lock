@@ -196,8 +196,6 @@ GEM
       warden (~> 1.2.3)
     devise-i18n (0.12.1)
     devise-i18n-views (0.3.7)
-    devise-token_authenticatable (0.4.0)
-      devise (~> 3.5.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
     domain_name (0.5.25)
@@ -507,7 +505,6 @@ DEPENDENCIES
   devise
   devise-i18n
   devise-i18n-views
-  devise-token_authenticatable
   execjs
   font-awesome-rails
   grape!

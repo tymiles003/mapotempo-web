@@ -73,7 +73,6 @@ gem 'therubyracer'
 gem 'devise'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
-gem 'devise-token_authenticatable'
 gem 'cancancan', '=1.11.0' # FIXME wait for ruby 2.0
 gem 'lograge'
 gem 'validates_timeliness'
@@ -85,6 +84,8 @@ gem 'twitter_bootstrap_form_for', github: 'frodrigo/twitter_bootstrap_form_for' 
 gem 'bootstrap-filestyle-rails'
 gem 'bootstrap-wysihtml5-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'bootstrap-select-rails'
+
 gem 'sanitize'
 gem 'iconv'
 
@@ -136,8 +137,6 @@ gem 'savon-multipart', '~> 2.0.2'
 gem 'rest-client'
 gem 'macaddr'
 gem 'rubyzip'
-
-gem 'bootstrap-select-rails'
 
 gem 'pnotify-rails'
 
