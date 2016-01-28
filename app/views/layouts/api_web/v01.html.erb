@@ -41,6 +41,7 @@
     <div class="main container" data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
       <%= yield %>
     </div>
+
     <style type="text/css">
       @media screen and (min-width: 800px) {
         .ui-pnotify {
@@ -49,6 +50,7 @@
         }
       }
     </style>
+
     <%= render partial: "shared/flash_messages" %>
   </body>
 </html>

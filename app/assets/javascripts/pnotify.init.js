@@ -27,6 +27,7 @@ PNotify.prototype.options.styling = 'fontawesome';
       shadow: true,
       hide: true,
       buttons: {
+        sticker: false,
         closer: true
       }
     }, options));
