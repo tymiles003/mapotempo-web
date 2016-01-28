@@ -51,6 +51,14 @@ class Vehicle < ActiveRecord::Base
     COLORS_TABLE
   end
 
+  def default_router
+    router || customer.router
+  end
+
+  def default_speed_multiplicator
+    (customer.speed_multiplicator || 1) * (speed_multiplicator || 1)
+  end
+
   def available_position?
     !!tomtom_id && customer.tomtom?
   end

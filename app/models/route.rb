@@ -78,12 +78,12 @@ class Route < ActiveRecord::Base
       service_time_start = service_time_start_value
       service_time_end = service_time_end_value
       self.end = self.start = departure || vehicle_usage.default_open
-      speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1)
+      speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
       if !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
         last_lat, last_lng = vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng
       end
       quantity = 0
-      router = vehicle_usage.vehicle.router || planning.customer.router
+      router = vehicle_usage.vehicle.default_router
       stops_time = {}
 
       # Add service time
@@ -325,7 +325,7 @@ class Route < ActiveRecord::Base
 
   def optimize(matrix_progress, &optimizer)
     stops_on = stops_segregate[true]
-    router = vehicle_usage.vehicle.router || planning.customer.router
+    router = vehicle_usage.vehicle.default_router
     position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
     position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
     amalgamate_stops_same_position(stops_on) { |positions|
@@ -340,7 +340,7 @@ class Route < ActiveRecord::Base
       }
 
       positions = [position_start] + positions + [position_stop]
-      speed_multiplicator = (planning.customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1)
+      speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
       order = unnil_positions(positions, tws){ |positions, tws, rest_tws|
         positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)].collect{ |position| position[0..1] }
         matrix = router.matrix(positions, positions, speed_multiplicator, 'time', &matrix_progress)

@@ -138,7 +138,7 @@ class Zoning < ActiveRecord::Base
 
   def isowhat?(what, vehicle_usage_set)
     vehicle_usage_set.vehicle_usages.find{ |vehicle_usage|
-      router = (vehicle_usage.vehicle.router || customer.router)
+      router = vehicle_usage.vehicle.default_router
       router.method(what).call && !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
     }
   end
@@ -152,9 +152,9 @@ class Zoning < ActiveRecord::Base
 
   def isowhat_vehicle_usage(what_qm, what, size, vehicle_usage)
     if vehicle_usage
-      router = (vehicle_usage.vehicle.router || customer.router)
+      router = vehicle_usage.vehicle.default_router
       if router.method(what_qm).call && !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
-        geom = router.method(what).call(vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng, size, (customer.speed_multiplicator || 1) * (vehicle_usage.vehicle.speed_multiplicator || 1))
+        geom = router.method(what).call(vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng, size, vehicle_usage.vehicle.default_speed_multiplicator)
       end
       if geom
         zone = zones.to_a.find{ |zone| zone.vehicle_id == vehicle_usage.vehicle.id }
