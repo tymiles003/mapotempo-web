@@ -962,8 +962,8 @@ en:
         none: "None"
       service_time:
         default: "%{n} (default value)"
-        help_start: "Necessary preparation time. This time will be added before the first stop of a tour. The value can also be defined at the vehicle configuration list level."
-        help_end: "Time required at the end of a tour. This time will be added after the last stop of a tour. The value can also be defined at the vehicle configuration list level."
+        help_start: "Duration added before the first stop."
+        help_end: "Duration added after the last stop."
 
   vehicle_usage_sets:
     default:
@@ -988,8 +988,8 @@ en:
       store_rest:
         none: "None"
       service_time:
-        help_start: "Necessary preparation time. This time will be added before the first stop of a tour."
-        help_end: "Time required at the end of a tour. This time will be added after the last stop of a tour."
+        help_start: "Duration added before the first stop."
+        help_end: "Duration added after the last stop."
       rest_duration:
         help: "Requires rest start and stop times"
       rest_stop:

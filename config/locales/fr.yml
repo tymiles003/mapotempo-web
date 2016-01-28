@@ -980,8 +980,8 @@ fr:
         none: "Aucun"
       service_time:
         default: "%{n} (valeur par défaut)"
-        help_start: "Durée de préparation nécessaire. Ce temps sera ajouté avant le premier arrêt d'une tournée."
-        help_end: "Durée requise à la fin d'une tournée. Ce temps sera ajouté après le dernier arrêt d'une tournée."
+        help_start: "Durée ajoutée avant le premier arrêt."
+        help_end: "Durée ajoutée après le dernier arrêt."
 
   vehicle_usage_sets:
     default:
@@ -1006,8 +1006,8 @@ fr:
       store_rest:
         none: "Aucun"
       service_time:
-        help_start: "Durée de préparation nécessaire. Ce temps sera ajouté avant le premier arrêt d'une tournée."
-        help_end: "Durée requise à la fin d'une tournée. Ce temps sera ajouté après le dernier arrêt d'une tournée."
+        help_start: "Durée ajoutée avant le premier arrêt."
+        help_end: "Durée ajoutée après le dernier arrêt."
       rest_duration:
         help: "Requiert un horaire de début et fin de pause"
       rest_stop:
