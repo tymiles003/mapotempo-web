@@ -154,9 +154,10 @@ span.color[data-color=''][data-selected]:after {
 }
 
 .leaflet-popup-content {
-  max-height: 300px;
-  overflow-y: auto;
-
+  .visits {
+    max-height: 200px;
+    overflow-y: auto;
+  }
   .ui-state-error {
     border: 0px;
   }
