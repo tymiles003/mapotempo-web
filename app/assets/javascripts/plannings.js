@@ -767,10 +767,10 @@ var plannings_edit = function(params) {
       if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
         var m = L.marker(new L.LatLng(store.lat, store.lng), {
           icon: L.divIcon({
-            html: '<i class="fa ' + (store.icon || 'fa-home') + ' fa-lg store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
-            iconSize: new L.Point(20, 20),
-            iconAnchor: new L.Point(10, 10),
-            popupAnchor: new L.Point(0, -8),
+            html: '<i class="fa ' + (store.icon || 'fa-home') + ' ' + map.iconSize[store.icon_size || 'large'].name + ' store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
+            iconSize: new L.Point(map.iconSize[store.icon_size || 'large'].size, map.iconSize[store.icon_size || 'large'].size),
+            iconAnchor: new L.Point(map.iconSize[store.icon_size || 'large'].size / 2, map.iconSize[store.icon_size || 'large'].size / 2),
+            popupAnchor: new L.Point(0, -Math.trunc(map.iconSize[store.icon_size || 'large'].size / 2.5)),
             className: 'store-icon-container'
           })
         }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {

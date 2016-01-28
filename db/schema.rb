@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125093540) do
+ActiveRecord::Schema.define(version: 20160128105941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,8 +247,8 @@ ActiveRecord::Schema.define(version: 20160125093540) do
     t.integer  "wait_time"
     t.integer  "lock_version",      default: 0,                 null: false
     t.string   "type",              default: "StopDestination", null: false
-    t.integer  "visit_id"
     t.integer  "drive_time"
+    t.integer  "visit_id"
   end
 
   add_index "stops", ["route_id"], name: "fk__stops_route_id", using: :btree
@@ -270,6 +270,7 @@ ActiveRecord::Schema.define(version: 20160125093540) do
     t.integer  "geocoding_level"
     t.string   "color"
     t.string   "icon"
+    t.string   "icon_size"
   end
 
   add_index "stores", ["customer_id"], name: "fk__stores_customer_id", using: :btree

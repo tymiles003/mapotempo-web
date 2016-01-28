@@ -62,5 +62,20 @@ var mapInitialize = function(params) {
       attribution: mapLayer.attribution
     });
 
+  map.iconSize = {
+    large: {
+      name: 'fa-2x',
+      size: 32
+    },
+    medium: {
+      name: 'fa-lg',
+      size: 20
+    },
+    small: {
+      name: '',
+      size: 16
+    }
+  };
+
   return map;
 }

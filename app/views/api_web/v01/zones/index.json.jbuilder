@@ -10,7 +10,7 @@ else
   stores = @zoning.customer.stores
 end
 json.stores stores do |store|
-  json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon
+  json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
 end
 json.zoning @zones do |zone|
   json.extract! zone, :id, :vehicle_id, :polygon

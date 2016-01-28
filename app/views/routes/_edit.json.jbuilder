@@ -20,7 +20,7 @@ end
 number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
 json.store_start do
-  json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon
+  json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
   (json.time l(route.start, format: :hour_minute)) if route.start
   (json.with_service_time l(display_start_time(route), format: :hour_minute)) if display_start_time(route)
   (json.geocoded true) if !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?
@@ -100,7 +100,7 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
   json.duration duration if duration
 end
 json.store_stop do
-  json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon
+  json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
   (json.time l(route.end, format: :hour_minute)) if route.end
   (json.with_service_time l(display_end_time(route), format: :hour_minute)) if display_end_time(route)
   (json.geocoded true) if !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?

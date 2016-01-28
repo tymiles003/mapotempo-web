@@ -29,8 +29,9 @@ class V01::Entities::Store < Grape::Entity
   expose(:country, documentation: { type: String })
   expose(:lat, documentation: { type: Float })
   expose(:lng, documentation: { type: Float })
-  expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000.' })
-  expose(:icon, documentation: { type: String, desc: 'Icon name from font-awesome. For instance: fa-home.' })
+  expose(:color, documentation: { type: String, desc: 'Color code with #. Default: #000000.' })
+  expose(:icon, documentation: { type: String, desc: 'Icon name from font-awesome. Default: fa-home.' })
+  expose(:icon_size, documentation: { type: String, values: ['large', 'medium', 'small'], desc: 'Icon size. Default: large.' })
   expose(:geocoding_accuracy, documentation: { type: Float })
   expose(:geocoding_level, documentation: { type: String, values: ['point', 'house', 'street', 'intersection', 'city'] })
 end

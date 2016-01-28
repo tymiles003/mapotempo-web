@@ -47,6 +47,7 @@ class Store < ActiveRecord::Base
   validates_inclusion_of :lng, in: -180..180, allow_nil: true, message: I18n.t('activerecord.errors.models.store.lng_outside_range')
   validates_inclusion_of :geocoding_accuracy, in: 0..1, allow_nil: true, message: I18n.t('activerecord.errors.models.destination.geocoding_accuracy_outside_range')
   validates_inclusion_of :icon, in: FontAwesome::icons_table, allow_blank: true, message: I18n.t('activerecord.errors.models.store.icon_unknown')
+  validates :icon_size, inclusion: { in: %w(small medium large), allow_blank: true, message: I18n.t('activerecord.errors.models.store.icon_size_invalid') }
   validates_with LocalizationStoreValidator, fields: [:street, :city, :lat, :lng]
 
   before_create :create_geocode

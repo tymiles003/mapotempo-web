@@ -262,6 +262,7 @@ en:
         store_end: "End store"
         color: "Color"
         icon: "Icon"
+        icon_size: "Icon size"
       # Duplicate for nested errors with autosave
       stores:
         name: "Name"
@@ -399,6 +400,7 @@ en:
           lat_outside_range: "must be inside range -90..90"
           lng_outside_range: "must be inside range -180..180"
           icon_unknown: "is not in font-awesome icon list"
+          icon_size_invalid: "is not a valid size"
         route:
           attributes:
             stops:
@@ -822,6 +824,10 @@ en:
       ref_help: "A free reference"
       locate_manually: "Locate manually on the map"
       country_default: "%{n} (default value)"
+      icon_size:
+        small: "small"
+        medium: "medium"
+        large: "large"
     edit:
       title: "Editing store"
     import:
@@ -1055,6 +1061,7 @@ en:
 
   web:
     form:
+      default: "%{n} (default value)"
       empty_entry: "- N/A -"
     select2:
       empty_result: "No results matched"

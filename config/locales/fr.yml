@@ -266,6 +266,7 @@ fr:
         store_end: "Dépôt fin"
         color: "Couleur"
         icon: "Icône"
+        icon_size: "Taille d'icône"
       # Duplicate for nested errors with autosave
       stores:
         name: "Nom"
@@ -413,6 +414,7 @@ fr:
           lat_outside_range: "doit être comprise entre -90..90"
           lng_outside_range: "doit être comprise entre -180..180"
           icon_unknown: "n'est pas une icône font-awesome autorisée"
+          icon_size_invalid: "n'est pas une taille valide"
         route:
           attributes:
             stops:
@@ -836,6 +838,10 @@ fr:
       ref_help: "Référence libre"
       locate_manually: "Positionner manuellement sur la carte"
       country_default: "%{n} (valeur par défaut)"
+      icon_size:
+        small: "petite"
+        medium: "moyenne"
+        large: "grande"
     edit:
       title: "Modifier dépôt"
     import:
@@ -1073,6 +1079,7 @@ fr:
 
   web:
     form:
+      default: "%{n} (valeur par défaut)"
       empty_entry: "- Non renseigné -"
     select2:
       empty_result: "Pas de résultats"
