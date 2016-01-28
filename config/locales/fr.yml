@@ -1008,6 +1008,10 @@ fr:
       service_time:
         help_start: "Durée de préparation nécessaire. Ce temps sera ajouté avant le premier arrêt d'une tournée."
         help_end: "Durée requise à la fin d'une tournée. Ce temps sera ajouté après le dernier arrêt d'une tournée."
+      rest_duration:
+        help: "Requiert un horaire de début et fin de pause"
+      rest_stop:
+        help: "Sans tenir compte de la durée de pause"
 
   visits:
     form:

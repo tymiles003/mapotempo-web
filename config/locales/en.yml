@@ -990,6 +990,10 @@ en:
       service_time:
         help_start: "Necessary preparation time. This time will be added before the first stop of a tour."
         help_end: "Time required at the end of a tour. This time will be added after the last stop of a tour."
+      rest_duration:
+        help: "Requires rest start and stop times"
+      rest_stop:
+        help: "Without taking into account rest duration"
 
   visits:
     form:
