@@ -869,26 +869,13 @@ var destinations_index = function(params, api) {
     });
 
     var tableOptions = {
-      headers: {
-        0: {
-          sorter: false
-        },
-        5: {
-          sorter: "digit"
-        },
-        7: {
-          sorter: false
-        },
-        8: {
-          sorter: false
-        }
-      },
       textExtraction: function(node, table, cellIndex) {
-        if (cellIndex == 5) {
+        var $node = $(node);
+        if ($node.hasClass('phone')) {
           if ($("[name$=\\[phone_number\\]]", node).val()) {
             return simply_phone(($("[name$=\\[phone_number\\]]", node).attr('value')));
           }
-        } else if (cellIndex == 6) {
+        } else if ($node.hasClass('geocoding')) {
           var ret = 0;
           switch ($("[name$=\\[geocoding_level\\]]", node).val()) {
             case 'point':
@@ -910,7 +897,7 @@ var destinations_index = function(params, api) {
           if ($("[name$=\\[geocoding_accuracy\\]]", node).val())
             ret += parseFloat($("[name$=\\[geocoding_accuracy\\]]", node).val()) * 100;
           return ret;
-        } else if (cellIndex == 7) {
+        } else if ($node.hasClass('visit')) {
           return $.map($("input[type!=hidden]", node), function(e, i) {
             return e.value;
           }).sort().join(',') + $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
@@ -943,25 +930,17 @@ var destinations_index = function(params, api) {
         filter_cssFilter: "tablesorter-filter",
         filter_placeholder: {search: I18n.t('web.placeholder_filter')},
         filter_functions: {
-          1: filter_text,
-          2: filter_text,
-          3: filter_text,
-          4: filter_text,
-          5: filter_phone,
-          6: filter_text,
-          7: filter_text
+          '.name': filter_text,
+          '.address': filter_text,
+          '.country': filter_text,
+          '.comment': filter_text,
+          '.phone': filter_phone,
+          '.visit': filter_text
         },
         columnSelector_container: $('#columnSelector'),
         columnSelector_name: 'data-selector-name',
         columnSelector_priority: 'data-priority',
-        columnSelector_layout: '<li role="presentation"><label><input type="checkbox">{name}</label></li>',
-        columnSelector_columns: {
-          0: 'disable',
-          1: 'disable',
-          2: 'disable',
-          7: 'disable',
-          8: 'disable'
-        }
+        columnSelector_layout: '<li role="presentation"><label><input type="checkbox">{name}</label></li>'
       }
     };
     $("#destination_box table").tablesorter(tableOptions).bind('filterEnd', function(e, filter) {

@@ -22,13 +22,13 @@
   <div class="col-md-12">
     <table class="tablesorter">
       <thead><tr>
-        <th>
+        <th data-sorter="false" class="filter-false columnSelector-disable">
           <button type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button>
         </th>
-        <th>
+        <th class="name columnSelector-disable">
           <div class="col-title"><%= t 'activerecord.attributes.destination.name' %></div>
         </th>
-        <th>
+        <th class="address columnSelector-disable">
           <div class="col-title">
             <span><%= t 'activerecord.attributes.destination.street' %></span>,
             <span><%= t 'activerecord.attributes.destination.detail' %></span>,
@@ -41,19 +41,19 @@
         # data-priority is used to hide columns depending the width of table
         # http://view.jquerymobile.com/1.3.2/dist/demos/widgets/table-column-toggle/ 
         %>
-        <th>
+        <th class="country">
           <div class="col-title"><%= t 'activerecord.attributes.destination.country' %></div>
         </th>
-        <th>
+        <th class="comment">
           <div class="col-title"><%= t 'activerecord.attributes.destination.comment_small' %></div>
         </th>
-        <th>
+        <th data-sorter="digit" class="phone">
           <div class="col-title"><%= t 'activerecord.attributes.destination.phone_number_small' %></div>
         </th>
-        <th title="<%= t '.geocoding_column_help' %>">
+        <th title="<%= t '.geocoding_column_help' %>" class="geocoding filter-false">
           <div class="col-title"><%= t 'activerecord.attributes.destination.geocoding_accuracy_small' %></div>
         </th>
-        <th>
+        <th data-sorter="false" class="visit columnSelector-disable">
           <div class="col-title"><%= t 'activerecord.models.visit' %></div>
           <div id="visit-subtitles">
             <% if @customer.enable_references %>
@@ -68,7 +68,7 @@
             <div class="visit-subtitle" style="width: 4em;"><%= t 'activerecord.attributes.visit.close_small' %></div>
           </div>
         </th>
-        <th></th>
+        <th data-sorter="false" class="filter-false columnSelector-disable"></th>
       </tr></thead>
       <tbody class="destinations"></tbody>
     </table>
