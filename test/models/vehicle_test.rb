@@ -31,4 +31,14 @@ class VehicleTest < ActiveSupport::TestCase
     o.save!
     assert o.vehicle_usages[0].routes[-1].out_of_date
   end
+
+  test 'should validate email' do
+    v = vehicles(:vehicle_one)
+    assert v.contact_email.nil?
+    assert v.valid?
+    assert v.update! contact_email: ""
+    assert v.valid?
+    assert v.update! contact_email: "test@example.com"
+    assert v.valid?
+  end
 end
