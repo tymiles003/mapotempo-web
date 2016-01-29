@@ -460,12 +460,12 @@ en:
       country: "England"
     menu:
       parameters: "Parameters"
-      customer: "Customer"
+      customer: "Global settings"
       user: "User"
       user_settings: "User's Settings"
       customers: "Customers"
     edit:
-      title: "Editing customer"
+      title: "Editing global settings"
       user:
         connect_as: "Connect as…"
         list: "Users list"
@@ -921,7 +921,7 @@ en:
         help: "Force usage of this router"
       speed_multiplicator:
         default: "%{n} (default value)"
-        help: "A value higher than 100% mean higher speed. The global tune up set on customer is also used on computation."
+        help: "A value higher than 100% mean higher speed. The global tune up set on settings is also used on computation."
       contact_email:
         help: "Driver E-Mail"
 

@@ -474,12 +474,12 @@ fr:
       country: "France"
     menu:
       parameters: "Paramètres"
-      customer: "Compte client"
+      customer: "Paramètrage global"
       user: "Compte utilisateur"
       user_settings: "Paramètres utilisateur"
       customers: "Comptes client"
     edit:
-      title: "Modifier compte client"
+      title: "Modifier paramètrage global"
       user:
         connect_as: "Connecter en tant que…"
         list: "Liste des utilisateurs"
@@ -937,7 +937,7 @@ fr:
         help: "Forcer l'utilisation de ce calculateur d'itinéraire"
       speed_multiplicator:
         default: "%{n} (valeur par défaut)"
-        help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du compte client est également utilisé lors des calculs."
+        help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du paramètrage est également utilisé lors des calculs."
       store_rest:
         none: "Aucun"
       contact_email:
