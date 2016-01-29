@@ -5,7 +5,7 @@
       <% if k == 'notice' %>
         notice(<%= v.to_json.html_safe %>);
       <% elsif ['alert', 'error'].include?(k) %>
-        error(<%= v.to_json.html_safe %>);
+        stickyError(<%= v.to_json.html_safe %>);
       <% end %>
     <% end %>
   });
