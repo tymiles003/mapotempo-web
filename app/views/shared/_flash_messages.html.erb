@@ -4,7 +4,7 @@
     <% flash.each do |k, v| %>
       <% if k == 'notice' %>
         notice(<%= v.to_json.html_safe %>);
-      <% elsif k == 'error' %>
+      <% elsif ['alert', 'error'].include?(k) %>
         error(<%= v.to_json.html_safe %>);
       <% end %>
     <% end %>
