@@ -1,6 +1,7 @@
 
 <script type="text/javascript">
   $(document).on('page:change', function() {
+    hideNotices();
     <% flash.each do |k, v| %>
       <% if k == 'notice' %>
         notice(<%= v.to_json.html_safe %>);
