@@ -37,6 +37,41 @@ class OrtTest < ActionController::TestCase
     assert_equal [0, 3, 2, 1, 4], @ort.send(:unzip_cluster, [0, 1, 2, 3], c, m)
   end
 
+  test 'shoud zip cluster with rest' do
+    m = [
+      [[ 0,  0], [ 1,  1], [ 1,  1], [10, 10], [ 0,  0]],
+      [[ 1,  1], [ 0,  0], [ 1,  1], [10, 10], [ 1,  1]],
+      [[ 1,  1], [ 1,  1], [ 0,  0], [10, 10], [ 1,  1]],
+      [[10, 10], [10, 10], [10, 10], [ 0,  0], [10, 10]],
+      [[ 0,  0], [ 1,  1], [ 1,  1], [10, 10], [ 0,  0]],
+    ]
+    t = [
+      [nil, nil, 0],
+      [nil, nil, 0],
+      [nil, nil, 0],
+      [nil, nil, 0],
+      [1, 2, 1],
+    ]
+
+    a, b, c = @ort.send(:zip_cluster, m, t, 5)
+
+    assert_equal [
+      [[ 0,  0], [10, 10], [ 1,  1], [ 0,  0]],
+      [[10, 10], [ 0,  0], [10, 10], [10, 10]],
+      [[ 1,  1], [10, 10], [ 0,  0], [ 1,  1]],
+      [[ 0,  0], [10, 10], [ 1,  1], [ 0,  0]],
+    ], a
+    assert_equal [
+      [nil, nil, 0],
+      [nil, nil, 0],
+      [nil, nil, 0],
+    ], b
+
+    assert_equal [0, 3, 2, 1, 4, 5], @ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m)
+    assert_equal [0, 3, 2, 1, 5, 4], @ort.send(:unzip_cluster, [0, 1, 2, 4, 3], c, m)
+    assert_equal [0, 3, 5, 2, 1, 4], @ort.send(:unzip_cluster, [0, 1, 4, 2, 3], c, m)
+  end
+
   test 'shoud not zip cluster' do
     m = [
       [[ 0,  0], [10, 10], [20, 20], [30, 30], [ 0,  0]],

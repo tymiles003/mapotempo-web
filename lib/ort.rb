@@ -107,8 +107,16 @@ class Ort
         ret << i - 1 - zip_key.length + original_matrix.length - 1
       elsif zip_key[i - 1].data_items.length > 1
         sub = zip_key[i - 1].data_items.collect{ |i| i[0] }
-        start = ret[-1]
-        stop = i < zip_key.length ? zip_key[i].data_items[0][0] : original_matrix.length - 1
+
+        # Last non rest-without-location
+        start = ret.reverse.find{ |r| r < original_matrix.size }
+
+        j = 0
+        while(result[ii + j] > zip_key.length) do # Next non rest-without-location
+          j += 1
+        end
+        stop = result[ii + j] < zip_key.length ? zip_key[result[ii + j]].data_items[0][0] : original_matrix.length - 1
+
         sub_size = sub.length
         min_order = if sub_size <= 5
           sub.permutation.collect{ |p|
