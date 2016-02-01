@@ -221,3 +221,14 @@ html.turbolinks-progress-bar::before {
 .store-icon {
   text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
+
+/*
+  PNotify
+*/
+.ui-pnotify {
+  margin: 30px;
+  top: 30px;
+  right: 30px;
+  z-index: 10 !important;
+}
+

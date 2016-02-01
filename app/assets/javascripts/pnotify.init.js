@@ -29,8 +29,15 @@ PNotify.prototype.options.styling = 'fontawesome';
       buttons: {
         sticker: false,
         closer: true
+      },
+      nonblock: {
+        nonblock: true
       }
     }, options));
+  };
+  function desktop_notify(status, message, options) {
+    PNotify.desktop.permission();
+    notify(status, message, $.extend({ title: "Mapotempo", desktop: { desktop: true }}, options));
   };
   $.extend(window, {
     stickyNotice: function(message, options) {
@@ -39,11 +46,17 @@ PNotify.prototype.options.styling = 'fontawesome';
     notice: function(message, options) {
       notify('success', message, options);
     },
+    desktopNotice: function(message, options) {
+      desktop_notify('success', message, $.extend({}, options));
+    },
     stickyError: function(message, options) {
       notify('error', message, $.extend(options, { hide: false }));
     },
     error: function(message, options) {
       notify('error', message, options);
+    },
+    desktopError: function(message, options) {
+      desktop_notify('error', message, $.extend({}, options));
     },
     hideNotices: function() {
       PNotify.removeAll();

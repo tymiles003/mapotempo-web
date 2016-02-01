@@ -37,20 +37,8 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   </head>
 
-  <body>
-    <div class="main container" data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
-      <%= yield %>
-    </div>
-
-    <style type="text/css">
-      @media screen and (min-width: 800px) {
-        .ui-pnotify {
-          top: 20px;
-          right: 20px;
-        }
-      }
-    </style>
-
+  <body class="main container" data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
+    <%= yield %>
     <%= render partial: "shared/flash_messages" %>
   </body>
 </html>

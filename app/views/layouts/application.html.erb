@@ -37,7 +37,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   </head>
 
-  <body>
+  <body data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
     <div id="wrapper">
       <div class="navbar navbar-default navbar-static-top">
         <div class="navbar-header">
@@ -47,7 +47,7 @@
           </button>
 
           <!-- Be sure to leave the brand out there if you want it shown -->
-          <a class="navbar-brand mapotempo-logo" href="/"><%= image_tag request.env['reseller'].logo_small.url || "logo_mapotempo.svg", width: 150, height: 40, alt: request.env['reseller'].name %></a>
+          <a class="navbar-brand" href="/"><%= image_tag request.env['reseller'].logo_small.url || "logo_mapotempo.svg", width: 150, height: 40, alt: request.env['reseller'].name %></a>
         </div>
 
         <!-- Place everything within .navbar-collapse to hide it until above 768px -->
@@ -155,18 +155,12 @@
 
       </div>
 
-      <div class="main container" data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
+      <div class="main container">
         <div>
           <iframe name="click2call_iframe" style="display: none"></iframe>
         </div>
         <%= yield %>
       </div>
-
-      <style type="text/css">
-        .ui-pnotify {
-          margin: 30px;
-        }
-      </style>
 
       <%= render partial: "shared/flash_messages" %>
 

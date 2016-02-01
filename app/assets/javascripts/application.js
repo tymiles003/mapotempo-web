@@ -76,6 +76,8 @@
 //= require leaflet.polylineoffset
 //= require pnotify/pnotify.js
 //= require pnotify/pnotify.buttons.js
+//= require pnotify/pnotify.nonblock.js
+//= require pnotify/pnotify.desktop.js
 //= require pnotify.init.js
 //= require_tree .
 // jQuery Turbolinks documentation informs to load all scripts before turbolinks
