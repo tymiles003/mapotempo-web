@@ -77,7 +77,9 @@ class V01::Api < Grape::API
     Rails.logger.error "\n\n#{e.class} (#{e.message}):\n    " + e.backtrace.join("\n    ") + "\n\n"
     response = {message: e.message}
     if ENV['RAILS_ENV'] == 'test'
-      response[:backtrace] = e.backtrace[0..10].join("\n    ")
+      response[:backtrace] = Rails.backtrace_cleaner.clean(e.backtrace)[0..10].join("\n    ")
+    elsif ENV['RAILS_ENV'] == 'development'
+      puts e.backtrace
     end
     rack_response(response.to_json, 500)
   end

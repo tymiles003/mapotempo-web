@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128105941) do
+ActiveRecord::Schema.define(version: 20160201165009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -330,18 +330,20 @@ ActiveRecord::Schema.define(version: 20160128105941) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "vehicle_usage_sets", force: :cascade do |t|
-    t.integer "customer_id",        null: false
-    t.string  "name",               null: false
-    t.time    "open",               null: false
-    t.time    "close",              null: false
-    t.integer "store_start_id"
-    t.integer "store_stop_id"
-    t.integer "store_rest_id"
-    t.time    "rest_start"
-    t.time    "rest_stop"
-    t.time    "rest_duration"
-    t.time    "service_time_start"
-    t.time    "service_time_end"
+    t.integer  "customer_id",        null: false
+    t.string   "name",               null: false
+    t.time     "open",               null: false
+    t.time     "close",              null: false
+    t.integer  "store_start_id"
+    t.integer  "store_stop_id"
+    t.integer  "store_rest_id"
+    t.time     "rest_start"
+    t.time     "rest_stop"
+    t.time     "rest_duration"
+    t.time     "service_time_start"
+    t.time     "service_time_end"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "vehicle_usage_sets", ["customer_id"], name: "index_vehicle_usage_sets_on_customer_id", using: :btree
@@ -350,18 +352,20 @@ ActiveRecord::Schema.define(version: 20160128105941) do
   add_index "vehicle_usage_sets", ["store_stop_id"], name: "index_vehicle_usage_sets_on_store_stop_id", using: :btree
 
   create_table "vehicle_usages", force: :cascade do |t|
-    t.integer "vehicle_usage_set_id", null: false
-    t.integer "vehicle_id",           null: false
-    t.time    "open"
-    t.time    "close"
-    t.integer "store_start_id"
-    t.integer "store_stop_id"
-    t.integer "store_rest_id"
-    t.time    "rest_start"
-    t.time    "rest_stop"
-    t.time    "rest_duration"
-    t.time    "service_time_start"
-    t.time    "service_time_end"
+    t.integer  "vehicle_usage_set_id", null: false
+    t.integer  "vehicle_id",           null: false
+    t.time     "open"
+    t.time     "close"
+    t.integer  "store_start_id"
+    t.integer  "store_stop_id"
+    t.integer  "store_rest_id"
+    t.time     "rest_start"
+    t.time     "rest_stop"
+    t.time     "rest_duration"
+    t.time     "service_time_start"
+    t.time     "service_time_end"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "vehicle_usages", ["store_rest_id"], name: "index_vehicle_usages_on_store_rest_id", using: :btree
