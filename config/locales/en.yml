@@ -497,6 +497,7 @@ en:
         title: "Printing"
       speed_multiplicator_default: "%{n} (default value)"
       speed_multiplicator_help: "A value higher than 100% mean higher speed."
+      submit: "Update Global settings"
 
   destinations:
     menu:

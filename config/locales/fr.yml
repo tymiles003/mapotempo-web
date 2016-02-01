@@ -474,12 +474,12 @@ fr:
       country: "France"
     menu:
       parameters: "Paramètres"
-      customer: "Paramètrage global"
+      customer: "Paramétrage global"
       user: "Compte utilisateur"
       user_settings: "Paramètres utilisateur"
       customers: "Comptes client"
     edit:
-      title: "Modifier paramètrage global"
+      title: "Modifier paramétrage global"
       user:
         connect_as: "Connecter en tant que…"
         list: "Liste des utilisateurs"
@@ -511,6 +511,7 @@ fr:
         title: "Impressions"
       speed_multiplicator_default: "%{n} (valeur par défaut)"
       speed_multiplicator_help: "Une valeur spérieure à 100% signifie une vitesse plus élevée."
+      submit: "Enregistrer Paramétrage global"
 
   destinations:
     menu:
@@ -937,7 +938,7 @@ fr:
         help: "Forcer l'utilisation de ce calculateur d'itinéraire"
       speed_multiplicator:
         default: "%{n} (valeur par défaut)"
-        help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du paramètrage est également utilisé lors des calculs."
+        help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du paramétrage est également utilisé lors des calculs."
       store_rest:
         none: "Aucun"
       contact_email:
