@@ -20,11 +20,25 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
   end
 
   test 'should update out_of_date for rest' do
-    assert_difference('Stop.count', -1) do
-      o = vehicle_usage_sets(:vehicle_usage_set_one)
+    o = vehicle_usage_sets(:vehicle_usage_set_one)
+    c = o.customer
+    vu = o.vehicle_usages[0]
+    vu.rest_duration = vu.rest_start = vu.rest_stop = nil
+    vu.save!
+    nb_vu_no_rest = o.vehicle_usages.select{ |vu| vu.rest_duration.nil? && vu.rest_start.nil? && vu.rest_stop.nil? }.size
+    assert nb_vu_no_rest > 0
+    nb = (c.vehicles.size - nb_vu_no_rest) * o.plannings.size
+    assert nb > 0
+
+    assert_difference('Stop.count', -nb) do
+      o.vehicle_usages[0].routes[-1].compute
+      o.vehicle_usages[0].routes[-1].out_of_date = false
+      assert !o.rest_duration.nil?
+
       o.rest_duration = nil
       o.save!
-      assert_not o.vehicle_usages[0].routes[-1].out_of_date
+      o.customer.save!
+      assert o.vehicle_usages[0].routes[-1].out_of_date
     end
   end
 

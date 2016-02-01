@@ -84,23 +84,9 @@ class VehicleUsageSet < ActiveRecord::Base
 
   def update_out_of_date
     if rest_duration_changed?
-      if rest_duration.nil?
-        # No more rest
-        vehicle_usages.each{ |vehicle_usage|
-          vehicle_usage.routes.each{ |route|
-            route.stops.select{ |stop| stop.is_a?(StopRest) }.each{ |stop|
-              route.remove_stop(stop)
-            }
-          }
-        }
-      elsif rest_duration_was.nil?
-        # New rest
-        vehicle_usages.each{ |vehicle_usage|
-          vehicle_usage.routes.each{ |route|
-            route.add_rest
-          }
-        }
-      end
+      vehicle_usages.each{ |vehicle_usage|
+        vehicle_usage.update_rest
+      }
     end
 
     if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? ||

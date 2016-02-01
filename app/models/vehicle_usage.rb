@@ -80,23 +80,27 @@ class VehicleUsage < ActiveRecord::Base
     service_time_end || vehicle_usage_set.service_time_end
   end
 
+  def update_rest
+    if default_rest_duration.nil?
+      # No more rest
+      routes.each{ |route|
+        route.stops.select{ |stop| stop.is_a?(StopRest) }.each{ |stop|
+          route.remove_stop(stop)
+        }
+      }
+    else
+      # New or changed rest
+      routes.each{ |route|
+        route.add_or_update_rest
+      }
+    end
+  end
+
   private
 
   def update_out_of_date
     if rest_duration_changed?
-      if rest_duration.nil?
-        # No more rest
-        routes.each{ |route|
-          route.stops.select{ |stop| stop.is_a?(StopRest) }.each{ |stop|
-            route.remove_stop(stop)
-          }
-        }
-      elsif rest_duration_was.nil?
-        # New rest
-        routes.each{ |route|
-          route.add_rest
-        }
-      end
+      update_rest
     end
 
     if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed?

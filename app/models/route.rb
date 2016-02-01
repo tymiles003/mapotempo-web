@@ -241,6 +241,13 @@ class Route < ActiveRecord::Base
     self.out_of_date = true
   end
 
+  def add_or_update_rest(active = true, stop_id = nil)
+    if !stops.find{ |stop| stop.is_a?(StopRest) }
+      add_rest(active, stop_id)
+    end
+    self.out_of_date = true
+  end
+
   def remove_visit(visit)
     stops.each{ |stop|
       if(stop.is_a?(StopVisit) && stop.visit == visit)
