@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 destination_unaffected_one:
+  ref: a
   name: unaffected_one
   street: MyString
   postalcode: MyString
@@ -11,8 +12,10 @@ destination_unaffected_one:
   detail: MyString
   comment: MyString
   phone_number: MyString
+  tags: tag_one
 
 destination_one:
+  ref: b
   name: destination_one
   street: Rue des Lilas
   postalcode: 33200
@@ -25,6 +28,7 @@ destination_one:
   phone_number: MyString
 
 destination_two:
+  ref: c
   name: destination_two
   street: MyString
   postalcode: MyString
@@ -35,8 +39,10 @@ destination_two:
   detail: MyString
   comment: MyString
   phone_number: MyString
+  tags: tag_one
 
 destination_three:
+  ref: c
   name: destination_three
   street: MyString
   postalcode: MyString
@@ -47,3 +53,4 @@ destination_three:
   detail: MyString
   comment: MyString
   phone_number: MyString
+  tags: tag_one

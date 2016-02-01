@@ -13,7 +13,7 @@
       <%= f.label :_destroy do %>
         <%= t('.destroy') %>
       <% end %>
-      <% if @destination.customer.enable_references %>
+      <% if visit.destination.customer.enable_references && visit.destination.customer.enable_multi_visits %>
         <%= f.text_field :ref do %>
           <p class="help-block"><%= t '.ref_help' %></p>
         <% end %>
@@ -31,8 +31,10 @@
       <%= f.text_field :close, {value: visit.close && l(visit.close, format: :hour_minute), input_group: t('all.unit.hour_minute')} do %>
         <p class="help-block"><%= t '.close_help' %></p>
       <% end %>
-      <%= f.select :tag_ids, t('activerecord.attributes.visit.tag_ids'), options_for_select(visit.destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, visit.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
-        <p class="help-block"><%= t '.tags_help' %></p>
+      <% if visit.destination.customer.enable_multi_visits %>
+        <%= f.select :tag_ids, t('activerecord.attributes.visit.tag_ids'), options_for_select(visit.destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, visit.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+          <p class="help-block"><%= t '.tags_help' %></p>
+        <% end %>
       <% end %>
     </div>
   </fieldset>

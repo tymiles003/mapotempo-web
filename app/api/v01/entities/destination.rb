@@ -21,6 +21,7 @@ class V01::Entities::Destination < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
+  expose(:ref, documentation: { type: String })
   expose(:name, documentation: { type: String })
   expose(:street, documentation: { type: String })
   expose(:postalcode, documentation: { type: String })
@@ -33,5 +34,6 @@ class V01::Entities::Destination < Grape::Entity
   expose(:phone_number, documentation: { type: String })
   expose(:geocoding_accuracy, documentation: { type: Float })
   expose(:geocoding_level, documentation: { type: String, values: ['point', 'house', 'street', 'intersection', 'city'] })
+  expose(:tag_ids, documentation: { type: Integer, is_array: true })
   expose(:visits, using: V01::Entities::Visit, documentation: { type: V01::Entities::Visit, is_array: true, param_type: 'form' })
 end

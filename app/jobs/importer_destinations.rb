@@ -34,6 +34,7 @@ class ImporterDestinations < ImporterBase
 
   def columns_destination
     {
+      ref: I18n.t('destinations.import_file.ref'),
       name: I18n.t('destinations.import_file.name'),
       street: I18n.t('destinations.import_file.street'),
       detail: I18n.t('destinations.import_file.detail'),
@@ -46,16 +47,17 @@ class ImporterDestinations < ImporterBase
       geocoding_level: I18n.t('destinations.import_file.geocoding_level'),
       phone_number: I18n.t('destinations.import_file.phone_number'),
       comment: I18n.t('destinations.import_file.comment'),
+      tags: I18n.t('destinations.import_file.tags')
     }
   end
 
   def columns_visit
     {
       # Visit
-      ref: I18n.t('destinations.import_file.ref'),
+      ref_visit: I18n.t('destinations.import_file.ref_visit'),
       open: I18n.t('destinations.import_file.open'),
       close: I18n.t('destinations.import_file.close'),
-      tags: I18n.t('destinations.import_file.tags'),
+      tags_visit: I18n.t('destinations.import_file.tags_visit'),
       take_over: I18n.t('destinations.import_file.take_over'),
       quantity: I18n.t('destinations.import_file.quantity'),
     }
@@ -77,6 +79,7 @@ class ImporterDestinations < ImporterBase
     if replace
       @customer.destinations.delete_all
     end
+    @visit_ids = []
   end
 
   def import_row(replace, name, row, line)
@@ -99,45 +102,80 @@ class ImporterDestinations < ImporterBase
       @need_geocode = true
     end
 
-    if !row[:tags].nil?
-      if row[:tags].is_a?(String)
-        row[:tags] = row[:tags].split(',').select{ |key|
-          !key.empty?
-        }
-      end
-
-      row[:tags] = row[:tags].collect{ |tag|
-        if tag.is_a?(Fixnum)
-          @tag_ids[tag]
-        else
-          if !@tag_labels.key?(tag)
-            @tag_labels[tag] = @customer.tags.build(label: tag)
-          end
-          @tag_labels[tag]
+    [:tags, :tags_visit].each{ |key|
+      if !row[key].nil?
+        if row[key].is_a?(String)
+          row[key] = row[key].split(',').select{ |key|
+            !key.empty?
+          }
         end
-      }.compact
-    end
+
+        row[key] = row[key].collect{ |tag|
+          if tag.is_a?(Fixnum)
+            @tag_ids[tag]
+          else
+            if !@tag_labels.key?(tag)
+              @tag_labels[tag] = @customer.tags.build(label: tag)
+            end
+            @tag_labels[tag]
+          end
+        }.compact
+      end
+    }
+
+    destination_attributes = row.slice(*(@@columns_destination_keys ||= columns_destination.keys))
+    visit_attributes = row.slice(*(@@columns_visit_keys ||= columns_visit.keys))
+    visit_attributes[:ref] = visit_attributes.delete :ref_visit
+    visit_attributes[:tags] = visit_attributes.delete :tags_visit if visit_attributes.key?(:tags_visit)
 
     if !row[:ref].nil? && !row[:ref].strip.empty?
-      visit = @customer.visits.find{ |visit|
-        visit.ref && visit.ref == row[:ref]
+      destination = @customer.destinations.find{ |destination|
+        destination.ref && destination.ref == row[:ref]
       }
-      if visit
-        visit.destination.assign_attributes(row.slice(*(@@columns_destination_keys ||= columns_destination.keys)))
-        visit.assign_attributes(row.slice(*(@@columns_visit_keys ||= columns_visit.keys)))
-      end
-    end
-    if !visit
-      destination_attributes = row.slice(*(@@columns_destination_keys ||= columns_destination.keys))
-      destination = @customer.destinations.find{ |d|
-        d.attributes.symbolize_keys.slice(*columns_destination.keys).except(:customer_id, :lat, :lng, :geocoding_accuracy, :geocoding_level) == Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten].merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level)
-      }
-      if !destination
+      if destination
+        destination.assign_attributes(destination_attributes)
+      else
         destination = @customer.destinations.build(destination_attributes)
       end
       if row[:without_visit].nil? || row[:without_visit].strip.empty?
-        # Link only when destination is complete
-        visit = destination.visits.build(row.slice(*(@@columns_visit_keys ||= columns_visit.keys)))
+        if !row[:ref_visit].nil? && !row[:ref_visit].strip.empty?
+          visit = destination.visits.find{ |visit|
+            visit.ref && visit.ref == row[:ref_visit]
+          }
+        else
+          # Get the first visit without ref
+          visit = destination.visits.find{ |v| !v.ref }
+        end
+        if visit
+          visit.assign_attributes(visit_attributes)
+        else
+          visit = destination.visits.build(visit_attributes)
+        end
+      else
+        destination.visits = []
+      end
+    else
+      if !row[:ref_visit].nil? && !row[:ref_visit].strip.empty?
+        visit = @customer.visits.find{ |visit|
+          visit.ref && visit.ref == row[:ref_visit]
+        }
+        if visit
+          visit.destination.assign_attributes(destination_attributes)
+          visit.assign_attributes(visit_attributes)
+        end
+      end
+      if !visit
+        # Get destination from attributes for multiple visits
+        destination = @customer.destinations.find{ |d|
+          d.attributes.symbolize_keys.slice(*columns_destination.keys).except(:customer_id, :lat, :lng, :geocoding_accuracy, :geocoding_level) == Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten].merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level, :tags)
+        }
+        if !destination
+          destination = @customer.destinations.build(destination_attributes)
+        end
+        if row[:without_visit].nil? || row[:without_visit].strip.empty?
+          # Link only when destination is complete
+          visit = destination.visits.build(visit_attributes)
+        end
       end
     end
 
@@ -151,11 +189,15 @@ class ImporterDestinations < ImporterBase
         end
       end
 
-      if visit.ref.nil? || @routes.size && !@routes.any?{ |k, r| r.any?{ |d| d && d[0]['ref'] == visit.ref } }
+      visit.save!
+
+      # Add visit to route if needed
+      if !@visit_ids.include?(visit.id)
         @routes[row.key?(:route) ? row[:route] : nil] << [visit, !row.key?(:active) || row[:active].strip != '0']
+        @visit_ids << visit.id
       end
 
-      visit.save! && visit.destination # For subclasses
+      visit.destination # For subclasses
     else
       destination.save! && destination
     end

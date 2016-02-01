@@ -54,6 +54,6 @@ class ImporterTest < ActionController::TestCase
       assert ImportCsv.new(importer: ImporterStores.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_stores_update.csv', 'text.csv')).import
     end
     assert_equal 'unaffected_one_update', Store.find_by(ref:'a').name
-    assert_equal 'unaffected_two_update', Store.find_by(ref:'d').name
+    assert_equal 'unaffected_two_update', Store.find_by(ref:'unknown').name
   end
 end

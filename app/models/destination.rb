@@ -28,6 +28,7 @@ class Destination < ActiveRecord::Base
   has_many :visits, -> { order(:id) }, inverse_of: :destination, dependent: :delete_all, autosave: true
   accepts_nested_attributes_for :visits, allow_destroy: true
   validates_associated_bubbling :visits
+  has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
   enum geocoding_level: {point: 1, house: 2, intersection: 3, street: 4, city: 5}
 
   nilify_blanks
@@ -43,6 +44,7 @@ class Destination < ActiveRecord::Base
   validates_inclusion_of :geocoding_accuracy, in: 0..1, allow_nil: true, message: I18n.t('activerecord.errors.models.destination.geocoding_accuracy_outside_range')
   validates_with LocalizationDestinationValidator, fields: [:street, :city, :lat, :lng]
 
+  before_save :update_tags
   before_create :create_geocode
   before_update :update_geocode, :update_out_of_date
 
@@ -75,6 +77,10 @@ class Destination < ActiveRecord::Base
     super
   end
 
+  def changed?
+    @tags_updated || super
+  end
+
   private
 
   def update_out_of_date
@@ -100,6 +106,33 @@ class Destination < ActiveRecord::Base
     if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed? || country_changed?)
       geocode
     end
+  end
+
+  def update_tags_track(_tag)
+    @tags_updated = true
+  end
+
+  def update_tags
+    if customer && (@tags_updated || new_record?)
+      @tags_updated = false
+
+      # Don't use local collection here, not set when save new record
+      customer.plannings.each{ |planning|
+        visits.select(&:id).each{ |visit|
+          if planning.visits.include?(visit)
+            if (planning.tags.to_a & (tags.to_a + visit.tags.to_a).uniq) != planning.tags.to_a
+              planning.visit_remove(visit)
+            end
+          else
+            if (planning.tags.to_a & (tags.to_a + visit.tags.to_a).uniq) == planning.tags.to_a
+              planning.visit_add(visit)
+            end
+          end
+        }
+      }
+    end
+
+    true
   end
 
   def out_of_date

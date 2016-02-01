@@ -87,25 +87,27 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           city: 'Tule',
           lat: 43.5710885456786,
           lng: 3.89636993408203,
-          quantity: nil,
-          open: nil,
-          close: nil,
           detail: nil,
           comment: nil,
           phone_number: nil,
           ref: 'z',
-          take_over: nil,
           tags: ['tag1', 'tag2'],
           geocoding_accuracy: nil,
           foo: 'bar',
           route: '1',
-          active: '1'
+          active: '1',
+          visits: [{
+            quantity: nil,
+            open: nil,
+            close: nil,
+            take_over: nil
+          }]
         }]}
         assert last_response.ok?, last_response.body
         assert_equal 1, JSON.parse(last_response.body).size
 
         get api()
-        assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['visits'][0]['tag_ids'].size
+        assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['tag_ids'].size
       end
     end
   end
@@ -120,25 +122,27 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           city: 'Tule',
           lat: 43.5710885456786,
           lng: 3.89636993408203,
-          quantity: nil,
-          open: nil,
-          close: nil,
           detail: nil,
           comment: nil,
           phone_number: nil,
           ref: 'z',
-          take_over: nil,
           tags: [tags(:tag_one).id, tags(:tag_two).id],
           geocoding_accuracy: nil,
           foo: 'bar',
           route: '1',
-          active: '1'
+          active: '1',
+          visits: [{
+            quantity: nil,
+            open: nil,
+            close: nil,
+            take_over: nil
+          }]
         }]}
         assert last_response.ok?, last_response.body
         assert_equal 1, JSON.parse(last_response.body).size
 
         get api()
-        assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['visits'][0]['tag_ids'].size
+        assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['tag_ids'].size
       end
     end
   end

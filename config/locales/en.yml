@@ -148,6 +148,7 @@ en:
         enable_orders: "Enable orders"
         enable_multi_vehicle_usage_sets: "Enable more than one vehicles configurations"
         enable_references: "View references"
+        enable_multi_visits: "Enable more than one visit per destination"
         test: "Test"
         jobs: "Jobs"
         optimization_cluster_size: "Optimization cluster size"
@@ -159,6 +160,8 @@ en:
         default_country: "Default country"
         ref: "Reference"
       destination:
+        ref: "Reference"
+        ref_small: "Ref."
         name: "Name"
         address: "Address"
         street: "Street"
@@ -175,6 +178,8 @@ en:
         geocoding_accuracy: "Geocoding accuracy"
         geocoding_accuracy_small: "Geoc."
         geocoding_level: "Geocoding level"
+        tags: "Tags"
+        tag_ids: "Tags"
       # Duplicate for nested errors with autosave
       destinations:
         name: "Name"
@@ -511,6 +516,7 @@ en:
       clear: "Clear all destinations"
       clear_confirm: "Are you sure to want to delete all destinations?"
     form:
+      ref_help: "A free reference"
       detail_help: "Non geocoded addresse complement; like flat number"
       comment_help: "Delivery required information"
       locate_manually: "Locate manually on the map"
@@ -524,9 +530,11 @@ en:
         street: "Street"
         intersection: "Intersection"
         city: "City"
+      tags_help: "Destination's categories"
       dialog:
         confirm_overwrite_point: "It seems you have previously set position manually on map. Do you want to replace previous position with the result of geocoding?"
       visit:
+        enable_multi_visits: "Need more than one visit for this destination? Please contact support."
         new: "New visit"
         new_help: "New visit if you go to this destination several times."
     edit:
@@ -583,6 +591,8 @@ en:
       phone_number: "phone"
       tags: "tags"
       without_visit: "without visit"
+      ref_visit: "reference visit"
+      tags_visit: "tags visit"
       not_csv: "Imported file is not a CSV"
       too_many_lines: "Stop import, too many lines (max: %{n})."
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
@@ -779,14 +789,16 @@ en:
       lat: "lat"
       lng: "lng"
       comment: "comment"
+      tags: "tags"
       phone_number: "phone"
+      ref_visit: "reference visit"
       duration: "duration"
       quantity: "quantity"
       orders: "orders"
       active: "active"
       open: "open"
       close: "close"
-      tags: "tags"
+      tags_visit: "tags visit"
       out_of_window: "out of customer's time window"
       out_of_capacity: "out of capacity"
       out_of_drive_time: "out of vehicle's time window"

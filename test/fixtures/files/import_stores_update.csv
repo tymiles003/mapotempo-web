@@ -2,4 +2,4 @@ référence,nom,voie,complément,code postal,ville,lat,lng,horaire début,horair
 c,store_two_update,MyString,MyString,MyString,MyString,1.5,1.5,10:00,11:00
 b,store_one_update,Rue des Lilas,MyString,33200,Bordeau,49.1857,-0.3735,10:00,11:00
 a,unaffected_one_update,MyString,MyString,MyString,MyString,1.5,1.5,10:00,11:00
-d,unaffected_two_update,MyString,MyString,MyString,MyString,1.5,1.5,10:00,11:00
+unknown,unaffected_two_update,MyString,MyString,MyString,MyString,1.5,1.5,10:00,11:00

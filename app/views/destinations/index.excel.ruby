@@ -1,5 +1,6 @@
 CSV.generate({col_sep: ';'}) { |csv|
   csv << [
+    I18n.t('destinations.import_file.ref'),
     I18n.t('destinations.import_file.name'),
     I18n.t('destinations.import_file.street'),
     I18n.t('destinations.import_file.detail'),
@@ -12,13 +13,14 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('destinations.import_file.geocoding_level'),
     I18n.t('destinations.import_file.comment'),
     I18n.t('destinations.import_file.phone_number'),
+    I18n.t('destinations.import_file.tags'),
     I18n.t('destinations.import_file.without_visit'),
-    I18n.t('destinations.import_file.ref'),
+    I18n.t('destinations.import_file.ref_visit'),
     I18n.t('destinations.import_file.take_over'),
     I18n.t('destinations.import_file.quantity'),
     I18n.t('destinations.import_file.open'),
     I18n.t('destinations.import_file.close'),
-    I18n.t('destinations.import_file.tags')
+    I18n.t('destinations.import_file.tags_visit')
   ]
   @destinations.each { |destination|
     destination_columns = [

@@ -49,7 +49,7 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
           Rails::logger.info "#{count} / #{total}"
           puts "#{count} / #{total}"
         end
-        visit = destination.visits.create!(quantity: destination.quantity, open: destination.open, close: destination.close, ref: destination.ref, take_over: destination.take_over, tag_ids: destination.tag_ids)
+        visit = destination.visits.create!(quantity: destination.quantity, open: destination.open, close: destination.close, take_over: destination.take_over)
         vid = visit.id
         destination.stop_destinations.all.each{ |stop|
           stop.visit_id = vid
@@ -73,10 +73,7 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     remove_column :destinations, :quantity, :float
     remove_column :destinations, :open, :time
     remove_column :destinations, :close, :time
-    remove_column :destinations, :ref, :string
     remove_column :destinations, :take_over, :time
-
-    drop_table :destinations_tags
   end
 
   def down
@@ -88,18 +85,7 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     add_column :destinations, :quantity, :float
     add_column :destinations, :open, :time
     add_column :destinations, :close, :time
-    add_column :destinations, :ref, :string
     add_column :destinations, :take_over, :time
-
-    create_table :destinations_tags, id: false, force: :cascade do |t|
-      t.integer :destination_id, null: false
-      t.integer :tag_id, null: false
-    end
-
-    add_index :destinations_tags, :destination_id
-    add_foreign_key :destinations_tags, :destinations, on_delete: :cascade
-    add_index :destinations_tags, :tag_id
-    add_foreign_key :destinations_tags, :tags, on_delete: :cascade
 
     # Link Stop and Order to Destination
     add_column :stops, :destination_id, :integer
@@ -128,9 +114,15 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
           stop.destination_id = destination.id
           stop.save!
         }
-        visit.orders.each{ |order|
-          order.destination_id = destination.id
-          order.save!
+        destination.visits.each_with_index{ |visit, i|
+          visit.orders.each{ |order|
+            if i == 0
+              order.destination_id = destination.id
+              order.save!
+            else
+              order.destroy!
+            end
+          }
         }
 
         if destination.visits.size > 1
@@ -157,6 +149,12 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     # Remove Visit table
     drop_table :tags_visits
     drop_table :visits
+
+    stop_count = Stop.where(type: "StopDestination", destination_id: nil).size
+    if stop_count > 0
+      puts "Remaining StopDestination with destination_id nil: " + stop_count.to_s
+      puts "You should delete them..."
+    end
   end
 
   private

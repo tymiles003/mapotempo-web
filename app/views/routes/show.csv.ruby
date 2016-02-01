@@ -13,6 +13,7 @@ CSV.generate { |csv|
     I18n.t('plannings.export_file.out_of_capacity'),
     I18n.t('plannings.export_file.out_of_drive_time'),
     
+    I18n.t('plannings.export_file.ref'),
     I18n.t('plannings.export_file.name'),
     I18n.t('plannings.export_file.street'),
     I18n.t('plannings.export_file.detail'),
@@ -23,13 +24,14 @@ CSV.generate { |csv|
     I18n.t('plannings.export_file.lng'),
     I18n.t('plannings.export_file.comment'),
     I18n.t('plannings.export_file.phone_number'),
+    I18n.t('plannings.export_file.tags'),
     
-    I18n.t('plannings.export_file.ref'),
+    I18n.t('plannings.export_file.ref_visit'),
     I18n.t('plannings.export_file.duration'),
     @route.planning.customer.enable_orders ? I18n.t('plannings.export_file.orders') : I18n.t('plannings.export_file.quantity'),
     I18n.t('plannings.export_file.open'),
     I18n.t('plannings.export_file.close'),
-    I18n.t('plannings.export_file.tags')
+    I18n.t('plannings.export_file.tags_visit')
   ]
   render 'show', route: @route, csv: csv
 }

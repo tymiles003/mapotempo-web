@@ -118,10 +118,6 @@
       display: table-cell;
     }
 
-    .input-group-tags {
-      min-width: 8em;
-    }
-
     .tablesorter-headerRow {
       th:nth-of-type(1) {
         padding-left: 0px;
@@ -155,17 +151,23 @@
       min-width: 8em;
     }
     td.address {
-      min-width: 21em;
+      min-width: 22em;
     }
     td.country {
       min-width: 5em;
     }
     td.comment {
-      min-width: 8em;
+      min-width: 7.5em;
     }
     td.phone {
-      min-width: 5em;
+      min-width: 4.5em;
       max-width: 10em;
+    }
+    td.tags, .input-group-tags {
+      min-width: 9em;
+    }
+    td.geocoding {
+      width: 6em;
     }
 
     .select2-container .select2-selection {

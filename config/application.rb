@@ -129,6 +129,7 @@ module Mapotempo
     config.manage_vehicles_only_admin = false
 
     config.enable_references = true
+    config.enable_multi_visits = false
   end
 end
 

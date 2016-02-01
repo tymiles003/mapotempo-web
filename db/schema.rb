@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20160201165009) do
     t.boolean  "print_stop_time",                             default: true,  null: false
     t.string   "ref"
     t.boolean  "enable_references",                           default: true
+    t.boolean  "enable_multi_visits",                         default: true,  null: false
   end
 
   add_index "customers", ["job_destination_geocoding_id"], name: "index_customers_on_job_destination_geocoding_id", using: :btree
@@ -89,9 +90,18 @@ ActiveRecord::Schema.define(version: 20160201165009) do
     t.string   "country"
     t.integer  "geocoding_level"
     t.string   "phone_number"
+    t.string   "ref"
   end
 
   add_index "destinations", ["customer_id"], name: "fk__destinations_customer_id", using: :btree
+
+  create_table "destinations_tags", id: false, force: :cascade do |t|
+    t.integer "destination_id", null: false
+    t.integer "tag_id",         null: false
+  end
+
+  add_index "destinations_tags", ["destination_id"], name: "index_destinations_tags_on_destination_id", using: :btree
+  add_index "destinations_tags", ["tag_id"], name: "index_destinations_tags_on_tag_id", using: :btree
 
   create_table "layers", force: :cascade do |t|
     t.string   "name",                        null: false
@@ -430,6 +440,8 @@ ActiveRecord::Schema.define(version: 20160201165009) do
 
   add_foreign_key "customers", "profiles"
   add_foreign_key "destinations", "customers", name: "fk_destinations_customer_id", on_delete: :cascade
+  add_foreign_key "destinations_tags", "destinations", on_delete: :cascade
+  add_foreign_key "destinations_tags", "tags", on_delete: :cascade
   add_foreign_key "order_arrays", "customers", name: "fk_order_arrays_customer_id", on_delete: :cascade
   add_foreign_key "orders", "order_arrays", name: "fk_orders_order_array_id", on_delete: :cascade
   add_foreign_key "orders", "visits", on_delete: :cascade

@@ -19,7 +19,8 @@ var destinations_form = function(params, api) {
 
   var destination_id = params.destination_id,
     marker_lat = $(":input[name$=\\[lat\\]]").val(),
-    marker_lng = $(":input[name$=\\[lng\\]]").val();
+    marker_lng = $(":input[name$=\\[lng\\]]").val(),
+    enable_multi_visits = params.enable_multi_visits;
 
   var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
@@ -276,13 +277,15 @@ var destinations_form = function(params, api) {
   }
 
   $('#visit-new').click(function() {
-    var fieldsetVisit = $('#visit-fieldset-template');
-    $('#visits').append(fieldsetVisit.html()
-      .replace('#0', '#' + ($('#visits fieldset').length + 1))
-      .replace(/isit0/g, 'isit' + ($('#visits fieldset').length + 1))
-      .replace(/destination([\[_])visits([^0]+)0([\]_])/g, "destination$1visits$2" + ($('#visits fieldset').length + 1) + "$3")
-    );
-    initVisits($('#visits fieldset:last-child'));
+    if (enable_multi_visits || $('#visits fieldset').length == 0) {
+      var fieldsetVisit = $('#visit-fieldset-template');
+      $('#visits').append(fieldsetVisit.html()
+        .replace('#0', '#' + ($('#visits fieldset').length + 1))
+        .replace(/isit0/g, 'isit' + ($('#visits fieldset').length + 1))
+        .replace(/destination([\[_])visits([^0]+)0([\]_])/g, "destination$1visits$2" + ($('#visits fieldset').length + 1) + "$3")
+      );
+      initVisits($('#visits fieldset:last-child'));
+    }
   });
 
   $("label[for$='destroy']").hide();
@@ -425,7 +428,8 @@ var destinations_index = function(params, api) {
     default_country = params.default_country,
     take_over_default = params.take_over_default,
     url_click2call =  params.url_click2call,
-    enable_references = params.enable_references;
+    enable_references = params.enable_references,
+    enable_multi_visits = params.enable_multi_visits;
 
   var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
@@ -460,7 +464,9 @@ var destinations_index = function(params, api) {
   var icon_over_stack = [];
 
   var prepare_display_destination = function(destination) {
+    // must be set here instead of in json because api used for update don't expose all attributes...
     destination.enable_references = enable_references;
+    destination.enable_multi_visits = enable_multi_visits;
     destination.i18n = mustache_i18n;
     if (destination.geocoding_accuracy) {
       if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocode_geocoder.accuracy_success %>) {
@@ -481,8 +487,22 @@ var destinations_index = function(params, api) {
     }
     destination.default_country = default_country;
 
+    var t = [];
+    $.each(tags, function(j, tag) {
+      t.push({
+        id: tag.id,
+        label: tag.label,
+        color: tag.color ? tag.color.substr(1) : undefined,
+        icon: tag.icon,
+        active: $.inArray(tag.id, destination.tag_ids) >= 0
+      });
+    });
+    destination.tags = t;
+
     $.each(destination.visits, function(i, visit) {
-      var t = [];
+      destination.visits[i].ref_visit = visit.ref;
+      destination.visits[i].ref = undefined;
+      t = [];
       $.each(tags, function(j, tag) {
         t.push({
           id: tag.id,
@@ -492,7 +512,8 @@ var destinations_index = function(params, api) {
           active: $.inArray(tag.id, visit.tag_ids) >= 0
         });
       });
-      destination.visits[i].tags = t;
+      destination.visits[i].tags_visit = t;
+      destination.visits[i].tags = undefined;
       if (visit.open) {
         destination.visits[i].open = visit.open.split(':').slice(0, 2).join(':');
       }
@@ -875,6 +896,10 @@ var destinations_index = function(params, api) {
           if ($("[name$=\\[phone_number\\]]", node).val()) {
             return simply_phone(($("[name$=\\[phone_number\\]]", node).attr('value')));
           }
+        } else if ($node.hasClass('tags')) {
+          return $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
+            return e.text;
+          }).sort().join(',');
         } else if ($node.hasClass('geocoding')) {
           var ret = 0;
           switch ($("[name$=\\[geocoding_level\\]]", node).val()) {

@@ -21,6 +21,14 @@ class ImporterTest < ActionController::TestCase
     file
   end
 
+  test 'should not import' do
+    assert_no_difference('Destination.count') do
+      assert_no_difference('Visit.count') do
+        assert !ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv')).import
+      end
+    end
+  end
+
   test 'should replace with new tag' do
     assert_difference('Tag.count') do
       assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: true, file: tempfile('test/fixtures/files/import_destinations_new_tag.csv', 'text.csv')).import
@@ -41,7 +49,7 @@ class ImporterTest < ActionController::TestCase
       end
     end
 
-    assert_equal [tags(:tag_one)], Destination.where(name: 'BF').first.visits.first.tags.to_a
+    assert_equal [tags(:tag_one)], Destination.where(name: 'BF').first.visits.first.destination.tags.to_a
   end
 
   test 'should import postalcode in new planning' do
@@ -83,10 +91,10 @@ class ImporterTest < ActionController::TestCase
     end
 
     stops = Planning.where(name: 'text').first.routes.find{ |route| route.ref == '1' }.stops
-    assert_equal 'z', stops[1].visit.ref
+    assert_equal 'z', stops[1].visit.destination.ref
     assert stops[1].visit.take_over
     assert stops[1].active
-    assert_equal 'x', stops[2].visit.ref
+    assert_equal 'x', stops[2].visit.destination.ref
     assert_not stops[2].active
   end
 
@@ -118,13 +126,13 @@ class ImporterTest < ActionController::TestCase
         assert_difference('Stop.count', import_count * (@customer.plannings.select{ |p| p.tags.any?{ |t| t.label == 'été' } }.size + 1) + rest_count) do
           di = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-utf-8.csv', 'text.csv'))
           assert di.import, di.errors.messages
-          assert_equal 'été', @customer.plannings[0].tags[0].label
+          assert_equal 'été', @customer.plannings.collect{ |p| p.tags.collect(&:label).join || 'oups' }.uniq.join
         end
       end
     end
 
     o = Destination.find{ |d| d.name == 'Point 1' }
-    assert_equal ['été'], o.visits.first.tags.collect(&:label)
+    assert_equal ['été'], o.visits.first.destination.tags.collect(&:label)
     p = Planning.first
     assert_equal import_count, p.routes[0].stops.size
     p = Planning.last
@@ -141,7 +149,7 @@ class ImporterTest < ActionController::TestCase
       assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-iso.csv', 'text.csv')).import
     end
 
-    o = Destination.find_by(name: 'Point 1').visits.first
+    o = Destination.find_by(name: 'Point 1')
     assert_equal ['été'], o.tags.collect(&:label)
   end
 
@@ -179,17 +187,11 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
-  test 'should not import' do
-    assert_difference('Destination.count', 0) do
-      assert !ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv')).import
-    end
-  end
-
   test 'should import and update' do
     assert_difference('Destination.count', 1) do
-      assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
+      ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
     end
-    assert_equal 'unaffected_one_update', Visit.find_by(ref:'a').destination.name
-    assert_equal 'unaffected_two_update', Visit.find_by(ref:'d').destination.name
+    assert_equal 'unaffected_one_update', Destination.find_by(ref:'a').name
+    assert_equal 'unaffected_two_update', Destination.find_by(ref:'unknown').name
   end
 end

@@ -54,7 +54,7 @@ class Customer < ActiveRecord::Base
 
   after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
   after_create :create_default_store, :create_default_vehicle_usage_set
-  before_update :update_out_of_date, :update_max_vehicles
+  before_update :update_out_of_date, :update_max_vehicles, :update_enable_multi_visits
   before_save :sanitize_print_header
 
   def default_position
@@ -90,6 +90,7 @@ class Customer < ActiveRecord::Base
   def assign_defaults
     self.default_country ||= I18n.t('customers.default.country')
     self.enable_references = Mapotempo::Application.config.enable_references
+    self.enable_multi_visits = Mapotempo::Application.config.enable_multi_visits
   end
 
   def create_default_store
@@ -137,6 +138,34 @@ class Customer < ActiveRecord::Base
         }
       end
       @max_vehicles = vehicles.size
+    end
+  end
+
+  def update_enable_multi_visits
+    if enable_multi_visits_changed?
+      Destination.transaction do
+        if enable_multi_visits
+          self.destinations.each{ |destination|
+            destination.visits.each{ |visit|
+              visit.ref = destination.ref
+              visit.tags = destination.tags # ?
+            }
+            destination.ref = nil
+            destination.tag_ids = [] # destination.tags = [] # destination.tags.destroy_all
+          }
+        else
+          self.destinations.each{ |destination|
+            if destination.visits.size > 0
+              destination.ref = destination.visits[0].ref
+              destination.tags = destination.visits[0].tags # ?
+              destination.visits.each{ |visit|
+                visit.ref = nil
+                visit.tag_ids = [] # visit.tags = [] # visit.tags.destroy_all
+              }
+            end
+          }
+        end
+      end
     end
   end
 

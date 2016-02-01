@@ -152,6 +152,7 @@ fr:
         enable_orders: "Activer les commandes"
         enable_multi_vehicle_usage_sets: "Autoriser les multiples configurations de véhicules"
         enable_references: "Montrer les references"
+        enable_multi_visits: "Autoriser les multiples visites"
         test: "Test"
         jobs: "Tâches"
         optimization_cluster_size: "Taille des clusters d'optimisation"
@@ -163,6 +164,8 @@ fr:
         default_country: "Pays par défaut"
         ref: "Référence"
       destination:
+        ref: "Référence"
+        ref_small: "Réf."
         name: "Nom"
         address: "Adresse"
         street: "Voie"
@@ -179,6 +182,8 @@ fr:
         geocoding_accuracy: "Qualité du géocodage"
         geocoding_accuracy_small: "Géoc."
         geocoding_level: "Niveau de géocodage"
+        tags: "Libellés"
+        tag_ids: "Libellés"
       # Duplicate for nested errors with autosave
       destinations:
         name: "Nom"
@@ -525,6 +530,7 @@ fr:
       clear: "Supprimer tous les clients"
       clear_confirm: "Êtes-vous sûr de vouloir supprimer tous les clients ?"
     form:
+      ref_help: "Référence libre"
       detail_help: "Complément d'adresse non géocodable, ex. numéro d'escalier"
       comment_help: "Informations nécessaires pour la livraison"
       locate_manually: "Positionner manuellement sur la carte"
@@ -538,9 +544,11 @@ fr:
         street: "Voie"
         intersection: "Intersection"
         city: "Commune"
+      tags_help: "Catégories du client"
       dialog:
         confirm_overwrite_point: "La position précédente a été définie manuellement sur la carte. Voulez-vous la remplacer avec le résultat du géocodage automatique ?"
       visit:
+        enable_multi_visits: "Besoin de plusieurs visites pour le même client ? Contactez l'administrateur pour avoir accès à cette fonctionnalité."
         new: "Nouvelle visite"
         new_help: "Nouvelle visite si vous vous rendez plusieurs fois chez ce client."
     edit:
@@ -597,6 +605,8 @@ fr:
       phone_number: "téléphone"
       tags: "libellés"
       without_visit: "sans visite"
+      ref_visit: "référence visite"
+      tags_visit: "libellés visite"
       not_csv: "Le fichier importé n'est pas au format CSV."
       too_many_lines: "Import stoppé, trop de lignes (max: %{n})."
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
@@ -793,14 +803,16 @@ fr:
       lat: "lat"
       lng: "lng"
       comment: "commentaire"
+      tags: "libellés"
       phone_number: "téléphone"
+      ref_visit: "référence visite"
       duration: "durée visite"
       quantity: "quantité"
       orders: "commandes"
       active: "livré"
       open: "horaire début"
       close: "horaire fin"
-      tags: "libellés"
+      tags_visit: "libellés visite"
       out_of_window: "hors créneau client"
       out_of_capacity: "hors capacité véhicule"
       out_of_drive_time: "hors créneau véhicule"

@@ -1,6 +1,11 @@
 <%= twitter_bootstrap_form_for(@destination, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: @destination %>
   <fieldset>
+    <% if @destination.customer.enable_references && !@destination.customer.enable_multi_visits %>
+      <%= f.text_field :ref do %>
+        <p class="help-block"><%= t '.ref_help' %></p>
+      <% end %>
+    <% end %>
     <%= f.text_field :name %>
     <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('i', '', {class: 'fa fa-crosshairs fa-fw', title: t('.locate_manually')})} %>
     <%= f.text_field :detail do %>
@@ -45,6 +50,11 @@
     </div>
     <%= f.number_field :lat, { step: 'any'} %>
     <%= f.number_field :lng, { step: 'any'} %>
+    <% if !@destination.customer.enable_multi_visits %>
+      <%= f.select :tag_ids, t('activerecord.attributes.destination.tag_ids'), options_for_select(@destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @destination.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
+        <p class="help-block"><%= t '.tags_help' %></p>
+      <% end %>
+    <% end %>
     <%= f.text_field :phone_number, {input_group: content_tag('i', '', class: 'fa fa-phone fa-fw')}  %>
     <%= f.text_area :comment do %>
       <p class="help-block"><%= t '.comment_help' %></p>
@@ -55,7 +65,14 @@
       <%= render 'visits/form', visit: visit, i: i+1 %>
     <% end %>
   </div>
-  <button id="visit-new" type="button" class="btn btn-default btn-sm" title="<%= t('destinations.form.visit.new_help') %>"><i class="fa fa-plus fa-fw"></i> <%= t('destinations.form.visit.new') %></button>
+  <% if @destination.visits.size == 0 || @destination.customer.enable_multi_visits %>
+    <button id="visit-new" type="button" class="btn btn-default btn-sm" title="<%= t('destinations.form.visit.new_help') %>"><i class="fa fa-plus fa-fw"></i> <%= t('destinations.form.visit.new') %></button>
+  <% end %>
+  <% if !@destination.customer.enable_multi_visits %>
+    <p class="help-block">
+    <%= t('destinations.form.visit.enable_multi_visits') %>
+    </p>
+  <% end %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
@@ -77,6 +94,7 @@ controller.js(
   destination_id: @destination.id || 0,
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
   map_lat: @destination.lat || @destination.customer.default_position[:lat],
-  map_lng: @destination.lng || @destination.customer.default_position[:lng]
+  map_lng: @destination.lng || @destination.customer.default_position[:lng],
+  enable_multi_visits: @destination.customer.enable_multi_visits
 )
 %>
