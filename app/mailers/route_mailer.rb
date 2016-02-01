@@ -1,9 +1,13 @@
 class RouteMailer < ApplicationMailer
-  def send_kml_route route, content
-    @vehicle = route.vehicle_usage.vehicle
-    attachments["route-#{route.id}-#{Time.now.to_i}.kml"] = { mime_type: 'text/xml', content: content }
-    mail to: @vehicle.contact_email, subject: t("route_mailer.send_kml_route.subject", n: @vehicle.name) do |format|
-      format.html { render "route_mailer/send_kml_route" }
+  def send_kmz_route from, to, filename, kmz
+    attachments['kmz'] = {
+      mime_type: 'application/vnd.google-earth.kmz',
+      transfer_encoding: :binary,
+      content: kmz.force_encoding('BINARY'),
+      content_disposition: "attachment; filename=\"#{filename}\""
+    }
+    mail from: from, to: to, subject: filename do |format|
+      format.html { render 'route_mailer/send_kmz_route' }
     end
   end
 end

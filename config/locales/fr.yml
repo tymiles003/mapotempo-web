@@ -648,8 +648,7 @@ fr:
       total: "total"
 
   route_mailer:
-    send_kml_route:
-      subject: "Votre route pour le véhicule %{n}"
+    send_kmz_route:
       content: "L'export au format KML de votre route se trouve dans le fichier attaché à cet email."
 
   plannings:
@@ -682,9 +681,9 @@ fr:
         spreadsheet_excel: "Tableur Excel"
         gpx_route: "Route GPX"
         gpx_trace: "Tracé GPX"
-        kml_email: "KML Envoyer par email"
-        kml_email_success: "Email envoyé avec succès"
-        kml_track: "Tracé KML"
+        kmz_email: "KML Envoyer par email"
+        kmz_email_success: "Email envoyé avec succès"
+        kmz_track: "Tracé KML"
         tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
         masternaut: "Envoyer vers Masternaut"
@@ -942,7 +941,7 @@ fr:
       store_rest:
         none: "Aucun"
       contact_email:
-        help: "Email du conducteur"
+        help: "Email du terminal du chauffeur"
 
   vehicle_usages:
     menu:

@@ -104,13 +104,13 @@
               <li><a href="/routes/{{route_id}}.gpx?track=true"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_trace{{/i18n}}</a></li>
               {{#contact_email}}
                 <li>
-                  <a href="/routes/{{route_id}}.kml?email=1" class="route-kml-email">
-                    <i class="fa fa-mobile fa-fw"></i>
-                    {{#i18n}}plannings.edit.export.kml_email{{/i18n}}
+                  <a href="/routes/{{route_id}}.kmz?email=1" class="route-kmz-email">
+                    <i class="fa fa-envelope fa-fw"></i>
+                    {{#i18n}}plannings.edit.export.kmz_email{{/i18n}}
                   </a>
                 </li>
               {{/contact_email}}
-              <li><a href="/routes/{{route_id}}.kmz"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.kml_track{{/i18n}}</a></li>
+              <li><a href="/routes/{{route_id}}.kmz"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.kmz_track{{/i18n}}</a></li>
               {{#tomtom}}
                 <li class="tomtom-send"><a href="/routes/{{route_id}}.tomtom?type=orders"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_orders{{/i18n}}</a></li>
                 <li class="tomtom-send"><a href="/routes/{{route_id}}.tomtom?type=waypoints"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_waypoints{{/i18n}}</a></li>

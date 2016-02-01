@@ -634,8 +634,7 @@ en:
       total: "total"
 
   route_mailer:
-    send_kml_route:
-      subject: "Your Route With Vehicle %{n}"
+    send_kmz_route:
       content: "Route informations have been exported using KML format in a file attached to this E-Mail."
 
   plannings:
@@ -668,9 +667,9 @@ en:
         spreadsheet_excel: "Spreadsheet Excel"
         gpx_route: "GPX Route"
         gpx_trace: "GPX Track"
-        kml_email: "KML Send by E-Mail"
-        kml_email_success: "E-Mail sent successfully"
-        kml_track: "KML Track"
+        kmz_email: "KML Send by E-Mail"
+        kmz_email_success: "E-Mail sent successfully"
+        kmz_track: "KML Track"
         tomtom_orders: "Send to TomTom as Orders"
         tomtom_waypoints: "Send to TomTom as Waypoints"
         masternaut: "Send to Masternaut"
@@ -924,7 +923,7 @@ en:
         default: "%{n} (default value)"
         help: "A value higher than 100% mean higher speed. The global tune up set on settings is also used on computation."
       contact_email:
-        help: "Driver E-Mail"
+        help: "Driver's Device E-Mail"
 
   vehicle_usages:
     menu:

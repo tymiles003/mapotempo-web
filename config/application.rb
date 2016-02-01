@@ -67,6 +67,8 @@ module Mapotempo
 
     config.action_mailer.default_url_options = {host: 'localhost'}
 
+    config.default_from_mail = 'root@localhost'
+
     config.swagger_docs_base_path = 'http://localhost:3000/'
 
     config.optimize = Ort.new(

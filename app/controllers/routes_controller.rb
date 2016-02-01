@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -35,12 +35,7 @@ class RoutesController < ApplicationController
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.gpx"'
       end
       format.kml do
-        if params[:email]
-          RouteMailer.send_kml_route(@route, render_to_string("routes/show.kml")).deliver_now
-          return
-        else
-          response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
-        end
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
       end
       format.kmz do
         stringio = Zip::OutputStream.write_buffer do |zio|
@@ -55,9 +50,14 @@ class RoutesController < ApplicationController
             zio.print IO.read('public/' + img_path)
           }
         end
-        send_data stringio.string,
-          type: 'application/vnd.google-earth.kmz',
-          filename: filename + '.kmz'
+        if params[:email]
+          RouteMailer.send_kmz_route(current_user.email, @route.vehicle_usage.vehicle.contact_email, filename + '.kmz', stringio.string).deliver_now
+          return
+        else
+          send_data stringio.string,
+            type: 'application/vnd.google-earth.kmz',
+            filename: filename + '.kmz'
+        end
       end
       format.excel do
         data = render_to_string.gsub('\n', '\r\n')

@@ -34,7 +34,7 @@
           <li><%= link_to planning_path(@planning, format: :excel) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_trace' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kml_track' %><% end %></li>
+          <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
           <% if @planning.customer.tomtom? %>
             <li class="export_tomtom"><%= link_to planning_path(@planning, format: :tomtom, type: 'orders') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_orders' %><% end %></li>
             <li class="export_tomtom"><%= link_to planning_path(@planning, format: :tomtom, type: 'waypoints') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_waypoints' %><% end %></li>
