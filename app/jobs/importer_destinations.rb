@@ -77,7 +77,7 @@ class ImporterDestinations < ImporterBase
     @need_geocode = false
 
     if replace
-      @customer.destinations.delete_all
+      @customer.delete_all_destinations
     end
     @visit_ids = []
   end

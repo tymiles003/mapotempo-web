@@ -131,7 +131,7 @@ class DestinationsController < ApplicationController
 
   def clear
     Destination.transaction do
-      current_user.customer.destinations.delete_all
+      current_user.customer.delete_all_destinations
     end
     respond_to do |format|
       format.html { redirect_to action: 'index' }

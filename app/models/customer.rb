@@ -85,6 +85,15 @@ class Customer < ActiveRecord::Base
     destinations.collect{ |destination| destination.visits }.flatten
   end
 
+  def delete_all_destinations
+    destinations.delete_all
+    plannings.each { |p|
+      # reindex remaining stops (like rests)
+      p.routes.select(&:vehicle_usage).each(&:force_reindex)
+      p.save!
+    }
+  end
+
   private
 
   def assign_defaults
@@ -151,7 +160,7 @@ class Customer < ActiveRecord::Base
               visit.tags = destination.tags # ?
             }
             destination.ref = nil
-            destination.tag_ids = [] # destination.tags = [] # destination.tags.destroy_all
+            destination.tag_ids = []
           }
         else
           self.destinations.each{ |destination|
@@ -160,7 +169,7 @@ class Customer < ActiveRecord::Base
               destination.tags = destination.visits[0].tags # ?
               destination.visits.each{ |visit|
                 visit.ref = nil
-                visit.tag_ids = [] # visit.tags = [] # visit.tags.destroy_all
+                visit.tag_ids = []
               }
             end
           }
