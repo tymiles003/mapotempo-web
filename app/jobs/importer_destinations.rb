@@ -120,6 +120,8 @@ class ImporterDestinations < ImporterBase
             @tag_labels[tag]
           end
         }.compact
+      elsif row.key?(key)
+        row.delete key
       end
     }
 
