@@ -22,7 +22,7 @@
     input_group: t('all.unit.hour_minute')} do %>
     <p class="help-block"><%= t 'vehicle_usage_sets.form.rest_stop.help' %></p>
   <% end %>
-  <%= f.collection_select :store_rest_id, [], @vehicle_usage_set.customer.stores, :id, :name, {include_blank: t('vehicles_usage.form.store_rest.none')}, {input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
+  <%= f.collection_select :store_rest_id, [], @vehicle_usage_set.customer.stores, :id, :name, {include_blank: t('vehicle_usages.form.store_rest.none')}, {input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
   <%= f.text_field :service_time_start, {
     value: f.object.service_time_start && l(f.object.service_time_start, format: :hour_minute),
     input_group: t('all.unit.hour_minute') } do %>
