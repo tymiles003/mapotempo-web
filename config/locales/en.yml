@@ -43,6 +43,7 @@ en:
       import_csv:
         file: "File"
         replace: "Replace"
+        delete_plannings: "Delete previous plannings"
       import_tomtom:
         replace: "Replace"
 
@@ -543,6 +544,8 @@ en:
       title: "Import destinations"
       replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost. In the opposite case an update of existing customers is made and the new ones are added."
       replace_confirm: "Delete all clients and their amendments to replace them with imported ones?"
+      delete_plannings_help: "Delete previously created plannings (allow better performances). If routes are present in your new import file, a planning will be created anyway after import."
+      delete_plannings_confirm: "Delete all previously created plannings ?"
       csv:
         title: "CSV File"
         help: "Imports destinations from CSV file. CSV files can be exported from spreadsheet or other softwares."
@@ -1018,7 +1021,7 @@ en:
     form:
       legend: "Visit #%{n}"
       destroy: "If checked, visit will be destroyed by submiting this page. Click here to cancel."
-      ref_help: "A free reference"
+      ref_help: "A free reference. IMPORTANT if you want not to overwrite visits during import/export especially."
       quantity_help: "Quantity to be delivered"
       take_over_help: "If empty uses the default value"
       close_help: "Without taking into account take over duration"

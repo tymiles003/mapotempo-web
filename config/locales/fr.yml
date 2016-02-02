@@ -47,8 +47,10 @@ fr:
       import_csv:
         file: "Fichier"
         replace: "Remplacer"
+        delete_plannings: "Supprimer anciens plannings"
       import_tomtom:
         replace: "Remplacer"
+
 
   activerecord:
     models:
@@ -557,6 +559,8 @@ fr:
       title: "Importer des clients"
       replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus. Dans le cas contraire une mise à jour des clients existants est faite et les nouveaux sont ajoutés."
       replace_confirm: "Supprimer tous les clients et leurs modifications pour les remplacer par ceux importés ?"
+      delete_plannings_help: "Supprimer les anciens plannings (permet notamment d'améliorer la réactivité de l'application). Si des tournées sont présentes dans votre fichier d'import, un nouveau planning sera tout de même créé après l'import."
+      delete_plannings_confirm: "Supprimer tous les anciens plannings ?"
       csv:
         title: "Fichier CSV"
         help: "Importe les clients depuis un fichier CSV. Les fichiers CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels."
@@ -1036,7 +1040,7 @@ fr:
     form:
       legend: "Visite #%{n}"
       destroy: "Si coché, la visite sera supprimée. Cliquez-ici pour annuler."
-      ref_help: "Référence libre"
+      ref_help: "Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites avec l'import/export notamment."
       quantity_help: "Quantité à livrer"
       take_over_help: "Si vide utilise la valeur par défaut"
       close_help: "Sans tenir compte de la durée de visite"

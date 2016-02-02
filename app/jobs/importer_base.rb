@@ -24,11 +24,11 @@ class ImporterBase
     @warnings = []
   end
 
-  def import(data, replace, name, synchronous, ignore_error)
+  def import(data, name, synchronous, options)
     dests = false
 
     Customer.transaction do
-      before_import(replace, name, synchronous)
+      before_import(name, synchronous, options)
 
       dests = data.each_with_index.collect{ |row, line|
         row = yield(row)
@@ -38,7 +38,7 @@ class ImporterBase
         end
 
         begin
-          dest = import_row(replace, name, row, line + 1)
+          dest = import_row(name, row, line + 1, options)
           if dest.nil?
             next
           end
@@ -48,7 +48,7 @@ class ImporterBase
           end
           dest
         rescue => e
-          if ignore_error
+          if options[:ignore_errors]
             @warnings << e if !@warnings.include?(e)
           else
             raise
@@ -56,9 +56,9 @@ class ImporterBase
         end
       }
 
-      after_import(replace, name, synchronous)
+      after_import(name, synchronous, options)
 
-      finalize_import(replace, name, synchronous)
+      finalize_import(name, synchronous, options)
     end
 
     dests

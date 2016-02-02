@@ -34,7 +34,7 @@ class ImportJson
         Customer.transaction do
           keys = @importer.columns.keys
 
-          @importer.import(json, replace, nil, synchronous, false) { |row|
+          @importer.import(json, nil, synchronous, ignore_errors: false, replace: replace) { |row|
             r, row = row, {}
             r.each{ |k, v|
               ks = k.to_sym

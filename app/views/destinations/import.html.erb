@@ -21,6 +21,10 @@
           <%= f.check_box :replace %>
           <p class="help-block"><%= t '.replace_help' %></p>
         <% end %>
+        <%= f.toggles t 'activemodel.attributes.import_csv.delete_plannings' do %>
+          <%= f.check_box :delete_plannings %>
+          <p class="help-block"><%= t '.delete_plannings_help' %></p>
+        <% end %>
         <%= f.actions do %>
           <%= f.submit t('all.verb.import'), {}, 'fa-upload' %>
         <% end %>
@@ -49,7 +53,7 @@
       <p class="help-block"><%= t '.tomtom.help' %></p>
         <%= twitter_bootstrap_form_for(@import_tomtom, url: destinations_import_tomtom_path, layout: :horizontal, multipart: true) do |f| %>
           <%= render 'shared/error_messages', model: @import_tomtom %>
-          <%= f.toggles t 'activemodel.attributes.import_csv.replace' do %>
+          <%= f.toggles t 'activemodel.attributes.import_tomtom.replace' do %>
             <%= f.check_box :replace %>
             <p class="help-block"><%= t '.replace_help' %></p>
           <% end %>

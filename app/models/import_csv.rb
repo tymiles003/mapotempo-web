@@ -22,12 +22,16 @@ class ImportCsv
   include ActiveRecord::AttributeAssignment
   extend ActiveModel::Translation
 
-  attr_accessor :importer, :replace, :file
+  attr_accessor :importer, :replace, :file, :delete_plannings
   validates :file, presence: true
   validate :data
 
   def replace=(value)
     @replace = ValueToBoolean.value_to_boolean(value)
+  end
+
+  def delete_plannings=(value)
+    @delete_plannings = ValueToBoolean.value_to_boolean(value)
   end
 
   def name
@@ -38,7 +42,7 @@ class ImportCsv
     if data
       begin
         Customer.transaction do
-          @importer.import(data, replace, name, synchronous, false) { |row|
+          @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings) { |row|
             # Switch from locale to internal column name
             r, row = row, {}
             @importer.columns.each{ |k, v|

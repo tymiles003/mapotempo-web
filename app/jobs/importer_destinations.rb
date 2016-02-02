@@ -67,7 +67,7 @@ class ImporterDestinations < ImporterBase
     columns_route.merge(columns_destination).merge(columns_visit).merge(without_visit: I18n.t('destinations.import_file.without_visit'))
   end
 
-  def before_import(replace, name, synchronous)
+  def before_import(name, synchronous, options)
     @common_tags = nil
     @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
     @tag_ids = Hash[@customer.tags.collect{ |tag| [tag.id, tag] }]
@@ -76,13 +76,16 @@ class ImporterDestinations < ImporterBase
     @planning = nil
     @need_geocode = false
 
-    if replace
+    if options[:delete_plannings]
+      @customer.plannings.delete_all
+    end
+    if options[:replace]
       @customer.delete_all_destinations
     end
     @visit_ids = []
   end
 
-  def import_row(replace, name, row, line)
+  def import_row(name, row, line, options)
     if !row[:stop_type].nil? && row[:stop_type] != I18n.t('destinations.import_file.stop_type_visit')
       return
     end
@@ -205,7 +208,7 @@ class ImporterDestinations < ImporterBase
     end
   end
 
-  def after_import(replace, name, synchronous)
+  def after_import(name, synchronous, options)
     if @need_geocode && (synchronous || !Mapotempo::Application.config.delayed_job_use)
       @routes.each{ |_key, visits|
         visits.each{ |visit_active|
@@ -228,7 +231,7 @@ class ImporterDestinations < ImporterBase
     @customer.save!
   end
 
-  def finalize_import(replace, name, synchronous)
+  def finalize_import(name, synchronous, options)
     if @need_geocode && !synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_destination_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(@customer.id, @planning ? @planning.id : nil))
     else
