@@ -36,9 +36,9 @@
           <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_trace' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
           <% if @planning.customer.tomtom? %>
-            <li class="export_tomtom"><%= link_to planning_path(@planning, format: :tomtom, type: 'orders') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_orders' %><% end %></li>
-            <li class="export_tomtom"><%= link_to planning_path(@planning, format: :tomtom, type: 'waypoints') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_waypoints' %><% end %></li>
-            <li class="export_tomtom"><%= link_to planning_path(@planning, format: :tomtom, type: 'empty') do %><i class="fa fa-mobile fa-fw"></i> <%= t 'plannings.edit.export.clear.action' %><% end %></li>
+            <li class="tomtom-send"><%= link_to planning_path(@planning, format: :tomtom, type: 'orders') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_orders' %><% end %></li>
+            <li class="tomtom-send"><%= link_to planning_path(@planning, format: :tomtom, type: 'waypoints') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_waypoints' %><% end %></li>
+            <li class="tomtom-clear"><%= link_to planning_path(@planning, format: :tomtom, type: 'empty') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.clear.action' %><% end %></li>
           <% end %>
           <% if @planning.customer.enable_masternaut && !@planning.customer.masternaut_user.blank? && !@planning.customer.masternaut_password.blank? %>
             <li class="export_masternaut"><%= link_to planning_path(@planning, format: :masternaut) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.masternaut' %><% end %></li>
