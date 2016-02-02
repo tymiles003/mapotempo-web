@@ -23,6 +23,8 @@ class PlanningsController < ApplicationController
   load_and_authorize_resource
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order]
 
+  include KmzExport
+
   def index
     @plannings = current_user.customer.plannings
     @customer = current_user.customer
@@ -39,28 +41,20 @@ class PlanningsController < ApplicationController
       end
       format.kml do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
+        render "plannings/show", locals: { planning: @planning }
       end
       format.kmz do
-        stringio = Zip::OutputStream.write_buffer do |zio|
-          zio.put_next_entry(filename + '.kml')
-          zio.write render_to_string(formats: :kml)
-          store_img_path = 'marker-home.png'
-          zio.put_next_entry(store_img_path)
-          zio.print IO.read('public/' + store_img_path)
-          (Vehicle.colors_table + ['#000000']).each { |color|
-            img_path = 'marker-home-' + color[1..-1] + '.png'
-            zio.put_next_entry(img_path)
-            zio.print IO.read('public/' + img_path)
-          }
-          (Vehicle.colors_table + ['#707070']).each { |color|
-            img_path = 'point-' + color[1..-1] + '.png'
-            zio.put_next_entry(img_path)
-            zio.print IO.read('public/' + img_path)
-          }
+        if params[:email]
+          @planning.routes.joins(vehicle_usage: [:vehicle]).each do |route|
+            next if !route.vehicle_usage.vehicle.contact_email
+            RouteMailer.send_kmz_route(current_user.email, route.vehicle_usage.vehicle.contact_email, filename + '.kmz', kmz_string_io(route: route, with_home_markers: true).string).deliver_now
+          end
+          head :no_content
+        else
+          send_data kmz_string_io(planning: @planning, with_home_markers: true).string,
+            type: 'application/vnd.google-earth.kmz',
+            filename: filename + '.kmz'
         end
-        send_data stringio.string,
-          type: 'application/vnd.google-earth.kmz',
-          filename: filename + '.kmz'
       end
       format.excel do
         data = render_to_string.gsub('\n', '\r\n')

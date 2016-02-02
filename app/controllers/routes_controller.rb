@@ -26,6 +26,8 @@ class RoutesController < ApplicationController
   load_and_authorize_resource
   before_action :set_route, only: [:update]
 
+  include KmzExport
+
   def show
     @export_stores = ValueToBoolean.value_to_boolean(params['stores'], true)
     respond_to do |format|
@@ -36,25 +38,14 @@ class RoutesController < ApplicationController
       end
       format.kml do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
+        render "routes/show", locals: { route: @route }
       end
       format.kmz do
-        stringio = Zip::OutputStream.write_buffer do |zio|
-          zio.put_next_entry(filename + '.kml')
-          zio.write render_to_string(formats: :kml)
-          store_img_path = 'marker-home.png'
-          zio.put_next_entry(store_img_path)
-          zio.print IO.read('public/' + store_img_path)
-          (Vehicle.colors_table + ['#707070']).each { |color|
-            img_path = 'point-' + color[1..-1] + '.png'
-            zio.put_next_entry(img_path)
-            zio.print IO.read('public/' + img_path)
-          }
-        end
         if params[:email]
-          RouteMailer.send_kmz_route(current_user.email, @route.vehicle_usage.vehicle.contact_email, filename + '.kmz', stringio.string).deliver_now
-          return
+          RouteMailer.send_kmz_route(current_user.email, @route.vehicle_usage.vehicle.contact_email, filename + '.kmz', kmz_string_io(route: @route).string).deliver_now
+          head :no_content
         else
-          send_data stringio.string,
+          send_data kmz_string_io(route: @route).string,
             type: 'application/vnd.google-earth.kmz',
             filename: filename + '.kmz'
         end

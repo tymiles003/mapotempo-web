@@ -3,8 +3,8 @@
 <kml xmlns="http://www.opengis.net/kml/2.2"
  xmlns:gx="http://www.google.com/kml/ext/2.2">
   <Document>
-    <name><%= @route.planning.name %></name>
-    <%= render 'showstyle', route: @route %>
-    <%= render 'show', route: @route %>
+    <name><%= route.planning.name %></name>
+    <%= render 'routes/showstyle', route: route %>
+    <%= render 'routes/show', route: route %>
   </Document>
 </kml>

@@ -438,34 +438,48 @@ var plannings_edit = function(params) {
     }
 
     // KMZ: Export Route via E-Mail
-    $("a.route-kmz-email").click(function(e) {
+    $('.kmz_email a').click(function(e) {
       e.preventDefault();
-      $.get($(e.target).attr("href"), function() {
-        notice(I18n.t('plannings.edit.export.kmz_email_success'));
+      $.ajax({
+        url: $(e.target).attr('href'),
+        type: 'GET',
+        beforeSend: function(jqXHR, settings) {
+          beforeSendWaiting();
+        },
+        complete: function(jqXHR, textStatus) {
+          completeWaiting();
+        },
+        success: function(data, textStatus, jqXHR) {
+          notice(I18n.t('plannings.edit.export.kmz_email.success'));
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          stickyError(I18n.t('plannings.edit.export.kmz_email.fail'));
+        }
       });
     });
 
-    $.each(['send', 'clear'], function(i, name) {
-      $(".tomtom-" + name + " a").click(function(e) {
-
+    // Send to TomTom, Clear TomTom
+    $.each(['tomtom_send', 'tomtom_clear'], function(i, name) {
+      $('.' + name + ' a').click(function(e) {
+        e.preventDefault();
         $.ajax({
-          type: "get",
-          url: $(e.target).attr("href"),
-          beforeSend: function() {
-            $("#dialog-tomtom").dialog("open");
+          url: $(e.target).attr('href'),
+          type: 'GET',
+          beforeSend: function(jqXHR, settings) {
+            $('#dialog-tomtom').dialog('open');
           },
-          success: function() {
+          success: function(data, textStatus, jqXHR) {
             notice(I18n.t('plannings.edit.export.' + name + '.success'));
           },
-          complete: function() {
-            $("#dialog-tomtom").dialog("close");
+          complete: function(jqXHR, textStatus) {
+            $('#dialog-tomtom').dialog('close');
           },
-          error: ajaxError
+          error: function(jqXHR, textStatus, errorThrown) {
+            stickyError(I18n.t('plannings.edit.export.' + name + '.fail'));
+          }
         });
-
         // Reset Dropdown
-        $(e.target).closest(".dropdown-menu").dropdown("toggle");
-
+        $(e.target).closest('.dropdown-menu').dropdown('toggle');
         return false;
       });
     });

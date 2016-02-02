@@ -103,18 +103,18 @@
               <li><a href="/routes/{{route_id}}.gpx"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_route{{/i18n}}</a></li>
               <li><a href="/routes/{{route_id}}.gpx?track=true"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_trace{{/i18n}}</a></li>
               {{#contact_email}}
-                <li>
-                  <a href="/routes/{{route_id}}.kmz?email=1" class="route-kmz-email">
+                <li class="kmz_email">
+                  <a href="/routes/{{route_id}}.kmz?email=1">
                     <i class="fa fa-envelope fa-fw"></i>
-                    {{#i18n}}plannings.edit.export.kmz_email{{/i18n}}
+                    {{#i18n}}plannings.edit.export.kmz_email.action{{/i18n}}
                   </a>
                 </li>
               {{/contact_email}}
               <li><a href="/routes/{{route_id}}.kmz"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.kmz_track{{/i18n}}</a></li>
               {{#tomtom}}
-                <li class="tomtom-send"><a href="/routes/{{route_id}}.tomtom?type=orders"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_orders{{/i18n}}</a></li>
-                <li class="tomtom-send"><a href="/routes/{{route_id}}.tomtom?type=waypoints"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_waypoints{{/i18n}}</a></li>
-                <li class="tomtom-clear"><a href="/routes/{{route_id}}.tomtom?type=empty"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.clear.action{{/i18n}}</a></li>
+                <li class="tomtom_send"><a href="/routes/{{route_id}}.tomtom?type=orders"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_send.action{{/i18n}}</a></li>
+                <li class="tomtom_send"><a href="/routes/{{route_id}}.tomtom?type=waypoints"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_waypoints{{/i18n}}</a></li>
+                <li class="tomtom_clear"><a href="/routes/{{route_id}}.tomtom?type=empty"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_clear.action{{/i18n}}</a></li>
               {{/tomtom}}
               {{#masternaut}}
                 <li class="export_masternaut"><a href="/routes/{{route_id}}.masternaut"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.masternaut{{/i18n}}</a></li>

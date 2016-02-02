@@ -3,11 +3,11 @@
 <kml xmlns="http://www.opengis.net/kml/2.2"
  xmlns:gx="http://www.google.com/kml/ext/2.2">
   <Document>
-    <name><%= @planning.name %></name>
-    <% @planning.routes.select{ |route| route.vehicle_usage && route.size_active > 0 }.each{ |route| %>
+    <name><%= planning.name %></name>
+    <% planning.routes.select{ |route| route.vehicle_usage && route.size_active > 0 }.each{ |route| %>
     <%=  render 'routes/showstyle', route: route %>
     <% } %>
-    <% @planning.routes.select{ |route| route.vehicle_usage && route.size_active > 0 }.each{ |route| %>
+    <% planning.routes.select{ |route| route.vehicle_usage && route.size_active > 0 }.each{ |route| %>
     <%=  render 'routes/show', route: route %>
     <% } %>
   </Document>

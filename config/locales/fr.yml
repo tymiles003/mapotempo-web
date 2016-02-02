@@ -684,21 +684,25 @@ fr:
       service_time: "Durées de service"
       exports: "Exporter"
       export:
-        clear:
+        tomtom_clear:
           action: "Vider TomTom"
           success: "Les commandes TomTom ont été vidées avec succès"
-        send:
+          fail: "Échec lors de la suppression des commandes TomTom"
+        tomtom_send:
+          action: "Commandes vers TomTom"
           success: "Envoi vers TomTom terminé avec succès"
+          fail: "Échec lors de l'envoi vers TomTom"
+        kmz_email:
+          action: "KML: Envoyer par email"
+          success: "Email envoyé avec succès"
+          fail: "Échec lors de l'envoi de l'Email"
         print: "Imprimer"
         spreadsheet_standard: "Tableur standard"
         spreadsheet_standard_without_stores: "Tableur standard sans dépôts"
         spreadsheet_excel: "Tableur Excel"
         gpx_route: "Route GPX"
         gpx_trace: "Tracé GPX"
-        kmz_email: "KML Envoyer par email"
-        kmz_email_success: "Email envoyé avec succès"
         kmz_track: "Tracé KML"
-        tomtom_orders: "Commandes vers TomTom"
         tomtom_waypoints: "Points de passage vers TomTom"
         masternaut: "Envoyer vers Masternaut"
         masternaut_success: "Envoi vers Masternaut terminé avec succès"
