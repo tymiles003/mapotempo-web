@@ -985,7 +985,7 @@ en:
         help: "Without taking into account rest duration"
       rest_duration:
         default: "%{n} (default value)"
-        help: "Requires rest start and stop times"
+        help: "Requires rest start and stop times if filled"
       store_rest:
         default: "Default"
         none: "None"
@@ -1020,7 +1020,7 @@ en:
         help_start: "Duration added before the first stop."
         help_end: "Duration added after the last stop."
       rest_duration:
-        help: "Requires rest start and stop times"
+        help: "Requires rest start and stop times if filled"
       rest_stop:
         help: "Without taking into account rest duration"
 

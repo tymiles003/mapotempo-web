@@ -38,6 +38,7 @@ class VehicleUsage < ActiveRecord::Base
   validates_time :service_time_start, if: :service_time_start
   validates_time :service_time_end, if: :service_time_end
 
+  before_validation :nilify_times
   before_update :update_out_of_date
 
   def default_open
@@ -97,6 +98,12 @@ class VehicleUsage < ActiveRecord::Base
   end
 
   private
+
+  def nilify_times
+    assign_attributes(rest_duration: nil) if rest_duration.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00')) && vehicle_usage_set.rest_duration.nil?
+    assign_attributes(service_time_start: nil) if service_time_start.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00')) && vehicle_usage_set.service_time_start.nil?
+    assign_attributes(service_time_end: nil) if service_time_end.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00')) && vehicle_usage_set.service_time_end.nil?
+  end
 
   def update_out_of_date
     if rest_duration_changed?

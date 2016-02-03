@@ -1004,7 +1004,7 @@ fr:
         help: "Sans tenir compte de la durée de pause"
       rest_duration:
         default: "%{n} (valeur par défaut)"
-        help: "Requiert un horaire de début et fin de pause"
+        help: "Requiert un horaire de début et fin de pause si renseigné"
       store_rest:
         default: "Défaut"
         none: "Aucun"
@@ -1039,7 +1039,7 @@ fr:
         help_start: "Durée ajoutée avant le premier arrêt."
         help_end: "Durée ajoutée après le dernier arrêt."
       rest_duration:
-        help: "Requiert un horaire de début et fin de pause"
+        help: "Requiert un horaire de début et fin de pause si renseigné"
       rest_stop:
         help: "Sans tenir compte de la durée de pause"
 

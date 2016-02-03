@@ -41,6 +41,7 @@ class VehicleUsageSet < ActiveRecord::Base
   validates_time :service_time_end, if: :service_time_end
 
   after_initialize :assign_defaults, if: :new_record?
+  before_validation :nilify_times
   before_save :set_stores
   before_update :update_out_of_date
 
@@ -80,6 +81,12 @@ class VehicleUsageSet < ActiveRecord::Base
     self.open ||= Time.utc(2000, 1, 1, 8, 0) unless open
     self.close ||= Time.utc(2000, 1, 1, 12, 0) unless close
     create_vehicle_usages
+  end
+
+  def nilify_times
+    assign_attributes(rest_duration: nil) if rest_duration.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
+    assign_attributes(service_time_start: nil) if service_time_start.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
+    assign_attributes(service_time_end: nil) if service_time_end.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
   end
 
   def update_out_of_date
