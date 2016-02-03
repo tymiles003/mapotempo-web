@@ -5,7 +5,7 @@
   {{#enable_references}}
   {{^enable_multi_visits}}
     <td class="ref">
-      <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}" style="width:4.5em"/>
+      <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}"/>
     </td>
   {{/enable_multi_visits}}
   {{/enable_references}}
@@ -130,13 +130,13 @@
           <input type="hidden" name="destination[visits_attributes][][id]" value="{{id}}"/>
           {{#enable_references}}
           {{#enable_multi_visits}}
-            <span>
-              <input class="form-control input-sm" type="text" name="destination[visits_attributes][][ref]" value="{{ref_visit}}" style="width:3em"/>
+            <span style="min-width:3em">
+              <input class="form-control input-sm" type="text" name="destination[visits_attributes][][ref]" value="{{ref_visit}}"/>
             </span>
           {{/enable_multi_visits}}
           {{/enable_references}}
-          <span>
-            <input class="form-control input-sm" type="number" name="destination[visits_attributes][][quantity]" value="{{quantity}}" placeholder="1" style="width:4em"/>
+          <span style="width:4em">
+            <input class="form-control input-sm" type="number" name="destination[visits_attributes][][quantity]" value="{{quantity}}" placeholder="1"/>
           </span>
           {{#enable_multi_visits}}
             <span>
@@ -176,14 +176,14 @@
               </div>
             </span>
           {{/enable_multi_visits}}
-          <span>
-            <input class="form-control input-sm" type="datetime" name="destination[visits_attributes][][take_over]" value="{{take_over}}" placeholder="{{take_over_default}}" style="width:5em"/>
+          <span style="width:5em">
+            <input class="form-control input-sm" type="datetime" name="destination[visits_attributes][][take_over]" value="{{take_over}}" placeholder="{{take_over_default}}"/>
           </span>
-          <span>
-            <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][open]" value="{{open}}" style="width:3.5em"/>
+          <span style="width:3.5em">
+            <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][open]" value="{{open}}"/>
           </span>
-          <span>
-            <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][close]" value="{{close}}" style="width:3.5em"/>
+          <span style="width:3.5em">
+            <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][close]" value="{{close}}"/>
           </span>
         </div>
       {{/visits}}

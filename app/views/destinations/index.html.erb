@@ -63,15 +63,15 @@
         <th title="<%= t '.geocoding_column_help' %>" class="geocoding filter-false">
           <div class="col-title"><%= t 'activerecord.attributes.destination.geocoding_accuracy_small' %></div>
         </th>
-        <th data-sorter="false" class="visit columnSelector-disable">
+        <th data-sorter="false" class="visit columnSelector-disable" style="min-width:<% if !@customer.enable_multi_visits %>14<% else %>26<% end %>em;">
           <div class="col-title"><%= t 'activerecord.models.visit' %></div>
           <div id="visit-subtitles" style="width: 100%;">
             <% if @customer.enable_references && @customer.enable_multi_visits %>
-              <div class="visit-subtitle" style="width: 3em;"><%= t 'activerecord.attributes.visit.ref_small' %></div>
+              <div class="visit-subtitle" style="min-width: 3em;"><%= t 'activerecord.attributes.visit.ref_small' %></div>
             <% end %>
             <div class="visit-subtitle" style="width: 4em;"><%= t 'activerecord.attributes.visit.quantity_small' %></div>
             <% if @customer.enable_multi_visits %>
-              <div class="visit-subtitle" style="min-width: 9em;"><%= t 'activerecord.attributes.visit.tags' %></div>
+              <div class="visit-subtitle" style="width: 10em;"><%= t 'activerecord.attributes.visit.tags' %></div>
             <% end %>
             <div class="visit-subtitle" style="width: 5em;"><%= t 'activerecord.attributes.visit.take_over_small' %></div>
             <div class="visit-subtitle" style="width: 3.5em;"><%= t 'activerecord.attributes.visit.open_small' %></div>

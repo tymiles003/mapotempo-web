@@ -147,26 +147,29 @@
       margin: auto;
       width: 2em;
     }
-    td.name {
-      min-width: 8em;
+    th.ref, td.ref {
+      min-width: 4em;
     }
-    td.address {
-      min-width: 22em;
+    th.name, td.name {
+      min-width: 6em;
     }
-    td.country {
-      min-width: 5em;
+    th.address, td.address {
+      min-width: 20em;
     }
-    td.comment {
+    th.country, td.country {
+      min-width: 4.5em;
+    }
+    th.comment, td.comment {
       min-width: 7.5em;
     }
-    td.phone {
+    th.phone, td.phone {
       min-width: 4.5em;
       max-width: 10em;
     }
-    td.tags, .input-group-tags {
-      min-width: 9em;
+    .input-group-tags {
+      width: 10em;
     }
-    td.geocoding {
+    th.geocoding, td.geocoding {
       width: 6em;
     }
 
