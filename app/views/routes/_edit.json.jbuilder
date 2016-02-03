@@ -72,6 +72,7 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
       icon = visit.tags.find(&:icon)
       (json.icon icon.icon) if icon
     end
+    json.index_visit (visit.destination.visits.index(visit) + 1) if visit.destination.visits.size > 1
     if !visit.tags.empty?
       json.tags_present do
         json.tags do

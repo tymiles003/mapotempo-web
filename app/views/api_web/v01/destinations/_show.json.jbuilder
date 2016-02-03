@@ -2,11 +2,9 @@ json.extract! destination, :name, :street, :detail, :postalcode, :city, :country
 json.destination_id destination.id
 json.error destination.lat.nil? || destination.lng.nil?
 
-num_visit = 0
 json.visits destination.visits do |visit|
   json.extract! visit, :id, :quantity, :tag_ids
-  num_visit += 1
-  json.num_visit num_visit if destination.visits.size > 1
+  json.index_visit (destination.visits.index(visit) + 1) if destination.visits.size > 1
   json.ref visit.ref if @customer.enable_references
   take_over = visit.take_over && l(visit.take_over, format: :hour_minute_second)
   json.take_over take_over

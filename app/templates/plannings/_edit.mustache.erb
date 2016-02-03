@@ -43,7 +43,7 @@
               {{^geocoded}}
                 <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geolocalization{{/i18n}}"></i>
               {{/geocoded}}
-              <span class="name" title="{{name}}">{{name}}</span><br />
+              <span class="name" title="{{name}}{{#index_visit}} #{{index_visit}}{{/index_visit}}">{{name}}</span>{{#index_visit}} #{{index_visit}}{{/index_visit}}<br />
             </div>
             <div class="btn-group pull-right stop-tools">
               {{#geocoded}}
