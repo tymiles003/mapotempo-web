@@ -63,7 +63,7 @@
         <th title="<%= t '.geocoding_column_help' %>" class="geocoding filter-false">
           <div class="col-title"><%= t 'activerecord.attributes.destination.geocoding_accuracy_small' %></div>
         </th>
-        <th data-sorter="false" class="visit columnSelector-disable" style="min-width:<% if !@customer.enable_multi_visits %>14<% else %>26<% end %>em;">
+        <th data-sorter="false" class="visit columnSelector-disable" style="min-width:<% if !@customer.enable_multi_visits %>14<% elsif !@customer.enable_references %>23<% else %>26<% end %>em;">
           <div class="col-title"><%= t 'activerecord.models.visit' %></div>
           <div id="visit-subtitles" style="width: 100%;">
             <% if @customer.enable_references && @customer.enable_multi_visits %>
