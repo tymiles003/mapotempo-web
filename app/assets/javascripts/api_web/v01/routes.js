@@ -222,7 +222,7 @@ var api_web_v01_routes_index = function(params) {
             html: '<i class="fa ' + (store.icon || 'fa-home') + ' ' + map.iconSize[store.icon_size || 'large'].name + ' store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
             iconSize: new L.Point(map.iconSize[store.icon_size || 'large'].size, map.iconSize[store.icon_size || 'large'].size),
             iconAnchor: new L.Point(map.iconSize[store.icon_size || 'large'].size / 2, map.iconSize[store.icon_size || 'large'].size / 2),
-            popupAnchor: new L.Point(0, -Math.trunc(map.iconSize[store.icon_size || 'large'].size / 2.5)),
+            popupAnchor: new L.Point(0, -Math.floor(map.iconSize[store.icon_size || 'large'].size / 2.5)),
             className: 'store-icon-container'
           })
         }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
