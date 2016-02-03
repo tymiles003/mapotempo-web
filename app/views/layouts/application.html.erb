@@ -139,7 +139,6 @@
                   <% if current_user.customer %>
                     <li><%= link_to edit_customer_path(current_user.customer) do %><i class="fa fa-building-o fa-fw"></i> <%= t 'customers.menu.customer' %><% end %></li>
                   <% end %>
-                  <li><%= link_to edit_user_registration_path do %><i class="fa fa-key fa-fw"></i> <%= t 'customers.menu.user' %><% end %></li>
                   <li><%= link_to edit_user_settings_path(current_user) do %><i class="fa fa-user fa-fw"></i> <%= t 'customers.menu.user_settings' %><% end %></li>
                 </ul>
               </li>

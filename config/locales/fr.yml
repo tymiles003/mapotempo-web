@@ -153,7 +153,7 @@ fr:
         stores: "Dépôts"
         enable_orders: "Activer les commandes"
         enable_multi_vehicle_usage_sets: "Autoriser les multiples configurations de véhicules"
-        enable_references: "Montrer les references"
+        enable_references: "Montrer les références"
         enable_multi_visits: "Autoriser les multiples visites"
         test: "Test"
         jobs: "Tâches"
@@ -482,7 +482,6 @@ fr:
     menu:
       parameters: "Paramètres"
       customer: "Paramétrage global"
-      user: "Compte utilisateur"
       user_settings: "Paramètres utilisateur"
       customers: "Comptes client"
     edit:
@@ -501,6 +500,9 @@ fr:
     new:
       title: "Nouveau compte client"
     form:
+      default_value: "Valeurs par défault"
+      options: "Options"
+      optimization_parameters: "Paramètres d'optimisation"
       router_help: "Profil utilisé pour les calculs d'itinéraires par défaut"
       take_over_help: "Durée de visite moyenne par client"
       tomtom: "TomTom WEBFLEET"
@@ -928,6 +930,7 @@ fr:
       sign_out: "Déconnexion"
     edit_settings:
       title: "Paramètres utilisateur"
+      edit_user_registration: "Modifier votre identifiant de connexion et mot de passe"
     form_settings:
       url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
 

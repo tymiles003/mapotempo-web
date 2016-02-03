@@ -3,13 +3,13 @@
 <%= twitter_bootstrap_form_for resource, as: resource_name, url: registration_path(resource_name), layout: :horizontal do |f| %>
   <%= devise_error_messages! %>
   <%= f.email_field :email %>
+  <%= f.password_field :current_password do %>
+    <p class="help-block"><%= t('.we_need_your_current_password_to_confirm_your_changes', default: 'we need your current password to confirm your changes') %></p>
+  <% end %>
   <%= f.password_field :password, {autocomplete: 'off'} do %>
     <p class="help-block"><%= t('.leave_blank_if_you_don_t_want_to_change_it', default: "leave blank if you don't want to change it") %></p>
   <% end %>
   <%= f.password_field :password_confirmation %>
-  <%= f.password_field :current_password do %>
-    <p class="help-block"><%= t('.we_need_your_current_password_to_confirm_your_changes', default: 'we need your current password to confirm your changes') %></p>
-  <% end %>
   <%= f.actions do %>
     <%= f.submit t('.update', default: "Update") %>
   <% end %>

@@ -467,7 +467,6 @@ en:
     menu:
       parameters: "Parameters"
       customer: "Global settings"
-      user: "User"
       user_settings: "User's Settings"
       customers: "Customers"
     edit:
@@ -486,6 +485,9 @@ en:
     new:
       title: "New customer"
     form:
+      default_value: "Default values"
+      options: "Options"
+      optimization_parameters: "Optimization's parameters"
       router_help: "Profile used for route planning by default"
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
@@ -915,6 +917,7 @@ en:
       sign_out: "Sign out"
     edit_settings:
       title: "User's Settings"
+      edit_user_registration: "Change your login credentials and password"
     form_settings:
       url_click2call_help: "URL of VOIP communications solution. In URL set '{TEL}' in place of the phone number"
 
