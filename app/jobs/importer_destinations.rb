@@ -198,7 +198,7 @@ class ImporterDestinations < ImporterBase
 
       # Add visit to route if needed
       if !@visit_ids.include?(visit.id)
-        @routes[row.key?(:route) ? row[:route] : nil] << [visit, !row.key?(:active) || row[:active].strip != '0']
+        @routes[row.key?(:route) ? row[:route] : nil] << [visit, !row.key?(:active) || (row[:active] && row[:active].strip != '0')]
         @visit_ids << visit.id
       end
 
