@@ -26,7 +26,7 @@ class V01::Destinations < Grape::API
       if p[:visits]
         p[:visits_attributes] = p[:visits]
       end
-      p.permit(:name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, visits_attributes: [:id, :ref, :quantity, :take_over, :open, :close, tag_ids: []])
+      p.permit(:name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :quantity, :take_over, :open, :close, tag_ids: []])
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'

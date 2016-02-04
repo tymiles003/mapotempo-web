@@ -65,18 +65,19 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
     json.visits true
     visit = stop.visit
     json.visit_id visit.id
+    tags = visit.destination.tags + visit.tags
     json.destination do
       json.destination_id visit.destination.id
-      color = visit.tags.find(&:color)
+      color = tags.find(&:color)
       (json.color color.color) if color
-      icon = visit.tags.find(&:icon)
+      icon = tags.find(&:icon)
       (json.icon icon.icon) if icon
     end
     json.index_visit (visit.destination.visits.index(visit) + 1) if visit.destination.visits.size > 1
-    if !visit.tags.empty?
+    if !tags.empty?
       json.tags_present do
         json.tags do
-          json.array! visit.tags, :label
+          json.array! tags, :label
         end
       end
     end
