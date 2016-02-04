@@ -55,7 +55,7 @@ class V01::VisitsTest < ActiveSupport::TestCase
     assert_equal @visit.ref, JSON.parse(last_response.body)['ref']
   end
 
-  test 'should create' do
+  test 'should create a visit' do
     # tags can be a string separated by comma or an array
     [
       tags(:tag_one).id.to_s + ',' + tags(:tag_two).id.to_s,
@@ -63,7 +63,7 @@ class V01::VisitsTest < ActiveSupport::TestCase
     ].each do |tags|
       assert_difference('Visit.count', 1) do
         assert_difference('Stop.count', 2) do
-          post api_destination(@destination.id), @visit.attributes.update({tag_ids: tags})
+          post api_destination(@destination.id), @visit.attributes.update({tag_ids: tags}).except('id')
           assert last_response.created?, last_response.body
           assert_equal 2, JSON.parse(last_response.body)['tag_ids'].size
         end
@@ -71,7 +71,7 @@ class V01::VisitsTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should create with none tag' do
+  test 'should create a visit with none tag' do
     ['', nil, []].each do |tags|
       assert_difference('Visit.count', 1) do
         post api_destination(@destination.id), @visit.attributes.update({tag_ids: tags})

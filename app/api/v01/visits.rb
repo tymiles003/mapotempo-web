@@ -79,7 +79,6 @@ class V01::Visits < Grape::API
         end
         post do
           destination_id = ParseIdsRefs.read(params[:destination_id])
-          id = ParseIdsRefs.read(params[:id])
           destination = current_customer.destinations.where(destination_id).first!
           visit = destination.visits.build(visit_params)
           visit.save!
