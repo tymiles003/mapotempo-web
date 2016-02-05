@@ -54,7 +54,7 @@ class ImportCsv
             row
           }
         end
-      rescue => e
+      rescue ImportInvalidRow => e
         errors[:base] << e.message
         return false
       end

@@ -17,6 +17,8 @@
 #
 require 'csv'
 
+class ImportInvalidRow < StandardError ; end
+
 class ImporterBase
 
   def initialize(customer)
@@ -47,7 +49,7 @@ class ImporterBase
             dest.delay_geocode
           end
           dest
-        rescue => e
+        rescue ImportInvalidRow => e
           if options[:ignore_errors]
             @warnings << e if !@warnings.include?(e)
           else
