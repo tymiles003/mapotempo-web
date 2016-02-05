@@ -29,12 +29,13 @@ class ImportJson
   end
 
   def import(synchronous = false)
-    if json
+    data = @importer.json_to_rows json
+    if data
       begin
         Customer.transaction do
           keys = @importer.columns.keys
 
-          @importer.import(json, nil, synchronous, ignore_errors: false, replace: replace) { |row|
+          rows = @importer.import(data, nil, synchronous, ignore_errors: false, replace: replace) { |row|
             r, row = row, {}
             r.each{ |k, v|
               ks = k.to_sym
@@ -45,6 +46,7 @@ class ImportJson
 
             row
           }
+          @importer.rows_to_json rows
         end
       rescue => e
         errors[:base] << e.message

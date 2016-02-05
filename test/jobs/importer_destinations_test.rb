@@ -40,7 +40,7 @@ class ImporterTest < ActionController::TestCase
   test 'should import in new planning' do
     import_count = 1
     # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
@@ -55,7 +55,7 @@ class ImporterTest < ActionController::TestCase
   test 'should import postalcode in new planning' do
     import_count = 1
     # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
@@ -68,7 +68,7 @@ class ImporterTest < ActionController::TestCase
   test 'should import coord in new planning' do
     import_count = 1
     # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
@@ -81,7 +81,7 @@ class ImporterTest < ActionController::TestCase
   test 'should import two in new planning' do
     import_count = 2
     # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size
     assert_difference('Planning.count') do
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
@@ -119,7 +119,7 @@ class ImporterTest < ActionController::TestCase
     # destinations with same ref are merged
     import_count = 5
     # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
-    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.rest_duration }.size
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size
 
     assert_difference('Planning.count', 1) do
       assert_difference('Destination.count', import_count) do

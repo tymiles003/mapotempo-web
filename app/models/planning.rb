@@ -55,13 +55,13 @@ class Planning < ActiveRecord::Base
     if visit_actives.size <= routes.size - 1
       visits = visit_actives.values.flatten(1).collect{ |visit_active| visit_active[0] }
       routes[0].set_visits((customer.visits - visits).select{ |visit|
-        (visit.tags & tags).size == tags.size
+        ((visit.tags + visit.destination.tags) & tags).size == tags.size
       })
       i = 0
       visit_actives.each{ |ref, visits|
         routes[i += 1].ref = ref
         routes[i].set_visits(visits.select{ |visit|
-          (visit[0].tags & tags).size == tags.size
+          ((visit[0].tags + visit[0].destination.tags) & tags).size == tags.size
         }, recompute)
       }
     else

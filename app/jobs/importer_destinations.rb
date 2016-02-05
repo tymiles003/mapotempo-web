@@ -67,6 +67,28 @@ class ImporterDestinations < ImporterBase
     columns_route.merge(columns_destination).merge(columns_visit).merge(without_visit: I18n.t('destinations.import_file.without_visit'))
   end
 
+  def json_to_rows(json)
+    json.collect{ |dest|
+      dest[:tags] = dest[:tag_ids].collect(&:to_i) if !dest.key?(:tags) && dest.key?(:tag_ids)
+      if dest.key?(:visits) && dest[:visits].size > 0
+        dest[:visits].collect{ |v|
+          v[:ref_visit] = v.delete(:ref)
+          v[:tags_visit] = v[:tag_ids].collect(&:to_i) if !v.key?(:tags) && v.key?(:tag_ids)
+          dest.except(:visits).merge(v)
+        }
+      else
+        [dest]
+      end
+    }.flatten
+  end
+
+  def rows_to_json(rows)
+    dest_ids = rows.collect{ |d| d.id }.uniq
+    @customer.destinations.select{ |d|
+      dest_ids.include?(d.id)
+    }
+  end
+
   def before_import(name, synchronous, options)
     @common_tags = nil
     @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
@@ -83,6 +105,29 @@ class ImporterDestinations < ImporterBase
       @customer.delete_all_destinations
     end
     @visit_ids = []
+  end
+
+  def prepare_tags(row, key)
+    if !row[key].nil?
+      if row[key].is_a?(String)
+        row[key] = row[key].split(',').select{ |key|
+          !key.empty?
+        }
+      end
+
+      row[key] = row[key].collect{ |tag|
+        if tag.is_a?(Fixnum)
+          @tag_ids[tag]
+        else
+          if !@tag_labels.key?(tag)
+            @tag_labels[tag] = @customer.tags.build(label: tag)
+          end
+          @tag_labels[tag]
+        end
+      }.compact
+    elsif row.key?(key)
+      row.delete key
+    end
   end
 
   def import_row(name, row, line, options)
@@ -105,28 +150,7 @@ class ImporterDestinations < ImporterBase
       @need_geocode = true
     end
 
-    [:tags, :tags_visit].each{ |key|
-      if !row[key].nil?
-        if row[key].is_a?(String)
-          row[key] = row[key].split(',').select{ |key|
-            !key.empty?
-          }
-        end
-
-        row[key] = row[key].collect{ |tag|
-          if tag.is_a?(Fixnum)
-            @tag_ids[tag]
-          else
-            if !@tag_labels.key?(tag)
-              @tag_labels[tag] = @customer.tags.build(label: tag)
-            end
-            @tag_labels[tag]
-          end
-        }.compact
-      elsif row.key?(key)
-        row.delete key
-      end
-    }
+    [:tags, :tags_visit].each{ |key| prepare_tags row, key }
 
     destination_attributes = row.slice(*(@@columns_destination_keys ||= columns_destination.keys))
     visit_attributes = row.slice(*(@@columns_visit_keys ||= columns_visit.keys))
@@ -185,13 +209,11 @@ class ImporterDestinations < ImporterBase
     end
 
     if visit
-      if !name.nil?
-        # Instersection of tags of all rows for tags of new planning
-        if !@common_tags
-          @common_tags = visit.tags.to_a
-        else
-          @common_tags &= visit.tags
-        end
+      # Instersection of tags of all rows for tags of new planning
+      if !@common_tags
+        @common_tags = (visit.tags.to_a + visit.destination.tags.to_a).uniq
+      else
+        @common_tags &= (visit.tags + visit.destination.tags).uniq
       end
 
       visit.save!

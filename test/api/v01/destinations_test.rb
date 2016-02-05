@@ -11,6 +11,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
 
   setup do
     @destination = destinations(:destination_one)
+    @customer = customers(:customer_one)
   end
 
   def around
@@ -80,34 +81,47 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   test 'should create bulk from json' do
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
-        put api(), {destinations: [{
-          name: 'Nouveau client',
-          street: nil,
-          postalcode: nil,
-          city: 'Tule',
-          lat: 43.5710885456786,
-          lng: 3.89636993408203,
-          detail: nil,
-          comment: nil,
-          phone_number: nil,
-          ref: 'z',
-          tags: ['tag1', 'tag2'],
-          geocoding_accuracy: nil,
-          foo: 'bar',
-          route: '1',
-          active: '1',
-          visits: [{
-            quantity: nil,
-            open: nil,
-            close: nil,
-            take_over: nil
-          }]
-        }]}
-        assert last_response.ok?, last_response.body
-        assert_equal 1, JSON.parse(last_response.body).size
+        assert_difference('Stop.count',
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+          2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size) do
+          put api(), {destinations: [{
+            name: 'Nouveau client',
+            street: nil,
+            postalcode: nil,
+            city: 'Tule',
+            lat: 43.5710885456786,
+            lng: 3.89636993408203,
+            detail: nil,
+            comment: nil,
+            phone_number: nil,
+            ref: 'z',
+            tags: ['tag1', 'tag2'],
+            geocoding_accuracy: nil,
+            foo: 'bar',
+            route: '1',
+            active: '1',
+            visits: [{
+              ref: 'v1',
+              quantity: 1,
+              open: '08:00',
+              close: '12:00',
+              take_over: nil
+            },
+            {
+              ref: 'v2',
+              quantity: 2,
+              open: '14:00',
+              close: '18:00',
+              take_over: nil
+            }]
+          }]}
+          assert last_response.ok?, last_response.body
+          assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
 
-        get api()
-        assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['tag_ids'].size
+          get api()
+          assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['tag_ids'].size
+        end
       end
     end
   end
@@ -115,34 +129,92 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   test 'should create bulk from json with tag_id' do
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
-        put api(), {destinations: [{
-          name: 'Nouveau client',
-          street: nil,
-          postalcode: nil,
-          city: 'Tule',
-          lat: 43.5710885456786,
-          lng: 3.89636993408203,
-          detail: nil,
-          comment: nil,
-          phone_number: nil,
-          ref: 'z',
-          tags: [tags(:tag_one).id, tags(:tag_two).id],
-          geocoding_accuracy: nil,
-          foo: 'bar',
-          route: '1',
-          active: '1',
-          visits: [{
-            quantity: nil,
-            open: nil,
-            close: nil,
-            take_over: nil
-          }]
-        }]}
-        assert last_response.ok?, last_response.body
-        assert_equal 1, JSON.parse(last_response.body).size
+        assert_difference('Stop.count',
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+          2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size) do
+          put api(), {destinations: [{
+            name: 'Nouveau client',
+            street: nil,
+            postalcode: nil,
+            city: 'Tule',
+            lat: 43.5710885456786,
+            lng: 3.89636993408203,
+            detail: nil,
+            comment: nil,
+            phone_number: nil,
+            ref: 'z',
+            tag_ids: [tags(:tag_one).id, tags(:tag_two).id],
+            geocoding_accuracy: nil,
+            foo: 'bar',
+            route: '1',
+            active: '1',
+            visits: [{
+              ref: 'v1',
+              quantity: nil,
+              open: nil,
+              close: nil,
+              take_over: nil
+            },{
+              ref: 'v2',
+              quantity: nil,
+              open: nil,
+              close: nil,
+              take_over: nil
+            }]
+          }]}
+          assert last_response.ok?, last_response.body
+          assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
 
-        get api()
-        assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['tag_ids'].size
+          get api()
+          assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['tag_ids'].size
+        end
+      end
+    end
+  end
+
+  test 'should create bulk from json with no visit ref' do
+    assert_difference('Destination.count', 1) do
+      assert_difference('Planning.count', 1) do
+        assert_difference('Stop.count',
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 1 +
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 1 +
+          1 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size) do
+          put api(), {destinations: [{
+            name: 'Nouveau client',
+            street: nil,
+            postalcode: nil,
+            city: 'Tule',
+            lat: 43.5710885456786,
+            lng: 3.89636993408203,
+            detail: nil,
+            comment: nil,
+            phone_number: nil,
+            ref: 'z',
+            tags: ['tag1', 'tag2'],
+            geocoding_accuracy: nil,
+            foo: 'bar',
+            route: '1',
+            active: '1',
+            visits: [{
+              quantity: 1,
+              open: '08:00',
+              close: '12:00',
+              take_over: nil
+            },
+            {
+              quantity: 2,
+              open: '14:00',
+              close: '18:00',
+              take_over: nil
+            }]
+          }]}
+          assert last_response.ok?, last_response.body
+          assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
+
+          get api()
+          assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['tag_ids'].size
+        end
       end
     end
   end

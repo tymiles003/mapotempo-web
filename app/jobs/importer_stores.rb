@@ -41,6 +41,14 @@ class ImporterStores < ImporterBase
     }
   end
 
+  def json_to_rows(json)
+    json
+  end
+
+  def rows_to_json(rows)
+    rows
+  end
+
   def before_import(name, synchronous, options)
     @need_geocode = false
 
