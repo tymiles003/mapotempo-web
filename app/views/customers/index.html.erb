@@ -49,7 +49,7 @@
 
   <tbody>
     <% @customers.each do |customer| %>
-      <tr>
+      <tr<% if customer.end_subscription && customer.end_subscription < Time.now %> class="disabled"<% end %>>
         <td><%= check_box_tag("customers[#{customer.id}]") %></td>
         <td><%= customer.name %></td>
         <td><%= customer.profile.name %></td>
@@ -60,7 +60,14 @@
           <%= render 'job', customer: customer, job: customer.job_destination_geocoding %>
           <%= render 'job', customer: customer, job: customer.job_store_geocoding %>
         </td>
-        <td><%= customer.end_subscription ? l(customer.end_subscription) : nil %></td>
+        <td>
+          <% if customer.end_subscription %>
+            <%= l(customer.end_subscription) %>
+            <% if customer.end_subscription > Time.now - 86400 * 30 && customer.end_subscription > Time.now %>
+              <i class="fa fa-warning" style="color: orange;"></i>
+            <% end %>
+          <% end %>
+        </td>
         <td class="text-right">
           <%= link_to edit_customer_path(customer), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to customer, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
