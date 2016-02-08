@@ -1,0 +1,58 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <i class="fa fa-arrows-h"></i>
+    <input id="route_ref" class="form-control" type="text" value="{{ref}}" name="route[ref]" placeholder="{{#i18n}}plannings.edit.route_placeholder{{/i18n}}" />
+    <select name="route[color]" class="color_select select2-xs" value="{{color}}" style="display:none">
+      {{#colors}}
+        <option value="{{color}}"{{#selected}} selected="selected"{{/selected}}>{{color}}</option>
+      {{/colors}}
+    </select>
+    <span class="fake select2 select2-container select2-container--bootstrap input-sm select2-container--below" dir="ltr" style="display: inline-block;"><span class="selection"><span aria-labelledby="select2-route[color]-uj-container" tabindex="0" class="select2-selection select2-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false"><span title="{{color_fake}}" id="select2-route[color]-uj-container" class="select2-selection__rendered"><span class="color_small" style="background:{{color_fake}}"></span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+    <select name="route[vehicle]" class="vehicle_select select2-xs" value="{{vehicle_id}}" data-initial-value="{{vehicle_id}}" style="display:none">
+      <option value="{{vehicle_id}}" selected="selected">{{vehicle_id}}</option>
+    </select>
+    <span class="fake select2 select2-container select2-container--bootstrap input-sm select2-container--below" dir="ltr" style="display: inline-block;"><span class="selection"><span aria-labelledby="select2-route[vehicle]-uj-container" tabindex="0" class="select2-selection select2-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false"><span title="{{vehicle_id}}" id="select2-route[vehicle]-uj-container" class="select2-selection__rendered"><span><span class="color_small" style="background:{{color}};{{#color_fake}} display: none;{{/color_fake}}"></span>&nbsp;<span>{{name}}</span></span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+    <div class="btn-group pull-right">
+      <a href="{{path}}" class="btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.vehicle_help{{/i18n}}"><i class="fa fa-truck"></i></a>
+      <button type="button" class="optimize btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"><i class="fa fa-gear"></i></button>
+      <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="fa fa-eye{{#hidden}}-slash{{/hidden}}"></i></button>
+      <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_help{{/i18n}}"><i class="fa fa-{{^locked}}un{{/locked}}lock"></i></button>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.export_help{{/i18n}}"><i class="fa fa-share-square-o"></i><span class="caret"></span></button>
+        <ul class="dropdown-menu pull-right" role="menu">
+          <li><a class="reverse_order" href="/plannings/{{planning_id}}/{{route_id}}/reverse_order"><i class="fa fa-random fa-fw"></i> {{#i18n}}plannings.edit.reverse_order{{/i18n}}</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="/routes/{{route_id}}"><i class="fa fa-print fa-fw"></i> {{#i18n}}plannings.edit.export.print{{/i18n}}</a></li>
+          <li><a href="/routes/{{route_id}}.csv"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet_standard{{/i18n}}</a></li>
+          <li><a href="/routes/{{route_id}}.excel"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet_excel{{/i18n}}</a></li>
+          <li><a href="/routes/{{route_id}}.gpx"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_route{{/i18n}}</a></li>
+          <li><a href="/routes/{{route_id}}.gpx?track=true"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_trace{{/i18n}}</a></li>
+          {{#contact_email}}
+            <li class="kmz_email">
+              <a href="/routes/{{route_id}}.kmz?email=1">
+                <i class="fa fa-envelope fa-fw"></i>
+                {{#i18n}}plannings.edit.export.kmz_email.action{{/i18n}}
+              </a>
+            </li>
+          {{/contact_email}}
+          <li><a href="/routes/{{route_id}}.kmz"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.kmz_track{{/i18n}}</a></li>
+          {{#tomtom}}
+            <li class="tomtom_send"><a href="/routes/{{route_id}}.tomtom?type=orders"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_send.action{{/i18n}}</a></li>
+            <li class="tomtom_send"><a href="/routes/{{route_id}}.tomtom?type=waypoints"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_waypoints{{/i18n}}</a></li>
+            <li class="tomtom_clear"><a href="/routes/{{route_id}}.tomtom?type=empty"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_clear.action{{/i18n}}</a></li>
+          {{/tomtom}}
+          {{#masternaut}}
+            <li class="export_masternaut"><a href="/routes/{{route_id}}.masternaut"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.masternaut{{/i18n}}</a></li>
+          {{/masternaut}}
+          {{#alyacom}}
+            <li class="export_alyacom"><a href="/routes/{{route_id}}.alyacom"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.alyacom{{/i18n}}</a></li>
+          {{/alyacom}}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="route-details">
+    {{> stops/list}}
+  </div>
+
+</div>

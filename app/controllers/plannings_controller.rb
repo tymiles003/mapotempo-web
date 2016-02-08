@@ -168,9 +168,12 @@ class PlanningsController < ApplicationController
         params[:stop_id] = Integer(params[:stop_id])
         stop = nil
         @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == params[:stop_id] } }
+        stop_route_id_was = stop.route.id
         route.move_stop(stop, Integer(params[:index]))
         if @planning.save
           @planning.reload
+          @routes = [route]
+          @routes << @planning.routes.find{ |route| route.id == stop_route_id_was } if stop_route_id_was != route.id
           format.json { render action: 'show', location: @planning }
         else
           @planning.reload
@@ -196,7 +199,6 @@ class PlanningsController < ApplicationController
       route = @planning.routes.find{ |route| route.id == Integer(params['route_id']) }
       vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params['vehicle_usage_id']))
       if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.compute && @planning.save
-        format.html { redirect_to @planning, notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -207,13 +209,16 @@ class PlanningsController < ApplicationController
   def automatic_insert
     respond_to do |format|
       stop_id = Integer(params[:stop_id])
-      @stop = @planning.routes.collect{ |route| route.stops.find{ |stop| stop.id == stop_id } }.compact[0]
+      route_was = @planning.routes.find{ |route| @stop = route.stops.find{ |stop| stop.id == stop_id } }
 
       if @stop
         Planning.transaction do
           @planning.automatic_insert(@stop)
           @planning.save!
           @planning.reload
+          @routes = [route_was]
+          route = @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == stop_id } }
+          @routes << route if route != route_was
           format.json { render action: 'show', location: @planning }
         end
       else
@@ -229,6 +234,7 @@ class PlanningsController < ApplicationController
       params[:stop_id] = Integer(params[:stop_id])
       @stop = @route.stops.find{ |stop| stop.id == params[:stop_id] }
       if @route && @stop && @stop.update(stop_params) && @route.compute && @planning.save
+        @routes = [@route]
         format.json { render action: 'show', location: @planning }
       else
         format.json { render nothing: true, status: :unprocessable_entity }
@@ -250,6 +256,7 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
       if route && Optimizer.optimize(@planning, route) && @planning.customer.save
+        @routes = [route]
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -261,6 +268,7 @@ class PlanningsController < ApplicationController
     route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
     respond_to do |format|
       if route && route.active(params[:active].to_s.to_sym) && route.compute && @planning.save
+        @routes = [route]
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -280,6 +288,7 @@ class PlanningsController < ApplicationController
     route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
     respond_to do |format|
       if route && route.reverse_order && route.compute && @planning.save
+        @routes = [route]
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }

@@ -1,0 +1,37 @@
+<p class="global_info">
+  {{> plannings/edit_head}}
+</p>
+{{#out_of_date}}
+<p class="text-center">
+  <button type="button" class="btn btn-warning btn-sm" id="refresh" title="{{#i18n}}plannings.edit.refresh_help{{/i18n}}"><i class="fa fa-refresh fa-fw"></i> {{#i18n}}plannings.edit.refresh{{/i18n}}</button>
+</p>
+{{/out_of_date}}
+{{#zoning_out_of_date}}
+<p class="text-center">
+{{#i18n}}plannings.edit.out_of_date_zoning{{/i18n}}
+</p>
+{{/zoning_out_of_date}}
+<ol class="routes">
+{{#routes}}
+<li class="route" data-route_id="{{route_id}}"{{#vehicle}} data-color="{{color}}" {{/vehicle}}>
+  {{^vehicle}}
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <i class="fa fa-arrows-h"></i>
+        {{#i18n}}plannings.edit.out_of_route{{/i18n}}
+        <div class="btn-group pull-right">
+          <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="fa fa-eye{{#hidden}}-slash{{/hidden}}"></i></button>
+          <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_unplanned_help{{/i18n}}"><i class="fa fa-{{^locked}}un{{/locked}}lock"></i></button>
+        </div>
+      </div>
+      <div class="route-details">
+        {{> stops/list}}
+      </div>
+    </div>
+  {{/vehicle}}
+  {{#vehicle}}
+    {{> routes/edit}}
+  {{/vehicle}}
+</li>
+{{/routes}}
+</ol>
