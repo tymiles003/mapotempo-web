@@ -48,7 +48,7 @@ class ImportJson
           }
           @importer.rows_to_json rows
         end
-      rescue ImportInvalidRow => e
+      rescue ImportBaseError => e
         errors[:base] << e.message
         return false
       end

@@ -13,7 +13,7 @@ class ImportJsonTest < ActiveSupport::TestCase
   end
 
   test 'shoud import too many destinations' do
-    importer_destinations = ImporterDestinations.new(@customer)
+    importer_destinations = ImporterDestinations.new(customers(:customer_one))
     def importer_destinations.max_lines
       2
     end

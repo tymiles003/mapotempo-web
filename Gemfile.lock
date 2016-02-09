@@ -5,6 +5,16 @@ GIT
     leaflet-controlledbounds-rails (0.0.1)
 
 GIT
+  remote: git://github.com/Mapotempo/mapotempo_web_by_time_distance.git
+  revision: a79653124b64d5ae50780058627de55b1581dd39
+  specs:
+
+GIT
+  remote: git://github.com/Mapotempo/mapotempo_web_import_vehicle_store.git
+  revision: 4287f28638943679198197db47e2ffa1179936e0
+  specs:
+
+GIT
   remote: git://github.com/Mapotempo/sidebar-v2-gh-pages-rails.git
   revision: 11f7717f4eca02b4be4567142d2df6e0274c8fc1
   specs:
@@ -86,6 +96,16 @@ GIT
       rack-accept
       rack-mount
       virtus (>= 1.0.0)
+
+PATH
+  remote: ../mapotempo_web_by_time_distance
+  specs:
+    mapotempo_web_by_time_distance (0.0.1)
+
+PATH
+  remote: ../mapotempo_web_import_vehicle_store
+  specs:
+    mapotempo_web_import_vehicle_store (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -529,6 +549,8 @@ DEPENDENCIES
   leaflet_numbered_markers-rails!
   lograge
   macaddr
+  mapotempo_web_by_time_distance!
+  mapotempo_web_import_vehicle_store!
   minitest-around
   minitest-focus
   minitest-stub_any_instance

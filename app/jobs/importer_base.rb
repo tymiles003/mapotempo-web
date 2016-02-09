@@ -17,7 +17,8 @@
 #
 require 'csv'
 
-class ImportInvalidRow < StandardError ; end
+class ImportBaseError < StandardError ; end
+class ImportInvalidRow < ImportBaseError ; end
 
 class ImporterBase
 
