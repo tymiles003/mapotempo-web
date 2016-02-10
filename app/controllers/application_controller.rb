@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_action :api_key?
+  before_action :api_key?, :load_vehicles
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -28,6 +28,12 @@ class ApplicationController < ActionController::Base
   def api_key?
     if params['api_key']
       warden.set_user(User.find_by(api_key: params['api_key']), run_callbacks: false)
+    end
+  end
+
+  def load_vehicles
+    if current_user && !current_user.admin?
+      @vehicle_usage_sets = current_user.customer.vehicle_usage_sets.includes([:vehicle_usages, { :vehicle_usages => [:vehicle] }])
     end
   end
 

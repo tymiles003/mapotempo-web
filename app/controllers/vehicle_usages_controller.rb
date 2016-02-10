@@ -22,11 +22,9 @@ class VehicleUsagesController < ApplicationController
   before_action :set_vehicle_usage, only: [:show, :edit, :update, :destroy]
 
   def edit
-    @vehicle_usage_sets = current_user.customer.vehicle_usage_sets
   end
 
   def update
-    @vehicle_usage_sets = current_user.customer.vehicle_usage_sets
     respond_to do |format|
       @vehicle_usage.assign_attributes(vehicle_usage_params)
       @vehicle_usage.vehicle.speed_multiplicator /= 100 if @vehicle_usage.vehicle.speed_multiplicator

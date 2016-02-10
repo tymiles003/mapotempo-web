@@ -116,9 +116,9 @@
                   <li class="divider"></li>
                   <li><%= link_to stores_path do %><i class="fa fa-home fa-fw"></i> <%= t 'destinations.menu.stores' %><% end %></li>
                   <li><%= link_to store_import_path do %><i class="fa fa-upload fa-fw"></i> <%= t 'destinations.menu.import_stores' %><% end %></li>
-                  <% if current_user.customer.vehicle_usage_sets.length == 1 %>
+                  <% if @vehicle_usage_sets.length == 1 %>
                     <li class="divider"></li>
-                    <% current_user.customer.vehicle_usage_sets[0].vehicle_usages.each do |vehicle_usage| %>
+                    <% @vehicle_usage_sets[0].vehicle_usages.each do |vehicle_usage| %>
                       <li><%= link_to edit_vehicle_usage_path(vehicle_usage) do %><i class="fa fa-truck fa-fw"></i> <%= vehicle_usage.vehicle.name %><% end %></li>
                     <% end %>
                   <% end %>

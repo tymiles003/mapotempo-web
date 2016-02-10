@@ -22,7 +22,6 @@ class VehicleUsageSetsController < ApplicationController
   before_action :set_vehicle_usage_set, only: [:show, :edit, :update, :destroy, :duplicate]
 
   def index
-    @vehicle_usage_sets = current_user.customer.vehicle_usage_sets
     @customer = current_user.customer
   end
 
