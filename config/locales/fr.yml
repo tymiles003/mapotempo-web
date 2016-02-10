@@ -1094,6 +1094,9 @@ fr:
     new:
       title: "Nouveau zonage"
     form:
+      all_destinations: "Afficher tous les clients"
+      from_planning_help: "Vous pouvez aussi afficher les clients d'un unique planning en modifiant ce zonage depuis le planning"
+      stops_from_planning: "Clients chargés depuis le planning « %{s} »"
       generate: "Générer"
       automatic:
         one: "Automatique : 1 zone"

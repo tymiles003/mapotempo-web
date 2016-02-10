@@ -72,6 +72,11 @@ div {
   color: #fff !important;
 }
 
+a.disabled {
+  color: #ccc !important;
+  cursor: default;
+}
+
 .navbar-brand {
   padding: 5px;
 }

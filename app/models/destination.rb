@@ -48,6 +48,10 @@ class Destination < ActiveRecord::Base
   before_create :create_geocode
   before_update :update_geocode, :update_out_of_date
 
+  def position?
+    !lat.nil? && !lng.nil?
+  end
+
   def geocode
     address = Mapotempo::Application.config.geocode_geocoder.code(street, postalcode, city, !country.nil? && !country.empty? ? country : customer.default_country)
     Rails.logger.info 'geocode: ' + address.inspect
@@ -102,7 +106,7 @@ class Destination < ActiveRecord::Base
     if !@is_gecoded && self.point? && (lat_changed? || lng_changed?)
       self.geocoding_accuracy = nil
     end
-    if !lat.nil? && !lng.nil?
+    if position?
       @is_gecoded = true
     end
     if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed? || country_changed?)

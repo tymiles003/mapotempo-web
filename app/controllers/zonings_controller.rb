@@ -93,10 +93,8 @@ class ZoningsController < ApplicationController
   def automatic
     respond_to do |format|
       @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
-      if @planning
-        @zoning.automatic_clustering(@planning, params[:n] ? Integer(params[:n]) : nil)
-        @zoning.save
-      end
+      @zoning.automatic_clustering(@planning, params[:n] ? Integer(params[:n]) : nil)
+      @zoning.save
       format.json { render action: 'edit' }
     end
   end

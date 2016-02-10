@@ -222,7 +222,7 @@ var zonings_edit = function(params) {
 
   var planning = undefined;
 
-  var display_zoning = function(data) {
+  var displayZoning = function(data) {
     $('#zones').empty();
     featureGroup.clearLayers();
     $.each(data.zoning, function(index, zone) {
@@ -247,7 +247,35 @@ var zonings_edit = function(params) {
     }
   }
 
-  var display_zoning_first_time = function(data) {
+  var displayDestinations = function(route) {
+    $.each(route.stops, function(index, stop) {
+      stop.i18n = mustache_i18n;
+      if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
+        var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
+          icon: L.icon({
+            iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
+            iconSize: new L.Point(12, 12),
+            iconAnchor: new L.Point(6, 6),
+            popupAnchor: new L.Point(0, -6),
+          })
+        }).bindPopup(SMT['stops/show']({
+          stop: stop
+        })).addTo(markersLayers);
+        m.data = stop;
+        m.on('mouseover', function(e) {
+          m.openPopup();
+        }).on('mouseout', function(e) {
+          m.closePopup();
+        }).on('popupopen', function(e){
+          $('.phone_number', e.popup._container).click(function(e){
+            phone_number_call(e.currentTarget.innerHTML, url_click2call, e.target);
+          });
+        });
+      }
+    });
+  }
+
+  var displayZoningFirstTime = function(data) {
     stores_marker.clearLayers();
     $.each(data.stores, function(i, store) {
       store.store = true;
@@ -276,36 +304,12 @@ var zonings_edit = function(params) {
       markersLayers.clearLayers();
       hasPlanning = true;
       $.each(data.planning, function(index, route) {
-        $.each(route.stops, function(index, stop) {
-          stop.i18n = mustache_i18n;
-          if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
-            var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
-              icon: L.icon({
-                iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
-                iconSize: new L.Point(12, 12),
-                iconAnchor: new L.Point(6, 6),
-                popupAnchor: new L.Point(0, -6),
-              })
-            }).addTo(stores_marker).bindPopup(SMT['stops/show']({
-              stop: stop
-            })).addTo(markersLayers);
-            m.data = stop;
-            m.on('mouseover', function(e) {
-              m.openPopup();
-            }).on('mouseout', function(e) {
-              m.closePopup();
-            }).on('popupopen', function(e){
-              $('.phone_number', e.popup._container).click(function(e){
-                phone_number_call(e.currentTarget.innerHTML, url_click2call, e.target);
-              });
-            });
-          }
-        });
+        displayDestinations(route);
       });
       planning = data.planning;
     }
 
-    display_zoning(data);
+    displayZoning(data);
   }
 
   $('form').submit(function (e) {
@@ -320,15 +324,48 @@ var zonings_edit = function(params) {
     }
   });
 
+  var destLoaded = false;
+  $('[name=all-destinations]').change(function() {
+    if ($(this).is(':checked')) {
+      if (!destLoaded) {
+        $.ajax({
+          type: 'get',
+          url: '/destinations.json',
+          beforeSend: beforeSendWaiting,
+          success: function(data) {
+            destLoaded = true;
+            displayDestinations({stops: data.destinations});
+          },
+          complete: completeAjaxMap,
+          error: ajaxError
+        });
+      }
+      else
+        map.addLayer(markersLayers);
+      $('.automatic.disabled').each(function() {
+        $(this).removeClass('disabled')
+      });
+      $('#generate').css('display', 'inline-block');
+    }
+    else {
+      map.removeLayer(markersLayers);
+      $('.automatic').each(function() {
+        $(this).addClass('disabled')
+      });
+    }
+  });
+
   $('.automatic').click(function () {
-    $.ajax({
-      type: "patch",
-      url: '/zonings/' + zoning_id + '/automatic' + (planning_id ? '/planning/' + planning_id : '') + '.json?n=' + $(this).data('n'),
-      beforeSend: beforeSendWaiting,
-      success: display_zoning,
-      complete: completeAjaxMap,
-      error: ajaxError
-    });
+    if (!$(this).hasClass('disabled')) {
+      $.ajax({
+        type: "patch",
+        url: '/zonings/' + zoning_id + '/automatic' + (planning_id ? '/planning/' + planning_id : '') + '.json?n=' + $(this).data('n'),
+        beforeSend: beforeSendWaiting,
+        success: displayZoning,
+        complete: completeAjaxMap,
+        error: ajaxError
+      });
+    }
   });
 
   $('#from_planning').click(function () {
@@ -336,7 +373,7 @@ var zonings_edit = function(params) {
       type: "patch",
       url: '/zonings/' + zoning_id + '/from_planning' + (planning_id ? '/planning/' + planning_id : '') + '.json',
       beforeSend: beforeSendWaiting,
-      success: display_zoning,
+      success: displayZoning,
       complete: completeAjaxMap,
       error: ajaxError
     });
@@ -360,7 +397,7 @@ var zonings_edit = function(params) {
       type: "patch",
       url: '/zonings/' + zoning_id + '/isochrone.json?vehicle_usage_set_id=' + vehicle_usage_set_id + '&size=' + size,
       beforeSend: beforeSendWaiting,
-      success: display_zoning,
+      success: displayZoning,
       complete: function() {
         completeAjaxMap();
         $('#isochrone-progress-modal').modal('hide');
@@ -381,7 +418,7 @@ var zonings_edit = function(params) {
       type: "patch",
       url: '/zonings/' + zoning_id + '/isodistance.json?vehicle_usage_set_id=' + vehicle_usage_set_id + '&size=' + size,
       beforeSend: beforeSendWaiting,
-      success: display_zoning,
+      success: displayZoning,
       complete: function() {
         completeAjaxMap();
         $('#isodistance-progress-modal').modal('hide');
@@ -393,7 +430,7 @@ var zonings_edit = function(params) {
   $.ajax({
     url: '/zonings/' + (zoning_id ? zoning_id + '/edit' : 'new') + (planning_id ? '/planning/' + planning_id : '') + '.json',
     beforeSend: beforeSendWaiting,
-    success: display_zoning_first_time,
+    success: displayZoningFirstTime,
     complete: completeWaiting,
     error: ajaxError
   });

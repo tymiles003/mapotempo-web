@@ -87,6 +87,7 @@ Rails.application.routes.draw do
     get 'edit/planning/:planning_id' => 'zonings#edit'
     get 'planning/:planning_id' => 'zonings#show'
     patch 'duplicate'
+    patch 'automatic' => 'zonings#automatic'
     patch 'automatic/planning/:planning_id' => 'zonings#automatic'
     patch 'from_planning/planning/:planning_id' => 'zonings#from_planning'
     patch 'isochrone' => 'zonings#isochrone'

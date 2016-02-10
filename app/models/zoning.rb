@@ -68,13 +68,13 @@ class Zoning < ActiveRecord::Base
   end
 
   def automatic_clustering(planning, n)
-    positions = planning.routes.collect{ |route| route.stops }.flatten.collect{ |stop|
+    positions = (planning ? planning.routes.collect{ |route| route.stops }.flatten : customer.destinations).collect{ |stop|
       if stop.position?
         [stop.lat, stop.lng]
       end
     }.compact.uniq
 
-    vehicles = planning.customer.vehicles.to_a
+    vehicles = customer.vehicles.to_a
     clusters = Clustering.clustering(positions, n || vehicles.size)
     zones.clear
     Clustering.hulls(clusters).each{ |hull|

@@ -1073,6 +1073,9 @@ en:
     new:
       title: "New zoning"
     form:
+      all_destinations: "Show all destinations"
+      from_planning_help: "It's also possible to filter destinations from a unic planning by editing this zoning from planning"
+      stops_from_planning: "Destinations from planning \"%{s}\""
       generate: "Generate"
       automatic:
         one: "Automatic: 1 zone"
