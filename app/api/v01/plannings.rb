@@ -113,8 +113,8 @@ class V01::Plannings < Grape::API
       end
     end
 
-    desc 'Force recompute the planning after parameter update.',
-      detail: 'Refresh planning and routes infos if inputs have been changed (for instance stores, destinations, visits, etc...)',
+    desc 'Recompute the planning after parameter update.',
+      detail: 'Refresh planning and out_of_date routes infos if inputs have been changed (for instance stores, destinations, visits, etc...)',
       nickname: 'refreshPlanning',
       entity: V01::Entities::Planning
     params do

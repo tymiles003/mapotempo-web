@@ -261,6 +261,7 @@ class Planning < ActiveRecord::Base
 
       routes.each{ |route|
         route.locked || route.set_visits([])
+        route.out_of_date = true
       }
       zoning.apply(visits_free).each{ |zone, visits|
         if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked

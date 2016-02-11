@@ -69,10 +69,7 @@ class V01::Visits < Grape::API
 
         desc 'Create visit.',
           nickname: 'createVisit',
-          params: V01::Entities::Visit.documentation.except(:id, :tag_ids).deep_merge(
-            name: { required: true },
-            geocoding_accuracy: { values: 0..1 }
-          ),
+          params: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids),
           entity: V01::Entities::Visit
         params do
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
@@ -89,9 +86,7 @@ class V01::Visits < Grape::API
         desc 'Update visit.',
           detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
           nickname: 'updateVisit',
-          params: V01::Entities::Visit.documentation.except(:id, :tag_ids).deep_merge(
-            geocoding_accuracy: { values: 0..1 }
-          ),
+          params: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids),
           entity: V01::Entities::Visit
         params do
           requires :id, type: String, desc: ID_DESC
