@@ -194,4 +194,26 @@ class ImporterTest < ActionController::TestCase
     assert_equal 'unaffected_one_update', Destination.find_by(ref:'a').name
     assert_equal 'unaffected_two_update', Destination.find_by(ref:'unknown').name
   end
+
+  test 'should import with route error in new planning' do
+    import_count = 2
+    # vehicle_usage_set for new planning is hardcoded... rest_count depends of it
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size
+    assert_difference('Planning.count') do
+      assert_difference('Destination.count', import_count) do
+        assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
+          RouterOsrm.stub_any_instance(:trace, lambda{ |*a| raise(RouterError.new('{"status":400,"status_message":"No route found between points"}')) }) do
+            assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_two.csv', 'text.csv')).import
+          end
+        end
+      end
+    end
+
+    stops = Planning.where(name: 'text').first.routes.find{ |route| route.ref == '1' }.stops
+    assert_equal 'z', stops[1].visit.destination.ref
+    assert stops[1].visit.take_over
+    assert stops[1].active
+    assert_equal 'x', stops[2].visit.destination.ref
+    assert_not stops[2].active
+  end
 end

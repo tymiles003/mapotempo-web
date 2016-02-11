@@ -19,6 +19,7 @@ require 'json'
 require 'rest_client'
 #RestClient.log = $stdout
 
+class RouterError < StandardError ; end
 
 module Routers
   class Osrm
@@ -47,7 +48,7 @@ module Routers
               request = JSON.parse(res.body)
               @cache_request.write(key, request)
             else
-              raise res.message
+              raise RouterError.new(res.message)
             end
           rescue OpenSSL::SSL::SSLError
             raise 'Unable to communicate over SSL'

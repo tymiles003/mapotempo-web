@@ -41,13 +41,13 @@ class Route < ActiveRecord::Base
     })
   end
 
-  def init_stops
+  def init_stops(ignore_errors = false)
     stops.clear
     if vehicle_usage && vehicle_usage.default_rest_duration
       stops.build(type: StopRest.name, active: true, index: 1)
     end
 
-    compute
+    compute(ignore_errors)
   end
 
   def default_stops
@@ -65,7 +65,7 @@ class Route < ActiveRecord::Base
     vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage && vehicle_usage.default_service_time_end
   end
 
-  def plan(departure = nil)
+  def plan(departure = nil, ignore_errors = false)
     self.out_of_date = false
     self.distance = 0
     self.stop_distance = 0
@@ -95,7 +95,11 @@ class Route < ActiveRecord::Base
       stops_sort.each_with_index{ |stop, index|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
           if stop.position? && !last_lat.nil? && !last_lng.nil?
-            stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
+            begin
+              stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
+            rescue RouterError => e
+              raise if !ignore_errors
+            end
           else
             stop.distance, stop.drive_time, stop.trace = nil, nil, nil
           end
@@ -141,7 +145,11 @@ class Route < ActiveRecord::Base
       }
 
       if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
-        distance, drive_time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng)
+        begin
+          distance, drive_time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng)
+        rescue RouterError => e
+          raise if !ignore_errors
+        end
       else
         distance, drive_time, trace = nil, nil, nil
       end
@@ -166,8 +174,8 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def compute
-    stops_sort, stops_time = plan
+  def compute(ignore_errors = false)
+    stops_sort, stops_time = plan(nil, ignore_errors)
 
     if stops_sort
       # Try to minimize waiting time by a later begin
@@ -194,30 +202,30 @@ class Route < ActiveRecord::Base
       (time -= vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_start
       if time > start
         # We can sleep a bit more on morning, shift departure
-        plan(time)
+        plan(time, ignore_errors)
       end
     end
 
     true
   end
 
-  def set_visits(visits, recompute = true)
+  def set_visits(visits, recompute = true, ignore_errors = false)
     Stop.transaction do
       stops.select{ |stop| stop.is_a?(StopVisit) }.each{ |stop|
         remove_stop(stop)
       }
-      add_visits(visits, recompute)
+      add_visits(visits, recompute, ignore_errors)
     end
   end
 
-  def add_visits(visits, recompute = true)
+  def add_visits(visits, recompute = true, ignore_errors = false)
     Stop.transaction do
       i = stops.size
       visits.each{ |stop|
         visit, active = stop
         stops.build(type: StopVisit.name, visit: visit, active: active, index: i += 1)
       }
-      compute if recompute
+      compute(ignore_errors) if recompute
     end
   end
 

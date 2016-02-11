@@ -19,6 +19,7 @@ require 'json'
 require 'rest_client'
 #RestClient.log = $stdout
 
+class RouterError < StandardError ; end
 
 module Routers
   class RouterWrapper
@@ -47,10 +48,13 @@ module Routers
           case response.code
           when 200
             response
-          when 417
+          when 204 # UnreachablePointError
+            ''
+          when 417 # OutOfSupportedAreaError
             ''
           else
-            response.return!(request, result, &block)
+            # response.return!(request, result, &block)
+            raise RouterError.new(result)
           end
         }
 

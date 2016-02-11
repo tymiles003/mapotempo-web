@@ -49,8 +49,8 @@ class Planning < ActiveRecord::Base
     append name: ' ' + I18n.l(Time.now, format: :long)
   end
 
-  def set_visits(visit_actives, recompute = true)
-    default_empty_routes
+  def set_visits(visit_actives, recompute = true, ignore_errors = false)
+    default_empty_routes(ignore_errors)
     visit_actives = visit_actives.select{ |ref, _d| ref }
     if visit_actives.size <= routes.size - 1
       visits = visit_actives.values.flatten(1).collect{ |visit_active| visit_active[0] }
@@ -62,17 +62,17 @@ class Planning < ActiveRecord::Base
         routes[i += 1].ref = ref
         routes[i].set_visits(visits.select{ |visit|
           ((visit[0].tags + visit[0].destination.tags) & tags).size == tags.size
-        }, recompute)
+        }, recompute, ignore_errors)
       }
     else
       raise I18n.t('errors.planning.import_too_routes')
    end
   end
 
-  def vehicle_usage_add(vehicle_usage)
+  def vehicle_usage_add(vehicle_usage, ignore_errors = false)
     route = routes.build(vehicle_usage: vehicle_usage, out_of_date: false)
     vehicle_usage.routes << route if !vehicle_usage.id
-    route.init_stops
+    route.init_stops(ignore_errors)
   end
 
   def vehicle_usage_remove(vehicle_usage)
@@ -94,11 +94,11 @@ class Planning < ActiveRecord::Base
     }
   end
 
-  def default_empty_routes
+  def default_empty_routes(ignore_errors = false)
     routes.clear
     routes.build
     vehicle_usage_set.vehicle_usages.each { |vehicle_usage|
-      vehicle_usage_add(vehicle_usage)
+      vehicle_usage_add(vehicle_usage, ignore_errors)
     }
   end
 
@@ -113,7 +113,7 @@ class Planning < ActiveRecord::Base
     if zoning_out_of_date
       split_by_zones
     end
-    routes.select(&:vehicle_usage).each(&:compute)
+    routes.select(&:vehicle_usage).select(&:out_of_date).each(&:compute)
   end
 
   def switch(route, vehicle_usage)
