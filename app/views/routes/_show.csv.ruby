@@ -61,7 +61,7 @@ route.stops.each { |stop|
     stop.phone_number,
     (stop.visit.destination.tags.collect(&:label).join(',') if stop.is_a?(StopVisit)),
     (stop.visit.ref if stop.is_a?(StopVisit)),
-    stop.is_a?(StopVisit) ? (stop.visit.take_over ? l(stop.visit.take_over, format: :hour_minute_second) : nil) : l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second),
+    stop.is_a?(StopVisit) ? (stop.visit.take_over ? l(stop.visit.take_over, format: :hour_minute_second) : nil) : (route.vehicle_usage.default_rest_duration ? l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second) : nil),
     ((route.planning.customer.enable_orders ? (stop.order && stop.order.products.length > 0 ? stop.order.products.collect(&:code).join('/') : nil) : stop.visit.quantity) if stop.is_a?(StopVisit)),
     (l(stop.open, format: :hour_minute) if stop.open),
     (l(stop.close, format: :hour_minute) if stop.close),
