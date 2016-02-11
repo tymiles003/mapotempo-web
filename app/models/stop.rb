@@ -17,6 +17,7 @@
 #
 class Stop < ActiveRecord::Base
   belongs_to :route
+  belongs_to :visit
 
   nilify_blanks
   validates :route, presence: true

@@ -300,7 +300,11 @@ class PlanningsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_planning
-    @planning = Planning.find(params[:id] || params[:planning_id])
+    if [:show, :edit, :optimize_each_routes].include?(action_name.to_sym)
+      @planning = Planning.includes(routes: {stops: :visit}).find(params[:id] || params[:planning_id])
+    else
+      @planning = Planning.find(params[:id] || params[:planning_id])
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
