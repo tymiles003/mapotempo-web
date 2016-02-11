@@ -334,7 +334,16 @@ var plannings_edit = function(params) {
     if ($("#dialog-optimizer").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
-    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), display_planning, '/plannings/' + planning_id + '.json')) {
+
+    function error_callback() {
+      stickyError(I18n.t('plannings.edit.optimize_failed'));
+    }
+
+    function success_callback() {
+      notice(I18n.t('plannings.edit.optimize_complete'));
+    }
+
+    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), '/plannings/' + planning_id + '.json', display_planning, error_callback, success_callback)) {
       return;
     }
 
@@ -904,10 +913,7 @@ var plannings_edit = function(params) {
 
   $("#dialog-optimizer").dialog({
     autoOpen: false,
-    modal: true,
-    close: function(event, ui) {
-      notice(I18n.t('plannings.edit.optimize_complete'));
-    }
+    modal: true
   });
 
   $("#dialog-tomtom").dialog({

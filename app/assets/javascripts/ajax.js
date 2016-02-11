@@ -59,7 +59,7 @@ var mustache_i18n = function() {
   };
 }
 
-var progress_dialog = function(data, dialog, callback, load_url) {
+var progress_dialog = function(data, dialog, load_url, callback, error_callback, success_callback) {
   if (data !== undefined) {
     var timeout;
     dialog.dialog("open");
@@ -116,6 +116,7 @@ var progress_dialog = function(data, dialog, callback, load_url) {
       $(".dialog-attempts", dialog).hide();
     }
     if (data.error) {
+      if (error_callback) error_callback();
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
       var buttons = {};
@@ -160,6 +161,7 @@ var progress_dialog = function(data, dialog, callback, load_url) {
     }
     return false;
   } else {
+    if (dialog.dialog('isOpen') && success_callback) success_callback();
     dialog.dialog("close");
     $($(".progress-bar", dialog)).css("width", "0%");
     return true;

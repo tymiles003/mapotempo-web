@@ -815,7 +815,7 @@ var destinations_index = function(params, api) {
     if ($("#dialog-geocoding").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
-    if (!progress_dialog(data.geocoding, $("#dialog-geocoding"), display_destinations, '/destinations.json')) {
+    if (!progress_dialog(data.geocoding, $("#dialog-geocoding"), '/destinations.json', display_destinations)) {
       return;
     }
 
