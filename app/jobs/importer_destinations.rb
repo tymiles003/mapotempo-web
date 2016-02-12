@@ -89,7 +89,7 @@ class ImporterDestinations < ImporterBase
     }
   end
 
-  def before_import(name, synchronous, options)
+  def before_import(name, options)
     @common_tags = nil
     @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
     @tag_ids = Hash[@customer.tags.collect{ |tag| [tag.id, tag] }]
@@ -216,6 +216,7 @@ class ImporterDestinations < ImporterBase
         @common_tags &= (visit.tags + visit.destination.tags).uniq
       end
 
+      visit.destination.delay_geocode if !synchronous && Mapotempo::Application.config.delayed_job_use
       visit.save!
 
       # Add visit to route if needed
@@ -226,11 +227,12 @@ class ImporterDestinations < ImporterBase
 
       visit.destination # For subclasses
     else
+      destination.delay_geocode if !synchronous && Mapotempo::Application.config.delayed_job_use
       destination.save! && destination
     end
   end
 
-  def after_import(name, synchronous, options)
+  def after_import(name, options)
     if @need_geocode && (synchronous || !Mapotempo::Application.config.delayed_job_use)
       @routes.each{ |_key, visits|
         visits.each{ |visit_active|
@@ -253,7 +255,7 @@ class ImporterDestinations < ImporterBase
     @customer.save!
   end
 
-  def finalize_import(name, synchronous, options)
+  def finalize_import(name, options)
     if @need_geocode && !synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_destination_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(@customer.id, @planning ? @planning.id : nil))
     else

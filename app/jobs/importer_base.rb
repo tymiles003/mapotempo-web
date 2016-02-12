@@ -22,16 +22,19 @@ class ImportInvalidRow < ImportBaseError ; end
 
 class ImporterBase
 
+  attr_accessor :synchronous
+
   def initialize(customer)
     @customer = customer
     @warnings = []
   end
 
   def import(data, name, synchronous, options)
+    self.synchronous = synchronous
     dests = false
 
     Customer.transaction do
-      before_import(name, synchronous, options)
+      before_import(name, options)
 
       dests = data.each_with_index.collect{ |row, line|
         row = yield(row)
@@ -59,9 +62,9 @@ class ImporterBase
         end
       }
 
-      after_import(name, synchronous, options)
+      after_import(name, options)
 
-      finalize_import(name, synchronous, options)
+      finalize_import(name, options)
     end
 
     dests

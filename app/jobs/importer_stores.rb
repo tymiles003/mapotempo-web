@@ -49,7 +49,7 @@ class ImporterStores < ImporterBase
     rows
   end
 
-  def before_import(name, synchronous, options)
+  def before_import(name, options)
     @need_geocode = false
 
     if options[:replace]
@@ -102,7 +102,7 @@ class ImporterStores < ImporterBase
     store # For subclasses
   end
 
-  def after_import(name, synchronous, options)
+  def after_import(name, options)
     if options[:replace]
       if !@customer.stores[1].nil?
         @customer.vehicle_usage_sets.each{ |vehicle_usage_set|
@@ -117,7 +117,7 @@ class ImporterStores < ImporterBase
     @customer.save!
   end
 
-  def finalize_import(name, synchronous, options)
+  def finalize_import(name, options)
     if @need_geocode && !synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_store_geocoding = Delayed::Job.enqueue(GeocoderStoresJob.new(@customer.id))
     end
