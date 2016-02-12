@@ -19,6 +19,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+[data-controller='plannings'][data-action='edit'] {
+  @media screen and (min-width: 800px) {
+    .ui-pnotify {
+      right: 350px !important; // SideMenu Width
+    }
+  }
+}
+
 [data-controller='plannings'] {
 
   #map {

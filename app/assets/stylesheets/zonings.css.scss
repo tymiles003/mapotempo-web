@@ -25,3 +25,11 @@
     vertical-align: middle;
   }
 }
+
+[data-controller='zonings'][data-action='edit'] {
+  @media screen and (min-width: 800px) {
+    .ui-pnotify {
+      right: 350px !important; // SideMenu Width
+    }
+  }
+}
