@@ -104,9 +104,10 @@
             </span>
           <% end %>
           <% if stop.is_a?(StopVisit) %>
-            <% if stop.visit.tags.size > 0 %>
+            <% tags = (stop.visit.tags | stop.visit.destination.tags) %>
+            <% if tags.size > 0 %>
               <div class="tags">
-                <% stop.visit.tags.each { |tag| %>
+                <% tags.each { |tag| %>
                   <i class="fa fa-tag fa-fw"></i><%= tag.label %>
                 <% } %>
               </div>
