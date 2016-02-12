@@ -61,13 +61,17 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
         }
       }
     }
-
     change_column :orders, :visit_id, :integer, null: false
 
     remove_column :stops, :destination_id
     remove_column :orders, :destination_id
 
     StopDestination.update_all(type: StopVisit.name)
+
+    raise '# visits and # destinations are different' if Visit.count != total
+    raise 'At least one destination without visit' if Destination.includes(:visits).select{ |d| d.visits.size == 0 }.size != 0
+    stops = Stop.where(type: 'StopVisit', visit_id: nil)
+    raise ('At least one stop without visit: ' + stops.inspect) if stops.size != 0
 
     # Remove moved field from Destination
     remove_column :destinations, :quantity, :float
@@ -150,11 +154,9 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     drop_table :tags_visits
     drop_table :visits
 
-    stop_count = Stop.where(type: "StopDestination", destination_id: nil).size
-    if stop_count > 0
-      puts "Remaining StopDestination with destination_id nil: " + stop_count.to_s
-      puts "You should delete them..."
-    end
+    stops = Stop.where(type: 'StopDestination', destination_id: nil)
+    raise ('Remaining some StopDestination without destination_id: ' + stops.inspect) if stops.size > 0
+    
   end
 
   private
