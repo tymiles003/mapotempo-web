@@ -828,6 +828,59 @@ var plannings_edit = function(params) {
         map.fitBounds(bounds.pad(1.1), {animate: false});
       }
     }
+
+    var displayVehicles = function(data) {
+      vehicleLayer.clearLayers();
+      data.forEach(function(pos) {
+        if ($.isNumeric(pos.lat) && $.isNumeric(pos.lng)) {
+          var route = routes_array.filter(function(route) {
+            return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id
+          })[0];
+          var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600 * 1000);
+          var iconContent = isMoving ?
+            '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i><i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) - 45) + 'deg);"></span>' :
+            '<i class="fa fa-truck fa-lg vehicle-icon" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>';
+          var m = L.marker(new L.LatLng(pos.lat, pos.lng), {
+            icon: new L.divIcon({
+              html: iconContent,
+              iconSize: new L.Point(24, 24),
+              iconAnchor: new L.Point(12, 12),
+              popupAnchor: new L.Point(0, -12),
+              className: 'vehicle-position'
+            }),
+            title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (pos.speed || 0) + 'km/h - ' + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (new Date(pos.time)).toLocaleString(),
+          }).addTo(vehicleLayer);
+        }
+      });
+    }
+
+    var queryVehicles = function() {
+      $.ajax({
+        type: 'get',
+        url: '/api/0.1/vehicles/current_position.json',
+        data: {ids: vehicleIdsPosition.join(',')},
+        beforeSend: beforeSendWaiting,
+        success: displayVehicles,
+        complete: completeAjaxMap,
+        error: function(err) {
+          clearInterval(tid);
+          ajaxError(err);
+        }
+      });
+    };
+
+    var vehicleIdsPosition = vehicles_array.filter(function(vehicle) {
+      return vehicle.available_position
+    }).map(function(vehicle) {
+      return vehicle.id
+    });
+
+    if (vehicleIdsPosition.length) {
+      var vehicleLayer = L.featureGroup();
+      map.addLayer(vehicleLayer);
+      queryVehicles();
+      var tid = setInterval(queryVehicles, 30000);
+    }
   }
 
   $('.btn.extend').click(function() {
@@ -856,59 +909,6 @@ var plannings_edit = function(params) {
       complete: completeAjaxMap,
       error: ajaxError
     });
-  }
-
-  var displayVehicles = function(data) {
-    vehicleLayer.clearLayers();
-    data.forEach(function(pos) {
-      if ($.isNumeric(pos.lat) && $.isNumeric(pos.lng)) {
-        var route = routes_array.filter(function(route) {
-          return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id
-        })[0];
-        var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600 * 1000);
-        var iconContent = isMoving ?
-          '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i><i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) - 45) + 'deg);"></span>' :
-          '<i class="fa fa-truck fa-lg vehicle-icon" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>';
-        var m = L.marker(new L.LatLng(pos.lat, pos.lng), {
-          icon: new L.divIcon({
-            html: iconContent,
-            iconSize: new L.Point(24, 24),
-            iconAnchor: new L.Point(12, 12),
-            popupAnchor: new L.Point(0, -12),
-            className: 'vehicle-position'
-          }),
-          title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (pos.speed || 0) + 'km/h - ' + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (new Date(pos.time)).toLocaleString(),
-        }).addTo(vehicleLayer);
-      }
-    });
-  }
-
-  var queryVehicles = function() {
-    $.ajax({
-      type: 'get',
-      url: '/api/0.1/vehicles/current_position.json',
-      data: {ids: vehicleIdsPosition.join(',')},
-      beforeSend: beforeSendWaiting,
-      success: displayVehicles,
-      complete: completeAjaxMap,
-      error: function(err) {
-        clearInterval(tid);
-        ajaxError(err);
-      }
-    });
-  };
-
-  var vehicleIdsPosition = vehicles_array.filter(function(vehicle) {
-    return vehicle.available_position
-  }).map(function(vehicle) {
-    return vehicle.id
-  });
-
-  if (vehicleIdsPosition.length) {
-    var vehicleLayer = L.featureGroup();
-    map.addLayer(vehicleLayer);
-    queryVehicles();
-    var tid = setInterval(queryVehicles, 30000);
   }
 
   $("#dialog-optimizer").dialog({
