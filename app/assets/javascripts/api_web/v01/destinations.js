@@ -45,17 +45,19 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
       });
     });
     destination.tags = t;
-    // TODO: display several icons
-    destination.color = destination.visits.map(function(visit) {
-      return visit.color;
-    }).reduce(function(prev, cur) {
-      return cur || prev;
-    }, null);
-    destination.icon = destination.visits.map(function(visit) {
-      return visit.icon;
-    }).reduce(function(prev, cur) {
-      return cur || prev;
-    }, null);
+    if (destination.visits) {
+      // TODO: display several icons
+      destination.color = destination.visits.map(function(visit) {
+        return visit.color;
+      }).reduce(function(prev, cur) {
+        return cur || prev;
+      }, null);
+      destination.icon = destination.visits.map(function(visit) {
+        return visit.icon;
+      }).reduce(function(prev, cur) {
+        return cur || prev;
+      }, null);
+    }
     destination.i18n = mustache_i18n;
     return destination;
   }
