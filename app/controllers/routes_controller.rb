@@ -42,7 +42,7 @@ class RoutesController < ApplicationController
       end
       format.kmz do
         if params[:email]
-          RouteMailer.send_kmz_route(current_user.email, @route.vehicle_usage.vehicle.contact_email, filename + '.kmz', kmz_string_io(route: @route).string).deliver_now
+          RouteMailer.send_kmz_route(current_user.customer, current_user.email, @route.vehicle_usage.vehicle.contact_email, filename + '.kmz', kmz_string_io(route: @route).string).deliver_now
           head :no_content
         else
           send_data kmz_string_io(route: @route).string,

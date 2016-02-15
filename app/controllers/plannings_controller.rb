@@ -47,7 +47,7 @@ class PlanningsController < ApplicationController
         if params[:email]
           @planning.routes.joins(vehicle_usage: [:vehicle]).each do |route|
             next if !route.vehicle_usage.vehicle.contact_email
-            RouteMailer.send_kmz_route(current_user.email, route.vehicle_usage.vehicle.contact_email, filename + '.kmz', kmz_string_io(route: route, with_home_markers: true).string).deliver_now
+            RouteMailer.send_kmz_route(current_user.customer, current_user.email, route.vehicle_usage.vehicle.contact_email, filename + '.kmz', kmz_string_io(route: route, with_home_markers: true).string).deliver_now
           end
           head :no_content
         else
