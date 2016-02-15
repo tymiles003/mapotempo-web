@@ -796,7 +796,7 @@ var destinations_index = function(params, api) {
   });
 
   var filter_text = function(exactText, normalizedValue, filter, index) {
-    return !!String(normalizedValue).match(new RegExp(filter, 'i'));
+    return !!String(exactText).match(new RegExp(filter, 'i'));
   }
 
   var filter_number = function(exactText, normalizedValue, filter, index) {
@@ -939,7 +939,7 @@ var destinations_index = function(params, api) {
         } else if ($node.hasClass('visit')) {
           return $.map($("input[type!=hidden]", node), function(e, i) {
             return e.value;
-          }).sort().join(',') + $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
+          }).sort().join(',') + ',' + $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).sort().join(',');
         }
