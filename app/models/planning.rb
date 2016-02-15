@@ -49,19 +49,23 @@ class Planning < ActiveRecord::Base
     append name: ' ' + I18n.l(Time.now, format: :long)
   end
 
-  def set_visits(visit_actives, recompute = true, ignore_errors = false)
+  def set_routes(routes_visits, recompute = true, ignore_errors = false)
     default_empty_routes(ignore_errors)
-    visit_actives = visit_actives.select{ |ref, _d| ref }
-    if visit_actives.size <= routes.size - 1
-      visits = visit_actives.values.flatten(1).collect{ |visit_active| visit_active[0] }
+    routes_visits = routes_visits.select{ |ref, _d| ref } # Remove out_of_route
+    if routes_visits.size <= routes.size - 1
+      visits = routes_visits.values.collect{ |s| s[:visits] }.flatten(1).collect{ |visit_active| visit_active[0] }
       routes[0].set_visits((customer.visits - visits).select{ |visit|
         ((visit.tags | visit.destination.tags) & tags).size == tags.size
       })
 
-      i = 0
-      visit_actives.each{ |ref, visits|
-        routes[i += 1].ref = ref
-        routes[i].set_visits(visits.select{ |visit|
+      index_routes = (1..routes.size).to_a
+      routes_visits.each{ |ref, r|
+        index_routes.delete(routes.index{ |rr| rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] }) if r[:ref_vehicle]
+      }
+      routes_visits.each{ |ref, r|
+        i = routes.index{ |rr| rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] } || index_routes.shift
+        routes[i].ref = ref
+        routes[i].set_visits(r[:visits].select{ |visit|
           ((visit[0].tags | visit[0].destination.tags) & tags).size == tags.size
         }, recompute, ignore_errors)
       }

@@ -1,7 +1,7 @@
 if route.vehicle_usage && @export_stores
   csv << [
     route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
-    (route.vehicle_usage.vehicle.name if route.vehicle_usage),
+    (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
     0,
     I18n.t('plannings.export_file.stop_type_store'),
     nil,
@@ -37,7 +37,7 @@ index = 0
 route.stops.each { |stop|
   csv << [
     route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
-    (route.vehicle_usage.vehicle.name if route.vehicle_usage),
+    (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
     (index+=1 if route.vehicle_usage),
     stop.is_a?(StopVisit) ? I18n.t('plannings.export_file.stop_type_visit') : I18n.t('plannings.export_file.stop_type_rest'),
     ((stop.active ? '1' : '0') if route.vehicle_usage),
@@ -72,7 +72,7 @@ route.stops.each { |stop|
 if route.vehicle_usage && @export_stores
   csv << [
     route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
-    (route.vehicle_usage.vehicle.name if route.vehicle_usage),
+    (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
     index+1,
     I18n.t('plannings.export_file.stop_type_store'),
     nil,

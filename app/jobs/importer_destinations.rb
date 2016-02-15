@@ -27,6 +27,7 @@ class ImporterDestinations < ImporterBase
   def columns_route
     {
       route: I18n.t('destinations.import_file.route'),
+      ref_vehicle: I18n.t('destinations.import_file.ref_vehicle'),
       active: I18n.t('destinations.import_file.active'),
       stop_type: I18n.t('destinations.import_file.stop_type')
     }
@@ -93,7 +94,16 @@ class ImporterDestinations < ImporterBase
     @common_tags = nil
     @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
     @tag_ids = Hash[@customer.tags.collect{ |tag| [tag.id, tag] }]
-    @routes = Hash.new{ |h, k| h[k] = [] }
+    # @routes = Hash.new{ |h, k| h[k] = [] }
+    @routes = Hash.new{ |h, k|
+      h[k] = Hash.new{ |hh, kk|
+        if kk == :visits
+          hh[kk] = []
+        else
+          hh[kk] = nil
+        end
+      }
+    }
 
     @planning = nil
     @need_geocode = false
@@ -211,9 +221,9 @@ class ImporterDestinations < ImporterBase
     if visit
       # Instersection of tags of all rows for tags of new planning
       if !@common_tags
-        @common_tags = (visit.tags.to_a + visit.destination.tags.to_a).uniq
+        @common_tags = (visit.tags.to_a | visit.destination.tags.to_a)
       else
-        @common_tags &= (visit.tags + visit.destination.tags).uniq
+        @common_tags &= (visit.tags | visit.destination.tags)
       end
 
       visit.destination.delay_geocode if !synchronous && Mapotempo::Application.config.delayed_job_use
@@ -221,7 +231,8 @@ class ImporterDestinations < ImporterBase
 
       # Add visit to route if needed
       if !@visit_ids.include?(visit.id)
-        @routes[row.key?(:route) ? row[:route] : nil] << [visit, !row.key?(:active) || (row[:active] && row[:active].strip != '0')]
+        @routes[row.key?(:route) ? row[:route] : nil][:ref_vehicle] = row[:ref_vehicle] if row[:ref_vehicle]
+        @routes[row.key?(:route) ? row[:route] : nil][:visits] << [visit, !row.key?(:active) || (row[:active] && row[:active].strip != '0')]
         @visit_ids << visit.id
       end
 
@@ -234,8 +245,8 @@ class ImporterDestinations < ImporterBase
 
   def after_import(name, options)
     if @need_geocode && (synchronous || !Mapotempo::Application.config.delayed_job_use)
-      @routes.each{ |_key, visits|
-        visits.each{ |visit_active|
+      @routes.each{ |_key, routes|
+        routes[:visits].each{ |visit_active|
           if visit_active[0].destination.lat.nil? || visit_active[0].destination.lng.nil?
             begin
               visit_active[0].destination.geocode
@@ -248,7 +259,7 @@ class ImporterDestinations < ImporterBase
 
     if @routes.size > 1 || !@routes.key?(nil)
       @planning = @customer.plannings.build(name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.now, format: :long), vehicle_usage_set: @customer.vehicle_usage_sets[0], tags: @common_tags || [])
-      @planning.set_visits(@routes, false, true)
+      @planning.set_routes(@routes, false, true)
       @planning.save!
     end
 

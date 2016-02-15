@@ -590,6 +590,7 @@ fr:
     import_file:
       ref: "référence"
       route: "tournée"
+      ref_vehicle: "véhicule"
       stop_type: "type arrêt"
       stop_type_visit: "visite"
       name: "nom"

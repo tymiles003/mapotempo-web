@@ -29,28 +29,36 @@ class PlanningTest < ActiveSupport::TestCase
     oo.save!
   end
 
-  test 'should set_visits' do
+  test 'should set_routes' do
     o = plannings(:planning_one)
 
-    o.set_visits({'route_one_one' => [[visits(:visit_one)]]})
+    o.set_routes({'route_one_one' => {visits: [[visits(:visit_one)]]}})
     assert o.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
     o.save!
   end
 
-  test 'should not set_visits for tags' do
+  test 'should not set_routes for tags' do
     o = plannings(:planning_one)
     o.tags << tags(:tag_two)
 
-    o.set_visits({'route_one_one' => [[visits(:visit_one)]]})
+    o.set_routes({'route_one_one' => {visits: [[visits(:visit_one)]]}})
     assert_not o.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
     o.save!
   end
 
-  test 'should not set_visits for size' do
+  test 'should set_routes with ref_vehicle' do
+    o = plannings(:planning_one)
+
+    o.set_routes({'route_one_one' => {visits: [[visits(:visit_one)]], ref_vehicle: vehicles(:vehicle_one).ref}})
+    assert o.routes[2].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
+    o.save!
+  end
+
+  test 'should not set_routes for size' do
     o = plannings(:planning_one)
 
     assert_raises(RuntimeError) {
-      o.set_visits(Hash[0.upto(o.routes.size).collect{ |i| ["route#{i}", [visits(:visit_one)]] }])
+      o.set_routes(Hash[0.upto(o.routes.size).collect{ |i| ["route#{i}", {visits: [visits(:visit_one)]}] }])
     }
     o.save!
   end
