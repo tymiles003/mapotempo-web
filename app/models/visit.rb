@@ -74,11 +74,11 @@ class Visit < ActiveRecord::Base
       # Don't use local collection here, not set when save new record
       destination.customer.plannings.each{ |planning|
         if planning.visits.include?(self)
-          if (planning.tags.to_a & (tags.to_a + destination.tags.to_a).uniq) != planning.tags.to_a
+          if (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) != planning.tags.to_a
             planning.visit_remove(self)
           end
         else
-          if (planning.tags.to_a & (tags.to_a + destination.tags.to_a).uniq) == planning.tags.to_a
+          if (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) == planning.tags.to_a
             planning.visit_add(self)
           end
         end

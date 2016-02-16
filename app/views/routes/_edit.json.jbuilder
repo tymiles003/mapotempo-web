@@ -65,7 +65,7 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
     json.visits true
     visit = stop.visit
     json.visit_id visit.id
-    tags = visit.destination.tags + visit.tags
+    tags = visit.destination.tags | visit.tags
     json.destination do
       json.destination_id visit.destination.id
       color = tags.find(&:color)
