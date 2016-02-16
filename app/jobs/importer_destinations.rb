@@ -17,6 +17,7 @@
 #
 require 'importer_base'
 require 'geocoder_destinations_job'
+require 'value_to_boolean'
 
 class ImporterDestinations < ImporterBase
 
@@ -232,7 +233,7 @@ class ImporterDestinations < ImporterBase
       # Add visit to route if needed
       if !@visit_ids.include?(visit.id)
         @routes[row.key?(:route) ? row[:route] : nil][:ref_vehicle] = row[:ref_vehicle] if row[:ref_vehicle]
-        @routes[row.key?(:route) ? row[:route] : nil][:visits] << [visit, !row.key?(:active) || (row[:active] && row[:active].strip != '0')]
+        @routes[row.key?(:route) ? row[:route] : nil][:visits] << [visit, ValueToBoolean.value_to_boolean(row[:active], true)]
         @visit_ids << visit.id
       end
 
