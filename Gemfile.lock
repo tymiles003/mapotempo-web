@@ -8,11 +8,13 @@ GIT
   remote: git://github.com/Mapotempo/mapotempo_web_by_time_distance.git
   revision: a79653124b64d5ae50780058627de55b1581dd39
   specs:
+    mapotempo_web_by_time_distance (0.0.1)
 
 GIT
   remote: git://github.com/Mapotempo/mapotempo_web_import_vehicle_store.git
-  revision: 4287f28638943679198197db47e2ffa1179936e0
+  revision: e18c2f5ee08b56bdf29804c71e5606e4ccbbe403
   specs:
+    mapotempo_web_import_vehicle_store (0.0.1)
 
 GIT
   remote: git://github.com/Mapotempo/sidebar-v2-gh-pages-rails.git
@@ -96,16 +98,6 @@ GIT
       rack-accept
       rack-mount
       virtus (>= 1.0.0)
-
-PATH
-  remote: ../mapotempo_web_by_time_distance
-  specs:
-    mapotempo_web_by_time_distance (0.0.1)
-
-PATH
-  remote: ../mapotempo_web_import_vehicle_store
-  specs:
-    mapotempo_web_import_vehicle_store (0.0.1)
 
 GEM
   remote: https://rubygems.org/

@@ -58,8 +58,8 @@ group :test do
 
   gem 'rspec-rails', '~> 3.0.0'
 
-  gem 'mapotempo_web_by_time_distance', path: '../mapotempo_web_by_time_distance', github: 'Mapotempo/mapotempo_web_by_time_distance'
-  gem 'mapotempo_web_import_vehicle_store', path: '../mapotempo_web_import_vehicle_store', github: 'Mapotempo/mapotempo_web_import_vehicle_store'
+  gem 'mapotempo_web_by_time_distance', github: 'Mapotempo/mapotempo_web_by_time_distance'
+  gem 'mapotempo_web_import_vehicle_store', github: 'Mapotempo/mapotempo_web_import_vehicle_store'
 end
 
 gem 'grape', github: 'ruby-grape/grape' # FIXME wait v0.14
