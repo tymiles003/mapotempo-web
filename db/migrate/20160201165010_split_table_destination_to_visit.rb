@@ -3,6 +3,12 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
     # Remove rest with 0 duration
     Customer.find_each{ |customer|
       customer.vehicle_usage_sets.each{ |vehicle_usage_set|
+        if vehicle_usage_set.rest_duration == Time.new(2000, 1, 1, 0, 0, 0, '+00:00')
+          vehicle_usage_set.rest_duration = nil
+          vehicle_usage_set.rest_start = nil
+          vehicle_usage_set.rest_stop = nil
+          vehicle_usage_set.save!
+        end
         vehicle_usage_set.vehicle_usages.each{ |vehicle_usage|
           if vehicle_usage.rest_duration == Time.new(2000, 1, 1, 0, 0, 0, '+00:00')
             vehicle_usage.rest_duration = nil
@@ -11,12 +17,6 @@ class SplitTableDestinationToVisit < ActiveRecord::Migration
             vehicle_usage.save!
           end
         }
-        if vehicle_usage_set.rest_duration == Time.new(2000, 1, 1, 0, 0, 0, '+00:00')
-          vehicle_usage_set.rest_duration = nil
-          vehicle_usage_set.rest_start = nil
-          vehicle_usage_set.rest_stop = nil
-          vehicle_usage_set.save!
-        end
       }
       customer.save!
     }
