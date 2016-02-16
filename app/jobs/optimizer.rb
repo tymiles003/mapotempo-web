@@ -63,7 +63,7 @@ class Optimizer
       if optimum
         route.order(optimum)
         route.save && route.reload # Refresh stops order
-        planning.compute
+        route.compute
         planning.save
       else
         false

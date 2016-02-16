@@ -67,7 +67,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
       if optimum
         route.order(optimum)
         route.save && route.reload # Refresh stops order
-        route.planning.compute
+        route.compute
         route.planning.save
         customer.save
       end
