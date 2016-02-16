@@ -1,5 +1,26 @@
 class SplitTableDestinationToVisit < ActiveRecord::Migration
   def up
+    # Remove rest with 0 duration
+    Customer.find_each{ |customer|
+      customer.vehicle_usage_sets.each{ |vehicle_usage_set|
+        vehicle_usage_set.vehicle_usages.each{ |vehicle_usage|
+          if vehicle_usage.rest_duration == Time.new(2000, 1, 1, 0, 0, 0, '+00:00')
+            vehicle_usage.rest_duration = nil
+            vehicle_usage.rest_start = nil if vehicle_usage.default_rest_duration.nil?
+            vehicle_usage.rest_stop = nil if vehicle_usage.default_rest_duration.nil?
+            vehicle_usage.save!
+          end
+        }
+        if vehicle_usage_set.rest_duration == Time.new(2000, 1, 1, 0, 0, 0, '+00:00')
+          vehicle_usage_set.rest_duration = nil
+          vehicle_usage_set.rest_start = nil
+          vehicle_usage_set.rest_stop = nil
+          vehicle_usage_set.save!
+        end
+      }
+      customer.save!
+    }
+
     fake_missing_props
 
     Customer.parent.const_set('StopDestination', Class.new(StopVisit))
