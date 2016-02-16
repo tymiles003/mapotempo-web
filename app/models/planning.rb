@@ -63,7 +63,7 @@ class Planning < ActiveRecord::Base
         index_routes.delete(routes.index{ |rr| rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] }) if r[:ref_vehicle]
       }
       routes_visits.each{ |ref, r|
-        i = routes.index{ |rr| rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] } || index_routes.shift
+        i = routes.index{ |rr| r[:ref_vehicle] && rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] } || index_routes.shift
         routes[i].ref = ref
         routes[i].set_visits(r[:visits].select{ |visit|
           ((visit[0].tags | visit[0].destination.tags) & tags).size == tags.size
