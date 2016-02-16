@@ -32,8 +32,8 @@ class VehicleUsage < ActiveRecord::Base
   validates_time :rest_start, if: :rest_start
   validates_time :rest_stop, on_or_after: :rest_start, if: lambda { |vu| vu.rest_start && vu.rest_stop }
 
-  validates :rest_start, presence: true, if: :rest_duration?
-  validates :rest_stop, presence: true, if: :rest_duration?
+  validates :default_rest_start, presence: true, if: :default_rest_duration?
+  validates :default_rest_stop, presence: true, if: :default_rest_duration?
 
   validates_time :service_time_start, if: :service_time_start
   validates_time :service_time_end, if: :service_time_end
@@ -71,6 +71,10 @@ class VehicleUsage < ActiveRecord::Base
 
   def default_rest_duration
     rest_duration || vehicle_usage_set.rest_duration
+  end
+
+  def default_rest_duration?
+    !default_rest_duration.nil?
   end
 
   def default_service_time_start

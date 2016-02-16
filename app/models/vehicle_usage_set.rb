@@ -34,9 +34,6 @@ class VehicleUsageSet < ActiveRecord::Base
   validates_time :rest_start, if: :rest_start
   validates_time :rest_stop, on_or_after: :rest_start, if: :rest_stop
 
-  validates :rest_start, presence: true, if: :rest_duration?
-  validates :rest_stop, presence: true, if: :rest_duration?
-
   validates_time :service_time_start, if: :service_time_start
   validates_time :service_time_end, if: :service_time_end
 
