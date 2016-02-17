@@ -66,6 +66,7 @@ class Route < ActiveRecord::Base
   end
 
   def plan(departure = nil, ignore_errors = false)
+    self.touch if self.id # To force route save in case none attribute has changed below
     self.out_of_date = false
     self.distance = 0
     self.stop_distance = 0

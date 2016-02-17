@@ -68,8 +68,8 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
         route.order(optimum)
         route.save && route.reload # Refresh stops order
         route.compute
+        route.save # Because route is not saved below
         route.planning.save
-        customer.save
       end
     }
   end
