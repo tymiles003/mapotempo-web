@@ -46,7 +46,7 @@ class ImportCsv
             # Switch from locale to internal column name
             r, row = row, {}
             @importer.columns.each{ |k, v|
-              if r.key?(v)
+              if r.key?(v) && r[v] # FIXME: keep only r.key?(v) to overwrite database with row containing nil
                 row[k] = r[v]
               end
             }
