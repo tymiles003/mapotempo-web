@@ -395,6 +395,7 @@ fr:
               after: "Doit être après l'horaire de début"
             rest_stop:
               after: "Doit être après l'horaire de début"
+          missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
         vehicle_usage_set:
           attributes:
             close:
@@ -402,6 +403,7 @@ fr:
             rest_stop:
               after: "Doit être après l'horaire de début"
           at_least_one: "Au moins une configuration des véhicules est requise"
+          missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
         zone:
           attributes:
             vehicle:

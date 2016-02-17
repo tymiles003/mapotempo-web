@@ -15,6 +15,16 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+class RestValidator < ActiveModel::Validator
+  def validate(record)
+    if record.default_rest_duration && record.default_rest_start.nil?
+      record.errors[:rest_start] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')
+    elsif record.default_rest_duration && record.default_rest_stop.nil?
+      record.errors[:rest_stop] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')
+    end
+  end
+end
+
 class VehicleUsage < ActiveRecord::Base
   belongs_to :vehicle_usage_set
   belongs_to :vehicle
@@ -32,8 +42,7 @@ class VehicleUsage < ActiveRecord::Base
   validates_time :rest_start, if: :rest_start
   validates_time :rest_stop, on_or_after: :rest_start, if: lambda { |vu| vu.rest_start && vu.rest_stop }
 
-  validates :default_rest_start, presence: true, if: :default_rest_duration?
-  validates :default_rest_stop, presence: true, if: :default_rest_duration?
+  validates_with RestValidator, fields: [:rest_duration, :rest_start, :rest_stop]
 
   validates_time :service_time_start, if: :service_time_start
   validates_time :service_time_end, if: :service_time_end

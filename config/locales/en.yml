@@ -375,12 +375,13 @@ en:
           geocoding_accuracy_outside_range: "must be inside range 0..1"
         vehicles:
           at_least_one: "At least one vehicle needed"
-        vehicle_usages:
+        vehicle_usage:
           attributes:
             close:
               after: "Must be after the open time"
             rest_stop:
               after: "Must be after the open time"
+          missing_rest_window: "can't be blanked if rest duration is filled"
         vehicle_usage_set:
           attributes:
             close:
@@ -388,6 +389,7 @@ en:
             rest_stop:
               after: "Must be after the open time"
           at_least_one: "At least one vehicles configuration needed"
+          missing_rest_window: "can't be blanked if rest duration is filled"
         zone:
           attributes:
             vehicle:
