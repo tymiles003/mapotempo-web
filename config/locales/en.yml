@@ -546,8 +546,14 @@ en:
       title: "Editing destination"
     import:
       title: "Import destinations"
-      replace_help: "Replace customers with import ones. Overwrite all customers. Plannings will also be lost. In the opposite case an update of existing customers is made and the new ones are added."
+      destinations: "Destinations"
+      replace_no: "Update / in addition"
+      replace_no_help: "An update of existing destinations (unchanged customer references) is made and the new ones are added in application."
+      replace_yes: "Delete previous destinations"
+      replace_yes_help: "Delete and replace destinations with import ones. Overwrite all destinations. Plannings will also be lost."
       replace_confirm: "Delete all clients and their amendments to replace them with imported ones?"
+      plannings: "Plannings"
+      delete_plannings: "Delete previous plannings"
       delete_plannings_help: "Delete previously created plannings (allow better performances). If routes are present in your new import file, a planning will be created anyway after import."
       delete_plannings_confirm: "Delete all previously created plannings ?"
       csv:
@@ -858,7 +864,11 @@ en:
       title: "Editing store"
     import:
       title: "Import stores"
-      replace_help: "Replace stores with import ones. Overwrite all stores. In the opposite case an update of existing stores is made and the new ones are added."
+      stores: "Stores"
+      replace_no: "Update / in addition"
+      replace_no_help: "An update of existing stores (unchanged store references) is made and the new ones are added in application."
+      replace_yes: "Delete previous stores"
+      replace_yes_help: "Delete and replace stores with import ones. Overwrite all stores."
       replace_confirm: "Delete all stores and their amendments to replace them with imported ones?"
       csv:
         title: "CSV File"

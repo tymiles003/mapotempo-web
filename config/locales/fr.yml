@@ -561,9 +561,15 @@ fr:
       title: "Modifier client"
     import:
       title: "Importer des clients"
-      replace_help: "Remplacer les clients par ceux de l'import. Efface et remplace tous les clients. Les plannings seront également perdus. Dans le cas contraire une mise à jour des clients existants est faite et les nouveaux sont ajoutés."
+      destinations: "Clients"
+      replace_no: "Mise à jour / ajout"
+      replace_no_help: "Une mise à jour des clients existants (référence client inchangée) est faite et les nouveaux sont ajoutés à l'application."
+      replace_yes: "Supprimer anciens clients"
+      replace_yes_help: "Efface et remplace tous les anciens clients par ceux de l'import. Les plannings seront également perdus."
       replace_confirm: "Supprimer tous les clients et leurs modifications pour les remplacer par ceux importés ?"
-      delete_plannings_help: "Supprimer les anciens plannings (permet notamment d'améliorer la réactivité de l'application). Si des tournées sont présentes dans votre fichier d'import, un nouveau planning sera tout de même créé après l'import."
+      plannings: "Plannings"
+      delete_plannings: "Supprimer anciens plannings"
+      delete_plannings_help: "Supprime les anciens plannings (permet notamment d'améliorer la réactivité de l'application). Si des tournées sont présentes dans votre fichier d'import, un nouveau planning sera tout de même créé après l'import."
       delete_plannings_confirm: "Supprimer tous les anciens plannings ?"
       csv:
         title: "Fichier CSV"
@@ -873,7 +879,11 @@ fr:
       title: "Modifier dépôt"
     import:
       title: "Importer des dépôts"
-      replace_help: "Remplacer les dépôts par ceux de l'import. Efface et remplace tous les dépôts. Dans le cas contraire une mise à jour des dépôts existants est faite et les nouveaux sont ajoutés."
+      stores: "Dépôts"
+      replace_no: "Mise à jour / ajout"
+      replace_no_help: "Une mise à jour des dépôts existants (référence dépôt inchangée) est faite et les nouveaux sont ajoutés à l'application."
+      replace_yes: "Supprimer anciens dépôts"
+      replace_yes_help: "Efface et remplace tous les anciens dépôts par ceux de l'import."
       replace_confirm: "Supprimer tous les dépôts et leurs modifications pour les remplacer par ceux importés ?"
       csv:
         title: "Fichier CSV"

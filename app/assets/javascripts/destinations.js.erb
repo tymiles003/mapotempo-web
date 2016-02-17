@@ -394,7 +394,7 @@ var destinations_import = function(params) {
     buttonText: I18n.t('web.choose_file')
   });
 
-  $('#import_csv_replace').click(function() {
+  $('#import_csv_replace_1').click(function() {
     if ($(this).is(':checked')) {
       $('#import_csv_delete_plannings').prop('checked', true);
     }
@@ -402,7 +402,7 @@ var destinations_import = function(params) {
 
   $("form").submit(function() {
     var confirmChecks = [];
-    $('input[name$=\\[replace\\]]', $(this)).is(':checked') && confirmChecks.push('replace');
+    $('input[id$=replace_1]', $(this)).is(':checked') && confirmChecks.push('replace');
     $('input[name$=\\[delete_plannings\\]]', $(this)).is(':checked') && confirmChecks.push('delete_plannings');
     if (confirmChecks.length > 0 && !confirm(confirmChecks.map(function(c) { return I18n.t('destinations.import.' + c + '_confirm'); } ).join(" \n"))) {
       return false;
