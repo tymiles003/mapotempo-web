@@ -896,6 +896,7 @@ en:
       close: "close"
       color: "color"
       icon: "icon"
+      icon_size: "icon size"
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
 
   products:

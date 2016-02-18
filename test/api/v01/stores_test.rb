@@ -77,12 +77,14 @@ class V01::StoresTest < ActiveSupport::TestCase
         geocoding_accuracy: nil,
         foo: 'bar',
         icon: 'fa-bars',
+        icon_size: 'small',
       }]}
       assert last_response.ok?, last_response.body
       json = JSON.parse(last_response.body)
       assert_equal 1, json.size
       assert_equal 'fra', json[0]['country']
       assert_equal 'fa-bars', json[0]['icon']
+      assert_equal 'small', json[0]['icon_size']
     end
   end
 

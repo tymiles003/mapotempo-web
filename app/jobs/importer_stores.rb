@@ -36,6 +36,7 @@ class ImporterStores < ImporterBase
       lng: I18n.t('stores.import_file.lng'),
       color: I18n.t('stores.import_file.color'),
       icon: I18n.t('stores.import_file.icon'),
+      icon_size: I18n.t('stores.import_file.icon_size'),
       geocoding_accuracy: I18n.t('stores.import_file.geocoding_accuracy'),
       geocoding_level: I18n.t('stores.import_file.geocoding_level')
     }

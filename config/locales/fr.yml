@@ -904,11 +904,14 @@ fr:
       country: "pays"
       lat: "lat"
       lng: "lng"
+      geocoding_accuracy: "qualité géocodage"
+      geocoding_level: "niveau géocodage"
       active: "livré"
       open: "horaire début"
       close: "horaire fin"
       color: "couleur"
       icon: "icone"
+      icon_size: "taille icone"
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
 
   products:
