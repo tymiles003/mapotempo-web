@@ -64,6 +64,8 @@ class Store < ActiveRecord::Base
       self.lat = self.lng = self.geocoding_accuracy = self.geocoding_level = nil
     end
     @is_gecoded = true
+  rescue
+    Rails.logger.info "Store Geocode Failed: ID=%s" % [self.id]
   end
 
   def delay_geocode

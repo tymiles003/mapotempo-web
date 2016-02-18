@@ -26,13 +26,11 @@ class GeocoderStoresJob < Struct.new(:customer_id)
     Delayed::Worker.logger.info "GeocoderStoresJob customer_id=#{customer_id} perform"
     count = customer.stores.where(lat: nil).count
     i = 0
-    customer.stores.where(lat: nil).each_slice(50){ |stores|
+    customer.stores.select(:id).where(lat: nil).each_slice(50){ |store_ids|
       Store.transaction do
-        stores.each { |store|
-          begin
-            store.geocode
-          rescue
-          end
+        store_ids.each { |store_id|
+          store = Store.find store_id # IMPORTANT: Lower Delayed Job Memory Usage
+          store.geocode
           Delayed::Worker.logger.info store.inspect
           store.save
           i += 1
