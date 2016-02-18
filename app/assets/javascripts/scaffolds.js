@@ -54,6 +54,9 @@ var mapInitialize = function(params) {
     attributionControl: false,
     layers: mapLayer
   }).setView([params.map_lat || 0, params.map_lng || 0], 13);
+
+  if (params.overlay_layers) $.extend(mapOverlays, params.overlay_layers);
+
   if (nbLayers > 1)
     L.control.layers(mapBaseLayers, mapOverlays, {position: 'topleft'}).addTo(map);
   else
