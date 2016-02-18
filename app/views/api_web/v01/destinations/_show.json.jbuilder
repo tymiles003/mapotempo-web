@@ -15,16 +15,27 @@ json.visits destination.visits do |visit|
   json.open_close visit.open || visit.close
   json.open visit.open && l(visit.open, format: :hour_minute)
   json.close visit.close && l(visit.close, format: :hour_minute)
-  tags |= visit.tags
-end
-if !tags.empty?
-  json.tags_present do
-    json.tags do
-      json.array! tags, :label
+  tags = visit.tags | destination.tags
+  if !tags.empty?
+    json.tags_present do
+      json.tags do
+        json.array! tags, :label
+      end
     end
+    color ||= tags.find(&:color)
+    icon ||= tags.find(&:icon)
   end
-  color ||= tags.find(&:color)
-  icon ||= tags.find(&:icon)
+end
+if destination.visits.size == 0
+  if !tags.empty?
+    json.tags_present do
+      json.tags do
+        json.array! tags, :label
+      end
+    end
+    color ||= tags.find(&:color)
+    icon ||= tags.find(&:icon)
+  end
 end
 # TODO: display several icons
 (json.color color.color) if color
