@@ -79,7 +79,7 @@ class ImporterDestinations < ImporterBase
           dest.except(:visits).merge(v)
         }
       else
-        [dest]
+        [dest.merge(without_visit: 'x')]
       end
     }.flatten
   end
