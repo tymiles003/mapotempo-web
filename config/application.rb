@@ -113,7 +113,7 @@ module Mapotempo
     config.tomtom = TomtomWebfleet.new(
       'https://soap.business.tomtom.com/v1.25',
       nil,
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'tomtom'), namespace: 'tomtom', expires_in: 30)
+      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'tomtom'), namespace: 'tomtom', expires_in: 60)
     )
 
     config.masternaut_api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
