@@ -116,6 +116,7 @@ var plannings_edit = function(params) {
     vehicleLayer = L.featureGroup();
     queryVehicles();
     tid = setInterval(queryVehicles, 30000);
+    $(document).on('page:change', clearInterval(tid));
     if (!params.overlay_layers) params.overlay_layers = {};
     params.overlay_layers["Vehicles"] = vehicleLayer;
   }
@@ -914,7 +915,6 @@ var plannings_edit = function(params) {
         map.fitBounds(bounds.pad(1.1), {animate: false});
       }
     }
-
   }
 
   $('.btn.extend').click(function() {
