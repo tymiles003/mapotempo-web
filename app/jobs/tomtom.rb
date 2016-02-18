@@ -29,11 +29,11 @@ class Tomtom
   def self.export_route_as_orders(route)
     date = route.planning.date || Date.today.to_time
     customer = route.planning.customer
-    position = route.vehicle_usage.default_store_start
+    position = route.vehicle_usage.default_store_stop
     if position && !position.lat.nil? && !position.lng.nil?
-      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, -1, route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name || "#{position.lat} #{position.lng}", route.start)
+      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, -2, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.start)
     end
-    route.stops.select(&:active).each{ |stop|
+    route.stops.select(&:active).reverse_each{ |stop|
       position = stop if stop.position?
       if (position && !position.lat.nil? && !position.lng.nil?) || position.is_a?(StopRest)
         description = [
@@ -49,9 +49,9 @@ class Tomtom
         Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, stop.id, description, stop.time)
       end
     }
-    position = route.vehicle_usage.default_store_stop
-    if !position.nil? && !position.lat.nil? && !position.lng.nil?
-      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, -2, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.start)
+    position = route.vehicle_usage.default_store_start
+    if position && !position.lat.nil? && !position.lng.nil?
+      Mapotempo::Application.config.tomtom.sendDestinationOrder(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password, route.vehicle_usage.vehicle.tomtom_id, date, position, -1, route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name || "#{position.lat} #{position.lng}", route.start)
     end
   end
 
@@ -71,7 +71,7 @@ class Tomtom
         '',
         route.vehicle_usage.default_store_stop.name
       ]] : []
-    waypoints = route.stops.select(&:active).collect{ |stop|
+    waypoints = route.stops.reverse.select(&:active).collect{ |stop|
         position = stop if stop.position?
         if position.nil? || position.lat.nil? || position.lng.nil?
           next
@@ -86,7 +86,7 @@ class Tomtom
           stop.phone_number
         ]
     }
-    waypoints = (waypoint_start + waypoints.compact + waypoint_stop).map{ |l|
+    waypoints = (waypoint_stop + waypoints.compact + waypoint_start).map{ |l|
         description = l[2..-1].compact.join(' ').strip
         {lat: l[0], lng: l[1], description: description}
     }
