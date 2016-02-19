@@ -67,7 +67,7 @@
           <li><%= link_to planning_path(@planning, format: :csv, stores: false) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard_without_stores' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :excel) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_trace' %><% end %></li>
+          <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_track' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
           <li class="kmz_email"><%= link_to planning_path(@planning, format: :kmz, email: 1) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.kmz_email.action' %><% end %></li>
         </ul>

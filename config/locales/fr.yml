@@ -759,7 +759,7 @@ fr:
         fail: "Échec lors de la suppression des commandes Orange Fleet"
       export:
         kmz_email:
-          action: "KML: Envoyer par email"
+          action: "Tracé KML par email"
           success: "Email envoyé avec succès"
           fail: "Échec lors de l'envoi de l'Email"
         print: "Imprimer"
@@ -767,7 +767,7 @@ fr:
         spreadsheet_standard_without_stores: "Tableur standard sans dépôts"
         spreadsheet_excel: "Tableur Excel"
         gpx_route: "Route GPX"
-        gpx_trace: "Tracé GPX"
+        gpx_track: "Tracé GPX"
         kmz_track: "Tracé KML"
         masternaut: "Envoyer vers Masternaut"
         masternaut_success: "Envoi vers Masternaut terminé avec succès"

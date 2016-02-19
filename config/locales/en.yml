@@ -744,7 +744,7 @@ en:
         fail: "Failed to clear Orange Fleet commands"
       export:
         kmz_email:
-          action: "KML Send by E-Mail"
+          action: "KML Track by E-Mail"
           success: "E-Mail sent successfully"
           fail: "Failed to send E-Mail"
         print: "Print"
@@ -752,7 +752,7 @@ en:
         spreadsheet_standard_without_stores: "Spreadsheet Standard without stores"
         spreadsheet_excel: "Spreadsheet Excel"
         gpx_route: "GPX Route"
-        gpx_trace: "GPX Track"
+        gpx_track: "GPX Track"
         kmz_track: "KML Track"
         masternaut: "Send to Masternaut"
         masternaut_success: "Sent to Masternaut with success"
