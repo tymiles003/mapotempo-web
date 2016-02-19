@@ -21,7 +21,8 @@ var plannings_form = function() {
     language: defaultLocale,
     autoclose: true,
     calendarWeeks: true,
-    todayHighlight: true
+    todayHighlight: true,
+    format: I18n.t("all.datepicker")
   });
 
   var formatNoMatches = I18n.t('web.select2.empty_result');

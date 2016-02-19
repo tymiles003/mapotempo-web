@@ -1,7 +1,7 @@
 <%= twitter_bootstrap_form_for @order_array, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @order_array %>
   <%= f.text_field :name %>
-  <%= f.text_field :base_date, {value: @order_array.base_date ? l(@order_array.base_date) : nil, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
+  <%= f.text_field :base_date, {value: @order_array.base_date ? l(@order_array.base_date.to_time, format: :datepicker) : nil, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
   <%= f.select :length, [], OrderArray.lengths.collect{ |key, id| [t('.'+key), key] }, {}, {disabled: !!@order_array.id} %>
   <%= f.actions do %>
     <%= f.submit %>

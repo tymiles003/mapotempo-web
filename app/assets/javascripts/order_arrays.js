@@ -20,7 +20,8 @@ var order_arrays_form = function() {
     language: defaultLocale,
     autoclose: true,
     calendarWeeks: true,
-    todayHighlight: true
+    todayHighlight: true,
+    format: I18n.t("all.datepicker")
   });
 }
 

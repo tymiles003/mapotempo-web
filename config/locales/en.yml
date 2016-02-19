@@ -1,3 +1,4 @@
+# Files in the config/locales directory are used for internationalization
 # and are automatically loaded by Rails. If you want to use locales other
 # than English, add the necessary files in this directory.
 #
@@ -26,8 +27,12 @@ en:
     hour: "Hour"
     minute: "Minute"
     formats:
+      default: "%d %B %Y %H:%M:%S"
+      long: "%A %d %B %Y %H:%M"
+      short: "%d %b %H:%M"
       hour_minute: "%H:%M"
       hour_minute_second: "%H:%M:%S"
+      datepicker: "%m-%d-%Y"
 
   activemodel:
     models:
@@ -1218,6 +1223,7 @@ en:
           without_vehicle: "Without Vehicle"
 
   all:
+    datepicker: "mm-dd-yyyy"
     map_attribution:
       osm: "Map data &copy; <a href=\"http://openstreetmap.org\" target=\"_blank\">OpenStreetMap</a> contributors, %{attribution}"
       here: "Here"
