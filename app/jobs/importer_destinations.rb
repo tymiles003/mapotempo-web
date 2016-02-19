@@ -173,7 +173,7 @@ class ImporterDestinations < ImporterBase
         destination.ref && destination.ref == row[:ref]
       }
       if destination
-        destination.assign_attributes(destination_attributes)
+        destination.assign_attributes(destination_attributes.compact) # FIXME: don't use compact to overwrite database with row containing nil
       else
         destination = @customer.destinations.build(destination_attributes)
       end
@@ -187,7 +187,7 @@ class ImporterDestinations < ImporterBase
           visit = destination.visits.find{ |v| !v.ref }
         end
         if visit
-          visit.assign_attributes(visit_attributes)
+          visit.assign_attributes(visit_attributes.compact) # FIXME: don't use compact to overwrite database with row containing nil
         else
           visit = destination.visits.build(visit_attributes)
         end

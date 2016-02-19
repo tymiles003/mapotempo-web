@@ -18,7 +18,7 @@
           <p class="help-block"><%= t '.csv.file_help' %></p>
         <% end %>
         <%= f.toggles t '.stores' do %>
-          <%= f.radio_button :replace, t('.replace_no'), nil, checked: true %>
+          <%= f.radio_button :replace, t('.replace_no'), 0, checked: true %>
           <p class="help-block"><%= t '.replace_no_help' %></p>
           <%= f.radio_button :replace, t('.replace_yes'), 1 %>
           <p class="help-block"><%= t '.replace_yes_help' %></p>
