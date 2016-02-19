@@ -882,7 +882,7 @@ en:
       out_of_drive_time: "out of vehicle's time window"
     form:
       ref_help: "A free reference"
-      tags_help: "Restrict visits/customers to these categories"
+      tags_help: "Restrict visits/destinations in the planning (visits/destinations should have all of these categories to be take into account in the planning)"
       order_array: "Orders"
 
   routes:

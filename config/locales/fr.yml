@@ -897,7 +897,7 @@ fr:
       out_of_drive_time: "hors créneau véhicule"
     form:
       ref_help: "Référence libre"
-      tags_help: "Restreint les visites/clients pris en compte à ces catégories"
+      tags_help: "Restreint les visites/clients dans le planning (les visites/clients doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)"
       order_array: "Comm."
 
   routes:
