@@ -163,7 +163,7 @@ class ImporterDestinations < ImporterBase
 
     [:tags, :tags_visit].each{ |key| prepare_tags row, key }
 
-    destination_attributes = row.slice(*(@@columns_destination_keys ||= columns_destination.keys))
+    destination_attributes = row.slice(*(@@col_dest_keys ||= columns_destination.keys))
     visit_attributes = row.slice(*(@@columns_visit_keys ||= columns_visit.keys))
     visit_attributes[:ref] = visit_attributes.delete :ref_visit
     visit_attributes[:tags] = visit_attributes.delete :tags_visit if visit_attributes.key?(:tags_visit)
@@ -205,9 +205,11 @@ class ImporterDestinations < ImporterBase
         end
       end
       if !visit
+        row_compare_attr = (@@dest_attr_nil ||= Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten]).merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level, :tags).stringify_keys
+        @@slice_attr ||= (@@col_dest_keys - [:customer_id, :lat, :lng, :geocoding_accuracy, :geocoding_level]).collect(&:to_s)
         # Get destination from attributes for multiple visits
         destination = @customer.destinations.find{ |d|
-          d.attributes.symbolize_keys.slice(*columns_destination.keys).except(:customer_id, :lat, :lng, :geocoding_accuracy, :geocoding_level) == Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten].merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level, :tags)
+          d.attributes.slice(*@@slice_attr) == row_compare_attr
         }
         if !destination
           destination = @customer.destinations.build(destination_attributes)
