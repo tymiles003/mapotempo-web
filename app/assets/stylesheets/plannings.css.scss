@@ -127,6 +127,16 @@
     text-shadow: black 0 1px;
   }
 
+  .sidebar {
+    .dropdown-menu li.link {
+      padding-left: 20px;
+      cursor: pointer;
+    }
+    .dropdown-menu li.link:hover {
+      background-color: #EEE;
+    }
+  }
+
   .sidebar.extended {
     width: 100% !important;
     top: 50px !important;

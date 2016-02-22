@@ -15,6 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+
 var plannings_form = function() {
   $('#planning_date').datepicker({
     language: defaultLocale,
@@ -81,8 +82,9 @@ var plannings_edit = function(params) {
             return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id
           })[0];
           var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600 * 1000);
+          var direction_icon = pos.direction ? '<i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) - 45) + 'deg);" />' : '';
           var iconContent = isMoving ?
-            '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i><i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) - 45) + 'deg);"></span>' :
+            '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>' + direction_icon + '</span>' :
             '<i class="fa fa-truck fa-lg vehicle-icon" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>';
           L.marker(new L.LatLng(pos.lat, pos.lng), {
             icon: new L.divIcon({
@@ -469,234 +471,211 @@ var plannings_edit = function(params) {
       }
     });
 
+    /* API: Devices */
+    devices_observe_planning();
+
     // KMZ: Export Route via E-Mail
-      $('.kmz_email a', context).click(function(e) {
-        e.preventDefault();
-        $.ajax({
-          url: $(e.target).attr('href'),
-          type: 'GET',
-          beforeSend: function(jqXHR, settings) {
-            beforeSendWaiting();
-          },
-          complete: function(jqXHR, textStatus) {
-            completeWaiting();
-          },
-          success: function(data, textStatus, jqXHR) {
-            notice(I18n.t('plannings.edit.export.kmz_email.success'));
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            stickyError(I18n.t('plannings.edit.export.kmz_email.fail'));
-          }
-        });
+    $('.kmz_email a', context).click(function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(e.target).attr('href'),
+        type: 'GET',
+        beforeSend: function(jqXHR, settings) {
+          beforeSendWaiting();
+        },
+        complete: function(jqXHR, textStatus) {
+          completeWaiting();
+        },
+        success: function(data, textStatus, jqXHR) {
+          notice(I18n.t('plannings.edit.export.kmz_email.success'));
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          stickyError(I18n.t('plannings.edit.export.kmz_email.fail'));
+        }
       });
+    });
 
-      // Send to TomTom, Clear TomTom
-      $.each(['tomtom_send', 'tomtom_clear'], function(i, name) {
-        $('.' + name + ' a', context).click(function(e) {
-          e.preventDefault();
-          $.ajax({
-            url: $(e.target).attr('href'),
-            type: 'GET',
-            beforeSend: function(jqXHR, settings) {
-              $('#dialog-tomtom').dialog('open');
-            },
-            success: function(data, textStatus, jqXHR) {
-              notice(I18n.t('plannings.edit.export.' + name + '.success'));
-            },
-            complete: function(jqXHR, textStatus) {
-              $('#dialog-tomtom').dialog('close');
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-              stickyError(I18n.t('plannings.edit.export.' + name + '.fail'));
-            }
-          });
-          // Reset Dropdown
-          $(e.target).closest('.dropdown-menu').dropdown('toggle');
-          return false;
-        });
+    $(".export_masternaut a", context).click(function() {
+      var url = this.href;
+      $.ajax({
+        type: "get",
+        url: url,
+        beforeSend: function() {
+          $("#dialog-masternaut").dialog("open");
+        },
+        success: function(data) {
+          notice(I18n.t('plannings.edit.export.masternaut_success'));
+        },
+        complete: function() {
+          $("#dialog-masternaut").dialog("close");
+        },
+        error: ajaxError
       });
+      $(this).closest(".dropdown-menu").prev().dropdown("toggle");
+      return false;
+    });
 
-      $(".export_masternaut a", context).click(function() {
-        var url = this.href;
-        $.ajax({
-          type: "get",
-          url: url,
-          beforeSend: function() {
-            $("#dialog-masternaut").dialog("open");
-          },
-          success: function(data) {
-            notice(I18n.t('plannings.edit.export.masternaut_success'));
-          },
-          complete: function() {
-            $("#dialog-masternaut").dialog("close");
-          },
-          error: ajaxError
-        });
-        $(this).closest(".dropdown-menu").prev().dropdown("toggle");
-        return false;
+    $(".export_alyacom a", context).click(function() {
+      var url = this.href;
+      $.ajax({
+        type: "get",
+        url: url,
+        beforeSend: function() {
+          $("#dialog-alyacom").dialog("open");
+        },
+        success: function(data) {
+          notice(I18n.t('plannings.edit.export.alyacom_success'));
+        },
+        complete: function() {
+          $("#dialog-alyacom").dialog("close");
+        },
+        error: ajaxError
       });
+      $(this).closest(".dropdown-menu").prev().dropdown("toggle");
+      return false;
+    });
 
-      $(".export_alyacom a", context).click(function() {
-        var url = this.href;
-        $.ajax({
-          type: "get",
-          url: url,
-          beforeSend: function() {
-            $("#dialog-alyacom").dialog("open");
-          },
-          success: function(data) {
-            notice(I18n.t('plannings.edit.export.alyacom_success'));
-          },
-          complete: function() {
-            $("#dialog-alyacom").dialog("close");
-          },
-          error: ajaxError
-        });
-        $(this).closest(".dropdown-menu").prev().dropdown("toggle");
-        return false;
-      });
+    $(".routes", context).sortable({
+      disabled: true,
+      items: "li.route"
+    });
 
-      $(".routes", context).sortable({
-        disabled: true,
-        items: "li.route"
-      });
-
-      $(".routes", context)
-        .on("click", ".toggle", function(event, ui) {
-          var id = $(this).closest("[data-route_id]").attr("data-route_id");
-          var li = $("ul.stops, ol.stops", $(this).closest("li"));
-          li.toggle();
-          var hidden = !li.is(":visible");
-          $.ajax({
-            type: "put",
-            data: JSON.stringify({
-              hidden: hidden
-            }),
-            contentType: 'application/json',
-            url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
-            error: ajaxError
-          });
-
-          var i = $("i", this);
-          if (hidden) {
-            i.removeClass("fa-eye").addClass("fa-eye-slash");
-            routes_layers.removeLayer(layers[id]);
-            routes_layers_cluster.removeLayer(layers_cluster[id]);
-          } else {
-            i.removeClass("fa-eye-slash").addClass("fa-eye");
-            routes_layers.addLayer(layers[id]);
-            routes_layers_cluster.addLayer(layers_cluster[id]);
-          }
-        })
-        .on("click", ".marker", function(event, ui) {
-          var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
-          if (stop_id in markers) {
-            map.setView(markers[stop_id].getLatLng(), 17, {
-              reset: true
-            });
-            var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
-            layers_cluster[route_id].zoomToShowLayer(markers[stop_id], function() {
-              markers[stop_id].openPopup();
-            });
-          } else {
-            var store_id = $(this).closest("[data-store_id]").attr("data-store_id");
-            if (store_id in stores) {
-              map.setView(stores[store_id].getLatLng(), 17, {
-                reset: true
-              });
-              stores[store_id].openPopup();
-            }
-          }
-          return false;
-        })
-        .on("click", ".optimize", function(event, ui) {
-          if (!confirm(I18n.t('plannings.edit.optimize_confirm'))) {
-            return;
-          }
-          var id = $(this).closest("[data-route_id]").attr("data-route_id");
-          $.ajax({
-            type: "get",
-            url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
-            beforeSend: beforeSendWaiting,
-            success: updatePlanning,
-            complete: completeAjaxMap,
-            error: ajaxError
-          });
-        })
-        .on("click", ".active_all, .active_reverse, .active_none, .reverse_order", function(event, ui) {
-          var url = this.href;
-          $.ajax({
-            type: "patch",
-            url: url,
-            beforeSend: beforeSendWaiting,
-            success: updatePlanning,
-            complete: completeAjaxMap,
-            error: ajaxError
-          });
-          return false;
-        })
-        .on("change", "[name=route\\\[ref\\\]]", function() {
-          var id = $(this).closest("[data-route_id]").attr("data-route_id");
-          var ref = this.value;
-          $.ajax({
-            type: "put",
-            data: JSON.stringify({
-              ref: ref
-            }),
-            contentType: 'application/json',
-            url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
-            error: ajaxError
-          });
-        })
-        .on("change", "[name=route\\\[color\\\]]", function() {
-          var vehicle_select = $('.vehicle_select', $(this).closest("[data-route_id]"));
-          vehicle_select.trigger('change');
-          var id = $(this).closest("[data-route_id]").attr("data-route_id");
-          var color = this.value;
-          if (color)
-            $('.color_small', $('.vehicle_select', $(this).parent()).next()).hide();
-          else
-            $('.color_small', $('.vehicle_select', $(this).parent()).next()).show();
-          $.ajax({
-            type: "put",
-            data: JSON.stringify({
-              color: color
-            }),
-            contentType: 'application/json',
-            url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
-            error: ajaxError
-          });
-          routes_array.forEach(function(route) {
-            if (route.route_id == id)
-              route.color = color;
-          });
-          var route = data.routes.reduce(function(found, el) {
-            return found || (el.route_id == id && el);
-          }, null);
-          route.color = color;
-          displayRouteOnMap(data, route);
-          $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
-          $('span[data-route_id=' + id + '] i.vehicle-icon').css('color', color || route.vehicle.color);
-        });
-
-      $(".lock").click(function(event, ui) {
+    $(".routes", context)
+      .on("click", ".toggle", function(event, ui) {
         var id = $(this).closest("[data-route_id]").attr("data-route_id");
-        var i = $("i", this);
-        i.toggleClass("fa-lock");
-        i.toggleClass("fa-unlock");
-        $(this).toggleClass("btn-default");
-        $(this).toggleClass("btn-warning");
-        var locked = i.hasClass("fa-lock");
+        var li = $("ul.stops, ol.stops", $(this).closest("li"));
+        li.toggle();
+        var hidden = !li.is(":visible");
         $.ajax({
           type: "put",
           data: JSON.stringify({
-            locked: locked
+            hidden: hidden
           }),
           contentType: 'application/json',
           url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
           error: ajaxError
         });
+
+        var i = $("i", this);
+        if (hidden) {
+          i.removeClass("fa-eye").addClass("fa-eye-slash");
+          routes_layers.removeLayer(layers[id]);
+          routes_layers_cluster.removeLayer(layers_cluster[id]);
+        } else {
+          i.removeClass("fa-eye-slash").addClass("fa-eye");
+          routes_layers.addLayer(layers[id]);
+          routes_layers_cluster.addLayer(layers_cluster[id]);
+        }
+      })
+      .on("click", ".marker", function(event, ui) {
+        var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
+        if (stop_id in markers) {
+          map.setView(markers[stop_id].getLatLng(), 17, {
+            reset: true
+          });
+          var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
+          layers_cluster[route_id].zoomToShowLayer(markers[stop_id], function() {
+            markers[stop_id].openPopup();
+          });
+        } else {
+          var store_id = $(this).closest("[data-store_id]").attr("data-store_id");
+          if (store_id in stores) {
+            map.setView(stores[store_id].getLatLng(), 17, {
+              reset: true
+            });
+            stores[store_id].openPopup();
+          }
+        }
+        return false;
+      })
+      .on("click", ".optimize", function(event, ui) {
+        if (!confirm(I18n.t('plannings.edit.optimize_confirm'))) {
+          return;
+        }
+        var id = $(this).closest("[data-route_id]").attr("data-route_id");
+        $.ajax({
+          type: "get",
+          url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
+          beforeSend: beforeSendWaiting,
+          success: updatePlanning,
+          complete: completeAjaxMap,
+          error: ajaxError
+        });
+      })
+      .on("click", ".active_all, .active_reverse, .active_none, .reverse_order", function(event, ui) {
+        var url = this.href;
+        $.ajax({
+          type: "patch",
+          url: url,
+          beforeSend: beforeSendWaiting,
+          success: updatePlanning,
+          complete: completeAjaxMap,
+          error: ajaxError
+        });
+        return false;
+      })
+      .on("change", "[name=route\\\[ref\\\]]", function() {
+        var id = $(this).closest("[data-route_id]").attr("data-route_id");
+        var ref = this.value;
+        $.ajax({
+          type: "put",
+          data: JSON.stringify({
+            ref: ref
+          }),
+          contentType: 'application/json',
+          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
+          error: ajaxError
+        });
+      })
+      .on("change", "[name=route\\\[color\\\]]", function() {
+        var vehicle_select = $('.vehicle_select', $(this).closest("[data-route_id]"));
+        vehicle_select.trigger('change');
+        var id = $(this).closest("[data-route_id]").attr("data-route_id");
+        var color = this.value;
+        if (color)
+          $('.color_small', $('.vehicle_select', $(this).parent()).next()).hide();
+        else
+          $('.color_small', $('.vehicle_select', $(this).parent()).next()).show();
+        $.ajax({
+          type: "put",
+          data: JSON.stringify({
+            color: color
+          }),
+          contentType: 'application/json',
+          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
+          error: ajaxError
+        });
+        routes_array.forEach(function(route) {
+          if (route.route_id == id)
+            route.color = color;
+        });
+        var route = data.routes.reduce(function(found, el) {
+          return found || (el.route_id == id && el);
+        }, null);
+        route.color = color;
+        displayRouteOnMap(data, route);
+        $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
+        $('span[data-route_id=' + id + '] i.vehicle-icon').css('color', color || route.vehicle.color);
       });
+
+    $(".lock").click(function(event, ui) {
+      var id = $(this).closest("[data-route_id]").attr("data-route_id");
+      var i = $("i", this);
+      i.toggleClass("fa-lock");
+      i.toggleClass("fa-unlock");
+      $(this).toggleClass("btn-default");
+      $(this).toggleClass("btn-warning");
+      var locked = i.hasClass("fa-lock");
+      $.ajax({
+        type: "put",
+        data: JSON.stringify({
+          locked: locked
+        }),
+        contentType: 'application/json',
+        url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
+        error: ajaxError
+      });
+    });
   }
 
   var displayPlanning = function(data, options) {
@@ -946,11 +925,6 @@ var plannings_edit = function(params) {
   }
 
   $("#dialog-optimizer").dialog({
-    autoOpen: false,
-    modal: true
-  });
-
-  $("#dialog-tomtom").dialog({
     autoOpen: false,
     modal: true
   });

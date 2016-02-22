@@ -67,125 +67,12 @@ var customers_index = function(params) {
   });
 }
 
-function initTomTom(params) {
-
-  var requests = [];
-
-  function tomTomSuccess() {
-    $("#tomtom_success").removeClass('hidden');
-    $("#tomtom_not_found").addClass('hidden');
-  }
-
-  function tomTomError() {
-    $("#tomtom_success").addClass('hidden');
-    $("#tomtom_not_found").removeClass('hidden');
-  }
-
-  function userTomTomCredentials() {
-    var hash = {};
-
-    // Optional Customer ID
-    if (params.customer_id) hash.customer_id = params.customer_id;
-
-    // Account and User Name
-    var hash = $.extend(hash, {
-      account:  $('#customer_tomtom_account').val(),
-      user:     $('#customer_tomtom_user').val()
-    });
-
-    // Prevent submitting default password value
-    var passwd = $('#customer_tomtom_password').val();
-    if (passwd != params.tomtom_default_password) hash.password = passwd;
-
-    return hash;
-  }
-
-  // Check TomTom Credentials Without Before / Complete Callbacks
-  function checkTomTom() {
-    requests.push($.ajax({
-      url: '/api/0.1/devices/tomtoms/check_credentials',
-      data: userTomTomCredentials(),
-      dataType: 'json',
-      success: function(data, textStatus, jqXHR) {
-        if (data.error) {
-          tomTomError();
-        } else {
-          tomTomSuccess();
-        }
-      }
-    }));
-  }
-
-  // Check TomTom Credentials: Observe User Events with Delay
-  function observeTomTom() {
-
-    var timeoutId;
-
-    function checkTomTomCredentials() {
-      requests.push($.ajax({
-        url: '/api/0.1/devices/tomtoms/check_credentials',
-        data: userTomTomCredentials(),
-        dataType: 'json',
-        beforeSend: function(jqXHR, settings) {
-          hideNotices();
-          $.each(requests, function(i, request) {
-            request.abort();
-          });
-          beforeSendWaiting();
-        },
-        complete: function(jqXHR, textStatus) {
-          completeWaiting();
-        },
-        success: function(data, textStatus, jqXHR) {
-          if (data.error) {
-            error(data.error);
-            tomTomError();
-          } else {
-            tomTomSuccess();
-          }
-        }
-      }));
-    }
-
-    function checkTomTomCredentialsWithDelay() {
-      if (timeoutId) clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkTomTomCredentials, 750);
-    }
-
-    $('#customer_tomtom_account, #customer_tomtom_user, #customer_tomtom_password').keyup(function(e) {
-      checkTomTomCredentialsWithDelay();
-    });
-  }
-
-  // Expand or Collapse Widget
-  function togglePanel() {
-    $('#tomtom_container .panel-collapse').collapse('toggle');
-  }
-
-  // Admin: Toggle Container When Toggling Check-Box
-  function toggleTomTom() {
-    function toggleTomTom(enabled) { enabled ? $('#tomtom_container').show() : $('#tomtom_container').hide() }
-    $('#customer_enable_tomtom').change(function(e) { toggleTomTom($(e.target).is(':checked')) });
-    $('#customer_enable_tomtom').trigger('change');
-    togglePanel();
-  }
-
-  // Check TomTom on Page Load if Customer has Service Enabled with Credentials
-  if (params.tomtom) {
-    togglePanel();
-    checkTomTom();
-  }
-
-  // Observe Widget if Customer has Service Enabled or Admin (New Customer)
-  if (params.enable_tomtom || params.admin) observeTomTom();
-
-  // Toggle Widget if Customer has Service Enabled with Credentials or Admin (New Customer)
-  if (params.tomtom || params.admin) toggleTomTom();
-}
-
 var customers_edit = function(params) {
 
-  initTomTom(params);
+  $(document).ready(function() {
+    /* API: Devices */
+    devices_observe_customer($.extend(params, { default_password: Math.random().toString(36).slice(-8) } ));
+  });
 
   $('#customer_end_subscription').datepicker({
     language: defaultLocale,

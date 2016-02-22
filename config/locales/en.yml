@@ -123,7 +123,6 @@ en:
       zonings:
         one: "zoning"
         other: "zonings"
-
     attributes:
       customer:
         end_subscription: "End subscription"
@@ -134,6 +133,11 @@ en:
         enable_tomtom: "Enable TomTom WEBFLEET"
         enable_masternaut: "Enable Masternaut"
         enable_alyacom: "Enable Alyacom"
+        enable_teksat: "Enable Teksat"
+        teksat_customer_id: "Teksat Customer ID"
+        teksat_username: "Teksat Username"
+        teksat_password: "Teksat Password"
+        teksat_url: "Teksat URL"
         tomtom_account: "WEBFLEET account name"
         tomtom_user: "WEBFLEET Username"
         tomtom_password: "WEBFLEET Password"
@@ -423,6 +427,17 @@ en:
       invalid_account: "User invalid (does not exist)."
       external_requests_not_allowed: "Access denied. 'Access to interface WEBFLEET.connect' is not enabled in WEBFLEET user interface. External requests are not allowed for that account/user."
       hostname_not_allowed: "Hostname not allowed."
+    teksat:
+      bad_url: "Bad URL"
+      get_ticket: "Can't Authenticate. Please Check Your Credentials"
+      list: "Can't List Devices"
+      get_vehicles_pos: "Can't Get Vehicles Positions"
+      set_mission: "Failed To Create Mission"
+    orange:
+      no_equipment: "Vehicle: No Equipment Found"
+      unauthorized: "Unauthorized"
+      list: "Can't List Devices"
+      get_vehicles_pos: "Can't Get Vehicles Positions"
 
   import:
     template_csv: "Import Template Spreadsheet Standard"
@@ -494,6 +509,10 @@ en:
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
+      teksat: "Teksat"
+      teksat_help: "Send plannings to Teksat devices"
+      orange: "Orange Fleet"
+      orange_help: "Send planning to Orange Fleet devices"
       masternaut: "Masternaut"
       masternaut_help: "Allows sending plannings to Masternaut device."
       alyacom: "AlyaCom"
@@ -508,6 +527,16 @@ en:
       speed_multiplicator_default: "%{n} (default value)"
       speed_multiplicator_help: "A value higher than 100% mean higher speed."
       submit: "Update Global settings"
+      sync:
+        orange:
+          confirm: "Sync Vehicles with Orange Fleet?"
+          action: "Sync Vehicles with Orange Fleet"
+        tomtom:
+          confirm: "Sync Vehicles with TomTom WebFLEET?"
+          action: "Sync Vehicles with TomTom WebFLEET"
+        teksat:
+          confirm: "Sync Vehicles with Teksat?"
+          action: "Sync Vehicles with Teksat"
 
   destinations:
     menu:
@@ -685,15 +714,35 @@ en:
       route_placeholder: "Route ref."
       service_time: "Service Time"
       exports: "Export"
+      teksat_send:
+        action: "Send to Teksat"
+        success: "Sent to Teksat successfully"
+        fail: "Failed to send to Teksat"
+      teksat_clear:
+        action: "Clear Teksat"
+        success: "Teksat commands have been cleared successfully"
+        fail: "Failed to clear Teksat commands"
+      tomtom_send_orders:
+        action: "Send to TomTom as Orders"
+        success: "Sent to TomTom successfully"
+        fail: "Failed to send to TomTom"
+      tomtom_send_waypoints:
+        action: "Send to TomTom as Waypoints"
+        success: "Sent to TomTom successfully"
+        fail: "Failed to send to TomTom"
+      tomtom_clear:
+        action: "Clear TomTom"
+        success: "TomTom commands have been cleared successfully"
+        fail: "Failed to clear TomTom commands"
+      orange_send:
+        action: "Send to Orange Fleet"
+        success: "Sent to Orange Fleet Successfully"
+        fail: "Failed to send to Orange Fleet"
+      orange_clear:
+        action: "Clear Orange Fleet"
+        success: "Orange Fleet commands have been cleared successfully"
+        fail: "Failed to clear Orange Fleet commands"
       export:
-        tomtom_clear:
-          action: "Clear TomTom"
-          success: "TomTom commands have been cleared successfully"
-          fail: "Failed to clear TomTom commands"
-        tomtom_send:
-          action: "Send to TomTom as Orders"
-          success: "Sent to TomTom successfully"
-          fail: "Failed to send to TomTom"
         kmz_email:
           action: "KML Send by E-Mail"
           success: "E-Mail sent successfully"
@@ -705,7 +754,6 @@ en:
         gpx_route: "GPX Route"
         gpx_trace: "GPX Track"
         kmz_track: "KML Track"
-        tomtom_waypoints: "Send to TomTom as Waypoints"
         masternaut: "Send to Masternaut"
         masternaut_success: "Sent to Masternaut with success"
         alyacom: "Send to AlyaCom"
@@ -777,9 +825,15 @@ en:
           routes: "Routes"
           attempts: "Attempts:"
           error: "Compute fail."
+        orange:
+          title: "Orange Fleet"
+          in_progress: "Please wait"
+        teksat:
+          title: "Teksat"
+          in_progress: "Please wait"
         tomtom:
           title: "TomTom"
-          in_progress: "Please wait, sending planning to TomTom GPS."
+          in_progress: "Please wait"
         masternaut:
           title: "Masternaut"
           in_progress: "Please wait, sending planning to Masternaut device."
@@ -980,6 +1034,8 @@ en:
         no_stop: "No stop store: end of route is free"
         same_start_stop: "Vehicle returns to its start store"
       time: "Open - Close"
+      devices: "Devices"
+
     new:
       title: "New vehicle configuration"
     form:

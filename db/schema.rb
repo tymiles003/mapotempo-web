@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201165009) do
+ActiveRecord::Schema.define(version: 20160208090750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,7 +50,15 @@ ActiveRecord::Schema.define(version: 20160201165009) do
     t.boolean  "print_stop_time",                             default: true,  null: false
     t.string   "ref"
     t.boolean  "enable_references",                           default: true
-    t.boolean  "enable_multi_visits",                         default: true,  null: false
+    t.boolean  "enable_teksat"
+    t.integer  "teksat_customer_id"
+    t.string   "teksat_username"
+    t.string   "teksat_password"
+    t.string   "teksat_url"
+    t.boolean  "enable_multi_visits",                         default: false, null: false
+    t.boolean  "enable_orange"
+    t.string   "orange_user"
+    t.string   "orange_password"
   end
 
   add_index "customers", ["job_destination_geocoding_id"], name: "index_customers_on_job_destination_geocoding_id", using: :btree
@@ -400,6 +408,8 @@ ActiveRecord::Schema.define(version: 20160201165009) do
     t.string   "ref"
     t.string   "capacity_unit"
     t.string   "contact_email"
+    t.string   "teksat_id"
+    t.string   "orange_id"
   end
 
   add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree

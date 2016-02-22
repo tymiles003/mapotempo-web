@@ -7,6 +7,10 @@
 controller.js(
   customer_id: @vehicle_usage.vehicle.customer.id,
   tomtom: current_user.customer.tomtom?,
-  tomtom_id: @vehicle_usage.vehicle.tomtom_id
+  tomtom_id: @vehicle_usage.vehicle.tomtom_id,
+  teksat: current_user.customer.teksat?,
+  teksat_id: @vehicle_usage.vehicle.teksat_id,
+  orange: current_user.customer.orange?,
+  orange_id: @vehicle_usage.vehicle.orange_id
 )
 %>

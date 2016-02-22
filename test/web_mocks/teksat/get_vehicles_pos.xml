@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<data>
+	
+					<vehicle_pos v_id="1091" code="356173064830644" lat="49.1860415" lng="-0.3810453" 
+						speed="0" cape="0.0" 
+						data_time="2016-02-10 15:20:31" data_time_gmt="2016-02-10 14:20:31"
+						contact="1" engine="1" io="01"
+						driver="" driver_name=""
+						status="1" status_color="0,255,0"
+						status_label="Contact allumé"
+						status_label_html="Contact &lt;b&gt;allumé&lt;/b&gt;" />
+					
+</data>

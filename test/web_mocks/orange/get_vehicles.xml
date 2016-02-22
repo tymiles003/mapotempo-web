@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<row xmlns:xlink="http://www.w3.org/1999/xlink">
+  <vehicle>
+    <uidveh>113594</uidveh>
+    <vcod>V11</vcod>
+    <vdes>Eric 590</vdes>
+    <vreg>DB-116-CL</vreg>
+    <vint></vint>
+    <elng>3870268863</elng>
+    <esht>325000749</esht>
+    <eid>132800</eid>
+    <uidper>51057</uidper>
+    <pcod>1</pcod>
+    <pnam>MEYNIAL</pnam>
+    <pfsn>Eric</pfsn>
+    <uidfleet>6544,13094</uidfleet>
+    <kmdeb>-9067</kmdeb>
+    <distance>93177</distance>
+    <dtderpos>2016-02-16 11:04:28</dtderpos>
+  </vehicle>
+</row>

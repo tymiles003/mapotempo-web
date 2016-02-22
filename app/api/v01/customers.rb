@@ -144,17 +144,5 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Fetch tomtom ids.',
-      detail: 'Get tomtom webfleet device ids if they are set for this customer.',
-      nickname: 'getTomtomIds'
-    params do
-      requires :id, type: String, desc: ID_DESC
-    end
-    get ':id/tomtom_ids' do
-      current_customer(params[:id])
-      Hash[Tomtom.fetch_devices(@current_customer).collect{ |tomtom|
-        [tomtom[:objectUid], tomtom[:objectName]]
-      }]
-    end
   end
 end

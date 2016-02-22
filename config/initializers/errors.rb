@@ -1,0 +1,2 @@
+
+class DeviceServiceError < StandardError ; end

@@ -1,1 +1,0 @@
-../../../../mapotempo_web_import_vehicle_store/test/api/v01/vehicle_stores_test.rb

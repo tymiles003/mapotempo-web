@@ -548,6 +548,7 @@ DEPENDENCIES
   minitest-stub_any_instance
   mustache (< 1.0.0)
   nilify_blanks
+  nokogiri
   paloma!
   pg
   pnotify-rails

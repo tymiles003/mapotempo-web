@@ -72,22 +72,6 @@ class PlanningsController < ApplicationController
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
       end
-      format.tomtom do
-        begin
-          @planning.routes.select(&:vehicle_usage).each{ |route|
-            if params[:type] == 'waypoints'
-              Tomtom.export_route_as_waypoints(route) if route.vehicle_usage.vehicle.tomtom_id
-            elsif params[:type] == 'orders'
-              Tomtom.export_route_as_orders(route) if route.vehicle_usage.vehicle.tomtom_id
-            else
-              Tomtom.clear(route) if route.vehicle_usage.vehicle.tomtom_id
-            end
-          }
-          head :no_content
-        rescue TomTomError => e
-          render json: e.message, status: :unprocessable_entity
-        end
-      end
       format.masternaut do
         begin
           @planning.routes.select(&:vehicle_usage).each{ |route|

@@ -1,4 +1,4 @@
-<%= twitter_bootstrap_form_for @customer, layout: :horizontal do |f| %>
+<%= twitter_bootstrap_form_for @customer, layout: :horizontal, html: { class: 'form-horizontal clear-passwords'} do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
   <% if current_user.admin? %>
     <%= f.text_field :ref %>
@@ -98,7 +98,6 @@
         <div class="panel-body">
           <p class="help-block"><%= t '.tomtom_help' %></p>
           <div class="pull-left col-md-10">
-
             <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
             <input style="display:none" type="text" name="customer[tomtom_account]" />
             <input style="display:none" type="text" name="customer[tomtom_user]" />
@@ -106,11 +105,106 @@
 
             <%= f.text_field :tomtom_account, autocomplete: "off" %>
             <%= f.text_field :tomtom_user, autocomplete: "off" %>
-            <%= f.password_field :tomtom_password, value: f.object.new_record? ? nil : tomtom_default_password, autocomplete: "off" %>
+            <%= f.password_field :tomtom_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
+
+            <% if !@customer.new_record? && @customer.tomtom? %>
+              <div class="btn btn-default btn-sm api-sync" data-url="/api/0.1/devices/tomtom/sync" data-customer-id="<%= @customer.id %>">
+                <i class="fa fa-bolt fa-fw"></i>
+                <%= t "customers.form.sync.tomtom.action" %>
+              </div>
+            <% end %>
+
           </div>
           <div class="pull-right col-md-2">
             <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "tomtom_success" %>
             <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "tomtom_not_found" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if current_user.admin? %>
+    <%= f.toggles t 'activerecord.attributes.customer.enable_teksat' do %>
+      <%= f.check_box :enable_teksat %>
+    <% end %>
+  <% end %>
+  <% if current_user.admin? || @customer.enable_teksat? %>
+    <div id="teksat_container" class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">
+          <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTeksat">
+            <%= t '.teksat' %>
+          </a>
+        </h2>
+      </div>
+      <div id="collapseTeksat" class="panel-collapse collapse">
+        <div class="panel-body">
+          <p class="help-block"><%= t '.teksat_help' %></p>
+          <div class="pull-left col-md-10">
+
+            <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
+            <input style="display:none" type="text" name="customer[teksat_customer_id]" />
+            <input style="display:none" type="text" name="customer[teksat_url]" />
+            <input style="display:none" type="text" name="customer[teksat_username]" />
+            <input style="display:none" type="password" name="customer[teksat_password]" />
+
+            <%= f.text_field :teksat_customer_id, autocomplete: "off" %>
+            <%= f.text_field :teksat_url, autocomplete: "off", placeholder: "www.gpsXX.teksat.fr" %>
+            <%= f.text_field :teksat_username, autocomplete: "off" %>
+            <%= f.password_field :teksat_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
+
+            <% if !@customer.new_record? && @customer.teksat? %>
+              <div class="btn btn-default btn-sm api-sync" data-url="/api/0.1/devices/teksat/sync" data-customer-id="<%= @customer.id %>">
+                <i class="fa fa-bolt fa-fw"></i>
+                <%= t "customers.form.sync.teksat.action" %>
+              </div>
+            <% end %>
+
+          </div>
+          <div class="pull-right col-md-2">
+            <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "teksat_success" %>
+            <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "teksat_not_found" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if current_user.admin? %>
+    <%= f.toggles t 'activerecord.attributes.customer.enable_orange_fleet' do %>
+      <%= f.check_box :enable_orange %>
+    <% end %>
+  <% end %>
+  <% if current_user.admin? || @customer.enable_orange? %>
+    <div id="orange_container" class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">
+          <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOrange">
+            <%= t '.orange' %>
+          </a>
+        </h2>
+      </div>
+      <div id="collapseOrange" class="panel-collapse collapse">
+        <div class="panel-body">
+          <p class="help-block"><%= t '.orange_help' %></p>
+          <div class="pull-left col-md-10">
+            <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
+            <input style="display:none" type="text" name="customer[orange_user]" />
+            <input style="display:none" type="password" name="customer[orange_password]" />
+
+            <%= f.text_field :orange_user, autocomplete: "off" %>
+            <%= f.password_field :orange_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
+
+            <% if !@customer.new_record? && @customer.orange? %>
+              <div class="btn btn-default btn-sm api-sync" data-url="/api/0.1/devices/orange/sync" data-customer-id="<%= @customer.id %>">
+                <i class="fa fa-bolt fa-fw"></i>
+                <%= t "customers.form.sync.orange.action" %>
+              </div>
+            <% end %>
+
+          </div>
+          <div class="pull-right col-md-2">
+            <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "orange_success" %>
+            <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "orange_not_found" %>
           </div>
         </div>
       </div>

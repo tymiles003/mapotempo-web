@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+  <missions>
+    <mission id="10751" type="0" v_id="1091" d_id="-1" label="Test Planning Abcd" customer="Toto" description="" special_id="" comments="" phone="" begin_date="2016-02-25" begin_time="00:00:07" begin_address1="" begin_address2="" begin_zip="" begin_city="" begin_z_id="-1" begin_latitude="44.829703" begin_longitude="-0.57324" begin_radius="0" end_date="0000-00-00" end_time="00:00:00" end_address1="" end_address2="" end_zip="" end_city="" tour_code="" roundtrip="0" priority="0" return_date="0000-00-00" return_time="00:00:00" miprod_id="-1" prod_quantity="0" prod_quantity_actual="0" prod_quantity_actual_date="0000-00-00 00:00:00" read="0" ack="0" received="0" cancelled="0" status="1" version="0">
+      <mission-events></mission-events>
+    </mission>
+</missions>

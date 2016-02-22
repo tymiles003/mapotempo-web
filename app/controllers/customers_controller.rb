@@ -21,7 +21,7 @@ class CustomersController < ApplicationController
   before_action :set_customer, only: [:edit, :update, :delete_vehicle]
   before_action :clear_customer_params, only: [:create, :update]
 
-  helper_method :tomtom_default_password
+  include DeviceHelpers
 
   def index
     @customers = current_user.reseller.customers.order(:name)
@@ -115,20 +115,18 @@ class CustomersController < ApplicationController
     end
   end
 
-  def tomtom_default_password
-    '97!8Or748trp'
-  end
-
-  def clear_customer_params
-    params[:customer].delete(:tomtom_password) if params[:customer][:tomtom_password] == tomtom_default_password # Delete default password displayed in form
+  def clear_customer_params # Delete default password displayed in form
+    params[:customer].delete(:tomtom_password) if params[:customer][:tomtom_password].blank?
+    params[:customer].delete(:teksat_password) if params[:customer][:teksat_password].blank?
+    params[:customer].delete(:orange_password) if params[:customer][:orange_password].blank?
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def customer_params
     if current_user.admin?
-      params.require(:customer).permit(:ref, :name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :enable_tomtom, :enable_masternaut, :enable_alyacom, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id, :default_country, :enable_multi_vehicle_usage_sets, :print_stop_time, :enable_references, :enable_multi_visits)
+      params.require(:customer).permit(:ref, :name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :enable_tomtom, :enable_masternaut, :enable_alyacom, :enable_teksat, :enable_orange, :orange_user, :orange_password, :teksat_url, :teksat_customer_id, :teksat_username, :teksat_password, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id, :default_country, :enable_multi_vehicle_usage_sets, :print_stop_time, :enable_references, :enable_multi_visits)
     else
-      params.require(:customer).permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :alyacom_association, :default_country, :print_stop_time)
+      params.require(:customer).permit(:take_over, :print_planning_annotating, :print_header, :orange_user, :orange_password, :teksat_url, :teksat_customer_id, :teksat_username, :teksat_password, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :alyacom_association, :default_country, :print_stop_time)
     end
   end
 end

@@ -31,6 +31,52 @@
             <li><a class="reverse_order" href="/plannings/{{planning_id}}/{{route_id}}/reverse_order"><i class="fa fa-random fa-fw"></i> {{#i18n}}plannings.edit.reverse_order{{/i18n}}</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="/routes/{{route_id}}"><i class="fa fa-print fa-fw"></i> {{#i18n}}plannings.edit.export.print{{/i18n}}</a></li>
+            {{#tomtom}}
+              <li role="separator" class="divider"></li>
+              <li class="link tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send" data-route-id="{{route_id}}" data-type="waypoints">
+                  <i class="fa fa-mobile fa-fw"></i>
+                  {{#i18n}}plannings.edit.tomtom_send_waypoints.action{{/i18n}}
+              </li>
+              <li class="link tomtom-send-orders" data-url="/api/0.1/devices/tomtom/send" data-route-id="{{route_id}}" data-type="orders">
+                  <i class="fa fa-mobile fa-fw"></i>
+                  {{#i18n}}plannings.edit.tomtom_send_orders.action{{/i18n}}
+              </li>
+              <li class="link tomtom-clear" data-url="/api/0.1/devices/tomtom/clear" data-route-id="{{route_id}}">
+                  <i class="fa fa-mobile fa-fw"></i>
+                  {{#i18n}}plannings.edit.tomtom_clear.action{{/i18n}}
+              </li>
+              <li role="separator" class="divider"></li>
+            {{/tomtom}}
+            {{#teksat}}
+              <li role="separator" class="divider"></li>
+              <li class="link teksat-send" data-url="/api/0.1/devices/teksat/send" data-route-id="{{route_id}}">
+                  <i class="fa fa-mobile fa-fw"></i>
+                  {{#i18n}}plannings.edit.teksat_send.action{{/i18n}}
+              </li>
+              <li class="link teksat-clear" data-url="/api/0.1/devices/teksat/clear" data-route-id="{{route_id}}">
+                  <i class="fa fa-mobile fa-fw"></i>
+                  {{#i18n}}plannings.edit.teksat_clear.action{{/i18n}}
+              </li>
+              <li role="separator" class="divider"></li>
+            {{/teksat}}
+            {{#orange}}
+              <li role="separator" class="divider"></li>
+              <li class="link orange-send" data-url="/api/0.1/devices/orange/send" data-route-id="{{route_id}}">
+                <i class="fa fa-mobile fa-fw"></i>
+                {{#i18n}}plannings.edit.orange_send.action{{/i18n}}
+              </li>
+              <li class="link orange-clear" data-url="/api/0.1/devices/orange/clear" data-route-id="{{route_id}}">
+                <i class="fa fa-mobile fa-fw"></i>
+                {{#i18n}}plannings.edit.orange_clear.action{{/i18n}}
+              </li>
+              <li role="separator" class="divider"></li>
+            {{/orange}}
+            {{#masternaut}}
+              <li class="export_masternaut"><a href="/routes/{{route_id}}.masternaut"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.masternaut{{/i18n}}</a></li>
+            {{/masternaut}}
+            {{#alyacom}}
+              <li class="export_alyacom"><a href="/routes/{{route_id}}.alyacom"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.alyacom{{/i18n}}</a></li>
+            {{/alyacom}}
             <li><a href="/routes/{{route_id}}.csv"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet_standard{{/i18n}}</a></li>
             <li><a href="/routes/{{route_id}}.excel"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet_excel{{/i18n}}</a></li>
             <li><a href="/routes/{{route_id}}.gpx"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_route{{/i18n}}</a></li>
@@ -44,17 +90,6 @@
               </li>
             {{/contact_email}}
             <li><a href="/routes/{{route_id}}.kmz"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.kmz_track{{/i18n}}</a></li>
-            {{#tomtom}}
-              <li class="tomtom_send"><a href="/routes/{{route_id}}.tomtom?type=orders"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_send.action{{/i18n}}</a></li>
-              <li class="tomtom_send"><a href="/routes/{{route_id}}.tomtom?type=waypoints"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_waypoints{{/i18n}}</a></li>
-              <li class="tomtom_clear"><a href="/routes/{{route_id}}.tomtom?type=empty"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.tomtom_clear.action{{/i18n}}</a></li>
-            {{/tomtom}}
-            {{#masternaut}}
-              <li class="export_masternaut"><a href="/routes/{{route_id}}.masternaut"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.masternaut{{/i18n}}</a></li>
-            {{/masternaut}}
-            {{#alyacom}}
-              <li class="export_alyacom"><a href="/routes/{{route_id}}.alyacom"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.alyacom{{/i18n}}</a></li>
-            {{/alyacom}}
           </ul>
         </div>
       </div>

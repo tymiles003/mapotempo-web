@@ -8,6 +8,7 @@
     <th><%= t 'vehicle_usages.index.stores' %></th>
     <th><%= t 'vehicle_usage_sets.index.time' %></th>
     <th><%= t 'vehicle_usage_sets.index.service_time' %></th>
+    <th><%= t 'vehicle_usages.index.external_services' %></th>
     <th></th>
   </thead>
   <tbody>
@@ -37,6 +38,9 @@
         </td>
         <td>
           <%= vehicle_usage_service_time vehicle_usage %>
+        </td>
+        <td>
+          <%= vehicle_usage_external_services vehicle_usage %>
         </td>
         <td>
           <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>

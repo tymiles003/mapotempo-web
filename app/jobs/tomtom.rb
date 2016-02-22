@@ -96,6 +96,8 @@ class Tomtom
   end
 
   def self.current_position(customer)
-    Mapotempo::Application.config.tomtom.showObjectReport(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password)
+    res = Mapotempo::Application.config.tomtom.showObjectReport(customer.tomtom_account, customer.tomtom_user, customer.tomtom_password)
+    res.each{|item| item.merge! device_name: item.delete(:objectName), tomtom_vehicle_id: item.delete(:objectUid) }
+    return res
   end
 end

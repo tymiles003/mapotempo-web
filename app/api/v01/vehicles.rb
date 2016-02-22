@@ -18,8 +18,16 @@
 require 'coerce'
 require 'tomtom'
 
+require Rails.root.join("lib/device_helpers")
+include DeviceHelpers
+
 class V01::Vehicles < Grape::API
   helpers do
+
+    def session
+      env[Rack::Session::Abstract::ENV_SESSION_KEY]
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def vehicle_params
       p = ActionController::Parameters.new(params)
@@ -71,11 +79,32 @@ class V01::Vehicles < Grape::API
       else
         current_customer.vehicles.load
       end
-      positions = Tomtom.current_position(current_customer).collect{ |o|
-        o[:vehicle_id] = vehicles.find{ |v| v.tomtom_id == o[:objectUid] }.try(:id)
-        o[:device_name] = o[:objectName]
-        o
-      }.select{ |o| o[:vehicle_id] }
+      positions = []
+      if current_customer.orange?
+        OrangeService.new(customer: current_customer).get_vehicles_pos.each do |item|
+          vehicle_id = item.delete :orange_vehicle_id
+          vehicle = vehicles.detect{|v| v.orange_id == vehicle_id }
+          next if !vehicle
+          positions << item.merge(vehicle_id: vehicle.id)
+        end
+      end
+      if current_customer.teksat?
+        teksat_authenticate current_customer
+        TeksatService.new(customer: current_customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos.each do |item|
+          vehicle_id = item.delete :teksat_vehicle_id
+          vehicle = vehicles.detect{|v| v.teksat_id == vehicle_id }
+          next if !vehicle
+          positions << item.merge(vehicle_id: vehicle.id)
+        end
+      end
+      if current_customer.tomtom?
+        Tomtom.current_position(current_customer).each do |item|
+          vehicle_id = item.delete :tomtom_vehicle_id
+          vehicle = vehicles.detect{|v| v.tomtom_id == vehicle_id }
+          next if !vehicle
+          positions << item.merge(vehicle_id: vehicle.id)
+        end
+      end
       present positions, with: V01::Entities::VehiclePosition
     end
 

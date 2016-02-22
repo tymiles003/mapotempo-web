@@ -60,7 +60,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def available_position?
-    !!tomtom_id && customer.tomtom?
+    (!tomtom_id.blank? && customer.tomtom?) || (!teksat_id.blank? && customer.teksat?) || (!orange_id.blank? && customer.orange?)
   end
 
   private

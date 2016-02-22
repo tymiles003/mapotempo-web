@@ -107,6 +107,14 @@ module VehicleUsagesHelper
     end
   end
 
+  def vehicle_usage_external_services vehicle_usage
+    services = []
+    services << "TomTom" if !vehicle_usage.vehicle.tomtom_id.blank?
+    services << "Teksat" if !vehicle_usage.vehicle.teksat_id.blank?
+    services << "Orange" if !vehicle_usage.vehicle.orange_id.blank?
+    return services.join(", ")
+  end
+
   def route_description route
     capture do
       concat [ route.size_active, t('plannings.edit.stops') ].join(' ')

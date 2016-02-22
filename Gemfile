@@ -144,3 +144,5 @@ gem 'macaddr'
 gem 'rubyzip'
 
 gem 'pnotify-rails'
+
+gem 'nokogiri'

@@ -21,17 +21,40 @@
         <button type="button" class="btn btn-default btn-sm dropdown-toggle right export" data-toggle="dropdown" title="<%= t '.exports' %>"><i class="fa fa-share-square-o fa-fw"></i><span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
           <li><%= link_to planning_path(@planning) do %><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :csv) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :csv, stores: false) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard_without_stores' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :excel) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_trace' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
-          <li class="kmz_email"><%= link_to planning_path(@planning, format: :kmz, email: 1) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.kmz_email.action' %><% end %></li>
+          <li role="separator" class="divider"></li>
           <% if @planning.customer.tomtom? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.tomtom_id.blank? } %>
-            <li class="tomtom_send"><%= link_to planning_path(@planning, format: :tomtom, type: 'orders') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_send.action' %><% end %></li>
-            <li class="tomtom_send"><%= link_to planning_path(@planning, format: :tomtom, type: 'waypoints') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_waypoints' %><% end %></li>
-            <li class="tomtom_clear"><%= link_to planning_path(@planning, format: :tomtom, type: 'empty') do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.tomtom_clear.action' %><% end %></li>
+            <li class="link planning-tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.tomtom_send_waypoints.action' %>
+            </li>
+            <li class="link planning-tomtom-send-orders" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.tomtom_send_orders.action' %>
+            </li>
+            <li class="link planning-tomtom-clear" data-url="/api/0.1/devices/tomtom/clear_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.tomtom_clear.action' %>
+            </li>
+          <% end %>
+          <% if @planning.customer.teksat? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.teksat_id.blank? } %>
+            <li class="link planning-teksat-send" data-url="/api/0.1/devices/teksat/send_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.teksat_send.action' %>
+            </li>
+            <li class="link planning-teksat-clear" data-url="/api/0.1/devices/teksat/clear_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.teksat_clear.action' %>
+            </li>
+          <% end %>
+          <% if @planning.customer.orange? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.orange_id.blank? } %>
+            <li class="link planning-orange-send" data-url="/api/0.1/devices/orange/send_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.orange_send.action' %>
+            </li>
+            <li class="link planning-orange-clear" data-url="/api/0.1/devices/orange/clear_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.orange_clear.action' %>
+            </li>
           <% end %>
           <% if @planning.customer.enable_masternaut && !@planning.customer.masternaut_user.blank? && !@planning.customer.masternaut_password.blank? %>
             <li class="export_masternaut"><%= link_to planning_path(@planning, format: :masternaut) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.masternaut' %><% end %></li>
@@ -39,6 +62,14 @@
           <% if @planning.customer.enable_alyacom && !@planning.customer.alyacom_association.blank? %>
             <li class="export_alyacom"><%= link_to planning_path(@planning, format: :alyacom) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.edit.export.alyacom' %><% end %></li>
           <% end %>
+          <li role="separator" class="divider"></li>
+          <li><%= link_to planning_path(@planning, format: :csv) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard' %><% end %></li>
+          <li><%= link_to planning_path(@planning, format: :csv, stores: false) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard_without_stores' %><% end %></li>
+          <li><%= link_to planning_path(@planning, format: :excel) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %><% end %></li>
+          <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
+          <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_trace' %><% end %></li>
+          <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
+          <li class="kmz_email"><%= link_to planning_path(@planning, format: :kmz, email: 1) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.kmz_email.action' %><% end %></li>
         </ul>
       </div>
       <div id="planning"></div>
@@ -72,6 +103,24 @@
   </div>
   <p class="dialog-error" style="display: none"><%= t '.dialog.optimizer.error' %></p>
   <p class="dialog-attempts" style="display: none"><%= t '.dialog.optimizer.attempts' %> <span class="dialog-attempts-number"></span></p>
+</div>
+
+<div id="dialog-orange" title="<%= t '.dialog.orange.title' %>" style="display:none">
+  <div class="dialog-progress">
+    <p><%= t '.dialog.orange.in_progress' %></p>
+    <div class="progress progress-striped">
+      <div class="progress-bar" style="width: 100%"></div>
+    </div>
+  </div>
+</div>
+
+<div id="dialog-teksat" title="<%= t '.dialog.teksat.title' %>" style="display:none">
+  <div class="dialog-progress">
+    <p><%= t '.dialog.teksat.in_progress' %></p>
+    <div class="progress progress-striped">
+      <div class="progress-bar" style="width: 100%"></div>
+    </div>
+  </div>
 </div>
 
 <div id="dialog-tomtom" title="<%= t '.dialog.tomtom.title' %>" style="display:none">
@@ -109,6 +158,7 @@
     </div>
   </div>
 </div>
+
 <%
 layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&:id).uniq.collect{ |layer|
   {

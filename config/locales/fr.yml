@@ -128,7 +128,6 @@ fr:
       zonings:
         one: "zonage"
         other: "zonages"
-
     attributes:
       customer:
         end_subscription: "Fin de souscription"
@@ -139,6 +138,11 @@ fr:
         enable_tomtom: "Activer TomTom WEBFLEET"
         enable_masternaut: "Activer Masternaut"
         enable_alyacom: "Activer Alyacom"
+        enable_teksat: "Activer Teksat"
+        teksat_customer_id: "Teksat Client ID"
+        teksat_username: "Teksat Nom d'utilisateur"
+        teksat_password: "Teksat Mot de passe"
+        teksat_url: "Teksat URL"
         tomtom_account: "Compte WEBFLEET"
         tomtom_user: "Nom d'utilisateur WEBFLEET"
         tomtom_password: "Mot de passe WEBFLEET"
@@ -438,6 +442,17 @@ fr:
       invalid_account: "Utilisateur invalide (non existant)."
       external_requests_not_allowed: "Non Autorisé. 'Accès à l'interface WebFLEET.connect' n'est pas activé dans l'interface WebFLEET. Les requêtes externes ne sont pas autorisées pour ce compte/utilisateur."
       hostname_not_allowed: "Le nom de domaine n'est pas autorisé."
+    teksat:
+      bad_url: "URL non valide"
+      get_ticket: "Échec de l'identification. Veuillez vérifier vos identifiants"
+      list: "Impossible de lister les appareils"
+      get_vehicles_pos: "Impossible de lister les positions des véhicules"
+      set_mission: "Échec lors de la création de la mission"
+    orange:
+      no_equipment: "Vehicule: Aucun équipement trouvé"
+      unauthorized: "Non authorisé"
+      list: "Impossible de lister les appareils"
+      get_vehicles_pos: "Impossible de lister les positions des véhicules"
 
   import:
     template_csv: "Modèle import tableur standard"
@@ -509,6 +524,10 @@ fr:
       take_over_help: "Durée de visite moyenne par client"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
+      teksat: "Teksat"
+      teksat_help: "Envoyer les plannings vers les GPS Teksat"
+      orange: "Orange Fleet"
+      orange_help: "Envoyer les plannings vers les GPS Orange Fleet"
       masternaut: "Masternaut"
       masternaut_help: "Permet d'envoyer les plannings vers les appareils Masternaut."
       alyacom: "AlyaCom"
@@ -523,6 +542,16 @@ fr:
       speed_multiplicator_default: "%{n} (valeur par défaut)"
       speed_multiplicator_help: "Une valeur spérieure à 100% signifie une vitesse plus élevée."
       submit: "Enregistrer Paramétrage global"
+      sync:
+        orange:
+          confirm: "Synchroniser les véhicules avec Orange Fleet ?"
+          action: "Synchroniser les véhicules avec Orange Fleet"
+        tomtom:
+          confirm: "Synchroniser les véhicules avec TomTom WebFLEET ?"
+          action: "Synchroniser les véhicules avec TomTom WebFLEET"
+        teksat:
+          confirm: "Synchroniser les véhicules avec Teksat ?"
+          action: "Synchroniser les véhicules avec Teksat"
 
   destinations:
     menu:
@@ -700,15 +729,35 @@ fr:
       route_placeholder: "Réf. de la tournée"
       service_time: "Durées de service"
       exports: "Exporter"
+      teksat_send:
+        action: "Envoyer à Teksat"
+        success: "Envoi vers Teksat terminé avec succès"
+        fail: "Échec lors de l'envoi vers Teksat"
+      teksat_clear:
+        action: "Vider Teksat"
+        success: "Les commandes Teksat ont été vidées avec succès"
+        fail: "Échec lors de la suppression des commandes Teksat"
+      tomtom_clear:
+        action: "Vider TomTom"
+        success: "Les commandes TomTom ont été vidées avec succès"
+        fail: "Échec lors de la suppression des commandes TomTom"
+      tomtom_send_orders:
+        action: "Commandes vers TomTom"
+        success: "Envoi vers TomTom terminé avec succès"
+        fail: "Échec lors de l'envoi vers TomTom"
+      tomtom_send_waypoints:
+        action: "Points de passage vers TomTom"
+        success: "Envoi vers TomTom terminé avec succès"
+        fail: "Échec lors de l'envoi vers TomTom"
+      orange_send:
+        action: "Envoyer à Orange Fleet"
+        success: "Envoyé à Orange Fleet avec succès"
+        fail: "Échec lors de l'envoi vers Orange Fleet"
+      orange_clear:
+        action: "Vider Orange Fleet"
+        success: "Les commandes Orange Fleet ont été vidées avec succès"
+        fail: "Échec lors de la suppression des commandes Orange Fleet"
       export:
-        tomtom_clear:
-          action: "Vider TomTom"
-          success: "Les commandes TomTom ont été vidées avec succès"
-          fail: "Échec lors de la suppression des commandes TomTom"
-        tomtom_send:
-          action: "Commandes vers TomTom"
-          success: "Envoi vers TomTom terminé avec succès"
-          fail: "Échec lors de l'envoi vers TomTom"
         kmz_email:
           action: "KML: Envoyer par email"
           success: "Email envoyé avec succès"
@@ -720,7 +769,6 @@ fr:
         gpx_route: "Route GPX"
         gpx_trace: "Tracé GPX"
         kmz_track: "Tracé KML"
-        tomtom_waypoints: "Points de passage vers TomTom"
         masternaut: "Envoyer vers Masternaut"
         masternaut_success: "Envoi vers Masternaut terminé avec succès"
         alyacom: "Envoyer vers AlyaCom"
@@ -792,9 +840,15 @@ fr:
           routes: "Tournées"
           attempts: "Tentatives :"
           error: "Impossible d'effectuer le calcul."
+        orange:
+          title: "Orange Fleet"
+          in_progress: "Veuillez patienter"
+        teksat:
+          title: "Teksat"
+          in_progress: "Veuillez patienter"
         tomtom:
           title: "TomTom"
-          in_progress: "Envoi vers GPS TomTom en cours, merci de patienter."
+          in_progress: "Veuillez patienter"
         masternaut:
           title: "Masternaut"
           in_progress: "Envoi vers Masternaut en cours, merci de patienter."
@@ -1001,6 +1055,8 @@ fr:
         no_stop: "Pas de dépôt d'arrivée : fin de tournée libre"
         same_start_stop: "Véhicule retournant à son dépôt de départ"
       time: "Début - Fin"
+      devices: "Terminaux mobiles"
+
     new:
       title: "Nouvelle configuration du véhicule"
     form:

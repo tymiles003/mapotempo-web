@@ -65,20 +65,6 @@ class RoutesController < ApplicationController
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
       end
-      format.tomtom do
-        begin
-          if params[:type] == 'waypoints'
-            Tomtom.export_route_as_waypoints(@route)
-          elsif params[:type] == 'orders'
-            Tomtom.export_route_as_orders(@route)
-          elsif params[:type] == 'empty'
-            Tomtom.clear(@route)
-          end
-          head :no_content
-        rescue TomTomError => e
-          render json: e.message, status: :unprocessable_entity
-        end
-      end
       format.masternaut do
         begin
           Masternaut.export_route(@route)

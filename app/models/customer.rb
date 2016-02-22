@@ -81,6 +81,14 @@ class Customer < ActiveRecord::Base
     enable_tomtom && !tomtom_account.blank? && !tomtom_user.blank? && !tomtom_password.blank?
   end
 
+  def teksat?
+    enable_teksat && !teksat_customer_id.blank? && !teksat_url.blank? && !teksat_username.blank? && !teksat_password.blank?
+  end
+
+  def orange?
+    enable_orange && !orange_user.blank? && !orange_password.blank?
+  end
+
   def visits
     destinations.collect{ |destination| destination.visits }.flatten
   end

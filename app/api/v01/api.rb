@@ -17,6 +17,14 @@
 #
 class V01::Api < Grape::API
   helpers do
+
+    require Rails.root.join("lib/device_helpers")
+    include DeviceHelpers
+
+    def session
+      env[Rack::Session::Abstract::ENV_SESSION_KEY]
+    end
+
     def warden
       env['warden']
     end
@@ -86,7 +94,6 @@ class V01::Api < Grape::API
 
   mount V01::Customers
   mount V01::Destinations
-  mount V01::Devices
   mount V01::Layers
   mount V01::OrderArrays
   mount V01::Orders
@@ -104,6 +111,11 @@ class V01::Api < Grape::API
   mount V01::VehicleUsageSets
   mount V01::Visits
   mount V01::Zonings
+
+  # Devices
+  mount V01::Devices::Tomtom
+  mount V01::Devices::Teksat
+  mount V01::Devices::Orange
 
   # Tools
   mount V01::Geocoder
