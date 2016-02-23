@@ -95,7 +95,6 @@ class ImporterDestinations < ImporterBase
     @common_tags = nil
     @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
     @tag_ids = Hash[@customer.tags.collect{ |tag| [tag.id, tag] }]
-    # @routes = Hash.new{ |h, k| h[k] = [] }
     @routes = Hash.new{ |h, k|
       h[k] = Hash.new{ |hh, kk|
         if kk == :visits
@@ -107,7 +106,7 @@ class ImporterDestinations < ImporterBase
     }
 
     @planning = nil
-    @need_geocode = false
+    @destinations_to_geocode = []
 
     if options[:delete_plannings]
       @customer.plannings.delete_all
@@ -155,10 +154,6 @@ class ImporterDestinations < ImporterBase
     end
     if !row[:lng].nil? && (row[:lng].is_a? String)
       row[:lng] = Float(row[:lng].tr(',', '.'))
-    end
-
-    if row[:lat].nil? || row[:lng].nil?
-      @need_geocode = true
     end
 
     [:tags, :tags_visit].each{ |key| prepare_tags row, key }
@@ -233,34 +228,35 @@ class ImporterDestinations < ImporterBase
       visit.save!
 
       # Add visit to route if needed
-      if !@visit_ids.include?(visit.id)
-        @routes[row.key?(:route) ? row[:route] : nil][:ref_vehicle] = row[:ref_vehicle] if row[:ref_vehicle]
-        @routes[row.key?(:route) ? row[:route] : nil][:visits] << [visit, ValueToBoolean.value_to_boolean(row[:active], true)]
+      if row.key?(:route) && !@visit_ids.include?(visit.id)
+        @routes[row[:route]][:ref_vehicle] = row[:ref_vehicle] if row[:ref_vehicle]
+        @routes[row[:route]][:visits] << [visit, ValueToBoolean.value_to_boolean(row[:active], true)]
         @visit_ids << visit.id
       end
 
+      @destinations_to_geocode << visit.destination if row[:lat].nil? || row[:lng].nil?
       visit.destination # For subclasses
     else
       destination.delay_geocode if !synchronous && Mapotempo::Application.config.delayed_job_use
-      destination.save! && destination
+      destination.save!
+      @destinations_to_geocode << destination if row[:lat].nil? || row[:lng].nil?
+      destination # For subclasses
     end
   end
 
   def after_import(name, options)
-    if @need_geocode && (synchronous || !Mapotempo::Application.config.delayed_job_use)
-      @routes.each{ |_key, routes|
-        routes[:visits].each{ |visit_active|
-          if visit_active[0].destination.lat.nil? || visit_active[0].destination.lng.nil?
-            begin
-              visit_active[0].destination.geocode
-            rescue
-            end
+    if @destinations_to_geocode.size > 0 && (synchronous || !Mapotempo::Application.config.delayed_job_use)
+      @destinations_to_geocode.each{ |destination|
+        if destination.lat.nil? || destination.lng.nil?
+          begin
+            destination.geocode
+          rescue
           end
-        }
+        end
       }
     end
 
-    if @routes.size > 1 || !@routes.key?(nil)
+    if @routes.size > 0
       @planning = @customer.plannings.build(name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.now, format: :long), vehicle_usage_set: @customer.vehicle_usage_sets[0], tags: @common_tags || [])
       @planning.set_routes(@routes, true, true)
       @planning.save!
@@ -270,7 +266,7 @@ class ImporterDestinations < ImporterBase
   end
 
   def finalize_import(name, options)
-    if @need_geocode && !synchronous && Mapotempo::Application.config.delayed_job_use
+    if @destinations_to_geocode.size > 0 && !synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_destination_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(@customer.id, @planning ? @planning.id : nil))
     else
       @planning.compute if @planning
