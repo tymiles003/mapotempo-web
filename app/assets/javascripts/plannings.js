@@ -791,6 +791,15 @@ var plannings_edit = function(params) {
         }
       }
     }).disableSelection();
+
+    $('li[data-stop_id]').mouseover(function() {
+      $('span.number', $(this)).css({display: 'none'});
+      $('i.fa-reorder', $(this)).css({display: 'inline-block'});
+    });
+    $('li[data-stop_id]').mouseout(function() {
+      $('i.fa-reorder', $(this)).css({display: 'none'});
+      $('span.number', $(this)).css({display: 'inline-block'});
+    });
   }
 
   var updatePlanning = function(data) {

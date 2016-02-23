@@ -209,9 +209,37 @@
     padding: 0px;
     margin: 0px;
 
+    .ui-sortable-placeholder {
+      visibility: visible !important;
+      border: 1px dashed #999 !important;
+      background: none !important;
+      background-color: rgba(238, 246, 255, 0.5) !important;
+      border-radius: 3px;
+    }
+
     .route {
       list-style-type: none;
       margin-bottom: 1em;
+
+      .panel-danger {
+        .stops li .title {
+          max-width: 190px;
+        }
+      }
+
+      .panel-default {
+        .fa-reorder {
+          width: 24px;
+          margin-right: 4px;
+        }
+        .stops li .title {
+          max-width: 204px;
+        }
+      }
+
+      #out_of_route {
+        min-width: 288px;
+      }
 
       ul.ui-state-error {
         margin-top: 10px;
@@ -277,11 +305,15 @@
           padding: 2px 2px 2px 6px;
 
           .fa-reorder {
-            color: #ccc;
+            color: #333;
           }
 
           .fa-reorder:hover {
             cursor: move;
+          }
+
+          .stop_active {
+            width: 14px;
           }
 
           .title {
@@ -291,7 +323,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            max-width: 174px;
             display: inline-block;
 
             .name {
