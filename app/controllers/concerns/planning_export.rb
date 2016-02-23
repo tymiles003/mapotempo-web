@@ -1,5 +1,14 @@
-module KmzExport
+module PlanningExport
   extend ActiveSupport::Concern
+
+  def export_filename planning, ref
+    array = []
+    array << planning.name
+    array << ref
+    array << planning.order_array.name if planning.customer.enable_orders && planning.order_array
+    array << l(planning.date) if planning.date
+    array.join("_").gsub("/", "-").delete("\"")
+  end
 
   def kmz_string_io options={}
     Zip::OutputStream.write_buffer do |zio|

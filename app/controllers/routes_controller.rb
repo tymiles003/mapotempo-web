@@ -26,7 +26,7 @@ class RoutesController < ApplicationController
   load_and_authorize_resource
   before_action :set_route, only: [:update]
 
-  include KmzExport
+  include PlanningExport
 
   def show
     @export_stores = ValueToBoolean.value_to_boolean(params['stores'], true)
@@ -42,7 +42,11 @@ class RoutesController < ApplicationController
       end
       format.kmz do
         if params[:email]
-          RouteMailer.send_kmz_route(current_user.customer, current_user.email, @route.vehicle_usage.vehicle.contact_email, filename + '.kmz', kmz_string_io(route: @route).string).deliver_now
+          vehicle = @route.vehicle_usage.vehicle
+          content = kmz_string_io(route: @route).string
+          scope = RouteMailer
+          scope = scope.delay if Mapotempo::Application.config.delayed_job_use
+          scope.send_kmz_route current_user, vehicle, @route, filename + '.kmz', content
           head :no_content
         else
           send_data kmz_string_io(route: @route).string,
@@ -115,9 +119,6 @@ class RoutesController < ApplicationController
   end
 
   def filename
-    (@route.planning.name + '_' + (@route.ref || @route.vehicle_usage.vehicle.name) +
-      (@route.planning.customer.enable_orders && @route.planning.order_array ? '_' + @route.planning.order_array.name : '') +
-      (@route.planning.date ? '_' + l(@route.planning.date) : '')
-    ).tr('/', '-').delete('"')
+    export_filename @route.planning, @route.ref || @route.vehicle_usage.vehicle.name
   end
 end

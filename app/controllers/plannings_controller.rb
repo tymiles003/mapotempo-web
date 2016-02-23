@@ -23,7 +23,7 @@ class PlanningsController < ApplicationController
   load_and_authorize_resource
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order]
 
-  include KmzExport
+  include PlanningExport
 
   def index
     @plannings = current_user.customer.plannings
@@ -47,7 +47,12 @@ class PlanningsController < ApplicationController
         if params[:email]
           @planning.routes.joins(vehicle_usage: [:vehicle]).each do |route|
             next if !route.vehicle_usage.vehicle.contact_email
-            RouteMailer.send_kmz_route(current_user.customer, current_user.email, route.vehicle_usage.vehicle.contact_email, filename + '.kmz', kmz_string_io(route: route, with_home_markers: true).string).deliver_now
+            vehicle = route.vehicle_usage.vehicle
+            content = kmz_string_io(route: route, with_home_markers: true).string
+            name = export_filename route.planning, route.ref || route.vehicle_usage.vehicle.name
+            scope = RouteMailer
+            scope = scope.delay if Mapotempo::Application.config.delayed_job_use
+            scope.send_kmz_route current_user, vehicle, route, name + '.kmz', content
           end
           head :no_content
         else
@@ -297,9 +302,6 @@ class PlanningsController < ApplicationController
   end
 
   def filename
-    (@planning.name + (@planning.ref ? '_' + @planning.ref : '') +
-      (@planning.customer.enable_orders && @planning.order_array ? '_' + @planning.order_array.name : '') +
-      (@planning.date ? '_' + l(@planning.date) : '')
-    ).tr('/', '-').delete('"')
+    export_filename @planning, @planning.ref
   end
 end

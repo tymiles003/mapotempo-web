@@ -660,6 +660,11 @@ en:
   route_mailer:
     send_kmz_route:
       content: "Route informations have been exported using KML format in a file attached to this E-Mail."
+      vehicle: "Vehicle"
+      planning: "Planning"
+      planning_ref: "Planning Ref."
+      route_ref: "Route Ref."
+      order_array: "Orders"
 
   plannings:
     menu:
