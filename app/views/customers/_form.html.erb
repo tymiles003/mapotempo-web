@@ -85,7 +85,7 @@
       <%= f.check_box :enable_tomtom %>
     <% end %>
   <% end %>
-  <% if current_user.admin? || @customer.enable_tomtom? %>
+  <% if @customer.enable_tomtom? %>
     <div id="tomtom_container" class="panel panel-default">
       <div class="panel-heading">
         <h2 class="panel-title">
@@ -128,7 +128,7 @@
       <%= f.check_box :enable_teksat %>
     <% end %>
   <% end %>
-  <% if current_user.admin? || @customer.enable_teksat? %>
+  <% if @customer.enable_teksat? %>
     <div id="teksat_container" class="panel panel-default">
       <div class="panel-heading">
         <h2 class="panel-title">
@@ -174,7 +174,7 @@
       <%= f.check_box :enable_orange %>
     <% end %>
   <% end %>
-  <% if current_user.admin? || @customer.enable_orange? %>
+  <% if @customer.enable_orange? %>
     <div id="orange_container" class="panel panel-default">
       <div class="panel-heading">
         <h2 class="panel-title">
