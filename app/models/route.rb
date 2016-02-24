@@ -532,7 +532,7 @@ class Route < ActiveRecord::Base
   end
 
   def update_vehicle_usage
-    if vehicle_usage_id_changed?
+    if vehicle_usage_id_changed? && (id || out_of_date.nil?)
       self.out_of_date = true
     end
   end
