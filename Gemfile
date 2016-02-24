@@ -146,3 +146,4 @@ gem 'rubyzip'
 gem 'pnotify-rails'
 
 gem 'nokogiri'
+gem 'addressable'

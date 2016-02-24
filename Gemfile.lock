@@ -496,6 +496,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   ai4r
   amoeba
   auto_strip_attributes
