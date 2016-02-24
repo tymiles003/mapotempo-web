@@ -63,7 +63,7 @@
         <td>
           <% if customer.end_subscription %>
             <%= l(customer.end_subscription) %>
-            <% if customer.end_subscription > Time.now - 86400 * 30 && customer.end_subscription > Time.now %>
+            <% if customer.end_subscription < Time.now + 86400 * 30 && customer.end_subscription > Time.now %>
               <i class="fa fa-warning" style="color: orange;"></i>
             <% end %>
           <% end %>
