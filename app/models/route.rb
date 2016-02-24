@@ -30,7 +30,7 @@ class Route < ActiveRecord::Base
 
   after_initialize :assign_defaults, if: 'new_record?'
 
-  scope :for_customer, -> (customer) { where(planning_id: customer.planning_ids) }
+  scope :for_customer, lambda{|customer| where(planning_id: customer.planning_ids) }
 
   amoeba do
     enable
