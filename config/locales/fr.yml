@@ -502,7 +502,7 @@ fr:
     new:
       title: "Nouveau compte client"
     form:
-      default_value: "Valeurs par défault"
+      default_value: "Valeurs par défaut"
       options: "Options"
       optimization_parameters: "Paramètres d'optimisation"
       router_help: "Profil utilisé pour les calculs d'itinéraires par défaut"
