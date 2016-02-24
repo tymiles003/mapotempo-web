@@ -258,7 +258,7 @@ class ImporterDestinations < ImporterBase
 
     if @routes.size > 0
       @planning = @customer.plannings.build(name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.now, format: :long), vehicle_usage_set: @customer.vehicle_usage_sets[0], tags: @common_tags || [])
-      @planning.set_routes(@routes, true, true)
+      @planning.set_routes(@routes, false, true)
       @planning.save!
     end
 
