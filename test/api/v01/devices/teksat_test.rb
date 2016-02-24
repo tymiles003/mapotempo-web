@@ -80,7 +80,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
 
   test 'list devices' do
     with_stubs [:auth, :get_vehicles] do
-      get api("devices/teksat/list", { customer_id: @customer.id })
+      get api("devices/teksat/devices", { customer_id: @customer.id })
       assert last_response.ok?, last_response.body
       assert_equal [
         {"id"=>"97", "text"=>"FIAT DOBLO - 352848026546057"},

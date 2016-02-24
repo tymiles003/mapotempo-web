@@ -69,7 +69,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
 
   test 'list devices' do
     with_stubs [:client_objects_wsdl, :client_objects_api] do
-      get api("devices/tomtom/list", { customer_id: @customer.id })
+      get api("devices/tomtom/devices", { customer_id: @customer.id })
       assert last_response.ok?, last_response.body
       assert_equal [
         {"id"=>"1-44063-666E054E7", "text"=>"MAPO1"},

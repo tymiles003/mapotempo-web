@@ -73,7 +73,7 @@ class V01::Devices::OrangeTest < ActiveSupport::TestCase
 
   test 'list devices' do
     with_stubs [:get_vehicles] do
-      get api("devices/orange/list", { customer_id: @customer.id })
+      get api("devices/orange/devices", { customer_id: @customer.id })
       assert last_response.ok?, last_response.body
       assert_equal [{"id"=>"325000749", "text"=>"Eric 590 - DB-116-CL"}], JSON.parse(last_response.body)
     end
