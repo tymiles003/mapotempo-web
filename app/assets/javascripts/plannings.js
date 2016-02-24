@@ -60,6 +60,18 @@ var plannings_edit = function(params) {
     routes_layers_cluster,
     initial_zoning = $("#planning_zoning_id").val();
 
+  var allRoutesVehicles = $.map(routes_array, function(route) {
+    if (route.vehicle_usage_id) {
+      var vehicle_usage = {};
+      $.each(vehicles_usages_map, function(i, v) {
+        if (v.vehicle_usage_id == route.vehicle_usage_id) vehicle_usage = v;
+      });
+      route.name = (route.ref ? (route.ref + ' ') : '') + vehicle_usage.name;
+      if (!route.color) route.color = vehicle_usage.color;
+    }
+    return route;
+  });
+
   // sidebar has to be created before map
   var sidebar = L.control.sidebar('edit-planning', {position: 'right'});
   sidebar.open('planning-pane');
@@ -284,7 +296,7 @@ var plannings_edit = function(params) {
     }
   });
 
-  var displayRouteOnMap = function(data, route) {
+  var prepareAndDisplayRouteOnMap = function(data, route) {
     var color = route.color || (route.vehicle && route.vehicle.color) || '#707070';
     var vehicle_name;
     if (route.vehicle) {
@@ -337,7 +349,7 @@ var plannings_edit = function(params) {
         stop.color = color;
         stop.vehicle_name = vehicle_name;
         stop.route_id = route.route_id;
-        stop.routes = data.routes;
+        stop.routes = allRoutesVehicles;
         stop.planning_id = data.planning_id;
         var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
           icon: new L.NumberedDivIcon({
@@ -653,7 +665,7 @@ var plannings_edit = function(params) {
           return found || (el.route_id == id && el);
         }, null);
         route.color = color;
-        displayRouteOnMap(data, route);
+        prepareAndDisplayRouteOnMap(data, route);
         $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
         $('span[data-route_id=' + id + '] i.vehicle-icon').css('color', color || route.vehicle.color);
       });
@@ -724,7 +736,7 @@ var plannings_edit = function(params) {
     });
 
     $.each(data.routes, function(i, route) {
-      displayRouteOnMap(data, route);
+      prepareAndDisplayRouteOnMap(data, route);
     });
 
     if (typeof options !== 'object' || !options.partial) {
@@ -747,6 +759,7 @@ var plannings_edit = function(params) {
       $.each(data.routes, function(i, route) {
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
+        route.routes = allRoutesVehicles;
 
         $("[data-route_id='" + route.route_id + "']").html(SMT['routes/edit'](route));
 
@@ -757,6 +770,7 @@ var plannings_edit = function(params) {
       $.each(data.routes, function(i, route) {
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
+        route.routes = allRoutesVehicles;
 
         $("[data-route_id='" + route.route_id + "'] .route-details").html(SMT['stops/list'](route));
       });

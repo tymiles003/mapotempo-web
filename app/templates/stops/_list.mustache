@@ -27,12 +27,9 @@
           <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.send_to_route_help{{/i18n}}"><i class="fa fa-truck fa-fw"></i><span class="caret"></span></button>
           <ul class="dropdown-menu pull-right" role="menu">
             {{#routes}}
-              {{^vehicle}}
-                <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
-              {{/vehicle}}
-              {{#vehicle}}
+              {{#vehicle_usage_id}}
                 <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"><div class="color_small" style="background:{{color}}"></div> {{name}}</a></li>
-              {{/vehicle}}
+              {{/vehicle_usage_id}}
             {{/routes}}
           </ul>
         </div>
