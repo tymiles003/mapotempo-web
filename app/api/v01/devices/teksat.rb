@@ -44,7 +44,7 @@ class V01::Devices::Teksat < Grape::API
       end
       post '/send' do
         route = Route.for_customer(@customer).find params[:route_id]
-        TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).delay.send_route
+        TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).send_route
         status 200
       end
 
@@ -56,7 +56,7 @@ class V01::Devices::Teksat < Grape::API
         planning = @customer.plannings.find params[:planning_id]
         planning.routes.select(&:vehicle_usage).each do |route|
           next if route.vehicle_usage.vehicle.teksat_id.blank?
-          TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).delay.send_route
+          TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).send_route
         end
         status 200
       end
@@ -67,7 +67,7 @@ class V01::Devices::Teksat < Grape::API
       end
       delete '/clear' do
         route = Route.for_customer(@customer).find params[:route_id]
-        TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).delay.clear_route
+        TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).clear_route
         status 200
       end
 

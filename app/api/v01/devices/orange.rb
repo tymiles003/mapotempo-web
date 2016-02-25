@@ -44,7 +44,7 @@ class V01::Devices::Orange < Grape::API
       end
       post '/send' do
         route = Route.for_customer(@customer).find params[:route_id]
-        OrangeService.new(customer: @customer, route: route).delay.send_route
+        OrangeService.new(customer: @customer, route: route).send_route
         status 200
       end
 
@@ -56,7 +56,7 @@ class V01::Devices::Orange < Grape::API
         planning = @customer.plannings.find params[:planning_id]
         planning.routes.select(&:vehicle_usage).each do |route|
           next if route.vehicle_usage.vehicle.orange_id.blank?
-          OrangeService.new(customer: @customer, route: route).delay.send_route
+          OrangeService.new(customer: @customer, route: route).send_route
         end
         status 200
       end
@@ -67,7 +67,7 @@ class V01::Devices::Orange < Grape::API
       end
       delete '/clear' do
         route = Route.for_customer(@customer).find params[:route_id]
-        OrangeService.new(customer: @customer, route: route).delay.clear_route
+        OrangeService.new(customer: @customer, route: route).clear_route
         status 200
       end
 
@@ -79,7 +79,7 @@ class V01::Devices::Orange < Grape::API
         planning = @customer.plannings.find params[:planning_id]
         planning.routes.select(&:vehicle_usage).each do |route|
           next if route.vehicle_usage.vehicle.orange_id.blank?
-          OrangeService.new(customer: @customer, route: route).delay.clear_route
+          OrangeService.new(customer: @customer, route: route).clear_route
         end
         status 200
       end

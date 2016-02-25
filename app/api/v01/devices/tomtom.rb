@@ -49,9 +49,9 @@ class V01::Devices::Tomtom < Grape::API
         route = Route.for_customer(@customer).find params[:route_id]
         case params[:type]
           when 'waypoints'
-            Tomtom.delay.export_route_as_waypoints route
+            Tomtom.export_route_as_waypoints route
           when 'orders'
-            Tomtom.delay.export_route_as_orders route
+            Tomtom.export_route_as_orders route
         end
         status 200
       end
@@ -67,9 +67,9 @@ class V01::Devices::Tomtom < Grape::API
           next if route.vehicle_usage.vehicle.tomtom_id.blank?
           case params[:type]
             when 'waypoints'
-              Tomtom.delay.export_route_as_waypoints route
+              Tomtom.export_route_as_waypoints route
             when 'orders'
-              Tomtom.delay.export_route_as_orders route
+              Tomtom.export_route_as_orders route
           end
         end
         status 200
@@ -81,7 +81,7 @@ class V01::Devices::Tomtom < Grape::API
       end
       delete '/clear' do
         route = Route.for_customer(@customer).find params[:route_id]
-        Tomtom.delay.clear route
+        Tomtom.clear route
         status 200
       end
 
@@ -93,7 +93,7 @@ class V01::Devices::Tomtom < Grape::API
         planning = @customer.plannings.find params[:planning_id]
         planning.routes.select(&:vehicle_usage).each do |route|
           next if route.vehicle_usage.vehicle.tomtom_id.blank?
-          Tomtom.delay.clear route
+          Tomtom.clear route
         end
         status 200
       end
