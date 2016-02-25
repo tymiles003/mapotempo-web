@@ -36,6 +36,7 @@ class ImportTomtom
           if !row[:tags].nil?
             row[:tags] = row[:tags].join(',')
           end
+          row[:line] = row[:ref]
 
           row
         }
