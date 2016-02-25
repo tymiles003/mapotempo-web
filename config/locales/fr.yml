@@ -488,10 +488,17 @@ fr:
       index:
         title: "Modifier utilisateurs"
         new: "Nouvel utilisateur"
+        send_email: "Envoyer Email de confirmation"
       new:
         title: "Nouvel utilisateur"
+      create:
+        success: "Utilisateur créé avec succès"
       edit:
         title: "Modifier utilisateur"
+      update:
+        success: "Utilisateur mis à jour avec succès"
+      send_email:
+        success: "Email envoyé à l'utilisateur avec succès"
 
   customers:
     default:
@@ -503,6 +510,8 @@ fr:
       customers: "Comptes client"
     edit:
       title: "Modifier paramétrage global"
+      send_email: "Envoyer Email de confirmation"
+      password: "Changer le mot de passe"
       user:
         connect_as: "Connecter en tant que…"
         list: "Liste des utilisateurs"
@@ -516,6 +525,10 @@ fr:
       no_test: "hors test"
     new:
       title: "Nouveau compte client"
+    destroy:
+      success: "Client supprimé avec succès"
+    destroy_multiple:
+      success: "Clients supprimés avec succès"
     form:
       default_value: "Valeurs par défaut"
       options: "Options"
@@ -709,6 +722,13 @@ fr:
       planning_ref: "Référence planning"
       route_ref: "Référence de la tournée"
       order_array: "Commandes"
+
+  user_mailer:
+    welcome:
+      title: "Mapotempo: Votre compte"
+      content: "Votre compte sera actif lorsqu'un mot de passe sera défini.\n
+                Vous pouvez le faire maintenant avec ce lien :"
+      set_password: "Changer le mot de passe"
 
   plannings:
     menu:
@@ -1004,11 +1024,14 @@ fr:
   users:
     menu:
       sign_out: "Déconnexion"
-    edit_settings:
+    edit:
       title: "Paramètres utilisateur"
-      edit_user_registration: "Modifier votre identifiant de connexion et mot de passe"
-    form_settings:
+    form:
       url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
+    password:
+      title: "Editer le mot de passe"
+    set_password:
+      success: "Utilisateur mis à jour avec succès"
 
   vehicles:
     default_name: "Véhicule %{n}"

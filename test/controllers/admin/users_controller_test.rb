@@ -25,20 +25,17 @@ class Admin::UsersControllerTest < ActionController::TestCase
 
   test 'should create user' do
     assert_difference('User.count') do
-      post :create, user: { customer_id: customers(:customer_one).id, email: 'ty@io.com', password: '123456789'}
+      post :create, user: { customer_id: customers(:customer_one).id, email: 'ty@io.com' }
     end
-
-    assert_redirected_to edit_customer_path(customers(:customer_one))
+    assert_redirected_to admin_users_path
   end
 
   test 'should not create user' do
     assert_difference('User.count', 0) do
-      post :create, user: { email: '' }
+      post :create, user: { customer_id: customers(:customer_one).id, email: '' }
     end
-
     assert_template :new
-    user = assigns(:user)
-    assert user.errors.any?
+    assert assigns(:user).errors.messages[:email].any?
     assert_valid response
   end
 
@@ -57,8 +54,7 @@ class Admin::UsersControllerTest < ActionController::TestCase
   test 'should not update user' do
     patch :update, id: @user, user: { email: '' }
     assert_template :edit
-    user = assigns(:user)
-    assert user.errors.any?
+    assert assigns(:user).errors.messages[:email].any?
     assert_valid response
   end
 
@@ -66,7 +62,6 @@ class Admin::UsersControllerTest < ActionController::TestCase
     assert_difference('User.count', -1) do
       delete :destroy, id: @user
     end
-
     assert_redirected_to admin_users_path
   end
 
@@ -74,7 +69,6 @@ class Admin::UsersControllerTest < ActionController::TestCase
     assert_difference('User.count', -2) do
       delete :destroy_multiple, users: { users(:user_one).id => 1, users(:user_two).id => 1 }
     end
-
     assert_redirected_to admin_users_path
   end
 end

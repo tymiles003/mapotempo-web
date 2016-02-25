@@ -3,12 +3,13 @@ Rails.application.routes.draw do
   mount ApiRoot => '/api'
 
   devise_for :users, :controllers => {:registrations => "registrations"}
-  get 'user_settings/:id' => 'users#show', :as => 'show_user'
-  get 'edit_user_settings/:id' => 'users#edit_settings', :as => 'edit_user_settings'
-  patch 'user_settings/:id' => 'users#update_settings', :as => 'update_user_settings'
 
   namespace :admin do
-    resources :users
+    resources :users do
+      member do
+        get :send_email
+      end
+    end
     delete 'users' => 'users#destroy_multiple'
     resources :profiles
     resources :resellers
@@ -34,9 +35,17 @@ Rails.application.routes.draw do
   delete 'tags' => 'tags#destroy_multiple'
 
   resources :customers do
-    delete 'vehicles/:vehicle_id' => 'customers#delete_vehicle'
+    collection do
+      delete :destroy_multiple
+    end
+    resources :users, only: [:edit, :update] do
+      member do
+        get :password
+        patch :set_password
+      end
+    end
   end
-  delete 'customers' => 'customers#destroy_multiple'
+  # delete 'customers' => 'customers#destroy_multiple'
 
   resources :vehicle_usage_sets do
     patch 'duplicate'

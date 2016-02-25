@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -17,35 +17,61 @@
 #
 class UsersController < ApplicationController
   load_and_authorize_resource
-  before_action :set_user, only: [:show, :edit_settings, :update_settings]
 
-  def show
+  before_action :find_customer
+  before_action :find_user, except: [:password, :set_password]
+  before_action :find_user_by_token, only: [:password, :set_password]
+
+  def edit ; end
+
+  def update
+    if @user.update user_params
+      redirect_to_default
+    else
+      render action: :edit
+    end
   end
 
-  def edit_settings
+  def password
+    if current_user != @user
+      sign_out :user
+      sign_in @user, bypass: true
+    end
   end
 
-  def update_settings
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to edit_user_settings_path(@user), notice: t('activerecord.successful.messages.updated', model: @user.class.model_name.human) }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+  def set_password
+    if @user.update user_password_params
+      @user.confirm! if !@user.confirmed?
+      sign_in @user, bypass: true
+      redirect_to_default
+    else
+      render action: :password
     end
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_user
-    @user = User.find(params[:id])
+  def redirect_to_default
+    redirect_to !params[:url].blank? ? params[:url] : [:edit, @customer], notice: t(".success")
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  def find_customer
+    @customer = Customer.find params[:customer_id]
+  end
+
+  def find_user
+    @user = @customer.users.find params[:id]
+  end
+
+  def find_user_by_token
+    @user = @customer.users.find_by confirmation_token: params[:token]
+  end
+
+  def user_password_params
+    params.require(:user).permit :password, :password_confirmation
+  end
+
   def user_params
-    params.require(:user).permit(:layer_id, :url_click2call)
+    params.require(:user).permit :layer_id, :url_click2call
   end
 end

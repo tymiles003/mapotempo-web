@@ -7,7 +7,6 @@ class UsersControllerTest < ActionController::TestCase
     @request.env['reseller'] = resellers(:reseller_one)
     @user = users(:user_one)
     sign_in users(:user_one)
-    assert_valid response
   end
 
   test 'user can only manage itself' do
@@ -17,7 +16,7 @@ class UsersControllerTest < ActionController::TestCase
     ability = Ability.new(users(:user_three))
     assert ability.cannot? :manage, users(:user_one)
     sign_in users(:user_three)
-    get :edit_settings, id: @user
+    get :edit, customer_id: @user.customer_id, id: @user
     assert_response :redirect
   end
 
@@ -27,14 +26,31 @@ class UsersControllerTest < ActionController::TestCase
     assert ability.cannot? :manage, users(:user_three)
   end
 
-  test 'should get edit_settings' do
-    get :edit_settings, id: @user
+  test 'should get edit' do
+    get :edit, customer_id: @user.customer_id, id: @user
     assert_response :success
     assert_valid response
   end
 
-  test 'should update_settings user' do
-    patch :update_settings, id: @user, user: { layer_id: @user.layer.id }
-    assert_redirected_to edit_user_settings_path(assigns(:user))
+  test 'should update user' do
+    patch :update, customer_id: @user.customer_id, id: @user, user: { layer_id: @user.layer.id }
+    assert_redirected_to [:edit, @user.customer]
+  end
+
+  test 'should get edit password' do
+    sign_out :user
+    user = users(:unconfirmed_user)
+    get :password, customer_id: user.customer_id, id: user.id, token: user.confirmation_token
+    assert_response :success
+    assert_valid response
+  end
+
+  test 'should update user password' do
+    sign_out :user
+    user = users(:unconfirmed_user)
+    assert !user.confirmed?
+    patch :set_password, customer_id: user.customer_id, id: user.id, token: user.confirmation_token, user: { password: "abcd1212", password_confirmation: "abcd1212" }
+    assert assigns(:user).confirmed?
+    assert_redirected_to [:edit, @user.customer]
   end
 end

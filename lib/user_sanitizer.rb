@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class User::ParameterSanitizer < Devise::ParameterSanitizer
+class UserParameterSanitizer < Devise::ParameterSanitizer
 
   private
 

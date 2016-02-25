@@ -116,7 +116,7 @@
                   <li class="divider"></li>
                   <li><%= link_to stores_path do %><i class="fa fa-home fa-fw"></i> <%= t 'destinations.menu.stores' %><% end %></li>
                   <li><%= link_to store_import_path do %><i class="fa fa-upload fa-fw"></i> <%= t 'destinations.menu.import_stores' %><% end %></li>
-                  <% if @vehicle_usage_sets.length == 1 %>
+                  <% if @vehicle_usage_sets.try(:length) == 1 %>
                     <li class="divider"></li>
                     <% @vehicle_usage_sets[0].vehicle_usages.each do |vehicle_usage| %>
                       <li><%= link_to edit_vehicle_usage_path(vehicle_usage) do %><i class="fa fa-truck fa-fw"></i> <%= vehicle_usage.vehicle.name %><% end %></li>
@@ -138,8 +138,8 @@
                 <ul class="dropdown-menu">
                   <% if current_user.customer %>
                     <li><%= link_to edit_customer_path(current_user.customer) do %><i class="fa fa-building-o fa-fw"></i> <%= t 'customers.menu.customer' %><% end %></li>
+                    <li><%= link_to edit_customer_user_path(current_user.customer, current_user) do %><i class="fa fa-user fa-fw"></i> <%= t 'customers.menu.user_settings' %><% end %></li>
                   <% end %>
-                  <li><%= link_to edit_user_settings_path(current_user) do %><i class="fa fa-user fa-fw"></i> <%= t 'customers.menu.user_settings' %><% end %></li>
                 </ul>
               </li>
               <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="fa fa-power-off fa-fw"></i> <%= t 'users.menu.sign_out' %><% end %></li>

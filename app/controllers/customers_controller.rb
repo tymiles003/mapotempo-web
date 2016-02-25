@@ -18,7 +18,7 @@
 class CustomersController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_customer, only: [:edit, :update, :delete_vehicle]
+  before_action :set_customer, only: [:edit, :update]
   before_action :clear_customer_params, only: [:create, :update]
 
   include DeviceHelpers
@@ -68,48 +68,19 @@ class CustomersController < ApplicationController
 
   def destroy
     @customer.destroy
-    respond_to do |format|
-      format.html { redirect_to customers_url }
-    end
-  end
-
-  def delete_vehicle
-    if current_user.admin?
-      respond_to do |format|
-        vehicle = @customer.vehicles.find(params[:vehicle_id])
-        if vehicle.destroy
-          format.html { redirect_to edit_customer_path(@customer) }
-        else
-          flash[:error] = vehicle.errors.full_messages
-          format.html { redirect_to edit_customer_path(@customer) }
-        end
-      end
-    else
-      error! 'Forbidden', 403
-    end
+    redirect_to customers_path, notice: t('.success')
   end
 
   def destroy_multiple
-    Customer.transaction do
-      if params['customers'].keys
-        ids = params['customers'].keys.collect{ |i| Integer(i) }
-        current_user.reseller.customers.select{ |customer| ids.include?(customer.id) }.each(&:destroy)
-      end
-      respond_to do |format|
-        format.html { redirect_to customers_url }
-      end
-    end
+    current_user.reseller.customers.find(params[:customers].keys).each(&:destroy) if params[:customers]
+    redirect_to customers_path, notice: t('.success')
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_customer
-    @customer = if current_user.admin?
-      current_user.reseller.customers.find(params[:id] || params[:customer_id])
-    else
-      current_user.customer
-    end
+    @customer = current_user.admin? ? Customer.find(params[:id]) : current_user.customer
+
     if @customer.speed_multiplicator
       @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
     end

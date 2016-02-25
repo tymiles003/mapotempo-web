@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -16,16 +16,15 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable,
+         :validatable
 
   nilify_blanks
   auto_strip_attributes :url_click2call
+
   belongs_to :reseller
-  belongs_to :customer, autosave: true
+  belongs_to :customer
   belongs_to :layer
 
   after_initialize :assign_defaults, if: 'new_record?'
@@ -33,6 +32,8 @@ class User < ActiveRecord::Base
 
   validates :customer, presence: true, unless: :admin?
   validates :layer, presence: true
+
+  include Confirmable
 
   def admin?
     !reseller_id.nil?

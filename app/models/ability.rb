@@ -18,19 +18,18 @@
 
 class Ability
   include CanCan::Ability
-  def initialize(user)
+  def initialize(user=nil)
     if user
       if user.admin?
         can :manage, Customer, reseller_id: user.reseller_id
-        can [:new, :create], Customer
+        can [:index, :new, :create], Customer
         can :manage, User, id: user.id
         can :manage, User, customer: {reseller_id: user.reseller_id}
-        can [:new, :create], User
+        can [:index, :new, :create, :send_email], User
         can :manage, Reseller, id: user.reseller_id
         can [:index], Profile
       else
-        can [:edit, :update], User, id: user.id
-        can [:show, :edit_settings, :update_settings], User, id: user.id
+        can [:edit, :update, :password, :set_password], User, id: user.id
         can [:edit, :update], Customer, id: user.customer.id
         can [:stop_job_optimizer, :stop_job_destination_geocoding, :stop_job_store_geocoding], Customer
         can :manage, VehicleUsageSet, customer_id: user.customer.id
@@ -56,6 +55,8 @@ class Ability
           can [:new, :create], Product
         end
       end
+    else
+      can [:password, :set_password], User
     end
   end
 end

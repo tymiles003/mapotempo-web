@@ -7,10 +7,10 @@ class CustomersControllerTest < ActionController::TestCase
     @request.env['reseller'] = resellers(:reseller_one)
     @customer = customers(:customer_one)
     @vehicle_one = vehicles(:vehicle_one)
-    sign_in users(:user_one)
   end
 
   test 'user can only edit its customer' do
+    sign_in users(:user_one)
     ability = Ability.new(users(:user_one))
     assert ability.can? :edit, customers(:customer_one)
     assert ability.can? :update, customers(:customer_one)
@@ -24,34 +24,35 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test 'should get edit' do
+    sign_in users(:user_one)
     get :edit, id: @customer
     assert_response :success
     assert_valid response
   end
 
   test 'should update customer' do
-    patch :update, id: @customer, customer: { take_over: 123 }
-
-    assert_redirected_to edit_customer_path(assigns(:customer))
+    sign_in users(:user_one)
+    patch :update, id: @customer, customer: { name: 123 }
+    assert_redirected_to [:edit, @customer]
   end
 
-  test 'should destroy vehicles' do
+  test 'should delete customer' do
     sign_in users(:user_admin)
-    assert_difference('Vehicle.count', -1) do
-      delete :delete_vehicle, customer_id: @customer.id, vehicle_id: @vehicle_one.id
-    end
-    assert_redirected_to edit_customer_path(assigns(:customer))
+    delete :destroy, id: @customer.id
+    assert_redirected_to customers_path
+    assert !assigns(:customer).persisted?
   end
 
-  test 'should not destroy vehicles' do
-    assert_difference('Vehicle.count', 0) do
-      delete :delete_vehicle, customer_id: @customer.id, vehicle_id: @vehicle_one.id
-    end
+  test 'should delete multiple customers' do
+    sign_in users(:user_admin)
+    delete :destroy_multiple, { customers: { @customer.id => 1 } }
+    assert_redirected_to customers_path
   end
 
   test 'should disabled max_vehicles field' do
     begin
       Mapotempo::Application.config.manage_vehicles_only_admin = true
+      sign_in users(:user_one)
       get :edit, id: @customer.id
       assert_response :success
       assert_select 'form input' do
@@ -65,7 +66,7 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test 'should not disabled max_vehicles field' do
-    sign_in users(:user_admin)
+    sign_in users(:user_one)
     get :edit, id: @customer.id
     assert_response :success
     assert_select 'form input' do

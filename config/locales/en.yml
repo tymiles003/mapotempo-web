@@ -473,10 +473,17 @@ en:
       index:
         title: "Editing users"
         new: "New user"
+        send_email: "Send Confirmation E-Mail"
       new:
         title: "New user"
+      create:
+        success: "User created successfully"
       edit:
         title: "Edit user"
+      update:
+        success: "User updated successfully"
+      send_email:
+        success: "E-Mail sent to user successfully"
 
   customers:
     default:
@@ -488,6 +495,8 @@ en:
       customers: "Customers"
     edit:
       title: "Editing global settings"
+      send_email: "Send Confirmation E-Mail"
+      password: "Change Password"
       user:
         connect_as: "Connect as…"
         list: "Users list"
@@ -501,6 +510,10 @@ en:
       no_test: "not in test"
     new:
       title: "New customer"
+    destroy:
+      success: "Customer deleted successfully"
+    destroy_multiple:
+      success: "Customers deleted successfully"
     form:
       default_value: "Default values"
       options: "Options"
@@ -694,6 +707,13 @@ en:
       planning_ref: "Planning Ref."
       route_ref: "Route Ref."
       order_array: "Orders"
+
+  user_mailer:
+    welcome:
+      title: "Mapotempo: Your Account"
+      content: "Your Account will be active when a password is set.\n
+                You can do it now using this link:"
+      set_password: "Set Password"
 
   plannings:
     menu:
@@ -989,11 +1009,16 @@ en:
   users:
     menu:
       sign_out: "Sign out"
-    edit_settings:
-      title: "User's Settings"
-      edit_user_registration: "Change your login credentials and password"
-    form_settings:
+    form:
       url_click2call_help: "URL of VOIP communications solution. In URL set '{TEL}' in place of the phone number"
+    edit:
+      title: "Edit User"
+    update:
+      success: "User updated successfully"
+    password:
+      title: "Edit Password"
+    set_password:
+      success: "User updated successfully"
 
   vehicles:
     default_name: "Vehicle %{n}"

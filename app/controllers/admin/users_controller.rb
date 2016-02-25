@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -17,99 +17,67 @@
 #
 class Admin::UsersController < ApplicationController
   load_and_authorize_resource
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  # GET /users
-  # GET /users.json
+  before_action :find_user, except: [:index, :new, :create, :destroy_multiple]
+  before_action :find_customers, except: [:index, :destroy_multiple]
+
   def index
     @users = User.joins(:customer).where(customers: {reseller_id: current_user.reseller_id})
   end
 
-  # GET /users/1
-  # GET /users/1.json
-  def show
-  end
-
-  # GET /users/new
   def new
-    @user = User.new
-    @customers = current_user.reseller.customers.order(:name)
-    @user.customer = @customers.select{ |c| c.id == Integer(params[:customer]) }.first if params.key?(:customer)
+    @customer = Customer.find params[:customer_id] if params[:customer_id]
+    @user = @customer ? @customer.users.new : User.new
   end
 
-  # GET /users/1/edit
-  def edit
-    @customers = current_user.reseller.customers.order(:name)
-  end
-
-  # POST /users
-  # POST /users.json
   def create
-    @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to edit_customer_path(@user.customer), notice: t('activerecord.successful.messages.created', model: @user.class.model_name.human) }
-        format.json { render action: 'show', status: :created, location: @user }
-      else
-        @customers = current_user.reseller.customers.order(:name)
-        format.html { render action: 'new' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
-  def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to edit_customer_path(@user.customer), notice: t('activerecord.successful.messages.updated', model: @user.class.model_name.human) }
-        format.json { head :no_content }
-      else
-        @customers = current_user.reseller.customers.order(:name)
-        format.html { render action: 'edit' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    if !@user.admin?
-      @user.destroy
-      respond_to do |format|
-        format.html { redirect_to admin_users_path }
-        format.json { head :no_content }
-      end
+    password = Time.now.to_i + rand(10000)
+    @user = User.new user_params.merge(password: password, password_confirmation: password)
+    if @user.save
+      redirect_to_default
     else
-      respond_to do |format|
-        format.html { redirect_to action: 'edit', status: :unprocessable_entity }
-        format.json { render json: {}, status: :unprocessable_entity }
-      end
+      render action: :new
     end
+  end
+
+  def update
+    if @user.update user_params
+      redirect_to_default
+    else
+      render action: :edit
+    end
+  end
+
+  def destroy
+    @user.destroy if !@user.admin?
+    redirect_to_default
   end
 
   def destroy_multiple
-    User.transaction do
-      ids = params['users'].keys.collect{ |i| Integer(i) }
-      User.find(ids).each(&:destroy)
-      respond_to do |format|
-        format.html { redirect_to admin_users_path }
-      end
-    end
+    User.find(params[:users].keys).reject(&:admin?).each &:destroy
+    redirect_to_default
+  end
+
+  def send_email
+    @user.send_welcome_email
+    redirect_to_default
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_user
-    User.joins(:customer).where(id: params[:id] || params[:user_id], customers: {reseller_id: current_user.reseller_id}).first!
+  def redirect_to_default
+    redirect_to !params[:url].blank? ? params[:url] : admin_users_path, notice: t(".success")
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  def find_customers
+    @customers = current_user.reseller.customers.order(:name)
+  end
+
+  def find_user
+    User.joins(:customer).where(customers: { reseller_id: current_user.reseller_id }).find params[:id]
+  end
+
   def user_params
-    params.require(:user).permit(:ref, :email, :customer_id, :layer_id, :password, :password_confirmation)
+    params.require(:user).permit(:email, :customer_id)
   end
 end
