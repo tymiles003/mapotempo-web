@@ -269,7 +269,7 @@ class ImporterDestinations < ImporterBase
     if @destinations_to_geocode.size > 0 && !synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_destination_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(@customer.id, @planning ? @planning.id : nil))
     else
-      @planning.compute if @planning
+      @planning.compute(ignore_errors: true) if @planning
     end
 
     @customer.save!

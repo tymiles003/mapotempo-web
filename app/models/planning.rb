@@ -114,11 +114,11 @@ class Planning < ActiveRecord::Base
     end
   end
 
-  def compute
+  def compute(options = {})
     if zoning_out_of_date
       split_by_zones
     end
-    routes.select(&:vehicle_usage).select(&:out_of_date).each(&:compute)
+    routes.select(&:vehicle_usage).select(&:out_of_date).each{ |r| r.compute(options) }
   end
 
   def switch(route, vehicle_usage)

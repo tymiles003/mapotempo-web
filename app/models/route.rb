@@ -49,7 +49,7 @@ class Route < ActiveRecord::Base
       stops.build(type: StopRest.name, active: true, index: 1)
     end
 
-    compute(ignore_errors)
+    compute(ignore_errors: ignore_errors)
   end
 
   def default_stops
@@ -177,8 +177,8 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def compute(ignore_errors = false)
-    stops_sort, stops_time = plan(nil, ignore_errors)
+  def compute(options = {})
+    stops_sort, stops_time = plan(nil, options[:ignore_errors])
 
     if stops_sort
       # Try to minimize waiting time by a later begin
@@ -205,7 +205,7 @@ class Route < ActiveRecord::Base
       (time -= vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_start
       if time > start
         # We can sleep a bit more on morning, shift departure
-        plan(time, ignore_errors)
+        plan(time, options[:ignore_errors])
       end
     end
 
@@ -228,7 +228,11 @@ class Route < ActiveRecord::Base
         visit, active = stop
         stops.build(type: StopVisit.name, visit: visit, active: active, index: i += 1)
       }
-      compute(ignore_errors) if recompute
+      if recompute
+        compute(ignore_errors: ignore_errors)
+      elsif vehicle_usage
+        self.out_of_date = true
+      end
     end
   end
 
