@@ -106,15 +106,14 @@ class V01::Routes < Grape::API
           nickname: 'moveVisits'
         params do
           requires :id, type: String, desc: ID_DESC
-          requires :visit_ids, type: Array[Integer], documentation: {param_type: 'form'}
+          requires :visit_ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', documentation: {param_type: 'form'}, coerce_with: CoerceArrayString
         end
         patch ':id/visits/moves' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           planning = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
           id = ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
-          ids = params[:visit_ids].collect{ |i| Integer(i) }
-          visits = current_customer.visits.select{ |visit| ids.include?(visit.id) }
+          visits = current_customer.visits.select{ |visit| params[:visit_ids].any?{ |s| ParseIdsRefs.match(s, visit) } }
 
           if route && planning && visits
             Planning.transaction do
