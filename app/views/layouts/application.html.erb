@@ -1,40 +1,7 @@
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
   <head>
-    <title><%= [yield(:title), request.env['reseller'].name].select{ |t| !t.empty? }.join(' – ') %></title>
-    <%= csrf_meta_tags %>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-
-    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-    <!-- Size should be 57 x 57 pixels -->
-    <%= favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' %>
-
-    <!-- For first- and second-generation iPad: -->
-    <!-- Size should be 72 x 72 pixels -->
-    <%= favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72' %>
-
-    <!-- For iPhone with high-resolution Retina display: -->
-    <!-- Size should be 114 x 114 pixels -->
-    <%= favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114' %>
-
-    <!-- For third-generation iPad with high-resolution Retina display: -->
-    <!-- Size should be 144 x 144 pixels -->
-    <%= favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
-
-    <!-- For all other devices -->
-    <!-- Size should be 32 x 32 pixels -->
-    <%= favicon_link_tag request.env['reseller'].favicon.url || 'favicon.ico', :rel => 'shortcut icon' %>
-
-    <script type="text/javascript">
-      var defaultLocale = "<%= I18n.default_locale %>";
-    </script>
-
-    <!-- Javascripts -->
-    <!-- Placed inside head element to support turbolinks -->
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= render partial: 'layouts/head' %>
   </head>
 
   <body data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
@@ -128,10 +95,20 @@
           </ul>
 
           <ul class="nav navbar-nav pull-right">
-            <li>
             <% if user_signed_in? %>
+              <% if request.env['reseller'].help_url && request.env['reseller'].contact_url %>
+                <li class="dropdown"><%= link_to request.env['reseller'].help_url, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-info-circle fa-fw"></i> <%= t 'web.help_menu' %> <span class="caret"></span><% end %>
+                <ul class="dropdown-menu">
+              <% end %>
               <% if request.env['reseller'].help_url %>
                 <li><%= link_to request.env['reseller'].help_url, target: '_blank' do %><i class="fa fa-info-circle fa-fw"></i> <%= t 'web.help' %><% end %></li>
+              <% end %>
+              <% if request.env['reseller'].contact_url %>
+                <li><%= link_to request.env['reseller'].contact_url, target: '_blank' do %><i class="fa fa-phone fa-fw"></i> <%= t 'web.contact' %><% end %></li>
+              <% end %>
+              <% if request.env['reseller'].help_url && request.env['reseller'].contact_url %>
+                </ul>
+                </li>
               <% end %>
               <li class="dropdown">
                 <%= link_to customers_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-wrench fa-fw"></i> <%= t 'customers.menu.parameters' %> <span class="caret"></span><% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160224095842) do
+ActiveRecord::Schema.define(version: 20160225160902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,6 +212,7 @@ ActiveRecord::Schema.define(version: 20160224095842) do
     t.string   "logo_large"
     t.string   "logo_small"
     t.string   "favicon"
+    t.string   "contact_url"
   end
 
   create_table "routers", force: :cascade do |t|

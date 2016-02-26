@@ -1200,7 +1200,9 @@ en:
     dialog:
       close: "Close"
     placeholder_filter: "filter"
-    help: "Help"
+    help_menu: "Help"
+    help: "Online help"
+    contact: "Contact"
     choose_file: "Choose file"
     geocoder:
       search: "Search an address..."
@@ -1251,3 +1253,9 @@ en:
       l_100km: "l/100Km"
       hour_minute: "hour : minute"
       hour_minute_second: "hour : minute : second"
+
+  devise:
+    shared:
+      links:
+        sign_in_prefix: "You have already an account?"
+        sign_up_prefix: "Need to create an account?"

@@ -173,6 +173,28 @@ span.color[data-color=''][data-selected]:after {
   }
 }
 
+[data-controller='devise_sessions'], [data-controller='devise_passwords'], [data-controller='registrations'] {
+  #registration-header {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  #registration-footer {
+    @media(min-width: 768px) {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    li {
+      list-style: none;
+      
+      @media(min-width: 768px) {
+        display: inline-block;
+        margin: 0 20px;
+      }
+    }
+  }
+}
+
 [data-controller='plannings'][data-action='edit'],
 [data-controller='plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],

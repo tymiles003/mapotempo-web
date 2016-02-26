@@ -1214,7 +1214,9 @@ fr:
     dialog:
       close: "Fermer"
     placeholder_filter: "filtrer"
-    help: "Aide"
+    help_menu: "Aide"
+    help: "Aide en ligne"
+    contact: "Contact"
     choose_file: "Sélectionner fichier"
     geocoder:
       search: "Recherche d'adresse"
@@ -1272,3 +1274,9 @@ fr:
       create: "Créer %{model}"
       update: "Enregistrer %{model}"
       submit: "Enregistrer %{model}"
+
+  devise:
+    shared:
+      links:
+        sign_in_prefix: "Vous possédez déjà un compte?"
+        sign_up_prefix: "Besoin de vous créer un compte?"
