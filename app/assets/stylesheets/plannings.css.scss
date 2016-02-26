@@ -172,6 +172,10 @@
           display: inline-block;
           vertical-align: top;
           margin: 2px;
+
+          #out_of_route {
+            display: block !important;
+          }
         }
       }
     }
