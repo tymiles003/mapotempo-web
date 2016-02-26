@@ -25,19 +25,22 @@ class ApiV01 < Grape::API
     description: ('
 <h2>Model</h2>
 
+<p>
 <a href="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg">
   <img src="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg" width="600"/><br/>
   Simplified view of domain model.
 </a>
+</p>
 
-Model is structured around four majors concepts: the Customer account, Destinations, Vehicles and Plannings.
+<p>Model is structured around four majors concepts: the Customer account, Destinations, Vehicles and Plannings.
 
 <ul>
 <li><b><code>Customers</code></b>: many of objects are linked to a customer account (relating to the user calling API). <br>The customer has many users, each user has his own <code>api_key</code>.</li>
-<li><b><code>Destinations</code></b>: location points to visit with constraints.</li>
+<li><b><code>Destinations</code></b>: location points to visit with constraints. The same <code>Destination</code> can be visited several times : in this case several <code>Visit</code>s are associated to one <code>Destination</code>.</li>
 <li><b><code>Vehicles</code></b>: vehicles definition are splited in two parts: <ul><li>the structural definition named <code>Vehicle</code> (car, truck, bike, consumption, etc.)</li> <li>and the vehicle usage <code>VehicleUsage</code>, a specific usage of a physical vehicle in a specific context.</li></ul> Vehicles can be used in many contexts called <code>VehicleUsageSet</code> (set of all vehicles usages under a context). Multiple values are only available if dedicated option for customer is active. For instance, if customer needs to use its vehicle 2 times per day (morning and evening), he needs 2 <code>VehicleUsageSet</code> called \'Morning\' and \'Evening\'. <code>VehicleUsageSet</code> defines default values for vehicle usage.</li>
 <li><b><code>Plannings</code></b>: <code>Planning</code> is a set of <code>Route</code>s to <code>Visit</code> <code>Destination</code>s with <code>Vehicle</code> within a <code>VehicleUsageSet</code> context. <br>A route is a track between all destinations reached by a vehicle (a new route is created for each customer\'s vehicle and a route without vehicle is created for all out-of-route destinations). By default all customer\'s visites are used in a planning.</li>
 </ul>
+</p>
 
 <h2>Technical access</h2>
 
