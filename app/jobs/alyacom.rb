@@ -35,7 +35,7 @@ class Alyacom
     position = route.vehicle_usage.default_store_start
     waypoints = route.stops.select(&:active).collect{ |stop|
       position = stop if stop.position?
-      if position.nil? || position.lat.nil? || position.lng.nil?
+      if position.nil? || position.lat.nil? || position.lng.nil? || stop.time.nil?
         next
       end
       {
