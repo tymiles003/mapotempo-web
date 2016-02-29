@@ -47,7 +47,7 @@ module AlyacomApi
     get = Hash[self.get(association_id, 'users').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     missing = users.select{ |s|
-      !get.key?(s[:name])
+      !get.key?(s[:id])
     }.collect{ |s|
       {
         idExt: s[:id],
