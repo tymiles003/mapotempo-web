@@ -8,25 +8,26 @@ class AlyacomApiTest < ActionController::TestCase
 
   def around
     begin
-      uri_template = Addressable::Template.new('http://partners.alyacom.fr/ws/asso/staff?apiKey={apikey}&enc=json')
+      url = Mapotempo::Application.config.alyacom_api_url
+      uri_template = Addressable::Template.new(url + '/asso/staff?apiKey={apikey}&enc=json')
       stub_staff_get = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../', __FILE__) + '/../web_mocks/alyacom.fr/staff.json').read)
 
-      uri_template = Addressable::Template.new('http://partners.alyacom.fr/ws/asso/staff?apiKey={apikey}&enc=json')
+      uri_template = Addressable::Template.new(url + '/asso/staff?apiKey={apikey}&enc=json')
       stub_staff_post = stub_request(:post, uri_template).to_return("HTTP/1.1 200 OK\n\n")
 
-      uri_template = Addressable::Template.new('http://partners.alyacom.fr/ws/asso/users?apiKey={apikey}&enc=json')
+      uri_template = Addressable::Template.new(url + '/asso/users?apiKey={apikey}&enc=json')
       stub_users_1 = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../', __FILE__) + '/../web_mocks/alyacom.fr/users-1.json').read)
 
       uri_template = Addressable::Template.new('http://app.alyacom.fr/ws/__id__/users?apiKey={apikey}&enc=json&page=2')
       stub_users_2 = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../', __FILE__) + '/../web_mocks/alyacom.fr/users-2.json').read)
 
-      uri_template = Addressable::Template.new('http://partners.alyacom.fr/ws/asso/users?apiKey={apikey}&enc=json')
+      uri_template = Addressable::Template.new(url + '/asso/users?apiKey={apikey}&enc=json')
       stub_users_post = stub_request(:post, uri_template).to_return("HTTP/1.1 200 OK\n\n")
 
-      uri_template = Addressable::Template.new('http://partners.alyacom.fr/ws/asso/planning?apiKey={apikey}&enc=json&fromDate={date}&idStaff=v')
+      uri_template = Addressable::Template.new(url + '/asso/planning?apiKey={apikey}&enc=json&fromDate={date}&idStaff=v')
       stub_planning_get = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../', __FILE__) + '/../web_mocks/alyacom.fr/planning.json').read)
 
-      uri_template = Addressable::Template.new('http://partners.alyacom.fr/ws/asso/planning?apiKey={apikey}&enc=json')
+      uri_template = Addressable::Template.new(url + '/asso/planning?apiKey={apikey}&enc=json')
       stub_planning_post = stub_request(:post, uri_template).to_return("HTTP/1.1 200 OK\n\n")
 
       yield

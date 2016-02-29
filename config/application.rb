@@ -119,7 +119,7 @@ module Mapotempo
 
     config.masternaut_api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
 
-    config.alyacom_api_url = 'http://partners.alyacom.fr/ws'
+    config.alyacom_api_url = 'https://partners.alyacom.fr/ws'
     config.alyacom_api_key = nil
 
     config.delayed_job_use = false
