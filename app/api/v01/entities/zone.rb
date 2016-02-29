@@ -21,6 +21,7 @@ class V01::Entities::Zone < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
+  expose(:name, documentation: { type: String })
   expose(:vehicle_id, documentation: { type: Integer })
   expose(:polygon, documentation: { type: String }) # format: GeoJson
 end

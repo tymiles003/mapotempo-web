@@ -366,6 +366,7 @@ en:
         name: "Name"
       zone:
         vehicle: "Vehicle"
+        name: "Name"
 
     successful:
       messages:
@@ -1145,11 +1146,16 @@ en:
       delete_help: "Delete this visit (destination will be kept)"
 
   zonings:
+    default:
+      from_route: "Route"
+      from_isochrone: "Isochrone"
+      from_isodistance: "Isodistance"
     menu:
       zonings: "Zonings"
     edit:
       title: "Editing zoning"
       collapse_zoning_panel: "Collapse zoning panel"
+      generate_confirm: "This action will reset all your current zones. Continue?"
       vehicleless_confirm: "Really save some zones without a vehicle?"
       isochrone_missing_vehicle: "Isochrone cannot be generated for at least one vehicle due to router restriction"
       isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to router restriction"
@@ -1167,6 +1173,8 @@ en:
         one: "Automatic: 1 zone"
         other: "Automatic: %{count} zones"
       from_planning: "From planning's routes"
+      zone_placeholder: "Zone"
+      zone_vehicle: "Vehicle"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
       dialog:

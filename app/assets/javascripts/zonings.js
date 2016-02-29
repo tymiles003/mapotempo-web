@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2013-2015
+// Copyright © Mapotempo, 2013-2016
 //
 // This file is part of Mapotempo.
 //
@@ -223,6 +223,7 @@ var zonings_edit = function(params) {
   var planning = undefined;
 
   var displayZoning = function(data) {
+    nbZones = data.zoning.length;
     $('#zones').empty();
     featureGroup.clearLayers();
     $.each(data.zoning, function(index, zone) {
@@ -355,8 +356,13 @@ var zonings_edit = function(params) {
     }
   });
 
+  var nbZones = undefined;
+
   $('.automatic').click(function () {
     if (!$(this).hasClass('disabled')) {
+      if (nbZones && !confirm(I18n.t('zonings.edit.generate_confirm'))) {
+        return false;
+      }
       $.ajax({
         type: "patch",
         url: '/zonings/' + zoning_id + '/automatic' + (planning_id ? '/planning/' + planning_id : '') + '.json?n=' + $(this).data('n'),
@@ -369,6 +375,9 @@ var zonings_edit = function(params) {
   });
 
   $('#from_planning').click(function () {
+    if (nbZones && !confirm(I18n.t('zonings.edit.generate_confirm'))) {
+      return false;
+    }
     $.ajax({
       type: "patch",
       url: '/zonings/' + zoning_id + '/from_planning' + (planning_id ? '/planning/' + planning_id : '') + '.json',
@@ -385,6 +394,9 @@ var zonings_edit = function(params) {
   });
 
   $('#isochrone').click(function () {
+    if (nbZones && !confirm(I18n.t('zonings.edit.generate_confirm'))) {
+      return false;
+    }
     var vehicle_usage_set_id = $('#isochrone_vehicle_usage_set_id').val();
     var size = $('#isochrone_size').val().split(':');
     size = parseInt(size[0]) * 60 + parseInt(size[1]);
@@ -407,6 +419,9 @@ var zonings_edit = function(params) {
   });
 
   $('#isodistance').click(function () {
+    if (nbZones && !confirm(I18n.t('zonings.edit.generate_confirm'))) {
+      return false;
+    }
     var vehicle_usage_set_id = $('#isodistance_vehicle_usage_set_id').val();
     var size = $('#isodistance_size').val();
     $('#isodistance-progress-modal').modal({

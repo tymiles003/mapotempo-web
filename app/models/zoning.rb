@@ -91,11 +91,12 @@ class Zoning < ActiveRecord::Base
         end
       }.compact.uniq
     }
-    vehicle_usages = planning.routes.select(&:vehicle_usage).collect(&:vehicle_usage)
+    routes = planning.routes.select(&:vehicle_usage)
     Clustering.hulls(clusters).each{ |hull|
-      vehicle_usage = vehicle_usages.shift
+      route = routes.shift
       if hull
-        zones.build({polygon: hull, vehicle: vehicle_usage.vehicle})
+        name = (route.ref) ? I18n.t('zonings.default.from_route') + ' ' + route.ref : nil
+        zones.build({polygon: hull, name: name, vehicle: route.vehicle_usage.vehicle})
       end
     }
   end
@@ -155,13 +156,16 @@ class Zoning < ActiveRecord::Base
       router = vehicle_usage.vehicle.default_router
       if router.method(what_qm).call && !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
         geom = router.method(what).call(vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng, size, vehicle_usage.vehicle.default_speed_multiplicator)
+        size_to_human = what == :isochrone ? (size / 60).to_s + ' mn' : (size / 1000).to_s + ' km'
+        name = I18n.t('zonings.default.from_' + what.to_s) + ' ' + size_to_human + ' / ' + vehicle_usage.default_store_start.name
       end
       if geom
         zone = zones.to_a.find{ |zone| zone.vehicle_id == vehicle_usage.vehicle.id }
         if zone
           zone.polygon = geom
+          zone.name = name
         else
-          zones.build({polygon: geom, vehicle: vehicle_usage.vehicle})
+          zones.build({polygon: geom, name: name, vehicle: vehicle_usage.vehicle})
         end
       end
     end

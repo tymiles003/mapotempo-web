@@ -375,6 +375,7 @@ fr:
         name: "Nom"
       zone:
         vehicle: "Véhicule"
+        name: "Nom"
 
     successful:
       messages:
@@ -1159,11 +1160,16 @@ fr:
       delete_help: "Supprimer cette visite (le client sera conservé)"
 
   zonings:
+    default:
+      from_route: "Tournée"
+      from_isochrone: "Isochrone"
+      from_isodistance: "Isodistance"
     menu:
       zonings: "Zonages"
     edit:
       title: "Modifier zonage"
       collapse_zoning_panel: "Minifier le panneau de zonage"
+      generate_confirm: "Ceci réinitialisera toutes vos zones actuelles. Continuer ?"
       vehicleless_confirm: "Confirmer l'enregistrement de zones sans véhicules ?"
       isochrone_missing_vehicle: "Un isochrone ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
       isodistance_missing_vehicle: "Un isodistance ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
@@ -1181,6 +1187,8 @@ fr:
         one: "Automatique : 1 zone"
         other: "Automatique : %{count} zones"
       from_planning: "Depuis les tournées du planning"
+      zone_placeholder: "Zone"
+      zone_vehicle: "Véhicule"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
       dialog:

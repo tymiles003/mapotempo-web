@@ -20,9 +20,11 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #zones {
-  .vehicle_select {
+  .zone-name {
     width: 270px;
-    vertical-align: middle;
+  }
+  .vehicle_select {
+    min-width: 150px;
   }
 }
 
