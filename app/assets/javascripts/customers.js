@@ -39,7 +39,7 @@ var customers_index = function(params) {
             popupAnchor: new L.Point(0, -6),
             className: "small"
           })
-        }).addTo(layer);
+        }).addTo(layer).bindPopup(customer.name);
       });
 
       map.invalidateSize();
