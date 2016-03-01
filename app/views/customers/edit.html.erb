@@ -97,7 +97,10 @@ controller.js(
           <td><%= vehicle.name %></td>
           <td class="text-right"><%= vehicle.ref %></td>
           <td class="text-right">
-            <%= link_to "vehicles/#{vehicle.id}", :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
+            <%= link_to delete_vehicle_customer_path(@customer, vehicle_id: vehicle.id), :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %>
+              <i class="fa fa-trash-o fa-fw"></i>
+              <%= t 'all.verb.destroy' %>
+            <% end %>
           </td>
         </tr>
       <% end %>

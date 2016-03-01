@@ -36,6 +36,20 @@ class CustomersControllerTest < ActionController::TestCase
     assert_redirected_to [:edit, @customer]
   end
 
+  test 'should destroy vehicles' do
+    sign_in users(:user_admin)
+    assert_difference('Vehicle.count', -1) do
+      delete :delete_vehicle, id: @customer.id, vehicle_id: @vehicle_one.id
+    end
+    assert_redirected_to edit_customer_path(assigns(:customer))
+  end
+
+  test 'should not destroy vehicles' do
+    assert_difference('Vehicle.count', 0) do
+      delete :delete_vehicle, id: @customer.id, vehicle_id: @vehicle_one.id
+    end
+  end
+
   test 'should delete customer' do
     sign_in users(:user_admin)
     delete :destroy, id: @customer.id

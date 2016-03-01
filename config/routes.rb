@@ -47,6 +47,9 @@ Rails.application.routes.draw do
     collection do
       delete :destroy_multiple
     end
+    member do
+      delete :delete_vehicle
+    end
     resources :users, only: [:edit, :update] do
       member do
         get :password

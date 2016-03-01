@@ -520,6 +520,8 @@ en:
       success: "Customer deleted successfully"
     destroy_multiple:
       success: "Customers deleted successfully"
+    delete_vehicle:
+      success: "Vehicle deleted successfully"
     form:
       default_value: "Default values"
       options: "Options"

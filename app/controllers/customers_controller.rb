@@ -18,7 +18,7 @@
 class CustomersController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_customer, only: [:edit, :update]
+  before_action :set_customer, only: [:edit, :update, :delete_vehicle]
   before_action :clear_customer_params, only: [:create, :update]
 
   include DeviceHelpers
@@ -76,10 +76,17 @@ class CustomersController < ApplicationController
     redirect_to customers_path, notice: t('.success')
   end
 
+  def delete_vehicle
+    if current_user.admin? || !Mapotempo::Application.config.manage_vehicles_only_admin
+      @customer.vehicles.find(params[:vehicle_id]).destroy
+    end
+    redirect_to [:edit, @customer], notice: t('.success')
+  end
+
   private
 
   def set_customer
-    @customer = current_user.admin? ? Customer.find(params[:id]) : current_user.customer
+    @customer = current_user.admin? ? current_user.reseller.customers.find(params[:id]) : current_user.customer
 
     if @customer.speed_multiplicator
       @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i

@@ -530,6 +530,8 @@ fr:
       success: "Client supprimé avec succès"
     destroy_multiple:
       success: "Clients supprimés avec succès"
+    delete_vehicle:
+      success: "Vehicule supprimé avec succès"
     form:
       default_value: "Valeurs par défaut"
       options: "Options"
