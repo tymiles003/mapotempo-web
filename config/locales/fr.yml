@@ -1027,6 +1027,7 @@ fr:
       sign_out: "Déconnexion"
     edit:
       title: "Paramètres utilisateur"
+      password: "Changer le mot de passe"
     form:
       url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
     password:

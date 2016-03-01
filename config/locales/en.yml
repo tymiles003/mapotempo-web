@@ -1019,6 +1019,7 @@ en:
       url_click2call_help: "URL of VOIP communications solution. In URL set '{TEL}' in place of the phone number"
     edit:
       title: "Edit User"
+      password: "Change Password"
     update:
       success: "User updated successfully"
     password:

@@ -2,3 +2,9 @@
 <h1><%= t '.title' %></h1>
 
 <%= render 'form' %>
+
+<br />
+
+<%= link_to [:password, @customer, @user, token: @user.confirmation_token, url: edit_customer_user_path(@customer, @user)] do %>
+  <%= t '.password' %>
+<% end %>
