@@ -40,7 +40,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -66,7 +66,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -92,7 +92,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -118,7 +118,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -144,7 +144,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -171,7 +171,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -197,7 +197,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -224,7 +224,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -251,7 +251,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -278,7 +278,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -304,7 +304,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -331,7 +331,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -358,7 +358,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
@@ -384,7 +384,7 @@ function devices_observe_planning() {
       }
     });
     // Reset Dropdown
-    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
 
