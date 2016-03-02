@@ -96,8 +96,12 @@ class Customer < ActiveRecord::Base
   def delete_all_destinations
     destinations.delete_all
     plannings.each { |p|
-      # reindex remaining stops (like rests)
-      p.routes.select(&:vehicle_usage).each(&:force_reindex)
+      p.routes.select(&:vehicle_usage).each do |route|
+        # reindex remaining stops (like rests)
+        route.force_reindex
+        # out_of_date for last step
+        route.out_of_date = true if route.stop_trace
+      end
       p.save!
     }
   end
