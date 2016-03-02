@@ -835,6 +835,7 @@ fr:
       wait: "Temps d'attente :"
       vehicle_speed: "Vitesse :"
       vehicle_last_position_time: "Dernier relevé :"
+      route_change_color_title: "Changer la couleur de la trounée"
       popup:
         open_close: "Plage horaire : "
         open: "début"
