@@ -536,8 +536,15 @@ class Route < ActiveRecord::Base
   end
 
   def update_vehicle_usage
-    if vehicle_usage_id_changed? && (id || out_of_date.nil?)
-      self.out_of_date = true
+    if vehicle_usage_id_changed?
+      if vehicle_usage.default_rest_duration.nil?
+        stops.select{ |stop| stop.is_a?(StopRest) }.each{ |stop|
+          remove_stop(stop)
+        }
+      elsif !stops.any?{ |stop| stop.is_a?(StopRest) }
+        add_rest
+      end
+      self.out_of_date = true if id || out_of_date.nil?
     end
   end
 end
