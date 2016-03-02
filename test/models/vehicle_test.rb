@@ -34,11 +34,9 @@ class VehicleTest < ActiveSupport::TestCase
 
   test 'should validate email' do
     v = vehicles(:vehicle_one)
-    assert v.contact_email.nil?
     assert v.valid?
     assert v.update! contact_email: ""
-    assert v.valid?
-    assert v.update! contact_email: "test@example.com"
+    assert v.contact_email.nil?
     assert v.valid?
   end
 end

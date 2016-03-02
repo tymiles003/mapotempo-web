@@ -10,6 +10,7 @@ vehicle_one:
   color: "#004499"
   customer: customer_one
   speed_multiplicator:
+  contact_email: 'toto@toto.toto'
 
 vehicle_two:
   ref: '002'

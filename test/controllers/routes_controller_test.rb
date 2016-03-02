@@ -1,5 +1,8 @@
 require 'test_helper'
 
+require 'rexml/document'
+include REXML
+
 class RoutesControllerTest < ActionController::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
@@ -38,6 +41,60 @@ class RoutesControllerTest < ActionController::TestCase
   test 'should show route as gpx' do
     get :show, id: @route, format: :gpx
     assert_response :success
+    assert Document.new(response.body)
+  end
+
+  test 'should show route as kml' do
+    get :show, id: @route, format: :kml
+    assert_response :success
+    assert Document.new(response.body)
+  end
+
+  test 'should show route as kmz' do
+    get :show, id: @route, format: :kmz
+    assert_response :success
+  end
+
+  test 'should show route as kmz by email' do
+    get :show, id: @route, format: :kmz, email: 1
+    assert_response :success
+  end
+
+  test 'should show route for masternaut' do
+    Masternaut.class_eval do
+      def self.save_export_route(route)
+        self.export_route(route)
+      end
+      def self.export_route(route)
+        true
+      end
+    end
+    get :show, id: @route, format: :masternaut
+    assert_response :success
+    assert Document.new(response.body)
+    Masternaut.class_eval do
+      def self.export_route(route)
+        self.save_export_route(route)
+      end
+    end
+  end
+
+  test 'should show route for alyacom' do
+    Alyacom.class_eval do
+      def self.save_export_route(route)
+        self.export_route(route)
+      end
+      def self.export_route(route)
+        true
+      end
+    end
+    get :show, id: @route, format: :alyacom
+    assert_response :success
+    Alyacom.class_eval do
+      def self.export_route(route)
+        self.save_export_route(route)
+      end
+    end
   end
 
   test 'should update route' do

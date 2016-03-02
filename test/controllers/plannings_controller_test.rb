@@ -88,6 +88,34 @@ class PlanningsControllerTest < ActionController::TestCase
     assert Document.new(response.body)
   end
 
+  test 'should show planning as kml' do
+    get :show, id: @planning, format: :kml
+    assert_response :success
+    assert Document.new(response.body)
+  end
+
+  test 'should show planning as kmz' do
+    get :show, id: @planning, format: :kmz
+    assert_response :success
+  end
+
+  test 'should show planning as kmz by email' do
+    get :show, id: @planning, format: :kmz, email: 1
+    assert_response :success
+  end
+
+  test 'should show planning for masternaut' do
+    get :show, id: @planning, format: :masternaut
+    assert_response :success
+    assert Document.new(response.body)
+  end
+
+  test 'should show planning for alyacom' do
+    get :show, id: @planning, format: :alyacom
+    assert_response :success
+    # assert Document.new(response.body)
+  end
+
   test 'should show planning as csv' do
     o = plannings(:planning_one)
     oa = order_arrays(:order_array_one)
