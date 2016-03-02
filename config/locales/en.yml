@@ -303,7 +303,6 @@ en:
         password: "Password"
         password_confirmation: "Password confirmation"
         current_password: "Current password"
-        remember_me: "Remember me"
         api_key: "API Key"
         url_click2call: "URL click2call"
         sign_in_count: "Connections count"
@@ -1285,3 +1284,6 @@ en:
       links:
         sign_in_prefix: "You have already an account?"
         sign_up_prefix: "Need to create an account?"
+    sessions:
+      new:
+        remember_me: "Remember me"
