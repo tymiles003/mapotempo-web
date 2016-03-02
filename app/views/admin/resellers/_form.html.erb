@@ -45,6 +45,9 @@
       </div>
     </div>
   <% end %>
+  <%= f.text_field :website_url do %>
+    <p class="help-block"><%= t '.website_url_help' %></p>
+  <% end %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

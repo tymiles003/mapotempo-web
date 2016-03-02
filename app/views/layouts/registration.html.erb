@@ -7,7 +7,13 @@
   <body class="main container" data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
     <div class="row">
       <div class="col-xs-offset-3 col-xs-6 col-md-offset-4 col-md-4" id="registration-header">
+        <% if request.env['reseller'].website_url %>
+          <a href="<%= request.env['reseller'].website_url %>" target="_blank">
+        <% end %>
         <%= image_tag request.env['reseller'].logo_large.url || "logo_mapotempo.svg", alt: request.env['reseller'].name, class: "mapotempo-logo" %>
+        <% if request.env['reseller'].website_url %>
+          </a>
+        <% end %>
       </div>
     </div>
 

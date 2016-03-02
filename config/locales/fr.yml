@@ -246,6 +246,7 @@ fr:
         logo_large: "Grand logo"
         logo_small: "Petit logo"
         favicon: "Favicon"
+        website_url: "URL site web"
       route:
         distance: "Distance"
         emission: "Émissions"
@@ -302,7 +303,7 @@ fr:
         password: "Mot de passe"
         password_confirmation: "Confirmation mot de passe"
         current_password: "Mot de passe actuel"
-        remember_me: "Se rappeler de moi"
+        remember_me: "Se souvenir de moi"
         api_key: "Clé d'API"
         url_click2call: "URL Click2Call"
         sign_in_count: "Nombre de connexions"
@@ -478,12 +479,13 @@ fr:
       form:
         host_help: "Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur."
         name_help: "Marque du revendeur."
-        welcome_url_help: "Page web html incluse comme «iframe» dans la page de bienvenue."
-        help_url_help: "Page web contenant l'aide."
-        contact_url_help: "Page web contenant le formulaire de contact."
+        welcome_url_help: "Adresse de la page web html incluse comme «iframe» dans la page de bienvenue."
+        help_url_help: "Adresse de la page web contenant l'aide."
+        contact_url_help: "Adresse de la page web contenant le formulaire de contact."
         logo_large_help: "Logo pleine page redimensionnable, de préférence au format SVG, à défaut en PNG."
         logo_small_help: "Logo du menu, 150×40 pixels en SVG ou PNG."
         favicon_help: "Icône du site web, 16x16 pixels au format PNG ou ICO."
+        website_url_help: "Adresse du site web"
 
     users:
       menu:
@@ -1294,5 +1296,5 @@ fr:
   devise:
     shared:
       links:
-        sign_in_prefix: "Vous possédez déjà un compte?"
-        sign_up_prefix: "Besoin de vous créer un compte?"
+        sign_in_prefix: "Vous possédez déjà un compte ?"
+        sign_up_prefix: "Besoin de vous créer un compte ?"

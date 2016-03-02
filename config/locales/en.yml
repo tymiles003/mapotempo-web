@@ -246,6 +246,7 @@ en:
         logo_large: "Large logo"
         logo_small: "Small logo"
         favicon: "Favicon"
+        website_url: "Website URL"
       route:
         distance: "Distance"
         emission: "Emission"
@@ -468,12 +469,13 @@ en:
       form:
         host_help: "Web URL hostname and port used to match with this reseller."
         name_help: "Reseller's brand name."
-        welcome_url_help: "Web page included as html as \"iframe\" on welcome page."
-        help_url_help: "Web page with help content."
-        contact_url_help: "Web page with contact form."
+        welcome_url_help: "Web page address included as html as \"iframe\" on welcome page."
+        help_url_help: "Web page address with help content."
+        contact_url_help: "Web page address with contact form."
         logo_large_help: "Full page resizable logo, preferably in SVG, alternatively in PNG format."
         logo_small_help: "Head menu logo, 150×40 pixels in SVG or PNG format."
         favicon_help: "Website icon, 16×16 pixels in PNG or ICO format."
+        website_url_help: "Website address."
 
     users:
       menu:

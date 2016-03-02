@@ -21,7 +21,7 @@ class Reseller < ActiveRecord::Base
   has_many :customers, -> { order('id') }, inverse_of: :reseller, autosave: true, dependent: :delete_all
 
   nilify_blanks
-  auto_strip_attributes :host, :name, :welcome_url, :help_url, :contact_url
+  auto_strip_attributes :host, :name, :welcome_url, :help_url, :contact_url, :website_url
   validates :host, presence: true
   validates :name, presence: true
 
