@@ -857,6 +857,9 @@ fr:
         no_path: "Destination inaccessible"
         no_path_help: "Destination inaccessible : pas de voie d'accès ou itinéraire pour aller ou partir de la destination"
       dialog:
+        refresh:
+          title: "Actualiser le planning"
+          confirm: "Vous avez effectuer des modifications qui nécessitent de recalculer votre planning. Souhaitez-vous l'actualiser maintenant ?"
         optimizer:
           title: "Optimisation"
           in_progress: "Processus en cours, merci de patienter."

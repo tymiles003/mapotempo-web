@@ -847,6 +847,9 @@ en:
         no_path: "Unreachable destination"
         no_path_help: "Unreachable destination: missing or no path to or from the destination to find a route"
       dialog:
+        refresh:
+          title: "Refresh the planning"
+          confirm: "You've performed some changes which involve recompute of the planning. Do you want to refresh this planning now?"
         optimizer:
           title: "Optimization"
           in_progress: "Please wait, process in progress."

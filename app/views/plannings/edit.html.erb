@@ -86,6 +86,28 @@
 
 <div id="map" class="sidebar-map"></div>
 
+<div class="modal fade" id="planning-refresh-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class="fa fa-refresh fa-fw"></i> <%= t 'plannings.edit.dialog.refresh.title' %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <%= t 'plannings.edit.dialog.refresh.confirm' %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'all.verb.dismiss' %></button>
+        <button type="button" class="btn btn-primary" id="refresh-modal"><%= t 'plannings.edit.refresh' %></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="dialog-optimizer" title="<%= t '.dialog.optimizer.title' %>" style="display:none">
   <div class="dialog-progress">
     <p><%= t '.dialog.optimizer.in_progress' %></p>

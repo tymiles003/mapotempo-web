@@ -745,7 +745,8 @@ var plannings_edit = function(params) {
 
       initRoutes($('#planning'), data);
 
-      $("#refresh").click(function(event, ui) {
+      $("#refresh, #refresh-modal").click(function(event, ui) {
+        $('#planning-refresh-modal').modal('hide');
         $.ajax({
           type: "get",
           url: '/plannings/' + planning_id + '/refresh.json',
@@ -870,6 +871,9 @@ var plannings_edit = function(params) {
   });
 
   var displayPlanningFirstTime = function(data) {
+    if (data.out_of_date)
+      $('#planning-refresh-modal').modal('show');
+
     displayPlanning(data);
 
     var stores_marker = L.featureGroup();
