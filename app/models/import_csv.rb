@@ -46,8 +46,8 @@ class ImportCsv
             # Switch from locale to internal column name
             r, row = row, {}
             @importer.columns.each{ |k, v|
-              if r.key?(v)
-                row[k] = r[v]
+              if r.key?(v[:title])
+                row[k] = r[v[:title]]
               end
             }
 

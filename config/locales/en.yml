@@ -659,8 +659,13 @@ en:
       phone_number: "phone"
       tags: "tags"
       without_visit: "without visit"
+      without_visit_help: "Specifies that there is no associated visits"
       ref_visit: "reference visit"
       tags_visit: "tags visit"
+      format:
+        hour: "HH:MM"
+        tag: "tag 1,tag 2"
+        required: "required"
       not_csv: "Imported file is not a CSV"
       too_many_lines: "Stop import, too many lines (max: %{n})."
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
@@ -990,7 +995,9 @@ en:
       open: "open"
       close: "close"
       color: "color"
+      color_help: "https://en.wikipedia.org/wiki/Web_colors"
       icon: "icon"
+      icon_help: "Icon from the list http://fontawesome.io/icons/ prefixed with fa-"
       icon_size: "icon size"
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
 
