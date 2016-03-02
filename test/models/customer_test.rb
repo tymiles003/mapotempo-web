@@ -79,11 +79,16 @@ class CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should create and destroy' do
-    customer = resellers(:reseller_one).customers.build(name: 'plop', max_vehicles: 5, default_country: 'France', router: routers(:router_one), profile: profiles(:profile_one))
+    customer = @customer
     resellers(:reseller_one).save!
     assert customer.stores.size > 0
     assert customer.vehicles.size > 0
     assert customer.vehicle_usage_sets.size > 0
-    customer.destroy
+    assert customer.users.size > 0
+    assert_difference('Customer.count', -1) do
+      assert_difference('User.count', -customer.users.size) do
+        customer.destroy
+      end
+    end
   end
 end

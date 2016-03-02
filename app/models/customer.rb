@@ -34,7 +34,7 @@ class Customer < ActiveRecord::Base
   has_many :stores, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :destinations, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :tags, -> { order('label') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :users, inverse_of: :customer, dependent: :nullify
+  has_many :users, inverse_of: :customer, dependent: :destroy
 
   nilify_blanks
   auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association, :default_country
