@@ -27,10 +27,10 @@ class ImporterStores < ImporterBase
   def columns
     {
       ref: {title: I18n.t('stores.import_file.ref')},
-      name: {title: I18n.t('stores.import_file.name'), required: I18n.t('destinations.import_file.format.required')},
-      street: {title: I18n.t('stores.import_file.street')},
-      postalcode: {title: I18n.t('stores.import_file.postalcode')},
-      city: {title: I18n.t('stores.import_file.city')},
+      name: {title: I18n.t('stores.import_file.name'), required: I18n.t('stores.import_file.format.required')},
+      street: {title: I18n.t('stores.import_file.street'), required: I18n.t('stores.import_file.format.advisable')},
+      postalcode: {title: I18n.t('stores.import_file.postalcode'), required: I18n.t('stores.import_file.format.advisable')},
+      city: {title: I18n.t('stores.import_file.city'), required: I18n.t('stores.import_file.format.advisable')},
       country: {title: I18n.t('stores.import_file.country')},
       lat: {title: I18n.t('stores.import_file.lat')},
       lng: {title: I18n.t('stores.import_file.lng')},

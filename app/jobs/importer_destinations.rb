@@ -27,8 +27,8 @@ class ImporterDestinations < ImporterBase
 
   def columns_route
     {
-      route: {title: I18n.t('destinations.import_file.route')},
-      ref_vehicle: {title: I18n.t('destinations.import_file.ref_vehicle')},
+      route: {title: I18n.t('destinations.import_file.route'), help: I18n.t('destinations.import_file.route_help')},
+      ref_vehicle: {title: I18n.t('destinations.import_file.ref_vehicle'), help: I18n.t('destinations.import_file.ref_vehicle_help')},
       active: {title: I18n.t('destinations.import_file.active')},
       stop_type: {title: I18n.t('destinations.import_file.stop_type')}
     }
@@ -38,10 +38,10 @@ class ImporterDestinations < ImporterBase
     {
       ref: {title: I18n.t('destinations.import_file.ref')},
       name: {title: I18n.t('destinations.import_file.name'), required: I18n.t('destinations.import_file.format.required')},
-      street: {title: I18n.t('destinations.import_file.street')},
-      detail: {title: I18n.t('destinations.import_file.detail')},
-      postalcode: {title: I18n.t('destinations.import_file.postalcode')},
-      city: {title: I18n.t('destinations.import_file.city')},
+      street: {title: I18n.t('destinations.import_file.street'), required: I18n.t('destinations.import_file.format.advisable')},
+      detail: {title: I18n.t('destinations.import_file.detail'), help: I18n.t('destinations.import_file.detail_help')},
+      postalcode: {title: I18n.t('destinations.import_file.postalcode'), required: I18n.t('destinations.import_file.format.advisable')},
+      city: {title: I18n.t('destinations.import_file.city'), required: I18n.t('destinations.import_file.format.advisable')},
       country: {title: I18n.t('destinations.import_file.country')},
       lat: {title: I18n.t('destinations.import_file.lat')},
       lng: {title: I18n.t('destinations.import_file.lng')},

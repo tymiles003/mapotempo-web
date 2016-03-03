@@ -646,12 +646,15 @@ fr:
     import_file:
       ref: "référence"
       route: "tournée"
+      route_help: "Référence"
       ref_vehicle: "véhicule"
+      ref_vehicle_help: "Référence"
       stop_type: "type arrêt"
       stop_type_visit: "visite"
       name: "nom"
       street: "voie"
       detail: "complément"
+      detail_help: "Bâtiment, résidence, appartement…"
       postalcode: "code postal"
       city: "ville"
       country: "pays"
@@ -675,6 +678,7 @@ fr:
         hour: "HH:MM"
         tag: "libellé 1,libellé 2"
         required: "obligatoire"
+        advisable: "recommandé"
       not_csv: "Le fichier importé n'est pas au format CSV."
       too_many_lines: "Import stoppé, trop de lignes (max: %{n})."
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
@@ -1009,6 +1013,9 @@ fr:
       icon_help: "Icone de la liste http://fontawesome.io/icons/ préfixé par fa-"
       icon_size: "taille icone"
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
+      format:
+        required: "obligatoire"
+        advisable: "recommandé"
 
   products:
     menu:

@@ -636,12 +636,15 @@ en:
     import_file:
       ref: "reference"
       route: "route"
+      route_help: "Reference"
       ref_vehicle: "vehicle"
+      ref_vehicle_help: "Reference"
       stop_type: "stop type"
       stop_type_visit: "visit"
       name: "name"
       street: "street"
       detail: "detail"
+      detail_help: "Building, residence, apartment ..."
       postalcode: "postalcode"
       city: "city"
       country: "country"
@@ -665,6 +668,7 @@ en:
         hour: "HH:MM"
         tag: "tag 1,tag 2"
         required: "required"
+        advisable: "advisable"
       not_csv: "Imported file is not a CSV"
       too_many_lines: "Stop import, too many lines (max: %{n})."
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
@@ -999,6 +1003,9 @@ en:
       icon_help: "Icon from the list http://fontawesome.io/icons/ prefixed with fa-"
       icon_size: "icon size"
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
+      format:
+        required: "required"
+        advisable: "advisable"
 
   products:
     menu:
