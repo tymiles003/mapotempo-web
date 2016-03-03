@@ -28,6 +28,8 @@ class OrderArray < ActiveRecord::Base
   validates :base_date, presence: true
   validates :length, presence: true
 
+  before_save :update_orders
+
   amoeba do
     enable
     exclude_association :planning
@@ -42,7 +44,8 @@ class OrderArray < ActiveRecord::Base
   end
 
   def days
-    !base_date ? 0 : week? ? 7 : week2? ? 14 : ((base_date >> 1) - base_date).numerator
+    @days = nil if base_date_changed? || length_changed?
+    @days ||= !base_date ? 0 : week? ? 7 : week2? ? 14 : ((base_date >> 1) - base_date).numerator
   end
 
   def default_orders
@@ -66,5 +69,24 @@ class OrderArray < ActiveRecord::Base
     days.times{ |i|
       orders.build(shift: i, visit: visit)
     }
+  end
+
+  private
+
+  def update_orders
+    if base_date_changed? || length_changed?
+      orders_by_shift_size = orders.group_by(&:shift).size
+      if days > orders_by_shift_size
+        (days - orders_by_shift_size).times{ |i|
+          customer.destinations.each{ |destination|
+            destination.visits.each{ |visit|
+              orders.build(shift: orders_by_shift_size + i, visit: visit)
+            }
+          }
+        }
+      elsif days < orders_by_shift_size
+        orders.select{ |o| o.shift + 1 > days }.each{ |o| orders.destroy(o) }
+      end
+    end
   end
 end
