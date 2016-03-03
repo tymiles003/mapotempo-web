@@ -147,6 +147,21 @@ class V01::Routes < Grape::API
           end
         end
       end
+
+      resource :routes_by_vehicle do
+        desc 'Fetch route from vehicle.',
+          nickname: 'getRouteByVehicle',
+          entity: V01::Entities::Route
+        params do
+          requires :id, type: String, desc: ID_DESC
+        end
+        get ':id' do
+          planning_id = ParseIdsRefs.read(params[:planning_id])
+          present current_customer.plannings.where(planning_id).first!.routes.find{ |route|
+            route.vehicle_usage && ParseIdsRefs.match(params[:id], route.vehicle_usage.vehicle)
+          }, with: V01::Entities::Route
+        end
+      end
     end
   end
 end
