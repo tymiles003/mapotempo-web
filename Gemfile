@@ -45,6 +45,7 @@ group :development, :test do
   #gem 'spring'
 
   gem 'rubocop'
+  gem 'i18n-tasks'
 end
 
 group :test do
