@@ -15,9 +15,9 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class V01::Entities::Vehicle < Grape::Entity
+class V01::Entities::VehicleWithoutVehicleUsage < Grape::Entity
   def self.entity_name
-    'V01_Vehicle'
+    'V01_VehicleWithoutVehicleUsage'
   end
 
   expose(:id, documentation: { type: Integer })
@@ -32,5 +32,12 @@ class V01::Entities::Vehicle < Grape::Entity
   expose(:tomtom_id, documentation: { type: String })
   expose(:router_id, documentation: { type: Integer })
   expose(:speed_multiplicator, documentation: { type: Float })
+end
+
+class V01::Entities::Vehicle < V01::Entities::VehicleWithoutVehicleUsage
+  def self.entity_name
+    'V01_Vehicle'
+  end
+
   expose(:vehicle_usages, using: V01::Entities::VehicleUsage, documentation: { type: V01::Entities::VehicleUsage, is_array: true, param_type: 'form' })
 end
