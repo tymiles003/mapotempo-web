@@ -22,9 +22,10 @@ class ValueToBoolean
     if value.nil? || (value.is_a?(String) && value.empty?)
       default
     else
-      TRUE_VALUES.include?(value)
+      val = value.is_a?(String) ? value.downcase : value
+      TRUE_VALUES.include?(val) || (value.is_a?(String) && (I18n.t('all.value.true') == val || I18n.t('all.value.yes') == val))
     end
   end
 
-  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE', 'on', 'ON'].to_set
+  TRUE_VALUES = [true, 1, '1', 't', 'true', 'on', 'yes'].to_set
 end

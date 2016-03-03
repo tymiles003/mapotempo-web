@@ -1285,6 +1285,11 @@ en:
       l_100km: "l/100Km"
       hour_minute: "hour : minute"
       hour_minute_second: "hour : minute : second"
+    value:
+      true: "true"
+      false: "false"
+      yes: "yes"
+      no: "no"
 
   devise:
     shared:

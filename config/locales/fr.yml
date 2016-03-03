@@ -1299,6 +1299,11 @@ fr:
       l_100km: "l/100Km"
       hour_minute: "heure : minute"
       hour_minute_second: "heure : minute : seconde"
+    value:
+      true: "vrai"
+      false: "faux"
+      yes: "oui"
+      no: "non"
 
   # Override rails-i18n
   helpers:
