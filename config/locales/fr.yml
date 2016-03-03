@@ -677,6 +677,7 @@ fr:
       format:
         hour: "HH:MM"
         tag: "libellé 1,libellé 2"
+        yes_no: "oui/non"
         required: "obligatoire"
         advisable: "recommandé"
       not_csv: "Le fichier importé n'est pas au format CSV."

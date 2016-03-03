@@ -667,6 +667,7 @@ en:
       format:
         hour: "HH:MM"
         tag: "tag 1,tag 2"
+        yes_no: "yes/no"
         required: "required"
         advisable: "advisable"
       not_csv: "Imported file is not a CSV"

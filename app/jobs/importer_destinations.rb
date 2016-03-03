@@ -29,7 +29,7 @@ class ImporterDestinations < ImporterBase
     {
       route: {title: I18n.t('destinations.import_file.route'), help: I18n.t('destinations.import_file.route_help')},
       ref_vehicle: {title: I18n.t('destinations.import_file.ref_vehicle'), help: I18n.t('destinations.import_file.ref_vehicle_help')},
-      active: {title: I18n.t('destinations.import_file.active')},
+      active: {title: I18n.t('destinations.import_file.active'), format: I18n.t('destinations.import_file.format.yes_no')},
       stop_type: {title: I18n.t('destinations.import_file.stop_type')}
     }
   end
@@ -66,7 +66,7 @@ class ImporterDestinations < ImporterBase
   end
 
   def columns
-    columns_route.merge(columns_destination).merge(columns_visit).merge(without_visit: {title: I18n.t('destinations.import_file.without_visit'), help: I18n.t('destinations.import_file.without_visit_help')})
+    columns_route.merge(columns_destination).merge(columns_visit).merge(without_visit: {title: I18n.t('destinations.import_file.without_visit'), help: I18n.t('destinations.import_file.without_visit_help'), format: I18n.t('destinations.import_file.format.yes_no')})
   end
 
   def json_to_rows(json)
