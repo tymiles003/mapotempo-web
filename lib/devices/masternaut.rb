@@ -30,7 +30,7 @@ class Masternaut < DeviceBase
       #pretty_print_xml true
       convert_request_keys_to :none
     end
-    @client_job,  = Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
+    @client_job = Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
