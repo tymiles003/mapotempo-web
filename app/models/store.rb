@@ -26,6 +26,7 @@ class LocalizationStoreValidator < ActiveModel::Validator
 end
 
 class Store < ActiveRecord::Base
+  GEOCODING_LEVEL = {point: 1, house: 2, intersection: 3, street: 4, city: 5}
   ICON_SIZE = %w(small medium large)
 
   belongs_to :customer
@@ -35,7 +36,7 @@ class Store < ActiveRecord::Base
   has_many :vehicle_usage_starts, class_name: 'VehicleUsage', inverse_of: :store_start, foreign_key: 'store_start_id', dependent: :nullify
   has_many :vehicle_usage_stops, class_name: 'VehicleUsage', inverse_of: :store_stop, foreign_key: 'store_stop_id', dependent: :nullify
   has_many :vehicle_usage_rests, class_name: 'VehicleUsage', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
-  enum geocoding_level: {point: 1, house: 2, intersection: 3, street: 4, city: 5}
+  enum geocoding_level: GEOCODING_LEVEL
 
   nilify_blanks
   auto_strip_attributes :name, :street, :postalcode, :city

@@ -27,46 +27,46 @@ class ImporterDestinations < ImporterBase
 
   def columns_route
     {
-      route: {title: I18n.t('destinations.import_file.route'), help: I18n.t('destinations.import_file.route_help')},
-      ref_vehicle: {title: I18n.t('destinations.import_file.ref_vehicle'), help: I18n.t('destinations.import_file.ref_vehicle_help')},
-      active: {title: I18n.t('destinations.import_file.active'), format: I18n.t('destinations.import_file.format.yes_no')},
-      stop_type: {title: I18n.t('destinations.import_file.stop_type')}
+      route: {title: I18n.t('destinations.import_file.route'), desc: I18n.t('destinations.import_file.route_desc'), format: I18n.t('destinations.import_file.format.string')},
+      ref_vehicle: {title: I18n.t('destinations.import_file.ref_vehicle'), desc: I18n.t('destinations.import_file.ref_vehicle_desc'), format: I18n.t('destinations.import_file.format.string')},
+      active: {title: I18n.t('destinations.import_file.active'), desc: I18n.t('destinations.import_file.active_desc'), format: I18n.t('destinations.import_file.format.yes_no')},
+      stop_type: {title: I18n.t('destinations.import_file.stop_type'), desc: I18n.t('destinations.import_file.stop_type_desc'), format: I18n.t('destinations.import_file.format.integer')}
     }
   end
 
   def columns_destination
     {
-      ref: {title: I18n.t('destinations.import_file.ref')},
-      name: {title: I18n.t('destinations.import_file.name'), required: I18n.t('destinations.import_file.format.required')},
-      street: {title: I18n.t('destinations.import_file.street'), required: I18n.t('destinations.import_file.format.advisable')},
-      detail: {title: I18n.t('destinations.import_file.detail'), help: I18n.t('destinations.import_file.detail_help')},
-      postalcode: {title: I18n.t('destinations.import_file.postalcode'), required: I18n.t('destinations.import_file.format.advisable')},
-      city: {title: I18n.t('destinations.import_file.city'), required: I18n.t('destinations.import_file.format.advisable')},
-      country: {title: I18n.t('destinations.import_file.country')},
-      lat: {title: I18n.t('destinations.import_file.lat')},
-      lng: {title: I18n.t('destinations.import_file.lng')},
-      geocoding_accuracy: {title: I18n.t('destinations.import_file.geocoding_accuracy')},
-      geocoding_level: {title: I18n.t('destinations.import_file.geocoding_level')},
-      phone_number: {title: I18n.t('destinations.import_file.phone_number')},
-      comment: {title: I18n.t('destinations.import_file.comment')},
-      tags: {title: I18n.t('destinations.import_file.tags'), format: I18n.t('destinations.import_file.format.tag')}
+      ref: {title: I18n.t('destinations.import_file.ref'), desc: I18n.t('destinations.import_file.ref_desc'), format: I18n.t('destinations.import_file.format.string')},
+      name: {title: I18n.t('destinations.import_file.name'), desc: I18n.t('destinations.import_file.name_desc'), format: I18n.t('destinations.import_file.format.string'), required: I18n.t('destinations.import_file.format.required')},
+      street: {title: I18n.t('destinations.import_file.street'), desc: I18n.t('destinations.import_file.street_desc'), format: I18n.t('destinations.import_file.format.string'), required: I18n.t('destinations.import_file.format.advisable')},
+      detail: {title: I18n.t('destinations.import_file.detail'), desc: I18n.t('destinations.import_file.detail_desc'), format: I18n.t('destinations.import_file.format.string')},
+      postalcode: {title: I18n.t('destinations.import_file.postalcode'), desc: I18n.t('destinations.import_file.postalcode_desc'), format: I18n.t('destinations.import_file.format.integer'), required: I18n.t('destinations.import_file.format.advisable')},
+      city: {title: I18n.t('destinations.import_file.city'), desc: I18n.t('destinations.import_file.city_desc'), format: I18n.t('destinations.import_file.format.string'), required: I18n.t('destinations.import_file.format.advisable')},
+      country: {title: I18n.t('destinations.import_file.country'), desc: I18n.t('destinations.import_file.country_desc'), format: I18n.t('destinations.import_file.format.string')},
+      lat: {title: I18n.t('destinations.import_file.lat'), desc: I18n.t('destinations.import_file.lat_desc'), format: I18n.t('destinations.import_file.format.lat')},
+      lng: {title: I18n.t('destinations.import_file.lng'), desc: I18n.t('destinations.import_file.lng_desc'), format: I18n.t('destinations.import_file.format.lng')},
+      geocoding_accuracy: {title: I18n.t('destinations.import_file.geocoding_accuracy'), desc: I18n.t('destinations.import_file.geocoding_accuracy_desc'), format: I18n.t('destinations.import_file.format.geocoding_accuracy')},
+      geocoding_level: {title: I18n.t('destinations.import_file.geocoding_level'), desc: I18n.t('destinations.import_file.geocoding_level_desc'), format: ::Destination::GEOCODING_LEVEL.keys.join('/')},
+      phone_number: {title: I18n.t('destinations.import_file.phone_number'), desc: I18n.t('destinations.import_file.phone_number_desc'), format: I18n.t('destinations.import_file.format.integer')},
+      comment: {title: I18n.t('destinations.import_file.comment'), desc: I18n.t('destinations.import_file.comment_desc'), format: I18n.t('destinations.import_file.format.string')},
+      tags: {title: I18n.t('destinations.import_file.tags'), desc: I18n.t('destinations.import_file.tags_desc'), format: I18n.t('destinations.import_file.format.tag')}
     }
   end
 
   def columns_visit
     {
       # Visit
-      ref_visit: {title: I18n.t('destinations.import_file.ref_visit')},
-      open: {title: I18n.t('destinations.import_file.open'), format: I18n.t('destinations.import_file.format.hour')},
-      close: {title: I18n.t('destinations.import_file.close'), format: I18n.t('destinations.import_file.format.hour')},
-      tags_visit: {title: I18n.t('destinations.import_file.tags_visit'), format: I18n.t('destinations.import_file.format.tag')},
-      take_over: {title: I18n.t('destinations.import_file.take_over'), format: I18n.t('destinations.import_file.format.hour')},
-      quantity: {title: I18n.t('destinations.import_file.quantity')},
+      ref_visit: {title: I18n.t('destinations.import_file.ref_visit'), desc: I18n.t('destinations.import_file.ref_visit_desc'), format: I18n.t('destinations.import_file.format.string')},
+      open: {title: I18n.t('destinations.import_file.open'), desc: I18n.t('destinations.import_file.open_desc'), format: I18n.t('destinations.import_file.format.hour')},
+      close: {title: I18n.t('destinations.import_file.close'), desc: I18n.t('destinations.import_file.close_desc'), format: I18n.t('destinations.import_file.format.hour')},
+      tags_visit: {title: I18n.t('destinations.import_file.tags_visit'), desc: I18n.t('destinations.import_file.tags_visit_desc'), format: I18n.t('destinations.import_file.format.tag')},
+      take_over: {title: I18n.t('destinations.import_file.take_over'), desc: I18n.t('destinations.import_file.take_over_desc'), format: I18n.t('destinations.import_file.format.hour')},
+      quantity: {title: I18n.t('destinations.import_file.quantity'), desc: I18n.t('destinations.import_file.quantity_desc'), format: I18n.t('destinations.import_file.format.integer')},
     }
   end
 
   def columns
-    columns_route.merge(columns_destination).merge(columns_visit).merge(without_visit: {title: I18n.t('destinations.import_file.without_visit'), help: I18n.t('destinations.import_file.without_visit_help'), format: I18n.t('destinations.import_file.format.yes_no')})
+    columns_route.merge(columns_destination).merge(columns_visit).merge(without_visit: {title: I18n.t('destinations.import_file.without_visit'), desc: I18n.t('destinations.import_file.without_visit_desc'), format: I18n.t('destinations.import_file.format.yes_no')})
   end
 
   def json_to_rows(json)

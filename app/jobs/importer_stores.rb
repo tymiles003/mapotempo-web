@@ -26,19 +26,19 @@ class ImporterStores < ImporterBase
 
   def columns
     {
-      ref: {title: I18n.t('stores.import_file.ref')},
-      name: {title: I18n.t('stores.import_file.name'), required: I18n.t('stores.import_file.format.required')},
-      street: {title: I18n.t('stores.import_file.street'), required: I18n.t('stores.import_file.format.advisable')},
-      postalcode: {title: I18n.t('stores.import_file.postalcode'), required: I18n.t('stores.import_file.format.advisable')},
-      city: {title: I18n.t('stores.import_file.city'), required: I18n.t('stores.import_file.format.advisable')},
-      country: {title: I18n.t('stores.import_file.country')},
-      lat: {title: I18n.t('stores.import_file.lat')},
-      lng: {title: I18n.t('stores.import_file.lng')},
-      color: {title: I18n.t('stores.import_file.color'), help: I18n.t('stores.import_file.color_help')},
-      icon: {title: I18n.t('stores.import_file.icon'), help: I18n.t('stores.import_file.icon_help')},
-      icon_size: {title: I18n.t('stores.import_file.icon_size'), format: ::Store::ICON_SIZE.join('/')},
-      geocoding_accuracy: {title: I18n.t('stores.import_file.geocoding_accuracy')},
-      geocoding_level: {title: I18n.t('stores.import_file.geocoding_level')}
+      ref: {title: I18n.t('stores.import_file.ref'), desc: I18n.t('stores.import_file.ref_desc'), format: I18n.t('stores.import_file.format.string')},
+      name: {title: I18n.t('stores.import_file.name'), desc: I18n.t('stores.import_file.name_desc'), format: I18n.t('stores.import_file.format.string'), required: I18n.t('stores.import_file.format.required')},
+      street: {title: I18n.t('stores.import_file.street'), desc: I18n.t('stores.import_file.street_desc'), format: I18n.t('stores.import_file.format.string'), required: I18n.t('stores.import_file.format.advisable')},
+      postalcode: {title: I18n.t('stores.import_file.postalcode'), desc: I18n.t('stores.import_file.postalcode_desc'), format: I18n.t('stores.import_file.format.integer'), required: I18n.t('stores.import_file.format.advisable')},
+      city: {title: I18n.t('stores.import_file.city'), desc: I18n.t('stores.import_file.city_desc'), format: I18n.t('stores.import_file.format.string'), required: I18n.t('stores.import_file.format.advisable')},
+      country: {title: I18n.t('stores.import_file.country'), desc: I18n.t('stores.import_file.country_desc'), format: I18n.t('stores.import_file.format.string')},
+      lat: {title: I18n.t('stores.import_file.lat'), desc: I18n.t('stores.import_file.lat_desc'), format: I18n.t('stores.import_file.format.lat')},
+      lng: {title: I18n.t('stores.import_file.lng'), desc: I18n.t('stores.import_file.lng_desc'), format: I18n.t('stores.import_file.format.lng')},
+      color: {title: I18n.t('stores.import_file.color'), desc: I18n.t('stores.import_file.color_desc'), format: I18n.t('stores.import_file.format.color')},
+      icon: {title: I18n.t('stores.import_file.icon'), desc: I18n.t('stores.import_file.icon_desc'), format: I18n.t('stores.import_file.format.string')},
+      icon_size: {title: I18n.t('stores.import_file.icon_size'), desc: I18n.t('stores.import_file.icon_size_desc'), format: ::Store::ICON_SIZE.join('/')},
+      geocoding_accuracy: {title: I18n.t('stores.import_file.geocoding_accuracy'), desc: I18n.t('stores.import_file.geocoding_accuracy_desc'), format: I18n.t('stores.import_file.format.geocoding_accuracy')},
+      geocoding_level: {title: I18n.t('stores.import_file.geocoding_level'), desc: I18n.t('stores.import_file.geocoding_level_desc'), format: ::Store::GEOCODING_LEVEL.keys.join('/')}
     }
   end
 
