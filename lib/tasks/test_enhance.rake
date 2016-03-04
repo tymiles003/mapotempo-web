@@ -15,12 +15,18 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'i18n/tasks/cli'
+begin
+  if Gem::Specification.find_by_name('i18n-tasks')
+    require 'i18n/tasks/cli'
 
-task :i18n_health do
-  I18n::Tasks::CLI.new.start(['health'])
-end
+    task :i18n_health do
+      I18n::Tasks::CLI.new.run(['health'])
+      I18n.locale = :fr
+    end
 
-Rake::Task["test"].enhance do
-  Rake::Task[:i18n_health].invoke
+    Rake::Task["test"].enhance do
+      Rake::Task[:i18n_health].invoke
+    end
+  end
+rescue Gem::LoadError
 end

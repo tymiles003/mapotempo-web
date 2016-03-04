@@ -45,7 +45,10 @@ group :development, :test do
   #gem 'spring'
 
   gem 'rubocop'
-  gem 'i18n-tasks'
+  # Install only for ruby >=2.1
+  install_if lambda { RUBY_VERSION =~ /^[^0-1]\.[1-9]/ } do
+    gem 'i18n-tasks'
+  end
 end
 
 group :test do
