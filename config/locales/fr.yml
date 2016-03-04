@@ -315,20 +315,10 @@ fr:
         capacity: "Capacité"
         capacity_unit: "Unité de la capacité"
         color: "Couleur"
-        open: "Horaire début"
-        close: "Horaire fin"
         tomtom_id: "TomTom ID"
         masternaut_ref: "Ref. véhicule Masternaut"
-        store_start: "Dépôt départ"
-        store_start_id: "Dépôt départ"
-        store_stop: "Dépôt arrivé"
-        store_stop_id: "Dépôt arrivée"
         router_id: "Calculateur d'itinéraire"
         speed_multiplicator: "Ajustement de la vitesse"
-        rest_start: "Début plage repos"
-        rest_stop: "Fin plage repos"
-        rest_duration: "Durée de repos"
-        store_rest_id: "Lieu de repos"
         ref: "Référence"
         contact_email: "Email"
       vehicle_usage:
@@ -416,7 +406,6 @@ fr:
               bad_customer: "non associé au compte client"
             polygon:
               invalid_json: "n'est pas une chaine de caractère json valide"
-          at_least_one: "Au moins un véhicule est requis"
         customer:
           attributes:
             destinations:
@@ -1068,10 +1057,6 @@ fr:
     form:
       ref:
         help: "Référence libre"
-      open:
-        help: "Horaire de travail livreur"
-      close:
-        help: "Horaire de travail livreur"
       emissions:
         help: "Type de carburant"
       consumption:
@@ -1086,8 +1071,6 @@ fr:
       speed_multiplicator:
         default: "%{n} (valeur par défaut)"
         help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du paramétrage est également utilisé lors des calculs."
-      store_rest:
-        none: "Aucun"
       contact_email:
         help: "Email du terminal du chauffeur"
 
