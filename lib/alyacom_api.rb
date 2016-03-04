@@ -130,7 +130,7 @@ module AlyacomApi
         end
       end
       response = JSON.parse(response)
-      if response['data'] && !response['data'][-1]['deleted']
+      if response.key('data') && !response['data'].empty? && !response['data'][-1]['deleted']
         data += response['data']
         next_ = response['next']
       else
