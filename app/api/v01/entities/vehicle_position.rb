@@ -27,4 +27,4 @@ class V01::Entities::VehiclePosition < Grape::Entity
   expose(:direction, documentation: { type: Float })
   expose(:speed, documentation: { type: Float })
   expose(:time, documentation: { type: Date })
-  end
+end

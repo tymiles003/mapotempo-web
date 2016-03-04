@@ -1,0 +1,6 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Body>
+    <ns3:blankResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://ws.webservices.masternaut.fr/MasterWS/services">
+    </ns3:blankResponse>
+  </soap:Body>
+</soap:Envelope>

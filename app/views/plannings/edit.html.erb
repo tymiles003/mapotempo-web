@@ -20,8 +20,6 @@
         <button type="button" class="btn btn-primary btn-sm" id="optimize_each" title="<%= t '.optimize_each' %>"><i class="fa fa-gears fa-fw"></i></button>
         <button type="button" class="btn btn-default btn-sm dropdown-toggle right export" data-toggle="dropdown" title="<%= t '.exports' %>"><i class="fa fa-share-square-o fa-fw"></i><span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
-          <li><%= link_to planning_path(@planning) do %><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %><% end %></li>
-          <li role="separator" class="divider"></li>
           <% if @planning.customer.tomtom? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.tomtom_id.blank? } %>
             <li class="link planning-tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
               <i class="fa fa-mobile fa-fw"></i>
@@ -35,6 +33,7 @@
               <i class="fa fa-mobile fa-fw"></i>
               <%= t 'plannings.edit.tomtom_clear.action' %>
             </li>
+            <li role="separator" class="divider"></li>
           <% end %>
           <% if @planning.customer.teksat? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.teksat_id.blank? } %>
             <li class="link planning-teksat-send" data-url="/api/0.1/devices/teksat/send_multiple" data-planning-id="<%= @planning.id %>">
@@ -45,6 +44,7 @@
               <i class="fa fa-mobile fa-fw"></i>
               <%= t 'plannings.edit.teksat_clear.action' %>
             </li>
+            <li role="separator" class="divider"></li>
           <% end %>
           <% if @planning.customer.orange? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.orange_id.blank? } %>
             <li class="link planning-orange-send" data-url="/api/0.1/devices/orange/send_multiple" data-planning-id="<%= @planning.id %>">
@@ -55,17 +55,28 @@
               <i class="fa fa-mobile fa-fw"></i>
               <%= t 'plannings.edit.orange_clear.action' %>
             </li>
+            <li role="separator" class="divider"></li>
           <% end %>
-          <% if @planning.customer.enable_masternaut && !@planning.customer.masternaut_user.blank? && !@planning.customer.masternaut_password.blank? %>
-            <li class="export_masternaut"><%= link_to planning_path(@planning, format: :masternaut) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.masternaut' %><% end %></li>
+          <% if @planning.customer.masternaut? %>
+            <li class="link planning-masternaut-send" data-url="/api/0.1/devices/masternaut/send_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.masternaut_send.action' %>
+            </li>
+            <li role="separator" class="divider"></li>
           <% end %>
-          <% if @planning.customer.enable_alyacom && !@planning.customer.alyacom_association.blank? %>
-            <li class="export_alyacom"><%= link_to planning_path(@planning, format: :alyacom) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.edit.export.alyacom' %><% end %></li>
+          <% if @planning.customer.alyacom? %>
+            <li class="link planning-alyacom-send" data-url="/api/0.1/devices/alyacom/send_multiple" data-planning-id="<%= @planning.id %>">
+              <i class="fa fa-mobile fa-fw"></i>
+              <%= t 'plannings.edit.alyacom_send.action' %>
+            </li>
+            <li role="separator" class="divider"></li>
           <% end %>
+          <li><%= link_to planning_path(@planning) do %><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %><% end %></li>
           <li role="separator" class="divider"></li>
           <li><%= link_to planning_path(@planning, format: :csv) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :csv, stores: false) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard_without_stores' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :excel) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %><% end %></li>
+          <li role="separator" class="divider"></li>
           <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_track' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
@@ -200,7 +211,7 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 }
 controller.js(
   planning_id: @planning.id,
-  routes_array: @planning.routes.collect{ |r| {route_id: r.id, color: r.color, vehicle_usage_id: r.vehicle_usage_id, ref: r.ref} },
+  routes_array: @planning.routes.collect{ |r| { route_id: r.id, color: r.color, vehicle_usage_id: r.vehicle_usage_id, ref: r.ref } },
   zoning_id: @planning.zoning ? @planning.zoning.id : nil,
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
   map_lat: @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lat }.try(:lat) || @planning.customer.default_position[:lat],

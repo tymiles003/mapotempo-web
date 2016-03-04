@@ -32,6 +32,7 @@ fr:
       short: "%d %b %H:%M"
       hour_minute: "%H:%M"
       hour_minute_second: "%H:%M:%S"
+      complete: "%d-%m-%Y %H:%M:%S"
       datepicker: "%d-%m-%Y"
 
   activemodel:
@@ -139,6 +140,7 @@ fr:
         enable_masternaut: "Activer Masternaut"
         enable_alyacom: "Activer Alyacom"
         enable_teksat: "Activer Teksat"
+        enable_orange_fleet: "Activer Orange Fleet"
         teksat_customer_id: "Teksat Client ID"
         teksat_username: "Teksat Nom d'utilisateur"
         teksat_password: "Teksat Mot de passe"
@@ -433,6 +435,7 @@ fr:
       invalid_account: "Utilisateur invalide (non existant)."
       external_requests_not_allowed: "Non Autorisé. 'Accès à l'interface WebFLEET.connect' n'est pas activé dans l'interface WebFLEET. Les requêtes externes ne sont pas autorisées pour ce compte/utilisateur."
       hostname_not_allowed: "Le nom de domaine n'est pas autorisé."
+      request_quota_reached: "Quota de requêtes dépassé"
     teksat:
       bad_url: "URL non valide"
       get_ticket: "Échec de l'identification. Veuillez vérifier vos identifiants"
@@ -770,6 +773,7 @@ fr:
       title: "Liste plannings"
       new: "Nouveau planning"
     edit:
+      last_sent_at: "Dernier envoi"
       title: "Modifier planning"
       stops: "arrêts"
       optimize_all: "Optimiser l'ensemble"
@@ -810,6 +814,14 @@ fr:
         action: "Vider Orange Fleet"
         success: "Les commandes Orange Fleet ont été vidées avec succès"
         fail: "Échec lors de la suppression des commandes Orange Fleet"
+      alyacom_send:
+        action: "Envoyer à Alyacom"
+        success: "Envoyé à Alyacom avec succès"
+        fail: "Échec lors de l'envoi vers Alyacom"
+      masternaut_send:
+        action: "Envoyer à Masternaut"
+        success: "Envoyé à Masternaut avec succès"
+        fail: "Échec lors de l'envoi vers Masternaut"
       export:
         kmz_email:
           action: "Tracé KML par email"
@@ -1100,7 +1112,11 @@ fr:
     emissions_light_petrol: "VL - Essence - %{n}"
     emissions_light_diesel: "VL - Gazole - %{n}"
     emissions_light_lgp: "VL - GPL - %{n}"
+    device_sync_complete: "Synchronisation complète"
     form:
+      tomtom_id: "TomTom"
+      teksat_id: "Teksat"
+      orange_id: "Orange"
       ref:
         help: "Référence libre"
       emissions:

@@ -104,18 +104,6 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should show planning for masternaut' do
-    get :show, id: @planning, format: :masternaut
-    assert_response :success
-    assert Document.new(response.body)
-  end
-
-  test 'should show planning for alyacom' do
-    get :show, id: @planning, format: :alyacom
-    assert_response :success
-    # assert Document.new(response.body)
-  end
-
   test 'should show planning as csv' do
     o = plannings(:planning_one)
     oa = order_arrays(:order_array_one)

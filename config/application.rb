@@ -7,7 +7,10 @@ require_relative '../lib/routers/otp'
 require_relative '../lib/routers/here'
 require_relative '../lib/routers/router_wrapper'
 require_relative '../lib/ort'
-require_relative '../lib/tomtom_webfleet'
+
+# Devices
+require_relative '../lib/device_base'
+Dir["lib/devices/*.rb"].each{|file| require_relative "../#{file}" }
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -111,16 +114,8 @@ module Mapotempo
       nil
     )
 
-    config.tomtom = TomtomWebfleet.new(
-      'https://soap.business.tomtom.com/v1.25',
-      nil,
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'tomtom'), namespace: 'tomtom', expires_in: 60)
-    )
-
-    config.masternaut_api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
-
-    config.alyacom_api_url = 'https://partners.alyacom.fr/ws'
-    config.alyacom_api_key = nil
+    # Devices
+    config.devices = OpenStruct.new alyacom: Alyacom.new, masternaut: Masternaut.new, orange: Orange.new, teksat: Teksat.new, tomtom: Tomtom.new
 
     config.delayed_job_use = false
 

@@ -118,7 +118,13 @@ var plannings_edit = function(params) {
       url: '/api/0.1/vehicles/current_position.json',
       data: {ids: vehicleIdsPosition.join(',')},
       beforeSend: beforeSendWaiting,
-      success: displayVehicles,
+      success: function(data, textStatus, jqXHR) {
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          displayVehicles(data);
+        }
+      },
       complete: completeAjaxMap,
       error: function(err) {
         clearInterval(tid);
@@ -407,6 +413,10 @@ var plannings_edit = function(params) {
   }
 
   var initRoutes = function(context, data) {
+
+    /* API: Devices */
+    devices_observe_planning(context);
+
     var templateSelectionColor = function(state) {
       if(state.id){
         return $("<span class='color_small' style='background:" + state.id + "'></span>");
@@ -484,9 +494,6 @@ var plannings_edit = function(params) {
       }
     });
 
-    /* API: Devices */
-    devices_observe_planning();
-
     // KMZ: Export Route via E-Mail
     $('.kmz_email a', context).click(function(e) {
       e.preventDefault();
@@ -506,46 +513,6 @@ var plannings_edit = function(params) {
           stickyError(I18n.t('plannings.edit.export.kmz_email.fail'));
         }
       });
-    });
-
-    $(".export_masternaut a", context).click(function() {
-      var url = this.href;
-      $.ajax({
-        type: "get",
-        url: url,
-        beforeSend: function() {
-          $("#dialog-masternaut").dialog("open");
-        },
-        success: function(data) {
-          notice(I18n.t('plannings.edit.export.masternaut_success'));
-        },
-        complete: function() {
-          $("#dialog-masternaut").dialog("close");
-        },
-        error: ajaxError
-      });
-      $(this).closest(".dropdown-menu").prev().dropdown("toggle");
-      return false;
-    });
-
-    $(".export_alyacom a", context).click(function() {
-      var url = this.href;
-      $.ajax({
-        type: "get",
-        url: url,
-        beforeSend: function() {
-          $("#dialog-alyacom").dialog("open");
-        },
-        success: function(data) {
-          notice(I18n.t('plannings.edit.export.alyacom_success'));
-        },
-        complete: function() {
-          $("#dialog-alyacom").dialog("close");
-        },
-        error: ajaxError
-      });
-      $(this).closest(".dropdown-menu").prev().dropdown("toggle");
-      return false;
     });
 
     $(".routes", context).sortable({
@@ -953,16 +920,6 @@ var plannings_edit = function(params) {
   }
 
   $("#dialog-optimizer").dialog({
-    autoOpen: false,
-    modal: true
-  });
-
-  $("#dialog-masternaut").dialog({
-    autoOpen: false,
-    modal: true
-  });
-
-  $("#dialog-alyacom").dialog({
     autoOpen: false,
     modal: true
   });

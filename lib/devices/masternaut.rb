@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2015
+# Copyright © Mapotempo, 2015-2016
 #
 # This file is part of Mapotempo.
 #
@@ -15,12 +15,27 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'savon'
+class Masternaut < DeviceBase
 
-class MasternautError < StandardError ; end
+  def initialize
+    super
+    @api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
+  end
 
-module MasternautWs
-  TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
+  attr_reader :client_poi, :client_job
+
+  def fetch_wsdl
+    @client_poi = Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/POI?wsdl', soap_version: 1) do
+      #log true
+      #pretty_print_xml true
+      convert_request_keys_to :none
+    end
+    @client_job,  = Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
+      #log true
+      #pretty_print_xml true
+      convert_request_keys_to :none
+    end
+  end
 
   @@error_code_poi = {
     '200' => 'request has been successful',
@@ -73,7 +88,90 @@ module MasternautWs
     '26' => 'an error occurred while creating the job item',
   }
 
-  def self.createPOICategory(client_poi, username, password)
+  def send_route options
+    @route = options[:route]
+    order_id_base = Time.now.to_i.to_s(36) + '_' + route.id.to_s
+    customer = route.planning.customer
+    position = route.vehicle_usage.default_store_start
+    waypoints = route.stops.select(&:active).collect{ |stop|
+      position = stop if stop.position?
+      if position.nil? || position.lat.nil? || position.lng.nil?
+        next
+      end
+      {
+        street: position.street,
+        city: position.city,
+        postalcode: position.postalcode,
+        country: !position.country.nil? && !position.country.empty? ? country : customer.default_country,
+        lat: position.lat,
+        lng: position.lng,
+        ref: stop.ref,
+        name: stop.name,
+        id: stop.base_id,
+        description: [
+          stop.name,
+          stop.ref,
+          stop.is_a?(StopVisit) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
+          stop.is_a?(StopVisit) ? (stop.visit.take_over ? '(' + stop.visit.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S'),
+          stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
+          stop.detail,
+          stop.comment,
+          stop.phone_number,
+        ].compact.join(' ').strip,
+        time: stop.time,
+        updated_at: stop.base_updated_at,
+      }
+    }.compact
+    if !position.nil? && !position.lat.nil? && !position.lng.nil?
+      createJobRoute route.vehicle_usage.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle_usage.vehicle.name, route.planning.date || Date.today, route.start, route.end, waypoints
+    end
+  end
+
+  private
+
+  def createJobRoute vehicleRef, reference, description, date, begin_time, end_time, waypoints
+    time_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
+
+    existing_waypoints = fetchPOI
+    if existing_waypoints.empty?
+      createPOICategory
+    end
+
+    waypoints.select{ |waypoint|
+      # Send only non existing waypoints or updated
+      !existing_waypoints[waypoint[:id]] || waypoint[:updated_at].change(usec: 0) > existing_waypoints[waypoint[:id]]
+    }.each{ |waypoint|
+      createPOI(waypoint)
+    }
+
+    params = {
+      jobRoute: {
+        begin: (date.to_time + (begin_time.to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
+        description: description ? description.gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..50] : nil,
+        end: (date.to_time + (end_time.to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
+        reference: reference,
+      }
+    }
+
+    get client_job, 1, :create_job_route, params, @@error_code_job
+
+    waypoints.each{ |waypoint|
+      params = {
+        job: {
+          description: waypoint[:description].gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..255],
+          poiReference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
+          scheduledBegin: (date.to_time + (waypoint[:time].to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
+          type: 'job',
+          vehicleRef: vehicleRef,
+        },
+        jobRouteRef: reference,
+      }
+
+      get client_job, 1, :create_job, params, @@error_code_job
+    }
+  end
+
+  def createPOICategory
     params = {
       category: {
         logo: 'client_green',
@@ -82,10 +180,10 @@ module MasternautWs
       }
     }
 
-    get(client_poi, nil, :create_poi_category, username, password, params, @@error_code_poi)
+    get client_poi, nil, :create_poi_category, params, @@error_code_poi
   end
 
-  def self.fetchPOI(client_poi, username, password)
+  def fetchPOI
     params = {
       filter: {
         categoryReference: 'mapotempo',
@@ -93,7 +191,7 @@ module MasternautWs
       maxResults: 999999,
     }
 
-    response = get(client_poi, nil, :search_poi, username, password, params, @@error_code_poi)
+    response = get client_poi, nil, :search_poi, params, @@error_code_poi
 
     fetch = (response[:multi_ref] || []).select{ |e|
       e[:'@xsi:type'].end_with?(':POI')
@@ -113,7 +211,7 @@ module MasternautWs
     fetch = Hash[fetch]
   end
 
-  def self.createPOI(client_poi, username, password, waypoint)
+  def createPOI waypoint
     params = {
       poi: {
         address: {
@@ -135,87 +233,17 @@ module MasternautWs
       overwrite: true
     }
 
-    get(client_poi, 200, :create_poi, username, password, params, @@error_code_poi)
+    get client_poi, 200, :create_poi, params, @@error_code_poi
   end
 
-  def self.createJobRoute(username, password, vehicleRef, reference, description, date, begin_time, end_time, waypoints)
-    client_poi = Savon.client(basic_auth: [username, password], wsdl: Mapotempo::Application.config.masternaut_api_url + '/POI?wsdl', soap_version: 1) do
-      #log true
-      #pretty_print_xml true
-      convert_request_keys_to :none
-    end
-
-    existing_waypoints = fetchPOI(client_poi, username, password)
-    if existing_waypoints.empty?
-      createPOICategory(client_poi, username, password)
-    end
-
-    waypoints.select{ |waypoint|
-      # Send only non existing waypoints or updated
-      !existing_waypoints[waypoint[:id]] || waypoint[:updated_at].change(usec: 0) > existing_waypoints[waypoint[:id]]
-    }.each{ |waypoint|
-      createPOI(client_poi, username, password, waypoint)
-    }
-
-    params = {
-      jobRoute: {
-        begin: (date.to_time + (begin_time.to_i - TIME_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
-        description: description ? description.gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..50] : nil,
-        end: (date.to_time + (end_time.to_i - TIME_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
-        reference: reference,
-      }
-    }
-
-    client_job = Savon.client(basic_auth: [username, password], wsdl: Mapotempo::Application.config.masternaut_api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
-      #log true
-      #pretty_print_xml true
-      convert_request_keys_to :none
-    end
-    get(client_job, 1, :create_job_route, username, password, params, @@error_code_job)
-
-    waypoints.each{ |waypoint|
-      params = {
-        job: {
-          description: waypoint[:description].gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..255],
-          poiReference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
-          scheduledBegin: (date.to_time + (waypoint[:time].to_i - TIME_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
-          type: 'job',
-          vehicleRef: vehicleRef,
-        },
-#        poi: {
-#          address: {
-#            road: waypoint[:street],
-#            city: waypoint[:city],
-#            zipCode: waypoint[:postalcode],
-#            country: waypoint[:country],
-#          },
-##          category: {
-##            logo: 'client_green',
-##            name: 'mapotempo',
-##            reference: 'mapotempo',
-##          },
-#          latitude: waypoint[:lat],
-#          longitude: waypoint[:lng],
-#          name: waypoint[:name],
-##          reference: [waypoint[:id], waypoint[:updated_at].to_s(36)].join(':'),
-#        },
-        jobRouteRef: reference,
-      }
-
-      get(client_job, 1, :create_job, username, password, params, @@error_code_job)
-    }
-  end
-
-  private
-
-  def self.get(client, no_error_code, operation, _username, _password, message = {}, error_code)
+  def get client, no_error_code, operation, message={}, error_code
     response = client.call(operation, message: message)
 
     op_response = (operation.to_s + '_response').to_sym
     op_return = (operation.to_s + '_return').to_sym
     if no_error_code && response.body[op_response] && response.body[op_response][op_return] != no_error_code.to_s
       Rails.logger.info response.body[op_response]
-      raise MasternautError.new("Masternaut operation #{operation} returns error: #{error_code[response.body[op_response][op_return]] || response.body[op_response][op_return]}")
+      raise DeviceServiceError.new("Masternaut operation #{operation} returns error: #{error_code[response.body[op_response][op_return]] || response.body[op_response][op_return]}")
     end
     response.body
   rescue Savon::SOAPFault => error

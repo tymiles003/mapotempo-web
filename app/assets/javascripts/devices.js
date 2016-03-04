@@ -17,12 +17,41 @@
  <http://www.gnu.org/licenses/agpl.html>
 */
 
-function devices_observe_planning() {
+function devices_observe_planning(context) {
+
+  $.each($('.last-sent-at', context), function(i, element) {
+    if ($(element).find('span').html() == '') $(element).hide();
+  });
+
+  function set_last_sent_at(route) {
+    var container = $(".last-sent-at[data-route-id='" + route.id + "']", context);
+    route.i18n = mustache_i18n;
+    container.html(SMT['routes/last_sent_at'](route));
+    route.last_sent_at ? container.show() : container.hide();
+  }
+
+  function set_planning_routes_last_sent_at(routes) {
+    $.each(routes, function(i, route) {
+      set_last_sent_at(route);
+    });
+  }
+
+  function clear_last_sent_at(route) {
+    $(".last-sent-at[data-route-id='" + route.id + "']", context).hide();
+  }
+
+  function clear_planning_routes_last_sent_at(routes) {
+    $.each(routes, function(i, route) {
+      clear_last_sent_at(route);
+    });
+  }
+
   // API Orange Fleet: Send Planning Routes
-  $('.planning-orange-send').click(function(e) {
+  $('.planning-orange-send', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
+      dataType: 'json',
       data: {
         planning_id: $(e.target).data('planning-id')
       },
@@ -31,6 +60,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.orange_send.success'));
+        set_planning_routes_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-orange').dialog('close');
@@ -45,10 +75,11 @@ function devices_observe_planning() {
   });
 
   // API Orange Fleet: Clear Planning Routes
-  $('.planning-orange-clear').click(function(e) {
+  $('.planning-orange-clear', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
+      dataType: 'json',
       data: {
         planning_id: $(e.target).data('planning-id')
       },
@@ -57,6 +88,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.orange_clear.success'));
+        clear_planning_routes_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-orange').dialog('close');
@@ -71,10 +103,11 @@ function devices_observe_planning() {
   });
 
   // API Orange Fleet: Send Route
-  $('.orange-send').click(function(e) {
+  $('.orange-send', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
+      dataType: 'json',
       data: {
         route_id: $(e.target).data('route-id')
       },
@@ -83,6 +116,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.orange_send.success'));
+        set_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-orange').dialog('close');
@@ -97,10 +131,11 @@ function devices_observe_planning() {
   });
 
   // API Orange Fleet: Clear Route
-  $('.orange-clear').click(function(e) {
+  $('.orange-clear', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
+      dataType: 'json',
       data: {
         route_id: $(e.target).data('route-id')
       },
@@ -109,6 +144,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.orange_clear.success'));
+        clear_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-orange').dialog('close');
@@ -123,10 +159,11 @@ function devices_observe_planning() {
   });
 
   // API Teksat: Send Planning Routes
-  $('.planning-teksat-send').click(function(e) {
+  $('.planning-teksat-send', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
+      dataType: 'json',
       data: {
         planning_id: $(e.target).data('planning-id')
       },
@@ -135,6 +172,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.teksat_send.success'));
+        set_planning_routes_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-teksat').dialog('close');
@@ -149,11 +187,12 @@ function devices_observe_planning() {
   });
 
   // API Teksat: Clear Planning Routes
-  $('.planning-teksat-clear').click(function(e) {
+  $('.planning-teksat-clear', context).click(function(e) {
     e.preventDefault();
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
+      dataType: 'json',
       data: {
         planning_id: $(e.target).data('planning-id')
       },
@@ -162,6 +201,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.teksat_clear.success'));
+        clear_planning_routes_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-teksat').dialog('close');
@@ -176,10 +216,11 @@ function devices_observe_planning() {
   });
 
   // API Teksat: Send Route
-  $('.teksat-send').click(function(e) {
+  $('.teksat-send', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
+      dataType: 'json',
       data: {
         route_id: $(e.target).data('route-id')
       },
@@ -188,6 +229,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.teksat_send.success'));
+        set_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-teksat').dialog('close');
@@ -202,11 +244,12 @@ function devices_observe_planning() {
   });
 
   // API Teksat: Clear Route
-  $('.teksat-clear').click(function(e) {
+  $('.teksat-clear', context).click(function(e) {
     e.preventDefault();
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
+      dataType: 'json',
       data: {
         route_id: $(e.target).data('route-id')
       },
@@ -215,6 +258,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.teksat_clear.success'));
+        clear_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-teksat').dialog('close');
@@ -229,10 +273,11 @@ function devices_observe_planning() {
   });
 
   // API TomTom: Send Planning Routes As Waypoints
-  $('.planning-tomtom-send-waypoints').click(function(e) {
+  $('.planning-tomtom-send-waypoints', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
+      dataType: 'json',
       data: {
         type: 'waypoints',
         planning_id: $(e.target).data('planning-id')
@@ -242,6 +287,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.tomtom_send_waypoints.success'));
+        set_planning_routes_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -256,10 +302,11 @@ function devices_observe_planning() {
   });
 
   // API TomTom: Send Planning Routes As Orders
-  $('.planning-tomtom-send-orders').click(function(e) {
+  $('.planning-tomtom-send-orders', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
+      dataType: 'json',
       data: {
         type: 'orders',
         planning_id: $(e.target).data('planning-id')
@@ -269,6 +316,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.tomtom_send_orders.success'));
+        set_planning_routes_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -283,10 +331,11 @@ function devices_observe_planning() {
   });
 
   // API TomTom: Clear Planning Routes
-  $('.planning-tomtom-clear').click(function(e) {
+  $('.planning-tomtom-clear', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
+      dataType: 'json',
       data: {
         planning_id: $(e.target).data('planning-id')
       },
@@ -295,6 +344,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.tomtom_clear.success'));
+        clear_planning_routes_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -309,10 +359,11 @@ function devices_observe_planning() {
   });
 
   // API TomTom: Send Route As Waypoints
-  $('.tomtom-send-waypoints').click(function(e) {
+  $('.tomtom-send-waypoints', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
+      dataType: 'json',
       data: {
         type: 'waypoints',
         route_id: $(e.target).data('route-id')
@@ -322,6 +373,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.tomtom_send_waypoints.success'));
+        set_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -336,10 +388,11 @@ function devices_observe_planning() {
   });
 
   // API TomTom: Send Route As Orders
-  $('.tomtom-send-orders').click(function(e) {
+  $('.tomtom-send-orders', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
+      dataType: 'json',
       data: {
         type: 'orders',
         route_id: $(e.target).data('route-id')
@@ -349,6 +402,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.tomtom_send_orders.success'));
+        set_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -363,10 +417,11 @@ function devices_observe_planning() {
   });
 
   // API TomTom: Clear Route
-  $('.tomtom-clear').click(function(e) {
+  $('.tomtom-clear', context).click(function(e) {
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
+      dataType: 'json',
       data: {
         route_id: $(e.target).data('route-id')
       },
@@ -375,6 +430,7 @@ function devices_observe_planning() {
       },
       success: function(data, textStatus, jqXHR) {
         notice(I18n.t('plannings.edit.tomtom_clear.success'));
+        clear_last_sent_at(data);
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -385,6 +441,118 @@ function devices_observe_planning() {
     });
     // Reset Dropdown
     $(this).closest(".dropdown-menu").prev().dropdown("toggle");
+    return false;
+  });
+
+  // API Masternaut: Send Planning Routes
+  $('.planning-masternaut-send', context).click(function(e) {
+    $.ajax({
+      url: $(e.target).data('url'),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        planning_id: $(e.target).data('planning-id')
+      },
+      beforeSend: function(jqXHR, settings) {
+        $('#dialog-masternaut').dialog('open');
+      },
+      success: function(data, textStatus, jqXHR) {
+        notice(I18n.t('plannings.edit.masternaut_send.success'));
+        set_planning_routes_last_sent_at(data);
+      },
+      complete: function(jqXHR, textStatus) {
+        $('#dialog-masternaut').dialog('close');
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        stickyError(I18n.t('plannings.edit.masternaut_send.fail'));
+      }
+    });
+    // Reset Dropdown
+    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    return false;
+  });
+
+  // API Masternaut: Send Route
+  $('.masternaut-send', context).click(function(e) {
+    $.ajax({
+      url: $(e.target).data('url'),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        route_id: $(e.target).data('route-id')
+      },
+      beforeSend: function(jqXHR, settings) {
+        $('#dialog-masternaut').dialog('open');
+      },
+      success: function(data, textStatus, jqXHR) {
+        notice(I18n.t('plannings.edit.masternaut_send.success'));
+        set_last_sent_at(data);
+      },
+      complete: function(jqXHR, textStatus) {
+        $('#dialog-masternaut').dialog('close');
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        stickyError(I18n.t('plannings.edit.masternaut_send.fail'));
+      }
+    });
+    // Reset Dropdown
+    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    return false;
+  });
+
+  // API Alyacom: Send Planning Routes
+  $('.planning-alyacom-send', context).click(function(e) {
+    $.ajax({
+      url: $(e.target).data('url'),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        planning_id: $(e.target).data('planning-id')
+      },
+      beforeSend: function(jqXHR, settings) {
+        $('#dialog-alyacom').dialog('open');
+      },
+      success: function(data, textStatus, jqXHR) {
+        notice(I18n.t('plannings.edit.alyacom_send.success'));
+        set_planning_routes_last_sent_at(data);
+      },
+      complete: function(jqXHR, textStatus) {
+        $('#dialog-alyacom').dialog('close');
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        stickyError(I18n.t('plannings.edit.alyacom_send.fail'));
+      }
+    });
+    // Reset Dropdown
+    $(e.target).closest('.dropdown-menu').dropdown('toggle');
+    return false;
+  });
+
+  // API Alyacom: Send Route
+  $('.alyacom-send', context).click(function(e) {
+    $.ajax({
+      url: $(e.target).data('url'),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        route_id: $(e.target).data('route-id')
+      },
+      beforeSend: function(jqXHR, settings) {
+        $('#dialog-alyacom').dialog('open');
+      },
+      success: function(data, textStatus, jqXHR) {
+        notice(I18n.t('plannings.edit.alyacom_send.success'));
+        set_last_sent_at(data);
+      },
+      complete: function(jqXHR, textStatus) {
+        $('#dialog-alyacom').dialog('close');
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        stickyError(I18n.t('plannings.edit.alyacom_send.fail'));
+      }
+    });
+    // Reset Dropdown
+    $(e.target).closest('.dropdown-menu').dropdown('toggle');
     return false;
   });
 
@@ -403,6 +571,16 @@ function devices_observe_planning() {
     autoOpen: false,
     modal: true
   });
+
+  $("#dialog-masternaut").dialog({
+    autoOpen: false,
+    modal: true
+  });
+
+  $("#dialog-alyacom").dialog({
+    autoOpen: false,
+    modal: true
+  });
 }
 
 function devices_observe_vehicle(params) {
@@ -413,7 +591,11 @@ function devices_observe_vehicle(params) {
       data: { customer_id: params.customer_id },
       dataType: 'json',
       success: function(data, textStatus, jqXHR) {
-        data.push(' ');
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          data.unshift(' '); // Blank option
+        }
         $('#' + base_name + '_' + name + '_id').select2({
           data: data,
           theme: 'bootstrap',
@@ -479,7 +661,7 @@ function devices_observe_customer(params) {
         data: user_credentials(),
         dataType: 'json',
         success: function(data, textStatus, jqXHR) {
-          if (data.error) {
+          if (data && data.error) {
             error_callback();
           } else {
             success_callback();
@@ -509,7 +691,7 @@ function devices_observe_customer(params) {
             completeWaiting();
           },
           success: function(data, textStatus, jqXHR) {
-            if (data.error) {
+            if (data && data.error) {
               error(data.error);
               error_callback();
             } else {
@@ -585,7 +767,7 @@ function devices_observe_customer(params) {
           completeWaiting();
         },
         success: function(data, textStatus, jqXHR) {
-          alert("Sync Complete");
+          alert(I18n.t('vehicles.device_sync_complete'));
         }
       });
     });

@@ -32,6 +32,7 @@ en:
       short: "%d %b %H:%M"
       hour_minute: "%H:%M"
       hour_minute_second: "%H:%M:%S"
+      complete: "%m-%d-%Y %H:%M:%S"
       datepicker: "%m-%d-%Y"
 
   activemodel:
@@ -139,6 +140,7 @@ en:
         enable_masternaut: "Enable Masternaut"
         enable_alyacom: "Enable Alyacom"
         enable_teksat: "Enable Teksat"
+        enable_orange_fleet: "Enable Orange Fleet"
         teksat_customer_id: "Teksat Customer ID"
         teksat_username: "Teksat Username"
         teksat_password: "Teksat Password"
@@ -434,6 +436,7 @@ en:
       invalid_account: "User invalid (does not exist)."
       external_requests_not_allowed: "Access denied. 'Access to interface WEBFLEET.connect' is not enabled in WEBFLEET user interface. External requests are not allowed for that account/user."
       hostname_not_allowed: "Hostname not allowed."
+      request_quota_reached: "Request Quota Reached"
     teksat:
       bad_url: "Bad URL"
       get_ticket: "Can't Authenticate. Please Check Your Credentials"
@@ -771,6 +774,7 @@ en:
       title: "Listing plannings"
       new: "New Planning"
     edit:
+      last_sent_at: "Last sent at"
       title: "Editing planning"
       stops: "stops"
       optimize_all: "Optimize the whole"
@@ -811,6 +815,14 @@ en:
         action: "Clear Orange Fleet"
         success: "Orange Fleet commands have been cleared successfully"
         fail: "Failed to clear Orange Fleet commands"
+      alyacom_send:
+        action: "Send to Alyacom"
+        success: "Sent to Alyacom Successfully"
+        fail: "Failed to send to Alyacom"
+      masternaut_send:
+        action: "Send to Masternaut"
+        success: "Sent to Masternaut Successfully"
+        fail: "Failed to send to Masternaut"
       export:
         kmz_email:
           action: "KML Track by E-Mail"
@@ -1102,7 +1114,11 @@ en:
     emissions_light_petrol: "Light - Petrol - %{n}"
     emissions_light_diesel: "Light - Diesel - %{n}"
     emissions_light_lgp: "Light - LGP - %{n}"
+    device_sync_complete: "Sync Complete"
     form:
+      tomtom_id: "TomTom"
+      teksat_id: "Teksat"
+      orange_id: "Orange"
       ref:
         help: "A free reference"
       emissions:

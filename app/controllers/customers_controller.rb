@@ -21,7 +21,7 @@ class CustomersController < ApplicationController
   before_action :set_customer, only: [:edit, :update, :delete_vehicle]
   before_action :clear_customer_params, only: [:create, :update]
 
-  include DeviceHelpers
+  include Devices::Helpers
 
   def index
     @customers = current_user.reseller.customers.order(:name)

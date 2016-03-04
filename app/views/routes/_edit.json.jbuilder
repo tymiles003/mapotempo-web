@@ -6,6 +6,7 @@ json.distance number_to_human((route.distance || 0), units: :distance, precision
 json.size route.stops.size
 json.extract! route, :ref, :color, :size_active
 json.color_fake route.color
+json.last_sent_at route.last_sent_at ? l(route.last_sent_at, format: :complete) : ""
 (json.quantity route.quantity) if !@planning.customer.enable_orders
 if route.vehicle_usage
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
@@ -13,12 +14,12 @@ if route.vehicle_usage
   json.vehicle_usage_id route.vehicle_usage.id
   json.vehicle_id route.vehicle_usage.vehicle.id
   json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
-  (json.masternaut true) if route.vehicle_usage.vehicle.masternaut_ref && route.planning.customer.enable_masternaut && !route.planning.customer.masternaut_user.blank? && !route.planning.customer.masternaut_password.blank?
-  (json.alyacom true) if route.planning.customer.enable_alyacom && !route.planning.customer.alyacom_association.blank?
   # Devices
   (json.teksat true) if !route.vehicle_usage.vehicle.teksat_id.blank? && route.planning.customer.teksat?
   (json.tomtom true) if !route.vehicle_usage.vehicle.tomtom_id.blank? && route.planning.customer.tomtom?
   (json.orange true) if !route.vehicle_usage.vehicle.orange_id.blank? && route.planning.customer.orange?
+  (json.alyacom true) if route.planning.customer.alyacom?
+  (json.masternaut true) if !route.vehicle_usage.vehicle.masternaut_ref.blank? && route.planning.customer.masternaut?
 end
 number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false

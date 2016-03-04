@@ -16,14 +16,17 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'coerce'
-require 'tomtom'
 
 require Rails.root.join("lib/device_helpers")
-include DeviceHelpers
+include Devices::Helpers
 
 class V01::Vehicles < Grape::API
-  helpers do
 
+  rescue_from DeviceServiceError do |e|
+    error! e.message, 200
+  end
+
+  helpers do
     def session
       env[Rack::Session::Abstract::ENV_SESSION_KEY]
     end
@@ -98,7 +101,7 @@ class V01::Vehicles < Grape::API
         end
       end
       if current_customer.tomtom?
-        Tomtom.current_position(current_customer).each do |item|
+        TomtomService.new(customer: current_customer).get_vehicles_pos.each do |item|
           vehicle_id = item.delete :tomtom_vehicle_id
           vehicle = vehicles.detect{|v| v.tomtom_id == vehicle_id }
           next if !vehicle

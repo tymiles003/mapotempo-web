@@ -77,6 +77,14 @@ class Customer < ActiveRecord::Base
     end
   end
 
+  def masternaut?
+    enable_masternaut && !masternaut_user.blank? && !masternaut_password.blank?
+  end
+
+  def alyacom?
+    enable_alyacom && !alyacom_association.blank?
+  end
+
   def tomtom?
     enable_tomtom && !tomtom_account.blank? && !tomtom_user.blank? && !tomtom_password.blank?
   end

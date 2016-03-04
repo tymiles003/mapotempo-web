@@ -27,52 +27,39 @@ class V01::Devices::Tomtom < Grape::API
         error! e.message, 200
       end
 
+      helpers do
+        def service
+          TomtomService.new customer: @customer
+        end
+      end
+
       desc 'Validate TomTom WebFleet Credentials', detail: 'Validate TomTom WebFleet Credentials'
       get '/auth' do
         tomtom_authenticate @customer
-        status 200
+        status 204
       end
 
       desc 'List Devices', detail: 'List Devices'
       get '/devices' do
-        Tomtom.fetch_devices(@customer).map do |item|
-          { id: item[:objectUid], text: item[:objectName] }
-        end
+        present service.list_devices, with: V01::Entities::DeviceItem
       end
 
       desc 'Send Route', detail: 'Send Route'
       params do
         requires :route_id, type: Integer, desc: 'Route ID'
-        requires :type, type: String, desc: 'Action Name'
+        requires :type, type: String, desc: 'Action Name', values: %w(waypoints orders)
       end
       post '/send' do
-        route = Route.for_customer(@customer).find params[:route_id]
-        case params[:type]
-          when 'waypoints'
-            Tomtom.export_route_as_waypoints route
-          when 'orders'
-            Tomtom.export_route_as_orders route
-        end
-        status 200
+        device_send_route params.slice(:type)
       end
 
-     desc 'Send Planning Routes', detail: 'Send Planning Routes'
+      desc 'Send Planning Routes', detail: 'Send Planning Routes'
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
-        requires :type, type: String, desc: 'Action Name'
+        requires :type, type: String, desc: 'Action Name', values: %w(waypoints orders)
       end
       post '/send_multiple' do
-        planning = @customer.plannings.find params[:planning_id]
-        planning.routes.select(&:vehicle_usage).each do |route|
-          next if route.vehicle_usage.vehicle.tomtom_id.blank?
-          case params[:type]
-            when 'waypoints'
-              Tomtom.export_route_as_waypoints route
-            when 'orders'
-              Tomtom.export_route_as_orders route
-          end
-        end
-        status 200
+        device_send_routes params.slice(:type).merge(device_id: :tomtom_id)
       end
 
       desc 'Clear Route', detail: 'Clear Route'
@@ -80,9 +67,7 @@ class V01::Devices::Tomtom < Grape::API
         requires :route_id, type: Integer, desc: 'Route ID'
       end
       delete '/clear' do
-        route = Route.for_customer(@customer).find params[:route_id]
-        Tomtom.clear route
-        status 200
+        device_clear_route
       end
 
       desc 'Clear Planning Routes', detail: 'Clear Planning Routes'
@@ -90,18 +75,13 @@ class V01::Devices::Tomtom < Grape::API
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
       delete '/clear_multiple' do
-        planning = @customer.plannings.find params[:planning_id]
-        planning.routes.select(&:vehicle_usage).each do |route|
-          next if route.vehicle_usage.vehicle.tomtom_id.blank?
-          Tomtom.clear route
-        end
-        status 200
+        device_clear_routes device_id: :tomtom_id
       end
 
       desc 'Sync Vehicles', detail: 'Sync Vehicles'
       post '/sync' do
         tomtom_sync_vehicles @customer
-        status 200
+        status 204
       end
 
     end

@@ -28,14 +28,20 @@ class V01::Devices::Teksat < Grape::API
         error! e.message, 200
       end
 
+      helpers do
+        def service
+          TeksatService.new customer: @customer, ticket_id: session[:teksat_ticket_id]
+        end
+      end
+
       desc 'Validate Teksat Credentials', detail: 'Validate Teksat Credentials'
       get '/auth' do
-        status 200
+        status 204
       end
 
       desc 'List Devices', detail: 'List Devices'
       get '/devices' do
-        TeksatService.new(customer: @customer, ticket_id: session[:teksat_ticket_id]).list
+        present service.list_devices, with: V01::Entities::DeviceItem
       end
 
       desc 'Send Route', detail: 'Send Route'
@@ -43,9 +49,7 @@ class V01::Devices::Teksat < Grape::API
         requires :route_id, type: Integer, desc: 'Route ID'
       end
       post '/send' do
-        route = Route.for_customer(@customer).find params[:route_id]
-        TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).send_route
-        status 200
+        device_send_route
       end
 
       desc 'Send Planning Routes', detail: 'Send Planning Routes'
@@ -53,12 +57,7 @@ class V01::Devices::Teksat < Grape::API
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
       post '/send_multiple' do
-        planning = @customer.plannings.find params[:planning_id]
-        planning.routes.select(&:vehicle_usage).each do |route|
-          next if route.vehicle_usage.vehicle.teksat_id.blank?
-          TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).send_route
-        end
-        status 200
+        device_send_routes device_id: :teksat_id
       end
 
       desc 'Clear Route', detail: 'Clear Route'
@@ -66,9 +65,7 @@ class V01::Devices::Teksat < Grape::API
         requires :route_id, type: Integer, desc: 'Route ID'
       end
       delete '/clear' do
-        route = Route.for_customer(@customer).find params[:route_id]
-        TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).clear_route
-        status 200
+        device_clear_route
       end
 
       desc 'Clear Planning Routes', detail: 'Clear Planning Routes'
@@ -76,18 +73,13 @@ class V01::Devices::Teksat < Grape::API
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
       delete '/clear_multiple' do
-        planning = @customer.plannings.find params[:planning_id]
-        planning.routes.select(&:vehicle_usage).each do |route|
-          next if route.vehicle_usage.vehicle.teksat_id.blank?
-          TeksatService.new(customer: @customer, route: route, ticket_id: session[:teksat_ticket_id]).clear_route
-        end
-        status 200
+        device_clear_routes device_id: :teksat_id
       end
 
       desc 'Sync Vehicles', detail: 'Sync Vehicles'
       post '/sync' do
         teksat_sync_vehicles @customer, session[:teksat_ticket_id]
-        status 200
+        status 204
       end
 
     end

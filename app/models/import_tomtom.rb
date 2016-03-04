@@ -31,13 +31,12 @@ class ImportTomtom
   def import(synchronous = false)
     begin
       Customer.transaction do
-        address = Mapotempo::Application.config.tomtom.showAddressReport(@customer.tomtom_account, @customer.tomtom_user, @customer.tomtom_password)
-        @importer.import(address, nil, synchronous, ignore_errors: true, replace: replace) { |row|
+        addresses = TomtomService.new(customer: customer).list_addresses
+        @importer.import(addresses, nil, synchronous, ignore_errors: true, replace: replace) { |row|
           if !row[:tags].nil?
             row[:tags] = row[:tags].join(',')
           end
           row[:line] = row[:ref]
-
           row
         }
       end

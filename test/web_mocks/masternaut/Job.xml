@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://ws.webservices.masternaut.fr/MasterWS/services/Job" xmlns:intf="http://ws.webservices.masternaut.fr/MasterWS/services/Job" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="urn:Job" xmlns:tns2="urn:POI" xmlns:tns3="urn:Address" xmlns:tns4="http://bean.geo.masterws.masternaut.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema targetNamespace="urn:Job" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:Address"/>
+   <import namespace="urn:POI"/>
+   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+   <import namespace="http://bean.geo.masterws.masternaut.com"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="JobItem">
+    <sequence>
+     <element name="label" nillable="true" type="xsd:string"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+     <element name="unit" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="JobStatus">
+    <sequence>
+     <element name="comment" nillable="true" type="xsd:string"/>
+     <element name="date" nillable="true" type="xsd:dateTime"/>
+     <element name="driverReference" nillable="true" type="xsd:string"/>
+     <element name="jobReference" nillable="true" type="xsd:string"/>
+     <element name="jobRouteReference" nillable="true" type="xsd:string"/>
+     <element name="latitude" type="xsd:double"/>
+     <element name="longitude" type="xsd:double"/>
+     <element name="state" type="xsd:int"/>
+     <element name="vehicleReference" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="Item">
+    <sequence>
+     <element name="jobItem" nillable="true" type="tns1:JobItem"/>
+     <element name="quantity" type="xsd:int"/>
+    </sequence>
+   </complexType>
+   <complexType name="Job">
+    <sequence>
+     <element name="description" nillable="true" type="xsd:string"/>
+     <element name="driverRef" nillable="true" type="xsd:string"/>
+     <element name="item" nillable="true" type="impl:ArrayOf_tns1_Item"/>
+     <element name="poiReference" nillable="true" type="xsd:string"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+     <element name="scheduledBegin" nillable="true" type="xsd:dateTime"/>
+     <element name="scheduledEnd" nillable="true" type="xsd:dateTime"/>
+     <element name="type" nillable="true" type="xsd:string"/>
+     <element name="vehicleRef" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="JobRoute">
+    <sequence>
+     <element name="begin" nillable="true" type="xsd:dateTime"/>
+     <element name="description" nillable="true" type="xsd:string"/>
+     <element name="end" nillable="true" type="xsd:dateTime"/>
+     <element name="jobs" nillable="true" type="impl:ArrayOf_tns1_Job"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="JobStep">
+    <sequence>
+     <element name="job" nillable="true" type="tns1:Job"/>
+     <element name="jobStatus" nillable="true" type="impl:ArrayOf_tns1_JobStatus"/>
+     <element name="sendingDate" nillable="true" type="xsd:dateTime"/>
+    </sequence>
+   </complexType>
+   <complexType name="JobRouteStatus">
+    <sequence>
+     <element name="beginDate" nillable="true" type="xsd:dateTime"/>
+     <element name="creationDate" nillable="true" type="xsd:dateTime"/>
+     <element name="endDate" nillable="true" type="xsd:dateTime"/>
+     <element name="jobRouteRef" nillable="true" type="xsd:string"/>
+     <element name="jobStep" nillable="true" type="impl:ArrayOf_tns1_JobStep"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:Address"/>
+   <import namespace="urn:POI"/>
+   <import namespace="urn:Job"/>
+   <import namespace="http://bean.geo.masterws.masternaut.com"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="ArrayOf_tns1_JobStatus">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:JobStatus[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_Item">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:Item[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_Job">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:Job[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_JobStep">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:JobStep[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_JobRouteStatus">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:JobRouteStatus[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+  </schema>
+  <schema targetNamespace="urn:Address" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:POI"/>
+   <import namespace="urn:Job"/>
+   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+   <import namespace="http://bean.geo.masterws.masternaut.com"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="JobStep">
+    <sequence>
+     <element name="city" nillable="true" type="xsd:string"/>
+     <element name="country" nillable="true" type="xsd:string"/>
+     <element name="department" nillable="true" type="xsd:string"/>
+     <element name="district" nillable="true" type="xsd:string"/>
+     <element name="houseNumber" nillable="true" type="xsd:string"/>
+     <element name="region" nillable="true" type="xsd:string"/>
+     <element name="road" nillable="true" type="xsd:string"/>
+     <element name="roadNumber" nillable="true" type="xsd:string"/>
+     <element name="zipCode" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://bean.geo.masterws.masternaut.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:Address"/>
+   <import namespace="urn:POI"/>
+   <import namespace="urn:Job"/>
+   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="POICategory">
+    <sequence>
+     <element name="logo" nillable="true" type="xsd:string"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="urn:POI" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:Address"/>
+   <import namespace="urn:Job"/>
+   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+   <import namespace="http://bean.geo.masterws.masternaut.com"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="JobStep">
+    <sequence>
+     <element name="address" nillable="true" type="tns3:JobStep"/>
+     <element name="category" nillable="true" type="tns4:POICategory"/>
+     <element name="companyName" nillable="true" type="xsd:string"/>
+     <element name="contactMail" nillable="true" type="xsd:string"/>
+     <element name="contactName" nillable="true" type="xsd:string"/>
+     <element name="contactPhone" nillable="true" type="xsd:string"/>
+     <element name="endTemporary" nillable="true" type="xsd:dateTime"/>
+     <element name="latitude" type="xsd:double"/>
+     <element name="longitude" type="xsd:double"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="radius" type="xsd:int"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+     <element name="startTemporary" nillable="true" type="xsd:dateTime"/>
+     <element name="temporary" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="cancelJobResponse">
+
+      <wsdl:part name="cancelJobReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createItemResponse">
+
+      <wsdl:part name="createItemReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelJobRouteResponse1">
+
+      <wsdl:part name="cancelJobRouteReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createJobRouteResponse">
+
+      <wsdl:part name="createJobRouteReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createJobRequest1">
+
+      <wsdl:part name="job" type="tns1:Job">
+
+      </wsdl:part>
+
+      <wsdl:part name="poi" type="tns2:JobStep">
+
+      </wsdl:part>
+
+      <wsdl:part name="jobRouteRef" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobStatusResponse">
+
+      <wsdl:part name="getJobStatusReturn" type="impl:ArrayOf_tns1_JobStatus">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteJobResponse">
+
+      <wsdl:part name="deleteJobReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobRouteStatusResponse">
+
+      <wsdl:part name="getJobRouteStatusReturn" type="tns1:JobRouteStatus">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelJobRequest1">
+
+      <wsdl:part name="jobReference" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="ignoreStatus" type="xsd:boolean">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createItemRequest">
+
+      <wsdl:part name="item" type="tns1:JobItem">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelJobRouteRequest1">
+
+      <wsdl:part name="jobRouteReference" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="ignoreStatus" type="xsd:boolean">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modifyJobRouteResponse">
+
+      <wsdl:part name="modifyJobRouteReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createJobResponse1">
+
+      <wsdl:part name="createJobReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createJobResponse">
+
+      <wsdl:part name="createJobReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobStatusRequest">
+
+      <wsdl:part name="jobReference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobRouteStatusRequest">
+
+      <wsdl:part name="jobRouteReference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createJobRouteRequest">
+
+      <wsdl:part name="jobRoute" type="tns1:JobRoute">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modifyJobRouteRequest">
+
+      <wsdl:part name="jobRouteReference" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="jobRoute" type="tns1:JobRoute">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobRouteStatusByBeginningDateResponse">
+
+      <wsdl:part name="getJobRouteStatusByBeginningDateReturn" type="impl:ArrayOf_tns1_JobRouteStatus">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createJobRequest">
+
+      <wsdl:part name="job" type="tns1:Job">
+
+      </wsdl:part>
+
+      <wsdl:part name="jobRouteRef" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelJobResponse1">
+
+      <wsdl:part name="cancelJobReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelJobRouteResponse">
+
+      <wsdl:part name="cancelJobRouteReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getJobRouteStatusByBeginningDateRequest">
+
+      <wsdl:part name="day" type="xsd:dateTime">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteJobRequest">
+
+      <wsdl:part name="jobReference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelJobRouteRequest">
+
+      <wsdl:part name="jobRouteReference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelJobRequest">
+
+      <wsdl:part name="jobReference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="JobWS">
+
+      <wsdl:operation name="createItem" parameterOrder="item">
+
+         <wsdl:input message="impl:createItemRequest" name="createItemRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createItemResponse" name="createItemResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobStatus" parameterOrder="jobReference">
+
+         <wsdl:input message="impl:getJobStatusRequest" name="getJobStatusRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getJobStatusResponse" name="getJobStatusResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancelJob" parameterOrder="jobReference">
+
+         <wsdl:input message="impl:cancelJobRequest" name="cancelJobRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:cancelJobResponse" name="cancelJobResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancelJob" parameterOrder="jobReference ignoreStatus">
+
+         <wsdl:input message="impl:cancelJobRequest1" name="cancelJobRequest1">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:cancelJobResponse1" name="cancelJobResponse1">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createJob" parameterOrder="job jobRouteRef">
+
+         <wsdl:input message="impl:createJobRequest" name="createJobRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createJobResponse" name="createJobResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createJob" parameterOrder="job poi jobRouteRef">
+
+         <wsdl:input message="impl:createJobRequest1" name="createJobRequest1">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createJobResponse1" name="createJobResponse1">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createJobRoute" parameterOrder="jobRoute">
+
+         <wsdl:input message="impl:createJobRouteRequest" name="createJobRouteRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createJobRouteResponse" name="createJobRouteResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancelJobRoute" parameterOrder="jobRouteReference">
+
+         <wsdl:input message="impl:cancelJobRouteRequest" name="cancelJobRouteRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:cancelJobRouteResponse" name="cancelJobRouteResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancelJobRoute" parameterOrder="jobRouteReference ignoreStatus">
+
+         <wsdl:input message="impl:cancelJobRouteRequest1" name="cancelJobRouteRequest1">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:cancelJobRouteResponse1" name="cancelJobRouteResponse1">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modifyJobRoute" parameterOrder="jobRouteReference jobRoute">
+
+         <wsdl:input message="impl:modifyJobRouteRequest" name="modifyJobRouteRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:modifyJobRouteResponse" name="modifyJobRouteResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteJob" parameterOrder="jobReference">
+
+         <wsdl:input message="impl:deleteJobRequest" name="deleteJobRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:deleteJobResponse" name="deleteJobResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobRouteStatus" parameterOrder="jobRouteReference">
+
+         <wsdl:input message="impl:getJobRouteStatusRequest" name="getJobRouteStatusRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getJobRouteStatusResponse" name="getJobRouteStatusResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobRouteStatusByBeginningDate" parameterOrder="day">
+
+         <wsdl:input message="impl:getJobRouteStatusByBeginningDateRequest" name="getJobRouteStatusByBeginningDateRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getJobRouteStatusByBeginningDateResponse" name="getJobRouteStatusByBeginningDateResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="JobSoapBinding" type="impl:JobWS">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="createItem">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createItemRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createItemResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobStatus">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getJobStatusRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getJobStatusResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancelJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cancelJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cancelJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancelJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cancelJobRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cancelJobResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createJobRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createJobResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createJobRoute">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createJobRouteRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createJobRouteResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancelJobRoute">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cancelJobRouteRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cancelJobRouteResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancelJobRoute">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cancelJobRouteRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cancelJobRouteResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modifyJobRoute">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="modifyJobRouteRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="modifyJobRouteResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteJob">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deleteJobRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deleteJobResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobRouteStatus">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getJobRouteStatusRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getJobRouteStatusResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getJobRouteStatusByBeginningDate">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getJobRouteStatusByBeginningDateRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getJobRouteStatusByBeginningDateResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="JobWSService">
+
+      <wsdl:port binding="impl:JobSoapBinding" name="Job">
+
+         <wsdlsoap:address location="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

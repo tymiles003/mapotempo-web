@@ -20,68 +20,27 @@ require 'test_helper'
 class V01::Devices::TeksatTest < ActiveSupport::TestCase
   include Rack::Test::Methods
 
+  require Rails.root.join("test/lib/devices/api_base")
+  include ApiBase
+
+  require Rails.root.join("test/lib/devices/teksat_base")
+  include TeksatBase
+
   setup do
-    @customer = customers(:customer_one)
-    @customer = add_teksat_credentials @customer
-  end
-
-  def app
-    Rails.application
-  end
-
-  def api path, params = {}
-    Addressable::Template.new("/api/0.1/#{path}.json{?query*}").expand(query: params.merge(api_key: 'testkey1')).to_s
-  end
-
-  def with_stubs names, &block
-    begin
-      stubs = []
-      names.each do |name|
-        case name
-          when :auth
-            @ticket_id = File.read(Rails.root.join("test/web_mocks/teksat/get_ticket")).strip
-            url = TeksatService.new({}).send :get_ticket_url, @customer.teksat_url, @customer.teksat_customer_id, @customer.teksat_username, @customer.teksat_password
-            stubs << stub_request(:get, url).to_return(status: 200, body: @ticket_id)
-          when :get_vehicles
-            expected_response = File.read(Rails.root.join("test/web_mocks/teksat/get_vehicles.xml")).strip
-            url = TeksatService.new(customer: @customer, ticket_id: @ticket_id).send :get_vehicles_url
-            stubs << stub_request(:get, url).to_return(status: 200, body: expected_response)
-          when :vehicles_pos
-            expected_response = File.read(Rails.root.join("test/web_mocks/teksat/get_vehicles_pos.xml")).strip
-            url = TeksatService.new(customer: @customer, ticket_id: @ticket_id).send :get_vehicles_pos_url
-            stubs << stub_request(:get, url).to_return(status: 200, body: expected_response)
-          when :send_route
-            expected_response = File.read(Rails.root.join("test/web_mocks/teksat/mission_data.xml")).strip
-            url = @customer.teksat_url + "/webservices/map/set-mission.jsp"
-            stubs << stub_request(:get, url).with(:query => hash_including({ })).to_return(status: 200, body: expected_response)
-          when :clear_route
-            expected_response = File.read(Rails.root.join("test/web_mocks/teksat/get_missions.xml")).strip
-            url = @customer.teksat_url + "/webservices/map/get-missions.jsp"
-            stubs << stub_request(:get, url).with(:query => hash_including({ })).to_return(status: 200, body: expected_response)
-            expected_response = File.read(Rails.root.join("test/web_mocks/teksat/mission_data.xml")).strip
-            url = @customer.teksat_url + "/webservices/map/delete-mission.jsp"
-            stubs << stub_request(:get, url).with(:query => hash_including({ })).to_return(status: 200, body: expected_response)
-        end
-      end
-      yield
-    ensure
-      stubs.each do |name|
-        remove_request_stub name
-      end
-    end
+    @customer = add_teksat_credentials customers(:customer_one)
   end
 
   test 'authenticate' do
     with_stubs [:auth] do
       get api("devices/teksat/auth")
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status
     end
   end
 
   test 'list devices' do
     with_stubs [:auth, :get_vehicles] do
       get api("devices/teksat/devices", { customer_id: @customer.id })
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
       assert_equal [
         {"id"=>"97", "text"=>"FIAT DOBLO - 352848026546057"},
         {"id"=>"98", "text"=>"FIAT DOBLO - 352848026546131"},
@@ -93,12 +52,11 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
 
   test 'vehicle positions' do
     with_stubs [:auth, :vehicles_pos] do
-      vehicle = @customer.vehicles.take
-      vehicle.update! teksat_id: '1091' # Match response vehicle_id
+      set_route
       get api("vehicles/current_position")
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
       assert_equal [{
-        "vehicle_id"=>vehicle.id,
+        "vehicle_id"=>@vehicle.id,
         "device_name"=>"356173064830644",
         "lat"=>"49.1860415",
         "lng"=>"-0.3810453",
@@ -113,7 +71,22 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
     with_stubs [:auth, :send_route] do
       set_route
       post api("devices/teksat/send", { customer_id: @customer.id, route_id: @route.id })
-      assert last_response.ok?, last_response.body
+      assert_equal 201, last_response.status
+      @route.reload
+      assert @route.reload.last_sent_at
+      assert_equal({ "id" => @route.id, "last_sent_at" => I18n.l(@route.last_sent_at, format: :complete) }, JSON.parse(last_response.body))
+    end
+  end
+
+  test 'send multiple' do
+    with_stubs [:auth, :send_route] do
+      set_route
+      post api("devices/teksat/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
+      assert_equal 201, last_response.status
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.teksat_id }
+      routes.each &:reload
+      routes.each{|route| assert route.last_sent_at }
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => I18n.l(route.last_sent_at, format: :complete) } }, JSON.parse(last_response.body))
     end
   end
 
@@ -121,25 +94,36 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
     with_stubs [:auth, :clear_route] do
       set_route
       delete api("devices/teksat/clear", { customer_id: @customer.id, route_id: @route.id })
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
+      @route.reload
+      assert !@route.reload.last_sent_at
+      assert_equal({ "id" => @route.id, "last_sent_at" => nil }, JSON.parse(last_response.body))
     end
   end
 
-  private
-
-  def set_route
-    @route = routes(:route_one_one)
-    @route.update! end: @route.start + 5.hours
-    @route.planning.update! date: 10.days.from_now
+  test 'clear multiple' do
+    with_stubs [:auth, :clear_route] do
+      set_route
+      delete api("devices/teksat/clear_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
+      assert_equal 200, last_response.status
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.teksat_id }
+      routes.each &:reload
+      routes.each{|route| assert !route.last_sent_at }
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => nil } }, JSON.parse(last_response.body))
+    end
   end
 
-  def add_teksat_credentials customer
-    customer.enable_teksat = true
-    customer.teksat_customer_id = rand(100)
-    customer.teksat_username = "TeksatUsername"
-    customer.teksat_password = "TeksatPassword"
-    customer.teksat_url = "www.gps00.teksat.fr"
-    customer.save!
-    customer
+  test 'sync' do
+    with_stubs [:auth, :get_vehicles] do
+      set_route
+      @vehicle.update! teksat_id: nil
+      @vehicle.reload
+      assert !@vehicle.teksat_id
+      post api("devices/teksat/sync")
+      assert_equal 204, last_response.status
+      @vehicle.reload
+      assert @vehicle.teksat_id
+    end
   end
+
 end

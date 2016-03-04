@@ -72,26 +72,6 @@ class PlanningsController < ApplicationController
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
       end
-      format.masternaut do
-        begin
-          @planning.routes.select(&:vehicle_usage).each{ |route|
-            Masternaut.export_route(route) if route.vehicle_usage.vehicle.masternaut_ref
-          }
-          head :no_content
-        rescue MasternautError => e
-          render json: e.message, status: :unprocessable_entity
-        end
-      end
-      format.alyacom do
-        begin
-          @planning.routes.select(&:vehicle_usage).each{ |route|
-            Alyacom.export_route(route) if route.vehicle_usage.vehicle.customer.alyacom_association
-          }
-          head :no_content
-        rescue AlyacomError => e
-          render json: e.message, status: :unprocessable_entity
-        end
-      end
     end
   end
 
@@ -181,6 +161,7 @@ class PlanningsController < ApplicationController
   def switch
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == Integer(params['route_id']) }
+      route.update! last_sent_at: nil
       vehicle_usage_id_was = route.vehicle_usage.id
       vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params['vehicle_usage_id']))
       if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.compute && @planning.save

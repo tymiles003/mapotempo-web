@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://ws.webservices.masternaut.fr/MasterWS/services/POI" xmlns:intf="http://ws.webservices.masternaut.fr/MasterWS/services/POI" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="urn:POI" xmlns:tns2="urn:ObjectIdentity" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema targetNamespace="urn:POI" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI"/>
+   <import namespace="urn:ObjectIdentity"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="PoiCategory">
+    <sequence>
+     <element name="logo" nillable="true" type="xsd:string"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="Address">
+    <sequence>
+     <element name="city" nillable="true" type="xsd:string"/>
+     <element name="country" nillable="true" type="xsd:string"/>
+     <element name="department" nillable="true" type="xsd:string"/>
+     <element name="district" nillable="true" type="xsd:string"/>
+     <element name="houseNumber" nillable="true" type="xsd:string"/>
+     <element name="region" nillable="true" type="xsd:string"/>
+     <element name="road" nillable="true" type="xsd:string"/>
+     <element name="roadNumber" nillable="true" type="xsd:string"/>
+     <element name="zipCode" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="POI">
+    <sequence>
+     <element name="address" nillable="true" type="tns1:Address"/>
+     <element name="category" nillable="true" type="tns1:PoiCategory"/>
+     <element name="companyName" nillable="true" type="xsd:string"/>
+     <element name="contactMail" nillable="true" type="xsd:string"/>
+     <element name="contactName" nillable="true" type="xsd:string"/>
+     <element name="contactPhone" nillable="true" type="xsd:string"/>
+     <element name="endTemporary" nillable="true" type="xsd:dateTime"/>
+     <element name="latitude" type="xsd:double"/>
+     <element name="longitude" type="xsd:double"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="radius" type="xsd:int"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+     <element name="startTemporary" nillable="true" type="xsd:dateTime"/>
+     <element name="temporary" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
+   <complexType name="Point">
+    <sequence>
+     <element name="latitude" type="xsd:double"/>
+     <element name="longitude" type="xsd:double"/>
+    </sequence>
+   </complexType>
+   <complexType name="CircleArea">
+    <sequence>
+     <element name="point" nillable="true" type="tns1:Point"/>
+     <element name="radius" type="xsd:int"/>
+    </sequence>
+   </complexType>
+   <complexType name="POISearchFilter">
+    <sequence>
+     <element name="categoryReference" nillable="true" type="xsd:string"/>
+     <element name="circleArea" nillable="true" type="tns1:CircleArea"/>
+     <element name="poiName" nillable="true" type="xsd:string"/>
+     <element name="reference" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="POIFound">
+    <sequence>
+     <element name="code" type="xsd:int"/>
+     <element name="distance" type="xsd:float"/>
+     <element name="poi" nillable="true" type="tns1:POI"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:POI"/>
+   <import namespace="urn:ObjectIdentity"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="ArrayOf_tns1_POIFound">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:POIFound[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns1_PoiCategory">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns1:PoiCategory[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+   <complexType name="ArrayOf_tns2_Point">
+    <complexContent>
+     <restriction base="soapenc:Array">
+      <attribute ref="soapenc:arrayType" wsdl:arrayType="tns2:Point[]"/>
+     </restriction>
+    </complexContent>
+   </complexType>
+  </schema>
+  <schema targetNamespace="urn:ObjectIdentity" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="urn:POI"/>
+   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI"/>
+   <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+   <complexType name="Point">
+    <sequence>
+     <element name="externalReference" nillable="true" type="xsd:string"/>
+     <element name="internalReference" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="createPOIResponse">
+
+      <wsdl:part name="createPOIReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modifyPOICategoryRequest">
+
+      <wsdl:part name="reference" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="category" type="tns1:PoiCategory">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createPOICategoryResponse">
+
+      <wsdl:part name="createPOICategoryReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deletePOICategoryRequest">
+
+      <wsdl:part name="categoryReference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createPOIRequest1">
+
+      <wsdl:part name="poi" type="tns1:POI">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllPOICategoryRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="deletePOIRequest">
+
+      <wsdl:part name="reference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchPOIRequest">
+
+      <wsdl:part name="filter" type="tns1:POISearchFilter">
+
+      </wsdl:part>
+
+      <wsdl:part name="maxResults" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createPOIRequest">
+
+      <wsdl:part name="poi" type="tns1:POI">
+
+      </wsdl:part>
+
+      <wsdl:part name="overwrite" type="xsd:boolean">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllPOICategoryResponse">
+
+      <wsdl:part name="getAllPOICategoryReturn" type="impl:ArrayOf_tns1_PoiCategory">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createPOICategoryRequest">
+
+      <wsdl:part name="category" type="tns1:PoiCategory">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchPOIResponse">
+
+      <wsdl:part name="searchPOIReturn" type="impl:ArrayOf_tns1_POIFound">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPOIInternalCodeResponse">
+
+      <wsdl:part name="getPOIInternalCodeReturn" type="impl:ArrayOf_tns2_Point">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modifyPOIReferenceResponse">
+
+      <wsdl:part name="modifyPOIReferenceReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deletePOIResponse">
+
+      <wsdl:part name="deletePOIReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deletePOIRequest1">
+
+      <wsdl:part name="reference" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="force" type="xsd:boolean">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modifyPOICategoryReferenceResponse">
+
+      <wsdl:part name="modifyPOICategoryReferenceReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPOICategoryInternalCodeRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="getPOICategoryInternalCodeResponse">
+
+      <wsdl:part name="getPOICategoryInternalCodeReturn" type="impl:ArrayOf_tns2_Point">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deletePOIResponse1">
+
+      <wsdl:part name="deletePOIReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createPOIResponse1">
+
+      <wsdl:part name="createPOIReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modifyPOIReferenceRequest">
+
+      <wsdl:part name="internalCode" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="newReference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPOIInternalCodeRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="modifyPOICategoryResponse">
+
+      <wsdl:part name="modifyPOICategoryReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deletePOICategoryResponse">
+
+      <wsdl:part name="deletePOICategoryReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modifyPOICategoryReferenceRequest">
+
+      <wsdl:part name="internalCode" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="newReference" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="PoiWS">
+
+      <wsdl:operation name="createPOICategory" parameterOrder="category">
+
+         <wsdl:input message="impl:createPOICategoryRequest" name="createPOICategoryRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createPOICategoryResponse" name="createPOICategoryResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modifyPOICategory" parameterOrder="reference category">
+
+         <wsdl:input message="impl:modifyPOICategoryRequest" name="modifyPOICategoryRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:modifyPOICategoryResponse" name="modifyPOICategoryResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createPOI" parameterOrder="poi overwrite">
+
+         <wsdl:input message="impl:createPOIRequest" name="createPOIRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createPOIResponse" name="createPOIResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createPOI" parameterOrder="poi">
+
+         <wsdl:input message="impl:createPOIRequest1" name="createPOIRequest1">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:createPOIResponse1" name="createPOIResponse1">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deletePOI" parameterOrder="reference">
+
+         <wsdl:input message="impl:deletePOIRequest" name="deletePOIRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:deletePOIResponse" name="deletePOIResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deletePOI" parameterOrder="reference force">
+
+         <wsdl:input message="impl:deletePOIRequest1" name="deletePOIRequest1">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:deletePOIResponse1" name="deletePOIResponse1">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchPOI" parameterOrder="filter maxResults">
+
+         <wsdl:input message="impl:searchPOIRequest" name="searchPOIRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:searchPOIResponse" name="searchPOIResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deletePOICategory" parameterOrder="categoryReference">
+
+         <wsdl:input message="impl:deletePOICategoryRequest" name="deletePOICategoryRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:deletePOICategoryResponse" name="deletePOICategoryResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllPOICategory">
+
+         <wsdl:input message="impl:getAllPOICategoryRequest" name="getAllPOICategoryRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getAllPOICategoryResponse" name="getAllPOICategoryResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPOIInternalCode">
+
+         <wsdl:input message="impl:getPOIInternalCodeRequest" name="getPOIInternalCodeRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getPOIInternalCodeResponse" name="getPOIInternalCodeResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPOICategoryInternalCode">
+
+         <wsdl:input message="impl:getPOICategoryInternalCodeRequest" name="getPOICategoryInternalCodeRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getPOICategoryInternalCodeResponse" name="getPOICategoryInternalCodeResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modifyPOIReference" parameterOrder="internalCode newReference">
+
+         <wsdl:input message="impl:modifyPOIReferenceRequest" name="modifyPOIReferenceRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:modifyPOIReferenceResponse" name="modifyPOIReferenceResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modifyPOICategoryReference" parameterOrder="internalCode newReference">
+
+         <wsdl:input message="impl:modifyPOICategoryReferenceRequest" name="modifyPOICategoryReferenceRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:modifyPOICategoryReferenceResponse" name="modifyPOICategoryReferenceResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="POISoapBinding" type="impl:PoiWS">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="createPOICategory">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createPOICategoryRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createPOICategoryResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modifyPOICategory">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="modifyPOICategoryRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="modifyPOICategoryResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createPOI">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createPOIRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createPOIResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="createPOI">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createPOIRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createPOIResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deletePOI">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deletePOIRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deletePOIResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deletePOI">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deletePOIRequest1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deletePOIResponse1">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchPOI">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchPOIRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchPOIResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deletePOICategory">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deletePOICategoryRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deletePOICategoryResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllPOICategory">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAllPOICategoryRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAllPOICategoryResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPOIInternalCode">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getPOIInternalCodeRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getPOIInternalCodeResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPOICategoryInternalCode">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getPOICategoryInternalCodeRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getPOICategoryInternalCodeResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modifyPOIReference">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="modifyPOIReferenceRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="modifyPOIReferenceResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modifyPOICategoryReference">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="modifyPOICategoryReferenceRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="modifyPOICategoryReferenceResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="PoiWSService">
+
+      <wsdl:port binding="impl:POISoapBinding" name="POI">
+
+         <wsdlsoap:address location="http://ws.webservices.masternaut.fr/MasterWS/services/POI"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

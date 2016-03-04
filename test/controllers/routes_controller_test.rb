@@ -60,43 +60,6 @@ class RoutesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should show route for masternaut' do
-    Masternaut.class_eval do
-      def self.save_export_route(route)
-        self.export_route(route)
-      end
-      def self.export_route(route)
-        true
-      end
-    end
-    get :show, id: @route, format: :masternaut
-    assert_response :success
-    assert Document.new(response.body)
-    Masternaut.class_eval do
-      def self.export_route(route)
-        self.save_export_route(route)
-      end
-    end
-  end
-
-  test 'should show route for alyacom' do
-    Alyacom.class_eval do
-      def self.save_export_route(route)
-        self.export_route(route)
-      end
-      def self.export_route(route)
-        true
-      end
-    end
-    get :show, id: @route, format: :alyacom
-    assert_response :success
-    Alyacom.class_eval do
-      def self.export_route(route)
-        self.save_export_route(route)
-      end
-    end
-  end
-
   test 'should update route' do
     patch :update, id: @route, route: { hidden: @route.hidden, locked: @route.locked, ref: 'ref8' }
     assert_redirected_to route_path(assigns(:route))

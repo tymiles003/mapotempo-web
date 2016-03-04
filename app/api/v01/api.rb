@@ -19,7 +19,7 @@ class V01::Api < Grape::API
   helpers do
 
     require Rails.root.join("lib/device_helpers")
-    include DeviceHelpers
+    include Devices::Helpers
 
     def session
       env[Rack::Session::Abstract::ENV_SESSION_KEY]
@@ -113,9 +113,11 @@ class V01::Api < Grape::API
   mount V01::Zonings
 
   # Devices
-  mount V01::Devices::Tomtom
-  mount V01::Devices::Teksat
+  mount V01::Devices::Alyacom
+  mount V01::Devices::Masternaut
   mount V01::Devices::Orange
+  mount V01::Devices::Teksat
+  mount V01::Devices::Tomtom
 
   # Tools
   mount V01::Geocoder

@@ -20,57 +20,27 @@ require 'test_helper'
 class V01::Devices::TomtomTest < ActiveSupport::TestCase
   include Rack::Test::Methods
 
+  require Rails.root.join("test/lib/devices/api_base")
+  include ApiBase
+
+  require Rails.root.join("test/lib/devices/tomtom_base")
+  include TomtomBase
+
   setup do
-    @customer = customers(:customer_one)
-    @customer = add_tomtom_credentials @customer
-  end
-
-  def app
-    Rails.application
-  end
-
-  def api path, params = {}
-    Addressable::Template.new("/api/0.1/#{path}.json{?query*}").expand(query: params.merge(api_key: 'testkey1')).to_s
-  end
-
-  def with_stubs names, &block
-    begin
-      stubs = []
-      names.each do |name|
-        case name
-          when :client_objects_wsdl
-            url = Addressable::Template.new "https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService?wsdl"
-            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl")))
-          when :client_objects_api
-            url = Addressable::Template.new "https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService"
-            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/showObjectReportResponse.xml")))
-          when :client_orders_wsdl
-            url = Addressable::Template.new "https://soap.business.tomtom.com/v1.25/ordersService?wsdl"
-            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/ordersService.wsdl")))
-          when :client_orders_api
-            url = Addressable::Template.new "https://soap.business.tomtom.com/v1.25/ordersService"
-            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/ordersService.xml")))
-        end
-      end
-      yield
-    ensure
-      stubs.each do |name|
-        remove_request_stub name
-      end
-    end
+    @customer = add_tomtom_credentials customers(:customer_one)
   end
 
   test 'authenticate' do
-    with_stubs [:client_objects_wsdl, :client_objects_api] do
+    with_stubs [:client_objects_wsdl, :object_report] do
       get api("devices/tomtom/auth")
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status
     end
   end
 
   test 'list devices' do
-    with_stubs [:client_objects_wsdl, :client_objects_api] do
+    with_stubs [:client_objects_wsdl, :object_report] do
       get api("devices/tomtom/devices", { customer_id: @customer.id })
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
       assert_equal [
         {"id"=>"1-44063-666E054E7", "text"=>"MAPO1"},
         {"id"=>"1-44063-666F24630", "text"=>"MAPO2"}
@@ -79,13 +49,12 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'vehicle positions' do
-    with_stubs [:client_objects_wsdl, :client_objects_api] do
-      vehicle = @customer.vehicles.take
-      vehicle.update! tomtom_id: '1-44063-666E054E7' # Match response vehicle_id
+    with_stubs [:client_objects_wsdl, :object_report] do
+      set_route
       get api("vehicles/current_position")
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
       assert_equal [{
-        "vehicle_id"=>vehicle.id,
+        "vehicle_id"=>@vehicle.id,
         "device_name"=>"MAPO1",
         "lat"=>43.319336,
         "lng"=>-0.367286,
@@ -97,38 +66,98 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'send orders' do
-    with_stubs [:client_orders_wsdl, :client_orders_api] do
-      @route = routes(:route_one_one)
+    with_stubs [:orders_service_wsdl, :orders_service] do
+      set_route
       post api("devices/tomtom/send", { customer_id: @customer.id, route_id: @route.id, type: "orders" })
-      assert last_response.ok?, last_response.body
+      assert_equal 201, last_response.status
+      @route.reload
+      assert @route.reload.last_sent_at
+      assert_equal({ "id" => @route.id, "last_sent_at" => I18n.l(@route.last_sent_at, format: :complete) }, JSON.parse(last_response.body))
     end
   end
 
   test 'send waypoints' do
-    with_stubs [:client_orders_wsdl, :client_orders_api] do
-      @route = routes(:route_one_one)
+    with_stubs [:orders_service_wsdl, :orders_service] do
+      set_route
       post api("devices/tomtom/send", { customer_id: @customer.id, route_id: @route.id, type: "waypoints" })
-      assert last_response.ok?, last_response.body
+      assert_equal 201, last_response.status
+      @route.reload
+      assert @route.reload.last_sent_at
+      assert_equal({ "id" => @route.id, "last_sent_at" => I18n.l(@route.last_sent_at, format: :complete) }, JSON.parse(last_response.body))
+    end
+  end
+
+  test 'send multiple orders' do
+    with_stubs [:orders_service_wsdl, :orders_service] do
+      set_route
+      post api("devices/tomtom/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id, type: "orders" })
+      assert_equal 201, last_response.status
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
+      routes.each &:reload
+      routes.each{|route| assert route.last_sent_at }
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => I18n.l(route.last_sent_at, format: :complete) } }, JSON.parse(last_response.body))
+    end
+  end
+
+  test 'send multiple waypoints' do
+    with_stubs [:orders_service_wsdl, :orders_service] do
+      set_route
+      post api("devices/tomtom/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id, type: "waypoints" })
+      assert_equal 201, last_response.status
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
+      routes.each &:reload
+      routes.each{|route| assert route.last_sent_at }
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => I18n.l(route.last_sent_at, format: :complete) } }, JSON.parse(last_response.body))
     end
   end
 
   test 'clear' do
-    with_stubs [:client_orders_wsdl, :client_orders_api] do
-      @route = routes(:route_one_one)
+    with_stubs [:orders_service_wsdl, :orders_service] do
+      set_route
       delete api("devices/tomtom/clear", { customer_id: @customer.id, route_id: @route.id })
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
+      @route.reload
+      assert !@route.reload.last_sent_at
+      assert_equal({ "id" => @route.id, "last_sent_at" => nil }, JSON.parse(last_response.body))
     end
   end
 
-  private
+  test 'clear multiple' do
+    with_stubs [:orders_service_wsdl, :orders_service] do
+      set_route
+      delete api("devices/tomtom/clear_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
+      assert_equal 200, last_response.status
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
+      routes.each &:reload
+      routes.each{|route| assert !route.last_sent_at }
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => nil } }, JSON.parse(last_response.body))
+    end
+  end
 
-  def add_tomtom_credentials customer
-    customer.enable_tomtom = true
-    customer.tomtom_account = "TomTomAccount"
-    customer.tomtom_user = "TomTomUser"
-    customer.tomtom_password = "12345ABCD"
-    customer.save!
-    customer
+  test 'sync' do
+    with_stubs [:client_objects_wsdl, :vehicle_report] do
+      set_route
+      default_color = "#004499"
+      @vehicle.update! tomtom_id: nil, fuel_type: nil, color: default_color
+      @vehicle.reload
+      assert !@vehicle.tomtom_id
+      assert !@vehicle.fuel_type
+      assert_equal default_color, @vehicle.color
+      post api("devices/tomtom/sync")
+      assert_equal 204, last_response.status
+      @vehicle.reload
+      assert_equal "1-44063-666E054E7", @vehicle.tomtom_id
+      assert_equal "DIESEL", @vehicle.fuel_type
+      assert_equal "#0000FF", @vehicle.color # Blue
+    end
+  end
+
+  test 'list addresses' do
+    with_stubs [:address_service_wsdl, :address_service] do
+      assert_equal 4, @customer.destinations.reload.length
+      put api("destinations", { remote: 'tomtom' })
+      assert_equal 5, @customer.destinations.reload.length
+    end
   end
 
 end

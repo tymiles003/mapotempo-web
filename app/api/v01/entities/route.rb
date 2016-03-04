@@ -48,4 +48,9 @@ class V01::Entities::Route < Grape::Entity
   expose(:stop_trace, documentation: { type: String, desc: 'Trace between the vehicle\'s store_stop and last stop.' })
   expose(:ref, documentation: { type: String })
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
+  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'}) do |route|
+    if route.last_sent_at
+      I18n.l route.last_sent_at, format: :complete
+    end
+  end
 end

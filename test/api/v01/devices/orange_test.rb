@@ -20,73 +20,38 @@ require 'test_helper'
 class V01::Devices::OrangeTest < ActiveSupport::TestCase
   include Rack::Test::Methods
 
+  require Rails.root.join("test/lib/devices/api_base")
+  include ApiBase
+
+  require Rails.root.join("test/lib/devices/orange_base")
+  include OrangeBase
+
   setup do
-    @customer = customers(:customer_one)
-    @customer = add_orange_credentials @customer
-  end
-
-  def app
-    Rails.application
-  end
-
-  def api path, params = {}
-    Addressable::Template.new("/api/0.1/#{path}.json{?query*}").expand(query: params.merge(api_key: 'testkey1')).to_s
-  end
-
-  def with_stubs names, &block
-    begin
-      stubs = []
-      names.each do |name|
-        case name
-          when :auth
-            expected_response = File.read(Rails.root.join("test/web_mocks/orange/blank.xml")).strip
-            uri = URI.parse OrangeService::URL ; url = "%s://%s:%s@%s%s" % [ uri.scheme, @customer.orange_user, @customer.orange_password, uri.host, "/pnd/index.php" ]
-            stubs << stub_request(:get, url).with(query: hash_including({ })).to_return(status: 200, body: expected_response)
-          when :send
-            expected_response = File.read(Rails.root.join("test/web_mocks/orange/blank.xml")).strip
-            uri = URI.parse OrangeService::URL ; url = "%s://%s:%s@%s%s" % [ uri.scheme, @customer.orange_user, @customer.orange_password, uri.host, "/pnd/index.php" ]
-            stubs << stub_request(:post, url).with(query: hash_including({ })).to_return(status: 200, body: expected_response)
-          when :get_vehicles
-            expected_response = File.read(Rails.root.join("test/web_mocks/orange/get_vehicles.xml")).strip
-            uri = URI.parse OrangeService::URL ; url = "%s://%s:%s@%s%s" % [ uri.scheme, @customer.orange_user, @customer.orange_password, uri.host, "/webservices/getvehicles.php" ]
-            stubs << stub_request(:get, url).with(body: { ext: "xml" }).to_return(status: 200, body: expected_response)
-          when :vehicles_pos
-            expected_response = File.read(Rails.root.join("test/web_mocks/orange/get_vehicles_pos.xml")).strip
-            uri = URI.parse OrangeService::URL ; url = "%s://%s:%s@%s%s" % [ uri.scheme, @customer.orange_user, @customer.orange_password, uri.host, "/webservices/getpositions.php" ]
-            stubs << stub_request(:get, url).with(body: { ext: "xml" }).to_return(status: 200, body: expected_response)
-        end
-      end
-      yield
-    ensure
-      stubs.each do |name|
-        remove_request_stub name
-      end
-    end
+    @customer = add_orange_credentials customers(:customer_one)
   end
 
   test 'authenticate' do
     with_stubs [:auth] do
       get api("devices/orange/auth")
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status
     end
   end
 
   test 'list devices' do
     with_stubs [:get_vehicles] do
       get api("devices/orange/devices", { customer_id: @customer.id })
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
       assert_equal [{"id"=>"325000749", "text"=>"Eric 590 - DB-116-CL"}], JSON.parse(last_response.body)
     end
   end
 
   test 'vehicle positions' do
     with_stubs [:vehicles_pos] do
-      vehicle = @customer.vehicles.take
-      vehicle.update! orange_id: '325000749' # Match response vehicle_id
+      set_route
       get api("vehicles/current_position")
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
       assert_equal [{
-        "vehicle_id"=>vehicle.id,
+        "vehicle_id"=>@vehicle.id,
         "device_name"=>"Eric 590",
         "lat"=>"44.813109",
         "lng"=>"-0.562738",
@@ -101,7 +66,22 @@ class V01::Devices::OrangeTest < ActiveSupport::TestCase
     with_stubs [:send] do
       set_route
       post api("devices/orange/send", { customer_id: @customer.id, route_id: @route.id })
-      assert last_response.ok?, last_response.body
+      assert_equal 201, last_response.status
+      @route.reload
+      assert @route.reload.last_sent_at
+      assert_equal({ "id" => @route.id, "last_sent_at" => I18n.l(@route.last_sent_at, format: :complete) }, JSON.parse(last_response.body))
+    end
+  end
+
+  test 'send multiple' do
+    with_stubs [:send] do
+      set_route
+      post api("devices/orange/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
+      assert_equal 201, last_response.status
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.orange_id }
+      routes.each &:reload
+      routes.each{|route| assert route.last_sent_at }
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => I18n.l(route.last_sent_at, format: :complete) } }, JSON.parse(last_response.body))
     end
   end
 
@@ -109,23 +89,36 @@ class V01::Devices::OrangeTest < ActiveSupport::TestCase
     with_stubs [:send] do
       set_route
       delete api("devices/orange/clear", { customer_id: @customer.id, route_id: @route.id })
-      assert last_response.ok?, last_response.body
+      assert_equal 200, last_response.status
+      @route.reload
+      assert !@route.reload.last_sent_at
+      assert_equal({ "id" => @route.id, "last_sent_at" => nil }, JSON.parse(last_response.body))
     end
   end
 
-  private
-
-  def set_route
-    @route = routes(:route_one_one)
-    @route.update! end: @route.start + 5.hours
-    @route.planning.update! date: 10.days.from_now
+  test 'clear multiple' do
+    with_stubs [:send] do
+      set_route
+      delete api("devices/orange/clear_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
+      assert_equal 200, last_response.status
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.orange_id }
+      routes.each &:reload
+      routes.each{|route| assert !route.last_sent_at }
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => nil } }, JSON.parse(last_response.body))
+    end
   end
 
-  def add_orange_credentials customer
-    customer.enable_orange = true
-    customer.orange_user = "OrangeUser"
-    customer.orange_password = "OrangePassword"
-    customer.save!
-    customer
+  test 'sync' do
+    with_stubs [:get_vehicles] do
+      set_route
+      @vehicle.update! orange_id: nil
+      @vehicle.reload
+      assert !@vehicle.orange_id
+      post api("devices/orange/sync")
+      assert_equal 204, last_response.status
+      @vehicle.reload
+      assert @vehicle.orange_id
+    end
   end
+
 end

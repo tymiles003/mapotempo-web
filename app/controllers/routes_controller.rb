@@ -15,9 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'tomtom'
-require 'masternaut'
-require 'alyacom'
+
 require 'csv'
 require 'value_to_boolean'
 require 'zip'
@@ -64,22 +62,6 @@ class RoutesController < ApplicationController
       end
       format.csv do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
-      end
-      format.masternaut do
-        begin
-          Masternaut.export_route(@route)
-          head :no_content
-        rescue MasternautError => e
-          render json: e.message, status: :unprocessable_entity
-        end
-      end
-      format.alyacom do
-        begin
-          Alyacom.export_route(@route)
-          head :no_content
-        rescue AlyacomError => e
-          render json: e.message, status: :unprocessable_entity
-        end
       end
     end
   end

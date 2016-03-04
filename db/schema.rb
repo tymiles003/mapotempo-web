@@ -247,6 +247,7 @@ ActiveRecord::Schema.define(version: 20160302112451) do
     t.string   "color"
     t.integer  "vehicle_usage_id"
     t.integer  "stop_drive_time"
+    t.datetime "last_sent_at"
   end
 
   add_index "routes", ["planning_id"], name: "fk__routes_planning_id", using: :btree
@@ -416,6 +417,7 @@ ActiveRecord::Schema.define(version: 20160302112451) do
     t.string   "contact_email"
     t.string   "teksat_id"
     t.string   "orange_id"
+    t.string   "fuel_type"
   end
 
   add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree
