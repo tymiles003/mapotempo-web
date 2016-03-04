@@ -19,11 +19,7 @@ class Tomtom < DeviceBase
 
   attr_reader :client_objects, :client_address, :client_orders
 
-  def initialize
-    super
-    # Api URL
-    @api_url = 'https://soap.business.tomtom.com/v1.25'
-
+  def fetch_wsdl
     @client_objects = Savon.client(wsdl: api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
       #pretty_print_xml true

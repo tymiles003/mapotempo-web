@@ -17,11 +17,6 @@
 #
 class Masternaut < DeviceBase
 
-  def initialize
-    super
-    @api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
-  end
-
   attr_reader :client_poi, :client_job
 
   def fetch_wsdl

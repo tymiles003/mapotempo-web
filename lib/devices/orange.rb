@@ -20,11 +20,6 @@ class Orange < DeviceBase
   require "builder" # XML
   require "addressable"
 
-  def initialize
-    super
-    @api_url = 'https://m2m-services.ft-dm.com'
-  end
-
   def test_list params
     @auth = params.slice :user, :password
     send_request list_operations({ eqpid: "", dtdeb: Time.now.beginning_of_day, dtfin: Time.now.end_of_day })

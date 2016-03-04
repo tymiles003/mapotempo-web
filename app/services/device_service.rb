@@ -21,15 +21,9 @@ class DeviceService
   def initialize params
     @customer = params[:customer]
     name = self.class.name.gsub("Service", "").downcase
-    if Mapotempo::Application.config.devices[name]
-      @service = Mapotempo::Application.config.devices[name]
-      @service.set_params params
-    end
-    if Rails.env.production?
-      @cache_object = ActiveSupport::Cache::RedisStore.new namespace: 'object', expires_in: 60
-    else
-      @cache_object = ActiveSupport::Cache::FileStore.new File.join(Dir.tmpdir, 'devices'), namespace: self.class.name.tableize, expires_in: 30
-    end
+    @cache_object = Mapotempo::Application.config.devices.cache_object
+    @service = Mapotempo::Application.config.devices[name]
+    @service.set_params params
   end
 
   def list_devices

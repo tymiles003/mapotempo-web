@@ -17,11 +17,6 @@
 #
 class Alyacom < DeviceBase
 
-  def initialize
-    super
-    @api_url = 'http://partners.alyacom.fr/ws'
-  end
-
   def send_route options
     @route = options[:route]
     store = route.vehicle_usage.default_store_start
