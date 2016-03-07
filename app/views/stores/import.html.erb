@@ -30,9 +30,43 @@
           <div class="col-md-offset-2 col-md-6">
             <a href="import_template.csv" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_csv' %></a>
             <a href="import_template.excel" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_excel' %></a>
+            <a data-toggle="modal" data-target="#import-help-modal" href="#help" title="<%= t('.import_template_help') %>"><i class="fa fa-lightbulb-o fa-fw"></i> <%= t('.import_template_help') %></a>
           </div>
         </div>
       <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="import-help-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= t 'stores.import.dialog.help.title' %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <%= t 'stores.import.dialog.help.desc' %>
+            <table id="columns-table">
+              <% ImporterStores.new(current_user.customer).columns.values.each do |column| %>
+                <tr class="column">
+                  <td>&bull; <b><%= column[:title] %></b></td>
+                  <td><%= column[:format] %></td>
+                  <td><%= column[:required] %></td>
+                </tr>
+                <tr class="column-desc">
+                  <td colspan="3"><p class="help-block"><%= column[:desc] %></p></td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'all.verb.dismiss' %></button>
+      </div>
     </div>
   </div>
 </div>

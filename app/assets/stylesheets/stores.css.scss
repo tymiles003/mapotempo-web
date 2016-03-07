@@ -54,4 +54,14 @@
     color: red;
     font-weight: bold;
   }
+
+  &[data-action='import'] {
+    #columns-table {
+      margin: 15px 5px;
+    }
+
+    .column-heading td, .column-desc td {
+      padding-bottom: 5px;
+    }
+  }
 }
