@@ -1248,6 +1248,7 @@ en:
       from_route: "Route"
       from_isochrone: "Isochrone"
       from_isodistance: "Isodistance"
+      from: "from"
     menu:
       zonings: "Zonings"
     edit:

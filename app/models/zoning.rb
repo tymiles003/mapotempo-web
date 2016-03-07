@@ -156,8 +156,8 @@ class Zoning < ActiveRecord::Base
       router = vehicle_usage.vehicle.default_router
       if router.method(what_qm).call && !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
         geom = router.method(what).call(vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng, size, vehicle_usage.vehicle.default_speed_multiplicator)
-        size_to_human = what == :isochrone ? (size / 60).to_s + ' mn' : (size / 1000).to_s + ' km'
-        name = I18n.t('zonings.default.from_' + what.to_s) + ' ' + size_to_human + ' / ' + vehicle_usage.default_store_start.name
+        size_to_human = what == :isochrone ? (size / 60).to_s + ' ' + I18n.t('all.unit.minute') : (size / 1000).to_s + ' ' + I18n.t('all.unit.km')
+        name = I18n.t('zonings.default.from_' + what.to_s) + ' ' + size_to_human + ' ' + I18n.t('zonings.default.from') + ' ' + vehicle_usage.default_store_start.name
       end
       if geom
         zone = zones.to_a.find{ |zone| zone.vehicle_id == vehicle_usage.vehicle.id }
