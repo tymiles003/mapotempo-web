@@ -16,24 +16,24 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class DeviceService
-  attr_reader :customer, :service, :cache_object
+  attr_reader :customer, :service_name, :cache_object, :service
 
   def initialize params
     @customer = params[:customer]
-    name = self.class.name.gsub("Service", "").downcase
     @cache_object = Mapotempo::Application.config.devices.cache_object
-    @service = Mapotempo::Application.config.devices[name]
+    @service_name = self.class.name.gsub("Service", "").downcase
+    @service = Mapotempo::Application.config.devices[service_name]
     @service.set_params params
   end
 
   def list_devices
-    with_cache "%s_%s" % [:list_devices, customer.id] do
+    with_cache "%s_%s" % [:list_devices, service_name, customer.id] do
       service.list_devices
     end
   end
 
   def get_vehicles_pos
-    with_cache "%s_%s" % [:get_vehicles_pos, customer.id] do
+    with_cache "%s_%s" % [:get_vehicles_pos, service_name, customer.id] do
       service.get_vehicles_pos
     end
   end

@@ -5743,7 +5743,7 @@ HTTP/1.1 200 OK
   </wsdl:binding>
   <wsdl:service name="ordersService">
     <wsdl:port binding="tns:ordersServiceSoapBinding" name="ordersPort">
-      <soap12:address location="https://soap.business.tomtom.com/v1.25/ordersService"/>
+      <soap12:address location="https://tomtom.example.com/v1.25/ordersService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

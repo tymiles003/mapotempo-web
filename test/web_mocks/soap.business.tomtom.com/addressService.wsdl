@@ -1270,7 +1270,7 @@ HTTP/1.1 200 OK
   </wsdl:binding>
   <wsdl:service name="addressService">
     <wsdl:port binding="tns:addressServiceSoapBinding" name="addressPort">
-      <soap12:address location="https://soap.business.tomtom.com/v1.25/addressService"/>
+      <soap12:address location="https://tomtom.example.com/v1.25/addressService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

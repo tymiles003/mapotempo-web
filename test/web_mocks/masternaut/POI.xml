@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions targetNamespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://ws.webservices.masternaut.fr/MasterWS/services/POI" xmlns:intf="http://ws.webservices.masternaut.fr/MasterWS/services/POI" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="urn:POI" xmlns:tns2="urn:ObjectIdentity" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<wsdl:definitions targetNamespace="https://masternaut.example.com/POI" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="https://masternaut.example.com/POI" xmlns:intf="https://masternaut.example.com/POI" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="urn:POI" xmlns:tns2="urn:ObjectIdentity" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 <!--WSDL created by Apache Axis version: 1.4
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema targetNamespace="urn:POI" xmlns="http://www.w3.org/2001/XMLSchema">
-   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI"/>
+   <import namespace="https://masternaut.example.com/POI"/>
    <import namespace="urn:ObjectIdentity"/>
    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
    <complexType name="PoiCategory">
@@ -73,7 +73,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     </sequence>
    </complexType>
   </schema>
-  <schema targetNamespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" xmlns="http://www.w3.org/2001/XMLSchema">
+  <schema targetNamespace="https://masternaut.example.com/POI" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="urn:POI"/>
    <import namespace="urn:ObjectIdentity"/>
    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
@@ -101,7 +101,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
   </schema>
   <schema targetNamespace="urn:ObjectIdentity" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="urn:POI"/>
-   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI"/>
+   <import namespace="https://masternaut.example.com/POI"/>
    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
    <complexType name="Point">
     <sequence>
@@ -502,13 +502,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="createPOICategoryRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="createPOICategoryResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -520,13 +520,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="modifyPOICategoryRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="modifyPOICategoryResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -538,13 +538,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="createPOIRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="createPOIResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -556,13 +556,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="createPOIRequest1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="createPOIResponse1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -574,13 +574,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="deletePOIRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="deletePOIResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -592,13 +592,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="deletePOIRequest1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="deletePOIResponse1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -610,13 +610,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="searchPOIRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="searchPOIResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -628,13 +628,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="deletePOICategoryRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="deletePOICategoryResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -646,13 +646,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="getAllPOICategoryRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="getAllPOICategoryResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -664,13 +664,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="getPOIInternalCodeRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="getPOIInternalCodeResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -682,13 +682,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="getPOICategoryInternalCodeRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="getPOICategoryInternalCodeResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -700,13 +700,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="modifyPOIReferenceRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="modifyPOIReferenceResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -718,13 +718,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="modifyPOICategoryReferenceRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="modifyPOICategoryReferenceResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/POI" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/POI" use="encoded"/>
 
          </wsdl:output>
 
@@ -736,7 +736,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       <wsdl:port binding="impl:POISoapBinding" name="POI">
 
-         <wsdlsoap:address location="http://ws.webservices.masternaut.fr/MasterWS/services/POI"/>
+         <wsdlsoap:address location="https://masternaut.example.com/POI"/>
 
       </wsdl:port>
 

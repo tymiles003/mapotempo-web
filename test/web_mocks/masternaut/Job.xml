@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions targetNamespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://ws.webservices.masternaut.fr/MasterWS/services/Job" xmlns:intf="http://ws.webservices.masternaut.fr/MasterWS/services/Job" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="urn:Job" xmlns:tns2="urn:POI" xmlns:tns3="urn:Address" xmlns:tns4="http://bean.geo.masterws.masternaut.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<wsdl:definitions targetNamespace="https://masternaut.example.com/Job" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="https://masternaut.example.com/Job" xmlns:intf="https://masternaut.example.com/Job" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="urn:Job" xmlns:tns2="urn:POI" xmlns:tns3="urn:Address" xmlns:tns4="http://bean.geo.masterws.masternaut.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 <!--WSDL created by Apache Axis version: 1.4
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema targetNamespace="urn:Job" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="urn:Address"/>
    <import namespace="urn:POI"/>
-   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+   <import namespace="https://masternaut.example.com/Job"/>
    <import namespace="http://bean.geo.masterws.masternaut.com"/>
    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
    <complexType name="JobItem">
@@ -74,7 +74,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
     </sequence>
    </complexType>
   </schema>
-  <schema targetNamespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" xmlns="http://www.w3.org/2001/XMLSchema">
+  <schema targetNamespace="https://masternaut.example.com/Job" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="urn:Address"/>
    <import namespace="urn:POI"/>
    <import namespace="urn:Job"/>
@@ -119,7 +119,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
   <schema targetNamespace="urn:Address" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="urn:POI"/>
    <import namespace="urn:Job"/>
-   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+   <import namespace="https://masternaut.example.com/Job"/>
    <import namespace="http://bean.geo.masterws.masternaut.com"/>
    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
    <complexType name="JobStep">
@@ -140,7 +140,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <import namespace="urn:Address"/>
    <import namespace="urn:POI"/>
    <import namespace="urn:Job"/>
-   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+   <import namespace="https://masternaut.example.com/Job"/>
    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
    <complexType name="POICategory">
     <sequence>
@@ -153,7 +153,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
   <schema targetNamespace="urn:POI" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="urn:Address"/>
    <import namespace="urn:Job"/>
-   <import namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+   <import namespace="https://masternaut.example.com/Job"/>
    <import namespace="http://bean.geo.masterws.masternaut.com"/>
    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
    <complexType name="JobStep">
@@ -579,13 +579,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="createItemRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="createItemResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -597,13 +597,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="getJobStatusRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="getJobStatusResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -615,13 +615,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="cancelJobRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="cancelJobResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -633,13 +633,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="cancelJobRequest1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="cancelJobResponse1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -651,13 +651,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="createJobRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="createJobResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -669,13 +669,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="createJobRequest1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="createJobResponse1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -687,13 +687,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="createJobRouteRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="createJobRouteResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -705,13 +705,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="cancelJobRouteRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="cancelJobRouteResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -723,13 +723,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="cancelJobRouteRequest1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="cancelJobRouteResponse1">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -741,13 +741,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="modifyJobRouteRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="modifyJobRouteResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -759,13 +759,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="deleteJobRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="deleteJobResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -777,13 +777,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="getJobRouteStatusRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="getJobRouteStatusResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -795,13 +795,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:input name="getJobRouteStatusByBeginningDateRequest">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:input>
 
          <wsdl:output name="getJobRouteStatusByBeginningDateResponse">
 
-            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ws.webservices.masternaut.fr/MasterWS/services/Job" use="encoded"/>
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="https://masternaut.example.com/Job" use="encoded"/>
 
          </wsdl:output>
 
@@ -813,7 +813,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       <wsdl:port binding="impl:JobSoapBinding" name="Job">
 
-         <wsdlsoap:address location="http://ws.webservices.masternaut.fr/MasterWS/services/Job"/>
+         <wsdlsoap:address location="https://masternaut.example.com/Job"/>
 
       </wsdl:port>
 

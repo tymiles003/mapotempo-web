@@ -2250,7 +2250,7 @@ Transfer-Encoding: chunked
   </wsdl:binding>
   <wsdl:service name="objectsAndPeopleReportingService">
     <wsdl:port binding="tns:objectsAndPeopleReportingServiceSoapBinding" name="objectsAndPeopleReportingPort">
-      <soap12:address location="https://soap.business.tomtom.com/v1.25/objectsAndPeopleReportingService"/>
+      <soap12:address location="https://tomtom.example.com/v1.25/objectsAndPeopleReportingService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
