@@ -47,7 +47,7 @@ class Orange < DeviceBase
   end
 
   def clear_route options
-    # Ça n’est pas possible sur les 590 (qui n’utilsent pas le même protocol de transmission). Uniquement sur Garmin Dezl et Nuvi.
+    # Not supported by Garmin 590 -- Garmin Dezl and Nuvi only
     @route = options[:route]
     send_request send_xml_file(delete: true)
   end
