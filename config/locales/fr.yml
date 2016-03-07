@@ -555,14 +555,14 @@ fr:
       submit: "Enregistrer Paramétrage global"
       sync:
         orange:
-          confirm: "Synchroniser les véhicules avec Orange Fleet ?"
-          action: "Synchroniser les véhicules avec Orange Fleet"
+          confirm: "Synchroniser les véhicules depuis Orange Fleet ?"
+          action: "Synchroniser les véhicules depuis Orange Fleet"
         tomtom:
-          confirm: "Synchroniser les véhicules avec TomTom WebFLEET ?"
-          action: "Synchroniser les véhicules avec TomTom WebFLEET"
+          confirm: "Synchroniser les véhicules depuis TomTom WebFLEET ?"
+          action: "Synchroniser les véhicules depuis TomTom WebFLEET"
         teksat:
-          confirm: "Synchroniser les véhicules avec Teksat ?"
-          action: "Synchroniser les véhicules avec Teksat"
+          confirm: "Synchroniser les véhicules depuis Teksat ?"
+          action: "Synchroniser les véhicules depuis Teksat"
 
   destinations:
     menu:

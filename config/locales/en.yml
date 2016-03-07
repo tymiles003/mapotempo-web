@@ -556,14 +556,14 @@ en:
       submit: "Update Global settings"
       sync:
         orange:
-          confirm: "Sync Vehicles with Orange Fleet?"
-          action: "Sync Vehicles with Orange Fleet"
+          confirm: "Sync Vehicles from Orange Fleet?"
+          action: "Sync Vehicles from Orange Fleet"
         tomtom:
-          confirm: "Sync Vehicles with TomTom WebFLEET?"
-          action: "Sync Vehicles with TomTom WebFLEET"
+          confirm: "Sync Vehicles from TomTom WebFLEET?"
+          action: "Sync Vehicles from TomTom WebFLEET"
         teksat:
-          confirm: "Sync Vehicles with Teksat?"
-          action: "Sync Vehicles with Teksat"
+          confirm: "Sync Vehicles from Teksat?"
+          action: "Sync Vehicles from Teksat"
 
   destinations:
     menu:
