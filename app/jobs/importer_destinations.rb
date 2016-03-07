@@ -60,7 +60,7 @@ class ImporterDestinations < ImporterBase
       open: {title: I18n.t('destinations.import_file.open'), desc: I18n.t('destinations.import_file.open_desc'), format: I18n.t('destinations.import_file.format.hour')},
       close: {title: I18n.t('destinations.import_file.close'), desc: I18n.t('destinations.import_file.close_desc'), format: I18n.t('destinations.import_file.format.hour')},
       tags_visit: {title: I18n.t('destinations.import_file.tags_visit'), desc: I18n.t('destinations.import_file.tags_visit_desc'), format: I18n.t('destinations.import_file.tags_format')},
-      take_over: {title: I18n.t('destinations.import_file.take_over'), desc: I18n.t('destinations.import_file.take_over_desc'), format: I18n.t('destinations.import_file.format.hour')},
+      take_over: {title: I18n.t('destinations.import_file.take_over'), desc: I18n.t('destinations.import_file.take_over_desc'), format: I18n.t('destinations.import_file.format.second')},
       quantity: {title: I18n.t('destinations.import_file.quantity'), desc: I18n.t('destinations.import_file.quantity_desc'), format: I18n.t('destinations.import_file.format.integer')},
     }
   end
