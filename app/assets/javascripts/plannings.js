@@ -128,7 +128,7 @@ var plannings_edit = function(params) {
       complete: completeAjaxMap,
       error: function(err) {
         clearInterval(tid);
-        ajaxError(err);
+        // ajaxError(err);
       }
     });
   };
