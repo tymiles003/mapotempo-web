@@ -71,7 +71,7 @@ en:
       orders:
         one: "Order"
         other: "Orders"
-      order_array: "Order array"
+      order_array: "Orders array"
       order_arrays:
         one: "orders array"
         other: "orders arrays"
@@ -212,7 +212,7 @@ en:
       order:
         date: "Date"
         destination_id: "Destination"
-        order_array_id: "Order array"
+        order_array_id: "Orders array"
       order_array:
         name: "Name"
         base_date: "Base date"
@@ -227,7 +227,7 @@ en:
         zoning_id: "Zoning"
         created_at: "Created"
         updated_at: "Updated"
-        order_array_id: "Order array"
+        order_array_id: "Orders array"
         date: "Date"
         vehicle_usage_set: "Vehicles configuration"
         vehicle_usage_set_id: "Vehicles configuration"
@@ -373,8 +373,8 @@ en:
 
     successful:
       messages:
-        created: "%{model} was successfully created."
-        updated: "%{model} was successfully updated."
+        created: "%{model} has been created successfully"
+        updated: "%{model} has been updated successfully"
 
     errors:
       models:
@@ -391,16 +391,16 @@ en:
         vehicle_usage:
           attributes:
             close:
-              after: "Must be after the open time"
+              after: "Must be after opening time"
             rest_stop:
-              after: "Must be after the open time"
+              after: "Must be after opening time"
           missing_rest_window: "can't be blanked if rest duration is filled"
         vehicle_usage_set:
           attributes:
             close:
-              after: "Must be after the open time"
+              after: "Must be after opening time"
             rest_stop:
-              after: "Must be after the open time"
+              after: "Must be after opening time"
           at_least_one: "At least one vehicles configuration needed"
           missing_rest_window: "can't be blanked if rest duration is filled"
         zone:
@@ -429,13 +429,13 @@ en:
 
   errors:
     planning:
-      import_too_routes: "Try to import more routes than available vehicles."
+      import_too_routes: "Tried to import more routes than available vehicles"
       already_optimizing: "A planning optimization is already in progress"
     tomtom:
       access_denied: "Access denied. 'Full Access Orders' is not enabled in WEBFLEET user interface. You have insufficient permissions to perform this function."
-      invalid_account: "User invalid (does not exist)."
+      invalid_account: "User invalid (does not exist)"
       external_requests_not_allowed: "Access denied. 'Access to interface WEBFLEET.connect' is not enabled in WEBFLEET user interface. External requests are not allowed for that account/user."
-      hostname_not_allowed: "Hostname not allowed."
+      hostname_not_allowed: "Hostname not allowed"
       request_quota_reached: "Request Quota Reached"
     teksat:
       bad_url: "Bad URL"
@@ -470,7 +470,7 @@ en:
         title: "Editing reseller"
       form:
         host_help: "Web URL hostname and port used to match with this reseller."
-        name_help: "Reseller's brand name."
+        name_help: "Reseller brand name."
         welcome_url_help: "Web page address included as html as \"iframe\" on welcome page."
         help_url_help: "Web page address with help content."
         contact_url_help: "Web page address with contact form."
@@ -503,7 +503,7 @@ en:
     menu:
       parameters: "Parameters"
       customer: "Global settings"
-      user_settings: "User's Settings"
+      user_settings: "User Settings"
       customers: "Customers"
     edit:
       title: "Editing global settings"
@@ -531,19 +531,19 @@ en:
     form:
       default_value: "Default values"
       options: "Options"
-      optimization_parameters: "Optimization's parameters"
-      router_help: "Profile used for route planning by default"
+      optimization_parameters: "Optimization settings"
+      router_help: "Profile used by route planning by default"
       take_over_help: "Average time per customer"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
       teksat: "Teksat"
       teksat_help: "Send plannings to Teksat devices"
       orange: "Orange Fleet"
-      orange_help: "Send planning to Orange Fleet devices"
+      orange_help: "Send plannings to Orange Fleet devices"
       masternaut: "Masternaut"
-      masternaut_help: "Allows sending plannings to Masternaut device."
+      masternaut_help: "Allows sending plannings to Masternaut devices"
       alyacom: "AlyaCom"
-      alyacom_help: "Allows sending plannings to AlyaCom device."
+      alyacom_help: "Allows sending plannings to AlyaCom devices"
       optimization_cluster_size_default: "%{n} (default value)"
       optimization_time_default: "%{n} (default value)"
       optimization_soft_upper_bound_default: "%{n} (default value)"
@@ -552,7 +552,7 @@ en:
       print:
         title: "Printing"
       speed_multiplicator_default: "%{n} (default value)"
-      speed_multiplicator_help: "A value higher than 100% mean higher speed."
+      speed_multiplicator_help: "A value higher than 100% means higher speed."
       submit: "Update Global settings"
       sync:
         orange:
@@ -591,9 +591,9 @@ en:
         street: "Street"
         intersection: "Intersection"
         city: "City"
-      tags_help: "Destination's categories"
+      tags_help: "Destination categories"
       dialog:
-        confirm_overwrite_point: "It seems you have previously set position manually on map. Do you want to replace previous position with the result of geocoding?"
+        confirm_overwrite_point: "Position has been set manually. Override with geocoding results?"
       visit:
         enable_multi_visits: "Need more than one visit for this destination? Please contact support."
         new: "New visit"
@@ -611,7 +611,7 @@ en:
       plannings: "Plannings"
       delete_plannings: "Delete previous plannings"
       delete_plannings_help: "Delete previously created plannings (allow better performances). If routes are present in your new import file, a planning will be created anyway after import."
-      delete_plannings_confirm: "Delete all previously created plannings ?"
+      delete_plannings_confirm: "Delete all previously created plannings?"
       csv:
         title: "CSV File"
         help: "Imports destinations from CSV file. CSV files can be exported from spreadsheet or other softwares."
@@ -620,13 +620,13 @@ en:
       dialog:
         help:
           title: "Columns in your file"
-          desc: "Your import file can contain following columns:"
-          columns_route: "Route's columns"
-          columns_destination: "Visited destination's columns"
-          columns_visit: "Visit's columns"
+          desc: "Your import file can contain the following columns:"
+          columns_route: "Route columns"
+          columns_destination: "Visited destination columns"
+          columns_visit: "Visit columns"
       tomtom:
         title: "TomTom"
-        help: "Imports TomTom WEBFLEET address as destinations."
+        help: "Import TomTom WEBFLEET address as destinations."
     index:
       title: "Listing destinations"
       new: "New Destination"
@@ -646,7 +646,7 @@ en:
       title: "New destination"
     import_file:
       ref: "reference"
-      ref_desc: "a stable, unique, constant reference id, allowing no-destructive update of this element when next import occurs."
+      ref_desc: "a stable, unique, constant reference id, allowing non-destructive update of this item when the next import happens"
       route: "route"
       route_desc: "index or reference of the route in the planning."
       ref_vehicle: "vehicle"
@@ -657,27 +657,30 @@ en:
       stop_type_visit_desc: ""
       stop_format: "[visit | store | rest]"
       name: "name"
-      name_desc: "customer or visited destionation's name."
+      name_desc: "customer or visited destination name."
       street: "street"
-      street_desc: "street address with building's number, road type and road name (spelling is critical for reliable geocoding). Non-official elements such as room number, stair's letter, etc must be moved to the field \"detail\"."
+      street_desc: "street address with building number, road type and road name (spelling is critical for reliable geocoding). Non-official elements such as room number, stair letter, etc must be moved to the field \"detail\"."
       detail: "detail"
-      detail_desc: "human friendly details and indications leading your agent from his/her vehicle to the destination's doorstep. Ex. building's name, stair's name, floor, room number…"
+      detail_desc: "human friendly details and indications leading your agent from his/her vehicle to the destination's doorstep. Ex. building name, floor, room number…"
       postalcode: "postalcode"
-      postalcode_desc: "postal code of your district (exactness is critical for reliable geocoding)."
+      postalcode_desc: "postal code of your district (exactness is critical for reliable geocoding)"
       city: "city"
-      city_desc: "city, town or district name (spelling is critical for reliable geocoding)."
+      city_desc: "City, town or district name (spelling is critical for reliable geocoding)"
       country: "country"
-      country_desc: "country or state's name (spelling is critical for reliable geocoding)."
+      country_desc: "country or state name (spelling is critical for reliable geocoding)"
       lat: "lat"
-      lat_desc: "latitude of the destionation in decimal degrees between -90° and 90°. E.g. 45.91"
+      lat_desc: "latitude of the destination in decimal degrees between -90° and 90°. E.g. 45.91"
+      lat_format: "floating number between -90 and 90"
       lng: "lng"
-      lng_desc: "longitude of the destionation in decimal degrees between -180° and 180°. E.g. -0.781"
+      lng_desc: "longitude of the destination in decimal degrees between -180° and 180°. E.g. -0.781"
+      lng_format: "floating number between -180 and 180"
       geocoding_accuracy: "geocoding accuracy"
       geocoding_accuracy_desc: "quality score given to the process of converting the destination's street address into geographic coordinates. This score is expressed via a score between 0 et 1. E.g. 0.70 means 70% accurate."
+      geocoding_accuracy_format: "Number between 0 and 1"
       geocoding_level: "geocoding level"
       geocoding_level_desc: "level of precision reached when converting the destination's street address into geographic coordinates, expressed via human friendly levels."
       take_over: "take over"
-      take_over_desc: "take over's duration."
+      take_over_desc: "take over duration"
       quantity: "quantity"
       quantity_desc: "number of units to deliver."
       active: "active"
@@ -691,10 +694,10 @@ en:
       phone_number: "phone"
       phone_number_desc: "phone number of your destination."
       tags: "tags"
-      tags_desc: "tags of your destination (allowing for instance to group them)."
+      tags_desc: "destination tags (allowing to group them)."
       tags_format: "tag 1,tag 2"
       without_visit: "without visit"
-      without_visit_desc: "state that there is no associated visit."
+      without_visit_desc: "state that there is no associated visits."
       ref_visit: "reference visit"
       ref_visit_desc: "reference id of this visit."
       tags_visit: "tags visit"
@@ -716,8 +719,8 @@ en:
   index:
     unsupported_browser:
       unsupported_browser: "Unsupported Browser"
-      unsupported_browser_ie: "Internet Explorer is not a supported, please use Firefox, Chrome or any other modern browser."
-      unsupported_browser_modern: "Your browser is too old, please use any modern browser."
+      unsupported_browser_ie: "Internet Explorer is not supported, please use Firefox, Chrome or any other recent browser."
+      unsupported_browser_modern: "Your browser is too old, please use any recent browser."
       download_browser: "You can download the last version of free browser Firefox at: "
 
   order_arrays:
@@ -750,7 +753,7 @@ en:
       dialog:
         loading:
           title: "Loading"
-          in_progress: "Loading in progress, please wait."
+          in_progress: "Loading, please wait."
     new:
       title: "New orders array"
     export_file:
@@ -843,10 +846,6 @@ en:
         gpx_route: "GPX Route"
         gpx_track: "GPX Track"
         kmz_track: "KML Track"
-        masternaut: "Send to Masternaut"
-        masternaut_success: "Sent to Masternaut with success"
-        alyacom: "Send to AlyaCom"
-        alyacom_success: "Sent to AlyaCom with success"
       zoning:
         none: "None"
         apply: "Apply zoning"
@@ -858,23 +857,23 @@ en:
       open_planning_panel: "Open planning panel"
       collapse_planning_panel: "Collapse planning panel"
       refresh: "Refresh"
-      refresh_help: "Planning parameters or customer has been changed, it is necessary to recalculate"
+      refresh_help: "Planning parameters have been changed, it is required to recalculate"
       out_of_date_zoning: "Zoning changed. Please refresh."
       out_of_route: "Out of route"
-      toggle_help: "Toogle view of clients on map"
+      toggle_help: "Toogle clients on map"
       locked_unplanned_help: "Lock the out of route on global planning operations"
       locked_help: "Lock the route on global planning operations"
       vehicle_help: "Vehicle parameters"
       optimize_help: "Optimize route"
       export_help: "Export route"
-      duration_help: "Duration / Vehicle's time window"
+      duration_help: "Duration / Vehicle time window"
       distance_help: "Distance"
-      quantity_help: "Quantity / Vehicle's capacity"
-      drag_help: "Drag&drop customer on routes"
+      quantity_help: "Quantity / Vehicle capacity"
+      drag_help: "Drag & drop customer on routes"
       active_help: "Take or not customer into route"
       edit_help: "Edit customer information"
       marker_help: "Show on map"
-      automatic_insert_help: "Guess a place for inserting this destination into route"
+      automatic_insert_help: "Guess a place to insert this destination into the route"
       active_all: "All"
       active_reverse: "Reverse"
       active_none: "None"
@@ -898,21 +897,21 @@ en:
       error:
         no_geolocalization: "No geolocalization"
         no_geolocalization_help: "No geographical coordinates or address could not be located"
-        out_of_window: "Out of customer's time window"
+        out_of_window: "Out of customer time window"
         out_of_window_help: "Customer planned out of his time window"
         out_of_capacity: "Out of capacity"
         out_of_capacity_help: "Vehicle capacity exceeded"
-        out_of_drive_time: "Out of vehicle's time window"
+        out_of_drive_time: "Out of vehicle time window"
         out_of_drive_time_help: "Vehicle time window activity exceeded"
         no_path: "Unreachable destination"
         no_path_help: "Unreachable destination: missing or no path to or from the destination to find a route"
       dialog:
         refresh:
           title: "Refresh the planning"
-          confirm: "You've performed some changes which involve recompute of the planning. Do you want to refresh this planning now?"
+          confirm: "You have performed changes that require a recompute of the planning. Do you want to refresh the planning now?"
         optimizer:
           title: "Optimization"
-          in_progress: "Please wait, process in progress."
+          in_progress: "Please wait, processing."
           matrix: "Distance matrix"
           optimize: "Optimizing"
           routes: "Routes"
@@ -970,12 +969,12 @@ en:
       open: "open"
       close: "close"
       tags_visit: "tags visit"
-      out_of_window: "out of customer's time window"
+      out_of_window: "out of customer time window"
       out_of_capacity: "out of capacity"
-      out_of_drive_time: "out of vehicle's time window"
+      out_of_drive_time: "out of vehicle time window"
     form:
       ref_help: "A free reference"
-      tags_help: "Restrict visits/destinations in the planning (visits/destinations should have all of these categories to be take into account in the planning)"
+      tags_help: "Restrict visits/destinations in the planning (visits/destinations should have all of these categories to be taken into account in the planning)"
       order_array: "Orders"
 
   routes:
@@ -1018,19 +1017,19 @@ en:
       title: "Import stores"
       stores: "Stores"
       replace_no: "Update / in addition"
-      replace_no_help: "An update of existing stores (unchanged store references) is made and the new ones are added in application."
+      replace_no_help: "An update of existing stores (unchanged store references) is made and the new ones are added."
       replace_yes: "Delete previous stores"
-      replace_yes_help: "Delete and replace stores with import ones. Overwrite all stores."
-      replace_confirm: "Delete all stores and their amendments to replace them with imported ones?"
+      replace_yes_help: "Delete and replace stores with imported ones. Overwrite all stores."
+      replace_confirm: "Delete all stores and their amendments and replace them with imported ones?"
       csv:
         title: "CSV File"
-        help: "Imports stores from CSV file. CSV files can be exported from spreadsheet or other softwares."
-        file_help: "Import only CSV files."
+        help: "Import stores from CSV file. CSV files can be exported from spreadsheet or other softwares."
+        file_help: "Import CSV files only"
       import_template_help: "Help"
       dialog:
         help:
-          title: "Columns in your file"
-          desc: "Your import file can contain following columns :"
+          title: "Column names in your file"
+          desc: "Your import file can use the following column names:"
     index:
       title: "Listing stores"
       new: "New store"
@@ -1038,36 +1037,41 @@ en:
       title: "New store"
     import_file:
       ref: "reference"
-      ref_desc: "a stable, unique, constant reference id, allowing no-destructive update of this element when next import occurs."
+      ref_desc: "a stable, unique, constant reference id, allowing non-destructive update of this item when the next import happens"
       name: "name"
-      name_desc: "store's name."
+      name_desc: "store name"
       color: "color"
       color_desc: "color of your icon, value being a color code. See web-color at https://en.wikipedia.org/wiki/Web_colors"
       color_format: "#000000 or black"
       icon: "icon"
-      icon_desc: "name of your chosen icon from font-awesome's icons http://fontawesome.io/icons with the prefix \"fa-\". E.g. fa-building."
+      icon_desc: "name of the icon you selected in font-awesome list http://fontawesome.io/icons . Please include the \"fa-\" prefix. E.g. fa-building."
       icon_size: "icon size"
       icon_size_desc: "size of the icon representing your store on the map. Default: large."
       open: "open"
-      open_desc: "start time from which your store is open."
+      open_desc: "Store opening time"
       close: "close"
-      close_desc: "end time from which your store is closed."
+      close_desc: "Store closing time"
       street: "street"
-      street_desc: "street address with building's number, road type and road name (spelling is critical for reliable geocoding)."
+      street_desc: "street address with building number, road type and road name. Spelling is critical for correct geocoding. Non-official elements such as room number, stair letter, etc must be moved to the \"details\" field"
+      detail: "detail"
+      detail_desc: "human friendly details and indications leading your agent from his/her vehicule to the destination's doorstep. Ex. building name, floor, room number…"
       postalcode: "postalcode"
       postalcode_desc: "postal code of your district (exactness is critical for reliable geocoding)."
       city: "city"
-      city_desc: "city, town or district name (spelling is critical for reliable geocoding)."
+      city_desc: "City, town or district name. Spelling is critical for correct geocoding."
       country: "country"
-      country_desc: "country or state's name (spelling is critical for reliable geocoding)."
+      country_desc: "country or state name (spelling is critical for reliable geocoding)."
       lat: "lat"
-      lat_desc: "latitude of the destionation in decimal degrees between -180° and 180°. E.g. 45.91"
+      lat_desc: "latitude of the destination in decimal degrees. E.g. 45.91°"
+      lat_format: "floating number between -90 and 90"
       lng: "lng"
-      lng_desc: "longitude of the destionation in decimal degrees between -180° and 180°. E.g. -0.781"
+      lng_desc: "longitude of the destination in decimal degrees. E.g. -0.781°"
+      lng_format: "floating number between -180 and 180"
       geocoding_accuracy: "geocoding accuracy"
-      geocoding_accuracy_desc: "quality score given to the process of converting the destination's street address into geographic coordinates. If under 85%, please check your spellings and refresh the geocoding. This score is expressed via a score between 0 et 1. E.g. 0.70 means 70% accurate."
+      geocoding_accuracy_desc: "quality score given to the process of converting the destination street address into geographic coordinates. If under 85%, please check your spelling and refresh the geocoding. This score is expressed with a value between 0 et 1. E.g. 0.70 means 70% accurate."
+      geocoding_accuracy_format: "floating number from 0 to 1"
       geocoding_level: "geocoding level"
-      geocoding_level_desc: "level of precision reached when converting the destination's street address into geographic coordinates, expressed via human friendly levels."
+      geocoding_level_desc: "level of precision reached when converting the destination street address into geographic coordinates"
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
       format:
         string: "text"
@@ -1108,11 +1112,11 @@ en:
   users:
     menu:
       sign_out: "Sign out"
-    form:
-      url_click2call_help: "URL of VOIP communications solution. In URL set '{TEL}' in place of the phone number"
     edit:
       title: "Edit User"
       edit: "Change your login credentials and password"
+    form:
+      url_click2call_help: "URL of VOIP communications solution. In URL set '{TEL}' in place of the phone number"
     update:
       success: "User updated successfully"
     password:
@@ -1161,7 +1165,7 @@ en:
       store:
         no_start: "No start store"
         no_stop: "No stop store: end of route is free"
-        same_start_stop: "Vehicle returns to its start store"
+        same_start_stop: "Vehicle returns to start store"
       time: "Open - Close"
       devices: "Devices"
 
@@ -1170,7 +1174,7 @@ en:
     form:
       vehicle:
         legend: "Vehicle"
-        help: "The following informations on the vehicle are common to all vehicle configurations."
+        help: "The following informations on the vehicle are common to all vehicles configurations"
       vehicle_usage:
         legend: "Vehicle configuration: \"%{s}\""
         help: "The following informations are specific to the configuration of the vehicle."
@@ -1205,7 +1209,7 @@ en:
     menu:
       vehicle_usage_sets: "Vehicles"
     edit:
-      title: "Editing vehicles configuration"
+      title: "Editing vehicle and configuration"
     index:
       title: "Listing vehicles configurations"
       new: "New vehicles configuration"
@@ -1232,12 +1236,12 @@ en:
   visits:
     form:
       legend: "Visit #%{n}"
-      destroy: "If checked, visit will be destroyed by submiting this page. Click here to cancel."
-      ref_help: "A free reference. IMPORTANT if you want not to overwrite visits during import/export especially."
+      destroy: "If checked, visit will be destroyed by submitting this page. Click here to cancel."
+      ref_help: "A free reference. Important to avoid overwriting visits on import / export"
       quantity_help: "Quantity to be delivered"
-      take_over_help: "If empty uses the default value"
+      take_over_help: "If empty, use the default value"
       close_help: "Without taking into account take over duration"
-      tags_help: "Visit's categories"
+      tags_help: "Visit categories"
       quantity_default: "default"
       take_over_default: "default"
       delete: "Flag for delation"
@@ -1255,9 +1259,9 @@ en:
       title: "Editing zoning"
       collapse_zoning_panel: "Collapse zoning panel"
       generate_confirm: "This action will reset all your current zones. Continue?"
-      vehicleless_confirm: "Really save some zones without a vehicle?"
-      isochrone_missing_vehicle: "Isochrone cannot be generated for at least one vehicle due to router restriction"
-      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to router restriction"
+      vehicleless_confirm: "Are you sure? Some zones don't have a vehicle"
+      isochrone_missing_vehicle: "Isochrone cannot be generated for at least one vehicle due to router restrictions"
+      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to router restrictions"
     index:
       title: "Listing zonings"
       new: "New Zoning"
@@ -1265,13 +1269,13 @@ en:
       title: "New zoning"
     form:
       all_destinations: "Show all destinations"
-      from_planning_help: "It's also possible to filter destinations from a unic planning by editing this zoning from planning"
+      from_planning_help: "It's also possible to filter destinations from a unique planning by editing this zoning from planning"
       stops_from_planning: "Destinations from planning \"%{s}\""
       generate: "Generate"
       automatic:
         one: "Automatic: 1 zone"
         other: "Automatic: %{count} zones"
-      from_planning: "From planning's routes"
+      from_planning: "From planning routes"
       zone_placeholder: "Zone"
       zone_vehicle: "Vehicle"
       isochrone: "Isochrone"
@@ -1319,16 +1323,16 @@ en:
     v01:
       destinations:
         index:
-          none_destinations: 'None destination has been loaded'
+          none_destinations: 'No destinations found'
       routes:
         index:
-          none_routes: 'None route has been loaded'
+          none_routes: 'No routes found'
       stores:
         index:
-          none_stores: 'None store has been loaded'
+          none_stores: 'No stores found'
       zones:
         index:
-          none_zones: 'None zone has been loaded'
+          none_zones: 'No zones found'
           without_vehicle: "Without Vehicle"
 
   all:
@@ -1366,10 +1370,17 @@ en:
       yes: "yes"
       no: "no"
 
+  # Override rails-i18n
+  helpers:
+    submit:
+      create: "Create %{model}"
+      update: "Save %{model}"
+      submit: "Save %{model}"
+
   devise:
     shared:
       links:
-        sign_in_prefix: "You have already an account?"
+        sign_in_prefix: "You already have an account?"
         sign_up_prefix: "Need to create an account?"
     sessions:
       new:

@@ -158,9 +158,9 @@ fr:
         print_stop_time: "Inclure les horaires de passage"
         stores: "Dépôts"
         enable_orders: "Activer les commandes"
-        enable_multi_vehicle_usage_sets: "Autoriser les multiples configurations de véhicules"
+        enable_multi_vehicle_usage_sets: "Autoriser les configurations de véhicules multiples"
         enable_references: "Montrer les références"
-        enable_multi_visits: "Autoriser les multiples visites"
+        enable_multi_visits: "Autoriser les visites multiples"
         test: "Test"
         jobs: "Tâches"
         optimization_cluster_size: "Taille des clusters d'optimisation"
@@ -324,6 +324,7 @@ fr:
         ref: "Référence"
         contact_email: "Email"
       vehicle_usage:
+        vehicle_id: "Vehicule"
         open: "Horaire début"
         close: "Horaire fin"
         store_start: "Dépôt départ"
@@ -342,7 +343,7 @@ fr:
         close: "Horaire fin"
         store_start: "Dépôt départ"
         store_start_id: "Dépôt départ"
-        store_stop: "Dépôt arrivé"
+        store_stop: "Dépôt arrivée"
         store_stop_id: "Dépôt arrivée"
         rest_start: "Début plage repos"
         rest_stop: "Fin plage repos"
@@ -372,8 +373,8 @@ fr:
 
     successful:
       messages:
-        created: "%{model} a bien été créé."
-        updated: "%{model} a bien été mis à jour."
+        created: "%{model} a été créé."
+        updated: "%{model} a été mis à jour."
 
     errors:
       models:
@@ -400,14 +401,14 @@ fr:
               after: "Doit être après l'horaire de début"
             rest_stop:
               after: "Doit être après l'horaire de début"
-          at_least_one: "Au moins une configuration des véhicules est requise"
+          at_least_one: "Au moins une configuration de véhicules est requise"
           missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
         zone:
           attributes:
             vehicle:
               bad_customer: "non associé au compte client"
             polygon:
-              invalid_json: "n'est pas une chaine de caractère json valide"
+              invalid_json: "n'est pas une chaîne de caractères json valide"
         customer:
           attributes:
             destinations:
@@ -432,9 +433,9 @@ fr:
       already_optimizing: "Une optimisation de planning est déjà en cours"
     tomtom:
       access_denied: "Non Autorisé. 'Accès complet aux commandes' n'est pas activé dans l'interface WebFLEET. Vous n'avez pas les permissions nécessaires pour effectuer cette action."
-      invalid_account: "Utilisateur invalide (non existant)."
+      invalid_account: "Utilisateur invalide (non existant)"
       external_requests_not_allowed: "Non Autorisé. 'Accès à l'interface WebFLEET.connect' n'est pas activé dans l'interface WebFLEET. Les requêtes externes ne sont pas autorisées pour ce compte/utilisateur."
-      hostname_not_allowed: "Le nom de domaine n'est pas autorisé."
+      hostname_not_allowed: "Le nom de domaine n'est pas autorisé"
       request_quota_reached: "Quota de requêtes dépassé"
     teksat:
       bad_url: "URL non valide"
@@ -444,7 +445,7 @@ fr:
       set_mission: "Échec lors de la création de la mission"
     orange:
       no_equipment: "Vehicule: Aucun équipement trouvé"
-      unauthorized: "Non authorisé"
+      unauthorized: "Non autorisé"
       list: "Impossible de lister les appareils"
       get_vehicles_pos: "Impossible de lister les positions des véhicules"
 
@@ -540,9 +541,9 @@ fr:
       orange: "Orange Fleet"
       orange_help: "Envoyer les plannings vers les GPS Orange Fleet"
       masternaut: "Masternaut"
-      masternaut_help: "Permet d'envoyer les plannings vers les appareils Masternaut."
+      masternaut_help: "Permet d'envoyer les plannings vers les GPS Masternaut."
       alyacom: "AlyaCom"
-      alyacom_help: "Permet d'envoyer les plannings vers les appareils AlyaCom."
+      alyacom_help: "Permet d'envoyer les plannings vers les GPS AlyaCom."
       optimization_cluster_size_default: "%{n} (valeur par défaut)"
       optimization_time_default: "%{n} (valeur par défaut)"
       optimization_soft_upper_bound_default: "%{n} (valeur par défaut)"
@@ -551,8 +552,8 @@ fr:
       print:
         title: "Impressions"
       speed_multiplicator_default: "%{n} (valeur par défaut)"
-      speed_multiplicator_help: "Une valeur spérieure à 100% signifie une vitesse plus élevée."
-      submit: "Enregistrer Paramétrage global"
+      speed_multiplicator_help: "Une valeur supérieure à 100% signifie une vitesse plus élevée."
+      submit: "Enregistrer paramétrage global"
       sync:
         orange:
           confirm: "Synchroniser les véhicules depuis Orange Fleet ?"
@@ -658,33 +659,36 @@ fr:
       name: "nom"
       name_desc: "nom du client ou de la destination visitée."
       street: "voie"
-      street_desc: "numéro de l'immeuble, type de voie et nom de la voie (l’orthographe doit être correcte pour un géocodage fiable). Note : les détails d'accés doivent eux être posés dans le champ « complément »."
+      street_desc: "numéro de l'immeuble, type de voie et nom de la voie (l'orthographe doit être correcte pour un géocodage fiable). Note : les détails d'accés doivent eux être posés dans le champ « complément »."
       detail: "complément"
-      detail_desc: "détails d'accés complémentaires à la voie permettant à l'agent de terrain d'atteindre le seuil de porte de sa destination. Ex. Bâtiment d'un complexe, résidence, escalier, étage, numéro de porte…"
+      detail_desc: "détails d'accès complémentaires à la voie permettant à l'agent de terrain d'atteindre le seuil de porte de sa destination. Ex. Bâtiment d'un complexe, résidence, escalier, étage, numéro de porte…"
       postalcode: "code postal"
-      postalcode_desc: "code postal de la ville ou commune (l’exactitude est importante pour un géocodage fiable)."
+      postalcode_desc: "code postal de la ville ou commune (l'exactitude est importante pour un géocodage fiable)."
       city: "ville"
-      city_desc: "nom de la ville ou commune (l’orthographe doit être correcte pour un géocodage fiable)."
+      city_desc: "nom de la ville ou commune, l'orthographe doit être correcte."
       country: "pays"
-      country_desc: "nom du pays (l’orthographe doit être correcte pour un géocodage fiable)."
+      country_desc: "nom du pays (l'orthographe doit être correcte pour un géocodage fiable)."
       lat: "lat"
-      lat_desc: "latitude de la destination (en dégrés décimaux) comprise entre -90° et 90°. Ex. 45,91"
+      lat_desc: "latitude de la destination (en degrés décimaux) comprise entre -90° et 90°. Ex. 45,91°"
+      lat_format: "nombre à virgule entre -90 et 90"
       lng: "lng"
-      lng_desc: "longitude de la destination (en dégrés décimaux) comprise entre -180° et 180°. Ex. -0,781"
+      lng_desc: "longitude de la destination (en degrés décimaux) comprise entre -180° et 180°. Ex. -0,781°"
+      lng_format: "nombre à virgule entre -180 et 180"
       geocoding_accuracy: "qualité géocodage"
-      geocoding_accuracy_desc: "note qualifiant la certitude de conversion de l’adresse postale en coordonnées géographiques. Ceci via un pourcentage exprimé entre 0 et 1. Ex. 0,70 représente 70% de fiabilité."
+      geocoding_accuracy_desc: "note qualifiant la certitude de conversion de l'adresse postale en coordonnées géographiques. Ceci via un pourcentage exprimé entre 0 et 1. Ex. 0,70 représente 70% de fiabilité."
+      geocoding_accuracy_format: "nombre à virgule de 0 à 1"
       geocoding_level: "niveau géocodage"
-      geocoding_level_desc: "niveau de précision atteint lors de la conversion de l’adresse postale en coordonnées géographiques, exprimée de manière sémantique."
+      geocoding_level_desc: "niveau de précision atteint lors de la conversion de l'adresse postale en coordonnées géographiques, exprimé de manière sémantique."
       take_over: "durée visite"
       take_over_desc: "durée anticipée de la visite."
       quantity: "quantité"
       quantity_desc: "quantité d'unités à livrer."
       active: "livré"
-      active_desc: "indique si le client est livré durant cette tournée ou pas."
+      active_desc: "indique si le client est livré durant cette tournée ou pas"
       open: "horaire début"
-      open_desc: "début de l’interval conseillé de la visite."
+      open_desc: "début de l'intervalle conseillée pour la visite."
       close: "horaire fin"
-      close_desc: "fin de l’interval conseillé de la visite."
+      close_desc: "fin de l'intervalle conseillée pour la visite."
       comment: "commentaire"
       comment_desc: "informations nécessaires pour la visite."
       phone_number: "téléphone"
@@ -715,8 +719,8 @@ fr:
   index:
     unsupported_browser:
       unsupported_browser: "Navigateur non pris en charge"
-      unsupported_browser_ie: "Internet Explorer n'est pas pris en charge, s'il vous plaît utiliser Firefox, Chrome ou tout autre navigateur moderne."
-      unsupported_browser_modern: "Votre navigateur est trop ancien, s'il vous plaît utilisez un navigateur moderne."
+      unsupported_browser_ie: "Internet Explorer n'est pas pris en charge, s'il vous plaît utilisez Firefox, Chrome ou tout autre navigateur récent."
+      unsupported_browser_modern: "Votre navigateur est trop ancien, s'il vous plaît utilisez un navigateur récent."
       download_browser: "Vous pouvez télécharger la dernière version du navigateur libre Firefox à cette adresse : "
 
   order_arrays:
@@ -769,7 +773,7 @@ fr:
 
   user_mailer:
     welcome:
-      title: "Mapotempo: Votre compte"
+      title: "Mapotempo : Votre compte"
       content: "Votre compte sera actif lorsqu'un mot de passe sera défini.\n
                 Vous pouvez le faire maintenant avec ce lien :"
       set_password: "Changer le mot de passe"
@@ -802,10 +806,6 @@ fr:
         action: "Vider Teksat"
         success: "Les commandes Teksat ont été vidées avec succès"
         fail: "Échec lors de la suppression des commandes Teksat"
-      tomtom_clear:
-        action: "Vider TomTom"
-        success: "Les commandes TomTom ont été vidées avec succès"
-        fail: "Échec lors de la suppression des commandes TomTom"
       tomtom_send_orders:
         action: "Commandes vers TomTom"
         success: "Envoi vers TomTom terminé avec succès"
@@ -814,6 +814,10 @@ fr:
         action: "Points de passage vers TomTom"
         success: "Envoi vers TomTom terminé avec succès"
         fail: "Échec lors de l'envoi vers TomTom"
+      tomtom_clear:
+        action: "Vider TomTom"
+        success: "Les commandes TomTom ont été vidées avec succès"
+        fail: "Échec lors de la suppression des commandes TomTom"
       orange_send:
         action: "Envoyer à Orange Fleet"
         success: "Envoyé à Orange Fleet avec succès"
@@ -837,15 +841,11 @@ fr:
           fail: "Échec lors de l'envoi de l'Email"
         print: "Imprimer"
         spreadsheet_standard: "Tableur standard"
-        spreadsheet_standard_without_stores: "Tableur standard sans dépôts"
+        spreadsheet_standard_without_stores: "Tableur standard sans dépôt"
         spreadsheet_excel: "Tableur Excel"
         gpx_route: "Route GPX"
         gpx_track: "Tracé GPX"
         kmz_track: "Tracé KML"
-        masternaut: "Envoyer vers Masternaut"
-        masternaut_success: "Envoi vers Masternaut terminé avec succès"
-        alyacom: "Envoyer vers AlyaCom"
-        alyacom_success: "Envoi vers AlyaCom terminé avec succès"
       zoning:
         none: "Aucun"
         apply: "Appliquer zonage"
@@ -861,7 +861,7 @@ fr:
       out_of_date_zoning: "Le Zonage a été modifié. Veuillez actualiser."
       out_of_route: "Non planifiés"
       toggle_help: "Affiche ou cache les clients sur la carte"
-      locked_unplanned_help: "Verrouille les non planifiés pour les opérations globales sur le planning"
+      locked_unplanned_help: "Verrouille les non-planifiés pour les opérations globales sur le planning"
       locked_help: "Verrouille la tournée pour les opérations globales sur le planning"
       vehicle_help: "Paramétrer le véhicule"
       optimize_help: "Optimiser la tournée"
@@ -881,7 +881,7 @@ fr:
       wait: "Temps d'attente :"
       vehicle_speed: "Vitesse :"
       vehicle_last_position_time: "Dernier relevé :"
-      route_change_color_title: "Changer la couleur de la trounée"
+      route_change_color_title: "Changer la couleur de la tournée"
       popup:
         open_close: "Plage horaire : "
         open: "début"
@@ -896,7 +896,7 @@ fr:
         visit: "Visite"
       error:
         no_geolocalization: "Pas de géolocalisation"
-        no_geolocalization_help: "Pas de coordonnées géographiques renseignées ou l'adresse n'a pu être localisée"
+        no_geolocalization_help: "Pas de coordonnée géographique renseignée, ou l'adresse n'a pu être localisée"
         out_of_window: "Hors créneau client"
         out_of_window_help: "Client planifié en dehors des créneaux de livraison"
         out_of_capacity: "Hors capacité véhicule"
@@ -974,7 +974,7 @@ fr:
       out_of_drive_time: "hors créneau véhicule"
     form:
       ref_help: "Référence libre"
-      tags_help: "Restreint les visites/clients dans le planning (les visites/clients doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)"
+      tags_help: "Restreint les visites / clients dans le planning (les visites/clients doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)"
       order_array: "Comm."
 
   routes:
@@ -1044,29 +1044,34 @@ fr:
       color_desc: "la couleur de votre icône de dépôt, issue des couleurs du web https://fr.wikipedia.org/wiki/Couleur_du_Web"
       color_format: "#000000 ou black"
       icon: "icône"
-      icon_desc: "nom de l’icône représentant le dépôt sur la carte, issue de la liste officielle de font-awesome http://fontawesome.io/icons préfixé de “fa-”. Ex. fa-building"
+      icon_desc: "nom de l'icône représentant le dépôt sur la carte, issue de la liste officielle de font-awesome http://fontawesome.io/icons préfixé de “fa-”. Ex. fa-building"
       icon_size: "taille icône"
-      icon_size_desc: "taille de l’icône localisant le dépôt sur la carte. Défaut: large"
+      icon_size_desc: "taille de l'icône localisant le dépôt sur la carte. Défaut : large"
       open: "horaire début"
-      open_desc: "début des horraires d'activité du dépôt."
+      open_desc: "début des horaires d'activités du dépôt."
       close: "horaire fin"
-      close_desc: "fin des horraires d'activité du dépôt."
+      close_desc: "fin des horaires d'activités du dépôt."
       street: "voie"
-      street_desc: "numéro de l'immeuble, type de voie et nom de la voie (l’orthographe doit être correcte pour un géocodage fiable)."
+      street_desc: "numéro d'immeuble et nom de la rue/avenue/etc, l'orthographe doit être correcte. Exclure les compléments d'usage non-officiels, type lieu-dit ou escalier, dans le champ “complément”."
+      detail: "complément"
+      detail_desc: "complément d'adresse non géocodable. Ex. Bâtiment d'un complexe, résidence, escalier, appartement…"
       postalcode: "code postal"
-      postalcode_desc: "code postal de la ville ou commune (l’exactitude est importante pour un géocodage fiable)."
+      postalcode_desc: "code postal de la ville ou commune (l'exactitude est importante pour un géocodage fiable)."
       city: "ville"
-      city_desc: "nom de la ville ou commune (l’orthographe doit être correcte pour un géocodage fiable)."
+      city_desc: "nom de la ville ou commune (l'orthographe doit être correcte pour un géocodage fiable)."
       country: "pays"
-      country_desc: "nom du pays (l’orthographe doit être correcte pour un géocodage fiable)."
+      country_desc: "nom du pays (l'orthographe doit être correcte pour un géocodage fiable)."
       lat: "lat"
-      lat_desc: "latitude du dépôt (en dégrés décimaux) comprise entre -90° et 90°. Ex. 45,91"
+      lat_desc: "latitude du dépôt (en degrés décimaux) comprise entre -90° et 90°. Ex. 45,91°"
+      lat_format: "nombre à virgule entre -90 et 90"
       lng: "lng"
       lng_desc: "longitude du dépôt (en dégrés décimaux) comprise entre -180° et 180°. Ex. -0,781"
+      lng_format: "nombre à virgule entre -180 et 180"
       geocoding_accuracy: "qualité géocodage"
-      geocoding_accuracy_desc: "note qualifiant la certitude de conversion de l’adresse postale en coordonnées géographiques. Ceci via un pourcentage exprimé entre 0 et 1. Ex. 0,70 représente 70% de fiabilité."
+      geocoding_accuracy_desc: "note qualifiant la certitude de conversion de l'adresse postale en coordonnées géographiques. Ceci via un pourcentage exprimé entre 0 et 1. Ex. 0,70 représente 70% de fiabilité."
+      geocoding_accuracy_format: "nombre à virgule de 0 à 1"
       geocoding_level: "niveau géocodage"
-      geocoding_level_desc: "niveau de précision atteint lors de la conversion de l’adresse postale en coordonnées géographiques, exprimée de manière sémantique."
+      geocoding_level_desc: "niveau de précision atteint lors de la conversion de l'adresse postale en coordonnées géographiques, exprimé de manière sémantique."
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
       format:
         string: "texte"
@@ -1112,6 +1117,8 @@ fr:
       edit: "Modifier votre identifiant de connexion et mot de passe"
     form:
       url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
+    update:
+      success: "Utilisateur mis à jour avec succès"
     password:
       title: "Editer le mot de passe"
     set_password:
@@ -1149,11 +1156,11 @@ fr:
 
   vehicle_usages:
     menu:
-      vehicle_usages: "Configurations de véhicule"
+      vehicle_usages: "Configurations de véhicules"
     edit:
       title: "Modifier véhicule et configuration"
     index:
-      title: "Liste configurations de véhicule"
+      title: "Liste configurations de véhicules"
       stores: "Dépôts"
       store:
         no_start: "Pas de dépôt de départ"
@@ -1163,11 +1170,11 @@ fr:
       devices: "Terminaux mobiles"
 
     new:
-      title: "Nouvelle configuration du véhicule"
+      title: "Nouvelle configuration de véhicule"
     form:
       vehicle:
         legend: "Véhicule"
-        help: "Les informations ci-dessous sur le véhicule sont communes à toutes les configurations du véhicule."
+        help: "Les informations ci-dessous sur le véhicule sont communes à toutes les configurations de véhicules"
       vehicle_usage:
         legend: "Configuration du véhicule : « %{s} »"
         help: "Les informations ci-dessous sont spécifiques à la configuration du véhicule."
@@ -1300,7 +1307,7 @@ fr:
       default: "%{n} (valeur par défaut)"
       empty_entry: "- Non renseigné -"
     select2:
-      empty_result: "Pas de résultats"
+      empty_result: "Pas de résultat"
     dialog:
       close: "Fermer"
     placeholder_filter: "filtrer"
@@ -1310,7 +1317,7 @@ fr:
     choose_file: "Sélectionner fichier"
     geocoder:
       search: "Recherche d'adresse"
-      empty_result: "Pas de résultats"
+      empty_result: "Pas de résultat"
 
   api_web:
     v01:
