@@ -120,7 +120,7 @@ class Tomtom < DeviceBase
 
   def send_route options
     @route = options[:route]
-    case options[:type]
+    case options[:type].to_sym
       when :orders
         position = route.vehicle_usage.default_store_stop
         if position && !position.lat.nil? && !position.lng.nil?
