@@ -711,8 +711,7 @@ var plannings_edit = function(params) {
 
       initRoutes($('#planning'), data);
 
-      $("#refresh, #refresh-modal").click(function(event, ui) {
-        $('#planning-refresh-modal').modal('hide');
+      $("#refresh").click(function(event, ui) {
         $.ajax({
           type: "get",
           url: '/plannings/' + planning_id + '/refresh.json',
@@ -837,9 +836,6 @@ var plannings_edit = function(params) {
   });
 
   var displayPlanningFirstTime = function(data) {
-    if (data.out_of_date)
-      $('#planning-refresh-modal').modal('show');
-
     displayPlanning(data);
 
     var stores_marker = L.featureGroup();
@@ -890,6 +886,40 @@ var plannings_edit = function(params) {
     }
   }
 
+  var checkForDisplayPlanningFirstTime = function(data) {
+    if (data.out_of_date) {
+
+      var displayPlanningAfterModal = function() {
+        var cursorBody = $('body').css('cursor');
+        var cursorMap = $('#map').css('cursor');
+        $('body, #map').css({cursor: 'progress'});
+        setTimeout(function() {
+          displayPlanningFirstTime(data);
+          $('body').css({cursor: cursorBody});
+          $('#map').css({cursor: cursorMap});
+        }, 100);
+      }
+
+      $('#planning-refresh-modal').modal('show');
+      $("#refresh-modal").click(function(event, ui) {
+        $('#planning-refresh-modal').off('hidden.bs.modal', displayPlanningAfterModal);
+        $('#planning-refresh-modal').modal('hide');
+        $.ajax({
+          type: "get",
+          url: '/plannings/' + planning_id + '/refresh.json',
+          beforeSend: beforeSendWaiting,
+          success: displayPlanningFirstTime,
+          complete: completeAjaxMap,
+          error: ajaxError
+        });
+      });
+      $('#planning-refresh-modal').on('hidden.bs.modal', displayPlanningAfterModal);
+    }
+    else {
+      displayPlanningFirstTime(data);
+    }
+  }
+
   $('.btn.extend').click(function() {
     $('.sidebar').toggleClass('extended');
     if ($('.sidebar').hasClass('extended')) {
@@ -902,7 +932,7 @@ var plannings_edit = function(params) {
   $.ajax({
     url: '/plannings/' + planning_id + '.json',
     beforeSend: beforeSendWaiting,
-    success: displayPlanningFirstTime,
+    success: checkForDisplayPlanningFirstTime,
     complete: completeAjaxMap,
     error: ajaxError
   });
