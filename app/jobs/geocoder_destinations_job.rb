@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -28,11 +28,12 @@ class GeocoderDestinationsJob < Struct.new(:customer_id, :planning_id)
     i = 0
     customer.destinations.select(:id).where(lat: nil).each_slice(50){ |destination_ids|
       Destination.transaction do
-        destination_ids.each { |destination_id|
-          destination = Destination.find destination_id # IMPORTANT: Lower Delayed Job Memory Usage
-          destination.geocode
-          Delayed::Worker.logger.info destination.inspect
-          destination.save
+        destinations = customer.destinations.find destination_ids # IMPORTANT: Lower Delayed Job Memory Usage
+        geocode_args = destinations.collect(&:geocode_args)
+        results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
+        destinations.zip(results).each { |destination, result|
+          destination.geocode_result(result) if result
+          destination.save!
           i += 1
         }
         @job.progress = Integer(i * 100 / count).to_s
@@ -46,7 +47,7 @@ class GeocoderDestinationsJob < Struct.new(:customer_id, :planning_id)
         planning = customer.plannings.find(planning_id)
         if planning
           planning.compute
-          planning.save
+          planning.save!
         end
       end
     end

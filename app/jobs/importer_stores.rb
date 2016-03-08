@@ -51,7 +51,7 @@ class ImporterStores < ImporterBase
   end
 
   def before_import(name, options)
-    @need_geocode = false
+    @stores_to_geocode = []
 
     if options[:replace]
       # vehicle is always linked to a store
@@ -86,18 +86,19 @@ class ImporterStores < ImporterBase
       row[:lng] = Float(row[:lng].tr(',', '.'))
     end
 
-    if row[:lat].nil? || row[:lng].nil?
-      @need_geocode = true
-    end
-
     if !row[:ref].nil? && !row[:ref].strip.empty?
       store = @customer.stores.find{ |store|
         store.ref && store.ref == row[:ref]
       }
       store.assign_attributes(row) if store
     end
+
     if !store
       store = @customer.stores.build(row) # Link only when store is complete
+    end
+
+    if store.lat.nil? || store.lng.nil?
+      @stores_to_geocode << store
     end
 
     store # For subclasses
@@ -115,11 +116,21 @@ class ImporterStores < ImporterBase
       @customer.stores.destroy(@tmp_store)
     end
 
+    if @stores_to_geocode.size > 0 && (synchronous || !Mapotempo::Application.config.delayed_job_use)
+      @stores_to_geocode.each_slice(50){ |stores|
+        geocode_args = stores.collect(&:geocode_args)
+        results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
+        stores.zip(results).each { |store, result|
+          store.geocode_result(result) if result
+        }
+      }
+    end
+
     @customer.save!
   end
 
   def finalize_import(name, options)
-    if @need_geocode && !synchronous && Mapotempo::Application.config.delayed_job_use
+    if @stores_to_geocode.size > 0 && !synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_store_geocoding = Delayed::Job.enqueue(GeocoderStoresJob.new(@customer.id))
     end
 

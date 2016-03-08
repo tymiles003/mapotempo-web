@@ -55,8 +55,14 @@ class Destination < ActiveRecord::Base
   end
 
   def geocode
-    address = Mapotempo::Application.config.geocode_geocoder.code(street, postalcode, city, !country.nil? && !country.empty? ? country : customer.default_country)
-    Rails.logger.info 'geocode: ' + address.inspect
+    geocode_result(Mapotempo::Application.config.geocode_geocoder.code(*geocode_args))
+  end
+
+  def geocode_args
+    [street, postalcode, city, !country.nil? && !country.empty? ? country : customer.default_country]
+  end
+
+  def geocode_result(address)
     if address
       self.lat, self.lng, self.geocoding_accuracy, self.geocoding_level = address[:lat], address[:lng], address[:accuracy], address[:quality]
     else

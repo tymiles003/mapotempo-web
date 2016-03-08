@@ -224,7 +224,7 @@ class ImporterDestinations < ImporterBase
         @common_tags &= (visit.tags | visit.destination.tags)
       end
 
-      visit.destination.delay_geocode if !synchronous && Mapotempo::Application.config.delayed_job_use
+      visit.destination.delay_geocode
       visit.save!
 
       # Add visit to route if needed
@@ -237,7 +237,7 @@ class ImporterDestinations < ImporterBase
       @destinations_to_geocode << visit.destination if row[:lat].nil? || row[:lng].nil?
       visit.destination # For subclasses
     else
-      destination.delay_geocode if !synchronous && Mapotempo::Application.config.delayed_job_use
+      destination.delay_geocode
       destination.save!
       @destinations_to_geocode << destination if row[:lat].nil? || row[:lng].nil?
       destination # For subclasses
@@ -246,13 +246,12 @@ class ImporterDestinations < ImporterBase
 
   def after_import(name, options)
     if @destinations_to_geocode.size > 0 && (synchronous || !Mapotempo::Application.config.delayed_job_use)
-      @destinations_to_geocode.each{ |destination|
-        if destination.lat.nil? || destination.lng.nil?
-          begin
-            destination.geocode
-          rescue
-          end
-        end
+      @destinations_to_geocode.each_slice(50){ |destinations|
+        geocode_args = destinations.collect(&:geocode_args)
+        results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
+        destinations.zip(results).each { |destination, result|
+          destination.geocode_result(result) if result
+        }
       }
     end
 

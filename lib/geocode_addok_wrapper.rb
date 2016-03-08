@@ -101,6 +101,12 @@ class GeocodeAddokWrapper
     []
   end
 
-  def code_bulk(rows)
+  def code_bulk(addresses)
+    addresses.collect{ |address|
+      begin
+        code(*address)
+      rescue
+      end
+    }
   end
 end

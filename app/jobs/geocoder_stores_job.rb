@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -28,15 +28,16 @@ class GeocoderStoresJob < Struct.new(:customer_id)
     i = 0
     customer.stores.select(:id).where(lat: nil).each_slice(50){ |store_ids|
       Store.transaction do
-        store_ids.each { |store_id|
-          store = Store.find store_id # IMPORTANT: Lower Delayed Job Memory Usage
-          store.geocode
-          Delayed::Worker.logger.info store.inspect
-          store.save
+        stores = customer.stores.find store_ids # IMPORTANT: Lower Delayed Job Memory Usage
+        geocode_args = stores.collect(&:geocode_args)
+        results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
+        stores.zip(results).each { |store, result|
+          store.geocode_result(result) if result
+          store.save!
           i += 1
         }
         @job.progress = Integer(i * 100 / count).to_s
-        @job.save
+        @job.save!
         Delayed::Worker.logger.info "GeocoderStoresJob customer_id=#{customer_id} #{@job.progress}%"
       end
     }
