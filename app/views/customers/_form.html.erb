@@ -107,13 +107,10 @@
             <%= f.text_field :tomtom_user, autocomplete: "off" %>
             <%= f.password_field :tomtom_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
 
-            <% if !@customer.new_record? && @customer.tomtom? %>
-              <div class="btn btn-default btn-sm api-sync" data-url="/api/0.1/devices/tomtom/sync" data-customer-id="<%= @customer.id %>">
-                <i class="fa fa-bolt fa-fw"></i>
-                <%= t "customers.form.sync.tomtom.action" %>
-              </div>
-            <% end %>
-
+            <div class="btn btn-default btn-sm api-sync" <%= 'disabled=\"disabled\"' if @customer.new_record? || !@customer.tomtom? %> data-url="/api/0.1/devices/tomtom/sync" data-customer-id="<%= @customer.id %>">
+              <i class="fa fa-bolt fa-fw"></i>
+              <%= t "customers.form.sync.tomtom.action" %>
+            </div>
           </div>
           <div class="pull-right col-md-2">
             <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "tomtom_success" %>
@@ -153,13 +150,10 @@
             <%= f.text_field :teksat_username, autocomplete: "off" %>
             <%= f.password_field :teksat_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
 
-            <% if !@customer.new_record? && @customer.teksat? %>
-              <div class="btn btn-default btn-sm api-sync" data-url="/api/0.1/devices/teksat/sync" data-customer-id="<%= @customer.id %>">
-                <i class="fa fa-bolt fa-fw"></i>
-                <%= t "customers.form.sync.teksat.action" %>
-              </div>
-            <% end %>
-
+            <div class="btn btn-default btn-sm api-sync" <%= 'disabled=\"disabled\"' if @customer.new_record? || !@customer.teksat? %> data-url="/api/0.1/devices/teksat/sync" data-customer-id="<%= @customer.id %>">
+              <i class="fa fa-bolt fa-fw"></i>
+              <%= t "customers.form.sync.teksat.action" %>
+            </div>
           </div>
           <div class="pull-right col-md-2">
             <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "teksat_success" %>
@@ -194,13 +188,10 @@
             <%= f.text_field :orange_user, autocomplete: "off" %>
             <%= f.password_field :orange_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
 
-            <% if !@customer.new_record? && @customer.orange? %>
-              <div class="btn btn-default btn-sm api-sync" data-url="/api/0.1/devices/orange/sync" data-customer-id="<%= @customer.id %>">
-                <i class="fa fa-bolt fa-fw"></i>
-                <%= t "customers.form.sync.orange.action" %>
-              </div>
-            <% end %>
-
+            <div class="btn btn-default btn-sm api-sync" <%= 'disabled=\"disabled\"' if @customer.new_record? || !@customer.orange? %> data-url="/api/0.1/devices/orange/sync" data-customer-id="<%= @customer.id %>">
+              <i class="fa fa-bolt fa-fw"></i>
+              <%= t "customers.form.sync.orange.action" %>
+            </div>
           </div>
           <div class="pull-right col-md-2">
             <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "orange_success" %>
