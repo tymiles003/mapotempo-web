@@ -19,20 +19,24 @@ class Tomtom < DeviceBase
 
   attr_reader :client_objects, :client_address, :client_orders
 
-  def fetch_wsdl
-    @client_objects = Savon.client(wsdl: api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+  def savon_client_objects
+    @client_objects ||= Savon.client(wsdl: api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
     end
+  end
 
-    @client_address = Savon.client(wsdl: api_url + '/addressService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+  def savon_client_address
+    @client_address ||= Savon.client(wsdl: api_url + '/addressService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
     end
+  end
 
-    @client_orders = Savon.client(wsdl: api_url + '/ordersService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
+  def savon_client_orders
+    @client_orders ||= Savon.client(wsdl: api_url + '/ordersService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
@@ -57,7 +61,7 @@ class Tomtom < DeviceBase
   end
 
   def list_devices
-    objects = get client_objects, :show_object_report, {}
+    objects = get savon_client_objects, :show_object_report, {}
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       {
@@ -68,7 +72,7 @@ class Tomtom < DeviceBase
   end
 
   def get_vehicles_pos
-    objects = get client_objects, :show_object_report, {}
+    objects = get savon_client_objects, :show_object_report, {}
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       {
@@ -82,7 +86,7 @@ class Tomtom < DeviceBase
   end
 
   def list_vehicles
-    objects = get client_objects, :show_vehicle_report, {}
+    objects = get savon_client_objects, :show_vehicle_report, {}
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       hash = {
@@ -99,7 +103,7 @@ class Tomtom < DeviceBase
   end
 
   def list_addresses
-    addresss = get client_address, :show_address_report, {}
+    addresss = get savon_client_address, :show_address_report, {}
     addresss = [addresss] if addresss.is_a?(Hash)
     addresss.select{ |object| !object[:deleted] }.collect do |address|
       {
@@ -188,7 +192,7 @@ class Tomtom < DeviceBase
 
   def clear_route options
     @route = options[:route]
-    get client_orders, :clear_orders,
+    get savon_client_orders, :clear_orders,
       deviceToClear: {
         markDeleted: 'true',
       },
@@ -298,7 +302,7 @@ class Tomtom < DeviceBase
         }
       }}
     end
-    get client_orders, :send_destination_order, params
+    get savon_client_orders, :send_destination_order, params
   end
 
 end

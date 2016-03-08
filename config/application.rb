@@ -8,12 +8,6 @@ require_relative '../lib/routers/here'
 require_relative '../lib/routers/router_wrapper'
 require_relative '../lib/ort'
 
-# Devices
-require_relative '../lib/device_base'
-['alyacom', 'masternaut', 'orange', 'teksat', 'tomtom'].each{|name|
-  require_relative "../lib/devices/#{name}"
-}
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -115,9 +109,6 @@ module Mapotempo
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'router_wrapper_result'), namespace: 'router_wrapper_result', expires_in: 60*60*24*1),
       nil
     )
-
-    # Devices
-    config.devices = OpenStruct.new alyacom: Alyacom.new, masternaut: Masternaut.new, orange: Orange.new, teksat: Teksat.new, tomtom: Tomtom.new
 
     config.delayed_job_use = false
 

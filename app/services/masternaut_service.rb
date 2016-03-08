@@ -15,9 +15,4 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class MasternautService < DeviceService
-  def initialize params
-    super params
-    service.fetch_wsdl
-  end
-end
+class MasternautService < DeviceService ; end

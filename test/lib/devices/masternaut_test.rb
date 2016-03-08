@@ -9,7 +9,6 @@ class MasternautTest < ActionController::TestCase
     @customer = add_masternaut_credentials customers(:customer_one)
     @service = Mapotempo::Application.config.devices.masternaut
     @service.set_params customer: @customer
-    @service.fetch_wsdl
   end
 
   test 'send route' do

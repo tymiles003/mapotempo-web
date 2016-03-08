@@ -19,13 +19,16 @@ class Masternaut < DeviceBase
 
   attr_reader :client_poi, :client_job
 
-  def fetch_wsdl
-    @client_poi = Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/POI?wsdl', soap_version: 1) do
+  def savon_client_poi
+    @client_poi ||= Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/POI?wsdl', soap_version: 1) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
     end
-    @client_job = Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
+  end
+
+  def savon_client_job
+    @client_job ||= Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
       #log true
       #pretty_print_xml true
       convert_request_keys_to :none
@@ -148,7 +151,7 @@ class Masternaut < DeviceBase
       }
     }
 
-    get client_job, 1, :create_job_route, params, @@error_code_job
+    get savon_client_job, 1, :create_job_route, params, @@error_code_job
 
     waypoints.each{ |waypoint|
       params = {
@@ -162,7 +165,7 @@ class Masternaut < DeviceBase
         jobRouteRef: reference,
       }
 
-      get client_job, 1, :create_job, params, @@error_code_job
+      get savon_client_job, 1, :create_job, params, @@error_code_job
     }
   end
 
@@ -175,7 +178,7 @@ class Masternaut < DeviceBase
       }
     }
 
-    get client_poi, nil, :create_poi_category, params, @@error_code_poi
+    get savon_client_poi, nil, :create_poi_category, params, @@error_code_poi
   end
 
   def fetchPOI
@@ -186,7 +189,7 @@ class Masternaut < DeviceBase
       maxResults: 999999,
     }
 
-    response = get client_poi, nil, :search_poi, params, @@error_code_poi
+    response = get savon_client_poi, nil, :search_poi, params, @@error_code_poi
 
     fetch = (response[:multi_ref] || []).select{ |e|
       e[:'@xsi:type'].end_with?(':POI')
@@ -228,7 +231,7 @@ class Masternaut < DeviceBase
       overwrite: true
     }
 
-    get client_poi, 200, :create_poi, params, @@error_code_poi
+    get savon_client_poi, 200, :create_poi, params, @@error_code_poi
   end
 
   def get client, no_error_code, operation, message={}, error_code
