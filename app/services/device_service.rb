@@ -26,18 +26,6 @@ class DeviceService
     @service.set_params params
   end
 
-  def list_devices
-    with_cache "%s_%s" % [:list_devices, service_name, customer.id] do
-      service.list_devices
-    end
-  end
-
-  def get_vehicles_pos
-    with_cache "%s_%s" % [:get_vehicles_pos, service_name, customer.id] do
-      service.get_vehicles_pos
-    end
-  end
-
   def send_route options
     service.send_route options
     options[:route].update! last_sent_at: Time.now

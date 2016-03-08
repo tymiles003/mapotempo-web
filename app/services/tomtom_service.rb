@@ -18,14 +18,26 @@
 class TomtomService < DeviceService
   delegate :test_list, to: :service
 
+  def list_devices
+    with_cache "%s_%s" % [:list_devices, service_name, customer.id, customer.tomtom_account] do
+      service.list_devices
+    end
+  end
+
+  def get_vehicles_pos
+    with_cache "%s_%s" % [:get_vehicles_pos, service_name, customer.id, customer.tomtom_account] do
+      service.get_vehicles_pos
+    end
+  end
+
   def list_vehicles
-    with_cache "%s_%s" % [:list_vehicles, service_name, customer.id] do
+    with_cache "%s_%s" % [:list_vehicles, service_name, customer.id, customer.tomtom_account] do
       service.list_vehicles
     end
   end
 
   def list_addresses
-    with_cache "%s_%s" % [:list_addresses, service_name, customer.id] do
+    with_cache "%s_%s" % [:list_addresses, service_name, customer.id, customer.tomtom_account] do
       service.list_addresses
     end
   end

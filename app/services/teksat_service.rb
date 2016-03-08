@@ -22,4 +22,16 @@ class TeksatService < DeviceService
     super params
     service.ticket_id = params[:ticket_id]
   end
+
+  def list_devices
+    with_cache "%s_%s" % [:list_devices, service_name, customer.id, customer.teksat_username] do
+      service.list_devices
+    end
+  end
+
+  def get_vehicles_pos
+    with_cache "%s_%s" % [:get_vehicles_pos, service_name, customer.id, customer.teksat_username] do
+      service.get_vehicles_pos
+    end
+  end
 end
