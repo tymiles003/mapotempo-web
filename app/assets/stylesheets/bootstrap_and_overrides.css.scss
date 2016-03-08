@@ -86,23 +86,28 @@ hr {
 /** External look-like **/
 
 /* Select2 */
-
 .fake .select2-selection:focus {
   border: 1px solid #5897fb;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
   outline:medium none;
 }
-
 .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field  {
   min-width: 0em;
 }
-
 .select2 img {
   vertical-align: baseline; /* better for tags */
 }
 
-/* Add Open and Close cheron to accordion */
+/* Move padding in a for easier click area */
+.accordion > .panel-heading {
+  padding: 0px;
 
+  a {
+    display: block;
+    padding: 10px 15px;
+  }
+}
+/* Add Open and Close cheron to accordion */
 .panel-heading .accordion-toggle:after {
     font-family: 'FontAwesome';
     content: "";

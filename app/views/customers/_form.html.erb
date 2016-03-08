@@ -71,7 +71,7 @@
     <legend class="scheduler-border">
       <%= t '.outputs' %>
     </legend>
-    <div id="accordion" class="panel panel-default">
+    <div class="panel panel-default accordion">
       <div class="panel-heading">
         <h2 class="panel-title">
           <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsePrint">
@@ -99,7 +99,7 @@
       <% end %>
     <% end %>
     <% if @customer.enable_tomtom? %>
-      <div id="tomtom_container" class="panel panel-default">
+      <div id="tomtom_container" class="panel panel-default accordion">
         <div class="panel-heading">
           <h2 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomtom">
@@ -139,7 +139,7 @@
       <% end %>
     <% end %>
     <% if @customer.enable_teksat? %>
-      <div id="teksat_container" class="panel panel-default">
+      <div id="teksat_container" class="panel panel-default accordion">
         <div class="panel-heading">
           <h2 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTeksat">
@@ -182,7 +182,7 @@
       <% end %>
     <% end %>
     <% if @customer.enable_orange? %>
-      <div id="orange_container" class="panel panel-default">
+      <div id="orange_container" class="panel panel-default accordion">
         <div class="panel-heading">
           <h2 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOrange">
@@ -220,7 +220,7 @@
       <% end %>
     <% end %>
     <% if @customer.enable_masternaut? %>
-      <div class="panel panel-default">
+      <div class="panel panel-default accordion">
         <div class="panel-heading">
           <h2 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseMasternaut">
@@ -243,7 +243,7 @@
       <% end %>
     <% end %>
     <% if @customer.enable_alyacom? %>
-      <div id="alyacom_container" class="panel panel-default">
+      <div id="alyacom_container" class="panel panel-default accordion">
         <div class="panel-heading">
           <h2 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAlyacom">
