@@ -18,6 +18,22 @@
 require 'routers/router_wrapper'
 
 class RouterWrapper < Router
+  def time?
+    true
+  end
+
+  def distance?
+    true
+  end
+
+  def isochrone?
+    true
+  end
+
+  def isodistance?
+    true
+  end
+
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, geometry = true)
     Mapotempo::Application.config.router_wrapper.compute(url_time, mode, lat1, lng1, lat2, lng2, speed_multiplicator, dimension)
   end
