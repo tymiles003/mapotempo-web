@@ -10,7 +10,9 @@ require_relative '../lib/ort'
 
 # Devices
 require_relative '../lib/device_base'
-Dir["lib/devices/*.rb"].each{|file| require_relative "../#{file}" }
+['alyacom', 'masternaut', 'orange', 'teksat', 'tomtom'].each{|name|
+  require_relative "../lib/devices/#{name}"
+}
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
