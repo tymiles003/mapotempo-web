@@ -908,7 +908,7 @@ fr:
       dialog:
         refresh:
           title: "Actualiser le planning"
-          confirm: "Vous avez effectuer des modifications qui nécessitent de recalculer votre planning. Souhaitez-vous l'actualiser maintenant ?"
+          confirm: "Vous avez effectué des modifications qui nécessitent de recalculer votre planning. Souhaitez-vous l'actualiser maintenant ?"
         optimizer:
           title: "Optimisation"
           in_progress: "Processus en cours, merci de patienter."
