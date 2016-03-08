@@ -542,6 +542,7 @@ fr:
     form:
       name: "Compte"
       default_value: "Valeurs par défaut"
+      outputs: "Diffusion des tournées"
       options: "Options"
       optimization_parameters: "Paramètres d'optimisation"
       router_help: "Profil utilisé pour les calculs d'itinéraires par défaut"

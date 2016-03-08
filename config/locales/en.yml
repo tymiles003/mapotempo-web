@@ -542,6 +542,7 @@ en:
     form:
       name: "Customer"
       default_value: "Default values"
+      outputs: "Outputs"
       options: "Options"
       optimization_parameters: "Optimization settings"
       router_help: "Profile used by route planning by default"
