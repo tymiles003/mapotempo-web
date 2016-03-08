@@ -57,11 +57,7 @@ class GeocodeAddokWrapper
 
     data = JSON.parse(result)
     if data['features'].size > 0
-      data = data['features'][0]
-      score = data['properties']['geocoding']['score']
-      type = data['properties']['geocoding']['type']
-      coordinates = data['geometry']['coordinates']
-      {lat: coordinates[1], lng: coordinates[0], quality: RESULTTYPE[type], accuracy: score}
+      parse_geojson_feature(data['features'][0])
     end
   end
 
@@ -86,11 +82,7 @@ class GeocodeAddokWrapper
     data = JSON.parse(result)
     features = data['features']
     features.collect{ |feature|
-      score = feature['properties']['geocoding']['score']
-      type = feature['properties']['geocoding']['type']
-      label = feature['properties']['geocoding']['label']
-      coordinates = feature['geometry']['coordinates']
-      {lat: coordinates[1], lng: coordinates[0], quality: RESULTTYPE[type], accuracy: score, free: label}
+      parse_geojson_feature(feature)
     }
   end
 
@@ -102,11 +94,38 @@ class GeocodeAddokWrapper
   end
 
   def code_bulk(addresses)
-    addresses.collect{ |address|
-      begin
-        code(*address)
-      rescue
-      end
+    json = addresses.collect{ |address|
+      {
+        street: address[0],
+        postalcode: address[1],
+        city: address[2],
+        country: address[3],
+      }
     }
+
+    key = ['addok_wrapper', json]
+    result = @cache_code.read(key)
+    if !result
+      begin
+        result = RestClient.post(@url + '/geocode.json', {api_key: @api_key, geocodes: json}.to_json, content_type: :json, accept: :json)
+        @cache_code.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
+      rescue
+        raise
+      end
+    end
+    data = JSON.parse(result)
+    data['geocodes'].collect{ |r|
+      parse_geojson_feature(r)
+    }
+  end
+
+  private
+
+  def parse_geojson_feature(feature)
+    score = feature['properties']['geocoding']['score']
+    type = feature['properties']['geocoding']['type']
+    label = feature['properties']['geocoding']['label']
+    coordinates = feature['geometry']['coordinates'] if feature['geometry'] && feature['geometry']['coordinates']
+    {lat: coordinates && coordinates[1], lng: coordinates && coordinates[0], quality: RESULTTYPE[type], accuracy: score, free: label}
   end
 end
