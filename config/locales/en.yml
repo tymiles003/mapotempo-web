@@ -657,6 +657,14 @@ en:
           in_progress: "Please wait, geocoding in progress."
           attempts: "Attempts:"
           error: "Compute fail."
+        geocoding_danger:
+          title: "Geocoding results"
+          infos: "Some of your destinations seem to be geocoded without reliability. Do you want to display them ?"
+          hide_help: "To hide this message, select your non reliable geocoded destinations and:"
+          correct_help: "Check address to correct or complete it if necessary"
+          move_help: "Move points on the map if necessary"
+          dismiss: "Dismiss"
+          sort_geocoding: "Display non reliable geocoded first"
     new:
       title: "New destination"
     import_file:

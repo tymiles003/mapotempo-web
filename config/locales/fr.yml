@@ -657,6 +657,14 @@ fr:
           in_progress: "Géocodage en cours, merci de patienter."
           attempts: "Tentatives :"
           error: "Impossible d'effectuer le calcul."
+        geocoding_danger:
+          title: "Résultats de géocodage"
+          infos: "Certains de vos clients semblent être géocodés de manière peu fiable. Souhaitez-vous les revoir dans la liste ?"
+          hide_help: "Pour ne plus voir ce message, sélectionnez les clients ayant un géocodage peu fiable puis :"
+          correct_help: "Vérifiez l'adresse pour la corriger ou compléter si besoin"
+          move_help: "Déplacez les points manuellement sur la carte le cas échéant"
+          dismiss: "Ignorer"
+          sort_geocoding: "Montrer les géocodages peu fiables d'abord"
     new:
       title: "Nouveau client"
     import_file:

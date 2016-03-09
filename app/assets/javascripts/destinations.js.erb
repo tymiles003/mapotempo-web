@@ -811,11 +811,37 @@ var destinations_index = function(params, api) {
     return number.replace(/^0|[-. ]/g, '');
   }
 
-  var display_destinations = function(data) {
+  var globalGeocodingScore = function(level, accuracy) {
+    var ret = 0;
+    switch (level) {
+      case 'point':
+        ret = 5000;
+        break;
+      case 'house':
+        ret = 4000;
+        break;
+      case 'street':
+        ret = 3000;
+        break;
+      case 'intersection':
+        ret = 2000;
+        break;
+      case 'city':
+        ret = 1000;
+        break;
+    }
+    if (accuracy)
+      ret += parseFloat(accuracy) * 100;
+    return ret;
+  }
+
+  var sortList = undefined;
+
+  var displayDestinations = function(data) {
     if ($("#dialog-geocoding").size() == 0) {
       return; // Avoid render and loop with turbolink when page is over
     }
-    if (!progress_dialog(data.geocoding, $("#dialog-geocoding"), '/destinations.json', display_destinations)) {
+    if (!progress_dialog(data.geocoding, $("#dialog-geocoding"), '/destinations.json', displayDestinations)) {
       return;
     }
 
@@ -904,6 +930,7 @@ var destinations_index = function(params, api) {
     });
 
     var tableOptions = {
+      sortList: sortList,
       textExtraction: function(node, table, cellIndex) {
         var $node = $(node);
         if ($node.hasClass('phone')) {
@@ -915,27 +942,7 @@ var destinations_index = function(params, api) {
             return e.text;
           }).sort().join(',');
         } else if ($node.hasClass('geocoding')) {
-          var ret = 0;
-          switch ($("[name$=\\[geocoding_level\\]]", node).val()) {
-            case 'point':
-              ret = 5000;
-              break;
-            case 'house':
-              ret = 4000;
-              break;
-            case 'street':
-              ret = 3000;
-              break;
-            case 'intersection':
-              ret = 2000;
-              break;
-            case 'city':
-              ret = 1000;
-              break;
-          }
-          if ($("[name$=\\[geocoding_accuracy\\]]", node).val())
-            ret += parseFloat($("[name$=\\[geocoding_accuracy\\]]", node).val()) * 100;
-          return ret;
+          return globalGeocodingScore($("[name$=\\[geocoding_level\\]]", node).val(), $("[name$=\\[geocoding_accuracy\\]]", node).val());
         } else if ($node.hasClass('visit')) {
           return $.map($("input[type!=hidden]", node), function(e, i) {
             return e.value;
@@ -1025,10 +1032,42 @@ var destinations_index = function(params, api) {
     });
   }
 
+  var checkForDisplayDestinations = function(data) {
+    var isAccuracyDanger = data.destinations && $.grep(data.destinations, function(dest) {
+      return dest.geocoding_accuracy && dest.geocoding_accuracy < <%= Mapotempo::Application.config.geocode_geocoder.accuracy_warning %>;
+    }).length > 0;
+
+    if (isAccuracyDanger) {
+
+      var displayDestinationsAfterModal = function() {
+        var cursorBody = $('body').css('cursor');
+        var cursorMap = $('#map').css('cursor');
+        $('body, #map').css({cursor: 'progress'});
+        setTimeout(function() {
+          displayDestinations(data);
+          $('body').css({cursor: cursorBody});
+          $('#map').css({cursor: cursorMap});
+        }, 200);
+      }
+
+      $('#geocoding-danger-modal').modal('show');
+      $("#sort-geocoding").click(function(event, ui) {
+        $('#geocoding-danger-modal').off('hidden.bs.modal', displayDestinationsAfterModal);
+        $('#geocoding-danger-modal').modal('hide');
+        sortList = [[$('.tablesorter th').index($('th.geocoding')[0]), 0]];
+        displayDestinationsAfterModal();
+      });
+      $('#geocoding-danger-modal').on('hidden.bs.modal', displayDestinationsAfterModal);
+    }
+    else {
+      displayDestinations(data);
+    }
+  }
+
   $.ajax({
     url: '/destinations.json',
     beforeSend: beforeSendWaiting,
-    success: display_destinations,
+    success: checkForDisplayDestinations,
     complete: completeWaiting,
     error: ajaxError
   });

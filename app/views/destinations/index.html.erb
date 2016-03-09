@@ -102,6 +102,33 @@
   <p class="dialog-error" style="display: none"><%= t '.dialog.geocoding.error' %></p>
   <p class="dialog-attempts" style="display: none"><%= t '.dialog.geocoding.attempts' %> <span class="dialog-attempts-number"></span></p>
 </div>
+
+<div class="modal fade" id="geocoding-danger-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class="fa fa-warning fa-fw"></i> <%= t 'destinations.index.dialog.geocoding_danger.title' %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <%= t 'destinations.index.dialog.geocoding_danger.infos' %>
+          </div>
+          <p class="help-block"><%= t 'destinations.index.dialog.geocoding_danger.hide_help' %><br/>
+            - <%= t 'destinations.index.dialog.geocoding_danger.correct_help' %><br/>
+            - <%= t 'destinations.index.dialog.geocoding_danger.move_help' %><br/>
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'destinations.index.dialog.geocoding_danger.dismiss' %></button>
+        <button type="button" class="btn btn-primary" id="sort-geocoding"><%= t 'destinations.index.dialog.geocoding_danger.sort_geocoding' %></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%
 layers = (@customer.profile.layers + [current_user.layer]).sort_by(&:id).uniq.collect{ |layer|
   {
