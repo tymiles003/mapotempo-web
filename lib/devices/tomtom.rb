@@ -55,13 +55,12 @@ class Tomtom < DeviceBase
     'blue' => '#0000FF'
   }
 
-  def test_list params
-    @auth = params.slice :account, :user, :password
-    list_devices
+  def test_list customer, params
+    list_devices customer, { auth: params.slice(:account, :user, :password) }
   end
 
-  def list_devices
-    objects = get savon_client_objects, :show_object_report, {}
+  def list_devices customer, options={}
+    objects = get customer, savon_client_objects, :show_object_report, options
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       {
@@ -71,8 +70,8 @@ class Tomtom < DeviceBase
     end
   end
 
-  def get_vehicles_pos
-    objects = get savon_client_objects, :show_object_report, {}
+  def get_vehicles_pos customer
+    objects = get customer, savon_client_objects, :show_object_report
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       {
@@ -85,8 +84,8 @@ class Tomtom < DeviceBase
     end
   end
 
-  def list_vehicles
-    objects = get savon_client_objects, :show_vehicle_report, {}
+  def list_vehicles customer
+    objects = get customer, savon_client_objects, :show_vehicle_report
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       hash = {
@@ -102,8 +101,8 @@ class Tomtom < DeviceBase
     end
   end
 
-  def list_addresses
-    addresss = get savon_client_address, :show_address_report, {}
+  def list_addresses customer
+    addresss = get customer, savon_client_address, :show_address_report
     addresss = [addresss] if addresss.is_a?(Hash)
     addresss.select{ |object| !object[:deleted] }.collect do |address|
       {
@@ -122,13 +121,12 @@ class Tomtom < DeviceBase
     end
   end
 
-  def send_route options
-    @route = options[:route]
+  def send_route customer, route, options={}
     case options[:type].to_sym
       when :orders
         position = route.vehicle_usage.default_store_stop
         if position && !position.lat.nil? && !position.lng.nil?
-          sendDestinationOrder position, -2, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.start
+          sendDestinationOrder customer, route, position, -2, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.start
         end
         route.stops.select(&:active).reverse_each{ |stop|
           position = stop if stop.position?
@@ -143,12 +141,12 @@ class Tomtom < DeviceBase
               stop.comment,
               stop.phone_number,
             ].compact.join(' ').strip
-            sendDestinationOrder position, stop.id, description, stop.time
+            sendDestinationOrder customer, route, position, stop.id, description, stop.time
           end
         }
         position = route.vehicle_usage.default_store_start
         if position && !position.lat.nil? && !position.lng.nil?
-          sendDestinationOrder position, -1, route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name || "#{position.lat} #{position.lng}", route.start
+          sendDestinationOrder customer, route, position, -1, route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name || "#{position.lat} #{position.lng}", route.start
         end
 
       when :waypoints
@@ -186,13 +184,12 @@ class Tomtom < DeviceBase
         }
         position = route.vehicle_usage.default_store_stop if route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?
         description = route.ref || (waypoints[-1] && waypoints[-1][:description]) || "#{waypoints[-1][:lat]} #{waypoints[-1][:lng]}"
-        sendDestinationOrder position, route.vehicle_usage.id, description, route.start, waypoints
+        sendDestinationOrder customer, route, position, route.vehicle_usage.id, description, route.start, waypoints
     end
   end
 
-  def clear_route options
-    @route = options[:route]
-    get savon_client_orders, :clear_orders,
+  def clear_route customer, route, options={}
+    get customer, savon_client_orders, :clear_orders, options, {
       deviceToClear: {
         markDeleted: 'true',
       },
@@ -200,14 +197,15 @@ class Tomtom < DeviceBase
         deviceToClear: {
           objectUid: route.vehicle_usage.vehicle.tomtom_id,
         }
-     }
+      }
+    }
   end
 
   private
 
-  def get client, operation, message={}
-    if auth
-      account, username, password = auth[:account], auth[:user], auth[:password]
+  def get customer, client, operation, options={}, message={}
+    if options[:auth]
+      account, username, password = options[:auth][:account], options[:auth][:user], options[:auth][:password]
     else
       account, username, password = customer.tomtom_account, customer.tomtom_user, customer.tomtom_password
     end
@@ -255,10 +253,10 @@ class Tomtom < DeviceBase
     end
   end
 
-  def sendDestinationOrder position, orderid, description, time, waypoints = nil
+  def sendDestinationOrder customer, route, position, orderid, description, time, waypoints=nil
     time_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
     objectuid = route.vehicle_usage.vehicle.tomtom_id
-    date = planning_date
+    date = planning_date(route)
     unique_base_order_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
       dstOrderToSend: {
@@ -302,7 +300,7 @@ class Tomtom < DeviceBase
         }
       }}
     end
-    get savon_client_orders, :send_destination_order, params
+    get customer, savon_client_orders, :send_destination_order, params
   end
 
 end

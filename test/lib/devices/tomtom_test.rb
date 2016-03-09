@@ -8,30 +8,29 @@ class TomtomTest < ActionController::TestCase
   setup do
     @customer = add_tomtom_credentials customers(:customer_one)
     @service = Mapotempo::Application.config.devices.tomtom
-    @service.set_params customer: @customer
   end
 
   test 'test list' do
     with_stubs [:client_objects_wsdl, :object_report] do
-      assert @service.test_list account: @customer.tomtom_account, user: @customer.tomtom_user, password: @customer.tomtom_password
+      assert @service.test_list @customer, { account: @customer.tomtom_account, user: @customer.tomtom_user, password: @customer.tomtom_password }
     end
   end
 
   test 'list devices' do
     with_stubs [:client_objects_wsdl, :object_report] do
-      assert @service.list_devices
+      assert @service.list_devices @customer
     end
   end
 
   test 'list vehicles' do
     with_stubs [:client_objects_wsdl, :vehicle_report] do
-      assert @service.list_vehicles
+      assert @service.list_vehicles @customer
     end
   end
 
   test 'list addresses' do
     with_stubs [:address_service_wsdl, :address_service] do
-      assert @service.list_addresses
+      assert @service.list_addresses @customer
     end
   end
 
@@ -39,7 +38,7 @@ class TomtomTest < ActionController::TestCase
     with_stubs [:orders_service_wsdl, :orders_service] do
       set_route
       assert_nothing_raised do
-        @service.send_route route: @route, type: :waypoints
+        @service.send_route @customer, @route, { type: :waypoints }
       end
     end
   end
@@ -48,7 +47,7 @@ class TomtomTest < ActionController::TestCase
     with_stubs [:orders_service_wsdl, :orders_service] do
       set_route
       assert_nothing_raised do
-        @service.send_route route: @route, type: :orders
+        @service.send_route @customer, @route, { type: :orders }
       end
     end
   end
@@ -57,14 +56,14 @@ class TomtomTest < ActionController::TestCase
     with_stubs [:orders_service_wsdl, :orders_service] do
       set_route
       assert_nothing_raised do
-        @service.clear_route route: @route
+        @service.clear_route @customer, @route
       end
     end
   end
 
   test 'get vehicles positions' do
     with_stubs [:client_objects_wsdl, :object_report] do
-      assert @service.get_vehicles_pos
+      assert @service.get_vehicles_pos @customer
     end
   end
 end

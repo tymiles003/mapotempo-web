@@ -21,9 +21,8 @@ class Teksat < DeviceBase
 
   attr_accessor :ticket_id
 
-  def authenticate params
-    @auth = params.slice :url, :customer_id, :username, :password
-    response = RestClient.get get_ticket_url
+  def authenticate customer, params
+    response = RestClient.get get_ticket_url(customer, { auth: params.slice(:url, :customer_id, :username, :password) })
     if response.code == 200 && response.strip.length >= 1
       return response.strip
     else
@@ -31,8 +30,8 @@ class Teksat < DeviceBase
     end
   end
 
-  def list_devices
-    response = RestClient.get get_vehicles_url
+  def list_devices customer
+    response = RestClient.get get_vehicles_url(customer)
     if response.code == 200
       Nokogiri::XML(response).xpath("//vehicle").map do |item|
         { id: item["id"], text: "%s %s - %s" % [ item["brand"], item["type"], item["code"] ] }
@@ -42,21 +41,19 @@ class Teksat < DeviceBase
     end
   end
 
-  def send_route options
-    @route = options[:route]
-    send_mission route.start, route.vehicle_usage.default_store_start.lat, route.vehicle_usage.default_store_start.lng
-    route.stops.select(&:active?).select(&:position?).sort_by(&:index).each{|stop| send_mission(stop.time, stop.lat, stop.lng) }
-    send_mission route.end, route.vehicle_usage.default_store_stop.lat, route.vehicle_usage.default_store_stop.lng
+  def send_route customer, route, options={}
+    send_mission customer, route, route.start, route.vehicle_usage.default_store_start.lat, route.vehicle_usage.default_store_start.lng
+    route.stops.select(&:active?).select(&:position?).sort_by(&:index).each{|stop| send_mission(customer, route, stop.time, stop.lat, stop.lng) }
+    send_mission customer, route, route.end, route.vehicle_usage.default_store_stop.lat, route.vehicle_usage.default_store_stop.lng
   end
 
-  def clear_route options
-    @route = options[:route]
-    response = RestClient.get get_missions_url(date: planning_date.strftime("%Y-%m-%d"))
-    Nokogiri::XML(response).xpath("//mission").map{|item| RestClient.get(delete_mission_url(mi_id: item["id"])) }
+  def clear_route customer, route, options={}
+    response = RestClient.get get_missions_url(customer, { date: planning_date(route).strftime("%Y-%m-%d") })
+    Nokogiri::XML(response).xpath("//mission").map{|item| RestClient.get(delete_mission_url(customer, { mi_id: item["id"] })) }
   end
 
-  def get_vehicles_pos
-    response = RestClient.get get_vehicles_pos_url
+  def get_vehicles_pos customer
+    response = RestClient.get get_vehicles_pos_url(customer)
     if response.code == 200
       Nokogiri::XML(response).xpath("//vehicle_pos").map do |item|
         { teksat_vehicle_id: item["v_id"], lat: item["lat"], lng: item["lng"], speed: item["speed"], time: item["data_time"], device_name: item["code"] }
@@ -68,15 +65,15 @@ class Teksat < DeviceBase
 
   private
 
-  def send_mission start_time, lat, lng
+  def send_mission customer, route, start_time, lat, lng
     route_params = {
       mi_v_id: route.vehicle_usage.vehicle.teksat_id,
       mi_label: route.planning.name,
       mi_customer: route.planning.customer.name
     }
-    response = RestClient.get set_mission_url(route_params.merge(
-      mi_begin_date: p_time(start_time).strftime("%Y-%m-%d"),
-      mi_begin_time: p_time(start_time).strftime("%H-%M-%S"),
+    response = RestClient.get set_mission_url(customer, route_params.merge(
+      mi_begin_date: p_time(route, start_time).strftime("%Y-%m-%d"),
+      mi_begin_time: p_time(route, start_time).strftime("%H-%M-%S"),
       mi_begin_latitude: lat,
       mi_begin_longitude: lng
     ))
@@ -85,9 +82,9 @@ class Teksat < DeviceBase
     end
   end
 
-  def get_ticket_url
-    if auth
-      url, customer_id, username, password = auth[:url], auth[:customer_id], auth[:username], auth[:password]
+  def get_ticket_url customer, options={}
+    if options[:auth]
+      url, customer_id, username, password = options[:auth][:url], options[:auth][:customer_id], options[:auth][:username], options[:auth][:password]
     else
       url, customer_id, username, password = customer.teksat_url, customer.teksat_customer_id, customer.teksat_username, customer.teksat_password
     end
@@ -99,31 +96,31 @@ class Teksat < DeviceBase
     ).to_s
   end
 
-  def get_vehicles_url
+  def get_vehicles_url customer
     Addressable::Template.new("http://%s/webservices/map/get-vehicles.jsp{?query*}" % [ customer.teksat_url ]).expand(
       query: { custID: customer.teksat_customer_id, tck: ticket_id }
     ).to_s
   end
 
-  def get_vehicles_pos_url
+  def get_vehicles_pos_url customer
     Addressable::Template.new("http://%s/webservices/map/get-vehicles-pos.jsp{?query*}" % [ customer.teksat_url ]).expand(
       query: { custID: customer.teksat_customer_id, tck: ticket_id }
     ).to_s
   end
 
-  def set_mission_url options
+  def set_mission_url customer, options
     Addressable::Template.new("http://%s/webservices/map/set-mission.jsp{?query*}" % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s
   end
 
-  def get_missions_url options
+  def get_missions_url customer, options
     Addressable::Template.new("http://%s/webservices/map/get-missions.jsp{?query*}" % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s
   end
 
-  def delete_mission_url options
+  def delete_mission_url customer, options
     Addressable::Template.new("http://%s/webservices/map/delete-mission.jsp{?query*}" % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s

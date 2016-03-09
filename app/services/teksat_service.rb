@@ -16,22 +16,24 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class TeksatService < DeviceService
-  delegate :authenticate, to: :service
-
   def initialize params
     super params
     service.ticket_id = params[:ticket_id]
   end
 
+  def authenticate params
+    service.authenticate customer, params
+  end
+
   def list_devices
     with_cache "%s_%s" % [:list_devices, service_name, customer.id, customer.teksat_username] do
-      service.list_devices
+      service.list_devices customer
     end
   end
 
   def get_vehicles_pos
     with_cache "%s_%s" % [:get_vehicles_pos, service_name, customer.id, customer.teksat_username] do
-      service.get_vehicles_pos
+      service.get_vehicles_pos customer
     end
   end
 end

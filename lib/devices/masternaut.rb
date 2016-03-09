@@ -16,10 +16,9 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Masternaut < DeviceBase
-
   attr_reader :client_poi, :client_job
 
-  def savon_client_poi
+  def savon_client_poi customer
     @client_poi ||= Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/POI?wsdl', soap_version: 1) do
       #log true
       #pretty_print_xml true
@@ -27,7 +26,7 @@ class Masternaut < DeviceBase
     end
   end
 
-  def savon_client_job
+  def savon_client_job customer
     @client_job ||= Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
       #log true
       #pretty_print_xml true
@@ -86,8 +85,7 @@ class Masternaut < DeviceBase
     '26' => 'an error occurred while creating the job item',
   }
 
-  def send_route options
-    @route = options[:route]
+  def send_route customer, route, options={}
     order_id_base = Time.now.to_i.to_s(36) + '_' + route.id.to_s
     customer = route.planning.customer
     position = route.vehicle_usage.default_store_start
@@ -109,7 +107,7 @@ class Masternaut < DeviceBase
         description: [
           stop.name,
           stop.ref,
-          stop.is_a?(StopVisit) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
+          stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
           stop.is_a?(StopVisit) ? (stop.visit.take_over ? '(' + stop.visit.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S'),
           stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
           stop.detail,
@@ -121,25 +119,25 @@ class Masternaut < DeviceBase
       }
     }.compact
     if !position.nil? && !position.lat.nil? && !position.lng.nil?
-      createJobRoute route.vehicle_usage.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle_usage.vehicle.name, route.planning.date || Date.today, route.start, route.end, waypoints
+      createJobRoute customer, route.vehicle_usage.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle_usage.vehicle.name, route.planning.date || Date.today, route.start, route.end, waypoints
     end
   end
 
   private
 
-  def createJobRoute vehicleRef, reference, description, date, begin_time, end_time, waypoints
+  def createJobRoute customer, vehicleRef, reference, description, date, begin_time, end_time, waypoints
     time_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
-    existing_waypoints = fetchPOI
+    existing_waypoints = fetchPOI(customer)
     if existing_waypoints.empty?
-      createPOICategory
+      createPOICategory(customer)
     end
 
     waypoints.select{ |waypoint|
       # Send only non existing waypoints or updated
       !existing_waypoints[waypoint[:id]] || waypoint[:updated_at].change(usec: 0) > existing_waypoints[waypoint[:id]]
     }.each{ |waypoint|
-      createPOI(waypoint)
+      createPOI(customer, waypoint)
     }
 
     params = {
@@ -151,7 +149,7 @@ class Masternaut < DeviceBase
       }
     }
 
-    get savon_client_job, 1, :create_job_route, params, @@error_code_job
+    get savon_client_job(customer), 1, :create_job_route, params, @@error_code_job
 
     waypoints.each{ |waypoint|
       params = {
@@ -165,11 +163,11 @@ class Masternaut < DeviceBase
         jobRouteRef: reference,
       }
 
-      get savon_client_job, 1, :create_job, params, @@error_code_job
+      get savon_client_job(customer), 1, :create_job, params, @@error_code_job
     }
   end
 
-  def createPOICategory
+  def createPOICategory customer
     params = {
       category: {
         logo: 'client_green',
@@ -178,10 +176,10 @@ class Masternaut < DeviceBase
       }
     }
 
-    get savon_client_poi, nil, :create_poi_category, params, @@error_code_poi
+    get savon_client_poi(customer), nil, :create_poi_category, params, @@error_code_poi
   end
 
-  def fetchPOI
+  def fetchPOI customer
     params = {
       filter: {
         categoryReference: 'mapotempo',
@@ -189,7 +187,7 @@ class Masternaut < DeviceBase
       maxResults: 999999,
     }
 
-    response = get savon_client_poi, nil, :search_poi, params, @@error_code_poi
+    response = get savon_client_poi(customer), nil, :search_poi, params, @@error_code_poi
 
     fetch = (response[:multi_ref] || []).select{ |e|
       e[:'@xsi:type'].end_with?(':POI')
@@ -209,7 +207,7 @@ class Masternaut < DeviceBase
     fetch = Hash[fetch]
   end
 
-  def createPOI waypoint
+  def createPOI customer, waypoint
     params = {
       poi: {
         address: {
@@ -231,7 +229,7 @@ class Masternaut < DeviceBase
       overwrite: true
     }
 
-    get savon_client_poi, 200, :create_poi, params, @@error_code_poi
+    get savon_client_poi(customer), 200, :create_poi, params, @@error_code_poi
   end
 
   def get client, no_error_code, operation, message={}, error_code

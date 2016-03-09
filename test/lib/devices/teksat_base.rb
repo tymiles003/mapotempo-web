@@ -25,17 +25,15 @@ module TeksatBase
         case name
           when :auth
             @ticket_id = File.read(Rails.root.join("test/web_mocks/teksat/get_ticket")).strip
-            teksat_service = TeksatService.new(customer: @customer).service
-            teksat_service.auth = { url: @customer.teksat_url, customer_id: @customer.teksat_customer_id, username: @customer.teksat_username, password: @customer.teksat_password }
-            url = teksat_service.send :get_ticket_url
+            url = TeksatService.new(customer: @customer).service.send :get_ticket_url, @customer, { url: @customer.teksat_url, customer_id: @customer.teksat_customer_id, username: @customer.teksat_username, password: @customer.teksat_password }
             stubs << stub_request(:get, url).to_return(status: 200, body: @ticket_id)
           when :get_vehicles
             expected_response = File.read(Rails.root.join("test/web_mocks/teksat/get_vehicles.xml")).strip
-            url = TeksatService.new(customer: @customer, ticket_id: @ticket_id).service.send :get_vehicles_url
+            url = TeksatService.new(customer: @customer, ticket_id: @ticket_id).service.send :get_vehicles_url, @customer
             stubs << stub_request(:get, url).to_return(status: 200, body: expected_response)
           when :vehicles_pos
             expected_response = File.read(Rails.root.join("test/web_mocks/teksat/get_vehicles_pos.xml")).strip
-            url = TeksatService.new(customer: @customer, ticket_id: @ticket_id).service.send :get_vehicles_pos_url
+            url = TeksatService.new(customer: @customer, ticket_id: @ticket_id).service.send :get_vehicles_pos_url, @customer
             stubs << stub_request(:get, url).to_return(status: 200, body: expected_response)
           when :send_route
             expected_response = File.read(Rails.root.join("test/web_mocks/teksat/mission_data.xml")).strip

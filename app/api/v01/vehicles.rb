@@ -17,7 +17,7 @@
 #
 require 'coerce'
 
-require Rails.root.join("lib/device_helpers")
+require Rails.root.join("lib/devices/device_helpers")
 include Devices::Helpers
 
 class V01::Vehicles < Grape::API
@@ -75,33 +75,34 @@ class V01::Vehicles < Grape::API
       optional :ids, type: Array[String], desc: 'Select vehicles by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
     get 'current_position' do
+      customer = current_customer
       vehicles = if params.key?(:ids)
-        current_customer.vehicles.select{ |vehicle|
+        customer.vehicles.select{ |vehicle|
           params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
         }
       else
-        current_customer.vehicles.load
+        customer.vehicles.load
       end
       positions = []
-      if current_customer.orange?
-        OrangeService.new(customer: current_customer).get_vehicles_pos.each do |item|
+      if customer.orange?
+        OrangeService.new(customer: customer).get_vehicles_pos.each do |item|
           vehicle_id = item.delete :orange_vehicle_id
           vehicle = vehicles.detect{|v| v.orange_id == vehicle_id }
           next if !vehicle
           positions << item.merge(vehicle_id: vehicle.id)
         end
       end
-      if current_customer.teksat?
-        teksat_authenticate current_customer
-        TeksatService.new(customer: current_customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos.each do |item|
+      if customer.teksat?
+        teksat_authenticate customer
+        TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos.each do |item|
           vehicle_id = item.delete :teksat_vehicle_id
           vehicle = vehicles.detect{|v| v.teksat_id == vehicle_id }
           next if !vehicle
           positions << item.merge(vehicle_id: vehicle.id)
         end
       end
-      if current_customer.tomtom?
-        TomtomService.new(customer: current_customer).get_vehicles_pos.each do |item|
+      if customer.tomtom?
+        TomtomService.new(customer: customer).get_vehicles_pos.each do |item|
           vehicle_id = item.delete :tomtom_vehicle_id
           vehicle = vehicles.detect{|v| v.tomtom_id == vehicle_id }
           next if !vehicle

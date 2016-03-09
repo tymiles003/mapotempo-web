@@ -23,18 +23,17 @@ class DeviceService
     @cache_object = Mapotempo::Application.config.devices.cache_object
     @service_name = self.class.name.gsub("Service", "").downcase
     @service = Mapotempo::Application.config.devices[service_name]
-    @service.set_params params
   end
 
-  def send_route options
-    service.send_route options
-    options[:route].update! last_sent_at: Time.now
-    return options[:route].last_sent_at
+  def send_route route, options={}
+    service.send_route customer, route, options
+    route.update! last_sent_at: Time.now
+    return route.last_sent_at
   end
 
-  def clear_route options
-    service.clear_route options
-    options[:route].update! last_sent_at: nil
+  def clear_route route, options={}
+    service.clear_route customer, route, options
+    route.update! last_sent_at: nil
   end
 
   private

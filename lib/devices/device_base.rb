@@ -16,19 +16,13 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class DeviceBase
-  attr_reader :customer
-  attr_accessor :auth, :route
   attr_accessor :api_url, :api_key
 
-  def set_params params
-    @customer = params[:customer]
-  end
-
-  def planning_date
+  def planning_date route
     route.planning.date ? route.planning.date.to_time : Time.now
   end
 
-  def p_time time
-    planning_date + (time - Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
+  def p_time route, time
+    planning_date(route) + (time - Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
   end
 end

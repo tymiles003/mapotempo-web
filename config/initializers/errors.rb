@@ -1,2 +1,0 @@
-
-class DeviceServiceError < StandardError ; end

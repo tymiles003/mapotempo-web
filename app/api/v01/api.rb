@@ -18,7 +18,7 @@
 class V01::Api < Grape::API
   helpers do
 
-    require Rails.root.join("lib/device_helpers")
+    require Rails.root.join("lib/devices/device_helpers")
     include Devices::Helpers
 
     def session

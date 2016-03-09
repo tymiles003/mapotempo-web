@@ -17,8 +17,7 @@
 #
 class Alyacom < DeviceBase
 
-  def send_route options
-    @route = options[:route]
+  def send_route customer, route, options={}
     store = route.vehicle_usage.default_store_start
     staff = {
       id: route.vehicle_usage.vehicle.name,
@@ -48,31 +47,31 @@ class Alyacom < DeviceBase
           ].compact.join(' ').strip
         },
         planning: {
-          id: planning_date.strftime('%y%m%d') + '_' + stop.base_id.to_s,
+          id: planning_date(route).strftime('%y%m%d') + '_' + stop.base_id.to_s,
           staff_id: route.vehicle_usage.vehicle.name,
           destination_id: stop.base_id,
           comment: [
-            stop.is_a?(StopVisit) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
+            stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
           ].compact.join(' ').strip,
-          start: planning_date + stop.time.seconds_since_midnight.seconds,
-          end: planning_date + (stop.time.seconds_since_midnight + stop.duration).seconds
+          start: planning_date(route) + stop.time.seconds_since_midnight.seconds,
+          end: planning_date(route) + (stop.time.seconds_since_midnight + stop.duration).seconds
         }
       }
     }.compact
-    createJobRoute planning_date, staff, waypoints
+    createJobRoute customer, planning_date(route), staff, waypoints
   end
 
   private
 
-  def createJobRoute planning_date, staff, waypoints
-    update_staffs [staff]
-    update_users waypoints.collect{ |w| w[:user] }
+  def createJobRoute customer, planning_date, staff, waypoints
+    update_staffs customer, [staff]
+    update_users customer, waypoints.collect{ |w| w[:user] }
 
-    get = Hash[get('planning', fromDate: planning_date.to_i * 1000, idStaff: staff[:id]).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
+    res = Hash[get(customer, 'planning', fromDate: planning_date.to_i * 1000, idStaff: staff[:id]).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     plannings = waypoints.collect{ |waypoint|
       planning = waypoint[:planning]
-      get.delete(planning[:id])
+      res.delete(planning[:id])
 
       {
         idExt: planning[:id],
@@ -84,21 +83,21 @@ class Alyacom < DeviceBase
       }
     }
 
-    plannings += get.select{ |_k, planning|
+    plannings += res.select{ |_k, planning|
       Date.parse(planning['start']) == planning_date
     }.collect{ |_k, planning|
       planning['deleted'] = true
       planning
     }
 
-    post 'planning', plannings
+    post customer, 'planning', plannings
   end
 
-  def update_staffs staffs
-    get = Hash[get('staff').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
+  def update_staffs customer, staffs
+    res = Hash[get(customer, 'staff').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     missing = staffs.select{ |s|
-      !get.key?(s[:id])
+      !res.key?(s[:id])
     }.collect{ |s|
       {
         idExt: s[:id],
@@ -111,15 +110,15 @@ class Alyacom < DeviceBase
     }
 
     if !missing.empty?
-      post 'staff', missing
+      post customer, 'staff', missing
     end
   end
 
-  def update_users users
-    get = Hash[get('users').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
+  def update_users customer, users
+    res = Hash[get(customer, 'users').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     missing = users.select{ |s|
-      !get.key?(s[:id])
+      !res.key?(s[:id])
     }.collect{ |s|
       {
         idExt: s[:id],
@@ -134,11 +133,11 @@ class Alyacom < DeviceBase
     }
 
     if !missing.empty?
-      post 'users', missing
+      post customer, 'users', missing
     end
   end
 
-  def get object, params={}
+  def get customer, object, params={}
     get_raw "#{api_url}/#{customer.alyacom_association}/#{object}", {enc: :json, apiKey: api_key}.merge(params)
   end
 
@@ -176,7 +175,7 @@ class Alyacom < DeviceBase
     data
   end
 
-  def post object, data
+  def post customer, object, data
     RestClient.post "#{api_url}/#{customer.alyacom_association}/#{object}", data.to_json, content_type: :json, params: {enc: :json, apiKey: api_key}
   rescue => e
     Rails.logger.info e.response

@@ -1,9 +1,8 @@
 module Devices
   module Helpers
-
     def device_send_route options={}
       route = Route.for_customer(@customer).find params[:route_id]
-      service.send_route options.merge(route: route)
+      service.send_route route, options
       present route, with: V01::Entities::DeviceRouteLastSentAt
     end
 
@@ -11,13 +10,13 @@ module Devices
       planning = @customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
       routes = routes.select{|route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
-      routes.each{|route| service.send_route options.merge(route: route) }
+      routes.each{|route| service.send_route(route, options) }
       present routes, with: V01::Entities::DeviceRouteLastSentAt
     end
 
     def device_clear_route options={}
       route = Route.for_customer(@customer).find params[:route_id]
-      service.clear_route options.merge(route: route)
+      service.clear_route(route, options)
       present route, with: V01::Entities::DeviceRouteLastSentAt
     end
 
@@ -25,7 +24,7 @@ module Devices
       planning = @customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
       routes = routes.select{|route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
-      routes.each{|route| service.clear_route options.merge(route: route) }
+      routes.each{|route| service.clear_route(route, options) }
       present routes, with: V01::Entities::DeviceRouteLastSentAt
     end
 
@@ -47,7 +46,7 @@ module Devices
       username = params[:teksat_username]    ? params[:teksat_username]    : customer.try(:teksat_username)
       password = params[:teksat_password]    ? params[:teksat_password]    : customer.try(:teksat_password)
       if params[:check_only].to_i == 1 || !session[:teksat_ticket_id] || (Time.now - Time.at(session[:teksat_authenticated_at])) > 3.hours
-        ticket_id = TeksatService.new(customer: customer).authenticate({ url: url, customer_id: cust_id, username: username, password: password})
+        ticket_id = TeksatService.new(customer: customer).authenticate(url: url, customer_id: cust_id, username: username, password: password)
         session[:teksat_ticket_id] = ticket_id
         session[:teksat_authenticated_at] = Time.now.to_i
       end
