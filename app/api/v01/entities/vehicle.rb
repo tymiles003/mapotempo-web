@@ -28,10 +28,13 @@ class V01::Entities::VehicleWithoutVehicleUsage < Grape::Entity
   expose(:consumption, documentation: { type: Integer })
   expose(:capacity, documentation: { type: Integer })
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
+  expose(:fuel_type, documentation: { type: String })
   expose(:capacity_unit, documentation: { type: String })
-  expose(:tomtom_id, documentation: { type: String })
   expose(:router_id, documentation: { type: Integer })
   expose(:speed_multiplicator, documentation: { type: Float })
+  expose(:teksat_id, documentation: { type: String })
+  expose(:tomtom_id, documentation: { type: String })
+  expose(:orange_id, documentation: { type: String })
 end
 
 class V01::Entities::Vehicle < V01::Entities::VehicleWithoutVehicleUsage

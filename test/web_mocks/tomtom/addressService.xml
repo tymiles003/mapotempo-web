@@ -1,0 +1,49 @@
+HTTP/1.1 200 OK
+Content-Type: text/xml
+Transfer-Encoding: chunked
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Body>
+    <ns3:showAddressReportResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://connect.webfleet.tomtomwork.com/services">
+      <return>
+        <statusCode>0</statusCode>
+        <statusMessage>The operation *showAddressReport* processed succesfully.</statusMessage>
+        <errors xsi:nil="true"/>
+        <resultSize>3</resultSize>
+        <results>
+          <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/addresses" xsi:type="ns4:Address" addressNo="s" addressUid="1-44063-722A7DE0639">
+            <name1>s</name1>
+            <name2 xsi:nil="true"/>
+            <name3 xsi:nil="true"/>
+            <radius>250</radius>
+            <visible>1</visible>
+            <location>
+              <street xsi:nil="true"/>
+              <postcode xsi:nil="true"/>
+              <city xsi:nil="true"/>
+              <country>FR</country>
+              <geoPosition>
+                <latitude>48856898</latitude>
+                <longitude>2350844</longitude>
+                <mapcode>FRA LJ.2L</mapcode>
+                <latitudeHumanReadable xsi:nil="true"/>
+                <longitudeHumanReadable xsi:nil="true"/>
+              </geoPosition>
+              <description xsi:nil="true"/>
+              <addrRegion xsi:nil="true"/>
+            </location>
+            <contact>
+              <phoneBusiness xsi:nil="true"/>
+              <phoneMobile xsi:nil="true"/>
+              <phonePersonal xsi:nil="true"/>
+              <contactName xsi:nil="true"/>
+              <fax xsi:nil="true"/>
+              <emailAddress xsi:nil="true"/>
+            </contact>
+            <colour>brightblue</colour>
+          </resultItem>
+        </results>
+      </return>
+    </ns3:showAddressReportResponse>
+  </soap:Body>
+</soap:Envelope>

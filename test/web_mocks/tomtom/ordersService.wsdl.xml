@@ -1,4 +1,6 @@
 HTTP/1.1 200 OK
+Content-Type: text/xml
+Transfer-Encoding: chunked
 
 <?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://connect.webfleet.tomtomwork.com/services" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" name="ordersService" targetNamespace="http://connect.webfleet.tomtomwork.com/services">
   <wsdl:types>
@@ -5743,7 +5745,7 @@ HTTP/1.1 200 OK
   </wsdl:binding>
   <wsdl:service name="ordersService">
     <wsdl:port binding="tns:ordersServiceSoapBinding" name="ordersPort">
-      <soap12:address location="https://tomtom.example.com/v1.26/ordersService"/>
+      <soap12:address location="https://tomtom.example.com/ordersService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

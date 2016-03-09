@@ -438,6 +438,7 @@ en:
       hostname_not_allowed: "Hostname not allowed"
       request_quota_reached: "Request Quota Reached"
       addresses_empty_result: "No Addresses Found"
+      could_not_process_last_request: "Could not process request"
     teksat:
       bad_url: "Bad URL"
       get_ticket: "Can't Authenticate. Please Check Your Credentials"

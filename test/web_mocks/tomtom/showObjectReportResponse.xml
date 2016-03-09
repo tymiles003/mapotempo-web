@@ -1,0 +1,82 @@
+HTTP/1.1 200 OK
+Content-Type: text/xml
+Transfer-Encoding: chunked
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+   <soap:Body>
+      <ns3:showObjectReportResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://connect.webfleet.tomtomwork.com/services">
+         <return>
+            <statusCode>0</statusCode>
+            <statusMessage>The operation *showObjectReport* processed succesfully.</statusMessage>
+            <errors xsi:nil="true"/>
+            <resultSize>2</resultSize>
+            <results>
+               <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/objects" xsi:type="ns4:ObjectReport" objectNo="002" objectUid="1-44063-666E054E7">
+                  <objectName>MAPO1</objectName>
+                  <objectClassName>Vehicle</objectClassName>
+                  <description>Pro 5250</description>
+                  <lastMsgId>50483652130</lastMsgId>
+                  <lastMsgTime>2016-02-25T09:51:23Z</lastMsgTime>
+                  <deleted>false</deleted>
+                  <position>
+                     <latitude>43319458</latitude>
+                     <longitude>-367294</longitude>
+                     <mapcode xsi:nil="true"/>
+                     <latitudeHumanReadable>43\xC2\xB019'10.0&quot; N</latitudeHumanReadable>
+                     <longitudeHumanReadable>0\xC2\xB022'02.2&quot; W</longitudeHumanReadable>
+                  </position>
+                  <positionText>Avenue Du Pr\xC3\xA9sident Pierre Angot, Pau (64000)</positionText>
+                  <positionTextShort>Pau, Avenue Du Pr\xC3\xA9sident Pierre Angot (64000)</positionTextShort>
+                  <status>A</status>
+                  <driverCurrentWorkState>FREETIME</driverCurrentWorkState>
+                  <coDriverCurrentWorkState>UNKNOWN</coDriverCurrentWorkState>
+                  <driver driverNo="Mapotempo" driverUid="1-44063-8859060249"/>
+                  <coDriver xsi:nil="true"/>
+                  <ignitionState>0</ignitionState>
+                  <odometer>57721</odometer>
+                  <distanceToDestination>750602</distanceToDestination>
+                  <tripMode>2</tripMode>
+                  <standstillState>1</standstillState>
+                  <ignitionTime>2016-01-29T15:41:38.329Z</ignitionTime>
+                  <pndConnected>1</pndConnected>
+                  <orderNo>PARIS-9UUKYTY</orderNo>
+                  <driverName>Mapotempo</driverName>
+                  <posTime>2016-02-25T09:51:23Z</posTime>
+               </resultItem>
+               <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/objects" xsi:type="ns4:ObjectReport" objectNo="004" objectUid="1-44063-666F24630">
+                  <objectName>MAPO2</objectName>
+                  <objectClassName>Vehicle</objectClassName>
+                  <objectType>car</objectType>
+                  <lastMsgId>50150974303</lastMsgId>
+                  <lastMsgTime>2016-02-10T07:38:33Z</lastMsgTime>
+                  <deleted>false</deleted>
+                  <position>
+                     <latitude>46362040</latitude>
+                     <longitude>6475177</longitude>
+                     <mapcode xsi:nil="true"/>
+                     <latitudeHumanReadable>46\xC2\xB021'43.3&quot; N</latitudeHumanReadable>
+                     <longitudeHumanReadable>6\xC2\xB028'30.6&quot; E</longitudeHumanReadable>
+                  </position>
+                  <positionText>9 Chemin Du Martinet, Thonon-Les-Bains (74200)</positionText>
+                  <positionTextShort>21 km south-west Lausanne, Thonon-Les-Bains, 9 Chemin Du Martinet (74200)</positionTextShort>
+                  <speed>21</speed>
+                  <course>227</course>
+                  <direction>SOUTHWEST</direction>
+                  <status>A</status>
+                  <driverCurrentWorkState>WORKING</driverCurrentWorkState>
+                  <coDriverCurrentWorkState>UNKNOWN</coDriverCurrentWorkState>
+                  <driver xsi:nil="true"/>
+                  <coDriver xsi:nil="true"/>
+                  <ignitionState>0</ignitionState>
+                  <odometer>49955</odometer>
+                  <tripMode>2</tripMode>
+                  <standstillState>0</standstillState>
+                  <ignitionTime>2016-02-10T07:38:36.119Z</ignitionTime>
+                  <pndConnected>1</pndConnected>
+                  <posTime>2016-02-10T07:38:33Z</posTime>
+               </resultItem>
+            </results>
+         </return>
+      </ns3:showObjectReportResponse>
+   </soap:Body>
+</soap:Envelope>

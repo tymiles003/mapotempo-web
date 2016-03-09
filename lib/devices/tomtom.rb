@@ -248,6 +248,8 @@ class Tomtom < DeviceBase
         I18n.t "errors.tomtom.request_quota_reached"
       when 8014
         I18n.t "errors.tomtom.external_requests_not_allowed"
+      when 9000
+        I18n.t "errors.tomtom.could_not_process_last_request"
       when 9126
         I18n.t "errors.tomtom.hostname_not_allowed"
       when 9198

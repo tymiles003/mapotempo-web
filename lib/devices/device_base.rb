@@ -26,3 +26,5 @@ class DeviceBase
     planning_date(route) + (time - Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
   end
 end
+
+class DeviceServiceError < StandardError ; end

@@ -25,31 +25,31 @@ module TomtomBase
           when :client_objects_wsdl
             api_url = Mapotempo::Application.config.devices.tomtom.api_url
             url = Addressable::Template.new "#{api_url}/objectsAndPeopleReportingService?wsdl"
-            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/objectsAndPeopleReportingService.wsdl")))
+            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join("test/web_mocks/tomtom/objectsAndPeopleReportingService.wsdl.xml")))
           when :object_report
             api_url = Mapotempo::Application.config.devices.tomtom.api_url
             url = Addressable::Template.new "#{api_url}/objectsAndPeopleReportingService"
-            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/showObjectReportResponse.xml")))
+            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/tomtom/showObjectReportResponse.xml")))
           when :vehicle_report
             api_url = Mapotempo::Application.config.devices.tomtom.api_url
             url = Addressable::Template.new "#{api_url}/objectsAndPeopleReportingService"
-            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/showVehicleReportResponse.xml")))
+            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/tomtom/showVehicleReportResponse.xml")))
           when :orders_service_wsdl
             api_url = Mapotempo::Application.config.devices.tomtom.api_url
             url = Addressable::Template.new "#{api_url}/ordersService?wsdl"
-            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/ordersService.wsdl")))
+            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join("test/web_mocks/tomtom/ordersService.wsdl.xml")))
           when :orders_service
             api_url = Mapotempo::Application.config.devices.tomtom.api_url
             url = Addressable::Template.new "#{api_url}/ordersService"
-            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/ordersService.xml")))
+            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/tomtom/ordersService.xml")))
           when :address_service_wsdl
             api_url = Mapotempo::Application.config.devices.tomtom.api_url
             url = Addressable::Template.new "#{api_url}/addressService?wsdl"
-            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/addressService.wsdl")))
+            stubs << stub_request(:get, url).to_return(File.read(Rails.root.join("test/web_mocks/tomtom/addressService.wsdl.xml")))
           when :address_service
             api_url = Mapotempo::Application.config.devices.tomtom.api_url
             url = Addressable::Template.new "#{api_url}/addressService"
-            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/soap.business.tomtom.com/addressService.xml")))
+            stubs << stub_request(:post, url).to_return(File.read(Rails.root.join("test/web_mocks/tomtom/addressService.xml")))
         end
       end
       yield

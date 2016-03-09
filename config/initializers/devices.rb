@@ -1,6 +1,4 @@
 
-class DeviceServiceError < StandardError ; end
-
 require_relative '../../lib/devices/device_base'
 ['alyacom', 'masternaut', 'orange', 'teksat', 'tomtom'].each{|name|
   require_relative "../../lib/devices/#{name}"
@@ -14,7 +12,7 @@ if Rails.env.test?
   Mapotempo::Application.config.devices.alyacom.api_url = 'https://alyacom.example.com'
   Mapotempo::Application.config.devices.masternaut.api_url = 'https://masternaut.example.com'
   Mapotempo::Application.config.devices.orange.api_url = 'https://orange.example.com'
-  Mapotempo::Application.config.devices.tomtom.api_url = 'https://tomtom.example.com/v1.26'
+  Mapotempo::Application.config.devices.tomtom.api_url = 'https://tomtom.example.com' #v1.26
 elsif Rails.env.development?
   Mapotempo::Application.config.devices.alyacom.api_url = 'http://partners.alyacom.fr/ws'
   Mapotempo::Application.config.devices.masternaut.api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
