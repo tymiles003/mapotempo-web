@@ -226,4 +226,12 @@ class ImporterTest < ActionController::TestCase
     assert_equal 'x', stops[2].visit.destination.ref
     assert_not stops[2].active
   end
+
+  test 'should not import too many routes' do
+    assert_no_difference('Destination.count') do
+      assert_no_difference('Visit.count') do
+        assert !ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_too_many_routes.csv', 'text.csv')).import
+      end
+    end
+  end
 end

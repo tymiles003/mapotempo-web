@@ -258,6 +258,49 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not create bulk from json containing too many routes' do
+    assert_no_difference('Destination.count') do
+      assert_no_difference('Visit.count') do
+        assert_no_difference('Stop.count') do
+          put api(), {destinations: [{
+            name: 'N1',
+            city: 'Tule',
+            lat: 43.5710885456786,
+            lng: 3.89636993408203,
+            visits: [{
+              ref: 'v1',
+              route: '1',
+              active: '1'
+            },
+            {
+              ref: 'v2',
+              route: '2',
+              active: '1'
+            }]
+          },
+          {
+            name: 'N2',
+            city: 'Brive',
+            lat: 45.158556,
+            lng: 1.532553,
+            visits: [{
+              ref: 'v3',
+              route: '3',
+              active: '1'
+            },
+            {
+              ref: 'v4',
+              route: '4',
+              active: '1'
+            }]
+          }]}
+          assert !last_response.ok?, last_response.body
+          assert_not_nil JSON.parse(last_response.body)['error'], 'Bad response: ' + last_response.body.inspect
+        end
+      end
+    end
+  end
+
   test 'should create bulk from tomtom' do
     with_stubs [:address_service_wsdl, :address_service] do
       assert_difference('Destination.count', 1) do
