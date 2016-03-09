@@ -24,6 +24,7 @@ CSV.generate({col_sep: ';'}) { |csv|
   ]
   @destinations.each { |destination|
     destination_columns = [
+      destination.ref,
       destination.name,
       destination.street,
       destination.detail,
@@ -35,7 +36,8 @@ CSV.generate({col_sep: ';'}) { |csv|
       destination.geocoding_accuracy,
       destination.geocoding_level,
       destination.comment,
-      destination.phone_number
+      destination.phone_number,
+      destination.tags.collect(&:label).join(',')
     ]
     if destination.visits.size > 0
       destination.visits.each { |visit|
