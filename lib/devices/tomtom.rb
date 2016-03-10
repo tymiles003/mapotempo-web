@@ -250,6 +250,8 @@ class Tomtom < DeviceBase
         I18n.t "errors.tomtom.external_requests_not_allowed"
       when 9126
         I18n.t "errors.tomtom.hostname_not_allowed"
+      when 9198
+        I18n.t "errors.tomtom.addresses_empty_result"
     end
   end
 

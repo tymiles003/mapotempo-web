@@ -437,6 +437,7 @@ en:
       external_requests_not_allowed: "Access denied. 'Access to interface WEBFLEET.connect' is not enabled in WEBFLEET user interface. External requests are not allowed for that account/user."
       hostname_not_allowed: "Hostname not allowed"
       request_quota_reached: "Request Quota Reached"
+      addresses_empty_result: "No Addresses Found"
     teksat:
       bad_url: "Bad URL"
       get_ticket: "Can't Authenticate. Please Check Your Credentials"
@@ -566,6 +567,8 @@ en:
           action: "Sync Vehicles from Teksat"
 
   destinations:
+    upload_tomtom:
+      success: "Addresses Imported Successfully"
     menu:
       destinations: "Destinations"
       import: "Import"

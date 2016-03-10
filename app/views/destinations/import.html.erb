@@ -43,32 +43,32 @@
 </div>
 
 <% if current_user.customer.tomtom? %>
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h2 class="panel-title">
-      <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomTom">
-        <%= t '.tomtom.title' %>
-      </a>
-    </h2>
-  </div>
-  <div id="collapseTomTom" class="panel-collapse collapse <%= !@import_tomtom.errors.empty? ? 'in' : '' %>">
-    <div class="panel-body">
-      <p class="help-block"><%= t '.tomtom.help' %></p>
-        <%= twitter_bootstrap_form_for(@import_tomtom, url: destinations_import_tomtom_path, layout: :horizontal, multipart: true) do |f| %>
-          <%= render 'shared/error_messages', model: @import_tomtom %>
-          <%= f.toggles t '.destinations' do %>
-            <%= f.radio_button :replace, t('.replace_no'), 0, checked: true %>
-            <p class="help-block"><%= t '.replace_no_help' %></p>
-            <%= f.radio_button :replace, t('.replace_yes'), 1 %>
-            <p class="help-block"><%= t '.replace_yes_help' %></p>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">
+        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomTom">
+          <%= t '.tomtom.title' %>
+        </a>
+      </h2>
+    </div>
+    <div id="collapseTomTom" class="panel-collapse collapse <%= !@import_tomtom.errors.empty? ? 'in' : '' %>">
+      <div class="panel-body">
+        <p class="help-block"><%= t '.tomtom.help' %></p>
+          <%= twitter_bootstrap_form_for(@import_tomtom, url: destinations_import_tomtom_path, layout: :horizontal, multipart: true) do |f| %>
+            <%= render 'shared/error_messages', model: @import_tomtom %>
+            <%= f.toggles t '.destinations' do %>
+              <%= f.radio_button :replace, t('.replace_no'), 0, checked: true %>
+              <p class="help-block"><%= t '.replace_no_help' %></p>
+              <%= f.radio_button :replace, t('.replace_yes'), 1 %>
+              <p class="help-block"><%= t '.replace_yes_help' %></p>
+            <% end %>
+            <%= f.actions do %>
+              <%= f.submit t('all.verb.import'), {}, 'fa-upload' %>
+            <% end %>
           <% end %>
-          <%= f.actions do %>
-            <%= f.submit t('all.verb.import'), {}, 'fa-upload' %>
-          <% end %>
-        <% end %>
+      </div>
     </div>
   </div>
-</div>
 <% end %>
 
 <div class="modal fade" id="import-help-modal" role="dialog">

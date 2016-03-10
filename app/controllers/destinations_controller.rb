@@ -117,15 +117,17 @@ class DestinationsController < ApplicationController
   end
 
   def upload_tomtom
-    respond_to do |format|
-      @import_tomtom = ImportTomtom.new(import_tomtom_params.merge(importer: ImporterDestinations.new(current_user.customer), customer: current_user.customer))
+    begin
+      @import_tomtom = ImportTomtom.new import_tomtom_params.merge(importer: ImporterDestinations.new(current_user.customer), customer: current_user.customer)
       if current_user.customer.tomtom? && @import_tomtom.valid? && @import_tomtom.import
-        flash[:warning] = @import_tomtom.warnings.join(', ') if @import_tomtom.warnings && @import_tomtom.warnings.length > 0
-        format.html { redirect_to action: 'index' }
+        flash[:warning] = @import_tomtom.warnings.join(', ') if @import_tomtom.warnings.any?
+        redirect_to destinations_path, notice: t(".success")
       else
         @import_csv = ImportCsv.new
-        format.html { render action: 'import' }
+        render action: :import
       end
+    rescue DeviceServiceError => e
+      redirect_to destination_import_path, alert: e.message
     end
   end
 

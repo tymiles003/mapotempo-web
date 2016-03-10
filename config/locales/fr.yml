@@ -437,6 +437,7 @@ fr:
       external_requests_not_allowed: "Non Autorisé. 'Accès à l'interface WebFLEET.connect' n'est pas activé dans l'interface WebFLEET. Les requêtes externes ne sont pas autorisées pour ce compte/utilisateur."
       hostname_not_allowed: "Le nom de domaine n'est pas autorisé"
       request_quota_reached: "Quota de requêtes dépassé"
+      addresses_empty_result: "Aucune adresse trouvée"
     teksat:
       bad_url: "URL non valide"
       get_ticket: "Échec de l'identification. Veuillez vérifier vos identifiants"
@@ -566,6 +567,8 @@ fr:
           action: "Synchroniser les véhicules depuis Teksat"
 
   destinations:
+    upload_tomtom:
+      success: "Adresses importées avec succès"
     menu:
       destinations: "Clients"
       import: "Importer"
