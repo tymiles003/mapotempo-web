@@ -19,6 +19,13 @@ class ApiWeb::V01::StoresControllerTest < ActionController::TestCase
     assert_equal 0, assigns(:stores).count
   end
 
+  test 'should sign in with api_key' do
+    sign_out users(:user_one)
+    get :index, api_key: 'testkey1'
+    assert_response :success
+    assert_not_nil assigns(:customer)
+  end
+
   test 'should get index' do
     get :index
     assert_response :success

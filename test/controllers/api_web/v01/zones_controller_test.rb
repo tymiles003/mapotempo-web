@@ -20,6 +20,13 @@ class ApiWeb::V01::ZonesControllerTest < ActionController::TestCase
     assert_nil assigns(:zones)
   end
 
+  test 'should sign in with api_key' do
+    sign_out users(:user_one)
+    get :index, api_key: 'testkey1', zoning_id: @zone.zoning_id
+    assert_response :success
+    assert_not_nil assigns(:customer)
+  end
+
   test 'should get zones' do
     get :index, zoning_id: @zone.zoning_id
     assert_response :success
