@@ -85,8 +85,7 @@ class V01::VehicleUsages < Grape::API
           if vehicle_usage_set
             vehicle_usage = vehicle_usage_set.vehicle_usages.find{ |vehicle_usage| vehicle_usage.id == params[:id] }
             if vehicle_usage
-              vehicle_usage.update(vehicle_usage_params)
-              vehicle_usage.save!
+              vehicle_usage.update! vehicle_usage_params
               present vehicle_usage, with: V01::Entities::VehicleUsageWithVehicle
               return
             end

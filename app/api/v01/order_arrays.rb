@@ -86,8 +86,7 @@ class V01::OrderArrays < Grape::API
     end
     put ':id' do
       order_array = current_customer.order_arrays.find(params[:id])
-      order_array.update(order_array_params)
-      order_array.save!
+      order_array.update! order_array_params
       present order_array, with: V01::Entities::OrderArray
     end
 

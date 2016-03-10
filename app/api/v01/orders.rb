@@ -81,7 +81,7 @@ class V01::Orders < Grape::API
           products = Hash[current_customer.products.collect{ |product| [product.id, product] }]
           products = (p[:product_ids] || []).collect{ |product_id| products[Integer(product_id)] }.compact
 
-          order.update(p)
+          order.update! p
           # Workaround for multiple values need add values and not affect
           order.products.clear
           order.products += products

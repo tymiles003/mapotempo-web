@@ -85,8 +85,7 @@ class V01::Plannings < Grape::API
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
-      planning.update(planning_params)
-      planning.save!
+      planning.update! planning_params
       present planning, with: V01::Entities::Planning
     end
 

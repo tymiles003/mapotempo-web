@@ -80,8 +80,7 @@ class V01::VehicleUsageSets < Grape::API
     end
     put ':id' do
       vehicle_usage_set = current_customer.vehicle_usage_sets.find(params[:id])
-      vehicle_usage_set.update(vehicle_usage_set_params)
-      vehicle_usage_set.save!
+      vehicle_usage_set.update! vehicle_usage_set_params
       present vehicle_usage_set, with: V01::Entities::VehicleUsageSet
     end
 

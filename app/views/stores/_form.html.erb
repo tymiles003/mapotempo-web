@@ -1,5 +1,5 @@
 <%= twitter_bootstrap_form_for(@store, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@store.id or 0)}) do |f| %>
-  <%= render 'shared/error_messages', model: current_user.customer %>
+  <%= render 'shared/error_messages', model: @store %>
   <% if @store.customer.enable_references %>
     <%= f.text_field :ref do %>
       <p class="help-block"><%= t '.ref_help' %></p>

@@ -97,8 +97,7 @@ class V01::Visits < Grape::API
           id = ParseIdsRefs.read(params[:id])
           destination = current_customer.destinations.where(destination_id).first!
           visit = destination.visits.where(id).first!
-          visit.update(visit_params)
-          visit.save!
+          visit.update! visit_params
           destination.customer.save!
           present visit, with: V01::Entities::Visit
         end

@@ -65,8 +65,7 @@ class V01::Customers < Grape::API
     end
     put ':id' do
       current_customer(params[:id])
-      @current_customer.update(customer_params)
-      @current_customer.save!
+      @current_customer.update! customer_params
       present @current_customer, with: V01::Entities::Customer
     end
 

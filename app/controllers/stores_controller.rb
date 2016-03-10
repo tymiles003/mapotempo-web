@@ -63,11 +63,10 @@ class StoresController < ApplicationController
   def update
     respond_to do |format|
       Store.transaction do
-        @store.update(store_params)
-        if @store.save && @store.customer.save
+        if @store.update(store_params) && @store.customer.save
           format.html { redirect_to link_back || edit_store_path(@store), notice: t('activerecord.successful.messages.updated', model: @store.class.model_name.human) }
         else
-          flash.now[:error] = @store.errors || @store.customer.errors
+          flash.now[:error] = @store.customer.errors.full_messages if @store.customer.errors.size > 0
           format.html { render action: 'edit' }
         end
       end
@@ -79,7 +78,6 @@ class StoresController < ApplicationController
       if @store.destroy
         format.html { redirect_to stores_url }
       else
-        flash[:error] = @store.errors.full_messages
         format.html { redirect_to stores_path }
       end
     end
@@ -92,7 +90,6 @@ class StoresController < ApplicationController
           ids = params['stores'].keys.collect{ |i| Integer(i) }
           current_user.customer.stores.select{ |store| ids.include?(store.id) }.each{ |store|
             if !store.destroy
-              flash[:error] = store.errors.full_messages
               format.html { redirect_to stores_path and return }
             end
           }

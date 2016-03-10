@@ -69,7 +69,6 @@ class StoresControllerTest < ActionController::TestCase
     store = assigns(:store)
     assert store.errors.any?
     assert_valid response
-    assert flash[:error]
   end
 
   test 'should destroy store' do

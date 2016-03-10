@@ -50,7 +50,7 @@ class V01::Stops < Grape::API
               planning = current_customer.plannings.find{ |planning| planning.id == planning_id }
               route = planning.routes.find{ |route| route.id == route_id }
               stop = route.stops.find{ |stop| stop.id == id }
-              stop.update(stop_params)
+              stop.update! stop_params
               route.compute && planning.save!
               status 204
             end

@@ -76,8 +76,7 @@ class V01::Tags < Grape::API
     end
     put ':id' do
       tag = current_customer.tags.find(params[:id])
-      tag.update(tag_params)
-      tag.save!
+      tag.update! tag_params
       present tag, with: V01::Entities::Tag
     end
 

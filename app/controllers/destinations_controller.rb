@@ -70,10 +70,10 @@ class DestinationsController < ApplicationController
   def update
     respond_to do |format|
       Destination.transaction do
-        @destination.update(destination_params)
-        if @destination.save && @destination.customer.save
+        if @destination.update(destination_params) && @destination.customer.save
           format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         else
+          flash.now[:error] = @destination.customer.errors.full_messages if @destination.customer.errors.size > 0
           format.html { render action: 'edit' }
         end
       end

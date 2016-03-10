@@ -133,8 +133,7 @@ class V01::Vehicles < Grape::API
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
       vehicle = current_customer.vehicles.where(id).first!
-      vehicle.update(vehicle_params)
-      vehicle.save!
+      vehicle.update! vehicle_params
       present vehicle, with: V01::Entities::Vehicle
     end
 

@@ -64,11 +64,9 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
   def update_position
     respond_to do |format|
       Store.transaction do
-        @store.update(store_params)
-        if @store.save && @store.customer.save
+        if @store.update(store_params) && @store.customer.save
           format.html { redirect_to api_web_v01_edit_position_store_path(@store), notice: t('activerecord.successful.messages.updated', model: @store.class.model_name.human) }
         else
-          flash.now[:error] = @store.errors
           format.html { render action: 'edit_position' }
         end
       end

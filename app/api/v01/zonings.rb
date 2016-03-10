@@ -79,8 +79,7 @@ class V01::Zonings < Grape::API
     end
     put ':id' do
       zoning = current_customer.zonings.find(params[:id])
-      zoning.update(zoning_params)
-      zoning.save!
+      zoning.update! zoning_params
       present zoning, with: V01::Entities::Zoning
     end
 

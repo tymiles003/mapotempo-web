@@ -80,8 +80,7 @@ class V01::Products < Grape::API
     end
     put ':id' do
       product = current_customer.products.find(params[:id])
-      product.update(product_params)
-      product.save!
+      product.update! product_params
       present product, with: V01::Entities::Product
     end
 

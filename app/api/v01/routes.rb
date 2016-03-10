@@ -78,8 +78,7 @@ class V01::Routes < Grape::API
           planning_id = ParseIdsRefs.read(params[:planning_id])
           id = ParseIdsRefs.read(params[:id])
           route = current_customer.plannings.where(planning_id).first!.routes.where(id).first!
-          route.update(route_params)
-          route.save!
+          route.update! route_params
           present route, with: V01::Entities::Route
         end
 
