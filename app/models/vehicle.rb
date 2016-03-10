@@ -20,6 +20,7 @@ class Vehicle < ActiveRecord::Base
   belongs_to :router
   has_many :vehicle_usages, inverse_of: :vehicle, dependent: :destroy, autosave: true
   has_many :zones, inverse_of: :vehicle, dependent: :nullify, autosave: true
+  enum router_dimension: Router::DIMENSION
 
   nilify_blanks
   auto_strip_attributes :name, :tomtom_id, :masternaut_ref
@@ -55,6 +56,10 @@ class Vehicle < ActiveRecord::Base
     router || customer.router
   end
 
+  def default_router_dimension
+    router_dimension || customer.router_dimension
+  end
+
   def default_speed_multiplicator
     (customer.speed_multiplicator || 1) * (speed_multiplicator || 1)
   end
@@ -86,7 +91,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def update_out_of_date
-    if emission_changed? || consumption_changed? || capacity_changed? || router_id_changed? || speed_multiplicator_changed?
+    if emission_changed? || consumption_changed? || capacity_changed? || router_id_changed? || router_dimension_changed? || speed_multiplicator_changed?
       vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.routes.each{ |route|
           route.out_of_date = true

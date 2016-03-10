@@ -8,6 +8,7 @@ customer_one:
   ref: ref1
   name: MyString
   router: router_one
+  router_dimension: 'time'
   enable_orders: true
   optimization_time: 10
   optimization_soft_upper_bound: 3
@@ -24,6 +25,7 @@ customer_one_other:
   ref: ref_1_o
   name: MyString
   router: router_one
+  router_dimension: 'time'
   enable_orders: true
   optimization_time: 10
   optimization_soft_upper_bound: 3
@@ -40,6 +42,7 @@ customer_two:
   ref: ref_2
   name: MyString
   router: router_one
+  router_dimension: 'time'
   enable_orders: false
   profile: profile_two
   speed_multiplicator: 1.1

@@ -47,6 +47,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should update a customer in admin' do
     put api_admin(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd' }
     assert last_response.ok?, last_response.body
+
     get api(@customer.id)
     assert last_response.ok?, last_response.body
     assert_equal 'tomtom_user_abcd', JSON.parse(last_response.body)['tomtom_user']

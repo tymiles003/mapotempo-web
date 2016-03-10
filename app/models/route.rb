@@ -87,6 +87,7 @@ class Route < ActiveRecord::Base
       end
       quantity = 0
       router = vehicle_usage.vehicle.default_router
+      router_dimension = vehicle_usage.vehicle.default_router_dimension
       stops_time = {}
 
       # Add service time
@@ -99,7 +100,7 @@ class Route < ActiveRecord::Base
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
           if stop.position? && !last_lat.nil? && !last_lng.nil?
             begin
-              stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng)
+              stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng, router_dimension)
             rescue RouterError => e
               raise if !ignore_errors
             end
@@ -149,7 +150,7 @@ class Route < ActiveRecord::Base
 
       if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
         begin
-          distance, drive_time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng)
+          distance, drive_time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng, router_dimension)
         rescue RouterError => e
           raise if !ignore_errors
         end
@@ -348,6 +349,7 @@ class Route < ActiveRecord::Base
   def optimize(matrix_progress, &optimizer)
     stops_on = stops_segregate[true]
     router = vehicle_usage.vehicle.default_router
+    router_dimension = vehicle_usage.vehicle.default_router_dimension
     position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
     position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
     amalgamate_stops_same_position(stops_on) { |positions|
@@ -365,7 +367,7 @@ class Route < ActiveRecord::Base
       speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
       order = unnil_positions(positions, tws){ |positions, tws, rest_tws|
         positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)].collect{ |position| position[0..1] }
-        matrix = router.matrix(positions, positions, speed_multiplicator, 'time', &matrix_progress)
+        matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, &matrix_progress)
         if position_start == [nil, nil]
           matrix = [[[0, 0]] * matrix.length] + matrix
           matrix.collect!{ |x| [[0, 0]] + x }

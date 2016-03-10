@@ -122,4 +122,7 @@ class CustomerTest < ActiveSupport::TestCase
     assert @customer.vehicles.all?{|vehicle| !vehicle.orange_id }
   end
 
+  test 'should get router dimension' do
+    assert_equal 'time', @customer.router_dimension
+  end
 end

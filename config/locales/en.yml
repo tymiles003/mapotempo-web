@@ -153,6 +153,7 @@ en:
         alyacom_association: "AlyaCom identifier"
         router: "Route planner"
         router_id: "Route planner"
+        router_dimension: "Router objective"
         print_planning_annotating: "Planning annotating"
         print_header: "Routes header"
         print_stop_time: "Include stop time"
@@ -258,6 +259,10 @@ en:
         hidden: "Hidden"
         locked: "Locked"
         ref: "Reference"
+      router:
+        router_dimensions:
+          time: "Fastest"
+          distance: "Shortest"
       stop:
         active: "Active"
         begin: "Begin"
@@ -320,6 +325,7 @@ en:
         tomtom_id: "TomTom ID"
         masternaut_ref: "Masternaut vehicle ref."
         router_id: "Route planner"
+        router_dimension: "Router objective"
         speed_multiplicator: "Speed tuning"
         ref: "Reference"
         contact_email: "E-Mail"
@@ -1157,6 +1163,8 @@ en:
       router:
         default: "Default"
         help: "Force usage of this router"
+      router_dimension:
+        default: "Default"
       speed_multiplicator:
         default: "%{n} (default value)"
         help: "A value higher than 100% mean higher speed. The global tune up set on settings is also used on computation."

@@ -32,8 +32,11 @@ class CustomersControllerTest < ActionController::TestCase
 
   test 'should update customer' do
     sign_in users(:user_one)
-    patch :update, id: @customer, customer: { name: 123 }
+    patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance' }
     assert_redirected_to [:edit, @customer]
+
+    c = Customer.find(@customer.id)
+    assert_equal 'distance', c.router_dimension
   end
 
   test 'should destroy vehicles' do

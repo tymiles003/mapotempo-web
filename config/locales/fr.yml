@@ -153,6 +153,7 @@ fr:
         alyacom_association: "Identifiant AlyaCom"
         router: "Calculateur d'itinéraire"
         router_id: "Calculateur d'itinéraire"
+        router_dimension: "Objectif du calculateur"
         print_planning_annotating: "Émargement des feuilles de routes"
         print_header: "Entête des tournées"
         print_stop_time: "Inclure les horaires de passage"
@@ -258,6 +259,10 @@ fr:
         hidden: "Masqué"
         locked: "Verrouillé"
         ref: "Référence"
+      router:
+        router_dimensions:
+          time: "Au plus rapide"
+          distance: "Au plus court"
       stop:
         active: "Actif"
         begin: "Début"
@@ -320,6 +325,7 @@ fr:
         tomtom_id: "TomTom ID"
         masternaut_ref: "Ref. véhicule Masternaut"
         router_id: "Calculateur d'itinéraire"
+        router_dimension: "Objectif du calculateur"
         speed_multiplicator: "Ajustement de la vitesse"
         ref: "Référence"
         contact_email: "Email"
@@ -1157,6 +1163,8 @@ fr:
       router:
         default: "Défaut"
         help: "Forcer l'utilisation de ce calculateur d'itinéraire"
+      router_dimension:
+        default: "Défaut"
       speed_multiplicator:
         default: "%{n} (valeur par défaut)"
         help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du paramétrage est également utilisé lors des calculs."

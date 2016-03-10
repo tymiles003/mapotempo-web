@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -104,7 +104,7 @@ class CustomersController < ApplicationController
     if current_user.admin?
       params.require(:customer).permit(:ref, :name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :enable_tomtom, :enable_masternaut, :enable_alyacom, :enable_teksat, :enable_orange, :orange_user, :orange_password, :teksat_url, :teksat_customer_id, :teksat_username, :teksat_password, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :enable_orders, :test, :alyacom_association, :optimization_cluster_size, :optimization_time, :optimization_soft_upper_bound, :profile_id, :default_country, :enable_multi_vehicle_usage_sets, :print_stop_time, :enable_references, :enable_multi_visits)
     else
-      allowed_params = [:take_over, :print_planning_annotating, :print_header, :orange_user, :orange_password, :teksat_url, :teksat_customer_id, :teksat_username, :teksat_password, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :speed_multiplicator, :alyacom_association, :default_country, :print_stop_time]
+      allowed_params = [:take_over, :print_planning_annotating, :print_header, :orange_user, :orange_password, :teksat_url, :teksat_customer_id, :teksat_username, :teksat_password, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :router_dimension, :speed_multiplicator, :alyacom_association, :default_country, :print_stop_time]
       allowed_params << :max_vehicles if !Mapotempo::Application.config.manage_vehicles_only_admin
       params.require(:customer).permit(*allowed_params)
     end

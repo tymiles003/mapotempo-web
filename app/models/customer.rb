@@ -35,11 +35,13 @@ class Customer < ActiveRecord::Base
   has_many :destinations, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :tags, -> { order('label') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :users, inverse_of: :customer, dependent: :destroy
+  enum router_dimension: Router::DIMENSION
 
   nilify_blanks
   auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association, :default_country
   validates :profile, presence: true
   validates :router, presence: true
+  validates :router_dimension, presence: true
   validates :name, presence: true
   validates :default_country, presence: true
   validates :stores, length: { maximum: Mapotempo::Application.config.max_destinations / 10, message: :over_max_limit }
@@ -147,7 +149,7 @@ class Customer < ActiveRecord::Base
   end
 
   def update_out_of_date
-    if take_over_changed? || router_id_changed? || speed_multiplicator_changed?
+    if take_over_changed? || router_id_changed? || router_dimension_changed? || speed_multiplicator_changed?
       Route.transaction do
         plannings.each{ |planning|
           planning.routes.each{ |route|

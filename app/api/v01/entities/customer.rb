@@ -35,6 +35,7 @@ class V01::Entities::Customer < Grape::Entity
   expose(:name, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
   expose(:enable_orders, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:router_id, documentation: { type: Integer })
+  expose(:router_dimension, documentation: { type: String, values: ::Router::DIMENSION.keys })
   expose(:speed_multiplicator, documentation: { type: Float })
   expose(:default_country, documentation: { type: String })
   expose(:print_planning_annotating, documentation: { type: 'Boolean' })

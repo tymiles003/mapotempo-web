@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20160311104210) do
     t.boolean  "enable_orange"
     t.string   "orange_user"
     t.string   "orange_password"
+    t.integer  "router_dimension",                            default: 0,     null: false
   end
 
   add_index "customers", ["job_destination_geocoding_id"], name: "index_customers_on_job_destination_geocoding_id", using: :btree
@@ -418,6 +419,7 @@ ActiveRecord::Schema.define(version: 20160311104210) do
     t.string   "teksat_id"
     t.string   "orange_id"
     t.string   "fuel_type"
+    t.integer  "router_dimension"
   end
 
   add_index "vehicles", ["customer_id"], name: "fk__vehicles_customer_id", using: :btree

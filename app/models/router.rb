@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2015
+# Copyright © Mapotempo, 2015-2016
 #
 # This file is part of Mapotempo.
 #
@@ -17,6 +17,8 @@
 #
 
 class Router < ActiveRecord::Base
+  DIMENSION = {time: 0, distance: 1}
+
   nilify_blanks
   auto_strip_attributes :name, :url_time, :url_distance, :mode
   validates :name, presence: true

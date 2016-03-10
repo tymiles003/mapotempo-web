@@ -71,6 +71,10 @@ a.disabled {
   padding: 5px;
 }
 
+.input-group .form-control.width_1_2 {
+  width: 50%;
+}
+
 ::-webkit-input-placeholder {
   color: #ccc !important;
   font-weight: normal;

@@ -31,9 +31,18 @@
         <%= f.text_field :capacity_unit do %>
           <p class="help-block"><%= t 'vehicles.form.capacity_unit.help' %></p>
         <% end %>
-        <%= f.collection_select :router_id, [], @vehicle_usage.vehicle.customer.profile.routers, :id, :name, {include_blank: t('vehicles.form.router.default') + ' (' + @vehicle_usage.vehicle.customer.router.name + ')' }, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} do %>
-          <p class="help-block"><%= t 'vehicles.form.router.help' %></p>
-        <% end %>
+        <div id="store_icon_input" class="form-group">
+          <label class="col-md-2 control-label" for="vehicle_router_id"><%= t 'activerecord.attributes.vehicle.router_id' %></label>
+          <label class="sr-only" for="vehicle_router_dimension"><%= t 'activerecord.attributes.vehicle.router_dimension' %></label>
+          <div class="col-md-6">
+            <div class="input-group">
+              <%= select_tag 'vehicle[router_id]', options_for_select(@vehicle_usage.vehicle.customer.profile.routers.collect{ |router| [router.name, router.id] }, @vehicle_usage.vehicle.router_id), include_blank: t('vehicles.form.router.default') + ' (' + @vehicle_usage.vehicle.customer.router.name + ')', class: 'form-control width_1_2' %>
+              <%= select_tag 'vehicle[router_dimension]', options_for_select([[t('activerecord.attributes.router.router_dimensions.time'), :time], [t('activerecord.attributes.router.router_dimensions.distance'), :distance]], @vehicle_usage.vehicle.router_dimension), include_blank: t('vehicles.form.router_dimension.default') + ' (' + t('activerecord.attributes.router.router_dimensions.' + @vehicle_usage.vehicle.customer.router_dimension.to_s) + ')', class: 'form-control width_1_2' %>
+              <span class="input-group-addon"><i class="fa fa-gear fa-fw"></i></span>
+            </div>
+            <p class="help-block"><%= t 'vehicles.form.router.help' %></p>
+          </div>
+        </div>
         <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('vehicles.form.speed_multiplicator.default', n: (@vehicle_usage.vehicle.customer.speed_multiplicator ? (@vehicle_usage.vehicle.customer.speed_multiplicator * 100).to_i : 100)), input_group: '%'} do %>
           <p class="help-block"><%= t 'vehicles.form.speed_multiplicator.help' %></p>
         <% end %>
