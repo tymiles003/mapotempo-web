@@ -1,12 +1,9 @@
 <% if model.errors.any? %>
-  <div id="error_explanation">
-    <div class="alert alert-danger">
-      <%= t('.form_contains_error', count: model.errors.count) %>
-    </div>
+  <div class="alert alert-danger">
     <ul>
-    <% model.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
+      <% model.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
     </ul>
   </div>
 <% end %>
