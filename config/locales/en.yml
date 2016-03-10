@@ -1304,6 +1304,7 @@ en:
       from_planning: "From planning routes"
       zone_placeholder: "Zone"
       zone_vehicle: "Vehicle"
+      avoid_zone: "Don't go inside this zone"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
       dialog:

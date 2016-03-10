@@ -1304,6 +1304,7 @@ fr:
       from_planning: "Depuis les tournées du planning"
       zone_placeholder: "Zone"
       zone_vehicle: "Véhicule"
+      avoid_zone: "Ne pas circuler dans cette zone"
       isochrone: "Isochrone"
       isodistance: "Isodistance"
       dialog:

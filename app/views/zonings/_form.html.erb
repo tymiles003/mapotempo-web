@@ -62,10 +62,10 @@ controller.js(
   map_lat: (@planning && @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lat }.try(:lat)) || @zoning.customer.default_position[:lat],
   map_lng: (@planning && @planning.vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lng }.try(:lng)) || @zoning.customer.default_position[:lng],
   vehicles_array: @zoning.customer.vehicles.collect{ |vehicle|
-    {id: vehicle.id, name: vehicle.name, color: vehicle.color}
+    {id: vehicle.id, name: vehicle.name, color: vehicle.color, router_avoid_zones: vehicle.default_router.avoid_zones}
   },
   vehicles_map: Hash[@zoning.customer.vehicles.collect{ |vehicle|
-    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]
+    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, router_avoid_zones: vehicle.default_router.avoid_zones, capacity: vehicle.capacity}]
   }],
   show_capacity: @planning && !@planning.customer.enable_orders
 )

@@ -61,7 +61,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def default_speed_multiplicator
-    (customer.speed_multiplicator || 1) * (speed_multiplicator || 1)
+    customer.speed_multiplicator * (speed_multiplicator || 1)
   end
 
   def available_position?

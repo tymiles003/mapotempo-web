@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20160314100318) do
     t.integer  "optimization_time"
     t.integer  "optimization_soft_upper_bound"
     t.integer  "profile_id",                                                  null: false
-    t.float    "speed_multiplicator"
+    t.float    "speed_multiplicator",                         default: 1.0,   null: false
     t.string   "default_country",                                             null: false
     t.boolean  "enable_tomtom",                               default: false, null: false
     t.boolean  "enable_masternaut",                           default: false, null: false
@@ -230,6 +230,7 @@ ActiveRecord::Schema.define(version: 20160314100318) do
     t.string   "mode",                                               null: false
     t.boolean  "time",                        default: true,         null: false
     t.boolean  "distance",                    default: false,        null: false
+    t.boolean  "avoid_zones",                 default: false,        null: false
   end
 
   create_table "routes", force: :cascade do |t|
@@ -442,11 +443,12 @@ ActiveRecord::Schema.define(version: 20160314100318) do
 
   create_table "zones", force: :cascade do |t|
     t.text     "polygon"
-    t.integer  "zoning_id",  null: false
+    t.integer  "zoning_id",                         null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "vehicle_id"
     t.string   "name"
+    t.float    "speed_multiplicator", default: 1.0, null: false
   end
 
   add_index "zones", ["vehicle_id"], name: "fk__zones_vehicle_id", using: :btree

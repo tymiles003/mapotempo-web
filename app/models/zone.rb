@@ -42,6 +42,14 @@ class Zone < ActiveRecord::Base
     end
   end
 
+  def avoid_zone
+    speed_multiplicator == 0
+  end
+
+  def avoid_zone=(bool)
+    speed_multiplicator = bool ? 0 : 1;
+  end
+
   private
 
   def inside_feature_distance(geom, point)

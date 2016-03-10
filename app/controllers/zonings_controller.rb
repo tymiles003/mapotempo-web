@@ -157,6 +157,9 @@ class ZoningsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def zoning_params
-    params.require(:zoning).permit(:name, zones_attributes: [:id, :name, :polygon, :_destroy, :vehicle_id])
+    params[:zoning][:zones_attributes].each{ |zone|
+      zone[:speed_multiplicator] = zone[:avoid_zone] ? 0 : 1
+    } if params[:zoning][:zones_attributes]
+    params.require(:zoning).permit(:name, zones_attributes: [:id, :name, :polygon, :_destroy, :vehicle_id, :speed_multiplicator])
   end
 end

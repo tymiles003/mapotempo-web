@@ -126,6 +126,10 @@ var zonings_edit = function(params) {
     }
   }
 
+  var router_avoid_zones = $.grep(vehicles_array, function(elem) {
+    return elem.router_avoid_zones;
+  }).length > 0;
+
   var add_zone = function(zone, geom) {
     var geoJsonLayer;
     if (geom instanceof L.GeoJSON) {
@@ -147,6 +151,8 @@ var zonings_edit = function(params) {
         name: val.name
       };
     });
+    zone.avoid_zone = zone.speed_multiplicator == 0;
+    zone.router_avoid_zones = zone.vehicle_id ? vehicles_map[zone.vehicle_id].router_avoid_zones : router_avoid_zones;
     zone.show_capacity = show_capacity;
     if (show_capacity) {
       if (zone.vehicle_id && vehicles_map[zone.vehicle_id].capacity) {
@@ -189,10 +195,23 @@ var zonings_edit = function(params) {
           }
         });
       }
-      var val = e.val || e.target.value;
+      var vehicleId = e.val || e.target.value;
       geom.setStyle({
-        color: (val.length > 0 ? vehicles_map[val].color : '#707070')
+        color: (vehicleId ? vehicles_map[vehicleId].color : '#707070')
       });
+
+      var avoid_zones = router_avoid_zones;
+      if (vehicleId) {
+        avoid_zones = vehicles_map[vehicleId].router_avoid_zones;
+      }
+      if (!avoid_zones) {
+        $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[avoid_zone\\]]', $(this).closest('.zone')).prop('disabled', true);
+        $('.avoid-zone', $(this).closest('.zone')).addClass('disabled');
+      } else {
+        $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[avoid_zone\\]]', $(this).closest('.zone')).prop('disabled', false);
+        $('.avoid-zone', $(this).closest('.zone')).css({display: 'block'});
+        $('.avoid-zone', $(this).closest('.zone')).removeClass('disabled');
+      }
 
       if (show_capacity) {
         if (this.value && vehicles_map[this.value].capacity) {
