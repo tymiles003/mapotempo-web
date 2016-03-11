@@ -376,7 +376,7 @@ class Route < ActiveRecord::Base
           matrix += [[[0, 0]] * matrix.length]
           matrix.collect!{ |x| x + [[0, 0]] }
         end
-        optimizer.call(matrix, tws, rest_tws)
+        optimizer.call(matrix, tws, rest_tws, router_dimension)
       }
       order[1..-2].collect{ |i| i - 1 }
     }

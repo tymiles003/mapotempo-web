@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2015
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -30,10 +30,11 @@ class Ort
     @cache, @url = cache, url
   end
 
-  def optimize(optimize_time, soft_upper_bound, capacity, matrix, time_window, rest_window, time_threshold)
-    key = [soft_upper_bound, capacity, matrix.hash, time_window.hash, time_threshold]
+  def optimize(optimize_time, soft_upper_bound, capacity, matrix, dimension, time_window, rest_window, time_threshold)
+    dimension = dimension == 'time' ? 0 : 1
+    key = [soft_upper_bound, capacity, matrix.hash, dimension, time_window.hash, time_threshold]
 
-    cluster(matrix, time_window, time_threshold) { |matrix, time_window|
+    cluster(matrix, dimension, time_window, time_threshold) { |matrix, time_window|
       result = @cache.read(key)
       if !result
         data = {
@@ -56,18 +57,18 @@ class Ort
 
   private
 
-  def cluster(matrix, time_window, time_threshold)
+  def cluster(matrix, dimension, time_window, time_threshold)
     original_matrix = matrix
-    matrix, time_window, zip_key = zip_cluster(matrix, time_window, time_threshold)
+    matrix, time_window, zip_key = zip_cluster(matrix, dimension, time_window, time_threshold)
     result = yield(matrix, time_window)
-    unzip_cluster(result, zip_key, original_matrix)
+    unzip_cluster(result, zip_key, original_matrix, dimension)
   end
 
-  def zip_cluster(matrix, time_window, time_threshold)
+  def zip_cluster(matrix, dimension, time_window, time_threshold)
     data_set = DataSet.new(data_items: (1..(matrix.length - 2)).collect{ |i| [i] })
     c = CompleteLinkageMaxDistance.new
     c.distance_function = lambda do |a, b|
-      time_window[a[0]] == time_window[b[0]] ? matrix[a[0]][b[0]][0] : Float::INFINITY
+      time_window[a[0]] == time_window[b[0]] ? matrix[a[0]][b[0]][dimension] : Float::INFINITY
     end
     clusterer = c.build(data_set, time_threshold)
 
@@ -97,7 +98,7 @@ class Ort
     [new_matrix, new_time_window, clusterer.clusters]
   end
 
-  def unzip_cluster(result, zip_key, original_matrix)
+  def unzip_cluster(result, zip_key, original_matrix, dimension)
     ret = []
     result.size.times.collect{ |ii|
       i = result[ii]
@@ -123,8 +124,8 @@ class Ort
             last = start
             s = p.sum { |s|
               a, last = last, s
-              original_matrix[a][s][0]
-            } + original_matrix[p[-1]][stop][0]
+              original_matrix[a][s][dimension]
+            } + original_matrix[p[-1]][stop][dimension]
             [s, p]
           }.min_by{ |a| a[0] }[1]
         else
@@ -132,6 +133,7 @@ class Ort
           sim_annealing.start = start
           sim_annealing.stop = stop
           sim_annealing.matrix = original_matrix
+          sim_annealing.dimension = dimension
           fact = (1..[sub_size, 8].min).reduce(1, :*) # Yes, compute factorial
           initial_order = [start] + sub + [stop]
           sub_size += 2
@@ -161,13 +163,13 @@ end
 
 module SimAnnealing
   class SimAnnealing
-    attr_accessor :start, :stop, :matrix
+    attr_accessor :start, :stop, :matrix, :dimension
 
     def euc_2d(c1, c2)
       if (c1 == start || c1 == stop) && (c2 == start || c2 == stop)
         0
       else
-        matrix[c1][c2][0]
+        matrix[c1][c2][dimension]
       end
     end
   end
