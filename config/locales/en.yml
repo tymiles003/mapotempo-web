@@ -531,6 +531,7 @@ en:
     delete_vehicle:
       success: "Vehicle deleted successfully"
     form:
+      name: "Customer"
       default_value: "Default values"
       options: "Options"
       optimization_parameters: "Optimization settings"

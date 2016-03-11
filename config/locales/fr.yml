@@ -531,6 +531,7 @@ fr:
     delete_vehicle:
       success: "Vehicule supprimé avec succès"
     form:
+      name: "Compte"
       default_value: "Valeurs par défaut"
       options: "Options"
       optimization_parameters: "Paramètres d'optimisation"
