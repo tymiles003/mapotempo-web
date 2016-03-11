@@ -44,8 +44,9 @@ class Optimizer
     optimize_time = planning.customer.optimization_time || @@optimize_time
     soft_upper_bound = planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
     if route.size_active <= 1
-        # Nothing to optimize
-      true
+      # Nothing to optimize
+      route.compute
+      planning.save
     elsif !synchronous && Mapotempo::Application.config.delayed_job_use
       if planning.customer.job_optimizer
         # Customer already run an optimization
