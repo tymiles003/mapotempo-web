@@ -84,8 +84,10 @@ class Tomtom < DeviceBase
     end
   end
 
-  def list_vehicles customer
-    objects = get customer, savon_client_objects, :show_vehicle_report
+  def list_vehicles customer, params={}
+    options = {}
+    options.merge!(auth: params.slice(:account, :user, :password)) if !params.blank?
+    objects = get customer, savon_client_objects, :show_vehicle_report, {}, options
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       hash = {
@@ -96,6 +98,8 @@ class Tomtom < DeviceBase
       }
       if object[:vehicle_color] && VEHICLE_COLOR.has_key?(object[:vehicle_color].downcase)
         hash[:color] = VEHICLE_COLOR[object[:vehicle_color].downcase]
+      else
+        hash[:color] = "#000000"
       end
       hash
     end

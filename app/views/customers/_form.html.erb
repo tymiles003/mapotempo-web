@@ -107,7 +107,7 @@
             <%= f.text_field :tomtom_user, autocomplete: "off" %>
             <%= f.password_field :tomtom_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
 
-            <div class="btn btn-default btn-sm api-sync" <%= 'disabled=\"disabled\"' if @customer.new_record? || !@customer.tomtom? %> data-url="/api/0.1/devices/tomtom/sync" data-customer-id="<%= @customer.id %>">
+            <div class="btn btn-default btn-sm tomtom-api-sync" disabled="disabled">
               <i class="fa fa-bolt fa-fw"></i>
               <%= t "customers.form.sync.tomtom.action" %>
             </div>
@@ -150,7 +150,7 @@
             <%= f.text_field :teksat_username, autocomplete: "off" %>
             <%= f.password_field :teksat_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
 
-            <div class="btn btn-default btn-sm api-sync" <%= 'disabled=\"disabled\"' if @customer.new_record? || !@customer.teksat? %> data-url="/api/0.1/devices/teksat/sync" data-customer-id="<%= @customer.id %>">
+            <div class="btn btn-default btn-sm teksat-api-sync" disabled="disabled">
               <i class="fa fa-bolt fa-fw"></i>
               <%= t "customers.form.sync.teksat.action" %>
             </div>
@@ -188,7 +188,7 @@
             <%= f.text_field :orange_user, autocomplete: "off" %>
             <%= f.password_field :orange_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
 
-            <div class="btn btn-default btn-sm api-sync" <%= 'disabled=\"disabled\"' if @customer.new_record? || !@customer.orange? %> data-url="/api/0.1/devices/orange/sync" data-customer-id="<%= @customer.id %>">
+            <div class="btn btn-default btn-sm orange-api-sync" disabled="disabled">
               <i class="fa fa-bolt fa-fw"></i>
               <%= t "customers.form.sync.orange.action" %>
             </div>

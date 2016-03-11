@@ -137,14 +137,52 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   test 'sync' do
     with_stubs [:client_objects_wsdl, :vehicle_report] do
       set_route
+
+      # Reset Vehicle
       default_color = "#004499"
       @vehicle.update! tomtom_id: nil, fuel_type: nil, color: default_color
       @vehicle.reload
       assert !@vehicle.tomtom_id
       assert !@vehicle.fuel_type
       assert_equal default_color, @vehicle.color
+
+      # Send Request.. Send Credentials As Parameters
       post api("devices/tomtom/sync")
       assert_equal 204, last_response.status
+
+      # Vehicle Should Now Have All Values
+      @vehicle.reload
+      assert_equal "1-44063-666E054E7", @vehicle.tomtom_id
+      assert_equal "DIESEL", @vehicle.fuel_type
+      assert_equal "#0000FF", @vehicle.color # Blue
+    end
+  end
+
+  test 'sync with credentials' do
+    with_stubs [:client_objects_wsdl, :vehicle_report] do
+      set_route
+
+      # Reset Vehicle
+      default_color = "#004499"
+      @vehicle.update! tomtom_id: nil, fuel_type: nil, color: default_color
+      @vehicle.reload
+      assert !@vehicle.tomtom_id
+      assert !@vehicle.fuel_type
+      assert_equal default_color, @vehicle.color
+
+      # Reset Customer
+      @customer.update! tomtom_account: nil, tomtom_user: nil, tomtom_password: nil
+      @customer.reload
+      tomtom_account, tomtom_user, tomtom_password = @customer.tomtom_account, @customer.tomtom_user, @customer.tomtom_password
+      assert !@customer.tomtom_account
+      assert !@customer.tomtom_user
+      assert !@customer.tomtom_password
+
+      # Send Request.. Send Credentials As Parameters
+      post api("devices/tomtom/sync"), { tomtom_account: tomtom_account, tomtom_user: tomtom_user, tomtom_password: tomtom_password }
+      assert_equal 204, last_response.status
+
+      # Vehicle Should Now Have All Values
       @vehicle.reload
       assert_equal "1-44063-666E054E7", @vehicle.tomtom_id
       assert_equal "DIESEL", @vehicle.fuel_type

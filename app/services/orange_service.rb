@@ -20,9 +20,9 @@ class OrangeService < DeviceService
     service.test_list customer, params
   end
 
-  def list_devices
+  def list_devices params={}
     with_cache "%s_%s" % [:list_devices, service_name, customer.id, customer.orange_user] do
-      service.list_devices customer
+      service.list_devices customer, params
     end
   end
 

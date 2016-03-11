@@ -23,8 +23,10 @@ class Orange < DeviceBase
     send_request list_operations(customer, { auth: params.slice(:user, :password) })
   end
 
-  def list_devices customer
-    response = send_request(get_vehicles(customer))
+  def list_devices customer, params
+    options = {}
+    options.merge!(auth: params.slice(:user, :password)) if !params.blank?
+    response = send_request get_vehicles(customer, options)
     if response.code.to_i == 200
       vehicle_infos = []
       Nokogiri::XML(response.body).xpath("//vehicle").each_with_object({}) do |item, hash|
@@ -99,8 +101,8 @@ class Orange < DeviceBase
     net_request customer, { path: "/webservices/getpositions.php", params: { ext: "xml" } }
   end
 
-  def get_vehicles customer
-    net_request customer, { path: "/webservices/getvehicles.php", params: { ext: "xml" } }
+  def get_vehicles customer, options
+    net_request customer, options.merge(path: "/webservices/getvehicles.php", params: { ext: "xml" })
   end
 
   def list_operations customer, options

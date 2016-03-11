@@ -92,22 +92,34 @@ class CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  require Rails.root.join("test/lib/devices/orange_base")
-  include OrangeBase
+  require Rails.root.join("test/lib/devices/tomtom_base")
+  include TomtomBase
+
+  test 'customer with device tomtom account change should update vehicles' do
+    @customer = add_tomtom_credentials @customer
+    @customer.vehicles.update_all tomtom_id: "tomtom_id"
+    @customer.update! tomtom_account: @customer.tomtom_account + "_edit"
+    assert @customer.vehicles.all?{|vehicle| !vehicle.tomtom_id }
+  end
 
   require Rails.root.join("test/lib/devices/teksat_base")
   include TeksatBase
 
-  require Rails.root.join("test/lib/devices/tomtom_base")
-  include TomtomBase
-
-  test 'customer and vehicles with devices' do
-    @customer = add_tomtom_credentials @customer
+  test 'customer and vehicles with device teksat account change should update vehicles' do
     @customer = add_teksat_credentials @customer
+    @customer.vehicles.update_all teksat_id: "teksat_id"
+    @customer.update! teksat_customer_id: Time.now.to_i
+    assert @customer.vehicles.all?{|vehicle| !vehicle.teksat_id }
+  end
+
+  require Rails.root.join("test/lib/devices/orange_base")
+  include OrangeBase
+
+  test 'customer and vehicles with device orange account change should update vehicles' do
     @customer = add_orange_credentials @customer
-    @customer.vehicles.update_all orange_id: "orange_id", teksat_id: "teksat_id", tomtom_id: "tomtom_id"
-    @customer.update! enable_tomtom: false, enable_teksat: false, enable_orange: false
-    assert @customer.vehicles.all?{|vehicle| !vehicle.orange_id && !vehicle.teksat_id && !vehicle.tomtom_id }
+    @customer.vehicles.update_all orange_id: "orange_id"
+    @customer.update! orange_user: @customer.orange_user + "_edit"
+    assert @customer.vehicles.all?{|vehicle| !vehicle.orange_id }
   end
 
 end

@@ -29,27 +29,35 @@ module Devices
     end
 
     def orange_fleet_authenticate customer
-      user     = params[:orange_user]     ? params[:orange_user]      : customer.try(:orange_user)
-      passwd   = params[:orange_password] ? params[:orange_password]  : customer.try(:orange_password)
-      OrangeService.new(customer: customer).test_list(user: user, password: passwd)
+      OrangeService.new(customer: customer).test_list orange_credentials(customer)
+    end
+
+    def orange_credentials customer
+      user   = params[:orange_user]     ? params[:orange_user]      : customer.try(:orange_user)
+      passwd = params[:orange_password] ? params[:orange_password]  : customer.try(:orange_password)
+      return { user: user, password: passwd }
     end
 
     def orange_sync_vehicles customer
-      orange_vehicles = OrangeService.new(customer: customer).list_devices
+      orange_vehicles = OrangeService.new(customer: customer).list_devices orange_credentials(customer)
       vehicles = customer.vehicles.take [orange_vehicles.length, customer.vehicles.count].min
       vehicles.each_with_index{|vehicle, index| vehicle.update!(orange_id: orange_vehicles[index][:id]) }
     end
 
     def teksat_authenticate customer
+      if params[:check_only].to_i == 1 || !session[:teksat_ticket_id] || (Time.now - Time.at(session[:teksat_authenticated_at])) > 3.hours
+        ticket_id = TeksatService.new(customer: customer).authenticate teksat_credentials(customer)
+        session[:teksat_ticket_id] = ticket_id
+        session[:teksat_authenticated_at] = Time.now.to_i
+      end
+    end
+
+    def teksat_credentials customer
       url      = params[:teksat_url]         ? params[:teksat_url]         : customer.try(:teksat_url)
       cust_id  = params[:teksat_customer_id] ? params[:teksat_customer_id] : customer.try(:teksat_customer_id)
       username = params[:teksat_username]    ? params[:teksat_username]    : customer.try(:teksat_username)
       password = params[:teksat_password]    ? params[:teksat_password]    : customer.try(:teksat_password)
-      if params[:check_only].to_i == 1 || !session[:teksat_ticket_id] || (Time.now - Time.at(session[:teksat_authenticated_at])) > 3.hours
-        ticket_id = TeksatService.new(customer: customer).authenticate(url: url, customer_id: cust_id, username: username, password: password)
-        session[:teksat_ticket_id] = ticket_id
-        session[:teksat_authenticated_at] = Time.now.to_i
-      end
+      return { url: url, customer_id: cust_id, username: username, password: password }
     end
 
     def teksat_sync_vehicles customer, ticket_id
@@ -59,18 +67,26 @@ module Devices
     end
 
     def tomtom_authenticate customer
-      account  = params[:tomtom_account]  ? params[:tomtom_account]   : customer.try(:tomtom_account)
-      user     = params[:tomtom_user]     ? params[:tomtom_user]      : customer.try(:tomtom_user)
-      passwd   = params[:tomtom_password] ? params[:tomtom_password]  : customer.try(:tomtom_password)
-      TomtomService.new(customer: customer).test_list(account: account, user: user, password: passwd)
+      TomtomService.new(customer: customer).test_list tomtom_credentials(customer)
+    end
+
+    def tomtom_credentials customer
+      account = params[:tomtom_account]  ? params[:tomtom_account]   : customer.try(:tomtom_account)
+      user    = params[:tomtom_user]     ? params[:tomtom_user]      : customer.try(:tomtom_user)
+      passwd  = params[:tomtom_password] ? params[:tomtom_password]  : customer.try(:tomtom_password)
+      return { account: account, user: user, password: passwd }
     end
 
     def tomtom_sync_vehicles customer
-      tomtom_vehicles = TomtomService.new(customer: customer).list_vehicles
+      tomtom_vehicles = TomtomService.new(customer: customer).list_vehicles tomtom_credentials(customer)
       tomtom_vehicles = tomtom_vehicles.select{|item| !item[:objectUid].blank? }
       vehicles = customer.vehicles.take [tomtom_vehicles.length, customer.vehicles.count].min
       vehicles.each_with_index do |vehicle, index|
-        vehicle.update!(tomtom_id: tomtom_vehicles[index][:objectUid], fuel_type: tomtom_vehicles[index][:fuelType], color: tomtom_vehicles[index][:color])
+        vehicle.update!(
+          tomtom_id: tomtom_vehicles[index][:objectUid],
+          fuel_type: tomtom_vehicles[index][:fuelType],
+          color: tomtom_vehicles[index][:color]
+        )
       end
     end
   end

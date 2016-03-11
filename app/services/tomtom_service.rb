@@ -32,9 +32,9 @@ class TomtomService < DeviceService
     end
   end
 
-  def list_vehicles
+  def list_vehicles params
     with_cache "%s_%s" % [:list_vehicles, service_name, customer.id, customer.tomtom_account] do
-      service.list_vehicles customer
+      service.list_vehicles customer, params
     end
   end
 

@@ -57,17 +57,11 @@ class Customer < ActiveRecord::Base
   before_update :update_out_of_date, :update_max_vehicles, :update_enable_multi_visits
   before_save :sanitize_print_header
 
-  before_save :update_vehicles, prepend: true
-  def update_vehicles
-    if self.tomtom_account_changed? || self.enable_tomtom_changed?
-      self.vehicles.select(&:tomtom_id).each{|vehicle| vehicle.tomtom_id = nil }
-    end
-    if self.teksat_customer_id_changed? || self.enable_teksat_changed?
-      self.vehicles.select(&:teksat_id).each{|vehicle| vehicle.teksat_id = nil }
-    end
-    if self.orange_user_changed? || self.enable_orange_changed?
-      self.vehicles.select(&:orange_id).each{|vehicle| vehicle.orange_id = nil }
-    end
+  before_save :devices_update_vehicles, prepend: true
+  def devices_update_vehicles
+    self.vehicles.select(&:tomtom_id).each{|vehicle| vehicle.tomtom_id = nil } if self.tomtom_account_changed? && !self.tomtom_account_was.nil?
+    self.vehicles.select(&:teksat_id).each{|vehicle| vehicle.teksat_id = nil } if self.teksat_customer_id_changed? && !self.teksat_customer_id_was.nil?
+    self.vehicles.select(&:orange_id).each{|vehicle| vehicle.orange_id = nil } if self.orange_user_changed? && !self.orange_user_was.nil?
   end
 
   def default_position

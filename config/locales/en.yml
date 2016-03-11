@@ -439,7 +439,7 @@ en:
       request_quota_reached: "Request Quota Reached"
       addresses_empty_result: "No Addresses Found"
       could_not_process_last_request: "Could not process request"
-      unsupported_export_type: "Connected GPS Does Not Support Export As Waypoints"
+      unsupported_export_type: "Connected GPS does not support export as waypoints"
     teksat:
       bad_url: "Bad URL"
       get_ticket: "Can't Authenticate. Please Check Your Credentials"

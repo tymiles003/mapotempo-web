@@ -18,7 +18,7 @@ class OrangeTest < ActionController::TestCase
 
   test 'list devices' do
     with_stubs [:get_vehicles] do
-      assert @service.list_devices @customer
+      assert @service.list_devices @customer, {}
     end
   end
 

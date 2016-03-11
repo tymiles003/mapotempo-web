@@ -36,24 +36,23 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should update a customer' do
-    @customer.tomtom_user = 'new name'
-    @customer.ref = 'new ref'
-    put api(@customer.id), @customer.attributes
+    put api_admin(@customer.id), { enable_tomtom: true, tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd' }
     assert last_response.ok?, last_response.body
-
+    put api(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd' }
+    assert last_response.ok?, last_response.body
     get api(@customer.id)
     assert last_response.ok?, last_response.body
-    assert_equal @customer.tomtom_user, JSON.parse(last_response.body)['tomtom_user']
-    assert 'new ref' != JSON.parse(last_response.body)['ref']
+    assert_equal 'tomtom_user_abcd', JSON.parse(last_response.body)['tomtom_user']
+    assert 'ref-abcd' != JSON.parse(last_response.body)['ref']
   end
 
   test 'should update a customer in admin' do
-    @customer.ref = 'new ref'
-    put api_admin(@customer.id), @customer.attributes
-
+    put api_admin(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd' }
+    assert last_response.ok?, last_response.body
     get api(@customer.id)
     assert last_response.ok?, last_response.body
-    assert_equal 'new ref', JSON.parse(last_response.body)['ref']
+    assert_equal 'tomtom_user_abcd', JSON.parse(last_response.body)['tomtom_user']
+    assert_equal 'ref-abcd', JSON.parse(last_response.body)['ref']
   end
 
   test 'should not update a customer in admin' do

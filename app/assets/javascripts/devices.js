@@ -699,11 +699,13 @@ function devices_observe_customer(params) {
     function success_callback() {
       $('#' + config.name + '_success').removeClass('hidden');
       $('#' + config.name + '_not_found').addClass('hidden');
+      $('.' + config.name + '-api-sync').removeAttr('disabled');
     }
 
     function error_callback() {
       $('#' + config.name + '_success').addClass('hidden');
       $('#' + config.name + '_not_found').removeClass('hidden');
+      $('.' + config.name + '-api-sync').attr('disabled', 'disabled');
     }
 
     function user_credentials() {
@@ -785,6 +787,26 @@ function devices_observe_customer(params) {
           check_credentials_with_delay();
         });
       });
+
+      // Sync
+      $('.' + config.name + '-api-sync').click(function(e) {
+        $.ajax({
+          url: '/api/0.1/devices/' + config.name + '/sync',
+          type: 'POST',
+          data: $.extend(user_credentials(), {
+            customer_id: params.customer_id
+          }),
+          beforeSend: function(jqXHR, settings) {
+            beforeSendWaiting();
+          },
+          complete: function(jqXHR, textStatus) {
+            completeWaiting();
+          },
+          success: function(data, textStatus, jqXHR) {
+            alert(I18n.t('vehicles.device_sync_complete'));
+          }
+        });
+      });
     }
 
     // Expand or Collapse Widget
@@ -826,23 +848,6 @@ function devices_observe_customer(params) {
         if ($(element).val() == params.default_password) $(element).val('');
       });
       return true;
-    });
-
-    $(".api-sync").click(function(e) {
-      $.ajax({
-        url: $(e.target).data("url"),
-        type: "POST",
-        data: { customer_id: $(e.target).data("customer-id") },
-        beforeSend: function(jqXHR, settings) {
-          beforeSendWaiting();
-        },
-        complete: function(jqXHR, textStatus) {
-          completeWaiting();
-        },
-        success: function(data, textStatus, jqXHR) {
-          alert(I18n.t('vehicles.device_sync_complete'));
-        }
-      });
     });
   }
 
