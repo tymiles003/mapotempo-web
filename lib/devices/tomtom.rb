@@ -222,9 +222,9 @@ class Tomtom < DeviceBase
     response_body = response.body.first[1][:return]
     status_code = response_body[:status_code].to_i
 
-    if response_body[:results] && status_code == 0
-      return response_body[:results][:result_item]
-    elsif response_body.has_key?(:results)
+    if status_code == 0
+      return response_body[:results][:result_item] if response_body[:results]
+    else
       raise DeviceServiceError.new "TomTom: %s" % [ parse_error_msg(status_code) || response_body[:status_message] ]
     end
 
@@ -244,6 +244,8 @@ class Tomtom < DeviceBase
         I18n.t "errors.tomtom.access_denied"
       when 1101
         I18n.t "errors.tomtom.invalid_account"
+      when 2615
+        I18n.t "errors.tomtom.unsupported_export_type"
       when 8011
         I18n.t "errors.tomtom.request_quota_reached"
       when 8014

@@ -59,8 +59,12 @@ function devices_observe_planning(context) {
         $('#dialog-orange').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.orange_send.success'));
-        set_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.orange_send.success'));
+          set_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-orange').dialog('close');
@@ -87,8 +91,12 @@ function devices_observe_planning(context) {
         $('#dialog-orange').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.orange_clear.success'));
-        clear_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.orange_clear.success'));
+          clear_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-orange').dialog('close');
@@ -115,8 +123,12 @@ function devices_observe_planning(context) {
         $('#dialog-orange').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.orange_send.success'));
-        set_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.orange_send.success'));
+          set_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-orange').dialog('close');
@@ -143,8 +155,12 @@ function devices_observe_planning(context) {
         $('#dialog-orange').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.orange_clear.success'));
-        clear_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.orange_clear.success'));
+          clear_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-orange').dialog('close');
@@ -171,8 +187,12 @@ function devices_observe_planning(context) {
         $('#dialog-teksat').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.teksat_send.success'));
-        set_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.teksat_send.success'));
+          set_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-teksat').dialog('close');
@@ -200,8 +220,12 @@ function devices_observe_planning(context) {
         $('#dialog-teksat').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.teksat_clear.success'));
-        clear_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.teksat_clear.success'));
+          clear_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-teksat').dialog('close');
@@ -228,8 +252,12 @@ function devices_observe_planning(context) {
         $('#dialog-teksat').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.teksat_send.success'));
-        set_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.teksat_send.success'));
+          set_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-teksat').dialog('close');
@@ -257,8 +285,12 @@ function devices_observe_planning(context) {
         $('#dialog-teksat').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.teksat_clear.success'));
-        clear_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.teksat_clear.success'));
+          clear_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-teksat').dialog('close');
@@ -286,8 +318,12 @@ function devices_observe_planning(context) {
         $('#dialog-tomtom').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.tomtom_send_waypoints.success'));
-        set_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.tomtom_send_waypoints.success'));
+          set_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -315,8 +351,12 @@ function devices_observe_planning(context) {
         $('#dialog-tomtom').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.tomtom_send_orders.success'));
-        set_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.tomtom_send_orders.success'));
+          set_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -343,8 +383,12 @@ function devices_observe_planning(context) {
         $('#dialog-tomtom').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.tomtom_clear.success'));
-        clear_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.tomtom_clear.success'));
+          clear_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -372,8 +416,12 @@ function devices_observe_planning(context) {
         $('#dialog-tomtom').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.tomtom_send_waypoints.success'));
-        set_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.tomtom_send_waypoints.success'));
+          set_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -401,8 +449,12 @@ function devices_observe_planning(context) {
         $('#dialog-tomtom').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.tomtom_send_orders.success'));
-        set_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.tomtom_send_orders.success'));
+          set_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -429,8 +481,12 @@ function devices_observe_planning(context) {
         $('#dialog-tomtom').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.tomtom_clear.success'));
-        clear_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.tomtom_clear.success'));
+          clear_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-tomtom').dialog('close');
@@ -457,8 +513,12 @@ function devices_observe_planning(context) {
         $('#dialog-masternaut').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.masternaut_send.success'));
-        set_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.masternaut_send.success'));
+          set_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-masternaut').dialog('close');
@@ -485,8 +545,12 @@ function devices_observe_planning(context) {
         $('#dialog-masternaut').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.masternaut_send.success'));
-        set_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.masternaut_send.success'));
+          set_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-masternaut').dialog('close');
@@ -513,8 +577,12 @@ function devices_observe_planning(context) {
         $('#dialog-alyacom').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.alyacom_send.success'));
-        set_planning_routes_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.alyacom_send.success'));
+          set_planning_routes_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-alyacom').dialog('close');
@@ -541,8 +609,12 @@ function devices_observe_planning(context) {
         $('#dialog-alyacom').dialog('open');
       },
       success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.alyacom_send.success'));
-        set_last_sent_at(data);
+        if (data && data.error) {
+          stickyError(data.error);
+        } else {
+          notice(I18n.t('plannings.edit.alyacom_send.success'));
+          set_last_sent_at(data);
+        }
       },
       complete: function(jqXHR, textStatus) {
         $('#dialog-alyacom').dialog('close');
