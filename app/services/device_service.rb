@@ -31,8 +31,8 @@ class DeviceService
     return route.last_sent_at
   end
 
-  def clear_route route, options={}
-    service.clear_route customer, route, options
+  def clear_route route
+    service.clear_route customer, route
     route.update! last_sent_at: nil
   end
 

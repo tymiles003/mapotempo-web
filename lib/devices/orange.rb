@@ -43,7 +43,7 @@ class Orange < DeviceBase
     send_request send_xml_file(customer, route)
   end
 
-  def clear_route customer, route, options={}
+  def clear_route customer, route
     # Not supported by Garmin 590 -- Garmin Dezl and Nuvi only
     send_request send_xml_file(customer, route, { delete: true })
   end

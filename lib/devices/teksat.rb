@@ -47,7 +47,7 @@ class Teksat < DeviceBase
     send_mission customer, route, route.end, route.vehicle_usage.default_store_stop.lat, route.vehicle_usage.default_store_stop.lng
   end
 
-  def clear_route customer, route, options={}
+  def clear_route customer, route
     response = RestClient.get get_missions_url(customer, { date: planning_date(route).strftime("%Y-%m-%d") })
     Nokogiri::XML(response).xpath("//mission").map{|item| RestClient.get(delete_mission_url(customer, { mi_id: item["id"] })) }
   end

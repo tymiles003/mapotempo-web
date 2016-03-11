@@ -59,8 +59,8 @@ class Tomtom < DeviceBase
     list_devices customer, { auth: params.slice(:account, :user, :password) }
   end
 
-  def list_devices customer, options={}
-    objects = get customer, savon_client_objects, :show_object_report, options
+  def list_devices customer, params={}
+    objects = get customer, savon_client_objects, :show_object_report, {}, params
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       {
@@ -188,8 +188,8 @@ class Tomtom < DeviceBase
     end
   end
 
-  def clear_route customer, route, options={}
-    get customer, savon_client_orders, :clear_orders, options, {
+  def clear_route customer, route
+    get customer, savon_client_orders, :clear_orders, {
       deviceToClear: {
         markDeleted: 'true',
       },
@@ -203,7 +203,7 @@ class Tomtom < DeviceBase
 
   private
 
-  def get customer, client, operation, options={}, message={}
+  def get customer, client, operation, message={}, options={}
     if options[:auth]
       account, username, password = options[:auth][:account], options[:auth][:user], options[:auth][:password]
     else

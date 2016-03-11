@@ -16,7 +16,7 @@ module Devices
 
     def device_clear_route options={}
       route = Route.for_customer(@customer).find params[:route_id]
-      service.clear_route(route, options)
+      service.clear_route route
       present route, with: V01::Entities::DeviceRouteLastSentAt
     end
 
@@ -24,7 +24,7 @@ module Devices
       planning = @customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
       routes = routes.select{|route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
-      routes.each{|route| service.clear_route(route, options) }
+      routes.each{|route| service.clear_route(route) }
       present routes, with: V01::Entities::DeviceRouteLastSentAt
     end
 
