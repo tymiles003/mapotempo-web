@@ -1370,10 +1370,10 @@ en:
       hour_minute: "hour : minute"
       hour_minute_second: "hour : minute : second"
     value:
-      true: "true"
-      false: "false"
-      yes: "yes"
-      no: "no"
+      _true: "true"
+      _false: "false"
+      _yes: "yes"
+      _no: "no"
 
   # Override rails-i18n
   helpers:

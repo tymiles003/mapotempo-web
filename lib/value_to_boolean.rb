@@ -23,7 +23,7 @@ class ValueToBoolean
       default
     else
       val = value.is_a?(String) ? value.downcase : value
-      TRUE_VALUES.include?(val) || (value.is_a?(String) && (I18n.t('all.value.true') == val || I18n.t('all.value.yes') == val))
+      TRUE_VALUES.include?(val) || (value.is_a?(String) && (I18n.t('all.value._true') == val || I18n.t('all.value._yes') == val))
     end
   end
 
