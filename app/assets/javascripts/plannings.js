@@ -709,7 +709,7 @@ var plannings_edit = function(params) {
     if (typeof options !== 'object' || !options.partial) {
       $("#planning").html(SMT['plannings/edit'](data));
 
-      initRoutes($('#planning'), data);
+      initRoutes($('#edit-planning'), data);
 
       $("#refresh").click(function(event, ui) {
         $.ajax({
