@@ -1128,6 +1128,7 @@ en:
     password:
       title: "Edit Password"
     set_password:
+      action: "Set My Password"
       success: "User updated successfully"
 
   vehicles:
