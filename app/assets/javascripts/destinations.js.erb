@@ -440,6 +440,8 @@ var destinations_index = function(params, api) {
     enable_references = params.enable_references,
     enable_multi_visits = params.enable_multi_visits;
 
+  params.geocoder = true;
+
   var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
   L.control.scale({

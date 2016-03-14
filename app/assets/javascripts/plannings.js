@@ -141,6 +141,8 @@ var plannings_edit = function(params) {
     params.overlay_layers["Vehicles"] = vehicleLayer;
   }
 
+  params.geocoder = true;
+
   var map = mapInitialize(params);
 
   if (vehicleLayer) map.addLayer(vehicleLayer);
@@ -154,20 +156,6 @@ var plannings_edit = function(params) {
   new L.Hash(map);
 
   sidebar.addTo(map);
-
-  var geocoder = L.Control.geocoder({
-    geocoder: L.Control.Geocoder.nominatim({
-      serviceUrl: "/api/0.1/geocoder/"
-    }),
-    position: 'topleft',
-    placeholder: I18n.t('web.geocoder.search'),
-    errorMessage: I18n.t('web.geocoder.empty_result')
-  }).addTo(map);
-  geocoder.markGeocode = function(result) {
-    this._map.fitBounds(result.bbox.pad(1.1), {
-      maxZoom: 15
-    });
-  };
 
   routes_layers = L.featureGroup();
   routes_layers_cluster = L.featureGroup();

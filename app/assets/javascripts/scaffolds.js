@@ -55,6 +55,34 @@ var mapInitialize = function(params) {
     layers: mapLayer
   }).setView([params.map_lat || 0, params.map_lng || 0], 13);
 
+  if (params.geocoder) {
+    var geocoderLayer = L.featureGroup();
+    map.addLayer(geocoderLayer);
+    var geocoder = L.Control.geocoder({
+      geocoder: L.Control.Geocoder.nominatim({
+        serviceUrl: "/api/0.1/geocoder/"
+      }),
+      position: 'topleft',
+      placeholder: I18n.t('web.geocoder.search'),
+      errorMessage: I18n.t('web.geocoder.empty_result')
+    }).addTo(map);
+    geocoder.markGeocode = function(result) {
+      this._map.fitBounds(result.bbox.pad(1.1), {
+        maxZoom: 15
+      });
+      var focusGeocode = L.marker(result.center, {
+        icon: new L.divIcon({
+          html: '',
+          iconSize: new L.Point(14, 14),
+          className: 'focus-geocoder'
+        })
+      }).addTo(geocoderLayer);
+      setTimeout(function() {
+        geocoderLayer.removeLayer(focusGeocode);
+      }, 2000);
+    };
+  }
+
   if (params.overlay_layers) $.extend(mapOverlays, params.overlay_layers);
 
   if (nbLayers > 1)
