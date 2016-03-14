@@ -40,7 +40,7 @@
           <%= vehicle_usage_service_time vehicle_usage %>
         </td>
         <td>
-          <%= vehicle_usage_external_services vehicle_usage %>
+          <%= vehicle_external_services vehicle_usage.vehicle %>
         </td>
         <td>
           <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>
