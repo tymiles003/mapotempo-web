@@ -140,7 +140,7 @@ en:
         enable_masternaut: "Enable Masternaut"
         enable_alyacom: "Enable Alyacom"
         enable_teksat: "Enable Teksat"
-        enable_orange_fleet: "Enable Orange Fleet"
+        enable_orange_fleet: "Enable Orange Fleet Performance"
         teksat_customer_id: "Teksat Customer ID"
         teksat_username: "Teksat Username"
         teksat_password: "Teksat Password"
@@ -542,8 +542,8 @@ en:
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
       teksat: "Teksat"
       teksat_help: "Send plannings to Teksat devices"
-      orange: "Orange Fleet"
-      orange_help: "Send plannings to Orange Fleet devices"
+      orange: "Orange Fleet Performance"
+      orange_help: "Send plannings to Orange Fleet Performance devices"
       masternaut: "Masternaut"
       masternaut_help: "Allows sending plannings to Masternaut devices"
       alyacom: "AlyaCom"
@@ -560,8 +560,8 @@ en:
       submit: "Update Global settings"
       sync:
         orange:
-          confirm: "Sync Vehicles from Orange Fleet?"
-          action: "Sync Vehicles from Orange Fleet"
+          confirm: "Sync Vehicles from Orange Fleet Performance?"
+          action: "Sync Vehicles from Orange Fleet Performance"
         tomtom:
           confirm: "Sync Vehicles from TomTom WebFLEET?"
           action: "Sync Vehicles from TomTom WebFLEET"
@@ -825,13 +825,13 @@ en:
         success: "TomTom commands have been cleared successfully"
         fail: "Failed to clear TomTom commands"
       orange_send:
-        action: "Send to Orange Fleet"
-        success: "Sent to Orange Fleet Successfully"
-        fail: "Failed to send to Orange Fleet"
+        action: "Send to Orange Fleet Performance"
+        success: "Sent to Orange Fleet Performance Successfully"
+        fail: "Failed to send to Orange Fleet Performance"
       orange_clear:
-        action: "Clear Orange Fleet"
-        success: "Orange Fleet commands have been cleared successfully"
-        fail: "Failed to clear Orange Fleet commands"
+        action: "Clear Orange Fleet Performance"
+        success: "Orange Fleet Performance commands have been cleared successfully"
+        fail: "Failed to clear Orange Fleet Performance commands"
       alyacom_send:
         action: "Send to Alyacom"
         success: "Sent to Alyacom Successfully"
@@ -924,7 +924,7 @@ en:
           attempts: "Attempts:"
           error: "Compute fail."
         orange:
-          title: "Orange Fleet"
+          title: "Orange Fleet Performance"
           in_progress: "Please wait"
         teksat:
           title: "Teksat"

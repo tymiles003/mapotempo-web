@@ -140,7 +140,7 @@ fr:
         enable_masternaut: "Activer Masternaut"
         enable_alyacom: "Activer Alyacom"
         enable_teksat: "Activer Teksat"
-        enable_orange_fleet: "Activer Orange Fleet"
+        enable_orange_fleet: "Activer Orange Fleet Performance"
         teksat_customer_id: "Teksat Client ID"
         teksat_username: "Teksat Nom d'utilisateur"
         teksat_password: "Teksat Mot de passe"
@@ -542,8 +542,8 @@ fr:
       tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
       teksat: "Teksat"
       teksat_help: "Envoyer les plannings vers les GPS Teksat"
-      orange: "Orange Fleet"
-      orange_help: "Envoyer les plannings vers les GPS Orange Fleet"
+      orange: "Orange Fleet Performance"
+      orange_help: "Envoyer les plannings vers les GPS Orange Fleet Performance"
       masternaut: "Masternaut"
       masternaut_help: "Permet d'envoyer les plannings vers les GPS Masternaut."
       alyacom: "AlyaCom"
@@ -560,8 +560,8 @@ fr:
       submit: "Enregistrer paramétrage global"
       sync:
         orange:
-          confirm: "Synchroniser les véhicules depuis Orange Fleet ?"
-          action: "Synchroniser les véhicules depuis Orange Fleet"
+          confirm: "Synchroniser les véhicules depuis Orange Fleet Performance ?"
+          action: "Synchroniser les véhicules depuis Orange Fleet Performance"
         tomtom:
           confirm: "Synchroniser les véhicules depuis TomTom WebFLEET ?"
           action: "Synchroniser les véhicules depuis TomTom WebFLEET"
@@ -825,13 +825,13 @@ fr:
         success: "Les commandes TomTom ont été vidées avec succès"
         fail: "Échec lors de la suppression des commandes TomTom"
       orange_send:
-        action: "Envoyer à Orange Fleet"
-        success: "Envoyé à Orange Fleet avec succès"
-        fail: "Échec lors de l'envoi vers Orange Fleet"
+        action: "Envoyer à Orange Fleet Performance"
+        success: "Envoyé à Orange Fleet Performance avec succès"
+        fail: "Échec lors de l'envoi vers Orange Fleet Performance"
       orange_clear:
-        action: "Vider Orange Fleet"
-        success: "Les commandes Orange Fleet ont été vidées avec succès"
-        fail: "Échec lors de la suppression des commandes Orange Fleet"
+        action: "Vider Orange Fleet Performance"
+        success: "Les commandes Orange Fleet Performance ont été vidées avec succès"
+        fail: "Échec lors de la suppression des commandes Orange Fleet Performance"
       alyacom_send:
         action: "Envoyer à Alyacom"
         success: "Envoyé à Alyacom avec succès"
@@ -924,7 +924,7 @@ fr:
           attempts: "Tentatives :"
           error: "Impossible d'effectuer le calcul."
         orange:
-          title: "Orange Fleet"
+          title: "Orange Fleet Performance"
           in_progress: "Veuillez patienter"
         teksat:
           title: "Teksat"
