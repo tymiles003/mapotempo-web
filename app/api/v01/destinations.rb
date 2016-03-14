@@ -80,6 +80,7 @@ class V01::Destinations < Grape::API
     end
 
     desc 'Import destinations by upload a CSV file, by JSON or from TomTom',
+      detail: 'Import multiple destinations and visits. If "route" is provided for a visit a planning will be automatically created at the same time, if not only destinations and visits will be created/updated. Use your internal and unique ids as a "reference" to automatically retrieve and update objects.',
       nickname: 'importDestinations',
       params: V01::Entities::DestinationsImport.documentation,
       is_array: true,
