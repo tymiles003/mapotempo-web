@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311104210) do
+ActiveRecord::Schema.define(version: 20160314100318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -228,6 +228,8 @@ ActiveRecord::Schema.define(version: 20160311104210) do
     t.string   "url_isodistance"
     t.string   "url_distance"
     t.string   "mode",                                               null: false
+    t.boolean  "time",                        default: true,         null: false
+    t.boolean  "distance",                    default: false,        null: false
   end
 
   create_table "routes", force: :cascade do |t|

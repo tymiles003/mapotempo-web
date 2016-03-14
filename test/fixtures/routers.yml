@@ -3,28 +3,40 @@
 router_one:
   mode: car
   name: MyString
+  time: true
+  distance: true
   url_time: http://localhost:5000
+  url_distance: http://localhost:5000
   url_isochrone: http://localhost:1723
   url_isodistance: http://localhost:1723
 
 router_two:
   mode: car
   name: MyString
+  time: true
+  distance: false
   url_time: http://localhost:5000
 
 router_osrm:
   mode: car
   type: RouterOsrm
   name: OSRM
+  time: true
+  distance: true
   url_time: http://localhost:5000
+  url_distance: http://localhost:5000
 
 router_here:
   mode: truck
   type: RouterHere
+  time: true
+  distance: true
   name: HERE
 
 router_wrapper_public_transport:
   mode: public_transport
-  type: RouterWrapperPublicTransport
+  type: RouterWrapper
   name: RouterWrapperPublicTransport
+  time: true
+  distance: false
   url_time: http://localhost:4899

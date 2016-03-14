@@ -30,10 +30,6 @@ class RouterOtp < Router
     matrix_iterate(row, column, speed_multiplicator, dimension, &block)
   end
 
-  def time?
-    true
-  end
-
   def isochrone?
     true
   end

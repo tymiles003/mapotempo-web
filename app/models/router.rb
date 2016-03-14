@@ -23,19 +23,19 @@ class Router < ActiveRecord::Base
   auto_strip_attributes :name, :url_time, :url_distance, :mode
   validates :name, presence: true
 
-  def time?
-    false
-  end
-
-  def distance?
-    false
-  end
-
   def isochrone?
     false
   end
 
   def isodistance?
+    false
+  end
+
+  def avoid_zones?
+    false
+  end
+
+  def speed_multiplicator_zones?
     false
   end
 
@@ -95,5 +95,17 @@ class Router < ActiveRecord::Base
         [distance, time]
       }
     }
+  end
+
+  private
+
+  # Access method after overide in sub classes
+
+  def super_time?
+    time?
+  end
+
+  def super_distance?
+    distance?
   end
 end

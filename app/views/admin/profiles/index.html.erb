@@ -25,7 +25,21 @@
         <td>
           <ul>
           <% profile.routers.each { |router| %>
-            <li><%= router.name %></li>
+            <li>
+              <%= router.name %>
+              <% if router.time? %>
+                <i class="fa fa-clock-o" title="<%= t 'activerecord.attributes.router.router_dimensions.time' %>"></i>
+              <% end %>
+              <% if router.distance? %>
+                <i class="fa fa-arrow-circle-right" title="<%= t 'activerecord.attributes.router.router_dimensions.distance' %>"></i>
+              <% end %>
+              <% if router.avoid_zones? %>
+                <i class="fa fa-square-o"></i>
+              <% end %>
+              <% if router.speed_multiplicator_zones? %>
+                <i class="fa fa-minus-square-o"></i>
+              <% end %>
+            </li>
           <% } %>
           </ul>
         </td>

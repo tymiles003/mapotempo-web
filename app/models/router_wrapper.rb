@@ -18,20 +18,12 @@
 require 'routers/router_wrapper'
 
 class RouterWrapper < Router
-  def time?
-    true
-  end
-
-  def distance?
-    true
-  end
-
   def isochrone?
-    true
+    time?
   end
 
   def isodistance?
-    true
+    distance?
   end
 
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, geometry = true)
