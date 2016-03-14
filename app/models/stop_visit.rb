@@ -16,9 +16,13 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class StopVisit < Stop
-  delegate :lat, :lng, :open, :close, :ref, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :visit
+  delegate :lat, :lng, :open, :close, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :visit
 
   validates :visit, presence: true
+
+  def ref
+    visit.ref || visit.destination.ref
+  end
 
   def order
     planning = route.planning
