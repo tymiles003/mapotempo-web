@@ -34,24 +34,35 @@ class V01::Entities::Customer < Grape::Entity
   expose(:ref, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
   expose(:name, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
   expose(:enable_orders, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:enable_tomtom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:tomtom_user, documentation: { type: String })
-  expose(:tomtom_password, documentation: { type: String })
-  expose(:tomtom_account, documentation: { type: String })
-  expose(:enable_masternaut, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:masternaut_user, documentation: { type: String })
-  expose(:masternaut_password, documentation: { type: String })
   expose(:router_id, documentation: { type: Integer })
   expose(:speed_multiplicator, documentation: { type: Float })
   expose(:default_country, documentation: { type: String })
   expose(:print_planning_annotating, documentation: { type: 'Boolean' })
   expose(:print_header, documentation: { type: String })
-  expose(:enable_alyacom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:alyacom_association, documentation: { type: String })
   expose(:profile_id, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
   expose(:enable_references, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:enable_multi_visits, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  # expose(:optimization_cluster_size)
-  # expose(:optimization_time)
-  # expose(:optimization_soft_upper_bound)
+
+  # Devices: Alyacom
+  expose(:enable_alyacom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  expose(:alyacom_association, documentation: { type: String })
+
+  # Devices: Masternaut
+  expose(:enable_masternaut, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  expose(:masternaut_user, documentation: { type: String })
+
+  # Devices: Orange
+  expose(:enable_orange, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  expose(:orange_user, documentation: { type: String })
+
+  # Devices: Teksat
+  expose(:enable_teksat, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  expose(:teksat_customer_id, documentation: { type: Integer })
+  expose(:teksat_username, documentation: { type: String })
+  expose(:teksat_url, documentation: { type: String })
+
+  # Devices: TomTom
+  expose(:enable_tomtom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  expose(:tomtom_user, documentation: { type: String })
+  expose(:tomtom_account, documentation: { type: String })
 end

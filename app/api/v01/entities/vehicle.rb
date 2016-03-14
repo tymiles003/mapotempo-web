@@ -32,9 +32,11 @@ class V01::Entities::VehicleWithoutVehicleUsage < Grape::Entity
   expose(:capacity_unit, documentation: { type: String })
   expose(:router_id, documentation: { type: Integer })
   expose(:speed_multiplicator, documentation: { type: Float })
+
+  # Devices
+  expose(:orange_id, documentation: { type: String })
   expose(:teksat_id, documentation: { type: String })
   expose(:tomtom_id, documentation: { type: String })
-  expose(:orange_id, documentation: { type: String })
 end
 
 class V01::Entities::Vehicle < V01::Entities::VehicleWithoutVehicleUsage
