@@ -69,10 +69,8 @@ var customers_index = function(params) {
 
 var customers_edit = function(params) {
 
-  $(document).ready(function() {
-    /* API: Devices */
-    devices_observe_customer($.extend(params, { default_password: Math.random().toString(36).slice(-8) } ));
-  });
+  /* API: Devices */
+  devices_observe_customer($.extend(params, { default_password: Math.random().toString(36).slice(-8) } ));
 
   $('#customer_end_subscription').datepicker({
     language: defaultLocale,
