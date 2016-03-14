@@ -36,8 +36,6 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should update a customer' do
-    put api_admin(@customer.id), { enable_tomtom: true, tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd' }
-    assert last_response.ok?, last_response.body
     put api(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd' }
     assert last_response.ok?, last_response.body
     get api(@customer.id)
