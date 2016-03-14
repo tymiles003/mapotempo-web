@@ -35,7 +35,9 @@ class ImportCsv
   end
 
   def name
-    (file.original_filename || file.filename).split('.')[0..-2].join('.')
+    ((!file.original_filename.try(&:empty?) && file.original_filename) || (!file.filename.try(&:empty?) && file.filename)).try{ |s|
+      s.split('.')[0..-2].join('.') if s.include?('.')
+    }
   end
 
   def import(synchronous = false)
