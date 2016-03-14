@@ -264,9 +264,7 @@ class Tomtom < DeviceBase
   end
 
   def sendDestinationOrder customer, route, position, orderid, description, time, waypoints=nil
-    time_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
     objectuid = route.vehicle_usage.vehicle.tomtom_id
-    date = planning_date(route)
     unique_base_order_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
       dstOrderToSend: {
@@ -297,7 +295,7 @@ class Tomtom < DeviceBase
       }
     }
 
-    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = (date.to_time + (time.to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S')) if time
+    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = p_time(route, time).strftime('%Y-%m-%dT%H:%M:%S')) if time
 
     if waypoints
       params[:advancedSendDestinationOrderParm] = {waypoints: {
