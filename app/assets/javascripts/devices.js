@@ -735,6 +735,7 @@ function devices_observe_customer(params) {
         success: function(data, textStatus, jqXHR) {
           if (data && data.error) {
             error_callback();
+            stickyError(data.error);
           } else {
             success_callback();
           }
