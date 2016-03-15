@@ -141,6 +141,8 @@ en:
         enable_alyacom: "Enable Alyacom"
         enable_teksat: "Enable Teksat"
         enable_orange_fleet: "Enable Orange Fleet Performance"
+        orange_user: "Orange Username"
+        orange_password: "Orange Password"
         teksat_customer_id: "Teksat Customer ID"
         teksat_username: "Teksat Username"
         teksat_password: "Teksat Password"
@@ -397,8 +399,10 @@ en:
         vehicle_usage:
           attributes:
             close:
+              on_or_after: "Must be after opening time"
               after: "Must be after opening time"
             rest_stop:
+              on_or_after: "Must be after opening time"
               after: "Must be after opening time"
           missing_rest_window: "can't be blanked if rest duration is filled"
         vehicle_usage_set:
@@ -406,9 +410,14 @@ en:
             close:
               after: "Must be after opening time"
             rest_stop:
+              on_or_after: "Must be after opening time"
               after: "Must be after opening time"
           at_least_one: "At least one vehicles configuration needed"
           missing_rest_window: "can't be blanked if rest duration is filled"
+        visit:
+          attributes:
+            close:
+              on_or_after: "Must be after opening time"
         zone:
           attributes:
             vehicle:
