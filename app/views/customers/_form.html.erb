@@ -1,4 +1,4 @@
-<%= twitter_bootstrap_form_for @customer, layout: :horizontal, html: { class: 'form-horizontal clear-passwords'} do |f| %>
+<%= twitter_bootstrap_form_for @customer, layout: :horizontal, html: { class: 'clear-passwords form-horizontal'} do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
   <% if current_user.admin? %>
     <%= f.text_field :ref %>
@@ -105,7 +105,7 @@
 
             <%= f.text_field :tomtom_account, autocomplete: "off" %>
             <%= f.text_field :tomtom_user, autocomplete: "off" %>
-            <%= f.password_field :tomtom_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
+            <%= f.password_field :tomtom_password, value: nil, autocomplete: "off", class: "form-control" %>
 
             <div class="btn btn-default btn-sm tomtom-api-sync" disabled="disabled">
               <i class="fa fa-bolt fa-fw"></i>
@@ -148,7 +148,7 @@
             <%= f.text_field :teksat_customer_id, autocomplete: "off" %>
             <%= f.text_field :teksat_url, autocomplete: "off", placeholder: "www.gpsXX.teksat.fr" %>
             <%= f.text_field :teksat_username, autocomplete: "off" %>
-            <%= f.password_field :teksat_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
+            <%= f.password_field :teksat_password, value: nil, autocomplete: "off", class: "form-control" %>
 
             <div class="btn btn-default btn-sm teksat-api-sync" disabled="disabled">
               <i class="fa fa-bolt fa-fw"></i>
@@ -186,7 +186,7 @@
             <input style="display:none" type="password" name="customer[orange_password]" />
 
             <%= f.text_field :orange_user, autocomplete: "off" %>
-            <%= f.password_field :orange_password, value: nil, autocomplete: "off", class: "form-control clear-default-password" %>
+            <%= f.password_field :orange_password, value: nil, autocomplete: "off", class: "form-control" %>
 
             <div class="btn btn-default btn-sm orange-api-sync" disabled="disabled">
               <i class="fa fa-bolt fa-fw"></i>
@@ -218,8 +218,8 @@
       <div id="collapseMasternaut" class="panel-collapse collapse">
         <div class="panel-body">
           <p class="help-block"><%= t '.masternaut_help' %></p>
-          <%= f.text_field :masternaut_user %>
-          <%= f.text_field :masternaut_password %>
+          <%= f.text_field :masternaut_user, autocomplete: "off" %>
+          <%= f.password_field :masternaut_password, value: f.object.masternaut_password, autocomplete: "off", class: "form-control" %>
         </div>
       </div>
     </div>
@@ -241,7 +241,7 @@
       <div id="collapseAlyacom" class="panel-collapse collapse">
         <div class="panel-body">
           <p class="help-block"><%= t '.alyacom_help' %></p>
-          <%= f.text_field :alyacom_association %>
+          <%= f.text_field :alyacom_association, autocomplete: "off" %>
         </div>
       </div>
     </div>

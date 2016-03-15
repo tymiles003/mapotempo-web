@@ -822,6 +822,12 @@ function devices_observe_customer(params) {
       toggle_panel();
     }
 
+    /* Password Inputs: Set value */
+    $.each(config.password_inputs, function(i, name) {
+      var password_field = $('#' + [base_name, config.name, name].join('_'));
+      if (params[config.name] && $(password_field).val() == '') $(password_field).val(params.default_password);
+    });
+
     // Check TomTom on Page Load if Customer has Service Enabled with Credentials
     if (params[config.name]) {
       toggle_panel();
@@ -836,15 +842,10 @@ function devices_observe_customer(params) {
   }
 
   function observe_form() {
-    /* Password Inputs: Set value */
-    $.each($('form.clear-passwords').find('.clear-default-password'), function(i, element) {
-      if ($(element).val() == '') $(element).val(params.default_password);
-    });
-
     /* Chrome / FF, Prevent Sending Default Password
        The browsers would ask to remember it. */
     $('form.clear-passwords').submit(function(e) {
-      $.each($(e.target).find('.clear-default-password'), function(i, element) {
+      $.each($(e.target).find('input[type=\'password\']'), function(i, element) {
         if ($(element).val() == params.default_password) $(element).val('');
       });
       return true;
