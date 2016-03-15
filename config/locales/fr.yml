@@ -1288,6 +1288,8 @@ fr:
       vehicleless_confirm: "Confirmer l'enregistrement de zones sans véhicules ?"
       isochrone_missing_vehicle: "Un isochrone ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
       isodistance_missing_vehicle: "Un isodistance ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
+      failed: "Échec lors de la génération de l'isochrone"
+      success: "Isochrone généré avec succès"
     index:
       title: "Liste zonages"
       new: "Nouveau zonage"

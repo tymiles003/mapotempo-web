@@ -419,21 +419,35 @@ var zonings_edit = function(params) {
     var vehicle_usage_set_id = $('#isochrone_vehicle_usage_set_id').val();
     var size = $('#isochrone_size').val().split(':');
     size = parseInt(size[0]) * 60 + parseInt(size[1]);
-    $('#isochrone-progress-modal').modal({
-      backdrop: 'static',
-      keyboard: true
-    });
-    $('#isochrone-modal').modal('hide');
+
     $.ajax({
+      url: '/zonings/' + zoning_id + '/isochrone',
       type: "patch",
-      url: '/zonings/' + zoning_id + '/isochrone.json?vehicle_usage_set_id=' + vehicle_usage_set_id + '&size=' + size,
-      beforeSend: beforeSendWaiting,
-      success: displayZoning,
-      complete: function() {
+      dataType: "json",
+      data: {
+        vehicle_usage_set_id: vehicle_usage_set_id,
+        size: size
+      },
+      beforeSend: function(jqXHR, settings) {
+        beforeSendWaiting();
+        $('#isochrone-modal').modal('hide');
+        $('#isochrone-progress-modal').modal({
+          backdrop: 'static',
+          keyboard: true
+        });
+      },
+      success: function(data, textStatus, jqXHR) {
+        hideNotices();
+        displayZoning(data);
+        notice(I18n.t('zonings.edit.success'));
+      },
+      complete: function(jqXHR, textStatus) {
         completeAjaxMap();
         $('#isochrone-progress-modal').modal('hide');
       },
-      error: ajaxError
+      error: function(jqXHR, textStatus, errorThrown) {
+        stickyError(I18n.t('zonings.edit.failed'));
+      }
     });
   });
 
