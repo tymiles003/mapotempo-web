@@ -1276,7 +1276,7 @@ en:
   zonings:
     default:
       from_route: "Route"
-      from_isochrone: "Isochrone"
+      from_isochrone: "Isochron"
       from_isodistance: "Isodistance"
       from: "from"
     menu:
@@ -1286,8 +1286,10 @@ en:
       collapse_zoning_panel: "Collapse zoning panel"
       generate_confirm: "This action will reset all your current zones. Continue?"
       vehicleless_confirm: "Are you sure? Some zones don't have a vehicle"
-      isochrone_missing_vehicle: "Isochrone cannot be generated for at least one vehicle due to router restrictions"
+      isochrone_missing_vehicle: "Isochron cannot be generated for at least one vehicle due to router restrictions"
       isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to router restrictions"
+      failed: "Failed to generate Isochron"
+      success: "Isochron generated successfully"
     index:
       title: "Listing zonings"
       new: "New Zoning"
@@ -1305,17 +1307,17 @@ en:
       zone_placeholder: "Zone"
       zone_vehicle: "Vehicle"
       avoid_zone: "Don't go inside this zone"
-      isochrone: "Isochrone"
+      isochrone: "Isochron"
       isodistance: "Isodistance"
       dialog:
         isochrone:
-          title: "Isochrone"
+          title: "Isochron"
           vehicle_usage_set: "Vehicles configuration"
           vehicle_usage_set_help: "Vehicles configuration to consider, especially the start store."
           size: "Time"
           size_help: "Area accessible from the start store by this travel time."
         isochrone-progress:
-          title: "Isochrones computation in progress"
+          title: "Isochrons computation in progress"
         isodistance:
           title: "Isodistance"
           vehicle_usage_set: "Vehicles configuration"
