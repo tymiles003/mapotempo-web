@@ -52,9 +52,10 @@ input[type="radio"], input[type="checkbox"] {
   margin-right: 3px;
 }
 
-.input-group-addon.input-sm {
+.input-group-addon.input-sm, .input-group-sm .input-group-btn .btn {
     height: 25px;
-    padding: 0 5px;
+    padding: 3px 5px;
+    margin-right: -1px;
 }
 
 a.btn-primary:link { color:#FFFFFF; }
@@ -86,6 +87,17 @@ hr {
 /** External look-like **/
 
 /* Select2 */
+.select2-selection--multiple:before {
+  content: "▾ ";
+  position: relative;
+  float: right;
+  height: 0;
+  right: 5px;
+  top: 5px;
+}
+.select2 .select2-selection--multiple .select2-selection__rendered {
+  padding-right: 10px;
+}
 .fake .select2-selection:focus {
   border: 1px solid #5897fb;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);

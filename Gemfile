@@ -93,7 +93,7 @@ gem 'rails_engine_decorators'
 
 gem 'font-awesome-rails'
 gem 'twitter-bootstrap-rails'
-gem 'twitter_bootstrap_form_for', github: 'frodrigo/twitter_bootstrap_form_for' # FIXME wait for pull request
+gem 'twitter_bootstrap_form_for', github: 'Mapotempo/twitter_bootstrap_form_for' # FIXME wait for pull request
 gem 'bootstrap-filestyle-rails'
 gem 'bootstrap-wysihtml5-rails'
 gem 'bootstrap-datepicker-rails'

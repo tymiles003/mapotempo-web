@@ -173,19 +173,24 @@
       width: 6em;
     }
 
-    .select2-container .select2-selection {
-      background-color: inherit;
-      min-height: 25px;
+    .select2-container {
+      .select2-selection {
+        background-color: inherit;
+        min-height: 25px;
 
-      .select2-selection__rendered {
-        .select2-search__field {
-          height: 23px;
-        }
+        .select2-selection__rendered {
+          .select2-search__field {
+            height: 23px;
+          }
 
-        .select2-selection__choice {
-          height: 18px;
-          margin-top: 2px;
+          .select2-selection__choice {
+            height: 18px;
+            margin-top: 2px;
+          }
         }
+      }
+      .select2-selection--multiple:before {
+        z-index: -1;
       }
     }
 

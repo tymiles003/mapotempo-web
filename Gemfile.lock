@@ -23,6 +23,14 @@ GIT
     sidebar-v2-gh-pages-rails (0.0.1)
 
 GIT
+  remote: git://github.com/Mapotempo/twitter_bootstrap_form_for.git
+  revision: 5ec6e134eda8742009310d58f80adb88de3de56e
+  specs:
+    twitter_bootstrap_form_for (2.0.0.beta)
+      actionpack (~> 4)
+      railties (~> 4)
+
+GIT
   remote: git://github.com/frodrigo/jquery-timeentry-rails.git
   revision: ccecc885d334b772d065bb722e2d4528a9f9a40c
   specs:
@@ -61,14 +69,6 @@ GIT
   specs:
     paloma (3.0.1)
       jquery-rails
-
-GIT
-  remote: git://github.com/frodrigo/twitter_bootstrap_form_for.git
-  revision: 8d774e449d146afcfac4c0e72d9c970ab3b372dc
-  specs:
-    twitter_bootstrap_form_for (2.0.0.beta)
-      actionpack (~> 4)
-      railties (~> 4)
 
 GIT
   remote: git://github.com/moneyadviceservice/tidy-html5-gem.git

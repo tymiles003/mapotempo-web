@@ -29,7 +29,7 @@
       <% end %>
     <% end %>
   <% end %>
-  <%= f.select :zoning_ids, t('plannings.edit.zonings'), options_for_select(@planning.customer.zonings.map{ |zoning| [zoning.name, zoning.id]}, @planning.zonings.collect(&:id)), {}, {multiple: true, input_group: @planning.id ? content_tag('a', content_tag('i', '', class: 'fa fa-plus fa-fw'), href: '/zonings/new/planning/' + @planning.id.to_s + '?back=true', title: t('plannings.edit.zoning_new')) : nil} do %>
+  <%= f.select :zoning_ids, t('plannings.edit.zonings'), options_for_select(@planning.customer.zonings.map{ |zoning| [zoning.name, zoning.id]}, @planning.zonings.collect(&:id)), {}, {multiple: true, input_group: @planning.id ? content_tag('a', content_tag('i', '', class: 'fa fa-plus fa-fw'), href: '/zonings/new/planning/' + @planning.id.to_s + '?back=true', class: 'btn btn-default', title: t('plannings.edit.zoning_new')) : nil} do %>
     <% if not @planning.id %>
       <p class="help-block">
         <%= t '.zonings_help' %>

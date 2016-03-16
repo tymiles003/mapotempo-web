@@ -24,9 +24,9 @@
         <input class="form-control input-sm" type="text" maxlength="17" width="17" name="destination[postalcode]" value="{{postalcode}}"/>
       </span>
       <span>
-        <div class="input-group">
+        <div class="input-group input-group-sm">
           <input class="form-control input-sm pointing" type="text" name="destination[city]" value="{{city}}" size="99"/>
-          <span class="input-group-addon input-sm" title="{{#i18n}}destinations.form.locate_manually{{/i18n}}"><i class="fa fa-crosshairs"></i></span>
+          <span class="input-group-btn" title="{{#i18n}}destinations.form.locate_manually{{/i18n}}"><button class="btn btn-default" type="button"><i class="fa fa-crosshairs"></i></button></span>
         </div>
       </span>
     </span>
@@ -40,9 +40,11 @@
     <textarea class="form-control input-sm" name="destination[comment]" rows="1">{{comment}}</textarea>
   </td>
   <td class="phone">
-    <div class="input-group">
+    <div class="input-group input-group-sm">
       <input class="form-control input-sm phone_number" type="datetime" name="destination[phone_number]" value="{{phone_number}}"/>
-      <a class="input-group-addon input-sm phone_link" target="click2call_iframe" href={{phone_number}}><i class="fa fa-phone" ></i></a>
+      <span class="input-group-btn">
+        <a class="btn btn-default phone_link" target="click2call_iframe" href="{{phone_number}}" title="{{#i18n}}destinations.index.click2call{{/i18n}}"><i class="fa fa-phone"></i></a>
+      </span>
     </div>
   </td>
   {{^enable_multi_visits}}

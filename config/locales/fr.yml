@@ -660,6 +660,7 @@ fr:
       geocoding_level: "Niveau de géocodage"
       geocoding_column_help: "Niveau de géocodage et qualité. Ordonner d'abord par niveau puis par qualité."
       geocoding_empty: "absent"
+      click2call: "Cliquez pour appeler"
       dialog:
         geocoding:
           title: "Géocodage"
