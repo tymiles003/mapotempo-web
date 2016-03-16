@@ -451,6 +451,8 @@ en:
       unauthorized: "Unauthorized"
       list: "Can't List Devices"
       get_vehicles_pos: "Can't Get Vehicles Positions"
+    alyacom:
+      unauthorized: "Unauthorized"
 
   import:
     template_csv: "Import Template Spreadsheet Standard"
@@ -934,10 +936,10 @@ en:
           in_progress: "Please wait"
         masternaut:
           title: "Masternaut"
-          in_progress: "Please wait, sending planning to Masternaut device."
+          in_progress: "Please wait"
         alyacom:
           title: "AlyaCom"
-          in_progress: "Please wait, sending planning to AlyaCom."
+          in_progress: "Please wait"
         zoning:
           title: "Zoning"
           in_progress: "Please wait, applying new zoning in progress."

@@ -869,6 +869,10 @@ function devices_observe_customer(params) {
       name: 'orange',
       inputs: ['user'],
       password_inputs: ['password']
+    },
+    {
+      name: 'alyacom',
+      inputs: ['association']
     }
   ], function(i, config) {
     if (params['enable_' + config.name]) {

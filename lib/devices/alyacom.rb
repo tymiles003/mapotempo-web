@@ -17,6 +17,12 @@
 #
 class Alyacom < DeviceBase
 
+  def test_list customer, params
+    RestClient.get [api_url, params[:alyacom_association], 'users'].join("/"), params: { apiKey: api_key }
+  rescue RestClient::InternalServerError => e
+    raise DeviceServiceError.new("Alyacom: %s" % [ I18n.t('errors.alycom.authenticate') ])
+  end
+
   def send_route customer, route, options={}
     store = route.vehicle_usage.default_store_start
     staff = {
@@ -171,6 +177,7 @@ class Alyacom < DeviceBase
       else
         next_ = nil
       end
+
     end while !next_.nil?
     data
   end

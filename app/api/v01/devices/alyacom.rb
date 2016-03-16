@@ -33,6 +33,12 @@ class V01::Devices::Alyacom < Grape::API
         end
       end
 
+      desc 'Check Alyacom Credentials', detail: 'Validate Alyacom Credentials'
+      get '/auth' do
+        alyacom_authenticate @customer
+        status 204
+      end
+
       desc 'Send Route', detail: 'Send Route'
       params do
         requires :route_id, type: Integer, desc: 'Route ID'

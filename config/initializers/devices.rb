@@ -14,7 +14,7 @@ if Rails.env.test?
   Mapotempo::Application.config.devices.orange.api_url = 'https://orange.example.com'
   Mapotempo::Application.config.devices.tomtom.api_url = 'https://tomtom.example.com' #v1.26
 elsif Rails.env.development?
-  Mapotempo::Application.config.devices.alyacom.api_url = 'http://partners.alyacom.fr/ws'
+  Mapotempo::Application.config.devices.alyacom.api_url = 'http://preprod.intra.alyacom.fr/ws'
   Mapotempo::Application.config.devices.masternaut.api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
   Mapotempo::Application.config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
   Mapotempo::Application.config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.26'

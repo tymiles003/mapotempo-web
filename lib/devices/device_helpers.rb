@@ -89,5 +89,15 @@ module Devices
         )
       end
     end
+
+    def alyacom_credentials customer
+      alyacom_association = params[:alyacom_association] ? params[:alyacom_association] : customer.try(:alyacom_association)
+      return { alyacom_association: alyacom_association }
+    end
+
+    def alyacom_authenticate customer
+      AlyacomService.new(customer: customer).test_list alyacom_credentials(customer)
+    end
+
   end
 end

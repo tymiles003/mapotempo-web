@@ -451,6 +451,8 @@ fr:
       unauthorized: "Non autorisé"
       list: "Impossible de lister les appareils"
       get_vehicles_pos: "Impossible de lister les positions des véhicules"
+    alyacom:
+      unauthorized: "Non autorisé"
 
   import:
     template_csv: "Modèle import tableur standard"
@@ -934,10 +936,10 @@ fr:
           in_progress: "Veuillez patienter"
         masternaut:
           title: "Masternaut"
-          in_progress: "Envoi vers Masternaut en cours, merci de patienter."
+          in_progress: "Veuillez patienter"
         alyacom:
           title: "AlyaCom"
-          in_progress: "Envoi vers AlyaCom en cours, merci de patienter."
+          in_progress: "Veuillez patienter"
         zoning:
           title: "Zonage"
           in_progress: "Application du nouveau zonage en cours, merci de patienter."

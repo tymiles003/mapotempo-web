@@ -230,7 +230,7 @@
     <% end %>
   <% end %>
   <% if @customer.enable_alyacom? %>
-    <div class="panel panel-default">
+    <div id="alyacom_container" class="panel panel-default">
       <div class="panel-heading">
         <h2 class="panel-title">
           <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAlyacom">
@@ -241,7 +241,16 @@
       <div id="collapseAlyacom" class="panel-collapse collapse">
         <div class="panel-body">
           <p class="help-block"><%= t '.alyacom_help' %></p>
-          <%= f.text_field :alyacom_association, autocomplete: "off" %>
+          <div class="pull-left col-md-10">
+            <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
+            <input style="display:none" type="text" name="customer[alyacom_association]" />
+
+            <%= f.text_field :alyacom_association, autocomplete: "off" %>
+          </div>
+          <div class="pull-right col-md-2">
+            <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "alyacom_success" %>
+            <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "alyacom_not_found" %>
+          </div>
         </div>
       </div>
     </div>

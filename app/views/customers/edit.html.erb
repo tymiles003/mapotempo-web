@@ -11,7 +11,9 @@ controller.js(
   teksat: @customer.teksat?,
   enable_teksat: @customer.enable_teksat?,
   orange: @customer.orange?,
-  enable_orange: @customer.enable_orange?
+  enable_orange: @customer.enable_orange?,
+  alyacom: @customer.alyacom?,
+  enable_alyacom: @customer.enable_alyacom?
 )
 %>
 
@@ -90,7 +92,6 @@ controller.js(
         <th></th>
       </tr>
     </thead>
-
     <tbody>
       <% @customer.vehicles.each do |vehicle| %>
         <tr>

@@ -15,4 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class AlyacomService < DeviceService ; end
+class AlyacomService < DeviceService
+  def test_list params
+    service.test_list customer, params
+  end
+end
