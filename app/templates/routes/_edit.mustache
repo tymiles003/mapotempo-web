@@ -69,16 +69,16 @@
               <li role="separator" class="divider"></li>
             {{/orange}}
             {{#masternaut}}
-              <li class="link planning-masternaut-send" data-url="/api/0.1/devices/masternaut/send" data-planning-id="{{route_id}}">
+              <li class="link masternaut-send" data-url="/api/0.1/devices/masternaut/send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-fw"></i>
-                {{#i18n}}plannings.edit.export.masternaut{{/i18n}}
+                {{#i18n}}plannings.edit.masternaut_send.action{{/i18n}}
               </li>
               <li role="separator" class="divider"></li>
             {{/masternaut}}
             {{#alyacom}}
-              <li class="link planning-alyacom-send" data-url="/api/0.1/devices/alyacom/send" data-planning-id="{{route_id}}">
+              <li class="link alyacom-send" data-url="/api/0.1/devices/alyacom/send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-fw"></i>
-                {{#i18n}}plannings.edit.export.alyacom{{/i18n}}
+                {{#i18n}}plannings.edit.alyacom_send.action{{/i18n}}
               </li>
               <li role="separator" class="divider"></li>
             {{/alyacom}}
