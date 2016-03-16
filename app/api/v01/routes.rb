@@ -129,7 +129,7 @@ class V01::Routes < Grape::API
           end
         end
 
-        desc 'Starts asynchronous route optimization.',
+        desc 'Starts synchronous route optimization.',
           detail: 'Get the shortest route in time.',
           nickname: 'optimizeRoute'
         params do

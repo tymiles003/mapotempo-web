@@ -150,7 +150,7 @@ class V01::Plannings < Grape::API
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Starts asynchronous routes optimization.',
+    desc 'Starts synchronous routes optimization.',
       detail: 'Not Implemented',
       nickname: 'optimizeRoutes'
     params do
