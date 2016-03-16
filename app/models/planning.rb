@@ -17,7 +17,7 @@
 #
 class Planning < ActiveRecord::Base
   belongs_to :customer
-  belongs_to :zoning
+  has_and_belongs_to_many :zonings, autosave: true, after_add: :update_zonings_track, after_remove: :update_zonings_track
   has_many :routes, -> { includes(:stops).order('CASE WHEN vehicle_usage_id IS NULL THEN 0 ELSE routes.id END') }, inverse_of: :planning, autosave: true, dependent: :delete_all
   has_and_belongs_to_many :tags, -> { order('label') }, autosave: true
   belongs_to :order_array
@@ -29,8 +29,8 @@ class Planning < ActiveRecord::Base
   validates :name, presence: true
   validates :vehicle_usage_set, presence: true
 
-  before_create :default_routes, :update_zoning
-  before_save :update_zoning
+  before_create :default_routes, :update_zonings
+  before_save :update_zonings
   before_save :update_vehicle_usage_set
 
   amoeba do
@@ -41,7 +41,7 @@ class Planning < ActiveRecord::Base
         route.planning = copy
       }
 
-      def copy.update_zoning
+      def copy.update_zonings
         # No make zoning on duplication
       end
     })
@@ -151,8 +151,8 @@ class Planning < ActiveRecord::Base
     end
 
     # If zoning, get appropriate route
-    if available_routes.empty? && zoning
-      zone = zoning.inside(stop.visit.destination)
+    if available_routes.empty? && zonings.size > 0
+      zone = Zoning.new(zones: zonings.collect(&:zones).flatten).inside(stop.visit.destination)
       if zone && zone.vehicle
         route = routes.find{ |route|
           route.vehicle_usage && route.vehicle_usage.vehicle == zone.vehicle && !route.locked
@@ -252,8 +252,12 @@ class Planning < ActiveRecord::Base
 
   private
 
+  def update_zonings_track(_zoning)
+    @zonings_updated = true
+  end
+
   def split_by_zones
-    if zoning && !routes.empty?
+    if zonings.size > 0 && !routes.empty?
       vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes| [vehicle_usage && vehicle_usage.vehicle, routes[0]] }]
       visits_free = routes.select{ |route|
         !route.locked
@@ -262,7 +266,7 @@ class Planning < ActiveRecord::Base
       routes.each{ |route|
         route.locked || route.set_visits([])
       }
-      zoning.apply(visits_free).each{ |zone, visits|
+      Zoning.new(zones: zonings.collect(&:zones).flatten).apply(visits_free).each{ |zone, visits|
         if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked
           vehicles_map[zone.vehicle].set_visits(visits.collect{ |d| [d, true] })
         else
@@ -274,8 +278,8 @@ class Planning < ActiveRecord::Base
     self.zoning_out_of_date = false
   end
 
-  def update_zoning
-    if zoning && zoning_id_changed?
+  def update_zonings
+    if zonings.size > 0 && @zonings_updated
       split_by_zones
     end
     true

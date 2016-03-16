@@ -40,13 +40,14 @@ var plannings_form = function() {
 
 var plannings_new = function(params) {
   plannings_form();
+  $("#planning_zoning_ids").select2({theme: 'bootstrap'});
 }
 
 var plannings_edit = function(params) {
   plannings_form();
 
   var planning_id = params.planning_id,
-    zoning_id = params.zoning_id,
+    zoning_ids = params.zoning_ids,
     routes_array = params.routes_array,
     vehicles_array = params.vehicles_array,
     vehicles_usages_map = params.vehicles_usages_map,
@@ -59,7 +60,7 @@ var plannings_edit = function(params) {
     layers_cluster = {},
     routes_layers,
     routes_layers_cluster,
-    initial_zoning = $("#planning_zoning_id").val();
+    initial_zoning = $("#planning_zoning_ids").val() || [];
 
   var allRoutesVehicles = $.map(routes_array, function(route) {
     if (route.vehicle_usage_id) {
@@ -192,43 +193,43 @@ var plannings_edit = function(params) {
     }
   }
 
-  var display_zoning = function(zoning) {
-    if (layer_zoning) {
-      map.removeLayer(layer_zoning);
-    }
-    layer_zoning = new L.LayerGroup();
+  layer_zoning = new L.LayerGroup();
+  layer_zoning.addTo(map);
+
+  var displayZoning = function(zoning) {
     $.each(zoning.zones, function(index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
       geom.setStyle({
-        color: (zone.vehicle_id ? vehicles_usages_map[zone.vehicle_id].color : '#707070')
+        color: (zone.vehicle_id ? vehicles_usages_map[zone.vehicle_id].color : '#707070'),
+        weight: 2
       });
       geom.addTo(layer_zoning);
     });
-    layer_zoning.addTo(map);
   }
 
-  $("#planning_zoning_id").change(function() {
-    var id = $(this).val();
-    if (id) {
-      $("#zoning_new").hide();
+  var templateSelectionZoning = function(state) {
+    if (state.id)
+      return $('<span>' + state.text + ' <a href="/zonings/' + state.id + '/edit/planning/' + planning_id + '?back=true" title="' + I18n.t('plannings.edit.zoning_edit') + '"><i class="fa fa-pencil fa-fw"></i></a></span>');
+  }
 
-      $("#zoning_edit")
-        .show()
-        .attr("href", "/zonings/" + id + "/edit/planning/" + planning_id + "?back=true");
-
-      $.ajax({
-        type: "get",
-        url: "/api/0.1/zonings/" + id + ".json",
-        beforeSend: beforeSendWaiting,
-        success: display_zoning,
-        complete: completeAjaxMap,
-        error: ajaxError
+  $("#planning_zoning_ids").select2({
+    theme: 'bootstrap',
+    templateSelection: templateSelectionZoning
+  });
+  $("#planning_zoning_ids").change(function() {
+    layer_zoning.clearLayers();
+    var ids = $(this).val();
+    if (ids && ids.length > 0) {
+      $.each(ids, function(i, id) {
+        $.ajax({
+          type: "get",
+          url: "/api/0.1/zonings/" + id + ".json",
+          beforeSend: beforeSendWaiting,
+          success: displayZoning,
+          complete: completeAjaxMap,
+          error: ajaxError
+        });
       });
-    } else {
-      $("#zoning_edit").hide();
-      $("#zoning_new").show();
-      map.removeLayer(layer_zoning);
-      layer_zoning = null;
     }
   });
 
@@ -927,14 +928,16 @@ var plannings_edit = function(params) {
     error: ajaxError
   });
 
-  if (zoning_id) {
-    $.ajax({
-      type: "get",
-      url: "/api/0.1/zonings/" + zoning_id + ".json",
-      beforeSend: beforeSendWaiting,
-      success: display_zoning,
-      complete: completeAjaxMap,
-      error: ajaxError
+  if (zoning_ids && zoning_ids.length > 0) {
+    $.each(zoning_ids, function(i, zoningId) {
+      $.ajax({
+        type: "get",
+        url: "/api/0.1/zonings/" + zoningId + ".json",
+        beforeSend: beforeSendWaiting,
+        success: displayZoning,
+        complete: completeAjaxMap,
+        error: ajaxError
+      });
     });
   }
 
@@ -944,8 +947,8 @@ var plannings_edit = function(params) {
   });
 
   $("form").submit(function(event) {
-    var new_zoning = $("#planning_zoning_id").val();
-    if (new_zoning && initial_zoning != new_zoning) {
+    var new_zoning = $("#planning_zoning_ids").val();
+    if (new_zoning && initial_zoning.join(',') != new_zoning.join(',')) {
       if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) {
         return false;
       }

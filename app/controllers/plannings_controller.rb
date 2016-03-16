@@ -277,7 +277,7 @@ class PlanningsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def planning_params
-    params.require(:planning).permit(:name, :ref, :date, :vehicle_usage_set_id, :zoning_id, tag_ids: [])
+    params.require(:planning).permit(:name, :ref, :date, :vehicle_usage_set_id, tag_ids: [], zoning_ids: [])
   end
 
   def stop_params

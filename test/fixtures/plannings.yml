@@ -5,7 +5,7 @@ planning_one:
   ref: r1
   date: 2015-10-10 00:00:00
   customer: customer_one
-  zoning: zoning_one
+  zonings: zoning_one
   tags: tag_one
   vehicle_usage_set: vehicle_usage_set_one
 
@@ -13,6 +13,6 @@ planning_two:
   name: planning2
   ref: r2
   customer: customer_one
-  zoning: zoning_one
+  zonings: zoning_one
   tags: tag_two
   vehicle_usage_set: vehicle_usage_set_three

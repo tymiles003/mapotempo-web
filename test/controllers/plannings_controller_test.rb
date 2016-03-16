@@ -49,7 +49,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'should create planning' do
     assert_difference('Planning.count') do
-      post :create, planning: { name: @planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_id: @planning.zoning.id }
+      post :create, planning: { name: @planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_ids: @planning.zonings.collect(&:id) }
     end
 
     assert_redirected_to edit_planning_path(assigns(:planning))
@@ -123,7 +123,7 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should update planning' do
-    patch :update, id: @planning, planning: { name: @planning.name, zoning_id: @planning.zoning.id }
+    patch :update, id: @planning, planning: { name: @planning.name, zoning_ids: @planning.zonings.collect(&:id) }
     assert_redirected_to edit_planning_path(assigns(:planning))
   end
 

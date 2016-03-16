@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160314100318) do
+ActiveRecord::Schema.define(version: 20160315102718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,7 +163,6 @@ ActiveRecord::Schema.define(version: 20160314100318) do
     t.integer  "customer_id",                      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "zoning_id"
     t.boolean  "zoning_out_of_date"
     t.integer  "order_array_id"
     t.string   "ref"
@@ -174,7 +173,6 @@ ActiveRecord::Schema.define(version: 20160314100318) do
   add_index "plannings", ["customer_id"], name: "fk__plannings_customer_id", using: :btree
   add_index "plannings", ["order_array_id"], name: "fk__plannings_order_array_id", using: :btree
   add_index "plannings", ["vehicle_usage_set_id"], name: "index_plannings_on_vehicle_usage_set_id", using: :btree
-  add_index "plannings", ["zoning_id"], name: "fk__plannings_zoning_id", using: :btree
 
   create_table "plannings_tags", id: false, force: :cascade do |t|
     t.integer "planning_id", null: false
@@ -183,6 +181,14 @@ ActiveRecord::Schema.define(version: 20160314100318) do
 
   add_index "plannings_tags", ["planning_id"], name: "fk__plannings_tags_planning_id", using: :btree
   add_index "plannings_tags", ["tag_id"], name: "fk__plannings_tags_tag_id", using: :btree
+
+  create_table "plannings_zonings", id: false, force: :cascade do |t|
+    t.integer "planning_id"
+    t.integer "zoning_id"
+  end
+
+  add_index "plannings_zonings", ["planning_id"], name: "index_plannings_zonings_on_planning_id", using: :btree
+  add_index "plannings_zonings", ["zoning_id"], name: "index_plannings_zonings_on_zoning_id", using: :btree
 
   create_table "products", force: :cascade do |t|
     t.string   "name",        limit: 255, null: false
@@ -475,9 +481,10 @@ ActiveRecord::Schema.define(version: 20160314100318) do
   add_foreign_key "plannings", "customers", name: "fk_plannings_customer_id", on_delete: :cascade
   add_foreign_key "plannings", "order_arrays", name: "fk_plannings_order_array_id"
   add_foreign_key "plannings", "vehicle_usage_sets"
-  add_foreign_key "plannings", "zonings", name: "fk_plannings_zoning_id"
   add_foreign_key "plannings_tags", "plannings", name: "fk_plannings_tags_planning_id", on_delete: :cascade
   add_foreign_key "plannings_tags", "tags", name: "fk_plannings_tags_tag_id", on_delete: :cascade
+  add_foreign_key "plannings_zonings", "plannings", on_delete: :cascade
+  add_foreign_key "plannings_zonings", "zonings", on_delete: :cascade
   add_foreign_key "products", "customers", name: "fk_products_customer_id", on_delete: :cascade
   add_foreign_key "routes", "plannings", name: "fk_routes_planning_id", on_delete: :cascade
   add_foreign_key "routes", "vehicle_usages"

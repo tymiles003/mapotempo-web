@@ -114,7 +114,8 @@ var zonings_edit = function(params) {
 
   var set_color = function(polygon, vehicle_id) {
     polygon.setStyle({
-      color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070')
+      color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070'),
+      weight: 2
     });
   }
 
@@ -197,7 +198,8 @@ var zonings_edit = function(params) {
       }
       var vehicleId = e.val || e.target.value;
       geom.setStyle({
-        color: (vehicleId ? vehicles_map[vehicleId].color : '#707070')
+        color: (vehicleId ? vehicles_map[vehicleId].color : '#707070'),
+        weight: 2
       });
 
       var avoid_zones = router_avoid_zones;

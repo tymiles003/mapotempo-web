@@ -16,7 +16,7 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should save' do
-    o = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zoning: zonings(:zoning_one))
+    o = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_one)])
     o.default_routes
     o.save!
   end
@@ -133,14 +133,14 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should update zoning' do
     o = plannings(:planning_one)
     assert_not o.zoning_out_of_date
-    o.zoning = zonings(:zoning_two)
+    o.zonings = [zonings(:zoning_two)]
     o.save!
     assert_not o.out_of_date
   end
 
   test 'should automatic insert' do
     o = plannings(:planning_one)
-    o.zoning = nil
+    o.zonings = []
     assert_equal 3, o.routes.size
     assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_zero' }.stops.size
     assert_equal 4, o.routes.find{ |ro| ro.ref == 'route_one' }.stops.size

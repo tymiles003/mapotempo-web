@@ -49,7 +49,8 @@ var api_web_v01_zones_index = function(params) {
 
   var set_color = function(polygon, vehicle_id) {
     polygon.setStyle({
-      color: (vehicle_id ? params.vehicles_map[vehicle_id].color : '#707070')
+      color: (vehicle_id ? params.vehicles_map[vehicle_id].color : '#707070'),
+      weight: 2
     });
   }
 

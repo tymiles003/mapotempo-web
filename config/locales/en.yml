@@ -817,6 +817,9 @@ en:
       title: "Listing plannings"
       new: "New Planning"
     edit:
+      zonings: "Zonings"
+      zoning_new: "New zoning from this planning"
+      zoning_edit: "Edit zoning from this planning"
       last_sent_at: "Last sent at"
       title: "Editing planning"
       stops: "stops"
@@ -1008,6 +1011,8 @@ en:
       ref_help: "A free reference"
       tags_help: "Restrict visits/destinations in the planning (visits/destinations should have all of these categories to be taken into account in the planning)"
       order_array: "Orders"
+      zonings_help: "Allow to automatically assign vehicles to visits/destinations with geographical zones."
+      avoid_zones_help: "In addition, allow to define zones where vehicle cannot circulate."
 
   routes:
     show:

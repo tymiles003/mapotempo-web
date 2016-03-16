@@ -29,9 +29,15 @@
       <% end %>
     <% end %>
   <% end %>
-  <%= f.collection_select :zoning_id, [], @planning.customer.zonings, :id, :name, {include_blank: t('plannings.edit.zoning.none')}, {} do %>
-    <a href="/zonings/<%= @planning.zoning ? @planning.zoning.id : 0 %>/edit/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_edit"<% if !@planning.id || !@planning.zoning %> style="display: none;"<% end %> title="<%= t 'plannings.edit.zoning.edit' %>"><i class="fa fa-pencil fa-fw"></i></a>
-    <a href="/zonings/new/planning/<%= @planning.id %>?back=true" class="btn btn-primary btn-sm" id="zoning_new"<% if !@planning.id || @planning.zoning %> style="display: none;"<% end %> title="<%= t 'plannings.edit.zoning.new' %>"><i class="fa fa-pencil fa-fw"></i></a>
+  <%= f.select :zoning_ids, t('plannings.edit.zonings'), options_for_select(@planning.customer.zonings.map{ |zoning| [zoning.name, zoning.id]}, @planning.zonings.collect(&:id)), {}, {multiple: true, input_group: @planning.id ? content_tag('a', content_tag('i', '', class: 'fa fa-plus fa-fw'), href: '/zonings/new/planning/' + @planning.id.to_s + '?back=true', title: t('plannings.edit.zoning_new')) : nil} do %>
+    <% if not @planning.id %>
+      <p class="help-block">
+        <%= t '.zonings_help' %>
+        <% if ([@planning.customer.router] + @planning.customer.vehicles.collect(&:router)).compact.any?{ |r| r.avoid_zones } %>
+          <%= t '.avoid_zones_help' %>
+        <% end %>
+      </p>
+    <% end %>
   <% end %>
   <%= f.actions do %>
     <%= f.submit %>

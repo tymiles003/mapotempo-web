@@ -25,7 +25,11 @@ class V01::Entities::Planning < Grape::Entity
   expose(:ref, documentation: { type: String })
   expose(:date, documentation: { type: Date })
   expose(:vehicle_usage_set_id, documentation: { type: Integer })
-  expose(:zoning_id, documentation: { type: Integer })
+  expose(:zoning_id, documentation: { type: Integer, desc: 'DEPRECATED. Use zoning_ids instead.' }) { |p|
+    p.zonings.first.id if p.zonings.size == 1
+  }
+  expose(:zoning_ids, documentation: { type: Integer, is_array: true })
+  expose(:zoning_out_of_date, documentation: { type: 'Boolean' })
   expose(:out_of_date, documentation: { type: 'Boolean' })
   expose(:route_ids, documentation: { type: Integer, is_array: true }) { |m| m.routes.collect(&:id) } # Workaround bug with fetch join stops
   expose(:tag_ids, documentation: { type: Integer, is_array: true })

@@ -644,7 +644,7 @@ fr:
       dialog:
         help:
           title: "Liste des colonnes de votre fichier"
-          desc: "Votre fichier d'import peut contenir l'ensemble des colonnes suivantes :"
+          desc: "Votre fichier d'import peut contenir l'ensemble des colonnes et types de valeurs suivants :"
           columns_route: "Colonnes de la tournée"
           columns_destination: "Colonnes de la destination visitée"
           columns_visit: "Colonnes de la visite"
@@ -817,6 +817,9 @@ fr:
       title: "Liste plannings"
       new: "Nouveau planning"
     edit:
+      zonings: "Zonages"
+      zoning_new: "Créer un nouveau zonage depuis ce planning"
+      zoning_edit: "Modifier ce zonage depuis ce planning"
       last_sent_at: "Dernier envoi"
       title: "Modifier planning"
       stops: "arrêts"
@@ -1006,8 +1009,10 @@ fr:
       out_of_drive_time: "hors créneau véhicule"
     form:
       ref_help: "Référence libre"
-      tags_help: "Restreint les visites / clients dans le planning (les visites/clients doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)"
+      tags_help: "Restreint les visites / clients dans le planning (les visites/clients doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)."
       order_array: "Comm."
+      zonings_help: "Permet d'affecter automatiquement des visites/clients à des véhicules suivant des zones géographiques prédéfinies."
+      avoid_zones_help: "Permet également de définir des zones où ne pas circuler."
 
   routes:
     show:
@@ -1061,7 +1066,7 @@ fr:
       dialog:
         help:
           title: "Liste des colonnes de votre fichier"
-          desc: "Votre fichier d'import peut contenir l'ensemble des colonnes suivantes :"
+          desc: "Votre fichier d'import peut contenir l'ensemble des colonnes et types de valeurs suivants :"
     index:
       title: "Liste dépôts"
       new: "Nouveau dépôt"
