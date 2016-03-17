@@ -20,7 +20,9 @@ require 'routers/here'
 class RouterHere < Router
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, geometry = true)
     distance, time, trace = Mapotempo::Application.config.router_here.compute(lat1, lng1, lat2, lng2)
-    time *= 1.0 / speed_multiplicator
+    if time
+      time *= 1.0 / speed_multiplicator
+    end
     [distance, time, trace]
   end
 
