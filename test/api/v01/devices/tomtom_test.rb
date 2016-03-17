@@ -51,7 +51,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   test 'vehicle positions' do
     with_stubs [:client_objects_wsdl, :object_report] do
       set_route
-      get api("vehicles/current_position")
+      get api("vehicles/current_position"), { ids: @customer.vehicle_ids }
       assert_equal 200, last_response.status
       assert_equal [{
         "vehicle_id"=>@vehicle.id,

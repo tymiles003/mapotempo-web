@@ -53,7 +53,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
   test 'vehicle positions' do
     with_stubs [:auth, :vehicles_pos] do
       set_route
-      get api("vehicles/current_position")
+      get api("vehicles/current_position"), { ids: @customer.vehicle_ids }
       assert_equal 200, last_response.status
       assert_equal [{
         "vehicle_id"=>@vehicle.id,
