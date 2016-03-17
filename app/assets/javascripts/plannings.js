@@ -114,9 +114,10 @@ var plannings_edit = function(params) {
     }
 
     $.ajax({
-      type: 'get',
-      url: '/api/0.1/vehicles/current_position.json',
-      data: {ids: vehicleIdsPosition.join(',')},
+      type: 'GET',
+      url: '/api/0.1/vehicles/current_position',
+      data: { ids: vehicleIdsPosition },
+      dataType: 'json',
       beforeSend: beforeSendWaiting,
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -130,6 +131,7 @@ var plannings_edit = function(params) {
         clearInterval(tid);
       }
     });
+
   };
 
   if (vehicleIdsPosition.length) {

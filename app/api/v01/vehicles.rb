@@ -72,42 +72,48 @@ class V01::Vehicles < Grape::API
       is_array: true,
       entity: V01::Entities::VehiclePosition
     params do
-      optional :ids, type: Array[String], desc: 'Select vehicles by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
+      optional :ids, type: Array[Integer]
     end
     get 'current_position' do
       customer = current_customer
-      vehicles = if params.key?(:ids)
-        customer.vehicles.select{ |vehicle|
-          params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
-        }
-      else
-        customer.vehicles.load
-      end
+      vehicles = customer.vehicles.find params[:ids]
       positions = []
-      if customer.orange?
-        OrangeService.new(customer: customer).get_vehicles_pos.each do |item|
-          vehicle_id = item.delete :orange_vehicle_id
-          vehicle = vehicles.detect{|v| v.orange_id == vehicle_id }
-          next if !vehicle
-          positions << item.merge(vehicle_id: vehicle.id)
+      begin
+        if customer.orange?
+          OrangeService.new(customer: customer).get_vehicles_pos.each do |item|
+            vehicle_id = item.delete :orange_vehicle_id
+            vehicle = vehicles.detect{|v| v.orange_id == vehicle_id }
+            next if !vehicle
+            positions << item.merge(vehicle_id: vehicle.id)
+          end
         end
+      rescue DeviceServiceError => e
+        Rails.logger.info "Vehicles#current_position Orange: %s" % [ e.message ]
       end
-      if customer.teksat?
-        teksat_authenticate customer
-        TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos.each do |item|
-          vehicle_id = item.delete :teksat_vehicle_id
-          vehicle = vehicles.detect{|v| v.teksat_id == vehicle_id }
-          next if !vehicle
-          positions << item.merge(vehicle_id: vehicle.id)
+      begin
+        if customer.teksat?
+          teksat_authenticate customer
+          TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos.each do |item|
+            vehicle_id = item.delete :teksat_vehicle_id
+            vehicle = vehicles.detect{|v| v.teksat_id == vehicle_id }
+            next if !vehicle
+            positions << item.merge(vehicle_id: vehicle.id)
+          end
         end
+      rescue DeviceServiceError => e
+        Rails.logger.info "Vehicles#current_position Teksat: %s" % [ e.message ]
       end
-      if customer.tomtom?
-        TomtomService.new(customer: customer).get_vehicles_pos.each do |item|
-          vehicle_id = item.delete :tomtom_vehicle_id
-          vehicle = vehicles.detect{|v| v.tomtom_id == vehicle_id }
-          next if !vehicle
-          positions << item.merge(vehicle_id: vehicle.id)
+      begin
+        if customer.tomtom?
+          TomtomService.new(customer: customer).get_vehicles_pos.each do |item|
+            vehicle_id = item.delete :tomtom_vehicle_id
+            vehicle = vehicles.detect{|v| v.tomtom_id == vehicle_id }
+            next if !vehicle
+            positions << item.merge(vehicle_id: vehicle.id)
+          end
         end
+      rescue DeviceServiceError => e
+        Rails.logger.info "Vehicles#current_position TomTom: %s" % [ e.message ]
       end
       present positions, with: V01::Entities::VehiclePosition
     end
