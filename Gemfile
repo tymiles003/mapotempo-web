@@ -74,7 +74,7 @@ group :test do
   gem 'mapotempo_web_import_vehicle_store', github: 'Mapotempo/mapotempo_web_import_vehicle_store'
 end
 
-gem 'grape', github: 'ruby-grape/grape' # FIXME wait v0.14
+gem 'grape', github: 'ruby-grape/grape'
 gem 'grape-entity'
 gem 'grape-swagger', github: 'ruby-grape/grape-swagger' # FIXME wait v0.10.3
 gem 'rack-cors'
