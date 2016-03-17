@@ -600,7 +600,10 @@ var destinations_index = function(params, api) {
           update(id, data, move);
         },
         complete: completeWaiting,
-        error: ajaxError
+        error: function(request, status, error) {
+          $('[name=' + event.currentTarget.name.replace('[', '\\[').replace(']', '\\]') + ']', row).val(event.currentTarget.defaultValue);
+          ajaxError(request, status, error);
+        }
       });
     })
     .on("click", ".pointing + span", function(event) {
