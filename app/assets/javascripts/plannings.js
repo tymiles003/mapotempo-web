@@ -199,9 +199,16 @@ var plannings_edit = function(params) {
   var displayZoning = function(zoning) {
     $.each(zoning.zones, function(index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
-      geom.setStyle({
+      geom.setStyle((zone.speed_multiplicator === 0) ? {
+        color: '#FF0000',
+        fillColor: '#707070',
+        weight: 5,
+        dashArray: '10, 10'
+      } : {
         color: (zone.vehicle_id ? vehicles_usages_map[zone.vehicle_id].color : '#707070'),
-        weight: 2
+        fillColor: null,
+        weight: 2,
+        dashArray: 'none'
       });
       geom.addTo(layer_zoning);
     });

@@ -47,14 +47,21 @@ var api_web_v01_zones_index = function(params) {
 
   map.addLayer(featureGroup).addLayer(map.storesLayers).addLayer(map.markersLayers);
 
-  var set_color = function(polygon, vehicle_id) {
-    polygon.setStyle({
+  var setColor = function(polygon, vehicle_id, speed_multiplicator) {
+    polygon.setStyle((speed_multiplicator === 0) ? {
+      color: '#FF0000',
+      fillColor: '#707070',
+      weight: 5,
+      dashArray: '10, 10'
+    } : {
       color: (vehicle_id ? params.vehicles_map[vehicle_id].color : '#707070'),
-      weight: 2
+      fillColor: null,
+      weight: 2,
+      dashArray: 'none'
     });
   }
 
-  var add_zone = function(zone, geom) {
+  var addZone = function(zone, geom) {
     var geoJsonLayer;
     if (geom instanceof L.GeoJSON) {
       geoJsonLayer = geom;
@@ -66,7 +73,7 @@ var api_web_v01_zones_index = function(params) {
     featureGroup.addLayer(geom);
   }
 
-  var display_zoning = function(data) {
+  var displayZoning = function(data) {
     api_web_v01_display_destinations_('destinations', map, data);
 
     map.storesLayers.clearLayers();
@@ -95,8 +102,8 @@ var api_web_v01_zones_index = function(params) {
 
     $.each(data.zoning, function(index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon));
-      set_color(geom, zone.vehicle_id);
-      add_zone(zone, geom);
+      setColor(geom, zone.vehicle_id, zone.speed_multiplicator);
+      addZone(zone, geom);
     });
 
     var bounds = featureGroup.getBounds();
@@ -121,7 +128,7 @@ var api_web_v01_zones_index = function(params) {
     beforeSend: beforeSendWaiting,
     success: function(data) {
       if (data.zoning && data.zoning.length) {
-        display_zoning(data);
+        displayZoning(data);
       }
       else {
         stickyError(I18n.t('api_web.v01.zones.index.none_zones'));

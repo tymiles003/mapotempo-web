@@ -75,7 +75,7 @@ var zonings_edit = function(params) {
   }).addTo(map);
 
   map.on('draw:created', function(e) {
-    add_zone({
+    addZone({
       'vehicles': vehicles_array,
       'polygon': JSON.stringify(e.layer.toGeoJSON())
     }, e.layer);
@@ -83,13 +83,13 @@ var zonings_edit = function(params) {
 
   map.on('draw:edited', function(e) {
     e.layers.eachLayer(function(layer) {
-      update_zone(layer);
+      updateZone(layer);
     });
   });
 
   map.on('draw:deleted', function(e) {
     e.layers.eachLayer(function(layer) {
-      del_zone(layer);
+      deleteZone(layer);
     });
   });
 
@@ -112,10 +112,17 @@ var zonings_edit = function(params) {
     }
   }
 
-  var set_color = function(polygon, vehicle_id) {
-    polygon.setStyle({
+  var setColor = function(polygon, vehicle_id, speed_multiplicator) {
+    polygon.setStyle((speed_multiplicator === 0) ? {
+      color: '#FF0000',
+      fillColor: '#707070',
+      weight: 5,
+      dashArray: '10, 10'
+    } : {
       color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070'),
-      weight: 2
+      fillColor: null,
+      weight: 2,
+      dashArray: 'none'
     });
   }
 
@@ -131,7 +138,7 @@ var zonings_edit = function(params) {
     return elem.router_avoid_zones;
   }).length > 0;
 
-  var add_zone = function(zone, geom) {
+  var addZone = function(zone, geom) {
     var geoJsonLayer;
     if (geom instanceof L.GeoJSON) {
       geoJsonLayer = geom;
@@ -197,10 +204,6 @@ var zonings_edit = function(params) {
         });
       }
       var vehicleId = e.val || e.target.value;
-      geom.setStyle({
-        color: (vehicleId ? vehicles_map[vehicleId].color : '#707070'),
-        weight: 2
-      });
 
       var avoid_zones = router_avoid_zones;
       if (vehicleId) {
@@ -215,6 +218,8 @@ var zonings_edit = function(params) {
         $('.avoid-zone', $(this).closest('.zone')).removeClass('disabled');
       }
 
+      setColor(geom, vehicleId, ($('[name$=\\[avoid_zone\\]]', ele).is(':checked') && !$('[name$=\\[avoid_zone\\]]', ele).is(':disabled')) ? 0 : undefined);
+
       if (show_capacity) {
         if (this.value && vehicles_map[this.value].capacity) {
           $('.capacity_number', $(this).closest('.zone')).html(vehicles_map[this.value].capacity);
@@ -224,19 +229,23 @@ var zonings_edit = function(params) {
       }
     });
 
+    $('[name$=\\[avoid_zone\\]]', ele).change(function(e) {
+      setColor(geom, $('select', ele).val(), e.target.checked ? 0 : undefined);
+    });
+
     $('.delete', ele).click(function(event) {
-      del_zone(geom);
+      deleteZone(geom);
     });
   }
 
-  var del_zone = function(geom) {
+  var deleteZone = function(geom) {
     featureGroup.removeLayer(geom);
     var ele = zone_map[geom._leaflet_id].ele;
     ele.hide();
     ele.append('<input type="hidden" name="zoning[zones_attributes][][_destroy]" value="1"/>');
   }
 
-  var update_zone = function(geom) {
+  var updateZone = function(geom) {
     $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[polygon\\]]', zone_map[geom._leaflet_id].ele).attr('value', JSON.stringify(geom.toGeoJSON()));
     count_point_in_polygon(geom._leaflet_id, zone_map[geom._leaflet_id].ele);
   }
@@ -249,8 +258,8 @@ var zonings_edit = function(params) {
     featureGroup.clearLayers();
     $.each(data.zoning, function(index, zone) {
       var geom = L.geoJson(JSON.parse(zone.polygon));
-      set_color(geom, zone.vehicle_id);
-      add_zone(zone, geom);
+      setColor(geom, zone.vehicle_id, zone.speed_multiplicator);
+      addZone(zone, geom);
     });
 
     if (fitBounds) {

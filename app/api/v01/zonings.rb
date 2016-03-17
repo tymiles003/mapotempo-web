@@ -26,7 +26,7 @@ class V01::Zonings < Grape::API
       if p[:zones]
         p[:zones_attributes] = p[:zones]
       end
-      p.permit(:name, zones_attributes: [:id, :name, :polygon, :_destroy, :vehicle_id])
+      p.permit(:name, zones_attributes: [:id, :name, :polygon, :_destroy, :vehicle_id, :speed_multiplicator])
     end
   end
 
