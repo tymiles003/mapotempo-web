@@ -40,8 +40,11 @@ module Devices
 
     def orange_sync_vehicles customer
       orange_vehicles = OrangeService.new(customer: customer).list_devices orange_credentials(customer)
-      vehicles = customer.vehicles.take [orange_vehicles.length, customer.vehicles.count].min
-      vehicles.each_with_index{|vehicle, index| vehicle.update!(orange_id: orange_vehicles[index][:id]) }
+      customer.vehicles.update_all orange_id: nil
+      orange_vehicles.each_with_index do |vehicle, index|
+        next if !customer.vehicles[index]
+        customer.vehicles[index].update! orange_id: vehicle[:id]
+      end
     end
 
     def teksat_authenticate customer
@@ -62,8 +65,11 @@ module Devices
 
     def teksat_sync_vehicles customer, ticket_id
       teksat_vehicles = TeksatService.new(customer: customer, ticket_id: ticket_id).list_devices
-      vehicles = customer.vehicles.take [teksat_vehicles.length, customer.vehicles.count].min
-      vehicles.each_with_index{|vehicle, index| vehicle.update!(teksat_id: teksat_vehicles[index][:id]) }
+      customer.vehicles.update_all teksat_id: nil
+      teksat_vehicles.each_with_index do |vehicle, index|
+        next if !customer.vehicles[index]
+        customer.vehicles[index].update! teksat_id: vehicle[:id]
+      end
     end
 
     def tomtom_authenticate customer
@@ -80,13 +86,10 @@ module Devices
     def tomtom_sync_vehicles customer
       tomtom_vehicles = TomtomService.new(customer: customer).list_vehicles tomtom_credentials(customer)
       tomtom_vehicles = tomtom_vehicles.select{|item| !item[:objectUid].blank? }
-      vehicles = customer.vehicles.take [tomtom_vehicles.length, customer.vehicles.count].min
-      vehicles.each_with_index do |vehicle, index|
-        vehicle.update!(
-          tomtom_id: tomtom_vehicles[index][:objectUid],
-          fuel_type: tomtom_vehicles[index][:fuelType],
-          color: tomtom_vehicles[index][:color]
-        )
+      customer.vehicles.update_all tomtom_id: nil
+      tomtom_vehicles.each_with_index do |vehicle, index|
+        next if !customer.vehicles[index]
+        customer.vehicles[index].update! tomtom_id: vehicle[:objectUid], fuel_type: vehicle[:fuelType], color: vehicle[:color]
       end
     end
 

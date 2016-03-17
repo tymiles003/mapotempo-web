@@ -116,13 +116,21 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
   test 'sync' do
     with_stubs [:auth, :get_vehicles] do
       set_route
-      @vehicle.update! teksat_id: nil
-      @vehicle.reload
-      assert !@vehicle.teksat_id
+
+      # Customer Already Have Devices
+      @customer.vehicles.update_all teksat_id: "teksat_id"
+
+      # Reset Vehicle
+      @customer.vehicles.reload ; @vehicle.reload
+      assert_equal "teksat_id", @vehicle.teksat_id
+
+      # Send Request.. Send Credentials As Parameters
       post api("devices/teksat/sync")
       assert_equal 204, last_response.status
-      @vehicle.reload
-      assert @vehicle.teksat_id
+
+      # Vehicle Should Now Have All Values
+      @customer.vehicles.reload ; @vehicle.reload
+      assert_equal "97", @vehicle.teksat_id
     end
   end
 

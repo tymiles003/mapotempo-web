@@ -111,13 +111,21 @@ class V01::Devices::OrangeTest < ActiveSupport::TestCase
   test 'sync' do
     with_stubs [:get_vehicles] do
       set_route
-      @vehicle.update! orange_id: nil
-      @vehicle.reload
-      assert !@vehicle.orange_id
+
+      # Customer Already Have Devices
+      @customer.vehicles.update_all orange_id: "orange_id"
+
+      # Reset Vehicle
+      @customer.vehicles.reload ; @vehicle.reload
+      assert_equal "orange_id", @vehicle.orange_id
+
+      # Send Request.. Send Credentials As Parameters
       post api("devices/orange/sync")
       assert_equal 204, last_response.status
-      @vehicle.reload
-      assert @vehicle.orange_id
+
+      # Vehicle Should Now Have All Values
+      @customer.vehicles.reload ; @vehicle.reload
+      assert_equal "325000749", @vehicle.orange_id
     end
   end
 

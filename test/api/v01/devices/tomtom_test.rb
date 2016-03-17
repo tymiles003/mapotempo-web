@@ -138,11 +138,14 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
     with_stubs [:client_objects_wsdl, :vehicle_report] do
       set_route
 
+      # Customer Already Have Devices
+      @customer.vehicles.update_all tomtom_id: "tomtom_id"
+
       # Reset Vehicle
       default_color = "#004499"
-      @vehicle.update! tomtom_id: nil, fuel_type: nil, color: default_color
-      @vehicle.reload
-      assert !@vehicle.tomtom_id
+      @vehicle.update! fuel_type: nil, color: default_color
+      @customer.vehicles.reload ; @vehicle.reload
+      assert_equal "tomtom_id", @vehicle.tomtom_id
       assert !@vehicle.fuel_type
       assert_equal default_color, @vehicle.color
 
@@ -151,10 +154,13 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       assert_equal 204, last_response.status
 
       # Vehicle Should Now Have All Values
-      @vehicle.reload
+      @customer.vehicles.reload ; @vehicle.reload
       assert_equal "1-44063-666E054E7", @vehicle.tomtom_id
       assert_equal "DIESEL", @vehicle.fuel_type
       assert_equal "#0000FF", @vehicle.color # Blue
+
+      # Customer Vehicles Should Have Devices Cleared, Except For The Two TomTom Vehicles
+      assert @customer.vehicles.where(tomtom_id: nil).count == (@customer.vehicles.count - 2)
     end
   end
 
