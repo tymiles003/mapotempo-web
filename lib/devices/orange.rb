@@ -70,7 +70,7 @@ class Orange < DeviceBase
     if response.code.to_i == 200
       return response
     elsif response.code.to_i == 401
-      raise DeviceServiceError.new I18n.t("errors.orange.unauthorized")
+      raise DeviceServiceError.new("Orange: %s" % [ I18n.t("errors.orange.unauthorized") ])
     else
       Rails.logger.info "OrangeService: %s %s" % [response.code, response.body]
     end
