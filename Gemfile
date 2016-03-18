@@ -38,9 +38,6 @@ group :development do
 end
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'
 
@@ -48,6 +45,12 @@ group :development, :test do
 
   # install_if appeared in bundler 1.10...
   if respond_to?(:install_if)
+
+    install_if lambda { Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.0') } do
+      # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+      gem 'byebug'
+    end
+
     # Install only for ruby >=2.1
     install_if lambda { Gem::Version.new(RUBY_VERSION) > Gem::Version.new('2.1') } do
       gem 'i18n-tasks'
