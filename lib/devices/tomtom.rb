@@ -132,7 +132,7 @@ class Tomtom < DeviceBase
         if position && !position.lat.nil? && !position.lng.nil?
           sendDestinationOrder customer, route, position, -2, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.start
         end
-        route.stops.select(&:active).reverse_each{ |stop|
+        route.stops.select(&:active).each{ |stop|
           position = stop if stop.position?
           if (position && !position.lat.nil? && !position.lng.nil?) || position.is_a?(StopRest)
             description = [
