@@ -122,8 +122,8 @@ module Routers
           end
 
           request['response']['matrixEntry'].each{ |e|
-            s = e['summary']
-            result[row_start + e['startIndex']][e['destinationIndex']] = [s['travelTime'].round, s['travelTime'].round]
+            travel_time = e['summary'] ? e['summary']['travelTime'].round : 2147483647
+            result[row_start + e['startIndex']][e['destinationIndex']] = [travel_time, travel_time]
           }
 
           row_start += split_size
