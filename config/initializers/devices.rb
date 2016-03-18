@@ -4,6 +4,14 @@ require_relative '../../lib/devices/device_base'
   require_relative "../../lib/devices/#{name}"
 }
 
+# Fixes OpenStruct + Ruby 1.9
+unless OpenStruct.new.respond_to? :[]
+  OpenStruct.class_eval do
+    extend Forwardable
+    def_delegators :@table, :[], :[]=
+  end
+end
+
 Mapotempo::Application.config.devices = OpenStruct.new alyacom: Alyacom.new, masternaut: Masternaut.new, orange: Orange.new, teksat: Teksat.new, tomtom: Tomtom.new
 Mapotempo::Application.config.devices.cache_object = ActiveSupport::Cache::FileStore.new File.join(Dir.tmpdir, 'devices'), namespace: 'devices', expires_in: 30
 
