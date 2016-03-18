@@ -68,9 +68,11 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
   end
 
-  test 'should move destinations in routes' do
-    patch api(@route.planning.id, "#{@route.id}/visits/moves"), visit_ids: [visits(:visit_one).id, visits(:visit_two).id]
+  test 'should move visits in routes' do
+    patch api(@route.planning.id, routes(:route_three_one).id.to_s + "/visits/moves"), visit_ids: [visits(:visit_two).id, visits(:visit_one).id]
     assert_equal 204, last_response.status, last_response.body
+    assert_equal visits(:visit_two).ref, routes(:route_three_one).stops[0].visit.ref
+    assert_equal visits(:visit_one).ref, routes(:route_three_one).stops[1].visit.ref
   end
 
   test 'should optimize route' do

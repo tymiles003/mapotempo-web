@@ -113,10 +113,12 @@ class V01::Routes < Grape::API
           id = ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
           visits = current_customer.visits.select{ |visit| params[:visit_ids].any?{ |s| ParseIdsRefs.match(s, visit) } }
+          visits_ordered = []
+          params[:visit_ids].each{ |s| visits_ordered << visits.find{ |visit| ParseIdsRefs.match(s, visit) } }
 
-          if route && planning && visits
+          if route && planning && visits_ordered.size > 0
             Planning.transaction do
-              visits.each{ |visit|
+              visits_ordered.each{ |visit|
                 route.move_visit(visit, -1)
               }
               planning.save!
