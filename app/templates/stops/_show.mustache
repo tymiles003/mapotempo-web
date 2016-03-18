@@ -20,9 +20,6 @@
   </span>
   <ul class="dropdown-menu" role="menu">
     {{#routes}}
-      {{^vehicle_usage_id}}
-        <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"> {{#i18n}}plannings.edit.out_of_route{{/i18n}}</a></li>
-      {{/vehicle_usage_id}}
       {{#vehicle_usage_id}}
         <li><a href="/plannings/{{planning_id}}/{{route_id}}/{{stop_id}}/move/-1.json" class="send_to_route"><div class="color_small" style="background:{{color}}"></div> {{name}}</a></li>
       {{/vehicle_usage_id}}
@@ -71,7 +68,7 @@
 {{#visits}}
 <hr>
 {{#index_visit}}
-{{#i18n}}plannings.edit.popup.visit{{/i18n}} #{{index_visit}} 
+{{#i18n}}plannings.edit.popup.visit{{/i18n}} #{{index_visit}}
 {{/index_visit}}
 {{#ref}}<b>{{ref}}</b>{{/ref}}
 <ul>
