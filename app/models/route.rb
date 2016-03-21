@@ -18,7 +18,7 @@
 class Route < ActiveRecord::Base
   belongs_to :planning
   belongs_to :vehicle_usage
-  has_many :stops, -> { order(:index) }, inverse_of: :route, autosave: true, dependent: :delete_all
+  has_many :stops, -> { order(:index) }, inverse_of: :route, autosave: true, dependent: :delete_all, after_add: :update_stops_track, after_remove: :update_stops_track
 
   nilify_blanks
   auto_strip_attributes :ref
@@ -280,43 +280,15 @@ class Route < ActiveRecord::Base
     stops.destroy(stop)
   end
 
-  def move_visit(visit, index)
-    stop = nil
-    planning.routes.find{ |route|
-      (route != self ? route : self).stops.find{ |s|
-        if s.is_a?(StopVisit) && s.visit == visit
-          stop = s
-        end
-      }
-    }
-    if stop
-      move_stop(stop, index)
-    end
-  end
-
-  def move_stop(stop, index, force = false)
-    if stop.route != self
-      if stop.is_a?(StopVisit)
-        visit, active = stop.visit, stop.active
-        stop_id = stop.id
-        stop.route.move_stop_out(stop)
-        add(visit, index, active || stop.route.vehicle_usage.nil?, stop_id)
-      elsif force && stop.is_a?(StopRest)
-        active = stop.active
-        stop_id = stop.id
-        stop.route.move_stop_out(stop, force)
-        add_rest(active, stop_id)
+  def move_stop(stop, index)
+    index = stops.size if index < 0
+    if stop.index
+      if index < stop.index
+        shift_index(index, 1, stop.index - 1)
+      else
+        shift_index(stop.index + 1, -1, index)
       end
-    else
-      index = stops.size if index < 0
-      if stop.index
-        if index < stop.index
-          shift_index(index, 1, stop.index - 1)
-        else
-          shift_index(stop.index + 1, -1, index)
-        end
-        stop.index = index
-      end
+      stop.index = index
     end
     compute
   end
@@ -447,6 +419,10 @@ class Route < ActiveRecord::Base
     vehicle_usage && self[:out_of_date]
   end
 
+  def changed?
+    @stops_updated || super || stops.any?{ |stop| stop.changed? }
+  end
+
   def to_s
     "#{ref}:#{vehicle_usage && vehicle_usage.vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
   end
@@ -535,6 +511,10 @@ class Route < ActiveRecord::Base
 
     all_index = [0] + not_nil_index + [positions.length - 1] + nil_index
     order.collect{ |o| all_index[o] }
+  end
+
+  def update_stops_track(_stop)
+    @stops_updated = true
   end
 
   def update_vehicle_usage

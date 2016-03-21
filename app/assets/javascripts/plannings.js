@@ -822,12 +822,16 @@ var plannings_edit = function(params) {
   });
 
   $(".main").on("click", ".send_to_route", function(event, ui) {
+    var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
     var url = this.href;
     $.ajax({
       type: 'patch',
       url: url,
       beforeSend: beforeSendWaiting,
-      success: updatePlanning,
+      success: function(data) {
+        data.stop_id_enlighten = stop_id;
+        updatePlanning(data);
+      },
       complete: completeAjaxMap,
       error: ajaxError
     });

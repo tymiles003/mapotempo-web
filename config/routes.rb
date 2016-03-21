@@ -86,6 +86,7 @@ Rails.application.routes.draw do
   delete 'stores' => 'stores#destroy_multiple'
 
   resources :plannings do
+    patch ':route_id/:stop_id/move' => 'plannings#move'
     patch ':route_id/:stop_id/move/:index' => 'plannings#move'
     get 'refresh'
     patch 'switch'

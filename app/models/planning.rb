@@ -132,13 +132,47 @@ class Planning < ActiveRecord::Base
       stops_prec = route_prec.stops.select{ |stop| stop.is_a?(StopRest) }
       stops = route.stops.select{ |stop| stop.is_a?(StopRest) }
       stops_prec.each{ |stop|
-        route.move_stop(stop, -1, true)
+        move_stop(route, stop, -1, true)
       }
       stops.each{ |stop|
-        route_prec.move_stop(stop, -1, true)
+        move_stop(route_prec, stop, -1, true)
       }
     else
       false
+    end
+  end
+
+  def move_visit(route, visit, index)
+    stop = nil
+    routes.find{ |route|
+      route.stops.find{ |s|
+        if s.is_a?(StopVisit) && s.visit == visit
+          stop = s
+        end
+      }
+    }
+    if stop
+      move_stop(route, stop, index)
+    end
+  end
+
+  def move_stop(route, stop, index, force = false)
+    route, index = prefered_route_and_index([route], stop) if !index
+    if stop.route != route
+      if stop.is_a?(StopVisit)
+        visit, active = stop.visit, stop.active
+        stop_id = stop.id
+        stop.route.move_stop_out(stop)
+        route.add(visit, index || 1, active || stop.route.vehicle_usage.nil?, stop_id)
+      elsif force && stop.is_a?(StopRest)
+        active = stop.active
+        stop_id = stop.id
+        stop.route.move_stop_out(stop, force)
+        route.add_rest(active, stop_id)
+      end
+      route.compute
+    else
+      route.move_stop(stop, index || 1)
     end
   end
 
@@ -173,39 +207,12 @@ class Planning < ActiveRecord::Base
       return
     end
 
-    cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
-
     # Take the closest routes visit and eval insert
-    route, index = available_routes.collect{ |route|
-      route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
-        [(route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?) ? [route.vehicle_usage.default_store_start, route, 1] : nil,
-        (route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
-    }.flatten(1).compact.sort_by{ |a|
-      a[0].distance(stop.position)
-    }[0..9].collect{ |visit_route_index|
-      [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
-    }.flatten(1).uniq.min_by{ |ri|
-      ri[0].class.amoeba do
-        clone :stops # No need to duplicate stop juste for compute evaluation
-        nullify :planning_id
-      end
-
-      r = ri[0].amoeba_dup
-      if stop.is_a?(StopVisit)
-        r.add(stop.visit, ri[1], true)
-      else
-        r.add_rest(ri[1], true)
-      end
-      r.compute
-
-      # Difference of total time + difference of sum of out_of_window time
-      ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
-        (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
-    }
+    route, index = prefered_route_and_index(available_routes, stop)
 
     if route
       stop.active = true
-      route.move_stop(stop, index || 1)
+      move_stop(route, stop, index || 1)
     end
   end
 
@@ -251,6 +258,37 @@ class Planning < ActiveRecord::Base
   end
 
   private
+
+  def prefered_route_and_index(available_routes, stop)
+    cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
+
+    available_routes.collect{ |route|
+      route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
+        [(route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?) ? [route.vehicle_usage.default_store_start, route, 1] : nil,
+        (route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
+    }.flatten(1).compact.sort_by{ |a|
+      a[0].distance(stop.position)
+    }[0..9].collect{ |visit_route_index|
+      [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
+    }.flatten(1).uniq.min_by{ |ri|
+      ri[0].class.amoeba do
+        clone :stops # No need to duplicate stop juste for compute evaluation
+        nullify :planning_id
+      end
+
+      r = ri[0].amoeba_dup
+      if stop.is_a?(StopVisit)
+        r.add(stop.visit, ri[1], true)
+      else
+        r.add_rest(ri[1], true)
+      end
+      r.compute
+
+      # Difference of total time + difference of sum of out_of_window time
+      ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
+        (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
+    }
+  end
 
   def update_zonings_track(_zoning)
     @zonings_updated = true

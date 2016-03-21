@@ -99,6 +99,110 @@ class PlanningTest < ActiveSupport::TestCase
     end
   end
 
+  test 'move stop on same route from inside to start' do
+    o = plannings(:planning_one)
+    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    s = r.stops[1]
+    assert_equal 2, s.index
+    assert_difference('Stop.count', 0) do
+      o.move_stop(r, s, 1)
+      o.save!
+      s.reload
+      assert_equal 1, s.index
+    end
+  end
+
+  test 'move stop on same route from inside to end' do
+    o = plannings(:planning_one)
+    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    s = r.stops[1]
+    assert_equal 2, s.index
+    assert_difference('Stop.count', 0) do
+      o.move_stop(r, s, 3)
+      o.save!
+      s.reload
+      assert_equal 3, s.index
+    end
+  end
+
+  test 'move stop on same route from start to inside' do
+    o = plannings(:planning_one)
+    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    s = r.stops[0]
+    assert_equal 1, s.index
+    assert_difference('Stop.count', 0) do
+      o.move_stop(r, s, 2)
+      o.save!
+      s.reload
+      assert_equal 2, s.index
+    end
+  end
+
+  test 'move stop on same route from end to inside' do
+    o = plannings(:planning_one)
+    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    s = r.stops[2]
+    assert_equal 3,  s.index
+    assert_difference('Stop.count', 0) do
+      o.move_stop(r, s, 2)
+      o.save!
+      s.reload
+      assert_equal 2, s.index
+    end
+  end
+
+  test 'move stop from unaffected to affected route' do
+    o = plannings(:planning_one)
+    s = o.routes.select{ |route| route == routes(:route_zero_one) }.first.stops[0]
+    assert_not s.index
+    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    assert_difference('Stop.count', 0) do
+      assert_difference('r.stops.size', 1) do
+        o.move_stop(r, s, 1)
+        o.save!
+      end
+    end
+  end
+
+  test 'move stop from unaffected to affected route with automatic_insert' do
+    o = plannings(:planning_one)
+    s = o.routes.select{ |route| route == routes(:route_zero_one) }.first.stops[0]
+    assert_not s.index
+    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    assert_difference('Stop.count', 0) do
+      assert_difference('r.stops.size', 1) do
+        o.move_stop(r, s, nil)
+        o.save!
+      end
+    end
+  end
+
+  test 'move stop from affected to affected route' do
+    o = plannings(:planning_one)
+    s = o.routes.select{ |route| route == routes(:route_one_one) }.first.stops[0]
+    assert s.index
+    r = o.routes.select{ |route| route == routes(:route_three_one) }.first
+    assert_difference('Stop.count', 0) do
+      assert_difference('r.stops.size', 1) do
+        o.move_stop(r, s, 1)
+        o.save!
+      end
+    end
+  end
+
+  test 'move stop to unaffected route' do
+    o = plannings(:planning_one)
+    s = o.routes.select{ |route| route == routes(:route_one_one) }.first.stops[1]
+    assert s.index
+    r = o.routes.select{ |route| route == routes(:route_zero_one) }.first
+    assert_difference('Stop.count', 0) do
+      assert_difference('r.stops.size', 1) do
+        o.move_stop(r, s, 1)
+        o.save!
+      end
+    end
+  end
+
   test 'should compute' do
     o = plannings(:planning_one)
     o.zoning_out_of_date = true

@@ -133,7 +133,7 @@ class PlanningsController < ApplicationController
         stop = nil
         @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == params[:stop_id] } }
         stop_route_id_was = stop.route.id
-        route.move_stop(stop, Integer(params[:index]))
+        @planning.move_stop(route, stop, params[:index] ? Integer(params[:index]) : nil)
         if @planning.save
           @planning.reload
           @routes = [route]

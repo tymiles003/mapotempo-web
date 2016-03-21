@@ -100,12 +100,13 @@ class V01::Routes < Grape::API
           end
         end
 
-        desc 'Move visit to routes. Append in order at end.',
-          detail: 'Set a new A route (or vehicle) for a visit which was in a previous B route in the same planning.',
+        desc 'Move visit(s) to route. Append in order at end if automatic_insert is false.',
+          detail: 'Set a new A route (or vehicle) for a visit which was in a previous B route in the same planning. Automatic_insert parameter allows to compute index of the stops created for visits.',
           nickname: 'moveVisits'
         params do
           requires :id, type: String, desc: ID_DESC
           requires :visit_ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', documentation: {param_type: 'form'}, coerce_with: CoerceArrayString
+          optional :automatic_insert, type: Boolean, desc: 'If true, the best index in the route is automatically computed to have minimum impact on total route distance (without taking into account constraints like open/close, you have to start a new optimization if needed).'
         end
         patch ':id/visits/moves' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
@@ -119,7 +120,7 @@ class V01::Routes < Grape::API
           if route && planning && visits_ordered.size > 0
             Planning.transaction do
               visits_ordered.each{ |visit|
-                route.move_visit(visit, -1)
+                planning.move_visit(route, visit, params[:automatic_insert] ? nil : -1)
               }
               planning.save!
             end
