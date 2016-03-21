@@ -615,6 +615,7 @@ en:
         street: "Street"
         intersection: "Intersection"
         city: "City"
+        null: "None"
       tags_help: "Destination categories"
       dialog:
         confirm_overwrite_point: "Position has been set manually. Override with geocoding results?"
