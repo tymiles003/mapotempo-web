@@ -31,7 +31,7 @@ json.store_start do
   (json.error true) if route.vehicle_usage.default_store_start.lat.nil? || route.vehicle_usage.default_store_start.lng.nil?
 end if route.vehicle_usage && route.vehicle_usage.default_store_start
 first_active_free = nil
-route.stops.reverse_each{ |stop|
+route.stops.select{ |s| s.is_a?(StopVisit) }.reverse_each{ |stop|
   if !stop.active
     first_active_free = stop
   else
@@ -61,11 +61,11 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
   (json.number number += 1) if route.vehicle_usage && stop.active
   (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
   json.distance (stop.distance || 0) / 1000
-  if first_active_free == true || first_active_free == stop || !route.vehicle_usage
-    json.automatic_insert true
-    first_active_free = true
-  end
   if stop.is_a?(StopVisit)
+    if first_active_free == true || first_active_free == stop || !route.vehicle_usage
+      json.automatic_insert true
+      first_active_free = true
+    end
     json.visits true
     visit = stop.visit
     json.visit_id visit.id
