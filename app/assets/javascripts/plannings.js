@@ -631,7 +631,8 @@ var plannings_edit = function(params) {
         }, null);
         route.color = color;
         prepareAndDisplayRouteOnMap(data, route);
-        $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
+        $('li[data-route_id=' + id + '] .fa-home').css('color', color);
+        $('li[data-route_id=' + id + '] li[data-stop_id].number:not(.color_force)').css('background', color || route.vehicle.color);
         $('span[data-route_id=' + id + '] i.vehicle-icon').css('color', color || route.vehicle.color);
       });
 
@@ -726,9 +727,9 @@ var plannings_edit = function(params) {
         route.planning_id = data.id;
         route.routes = allRoutesVehicles;
 
-        $("[data-route_id='" + route.route_id + "']").html(SMT['routes/edit'](route));
+        $(".route[data-route_id='" + route.route_id + "']").html(SMT['routes/edit'](route));
 
-        initRoutes($("[data-route_id='" + route.route_id + "']"), data);
+        initRoutes($(".route[data-route_id='" + route.route_id + "']"), data);
       });
     }
     else if (typeof options === 'object' && options.partial == 'stops') {
@@ -737,7 +738,7 @@ var plannings_edit = function(params) {
         route.planning_id = data.id;
         route.routes = allRoutesVehicles;
 
-        $("[data-route_id='" + route.route_id + "'] .route-details").html(SMT['stops/list'](route));
+        $(".route[data-route_id='" + route.route_id + "'] .route-details").html(SMT['stops/list'](route));
       });
 
       $('.global_info').html(SMT['plannings/edit_head'](data));
