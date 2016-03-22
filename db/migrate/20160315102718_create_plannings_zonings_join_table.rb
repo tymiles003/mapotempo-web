@@ -10,7 +10,6 @@ class CreatePlanningsZoningsJoinTable < ActiveRecord::Migration
     Planning.find_each{ |planning|
       if planning.zoning
         planning.zonings << planning.zoning
-        planning.save
       end
     }
 
