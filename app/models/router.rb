@@ -31,10 +31,6 @@ class Router < ActiveRecord::Base
     false
   end
 
-  def avoid_zones?
-    false
-  end
-
   def speed_multiplicator_zones?
     false
   end
