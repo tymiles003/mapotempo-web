@@ -26,21 +26,21 @@ class RouterWrapper < Router
     distance?
   end
 
-  def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, geometry = true)
-    Mapotempo::Application.config.router_wrapper.compute(url_time, mode, lat1, lng1, lat2, lng2, speed_multiplicator, dimension)
+  def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, options = {})
+    Mapotempo::Application.config.router_wrapper.compute(url_time, mode, dimension, lat1, lng1, lat2, lng2, options.merge(speed_multiplicator: speed_multiplicator))
   end
 
-  def matrix(row, column, speed_multiplicator, dimension = :time, &block)
-    Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, row, column, speed_multiplicator, dimension).map{ |row|
+  def matrix(row, column, speed_multiplicator, dimension = :time, options = {}, &block)
+    Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, dimension, row, column, options.merge(speed_multiplicator: speed_multiplicator)).map{ |row|
       row.map{ |v| [v, v] }
     }
   end
 
-  def isochrone(lat, lng, size, speed_multiplicator)
-    Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, lat, lng, size, speed_multiplicator, :time)
+  def isochrone(lat, lng, size, speed_multiplicator, options = {})
+    Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, :time, lat, lng, size, options.merge(speed_multiplicator: speed_multiplicator))
   end
 
-  def isodistance(lat, lng, size, speed_multiplicator)
-    Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, lat, lng, size, speed_multiplicator, :distance)
+  def isodistance(lat, lng, size, speed_multiplicator, options = {})
+    Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, :distance, lat, lng, size, options.merge(speed_multiplicator: speed_multiplicator))
   end
 end

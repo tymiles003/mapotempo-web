@@ -20,12 +20,12 @@ require 'routers/otp'
 class RouterOtp < Router
   validates :url_time, presence: true
 
-  def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, geometry = true)
+  def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, options = {})
     # No speed_multiplicator
     Mapotempo::Application.config.router_otp.compute(url_time, ref, lat1, lng1, lat2, lng2, monday_morning)
   end
 
-  def matrix(row, column, speed_multiplicator, dimension = :time, &block)
+  def matrix(row, column, speed_multiplicator, dimension = :time, options = {}, &block)
     # No speed_multiplicator
     matrix_iterate(row, column, speed_multiplicator, dimension, &block)
   end
@@ -34,7 +34,7 @@ class RouterOtp < Router
     true
   end
 
-  def isochrone(lat, lng, size, speed_multiplicator)
+  def isochrone(lat, lng, size, speed_multiplicator, options = {})
     # No speed_multiplicator
     Mapotempo::Application.config.router_otp.isochrone(url_time, ref, lat, lng, size, monday_morning)
   end

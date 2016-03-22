@@ -31,8 +31,8 @@ module Routers
       @api_key = api_key
     end
 
-    def compute(url, mode, from_lat, from_lng, to_lat, to_lng, speed_multiplicator = nil, dimension = nil)
-      key = ['c', url, mode, dimension, from_lat, from_lng, to_lat, to_lng, speed_multiplicator]
+    def compute(url, mode, dimension, from_lat, from_lng, to_lat, to_lng, options = {})
+      key = ['c', url, mode, dimension, from_lat, from_lng, to_lat, to_lng, Digest::MD5.hexdigest(Marshal.dump(options.to_a.sort_by{ |i| i[0].to_s }))]
 
       request = @cache_request.read(key)
       if !request
@@ -40,8 +40,11 @@ module Routers
           api_key: @api_key,
           mode: mode,
           dimension: dimension,
-          speed_multiplicator: speed_multiplicator == 1 ? nil : speed_multiplicator,
-          loc: [from_lat, from_lng, to_lat, to_lng].join(',')
+          speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
+          loc: [from_lat, from_lng, to_lat, to_lng].join(','),
+          geometry: options[:geometry],
+          area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
+          speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil
         }.compact
         resource = RestClient::Resource.new(url + '/0.1/route.json', timeout: nil)
         request = resource.get(params: params) { |response, request, result, &block|
@@ -77,8 +80,8 @@ module Routers
       end
     end
 
-    def matrix(url, mode, row, column, speed_multiplicator = nil, dimension = nil)
-      key = ['m', url, mode, row, column, speed_multiplicator]
+    def matrix(url, mode, dimension, row, column, options = {})
+      key = ['m', url, mode, row, column, options[:speed_multiplicator]]
 
       request = @cache_request.read(key)
       if !request
@@ -88,7 +91,9 @@ module Routers
           dimension: dimension,
           src: row.flatten.join(','),
           dst: row != column ? column.flatten.join(',') : nil,
-          speed_multiplicator: speed_multiplicator == 1 ? nil : speed_multiplicator
+          speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
+          area: options[:area],
+          speed_multiplicator_area: options[:speed_multiplicator_area]
         }.compact
         resource = RestClient::Resource.new(url + '/0.1/matrix.json', timeout: nil)
         request = resource.get(params: params) { |response, request, result, &block|
@@ -119,8 +124,8 @@ module Routers
       end
     end
 
-    def isoline(url, mode, lat, lng, size, speed_multiplicator = nil, dimension = nil)
-      key = ['i', url, mode, lat, lng, size, speed_multiplicator]
+    def isoline(url, mode, dimension, lat, lng, size, options = {})
+      key = ['i', url, mode, lat, lng, size, options[:speed_multiplicator]]
 
       request = @cache_request.read(key)
       if !request
@@ -130,7 +135,9 @@ module Routers
           dimension: dimension,
           loc: [lat, lng].join(','),
           size: size,
-          speed_multiplicator: speed_multiplicator == 1 ? nil : speed_multiplicator
+          speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
+          area: options[:area],
+          speed_multiplicator_area: options[:speed_multiplicator_area]
         }.compact
         resource = RestClient::Resource.new(url + '/0.1/isoline.json', timeout: nil)
         request = resource.get(params: params) { |response, request, result, &block|

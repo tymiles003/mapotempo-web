@@ -95,12 +95,22 @@ class Route < ActiveRecord::Base
         self.end += service_time_start
       end
 
+      speed_multiplicator_areas = planning.zonings.collect(&:zones).flatten.select{ |z| z.speed_multiplicator != 1 }.collect{ |z|
+        feat = RGeo::GeoJSON.decode(z.polygon, json_parser: :json)
+        coordinates = feat.geometry.coordinates[0] if feat && feat.geometry.geometry_type == RGeo::Feature::Polygon
+        coordinates = feat.geometry.coordinates[0][0] if feat && feat.geometry.geometry_type == RGeo::Feature::MultiPolygon
+        {
+          area: coordinates.collect(&:reverse),
+          speed_multiplicator_area: z.speed_multiplicator
+        }
+      }
+
       stops_sort = stops.sort_by(&:index)
       stops_sort.each_with_index{ |stop, index|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
           if stop.position? && !last_lat.nil? && !last_lng.nil?
             begin
-              stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng, router_dimension)
+              stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas)
             rescue RouterError => e
               raise if !ignore_errors
             end
@@ -150,7 +160,7 @@ class Route < ActiveRecord::Base
 
       if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
         begin
-          distance, drive_time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng, router_dimension)
+          distance, drive_time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas)
         rescue RouterError => e
           raise if !ignore_errors
         end
