@@ -60,20 +60,23 @@ class V01::UsersTest < ActiveSupport::TestCase
   end
 
   test 'should update a user' do
-    @user.email = 'updated@plop.com'
+    @user.email = 'user@example.com'
     put api_admin('ref:' + @user.ref), @user.attributes
     assert last_response.ok?, last_response.body
-
     get api_admin(@user.id)
     assert last_response.ok?, last_response.body
-    assert_equal @user.email, JSON.parse(last_response.body)['email']
+    assert_equal @user.reload.email, JSON.parse(last_response.body)['email']
   end
 
   test 'should not update a user' do
     user = users(:user_three)
-    user.email = 'updated@plop.com'
+    email_reference = 'user@example.com'
+    user.email = email_reference
     put api_admin('ref:' + user.ref), user.attributes
-    assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+    assert last_response.ok?, last_response.body
+    get api_admin(@user.id)
+    assert last_response.ok?, last_response.body
+    assert user.reload.email != email_reference
   end
 
   test 'should destroy a user' do

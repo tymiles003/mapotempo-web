@@ -95,7 +95,7 @@ class V01::Users < Grape::API
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
       user = (User.where(id.merge(reseller: @current_user.reseller)) +
-        User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id}))).first
+        User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller_id}))).first
       user.update! user_params
       present user, with: V01::Entities::User
     end
