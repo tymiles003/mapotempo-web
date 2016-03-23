@@ -61,6 +61,7 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
   (json.number number += 1) if route.vehicle_usage && stop.active
   (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
   json.distance (stop.distance || 0) / 1000
+  json.out_of_route_id @planning.routes.detect{|route| !route.vehicle_usage }.id
   if stop.is_a?(StopVisit)
     if first_active_free == true || first_active_free == stop || !route.vehicle_usage
       json.automatic_insert true
