@@ -317,6 +317,7 @@ en:
         sign_in_count: "Connections count"
         sign_in_at: "Last connection"
         ref: "Reference"
+        confirmed_at: "Confirmed at"
       vehicle:
         name: "Name"
         emission: "Emission"
