@@ -17,73 +17,21 @@
 #
 require 'font_awesome'
 
-class LocalizationStoreValidator < ActiveModel::Validator
-  def validate(record)
-    if record.postalcode.nil? && record.city.nil? && (record.lat.nil? || record.lng.nil?)
-      record.errors[:base] << I18n.t('activerecord.errors.models.store.missing_address_or_latlng')
-    end
-  end
-end
-
-class Store < ActiveRecord::Base
-  GEOCODING_LEVEL = {point: 1, house: 2, intersection: 3, street: 4, city: 5}
+class Store < Location
   ICON_SIZE = %w(small medium large)
 
-  belongs_to :customer
   has_many :vehicle_usage_set_starts, class_name: 'VehicleUsageSet', inverse_of: :store_start, foreign_key: 'store_start_id'
   has_many :vehicle_usage_set_stops, class_name: 'VehicleUsageSet', inverse_of: :store_stop, foreign_key: 'store_stop_id'
   has_many :vehicle_usage_set_rests, class_name: 'VehicleUsageSet', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
   has_many :vehicle_usage_starts, class_name: 'VehicleUsage', inverse_of: :store_start, foreign_key: 'store_start_id', dependent: :nullify
   has_many :vehicle_usage_stops, class_name: 'VehicleUsage', inverse_of: :store_stop, foreign_key: 'store_stop_id', dependent: :nullify
   has_many :vehicle_usage_rests, class_name: 'VehicleUsage', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
-  enum geocoding_level: GEOCODING_LEVEL
 
-  nilify_blanks
   auto_strip_attributes :name, :street, :postalcode, :city
-  validates :customer, presence: true
-  validates :name, presence: true
-#  validates :street, presence: true
-#  validates :city, presence: true
-  validates :lat, numericality: {only_float: true}, allow_nil: true
-  validates :lng, numericality: {only_float: true}, allow_nil: true
-  validates_inclusion_of :lat, in: -90..90, allow_nil: true, message: I18n.t('activerecord.errors.models.store.lat_outside_range')
-  validates_inclusion_of :lng, in: -180..180, allow_nil: true, message: I18n.t('activerecord.errors.models.store.lng_outside_range')
-  validates_inclusion_of :geocoding_accuracy, in: 0..1, allow_nil: true, message: I18n.t('activerecord.errors.models.destination.geocoding_accuracy_outside_range')
   validates_inclusion_of :icon, in: FontAwesome::icons_table, allow_blank: true, message: I18n.t('activerecord.errors.models.store.icon_unknown')
   validates :icon_size, inclusion: { in: Store::ICON_SIZE, allow_blank: true, message: I18n.t('activerecord.errors.models.store.icon_size_invalid') }
-  validates_with LocalizationStoreValidator, fields: [:street, :city, :lat, :lng]
 
-  before_create :create_geocode
-  before_update :update_geocode
-  before_save :update_out_of_date
   before_destroy :destroy_vehicle_store
-
-  def geocode
-    geocode_result(Mapotempo::Application.config.geocode_geocoder.code(*geocode_args))
-  end
-
-  def geocode_args
-    [street, postalcode, city, !country.nil? && !country.empty? ? country : customer.default_country]
-  end
-
-  def geocode_result(address)
-    if address
-      self.lat, self.lng, self.geocoding_accuracy, self.geocoding_level = address[:lat], address[:lng], address[:accuracy], address[:quality]
-    else
-      self.lat = self.lng = self.geocoding_accuracy = self.geocoding_level = nil
-    end
-    @is_gecoded = true
-  rescue
-    Rails.logger.info "Store Geocode Failed: ID=%s" % [self.id]
-  end
-
-  def delay_geocode
-    @is_gecoded = true
-  end
-
-  def distance(position)
-    lat && lng && position.lat && position.lng && Math.hypot(position.lat - lat, position.lng - lng)
-  end
 
   def destroy
     out_of_date # Too late to do this in before_destroy callback, children already destroyed
@@ -91,31 +39,6 @@ class Store < ActiveRecord::Base
   end
 
   private
-
-  def update_out_of_date
-    if lat_changed? || lng_changed?
-      out_of_date
-    end
-  end
-
-  def create_geocode
-    if !@is_gecoded && (lat.nil? || lng.nil?)
-      geocode
-    end
-  end
-
-  def update_geocode
-    # when lat/lng are specified manually, geocoding_accuracy has no sense
-    if !@is_gecoded && self.point? && (lat_changed? || lng_changed?)
-      self.geocoding_accuracy = nil
-    end
-    if !lat.nil? && !lng.nil?
-      @is_gecoded = true
-    end
-    if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed? || country_changed?)
-      geocode
-    end
-  end
 
   def out_of_date
     Route.transaction do
