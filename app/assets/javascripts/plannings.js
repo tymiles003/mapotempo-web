@@ -846,6 +846,7 @@ var plannings_edit = function(params) {
     $.each(data.stores, function(i, store) {
       store.store = true;
       store.planning_id = data.planning_id;
+      store.edit_planning = true;
       if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
         var m = L.marker(new L.LatLng(store.lat, store.lng), {
           icon: L.divIcon({

@@ -40,14 +40,12 @@
 {{/route_id}}
 <div>
   {{#planning_id}}
-  {{^store}}
   {{#edit_planning}}
   <div class="btn-group pull-right stop-tools">
-    <a href="/destinations/{{#destination}}{{destination_id}}{{/destination}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+    <a href="{{#store}}/stores/{{id}}/edit?back=true{{/store}}{{#destination}}/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}{{/destination}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
   </div>
   {{/edit_planning}}
   {{#vehicle_name}}<span class="number label label-default" style="background-color: {{color}};">{{#number}}{{number}}{{/number}}{{^number}}-{{/number}}</span>{{/vehicle_name}}
-  {{/store}}
   {{/planning_id}}
   {{#edit_planning}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/edit_planning}}
   <b>{{#ref}}{{^visits}}{{ref}} {{/visits}}{{/ref}}{{name}}</b><br/>
