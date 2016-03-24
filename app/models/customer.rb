@@ -58,13 +58,7 @@ class Customer < ActiveRecord::Base
   after_create :create_default_store, :create_default_vehicle_usage_set
   before_update :update_out_of_date, :update_max_vehicles, :update_enable_multi_visits
   before_save :sanitize_print_header
-
   before_save :devices_update_vehicles, prepend: true
-  def devices_update_vehicles
-    self.vehicles.select(&:tomtom_id).each{|vehicle| vehicle.tomtom_id = nil } if self.tomtom_account_changed? && !self.tomtom_account_was.nil?
-    self.vehicles.select(&:teksat_id).each{|vehicle| vehicle.teksat_id = nil } if self.teksat_customer_id_changed? && !self.teksat_customer_id_was.nil?
-    self.vehicles.select(&:orange_id).each{|vehicle| vehicle.orange_id = nil } if self.orange_user_changed? && !self.orange_user_was.nil?
-  end
 
   include RefSanitizer
 
@@ -126,6 +120,12 @@ class Customer < ActiveRecord::Base
   end
 
   private
+
+  def devices_update_vehicles
+    self.vehicles.select(&:tomtom_id).each{|vehicle| vehicle.tomtom_id = nil } if self.tomtom_account_changed? && !self.tomtom_account_was.nil?
+    self.vehicles.select(&:teksat_id).each{|vehicle| vehicle.teksat_id = nil } if self.teksat_customer_id_changed? && !self.teksat_customer_id_was.nil?
+    self.vehicles.select(&:orange_id).each{|vehicle| vehicle.orange_id = nil } if self.orange_user_changed? && !self.orange_user_was.nil?
+  end
 
   def assign_defaults
     self.default_country ||= I18n.t('customers.default.country')
