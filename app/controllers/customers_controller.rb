@@ -29,6 +29,7 @@ class CustomersController < ApplicationController
 
   def new
     @customer = current_user.reseller.customers.build
+    @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
   end
 
   def edit
@@ -36,31 +37,29 @@ class CustomersController < ApplicationController
 
   def create
     @customer = current_user.reseller.customers.build(customer_params)
-    @customer.speed_multiplicator /= 100 if @customer.speed_multiplicator
+    @customer.speed_multiplicator = 100 if !@customer.speed_multiplicator
+    @customer.speed_multiplicator /= 100
 
     respond_to do |format|
-      if @customer.save && @customer.update(customer_params) && @customer.save
+      if @customer.save
         format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.created', model: @customer.class.model_name.human) }
       else
-        if @customer.speed_multiplicator
-          @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
-        end
+        @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
         format.html { render action: 'new' }
       end
     end
   end
 
   def update
+    @customer.assign_attributes(customer_params)
+    @customer.speed_multiplicator = 100 if !@customer.speed_multiplicator
+    @customer.speed_multiplicator /= 100
+
     respond_to do |format|
-      p = customer_params
-      @customer.assign_attributes(p)
-      @customer.speed_multiplicator /= 100 if @customer.speed_multiplicator
       if @customer.save
         format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.updated', model: @customer.class.model_name.human) }
       else
-        if @customer.speed_multiplicator
-          @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
-        end
+        @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
         format.html { render action: 'edit' }
       end
     end
@@ -87,10 +86,7 @@ class CustomersController < ApplicationController
 
   def set_customer
     @customer = current_user.admin? ? current_user.reseller.customers.find(params[:id]) : current_user.customer
-
-    if @customer.speed_multiplicator
-      @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
-    end
+    @customer.speed_multiplicator = (@customer.speed_multiplicator * 100).to_i
   end
 
   def clear_customer_params # Delete default password displayed in form
