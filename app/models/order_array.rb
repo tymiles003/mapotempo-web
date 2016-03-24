@@ -35,12 +35,11 @@ class OrderArray < ActiveRecord::Base
     exclude_association :planning
 
     customize(lambda { |_original, copy|
+      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
       copy.orders.each{ |order|
         order.order_array = copy
       }
     })
-
-    append name: ' ' + I18n.l(Time.now, format: :long)
   end
 
   def days

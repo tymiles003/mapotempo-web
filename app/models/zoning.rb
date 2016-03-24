@@ -35,12 +35,11 @@ class Zoning < ActiveRecord::Base
     exclude_association :plannings
 
     customize(lambda { |_original, copy|
+      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
       copy.zones.each{ |zone|
         zone.zoning = copy
       }
     })
-
-    append name: ' ' + I18n.l(Time.now, format: :long)
   end
 
   def apply(visits)

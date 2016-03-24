@@ -49,12 +49,11 @@ class VehicleUsageSet < ActiveRecord::Base
     exclude_association :plannings
 
     customize(lambda { |_original, copy|
+      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
       copy.vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.vehicle_usage_set = copy
       }
     })
-
-    append name: ' ' + I18n.l(Time.now, format: :long)
   end
 
   private
