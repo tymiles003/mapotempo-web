@@ -22,6 +22,7 @@ var destinations_form = function(params, api) {
     marker_lng = $(":input[name$=\\[lng\\]]").val(),
     enable_multi_visits = params.enable_multi_visits;
 
+  params.map_zoom = 15;
   var map = mapInitialize(params);
   L.control.attribution({prefix: false}).addTo(map);
 
