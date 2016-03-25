@@ -28,7 +28,7 @@ class Teksat < DeviceBase
     else
       raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.get_ticket') ])
     end
-  rescue RestClient::InternalServerError => e
+  rescue RestClient::Forbidden, RestClient::InternalServerError => e
     raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.unauthorized') ])
   end
 
