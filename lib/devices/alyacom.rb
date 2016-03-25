@@ -19,7 +19,7 @@ class Alyacom < DeviceBase
 
   def test_list customer, params
     RestClient.get [api_url, params[:alyacom_association], 'users'].join("/"), params: { apiKey: api_key }
-  rescue RestClient::InternalServerError => e
+  rescue RestClient::Forbidden => e
     raise DeviceServiceError.new("Alyacom: %s" % [ I18n.t('errors.alyacom.unauthorized') ])
   end
 

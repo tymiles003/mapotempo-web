@@ -460,6 +460,7 @@ en:
       list: "Can't List Devices"
       get_vehicles_pos: "Can't Get Vehicles Positions"
       set_mission: "Failed To Create Mission"
+      unauthorized: "Unauthorized"
     orange:
       no_equipment: "Vehicle: No Equipment Found"
       unauthorized: "Unauthorized"

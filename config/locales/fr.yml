@@ -460,6 +460,7 @@ fr:
       list: "Impossible de lister les appareils"
       get_vehicles_pos: "Impossible de lister les positions des véhicules"
       set_mission: "Échec lors de la création de la mission"
+      unauthorized: "Non autorisé"
     orange:
       no_equipment: "Vehicule: Aucun équipement trouvé"
       unauthorized: "Non autorisé"
