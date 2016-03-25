@@ -21,6 +21,12 @@ GIT
     leaflet-controlledbounds-rails (0.0.1)
 
 GIT
+  remote: git://github.com/Mapotempo/leaflet-encoded-rails.git
+  revision: 16bca35c05dc318a432704d0b447852912ece805
+  specs:
+    leaflet-encoded-rails (0.1.0)
+
+GIT
   remote: git://github.com/Mapotempo/leaflet-pattern-rails.git
   revision: 351209594cfcfd0d19c1e89dad20cedbdd48a5a4
   specs:
@@ -564,6 +570,7 @@ DEPENDENCIES
   leaflet-control-geocoder-rails!
   leaflet-controlledbounds-rails!
   leaflet-draw-rails!
+  leaflet-encoded-rails!
   leaflet-hash-rails!
   leaflet-markercluster-rails
   leaflet-pattern-rails!

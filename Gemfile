@@ -118,6 +118,7 @@ gem 'leaflet-controlledbounds-rails', github: 'Mapotempo/leaflet-controlledbound
 gem 'leaflet-hash-rails', github: 'frodrigo/leaflet-hash-rails'
 gem 'leaflet-pattern-rails', github: 'Mapotempo/leaflet-pattern-rails'
 gem 'sidebar-v2-gh-pages-rails', github: 'Mapotempo/sidebar-v2-gh-pages-rails'
+gem 'leaflet-encoded-rails', github: 'Mapotempo/leaflet-encoded-rails'
 
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
