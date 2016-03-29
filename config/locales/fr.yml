@@ -1018,6 +1018,7 @@ fr:
       order_array: "Comm."
       zonings_help: "Permet d'affecter automatiquement des visites/clients à des véhicules suivant des zones géographiques prédéfinies."
       avoid_zones_help: "Permet également de définir des zones où ne pas circuler."
+      default: "Défaut"
 
   routes:
     show:

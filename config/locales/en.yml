@@ -1018,6 +1018,7 @@ en:
       order_array: "Orders"
       zonings_help: "Allow to automatically assign vehicles to visits/destinations with geographical zones."
       avoid_zones_help: "In addition, allow to define zones where vehicle cannot circulate."
+      default: "Default"
 
   routes:
     show:

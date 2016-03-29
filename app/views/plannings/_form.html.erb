@@ -21,7 +21,7 @@
       <a href="/order_arrays/<%= @planning.order_array.id %>/edit?planning_id=<%= @planning.id %>" class="btn btn-primary btn-sm" title="<%= t 'plannings.edit.order_array.edit' %>"><i class="fa fa-pencil fa-fw"></i></a>
     <% end %>
   <% end %>
-  <%= f.text_field :date, {value: @planning.date ? l(@planning.date.to_time, format: :datepicker) : nil, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
+  <%= f.text_field :date, { placeholder: "%s (%s)" % [l(Time.now, format: :datepicker), t(".default")], value: @planning.date ? l(@planning.date.to_time, format: :datepicker) : nil, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
   <% if (@planning.id && !@planning.tags.empty?) || !@planning.id %>
     <%= f.select :tag_ids, t('activerecord.attributes.planning.tag_ids'), options_for_select(@planning.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @planning.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw'), disabled: @planning.id} do %>
       <% if not @planning.id %>
