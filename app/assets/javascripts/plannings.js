@@ -418,6 +418,7 @@ var plannings_edit = function(params) {
       if(state.id){
         return $("<span class='color_small' style='background:" + state.id + "'></span>");
       } else {
+        return $("<i />").addClass("fa fa-paint-brush").css("color", "#CCC");
       }
     }
 
