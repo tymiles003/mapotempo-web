@@ -28,7 +28,13 @@
             {{/products}}
             <li class="divider"></li>
             {{#plannings}}
-            <li><a class="planning" data-planning_id="{{id}}" href="javascript:void(0);"><i class="fa fa-calendar fa-fw"></i> {{#i18n}}order_arrays.edit.planning{{/i18n}} {{name}}</a></li>
+              <li>
+                <a class="planning" data-planning-id="{{id}}" data-index="{{index}}" href="javascript:void(0);">
+                  <i class="fa fa-calendar fa-fw"></i>
+                  {{#i18n}}order_arrays.edit.planning{{/i18n}}
+                  {{name}}
+                </a>
+              </li>
             {{/plannings}}
           </ul>
         </div>

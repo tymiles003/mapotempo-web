@@ -181,10 +181,10 @@ class V01::Plannings < Grape::API
       entity: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :order_array_id, type: String
+      requires :order_array_id, type: Integer
       requires :shift, type: Integer
     end
-    patch ':id/orders/:order_array_id/:shift' do
+    patch ':id/orders_array' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       order_array = current_customer.order_arrays.find(params[:order_array_id])

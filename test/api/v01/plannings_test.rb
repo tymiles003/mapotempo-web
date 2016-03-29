@@ -129,8 +129,7 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     assert r.stops[0].active
     assert r.stops[1].active
     @order_array = order_arrays(:order_array_one)
-    patch api("#{@planning.id}/orders/#{@order_array.id}/0")
-
+    patch api("#{@planning.id}/orders_array"), { order_array_id: @order_array.id, shift: 0 }
     @planning.reload
     r = @planning.routes.find{ |ro| ro.ref == 'route_one' }
     assert r.stops[0].active

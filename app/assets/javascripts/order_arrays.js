@@ -195,6 +195,9 @@ var order_arrays_edit = function(params) {
         order.products = select2_build_options(products, order.product_ids)
       });
     });
+    $.each(data.columns, function(i, column) {
+      column.index = i;
+    });
     data.i18n = mustache_i18n;
     $(container).html(SMT['order_arrays/edit'](data));
 
@@ -363,18 +366,18 @@ var order_arrays_edit = function(params) {
     });
 
     $('.planning').click(function(e) {
-      var index = $(this).closest('th').index('th') - 3,
-        planning_id = $(this).data('planning_id').toString();
+      var planning_id = $(e.target).data('planning-id');
+      var shift = $(e.target).data('index');
       $.ajax({
-        type: "patch",
-        contentType: "application/json",
-        url: '/api/0.1/plannings/' + planning_id + '/orders/' + order_array_id + '/' + index + '.json',
+        type: 'PATCH',
+        url: '/api/0.1/plannings/' + planning_id + '/orders_array',
+        data: { order_array_id: order_array_id, shift: shift },
         beforeSend: beforeSendWaiting,
-        success: function() {
-          window.location = '/plannings/' + planning_id +'/edit';
-        },
         complete: completeWaiting,
-        error: ajaxError
+        error: ajaxError,
+        success: function() {
+          window.location = '/plannings/' + planning_id + '/edit';
+        }
       });
     });
   }
