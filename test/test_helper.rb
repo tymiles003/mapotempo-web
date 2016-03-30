@@ -37,7 +37,7 @@ class ActiveSupport::TestCase
     @stub_GeocodeMapotempo = stub_request(:get, "https://geocode.mapotempo.com/0.1/geocode.json").with(:query => hash_including({})).
       to_return(File.new(File.expand_path('../', __FILE__) + '/fixtures/geocode.mapotempo.com/geocode.json').read)
 
-    @stub_GeocodeMapotempo = stub_request(:post, "https://geocode.mapotempo.com/0.1/geocode.json").with(:query => hash_including({})).
+    @stub_GeocodeMapotempoBulk = stub_request(:post, "https://geocode.mapotempo.com/0.1/geocode.json").with(:query => hash_including({})).
       to_return(File.new(File.expand_path('../', __FILE__) + '/fixtures/geocode.mapotempo.com/geocode_bulk.json').read)
   end
 
@@ -45,6 +45,7 @@ class ActiveSupport::TestCase
     remove_request_stub(@stub_GeocodeRequest)
     remove_request_stub(@stub_LocationUtilityService)
     remove_request_stub(@stub_GeocodeMapotempo)
+    remove_request_stub(@stub_GeocodeMapotempoBulk)
   end
 
   def assert_valid(response)
