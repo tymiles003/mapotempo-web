@@ -659,7 +659,7 @@ function devices_observe_vehicle(params) {
 
   function devices_init_vehicle(base_name, name) {
     $.ajax({
-      url: '/api/0.1/devices/' + name + '/devices',
+      url: '/api/0.1/devices/' + name + '/devices.json',
       data: { customer_id: params.customer_id },
       dataType: 'json',
       success: function(data, textStatus, jqXHR) {
@@ -731,7 +731,7 @@ function devices_observe_customer(params) {
     // Check TomTom Credentials Without Before / Complete Callbacks
     function check_credentials() {
       requests.push($.ajax({
-        url: '/api/0.1/devices/' + config.name + '/auth',
+        url: '/api/0.1/devices/' + config.name + '/auth.json',
         data: user_credentials(),
         dataType: 'json',
         success: function(data, textStatus, jqXHR) {
@@ -752,7 +752,7 @@ function devices_observe_customer(params) {
 
       function check_credentials_with_callbacks() {
         requests.push($.ajax({
-          url: '/api/0.1/devices/' + config.name + '/auth',
+          url: '/api/0.1/devices/' + config.name + '/auth.json',
           data: $.extend(user_credentials(), { check_only: 1 }),
           dataType: 'json',
           beforeSend: function(jqXHR, settings) {
@@ -791,7 +791,7 @@ function devices_observe_customer(params) {
       // Sync
       $('.' + config.name + '-api-sync').click(function(e) {
         $.ajax({
-          url: '/api/0.1/devices/' + config.name + '/sync',
+          url: '/api/0.1/devices/' + config.name + '/sync.json',
           type: 'POST',
           data: $.extend(user_credentials(), {
             customer_id: params.customer_id
