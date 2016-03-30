@@ -136,6 +136,7 @@ class V01::Routes < Grape::API
           nickname: 'optimizeRoute'
         params do
           requires :id, type: String, desc: ID_DESC
+          optional :details, type: Boolean, desc: 'Ouput route details'
         end
         patch ':id/optimize' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
@@ -145,7 +146,11 @@ class V01::Routes < Grape::API
             status 304
           else
             route.planning.customer.save!
-            status 204
+            if params[:details]
+              present route, with: V01::Entities::Route
+            else
+              status 204
+            end
           end
         end
       end

@@ -80,6 +80,12 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert_equal 204, last_response.status, last_response.body
   end
 
+  test 'should optimize route with details' do
+    patch api(@route.planning.id, "#{@route.id}/optimize", details: true)
+    assert_equal 200, last_response.status, last_response.body
+    assert JSON.parse(last_response.body)['id']
+  end
+
   test 'should return a route from vehicle' do
     get "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/ref:" + vehicles(:vehicle_one).ref + ".json?api_key=testkey1"
     assert last_response.ok?, last_response.body
