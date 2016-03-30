@@ -42,6 +42,11 @@ Rails.application.configure do
 
   # Application config
 
+  config.devices.alyacom.api_url = 'https://alyacom.example.com'
+  config.devices.masternaut.api_url = 'https://masternaut.example.com'
+  config.devices.orange.api_url = 'https://orange.example.com'
+  config.devices.tomtom.api_url = 'https://tomtom.example.com' #v1.26
+
   config.delayed_job_use = false
   config.geocode_complete = true
 

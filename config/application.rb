@@ -8,6 +8,19 @@ require_relative '../lib/routers/here'
 require_relative '../lib/routers/router_wrapper'
 require_relative '../lib/ort'
 
+require_relative '../lib/devices/device_base'
+['alyacom', 'masternaut', 'orange', 'teksat', 'tomtom'].each{|name|
+  require_relative "../lib/devices/#{name}"
+}
+
+# Fixes OpenStruct + Ruby 1.9, for devices
+unless OpenStruct.new.respond_to? :[]
+  OpenStruct.class_eval do
+    extend Forwardable
+    def_delegators :@table, :[], :[]=
+  end
+end
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -109,6 +122,14 @@ module Mapotempo
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'router_wrapper_result'), namespace: 'router_wrapper_result', expires_in: 60*60*24*1),
       nil
     )
+
+    config.devices = OpenStruct.new alyacom: Alyacom.new, masternaut: Masternaut.new, orange: Orange.new, teksat: Teksat.new, tomtom: Tomtom.new
+    config.devices.cache_object = ActiveSupport::Cache::FileStore.new File.join(Dir.tmpdir, 'devices'), namespace: 'devices', expires_in: 30
+
+    config.devices.alyacom.api_url = 'https://alyacom.example.com'
+    config.devices.masternaut.api_url = 'https://masternaut.example.com'
+    config.devices.orange.api_url = 'https://orange.example.com'
+    config.devices.tomtom.api_url = 'https://tomtom.example.com' #v1.26
 
     config.delayed_job_use = false
 
