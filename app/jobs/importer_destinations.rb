@@ -21,6 +21,11 @@ require 'value_to_boolean'
 
 class ImporterDestinations < ImporterBase
 
+  def initialize(customer, planning_hash = nil)
+    super customer
+    @planning_hash = planning_hash || {}
+  end
+
   def max_lines
     Mapotempo::Application.config.max_destinations
   end
@@ -105,7 +110,6 @@ class ImporterDestinations < ImporterBase
       }
     }
 
-    @planning = nil
     @destinations_to_geocode = []
 
     if options[:delete_plannings]
@@ -256,7 +260,7 @@ class ImporterDestinations < ImporterBase
     end
 
     if @routes.size > 0
-      @planning = @customer.plannings.build(name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.now, format: :long), vehicle_usage_set: @customer.vehicle_usage_sets[0], tags: @common_tags || [])
+      @planning = @customer.plannings.build({name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.now, format: :long), vehicle_usage_set: @customer.vehicle_usage_sets[0], tags: @common_tags || []}.merge(@planning_hash))
       @planning.set_routes(@routes, false, true)
       @planning.save!
     end

@@ -88,44 +88,59 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
           @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
           2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size) do
-          put api(), {destinations: [{
-            name: 'Nouveau client',
-            street: nil,
-            postalcode: nil,
-            city: 'Tule',
-            lat: 43.5710885456786,
-            lng: 3.89636993408203,
-            detail: nil,
-            comment: nil,
-            phone_number: nil,
-            ref: 'z',
-            tags: ['tag1', 'tag2'],
-            geocoding_accuracy: nil,
-            foo: 'bar',
-            visits: [{
-              ref: 'v1',
-              quantity: 1,
-              open: '08:00',
-              close: '12:00',
-              take_over: nil,
-              route: '1',
-              active: '1'
+          put api(), {
+            planning: {
+              name: 'Hey',
+              ref: 'Hop',
+              date: '2123-10-10',
+              vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id,
+              zoning_ids: [zonings(:zoning_one).id]
             },
-            {
-              ref: 'v2',
-              quantity: 2,
-              open: '14:00',
-              close: '18:00',
-              take_over: nil,
-              route: '1',
-              active: '1'
+            destinations: [{
+              name: 'Nouveau client',
+              street: nil,
+              postalcode: nil,
+              city: 'Tule',
+              lat: 43.5710885456786,
+              lng: 3.89636993408203,
+              detail: nil,
+              comment: nil,
+              phone_number: nil,
+              ref: 'z',
+              tags: ['tag1', 'tag2'],
+              geocoding_accuracy: nil,
+              foo: 'bar',
+              visits: [{
+                ref: 'v1',
+                quantity: 1,
+                open: '08:00',
+                close: '12:00',
+                take_over: nil,
+                route: '1',
+                active: '1'
+              },
+              {
+                ref: 'v2',
+                quantity: 2,
+                open: '14:00',
+                close: '18:00',
+                take_over: nil,
+                route: '1',
+                active: '1'
+              }]
             }]
-          }]}
+          }
           assert last_response.ok?, last_response.body
           assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
 
           get api()
           assert_equal 2, JSON.parse(last_response.body).find{ |destination| destination['name'] == 'Nouveau client' }['tag_ids'].size
+          get '/api/0.1/plannings/ref:Hop.json?api_key=testkey1'
+          planning = JSON.parse(last_response.body)
+          assert_equal 'Hey', planning['name']
+          assert_equal 'Hop', planning['ref']
+          assert planning['vehicle_usage_set_id']
+          assert planning['zoning_ids'].size > 0
         end
       end
     end

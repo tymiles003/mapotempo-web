@@ -82,18 +82,31 @@ class V01::Destinations < Grape::API
     desc 'Import destinations by upload a CSV file, by JSON or from TomTom',
       detail: 'Import multiple destinations and visits. If "route" is provided for a visit a planning will be automatically created at the same time, if not only destinations and visits will be created/updated. Use your internal and unique ids as a "reference" to automatically retrieve and update objects.',
       nickname: 'importDestinations',
-      params: V01::Entities::DestinationsImport.documentation,
+      params: V01::Entities::DestinationsImport.documentation.except(:zoning_ids),
       is_array: true,
       entity: [V01::Entities::Destination, V01::Entities::DestinationsImport]
+    params do
+      optional :zoning_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
+    end
     put do
+      if params[:planning]
+        if params[:planning][:vehicle_usage_set_id]
+          params[:planning][:vehicle_usage_set] = current_customer.vehicle_usage_sets.find(params[:planning][:vehicle_usage_set_id])
+        end
+        params[:planning].delete(:vehicle_usage_set_id)
+        if params[:planning][:zoning_ids] && params[:planning][:zoning_ids].size > 0
+          params[:planning][:zonings] = current_customer.zonings.find(params[:planning][:zoning_ids])
+        end
+        params[:planning].delete(:zoning_ids)
+      end
       import = if params[:destinations]
-        ImportJson.new(importer: ImporterDestinations.new(current_customer), replace: params[:replace], json: params[:destinations])
+        ImportJson.new(importer: ImporterDestinations.new(current_customer, params[:planning]), replace: params[:replace], json: params[:destinations])
       elsif params[:remote]
         case params[:remote]
-          when 'tomtom' then ImportTomtom.new(importer: ImporterDestinations.new(current_customer), customer: current_customer, replace: params[:replace])
+          when 'tomtom' then ImportTomtom.new(importer: ImporterDestinations.new(current_customer, params[:planning]), customer: current_customer, replace: params[:replace])
         end
       else
-        ImportCsv.new(importer: ImporterDestinations.new(current_customer), replace: params[:replace], file: params[:file])
+        ImportCsv.new(importer: ImporterDestinations.new(current_customer, params[:planning]), replace: params[:replace], file: params[:file])
       end
 
       if import && import.valid? && (destinations = import.import(true))
