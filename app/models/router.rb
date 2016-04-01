@@ -22,14 +22,12 @@ class Router < ActiveRecord::Base
   nilify_blanks
   auto_strip_attributes :name, :url_time, :url_distance, :mode
   validates :name, presence: true
-
-  def isochrone?
-    false
-  end
-
-  def isodistance?
-    false
-  end
+  validates :mode, presence: true
+  validates :time, presence: true
+  validates :distance, presence: true
+  validates :avoid_zones, presence: true
+  validates :isochrone, presence: true
+  validates :isodistance, presence: true
 
   def speed_multiplicator_zones?
     false

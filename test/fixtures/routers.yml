@@ -9,6 +9,9 @@ router_one:
   url_distance: http://localhost:5000
   url_isochrone: http://localhost:1723
   url_isodistance: http://localhost:1723
+  isochrone: true
+  isodistance: true
+  avoid_zones: true
 
 router_two:
   mode: car
