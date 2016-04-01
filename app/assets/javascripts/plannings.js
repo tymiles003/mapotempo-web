@@ -121,8 +121,10 @@ var plannings_edit = function(params) {
       dataType: 'json',
       beforeSend: beforeSendWaiting,
       success: function(data, textStatus, jqXHR) {
-        if (data && data.error) {
-          stickyError(data.error);
+        if (data && data.errors) {
+          $.each(data.errors, function(i, error) {
+            stickyError(error);
+          });
         } else {
           displayVehicles(data);
         }

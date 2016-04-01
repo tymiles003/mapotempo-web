@@ -77,7 +77,7 @@ class V01::Vehicles < Grape::API
     get 'current_position' do
       customer = current_customer
       vehicles = customer.vehicles.find params[:ids]
-      positions = []
+      positions = [] ; errors = []
       begin
         if customer.orange?
           OrangeService.new(customer: customer).get_vehicles_pos.each do |item|
@@ -88,7 +88,7 @@ class V01::Vehicles < Grape::API
           end
         end
       rescue DeviceServiceError => e
-        Rails.logger.info "Vehicles#current_position Orange: %s" % [ e.message ]
+        errors << e.message
       end
       begin
         if customer.teksat?
@@ -101,7 +101,7 @@ class V01::Vehicles < Grape::API
           end
         end
       rescue DeviceServiceError => e
-        Rails.logger.info "Vehicles#current_position Teksat: %s" % [ e.message ]
+        errors << e.message
       end
       begin
         if customer.tomtom?
@@ -113,9 +113,13 @@ class V01::Vehicles < Grape::API
           end
         end
       rescue DeviceServiceError => e
-        Rails.logger.info "Vehicles#current_position TomTom: %s" % [ e.message ]
+        errors << e.message
       end
-      present positions, with: V01::Entities::VehiclePosition
+      if errors.any?
+        { errors: errors }
+      else
+        present positions, with: V01::Entities::VehiclePosition
+      end
     end
 
     desc 'Fetch vehicle.',
