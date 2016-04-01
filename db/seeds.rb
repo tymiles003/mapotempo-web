@@ -23,8 +23,6 @@ store = Store.create!(name: "l1", street: "Place Picard", postalcode: "33000", c
 vehicle_usage_set = VehicleUsageSet.create!(name: "Vehicle Usage Set #{Time.now.to_i}", customer: customer, store_start: store, store_stop: store, store_rest: store)
 vehicle_1 = Vehicle.create!(capacity: 100, customer: customer, name: "Renault Kangoo")
 vehicle_2 = Vehicle.create!(capacity: 100, customer: customer, name: "Fiat Vito")
-vehicle_usage_1 = VehicleUsage.create!(vehicle_usage_set: vehicle_usage_set, vehicle: vehicle_1)
-vehicle_usage_2 = VehicleUsage.create!(vehicle_usage_set: vehicle_usage_set, vehicle: vehicle_2)
 
 Tag.create!(label: "lundi", customer: customer)
 Tag.create!(label: "jeudi", customer: customer)
