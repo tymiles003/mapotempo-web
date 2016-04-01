@@ -295,6 +295,9 @@ class Planning < ActiveRecord::Base
 
   def split_by_zones
     if zonings.size > 0 && !routes.empty?
+      # Make sure there is at least one Zone with Vehicle, else, don't apply Zones
+      return unless zonings.any?{|zoning| zoning.zones.any?{|zone| !zone.avoid_zone && !zone.vehicle_id.blank? }}
+
       vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes| [vehicle_usage && vehicle_usage.vehicle, routes[0]] }]
       visits_free = routes.select{ |route|
         !route.locked
@@ -303,9 +306,10 @@ class Planning < ActiveRecord::Base
       routes.each{ |route|
         route.locked || route.set_visits([])
       }
+
       Zoning.new(zones: zonings.collect(&:zones).flatten).apply(visits_free).each{ |zone, visits|
         if zone && zone.vehicle && !vehicles_map[zone.vehicle].locked
-          vehicles_map[zone.vehicle].set_visits(visits.collect{ |d| [d, true] })
+          vehicles_map[zone.vehicle].add_visits(visits.collect{ |d| [d, true] })
         else
           # Add to unplanned route even if the route is locked
           routes[0].add_visits(visits.collect{ |d| [d, true] })
