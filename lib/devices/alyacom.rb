@@ -33,7 +33,7 @@ class Alyacom < DeviceBase
       city: store && store.city
     }
     position = route.vehicle_usage.default_store_start
-    waypoints = route.stops.select(&:active).collect{ |stop|
+    waypoints = route.stops.select(&:active).select{|stop| stop.is_a?(StopVisit) }.collect{ |stop|
       position = stop if stop.position?
       if position.nil? || position.lat.nil? || position.lng.nil? || stop.time.nil?
         next
