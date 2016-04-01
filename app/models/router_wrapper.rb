@@ -27,20 +27,31 @@ class RouterWrapper < Router
   end
 
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, options = {})
-    Mapotempo::Application.config.router_wrapper.compute(url_time, mode, dimension, lat1, lng1, lat2, lng2, options.merge(speed_multiplicator: speed_multiplicator))
+    Mapotempo::Application.config.router_wrapper.compute(url_time, mode, dimension, lat1, lng1, lat2, lng2, sanitize_options(options, speed_multiplicator: speed_multiplicator))
   end
 
   def matrix(row, column, speed_multiplicator, dimension = :time, options = {}, &block)
-    Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, dimension, row, column, options.merge(speed_multiplicator: speed_multiplicator)).map{ |row|
+    Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, dimension, row, column, sanitize_options(options, speed_multiplicator: speed_multiplicator)).map{ |row|
       row.map{ |v| [v, v] }
     }
   end
 
   def isochrone(lat, lng, size, speed_multiplicator, options = {})
-    Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, :time, lat, lng, size, options.merge(speed_multiplicator: speed_multiplicator))
+    Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, :time, lat, lng, size, sanitize_options(options, speed_multiplicator: speed_multiplicator))
   end
 
   def isodistance(lat, lng, size, speed_multiplicator, options = {})
-    Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, :distance, lat, lng, size, options.merge(speed_multiplicator: speed_multiplicator))
+    Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, :distance, lat, lng, size, sanitize_options(options, speed_multiplicator: speed_multiplicator))
+  end
+
+  private
+
+  def sanitize_options(options, extra_options = {})
+    if !avoid_zones? || !speed_multiplicator_zones?
+      options.delete(:speed_multiplicator_areas)
+      options.delete(:area)
+    end
+
+    options.merge(extra_options)
   end
 end
