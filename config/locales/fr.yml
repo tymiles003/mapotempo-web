@@ -522,7 +522,6 @@ fr:
     default:
       country: "France"
     menu:
-      parameters: "Paramètres"
       customer: "Paramétrage global"
       user_settings: "Paramètres utilisateur"
       customers: "Comptes client"

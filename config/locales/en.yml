@@ -522,7 +522,6 @@ en:
     default:
       country: "England"
     menu:
-      parameters: "Parameters"
       customer: "Global settings"
       user_settings: "User Settings"
       customers: "Customers"
