@@ -102,6 +102,9 @@ class CustomersController < ApplicationController
     else
       allowed_params = [:take_over, :print_planning_annotating, :print_header, :orange_user, :orange_password, :teksat_url, :teksat_customer_id, :teksat_username, :teksat_password, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :router_dimension, :speed_multiplicator, :alyacom_association, :default_country, :print_stop_time]
       allowed_params << :max_vehicles if !Mapotempo::Application.config.manage_vehicles_only_admin
+      if params[:customer][:router]
+        params[:customer][:router_id], params[:customer][:router_dimension] = params[:customer][:router].split('_')
+      end
       params.require(:customer).permit(*allowed_params)
     end
   end

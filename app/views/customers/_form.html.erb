@@ -18,13 +18,17 @@
     <% if current_user.admin? %>
       <%= f.collection_select :profile_id, [], Profile.all, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} %>
     <% end %>
-    <div id="store_icon_input" class="form-group">
-      <label class="col-md-2 control-label" for="customer_router_id"><%= t 'activerecord.attributes.customer.router' %></label>
-      <label class="sr-only" for="customer_router_dimension"><%= t 'activerecord.attributes.customer.router_dimension' %></label>
+    <div id="customer_router_input" class="form-group">
+      <label class="col-md-2 control-label" for="customer_router"><%= t 'activerecord.attributes.customer.router' %></label>
       <div class="col-md-6">
         <div class="input-group">
-          <%= select_tag 'customer[router_id]', options_for_select((@customer.id ? @customer.profile.routers : Router.all).collect{ |router| [router.name, router.id] }, @customer.router_id), class: 'form-control width_1_2' %>
-          <%= select_tag 'customer[router_dimension]', options_for_select([[t('activerecord.attributes.router.router_dimensions.time'), :time], [t('activerecord.attributes.router.router_dimensions.distance'), :distance]], @customer.router_dimension), class: 'form-control width_1_2' %>
+          <% routers = @customer.id ? @customer.profile.routers : Router.all %>
+          <%= select_tag 'customer[router]', grouped_options_for_select([[t('activerecord.attributes.router.router_dimensions.time'), routers.select(&:time?).collect{ |router|
+              [router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.time'), router.id.to_s + '_time']
+              }]] + [[t('activerecord.attributes.router.router_dimensions.distance'), routers.select(&:distance?).collect{ |router|
+              [router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.distance'), router.id.to_s + '_distance']
+              }]],
+            @customer.router_id.to_s + '_' + @customer.router_dimension), class: 'form-control' %>
           <span class="input-group-addon"><i class="fa fa-gear fa-fw"></i></span>
         </div>
         <p class="help-block"><%= t '.router_help' %></p>

@@ -327,6 +327,7 @@ fr:
         color: "Couleur"
         tomtom_id: "TomTom ID"
         masternaut_ref: "Ref. véhicule Masternaut"
+        router: "Calculateur d'itinéraire"
         router_id: "Calculateur d'itinéraire"
         router_dimension: "Objectif du calculateur"
         speed_multiplicator: "Ajustement de la vitesse"

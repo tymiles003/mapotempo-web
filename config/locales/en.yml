@@ -327,6 +327,7 @@ en:
         color: "Color"
         tomtom_id: "TomTom ID"
         masternaut_ref: "Masternaut vehicle ref."
+        router: "Route planner"
         router_id: "Route planner"
         router_dimension: "Router objective"
         speed_multiplicator: "Speed tuning"

@@ -51,6 +51,9 @@ class VehicleUsagesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def vehicle_usage_params
+    if params[:vehicle_usage][:vehicle][:router]
+      params[:vehicle_usage][:vehicle][:router_id], params[:vehicle_usage][:vehicle][:router_dimension] = params[:vehicle_usage][:vehicle][:router].split('_')
+    end
     p = params.require(:vehicle_usage).permit(:open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, :service_time_start, :service_time_end, vehicle: [:contact_email, :ref, :name, :emission, :consumption, :capacity, :capacity_unit, :color, :tomtom_id, :teksat_id, :orange_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator])
     if p.key?(:vehicle)
       p[:vehicle_attributes] = p[:vehicle]
