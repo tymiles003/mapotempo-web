@@ -80,7 +80,7 @@ class V01::Destinations < Grape::API
     end
 
     desc 'Import destinations by upload a CSV file, by JSON or from TomTom',
-      detail: 'Import multiple destinations and visits. If "route" is provided for a visit a planning will be automatically created at the same time, if not only destinations and visits will be created/updated. Use your internal and unique ids as a "reference" to automatically retrieve and update objects.',
+      detail: 'Import multiple destinations and visits. Use your internal and unique ids as a "reference" to automatically retrieve and update objects. If "route" or "ref_vehicle" is provided for a visit, a planning will be automatically created at the same time. If "route" and "ref_vehicle" are blank, only destinations and visits will be created/updated.',
       nickname: 'importDestinations',
       params: V01::Entities::DestinationsImport.documentation.except(:zoning_ids),
       is_array: true,
