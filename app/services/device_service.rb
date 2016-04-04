@@ -27,7 +27,7 @@ class DeviceService
 
   def send_route route, options={}
     service.send_route customer, route, options
-    route.update! last_sent_at: Time.now
+    route.update! last_sent_at: Time.now.utc
     return route.last_sent_at
   end
 
