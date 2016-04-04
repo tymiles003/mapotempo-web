@@ -97,7 +97,7 @@ class GeocodeAddokWrapper
     json = addresses.collect{ |address|
       {
         street: address[0],
-        postalcode: address[1],
+        postcode: address[1],
         city: address[2],
         country: address[3],
       }
