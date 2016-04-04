@@ -117,14 +117,17 @@ var zonings_edit = function(params) {
       color: '#FF0000',
       fillColor: '#707070',
       weight: 5,
-      dashArray: '10, 10'
+      dashArray: '10, 10',
+      fillPattern: stripes
     } : {
       color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070'),
       fillColor: null,
       weight: 2,
-      dashArray: 'none'
+      dashArray: 'none',
+      fillPattern: null
     });
   }
+  var stripes = new L.StripePattern({color: '#FF0000', angle: -45}); stripes.addTo(map);
 
   var template = function(state) {
     if (state.id) {
