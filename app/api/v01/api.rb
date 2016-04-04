@@ -74,11 +74,7 @@ class V01::Api < Grape::API
 
   rescue_from :all do |e|
     ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
-    if e.is_a?(ActiveRecord::RecordNotFound)
-      rack_response(nil, 404)
-    elsif e.is_a?(ActiveRecord::RecordInvalid)
-      rack_response({error: e.to_s}.to_json, 400)
-    end
+
     @error = e
     Rails.logger.error "\n\n#{e.class} (#{e.message}):\n    " + e.backtrace.join("\n    ") + "\n\n"
     response = {message: e.message}
@@ -87,7 +83,14 @@ class V01::Api < Grape::API
     elsif ENV['RAILS_ENV'] == 'development'
       puts e.backtrace
     end
-    rack_response(response.to_json, 500)
+
+    if e.is_a?(ActiveRecord::RecordNotFound)
+      rack_response(nil, 404)
+    elsif e.is_a?(ActiveRecord::RecordInvalid)
+      rack_response({error: e.to_s}.to_json, 400)
+    else
+      rack_response(response.to_json, 500)
+    end
   end
 
   mount V01::Customers

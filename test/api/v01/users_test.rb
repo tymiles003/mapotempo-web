@@ -36,7 +36,7 @@ class V01::UsersTest < ActiveSupport::TestCase
 
   test 'should not return a user' do
     get api('ref:' + users(:user_three).ref)
-    assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+    assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
   end
 
   test 'should create a user' do
@@ -55,7 +55,7 @@ class V01::UsersTest < ActiveSupport::TestCase
   test 'should not create a user' do
     assert_no_difference('User.count') do
       post api_admin(), {email: 'new@plop.com', password: 'password', customer_id: customers(:customer_two).id, layer_id: @user.layer_id}
-      assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+      assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
     end
   end
 

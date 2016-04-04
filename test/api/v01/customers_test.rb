@@ -58,7 +58,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
     customer = customers(:customer_two)
     customer.ref = 'new ref'
     put api_admin(customer.id), customer.attributes
-    assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+    assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
   end
 
   test 'should create a customer' do
@@ -95,7 +95,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should not destroy a customer' do
     assert_no_difference('Customer.count') do
       delete api_admin('ref:' + customers(:customer_two).ref)
-      assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+      assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
     end
   end
 
