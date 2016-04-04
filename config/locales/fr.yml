@@ -749,6 +749,7 @@ fr:
       not_csv: "Le fichier importé n'est pas au format CSV."
       too_many_lines: "Import stoppé, trop de lignes (max: %{n})."
       missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
+      invalid_numeric_value: "Valeur numérique invalide : \"%{value}\" - ligne : %{line}"
 
   index:
     unsupported_browser:

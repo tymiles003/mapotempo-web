@@ -749,6 +749,7 @@ en:
       not_csv: "Imported file is not a CSV"
       too_many_lines: "Stop import, too many lines (max: %{n})."
       missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
+      invalid_numeric_value: "Invalid numeric value: \"%{value}\" - line: %{line}"
 
   index:
     unsupported_browser:

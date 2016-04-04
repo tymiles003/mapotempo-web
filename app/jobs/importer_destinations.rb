@@ -153,11 +153,18 @@ class ImporterDestinations < ImporterBase
       raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_data', line: (row[:line] || line)))
     end
 
-    if !row[:lat].nil? && (row[:lat].is_a? String)
-      row[:lat] = Float(row[:lat].tr(',', '.'))
-    end
-    if !row[:lng].nil? && (row[:lng].is_a? String)
-      row[:lng] = Float(row[:lng].tr(',', '.'))
+    [:lat, :lng].each do |name|
+      begin
+        if !row[name].nil? && row[name].is_a?(String)
+          row[name] = Float(row[name].tr(',', '.'))
+        end
+      rescue ArgumentError => e
+        if e.message =~ /invalid value for Float/
+          raise ImportInvalidRow.new(I18n.t('destinations.import_file.invalid_numeric_value', line: (row[:line] || line), value: row[name]))
+        else
+          raise e
+        end
+      end
     end
 
     [:tags, :tags_visit].each{ |key| prepare_tags row, key }
