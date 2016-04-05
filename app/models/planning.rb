@@ -294,6 +294,7 @@ class Planning < ActiveRecord::Base
   end
 
   def split_by_zones
+    self.zoning_out_of_date = false
     if zonings.size > 0 && !routes.empty?
       # Make sure there is at least one Zone with Vehicle, else, don't apply Zones
       return unless zonings.any?{|zoning| zoning.zones.any?{|zone| !zone.avoid_zone && !zone.vehicle_id.blank? }}
@@ -316,7 +317,6 @@ class Planning < ActiveRecord::Base
         end
       }
     end
-    self.zoning_out_of_date = false
   end
 
   def update_zonings
