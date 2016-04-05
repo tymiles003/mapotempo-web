@@ -77,8 +77,8 @@ class Tomtom < DeviceBase
       {
         tomtom_vehicle_id: object[:@object_uid],
         device_name: object[:object_name],
-        lat: object[:position][:latitude].to_i / 1e6,
-        lng: object[:position][:longitude].to_i / 1e6,
+        lat: object[:position] ? object[:position][:latitude].to_i / 1e6 : nil,
+        lng: object[:position] ? object[:position][:longitude].to_i / 1e6 : nil,
         time: object[:pos_time]
       }
     end
