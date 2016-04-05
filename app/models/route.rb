@@ -329,9 +329,19 @@ class Route < ActiveRecord::Base
   end
 
   def optimize(matrix_progress, &optimizer)
-    stops_on = stops_segregate[true]
     router = vehicle_usage.vehicle.default_router
     router_dimension = vehicle_usage.vehicle.default_router_dimension
+    speed_multiplicator_areas = planning.zonings.collect(&:zones).flatten.select{ |z| z.speed_multiplicator != 1 }.collect{ |z|
+      feat = RGeo::GeoJSON.decode(z.polygon, json_parser: :json)
+      coordinates = feat.geometry.coordinates[0] if feat && feat.geometry.geometry_type == RGeo::Feature::Polygon
+      coordinates = feat.geometry.coordinates[0][0] if feat && feat.geometry.geometry_type == RGeo::Feature::MultiPolygon
+      {
+        area: coordinates.collect(&:reverse),
+        speed_multiplicator_area: z.speed_multiplicator
+      }
+    }
+
+    stops_on = stops_segregate[true]
     position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
     position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
     amalgamate_stops_same_position(stops_on) { |positions|
@@ -349,7 +359,7 @@ class Route < ActiveRecord::Base
       speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
       order = unnil_positions(positions, tws){ |positions, tws, rest_tws|
         positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)].collect{ |position| position[0..1] }
-        matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, &matrix_progress)
+        matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
         if position_start == [nil, nil]
           matrix = [[[0, 0]] * matrix.length] + matrix
           matrix.collect!{ |x| [[0, 0]] + x }
