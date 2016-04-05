@@ -116,6 +116,8 @@ class Planning < ActiveRecord::Base
   def compute(options = {})
     if zoning_out_of_date
       split_by_zones
+      # In case a zone with speed_multiplicator has changed
+      routes.select(&:vehicle_usage).each{ |r| r.out_of_date = true }
     end
     routes.select(&:vehicle_usage).select(&:out_of_date).each{ |r| r.compute(options) }
   end
@@ -291,6 +293,7 @@ class Planning < ActiveRecord::Base
 
   def update_zonings_track(_zoning)
     @zonings_updated = true
+    self.zoning_out_of_date = true
   end
 
   def split_by_zones
