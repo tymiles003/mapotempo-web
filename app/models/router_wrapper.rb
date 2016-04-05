@@ -39,7 +39,7 @@ class RouterWrapper < Router
   private
 
   def sanitize_options(options, extra_options = {})
-    if !avoid_zones? || !speed_multiplicator_zones?
+    if !avoid_zones? && !speed_multiplicator_zones?
       options.delete(:speed_multiplicator_areas)
       options.delete(:area)
     end
