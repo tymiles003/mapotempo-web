@@ -159,7 +159,7 @@
       </div>
 
       <% if stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time %>
-        <div class="row">
+        <div class="row errors">
           <span class="col-md-offset-1 col-md-11 ui-state-error">
             <% if stop.out_of_window %>
               <span><i class="fa fa-clock-o fa-fw"></i> <%= t 'plannings.edit.error.out_of_window' %></span>
@@ -206,17 +206,17 @@
               </span>
             <% end %>
           </div>
-
-          <% if route.stop_out_of_drive_time %>
-            <div class="row">
-              <span class="col-md-offset-1 col-md-11 ui-state-error">
-                <% if route.stop_out_of_drive_time %>
-                  <span><i class="fa fa-power-off fa-fw"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
-                <% end %>
-              </span>
-            </div>
-          <% end %>
         </div>
+
+        <% if route.stop_out_of_drive_time %>
+          <div class="row errors">
+            <span class="col-md-offset-1 col-md-11 ui-state-error">
+              <% if route.stop_out_of_drive_time %>
+                <span><i class="fa fa-power-off fa-fw"></i> <%= t 'plannings.edit.error.out_of_drive_time' %></span>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
       </li>
     <% end %>
 
