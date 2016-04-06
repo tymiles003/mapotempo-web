@@ -95,7 +95,8 @@ module Devices
 
     def alyacom_credentials customer
       alyacom_association = params[:alyacom_association] ? params[:alyacom_association] : customer.try(:alyacom_association)
-      return { alyacom_association: alyacom_association }
+      alyacom_api_key     = params[:alyacom_api_key]     ? params[:alyacom_api_key]     : customer.try(:alyacom_api_key)
+      return { alyacom_association: alyacom_association, alyacom_api_key: alyacom_api_key }
     end
 
     def alyacom_authenticate customer

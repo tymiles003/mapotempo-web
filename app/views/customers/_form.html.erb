@@ -261,8 +261,10 @@
             <div class="pull-left col-md-10">
               <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
               <input style="display:none" type="text" name="customer[alyacom_association]" />
+              <input style="display:none" type="text" name="customer[alyacom_api_key]" />
 
               <%= f.text_field :alyacom_association, autocomplete: "off" %>
+              <%= f.text_field :alyacom_api_key, autocomplete: "off" %>
             </div>
             <div class="pull-right col-md-2">
               <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "alyacom_success" %>

@@ -153,6 +153,7 @@ en:
         masternaut_user: "Username"
         masternaut_password: "Password"
         alyacom_association: "AlyaCom identifier"
+        alyacom_api_key: "AlyaCom API key"
         router: "Route planner"
         router_id: "Route planner"
         router_dimension: "Router objective"

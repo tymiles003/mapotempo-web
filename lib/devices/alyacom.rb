@@ -18,7 +18,7 @@
 class Alyacom < DeviceBase
 
   def test_list customer, params
-    RestClient.get [api_url, params[:alyacom_association], 'users'].join("/"), params: { apiKey: api_key }
+    RestClient.get [api_url, params[:alyacom_association], 'users'].join("/"), params: { apiKey: params[:alyacom_api_key] }
   rescue RestClient::Forbidden, RestClient::InternalServerError => e
     raise DeviceServiceError.new("Alyacom: %s" % [ I18n.t('errors.alyacom.unauthorized') ])
   end
@@ -144,7 +144,7 @@ class Alyacom < DeviceBase
   end
 
   def get customer, object, params={}
-    get_raw "#{api_url}/#{customer.alyacom_association}/#{object}", {enc: :json, apiKey: api_key}.merge(params)
+    get_raw "#{api_url}/#{customer.alyacom_association}/#{object}", { enc: :json, apiKey: customer.alyacom_api_key }.merge(params)
   end
 
   def get_raw url, params
@@ -183,7 +183,7 @@ class Alyacom < DeviceBase
   end
 
   def post customer, object, data
-    RestClient.post "#{api_url}/#{customer.alyacom_association}/#{object}", data.to_json, content_type: :json, params: {enc: :json, apiKey: api_key}
+    RestClient.post "#{api_url}/#{customer.alyacom_association}/#{object}", data.to_json, content_type: :json, params: { enc: :json, apiKey: customer.alyacom_api_key }
   rescue => e
     Rails.logger.info e.response
     raise e

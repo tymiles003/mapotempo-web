@@ -153,6 +153,7 @@ fr:
         masternaut_user: "Nom d'utilisateur"
         masternaut_password: "Mot de passe"
         alyacom_association: "Identifiant AlyaCom"
+        alyacom_api_key: "Clé d'API AlyaCom"
         router: "Calculateur d'itinéraire"
         router_id: "Calculateur d'itinéraire"
         router_dimension: "Objectif du calculateur"
