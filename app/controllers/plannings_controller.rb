@@ -164,7 +164,7 @@ class PlanningsController < ApplicationController
       route.update! last_sent_at: nil
       vehicle_usage_id_was = route.vehicle_usage.id
       vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params['vehicle_usage_id']))
-      if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.compute && @planning.save
+      if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.save && @planning.compute && @planning.save
         @routes = [route]
         @routes << @planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.id == vehicle_usage_id_was } if vehicle_usage_id_was != route.vehicle_usage.id
         format.json { render action: 'show', location: @planning }
