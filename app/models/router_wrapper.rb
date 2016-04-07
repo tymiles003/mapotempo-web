@@ -28,11 +28,11 @@ class RouterWrapper < Router
     }
   end
 
-  def isochrone(lat, lng, size, speed_multiplicator, options = {})
+  def compute_isochrone(lat, lng, size, speed_multiplicator, options = {})
     Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, :time, lat, lng, size, sanitize_options(options, speed_multiplicator: speed_multiplicator))
   end
 
-  def isodistance(lat, lng, size, speed_multiplicator, options = {})
+  def compute_isodistance(lat, lng, size, speed_multiplicator, options = {})
     Mapotempo::Application.config.router_wrapper.isoline(url_time, mode, :distance, lat, lng, size, sanitize_options(options, speed_multiplicator: speed_multiplicator))
   end
 
