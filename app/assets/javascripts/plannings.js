@@ -85,35 +85,35 @@ var plannings_edit = function(params) {
   });
 
   var vehicleLayer, tid;
+  var vehicleMarkers = [];
 
-  function queryVehicles() {
+  var displayVehicles = function(data) {
+    data.forEach(function(pos) {
+      if ($.isNumeric(pos.lat) && $.isNumeric(pos.lng)) {
+        var route = routes_array.filter(function(route) {
+          return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id
+        })[0];
+        var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600 * 1000);
+        var direction_icon = pos.direction ? '<i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) - 45) + 'deg);" />' : '';
+        var iconContent = isMoving ?
+          '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>' + direction_icon + '</span>' :
+          '<i class="fa fa-truck fa-lg vehicle-icon" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>';
+        vehicleLayer.removeLayer(vehicleMarkers[pos.vehicle_id]);
+        vehicleMarkers[pos.vehicle_id] = L.marker(new L.LatLng(pos.lat, pos.lng), {
+          icon: new L.divIcon({
+            html: iconContent,
+            iconSize: new L.Point(24, 24),
+            iconAnchor: new L.Point(12, 12),
+            popupAnchor: new L.Point(0, -12),
+            className: 'vehicle-position'
+          }),
+          title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (pos.speed || 0) + 'km/h - ' + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (new Date(pos.time)).toLocaleString(),
+        }).addTo(vehicleLayer);
+      }
+    });
+  }
 
-    function displayVehicles(data) {
-      vehicleLayer.clearLayers();
-      data.forEach(function(pos) {
-        if ($.isNumeric(pos.lat) && $.isNumeric(pos.lng)) {
-          var route = routes_array.filter(function(route) {
-            return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id
-          })[0];
-          var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600 * 1000);
-          var direction_icon = pos.direction ? '<i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) - 45) + 'deg);" />' : '';
-          var iconContent = isMoving ?
-            '<span class="fa-stack" data-route_id="' + route.route_id + '"><i class="fa fa-truck fa-stack-2x vehicle-icon pulse" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>' + direction_icon + '</span>' :
-            '<i class="fa fa-truck fa-lg vehicle-icon" style="color: ' + (route.color || vehicles_usages_map[pos.vehicle_id].color) + '"></i>';
-          L.marker(new L.LatLng(pos.lat, pos.lng), {
-            icon: new L.divIcon({
-              html: iconContent,
-              iconSize: new L.Point(24, 24),
-              iconAnchor: new L.Point(12, 12),
-              popupAnchor: new L.Point(0, -12),
-              className: 'vehicle-position'
-            }),
-            title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (pos.speed || 0) + 'km/h - ' + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (new Date(pos.time)).toLocaleString(),
-          }).addTo(vehicleLayer);
-        }
-      });
-    }
-
+  var queryVehicles = function() {
     $.ajax({
       type: 'GET',
       url: '/api/0.1/vehicles/current_position',
@@ -134,14 +134,15 @@ var plannings_edit = function(params) {
         clearInterval(tid);
       }
     });
-
   };
 
   if (vehicleIdsPosition.length) {
     vehicleLayer = L.featureGroup();
     queryVehicles();
     tid = setInterval(queryVehicles, 30000);
-    $(document).on('page:change', clearInterval(tid));
+    $(document).on('page:before-change', function() {
+      clearInterval(tid);
+    });
     if (!params.overlay_layers) params.overlay_layers = {};
     params.overlay_layers["Vehicles"] = vehicleLayer;
   }
