@@ -879,9 +879,7 @@ fr:
           success: "Email envoyé avec succès"
           fail: "Échec lors de l'envoi de l'Email"
         print: "Imprimer"
-        spreadsheet_standard: "Tableur standard"
-        spreadsheet_standard_without_stores: "Tableur standard sans dépôt"
-        spreadsheet_excel: "Tableur Excel"
+        spreadsheet: "Tableur csv / Excel"
         gpx_route: "Route GPX"
         gpx_track: "Tracé GPX"
         kmz_track: "Tracé KML"
@@ -980,6 +978,21 @@ fr:
         zoning:
           title: "Zonage"
           in_progress: "Application du nouveau zonage en cours, merci de patienter."
+        spreadsheet:
+          title: "Export vers un tableur"
+          stops: "Types d'arrêt"
+          out_of_route: "non planifiés"
+          stores: "dépôts"
+          rests: "pauses"
+          stops_inactives: "arrêts inactifs"
+          columns: "Colonnes"
+          columns_export: "À exporter"
+          columns_skip: "Non exportées"
+          columns_DnD_help: "Utilisez la souris pour glisser-déposer les colonnes à exporter"
+          format: "Format"
+          csv: "format standard csv"
+          excel: "format Excel"
+          download: "Télécharger"
     new:
       title: "Nouveau planning"
     export_file:

@@ -498,6 +498,11 @@ var plannings_edit = function(params) {
       }
     });
 
+    $('.export_spreadsheet').click(function() {
+      $('[name=spreadsheet-route]').val($(this).closest("[data-route_id]").attr("data-route_id"));
+      $('#planning-spreadsheet-modal').modal('show');
+    });
+
     // KMZ: Export Route via E-Mail
     $('.kmz_email a', context).click(function(e) {
       e.preventDefault();
@@ -1016,6 +1021,69 @@ var plannings_edit = function(params) {
         modal: true
       });
     }
+  });
+
+  // Export spreadsheet modal
+  $('#planning-spreadsheet-modal').on('show.bs.modal', function() {
+    if ($('[name=spreadsheet-route]').val())
+      $('[name=spreadsheet-out-of-route]').parent().parent().hide();
+    else
+      $('[name=spreadsheet-out-of-route]').parent().parent().show();
+  });
+  if (localStorage.spreadsheetStops) {
+    $.each($('.spreadsheet-stops'), function(i, cb) {
+      $(cb).prop('checked', localStorage.spreadsheetStops.split('|').indexOf($(cb).val()) >= 0);
+    });
+  }
+  $('.columns-export-list').sortable({
+    connectWith: '#spreadsheet-columns .ui-sortable'
+  });
+  var columns_export = params.spreadsheet_columns;
+  if (localStorage.spreadsheetColumnsExport) {
+    columns_export = localStorage.spreadsheetColumnsExport.split('|');
+    $.each(params.spreadsheet_columns, function(i, c) {
+      if (columns_export.indexOf(c) < 0)
+        columns_export.push(c);
+    });
+  }
+  $.each(columns_export, function(i, c) {
+    if (params.spreadsheet_columns.indexOf(c) >= 0) {
+      $('#columns-export').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
+    }
+  });
+  var columns_skip = localStorage.spreadsheetColumnsSkip && localStorage.spreadsheetColumnsSkip.split('|');
+  $.each(columns_skip, function(i, c) {
+    if (params.spreadsheet_columns.indexOf(c) >= 0)
+      $('#columns-skip').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
+  });
+  $('#columns-export a.remove').click(function(evt) {
+    var $elem = $(evt.currentTarget).closest('li');
+    if ($elem.parent()[0].id == 'columns-export') {
+      var nextFocus = $elem.next();
+      $('a.remove', $elem).hide();
+      $('#columns-skip').append($elem);
+      if (nextFocus.length) $('a.remove', nextFocus).show();
+    }
+  });
+  $('#columns-export li').mouseenter(function(evt) {
+    $('a.remove', evt.currentTarget).show();
+  }).mouseleave(function(evt) {
+    $('a.remove', evt.currentTarget).hide();
+  });
+  if (localStorage.spreadsheetFormat)
+    $('[name=spreadsheet-format][value=' + localStorage.spreadsheetFormat + ']').prop('checked', true);
+
+  $('#btn-spreadsheet').click(function() {
+    var spreadsheetStops = localStorage.spreadsheetStops = $('.spreadsheet-stops:checked').map(function(i, e) { return $(e).val() } ).get().join('|');
+    var spreadsheetColumnsExport = localStorage.spreadsheetColumnsExport = $('#columns-export li').map(function(i, e) { return $(e).attr('data-value') } ).get().join('|');
+    var spreadsheetColumnsSkip = localStorage.spreadsheetColumnsSkip = $('#columns-skip li').map(function(i, e) { return $(e).attr('data-value') } ).get().join('|');
+    var spreadsheetFormat = localStorage.spreadsheetFormat = $('[name=spreadsheet-format]:checked').val();
+    var basePath = $('[name=spreadsheet-route]').val() ? ('/routes/' + $('[name=spreadsheet-route]').val()) : ('/plannings/' + planning_id);
+    window.location.href = basePath + '.' + spreadsheetFormat + '?stops=' + spreadsheetStops + '&columns=' + spreadsheetColumnsExport;
+  });
+
+  $('.export_spreadsheet').click(function() {
+    $('#planning-spreadsheet-modal').modal('show');
   });
 }
 

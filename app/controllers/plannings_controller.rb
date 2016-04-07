@@ -31,7 +31,7 @@ class PlanningsController < ApplicationController
   end
 
   def show
-    @export_stores = ValueToBoolean.value_to_boolean(params['stores'], true)
+    @params = params
     respond_to do |format|
       format.html
       format.json
@@ -64,12 +64,14 @@ class PlanningsController < ApplicationController
         end
       end
       format.excel do
+        @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
             type: 'text/csv',
             filename: filename + '.csv'
       end
       format.csv do
+        @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
       end
     end
@@ -80,6 +82,7 @@ class PlanningsController < ApplicationController
   end
 
   def edit
+    @spreadsheet_columns = export_columns
   end
 
   def create
@@ -286,5 +289,42 @@ class PlanningsController < ApplicationController
 
   def filename
     export_filename @planning, @planning.ref
+  end
+
+  def export_columns
+    [
+      :route,
+      :vehicle,
+      :order,
+      :stop_type,
+      :active,
+      :wait_time,
+      :time,
+      :distance,
+      :drive_time,
+      :out_of_window,
+      :out_of_capacity,
+      :out_of_drive_time,
+
+      :ref,
+      :name,
+      :street,
+      :detail,
+      :postalcode,
+      :city,
+      :country,
+      :lat,
+      :lng,
+      :comment,
+      :phone_number,
+      :tags,
+
+      :ref_visit,
+      :duration,
+      @planning.customer.enable_orders ? :orders : :quantity,
+      :open,
+      :close,
+      :tags_visit
+    ]
   end
 end

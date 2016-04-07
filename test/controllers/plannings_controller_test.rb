@@ -82,6 +82,24 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should show planning as csv with order array' do
+    o = plannings(:planning_one)
+    oa = order_arrays(:order_array_one)
+    o.apply_orders(oa, 0)
+    o.save!
+
+    get :show, id: @planning, format: :csv
+    assert_response :success
+    assert_equal 'route_zero,,,visite,,,,,,"","","",a,unaffected_one,MyString,MyString,MyString,MyString,,1.5,1.5,MyString,MyString,tag1,a,00:01:00,,10:00,11:00,tag1', response.body.split("\n")[1]
+    assert_equal 'route_one,001,1,visite,1,,00:00,1.1,,"","","",b,destination_one,Rue des Lilas,MyString,33200,Bordeau,,49.1857,-0.3735,MyString,MyString,"",b,00:05:33,P1/P2,10:00,11:00,tag1', response.body.split("\n").select{ |l| l.include?('001') }[1]
+  end
+
+  test 'should show planning as csv with ordered columns' do
+    get :show, id: @planning, format: :csv, stops: 'visit', columns: 'route|name|street|postalcode|city'
+    assert_response :success
+    assert_equal 'route_three,destination_one,Rue des Lilas,33200,Bordeau', response.body.split("\n")[1]
+  end
+
   test 'should show planning as gpx' do
     get :show, id: @planning, format: :gpx
     assert_response :success
@@ -102,18 +120,6 @@ class PlanningsControllerTest < ActionController::TestCase
   test 'should show planning as kmz by email' do
     get :show, id: @planning, format: :kmz, email: 1
     assert_response :success
-  end
-
-  test 'should show planning as csv' do
-    o = plannings(:planning_one)
-    oa = order_arrays(:order_array_one)
-    o.apply_orders(oa, 0)
-    o.save!
-
-    get :show, id: @planning, format: :csv
-    assert_response :success
-    assert_equal 'route_zero,,,visite,,,,,,"","","",a,unaffected_one,MyString,MyString,MyString,MyString,,1.5,1.5,MyString,MyString,tag1,a,00:01:00,,10:00,11:00,tag1', response.body.split("\n")[1]
-    assert_equal 'route_one,001,1,visite,1,,00:00,1.1,,"","","",b,destination_one,Rue des Lilas,MyString,33200,Bordeau,,49.1857,-0.3735,MyString,MyString,"",b,00:05:33,P1/P2,10:00,11:00,tag1', response.body.split("\n").select{ |l| l.include?('001') }[1]
   end
 
   test 'should get edit' do

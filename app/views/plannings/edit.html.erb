@@ -73,9 +73,7 @@
           <% end %>
           <li><%= link_to planning_path(@planning) do %><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %><% end %></li>
           <li role="separator" class="divider"></li>
-          <li><%= link_to planning_path(@planning, format: :csv) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :csv, stores: false) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_standard_without_stores' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :excel) do %><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet_excel' %><% end %></li>
+          <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet' %></a></li>
           <li role="separator" class="divider"></li>
           <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
           <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_track' %><% end %></li>
@@ -199,6 +197,90 @@
   </div>
 </div>
 
+<div class="modal fade" id="planning-spreadsheet-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class="fa fa-table fa-fw"></i> <%= t 'plannings.edit.dialog.spreadsheet.title' %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <input type="hidden" name="spreadsheet-route" value="">
+          <div class="row form-group">
+            <label class="col-md-3 control-label"><%= t 'plannings.edit.dialog.spreadsheet.stops' %></label>
+            <div class="col-md-9">
+              <div>
+                <label>
+                  <input type="checkbox" name="spreadsheet-out-of-route" class="spreadsheet-stops" value="out-of-route" checked="checked">
+                  <span><%= t 'plannings.edit.dialog.spreadsheet.out_of_route' %></span>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" name="spreadsheet-stores" class="spreadsheet-stops" value="store" checked="checked">
+                  <span><%= t 'plannings.edit.dialog.spreadsheet.stores' %></span>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" name="spreadsheet-rests" class="spreadsheet-stops" value="rest" checked="checked">
+                  <span><%= t 'plannings.edit.dialog.spreadsheet.rests' %></span>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="checkbox" name="spreadsheet-stops-inactives" class="spreadsheet-stops" value="inactive" checked="checked">
+                  <span><%= t 'plannings.edit.dialog.spreadsheet.stops_inactives' %></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row form-group">
+            <label class="col-md-3 control-label"><%= t 'plannings.edit.dialog.spreadsheet.columns' %></label>
+            <div class="col-md-9">
+              <div class="row" id="spreadsheet-columns">
+                <div class="col-md-6">
+                  <label><span><i class="fa fa-check fa-fw" style="color: green;"></i> <%= t 'plannings.edit.dialog.spreadsheet.columns_export' %></span></label>
+                  <ol class="columns-export-list" id="columns-export">
+                  </ol>
+                </div>
+                <div class="col-md-6">
+                  <label><span><i class="fa fa-close fa-fw" style="color: red;"></i> <%= t 'plannings.edit.dialog.spreadsheet.columns_skip' %></span></label>
+                  <ul class="columns-export-list" id="columns-skip">
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <p class="help-block"><%= t 'plannings.edit.dialog.spreadsheet.columns_DnD_help' %></p>
+              </div>
+            </div>
+          </div>
+          <div class="row form-group">
+            <label class="col-md-3 control-label"><%= t 'plannings.edit.dialog.spreadsheet.format' %></label>
+            <div class="col-md-5">
+              <label>
+                <input type="radio" value="csv" name="spreadsheet-format" checked="checked">
+                <span><%= t 'plannings.edit.dialog.spreadsheet.csv' %></span>
+              </label>
+            </div>
+            <div class="col-md-4">
+              <label>
+                <input type="radio" value="excel" name="spreadsheet-format">
+                <span><%= t 'plannings.edit.dialog.spreadsheet.excel' %></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'all.verb.dismiss' %></button>
+        <button type="button" class="btn btn-primary" id="btn-spreadsheet"><i class="fa fa-download fa-fw"></i> <%= t 'plannings.edit.dialog.spreadsheet.download' %></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%
 layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&:id).uniq.collect{ |layer|
   {
@@ -231,6 +313,7 @@ controller.js(
     ]
   }],
   colors: Vehicle.colors_table,
-  url_click2call: current_user.link_phone_number
+  url_click2call: current_user.link_phone_number,
+  spreadsheet_columns: @spreadsheet_columns
 )
 %>

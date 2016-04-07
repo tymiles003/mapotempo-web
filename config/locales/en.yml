@@ -879,9 +879,7 @@ en:
           success: "E-Mail sent successfully"
           fail: "Failed to send E-Mail"
         print: "Print"
-        spreadsheet_standard: "Spreadsheet Standard"
-        spreadsheet_standard_without_stores: "Spreadsheet Standard without stores"
-        spreadsheet_excel: "Spreadsheet Excel"
+        spreadsheet: "Spreadsheet csv / Excel"
         gpx_route: "GPX Route"
         gpx_track: "GPX Track"
         kmz_track: "KML Track"
@@ -980,6 +978,21 @@ en:
         zoning:
           title: "Zoning"
           in_progress: "Please wait, applying new zoning in progress."
+        spreadsheet:
+          title: "Export to spreadsheet"
+          stops: "Stop types"
+          out_of_route: "out of route"
+          stores: "stores"
+          rests: "rests"
+          stops_inactives: "inactive stops"
+          columns: "Columns"
+          columns_export: "For export"
+          columns_skip: "Skip"
+          columns_DnD_help: "Use mouse to drag-and-drop exported columns"
+          format: "Format"
+          csv: "standard csv format"
+          excel: "Excel format"
+          download: "Download"
     new:
       title: "New planning"
     export_file:

@@ -146,6 +146,10 @@
       .dropdown-menu li.link:hover {
         background-color: #EEE;
       }
+
+      .export_spreadsheet {
+        cursor: pointer;
+      }
     }
   }
 
@@ -358,6 +362,35 @@
         *[data-store_id] .title {
           max-width: 260px;
         }
+      }
+    }
+  }
+
+  .columns-export-list {
+    background-color: #eee;
+    min-height: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+
+    li {
+      margin-left: -10px;
+      padding-left: 10px;
+
+      a {
+        cursor: pointer;
+        float: right;
+        color: #666;
+        display: none;
+      }
+    }
+    li:hover {
+      cursor: move;
+      background-color: #ccc;
+    }
+    &#columns-skip {
+
+      li {
+        color: #aaa;
       }
     }
   }
