@@ -23,6 +23,7 @@ class V01::Entities::Route < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
+  expose(:ref, documentation: { type: String })
   expose(:distance, documentation: { type: Float, desc: 'Total route\'s distance.' })
   expose(:emission, documentation: { type: Float })
   expose(:vehicle_usage_id, documentation: { type: Integer })
@@ -46,7 +47,6 @@ class V01::Entities::Route < Grape::Entity
   expose(:stop_distance, documentation: { type: Float, desc: 'Distance between the vehicle\'s store_stop and last stop.' })
   expose(:stop_drive_time, documentation: { type: Integer, desc: 'Time in seconds between the vehicle\'s store_stop and last stop.' })
   expose(:stop_trace, documentation: { type: String, desc: 'Trace between the vehicle\'s store_stop and last stop.' })
-  expose(:ref, documentation: { type: String })
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
   expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'}) do |route|
     if route.updated_at

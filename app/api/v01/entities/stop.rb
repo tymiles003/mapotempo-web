@@ -23,6 +23,16 @@ class V01::Entities::Stop < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer })
+  expose(:visit_ref, documentation: { type: String }) { |stop|
+    if stop.is_a?(StopVisit) && stop.visit
+      stop.visit.ref
+    end
+  }
+  expose(:destination_ref, documentation: { type: String }) { |stop|
+    if stop.is_a?(StopVisit) && stop.visit && stop.visit.destination
+      stop.visit.destination.ref
+    end
+  }
   expose(:index, documentation: { type: Integer })
   expose(:active, documentation: { type: 'Boolean' })
   expose(:distance, documentation: { type: Float, desc: 'Distance between the stop and previous one.' })
