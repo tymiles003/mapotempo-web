@@ -167,7 +167,7 @@ class Tomtom < DeviceBase
             '',
             route.vehicle_usage.default_store_stop.name
           ]] : []
-        waypoints = route.stops.reverse.select(&:active).collect{ |stop|
+        waypoints = route.stops.select(&:active).collect{ |stop|
             position = stop if stop.position?
             if position.nil? || position.lat.nil? || position.lng.nil?
               next
