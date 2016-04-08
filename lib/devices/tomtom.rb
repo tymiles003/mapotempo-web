@@ -182,7 +182,7 @@ class Tomtom < DeviceBase
               stop.phone_number
             ]
         }
-        waypoints = (waypoint_stop + waypoints.compact + waypoint_start).map{ |l|
+        waypoints = (waypoint_start + waypoints.compact + waypoint_stop).map{ |l|
             description = l[2..-1].compact.join(' ').strip
             {lat: l[0], lng: l[1], description: description}
         }
