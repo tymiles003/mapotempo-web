@@ -22,6 +22,13 @@ class Admin::CustomersControllerTest < ActionController::TestCase
     assert_valid response
   end
 
+  test 'should create customer' do
+    assert_difference('Customer.count') do
+      post :create, customer: { name: 'new', max_vehicles: 2, default_country: 'France', speed_multiplicator: 100, profile_id: profiles(:profile_one), router: routers(:router_one).id.to_s + '_time' }
+    end
+    assert_redirected_to edit_customer_path(assigns(:customer))
+  end
+
   test 'should update customer' do
     patch :update, id: @customer, customer: { take_over: 123, enable_orders: !@customer.enable_orders }
 
