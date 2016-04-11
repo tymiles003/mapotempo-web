@@ -79,8 +79,8 @@ Rails.application.configure do
 
   # Application config
 
-  config.devices.alyacom.api_url = 'http://preprod.intra.alyacom.fr/ws'
-  config.devices.masternaut.api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
+  config.devices.alyacom.api_url = 'http://app.alyacom.fr/ws'
+  config.devices.masternaut.api_url = 'http://gc.api.geonaut.masternaut.com/MasterWS/services'
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
   config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.26'
 
