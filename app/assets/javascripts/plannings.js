@@ -116,7 +116,7 @@ var plannings_edit = function(params) {
   var queryVehicles = function() {
     $.ajax({
       type: 'GET',
-      url: '/api/0.1/vehicles/current_position',
+      url: '/api/0.1/vehicles/current_position.json',
       data: { ids: vehicleIdsPosition },
       dataType: 'json',
       beforeSend: beforeSendWaiting,
