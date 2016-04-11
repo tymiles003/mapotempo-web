@@ -91,11 +91,48 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert JSON.parse(last_response.body)['id']
   end
 
-  test 'should return a route from vehicle' do
+  test 'should return a route from vehicle from Ref JSON' do
     get "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/ref:" + vehicles(:vehicle_one).ref + ".json?api_key=testkey1"
     assert last_response.ok?, last_response.body
     stops = JSON.parse(last_response.body)['stops']
     assert_equal @route.stops.size, stops.size
     assert_equal '2015-10-10T00:00:30', stops[0]['time']
   end
+
+  test 'should return a route from vehicle from ID JSON' do
+    get "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/" + vehicles(:vehicle_one).id.to_s + ".json?api_key=testkey1"
+    assert last_response.ok?, last_response.body
+    stops = JSON.parse(last_response.body)['stops']
+    assert_equal @route.stops.size, stops.size
+    assert_equal '2015-10-10T00:00:30', stops[0]['time']
+  end
+
+  test 'should return a route from vehicle from Ref XML' do
+    get "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/ref:" + vehicles(:vehicle_one).ref + ".xml?api_key=testkey1"
+    assert last_response.ok?, last_response.body
+    stops = Hash.from_xml(last_response.body)["hash"]["stops"]
+    assert_equal @route.stops.size, stops.size
+    assert_equal '2015-10-10T00:00:30', stops[0]['time']
+  end
+
+  test 'should return a route from vehicle from ID XML' do
+    get "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/" + vehicles(:vehicle_one).id.to_s + ".xml?api_key=testkey1"
+    assert last_response.ok?, last_response.body
+    stops = Hash.from_xml(last_response.body)["hash"]["stops"]
+    assert_equal @route.stops.size, stops.size
+    assert_equal '2015-10-10T00:00:30', stops[0]['time']
+  end
+
+  test 'should not return route because IDs are invalid' do
+    get "/api/0.1/plannings/Abcd/routes_by_vehicle/test1111.json?api_key=testkey1"
+    assert_equal(400, last_response.status)
+    assert_equal({ "error" => "Invalid IDs" }, JSON.parse(last_response.body))
+  end
+
+  test 'should not return route because not found' do
+    get "/api/0.1/plannings/1234/routes_by_vehicle/1234.json?api_key=testkey1"
+    assert_equal(404, last_response.status)
+    assert_equal({ "error" => "Not Found" }, JSON.parse(last_response.body))
+  end
+
 end
