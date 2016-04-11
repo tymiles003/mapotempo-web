@@ -135,4 +135,22 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     assert r.stops[0].active
     assert_not r.stops[1].active
   end
+
+  test 'automatic insert with ID' do
+    assert @planning.valid?
+    unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
+    assert unassigned_stop.valid?
+    patch api("#{@planning.id}/automatic_insert"), { id: @planning.id, stop_id: unassigned_stop.id }
+    assert_equal 200, last_response.status
+    assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
+  end
+
+  test 'automatic insert with Ref' do
+    assert @planning.valid?
+    unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
+    assert unassigned_stop.valid?
+    patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_id: unassigned_stop.id }
+    assert_equal 200, last_response.status
+    assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
+  end
 end

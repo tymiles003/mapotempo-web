@@ -144,10 +144,17 @@ class V01::Plannings < Grape::API
       nickname: 'automaticInsertStop'
     params do
       requires :id, type: String, desc: ID_DESC
+      requires :stop_id, type: Integer, desc: 'ID (Integer)'
     end
     patch ':id/automatic_insert' do
-      # TODO
-      error!('501 Not Implemented', 501)
+      planning_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
+      planning = current_customer.plannings.where(planning_id).first!
+      error!('Not Found', 404) if !planning
+      stop = Stop.where(route_id: planning.route_ids).find_by id: params[:stop_id]
+      error!('Not Found', 404) if !stop
+      planning.automatic_insert stop
+      planning.save!
+      status 200
     end
 
     desc 'Starts synchronous routes optimization.',
