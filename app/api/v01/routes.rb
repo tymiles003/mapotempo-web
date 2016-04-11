@@ -140,8 +140,7 @@ class V01::Routes < Grape::API
         end
         patch ':id/optimize' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
-          id = ParseIdsRefs.read(params[:id])
-          route = current_customer.plannings.where(planning_id).first!.routes.where(id).first!
+          route = current_customer.plannings.where(planning_id).first!.routes.find{ |r| ParseIdsRefs.match(params[:id], r) }
           if !Optimizer.optimize(route.planning, route, true)
             status 304
           else
