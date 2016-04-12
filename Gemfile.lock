@@ -607,7 +607,7 @@ DEPENDENCIES
   sim_annealing
   simplecov
   smt_rails
-  sprockets (~> 2)
+  sprockets
   swagger-docs
   therubyracer
   tidy-html5!
