@@ -77,9 +77,9 @@ group :test do
   gem 'mapotempo_web_import_vehicle_store', github: 'Mapotempo/mapotempo_web_import_vehicle_store'
 end
 
-gem 'grape', github: 'Mapotempo/grape', branch: 'disable-deprecation-warnings' # https://github.com/ruby-grape/grape-swagger/issues/364
+gem 'grape', github: 'Mapotempo/grape', branch: 'disable-deprecation-warnings' # FIXME wait for https://github.com/ruby-grape/grape-swagger/issues/364 and https://github.com/ruby-grape/grape-swagger/pull/375
 gem 'grape-entity'
-gem 'grape-swagger', github: 'ruby-grape/grape-swagger' # FIXME wait v0.10.3
+gem 'grape-swagger'
 gem 'rack-cors'
 gem 'swagger-docs'
 
