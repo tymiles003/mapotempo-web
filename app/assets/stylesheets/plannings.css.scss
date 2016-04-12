@@ -127,6 +127,14 @@
     text-shadow: black 0 1px;
   }
 
+  .zoning_name {
+    text-overflow: ellipsis;
+    max-width: 130px;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+
   .sidebar {
     .sidebar-content {
       overflow-y: scroll; // important for select2

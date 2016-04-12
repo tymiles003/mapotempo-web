@@ -222,7 +222,7 @@ var plannings_edit = function(params) {
 
   var templateSelectionZoning = function(state) {
     if (state.id)
-      return $('<span>' + state.text + ' <a href="/zonings/' + state.id + '/edit/planning/' + planning_id + '?back=true" title="' + I18n.t('plannings.edit.zoning_edit') + '"><i class="fa fa-pencil fa-fw"></i></a></span>');
+      return $('<span><span class="zoning_name">' + state.text + '</span> <a href="/zonings/' + state.id + '/edit/planning/' + planning_id + '?back=true" title="' + I18n.t('plannings.edit.zoning_edit') + '"><i class="fa fa-pencil fa-fw"></i></a></span>');
   }
 
   $("#planning_zoning_ids").select2({
