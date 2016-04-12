@@ -55,12 +55,12 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       assert_equal 200, last_response.status
       assert_equal [{
         "vehicle_id"=>@vehicle.id,
-        "device_name"=>"MAPO1",
-        "lat"=>43.319458,
-        "lng"=>-0.367294,
-        "direction"=>nil,
-        "speed"=>nil,
-        "time"=>"2016-02-25T09:51:23.000+00:00"
+        "device_name"=>"MAPO2",
+        "lat"=>46.36204,
+        "lng"=>6.475177,
+        "direction"=>"227",
+        "speed"=>"21",
+        "time"=>"2016-02-10T07:38:33.000+00:00",
       }], JSON.parse(last_response.body)
     end
   end

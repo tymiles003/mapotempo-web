@@ -79,7 +79,9 @@ class Tomtom < DeviceBase
         device_name: object[:object_name],
         lat: object[:position] ? object[:position][:latitude].to_i / 1e6 : nil,
         lng: object[:position] ? object[:position][:longitude].to_i / 1e6 : nil,
-        time: object[:pos_time]
+        time: object[:pos_time],
+        speed: object[:speed],
+        direction: object[:course]
       }
     end
   end

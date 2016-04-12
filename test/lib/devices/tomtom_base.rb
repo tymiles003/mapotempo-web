@@ -14,7 +14,7 @@ module TomtomBase
     @route.update! end: @route.start + 5.hours
     @route.planning.update! date: 10.days.from_now
     @vehicle = @route.vehicle_usage.vehicle
-    @vehicle.update! tomtom_id: "1-44063-666E054E7"
+    @vehicle.update! tomtom_id: "1-44063-666F24630"
   end
 
   def with_stubs names, &block
