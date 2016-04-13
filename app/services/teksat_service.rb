@@ -26,13 +26,13 @@ class TeksatService < DeviceService
   end
 
   def list_devices
-    with_cache "%s_%s" % [:list_devices, service_name, customer.id, customer.teksat_username] do
+    with_cache [:list_devices, service_name, customer.id, customer.teksat_username] do
       service.list_devices customer
     end
   end
 
   def get_vehicles_pos
-    with_cache "%s_%s" % [:get_vehicles_pos, service_name, customer.id, customer.teksat_username] do
+    with_cache [:get_vehicles_pos, service_name, customer.id, customer.teksat_username] do
       service.get_vehicles_pos customer
     end
   end
