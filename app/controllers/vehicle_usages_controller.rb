@@ -19,7 +19,7 @@ class VehicleUsagesController < ApplicationController
   include LinkBack
 
   load_and_authorize_resource
-  before_action :set_vehicle_usage, only: [:show, :edit, :update, :destroy]
+  before_action :set_vehicle_usage, only: [:show, :edit, :update, :destroy, :toggle]
 
   def edit
   end
@@ -37,6 +37,11 @@ class VehicleUsagesController < ApplicationController
         format.html { render action: 'edit' }
       end
     end
+  end
+
+  def toggle
+    @vehicle_usage.update! active: !@vehicle_usage.active?
+    redirect_to [:edit, @vehicle_usage], notice: t(".success")
   end
 
   private

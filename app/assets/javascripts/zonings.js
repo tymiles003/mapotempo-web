@@ -120,7 +120,7 @@ var zonings_edit = function(params) {
       dashArray: '10, 10',
       fillPattern: stripes
     } : {
-      color: (vehicle_id ? vehicles_map[vehicle_id].color : '#707070'),
+      color: (vehicle_id && vehicles_map[vehicle_id] ? vehicles_map[vehicle_id].color : '#707070'),
       fillColor: null,
       weight: 2,
       dashArray: 'none',
@@ -130,7 +130,7 @@ var zonings_edit = function(params) {
   var stripes = new L.StripePattern({color: '#FF0000', angle: -45}); stripes.addTo(map);
 
   var template = function(state) {
-    if (state.id) {
+    if (state.id && vehicles_map[state.id]) {
       return $("<span><span class='color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
     } else {
       return I18n.t('web.form.empty_entry');
@@ -163,7 +163,7 @@ var zonings_edit = function(params) {
       };
     });
     zone.avoid_zone = zone.speed_multiplicator == 0;
-    zone.router_avoid_zones = zone.vehicle_id ? vehicles_map[zone.vehicle_id].router_avoid_zones : router_avoid_zones;
+    zone.router_avoid_zones = zone.vehicle_id && vehicles_map[zone.vehicle_id] ? vehicles_map[zone.vehicle_id].router_avoid_zones : router_avoid_zones;
     zone.show_capacity = show_capacity;
     if (show_capacity) {
       if (zone.vehicle_id && vehicles_map[zone.vehicle_id].capacity) {

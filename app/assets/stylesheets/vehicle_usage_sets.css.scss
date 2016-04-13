@@ -20,6 +20,11 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 [data-controller='vehicle_usage_sets'] {
+
+  table tr.disabled td {
+    color: #999;
+  }
+
   .usage-set-name {
     font-size: 1.5em;
   }

@@ -1236,10 +1236,14 @@ en:
         same_start_stop: "Vehicle returns to start store"
       time: "Open - Close"
       devices: "Devices"
-
     new:
       title: "New vehicle configuration"
+    toggle:
+      success: "Vehicle Configuration Updated Successfully"
     form:
+      disable: "Disable Vehicle Configuration"
+      enable: "Enable Vehicle Configuration"
+      save: "Save Vehicle Configuration"
       vehicle:
         legend: "Vehicle"
         help: "The following informations on the vehicle are common to all vehicles configurations"

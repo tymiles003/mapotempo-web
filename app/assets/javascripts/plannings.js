@@ -209,7 +209,7 @@ var plannings_edit = function(params) {
         dashArray: '10, 10',
         fillPattern: stripes
       } : {
-        color: (zone.vehicle_id ? vehicles_usages_map[zone.vehicle_id].color : '#707070'),
+        color: (zone.vehicle_id && vehicles_usages_map[zone.vehicle_id] ? vehicles_usages_map[zone.vehicle_id].color : '#707070'),
         fillColor: null,
         weight: 2,
         dashArray: 'none',

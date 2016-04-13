@@ -64,4 +64,21 @@ class VehicleUsageTest < ActiveSupport::TestCase
 #    assert v.valid?
 #  end
 
+
+  test 'disable vehicule usage' do
+    vehicle_usage = vehicle_usages :vehicle_usage_one_one
+    routes = vehicle_usage.routes
+    assert vehicle_usage.active
+    assert_equal 1, vehicle_usage.routes.length
+    vehicle_usage.update! active: false
+    assert !vehicle_usage.active
+    assert_equal 1, vehicle_usage.routes.length
+    routes.each do |route|
+      out_of_route = route.planning.routes.detect{|r| !r.vehicle_usage }
+      route.stops.each do |stop|
+        assert stop.route_id == out_of_route.id
+      end
+    end
+  end
+
 end

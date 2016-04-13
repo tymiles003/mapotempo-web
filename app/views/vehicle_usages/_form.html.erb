@@ -124,6 +124,16 @@
   </fieldset>
 
   <%= f.actions do %>
-    <%= f.submit %>
+    <%= f.submit t('.save') %>
+  <% end %>
+<% end %>
+
+<%= twitter_bootstrap_form_for @vehicle_usage, url: [:toggle, @vehicle_usage], layout: :horizontal do |f| %>
+  <%= f.actions do %>
+    <% if @vehicle_usage.active %>
+      <%= f.submit t('.disable'), { class: 'btn btn-danger', data: { confirm:  t('all.verb.destroy_confirm') } }, 'fa-exclamation-triangle' %>
+    <% else %>
+      <%= f.submit t('.enable'), { class: 'btn btn-success' }, 'fa-circle-o-notch' %>
+    <% end %>
   <% end %>
 <% end %>

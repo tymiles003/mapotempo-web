@@ -58,19 +58,18 @@ Rails.application.routes.draw do
       end
     end
   end
-  # delete 'customers' => 'customers#destroy_multiple'
 
   resources :vehicle_usage_sets do
     patch 'duplicate'
   end
-  delete 'vehicle_usage_sets' => 'vehicle_usage_sets#destroy_multiple'
-  resources :vehicle_usages
 
-  resources :vehicle_usage_sets do
-    patch 'duplicate'
-  end
   delete 'vehicle_usage_sets' => 'vehicle_usage_sets#destroy_multiple'
-  resources :vehicle_usage
+
+  resources :vehicle_usages do
+    member do
+      patch :toggle
+    end
+  end
 
   resources :destinations
   get 'destination/import_template' => 'destinations#import_template'

@@ -1236,10 +1236,14 @@ fr:
         same_start_stop: "Véhicule retournant à son dépôt de départ"
       time: "Début - Fin"
       devices: "Terminaux mobiles"
-
     new:
       title: "Nouvelle configuration de véhicule"
+    toggle:
+      success: "Configuration du véhicule mise à jour avec succès"
     form:
+      disable: "Désactiver la configuration du véhicule"
+      enable: "Activer la configuration du véhicule"
+      save: "Enregistrer la configuration du véhicule"
       vehicle:
         legend: "Véhicule"
         help: "Les informations ci-dessous sur le véhicule sont communes à toutes les configurations de véhicules"

@@ -50,6 +50,10 @@ class VehicleUsage < ActiveRecord::Base
   before_validation :nilify_times
   before_update :update_out_of_date
 
+  before_save :set_stops_out_of_route, prepend: true, unless: :active?
+
+  scope :active, lambda{ where(vehicle_usages: { active: true }) }
+
   def default_open
     open || vehicle_usage_set.open
   end
@@ -111,6 +115,13 @@ class VehicleUsage < ActiveRecord::Base
   end
 
   private
+
+  def set_stops_out_of_route
+    self.routes.each do |route|
+      out_of_route = route.planning.routes.detect{|r| !r.vehicle_usage }
+      route.stops.each{|stop| stop.route_id = out_of_route.id }
+    end
+  end
 
   def nilify_times
     assign_attributes(rest_duration: nil) if rest_duration.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00')) && vehicle_usage_set.rest_duration.nil?

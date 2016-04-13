@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <% vehicle_usage_set.vehicle_usages.each do |vehicle_usage| %>
-      <tr>
+      <tr class="<%= 'disabled' if !vehicle_usage.active %>">
         <td>
           <div class="vehicle_color" style="background:<%= vehicle_usage.vehicle.color %>"></div>
           <%= vehicle_usage.vehicle.name %>
