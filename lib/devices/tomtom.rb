@@ -130,9 +130,9 @@ class Tomtom < DeviceBase
   def send_route customer, route, options={}
     case options[:type].to_sym
       when :orders
-        position = route.vehicle_usage.default_store_stop
+        position = route.vehicle_usage.default_store_start
         if position && !position.lat.nil? && !position.lng.nil?
-          sendDestinationOrder customer, route, position, -2, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.start
+          sendDestinationOrder customer, route, position, -2, route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name || "#{position.lat} #{position.lng}", route.start
         end
         route.stops.select(&:active).each{ |stop|
           position = stop if stop.position?
@@ -150,9 +150,9 @@ class Tomtom < DeviceBase
             sendDestinationOrder customer, route, position, stop.id, description, stop.time
           end
         }
-        position = route.vehicle_usage.default_store_start
+        position = route.vehicle_usage.default_store_stop
         if position && !position.lat.nil? && !position.lng.nil?
-          sendDestinationOrder customer, route, position, -1, route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name || "#{position.lat} #{position.lng}", route.start
+          sendDestinationOrder customer, route, position, -1, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.end
         end
 
       when :waypoints
