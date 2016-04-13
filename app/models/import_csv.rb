@@ -22,7 +22,7 @@ class ImportCsv
   include ActiveRecord::AttributeAssignment
   extend ActiveModel::Translation
 
-  attr_accessor :importer, :replace, :file, :delete_plannings
+  attr_accessor :importer, :replace, :file, :delete_plannings, :column_def
   validates :file, presence: true
   validate :data
 
@@ -32,6 +32,10 @@ class ImportCsv
 
   def delete_plannings=(value)
     @delete_plannings = ValueToBoolean.value_to_boolean(value)
+  end
+
+  def column_def=(values)
+    @column_def = values.symbolize_keys
   end
 
   def name
@@ -44,11 +48,20 @@ class ImportCsv
     if data
       begin
         Customer.transaction do
-          @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings) { |row|
-            # Switch from locale to internal column name
+          @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, column_def: column_def) { |row|
+            # Switch from locale or custom to internal column name
             r, row = row, {}
             @importer.columns.each{ |k, v|
-              if r.key?(v[:title])
+              if r.is_a?(Array)
+                values = ((column_def[k] && !column_def[k].empty?) ? column_def[k] : (without_header? ? '' : v[:title])).split(',').map{ |c|
+                  if c.to_i != 0
+                    r[c.to_i - 1].is_a?(Array) ? r[c.to_i - 1][1] : r[c.to_i - 1]
+                  else
+                    r.find{ |rr| rr[0] == c}.try{ |rr| rr[1] }
+                  end
+                }.compact
+                row[k] = values.join(' ') if values.size > 0
+              elsif r.key?(v[:title])
                 row[k] = r[v[:title]]
               end
             }
@@ -67,6 +80,10 @@ class ImportCsv
 
   def data
     @data ||= parse_csv
+  end
+
+  def without_header?
+    column_def && column_def.values.all?{ |v| v.strip.empty? || v.split(',').all?{ |vv| vv.to_i != 0 } }
   end
 
   def parse_csv
@@ -89,7 +106,14 @@ class ImportCsv
     _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
 
     begin
-      data = CSV.parse(contents, col_sep: separator, headers: true).collect(&:to_hash)
+      column_def_any = column_def && column_def.values.any?{ |v| !v.strip.empty? }
+      data = CSV.parse(contents, col_sep: separator, headers: !without_header?).collect{ |c|
+        if column_def_any
+          c.to_a
+        else
+          c.to_hash
+        end
+      }
       if data.length > @importer.max_lines + 1
         errors[:file] << I18n.t('destinations.import_file.too_many_lines', n: @importer.max_lines)
         return false

@@ -234,4 +234,15 @@ class ImporterTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should import without header' do
+    assert_no_difference('Planning.count') do
+      assert_difference('Destination.count', 1) do
+        assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, column_def: {name: '2,3', city: '4', lat: '5', lng: '6', tags: '7'}, file: tempfile('test/fixtures/files/import_destinations_without_header.csv', 'text.csv')).import
+      end
+    end
+
+    o = Destination.find_by(name: 'Point 1')
+    assert_equal ['été'], o.tags.collect(&:label)
+  end
 end

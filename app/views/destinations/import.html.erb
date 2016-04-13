@@ -15,7 +15,10 @@
       <%= twitter_bootstrap_form_for(@import_csv, url: destinations_import_csv_path, layout: :horizontal, multipart: true) do |f| %>
         <%= render 'shared/error_messages', model: @import_csv %>
         <%= f.file_field :file do %>
-          <p class="help-block"><%= t '.csv.file_help' %></p>
+          <p class="help-block">
+            <%= t '.csv.file_help' %>
+            <a data-toggle="modal" data-target="#import-help-modal" href="#help" title="<%= t('.import_template_help') %>"><i class="fa fa-info-circle fa-fw"></i> <%= t('.import_template_help') %></a>
+          </p>
         <% end %>
         <%= f.toggles t '.destinations' do %>
           <%= f.radio_button :replace, t('.replace_no'), 0, checked: true %>
@@ -34,7 +37,47 @@
           <div class="col-md-offset-2 col-md-6">
             <a href="import_template.csv" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_csv' %></a>
             <a href="import_template.excel" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_excel' %></a>
-            <a data-toggle="modal" data-target="#import-help-modal" href="#help" title="<%= t('.import_template_help') %>"><i class="fa fa-info-circle fa-fw"></i> <%= t('.import_template_help') %></a>
+          </div>
+        </div>
+
+        <div class="modal fade" id="import-help-modal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><%= t 'destinations.import.dialog.help.title' %></h4>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <%= t 'destinations.import.dialog.help.desc' %>
+                    <table id="columns-table">
+                    <% [:columns_route, :columns_destination, :columns_visit].each do |columns| %>
+                      <tr class="column-heading"><td colspan="3"><h5><%= t('destinations.import.dialog.help.' + columns.to_s) %></h5></td></tr>
+                      <% ImporterDestinations.new(current_user.customer).send(columns).each do |key, column| %>
+                        <tr class="column">
+                          <td>
+                            <span class="column-default">&bull; <b><%= column[:title] %></b></span>
+                            <%= text_field_tag 'import_csv[column_def][' + key.to_s + ']', nil, class: 'column-def hide', placeholder: column[:title] %>
+                            <a class="column-edit" title="<%= t 'destinations.import.dialog.help.def_help' %>"><i class="fa fa-edit fa-fw"></i></a>
+                          </td>
+                          <td><%= column[:format] %></td>
+                          <td><%= column[:required] %></td>
+                        </tr>
+                        <tr class="column-desc">
+                          <td colspan="3"><p class="help-block"><%= column[:desc] %></p></td>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'all.verb.dismiss' %></button>
+                <button name="columns-save" type="button" class="btn btn-primary" data-dismiss="modal" style="display: none;"><i class="fa fa-floppy-o fa-fw"></i> <%= t 'all.verb.save' %></button>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>
@@ -43,7 +86,7 @@
 </div>
 
 <% if current_user.customer.tomtom? %>
-  <div class="panel panel-default">
+  <div class="panel panel-default accordion">
     <div class="panel-heading">
       <h2 class="panel-title">
         <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomTom">
@@ -70,42 +113,6 @@
     </div>
   </div>
 <% end %>
-
-<div class="modal fade" id="import-help-modal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"><%= t 'destinations.import.dialog.help.title' %></h4>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <div class="row">
-            <%= t 'destinations.import.dialog.help.desc' %>
-            <table id="columns-table">
-            <% [:columns_route, :columns_destination, :columns_visit].each do |columns| %>
-              <tr class="column-heading"><td colspan="3"><h5><%= t('destinations.import.dialog.help.' + columns.to_s) %></h5></td></tr>
-              <% ImporterDestinations.new(current_user.customer).send(columns).values.each do |column| %>
-                <tr class="column">
-                  <td>&bull; <b><%= column[:title] %></b></td>
-                  <td><%= column[:format] %></td>
-                  <td><%= column[:required] %></td>
-                </tr>
-                <tr class="column-desc">
-                  <td colspan="3"><p class="help-block"><%= column[:desc] %></p></td>
-                </tr>
-              <% end %>
-            <% end %>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'all.verb.dismiss' %></button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div id="dialog-upload" title="<%= t 'import.dialog.title' %>" style="display:none">
   <p><%= t 'import.dialog.import_in_progress' %></p>

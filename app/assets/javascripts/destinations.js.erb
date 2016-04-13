@@ -410,6 +410,13 @@ var destinations_import = function(params) {
     }
     $("#dialog-upload").dialog("open");
   });
+
+  $('a.column-edit').click(function(evt) {
+    var $elem = $(evt.currentTarget).closest('td');
+    $('.column-default, .column-edit', $elem).hide();
+    $('.column-def', $elem).removeClass('hide').popover({ placement : 'left', content: I18n.t('destinations.import.dialog.help.def_example'), trigger: 'focus'}).focus();
+    // $('[name=columns-save]').show();
+  });
 }
 
 Paloma.controller('Destination').prototype.import = function() {

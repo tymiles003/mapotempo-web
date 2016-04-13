@@ -261,18 +261,34 @@
     }
   }
 
-  &[data-action='import'] {
+  &[data-action='import'], &[data-action='upload_csv'] {
     #columns-table {
       margin: 5px;
-    }
 
-    .column-heading td, .column-desc td {
-      padding-bottom: 5px;
-    }
+      .column-heading td, .column-desc td {
+        padding-bottom: 5px;
+      }
 
-    h5 {
-      background-color: #f5f5f5;
-      padding: 5px;
+      h5 {
+        background-color: #f5f5f5;
+        padding: 5px;
+      }
+
+      .column {
+        td:first-child {
+          min-width: 180px;
+        }
+
+        a.column-edit {
+          color: #333;
+          cursor: pointer;
+        }
+        .column-def {
+          width: 160px;
+          height: 18px;
+          padding: 0 3px;
+        }
+      }
     }
   }
 }

@@ -154,7 +154,7 @@ class DestinationsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def import_csv_params
-    params.require(:import_csv).permit(:replace, :file, :delete_plannings)
+    params.require(:import_csv).permit(:replace, :file, :delete_plannings, column_def: ImporterDestinations.new(current_user.customer).columns.keys)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
