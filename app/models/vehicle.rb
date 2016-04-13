@@ -39,6 +39,8 @@ class Vehicle < ActiveRecord::Base
   before_update :update_out_of_date
   before_destroy :destroy_vehicle
 
+  include RefSanitizer
+
   def self.emissions_table
     [
       [I18n.t('vehicles.emissions_nothing', n: 0), '0.0'],

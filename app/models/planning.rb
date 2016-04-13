@@ -24,7 +24,8 @@ class Planning < ActiveRecord::Base
   belongs_to :vehicle_usage_set, inverse_of: :plannings
 
   nilify_blanks
-  auto_strip_attributes :name, :ref
+  auto_strip_attributes :name
+
   validates :customer, presence: true
   validates :name, presence: true
   validates :vehicle_usage_set, presence: true
@@ -32,6 +33,8 @@ class Planning < ActiveRecord::Base
   before_create :default_routes, :update_zonings
   before_save :update_zonings
   before_save :update_vehicle_usage_set
+
+  include RefSanitizer
 
   amoeba do
     enable

@@ -353,4 +353,24 @@ class PlanningTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'validates format of REF field with invalid characters' do
+    planning = plannings :planning_one
+    assert_raises(ActiveRecord::RecordInvalid) do
+      planning.update! ref: "test.abcd"
+    end
+    assert_equal ["La référence ne doit contenir que des caractères et des chiffres"], planning.errors[:ref]
+  end
+
+  test 'validates format of REF field with valid characters' do
+    planning = plannings :planning_one
+    assert planning.update! ref: "testabcd!@\#{$%^&*()_+},;'\"`[]|{}:<>?-=~"
+  end
+
+  test 'validates format of REF field with spaces' do
+    planning = plannings :planning_one
+    assert planning.update! ref: " test abcd "
+    assert_equal "testabcd", planning.ref
+  end
+
 end

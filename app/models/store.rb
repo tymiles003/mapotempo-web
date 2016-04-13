@@ -33,6 +33,8 @@ class Store < Location
 
   before_destroy :destroy_vehicle_store
 
+  include RefSanitizer
+
   def destroy
     out_of_date # Too late to do this in before_destroy callback, children already destroyed
     super

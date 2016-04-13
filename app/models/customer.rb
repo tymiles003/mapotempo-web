@@ -66,6 +66,8 @@ class Customer < ActiveRecord::Base
     self.vehicles.select(&:orange_id).each{|vehicle| vehicle.orange_id = nil } if self.orange_user_changed? && !self.orange_user_was.nil?
   end
 
+  include RefSanitizer
+
   def default_position
     store = stores.find{ |s| !s.lat.nil? && !s.lng.nil? }
     # store ? [store.lat, store.lng] : [I18n.t('stores.default.lat'), I18n.t('stores.default.lng')]

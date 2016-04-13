@@ -33,6 +33,8 @@ class User < ActiveRecord::Base
   validates :customer, presence: true, unless: :admin?
   validates :layer, presence: true
 
+  include RefSanitizer
+
   include Confirmable
 
   def admin?

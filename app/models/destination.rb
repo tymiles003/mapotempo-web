@@ -25,6 +25,8 @@ class Destination < Location
 
   before_save :update_tags
 
+  include RefSanitizer
+
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed
     Visit.transaction do

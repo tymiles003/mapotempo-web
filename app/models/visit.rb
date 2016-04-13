@@ -23,13 +23,14 @@ class Visit < ActiveRecord::Base
   delegate :lat, :lng, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :destination
 
   nilify_blanks
-  auto_strip_attributes :ref
   validates :destination, presence: true
   validates_time :open, if: :open
   validates_time :close, presence: false, on_or_after: :open, if: :close
 
   before_save :update_tags, :create_orders
   before_update :update_out_of_date
+
+  include RefSanitizer
 
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed

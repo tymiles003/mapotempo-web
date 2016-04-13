@@ -21,7 +21,6 @@ class Route < ActiveRecord::Base
   has_many :stops, -> { order(:index) }, inverse_of: :route, autosave: true, dependent: :delete_all, after_add: :update_stops_track, after_remove: :update_stops_track
 
   nilify_blanks
-  auto_strip_attributes :ref
   validates :planning, presence: true
 #  validates :vehicle_usage, presence: true # nil on unplanned route
   validate :stop_index_validation
@@ -31,6 +30,8 @@ class Route < ActiveRecord::Base
   after_initialize :assign_defaults, if: 'new_record?'
 
   scope :for_customer, lambda{|customer| where(planning_id: customer.planning_ids) }
+
+  include RefSanitizer
 
   amoeba do
     enable

@@ -443,6 +443,10 @@ fr:
           attributes:
             stops:
               bad_index: "Mauvais index"
+        planning:
+          attributes:
+            ref:
+              invalid_format: "La référence ne doit contenir que des caractères et des chiffres"
 
   errors:
     planning:
