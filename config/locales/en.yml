@@ -642,7 +642,7 @@ en:
         title: "CSV File"
         help: "Imports destinations from CSV file. CSV files can be exported from spreadsheet or other softwares."
         file_help: "Import only CSV files."
-      import_template_help: "Help"
+      import_template_help: "Help - Columns definition"
       dialog:
         help:
           title: "Columns in your file"
@@ -1088,7 +1088,7 @@ en:
         title: "CSV File"
         help: "Import stores from CSV file. CSV files can be exported from spreadsheet or other softwares."
         file_help: "Import CSV files only"
-      import_template_help: "Help - Define your custom columns"
+      import_template_help: "Help"
       dialog:
         help:
           title: "Column names in your file"

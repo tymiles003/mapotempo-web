@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406140606) do
+ActiveRecord::Schema.define(version: 20160413130004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20160406140606) do
     t.string   "orange_password"
     t.integer  "router_dimension",                            default: 0,     null: false
     t.string   "alyacom_api_key"
+    t.text     "advanced_options"
   end
 
   add_index "customers", ["job_destination_geocoding_id"], name: "index_customers_on_job_destination_geocoding_id", using: :btree

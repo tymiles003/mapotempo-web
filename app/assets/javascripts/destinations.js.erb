@@ -376,7 +376,22 @@ var destinations_import = function(params) {
     var $elem = $(evt.currentTarget).closest('td');
     $('.column-default, .column-edit', $elem).hide();
     $('.column-def', $elem).removeClass('hide').popover({ placement : 'left', content: I18n.t('destinations.import.dialog.help.def_example'), trigger: 'focus'}).focus();
-    // $('[name=columns-save]').show();
+    $('[name=columns-save]').show();
+  });
+
+  $('[name=columns-save]').click(function(evt) {
+    var columnsDef = $('.column-def')
+      .filter(function(i, e) {
+        return $(e).val();
+      })
+      .map(function(i, e) {
+        return '"' + $(e).attr('name').replace(/import_csv\[column_def\]\[([^\]]+)\]/, '$1') + '": "' + $(e).val() + '"';
+      }).get().join(', ');
+    $.ajax({
+      type: 'put',
+      data: 'advanced_options={"import": {"destinations": {"spreadsheetColumnsDef": {' + columnsDef + '}}}}',
+      url: '/api/0.1/customers/' + params.customer_id + '.json'
+    });
   });
 }
 

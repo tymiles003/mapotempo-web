@@ -642,7 +642,7 @@ fr:
         title: "Fichier CSV"
         help: "Importe les clients depuis un fichier CSV. Les fichiers CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels."
         file_help: "Import de fichier CSV uniquement."
-      import_template_help: "Aide - Définissez vos propres colonnes"
+      import_template_help: "Aide - Définition des colonnes"
       dialog:
         help:
           title: "Liste des colonnes de votre fichier"

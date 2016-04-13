@@ -57,9 +57,9 @@
                       <% ImporterDestinations.new(current_user.customer).send(columns).each do |key, column| %>
                         <tr class="column">
                           <td>
-                            <span class="column-default">&bull; <b><%= column[:title] %></b></span>
-                            <%= text_field_tag 'import_csv[column_def][' + key.to_s + ']', nil, class: 'column-def hide', placeholder: column[:title] %>
-                            <a class="column-edit" title="<%= t 'destinations.import.dialog.help.def_help' %>"><i class="fa fa-edit fa-fw"></i></a>
+                            <span class="column-default<% if @columns_default && @columns_default[key.to_s] %> hide<% end %>">&bull; <b><%= column[:title] %></b></span>
+                            <%= text_field_tag 'import_csv[column_def][' + key.to_s + ']', @columns_default && @columns_default[key.to_s], class: (@columns_default && @columns_default[key.to_s]) ? 'column-def' : 'column-def hide', placeholder: column[:title] %>
+                            <a class="column-edit<% if @columns_default && @columns_default[key.to_s] %> hide<% end %>" title="<%= t 'destinations.import.dialog.help.def_help' %>"><i class="fa fa-edit fa-fw"></i></a>
                           </td>
                           <td><%= column[:format] %></td>
                           <td><%= column[:required] %></td>
@@ -75,7 +75,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><%= t 'all.verb.dismiss' %></button>
-                <button name="columns-save" type="button" class="btn btn-primary" data-dismiss="modal" style="display: none;"><i class="fa fa-floppy-o fa-fw"></i> <%= t 'all.verb.save' %></button>
+                <button name="columns-save" type="button" class="btn btn-primary" data-dismiss="modal"<% if !@columns_default || @columns_default.empty? %>style=" display: none;"<% end %>><i class="fa fa-floppy-o fa-fw"></i> <%= t 'all.verb.save' %></button>
               </div>
             </div>
           </div>
@@ -120,3 +120,9 @@
     <div class="progress-bar" style="width: 100%"></div>
   </div>
 </div>
+
+<%
+controller.js(
+  customer_id: current_user.customer.id
+)
+%>
