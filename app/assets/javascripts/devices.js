@@ -741,6 +741,12 @@ function devices_observe_customer(params) {
   function devices_init_customer(base_name, config, params) {
     var requests = [];
 
+    function clear_callback() {
+      $('#' + config.name + '_success').addClass('hidden');
+      $('#' + config.name + '_not_found').addClass('hidden');
+      $('.' + config.name + '-api-sync').attr('disabled', 'disabled');
+    }
+
     function success_callback() {
       $('#' + config.name + '_success').removeClass('hidden');
       $('#' + config.name + '_not_found').addClass('hidden');
@@ -795,7 +801,33 @@ function devices_observe_customer(params) {
 
       var timeout_id;
 
+      function all_fields_filled() {
+        var array = [];
+
+        var count = Object.keys(config.inputs).length;
+        if (config.password_inputs) count += Object.keys(config.password_inputs).length;
+
+        $.each(config.inputs, function(i, name) {
+          if ($('#' + base_name + '_' + config.name + '_' + name).val() != '') array.push(name)
+        });
+
+        if (config.password_inputs) {
+          $.each(config.password_inputs, function(i, name) {
+            if ($('#' + base_name + '_' + config.name + '_' + name).val() != '') array.push(name)
+          });
+        }
+        return array.length == count;
+      }
+
       function check_credentials_with_callbacks() {
+
+        // Don't check credentials unless all fields are filled
+        if (!all_fields_filled()) {
+          clear_callback();
+          return;
+        }
+
+        // Send request
         requests.push($.ajax({
           url: '/api/0.1/devices/' + config.name + '/auth.json',
           data: $.extend(user_credentials(), { check_only: 1 }),
@@ -917,7 +949,7 @@ function devices_observe_customer(params) {
     },
     {
       name: 'alyacom',
-      inputs: ['association']
+      inputs: ['association', 'api_key']
     }
   ], function(i, config) {
     if (params['enable_' + config.name]) {
