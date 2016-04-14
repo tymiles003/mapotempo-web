@@ -19,7 +19,7 @@ var routes_show = function(params) {
   if (!params.print_map) {
     window.print();
   } else {
-    $('div .print-link').click(function() {
+    $('.btn-print').click(function() {
       window.print();
     });
   }

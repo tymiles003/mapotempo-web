@@ -21,6 +21,10 @@
 
 [data-controller='api_web_v01_routes'][data-action='index'] {
 
+  leaflet-control-zoom {
+    display: none;
+  }
+
   .ui-pnotify {
     top: 20px !important;
     right: 20px !important;

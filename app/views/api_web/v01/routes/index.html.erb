@@ -17,7 +17,7 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
     name: layer.name,
     url: request.ssl? ? layer.urlssl : layer.url,
     attribution: layer.map_attribution,
-    default: layer == current_user.layer,
+    default: @layer ? layer == @layer : layer == current_user.layer,
     overlay: layer.overlay
   }
 }

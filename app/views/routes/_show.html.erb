@@ -22,7 +22,7 @@
   <% end %>
   <% if route.planning.customer.print_map %>
     <div>
-      <iframe src="/api-web/0.1/plannings/<%= route.planning.id %>/routes?ids=<%= route.id %>" width="50%" height="400px"></iframe>
+      <iframe src="/api-web/0.1/plannings/<%= route.planning.id %>/routes?ids=<%= route.id %>&layer_id=<%= route.planning.customer.profile.layers.where(print: true).first.try(&:id) %>" width="50%" height="400px"></iframe>
     </div>
   <% end %>
   <span>

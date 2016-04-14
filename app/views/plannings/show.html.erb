@@ -1,6 +1,6 @@
 <% content_for :title, @planning.name %>
 <% if @planning.customer.print_map %>
-  <div class="print-link"><a><i class="fa fa-print fa-fw"></i> <%= t '.print' %></a></div>
+  <%= button_tag class: 'btn btn-primary btn-print' do %><i class="fa fa-print fa-fw"></i> <%= t '.print' %><% end %>
 <% end %>
 <ol class="routes-print">
 <% @planning.routes.select{ |route| route.vehicle_usage && route.size_active > 0 }.each{ |route| %>

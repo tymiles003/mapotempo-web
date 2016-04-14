@@ -36,6 +36,7 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
     else
       @planning.routes
     end
+    @layer = current_user.customer.profile.layers.find(params[:layer_id]) if params[:layer_id]
   end
 
   private

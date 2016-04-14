@@ -22,15 +22,11 @@
 [data-controller='routes'][data-action='show'],
 [data-controller='plannings'][data-action='show'] {
   @media print {
-    .print-link {
+    .btn-print {
       display: none;
     }
     .route-print {
       page-break-after: always;
-
-      iframe {
-        width: 100%;
-      }
     }
     .route-print:last-of-type {
       page-break-after: avoid !important;
@@ -39,21 +35,15 @@
       page-break-inside: avoid;
     }
 
-    &.container {
-      padding: 0px;
+    .container {
+      padding: 0px !important;
     }
   }
   @media screen {
-    .print-link {
-      font-weight: bold;
+    .btn-print {
       position: fixed;
-      right: 50px;
+      right: 20px;
       cursor: pointer;
-    }
-    .route-print {
-      iframe {
-        width: 50%;
-      }
     }
   }
 
@@ -69,7 +59,9 @@
       text-align: center;
     }
     iframe {
-      height: 400px;
+      width: 20cm;
+      border: 0;
+      height: 15cm;
     }
     > ol {
       padding: 0px;

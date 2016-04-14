@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414093809) do
+ActiveRecord::Schema.define(version: 20160414142500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 20160414093809) do
     t.string   "urlssl",                      null: false
     t.string   "source",                      null: false
     t.boolean  "overlay",     default: false
+    t.boolean  "print",       default: false, null: false
   end
 
   create_table "layers_profiles", id: false, force: :cascade do |t|
