@@ -44,8 +44,9 @@ var customers_index = function(params) {
 
       map.invalidateSize();
       if (layer.getLayers().length > 0) {
-        map.fitBounds(layer.getBounds().pad(1.1), {
-          maxZoom: 15
+        map.fitBounds(layer.getBounds(), {
+          maxZoom: 15,
+          padding: [20, 20]
         });
       }
     }

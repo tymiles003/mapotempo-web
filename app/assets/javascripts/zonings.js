@@ -273,9 +273,10 @@ var zonings_edit = function(params) {
       ).getBounds();
       if (bounds && bounds.isValid()) {
         map.invalidateSize();
-        map.fitBounds(bounds.pad(1.1), {
+        map.fitBounds(bounds, {
           maxZoom: 15,
-          animate: false
+          animate: false,
+          padding: [20, 20]
         });
       }
     }

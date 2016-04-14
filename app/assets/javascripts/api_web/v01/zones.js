@@ -111,8 +111,9 @@ var api_web_v01_zones_index = function(params) {
 
     var bounds = featureGroup.getBounds();
     if (bounds && bounds.isValid()) {
-      map.fitBounds(bounds.pad(1.1), {
-        maxZoom: 15
+      map.fitBounds(bounds, {
+        maxZoom: 15,
+        padding: [20, 20]
       });
     }
   }

@@ -73,8 +73,9 @@ var mapInitialize = function(params) {
       errorMessage: I18n.t('web.geocoder.empty_result')
     }).addTo(map);
     geocoder.markGeocode = function(result) {
-      this._map.fitBounds(result.bbox.pad(1.1), {
-        maxZoom: 15
+      this._map.fitBounds(result.bbox, {
+        maxZoom: 15,
+        padding: [20, 20]
       });
       var focusGeocode = L.marker(result.center, {
         icon: new L.divIcon({

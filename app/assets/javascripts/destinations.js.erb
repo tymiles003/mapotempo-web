@@ -824,8 +824,9 @@ var destinations_index = function(params, api) {
     });
 
     if (markersLayers.getLayers().length > 0) {
-      map.fitBounds(markersLayers.getBounds().pad(1.1), {
-        maxZoom: 15
+      map.fitBounds(markersLayers.getBounds(), {
+        maxZoom: 15,
+        padding: [20, 20]
       });
     }
 

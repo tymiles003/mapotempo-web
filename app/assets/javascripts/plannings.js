@@ -933,7 +933,10 @@ var plannings_edit = function(params) {
       var bounds = routes_layers.getBounds();
       if (bounds && bounds.isValid()) {
         map.invalidateSize();
-        map.fitBounds(bounds.pad(1.1), {animate: false});
+        map.fitBounds(bounds, {
+          animate: false,
+          padding: [20, 20]
+        });
       }
     }
   }

@@ -123,8 +123,9 @@ var api_web_v01_destinations_index = function(params, api) {
   var display_destinations = function(data) {
     api_web_v01_display_destinations_(api, map, data);
     if (markersLayers.getLayers().length > 0) {
-      map.fitBounds(markersLayers.getBounds().pad(1.1), {
-        maxZoom: 15
+      map.fitBounds(markersLayers.getBounds(), {
+        maxZoom: 15,
+        padding: [20, 20]
       });
     }
   }
