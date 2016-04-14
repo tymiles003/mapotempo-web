@@ -19,94 +19,120 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@media print {
-  .route-print {
-    page-break-after: always;
-  }
-  .route-print:last-of-type {
-    page-break-after: avoid !important;
-  }
-  li.list-group-item {
-    page-break-inside: avoid;
-  }
+[data-controller='routes'][data-action='show'],
+[data-controller='plannings'][data-action='show'] {
+  @media print {
+    .print-link {
+      display: none;
+    }
+    .route-print {
+      page-break-after: always;
 
-  [data-controller='plannings'].container {
-    padding: 0px;
-  }
-}
-
-ol.routes-print {
-  padding: 0px;
-  position: relative;
-}
-.route-print {
-  position: relative;
-  list-style: none;
-
-  > h1 {
-    text-align: center;
-  }
-  > ol {
-    padding: 0px;
-
-    li {
-      padding: 0px;
-    }
-    li:nth-child(odd) {
-      background: lightgray !important;
-      -webkit-print-color-adjust: exact;
-    }
-    li.store, li.stop {
-      padding-left: 5px;
-    }
-    .number {
-      background: #111 !important;
-      padding: 0px 6px;
-      border: 1px solid #222;
-      border-radius: 20px;
-      color: white !important;
-      -webkit-print-color-adjust: exact;
-    }
-    .number, .name {
-      font-size: 150%;
-      font-weight: bold;
-    }
-    .title {
-      .window {
-        display: block;
+      iframe {
+        width: 100%;
       }
     }
-    .ref {
-      font-weight: bold;
+    .route-print:last-of-type {
+      page-break-after: avoid !important;
     }
-    .quantity {
-      font-weight: bold;
-    }
-    .comment {
-      font-style: italic;
+    li.list-group-item {
+      page-break-inside: avoid;
     }
 
-    .annotating .signature {
-      height: 4em;
+    &.container {
+      padding: 0px;
     }
-
-    .service-time {
-      border-left: 5px solid #003880;
-      padding: 3px 5px;
+  }
+  @media screen {
+    .print-link {
+      font-weight: bold;
+      position: fixed;
+      right: 50px;
+      cursor: pointer;
+    }
+    .route-print {
+      iframe {
+        width: 50%;
+      }
     }
   }
 
-  .row.errors {
-    margin: 5px;
+  ol.routes-print {
+    padding: 0px;
+    position: relative;
   }
-}
+  .route-print {
+    position: relative;
+    list-style: none;
 
-.route-info {
-  white-space: nowrap;
-}
+    > h1 {
+      text-align: center;
+    }
+    iframe {
+      height: 400px;
+    }
+    > ol {
+      padding: 0px;
 
-.global_info {
-  span {
+      li {
+        padding: 0px;
+      }
+      li:nth-child(odd) {
+        background: lightgray !important;
+        -webkit-print-color-adjust: exact;
+      }
+      li.store, li.stop {
+        padding-left: 5px;
+      }
+      .number {
+        background: #111 !important;
+        padding: 0px 6px;
+        border: 1px solid #222;
+        border-radius: 20px;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+      }
+      .number, .name {
+        font-size: 150%;
+        font-weight: bold;
+      }
+      .title {
+        .window {
+          display: block;
+        }
+      }
+      .ref {
+        font-weight: bold;
+      }
+      .quantity {
+        font-weight: bold;
+      }
+      .comment {
+        font-style: italic;
+      }
+
+      .annotating .signature {
+        height: 4em;
+      }
+
+      .service-time {
+        border-left: 5px solid #003880;
+        padding: 3px 5px;
+      }
+    }
+
+    .row.errors {
+      margin: 5px;
+    }
+  }
+
+  .route-info {
     white-space: nowrap;
+  }
+
+  .global_info {
+    span {
+      white-space: nowrap;
+    }
   }
 }

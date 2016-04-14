@@ -94,6 +94,9 @@
           <%= f.text_area :print_header do %>
             <p class="help-block"><%= t '.print_header_help' %></p>
           <% end %>
+          <%= f.toggles t 'activerecord.attributes.customer.print_map' do %>
+            <%= f.check_box :print_map %>
+          <% end %>
         </div>
       </div>
     </div>

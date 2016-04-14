@@ -17,6 +17,7 @@
 //
 Paloma.controller('Routes', {
   show: function() {
-    window.print();
+    if (!params.print_map) window.print();
+    else $('div .print-link').click(function() { window.print(); });
   }
 });

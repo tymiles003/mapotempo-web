@@ -160,6 +160,7 @@ fr:
         print_planning_annotating: "Émargement des feuilles de routes"
         print_header: "Entête des tournées"
         print_stop_time: "Inclure les horaires de passage"
+        print_map: "Inclure la carte"
         stores: "Dépôts"
         enable_orders: "Activer les commandes"
         enable_multi_vehicle_usage_sets: "Autoriser les configurations de véhicules multiples"
@@ -1039,9 +1040,12 @@ fr:
       zonings_help: "Permet d'affecter automatiquement des visites/clients à des véhicules suivant des zones géographiques prédéfinies."
       avoid_zones_help: "Permet également de définir des zones où ne pas circuler."
       default: "Défaut"
+    show:
+      print: "Imprimer"
 
   routes:
     show:
+      print: "Imprimer"
       wait: "Temps d'attente :"
       annotating:
         hour: "Heure de passage :"

@@ -20,6 +20,11 @@
       <%= raw(route.planning.customer.print_header) %>
     </div>
   <% end %>
+  <% if route.planning.customer.print_map %>
+    <div>
+      <iframe src="/api-web/0.1/plannings/<%= route.planning.id %>/routes?ids=<%= route.id %>" width="50%" height="400px"></iframe>
+    </div>
+  <% end %>
   <span>
     <i class="fa fa-check-square fa-fw"></i> <%= route.size_active %>&nbsp;<%= I18n.t 'plannings.edit.stops' %>
     <i class="fa fa-clock-o fa-fw"></i> <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>

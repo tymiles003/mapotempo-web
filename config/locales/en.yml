@@ -160,6 +160,7 @@ en:
         print_planning_annotating: "Planning annotating"
         print_header: "Routes header"
         print_stop_time: "Include stop time"
+        print_map: "Include map"
         stores: "Stores"
         enable_orders: "Enable orders"
         enable_multi_vehicle_usage_sets: "Enable more than one vehicles configurations"
@@ -1039,9 +1040,12 @@ en:
       zonings_help: "Allow to automatically assign vehicles to visits/destinations with geographical zones."
       avoid_zones_help: "In addition, allow to define zones where vehicle cannot circulate."
       default: "Default"
+    show:
+      print: "Print"
 
   routes:
     show:
+      print: "Print"
       wait: "Waiting time:"
       annotating:
         hour: "Passing Time:"

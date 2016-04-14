@@ -1,4 +1,13 @@
 <% content_for :title, @route.ref || @route.vehicle_usage.vehicle.name %>
+<% if @route.planning.customer.print_map %>
+  <div class="print-link"><a><i class="fa fa-print fa-fw"></i> <%= t '.print' %></a></div>
+<% end %>
 <ol class="routes-print">
 <%= render 'show', route: @route %>
 </ol>
+
+<%
+controller.js(
+  print_map: @route.planning.customer.print_map
+)
+%>
