@@ -15,6 +15,8 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-Paloma.controller('Route').prototype.show = function() {
-  window.print();
-};
+Paloma.controller('Routes', {
+  show: function() {
+    window.print();
+  }
+});

@@ -75,14 +75,6 @@ GIT
     leaflet_numbered_markers-rails (0.0.1)
 
 GIT
-  remote: git://github.com/frodrigo/paloma.git
-  revision: 3a92dfc6b7d8d864d3a1f3955d05d1261ecec214
-  branch: 3.0
-  specs:
-    paloma (3.0.1)
-      jquery-rails
-
-GIT
   remote: git://github.com/moneyadviceservice/tidy-html5-gem.git
   revision: 54b78c66e94b32ab73d9907508857f4ceee5e032
   specs:
@@ -316,6 +308,7 @@ GEM
       nokogiri
     nori (2.6.0)
     orm_adapter (0.5.0)
+    paloma (5.0.0)
     parser (2.3.0.7)
       ast (~> 2.2)
     pg (0.18.4)
@@ -571,7 +564,7 @@ DEPENDENCIES
   mustache (< 1.0.0)
   nilify_blanks
   nokogiri
-  paloma!
+  paloma
   pg
   pnotify-rails
   polylines

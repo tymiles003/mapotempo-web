@@ -399,18 +399,17 @@ var order_arrays_edit = function(params) {
   });
 }
 
-Paloma.controller('OrderArray').prototype.new = function() {
-  order_arrays_new(this.params);
-};
-
-Paloma.controller('OrderArray').prototype.create = function() {
-  order_arrays_new(this.params);
-};
-
-Paloma.controller('OrderArray').prototype.edit = function() {
-  order_arrays_edit(this.params);
-};
-
-Paloma.controller('OrderArray').prototype.update = function() {
-  order_arrays_edit(this.params);
-};
+Paloma.controller('OrderArrays', {
+  new: function() {
+    order_arrays_new(this.params);
+  },
+  create: function() {
+    order_arrays_new(this.params);
+  },
+  edit: function() {
+    order_arrays_edit(this.params);
+  },
+  update: function() {
+    order_arrays_edit(this.params);
+  }
+});

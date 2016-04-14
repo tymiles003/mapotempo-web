@@ -30,18 +30,17 @@ var vehicle_usages_form = function(params) {
   devices_observe_vehicle(params);
 }
 
-Paloma.controller('VehicleUsage').prototype.new = function() {
-  vehicle_usages_form(this.params);
-};
-
-Paloma.controller('VehicleUsage').prototype.create = function() {
-  vehicle_usages_form(this.params);
-};
-
-Paloma.controller('VehicleUsage').prototype.edit = function() {
-  vehicle_usages_form(this.params);
-};
-
-Paloma.controller('VehicleUsage').prototype.update = function() {
-  vehicle_usages_form(this.params);
-};
+Paloma.controller('VehicleUsages', {
+  new: function() {
+    vehicle_usages_form(this.params);
+  },
+  create: function() {
+    vehicle_usages_form(this.params);
+  },
+  edit: function() {
+    vehicle_usages_form(this.params);
+  },
+  update: function() {
+    vehicle_usages_form(this.params);
+  }
+});

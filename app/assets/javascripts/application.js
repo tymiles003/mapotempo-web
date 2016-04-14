@@ -102,4 +102,10 @@ $( document ).ready(function() {
   }
   $(document).on("page:fetch", startSpinner);
   $(document).on("page:receive", stopSpinner);
+
+  Paloma.start();
+});
+
+$(document).on('page:restore', function(){
+  Paloma.start();
 });

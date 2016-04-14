@@ -1091,22 +1091,20 @@ var plannings_show = function(params){
   window.print();
 }
 
-Paloma.controller('Planning').prototype.new = function() {
-  plannings_new(this.params);
-};
-
-Paloma.controller('Planning').prototype.create = function() {
-  plannings_new(this.params);
-};
-
-Paloma.controller('Planning').prototype.edit = function() {
-  plannings_edit(this.params);
-};
-
-Paloma.controller('Planning').prototype.update = function() {
-  plannings_edit(this.params);
-};
-
-Paloma.controller('Planning').prototype.show = function() {
-  plannings_show(this.params);
-};
+Paloma.controller('Plannings', {
+  new: function() {
+    plannings_new(this.params);
+  },
+  create: function() {
+    plannings_new(this.params);
+  },
+  edit: function() {
+    plannings_edit(this.params);
+  },
+  update: function() {
+    plannings_edit(this.params);
+  },
+  show: function() {
+    plannings_show(this.params);
+  }
+});

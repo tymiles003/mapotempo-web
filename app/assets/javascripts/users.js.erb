@@ -31,14 +31,11 @@ var user_edit_settings = function(params) {
   });
 }
 
-Paloma.controller('Devise/Registration').prototype.edit = function() {};
-
-Paloma.controller('Devise/Registration').prototype.update = function() {};
-
-Paloma.controller('User').prototype.edit = function() {
-  user_edit_settings(this.params);
-};
-
-Paloma.controller('User').prototype.update = function() {
-  user_edit_settings(this.params);
-};
+Paloma.controller('Users', {
+  edit: function() {
+    user_edit_settings(this.params);
+  },
+  update: function() {
+    user_edit_settings(this.params);
+  }
+});

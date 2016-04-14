@@ -46,21 +46,20 @@ var tags_form = function() {
   });
 }
 
-Paloma.controller('Tag').prototype.new = function() {
-  tags_form();
-};
-
-Paloma.controller('Tag').prototype.create = function() {
-  tags_form();
-};
-
-Paloma.controller('Tag').prototype.edit = function() {
-  tags_form();
-};
-
-Paloma.controller('Tag').prototype.update = function() {
-  tags_form();
-};
+Paloma.controller('Tags', {
+  new: function() {
+    tags_form();
+  },
+  create: function() {
+    tags_form();
+  },
+  edit: function() {
+    tags_form();
+  },
+  update: function() {
+    tags_form();
+  }
+});
 
 var templateTag = function(item) {
   var color = $(item.element).attr('data-color');

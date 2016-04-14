@@ -45,22 +45,20 @@ var vehicle_usage_sets_edit = function(params) {
   });
 }
 
-Paloma.controller('VehicleUsageSet').prototype.index = function() {
-  vehicle_usage_sets_index(this.params);
-};
-
-Paloma.controller('VehicleUsageSet').prototype.new = function() {
-  vehicle_usage_sets_edit(this.params);
-};
-
-Paloma.controller('VehicleUsageSet').prototype.create = function() {
-  vehicle_usage_sets_edit(this.params);
-};
-
-Paloma.controller('VehicleUsageSet').prototype.edit = function() {
-  vehicle_usage_sets_edit(this.params);
-};
-
-Paloma.controller('VehicleUsageSet').prototype.update = function() {
-  vehicle_usage_sets_edit(this.params);
-};
+Paloma.controller('VehicleUsageSets', {
+  index: function() {
+    vehicle_usage_sets_index(this.params);
+  },
+  new: function() {
+    vehicle_usage_sets_edit(this.params);
+  },
+  create: function() {
+    vehicle_usage_sets_edit(this.params);
+  },
+  edit: function() {
+    vehicle_usage_sets_edit(this.params);
+  },
+  update: function() {
+    vehicle_usage_sets_edit(this.params);
+  }
+});

@@ -99,22 +99,20 @@ var customers_edit = function(params) {
   });
 }
 
-Paloma.controller('Customer').prototype.index = function() {
-  customers_index(this.params);
-};
-
-Paloma.controller('Customer').prototype.new = function() {
-  customers_edit(this.params);
-};
-
-Paloma.controller('Customer').prototype.create = function() {
-  customers_edit(this.params);
-};
-
-Paloma.controller('Customer').prototype.edit = function() {
-  customers_edit(this.params);
-};
-
-Paloma.controller('Customer').prototype.update = function() {
-  customers_edit(this.params);
-};
+Paloma.controller('Customers', {
+  index: function() {
+    customers_index(this.params);
+  },
+  new: function() {
+    customers_edit(this.params);
+  },
+  create: function() {
+    customers_edit(this.params);
+  },
+  edit: function() {
+    customers_edit(this.params);
+  },
+  update: function() {
+    customers_edit(this.params);
+  }
+});

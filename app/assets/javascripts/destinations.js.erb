@@ -343,45 +343,6 @@ var destinations_form = function(params, api) {
   }
 }
 
-var destinations_new = function(params, api) {
-  destinations_form(params, api);
-}
-
-var destinations_edit = function(params, api) {
-  destinations_form(params, api);
-}
-
-Paloma.controller('Destination').prototype.new = function() {
-  destinations_new(this.params, 'destinations');
-};
-
-Paloma.controller('Destination').prototype.create = function() {
-  destinations_new(this.params, 'destinations');
-};
-
-Paloma.controller('Destination').prototype.edit = function() {
-  destinations_edit(this.params, 'destinations');
-};
-
-Paloma.controller('Destination').prototype.update = function() {
-  destinations_edit(this.params, 'destinations');
-};
-
-Paloma.controller('Store').prototype.new = function() {
-  destinations_new(this.params, 'stores');
-};
-
-Paloma.controller('Store').prototype.create = function() {
-  destinations_new(this.params, 'stores');
-};
-
-Paloma.controller('Store').prototype.edit = function() {
-  destinations_edit(this.params, 'stores');
-};
-
-Paloma.controller('Store').prototype.update = function() {
-  destinations_edit(this.params, 'stores');
-};
 
 var destinations_import = function(params) {
   $("#dialog-upload").dialog({
@@ -418,26 +379,6 @@ var destinations_import = function(params) {
     // $('[name=columns-save]').show();
   });
 }
-
-Paloma.controller('Destination').prototype.import = function() {
-  destinations_import(this.params);
-};
-
-Paloma.controller('Destination').prototype.upload_csv = function() {
-  destinations_import(this.params);
-};
-
-Paloma.controller('Destination').prototype.upload_tomtom = function() {
-  destinations_import(this.params);
-};
-
-Paloma.controller('Store').prototype.import = function() {
-  destinations_import(this.params);
-};
-
-Paloma.controller('Store').prototype.upload = function() {
-  destinations_import(this.params);
-};
 
 var destinations_index = function(params, api) {
 
@@ -1091,6 +1032,58 @@ var destinations_index = function(params, api) {
   });
 }
 
-Paloma.controller('Destination').prototype.index = function() {
-  destinations_index(this.params, 'destinations');
-};
+var destinations_new = function(params, api) {
+  destinations_form(params, api);
+}
+
+var destinations_edit = function(params, api) {
+  destinations_form(params, api);
+}
+
+Paloma.controller('Destinations', {
+  new: function() {
+    destinations_new(this.params, 'destinations');
+  },
+  create: function() {
+    destinations_new(this.params, 'destinations');
+  },
+  edit: function() {
+    destinations_edit(this.params, 'destinations');
+  },
+  update: function() {
+    destinations_edit(this.params, 'destinations');
+  },
+  import: function() {
+    destinations_import(this.params);
+  },
+  upload_csv: function() {
+    destinations_import(this.params);
+  },
+  upload_tomtom: function() {
+    destinations_import(this.params);
+  },
+  index: function() {
+    destinations_index(this.params, 'destinations');
+  }
+});
+
+Paloma.controller('Stores', {
+  new: function() {
+    destinations_new(this.params, 'stores');
+  },
+  create: function() {
+    destinations_new(this.params, 'stores');
+  },
+  edit: function() {
+    destinations_edit(this.params, 'stores');
+  },
+  update: function() {
+    destinations_edit(this.params, 'stores');
+  },
+  import: function() {
+    destinations_import(this.params);
+  },
+  upload: function() {
+    destinations_import(this.params);
+  }
+});
