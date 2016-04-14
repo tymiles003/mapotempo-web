@@ -143,6 +143,8 @@ var api_web_v01_zones_index = function(params) {
   });
 }
 
-Paloma.controller('ApiWeb/V01/Zone').prototype.index = function() {
-  api_web_v01_zones_index(this.params);
-};
+Paloma.controller('ApiWeb/V01/Zones', {
+  index: function() {
+    api_web_v01_zones_index(this.params);
+  }
+});

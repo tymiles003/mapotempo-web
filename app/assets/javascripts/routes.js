@@ -15,9 +15,18 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+var routes_show = function(params) {
+  if (!params.print_map) {
+    window.print();
+  } else {
+    $('div .print-link').click(function() {
+      window.print();
+    });
+  }
+}
+
 Paloma.controller('Routes', {
   show: function() {
-    if (!params.print_map) window.print();
-    else $('div .print-link').click(function() { window.print(); });
+    routes_show(this.params);
   }
 });

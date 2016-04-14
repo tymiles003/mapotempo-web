@@ -7,5 +7,6 @@
   <body class="main container" data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
     <%= yield %>
     <%= render partial: "shared/flash_messages" %>
+    <%= insert_paloma_hook %>
   </body>
 </html>

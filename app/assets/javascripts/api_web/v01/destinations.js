@@ -15,21 +15,6 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-Paloma.controller('ApiWeb/V01/Destination').prototype.edit_position = function() {
-  destinations_edit(this.params, 'destinations');
-};
-
-Paloma.controller('ApiWeb/V01/Destination').prototype.update_position = function() {
-  destinations_edit(this.params, 'destinations');
-};
-
-Paloma.controller('ApiWeb/V01/Store').prototype.edit_position = function() {
-  destinations_edit(this.params, 'stores');
-};
-
-Paloma.controller('ApiWeb/V01/Store').prototype.update_position = function() {
-  destinations_edit(this.params, 'stores');
-};
 
 var api_web_v01_display_destinations_ = function(api, map, data) {
   var tags = {};
@@ -167,10 +152,26 @@ var api_web_v01_destinations_index = function(params, api) {
   });
 }
 
-Paloma.controller('ApiWeb/V01/Destination').prototype.index = function() {
-  api_web_v01_destinations_index(this.params, 'destinations');
-};
+Paloma.controller('ApiWeb/V01/Destinations', {
+  edit_position: function() {
+    destinations_edit(this.params, 'destinations');
+  },
+  update_position: function() {
+    destinations_edit(this.params, 'destinations');
+  },
+  index: function() {
+    api_web_v01_destinations_index(this.params, 'destinations');
+  }
+});
 
-Paloma.controller('ApiWeb/V01/Store').prototype.index = function() {
-  api_web_v01_destinations_index(this.params, 'stores');
-};
+Paloma.controller('ApiWeb/V01/Stores', {
+  edit_position: function() {
+    destinations_edit(this.params, 'stores');
+  },
+  update_position: function() {
+    destinations_edit(this.params, 'stores');
+  },
+  index: function() {
+    api_web_v01_destinations_index(this.params, 'stores');
+  }
+});

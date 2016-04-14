@@ -277,6 +277,8 @@ var api_web_v01_routes_index = function(params) {
   });
 }
 
-Paloma.controller('ApiWeb/V01/Route').prototype.index = function() {
-  api_web_v01_routes_index(this.params);
-};
+Paloma.controller('ApiWeb/V01/Routes', {
+  index: function() {
+    api_web_v01_routes_index(this.params);
+  }
+});
