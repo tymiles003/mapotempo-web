@@ -52,7 +52,7 @@ controller.js(
         <% if current_user.admin? %>
           <td><a href="/?api_key=<%= user.api_key %>"><%= t '.user.connect_as' %></a></td>
           <td class="text-right">
-            <%= link_to send_email_admin_user_path(user, url: edit_customer_path(@customer)), class: 'btn btn-primary btn-sm' do %>
+            <%= link_to send_email_admin_user_path(user, url: edit_customer_path(@customer)), class: 'btn btn-default btn-sm' do %>
               <i class="fa fa-envelope fa-fw"></i>
               <%= t '.send_email' %>
             <% end %>
