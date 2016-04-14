@@ -157,15 +157,22 @@ class V01::Plannings < Grape::API
       status 200
     end
 
-    desc 'Starts synchronous routes optimization.',
-      detail: 'Not Implemented',
+    desc 'Optimize Routes',
+      detail: 'Optimize Routes',
       nickname: 'optimizeRoutes'
     params do
       requires :id, type: String, desc: ID_DESC
+      optional :details, type: Boolean, desc: 'Output Route Details', default: false
+      optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
     end
-    get ':id/optimize_each_routes' do
-      # TODO
-      error!('501 Not Implemented', 501)
+    get ':id/optimize' do
+      planning = current_customer.plannings.find params[:id]
+      Optimizer.optimize_each planning, params[:synchronous]
+      if params[:details]
+        present planning, with: V01::Entities::Planning
+      else
+        status 204
+      end
     end
 
     desc 'Clone the planning.',

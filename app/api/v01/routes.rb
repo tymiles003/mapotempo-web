@@ -136,12 +136,13 @@ class V01::Routes < Grape::API
           nickname: 'optimizeRoute'
         params do
           requires :id, type: String, desc: ID_DESC
-          optional :details, type: Boolean, desc: 'Ouput route details'
+          optional :details, type: Boolean, desc: 'Output Route Details', default: false
+          optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
         end
         patch ':id/optimize' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           route = current_customer.plannings.where(planning_id).first!.routes.find{ |r| ParseIdsRefs.match(params[:id], r) }
-          if !Optimizer.optimize(route.planning, route, true)
+          if !Optimizer.optimize(route.planning, route, params[:synchronous])
             status 304
           else
             route.planning.customer.save!
