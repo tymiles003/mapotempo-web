@@ -44,6 +44,7 @@
       position: fixed;
       right: 20px;
       cursor: pointer;
+      z-index: 100;
     }
   }
 
@@ -62,6 +63,7 @@
       width: 20cm;
       border: 0;
       height: 15cm;
+      background-color: #ddd;
     }
     > ol {
       padding: 0px;
