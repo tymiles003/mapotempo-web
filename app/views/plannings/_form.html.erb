@@ -1,9 +1,9 @@
 <% options = @planning.id ? {layout: :horizontal, default_div_class: 'col-lg-10 col-md-10'} : {layout: :horizontal} %>
 <%= twitter_bootstrap_form_for @planning, options do |f| %>
   <%= render 'shared/error_messages', model: @planning %>
-  <%= f.text_field :name %>
+  <%= f.text_field :name, required: true %>
   <% if @planning.customer.vehicle_usage_sets.size > 1 %>
-    <%= f.collection_select :vehicle_usage_set_id, @planning.id ? t('activerecord.attributes.planning.vehicle_usage_set_small') : [], @planning.customer.vehicle_usage_sets, :id, :name, {}, {} %>
+    <%= f.collection_select :vehicle_usage_set_id, @planning.id ? t('activerecord.attributes.planning.vehicle_usage_set_small') : [], @planning.customer.vehicle_usage_sets, :id, :name, {}, {required: true} %>
   <% else %>
     <%= f.hidden_field :vehicle_usage_set_id, value: @planning.customer.vehicle_usage_sets[0].id %>
   <% end %>

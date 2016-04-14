@@ -1,13 +1,13 @@
 <%= twitter_bootstrap_form_for @vehicle_usage_set, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @vehicle_usage_set %>
-  <%= f.text_field :name %>
-  <%= f.text_field :open, {value: @vehicle_usage_set.open && l(@vehicle_usage_set.open, format: :hour_minute), input_group: t('all.unit.hour_minute')} do %>
+  <%= f.text_field :name, required: true %>
+  <%= f.text_field :open, required: true, value: @vehicle_usage_set.open && l(@vehicle_usage_set.open, format: :hour_minute), input_group: t('all.unit.hour_minute') do %>
     <p class="help-block"><%= t '.open_help' %></p>
   <% end %>
-  <%= f.text_field :close, {value: @vehicle_usage_set.close && l(@vehicle_usage_set.close, format: :hour_minute), input_group: t('all.unit.hour_minute')} do %>
+  <%= f.text_field :close, required: true, value: @vehicle_usage_set.close && l(@vehicle_usage_set.close, format: :hour_minute), input_group: t('all.unit.hour_minute') do %>
     <p class="help-block"><%= t '.close_help' %></p>
   <% end %>
-  <%= f.collection_select :store_start_id, [], @vehicle_usage_set.customer.stores, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
+  <%= f.collection_select :store_start_id, [], @vehicle_usage_set.customer.stores, :id, :name, {}, {required: true, input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
   <%= f.collection_select :store_stop_id, [], @vehicle_usage_set.customer.stores, :id, :name, {include_blank: t('vehicle_usage_sets.form.store.none')}, {input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
   <%= f.text_field :rest_duration, {
     value: @vehicle_usage_set.rest_duration && l(@vehicle_usage_set.rest_duration, format: :hour_minute),

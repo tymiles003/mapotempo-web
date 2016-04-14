@@ -3,7 +3,7 @@
   <% if @planning %>
     <input id="planning_id" type="hidden" value="<%= @planning.id %>" name="planning_id">
   <% end %>
-  <%= f.text_field :name %>
+  <%= f.text_field :name, required: true %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

@@ -1,9 +1,9 @@
 <%= twitter_bootstrap_form_for [:admin, @reseller], layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @reseller %>
-  <%= f.text_field :host do %>
+  <%= f.text_field :host, required: true do %>
     <p class="help-block"><%= t '.host_help' %></p>
   <% end %>
-  <%= f.text_field :name do %>
+  <%= f.text_field :name, required: true do %>
     <p class="help-block"><%= t '.name_help' %></p>
   <% end %>
   <%= f.text_field :welcome_url do %>

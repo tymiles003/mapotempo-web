@@ -15,7 +15,7 @@
             <p class="help-block"><%= t 'vehicles.form.ref.help' %></p>
           <% end %>
         <% end %>
-        <%= f.text_field :name %>
+        <%= f.text_field :name, required: true %>
         <%= f.text_field :contact_email, {input_group: content_tag('i', '', class: 'fa fa-envelope fa-fw')} do %>
           <p class="help-block"><%= t 'vehicles.form.contact_email.help' %></p>
         <% end %>

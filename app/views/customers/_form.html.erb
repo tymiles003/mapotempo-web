@@ -3,9 +3,9 @@
   <% if current_user.admin? %>
     <%= f.text_field :ref %>
   <% end %>
-  <%= f.text_field :name, t('.name'), disabled:!current_user.admin? %>
+  <%= f.text_field :name, t('.name'), required: true, disabled: !current_user.admin? %>
   <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
-  <%= f.number_field :max_vehicles, {min:1, disabled: (Mapotempo::Application.config.manage_vehicles_only_admin && !current_user.admin?) }  %>
+  <%= f.number_field :max_vehicles, min:1, disabled: (Mapotempo::Application.config.manage_vehicles_only_admin && !current_user.admin?) %>
   <% if current_user.admin? %>
     <%= f.toggles t 'activerecord.attributes.customer.test' do %>
       <%= f.check_box :test %>
@@ -16,7 +16,7 @@
       <%= t '.default_value' %>
     </legend>
     <% if current_user.admin? %>
-      <%= f.collection_select :profile_id, [], Profile.all, :id, :name, {}, {input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} %>
+      <%= f.collection_select :profile_id, [], Profile.all, :id, :name, {}, {required: true, input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} %>
     <% end %>
     <div id="customer_router_input" class="form-group">
       <label class="col-md-2 control-label" for="customer_router"><%= t 'activerecord.attributes.customer.router' %></label>
@@ -28,7 +28,7 @@
               }]] + [[t('activerecord.attributes.router.router_dimensions.distance'), routers.select(&:distance?).collect{ |router|
               [router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.distance'), router.id.to_s + '_distance']
               }]],
-            @customer.router_id.to_s + '_' + @customer.router_dimension), class: 'form-control' %>
+            @customer.router_id.to_s + '_' + @customer.router_dimension), class: 'form-control', required: true %>
           <span class="input-group-addon"><i class="fa fa-gear fa-fw"></i></span>
         </div>
         <p class="help-block"><%= t '.router_help' %></p>
@@ -40,7 +40,7 @@
     <%= f.text_field :take_over, {value: @customer.take_over && l(@customer.take_over, format: :hour_minute_second), input_group: t('all.unit.hour_minute_second')} do %>
       <p class="help-block"><%= t '.take_over_help' %></p>
     <% end %>
-    <%= f.text_field :default_country %>
+    <%= f.text_field :default_country, required: true %>
   </fieldset>
   <% if current_user.admin? %>
     <fieldset>

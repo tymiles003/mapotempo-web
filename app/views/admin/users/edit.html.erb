@@ -4,7 +4,7 @@
 <%= twitter_bootstrap_form_for [:admin, @user], layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @user %>
   <%= hidden_field_tag :url, params[:url] %>
-  <%= f.email_field :email, autocomplete: "off" %>
+  <%= f.email_field :email, required: true, autocomplete: "off" %>
   <%= f.password_field :password %>
   <%= f.password_field :password_confirmation %>
   <%= f.collection_select :customer_id, [], @customers, :id, :name %>

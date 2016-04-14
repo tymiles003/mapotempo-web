@@ -1,9 +1,9 @@
 <%= twitter_bootstrap_form_for @product, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @product %>
-  <%= f.text_field :name do %>
+  <%= f.text_field :name, required: true do %>
     <p class="help-block"><%= t '.name_help' %></p>
   <% end %>
-  <%= f.text_field :code do %>
+  <%= f.text_field :code, required: true do %>
     <p class="help-block"><%= t '.code_help' %></p>
   <% end %>
   <%= f.actions do %>

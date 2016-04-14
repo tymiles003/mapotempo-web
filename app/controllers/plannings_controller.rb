@@ -79,6 +79,7 @@ class PlanningsController < ApplicationController
 
   def new
     @planning = current_user.customer.plannings.build()
+    @planning.vehicle_usage_set = current_user.customer.vehicle_usage_sets[0]
   end
 
   def edit

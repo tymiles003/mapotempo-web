@@ -92,6 +92,12 @@ hr {
   background: transparent;
 }
 
+/* Bootstrap */
+input.form-control[required],
+select.form-control[required] {
+  background: #ffffda;
+}
+
 /** External look-like **/
 
 /* Select2 */
@@ -172,11 +178,6 @@ hr {
   .tablesorter-headerDesc .tablesorter-header-inner:after {
     content: "\f0dd";
   }
-}
-
-/* jQuery UI - dialog */
-.ui-dialog-titlebar-close {
-  display: none;
 }
 
 /* Leaflet geocoder */
