@@ -70,6 +70,14 @@ a.btn-primary:active { color:#FFFFFF; }
 .navbar .dropdown-menu {
   max-height: 400px;
 }
+.navbar .dropdown-toggle span.menu_label {
+  max-width: 15em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: bottom;
+}
 
 .leaflet-top, .leaflet-bottom {
     z-index: 999 !important; /* Bootstrap also use 1000 for control */
