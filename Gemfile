@@ -84,6 +84,7 @@ gem 'rack-cors'
 gem 'swagger-docs'
 
 gem 'rails-i18n'
+gem 'http_accept_language'
 gem 'execjs'
 gem 'therubyracer'
 gem 'devise'

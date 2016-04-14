@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2016
 #
 # This file is part of Mapotempo.
 #
@@ -21,6 +21,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   layout :layout_by_resource
+
+  include HttpAcceptLanguage::AutoLocale
 
   before_action :api_key?, :load_vehicles
 
