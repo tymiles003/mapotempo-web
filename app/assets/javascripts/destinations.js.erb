@@ -345,9 +345,9 @@ var destinations_form = function(params, api) {
 
 
 var destinations_import = function(params) {
-  $("#dialog-upload").dialog({
-    autoOpen: false,
-    modal: true
+  var dialog_upload = bootstrap_dialog({
+    title: I18n.t('destinations.index.dialog.import.title'),
+    message: SMT['modals/default_with_progress']({ msg: I18n.t('destinations.index.dialog.import.in_progress') })
   });
 
   $(":file").filestyle({
@@ -369,7 +369,7 @@ var destinations_import = function(params) {
     if (confirmChecks.length > 0 && !confirm(confirmChecks.map(function(c) { return I18n.t('destinations.import.' + c + '_confirm'); } ).join(" \n"))) {
       return false;
     }
-    $("#dialog-upload").dialog("open");
+    dialog_upload.modal('show');
   });
 
   $('a.column-edit').click(function(evt) {
@@ -807,10 +807,7 @@ var destinations_index = function(params, api) {
   var sortList = undefined;
 
   var displayDestinations = function(data) {
-    if ($("#dialog-geocoding").size() == 0) {
-      return; // Avoid render and loop with turbolink when page is over
-    }
-    if (!progress_dialog(data.geocoding, $("#dialog-geocoding"), '/destinations.json', checkForDisplayDestinations)) {
+    if (!progress_dialog(data.geocoding, dialog_geocoding, '/destinations.json', checkForDisplayDestinations)) {
       return;
     }
 
@@ -1041,9 +1038,9 @@ var destinations_index = function(params, api) {
     error: ajaxError
   });
 
-  $("#dialog-geocoding").dialog({
-    autoOpen: false,
-    modal: true
+  var dialog_geocoding = bootstrap_dialog({
+    title: I18n.t('destinations.index.dialog.geocoding.title'),
+    message: SMT['modals/geocoding']({ i18n: mustache_i18n })
   });
 }
 

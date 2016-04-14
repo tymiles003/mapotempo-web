@@ -475,9 +475,6 @@ en:
   import:
     template_csv: "Import Template Spreadsheet Standard"
     template_excel: "Import Template Spreadsheet Excel"
-    dialog:
-      title: "Import"
-      import_in_progress: "Please wait, import in progress."
 
   admin:
     profiles:
@@ -667,6 +664,9 @@ en:
       geocoding_empty: "missing"
       click2call: "Click to call"
       dialog:
+        import:
+          title: 'Import'
+          in_progress: 'Please wait, import in progress'
         geocoding:
           title: "Geocoding"
           in_progress: "Please wait, geocoding in progress."

@@ -114,13 +114,6 @@
   </div>
 <% end %>
 
-<div id="dialog-upload" title="<%= t 'import.dialog.title' %>" style="display:none">
-  <p><%= t 'import.dialog.import_in_progress' %></p>
-  <div class="progress progress-striped">
-    <div class="progress-bar" style="width: 100%"></div>
-  </div>
-</div>
-
 <%
 controller.js(
   customer_id: current_user.customer.id

@@ -669,10 +669,6 @@ var plannings_edit = function(params) {
   }
 
   var displayPlanning = function(data, options) {
-    if ($("#dialog-optimizer").size() == 0) {
-      return; // Avoid render and loop with turbolink when page is over
-    }
-
     function error_callback() {
       stickyError(I18n.t('plannings.edit.optimize_failed'));
     }
@@ -681,7 +677,7 @@ var plannings_edit = function(params) {
       notice(I18n.t('plannings.edit.optimize_complete'));
     }
 
-    if (!progress_dialog(data.optimizer, $("#dialog-optimizer"), '/plannings/' + planning_id + '.json', displayPlanning, error_callback, success_callback)) {
+    if (!progress_dialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, error_callback, success_callback)) {
       return;
     }
 
@@ -1006,20 +1002,20 @@ var plannings_edit = function(params) {
     });
   }
 
-  $("#dialog-optimizer").dialog({
-    autoOpen: false,
-    modal: true
+  var dialog_optimizer = bootstrap_dialog({
+    title: I18n.t('plannings.edit.dialog.optimizer.title'),
+    message: SMT['modals/optimize']({ i18n: mustache_i18n })
   });
 
   $("form").submit(function(event) {
     var new_zoning = $("#planning_zoning_ids").val();
     if (new_zoning && initial_zoning.join(',') != new_zoning.join(',')) {
-      if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) {
-        return false;
+      if (confirm(I18n.t('plannings.edit.zoning_confirm'))) {
+        bootstrap_dialog({
+          title: I18n.t('plannings.edit.dialog.zoning.title'),
+          message: I18n.t('plannings.edit.dialog.zoning.in_progress')
+        }).modal('show');
       }
-      $("#dialog-zoning").dialog({
-        modal: true
-      });
     }
   });
 

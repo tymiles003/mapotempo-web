@@ -16,6 +16,7 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 var ajaxWaitingGlobal = 0;
+var planningTimerId;
 
 var beforeSendWaiting = function() {
   if (ajaxWaitingGlobal == 0) {
@@ -62,7 +63,7 @@ var mustache_i18n = function() {
 var progress_dialog = function(data, dialog, load_url, callback, error_callback, success_callback) {
   if (data !== undefined) {
     var timeout;
-    dialog.dialog("open");
+    dialog.modal('show');
     var progress = data.progress && data.progress.split(';');
     $(".progress-bar", dialog).each(function(i, e) {
       if (progress == undefined || progress == '' || progress[i] == undefined || progress[i] == '') {
@@ -126,7 +127,7 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
           url: "/api/0.1/customers/" + data.customer_id + "/job/" + data.id + ".json",
           beforeSend: beforeSendWaiting,
           complete: function() {
-            dialog.dialog("close");
+            dialog.modal('hide');
             completeWaiting();
             $.ajax({
               url: load_url,
@@ -138,31 +139,29 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
             $(".dialog-attempts", dialog).hide();
             $(".dialog-error", dialog).hide();
             $(".progress-bar", dialog).css("width", "0%");
-            dialog.dialog({
-              buttons: {}
-            });
           },
           error: function(request, status, error) {
             ajaxError(request, status, error);
           }
         });
       };
-      dialog.dialog({
-        buttons: buttons
-      });
     } else {
-      setTimeout(function() {
+      planningTimerId = setTimeout(function() {
         $.ajax({
           url: load_url,
           success: callback,
           error: ajaxError
         });
       }, 2000 + (timeout || 0));
+      $(document).on('page:before-change', function(e) {
+        clearTimeout(planningTimerId);
+        $(document).off('page:before-change');
+      });
     }
     return false;
   } else {
-    if (dialog.dialog('isOpen') && success_callback) success_callback();
-    dialog.dialog("close");
+    if (dialog.is(':visible') && success_callback) success_callback();
+    dialog.modal('hide');
     $($(".progress-bar", dialog)).css("width", "0%");
     return true;
   }

@@ -48,6 +48,10 @@ function devices_observe_planning(context) {
 
   // API Orange Fleet: Send Planning Routes
   $('.planning-orange-send', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Orange',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.orange.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -56,7 +60,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-orange').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -67,7 +71,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-orange').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.orange_send.fail'));
@@ -80,6 +84,10 @@ function devices_observe_planning(context) {
 
   // API Orange Fleet: Clear Planning Routes
   $('.planning-orange-clear', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Orange',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.orange.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -88,7 +96,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-orange').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -99,7 +107,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-orange').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.orange_clear.fail'));
@@ -112,6 +120,10 @@ function devices_observe_planning(context) {
 
   // API Orange Fleet: Send Route
   $('.orange-send', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Orange',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.orange.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -120,7 +132,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-orange').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -131,7 +143,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-orange').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.orange_send.fail'));
@@ -144,6 +156,10 @@ function devices_observe_planning(context) {
 
   // API Orange Fleet: Clear Route
   $('.orange-clear', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Orange',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.orange.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -152,7 +168,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-orange').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -163,7 +179,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-orange').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.orange_clear.fail'));
@@ -176,6 +192,10 @@ function devices_observe_planning(context) {
 
   // API Teksat: Send Planning Routes
   $('.planning-teksat-send', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Teksat',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.teksat.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -184,7 +204,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-teksat').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -195,7 +215,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-teksat').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.teksat_send.fail'));
@@ -208,7 +228,10 @@ function devices_observe_planning(context) {
 
   // API Teksat: Clear Planning Routes
   $('.planning-teksat-clear', context).click(function(e) {
-    e.preventDefault();
+    var dialog = bootstrap_dialog({
+      title: 'Teksat',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.teksat.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -217,7 +240,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-teksat').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -228,7 +251,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-teksat').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.teksat_clear.fail'));
@@ -241,6 +264,10 @@ function devices_observe_planning(context) {
 
   // API Teksat: Send Route
   $('.teksat-send', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Teksat',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.teksat.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -249,7 +276,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-teksat').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -260,7 +287,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-teksat').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.teksat_send.fail'));
@@ -273,7 +300,10 @@ function devices_observe_planning(context) {
 
   // API Teksat: Clear Route
   $('.teksat-clear', context).click(function(e) {
-    e.preventDefault();
+    var dialog = bootstrap_dialog({
+      title: 'Teksat',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.teksat.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -282,7 +312,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-teksat').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -293,7 +323,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-teksat').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.teksat_clear.fail'));
@@ -306,6 +336,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Send Planning Routes As Waypoints
   $('.planning-tomtom-send-waypoints', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'TomTom',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -315,7 +349,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-tomtom').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -326,7 +360,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-tomtom').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.tomtom_send_waypoints.fail'));
@@ -339,6 +373,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Send Planning Routes As Orders
   $('.planning-tomtom-send-orders', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'TomTom',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -348,7 +386,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-tomtom').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -359,7 +397,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-tomtom').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.tomtom_send_orders.fail'));
@@ -372,6 +410,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Clear Planning Routes
   $('.planning-tomtom-clear', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'TomTom',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -380,7 +422,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-tomtom').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -391,7 +433,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-tomtom').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.tomtom_clear.fail'));
@@ -404,6 +446,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Send Route As Waypoints
   $('.tomtom-send-waypoints', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'TomTom',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -413,7 +459,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-tomtom').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -424,7 +470,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-tomtom').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.tomtom_send_waypoints.fail'));
@@ -437,6 +483,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Send Route As Orders
   $('.tomtom-send-orders', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'TomTom',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -446,7 +496,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-tomtom').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -457,7 +507,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-tomtom').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.tomtom_send_orders.fail'));
@@ -470,6 +520,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Clear Route
   $('.tomtom-clear', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'TomTom',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -478,7 +532,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-tomtom').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -489,7 +543,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-tomtom').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.tomtom_clear.fail'));
@@ -502,6 +556,10 @@ function devices_observe_planning(context) {
 
   // API Masternaut: Send Planning Routes
   $('.planning-masternaut-send', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Masternaut',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.masternaut.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -510,7 +568,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-masternaut').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -521,7 +579,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-masternaut').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.masternaut_send.fail'));
@@ -534,6 +592,10 @@ function devices_observe_planning(context) {
 
   // API Masternaut: Send Route
   $('.masternaut-send', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Masternaut',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.masternaut.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -542,7 +604,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-masternaut').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -553,7 +615,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-masternaut').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.masternaut_send.fail'));
@@ -566,6 +628,10 @@ function devices_observe_planning(context) {
 
   // API Alyacom: Send Planning Routes
   $('.planning-alyacom-send', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Alyacom',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.alyacom.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -574,7 +640,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-alyacom').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -585,7 +651,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-alyacom').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.alyacom_send.fail'));
@@ -598,6 +664,10 @@ function devices_observe_planning(context) {
 
   // API Alyacom: Send Route
   $('.alyacom-send', context).click(function(e) {
+    var dialog = bootstrap_dialog({
+      title: 'Alyacom',
+      message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.alyacom.in_progress') })
+    });
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -606,7 +676,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        $('#dialog-alyacom').dialog('open');
+        dialog.modal('show');
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -617,7 +687,7 @@ function devices_observe_planning(context) {
         }
       },
       complete: function(jqXHR, textStatus) {
-        $('#dialog-alyacom').dialog('close');
+        dialog.modal('hide');
       },
       error: function(jqXHR, textStatus, errorThrown) {
         stickyError(I18n.t('plannings.edit.alyacom_send.fail'));
@@ -628,31 +698,6 @@ function devices_observe_planning(context) {
     return false;
   });
 
-  // Loading Modals
-  $("#dialog-orange").dialog({
-    autoOpen: false,
-    modal: true
-  });
-
-  $("#dialog-teksat").dialog({
-    autoOpen: false,
-    modal: true
-  });
-
-  $("#dialog-tomtom").dialog({
-    autoOpen: false,
-    modal: true
-  });
-
-  $("#dialog-masternaut").dialog({
-    autoOpen: false,
-    modal: true
-  });
-
-  $("#dialog-alyacom").dialog({
-    autoOpen: false,
-    modal: true
-  });
 }
 
 function devices_observe_vehicle(params) {

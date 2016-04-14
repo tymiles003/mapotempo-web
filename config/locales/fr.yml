@@ -475,9 +475,6 @@ fr:
   import:
     template_csv: "Modèle import tableur standard"
     template_excel: "Modèle import tableur Excel"
-    dialog:
-      title: "Import des clients"
-      import_in_progress: "Import des clients en cours, merci de patienter."
 
   admin:
     profiles:
@@ -667,6 +664,9 @@ fr:
       geocoding_empty: "absent"
       click2call: "Cliquez pour appeler"
       dialog:
+        import:
+          title: 'Import des clients'
+          in_progress: 'Import des clients en cours, merci de patienter'
         geocoding:
           title: "Géocodage"
           in_progress: "Géocodage en cours, merci de patienter."

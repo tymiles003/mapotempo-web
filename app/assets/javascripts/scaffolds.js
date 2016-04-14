@@ -31,6 +31,12 @@ $(document).on('ready page:load', function() {
   });
 });
 
+var bootstrap_dialog = function(options) {
+  $('#default-modal').find('.bootstrap-dialog-title').html(options.title);
+  $('#default-modal').find('.bootstrap-dialog-message').html(options.message);
+  return $('#default-modal');
+}
+
 var mapInitialize = function(params) {
   var mapLayer, mapBaseLayers = {}, mapOverlays = {}, nbLayers = 0;
   for (layer_name in params.map_layers) {

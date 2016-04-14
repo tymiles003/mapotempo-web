@@ -382,10 +382,12 @@ var order_arrays_edit = function(params) {
     });
   }
 
-  $("#dialog-loading").dialog({
-    autoOpen: true,
-    modal: true
+  var dialog_loading = bootstrap_dialog({
+    title: I18n.t('order_arrays.edit.dialog.loading.title'),
+    message: SMT['modals/default_with_progress']({ msg: I18n.t('order_arrays.edit.dialog.loading.in_progress') })
   });
+
+  dialog_loading.modal('show');
 
   $.ajax({
     url: '/order_arrays/' + order_array_id + '.json' + (planning_id ? '?planning_id=' + planning_id : ''),
@@ -393,7 +395,7 @@ var order_arrays_edit = function(params) {
     success: display_order_array,
     complete: function(data) {
       completeWaiting(data);
-      $("#dialog-loading").dialog('close');
+      dialog_loading.modal('hide');
     },
     error: ajaxError
   });
