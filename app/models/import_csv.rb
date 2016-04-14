@@ -83,7 +83,7 @@ class ImportCsv
   end
 
   def without_header?
-    column_def && column_def.values.all?{ |v| v.strip.empty? || v.split(',').all?{ |vv| vv.to_i != 0 } }
+    column_def && !column_def.values.join('').empty? && column_def.values.all?{ |v| v.strip.empty? || v.split(',').all?{ |vv| vv.to_i != 0 } }
   end
 
   def parse_csv
