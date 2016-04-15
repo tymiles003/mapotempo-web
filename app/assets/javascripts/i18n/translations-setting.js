@@ -16,4 +16,4 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 I18n.defaultLocale = defaultLocale;
-I18n.locale = defaultLocale;
+I18n.locale = locale;
