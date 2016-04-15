@@ -19,7 +19,11 @@ require 'routers/router_wrapper'
 
 class RouterWrapper < Router
   def trace(speed_multiplicator, lat1, lng1, lat2, lng2, dimension = :time, options = {})
-    Mapotempo::Application.config.router_wrapper.compute(url_time, mode, dimension, lat1, lng1, lat2, lng2, sanitize_options(options, speed_multiplicator: speed_multiplicator))
+    trace_batch(speed_multiplicator, [[lat1, lng1, lat2, lng2]], dimension, options)
+  end
+
+  def trace_batch(speed_multiplicator, segments, dimension = :time, options = {})
+    Mapotempo::Application.config.router_wrapper.compute_batch(url_time, mode, dimension, segments, sanitize_options(options, speed_multiplicator: speed_multiplicator))
   end
 
   def matrix(row, column, speed_multiplicator, dimension = :time, options = {}, &block)

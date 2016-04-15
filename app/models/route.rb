@@ -107,17 +107,48 @@ class Route < ActiveRecord::Base
       }
 
       stops_sort = stops.sort_by(&:index)
-      stops_sort.each_with_index{ |stop, index|
-        if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
-          if stop.position? && !last_lat.nil? && !last_lng.nil?
-            begin
-              stop.distance, stop.drive_time, stop.trace = router.trace(speed_multiplicator, last_lat, last_lng, stop.lat, stop.lng, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas)
-            rescue RouterError => e
-              raise if !ignore_errors
-            end
+
+      # Collect route legs
+      segments = stops_sort.select{ |stop|
+        stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
+      }.collect{ |stop|
+        if stop.position? && !last_lat.nil? && !last_lng.nil?
+          ret = [last_lat, last_lng, stop.lat, stop.lng]
+        end
+        if stop.position?
+          last_lat, last_lng = stop.lat, stop.lng
+        end
+        ret
+      }
+
+      if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
+        segments << [last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng]
+      else
+        segments << nil
+      end
+
+      # Compute legs traces
+      begin
+        ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas)
+        traces = segments.collect{ |segment|
+          if segment.nil?
+            [nil, nil, nil]
           else
-            stop.distance, stop.drive_time, stop.trace = nil, nil, nil
+            (ts && !ts.empty? && ts.shift) || [nil, nil, nil]
           end
+        }
+      rescue RouterError => e
+        if !ignore_errors
+          raise
+        else
+          [nil, nil, nil] * segments.size
+        end
+      end
+
+      # Recompute Stops
+      stops_sort.each{ |stop|
+        if stop.active && (stop.position? || (stop.is_a?(StopRest) && stop.open && stop.close && stop.duration))
+          stop.distance, stop.drive_time, stop.trace = traces.shift
           if stop.drive_time
             stops_time[stop] = stop.drive_time
             stop.time = self.end + stop.drive_time
@@ -148,26 +179,14 @@ class Route < ActiveRecord::Base
 
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
           end
-
-          if stop.position?
-            last_lat, last_lng = stop.lat, stop.lng
-          end
-
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_window = false
           stop.distance = stop.trace = stop.time = stop.wait_time = nil
         end
       }
 
-      if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
-        begin
-          distance, drive_time, trace = router.trace(speed_multiplicator, last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas)
-        rescue RouterError => e
-          raise if !ignore_errors
-        end
-      else
-        distance, drive_time, trace = nil, nil, nil
-      end
+      # Last stop to store
+      distance, drive_time, trace = traces.shift
       if drive_time
         self.distance += distance
         stops_time[:stop] = drive_time

@@ -31,8 +31,8 @@ module Routers
       @api_key = api_key
     end
 
-    def compute(url, mode, dimension, from_lat, from_lng, to_lat, to_lng, options = {})
-      key = ['c', url, mode, dimension, from_lat, from_lng, to_lat, to_lng, Digest::MD5.hexdigest(Marshal.dump(options.to_a.sort_by{ |i| i[0].to_s }))]
+    def compute_batch(url, mode, dimension, segments, options = {})
+      key = ['c', url, mode, dimension, Digest::MD5.hexdigest(Marshal.dump([segments, options.to_a.sort_by{ |i| i[0].to_s }]))]
 
       request = @cache_request.read(key)
       if !request
@@ -41,12 +41,12 @@ module Routers
           mode: mode,
           dimension: dimension,
           speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
-          loc: [from_lat, from_lng, to_lat, to_lng].join(','),
+          locs: segments.collect{ |segment| segment.join(',') }.join(';'),
           geometry: options[:geometry],
           area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
           speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil
         }.compact
-        resource = RestClient::Resource.new(url + '/0.1/route.json', timeout: nil)
+        resource = RestClient::Resource.new(url + '/0.1/routes.json', timeout: nil)
         request = resource.get(params: params) { |response, request, result, &block|
           case response.code
           when 200
@@ -65,17 +65,23 @@ module Routers
       end
 
       if request == ''
-        [nil, nil, nil]
+        []
       else
-        data = JSON.parse(request)
-        if data && data.key?('features') && data['features'].size > 0
-          feature = data['features'][0]
-          distance = feature['properties']['router']['total_distance'] if feature['properties'] && feature['properties']['router']
-          time = feature['properties']['router']['total_time'] if feature['properties'] && feature['properties']['router']
-          trace = feature['geometry']['polylines'] if feature['geometry']
-          [distance, time, trace]
+        datas = JSON.parse(request)
+        if datas && datas.key?('features') && datas['features'].size > 0
+          datas['features'].collect{ |data|
+            feature = data['features'][0]
+            if data && data.key?('features') && data['features'].size > 0
+              distance = feature['properties']['router']['total_distance'] if feature['properties'] && feature['properties']['router']
+              time = feature['properties']['router']['total_time'] if feature['properties'] && feature['properties']['router']
+              trace = feature['geometry']['polylines'] if feature['geometry']
+              [distance, time, trace]
+            else
+              [nil, nil, nil]
+            end
+          }
         else
-          [nil, nil, nil]
+          []
         end
       end
     end
