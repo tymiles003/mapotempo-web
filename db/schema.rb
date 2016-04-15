@@ -392,8 +392,8 @@ ActiveRecord::Schema.define(version: 20160414142500) do
   add_index "vehicle_usage_sets", ["store_stop_id"], name: "index_vehicle_usage_sets_on_store_stop_id", using: :btree
 
   create_table "vehicle_usages", force: :cascade do |t|
-    t.integer  "vehicle_usage_set_id", null: false
-    t.integer  "vehicle_id",           null: false
+    t.integer  "vehicle_usage_set_id",                null: false
+    t.integer  "vehicle_id",                          null: false
     t.time     "open"
     t.time     "close"
     t.integer  "store_start_id"
@@ -406,6 +406,7 @@ ActiveRecord::Schema.define(version: 20160414142500) do
     t.time     "service_time_end"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active",               default: true
   end
 
   add_index "vehicle_usages", ["store_rest_id"], name: "index_vehicle_usages_on_store_rest_id", using: :btree
