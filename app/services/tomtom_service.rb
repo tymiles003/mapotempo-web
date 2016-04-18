@@ -21,25 +21,25 @@ class TomtomService < DeviceService
   end
 
   def list_devices
-    with_cache [:list_devices, service_name, customer.id, customer.tomtom_account] do
+    with_cache [:list_devices, service_name, customer.id, customer.tomtom_user] do
       service.list_devices customer
     end
   end
 
   def get_vehicles_pos
-    with_cache [:get_vehicles_pos, service_name, customer.id, customer.tomtom_account] do
+    with_cache [:get_vehicles_pos, service_name, customer.id, customer.tomtom_user] do
       service.get_vehicles_pos customer
     end
   end
 
   def list_vehicles params
-    with_cache [:list_vehicles, service_name, customer.id, customer.tomtom_account] do
+    with_cache [:list_vehicles, service_name, customer.id, customer.tomtom_user] do
       service.list_vehicles customer, params
     end
   end
 
   def list_addresses
-    with_cache [:list_addresses, service_name, customer.id, customer.tomtom_account] do
+    with_cache [:list_addresses, service_name, customer.id, customer.tomtom_user] do
       service.list_addresses customer
     end
   end
