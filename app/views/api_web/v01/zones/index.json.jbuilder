@@ -13,7 +13,7 @@ json.stores stores do |store|
   json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
 end
 json.zoning @zones do |zone|
-  json.extract! zone, :id, :vehicle_id, :polygon, :speed_multiplicator
+  json.extract! zone, :id, :name, :vehicle_id, :polygon, :speed_multiplicator
 end
 if @destinations
   json.destinations @destinations, partial: 'api_web/v01/destinations/show', as: :destination

@@ -141,13 +141,53 @@ var zonings_edit = function(params) {
     return elem.router_avoid_zones;
   }).length > 0;
 
+  var zoneGeometry = L.GeoJSON.extend({
+    addOverlay: function(zone) {
+      var that = this;
+      var labelLayer = (new L.layerGroup()).addTo(map);
+      var labelMarker;
+      this.on('mouseover', function(e) {
+        that.setStyle({
+          opacity: 0.9,
+          weight: (zone.speed_multiplicator === 0) ? 5 : 3
+        });
+        if (zone.name) labelMarker = L.marker(that.getBounds().getCenter(), {
+          icon: L.divIcon({
+            className: 'label',
+            html: zone.name,
+            iconSize: [100, 40]
+          })
+        }).addTo(labelLayer);
+      });
+      this.on('mouseout', function(e) {
+        that.setStyle({
+          opacity: 0.5,
+          weight: (zone.speed_multiplicator === 0) ? 5 : 2
+        });
+        if (labelMarker) labelLayer.removeLayer(labelMarker);
+        labelMarker = null
+      });
+      this.on('click', function(e) {
+        var z = $('#zones input[value=' + zone.id + ']').closest('.zone');
+        z.css('box-shadow', '#4D90FE 0px 0px 5px');
+        setTimeout(function() {
+          z.css('box-shadow', '');
+        }, 1500);
+        $('.sidebar-content').animate({
+          scrollTop: z.offset().top + $('.sidebar-content').scrollTop() - 100
+        });
+      });
+      return this;
+    }
+  });
+
   var addZone = function(zone, geom) {
     var geoJsonLayer;
     if (geom instanceof L.GeoJSON) {
       geoJsonLayer = geom;
       geom = geom.getLayers()[0];
     } else {
-      geoJsonLayer = L.geoJson();
+      geoJsonLayer = (new zoneGeometry).addOverlay(zone);
       geoJsonLayer.addLayer(geom);
     }
     geoJsonLayers[geom._leaflet_id] = geoJsonLayer;
@@ -260,7 +300,7 @@ var zonings_edit = function(params) {
     $('#zones').empty();
     featureGroup.clearLayers();
     $.each(data.zoning, function(index, zone) {
-      var geom = L.geoJson(JSON.parse(zone.polygon));
+      var geom = (new zoneGeometry(JSON.parse(zone.polygon))).addOverlay(zone);
       setColor(geom, zone.vehicle_id, zone.speed_multiplicator);
       addZone(zone, geom);
     });

@@ -39,5 +39,12 @@
         color: #ccc;
       }
     }
+
+    #map {
+      .label {
+        pointer-events: none;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      }
+    }
   }
 }

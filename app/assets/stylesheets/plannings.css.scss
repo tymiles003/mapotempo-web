@@ -31,113 +31,118 @@
 
   #map {
     min-height: 250px;
-  }
 
-  .leaflet-popup-content {
-    .route-select {
-      cursor: pointer;
-      line-height: 20px;
+    .leaflet-popup-content {
+      .route-select {
+        cursor: pointer;
+        line-height: 20px;
+      }
     }
-  }
 
-  .pulse {
-    -webkit-animation: pulse 1s linear infinite;
-    -moz-animation: pulse 1s linear infinite;
-    -ms-animation: pulse 1s linear infinite;
-    animation: pulse 1s linear infinite;
-  }
+    .label {
+      pointer-events: none;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
 
-  @keyframes "pulse" {
-    0% {
-      -webkit-transform: scale(1);
-      -moz-transform: scale(1);
-      -o-transform: scale(1);
-      -ms-transform: scale(1);
-      transform: scale(1);
+    .pulse {
+      -webkit-animation: pulse 1s linear infinite;
+      -moz-animation: pulse 1s linear infinite;
+      -ms-animation: pulse 1s linear infinite;
+      animation: pulse 1s linear infinite;
     }
-    50% {
-      -webkit-transform: scale(0.8);
-      -moz-transform: scale(0.9);
-      -o-transform: scale(0.8);
-      -ms-transform: scale(0.8);
-      transform: scale(0.8);
-    }
-    100% {
-      -webkit-transform: scale(1);
-      -moz-transform: scale(1);
-      -o-transform: scale(1);
-      -ms-transform: scale(1);
-      transform: scale(1);
-    }
-  }
 
-  @-moz-keyframes pulse {
-    0% {
-      -moz-transform: scale(1);
-      transform: scale(1);
+    @keyframes "pulse" {
+      0% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
+      50% {
+        -webkit-transform: scale(0.8);
+        -moz-transform: scale(0.9);
+        -o-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+        transform: scale(0.8);
+      }
+      100% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
     }
-    50% {
-      -moz-transform: scale(0.9);
-      transform: scale(0.9);
-    }
-    100% {
-      -moz-transform: scale(1);
-      transform: scale(1);
-    }
-  }
 
-  @-webkit-keyframes "pulse" {
-    0% {
-      -webkit-transform: scale(1);
-      transform: scale(1);
+    @-moz-keyframes pulse {
+      0% {
+        -moz-transform: scale(1);
+        transform: scale(1);
+      }
+      50% {
+        -moz-transform: scale(0.9);
+        transform: scale(0.9);
+      }
+      100% {
+        -moz-transform: scale(1);
+        transform: scale(1);
+      }
     }
-    50% {
-      -webkit-transform: scale(0.8);
-      transform: scale(0.8);
-    }
-    100% {
-      -webkit-transform: scale(1);
-      transform: scale(1);
-    }
-  }
 
-  @-ms-keyframes "pulse" {
-    0% {
-      -ms-transform: scale(1);
-      transform: scale(1);
+    @-webkit-keyframes "pulse" {
+      0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+      }
+      50% {
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+      }
+      100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+      }
     }
-    50% {
-      -ms-transform: scale(0.8);
-      transform: scale(0.8);
+
+    @-ms-keyframes "pulse" {
+      0% {
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
+      50% {
+        -ms-transform: scale(0.8);
+        transform: scale(0.8);
+      }
+      100% {
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
     }
-    100% {
-      -ms-transform: scale(1);
-      transform: scale(1);
+
+    .vehicle-icon {
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
-  }
 
-  .vehicle-icon {
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-  }
-
-  .vehicle-direction {
-    left: 5px;
-    bottom: 2px;
-    color: #FF7F00;
-    text-shadow: black 0 1px;
-  }
-
-  .zoning_name {
-    text-overflow: ellipsis;
-    max-width: 130px;
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: bottom;
+    .vehicle-direction {
+      left: 5px;
+      bottom: 2px;
+      color: #FF7F00;
+      text-shadow: black 0 1px;
+    }
   }
 
   .sidebar {
     .sidebar-content {
       overflow-y: scroll; // important for select2
+
+      .zoning_name {
+        text-overflow: ellipsis;
+        max-width: 130px;
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: bottom;
+      }
 
       .dropdown-menu li.link {
         padding-left: 20px;

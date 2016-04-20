@@ -196,12 +196,41 @@ var plannings_edit = function(params) {
     }
   }
 
-  layer_zoning = new L.LayerGroup();
-  layer_zoning.addTo(map);
+  layer_zoning = (new L.LayerGroup()).addTo(map);
+  var zoneGeometry = L.GeoJSON.extend({
+    addOverlay: function(zone) {
+      var that = this;
+      var labelLayer = (new L.layerGroup()).addTo(map);
+      var labelMarker;
+      this.on('mouseover', function(e) {
+        that.setStyle({
+          opacity: 0.9,
+          weight: (zone.speed_multiplicator === 0) ? 5 : 3
+        });
+        if (zone.name) labelMarker = L.marker(that.getBounds().getCenter(), {
+          icon: L.divIcon({
+            className: 'label',
+            html: zone.name,
+            iconSize: [100, 40]
+          })
+        }).addTo(labelLayer);
+      });
+      this.on('mouseout', function(e) {
+        that.setStyle({
+          opacity: 0.5,
+          weight: (zone.speed_multiplicator === 0) ? 5 : 2
+        });
+        if (labelMarker) labelLayer.removeLayer(labelMarker);
+        labelMarker = null
+      });
+      return this;
+    }
+  });
 
   var displayZoning = function(zoning) {
     $.each(zoning.zones, function(index, zone) {
-      var geom = L.geoJson(JSON.parse(zone.polygon)).getLayers()[0];
+      var geoJsonLayer = (new zoneGeometry(JSON.parse(zone.polygon))).addOverlay(zone);
+      var geom = geoJsonLayer.getLayers()[0];
       geom.setStyle((zone.speed_multiplicator === 0) ? {
         color: '#FF0000',
         fillColor: '#707070',
