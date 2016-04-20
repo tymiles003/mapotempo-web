@@ -58,6 +58,10 @@ input[type="radio"], input[type="checkbox"] {
     margin-right: -1px;
 }
 
+button {
+  outline: none !important;
+}
+
 a.btn-primary:link { color:#FFFFFF; }
 a.btn-primary:visited { color:#FFFFFF; }
 a.btn-primary:hover { color:#FFFFFF; }
