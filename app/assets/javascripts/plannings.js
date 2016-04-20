@@ -122,8 +122,9 @@ var plannings_edit = function(params) {
       beforeSend: beforeSendWaiting,
       success: function(data, textStatus, jqXHR) {
         if (data && data.errors) {
+          clearInterval(tid);
           $.each(data.errors, function(i, error) {
-            stickyError(error);
+            stickyError(I18n.t('plannings.edit.position') + " " + error);
           });
         } else {
           displayVehicles(data);

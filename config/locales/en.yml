@@ -832,6 +832,7 @@ en:
       title: "Listing plannings"
       new: "New Planning"
     edit:
+      position: "Position"
       zonings: "Zonings"
       zoning_new: "New zoning from this planning"
       zoning_edit: "Edit zoning from this planning"

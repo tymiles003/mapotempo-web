@@ -832,6 +832,7 @@ fr:
       title: "Liste plannings"
       new: "Nouveau planning"
     edit:
+      position: "Position"
       zonings: "Zonages"
       zoning_new: "Créer un nouveau zonage depuis ce planning"
       zoning_edit: "Modifier ce zonage depuis ce planning"
