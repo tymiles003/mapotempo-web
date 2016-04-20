@@ -250,12 +250,16 @@ class Tomtom < DeviceBase
         I18n.t "errors.tomtom.access_denied"
       when 1101
         I18n.t "errors.tomtom.invalid_account"
+      when 2515
+        I18n.t "errors.tomtom.duplicate_order"
       when 2615
         I18n.t "errors.tomtom.unsupported_export_type"
       when 8011
         I18n.t "errors.tomtom.request_quota_reached"
       when 8014
         I18n.t "errors.tomtom.external_requests_not_allowed"
+      when 8015
+        I18n.t "errors.tomtom.busy_processing"
       when 9000
         I18n.t "errors.tomtom.could_not_process_last_request"
       when 9126

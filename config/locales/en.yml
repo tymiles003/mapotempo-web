@@ -461,6 +461,8 @@ en:
       addresses_empty_result: "No Addresses Found"
       could_not_process_last_request: "Could not process request"
       unsupported_export_type: "Connected GPS does not support export as waypoints"
+      duplicate_order: "Duplicate Order number"
+      busy_processing: "Account / username busy processing other request"
     teksat:
       bad_url: "Bad URL"
       get_ticket: "Can't Authenticate. Please Check Your Credentials"
