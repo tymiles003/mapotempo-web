@@ -630,6 +630,8 @@ var plannings_edit = function(params) {
           complete: completeAjaxMap,
           error: ajaxError
         });
+        if ($(this).hasClass('reverse_order'))
+          $(this).closest(".dropdown-menu").prev().dropdown("toggle");
         return false;
       })
       .on("change", "[name=route\\\[ref\\\]]", function() {
