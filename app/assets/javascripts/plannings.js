@@ -604,6 +604,7 @@ var plannings_edit = function(params) {
             stores[store_id].openPopup();
           }
         }
+        $(this).blur();
         return false;
       })
       .on("click", ".optimize", function(event, ui) {
