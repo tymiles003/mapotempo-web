@@ -1017,6 +1017,7 @@ var destinations_index = function(params, api) {
         }, 200);
       }
 
+      if (dialog_geocoding) dialog_geocoding.modal('hide');
       $('#geocoding-danger-modal').modal('show');
       $("#sort-geocoding").click(function(event, ui) {
         $('#geocoding-danger-modal').off('hidden.bs.modal', displayDestinationsAfterModal);
