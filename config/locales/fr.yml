@@ -322,7 +322,7 @@ fr:
         confirmed_at: "Date de confirmation"
       vehicle:
         name: "Nom"
-        emission: "Émissions"
+        emission: "Émission"
         consumption: "Consommation"
         capacity: "Capacité"
         capacity_unit: "Unité de la capacité"
@@ -1219,7 +1219,7 @@ fr:
         help: "Unité de la capacité"
       router:
         default: "Défaut"
-        help: "Forcer l'utilisation de ce calculateur d'itinéraire"
+        help: "Forcer l'utilisation d'un calculateur d'itinéraire"
       router_dimension:
         default: "Défaut"
       speed_multiplicator:
@@ -1247,8 +1247,9 @@ fr:
     toggle:
       success: "Configuration du véhicule mise à jour avec succès"
     form:
-      disable: "Désactiver la configuration du véhicule"
-      enable: "Activer la configuration du véhicule"
+      disable: "Désactiver « %{v} » dans la configuration « %{c} »"
+      disable_confirm: "Êtes-vous sûr ? Toutes les tournées utilisant ce véhicule dans cette configuration seront perdues."
+      enable: "Activer « %{v} » dans la configuration « %{c} »"
       save: "Enregistrer la configuration du véhicule"
       vehicle:
         legend: "Véhicule"
@@ -1258,28 +1259,34 @@ fr:
         help: "Les informations ci-dessous sont spécifiques à la configuration du véhicule."
       open:
         default: "%{n} (valeur par défaut)"
-        help: "Horaire de travail livreur"
       close:
         default: "%{n} (valeur par défaut)"
-        help: "Horaire de travail livreur"
+      open_close: "Horaire"
+      open_close_help: "Horaire de travail livreur"
+      stores: "Dépôts"
       store:
         default: "Défaut"
         none: "Aucun"
+      stores_help: "Dépôts de départ et d'arrivée"
+      rest_duration_store: "Durée de repos / lieu"
       rest_start:
         default: "%{n} (valeur par défaut)"
       rest_stop:
         default: "%{n} (valeur par défaut)"
-        help: "Sans tenir compte de la durée de pause"
+      rest_start_stop: "Plage de repos"
+      rest_start_stop_help: "Sans tenir compte de la durée de pause"
       rest_duration:
         default: "%{n} (valeur par défaut)"
         help: "Requiert un horaire de début et fin de pause si renseigné"
       store_rest:
         default: "Défaut"
         none: "Aucun"
+      service_times: "Durées de service"
       service_time:
         default: "%{n} (valeur par défaut)"
-        help_start: "Durée ajoutée avant le premier arrêt."
-        help_end: "Durée ajoutée après le dernier arrêt."
+      service_time_start_addon: "avant"
+      service_time_end_addon: "après"
+      service_times_help: "Durées ajoutées avant le premier arrêt et après le dernier arrêt."
 
   vehicle_usage_sets:
     default:
@@ -1297,19 +1304,21 @@ fr:
     new:
       title: "Nouvelle configuration des véhicules"
     form:
-      open_help: "Horaire de travail livreur"
-      close_help: "Horaire de travail livreur"
+      open_close: "Horaire"
+      open_close_help: "Horaire de travail livreur"
+      stores: "Dépôts"
       store:
         none: "Aucun"
-      store_rest:
-        none: "Aucun"
-      service_time:
-        help_start: "Durée ajoutée avant le premier arrêt."
-        help_end: "Durée ajoutée après le dernier arrêt."
+      stores_help: "Dépôts de départ et d'arrivée"
+      service_times: "Durées de service"
+      service_time_start_addon: "avant"
+      service_time_end_addon: "après"
+      service_times_help: "Durées ajoutées avant le premier arrêt et après le dernier arrêt."
+      rest_duration_store: "Durée de repos / lieu"
       rest_duration:
         help: "Requiert un horaire de début et fin de pause si renseigné"
-      rest_stop:
-        help: "Sans tenir compte de la durée de pause"
+      rest_start_stop: "Plage de repos"
+      rest_start_stop_help: "Sans tenir compte de la durée de pause"
 
   visits:
     form:
@@ -1318,6 +1327,7 @@ fr:
       ref_help: "Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites avec l'import/export notamment."
       quantity_help: "Quantité à livrer"
       take_over_help: "Si vide utilise la valeur par défaut"
+      open_close: "Plage horaire"
       close_help: "Sans tenir compte de la durée de visite"
       tags_help: "Catégories de la visite"
       quantity_default: "défaut"
@@ -1387,6 +1397,8 @@ fr:
     form:
       default: "%{n} (valeur par défaut)"
       empty_entry: "- Non renseigné -"
+      from_time: 'de'
+      to_time: 'à'
     select2:
       empty_result: "Pas de résultat"
     dialog:

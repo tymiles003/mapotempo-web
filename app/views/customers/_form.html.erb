@@ -5,7 +5,7 @@
   <% end %>
   <%= f.text_field :name, t('.name'), required: true, disabled: !current_user.admin? %>
   <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
-  <%= f.number_field :max_vehicles, min:1, disabled: (Mapotempo::Application.config.manage_vehicles_only_admin && !current_user.admin?) %>
+  <%= f.number_field :max_vehicles, min:1, disabled: (Mapotempo::Application.config.manage_vehicles_only_admin && !current_user.admin?), input_group: content_tag('i', '', class: 'fa fa-truck fa-fw') %>
   <% if current_user.admin? %>
     <%= f.toggles t 'activerecord.attributes.customer.test' do %>
       <%= f.check_box :test %>
@@ -37,7 +37,7 @@
     <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('.speed_multiplicator_default', n: 100), input_group: '%'} do %>
       <p class="help-block"><%= t '.speed_multiplicator_help' %></p>
     <% end %>
-    <%= f.text_field :take_over, {value: @customer.take_over && l(@customer.take_over, format: :hour_minute_second), input_group: t('all.unit.hour_minute_second')} do %>
+    <%= f.text_field :take_over, {placeholder: t('all.unit.hour_minute_second'), value: @customer.take_over && l(@customer.take_over, format: :hour_minute_second), input_group: content_tag('i', '', class: 'fa fa-clock-o fa-fw')} do %>
       <p class="help-block"><%= t '.take_over_help' %></p>
     <% end %>
     <%= f.text_field :default_country, required: true %>

@@ -16,21 +16,36 @@
           <% end %>
         <% end %>
         <%= f.text_field :name, required: true %>
-        <%= f.text_field :contact_email, {input_group: content_tag('i', '', class: 'fa fa-envelope fa-fw')} do %>
+        <%= f.text_field :contact_email, {input_group: '@'} do %>
           <p class="help-block"><%= t 'vehicles.form.contact_email.help' %></p>
         <% end %>
-        <%= f.select :emission, [], Vehicle.emissions_table, { include_blank: t('web.form.empty_entry') }, {input_group: t('all.unit.kgco2e_l_html')} do %>
-          <p class="help-block"><%= t 'vehicles.form.emissions.help' %></p>
-        <% end %>
-        <%= f.number_field :consumption, { input_group: t('all.unit.l_100km'), step: 0.1 } do %>
-          <p class="help-block"><%= t 'vehicles.form.consumption.help' %></p>
-        <% end %>
-        <%= f.number_field :capacity, {min:1, input_group: content_tag('i', '', class: 'fa fa-check-square fa-fw')} do %>
-          <p class="help-block"><%= t 'vehicles.form.capacity.help' %></p>
-        <% end %>
-        <%= f.text_field :capacity_unit do %>
-          <p class="help-block"><%= t 'vehicles.form.capacity_unit.help' %></p>
-        <% end %>
+        <div id="vehicle_usage_vehicle_consumption_input" class="form-group">
+          <label class="sr-only" for="vehicle_usage_vehicle_emission"><%= t 'activerecord.attributes.vehicle.emission' %></label>
+          <label class="sr-only" for="vehicle_usage_vehicle_consumption"><%= t 'activerecord.attributes.vehicle.consumption' %></label>
+          <label class="col-md-2 control-label"><%= t 'activerecord.attributes.vehicle.emission' %> / <%= t 'activerecord.attributes.vehicle.consumption' %></label>
+          <div class="col-md-6">
+            <div class="input-group">
+              <%= select 'vehicle_usage[vehicle]', :emission, Vehicle.emissions_table, { include_blank: t('web.form.empty_entry') }, class: 'form-control' %>
+              <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
+              <%= text_field 'vehicle_usage[vehicle]', :consumption, class: 'form-control' %>
+              <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
+            </div>
+            <p class="help-block"><%= t 'vehicles.form.emissions.help' %> - <%= t 'vehicles.form.consumption.help' %></p>
+          </div>
+        </div>
+        <div id="vehicle_usage_vehicle_capacity_input" class="form-group">
+          <label class="sr-only" for="vehicle_usage_vehicle_capacity"><%= t 'activerecord.attributes.vehicle.emission' %></label>
+          <label class="sr-only" for="vehicle_usage_vehicle_capacity_unit"><%= t 'activerecord.attributes.vehicle.consumption' %></label>
+          <label class="col-md-2 control-label"><%= t 'activerecord.attributes.vehicle.capacity' %></label>
+          <div class="col-md-6">
+            <div class="input-group">
+              <%= number_field 'vehicle_usage[vehicle]', :capacity, min: 1, class: 'form-control width_1_2' %>
+              <%= text_field 'vehicle_usage[vehicle]', :capacity_unit, class: 'form-control width_1_2' %>
+              <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-archive fa-fw') %></span>
+            </div>
+            <p class="help-block"><%= t 'vehicles.form.capacity.help' %> - <%= t 'vehicles.form.capacity_unit.help' %></p>
+          </div>
+        </div>
         <div id="vehicle_router_input" class="form-group">
           <label class="col-md-2 control-label" for="vehicle_router"><%= t 'activerecord.attributes.vehicle.router' %></label>
           <div class="col-md-6">
@@ -72,55 +87,101 @@
     <% if @vehicle_usage_sets[0].customer.enable_multi_vehicle_usage_sets %>
     <p class="help-block"><%= t 'vehicle_usages.form.vehicle_usage.help' %></p>
     <% end %>
-    <%= f.text_field :open, {
-      value: @vehicle_usage.open && l(@vehicle_usage.open, format: :hour_minute),
-      placeholder: t('vehicle_usages.form.open.default', n: l(@vehicle_usage.vehicle_usage_set.open, format: :hour_minute)),
-      input_group: t('all.unit.hour_minute')} do %>
-      <p class="help-block"><%= t '.open.help' %></p>
-    <% end %>
-    <%= f.text_field :close, {
-      value: @vehicle_usage.close && l(@vehicle_usage.close, format: :hour_minute),
-      placeholder: t('vehicle_usages.form.close.default', n: l(@vehicle_usage.vehicle_usage_set.close, format: :hour_minute)),
-      input_group: t('all.unit.hour_minute')} do %>
-      <p class="help-block"><%= t '.close.help' %></p>
-    <% end %>
-    <%= f.collection_select :store_start_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {
-      include_blank: t('vehicle_usages.form.store.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_start ? @vehicle_usage.vehicle_usage_set.store_start.name : t('vehicle_usages.form.store.none')) + ')' }, {
-      input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
-    <%= f.collection_select :store_stop_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {
-      include_blank: t('vehicle_usages.form.store.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_stop ? @vehicle_usage.vehicle_usage_set.store_stop.name : t('vehicle_usages.form.store.none')) + ')' }, {
-      input_group: content_tag('i', '', class: 'fa fa-home fa-fw')} %>
-    <%= f.text_field :rest_duration, {
-      value: @vehicle_usage.rest_duration && l(@vehicle_usage.rest_duration, format: :hour_minute),
-      placeholder: !@vehicle_usage.vehicle_usage_set.rest_duration.nil? ? t('vehicle_usages.form.rest_duration.default', n: l(@vehicle_usage.vehicle_usage_set.rest_duration, format: :hour_minute)) : nil,
-      input_group: t('all.unit.hour_minute')} do %>
-      <p class="help-block"><%= t 'vehicle_usages.form.rest_duration.help' %></p>
-    <% end %>
-    <%= f.text_field :rest_start, {
-      value: @vehicle_usage.rest_start && l(@vehicle_usage.rest_start, format: :hour_minute),
-      placeholder: !@vehicle_usage.vehicle_usage_set.rest_start.nil? ? t('vehicle_usages.form.rest_start.default', n: l(@vehicle_usage.vehicle_usage_set.rest_start, format: :hour_minute)) : nil,
-      input_group: t('all.unit.hour_minute')} %>
-    <%= f.text_field :rest_stop, {
-      value: @vehicle_usage.rest_stop && l(@vehicle_usage.rest_stop, format: :hour_minute),
-      placeholder: !@vehicle_usage.vehicle_usage_set.rest_stop.nil? ? t('vehicle_usages.form.rest_stop.default', n: l(@vehicle_usage.vehicle_usage_set.rest_stop, format: :hour_minute)) : nil,
-      input_group: t('all.unit.hour_minute')} do %>
-      <p class="help-block"><%= t 'vehicle_usages.form.rest_stop.help' %></p>
-    <% end %>
-    <%= f.collection_select :store_rest_id, [], @vehicle_usage.vehicle.customer.stores, :id, :name, {
-      include_blank: t('vehicle_usages.form.store_rest.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_rest ? @vehicle_usage.vehicle_usage_set.store_rest.name : t('vehicle_usages.form.store_rest.none')) + ')' }, {
-      input_group: content_tag('i', '', class: 'fa fa-coffee fa-fw')} %>
-    <%= f.text_field :service_time_start, {
-      value: f.object.service_time_start && l(f.object.service_time_start, format: :hour_minute),
-      input_group: t('all.unit.hour_minute'),
-      placeholder: f.object.vehicle_usage_set.service_time_start ? t("vehicle_usages.form.service_time.default", n: l(f.object.vehicle_usage_set.service_time_start, format: :hour_minute)) : nil } do %>
-      <p class="help-block"><%= t 'vehicle_usages.form.service_time.help_start' %></p>
-    <% end %>
-    <%= f.text_field :service_time_end, {
-      value: f.object.service_time_end && l(f.object.service_time_end, format: :hour_minute),
-      input_group: t('all.unit.hour_minute'),
-      placeholder: f.object.vehicle_usage_set.service_time_end ? t("vehicle_usages.form.service_time.default", n: l(f.object.vehicle_usage_set.service_time_end, format: :hour_minute)) : nil } do %>
-      <p class="help-block"><%= t 'vehicle_usages.form.service_time.help_end' %></p>
-    <% end %>
+    <div id="vehicle_usage_open_close_input" class="form-group">
+      <label class="sr-only" for="vehicle_usage_open"><%= t 'activerecord.attributes.vehicle_usage.open' %></label>
+      <label class="sr-only" for="vehicle_usage_close"><%= t 'activerecord.attributes.vehicle_usage.close' %></label>
+      <label class="col-md-2 control-label"><%= t '.open_close' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
+          <%= text_field :vehicle_usage, :open,
+            class: 'form-control',
+            placeholder: t('vehicle_usages.form.open.default', n: l(@vehicle_usage.vehicle_usage_set.open, format: :hour_minute)),
+            value: @vehicle_usage.open && l(@vehicle_usage.open, format: :hour_minute) %>
+          <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
+          <%= text_field :vehicle_usage, :close,
+            class: 'form-control',
+            placeholder: t('vehicle_usages.form.close.default', n: l(@vehicle_usage.vehicle_usage_set.close, format: :hour_minute)),
+            value: @vehicle_usage.close && l(@vehicle_usage.close, format: :hour_minute) %>
+        </div>
+        <p class="help-block"><%= t '.open_close_help' %></p>
+      </div>
+    </div>
+    <div id="vehicle_usage_store_input" class="form-group">
+      <label class="sr-only" for="vehicle_usage_store_start"><%= t 'activerecord.attributes.vehicle_usage.store_start' %></label>
+      <label class="sr-only" for="vehicle_usage_store_stop"><%= t 'activerecord.attributes.vehicle_usage.store_stop' %></label>
+      <label class="col-md-2 control-label"><%= t '.stores' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= collection_select :vehicle_usage, :store_start_id, @vehicle_usage.vehicle.customer.stores, :id, :name, {
+            include_blank: t('vehicle_usages.form.store.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_start ? @vehicle_usage.vehicle_usage_set.store_start.name : t('vehicle_usages.form.store.none')) + ')'}, {
+            class: 'form-control width_1_2' } %>
+          <%= collection_select :vehicle_usage, :store_stop_id, @vehicle_usage.vehicle.customer.stores, :id, :name, {
+            include_blank: t('vehicle_usages.form.store.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_stop ? @vehicle_usage.vehicle_usage_set.store_stop.name : t('vehicle_usages.form.store.none')) + ')'}, {
+            class: 'form-control width_1_2' } %>
+          <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
+        </div>
+        <p class="help-block"><%= t '.stores_help' %></p>
+      </div>
+    </div>
+    <div id="vehicle_usage_service_time_input" class="form-group">
+      <label class="sr-only" for="vehicle_usage_service_time_start"><%= t 'activerecord.attributes.vehicle_usage.service_time_start' %></label>
+      <label class="sr-only" for="vehicle_usage_service_time_end"><%= t 'activerecord.attributes.vehicle_usage.service_time_end' %></label>
+      <label class="col-md-2 control-label"><%= t '.service_times' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-addon"><%= t '.service_time_start_addon' %></span>
+          <%= text_field :vehicle_usage, :service_time_start,
+            class: 'form-control',
+            placeholder: f.object.vehicle_usage_set.service_time_start ? t("vehicle_usages.form.service_time.default", n: l(f.object.vehicle_usage_set.service_time_start, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.service_time_start && l(@vehicle_usage.service_time_start, format: :hour_minute) %>
+          <span class="input-group-addon"><%= t '.service_time_end_addon' %></span>
+          <%= text_field :vehicle_usage, :service_time_end,
+            class: 'form-control',
+            placeholder: f.object.vehicle_usage_set.service_time_end ? t("vehicle_usages.form.service_time.default", n: l(f.object.vehicle_usage_set.service_time_end, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.service_time_end && l(@vehicle_usage.service_time_end, format: :hour_minute) %>
+        </div>
+        <p class="help-block"><%= t '.service_times_help' %></p>
+      </div>
+    </div>
+    <div id="vehicle_usage_rest_input" class="form-group">
+      <label class="sr-only" for="vehicle_usage_rest_duration"><%= t 'activerecord.attributes.vehicle_usage.rest_duration' %></label>
+      <label class="sr-only" for="vehicle_usage_store_rest"><%= t 'activerecord.attributes.vehicle_usage.store_rest' %></label>
+      <label class="col-md-2 control-label"><%= t '.rest_duration_store' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= text_field :vehicle_usage, :rest_duration,
+            value: @vehicle_usage.rest_duration && l(@vehicle_usage.rest_duration, format: :hour_minute),
+            placeholder: !@vehicle_usage.vehicle_usage_set.rest_duration.nil? ? t('vehicle_usages.form.rest_duration.default', n: l(@vehicle_usage.vehicle_usage_set.rest_duration, format: :hour_minute)) : t('all.unit.hour_minute'),
+            class: 'form-control width_1_2' %>
+          <%= collection_select :vehicle_usage, :store_rest_id, @vehicle_usage.vehicle.customer.stores, :id, :name, {
+            include_blank: t('vehicle_usages.form.store.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_rest ? @vehicle_usage.vehicle_usage_set.store_rest.name : t('vehicle_usages.form.store.none')) + ')'}, {
+            class: 'form-control width_1_2' } %>
+          <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-coffee fa-fw') %></span>
+        </div>
+        <p class="help-block"><%= t '.rest_duration.help' %></p>
+      </div>
+    </div>
+    <div id="vehicle_usage_rest_start_stop_input" class="form-group">
+      <label class="sr-only" for="vehicle_usage_rest_start"><%= t 'activerecord.attributes.vehicle_usage.rest_start' %></label>
+      <label class="sr-only" for="vehicle_usage_rest_stop"><%= t 'activerecord.attributes.vehicle_usage.rest_stop' %></label>
+      <label class="col-md-2 control-label"><%= t '.rest_start_stop' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
+          <%= text_field :vehicle_usage, :rest_start,
+            class: 'form-control',
+            placeholder: !@vehicle_usage.vehicle_usage_set.rest_start.nil? ? t('vehicle_usages.form.rest_start.default', n: l(@vehicle_usage.vehicle_usage_set.rest_start, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.rest_start && l(@vehicle_usage.rest_start, format: :hour_minute) %>
+          <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
+          <%= text_field :vehicle_usage, :rest_stop,
+            class: 'form-control',
+            placeholder: !@vehicle_usage.vehicle_usage_set.rest_stop.nil? ? t('vehicle_usages.form.rest_stop.default', n: l(@vehicle_usage.vehicle_usage_set.rest_stop, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.rest_stop && l(@vehicle_usage.rest_stop, format: :hour_minute) %>
+        </div>
+        <p class="help-block"><%= t '.rest_start_stop_help' %></p>
+      </div>
+    </div>
   </fieldset>
 
   <%= f.actions do %>
@@ -131,9 +192,9 @@
 <%= twitter_bootstrap_form_for @vehicle_usage, url: [:toggle, @vehicle_usage], layout: :horizontal do |f| %>
   <%= f.actions do %>
     <% if @vehicle_usage.active %>
-      <%= f.submit t('.disable'), { class: 'btn btn-danger', data: { confirm:  t('all.verb.destroy_confirm') } }, 'fa-exclamation-triangle' %>
+      <%= f.submit t('.disable', v: @vehicle_usage.vehicle.name, c: @vehicle_usage.vehicle_usage_set.name), { class: 'btn btn-danger', data: { confirm:  t('.disable_confirm') } }, 'fa-exclamation-triangle' %>
     <% else %>
-      <%= f.submit t('.enable'), { class: 'btn btn-success' }, 'fa-circle-o-notch' %>
+      <%= f.submit t('.enable', v: @vehicle_usage.vehicle.name, c: @vehicle_usage.vehicle_usage_set.name), { class: 'btn btn-success' }, 'fa-circle-o-notch' %>
     <% end %>
   <% end %>
 <% end %>

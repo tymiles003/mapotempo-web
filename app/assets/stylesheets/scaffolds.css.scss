@@ -74,6 +74,15 @@ a.disabled {
 .input-group .form-control.width_1_2 {
   width: 50%;
 }
+.input-group .form-control, .input-group-addon {
+  border-left-width: 0px;
+}
+.input-group :first-child {
+  border-left-width: 1px;
+}
+.input-group .input-group-addon {
+  border-right: 1px solid #ccc;
+}
 
 ::-webkit-input-placeholder {
   color: #ccc !important;

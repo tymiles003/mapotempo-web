@@ -1219,7 +1219,7 @@ en:
         help: "Unit of the capacity"
       router:
         default: "Default"
-        help: "Force usage of this router"
+        help: "Force usage of a specific router"
       router_dimension:
         default: "Default"
       speed_multiplicator:
@@ -1247,8 +1247,9 @@ en:
     toggle:
       success: "Vehicle Configuration Updated Successfully"
     form:
-      disable: "Disable Vehicle Configuration"
-      enable: "Enable Vehicle Configuration"
+      disable: "Disable \"%{v}\" in configuration \"%{c}\""
+      disable_confirm: "Are you sure? All routes using this vehicle with this configuration will be lost."
+      enable: "Enable \"%{v}\" in configuration \"%{c}\""
       save: "Save Vehicle Configuration"
       vehicle:
         legend: "Vehicle"
@@ -1258,13 +1259,16 @@ en:
         help: "The following informations are specific to the configuration of the vehicle."
       open:
         default: "%{n} (default value)"
-        help: "Deliveryman's working hours"
       close:
         default: "%{n} (default value)"
-        help: "Deliveryman's working hours"
+      open_close: "Hours"
+      open_close_help: "Deliveryman's working hours"
+      stores: "Stores"
       store:
         default: "Default"
         none: "None"
+      stores_help: "Start and end stores"
+      rest_duration_store: "Rest duration / place"
       rest_start:
         default: "%{n} (default value)"
       rest_stop:
@@ -1278,8 +1282,9 @@ en:
         none: "None"
       service_time:
         default: "%{n} (default value)"
-        help_start: "Duration added before the first stop."
-        help_end: "Duration added after the last stop."
+      service_time_start_addon: "before"
+      service_time_end_addon: "after"
+      service_times_help: "Durations added before the first stop and after the last stop."
 
   vehicle_usage_sets:
     default:
@@ -1297,19 +1302,23 @@ en:
     new:
       title: "New vehicles configuration"
     form:
-      open_help: "Deliveryman's working hours"
-      close_help: "Deliveryman's working hours"
+      open_close: "Hours"
+      open_close_help: "Deliveryman's working hours"
+      stores: "Stores"
       store:
         none: "None"
-      store_rest:
-        none: "None"
-      service_time:
-        help_start: "Duration added before the first stop."
-        help_end: "Duration added after the last stop."
+      stores_help: "Start and end stores"
+      service_times: "Service times"
+      service_time_start_addon: "before"
+      service_time_end_addon: "after"
+      service_times_help: "Durations added before the first stop and after the last stop."
+      rest_duration_store: "Rest duration / place"
       rest_duration:
         help: "Requires rest start and stop times if filled"
       rest_stop:
         help: "Without taking into account rest duration"
+      rest_start_stop: "Rest window"
+      rest_start_stop_help: "Without taking into account rest duration"
 
   visits:
     form:
@@ -1318,6 +1327,7 @@ en:
       ref_help: "A free reference. Important to avoid overwriting visits on import / export"
       quantity_help: "Quantity to be delivered"
       take_over_help: "If empty, use the default value"
+      open_close: "Time window"
       close_help: "Without taking into account take over duration"
       tags_help: "Visit categories"
       quantity_default: "default"
@@ -1387,6 +1397,8 @@ en:
     form:
       default: "%{n} (default value)"
       empty_entry: "- N/A -"
+      from_time: 'from'
+      to_time: 'to'
     select2:
       empty_result: "No results matched"
     dialog:

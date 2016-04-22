@@ -45,11 +45,6 @@
     }
   }
 
-  input[name='destination\[street\]'] + .input-group-addon,
-  input[name='destination\[city\]'] + .input-group-addon {
-    cursor: pointer;
-  }
-
   #geocoding_accuracy, #no_geocoding_accuracy, #geocoding_level {
     display: table-cell;
     padding-right: 5px;

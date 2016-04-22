@@ -18,19 +18,29 @@
           <p class="help-block"><%= t '.ref_help' %></p>
         <% end %>
       <% end %>
-      <%= f.number_field :quantity, {placeholder: '1 (' + t('.quantity_default') + ')', step: 'any' } do %>
+      <%= f.number_field :quantity, {placeholder: '1 (' + t('.quantity_default') + ')', step: 'any' }, input_group: content_tag('i', '', class: 'fa fa-archive fa-fw') do %>
         <p class="help-block"><%= t '.quantity_help' %></p>
       <% end %>
       <%= f.text_field :take_over, {
         value: visit.take_over && l(visit.take_over, format: :hour_minute_second),
-        placeholder: visit.destination.customer.take_over ? l(visit.destination.customer.take_over, format: :hour_minute_second) + ' (' + t('.take_over_default') + ')' : nil,
-        input_group: t('all.unit.hour_minute_second')} do %>
+        placeholder: visit.destination.customer.take_over ? l(visit.destination.customer.take_over, format: :hour_minute_second) + ' (' + t('.take_over_default') + ')' : t('all.unit.hour_minute_second'),
+        input_group: content_tag('i', '', class: 'fa fa-clock-o fa-fw')} do %>
         <p class="help-block"><%= t '.take_over_help' %></p>
       <% end %>
-      <%= f.text_field :open, {value: visit.open && l(visit.open, format: :hour_minute), input_group: t('all.unit.hour_minute')} %>
-      <%= f.text_field :close, {value: visit.close && l(visit.close, format: :hour_minute), input_group: t('all.unit.hour_minute')} do %>
-        <p class="help-block"><%= t '.close_help' %></p>
-      <% end %>
+      <div id="visit_open_close_input" class="form-group">
+        <label class="sr-only" for="destination_visits_attributes_#{i}_open"><%= t 'activerecord.attributes.visit.open' %></label>
+        <label class="sr-only" for="destination_visits_attributes_#{i}_close"><%= t 'activerecord.attributes.visit.close' %></label>
+        <label class="col-md-2 control-label"><%= t '.open_close' %></label>
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
+            <%= text_field "destination[visits_attributes][#{i}]", :open, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.open && l(visit.open, format: :hour_minute) %>
+            <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
+            <%= text_field "destination[visits_attributes][#{i}]", :close, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.close && l(visit.close, format: :hour_minute) %>
+          </div>
+          <p class="help-block"><%= t '.close_help' %></p>
+        </div>
+      </div>
       <% if visit.destination.customer.enable_multi_visits %>
         <%= f.select :tag_ids, t('activerecord.attributes.visit.tag_ids'), options_for_select(visit.destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, visit.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
           <p class="help-block"><%= t '.tags_help' %></p>

@@ -7,8 +7,18 @@
   <% end %>
   <%= f.text_field :name, required: true %>
   <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('button', content_tag('i', '', class: 'fa fa-crosshairs fa-fw'), class: 'btn btn-default', type: 'button', title: t('.locate_manually'))} %>
-  <%= f.text_field :postalcode, {maxlength: 17, width: 17} %>
-  <%= f.text_field :city %>
+  <div id="store_city_input" class="form-group">
+    <label class="sr-only" for="store_postalcode"><%= t 'activerecord.attributes.store.postalcode' %></label>
+    <label class="sr-only" for="store_city"><%= t 'activerecord.attributes.store.city' %></label>
+    <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.postalcode' %> / <%= t 'activerecord.attributes.store.city' %></label>
+    <div class="col-md-6">
+      <div class="input-group">
+        <%= text_field :store, :postalcode, maxlength: 17, class: 'form-control width_1_2' %>
+        <%= text_field :store, :city, class: 'form-control width_1_2' %>
+        <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
+      </div>
+    </div>
+  </div>
   <%= f.text_field :country, {placeholder: t('.country_default', n: @store.customer.default_country)} %>
   <div id="store_geocoding_input" class="form-group">
     <label class="col-md-2 control-label" for="store_geocoding"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
@@ -44,14 +54,28 @@
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" class="map-fixed-size"></div></span>
   </div>
-  <%= f.number_field :lat, { step: 'any'} %>
-  <%= f.number_field :lng, { step: 'any'} %>
+  <div id="store_geoloc_input" class="form-group">
+    <label class="sr-only" for="store_lat"><%= t 'activerecord.attributes.store.lat' %></label>
+    <label class="sr-only" for="store_lnt"><%= t 'activerecord.attributes.store.lng' %></label>
+    <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.lat' %> / <%= t 'activerecord.attributes.store.lng' %></label>
+    <div class="col-md-6">
+      <div class="input-group">
+        <%= number_field :store, :lat, step: 'any', class: 'form-control width_1_2' %>
+        <%= number_field :store, :lng, step: 'any', class: 'form-control width_1_2' %>
+        <span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+      </div>
+    </div>
+  </div>
   <%= f.select :color, [], (COLORS_TABLE + [@store[:color]]).compact.uniq, include_blank: '#000000' %>
   <div id="store_icon_input" class="form-group">
     <label class="col-md-2 control-label" for="store_icon"><%= t 'activerecord.attributes.store.icon' %></label>
-    <div class="col-md-6 form-inline">
-      <%= select_tag 'store[icon]', options_for_select(@icons_table, @store.icon), include_blank: t('web.form.default', n: 'fa-home') %>
-      <%= select_tag 'store[icon_size]', options_for_select([[t('.icon_size.small'), :small], [t('.icon_size.medium'), :medium], [t('.icon_size.large'), :large]], @store.icon_size), include_blank: t('web.form.default', n: t('.icon_size.large')), class: 'form-control' %>
+    <label class="sr-only" for="store_icon_size"><%= t 'activerecord.attributes.store.icon_size' %></label>
+    <div class="col-md-6">
+      <div class="input-group">
+        <%= select_tag 'store[icon]', options_for_select(@icons_table, @store.icon), include_blank: t('web.form.default', n: 'fa-home'), class: 'form-control width_1_2' %>
+        <%= select_tag 'store[icon_size]', options_for_select([[t('.icon_size.small'), :small], [t('.icon_size.medium'), :medium], [t('.icon_size.large'), :large]], @store.icon_size), include_blank: t('web.form.default', n: t('.icon_size.large')), class: 'form-control width_1_2' %>  
+        <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
+      </div>
     </div>
   </div>
   <%= f.actions do %>

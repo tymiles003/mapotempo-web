@@ -11,8 +11,18 @@
     <%= f.text_field :detail do %>
       <p class="help-block"><%= t '.detail_help' %></p>
     <% end %>
-    <%= f.text_field :postalcode, {maxlength: 17} %>
-    <%= f.text_field :city %>
+    <div id="destination_city_input" class="form-group">
+      <label class="sr-only" for="destination_postalcode"><%= t 'activerecord.attributes.destination.postalcode' %></label>
+      <label class="sr-only" for="destination_city"><%= t 'activerecord.attributes.destination.city' %></label>
+      <label class="col-md-2 control-label"><%= t 'activerecord.attributes.destination.postalcode' %> / <%= t 'activerecord.attributes.destination.city' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= text_field :destination, :postalcode, maxlength: 17, class: 'form-control width_1_2' %>
+          <%= text_field :destination, :city, class: 'form-control width_1_2' %>
+          <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
+        </div>
+      </div>
+    </div>
     <%= f.text_field :country, {placeholder: t('.country_default', n: @destination.customer.default_country)} %>
     <div class="form-group">
       <label class="col-md-2 control-label" for="destination_geocoding"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
@@ -48,8 +58,18 @@
     <div class="form-group">
       <div class="col-md-offset-2 col-md-6"><div id="map" class="map-fixed-size"></div></div>
     </div>
-    <%= f.number_field :lat, { step: 'any'} %>
-    <%= f.number_field :lng, { step: 'any'} %>
+    <div id="destination_geoloc_input" class="form-group">
+      <label class="sr-only" for="destination_lat"><%= t 'activerecord.attributes.destination.lat' %></label>
+      <label class="sr-only" for="destination_lnt"><%= t 'activerecord.attributes.destination.lng' %></label>
+      <label class="col-md-2 control-label"><%= t 'activerecord.attributes.destination.lat' %> / <%= t 'activerecord.attributes.destination.lng' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= number_field :destination, :lat, step: 'any', class: 'form-control width_1_2' %>
+          <%= number_field :destination, :lng, step: 'any', class: 'form-control width_1_2' %>
+          <span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+        </div>
+      </div>
+    </div>
     <% if !@destination.customer.enable_multi_visits %>
       <%= f.select :tag_ids, t('activerecord.attributes.destination.tag_ids'), options_for_select(@destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @destination.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
         <p class="help-block"><%= t '.tags_help' %></p>
