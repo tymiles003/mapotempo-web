@@ -40,8 +40,11 @@ class VehicleUsagesController < ApplicationController
   end
 
   def toggle
-    @vehicle_usage.update! active: !@vehicle_usage.active?
-    redirect_to [:edit, @vehicle_usage], notice: t(".success")
+    if @vehicle_usage.update active: !@vehicle_usage.active?
+      redirect_to [:edit, @vehicle_usage], notice: t('.success')
+    else
+      render action: :edit
+    end
   end
 
   private
