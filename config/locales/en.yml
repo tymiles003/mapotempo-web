@@ -989,7 +989,7 @@ en:
           in_progress: "Please wait, applying new zoning in progress."
         spreadsheet:
           title: "Export to spreadsheet"
-          stops: "Stop types"
+          stops: "Extra stops"
           out_of_route: "out of route"
           stores: "stores"
           rests: "rests"
@@ -1273,13 +1273,15 @@ en:
         default: "%{n} (default value)"
       rest_stop:
         default: "%{n} (default value)"
-        help: "Without taking into account rest duration"
+      rest_start_stop: "Rest time window"
+      rest_start_stop_help: "Without taking into account rest duration"
       rest_duration:
         default: "%{n} (default value)"
-        help: "Requires rest start and stop times if filled"
+        help: "Requires rest time window if filled"
       store_rest:
         default: "Default"
         none: "None"
+      service_times: "Service times"
       service_time:
         default: "%{n} (default value)"
       service_time_start_addon: "before"
@@ -1314,10 +1316,8 @@ en:
       service_times_help: "Durations added before the first stop and after the last stop."
       rest_duration_store: "Rest duration / place"
       rest_duration:
-        help: "Requires rest start and stop times if filled"
-      rest_stop:
-        help: "Without taking into account rest duration"
-      rest_start_stop: "Rest window"
+        help: "Requires rest time window if filled"
+      rest_start_stop: "Rest time window"
       rest_start_stop_help: "Without taking into account rest duration"
 
   visits:

@@ -37,6 +37,7 @@
             <%= text_field "destination[visits_attributes][#{i}]", :open, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.open && l(visit.open, format: :hour_minute) %>
             <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
             <%= text_field "destination[visits_attributes][#{i}]", :close, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.close && l(visit.close, format: :hour_minute) %>
+            <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
           </div>
           <p class="help-block"><%= t '.close_help' %></p>
         </div>

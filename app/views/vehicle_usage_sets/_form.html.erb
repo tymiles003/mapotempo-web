@@ -19,6 +19,7 @@
           placeholder: t('all.unit.hour_minute'),
           value: @vehicle_usage_set.close && l(@vehicle_usage_set.close, format: :hour_minute),
           required: true %>
+        <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
       </div>
       <p class="help-block"><%= t '.open_close_help' %></p>
     </div>
@@ -56,6 +57,7 @@
           class: 'form-control',
           placeholder: t('all.unit.hour_minute'),
           value: @vehicle_usage_set.service_time_end && l(@vehicle_usage_set.service_time_end, format: :hour_minute) %>
+        <span class="input-group-addon"><i class="fa fa-clock-o fa-fw"></i></span>
       </div>
       <p class="help-block"><%= t '.service_times_help' %></p>
     </div>
@@ -94,6 +96,7 @@
           class: 'form-control',
           placeholder: t('all.unit.hour_minute'),
           value: @vehicle_usage_set.rest_stop && l(@vehicle_usage_set.rest_stop, format: :hour_minute) %>
+        <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
       </div>
       <p class="help-block"><%= t '.rest_start_stop_help' %></p>
     </div>

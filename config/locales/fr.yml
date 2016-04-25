@@ -989,7 +989,7 @@ fr:
           in_progress: "Application du nouveau zonage en cours, merci de patienter."
         spreadsheet:
           title: "Export vers un tableur"
-          stops: "Types d'arrêt"
+          stops: "Arrêts additionnels"
           out_of_route: "non planifiés"
           stores: "dépôts"
           rests: "pauses"
@@ -1277,7 +1277,7 @@ fr:
       rest_start_stop_help: "Sans tenir compte de la durée de pause"
       rest_duration:
         default: "%{n} (valeur par défaut)"
-        help: "Requiert un horaire de début et fin de pause si renseigné"
+        help: "Requiert une plage de repos si renseigné"
       store_rest:
         default: "Défaut"
         none: "Aucun"
@@ -1316,7 +1316,7 @@ fr:
       service_times_help: "Durées ajoutées avant le premier arrêt et après le dernier arrêt."
       rest_duration_store: "Durée de repos / lieu"
       rest_duration:
-        help: "Requiert un horaire de début et fin de pause si renseigné"
+        help: "Requiert une plage de repos si renseigné"
       rest_start_stop: "Plage de repos"
       rest_start_stop_help: "Sans tenir compte de la durée de pause"
 
