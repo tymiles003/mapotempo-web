@@ -21,6 +21,8 @@ class RestValidator < ActiveModel::Validator
       record.errors[:rest_start] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')
     elsif record.default_rest_duration && record.default_rest_stop.nil?
       record.errors[:rest_stop] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')
+    elsif record.default_rest_duration.nil? && record.default_rest_start
+      record.errors[:rest_duration] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_duration')
     end
   end
 end

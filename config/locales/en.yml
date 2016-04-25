@@ -410,6 +410,7 @@ en:
               on_or_after: "Must be after opening time"
               after: "Must be after opening time"
           missing_rest_window: "can't be blanked if rest duration is filled"
+          missing_rest_duration: "can't be blanked if rest time window is filled"
         vehicle_usage_set:
           attributes:
             close:
@@ -419,6 +420,7 @@ en:
               after: "Must be after opening time"
           at_least_one: "At least one vehicles configuration needed"
           missing_rest_window: "can't be blanked if rest duration is filled"
+          missing_rest_duration: "can't be blanked if rest time window is filled"
         visit:
           attributes:
             close:

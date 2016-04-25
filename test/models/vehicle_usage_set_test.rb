@@ -35,7 +35,7 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
       o.vehicle_usages[0].routes[-1].out_of_date = false
       assert !o.rest_duration.nil?
 
-      o.rest_duration = nil
+      o.rest_duration = o.rest_start = o.rest_stop = nil
       o.save!
       o.customer.save!
       assert o.vehicle_usages[0].routes[-1].out_of_date

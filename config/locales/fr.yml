@@ -410,6 +410,7 @@ fr:
               on_or_after: "Doit être après l'horaire de début"
               after: "Doit être après l'horaire de début"
           missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
+          missing_rest_duration: "doit être remplie si une plage de repos est remplie"
         vehicle_usage_set:
           attributes:
             close:
@@ -419,6 +420,7 @@ fr:
               after: "Doit être après l'horaire de début"
           at_least_one: "Au moins une configuration de véhicules est requise"
           missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
+          missing_rest_duration: "doit être remplie si une plage de repos est remplie"
         visit:
           attributes:
             close:
