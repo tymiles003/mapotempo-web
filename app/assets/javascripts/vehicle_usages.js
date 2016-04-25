@@ -42,5 +42,8 @@ Paloma.controller('VehicleUsages', {
   },
   update: function() {
     vehicle_usages_form(this.params);
+  },
+  toggle: function() {
+    vehicle_usages_form(this.params);
   }
 });
