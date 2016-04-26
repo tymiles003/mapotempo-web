@@ -50,7 +50,7 @@ class VehicleUsage < ActiveRecord::Base
 
   before_save :set_stops_out_of_route, prepend: true, unless: :active?
 
-  scope :active, lambda{ where(vehicle_usages: { active: true }) }
+  scope :active, lambda{ where(active: true) }
 
   def default_open
     open || vehicle_usage_set.open
@@ -117,7 +117,7 @@ class VehicleUsage < ActiveRecord::Base
   def set_stops_out_of_route
     self.routes.each do |route|
       out_of_route = route.planning.routes.detect{|r| !r.vehicle_usage }
-      route.stops.each{|stop| stop.route_id = out_of_route.id }
+      route.stops.select{|stop| stop.is_a?(StopVisit) }.each{|stop| stop.route_id = out_of_route.id }
     end
   end
 

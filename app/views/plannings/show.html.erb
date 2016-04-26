@@ -3,7 +3,7 @@
   <%= button_tag class: 'btn btn-primary btn-print' do %><i class="fa fa-print fa-fw"></i> <%= t '.print' %><% end %>
 <% end %>
 <ol class="routes-print">
-<% @planning.routes.select{ |route| route.vehicle_usage && route.size_active > 0 }.each{ |route| %>
+<% @routes.select{ |route| route.vehicle_usage && route.size_active > 0 }.each{ |route| %>
 <%=  render 'routes/show', route: route %>
 <% } %>
 </ol>

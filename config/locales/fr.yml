@@ -1247,14 +1247,14 @@ fr:
         same_start_stop: "Véhicule retournant à son dépôt de départ"
       time: "Début - Fin"
       devices: "Terminaux mobiles"
+      disable: "Désactiver"
+      disable_confirm: "Êtes-vous sûr ? Toutes les tournées utilisant ce véhicule dans cette configuration seront perdues."
+      enable: "Activer"
     new:
       title: "Nouvelle configuration de véhicule"
     toggle:
       success: "Configuration du véhicule mise à jour avec succès"
     form:
-      disable: "Désactiver « %{v} » dans la configuration « %{c} »"
-      disable_confirm: "Êtes-vous sûr ? Toutes les tournées utilisant ce véhicule dans cette configuration seront perdues."
-      enable: "Activer « %{v} » dans la configuration « %{c} »"
       save: "Enregistrer la configuration du véhicule"
       vehicle:
         legend: "Véhicule"

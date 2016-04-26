@@ -66,18 +66,31 @@ class VehicleUsageTest < ActiveSupport::TestCase
  end
 
   test 'disable vehicule usage' do
-    vehicle_usage = vehicle_usages :vehicle_usage_one_one
-    routes = vehicle_usage.routes
-    assert vehicle_usage.active
-    assert_equal 1, vehicle_usage.routes.length
-    vehicle_usage.update! active: false
-    assert !vehicle_usage.active
-    assert_equal 1, vehicle_usage.routes.length
-    routes.each do |route|
-      out_of_route = route.planning.routes.detect{|r| !r.vehicle_usage }
-      route.stops.each do |stop|
-        assert stop.route_id == out_of_route.id
-      end
+    planning = plannings :planning_one
+    out_of_route = planning.routes.detect{|route| !route.vehicle_usage }
+    route = planning.routes.detect{|route| route.ref == 'route_one' }
+
+    # There are 3 Stops on this Route
+    assert_equal 3, route.stops.reload.select{|stop| stop.is_a?(StopVisit) }.count
+    assert_equal 1, route.stops.reload.select{|stop| stop.is_a?(StopRest) }.count
+    assert_equal 1, out_of_route.stops.reload.select{|stop| stop.is_a?(StopVisit) }.count
+
+    # Scope includes Vehicle Usage
+    assert VehicleUsage.active.find(route.vehicle_usage_id)
+
+    # Deactivating Vehicle Usage
+    assert route.vehicle_usage.active
+    route.vehicle_usage.update! active: false
+    assert !route.vehicle_usage.active
+
+    # Scope does not include Vehicle Usage
+    assert_raises ActiveRecord::RecordNotFound do
+      VehicleUsage.active.find route.vehicle_usage_id
     end
+
+    # All Stops are now out of route
+    assert_equal 0, route.stops.reload.select{|stop| stop.is_a?(StopVisit) }.count
+    assert_equal 1, route.stops.reload.select{|stop| stop.is_a?(StopRest) }.count
+    assert_equal 4, out_of_route.stops.reload.select{|stop| stop.is_a?(StopVisit) }.count
   end
 end

@@ -1247,14 +1247,14 @@ en:
         same_start_stop: "Vehicle returns to start store"
       time: "Open - Close"
       devices: "Devices"
+      disable: "Disable"
+      disable_confirm: "Are you sure? All routes using this vehicle and configuration will be lost."
+      enable: "Enable"
     new:
       title: "New vehicle configuration"
     toggle:
       success: "Vehicle Configuration Updated Successfully"
     form:
-      disable: "Disable \"%{v}\" in configuration \"%{c}\""
-      disable_confirm: "Are you sure? All routes using this vehicle with this configuration will be lost."
-      enable: "Enable \"%{v}\" in configuration \"%{c}\""
       save: "Save Vehicle Configuration"
       vehicle:
         legend: "Vehicle"

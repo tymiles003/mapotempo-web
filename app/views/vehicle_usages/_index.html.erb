@@ -43,6 +43,11 @@
           <%= vehicle_external_services vehicle_usage.vehicle %>
         </td>
         <td>
+          <% if vehicle_usage.active %>
+            <%= link_to t('.disable'), [:toggle, vehicle_usage], { method: :patch, class: 'btn btn-default', data: { confirm:  t('.disable_confirm') } } %>
+          <% else %>
+            <%= link_to t('.enable'), [:toggle, vehicle_usage], { method: :patch, class: 'btn btn-default' } %>
+          <% end %>
           <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>
             <i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %>
           <% end %>

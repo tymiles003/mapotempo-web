@@ -31,6 +31,7 @@ class PlanningsController < ApplicationController
   end
 
   def show
+    @routes = @planning.routes.select{ |r| !r.vehicle_usage || r.vehicle_usage.active }
     @params = params
     respond_to do |format|
       format.html

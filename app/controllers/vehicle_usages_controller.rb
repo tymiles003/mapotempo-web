@@ -42,7 +42,7 @@ class VehicleUsagesController < ApplicationController
   def toggle
     @vehicle_usage.vehicle.speed_multiplicator /= 100 if @vehicle_usage.vehicle.speed_multiplicator
     if @vehicle_usage.update active: !@vehicle_usage.active?
-      redirect_to [:edit, @vehicle_usage], notice: t('.success')
+      redirect_to link_back || vehicle_usage_sets_path, notice: t('.success')
     else
       if @vehicle_usage.vehicle.speed_multiplicator
         @vehicle_usage.vehicle.speed_multiplicator = (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i
