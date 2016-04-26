@@ -32,8 +32,8 @@ $(document).on('ready page:load', function() {
 });
 
 var bootstrap_dialog = function(options) {
-  $('#default-modal').find('.bootstrap-dialog-title').html(options.title);
-  $('#default-modal').find('.bootstrap-dialog-message').html(options.message);
+  $('#default-modal').find('.modal-title').html(options.title);
+  $('#default-modal').find('.modal-body').html(options.message);
   return $('#default-modal');
 }
 
