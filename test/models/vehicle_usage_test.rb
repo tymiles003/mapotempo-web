@@ -52,18 +52,18 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert r.reload.out_of_date
   end
 
-#  test 'setting a time duration requires time start and stop' do
-#    v = vehicle_usages(:vehicle_usage_one_one)
-#    v.update! rest_start: nil, rest_stop: nil, rest_duration: nil
-#    assert v.valid?
-#    v.rest_duration = Time.utc(2000, 1, 1, 0, 0) + 15.minutes
-#    assert !v.valid?
-#    assert_equal [:rest_start, :rest_stop], v.errors.keys
-#    v.rest_start = Time.utc(2000, 1, 1, 0, 0) + 10.hours
-#    v.rest_stop = Time.utc(2000, 1, 1, 0, 0) + 11.hours
-#    assert v.valid?
-#  end
-
+ test 'setting a rest duration requires time start and stop' do
+   v = vehicle_usages(:vehicle_usage_one_one)
+   v.update! rest_start: nil, rest_stop: nil, rest_duration: nil
+   assert v.valid?
+   v.vehicle_usage_set.update! rest_start: nil, rest_stop: nil, rest_duration: nil
+   v.rest_duration = Time.utc(2000, 1, 1, 0, 0) + 15.minutes
+   assert !v.valid?
+   assert_equal [:rest_start, :rest_stop], v.errors.keys
+   v.rest_start = Time.utc(2000, 1, 1, 0, 0) + 10.hours
+   v.rest_stop = Time.utc(2000, 1, 1, 0, 0) + 11.hours
+   assert v.valid?
+ end
 
   test 'disable vehicule usage' do
     vehicle_usage = vehicle_usages :vehicle_usage_one_one
@@ -80,5 +80,4 @@ class VehicleUsageTest < ActiveSupport::TestCase
       end
     end
   end
-
 end

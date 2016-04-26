@@ -1,5 +1,7 @@
 require 'simplecov'
+SimpleCov.minimum_coverage 80
 SimpleCov.start 'rails'
+Dir[Rails.root.join('lib/**/*.rb')].each { |file| load file } # only explicitly required files are tracked
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)

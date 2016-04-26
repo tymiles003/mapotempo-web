@@ -17,13 +17,9 @@
 #
 class RestValidator < ActiveModel::Validator
   def validate(record)
-    if record.default_rest_duration && record.default_rest_start.nil?
-      record.errors[:rest_start] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')
-    elsif record.default_rest_duration && record.default_rest_stop.nil?
-      record.errors[:rest_stop] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')
-    elsif record.default_rest_duration.nil? && record.default_rest_start
-      record.errors[:rest_duration] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_duration')
-    end
+    record.errors[:rest_start] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window') if record.default_rest_duration && record.default_rest_start.nil?
+    record.errors[:rest_stop] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window') if record.default_rest_duration && record.default_rest_stop.nil?
+    record.errors[:rest_duration] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_duration') if record.default_rest_duration.nil? && record.default_rest_start
   end
 end
 
