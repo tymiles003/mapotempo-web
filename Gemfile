@@ -131,7 +131,7 @@ gem 'i18n-js'
 gem 'mustache', '<1.0.0' # FIXME wait for ruby 2.0
 gem 'smt_rails'
 gem 'paloma'
-gem 'browser'
+gem 'browser', '<2.0.0' #FIXME wait for ruby 2.0
 gem 'color'
 
 gem 'daemons'

@@ -142,7 +142,7 @@ GEM
     bootstrap-select-rails (1.6.3)
     bootstrap-wysihtml5-rails (0.3.3.8)
       railties (>= 3.0)
-    browser (2.0.3)
+    browser (1.1.0)
     builder (3.2.2)
     byebug (8.2.4)
     cancancan (1.11.0)
@@ -516,7 +516,7 @@ DEPENDENCIES
   bootstrap-filestyle-rails
   bootstrap-select-rails
   bootstrap-wysihtml5-rails
-  browser
+  browser (< 2.0.0)
   byebug
   cancancan (= 1.11.0)
   carrierwave
