@@ -16,147 +16,138 @@
 
       <%= render 'form' %>
 
-      <div style="clear:both;"></div>
-      <br />
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="btn-group" style="clear:both;">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="test">
-              <i class="fa fa-check-square fa-fw"></i>
-              <span><%= t 'plannings.edit.toggle_routes' %></span>
-              <span class="caret"></span>
-            </button>
-            <ul id="toggle_routes_dropdown" class="dropdown-menu" role="menu">
-              <li data-selection="none">
-                <a class="active_none" href="#">
-                  <i class="fa fa-square-o fa-fw"></i>
-                  <%= t 'plannings.edit.active_none' %>
-                </a>
-              </li>
-              <li data-selection="reverse">
-                <a class="active_reverse" href="#">
-                  <i class="fa fa-random fa-fw"></i>
-                  <%= t 'plannings.edit.active_reverse' %>
-                </a>
-              </li>
-              <li data-selection="all">
-                <a class="active_all" href="#">
-                  <i class="fa fa-check-square-o fa-fw"></i>
-                  <%= t 'plannings.edit.active_all' %>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="btn-group" style="clear:both;">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="test">
-              <i class="fa fa-check-square fa-fw"></i>
-              <span><%= t 'plannings.edit.lock_routes' %></span>
-              <span class="caret"></span>
-            </button>
-            <ul id="lock_routes_dropdown" class="dropdown-menu" role="menu">
-              <li data-selection="none">
-                <a class="active_none" href="#">
-                  <i class="fa fa-square-o fa-fw"></i>
-                  <%= t 'plannings.edit.active_none' %>
-                </a>
-              </li>
-              <li data-selection="reverse">
-                <a class="active_reverse" href="#">
-                  <i class="fa fa-random fa-fw"></i>
-                  <%= t 'plannings.edit.active_reverse' %>
-                </a>
-              </li>
-              <li data-selection="all">
-                <a class="active_all" href="#">
-                  <i class="fa fa-check-square-o fa-fw"></i>
-                  <%= t 'plannings.edit.active_all' %>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div style="clear:both;"></div>
-      <br />
-
       <div id="global_tools" class="btn-group pull-right">
-        <!--<button type="button" class="btn btn-primary btn-sm" id="optimize_all" title="<%= t '.optimize_all' %>"><i class="fa fa-gear fa-fw"></i></button>-->
-        <button type="button" class="btn btn-primary btn-sm" id="optimize_each" title="<%= t '.optimize_each' %>"><i class="fa fa-gears fa-fw"></i></button>
-
-        <button type="button" class="btn btn-default btn-sm dropdown-toggle right export" data-toggle="dropdown" title="<%= t '.exports' %>"><i class="fa fa-share-square-o fa-fw"></i><span class="caret"></span></button>
-        <ul class="dropdown-menu" role="menu">
-          <% if @planning.customer.tomtom? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.tomtom_id.blank? } %>
-            <li class="link planning-tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.tomtom_send_waypoints.action' %>
+        <span style="display:inline">
+          <button type="button" class="btn btn-primary btn-sm" id="optimize_each" title="<%= t '.optimize_each' %>">
+            <i class="fa fa-gears fa-fw"></i>
+          </button>
+        </span>
+        <span class="dropdown" style="display:inline">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t '.toggle_routes' %>">
+            <i class="fa fa-eye fa-fw"></i>
+          </button>
+          <!-- https://github.com/twbs/bootstrap/issues/1411 -->
+          <ul id="toggle_routes_dropdown" class="dropdown-menu" style="right: 0; left: auto;" role="menu">
+            <li data-selection="none">
+              <a class="active_none" href="#">
+                <i class="fa fa-eye-slash fa-fw"></i>
+                <%= t 'plannings.edit.active_none' %>
+              </a>
             </li>
-            <li class="link planning-tomtom-send-orders" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.tomtom_send_orders.action' %>
+            <li data-selection="reverse">
+              <a class="active_reverse" href="#">
+                <i class="fa fa-random fa-fw"></i>
+                <%= t 'plannings.edit.active_reverse' %>
+              </a>
             </li>
-            <li class="link planning-tomtom-clear" data-url="/api/0.1/devices/tomtom/clear_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.tomtom_clear.action' %>
+            <li data-selection="all">
+              <a class="active_all" href="#">
+                <i class="fa fa-eye fa-fw"></i>
+                <%= t 'plannings.edit.active_all' %>
+              </a>
             </li>
+          </ul>
+        </span>
+        <span class="dropdown" style="display:inline">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t '.toggle_routes' %>">
+            <i class="fa fa-unlock fa-fw"></i>
+          </button>
+          <!-- https://github.com/twbs/bootstrap/issues/1411 -->
+          <ul id="lock_routes_dropdown" class="dropdown-menu" style="right: 0; left: auto;" role="menu">
+            <li data-selection="none">
+              <a class="active_none" href="#">
+                <i class="fa fa-unlock fa-fw"></i>
+                <%= t 'plannings.edit.active_none' %>
+              </a>
+            </li>
+            <li data-selection="reverse">
+              <a class="active_reverse" href="#">
+                <i class="fa fa-random fa-fw"></i>
+                <%= t 'plannings.edit.active_reverse' %>
+              </a>
+            </li>
+            <li data-selection="all">
+              <a class="active_all" href="#">
+                <i class="fa fa-lock fa-fw"></i>
+                <%= t 'plannings.edit.active_all' %>
+              </a>
+            </li>
+          </ul>
+        </span>
+        <span class="dropdown" style="display:inline">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle right export" data-toggle="dropdown" title="<%= t '.exports' %>">
+            <i class="fa fa-share-square-o fa-fw"></i>
+          </button>
+          <!-- https://github.com/twbs/bootstrap/issues/1411 -->
+          <ul class="dropdown-menu" class="dropdown-menu" style="right: 0; left: auto;" role="menu">
+            <% if @planning.customer.tomtom? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.tomtom_id.blank? } %>
+              <li class="link planning-tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.tomtom_send_waypoints.action' %>
+              </li>
+              <li class="link planning-tomtom-send-orders" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.tomtom_send_orders.action' %>
+              </li>
+              <li class="link planning-tomtom-clear" data-url="/api/0.1/devices/tomtom/clear_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.tomtom_clear.action' %>
+              </li>
+              <li role="separator" class="divider"></li>
+            <% end %>
+            <% if @planning.customer.teksat? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.teksat_id.blank? } %>
+              <li class="link planning-teksat-send" data-url="/api/0.1/devices/teksat/send_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.teksat_send.action' %>
+              </li>
+              <li class="link planning-teksat-clear" data-url="/api/0.1/devices/teksat/clear_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.teksat_clear.action' %>
+              </li>
+              <li role="separator" class="divider"></li>
+            <% end %>
+            <% if @planning.customer.orange? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.orange_id.blank? } %>
+              <li class="link planning-orange-send" data-url="/api/0.1/devices/orange/send_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.orange_send.action' %>
+              </li>
+              <li class="link planning-orange-clear" data-url="/api/0.1/devices/orange/clear_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.orange_clear.action' %>
+              </li>
+              <li role="separator" class="divider"></li>
+            <% end %>
+            <% if @planning.customer.masternaut? %>
+              <li class="link planning-masternaut-send" data-url="/api/0.1/devices/masternaut/send_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.masternaut_send.action' %>
+              </li>
+              <li role="separator" class="divider"></li>
+            <% end %>
+            <% if @planning.customer.alyacom? %>
+              <li class="link planning-alyacom-send" data-url="/api/0.1/devices/alyacom/send_multiple" data-planning-id="<%= @planning.id %>">
+                <i class="fa fa-mobile fa-fw"></i>
+                <%= t 'plannings.edit.alyacom_send.action' %>
+              </li>
+              <li role="separator" class="divider"></li>
+            <% end %>
+            <li><%= link_to planning_path(@planning) do %><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %><% end %></li>
             <li role="separator" class="divider"></li>
-          <% end %>
-          <% if @planning.customer.teksat? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.teksat_id.blank? } %>
-            <li class="link planning-teksat-send" data-url="/api/0.1/devices/teksat/send_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.teksat_send.action' %>
-            </li>
-            <li class="link planning-teksat-clear" data-url="/api/0.1/devices/teksat/clear_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.teksat_clear.action' %>
-            </li>
+            <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet' %></a></li>
             <li role="separator" class="divider"></li>
-          <% end %>
-          <% if @planning.customer.orange? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.orange_id.blank? } %>
-            <li class="link planning-orange-send" data-url="/api/0.1/devices/orange/send_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.orange_send.action' %>
-            </li>
-            <li class="link planning-orange-clear" data-url="/api/0.1/devices/orange/clear_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.orange_clear.action' %>
-            </li>
-            <li role="separator" class="divider"></li>
-          <% end %>
-          <% if @planning.customer.masternaut? %>
-            <li class="link planning-masternaut-send" data-url="/api/0.1/devices/masternaut/send_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.masternaut_send.action' %>
-            </li>
-            <li role="separator" class="divider"></li>
-          <% end %>
-          <% if @planning.customer.alyacom? %>
-            <li class="link planning-alyacom-send" data-url="/api/0.1/devices/alyacom/send_multiple" data-planning-id="<%= @planning.id %>">
-              <i class="fa fa-mobile fa-fw"></i>
-              <%= t 'plannings.edit.alyacom_send.action' %>
-            </li>
-            <li role="separator" class="divider"></li>
-          <% end %>
-          <li><%= link_to planning_path(@planning) do %><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %><% end %></li>
-          <li role="separator" class="divider"></li>
-          <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet' %></a></li>
-          <li role="separator" class="divider"></li>
-          <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_track' %><% end %></li>
-          <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
-          <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.contact_email.blank? } %>
-            <li class="kmz_email">
-              <%= link_to planning_path(@planning, format: :kmz, email: 1) do %>
-                <i class="fa fa-envelope fa-fw"></i>
-                <%= t '.export.kmz_email.action' %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+            <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
+            <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_track' %><% end %></li>
+            <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
+            <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.contact_email.blank? } %>
+              <li class="kmz_email">
+                <%= link_to planning_path(@planning, format: :kmz, email: 1) do %>
+                  <i class="fa fa-envelope fa-fw"></i>
+                  <%= t '.export.kmz_email.action' %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </span>
       </div>
       <div id="planning"></div>
     </div>
