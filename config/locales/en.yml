@@ -833,6 +833,8 @@ en:
       new: "New Planning"
     edit:
       position: "Position"
+      lock_routes: "Lock Routes"
+      toggle_routes: "Toggle Routes"
       zonings: "Zonings"
       zoning_new: "New zoning from this planning"
       zoning_edit: "Edit zoning from this planning"

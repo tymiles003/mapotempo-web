@@ -17,7 +17,7 @@
 #
 module PlanningsHelper
   def planning_active_routes planning
-    planning.routes.joins(:vehicle_usage).select{|route| route.vehicle_usage.active }.map{|route| route.slice(:color, :vehicle_usage_id, :ref).merge(route_id: route.id) }
+    planning.routes.joins(:vehicle_usage).select{|route| route.vehicle_usage.active }.map{|route| route.slice(:color, :vehicle_usage_id, :ref, :hidden, :locked).merge(route_id: route.id) }
   end
 
   def planning_vehicles_array planning

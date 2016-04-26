@@ -833,6 +833,8 @@ fr:
       new: "Nouveau planning"
     edit:
       position: "Position"
+      lock_routes: "Verrouiller routes"
+      toggle_routes: "Masquer routes"
       zonings: "Zonages"
       zoning_new: "Créer un nouveau zonage depuis ce planning"
       zoning_edit: "Modifier ce zonage depuis ce planning"

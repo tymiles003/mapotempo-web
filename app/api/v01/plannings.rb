@@ -207,5 +207,47 @@ class V01::Plannings < Grape::API
       planning.save!
       present planning, with: V01::Entities::Planning
     end
+
+    desc 'Update Routes',
+      params: V01::Entities::Route.documentation.slice(:hidden, :locked)
+    params do
+      requires :id, type: String, desc: ID_DESC
+      requires :route_ids, type: Array[Integer]
+      requires :selection, type: String, values: %w(all reverse none)
+      requires :action, type: String, values: %w(toggle lock)
+    end
+    patch ':id/update_routes' do
+      planning_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
+      planning = current_customer.plannings.where(planning_id).first!
+      routes = planning.routes.find params[:route_ids]
+      routes.each do |route|
+        case params[:action].to_sym
+          when :toggle
+
+            case params[:selection].to_sym
+              when :all
+                route.update! hidden: false
+              when :reverse
+                route.update! hidden: !route.hidden
+              when :none
+                route.update! hidden: true
+            end
+
+          when :lock
+
+            case params[:selection].to_sym
+              when :all
+                route.update! locked: true
+              when :reverse
+                route.update! locked: !route.locked
+              when :none
+                route.update! locked: false
+            end
+
+        end
+      end
+      present routes, with: V01::Entities::Route
+    end
+
   end
 end
