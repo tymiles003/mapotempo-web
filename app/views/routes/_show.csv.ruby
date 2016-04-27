@@ -1,4 +1,4 @@
-if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').include?('stores'))
+if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').include?('store'))
   row = {
     route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
     vehicle: (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
@@ -38,7 +38,7 @@ end
 
 index = 0
 route.stops.each { |stop|
-  if stop.active || !@params.key?(:stops) || @params[:stops].split('|').include?(:inactive)
+  if !@params.key?(:stops) || ((stop.active || @params[:stops].split('|').include?('inactive') || stop.route.vehicle_usage || @params[:stops].split('|').include?('out-of-route')) && (stop.is_a?(StopVisit) || @params[:stops].split('|').include?('rest')))
     row = {
       route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
       vehicle: (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
@@ -77,7 +77,7 @@ route.stops.each { |stop|
   end
 }
 
-if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').include?('stores'))
+if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').include?('store'))
   row = {
     route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
     vehicle: (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
