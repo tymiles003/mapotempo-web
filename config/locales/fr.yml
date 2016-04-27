@@ -1240,7 +1240,7 @@ fr:
       title: "Modifier véhicule et configuration"
     index:
       title: "Liste configurations de véhicules"
-      stores: "Dépôts"
+      stores: "Départ - Arrivée"
       store:
         no_start: "Pas de dépôt de départ"
         no_stop: "Pas de dépôt d'arrivée : fin de tournée libre"
@@ -1268,7 +1268,7 @@ fr:
         default: "%{n} (valeur par défaut)"
       open_close: "Horaire"
       open_close_help: "Horaire de travail livreur"
-      stores: "Dépôts"
+      stores: "Départ / Arrivée"
       store:
         default: "Défaut"
         none: "Aucun"
@@ -1303,7 +1303,7 @@ fr:
     index:
       title: "Liste configurations des véhicules"
       new: "Nouvelle configuration des véhicules"
-      stores: "Dépôts"
+      stores: "Départ - Arrivée"
       time: "Début - Fin"
       service_time: "Durées de service"
     new:
@@ -1311,7 +1311,7 @@ fr:
     form:
       open_close: "Horaire"
       open_close_help: "Horaire de travail livreur"
-      stores: "Dépôts"
+      stores: "Départ / Arrivée"
       store:
         none: "Aucun"
       stores_help: "Dépôts de départ et d'arrivée"

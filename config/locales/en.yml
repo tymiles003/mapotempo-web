@@ -1240,7 +1240,7 @@ en:
       title: "Editing vehicle and configuration"
     index:
       title: "Listing vehicle configurations"
-      stores: "Stores"
+      stores: "Start - End"
       store:
         no_start: "No start store"
         no_stop: "No stop store: end of route is free"
@@ -1268,7 +1268,7 @@ en:
         default: "%{n} (default value)"
       open_close: "Hours"
       open_close_help: "Deliveryman's working hours"
-      stores: "Stores"
+      stores: "Start / End"
       store:
         default: "Default"
         none: "None"
@@ -1303,7 +1303,7 @@ en:
     index:
       title: "Listing vehicles configurations"
       new: "New vehicles configuration"
-      stores: "Stores"
+      stores: "Start - End"
       time: "Open - Close"
       service_time: "Service Time"
     new:
@@ -1311,7 +1311,7 @@ en:
     form:
       open_close: "Hours"
       open_close_help: "Deliveryman's working hours"
-      stores: "Stores"
+      stores: "Start / End"
       store:
         none: "None"
       stores_help: "Start and end stores"
