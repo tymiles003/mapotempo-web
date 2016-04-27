@@ -120,31 +120,6 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
       if (error_callback) error_callback();
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
-      var buttons = {};
-      buttons[I18n.t('web.dialog.close')] = function() {
-        $.ajax({
-          type: "delete",
-          url: "/api/0.1/customers/" + data.customer_id + "/job/" + data.id + ".json",
-          beforeSend: beforeSendWaiting,
-          complete: function() {
-            dialog.modal('hide');
-            completeWaiting();
-            $.ajax({
-              url: load_url,
-              success: callback,
-              error: ajaxError
-            });
-            // Reset dialog content
-            $(".dialog-progress", dialog).show();
-            $(".dialog-attempts", dialog).hide();
-            $(".dialog-error", dialog).hide();
-            $(".progress-bar", dialog).css("width", "0%");
-          },
-          error: function(request, status, error) {
-            ajaxError(request, status, error);
-          }
-        });
-      };
     } else {
       planningTimerId = setTimeout(function() {
         $.ajax({

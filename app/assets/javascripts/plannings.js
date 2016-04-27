@@ -784,8 +784,13 @@ var plannings_edit = function(params) {
   }
 
   var displayPlanning = function(data, options) {
+
     function error_callback() {
       stickyError(I18n.t('plannings.edit.optimize_failed'));
+      dialog_optimizer.find('[data-dismiss]').show();
+      dialog_optimizer.on('hidden.bs.modal', function() {
+        $.ajax({ type: 'DELETE', url: '/api/0.1/customers/' + data.optimizer.customer_id + '/job/' + data.optimizer.id + '.json' });
+      });
     }
 
     function success_callback() {

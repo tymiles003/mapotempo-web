@@ -30,7 +30,15 @@ class DestinationsController < ApplicationController
     @tags = current_user.customer.tags
     respond_to do |format|
       format.html
-      format.json
+      format.json do
+        if @customer.job_destination_geocoding
+          if @customer.job_destination_geocoding.attempts >= Delayed::Worker.max_attempts
+            @customer.job_destination_geocoding.update! failed_at: Time.now
+          else
+            @customer.job_destination_geocoding.update! attempts: @customer.job_destination_geocoding.attempts + 1
+          end
+        end
+      end
       format.excel do
         data = render_to_string.gsub('\n', '\r\n')
         send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),

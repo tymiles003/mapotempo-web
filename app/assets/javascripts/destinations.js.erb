@@ -807,7 +807,16 @@ var destinations_index = function(params, api) {
   var sortList = undefined;
 
   var displayDestinations = function(data) {
-    if (!progress_dialog(data.geocoding, dialog_geocoding, '/destinations.json', checkForDisplayDestinations)) {
+
+    function error_callback() {
+      stickyError(I18n.t('destinations.index.dialog.geocoding.error'));
+      dialog_geocoding.find('[data-dismiss]').show();
+      dialog_geocoding.on('hidden.bs.modal', function() {
+        $.ajax({ type: 'DELETE', url: '/api/0.1/customers/' + data.geocoding.customer_id + '/job/' + data.geocoding.id + '.json' });
+      });
+    }
+
+    if (!progress_dialog(data.geocoding, dialog_geocoding, '/destinations.json', checkForDisplayDestinations, error_callback)) {
       return;
     }
 
