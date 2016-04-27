@@ -20,7 +20,7 @@ class V01::Devices::Alyacom < Grape::API
     namespace :alyacom do
 
       before do
-        @customer = current_customer
+        @customer = current_customer params[:customer_id]
       end
 
       rescue_from DeviceServiceError do |e|

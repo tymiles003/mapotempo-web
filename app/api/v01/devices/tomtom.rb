@@ -20,7 +20,7 @@ class V01::Devices::Tomtom < Grape::API
     namespace :tomtom do
 
       before do
-        @customer = current_customer
+        @customer = current_customer params[:customer_id]
       end
 
       rescue_from DeviceServiceError do |e|
