@@ -32,57 +32,74 @@ module Routers
     end
 
     def compute_batch(url, mode, dimension, segments, options = {})
-      key = ['c', url, mode, dimension, Digest::MD5.hexdigest(Marshal.dump([segments, options.to_a.sort_by{ |i| i[0].to_s }]))]
-
-      request = @cache_request.read(key)
-      if !request
-        params = {
-          api_key: @api_key,
-          mode: mode,
-          dimension: dimension,
-          speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
-          locs: segments.collect{ |segment| segment.join(',') }.join(';'),
-          geometry: options[:geometry],
-          area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
-          speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil
-        }.compact
-        resource = RestClient::Resource.new(url + '/0.1/routes.json', timeout: nil)
-        request = resource.get(params: params) { |response, request, result, &block|
-          case response.code
-          when 200
-            response
-          when 204 # UnreachablePointError
-            ''
-          when 417 # OutOfSupportedAreaError
-            ''
-          else
-            # response.return!(request, result, &block)
-            raise RouterError.new(result)
-          end
-        }
-
-        @cache_request.write(key, request && String.new(request)) # String.new workaround waiting for RestClient 2.0
-      end
-
-      if request == ''
-        []
-      else
-        datas = JSON.parse(request)
-        if datas && datas.key?('features') && datas['features'].size > 0
-          datas['features'].collect{ |data|
-            feature = data['features'][0]
-            if data && data.key?('features') && data['features'].size > 0
-              distance = feature['properties']['router']['total_distance'] if feature['properties'] && feature['properties']['router']
-              time = feature['properties']['router']['total_time'] if feature['properties'] && feature['properties']['router']
-              trace = feature['geometry']['polylines'] if feature['geometry']
-              [distance, time, trace]
+      results = Hash.new
+      nocache_segments = []
+      segments.each{ |s|
+        key_segment = ['c', url, mode, dimension, Digest::MD5.hexdigest(Marshal.dump([s, options.to_a.sort_by{ |i| i[0].to_s }]))]
+        request_segment = @cache_request.read key_segment
+        if request_segment
+          results[s] = JSON.parse request_segment
+        else
+          nocache_segments << s if !request_segment
+        end
+      }
+      if nocache_segments.size > 0
+        nocache_segments.each_slice(50){ |slice_segments|
+          params = {
+            api_key: @api_key,
+            mode: mode,
+            dimension: dimension,
+            speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
+            locs: slice_segments.collect{ |segment| segment.join(',') }.join(';'),
+            geometry: options[:geometry],
+            area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
+            speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil
+          }.compact
+          resource = RestClient::Resource.new(url + '/0.1/routes.json', timeout: nil)
+          request = resource.get(params: params) { |response, request, result, &block|
+            case response.code
+            when 200
+              response
+            when 204 # UnreachablePointError
+              ''
+            when 417 # OutOfSupportedAreaError
+              ''
             else
-              [nil, nil, nil]
+              # response.return!(request, result, &block)
+              raise RouterError.new(result)
             end
           }
-        else
-          []
-        end
+          if request != ''
+            datas = JSON.parse request
+            if datas && datas.key?('features') && datas['features'].size > 0
+              slice_segments.each_with_index{ |s, i|
+                data = datas['features'][i]
+                if data && data.key?('features') && data['features'].size > 0
+                  key_segment = ['c', url, mode, dimension, Digest::MD5.hexdigest(Marshal.dump([s, options.to_a.sort_by{ |i| i[0].to_s }]))]
+                  @cache_request.write(key_segment, String.new(data.to_json)) # String.new workaround waiting for RestClient 2.0
+                  results[s] = data
+                end
+              }
+            end
+          end
+        }
+      end
+
+      if results.size == 0
+        []
+      else
+        segments.collect{ |segment|
+          data = results[segment]
+          if data && data.key?('features') && data['features'].size > 0
+            feature = data['features'][0]
+            distance = feature['properties']['router']['total_distance'] if feature['properties'] && feature['properties']['router']
+            time = feature['properties']['router']['total_time'] if feature['properties'] && feature['properties']['router']
+            trace = feature['geometry']['polylines'] if feature['geometry']
+            [distance, time, trace]
+          else
+            [nil, nil, nil]
+          end
+        }
       end
     end
 
