@@ -1,6 +1,6 @@
 # mapotempo-web
 
-As of April 27, 2016 11:10am. 198 total
+As of April 27, 2016  4:46pm. 198 total
 
 ## Summary
 * 160 MIT
@@ -23,9 +23,8 @@ As of April 27, 2016 11:10am. 198 total
 
 
 ## Action
-3 *unapproved*
+2 *unapproved*
 
-* <a href='#enumerable-lazy'>enumerable-lazy</a> (["other"])
 * <a href='#leaflet-encoded-rails'>leaflet-encoded-rails</a> (["other"])
 * <a href='#leaflet-pattern-rails'>leaflet-pattern-rails</a> (["other"])
 
@@ -524,7 +523,11 @@ easy_translate is a wrapper for the google translate API that makes sense progra
 ### <a href="https://github.com/yhara/enumerable-lazy">enumerable-lazy</a> v0.0.1
 #### provides `lazy' version of map, select, etc. by `.lazy.map'
 
-other _**unapproved**_
+other manually approved
+
+>
+
+><cite>  2016-04-27</cite>
 
 provides `lazy' version of map, select, etc. by `.lazy.map'
 
