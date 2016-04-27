@@ -24,9 +24,9 @@ class Customer < ActiveRecord::Base
   belongs_to :job_destination_geocoding, class_name: 'Delayed::Backend::ActiveRecord::Job', dependent: :destroy
   belongs_to :job_store_geocoding, class_name: 'Delayed::Backend::ActiveRecord::Job', dependent: :destroy
   belongs_to :job_optimizer, class_name: 'Delayed::Backend::ActiveRecord::Job', dependent: :destroy
-  has_many :order_arrays, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :products, -> { order('code') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :plannings, -> { includes(:tags).order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :order_arrays, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :zonings, inverse_of: :customer, dependent: :delete_all
   before_destroy :destroy_disable_vehicle_usage_sets_validation # Declare and run before has_many :vehicle_usage_sets
   has_many :vehicle_usage_sets, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :destroy

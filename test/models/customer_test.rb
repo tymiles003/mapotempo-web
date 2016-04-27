@@ -125,4 +125,14 @@ class CustomerTest < ActiveSupport::TestCase
   test 'should get router dimension' do
     assert_equal 'time', @customer.router_dimension
   end
+
+  test 'customer with order array' do
+    planning = plannings :planning_one
+    order_array = order_arrays :order_array_one
+    planning.update! order_array: order_array
+    products = Product.find ActiveRecord::Base.connection.select_all("SELECT product_id FROM orders_products WHERE order_id IN (%s)" % [ order_array.order_ids.join(",") ]).rows
+    assert products.any?
+    assert planning.customer.destroy
+  end
+
 end
