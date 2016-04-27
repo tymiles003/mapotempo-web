@@ -3,13 +3,17 @@ whitelist:
 - MIT
 - BSD
 - BSD 2-Clause
+- 2-clause BSDL
 - New BSD
 - Apache
 - Apache-2.0
 - Ruby
 - GPL
 - GPL-2
+- AGPL
+- MPL
 - PD
+- WTFPL
 ignore_groups: []
 dependencies_file_dir: ./doc/
 project_name: mapotempo-web
