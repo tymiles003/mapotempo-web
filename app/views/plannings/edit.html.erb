@@ -17,12 +17,12 @@
       <%= render 'form' %>
 
       <div id="global_tools" class="btn-group pull-right">
-        <span style="display:inline">
+        <div class="btn-group">
           <button type="button" class="btn btn-primary btn-sm" id="optimize_each" title="<%= t '.optimize_each' %>">
             <i class="fa fa-gears fa-fw"></i>
           </button>
-        </span>
-        <span class="dropdown" style="display:inline">
+        </div>
+        <div class="btn-group">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t '.toggle_routes' %>">
             <i class="fa fa-eye fa-fw"></i>
           </button>
@@ -47,9 +47,9 @@
               </a>
             </li>
           </ul>
-        </span>
-        <span class="dropdown" style="display:inline">
-          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t '.toggle_routes' %>">
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t '.lock_routes' %>">
             <i class="fa fa-unlock fa-fw"></i>
           </button>
           <!-- https://github.com/twbs/bootstrap/issues/1411 -->
@@ -73,8 +73,8 @@
               </a>
             </li>
           </ul>
-        </span>
-        <span class="dropdown" style="display:inline">
+        </div>
+        <div class="btn-group">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle right export" data-toggle="dropdown" title="<%= t '.exports' %>">
             <i class="fa fa-share-square-o fa-fw"></i>
           </button>
@@ -147,7 +147,7 @@
               </li>
             <% end %>
           </ul>
-        </span>
+        </div>
       </div>
       <div id="planning"></div>
     </div>

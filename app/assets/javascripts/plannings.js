@@ -193,6 +193,7 @@ var plannings_edit = function(params) {
       // Params
       var array = [];
       $.each(routes_array, function(index, route) { array.push(route.route_id) });
+      array.push($('#out_of_route').parents('[data-route_id]').data('route_id'));
 
       $.ajax({
         url: '/api/0.1/plannings/' + planning_id + '/update_routes',
@@ -205,22 +206,14 @@ var plannings_edit = function(params) {
         success: function(data, textStatus, jqXHR) {
 
           $.each(data, function(index, route) {
-
-            $.each(routes_array, function(j, item) {
-              if (route.id == item.route_id) {
-
-                var element = $("[data-route_id='" + route.id + "']");
-
-                if (route.locked) {
-                  element.find(".lock").removeClass("btn-default").addClass("btn-warning");
-                  element.find('.lock i').removeClass('fa-unlock').addClass('fa-lock');
-                } else {
-                  element.find(".lock").removeClass("btn-warning").addClass("btn-default");
-                  element.find('.lock i').removeClass('fa-lock').addClass('fa-unlock');
-                }
-
-              }
-            });
+            var element = $("[data-route_id='" + route.id + "']");
+            if (route.locked) {
+              element.find(".lock").removeClass("btn-default").addClass("btn-warning");
+              element.find('.lock i').removeClass('fa-unlock').addClass('fa-lock');
+            } else {
+              element.find(".lock").removeClass("btn-warning").addClass("btn-default");
+              element.find('.lock i').removeClass('fa-lock').addClass('fa-unlock');
+            }
           });
 
         }
@@ -239,6 +232,7 @@ var plannings_edit = function(params) {
       // Params
       var array = [];
       $.each(routes_array, function(index, route) { array.push(route.route_id) });
+      array.push($('#out_of_route').parents('[data-route_id]').data('route_id'));
 
       $.ajax({
         url: '/api/0.1/plannings/' + planning_id + '/update_routes',
@@ -251,27 +245,18 @@ var plannings_edit = function(params) {
         success: function(data, textStatus, jqXHR) {
 
           $.each(data, function(index, route) {
-
-            $.each(routes_array, function(j, item) {
-              if (route.id == item.route_id) {
-
-                var element = $("[data-route_id='" + route.id + "']");
-
-                if (route.hidden) {
-                  element.find("ul.stops").hide();
-                  element.find('.toggle i').removeClass('fa-eye').addClass('fa-eye-slash');
-                  routes_layers.removeLayer(layers[route.id]);
-                  routes_layers_cluster.removeLayer(layers_cluster[route.id]);
-                } else {
-                  element.find("ul.stops").show();
-                  element.find('.toggle i').removeClass('fa-eye-slash').addClass('fa-eye');
-                  routes_layers.addLayer(layers[route.id]);
-                  routes_layers_cluster.addLayer(layers_cluster[route.id]);
-                }
-
-              }
-            });
-
+            var element = $("[data-route_id='" + route.id + "']");
+            if (route.hidden) {
+              element.find("ul.stops").hide();
+              element.find('.toggle i').removeClass('fa-eye').addClass('fa-eye-slash');
+              routes_layers.removeLayer(layers[route.id]);
+              routes_layers_cluster.removeLayer(layers_cluster[route.id]);
+            } else {
+              element.find("ul.stops").show();
+              element.find('.toggle i').removeClass('fa-eye-slash').addClass('fa-eye');
+              routes_layers.addLayer(layers[route.id]);
+              routes_layers_cluster.addLayer(layers_cluster[route.id]);
+            }
           });
 
         }
