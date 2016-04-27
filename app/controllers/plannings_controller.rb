@@ -22,6 +22,7 @@ require 'zip'
 class PlanningsController < ApplicationController
   load_and_authorize_resource
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order]
+  before_action :set_routes, only: [:show, :refresh]
 
   include PlanningExport
 
@@ -31,7 +32,6 @@ class PlanningsController < ApplicationController
   end
 
   def show
-    @routes = @planning.routes.select{ |r| !r.vehicle_usage || r.vehicle_usage.active }
     @params = params
     respond_to do |format|
       format.html
@@ -270,6 +270,10 @@ class PlanningsController < ApplicationController
   end
 
   private
+
+  def set_routes
+    @routes = @planning.routes.select{ |r| !r.vehicle_usage || r.vehicle_usage.active }
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_planning
