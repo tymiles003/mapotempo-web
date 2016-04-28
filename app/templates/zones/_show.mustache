@@ -1,9 +1,11 @@
 <div class="panel panel-default zone">
   <div class="panel-heading">
-    <div class="form-inline">
+    <div>
       <input name="zoning[zones_attributes][][id]" type="hidden" value="{{id}}" />
       <input class="form-control zone-name" type="text" value="{{name}}" name="zoning[zones_attributes][][name]" placeholder="{{#i18n}}zonings.form.zone_placeholder{{/i18n}} #{{index}}" />
-      <button type="button" class="delete btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
+      <div class="btn-group pull-right">
+        <button type="button" class="delete btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
+      </div>
     </div>
   </div>
   <div class="panel-body">
