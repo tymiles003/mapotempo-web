@@ -104,13 +104,13 @@ class Planning < ActiveRecord::Base
   def default_empty_routes(ignore_errors = false)
     routes.clear
     routes.build
-    vehicle_usage_set.vehicle_usages.each { |vehicle_usage|
+    vehicle_usage_set.vehicle_usages.select(&:active).each { |vehicle_usage|
       vehicle_usage_add(vehicle_usage, ignore_errors)
     }
   end
 
   def default_routes
-    if routes.length != vehicle_usage_set.vehicle_usages.length + 1
+    if routes.length != vehicle_usage_set.vehicle_usages.select(&:active).length + 1
       default_empty_routes
       routes[0].default_stops
     end
@@ -342,8 +342,16 @@ class Planning < ActiveRecord::Base
     if vehicle_usage_set_id_changed? && !vehicle_usage_set_id_was.nil? && !id.nil?
       h = Hash[routes.select(&:vehicle_usage).collect{ |route| [route.vehicle_usage.vehicle, route] }]
       vehicle_usage_set.vehicle_usages.each{ |vehicle_usage|
-        h[vehicle_usage.vehicle].vehicle_usage = vehicle_usage
-        h[vehicle_usage.vehicle].save!
+        if h[vehicle_usage.vehicle] && vehicle_usage.active
+          h[vehicle_usage.vehicle].vehicle_usage = vehicle_usage
+          h[vehicle_usage.vehicle].save!
+        else
+          if vehicle_usage.active
+            vehicle_usage_add vehicle_usage
+          else
+            vehicle_usage_remove h[vehicle_usage.vehicle].vehicle_usage
+          end
+        end
       }
       compute
     end

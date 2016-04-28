@@ -22,7 +22,6 @@ require 'zip'
 class PlanningsController < ApplicationController
   load_and_authorize_resource
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order]
-  before_action :set_routes, only: [:show, :refresh]
 
   include PlanningExport
 
@@ -132,21 +131,18 @@ class PlanningsController < ApplicationController
   def move
     respond_to do |format|
       Planning.transaction do
-        params[:route_id] = Integer(params[:route_id])
-        route = @planning.routes.find{ |route| route.id == params[:route_id] }
-        params[:stop_id] = Integer(params[:stop_id])
+        route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
         stop = nil
-        @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == params[:stop_id] } }
+        @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == Integer(params[:stop_id]) } }
         stop_route_id_was = stop.route.id
-        @planning.move_stop(route, stop, params[:index] ? Integer(params[:index]) : nil)
-        if @planning.save
+        if @planning.move_stop(route, stop, params[:index] ? Integer(params[:index]) : nil) && @planning.save
           @planning.reload
           @routes = [route]
           @routes << @planning.routes.find{ |route| route.id == stop_route_id_was } if stop_route_id_was != route.id
           format.json { render action: 'show', location: @planning }
         else
           @planning.reload
-          format.json { render json: @planning.errors.full_messages, status: :unprocessable_entity }
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -270,10 +266,6 @@ class PlanningsController < ApplicationController
   end
 
   private
-
-  def set_routes
-    @routes = @planning.routes.select{ |r| !r.vehicle_usage || r.vehicle_usage.active }
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_planning

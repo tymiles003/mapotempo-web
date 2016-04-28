@@ -181,6 +181,17 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response 422
   end
 
+  test 'should not move stop to route with deactivated vehicle' do
+    route = @planning.routes.joins(:vehicle_usage).take
+    route.vehicle_usage.update! active: !route.vehicle_usage.active?
+    out_of_route = @planning.routes.detect{|route| !route.vehicle_usage }
+    stop = out_of_route.stops.take
+    assert_raises do
+      patch :move, planning_id: @planning.id, route_id: route.id, stop_id: stop.id, index: 1, format: :json
+    end
+    assert stop.reload.route == out_of_route
+  end
+
   test 'should refresh' do
     get :refresh, planning_id: @planning, format: :json
     assert_response :success

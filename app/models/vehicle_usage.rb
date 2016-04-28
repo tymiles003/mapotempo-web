@@ -25,6 +25,7 @@ end
 
 class VehicleUsage < ActiveRecord::Base
   belongs_to :vehicle_usage_set
+
   belongs_to :vehicle
   belongs_to :store_start, class_name: 'Store', inverse_of: :vehicle_usage_starts
   belongs_to :store_stop, class_name: 'Store', inverse_of: :vehicle_usage_stops
@@ -48,7 +49,7 @@ class VehicleUsage < ActiveRecord::Base
   before_validation :nilify_times
   before_update :update_out_of_date
 
-  before_save :set_stops_out_of_route, prepend: true, unless: :active?
+  before_save :update_routes
 
   scope :active, lambda{ where(active: true) }
 
@@ -114,10 +115,18 @@ class VehicleUsage < ActiveRecord::Base
 
   private
 
-  def set_stops_out_of_route
-    self.routes.each do |route|
-      out_of_route = route.planning.routes.detect{|r| !r.vehicle_usage }
-      route.stops.select{|stop| stop.is_a?(StopVisit) }.each{|stop| stop.route_id = out_of_route.id }
+  def update_routes
+    return if changes.exclude?(:active)
+    if active?
+      routes.each do |route|
+        route.planning.vehicle_usage_add self
+        route.planning.save!
+      end
+    else
+      routes.each do |route|
+        route.planning.vehicle_usage_remove self
+        route.planning.save!
+      end
     end
   end
 
