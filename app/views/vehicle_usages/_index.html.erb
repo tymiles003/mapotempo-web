@@ -42,10 +42,13 @@
         <td>
           <%= vehicle_external_services vehicle_usage.vehicle %>
         </td>
-        <td>
+        <td class="text-right">
+          <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>
+            <i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %>
+          <% end %>
           <% if vehicle_usage.active %>
             <%= link_to [:toggle, vehicle_usage], { method: :patch, class: 'btn btn-default btn-sm', data: { confirm:  t('.disable_confirm') } } do %>
-              <i class="fa fa-ban fa-fw"></i>
+              <i class="fa fa-power-off fa-fw"></i>
               <%= t('.disable') %>
             <% end %>
           <% else %>
@@ -53,9 +56,6 @@
               <i class="fa fa-circle-o-notch fa-fw"></i>
               <%= t('.enable') %>
             <% end %>
-          <% end %>
-          <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>
-            <i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %>
           <% end %>
         </td>
       </tr>

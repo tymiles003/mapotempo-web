@@ -17,7 +17,7 @@
 </div>
 
 <%= form_tag vehicle_usage_sets_path, method: :delete do %>
-<table id="accordion" class="table table-striped table-hover">
+<table id="accordion-vehicle-usage-sets" class="table table-striped table-hover">
   <thead>
     <tr>
       <% if @customer.enable_multi_vehicle_usage_sets %>
@@ -39,7 +39,7 @@
         <% end %>
         <td>
           <% if @vehicle_usage_sets.count > 1 %>
-          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseUsageSet<%= vehicle_usage_set.id %>">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-vehicle-usage-sets" href="#collapseUsageSet<%= vehicle_usage_set.id %>">
           <% end %>
           <span class="usage-set-name"><%= vehicle_usage_set.name %></span>
           <% if @vehicle_usage_sets.count > 1 %>

@@ -19,33 +19,65 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-[data-controller='vehicle_usage_sets'] {
-
-  table tr.disabled td {
-    color: #999;
-  }
+[data-controller='vehicle_usage_sets'][data-action='index'] {
 
   .usage-set-name {
     font-size: 1.5em;
   }
   .accordion-toggle > .usage-set-name:before {
-    content: "▾ ";
+    content: "▾ ";
   }
   .accordion-toggle.collapsed > .usage-set-name:before {
-    content: "▸ ";
+    content: "▸ ";
   }
   .table-hover .vehicle_usages:hover > td {
     background-color: white;
   }
-
-  .vehicle_color {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -o-border-radius: 50%;
-    vertical-align: middle;
+  #accordion-vehicle-usage-sets {
+    @media screen and (max-width: 767px) {
+      :not(.vehicle_usages) {
+        tr th:nth-of-type(5), tr td:nth-of-type(5) {
+          display: none;
+        }
+      }
+    }
+    .vehicle_usages {
+      table {
+        @media screen and (max-width: 991px) {
+          tr th:nth-of-type(3), tr td:nth-of-type(3),
+          tr th:nth-of-type(4), tr td:nth-of-type(4) {
+            display: none;
+          }
+        }
+        @media screen and (max-width: 767px) {
+          tr th:nth-of-type(2), tr td:nth-of-type(2),
+          tr th:nth-of-type(5), tr td:nth-of-type(5),
+          tr th:nth-of-type(8), tr td:nth-of-type(8) {
+            display: none;
+          }
+        }
+        tr.disabled td {
+          opacity: 0.5;
+        }
+        tr.disabled td:last-child {
+          opacity: 1;
+        }
+        @media screen and (min-width: 768px) {
+          td:last-child {
+            white-space: nowrap;
+          }
+        }
+        .vehicle_color {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          -moz-border-radius: 50%;
+          -webkit-border-radius: 50%;
+          -o-border-radius: 50%;
+          vertical-align: middle;
+        }
+      }
+    }
   }
 }
