@@ -172,9 +172,11 @@ class DestinationsControllerTest < ActionController::TestCase
   end
 
   test 'should import' do
+    users(:user_one).customer.update advanced_options: "{\"import\": {\"destinations\": {\"spreadsheetColumnsDef\": {\"route\": \"my_route\"}}}}"
     get :import
     assert_response :success
     assert_valid response
+    assert_equal 'my_route', assigns(:columns_default)['route']
   end
 
   test 'should upload' do

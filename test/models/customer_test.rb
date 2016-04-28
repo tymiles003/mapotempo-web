@@ -135,4 +135,26 @@ class CustomerTest < ActiveSupport::TestCase
     assert planning.customer.destroy
   end
 
+  test 'should update enable_multi_visits' do
+    customer = @customer
+    refs = customer.destinations.collect(&:ref)
+    tags = customer.destinations.collect{ |d| d.tags.collect(&:label) }.flatten
+    assert_no_difference('Destination.count') do
+      assert_no_difference('Visit.count') do
+        customer.enable_multi_visits = true
+        customer.save
+        assert_equal refs, customer.destinations.collect{ |d| d.visits.collect(&:ref) }.flatten
+        assert_equal tags, customer.destinations.collect{ |d| d.visits.collect{ |v| v.tags.collect(&:label)}.flatten }.flatten
+      end
+    end
+    assert_no_difference('Destination.count') do
+      assert_no_difference('Visit.count') do
+        customer.enable_multi_visits = false
+        customer.save
+        assert_equal refs, customer.destinations.collect(&:ref)
+        assert_equal tags, customer.destinations.collect{ |d| d.tags.collect(&:label) }.flatten
+      end
+    end
+  end
+
 end
