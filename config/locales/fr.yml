@@ -833,8 +833,8 @@ fr:
       new: "Nouveau planning"
     edit:
       position: "Position"
-      lock_routes: "Verrouiller routes"
-      toggle_routes: "Masquer routes"
+      lock_routes: "Verrouiller les tournées"
+      toggle_routes: "Masquer les tournées"
       zonings: "Zonages"
       zoning_new: "Créer un nouveau zonage depuis ce planning"
       zoning_edit: "Modifier ce zonage depuis ce planning"
@@ -850,7 +850,7 @@ fr:
       zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
       route_placeholder: "Réf. de la tournée"
       service_time: "Durées de service"
-      exports: "Exporter"
+      exports: "Exporter le planning"
       teksat_send:
         action: "Envoyer à Teksat"
         success: "Envoi vers Teksat terminé avec succès"

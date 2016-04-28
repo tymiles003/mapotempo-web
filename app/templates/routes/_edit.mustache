@@ -88,6 +88,7 @@
             <li role="separator" class="divider"></li>
             <li><a href="/routes/{{route_id}}.gpx"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_route{{/i18n}}</a></li>
             <li><a href="/routes/{{route_id}}.gpx?track=true"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_track{{/i18n}}</a></li>
+            <li><a href="/routes/{{route_id}}.kmz"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.kmz_track{{/i18n}}</a></li>
             {{#contact_email}}
               <li class="kmz_email">
                 <a href="/routes/{{route_id}}.kmz?email=1">
@@ -96,7 +97,6 @@
                 </a>
               </li>
             {{/contact_email}}
-            <li><a href="/routes/{{route_id}}.kmz"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.kmz_track{{/i18n}}</a></li>
           </ul>
         </div>
       </div>

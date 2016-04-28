@@ -833,8 +833,8 @@ en:
       new: "New Planning"
     edit:
       position: "Position"
-      lock_routes: "Lock Routes"
-      toggle_routes: "Toggle Routes"
+      lock_routes: "Lock routes"
+      toggle_routes: "Toggle routes"
       zonings: "Zonings"
       zoning_new: "New zoning from this planning"
       zoning_edit: "Edit zoning from this planning"
@@ -850,7 +850,7 @@ en:
       zoning_confirm: "Save and apply the new zoning?"
       route_placeholder: "Route ref."
       service_time: "Service Time"
-      exports: "Export"
+      exports: "Export planning"
       teksat_send:
         action: "Send to Teksat"
         success: "Sent to Teksat successfully"
