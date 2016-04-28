@@ -205,13 +205,15 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'should compute' do
     o = plannings(:planning_one)
-    o.zoning_out_of_date = true
-    o.compute
-    o.routes.select{ |r| r.vehicle_usage }.each{ |r|
-      assert_not r.out_of_date
-    }
-    assert_not o.zoning_out_of_date
-    o.save!
+    assert_no_difference('Stop.count') do
+      o.zoning_out_of_date = true
+      o.compute
+      o.routes.select{ |r| r.vehicle_usage }.each{ |r|
+        assert_not r.out_of_date
+      }
+      assert_not o.zoning_out_of_date
+      o.save!
+    end
   end
 
   test 'should compute with non geocoded' do
@@ -373,4 +375,35 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal "testabcd", planning.ref
   end
 
+end
+
+class PlanningTestError < ActiveSupport::TestCase
+  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
+
+  test 'should not compute because of router error' do
+    o = plannings(:planning_one)
+    Routers::Osrm.stub_any_instance(:compute, []) do
+      assert_no_difference('Stop.count') do
+        o.zoning_out_of_date = true
+        o.compute
+        o.save!
+      end
+    end
+  end
+end
+
+class PlanningTestException < ActiveSupport::TestCase
+  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
+
+  test 'should not compute because of router exception' do
+    o = plannings(:planning_one)
+    Routers::Osrm.stub_any_instance(:compute, lambda{ |*a| raise }) do
+      assert_no_difference('Stop.count') do
+        o.zoning_out_of_date = true
+        assert_raises(RuntimeError) do
+          o.compute
+        end
+      end
+    end
+  end
 end
