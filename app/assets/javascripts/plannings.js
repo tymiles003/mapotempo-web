@@ -1153,10 +1153,11 @@ var plannings_edit = function(params) {
     connectWith: '#spreadsheet-columns .ui-sortable'
   });
   var columns_export = params.spreadsheet_columns;
+  var columns_skip = localStorage.spreadsheetColumnsSkip && localStorage.spreadsheetColumnsSkip.split('|');
   if (localStorage.spreadsheetColumnsExport) {
     columns_export = localStorage.spreadsheetColumnsExport.split('|');
     $.each(params.spreadsheet_columns, function(i, c) {
-      if (columns_export.indexOf(c) < 0)
+      if (columns_export.indexOf(c) < 0 && columns_skip && columns_skip.indexOf(c) < 0)
         columns_export.push(c);
     });
   }
@@ -1165,7 +1166,6 @@ var plannings_edit = function(params) {
       $('#columns-export').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
     }
   });
-  var columns_skip = localStorage.spreadsheetColumnsSkip && localStorage.spreadsheetColumnsSkip.split('|');
   $.each(columns_skip, function(i, c) {
     if (params.spreadsheet_columns.indexOf(c) >= 0)
       $('#columns-skip').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
@@ -1180,7 +1180,8 @@ var plannings_edit = function(params) {
     }
   });
   $('#columns-export li').mouseenter(function(evt) {
-    $('a.remove', evt.currentTarget).show();
+    if ($(evt.currentTarget).closest('#columns-export').length > 0)
+      $('a.remove', evt.currentTarget).show();
   }).mouseleave(function(evt) {
     $('a.remove', evt.currentTarget).hide();
   });
