@@ -104,9 +104,9 @@ hr {
 }
 
 /* Bootstrap */
-input.form-control[required],
-select.form-control[required] {
-  background: #ffffda;
+input.form-control[required]:not(:disabled),
+select.form-control[required]:not(:disabled) {
+  background: #EEFAFF;
 }
 
 /** External look-like **/
