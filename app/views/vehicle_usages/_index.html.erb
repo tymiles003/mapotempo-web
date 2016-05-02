@@ -2,12 +2,10 @@
   <thead>
     <th><%= t 'activerecord.attributes.vehicle.name' %></th>
     <th><%= t 'activerecord.attributes.vehicle.router_id' %></th>
-    <th><%= t 'activerecord.attributes.vehicle.emission' %></th>
-    <th><%= t 'activerecord.attributes.vehicle.consumption' %></th>
+    <th><%= t 'activerecord.attributes.vehicle.emission' %> - <%= t 'activerecord.attributes.vehicle.consumption' %></th>
     <th><%= t 'activerecord.attributes.vehicle.capacity' %></th>
     <th><%= t 'vehicle_usages.index.stores' %></th>
     <th><%= t 'vehicle_usage_sets.index.time' %></th>
-    <th><%= t 'vehicle_usage_sets.index.service_time' %></th>
     <th><%= t 'vehicle_usages.index.devices' %></th>
     <th></th>
   </thead>
@@ -22,10 +20,7 @@
           <%= vehicle_usage_router vehicle_usage %>
         </td>
         <td>
-          <%= vehicle_usage_emission vehicle_usage %>
-        </td>
-        <td>
-          <%= vehicle_usage_consumption vehicle_usage %>
+          <%= vehicle_usage_emission_consumption vehicle_usage %>
         </td>
         <td>
           <%= vehicle_usage.vehicle.capacity %>&nbsp;<%= vehicle_usage.vehicle.capacity_unit %>
@@ -37,22 +32,19 @@
           <%= vehicle_usage_store_hours vehicle_usage %>
         </td>
         <td>
-          <%= vehicle_usage_service_time vehicle_usage %>
-        </td>
-        <td>
           <%= vehicle_external_services vehicle_usage.vehicle %>
         </td>
         <td class="text-right">
-          <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>
-            <i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %>
-          <% end %>
           <% if vehicle_usage.active %>
-            <%= link_to [:toggle, vehicle_usage], { method: :patch, class: 'btn btn-default btn-sm', data: { confirm:  t('.disable_confirm') } } do %>
+            <%= link_to edit_vehicle_usage_path(vehicle_usage, back: true), :class => 'btn btn-primary btn-sm' do %>
+              <i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %>
+            <% end %>
+            <%= link_to [:toggle, vehicle_usage, back: true], { method: :patch, class: 'btn btn-default btn-sm', data: { confirm:  t('.disable_confirm') } } do %>
               <i class="fa fa-power-off fa-fw"></i>
               <%= t('.disable') %>
             <% end %>
           <% else %>
-            <%= link_to [:toggle, vehicle_usage], { method: :patch, class: 'btn btn-default btn-sm' } do %>
+            <%= link_to [:toggle, vehicle_usage, back: true], { method: :patch, class: 'btn btn-default btn-sm' } do %>
               <i class="fa fa-circle-o-notch fa-fw"></i>
               <%= t('.enable') %>
             <% end %>

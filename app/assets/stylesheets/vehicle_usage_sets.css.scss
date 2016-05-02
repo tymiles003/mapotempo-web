@@ -34,25 +34,18 @@
     background-color: white;
   }
   #accordion-vehicle-usage-sets {
-    @media screen and (max-width: 767px) {
-      :not(.vehicle_usages) {
-        tr th:nth-of-type(5), tr td:nth-of-type(5) {
-          display: none;
-        }
-      }
-    }
     .vehicle_usages {
       table {
         @media screen and (max-width: 991px) {
           tr th:nth-of-type(3), tr td:nth-of-type(3),
-          tr th:nth-of-type(4), tr td:nth-of-type(4) {
+          tr th:nth-of-type(4), tr td:nth-of-type(4),
+          tr th:nth-of-type(7), tr td:nth-of-type(7) {
             display: none;
           }
         }
         @media screen and (max-width: 767px) {
           tr th:nth-of-type(2), tr td:nth-of-type(2),
-          tr th:nth-of-type(5), tr td:nth-of-type(5),
-          tr th:nth-of-type(8), tr td:nth-of-type(8) {
+          tr th:nth-of-type(6), tr td:nth-of-type(6) {
             display: none;
           }
         }

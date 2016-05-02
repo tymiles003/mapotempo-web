@@ -40,20 +40,4 @@ module VehicleUsageSetsHelper
     end
   end
 
-  def vehicle_usage_set_service_time vehicle_usage_set
-    capture do
-      if vehicle_usage_set.service_time_start
-        concat l(vehicle_usage_set.service_time_start, format: :hour_minute)
-      elsif vehicle_usage_set.service_time_end
-        concat span_tag('--')
-      end
-      concat span_tag(' / ') if vehicle_usage_set.service_time_start || vehicle_usage_set.service_time_end
-      if vehicle_usage_set.service_time_end
-        concat l(vehicle_usage_set.service_time_end, format: :hour_minute)
-      elsif vehicle_usage_set.service_time_start
-        concat span_tag('--')
-      end
-    end
-  end
-
 end

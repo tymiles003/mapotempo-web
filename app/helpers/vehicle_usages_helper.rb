@@ -17,14 +17,12 @@
 #
 module VehicleUsagesHelper
 
-  def vehicle_usage_emission vehicle_usage
-    return if !vehicle_usage.vehicle.emission
-    '%s %s'.html_safe % [ vehicle_usage.vehicle.emission, t('all.unit.kgco2e_l_html') ]
-  end
-
-  def vehicle_usage_consumption vehicle_usage
-    return if !vehicle_usage.vehicle.consumption
-    '%s %s'.html_safe % [ vehicle_usage.vehicle.consumption, t('all.unit.l_100km') ]
+  def vehicle_usage_emission_consumption vehicle_usage
+    capture do
+      concat '%s %s'.html_safe % [ vehicle_usage.vehicle.emission, t('all.unit.kgco2e_l_html') ] if vehicle_usage.vehicle.emission
+      concat ' - ' if vehicle_usage.vehicle.emission && vehicle_usage.vehicle.consumption
+      concat '%s %s'.html_safe % [ vehicle_usage.vehicle.consumption, t('all.unit.l_100km') ] if vehicle_usage.vehicle.consumption
+    end
   end
 
   def vehicle_usage_router vehicle_usage
@@ -83,26 +81,6 @@ module VehicleUsagesHelper
         concat l(vehicle_usage.close, format: :hour_minute)
       elsif vehicle_usage.vehicle_usage_set.close
         concat span_tag(l(vehicle_usage.vehicle_usage_set.close, format: :hour_minute))
-      end
-    end
-  end
-
-  def vehicle_usage_service_time vehicle_usage
-    capture do
-      if vehicle_usage.service_time_start
-        concat l(vehicle_usage.service_time_start, format: :hour_minute)
-      elsif vehicle_usage.vehicle_usage_set.service_time_start
-        concat span_tag(l(vehicle_usage.vehicle_usage_set.service_time_start, format: :hour_minute))
-      elsif vehicle_usage.default_service_time_end
-        concat span_tag('--')
-      end
-      concat span_tag(' / ') if vehicle_usage.default_service_time_start || vehicle_usage.default_service_time_end
-      if vehicle_usage.service_time_end
-        concat l(vehicle_usage.service_time_end, format: :hour_minute)
-      elsif vehicle_usage.vehicle_usage_set.service_time_end
-        concat span_tag(l(vehicle_usage.vehicle_usage_set.service_time_end, format: :hour_minute))
-      elsif vehicle_usage.default_service_time_start
-        concat span_tag('--')
       end
     end
   end

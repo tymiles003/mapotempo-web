@@ -26,7 +26,6 @@
       <th><%= t 'activerecord.attributes.vehicle_usage_set.name' %></th>
       <th><%= t 'vehicle_usage_sets.index.stores' %></th>
       <th><%= t 'vehicle_usage_sets.index.time' %></th>
-      <th><%= t 'vehicle_usage_sets.index.service_time' %></th>
       <th></th>
     </tr>
   </thead>
@@ -53,9 +52,6 @@
           <%= if(vehicle_usage_set.open) then l(vehicle_usage_set.open, format: :hour_minute) end %>
           -
           <%= if(vehicle_usage_set.close) then l(vehicle_usage_set.close, format: :hour_minute) end %>
-        </td>
-        <td>
-          <%= vehicle_usage_set_service_time vehicle_usage_set %>
         </td>
         <td class="text-right">
           <% if @customer.enable_multi_vehicle_usage_sets %>
