@@ -25,9 +25,9 @@
           <label class="col-md-2 control-label"><%= t 'activerecord.attributes.vehicle.emission' %> / <%= t 'activerecord.attributes.vehicle.consumption' %></label>
           <div class="col-md-6">
             <div class="input-group">
-              <%= select 'vehicle_usage[vehicle]', :emission, Vehicle.emissions_table, { include_blank: t('web.form.empty_entry') }, class: 'form-control' %>
+              <%= select 'vehicle_usage[vehicle]', :emission, Vehicle.emissions_table, { include_blank: t('web.form.empty_entry'), selected: @vehicle_usage.vehicle.emission }, class: 'form-control' %>
               <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
-              <%= text_field 'vehicle_usage[vehicle]', :consumption, class: 'form-control' %>
+              <%= text_field 'vehicle_usage[vehicle]', :consumption, value: @vehicle_usage.vehicle.consumption, class: 'form-control' %>
               <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
             </div>
             <p class="help-block"><%= t 'vehicles.form.emissions.help' %> - <%= t 'vehicles.form.consumption.help' %></p>
@@ -39,8 +39,8 @@
           <label class="col-md-2 control-label"><%= t 'activerecord.attributes.vehicle.capacity' %></label>
           <div class="col-md-6">
             <div class="input-group">
-              <%= number_field 'vehicle_usage[vehicle]', :capacity, min: 1, class: 'form-control width_1_2' %>
-              <%= text_field 'vehicle_usage[vehicle]', :capacity_unit, class: 'form-control width_1_2' %>
+              <%= number_field 'vehicle_usage[vehicle]', :capacity, min: 1, value: @vehicle_usage.vehicle.capacity, class: 'form-control width_1_2' %>
+              <%= text_field 'vehicle_usage[vehicle]', :capacity_unit, value: @vehicle_usage.vehicle.capacity_unit, class: 'form-control width_1_2' %>
               <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-archive fa-fw') %></span>
             </div>
             <p class="help-block"><%= t 'vehicles.form.capacity.help' %> - <%= t 'vehicles.form.capacity_unit.help' %></p>
