@@ -359,8 +359,6 @@ class Route < ActiveRecord::Base
     }
 
     stops_on = stops_segregate[true]
-    position_start = (vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
-    position_stop = (vehicle_usage.default_store_stop && vehicle_usage.default_store_stop.position?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
     amalgamate_stops_same_position(stops_on) { |positions|
       services = [{start: nil, end: nil, duration: 0}] + positions.collect{ |position|
         open, close, duration = position[2..4]
@@ -372,10 +370,12 @@ class Route < ActiveRecord::Base
         {start: open, end: close, duration: duration}
       }
 
+      position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
+      position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
       positions = [position_start] + positions + [position_stop]
-      speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
       order = unnil_positions(positions, services){ |positions, services, rests|
         positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)].collect{ |position| position[0..1] }
+        speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
         matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
         if position_start == [nil, nil]
           matrix = [[[0, 0]] * matrix.length] + matrix
