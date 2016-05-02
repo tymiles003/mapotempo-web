@@ -56,7 +56,7 @@ module Routers
             speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil
           }.compact
           resource = RestClient::Resource.new(url + '/0.1/routes.json', timeout: nil)
-          request = resource.get(params: params) { |response, request, result, &block|
+          request = resource.post(params) { |response, request, result, &block|
             case response.code
             when 200
               response
@@ -118,7 +118,7 @@ module Routers
           speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil
         }.compact
         resource = RestClient::Resource.new(url + '/0.1/matrix.json', timeout: nil)
-        request = resource.get(params: params) { |response, request, result, &block|
+        request = resource.post(params) { |response, request, result, &block|
           case response.code
           when 200
             response
@@ -162,7 +162,7 @@ module Routers
           speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil
         }.compact
         resource = RestClient::Resource.new(url + '/0.1/isoline.json', timeout: nil)
-        request = resource.get(params: params) { |response, request, result, &block|
+        request = resource.post(params) { |response, request, result, &block|
           case response.code
           when 200
             response

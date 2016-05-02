@@ -10,8 +10,8 @@ class Routers::RouterWrapperTest < ActionController::TestCase
     begin
       points = [[44.82641, -0.55674], [44.83, -0.557]]
 
-      uri_template = Addressable::Template.new('http://localhost:4899/0.1/routes.json?api_key={api_key}&dimension=time&locs=' + points.flatten.join(',') + '&mode={mode}')
-      stub_route = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/routes.json'))
+      uri_template = Addressable::Template.new('http://localhost:4899/0.1/routes.json')
+      stub_route = stub_request(:post, uri_template).with(body: hash_including({dimension: 'time', locs: points.flatten.join(',')})).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/routes.json'))
 
       route = @router_wrapper.compute_batch(routers(:router_wrapper_public_transport).url_time, :public_transport, :time, [points.flatten])
       assert !route[0][2].nil? # trace
@@ -24,8 +24,8 @@ class Routers::RouterWrapperTest < ActionController::TestCase
     begin
       points = [[44.82641, -0.55674], [44.83, -0.557], [44.822, -0.554]]
 
-      uri_template = Addressable::Template.new('http://localhost:4899/0.1/matrix.json?api_key={api_key}&dimension=time&mode={mode}&src=' + points.flatten.join(','))
-      stub_matrix = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/matrix.json'))
+      uri_template = Addressable::Template.new('http://localhost:4899/0.1/matrix.json')
+      stub_matrix = stub_request(:post, uri_template).with(body: hash_including(dimension: 'time', src: points.flatten.join(','))).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/matrix.json'))
 
       matrix = @router_wrapper.matrix(routers(:router_wrapper_public_transport).url_time, :public_transport, :time, points, points)
       assert_equal 3, matrix.size
@@ -39,10 +39,10 @@ class Routers::RouterWrapperTest < ActionController::TestCase
     begin
       points = [[46.634056, 2.547283], [42.161697, 9.138183]]
 
-      uri_template = Addressable::Template.new('http://localhost:4899/0.1/routes.json?api_key={api_key}&dimension=time&locs=' + points.flatten.join(',') + '&mode={mode}')
-      stub_route = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/routes-impassable.json'))
-      uri_template = Addressable::Template.new('http://localhost:4899/0.1/matrix.json?api_key={api_key}&dimension=time&mode={mode}&src=' + points.flatten.join(','))
-      stub_matrix = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/matrix-impassable.json'))
+      uri_template = Addressable::Template.new('http://localhost:4899/0.1/routes.json')
+      stub_route = stub_request(:post, uri_template).with(body: hash_including(dimension: 'time', locs: points.flatten.join(','))).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/routes-impassable.json'))
+      uri_template = Addressable::Template.new('http://localhost:4899/0.1/matrix.json')
+      stub_matrix = stub_request(:post, uri_template).with(body: hash_including(dimension: 'time', src: points.flatten.join(','))).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/matrix-impassable.json'))
 
       impassable = @router_wrapper.compute_batch(routers(:router_wrapper_public_transport).url_time, :public_transport, :time, [points.flatten])
       assert_not impassable && impassable.size > 0 && impassable[0][2] # no trace
@@ -58,8 +58,8 @@ class Routers::RouterWrapperTest < ActionController::TestCase
     begin
       point = [44.82641, -0.55674]
 
-      uri_template = Addressable::Template.new('http://localhost:4899/0.1/isoline.json?api_key={api_key}&dimension=time&loc=' + point.flatten.join(',') + '&mode={mode}&size={size}')
-      stub_isoline = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/isoline.json'))
+      uri_template = Addressable::Template.new('http://localhost:4899/0.1/isoline.json')
+      stub_isoline = stub_request(:post, uri_template).with(body: hash_including(dimension: 'time', loc: point.flatten.join(','))).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/isoline.json'))
 
       isoline = @router_wrapper.isoline(routers(:router_wrapper_public_transport).url_time, :public_transport, :time, point[0], point[1], 120)
       assert isoline['features'].size > 0
