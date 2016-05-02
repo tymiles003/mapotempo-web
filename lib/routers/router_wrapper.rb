@@ -66,7 +66,7 @@ module Routers
               ''
             else
               # response.return!(request, result, &block)
-              raise RouterError.new(result)
+              raise RouterError.new(result.message)
             end
           }
           if request != ''
@@ -74,7 +74,7 @@ module Routers
             if datas && datas.key?('features') && datas['features'].size > 0
               slice_segments.each_with_index{ |s, i|
                 data = datas['features'][i]
-                if data && data.key?('features') && data['features'].size > 0
+                if data
                   key_segment = ['c', url, mode, dimension, Digest::MD5.hexdigest(Marshal.dump([s, options.to_a.sort_by{ |i| i[0].to_s }]))]
                   @cache_request.write(key_segment, String.new(data.to_json)) # String.new workaround waiting for RestClient 2.0
                   results[s] = data
@@ -89,9 +89,8 @@ module Routers
         []
       else
         segments.collect{ |segment|
-          data = results[segment]
-          if data && data.key?('features') && data['features'].size > 0
-            feature = data['features'][0]
+          feature = results[segment]
+          if feature
             distance = feature['properties']['router']['total_distance'] if feature['properties'] && feature['properties']['router']
             time = feature['properties']['router']['total_time'] if feature['properties'] && feature['properties']['router']
             trace = feature['geometry']['polylines'] if feature['geometry']
