@@ -6,7 +6,7 @@ require_relative '../lib/routers/osrm'
 require_relative '../lib/routers/otp'
 require_relative '../lib/routers/here'
 require_relative '../lib/routers/router_wrapper'
-require_relative '../lib/ort'
+require_relative '../lib/optim/ort'
 
 require_relative '../lib/devices/device_base'
 ['alyacom', 'masternaut', 'orange', 'teksat', 'tomtom'].each{|name|

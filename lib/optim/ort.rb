@@ -30,15 +30,16 @@ class Ort
     @cache, @url = cache, url
   end
 
-  def optimize(optimize_time, soft_upper_bound, capacity, matrix, dimension, time_window, rest_window, time_threshold)
+  def optimize(matrix, dimension, services, rests, optimize_time, soft_upper_bound, cluster_time_threshold)
     dimension = dimension == 'time' ? 0 : 1
-    key = [soft_upper_bound, capacity, matrix.hash, dimension, time_window.hash, time_threshold]
+    key = [soft_upper_bound, matrix.hash, dimension, time_window.hash, rest_window.hash, cluster_threshold]
 
-    cluster(matrix, dimension, time_window, time_threshold) { |matrix, time_window|
+    time_window = services.collect{ |service| [service[:start], service[:end], service[:duration]] }
+    rest_window = rests.collect{ |rest| [rest[:start], rest[:end], rest[:duration]] }
+    cluster(matrix, dimension, time_window, cluster_threshold) { |matrix, time_window|
       result = @cache.read(key)
       if !result
         data = {
-          capacity: capacity,
           matrix: matrix,
           time_window: time_window,
           rest_window: rest_window,

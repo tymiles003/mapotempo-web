@@ -1,4 +1,4 @@
-require 'ort'
+require 'optim/ort'
 
 class OrtTest < ActionController::TestCase
   setup do

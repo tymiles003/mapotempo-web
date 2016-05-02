@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'ort'
+require 'optim/ort'
 require 'optimizer_job'
 
 class Optimizer
@@ -58,8 +58,8 @@ class Optimizer
         planning.customer.job_optimizer.save!
       end
     else
-      optimum = route.optimize(nil) { |matrix, tws, rest_tws, dimension|
-        Mapotempo::Application.config.optimize.optimize(optimize_time * 1000, soft_upper_bound, route.vehicle_usage.vehicle.capacity, matrix, dimension, tws, rest_tws, planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size)
+      optimum = route.optimize(nil) { |matrix, services, rests, dimension|
+        Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, rests, optimize_time * 1000, soft_upper_bound, planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size)
       }
       if optimum
         route.order(optimum)

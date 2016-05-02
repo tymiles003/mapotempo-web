@@ -362,19 +362,19 @@ class Route < ActiveRecord::Base
     position_start = (vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
     position_stop = (vehicle_usage.default_store_stop && vehicle_usage.default_store_stop.position?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
     amalgamate_stops_same_position(stops_on) { |positions|
-      tws = [[nil, nil, 0]] + positions.collect{ |position|
+      services = [{start: nil, end: nil, duration: 0}] + positions.collect{ |position|
         open, close, duration = position[2..4]
         open = open ? Integer(open - vehicle_usage.default_open) : nil
         close = close ? Integer(close - vehicle_usage.default_open) : nil
         if open && close && open > close
           close = open
         end
-        [open, close, duration]
+        {start: open, end: close, duration: duration}
       }
 
       positions = [position_start] + positions + [position_stop]
       speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
-      order = unnil_positions(positions, tws){ |positions, tws, rest_tws|
+      order = unnil_positions(positions, services){ |positions, services, rests|
         positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)].collect{ |position| position[0..1] }
         matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
         if position_start == [nil, nil]
@@ -385,7 +385,7 @@ class Route < ActiveRecord::Base
           matrix += [[[0, 0]] * matrix.length]
           matrix.collect!{ |x| x + [[0, 0]] }
         end
-        optimizer.call(matrix, tws, rest_tws, router_dimension)
+        optimizer.call(matrix, services, rests, router_dimension)
       }
       order[1..-2].collect{ |i| i - 1 }
     }

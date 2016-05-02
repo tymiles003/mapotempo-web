@@ -3,7 +3,7 @@ require 'test_helper'
 require 'rexml/document'
 include REXML
 
-require 'ort'
+require 'optim/ort'
 
 class PlanningsControllerTest < ActionController::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
@@ -17,7 +17,7 @@ class PlanningsControllerTest < ActionController::TestCase
   def around
     Routers::Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
       Routers::Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
-        Ort.stub_any_instance(:optimize, lambda { |optimize_time, soft_upper_bound, capacity, matrix, dimension, time_window, time_window_rest, time_threshold| (0..(matrix.size-1)).to_a }) do
+        Ort.stub_any_instance(:optimize, lambda { |matrix, dimension, services, rests, optimize_time, soft_upper_bound, cluster_time_threshold| (0..(matrix.size-1)).to_a }) do
           yield
         end
       end
