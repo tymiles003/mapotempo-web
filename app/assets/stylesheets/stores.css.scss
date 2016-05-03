@@ -64,4 +64,15 @@
       padding-bottom: 5px;
     }
   }
+
+  &[data-action='index'] {
+  @media screen and (max-width: 767px) {
+    #stores {
+      tr th:nth-of-type(4), tr td:nth-of-type(4),
+      tr th:nth-of-type(5), tr td:nth-of-type(5) {
+        display: none;
+      }
+    }
+  }
+}
 }

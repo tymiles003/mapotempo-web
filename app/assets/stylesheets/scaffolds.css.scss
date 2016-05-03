@@ -280,6 +280,10 @@ span.color[data-color=''][data-selected]:after {
     bottom: 0;
   }
 
+  .sidebar.leaflet-touch {
+    border: 2px solid rgba(0,0,0,0.2);
+  }
+
   .sidebar {
     top: $navbar-height + $sidebar-margins;
     transition: right $transition-duration, top $transition-duration, width $transition-duration, height $transition-duration;

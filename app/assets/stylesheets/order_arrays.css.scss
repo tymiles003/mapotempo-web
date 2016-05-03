@@ -124,3 +124,14 @@
     text-align: right;
   }
 }
+
+[data-controller='order_arrays'][data-action='index'] {
+  @media screen and (max-width: 767px) {
+    #order_arrays {
+      tr th:nth-of-type(3), tr td:nth-of-type(3),
+      tr th:nth-of-type(4), tr td:nth-of-type(4) {
+        display: none;
+      }
+    }
+  }
+}
