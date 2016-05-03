@@ -371,8 +371,8 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'validates format of REF field with spaces' do
     planning = plannings :planning_one
-    assert planning.update! ref: " test abcd "
-    assert_equal "testabcd", planning.ref
+    assert planning.update! ref: "  test abcd   "
+    assert_equal "test abcd", planning.ref
   end
 
 end

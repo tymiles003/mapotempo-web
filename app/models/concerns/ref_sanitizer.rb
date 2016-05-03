@@ -4,7 +4,7 @@ module RefSanitizer
   included do
     validate do |record|
       if !record.ref.blank?
-        record.ref.gsub! /\s+/, ""
+        record.ref.strip!
         if record.ref =~ /[\.\/\\]/
           record.errors[:ref] << I18n.t("activerecord.errors.models.planning.attributes.ref.invalid_format")
         end
