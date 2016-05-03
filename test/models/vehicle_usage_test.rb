@@ -85,9 +85,12 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert VehicleUsage.active.find(route.vehicle_usage_id)
 
     # Deactivating Vehicle Usage
-    assert vehicle_usage.active
-    vehicle_usage.update! active: false
-    assert !vehicle_usage.active
+    assert_difference("planning.routes.size", -1) do
+      assert vehicle_usage.active
+      vehicle_usage.update! active: false
+      assert !vehicle_usage.active
+      planning.reload
+    end
 
     # Scope does not include Vehicle Usage
     assert_raises ActiveRecord::RecordNotFound do
@@ -100,8 +103,10 @@ class VehicleUsageTest < ActiveSupport::TestCase
     end
 
     # Activating Vehicle Usage
-    vehicle_usage.update! active: true
-    assert vehicle_usage.active
+    assert_difference("planning.routes.size", 1) do
+      vehicle_usage.update! active: true
+      assert vehicle_usage.active
+    end
 
     # Routes should be recreated
     route = planning.routes.reload.detect{|route| route.vehicle_usage_id == vehicle_usage.id }

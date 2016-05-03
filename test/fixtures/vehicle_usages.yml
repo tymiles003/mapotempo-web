@@ -59,6 +59,7 @@ vehicle_usage_three_two:
   rest_stop: 2000-01-01 14:00:00
   rest_duration: 2000-01-01 00:45:00
   store_rest:
+  active: false
 
 vehicle_usage_four_one:
   vehicle_usage_set: vehicle_usage_set_four

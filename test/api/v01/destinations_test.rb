@@ -152,7 +152,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
         assert_difference('Stop.count',
           @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
           @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
-          2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size) do
+          2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.default_rest_duration }.size) do
           put api(), {destinations: [{
             name: 'Nouveau client',
             street: nil,
@@ -201,7 +201,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
         assert_difference('Stop.count',
           @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 1 +
           @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 1 +
-          1 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size) do
+          1 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.default_rest_duration }.size) do
           put api(), {destinations: [{
             name: 'Nouveau client',
             street: nil,

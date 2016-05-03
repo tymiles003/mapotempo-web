@@ -188,10 +188,10 @@ class DestinationsControllerTest < ActionController::TestCase
     destinations_count = @destination.customer.destinations.count
     plannings_count = @destination.customer.plannings.select{ |planning| planning.tags == [tags(:tag_one)] }.count
     import_count = 1
-    rest_count = 1
+    import_rest_count = @destination.customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.rest_duration && v.rest_start && v.rest_stop }.size
 
     assert_difference('Destination.count') do
-      assert_difference('Stop.count', (destinations_count + import_count + rest_count) + (import_count + rest_count) * plannings_count) do
+      assert_difference('Stop.count', (destinations_count + import_count + import_rest_count) + import_count * plannings_count) do
         assert_difference('Planning.count') do
           post :upload_csv, import_csv: { replace: false, file: file }
         end

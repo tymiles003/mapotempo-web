@@ -30,6 +30,7 @@ class V01::Entities::VehicleUsage < Grape::Entity
   expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop && m.rest_stop.strftime('%H:%M:%S') }
   expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration && m.rest_duration.strftime('%H:%M:%S') }
   expose(:store_rest_id, documentation: { type: Integer })
+  expose(:active, documentation: { type: 'Boolean' })
 end
 
 class V01::Entities::VehicleUsageWithVehicle < V01::Entities::VehicleUsage

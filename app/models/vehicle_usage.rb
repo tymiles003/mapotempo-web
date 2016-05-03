@@ -118,14 +118,14 @@ class VehicleUsage < ActiveRecord::Base
   def update_routes
     return if changes.exclude?(:active)
     if active?
-      routes.each do |route|
-        route.planning.vehicle_usage_add self
-        route.planning.save!
+      vehicle_usage_set.plannings.each do |planning|
+        planning.vehicle_usage_add self
+        planning.save!
       end
     else
-      routes.each do |route|
-        route.planning.vehicle_usage_remove self
-        route.planning.save!
+      vehicle_usage_set.plannings.each do |planning|
+        planning.vehicle_usage_remove self
+        planning.save!
       end
     end
   end
