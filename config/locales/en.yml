@@ -55,26 +55,26 @@ en:
 
   activerecord:
     models:
-      customer: "Customer"
+      customer: "Account"
       customers:
-        one: "customer"
-        other: "customers"
+        one: "account"
+        other: "accounts"
       destination: "Destination"
       destinations:
         one: "destination"
         other: "destinations"
-      layer: "Layer"
+      layer: "Base Map"
       layers:
-        one: "layer"
-        other: "layers"
+        one: "base map"
+        other: "base maps"
       order: "Order"
       orders:
         one: "Order"
         other: "Orders"
-      order_array: "Orders array"
+      order_array: "Orders Planning"
       order_arrays:
-        one: "orders array"
-        other: "orders arrays"
+        one: "orders planning"
+        other: "orders plannings"
       planning: "Planning"
       plannings:
         one: "planning"
@@ -113,14 +113,14 @@ en:
       vehicles:
         one: "vehicle"
         other: "vehicles"
-      vehicle_usage: "Vehicle configuration"
+      vehicle_usage: "Vehicle settings"
       vehicle_usages:
-        one: "vehicle configuration"
-        other: "vehicle configurations"
-      vehicle_usage_set: "Vehicles configuration"
+        one: "vehicle settings"
+        other: "vehicle settings"
+      vehicle_usage_set: "Vehicles base settings"
       vehicle_usage_sets:
-        one: "vehicles configuration"
-        other: "vehicle configurations"
+        one: "vehicles base settings"
+        other: "vehicles base settings"
       visit: "Visit"
       visits:
         one: "visit"
@@ -217,12 +217,12 @@ en:
       order:
         date: "Date"
         destination_id: "Destination"
-        order_array_id: "Orders array"
+        order_array_id: "Orders Planning"
       order_array:
         name: "Name"
         base_date: "Base date"
         length: "Period"
-        customer_id: "Customer"
+        customer_id: "Account"
       planning:
         name: "Name"
         ref: "Reference"
@@ -232,15 +232,15 @@ en:
         zoning_id: "Zoning"
         created_at: "Created"
         updated_at: "Updated"
-        order_array_id: "Orders array"
+        order_array_id: "Orders Planning"
         date: "Date"
         vehicle_usage_set: "Vehicles configuration"
         vehicle_usage_set_id: "Vehicles configuration"
         vehicle_usage_set_small: "Conf."
       profile:
         name: "Name"
-        layers: "Layers"
-        routers: "Routers"
+        layers: "Base Maps"
+        routers: "Routing Engines"
       product:
         code: "Code"
         name: "Name"
@@ -307,10 +307,10 @@ en:
         icon: "Icon"
       user:
         email: "Email"
-        customer: "Customer"
-        customer_id: "Customer"
-        layer: "Map"
-        layer_id: "Map"
+        customer: "Account"
+        customer_id: "Account"
+        layer: "Base Map"
+        layer_id: "Base Map"
         password: "Password"
         password_confirmation: "Password confirmation"
         current_password: "Current password"
@@ -428,7 +428,7 @@ en:
         zone:
           attributes:
             vehicle:
-              bad_customer: "not associated with customer"
+              bad_customer: "not associated with account"
             polygon:
               invalid_json: "is not a valid stringified json"
         customer:
@@ -531,7 +531,7 @@ en:
     menu:
       customer: "Global settings"
       user_settings: "User Settings"
-      customers: "Customers"
+      customers: "Accounts"
     edit:
       title: "Editing global settings"
       send_email: "Send Confirmation E-Mail"
@@ -543,26 +543,26 @@ en:
       vehicles:
         list: "Vehicles list"
     index:
-      title: "Listing customers"
-      new: "New Customer"
+      title: "Listing accounts"
+      new: "New Account"
       map: "Map"
       no_test: "not in test"
     new:
-      title: "New customer"
+      title: "New Account"
     destroy:
-      success: "Customer deleted successfully"
+      success: "Account deleted successfully"
     destroy_multiple:
-      success: "Customers deleted successfully"
+      success: "Account deleted successfully"
     delete_vehicle:
       success: "Vehicle deleted successfully"
     form:
-      name: "Customer"
+      name: "Account"
       default_value: "Default values"
       outputs: "Outputs"
       options: "Options"
       optimization_parameters: "Optimization settings"
       router_help: "Profile used by route planning by default"
-      take_over_help: "Average time per customer"
+      take_over_help: "Average time per account"
       tomtom: "TomTom WEBFLEET"
       tomtom_help: "Allows sending plannings to TomTom Pro with WEBFLEET."
       teksat: "Teksat"
@@ -703,7 +703,7 @@ en:
       stop_type_visit_desc: ""
       stop_format: "[visit | store | rest]"
       name: "name"
-      name_desc: "customer or visited destination name."
+      name_desc: "account or visited destination name."
       street: "street"
       street_desc: "street address with building number, road type and road name (spelling is critical for reliable geocoding). Non-official elements such as room number, stair letter, etc must be moved to the field \"detail\"."
       detail: "detail"
@@ -782,10 +782,10 @@ en:
         spreadsheet_standard: "Spreadsheet Standard"
         spreadsheet_excel: "Spreadsheet Excel"
     index:
-      title: "Listing orders arrays"
-      new: "New orders array"
+      title: "Listing orders plannings"
+      new: "New orders plannings"
     edit:
-      title: "Editing orders array"
+      title: "Editing orders plannings"
       vehicle: "Vehicle"
       name: "Name"
       comment: "Comment"
@@ -802,7 +802,7 @@ en:
           title: "Loading"
           in_progress: "Loading, please wait."
     new:
-      title: "New orders array"
+      title: "New orders planning"
     export_file:
       vehicle: "vehicle"
       name: "name"
@@ -903,7 +903,7 @@ en:
         edit: "Edit zoning"
         new: "New zoning"
       order_array:
-        edit: "Edit orders array"
+        edit: "Edit orders planning"
       reverse_order: "Reverse stops order"
       open_planning_panel: "Open planning panel"
       collapse_planning_panel: "Collapse planning panel"
@@ -925,10 +925,10 @@ en:
       route_duration_help: "Route duration / Vehicle time window"
       route_distance_help: "Route distance"
       route_quantity_help: "Quantity / Vehicle capacity"
-      drag_help: "Drag & drop customer on routes"
-      active_help: "Take or not customer into route"
+      drag_help: "Drag & drop account on routes"
+      active_help: "Take or not account into route"
       edit_store_help: "Edit store information"
-      edit_visit_help: "Edit visit/customer information"
+      edit_visit_help: "Edit visit/account information"
       marker_help: "Show on map"
       automatic_insert_help: "Guess a place to insert this destination into the route"
       active_all: "All"
@@ -953,8 +953,8 @@ en:
         visit: "Visit"
       error:
         no_geolocalization: "No geolocalization"
-        no_geolocalization_help: "No geographical coordinates or address could not be located"
-        out_of_window: "Out of customer time window"
+        no_geolocalization_help: "No geographical coordinates or addresses could not be located"
+        out_of_window: "Out of account time window"
         out_of_window_help: "Customer planned out of his time window"
         out_of_capacity: "Out of capacity"
         out_of_capacity_help: "Vehicle capacity exceeded"
@@ -1224,7 +1224,7 @@ en:
         help: "Unit of the capacity"
       router:
         default: "Default"
-        help: "Force usage of a specific router"
+        help: "Force usage of a specific routing engine"
       router_dimension:
         default: "Default"
       speed_multiplicator:
@@ -1353,8 +1353,8 @@ en:
       collapse_zoning_panel: "Collapse zoning panel"
       generate_confirm: "This action will reset all your current zones. Continue?"
       vehicleless_confirm: "Are you sure? Some zones don't have a vehicle"
-      isochrone_missing_vehicle: "Isochron cannot be generated for at least one vehicle due to router restrictions"
-      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to router restrictions"
+      isochrone_missing_vehicle: "Isochron cannot be generated for at least one vehicle due to routing engine restrictions"
+      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to routing engine restrictions"
       failed: "Failed to generate Isochron"
       success: "Isochron generated successfully"
     index:
