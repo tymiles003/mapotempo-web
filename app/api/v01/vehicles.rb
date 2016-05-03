@@ -113,9 +113,7 @@ class V01::Vehicles < Grape::API
           end
         end
       rescue DeviceServiceError => e
-        unless e.message == I18n.t('errors.tomtom.busy_processing')
-          errors << e.message
-        end
+        errors << e.message
       end
       if errors.any?
         { errors: errors }

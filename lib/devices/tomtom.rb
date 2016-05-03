@@ -228,7 +228,7 @@ class Tomtom < DeviceBase
     response_body = response.body.first[1][:return]
     status_code = response_body[:status_code].to_i
 
-    if status_code == 0
+    if status_code == 0 || status_code == 8015
       return response_body[:results][:result_item] if response_body[:results]
     else
       raise DeviceServiceError.new "TomTom: %s" % [ parse_error_msg(status_code) || response_body[:status_message] ]
@@ -258,8 +258,8 @@ class Tomtom < DeviceBase
         I18n.t "errors.tomtom.request_quota_reached"
       when 8014
         I18n.t "errors.tomtom.external_requests_not_allowed"
-      when 8015
-        I18n.t "errors.tomtom.busy_processing"
+      # when 8015 # Not an error
+      # I18n.t "errors.tomtom.busy_processing"
       when 9000
         I18n.t "errors.tomtom.could_not_process_last_request"
       when 9126
