@@ -12,7 +12,7 @@
     <desc>
       <%= route_description route %>
     </desc>
-    <% if route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil? %>
+    <% if route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.position? %>
     <rtept lat="<%= route.vehicle_usage.default_store_start.lat %>" lon="<%= route.vehicle_usage.default_store_start.lng %>">
       <name>
         <%= route.vehicle_usage.default_store_start.name %>
@@ -76,7 +76,7 @@ route.stops.each{ |stop|
   end
 }
 %>
-    <% if route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? %>
+    <% if route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position? %>
     <rtept lat="<%= route.vehicle_usage.default_store_stop.lat %>" lon="<%= route.vehicle_usage.default_store_stop.lng %>">
       <name>
         <%= route.vehicle_usage.default_store_stop.name %>

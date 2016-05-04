@@ -270,8 +270,8 @@ class Planning < ActiveRecord::Base
 
     available_routes.collect{ |route|
       route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
-        [(route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?) ? [route.vehicle_usage.default_store_start, route, 1] : nil,
-        (route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
+        [(route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.position?) ? [route.vehicle_usage.default_store_start, route, 1] : nil,
+        (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.flatten(1).compact.sort_by{ |a|
       a[0].distance(stop.position)
     }[0..9].collect{ |visit_route_index|

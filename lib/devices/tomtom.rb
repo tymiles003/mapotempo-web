@@ -157,13 +157,13 @@ class Tomtom < DeviceBase
 
       when :waypoints
         position = route.vehicle_usage.default_store_start
-        waypoint_start = (route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil?) ? [[
+        waypoint_start = (route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.position?) ? [[
             route.vehicle_usage.default_store_start.lat,
             route.vehicle_usage.default_store_start.lng,
             '',
             route.vehicle_usage.default_store_start.name
           ]] : []
-        waypoint_stop = (route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?) ? [[
+        waypoint_stop = (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [[
             route.vehicle_usage.default_store_stop.lat,
             route.vehicle_usage.default_store_stop.lng,
             '',
@@ -188,7 +188,7 @@ class Tomtom < DeviceBase
             description = l[2..-1].compact.join(' ').strip
             {lat: l[0], lng: l[1], description: description}
         }
-        position = route.vehicle_usage.default_store_stop if route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil?
+        position = route.vehicle_usage.default_store_stop if route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?
         description = route.ref || (waypoints[-1] && waypoints[-1][:description]) || "#{waypoints[-1][:lat]} #{waypoints[-1][:lng]}"
         sendDestinationOrder customer, route, position, route.vehicle_usage.id, description, route.start, waypoints
     end

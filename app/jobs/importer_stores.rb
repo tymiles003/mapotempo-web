@@ -107,7 +107,7 @@ class ImporterStores < ImporterBase
       store = @customer.stores.build(row) # Link only when store is complete
     end
 
-    if store.lat.nil? || store.lng.nil?
+    if !store.position?
       @stores_to_geocode << store
     end
 

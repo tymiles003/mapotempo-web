@@ -11,7 +11,7 @@ end
 json.tag_ids do
   json.array! destination.tags.collect(&:id)
 end
-json.has_no_position (destination.lat.nil? || destination.lng.nil?) ? t('destinations.index.no_position') : false
+json.has_no_position !destination.position? ? t('destinations.index.no_position') : false
 json.visits do
   json.array! destination.visits do |visit|
     json.extract! visit, :id, :quantity

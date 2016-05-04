@@ -83,7 +83,7 @@ class Route < ActiveRecord::Base
       service_time_end = service_time_end_value
       self.end = self.start = departure || vehicle_usage.default_open
       speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
-      if !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
+      if vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?
         last_lat, last_lng = vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng
       end
       quantity = 0
@@ -121,7 +121,7 @@ class Route < ActiveRecord::Base
         ret
       }
 
-      if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?
+      if !last_lat.nil? && !last_lng.nil? && vehicle_usage.default_store_stop && vehicle_usage.default_store_stop.position?
         segments << [last_lat, last_lng, vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng]
       else
         segments << nil
@@ -361,8 +361,8 @@ class Route < ActiveRecord::Base
     }
 
     stops_on = stops_segregate[true]
-    position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
-    position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
+    position_start = (vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
+    position_stop = (vehicle_usage.default_store_stop && vehicle_usage.default_store_stop.position?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
     amalgamate_stops_same_position(stops_on) { |positions|
       tws = [[nil, nil, 0]] + positions.collect{ |position|
         open, close, duration = position[2..4]

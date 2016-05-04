@@ -32,7 +32,7 @@
     </coordinates>
   </LineString>
 </Placemark>
-<% if route.vehicle_usage.default_store_start && !route.vehicle_usage.default_store_start.lat.nil? && !route.vehicle_usage.default_store_start.lng.nil? %>
+<% if route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.position? %>
 <Placemark>
   <name><%= route.vehicle_usage.default_store_start.name %></name>
   <address>
@@ -80,7 +80,7 @@ route.stops.each do |stop|
   end
 end
 %>
-<% if route.vehicle_usage.default_store_stop && !route.vehicle_usage.default_store_stop.lat.nil? && !route.vehicle_usage.default_store_stop.lng.nil? %>
+<% if route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position? %>
 <Placemark>
   <name><%= route.vehicle_usage.default_store_stop.name %></name>
   <address>

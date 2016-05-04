@@ -28,10 +28,10 @@
 
   <tbody>
     <% @stores.each do |store| %>
-      <tr<%= ' class="ui-state-error"'.html_safe if store.lat.nil? || store.lng.nil? %>>
+      <tr<%= ' class="ui-state-error"'.html_safe if !store.position? %>>
         <td><%= check_box_tag("stores[#{store.id}]") %></td>
         <td><%= store_icon store %></td>
-        <td><%= content_tag :i, nil, class: "fa fa-map-marker fa-fw", title: t('plannings.edit.error.no_geolocalization') if store.lat.nil? || store.lng.nil? %><%= store.name %></td>
+        <td><%= content_tag :i, nil, class: "fa fa-map-marker fa-fw", title: t('plannings.edit.error.no_geolocalization') if !store.position? %><%= store.name %></td>
         <td><%= store.street %></td>
         <td><%= store.city %></td>
         <td class="text-right">
