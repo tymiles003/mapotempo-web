@@ -37,6 +37,15 @@ class ZoningTest < ActiveSupport::TestCase
   test 'should generate automatic clustering' do
     o = zonings(:zoning_one)
     o.automatic_clustering(plannings(:planning_one), 2)
+    assert 2, o.zones.size
+  end
+
+  test 'should generate automatic clustering with disabled vehicles' do
+    p = plannings(:planning_one)
+    p.vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_three)
+    o = zonings(:zoning_one)
+    o.automatic_clustering(p, 2)
+    assert 1, o.zones.size
   end
 
   test 'should generate from planning' do

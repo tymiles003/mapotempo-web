@@ -16,11 +16,15 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module ZoningsHelper
-  def zoning_active_vehicles zoning, planning=nil
+  def zoning_vehicles zoning, planning=nil, options={}
     if planning && planning.vehicle_usage_set.present?
-      planning.vehicle_usage_set.vehicle_usages.active.map &:vehicle
+      planning.vehicle_usage_set.vehicle_usages.select{ |v|
+        options[:active].nil? || options[:active] == v.active
+      }.map &:vehicle
     else
-      VehicleUsage.where(vehicle_usage_set_id: zoning.customer.vehicle_usage_set_ids).active.map(&:vehicle).uniq
+      VehicleUsage.where(vehicle_usage_set_id: zoning.customer.vehicle_usage_set_ids).select{ |v|
+        options[:active].nil? || options[:active] == v.active
+      }.map(&:vehicle).uniq
     end
   end
 end

@@ -17,7 +17,7 @@
 #
 class Zoning < ActiveRecord::Base
   belongs_to :customer
-  has_many :zones, inverse_of: :zoning, dependent: :delete_all, autosave: true, after_add: :touch_zones, after_remove: :touch_zones
+  has_many :zones, -> { order('id') }, inverse_of: :zoning, dependent: :delete_all, autosave: true, after_add: :touch_zones, after_remove: :touch_zones
   has_and_belongs_to_many :plannings, autosave: true
 
   accepts_nested_attributes_for :zones, allow_destroy: true
@@ -73,7 +73,7 @@ class Zoning < ActiveRecord::Base
       end
     }.compact.uniq
 
-    vehicles = customer.vehicles.to_a
+    vehicles = planning ? planning.vehicle_usage_set.vehicle_usages.select(&:active).collect(&:vehicle).to_a : customer.vehicles.to_a
     clusters = Clustering.clustering(positions, n || vehicles.size)
     zones.clear
     Clustering.hulls(clusters).each{ |hull|
@@ -137,7 +137,7 @@ class Zoning < ActiveRecord::Base
   end
 
   def isowhat?(what, vehicle_usage_set)
-    vehicle_usage_set.vehicle_usages.find{ |vehicle_usage|
+    vehicle_usage_set.vehicle_usages.select(&:active).find{ |vehicle_usage|
       router = vehicle_usage.vehicle.default_router
       router.method(what).call && !vehicle_usage.default_store_start.nil? && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?
     }
@@ -145,7 +145,7 @@ class Zoning < ActiveRecord::Base
 
   def isowhat(what_qm, what, size, vehicle_usage_set)
     zones.clear
-    vehicle_usage_set.vehicle_usages.each{ |vehicle_usage|
+    vehicle_usage_set.vehicle_usages.select(&:active).each{ |vehicle_usage|
       isowhat_vehicle_usage(what_qm, what, size, vehicle_usage)
     }
   end

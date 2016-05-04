@@ -195,13 +195,20 @@ var zonings_edit = function(params) {
     featureGroup.addLayer(geom);
 
     zone.i18n = mustache_i18n;
-    zone.vehicles = $.map(vehicles_map, function(val, i) {
+    zone.vehicles = $.map(vehicles_array, function(val, i) {
       return {
         id: val.id,
         selected: val.id == zone.vehicle_id,
         name: val.name
       };
     });
+    if (zone.vehicle_id && $.inArray(true, $.map(zone.vehicles, function(val, i) {  return val.selected; })) < 0) {
+      zone.vehicles.unshift({
+        id: vehicles_map[zone.vehicle_id].id,
+        selected: true,
+        name: vehicles_map[zone.vehicle_id].name
+      })
+    }
     zone.avoid_zone = zone.speed_multiplicator == 0;
     zone.router_avoid_zones = zone.vehicle_id && vehicles_map[zone.vehicle_id] ? vehicles_map[zone.vehicle_id].router_avoid_zones : router_avoid_zones;
     zone.show_capacity = show_capacity;
