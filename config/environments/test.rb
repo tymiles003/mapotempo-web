@@ -42,6 +42,35 @@ Rails.application.configure do
 
   # Application config
 
+  config.optimize = Ort.new(
+    ActiveSupport::Cache::NullStore.new,
+    'http://localhost:4567/0.1/optimize_tsptw'
+  )
+  config.geocode_code_cache = ActiveSupport::Cache::NullStore.new
+  config.geocode_reverse_cache = ActiveSupport::Cache::NullStore.new
+  config.geocode_complete_cache = ActiveSupport::Cache::NullStore.new
+
+  config.router_osrm = Routers::Osrm.new(
+    ActiveSupport::Cache::NullStore.new,
+    ActiveSupport::Cache::NullStore.new
+  )
+  config.router_otp = Routers::Otp.new(
+    ActiveSupport::Cache::NullStore.new,
+    ActiveSupport::Cache::NullStore.new
+  )
+  config.router_here = Routers::Here.new(
+    ActiveSupport::Cache::NullStore.new,
+    ActiveSupport::Cache::NullStore.new,
+    'https://route.nlp.nokia.com/routing', nil, nil
+  )
+  config.router_wrapper = Routers::RouterWrapper.new(
+    ActiveSupport::Cache::NullStore.new,
+    ActiveSupport::Cache::NullStore.new,
+    nil
+  )
+
+  config.devices.cache_object = ActiveSupport::Cache::NullStore.new
+
   config.devices.alyacom.api_url = 'https://alyacom.example.com'
   config.devices.masternaut.api_url = 'https://masternaut.example.com'
   config.devices.orange.api_url = 'https://orange.example.com'
