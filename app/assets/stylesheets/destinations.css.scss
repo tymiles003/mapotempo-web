@@ -282,8 +282,10 @@
           cursor: pointer;
         }
         .column-def {
+          border: 1px solid #bbb; // important for firefox
           width: 160px;
           height: 18px;
+          line-height: 18px;
           padding: 0 3px;
         }
       }
