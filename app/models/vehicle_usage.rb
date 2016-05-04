@@ -120,6 +120,11 @@ class VehicleUsage < ActiveRecord::Base
     if active?
       vehicle_usage_set.plannings.each do |planning|
         planning.vehicle_usage_add self
+
+        if Zone.exists? zoning_id: planning.zoning_ids, vehicle_id: self.vehicle_id
+          planning.zoning_out_of_date = true
+        end
+
         planning.save!
       end
     else

@@ -65,6 +65,20 @@ class VehicleUsageTest < ActiveSupport::TestCase
    assert v.valid?
  end
 
+  test 'enable vehicle usage sets plannings zonings as outdated' do
+    planning = plannings :planning_one
+    assert planning.zonings.any?
+    assert !planning.zoning_out_of_date
+    route = planning.routes.detect &:vehicle_usage
+    planning.zonings.each{|zoning| zoning.zones.each{|zone| zone.update!(vehicle_id: route.vehicle_usage.vehicle_id) }}
+    assert route.vehicle_usage.active
+    route.vehicle_usage.update! active: false
+    assert !route.vehicle_usage.active
+    route.vehicle_usage.update! active: true
+    assert route.vehicle_usage.active
+    assert planning.reload.zoning_out_of_date
+  end
+
   test 'disable vehicule usage' do
     # Stub Requests
     expected_response = File.read(Rails.root.join("test/web_mocks/osrm/route.json")).strip
