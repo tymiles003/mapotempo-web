@@ -3,10 +3,10 @@
   $(document).on('page:change', function() {
     hideNotices();
     <% flash.each do |k, v| %>
-      <% if k == 'notice' %>
-        notice(<%= v.to_json.html_safe %>);
-      <% elsif ['alert', 'error'].include?(k) %>
+      <% if ['alert', 'error'].include?(k) %>
         stickyError(<%= v.to_json.html_safe %>);
+      <% else %>
+        flashNotify(k, <%= v.to_json.html_safe %><% if k != 'notice' %>, { hide: false }<% end %>);
       <% end %>
     <% end %>
   });

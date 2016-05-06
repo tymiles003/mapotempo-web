@@ -55,6 +55,9 @@ PNotify.prototype.options.styling = 'fontawesome';
     desktopError: function(message, options) {
       desktop_notify('error', message, $.extend({}, options));
     },
+    flashNotify: function(type, message, options) {
+      notify(type, message, options);
+    },
     hideNotices: function() {
       PNotify.removeAll();
     }
