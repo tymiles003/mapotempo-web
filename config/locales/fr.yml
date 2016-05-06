@@ -448,7 +448,7 @@ fr:
         planning:
           attributes:
             ref:
-              invalid_format: "La référence ne doit contenir que des caractères et des chiffres"
+              invalid_format: "La référence ne doit pas contenir les caractères \".\", \"\\\" ou \"/\""
 
   errors:
     planning:

@@ -361,7 +361,7 @@ class PlanningTest < ActiveSupport::TestCase
     assert_raises(ActiveRecord::RecordInvalid) do
       planning.update! ref: "test.abcd"
     end
-    assert_equal ["La référence ne doit contenir que des caractères et des chiffres"], planning.errors[:ref]
+    assert_equal ['La référence ne doit pas contenir les caractères \".\", \"\\\" ou \"/\"'], planning.errors[:ref]
   end
 
   test 'validates format of REF field with valid characters' do

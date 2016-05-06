@@ -6,7 +6,7 @@ module RefSanitizer
       if !record.ref.blank?
         record.ref.strip!
         if record.ref =~ /[\.\/\\]/
-          record.errors[:ref] << I18n.t("activerecord.errors.models.planning.attributes.ref.invalid_format")
+          record.errors[:ref] << I18n.t('activerecord.errors.models.planning.attributes.ref.invalid_format')
         end
       end
     end
