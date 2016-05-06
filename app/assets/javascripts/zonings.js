@@ -90,6 +90,7 @@ var zonings_edit = function(params) {
   map.on('draw:deleted', function(e) {
     e.layers.eachLayer(function(layer) {
       deleteZone(layer);
+      labelLayer.clearLayers();
     });
   });
 
@@ -141,10 +142,10 @@ var zonings_edit = function(params) {
     return elem.router_avoid_zones;
   }).length > 0;
 
+  var labelLayer = (new L.layerGroup()).addTo(map);
   var zoneGeometry = L.GeoJSON.extend({
     addOverlay: function(zone) {
       var that = this;
-      var labelLayer = (new L.layerGroup()).addTo(map);
       var labelMarker;
       this.on('mouseover', function(e) {
         that.setStyle({
