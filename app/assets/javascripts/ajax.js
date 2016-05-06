@@ -42,7 +42,7 @@ var ajaxError = function(request, status, error) {
   try {
     text = "";
     $.each($.parseJSON(otext), function(i, e) {
-      text += e;
+      text += " " + e;
     });
   } catch (e) {
     text = otext;
