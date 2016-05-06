@@ -481,6 +481,7 @@ fr:
       unauthorized: "Non autorisé"
 
   import:
+    empty: "Rien à importer"
     template_csv: "Modèle import tableur standard"
     template_excel: "Modèle import tableur Excel"
 

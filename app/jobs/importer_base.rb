@@ -18,6 +18,7 @@
 require 'csv'
 
 class ImportBaseError < StandardError ; end
+class ImportEmpty < ImportBaseError ; end
 class ImportInvalidRow < ImportBaseError ; end
 
 class ImporterBase
@@ -61,6 +62,7 @@ class ImporterBase
           end
         end
       }
+      raise ImportEmpty.new I18n.t('import.empty') if dests.all? &:nil?
 
       after_import(name, options)
 
