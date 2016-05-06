@@ -767,7 +767,6 @@ en:
   index:
     unsupported_browser:
       unsupported_browser: "Unsupported Browser"
-      unsupported_browser_ie: "Internet Explorer is not supported, please use Firefox, Chrome or any other recent browser."
       unsupported_browser_modern: "Your browser is too old, please use any recent browser."
       download_browser: "You can download the last version of free browser Firefox at: "
 

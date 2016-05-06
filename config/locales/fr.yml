@@ -767,7 +767,6 @@ fr:
   index:
     unsupported_browser:
       unsupported_browser: "Navigateur non pris en charge"
-      unsupported_browser_ie: "Internet Explorer n'est pas pris en charge, s'il vous plaît utilisez Firefox, Chrome ou tout autre navigateur récent."
       unsupported_browser_modern: "Votre navigateur est trop ancien, s'il vous plaît utilisez un navigateur récent."
       download_browser: "Vous pouvez télécharger la dernière version du navigateur libre Firefox à cette adresse : "
 

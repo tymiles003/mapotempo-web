@@ -1,8 +1,6 @@
 <h1><%= t '.unsupported_browser' %></h1>
 <p>
-<% if params[:browser] == 'ie' %>
-  <%= t '.unsupported_browser_ie' %>
-<% elsif params[:browser] == 'modern' %>
+<% if params[:browser] == 'modern' %>
   <%= t '.unsupported_browser_modern' %>
 <% end %>
 </p>
