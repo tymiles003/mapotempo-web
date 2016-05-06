@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def set_locale
-    I18n.locale = http_accept_language.preferred_language_from %w(en fr)
+    I18n.locale = http_accept_language.compatible_language_from %w(en fr)
   end
 
   def devise_parameter_sanitizer
