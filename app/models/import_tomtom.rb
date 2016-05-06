@@ -42,6 +42,7 @@ class ImportTomtom
       end
     rescue => e
       errors[:base] << e.message
+      Rails.logger.error e.backtrace.join("\n")
       return false
     end
   end
