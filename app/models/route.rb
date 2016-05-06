@@ -128,6 +128,7 @@ class Route < ActiveRecord::Base
       end
 
       # Compute legs traces
+      traces = [nil, nil, nil] * segments.size
       begin
         ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas)
         traces = segments.collect{ |segment|
@@ -140,8 +141,6 @@ class Route < ActiveRecord::Base
       rescue RouterError => e
         if !ignore_errors
           raise
-        else
-          [nil, nil, nil] * segments.size
         end
       end
 
