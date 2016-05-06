@@ -761,8 +761,9 @@ en:
         optionnal: "optionnal"
       not_csv: "Imported file is not a CSV"
       too_many_lines: "Stop import, too many lines (max: %{n})."
-      missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
-      invalid_numeric_value: "Invalid numeric value: \"%{value}\" - line: %{line}"
+      missing_name: "\"name\" missing at record %{line}."
+      missing_location: "\"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
+      invalid_numeric_value: "Invalid numeric value \"%{value}\" at record %{line}."
 
   index:
     unsupported_browser:
@@ -1148,7 +1149,9 @@ en:
       geocoding_accuracy_format: "floating number from 0 to 1"
       geocoding_level: "geocoding level"
       geocoding_level_desc: "level of precision reached when converting the destination street address into geographic coordinates"
-      missing_data: "\"name\" missing or \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
+      missing_name: "\"name\" missing at record %{line}."
+      missing_location: "\"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
+      invalid_numeric_value: "Invalid numeric value \"%{value}\" at record %{line}."
       format:
         string: "text"
         integer: "integer"

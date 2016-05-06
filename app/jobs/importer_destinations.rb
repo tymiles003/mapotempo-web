@@ -149,8 +149,11 @@ class ImporterDestinations < ImporterBase
       return
     end
 
-    if row[:name].nil? || (row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?))
-      raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_data', line: (row[:line] || line)))
+    if row[:name].nil?
+      raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_name', line: (row[:line] || line)))
+    end
+    if row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?)
+      raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_location', line: (row[:line] || line)))
     end
 
     [:lat, :lng].each do |name|

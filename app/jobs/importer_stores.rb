@@ -75,15 +75,25 @@ class ImporterStores < ImporterBase
   end
 
   def import_row(name, row, line, options)
-    if row[:name].nil? || (row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?))
-      raise ImportInvalidRow.new(I18n.t('stores.import_file.missing_data', line: line))
+    if row[:name].nil?
+      raise ImportInvalidRow.new(I18n.t('stores.import_file.missing_name', line: (row[:line] || line)))
+    end
+    if row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?)
+      raise ImportInvalidRow.new(I18n.t('stores.import_file.missing_location', line: (row[:line] || line)))
     end
 
-    if !row[:lat].nil? && (row[:lat].is_a? String)
-      row[:lat] = Float(row[:lat].tr(',', '.'))
-    end
-    if !row[:lng].nil? && (row[:lng].is_a? String)
-      row[:lng] = Float(row[:lng].tr(',', '.'))
+    [:lat, :lng].each do |name|
+      begin
+        if !row[name].nil? && row[name].is_a?(String)
+          row[name] = Float(row[name].tr(',', '.'))
+        end
+      rescue ArgumentError => e
+        if e.message =~ /invalid value for Float/
+          raise ImportInvalidRow.new(I18n.t('stores.import_file.invalid_numeric_value', line: (row[:line] || line), value: row[name]))
+        else
+          raise e
+        end
+      end
     end
 
     if !row[:ref].nil? && !row[:ref].strip.empty?

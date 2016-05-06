@@ -761,8 +761,9 @@ fr:
         optionnal: "optionnel"
       not_csv: "Le fichier importé n'est pas au format CSV."
       too_many_lines: "Import stoppé, trop de lignes (max: %{n})."
-      missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
-      invalid_numeric_value: "Valeur numérique invalide : \"%{value}\" - ligne : %{line}"
+      missing_name: "« nom » manquant à l'enregistrement %{line}."
+      missing_location: "« ville » ou « code postal » ou « lat » et « lng » manquant à l'enregistrement %{line}."
+      invalid_numeric_value: "Valeur numérique « %{value} » invalide à l'enregistrement %{line}"
 
   index:
     unsupported_browser:
@@ -1148,7 +1149,9 @@ fr:
       geocoding_accuracy_format: "nombre à virgule de 0 à 1"
       geocoding_level: "niveau géocodage"
       geocoding_level_desc: "niveau de précision atteint lors de la conversion de l'adresse postale en coordonnées géographiques, exprimé de manière sémantique."
-      missing_data: "\"nom\" manquant ou \"ville\" ou \"code postal\" ou \"lat\" et \"lng\" manquant à l'enregistrement %{line}."
+      missing_name: "« nom » manquant à l'enregistrement %{line}."
+      missing_location: "« ville » ou « code postal » ou « lat » et « lng » manquant à l'enregistrement %{line}."
+      invalid_numeric_value: "Valeur numérique « %{value} » invalide à l'enregistrement %{line}."
       format:
         string: "texte"
         integer: "nombre"
