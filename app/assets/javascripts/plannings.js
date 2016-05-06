@@ -759,7 +759,7 @@ var plannings_edit = function(params) {
         route.color = color;
         prepareAndDisplayRouteOnMap(data, route);
         $('li[data-route_id=' + id + '] .fa-home').css('color', color);
-        $('li[data-route_id=' + id + '] li[data-stop_id].number:not(.color_force)').css('background', color || route.vehicle.color);
+        $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
         $('span[data-route_id=' + id + '] i.vehicle-icon').css('color', color || route.vehicle.color);
       });
 
