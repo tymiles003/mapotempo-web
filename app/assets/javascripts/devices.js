@@ -60,7 +60,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -96,7 +96,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -132,7 +132,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -168,7 +168,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -204,7 +204,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -240,7 +240,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -276,7 +276,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -312,7 +312,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -349,7 +349,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -386,7 +386,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -422,7 +422,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -459,7 +459,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -496,7 +496,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -532,7 +532,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -568,7 +568,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -604,7 +604,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -640,7 +640,7 @@ function devices_observe_planning(context) {
         planning_id: $(e.target).data('planning-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {
@@ -676,7 +676,7 @@ function devices_observe_planning(context) {
         route_id: $(e.target).data('route-id')
       },
       beforeSend: function(jqXHR, settings) {
-        dialog.modal('show');
+        dialog.modal(modal_options());
       },
       success: function(data, textStatus, jqXHR) {
         if (data && data.error) {

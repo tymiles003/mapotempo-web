@@ -31,6 +31,10 @@ $(document).on('ready page:load', function() {
   });
 });
 
+var modal_options = function() {
+  return { keyboard: false, show: true, backdrop: 'static' };
+}
+
 var bootstrap_dialog = function(options) {
   $('#default-modal').find('.modal-title').html(options.title);
   $('#default-modal').find('.modal-body').html(options.message);

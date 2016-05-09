@@ -791,6 +791,12 @@ var plannings_edit = function(params) {
       dialog_optimizer.on('hidden.bs.modal', function() {
         $.ajax({ type: 'DELETE', url: '/api/0.1/customers/' + data.optimizer.customer_id + '/job/' + data.optimizer.id + '.json' });
       });
+      dialog_optimizer.on('keyup', function(e) {
+        if (e.keyCode == 27) {
+          dialog_optimizer.modal('hide');
+          dialog_optimizer.off('keyup');
+        }
+      });
     }
 
     function success_callback() {

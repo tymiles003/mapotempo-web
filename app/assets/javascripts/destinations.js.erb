@@ -369,7 +369,7 @@ var destinations_import = function(params) {
     if (confirmChecks.length > 0 && !confirm(confirmChecks.map(function(c) { return I18n.t('destinations.import.' + c + '_confirm'); } ).join(" \n"))) {
       return false;
     }
-    dialog_upload.modal('show');
+    dialog_upload.modal(modal_options());
   });
 
   $('a.column-edit').click(function(evt) {
@@ -813,6 +813,12 @@ var destinations_index = function(params, api) {
       dialog_geocoding.find('[data-dismiss]').show();
       dialog_geocoding.on('hidden.bs.modal', function() {
         $.ajax({ type: 'DELETE', url: '/api/0.1/customers/' + data.geocoding.customer_id + '/job/' + data.geocoding.id + '.json' });
+      });
+      dialog_geocoding.on('keyup', function(e) {
+        if (e.keyCode == 27) {
+          dialog_geocoding.modal('hide');
+          dialog_geocoding.off('keyup');
+        }
       });
     }
 

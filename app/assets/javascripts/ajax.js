@@ -63,7 +63,7 @@ var mustache_i18n = function() {
 var progress_dialog = function(data, dialog, load_url, callback, error_callback, success_callback) {
   if (data !== undefined) {
     var timeout;
-    dialog.modal('show');
+    dialog.modal(modal_options());
     var progress = data.progress && data.progress.split(';');
     $(".progress-bar", dialog).each(function(i, e) {
       if (progress == undefined || progress == '' || progress[i] == undefined || progress[i] == '') {
@@ -135,9 +135,11 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
     }
     return false;
   } else {
-    if (dialog.is(':visible') && success_callback) success_callback();
-    dialog.modal('hide');
-    $($(".progress-bar", dialog)).css("width", "0%");
+    if (dialog.is(':visible')) {
+      if (success_callback) success_callback();
+      dialog.modal('hide');
+      $($(".progress-bar", dialog)).css("width", "0%");
+    }
     return true;
   }
 }

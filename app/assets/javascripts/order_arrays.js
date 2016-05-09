@@ -387,7 +387,7 @@ var order_arrays_edit = function(params) {
     message: SMT['modals/default_with_progress']({ msg: I18n.t('order_arrays.edit.dialog.loading.in_progress') })
   });
 
-  dialog_loading.modal('show');
+  dialog_loading.modal(modal_options());
 
   $.ajax({
     url: '/order_arrays/' + order_array_id + '.json' + (planning_id ? '?planning_id=' + planning_id : ''),
