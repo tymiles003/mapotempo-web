@@ -2,7 +2,7 @@ require 'optim/ort'
 
 class OrtTest < ActionController::TestCase
   setup do
-    @ort = Mapotempo::Application.config.optimize
+    @optim = Ort.new(ActiveSupport::Cache::NullStore.new, 'http://localhost:4567/0.1/optimize_tsptw')
   end
 
   test 'shoud zip cluster' do
@@ -20,7 +20,7 @@ class OrtTest < ActionController::TestCase
       [nil, nil, 0],
     ]
 
-    a, b, c = @ort.send(:zip_cluster, m, 0, t, 5)
+    a, b, c = @optim.send(:zip_cluster, m, 0, t, 5)
 
     assert_equal [
       [[ 0,  0], [10, 10], [ 1,  1], [ 0,  0]],
@@ -34,7 +34,7 @@ class OrtTest < ActionController::TestCase
       [nil, nil, 0],
     ], b
 
-    assert_equal [0, 3, 2, 1, 4], @ort.send(:unzip_cluster, [0, 1, 2, 3], c, m, 0)
+    assert_equal [0, 3, 2, 1, 4], @optim.send(:unzip_cluster, [0, 1, 2, 3], c, m, 0)
   end
 
   test 'shoud zip cluster with rest' do
@@ -53,7 +53,7 @@ class OrtTest < ActionController::TestCase
       [1, 2, 1],
     ]
 
-    a, b, c = @ort.send(:zip_cluster, m, 0, t, 5)
+    a, b, c = @optim.send(:zip_cluster, m, 0, t, 5)
 
     assert_equal [
       [[ 0,  0], [10, 10], [ 1,  1], [ 0,  0]],
@@ -67,9 +67,9 @@ class OrtTest < ActionController::TestCase
       [nil, nil, 0],
     ], b
 
-    assert_equal [0, 3, 2, 1, 4, 5], @ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
-    assert_equal [0, 3, 2, 1, 5, 4], @ort.send(:unzip_cluster, [0, 1, 2, 4, 3], c, m, 0)
-    assert_equal [0, 3, 5, 2, 1, 4], @ort.send(:unzip_cluster, [0, 1, 4, 2, 3], c, m, 0)
+    assert_equal [0, 3, 2, 1, 4, 5], @optim.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
+    assert_equal [0, 3, 2, 1, 5, 4], @optim.send(:unzip_cluster, [0, 1, 2, 4, 3], c, m, 0)
+    assert_equal [0, 3, 5, 2, 1, 4], @optim.send(:unzip_cluster, [0, 1, 4, 2, 3], c, m, 0)
   end
 
   test 'shoud not zip cluster' do
@@ -87,11 +87,11 @@ class OrtTest < ActionController::TestCase
       [nil, nil, 0],
     ]
 
-    a, b, c = @ort.send(:zip_cluster, m, 0, t, 5)
+    a, b, c = @optim.send(:zip_cluster, m, 0, t, 5)
 
     assert_equal m, a
     assert_equal b, t
-    assert_equal [0, 1, 2, 3, 4], @ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
+    assert_equal [0, 1, 2, 3, 4], @optim.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
   end
 
   test 'shoud not zip cluster, tw' do
@@ -108,11 +108,11 @@ class OrtTest < ActionController::TestCase
       [nil, nil, 0],
       [nil, nil, 0],
     ]
-    a, b, c = @ort.send(:zip_cluster, m, 0, t, 5)
+    a, b, c = @optim.send(:zip_cluster, m, 0, t, 5)
 
     assert_equal m, a
     assert_equal b, t
-    assert_equal [0, 1, 2, 3, 4], @ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
+    assert_equal [0, 1, 2, 3, 4], @optim.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
   end
 
   test 'shoud not zip cluster true case' do
@@ -125,11 +125,11 @@ class OrtTest < ActionController::TestCase
       [[0, 0], [655, 655], [1948, 1948], [5231, 5231], [2971, 2971], [0, 0]]]
     t = [[nil, nil, 0], [nil, nil, 1], [nil, nil, 2], [nil, nil, 3], [nil, nil, 4]]
 
-    a, b, c = @ort.send(:zip_cluster, m, 0, t, 5)
+    a, b, c = @optim.send(:zip_cluster, m, 0, t, 5)
 
     assert_equal m, a
     assert_equal t, b
-    assert_equal [0, 1, 2, 3, 4, 5], @ort.send(:unzip_cluster, [0, 1, 2, 3, 4, 5], c, m, 0)
+    assert_equal [0, 1, 2, 3, 4, 5], @optim.send(:unzip_cluster, [0, 1, 2, 3, 4, 5], c, m, 0)
   end
 
   test 'shoud zip cluster true case' do
@@ -142,7 +142,7 @@ class OrtTest < ActionController::TestCase
       [[0, 0], [693, 693], [655, 655], [1948, 1948], [693, 693], [0, 0]]]
     t = [[nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0]]
 
-    a, b, c = @ort.send(:zip_cluster, m, 0, t, 5)
+    a, b, c = @optim.send(:zip_cluster, m, 0, t, 5)
 
     assert_equal [
       [[0, 0], [655, 655], [1948, 1948], [693, 693], [0, 0]],
@@ -151,7 +151,7 @@ class OrtTest < ActionController::TestCase
       [[609, 609], [416, 416], [2070, 2070], [0, 0], [609, 609]],
       [[0, 0], [655, 655], [1948, 1948], [693, 693], [0, 0]]], a
     assert_equal [[nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0]], b
-    assert_equal [0, 2, 3, 4, 1, 5], @ort.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
+    assert_equal [0, 2, 3, 4, 1, 5], @optim.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
   end
 
   test 'shoud zip large cluster case' do
@@ -166,13 +166,13 @@ class OrtTest < ActionController::TestCase
       [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [0, 0]]]
     t = [[nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0], [nil, nil, 0]]
 
-    a, b, c = @ort.send(:zip_cluster, m, 0, t, 100)
+    a, b, c = @optim.send(:zip_cluster, m, 0, t, 100)
 
     assert_equal [
       [[0, 0], [2, 2], [7, 7]],
       [[1, 1], [0, 0], [7, 7]],
       [[1, 1], [3, 3], [0, 0]]], a
     assert_equal [[nil, nil, 0], [nil, nil, 0]], b
-    assert_equal m.size, @ort.send(:unzip_cluster, [0, 1, 2], c, m, 0).size
+    assert_equal m.size, @optim.send(:unzip_cluster, [0, 1, 2], c, m, 0).size
   end
 end
