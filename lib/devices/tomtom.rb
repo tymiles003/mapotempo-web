@@ -43,7 +43,7 @@ class Tomtom < DeviceBase
     end
   end
 
-  VEHICLE_COLOR = {
+  @@vehicle_colors = {
     'white' => '#ffffff',
     'grey' => '#808080',
     'black' => '#000000',
@@ -98,8 +98,8 @@ class Tomtom < DeviceBase
         fuelType: object[:vehicle_fuel_type],
         description: object[:description]
       }
-      if object[:vehicle_color] && VEHICLE_COLOR.has_key?(object[:vehicle_color].downcase)
-        hash[:color] = VEHICLE_COLOR[object[:vehicle_color].downcase]
+      if object[:vehicle_color] && @@vehicle_colors.has_key?(object[:vehicle_color].downcase)
+        hash[:color] = @@vehicle_colors[object[:vehicle_color].downcase]
       else
         hash[:color] = "#000000"
       end

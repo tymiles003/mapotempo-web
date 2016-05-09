@@ -17,15 +17,17 @@
 #
 
 class ValueToBoolean
+
+  @@true_values = [true, 1, '1', 't', 'true', 'on', 'yes'].to_set
+
   # convert something to a boolean
   def self.value_to_boolean(value, default = false)
     if value.nil? || (value.is_a?(String) && value.empty?)
       default
     else
       val = value.is_a?(String) ? value.downcase : value
-      TRUE_VALUES.include?(val) || (value.is_a?(String) && (I18n.t('all.value._true') == val || I18n.t('all.value._yes') == val))
+      @@true_values.include?(val) || (value.is_a?(String) && (I18n.t('all.value._true') == val || I18n.t('all.value._yes') == val))
     end
   end
 
-  TRUE_VALUES = [true, 1, '1', 't', 'true', 'on', 'yes'].to_set
 end

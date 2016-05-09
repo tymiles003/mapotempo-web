@@ -18,7 +18,7 @@
 require 'rest_client'
 
 class GeocodeAddokWrapper
-  RESULTTYPE = {'city' => 'city', 'street' => 'street', 'locality' => 'street', 'intersection' => 'intersection', 'house' => 'house', 'poi' => 'house'}
+  @@result_types = {'city' => 'city', 'street' => 'street', 'locality' => 'street', 'intersection' => 'intersection', 'house' => 'house', 'poi' => 'house'}
 
   def accuracy_success
     0.8
@@ -126,6 +126,6 @@ class GeocodeAddokWrapper
     type = feature['properties']['geocoding']['type']
     label = feature['properties']['geocoding']['label']
     coordinates = feature['geometry']['coordinates'] if feature['geometry'] && feature['geometry']['coordinates']
-    {lat: coordinates && coordinates[1], lng: coordinates && coordinates[0], quality: RESULTTYPE[type], accuracy: score, free: label}
+    {lat: coordinates && coordinates[1], lng: coordinates && coordinates[0], quality: @@result_types[type], accuracy: score, free: label}
   end
 end
