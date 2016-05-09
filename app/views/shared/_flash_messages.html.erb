@@ -5,8 +5,10 @@
     <% flash.each do |k, v| %>
       <% if ['alert', 'error'].include?(k) %>
         stickyError(<%= v.to_json.html_safe %>);
+      <% elsif 'notice' == k %>
+        notice(<%= v.to_json.html_safe %>);
       <% else %>
-        flashNotify(k, <%= v.to_json.html_safe %><% if k != 'notice' %>, { hide: false }<% end %>);
+        notify(<%= k.to_json.html_safe %>, <%= v.to_json.html_safe %>, { hide: false });
       <% end %>
     <% end %>
   });
