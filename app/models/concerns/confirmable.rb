@@ -3,7 +3,7 @@ module Confirmable
 
   included do
     before_create :generate_confirmation_token
-    after_create :send_welcome_email
+    after_create :send_welcome_email, unless: :admin?
   end
 
   def confirm!
