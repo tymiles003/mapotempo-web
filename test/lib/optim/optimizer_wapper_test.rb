@@ -2,7 +2,18 @@ require 'optim/optimizer_wrapper'
 
 class OptimizerWrapperTest < ActionController::TestCase
   setup do
-    @optim = OptimizerWrapper.new(ActiveSupport::Cache::NullStore.new, 'http://localhost:1791/0.1/', 'demo')
+    @optim = OptimizerWrapper.new(ActiveSupport::Cache::NullStore.new, 'http://localhost:1791/0.1', 'demo')
+
+    uri_template = Addressable::Template.new('localhost:1791/0.1/vrp/submit.json')
+    @stub_VrpSubmit = stub_request(:post, uri_template).to_return(File.new(File.expand_path('../../../', __FILE__) + '/fixtures/optimizer-wrapper/vrp-submit.json').read)
+
+    uri_template = Addressable::Template.new('http://localhost:1791/0.1/vrp/job/{job_id}.json?api_key={api_key}')
+    @stub_VrpJob = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../', __FILE__) + '/fixtures/optimizer-wrapper/vrp-job.json').read)
+  end
+
+  def teardown
+    remove_request_stub(@stub_VrpJob)
+    remove_request_stub(@stub_VrpSubmit)
   end
 
   test 'shoud optim' do
@@ -38,7 +49,7 @@ class OptimizerWrapperTest < ActionController::TestCase
       {start: nil, end: nil, duration: 0},
     ]
 
-    assert_equal [0, 1, 2, 3, 4], @optim.send(:unzip_cluster, [0, 1, 2, 3, 4], c, m, 0)
+    assert_equal [0, 1, 2, 3, 4], @optim.optimize(m, 'time', t, [], nil, nil, nil)
   end
 
   test 'shoud optim true case' do
@@ -57,6 +68,6 @@ class OptimizerWrapperTest < ActionController::TestCase
       {start: nil, end: nil, duration: 4},
     ]
 
-    assert_equal [0, 1, 2, 3, 4, 5], @optim.send(:unzip_cluster, [0, 1, 2, 3, 4, 5], c, m, 0)
+    assert_equal [0, 1, 2, 3, 4, 5], @optim.optimize(m, 'time', t, [], nil, nil, nil)
   end
 end
