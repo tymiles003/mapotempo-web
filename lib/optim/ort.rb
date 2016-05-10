@@ -30,9 +30,9 @@ class Ort
     @cache, @url = cache, url
   end
 
-  def optimize(matrix, dimension, services, rests, optimize_time, soft_upper_bound, cluster_time_threshold)
+  def optimize(matrix, dimension, services, rests, optimize_time, soft_upper_bound, cluster_threshold)
     dimension = dimension == 'time' ? 0 : 1
-    key = [soft_upper_bound, matrix.hash, dimension, time_window.hash, rest_window.hash, cluster_threshold]
+    key = [soft_upper_bound, matrix.hash, dimension, services.hash, rests.hash, cluster_threshold]
 
     time_window = services.collect{ |service| [service[:start], service[:end], service[:duration]] }
     rest_window = rests.collect{ |rest| [rest[:start], rest[:end], rest[:duration]] }

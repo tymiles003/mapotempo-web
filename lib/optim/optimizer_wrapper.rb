@@ -37,14 +37,14 @@ class OptimizerWrapper
         },
         points: matrix.size.times.collect{ |i| {
           id: "p#{i}",
-          matrix_index: i,
+          matrix_index: i
         }},
         services: services.each_with_index.collect{ |service, index| {
           id: "s#{index + 1}",
           point_id: "p#{index + 1}",
           timewindows: [{
             start: service[:start],
-            end: service[:end],
+            end: service[:end]
           }],
           duration: service[:duration]
         }},
@@ -61,15 +61,15 @@ class OptimizerWrapper
           start_point_id: 'p0', ############################# TODO detect has start
           end_point_id: "p#{matrix.size - 1}", ################################ TODO detect has stop
           cost_fixed: 0,
-          cost_distance_multiplicator: dimension == 'distance' ? 1 : 0,
-          cost_time_multiplicator: dimension == 'time' ? 1 : 0,
-          cost_waiting_time_multiplicator: dimension == 'time' ? 1 : 0,
-          cost_late_multiplicator: dimension == 'time' ? soft_upper_bound : 0,
+          cost_distance_multiplier: dimension == 'distance' ? 1 : 0,
+          cost_time_multiplier: dimension == 'time' ? 1 : 0,
+          cost_waiting_time_multiplier: dimension == 'time' ? 1 : 0,
+          cost_late_multiplier: dimension == 'time' ? soft_upper_bound : 0,
 #          rests: rests.each_with_index.collect{ |rest, index| "r#{index}" }
         }],
         resolution: {
           preprocessing_cluster_threshold: cluster_threshold,
-          preporcessing_prefer_short_segment: true,
+          preprocessing_prefer_short_segment: true,
           resolution_duration: optimize_time
          }
       }
