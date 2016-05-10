@@ -17,6 +17,8 @@ Install ruby (>2.0 is needed), bundler and some dependencies from system package
 Install ruby (>2.0 is needed) and other dependencies from system package. For exemple for Ubuntu:
     sudo apt-get install ruby2.0 ruby2.0-dev libz-dev libicu-dev build-essential g++ postgresql-server-dev-9.3 libgeos++-dev
 
+It's important to have those installed packages before installing following gems.
+
 Install ruby bundle gem by :
 
     export GEM_HOME=~/.gem/ruby/2.0.0

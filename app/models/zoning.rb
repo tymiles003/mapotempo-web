@@ -48,9 +48,9 @@ class Zoning < ActiveRecord::Base
     }
   end
 
-  # Return the zone corresponding to destination location
+  # Return the zone with vehicle and max distance from the border
   def inside(destination)
-    z = zones.collect{ |zone|
+    z = zones.select(&:vehicle_id).collect{ |zone|
       [zone, zone.inside_distance(destination.lat, destination.lng)]
     }.select{ |zone, d|
       d
