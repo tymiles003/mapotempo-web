@@ -154,8 +154,8 @@ en:
         masternaut_password: "Password"
         alyacom_association: "AlyaCom identifier"
         alyacom_api_key: "AlyaCom API key"
-        router: "Route planner"
-        router_id: "Route planner"
+        router: "Routing Engine"
+        router_id: "Routing Engine"
         router_dimension: "Router objective"
         print_planning_annotating: "Plan annotating"
         print_header: "Routes header"
@@ -240,7 +240,7 @@ en:
       profile:
         name: "Name"
         layers: "Base Maps"
-        routers: "Route planners"
+        routers: "Routing Engines"
       product:
         code: "Code"
         name: "Name"
@@ -329,8 +329,8 @@ en:
         color: "Color"
         tomtom_id: "TomTom ID"
         masternaut_ref: "Masternaut vehicle ref."
-        router: "Route planner"
-        router_id: "Route planner"
+        router: "Routing Engine"
+        router_id: "Routing Engine"
         router_dimension: "Router objective"
         speed_multiplicator: "Speed multiplier"
         ref: "Reference"
@@ -1185,8 +1185,8 @@ en:
     form:
       color_default: "Default"
       icon_default: "Default"
-      color_help: "Force usage of this color"
-      icon_help: "Force usage of this symbol"
+      color_help: "Force use of this color"
+      icon_help: "Force use of this symbol"
 
   users:
     menu:
@@ -1227,7 +1227,7 @@ en:
         help: "Unit of the capacity"
       router:
         default: "Default"
-        help: "Force usage of a specific route planner"
+        help: "Force use of a specific routing engine"
       router_dimension:
         default: "Default"
       speed_multiplicator:
@@ -1356,8 +1356,8 @@ en:
       collapse_zoning_panel: "Collapse zoning panel"
       generate_confirm: "This action will reset all your current zones. Continue?"
       vehicleless_confirm: "Are you sure? Some zones don't have a vehicle"
-      isochrone_missing_vehicle: "Isochron cannot be generated for at least one vehicle due to route planner restrictions"
-      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to route planner restrictions"
+      isochrone_missing_vehicle: "Isochron cannot be generated for at least one vehicle due to routing engine restrictions"
+      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to routing engine restrictions"
       failed: "Failed to generate Isochron"
       success: "Isochron generated successfully"
     index:
