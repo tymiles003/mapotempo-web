@@ -170,7 +170,7 @@ en:
         jobs: "Jobs"
         optimization_cluster_size: "Optimization cluster size"
         optimization_time: "Optimization time"
-        optimization_soft_upper_bound: "Optimization soft upper bound multiplier"
+        optimization_soft_upper_bound: "Delays coefficient"
         profile: "Profile"
         profile_id: "Profile"
         speed_multiplicator: "Speed multiplier"
@@ -577,7 +577,7 @@ en:
       optimization_cluster_size_default: "%{n} (default value)"
       optimization_time_default: "%{n} (default value)"
       optimization_soft_upper_bound_default: "%{n} (default value)"
-      optimization_soft_upper_bound_help: "0 to disable"
+      optimization_soft_upper_bound_help: "More the value is important, more delays are detrimental (0 not to allow delays strictly)."
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
