@@ -128,12 +128,6 @@ module Mapotempo
     )
 
     config.devices = OpenStruct.new alyacom: Alyacom.new, masternaut: Masternaut.new, orange: Orange.new, teksat: Teksat.new, tomtom: Tomtom.new
-    config.devices.cache_object = ActiveSupport::Cache::FileStore.new File.join(Dir.tmpdir, 'devices'), namespace: 'devices', expires_in: 30
-
-    config.devices.alyacom.api_url = 'https://alyacom.example.com'
-    config.devices.masternaut.api_url = 'https://masternaut.example.com'
-    config.devices.orange.api_url = 'https://orange.example.com'
-    config.devices.tomtom.api_url = 'https://tomtom.example.com' #v1.26
 
     config.delayed_job_use = false
 

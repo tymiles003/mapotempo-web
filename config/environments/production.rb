@@ -83,6 +83,7 @@ Rails.application.configure do
   config.devices.masternaut.api_url = 'http://gc.api.geonaut.masternaut.com/MasterWS/services'
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
   config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.26'
+  config.devices.cache_object = ActiveSupport::Cache::FileStore.new File.join(Dir.tmpdir, 'devices'), namespace: 'devices', expires_in: 30
 
   config.delayed_job_use = true
 end
