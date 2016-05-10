@@ -347,6 +347,7 @@ var destinations_form = function(params, api) {
 var destinations_import = function(params) {
   var dialog_upload = bootstrap_dialog({
     title: I18n.t('destinations.index.dialog.import.title'),
+    icon: 'fa-download',
     message: SMT['modals/default_with_progress']({ msg: I18n.t('destinations.index.dialog.import.in_progress') })
   });
 
@@ -1057,6 +1058,7 @@ var destinations_index = function(params, api) {
 
   var dialog_geocoding = bootstrap_dialog({
     title: I18n.t('destinations.index.dialog.geocoding.title'),
+    icon: 'fa-refresh',
     message: SMT['modals/geocoding']({ i18n: mustache_i18n })
   });
 }

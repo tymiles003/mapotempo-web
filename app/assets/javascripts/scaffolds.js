@@ -38,6 +38,7 @@ var modal_options = function() {
 var bootstrap_dialog = function(options) {
   $('#default-modal').find('.modal-title').html(options.title);
   $('#default-modal').find('.modal-body').html(options.message);
+  if (options.icon) $('#default-modal').find('i.fa').addClass(options.icon).show();
   return $('#default-modal');
 }
 

@@ -46,12 +46,14 @@ function devices_observe_planning(context) {
     });
   }
 
+  var modal_options = { icon: 'fa-bars' };
+
   // API Orange Fleet: Send Planning Routes
   $('.planning-orange-send', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Orange',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.orange.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -84,10 +86,10 @@ function devices_observe_planning(context) {
 
   // API Orange Fleet: Clear Planning Routes
   $('.planning-orange-clear', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Orange',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.orange.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -120,10 +122,10 @@ function devices_observe_planning(context) {
 
   // API Orange Fleet: Send Route
   $('.orange-send', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Orange',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.orange.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -156,10 +158,10 @@ function devices_observe_planning(context) {
 
   // API Orange Fleet: Clear Route
   $('.orange-clear', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Orange',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.orange.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -192,10 +194,10 @@ function devices_observe_planning(context) {
 
   // API Teksat: Send Planning Routes
   $('.planning-teksat-send', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Teksat',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.teksat.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -228,10 +230,10 @@ function devices_observe_planning(context) {
 
   // API Teksat: Clear Planning Routes
   $('.planning-teksat-clear', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Teksat',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.teksat.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -264,10 +266,10 @@ function devices_observe_planning(context) {
 
   // API Teksat: Send Route
   $('.teksat-send', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Teksat',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.teksat.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -300,10 +302,10 @@ function devices_observe_planning(context) {
 
   // API Teksat: Clear Route
   $('.teksat-clear', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Teksat',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.teksat.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -336,10 +338,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Send Planning Routes As Waypoints
   $('.planning-tomtom-send-waypoints', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'TomTom',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -373,10 +375,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Send Planning Routes As Orders
   $('.planning-tomtom-send-orders', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'TomTom',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -410,10 +412,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Clear Planning Routes
   $('.planning-tomtom-clear', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'TomTom',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -446,10 +448,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Send Route As Waypoints
   $('.tomtom-send-waypoints', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'TomTom',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -483,10 +485,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Send Route As Orders
   $('.tomtom-send-orders', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'TomTom',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -520,10 +522,10 @@ function devices_observe_planning(context) {
 
   // API TomTom: Clear Route
   $('.tomtom-clear', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'TomTom',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.tomtom.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'DELETE',
@@ -556,10 +558,10 @@ function devices_observe_planning(context) {
 
   // API Masternaut: Send Planning Routes
   $('.planning-masternaut-send', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Masternaut',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.masternaut.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -592,10 +594,10 @@ function devices_observe_planning(context) {
 
   // API Masternaut: Send Route
   $('.masternaut-send', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Masternaut',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.masternaut.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -628,10 +630,10 @@ function devices_observe_planning(context) {
 
   // API Alyacom: Send Planning Routes
   $('.planning-alyacom-send', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Alyacom',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.alyacom.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',
@@ -664,10 +666,10 @@ function devices_observe_planning(context) {
 
   // API Alyacom: Send Route
   $('.alyacom-send', context).click(function(e) {
-    var dialog = bootstrap_dialog({
+    var dialog = bootstrap_dialog($.extend(modal_options, {
       title: 'Alyacom',
       message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.alyacom.in_progress') })
-    });
+    }));
     $.ajax({
       url: $(e.target).data('url'),
       type: 'POST',

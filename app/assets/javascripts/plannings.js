@@ -1133,6 +1133,7 @@ var plannings_edit = function(params) {
 
   var dialog_optimizer = bootstrap_dialog({
     title: I18n.t('plannings.edit.dialog.optimizer.title'),
+    icon: 'fa-gear',
     message: SMT['modals/optimize']({ i18n: mustache_i18n })
   });
 
@@ -1142,6 +1143,7 @@ var plannings_edit = function(params) {
       if (confirm(I18n.t('plannings.edit.zoning_confirm'))) {
         bootstrap_dialog({
           title: I18n.t('plannings.edit.dialog.zoning.title'),
+          icon: 'fa-bars',
           message: I18n.t('plannings.edit.dialog.zoning.in_progress')
         }).modal('show');
       }
