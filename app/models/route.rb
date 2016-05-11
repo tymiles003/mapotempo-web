@@ -387,7 +387,7 @@ class Route < ActiveRecord::Base
         end
         optimizer.call(matrix, services, [position_start == [nil, nil] ? nil : :start, position_stop == [nil, nil] ? nil : :stop].compact, rests, router_dimension)
       }
-      order.collect{ |i| i - 1 }
+      order[1..-2].collect{ |i| i - 1 }
     }
   end
 

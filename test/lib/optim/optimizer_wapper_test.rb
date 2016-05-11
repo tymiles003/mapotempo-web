@@ -32,8 +32,8 @@ class OptimizerWrapperTest < ActionController::TestCase
       {start: 0, end: 7200, duration: 300.0},
     ]
 
-    assert_equal [0, 1, 2, 3, 4, 5], @optim.optimize(m, 'time', t, [:start, :stop], [], nil, nil, nil)
+    assert_equal [0, 1, 2, 3, 4, 5, 6, 7], @optim.optimize(m, 'time', t, [:start, :stop], [], nil, nil, nil)
 
-    assert_equal [0, 1, 2, 3, 4, 5], @optim.optimize(m, 'time', t, [], [], nil, nil, nil)
+    assert_equal [0, 1, 2, 3, 4, 5, 6, 7], @optim.optimize(m, 'time', t, [], [], nil, nil, nil)
   end
 end

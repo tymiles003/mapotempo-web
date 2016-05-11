@@ -61,7 +61,7 @@ class OptimizerWrapper
         vehicles: [{
           id: 'v0',
           start_point_id: stores.include?(:start) ? 'p0' : nil,
-          end_point_id: stores.include?(:stop) ? "p#{matrix.size}" : nil,
+          end_point_id: stores.include?(:stop) ? "p#{matrix.size - 1}" : nil,
           cost_fixed: 0,
           cost_distance_multiplier: dimension == 'distance' ? 1 : 0,
           cost_time_multiplier: dimension == 'time' ? 1 : 0,
@@ -95,7 +95,7 @@ class OptimizerWrapper
       end
 
       result['solution']['routes'][0]['activities'].collect{ |activity|
-        activity['service_id'][1..-1].to_i - 1
+        activity['point_id'][1..-1].to_i
       }
     end
   end
