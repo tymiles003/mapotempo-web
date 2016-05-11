@@ -360,7 +360,7 @@ class Route < ActiveRecord::Base
 
     stops_on = stops_segregate[true]
     amalgamate_stops_same_position(stops_on) { |positions|
-      services = [{start: nil, end: nil, duration: 0}] + positions.collect{ |position|
+      services = positions.collect{ |position|
         open, close, duration = position[2..4]
         open = open ? Integer(open - vehicle_usage.default_open) : nil
         close = close ? Integer(close - vehicle_usage.default_open) : nil
@@ -385,9 +385,9 @@ class Route < ActiveRecord::Base
           matrix += [[[0, 0]] * matrix.length]
           matrix.collect!{ |x| x + [[0, 0]] }
         end
-        optimizer.call(matrix, services, rests, router_dimension)
+        optimizer.call(matrix, services, [position_start == [nil, nil] ? nil : :start, position_stop == [nil, nil] ? nil : :stop].compact, rests, router_dimension)
       }
-      order[1..-2].collect{ |i| i - 1 }
+      order.collect{ |i| i - 1 }
     }
   end
 
@@ -529,7 +529,7 @@ class Route < ActiveRecord::Base
 
     if not_nil_position_index.key?(true)
       not_nil_position = not_nil_position_index[true].collect{ |position, index| position }
-      not_nil_tws = not_nil_position_index[true][0..-1].collect{ |position, index| tws[index + 1] }
+      not_nil_tws = not_nil_position_index[true].collect{ |position, index| tws[index] }
       not_nil_index = not_nil_position_index[true].collect{ |position, index| index + 1 }
     else
       not_nil_position = []
@@ -544,7 +544,7 @@ class Route < ActiveRecord::Base
       nil_index = []
     end
 
-    order = yield([positions[0]] + not_nil_position + [positions[-1]], [tws[0]] + not_nil_tws, nil_tws)
+    order = yield([positions[0]] + not_nil_position + [positions[-1]], not_nil_tws, nil_tws)
 
     all_index = [0] + not_nil_index + [positions.length - 1] + nil_index
     order.collect{ |o| all_index[o] }

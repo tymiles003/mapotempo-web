@@ -12,7 +12,62 @@ HTTP/1.1 200 OK
       "vehicle_id": "v0",
       "start_time": 0,
       "end_time": 0,
-      "activities": []
+      "activities": [
+        {
+          "point_id": "p1",
+          "travel_distance": 0,
+          "travel_start_time": 0,
+          "waiting_duration": 0,
+          "arrival_time": 0,
+          "departure_time": 0,
+          "service_id": "s1"
+        },
+        {
+          "point_id": "p2",
+          "travel_distance": 0,
+          "travel_start_time": 0,
+          "waiting_duration": 0,
+          "arrival_time": 0,
+          "departure_time": 0,
+          "service_id": "s2"
+        },
+        {
+          "point_id": "p3",
+          "travel_distance": 0,
+          "travel_start_time": 0,
+          "waiting_duration": 0,
+          "arrival_time": 0,
+          "departure_time": 0,
+          "service_id": "s3"
+        },
+        {
+          "point_id": "p4",
+          "travel_distance": 0,
+          "travel_start_time": 0,
+          "waiting_duration": 0,
+          "arrival_time": 0,
+          "departure_time": 0,
+          "service_id": "s4"
+        },
+        {
+          "point_id": "p5",
+          "travel_distance": 0,
+          "travel_start_time": 0,
+          "waiting_duration": 0,
+          "arrival_time": 0,
+          "departure_time": 0,
+          "service_id": "s5"
+        },
+        {
+          "point_id": "p6",
+          "travel_distance": 0,
+          "travel_start_time": 0,
+          "waiting_duration": 0,
+          "arrival_time": 0,
+          "departure_time": 0,
+          "service_id": "s6"
+        }
+      ]
     }]
   }
 }

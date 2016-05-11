@@ -16,43 +16,7 @@ class OptimizerWrapperTest < ActionController::TestCase
     remove_request_stub(@stub_VrpSubmit)
   end
 
-  test 'shoud optim' do
-    m = [
-      [[ 0,  0], [10, 10], [20, 20], [30, 30], [ 0,  0]],
-      [[10, 10], [ 0,  0], [30, 30], [40, 40], [10, 10]],
-      [[20, 20], [30, 30], [ 0,  0], [50, 50], [20, 20]],
-      [[30, 30], [40, 40], [50, 50], [ 0,  0], [30, 30]],
-      [[ 0,  0], [10, 10], [20, 20], [30, 30], [ 0,  0]],
-    ]
-    t = [
-      {start: nil, end: nil, duration: 0},
-      {start: nil, end: nil, duration: 0},
-      {start: nil, end: nil, duration: 0},
-      {start: nil, end: nil, duration: 0},
-    ]
-
-    assert_equal [0, 1, 2, 3, 4], @optim.optimize(m, 'time', t, [], nil, nil, nil)
-  end
-
-  test 'shoud optim, tw' do
-    m = [
-      [[ 0,  0], [ 1,  1], [ 1,  1], [10, 10], [ 0,  0]],
-      [[ 1,  1], [ 0,  0], [ 1,  1], [10, 10], [ 1,  1]],
-      [[ 1,  1], [ 1,  1], [ 0,  0], [10, 10], [ 1,  1]],
-      [[10, 10], [10, 10], [10, 10], [ 0,  0], [10, 10]],
-      [[ 0,  0], [ 1,  1], [ 1,  1], [10, 10], [ 0,  0]],
-    ]
-    t = [
-      {start: nil, end: nil, duration: 0},
-      {start: nil, end: nil, duration: 1},
-      {start: nil, end: nil, duration: 0},
-      {start: nil, end: nil, duration: 0},
-    ]
-
-    assert_equal [0, 1, 2, 3, 4], @optim.optimize(m, 'time', t, [], nil, nil, nil)
-  end
-
-  test 'shoud optim true case' do
+  test 'shoud optimize' do
     m = [
       [[0, 0], [655, 655], [1948, 1948], [5231, 5231], [2971, 2971], [0, 0]],
       [[603, 603], [0, 0], [1692, 1692], [4977, 4977], [2715, 2715], [603, 603]],
@@ -61,13 +25,15 @@ class OptimizerWrapperTest < ActionController::TestCase
       [[2982, 2982], [2758, 2758], [1652, 1652], [7264, 7264], [0, 0], [2982, 2982]],
       [[0, 0], [655, 655], [1948, 1948], [5231, 5231], [2971, 2971], [0, 0]]]
     t = [
-      {start: nil, end: nil, duration: 0},
-      {start: nil, end: nil, duration: 1},
-      {start: nil, end: nil, duration: 2},
-      {start: nil, end: nil, duration: 3},
-      {start: nil, end: nil, duration: 4},
+      {start: nil, end: nil, duration: 300.0},
+      {start: nil, end: nil, duration: 300.0},
+      {start: nil, end: nil, duration: 300.0},
+      {start: 28800, end: 36000, duration: 500.0},
+      {start: 0, end: 7200, duration: 300.0},
     ]
 
-    assert_equal [0, 1, 2, 3, 4, 5], @optim.optimize(m, 'time', t, [], nil, nil, nil)
+    assert_equal [0, 1, 2, 3, 4, 5], @optim.optimize(m, 'time', t, [:start, :stop], [], nil, nil, nil)
+
+    assert_equal [0, 1, 2, 3, 4, 5], @optim.optimize(m, 'time', t, [], [], nil, nil, nil)
   end
 end

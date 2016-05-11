@@ -196,7 +196,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should optimize' do
     o = routes(:route_one_one)
     optim = o.optimize(nil) { |matrix|
-      (0..(matrix.size-1)).to_a
+      (1..(matrix.size-2)).to_a
     }
     assert_equal (0..(o.stops.size-1)).to_a, optim
   end
@@ -204,7 +204,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should optimize whithout store' do
     o = routes(:route_three_one)
     optim = o.optimize(nil) { |matrix|
-      (0..(matrix.size-1)).to_a
+      (1..(matrix.size-2)).to_a
     }
     assert_equal (0..(o.stops.size-1)).to_a, optim
   end

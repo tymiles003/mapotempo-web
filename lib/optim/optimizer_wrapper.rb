@@ -25,8 +25,8 @@ class OptimizerWrapper
     @cache, @url, @api_key = cache, url, api_key
   end
 
-  def optimize(matrix, dimension, services, rests, optimize_time, soft_upper_bound, cluster_threshold)
-    key = Digest::MD5.hexdigest(Marshal.dump([matrix, dimension, services, rests, optimize_time, soft_upper_bound, cluster_threshold]))
+  def optimize(matrix, dimension, services, stores, rests, optimize_time, soft_upper_bound, cluster_threshold)
+    key = Digest::MD5.hexdigest(Marshal.dump([matrix, dimension, services, stores, rests, optimize_time, soft_upper_bound, cluster_threshold]))
 
     result = @cache.read(key)
     if !result
@@ -41,12 +41,15 @@ class OptimizerWrapper
         }},
         services: services.each_with_index.collect{ |service, index| {
           id: "s#{index + 1}",
-          point_id: "p#{index + 1}",
-          timewindows: [{
-            start: service[:start],
-            end: service[:end]
-          }],
-          duration: service[:duration]
+          activity: {
+            id: "a#{index + 1}", # tmp
+            point_id: "p#{index + 1}",
+            timewindows: [{
+              start: service[:start],
+              end: service[:end]
+            }],
+            duration: service[:duration]
+          }
         }},
         rests: rests.each_with_index.collect{ |rest, index| {
           id: "r#{index}",
@@ -58,8 +61,8 @@ class OptimizerWrapper
         }},
         vehicles: [{
           id: 'v0',
-          start_point_id: 'p0', ############################# TODO detect has start
-          end_point_id: "p#{matrix.size - 1}", ################################ TODO detect has stop
+          start_point_id: stores.include?(:start) ? 'p0' : nil,
+          end_point_id: stores.include?(:stop) ? "p#{matrix.size}" : nil,
           cost_fixed: 0,
           cost_distance_multiplier: dimension == 'distance' ? 1 : 0,
           cost_time_multiplier: dimension == 'time' ? 1 : 0,
@@ -92,8 +95,8 @@ class OptimizerWrapper
         end
       end
 
-      result['solution']['routes'][0]['activities'].collect{ |activitie|
-        activitie['service_id'][1..-1].to_i - 1
+      result['solution']['routes'][0]['activities'].collect{ |activity|
+        activity['service_id'][1..-1].to_i - 1
       }
     end
   end
