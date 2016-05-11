@@ -346,6 +346,7 @@ en:
         rest_start: "Rest window start"
         rest_stop: "Rest window stop"
         rest_duration: "Rest duration"
+        store_rest: "Rest place"
         store_rest_id: "Rest place"
         service_time_start: "Service Time Before"
         service_time_end: "Service Time After"
@@ -448,7 +449,7 @@ en:
         planning:
           attributes:
             ref:
-              invalid_format: "Reference must not contain letters \".\", \"\\\" or \"/\""
+              invalid_format: "must not contain characters \".\", \"\\\" or \"/\""
 
   errors:
     planning:

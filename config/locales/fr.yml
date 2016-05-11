@@ -336,7 +336,7 @@ fr:
         ref: "Référence"
         contact_email: "Email"
       vehicle_usage:
-        vehicle_id: "Vehicule"
+        vehicle_id: "Véhicule"
         open: "Horaire début"
         close: "Horaire fin"
         store_start: "Dépôt départ"
@@ -346,9 +346,11 @@ fr:
         rest_start: "Début plage repos"
         rest_stop: "Fin plage repos"
         rest_duration: "Durée de repos"
+        store_rest: "Lieu de repos"
         store_rest_id: "Lieu de repos"
         service_time_start: "Durée de service avant"
         service_time_end: "Durée de service après"
+        vehicle: "Véhicule"
       vehicle_usage_set:
         name: "Nom"
         open: "Horaire début"
@@ -448,7 +450,7 @@ fr:
         planning:
           attributes:
             ref:
-              invalid_format: "La référence ne doit pas contenir les caractères \".\", \"\\\" ou \"/\""
+              invalid_format: "ne doit pas contenir les caractères \".\", \"\\\" ou \"/\""
 
   errors:
     planning:
@@ -473,7 +475,7 @@ fr:
       set_mission: "Échec lors de la création de la mission"
       unauthorized: "Non autorisé"
     orange:
-      no_equipment: "Vehicule: Aucun équipement trouvé"
+      no_equipment: "Véhicule: Aucun équipement trouvé"
       unauthorized: "Non autorisé"
       list: "Impossible de lister les appareils"
       get_vehicles_pos: "Impossible de lister les positions des véhicules"
@@ -555,7 +557,7 @@ fr:
     destroy_multiple:
       success: "Clients supprimés avec succès"
     delete_vehicle:
-      success: "Vehicule supprimé avec succès"
+      success: "Véhicule supprimé avec succès"
     form:
       name: "Compte"
       default_value: "Valeurs par défaut"
