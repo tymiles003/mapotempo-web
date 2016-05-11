@@ -32,8 +32,8 @@ class OptimizerWrapper
     if !result
       vrp = {
         matrices: {
-          time: matrix.select{ |row| row.select(&:first) },
-          distance: matrix.select{ |row| row.select(&:last) }
+          time: matrix.collect{ |row| row.collect(&:first) },
+          distance: matrix.collect{ |row| row.collect(&:last) }
         },
         points: matrix.size.times.collect{ |i| {
           id: "p#{i}",
@@ -42,7 +42,6 @@ class OptimizerWrapper
         services: services.each_with_index.collect{ |service, index| {
           id: "s#{index + 1}",
           activity: {
-            id: "a#{index + 1}", # tmp
             point_id: "p#{index + 1}",
             timewindows: [{
               start: service[:start],
@@ -83,10 +82,10 @@ class OptimizerWrapper
       result = nil
       while json
         result = JSON.parse(json)
-        if result.key?('solution')
+        if result['job']['status'] == 'completed'
           @cache.write(key, json && String.new(json)) # String.new workaround waiting for RestClient 2.0
           break
-        elsif result.key?('job')
+        elsif ['queued', 'working'].include?(result['job']['status'])
           sleep(2)
           job_id = result['job']['id']
           json = RestClient.get(@url + "/vrp/job/#{job_id}.json", params: {api_key: @api_key})
