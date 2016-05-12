@@ -814,6 +814,7 @@ var destinations_index = function(params, api) {
       dialog_geocoding.find('[data-dismiss]').show();
       dialog_geocoding.on('hidden.bs.modal', function() {
         $.ajax({ type: 'DELETE', url: '/api/0.1/customers/' + data.geocoding.customer_id + '/job/' + data.geocoding.id + '.json' });
+        dialog_geocoding.find('[data-dismiss]').hide();
       });
       dialog_geocoding.on('keyup', function(e) {
         if (e.keyCode == 27) {

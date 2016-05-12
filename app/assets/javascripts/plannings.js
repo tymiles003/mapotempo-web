@@ -691,6 +691,9 @@ var plannings_edit = function(params) {
         return false;
       })
       .on("click", ".optimize", function(event, ui) {
+
+        initOptimizerDialog();
+
         if (!confirm(I18n.t('plannings.edit.optimize_confirm'))) {
           return;
         }
@@ -783,6 +786,19 @@ var plannings_edit = function(params) {
     });
   }
 
+  var dialog_optimizer;
+
+  initOptimizerDialog();
+
+  function initOptimizerDialog() {
+    hideNotices(); // Clear Failed Optimization Notices
+    dialog_optimizer = bootstrap_dialog({
+      title: I18n.t('plannings.edit.dialog.optimizer.title'),
+      icon: 'fa-gear',
+      message: SMT['modals/optimize']({ i18n: mustache_i18n })
+    });
+  }
+
   var displayPlanning = function(data, options) {
 
     function error_callback() {
@@ -790,6 +806,7 @@ var plannings_edit = function(params) {
       dialog_optimizer.find('[data-dismiss]').show();
       dialog_optimizer.on('hidden.bs.modal', function() {
         $.ajax({ type: 'DELETE', url: '/api/0.1/customers/' + data.optimizer.customer_id + '/job/' + data.optimizer.id + '.json' });
+        dialog_optimizer.find('[data-dismiss]').hide();
       });
       dialog_optimizer.on('keyup', function(e) {
         if (e.keyCode == 27) {
@@ -1130,12 +1147,6 @@ var plannings_edit = function(params) {
       });
     });
   }
-
-  var dialog_optimizer = bootstrap_dialog({
-    title: I18n.t('plannings.edit.dialog.optimizer.title'),
-    icon: 'fa-gear',
-    message: SMT['modals/optimize']({ i18n: mustache_i18n })
-  });
 
   $("form").submit(function(event) {
     var new_zoning = $("#planning_zoning_ids").val();
