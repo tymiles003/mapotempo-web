@@ -95,7 +95,11 @@ class OptimizerWrapper
       end
 
       result['solution']['routes'][0]['activities'].collect{ |activity|
-        activity['point_id'][1..-1].to_i
+        if activity.key?('service_id') && !activity['service_id'].nil?
+          activity['service_id'][1..-1].to_i
+        else
+          activity['point_id'][1..-1].to_i
+        end
       }
     end
   end
