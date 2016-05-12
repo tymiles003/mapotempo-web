@@ -43,16 +43,17 @@ class OptimizerWrapper
           id: "s#{index + 1}",
           activity: {
             point_id: "p#{index + 1}",
-            timewindows: [{
+            timewindows: service[:start] || service[:end] ? [{
               start: service[:start],
               end: service[:end]
-            }],
+            }] : [],
             duration: service[:duration]
           }
         }},
         rests: rests.each_with_index.collect{ |rest, index| {
           id: "r#{index}",
-           timewindows: [{
+#          point_id: "p#{index + 1}",
+          timewindows: [{
             start: rest[:start],
             end: rest[:end]
           }],
@@ -90,7 +91,7 @@ class OptimizerWrapper
           job_id = result['job']['id']
           json = RestClient.get(@url + "/vrp/job/#{job_id}.json", params: {api_key: @api_key})
         else
-          raise ##############################" TODO
+          raise RuntimeError.new(result['job']['avancement'] || 'Optimizer return unknow error')
         end
       end
 
