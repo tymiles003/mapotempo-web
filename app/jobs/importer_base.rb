@@ -23,15 +23,13 @@ class ImportInvalidRow < ImportBaseError ; end
 
 class ImporterBase
 
-  attr_accessor :synchronous
-
   def initialize(customer)
     @customer = customer
     @warnings = []
   end
 
   def import(data, name, synchronous, options)
-    self.synchronous = synchronous
+    @synchronous = synchronous
     dests = false
 
     Customer.transaction do
@@ -50,7 +48,7 @@ class ImporterBase
             next
           end
 
-          if !synchronous && Mapotempo::Application.config.delayed_job_use
+          if !@synchronous && Mapotempo::Application.config.delayed_job_use
             dest.delay_geocode
           end
           dest

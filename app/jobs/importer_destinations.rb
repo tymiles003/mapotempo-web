@@ -259,7 +259,7 @@ class ImporterDestinations < ImporterBase
   end
 
   def after_import(name, options)
-    if @destinations_to_geocode.size > 0 && (synchronous || !Mapotempo::Application.config.delayed_job_use)
+    if @destinations_to_geocode.size > 0 && (@synchronous || !Mapotempo::Application.config.delayed_job_use)
       @destinations_to_geocode.each_slice(50){ |destinations|
         geocode_args = destinations.collect(&:geocode_args)
         results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
@@ -279,7 +279,7 @@ class ImporterDestinations < ImporterBase
   end
 
   def finalize_import(name, options)
-    if @destinations_to_geocode.size > 0 && !synchronous && Mapotempo::Application.config.delayed_job_use
+    if @destinations_to_geocode.size > 0 && !@synchronous && Mapotempo::Application.config.delayed_job_use
       @customer.job_destination_geocoding = Delayed::Job.enqueue(GeocoderDestinationsJob.new(@customer.id, @planning ? @planning.id : nil))
     else
       @planning.compute(ignore_errors: true) if @planning
