@@ -805,7 +805,20 @@ var plannings_edit = function(params) {
       stickyError(I18n.t('plannings.edit.optimize_failed'));
       dialog_optimizer.find('[data-dismiss]').show();
       dialog_optimizer.on('hidden.bs.modal', function() {
-        $.ajax({ type: 'DELETE', url: '/api/0.1/customers/' + data.optimizer.customer_id + '/job/' + data.optimizer.id + '.json' });
+        $.ajax({
+          type: 'DELETE',
+          url: '/api/0.1/customers/' + data.optimizer.customer_id + '/job/' + data.optimizer.id + '.json',
+          success: function(data, textStatus, jqXHR) {
+            $.ajax({
+              type: 'GET',
+              url: '/plannings/' + planning_id + '.json',
+              beforeSend: beforeSendWaiting,
+              success: checkForDisplayPlanningFirstTime,
+              complete: completeAjaxMap,
+              error: ajaxError
+            });
+          }
+        });
         dialog_optimizer.find('[data-dismiss]').hide();
       });
       dialog_optimizer.on('keyup', function(e) {
