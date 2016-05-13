@@ -52,7 +52,6 @@ class OptimizerWrapper
         }},
         rests: rests.each_with_index.collect{ |rest, index| {
           id: "r#{index}",
-#          point_id: "p#{index + 1}",
           timewindows: [{
             start: rest[:start],
             end: rest[:end]
@@ -68,7 +67,7 @@ class OptimizerWrapper
           cost_time_multiplier: dimension == 'time' ? 1 : 0,
           cost_waiting_time_multiplier: dimension == 'time' ? 1 : 0,
           cost_late_multiplier: dimension == 'time' ? soft_upper_bound : 0,
-#          rests: rests.each_with_index.collect{ |rest, index| "r#{index}" }
+          rests: rests.each_with_index.collect{ |rest, index| "r#{index}" }
         }],
         resolution: {
           preprocessing_cluster_threshold: cluster_threshold,
