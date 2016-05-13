@@ -274,11 +274,11 @@ class Tomtom < DeviceBase
     unique_base_order_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
       dstOrderToSend: {
-        orderText: description.gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..499],
+        orderText: strip_sql(description).strip[0..499],
         explicitDestination: {
-          street: (position.street[0..49] if position.street),
-          postcode: (position.postalcode[0..9] if position.postalcode),
-          city: (position.city[0..49] if position.city),
+          street: (strip_sql(position.street[0..49]) if position.street),
+          postcode: (strip_sql(position.postalcode[0..9]) if position.postalcode),
+          city: (strip_sql(position.city[0..49]) if position.city),
           geoPosition: '',
           attributes!: {
             geoPosition: {
@@ -309,7 +309,7 @@ class Tomtom < DeviceBase
           {
             latitude: (waypoint[:lat] * 1e6).round.to_s,
             longitude: (waypoint[:lng] * 1e6).round.to_s,
-            description: waypoint[:description].gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(',', ' ').gsub(/\s+/, ' ').strip[0..19]
+            description: strip_sql(waypoint[:description]).gsub(',', ' ').strip[0..19]
           }
         }
       }}
@@ -317,4 +317,8 @@ class Tomtom < DeviceBase
     get customer, savon_client_orders, :send_destination_order, params
   end
 
+  def strip_sql string
+    # Strip Quotes, forbidden by service in some cases (before Union or Select)
+    string.gsub(/\'/i, '’').gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ')
+  end
 end
