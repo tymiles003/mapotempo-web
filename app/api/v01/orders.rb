@@ -39,34 +39,6 @@ class V01::Orders < Grape::API
     segment '/:order_array_id' do
 
       resource :orders do
-        desc 'Fetch order_array\'s orders.',
-          detail: 'Only available if "order array" option is active for current customer.',
-          nickname: 'getOrders',
-          is_array: true,
-          entity: V01::Entities::Order
-        params do
-          optional :ids, type: Array[Integer], desc: 'Select returned orders by id.', coerce_with: CoerceArrayInteger
-        end
-        get do
-          orders = if params.key?(:ids)
-            current_customer.order_arrays.find(params[:order_array_id]).orders.select{ |order| params[:ids].include?(order.id) }
-          else
-            current_customer.order_arrays.find(params[:order_array_id]).orders.load
-          end
-          present orders, with: V01::Entities::Order
-        end
-
-        desc 'Fetch order.',
-          detail: 'Only available if "order array" option is active for current customer.',
-          nickname: 'getOrder',
-          entity: V01::Entities::Order
-        params do
-          requires :id, type: Integer
-        end
-        get ':id' do
-          present current_customer.order_arrays.find(params[:order_array_id]).orders.find(params[:id]), with: V01::Entities::Order
-        end
-
         desc 'Update order.',
           detail: 'Only available if "order array" option is active for current customer.',
           nickname: 'updateOrder',

@@ -124,18 +124,6 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should apply orders' do
-    r = @planning.routes.find{ |ro| ro.ref == 'route_one' }
-    assert r.stops[0].active
-    assert r.stops[1].active
-    @order_array = order_arrays(:order_array_one)
-    patch api("#{@planning.id}/orders_array"), { order_array_id: @order_array.id, shift: 0 }
-    @planning.reload
-    r = @planning.routes.find{ |ro| ro.ref == 'route_one' }
-    assert r.stops[0].active
-    assert_not r.stops[1].active
-  end
-
   test 'automatic insert with ID' do
     assert @planning.valid?
     unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take

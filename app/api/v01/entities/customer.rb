@@ -33,7 +33,6 @@ class V01::Entities::Customer < Grape::Entity
   expose(:job_optimizer_id, documentation: { type: Integer })
   expose(:ref, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
   expose(:name, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
-  expose(:enable_orders, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:router_id, documentation: { type: Integer })
   expose(:router_dimension, documentation: { type: String, values: ::Router::DIMENSION.keys })
   expose(:speed_multiplicator, documentation: { type: Float })
