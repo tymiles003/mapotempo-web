@@ -51,7 +51,7 @@ class OptimizerWrapper
           }
         }},
         rests: rests.each_with_index.collect{ |rest, index| {
-          id: "r#{index}",
+          id: "r#{index + services.size + 1 + 1}",
           timewindows: [{
             start: rest[:start],
             end: rest[:end]
@@ -67,7 +67,7 @@ class OptimizerWrapper
           cost_time_multiplier: dimension == 'time' ? 1 : 0,
           cost_waiting_time_multiplier: dimension == 'time' ? 1 : 0,
           cost_late_multiplier: dimension == 'time' ? soft_upper_bound : 0,
-          rests: rests.each_with_index.collect{ |rest, index| "r#{index}" }
+          rests: rests.each_with_index.collect{ |rest, index| "r#{index + services.size + 1 + 1}" }
         }],
         resolution: {
           preprocessing_cluster_threshold: cluster_threshold,
@@ -95,8 +95,10 @@ class OptimizerWrapper
       end
 
       result['solution']['routes'][0]['activities'].collect{ |activity|
-        if activity.key?('service_id') && !activity['service_id'].nil?
+        if activity.key?('service_id')
           activity['service_id'][1..-1].to_i
+        elsif activity.key?('rest_id')
+          activity['rest_id'][1..-1].to_i
         else
           activity['point_id'][1..-1].to_i
         end
