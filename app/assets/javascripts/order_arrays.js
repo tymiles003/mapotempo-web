@@ -384,7 +384,7 @@ var order_arrays_edit = function(params) {
 
   var dialog_loading = bootstrap_dialog({
     title: I18n.t('order_arrays.edit.dialog.loading.title'),
-    icon: 'fa-bars',
+    icon: 'fa-check-square-o',
     message: SMT['modals/default_with_progress']({ msg: I18n.t('order_arrays.edit.dialog.loading.in_progress') })
   });
 
