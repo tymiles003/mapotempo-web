@@ -136,8 +136,8 @@ module Routers
         Array.new(row.size) { Array.new(column.size, 2147483647) }
       else
         data = JSON.parse(request)
-        if data.key?('matrix')
-          data['matrix'].collect{ |r|
+        if data.key?('matrix_time')
+          data['matrix_time'].collect{ |r|
             r.collect{ |rr|
               rr || 2147483647
             }
