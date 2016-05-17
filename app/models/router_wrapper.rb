@@ -27,9 +27,9 @@ class RouterWrapper < Router
   end
 
   def matrix(row, column, speed_multiplicator, dimension = :time, options = {}, &block)
-    Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, dimension, row, column, sanitize_options(options, speed_multiplicator: speed_multiplicator)).map{ |row|
+    Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, [dimension], row, column, sanitize_options(options, speed_multiplicator: speed_multiplicator)).map{ |row|
       row.map{ |v| [v, v] }
-    }
+    }[0]
   end
 
   def compute_isochrone(lat, lng, size, speed_multiplicator, options = {})

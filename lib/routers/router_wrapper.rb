@@ -102,7 +102,7 @@ module Routers
       end
     end
 
-    def matrix(url, mode, dimension, row, column, options = {})
+    def matrix(url, mode, dimensions, row, column, options = {})
       key = ['m', url, mode, row, column, Digest::MD5.hexdigest(Marshal.dump(options.to_a.sort_by{ |i| i[0].to_s }))]
 
       request = @cache_request.read(key)
@@ -110,7 +110,7 @@ module Routers
         params = {
           api_key: @api_key,
           mode: mode,
-          dimension: dimension,
+          dimension: dimensions.join('_'),
           src: row.flatten.join(','),
           dst: row != column ? column.flatten.join(',') : nil,
           speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
@@ -133,16 +133,18 @@ module Routers
       end
 
       if request == ''
-        Array.new(row.size) { Array.new(column.size, 2147483647) }
+        [Array.new(row.size) { Array.new(column.size, 2147483647) }]
       else
         data = JSON.parse(request)
-        if data.key?('matrix_time')
-          data['matrix_time'].collect{ |r|
-            r.collect{ |rr|
-              rr || 2147483647
+        dimensions.collect{ |dim|
+          if data.key?("matrix_#{dim}")
+            data["matrix_#{dim}"].collect{ |r|
+              r.collect{ |rr|
+                rr || 2147483647
+              }
             }
-          }
-        end
+          end
+        }
       end
     end
 

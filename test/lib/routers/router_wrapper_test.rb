@@ -27,7 +27,7 @@ class Routers::RouterWrapperTest < ActionController::TestCase
       uri_template = Addressable::Template.new('http://localhost:4899/0.1/matrix.json')
       stub_matrix = stub_request(:post, uri_template).with(body: hash_including(dimension: 'time', src: points.flatten.join(','))).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/matrix.json'))
 
-      matrix = @router_wrapper.matrix(routers(:router_wrapper_public_transport).url_time, :public_transport, :time, points, points)
+      matrix = @router_wrapper.matrix(routers(:router_wrapper_public_transport).url_time, :public_transport, [:time], points, points)[0]
       assert_equal 3, matrix.size
       assert_equal 3, matrix[0].size
     ensure
@@ -47,7 +47,7 @@ class Routers::RouterWrapperTest < ActionController::TestCase
       impassable = @router_wrapper.compute_batch(routers(:router_wrapper_public_transport).url_time, :public_transport, :time, [points.flatten])
       assert_not impassable && impassable.size > 0 && impassable[0][2] # no trace
 
-      matrix = @router_wrapper.matrix(routers(:router_wrapper_public_transport).url_time, :public_transport, :time, points, points)
+      matrix = @router_wrapper.matrix(routers(:router_wrapper_public_transport).url_time, :public_transport, [:time], points, points)[0]
     ensure
       remove_request_stub(stub_route)
       remove_request_stub(stub_matrix)
