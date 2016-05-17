@@ -502,13 +502,13 @@ fr:
       form:
         host_help: "Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur."
         name_help: "Marque du revendeur."
-        welcome_url_help: "Adresse de la page web html incluse comme «iframe» dans la page de bienvenue."
-        help_url_help: "Adresse de la page web contenant l'aide."
-        contact_url_help: "Adresse de la page web contenant le formulaire de contact."
+        welcome_url_help: "Adresse de la page web html incluse comme « iframe » dans la page de bienvenue. Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html)."
+        help_url_help: "Adresse de la page web contenant l'aide. Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html)."
+        contact_url_help: "Adresse de la page web contenant le formulaire de contact. Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html)."
         logo_large_help: "Logo pleine page redimensionnable, de préférence au format SVG, à défaut en PNG."
         logo_small_help: "Logo du menu, 150×40 pixels en SVG ou PNG."
         favicon_help: "Icône du site web, 16x16 pixels au format PNG ou ICO."
-        website_url_help: "Adresse du site web"
+        website_url_help: "Adresse du site web. Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html)."
 
     users:
       menu:

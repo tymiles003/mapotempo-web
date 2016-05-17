@@ -97,14 +97,14 @@
           <ul class="nav navbar-nav pull-right">
             <% if user_signed_in? %>
               <% if request.env['reseller'].help_url && request.env['reseller'].contact_url %>
-                <li class="dropdown"><%= link_to request.env['reseller'].help_url, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-info-circle fa-fw"></i> <span class="menu_label"><%= t 'web.help_menu' %></span> <span class="caret"></span><% end %>
+                <li class="dropdown"><%= link_to request.env['reseller'].help_url.gsub('{LG}', I18n.locale.to_s), :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-info-circle fa-fw"></i> <span class="menu_label"><%= t 'web.help_menu' %></span> <span class="caret"></span><% end %>
                 <ul class="dropdown-menu">
               <% end %>
               <% if request.env['reseller'].help_url %>
-                <li><%= link_to request.env['reseller'].help_url, target: '_blank' do %><i class="fa fa-info-circle fa-fw"></i> <%= t 'web.help' %><% end %></li>
+                <li><%= link_to request.env['reseller'].help_url.gsub('{LG}', I18n.locale.to_s), target: '_blank' do %><i class="fa fa-info-circle fa-fw"></i> <%= t 'web.help' %><% end %></li>
               <% end %>
               <% if request.env['reseller'].contact_url %>
-                <li><%= link_to request.env['reseller'].contact_url, target: '_blank' do %><i class="fa fa-phone fa-fw"></i> <%= t 'web.contact' %><% end %></li>
+                <li><%= link_to request.env['reseller'].contact_url.gsub('{LG}', I18n.locale.to_s), target: '_blank' do %><i class="fa fa-phone fa-fw"></i> <%= t 'web.contact' %><% end %></li>
               <% end %>
               <% if request.env['reseller'].help_url && request.env['reseller'].contact_url %>
                 </ul>
