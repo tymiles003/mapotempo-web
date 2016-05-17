@@ -360,6 +360,7 @@ class Route < ActiveRecord::Base
 
     stops_on = stops_segregate[true]
     amalgamate_stops_same_position(stops_on) { |positions|
+
       services = positions.collect{ |position|
         open, close, duration = position[2..4]
         open = open ? Integer(open - vehicle_usage.default_open) : nil
@@ -376,6 +377,7 @@ class Route < ActiveRecord::Base
       order = unnil_positions(positions, services){ |positions, services, rests|
         positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)].collect{ |position| position[0..1] }
         speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
+
         matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
         if position_start == [nil, nil]
           matrix = [[[0, 0]] * matrix.length] + matrix
@@ -524,24 +526,18 @@ class Route < ActiveRecord::Base
   end
 
   def unnil_positions(positions, tws)
-    # start/stop are not removed in case they are not geocoded
+    # start/stop are always in input positions
     not_nil_position_index = positions[1..-2].each_with_index.group_by{ |position, index| !position[0].nil? && !position[1].nil? }
 
     if not_nil_position_index.key?(true)
-      not_nil_position = not_nil_position_index[true].collect{ |position, index| position }
-      not_nil_tws = not_nil_position_index[true].collect{ |position, index| tws[index] }
-      not_nil_index = not_nil_position_index[true].collect{ |position, index| index + 1 }
+      not_nil_position, not_nil_tws, not_nil_index = not_nil_position_index[true].collect{ |position, index| [position, tws[index], index + 1] }.transpose
     else
-      not_nil_position = []
-      not_nil_tws = []
-      not_nil_index = []
+      not_nil_position = not_nil_tws = not_nil_index = []
     end
     if not_nil_position_index.key?(false)
-      nil_tws = not_nil_position_index[false].collect{ |position, index| tws[index + 1] }
-      nil_index = not_nil_position_index[false].collect{ |position, index| index + 1 }
+      nil_tws, nil_index = not_nil_position_index[false].collect{ |position, index| [tws[index], index  + 1] }.transpose
     else
-      nil_tws = []
-      nil_index = []
+      nil_tws = nil_index = []
     end
 
     order = yield([positions[0]] + not_nil_position + [positions[-1]], not_nil_tws, nil_tws)
