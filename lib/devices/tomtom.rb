@@ -319,6 +319,6 @@ class Tomtom < DeviceBase
 
   def strip_sql string
     # Strip Quotes, forbidden by service in some cases (before Union or Select)
-    string.gsub(/\'/i, '’').gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ')
+    string.gsub(/\'/i, "\u2019").gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ')
   end
 end
