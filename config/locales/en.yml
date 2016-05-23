@@ -681,7 +681,7 @@ en:
           title: "Geocoding"
           in_progress: "Please wait, geocoding in progress."
           attempts: "Attempts:"
-          error: "Geocoding failed"
+          error: "Compute failed."
         geocoding_danger:
           title: "Geocoding results"
           infos: "Some of your destinations seem to be geocoded without reliability. Do you want to display them?"
