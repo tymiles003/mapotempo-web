@@ -37,6 +37,9 @@ PNotify.prototype.options.styling = 'fontawesome';
     notify(status, message, $.extend({ title: "Mapotempo", desktop: { desktop: true }}, options));
   };
   $.extend(window, {
+    notify: function(status, message, options) {
+      notify(status, message, $.extend({}, options));
+    },
     stickyNotice: function(message, options) {
       notify('success', message, $.extend(options, { hide: false }));
     },
