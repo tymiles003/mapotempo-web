@@ -26,9 +26,9 @@ module Routers
     attr_accessor :cache_request, :cache_result
     attr_accessor :url, :app_id, :app_code
 
-    def initialize(cache_request, cache_result, url, app_id, app_code)
+    def initialize(cache_request, cache_result, url_router, url_matrix, url_isoline, app_id, app_code)
       @cache_request, @cache_result = cache_request, cache_result
-      @url, @app_id, @app_code = url, app_id, app_code
+      @url_router, @url_matrix, @url_isoline, @app_id, @app_code = url_router, url_matrix, url_isoline, app_id, app_code
     end
 
     def compute(from_lat, from_lng, to_lat, to_lng)
@@ -36,7 +36,7 @@ module Routers
 
       result = @cache_result.read(key)
       if !result
-        request = get('7.2/calculateroute',
+        request = get(@url_router, '7.2/calculateroute',
           waypoint0: "geo!#{from_lat},#{from_lng}",
           waypoint1: "geo!#{to_lat},#{to_lng}",
           mode: 'fastest;truck;traffic:disabled',
@@ -117,7 +117,7 @@ module Routers
             row_start.upto([row_start + split_size - 1, row.size - 1].min).each{ |i|
               param["start#{i - row_start}"] = row[i].join(',')
             }
-            request = get('7.2/calculatematrix', param)
+            request = get(@url_matrix, '7.2/calculatematrix', param)
             @cache_result.write([key, row_start, split_size], request)
           end
 
@@ -138,8 +138,8 @@ module Routers
 
     private
 
-    def get(object, params = {})
-      url = "#{@url}/#{object}.json"
+    def get(base_url, object, params = {})
+      url = "#{base_url}/#{object}.json"
       params = {app_id: @app_id, app_code: @app_code}.merge(params)
 
       key = [url, params].hash

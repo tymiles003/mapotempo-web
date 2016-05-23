@@ -115,7 +115,10 @@ module Mapotempo
     config.router_here = Routers::Here.new(
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'here_request'), namespace: 'here_request', expires_in: 60*60*24*1),
       ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'here_result'), namespace: 'here_result', expires_in: 60*60*24*1),
-      'https://route.nlp.nokia.com/routing', nil, nil
+      'https://route.api.here.com/routing',
+      'https://matrix.route.api.here.com/routing',
+      'https://isoline.route.api.here.com/routing',
+      nil, nil
     )
 
     config.router_wrapper = Routers::RouterWrapper.new(

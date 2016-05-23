@@ -61,7 +61,10 @@ Rails.application.configure do
   config.router_here = Routers::Here.new(
     ActiveSupport::Cache::NullStore.new,
     ActiveSupport::Cache::NullStore.new,
-    'https://route.nlp.nokia.com/routing', nil, nil
+    'https://route.api.here.com/routing',
+    'https://matrix.route.api.here.com/routing',
+    'https://isoline.route.api.here.com/routing',
+    nil, nil
   )
   config.router_wrapper = Routers::RouterWrapper.new(
     ActiveSupport::Cache::NullStore.new,
