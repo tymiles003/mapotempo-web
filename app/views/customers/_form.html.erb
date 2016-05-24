@@ -1,4 +1,4 @@
-<%= twitter_bootstrap_form_for @customer, layout: :horizontal, html: { class: 'clear-passwords form-horizontal'} do |f| %>
+<%= twitter_bootstrap_form_for @customer, layout: :horizontal, html: { class: 'clear-passwords number-to-percentage form-horizontal'} do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
   <% if current_user.admin? %>
     <%= f.text_field :ref %>
@@ -34,9 +34,22 @@
         <p class="help-block"><%= t '.router_help' %></p>
       </div>
     </div>
-    <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('.speed_multiplicator_default', n: 100), input_group: '%'} do %>
-      <p class="help-block"><%= t '.speed_multiplicator_help' %></p>
-    <% end %>
+
+    <div class="form-group">
+      <label class="col-md-2 control-label" for="speed_multiplicator">
+        <%= t("activerecord.models.attributes.customer.speed_multiplicator") %>
+      </label>
+      <div class="col-md-6 input-append">
+        <div class="input-group">
+          <%= number_field_tag :speed_multiplicator, (@customer.speed_multiplicator ? (@customer.speed_multiplicator * 100).to_i : 100), { min: 50, max: 150, placeholder: t(".speed_multiplicator_default", n: 100), class: "form-control number-to-percentage" } %>
+          <span class="input-group-addon">%</span>
+        </div>
+        <p class="help-block">
+          <%= t("customers.form.speed_multiplicator_help") %>
+        </p>
+      </div>
+    </div>
+
     <%= f.text_field :take_over, {placeholder: t('all.unit.hour_minute_second'), value: @customer.take_over && l(@customer.take_over, format: :hour_minute_second), input_group: content_tag('i', '', class: 'fa fa-clock-o fa-fw')} do %>
       <p class="help-block"><%= t '.take_over_help' %></p>
     <% end %>

@@ -27,41 +27,28 @@ class VehicleUsagesController < ApplicationController
   def update
     respond_to do |format|
       @vehicle_usage.assign_attributes(vehicle_usage_params)
-      @vehicle_usage.vehicle.speed_multiplicator /= 100 if @vehicle_usage.vehicle.speed_multiplicator
       if @vehicle_usage.save
         format.html { redirect_to link_back || edit_vehicle_usage_path(@vehicle_usage), notice: t('activerecord.successful.messages.updated', model: @vehicle_usage.class.model_name.human) }
       else
-        if @vehicle_usage.vehicle.speed_multiplicator
-          @vehicle_usage.vehicle.speed_multiplicator = (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i
-        end
         format.html { render action: 'edit' }
       end
     end
   end
 
   def toggle
-    @vehicle_usage.vehicle.speed_multiplicator /= 100 if @vehicle_usage.vehicle.speed_multiplicator
     if @vehicle_usage.update active: !@vehicle_usage.active?
       redirect_to link_back || vehicle_usage_sets_path, notice: t('.success')
     else
-      if @vehicle_usage.vehicle.speed_multiplicator
-        @vehicle_usage.vehicle.speed_multiplicator = (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i
-      end
       render action: :edit
     end
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_vehicle_usage
     @vehicle_usage = VehicleUsage.find(params[:id])
-    if @vehicle_usage.vehicle.speed_multiplicator
-      @vehicle_usage.vehicle.speed_multiplicator = (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i
-    end
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def vehicle_usage_params
     if params[:vehicle_usage][:vehicle][:router]
       params[:vehicle_usage][:vehicle][:router_id], params[:vehicle_usage][:vehicle][:router_dimension] = params[:vehicle_usage][:vehicle][:router].split('_')

@@ -1,4 +1,4 @@
-<%= twitter_bootstrap_form_for @vehicle_usage, layout: :horizontal do |f| %>
+<%= twitter_bootstrap_form_for @vehicle_usage, layout: :horizontal, html: { class: 'number-to-percentage form-horizontal'} do |f| %>
   <%= render 'shared/error_messages', model: @vehicle_usage %>
   <fieldset>
     <legend class="scheduler-border">
@@ -62,9 +62,22 @@
             <p class="help-block"><%= t 'vehicles.form.router.help' %></p>
           </div>
         </div>
-        <%= f.number_field :speed_multiplicator, {min:50, max: 150, placeholder: t('vehicles.form.speed_multiplicator.default', n: (@vehicle_usage.vehicle.customer.speed_multiplicator ? (@vehicle_usage.vehicle.customer.speed_multiplicator * 100).to_i : 100)), input_group: '%'} do %>
-          <p class="help-block"><%= t 'vehicles.form.speed_multiplicator.help' %></p>
-        <% end %>
+
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="speed_multiplicator">
+            <%= t("activerecord.attributes.vehicle.speed_multiplicator") %>
+          </label>
+          <div class="col-md-6 input-append">
+            <div class="input-group">
+              <%= number_field_tag :speed_multiplicator, (@vehicle_usage.vehicle.speed_multiplicator ? (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i : nil), { min: 50, max: 150, placeholder: t("vehicles.form.speed_multiplicator.default", n: (@vehicle_usage.vehicle.customer.speed_multiplicator ? (@vehicle_usage.vehicle.customer.speed_multiplicator * 100).to_i : 75)), class: "form-control number-to-percentage" } %>
+              <span class="input-group-addon">%</span>
+            </div>
+            <p class="help-block">
+              <%= t("vehicles.form.speed_multiplicator.help") %>
+            </p>
+          </div>
+        </div>
+
         <% if f.object.customer.tomtom? %>
           <%= f.select :tomtom_id, t('vehicles.form.tomtom_id'), [] %>
         <% end %>

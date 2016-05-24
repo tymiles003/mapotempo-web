@@ -17,6 +17,15 @@
 //
 
 var vehicle_usages_form = function(params) {
+  /* Speed Multiplier */
+  $('form.number-to-percentage').submit(function(e) {
+    $.each($(e.target).find('input[type=\'number\'].number-to-percentage'), function(i, element) {
+      var value = $(element).val() ? Number($(element).val()) / 100 : null;
+      $($(document.createElement('input')).attr('type', 'hidden').attr('name', 'vehicle_usage[vehicle][' + $(element).attr('name') + ']').val(value)).insertAfter($(element));
+    });
+    return true;
+  });
+
   $('#vehicle_usage_open, #vehicle_usage_close, #vehicle_usage_rest_start, #vehicle_usage_rest_stop, #vehicle_usage_rest_duration, #vehicle_usage_service_time_start, #vehicle_usage_service_time_end').timeEntry({
     show24Hours: true,
     spinnerImage: ''

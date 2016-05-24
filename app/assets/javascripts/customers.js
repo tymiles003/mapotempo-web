@@ -69,6 +69,14 @@ var customers_index = function(params) {
 }
 
 var customers_edit = function(params) {
+  /* Speed Multiplier */
+  $('form.number-to-percentage').submit(function(e) {
+    $.each($(e.target).find('input[type=\'number\'].number-to-percentage'), function(i, element) {
+      var value = $(element).val() ? Number($(element).val()) / 100 : 1;
+      $($(document.createElement('input')).attr('type', 'hidden').attr('name', 'customer[' + $(element).attr('name') + ']').val(value)).insertAfter($(element));
+    });
+    return true;
+  });
 
   /* API: Devices */
   devices_observe_customer($.extend(params, { default_password: Math.random().toString(36).slice(-8) } ));
