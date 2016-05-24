@@ -74,9 +74,11 @@ var customers_edit = function(params) {
   devices_observe_customer($.extend(params, { default_password: Math.random().toString(36).slice(-8) } ));
 
   $('#customer_end_subscription').datepicker({
-    language: defaultLocale,
     autoclose: true,
-    todayHighlight: true
+    calendarWeeks: true,
+    todayHighlight: true,
+    format: I18n.t("all.datepicker"),
+    language: I18n.locale
   });
 
   $('#customer_take_over').timeEntry({

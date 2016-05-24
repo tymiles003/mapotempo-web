@@ -22,7 +22,8 @@ var plannings_form = function() {
     autoclose: true,
     calendarWeeks: true,
     todayHighlight: true,
-    format: I18n.t("all.datepicker")
+    format: I18n.t("all.datepicker"),
+    language: I18n.locale
   });
 
   var formatNoMatches = I18n.t('web.select2.empty_result');
