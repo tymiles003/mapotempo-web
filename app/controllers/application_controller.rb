@@ -51,6 +51,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def set_locale
+    Time.zone = current_user.time_zone if current_user
     I18n.locale = http_accept_language.compatible_language_from %w(en fr)
   end
 

@@ -548,6 +548,7 @@ en:
         new: "New user"
       vehicles:
         list: "Vehicles list"
+      time_zone: "Time Zone"
     index:
       title: "Listing accounts"
       new: "New Account"

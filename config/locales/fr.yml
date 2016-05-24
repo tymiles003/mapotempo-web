@@ -549,6 +549,7 @@ fr:
         new: "Nouvel utilisateur"
       vehicles:
         list: "Liste des véhicules"
+      time_zone: "Fuseau horaire"
     index:
       title: "Liste comptes client"
       new: "Nouveau compte client"
