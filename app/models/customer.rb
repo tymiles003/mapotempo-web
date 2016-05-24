@@ -62,6 +62,100 @@ class Customer < ActiveRecord::Base
 
   include RefSanitizer
 
+  amoeba do
+    enable
+    exclude_association :plannings
+    exclude_association :routes
+    exclude_association :stores
+    exclude_association :users
+    exclude_association :vehicle_usage_sets
+    exclude_association :vehicle_usages
+    exclude_association :vehicles
+    exclude_association :zonings
+    customize(lambda { |original, copy|
+      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+
+      copy.attributes.select{|attr| attr[/job_/] }.keys.each do |name|
+        copy.send "#{name}=", nil
+      end
+
+      original.stores.each do |store|
+        dup_store = copy.stores.new store.attributes.reject{|attr| attr[/id/] }
+        dup_store.customer = copy
+      end
+
+      original.vehicle_usage_sets.each do |vehicle_usage_set|
+        dup_vehicle_usage_set = copy.vehicle_usage_sets.new vehicle_usage_set.attributes.reject{|attr| attr[/id/] }
+        dup_vehicle_usage_set.customer = copy
+      end
+
+      original.vehicles.each do |vehicle|
+        dup_vehicle = copy.vehicles.new vehicle.attributes.reject{|attr| attr[/id/] }
+        dup_vehicle.customer = copy
+      end
+
+      original.vehicle_usage_sets.each do |vehicle_usage_set|
+        vehicle_usage_set.vehicle_usages.each do |vehicle_usage|
+          dup_vehicle_usage = VehicleUsage.new vehicle_usage.attributes.reject{|attr| attr[/id/] }
+          dup_vehicle_usage.vehicle_usage_set = copy.vehicle_usage_sets.detect{|item| item.name == vehicle_usage.vehicle_usage_set.name }
+          dup_vehicle_usage.vehicle = copy.vehicles.detect{|item| item.name == vehicle_usage.vehicle.name }
+          [:store_start, :store_stop, :store_rest].each do |attr|
+            next if !vehicle_usage.send(attr)
+            dup_vehicle_usage.send "#{attr}=", copy.stores.detect{|item| item.name == vehicle_usage.send(attr).name }
+          end
+        end
+      end
+
+      original.zonings.each do |zoning|
+        dup_zoning = copy.zonings.new zoning.attributes.reject{|attr| attr[/id/] }
+        zoning.zones.each do |zone|
+          dup_zone = Zone.new zone.attributes.reject{|attr| attr[/id/] }
+          dup_zone.vehicle = copy.vehicles.detect{|item| item.name == zone.vehicle.name } if zone.vehicle
+          dup_zoning.zones << dup_zone
+        end
+        dup_zoning.customer = copy
+      end
+
+      User.skip_callback :create, :after, :send_welcome_email
+
+      original.users.each do |user|
+        dup_user = copy.users.new
+        if user.email =~ /duplicate/
+          dup_user.email = Time.now.to_i.to_s + "@example.com"
+        else
+          dup_user.email = user.email.split("@")[0] + "+duplicate@" + user.email.split("@")[1]
+        end
+        dup_user.password = user.password_confirmation = Time.now.to_i * rand(100)
+        dup_user.customer = copy
+      end
+
+      Customer.skip_callback :create, :after, :create_default_store
+      Customer.skip_callback :create, :after, :create_default_vehicle_usage_set
+
+      copy.save!
+
+      Planning.skip_callback :create, :before, :default_routes
+      Planning.skip_callback :create, :before, :update_zonings
+      Planning.skip_callback :save, :before, :update_zonings
+      Planning.skip_callback :save, :before, :update_vehicle_usage_set
+
+      original.plannings.each do |planning|
+        dup_planning = copy.plannings.new planning.attributes.slice("name")
+        dup_planning.vehicle_usage_set = copy.vehicle_usage_sets.detect{|item| item.name == planning.vehicle_usage_set.name }
+        planning.zonings.each{|zoning| dup_planning.zonings << copy.zonings.detect{|item| item.name == zoning.name } }
+        planning.routes.each do |route|
+          dup_route = dup_planning.routes.new route.attributes.reject{|attr| attr[/id/] }
+          next if !route.vehicle_usage
+          dup_route.vehicle_usage = dup_planning.vehicle_usage_set.vehicle_usages.detect{|item| item.vehicle.name == route.vehicle_usage.vehicle.name }
+        end
+        dup_planning.customer = copy
+        dup_planning.save!
+
+      end
+
+    })
+  end
+
   def default_position
     store = stores.find{ |s| !s.lat.nil? && !s.lng.nil? }
     # store ? [store.lat, store.lng] : [I18n.t('stores.default.lat'), I18n.t('stores.default.lng')]

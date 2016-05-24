@@ -69,6 +69,10 @@
           <% end %>
         </td>
         <td class="text-right">
+          <%= link_to [:duplicate, customer], method: :patch, class: "btn btn-default btn-sm", data: { confirm: t('all.verb.destroy_confirm') } do %>
+            <i class="fa fa-copy fa-fw"></i>
+            <%= t 'all.verb.duplicate' %>
+          <% end %>
           <%= link_to edit_customer_path(customer), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to customer, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
         </td>

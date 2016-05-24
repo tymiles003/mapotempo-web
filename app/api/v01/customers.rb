@@ -142,5 +142,17 @@ class V01::Customers < Grape::API
       end
     end
 
+    desc 'Duplicate Customer',
+      detail: 'Create a copy of Customer',
+      nickname: 'duplicateCustomer'
+    params do
+      requires :id, type: String, desc: ID_DESC
+    end
+    put ':id/duplicate' do
+      customer = current_customer.amoeba_dup
+      customer.save!
+      present customer, with: V01::Entities::Customer
+    end
+
   end
 end

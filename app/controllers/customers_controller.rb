@@ -82,6 +82,11 @@ class CustomersController < ApplicationController
     redirect_to [:edit, @customer], notice: t('.success')
   end
 
+  def duplicate
+    @customer.amoeba_dup.save!
+    redirect_to [:customers], notice: t('.success')
+  end
+
   private
 
   def set_customer

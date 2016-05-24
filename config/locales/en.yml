@@ -528,6 +528,8 @@ en:
         success: "E-Mail sent to user successfully"
 
   customers:
+    duplicate:
+      success: "Customer account duplicated successfully"
     default:
       country: "England"
     menu:

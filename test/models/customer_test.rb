@@ -157,4 +157,14 @@ class CustomerTest < ActiveSupport::TestCase
     end
   end
 
+  test 'duplicate' do
+    customer = customers :customer_one
+    duplicate = customer.amoeba_dup
+    assert duplicate.persisted?
+    [:order_arrays, :plannings, :products, :stores, :users, :vehicle_usage_sets, :vehicles, :zonings].each do |name|
+      assert customer.send(name).any?
+      assert_equal customer.send(name).reload.count, duplicate.send(name).reload.count
+    end
+  end
+
 end

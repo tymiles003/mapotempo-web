@@ -111,4 +111,12 @@ class V01::CustomerTest < ActiveSupport::TestCase
     end
   end
 
+  test 'duplicate customer' do
+    customer = customers :customer_one
+    assert_difference('Customer.count', +1) do
+      put api(customer.id.to_s + '/duplicate')
+      assert last_response.ok?
+    end
+  end
+
 end

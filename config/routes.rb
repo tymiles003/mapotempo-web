@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     end
     member do
       delete :delete_vehicle
+      patch :duplicate
     end
     resources :users, only: [:edit, :update] do
       member do
