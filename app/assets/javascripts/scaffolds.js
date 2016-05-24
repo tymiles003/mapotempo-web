@@ -63,8 +63,17 @@ var mapInitialize = function(params) {
 
   var map = L.map('map', {
     attributionControl: false,
-    layers: mapLayer
+    layers: mapLayer,
+    zoomControl: false
   }).setView([params.map_lat || 0, params.map_lng || 0], params.map_zoom || 13);
+
+  L.control.zoom({
+    position:'topleft',
+    zoomInText: '+',
+    zoomOutText: '-',
+    zoomInTitle: I18n.t('plannings.edit.map.zoom_in'),
+    zoomOutTitle: I18n.t('plannings.edit.map.zoom_out')
+  }).addTo(map);
 
   if (params.geocoder) {
     var geocoderLayer = L.featureGroup();

@@ -907,6 +907,9 @@ fr:
         new: "Nouveau zonage"
       order_array:
         edit: "Modifier tableau de commandes"
+      map:
+        zoom_in: "Augmenter le zoom"
+        zoom_out: "Diminuer le zoom"
       reverse_order: "Inverser l'ordre des arrêts"
       open_planning_panel: "Déployer le panneau du planning"
       collapse_planning_panel: "Minifier le panneau du planning"

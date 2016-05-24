@@ -906,6 +906,9 @@ en:
         new: "New zoning"
       order_array:
         edit: "Edit orders plan"
+      map:
+        zoom_in: "Zoom In"
+        zoom_out: "Zoom Out"
       reverse_order: "Reverse stops order"
       open_planning_panel: "Open plan panel"
       collapse_planning_panel: "Collapse plan panel"
