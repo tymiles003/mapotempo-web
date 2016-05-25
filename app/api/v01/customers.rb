@@ -42,7 +42,9 @@ class V01::Customers < Grape::API
     end
     get ':id' do
       if @current_user.admin?
-        present current_customer(params[:id]), with: V01::Entities::Customer
+        id = ParseIdsRefs.read params[:id]
+        customer = @current_user.reseller.customers.where(id).first!
+        present customer, with: V01::Entities::Customer
       elsif @current_user.customer.id == params[:id].to_i || (@current_user.customer.ref && 'ref:' + @current_user.customer.ref == params[:id])
         present @current_user.customer, with: V01::Entities::Customer
       else
