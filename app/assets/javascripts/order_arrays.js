@@ -22,7 +22,8 @@ var order_arrays_form = function() {
     calendarWeeks: true,
     todayHighlight: true,
     format: I18n.t("all.datepicker"),
-    language: I18n.locale
+    language: I18n.locale,
+    zIndexOffset: 1000
   });
 }
 

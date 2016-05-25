@@ -86,7 +86,8 @@ var customers_edit = function(params) {
     calendarWeeks: true,
     todayHighlight: true,
     format: I18n.t("all.datepicker"),
-    language: I18n.locale
+    language: I18n.locale,
+    zIndexOffset: 1000
   });
 
   $('#customer_take_over').timeEntry({
