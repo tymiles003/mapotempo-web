@@ -587,9 +587,11 @@ var destinations_index = function(params, api) {
           beforeSend: beforeSendWaiting,
           success: function(data) {
             row.remove();
-            markersLayers.removeLayer(markers[id]);
-            cluster.removeLayer(markers[id]);
-            delete markers[id];
+            if (markers[id]) {
+              markersLayers.removeLayer(markers[id]);
+              cluster.removeLayer(markers[id]);
+              delete markers[id];
+            }
             count_dec();
           },
           complete: completeWaiting,
@@ -1016,9 +1018,11 @@ var destinations_index = function(params, api) {
               var row = $(row)
               var id = row.data('destination_id');
               row.remove();
-              markersLayers.removeLayer(markers[id]);
-              cluster.removeLayer(markers[id]);
-              delete markers[id];
+              if (markers[id]) {
+                markersLayers.removeLayer(markers[id]);
+                cluster.removeLayer(markers[id]);
+                delete markers[id];
+              }
               count_dec();
             });
           },
