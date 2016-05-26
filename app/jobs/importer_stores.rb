@@ -129,10 +129,13 @@ class ImporterStores < ImporterBase
     if @stores_to_geocode.size > 0 && (@synchronous || !Mapotempo::Application.config.delayed_job_use)
       @stores_to_geocode.each_slice(50){ |stores|
         geocode_args = stores.collect(&:geocode_args)
-        results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
-        stores.zip(results).each { |store, result|
-          store.geocode_result(result) if result
-        }
+        begin
+          results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
+          stores.zip(results).each { |store, result|
+            store.geocode_result(result) if result
+          }
+        rescue GeocodeError => e # avoid stop import because of geocoding job
+        end
       }
     end
 

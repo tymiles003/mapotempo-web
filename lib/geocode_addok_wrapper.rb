@@ -17,6 +17,8 @@
 #
 require 'rest_client'
 
+class GeocodeError < StandardError ; end
+
 class GeocodeAddokWrapper
   @@result_types = {'city' => 'city', 'street' => 'street', 'locality' => 'street', 'intersection' => 'intersection', 'house' => 'house', 'poi' => 'house'}
 
@@ -50,8 +52,8 @@ class GeocodeAddokWrapper
         })
 
         @cache_code.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
-      rescue
-        raise
+      rescue RestClient::Exception => e
+        raise GeocodeError.new e.message
       end
     end
 
@@ -109,8 +111,8 @@ class GeocodeAddokWrapper
       begin
         result = RestClient.post(@url + '/geocode.json', {api_key: @api_key, geocodes: json}.to_json, content_type: :json, accept: :json)
         @cache_code.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
-      rescue
-        raise
+      rescue RestClient::Exception => e
+        raise GeocodeError.new e.message
       end
     end
     data = JSON.parse(result)

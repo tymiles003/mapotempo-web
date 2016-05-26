@@ -69,6 +69,14 @@ class StoreTest < ActiveSupport::TestCase
     assert_not_equal lng, o.lng
   end
 
+  test 'should geocode with error' do
+    Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise GeocodeError.new }) do
+      o = stores(:store_one)
+      assert o.geocode
+      assert 1, o.warnings.size
+    end
+  end
+
   test 'should update_geocode' do
     o = stores(:store_one)
     o.city = 'Toulouse'
@@ -79,6 +87,16 @@ class StoreTest < ActiveSupport::TestCase
     assert_not_equal lat, o.lat
     assert o.lng
     assert_not_equal lng, o.lng
+  end
+
+  test 'should update_geocode with error' do
+    Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise GeocodeError.new }) do
+      o = stores(:store_one)
+      o.city = 'Toulouse'
+      o.lat = o.lng = nil
+      assert o.save!
+      assert 1, o.warnings.size
+    end
   end
 
   test 'should distance' do

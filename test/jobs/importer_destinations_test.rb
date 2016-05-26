@@ -227,6 +227,22 @@ class ImporterTest < ActionController::TestCase
     assert_not stops[2].active
   end
 
+  test 'should import postalcode in new planning with geocode error' do
+    import_count = 1
+    # vehicle_usage_set for new planning is hardcoded but random in tests... rest_count depends of it
+    VehicleUsageSet.all.each { |v| v.destroy if v.id != vehicle_usage_sets(:vehicle_usage_set_one).id }
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size
+    assert_difference('Planning.count', 1) do
+      assert_difference('Destination.count', import_count) do
+        assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
+          Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code_bulk, lambda{ |*a| raise GeocodeError.new }) do
+            assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
+          end
+        end
+      end
+    end
+  end
+
   test 'should not import too many routes' do
     assert_no_difference('Destination.count') do
       assert_no_difference('Visit.count') do

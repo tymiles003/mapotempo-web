@@ -53,6 +53,9 @@ class Location < ActiveRecord::Base
 
   def geocode
     geocode_result(Mapotempo::Application.config.geocode_geocoder.code(*geocode_args))
+  rescue GeocodeError => e # avoid stop import or get exception in app/api
+    @warnings = [I18n.t('errors.location.geocoding_fail') + ' ' + e.message]
+    Rails.logger.info "Destination Geocode Failed: ID=%s" % [self.id]
   end
 
   def geocode_args
@@ -66,8 +69,6 @@ class Location < ActiveRecord::Base
       self.lat = self.lng = self.geocoding_accuracy = self.geocoding_level = nil
     end
     @is_gecoded = true
-  rescue
-    Rails.logger.info "Destination Geocode Failed: ID=%s" % [self.id]
   end
 
   def delay_geocode
@@ -76,6 +77,10 @@ class Location < ActiveRecord::Base
 
   def distance(position)
     lat && lng && position.lat && position.lng && Math.hypot(position.lat - lat, position.lng - lng)
+  end
+
+  def warnings
+    @warnings
   end
 
   private

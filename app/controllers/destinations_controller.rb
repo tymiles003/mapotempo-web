@@ -23,6 +23,7 @@ class DestinationsController < ApplicationController
 
   load_and_authorize_resource
   before_action :set_destination, only: [:show, :edit, :update, :destroy]
+  after_action :warnings, only: [:create, :update]
 
   def index
     @customer = current_user.customer
@@ -62,6 +63,7 @@ class DestinationsController < ApplicationController
       if @destination.save && current_user.customer.save
         format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
       else
+        flash.now[:error] = @destination.customer.errors.full_messages if @destination.customer.errors.size > 0
         format.html { render action: 'new' }
       end
     end
@@ -153,6 +155,10 @@ class DestinationsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_destination
     @destination = Destination.find(params[:id] || params[:destination_id])
+  end
+
+  def warnings
+    flash[:warning] = @destination.warnings.join(', ') if @destination.warnings && @destination.warnings.any?
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

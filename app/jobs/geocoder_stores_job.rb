@@ -30,12 +30,15 @@ class GeocoderStoresJob < Struct.new(:customer_id)
       Store.transaction do
         stores = customer.stores.find store_ids # IMPORTANT: Lower Delayed Job Memory Usage
         geocode_args = stores.collect(&:geocode_args)
-        results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
-        stores.zip(results).each { |store, result|
-          store.geocode_result(result) if result
-          store.save!
-          i += 1
-        }
+        begin
+          results = Mapotempo::Application.config.geocode_geocoder.code_bulk(geocode_args)
+          stores.zip(results).each { |store, result|
+            store.geocode_result(result) if result
+            store.save!
+            i += 1
+          }
+        rescue GeocodeError => e # avoid stop import because of geocoding job
+        end
         @job.progress = Integer(i * 100 / count).to_s
         @job.save!
         Delayed::Worker.logger.info "GeocoderStoresJob customer_id=#{customer_id} #{@job.progress}%"

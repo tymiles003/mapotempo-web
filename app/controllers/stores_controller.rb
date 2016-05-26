@@ -25,6 +25,7 @@ class StoresController < ApplicationController
   load_and_authorize_resource
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :icons_table
+  after_action :warnings, only: [:create, :update]
 
   def index
     if current_user.customer.job_store_geocoding
@@ -55,6 +56,7 @@ class StoresController < ApplicationController
       if current_user.customer.save
         format.html { redirect_to link_back || edit_store_path(@store), notice: t('activerecord.successful.messages.created', model: @store.class.model_name.human) }
       else
+        flash.now[:error] = @store.customer.errors.full_messages if @store.customer.errors.size > 0
         format.html { render action: 'new' }
       end
     end
@@ -131,6 +133,10 @@ class StoresController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_store
     @store = Store.find(params[:id] || params[:store_id])
+  end
+
+  def warnings
+    flash[:warning] = @store.warnings.join(', ') if @store.warnings && @store.warnings.any?
   end
 
   def icons_table

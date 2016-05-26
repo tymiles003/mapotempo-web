@@ -452,6 +452,8 @@ en:
               invalid_format: "must not contain characters \".\", \"\\\" or \"/\""
 
   errors:
+    location:
+      geocoding_fail: "Geocoding has failed:"
     planning:
       import_too_routes: "Tried to import more routes than available vehicles"
       already_optimizing: "A plan optimization is already in progress"

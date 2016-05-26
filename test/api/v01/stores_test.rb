@@ -37,6 +37,16 @@ class V01::StoresTest < ActiveSupport::TestCase
     assert_equal @store.name, JSON.parse(last_response.body)['name']
   end
 
+  test 'should create a store with geocode error' do
+    Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise GeocodeError.new }) do
+      assert_difference('Store.count', 1) do
+        @store.name = 'new dest'
+        post api(), @store.attributes
+        assert last_response.created?, last_response.body
+      end
+    end
+  end
+
   test 'should create a store' do
     assert_difference('Store.count', 1) do
       @store.name = 'new dest'
@@ -122,6 +132,13 @@ class V01::StoresTest < ActiveSupport::TestCase
   test 'should geocode' do
     patch api('geocode'), format: :json, store: { city: @store.city, name: @store.name, postalcode: @store.postalcode, street: @store.street }
     assert last_response.ok?, last_response.body
+  end
+
+  test 'should geocode with error' do
+    Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise GeocodeError.new }) do
+      patch api('geocode'), format: :json, store: { city: @store.city, name: @store.name, postalcode: @store.postalcode, street: @store.street }
+      assert last_response.ok?, last_response.body
+    end
   end
 
   test 'should geocode complete' do
