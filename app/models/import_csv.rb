@@ -48,7 +48,7 @@ class ImportCsv
     if data
       begin
         Customer.transaction do
-          @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, column_def: column_def) { |row|
+          @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, line_shift: (without_header? ? 0 : 1), column_def: column_def) { |row|
             # Switch from locale or custom to internal column name
             r, row = row, {}
             @importer.columns.each{ |k, v|

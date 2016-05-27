@@ -43,7 +43,7 @@ class ImporterBase
         end
 
         begin
-          dest = import_row(name, row, line + 1, options)
+          dest = import_row(name, row, line + 1 + (options[:line_shift] || 0), options)
           if dest.nil?
             next
           end
