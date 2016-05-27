@@ -83,7 +83,7 @@ class CustomersController < ApplicationController
   end
 
   def duplicate
-    @customer.amoeba_dup.save!
+    @customer.duplicate.save!
     redirect_to [:customers], notice: t('.success')
   end
 

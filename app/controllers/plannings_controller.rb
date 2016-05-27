@@ -247,7 +247,7 @@ class PlanningsController < ApplicationController
 
   def duplicate
     respond_to do |format|
-      @planning = @planning.amoeba_dup
+      @planning = @planning.duplicate
       @planning.save!
       format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
     end

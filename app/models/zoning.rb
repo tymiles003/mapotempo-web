@@ -35,11 +35,20 @@ class Zoning < ActiveRecord::Base
     exclude_association :plannings
 
     customize(lambda { |_original, copy|
-      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
       copy.zones.each{ |zone|
         zone.zoning = copy
       }
     })
+  end
+
+  def duplicate
+    self.class.amoeba do
+      customize(lambda { |_original, copy|
+        copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+      })
+    end
+
+    self.amoeba_dup
   end
 
   def apply(visits)

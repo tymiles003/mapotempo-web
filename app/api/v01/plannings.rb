@@ -184,7 +184,7 @@ class V01::Plannings < Grape::API
     patch ':id/duplicate' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
-      planning = planning.amoeba_dup
+      planning = planning.duplicate
       planning.save!
       present planning, with: V01::Entities::Planning
     end

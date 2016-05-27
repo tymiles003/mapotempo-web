@@ -23,7 +23,7 @@ class ZoningTest < ActiveSupport::TestCase
 
   test 'should dup' do
     o = zonings(:zoning_one)
-    oo = o.amoeba_dup
+    oo = o.duplicate
     assert oo.zones[0].zoning == oo
   end
 

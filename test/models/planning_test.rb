@@ -23,7 +23,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'should dup' do
     o = plannings(:planning_one)
-    oo = o.amoeba_dup
+    oo = o.duplicate
 
     assert_equal oo, oo.routes[0].planning
     oo.save!

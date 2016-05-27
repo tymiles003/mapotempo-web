@@ -151,7 +151,7 @@ class V01::Customers < Grape::API
       requires :id, type: String, desc: ID_DESC
     end
     put ':id/duplicate' do
-      customer = current_customer.amoeba_dup
+      customer = current_customer.duplicate
       customer.save!
       present customer, with: V01::Entities::Customer
     end

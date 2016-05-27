@@ -35,11 +35,20 @@ class OrderArray < ActiveRecord::Base
     exclude_association :planning
 
     customize(lambda { |_original, copy|
-      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
       copy.orders.each{ |order|
         order.order_array = copy
       }
     })
+  end
+
+  def duplicate
+    self.class.amoeba do
+      customize(lambda { |_original, copy|
+        copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+      })
+    end
+
+    self.amoeba_dup
   end
 
   def days

@@ -156,6 +156,10 @@ class Customer < ActiveRecord::Base
     })
   end
 
+  def duplicate
+    self.amoeba_dup
+  end
+
   def default_position
     store = stores.find{ |s| !s.lat.nil? && !s.lng.nil? }
     # store ? [store.lat, store.lng] : [I18n.t('stores.default.lat'), I18n.t('stores.default.lng')]

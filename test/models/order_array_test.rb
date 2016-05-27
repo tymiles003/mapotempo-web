@@ -31,7 +31,7 @@ class OrderArrayTest < ActiveSupport::TestCase
     o = order_arrays(:order_array_one)
     assert_equal 2, o.orders[0].products.size
 
-    oo = o.amoeba_dup
+    oo = o.duplicate
     assert_equal 2, oo.orders[0].products.size
   end
 
