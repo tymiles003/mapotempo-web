@@ -168,6 +168,16 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should move with error' do
+    Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
+      assert_no_difference('Stop.count') do
+        assert_raise do
+          patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 1, format: :json
+        end
+      end
+    end
+  end
+
   test 'should move with automatic index' do
     patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], format: :json
     assert_response :success
@@ -238,6 +248,16 @@ class PlanningsControllerTest < ActionController::TestCase
   test 'should automatic insert' do
     patch :automatic_insert, planning_id: @planning, format: :json, stop_id: stops(:stop_unaffected).id
     assert_response :success
+  end
+
+  test 'should automatic insert with error' do
+    Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
+      assert_no_difference('Stop.count') do
+        assert_raise do
+          patch :automatic_insert, planning_id: @planning, format: :json, stop_id: stops(:stop_unaffected).id
+        end
+      end
+    end
   end
 
   test 'should update active' do

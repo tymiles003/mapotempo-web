@@ -69,10 +69,25 @@ class V01::RoutesTest < ActiveSupport::TestCase
   end
 
   test 'should move visits in routes' do
-    patch api(@route.planning.id, routes(:route_three_one).id.to_s + "/visits/moves"), visit_ids: [visits(:visit_two).id, visits(:visit_one).id]
-    assert_equal 204, last_response.status, last_response.body
-    assert_equal visits(:visit_two).ref, routes(:route_three_one).stops[0].visit.ref
-    assert_equal visits(:visit_one).ref, routes(:route_three_one).stops[1].visit.ref
+    assert_no_difference('Stop.count') do
+      patch api(@route.planning.id, routes(:route_three_one).id.to_s + "/visits/moves"), visit_ids: [visits(:visit_two).id, visits(:visit_one).id]
+      assert_equal 204, last_response.status, last_response.body
+      assert_equal visits(:visit_two).ref, routes(:route_three_one).stops[0].visit.ref
+      assert_equal visits(:visit_one).ref, routes(:route_three_one).stops[1].visit.ref
+    end
+  end
+
+  test 'should move visits in routes with error' do
+    assert_no_difference('Stop.count') do
+      Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
+        visit_one = visits(:visit_one)
+        visit_two = visits(:visit_two)
+        patch api(@route.planning.id, routes(:route_three_one).id.to_s + "/visits/moves"), visit_ids: [visit_two.id, visit_one.id]
+        assert_equal 500, last_response.status, last_response.body
+        assert visit_two.stop_visits.find{ |s| s.route_id == routes(:route_one_one).id }
+        assert visit_one.stop_visits.find{ |s| s.route_id == routes(:route_one_one).id }
+      end
+    end
   end
 
   test 'should optimize route' do
