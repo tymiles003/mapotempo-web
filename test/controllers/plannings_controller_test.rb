@@ -246,18 +246,15 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should automatic insert' do
-    patch :automatic_insert, planning_id: @planning, format: :json, stop_id: stops(:stop_unaffected).id
+    patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
     assert_response :success
   end
 
-  test 'should automatic insert with error' do
-    Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
-      assert_no_difference('Stop.count') do
-        assert_raise do
-          patch :automatic_insert, planning_id: @planning, format: :json, stop_id: stops(:stop_unaffected).id
-        end
-      end
-    end
+  test 'should automatic insert all' do
+    assert @planning.routes.detect{|route| !route.vehicle_usage }.stops.any?
+    patch :automatic_insert, id: @planning.id, format: :json, stop_ids: []
+    assert_response :success
+    assert @planning.routes.detect{|route| !route.vehicle_usage }.stops.reload.none?
   end
 
   test 'should update active' do

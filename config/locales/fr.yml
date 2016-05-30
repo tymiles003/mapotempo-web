@@ -942,6 +942,8 @@ fr:
       edit_visit_help: "Modifier les informations du client"
       marker_help: "Visualiser sur la carte"
       automatic_insert_help: "Propose un endroit pour insérer ce client dans une tournée"
+      automatic_insert_help_multiple: "Propose un endroit pour insérer les clients dans des tournées"
+      automatic_insert_confirm: "Êtes-vous sûr ? Les résultats ne seront pas optimisés et les placements se feront sur les tournées de ce planning."
       active_all: "Tous"
       active_reverse: "Inverser"
       active_none: "Aucun"

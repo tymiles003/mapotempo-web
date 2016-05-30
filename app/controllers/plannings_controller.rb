@@ -176,22 +176,17 @@ class PlanningsController < ApplicationController
   end
 
   def automatic_insert
+    if params[:stop_ids] && !params[:stop_ids].empty?
+      stops = Stop.where route_id: @planning.route_ids, id: params[:stop_ids]
+    else
+      stops = @planning.routes.detect{|route| !route.vehicle_usage }.stops
+    end
+    stops.each{|stop| @planning.automatic_insert(stop) }
+    @planning.save!
+    @planning.reload
     respond_to do |format|
-      stop_id = Integer(params[:stop_id])
-      route_was = @planning.routes.find{ |route| @stop = route.stops.find{ |stop| stop.id == stop_id } }
-
-      if @stop
-        Planning.transaction do
-          @planning.automatic_insert(@stop)
-          @planning.save!
-          @planning.reload
-          @routes = [route_was]
-          route = @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == stop_id } }
-          @routes << route if route != route_was
-          format.json { render action: 'show', location: @planning }
-        end
-      else
-        format.json { render nothing: true, status: :unprocessable_entity }
+      format.json do
+        render action: :show
       end
     end
   end

@@ -95,11 +95,6 @@ class V01::PlanningsTest < ActiveSupport::TestCase
 #    assert last_response.ok?, last_response.body
 #  end
 
-#  test 'should suggest a place for an unaffected stop' do
-#    patch api("#{@planning.id}/automatic_insert")
-#    assert last_response.ok?, last_response.body
-#  end
-
 #  test 'should set stop status' do
 #    patch api("#{@planning.id}/update_stop")
 #    assert last_response.ok?, last_response.body
@@ -128,29 +123,25 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     assert @planning.valid?
     unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
     assert unassigned_stop.valid?
-    assert_no_difference('Stop.count') do
-      patch api("#{@planning.id}/automatic_insert"), { id: @planning.id, stop_id: unassigned_stop.id }
-      assert_equal 200, last_response.status
-      assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
-    end
+    patch api("#{@planning.id}/automatic_insert"), { id: @planning.id, stop_ids: [unassigned_stop.id] }
+    assert_equal 200, last_response.status
+    assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
   end
 
   test 'should automatic insert with Ref' do
     assert @planning.valid?
     unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
     assert unassigned_stop.valid?
-    assert_no_difference('Stop.count') do
-      patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_id: unassigned_stop.id }
-      assert_equal 200, last_response.status
-      assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
-    end
+    patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_ids: [unassigned_stop.id] }
+    assert_equal 200, last_response.status
+    assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
   end
 
   test 'should automatic insert with error' do
     Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
       unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
       assert_no_difference('Stop.count') do
-        patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_id: unassigned_stop.id }
+        patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_ids: [unassigned_stop.id] }
         assert_equal 500, last_response.status
         assert @planning.routes.reload.detect{|route| !route.vehicle_usage }.stop_ids.include?(unassigned_stop.id)
       end

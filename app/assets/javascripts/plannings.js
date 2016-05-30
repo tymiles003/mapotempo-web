@@ -950,10 +950,6 @@ var plannings_edit = function(params) {
       $('.global_info').html(SMT['plannings/edit_head'](data));
     }
 
-    if (data.stop_id_enlighten) {
-      enlighten_stop(data.stop_id_enlighten);
-    }
-
     $("#out_of_route .sortable").sortable({
       connectWith: ".sortable",
       update: sortPlanning
@@ -992,19 +988,33 @@ var plannings_edit = function(params) {
     displayPlanning(data, {partial: 'stops'});
   }
 
-  $(".main").on("click", ".automatic_insert", function(event, ui) {
-    var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
+  function automaticInsertStops(stop_ids, callback) {
     $.ajax({
-      type: "patch",
-      url: '/plannings/' + planning_id + '/automatic_insert/' + stop_id + '.json',
+      url: '/plannings/' + planning_id + '/automatic_insert/',
+      type: 'PATCH',
+      dataType: 'json',
+      data: { stop_ids: stop_ids },
       beforeSend: beforeSendWaiting,
-      success: function(data) {
-        data.stop_id_enlighten = stop_id;
-        updatePlanning(data);
-      },
       complete: completeAjaxMap,
-      error: ajaxError
+      error: ajaxError,
+      success: function(data, textStatus, jqXHR) {
+        updatePlanning(data);
+        if (callback) callback();
+      }
     });
+  }
+
+  $(".main").on("click", ".automatic_insert", function(e, ui) {
+    var stop_id = $(e.target).parents('li').data('stop_id');
+    automaticInsertStops([stop_id], function() {
+      enlighten_stop(stop_id);
+    });
+  });
+
+  $(".main").on("click", ".automatic_insert_all", function(e, ui) {
+    if (confirm(I18n.t('plannings.edit.automatic_insert_confirm'))) {
+      automaticInsertStops([]);
+    }
   });
 
   $(".main").on('change', 'input:checkbox.stop_active', function(event, ui) {

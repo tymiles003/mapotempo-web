@@ -19,7 +19,9 @@
       </div>
       <div class="btn-group pull-right stop-tools">
         {{#geocoded}}
-          <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
+          <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}">
+            <i class="fa fa-lightbulb-o"></i>
+          </button>
         {{/geocoded}}
         <a href="/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
         {{#geocoded}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/geocoded}}
@@ -87,7 +89,7 @@
         {{/no_path}}
         <span class="info">
           {{#time}}
-            {{time}}{{#with_service_time}}&nbsp;-&nbsp;{{with_service_time}}{{/with_service_time}} - 
+            {{time}}{{#with_service_time}}&nbsp;-&nbsp;{{with_service_time}}{{/with_service_time}} -
           {{/time}}
         </span>
         <span class="name" title="{{name}}">{{name}}</span>
@@ -192,7 +194,7 @@
         {{/no_path}}
         <span class="info">
           {{#time}}
-            {{#with_service_time}}{{with_service_time}}&nbsp;-&nbsp;{{/with_service_time}}{{time}} - 
+            {{#with_service_time}}{{with_service_time}}&nbsp;-&nbsp;{{/with_service_time}}{{time}} -
           {{/time}}
         </span>
         <span class="name" title="{{name}}">{{name}}</span>

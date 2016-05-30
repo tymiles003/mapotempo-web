@@ -139,20 +139,19 @@ class V01::Plannings < Grape::API
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Suggest a place for an unaffected stop.',
-      detail: 'Not Implemented',
+    desc 'Insert Destination Into Planning Routes',
       nickname: 'automaticInsertStop'
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :stop_id, type: Integer, desc: 'ID (Integer)'
+      requires :stop_ids, type: Array[Integer], desc: 'Stop IDs'
     end
     patch ':id/automatic_insert' do
       planning_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
       planning = current_customer.plannings.where(planning_id).first!
       error!('Not Found', 404) if !planning
-      stop = Stop.where(route_id: planning.route_ids).find_by id: params[:stop_id]
-      error!('Not Found', 404) if !stop
-      planning.automatic_insert stop
+      stops = Stop.where id: params[:stop_ids], route_id: planning.route_ids
+      error!('Not Found', 404) if stops.empty?
+      stops.each{|stop| planning.automatic_insert(stop) }
       planning.save!
       status 200
     end

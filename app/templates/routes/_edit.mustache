@@ -4,6 +4,7 @@
     {{^vehicle}}
       {{#i18n}}plannings.edit.out_of_route{{/i18n}}
       <div class="btn-group pull-right">
+        <button type="button" class="automatic_insert_all btn btn-default btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help_multiple{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
         <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="fa fa-eye{{#hidden}}-slash{{/hidden}}"></i></button>
         <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_unplanned_help{{/i18n}}"><i class="fa fa-{{^locked}}un{{/locked}}lock"></i></button>
       </div>
