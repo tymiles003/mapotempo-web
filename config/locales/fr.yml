@@ -1208,6 +1208,7 @@ fr:
       edit: "Modifier votre identifiant de connexion et mot de passe"
     form:
       url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
+      send_email: "Envoyer Email"
     update:
       success: "Utilisateur mis à jour avec succès"
     password:

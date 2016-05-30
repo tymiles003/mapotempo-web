@@ -1207,6 +1207,7 @@ en:
       edit: "Change your login credentials and password"
     form:
       url_click2call_help: "URL of VOIP communications solution. In URL set '{TEL}' in place of the phone number"
+      send_email: "Send E-Mail"
     update:
       success: "User updated successfully"
     password:

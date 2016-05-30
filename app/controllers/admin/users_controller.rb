@@ -33,7 +33,11 @@ class Admin::UsersController < ApplicationController
   def create
     password = Time.now.to_i + rand(10000)
     @user = User.new user_params.merge(password: password, password_confirmation: password)
-    if @user.save
+    @user.save
+    if @user.persisted? && params[:send_email].to_i == 1 && !@user.admin?
+      @user.send_welcome_email
+    end
+    if @user.persisted?
       redirect_to_default
     else
       render action: :new

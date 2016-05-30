@@ -116,8 +116,6 @@ class Customer < ActiveRecord::Base
         dup_zoning.customer = copy
       end
 
-      User.skip_callback :create, :after, :send_welcome_email
-
       original.users.each do |user|
         dup_user = copy.users.new
         if user.email =~ /duplicate/

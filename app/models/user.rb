@@ -49,6 +49,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def send_welcome_email
+    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self) : UserMailer.welcome_message(self).deliver_now
+    self.update! confirmation_sent_at: Time.now
+  end
+
   private
 
   def assign_defaults
