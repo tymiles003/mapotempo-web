@@ -60,6 +60,7 @@ var mustache_i18n = function() {
   };
 }
 
+var progress_attempt = undefined;
 var progress_dialog = function(data, dialog, load_url, callback, error_callback, success_callback) {
   if (data !== undefined) {
     var timeout;
@@ -71,7 +72,6 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
       } else {
         $(e).parent().parent().show();
       }
-
       if (!progress || !progress[i]) {
         $(e).parent().removeClass("active");
         $(e).css("transition", "linear 0s");
@@ -85,19 +85,22 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
         $(e).css("transition", "linear 0s");
         $(e).css("width", "100%");
       } else if (progress[i].indexOf('ms') > -1) {
-        var v = progress[i].split('ms');
-        var iteration = $(e).data('iteration');
-        if (iteration != v[1]) {
-          $(e).data('iteration', iteration);
-          $(e).css("transition", "linear 0s");
-          $(e).css("width", "0%");
+        if (progress_attempt != data.attempts) {
+          var v = progress[i].split('ms');
+          var iteration = $(e).data('iteration');
+          if (iteration != v[1]) {
+            $(e).data('iteration', iteration);
+            $(e).css("transition", "linear 0s");
+            $(e).css("width", "0%");
+          }
+          if (parseInt($(e).css("width")) == 0) {
+            timeout = parseInt(v[0]);
+            $(e).parent().removeClass("active");
+            $(e).css("transition", "linear " + (timeout / 1000) + "s");
+            $(e).css("width", "100%");
+          }
         }
-        if (parseInt($(e).css("width")) == 0) {
-          timeout = parseInt(v[0]);
-          $(e).parent().removeClass("active");
-          $(e).css("transition", "linear " + (timeout / 1000) + "s");
-          $(e).css("width", "100%");
-        }
+        progress_attempt = data.attempts;
       } else if (progress[i].indexOf('/') > -1) {
         var v = progress[i].split('/');
         $(e).parent().removeClass("active");
@@ -127,7 +130,7 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
           success: callback,
           error: ajaxError
         });
-      }, 2000 + (timeout || 0));
+      }, 2000);
       $(document).on('page:before-change', function(e) {
         clearTimeout(planningTimerId);
         $(document).off('page:before-change');
@@ -140,6 +143,7 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
       dialog.modal('hide');
       $($(".progress-bar", dialog)).css("width", "0%");
     }
+    progress_attempt = undefined;
     return true;
   }
 }
