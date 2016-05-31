@@ -56,7 +56,8 @@
                   }]] + [[t('activerecord.attributes.router.router_dimensions.distance'), routers.select(&:distance?).collect{ |router|
                   [router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.distance'), router.id.to_s + '_distance']
                   }]],
-                @vehicle_usage.vehicle.router_id || @vehicle_usage.vehicle.router_dimension ? (@vehicle_usage.vehicle || @customer).router_id.to_s + '_' + (@vehicle_usage.vehicle || @customer).router_dimension : nil), include_blank: t('vehicles.form.router.default') + ' (' + @vehicle_usage.vehicle.customer.router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.' + @vehicle_usage.vehicle.customer.router_dimension) + ')', class: 'form-control' %>
+                @vehicle_usage.vehicle.router_id || @vehicle_usage.vehicle.router_dimension ? (@vehicle_usage.vehicle.router_id || @vehicle_usage.vehicle.customer.router_id).to_s + '_' + (@vehicle_usage.vehicle.router_dimension || @vehicle_usage.vehicle.customer.router_dimension) : nil),
+                include_blank: t('vehicles.form.router.default') + ' (' + @vehicle_usage.vehicle.customer.router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.' + @vehicle_usage.vehicle.customer.router_dimension) + ')', class: 'form-control' %>
               <span class="input-group-addon"><i class="fa fa-gear fa-fw"></i></span>
             </div>
             <p class="help-block"><%= t 'vehicles.form.router.help' %></p>
