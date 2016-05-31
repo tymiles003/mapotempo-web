@@ -83,4 +83,18 @@ class DestinationTest < ActiveSupport::TestCase
     r.touch
     r.save!
   end
+
+  test 'set Lat, Lng with comma separator' do
+    destination = destinations :destination_one
+    lat_french_format = "33,499573" ; lng_french_format = "-112,001210"
+    lat = 33.499573 ; lng = -112.001210
+    assert I18n.locale == :fr
+    destination.update! lat: lat_french_format, lng: lng_french_format
+    assert destination.lat == lat
+    assert destination.lng == lng
+    destination.update! lat: lat, lng: lng
+    assert destination.lat == lat
+    assert destination.lng == lng
+  end
+
 end

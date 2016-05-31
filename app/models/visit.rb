@@ -43,6 +43,10 @@ class Visit < ActiveRecord::Base
     })
   end
 
+  include LocalizedAttr
+
+  attr_localized :quantity
+
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed
     Route.transaction do

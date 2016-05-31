@@ -35,6 +35,10 @@ class Destination < Location
     })
   end
 
+  include LocalizedAttr
+
+  attr_localized :lat, :lng
+
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed
     Visit.transaction do

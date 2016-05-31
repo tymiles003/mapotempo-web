@@ -280,4 +280,14 @@ class ImporterTest < ActionController::TestCase
       end
     end
   end
+
+  test 'Import Destinations With French Separator (Commas)' do
+    assert I18n.locale == :fr
+    assert_difference('Destination.count', 1) do
+      ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_FR.csv', 'text.csv')).import
+    end
+    assert Destination.last.lat == 49.173419
+    assert Destination.last.lng == -0.326613
+  end
+
 end
