@@ -26,7 +26,7 @@ class V01::Api < Grape::API
     end
 
     def warden
-      env['warden']
+      env && env['warden']
     end
 
     def current_customer customer_id=nil
@@ -36,6 +36,7 @@ class V01::Api < Grape::API
     end
 
     def authenticate!
+      error!('401 Unauthorized', 401) unless env
       current_customer
       error!('401 Unauthorized', 401) unless @current_user
       error!('402 Payment Required', 402) if @current_customer && @current_customer.end_subscription && @current_customer.end_subscription < Time.now
