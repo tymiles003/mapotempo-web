@@ -37,10 +37,8 @@ class Route < ActiveRecord::Base
     enable
 
     customize(lambda { |original, copy|
-      copy.planning = original.planning
-      copy.stops.each{ |stop|
-        stop.route = copy
-      }
+      def copy.update_vehicle_usage; end
+      def copy.assign_defaults; end
     })
   end
 

@@ -35,6 +35,19 @@ class Store < Location
 
   include RefSanitizer
 
+  amoeba do
+    exclude_association :vehicle_usage_set_starts
+    exclude_association :vehicle_usage_set_stops
+    exclude_association :vehicle_usage_set_rests
+    exclude_association :vehicle_usage_starts
+    exclude_association :vehicle_usage_stops
+    exclude_association :vehicle_usage_rests
+
+    customize(lambda { |original, copy|
+      def copy.destroy_vehicle_store; end
+    })
+  end
+
   def destroy
     out_of_date # Too late to do this in before_destroy callback, children already destroyed
     super

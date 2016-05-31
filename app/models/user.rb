@@ -37,6 +37,20 @@ class User < ActiveRecord::Base
 
   include Confirmable
 
+  amoeba do
+    enable
+
+    customize(lambda { |original, copy|
+      def copy.assign_defaults; end
+      def copy.assign_defaults_layer; end
+      def copy.generate_confirmation_token; end
+
+      copy.email = I18n.l(Time.now, format: '%Y%m%d%H%M%S') + '_' + copy.email
+      copy.password = Devise.friendly_token
+      copy.confirmation_token = nil
+    })
+  end
+
   def admin?
     !reseller_id.nil?
   end

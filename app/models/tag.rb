@@ -29,4 +29,9 @@ class Tag < ActiveRecord::Base
   validates :label, presence: true
   validates_format_of :color, with: /\A(|\#[A-Fa-f0-9]{6})\Z/, allow_nil: true
   validates_inclusion_of :icon, in: [''] + icons_table, allow_nil: true
+
+  amoeba do
+    exclude_association :visits
+    exclude_association :plannings
+  end
 end

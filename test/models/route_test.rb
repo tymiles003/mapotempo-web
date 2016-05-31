@@ -26,6 +26,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should dup' do
     o = routes(:route_one_one)
     oo = o.amoeba_dup
+    oo.planning = o.planning
     assert_equal oo, oo.stops[0].route
     oo.save!
   end

@@ -40,24 +40,21 @@ class Planning < ActiveRecord::Base
     enable
 
     customize(lambda { |_original, copy|
+      def copy.update_zonings; end
+      def copy.update_vehicle_usage_set; end
+      def copy.default_routes; end
+      def copy.update_zonings; end
+
       copy.routes.each{ |route|
         route.planning = copy
       }
-
-      def copy.update_zonings
-        # No make zoning on duplication
-      end
     })
   end
 
   def duplicate
-    self.class.amoeba do
-      customize(lambda { |_original, copy|
-        copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
-      })
-    end
-
-    self.amoeba_dup
+    copy = self.amoeba_dup
+    copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+    copy
   end
 
   def set_routes(routes_visits, recompute = true, ignore_errors = false)

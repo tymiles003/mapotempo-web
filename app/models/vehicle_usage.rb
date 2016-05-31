@@ -53,6 +53,16 @@ class VehicleUsage < ActiveRecord::Base
 
   scope :active, lambda{ where(active: true) }
 
+  amoeba do
+    exclude_association :routes
+
+    customize(lambda { |original, copy|
+      def copy.nilify_times; end
+      def copy.update_out_of_date; end
+      def copy.update_routes; end
+    })
+  end
+
   def default_open
     open || vehicle_usage_set.open
   end

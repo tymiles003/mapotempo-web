@@ -28,6 +28,12 @@ class Zone < ActiveRecord::Base
 
   amoeba do
     enable
+
+    customize(lambda { |original, copy|
+      def copy.polygon_json_format_validation; end
+      def copy.vehicle_from_customer_validation; end
+      def copy.update_out_of_date; end
+    })
   end
 
   def inside_distance(lat, lng)

@@ -159,12 +159,33 @@ class CustomerTest < ActiveSupport::TestCase
 
   test 'duplicate' do
     customer = customers :customer_one
-    duplicate = customer.duplicate
-    assert duplicate.persisted?
-    [:order_arrays, :plannings, :products, :stores, :users, :vehicle_usage_sets, :vehicles, :zonings].each do |name|
-      assert customer.send(name).any?
-      assert_equal customer.send(name).reload.count, duplicate.send(name).reload.count
+    duplicate = nil
+
+    assert_difference('Customer.count', 1) do
+      assert_difference('User.count', customer.users.size) do
+        assert_difference('Planning.count', customer.plannings.size) do
+          assert_difference('Destination.count', customer.destinations.size) do
+            assert_difference('Vehicle.count', customer.vehicles.size) do
+              duplicate = customer.duplicate
+              duplicate.save!
+            end
+          end
+        end
+      end
+    end
+
+    duplicate.reload
+
+    assert_difference('Customer.count', -1) do
+      assert_difference('User.count', -customer.users.size) do
+        assert_difference('Planning.count', -customer.plannings.size) do
+          assert_difference('Destination.count', -customer.destinations.size) do
+            assert_difference('Vehicle.count', -customer.vehicles.size) do
+              duplicate.destroy!
+            end
+          end
+        end
+      end
     end
   end
-
 end

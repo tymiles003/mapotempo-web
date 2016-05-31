@@ -50,20 +50,17 @@ class VehicleUsageSet < ActiveRecord::Base
     exclude_association :plannings
 
     customize(lambda { |_original, copy|
-      copy.vehicle_usages.each{ |vehicle_usage|
-        vehicle_usage.vehicle_usage_set = copy
-      }
+      def copy.assign_defaults; end
+      def copy.nilify_times; end
+      def copy.set_stores; end
+      def copy.update_out_of_date; end
     })
   end
 
   def duplicate
-    self.class.amoeba do
-      customize(lambda { |_original, copy|
-        copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
-      })
-    end
-
-    self.amoeba_dup
+    copy = self.amoeba_dup
+    copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+    copy
   end
 
   private

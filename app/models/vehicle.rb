@@ -54,6 +54,19 @@ class Vehicle < ActiveRecord::Base
     COLORS_TABLE
   end
 
+  amoeba do
+    exclude_association :vehicle_usages
+    exclude_association :zones
+
+    customize(lambda { |original, copy|
+      def copy.assign_defaults; end
+      def copy.increment_max_vehicles; end
+      def copy.create_vehicle_usage; end
+      def copy.update_out_of_date; end
+      def copy.destroy_vehicle; end
+    })
+  end
+
   def default_router
     router || customer.router
   end

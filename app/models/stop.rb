@@ -21,4 +21,8 @@ class Stop < ActiveRecord::Base
 
   nilify_blanks
   validates :route, presence: true
+
+  amoeba do
+    enable
+  end
 end

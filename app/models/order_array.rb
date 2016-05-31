@@ -38,17 +38,15 @@ class OrderArray < ActiveRecord::Base
       copy.orders.each{ |order|
         order.order_array = copy
       }
+
+      def copy.update_orders; end
     })
   end
 
   def duplicate
-    self.class.amoeba do
-      customize(lambda { |_original, copy|
-        copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
-      })
-    end
-
-    self.amoeba_dup
+    copy = self.amoeba_dup
+    copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+    copy
   end
 
   def days

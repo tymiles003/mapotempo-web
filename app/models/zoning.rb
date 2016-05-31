@@ -31,10 +31,11 @@ class Zoning < ActiveRecord::Base
   before_save :update_out_of_date
 
   amoeba do
-    enable
     exclude_association :plannings
 
     customize(lambda { |_original, copy|
+      def copy.update_out_of_date; end
+
       copy.zones.each{ |zone|
         zone.zoning = copy
       }
@@ -42,13 +43,9 @@ class Zoning < ActiveRecord::Base
   end
 
   def duplicate
-    self.class.amoeba do
-      customize(lambda { |_original, copy|
-        copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
-      })
-    end
-
-    self.amoeba_dup
+    copy = self.amoeba_dup
+    copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+    copy
   end
 
   def apply(visits)

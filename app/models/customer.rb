@@ -63,99 +63,95 @@ class Customer < ActiveRecord::Base
   include RefSanitizer
 
   amoeba do
-    enable
-    exclude_association :plannings
-    exclude_association :routes
-    exclude_association :stores
-    exclude_association :users
-    exclude_association :vehicle_usage_sets
-    exclude_association :vehicle_usages
-    exclude_association :vehicles
-    exclude_association :zonings
+    nullify :job_destination_geocoding_id
+    nullify :job_store_geocoding_id
+    nullify :job_optimizer_id
+
+    # No duplication of OrderArray
+    exclude_association :products
+    exclude_association :order_arrays
+
     customize(lambda { |original, copy|
-      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
-
-      copy.attributes.select{|attr| attr[/job_/] }.keys.each do |name|
-        copy.send "#{name}=", nil
-      end
-
-      original.stores.each do |store|
-        dup_store = copy.stores.new store.attributes.reject{|attr| attr[/id/] }
-        dup_store.customer = copy
-      end
-
-      original.vehicle_usage_sets.each do |vehicle_usage_set|
-        dup_vehicle_usage_set = copy.vehicle_usage_sets.new vehicle_usage_set.attributes.reject{|attr| attr[/id/] }
-        dup_vehicle_usage_set.customer = copy
-      end
-
-      original.vehicles.each do |vehicle|
-        dup_vehicle = copy.vehicles.new vehicle.attributes.reject{|attr| attr[/id/] }
-        dup_vehicle.customer = copy
-      end
-
-      original.vehicle_usage_sets.each do |vehicle_usage_set|
-        vehicle_usage_set.vehicle_usages.each do |vehicle_usage|
-          dup_vehicle_usage = VehicleUsage.new vehicle_usage.attributes.reject{|attr| attr[/id/] }
-          dup_vehicle_usage.vehicle_usage_set = copy.vehicle_usage_sets.detect{|item| item.name == vehicle_usage.vehicle_usage_set.name }
-          dup_vehicle_usage.vehicle = copy.vehicles.detect{|item| item.name == vehicle_usage.vehicle.name }
-          [:store_start, :store_stop, :store_rest].each do |attr|
-            next if !vehicle_usage.send(attr)
-            dup_vehicle_usage.send "#{attr}=", copy.stores.detect{|item| item.name == vehicle_usage.send(attr).name }
-          end
-        end
-      end
-
-      original.zonings.each do |zoning|
-        dup_zoning = copy.zonings.new zoning.attributes.reject{|attr| attr[/id/] }
-        zoning.zones.each do |zone|
-          dup_zone = Zone.new zone.attributes.reject{|attr| attr[/id/] }
-          dup_zone.vehicle = copy.vehicles.detect{|item| item.name == zone.vehicle.name } if zone.vehicle
-          dup_zoning.zones << dup_zone
-        end
-        dup_zoning.customer = copy
-      end
-
-      original.users.each do |user|
-        dup_user = copy.users.new
-        if user.email =~ /duplicate/
-          dup_user.email = Time.now.to_i.to_s + "@example.com"
-        else
-          dup_user.email = user.email.split("@")[0] + "+duplicate@" + user.email.split("@")[1]
-        end
-        dup_user.password = user.password_confirmation = Time.now.to_i * rand(100)
-        dup_user.customer = copy
-      end
-
-      Customer.skip_callback :create, :after, :create_default_store
-      Customer.skip_callback :create, :after, :create_default_vehicle_usage_set
+      def copy.assign_defaults; end
+      def copy.update_max_vehicles; end
+      def copy.create_default_store; end
+      def copy.create_default_vehicle_usage_set; end
+      def copy.update_out_of_date; end
+      def copy.update_enable_multi_visits; end
+      def copy.sanitize_print_header; end
+      def copy.devices_update_vehicles; end
 
       copy.save!
 
-      Planning.skip_callback :create, :before, :default_routes
-      Planning.skip_callback :create, :before, :update_zonings
-      Planning.skip_callback :save, :before, :update_zonings
-      Planning.skip_callback :save, :before, :update_vehicle_usage_set
+      vehicles_map = Hash[original.vehicles.zip(copy.vehicles)].merge(nil => nil)
+      vehicle_usage_sets_map = Hash[original.vehicle_usage_sets.zip(copy.vehicle_usage_sets)].merge(nil => nil)
+      vehicle_usages_map = Hash[original.vehicle_usage_sets.collect(&:vehicle_usages).flatten.zip(copy.vehicle_usage_sets.collect(&:vehicle_usages).flatten)].merge(nil => nil)
+      stores_map = Hash[original.stores.zip(copy.stores)].merge(nil => nil)
+      visits_map = Hash[original.destinations.collect(&:visits).flatten.zip(copy.destinations.collect(&:visits).flatten)].merge(nil => nil)
+      tags_map = Hash[original.tags.zip(copy.tags)].merge(nil => nil)
+      zonings_map = Hash[original.zonings.zip(copy.zonings)].merge(nil => nil)
 
-      original.plannings.each do |planning|
-        dup_planning = copy.plannings.new planning.attributes.slice("name")
-        dup_planning.vehicle_usage_set = copy.vehicle_usage_sets.detect{|item| item.name == planning.vehicle_usage_set.name }
-        planning.zonings.each{|zoning| dup_planning.zonings << copy.zonings.detect{|item| item.name == zoning.name } }
-        planning.routes.each do |route|
-          dup_route = dup_planning.routes.new route.attributes.reject{|attr| attr[/id/] }
-          next if !route.vehicle_usage
-          dup_route.vehicle_usage = dup_planning.vehicle_usage_set.vehicle_usages.detect{|item| item.vehicle.name == route.vehicle_usage.vehicle.name }
-        end
-        dup_planning.customer = copy
-        dup_planning.save!
+      copy.vehicle_usage_sets.each{ |vehicle_usage_set|
+        vehicle_usage_set.store_start = stores_map[vehicle_usage_set.store_start]
+        vehicle_usage_set.store_stop = stores_map[vehicle_usage_set.store_stop]
+        vehicle_usage_set.store_rest = stores_map[vehicle_usage_set.store_rest]
 
-      end
+        vehicle_usage_set.vehicle_usages.each{ |vehicle_usage|
+          vehicle_usage.vehicle = vehicles_map[vehicle_usage.vehicle]
+          vehicle_usage.store_start = stores_map[vehicle_usage.store_start]
+          vehicle_usage.store_stop = stores_map[vehicle_usage.store_stop]
+          vehicle_usage.store_rest = stores_map[vehicle_usage.store_rest]
+          vehicle_usage.save!
+        }
+        vehicle_usage_set.save!
+      }
 
+      copy.destinations.each{ |destination|
+        destination.tags = destination.tags.collect{ |tag| tags_map[tag] }
+
+        destination.visits.each{ |visit|
+          visit.tags = visit.tags.collect{ |tag| tags_map[tag] }
+          visit.save!
+        }
+        destination.save!
+      }
+
+      copy.zonings.each{ |zoning|
+        zoning.zones.each{ |zone|
+          zone.vehicle = vehicles_map[zone.vehicle]
+          zone.save!
+        }
+      }
+
+      copy.plannings.each{ |planning|
+        planning.vehicle_usage_set = vehicle_usage_sets_map[planning.vehicle_usage_set]
+        planning.zonings = planning.zonings.collect{ |zoning| zonings_map[zoning] }
+        planning.tags = planning.tags.collect{ |tag| tags_map[tag] }
+
+        planning.routes.each{ |route|
+          route.vehicle_usage = vehicle_usages_map[route.vehicle_usage]
+
+          route.stops.each{ |stop|
+            stop.visit = visits_map[stop.visit]
+            stop.save!
+          }
+          route.save!
+        }
+        planning.save!
+      }
+
+      copy.save!
+      copy.reload
     })
   end
 
   def duplicate
-    self.amoeba_dup
+    Customer.transaction do
+      copy = self.amoeba_dup
+      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+      copy.save!
+      copy
+    end
   end
 
   def default_position

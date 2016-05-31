@@ -27,6 +27,14 @@ class Destination < Location
 
   include RefSanitizer
 
+  amoeba do
+    enable
+
+    customize(lambda { |original, copy|
+      def copy.update_tags; end
+    })
+  end
+
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed
     Visit.transaction do

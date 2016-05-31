@@ -32,6 +32,17 @@ class Visit < ActiveRecord::Base
 
   include RefSanitizer
 
+  amoeba do
+    exclude_association :stop_visits
+    exclude_association :orders
+
+    customize(lambda { |original, copy|
+      def copy.update_tags; end
+      def copy.create_orders; end
+      def copy.update_out_of_date; end
+    })
+  end
+
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed
     Route.transaction do
