@@ -1,9 +1,0 @@
-<% content_for :title, t('.title') %>
-<h1><%= t '.title' %></h1>
-<%= twitter_bootstrap_form_for [@customer, @user], layout: :horizontal do |f| %>
-  <%= render 'shared/error_messages', model: @user %>
-  <%= f.email_field :email %>
-  <%= f.actions do %>
-    <%= f.submit %>
-  <% end %>
-<% end %>
