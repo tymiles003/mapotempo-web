@@ -959,7 +959,7 @@ var plannings_edit = function(params) {
     $(".stops.sortable").sortable({
       distance: 8,
       connectWith: ".sortable",
-      items: "li",
+      items: "> li",
       cancel: '.wait',
       start: function(event, ui) {
         sortableUpdate = false;
