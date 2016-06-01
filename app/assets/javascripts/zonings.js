@@ -169,6 +169,7 @@ var zonings_edit = function(params) {
         labelMarker = null
       });
       this.on('click', function(e) {
+        if (!zone.id) return;
         var z = $('#zones input[value=' + zone.id + ']').closest('.zone');
         z.css('box-shadow', '#4D90FE 0px 0px 5px');
         setTimeout(function() {
