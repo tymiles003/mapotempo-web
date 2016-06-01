@@ -24,6 +24,7 @@ class PlanningsController < ApplicationController
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order]
 
   include PlanningExport
+  include PlanningIcalendar
 
   def index
     @plannings = current_user.customer.plannings
@@ -73,6 +74,10 @@ class PlanningsController < ApplicationController
       format.csv do
         @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
+      end
+      format.ics do
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.ics"'
+        render text: planning_calendar(@planning).to_ical, mime_type: 'text/calendar'
       end
     end
   end

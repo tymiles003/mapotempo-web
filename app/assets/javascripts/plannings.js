@@ -664,6 +664,26 @@ var plannings_edit = function(params) {
       });
     });
 
+    // iCalendar Export
+    $('.icalendar-export a', context).click(function(e) {
+      $.ajax({
+        url: $(e.target).attr('href'),
+        type: 'GET',
+        beforeSend: function(jqXHR, settings) {
+          beforeSendWaiting();
+        },
+        complete: function(jqXHR, textStatus) {
+          completeWaiting();
+        },
+        success: function(data, textStatus, jqXHR) {
+          notice(I18n.t('plannings.edit.export.icalendar.success'));
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
+        }
+      });
+    });
+
     $(".routes", context).sortable({
       disabled: true,
       items: "li.route"

@@ -138,6 +138,13 @@
             <li role="separator" class="divider"></li>
             <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet' %></a></li>
             <li role="separator" class="divider"></li>
+            <li class="icalendar-export">
+              <%= link_to planning_path(@planning, format: :ics) do %>
+                <i class="fa fa-calendar fa-fw"></i>
+                <%= t '.export.icalendar.action' %>
+              <% end %>
+            </li>
+            <li role="separator" class="divider"></li>
             <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
             <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_track' %><% end %></li>
             <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>

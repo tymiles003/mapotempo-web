@@ -87,6 +87,13 @@
             <li role="separator" class="divider"></li>
             <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet{{/i18n}}</a></li>
             <li role="separator" class="divider"></li>
+            <li class="icalendar-export">
+              <a href="{{calendar_url}}">
+                <i class="fa fa-calendar fa-fw"></i>
+                {{#i18n}}plannings.edit.export.icalendar.action{{/i18n}}
+              </a>
+            </li>
+            <li role="separator" class="divider"></li>
             <li><a href="/routes/{{route_id}}.gpx"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_route{{/i18n}}</a></li>
             <li><a href="/routes/{{route_id}}.gpx?track=true"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.gpx_track{{/i18n}}</a></li>
             <li><a href="/routes/{{route_id}}.kmz"><i class="fa fa-mobile fa-fw"></i> {{#i18n}}plannings.edit.export.kmz_track{{/i18n}}</a></li>

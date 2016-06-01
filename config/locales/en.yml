@@ -896,6 +896,10 @@ en:
         success: "Sent to Masternaut Successfully"
         fail: "Failed to send to Masternaut"
       export:
+        icalendar:
+          action: "Export as iCalendar"
+          success: "Planning exported successfully"
+          fail: "Failed to export planning"
         kmz_email:
           action: "KML Track by E-Mail"
           success: "E-Mail sent successfully"

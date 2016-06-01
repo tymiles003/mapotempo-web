@@ -25,6 +25,7 @@ class RoutesController < ApplicationController
   before_action :set_route, only: [:update]
 
   include PlanningExport
+  include PlanningIcalendar
 
   def show
     @params = params
@@ -64,6 +65,10 @@ class RoutesController < ApplicationController
       format.csv do
         @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
+      end
+      format.ics do
+        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.ics"'
+        render text: route_calendar(@route).to_ical, mime_type: 'text/calendar'
       end
     end
   end
