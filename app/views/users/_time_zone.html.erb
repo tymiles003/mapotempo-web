@@ -1,12 +1,8 @@
 <div class="form-group">
-  <div class="col-md-2">
-    <div class="pull-right">
-      <label for="user_time_zone">
-        <%= t 'customers.edit.time_zone' %>
-      </label>
-    </div>
-  </div>
+  <label for="user_time_zone" class="col-md-2 control-label">
+    <%= t 'customers.edit.time_zone' %>
+  </label>
   <div class="col-md-6">
-    <%= time_zone_select :user, :time_zone, ActiveSupport::TimeZone.all, {}, { class: :select2 } %>
+    <%= time_zone_select :user, :time_zone, ActiveSupport::TimeZone.all, {}, { class: "form-control" } %>
   </div>
 </div>
