@@ -54,6 +54,9 @@ class VehicleUsageSet < ActiveRecord::Base
       def copy.nilify_times; end
       def copy.set_stores; end
       def copy.update_out_of_date; end
+      copy.vehicle_usages.each{ |vehicle_usage|
+        vehicle_usage.vehicle_usage_set = copy
+      }
     })
   end
 
