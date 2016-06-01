@@ -60,32 +60,76 @@ var mustache_i18n = function() {
   };
 }
 
-var progress_attempt = undefined;
-var progress_dialog = function(data, dialog, load_url, callback, error_callback, success_callback) {
-  if (data !== undefined) {
-    var timeout;
+var freezeProgressDialog = function(dialog) {
+  dialog.find('[data-dismiss]').hide();
+  dialog.off('hidden.bs.modal'); // important to avoid canceling old jobs
+  dialog.off('keyup');
+};
+
+var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
+  dialog.find('[data-dismiss]').show();
+  dialog.on('hidden.bs.modal', function() {
+    // delayedJob could contain neither customer_id nor id in case of server error...
+    $.ajax({
+      type: 'DELETE',
+      url: '/api/0.1/customers/' + delayedJob.customer_id + '/job/' + delayedJob.id + '.json',
+      success: function() {
+        $.ajax({
+          type: 'GET',
+          url: url,
+          beforeSend: beforeSendWaiting,
+          success: callback,
+          complete: completeAjaxMap,
+          error: ajaxError
+        });
+      }
+    });
+    // Reset dialog content
+    $(".dialog-progress", dialog).show();
+    $(".dialog-attempts", dialog).hide();
+    $(".dialog-error", dialog).hide();
+    $(".progress-bar", dialog).css("width", "0%");
+  });
+  dialog.on('keyup', function(e) {
+    if (e.keyCode == 27) {
+      dialog.modal('hide');
+    }
+  });
+};
+
+var progressAttempt = undefined;
+var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, successCallback) {
+  if (delayedJob !== undefined) {
+    var timeout = 2000;
+    var duration;
     dialog.modal(modal_options());
-    var progress = data.progress && data.progress.split(';');
+    freezeProgressDialog(dialog);
+    var progress = delayedJob.progress && delayedJob.progress.split(';');
     $(".progress-bar", dialog).each(function(i, e) {
       if (progress == undefined || progress == '' || progress[i] == undefined || progress[i] == '') {
         $(e).parent().parent().hide();
-      } else {
+      }
+      else {
         $(e).parent().parent().show();
       }
       if (!progress || !progress[i]) {
         $(e).parent().removeClass("active");
         $(e).css("transition", "linear 0s");
         $(e).css("width", "0%");
-      } else if (progress[i] == 100) {
+      }
+      else if (progress[i] == 100) {
         $(e).parent().removeClass("active");
         $(e).css("transition", "linear 0s");
         $(e).css("width", "100%");
-      } else if (progress[i] == -1) {
+      }
+      else if (progress[i] == -1) {
         $(e).parent().addClass("active");
         $(e).css("transition", "linear 0s");
         $(e).css("width", "100%");
-      } else if (progress[i].indexOf('ms') > -1) {
-        if (progress_attempt != data.attempts) {
+      }
+      else if (progress[i].indexOf('ms') > -1) {
+        // optimization in ms
+        if (progressAttempt != delayedJob.attempts) {
           var v = progress[i].split('ms');
           var iteration = $(e).data('iteration');
           if (iteration != v[1]) {
@@ -94,40 +138,55 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
             $(e).css("width", "0%");
           }
           if (parseInt($(e).css("width")) == 0) {
-            timeout = parseInt(v[0]);
-            $(e).parent().removeClass("active");
-            $(e).css("transition", "linear " + (timeout / 1000) + "s");
-            $(e).css("width", "100%");
+            duration = parseInt(v[0]);
+            if (duration > timeout) {
+              $(e).parent().removeClass("active");
+              $(e).css("transition", "linear " + ((duration - timeout) / 1000) + "s");
+              $(e).css("width", "100%");
+            }
           }
         }
-        progress_attempt = data.attempts;
-      } else if (progress[i].indexOf('/') > -1) {
-        var v = progress[i].split('/');
-        $(e).parent().removeClass("active");
-        $(e).css("transition", "linear 0.5s");
-        $(e).css("width", "" + (100 * v[0] / v[1]) + "%");
-        $(e).html(progress[i]);
-      } else {
+      }
+      else if (progress[i].indexOf('/') > -1) {
+        // geocoding current/total
+        if (progressAttempt != delayedJob.attempts) {
+          var v = progress[i].split('/');
+          $(e).parent().removeClass("active");
+          $(e).css("transition", "linear 0.5s");
+          $(e).css("width", "" + (100 * v[0] / v[1]) + "%");
+          $(e).html(progress[i]);
+        }
+      }
+      else {
         $(e).parent().removeClass("active");
         $(e).css("transition", "linear 2s");
         $(e).css("width", "" + progress[i] + "%");
       }
     });
-    if (data.attempts) {
-      $(".dialog-attempts-number", dialog).html(data.attempts);
+    progressAttempt = delayedJob.attempts;
+    if (delayedJob.attempts) {
+      $(".dialog-attempts-number", dialog).html(delayedJob.attempts);
       $(".dialog-attempts", dialog).show();
-    } else {
+    }
+    else {
       $(".dialog-attempts", dialog).hide();
     }
-    if (data.error) {
-      if (error_callback) error_callback();
+    if (delayedJob.error) {
+      if (errorCallback) errorCallback();
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
-    } else {
+      unfreezeProgressDialog(dialog, delayedJob, url, callback);
+    }
+    else {
       planningTimerId = setTimeout(function() {
         $.ajax({
-          url: load_url,
-          success: callback,
+          url: url,
+          success: function(data) {
+            callback(data, {
+              error: errorCallback,
+              success: successCallback
+            });
+          },
           error: ajaxError
         });
       }, 2000);
@@ -137,13 +196,14 @@ var progress_dialog = function(data, dialog, load_url, callback, error_callback,
       });
     }
     return false;
-  } else {
+  }
+  else {
     if (dialog.is(':visible')) {
-      if (success_callback) success_callback();
+      if (successCallback) successCallback();
       dialog.modal('hide');
       $($(".progress-bar", dialog)).css("width", "0%");
     }
-    progress_attempt = undefined;
+    progressAttempt = undefined;
     return true;
   }
 }

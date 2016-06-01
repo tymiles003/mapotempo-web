@@ -360,6 +360,27 @@ var plannings_edit = function(params) {
     }
   });
 
+  var dialog_optimizer;
+
+  initOptimizerDialog();
+
+  function initOptimizerDialog() {
+    hideNotices(); // Clear Failed Optimization Notices
+    dialog_optimizer = bootstrap_dialog({
+      title: I18n.t('plannings.edit.dialog.optimizer.title'),
+      icon: 'fa-gear',
+      message: SMT['modals/optimize']({ i18n: mustache_i18n })
+    });
+  };
+
+  var errorOptimize = function(data) {
+    stickyError(I18n.t('plannings.edit.optimize_failed'));
+  };
+
+  var successOptimize = function(data) {
+    notice(I18n.t('plannings.edit.optimize_complete'));
+  };
+
   $("#optimize_each").click( function(event, ui) {
     if (!confirm(I18n.t('plannings.edit.optimize_each_confirm'))) {
       return false;
@@ -368,7 +389,12 @@ var plannings_edit = function(params) {
       type: "get",
       url: '/plannings/' + planning_id + '/optimize_each.json',
       beforeSend: beforeSendWaiting,
-      success: displayPlanning,
+      success: function(data) {
+        displayPlanning(data, {
+          error: errorOptimize,
+          success: successOptimize
+        })
+      },
       complete: completeAjaxMap,
       error: ajaxError
     });
@@ -704,7 +730,12 @@ var plannings_edit = function(params) {
           type: "get",
           url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
           beforeSend: beforeSendWaiting,
-          success: updatePlanning,
+          success: function(data) {
+            updatePlanning(data, {
+              error: errorOptimize,
+              success: successOptimize
+            });
+          },
           complete: completeAjaxMap,
           error: ajaxError
         });
@@ -788,54 +819,9 @@ var plannings_edit = function(params) {
     });
   }
 
-  var dialog_optimizer;
-
-  initOptimizerDialog();
-
-  function initOptimizerDialog() {
-    hideNotices(); // Clear Failed Optimization Notices
-    dialog_optimizer = bootstrap_dialog({
-      title: I18n.t('plannings.edit.dialog.optimizer.title'),
-      icon: 'fa-gear',
-      message: SMT['modals/optimize']({ i18n: mustache_i18n })
-    });
-  }
-
   var displayPlanning = function(data, options) {
 
-    function error_callback() {
-      stickyError(I18n.t('plannings.edit.optimize_failed'));
-      dialog_optimizer.find('[data-dismiss]').show();
-      dialog_optimizer.on('hidden.bs.modal', function() {
-        $.ajax({
-          type: 'DELETE',
-          url: '/api/0.1/customers/' + data.optimizer.customer_id + '/job/' + data.optimizer.id + '.json',
-          success: function(data, textStatus, jqXHR) {
-            $.ajax({
-              type: 'GET',
-              url: '/plannings/' + planning_id + '.json',
-              beforeSend: beforeSendWaiting,
-              success: checkForDisplayPlanningFirstTime,
-              complete: completeAjaxMap,
-              error: ajaxError
-            });
-          }
-        });
-        dialog_optimizer.find('[data-dismiss]').hide();
-      });
-      dialog_optimizer.on('keyup', function(e) {
-        if (e.keyCode == 27) {
-          dialog_optimizer.modal('hide');
-          dialog_optimizer.off('keyup');
-        }
-      });
-    }
-
-    function success_callback() {
-      notice(I18n.t('plannings.edit.optimize_complete'));
-    }
-
-    if (!progress_dialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, error_callback, success_callback)) {
+    if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options && options.error, options && options.success)) {
       return;
     }
 
@@ -984,36 +970,45 @@ var plannings_edit = function(params) {
     });
   }
 
-  var updatePlanning = function(data) {
-    displayPlanning(data, {partial: 'stops'});
+  var updatePlanning = function(data, options) {
+    displayPlanning(data, $.extend({partial: 'stops'}, options));
   }
 
-  function automaticInsertStops(stop_ids, callback) {
-    $.ajax({
-      url: '/plannings/' + planning_id + '/automatic_insert/',
+  function automaticInsertStops(stop_ids, options) {
+    $.ajax($.extend({
+      url: '/plannings/' + planning_id + '/automatic_insert',
       type: 'PATCH',
       dataType: 'json',
       data: { stop_ids: stop_ids },
       beforeSend: beforeSendWaiting,
       complete: completeAjaxMap,
       error: ajaxError,
-      success: function(data, textStatus, jqXHR) {
-        updatePlanning(data);
-        if (callback) callback();
-      }
-    });
+      success: updatePlanning
+    }, options));
   }
 
   $(".main").on("click", ".automatic_insert", function(e, ui) {
     var stop_id = $(e.target).parents('li').data('stop_id');
-    automaticInsertStops([stop_id], function() {
-      enlighten_stop(stop_id);
+    automaticInsertStops([stop_id], {
+      success: function(data, textStatus, jqXHR) {
+        updatePlanning(data);
+        enlighten_stop(stop_id);
+      }
     });
   });
 
   $(".main").on("click", ".automatic_insert_all", function(e, ui) {
     if (confirm(I18n.t('plannings.edit.automatic_insert_confirm'))) {
-      automaticInsertStops([]);
+      var dialog = bootstrap_dialog($.extend(modal_options(), {
+        title: I18n.t('plannings.edit.dialog.automatic_insert.title'),
+        message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.automatic_insert.in_progress') })
+      })).modal('show');
+      automaticInsertStops([], {
+        complete: function() {
+          dialog.modal('hide');
+          completeAjaxMap();
+        }
+      });
     }
   });
 

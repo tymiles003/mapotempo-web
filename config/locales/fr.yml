@@ -943,8 +943,8 @@ fr:
       edit_visit_help: "Modifier les informations du client"
       marker_help: "Visualiser sur la carte"
       automatic_insert_help: "Propose un endroit pour insérer ce client dans une tournée"
-      automatic_insert_help_multiple: "Propose un endroit pour insérer les clients dans des tournées"
-      automatic_insert_confirm: "Êtes-vous sûr ? Les résultats ne seront pas optimisés et les placements se feront sur les tournées de ce planning."
+      automatic_insert_help_multiple: "Propose un endroit pour insérer les clients dans des tournées (le résultat ne sera plus optimisé)"
+      automatic_insert_confirm: "Affecter tous les arrêts non planifiés à des tournées ? Le résultat ne sera plus optimisé. Les zonages sont recommandés pour affecter les arrêts de manière plus précise (Ok pour continuer malgré tout)."
       active_all: "Tous"
       active_reverse: "Inverser"
       active_none: "Aucun"
@@ -1006,6 +1006,9 @@ fr:
         zoning:
           title: "Zonage"
           in_progress: "Application du nouveau zonage en cours, merci de patienter."
+        automatic_insert:
+          title: "Affectation des arrêts non planifiés"
+          in_progress: "Veuillez patienter"
         spreadsheet:
           title: "Export vers un tableur"
           stops: "Arrêts additionnels"
