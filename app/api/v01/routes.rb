@@ -34,7 +34,6 @@ class V01::Routes < Grape::API
       requires :planning_id, type: String, desc: ID_DESC
     end
     segment '/:planning_id' do
-
       resource :routes do
         desc 'Fetch planning\'s routes.',
           nickname: 'getRoutes',

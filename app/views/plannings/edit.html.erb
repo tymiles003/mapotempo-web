@@ -139,10 +139,10 @@
             <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet' %></a></li>
             <li role="separator" class="divider"></li>
             <li class="icalendar-export">
-              <%= link_to planning_path(@planning, format: :ics) do %>
+              <a href="/api/0.1/plannings_icalendar/<%= @planning.id %>?api_key=<%= current_user.api_key %>">
                 <i class="fa fa-calendar fa-fw"></i>
                 <%= t '.export.icalendar.action' %>
-              <% end %>
+              </a>
             </li>
             <li role="separator" class="divider"></li>
             <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>

@@ -245,6 +245,7 @@ GEM
       parser (>= 2.2.3.0)
       term-ansicolor (>= 1.3.2)
       terminal-table (>= 1.5.1)
+    icalendar (2.3.0)
     ice_nine (0.11.2)
     iconv (1.0.4)
     jbuilder (2.4.1)
@@ -539,6 +540,7 @@ DEPENDENCIES
   http_accept_language
   i18n-js
   i18n-tasks
+  icalendar
   iconv
   jbuilder (~> 2.0)
   jquery-rails

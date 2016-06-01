@@ -6,7 +6,7 @@ module PlanningExport
     array << planning.name
     array << ref
     array << planning.order_array.name if planning.customer.enable_orders && planning.order_array
-    array << l(planning.date) if planning.date
+    array << I18n.l(planning.date) if planning.date
     array.join("_").gsub("/", "-").delete("\"")
   end
 
