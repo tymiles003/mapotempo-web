@@ -12,6 +12,7 @@ class PlanningsControllerTest < ActionController::TestCase
     @request.env['reseller'] = resellers(:reseller_one)
     @planning = plannings(:planning_one)
     sign_in users(:user_one)
+    customers(:customer_one).update(job_optimizer_id: nil, job_destination_geocoding_id: nil)
   end
 
   def around
@@ -75,6 +76,7 @@ class PlanningsControllerTest < ActionController::TestCase
   test 'should show planning as json' do
     get :show, format: :json, id: @planning
     assert_response :success
+    assert_equal 3, JSON.parse(response.body)['routes'].size
   end
 
   test 'should show planning as excel' do
@@ -166,6 +168,7 @@ class PlanningsControllerTest < ActionController::TestCase
   test 'should move' do
     patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 1, format: :json
     assert_response :success
+    assert_equal 2, JSON.parse(response.body)['routes'].size
   end
 
   test 'should move with error' do
@@ -181,6 +184,7 @@ class PlanningsControllerTest < ActionController::TestCase
   test 'should move with automatic index' do
     patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], format: :json
     assert_response :success
+    assert_equal 2, JSON.parse(response.body)['routes'].size
   end
 
   test 'should not move' do
@@ -216,9 +220,16 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_not planning.zoning_out_of_date
   end
 
-  test 'should switch' do
+  test 'should switch with same vehicle' do
     patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: vehicle_usages(:vehicle_usage_one_one).id
     assert_response :success, id: @planning
+    assert_equal 1, JSON.parse(response.body)['routes'].size
+  end
+
+  test 'should switch' do
+    patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: vehicle_usages(:vehicle_usage_one_three).id
+    assert_response :success, id: @planning
+    assert_equal 2, JSON.parse(response.body)['routes'].size
   end
 
   test 'should not switch' do
@@ -230,11 +241,13 @@ class PlanningsControllerTest < ActionController::TestCase
   test 'should update stop' do
     patch :update_stop, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, stop_id: stops(:stop_one_one).id, stop: { active: false }
     assert_response :success
+    assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 
   test 'should optimize route' do
     get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
     assert_response :success
+    assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 
   test 'should duplicate' do
@@ -248,6 +261,7 @@ class PlanningsControllerTest < ActionController::TestCase
   test 'should automatic insert' do
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
     assert_response :success
+    assert_equal 2, JSON.parse(response.body)['routes'].size
   end
 
   test 'should automatic insert all' do
@@ -260,10 +274,12 @@ class PlanningsControllerTest < ActionController::TestCase
   test 'should update active' do
     patch :active, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, active: :none
     assert_response :success
+    assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 
   test 'should reverse route stops' do
     patch :reverse_order, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
     assert_response :success
+    assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 end
