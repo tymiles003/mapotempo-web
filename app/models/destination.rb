@@ -38,9 +38,7 @@ class Destination < Location
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed
     Visit.transaction do
-      visits.each{ |visit|
-        visit.destroy
-      }
+      visits.destroy_all
     end
     super
   end
