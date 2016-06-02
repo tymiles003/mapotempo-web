@@ -24,7 +24,7 @@ class Admin::CustomersControllerTest < ActionController::TestCase
 
   test 'should create customer' do
     assert_difference('Customer.count') do
-      post :create, customer: { name: 'new', max_vehicles: 2, default_country: 'France', speed_multiplicator: 100, profile_id: profiles(:profile_one), router: routers(:router_one).id.to_s + '_time' }
+      post :create, customer: { name: 'new', max_vehicles: 2, default_country: 'France', speed_multiplicator: 1, profile_id: profiles(:profile_one), router: routers(:router_one).id.to_s + '_time' }
     end
     assert_redirected_to edit_customer_path(assigns(:customer))
   end
