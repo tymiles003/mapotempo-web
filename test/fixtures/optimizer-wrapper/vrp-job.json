@@ -59,25 +59,10 @@ HTTP/1.1 200 OK
           "service_id": "s4"
         },
         {
+          "rest_id": "r6"
+        },
+        {
           "point_id": "p5",
-          "travel_distance": 0,
-          "travel_start_time": 0,
-          "waiting_duration": 0,
-          "arrival_time": 0,
-          "departure_time": 0,
-          "service_id": "s5"
-        },
-        {
-          "point_id": "p6",
-          "travel_distance": 0,
-          "travel_start_time": 0,
-          "waiting_duration": 0,
-          "arrival_time": 0,
-          "departure_time": 0,
-          "service_id": "s6"
-        },
-        {
-          "point_id": "p7",
           "travel_distance": 0,
           "travel_start_time": 0
         }
