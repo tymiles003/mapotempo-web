@@ -44,8 +44,8 @@ class Location < ActiveRecord::Base
   validates_inclusion_of :geocoding_accuracy, in: 0..1, allow_nil: true, message: I18n.t('activerecord.errors.models.location.geocoding_accuracy_outside_range')
   validates_with LocalizationValidator, fields: [:street, :city, :lat, :lng]
 
-  before_create :create_geocode
-  before_update :update_geocode, :update_out_of_date
+  before_validation :update_geocode
+  before_update :update_out_of_date
 
   def position?
     !lat.nil? && !lng.nil?
@@ -53,13 +53,13 @@ class Location < ActiveRecord::Base
 
   def geocode
     geocode_result(Mapotempo::Application.config.geocode_geocoder.code(*geocode_args))
-  rescue GeocodeError => e # avoid stop import or get exception in app/api
+  rescue GeocodeError => e # avoid stop save
     @warnings = [I18n.t('errors.location.geocoding_fail') + ' ' + e.message]
     Rails.logger.info "Destination Geocode Failed: ID=%s" % [self.id]
   end
 
   def geocode_args
-    [street, postalcode, city, !country.nil? && !country.empty? ? country : customer.default_country]
+    [street, postalcode, city, !country.nil? && !country.empty? ? country : customer.try(&:default_country)]
   end
 
   def geocode_result(address)
@@ -91,22 +91,22 @@ class Location < ActiveRecord::Base
     end
   end
 
-  def create_geocode
-    if !@is_gecoded && (lat.nil? || lng.nil?)
-      geocode
-    end
-  end
-
   def update_geocode
-    # when lat/lng are specified manually, geocoding_accuracy has no sense
-    if !@is_gecoded && self.point? && (lat_changed? || lng_changed?)
-      self.geocoding_accuracy = nil
-    end
-    if position?
-      @is_gecoded = true
-    end
-    if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed? || country_changed?)
-      geocode
+    if self.id.nil?
+      if !@is_gecoded && (lat.nil? || lng.nil?)
+        geocode
+      end
+    else
+      # when lat/lng are specified manually, geocoding_accuracy has no sense
+      if !@is_gecoded && self.point? && (lat_changed? || lng_changed?)
+        self.geocoding_accuracy = nil
+      end
+      if position?
+        @is_gecoded = true
+      end
+      if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed? || country_changed?)
+        geocode
+      end
     end
   end
 end

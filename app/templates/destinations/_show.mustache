@@ -87,6 +87,8 @@
   {{/enable_multi_visits}}
   <td class="geocoding">
     <div class="block destination-geocoding">
+      <input type="hidden" name="destination[lat]" value="{{lat}}" />
+      <input type="hidden" name="destination[lng]" value="{{lng}}" />
       <span class="geocoding_level" title="{{geocoding_level_title}}">
         <input type="hidden" name="destination[geocoding_level]" value="{{geocoding_level}}">
         {{#geocoding_level}}
@@ -193,8 +195,6 @@
   </td>
   <td>
     <div class="destination-buttons">
-      <input type="hidden" name="destination[lat]" value="{{lat}}" />
-      <input type="hidden" name="destination[lng]" value="{{lng}}" />
       <a href="destinations/{{id}}/edit" class="btn btn-primary btn-xs" title="{{#i18n}}all.verb.edit{{/i18n}}"><i class="fa fa-pencil fa-fw"></i></a>
       <button type="button" class="destroy btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
     </div>
