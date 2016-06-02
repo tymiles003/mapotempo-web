@@ -17,7 +17,7 @@
         <%= f.file_field :file, required: true do %>
           <p class="help-block">
             <%= t '.csv.file_help' %>
-            <a data-toggle="modal" data-target="#import-help-modal" href="#help" title="<%= t('.import_template_help') %>"><i class="fa fa-info-circle fa-fw"></i> <%= t('.import_template_help') %></a>
+            <a data-toggle="modal" data-target="#import-help-modal" data-keyboard="true" href="#help" title="<%= t('.import_template_help') %>"><i class="fa fa-info-circle fa-fw"></i> <%= t('.import_template_help') %></a>
           </p>
         <% end %>
         <%= f.toggles t '.destinations' do %>
@@ -40,7 +40,7 @@
           </div>
         </div>
 
-        <div class="modal fade" id="import-help-modal" role="dialog">
+        <div class="modal fade" id="import-help-modal" role="dialog" tabindex="-1">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">

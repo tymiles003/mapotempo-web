@@ -25,10 +25,10 @@
         <ul class="dropdown-menu" role="menu">
           <% if @isochrone_capability || @isodistance_capability %>
             <% if @isochrone_capability %>
-              <li><a data-toggle="modal" data-target="#isochrone-modal" href="#"><i class="fa fa-clock-o fa-fw"></i> <%= t '.isochrone' %></a></li>
+              <li><a data-toggle="modal" data-target="#isochrone-modal" data-keyboard="true" href="#"><i class="fa fa-clock-o fa-fw"></i> <%= t '.isochrone' %></a></li>
             <% end %>
             <% if @isodistance_capability %>
-              <li><a data-toggle="modal" data-target="#isodistance-modal" href="#"><i class="fa fa-road fa-fw"></i> <%= t '.isodistance' %></a></li>
+              <li><a data-toggle="modal" data-target="#isodistance-modal" data-keyboard="true" href="#"><i class="fa fa-road fa-fw"></i> <%= t '.isodistance' %></a></li>
             <% end %>
             <li class="divider"></li>
           <% end %>

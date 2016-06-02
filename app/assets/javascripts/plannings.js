@@ -640,7 +640,7 @@ var plannings_edit = function(params) {
 
     $('.export_spreadsheet').click(function() {
       $('[name=spreadsheet-route]').val($(this).closest("[data-route_id]").attr("data-route_id"));
-      $('#planning-spreadsheet-modal').modal('show');
+      $('#planning-spreadsheet-modal').modal({keyboard: true, show: true});
     });
 
     // KMZ: Export Route via E-Mail
@@ -1002,7 +1002,7 @@ var plannings_edit = function(params) {
       var dialog = bootstrap_dialog($.extend(modal_options(), {
         title: I18n.t('plannings.edit.dialog.automatic_insert.title'),
         message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.automatic_insert.in_progress') })
-      })).modal('show');
+      })).modal({keyboard: false, show: true});
       automaticInsertStops([], {
         complete: function() {
           dialog.modal('hide');
@@ -1118,7 +1118,7 @@ var plannings_edit = function(params) {
         }, 100);
       }
 
-      $('#planning-refresh-modal').modal('show');
+      $('#planning-refresh-modal').modal({keyboard: true, show: true});
       $("#refresh-modal").click(function(event, ui) {
         $('#planning-refresh-modal').off('hidden.bs.modal', displayPlanningAfterModal);
         $('#planning-refresh-modal').modal('hide');
@@ -1242,7 +1242,7 @@ var plannings_edit = function(params) {
   });
 
   $('.export_spreadsheet').click(function() {
-    $('#planning-spreadsheet-modal').modal('show');
+    $('#planning-spreadsheet-modal').modal({keyboard: true, show: true});
   });
 }
 
