@@ -35,6 +35,8 @@ class Ort
     key = [soft_upper_bound, matrix.hash, dimension, services.hash, stores.hash, rests.hash, cluster_threshold]
 
     time_window = services.collect{ |service| [service[:start], service[:end], service[:duration]] }
+    time_window.unshift [0, 2147483647, 0] if stores.include? :start
+    # time_window.push [0, 2147483647, 0] if stores.include? :stop
     rest_window = rests.collect{ |rest| [rest[:start], rest[:end], rest[:duration]] }
     cluster(matrix, dimension, time_window, cluster_threshold) { |matrix, time_window|
       result = @cache.read(key)
