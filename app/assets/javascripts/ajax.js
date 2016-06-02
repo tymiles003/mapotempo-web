@@ -146,6 +146,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
             }
           }
         }
+        progressAttempt = delayedJob.attempts;
       }
       else if (progress[i].indexOf('/') > -1) {
         // geocoding current/total
@@ -156,6 +157,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
           $(e).css("width", "" + (100 * v[0] / v[1]) + "%");
           $(e).html(progress[i]);
         }
+        progressAttempt = delayedJob.attempts;
       }
       else {
         $(e).parent().removeClass("active");
@@ -163,7 +165,6 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
         $(e).css("width", "" + progress[i] + "%");
       }
     });
-    progressAttempt = delayedJob.attempts;
     if (delayedJob.attempts) {
       $(".dialog-attempts-number", dialog).html(delayedJob.attempts);
       $(".dialog-attempts", dialog).show();
