@@ -258,13 +258,20 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
-  test 'should automatic insert' do
+  test 'Automatic Insert' do
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
     assert_response :success
+    assert_equal 2, assigns(:routes).length
     assert_equal 2, JSON.parse(response.body)['routes'].size
   end
 
-  test 'should automatic insert all' do
+
+  test 'Automatic Insert With Bad IDs' do
+    patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [1234]
+    assert response.code == 422
+  end
+
+  test 'Automatic Insert All Unaffected Stops' do
     assert @planning.routes.detect{|route| !route.vehicle_usage }.stops.any?
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: []
     assert_response :success

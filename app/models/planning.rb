@@ -225,6 +225,7 @@ class Planning < ActiveRecord::Base
     if route
       stop.active = true
       move_stop(route, stop, index || 1)
+      return route
     end
   end
 

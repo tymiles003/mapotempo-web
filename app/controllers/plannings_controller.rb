@@ -181,17 +181,39 @@ class PlanningsController < ApplicationController
   end
 
   def automatic_insert
+    default_route = @planning.routes.detect{|route| !route.vehicle_usage }
+
     if params[:stop_ids] && !params[:stop_ids].empty?
-      stops = Stop.where route_id: @planning.route_ids, id: params[:stop_ids]
+      begin
+        stops = Stop.where(route_id: @planning.route_ids).find params[:stop_ids]
+      rescue ActiveRecord::RecordNotFound
+        render nothing: true, status: :unprocessable_entity
+        return
+      end
     else
-      stops = @planning.routes.detect{|route| !route.vehicle_usage }.stops
+      stops = default_route.stops
     end
-    stops.each{|stop| @planning.automatic_insert(stop) }
-    @planning.save!
-    @planning.reload
+
+    @routes = [default_route]
+
+    success = true
+    stops.each do |stop|
+      route = @planning.automatic_insert stop
+      if route
+        @routes << route if @routes.exclude?(route)
+      else
+        success = false
+        break
+      end
+    end
+
     respond_to do |format|
       format.json do
-        render action: :show
+        if success && @planning.save && @planning.reload
+          render action: :show
+        else
+          render nothing: true, status: :unprocessable_entity
+        end
       end
     end
   end
