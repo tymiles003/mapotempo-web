@@ -1024,8 +1024,8 @@ en:
           columns_skip: "Skip"
           columns_DnD_help: "Use mouse to drag-and-drop exported columns"
           format: "Format"
-          csv: "standard csv format"
-          excel: "Excel format"
+          csv: "standard CSV format"
+          excel: "Excel CSV format"
           download: "Download"
     new:
       title: "New plan"

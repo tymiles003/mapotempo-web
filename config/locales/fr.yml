@@ -1025,8 +1025,8 @@ fr:
           columns_skip: "Non exportées"
           columns_DnD_help: "Utilisez la souris pour glisser-déposer les colonnes à exporter"
           format: "Format"
-          csv: "format standard csv"
-          excel: "format Excel"
+          csv: "format standard CSV"
+          excel: "format Excel CSV"
           download: "Télécharger"
     new:
       title: "Nouveau planning"
