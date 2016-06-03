@@ -1191,13 +1191,14 @@ var plannings_edit = function(params) {
   $("form").submit(function(event) {
     var new_zoning = $("#planning_zoning_ids").val();
     if (new_zoning && initial_zoning.join(',') != new_zoning.join(',')) {
-      if (confirm(I18n.t('plannings.edit.zoning_confirm'))) {
-        bootstrap_dialog({
-          title: I18n.t('plannings.edit.dialog.zoning.title'),
-          icon: 'fa-bars',
-          message: I18n.t('plannings.edit.dialog.zoning.in_progress')
-        }).modal('show');
+      if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) {
+        return false;
       }
+      bootstrap_dialog({
+        title: I18n.t('plannings.edit.dialog.zoning.title'),
+        icon: 'fa-bars',
+        message: I18n.t('plannings.edit.dialog.zoning.in_progress')
+      }).modal('show');
     }
   });
 
