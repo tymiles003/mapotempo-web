@@ -127,6 +127,7 @@ class Orange < DeviceBase
         prevmisdeb: p_time(route, route.start).strftime("%d/%m/%Y %H:%M"), prevmisfin: p_time(route, route.end).strftime("%d/%m/%Y %H:%M")
       xml.tag! :zone, nil, type: "operation" do
         route.stops.select(&:active?).select(&:position?).sort_by(&:index).each do |stop|
+          next if !stop.time
           xml.tag! :operation, nil, options.merge(seq: stop.index, ad1: stop.street, ad2: nil, ad3: nil, ad_zip: stop.postalcode,
             ad_city: stop.city, ad_cntry: "FR", latitude: stop.lat, longitude: stop.lng, title: stop.name, txt: [stop.street, stop.postalcode, stop.city].join(", "),
             prevopedeb: p_time(route, stop.open || stop.time).strftime("%d/%m/%Y %H:%M"), prevopefin: p_time(route, stop.close || stop.time).strftime("%d/%m/%Y %H:%M"))

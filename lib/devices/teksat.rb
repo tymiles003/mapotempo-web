@@ -44,9 +44,12 @@ class Teksat < DeviceBase
   end
 
   def send_route customer, route, options={}
-    send_mission customer, route, route.start, route.vehicle_usage.default_store_start.lat, route.vehicle_usage.default_store_start.lng
-    route.stops.select(&:active?).select(&:position?).sort_by(&:index).each{|stop| send_mission(customer, route, stop.time, stop.lat, stop.lng) }
-    send_mission customer, route, route.end, route.vehicle_usage.default_store_stop.lat, route.vehicle_usage.default_store_stop.lng
+    send_mission(customer, route, route.start, route.vehicle_usage.default_store_start) if route.vehicle_usage.default_store_start
+    route.stops.select(&:active?).select(&:position?).sort_by(&:index).each do |stop|
+      next if !stop.time # Teksat API: Stop time is required
+      send_mission(customer, route, stop.time, stop)
+    end
+    send_mission(customer, route, route.end, route.vehicle_usage.default_store_stop) if route.vehicle_usage.default_store_stop
   end
 
   def clear_route customer, route
@@ -67,18 +70,20 @@ class Teksat < DeviceBase
 
   private
 
-  def send_mission customer, route, start_time, lat, lng
-    route_params = {
+  def send_mission customer, route, start_time, destination
+    response = RestClient.get set_mission_url(customer, {
       mi_v_id: route.vehicle_usage.vehicle.teksat_id,
       mi_label: route.planning.name,
-      mi_customer: route.planning.customer.name
-    }
-    response = RestClient.get set_mission_url(customer, route_params.merge(
+      mi_customer: destination.name,
+      mi_begin_latitude: destination.lat,
+      mi_begin_longitude: destination.lng,
+      mi_begin_address1: destination.street,
+      mi_begin_zip: destination.postalcode,
+      mi_begin_city: destination.city,
+      mi_begin_country: destination.country || customer.default_country,
       mi_begin_date: p_time(route, start_time).strftime("%Y-%m-%d"),
-      mi_begin_time: p_time(route, start_time).strftime("%H-%M-%S"),
-      mi_begin_latitude: lat,
-      mi_begin_longitude: lng
-    ))
+      mi_begin_time: p_time(route, start_time).strftime("%H:%M:%S")
+    })
     if response.code != 200
       raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.set_mission') ])
     end
