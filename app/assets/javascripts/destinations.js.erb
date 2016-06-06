@@ -784,7 +784,7 @@ var destinations_index = function(params, api) {
   }
 
   var globalGeocodingScore = function(level, accuracy) {
-    var ret = 0;
+    var ret = null;
     switch (level) {
       case 'point':
         ret = 5000;
