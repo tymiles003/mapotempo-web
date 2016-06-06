@@ -29,6 +29,20 @@ $(document).on('ready page:load', function() {
   $('[data-toggle="dropdown"]').parent().on('hide.bs.dropdown', function(e){
     $(this).find('.dropdown-menu').first().stop(true, true).slideUp({duration: 200});
   });
+
+  $('.modal').on('shown.bs.modal', function() {
+    var modal = this;
+    $('input:not(:hidden)', modal).focus();
+    $(modal).on('keyup', function(e) {
+      if (e.keyCode == 13) {
+        $('.btn-primary', modal)[0].click();
+      }
+    });
+  });
+  $('.modal').on('hidden.bs.modal', function() {
+    var modal = this;
+    $(modal).off('keyup');
+  });
 });
 
 var modal_options = function() {

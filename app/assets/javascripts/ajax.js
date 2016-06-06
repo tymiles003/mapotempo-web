@@ -68,6 +68,7 @@ var freezeProgressDialog = function(dialog) {
 
 var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
   dialog.find('[data-dismiss]').show();
+  dialog.data()['bs.modal'].options.backdrop = false;
   dialog.on('hidden.bs.modal', function() {
     // delayedJob could contain neither customer_id nor id in case of server error...
     $.ajax({
@@ -82,8 +83,10 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
           complete: completeAjaxMap,
           error: ajaxError
         });
-      }
+      },
+      error: ajaxError
     });
+    dialog.off('keyup');
     // Reset dialog content
     $(".dialog-progress", dialog).show();
     $(".dialog-attempts", dialog).hide();
@@ -93,6 +96,9 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
   dialog.on('keyup', function(e) {
     if (e.keyCode == 27) {
       dialog.modal('hide');
+    }
+    if (e.keyCode == 13) {
+      dialog.find('.btn-primary')[0].click();
     }
   });
 };
