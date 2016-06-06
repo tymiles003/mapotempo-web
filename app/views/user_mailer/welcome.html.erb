@@ -5,8 +5,14 @@
   </head>
   <body>
     <p>
-      <%= t '.content' %>
-      <%= link_to t(".set_password"), [:password, user.customer, user, token: user.confirmation_token] %>
+      <%= t('.content',
+      s: user.customer.reseller.name,
+      # /customers/id/users/id/password?token=token
+      t: link_to(t(".set_password"), [:password, user.customer, user, token: user.confirmation_token]),
+      l: url_for([:password, user.customer, user, token: user.confirmation_token]),
+      a: user.customer.reseller.host,
+      c: user.customer.reseller.contact_url)
+      %>
     </p>
   </body>
 </html>

@@ -829,9 +829,18 @@ fr:
 
   user_mailer:
     welcome:
-      title: "Mapotempo : Votre compte"
-      content: "Votre compte sera actif lorsqu'un mot de passe sera défini.\n
-                Vous pouvez le faire maintenant avec ce lien :"
+      title: "Votre compte %{s}"
+      content: "Bonjour et bienvenue sur %{s},\n
+\n
+Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : %{t} ou %{l}\n
+\n
+Vous pourrez alors vous connecter à tout moment au service en ligne %{s} via : %{a}\n
+\n
+Pour nous contacter veuillez utiliser l'un des moyens listés sur cette page : %{c}\n
+\n
+Avec toute notre attention,\n
+\n
+L'équipe %{s}"
       set_password: "Changer le mot de passe"
 
   plannings:
