@@ -1,0 +1,13 @@
+<%= t '.content' %>
+
+<%= "https://app.mapotempo.com" + url %>
+
+<%= "%s: %s" % [t(".vehicle"), vehicle.name] %>
+<% if route.planning.date %>
+<%= "%s: %s (%s)" % [t(".planning"), route.planning.name, l(route.planning.date)] %>
+<% else %>
+<%= "%s: %s" % [t(".planning"), route.planning.name] %>
+<% end %>
+<%= "%s: %s" % [t(".planning_ref"), route.planning.ref] if route.planning.ref %>
+<%= "%s: %s" % [t(".route_ref"), route.ref] if route.ref %>
+<%= "%s: %s" % [t(".order_array"), route.planning.order_array.name] if route.planning.customer.enable_orders && route.planning.order_array %>

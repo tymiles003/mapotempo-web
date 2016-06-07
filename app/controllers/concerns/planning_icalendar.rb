@@ -17,7 +17,7 @@ module PlanningIcalendar
     event.dtstart = event_start
     event.summary = stop.name
     event.location = [stop.street, stop.postalcode, stop.city, stop.country, stop.detail].reject(&:blank?).join(", ")
-    event.categories = !route.ref.blank? ? route.ref : route.vehicle_usage.vehicle.name
+    event.categories = !route.ref.blank? ? route.ref : route.vehicle_usage.vehicle.name.gsub(",", "")
     event.description = stop.comment
     event.created = stop.created_at
     event.last_modified = stop.updated_at
@@ -52,6 +52,31 @@ module PlanningIcalendar
     calendar = Icalendar::Calendar.new
     add_route_to_calendar calendar, route
     return calendar
+  end
+
+  def icalendar_route_export planning, route
+    filename = export_filename planning, route.ref || route.vehicle_usage.vehicle.name
+    header 'Content-Disposition', "attachment; filename=\"#{filename}.ics\""
+    route_calendar(route).to_ical
+  end
+
+  def icalendar_planning_export planning
+    filename = export_filename planning, planning.ref
+    header 'Content-Disposition', "attachment; filename=\"#{filename}.ics\""
+    planning_calendar(planning).to_ical
+  end
+
+  def icalendar_export_email planning, route
+    if route.vehicle_usage.vehicle.contact_email
+      vehicle = route.vehicle_usage.vehicle
+      url = api_route_calendar_path @current_user, route
+      name = export_filename route.planning, route.ref || route.vehicle_usage.vehicle.name
+      if Mapotempo::Application.config.delayed_job_use
+        RouteMailer.delay.send_ics_route @current_user, vehicle, route, name + '.ics', url
+      else
+        RouteMailer.send_ics_route(@current_user, vehicle, route, name + '.ics', url).deliver_now
+      end
+    end
   end
 
 end

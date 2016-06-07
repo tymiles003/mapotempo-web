@@ -18,6 +18,7 @@
 
 include PlanningExport
 include PlanningIcalendar
+include IcalendarUrlHelper
 
 class V01::RoutesIcalendar < Grape::API
 
@@ -26,26 +27,22 @@ class V01::RoutesIcalendar < Grape::API
   content_type :ics, 'text/calendar'
   format :ics
 
-  resource :plannings do
+  resource :routes_icalendar do
+    desc 'Export Calendar ICS'
     params do
       requires :planning_id, type: String, desc: ID_DESC
+      requires :id, type: String, desc: ID_DESC
     end
-    segment '/:planning_id' do
-      resource :routes_icalendar do
-        desc 'Export Calendar ICS'
-        params do
-          requires :planning_id, type: String, desc: ID_DESC
-          requires :id, type: String, desc: ID_DESC
-        end
-        get ':id' do
-          planning_id = ParseIdsRefs.read params[:planning_id] rescue error!('Invalid IDs', 400)
-          route_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
-          planning = current_customer.plannings.where(planning_id).first!
-          route = planning.routes.where(route_id).first!
-          filename = export_filename route.planning, route.ref || route.vehicle_usage.vehicle.name
-          header 'Content-Disposition', "attachment; filename=\"#{filename}.ics\""
-          route_calendar(route).to_ical
-        end
+    get ':planning_id/:id' do
+      planning_id = ParseIdsRefs.read params[:planning_id] rescue error!('Invalid IDs', 400)
+      route_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
+      planning = current_customer.plannings.where(planning_id).first!
+      route = planning.routes.where(route_id).first!
+      if params[:email].to_i == 1
+        icalendar_export_email planning, route
+        status 204
+      else
+        icalendar_route_export planning, route
       end
     end
   end

@@ -825,6 +825,13 @@ en:
       planning_ref: "Plan Ref."
       route_ref: "Route Ref."
       order_array: "Orders"
+    send_ics_route:
+      content: "Please click the following link to access your Routes details in Calendar"
+      vehicle: "Vehicle"
+      planning: "Plan"
+      planning_ref: "Plan Ref."
+      route_ref: "Route Ref."
+      order_array: "Orders"
 
   user_mailer:
     welcome:
@@ -906,9 +913,11 @@ Best resgards,\n
         fail: "Failed to send to Masternaut"
       export:
         icalendar:
-          action: "Export as iCalendar"
-          success: "Planning exported successfully"
-          fail: "Failed to export planning"
+          action: "Calendar"
+          action_email: "Calendar by E-Mail"
+          success: "File exported successfully"
+          success_with_email: "File sucessfully sent by E-Mail"
+          fail: "Failed to export"
         kmz_email:
           action: "KML Track by E-Mail"
           success: "E-Mail sent successfully"

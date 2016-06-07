@@ -826,6 +826,13 @@ fr:
       planning_ref: "Référence planning"
       route_ref: "Référence de la tournée"
       order_array: "Commandes"
+    send_ics_route:
+      content: "Veuillez cliquer sur le lien suivant pour accéder aux détails de la route dans l'agenda"
+      vehicle: "Véhicule"
+      planning: "Planning"
+      planning_ref: "Référence planning"
+      route_ref: "Référence de la tournée"
+      order_array: "Commandes"
 
   user_mailer:
     welcome:
@@ -907,9 +914,11 @@ L'équipe %{s}"
         fail: "Échec lors de l'envoi vers Masternaut"
       export:
         icalendar:
-          action: "Export iCalendar"
-          success: "Planning exporté avec succès"
-          fail: "Échec lors de l'export iCalendar"
+          action: "Agenda"
+          action_email: "Agenda par Email"
+          success: "Fichier exporté avec succès"
+          success_with_email: "Fichier exporté avec succès par Email"
+          fail: "Échec lors de l'export"
         kmz_email:
           action: "Tracé KML par email"
           success: "Email envoyé avec succès"

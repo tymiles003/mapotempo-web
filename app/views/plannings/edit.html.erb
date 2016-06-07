@@ -138,21 +138,30 @@
             <li role="separator" class="divider"></li>
             <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet' %></a></li>
             <li role="separator" class="divider"></li>
-            <li class="icalendar-export">
-              <a href="/api/0.1/plannings_icalendar/<%= @planning.id %>?api_key=<%= current_user.api_key %>">
-                <i class="fa fa-calendar fa-fw"></i>
-                <%= t '.export.icalendar.action' %>
-              </a>
-            </li>
-            <li role="separator" class="divider"></li>
             <li><%= link_to planning_path(@planning, format: :gpx) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_route' %><% end %></li>
             <li><%= link_to planning_path(@planning, format: :gpx, track: true) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.gpx_track' %><% end %></li>
             <li><%= link_to planning_path(@planning, format: :kmz) do %><i class="fa fa-mobile fa-fw"></i> <%= t '.export.kmz_track' %><% end %></li>
+            <li role="separator" class="divider"></li>
             <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.contact_email.blank? } %>
               <li class="kmz_email">
                 <%= link_to planning_path(@planning, format: :kmz, email: 1) do %>
                   <i class="fa fa-envelope fa-fw"></i>
                   <%= t '.export.kmz_email.action' %>
+                <% end %>
+              </li>
+              <li role="separator" class="divider"></li>
+            <% end %>
+            <li class="icalendar-export">
+              <%= link_to api_planning_calendar_path(current_user, @planning) do %>
+                <i class="fa fa-calendar fa-fw"></i>
+                <%= t '.export.icalendar.action' %>
+              <% end %>
+            </li>
+            <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.contact_email.blank? } %>
+              <li class="icalendar-export" data-email="true">
+                <%= link_to api_planning_calendar_path(current_user, @planning) do %>
+                  <i class="fa fa-calendar fa-fw"></i>
+                  <%= t '.export.icalendar.action_email' %>
                 <% end %>
               </li>
             <% end %>

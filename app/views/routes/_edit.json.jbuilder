@@ -1,5 +1,5 @@
 json.route_id route.id
-json.calendar_url "/api/0.1/plannings/#{route.planning_id}/routes_icalendar/#{route.id}?api_key=#{current_user.api_key}"
+json.calendar_url api_route_calendar_path(current_user, route)
 (json.duration (route.start && route.end) ? '%i:%02i' % [(route.end - route.start) / 60 / 60, (route.end - route.start) / 60 % 60] : '0:00')
 (json.hidden true) if route.hidden
 (json.locked true) if route.locked
