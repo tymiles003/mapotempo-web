@@ -10,7 +10,6 @@ class V01::PlanningsIcalendarTest < ActiveSupport::TestCase
     @planning = plannings :planning_one
   end
 
-  focus
   test 'Export Planning' do
     get api("/plannings_icalendar/#{@planning.id}")
     assert last_response.ok?
