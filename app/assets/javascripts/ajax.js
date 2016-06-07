@@ -103,7 +103,7 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
   });
 };
 
-var progressAttempt = undefined;
+var iteration = undefined;
 var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, successCallback) {
   if (delayedJob !== undefined) {
     var timeout = 2000;
@@ -120,50 +120,40 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       }
       if (!progress || !progress[i]) {
         $(e).parent().removeClass("active");
-        $(e).css("transition", "linear 0s");
-        $(e).css("width", "0%");
+        $(e).css({transition: 'linear 0s', width: '0%'});
       }
       else if (progress[i] == 100) {
         $(e).parent().removeClass("active");
-        $(e).css("transition", "linear 0s");
-        $(e).css("width", "100%");
+        $(e).css({transition: 'linear 0s', width: '100%'});
       }
       else if (progress[i] == -1) {
         $(e).parent().addClass("active");
-        $(e).css("transition", "linear 0s");
-        $(e).css("width", "100%");
+        $(e).css({transition: 'linear 0s', width: '100%'});
       }
       else if (progress[i].indexOf('ms') > -1) {
         // optimization in ms
-        if (progressAttempt != delayedJob.attempts) {
-          var v = progress[i].split('ms');
-          var iteration = $(e).data('iteration');
-          if (iteration != v[1]) {
-            $(e).data('iteration', iteration);
-            $(e).css("transition", "linear 0s");
-            $(e).css("width", "0%");
-          }
-          if (parseInt($(e).css("width")) == 0) {
+        var v = progress[i].split('ms');
+        if (iteration != v[1] || $(".dialog-attempts-number", dialog).html() != delayedJob.attempts) {
+          iteration = v[1];
+          $(e).css('transition', 'linear 0s');
+          $(e).css('width', '0%');
+          setTimeout(function() { // to be sure width is 0%
             duration = parseInt(v[0]);
             if (duration > timeout) {
               $(e).parent().removeClass("active");
-              $(e).css("transition", "linear " + ((duration - timeout) / 1000) + "s");
+              $(e).css("transition", "linear " + ((duration - timeout - 20) / 1000) + "s");
               $(e).css("width", "100%");
             }
-          }
+          }, 20);
         }
-        progressAttempt = delayedJob.attempts;
       }
       else if (progress[i].indexOf('/') > -1) {
-        // geocoding current/total
-        if (progressAttempt != delayedJob.attempts) {
-          var v = progress[i].split('/');
-          $(e).parent().removeClass("active");
-          $(e).css("transition", "linear 0.5s");
-          $(e).css("width", "" + (100 * v[0] / v[1]) + "%");
-          $(e).html(progress[i]);
-        }
-        progressAttempt = delayedJob.attempts;
+        // optimization or geocoding current/total
+        var v = progress[i].split('/');
+        $(e).parent().removeClass("active");
+        $(e).css("transition", "linear 0.5s");
+        $(e).css("width", "" + (100 * v[0] / v[1]) + "%");
+        $(e).html(progress[i]);
       }
       else {
         $(e).parent().removeClass("active");
@@ -210,7 +200,6 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       dialog.modal('hide');
       $($(".progress-bar", dialog)).css("width", "0%");
     }
-    progressAttempt = undefined;
     return true;
   }
 }
