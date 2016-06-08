@@ -25,7 +25,6 @@ class RoutesController < ApplicationController
   before_action :set_route, only: [:update]
 
   include PlanningExport
-  include PlanningIcalendar
 
   def show
     @params = params
