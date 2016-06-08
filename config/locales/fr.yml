@@ -519,9 +519,9 @@ fr:
       index:
         title: "Modifier utilisateurs"
         new: "Nouvel utilisateur"
-        send_email: "Envoyer email de confirmation"
       new:
         title: "Nouvel utilisateur"
+        send_email: "Envoyer email de confirmation"
       create:
         success: "Utilisateur créé avec succès"
       edit:

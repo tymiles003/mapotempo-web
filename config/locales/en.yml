@@ -518,9 +518,9 @@ en:
       index:
         title: "Editing users"
         new: "New user"
-        send_email: "Send Confirmation E-Mail"
       new:
         title: "New user"
+        send_email: "Send Confirmation E-Mail"
       create:
         success: "User created successfully"
       edit:
