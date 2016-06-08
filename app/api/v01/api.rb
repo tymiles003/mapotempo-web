@@ -128,7 +128,6 @@ class V01::Api < Grape::API
   mount V01::Geocoder
 
   # iCalendar Export
-  mount V01::PlanningsIcalendar
-  mount V01::RoutesIcalendar
+  mount V01::Icalendar
 
 end

@@ -519,7 +519,7 @@ fr:
       index:
         title: "Modifier utilisateurs"
         new: "Nouvel utilisateur"
-        send_email: "Envoyer Email de confirmation"
+        send_email: "Envoyer email de confirmation"
       new:
         title: "Nouvel utilisateur"
       create:
@@ -542,7 +542,7 @@ fr:
       customers: "Comptes client"
     edit:
       title: "Modifier paramétrage global"
-      send_email: "Envoyer Email de confirmation"
+      send_email: "Envoyer email de confirmation"
       password: "Changer le mot de passe"
       user:
         connect_as: "Connecter en tant que…"
@@ -922,7 +922,7 @@ L'équipe %{s}"
         kmz_email:
           action: "Tracé KML par email"
           success: "Email envoyé avec succès"
-          fail: "Échec lors de l'envoi de l'Email"
+          fail: "Échec lors de l'envoi de l'email"
         print: "Imprimer"
         spreadsheet: "Tableur CSV / Excel"
         gpx_route: "Route GPX"
@@ -1234,7 +1234,7 @@ L'équipe %{s}"
       edit: "Modifier votre identifiant de connexion et mot de passe"
     form:
       url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
-      send_email: "Envoyer Email"
+      send_email: "Envoyer email"
     update:
       success: "Utilisateur mis à jour avec succès"
     password:

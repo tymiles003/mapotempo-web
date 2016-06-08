@@ -3,15 +3,22 @@ require 'test_helper'
 class V01::RoutesIcalendarTest < ActiveSupport::TestCase
 
   include Rack::Test::Methods
-  require Rails.root.join("test/lib/devices/api_base")
   include ApiBase
+
+  def app
+    Rails.application
+  end
+
+  def api path, params = {}
+    Addressable::Template.new("/api/0.1/#{path}{?query*}").expand(query: params.merge(api_key: 'testkey1')).to_s
+  end
 
   setup do
     @route = routes :route_one_one
   end
 
   test 'Export Route' do
-    get api("/plannings/#{@route.planning_id}/routes_icalendar/#{@route.id}")
+    get api("/plannings/#{@route.planning_id}/routes/#{@route.id}/icalendar.ics")
     assert last_response.ok?
   end
 end
