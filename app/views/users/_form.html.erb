@@ -14,10 +14,8 @@ layers = (@user.admin? ? Layer.all : (@user.customer.profile.layers + [@user.lay
 <%= twitter_bootstrap_form_for @user, url: [@customer, @user], layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @user %>
   <%= hidden_field_tag :url, params[:url] %>
-  <%= f.collection_select :layer_id, [], (@user.admin? ? Layer.all.sort_by(&:id) : @user.customer.profile.layers).select{ |l| !l[:overlay] }, :id, :name, {}, {required: true} %>
-
   <%= render partial: "users/time_zone" %>
-
+  <%= f.collection_select :layer_id, [], (@user.admin? ? Layer.all.sort_by(&:id) : @user.customer.profile.layers).select{ |l| !l[:overlay] }, :id, :name, {}, {required: true} %>
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" class="map-fixed-size"></div></span>
   </div>
