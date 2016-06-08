@@ -8,7 +8,7 @@
   <%= f.password_field :password %>
   <%= f.password_field :password_confirmation %>
   <%= render partial: 'users/time_zone' %>
-  <%= f.collection_select :customer_id, [], @customers, :id, :name %>
+  <%= f.collection_select :customer_id, [], @customers, :id, :name, {}, {class: 'form-control'} %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
