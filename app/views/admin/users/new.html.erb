@@ -7,16 +7,9 @@
   <%= f.email_field :email, autocomplete: "off" %>
   <%= render partial: 'users/time_zone' %>
   <%= f.collection_select :customer_id, [], @customers, :id, :name, {}, {class: 'form-control'} %>
-  <div class="form-group">
-    <div class="col-md-2">
-      <div class="pull-right">
-        <%= label_tag :send_email, t("users.send_email") %>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <%= check_box_tag :send_email, 1, true %>
-    </div>
-  </div>
+  <%= f.toggles t 'users.send_email' do %>
+    <%= check_box_tag :send_email, 1, true %>
+  <% end %>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
