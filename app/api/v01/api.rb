@@ -49,6 +49,10 @@ class V01::Api < Grape::API
       Time.zone = @current_user.time_zone
     end
 
+    def set_locale
+      I18n.locale = env.http_accept_language.preferred_language_from %w(en fr)
+    end
+
     def error!(*args)
       # Workaround for close transaction on error!
       if !ActiveRecord::Base.connection.transaction_manager.current_transaction.is_a?(ActiveRecord::ConnectionAdapters::NullTransaction)
@@ -62,6 +66,7 @@ class V01::Api < Grape::API
     authenticate!
     authorize!
     set_time_zone
+    set_locale
     ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.begin_transaction
   end
 
