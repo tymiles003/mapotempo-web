@@ -28,8 +28,8 @@ module VehicleUsagesHelper
   def vehicle_usage_router vehicle_usage
     capture do
       if vehicle_usage.vehicle.router
-        concat [vehicle_usage.vehicle.router.name, t("activerecord.attributes.router.router_dimensions.#{vehicle_usage.vehicle.router_dimension}")].join(" - ")
-      elsif @customer.router
+        concat [vehicle_usage.vehicle.router.name, t("activerecord.attributes.router.router_dimensions.#{vehicle_usage.vehicle.router_dimension || @customer.router_dimension}")].join(" - ")
+      elsif
         concat span_tag([@customer.router.name, t("activerecord.attributes.router.router_dimensions.#{@customer.router_dimension}")].join(" - "))
       end
     end
