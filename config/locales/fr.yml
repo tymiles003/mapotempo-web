@@ -895,6 +895,7 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
       optimize_complete: "Optimisation terminée"
       optimize_failed: "Échec lors de l'optimisation"
       zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
+      page_change_zoning_confirm: "Souhaitez-vous quitter la page et perdre les changements de zonage ?"
       route_placeholder: "Réf. de la tournée"
       service_time: "Durées de service"
       exports: "Exporter le planning"

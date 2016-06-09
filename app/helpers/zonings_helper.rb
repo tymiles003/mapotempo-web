@@ -27,4 +27,10 @@ module ZoningsHelper
       }.map(&:vehicle).uniq
     end
   end
+
+  def zoning_details zoning
+    zoning.zones.each_with_object({}) do |zone, hash|
+      hash[zone.id] = zone.attributes.slice('vehicle_id').merge('avoid_zone' => zone.avoid_zone)
+    end
+  end
 end

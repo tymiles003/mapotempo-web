@@ -59,6 +59,7 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 
 controller.js(
   zoning_id: @zoning.id,
+  zoning_details: zoning_details(@zoning),
   planning_id: @planning ? @planning.id : nil,
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
   map_lat: (@planning && @planning.vehicle_usage_set.vehicle_usages.active.collect(&:default_store_start).find{ |s| s.lat }.try(:lat)) || @zoning.customer.default_position[:lat],

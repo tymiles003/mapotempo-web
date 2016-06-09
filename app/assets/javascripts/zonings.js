@@ -24,6 +24,9 @@ var zonings_edit = function(params) {
     url_click2call = params.url_click2call,
     show_capacity = params.show_capacity;
 
+  var changes = {};
+  var drawing_changed, editing_drawing;
+
   // sidebar has to be created before map
   var sidebar = L.control.sidebar('edit-zoning', {
     position: 'right'
@@ -79,7 +82,33 @@ var zonings_edit = function(params) {
     }
   }).addTo(map);
 
+  function checkZoningChanges(e) {
+    var zones_changed;
+    $.each(changes, function(i, array) {
+      if (array.length > 0) zones_changed = true;
+    });
+    if (editing_drawing || drawing_changed || zones_changed) {
+      if (!confirm(I18n.t('plannings.edit.page_change_zoning_confirm'))) {
+        e.preventDefault();
+      }
+    }
+    $(document).on('page:change', function(e) {
+      $(document).off('page:before-change', checkZoningChanges);
+    });
+  }
+
+  $(document).on('page:before-change', checkZoningChanges);
+
+  map.on('draw:editstart', function(e) {
+    editing_drawing = true;
+  });
+
+  map.on('draw:editstop', function(e) {
+    editing_drawing = true;
+  });
+
   map.on('draw:created', function(e) {
+    drawing_changed = true;
     addZone({
       'vehicles': vehicles_array,
       'polygon': JSON.stringify(e.layer.toGeoJSON())
@@ -87,12 +116,15 @@ var zonings_edit = function(params) {
   });
 
   map.on('draw:edited', function(e) {
+    editing_drawing = null;
+    drawing_changed = true;
     e.layers.eachLayer(function(layer) {
       updateZone(layer);
     });
   });
 
   map.on('draw:deleted', function(e) {
+    drawing_changed = true;
     e.layers.eachLayer(function(layer) {
       deleteZone(layer);
       labelLayer.clearLayers();
@@ -199,6 +231,40 @@ var zonings_edit = function(params) {
   });
 
   var addZone = function(zone, geom) {
+
+    function observeChanges(element) {
+
+      var zone_id = getID();
+
+      if (zone_id == '') return;
+
+      function getID() {
+        return $(element).find("input[name='zoning[zones_attributes][][id]']").val();
+      }
+
+      function toggleChange(k, v) {
+        if (params.zoning_details[zone_id][k] == v) {
+          $.each(changes[zone_id], function(i, item) { if (item == k) changes[zone_id].splice(i, 1) });
+        } else {
+          if ($.inArray(k, changes[zone_id]) == -1) changes[zone_id].push(k);
+        }
+      }
+
+      changes[zone_id] = [];
+
+      element.find('input.zone-name').change(function(e) {
+        toggleChange('name', $(e.target).val());
+      });
+
+      element.find('.avoid-zone input[type=checkbox]').click(function(e) {
+        toggleChange('avoid_zone', $(e.target).is(':checked'));
+      });
+
+      element.find('select.vehicle_select').change(function(e) {
+        toggleChange('vehicle_id', $(e.target).val());
+      });
+    }
+
     var geoJsonLayer;
     if (geom instanceof L.GeoJSON) {
       geoJsonLayer = geom;
@@ -238,8 +304,13 @@ var zonings_edit = function(params) {
         zone.capacity = '-';
       }
     }
+
     $('#zones').append(SMT['zones/show'](zone));
+
     var ele = $('#zones .zone:last');
+
+    observeChanges(ele);
+
     ele.data('feature', zone);
     zone_map[geom._leaflet_id] = {
       layer: geom,
@@ -310,6 +381,7 @@ var zonings_edit = function(params) {
   };
 
   var deleteZone = function(geom) {
+    drawing_changed = true;
     featureGroup.removeLayer(geom);
     var ele = zone_map[geom._leaflet_id].ele;
     ele.hide();
