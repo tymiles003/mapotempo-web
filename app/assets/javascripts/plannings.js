@@ -665,30 +665,28 @@ var plannings_edit = function(params) {
     });
 
     // iCalendar Export
-    $.each($('.icalendar-export'), function(i, element) {
-      $(element, context).click(function(e) {
-        if ($(element).data('email')) e.preventDefault();
-        $.ajax({
-          url: $(e.target).attr('href'),
-          type: 'GET',
-          data: { email: $(element).data('email') ? 1 : 0 },
-          beforeSend: function(jqXHR, settings) {
-            beforeSendWaiting();
-          },
-          complete: function(jqXHR, textStatus) {
-            completeWaiting();
-          },
-          success: function(data, textStatus, jqXHR) {
-            if ($(element).data('email')) {
-              notice(I18n.t('plannings.edit.export.icalendar.success_with_email'));
-            } else {
-              notice(I18n.t('plannings.edit.export.icalendar.success'));
-            }
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
+    $('.icalendar-export_email a', context).click(function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(e.target).attr('href'),
+        type: 'GET',
+        beforeSend: function(jqXHR, settings) {
+          beforeSendWaiting();
+        },
+        complete: function(jqXHR, textStatus) {
+          completeWaiting();
+        },
+        success: function(data, textStatus, jqXHR) {
+          if ($(e.target).attr('href').indexOf('email' !== -1)) {
+            notice(I18n.t('plannings.edit.export.icalendar.success_with_email'));
+          } else {
+            notice(I18n.t('plannings.edit.export.icalendar.success'));
           }
-        });
+          notice(I18n.t('plannings.edit.export.icalendar.success_with_email'));
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
+        }
       });
     });
 
