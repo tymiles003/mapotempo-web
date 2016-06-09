@@ -29,7 +29,6 @@ class User < ActiveRecord::Base
 
   after_initialize :assign_defaults, if: 'new_record?'
   before_validation :assign_defaults_layer, if: 'new_record?'
-  after_initialize :set_default_time_zone
   before_save :set_time_zone
 
   validates :customer, presence: true, unless: :admin?
@@ -86,6 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def assign_defaults
+    set_default_time_zone
     self.api_key || self.api_key_random
   end
 
