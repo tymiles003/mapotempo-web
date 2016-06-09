@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
       copy.email = I18n.l(Time.now, format: '%Y%m%d%H%M%S') + '_' + copy.email
       copy.password = Devise.friendly_token
       copy.confirmation_token = nil
+      copy.api_key_random
     })
   end
 
@@ -70,6 +71,10 @@ class User < ActiveRecord::Base
     self.update! confirmation_sent_at: Time.now
   end
 
+  def api_key_random
+    self.api_key = SecureRandom.hex
+  end
+
   private
 
   def set_default_time_zone
@@ -81,7 +86,7 @@ class User < ActiveRecord::Base
   end
 
   def assign_defaults
-    self.api_key ||= SecureRandom.hex
+    self.api_key || self.api_key_random
   end
 
   def assign_defaults_layer
