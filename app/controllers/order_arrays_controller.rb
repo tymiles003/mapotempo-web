@@ -131,6 +131,7 @@ class OrderArraysController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def order_array_params
+    params[:order_array][:base_date] = Date.strptime(params[:order_array][:base_date], I18n.t('time.formats.datepicker')).strftime(I18n.t('time.formats.activerecord_default')) if params[:order_array] && params[:order_array][:base_date]
     params.require(:order_array).permit(:name, :base_date, :length)
   end
 end

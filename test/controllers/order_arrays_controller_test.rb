@@ -37,10 +37,11 @@ class OrderArraysControllerTest < ActionController::TestCase
 
   test 'should create order_array' do
     assert_difference('OrderArray.count') do
-      post :create, order_array: { name: 'test', length: 'week', base_date: '10/10/2014' }
+      post :create, order_array: { name: 'test', length: 'week', base_date: '30-10-2016' }
     end
-
     assert_redirected_to edit_order_array_path(assigns(:order_array))
+    assert assigns(:order_array).persisted?
+    assert assigns(:order_array).base_date.strftime("%d-%m-%Y") == '30-10-2016'
   end
 
   test 'should not create order_array' do
@@ -72,8 +73,10 @@ class OrderArraysControllerTest < ActionController::TestCase
   end
 
   test 'should update order_array' do
-    patch :update, id: @order_array, order_array: { name: @order_array.name, base_date: Date.new(2018,10,10) }
+    patch :update, id: @order_array, order_array: { name: @order_array.name, base_date: '30-10-2016' }
     assert_redirected_to edit_order_array_path(assigns(:order_array))
+    assert assigns(:order_array).persisted?
+    assert assigns(:order_array).base_date.strftime("%d-%m-%Y") == '30-10-2016'
   end
 
   test 'should not update order_array' do

@@ -34,9 +34,14 @@ class CustomersControllerTest < ActionController::TestCase
     sign_in users(:user_one)
     patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance' }
     assert_redirected_to [:edit, @customer]
+    assert_equal 'distance', @customer.reload.router_dimension
+  end
 
-    c = Customer.find(@customer.id)
-    assert_equal 'distance', c.router_dimension
+  test 'should update customer as admin' do
+    sign_in users(:user_admin)
+    patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '30-10-2016' }
+    assert_redirected_to [:edit, @customer]
+    assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
   end
 
   test 'should destroy vehicles' do
