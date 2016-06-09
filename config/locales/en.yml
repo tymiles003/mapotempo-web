@@ -1377,7 +1377,7 @@ Best resgards,\n
       tags_help: "Visit categories"
       quantity_default: "default"
       take_over_default: "default"
-      delete: "Flag for delation"
+      delete: "Flag for deletion"
       delete_help: "Delete this visit (destination will be kept)"
 
   zonings:

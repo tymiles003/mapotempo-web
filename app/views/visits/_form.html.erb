@@ -18,7 +18,7 @@
           <p class="help-block"><%= t '.ref_help' %></p>
         <% end %>
       <% end %>
-      <%= f.text_field :quantity, { placeholder: '1 (' + t('.quantity_default') + ')', delimiter: t('number.format.delimiter'), separator: t('number.format.separator') }, input_group: content_tag('i', '', class: 'fa fa-archive fa-fw') do %>
+      <%= f.number_field :quantity, { placeholder: '1 (' + t('.quantity_default') + ')', step: 'any', input_group: content_tag('i', '', class: 'fa fa-archive fa-fw') } do %>
         <p class="help-block"><%= t '.quantity_help' %></p>
       <% end %>
       <%= f.text_field :take_over, {
