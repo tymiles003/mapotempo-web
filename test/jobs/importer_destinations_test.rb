@@ -288,6 +288,7 @@ class ImporterTest < ActionController::TestCase
     end
     assert Destination.last.lat == 49.173419
     assert Destination.last.lng == -0.326613
+    assert Visit.last.quantity == 39.482
   end
 
 end

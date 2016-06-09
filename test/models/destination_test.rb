@@ -64,6 +64,15 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not update_geocode' do
+    Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise }) do
+      o = destinations(:destination_one)
+      o.street = 'rue'
+      o.lat, o.lng = 1, 1
+      assert o.save
+    end
+  end
+
   test 'should distance' do
     o = destinations(:destination_one)
     assert_equal 47.72248931834969, o.distance(destinations(:destination_two))
