@@ -65,15 +65,17 @@ controller.js(
               <%= t 'all.verb.destroy' %>
             <% end %>
           </td>
-        <% elsif current_user == user %>
+        <% else %>
           <td class="text-right">
+            <% if current_user == user %>
               <%= link_to edit_customer_user_path(@customer, user, url: edit_customer_path(@customer)), :class => "btn btn-primary btn-sm" do %>
                 <i class="fa fa-edit fa-fw"></i>
                 <%= t 'all.verb.edit' %>
               <% end %>
-            <%= link_to password_customer_user_path(@customer, user, url: edit_customer_path(@customer), token: user.confirmation_token), class: 'btn btn-primary btn-sm' do %>
-              <i class="fa fa-edit fa-fw"></i>
-              <%= t '.password' %>
+              <%= link_to password_customer_user_path(@customer, user, url: edit_customer_path(@customer), token: user.confirmation_token), class: 'btn btn-primary btn-sm' do %>
+                <i class="fa fa-edit fa-fw"></i>
+                <%= t '.password' %>
+              <% end %>
             <% end %>
           </td>
         <% end %>
