@@ -109,9 +109,11 @@ class V01::Api < Grape::API
   mount V01::Layers
   mount V01::Orders
   mount V01::Plannings
+  mount V01::PlanningsGet
   mount V01::Profiles
   mount V01::Routers
   mount V01::Routes
+  mount V01::RoutesGet
   mount V01::Stops
   mount V01::Stores
   mount V01::Tags
@@ -131,8 +133,4 @@ class V01::Api < Grape::API
 
   # Tools
   mount V01::Geocoder
-
-  # iCalendar Export
-  mount V01::Icalendar
-
 end

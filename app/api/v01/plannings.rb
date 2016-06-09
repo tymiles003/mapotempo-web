@@ -49,17 +49,6 @@ class V01::Plannings < Grape::API
       present plannings, with: V01::Entities::Planning
     end
 
-    desc 'Fetch planning.',
-      nickname: 'getPlanning',
-      entity: V01::Entities::Planning
-    params do
-      requires :id, type: String, desc: ID_DESC
-    end
-    get ':id' do
-      id = ParseIdsRefs.read(params[:id])
-      present current_customer.plannings.where(id).first!, with: V01::Entities::Planning
-    end
-
     desc 'Create planning.',
       nickname: 'createPlanning',
       params: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids).deep_merge(

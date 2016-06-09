@@ -1,6 +1,4 @@
 module PlanningIcalendar
-  extend ActiveSupport::Concern
-
   require 'icalendar/tzinfo'
 
   def planning_date route
@@ -54,23 +52,19 @@ module PlanningIcalendar
     return calendar
   end
 
-  def icalendar_route_export planning, route
-    filename = export_filename planning, route.ref || route.vehicle_usage.vehicle.name
-    header 'Content-Disposition', "attachment; filename=\"#{filename}.ics\""
+  def icalendar_route_export route
     route_calendar(route).to_ical
   end
 
   def icalendar_planning_export planning
-    filename = export_filename planning, planning.ref
-    header 'Content-Disposition', "attachment; filename=\"#{filename}.ics\""
     planning_calendar(planning).to_ical
   end
 
-  def icalendar_export_email planning, route
+  def icalendar_export_email route
     if route.vehicle_usage.vehicle.contact_email
       vehicle = route.vehicle_usage.vehicle
       url = api_route_calendar_path(@current_user, route) + "?api_key=" + @current_user.api_key
-      name = export_filename route.planning, route.ref || route.vehicle_usage.vehicle.name
+      name = route.ref || route.vehicle_usage.vehicle.name
       if Mapotempo::Application.config.delayed_job_use
         RouteMailer.delay.send_ics_route @current_user, vehicle, route, name + '.ics', url
       else

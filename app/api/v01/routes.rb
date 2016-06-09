@@ -54,18 +54,6 @@ class V01::Routes < Grape::API
           present routes, with: V01::Entities::Route
         end
 
-        desc 'Fetch route.',
-          nickname: 'getRoute',
-          entity: V01::Entities::Route
-        params do
-          requires :id, type: String, desc: ID_DESC
-        end
-        get ':id' do
-          planning_id = ParseIdsRefs.read(params[:planning_id])
-          id = ParseIdsRefs.read(params[:id])
-          present current_customer.plannings.where(planning_id).first!.routes.where(id).first!, with: V01::Entities::Route
-        end
-
         desc 'Update route.',
           nickname: 'updateRoute',
           params: V01::Entities::Route.documentation.slice(:hidden, :locked, :color),
