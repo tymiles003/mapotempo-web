@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
 
   after_initialize :assign_defaults, if: 'new_record?'
   before_validation :assign_defaults_layer, if: 'new_record?'
+  after_initialize :set_default_time_zone
   before_save :set_time_zone
 
   validates :customer, presence: true, unless: :admin?
@@ -71,9 +72,12 @@ class User < ActiveRecord::Base
 
   private
 
-  def set_time_zone
-    return if !self.time_zone.blank?
+  def set_default_time_zone
     self.time_zone = I18n.t('default_time_zone')
+  end
+
+  def set_time_zone
+    set_default_time_zone if self.time_zone.blank?
   end
 
   def assign_defaults
