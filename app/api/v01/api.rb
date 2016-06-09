@@ -50,7 +50,7 @@ class V01::Api < Grape::API
     end
 
     def set_locale
-      I18n.locale = env.http_accept_language.preferred_language_from(%w(en fr)) || I18n.default_locale
+      I18n.locale = env.http_accept_language.preferred_language_from(I18n.available_locales.map(&:to_s)) || I18n.default_locale
     end
 
     def error!(*args)

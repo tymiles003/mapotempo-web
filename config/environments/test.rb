@@ -85,5 +85,6 @@ Rails.application.configure do
   config.router_wrapper.api_key = 'api_key'
 end
 
+I18n.available_locales = [:fr]
 I18n.enforce_available_locales = false
 I18n.default_locale = :fr
