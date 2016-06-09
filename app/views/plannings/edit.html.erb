@@ -145,7 +145,7 @@
               <li class="kmz_email"><%= link_to planning_path(@planning, format: :kmz, email: 1) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.kmz_email.action' %><% end %></li>
             <% end %>
             <li role="separator" class="divider"></li>
-            <li><%= link_to api_planning_calendar_path(current_user, @planning) do %><i class="fa fa-calendar fa-fw"></i> <%= t '.export.icalendar.action' %><% end %></li>
+            <li><%= link_to api_planning_calendar_path(current_user, @planning, "api_key=#{current_user.api_key}") do %><i class="fa fa-calendar fa-fw"></i> <%= t '.export.icalendar.action' %><% end %></li>
             <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.contact_email.blank? } %>
               <li class="icalendar_email"><%= link_to api_planning_calendar_path(current_user, @planning) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.icalendar.action_email' %><% end %></li>
             <% end %>
