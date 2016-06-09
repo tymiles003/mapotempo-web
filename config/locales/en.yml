@@ -34,7 +34,7 @@ en:
       hour_minute_second: "%H:%M:%S"
       complete: "%m-%d-%Y %H:%M:%S"
       datepicker: "%m-%d-%Y"
-  default_time_zone: "Europe/Paris"
+  default_time_zone: "London"
 
   activemodel:
     models:
