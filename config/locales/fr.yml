@@ -914,10 +914,10 @@ L'équipe %{s}"
         fail: "Échec lors de l'envoi vers Masternaut"
       export:
         icalendar:
-          action: "Agenda"
-          action_email: "Agenda par Email"
+          action: "Agenda iCal"
+          action_email: "Agenda iCal par email"
           success: "Fichier exporté avec succès"
-          success_with_email: "Fichier exporté avec succès par Email"
+          success_with_email: "Fichier exporté avec succès par email"
           fail: "Échec lors de l'export"
         kmz_email:
           action: "Tracé KML par email"
