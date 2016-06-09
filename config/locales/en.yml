@@ -838,7 +838,7 @@ en:
       title: "Your %{s} account"
       content: "Hello and welcome on %{s},\n
 \n
-You can set your password with the following link: %{t} or %{l}\n
+You can set your password with the following link: <a href=\"%{l}\">Set Password</a> or %{l}\n
 \n
 You will be able to connect our service online %{s} with: %{a}\n
 \n
@@ -847,7 +847,6 @@ If you need to contact us, please use the following link: %{c}\n
 Best resgards,\n
 \n
 %{s} team"
-      set_password: "Set Password"
 
   plannings:
     menu:

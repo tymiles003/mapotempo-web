@@ -839,7 +839,7 @@ fr:
       title: "Votre compte %{s}"
       content: "Bonjour et bienvenue sur %{s},\n
 \n
-Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : %{t} ou %{l}\n
+Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : <a href=\"%{l}\">Changer le mot de passe</a> ou %{l}\n
 \n
 Vous pourrez alors vous connecter à tout moment au service en ligne %{s} via : %{a}\n
 \n
@@ -848,7 +848,6 @@ Pour nous contacter veuillez utiliser l'un des moyens listés sur cette page : 
 Avec toute notre attention,\n
 \n
 L'équipe %{s}"
-      set_password: "Changer le mot de passe"
 
   plannings:
     menu:
