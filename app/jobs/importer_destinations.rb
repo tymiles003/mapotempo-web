@@ -225,6 +225,7 @@ class ImporterDestinations < ImporterBase
       end
 
       visit.destination.delay_geocode
+      visit.destination.validate! # to get errors first
       visit.save!
 
       # Add visit to route if needed
