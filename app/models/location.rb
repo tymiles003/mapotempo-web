@@ -39,9 +39,9 @@ class Location < ActiveRecord::Base
 #  validates :city, presence: true
   validates :lat, numericality: {only_float: true}, allow_nil: true
   validates :lng, numericality: {only_float: true}, allow_nil: true
-  validates_inclusion_of :lat, in: -90..90, allow_nil: true, message: I18n.t('activerecord.errors.models.location.lat_outside_range')
-  validates_inclusion_of :lng, in: -180..180, allow_nil: true, message: I18n.t('activerecord.errors.models.location.lng_outside_range')
-  validates_inclusion_of :geocoding_accuracy, in: 0..1, allow_nil: true, message: I18n.t('activerecord.errors.models.location.geocoding_accuracy_outside_range')
+  validates_inclusion_of :lat, in: -90..90, allow_nil: true, message: lambda { |*_| I18n.t('activerecord.errors.models.location.lat_outside_range') }
+  validates_inclusion_of :lng, in: -180..180, allow_nil: true, message: lambda { |*_| I18n.t('activerecord.errors.models.location.lng_outside_range') }
+  validates_inclusion_of :geocoding_accuracy, in: 0..1, allow_nil: true, message: lambda { |*_| I18n.t('activerecord.errors.models.location.geocoding_accuracy_outside_range') }
   validates_with LocalizationValidator, fields: [:street, :city, :lat, :lng]
 
   before_validation :update_geocode
