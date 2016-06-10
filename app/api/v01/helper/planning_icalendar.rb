@@ -14,12 +14,15 @@ module PlanningIcalendar
     event.uid = [stop.id, stop.visit_id].join("-")
     event.dtstart = event_start
     event.summary = stop.name
-    event.location = [stop.street, stop.postalcode, stop.city, stop.country, stop.detail].reject(&:blank?).join(", ")
-    event.categories = !route.ref.blank? ? route.ref : route.vehicle_usage.vehicle.name.gsub(",", "")
-    event.description = stop.comment
+    event.location = [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].reject(&:blank?).join(", ")
+    event.categories = route.ref || route.vehicle_usage.vehicle.name.gsub(",", "")
+    event.description = [stop.phone_number, stop.comment].reject(&:blank?).join("\n")
     event.created = stop.created_at
     event.last_modified = stop.updated_at
     event.organizer = Icalendar::Values::CalAddress.new("mailto:#{@current_user.email}", cn: @current_user.customer.name)
+    if stop.phone_number
+      event.attendee = Icalendar::Values::CalAddress.new("tel:#{stop.phone_number}", cn: stop.phone_number)
+    end
     if stop.duration
       hours = stop.duration.to_i / 3600
       minutes = (stop.duration.to_i - hours * 3600) / 60

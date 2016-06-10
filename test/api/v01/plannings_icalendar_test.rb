@@ -19,6 +19,6 @@ class V01::PlanningsIcalendarTest < ActiveSupport::TestCase
 
   test 'Export Planning' do
     get api("/plannings/#{@planning.id}.ics")
-    assert last_response.ok?
+    assert last_response.ok?, last_response.body
   end
 end

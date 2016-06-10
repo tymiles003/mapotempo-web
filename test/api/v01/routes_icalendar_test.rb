@@ -19,6 +19,6 @@ class V01::RoutesIcalendarTest < ActiveSupport::TestCase
 
   test 'Export Route' do
     get api("/plannings/#{@route.planning_id}/routes/#{@route.id}.ics")
-    assert last_response.ok?
+    assert last_response.ok?, last_response.body
   end
 end
