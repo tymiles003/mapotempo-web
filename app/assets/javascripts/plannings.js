@@ -682,7 +682,6 @@ var plannings_edit = function(params) {
           } else {
             notice(I18n.t('plannings.edit.export.icalendar.success'));
           }
-          notice(I18n.t('plannings.edit.export.icalendar.success_with_email'));
         },
         error: function(jqXHR, textStatus, errorThrown) {
           stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
