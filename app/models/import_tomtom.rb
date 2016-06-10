@@ -30,18 +30,23 @@ class ImportTomtom
 
   def import(synchronous = false)
     begin
+      last_row = nil
       Customer.transaction do
         addresses = TomtomService.new(customer: customer).list_addresses
         @importer.import(addresses, nil, synchronous, ignore_errors: true, replace: replace) { |row|
-          if !row[:tags].nil?
-            row[:tags] = row[:tags].join(',')
+          if row
+            if !row[:tags].nil?
+              row[:tags] = row[:tags].join(',')
+            end
+            row[:line] = row[:ref]
           end
-          row[:line] = row[:ref]
+          last_row = row
+
           row
         }
       end
     rescue => e
-      errors[:base] << e.message
+      errors[:base] << e.message + (last_row ? ' [' + last_row.to_s + ']' : '')
       Rails.logger.error e.backtrace.join("\n")
       return false
     end

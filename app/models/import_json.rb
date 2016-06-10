@@ -32,24 +32,28 @@ class ImportJson
     data = @importer.json_to_rows json
     if data
       begin
+        last_row = nil
         Customer.transaction do
           keys = @importer.columns.keys
 
           rows = @importer.import(data, nil, synchronous, ignore_errors: false, replace: replace) { |row|
-            r, row = row, {}
-            r.each{ |k, v|
-              ks = k.to_sym
-              if keys.include?(ks)
-                row[ks] = v
-              end
-            }
+            if row
+              r, row = row, {}
+              r.each{ |k, v|
+                ks = k.to_sym
+                if keys.include?(ks)
+                  row[ks] = v
+                end
+              }
+            end
+            last_row = row
 
             row
           }
           @importer.rows_to_json rows
         end
       rescue => e
-        errors[:base] << e.message
+        errors[:base] << e.message + (last_row ? ' [' + last_row.to_s + ']' : '')
         Rails.logger.error e.backtrace.join("\n")
         return false
       end

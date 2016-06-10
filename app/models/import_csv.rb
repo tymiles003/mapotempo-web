@@ -47,30 +47,34 @@ class ImportCsv
   def import(synchronous = false)
     if data
       begin
+        last_row = nil
         Customer.transaction do
           @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, line_shift: (without_header? ? 0 : 1), column_def: column_def) { |row|
-            # Switch from locale or custom to internal column name
-            r, row = row, {}
-            @importer.columns.each{ |k, v|
-              if r.is_a?(Array)
-                values = ((column_def[k] && !column_def[k].empty?) ? column_def[k] : (without_header? ? '' : v[:title])).split(',').map{ |c|
-                  if c.to_i != 0
-                    r[c.to_i - 1].is_a?(Array) ? r[c.to_i - 1][1] : r[c.to_i - 1]
-                  else
-                    r.find{ |rr| rr[0] == c}.try{ |rr| rr[1] }
-                  end
-                }.compact
-                row[k] = values.join(' ') if values.size > 0
-              elsif r.key?(v[:title])
-                row[k] = r[v[:title]]
-              end
-            }
+            if row
+              # Switch from locale or custom to internal column name
+              r, row = row, {}
+              @importer.columns.each{ |k, v|
+                if r.is_a?(Array)
+                  values = ((column_def[k] && !column_def[k].empty?) ? column_def[k] : (without_header? ? '' : v[:title])).split(',').map{ |c|
+                    if c.to_i != 0
+                      r[c.to_i - 1].is_a?(Array) ? r[c.to_i - 1][1] : r[c.to_i - 1]
+                    else
+                      r.find{ |rr| rr[0] == c}.try{ |rr| rr[1] }
+                    end
+                  }.compact
+                  row[k] = values.join(' ') if values.size > 0
+                elsif r.key?(v[:title])
+                  row[k] = r[v[:title]]
+                end
+              }
+            end
+            last_row = row
 
             row
           }
         end
       rescue => e
-        errors[:base] << e.message
+        errors[:base] << e.message + (last_row ? ' [' + last_row.to_s + ']' : '')
         Rails.logger.error e.backtrace.join("\n")
         return false
       end

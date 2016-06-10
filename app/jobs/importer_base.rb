@@ -61,6 +61,7 @@ class ImporterBase
         end
       }
       raise ImportEmpty.new I18n.t('import.empty') if dests.all? &:nil?
+      yield(nil)
 
       after_import(name, options)
 
