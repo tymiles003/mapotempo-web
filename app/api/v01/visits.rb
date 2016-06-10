@@ -23,7 +23,7 @@ class V01::Visits < Grape::API
     def visit_params
       p = ActionController::Parameters.new(params)
       p = p[:visit] if p.key?(:visit)
-      p.permit(:ref, :take_over, :open, :close, tag_ids: [])
+      p.permit(:ref, :quantity, :take_over, :open, :close, tag_ids: [])
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
