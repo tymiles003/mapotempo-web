@@ -44,8 +44,8 @@ class V01::Visits < Grape::API
           optional :ids, type: Array[String], desc: 'Select returned visits by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
         end
         get do
+          destination_id = ParseIdsRefs.read(params[:destination_id])
           visits = if params.key?(:ids)
-            destination_id = ParseIdsRefs.read(params[:destination_id])
             current_customer.destinations.where(destination_id).first!.visits.select{ |visit|
               params[:ids].any?{ |s| ParseIdsRefs.match(s, visit) }
             }
