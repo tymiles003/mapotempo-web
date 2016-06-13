@@ -289,7 +289,9 @@ class PlanningsControllerTest < ActionController::TestCase
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
     assert_response :success
     assert_equal 2, assigns(:routes).length
-    assert_equal 2, JSON.parse(response.body)['routes'].size
+    routes = JSON.parse(response.body)['routes']
+    assert_equal 2, routes.size
+    assert_equal [], routes.first['stops']
   end
 
   test 'Automatic Insert With Bad IDs' do
