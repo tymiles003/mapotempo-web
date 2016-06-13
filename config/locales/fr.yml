@@ -471,6 +471,7 @@ fr:
       unsupported_export_type: "Le GPS connecté ne supporte pas l'export de points de passage"
       duplicate_order: "Commande déjà envoyée"
       busy_processing: "Compte occupé à traiter une autre demande"
+      gps_unreachable: "GPS actuellement indisponible"
     teksat:
       bad_url: "URL non valide"
       get_ticket: "Échec de l'identification. Veuillez vérifier vos identifiants"

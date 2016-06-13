@@ -252,6 +252,8 @@ class Tomtom < DeviceBase
         I18n.t "errors.tomtom.invalid_account"
       when 2515
         I18n.t "errors.tomtom.duplicate_order"
+      when 2605
+        I18n.t "errors.tomtom.gps_unreachable"
       when 2615
         I18n.t "errors.tomtom.unsupported_export_type"
       when 8011
