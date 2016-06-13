@@ -49,6 +49,8 @@ var plannings_edit = function(params) {
   plannings_form();
 
   var planning_id = params.planning_id,
+    planning_ref = params.planning_ref,
+    user_api_key = params.user_api_key,
     zoning_ids = params.zoning_ids,
     routes_array = params.routes_array,
     vehicles_array = params.vehicles_array,
@@ -850,7 +852,16 @@ var plannings_edit = function(params) {
       return;
     }
 
+    function api_route_calendar_path(route) {
+      return '/api/0.1/plannings/' + (planning_ref ? 'ref:' + encodeURIComponent(planning_ref) : planning_id) +
+        '/routes/' + (route.ref ? 'ref:' + encodeURIComponent(route.ref) : route.route_id) + '.ics';
+    }
+
     $.each(data.routes, function(i, route) {
+
+      route.calendar_url = api_route_calendar_path(route)
+      route.calendar_url_api_key = api_route_calendar_path(route) + '?api_key=' + user_api_key;
+
       if (route.vehicle_id) {
         route.vehicle = vehicles_usages_map[route.vehicle_id];
         route.path = '/vehicle_usages/' + route.vehicle_usage_id + '/edit?back=true';

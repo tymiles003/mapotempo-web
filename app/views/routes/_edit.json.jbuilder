@@ -1,6 +1,4 @@
 json.route_id route.id
-json.calendar_url api_route_calendar_path(current_user, route)
-json.calendar_url_api_key api_route_calendar_path(current_user, route, "api_key=#{current_user.api_key}")
 (json.duration (route.start && route.end) ? '%i:%02i' % [(route.end - route.start) / 60 / 60, (route.end - route.start) / 60 % 60] : '0:00')
 (json.hidden true) if route.hidden
 (json.locked true) if route.locked

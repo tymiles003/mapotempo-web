@@ -278,6 +278,8 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 
 controller.js(
   planning_id: @planning.id,
+  planning_ref: @planning.ref,
+  user_api_key: current_user.api_key,
   routes_array: planning_active_routes(@planning),
   zoning_ids: @planning.zonings.collect(&:id),
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
