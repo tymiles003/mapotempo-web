@@ -915,7 +915,6 @@ Best resgards,\n
         icalendar:
           action: "Calendar iCal"
           action_email: "Calendar iCal by E-Mail"
-          success: "File exported successfully"
           success_with_email: "File sucessfully sent by E-Mail"
           fail: "Failed to export"
         kmz_email:

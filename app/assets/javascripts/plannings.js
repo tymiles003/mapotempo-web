@@ -667,7 +667,7 @@ var plannings_edit = function(params) {
     });
 
     // iCalendar Export
-    $('.icalendar-export_email a', context).click(function(e) {
+    $('.icalendar_email a', context).click(function(e) {
       e.preventDefault();
       $.ajax({
         url: $(e.target).attr('href'),
@@ -679,11 +679,7 @@ var plannings_edit = function(params) {
           completeWaiting();
         },
         success: function(data, textStatus, jqXHR) {
-          if ($(e.target).attr('href').indexOf('email' !== -1)) {
-            notice(I18n.t('plannings.edit.export.icalendar.success_with_email'));
-          } else {
-            notice(I18n.t('plannings.edit.export.icalendar.success'));
-          }
+          notice(I18n.t('plannings.edit.export.icalendar.success_with_email'));
         },
         error: function(jqXHR, textStatus, errorThrown) {
           stickyError(I18n.t('plannings.edit.export.icalendar.fail'));

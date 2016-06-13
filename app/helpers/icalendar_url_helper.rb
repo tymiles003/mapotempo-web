@@ -1,18 +1,13 @@
-require "erb"
-include ERB::Util
-
 module IcalendarUrlHelper
-  def api_planning_calendar_path user, planning, query = nil
-    "/api/0.1/plannings/%s.ics%s" % [
-      planning.ref ? url_encode("ref:#{planning.ref}") : planning.id,
-      query ? "?" + query : ""
-    ]
+  def api_planning_calendar_path planning, query
+    Addressable::Template.new("/api/0.1/plannings/%s.ics{?query*}" % [
+      planning.ref ? URI::encode("ref:#{planning.ref}") : planning.id
+    ]).expand(query: query).to_s
   end
-  def api_route_calendar_path user, route, query = nil
-    "/api/0.1/plannings/%s/routes/%s.ics%s" % [
-      route.planning.ref ? url_encode("ref:#{route.planning.ref}") : route.planning.id,
-      route.ref ? url_encode("ref:#{route.ref}") : route.id,
-      query ? "?" + query : ""
-    ]
+  def api_route_calendar_path route, query
+    Addressable::Template.new("/api/0.1/plannings/%s/routes/%s.ics{?query*}" % [
+      route.planning.ref ? URI::encode("ref:#{route.planning.ref}") : route.planning.id,
+      route.ref ? URI::encode("ref:#{route.ref}") : route.id
+    ]).expand(query: query).to_s
   end
 end

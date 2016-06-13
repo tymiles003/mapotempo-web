@@ -916,7 +916,6 @@ L'équipe %{s}"
         icalendar:
           action: "Agenda iCal"
           action_email: "Agenda iCal par email"
-          success: "Fichier exporté avec succès"
           success_with_email: "Fichier exporté avec succès par email"
           fail: "Échec lors de l'export"
         kmz_email:

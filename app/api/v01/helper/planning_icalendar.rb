@@ -66,7 +66,7 @@ module PlanningIcalendar
   def icalendar_export_email route
     if route.vehicle_usage.vehicle.contact_email
       vehicle = route.vehicle_usage.vehicle
-      url = api_route_calendar_path(@current_user, route) + "?api_key=" + @current_user.api_key
+      url = api_route_calendar_path(route, api_key: @current_user.api_key)
       name = route.ref || route.vehicle_usage.vehicle.name
       if Mapotempo::Application.config.delayed_job_use
         RouteMailer.delay.send_ics_route @current_user, vehicle, route, name + '.ics', url
