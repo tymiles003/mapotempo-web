@@ -294,7 +294,7 @@ class PlanningsController < ApplicationController
   end
 
   def planning_params
-    params[:planning][:date] = Date.strptime(params[:planning][:date], I18n.t('time.formats.datepicker')).strftime(I18n.t('time.formats.activerecord_default')) if params[:planning] && params[:planning][:date]
+    params[:planning][:date] = Date.strptime(params[:planning][:date], I18n.t('time.formats.datepicker')).strftime(I18n.t('time.formats.activerecord_default')) if params[:planning] && !params[:planning][:date].blank?
     params.require(:planning).permit(:name, :ref, :date, :vehicle_usage_set_id, tag_ids: [], zoning_ids: [])
   end
 
