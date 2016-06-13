@@ -268,7 +268,7 @@ class ImporterDestinations < ImporterBase
       @planning = @customer.plannings.build if !@planning
 
       @planning.attributes = {
-        name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.now, format: :long),
+        name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.zone.now, format: :long),
         vehicle_usage_set: @customer.vehicle_usage_sets[0],
         tags: @common_tags || []
       }.merge(@planning_hash)

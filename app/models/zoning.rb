@@ -44,7 +44,7 @@ class Zoning < ActiveRecord::Base
 
   def duplicate
     copy = self.amoeba_dup
-    copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+    copy.name += " (%s)" % [I18n.l(Time.zone.now, format: :long)]
     copy
   end
 

@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
       def copy.assign_defaults_layer; end
       def copy.generate_confirmation_token; end
 
-      copy.email = I18n.l(Time.now, format: '%Y%m%d%H%M%S') + '_' + copy.email
+      copy.email = I18n.l(Time.zone.now, format: '%Y%m%d%H%M%S') + '_' + copy.email
       copy.password = Devise.friendly_token
       copy.confirmation_token = nil
       copy.api_key_random
@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
 
   def send_welcome_email
     Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self) : UserMailer.welcome_message(self).deliver_now
-    self.update! confirmation_sent_at: Time.now
+    self.update! confirmation_sent_at: Time.now.utc
   end
 
   def api_key_random

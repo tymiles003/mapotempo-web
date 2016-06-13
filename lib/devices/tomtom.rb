@@ -301,7 +301,7 @@ class Tomtom < DeviceBase
       }
     }
 
-    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = p_time(route, time).strftime('%Y-%m-%dT%H:%M:%S')) if time
+    (params[:attributes!][:dstOrderToSend][:scheduledCompletionDateAndTime] = p_time(route, time).utc.strftime('%Y-%m-%dT%H:%M:%S')) if time
 
     if waypoints
       params[:advancedSendDestinationOrderParm] = {waypoints: {

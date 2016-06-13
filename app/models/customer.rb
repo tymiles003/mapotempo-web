@@ -148,7 +148,7 @@ class Customer < ActiveRecord::Base
   def duplicate
     Customer.transaction do
       copy = self.amoeba_dup
-      copy.name += " (%s)" % [I18n.l(Time.now, format: :long)]
+      copy.name += " (%s)" % [I18n.l(Time.zone.now, format: :long)]
       copy.save!
       copy
     end

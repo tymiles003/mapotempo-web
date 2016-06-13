@@ -106,11 +106,11 @@ class Orange < DeviceBase
   end
 
   def list_operations customer, options
-    net_request customer, options.merge(path: "/pnd/index.php", params: { ext: "xml", ref: "", vehid: "", typ: "mis", eqpid: "", dtdeb: Time.now.beginning_of_day, dtfin: Time.now.end_of_day })
+    net_request customer, options.merge(path: "/pnd/index.php", params: { ext: "xml", ref: "", vehid: "", typ: "mis", eqpid: "", dtdeb: Time.zone.now.beginning_of_day, dtfin: Time.zone.now.end_of_day })
   end
 
   def send_xml_file customer, route, options={}
-    f = Tempfile.new Time.now.to_i.to_s ; f.write to_xml(route, options) ; f.rewind
+    f = Tempfile.new Time.zone.now.to_i.to_s ; f.write to_xml(route, options) ; f.rewind
     response = RestClient::Request.execute method: :post, user: customer.orange_user, password: customer.orange_password, url: api_url + "/pnd/index.php", payload: { multipart: true, file: f }
     f.unlink
     return response
@@ -121,7 +121,7 @@ class Orange < DeviceBase
     xml.instruct!
     xml.tag! :ROOT do
       xml.tag! :version
-      xml.tag! :transmit, Time.now.strftime("%d/%m/%Y %H:%M")
+      xml.tag! :transmit, Time.zone.now.strftime("%d/%m/%Y %H:%M")
       xml.tag! :zone, nil, type: "dest", ref: route.id, eqpid: route.vehicle_usage.vehicle.orange_id, drivername: nil, vehid: nil, badge: nil
       xml.tag! :zone, nil, type: "mission", ref: route.id, lang: nil, title: "Mission #{route.id}", txt: route.planning.name,
         prevmisdeb: p_time(route, route.start).strftime("%d/%m/%Y %H:%M"), prevmisfin: p_time(route, route.end).strftime("%d/%m/%Y %H:%M")
