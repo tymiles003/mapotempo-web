@@ -18,7 +18,6 @@
 class V01::Devices::Tomtom < Grape::API
   namespace :devices do
     namespace :tomtom do
-
       before do
         @customer = current_customer params[:customer_id]
       end
@@ -83,7 +82,6 @@ class V01::Devices::Tomtom < Grape::API
         tomtom_sync_vehicles @customer
         status 204
       end
-
     end
   end
 end

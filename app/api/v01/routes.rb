@@ -26,7 +26,7 @@ class V01::Routes < Grape::API
       p.permit(:hidden, :locked, :ref, :color)
     end
 
-    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
 
   resource :plannings do
@@ -85,7 +85,7 @@ class V01::Routes < Grape::API
           visits_ordered = []
           params[:visit_ids].each{ |s| visits_ordered << visits.find{ |visit| ParseIdsRefs.match(s, visit) } }
 
-          if route && planning && visits_ordered.size > 0
+          if route && planning && !visits_ordered.empty?
             Planning.transaction do
               visits_ordered.each{ |visit|
                 planning.move_visit(route, visit, params[:automatic_insert] ? nil : -1)
@@ -133,7 +133,6 @@ class V01::Routes < Grape::API
         end
         get ':id' do
           planning_id = ParseIdsRefs.read params[:planning_id] rescue error!('Invalid IDs', 400)
-          vehicle_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
           planning = current_customer.plannings.find_by planning_id
           error!('Not Found', 404) if !planning
           route = planning.routes.detect{ |route| route.vehicle_usage && ParseIdsRefs.match(params[:id], route.vehicle_usage.vehicle) }

@@ -37,7 +37,6 @@ class V01::Orders < Grape::API
       requires :order_array_id, type: Integer
     end
     segment '/:order_array_id' do
-
       resource :orders do
         desc 'Update order.',
           detail: 'Only available if "order array" option is active for current customer.',

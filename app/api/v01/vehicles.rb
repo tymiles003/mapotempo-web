@@ -17,7 +17,7 @@
 #
 require 'coerce'
 
-require Rails.root.join("lib/devices/device_helpers")
+require Rails.root.join('lib/devices/device_helpers')
 include Devices::Helpers
 
 class V01::Vehicles < Grape::API
@@ -45,7 +45,7 @@ class V01::Vehicles < Grape::API
       p.permit(:open, :close, :store_start_id, :store_stop_id, :store_rest_id, :rest_start, :rest_stop, :rest_duration)
     end
 
-    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
 
   resource :vehicles do
@@ -77,12 +77,13 @@ class V01::Vehicles < Grape::API
     get 'current_position' do
       customer = current_customer
       vehicles = customer.vehicles.find params[:ids]
-      positions = [] ; errors = []
+      positions = []
+      errors = []
       begin
         if customer.orange?
           (OrangeService.new(customer: customer).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :orange_vehicle_id
-            vehicle = vehicles.detect{|v| v.orange_id == vehicle_id }
+            vehicle = vehicles.detect{ |v| v.orange_id == vehicle_id }
             next if !vehicle
             positions << item.merge(vehicle_id: vehicle.id)
           end
@@ -95,7 +96,7 @@ class V01::Vehicles < Grape::API
           teksat_authenticate customer
           (TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :teksat_vehicle_id
-            vehicle = vehicles.detect{|v| v.teksat_id == vehicle_id }
+            vehicle = vehicles.detect{ |v| v.teksat_id == vehicle_id }
             next if !vehicle
             positions << item.merge(vehicle_id: vehicle.id)
           end
@@ -107,7 +108,7 @@ class V01::Vehicles < Grape::API
         if customer.tomtom?
           (TomtomService.new(customer: customer).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :tomtom_vehicle_id
-            vehicle = vehicles.detect{|v| v.tomtom_id == vehicle_id }
+            vehicle = vehicles.detect{ |v| v.tomtom_id == vehicle_id }
             next if !vehicle
             positions << item.merge(vehicle_id: vehicle.id)
           end

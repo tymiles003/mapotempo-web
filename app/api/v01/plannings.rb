@@ -23,11 +23,11 @@ class V01::Plannings < Grape::API
     def planning_params
       p = ActionController::Parameters.new(params)
       p = p[:planning] if p.key?(:planning)
-      p[:zoning_ids] = [p[:zoning_id]] if p[:zoning_id] && (!p[:zoning_ids] || p[:zoning_ids].size == 0)
+      p[:zoning_ids] = [p[:zoning_id]] if p[:zoning_id] && (!p[:zoning_ids] || p[:zoning_ids].empty?)
       p.permit(:name, :ref, :date, :vehicle_usage_set_id, tag_ids: [], zoning_ids: [])
     end
 
-    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
 
   resource :plannings do
@@ -122,7 +122,7 @@ class V01::Plannings < Grape::API
       error!('Not Found', 404) if !planning
       stops = Stop.where id: params[:stop_ids], route_id: planning.route_ids
       error!('Not Found', 404) if stops.empty?
-      stops.each{|stop| planning.automatic_insert(stop) }
+      stops.each{ |stop| planning.automatic_insert(stop) }
       planning.save!
       status 200
     end
@@ -192,32 +192,27 @@ class V01::Plannings < Grape::API
       routes = planning.routes.find params[:route_ids]
       routes.each do |route|
         case params[:action].to_sym
-          when :toggle
-
-            case params[:selection].to_sym
-              when :all
-                route.update! hidden: false
-              when :reverse
-                route.update! hidden: !route.hidden
-              when :none
-                route.update! hidden: true
-            end
-
-          when :lock
-
-            case params[:selection].to_sym
-              when :all
-                route.update! locked: true
-              when :reverse
-                route.update! locked: !route.locked
-              when :none
-                route.update! locked: false
-            end
-
+        when :toggle
+          case params[:selection].to_sym
+          when :all
+            route.update! hidden: false
+          when :reverse
+            route.update! hidden: !route.hidden
+          when :none
+            route.update! hidden: true
+          end
+        when :lock
+          case params[:selection].to_sym
+          when :all
+            route.update! locked: true
+          when :reverse
+            route.update! locked: !route.locked
+          when :none
+            route.update! locked: false
+          end
         end
       end
       present routes, with: V01::Entities::Route
     end
-
   end
 end

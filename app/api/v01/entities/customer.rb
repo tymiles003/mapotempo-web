@@ -19,7 +19,7 @@ class V01::Entities::Customer < Grape::Entity
   def self.entity_name
     'V01_Customer'
   end
-  EDIT_ONLY_ADMIN = 'Only available in admin.'
+  EDIT_ONLY_ADMIN = 'Only available in admin.'.freeze
 
   # expose(:reseller_id, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
   # expose(:test, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })

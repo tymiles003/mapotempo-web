@@ -29,7 +29,7 @@ class V01::Customers < Grape::API
       end
     end
 
-    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
 
   resource :customers do
@@ -155,6 +155,5 @@ class V01::Customers < Grape::API
       customer.save!
       present customer, with: V01::Entities::Customer
     end
-
   end
 end

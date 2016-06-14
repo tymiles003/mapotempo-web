@@ -18,7 +18,6 @@
 class V01::Devices::Orange < Grape::API
   namespace :devices do
     namespace :orange do
-
       before do
         @customer = current_customer params[:customer_id]
       end
@@ -81,7 +80,6 @@ class V01::Devices::Orange < Grape::API
         orange_sync_vehicles @customer
         status 204
       end
-
     end
   end
 end

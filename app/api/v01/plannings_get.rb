@@ -26,7 +26,7 @@ class V01::PlanningsGet < Grape::API
   default_format :json
 
   helpers do
-    ID_DESC = 'ID or REF ref:[value]'
+    ID_DESC = 'ID or REF ref:[value]'.freeze
   end
 
   resource :plannings do

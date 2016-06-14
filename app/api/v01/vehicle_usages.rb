@@ -32,7 +32,6 @@ class V01::VehicleUsages < Grape::API
       requires :vehicle_usage_set_id, type: Integer
     end
     segment '/:vehicle_usage_set_id' do
-
       resource :vehicle_usages do
         desc 'Fetch customer\'s vehicle_usages.',
           nickname: 'getVehicleUsages',

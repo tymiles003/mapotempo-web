@@ -26,7 +26,7 @@ class V01::Stores < Grape::API
       p.permit(:ref, :name, :street, :postalcode, :city, :country, :lat, :lng, :geocoding_accuracy, :geocoding_level, :color, :icon, :icon_size)
     end
 
-    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
 
   resource :stores do

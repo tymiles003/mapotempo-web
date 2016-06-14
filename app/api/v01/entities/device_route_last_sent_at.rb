@@ -20,7 +20,7 @@ class V01::Entities::DeviceRouteLastSentAt < Grape::Entity
     'V01_Devices_DeviceRouteLastSentAt'
   end
 
-  expose(:id, documentation: { type: Integer, desc: "Route ID" })
+  expose(:id, documentation: { type: Integer, desc: 'Route ID' })
   expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
   expose(:last_sent_at_formatted, documentation: { type: String }) { |m|
     m.last_sent_at && I18n.l(m.last_sent_at.in_time_zone(Time.zone))

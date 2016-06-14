@@ -20,6 +20,6 @@ class V01::Entities::DeviceItem < Grape::Entity
     'V01_Devices_DeviceItem'
   end
 
-  expose(:id, documentation: { type: Integer, desc: "Device (GPS) ID" })
-  expose(:text, documentation: { type: String, desc: "Device (GPS) Model" })
+  expose(:id, documentation: { type: Integer, desc: 'Device (GPS) ID' })
+  expose(:text, documentation: { type: String, desc: 'Device (GPS) Model' })
 end

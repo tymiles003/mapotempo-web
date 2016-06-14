@@ -26,7 +26,7 @@ class V01::RoutesGet < Grape::API
   default_format :json
 
   helpers do
-    ID_DESC = 'ID or REF ref:[value]'
+    ID_DESC = 'ID or REF ref:[value]'.freeze
   end
 
   resource :plannings do
@@ -67,12 +67,10 @@ class V01::RoutesGet < Grape::API
           if params.key?(:email)
             route_calendar_email route
             status 204
+          elsif env['api.format'] == :ics
+            route_calendar(route).to_ical
           else
-            if env['api.format'] == :ics
-              route_calendar(route).to_ical
-            else
-              present route, with: V01::Entities::Route
-            end
+            present route, with: V01::Entities::Route
           end
         end
       end

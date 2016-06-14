@@ -1,21 +1,21 @@
 module PlanningIcalendar
   require 'icalendar/tzinfo'
 
-  def planning_date route
+  def planning_date(route)
     route.planning.date ? route.planning.date.beginning_of_day.to_time : Time.zone.now.beginning_of_day
   end
 
-  def p_time route, time
+  def p_time(route, time)
     planning_date(route) + (time - Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
   end
 
-  def stop_ics route, stop, event_start
+  def stop_ics(route, stop, event_start)
     event = Icalendar::Event.new
-    event.uid = [stop.id, stop.visit_id].join("-")
+    event.uid = [stop.id, stop.visit_id].join('-')
     event.dtstart = event_start
     event.summary = stop.name
-    event.location = [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].reject(&:blank?).join(", ")
-    event.categories = route.ref || route.vehicle_usage.vehicle.name.gsub(",", "")
+    event.location = [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].reject(&:blank?).join(', ')
+    event.categories = route.ref || route.vehicle_usage.vehicle.name.delete(',')
     event.description = [stop.phone_number, stop.comment].reject(&:blank?).join("\n")
     event.created = stop.created_at
     event.last_modified = stop.updated_at
@@ -30,10 +30,10 @@ module PlanningIcalendar
       event.duration = Icalendar::Values::Duration.new("#{hours}H#{minutes}M#{seconds}S").value_ical
     end
     event.geo = [stop.lat, stop.lng]
-    return event
+    event
   end
 
-  def add_route_to_calendar calendar, route
+  def add_route_to_calendar(calendar, route)
     route.stops.select(&:active?).select(&:position?).select(&:time?).sort_by(&:index).each do |stop|
       event_start = p_time(route, stop.time)
       calendar.add_timezone TZInfo::Timezone.get(Time.zone.tzinfo.name).ical_timezone(event_start)
@@ -41,7 +41,7 @@ module PlanningIcalendar
     end
   end
 
-  def plannings_calendar plannings
+  def plannings_calendar(plannings)
     calendar = Icalendar::Calendar.new
     plannings.each do |planning|
       planning.routes.select(&:vehicle_usage).each do |route|
@@ -51,21 +51,21 @@ module PlanningIcalendar
     return calendar
   end
 
-  def planning_calendar planning
+  def planning_calendar(planning)
     calendar = Icalendar::Calendar.new
     planning.routes.select(&:vehicle_usage).each do |route|
       add_route_to_calendar calendar, route
     end
-    return calendar
+    calendar
   end
 
-  def route_calendar route
+  def route_calendar(route)
     calendar = Icalendar::Calendar.new
     add_route_to_calendar calendar, route
-    return calendar
+    calendar
   end
 
-  def route_calendar_email route
+  def route_calendar_email(route)
     if route.vehicle_usage.vehicle.contact_email
       vehicle = route.vehicle_usage.vehicle
       url = api_route_calendar_path(route, api_key: @current_user.api_key)
@@ -77,5 +77,4 @@ module PlanningIcalendar
       end
     end
   end
-
 end

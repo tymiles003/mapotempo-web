@@ -18,7 +18,6 @@
 class V01::Devices::Masternaut < Grape::API
   namespace :devices do
     namespace :masternaut do
-
       before do
         @customer = current_customer params[:customer_id]
       end
@@ -48,7 +47,6 @@ class V01::Devices::Masternaut < Grape::API
       post '/send_multiple' do
         device_send_routes device_id: :masternaut_ref
       end
-
     end
   end
 end

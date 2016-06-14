@@ -18,7 +18,6 @@
 class V01::Devices::Teksat < Grape::API
   namespace :devices do
     namespace :teksat do
-
       before do
         @customer = current_customer params[:customer_id]
         teksat_authenticate @customer
@@ -81,7 +80,6 @@ class V01::Devices::Teksat < Grape::API
         teksat_sync_vehicles @customer, session[:teksat_ticket_id]
         status 204
       end
-
     end
   end
 end
