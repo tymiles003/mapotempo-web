@@ -15,9 +15,9 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Teksat < DeviceBase
-  require 'addressable'
+require 'addressable'
 
+class Teksat < DeviceBase
   attr_accessor :ticket_id
 
   def authenticate(customer, params)

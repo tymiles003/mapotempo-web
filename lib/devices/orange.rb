@@ -15,10 +15,10 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Orange < DeviceBase
-  require 'builder' # XML
-  require 'addressable'
+require 'builder' # XML
+require 'addressable'
 
+class Orange < DeviceBase
   def test_list(customer, params)
     send_request list_operations(customer, { auth: params.slice(:user, :password) })
   end

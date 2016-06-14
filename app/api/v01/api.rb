@@ -15,12 +15,11 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require Rails.root.join('lib/devices/device_helpers')
+include Devices::Helpers
+
 class V01::Api < Grape::API
   helpers do
-
-    require Rails.root.join('lib/devices/device_helpers')
-    include Devices::Helpers
-
     def session
       env[Rack::Session::Abstract::ENV_SESSION_KEY]
     end
