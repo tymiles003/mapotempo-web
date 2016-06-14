@@ -17,10 +17,10 @@
 #
 require 'rest_client'
 
-class GeocodeError < StandardError ; end
+class GeocodeError < StandardError; end
 
 class GeocodeAddokWrapper
-  @@result_types = {'city' => 'city', 'street' => 'street', 'locality' => 'street', 'intersection' => 'intersection', 'house' => 'house', 'poi' => 'house'}
+  @@result_types = {'city' => 'city', 'street' => 'street', 'locality' => 'street', 'intersection' => 'intersection', 'house' => 'house', 'poi' => 'house'}.freeze
 
   def accuracy_success
     0.8
@@ -58,7 +58,7 @@ class GeocodeAddokWrapper
     end
 
     data = JSON.parse(result)
-    if data['features'].size > 0
+    if !data['features'].empty?
       parse_geojson_feature(data['features'][0])
     end
   end

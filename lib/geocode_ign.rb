@@ -24,7 +24,7 @@ require 'rexml/document'
 include REXML
 
 class GeocodeIgn
-  MATCHTYPE = {'street number' => 'house', 'street enhanced' => 'street'}
+  MATCHTYPE = {'street number' => 'house', 'street enhanced' => 'street'}.freeze
 
   def accuracy_success
     0.98

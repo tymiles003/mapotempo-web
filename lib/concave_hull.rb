@@ -42,7 +42,7 @@ module ConcaveHull
     current_point = first_point
     dataset = vector - [first_point]
     previous_angle = 0
-    while (current_point != first_point || hull.size == 1) && dataset.size > 0 do
+    while (current_point != first_point || hull.size == 1) && !dataset.empty? do
       if hull.size == 3
         dataset += [first_point] # add the firstPoint again
       end

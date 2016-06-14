@@ -16,7 +16,6 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class UserParameterSanitizer < Devise::ParameterSanitizer
-
   private
 
   def account_update

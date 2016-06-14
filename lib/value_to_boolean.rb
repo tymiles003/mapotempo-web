@@ -17,8 +17,7 @@
 #
 
 class ValueToBoolean
-
-  @@true_values = [true, 1, '1', 't', 'true', 'on', 'yes'].to_set
+  @@true_values = [true, 1, '1', 't', 'true', 'on', 'yes'].to_set.freeze
 
   # convert something to a boolean
   def self.value_to_boolean(value, default = false)
@@ -29,5 +28,4 @@ class ValueToBoolean
       @@true_values.include?(val) || (value.is_a?(String) && (I18n.t('all.value._true') == val || I18n.t('all.value._yes') == val))
     end
   end
-
 end
