@@ -18,7 +18,7 @@
 
 class Ability
   include CanCan::Ability
-  def initialize(user=nil)
+  def initialize(user = nil)
     if user
       if user.admin?
         can :manage, Customer, reseller_id: user.reseller_id

@@ -30,7 +30,7 @@ class Destination < Location
   amoeba do
     enable
 
-    customize(lambda { |original, copy|
+    customize(lambda { |_original, copy|
       def copy.update_tags; end
     })
   end
@@ -68,10 +68,8 @@ class Destination < Location
             if (planning.tags.to_a & (tags.to_a + visit.tags.to_a).uniq) != planning.tags.to_a
               planning.visit_remove(visit)
             end
-          else
-            if (planning.tags.to_a & (tags.to_a + visit.tags.to_a).uniq) == planning.tags.to_a
-              planning.visit_add(visit)
-            end
+          elsif (planning.tags.to_a & (tags.to_a + visit.tags.to_a).uniq) == planning.tags.to_a
+            planning.visit_add(visit)
           end
         }
       }
@@ -82,9 +80,7 @@ class Destination < Location
 
   def out_of_date
     Route.transaction do
-      visits.each{ |visit|
-        visit.out_of_date
-      }
+      visits.each(&:out_of_date)
     end
   end
 end

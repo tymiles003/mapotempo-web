@@ -44,7 +44,7 @@ class Zoning < ActiveRecord::Base
 
   def duplicate
     copy = self.amoeba_dup
-    copy.name += " (%s)" % [I18n.l(Time.zone.now, format: :long)]
+    copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
     copy
   end
 
@@ -58,9 +58,9 @@ class Zoning < ActiveRecord::Base
   def inside(destination)
     z = zones.select(&:vehicle_id).collect{ |zone|
       [zone, zone.inside_distance(destination.lat, destination.lng)]
-    }.select{ |zone, d|
+    }.select{ |_zone, d|
       d
-    }.max_by{ |zone, d|
+    }.max_by{ |_zone, d|
       d
     }
     z[0] if z
@@ -73,7 +73,7 @@ class Zoning < ActiveRecord::Base
   end
 
   def automatic_clustering(planning, n)
-    positions = (planning ? planning.routes.collect{ |route| route.stops }.flatten : customer.destinations).collect{ |stop|
+    positions = (planning ? planning.routes.collect(&:stops).flatten : customer.destinations).collect{ |stop|
       if stop.position?
         [stop.lat, stop.lng]
       end
@@ -83,7 +83,7 @@ class Zoning < ActiveRecord::Base
     clusters = Clustering.clustering(positions, n || vehicles.size)
     zones.clear
     Clustering.hulls(clusters).each{ |hull|
-      zones.build({polygon: hull, vehicle: vehicles.shift})
+      zones.build(polygon: hull, vehicle: vehicles.shift)
     }
   end
 
@@ -101,7 +101,7 @@ class Zoning < ActiveRecord::Base
       route = routes.shift
       if hull
         name = (route.ref) ? I18n.t('zonings.default.from_route') + ' ' + route.ref : nil
-        zones.build({polygon: hull, name: name, vehicle: route.vehicle_usage.vehicle})
+        zones.build(polygon: hull, name: name, vehicle: route.vehicle_usage.vehicle)
       end
     }
   end

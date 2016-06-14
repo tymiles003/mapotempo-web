@@ -29,27 +29,25 @@ class ImportTomtom
   end
 
   def import(synchronous = false)
-    begin
-      last_row = nil
-      Customer.transaction do
-        addresses = TomtomService.new(customer: customer).list_addresses
-        @importer.import(addresses, nil, synchronous, ignore_errors: true, replace: replace) { |row|
-          if row
-            if !row[:tags].nil?
-              row[:tags] = row[:tags].join(',')
-            end
-            row[:line] = row[:ref]
+    last_row = nil
+    Customer.transaction do
+      addresses = TomtomService.new(customer: customer).list_addresses
+      @importer.import(addresses, nil, synchronous, ignore_errors: true, replace: replace) { |row|
+        if row
+          if !row[:tags].nil?
+            row[:tags] = row[:tags].join(',')
           end
-          last_row = row
+          row[:line] = row[:ref]
+        end
+        last_row = row
 
-          row
-        }
-      end
-    rescue => e
-      errors[:base] << e.message + (last_row ? ' [' + last_row.to_a.collect{ |a| "#{a[0]}: \"#{a[1]}\"" }.join(', ') + ']' : '')
-      Rails.logger.error e.backtrace.join("\n")
-      return false
+        row
+      }
     end
+  rescue => e
+    errors[:base] << e.message + (last_row ? ' [' + last_row.to_a.collect{ |a| "#{a[0]}: \"#{a[1]}\"" }.join(', ') + ']' : '')
+    Rails.logger.error e.backtrace.join("\n")
+    return false
   end
 
   def warnings

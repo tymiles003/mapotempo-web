@@ -58,7 +58,7 @@ class Vehicle < ActiveRecord::Base
     exclude_association :vehicle_usages
     exclude_association :zones
 
-    customize(lambda { |original, copy|
+    customize(lambda { |_original, copy|
       def copy.assign_defaults; end
       def copy.increment_max_vehicles; end
       def copy.create_vehicle_usage; end

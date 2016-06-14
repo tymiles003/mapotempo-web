@@ -29,7 +29,7 @@ class Route < ActiveRecord::Base
 
   after_initialize :assign_defaults, if: 'new_record?'
 
-  scope :for_customer, lambda{|customer| where(planning_id: customer.planning_ids) }
+  scope :for_customer, lambda{ |customer| where(planning_id: customer.planning_ids) }
 
   include RefSanitizer
 
@@ -80,7 +80,7 @@ class Route < ActiveRecord::Base
     self.emission = 0
     self.start = self.end = nil
     last_lat, last_lng = nil, nil
-    if vehicle_usage && stops.size > 0
+    if vehicle_usage && !stops.empty?
       service_time_start = service_time_start_value
       service_time_end = service_time_end_value
       self.end = self.start = departure || vehicle_usage.default_open
@@ -140,7 +140,7 @@ class Route < ActiveRecord::Base
             (ts && !ts.empty? && ts.shift) || [nil, nil, nil]
           end
         }
-      rescue RouterError => e
+      rescue RouterError
         if !ignore_errors
           raise
         end
@@ -297,7 +297,7 @@ class Route < ActiveRecord::Base
 
   def remove_visit(visit)
     stops.each{ |stop|
-      if(stop.is_a?(StopVisit) && stop.visit == visit)
+      if stop.is_a?(StopVisit) && stop.visit == visit
         remove_stop(stop)
       end
     }
@@ -463,7 +463,7 @@ class Route < ActiveRecord::Base
   end
 
   def changed?
-    @stops_updated || super || stops.any?{ |stop| stop.changed? }
+    @stops_updated || super || stops.any?(&:changed?)
   end
 
   def to_s
@@ -490,7 +490,7 @@ class Route < ActiveRecord::Base
   end
 
   def stop_index_validation
-    if vehicle_usage_id && stops.length > 0 && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
+    if vehicle_usage_id && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
       errors.add(:stops, :bad_index)
     end
   end
@@ -521,9 +521,9 @@ class Route < ActiveRecord::Base
 
       optim_uniq = yield(positions_uniq)
 
-      optim_uniq.collect{ |ou|
+      optim_uniq.flat_map{ |ou|
         stock[positions_uniq[ou][0..1]]
-      }.flatten(1).collect{ |pa|
+      }.collect{ |pa|
         pa[1]
       }
     end
@@ -531,7 +531,7 @@ class Route < ActiveRecord::Base
 
   def unnil_positions(positions, tws)
     # start/stop are always in input positions
-    not_nil_position_index = positions[1..-2].each_with_index.group_by{ |position, index| !position[0].nil? && !position[1].nil? }
+    not_nil_position_index = positions[1..-2].each_with_index.group_by{ |position, _index| !position[0].nil? && !position[1].nil? }
 
     if not_nil_position_index.key?(true)
       not_nil_position, not_nil_tws, not_nil_index = not_nil_position_index[true].collect{ |position, index| [position, tws[index], index + 1] }.transpose
@@ -539,7 +539,7 @@ class Route < ActiveRecord::Base
       not_nil_position = not_nil_tws = not_nil_index = []
     end
     if not_nil_position_index.key?(false)
-      nil_tws, nil_index = not_nil_position_index[false].collect{ |position, index| [tws[index], index  + 1] }.transpose
+      nil_tws, nil_index = not_nil_position_index[false].collect{ |_position, index| [tws[index], index + 1] }.transpose
     else
       nil_tws = nil_index = []
     end

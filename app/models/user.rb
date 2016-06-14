@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   amoeba do
     enable
 
-    customize(lambda { |original, copy|
+    customize(lambda { |_original, copy|
       def copy.assign_defaults; end
       def copy.assign_defaults_layer; end
       def copy.generate_confirmation_token; end
@@ -91,10 +91,10 @@ class User < ActiveRecord::Base
   end
 
   def assign_defaults_layer
-    if admin?
-      self.layer ||= Layer.order(:id).find_by!(overlay: false)
+     self.layer ||= if admin?
+       Layer.order(:id).find_by!(overlay: false)
     else
-      self.layer ||= customer && customer.profile.layers.order(:id).find_by!(overlay: false)
+      customer && customer.profile.layers.order(:id).find_by!(overlay: false)
     end
   end
 end

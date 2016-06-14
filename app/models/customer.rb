@@ -148,7 +148,7 @@ class Customer < ActiveRecord::Base
   def duplicate
     Customer.transaction do
       copy = self.amoeba_dup
-      copy.name += " (%s)" % [I18n.l(Time.zone.now, format: :long)]
+      copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
       copy.save!
       copy
     end
@@ -161,17 +161,15 @@ class Customer < ActiveRecord::Base
   end
 
   def max_vehicles
-    @max_vehicles = @max_vehicles || vehicles.size
+    @max_vehicles ||= vehicles.size
   end
 
   def max_vehicles=(max)
-    begin
-      if !max.blank?
-        @max_vehicles = Integer(max.to_s, 10)
-      end
-    rescue ArgumentError
-      @invalid_max_vehicle = true
+    if !max.blank?
+      @max_vehicles = Integer(max.to_s, 10)
     end
+  rescue ArgumentError
+    @invalid_max_vehicle = true
   end
 
   def masternaut?
@@ -195,7 +193,7 @@ class Customer < ActiveRecord::Base
   end
 
   def visits
-    destinations.collect{ |destination| destination.visits }.flatten
+    destinations.collect(&:visits).flatten
   end
 
   def delete_all_destinations
@@ -214,9 +212,9 @@ class Customer < ActiveRecord::Base
   private
 
   def devices_update_vehicles
-    self.vehicles.select(&:tomtom_id).each{|vehicle| vehicle.tomtom_id = nil } if !self.enable_tomtom || (self.tomtom_account_changed? && !self.tomtom_account_was.nil?) || (self.tomtom_user_changed? && !self.tomtom_user_was.nil?)
-    self.vehicles.select(&:teksat_id).each{|vehicle| vehicle.teksat_id = nil } if !self.enable_teksat || (self.teksat_customer_id_changed? && !self.teksat_customer_id_was.nil?) || (self.teksat_username_changed? && !self.teksat_username_was.nil?)
-    self.vehicles.select(&:orange_id).each{|vehicle| vehicle.orange_id = nil } if !self.enable_orange || (self.orange_user_changed? && !self.orange_user_was.nil?)
+    self.vehicles.select(&:tomtom_id).each{ |vehicle| vehicle.tomtom_id = nil } if !self.enable_tomtom || (self.tomtom_account_changed? && !self.tomtom_account_was.nil?) || (self.tomtom_user_changed? && !self.tomtom_user_was.nil?)
+    self.vehicles.select(&:teksat_id).each{ |vehicle| vehicle.teksat_id = nil } if !self.enable_teksat || (self.teksat_customer_id_changed? && !self.teksat_customer_id_was.nil?) || (self.teksat_username_changed? && !self.teksat_username_was.nil?)
+    self.vehicles.select(&:orange_id).each{ |vehicle| vehicle.orange_id = nil } if !self.enable_orange || (self.orange_user_changed? && !self.orange_user_was.nil?)
   end
 
   def assign_defaults
@@ -264,7 +262,7 @@ class Customer < ActiveRecord::Base
         }
       elsif vehicles.size > max_vehicles
         # Delete
-        (vehicles.size - max_vehicles).times{ |i|
+        (vehicles.size - max_vehicles).times{ |_i|
           vehicle = vehicles[vehicles.size - 1]
           vehicles.destroy(vehicle)
         }
@@ -286,15 +284,13 @@ class Customer < ActiveRecord::Base
             destination.tag_ids = []
           }
         else
-          self.destinations.each{ |destination|
-            if destination.visits.size > 0
-              destination.ref = destination.visits[0].ref
-              destination.tags = destination.visits[0].tags # ?
-              destination.visits.each{ |visit|
-                visit.ref = nil
-                visit.tag_ids = []
-              }
-            end
+          self.destinations.select(&:present?).each{ |destination|
+            destination.ref = destination.visits[0].ref
+            destination.tags = destination.visits[0].tags # ?
+            destination.visits.each{ |visit|
+              visit.ref = nil
+              visit.tag_ids = []
+            }
           }
         end
       end

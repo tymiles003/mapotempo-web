@@ -17,7 +17,7 @@
 #
 
 class Router < ActiveRecord::Base
-  DIMENSION = {time: 0, distance: 1}
+  DIMENSION = {time: 0, distance: 1}.freeze
 
   nilify_blanks
   auto_strip_attributes :name, :url_time, :url_distance, :mode
@@ -32,7 +32,7 @@ class Router < ActiveRecord::Base
     segments.collect{ |segment|
       begin
         trace(speed_multiplicator, *segment, dimension, options)
-      rescue RouterError => e
+      rescue RouterError
         [nil, nil, nil]
       end
     }
@@ -71,7 +71,7 @@ class Router < ActiveRecord::Base
     out
   end
 
-  def rectangular2square_matrix(row, column, &block)
+  def rectangular2square_matrix(row, column, &_block)
     row, column = pack_vector(row, column)
     vector = row != column ? row + column : row
     matrix = yield(vector)
@@ -84,13 +84,13 @@ class Router < ActiveRecord::Base
   end
 
   def matrix_iterate(row, column, speed_multiplicator, dimension = :time, options, &block)
-    segments = row.collect{ |v1|
+    segments = row.flat_map{ |v1|
       column.collect{ |v2|
         [v1[0], v1[1], v2[0], v2[1]]
       }
-    }.flatten(1)
+    }
 
-    traces = trace_batch(speed_multiplicator, segments, dimension, options).collect{ |distance, time, trace|
+    trace_batch(speed_multiplicator, segments, dimension, options).collect{ |distance, time, _trace|
       distance ||= 2147483647
       time ||= 2147483647
       block.call(1, total) if block

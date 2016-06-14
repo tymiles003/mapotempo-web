@@ -18,7 +18,7 @@
 require 'font_awesome'
 
 class Store < Location
-  ICON_SIZE = %w(small medium large)
+  ICON_SIZE = %w(small medium large).freeze
 
   has_many :vehicle_usage_set_starts, class_name: 'VehicleUsageSet', inverse_of: :store_start, foreign_key: 'store_start_id'
   has_many :vehicle_usage_set_stops, class_name: 'VehicleUsageSet', inverse_of: :store_stop, foreign_key: 'store_stop_id'
@@ -28,7 +28,7 @@ class Store < Location
   has_many :vehicle_usage_rests, class_name: 'VehicleUsage', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
 
   auto_strip_attributes :name, :street, :postalcode, :city
-  validates_inclusion_of :icon, in: FontAwesome::icons_table, allow_blank: true, message: lambda { |*_| I18n.t('activerecord.errors.models.store.icon_unknown') }
+  validates_inclusion_of :icon, in: FontAwesome.icons_table, allow_blank: true, message: lambda { |*_| I18n.t('activerecord.errors.models.store.icon_unknown') }
   validates :icon_size, inclusion: { in: Store::ICON_SIZE, allow_blank: true, message: lambda { |*_| I18n.t('activerecord.errors.models.store.icon_size_invalid') } }
 
   before_destroy :destroy_vehicle_store
@@ -43,7 +43,7 @@ class Store < Location
     exclude_association :vehicle_usage_stops
     exclude_association :vehicle_usage_rests
 
-    customize(lambda { |original, copy|
+    customize(lambda { |_original, copy|
       def copy.destroy_vehicle_store; end
     })
   end
@@ -63,11 +63,9 @@ class Store < Location
     Route.transaction do
       routes_usage_set = vehicle_usage_set_starts.collect{ |vehicle_usage_set_start|
         vehicle_usage_set_start.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_start }.collect(&:routes)
-      } +
-      vehicle_usage_set_stops.collect{ |vehicle_usage_set_stop|
+      } + vehicle_usage_set_stops.collect{ |vehicle_usage_set_stop|
         vehicle_usage_set_stop.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_stop }.collect(&:routes)
-      } +
-      vehicle_usage_set_rests.collect{ |vehicle_usage_set_rest|
+      } + vehicle_usage_set_rests.collect{ |vehicle_usage_set_rest|
         vehicle_usage_set_rest.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_rest }.collect(&:routes)
       }
 

@@ -56,7 +56,7 @@ class VehicleUsage < ActiveRecord::Base
   amoeba do
     exclude_association :routes
 
-    customize(lambda { |original, copy|
+    customize(lambda { |_original, copy|
       def copy.nilify_times; end
       def copy.update_out_of_date; end
       def copy.update_routes; end
@@ -117,9 +117,7 @@ class VehicleUsage < ActiveRecord::Base
       }
     else
       # New or changed rest
-      routes.each{ |route|
-        route.add_or_update_rest
-      }
+      routes.each(&:add_or_update_rest)
     end
   end
 

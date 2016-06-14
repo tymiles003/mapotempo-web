@@ -53,7 +53,7 @@ class Planning < ActiveRecord::Base
 
   def duplicate
     copy = self.amoeba_dup
-    copy.name += " (%s)" % [I18n.l(Time.zone.now, format: :long)]
+    copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
     copy
   end
 
@@ -61,13 +61,13 @@ class Planning < ActiveRecord::Base
     default_empty_routes(ignore_errors)
     routes_visits = routes_visits.select{ |ref, _d| ref } # Remove out_of_route
     if routes_visits.size <= routes.size - 1
-      visits = routes_visits.values.collect{ |s| s[:visits] }.flatten(1).collect{ |visit_active| visit_active[0] }
+      visits = routes_visits.values.flat_map{ |s| s[:visits] }.collect{ |visit_active| visit_active[0] }
       routes[0].set_visits((customer.visits - visits).select{ |visit|
         ((visit.tags | visit.destination.tags) & tags).size == tags.size
       })
 
       index_routes = (1..routes.size).to_a
-      routes_visits.each{ |ref, r|
+      routes_visits.each{ |_ref, r|
         index_routes.delete(routes.index{ |rr| rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] }) if r[:ref_vehicle]
       }
       routes_visits.each{ |ref, r|
@@ -197,7 +197,7 @@ class Planning < ActiveRecord::Base
     end
 
     # If zoning, get appropriate route
-    if available_routes.empty? && zonings.size > 0
+    if available_routes.empty? && !zonings.empty?
       zone = Zoning.new(zones: zonings.collect(&:zones).flatten).inside(stop.visit.destination)
       if zone && zone.vehicle
         route = routes.find{ |route|
@@ -275,15 +275,15 @@ class Planning < ActiveRecord::Base
   def prefered_route_and_index(available_routes, stop)
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
-    available_routes.collect{ |route|
+    available_routes.flat_map{ |route|
       route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
         [(route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.position?) ? [route.vehicle_usage.default_store_start, route, 1] : nil,
         (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
-    }.flatten(1).compact.sort_by{ |a|
+    }.compact.sort_by{ |a|
       a[0].distance(stop.position)
-    }[0..9].collect{ |visit_route_index|
+    }[0..9].flat_map{ |visit_route_index|
       [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
-    }.flatten(1).uniq.min_by{ |ri|
+    }.uniq.min_by{ |ri|
       ri[0].class.amoeba do
         clone :stops # No need to duplicate stop juste for compute evaluation
         nullify :planning_id
@@ -309,9 +309,9 @@ class Planning < ActiveRecord::Base
 
   def split_by_zones
     self.zoning_out_of_date = false
-    if zonings.size > 0 && !routes.empty?
+    if !zonings.empty? && !routes.empty?
       # Make sure there is at least one Zone with Vehicle, else, don't apply Zones
-      return unless zonings.any?{|zoning| zoning.zones.any?{|zone| !zone.avoid_zone && !zone.vehicle_id.blank? }}
+      return unless zonings.any?{ |zoning| zoning.zones.any?{ |zone| !zone.avoid_zone && !zone.vehicle_id.blank? } }
 
       vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes|
         next if vehicle_usage && !vehicle_usage.active?
@@ -342,7 +342,7 @@ class Planning < ActiveRecord::Base
       self.zoning_out_of_date = true
     end
 
-    if zonings.size > 0 && @zonings_updated
+    if !zonings.empty? && @zonings_updated
       self.zoning_out_of_date = true
       split_by_zones
     end
@@ -356,12 +356,10 @@ class Planning < ActiveRecord::Base
         if h[vehicle_usage.vehicle] && vehicle_usage.active
           h[vehicle_usage.vehicle].vehicle_usage = vehicle_usage
           h[vehicle_usage.vehicle].save!
+        elsif vehicle_usage.active
+          vehicle_usage_add vehicle_usage
         else
-          if vehicle_usage.active
-            vehicle_usage_add vehicle_usage
-          else
-            vehicle_usage_remove h[vehicle_usage.vehicle].vehicle_usage
-          end
+          vehicle_usage_remove h[vehicle_usage.vehicle].vehicle_usage
         end
       }
       compute

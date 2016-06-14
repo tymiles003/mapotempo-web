@@ -59,10 +59,10 @@ class ImportCsv
                     if c.to_i != 0
                       r[c.to_i - 1].is_a?(Array) ? r[c.to_i - 1][1] : r[c.to_i - 1]
                     else
-                      r.find{ |rr| rr[0] == c}.try{ |rr| rr[1] }
+                      r.find{ |rr| rr[0] == c }.try{ |rr| rr[1] }
                     end
                   }.compact
-                  row[k] = values.join(' ') if values.size > 0
+                  row[k] = values.join(' ') if !values.empty?
                 elsif r.key?(v[:title])
                   row[k] = r[v[:title]]
                 end

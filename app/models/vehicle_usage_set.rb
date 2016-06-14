@@ -62,7 +62,7 @@ class VehicleUsageSet < ActiveRecord::Base
 
   def duplicate
     copy = self.amoeba_dup
-    copy.name += " (%s)" % [I18n.l(Time.zone.now, format: :long)]
+    copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
     copy
   end
 
@@ -100,9 +100,7 @@ class VehicleUsageSet < ActiveRecord::Base
 
   def update_out_of_date
     if rest_duration_changed?
-      vehicle_usages.each{ |vehicle_usage|
-        vehicle_usage.update_rest
-      }
+      vehicle_usages.each(&:update_rest)
     end
 
     if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? ||

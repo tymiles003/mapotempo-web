@@ -36,7 +36,7 @@ class Visit < ActiveRecord::Base
     exclude_association :stop_visits
     exclude_association :orders
 
-    customize(lambda { |original, copy|
+    customize(lambda { |_original, copy|
       def copy.update_tags; end
       def copy.create_orders; end
       def copy.update_out_of_date; end
@@ -93,10 +93,8 @@ class Visit < ActiveRecord::Base
           if (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) != planning.tags.to_a
             planning.visit_remove(self)
           end
-        else
-          if (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) == planning.tags.to_a
-            planning.visit_add(self)
-          end
+        elsif (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) == planning.tags.to_a
+          planning.visit_add(self)
         end
       }
     end

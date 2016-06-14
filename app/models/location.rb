@@ -24,7 +24,7 @@ class LocalizationValidator < ActiveModel::Validator
 end
 
 class Location < ActiveRecord::Base
-  GEOCODING_LEVEL = {point: 1, house: 2, intersection: 3, street: 4, city: 5}
+  GEOCODING_LEVEL = {point: 1, house: 2, intersection: 3, street: 4, city: 5}.freeze
 
   self.abstract_class = true
 
@@ -55,7 +55,7 @@ class Location < ActiveRecord::Base
     geocode_result(Mapotempo::Application.config.geocode_geocoder.code(*geocode_args))
   rescue GeocodeError => e # avoid stop save
     @warnings = [I18n.t('errors.location.geocoding_fail') + ' ' + e.message]
-    Rails.logger.info "Destination Geocode Failed: ID=%s" % [self.id]
+    Rails.logger.info "Destination Geocode Failed: ID=#{self.id}"
   end
 
   def geocode_args
