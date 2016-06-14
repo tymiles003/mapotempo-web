@@ -16,12 +16,12 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class TeksatService < DeviceService
-  def initialize params
+  def initialize(params)
     super params
     service.ticket_id = params[:ticket_id]
   end
 
-  def authenticate params
+  def authenticate(params)
     service.authenticate customer, params
   end
 

@@ -15,4 +15,4 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class MasternautService < DeviceService ; end
+class MasternautService < DeviceService; end

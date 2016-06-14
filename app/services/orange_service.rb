@@ -16,11 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class OrangeService < DeviceService
-  def test_list params
+  def test_list(params)
     service.test_list customer, params
   end
 
-  def list_devices params={}
+  def list_devices(params = {})
     with_cache [:list_devices, service_name, customer.id, customer.orange_user] do
       service.list_devices customer, params
     end

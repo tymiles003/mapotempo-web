@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class TomtomService < DeviceService
-  def test_list params
+  def test_list(params)
     service.test_list customer, params
   end
 
@@ -32,7 +32,7 @@ class TomtomService < DeviceService
     end
   end
 
-  def list_vehicles params
+  def list_vehicles(params)
     with_cache [:list_vehicles, service_name, customer.id, customer.tomtom_user] do
       service.list_vehicles customer, params
     end

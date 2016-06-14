@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class AlyacomService < DeviceService
-  def test_list params
+  def test_list(params)
     service.test_list customer, params
   end
 end

@@ -18,31 +18,32 @@
 class DeviceService
   attr_reader :customer, :service_name, :cache_object, :service
 
-  def initialize params
+  def initialize(params)
     @customer = params[:customer]
     @cache_object = Mapotempo::Application.config.devices.cache_object
-    @service_name = self.class.name.gsub("Service", "").downcase.to_sym
+    @service_name = self.class.name.gsub('Service', '').downcase.to_sym
     @service = Mapotempo::Application.config.devices[service_name]
   end
 
-  def send_route route, options={}
+  def send_route(route, options = {})
     service.send_route customer, route, options
     route.update! last_sent_at: Time.now.utc
-    return route.last_sent_at
+    route.last_sent_at
   end
 
-  def clear_route route
+  def clear_route(route)
     service.clear_route customer, route
     route.update! last_sent_at: nil
   end
 
   private
 
-  def with_cache key, &block
+  def with_cache(key, &block)
     result = cache_object.read key
     return result if result
+
     result = yield
     cache_object.write key, result
-    return result
+    result
   end
 end
