@@ -16,13 +16,13 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Alyacom < DeviceBase
-  def test_list customer, params
+  def test_list(customer, params)
     RestClient.get [api_url, params[:alyacom_association], 'users'].join('/'), params: { apiKey: params[:alyacom_api_key] }
   rescue RestClient::Forbidden, RestClient::InternalServerError => e
     raise DeviceServiceError.new('Alyacom: %s' % [ I18n.t('errors.alyacom.unauthorized') ])
   end
 
-  def send_route customer, route, options={}
+  def send_route(customer, route, options = {})
     store = route.vehicle_usage.default_store_start
     staff = {
       id: route.vehicle_usage.vehicle.name,
@@ -68,7 +68,7 @@ class Alyacom < DeviceBase
 
   private
 
-  def createJobRoute customer, planning_date, staff, waypoints
+  def createJobRoute(customer, planning_date, staff, waypoints)
     update_staffs customer, [staff]
     update_users customer, waypoints.collect{ |w| w[:user] }
 
@@ -98,7 +98,7 @@ class Alyacom < DeviceBase
     post customer, 'planning', plannings
   end
 
-  def update_staffs customer, staffs
+  def update_staffs(customer, staffs)
     res = Hash[get(customer, 'staff').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     missing = staffs.select{ |s|
@@ -119,7 +119,7 @@ class Alyacom < DeviceBase
     end
   end
 
-  def update_users customer, users
+  def update_users(customer, users)
     res = Hash[get(customer, 'users').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     missing = users.select{ |s|
@@ -142,11 +142,11 @@ class Alyacom < DeviceBase
     end
   end
 
-  def get customer, object, params={}
+  def get(customer, object, params = {})
     get_raw "#{api_url}/#{customer.alyacom_association}/#{object}", { enc: :json, apiKey: customer.alyacom_api_key }.merge(params)
   end
 
-  def get_raw url, params
+  def get_raw(url, params)
     data = []
     next_ = nil
     begin
@@ -156,7 +156,7 @@ class Alyacom < DeviceBase
         Rails.logger.info next_ || url
         begin
           # Parse malformed Json, replace key by string, simple quote by double quote
-          response = JSON.parse(e.response.gsub('\'', '"').gsub(/([\'\"])?([a-zA-Z0-9_]+)([\'\"])?:/, '"\2":'))
+          response = JSON.parse(e.response.tr('\'', '"').gsub(/([\'\"])?([a-zA-Z0-9_]+)([\'\"])?:/, '"\2":'))
         rescue
           Rails.logger.info e
           raise e
@@ -181,7 +181,7 @@ class Alyacom < DeviceBase
     data
   end
 
-  def post customer, object, data
+  def post(customer, object, data)
     RestClient.post "#{api_url}/#{customer.alyacom_association}/#{object}", data.to_json, content_type: :json, params: { enc: :json, apiKey: customer.alyacom_api_key }
   rescue => e
     Rails.logger.info e.response

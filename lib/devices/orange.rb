@@ -23,7 +23,7 @@ class Orange < DeviceBase
     send_request list_operations(customer, { auth: params.slice(:user, :password) })
   end
 
-  def list_devices customer, params
+  def list_devices(customer, params)
     options = {}
     options.merge!(auth: params.slice(:user, :password)) if !params.blank?
     response = send_request get_vehicles(customer, options)
@@ -41,16 +41,16 @@ class Orange < DeviceBase
     end
   end
 
-  def send_route customer, route, options={}
+  def send_route(customer, route, options = {})
     send_request send_xml_file(customer, route)
   end
 
-  def clear_route customer, route
+  def clear_route(customer, route)
     # Not supported by Garmin 590 -- Garmin Dezl and Nuvi only
     send_request send_xml_file(customer, route, { delete: true })
   end
 
-  def get_vehicles_pos customer
+  def get_vehicles_pos(customer)
     response = send_request(get_positions(customer))
     if response.code.to_i == 200
       vehicle_infos = []
@@ -66,7 +66,7 @@ class Orange < DeviceBase
 
   private
 
-  def send_request response
+  def send_request(response)
     if response.code.to_i == 200
       return response
     elsif response.code.to_i == 401
@@ -76,7 +76,7 @@ class Orange < DeviceBase
     end
   end
 
-  def net_request customer, options
+  def net_request(customer, options)
     # Auth
     if options[:auth]
       user, password = options[:auth][:user], options[:auth][:password]
@@ -97,26 +97,26 @@ class Orange < DeviceBase
     http.request request
   end
 
-  def get_positions customer
+  def get_positions(customer)
     net_request customer, { path: '/webservices/getpositions.php', params: { ext: 'xml' } }
   end
 
-  def get_vehicles customer, options
+  def get_vehicles(customer, options)
     net_request customer, options.merge(path: '/webservices/getvehicles.php', params: { ext: 'xml' })
   end
 
-  def list_operations customer, options
+  def list_operations(customer, options)
     net_request customer, options.merge(path: '/pnd/index.php', params: { ext: 'xml', ref: '', vehid: '', typ: 'mis', eqpid: '', dtdeb: Time.zone.now.beginning_of_day, dtfin: Time.zone.now.end_of_day })
   end
 
-  def send_xml_file customer, route, options={}
+  def send_xml_file(customer, route, options = {})
     f = Tempfile.new Time.zone.now.to_i.to_s ; f.write to_xml(route, options) ; f.rewind
     response = RestClient::Request.execute method: :post, user: customer.orange_user, password: customer.orange_password, url: api_url + '/pnd/index.php', payload: { multipart: true, file: f }
     f.unlink
     return response
   end
 
-  def to_xml route, options={}
+  def to_xml(route, options = {})
     xml = ::Builder::XmlMarkup.new indent: 2
     xml.instruct!
     xml.tag! :ROOT do

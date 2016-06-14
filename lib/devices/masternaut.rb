@@ -18,7 +18,7 @@
 class Masternaut < DeviceBase
   attr_reader :client_poi, :client_job
 
-  def savon_client_poi customer
+  def savon_client_poi(customer)
     @client_poi ||= Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/POI?wsdl', soap_version: 1) do
       #log true
       #pretty_print_xml true
@@ -26,7 +26,7 @@ class Masternaut < DeviceBase
     end
   end
 
-  def savon_client_job customer
+  def savon_client_job(customer)
     @client_job ||= Savon.client(basic_auth: [customer.masternaut_user, customer.masternaut_password], wsdl: api_url + '/Job?wsdl', multipart: true, soap_version: 1) do
       #log true
       #pretty_print_xml true
@@ -85,7 +85,7 @@ class Masternaut < DeviceBase
     '26' => 'an error occurred while creating the job item',
   }
 
-  def send_route customer, route, options={}
+  def send_route(customer, route, options = {})
     order_id_base = Time.now.to_i.to_s(36) + '_' + route.id.to_s
     customer = route.planning.customer
     position = route.vehicle_usage.default_store_start
@@ -125,7 +125,7 @@ class Masternaut < DeviceBase
 
   private
 
-  def createJobRoute customer, vehicleRef, reference, description, date, begin_time, end_time, waypoints
+  def createJobRoute(customer, vehicleRef, reference, description, date, begin_time, end_time, waypoints)
     time_2000 = Time.utc(2000, 1, 1, 0, 0, 0, '+00:00').to_i
 
     existing_waypoints = fetchPOI(customer)
@@ -167,7 +167,7 @@ class Masternaut < DeviceBase
     }
   end
 
-  def createPOICategory customer
+  def createPOICategory(customer)
     params = {
       category: {
         logo: 'client_green',
@@ -179,7 +179,7 @@ class Masternaut < DeviceBase
     get savon_client_poi(customer), nil, :create_poi_category, params, @@error_code_poi
   end
 
-  def fetchPOI customer
+  def fetchPOI(customer)
     params = {
       filter: {
         categoryReference: 'mapotempo',
@@ -207,7 +207,7 @@ class Masternaut < DeviceBase
     fetch = Hash[fetch]
   end
 
-  def createPOI customer, waypoint
+  def createPOI(customer, waypoint)
     params = {
       poi: {
         address: {
@@ -232,7 +232,7 @@ class Masternaut < DeviceBase
     get savon_client_poi(customer), 200, :create_poi, params, @@error_code_poi
   end
 
-  def get client, no_error_code, operation, message={}, error_code
+  def get(client, no_error_code, operation, message = {}, error_code)
     response = client.call(operation, message: message)
 
     op_response = (operation.to_s + '_response').to_sym

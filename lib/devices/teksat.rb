@@ -20,7 +20,7 @@ class Teksat < DeviceBase
 
   attr_accessor :ticket_id
 
-  def authenticate customer, params
+  def authenticate(customer, params)
     response = RestClient.get get_ticket_url(customer, { auth: params.slice(:url, :customer_id, :username, :password) })
     if response.code == 200 && response.strip.length >= 1
       return response.strip
@@ -31,7 +31,7 @@ class Teksat < DeviceBase
     raise DeviceServiceError.new('Teksat: %s' % [ I18n.t('errors.teksat.unauthorized') ])
   end
 
-  def list_devices customer
+  def list_devices(customer)
     response = RestClient.get get_vehicles_url(customer)
     if response.code == 200
       Nokogiri::XML(response).xpath('//vehicle').map do |item|
@@ -42,7 +42,7 @@ class Teksat < DeviceBase
     end
   end
 
-  def send_route customer, route, options={}
+  def send_route(customer, route, options = {})
     send_mission(customer, route, route.start, route.vehicle_usage.default_store_start) if route.vehicle_usage.default_store_start
     route.stops.select(&:active?).select(&:position?).sort_by(&:index).each do |stop|
       next if !stop.time # Teksat API: Stop time is required
@@ -51,12 +51,12 @@ class Teksat < DeviceBase
     send_mission(customer, route, route.end, route.vehicle_usage.default_store_stop) if route.vehicle_usage.default_store_stop
   end
 
-  def clear_route customer, route
+  def clear_route(customer, route)
     response = RestClient.get get_missions_url(customer, { date: planning_date(route).strftime('%Y-%m-%d') })
     Nokogiri::XML(response).xpath('//mission').map{|item| RestClient.get(delete_mission_url(customer, { mi_id: item['id'] })) }
   end
 
-  def get_vehicles_pos customer
+  def get_vehicles_pos(customer)
     response = RestClient.get get_vehicles_pos_url(customer)
     if response.code == 200
       Nokogiri::XML(response).xpath('//vehicle_pos').map do |item|
@@ -69,7 +69,7 @@ class Teksat < DeviceBase
 
   private
 
-  def send_mission customer, route, start_time, destination
+  def send_mission(customer, route, start_time, destination)
     response = RestClient.get set_mission_url(customer, {
       mi_v_id: route.vehicle_usage.vehicle.teksat_id,
       mi_label: route.planning.name,
@@ -88,7 +88,7 @@ class Teksat < DeviceBase
     end
   end
 
-  def get_ticket_url customer, options={}
+  def get_ticket_url(customer, options = {})
     if options[:auth]
       url, customer_id, username, password = options[:auth][:url], options[:auth][:customer_id], options[:auth][:username], options[:auth][:password]
     else
@@ -102,31 +102,31 @@ class Teksat < DeviceBase
     ).to_s
   end
 
-  def get_vehicles_url customer
+  def get_vehicles_url(customer)
     Addressable::Template.new('http://%s/webservices/map/get-vehicles.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: { custID: customer.teksat_customer_id, tck: ticket_id }
     ).to_s
   end
 
-  def get_vehicles_pos_url customer
+  def get_vehicles_pos_url(customer)
     Addressable::Template.new('http://%s/webservices/map/get-vehicles-pos.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: { custID: customer.teksat_customer_id, tck: ticket_id }
     ).to_s
   end
 
-  def set_mission_url customer, options
+  def set_mission_url(customer, options)
     Addressable::Template.new('http://%s/webservices/map/set-mission.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s
   end
 
-  def get_missions_url customer, options
+  def get_missions_url(customer, options)
     Addressable::Template.new('http://%s/webservices/map/get-missions.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s
   end
 
-  def delete_mission_url customer, options
+  def delete_mission_url(customer, options)
     Addressable::Template.new('http://%s/webservices/map/delete-mission.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s

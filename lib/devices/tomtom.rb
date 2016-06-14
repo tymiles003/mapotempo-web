@@ -54,11 +54,11 @@ class Tomtom < DeviceBase
     'blue' => '#0000FF'
   }
 
-  def test_list customer, params
+  def test_list(customer, params)
     list_devices customer, { auth: params.slice(:account, :user, :password) }
   end
 
-  def list_devices customer, params={}
+  def list_devices(customer, params = {})
     objects = get customer, savon_client_objects, :show_object_report, {}, params
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
@@ -69,7 +69,7 @@ class Tomtom < DeviceBase
     end
   end
 
-  def get_vehicles_pos customer
+  def get_vehicles_pos(customer)
     objects = get customer, savon_client_objects, :show_object_report, {}, {}, ignore_busy = true
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
@@ -85,7 +85,7 @@ class Tomtom < DeviceBase
     end if objects
   end
 
-  def list_vehicles customer, params={}
+  def list_vehicles(customer, params = {})
     options = {}
     options.merge!(auth: params.slice(:account, :user, :password)) if !params.blank?
     objects = get customer, savon_client_objects, :show_vehicle_report, {}, options
@@ -106,7 +106,7 @@ class Tomtom < DeviceBase
     end
   end
 
-  def list_addresses customer
+  def list_addresses(customer)
     addresss = get customer, savon_client_address, :show_address_report
     addresss = [addresss] if addresss.is_a?(Hash)
     addresss.select{ |object| !object[:deleted] }.collect do |address|
@@ -126,7 +126,7 @@ class Tomtom < DeviceBase
     end
   end
 
-  def send_route customer, route, options={}
+  def send_route(customer, route, options = {})
     case options[:type].to_sym
       when :orders
         position = route.vehicle_usage.default_store_start
@@ -193,7 +193,7 @@ class Tomtom < DeviceBase
     end
   end
 
-  def clear_route customer, route
+  def clear_route(customer, route)
     get customer, savon_client_orders, :clear_orders, {
       deviceToClear: {
         markDeleted: 'true',
@@ -208,7 +208,7 @@ class Tomtom < DeviceBase
 
   private
 
-  def get customer, client, operation, message={}, options={}, ignore_busy = false
+  def get(customer, client, operation, message={}, options={}, ignore_busy = false)
     if options[:auth]
       account, username, password = options[:auth][:account], options[:auth][:user], options[:auth][:password]
     else
@@ -242,7 +242,7 @@ class Tomtom < DeviceBase
     raise error
   end
 
-  def parse_error_msg status_code
+  def parse_error_msg(status_code)
     # https://uk.support.business.tomtom.com/ci/fattach/get/1331065/1450429305/redirect/1/session/L2F2LzEvdGltZS8xNDUyNjk2OTAzL3NpZC9yVVVpQ3FHbQ==/filename/WEBFLEET.connect-en-1.26.0.pdf
     case status_code
       when 10, 20, 40
@@ -272,7 +272,7 @@ class Tomtom < DeviceBase
     end
   end
 
-  def sendDestinationOrder customer, route, position, orderid, description, time, waypoints=nil
+  def sendDestinationOrder(customer, route, position, orderid, description, time, waypoints = nil)
     objectuid = route.vehicle_usage.vehicle.tomtom_id
     unique_base_order_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
@@ -312,7 +312,7 @@ class Tomtom < DeviceBase
           {
             latitude: (waypoint[:lat] * 1e6).round.to_s,
             longitude: (waypoint[:lng] * 1e6).round.to_s,
-            description: strip_sql(waypoint[:description]).gsub(',', ' ').strip[0..19]
+            description: strip_sql(waypoint[:description]).tr(',', ' ').strip[0..19]
           }
         }
       }}
@@ -320,8 +320,8 @@ class Tomtom < DeviceBase
     get customer, savon_client_orders, :send_destination_order, params
   end
 
-  def strip_sql string
+  def strip_sql(string)
     # Strip Quotes, forbidden by service in some cases (before Union or Select)
-    string.gsub(/\'/i, "\u2019").gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ')
+    string.tr('\'', "\u2019").tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ')
   end
 end
