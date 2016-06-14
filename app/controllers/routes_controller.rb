@@ -36,7 +36,7 @@ class RoutesController < ApplicationController
       end
       format.kml do
         response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.kml"'
-        render "routes/show", locals: { route: @route }
+        render 'routes/show', locals: { route: @route }
       end
       format.kmz do
         if params[:email]

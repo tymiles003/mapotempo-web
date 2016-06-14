@@ -56,7 +56,7 @@ class StoresController < ApplicationController
       if current_user.customer.save
         format.html { redirect_to link_back || edit_store_path(@store), notice: t('activerecord.successful.messages.created', model: @store.class.model_name.human) }
       else
-        flash.now[:error] = @store.customer.errors.full_messages if @store.customer.errors.size > 0
+        flash.now[:error] = @store.customer.errors.full_messages if !@store.customer.errors.empty?
         format.html { render action: 'new' }
       end
     end
@@ -68,7 +68,7 @@ class StoresController < ApplicationController
         if @store.update(store_params) && @store.customer.save
           format.html { redirect_to link_back || edit_store_path(@store), notice: t('activerecord.successful.messages.updated', model: @store.class.model_name.human) }
         else
-          flash.now[:error] = @store.customer.errors.full_messages if @store.customer.errors.size > 0
+          flash.now[:error] = @store.customer.errors.full_messages if !@store.customer.errors.empty?
           format.html { render action: 'edit' }
         end
       end
@@ -140,7 +140,7 @@ class StoresController < ApplicationController
   end
 
   def icons_table
-    @icons_table = FontAwesome::icons_table
+    @icons_table = FontAwesome.icons_table
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

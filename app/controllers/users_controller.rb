@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   before_action :find_user, except: [:password, :set_password]
   before_action :find_user_by_token, only: [:password, :set_password]
 
-  def edit ; end
+  def edit; end
 
   def update
     if @user.update user_params

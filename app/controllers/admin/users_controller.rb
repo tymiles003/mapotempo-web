@@ -58,7 +58,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy_multiple
-    User.find(params[:users].keys).reject(&:admin?).each &:destroy
+    User.find(params[:users].keys).reject(&:admin?).each(&:destroy)
     redirect_to_default
   end
 

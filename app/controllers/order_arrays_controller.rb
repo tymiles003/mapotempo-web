@@ -30,11 +30,11 @@ class OrderArraysController < ApplicationController
     planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
     if planning
       i = -1
-      visit_index = Hash[planning.routes.collect{ |route|
+      visit_index = Hash[planning.routes.flat_map{ |route|
         route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
           [stop.visit.id, route.vehicle_usage]
         }
-      }.flatten(1).collect{ |id, vehicle_usage| [id, [i += 1, vehicle_usage]] }]
+      }.collect{ |id, vehicle_usage| [id, [i += 1, vehicle_usage]] }]
 
       @visits_orders = @visits_orders.sort_by{ |visit_orders|
         visit_index[visit_orders[0].visit.id] ? visit_index[visit_orders[0].visit.id][0] : Float::INFINITY

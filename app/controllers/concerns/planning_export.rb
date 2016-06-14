@@ -1,27 +1,27 @@
 module PlanningExport
   extend ActiveSupport::Concern
 
-  def export_filename planning, ref
+  def export_filename(planning, ref)
     array = []
     array << planning.name
     array << ref
     array << planning.order_array.name if planning.customer.enable_orders && planning.order_array
     array << I18n.l(planning.date) if planning.date
-    array.join("_").gsub("/", "-").delete("\"")
+    array.join('_').tr('/', '-').delete('"')
   end
 
-  def kmz_string_io options={}
+  def kmz_string_io(options = {})
     Zip::OutputStream.write_buffer do |zio|
       zio.put_next_entry(filename + '.kml')
       if options[:route]
         zio.write render_to_string(
-          template: "routes/show",
+          template: 'routes/show',
           formats: :kml,
           locals: options.slice(:route)
         )
       elsif options[:planning]
         zio.write render_to_string(
-          template: "plannings/show",
+          template: 'plannings/show',
           formats: :kml,
           locals: options.slice(:planning)
         )
@@ -43,5 +43,4 @@ module PlanningExport
       }
     end
   end
-
 end

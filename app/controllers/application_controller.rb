@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
 
   def load_vehicles
     if current_user && !current_user.admin?
-      @vehicle_usage_sets = current_user.customer.vehicle_usage_sets.includes([:vehicle_usages, { :vehicle_usages => [:vehicle] }])
+      @vehicle_usage_sets = current_user.customer.vehicle_usage_sets.includes([:vehicle_usages, { vehicle_usages: [:vehicle] }])
     end
   end
 
