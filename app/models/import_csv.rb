@@ -51,6 +51,9 @@ class ImportCsv
         Customer.transaction do
           @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, line_shift: (without_header? ? 0 : 1), column_def: column_def) { |row|
             if row
+              # Column Names: Strip Whitespaces
+              row = row.each_with_object({}){ |(k, v), hash| hash[k.is_a?(String) ? k.strip : k] = v } if row.is_a? Hash
+
               # Switch from locale or custom to internal column name
               r, row = row, {}
               @importer.columns.each{ |k, v|

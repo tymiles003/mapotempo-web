@@ -300,13 +300,24 @@ class ImporterTest < ActionController::TestCase
   end
 
   test 'Import Destinations With French Separator (Commas)' do
+    [:en, :fr].each do |locale|
+      I18n.locale = I18n.default_locale = locale
+      assert I18n.locale == locale
+      assert_difference('Destination.count', 1) do
+        ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile("test/fixtures/files/import_destinations_#{locale.to_s.upcase}.csv", "text.csv")).import
+      end
+      assert Destination.last.lat == 49.173419
+      assert Destination.last.lng == -0.326613
+      assert Visit.last.quantity == 39.482
+    end
+  end
+
+  test 'Import Destinations CSV File With Spaces In Headers' do
+    I18n.locale = I18n.default_locale = :fr
     assert I18n.locale == :fr
     assert_difference('Destination.count', 1) do
-      ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_FR.csv', 'text.csv')).import
+      ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_headers_with_spaces.csv', 'text.csv')).import
     end
-    assert Destination.last.lat == 49.173419
-    assert Destination.last.lng == -0.326613
-    assert Visit.last.quantity == 39.482
   end
 
 end
