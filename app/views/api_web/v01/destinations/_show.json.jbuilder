@@ -26,7 +26,7 @@ json.visits destination.visits do |visit|
     icon ||= tags.find(&:icon)
   end
 end
-if destination.visits.size == 0
+if destination.visits.empty?
   if !tags.empty?
     json.tags_present do
       json.tags do

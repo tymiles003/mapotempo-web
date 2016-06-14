@@ -85,7 +85,7 @@
       <%= render 'visits/form', visit: visit, i: i+1 %>
     <% end %>
   </div>
-  <% if @destination.visits.size == 0 || @destination.customer.enable_multi_visits %>
+  <% if @destination.visits.empty? || @destination.customer.enable_multi_visits %>
     <button id="visit-new" type="button" class="btn btn-default btn-sm" title="<%= t('destinations.form.visit.new_help') %>"><i class="fa fa-plus fa-fw"></i> <%= t('destinations.form.visit.new') %></button>
   <% end %>
   <% if !@destination.customer.enable_multi_visits %>
