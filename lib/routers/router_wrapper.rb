@@ -19,7 +19,7 @@ require 'json'
 require 'rest_client'
 #RestClient.log = $stdout
 
-class RouterError < StandardError ; end
+class RouterError < StandardError; end
 
 module Routers
   class RouterWrapper
@@ -32,7 +32,7 @@ module Routers
     end
 
     def compute_batch(url, mode, dimension, segments, options = {})
-      results = Hash.new
+      results = {}
       nocache_segments = []
       segments.each{ |s|
         key_segment = ['c', url, mode, dimension, Digest::MD5.hexdigest(Marshal.dump([s, options.to_a.sort_by{ |i| i[0].to_s }]))]
@@ -43,7 +43,7 @@ module Routers
           nocache_segments << s if !request_segment
         end
       }
-      if nocache_segments.size > 0
+      if !nocache_segments.empty?
         nocache_segments.each_slice(50){ |slice_segments|
           params = {
             api_key: @api_key,
@@ -71,7 +71,7 @@ module Routers
           }
           if request != ''
             datas = JSON.parse request
-            if datas && datas.key?('features') && datas['features'].size > 0
+            if datas && datas.key?('features') && !datas['features'].empty?
               slice_segments.each_with_index{ |s, i|
                 data = datas['features'][i]
                 if data
@@ -85,7 +85,7 @@ module Routers
         }
       end
 
-      if results.size == 0
+      if results.empty?
         []
       else
         segments.collect{ |segment|
@@ -178,9 +178,7 @@ module Routers
         @cache_request.write(key, request && String.new(request)) # String.new workaround waiting for RestClient 2.0
       end
 
-      if request == ''
-        nil
-      else
+      if request != ''
         data = JSON.parse(request)
         if data['features']
           # MultiPolygon not supported by Leaflet.Draw
@@ -192,8 +190,6 @@ module Routers
             feat
           }
           data.to_json
-        else
-          nil
         end
       end
     end

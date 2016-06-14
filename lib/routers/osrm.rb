@@ -19,7 +19,7 @@ require 'json'
 require 'rest_client'
 #RestClient.log = $stdout
 
-class RouterError < StandardError ; end
+class RouterError < StandardError; end
 
 module Routers
   class Osrm

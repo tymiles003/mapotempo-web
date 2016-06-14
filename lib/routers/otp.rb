@@ -54,9 +54,9 @@ module Routers
           i = data['plan']['itineraries'][0]
           time = i['duration']
           distance = i['walkDistance'] || 0 # FIXME walk only
-          points = i['legs'].collect{ |leg| leg['legGeometry']['points'] }.collect{ |code|
+          points = i['legs'].collect{ |leg| leg['legGeometry']['points'] }.flat_map{ |code|
             Polylines::Decoder.decode_polyline(code)
-          }.flatten(1)
+          }
           trace = Polylines::Encoder.encode_points(points, 1e6)
         else
           distance = nil
