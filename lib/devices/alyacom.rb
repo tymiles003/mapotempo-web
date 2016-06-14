@@ -16,11 +16,10 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Alyacom < DeviceBase
-
   def test_list customer, params
-    RestClient.get [api_url, params[:alyacom_association], 'users'].join("/"), params: { apiKey: params[:alyacom_api_key] }
+    RestClient.get [api_url, params[:alyacom_association], 'users'].join('/'), params: { apiKey: params[:alyacom_api_key] }
   rescue RestClient::Forbidden, RestClient::InternalServerError => e
-    raise DeviceServiceError.new("Alyacom: %s" % [ I18n.t('errors.alyacom.unauthorized') ])
+    raise DeviceServiceError.new('Alyacom: %s' % [ I18n.t('errors.alyacom.unauthorized') ])
   end
 
   def send_route customer, route, options={}
@@ -164,7 +163,7 @@ class Alyacom < DeviceBase
         end
         if !response['message'].blank?
           Rails.logger.info response['message']
-          raise DeviceServiceError.new("Alyacom: %s" % [ response['message'] ])
+          raise DeviceServiceError.new('Alyacom: %s' % [ response['message'] ])
         else
           Rails.logger.info e
           raise e
@@ -188,5 +187,4 @@ class Alyacom < DeviceBase
     Rails.logger.info e.response
     raise e
   end
-
 end

@@ -27,4 +27,4 @@ class DeviceBase
   end
 end
 
-class DeviceServiceError < StandardError ; end
+class DeviceServiceError < StandardError; end

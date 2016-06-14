@@ -16,7 +16,6 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Tomtom < DeviceBase
-
   attr_reader :client_objects, :client_address, :client_orders
 
   def savon_client_objects
@@ -101,7 +100,7 @@ class Tomtom < DeviceBase
       if object[:vehicle_color] && @@vehicle_colors.has_key?(object[:vehicle_color].downcase)
         hash[:color] = @@vehicle_colors[object[:vehicle_color].downcase]
       else
-        hash[:color] = "#000000"
+        hash[:color] = '#000000'
       end
       hash
     end
@@ -231,7 +230,7 @@ class Tomtom < DeviceBase
     if status_code == 0 || (ignore_busy && status_code == 8015)
       return response_body[:results][:result_item] if response_body[:results]
     else
-      raise DeviceServiceError.new "TomTom: %s" % [ parse_error_msg(status_code) || response_body[:status_message] ]
+      raise DeviceServiceError.new 'TomTom: %s' % [ parse_error_msg(status_code) || response_body[:status_message] ]
     end
 
   rescue Savon::SOAPFault => error
@@ -247,29 +246,29 @@ class Tomtom < DeviceBase
     # https://uk.support.business.tomtom.com/ci/fattach/get/1331065/1450429305/redirect/1/session/L2F2LzEvdGltZS8xNDUyNjk2OTAzL3NpZC9yVVVpQ3FHbQ==/filename/WEBFLEET.connect-en-1.26.0.pdf
     case status_code
       when 10, 20, 40
-        I18n.t "errors.tomtom.last_action_failed"
+        I18n.t 'errors.tomtom.last_action_failed'
       when 45
-        I18n.t "errors.tomtom.access_denied"
+        I18n.t 'errors.tomtom.access_denied'
       when 1101
-        I18n.t "errors.tomtom.invalid_account"
+        I18n.t 'errors.tomtom.invalid_account'
       when 2515
-        I18n.t "errors.tomtom.duplicate_order"
+        I18n.t 'errors.tomtom.duplicate_order'
       when 2605
-        I18n.t "errors.tomtom.gps_unreachable"
+        I18n.t 'errors.tomtom.gps_unreachable'
       when 2615
-        I18n.t "errors.tomtom.unsupported_export_type"
+        I18n.t 'errors.tomtom.unsupported_export_type'
       when 8011
-        I18n.t "errors.tomtom.request_quota_reached"
+        I18n.t 'errors.tomtom.request_quota_reached'
       when 8014
-        I18n.t "errors.tomtom.external_requests_not_allowed"
+        I18n.t 'errors.tomtom.external_requests_not_allowed'
       when 8015
-        I18n.t "errors.tomtom.busy_processing"
+        I18n.t 'errors.tomtom.busy_processing'
       when 9000
-        I18n.t "errors.tomtom.could_not_process_last_request"
+        I18n.t 'errors.tomtom.could_not_process_last_request'
       when 9126
-        I18n.t "errors.tomtom.hostname_not_allowed"
+        I18n.t 'errors.tomtom.hostname_not_allowed'
       when 9198
-        I18n.t "errors.tomtom.addresses_empty_result"
+        I18n.t 'errors.tomtom.addresses_empty_result'
     end
   end
 

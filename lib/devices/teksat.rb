@@ -16,8 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Teksat < DeviceBase
-
-  require "addressable"
+  require 'addressable'
 
   attr_accessor :ticket_id
 
@@ -26,20 +25,20 @@ class Teksat < DeviceBase
     if response.code == 200 && response.strip.length >= 1
       return response.strip
     else
-      raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.get_ticket') ])
+      raise DeviceServiceError.new('Teksat: %s' % [ I18n.t('errors.teksat.get_ticket') ])
     end
   rescue RestClient::Forbidden, RestClient::InternalServerError => e
-    raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.unauthorized') ])
+    raise DeviceServiceError.new('Teksat: %s' % [ I18n.t('errors.teksat.unauthorized') ])
   end
 
   def list_devices customer
     response = RestClient.get get_vehicles_url(customer)
     if response.code == 200
-      Nokogiri::XML(response).xpath("//vehicle").map do |item|
-        { id: item["id"], text: "%s %s - %s" % [ item["brand"], item["type"], item["code"] ] }
+      Nokogiri::XML(response).xpath('//vehicle').map do |item|
+        { id: item['id'], text: '%s %s - %s' % [ item['brand'], item['type'], item['code'] ] }
       end
     else
-      raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.list') ])
+      raise DeviceServiceError.new('Teksat: %s' % [ I18n.t('errors.teksat.list') ])
     end
   end
 
@@ -53,18 +52,18 @@ class Teksat < DeviceBase
   end
 
   def clear_route customer, route
-    response = RestClient.get get_missions_url(customer, { date: planning_date(route).strftime("%Y-%m-%d") })
-    Nokogiri::XML(response).xpath("//mission").map{|item| RestClient.get(delete_mission_url(customer, { mi_id: item["id"] })) }
+    response = RestClient.get get_missions_url(customer, { date: planning_date(route).strftime('%Y-%m-%d') })
+    Nokogiri::XML(response).xpath('//mission').map{|item| RestClient.get(delete_mission_url(customer, { mi_id: item['id'] })) }
   end
 
   def get_vehicles_pos customer
     response = RestClient.get get_vehicles_pos_url(customer)
     if response.code == 200
-      Nokogiri::XML(response).xpath("//vehicle_pos").map do |item|
-        { teksat_vehicle_id: item["v_id"], lat: item["lat"], lng: item["lng"], speed: item["speed"], time: item["data_time_gmt"] + "+00:00", device_name: item["code"] }
+      Nokogiri::XML(response).xpath('//vehicle_pos').map do |item|
+        { teksat_vehicle_id: item['v_id'], lat: item['lat'], lng: item['lng'], speed: item['speed'], time: item['data_time_gmt'] + '+00:00', device_name: item['code'] }
       end
     else
-      raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.get_vehicles_pos') ])
+      raise DeviceServiceError.new('Teksat: %s' % [ I18n.t('errors.teksat.get_vehicles_pos') ])
     end
   end
 
@@ -81,11 +80,11 @@ class Teksat < DeviceBase
       mi_begin_zip: destination.postalcode,
       mi_begin_city: destination.city,
       mi_begin_country: destination.country || customer.default_country,
-      mi_begin_date: p_time(route, start_time).strftime("%Y-%m-%d"),
-      mi_begin_time: p_time(route, start_time).strftime("%H:%M:%S")
+      mi_begin_date: p_time(route, start_time).strftime('%Y-%m-%d'),
+      mi_begin_time: p_time(route, start_time).strftime('%H:%M:%S')
     })
     if response.code != 200
-      raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.set_mission') ])
+      raise DeviceServiceError.new('Teksat: %s' % [ I18n.t('errors.teksat.set_mission') ])
     end
   end
 
@@ -96,39 +95,39 @@ class Teksat < DeviceBase
       url, customer_id, username, password = customer.teksat_url, customer.teksat_customer_id, customer.teksat_username, customer.teksat_password
     end
     if (url =~ /\A(www.*.teksat.fr)\Z/).nil?
-      raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.bad_url') ])
+      raise DeviceServiceError.new('Teksat: %s' % [ I18n.t('errors.teksat.bad_url') ])
     end
-    Addressable::Template.new("http://%s/webservices/map/get-ticket.jsp{?query*}" % [ url ]).expand(
+    Addressable::Template.new('http://%s/webservices/map/get-ticket.jsp{?query*}' % [ url ]).expand(
       query: { custID: customer_id, username: username, pw: password }
     ).to_s
   end
 
   def get_vehicles_url customer
-    Addressable::Template.new("http://%s/webservices/map/get-vehicles.jsp{?query*}" % [ customer.teksat_url ]).expand(
+    Addressable::Template.new('http://%s/webservices/map/get-vehicles.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: { custID: customer.teksat_customer_id, tck: ticket_id }
     ).to_s
   end
 
   def get_vehicles_pos_url customer
-    Addressable::Template.new("http://%s/webservices/map/get-vehicles-pos.jsp{?query*}" % [ customer.teksat_url ]).expand(
+    Addressable::Template.new('http://%s/webservices/map/get-vehicles-pos.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: { custID: customer.teksat_customer_id, tck: ticket_id }
     ).to_s
   end
 
   def set_mission_url customer, options
-    Addressable::Template.new("http://%s/webservices/map/set-mission.jsp{?query*}" % [ customer.teksat_url ]).expand(
+    Addressable::Template.new('http://%s/webservices/map/set-mission.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s
   end
 
   def get_missions_url customer, options
-    Addressable::Template.new("http://%s/webservices/map/get-missions.jsp{?query*}" % [ customer.teksat_url ]).expand(
+    Addressable::Template.new('http://%s/webservices/map/get-missions.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s
   end
 
   def delete_mission_url customer, options
-    Addressable::Template.new("http://%s/webservices/map/delete-mission.jsp{?query*}" % [ customer.teksat_url ]).expand(
+    Addressable::Template.new('http://%s/webservices/map/delete-mission.jsp{?query*}' % [ customer.teksat_url ]).expand(
       query: options.merge(custID: customer.teksat_customer_id, tck: ticket_id)
     ).to_s
   end
