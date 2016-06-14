@@ -176,7 +176,6 @@ GEM
     coffee-script-source (1.10.0)
     color (1.8)
     commonjs (0.2.7)
-    concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.2)
@@ -605,7 +604,7 @@ DEPENDENCIES
   sim_annealing
   simplecov
   smt_rails
-  sprockets (~> 2)
+  sprockets
   swagger-docs
   therubyracer
   tidy-html5!
