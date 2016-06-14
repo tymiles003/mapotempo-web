@@ -37,7 +37,7 @@ class GeocoderDestinationsJob < Struct.new(:customer_id, :planning_id)
             destination.save!
             i += 1
           }
-        rescue GeocodeError => e # avoid stop import because of geocoding job
+        rescue GeocodeError # avoid stop import because of geocoding job
         end
         @job.progress = Integer(i * 100 / count).to_s
         @job.save

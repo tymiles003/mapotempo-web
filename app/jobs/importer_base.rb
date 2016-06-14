@@ -17,12 +17,11 @@
 #
 require 'csv'
 
-class ImportBaseError < StandardError ; end
-class ImportEmpty < ImportBaseError ; end
-class ImportInvalidRow < ImportBaseError ; end
+class ImportBaseError < StandardError; end
+class ImportEmpty < ImportBaseError; end
+class ImportInvalidRow < ImportBaseError; end
 
 class ImporterBase
-
   def initialize(customer)
     @customer = customer
     @warnings = []
@@ -38,7 +37,7 @@ class ImporterBase
       dests = data.each_with_index.collect{ |row, line|
         row = yield(row)
 
-        if row.size == 0
+        if row.empty?
           next # Skip empty line
         end
 
@@ -52,7 +51,7 @@ class ImporterBase
             dest.delay_geocode
           end
           dest
-        rescue ImportBaseError => e
+        rescue ImportBaseError
           if options[:ignore_errors]
             @warnings << e if !@warnings.include?(e)
           else
@@ -60,7 +59,7 @@ class ImporterBase
           end
         end
       }
-      raise ImportEmpty.new I18n.t('import.empty') if dests.all? &:nil?
+      raise ImportEmpty.new I18n.t('import.empty') if dests.all?(&:nil?)
       yield(nil)
 
       after_import(name, options)

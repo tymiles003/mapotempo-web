@@ -28,7 +28,7 @@ class Clustering
 
   # Cluster non duplicate points
   def self.clustering(vector, n)
-    if vector.size == 0
+    if vector.empty?
       []
     else
       data_set = DataSet.new(data_items: vector.size.times.collect{ |i| [i] })
@@ -47,7 +47,7 @@ class Clustering
       c.distance_function = lambda do |a, b|
         a = a[0]
         b = b[0]
-        Math::sqrt((vector[a][0] - vector[b][0])**2 + (vector[a][1] - vector[b][1])**2)
+        Math.sqrt((vector[a][0] - vector[b][0])**2 + (vector[a][1] - vector[b][1])**2)
       end
 
       clusterer = c.build(data_set, n)
@@ -62,7 +62,7 @@ class Clustering
 
   def self.hulls(clusters)
     clusters_flatten = clusters.flatten(1)
-    if clusters_flatten.size == 0
+    if clusters_flatten.empty?
       []
     else
       min, max = clusters_flatten.minmax_by{ |i| i[0] }

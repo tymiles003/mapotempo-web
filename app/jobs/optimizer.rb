@@ -71,5 +71,4 @@ class Optimizer
       end
     end
   end
-
 end
