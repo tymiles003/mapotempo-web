@@ -16,35 +16,34 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module VehicleUsagesHelper
-
-  def vehicle_usage_emission_consumption vehicle_usage
+  def vehicle_usage_emission_consumption(vehicle_usage)
     capture do
-      concat '%s&nbsp;%s'.html_safe % [ vehicle_usage.vehicle.emission, t('all.unit.kgco2e_l_html') ] if vehicle_usage.vehicle.emission
+      concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.emission, t('all.unit.kgco2e_l_html')] if vehicle_usage.vehicle.emission
       concat ' - ' if vehicle_usage.vehicle.emission && vehicle_usage.vehicle.consumption
-      concat '%s&nbsp;%s'.html_safe % [ vehicle_usage.vehicle.consumption, t('all.unit.l_100km') ] if vehicle_usage.vehicle.consumption
+      concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.consumption, t('all.unit.l_100km')] if vehicle_usage.vehicle.consumption
     end
   end
 
-  def vehicle_usage_router vehicle_usage
+  def vehicle_usage_router(vehicle_usage)
     capture do
       if vehicle_usage.vehicle.router
-        concat [vehicle_usage.vehicle.router.name, t("activerecord.attributes.router.router_dimensions.#{vehicle_usage.vehicle.router_dimension || @customer.router_dimension}")].join(" - ")
+        concat [vehicle_usage.vehicle.router.name, t("activerecord.attributes.router.router_dimensions.#{vehicle_usage.vehicle.router_dimension || @customer.router_dimension}")].join(' - ')
       else
-        concat span_tag([@customer.router.name, t("activerecord.attributes.router.router_dimensions.#{@customer.router_dimension}")].join(" - "))
+        concat span_tag([@customer.router.name, t("activerecord.attributes.router.router_dimensions.#{@customer.router_dimension}")].join(' - '))
       end
     end
   end
 
-  def vehicle_usage_store_name vehicle_usage
+  def vehicle_usage_store_name(vehicle_usage)
     capture do
       if vehicle_usage.default_store_start || vehicle_usage.default_store_stop
         if vehicle_usage.store_start
-          concat '%s ' % [ vehicle_usage.store_start.name ]
+          concat '%s ' % [vehicle_usage.store_start.name]
         elsif vehicle_usage.vehicle_usage_set.store_start
           if vehicle_usage.store_stop
-            concat '%s ' % [ vehicle_usage.vehicle_usage_set.store_start.name ]
+            concat '%s ' % [vehicle_usage.vehicle_usage_set.store_start.name]
           else
-            concat span_tag('%s ' % [ vehicle_usage.vehicle_usage_set.store_start.name ])
+            concat span_tag('%s ' % [vehicle_usage.vehicle_usage_set.store_start.name])
           end
         else
           concat fa_icon('ban', title: t('vehicle_usages.index.store.no_start'))
@@ -53,9 +52,9 @@ module VehicleUsagesHelper
           concat fa_icon('long-arrow-right')
           concat ' '
           if vehicle_usage.store_stop
-            concat ' %s' % [ vehicle_usage.store_stop.name ]
+            concat ' %s' % [vehicle_usage.store_stop.name]
           elsif vehicle_usage.vehicle_usage_set.store_stop
-            concat '%s ' % [ vehicle_usage.vehicle_usage_set.store_stop.name ]
+            concat '%s ' % [vehicle_usage.vehicle_usage_set.store_stop.name]
           else
             concat fa_icon('ban', title: t('vehicle_usages.index.store.no_stop'))
           end
@@ -68,7 +67,7 @@ module VehicleUsagesHelper
     end
   end
 
-  def vehicle_usage_store_hours vehicle_usage
+  def vehicle_usage_store_hours(vehicle_usage)
     capture do
       if vehicle_usage.open
         concat l(vehicle_usage.open, format: :hour_minute)
@@ -85,17 +84,17 @@ module VehicleUsagesHelper
     end
   end
 
-  def vehicle_external_services vehicle
+  def vehicle_external_services(vehicle)
     services = []
-    services << "TomTom" if !vehicle.tomtom_id.blank?
-    services << "Teksat" if !vehicle.teksat_id.blank?
-    services << "Orange" if !vehicle.orange_id.blank?
-    return services.join(", ")
+    services << 'TomTom' if !vehicle.tomtom_id.blank?
+    services << 'Teksat' if !vehicle.teksat_id.blank?
+    services << 'Orange' if !vehicle.orange_id.blank?
+    services.join(', ')
   end
 
-  def route_description route
+  def route_description(route)
     capture do
-      concat [ route.size_active, t('plannings.edit.stops') ].join(' ')
+      concat [route.size_active, t('plannings.edit.stops')].join(' ')
       if route.start && route.end
         concat ' - %i:%02i - ' % [
           (route.end - route.start) / 60 / 60,

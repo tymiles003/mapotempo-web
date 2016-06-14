@@ -16,9 +16,9 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module StoresHelper
-  def store_icon store
+  def store_icon(store)
     content_tag :i, '',
-      class: 'fa fa-lg %s' % [ store.icon ? store.icon : 'fa-home' ],
-      style: 'color: %s' % [ store.color ? store.color : '#000' ]
+      class: 'fa fa-lg %s' % [store.icon || 'fa-home'],
+      style: 'color: %s' % [store.color || '#000']
   end
 end

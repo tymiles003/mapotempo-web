@@ -16,17 +16,17 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module PlanningsHelper
-  def planning_active_routes planning
-    planning.routes.joins(:vehicle_usage).select{|route| route.vehicle_usage.active }.map{|route| route.slice(:color, :vehicle_usage_id, :ref, :hidden, :locked).merge(route_id: route.id) }
+  def planning_active_routes(planning)
+    planning.routes.joins(:vehicle_usage).select{ |route| route.vehicle_usage.active }.map{ |route| route.slice(:color, :vehicle_usage_id, :ref, :hidden, :locked).merge(route_id: route.id) }
   end
 
-  def planning_vehicles_array planning
-    planning.vehicle_usage_set.vehicle_usages.active.map(&:vehicle).map{|vehicle|
-      { id: vehicle.id, text: vehicle.name, color: vehicle.color, available_position: vehicle.available_position? && vehicle.vehicle_usages.detect{|item| item.vehicle_usage_set == @planning.vehicle_usage_set }.active? }
+  def planning_vehicles_array(planning)
+    planning.vehicle_usage_set.vehicle_usages.active.map(&:vehicle).map{ |vehicle|
+      { id: vehicle.id, text: vehicle.name, color: vehicle.color, available_position: vehicle.available_position? && vehicle.vehicle_usages.detect{ |item| item.vehicle_usage_set == @planning.vehicle_usage_set }.active? }
     }
   end
 
-  def planning_vehicles_usages_map planning
+  def planning_vehicles_usages_map(planning)
     planning.vehicle_usage_set.vehicle_usages.active.each_with_object({}) do |vehicle_usage, hash|
       hash[vehicle_usage.vehicle_id] = vehicle_usage.vehicle.slice(:name, :color, :capacity).merge(vehicle_usage_id: vehicle_usage.id, vehicle_id: vehicle_usage.vehicle_id)
     end

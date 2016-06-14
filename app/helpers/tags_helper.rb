@@ -16,15 +16,15 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module TagsHelper
-  def tag_icon tag
+  def tag_icon(tag)
     if tag.icon
       if tag.color
-        image_tag "/images/%s.svg?color=%s" % [ tag.icon, tag.color.gsub("#","") ]
+        image_tag '/images/%s.svg?color=%s' % [tag.icon, tag.color.tr('#', '')]
       else
-        image_tag "/images/%s.svg" % [ tag.icon ]
+        image_tag '/images/%s.svg' % [tag.icon]
       end
     elsif tag.color
-      content_tag :div, '', class: 'tag_color', style: 'background-color: %s' % [ tag.color ]
+      content_tag :div, '', class: 'tag_color', style: 'background-color: %s' % [tag.color]
     end
   end
 end

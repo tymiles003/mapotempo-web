@@ -16,12 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module VehicleUsageSetsHelper
-
-  def vehicle_usage_set_store_name vehicle_usage_set
+  def vehicle_usage_set_store_name(vehicle_usage_set)
     capture do
       if vehicle_usage_set.store_start || vehicle_usage_set.store_stop
         if vehicle_usage_set.store_start
-          concat '%s ' % [ vehicle_usage_set.store_start.name ]
+          concat '%s ' % [vehicle_usage_set.store_start.name]
         else
           concat fa_icon('ban', title: t('vehicle_usages.index.store.no_start'))
         end
@@ -29,7 +28,7 @@ module VehicleUsageSetsHelper
           concat fa_icon('long-arrow-right')
           concat ' '
           if vehicle_usage_set.store_stop
-            concat ' %s' % [ vehicle_usage_set.store_stop.name ]
+            concat ' %s' % [vehicle_usage_set.store_stop.name]
           else
             concat fa_icon('ban', title: t('vehicle_usages.index.store.no_stop'))
           end
@@ -39,5 +38,4 @@ module VehicleUsageSetsHelper
       end
     end
   end
-
 end
