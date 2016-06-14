@@ -97,7 +97,7 @@ class Tomtom < DeviceBase
         fuelType: object[:vehicle_fuel_type],
         description: object[:description]
       }
-      if object[:vehicle_color] && @@vehicle_colors.has_key?(object[:vehicle_color].downcase)
+      if object[:vehicle_color] && @@vehicle_colors.key?(object[:vehicle_color].downcase)
         hash[:color] = @@vehicle_colors[object[:vehicle_color].downcase]
       else
         hash[:color] = '#000000'
@@ -128,68 +128,68 @@ class Tomtom < DeviceBase
 
   def send_route(customer, route, options = {})
     case options[:type].to_sym
-      when :orders
-        position = route.vehicle_usage.default_store_start
-        if position && !position.lat.nil? && !position.lng.nil?
-          sendDestinationOrder customer, route, position, -2, route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name || "#{position.lat} #{position.lng}", route.start
+    when :orders
+      position = route.vehicle_usage.default_store_start
+      if position && !position.lat.nil? && !position.lng.nil?
+        sendDestinationOrder customer, route, position, -2, route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.name || "#{position.lat} #{position.lng}", route.start
+      end
+      route.stops.select(&:active).each{ |stop|
+        position = stop if stop.position?
+        if (position && !position.lat.nil? && !position.lng.nil?) || position.is_a?(StopRest)
+          description = [
+            '',
+            stop.name,
+            stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
+            stop.is_a?(StopVisit) ? (stop.visit.take_over ? '(' + stop.visit.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S'),
+            stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
+            stop.detail,
+            stop.comment,
+            stop.phone_number,
+          ].compact.join(' ').strip
+          sendDestinationOrder customer, route, position, stop.id, description, stop.time
         end
-        route.stops.select(&:active).each{ |stop|
-          position = stop if stop.position?
-          if (position && !position.lat.nil? && !position.lng.nil?) || position.is_a?(StopRest)
-            description = [
-              '',
-              stop.name,
-              stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
-              stop.is_a?(StopVisit) ? (stop.visit.take_over ? '(' + stop.visit.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S'),
-              stop.open || stop.close ? (stop.open ? stop.open.strftime('%H:%M') : '') + '-' + (stop.close ? stop.close.strftime('%H:%M') : '') : nil,
-              stop.detail,
-              stop.comment,
-              stop.phone_number,
-            ].compact.join(' ').strip
-            sendDestinationOrder customer, route, position, stop.id, description, stop.time
-          end
-        }
-        position = route.vehicle_usage.default_store_stop
-        if position && !position.lat.nil? && !position.lng.nil?
-          sendDestinationOrder customer, route, position, -1, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.end
-        end
+      }
+      position = route.vehicle_usage.default_store_stop
+      if position && !position.lat.nil? && !position.lng.nil?
+        sendDestinationOrder customer, route, position, -1, route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.name || "#{position.lat} #{position.lng}", route.end
+      end
 
-      when :waypoints
-        position = route.vehicle_usage.default_store_start
-        waypoint_start = (route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.position?) ? [[
-            route.vehicle_usage.default_store_start.lat,
-            route.vehicle_usage.default_store_start.lng,
+    when :waypoints
+      position = route.vehicle_usage.default_store_start
+      waypoint_start = (route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.position?) ? [[
+          route.vehicle_usage.default_store_start.lat,
+          route.vehicle_usage.default_store_start.lng,
+          '',
+          route.vehicle_usage.default_store_start.name
+        ]] : []
+      waypoint_stop = (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [[
+          route.vehicle_usage.default_store_stop.lat,
+          route.vehicle_usage.default_store_stop.lng,
+          '',
+          route.vehicle_usage.default_store_stop.name
+        ]] : []
+      waypoints = route.stops.select(&:active).collect{ |stop|
+          position = stop if stop.position?
+          if position.nil? || position.lat.nil? || position.lng.nil?
+            next
+          end
+          [
+            position.lat,
+            position.lng,
             '',
-            route.vehicle_usage.default_store_start.name
-          ]] : []
-        waypoint_stop = (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [[
-            route.vehicle_usage.default_store_stop.lat,
-            route.vehicle_usage.default_store_stop.lng,
-            '',
-            route.vehicle_usage.default_store_stop.name
-          ]] : []
-        waypoints = route.stops.select(&:active).collect{ |stop|
-            position = stop if stop.position?
-            if position.nil? || position.lat.nil? || position.lng.nil?
-              next
-            end
-            [
-              position.lat,
-              position.lng,
-              '',
-              stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
-              stop.name,
-              stop.comment,
-              stop.phone_number
-            ]
-        }
-        waypoints = (waypoint_start + waypoints.compact + waypoint_stop).map{ |l|
-            description = l[2..-1].compact.join(' ').strip
-            {lat: l[0], lng: l[1], description: description}
-        }
-        position = route.vehicle_usage.default_store_stop if route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?
-        description = route.ref || (waypoints[-1] && waypoints[-1][:description]) || "#{waypoints[-1][:lat]} #{waypoints[-1][:lng]}"
-        sendDestinationOrder customer, route, position, route.vehicle_usage.id, description, route.start, waypoints
+            stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
+            stop.name,
+            stop.comment,
+            stop.phone_number
+          ]
+      }
+      waypoints = (waypoint_start + waypoints.compact + waypoint_stop).map{ |l|
+          description = l[2..-1].compact.join(' ').strip
+          {lat: l[0], lng: l[1], description: description}
+      }
+      position = route.vehicle_usage.default_store_stop if route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?
+      description = route.ref || (waypoints[-1] && waypoints[-1][:description]) || "#{waypoints[-1][:lat]} #{waypoints[-1][:lng]}"
+      sendDestinationOrder customer, route, position, route.vehicle_usage.id, description, route.start, waypoints
     end
   end
 
@@ -245,30 +245,30 @@ class Tomtom < DeviceBase
   def parse_error_msg(status_code)
     # https://uk.support.business.tomtom.com/ci/fattach/get/1331065/1450429305/redirect/1/session/L2F2LzEvdGltZS8xNDUyNjk2OTAzL3NpZC9yVVVpQ3FHbQ==/filename/WEBFLEET.connect-en-1.26.0.pdf
     case status_code
-      when 10, 20, 40
-        I18n.t 'errors.tomtom.last_action_failed'
-      when 45
-        I18n.t 'errors.tomtom.access_denied'
-      when 1101
-        I18n.t 'errors.tomtom.invalid_account'
-      when 2515
-        I18n.t 'errors.tomtom.duplicate_order'
-      when 2605
-        I18n.t 'errors.tomtom.gps_unreachable'
-      when 2615
-        I18n.t 'errors.tomtom.unsupported_export_type'
-      when 8011
-        I18n.t 'errors.tomtom.request_quota_reached'
-      when 8014
-        I18n.t 'errors.tomtom.external_requests_not_allowed'
-      when 8015
-        I18n.t 'errors.tomtom.busy_processing'
-      when 9000
-        I18n.t 'errors.tomtom.could_not_process_last_request'
-      when 9126
-        I18n.t 'errors.tomtom.hostname_not_allowed'
-      when 9198
-        I18n.t 'errors.tomtom.addresses_empty_result'
+    when 10, 20, 40
+      I18n.t 'errors.tomtom.last_action_failed'
+    when 45
+      I18n.t 'errors.tomtom.access_denied'
+    when 1101
+      I18n.t 'errors.tomtom.invalid_account'
+    when 2515
+      I18n.t 'errors.tomtom.duplicate_order'
+    when 2605
+      I18n.t 'errors.tomtom.gps_unreachable'
+    when 2615
+      I18n.t 'errors.tomtom.unsupported_export_type'
+    when 8011
+      I18n.t 'errors.tomtom.request_quota_reached'
+    when 8014
+      I18n.t 'errors.tomtom.external_requests_not_allowed'
+    when 8015
+      I18n.t 'errors.tomtom.busy_processing'
+    when 9000
+      I18n.t 'errors.tomtom.could_not_process_last_request'
+    when 9126
+      I18n.t 'errors.tomtom.hostname_not_allowed'
+    when 9198
+      I18n.t 'errors.tomtom.addresses_empty_result'
     end
   end
 

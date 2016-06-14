@@ -16,13 +16,13 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Alyacom < DeviceBase
-  def test_list(customer, params)
+  def test_list(_customer, params)
     RestClient.get [api_url, params[:alyacom_association], 'users'].join('/'), params: { apiKey: params[:alyacom_api_key] }
-  rescue RestClient::Forbidden, RestClient::InternalServerError => e
+  rescue RestClient::Forbidden, RestClient::InternalServerError
     raise DeviceServiceError.new('Alyacom: %s' % [ I18n.t('errors.alyacom.unauthorized') ])
   end
 
-  def send_route(customer, route, options = {})
+  def send_route(customer, route, _options = {})
     store = route.vehicle_usage.default_store_start
     staff = {
       id: route.vehicle_usage.vehicle.name,
@@ -32,7 +32,7 @@ class Alyacom < DeviceBase
       city: store && store.city
     }
     position = route.vehicle_usage.default_store_start
-    waypoints = route.stops.select(&:active).select{|stop| stop.is_a?(StopVisit) }.collect{ |stop|
+    waypoints = route.stops.select(&:active).select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
       position = stop if stop.position?
       if position.nil? || position.lat.nil? || position.lng.nil? || stop.time.nil?
         next

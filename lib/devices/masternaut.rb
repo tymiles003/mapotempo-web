@@ -85,7 +85,7 @@ class Masternaut < DeviceBase
     '26' => 'an error occurred while creating the job item',
   }
 
-  def send_route(customer, route, options = {})
+  def send_route(customer, route, _options = {})
     order_id_base = Time.now.to_i.to_s(36) + '_' + route.id.to_s
     customer = route.planning.customer
     position = route.vehicle_usage.default_store_start
@@ -143,7 +143,7 @@ class Masternaut < DeviceBase
     params = {
       jobRoute: {
         begin: (date.to_time + (begin_time.utc.to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
-        description: description ? description.gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..50] : nil,
+        description: description ? description.tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ').strip[0..50] : nil,
         end: (date.to_time + (end_time.utc.to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
         reference: reference,
       }
@@ -154,7 +154,7 @@ class Masternaut < DeviceBase
     waypoints.each{ |waypoint|
       params = {
         job: {
-          description: waypoint[:description].gsub(/\r/, ' ').gsub(/\n/, ' ').gsub(/\s+/, ' ').strip[0..255],
+          description: waypoint[:description].tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ').strip[0..255],
           poiReference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
           scheduledBegin: (date.to_time + (waypoint[:time].to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
           type: 'job',
@@ -204,7 +204,7 @@ class Masternaut < DeviceBase
     }.select{ |r|
       r
     }
-    fetch = Hash[fetch]
+    Hash[fetch]
   end
 
   def createPOI(customer, waypoint)

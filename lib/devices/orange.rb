@@ -19,7 +19,7 @@ class Orange < DeviceBase
   require 'builder' # XML
   require 'addressable'
 
-  def test_list customer, params
+  def test_list(customer, params)
     send_request list_operations(customer, { auth: params.slice(:user, :password) })
   end
 
@@ -30,24 +30,24 @@ class Orange < DeviceBase
     if response.code.to_i == 200
       vehicle_infos = []
       Nokogiri::XML(response.body).xpath('//vehicle').each_with_object({}) do |item, hash|
-        item.children.select(&:element?).map{|node| hash[node.name] = node.inner_html }
+        item.children.select(&:element?).map{ |node| hash[node.name] = node.inner_html }
         vehicle_infos << hash
       end
       vehicle_infos.map do |item|
-        { id: item['esht'], text: '%s - %s' % [ item['vdes'], item['vreg'] ] }
+        { id: item['esht'], text: '%s - %s' % [item['vdes'], item['vreg']] }
       end
     else
-      raise DeviceServiceError.new('Orange: %s' % [ I18n.t('errors.orange.list') ])
+      raise DeviceServiceError.new('Orange: %s' % [I18n.t('errors.orange.list')])
     end
   end
 
-  def send_route(customer, route, options = {})
+  def send_route(customer, route, _options = {})
     send_request send_xml_file(customer, route)
   end
 
   def clear_route(customer, route)
     # Not supported by Garmin 590 -- Garmin Dezl and Nuvi only
-    send_request send_xml_file(customer, route, { delete: true })
+    send_request send_xml_file(customer, route, delete: true)
   end
 
   def get_vehicles_pos(customer)
@@ -55,12 +55,12 @@ class Orange < DeviceBase
     if response.code.to_i == 200
       vehicle_infos = []
       Nokogiri::XML(response.body).xpath('//position').each_with_object({}) do |item, hash|
-        item.children.select(&:element?).map{|node| hash[node.name] = node.inner_html }
+        item.children.select(&:element?).map{ |node| hash[node.name] = node.inner_html }
         vehicle_infos << { orange_vehicle_id: hash['esht'], lat: hash['lat'], lng: hash['lon'], speed: hash['speed'], time: hash['hd'] + '+00:00', device_name: hash['vdes'] }
       end
       return vehicle_infos
     else
-      raise DeviceServiceError.new('Orange: %s' % [ I18n.t('errors.orange.get_vehicles_pos') ])
+      raise DeviceServiceError.new('Orange: %s' % [I18n.t('errors.orange.get_vehicles_pos')])
     end
   end
 
@@ -70,7 +70,7 @@ class Orange < DeviceBase
     if response.code.to_i == 200
       return response
     elsif response.code.to_i == 401
-      raise DeviceServiceError.new('Orange: %s' % [ I18n.t('errors.orange.unauthorized') ])
+      raise DeviceServiceError.new('Orange: %s' % [I18n.t('errors.orange.unauthorized')])
     else
       Rails.logger.info 'OrangeService: %s %s' % [response.code, response.body]
     end
@@ -110,10 +110,12 @@ class Orange < DeviceBase
   end
 
   def send_xml_file(customer, route, options = {})
-    f = Tempfile.new Time.zone.now.to_i.to_s ; f.write to_xml(route, options) ; f.rewind
+    f = Tempfile.new Time.zone.now.to_i.to_s
+    f.write to_xml(route, options)
+    f.rewind
     response = RestClient::Request.execute method: :post, user: customer.orange_user, password: customer.orange_password, url: api_url + '/pnd/index.php', payload: { multipart: true, file: f }
     f.unlink
-    return response
+    response
   end
 
   def to_xml(route, options = {})

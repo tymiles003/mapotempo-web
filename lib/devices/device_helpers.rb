@@ -26,12 +26,12 @@ module Devices
     def device_send_routes(options = {})
       planning = @customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
-      routes = routes.select{|route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
-      routes.each{|route| service.send_route(route, options) }
+      routes = routes.select{ |route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
+      routes.each{ |route| service.send_route(route, options) }
       present routes, with: V01::Entities::DeviceRouteLastSentAt
     end
 
-    def device_clear_route(options = {})
+    def device_clear_route(_options = {})
       route = Route.for_customer(@customer).find params[:route_id]
       service.clear_route route
       present route, with: V01::Entities::DeviceRouteLastSentAt
@@ -40,8 +40,8 @@ module Devices
     def device_clear_routes(options = {})
       planning = @customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
-      routes = routes.select{|route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
-      routes.each{|route| service.clear_route(route) }
+      routes = routes.select{ |route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
+      routes.each{ |route| service.clear_route(route) }
       present routes, with: V01::Entities::DeviceRouteLastSentAt
     end
 
@@ -52,7 +52,7 @@ module Devices
     def orange_credentials(customer)
       user   = params[:orange_user]     ? params[:orange_user]      : customer.try(:orange_user)
       passwd = params[:orange_password] ? params[:orange_password]  : customer.try(:orange_password)
-      return { user: user, password: passwd }
+      { user: user, password: passwd }
     end
 
     def orange_sync_vehicles(customer)
@@ -77,7 +77,7 @@ module Devices
       cust_id  = params[:teksat_customer_id] ? params[:teksat_customer_id] : customer.try(:teksat_customer_id)
       username = params[:teksat_username]    ? params[:teksat_username]    : customer.try(:teksat_username)
       password = params[:teksat_password]    ? params[:teksat_password]    : customer.try(:teksat_password)
-      return { url: url, customer_id: cust_id, username: username, password: password }
+      { url: url, customer_id: cust_id, username: username, password: password }
     end
 
     def teksat_sync_vehicles(customer, ticket_id)
@@ -97,12 +97,12 @@ module Devices
       account = params[:tomtom_account]  ? params[:tomtom_account]   : customer.try(:tomtom_account)
       user    = params[:tomtom_user]     ? params[:tomtom_user]      : customer.try(:tomtom_user)
       passwd  = params[:tomtom_password] ? params[:tomtom_password]  : customer.try(:tomtom_password)
-      return { account: account, user: user, password: passwd }
+      { account: account, user: user, password: passwd }
     end
 
     def tomtom_sync_vehicles(customer)
       tomtom_vehicles = TomtomService.new(customer: customer).list_vehicles tomtom_credentials(customer)
-      tomtom_vehicles = tomtom_vehicles.select{|item| !item[:objectUid].blank? }
+      tomtom_vehicles = tomtom_vehicles.select{ |item| !item[:objectUid].blank? }
       customer.vehicles.update_all tomtom_id: nil
       tomtom_vehicles.each_with_index do |vehicle, index|
         next if !customer.vehicles[index]
@@ -113,7 +113,7 @@ module Devices
     def alyacom_credentials(customer)
       alyacom_association = params[:alyacom_association] ? params[:alyacom_association] : customer.try(:alyacom_association)
       alyacom_api_key     = params[:alyacom_api_key]     ? params[:alyacom_api_key]     : customer.try(:alyacom_api_key)
-      return { alyacom_association: alyacom_association, alyacom_api_key: alyacom_api_key }
+      { alyacom_association: alyacom_association, alyacom_api_key: alyacom_api_key }
     end
 
     def alyacom_authenticate(customer)
