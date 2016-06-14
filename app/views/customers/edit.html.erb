@@ -72,10 +72,6 @@ controller.js(
                 <i class="fa fa-edit fa-fw"></i>
                 <%= t 'all.verb.edit' %>
               <% end %>
-              <%= link_to password_customer_user_path(@customer, user, url: edit_customer_path(@customer), token: user.confirmation_token), class: 'btn btn-primary btn-sm' do %>
-                <i class="fa fa-edit fa-fw"></i>
-                <%= t '.password' %>
-              <% end %>
             <% end %>
           </td>
         <% end %>
