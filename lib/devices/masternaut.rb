@@ -119,7 +119,7 @@ class Masternaut < DeviceBase
       }
     }.compact
     if !position.nil? && !position.lat.nil? && !position.lng.nil?
-      createJobRoute customer, route.vehicle_usage.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle_usage.vehicle.name, route.planning.date || Date.today, route.start, route.end, waypoints
+      createJobRoute customer, route.vehicle_usage.vehicle.masternaut_ref, order_id_base, route.ref || route.vehicle_usage.vehicle.name, route.planning.date || Time.zone.today, route.start, route.end, waypoints
     end
   end
 

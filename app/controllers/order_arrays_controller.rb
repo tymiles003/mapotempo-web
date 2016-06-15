@@ -65,7 +65,7 @@ class OrderArraysController < ApplicationController
 
   def new
     @order_array = current_user.customer.order_arrays.build
-    @order_array.base_date = Date.today
+    @order_array.base_date = Time.zone.today
   end
 
   def edit

@@ -42,7 +42,7 @@ class RouterOtp < Router
   private
 
   def monday_morning
-    monday_morning = Date.today
+    monday_morning = Time.zone.today
     monday_morning -= monday_morning.cwday - 1 # Go to last monday
     monday_morning.to_time + 9.hours # Go to monday 09:00
   end

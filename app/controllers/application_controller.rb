@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
   layout :layout_by_resource
 
   before_action :api_key?, :load_vehicles
-  before_action :set_time_zone, :set_locale
+  before_action :set_locale
+  around_action :set_time_zone, if: :current_user
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -49,8 +50,8 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def set_time_zone
-    Time.zone = current_user.time_zone if current_user
+  def set_time_zone(&block)
+    Time.use_zone(current_user.time_zone, &block)
   end
 
   def set_locale

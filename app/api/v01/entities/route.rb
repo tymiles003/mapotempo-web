@@ -29,13 +29,13 @@ class V01::Entities::Route < Grape::Entity
   expose(:vehicle_usage_id, documentation: { type: Integer })
   expose(:start, documentation: { type: DateTime }) { |m|
     if m.start
-      date = (m.planning.date || Date.today).to_time + (m.start.to_i - TIME_2000)
+      date = (m.planning.date || Time.zone.today).to_time + (m.start.to_i - TIME_2000)
       date.strftime('%Y-%m-%dT%H:%M:%S')
     end
   }
   expose(:end, documentation: { type: DateTime }) { |m|
     if m.end
-      date = (m.planning.date || Date.today).to_time + (m.end.to_i - TIME_2000)
+      date = (m.planning.date || Time.zone.today).to_time + (m.end.to_i - TIME_2000)
       date.strftime('%Y-%m-%dT%H:%M:%S')
     end
   }
