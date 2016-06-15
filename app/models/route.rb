@@ -83,7 +83,7 @@ class Route < ActiveRecord::Base
     if vehicle_usage && stops.size > 0
       service_time_start = service_time_start_value
       service_time_end = service_time_end_value
-      self.end = self.start = Time.zone.now.beginning_of_day + ((departure || vehicle_usage.default_open) - Time.utc(2000, 1, 1, 0, 0))
+      self.end = self.start = Time.zone.local(2000, 1, 1, 0, 0) + ((departure || vehicle_usage.default_open) - Time.utc(2000, 1, 1, 0, 0))
       speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
       if vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?
         last_lat, last_lng = vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng
@@ -201,7 +201,7 @@ class Route < ActiveRecord::Base
       end
 
       self.stop_trace = trace
-      self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
+      self.stop_out_of_drive_time = self.end > (Time.zone.local(2000, 1, 1, 0, 0) + (vehicle_usage.default_close - Time.utc(2000, 1, 1, 0, 0)))
 
       self.emission = vehicle_usage.vehicle.emission.nil? || vehicle_usage.vehicle.consumption.nil? ? nil : self.distance / 1000 * vehicle_usage.vehicle.emission * vehicle_usage.vehicle.consumption / 100
 
