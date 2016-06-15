@@ -48,10 +48,41 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_valid response
   end
 
-  test 'should create planning' do
+  test 'Create Planning' do
+    # EN
+    I18n.locale = I18n.default_locale = :en
+    assert_equal :en, I18n.locale
+    assert_difference('Planning.count') do
+      post :create, planning: { name: @planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_ids: @planning.zonings.collect(&:id), date: '10-30-2016' }
+    end
+    assert_redirected_to edit_planning_path(assigns(:planning))
+    assert assigns(:planning).persisted?
+    assert assigns(:planning).date.strftime("%d-%m-%Y") == '30-10-2016'
+
+    # FR
+    I18n.locale = I18n.default_locale = :fr
+    assert_equal :fr, I18n.locale
     assert_difference('Planning.count') do
       post :create, planning: { name: @planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_ids: @planning.zonings.collect(&:id), date: '30-10-2016' }
     end
+    assert_redirected_to edit_planning_path(assigns(:planning))
+    assert assigns(:planning).persisted?
+    assert assigns(:planning).date.strftime("%d-%m-%Y") == '30-10-2016'
+  end
+
+  test 'Update Planning' do
+    # EN
+    I18n.locale = I18n.default_locale = :en
+    assert_equal :en, I18n.locale
+    patch :update, id: @planning, planning: { name: @planning.name, zoning_ids: @planning.zonings.collect(&:id), date: '10-30-2016' }
+    assert_redirected_to edit_planning_path(assigns(:planning))
+    assert assigns(:planning).persisted?
+    assert assigns(:planning).date.strftime("%d-%m-%Y") == '30-10-2016'
+
+    # FR
+    I18n.locale = I18n.default_locale = :fr
+    assert_equal :fr, I18n.locale
+    patch :update, id: @planning, planning: { name: @planning.name, zoning_ids: @planning.zonings.collect(&:id), date: '30-10-2016' }
     assert_redirected_to edit_planning_path(assigns(:planning))
     assert assigns(:planning).persisted?
     assert assigns(:planning).date.strftime("%d-%m-%Y") == '30-10-2016'
@@ -129,13 +160,6 @@ class PlanningsControllerTest < ActionController::TestCase
     get :edit, id: @planning
     assert_response :success
     assert_valid response
-  end
-
-  test 'should update planning' do
-    patch :update, id: @planning, planning: { name: @planning.name, zoning_ids: @planning.zonings.collect(&:id), date: '30-10-2016' }
-    assert_redirected_to edit_planning_path(assigns(:planning))
-    assert assigns(:planning).persisted?
-    assert assigns(:planning).date.strftime("%d-%m-%Y") == '30-10-2016'
   end
 
   test 'should update planning and change zoning' do

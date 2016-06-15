@@ -376,6 +376,15 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal "test abcd", planning.ref
   end
 
+  test 'date format' do
+    planning = plannings :planning_one
+    planning.update! date: Date.new(2017, 1, 31)
+    I18n.locale = :en
+    assert_equal '01-31-2017', I18n.l(planning.date.to_time, format: :datepicker)
+    I18n.locale = :fr
+    assert_equal '31-01-2017', I18n.l(planning.date.to_time, format: :datepicker)
+  end
+
 end
 
 class PlanningTestError < ActiveSupport::TestCase

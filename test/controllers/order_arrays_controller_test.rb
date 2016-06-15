@@ -35,10 +35,41 @@ class OrderArraysControllerTest < ActionController::TestCase
     assert_valid response
   end
 
-  test 'should create order_array' do
+  test 'Create Order Array' do
+    # EN
+    I18n.locale = I18n.default_locale = :en
+    assert_equal :en, I18n.locale
+    assert_difference('OrderArray.count') do
+      post :create, order_array: { name: 'test', length: 'week', base_date: '10-30-2016' }
+    end
+    assert_redirected_to edit_order_array_path(assigns(:order_array))
+    assert assigns(:order_array).persisted?
+    assert assigns(:order_array).base_date.strftime("%d-%m-%Y") == '30-10-2016'
+
+    # FR
+    I18n.locale = I18n.default_locale = :fr
+    assert_equal :fr, I18n.locale
     assert_difference('OrderArray.count') do
       post :create, order_array: { name: 'test', length: 'week', base_date: '30-10-2016' }
     end
+    assert_redirected_to edit_order_array_path(assigns(:order_array))
+    assert assigns(:order_array).persisted?
+    assert assigns(:order_array).base_date.strftime("%d-%m-%Y") == '30-10-2016'
+  end
+
+  test 'Update Order Array' do
+    # EN
+    I18n.locale = I18n.default_locale = :en
+    assert_equal :en, I18n.locale
+    patch :update, id: @order_array, order_array: { name: @order_array.name, base_date: '10-30-2016' }
+    assert_redirected_to edit_order_array_path(assigns(:order_array))
+    assert assigns(:order_array).persisted?
+    assert assigns(:order_array).base_date.strftime("%d-%m-%Y") == '30-10-2016'
+
+    # FR
+    I18n.locale = I18n.default_locale = :fr
+    assert_equal :fr, I18n.locale
+    patch :update, id: @order_array, order_array: { name: @order_array.name, base_date: '30-10-2016' }
     assert_redirected_to edit_order_array_path(assigns(:order_array))
     assert assigns(:order_array).persisted?
     assert assigns(:order_array).base_date.strftime("%d-%m-%Y") == '30-10-2016'
@@ -70,13 +101,6 @@ class OrderArraysControllerTest < ActionController::TestCase
     get :edit, id: @order_array
     assert_response :success
     assert_valid response
-  end
-
-  test 'should update order_array' do
-    patch :update, id: @order_array, order_array: { name: @order_array.name, base_date: '30-10-2016' }
-    assert_redirected_to edit_order_array_path(assigns(:order_array))
-    assert assigns(:order_array).persisted?
-    assert assigns(:order_array).base_date.strftime("%d-%m-%Y") == '30-10-2016'
   end
 
   test 'should not update order_array' do
