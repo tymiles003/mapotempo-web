@@ -75,67 +75,7 @@ module Mapotempo
       {customer_id: customer_id, time: event.time, params: params}
     end
 
-    # Application config
-
-    config.action_mailer.default_url_options = {host: 'localhost'}
-
-    config.default_from_mail = 'root@localhost'
-
-    config.swagger_docs_base_path = 'http://localhost:3000/'
-
-    config.optimize = Ort.new(
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'optimizer'), namespace: 'optimizer', expires_in: 60*60*24*10),
-      'http://localhost:4567/0.1/optimize_tsptw'
-    )
-    config.optimize_time = 30
-    config.optimize_cluster_size = 0
-    config.optimize_soft_upper_bound = 3
-
-    config.geocode_code_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode'), namespace: 'geocode', expires_in: 60*60*24*10)
-    config.geocode_reverse_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode_reverse'), namespace: 'geocode_reverse', expires_in: 60*60*24*10)
-    config.geocode_complete_cache = ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'geocode_complete'), namespace: 'geocode_complete', expires_in: 60*60*24*10)
-    config.geocode_complete = false # Build time setting
-    # require 'geocode_ign'
-    # config.geocode_geocoder = GeocodeIgn.new('secret_api_key', 'localhost')
-    require 'geocode_addok_wrapper'
-    Mapotempo::Application.config.geocode_geocoder = GeocodeAddokWrapper.new('https://geocode.mapotempo.com/0.1', 'secret_api_key')
-
-    config.router_osrm = Routers::Osrm.new(
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'osrm_request'), namespace: 'osrm_request', expires_in: 60*60*24*1),
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'osrm_result'), namespace: 'osrm_result', expires_in: 60*60*24*1)
-    )
-
-    config.router_otp = Routers::Otp.new(
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'otp_request'), namespace: 'otp_request', expires_in: 60*60*24*1),
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'otp_result'), namespace: 'otp_result', expires_in: 60*60*24*1)
-    )
-
-    config.router_here = Routers::Here.new(
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'here_request'), namespace: 'here_request', expires_in: 60*60*24*1),
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'here_result'), namespace: 'here_result', expires_in: 60*60*24*1),
-      'https://route.api.here.com/routing',
-      'https://matrix.route.api.here.com/routing',
-      'https://isoline.route.api.here.com/routing',
-      nil, nil
-    )
-
-    config.router_wrapper = Routers::RouterWrapper.new(
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'router_wrapper_request'), namespace: 'router_wrapper_request', expires_in: 60*60*24*1),
-      ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, 'router_wrapper_result'), namespace: 'router_wrapper_result', expires_in: 60*60*24*1),
-      nil
-    )
-
     config.devices = OpenStruct.new alyacom: Alyacom.new, masternaut: Masternaut.new, orange: Orange.new, teksat: Teksat.new, tomtom: Tomtom.new
-
-    config.delayed_job_use = false
-
-    config.self_care = true # Allow subscription and resiliation by the user himself
-
-    config.max_destinations = 3000
-    config.manage_vehicles_only_admin = false
-
-    config.enable_references = true
-    config.enable_multi_visits = false
   end
 end
 
