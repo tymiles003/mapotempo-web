@@ -23,7 +23,7 @@ class DeviceBase
   end
 
   def p_time route, time
-    planning_date(route) + (time - Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
+    planning_date(route) + (time - Time.zone.local(2000, 1, 1, 0, 0))
   end
 end
 

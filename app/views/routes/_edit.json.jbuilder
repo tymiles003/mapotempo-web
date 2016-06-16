@@ -6,7 +6,7 @@ json.distance number_to_human((route.distance || 0), units: :distance, precision
 json.size route.stops.size
 json.extract! route, :ref, :color, :size_active
 json.color_fake route.color
-json.last_sent_at route.last_sent_at ? l(route.last_sent_at.in_time_zone, format: :complete) : ""
+json.last_sent_at route.last_sent_at ? l(route.last_sent_at, format: :complete) : ""
 (json.quantity route.quantity) if !@planning.customer.enable_orders
 if route.vehicle_usage
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email

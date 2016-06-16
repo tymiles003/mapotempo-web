@@ -21,9 +21,5 @@ class V01::Entities::DeviceRouteLastSentAt < Grape::Entity
   end
 
   expose(:id, documentation: { type: Integer, desc: "Route ID" })
-  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'}) do |route|
-    if route.last_sent_at
-      I18n.l route.last_sent_at, format: :complete
-    end
-  end
+  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
 end

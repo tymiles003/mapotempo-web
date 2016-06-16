@@ -16,8 +16,6 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class V01::Entities::Route < Grape::Entity
-  TIME_2000 = Time.new(2000, 1, 1, 0, 0, 0, '+00:00').to_i
-
   def self.entity_name
     'V01_Route'
   end
@@ -29,14 +27,12 @@ class V01::Entities::Route < Grape::Entity
   expose(:vehicle_usage_id, documentation: { type: Integer })
   expose(:start, documentation: { type: DateTime }) { |m|
     if m.start
-      date = (m.planning.date || Time.zone.today).to_time + (m.start.to_i - TIME_2000)
-      date.strftime('%Y-%m-%dT%H:%M:%S')
+      (m.planning.date || Time.zone.today).beginning_of_day + (m.start - Time.zone.local(2000, 1, 1))
     end
   }
   expose(:end, documentation: { type: DateTime }) { |m|
     if m.end
-      date = (m.planning.date || Time.zone.today).to_time + (m.end.to_i - TIME_2000)
-      date.strftime('%Y-%m-%dT%H:%M:%S')
+      (m.planning.date || Time.zone.today).beginning_of_day + (m.end - Time.zone.local(2000, 1, 1))
     end
   }
   expose(:hidden, documentation: { type: 'Boolean' })
@@ -48,14 +44,6 @@ class V01::Entities::Route < Grape::Entity
   expose(:stop_drive_time, documentation: { type: Integer, desc: 'Time in seconds between the vehicle\'s store_stop and last stop.' })
   expose(:stop_trace, documentation: { type: String, desc: 'Trace between the vehicle\'s store_stop and last stop.' })
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
-  expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'}) do |route|
-    if route.updated_at
-      I18n.l route.updated_at, format: :complete
-    end
-  end
-  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'}) do |route|
-    if route.last_sent_at
-      I18n.l route.last_sent_at, format: :complete
-    end
-  end
+  expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'})
+  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
 end

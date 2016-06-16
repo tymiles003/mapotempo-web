@@ -45,7 +45,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     stops = JSON.parse(last_response.body)['stops']
     assert_equal @route.stops.size, stops.size
-    assert_equal '2015-10-10T00:00:30', stops[0]['time']
+    assert_equal Time.parse('2015-10-10T00:00:30Z'), Time.parse(stops[0]['time'])
   end
 
   test 'should update a route' do
@@ -111,7 +111,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     stops = JSON.parse(last_response.body)['stops']
     assert_equal @route.stops.size, stops.size
-    assert_equal '2015-10-10T00:00:30', stops[0]['time']
+    assert_equal Time.parse('2015-10-10T00:00:30Z'), Time.parse(stops[0]['time'])
   end
 
   test 'should return a route from vehicle from ID JSON' do
@@ -119,7 +119,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     stops = JSON.parse(last_response.body)['stops']
     assert_equal @route.stops.size, stops.size
-    assert_equal '2015-10-10T00:00:30', stops[0]['time']
+    assert_equal Time.parse('2015-10-10T00:00:30Z'), Time.parse(stops[0]['time'])
   end
 
   test 'should return a route from vehicle from Ref XML' do
@@ -127,7 +127,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     stops = Hash.from_xml(last_response.body)["hash"]["stops"]
     assert_equal @route.stops.size, stops.size
-    assert_equal '2015-10-10T00:00:30', stops[0]['time']
+    assert_equal Time.parse('2015-10-10T00:00:30Z'), stops[0]['time']
   end
 
   test 'should return a route from vehicle from ID XML' do
@@ -135,7 +135,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
     stops = Hash.from_xml(last_response.body)["hash"]["stops"]
     assert_equal @route.stops.size, stops.size
-    assert_equal '2015-10-10T00:00:30', stops[0]['time']
+    assert_equal Time.parse('2015-10-10T00:00:30Z'), stops[0]['time']
   end
 
   test 'should not return route because IDs are invalid' do

@@ -33,9 +33,5 @@ class V01::Entities::Planning < Grape::Entity
   expose(:out_of_date, documentation: { type: 'Boolean' })
   expose(:route_ids, documentation: { type: Integer, is_array: true }) { |m| m.routes.collect(&:id) } # Workaround bug with fetch join stops
   expose(:tag_ids, documentation: { type: Integer, is_array: true })
-  expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'}) do |planning|
-    if planning.updated_at
-      I18n.l planning.updated_at, format: :complete
-    end
-  end
+  expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'})
 end

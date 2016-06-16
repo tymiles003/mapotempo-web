@@ -10,6 +10,7 @@ user_admin:
   reseller: reseller_one
   confirmed_at: <%= 1.week.ago %>
   confirmation_token: <%= User.new.generate_confirmation_token %>
+  time_zone: 'Hawaii'
 
 user_one:
   email: u1@plop.com
@@ -21,6 +22,7 @@ user_one:
   url_click2call: +331245
   confirmed_at: <%= 1.week.ago %>
   confirmation_token: <%= User.new.generate_confirmation_token %>
+  time_zone: 'Hawaii'
 
 user_two:
   email: u2@plop.com
@@ -32,6 +34,7 @@ user_two:
   url_click2call:
   confirmed_at: <%= 1.week.ago %>
   confirmation_token: <%= User.new.generate_confirmation_token %>
+  time_zone: 'Hawaii'
 
 user_three:
   email: u3@plop.com
@@ -43,6 +46,7 @@ user_three:
   url_click2call:
   confirmed_at: <%= 1.week.ago %>
   confirmation_token: <%= User.new.generate_confirmation_token %>
+  time_zone: 'Hawaii'
 
 unconfirmed_user:
   email: unconfirmed@example.com
@@ -51,3 +55,4 @@ unconfirmed_user:
   layer: layer_one
   api_key: testkey1
   confirmation_token: <%= User.new.generate_confirmation_token %>
+  time_zone: 'Hawaii'

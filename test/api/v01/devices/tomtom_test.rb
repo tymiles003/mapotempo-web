@@ -72,7 +72,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       assert_equal 201, last_response.status
       @route.reload
       assert @route.reload.last_sent_at
-      assert_equal({ "id" => @route.id, "last_sent_at" => I18n.l(@route.last_sent_at, format: :complete) }, JSON.parse(last_response.body))
+      assert_equal({ "id" => @route.id, "last_sent_at" => @route.last_sent_at.iso8601(3) }, JSON.parse(last_response.body))
     end
   end
 
@@ -83,7 +83,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       assert_equal 201, last_response.status
       @route.reload
       assert @route.reload.last_sent_at
-      assert_equal({ "id" => @route.id, "last_sent_at" => I18n.l(@route.last_sent_at, format: :complete) }, JSON.parse(last_response.body))
+      assert_equal({ "id" => @route.id, "last_sent_at" => @route.last_sent_at.iso8601(3) }, JSON.parse(last_response.body))
     end
   end
 
@@ -95,7 +95,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
-      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => I18n.l(route.last_sent_at, format: :complete) } }, JSON.parse(last_response.body))
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => route.last_sent_at.iso8601(3) } }, JSON.parse(last_response.body))
     end
   end
 
@@ -107,7 +107,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
-      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => I18n.l(route.last_sent_at, format: :complete) } }, JSON.parse(last_response.body))
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => route.last_sent_at.iso8601(3) } }, JSON.parse(last_response.body))
     end
   end
 
