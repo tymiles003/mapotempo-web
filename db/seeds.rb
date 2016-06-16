@@ -3,7 +3,6 @@ I18n.locale = :fr
 mapnik_fr = Layer.create!(source: "osm", name: "Mapnik-fr", url: "http://tile-{s}.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", urlssl: "https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", attribution: "Tiles by OpenStreetMap-France")
 mapnik = Layer.create!(source: "osm", name: "Mapnik", url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", urlssl: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "Tiles by OpenStreetMap")
 mapbox = Layer.create!(source: "osm", name: "MapBox Street", url: "http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png", urlssl: "https://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png", attribution: "Tiles by MapBox")
-mapquest = Layer.create!(source: "osm", name: "MapQuest", url: "http://otile2.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", urlssl: "https://otile2-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", attribution: "Tiles by MapQuest")
 stamen_bw = Layer.create!(source: "osm", name: "Stamen B&W", url: "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png", urlssl: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png", attribution: "Tiles by Stamen Design")
 
 here_layer = Layer.create!(source: "here", name: "Here", url: "http://4.base.maps.cit.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?app_id=YOUR_APP_ID&app_code=YOUR_APP_CODE", urlssl: "https://4.base.maps.cit.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?app_id=YOUR_APP_ID&app_code=YOUR_APP_CODE", attribution: "Here")
