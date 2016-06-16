@@ -4,7 +4,7 @@
   <%= f.select :color, [], (COLORS_TABLE + [@tag[:color]]).compact.uniq, { include_blank: t('.color_default') } do %>
     <p class="help-block"><%= t '.color_help' %></p>
   <% end %>
-  <%= f.select :icon, [], Tag.icons_table, { include_blank: t('.icon_default') } do %>
+  <%= f.select :icon, [], Tag::ICONS_TABLE, { include_blank: t('.icon_default') } do %>
     <p class="help-block"><%= t '.icon_help' %></p>
   <% end %>
   <%= f.actions do %>

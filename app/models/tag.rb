@@ -16,19 +16,17 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Tag < ActiveRecord::Base
+  ICONS_TABLE = %w(square diamon star user).freeze
+
   belongs_to :customer
   has_and_belongs_to_many :visits
   has_and_belongs_to_many :plannings
-
-  def self.icons_table
-    ['square', 'diamon', 'star', 'user']
-  end
 
   nilify_blanks
   auto_strip_attributes :label
   validates :label, presence: true
   validates_format_of :color, with: /\A(|\#[A-Fa-f0-9]{6})\Z/, allow_nil: true
-  validates_inclusion_of :icon, in: [''] + icons_table, allow_nil: true
+  validates_inclusion_of :icon, in: [''] + ICONS_TABLE, allow_nil: true
 
   amoeba do
     exclude_association :visits

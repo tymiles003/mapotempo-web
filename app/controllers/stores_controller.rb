@@ -140,7 +140,7 @@ class StoresController < ApplicationController
   end
 
   def icons_table
-    @icons_table = FontAwesome.icons_table
+    @icons_table = FontAwesome::ICONS_TABLE
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
