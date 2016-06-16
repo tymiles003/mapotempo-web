@@ -690,7 +690,7 @@ en:
           attempts: "Attempts:"
           error: "Compute failed."
         geocoding_danger:
-          title: "Geocoding results"
+          title: "Geocoding results without reliability"
           infos: "Some of your destinations seem to be geocoded without reliability. Do you want to display them?"
           hide_help: "To hide this message, select your non reliable geocoded destinations and:"
           correct_help: "Check address to correct or complete it if necessary"

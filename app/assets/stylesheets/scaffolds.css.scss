@@ -83,6 +83,13 @@ a.disabled {
 .input-group .input-group-addon {
   border-right: 1px solid #ccc;
 }
+.has-error .input-group .input-group-addon, .has-error .input-group .input-group-btn .btn-default {
+  color: #a94442;
+  border-color: #a94442;
+}
+.has-error .input-group .input-group-btn .btn-default:hover {
+  background-color: #f2dede;
+}
 
 ::-webkit-input-placeholder {
   color: #ccc !important;

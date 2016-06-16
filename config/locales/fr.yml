@@ -691,7 +691,7 @@ fr:
           attempts: "Tentatives :"
           error: "Impossible d'effectuer le calcul."
         geocoding_danger:
-          title: "Résultats de géocodage"
+          title: "Résultats de géocodage peu fiables"
           infos: "Certains de vos clients semblent être géocodés de manière peu fiable. Souhaitez-vous les revoir dans la liste ?"
           hide_help: "Pour ne plus voir ce message, sélectionnez les clients ayant un géocodage peu fiable puis :"
           correct_help: "Vérifiez l'adresse pour la corriger ou compléter si besoin"
