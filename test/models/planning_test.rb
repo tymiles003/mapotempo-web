@@ -247,21 +247,15 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should automatic insert' do
     o = plannings(:planning_one)
     o.zonings = []
-    assert_equal 3, o.routes.size
-    assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_zero' }.stops.size
-    assert_equal 4, o.routes.find{ |ro| ro.ref == 'route_one' }.stops.size
-    assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_three' }.stops.size
     assert_difference('Stop.count', 0) do
       # route_zero has not any vehicle_usage => stop will be affected to another route
       o.automatic_insert(o.routes.find{ |ro| ro.ref == 'route_zero' }.stops[0])
       o.save!
-      o.customer.save!
     end
     o.reload
     assert_equal 3, o.routes.size
     assert_equal 0, o.routes.find{ |ro| ro.ref == 'route_zero' }.stops.size
-    assert_equal 5, o.routes.find{ |ro| ro.ref == 'route_one' }.stops.size
-    assert_equal 1, o.routes.find{ |ro| ro.ref == 'route_three' }.stops.size
+    assert_equal 4 + 1 + 1, o.routes.select{ |ro| ro.ref != 'route_zero' }.collect{ |r| r.stops.size }.inject(:+)
   end
 
   test 'should apply orders' do
