@@ -51,9 +51,9 @@ class PlanningsController < ApplicationController
             content = kmz_string_io(route: route, with_home_markers: true).string
             name = export_filename route.planning, route.ref || route.vehicle_usage.vehicle.name
             if Mapotempo::Application.config.delayed_job_use
-              RouteMailer.delay.send_kmz_route current_user, vehicle, route, name + '.kmz', content
+              RouteMailer.delay.send_kmz_route current_user, I18n.locale, vehicle, route, name + '.kmz', content
             else
-              RouteMailer.send_kmz_route(current_user, vehicle, route, name + '.kmz', content).deliver_now
+              RouteMailer.send_kmz_route(current_user, I18n.locale, vehicle, route, name + '.kmz', content).deliver_now
             end
           end
           head :no_content

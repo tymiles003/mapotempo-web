@@ -820,14 +820,16 @@ en:
 
   route_mailer:
     send_kmz_route:
-      content: "Route informations have been exported using KML format in a file attached to this E-Mail."
+      content: "A KML file containing route informations has been attached to this E-Mail from %{s}."
       vehicle: "Vehicle"
       planning: "Plan"
       planning_ref: "Plan Ref."
       route_ref: "Route Ref."
       order_array: "Orders"
     send_ics_route:
-      content: "Please click the following link to access your Routes details in Calendar"
+      content: "An iCalendar has been sent from %{s}\n
+you can copy-paste the following link to be able to use it as a source in your personnal calendar (update will be automatic)\n
+or you can click on this link to download file (no update in this case)."
       vehicle: "Vehicle"
       planning: "Plan"
       planning_ref: "Plan Ref."

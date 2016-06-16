@@ -43,9 +43,9 @@ class RoutesController < ApplicationController
           vehicle = @route.vehicle_usage.vehicle
           content = kmz_string_io(route: @route).string
           if Mapotempo::Application.config.delayed_job_use
-            RouteMailer.delay.send_kmz_route current_user, vehicle, @route, filename + '.kmz', content
+            RouteMailer.delay.send_kmz_route current_user, I18n.locale, vehicle, @route, filename + '.kmz', content
           else
-            RouteMailer.send_kmz_route(current_user, vehicle, @route, filename + '.kmz', content).deliver_now
+            RouteMailer.send_kmz_route(current_user, I18n.locale, vehicle, @route, filename + '.kmz', content).deliver_now
           end
           head :no_content
         else
