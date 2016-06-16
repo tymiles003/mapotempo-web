@@ -65,7 +65,7 @@ class Tomtom < DeviceBase
     objects.select{ |object| !object[:deleted] }.collect do |object|
       {
         id: object[:@object_uid],
-        text: object[:object_name]
+        text: [object[:@object_no], object[:object_name]].join(" / ")
       }
     end
   end
