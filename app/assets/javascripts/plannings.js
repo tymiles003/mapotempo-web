@@ -667,25 +667,7 @@ var plannings_edit = function(params) {
     });
 
     // iCalendar Export
-    $('.icalendar_email a', context).click(function(e) {
-      e.preventDefault();
-      $.ajax({
-        url: $(e.target).attr('href'),
-        type: 'GET',
-        beforeSend: function(jqXHR, settings) {
-          beforeSendWaiting();
-        },
-        complete: function(jqXHR, textStatus) {
-          completeWaiting();
-        },
-        success: function(data, textStatus, jqXHR) {
-          notice(I18n.t('plannings.edit.export.icalendar.success_with_email'));
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
-        }
-      });
-    });
+    observe_icalendar_export();
 
     $(".routes", context).sortable({
       disabled: true,
@@ -1293,7 +1275,36 @@ var plannings_show = function(params){
   }
 }
 
+function observe_icalendar_export() {
+  $('.icalendar_email').click(function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(e.target).attr('href'),
+      type: 'GET',
+      beforeSend: function(jqXHR, settings) {
+        beforeSendWaiting();
+      },
+      complete: function(jqXHR, textStatus) {
+        completeWaiting();
+      },
+      success: function(data, textStatus, jqXHR) {
+        notice(I18n.t('plannings.edit.export.icalendar.success'));
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
+      }
+    });
+  });
+}
+
+var plannings_index = function(params) {
+  observe_icalendar_export();
+}
+
 Paloma.controller('Plannings', {
+  index: function() {
+    plannings_index(this.params);
+  },
   new: function() {
     plannings_new(this.params);
   },

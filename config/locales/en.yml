@@ -857,6 +857,8 @@ Best resgards,\n
     index:
       title: "Listing plans"
       new: "New Plan"
+      export_icalendar: "Calendar iCal"
+      export_icalendar_email: "Calendar iCal by E-Mail"
     edit:
       position: "Position"
       lock_routes: "Lock routes"
@@ -917,7 +919,7 @@ Best resgards,\n
         icalendar:
           action: "Calendar iCal"
           action_email: "Calendar iCal by E-Mail"
-          success_with_email: "File sucessfully sent by E-Mail"
+          success: "File sucessfully sent by E-Mail"
           fail: "Failed to export"
         kmz_email:
           action: "KML Track by E-Mail"

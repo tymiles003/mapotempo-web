@@ -1,4 +1,7 @@
 module IcalendarUrlHelper
+  def api_plannings_calendar_path query
+    Addressable::Template.new("/api/0.1/plannings.ics{?query*}").expand(query: query).to_s
+  end
   def api_planning_calendar_path planning, query
     Addressable::Template.new("/api/0.1/plannings/%s.ics{?query*}" % [
       planning.ref ? URI::encode("ref:#{planning.ref}") : planning.id

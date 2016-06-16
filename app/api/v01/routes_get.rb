@@ -35,6 +35,25 @@ class V01::RoutesGet < Grape::API
     end
     segment '/:planning_id' do
       resource :routes do
+        desc 'Fetch planning\'s routes.',
+          nickname: 'getRoutes',
+          is_array: true,
+          entity: V01::Entities::Route
+        params do
+          optional :ids, type: Array[String], desc: 'Select returned routes by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
+        end
+        get do
+          planning_id = ParseIdsRefs.read(params[:planning_id])
+          routes = if params.key?(:ids)
+            current_customer.plannings.where(planning_id).first!.routes.select{ |route|
+              params[:ids].any?{ |s| ParseIdsRefs.match(s, route) }
+            }
+          else
+            current_customer.plannings.where(planning_id).first!.routes.load
+          end
+          present routes, with: V01::Entities::Route
+        end
+
         desc 'Fetch route.',
           nickname: 'getRoute',
           entity: V01::Entities::Route
@@ -46,11 +65,11 @@ class V01::RoutesGet < Grape::API
           route_id = ParseIdsRefs.read params[:id] rescue error!('Invalid route', 400)
           route = current_customer.plannings.where(planning_id).first!.routes.where(route_id).first!
           if params.key?(:email)
-            icalendar_export_email route
+            route_calendar_email route
             status 204
           else
             if env['api.format'] == :ics
-              icalendar_route_export route
+              route_calendar(route).to_ical
             else
               present route, with: V01::Entities::Route
             end

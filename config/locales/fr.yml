@@ -858,6 +858,8 @@ L'équipe %{s}"
     index:
       title: "Liste plannings"
       new: "Nouveau planning"
+      export_icalendar: "Agenda iCal"
+      export_icalendar_email: "Agenda iCal par email"
     edit:
       position: "Position"
       lock_routes: "Verrouiller les tournées"
@@ -918,7 +920,7 @@ L'équipe %{s}"
         icalendar:
           action: "Agenda iCal"
           action_email: "Agenda iCal par email"
-          success_with_email: "Fichier exporté avec succès par email"
+          success: "Fichier exporté avec succès par email"
           fail: "Échec lors de l'export"
         kmz_email:
           action: "Tracé KML par email"

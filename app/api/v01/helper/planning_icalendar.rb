@@ -41,6 +41,16 @@ module PlanningIcalendar
     end
   end
 
+  def plannings_calendar plannings
+    calendar = Icalendar::Calendar.new
+    plannings.each do |planning|
+      planning.routes.select(&:vehicle_usage).each do |route|
+        add_route_to_calendar calendar, route
+      end
+    end
+    return calendar
+  end
+
   def planning_calendar planning
     calendar = Icalendar::Calendar.new
     planning.routes.select(&:vehicle_usage).each do |route|
@@ -55,15 +65,7 @@ module PlanningIcalendar
     return calendar
   end
 
-  def icalendar_route_export route
-    route_calendar(route).to_ical
-  end
-
-  def icalendar_planning_export planning
-    planning_calendar(planning).to_ical
-  end
-
-  def icalendar_export_email route
+  def route_calendar_email route
     if route.vehicle_usage.vehicle.contact_email
       vehicle = route.vehicle_usage.vehicle
       url = api_route_calendar_path(route, api_key: @current_user.api_key)

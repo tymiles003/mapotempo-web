@@ -31,24 +31,6 @@ class V01::Plannings < Grape::API
   end
 
   resource :plannings do
-    desc 'Fetch customer\'s plannings.',
-      nickname: 'getPlannings',
-      is_array: true,
-      entity: V01::Entities::Planning
-    params do
-      optional :ids, type: Array[String], desc: 'Select returned plannings by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
-    end
-    get do
-      plannings = if params.key?(:ids)
-        current_customer.plannings.select{ |planning|
-          params[:ids].any?{ |s| ParseIdsRefs.match(s, planning) }
-        }
-      else
-        current_customer.plannings.load
-      end
-      present plannings, with: V01::Entities::Planning
-    end
-
     desc 'Create planning.',
       nickname: 'createPlanning',
       params: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids).deep_merge(
