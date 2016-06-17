@@ -90,6 +90,6 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def destination_params
-    params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :quantity, :take_over, :open, :close, :comment, :phone_number, tag_ids: [])
+    params.require(:destination).permit(:lat, :lng)
   end
 end
