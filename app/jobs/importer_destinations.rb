@@ -144,16 +144,18 @@ class ImporterDestinations < ImporterBase
     end
   end
 
+  def valid_row(destination, row, line)
+    if destination.name.nil?
+      raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_name', line: (row[:line] || line)))
+    end
+    if destination.city.nil? && destination.postalcode.nil? && (destination.lat.nil? || destination.lng.nil?)
+      raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_location', line: (row[:line] || line)))
+    end
+  end
+
   def import_row(name, row, line, options)
     if !row[:stop_type].nil? && row[:stop_type] != I18n.t('destinations.import_file.stop_type_visit')
       return
-    end
-
-    if row[:name].nil?
-      raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_name', line: (row[:line] || line)))
-    end
-    if row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?)
-      raise ImportInvalidRow.new(I18n.t('destinations.import_file.missing_location', line: (row[:line] || line)))
     end
 
     [:tags, :tags_visit].each{ |key| prepare_tags row, key }
@@ -215,6 +217,8 @@ class ImporterDestinations < ImporterBase
         end
       end
     end
+
+    valid_row(visit ? visit.destination : destination, row, line)
 
     if visit
       # Instersection of tags of all rows for tags of new planning

@@ -37,6 +37,24 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
+  test 'should import only ref in new planning' do
+    # clean all visit ref to update the first destination's visit without ref during import
+    Visit.all.each{ |v| v.update! ref: nil }
+    @customer.reload
+    # destinations with same ref are merged
+    import_count = 0
+    # vehicle_usage_set for new planning is hardcoded but random in tests... rest_count depends of it
+    VehicleUsageSet.all.each { |v| v.destroy if v.id != vehicle_usage_sets(:vehicle_usage_set_one).id }
+    rest_count = @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.default_rest_duration }.size
+    assert_difference('Planning.count', 1) do
+      assert_difference('Destination.count', import_count) do
+        assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
+          assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_only_ref.csv', 'text.csv')).import
+        end
+      end
+    end
+  end
+
   test 'should import in new planning' do
     import_count = 1
     # vehicle_usage_set for new planning is hardcoded but random in tests... rest_count depends of it
