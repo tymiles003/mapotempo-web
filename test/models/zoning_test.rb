@@ -53,13 +53,13 @@ class ZoningTest < ActiveSupport::TestCase
     o.from_planning(plannings(:planning_one))
   end
 
-  test 'should generate isochrone' do
+  test 'should generate isochrones' do
     begin
       store_one = stores(:store_one)
       stub_isochrone = stub_request(:get, 'localhost:1723/0.1/isochrone').with(:query => hash_including({})).
         to_return(File.new(File.expand_path('../../web_mocks/', __FILE__) + '/isochrone/isochrone-1.json').read)
       o = zonings(:zoning_one)
-      o.isochrone(5, o.customer.vehicle_usage_sets[0], vehicle_usages(:vehicle_usage_one_one))
+      o.isochrones(5, o.customer.vehicle_usage_sets[0])
     ensure
       remove_request_stub(stub_isochrone) if stub_isochrone
     end

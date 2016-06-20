@@ -1428,7 +1428,7 @@ or you can click on this link to download file (no update in this case)."
           vehicle_usage_set: "Vehicles configuration"
           vehicle_usage_set_help: "Vehicles configuration to consider, especially the start store."
           size: "Time"
-          size_help: "Area accessible from the start store by this travel time."
+          size_help: "Area accessible from the start point by this travel time."
         isochrone-progress:
           title: "Isochrons computation in progress"
         isodistance:
@@ -1436,7 +1436,7 @@ or you can click on this link to download file (no update in this case)."
           vehicle_usage_set: "Vehicles configuration"
           vehicle_usage_set_help: "Vehicles configuration to consider, especially the start store."
           size: "Distance"
-          size_help: "Area accessible from the start store by this travel distance."
+          size_help: "Area accessible from the start point by this travel distance."
         isodistance-progress:
           title: "Isodistances computation in progress"
         validate: "Generate"

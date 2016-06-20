@@ -318,20 +318,22 @@ var plannings_edit = function(params) {
     $.each(zoning.zones, function(index, zone) {
       var geoJsonLayer = (new zoneGeometry(JSON.parse(zone.polygon))).addOverlay(zone);
       var geom = geoJsonLayer.getLayers()[0];
-      geom.setStyle((zone.speed_multiplicator === 0) ? {
-        color: '#FF0000',
-        fillColor: '#707070',
-        weight: 5,
-        dashArray: '10, 10',
-        fillPattern: stripes
-      } : {
-        color: (zone.vehicle_id && vehicles_usages_map[zone.vehicle_id] ? vehicles_usages_map[zone.vehicle_id].color : '#707070'),
-        fillColor: null,
-        weight: 2,
-        dashArray: 'none',
-        fillPattern: null
-      });
-      geom.addTo(layer_zoning);
+      if (geom) {
+        geom.setStyle((zone.speed_multiplicator === 0) ? {
+          color: '#FF0000',
+          fillColor: '#707070',
+          weight: 5,
+          dashArray: '10, 10',
+          fillPattern: stripes
+        } : {
+          color: (zone.vehicle_id && vehicles_usages_map[zone.vehicle_id] ? vehicles_usages_map[zone.vehicle_id].color : '#707070'),
+          fillColor: null,
+          weight: 2,
+          dashArray: 'none',
+          fillPattern: null
+        });
+        geom.addTo(layer_zoning);
+      }
     });
   }
   var stripes = new L.StripePattern({color: '#FF0000', angle: -45}); stripes.addTo(map);
@@ -503,6 +505,9 @@ var plannings_edit = function(params) {
         stop.route_id = route.route_id;
         stop.routes = allRoutesVehicles;
         stop.planning_id = data.planning_id;
+        stop.isoline_capability = params.isoline_capability.isochrone || params.isoline_capability.isodistance;
+        stop.isochrone_capability = params.isoline_capability.isochrone;
+        stop.isodistance_capability = params.isoline_capability.isodistance;
         var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
           icon: new L.NumberedDivIcon({
             number: stop.number,
@@ -534,6 +539,16 @@ var plannings_edit = function(params) {
         }).on('popupopen', function(e) {
           $('.phone_number', e.popup._container).click(function(e) {
             phone_number_call(e.currentTarget.innerHTML, url_click2call, e.target);
+          });
+          $('[data-target$=isochrone-modal]').click(function(e) {
+            $('#isochrone_lat').val(stop.lat);
+            $('#isochrone_lng').val(stop.lng);
+            $('#isochrone_vehicle_usage_id').val(route.vehicle_usage_id);
+          });
+          $('[data-target$=isodistance-modal]').click(function(e) {
+            $('#isodistance_lat').val(stop.lat);
+            $('#isodistance_lng').val(stop.lng);
+            $('#isodistance_vehicle_usage_id').val(route.vehicle_usage_id);
           });
         }).on('popupclose', function(e) {
           m.click = false;
@@ -1073,9 +1088,13 @@ var plannings_edit = function(params) {
     var stores_marker = L.featureGroup();
     stores = {};
     $.each(data.stores, function(i, store) {
+      store.i18n = mustache_i18n;
       store.store = true;
       store.planning_id = data.planning_id;
       store.edit_planning = true;
+      store.isoline_capability = params.isoline_capability.isochrone || params.isoline_capability.isodistance;
+      store.isochrone_capability = params.isoline_capability.isochrone;
+      store.isodistance_capability = params.isoline_capability.isodistance;
       if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
         var m = L.marker(new L.LatLng(store.lat, store.lng), {
           icon: L.divIcon({
@@ -1102,6 +1121,17 @@ var plannings_edit = function(params) {
             m.click = true;
             m.openPopup();
           }
+        }).on('popupopen', function(e) {
+          $('[data-target$=isochrone-modal]').click(function(e) {
+            $('#isochrone_lat').val(store.lat);
+            $('#isochrone_lng').val(store.lng);
+            $('#isochrone_vehicle_usage_id').val('');
+          });
+          $('[data-target$=isodistance-modal]').click(function(e) {
+            $('#isodistance_lat').val(store.lat);
+            $('#isodistance_lng').val(store.lng);
+            $('#isodistance_vehicle_usage_id').val('');
+          });
         }).on('popupclose', function(e) {
           m.click = false;
         });
@@ -1198,6 +1228,77 @@ var plannings_edit = function(params) {
         message: I18n.t('plannings.edit.dialog.zoning.in_progress')
       }).modal('show');
     }
+  });
+
+  $('#isochrone_size').timeEntry({
+    show24Hours: true,
+    spinnerImage: ''
+  });
+
+  $('#isochrone').click(function () {
+    var vehicle_usage_id = $('#isochrone_vehicle_usage_id').val();
+    var size = $('#isochrone_size').val().split(':');
+    size = parseInt(size[0]) * 3600 + parseInt(size[1]) * 60;
+
+    $.ajax({
+      url: '/api/0.1/zonings/isochrone',
+      type: "patch",
+      dataType: "json",
+      data: {
+        vehicle_usage_id: vehicle_usage_id,
+        size: size,
+        lat: $('#isochrone_lat').val(),
+        lng: $('#isochrone_lng').val()
+      },
+      beforeSend: function(jqXHR, settings) {
+        beforeSendWaiting();
+        $('#isochrone-modal').modal('hide');
+        $('#isochrone-progress-modal').modal({
+          backdrop: 'static',
+          keyboard: true
+        });
+      },
+      success: function(data, textStatus, jqXHR) {
+        hideNotices();
+        displayZoning(data);
+        notice(I18n.t('zonings.edit.success'));
+      },
+      complete: function(jqXHR, textStatus) {
+        completeAjaxMap();
+        $('#isochrone-progress-modal').modal('hide');
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        stickyError(I18n.t('zonings.edit.failed'));
+      }
+    });
+  });
+
+  $('#isodistance').click(function () {
+    var vehicle_usage_id = $('#isodistance_vehicle_usage_id').val();
+    var size = $('#isodistance_size').val() * 1000;
+    $('#isodistance-progress-modal').modal({
+      backdrop: 'static',
+      keyboard: true
+    });
+    $('#isodistance-modal').modal('hide');
+    $.ajax({
+      type: "patch",
+      url: '/api/0.1/zonings/isodistance.json',
+      dataType: "json",
+      data: {
+        vehicle_usage_id: vehicle_usage_id,
+        size: size,
+        lat: $('#isodistance_lat').val(),
+        lng: $('#isodistance_lng').val()
+      },
+      beforeSend: beforeSendWaiting,
+      success: displayZoning,
+      complete: function() {
+        completeAjaxMap();
+        $('#isodistance-progress-modal').modal('hide');
+      },
+      error: ajaxError
+    });
   });
 
   // Export spreadsheet modal

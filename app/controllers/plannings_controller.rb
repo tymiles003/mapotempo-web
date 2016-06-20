@@ -84,6 +84,7 @@ class PlanningsController < ApplicationController
 
   def edit
     @spreadsheet_columns = export_columns
+    capabilities
   end
 
   def create
@@ -104,6 +105,7 @@ class PlanningsController < ApplicationController
       if @planning.update(planning_params)
         format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
       else
+        capabilities
         format.html { render action: 'edit' }
       end
     end
@@ -337,5 +339,12 @@ class PlanningsController < ApplicationController
       :close,
       :tags_visit
     ]
+  end
+
+  def capabilities
+    @isochrone = [[@planning.vehicle_usage_set, Zoning.new.isochrone?(@planning.vehicle_usage_set, false)]]
+    @isochrone_capability = @isochrone.find(&:last)
+    @isodistance = [[@planning.vehicle_usage_set, Zoning.new.isodistance?(@planning.vehicle_usage_set, false)]]
+    @isodistance_capability = @isodistance.find(&:last)
   end
 end

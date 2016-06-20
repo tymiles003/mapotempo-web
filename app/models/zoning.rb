@@ -106,28 +106,28 @@ class Zoning < ActiveRecord::Base
     }
   end
 
-  def isochrone?(vehicle_usage_set)
+  def isochrone?(vehicle_usage_set, from_store = true)
     isowhat?(:isochrone?, vehicle_usage_set)
   end
 
-  def isochrone(size, vehicle_usage_set, vehicle_usage = nil)
-    if vehicle_usage
-      isowhat_vehicle_usage(:isochrone?, :isochrone, size, vehicle_usage)
-    else
-      isowhat(:isochrone?, :isochrone, size, vehicle_usage_set)
-    end
+  def isochrone(size, vehicle_usage = nil, loc = nil)
+    isowhat(:isochrone?, :isochrone, size, vehicle_usage, loc)
   end
 
-  def isodistance?(vehicle_usage_set)
+  def isochrones(size, vehicle_usage_set)
+    isowhats(:isochrone?, :isochrone, size, vehicle_usage_set)
+  end
+
+  def isodistance?(vehicle_usage_set, from_store = true)
     isowhat?(:isodistance?, vehicle_usage_set)
   end
 
-  def isodistance(size, vehicle_usage_set, vehicle_usage = nil)
-    if vehicle_usage
-      isowhat_vehicle_usage(:isodistance?, :isodistance, size, vehicle_usage)
-    else
-      isowhat(:isodistance?, :isodistance, size, vehicle_usage_set)
-    end
+  def isodistance(size, vehicle_usage = nil, loc = nil)
+    isowhat(:isodistance?, :isodistance, size, vehicle_usage, loc)
+  end
+
+  def isodistances(size, vehicle_usage_set)
+    isowhats(:isodistance?, :isodistance, size, vehicle_usage_set)
   end
 
   private
@@ -142,36 +142,40 @@ class Zoning < ActiveRecord::Base
     @collection_touched = true
   end
 
-  def isowhat?(what, vehicle_usage_set)
+  def isowhat?(what, vehicle_usage_set, from_store = true)
     vehicle_usage_set.vehicle_usages.select(&:active).find{ |vehicle_usage|
       router = vehicle_usage.vehicle.default_router
-      router.method(what).call && vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?
+      router.method(what).call && (vehicle_usage.default_store_start.try(&:position?) || !from_store)
     }
   end
 
-  def isowhat(what_qm, what, size, vehicle_usage_set)
+  def isowhats(what_qm, what, size, vehicle_usage_set)
     zones.clear
     vehicle_usage_set.vehicle_usages.select(&:active).each{ |vehicle_usage|
-      isowhat_vehicle_usage(what_qm, what, size, vehicle_usage)
+      isowhat(what_qm, what, size, vehicle_usage, nil)
     }
   end
 
-  def isowhat_vehicle_usage(what_qm, what, size, vehicle_usage)
-    if vehicle_usage
-      router = vehicle_usage.vehicle.default_router
-      if router.method(what_qm).call && vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?
-        geom = router.method('compute_' + what.to_s).call(vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng, size, vehicle_usage.vehicle.default_speed_multiplicator)
-        size_to_human = what == :isochrone ? (size / 60).to_s + ' ' + I18n.t('all.unit.minute') : (size / 1000).to_s + ' ' + I18n.t('all.unit.km')
-        name = I18n.t('zonings.default.from_' + what.to_s) + ' ' + size_to_human + ' ' + I18n.t('zonings.default.from') + ' ' + vehicle_usage.default_store_start.name
-      end
-      if geom
-        zone = zones.to_a.find{ |zone| zone.vehicle_id == vehicle_usage.vehicle.id }
-        if zone
-          zone.polygon = geom
-          zone.name = name
-        else
-          zones.build({polygon: geom, name: name, vehicle: vehicle_usage.vehicle})
-        end
+  def isowhat(what_qm, what, size, vehicle_usage, loc)
+    return unless vehicle_usage || loc
+    router = vehicle_usage ? vehicle_usage.vehicle.default_router : customer.router
+    size_to_human = what == :isochrone ? (size / 60).to_s + ' ' + I18n.t('all.unit.minute') : (size / 1000).to_s + ' ' + I18n.t('all.unit.km')
+    name = I18n.t('zonings.default.from_' + what.to_s) + ' ' + size_to_human
+    if !loc
+      loc = [vehicle_usage.default_store_start.try(&:lat), vehicle_usage.default_store_start.try(&:lng)]
+      name += ' ' + I18n.t('zonings.default.from') + ' ' + vehicle_usage.default_store_start.name if vehicle_usage.try(&:default_store_start)
+    end
+
+    if router.method(what_qm).call && loc[0] && loc[1]
+      geom = router.method('compute_' + what.to_s).call(loc[0], loc[1], size, vehicle_usage ? vehicle_usage.vehicle.default_speed_multiplicator : customer.speed_multiplicator)
+    end
+    if geom
+      zone = vehicle_usage && zones.to_a.find{ |zone| zone.vehicle_id == vehicle_usage.vehicle.id }
+      if zone
+        zone.polygon = geom
+        zone.name = name
+      else
+        zones.build({polygon: geom, name: name, vehicle: vehicle_usage.try(&:vehicle)})
       end
     end
   end

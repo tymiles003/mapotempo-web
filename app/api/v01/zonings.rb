@@ -145,8 +145,8 @@ class V01::Zonings < Grape::API
       end
     end
 
-    desc 'Generate isochrone.',
-      detail: 'Generate isochrone polygon for all vehicles. All previous existing zones are cleared.',
+    desc 'Generate isochrones.',
+      detail: 'Generate zoning with isochrone polygons for all vehicles. All previous existing zones are cleared.',
       nickname: 'generateIsochrone',
       entity: V01::Entities::Zoning
     params do
@@ -165,7 +165,7 @@ class V01::Zonings < Grape::API
         end
         size = Integer(params[:size])
         if zoning && vehicle_usage_set
-          zoning.isochrone(size, vehicle_usage_set)
+          zoning.isochrones(size, vehicle_usage_set)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
@@ -175,7 +175,7 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate isochrone for only one vehicle usage.',
-      detail: 'Generate isochrone polygon for one vehicle.',
+      detail: 'Generate zoning with isochrone polygon from specified vehicle\'s start.',
       nickname: 'generateIsochroneVehicleUsage',
       entity: V01::Entities::Zone
     params do
@@ -194,7 +194,7 @@ class V01::Zonings < Grape::API
         }.compact.first
         size = Integer(params[:size])
         if zoning && vehicle_usage
-          zoning.isochrone(size, vehicle_usage.vehicle_usage_set, vehicle_usage)
+          zoning.isochrone(size, vehicle_usage)
           zoning.save!
           present zoning.zones.find{ |z| z.vehicle == vehicle_usage.vehicle }, with: V01::Entities::Zone
         else
@@ -203,8 +203,8 @@ class V01::Zonings < Grape::API
       end
     end
 
-    desc 'Generate isodistance.',
-      detail: 'Generate isodistance polygon for all vehicles. All previous existing zones are cleared.',
+    desc 'Generate isodistances.',
+      detail: 'Generate zoning with isodistance polygons for all vehicles. All previous existing zones are cleared.',
       nickname: 'generateIsodistance',
       entity: V01::Entities::Zoning
     params do
@@ -223,7 +223,7 @@ class V01::Zonings < Grape::API
         end
         size = Integer(params[:size])
         if zoning && vehicle_usage_set
-          zoning.isodistance(size, vehicle_usage_set)
+          zoning.isodistances(size, vehicle_usage_set)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
         else
@@ -233,7 +233,7 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate isodistance for only one vehicle usage.',
-      detail: 'Generate isodistance polygon for one vehicle.',
+      detail: 'Generate zoning with isodistance polygon from specified vehicle\'s start.',
       nickname: 'generateIsochroneVehicleUsage',
       entity: V01::Entities::Zone
     params do
@@ -252,7 +252,7 @@ class V01::Zonings < Grape::API
         }.compact.first
         size = Integer(params[:size])
         if zoning && vehicle_usage
-          zoning.isodistance(size, vehicle_usage.vehicle_usage_set, vehicle_usage)
+          zoning.isodistance(size, vehicle_usage)
           zoning.save!
           present zoning.zones.find{ |z| z.vehicle == vehicle_usage.vehicle }, with: V01::Entities::Zone
         else
@@ -260,5 +260,50 @@ class V01::Zonings < Grape::API
         end
       end
     end
+
+    desc 'Build isochrone for a point.',
+      detail: 'Build isochrone polygon from a specific point. No zoning is saved in database.',
+      nickname: 'buildIsochrone',
+      entity: V01::Entities::Zoning
+    params do
+      requires :lat, type: Float, desc: 'Latitude.'
+      requires :lng, type: Float, desc: 'Longitude.'
+      requires :size, type: Integer, desc: 'Area accessible from the start point by this travel time in seconds.'
+      optional :vehicle_usage_id, type: Integer, desc: 'If not provided, use default router from customer.'
+    end
+    patch 'isochrone' do
+      zoning = Zoning.new customer_id: current_customer.id
+      vehicle_usage = current_customer.vehicle_usage_sets.collect{ |vehicle_usage_set|
+        vehicle_usage_set.vehicle_usages.find{ |vehicle_usage|
+          vehicle_usage.id == params[:vehicle_usage_id]
+        }
+      }.compact.first
+      size = Integer(params[:size])
+      zoning.isochrone(size, vehicle_usage, [params[:lat], params[:lng]])
+      present zoning, with: V01::Entities::Zoning
+    end
+
+    desc 'Build isodistance for a point.',
+      detail: 'Build isodistance polygon from a specific point. No zoning is saved in database.',
+      nickname: 'buildIsodistance',
+      entity: V01::Entities::Zoning
+    params do
+      requires :lat, type: Float, desc: 'Latitude.'
+      requires :lng, type: Float, desc: 'Longitude.'
+      requires :size, type: Integer, desc: 'Area accessible from the start point by this travel distance in meters.'
+      optional :vehicle_usage_id, type: Integer, desc: 'If not provided, use default router from customer.'
+    end
+    patch 'isodistance' do
+      zoning = Zoning.new customer_id: current_customer.id
+      vehicle_usage = current_customer.vehicle_usage_sets.collect{ |vehicle_usage_set|
+        vehicle_usage_set.vehicle_usages.find{ |vehicle_usage|
+          vehicle_usage.id == params[:vehicle_usage_id]
+        }
+      }.compact.first
+      size = Integer(params[:size])
+      zoning.isodistance(size, vehicle_usage, [params[:lat], params[:lng]])
+      present zoning, with: V01::Entities::Zoning
+    end
+
   end
 end

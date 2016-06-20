@@ -310,8 +310,10 @@ var zonings_edit = function(params) {
     featureGroup.clearLayers();
     $.each(data.zoning, function(index, zone) {
       var geom = (new zoneGeometry(JSON.parse(zone.polygon))).addOverlay(zone);
-      setColor(geom, zone.vehicle_id, zone.speed_multiplicator);
-      addZone(zone, geom);
+      if (geom) {
+        setColor(geom, zone.vehicle_id, zone.speed_multiplicator);
+        addZone(zone, geom);
+      }
     });
 
     if (fitBounds) {

@@ -35,6 +35,7 @@ class ZoningsController < ApplicationController
 
   def edit
     @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+    @vehicle_usage_set = @planning ? @planning.vehicle_usage_set : @zoning.customer.vehicle_usage_sets[0]
     capabilities
   end
 
@@ -116,7 +117,7 @@ class ZoningsController < ApplicationController
       vehicle_usage_set_id = Integer(params[:vehicle_usage_set_id])
       vehicle_usage_set = current_user.customer.vehicle_usage_sets.to_a.find{ |vehicle_usage_set| vehicle_usage_set.id == vehicle_usage_set_id }
       if size && vehicle_usage_set
-        @zoning.isochrone(size, vehicle_usage_set)
+        @zoning.isochrones(size, vehicle_usage_set)
         @zoning.save
       end
       format.json { render action: 'edit' }
@@ -129,7 +130,7 @@ class ZoningsController < ApplicationController
       vehicle_usage_set_id = Integer(params[:vehicle_usage_set_id])
       vehicle_usage_set = current_user.customer.vehicle_usage_sets.to_a.find{ |vehicle_usage_set| vehicle_usage_set.id == vehicle_usage_set_id }
       if size && vehicle_usage_set
-        @zoning.isodistance(size, vehicle_usage_set)
+        @zoning.isodistances(size, vehicle_usage_set)
         @zoning.save
       end
       format.json { render action: 'edit' }
