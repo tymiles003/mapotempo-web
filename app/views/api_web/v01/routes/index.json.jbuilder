@@ -46,7 +46,7 @@ json.routes @routes do |route|
     json.ref stop.ref if @planning.customer.enable_references
     json.open_close stop.open || stop.close
     json.open stop.open && l(stop.open.utc, format: :hour_minute)
-    json.open stop.close && l(stop.close.utc, format: :hour_minute)
+    json.close stop.close && l(stop.close.utc, format: :hour_minute)
     (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
     (json.geocoded true) if stop.position?
     (json.no_path true) if stop.position? && route.vehicle_usage && !stop.trace && stop.active
