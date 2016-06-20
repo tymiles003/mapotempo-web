@@ -158,7 +158,7 @@ en:
         router: "Routing Engine"
         router_id: "Routing Engine"
         router_dimension: "Router objective"
-        print_planning_annotating: "Plan annotating"
+        print_planning_annotating: "Include plan annotating"
         print_header: "Routes header"
         print_stop_time: "Include stop time"
         print_map: "Include map"

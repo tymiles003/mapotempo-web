@@ -158,7 +158,7 @@ fr:
         router: "Calculateur d'itinéraire"
         router_id: "Calculateur d'itinéraire"
         router_dimension: "Objectif du calculateur"
-        print_planning_annotating: "Émargement des feuilles de routes"
+        print_planning_annotating: "Inclure un émargement client"
         print_header: "Entête des tournées"
         print_stop_time: "Inclure les horaires de passage"
         print_map: "Inclure la carte"
