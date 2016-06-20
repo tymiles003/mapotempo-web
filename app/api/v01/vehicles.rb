@@ -80,7 +80,7 @@ class V01::Vehicles < Grape::API
       positions = [] ; errors = []
       begin
         if customer.orange?
-          OrangeService.new(customer: customer).get_vehicles_pos.each do |item|
+          (OrangeService.new(customer: customer).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :orange_vehicle_id
             vehicle = vehicles.detect{|v| v.orange_id == vehicle_id }
             next if !vehicle
@@ -93,7 +93,7 @@ class V01::Vehicles < Grape::API
       begin
         if customer.teksat?
           teksat_authenticate customer
-          TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos.each do |item|
+          (TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :teksat_vehicle_id
             vehicle = vehicles.detect{|v| v.teksat_id == vehicle_id }
             next if !vehicle
@@ -105,7 +105,7 @@ class V01::Vehicles < Grape::API
       end
       begin
         if customer.tomtom?
-          TomtomService.new(customer: customer).get_vehicles_pos.each do |item|
+          (TomtomService.new(customer: customer).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :tomtom_vehicle_id
             vehicle = vehicles.detect{|v| v.tomtom_id == vehicle_id }
             next if !vehicle
