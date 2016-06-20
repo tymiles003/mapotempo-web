@@ -42,8 +42,8 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       get api("devices/tomtom/devices", { customer_id: @customer.id })
       assert_equal 200, last_response.status
       assert_equal [
-        {"id"=>"1-44063-666E054E7", "text"=>"MAPO1"},
-        {"id"=>"1-44063-666F24630", "text"=>"MAPO2"}
+        {"id"=>"1-44063-666E054E7", "text"=>"002 / MAPO1"},
+        {"id"=>"1-44063-666F24630", "text"=>"004 / MAPO2"}
       ], JSON.parse(last_response.body)
     end
   end
