@@ -26,5 +26,6 @@ class V01::Entities::VehiclePosition < Grape::Entity
   expose(:lng, documentation: { type: Float })
   expose(:direction, documentation: { type: Float })
   expose(:speed, documentation: { type: Float })
-  expose(:time, documentation: { type: Date })
+  expose(:time, documentation: { type: DateTime })
+  expose(:time_formatted, documentation: { type: String }) { |m| m[:time] && I18n.l(m[:time].to_time) }
 end

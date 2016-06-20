@@ -111,7 +111,7 @@ var plannings_edit = function(params) {
             popupAnchor: new L.Point(0, -12),
             className: 'vehicle-position'
           }),
-          title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (pos.speed || 0) + 'km/h - ' + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (new Date(pos.time)).toLocaleString(),
+          title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (pos.speed || 0) + 'km/h - ' + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (pos.time_formatted || (new Date(pos.time)).toLocaleString()),
         }).addTo(vehicleLayer);
       }
     });

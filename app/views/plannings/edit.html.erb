@@ -85,44 +85,44 @@
           <ul class="dropdown-menu" class="dropdown-menu" style="right: 0; left: auto;" role="menu">
             <% if @planning.customer.tomtom? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.tomtom_id.blank? } %>
               <li class="link planning-tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 <%= t 'plannings.edit.tomtom_send_waypoints.action' %>
               </li>
               <li class="link planning-tomtom-send-orders" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 <%= t 'plannings.edit.tomtom_send_orders.action' %>
               </li>
               <li class="link planning-tomtom-clear" data-url="/api/0.1/devices/tomtom/clear_multiple" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 <%= t 'plannings.edit.tomtom_clear.action' %>
               </li>
               <li role="separator" class="divider"></li>
             <% end %>
             <% if @planning.customer.teksat? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.teksat_id.blank? } %>
               <li class="link planning-teksat-send" data-url="/api/0.1/devices/teksat/send_multiple" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 <%= t 'plannings.edit.teksat_send.action' %>
               </li>
               <li class="link planning-teksat-clear" data-url="/api/0.1/devices/teksat/clear_multiple" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 <%= t 'plannings.edit.teksat_clear.action' %>
               </li>
               <li role="separator" class="divider"></li>
             <% end %>
             <% if @planning.customer.orange? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.orange_id.blank? } %>
               <li class="link planning-orange-send" data-url="/api/0.1/devices/orange/send_multiple" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 <%= t 'plannings.edit.orange_send.action' %>
               </li>
               <li class="link planning-orange-clear" data-url="/api/0.1/devices/orange/clear_multiple" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 <%= t 'plannings.edit.orange_clear.action' %>
               </li>
               <li role="separator" class="divider"></li>
             <% end %>
             <% if @planning.customer.masternaut? %>
               <li class="link planning-masternaut-send" data-url="/api/0.1/devices/masternaut/send_multiple" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 <%= t 'plannings.edit.masternaut_send.action' %>
               </li>
               <li role="separator" class="divider"></li>
