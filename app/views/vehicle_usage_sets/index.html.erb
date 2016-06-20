@@ -49,9 +49,9 @@
           <%= vehicle_usage_set_store_name vehicle_usage_set %>
         </td>
         <td>
-          <%= if(vehicle_usage_set.open) then l(vehicle_usage_set.open, format: :hour_minute) end %>
+          <%= if(vehicle_usage_set.open) then l(vehicle_usage_set.open.utc, format: :hour_minute) end %>
           -
-          <%= if(vehicle_usage_set.close) then l(vehicle_usage_set.close, format: :hour_minute) end %>
+          <%= if(vehicle_usage_set.close) then l(vehicle_usage_set.close.utc, format: :hour_minute) end %>
         </td>
         <td class="text-right">
           <% if @customer.enable_multi_vehicle_usage_sets %>

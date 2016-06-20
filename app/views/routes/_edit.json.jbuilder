@@ -25,8 +25,8 @@ number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
 json.store_start do
   json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
-  (json.time l(route.start, format: :hour_minute)) if route.start
-  (json.with_service_time l(display_start_time(route), format: :hour_minute)) if display_start_time(route)
+  (json.time l(route.start.utc, format: :hour_minute)) if route.start
+  (json.with_service_time l(display_start_time(route).utc, format: :hour_minute)) if display_start_time(route)
   (json.geocoded true) if route.vehicle_usage.default_store_start.position?
   (json.error true) if !route.vehicle_usage.default_store_start.position?
 end if route.vehicle_usage && route.vehicle_usage.default_store_start
@@ -51,12 +51,12 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
   json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
   json.ref stop.ref if @planning.customer.enable_references
   json.open_close stop.open || stop.close
-  (json.open l(stop.open, format: :hour_minute)) if stop.open
-  (json.close l(stop.close, format: :hour_minute)) if stop.close
+  (json.open l(stop.open.utc, format: :hour_minute)) if stop.open
+  (json.close l(stop.close.utc, format: :hour_minute)) if stop.close
   (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
   (json.geocoded true) if stop.position?
   (json.no_path true) if stop.position? && route.vehicle_usage && !stop.trace && stop.active
-  (json.time l(stop.time, format: :hour_minute)) if stop.time
+  (json.time l(stop.time.utc, format: :hour_minute)) if stop.time
   (json.active true) if stop.active
   (json.number number += 1) if route.vehicle_usage && stop.active
   (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
@@ -94,11 +94,11 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
     else
       json.extract! visit, :quantity
     end
-    duration = l(visit.take_over, format: :hour_minute_second) if visit.take_over
+    duration = l(visit.take_over.utc, format: :hour_minute_second) if visit.take_over
   elsif stop.is_a?(StopRest)
     json.rest do
       json.rest true
-      duration = l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second) if route.vehicle_usage.default_rest_duration
+      duration = l(route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) if route.vehicle_usage.default_rest_duration
       (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
       (json.geocoded true) if route.vehicle_usage.default_store_rest && route.vehicle_usage.default_store_rest.position?
       (json.error true) if route.vehicle_usage.default_store_rest && !route.vehicle_usage.default_store_rest.position?
@@ -108,8 +108,8 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
 end
 json.store_stop do
   json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
-  (json.time l(route.end, format: :hour_minute)) if route.end
-  (json.with_service_time l(display_end_time(route), format: :hour_minute)) if display_end_time(route)
+  (json.time l(route.end.utc, format: :hour_minute)) if route.end
+  (json.with_service_time l(display_end_time(route).utc, format: :hour_minute)) if display_end_time(route)
   (json.geocoded true) if route.vehicle_usage.default_store_stop.position?
   (json.no_path true) if !route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace
   (json.error true) if !route.vehicle_usage.default_store_stop.position? || (!route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace)

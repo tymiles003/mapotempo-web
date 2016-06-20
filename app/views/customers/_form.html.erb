@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <%= f.text_field :take_over, {placeholder: t('all.unit.hour_minute_second'), value: @customer.take_over && l(@customer.take_over, format: :hour_minute_second), input_group: content_tag('i', '', class: 'fa fa-clock-o fa-fw')} do %>
+    <%= f.text_field :take_over, {placeholder: t('all.unit.hour_minute_second'), value: @customer.take_over && l(@customer.take_over.utc, format: :hour_minute_second), input_group: content_tag('i', '', class: 'fa fa-clock-o fa-fw')} do %>
       <p class="help-block"><%= t '.take_over_help' %></p>
     <% end %>
     <%= f.text_field :default_country, required: true %>

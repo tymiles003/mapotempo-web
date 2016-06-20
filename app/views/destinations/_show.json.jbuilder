@@ -16,9 +16,9 @@ json.visits do
   json.array! destination.visits do |visit|
     json.extract! visit, :id, :quantity
     json.ref visit.ref if @customer.enable_references
-    json.take_over visit.take_over && l(visit.take_over, format: :hour_minute_second)
-    json.open visit.open && l(visit.open, format: :hour_minute)
-    json.close visit.close && l(visit.close, format: :hour_minute)
+    json.take_over visit.take_over && l(visit.take_over.utc, format: :hour_minute_second)
+    json.open visit.open && l(visit.open.utc, format: :hour_minute)
+    json.close visit.close && l(visit.close.utc, format: :hour_minute)
     json.tag_ids do
       json.array! visit.tags.collect(&:id)
     end

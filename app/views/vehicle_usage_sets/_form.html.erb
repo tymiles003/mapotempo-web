@@ -2,8 +2,8 @@
   <%= render 'shared/error_messages', model: @vehicle_usage_set %>
   <%= f.text_field :name, required: true %>
   <div id="vehicle_usage_set_open_close_input" class="form-group">
-    <label class="sr-only" for="vehicle_usage_set_open"><%= t 'activerecord.attributes.vehicle_usage_set.open' %></label>
-    <label class="sr-only" for="vehicle_usage_set_close"><%= t 'activerecord.attributes.vehicle_usage_set.close' %></label>
+    <label class="sr-only" for="vehicle_usage_set_open"><%= t 'activerecord.attributes.vehicle_usage_set.open.utc' %></label>
+    <label class="sr-only" for="vehicle_usage_set_close"><%= t 'activerecord.attributes.vehicle_usage_set.close.utc' %></label>
     <label class="col-md-2 control-label"><%= t '.open_close' %></label>
     <div class="col-md-6">
       <div class="input-group">
@@ -11,13 +11,13 @@
         <%= text_field :vehicle_usage_set, :open,
           class: 'form-control',
           placeholder: t('all.unit.hour_minute'),
-          value: @vehicle_usage_set.open && l(@vehicle_usage_set.open, format: :hour_minute),
+          value: @vehicle_usage_set.open && l(@vehicle_usage_set.open.utc, format: :hour_minute),
           required: true %>
         <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
         <%= text_field :vehicle_usage_set, :close,
           class: 'form-control',
           placeholder: t('all.unit.hour_minute'),
-          value: @vehicle_usage_set.close && l(@vehicle_usage_set.close, format: :hour_minute),
+          value: @vehicle_usage_set.close && l(@vehicle_usage_set.close.utc, format: :hour_minute),
           required: true %>
         <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
       </div>
@@ -51,12 +51,12 @@
         <%= text_field :vehicle_usage_set, :service_time_start,
           class: 'form-control',
           placeholder: t('all.unit.hour_minute'),
-          value: @vehicle_usage_set.service_time_start && l(@vehicle_usage_set.service_time_start, format: :hour_minute) %>
+          value: @vehicle_usage_set.service_time_start && l(@vehicle_usage_set.service_time_start.utc, format: :hour_minute) %>
         <span class="input-group-addon"><%= t '.service_time_end_addon' %></span>
         <%= text_field :vehicle_usage_set, :service_time_end,
           class: 'form-control',
           placeholder: t('all.unit.hour_minute'),
-          value: @vehicle_usage_set.service_time_end && l(@vehicle_usage_set.service_time_end, format: :hour_minute) %>
+          value: @vehicle_usage_set.service_time_end && l(@vehicle_usage_set.service_time_end.utc, format: :hour_minute) %>
         <span class="input-group-addon"><i class="fa fa-clock-o fa-fw"></i></span>
       </div>
       <p class="help-block"><%= t '.service_times_help' %></p>
@@ -69,7 +69,7 @@
     <div class="col-md-6">
       <div class="input-group">
         <%= text_field :vehicle_usage_set, :rest_duration,
-          value: @vehicle_usage_set.rest_duration && l(@vehicle_usage_set.rest_duration, format: :hour_minute),
+          value: @vehicle_usage_set.rest_duration && l(@vehicle_usage_set.rest_duration.utc, format: :hour_minute),
           placeholder: t('all.unit.hour_minute'),
           class: 'form-control width_1_2' %>
         <%= collection_select :vehicle_usage_set, :store_rest_id, @vehicle_usage_set.customer.stores, :id, :name, {
@@ -90,12 +90,12 @@
         <%= text_field :vehicle_usage_set, :rest_start,
           class: 'form-control',
           placeholder: t('all.unit.hour_minute'),
-          value: @vehicle_usage_set.rest_start && l(@vehicle_usage_set.rest_start, format: :hour_minute) %>
+          value: @vehicle_usage_set.rest_start && l(@vehicle_usage_set.rest_start.utc, format: :hour_minute) %>
         <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
         <%= text_field :vehicle_usage_set, :rest_stop,
           class: 'form-control',
           placeholder: t('all.unit.hour_minute'),
-          value: @vehicle_usage_set.rest_stop && l(@vehicle_usage_set.rest_stop, format: :hour_minute) %>
+          value: @vehicle_usage_set.rest_stop && l(@vehicle_usage_set.rest_stop.utc, format: :hour_minute) %>
         <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
       </div>
       <p class="help-block"><%= t '.rest_start_stop_help' %></p>

@@ -23,10 +23,10 @@ class V01::Entities::Visit < Grape::Entity
   expose(:id, documentation: { type: Integer })
   expose(:destination_id, documentation: { type: Integer })
   expose(:quantity, documentation: { type: Integer })
-  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M:%S') }
-  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
+  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.utc.strftime('%H:%M:%S') }
+  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.utc.strftime('%H:%M:%S') }
   expose(:ref, documentation: { type: String })
-  expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.strftime('%H:%M:%S') }
-  expose(:take_over_default, documentation: { type: DateTime }) { |m| m.destination.customer && m.destination.customer.take_over && m.destination.customer.take_over.strftime('%H:%M:%S') }
+  expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
+  expose(:take_over_default, documentation: { type: DateTime }) { |m| m.destination.customer && m.destination.customer.take_over && m.destination.customer.take_over.utc.strftime('%H:%M:%S') }
   expose(:tag_ids, documentation: { type: Integer, is_array: true })
 end

@@ -110,13 +110,13 @@
           <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
           <%= text_field :vehicle_usage, :open,
             class: 'form-control',
-            placeholder: t('vehicle_usages.form.open.default', n: l(@vehicle_usage.vehicle_usage_set.open, format: :hour_minute)),
-            value: @vehicle_usage.open && l(@vehicle_usage.open, format: :hour_minute) %>
+            placeholder: t('vehicle_usages.form.open.default', n: l(@vehicle_usage.vehicle_usage_set.open.utc, format: :hour_minute)),
+            value: @vehicle_usage.open && l(@vehicle_usage.open.utc, format: :hour_minute) %>
           <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
           <%= text_field :vehicle_usage, :close,
             class: 'form-control',
-            placeholder: t('vehicle_usages.form.close.default', n: l(@vehicle_usage.vehicle_usage_set.close, format: :hour_minute)),
-            value: @vehicle_usage.close && l(@vehicle_usage.close, format: :hour_minute) %>
+            placeholder: t('vehicle_usages.form.close.default', n: l(@vehicle_usage.vehicle_usage_set.close.utc, format: :hour_minute)),
+            value: @vehicle_usage.close && l(@vehicle_usage.close.utc, format: :hour_minute) %>
           <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
         </div>
         <p class="help-block"><%= t '.open_close_help' %></p>
@@ -148,13 +148,13 @@
           <span class="input-group-addon"><%= t '.service_time_start_addon' %></span>
           <%= text_field :vehicle_usage, :service_time_start,
             class: 'form-control',
-            placeholder: f.object.vehicle_usage_set.service_time_start ? t("vehicle_usages.form.service_time.default", n: l(f.object.vehicle_usage_set.service_time_start, format: :hour_minute)) : t('all.unit.hour_minute'),
-            value: @vehicle_usage.service_time_start && l(@vehicle_usage.service_time_start, format: :hour_minute) %>
+            placeholder: f.object.vehicle_usage_set.service_time_start ? t("vehicle_usages.form.service_time.default", n: l(f.object.vehicle_usage_set.service_time_start.utc, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.service_time_start && l(@vehicle_usage.service_time_start.utc, format: :hour_minute) %>
           <span class="input-group-addon"><%= t '.service_time_end_addon' %></span>
           <%= text_field :vehicle_usage, :service_time_end,
             class: 'form-control',
-            placeholder: f.object.vehicle_usage_set.service_time_end ? t("vehicle_usages.form.service_time.default", n: l(f.object.vehicle_usage_set.service_time_end, format: :hour_minute)) : t('all.unit.hour_minute'),
-            value: @vehicle_usage.service_time_end && l(@vehicle_usage.service_time_end, format: :hour_minute) %>
+            placeholder: f.object.vehicle_usage_set.service_time_end ? t("vehicle_usages.form.service_time.default", n: l(f.object.vehicle_usage_set.service_time_end.utc, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.service_time_end && l(@vehicle_usage.service_time_end.utc, format: :hour_minute) %>
           <span class="input-group-addon"><i class="fa fa-clock-o fa-fw"></i></span>
         </div>
         <p class="help-block"><%= t '.service_times_help' %></p>
@@ -167,8 +167,8 @@
       <div class="col-md-6">
         <div class="input-group">
           <%= text_field :vehicle_usage, :rest_duration,
-            value: @vehicle_usage.rest_duration && l(@vehicle_usage.rest_duration, format: :hour_minute),
-            placeholder: !@vehicle_usage.vehicle_usage_set.rest_duration.nil? ? t('vehicle_usages.form.rest_duration.default', n: l(@vehicle_usage.vehicle_usage_set.rest_duration, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.rest_duration && l(@vehicle_usage.rest_duration.utc, format: :hour_minute),
+            placeholder: !@vehicle_usage.vehicle_usage_set.rest_duration.nil? ? t('vehicle_usages.form.rest_duration.default', n: l(@vehicle_usage.vehicle_usage_set.rest_duration.utc, format: :hour_minute)) : t('all.unit.hour_minute'),
             class: 'form-control width_1_2' %>
           <%= collection_select :vehicle_usage, :store_rest_id, @vehicle_usage.vehicle.customer.stores, :id, :name, {
             include_blank: t('vehicle_usages.form.store.default') + ' (' + (@vehicle_usage.vehicle_usage_set.store_rest ? @vehicle_usage.vehicle_usage_set.store_rest.name : t('vehicle_usages.form.store.none')) + ')'}, {
@@ -187,13 +187,13 @@
           <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
           <%= text_field :vehicle_usage, :rest_start,
             class: 'form-control',
-            placeholder: !@vehicle_usage.vehicle_usage_set.rest_start.nil? ? t('vehicle_usages.form.rest_start.default', n: l(@vehicle_usage.vehicle_usage_set.rest_start, format: :hour_minute)) : t('all.unit.hour_minute'),
-            value: @vehicle_usage.rest_start && l(@vehicle_usage.rest_start, format: :hour_minute) %>
+            placeholder: !@vehicle_usage.vehicle_usage_set.rest_start.nil? ? t('vehicle_usages.form.rest_start.default', n: l(@vehicle_usage.vehicle_usage_set.rest_start.utc, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.rest_start && l(@vehicle_usage.rest_start.utc, format: :hour_minute) %>
           <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
           <%= text_field :vehicle_usage, :rest_stop,
             class: 'form-control',
-            placeholder: !@vehicle_usage.vehicle_usage_set.rest_stop.nil? ? t('vehicle_usages.form.rest_stop.default', n: l(@vehicle_usage.vehicle_usage_set.rest_stop, format: :hour_minute)) : t('all.unit.hour_minute'),
-            value: @vehicle_usage.rest_stop && l(@vehicle_usage.rest_stop, format: :hour_minute) %>
+            placeholder: !@vehicle_usage.vehicle_usage_set.rest_stop.nil? ? t('vehicle_usages.form.rest_stop.default', n: l(@vehicle_usage.vehicle_usage_set.rest_stop.utc, format: :hour_minute)) : t('all.unit.hour_minute'),
+            value: @vehicle_usage.rest_stop && l(@vehicle_usage.rest_stop.utc, format: :hour_minute) %>
           <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
         </div>
         <p class="help-block"><%= t '.rest_start_stop_help' %></p>

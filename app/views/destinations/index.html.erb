@@ -134,7 +134,7 @@ controller.js(
   map_lng: @customer.default_position[:lng],
   default_city: @customer.stores[0].city,
   default_country: @customer.default_country,
-  take_over_default: @customer.take_over && l(@customer.take_over, format: :hour_minute_second),
+  take_over_default: @customer.take_over && l(@customer.take_over.utc, format: :hour_minute_second),
   url_click2call: current_user.link_phone_number,
   enable_references: @customer.enable_references,
   enable_multi_visits: @customer.enable_multi_visits

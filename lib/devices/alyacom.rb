@@ -59,8 +59,8 @@ class Alyacom < DeviceBase
           comment: [
             stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity && stop.visit.quantity > 1 ? "x#{stop.visit.quantity}" : nil) : nil,
           ].compact.join(' ').strip,
-          start: planning_date(route) + stop.time.seconds_since_midnight.seconds,
-          end: planning_date(route) + (stop.time.seconds_since_midnight + stop.duration).seconds
+          start: planning_date(route) + stop.time.utc.seconds_since_midnight.seconds,
+          end: planning_date(route) + (stop.time.utc.seconds_since_midnight + stop.duration).seconds
         }
       }
     }.compact

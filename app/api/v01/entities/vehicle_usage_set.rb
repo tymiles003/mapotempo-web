@@ -22,12 +22,12 @@ class V01::Entities::VehicleUsageSet < Grape::Entity
 
   expose(:id, documentation: { type: Integer })
   expose(:name, documentation: { type: String })
-  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.strftime('%H:%M:%S') }
-  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.strftime('%H:%M:%S') }
+  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.utc.strftime('%H:%M:%S') }
+  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.utc.strftime('%H:%M:%S') }
   expose(:store_start_id, documentation: { type: Integer })
   expose(:store_stop_id, documentation: { type: Integer })
-  expose(:rest_start, documentation: { type: DateTime }) { |m| m.rest_start && m.rest_start.strftime('%H:%M:%S') }
-  expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop && m.rest_stop.strftime('%H:%M:%S') }
-  expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration && m.rest_duration.strftime('%H:%M:%S') }
+  expose(:rest_start, documentation: { type: DateTime }) { |m| m.rest_start && m.rest_start.utc.strftime('%H:%M:%S') }
+  expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop && m.rest_stop.utc.strftime('%H:%M:%S') }
+  expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration && m.rest_duration.utc.strftime('%H:%M:%S') }
   expose(:store_rest_id, documentation: { type: Integer })
 end

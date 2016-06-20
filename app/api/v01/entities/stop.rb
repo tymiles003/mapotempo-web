@@ -42,7 +42,7 @@ class V01::Entities::Stop < Grape::Entity
   expose(:wait_time, documentation: { type: DateTime, desc: 'Time before delivery.' }) { |m| m.wait_time && ('%i:%02i:%02i' % [m.wait_time / 60 / 60, m.wait_time / 60 % 60, m.wait_time % 60]) }
   expose(:time, documentation: { type: DateTime, desc: 'Delivered at.' }) { |m|
     if m.time
-      (m.route.planning.date || Time.zone.today).beginning_of_day + (m.time - Time.zone.local(2000, 1, 1))
+      (m.route.planning.date || Time.zone.today).beginning_of_day + (m.time - Time.utc(2000, 1, 1))
     end
   }
   expose(:out_of_window, documentation: { type: 'Boolean' })

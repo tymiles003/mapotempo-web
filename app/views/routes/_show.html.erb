@@ -51,9 +51,9 @@
 
           <div class="title col-md-2 col-sm-2 col-xs-3">
             <span class="time">
-              <%= l(route.start, format: :hour_minute) if route.start %>
+              <%= l(route.start.utc, format: :hour_minute) if route.start %>
               <% if display_start_time(route) %>
-                - <%= l(display_start_time(route), format: :hour_minute) %>
+                - <%= l(display_start_time(route).utc, format: :hour_minute) %>
               <% end %>
             </span>
           </div>
@@ -101,11 +101,11 @@
 
         <div class="title col-md-2 col-sm-2 col-xs-3">
           <% if route.planning.customer.print_stop_time %>
-            <span class="time"><%= l(stop.time, format: :hour_minute) if stop.time %></span>
+            <span class="time"><%= l(stop.time.utc, format: :hour_minute) if stop.time %></span>
           <% end %>
           <% if stop.open || stop.close %>
             <span class="window">
-              <%= l(stop.open, format: :hour_minute) if stop.open %>-<%= l(stop.close, format: :hour_minute) if stop.close %>
+              <%= l(stop.open.utc, format: :hour_minute) if stop.open %>-<%= l(stop.close.utc, format: :hour_minute) if stop.close %>
             </span>
           <% end %>
           <% if stop.is_a?(StopVisit) %>
@@ -133,11 +133,11 @@
               <% end %>
             <% end %>
             <% if stop.visit.take_over %>
-              <span class="duration">(<%= l(stop.visit.take_over, format: :hour_minute_second) %>)</span>
+              <span class="duration">(<%= l(stop.visit.take_over.utc, format: :hour_minute_second) %>)</span>
             <% end %>
           <% end %>
           <% if stop.is_a?(StopRest) %>
-            <span class="duration">(<%= l(route.vehicle_usage.default_rest_duration, format: :hour_minute_second) %>)</span>
+            <span class="duration">(<%= l(route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) %>)</span>
           <% end %>
         </div>
 
@@ -205,9 +205,9 @@
             <% if route.planning.customer.print_stop_time %>
               <span class="time">
                 <% if display_end_time(route) %>
-                  <%= l(display_end_time(route), format: :hour_minute) %> -
+                  <%= l(display_end_time(route).utc, format: :hour_minute) %> -
                 <% end %>
-                <%= l(route.end, format: :hour_minute) if route.end %>
+                <%= l(route.end.utc, format: :hour_minute) if route.end %>
               </span>
             <% end %>
           </div>

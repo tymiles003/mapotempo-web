@@ -22,8 +22,8 @@
         <p class="help-block"><%= t '.quantity_help' %></p>
       <% end %>
       <%= f.text_field :take_over, {
-        value: visit.take_over && l(visit.take_over, format: :hour_minute_second),
-        placeholder: visit.destination.customer.take_over ? l(visit.destination.customer.take_over, format: :hour_minute_second) + ' (' + t('.take_over_default') + ')' : t('all.unit.hour_minute_second'),
+        value: visit.take_over && l(visit.take_over.utc, format: :hour_minute_second),
+        placeholder: visit.destination.customer.take_over ? l(visit.destination.customer.take_over.utc, format: :hour_minute_second) + ' (' + t('.take_over_default') + ')' : t('all.unit.hour_minute_second'),
         input_group: content_tag('i', '', class: 'fa fa-clock-o fa-fw')} do %>
         <p class="help-block"><%= t '.take_over_help' %></p>
       <% end %>
@@ -34,9 +34,9 @@
         <div class="col-md-6">
           <div class="input-group">
             <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
-            <%= text_field "destination[visits_attributes][#{i}]", :open, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.open && l(visit.open, format: :hour_minute) %>
+            <%= text_field "destination[visits_attributes][#{i}]", :open, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.open && l(visit.open.utc, format: :hour_minute) %>
             <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
-            <%= text_field "destination[visits_attributes][#{i}]", :close, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.close && l(visit.close, format: :hour_minute) %>
+            <%= text_field "destination[visits_attributes][#{i}]", :close, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.close && l(visit.close.utc, format: :hour_minute) %>
             <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
           </div>
           <p class="help-block"><%= t '.close_help' %></p>

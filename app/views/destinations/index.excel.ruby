@@ -44,10 +44,10 @@ CSV.generate({col_sep: ';'}) { |csv|
         csv << destination_columns + [
           '',
           visit.ref,
-          visit.take_over && l(visit.take_over, format: :hour_minute_second),
+          visit.take_over && l(visit.take_over.utc, format: :hour_minute_second),
           visit.quantity,
-          visit.open && l(visit.open, format: :hour_minute),
-          visit.close && l(visit.close, format: :hour_minute),
+          visit.open && l(visit.open.utc, format: :hour_minute),
+          visit.close && l(visit.close.utc, format: :hour_minute),
           visit.tags.collect(&:label).join(',')
         ]
       }
