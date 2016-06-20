@@ -470,6 +470,7 @@ en:
       duplicate_order: "Duplicate Order number"
       busy_processing: "Account / username busy processing other request"
       gps_unreachable: "GPS currently unreachable"
+      last_action_failed: "Your last action could not be processed"
     teksat:
       bad_url: "Bad URL"
       get_ticket: "Can't Authenticate. Please Check Your Credentials"

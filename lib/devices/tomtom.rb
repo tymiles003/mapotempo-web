@@ -246,6 +246,8 @@ class Tomtom < DeviceBase
   def parse_error_msg status_code
     # https://uk.support.business.tomtom.com/ci/fattach/get/1331065/1450429305/redirect/1/session/L2F2LzEvdGltZS8xNDUyNjk2OTAzL3NpZC9yVVVpQ3FHbQ==/filename/WEBFLEET.connect-en-1.26.0.pdf
     case status_code
+      when 10, 20, 40
+        I18n.t "errors.tomtom.last_action_failed"
       when 45
         I18n.t "errors.tomtom.access_denied"
       when 1101
