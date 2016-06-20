@@ -48,8 +48,12 @@ route.stops.each{ |stop|
         %>
       </name>
       <desc><%= l(stop.time.utc, format: :hour_minute) if stop.time %>
-      <% if stop.open || stop.close %>
-<%= l(stop.open.utc, format: :hour_minute) if stop.open %>-<%= l(stop.close.utc, format: :hour_minute) if stop.close %>
+      <% if stop.open1 || stop.close1 %>
+<%= l(stop.open1.utc, format: :hour_minute) if stop.open1 %>-<%= l(stop.close1.utc, format: :hour_minute) if stop.close1 %>
+      <% end %>
+      <% if (stop.open1 || stop.close1) && (stop.open2 || stop.close2) %>/<% end %>
+      <% if stop.open2 || stop.close2 %>
+<%= l(stop.open2.utc, format: :hour_minute) if stop.open2 %>-<%= l(stop.close2.utc, format: :hour_minute) if stop.close2 %>
       <% end %>
 <%= [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if !stop.comment.blank? %>

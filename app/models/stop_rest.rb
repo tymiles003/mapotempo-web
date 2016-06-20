@@ -36,12 +36,20 @@ class StopRest < Stop
     end
   end
 
-  def open
+  def open1
     route.vehicle_usage.default_rest_start
   end
 
-  def close
+  def close1
     route.vehicle_usage.default_rest_stop
+  end
+
+  def open2
+    nil
+  end
+
+  def close2
+    nil
   end
 
   def duration

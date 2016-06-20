@@ -12,9 +12,12 @@ json.visits destination.visits do |visit|
   take_over = visit.take_over && l(visit.take_over.utc, format: :hour_minute_second)
   json.take_over take_over
   json.duration take_over
-  json.open_close visit.open || visit.close
-  json.open visit.open && l(visit.open.utc, format: :hour_minute)
-  json.close visit.close && l(visit.close.utc, format: :hour_minute)
+  json.open_close1 visit.open1 || visit.close1
+  json.open1 visit.open1 && l(visit.open1.utc, format: :hour_minute)
+  json.close1 visit.close1 && l(visit.close1.utc, format: :hour_minute)
+  json.open_close2 visit.open2 || visit.close2
+  json.open2 visit.open2 && l(visit.open2.utc, format: :hour_minute)
+  json.close2 visit.close2 && l(visit.close2.utc, format: :hour_minute)
   tags = visit.tags | destination.tags
   if !tags.empty?
     json.tags_present do

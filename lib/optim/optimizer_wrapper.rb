@@ -43,10 +43,16 @@ class OptimizerWrapper
           id: "s#{index + 1}",
           activity: {
             point_id: "p#{index + 1}",
-            timewindows: service[:start] || service[:end] ? [{
-              start: service[:start],
-              end: service[:end]
-            }] : [],
+            timewindows: [
+              (service[:start1] || service[:end1]) && {
+                start: service[:start1],
+                end: service[:end1]
+              },
+              (service[:start2] || service[:end2]) && {
+                start: service[:start2],
+                end: service[:end2]
+              },
+            ].compact,
             duration: service[:duration]
           }
         }},

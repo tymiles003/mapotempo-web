@@ -61,8 +61,10 @@ route.stops.each do |stop|
   </address>
   <description>
     <%= stop.comment %>
-    <% if stop.open %><%= t('plannings.edit.popup.open') %> <%= l(stop.open.utc, format: :hour_minute) %><% end %>
-    <% if stop.close %><%= t('plannings.edit.popup.close') %> <%= l(stop.close.utc, format: :hour_minute) %><% end %>
+    <% if stop.open1 %><%= t('plannings.edit.popup.open1') %> <%= l(stop.open1.utc, format: :hour_minute) %><% end %>
+    <% if stop.close1 %><%= t('plannings.edit.popup.close1') %> <%= l(stop.close1.utc, format: :hour_minute) %><% end %>
+    <% if stop.open2 %><%= t('plannings.edit.popup.open2') %> <%= l(stop.open2.utc, format: :hour_minute) %><% end %>
+    <% if stop.close2 %><%= t('plannings.edit.popup.close2') %> <%= l(stop.close2.utc, format: :hour_minute) %><% end %>
     <% if stop.time %><%= t('plannings.edit.popup.time') %> <%= l(stop.time.utc, format: :hour_minute) %><% end %>
     <% if stop.is_a?(StopVisit) && stop.visit.quantity && stop.visit.quantity > 1 %>
       <%= t('plannings.edit.popup.quantity') %> <%= "#{stop.visit.quantity}&nbsp;#{route.vehicle_usage.vehicle.capacity_unit}" %>

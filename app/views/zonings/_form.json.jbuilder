@@ -21,8 +21,10 @@ if @planning
         json.extract! visit, :quantity
       end
       (json.duration l(visit.take_over.utc, format: :hour_minute_second)) if visit.take_over
-      (json.open l(stop.open.utc, format: :hour_minute)) if stop.open
-      (json.close l(stop.close.utc, format: :hour_minute)) if stop.close
+      (json.open1 l(stop.open1.utc, format: :hour_minute)) if stop.open1
+      (json.close1 l(stop.close1.utc, format: :hour_minute)) if stop.close1
+      (json.open2 l(stop.open2.utc, format: :hour_minute)) if stop.open2
+      (json.close2 l(stop.close2.utc, format: :hour_minute)) if stop.close2
       tags = stop.visit.tags | stop.visit.destination.tags
       color = tags.find(&:color)
       (json.color color.color) if color

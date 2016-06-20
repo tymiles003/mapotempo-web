@@ -19,9 +19,9 @@ class OrtTest < ActionController::TestCase
         [[ 0,  0], [ 1,  1], [ 1,  1], [10, 10], [ 0,  0]],
       ]
       t = [
-        {start: nil, end: nil, duration: 0},
-        {start: nil, end: nil, duration: 0},
-        {start: nil, end: nil, duration: 0},
+        {start1: nil, end1: nil, start2: nil, end2: nil, duration: 0},
+        {start1: nil, end1: nil, start2: nil, end2: nil, duration: 0},
+        {start1: nil, end1: nil, start2: nil, end2: nil, duration: 0},
       ]
       assert_equal [0, 1, 2, 3, 4], @optim.optimize(m, 'time', t, [:start, :stop], [], 1, 0, 0)
     ensure

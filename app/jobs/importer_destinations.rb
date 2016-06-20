@@ -62,8 +62,10 @@ class ImporterDestinations < ImporterBase
     {
       # Visit
       ref_visit: {title: I18n.t('destinations.import_file.ref_visit'), desc: I18n.t('destinations.import_file.ref_visit_desc'), format: I18n.t('destinations.import_file.format.string')},
-      open: {title: I18n.t('destinations.import_file.open'), desc: I18n.t('destinations.import_file.open_desc'), format: I18n.t('destinations.import_file.format.hour')},
-      close: {title: I18n.t('destinations.import_file.close'), desc: I18n.t('destinations.import_file.close_desc'), format: I18n.t('destinations.import_file.format.hour')},
+      open1: {title: I18n.t('destinations.import_file.open1'), desc: I18n.t('destinations.import_file.open_desc1'), format: I18n.t('destinations.import_file.format.hour')},
+      close1: {title: I18n.t('destinations.import_file.close1'), desc: I18n.t('destinations.import_file.close_desc1'), format: I18n.t('destinations.import_file.format.hour')},
+      open2: {title: I18n.t('destinations.import_file.open2'), desc: I18n.t('destinations.import_file.open_desc2'), format: I18n.t('destinations.import_file.format.hour')},
+      close2: {title: I18n.t('destinations.import_file.close2'), desc: I18n.t('destinations.import_file.close_desc2'), format: I18n.t('destinations.import_file.format.hour')},
       tags_visit: {title: I18n.t('destinations.import_file.tags_visit'), desc: I18n.t('destinations.import_file.tags_visit_desc'), format: I18n.t('destinations.import_file.tags_format')},
       take_over: {title: I18n.t('destinations.import_file.take_over'), desc: I18n.t('destinations.import_file.take_over_desc'), format: I18n.t('destinations.import_file.format.second')},
       quantity: {title: I18n.t('destinations.import_file.quantity'), desc: I18n.t('destinations.import_file.quantity_desc'), format: I18n.t('destinations.import_file.format.integer')},

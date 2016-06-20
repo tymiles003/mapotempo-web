@@ -374,11 +374,16 @@ fr:
         quantity_small: "Qté."
         take_over: "Durée de visite"
         take_over_small: "Durée"
-        open: "Plage horaire début"
-        open_small: "Début"
-        close: "Plage horaire fin"
-        close_small: "Fin"
-        open_close_small: "Début/Fin"
+        open1: "Plage horaire 1 début"
+        open1_small: "Début 1"
+        close1: "Plage horaire 1 fin"
+        close1_small: "Fin 1"
+        open_close1_small: "Début/Fin 1"
+        open2: "Plage horaire 2 début"
+        open2_small: "Début 2"
+        close2: "Plage horaire 2 fin"
+        close2_small: "Fin 2"
+        open_close2_small: "Début/Fin 2"
         tags: "Libellés"
         tag_ids: "Libellés"
       zoning:
@@ -399,10 +404,6 @@ fr:
           lat_outside_range: "doit être comprise entre -90..90"
           lng_outside_range: "doit être comprise entre -180..180"
           geocoding_accuracy_outside_range: "doit être comprise entre 0..1"
-        destination:
-          attributes:
-            close:
-              after: "Doit être après l'horaire de début"
         vehicles:
           at_least_one: "Au moins un véhicle est requis"
         vehicle_usage:
@@ -427,8 +428,10 @@ fr:
           missing_rest_duration: "doit être remplie si une plage de repos est remplie"
         visit:
           attributes:
-            close:
-              on_or_after: "Doit être après l'horaire de début"
+            close1:
+              on_or_after: "Doit être après l'horaire de début 1"
+            close2:
+              on_or_after: "Doit être après l'horaire de début 2"
         zone:
           attributes:
             vehicle:
@@ -750,10 +753,14 @@ fr:
       quantity_desc: "quantité d'unités à livrer."
       active: "livré"
       active_desc: "indique si le client est livré durant cette tournée ou pas"
-      open: "horaire début"
-      open_desc: "début de l'intervalle conseillée pour la visite."
-      close: "horaire fin"
-      close_desc: "fin de l'intervalle conseillée pour la visite."
+      open1: "horaire début 1"
+      open1_desc: "début de l'intervalle 1 conseillée pour la visite."
+      close1: "horaire fin 1"
+      close1_desc: "fin de l'intervalle 1 conseillée pour la visite."
+      open2: "horaire début 2"
+      open2_desc: "début de l'intervalle 2 conseillée pour la visite."
+      close2: "horaire fin 2"
+      close2_desc: "fin de l'intervalle 2 conseillée pour la visite."
       comment: "commentaire"
       comment_desc: "informations nécessaires pour la visite."
       phone_number: "téléphone"
@@ -990,9 +997,12 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
       vehicle_last_position_time: "Dernier relevé :"
       route_change_color_help: "Changer la couleur de la tournée"
       popup:
-        open_close: "Plage horaire : "
-        open: "début"
-        close: "fin"
+        open_close1: "Plage horaire 1 : "
+        open1: "début 1"
+        close1: "fin 1"
+        open_close2: "Plage horaire 2 :"
+        open2: "début 2"
+        close2: "fin 2"
         time: "Passage : "
         quantity: "Quantité : "
         orders: "Commandes : "
@@ -1091,8 +1101,10 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
       quantity: "quantité"
       orders: "commandes"
       active: "livré"
-      open: "horaire début"
-      close: "horaire fin"
+      open1: "horaire début 1"
+      close1: "horaire fin 1"
+      open2: "horaire début 2"
+      close2: "horaire fin 2"
       tags_visit: "libellés visite"
       out_of_window: "hors créneau visite"
       out_of_capacity: "hors capacité véhicule"
@@ -1388,7 +1400,8 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
       ref_help: "Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites avec l'import/export notamment."
       quantity_help: "Quantité à livrer"
       take_over_help: "Si vide utilise la valeur par défaut"
-      open_close: "Plage horaire"
+      open_close1: "Plage horaire 1"
+      open_close2: "Plage horaire 2"
       close_help: "Sans tenir compte de la durée de visite"
       tags_help: "Catégories de la visite"
       quantity_default: "défaut"

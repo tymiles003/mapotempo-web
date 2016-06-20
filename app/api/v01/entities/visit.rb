@@ -23,8 +23,12 @@ class V01::Entities::Visit < Grape::Entity
   expose(:id, documentation: { type: Integer })
   expose(:destination_id, documentation: { type: Integer })
   expose(:quantity, documentation: { type: Integer })
-  expose(:open, documentation: { type: DateTime }) { |m| m.open && m.open.utc.strftime('%H:%M:%S') }
-  expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.utc.strftime('%H:%M:%S') }
+  expose(:open1, documentation: { type: DateTime, desc: 'Deprecated, use open1.' }) { |m| m.open1 && m.open1.utc.strftime('%H:%M:%S') }
+  expose(:close1, documentation: { type: DateTime, desc: 'Deprecated, use close2.' }) { |m| m.close1 && m.close1.utc.strftime('%H:%M:%S') }
+  expose(:open1, documentation: { type: DateTime }) { |m| m.open1 && m.open1.utc.strftime('%H:%M:%S') }
+  expose(:close1, documentation: { type: DateTime }) { |m| m.close1 && m.close1.utc.strftime('%H:%M:%S') }
+  expose(:open2, documentation: { type: DateTime }) { |m| m.open2 && m.open2.utc.strftime('%H:%M:%S') }
+  expose(:close2, documentation: { type: DateTime }) { |m| m.close2 && m.close2.utc.strftime('%H:%M:%S') }
   expose(:ref, documentation: { type: String })
   expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
   expose(:take_over_default, documentation: { type: DateTime }) { |m| m.destination.customer && m.destination.customer.take_over && m.destination.customer.take_over.utc.strftime('%H:%M:%S') }

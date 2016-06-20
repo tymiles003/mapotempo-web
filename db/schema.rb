@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160530145107) do
+ActiveRecord::Schema.define(version: 20160617091911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -443,13 +443,15 @@ ActiveRecord::Schema.define(version: 20160530145107) do
 
   create_table "visits", force: :cascade do |t|
     t.float    "quantity"
-    t.time     "open"
-    t.time     "close"
+    t.time     "open1"
+    t.time     "close1"
     t.string   "ref"
     t.time     "take_over"
     t.integer  "destination_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.time     "open2"
+    t.time     "close2"
   end
 
   add_index "visits", ["destination_id"], name: "index_visits_on_destination_id", using: :btree

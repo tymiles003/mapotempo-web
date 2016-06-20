@@ -34,10 +34,10 @@ class Ort
     dimension = dimension == 'time' ? 0 : 1
     key = [soft_upper_bound, matrix.hash, dimension, services.hash, stores.hash, rests.hash, cluster_threshold]
 
-    time_window = services.collect{ |service| [service[:start], service[:end], service[:duration]] }
+    time_window = services.collect{ |service| [service[:start1], service[:end1], service[:duration]] }
     time_window.unshift [0, 2147483647, 0] if stores.include? :start
     # time_window.push [0, 2147483647, 0] if stores.include? :stop
-    rest_window = rests.collect{ |rest| [rest[:start], rest[:end], rest[:duration]] }
+    rest_window = rests.collect{ |rest| [rest[:start1], rest[:end1], rest[:duration]] }
     cluster(matrix, dimension, time_window, cluster_threshold) { |matrix, time_window|
       result = @cache.read(key)
       if !result
@@ -133,8 +133,8 @@ class Ort
           }.min_by{ |a| a[0] }[1]
         else
           sim_annealing = SimAnnealing::SimAnnealing.new
-          sim_annealing.start = start
-          sim_annealing.stop = stop
+          sim_annealing.start1 = start
+          sim_annealing.stop1 = stop
           sim_annealing.matrix = original_matrix
           sim_annealing.dimension = dimension
           fact = (1..[sub_size, 8].min).reduce(1, :*) # Yes, compute factorial
@@ -166,10 +166,10 @@ end
 
 module SimAnnealing
   class SimAnnealing
-    attr_accessor :start, :stop, :matrix, :dimension
+    attr_accessor :start1, :stop1, :matrix, :dimension
 
     def euc_2d(c1, c2)
-      if (c1 == start || c1 == stop) && (c2 == start || c2 == stop)
+      if (c1 == start1 || c1 == stop1) && (c2 == start1 || c2 == stop1)
         0
       else
         matrix[c1][c2][dimension]

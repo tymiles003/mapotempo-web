@@ -325,8 +325,8 @@ class PlanningTest < ActiveSupport::TestCase
 
     # Add a time window in service time start time (less than 30 minutes)
     r.stops[0].visit.update!(
-      open: v.service_time_start + 5.minutes,
-      close: v.service_time_start + 10.minutes
+      open1: v.service_time_start + 5.minutes,
+      close1: v.service_time_start + 10.minutes
     )
 
     # Compute a last time, this stop should be out of time window

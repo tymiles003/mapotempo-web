@@ -36,7 +36,7 @@ class DestinationsControllerTest < ActionController::TestCase
     get :index, format: :excel
     assert_response :success
     assert_not_nil assigns(:destinations)
-    assert_equal "b;destination_one;Rue des Lilas;MyString;33200;Bordeau;;49.1857;-0.3735;;;MyString;MyString;\"\";\"\";b;00:05:33;1.0;10:00;11:00;tag1\r", response.body.split("\n").find{ |l| l.start_with? 'b;destination_one' }
+    assert_equal "b;destination_one;Rue des Lilas;MyString;33200;Bordeau;;49.1857;-0.3735;;;MyString;MyString;\"\";\"\";b;00:05:33;1.0;10:00;11:00;;;tag1\r", response.body.split("\n").find{ |l| l.start_with? 'b;destination_one' }
   end
 
   test 'should get new' do
@@ -78,8 +78,10 @@ class DestinationsControllerTest < ActionController::TestCase
             comment: 'comment',
             phone_number: '+336123456789',
             visits_attributes: [{
-              open: '10:00',
-              close: '18:00',
+              open1: '10:00',
+              close1: '18:00',
+              open2: '20:00',
+              close2: '21:00',
               quantity: '10',
               tag_ids: [tags(:tag_one).id]
             }]
@@ -105,8 +107,10 @@ class DestinationsControllerTest < ActionController::TestCase
             comment: 'comment',
             phone_number: '+336123456789',
             visits_attributes: [{
-              open: '10:00',
-              close: '18:00',
+              open1: '10:00',
+              close1: '18:00',
+              open2: '20:00',
+              close2: '21:00',
               quantity: '10'
             }]
           }

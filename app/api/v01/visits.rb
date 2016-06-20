@@ -23,7 +23,19 @@ class V01::Visits < Grape::API
     def visit_params
       p = ActionController::Parameters.new(params)
       p = p[:visit] if p.key?(:visit)
-      p.permit(:ref, :quantity, :take_over, :open, :close, tag_ids: [])
+      p = p.permit(:ref, :quantity, :take_over, :open, :close, :open1, :close1, :open2, :close2, tag_ids: [])
+
+      # Deals with deprecated open and close
+      if !p[:open].nil?
+        p[:open1] = p[:open]
+      end
+      if !p[:close].nil?
+        p[:close1] = p[:close]
+      end
+      p.delete(:open)
+      p.delete(:close)
+
+      p
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze

@@ -18,8 +18,10 @@ CSV.generate { |csv|
     I18n.t('destinations.import_file.ref_visit'),
     I18n.t('destinations.import_file.take_over'),
     I18n.t('destinations.import_file.quantity'),
-    I18n.t('destinations.import_file.open'),
-    I18n.t('destinations.import_file.close'),
+    I18n.t('destinations.import_file.open1'),
+    I18n.t('destinations.import_file.close1'),
+    I18n.t('destinations.import_file.open2'),
+    I18n.t('destinations.import_file.close2'),
     I18n.t('destinations.import_file.tags_visit')
   ]
   @destinations.each { |destination|
@@ -46,8 +48,10 @@ CSV.generate { |csv|
           visit.ref,
           visit.take_over && l(visit.take_over.utc, format: :hour_minute_second),
           visit.quantity,
-          visit.open && l(visit.open.utc, format: :hour_minute),
-          visit.close && l(visit.close.utc, format: :hour_minute),
+          visit.open1 && l(visit.open1.utc, format: :hour_minute),
+          visit.close1 && l(visit.close1.utc, format: :hour_minute),
+          visit.open2 && l(visit.open2.utc, format: :hour_minute),
+          visit.close2 && l(visit.close2.utc, format: :hour_minute),
           visit.tags.collect(&:label).join(',')
         ]
       }

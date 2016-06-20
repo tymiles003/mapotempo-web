@@ -25,10 +25,10 @@ class OptimizerWrapperTest < ActionController::TestCase
       [[2982, 2982], [2758, 2758], [1652, 1652], [7264, 7264], [0, 0], [2982, 2982]],
       [[0, 0], [655, 655], [1948, 1948], [5231, 5231], [2971, 2971], [0, 0]]]
     t = [
-      {start: nil, end: nil, duration: 300.0},
-      {start: nil, end: nil, duration: 300.0},
-      {start: 28800, end: 36000, duration: 500.0},
-      {start: 0, end: 7200, duration: 300.0},
+      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0},
+      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0},
+      {start1: 28800, end1: 36000, start2: nil, end2: nil, duration: 500.0},
+      {start1: 0, end1: 7200, start2: nil, end2: nil, duration: 300.0},
     ]
     r = [
       {start: 28800, end: 36000, duration: 500.0},

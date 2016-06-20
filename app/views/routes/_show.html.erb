@@ -103,9 +103,15 @@
           <% if route.planning.customer.print_stop_time %>
             <span class="time"><%= l(stop.time.utc, format: :hour_minute) if stop.time %></span>
           <% end %>
-          <% if stop.open || stop.close %>
+          <% if stop.open1 || stop.close1 %>
             <span class="window">
-              <%= l(stop.open.utc, format: :hour_minute) if stop.open %>-<%= l(stop.close.utc, format: :hour_minute) if stop.close %>
+              <%= l(stop.open1.utc, format: :hour_minute) if stop.open1 %>-<%= l(stop.close1.utc, format: :hour_minute) if stop.close1 %>
+            </span>
+          <% end %>
+          <% if (stop.open1 || stop.close1) && (stop.open2 || stop.close2) %><span>/</span><% end %>
+          <% if stop.open2 || stop.close2 %>
+            <span class="window">
+              <%= l(stop.open2.utc, format: :hour_minute) if stop.open2 %>-<%= l(stop.close2.utc, format: :hour_minute) if stop.close2 %>
             </span>
           <% end %>
           <% if stop.is_a?(StopVisit) %>

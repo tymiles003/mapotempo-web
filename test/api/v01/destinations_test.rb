@@ -126,8 +126,10 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               visits: [{
                 ref: 'v1',
                 quantity: 1,
-                open: '08:00',
-                close: '12:00',
+                open1: '08:00',
+                close1: '12:00',
+                open2: '14:00',
+                close2: '18:00',
                 take_over: nil,
                 route: '1',
                 active: '1'
@@ -135,8 +137,10 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               {
                 ref: 'v2',
                 quantity: 2,
-                open: '14:00',
-                close: '18:00',
+                open1: '14:00',
+                close1: '18:00',
+                open2: '20:00',
+                close2: '21:00',
                 take_over: nil,
                 route: '1',
                 active: '1'
@@ -183,16 +187,20 @@ class V01::DestinationsTest < ActiveSupport::TestCase
             visits: [{
               ref: 'v1',
               quantity: nil,
-              open: nil,
-              close: nil,
+              open1: nil,
+              close1: nil,
+              open2: nil,
+              close2: nil,
               take_over: nil,
               route: '1',
               active: '1'
             },{
               ref: 'v2',
               quantity: nil,
-              open: nil,
-              close: nil,
+              open1: nil,
+              close1: nil,
+              open2: nil,
+              close2: nil,
               take_over: nil,
               route: '1',
               active: '1'
@@ -231,16 +239,20 @@ class V01::DestinationsTest < ActiveSupport::TestCase
             foo: 'bar',
             visits: [{
               quantity: 1,
-              open: '08:00',
-              close: '12:00',
+              open1: '08:00',
+              close1: '12:00',
+              open2: '13:00',
+              close2: '14:00',
               take_over: nil,
               route: '1',
               active: '1'
             },
             {
               quantity: 2,
-              open: '14:00',
-              close: '18:00',
+              open1: '14:00',
+              close1: '18:00',
+              open2: '20:00',
+              close2: '21:00',
               take_over: nil,
               route: '1',
               active: '1'

@@ -26,7 +26,22 @@ class V01::Destinations < Grape::API
       if p[:visits]
         p[:visits_attributes] = p[:visits]
       end
-      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :quantity, :take_over, :open, :close, tag_ids: []])
+      p = p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :quantity, :take_over, :open, :close, :open1, :close1, :open2, :close2, tag_ids: []])
+
+      # Deals with deprecated open and close
+      p[:visits_attributes] && p[:visits_attributes].collect!{ |v|
+        if !v[:open].nil?
+          v[:open1] = v[:open]
+        end
+        if !p[:close].nil?
+          v[:close1] = v[:close]
+        end
+        v.delete(:open)
+        v.delete(:close)
+        v
+      }
+
+      p
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze

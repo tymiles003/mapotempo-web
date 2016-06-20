@@ -53,7 +53,7 @@ class VisitTest < ActiveSupport::TestCase
   test 'should set same start and close' do
     d = destinations(:destination_one)
     v = d.visits[0]
-    v.open = v.close = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    v.open1 = v.close1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
     d.save!
   end
 end

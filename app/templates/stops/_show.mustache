@@ -84,13 +84,20 @@
 {{/index_visit}}
 {{#ref}}<b>{{ref}}</b>{{/ref}}
 <ul>
-  {{#open_close}}
-    <li><i class="fa fa-sort fa-rotate-90 fa-fw"></i> {{#i18n}}plannings.edit.popup.open_close{{/i18n}}
-      {{open}} {{^close}}({{#i18n}}plannings.edit.popup.open{{/i18n}}){{/close}}
-      {{#open}}{{#close}}-{{/close}}{{/open}}
-      {{close}} {{^open}}({{#i18n}}plannings.edit.popup.close{{/i18n}}){{/open}}
+  {{#open_close1}}
+    <li><i class="fa fa-sort fa-rotate-90 fa-fw"></i> {{#i18n}}plannings.edit.popup.open_close1{{/i18n}}
+      {{open1}} {{^close1}}({{#i18n}}plannings.edit.popup.open1{{/i18n}}){{/close1}}
+      {{#open1}}{{#close1}}-{{/close1}}{{/open1}}
+      {{close1}} {{^open1}}({{#i18n}}plannings.edit.popup.close1{{/i18n}}){{/open1}}
     </li>
-  {{/open_close}}
+  {{/open_close1}}
+  {{#open_close2}}
+    <li><i class="fa fa-sort fa-rotate-90 fa-fw"></i> {{#i18n}}plannings.edit.popup.open_close2{{/i18n}}
+      {{open2}} {{^close2}}({{#i18n}}plannings.edit.popup.open2{{/i18n}}){{/close2}}
+      {{#open2}}{{#close2}}-{{/close2}}{{/open2}}
+      {{close2}} {{^open2}}({{#i18n}}plannings.edit.popup.close2{{/i18n}}){{/open2}}
+    </li>
+  {{/open_close2}}
   {{#wait_time}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.wait{{/i18n}} {{wait_time}}</li>{{/wait_time}}
   {{#time}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.time{{/i18n}} {{time}}</li>{{/time}}
   {{#duration}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.duration{{/i18n}} {{duration}}</li>{{/duration}}

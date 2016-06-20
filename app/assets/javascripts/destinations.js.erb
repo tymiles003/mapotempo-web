@@ -314,7 +314,7 @@ var destinations_form = function(params, api) {
       spinnerImage: ''
     });
 
-    $('[name$=\\[open\\]], [name$=\\[close\\]]', parent).timeEntry({
+    $('[name$=\\[open1\\]], [name$=\\[close1\\]], [name$=\\[open2\\]], [name$=\\[close2\\]]', parent).timeEntry({
       show24Hours: true,
       spinnerImage: ''
     });
@@ -490,11 +490,17 @@ var destinations_index = function(params, api) {
       });
       destination.visits[i].tags_visit = t;
       destination.visits[i].tags = undefined;
-      if (visit.open) {
-        destination.visits[i].open = visit.open.split(':').slice(0, 2).join(':');
+      if (visit.open1) {
+        destination.visits[i].open1 = visit.open1.split(':').slice(0, 2).join(':');
       }
-      if (visit.close) {
-        destination.visits[i].close = visit.close.split(':').slice(0, 2).join(':');
+      if (visit.close1) {
+        destination.visits[i].close1 = visit.close1.split(':').slice(0, 2).join(':');
+      }
+      if (visit.open2) {
+        destination.visits[i].open2 = visit.open2.split(':').slice(0, 2).join(':');
+      }
+      if (visit.close2) {
+        destination.visits[i].close2 = visit.close2.split(':').slice(0, 2).join(':');
       }
       destination.visits[i].take_over_default = take_over_default;
     });

@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'routers/osrm'
 
-class D < Struct.new(:lat, :lng, :open, :close, :duration)
+class D < Struct.new(:lat, :lng, :open1, :close1, :open2, :close2, :duration)
   def visit
     self
   end
@@ -115,10 +115,11 @@ class RouteTest < ActiveSupport::TestCase
 
     o.stops.each { |s|
       if s.is_a?(StopVisit)
-        s.visit.open = s.visit.close = nil
+        s.visit.open1 = s.visit.close1 = nil
+        s.visit.open2 = s.visit.close2 = nil
         s.visit.save!
       else
-        s.time = s.open
+        s.time = s.open1
         s.save!
       end
     }
@@ -128,8 +129,8 @@ class RouteTest < ActiveSupport::TestCase
 
     assert_equal 0, o.sum_out_of_window
 
-    o.stops[1].visit.open = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
-    o.stops[1].visit.close = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
+    o.stops[1].visit.open1 = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
+    o.stops[1].visit.close1 = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
     o.stops[1].visit.save!
     assert_equal 30, o.sum_out_of_window
   end
@@ -168,7 +169,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should amalgamate point at same position' do
     o = routes(:route_one_one)
 
-    positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(2,2,nil,nil,0), D.new(3,3,nil,nil,0)]
+    positions = [D.new(1,1,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(3,3,nil,nil,nil,nil,0)]
     ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
@@ -183,7 +184,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should amalgamate point at same position, tw' do
     o = routes(:route_one_one)
 
-    positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(2,2,10,20,0), D.new(3,3,nil,nil,0)]
+    positions = [D.new(1,1,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(3,3,nil,nil,nil,nil,0)]
     ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
       assert_equal 4, positions.size
       (0..(positions.size-1)).to_a
@@ -211,9 +212,9 @@ class RouteTest < ActiveSupport::TestCase
   test 'should unnil_positions' do
     o = routes(:route_one_one)
 
-    positions = [D.new(1,1,nil,nil,0), D.new(2,2,nil,nil,0), D.new(nil,nil,nil,nil,0), D.new(2,2,10,20,0), D.new(3,3,nil,nil,0)]
+    positions = [D.new(1,1,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(3,3,nil,nil,nil,nil,0)]
     tws = [[nil, nil, 0]] + positions.collect{ |position|
-        open, close, duration = position[:open], position[:close], position[:duration]
+        open, close, duration = position[:open1], position[:close1], position[:duration]
         open = open ? open - o.vehicle_usage.open.to_i : nil
         close = close ? close - o.vehicle_usage.open.to_i : nil
         if open && close && open > close
@@ -230,9 +231,9 @@ class RouteTest < ActiveSupport::TestCase
   test 'should unnil_positions except start/stop' do
     o = routes(:route_one_one)
 
-    positions = [D.new(nil,nil,nil,nil,0), D.new(2,2,nil,nil,0), D.new(nil,nil,nil,nil,0), D.new(2,2,10,20,0), D.new(nil,nil,nil,nil,0)]
+    positions = [D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0)]
     tws = [[nil, nil, 0]] + positions.collect{ |position|
-        open, close, duration = position[:open], position[:close], position[:duration]
+        open, close, duration = position[:open1], position[:close1], position[:duration]
         open = open ? open - o.vehicle_usage.open.to_i : nil
         close = close ? close - o.vehicle_usage.open.to_i : nil
         if open && close && open > close

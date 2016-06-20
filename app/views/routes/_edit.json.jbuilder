@@ -50,9 +50,12 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
   json.stop_id stop.id
   json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
   json.ref stop.ref if @planning.customer.enable_references
-  json.open_close stop.open || stop.close
-  (json.open l(stop.open.utc, format: :hour_minute)) if stop.open
-  (json.close l(stop.close.utc, format: :hour_minute)) if stop.close
+  json.open_close1 stop.open1 || stop.close1
+  (json.open1 l(stop.open1.utc, format: :hour_minute)) if stop.open1
+  (json.close1 l(stop.close1.utc, format: :hour_minute)) if stop.close1
+  json.open_close2 stop.open2 || stop.close2
+  (json.open2 l(stop.open2.utc, format: :hour_minute)) if stop.open2
+  (json.close2 l(stop.close2.utc, format: :hour_minute)) if stop.close2
   (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
   (json.geocoded true) if stop.position?
   (json.no_path true) if stop.position? && route.vehicle_usage && !stop.trace && stop.active

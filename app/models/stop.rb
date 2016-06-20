@@ -25,4 +25,29 @@ class Stop < ActiveRecord::Base
   amoeba do
     enable
   end
+
+  # Return best fit time window, and late (positive) time or waiting time (negative).
+  def best_open_close(time)
+    [[open1, close1], [open2, close2]].select{ |open, close|
+      open || close
+    }.collect{ |open, close|
+      [open, close, eval_open_close(open, close, time)]
+    }.select{ |open, close, eval|
+      !eval.nil?
+    }.min_by{ |open, close, eval|
+      eval.abs
+    }
+  end
+
+  private
+
+  def eval_open_close(open, close, time)
+    if open && time < open
+      time - open # Negative
+    elsif close && time > close
+      (time - close) * (self.route.planning.customer.optimization_soft_upper_bound || 1)  # Positive
+    else
+      0
+    end
+  end
 end

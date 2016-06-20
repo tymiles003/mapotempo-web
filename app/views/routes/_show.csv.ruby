@@ -29,8 +29,10 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
     ref_visit: nil,
     duration: nil,
     (route.planning.customer.enable_orders ? :orders : :quantity) => nil,
-    open: nil,
-    close: nil,
+    open1: nil,
+    close1: nil,
+    open2: nil,
+    close2: nil,
     tags_visit: nil
   }
   csv << @columns.map{ |c| row[c.to_sym] }
@@ -69,8 +71,10 @@ route.stops.each { |stop|
       ref_visit: (stop.visit.ref if stop.is_a?(StopVisit)),
       duration: stop.is_a?(StopVisit) ? (stop.visit.take_over ? l(stop.visit.take_over.utc, format: :hour_minute_second) : nil) : (route.vehicle_usage.default_rest_duration ? l(route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) : nil),
       (route.planning.customer.enable_orders ? :orders : :quantity) => ((route.planning.customer.enable_orders ? (stop.order && stop.order.products.length > 0 ? stop.order.products.collect(&:code).join('/') : nil) : stop.visit.quantity) if stop.is_a?(StopVisit)),
-      open: (l(stop.open.utc, format: :hour_minute) if stop.open),
-      close: (l(stop.close.utc, format: :hour_minute) if stop.close),
+      open1: (l(stop.open1.utc, format: :hour_minute) if stop.open1),
+      close1: (l(stop.close1.utc, format: :hour_minute) if stop.close1),
+      open2: (l(stop.open2.utc, format: :hour_minute) if stop.open2),
+      close2: (l(stop.close2.utc, format: :hour_minute) if stop.close2),
       tags_visit: (stop.visit.tags.collect(&:label).join(',') if stop.is_a?(StopVisit))
     }
     csv << @columns.map{ |c| row[c.to_sym] }
@@ -108,8 +112,10 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
     ref_visit: nil,
     duration: nil,
     (route.planning.customer.enable_orders ? :orders : :quantity) => nil,
-    open: nil,
-    close: nil,
+    open1: nil,
+    close1: nil,
+    open2: nil,
+    close2: nil,
     tags_visit: nil
   }
   csv << @columns.map{ |c| row[c.to_sym] }
