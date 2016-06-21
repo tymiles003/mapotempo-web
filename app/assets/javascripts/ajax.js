@@ -195,6 +195,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     return false;
   }
   else {
+    iteration = null;
     if (dialog.is(':visible')) {
       if (successCallback) successCallback();
       dialog.modal('hide');
