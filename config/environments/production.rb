@@ -130,8 +130,11 @@ Rails.application.configure do
 
   config.devices.alyacom.api_url = 'http://app.alyacom.fr/ws'
   config.devices.masternaut.api_url = 'http://gc.api.geonaut.masternaut.com/MasterWS/services'
+  config.devices.masternaut.api_key = nil
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
+  config.devices.orange.api_key = nil
   config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.26'
+  config.devices.tomtom.api_key = nil
   config.devices.cache_object = cache_factory('devices', 30)
 
   config.delayed_job_use = true
