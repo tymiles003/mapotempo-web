@@ -841,17 +841,17 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
   user_mailer:
     welcome:
       title: "Votre compte %{s}"
-      content: "Bonjour et bienvenue sur %{s},\n
+      content: "<p>Bonjour et bienvenue sur %{s},</p>\n
 \n
-Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : <a href=\"%{l}\">Changer le mot de passe</a> ou %{l}\n
+<p>Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : <a href=\"%{l}\">Changer le mot de passe</a> ou %{l} </p>\n
 \n
-Vous pourrez alors vous connecter à tout moment au service en ligne %{s} via : %{a}\n
+<p>Vous pourrez alors vous connecter à tout moment au service en ligne %{s} via : %{a} </p>\n
 \n
-Pour nous contacter veuillez utiliser l'un des moyens listés sur cette page : %{c}\n
+<p>Pour nous contacter veuillez utiliser l'un des moyens listés sur cette page : %{c} </p>\n
 \n
-Avec toute notre attention,\n
+<p>Avec toute notre attention,</p>\n
 \n
-L'équipe %{s}"
+<p>L'équipe %{s}</p>"
 
   plannings:
     menu:

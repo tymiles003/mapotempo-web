@@ -4,14 +4,13 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <p>
-      <%= t('.content',
+    <%= t('.content',
       s: user.customer.reseller.name,
       # /customers/id/users/id/password?token=token
       l: url_for([:password, user.customer, user, token: user.confirmation_token]),
       a: user.customer.reseller.host,
-      c: (user.customer.reseller.contact_url && user.customer.reseller.contact_url.gsub('{LG}', I18n.locale.to_s)))
-      %>
-    </p>
+      c: (user.customer.reseller.contact_url && user.customer.reseller.contact_url.gsub('{LG}', I18n.locale.to_s))
+    ).html_safe
+    %>
   </body>
 </html>

@@ -840,17 +840,17 @@ or you can click on this link to download file (no update in this case)."
   user_mailer:
     welcome:
       title: "Your %{s} account"
-      content: "Hello and welcome on %{s},\n
+      content: "<p>Hello and welcome on %{s},</p>\n
 \n
-You can set your password with the following link: <a href=\"%{l}\">Set Password</a> or %{l}\n
+<p>You can set your password with the following link: <a href=\"%{l}\">Set Password</a> or %{l} </p>\n
 \n
-You will be able to connect our service online %{s} with: %{a}\n
+<p>You will be able to connect our service online %{s} with: %{a} </p>\n
 \n
-If you need to contact us, please use the following link: %{c}\n
+<p>If you need to contact us, please use the following link: %{c} </p>\n
 \n
-Best resgards,\n
+<p>Best regards,</p>\n
 \n
-%{s} team"
+<p>%{s} team</p>"
 
   plannings:
     menu:
