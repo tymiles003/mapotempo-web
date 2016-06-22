@@ -34,9 +34,6 @@ class Admin::UsersController < ApplicationController
     password = Time.now.to_i + rand(10000)
     @user = User.new user_params.merge(password: password, password_confirmation: password)
     @user.save
-    if @user.persisted? && params[:send_email].to_i == 1 && !@user.admin?
-      @user.send_welcome_email
-    end
     if @user.persisted?
       redirect_to_default
     else
@@ -82,6 +79,6 @@ class Admin::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :customer_id, :password, :password_confirmation, :time_zone)
+    params.require(:user).permit(:email, :customer_id, :password, :password_confirmation, :time_zone, :send_email)
   end
 end

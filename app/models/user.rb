@@ -34,6 +34,15 @@ class User < ActiveRecord::Base
   validates :customer, presence: true, unless: :admin?
   validates :layer, presence: true
 
+  attr_accessor :send_email
+
+  after_create :send_welcome_email, if: lambda{|user| user.send_email.to_i == 1 }
+
+  def send_welcome_email
+    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self) : UserMailer.welcome_message(self).deliver_now
+    self.update! confirmation_sent_at: Time.now
+  end
+
   include RefSanitizer
 
   include Confirmable
@@ -64,11 +73,6 @@ class User < ActiveRecord::Base
     else
       'tel:+{TEL}'
     end
-  end
-
-  def send_welcome_email
-    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self, I18n.locale) : UserMailer.welcome_message(self, I18n.locale).deliver_now
-    self.update! confirmation_sent_at: Time.now.utc
   end
 
   def api_key_random
