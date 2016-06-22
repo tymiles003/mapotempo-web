@@ -132,7 +132,7 @@ class Orange < DeviceBase
           start_time = stop.time
           end_time = stop.duration ? stop.time + stop.duration.seconds : stop.time
           xml.tag! :operation, nil, options.merge(seq: stop.index, ad1: stop.street, ad2: nil, ad3: nil, ad_zip: stop.postalcode,
-            ad_city: stop.city, ad_cntry: 'FR', latitude: stop.lat, longitude: stop.lng, title: stop.name, txt: [stop.street, stop.postalcode, stop.city].join(', '),
+            ad_city: stop.city, ad_cntry: stop.country || stop.route.planning.customer.default_country, latitude: stop.lat, longitude: stop.lng, title: stop.name, txt: [stop.street, stop.postalcode, stop.city].join(', '),
             prevopedeb: p_time(route, start_time).strftime('%d/%m/%Y %H:%M'), prevopefin: p_time(route, end_time).strftime('%d/%m/%Y %H:%M'))
         end
       end
