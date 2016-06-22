@@ -48,33 +48,37 @@ Rails.application.configure do
 
   config.swagger_docs_base_path = 'http://localhost:3000/'
 
+  def cache_factory(namespace, expires_in)
+    ActiveSupport::Cache::NullStore.new
+  end
+
   config.optimize = Ort.new(
-    ActiveSupport::Cache::NullStore.new,
+    cache_factory('optimizer', 60*60*24*10),
     'http://localhost:4567/0.1/optimize_tsptw'
   )
   config.optimize_time = 1
   config.optimize_cluster_size = 0
   config.optimize_soft_upper_bound = 3
 
-  config.geocode_code_cache = ActiveSupport::Cache::NullStore.new
-  config.geocode_reverse_cache = ActiveSupport::Cache::NullStore.new
-  config.geocode_complete_cache = ActiveSupport::Cache::NullStore.new
+  config.geocode_code_cache = cache_factory('geocode', 60*60*24*10)
+  config.geocode_reverse_cache = cache_factory('geocode_reverse', 60*60*24*10)
+  config.geocode_complete_cache = cache_factory('geocode_complete', 60*60*24*10)
   config.geocode_complete = true # Build time setting
 
   require 'geocode_addok_wrapper'
   config.geocode_geocoder = GeocodeAddokWrapper.new('https://geocode.mapotempo.com/0.1', 'demo')
 
   config.router_osrm = Routers::Osrm.new(
-    ActiveSupport::Cache::NullStore.new,
-    ActiveSupport::Cache::NullStore.new
+    cache_factory('osrm_request', 60*60*24*1),
+    cache_factory('osrm_result', 60*60*24*1)
   )
   config.router_otp = Routers::Otp.new(
-    ActiveSupport::Cache::NullStore.new,
-    ActiveSupport::Cache::NullStore.new
+    cache_factory('otp_request', 60*60*24*1),
+    cache_factory('otp_result', 60*60*24*1)
   )
   config.router_here = Routers::Here.new(
-    ActiveSupport::Cache::NullStore.new,
-    ActiveSupport::Cache::NullStore.new,
+    cache_factory('here_request', 60*60*24*1),
+    cache_factory('here_result', 60*60*24*1),
     'https://route.api.here.com/routing',
     'https://matrix.route.api.here.com/routing',
     'https://isoline.route.api.here.com/routing',
@@ -82,8 +86,8 @@ Rails.application.configure do
     nil
   )
   config.router_wrapper = Routers::RouterWrapper.new(
-    ActiveSupport::Cache::NullStore.new,
-    ActiveSupport::Cache::NullStore.new,
+    cache_factory('router_wrapper_request', 60*60*24*1),
+    cache_factory('router_wrapper_result', 60*60*24*1),
     'api_key'
   )
 
@@ -91,7 +95,7 @@ Rails.application.configure do
   config.devices.masternaut.api_url = 'https://masternaut.example.com'
   config.devices.orange.api_url = 'https://orange.example.com'
   config.devices.tomtom.api_url = 'https://tomtom.example.com' #v1.26
-  config.devices.cache_object = ActiveSupport::Cache::NullStore.new
+  config.devices.cache_object = cache_factory('devices', 30)
 
   config.delayed_job_use = false
 
