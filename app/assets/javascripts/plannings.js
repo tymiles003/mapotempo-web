@@ -1012,7 +1012,7 @@ var plannings_edit = function(params) {
   });
 
   $(".main").on("click", ".automatic_insert_all", function(e, ui) {
-    if ($('#out_of_route li').length > 20) {
+    if ($('#out_of_route > li').length > 20) {
       alert(I18n.t('plannings.edit.automatic_insert_too_many'));
       return false;
     }
