@@ -70,7 +70,7 @@ class Admin::UsersController < ApplicationController
   private
 
   def redirect_to_default
-    redirect_to !params[:url].blank? ? params[:url] : admin_users_path, notice: t(".success")
+    redirect_to !params[:url].blank? ? params[:url] : admin_users_path, notice: t("admin.users.#{action_name}.success")
   end
 
   def find_customers

@@ -52,7 +52,7 @@ class UsersController < ApplicationController
   private
 
   def redirect_to_default
-    redirect_to !params[:url].blank? ? params[:url] : [:edit, @customer], notice: t(".success")
+    redirect_to !params[:url].blank? ? params[:url] : [:edit, @customer], notice: t("users.#{action_name}.success")
   end
 
   def find_customer

@@ -2,8 +2,8 @@
   <%= render 'shared/error_messages', model: @vehicle_usage_set %>
   <%= f.text_field :name, required: true %>
   <div id="vehicle_usage_set_open_close_input" class="form-group">
-    <label class="sr-only" for="vehicle_usage_set_open"><%= t 'activerecord.attributes.vehicle_usage_set.open.utc' %></label>
-    <label class="sr-only" for="vehicle_usage_set_close"><%= t 'activerecord.attributes.vehicle_usage_set.close.utc' %></label>
+    <label class="sr-only" for="vehicle_usage_set_open"><%= t 'activerecord.attributes.vehicle_usage_set.open' %></label>
+    <label class="sr-only" for="vehicle_usage_set_close"><%= t 'activerecord.attributes.vehicle_usage_set.close' %></label>
     <label class="col-md-2 control-label"><%= t '.open_close' %></label>
     <div class="col-md-6">
       <div class="input-group">

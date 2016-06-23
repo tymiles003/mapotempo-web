@@ -363,6 +363,7 @@ fr:
         rest_start: "Début plage repos"
         rest_stop: "Fin plage repos"
         rest_duration: "Durée de repos"
+        store_rest: "Lieu de repos"
         store_rest_id: "Lieu de repos"
         service_time_start: "Durée de service avant"
         service_time_end: "Durée de service après"
@@ -518,18 +519,25 @@ fr:
     users:
       menu:
         users : "Utilisateurs"
+        send_email: "Envoyer email de confirmation"
       index:
         title: "Modifier utilisateurs"
         new: "Nouvel utilisateur"
       new:
         title: "Nouvel utilisateur"
-        send_email: "Envoyer email de confirmation"
       create:
         success: "Utilisateur créé avec succès"
       edit:
         title: "Modifier utilisateur"
+        connect_as: "Connecter en tant que…"
+      create:
+        success: "User créé avec succès"
       update:
         success: "Utilisateur mis à jour avec succès"
+      destroy:
+        success: "Utilisateur supprimé avec succès"
+      destroy_multiple:
+        success: "Utilisateurs supprimés avec succès"
       send_email:
         success: "Email envoyé à l'utilisateur avec succès"
 
@@ -789,6 +797,7 @@ fr:
       week2: "2 Semaines"
       month: "Mois"
       export:
+        print: "Imprimer"
         menu: "Exporter"
         spreadsheet_standard: "Tableur standard"
         spreadsheet_excel: "Tableur Excel"

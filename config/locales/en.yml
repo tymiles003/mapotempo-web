@@ -351,6 +351,7 @@ en:
         store_rest_id: "Rest place"
         service_time_start: "Service Time Before"
         service_time_end: "Service Time After"
+        vehicle: "Vehicle"
       vehicle_usage_set:
         name: "Name"
         open: "Open"
@@ -362,6 +363,7 @@ en:
         rest_start: "Rest window start"
         rest_stop: "Rest window stop"
         rest_duration: "Rest duration"
+        store_rest: "Rest place"
         store_rest_id: "Rest place"
         service_time_start: "Service Time Before"
         service_time_end: "Service Time After"
@@ -517,18 +519,25 @@ en:
     users:
       menu:
         users : "Users"
+        send_email: "Send Confirmation E-Mail"
       index:
         title: "Editing users"
         new: "New user"
       new:
         title: "New user"
-        send_email: "Send Confirmation E-Mail"
       create:
         success: "User created successfully"
       edit:
         title: "Edit user"
+        connect_as: "Connect as…"
+      create:
+        success: "User created successfully"
       update:
         success: "User updated successfully"
+      destroy:
+        success: "User deleted successfully"
+      destroy_multiple:
+        success: "Users deleted successfully"
       send_email:
         success: "E-Mail sent to user successfully"
 
@@ -788,6 +797,7 @@ en:
       week2: "2 Weeks"
       month: "Month"
       export:
+        print: "Print"
         menu: "Export"
         spreadsheet_standard: "Spreadsheet Standard"
         spreadsheet_excel: "Spreadsheet Excel"
