@@ -62,8 +62,8 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
         "lng"=>"-0.3810453",
         "direction"=>nil,
         "speed"=>"0",
-        "time"=>"2016-02-10 15:20:31",
-        "time_formatted"=>"10 février 2016 15:20:31"
+        "time"=>"2016-02-10 14:20:31+00:00",
+        "time_formatted"=>"10 février 2016 04:20:31"
       }], JSON.parse(last_response.body)
     end
   end

@@ -61,7 +61,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
         "direction"=>"227",
         "speed"=>"21",
         "time"=>"2016-02-10T07:38:33.000+00:00",
-        "time_formatted"=>"10 février 2016 08:38:33"
+        "time_formatted"=>"09 février 2016 21:38:33"
       }], JSON.parse(last_response.body)
     end
   end

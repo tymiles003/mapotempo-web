@@ -56,7 +56,7 @@ class Orange < DeviceBase
       vehicle_infos = []
       Nokogiri::XML(response.body).xpath("//position").each_with_object({}) do |item, hash|
         item.children.select(&:element?).map{|node| hash[node.name] = node.inner_html }
-        vehicle_infos << { orange_vehicle_id: hash["esht"], lat: hash["lat"], lng: hash["lon"], speed: hash["speed"], time: hash["hd"], device_name: hash["vdes"] }
+        vehicle_infos << { orange_vehicle_id: hash["esht"], lat: hash["lat"], lng: hash["lon"], speed: hash["speed"], time: hash["hd"] + "+00:00", device_name: hash["vdes"] }
       end
       return vehicle_infos
     else

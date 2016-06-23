@@ -57,8 +57,8 @@ class V01::Devices::OrangeTest < ActiveSupport::TestCase
         "lng"=>"-0.562738",
         "direction"=>nil,
         "speed"=>"2",
-        "time"=>"2016-02-16 11:19:35",
-        "time_formatted"=>"16 février 2016 11:19:35"}
+        "time"=>"2016-02-16 11:19:35+00:00",
+        "time_formatted"=>"16 février 2016 01:19:35"}
       ], JSON.parse(last_response.body)
     end
   end

@@ -61,7 +61,7 @@ class Teksat < DeviceBase
     response = RestClient.get get_vehicles_pos_url(customer)
     if response.code == 200
       Nokogiri::XML(response).xpath("//vehicle_pos").map do |item|
-        { teksat_vehicle_id: item["v_id"], lat: item["lat"], lng: item["lng"], speed: item["speed"], time: item["data_time"], device_name: item["code"] }
+        { teksat_vehicle_id: item["v_id"], lat: item["lat"], lng: item["lng"], speed: item["speed"], time: item["data_time_gmt"] + "+00:00", device_name: item["code"] }
       end
     else
       raise DeviceServiceError.new("Teksat: %s" % [ I18n.t('errors.teksat.get_vehicles_pos') ])
