@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
       copy.email = I18n.l(Time.zone.now, format: '%Y%m%d%H%M%S') + '_' + copy.email
       copy.password = Devise.friendly_token
       copy.confirmation_token = nil
+      copy.reset_password_token = nil
       copy.api_key_random
     })
   end
