@@ -4,14 +4,6 @@
 <div class="row row-top">
   <div class="col-md-6">
     <%= link_to new_planning_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
-    <%= link_to api_plannings_calendar_path(api_key: current_user.api_key), class:"btn btn-default btn-sm" do %>
-      <i class="fa fa-calendar-o fa-fw"></i>
-      <%= t '.export_icalendar' %>
-    <% end %>
-    <%= link_to api_plannings_calendar_path(email: 1), class:"btn btn-default btn-sm icalendar_email" do %>
-      <i class="fa fa-calendar-o fa-fw"></i>
-      <%= t '.export_icalendar_email' %>
-    <% end %>
   </div>
   <div class="col-md-6">
     <div class="pull-right">
@@ -60,6 +52,27 @@
 </table>
 
 <%= button_tag type: :submit, class: "btn btn-danger btn-sm", data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %><% end %>
+
+<div class="dropdown">
+  <button class="btn btn-sm btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+    <%= t 'export_icalendar' %>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li>
+      <%= link_to api_plannings_calendar_path(api_key: current_user.api_key), class:"pull-left" do %>
+        <i class="fa fa-calendar fa-fw"></i>
+        <%= t '.export_icalendar' %>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to api_plannings_calendar_path(email: 1), class:"icalendar_email pull-left" do %>
+        <i class="fa fa-calendar fa-fw"></i>
+        <%= t '.export_icalendar_email' %>
+      <% end %>
+    </li>
+  </ul>
+</div>
 <% end %>
 
 <%
