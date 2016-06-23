@@ -96,7 +96,7 @@ gem 'validates_timeliness'
 gem 'rails_engine_decorators'
 
 gem 'font-awesome-rails'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails' # FIXME wait for >3.2.2 with drop font-awesome
 gem 'twitter_bootstrap_form_for', github: 'Mapotempo/twitter_bootstrap_form_for' # FIXME wait for pull request
 gem 'bootstrap-filestyle-rails'
 gem 'bootstrap-wysihtml5-rails'
