@@ -214,9 +214,9 @@ class Customer < ActiveRecord::Base
   private
 
   def devices_update_vehicles
-    self.vehicles.select(&:tomtom_id).each{|vehicle| vehicle.tomtom_id = nil } if (self.tomtom_account_changed? && !self.tomtom_account_was.nil?) || (self.tomtom_user_changed? && !self.tomtom_user_was.nil?)
-    self.vehicles.select(&:teksat_id).each{|vehicle| vehicle.teksat_id = nil } if (self.teksat_customer_id_changed? && !self.teksat_customer_id_was.nil?) || (self.teksat_username_changed? && !self.teksat_username_was.nil?)
-    self.vehicles.select(&:orange_id).each{|vehicle| vehicle.orange_id = nil } if self.orange_user_changed? && !self.orange_user_was.nil?
+    self.vehicles.select(&:tomtom_id).each{|vehicle| vehicle.tomtom_id = nil } if !self.enable_tomtom || (self.tomtom_account_changed? && !self.tomtom_account_was.nil?) || (self.tomtom_user_changed? && !self.tomtom_user_was.nil?)
+    self.vehicles.select(&:teksat_id).each{|vehicle| vehicle.teksat_id = nil } if !self.enable_teksat || (self.teksat_customer_id_changed? && !self.teksat_customer_id_was.nil?) || (self.teksat_username_changed? && !self.teksat_username_was.nil?)
+    self.vehicles.select(&:orange_id).each{|vehicle| vehicle.orange_id = nil } if !self.enable_orange || (self.orange_user_changed? && !self.orange_user_was.nil?)
   end
 
   def assign_defaults

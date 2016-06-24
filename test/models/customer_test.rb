@@ -95,30 +95,51 @@ class CustomerTest < ActiveSupport::TestCase
   require Rails.root.join("test/lib/devices/tomtom_base")
   include TomtomBase
 
-  test 'customer with device tomtom account change should update vehicles' do
+  test '[tomtom] change device credentials should update vehicles' do
     @customer = add_tomtom_credentials @customer
     @customer.vehicles.update_all tomtom_id: "tomtom_id"
     @customer.update! tomtom_account: @customer.tomtom_account + "_edit"
     assert @customer.vehicles.all?{|vehicle| !vehicle.tomtom_id }
   end
 
+  test '[tomtom] disable service should update vehicles' do
+    @customer = add_tomtom_credentials @customer
+    @customer.vehicles.update_all tomtom_id: "tomtom_id"
+    @customer.update! enable_tomtom: false
+    assert @customer.vehicles.all?{|vehicle| !vehicle.tomtom_id }
+  end
+
   require Rails.root.join("test/lib/devices/teksat_base")
   include TeksatBase
 
-  test 'customer and vehicles with device teksat account change should update vehicles' do
+  test '[teksat] change device credentials should update vehicles' do
     @customer = add_teksat_credentials @customer
     @customer.vehicles.update_all teksat_id: "teksat_id"
     @customer.update! teksat_customer_id: Time.now.to_i
     assert @customer.vehicles.all?{|vehicle| !vehicle.teksat_id }
   end
 
+  test '[teksat] disable service should update vehicles' do
+    @customer = add_teksat_credentials @customer
+    @customer.vehicles.update_all teksat_id: "teksat_id"
+    @customer.update! enable_teksat: false
+    assert @customer.vehicles.all?{|vehicle| !vehicle.teksat_id }
+  end
+
   require Rails.root.join("test/lib/devices/orange_base")
   include OrangeBase
 
-  test 'customer and vehicles with device orange account change should update vehicles' do
+  test '[orange] change device credentials should update vehicles' do
     @customer = add_orange_credentials @customer
     @customer.vehicles.update_all orange_id: "orange_id"
     @customer.update! orange_user: @customer.orange_user + "_edit"
+    assert @customer.vehicles.all?{|vehicle| !vehicle.orange_id }
+  end
+
+  test '[orange] disable service should update vehicles' do
+    @customer = add_teksat_credentials @customer
+    @customer.vehicles.update_all orange_id: "orange_id"
+    @customer.update! enable_orange: false
     assert @customer.vehicles.all?{|vehicle| !vehicle.orange_id }
   end
 
