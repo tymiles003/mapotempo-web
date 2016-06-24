@@ -379,6 +379,22 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal '31-01-2017', I18n.l(planning.date.to_time, format: :datepicker)
   end
 
+  test 'duplicate should not change zonings outdated flag when initially false' do
+    planning = plannings :planning_one
+    assert !planning.zoning_out_of_date
+    dup_planning = planning.duplicate
+    dup_planning.save!
+    assert !dup_planning.zoning_out_of_date
+  end
+
+  test 'duplicate should not change zonings outdated flag when initially true' do
+    planning = plannings :planning_one
+    planning.update! zoning_out_of_date: true
+    assert planning.zoning_out_of_date
+    dup_planning = planning.duplicate
+    dup_planning.save!
+    assert dup_planning.zoning_out_of_date
+  end
 end
 
 class PlanningTestError < ActiveSupport::TestCase

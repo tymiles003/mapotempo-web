@@ -305,7 +305,6 @@ class Planning < ActiveRecord::Base
 
   def update_zonings_track(_zoning)
     @zonings_updated = true
-    self.zoning_out_of_date = true
   end
 
   def split_by_zones
@@ -339,6 +338,10 @@ class Planning < ActiveRecord::Base
   end
 
   def update_zonings
+    if @zonings_updated
+      self.zoning_out_of_date = true
+    end
+
     if zonings.size > 0 && @zonings_updated
       split_by_zones
     end
