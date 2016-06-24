@@ -847,9 +847,9 @@ fr:
       route_ref: "Référence de la tournée"
       order_array: "Commandes"
     send_ics_route:
-      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis %{s}\n
-vous pouvez copier-coller le lien suivant pour vous en servir de source dans votre agenda personnel (la mise à jour de votre agenda se fera de manière automatique à l'avenir)\n
-ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à jour automatique)."
+      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis %{s}, vous pouvez :\n
+- Copier-coller le lien et l'importer dans votre agenda personnel (la mise à jour de votre agenda se fera de manière automatique à l'avenir)\n
+- Cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à jour automatique)."
       vehicle: "Véhicule"
       planning: "Planning"
       planning_ref: "Référence planning"
