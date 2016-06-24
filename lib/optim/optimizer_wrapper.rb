@@ -30,6 +30,11 @@ class OptimizerWrapper
 
     result = @cache.read(key)
     if !result
+      # TODO not compute too big matrix before seding it here
+      is_loop = if stores.include?(:start) && stores.include?(:stop) && matrix[0] == matrix[-1] && matrix.collect(&:first) == matrix.collect(&:last)
+        matrix = matrix[0..-2].collect{ |r| r[0..-2] }
+      end
+
       vrp = {
         matrices: {
           time: matrix.collect{ |row| row.collect(&:first) },
@@ -67,7 +72,7 @@ class OptimizerWrapper
         vehicles: [{
           id: 'v0',
           start_point_id: stores.include?(:start) ? 'p0' : nil,
-          end_point_id: stores.include?(:stop) ? "p#{matrix.size - 1}" : nil,
+          end_point_id: stores.include?(:stop) ? (is_loop ? 'p0' : "p#{matrix.size - 1}") : nil,
           cost_fixed: 0,
           cost_distance_multiplier: dimension == 'distance' ? 1 : 0,
           cost_time_multiplier: dimension == 'time' ? 1 : 0,
@@ -78,7 +83,7 @@ class OptimizerWrapper
         resolution: {
           preprocessing_cluster_threshold: cluster_threshold,
           preprocessing_prefer_short_segment: true,
-          resolution_duration: optimize_time
+          duration: optimize_time,
          }
       }
 
@@ -99,16 +104,18 @@ class OptimizerWrapper
           raise RuntimeError.new(result['job']['avancement'] || 'Optimizer return unknow error')
         end
       end
-
-      result['solution']['routes'][0]['activities'].collect{ |activity|
-        if activity.key?('service_id')
-          activity['service_id'][1..-1].to_i
-        elsif activity.key?('rest_id')
-          activity['rest_id'][1..-1].to_i
-        else
-          activity['point_id'][1..-1].to_i
-        end
-      }
+    else
+      result = JSON.parse(result)
     end
+
+    result['solution']['routes'][0]['activities'].collect{ |activity|
+      if activity.key?('service_id')
+        activity['service_id'][1..-1].to_i
+      elsif activity.key?('rest_id')
+        activity['rest_id'][1..-1].to_i
+      else
+        activity['point_id'][1..-1].to_i
+      end
+    }
   end
 end
