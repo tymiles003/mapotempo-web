@@ -343,6 +343,7 @@ class Planning < ActiveRecord::Base
     end
 
     if zonings.size > 0 && @zonings_updated
+      self.zoning_out_of_date = true
       split_by_zones
     end
     true
