@@ -1017,7 +1017,7 @@ var plannings_edit = function(params) {
   }
 
   $(".main").on("click", ".automatic_insert", function(e, ui) {
-    var stop_id = $(e.target).parents('li').data('stop_id');
+    var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
     automaticInsertStops([stop_id], {
       success: function(data, textStatus, jqXHR) {
         updatePlanning(data);
