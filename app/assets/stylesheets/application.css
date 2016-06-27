@@ -37,12 +37,14 @@
  *= require jquery.simplecolorpicker
  *= require jquery.simplecolorpicker-fontawesome
  *= require jquery.timeentry
- *= require font-awesome
  *= require bootstrap-wysihtml5
  *= require bootstrap-datepicker3
  *= require leaflet
  *= require leaflet.draw
  *= require Control.Geocoder
+ *= require twitter-bootstrap-static/bootstrap
+ * font awesome must be after bootstrap to overwrite glyphicons
+ *= require font-awesome
  *= require bootstrap_and_overrides
  *= require leaflet
  *= require leaflet_numbered_markers
