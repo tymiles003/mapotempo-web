@@ -29,7 +29,9 @@
     <i class="fa fa-check-square fa-fw"></i> <%= route.size_active %>&nbsp;<%= I18n.t 'plannings.edit.stops' %>
     <i class="fa fa-clock-o fa-fw"></i> <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
     <i class="fa fa-road fa-fw"></i> <%= number_to_human(route.distance, units: :distance, precision: 3, format: '%n %u') %>
-    <i class="fa fa-archive fa-fw"></i> <%= route.quantity %>&nbsp;<%= route.vehicle_usage.vehicle.capacity_unit %>
+    <% if route.planning.customer.enable_orders && route.planning.order_array %>
+      <i class="fa fa-archive fa-fw"></i> <%= route.quantity %>&nbsp;<%= route.vehicle_usage.vehicle.capacity_unit %>
+    <% end %>
   </span>
 
   <ol class="stops" start="0">
