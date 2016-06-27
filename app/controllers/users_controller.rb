@@ -18,9 +18,8 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
 
-  before_action :find_customer
-  before_action :find_user, except: [:password, :set_password]
-  before_action :find_user_by_token, only: [:password, :set_password]
+  before_action :set_customer_and_user, except: [:password, :set_password]
+  before_action :set_customer_and_user_from_token, only: [:password, :set_password]
 
   def edit; end
 
@@ -55,15 +54,13 @@ class UsersController < ApplicationController
     redirect_to !params[:url].blank? ? params[:url] : [:edit, @customer], notice: t("users.#{action_name}.success")
   end
 
-  def find_customer
+  def set_customer_and_user
+    @customer = current_user.customer
+    @user = current_user.customer.users.find params[:id]
+  end
+
+  def set_customer_and_user_from_token
     @customer = Customer.find params[:customer_id]
-  end
-
-  def find_user
-    @user = @customer.users.find params[:id]
-  end
-
-  def find_user_by_token
     @user = @customer.users.find_by confirmation_token: params[:token]
   end
 

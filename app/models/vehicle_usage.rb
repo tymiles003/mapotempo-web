@@ -52,6 +52,7 @@ class VehicleUsage < ActiveRecord::Base
   before_save :update_routes
 
   scope :active, lambda{ where(active: true) }
+  scope :for_customer, lambda{ |customer| joins(:vehicle_usage_set).where(vehicle_usage_sets: { customer_id: customer.id }) }
 
   amoeba do
     exclude_association :routes

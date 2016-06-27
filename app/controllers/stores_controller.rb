@@ -132,7 +132,7 @@ class StoresController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_store
-    @store = Store.find(params[:id] || params[:store_id])
+    @store = current_user.customer.stores.find params[:id] || params[:store_id]
   end
 
   def warnings

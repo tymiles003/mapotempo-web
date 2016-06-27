@@ -93,7 +93,7 @@ class VehicleUsageSetsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_vehicle_usage_set
-    @vehicle_usage_set = VehicleUsageSet.find(params[:id] || params[:vehicle_usage_set_id])
+    @vehicle_usage_set = current_user.customer.vehicle_usage_sets.find params[:id] || params[:vehicle_usage_set_id]
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

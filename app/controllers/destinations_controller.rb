@@ -152,7 +152,7 @@ class DestinationsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_destination
-    @destination = Destination.find(params[:id] || params[:destination_id])
+    @destination = current_user.customer.destinations.find params[:id] || params[:destination_id]
   end
 
   def warnings

@@ -75,7 +75,7 @@ class TagsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_tag
-    @tag = Tag.find(params[:id])
+    @tag = current_user.customer.tags.find params[:id]
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

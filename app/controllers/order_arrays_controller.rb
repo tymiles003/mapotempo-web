@@ -126,7 +126,7 @@ class OrderArraysController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_order_array
-    @order_array = OrderArray.find(params[:id] || params[:order_array_id])
+    @order_array = current_user.customer.order_arrays.find params[:id] || params[:order_array_id]
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
