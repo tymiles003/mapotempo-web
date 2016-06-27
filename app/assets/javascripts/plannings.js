@@ -15,7 +15,6 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-
 var plannings_form = function() {
   $('#planning_date').datepicker({
     language: defaultLocale,
@@ -42,7 +41,9 @@ var plannings_form = function() {
 
 var plannings_new = function(params) {
   plannings_form();
-  $("#planning_zoning_ids").select2({theme: 'bootstrap'});
+  $("#planning_zoning_ids").select2({
+    theme: 'bootstrap'
+  });
 }
 
 var plannings_edit = function(params) {
@@ -79,7 +80,9 @@ var plannings_edit = function(params) {
   });
 
   // sidebar has to be created before map
-  var sidebar = L.control.sidebar('edit-planning', {position: 'right'});
+  var sidebar = L.control.sidebar('edit-planning', {
+    position: 'right'
+  });
   sidebar.open('planning-pane');
 
   var vehicleIdsPosition = vehicles_array.filter(function(vehicle) {
@@ -121,7 +124,9 @@ var plannings_edit = function(params) {
     $.ajax({
       type: 'GET',
       url: '/api/0.1/vehicles/current_position.json',
-      data: { ids: vehicleIdsPosition },
+      data: {
+        ids: vehicleIdsPosition
+      },
       dataType: 'json',
       beforeSend: beforeSendWaiting,
       success: function(data, textStatus, jqXHR) {
@@ -158,7 +163,10 @@ var plannings_edit = function(params) {
 
   if (vehicleLayer) map.addLayer(vehicleLayer);
 
-  L.control.attribution({prefix: false, position: 'bottomleft'}).addTo(map);
+  L.control.attribution({
+    prefix: false,
+    position: 'bottomleft'
+  }).addTo(map);
   L.control.scale({
     imperial: false
   }).addTo(map);
@@ -196,13 +204,19 @@ var plannings_edit = function(params) {
 
       // Params
       var array = [];
-      $.each(routes_array, function(index, route) { array.push(route.route_id) });
+      $.each(routes_array, function(index, route) {
+        array.push(route.route_id)
+      });
       array.push($('#out_of_route').parents('[data-route_id]').data('route_id'));
 
       $.ajax({
         url: '/api/0.1/plannings/' + planning_id + '/update_routes',
         type: 'PATCH',
-        data: { route_ids: array, selection: selection, action: 'lock' },
+        data: {
+          route_ids: array,
+          selection: selection,
+          action: 'lock'
+        },
         dataType: 'json',
         beforeSend: beforeSendWaiting,
         complete: completeAjaxMap,
@@ -235,13 +249,19 @@ var plannings_edit = function(params) {
 
       // Params
       var array = [];
-      $.each(routes_array, function(index, route) { array.push(route.route_id) });
+      $.each(routes_array, function(index, route) {
+        array.push(route.route_id)
+      });
       array.push($('#out_of_route').parents('[data-route_id]').data('route_id'));
 
       $.ajax({
         url: '/api/0.1/plannings/' + planning_id + '/update_routes',
         type: 'PATCH',
-        data: { route_ids: array, selection: selection, action: 'toggle' },
+        data: {
+          route_ids: array,
+          selection: selection,
+          action: 'toggle'
+        },
         dataType: 'json',
         beforeSend: beforeSendWaiting,
         complete: completeAjaxMap,
@@ -336,7 +356,11 @@ var plannings_edit = function(params) {
       }
     });
   }
-  var stripes = new L.StripePattern({color: '#FF0000', angle: -45}); stripes.addTo(map);
+  var stripes = new L.StripePattern({
+    color: '#FF0000',
+    angle: -45
+  });
+  stripes.addTo(map);
 
   var templateSelectionZoning = function(state) {
     if (state.id)
@@ -373,7 +397,9 @@ var plannings_edit = function(params) {
     dialog_optimizer = bootstrap_dialog({
       title: I18n.t('plannings.edit.dialog.optimizer.title'),
       icon: 'fa-gear',
-      message: SMT['modals/optimize']({ i18n: mustache_i18n })
+      message: SMT['modals/optimize']({
+        i18n: mustache_i18n
+      })
     });
   };
 
@@ -385,7 +411,7 @@ var plannings_edit = function(params) {
     notice(I18n.t('plannings.edit.optimize_complete'));
   };
 
-  $("#optimize_each").click( function(event, ui) {
+  $("#optimize_each").click(function(event, ui) {
     if (!confirm(I18n.t('plannings.edit.optimize_each_confirm'))) {
       return false;
     }
@@ -466,7 +492,8 @@ var plannings_edit = function(params) {
       spiderfyDistanceMultiplier: 0.5,
       iconCreateFunction: function(cluster) {
         var markers = cluster.getAllChildMarkers();
-        var n = [], i;
+        var n = [],
+          i;
         for (i = 0; i < markers.length; i++) {
           if (markers[i].number) {
             if (n.length < 2) {
@@ -517,7 +544,9 @@ var plannings_edit = function(params) {
             popupAnchor: new L.Point(0, -6),
             className: "small"
           })
-        }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show']({stop: stop}), {
+        }).addTo(layers[route.route_id]).addTo(layers_cluster[route.route_id]).bindPopup(SMT['stops/show']({
+          stop: stop
+        }), {
           minWidth: 200,
           autoPan: false
         });
@@ -578,7 +607,7 @@ var plannings_edit = function(params) {
     devices_observe_planning(context);
 
     var templateSelectionColor = function(state) {
-      if(state.id){
+      if (state.id) {
         return $("<span class='color_small' style='background:" + state.id + "'></span>");
       } else {
         return $("<i />").addClass("fa fa-paint-brush").css("color", "#CCC");
@@ -586,7 +615,7 @@ var plannings_edit = function(params) {
     }
 
     var templateResultColor = function(state) {
-      if(state.id){
+      if (state.id) {
         return $("<span class='color_small' style='background:" + state.id + "'></span>");
       } else {
         return $("<span class='color_small' data-color=''></span>");
@@ -604,9 +633,9 @@ var plannings_edit = function(params) {
     });
 
     var templateSelectionVehicles = function(state) {
-      if(state.id) {
+      if (state.id) {
         var color = $('.color_select', $(state.element).parent().parent()).val();
-        if(color) {
+        if (color) {
           return $("<span/>").text(vehicles_usages_map[state.id].name);
         } else {
           return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;</span>").append($("<span/>").text(vehicles_usages_map[state.id].name));
@@ -615,7 +644,7 @@ var plannings_edit = function(params) {
     }
 
     var templateResultVehicles = function(state) {
-      if(state.id){
+      if (state.id) {
         return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;</span>").append($("<span/>").text(vehicles_usages_map[state.id].name));
       } else {
         console.log(state);
@@ -636,7 +665,7 @@ var plannings_edit = function(params) {
     $(".vehicle_select", context).change(function() {
       var $this = $(this);
       var initial_value = $this.data("initial-value");
-      if(initial_value != $this.val()) {
+      if (initial_value != $this.val()) {
         $.ajax({
           type: "patch",
           data: JSON.stringify({
@@ -647,7 +676,9 @@ var plannings_edit = function(params) {
           url: '/plannings/' + planning_id + '/switch.json',
           beforeSend: beforeSendWaiting,
           success: function(data) {
-            displayPlanning(data, {partial: 'routes'});
+            displayPlanning(data, {
+              partial: 'routes'
+            });
           },
           complete: completeAjaxMap,
           error: ajaxError
@@ -657,7 +688,10 @@ var plannings_edit = function(params) {
 
     $('.export_spreadsheet').click(function() {
       $('[name=spreadsheet-route]').val($(this).closest("[data-route_id]").attr("data-route_id"));
-      $('#planning-spreadsheet-modal').modal({keyboard: true, show: true});
+      $('#planning-spreadsheet-modal').modal({
+        keyboard: true,
+        show: true
+      });
     });
 
     // KMZ: Export Route via E-Mail
@@ -874,7 +908,7 @@ var plannings_edit = function(params) {
         };
       });
       $.each(route.stops, function(i, stop) {
-        if(stop.destination && stop.destination.color) {
+        if (stop.destination && stop.destination.color) {
           stop.destination.color_force = true;
         } else {
           stop.color = route.color;
@@ -901,8 +935,7 @@ var plannings_edit = function(params) {
           error: ajaxError
         });
       });
-    }
-    else if (typeof options === 'object' && options.partial == 'routes') {
+    } else if (typeof options === 'object' && options.partial == 'routes') {
       // update allRoutesVehicles
       $.each(data.routes, function(i, route) {
         var vehicle_usage = {};
@@ -952,8 +985,7 @@ var plannings_edit = function(params) {
           });
         });
       });
-    }
-    else if (typeof options === 'object' && options.partial == 'stops') {
+    } else if (typeof options === 'object' && options.partial == 'stops') {
       $.each(data.routes, function(i, route) {
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
@@ -990,17 +1022,27 @@ var plannings_edit = function(params) {
     }).disableSelection();
 
     $('li[data-stop_id]').mouseover(function() {
-      $('span.number', $(this)).css({display: 'none'});
-      $('i.fa-reorder', $(this)).css({display: 'inline-block'});
+      $('span.number', $(this)).css({
+        display: 'none'
+      });
+      $('i.fa-reorder', $(this)).css({
+        display: 'inline-block'
+      });
     });
     $('li[data-stop_id]').mouseout(function() {
-      $('i.fa-reorder', $(this)).css({display: 'none'});
-      $('span.number', $(this)).css({display: 'inline-block'});
+      $('i.fa-reorder', $(this)).css({
+        display: 'none'
+      });
+      $('span.number', $(this)).css({
+        display: 'inline-block'
+      });
     });
   }
 
   var updatePlanning = function(data, options) {
-    displayPlanning(data, $.extend({partial: 'stops'}, options));
+    displayPlanning(data, $.extend({
+      partial: 'stops'
+    }, options));
   }
 
   function automaticInsertStops(stop_ids, options) {
@@ -1008,7 +1050,9 @@ var plannings_edit = function(params) {
       url: '/plannings/' + planning_id + '/automatic_insert',
       type: 'PATCH',
       dataType: 'json',
-      data: { stop_ids: stop_ids },
+      data: {
+        stop_ids: stop_ids
+      },
       beforeSend: beforeSendWaiting,
       complete: completeAjaxMap,
       error: ajaxError,
@@ -1034,8 +1078,13 @@ var plannings_edit = function(params) {
     if (confirm(I18n.t('plannings.edit.automatic_insert_confirm'))) {
       var dialog = bootstrap_dialog($.extend(modal_options(), {
         title: I18n.t('plannings.edit.dialog.automatic_insert.title'),
-        message: SMT['modals/default_with_progress']({ msg: I18n.t('plannings.edit.dialog.automatic_insert.in_progress') })
-      })).modal({keyboard: false, show: true});
+        message: SMT['modals/default_with_progress']({
+          msg: I18n.t('plannings.edit.dialog.automatic_insert.in_progress')
+        })
+      })).modal({
+        keyboard: false,
+        show: true
+      });
       automaticInsertStops([], {
         complete: function() {
           dialog.modal('hide');
@@ -1104,7 +1153,9 @@ var plannings_edit = function(params) {
             popupAnchor: new L.Point(0, -Math.floor(map.iconSize[store.icon_size || 'large'].size / 2.5)),
             className: 'store-icon-container'
           })
-        }).addTo(stores_marker).bindPopup(SMT['stops/show']({stop: store}), {
+        }).addTo(stores_marker).bindPopup(SMT['stops/show']({
+          stop: store
+        }), {
           minWidth: 200,
           autoPan: false
         });
@@ -1158,15 +1209,24 @@ var plannings_edit = function(params) {
       var displayPlanningAfterModal = function() {
         var cursorBody = $('body').css('cursor');
         var cursorMap = $('#map').css('cursor');
-        $('body, #map').css({cursor: 'progress'});
+        $('body, #map').css({
+          cursor: 'progress'
+        });
         setTimeout(function() {
           displayPlanningFirstTime(data);
-          $('body').css({cursor: cursorBody});
-          $('#map').css({cursor: cursorMap});
+          $('body').css({
+            cursor: cursorBody
+          });
+          $('#map').css({
+            cursor: cursorMap
+          });
         }, 100);
       }
 
-      $('#planning-refresh-modal').modal({keyboard: true, show: true});
+      $('#planning-refresh-modal').modal({
+        keyboard: true,
+        show: true
+      });
       $("#refresh-modal").click(function(event, ui) {
         $('#planning-refresh-modal').off('hidden.bs.modal', displayPlanningAfterModal);
         $('#planning-refresh-modal').modal('hide');
@@ -1180,8 +1240,7 @@ var plannings_edit = function(params) {
         });
       });
       $('#planning-refresh-modal').on('hidden.bs.modal', displayPlanningAfterModal);
-    }
-    else {
+    } else {
       displayPlanningFirstTime(data);
     }
   }
@@ -1235,7 +1294,7 @@ var plannings_edit = function(params) {
     spinnerImage: ''
   });
 
-  $('#isochrone').click(function () {
+  $('#isochrone').click(function() {
     var vehicle_usage_id = $('#isochrone_vehicle_usage_id').val();
     var size = $('#isochrone_size').val().split(':');
     size = parseInt(size[0]) * 3600 + parseInt(size[1]) * 60;
@@ -1273,7 +1332,7 @@ var plannings_edit = function(params) {
     });
   });
 
-  $('#isodistance').click(function () {
+  $('#isodistance').click(function() {
     var vehicle_usage_id = $('#isodistance_vehicle_usage_id').val();
     var size = $('#isodistance_size').val() * 1000;
     $('#isodistance-progress-modal').modal({
@@ -1353,20 +1412,29 @@ var plannings_edit = function(params) {
     $('[name=spreadsheet-format][value=' + localStorage.spreadsheetFormat + ']').prop('checked', true);
 
   $('#btn-spreadsheet').click(function() {
-    var spreadsheetStops = localStorage.spreadsheetStops = $('.spreadsheet-stops:checked').map(function(i, e) { return $(e).val() } ).get().join('|');
-    var spreadsheetColumnsExport = localStorage.spreadsheetColumnsExport = $('#columns-export li').map(function(i, e) { return $(e).attr('data-value') } ).get().join('|');
-    var spreadsheetColumnsSkip = localStorage.spreadsheetColumnsSkip = $('#columns-skip li').map(function(i, e) { return $(e).attr('data-value') } ).get().join('|');
+    var spreadsheetStops = localStorage.spreadsheetStops = $('.spreadsheet-stops:checked').map(function(i, e) {
+      return $(e).val()
+    }).get().join('|');
+    var spreadsheetColumnsExport = localStorage.spreadsheetColumnsExport = $('#columns-export li').map(function(i, e) {
+      return $(e).attr('data-value')
+    }).get().join('|');
+    var spreadsheetColumnsSkip = localStorage.spreadsheetColumnsSkip = $('#columns-skip li').map(function(i, e) {
+      return $(e).attr('data-value')
+    }).get().join('|');
     var spreadsheetFormat = localStorage.spreadsheetFormat = $('[name=spreadsheet-format]:checked').val();
     var basePath = $('[name=spreadsheet-route]').val() ? ('/routes/' + $('[name=spreadsheet-route]').val()) : ('/plannings/' + planning_id);
     window.location.href = basePath + '.' + spreadsheetFormat + '?stops=' + spreadsheetStops + '&columns=' + spreadsheetColumnsExport;
   });
 
   $('.export_spreadsheet').click(function() {
-    $('#planning-spreadsheet-modal').modal({keyboard: true, show: true});
+    $('#planning-spreadsheet-modal').modal({
+      keyboard: true,
+      show: true
+    });
   });
 }
 
-var plannings_show = function(params){
+var plannings_show = function(params) {
   if (!params.print_map) {
     window.print();
   } else {

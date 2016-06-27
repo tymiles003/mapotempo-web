@@ -114,23 +114,28 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     $(".progress-bar", dialog).each(function(i, e) {
       if (progress == undefined || progress == '' || progress[i] == undefined || progress[i] == '') {
         $(e).parent().parent().hide();
-      }
-      else {
+      } else {
         $(e).parent().parent().show();
       }
       if (!progress || !progress[i]) {
         $(e).parent().removeClass("active");
-        $(e).css({transition: 'linear 0s', width: '0%'});
-      }
-      else if (progress[i] == 100) {
+        $(e).css({
+          transition: 'linear 0s',
+          width: '0%'
+        });
+      } else if (progress[i] == 100) {
         $(e).parent().removeClass("active");
-        $(e).css({transition: 'linear 0s', width: '100%'});
-      }
-      else if (progress[i] == -1) {
+        $(e).css({
+          transition: 'linear 0s',
+          width: '100%'
+        });
+      } else if (progress[i] == -1) {
         $(e).parent().addClass("active");
-        $(e).css({transition: 'linear 0s', width: '100%'});
-      }
-      else if (progress[i].indexOf('ms') > -1) {
+        $(e).css({
+          transition: 'linear 0s',
+          width: '100%'
+        });
+      } else if (progress[i].indexOf('ms') > -1) {
         // optimization in ms
         var v = progress[i].split('ms');
         if (iteration != v[1] || $(".dialog-attempts-number", dialog).html() != delayedJob.attempts) {
@@ -146,16 +151,14 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
             }
           }, 20);
         }
-      }
-      else if (progress[i].indexOf('/') > -1) {
+      } else if (progress[i].indexOf('/') > -1) {
         // optimization or geocoding current/total
         var v = progress[i].split('/');
         $(e).parent().removeClass("active");
         $(e).css("transition", "linear 0.5s");
         $(e).css("width", "" + (100 * v[0] / v[1]) + "%");
         $(e).html(progress[i]);
-      }
-      else {
+      } else {
         $(e).parent().removeClass("active");
         $(e).css("transition", "linear 2s");
         $(e).css("width", "" + progress[i] + "%");
@@ -164,8 +167,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     if (delayedJob.attempts) {
       $(".dialog-attempts-number", dialog).html(delayedJob.attempts);
       $(".dialog-attempts", dialog).show();
-    }
-    else {
+    } else {
       $(".dialog-attempts", dialog).hide();
     }
     if (delayedJob.error) {
@@ -173,8 +175,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
       unfreezeProgressDialog(dialog, delayedJob, url, callback);
-    }
-    else {
+    } else {
       planningTimerId = setTimeout(function() {
         $.ajax({
           url: url,
@@ -193,8 +194,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       });
     }
     return false;
-  }
-  else {
+  } else {
     iteration = null;
     if (dialog.is(':visible')) {
       if (successCallback) successCallback();
@@ -243,10 +243,10 @@ var fake_select2 = function(selector, callback) {
 }
 
 var phone_number_call = function(num, url_template, link) {
-    if(num){
-        link.href = url_template.replace('{TEL}', num);
-        if(document.location.protocol == 'http:' && !(link.href.substr(0,5) == 'https')){
-            link.target = link.target.replace('click2call_iframe', '_blank');
-        }
+  if (num) {
+    link.href = url_template.replace('{TEL}', num);
+    if (document.location.protocol == 'http:' && !(link.href.substr(0, 5) == 'https')) {
+      link.target = link.target.replace('click2call_iframe', '_blank');
     }
+  }
 }

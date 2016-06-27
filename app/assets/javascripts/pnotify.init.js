@@ -32,16 +32,24 @@ PNotify.prototype.options.styling = 'fontawesome';
       }
     }, options));
   };
+
   function desktop_notify(status, message, options) {
     PNotify.desktop.permission();
-    notify(status, message, $.extend({ title: "Mapotempo", desktop: { desktop: true }}, options));
+    notify(status, message, $.extend({
+      title: "Mapotempo",
+      desktop: {
+        desktop: true
+      }
+    }, options));
   };
   $.extend(window, {
     notify: function(status, message, options) {
       notify(status, message, $.extend({}, options));
     },
     stickyNotice: function(message, options) {
-      notify('success', message, $.extend(options, { hide: false }));
+      notify('success', message, $.extend(options, {
+        hide: false
+      }));
     },
     notice: function(message, options) {
       notify('success', message, options);
@@ -50,7 +58,9 @@ PNotify.prototype.options.styling = 'fontawesome';
       desktop_notify('success', message, $.extend({}, options));
     },
     stickyError: function(message, options) {
-      notify('error', message, $.extend(options, { hide: false }));
+      notify('error', message, $.extend(options, {
+        hide: false
+      }));
     },
     error: function(message, options) {
       notify('error', message, options);

@@ -15,7 +15,6 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -83,7 +82,6 @@
 //= require_tree .
 // jQuery Turbolinks documentation informs to load all scripts before turbolinks
 //= require turbolinks
-
 Turbolinks.enableProgressBar();
 // bug in Firefox 40 when printing multi pages with progress bar
 window.onbeforeprint = function() {
@@ -93,7 +91,7 @@ window.onafterprint = function() {
   Turbolinks.enableProgressBar();
 };
 
-$( document ).ready(function() {
+$(document).ready(function() {
   startSpinner = function() {
     $('body').addClass('turbolinks_waiting');
   }
@@ -106,6 +104,6 @@ $( document ).ready(function() {
   Paloma.start();
 });
 
-$(document).on('page:restore', function(){
+$(document).on('page:restore', function() {
   Paloma.start();
 });

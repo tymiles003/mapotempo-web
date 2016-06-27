@@ -15,7 +15,6 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-
 var api_web_v01_display_destinations_ = function(api, map, data) {
   var tags = {};
 
@@ -38,7 +37,7 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
     var licon;
     if (options.store) {
       licon = L.divIcon({
-        html: '<i class="fa ' + (options.icon || 'fa-home') + ' ' + map.iconSize[options.icon_size || 'large'].name + ' store-icon" style="color: ' + (options.color || 'black') + ';"></i>',
+        html: '<i class="fa ' + (options.icon ||  'fa-home') + ' ' + map.iconSize[options.icon_size || 'large'].name + ' store-icon" style="color: ' + (options.color || 'black') + ';"></i>',
         iconSize: new L.Point(map.iconSize[options.icon_size || 'large'].size, map.iconSize[options.icon_size || 'large'].size),
         iconAnchor: new L.Point(map.iconSize[options.icon_size || 'large'].size / 2, map.iconSize[options.icon_size || 'large'].size / 2),
         popupAnchor: new L.Point(0, -Math.floor(map.iconSize[options.icon_size || 'large'].size / 2.5)),
@@ -90,7 +89,9 @@ var api_web_v01_destinations_index = function(params, api) {
     ids = params.ids;
 
   var map = mapInitialize(params);
-  L.control.attribution({prefix: false}).addTo(map);
+  L.control.attribution({
+    prefix: false
+  }).addTo(map);
   L.control.scale({
     imperial: false
   }).addTo(map);
@@ -142,8 +143,7 @@ var api_web_v01_destinations_index = function(params, api) {
     success: function(data) {
       if ((data.destinations && data.destinations.length) || (data.stores && data.stores.length)) {
         display_destinations(data);
-      }
-      else {
+      } else {
         stickyError(I18n.t('api_web.v01.destinations.index.none_destinations'));
       }
       progressBar && progressBar.done();

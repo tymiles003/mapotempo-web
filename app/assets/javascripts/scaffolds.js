@@ -22,12 +22,16 @@ $(document).on('ready page:load', function() {
     });
   });
 
-  $('[data-toggle="dropdown"]').parent().on('show.bs.dropdown', function(e){
-    $(this).find('.dropdown-menu').first().stop(true, true).slideDown({duration: 200});
+  $('[data-toggle="dropdown"]').parent().on('show.bs.dropdown', function(e) {
+    $(this).find('.dropdown-menu').first().stop(true, true).slideDown({
+      duration: 200
+    });
   });
 
-  $('[data-toggle="dropdown"]').parent().on('hide.bs.dropdown', function(e){
-    $(this).find('.dropdown-menu').first().stop(true, true).slideUp({duration: 200});
+  $('[data-toggle="dropdown"]').parent().on('hide.bs.dropdown', function(e) {
+    $(this).find('.dropdown-menu').first().stop(true, true).slideUp({
+      duration: 200
+    });
   });
 
   $('.modal').on('shown.bs.modal', function() {
@@ -46,7 +50,11 @@ $(document).on('ready page:load', function() {
 });
 
 var modal_options = function() {
-  return { keyboard: false, show: true, backdrop: 'static' };
+  return {
+    keyboard: false,
+    show: true,
+    backdrop: 'static'
+  };
 }
 
 var bootstrap_dialog = function(options) {
@@ -57,7 +65,9 @@ var bootstrap_dialog = function(options) {
 }
 
 var mapInitialize = function(params) {
-  var mapLayer, mapBaseLayers = {}, mapOverlays = {}, nbLayers = 0;
+  var mapLayer, mapBaseLayers = {},
+    mapOverlays = {},
+    nbLayers = 0;
   for (layer_name in params.map_layers) {
     var layer = params.map_layers[layer_name];
     var l = L.tileLayer(layer.url, {
@@ -82,7 +92,7 @@ var mapInitialize = function(params) {
   }).setView([params.map_lat || 0, params.map_lng || 0], params.map_zoom || 13);
 
   L.control.zoom({
-    position:'topleft',
+    position: 'topleft',
     zoomInText: '+',
     zoomOutText: '-',
     zoomInTitle: I18n.t('plannings.edit.map.zoom_in'),
@@ -121,7 +131,9 @@ var mapInitialize = function(params) {
   if (params.overlay_layers) $.extend(mapOverlays, params.overlay_layers);
 
   if (nbLayers > 1)
-    L.control.layers(mapBaseLayers, mapOverlays, {position: 'topleft'}).addTo(map);
+    L.control.layers(mapBaseLayers, mapOverlays, {
+      position: 'topleft'
+    }).addTo(map);
   else
     map.tileLayer = L.tileLayer(mapLayer.url, {
       maxZoom: 18,

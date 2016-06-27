@@ -23,7 +23,9 @@ var customers_index = function(params) {
 
   var map_init = function() {
     var map = mapInitialize(params);
-    L.control.attribution({prefix: false}).addTo(map);
+    L.control.attribution({
+      prefix: false
+    }).addTo(map);
 
     var layer = L.featureGroup();
     map.addLayer(layer);
@@ -79,7 +81,9 @@ var customers_edit = function(params) {
   });
 
   /* API: Devices */
-  devices_observe_customer($.extend(params, { default_password: Math.random().toString(36).slice(-8) } ));
+  devices_observe_customer($.extend(params, {
+    default_password: Math.random().toString(36).slice(-8)
+  }));
 
   $('#customer_end_subscription').datepicker({
     autoclose: true,

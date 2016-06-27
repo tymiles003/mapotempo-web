@@ -20,7 +20,9 @@ var api_web_v01_zones_index = function(params) {
   progressBar && progressBar.advanceTo(25);
 
   var map = mapInitialize(params);
-  L.control.attribution({prefix: false}).addTo(map);
+  L.control.attribution({
+    prefix: false
+  }).addTo(map);
   L.control.scale({
     imperial: false
   }).addTo(map);
@@ -30,12 +32,12 @@ var api_web_v01_zones_index = function(params) {
     caption.classList.add('leaflet-bar');
     var control_caption = L.Control.extend({
       options: {
-          position: 'bottomright'
+        position: 'bottomright'
       },
-      onAdd: function (map) {
-          var container = caption;
-          L.DomEvent.disableClickPropagation(container);
-          return container;
+      onAdd: function(map) {
+        var container = caption;
+        L.DomEvent.disableClickPropagation(container);
+        return container;
       }
     });
     map.addControl(new control_caption());
@@ -62,7 +64,11 @@ var api_web_v01_zones_index = function(params) {
       fillPattern: null
     });
   }
-  var stripes = new L.StripePattern({color: '#FF0000', angle: -45}); stripes.addTo(map);
+  var stripes = new L.StripePattern({
+    color: '#FF0000',
+    angle: -45
+  });
+  stripes.addTo(map);
 
   var zoneGeometry = L.GeoJSON.extend({
     addOverlay: function(zone) {
@@ -163,8 +169,7 @@ var api_web_v01_zones_index = function(params) {
     success: function(data) {
       if (data.zoning && data.zoning.length) {
         displayZoning(data);
-      }
-      else {
+      } else {
         stickyError(I18n.t('api_web.v01.zones.index.none_zones'));
       }
       progressBar && progressBar.done();

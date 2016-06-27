@@ -24,7 +24,9 @@ var destinations_form = function(params, api) {
 
   params.map_zoom = 15;
   var map = mapInitialize(params);
-  L.control.attribution({prefix: false}).addTo(map);
+  L.control.attribution({
+    prefix: false
+  }).addTo(map);
 
   // api-web
   var form_popup = L.DomUtil.get('edit-position');
@@ -32,12 +34,12 @@ var destinations_form = function(params, api) {
     form_popup.classList.add('leaflet-bar');
     var control_position = L.Control.extend({
       options: {
-          position: 'topright'
+        position: 'topright'
       },
-      onAdd: function (map) {
-          var container = form_popup;
-          L.DomEvent.disableClickPropagation(container);
-          return container;
+      onAdd: function(map) {
+        var container = form_popup;
+        L.DomEvent.disableClickPropagation(container);
+        return container;
       }
     });
     map.addControl(new control_position());
@@ -107,6 +109,7 @@ var destinations_form = function(params, api) {
       });
     });
     <% end %>
+
     $row.on("change", ":input", function(event, move) {
       if (move === undefined && event.currentTarget.name.match(/\[street\]|\[postalcode\]|\[city\]|\[country\]|\[lat\]|\[lng\]$/))
         move = true;
@@ -116,7 +119,7 @@ var destinations_form = function(params, api) {
       } else {
         if (event.currentTarget.name.match(/\[lat\]|\[lng\]$/)) {
           var latChg = $(":input[id$=_lat]").val(),
-              lngChg = $(":input[id$=_lng]").val();
+            lngChg = $(":input[id$=_lng]").val();
           if (destination_id in markers) {
             markers[destination_id].setLatLng(new L.LatLng(latChg, lngChg));
           } else {
@@ -163,8 +166,7 @@ var destinations_form = function(params, api) {
         $('[name$=\\[lng\\]]').val('');
         $.ajax(ajaxParams);
       }
-    }
-    else {
+    } else {
       $('[name$=\\[lat\\]]').val('');
       $('[name$=\\[lng\\]]').val('');
       $.ajax(ajaxParams);
@@ -180,8 +182,7 @@ var destinations_form = function(params, api) {
       progress.removeClass('progress-bar-success progress-bar-warning progress-bar-danger');
       progress.addClass('progress-bar-' + status);
       $('.progress div span').html(accuracy_percent + '%');
-    }
-    else
+    } else
       $('#geocoding_accuracy').hide();
     $('[name$=\\[geocoding_accuracy\\]]').val(accuracy_percent / 100);
     if (level == 'point')
@@ -228,8 +229,7 @@ var destinations_form = function(params, api) {
         $('[name$=\\[geocoding_level\\]]', row).val(null);
         $('#geocoding_fail').show();
       }
-    }
-    else {
+    } else {
       $('#no_geocoding_accuracy').show();
       $('#geocoding_accuracy').hide();
       $('[name$=\\[geocoding_accuracy\\]]').val(null);
@@ -348,7 +348,9 @@ var destinations_import = function(params) {
   var dialog_upload = bootstrap_dialog({
     title: I18n.t('destinations.index.dialog.import.title'),
     icon: 'fa-upload',
-    message: SMT['modals/default_with_progress']({ msg: I18n.t('destinations.index.dialog.import.in_progress') })
+    message: SMT['modals/default_with_progress']({
+      msg: I18n.t('destinations.index.dialog.import.in_progress')
+    })
   });
 
   $(":file").filestyle({
@@ -367,7 +369,9 @@ var destinations_import = function(params) {
     var confirmChecks = [];
     $('input[id$=replace_1]', $(this)).is(':checked') && confirmChecks.push('replace');
     $('input[name$=\\[delete_plannings\\]]', $(this)).is(':checked') && confirmChecks.push('delete_plannings');
-    if (confirmChecks.length > 0 && !confirm(confirmChecks.map(function(c) { return I18n.t('destinations.import.' + c + '_confirm'); } ).join(" \n"))) {
+    if (confirmChecks.length > 0 && !confirm(confirmChecks.map(function(c) {
+        return I18n.t('destinations.import.' + c + '_confirm');
+      }).join(" \n"))) {
       return false;
     }
     dialog_upload.modal(modal_options());
@@ -376,7 +380,11 @@ var destinations_import = function(params) {
   $('a.column-edit').click(function(evt) {
     var $elem = $(evt.currentTarget).closest('td');
     $('.column-default, .column-edit', $elem).hide();
-    $('.column-def', $elem).removeClass('hide').popover({ placement : 'left', content: I18n.t('destinations.import.dialog.help.def_example'), trigger: 'focus'}).focus();
+    $('.column-def', $elem).removeClass('hide').popover({
+      placement: 'left',
+      content: I18n.t('destinations.import.dialog.help.def_example'),
+      trigger: 'focus'
+    }).focus();
     $('[name=columns-save]').show();
   });
 
@@ -401,14 +409,16 @@ var destinations_index = function(params, api) {
   var default_city = params.default_city,
     default_country = params.default_country,
     take_over_default = params.take_over_default,
-    url_click2call =  params.url_click2call,
+    url_click2call = params.url_click2call,
     enable_references = params.enable_references,
     enable_multi_visits = params.enable_multi_visits;
 
   params.geocoder = true;
 
   var map = mapInitialize(params);
-  L.control.attribution({prefix: false}).addTo(map);
+  L.control.attribution({
+    prefix: false
+  }).addTo(map);
   L.control.scale({
     imperial: false
   }).addTo(map);
@@ -557,8 +567,7 @@ var destinations_index = function(params, api) {
           $('[name$=\\[lat\\]]', row).val(null);
           $('[name$=\\[lng\\]]', row).val(null);
         }
-      }
-      else if (geocode) {
+      } else if (geocode) {
         $('[name$=\\[lat\\]]', row).val(null);
         $('[name$=\\[lng\\]]', row).val(null);
       }
@@ -620,8 +629,8 @@ var destinations_index = function(params, api) {
       });
       select.next('.select2-container--bootstrap').addClass('input-sm');
     });
-    $('.phone_link', $row).click(function(e){
-      phone_number_call($( '.phone_number', $row).attr('value'), url_click2call, e.currentTarget);
+    $('.phone_link', $row).click(function(e) {
+      phone_number_call($('.phone_number', $row).attr('value'), url_click2call, e.currentTarget);
     });
   }
 
@@ -781,11 +790,11 @@ var destinations_index = function(params, api) {
     return normalizedValue == filter;
   }
 
-  var filter_phone = function (exactText, normalizedValue, filter, index) {
+  var filter_phone = function(exactText, normalizedValue, filter, index) {
     return !!String(normalizedValue).match(new RegExp(simply_phone(filter), 'i'));
   }
 
-  var simply_phone = function(number){
+  var simply_phone = function(number) {
     return number.replace(/^0|[-. ]/g, '');
   }
 
@@ -901,13 +910,13 @@ var destinations_index = function(params, api) {
           return false;
         });
 
-        $('.index_toggle_selection').click(function() {
-          $('tr.destination').not('.filtered').each(function(idx, row) {
-            $('input:checkbox', row).each(function() {
-              this.checked = !this.checked;
-            });
+      $('.index_toggle_selection').click(function() {
+        $('tr.destination').not('.filtered').each(function(idx, row) {
+          $('input:checkbox', row).each(function() {
+            this.checked = !this.checked;
           });
         });
+      });
     });
 
     var tableOptions = {
@@ -930,8 +939,7 @@ var destinations_index = function(params, api) {
           }).sort().join(',') + ',' + $.map($("[name$=\\[tag_ids\\]\\[\\]] :selected", node), function(e, i) {
             return e.text;
           }).sort().join(',');
-        }
-        else {
+        } else {
           return $.map($(":input", node), function(e, i) {
             return e.value;
           }).join(",");
@@ -955,7 +963,9 @@ var destinations_index = function(params, api) {
         filter_childRows: true,
         // class name applied to filter row and each input
         filter_cssFilter: "tablesorter-filter",
-        filter_placeholder: {search: I18n.t('web.placeholder_filter')},
+        filter_placeholder: {
+          search: I18n.t('web.placeholder_filter')
+        },
         filter_functions: {
           '.name': filter_text,
           '.address': filter_text,
@@ -993,7 +1003,9 @@ var destinations_index = function(params, api) {
 
         $.ajax({
           type: "delete",
-          url: '/api/0.1/' + api + '.json?' + $.param({ids: destination_ids.join()}),
+          url: '/api/0.1/' + api + '.json?' + $.param({
+            ids: destination_ids.join()
+          }),
           beforeSend: beforeSendWaiting,
           success: function(data) {
             $.map($('table tbody :checkbox:checked').closest('tr'), function(row, i) {
@@ -1025,25 +1037,35 @@ var destinations_index = function(params, api) {
       var displayDestinationsAfterModal = function() {
         var cursorBody = $('body').css('cursor');
         var cursorMap = $('#map').css('cursor');
-        $('body, #map').css({cursor: 'progress'});
+        $('body, #map').css({
+          cursor: 'progress'
+        });
         setTimeout(function() {
           displayDestinations(data);
-          $('body').css({cursor: cursorBody});
-          $('#map').css({cursor: cursorMap});
+          $('body').css({
+            cursor: cursorBody
+          });
+          $('#map').css({
+            cursor: cursorMap
+          });
         }, 200);
       }
 
       if (dialog_geocoding) dialog_geocoding.modal('hide');
-      $('#geocoding-danger-modal').modal({keyboard: true, show: true});
+      $('#geocoding-danger-modal').modal({
+        keyboard: true,
+        show: true
+      });
       $("#sort-geocoding").click(function(event, ui) {
         $('#geocoding-danger-modal').off('hidden.bs.modal', displayDestinationsAfterModal);
         $('#geocoding-danger-modal').modal('hide');
-        sortList = [[$('.tablesorter th').index($('th.geocoding')[0]), 0]];
+        sortList = [
+          [$('.tablesorter th').index($('th.geocoding')[0]), 0]
+        ];
         displayDestinationsAfterModal();
       });
       $('#geocoding-danger-modal').on('hidden.bs.modal', displayDestinationsAfterModal);
-    }
-    else {
+    } else {
       displayDestinations(data);
     }
   }
@@ -1059,7 +1081,9 @@ var destinations_index = function(params, api) {
   var dialog_geocoding = bootstrap_dialog({
     title: I18n.t('destinations.index.dialog.geocoding.title'),
     icon: 'fa-refresh',
-    message: SMT['modals/geocoding']({ i18n: mustache_i18n })
+    message: SMT['modals/geocoding']({
+      i18n: mustache_i18n
+    })
   });
 }
 

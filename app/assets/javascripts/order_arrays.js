@@ -211,7 +211,7 @@ var order_arrays_edit = function(params) {
     };
 
     var headers = {
-      0 : no_sorter
+      0: no_sorter
     };
     var filter_formatter = {
       0: false_formater
@@ -233,7 +233,9 @@ var order_arrays_edit = function(params) {
       filter_formatter[i + data.columns.length + 3 + shift] = false_formater;
     }
 
-    $("#order_array table").bind("tablesorter-initialized", function(e, table) { build_total(e, table, shift); }).tablesorter({
+    $("#order_array table").bind("tablesorter-initialized", function(e, table) {
+      build_total(e, table, shift);
+    }).tablesorter({
       textExtraction: function(node, table, cellIndex) {
         if (cellIndex >= 3 + shift && cellIndex < data.columns.length + 3 + shift) {
           return $.map($("[name$=\\[product_ids\\]\\[\\]] :selected", node), function(e, i) {
@@ -373,7 +375,10 @@ var order_arrays_edit = function(params) {
       $.ajax({
         type: 'PATCH',
         url: '/api/0.1/plannings/' + planning_id + '/order_array',
-        data: { order_array_id: order_array_id, shift: shift },
+        data: {
+          order_array_id: order_array_id,
+          shift: shift
+        },
         beforeSend: beforeSendWaiting,
         complete: completeWaiting,
         error: ajaxError,
@@ -387,7 +392,9 @@ var order_arrays_edit = function(params) {
   var dialog_loading = bootstrap_dialog({
     title: I18n.t('order_arrays.edit.dialog.loading.title'),
     icon: 'fa-check-square-o',
-    message: SMT['modals/default_with_progress']({ msg: I18n.t('order_arrays.edit.dialog.loading.in_progress') })
+    message: SMT['modals/default_with_progress']({
+      msg: I18n.t('order_arrays.edit.dialog.loading.in_progress')
+    })
   });
 
   dialog_loading.modal(modal_options());
