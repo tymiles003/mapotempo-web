@@ -55,14 +55,16 @@ var modal_options = function() {
     show: true,
     backdrop: 'static'
   };
-}
+};
 
 var bootstrap_dialog = function(options) {
   $('#default-modal').find('.modal-title').html(options.title);
   $('#default-modal').find('.modal-body').html(options.message);
-  if (options.icon) $('#default-modal').find('i.fa').addClass(options.icon).show();
+  if (options.icon) {
+    $('#default-modal').find('i.fa').addClass(options.icon).show();
+  }
   return $('#default-modal');
-}
+};
 
 var mapInitialize = function(params) {
   var mapLayer, mapBaseLayers = {},
@@ -78,12 +80,13 @@ var mapInitialize = function(params) {
     if (layer.default) {
       mapLayer = l;
     }
-    if (layer.overlay)
+    if (layer.overlay) {
       mapOverlays[layer_name] = l;
-    else
+    } else {
       mapBaseLayers[layer_name] = l;
+    }
     nbLayers++;
-  };
+  }
 
   var map = L.map('map', {
     attributionControl: false,
@@ -128,17 +131,20 @@ var mapInitialize = function(params) {
     };
   }
 
-  if (params.overlay_layers) $.extend(mapOverlays, params.overlay_layers);
+  if (params.overlay_layers) {
+    $.extend(mapOverlays, params.overlay_layers);
+  }
 
-  if (nbLayers > 1)
+  if (nbLayers > 1) {
     L.control.layers(mapBaseLayers, mapOverlays, {
       position: 'topleft'
     }).addTo(map);
-  else
+  } else {
     map.tileLayer = L.tileLayer(mapLayer.url, {
       maxZoom: 18,
       attribution: mapLayer.attribution
     });
+  }
 
   map.iconSize = {
     large: {
@@ -156,4 +162,4 @@ var mapInitialize = function(params) {
   };
 
   return map;
-}
+};

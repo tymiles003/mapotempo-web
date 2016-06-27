@@ -28,7 +28,7 @@ var tags_form = function() {
     } else {
       return I18n.t('tags.form.icon_default');
     }
-  }
+  };
 
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('#tag_icon').select2({
@@ -44,7 +44,7 @@ var tags_form = function() {
       return m;
     }
   });
-}
+};
 
 Paloma.controller('Tags', {
   new: function() {
@@ -73,4 +73,4 @@ var templateTag = function(item) {
   } else {
     return item.text;
   }
-}
+};

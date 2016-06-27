@@ -51,7 +51,7 @@ var customers_index = function(params) {
           padding: [20, 20]
         });
       }
-    }
+    };
 
     $.ajax({
       url: '/customers.json',
@@ -68,7 +68,7 @@ var customers_index = function(params) {
       map_init();
     }
   });
-}
+};
 
 var customers_edit = function(params) {
   /* Speed Multiplier */
@@ -113,7 +113,7 @@ var customers_edit = function(params) {
     },
     locale: defaultLocale
   });
-}
+};
 
 Paloma.controller('Customers', {
   index: function() {

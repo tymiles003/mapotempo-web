@@ -33,8 +33,7 @@ var user_edit_settings = function(params) {
   });
 
   $('.select2').select2();
-
-}
+};
 
 Paloma.controller('Users', {
   edit: function() {

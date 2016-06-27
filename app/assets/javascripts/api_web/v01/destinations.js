@@ -31,7 +31,7 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
     destination.tags = t;
     destination.i18n = mustache_i18n;
     return destination;
-  }
+  };
 
   var addMarker = function(options) {
     var licon;
@@ -49,7 +49,7 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
         iconSize: new L.Point(12, 12),
         iconAnchor: new L.Point(6, 6),
         popupAnchor: new L.Point(0, -6),
-      })
+      });
     }
     var marker = L.marker(new L.LatLng(options.lat, options.lng), {
       icon: licon
@@ -58,7 +58,7 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
       marker.addTo(map.cluster);
     }
     return marker;
-  }
+  };
 
   if (data.tags) {
     $.each(data.tags, function(i, tag) {
@@ -78,7 +78,7 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
       });
     }
   });
-}
+};
 
 var api_web_v01_destinations_index = function(params, api) {
   var progressBar = Turbolinks.enableProgressBar();
@@ -151,7 +151,7 @@ var api_web_v01_destinations_index = function(params, api) {
     complete: completeWaiting,
     error: ajaxError
   });
-}
+};
 
 Paloma.controller('ApiWeb/V01/Destinations', {
   edit_position: function() {

@@ -23,18 +23,18 @@ var beforeSendWaiting = function() {
     $('body').addClass('ajax_waiting');
   }
   ajaxWaitingGlobal++;
-}
+};
 
 var completeWaiting = function() {
   ajaxWaitingGlobal--;
   if (ajaxWaitingGlobal == 0) {
     $('body').removeClass('ajax_waiting');
   }
-}
+};
 
 var completeAjaxMap = function() {
   completeWaiting();
-}
+};
 
 var ajaxError = function(request, status, error) {
   var otext = request.responseText;
@@ -50,15 +50,16 @@ var ajaxError = function(request, status, error) {
   if (!text) {
     text = status;
   }
-  if (request.readyState != 0)
+  if (request.readyState != 0) {
     stickyError(text);
-}
+  }
+};
 
 var mustache_i18n = function() {
   return function(text) {
     return I18n.t(text);
   };
-}
+};
 
 var freezeProgressDialog = function(dialog) {
   dialog.find('[data-dismiss]').hide();
@@ -171,7 +172,9 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       $(".dialog-attempts", dialog).hide();
     }
     if (delayedJob.error) {
-      if (errorCallback) errorCallback();
+      if (errorCallback) {
+        errorCallback();
+      }
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
       unfreezeProgressDialog(dialog, delayedJob, url, callback);
@@ -197,13 +200,15 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
   } else {
     iteration = null;
     if (dialog.is(':visible')) {
-      if (successCallback) successCallback();
+      if (successCallback) {
+        successCallback();
+      }
       dialog.modal('hide');
       $($(".progress-bar", dialog)).css("width", "0%");
     }
     return true;
   }
-}
+};
 
 
 var fake_select2 = function(selector, callback) {
@@ -213,7 +218,7 @@ var fake_select2 = function(selector, callback) {
     select.show();
     callback(select);
     fake_select.off();
-  }
+  };
 
   var fake_select2_click = function(e) {
     // On the first click on select2-look like div, initialize select2, remove the placeholder and resend the click
@@ -223,7 +228,7 @@ var fake_select2 = function(selector, callback) {
     if (e.clientX && e.clientY) {
       $(document.elementFromPoint(e.clientX, e.clientY)).click();
     }
-  }
+  };
 
   var fake_select2_key_event = function(e) {
     var fake_select = $(this).closest('.fake');
@@ -235,12 +240,12 @@ var fake_select2 = function(selector, callback) {
     // var ee = jQuery.Event('keydown');
     // ee.which = e.which;
     // $('input', $(this)).trigger(ee);
-  }
+  };
 
   selector.next()
     .on('click', fake_select2_click)
     .on('keydown', fake_select2_key_event);
-}
+};
 
 var phone_number_call = function(num, url_template, link) {
   if (num) {

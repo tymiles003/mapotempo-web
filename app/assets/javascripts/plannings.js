@@ -37,14 +37,14 @@ var plannings_form = function() {
     },
     width: '100%'
   });
-}
+};
 
 var plannings_new = function(params) {
   plannings_form();
   $("#planning_zoning_ids").select2({
     theme: 'bootstrap'
   });
-}
+};
 
 var plannings_edit = function(params) {
   plannings_form();
@@ -71,10 +71,14 @@ var plannings_edit = function(params) {
     if (route.vehicle_usage_id) {
       var vehicle_usage = {};
       $.each(vehicles_usages_map, function(i, v) {
-        if (v.vehicle_usage_id == route.vehicle_usage_id) vehicle_usage = v;
+        if (v.vehicle_usage_id == route.vehicle_usage_id) {
+          vehicle_usage = v;
+        }
       });
       route.name = (route.ref ? (route.ref + ' ') : '') + vehicle_usage.name;
-      if (!route.color) route.color = vehicle_usage.color;
+      if (!route.color) {
+        route.color = vehicle_usage.color;
+      }
     }
     return route;
   });
@@ -86,9 +90,9 @@ var plannings_edit = function(params) {
   sidebar.open('planning-pane');
 
   var vehicleIdsPosition = vehicles_array.filter(function(vehicle) {
-    return vehicle.available_position
+    return vehicle.available_position;
   }).map(function(vehicle) {
-    return vehicle.id
+    return vehicle.id;
   });
 
   var vehicleLayer, tid;
@@ -98,7 +102,7 @@ var plannings_edit = function(params) {
     data.forEach(function(pos) {
       if ($.isNumeric(pos.lat) && $.isNumeric(pos.lng)) {
         var route = routes_array.filter(function(route) {
-          return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id
+          return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id;
         })[0];
         var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600 * 1000);
         var direction_icon = pos.direction ? '<i class="fa fa-location-arrow fa-stack-1x vehicle-direction" style="transform: rotate(' + (parseInt(pos.direction) - 45) + 'deg);" />' : '';
@@ -118,7 +122,7 @@ var plannings_edit = function(params) {
         }).addTo(vehicleLayer);
       }
     });
-  }
+  };
 
   var queryVehicles = function() {
     $.ajax({
@@ -301,7 +305,7 @@ var plannings_edit = function(params) {
         scrollTop: e.offset().top + $(".sidebar-content").scrollTop() - 100
       });
     }
-  }
+  };
 
   layer_zoning = (new L.LayerGroup()).addTo(map);
   var zoneGeometry = L.GeoJSON.extend({
@@ -355,7 +359,7 @@ var plannings_edit = function(params) {
         geom.addTo(layer_zoning);
       }
     });
-  }
+  };
   var stripes = new L.StripePattern({
     color: '#FF0000',
     angle: -45
@@ -871,7 +875,7 @@ var plannings_edit = function(params) {
         error: ajaxError
       });
     });
-  }
+  };
 
   var displayPlanning = function(data, options) {
 
@@ -1432,7 +1436,7 @@ var plannings_edit = function(params) {
       show: true
     });
   });
-}
+};
 
 var plannings_show = function(params) {
   if (!params.print_map) {
@@ -1442,7 +1446,7 @@ var plannings_show = function(params) {
       window.print();
     });
   }
-}
+};
 
 function observe_icalendar_export() {
   $('.icalendar_email').click(function(e) {
@@ -1464,11 +1468,11 @@ function observe_icalendar_export() {
       }
     });
   });
-}
+};
 
 var plannings_index = function(params) {
   observe_icalendar_export();
-}
+};
 
 Paloma.controller('Plannings', {
   index: function() {

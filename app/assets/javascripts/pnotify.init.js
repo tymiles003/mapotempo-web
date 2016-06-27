@@ -71,5 +71,5 @@ PNotify.prototype.options.styling = 'fontawesome';
     hideNotices: function() {
       PNotify.removeAll();
     }
-  })
+  });
 })();

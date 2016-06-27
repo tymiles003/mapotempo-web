@@ -155,8 +155,9 @@ var api_web_v01_routes_index = function(params) {
           stop.vehicle_name = vehicle_name;
           stop.route_id = route.route_id;
           stop.routes = data.routes;
-          if ((data.routes && data.routes.length == 1) || (route_ids && route_ids.length == 1))
+          if ((data.routes && data.routes.length == 1) || (route_ids && route_ids.length == 1)) {
             stop.one_route = true;
+          }
           stop.planning_id = data.planning_id;
           var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
             icon: new L.NumberedDivIcon({
@@ -206,7 +207,7 @@ var api_web_v01_routes_index = function(params) {
       routes_layers_cluster.addLayer(layers_cluster[route.route_id]);
       routes_layers.addLayer(layers[route.route_id]);
     });
-  }
+  };
 
   var display_planning_first_time = function(data) {
     $.each(data.routes, function(i, route) {
@@ -283,7 +284,7 @@ var api_web_v01_routes_index = function(params) {
     complete: completeWaiting,
     error: ajaxError
   });
-}
+};
 
 Paloma.controller('ApiWeb/V01/Routes', {
   index: function() {

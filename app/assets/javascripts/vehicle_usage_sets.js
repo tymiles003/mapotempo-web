@@ -22,28 +22,30 @@ var vehicle_usage_sets_index = function(params) {
     window.location.hash = id;
     $('.accordion-body.collapse.in').each(function(index) {
       var $this = $(this);
-      if (id != '#' + $this.attr('id'))
+      if (id != '#' + $this.attr('id')) {
         $this.collapse('hide');
+      }
     });
   });
 
   if (window.location.hash) {
     $('.accordion-body.collapse.in').each(function(index) {
       var $this = $(this);
-      if (window.location.hash != '#' + $this.attr('id'))
+      if (window.location.hash != '#' + $this.attr('id')) {
         $this.removeClass('in');
+      }
     });
     $(window.location.hash).addClass('in');
     $(".accordion-toggle[href!='" + window.location.hash + "']").addClass('collapsed');
   }
-}
+};
 
 var vehicle_usage_sets_edit = function(params) {
   $('#vehicle_usage_set_open, #vehicle_usage_set_close, #vehicle_usage_set_rest_start, #vehicle_usage_set_rest_stop, #vehicle_usage_set_rest_duration, #vehicle_usage_set_service_time_start, #vehicle_usage_set_service_time_end').timeEntry({
     show24Hours: true,
     spinnerImage: ''
   });
-}
+};
 
 Paloma.controller('VehicleUsageSets', {
   index: function() {

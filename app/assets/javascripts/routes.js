@@ -23,7 +23,7 @@ var routes_show = function(params) {
       window.print();
     });
   }
-}
+};
 
 Paloma.controller('Routes', {
   show: function() {

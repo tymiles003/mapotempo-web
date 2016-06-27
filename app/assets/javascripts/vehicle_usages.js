@@ -36,7 +36,7 @@ var vehicle_usages_form = function(params) {
 
   /* API: Devices */
   devices_observe_vehicle(params);
-}
+};
 
 Paloma.controller('VehicleUsages', {
   new: function() {

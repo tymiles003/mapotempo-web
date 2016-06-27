@@ -63,7 +63,7 @@ var api_web_v01_zones_index = function(params) {
       dashArray: 'none',
       fillPattern: null
     });
-  }
+  };
   var stripes = new L.StripePattern({
     color: '#FF0000',
     angle: -45
@@ -110,7 +110,7 @@ var api_web_v01_zones_index = function(params) {
       geoJsonLayer.addLayer(geom);
     }
     featureGroup.addLayer(geom);
-  }
+  };
 
   var displayZoning = function(data) {
     api_web_v01_display_destinations_('destinations', map, data);
@@ -152,7 +152,7 @@ var api_web_v01_zones_index = function(params) {
         padding: [20, 20]
       });
     }
-  }
+  };
 
   progressBar && progressBar.advanceTo(50);
   var ajaxParams = {};
@@ -177,7 +177,7 @@ var api_web_v01_zones_index = function(params) {
     complete: completeWaiting,
     error: ajaxError
   });
-}
+};
 
 Paloma.controller('ApiWeb/V01/Zones', {
   index: function() {
