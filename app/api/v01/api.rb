@@ -108,6 +108,7 @@ class V01::Api < Grape::API
   mount V01::Destinations
   mount V01::Layers
   mount V01::Orders
+  mount V01::OrderArrays
   mount V01::Plannings
   mount V01::PlanningsGet
   mount V01::Profiles
