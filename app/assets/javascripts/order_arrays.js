@@ -372,7 +372,7 @@ var order_arrays_edit = function(params) {
       var shift = $(e.target).data('index');
       $.ajax({
         type: 'PATCH',
-        url: '/api/0.1/plannings/' + planning_id + '/orders_array',
+        url: '/api/0.1/plannings/' + planning_id + '/order_array',
         data: { order_array_id: order_array_id, shift: shift },
         beforeSend: beforeSendWaiting,
         complete: completeWaiting,

@@ -159,6 +159,25 @@ class V01::Plannings < Grape::API
       present planning, with: V01::Entities::Planning
     end
 
+    desc 'Use order_array in the planning.',
+      detail: 'Only available if "order array" option is active for current customer.',
+      nickname: 'useOrderArray',
+      entity: V01::Entities::Planning
+    params do
+      requires :id, type: String, desc: ID_DESC
+      requires :order_array_id, type: Integer
+      requires :shift, type: Integer
+    end
+    patch ':id/order_array' do
+      id = ParseIdsRefs.read(params[:id])
+      planning = current_customer.plannings.where(id).first!
+      order_array = current_customer.order_arrays.find(params[:order_array_id])
+      shift = Integer(params[:shift])
+      planning.apply_orders(order_array, shift)
+      planning.save!
+      present planning, with: V01::Entities::Planning
+    end
+
     desc 'Update Routes',
       params: V01::Entities::Route.documentation.slice(:hidden, :locked)
     params do
