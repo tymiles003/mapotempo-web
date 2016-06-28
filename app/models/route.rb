@@ -201,7 +201,7 @@ class Route < ActiveRecord::Base
       end
 
       self.stop_trace = trace
-      self.stop_out_of_drive_time = self.end > (Time.zone.local(2000, 1, 1, 0, 0) + (vehicle_usage.default_close - Time.utc(2000, 1, 1, 0, 0)))
+      self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
 
       self.emission = vehicle_usage.vehicle.emission.nil? || vehicle_usage.vehicle.consumption.nil? ? nil : self.distance / 1000 * vehicle_usage.vehicle.emission * vehicle_usage.vehicle.consumption / 100
 
