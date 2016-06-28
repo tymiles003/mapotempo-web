@@ -49,9 +49,10 @@ var zonings_edit = function(params) {
 
   var markersLayers = L.featureGroup(),
     stores_marker = L.featureGroup(),
-    featureGroup = L.featureGroup();
+    featureGroup = L.featureGroup(),
+    unaffectedGroup = L.featureGroup();
 
-  map.addLayer(featureGroup).addLayer(stores_marker).addLayer(markersLayers);
+  map.addLayer(featureGroup).addLayer(stores_marker).addLayer(markersLayers).addLayer(unaffectedGroup);
 
   var hasPlanning = false;
   var geoJsonLayers = {};
@@ -425,19 +426,25 @@ var zonings_edit = function(params) {
   };
 
   var displayDestinations = function(route) {
+    var has_vehicle = route.vehicle_id && vehicles_map[route.vehicle_id];
+
     $.each(route.stops, function(index, stop) {
       stop.i18n = mustache_i18n;
       if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
         var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
           icon: L.icon({
-            iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (route.vehicle_id && vehicles_map[route.vehicle_id] ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
+            iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (has_vehicle ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
             iconSize: new L.Point(12, 12),
             iconAnchor: new L.Point(6, 6),
             popupAnchor: new L.Point(0, -6),
           })
         }).bindPopup(SMT['stops/show']({
           stop: stop
-        })).addTo(markersLayers);
+        }));
+
+        m.addTo(markersLayers);
+        if (!has_vehicle) m.addTo(unaffectedGroup);
+
         m.data = stop;
         m.on('mouseover', function(e) {
           m.openPopup();
@@ -533,6 +540,14 @@ var zonings_edit = function(params) {
     }
   });
 
+  $('#hide_out_of_route').change(function(e) {
+    if ($(e.target).is(':checked')) {
+      map.removeLayer(unaffectedGroup);
+    } else {
+      map.addLayer(unaffectedGroup);
+    }
+  });
+
   var nbZones = undefined;
 
   $('.automatic').click(function() {
@@ -542,7 +557,11 @@ var zonings_edit = function(params) {
       }
       $.ajax({
         type: "patch",
-        url: '/zonings/' + zoning_id + '/automatic' + (planning_id ? '/planning/' + planning_id : '') + '.json?n=' + $(this).data('n'),
+        url: '/zonings/' + zoning_id + '/automatic' + (planning_id ? '/planning/' + planning_id : '') + '.json',
+        data: {
+          n: $(this).data('n'),
+          hide_out_of_route: $("#hide_out_of_route").is(":checked") ? 1 : 0
+        },
         beforeSend: beforeSendWaiting,
         success: displayZoning,
         complete: completeAjaxMap,

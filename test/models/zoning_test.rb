@@ -64,4 +64,23 @@ class ZoningTest < ActiveSupport::TestCase
       remove_request_stub(stub_isochrone) if stub_isochrone
     end
   end
+
+  test 'Automatic Clustering, Include Unaffected' do
+    customer = customers :customer_one
+    planning = plannings :planning_one
+    zoning = customer.zonings.new
+    assert planning.routes.detect{|route| !route.vehicle_usage }.stops.any?
+    zoning.automatic_clustering planning, nil, true
+    assert_equal customer.vehicles.count, zoning.zones.length
+  end
+
+  test 'Automatic Clustering, Reject Unaffected' do
+    customer = customers :customer_one
+    planning = plannings :planning_one
+    zoning = customer.zonings.new
+    assert planning.routes.detect{|route| !route.vehicle_usage }.stops.any?
+    zoning.automatic_clustering planning, nil, false
+    assert_equal customer.vehicles.count, zoning.zones.length
+  end
+
 end

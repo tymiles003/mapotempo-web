@@ -94,7 +94,9 @@ class ZoningsController < ApplicationController
   def automatic
     respond_to do |format|
       @planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
-      @zoning.automatic_clustering(@planning, params[:n] ? Integer(params[:n]) : nil)
+      n = params[:n].to_i if params[:n]
+      hide_out_of_route = params[:hide_out_of_route].to_i == 1
+      @zoning.automatic_clustering @planning, n, !hide_out_of_route
       @zoning.save
       format.json { render action: 'edit' }
     end

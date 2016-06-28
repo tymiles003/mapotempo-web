@@ -1451,6 +1451,7 @@ or you can click on this link to download file (no update in this case)."
     new:
       title: "New zoning"
     form:
+      hide_out_of_route: "Hide unaffected destinations"
       all_destinations: "Show all destinations"
       from_planning_help: "It's also possible to filter destinations from a unique plan by editing this zoning from plan"
       stops_from_planning: "Destinations from plan \"%{s}\""

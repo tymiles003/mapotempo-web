@@ -72,14 +72,13 @@ class Zoning < ActiveRecord::Base
     }
   end
 
-  def automatic_clustering(planning, n)
-    positions = (planning ? planning.routes.collect(&:stops).flatten : customer.destinations).collect{ |stop|
-      if stop.position?
-        [stop.lat, stop.lng]
-      end
-    }.compact.uniq
-
-    vehicles = planning ? planning.vehicle_usage_set.vehicle_usages.select(&:active).collect(&:vehicle).to_a : customer.vehicles.to_a
+  def automatic_clustering(planning, n, out_of_route=true)
+    if planning
+      routes = out_of_route ? planning.routes : planning.routes.select(&:vehicle_usage)
+      stops = routes.map(&:stops).flatten.uniq
+    end
+    positions = (stops || customer.destinations).select(&:position?).map{|position| [position.lat, position.lng] }.compact.uniq
+    vehicles = planning ? planning.vehicle_usage_set.vehicle_usages.select(&:active).map(&:vehicle) : customer.vehicles
     clusters = Clustering.clustering(positions, n || vehicles.size)
     zones.clear
     Clustering.hulls(clusters).each{ |hull|

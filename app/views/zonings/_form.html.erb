@@ -11,13 +11,15 @@
   <% if @zoning.id %>
     <hr>
     <div class="form-group">
-      <% if !@planning %>
+      <% if @planning %>
         <div class="col-md-12">
-        <label><input type="checkbox" name="all-destinations"> <%= t '.all_destinations' %> <i class="fa fa-lightbulb-o fa-fw" title="<%= t '.from_planning_help' %>"></i></label>
+          <p class="help-block"><%= t('.stops_from_planning', s: @planning.name) %></p>
+          <%= check_box_tag :hide_out_of_route %>
+          <%= label_tag :hide_out_of_route, t(".hide_out_of_route") %>
         </div>
       <% else %>
         <div class="col-md-12">
-        <p class="help-block"><%= t('.stops_from_planning', s: @planning.name) %></p>
+          <label><input type="checkbox" name="all-destinations"> <%= t '.all_destinations' %> <i class="fa fa-lightbulb-o fa-fw" title="<%= t '.from_planning_help' %>"></i></label>
         </div>
       <% end %>
       <div class="col-md-offset-2 col-md-10">
