@@ -184,7 +184,7 @@ class PlanningsController < ApplicationController
       route_ids = stops.collect{ |s| s.route_id }.uniq
     else
       stops = @planning.routes.detect{ |r| !r.vehicle_usage }.stops
-      route_ids = [stops[0].route_id]
+      route_ids = stops.any? ? [stops[0].route_id] : []
     end
 
     success = true
@@ -200,7 +200,7 @@ class PlanningsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        if route_ids.size > 0 && success && @planning.save && @planning.reload
+        if success && @planning.save && @planning.reload
           @routes = @planning.routes.select{ |r| route_ids.include? r.id }
           render action: :show
         else

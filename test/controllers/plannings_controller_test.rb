@@ -296,7 +296,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'Automatic Insert With Bad IDs' do
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [1234]
-    assert response.code.to_i == 422
+    assert_response :success
   end
 
   test 'Automatic Insert All Unaffected Stops' do
@@ -304,6 +304,13 @@ class PlanningsControllerTest < ActionController::TestCase
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: []
     assert_response :success
     assert @planning.routes.detect{|route| !route.vehicle_usage }.stops.reload.none?
+  end
+
+  test 'Automatic Insert Twice' do
+    patch :automatic_insert, id: @planning.id, format: :json
+    assert_response :success
+    patch :automatic_insert, id: @planning.id, format: :json
+    assert_response :success
   end
 
   test 'should update active' do
