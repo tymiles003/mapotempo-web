@@ -783,8 +783,8 @@ var destinations_index = function(params, api) {
     return number.replace(/^0|[-. ]/g, '');
   }
 
-  var globalGeocodingScore = function(level, accuracy) {
-    var ret = null;
+  var globalGeocodingScore = function(level, accuracy, lat, lng) {
+    var ret = (lat === '' || lng === '') ? 0 : null;
     switch (level) {
       case 'point':
         ret = 5000;
@@ -917,7 +917,7 @@ var destinations_index = function(params, api) {
             return e.text;
           }).sort().join(',');
         } else if ($node.hasClass('geocoding')) {
-          return globalGeocodingScore($("[name$=\\[geocoding_level\\]]", node).val(), $("[name$=\\[geocoding_accuracy\\]]", node).val());
+          return globalGeocodingScore($("[name$=\\[geocoding_level\\]]", node).val(), $("[name$=\\[geocoding_accuracy\\]]", node).val(), $("[name$=\\[lat\\]]", node).val(), $("[name$=\\[lng\\]]", node).val());
         } else if ($node.hasClass('visit')) {
           return $.map($("input[type!=hidden]", node), function(e, i) {
             return e.value;
