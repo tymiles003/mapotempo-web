@@ -87,7 +87,7 @@ gem 'rails-i18n'
 gem 'http_accept_language'
 gem 'execjs'
 gem 'therubyracer'
-gem 'devise'
+gem 'devise', '< 4' # FIXME wait for ruby 2.1
 gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'cancancan', '=1.11.0' # FIXME wait for ruby 2.0
