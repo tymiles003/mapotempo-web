@@ -51,6 +51,9 @@
 
    // API Orange Fleet: Send Planning Routes
    $('.planning-orange-send', context).click(function(e) {
+     if (!confirm(I18n.t('all.verb.confirm'))) {
+       return;
+     }
      var dialog = bootstrap_dialog($.extend(modal_options, {
        title: 'Orange',
        message: SMT['modals/default_with_progress']({
@@ -89,6 +92,9 @@
 
    // API Orange Fleet: Clear Planning Routes
    $('.planning-orange-clear', context).click(function(e) {
+     if (!confirm(I18n.t('all.verb.confirm'))) {
+       return;
+     }
      var dialog = bootstrap_dialog($.extend(modal_options, {
        title: 'Orange',
        message: SMT['modals/default_with_progress']({
@@ -203,6 +209,9 @@
 
    // API Teksat: Send Planning Routes
    $('.planning-teksat-send', context).click(function(e) {
+     if (!confirm(I18n.t('all.verb.confirm'))) {
+       return;
+     }
      var dialog = bootstrap_dialog($.extend(modal_options, {
        title: 'Teksat',
        message: SMT['modals/default_with_progress']({
@@ -241,6 +250,9 @@
 
    // API Teksat: Clear Planning Routes
    $('.planning-teksat-clear', context).click(function(e) {
+     if (!confirm(I18n.t('all.verb.confirm'))) {
+       return;
+     }
      var dialog = bootstrap_dialog($.extend(modal_options, {
        title: 'Teksat',
        message: SMT['modals/default_with_progress']({
@@ -355,6 +367,9 @@
 
    // API TomTom: Send Planning Routes As Waypoints
    $('.planning-tomtom-send-waypoints', context).click(function(e) {
+     if (!confirm(I18n.t('all.verb.confirm'))) {
+       return;
+     }
      var dialog = bootstrap_dialog($.extend(modal_options, {
        title: 'TomTom',
        message: SMT['modals/default_with_progress']({
@@ -394,6 +409,9 @@
 
    // API TomTom: Send Planning Routes As Orders
    $('.planning-tomtom-send-orders', context).click(function(e) {
+     if (!confirm(I18n.t('all.verb.confirm'))) {
+       return;
+     }
      var dialog = bootstrap_dialog($.extend(modal_options, {
        title: 'TomTom',
        message: SMT['modals/default_with_progress']({
@@ -433,6 +451,9 @@
 
    // API TomTom: Clear Planning Routes
    $('.planning-tomtom-clear', context).click(function(e) {
+     if (!confirm(I18n.t('all.verb.confirm'))) {
+       return;
+     }
      var dialog = bootstrap_dialog($.extend(modal_options, {
        title: 'TomTom',
        message: SMT['modals/default_with_progress']({

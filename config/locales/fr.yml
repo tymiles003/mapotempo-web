@@ -1517,6 +1517,7 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
       destroy: "Supprimer"
       destroy_selection: "Supprimer sélection"
       destroy_confirm: "Êtes-vous sûr ?"
+      confirm: "Êtes-vous sûr ?"
       duplicate: "Dupliquer"
       toggle_selection: "Inverser sélection"
       dismiss: "Fermer"
