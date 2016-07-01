@@ -79,3 +79,10 @@ Start the background jobs runner with
 Setup assets:
     rake i18n:js:export
     rake assets:precompile
+
+# Launch tests
+
+    rake test
+
+If you focus one test only or for any other good reasons, you don't want to check i18n and coverage:
+    rake test I18N=false COVERAGE=false

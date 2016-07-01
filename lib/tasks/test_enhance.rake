@@ -24,8 +24,10 @@ begin
       I18n.locale = :fr
     end
 
-    Rake::Task["test"].enhance do
-      Rake::Task[:i18n_health].invoke
+    Rake::Task['test'].enhance do
+      if !ENV.key?('I18N') || ENV['I18N'] != 'false'
+        Rake::Task[:i18n_health].invoke
+      end
     end
   end
 rescue Gem::LoadError

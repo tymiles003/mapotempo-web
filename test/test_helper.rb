@@ -1,6 +1,8 @@
-require 'simplecov'
-SimpleCov.minimum_coverage 83
-SimpleCov.start 'rails'
+if !ENV.key?('COV') || ENV['COV'] != 'false'
+  require 'simplecov'
+  SimpleCov.minimum_coverage 83
+  SimpleCov.start 'rails'
+end
 Dir[Rails.root.join('lib/**/*.rb')].each { |file| load file } # only explicitly required files are tracked
 
 ENV['RAILS_ENV'] ||= 'test'
