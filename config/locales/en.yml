@@ -606,6 +606,7 @@ en:
       speed_multiplicator_help: "A value higher than 100% means higher speed."
       submit: "Update Global settings"
       sync:
+        complete: "Sync Complete"
         orange:
           confirm: "Sync Vehicles from Orange Fleet Performance?"
           action: "Sync Vehicles from Orange Fleet Performance"
@@ -1275,7 +1276,6 @@ or you can click on this link to download file (no update in this case)."
     emissions_light_petrol: "Light - Petrol - %{n}"
     emissions_light_diesel: "Light - Diesel - %{n}"
     emissions_light_lgp: "Light - LGP - %{n}"
-    device_sync_complete: "Sync Complete"
     form:
       tomtom_id: "TomTom"
       teksat_id: "Teksat"

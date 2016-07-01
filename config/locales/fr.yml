@@ -606,6 +606,7 @@ fr:
       speed_multiplicator_help: "Une valeur supérieure à 100% signifie une vitesse plus élevée."
       submit: "Enregistrer paramétrage global"
       sync:
+        complete: "Synchronisation complète"
         orange:
           confirm: "Synchroniser les véhicules depuis Orange Fleet Performance ?"
           action: "Synchroniser les véhicules depuis Orange Fleet Performance"
@@ -1275,7 +1276,6 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
     emissions_light_petrol: "VL - Essence - %{n}"
     emissions_light_diesel: "VL - Gazole - %{n}"
     emissions_light_lgp: "VL - GPL - %{n}"
-    device_sync_complete: "Synchronisation complète"
     form:
       tomtom_id: "TomTom"
       teksat_id: "Teksat"

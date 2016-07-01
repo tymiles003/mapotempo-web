@@ -910,22 +910,24 @@
 
        // Sync
        $('.' + config.name + '-api-sync').click(function(e) {
-         $.ajax({
-           url: '/api/0.1/devices/' + config.name + '/sync.json',
-           type: 'POST',
-           data: $.extend(user_credentials(), {
-             customer_id: params.customer_id
-           }),
-           beforeSend: function(jqXHR, settings) {
-             beforeSendWaiting();
-           },
-           complete: function(jqXHR, textStatus) {
-             completeWaiting();
-           },
-           success: function(data, textStatus, jqXHR) {
-             alert(I18n.t('vehicles.device_sync_complete'));
-           }
-         });
+         if (confirm(I18n.t('customers.form.sync.' + config.name + '.confirm'))) {
+           $.ajax({
+             url: '/api/0.1/devices/' + config.name + '/sync.json',
+             type: 'POST',
+             data: $.extend(user_credentials(), {
+               customer_id: params.customer_id
+             }),
+             beforeSend: function(jqXHR, settings) {
+               beforeSendWaiting();
+             },
+             complete: function(jqXHR, textStatus) {
+               completeWaiting();
+             },
+             success: function(data, textStatus, jqXHR) {
+               alert(I18n.t('customers.form.sync.complete'));
+             }
+           });
+         }
        });
      }
 
