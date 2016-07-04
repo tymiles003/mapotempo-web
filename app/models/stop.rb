@@ -22,6 +22,8 @@ class Stop < ActiveRecord::Base
   nilify_blanks
   validates :route, presence: true
 
+  before_save :out_of_date
+
   amoeba do
     enable
   end
@@ -48,6 +50,13 @@ class Stop < ActiveRecord::Base
       (time - close) * (self.route.planning.customer.optimization_soft_upper_bound || 1)  # Positive
     else
       0
+    end
+  end
+
+  def out_of_date
+    if active_changed?
+      route.out_of_date = true
+      route.optimized_at = nil
     end
   end
 end

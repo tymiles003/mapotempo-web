@@ -204,6 +204,7 @@ class Customer < ActiveRecord::Base
         route.force_reindex
         # out_of_date for last step
         route.out_of_date = true if route.stop_trace
+        route.optimized_at = nil
       end
       p.save!
     }
@@ -246,6 +247,7 @@ class Customer < ActiveRecord::Base
         plannings.each{ |planning|
           planning.routes.each{ |route|
             route.out_of_date = true
+            route.optimized_at = nil
           }
         }
       end

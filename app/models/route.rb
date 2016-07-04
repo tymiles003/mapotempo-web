@@ -264,11 +264,11 @@ class Route < ActiveRecord::Base
         visit, active = stop
         stops.build(type: StopVisit.name, visit: visit, active: active, index: i += 1)
       }
-      if recompute
-        compute(ignore_errors: ignore_errors)
-      elsif vehicle_usage
+      if vehicle_usage
         self.out_of_date = true
+        self.optimized_at = nil
       end
+      compute(ignore_errors: ignore_errors) if recompute
     end
   end
 
@@ -283,6 +283,7 @@ class Route < ActiveRecord::Base
 
     if vehicle_usage
       self.out_of_date = true
+      self.optimized_at = nil
     end
   end
 
@@ -290,6 +291,7 @@ class Route < ActiveRecord::Base
     index = stops.size + 1
     stops.build(type: StopRest.name, index: index, active: active, id: stop_id)
     self.out_of_date = true
+    self.optimized_at = nil if vehicle_usage
   end
 
   def add_or_update_rest(active = true, stop_id = nil)
@@ -297,6 +299,7 @@ class Route < ActiveRecord::Base
       add_rest(active, stop_id)
     end
     self.out_of_date = true
+    self.optimized_at = nil if vehicle_usage
   end
 
   def remove_visit(visit)
@@ -311,6 +314,7 @@ class Route < ActiveRecord::Base
     if vehicle_usage
       shift_index(stop.index + 1, -1)
       self.out_of_date = true
+      self.optimized_at = nil
     end
     stops.destroy(stop)
   end
@@ -325,6 +329,7 @@ class Route < ActiveRecord::Base
       end
       stop.index = index
     end
+    self.optimized_at = nil if vehicle_usage
     compute
   end
 
@@ -332,6 +337,7 @@ class Route < ActiveRecord::Base
     if force || stop.is_a?(StopVisit)
       if vehicle_usage
         shift_index(stop.index + 1, -1)
+        self.optimized_at = nil
       end
       stop.active = false
       compute
@@ -371,7 +377,7 @@ class Route < ActiveRecord::Base
     }
 
     stops_on = stops_segregate[true]
-    amalgamate_stops_same_position(stops_on) { |positions|
+    o = amalgamate_stops_same_position(stops_on) { |positions|
 
       services = positions.collect{ |position|
         open1, close1, open2, close2, duration = position[2..6]
@@ -409,6 +415,8 @@ class Route < ActiveRecord::Base
       }
       order[1..-2].collect{ |i| i - 1 }
     }
+    self.optimized_at = Time.now.utc
+    o
   end
 
   def order(o)
@@ -430,19 +438,12 @@ class Route < ActiveRecord::Base
   end
 
   def active(action)
-    if action == :reverse
-      stops.each{ |stop|
-        stop.active = !stop.active
-      }
-      true
-    elsif action == :all || action == :none
-      stops.each{ |stop|
-        stop.active = action == :all
-      }
-      true
-    else
-      false
-    end
+    return false if ![:reverse, :all, :none].include?(action)
+    stops.each{ |stop|
+      stop.active = action == :reverse ? !stop.active : action == :all
+    }
+    self.optimized_at = nil
+    true
   end
 
   def size_active
@@ -463,10 +464,12 @@ class Route < ActiveRecord::Base
         stop.active = true
       end
     }
+    self.optimized_at = nil
     compute
   end
 
   def reverse_order
+    self.optimized_at = nil
     stops.sort_by{ |stop| -stop.index }.each_with_index{ |stop, index|
       stop.index = index + 1
     }
@@ -578,6 +581,7 @@ class Route < ActiveRecord::Base
         add_rest
       end
       self.out_of_date = true if id || out_of_date.nil?
+      self.optimized_at = nil
     end
   end
 end

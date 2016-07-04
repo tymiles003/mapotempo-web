@@ -153,6 +153,7 @@ class VehicleUsage < ActiveRecord::Base
     if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed?
       routes.each{ |route|
         route.out_of_date = true
+        route.optimized_at = nil
       }
     end
   end

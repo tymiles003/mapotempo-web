@@ -887,6 +887,7 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
       zoning_new: "Créer un nouveau zonage depuis ce planning"
       zoning_edit: "Modifier ce zonage depuis ce planning"
       last_sent_at: "Dernier envoi"
+      optimized_at: "Optimisé"
       title: "Modifier planning"
       stops: "arrêts"
       optimize_all: "Optimiser l'ensemble"

@@ -278,6 +278,10 @@
         }
       }
 
+      .optimum, .optimum .list-group-item {
+        background-color: rgba(223, 240, 216, 0.5);
+      }
+
       #out_of_route {
         min-width: 288px;
       }
@@ -324,9 +328,7 @@
         }
       }
 
-      .last-sent-at {
-        margin: 5px 0px 0px 0px;
-        line-height: initial;
+      .last-sent-at, .optimized-at {
         font-style: italic;
       }
 

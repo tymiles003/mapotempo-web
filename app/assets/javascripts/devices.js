@@ -23,7 +23,7 @@
    });
 
    function set_last_sent_at(route) {
-     var container = $(".last-sent-at[data-route-id='" + route.id + "']", context);
+     var container = $("[data-route_id='" + route.id + "'] .last-sent-at", context);
      route.i18n = mustache_i18n;
      container.html(SMT['routes/last_sent_at'](route));
      route.last_sent_at ? container.show() : container.hide();
@@ -36,7 +36,7 @@
    }
 
    function clear_last_sent_at(route) {
-     $(".last-sent-at[data-route-id='" + route.id + "']", context).hide();
+     $("[data-route_id='" + route.id + "'] .last-sent-at", context).hide();
    }
 
    function clear_planning_routes_last_sent_at(routes) {

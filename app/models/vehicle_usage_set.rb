@@ -124,6 +124,7 @@ class VehicleUsageSet < ActiveRecord::Base
 
           vehicle_usage.routes.each{ |route|
             route.out_of_date = true
+            route.optimized_at = nil
           }
         end
       }

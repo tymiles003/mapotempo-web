@@ -73,6 +73,7 @@ class Store < Location
 
       (routes_usage_set + routes_usage).flatten.uniq.each{ |route|
         route.out_of_date = true
+        route.optimized_at = nil
         route.save!
       }
     end

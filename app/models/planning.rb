@@ -91,14 +91,13 @@ class Planning < ActiveRecord::Base
   def vehicle_usage_remove(vehicle_usage)
     route = routes.find{ |route| route.vehicle_usage == vehicle_usage }
     route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
-      routes[0].stops.build(type: StopVisit.name, visit: stop.visit)
-      routes[0].out_of_date = true
+      routes.find{ |r| !r.vehicle_usage }.stops.build(type: StopVisit.name, visit: stop.visit)
     }
     routes.destroy(route)
   end
 
   def visit_add(visit)
-    routes[0].add(visit)
+    routes.find{ |r| !r.vehicle_usage }.add(visit)
   end
 
   def visit_remove(visit)
@@ -118,18 +117,14 @@ class Planning < ActiveRecord::Base
   def default_routes
     if routes.length != vehicle_usage_set.vehicle_usages.select(&:active).length + 1
       default_empty_routes
-      routes[0].default_stops
+      routes.find{ |r| !r.vehicle_usage }.default_stops
     end
   end
 
   def compute(options = {})
     Planning.transaction do
-      if zoning_out_of_date
-        split_by_zones
-        # In case a zone with speed_multiplicator has changed
-        routes.select(&:vehicle_usage).each{ |r| r.out_of_date = true }
-      end
-      routes.select(&:vehicle_usage).select(&:out_of_date).each{ |r| r.compute(options) }
+      split_by_zones if zoning_out_of_date
+      routes.select{ |r| r.vehicle_usage && r.out_of_date }.each{ |r| r.compute(options) }
     end
   end
 
@@ -260,6 +255,7 @@ class Planning < ActiveRecord::Base
         stop.active = orders.key?(stop.visit_id) && !orders[stop.visit_id].empty?
       }
       route.out_of_date = true
+      route.optimized_at = nil
     }
 
     self.order_array = order_array
@@ -331,7 +327,7 @@ class Planning < ActiveRecord::Base
           vehicles_map[zone.vehicle].add_visits(visits.collect{ |d| [d, true] })
         else
           # Add to unplanned route even if the route is locked
-          routes[0].add_visits(visits.collect{ |d| [d, true] })
+          routes.find{ |r| !r.vehicle_usage }.add_visits(visits.collect{ |d| [d, true] })
         end
       }
     end

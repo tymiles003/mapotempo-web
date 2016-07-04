@@ -7,6 +7,7 @@ json.size route.stops.size
 json.extract! route, :ref, :color, :size_active
 json.color_fake route.color
 json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at
+json.optimized_at_formatted l(route.optimized_at) if route.optimized_at
 (json.quantity route.quantity) if !@planning.customer.enable_orders
 if route.vehicle_usage
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
