@@ -95,6 +95,11 @@
 
     .tablesorter-header-inner {
       padding: 0px;
+
+      .index_toggle_selection {
+        padding: 0px;
+        margin: 0px 0px 2px 0px;
+      }
     }
 
     .tablesorter-header-inner:after {
@@ -102,7 +107,7 @@
     }
 
     .col-title {
-      margin: 5px;
+      margin: 5px 2px;
       display: inline-block;
     }
 
@@ -140,10 +145,10 @@
     td:nth-of-type(1) {
       text-align: center;
       margin: auto;
-      width: 2em;
+      width: 1em;
     }
     th.ref, td.ref {
-      min-width: 4em;
+      min-width: 3.5em;
     }
     th.name, td.name {
       min-width: 6em;
@@ -152,16 +157,16 @@
       }
     }
     th.address, td.address {
-      min-width: 20em;
+      min-width: 19em;
     }
     th.country, td.country {
-      min-width: 4.5em;
+      min-width: 4em;
     }
     th.comment, td.comment {
-      min-width: 7.5em;
+      min-width: 7em;
     }
     th.phone, td.phone {
-      min-width: 4.5em;
+      min-width: 4em;
       max-width: 10em;
     }
     .input-group-tags {
@@ -200,40 +205,46 @@
       border: none;
     }
 
-    .destination .block {
-      display: table;
-      table-layout: fixed;
-
-      > span {
-        display: table-cell;
-        vertical-align: top;
+    .destination {
+      .form-control.input-sm {
+        padding: 3px;
       }
 
-      > span:not(:first-child) input {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
+      .block {
+        display: table;
+        table-layout: fixed;
 
-      > span:not(:last-child) input:last-child {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
+        > span {
+          display: table-cell;
+          vertical-align: top;
+        }
 
-      > span + span input {
-        border-left: 0;
-      }
+        > span:not(:first-child) input {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
 
-      .geocoding_level {
-        width: 30px;
-        padding-top: 4px;
-      }
+        > span:not(:last-child) input:last-child {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
 
-      .no_position {
-        padding-top: 7px;
-        display: inline-block;
-        margin-left: -20px;
-        color: red;
-        font-weight: bold;
+        > span + span input {
+          border-left: 0;
+        }
+
+        .geocoding_level {
+          width: 30px;
+          padding-top: 4px;
+        }
+
+        .no_position {
+          padding-top: 7px;
+          display: inline-block;
+          margin-left: -20px;
+          color: red;
+          font-weight: bold;
+        }
       }
     }
 

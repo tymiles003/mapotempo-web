@@ -56,6 +56,10 @@ input[type="radio"], input[type="checkbox"] {
   margin-right: 3px;
 }
 
+.input-group-btn .btn {
+  color: #428bca;
+}
+
 .input-group-addon.input-sm, .input-group-sm .input-group-btn .btn {
     height: 25px;
     padding: 3px 5px;
