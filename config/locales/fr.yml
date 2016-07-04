@@ -994,7 +994,7 @@ ou cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à
       active_all: "Tous"
       active_reverse: "Inverser"
       active_none: "Aucun"
-      send_to_route_help: "Envoyer cet arrêt à la fin d'une tournée"
+      send_to_route_help: "Envoyer cet arrêt dans une tournée"
       wait: "Temps d'attente :"
       vehicle_speed: "Vitesse :"
       vehicle_last_position_time: "Dernier relevé :"
