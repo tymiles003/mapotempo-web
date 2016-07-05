@@ -13,6 +13,7 @@ class V01::OrderArrays < Grape::API
       nickname: 'massAssignmentOrder'
     params do
       requires :id, type: Integer
+      optional :orders, type: JSON
     end
     patch ':id' do
       if params[:orders]

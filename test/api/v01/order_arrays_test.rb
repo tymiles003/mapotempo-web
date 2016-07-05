@@ -16,8 +16,7 @@ class V01::OrderArraysTest < ActiveSupport::TestCase
     order_array = order_arrays :order_array_one
     assert order_array.orders[0].reload.products.any?
     params = order_array.order_ids.each_with_object({}){|order_id, hash| hash[order_id] = { product_ids: [] }}
-    params = params.to_json.to_s # JSON.stringify equivalent
-    patch api("order_arrays/#{order_array.id}.json", { orders: params, api_key: 'testkey1' })
+    patch api("order_arrays/#{order_array.id}.json", { orders: params.to_json, api_key: 'testkey1' })
     assert last_response.ok?
     assert order_array.orders[0].reload.products.none?
   end

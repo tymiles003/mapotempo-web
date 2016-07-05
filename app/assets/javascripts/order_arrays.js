@@ -306,10 +306,10 @@ var order_arrays_edit = function(params) {
       build_total(undefined, $('#order_array table'), shift);
 
       $.ajax({
-        type: "patch",
-        data: JSON.stringify({
+        type: "PATCH",
+        data: {
           orders: orders
-        }),
+        },
         contentType: "application/json",
         url: '/api/0.1/order_arrays/' + order_array_id + '.json',
         beforeSend: beforeSendWaiting,
