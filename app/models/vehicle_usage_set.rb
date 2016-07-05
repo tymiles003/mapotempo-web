@@ -27,7 +27,6 @@ class VehicleUsageSet < ActiveRecord::Base
   nilify_blanks
   auto_strip_attributes :name
   validates :customer, presence: true
-  validates :store_start, presence: true
   validates :name, presence: true
   validates_time :open, presence: true
   validates_time :close, presence: true, after: :open
@@ -43,7 +42,6 @@ class VehicleUsageSet < ActiveRecord::Base
 
   after_initialize :assign_defaults, if: :new_record?
   before_validation :nilify_times
-  before_save :set_stores
   before_update :update_out_of_date
 
   amoeba do

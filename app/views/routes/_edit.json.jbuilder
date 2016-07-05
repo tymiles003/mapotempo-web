@@ -31,6 +31,7 @@ json.store_start do
   (json.geocoded true) if route.vehicle_usage.default_store_start.position?
   (json.error true) if !route.vehicle_usage.default_store_start.position?
 end if route.vehicle_usage && route.vehicle_usage.default_store_start
+previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
 first_active_free = nil
 route.stops.select{ |s| s.is_a?(StopVisit) }.reverse_each{ |stop|
   if !stop.active
@@ -45,8 +46,8 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
   out_of_capacity |= stop.out_of_capacity
   out_of_drive_time |= stop.out_of_drive_time
   no_geolocalization |= stop.is_a?(StopVisit) && !stop.position?
-  no_path |= stop.position? && route.vehicle_usage && !stop.trace && stop.active
-  (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || (stop.position? && route.vehicle_usage && !stop.trace && stop.active) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
+  no_path |= stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
+  (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || (stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time
   json.edit_planning true
   json.stop_id stop.id
   json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
@@ -59,7 +60,7 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
   (json.close2 l(stop.close2.utc, format: :hour_minute)) if stop.close2
   (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
   (json.geocoded true) if stop.position?
-  (json.no_path true) if stop.position? && route.vehicle_usage && !stop.trace && stop.active
+  (json.no_path true) if stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
   (json.time l(stop.time.utc, format: :hour_minute)) if stop.time
   (json.active true) if stop.active
   (json.number number += 1) if route.vehicle_usage && stop.active
@@ -109,6 +110,7 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
     end
   end
   json.duration duration if duration
+  previous_with_pos = stop if stop.position?
 end
 json.store_stop do
   json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size

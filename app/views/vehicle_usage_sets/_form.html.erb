@@ -30,9 +30,8 @@
     <label class="col-md-2 control-label"><%= t '.stores' %></label>
     <div class="col-md-6">
       <div class="input-group">
-        <%= collection_select :vehicle_usage_set, :store_start_id, @vehicle_usage_set.customer.stores, :id, :name, {}, {
-          class: 'form-control width_1_2',
-          required: true } %>
+        <%= collection_select :vehicle_usage_set, :store_start_id, @vehicle_usage_set.customer.stores, :id, :name, {include_blank: t('vehicle_usage_sets.form.store.none')}, {
+          class: 'form-control width_1_2' } %>
         <%= collection_select :vehicle_usage_set, :store_stop_id, @vehicle_usage_set.customer.stores, :id, :name, {
           include_blank: t('vehicle_usage_sets.form.store.none')}, {
           class: 'form-control width_1_2' } %>

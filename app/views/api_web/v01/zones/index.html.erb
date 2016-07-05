@@ -25,8 +25,8 @@ controller.js(
   zoning_id: @zoning.id,
   zone_ids: @zones ? @zones.collect(&:id) : nil,
   map_layers: Hash[layers.map{ |l| l[:name] }.zip(layers)],
-  map_lat: (@vehicle_usage_set && @vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lat }.try(:lat)) || @zoning.customer.default_position[:lat],
-  map_lng: (@vehicle_usage_set && @vehicle_usage_set.vehicle_usages.collect(&:default_store_start).find{ |s| s.lng }.try(:lng)) || @zoning.customer.default_position[:lng],
+  map_lat: (@vehicle_usage_set && @vehicle_usage_set.vehicle_usages.collect(&:default_store_start).compact.find{ |s| s.lat }.try(:lat)) || @zoning.customer.default_position[:lat],
+  map_lng: (@vehicle_usage_set && @vehicle_usage_set.vehicle_usages.collect(&:default_store_start).compact.find{ |s| s.lng }.try(:lng)) || @zoning.customer.default_position[:lng],
   map_attribution: current_user.layer.map_attribution,
   vehicles_map: Hash[@zoning.customer.vehicles.collect{ |vehicle|
     [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]

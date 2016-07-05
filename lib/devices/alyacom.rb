@@ -23,15 +23,14 @@ class Alyacom < DeviceBase
   end
 
   def send_route(customer, route, _options = {})
-    store = route.vehicle_usage.default_store_start
+    position = route.vehicle_usage.default_store_start
     staff = {
       id: route.vehicle_usage.vehicle.name,
       name: route.vehicle_usage.vehicle.name,
-      street: store && store.street,
-      postalcode: store && store.postalcode,
-      city: store && store.city
+      street: position && position.street,
+      postalcode: position && position.postalcode,
+      city: position && position.city
     }
-    position = route.vehicle_usage.default_store_start
     waypoints = route.stops.select(&:active).select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
       position = stop if stop.position?
       if position.nil? || position.lat.nil? || position.lng.nil? || stop.time.nil?

@@ -145,6 +145,7 @@ class Route < ActiveRecord::Base
           raise
         end
       end
+      traces[0] = [0, 0, nil] if !vehicle_usage.default_store_start || !vehicle_usage.default_store_start.position?
 
       # Recompute Stops
       stops_time_windows = {}

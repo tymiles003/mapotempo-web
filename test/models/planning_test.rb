@@ -340,8 +340,12 @@ class PlanningTest < ActiveSupport::TestCase
     r.planning.customer.stores.update_all lat: nil, lng: nil
     r.compute
     r.stops.sort_by(&:index).each_with_index do |stop, index|
-      if index.zero? || index == r.stops.length - 1
+      if index.zero?
         # Can't trace path, store has no lat / lng to start with
+        assert_equal 0, stop.distance
+        assert_equal v.default_open, stop.time
+        assert stop.trace.nil?
+      elsif index == r.stops.length - 1
         assert stop.distance.nil? && stop.trace.nil?
       else
         assert_equal 1.0, stop.distance
