@@ -78,7 +78,7 @@ class OptimizerWrapper
           cost_time_multiplier: dimension == 'time' ? 1 : 0,
           cost_waiting_time_multiplier: dimension == 'time' ? 1 : 0,
           cost_late_multiplier: dimension == 'time' ? soft_upper_bound : 0,
-          rests: rests.each_with_index.collect{ |rest, index| "r#{index + services.size + 1 + 1}" }
+          rest_ids: rests.each_with_index.collect{ |rest, index| "r#{index + services.size + 1 + 1}" }
         }],
         configuration: {
           preprocessing: {
