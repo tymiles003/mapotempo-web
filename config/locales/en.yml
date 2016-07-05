@@ -786,6 +786,7 @@ en:
         advisable: "advised"
         optionnal: "optionnal"
       not_csv: "Imported file is not a CSV"
+      empty_file: "content is blank"
       too_many_lines: "Stop import, too many lines (max: %{n})."
       missing_name: "\"name\" missing at record %{line}."
       missing_location: "\"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."

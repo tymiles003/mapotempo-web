@@ -109,6 +109,11 @@ class ImportCsv
       contents = CharlockHolmes::Converter.convert(contents, detection[:encoding], 'UTF-8')
     end
 
+    if contents.blank?
+      errors[:file] << I18n.t('destinations.import_file.empty_file')
+      return false
+    end
+
     line = contents.lines.first
     splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
     _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
