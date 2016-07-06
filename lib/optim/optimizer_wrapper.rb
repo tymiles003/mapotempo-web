@@ -80,11 +80,15 @@ class OptimizerWrapper
           cost_late_multiplier: dimension == 'time' ? soft_upper_bound : 0,
           rests: rests.each_with_index.collect{ |rest, index| "r#{index + services.size + 1 + 1}" }
         }],
-        resolution: {
-          preprocessing_cluster_threshold: cluster_threshold,
-          preprocessing_prefer_short_segment: true,
-          duration: optimize_time,
-         }
+        configuration: {
+          preprocessing: {
+            cluster_threshold: cluster_threshold,
+            prefer_short_segment: true
+          },
+          resolution: {
+            duration: optimize_time
+          }
+        }
       }
 
       resource_vrp = RestClient::Resource.new(@url + '/vrp/submit.json')
