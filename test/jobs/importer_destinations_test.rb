@@ -320,4 +320,10 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
+  test 'Import Blank CSV File' do
+    assert_no_difference('Destination.count', 1) do
+      ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/blank.csv', 'text.csv')).import
+    end
+  end
+
 end
