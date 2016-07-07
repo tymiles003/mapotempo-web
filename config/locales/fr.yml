@@ -569,6 +569,10 @@ fr:
       new: "Nouveau compte client"
       map: "Carte"
       no_test: "hors test"
+      status: "Statut"
+      status_no_user: "Pas d'utilisateur"
+      status_no_sign_in_user: "Utilisateur jamais connecté"
+      status_inactive_user: "Utilisateur inactif"
     new:
       title: "Nouveau compte client"
     destroy:

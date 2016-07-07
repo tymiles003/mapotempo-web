@@ -569,6 +569,10 @@ en:
       new: "New Account"
       map: "Map"
       no_test: "not in test"
+      status: "Status"
+      status_no_user: "No user"
+      status_no_sign_in_user: "User never logged"
+      status_inactive_user: "Inactive user"
     new:
       title: "New Account"
     destroy:

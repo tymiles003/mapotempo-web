@@ -42,6 +42,7 @@
       <th><%= t 'activerecord.attributes.customer.max_vehicles' %></th>
       <th><%= t 'activerecord.attributes.customer.test' %></th>
       <th><%= t 'activerecord.attributes.customer.jobs' %></th>
+      <th><%= t '.status' %></th>
       <th><%= t 'activerecord.attributes.customer.end_subscription' %></th>
       <th></th>
     </tr>
@@ -61,9 +62,20 @@
           <%= render 'job', customer: customer, job: customer.job_store_geocoding %>
         </td>
         <td>
+          <% if customer.users.empty? %>
+            <span title="<%= t '.status_no_user' %>"><i class="fa fa-user-times fa-fw"></i><i class="fa fa-warning" style="color: orange;"></i></span>
+          <% else
+            max = customer.users.collect(&:last_sign_in_at).compact.max
+            if !max %>
+            <span title="<%= t '.status_no_sign_in_user' %>"><i class="fa fa-user-plus fa-fw"></i></span>
+          <% elsif max < Time.now - 61.days %>
+            <span title="<%= t '.status_inactive_user' %>"><i class="fa fa-user fa-fw"></i>Zz (<%= l max.to_date %>)</span>
+          <% end end %>
+        </td>
+        <td>
           <% if customer.end_subscription %>
             <%= l(customer.end_subscription) %>
-            <% if customer.end_subscription < Time.now + 86400 * 30 && customer.end_subscription > Time.now %>
+            <% if customer.end_subscription < Time.now + 30.days && customer.end_subscription > Time.now %>
               <i class="fa fa-warning" style="color: orange;"></i>
             <% end %>
           <% end %>
