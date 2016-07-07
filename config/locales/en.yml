@@ -27,7 +27,7 @@ en:
     hour: "Hour"
     minute: "Minute"
     formats:
-      default: "%d %B %Y %H:%M:%S"
+      default: "%B %d, %Y (%H:%M:%S)"
       long: "%A %d %B %Y %H:%M"
       short: "%d %b %H:%M"
       hour_minute: "%H:%M"
