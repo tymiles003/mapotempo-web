@@ -39,12 +39,17 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
       route = Route.find(route.id) # IMPORTANT: Lower Delayed Job Memory Usage
       i = ii = 0
       optimum = route.optimize(Proc.new { |computed, count|
-        i += computed
-        if i > ii + 50
-          @job.progress = "#{i * 100 / count};0;" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
+        if computed
+          i += computed
+          if i > ii + 50
+            @job.progress = "#{i * 100 / count};0;" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
+            @job.save
+            Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
+            ii = i
+          end
+        else
+          @job.progress = "-1;0;" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
           @job.save
-          Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-          ii = i
         end
       }) { |matrix, services, stores, rests, dimension|
         @job.progress = '100;0;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
@@ -52,7 +57,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
 
         # Optimize
-        @job.progress = "100;#{optimize_time * 1000}ms#{routes_count};" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
+        @job.progress = "100;" + (routes[0].planning.customer.optimization_time ? "#{optimize_time * 1000}ms#{routes_count};" : '-1;') + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         @job.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
         optimum = Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, stores, rests, optimize_time * 1000, soft_upper_bound, route.planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size)

@@ -28,7 +28,8 @@ class RouterOsrm < Router
     [distance, time, trace]
   end
 
-  def matrix(row, column, speed_multiplicator, dimension = :time, _options = {}, &_block)
+  def matrix(row, column, speed_multiplicator, dimension = :time, _options = {}, &block)
+    block.call(nil, nil) if block
     time_multiplicator = 1.0 / speed_multiplicator
     url = send('url_' + dimension.to_s)
     if !url

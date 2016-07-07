@@ -26,7 +26,8 @@ class RouterWrapper < Router
     Mapotempo::Application.config.router_wrapper.compute_batch(url_time, mode, dimension, segments, sanitize_options(options, speed_multiplicator: speed_multiplicator))
   end
 
-  def matrix(row, column, speed_multiplicator, dimension = :time, options = {}, &_block)
+  def matrix(row, column, speed_multiplicator, dimension = :time, options = {}, &block)
+    block.call(nil, nil) if block
     Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, [dimension], row, column, sanitize_options(options, speed_multiplicator: speed_multiplicator))[0].map{ |row|
       row.map{ |v| [v, v] }
     }
