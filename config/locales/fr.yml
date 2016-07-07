@@ -900,7 +900,7 @@ fr:
       optimize_confirm: "Lancer un calcul d'optimisation ?"
       optimize_complete: "Optimisation terminée"
       optimize_failed: "Échec lors de l'optimisation"
-      zoning_confirm: "Enregistrer et appliquer le nouveau zonage ?"
+      zoning_confirm: "Enregistrer et appliquer le nouveau zonage ? Les tournées du planning vont être modifiées"
       page_change_zoning_confirm: "Souhaitez-vous quitter la page et perdre les changements de zonage ?"
       route_placeholder: "Réf. de la tournée"
       service_time: "Durées de service"
@@ -966,6 +966,11 @@ fr:
       map:
         zoom_in: "Augmenter le zoom"
         zoom_out: "Diminuer le zoom"
+      zonings:
+        label: "Zonages"
+        success: "Zonages appliqués avec succès"
+        success: "Échec lors de l'application des zonages"
+        action: "Appliquer Zonages"
       reverse_order: "Inverser l'ordre des arrêts"
       open_planning_panel: "Déployer le panneau du planning"
       collapse_planning_panel: "Minifier le panneau du planning"

@@ -21,7 +21,8 @@ require 'zip'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop,
+    :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order, :apply_zonings]
 
   include PlanningExport
 
@@ -275,6 +276,25 @@ class PlanningsController < ApplicationController
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def apply_zonings
+    @planning.zonings = params[:planning] && planning_params[:zoning_ids] ? current_user.customer.zonings.find(planning_params[:zoning_ids]) : []
+    @planning.zoning_out_of_date = true
+    @planning.compute
+    if @planning.save && @planning.reload
+      respond_to do |format|
+        format.json do
+          render action: :show
+        end
+      end
+    else
+      respond_to do |format|
+        format.json do
+          render json: @planning.errors, status: :unprocessable_entity
+        end
       end
     end
   end

@@ -58,12 +58,14 @@ var modal_options = function() {
 };
 
 var bootstrap_dialog = function(options) {
-  $('#default-modal').find('.modal-title').html(options.title);
-  $('#default-modal').find('.modal-body').html(options.message);
+  var default_modal = $('#default-modal').clone();
+  default_modal.find('.modal-title').html(options.title);
+  default_modal.find('.modal-body').html(options.message);
   if (options.icon) {
-    $('#default-modal').find('i.fa').addClass(options.icon).show();
-  }
-  return $('#default-modal');
+    default_modal.find('i.fa').addClass(options.icon).show();
+  };
+  $("body").append(default_modal);
+  return default_modal;
 };
 
 var mapInitialize = function(params) {

@@ -97,6 +97,7 @@ Rails.application.routes.draw do
     get 'optimize_each' => 'plannings#optimize_each_routes'
     get ':route_id/optimize' => 'plannings#optimize_route'
     member do
+      patch :apply_zonings
       patch :automatic_insert
     end
   end
@@ -107,7 +108,7 @@ Rails.application.routes.draw do
 
   resources :routes
 
-  get '/zonings/new/planning/:planning_id' => 'zonings#new'
+  get '/zonings/new/planning/:planning_id' => 'zonings#new', as: :new_zonings_planning
   resources :zonings do
     get 'edit/planning/:planning_id' => 'zonings#edit'
     get 'planning/:planning_id' => 'zonings#show'

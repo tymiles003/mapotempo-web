@@ -324,4 +324,20 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal 1, JSON.parse(response.body)['routes'].size
   end
+
+  test 'Apply Zonings' do
+    planning = plannings :planning_one
+    zoning = zonings :zoning_one
+    patch :apply_zonings, id: @planning.id, format: :json
+    assert_response :success
+    assert planning.zonings.empty?
+    assert !planning.out_of_date
+    assert !planning.zoning_out_of_date
+    patch :apply_zonings, id: @planning.id, format: :json, planning: { zoning_ids: [zoning.id] }
+    assert_response :success
+    planning.reload
+    assert_equal [zoning.id], planning.zonings.map(&:id)
+    assert !planning.out_of_date
+    assert !planning.zoning_out_of_date
+  end
 end

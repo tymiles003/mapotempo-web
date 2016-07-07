@@ -65,7 +65,50 @@ var plannings_edit = function(params) {
     layers_cluster = {},
     routes_layers,
     routes_layers_cluster,
-    initial_zoning = $("#planning_zoning_ids").val() || [];
+    zoning_ids = getZonings();
+
+  function getZonings() {
+    return $("#planning_zoning_ids").val() || [];
+  }
+
+  function eqArrays(a, b) {
+    return (a.length == b.length) && a.every(function(item, index) {
+      return item === b[index];
+    });
+  }
+
+  var apply_zoning_modal = bootstrap_dialog({
+    title: I18n.t('plannings.edit.dialog.zoning.title'),
+    icon: 'fa-bars',
+    message: SMT['modals/default_with_progress']({
+      msg: I18n.t('plannings.edit.dialog.zoning.in_progress')
+    })
+  });
+
+  $('.update-zonings-form').submit(function(e) {
+    e.preventDefault();
+    if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) { return };
+    $.ajax({
+      url: $(e.target).attr('action'),
+      type: 'PATCH',
+      data: { planning: { zoning_ids: getZonings() }},
+      dataType: 'json',
+      beforeSend: function(jqXHR) {
+        apply_zoning_modal.modal('show');
+      },
+      complete: function(xhr, status) {
+        apply_zoning_modal.modal('hide');
+      },
+      success: function(data, textStatus, jqXHR) {
+        updatePlanning(data);
+        notice(I18n.t('plannings.edit.zonings.success'));
+        zoning_ids = getZonings();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        stickyError(I18n.t('plannings.edit.zonings.fail'));
+      }
+    });
+  });
 
   var allRoutesVehicles = $.map(routes_array, function(route) {
     if (route.vehicle_usage_id) {
@@ -1278,20 +1321,6 @@ var plannings_edit = function(params) {
       });
     });
   }
-
-  $("form").submit(function(event) {
-    var new_zoning = $("#planning_zoning_ids").val();
-    if (new_zoning && initial_zoning.join(',') != new_zoning.join(',')) {
-      if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) {
-        return false;
-      }
-      bootstrap_dialog({
-        title: I18n.t('plannings.edit.dialog.zoning.title'),
-        icon: 'fa-bars',
-        message: I18n.t('plannings.edit.dialog.zoning.in_progress')
-      }).modal('show');
-    }
-  });
 
   $('#isochrone_size').timeEntry({
     show24Hours: true,

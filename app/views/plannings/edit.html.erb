@@ -16,6 +16,13 @@
 
       <%= render 'form' %>
 
+      <%= twitter_bootstrap_form_for [:apply_zonings, @planning], { layout: :horizontal, default_div_class: 'col-lg-10 col-md-10', html: { class: 'form-horizontal update-zonings-form' }} do |f| %>
+        <%= zoning_select f, @planning, t('plannings.edit.zonings.label') %>
+        <%= f.actions do %>
+          <%= f.submit t('plannings.edit.zonings.action'), { class: 'btn btn-default pull-left' }, 'fa-object-ungroup' %>
+        <% end %>
+      <% end %>
+
       <div id="global_tools" class="btn-group pull-right">
         <div class="btn-group">
           <button type="button" class="btn btn-primary btn-sm" id="optimize_each" title="<%= t '.optimize_each' %>">
