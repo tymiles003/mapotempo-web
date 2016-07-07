@@ -15,6 +15,9 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+
+#RestClient.log = $stdout
+
 class Alyacom < DeviceBase
   def test_list(_customer, params)
     RestClient.get [api_url, params[:alyacom_association], 'users'].join('/'), params: { apiKey: params[:alyacom_api_key] }
@@ -72,7 +75,7 @@ class Alyacom < DeviceBase
     update_staffs customer, [staff]
     update_users customer, waypoints.collect{ |w| w[:user] }
 
-    res = Hash[get(customer, 'planning', fromDate: planning_date.to_i * 1000, idStaff: staff[:id]).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
+    res = Hash[get(customer, 'planning', fromDate: planning_date.to_i, idStaff: staff[:id]).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     plannings = waypoints.collect{ |waypoint|
       planning = waypoint[:planning]
@@ -89,7 +92,7 @@ class Alyacom < DeviceBase
     }
 
     plannings += res.select{ |_k, planning|
-      Date.parse(planning['start']) == planning_date
+      Date.parse(planning['start']) == planning_date.to_date
     }.collect{ |_k, planning|
       planning['deleted'] = true
       planning
@@ -170,13 +173,15 @@ class Alyacom < DeviceBase
         end
       end
       response = JSON.parse(response)
+      if response.key?('data') && !response['data'].empty?
+        data += response['data'].select{ |i| !i['deleted'] }
+      end
+
       if response.key?('data') && !response['data'].empty? && !response['data'][-1]['deleted'] # Stop if last page items are deleted
-        data += response['data']
         next_ = response['next']
       else
         next_ = nil
       end
-
     end while !next_.nil?
     data
   end
