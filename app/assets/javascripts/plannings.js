@@ -1413,7 +1413,7 @@ var plannings_edit = function(params) {
   if (localStorage.spreadsheetColumnsExport) {
     columns_export = localStorage.spreadsheetColumnsExport.split('|');
     $.each(params.spreadsheet_columns, function(i, c) {
-      if (columns_export.indexOf(c) < 0 && columns_skip && columns_skip.indexOf(c) < 0)
+      if (columns_export.indexOf(c) < 0 && (!columns_skip || columns_skip.indexOf(c) < 0))
         columns_export.push(c);
     });
   }
