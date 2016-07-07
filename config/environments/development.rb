@@ -95,7 +95,7 @@ Rails.application.configure do
     nil
   )
 
-  config.devices.alyacom.api_url = 'http://preprod.intra.alyacom.fr/ws'
+  config.devices.alyacom.api_url = 'http://partners.alyacom.fr/ws'
   config.devices.masternaut.api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
   config.devices.masternaut.api_key = nil
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'

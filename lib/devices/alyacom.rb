@@ -170,7 +170,7 @@ class Alyacom < DeviceBase
         end
       end
       response = JSON.parse(response)
-      if response.key('data') && !response['data'].empty? && !response['data'][-1]['deleted']
+      if response.key?('data') && !response['data'].empty? && !response['data'][-1]['deleted'] # Stop if last page items are deleted
         data += response['data']
         next_ = response['next']
       else
