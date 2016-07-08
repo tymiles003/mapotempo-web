@@ -67,6 +67,9 @@ a.disabled {
   cursor: default;
 }
 
+.navbar-static-top {
+  z-index: 2;
+}
 .navbar-brand {
   padding: 5px;
 }
@@ -298,7 +301,7 @@ span.color[data-color=''][data-selected]:after {
   .sidebar {
     top: $navbar-height + $sidebar-margins;
     transition: right $transition-duration, top $transition-duration, width $transition-duration, height $transition-duration;
-    z-index: 3;
+    z-index: 1;
 
     .sidebar-tabs {
       width: 0px;
