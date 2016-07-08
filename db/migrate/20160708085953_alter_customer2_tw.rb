@@ -1,7 +1,6 @@
 class AlterCustomer2Tw < ActiveRecord::Migration
   def self.up
     Customer.all.each{ |c|
-      puts '### c.advanced_options ' + c.advanced_options.inspect
       if c.advanced_options && (c.advanced_options.include?('"open":') || c.advanced_options.include?('"close":'))
         c.advanced_options = c.advanced_options.gsub('"open":', '"open1":')
         c.advanced_options = c.advanced_options.gsub('"close":', '"close1":')
