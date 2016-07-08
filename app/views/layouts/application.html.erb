@@ -36,7 +36,7 @@
                     <li><%= link_to new_planning_path do %><i class="fa fa-plus fa-fw"></i> <%= t 'all.verb.new' %><% end %></li>
                     <li><%= link_to plannings_path do %><i class="fa fa-calendar-o fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
                     <li class="divider"></li>
-                    <li><%= link_to zonings_path do %><i class="fa fa-adjust fa-fw"></i> <%= t 'zonings.menu.zonings' %><% end %></li>
+                    <li><%= link_to zonings_path do %><i class="fa fa-object-ungroup fa-fw"></i> <%= t 'zonings.menu.zonings' %><% end %></li>
                     <li class="divider"></li>
                     <% current_user.customer.plannings.select(&:id).each do |planning| %>
                       <li><%= link_to edit_planning_path(planning) do %><i class="fa fa-calendar fa-fw"></i> <%= planning.name %><% end %></li>
