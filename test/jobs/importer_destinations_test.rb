@@ -299,6 +299,16 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
+  test 'should import deprecated columns' do
+    assert_no_difference('Planning.count') do
+      assert_difference('Visit.count', 1) do
+        assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_deprecated_columns.csv', 'text.csv')).import
+      end
+    end
+
+    assert_equal '2000-01-01 15:00:00 UTC', Visit.last.open1.to_s
+  end
+
   test 'Import Destinations With French Separator (Commas)' do
     [:en, :fr].each do |locale|
       I18n.locale = I18n.default_locale = locale
