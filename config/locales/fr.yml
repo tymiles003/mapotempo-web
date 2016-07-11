@@ -974,7 +974,7 @@ fr:
       zonings:
         label: "Zonages"
         success: "Zonages appliqués avec succès"
-        success: "Échec lors de l'application des zonages"
+        fail: "Échec lors de l'application des zonages"
         action: "Appliquer Zonages"
       reverse_order: "Inverser l'ordre des arrêts"
       open_planning_panel: "Déployer le panneau du planning"
