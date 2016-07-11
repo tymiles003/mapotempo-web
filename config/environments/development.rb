@@ -60,7 +60,7 @@ Rails.application.configure do
     'http://optim.mapotempo.com:1791/0.1',
     'demo'
   )
-  config.optimize_time = 30
+  config.optimize_time = nil
   config.optimize_cluster_size = 0
   config.optimize_soft_upper_bound = 3
 

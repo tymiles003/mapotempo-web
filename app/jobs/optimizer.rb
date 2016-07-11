@@ -59,7 +59,7 @@ class Optimizer
       end
     else
       optimum = route.optimize(nil) { |matrix, services, stores, rests, dimension|
-        Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, stores, rests, optimize_time * 1000, soft_upper_bound, planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size)
+        Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, stores, rests, optimize_time ? optimize_time * 1000 : nil, soft_upper_bound, planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size)
       }
       if optimum
         route.order(optimum)
