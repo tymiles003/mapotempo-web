@@ -76,7 +76,11 @@
     }
   }
 
-  .btn[data-id='store_icon'] {
-    color: #555;
+  #store_icon + div {
+    z-index: 1000;
+
+    .btn[data-id='store_icon'] {
+      color: #555;
+    }
   }
 }
