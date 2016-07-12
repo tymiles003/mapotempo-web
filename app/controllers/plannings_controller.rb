@@ -188,24 +188,26 @@ class PlanningsController < ApplicationController
       route_ids = stops.any? ? [stops[0].route_id] : []
     end
 
-    success = true
-    stops.each do |stop|
-      route = @planning.automatic_insert stop
-      if route
-        route_ids << route.id if route_ids.exclude?(route.id)
-      else
-        success = false
-        break
-      end
-    end
-
-    respond_to do |format|
-      format.json do
-        if success && @planning.save && @planning.reload
-          @routes = @planning.routes.select{ |r| route_ids.include? r.id }
-          render action: :show
+    Planning.transaction do
+      success = true
+      stops.each do |stop|
+        route = @planning.automatic_insert stop
+        if route
+          route_ids << route.id if route_ids.exclude?(route.id)
         else
-          render nothing: true, status: :unprocessable_entity
+          success = false
+          break
+        end
+      end
+
+      respond_to do |format|
+        format.json do
+          if success && @planning.save! && @planning.reload
+            @routes = @planning.routes.select{ |r| route_ids.include? r.id }
+            render action: :show
+          else
+            render nothing: true, status: :unprocessable_entity
+          end
         end
       end
     end
