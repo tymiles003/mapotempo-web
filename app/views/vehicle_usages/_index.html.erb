@@ -3,7 +3,7 @@
     <th><%= t 'activerecord.attributes.vehicle.name' %></th>
     <th><%= t 'activerecord.attributes.vehicle.router_id' %></th>
     <th><%= t 'activerecord.attributes.vehicle.emission' %> - <%= t 'activerecord.attributes.vehicle.consumption' %></th>
-    <th><%= t 'activerecord.attributes.vehicle.capacity' %></th>
+    <th><%= t 'vehicle_usages.index.capacity' %></th>
     <th><%= t 'vehicle_usages.index.stores' %></th>
     <th><%= t 'vehicle_usage_sets.index.time' %></th>
     <th><%= t 'vehicle_usages.index.devices' %></th>
@@ -23,7 +23,8 @@
           <%= vehicle_usage_emission_consumption vehicle_usage %>
         </td>
         <td>
-          <%= vehicle_usage.vehicle.capacity %>&nbsp;<%= vehicle_usage.vehicle.capacity_unit %>
+          <%= vehicle_usage.vehicle.capacity1_1 %>&nbsp;<%= vehicle_usage.vehicle.capacity1_1_unit %>
+          <%= vehicle_usage.vehicle.capacity1_2 %>&nbsp;<%= vehicle_usage.vehicle.capacity1_2_unit %>
         </td>
         <td>
           <%= vehicle_usage_store_name vehicle_usage %>

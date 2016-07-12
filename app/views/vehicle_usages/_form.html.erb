@@ -34,16 +34,23 @@
           </div>
         </div>
         <div id="vehicle_usage_vehicle_capacity_input" class="form-group">
-          <label class="sr-only" for="vehicle_usage_vehicle_capacity"><%= t 'activerecord.attributes.vehicle.emission' %></label>
-          <label class="sr-only" for="vehicle_usage_vehicle_capacity_unit"><%= t 'activerecord.attributes.vehicle.consumption' %></label>
-          <label class="col-md-2 control-label"><%= t 'activerecord.attributes.vehicle.capacity' %></label>
+          <label class="sr-only" for="vehicle_usage_vehicle_capacity"><%= t 'activerecord.attributes.vehicle.capacity1_1' %></label>
+          <label class="sr-only" for="vehicle_usage_vehicle_capacity1_1_unit"><%= t 'activerecord.attributes.vehicle.consumption' %></label>
+          <label class="sr-only" for="vehicle_usage_vehicle_capacity"><%= t 'activerecord.attributes.vehicle.capacity1_2' %></label>
+          <label class="sr-only" for="vehicle_usage_vehicle_capacity1_2_unit"><%= t 'activerecord.attributes.vehicle.consumption' %></label>
+          <label class="col-md-2 control-label"><%= t 'vehicles.form.capacity.label' %></label>
           <div class="col-md-6">
             <div class="input-group">
-              <%= number_field 'vehicle_usage[vehicle]', :capacity, min: 1, value: @vehicle_usage.vehicle.capacity, class: 'form-control width_1_2' %>
-              <%= text_field 'vehicle_usage[vehicle]', :capacity_unit, value: @vehicle_usage.vehicle.capacity_unit, class: 'form-control width_1_2' %>
+              <%= number_field 'vehicle_usage[vehicle]', :capacity1_1, min: 1, value: @vehicle_usage.vehicle.capacity1_1, class: 'form-control width_1_2' %>
+              <%= text_field 'vehicle_usage[vehicle]', :capacity1_1_unit, value: @vehicle_usage.vehicle.capacity1_1_unit, class: 'form-control width_1_2', placeholder: t('vehicles.form.capacity_unit.placeholder') %>
               <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-archive fa-fw') %></span>
             </div>
-            <p class="help-block"><%= t 'vehicles.form.capacity.help' %> - <%= t 'vehicles.form.capacity_unit.help' %></p>
+            <div class="input-group"<% if !@vehicle_usage.vehicle.capacity1_2 && !@vehicle_usage.vehicle.capacity1_2_unit %> style="display: none;"<% end %>>
+              <%= number_field 'vehicle_usage[vehicle]', :capacity1_2, min: 1, value: @vehicle_usage.vehicle.capacity1_2, class: 'form-control width_1_2' %>
+              <%= text_field 'vehicle_usage[vehicle]', :capacity1_2_unit, value: @vehicle_usage.vehicle.capacity1_2_unit, class: 'form-control width_1_2', placeholder: t('vehicles.form.capacity_unit.placeholder') %>
+              <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-archive fa-fw') %></span>
+            </div>
+            <p class="help-block"><%= t 'vehicles.form.capacity.help' %> - <%= t 'vehicles.form.capacity_unit.help' %><% if !@vehicle_usage.vehicle.capacity1_2 && !@vehicle_usage.vehicle.capacity1_2_unit %> - <a href="#" id="capacity-unit-add"><%= t 'vehicles.form.capacity_unit.add' %></a><% end %></p>
           </div>
         </div>
         <div id="vehicle_router_input" class="form-group">

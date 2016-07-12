@@ -35,7 +35,7 @@ class V01::Vehicles < Grape::API
     def vehicle_params
       p = ActionController::Parameters.new(params)
       p = p[:vehicle] if p.key?(:vehicle)
-      p.permit(:contact_email, :ref, :name, :emission, :consumption, :capacity, :capacity_unit, :color, :tomtom_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator)
+      p.permit(:contact_email, :ref, :name, :emission, :consumption, :capacity1_1, :capacity1_1_unit, :capacity1_2, :capacity1_2_unit, :color, :tomtom_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

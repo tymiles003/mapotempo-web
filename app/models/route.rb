@@ -88,7 +88,7 @@ class Route < ActiveRecord::Base
       if vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?
         last_lat, last_lng = vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng
       end
-      quantity = 0
+      quantity1_1 = quantity1_2 = 0
       router = vehicle_usage.vehicle.default_router
       router_dimension = vehicle_usage.vehicle.default_router_dimension
       stops_time = {}
@@ -178,8 +178,9 @@ class Route < ActiveRecord::Base
             self.end = stop.time + stop.duration
 
             if stop.is_a?(StopVisit)
-              quantity += (stop.visit.quantity || 1)
-              stop.out_of_capacity = vehicle_usage.vehicle.capacity && quantity > vehicle_usage.vehicle.capacity
+              quantity1_1 += (stop.visit.quantity1_1 || 1)
+              quantity1_2 += (stop.visit.quantity1_2 || 1)
+              stop.out_of_capacity = (vehicle_usage.vehicle.capacity1_1 && quantity1_1 > vehicle_usage.vehicle.capacity1_1) || (vehicle_usage.vehicle.capacity1_2 && quantity1_2 > vehicle_usage.vehicle.capacity1_2)
             end
 
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
@@ -453,10 +454,20 @@ class Route < ActiveRecord::Base
     }
   end
 
-  def quantity
+  def quantity1_1
     stops.to_a.sum(0) { |stop|
-      stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.quantity || 1) : 0
+      stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.quantity1_1 || 1) : 0
     }
+  end
+
+  def quantity1_2
+    stops.to_a.sum(0) { |stop|
+      stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.quantity1_2 || 0) : 0
+    }
+  end
+
+  def quantity?
+    quantity1_1 > 0 || quantity1_2 > 0
   end
 
   def active_all

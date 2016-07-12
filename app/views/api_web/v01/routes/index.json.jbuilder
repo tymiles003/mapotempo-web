@@ -14,7 +14,11 @@ json.routes @routes do |route|
   json.size route.stops.size
   json.extract! route, :color, :size_active
   json.ref route.ref if @planning.customer.enable_references
-  (json.quantity route.quantity) if !@planning.customer.enable_orders
+  if !@planning.customer.enable_orders
+    json.quantity route.quantity?
+    json.quantity1_1 route.quantity1_1
+    json.quantity1_2 route.quantity1_2
+  end
   if route.vehicle_usage
     json.vehicle_id route.vehicle_usage.vehicle.id
     json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
@@ -87,7 +91,8 @@ json.routes @routes do |route|
           json.orders order.products.collect(&:code).join(', ')
         end
       else
-        json.extract! visit, :quantity
+        json.extract! visit, :quantity1_1, quantity1_2
+        json.quantity visit.quantity?
       end
       duration = visit.take_over.strftime('%H:%M:%S') if visit.take_over
     elsif stop.is_a?(StopRest)

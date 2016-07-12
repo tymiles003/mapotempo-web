@@ -34,6 +34,13 @@ var vehicle_usages_form = function(params) {
     theme: 'fontawesome'
   });
 
+  $('#capacity-unit-add').click(function(e) {
+    $(this).hide();
+    $('#vehicle_usage_vehicle_capacity_input .input-group').show();
+    e.preventDefault();
+    return false;
+  });
+
   /* API: Devices */
   devices_observe_vehicle(params);
 };

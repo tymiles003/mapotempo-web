@@ -26,10 +26,14 @@ class V01::Entities::VehicleWithoutVehicleUsage < Grape::Entity
   expose(:name, documentation: { type: String })
   expose(:emission, documentation: { type: Integer })
   expose(:consumption, documentation: { type: Integer })
-  expose(:capacity, documentation: { type: Integer })
+  expose(:capacity, documentation: { type: Integer, desc: 'Deprecated, use capacity1_1.' }) { |m| m.capacity1_1 }
+  expose(:capacity_unit, documentation: { type: String, desc: 'Deprecated, use capacity1_1_unit.' }) { |m| m.capacity1_1_unit }
+  expose(:capacity1_1, documentation: { type: Integer })
+  expose(:capacity1_1_unit, documentation: { type: String })
+  expose(:capacity1_2, documentation: { type: Integer })
+  expose(:capacity1_2_unit, documentation: { type: String })
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
   expose(:fuel_type, documentation: { type: String })
-  expose(:capacity_unit, documentation: { type: String })
   expose(:router_id, documentation: { type: Integer })
   expose(:router_dimension, documentation: { type: String, values: ::Router::DIMENSION.keys })
   expose(:speed_multiplicator, documentation: { type: Float })

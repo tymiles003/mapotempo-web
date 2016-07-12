@@ -26,13 +26,15 @@ class V01::Destinations < Grape::API
       if p[:visits]
         p[:visits_attributes] = p[:visits]
       end
-      p = p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :quantity, :take_over, :open, :close, :open1, :close1, :open2, :close2, tag_ids: []])
+      p = p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :quantity, :quantity1_1, :quantity1_2, :take_over, :open, :close, :open1, :close1, :open2, :close2, tag_ids: []])
 
-      # Deals with deprecated open and close
       if p[:visits_attributes]
         p[:visits_attributes].each do |hash|
+          # Deals with deprecated open and close
           hash[:open1] = hash.delete(:open) if !hash[:open1]
           hash[:close1] = hash.delete(:close) if !hash[:close1]
+          # Deals with deprecated quantity
+          hash[:quantity1_1] = hash.delete(:quantity) if !hash[:quantity1_1]
         end
       end
 

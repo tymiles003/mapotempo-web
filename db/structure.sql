@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.3
--- Dumped by pg_dump version 9.5.3
+-- Dumped from database version 9.5.2
+-- Dumped by pg_dump version 9.5.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -878,7 +878,7 @@ CREATE TABLE vehicles (
     name character varying(255),
     emission double precision,
     consumption double precision,
-    capacity integer,
+    capacity1_1 integer,
     color character varying NOT NULL,
     customer_id integer NOT NULL,
     created_at timestamp without time zone,
@@ -888,12 +888,14 @@ CREATE TABLE vehicles (
     masternaut_ref character varying(255),
     speed_multiplicator double precision,
     ref character varying,
-    capacity_unit character varying,
+    capacity1_1_unit character varying,
     contact_email character varying,
     teksat_id character varying,
     orange_id character varying,
     fuel_type character varying,
-    router_dimension integer
+    router_dimension integer,
+    capacity1_2 integer,
+    capacity1_2_unit character varying
 );
 
 
@@ -922,7 +924,7 @@ ALTER SEQUENCE vehicles_id_seq OWNED BY vehicles.id;
 
 CREATE TABLE visits (
     id integer NOT NULL,
-    quantity double precision,
+    quantity1_1 double precision,
     open1 time without time zone,
     close1 time without time zone,
     ref character varying,
@@ -931,7 +933,8 @@ CREATE TABLE visits (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     open2 time without time zone,
-    close2 time without time zone
+    close2 time without time zone,
+    quantity1_2 double precision
 );
 
 
@@ -2360,6 +2363,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160617091911');
 INSERT INTO schema_migrations (version) VALUES ('20160704124035');
 
 INSERT INTO schema_migrations (version) VALUES ('20160708085953');
+
+INSERT INTO schema_migrations (version) VALUES ('20160712133500');
 
 INSERT INTO schema_migrations (version) VALUES ('20160720144957');
 

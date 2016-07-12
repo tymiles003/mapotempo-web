@@ -44,9 +44,11 @@ def destination_hash index
     lat: 44.8798,
     lng: -0.544917,
     visits: [{
-      quantity: 1,
-      open: "08:00",
-      close: "12:00",
+      quantity1_1: 1,
+      open1: "08:00",
+      close1: "12:00",
+      open2: "14:00",
+      close2: "18:00",
       take_over: "00:10:00"
     }]
   }

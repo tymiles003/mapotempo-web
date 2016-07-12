@@ -22,9 +22,11 @@ class V01::Entities::Visit < Grape::Entity
 
   expose(:id, documentation: { type: Integer })
   expose(:destination_id, documentation: { type: Integer })
-  expose(:quantity, documentation: { type: Integer })
-  expose(:open1, documentation: { type: DateTime, desc: 'Deprecated, use open1.' }) { |m| m.open1 && m.open1.utc.strftime('%H:%M:%S') }
-  expose(:close1, documentation: { type: DateTime, desc: 'Deprecated, use close2.' }) { |m| m.close1 && m.close1.utc.strftime('%H:%M:%S') }
+  expose(:quantity, documentation: { type: Integer, desc: 'Deprecated, use quantity1_1.' }) { |m| m.quantity1_1 }
+  expose(:quantity1_1, documentation: { type: Integer })
+  expose(:quantity1_2, documentation: { type: Integer })
+  expose(:open, documentation: { type: DateTime, desc: 'Deprecated, use open1.' }) { |m| m.open1 && m.open1.utc.strftime('%H:%M:%S') }
+  expose(:close, documentation: { type: DateTime, desc: 'Deprecated, use close2.' }) { |m| m.close1 && m.close1.utc.strftime('%H:%M:%S') }
   expose(:open1, documentation: { type: DateTime }) { |m| m.open1 && m.open1.utc.strftime('%H:%M:%S') }
   expose(:close1, documentation: { type: DateTime }) { |m| m.close1 && m.close1.utc.strftime('%H:%M:%S') }
   expose(:open2, documentation: { type: DateTime }) { |m| m.open2 && m.open2.utc.strftime('%H:%M:%S') }

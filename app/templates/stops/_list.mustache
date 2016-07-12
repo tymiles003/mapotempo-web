@@ -3,7 +3,7 @@
     <div class="panel-body">
       <p>
         <i class="fa fa-check-square fa-fw"></i>{{size}}&nbsp;{{#i18n}}plannings.edit.stops{{/i18n}}
-        {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity}}{{/quantity}}
+        {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity1_1}} {{quantity1_2}}{{/quantity}}
       </p>
     </div>
     <ul id="out_of_route" class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
@@ -65,7 +65,7 @@
       </div>
       <span class="route-info"><i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.route_duration_help{{/i18n}}"></i>{{duration}}/{{work_time}}</span>
       <span class="route-info"><i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.route_distance_help{{/i18n}}"></i>{{distance}}</span>
-      {{#quantity}}<span class="route-info"><i class="fa fa-archive fa-fw" title="{{#i18n}}plannings.edit.route_quantity_help{{/i18n}}"></i>{{quantity}}{{#capacity}}/{{capacity}}{{/capacity}}{{#capacity_unit}}&nbsp;{{capacity_unit}}{{/capacity_unit}}{{/quantity}}</span>
+      {{#quantity}}<span class="route-info"><i class="fa fa-archive fa-fw" title="{{#i18n}}plannings.edit.route_quantity_help{{/i18n}}"></i>{{quantity1_1}}{{#capacity1_1}}/{{capacity1_1}}{{/capacity1_1}}{{#capacity1_1_unit}}&nbsp;{{capacity1_1_unit}}{{/capacity1_1_unit}}</span> {{quantity1_2}}{{#capacity1_2}}/{{capacity1_2}}{{/capacity1_2}}{{#capacity1_2_unit}}&nbsp;{{capacity1_2_unit}}{{/capacity1_2_unit}}</span>{{/quantity}}
       {{#route_error}}
         <ul class="ui-state-error">
           {{#route_no_geolocalization}}

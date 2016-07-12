@@ -356,13 +356,14 @@ class PlanningsController < ApplicationController
 
       :ref_visit,
       :duration,
-      @planning.customer.enable_orders ? :orders : :quantity,
+      @planning.customer.enable_orders ? :orders : :quantity1_1,
+      @planning.customer.enable_orders ? nil : :quantity1_2,
       :open1,
       :close1,
       :open2,
       :close2,
       :tags_visit
-    ]
+    ].compact
   end
 
   def capabilities

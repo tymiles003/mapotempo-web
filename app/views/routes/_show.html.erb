@@ -30,7 +30,7 @@
     <i class="fa fa-clock-o fa-fw"></i> <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
     <i class="fa fa-road fa-fw"></i> <%= number_to_human(route.distance, units: :distance, precision: 3, format: '%n %u') %>
     <% if !route.planning.customer.enable_orders %>
-      <i class="fa fa-archive fa-fw"></i> <%= route.quantity %>&nbsp;<%= route.vehicle_usage.vehicle.capacity_unit %>
+      <i class="fa fa-archive fa-fw"></i> <%= route.quantity1_1 %>&nbsp;<%= route.vehicle_usage.vehicle.capacity1_1_unit %> <%= route.quantity1_2 %>&nbsp;<%= route.vehicle_usage.vehicle.capacity1_2_unit %>
     <% end %>
   </span>
 
@@ -137,9 +137,10 @@
                   <% end %>
                 </p>
               <% end %>
-            <% elsif stop.visit.quantity && stop.visit.quantity > 0 %>
+            <% elsif stop.visit.quantity? %>
               <div class="quantity">
-                <i class="fa fa-archive fa-fw"></i> <%= stop.visit.localized_quantity %>&nbsp;<%= route.vehicle_usage.vehicle.capacity_unit %>
+                <i class="fa fa-archive fa-fw"></i> <%= stop.visit.localized_quantity1_1 %>&nbsp;<%= route.vehicle_usage.vehicle.capacity1_1 %>
+                <i class="fa fa-archive fa-fw"></i> <%= stop.visit.localized_quantity1_2 %>&nbsp;<%= route.vehicle_usage.vehicle.capacity1_2_unit %>
               </div>
             <% end %>
           <% end %>

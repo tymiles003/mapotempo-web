@@ -26,7 +26,7 @@ class VehicleTest < ActiveSupport::TestCase
 
   test 'should update out_of_date for capacity' do
     o = vehicles(:vehicle_one)
-    o.capacity = 123
+    o.capacity1_1 = 123
     assert_not o.vehicle_usages[0].routes[-1].out_of_date
     o.save!
     assert o.vehicle_usages[0].routes[-1].out_of_date

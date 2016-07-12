@@ -70,7 +70,7 @@
             <% if @customer.enable_references && @customer.enable_multi_visits %>
               <div class="visit-subtitle" style="min-width: 3em;"><%= t 'activerecord.attributes.visit.ref_small' %></div>
             <% end %>
-            <div class="visit-subtitle" style="width: 4em;"><%= t 'activerecord.attributes.visit.quantity_small' %></div>
+            <div class="visit-subtitle" style="width: 4em;"><%= t '.quantity_small' %></div>
             <% if @customer.enable_multi_visits %>
               <div class="visit-subtitle" style="width: 10em;"><%= t 'activerecord.attributes.visit.tags' %></div>
             <% end %>

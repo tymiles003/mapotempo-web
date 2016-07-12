@@ -125,7 +125,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               foo: 'bar',
               visits: [{
                 ref: 'v1',
-                quantity: 1,
+                quantity1_1: 1,
                 open1: '08:00',
                 close1: '12:00',
                 open2: '14:00',
@@ -136,7 +136,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               },
               {
                 ref: 'v2',
-                quantity: 2,
+                quantity1_1: 2,
                 open1: '14:00',
                 close1: '18:00',
                 open2: '20:00',
@@ -186,7 +186,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
             foo: 'bar',
             visits: [{
               ref: 'v1',
-              quantity: nil,
+              quantity1_1: nil,
               open1: nil,
               close1: nil,
               open2: nil,
@@ -196,7 +196,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               active: '1'
             },{
               ref: 'v2',
-              quantity: nil,
+              quantity1_1: nil,
               open1: nil,
               close1: nil,
               open2: nil,
@@ -238,7 +238,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
             geocoding_accuracy: nil,
             foo: 'bar',
             visits: [{
-              quantity: 1,
+              quantity1_1: 1,
               open1: '08:00',
               close1: '12:00',
               open2: '13:00',
@@ -248,7 +248,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               active: '1'
             },
             {
-              quantity: 2,
+              quantity1_1: 2,
               open1: '14:00',
               close1: '18:00',
               open2: '20:00',

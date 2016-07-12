@@ -39,7 +39,7 @@ route.stops.each{ |stop|
           ' ',
           stop.name,
           ' ',
-          stop.is_a?(StopVisit) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity ? "#{stop.visit.quantity}&nbsp;#{route.vehicle_usage.vehicle.capacity_unit}" : '') : '',
+          stop.is_a?(StopVisit) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity? ? "#{stop.visit.quantity1_1}&nbsp;#{route.vehicle_usage.vehicle.capacity1_1_unit} #{stop.visit.quantity1_2}&nbsp;#{route.vehicle_usage.vehicle.capacity1_2_unit}" : '') : '',
           ' ',
           stop.is_a?(StopVisit) ?
             (stop.visit.take_over ? '(' + l(stop.visit.take_over.utc, format: :hour_minute_second) + ')' : '') :

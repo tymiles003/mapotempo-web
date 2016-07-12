@@ -18,7 +18,8 @@ if @planning
       json.ref visit.ref if @zoning.customer.enable_references
       json.active route.vehicle_usage && stop.active
       if !@planning.customer.enable_orders
-        json.extract! visit, :quantity
+        json.extract! visit, :quantity1_1, :quantity1_2
+        json.quantity visit.quantity?
       end
       (json.duration l(visit.take_over.utc, format: :hour_minute_second)) if visit.take_over
       (json.open1 l(stop.open1.utc, format: :hour_minute)) if stop.open1

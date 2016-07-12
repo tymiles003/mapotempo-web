@@ -62,7 +62,7 @@ class Alyacom < DeviceBase
           staff_id: route.vehicle_usage.vehicle.name,
           destination_id: stop.base_id,
           comment: [
-            stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity ? "x#{stop.visit.quantity}" : nil) : nil,
+            stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.quantity? ? [stop.visit.quantity1_1, stop.visit.quantity1_2].compact.map{ |q| 'x' + q.to_s }.join(' ') : nil) : nil,
           ].compact.join(' ').strip,
           start: planning_date(route) + stop.time.utc.seconds_since_midnight.seconds,
           end: planning_date(route) + (stop.time.utc.seconds_since_midnight + stop.duration).seconds

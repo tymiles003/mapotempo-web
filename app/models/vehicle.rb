@@ -28,7 +28,8 @@ class Vehicle < ActiveRecord::Base
   validates :name, presence: true
   validates :emission, numericality: {only_float: true}, allow_nil: true
   validates :consumption, numericality: {only_float: true}, allow_nil: true
-  validates :capacity, numericality: {only_integer: true}, allow_nil: true
+  validates :capacity1_1, numericality: {only_integer: true}, allow_nil: true
+  validates :capacity1_2, numericality: {only_integer: true}, allow_nil: true
   validates :color, presence: true
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
   validates :speed_multiplicator, numericality: { greater_than_or_equal_to: 0.5, less_than_or_equal_to: 1.5 }, if: :speed_multiplicator
@@ -81,6 +82,10 @@ class Vehicle < ActiveRecord::Base
 
   def available_position?
     (!tomtom_id.blank? && customer.tomtom?) || (!teksat_id.blank? && customer.teksat?) || (!orange_id.blank? && customer.orange?)
+  end
+
+  def capacity_changed?
+    capacity1_1_changed? || capacity1_2_changed?
   end
 
   private

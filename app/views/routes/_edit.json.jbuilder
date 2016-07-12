@@ -8,10 +8,15 @@ json.extract! route, :ref, :color, :size_active
 json.color_fake route.color
 json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at
 json.optimized_at_formatted l(route.optimized_at) if route.optimized_at
-(json.quantity route.quantity) if !@planning.customer.enable_orders
+if !@planning.customer.enable_orders
+  json.quantity route.quantity?
+  json.quantity1_1 route.quantity1_1
+  json.quantity1_2 route.quantity1_2 if route.quantity1_2 > 0
+end
 if route.vehicle_usage
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
-  json.capacity_unit route.vehicle_usage.vehicle.capacity_unit
+  json.capacity1_1_unit route.vehicle_usage.vehicle.capacity1_1_unit
+  json.capacity1_2_unit route.vehicle_usage.vehicle.capacity1_2_unit if route.quantity1_2 > 0
   json.vehicle_usage_id route.vehicle_usage.id
   json.vehicle_id route.vehicle_usage.vehicle.id
   json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
@@ -97,7 +102,8 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
         json.orders order.products.collect(&:code).join(', ')
       end
     else
-      json.extract! visit, :quantity
+      json.extract! visit, :quantity1_1, :quantity1_2
+      json.quantity visit.quantity?
     end
     duration = l(visit.take_over.utc, format: :hour_minute_second) if visit.take_over
   elsif stop.is_a?(StopRest)

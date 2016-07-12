@@ -124,12 +124,13 @@ class RoutesController < ApplicationController
 
       :ref_visit,
       :duration,
-      @route.planning.customer.enable_orders ? :orders : :quantity,
+      @route.planning.customer.enable_orders ? :orders : :quantity1_1,
+      @route.planning.customer.enable_orders ? nil : :quantity1_2,
       :open1,
       :close1,
       :open2,
       :close2,
       :tags_visit
-    ]
+    ].compact
   end
 end

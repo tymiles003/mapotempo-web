@@ -29,7 +29,7 @@ controller.js(
   map_lng: (@vehicle_usage_set && @vehicle_usage_set.vehicle_usages.collect(&:default_store_start).compact.find{ |s| s.lng }.try(:lng)) || @zoning.customer.default_position[:lng],
   map_attribution: current_user.layer.map_attribution,
   vehicles_map: Hash[@zoning.customer.vehicles.collect{ |vehicle|
-    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity: vehicle.capacity}]
+    [vehicle.id, {id: vehicle.id, name: vehicle.name, color: vehicle.color, capacity1_1: vehicle.capacity1_1, capacity1_2: vehicle.capacity1_2}]
   }],
   destinations: !@destinations_all.nil?,
   destination_ids: @destinations ? @destinations.collect(&:id) : nil,

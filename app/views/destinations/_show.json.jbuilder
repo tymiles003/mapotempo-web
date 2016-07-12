@@ -14,9 +14,14 @@ end
 json.has_no_position !destination.position? ? t('destinations.index.no_position') : false
 json.visits do
   json.array! destination.visits do |visit|
-    json.extract! visit, :id, :quantity
+    json.extract! visit, :id
     json.ref visit.ref if @customer.enable_references
     json.take_over visit.take_over && l(visit.take_over.utc, format: :hour_minute_second)
+    if !@customer.enable_orders
+      json.quantity visit.quantity?
+      json.quantity1_1 visit.quantity1_1
+      json.quantity1_2 visit.quantity1_2
+    end
     json.open1 visit.open1 && l(visit.open1.utc, format: :hour_minute)
     json.close1 visit.close1 && l(visit.close1.utc, format: :hour_minute)
     json.open2 visit.open2 && l(visit.open2.utc, format: :hour_minute)

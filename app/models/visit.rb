@@ -47,7 +47,8 @@ class Visit < ActiveRecord::Base
 
   include LocalizedAttr
 
-  attr_localized :quantity
+  attr_localized :quantity1_1
+  attr_localized :quantity1_2
 
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed
@@ -72,6 +73,14 @@ class Visit < ActiveRecord::Base
         stop.route.save
       }
     end
+  end
+
+  def quantity?
+    (quantity1_1 && quantity1_1 > 0) || (quantity1_2 && quantity1_2 > 0)
+  end
+
+  def quantity_changed?
+    quantity1_1_changed? || quantity1_2_changed?
   end
 
   private

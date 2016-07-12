@@ -325,8 +325,10 @@ fr:
         name: "Nom"
         emission: "Émission"
         consumption: "Consommation"
-        capacity: "Capacité"
-        capacity_unit: "Unité de la capacité"
+        capacity1_1: "Capacité 1_1"
+        capacity1_1_unit: "Unité 1 de la capacité 1"
+        capacity1_2: "Capacité 1_2"
+        capacity1_2_unit: "Unité 2 de la capacité 1"
         color: "Couleur"
         tomtom_id: "TomTom ID"
         masternaut_ref: "Ref. véhicule Masternaut"
@@ -370,8 +372,8 @@ fr:
       visit:
         ref: "Référence"
         ref_small: "Réf."
-        quantity: "Quantité"
-        quantity_small: "Qté."
+        quantity1_1: "Quantité"
+        quantity1_2: "Quantité avec autre unité"
         take_over: "Durée de visite"
         take_over_small: "Durée"
         open1: "Plage horaire 1 début"
@@ -699,6 +701,7 @@ fr:
       geocoding_column_help: "Niveau de géocodage et qualité. Ordonner d'abord par niveau puis par qualité."
       geocoding_empty: "absent"
       click2call: "Cliquez pour appeler"
+      quantity_small: "Qté."
       dialog:
         import:
           title: 'Import des clients'
@@ -756,7 +759,11 @@ fr:
       take_over: "durée visite"
       take_over_desc: "durée anticipée de la visite."
       quantity: "quantité"
-      quantity_desc: "quantité d'unités à livrer."
+      quantity_desc: "déprécié : utiliser « quantité 1_1» à la place."
+      quantity1_1: "quantité 1_1"
+      quantity1_1_desc: "quantité 1 d'unités 1 à livrer."
+      quantity1_2: "quantité 1_2"
+      quantity1_2_desc: "quantité 1 d'unités 2 à livrer."
       active: "livré"
       active_desc: "indique si le client est livré durant cette tournée ou pas"
       open: "horaire début"
@@ -1306,9 +1313,12 @@ fr:
       consumption:
         help: "Consommation moyenne aux 100 km en litres de carburant"
       capacity:
+        label: "Capacité"
         help: "Capacité maximum du véhicule"
       capacity_unit:
+        placeholder: "unité"
         help: "Unité de la capacité"
+        add: "Unité supplémentaire"
       router:
         default: "Défaut"
         help: "Forcer l'utilisation d'un calculateur d'itinéraire"
@@ -1327,6 +1337,7 @@ fr:
       title: "Modifier véhicule et configuration"
     index:
       title: "Liste configurations de véhicules"
+      capacity: "Capacité"
       stores: "Départ - Arrivée"
       store:
         no_start: "Pas de dépôt de départ"
@@ -1417,14 +1428,15 @@ fr:
       legend: "Visite #%{n}"
       destroy: "Si coché, la visite sera supprimée. Cliquez-ici pour annuler."
       ref_help: "Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites avec l'import/export notamment."
+      quantity: "Quantité"
+      quantity_default: "défaut"
       quantity_help: "Quantité à livrer"
+      take_over_default: "défaut"
       take_over_help: "Si vide utilise la valeur par défaut"
       open_close1: "Plage horaire 1"
       open_close2: "Plage horaire 2"
       close_help: "Sans tenir compte de la durée de visite"
       tags_help: "Catégories de la visite"
-      quantity_default: "défaut"
-      take_over_default: "défaut"
       delete: "Marquer à supprimer"
       delete_help: "Supprimer cette visite (le client sera conservé)"
 

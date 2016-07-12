@@ -18,9 +18,19 @@
           <p class="help-block"><%= t '.ref_help' %></p>
         <% end %>
       <% end %>
-      <%= f.number_field :quantity, { placeholder: '1 (' + t('.quantity_default') + ')', step: 'any', input_group: content_tag('i', '', class: 'fa fa-archive fa-fw') } do %>
-        <p class="help-block"><%= t '.quantity_help' %></p>
-      <% end %>
+      <div id="visit_quantity_input" class="form-group">
+        <label class="sr-only" for="destination_visits_attributes_#{i}_quantity1_1"><%= t 'activerecord.attributes.visit.quantity1_1' %></label>
+        <label class="sr-only" for="destination_visits_attributes_#{i}_quantity1_2"><%= t 'activerecord.attributes.visit.quantity1_2' %></label>
+        <label class="col-md-2 control-label"><%= t '.quantity' %></label>
+        <div class="col-md-6">
+          <div class="input-group">
+            <%= number_field "destination[visits_attributes][#{i}]", :quantity1_1, class: 'form-control width_1_2', placeholder: '1 (' + t('.quantity_default') + ')', value: visit.quantity1_1, step: 'any' %>
+            <%= number_field "destination[visits_attributes][#{i}]", :quantity1_2, class: 'form-control width_1_2', placeholder: '0 (' + t('.quantity_default') + ')', value: visit.quantity1_2, step: 'any' %>
+            <span class="input-group-addon"><i class="fa fa-archive fa-fw"></i></span>
+          </div>
+          <p class="help-block"><%= t '.quantity_help' %></p>
+        </div>
+      </div>
       <%= f.text_field :take_over, {
         value: visit.take_over && l(visit.take_over.utc, format: :hour_minute_second),
         placeholder: visit.destination.customer.take_over ? l(visit.destination.customer.take_over.utc, format: :hour_minute_second) + ' (' + t('.take_over_default') + ')' : t('all.unit.hour_minute_second'),
