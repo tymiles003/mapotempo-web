@@ -600,7 +600,7 @@ fr:
       alyacom: "AlyaCom"
       alyacom_help: "Permet d'envoyer les plannings vers l'application AlyaCom."
       optimization_cluster_size_default: "%{n} (valeur par défaut)"
-      optimization_time_default: "%{n} (valeur par défaut)"
+      optimization_time_default: "automatique (valeur par défaut)"
       optimization_soft_upper_bound_default: "%{n} (valeur par défaut)"
       optimization_soft_upper_bound_help: "Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte)."
       print_header_help: "Bloc de texte ajouté avant chaque tournée"

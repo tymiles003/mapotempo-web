@@ -600,7 +600,7 @@ en:
       alyacom: "AlyaCom"
       alyacom_help: "Allows sending plans to AlyaCom application"
       optimization_cluster_size_default: "%{n} (default value)"
-      optimization_time_default: "%{n} (default value)"
+      optimization_time_default: "automatic (default value)"
       optimization_soft_upper_bound_default: "%{n} (default value)"
       optimization_soft_upper_bound_help: "More the value is important, more delays are detrimental (0 not to allow delays strictly)."
       print_header_help: "Block of text added before each route"
