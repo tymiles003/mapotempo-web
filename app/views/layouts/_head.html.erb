@@ -33,3 +33,9 @@
 <!-- Javascripts -->
 <!-- Placed inside head element to support turbolinks -->
 <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+<% if user_signed_in? %>
+  <script type="text/javascript">
+    var reseller_name = <%= current_user.customer.reseller.name.to_json.html_safe %>
+  </script>
+<% end %>

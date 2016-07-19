@@ -36,12 +36,13 @@ PNotify.prototype.options.styling = 'fontawesome';
   function desktop_notify(status, message, options) {
     PNotify.desktop.permission();
     notify(status, message, $.extend({
-      title: "Mapotempo",
+      title: reseller_name,
       desktop: {
         desktop: true
       }
     }, options));
   };
+
   $.extend(window, {
     notify: function(status, message, options) {
       notify(status, message, $.extend({}, options));
