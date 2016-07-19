@@ -13,33 +13,31 @@
 </div>
 
 <%= form_tag order_arrays_path, method: :delete do %>
-<table id="order_arrays" class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th><button id="add" type="button" class="btn btn-default btn-xs" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
-      <th><%= t 'activerecord.attributes.order_array.name' %></th>
-      <th><%= t 'activerecord.attributes.order_array.base_date' %></th>
-      <th><%= t 'activerecord.attributes.order_array.length' %></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @order_arrays.each do |order_array| %>
+  <table id="order_arrays" class="table table-striped table-hover">
+    <thead>
       <tr>
-        <td><%= check_box_tag("order_arrays[#{order_array.id}]") %></td>
-        <td><%= order_array.name %></td>
-        <td><%= l order_array.base_date %></td>
-        <td><%= t('order_arrays.form.'+order_array.length) %></td>
-        <td class="text-right">
-          <%= link_to order_array_duplicate_path(order_array), :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
-          <%= link_to edit_order_array_path(order_array), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
-          <%= link_to order_array, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
-        </td>
+        <th><button id="add" type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
+        <th><%= t 'activerecord.attributes.order_array.name' %></th>
+        <th><%= t 'activerecord.attributes.order_array.base_date' %></th>
+        <th><%= t 'activerecord.attributes.order_array.length' %></th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= button_tag type: :submit, class: "btn btn-danger btn-sm", data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %><% end %>
+    </thead>
+    <tbody>
+      <% @order_arrays.each do |order_array| %>
+        <tr>
+          <td><%= check_box_tag("order_arrays[#{order_array.id}]") %></td>
+          <td><%= order_array.name %></td>
+          <td><%= l order_array.base_date %></td>
+          <td><%= t('order_arrays.form.'+order_array.length) %></td>
+          <td class="text-right">
+            <%= link_to order_array_duplicate_path(order_array), :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
+            <%= link_to edit_order_array_path(order_array), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
+            <%= link_to order_array, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= button_tag type: :submit, class: "btn btn-danger btn-sm", data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %><% end %>
 <% end %>
