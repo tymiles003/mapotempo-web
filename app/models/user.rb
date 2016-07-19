@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   after_create :send_welcome_email, if: lambda{|user| user.send_email.to_i == 1 }
 
   def send_welcome_email
-    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self) : UserMailer.welcome_message(self).deliver_now
+    Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self, I18n.locale) : UserMailer.welcome_message(self, I18n.locale).deliver_now
     self.update! confirmation_sent_at: Time.now
   end
 
