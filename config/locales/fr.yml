@@ -490,6 +490,7 @@ fr:
       get_vehicles_pos: "Impossible de lister les positions des véhicules"
     alyacom:
       unauthorized: "Non autorisé"
+      timeout: "Délai d'attente depassé"
 
   import:
     empty: "Rien à importer"

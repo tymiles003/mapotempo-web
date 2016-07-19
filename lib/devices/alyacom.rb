@@ -19,8 +19,11 @@
 #RestClient.log = $stdout
 
 class Alyacom < DeviceBase
+
+  TIMEOUT_VALUE = 120
+
   def test_list(_customer, params)
-    RestClient.get [api_url, params[:alyacom_association], 'users'].join('/'), params: { apiKey: params[:alyacom_api_key] }
+    rest_client_get [api_url, params[:alyacom_association], 'users'].join('/'), { apiKey: params[:alyacom_api_key] }
   rescue RestClient::Forbidden, RestClient::InternalServerError
     raise DeviceServiceError.new('Alyacom: %s' % [ I18n.t('errors.alyacom.unauthorized') ])
   end
@@ -98,7 +101,7 @@ class Alyacom < DeviceBase
       planning
     }
 
-    post customer, 'planning', plannings
+    rest_client_post [api_url, customer.alyacom_association, 'planning'].join('/'), { enc: :json, apiKey: customer.alyacom_api_key }, plannings
   end
 
   def update_staffs(customer, staffs)
@@ -118,7 +121,7 @@ class Alyacom < DeviceBase
     }
 
     if !missing.empty?
-      post customer, 'staff', missing
+      rest_client_post [api_url, customer.alyacom_association, 'staff'].join('/'), { enc: :json, apiKey: customer.alyacom_api_key }, missing
     end
   end
 
@@ -141,7 +144,7 @@ class Alyacom < DeviceBase
     }
 
     if !missing.empty?
-      post customer, 'users', missing
+      rest_client_post [api_url, customer.alyacom_association, 'users'].join('/'), { enc: :json, apiKey: customer.alyacom_api_key }, missing
     end
   end
 
@@ -154,7 +157,7 @@ class Alyacom < DeviceBase
     next_ = nil
     begin
       begin
-        response = RestClient.get(next_ || url, next_ ? nil : {params: params})
+        response = rest_client_get next_ || url, params
       rescue => e
         Rails.logger.info next_ || url
         begin
@@ -186,10 +189,16 @@ class Alyacom < DeviceBase
     data
   end
 
-  def post(customer, object, data)
-    RestClient.post "#{api_url}/#{customer.alyacom_association}/#{object}", data.to_json, content_type: :json, params: { enc: :json, apiKey: customer.alyacom_api_key }
-  rescue => e
-    Rails.logger.info e.response
-    raise e
+  def rest_client_get(url, params)
+    RestClient::Request.execute method: :get, url: url, timeout: TIMEOUT_VALUE, headers: { params: params }
+  rescue RestClient::RequestTimeout => e
+    raise DeviceServiceError.new('Alyacom: %s' % [ I18n.t('errors.alyacom.timeout') ])
+  end
+
+  def rest_client_post(url, params, data)
+    Rails.logger.info data.inspect
+    RestClient::Request.execute method: :post, url: url, timeout: TIMEOUT_VALUE, headers: { content_type: :json, params: params }, payload: data.to_json
+  rescue RestClient::RequestTimeout => e
+    raise DeviceServiceError.new('Alyacom: %s' % [ I18n.t('errors.alyacom.timeout') ])
   end
 end

@@ -490,6 +490,7 @@ en:
       get_vehicles_pos: "Can't Get Vehicles Positions"
     alyacom:
       unauthorized: "Unauthorized"
+      timeout: "Request Timeout"
 
   import:
     empty: "Nothing to import"
