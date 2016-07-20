@@ -140,7 +140,7 @@
             <% else %>
               <% if stop.visit.quantity && stop.visit.quantity > 1 %>
                 <div class="quantity">
-                  <i class="fa fa-archive fa-fw"></i> <%= stop.visit.quantity %>&nbsp;<%= route.vehicle_usage.vehicle.capacity_unit %>
+                  <i class="fa fa-archive fa-fw"></i> <%= stop.visit.localized_quantity %>&nbsp;<%= route.vehicle_usage.vehicle.capacity_unit %>
                 </div>
               <% end %>
             <% end %>
