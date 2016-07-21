@@ -29,10 +29,12 @@ class V01::Destinations < Grape::API
       p = p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :quantity, :take_over, :open, :close, :open1, :close1, :open2, :close2, tag_ids: []])
 
       # Deals with deprecated open and close
-      p[:visits_attributes] && p[:visits_attributes].each{ |k, v|
-        v[:open1] = v.delete(:open) if !v[:open1]
-        v[:close1] = v.delete(:close) if !v[:close1]
-      }
+      if p[:visits_attributes]
+        p[:visits_attributes].each do |hash|
+          hash[:open1] = hash.delete(:open) if !hash[:open1]
+          hash[:close1] = hash.delete(:close) if !hash[:close1]
+        end
+      end
 
       p
     end
