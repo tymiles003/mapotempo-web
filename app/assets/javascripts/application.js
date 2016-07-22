@@ -34,7 +34,6 @@
 //= require bootstrap-filestyle
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales/fr-FR.js
-//= require bootstrap-wysihtml5/locales/fr-NL.js
 //= require bootstrap-wysihtml5/locales/en-US.js
 //= require bootstrap-datepicker/core.js
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.fr.js

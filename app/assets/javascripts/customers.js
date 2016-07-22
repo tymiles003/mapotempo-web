@@ -102,16 +102,15 @@ var customers_edit = function(params) {
     spinnerImage: ''
   });
 
-  $.fn.wysihtml5.locale['fr'] = $.fn.wysihtml5.locale['fr-FR'];
   $('#customer_print_header').wysihtml5({
+    locale: I18n.locale == 'fr' ? 'fr-FR' : 'en-US',
     toolbar: {
       link: false,
       image: false,
       blockquote: false,
       size: 'sm',
       fa: true
-    },
-    locale: defaultLocale
+    }
   });
 };
 
