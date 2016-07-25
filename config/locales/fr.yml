@@ -482,6 +482,7 @@ fr:
       busy_processing: "Compte occupé à traiter une autre demande"
       gps_unreachable: "GPS actuellement indisponible"
       last_action_failed: "Votre dernier envoi n'a pas fonctionné"
+      service_failed: "Service occupé après plusieurs tentatives"
     teksat:
       bad_url: "URL non valide"
       get_ticket: "Échec de l'identification. Veuillez vérifier vos identifiants"

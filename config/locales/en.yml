@@ -482,6 +482,7 @@ en:
       busy_processing: "Account / username busy processing other request"
       gps_unreachable: "GPS currently unreachable"
       last_action_failed: "Your last action could not be processed"
+      service_failed: "Service busy after several attempts"
     teksat:
       bad_url: "Bad URL"
       get_ticket: "Can't authenticate. Please check your credentials"

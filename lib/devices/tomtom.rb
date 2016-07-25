@@ -18,6 +18,8 @@
 class Tomtom < DeviceBase
   attr_reader :client_objects, :client_address, :client_orders
 
+  class TomTomServiceBusyError < StandardError; end
+
   def savon_client_objects
     @client_objects ||= Savon.client(wsdl: api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
@@ -224,14 +226,17 @@ class Tomtom < DeviceBase
       password: password,
     }
     message[:gParm] = {}
-    response = client.call(operation, message: message)
-    response_body = response.body.first[1][:return]
-    status_code = response_body[:status_code].to_i
 
-    if status_code == 0 || (ignore_busy && status_code == 8015)
-      return response_body[:results][:result_item] if response_body[:results]
-    else
-      raise DeviceServiceError.new 'TomTom: %s' % [ parse_error_msg(status_code) || response_body[:status_message] ]
+    with_retries do
+      response = client.call(operation, message: message)
+      response_body = response.body.first[1][:return]
+      status_code = response_body[:status_code].to_i
+      raise TomTomServiceBusyError.new if status_code == 8015 && !ignore_busy
+      if status_code == 0 || (ignore_busy && status_code == 8015)
+        return response_body[:results][:result_item] if response_body[:results]
+      else
+        raise DeviceServiceError.new 'TomTom: %s' % [ parse_error_msg(status_code) || response_body[:status_message] ]
+      end
     end
 
   rescue Savon::SOAPFault => error
@@ -241,6 +246,22 @@ class Tomtom < DeviceBase
   rescue Savon::HTTPError => error
     Rails.logger.info error.http.code
     raise error
+  end
+
+  def with_retries(max_tries=5)
+    i = 0
+    loop do
+      if i == max_tries
+        raise DeviceServiceError.new 'TomTom: %s' % [ I18n.t('errors.tomtom.service_failed') ]
+      end
+      begin
+        yield
+        break
+      rescue TomTomServiceBusyError
+        i += 1
+        sleep 5 * i
+      end
+    end
   end
 
   def parse_error_msg(status_code)
