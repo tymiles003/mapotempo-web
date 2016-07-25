@@ -1,6 +1,6 @@
 <%= twitter_bootstrap_form_for(@destination, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@destination.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: @destination %>
-  <fieldset>
+  <fieldset id="destination-details">
     <% if @destination.customer.enable_references && !@destination.customer.enable_multi_visits %>
       <%= f.text_field :ref do %>
         <p class="help-block"><%= t '.ref_help' %></p>
@@ -50,7 +50,7 @@
           <i id="geocoding-level-street" class="fa fa-road fa-fw geocoding-level"<% if ! @destination.street? %> style="display: none"<% end %>></i>
           <i id="geocoding-level-city" class="fa fa-exclamation-triangle fa-fw geocoding-level"<% if ! @destination.city? %> style="display: none"<% end %>></i>
           <span><%= t 'activerecord.attributes.destination.geocoding_level' %>: <span id="geocoding-level-value"><%= if @destination.geocoding_level
-            t 'destinations.form.geocoding_level.' + @destination.geocoding_level 
+            t 'destinations.form.geocoding_level.' + @destination.geocoding_level
             end %></span></span>
         </div>
       </div>

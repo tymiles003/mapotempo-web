@@ -136,7 +136,7 @@ var destinations_form = function(params, api) {
       }
       confirmGeocode({
         type: "patch",
-        data: $(":input", $row),
+        data: $("#destination-details").find("input"),
         url: url,
         beforeSend: beforeSendWaiting,
         success: function(data) {
