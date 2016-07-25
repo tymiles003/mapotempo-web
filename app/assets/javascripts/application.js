@@ -53,7 +53,6 @@
 //= require jquery.timeentry
 //= require i18n
 //= require i18n/translations
-//= require i18n/translations-setting
 //= require leaflet
 //= require leaflet.markercluster
 //= require leaflet.draw

@@ -17,7 +17,7 @@
 //
 (function(window, document, undefined) {
 
-  if (I18n.locale != 'en') {
+  if (I18n.currentLocale() != 'en') {
     L.drawLocal = {
       draw: {
         toolbar: {

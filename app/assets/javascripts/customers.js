@@ -90,7 +90,7 @@ var customers_edit = function(params) {
     calendarWeeks: true,
     todayHighlight: true,
     format: I18n.t("all.datepicker"),
-    language: I18n.locale,
+    language: I18n.currentLocale(),
     zIndexOffset: 1000
   });
 
@@ -103,7 +103,7 @@ var customers_edit = function(params) {
   });
 
   $('#customer_print_header').wysihtml5({
-    locale: I18n.locale == 'fr' ? 'fr-FR' : 'en-US',
+    locale: I18n.currentLocale() == 'fr' ? 'fr-FR' : 'en-US',
     toolbar: {
       link: false,
       image: false,

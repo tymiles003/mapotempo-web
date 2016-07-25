@@ -26,8 +26,9 @@
 <%= favicon_link_tag request.env['reseller'].favicon.url || 'favicon.ico', :rel => 'shortcut icon' %>
 
 <script type="text/javascript">
-  var defaultLocale = "<%= I18n.default_locale %>";
-  var locale = "<%= I18n.locale %>";
+  I18n = {};
+  I18n.defaultLocale = "<%= I18n.default_locale %>";
+  I18n.locale = "<%= I18n.locale %>";
 </script>
 
 <!-- Javascripts -->

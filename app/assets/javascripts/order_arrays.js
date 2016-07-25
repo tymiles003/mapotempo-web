@@ -17,12 +17,11 @@
 //
 var order_arrays_form = function() {
   $('#order_array_base_date').datepicker({
-    language: defaultLocale,
+    language: I18n.currentLocale(),
     autoclose: true,
     calendarWeeks: true,
     todayHighlight: true,
     format: I18n.t("all.datepicker"),
-    language: I18n.locale,
     zIndexOffset: 1000
   });
 };
