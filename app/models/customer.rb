@@ -34,7 +34,7 @@ class Customer < ActiveRecord::Base
   has_many :stores, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :destinations, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :tags, -> { order('label') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :users, inverse_of: :customer, dependent: :destroy
+  has_many :users, -> { order('LOWER(email)') }, inverse_of: :customer, dependent: :destroy
   enum router_dimension: Router::DIMENSION
 
   nilify_blanks
