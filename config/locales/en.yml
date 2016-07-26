@@ -890,6 +890,7 @@ or you can click on this link to download file (no update in this case)."
       export_icalendar: "Calendar iCal"
       export_icalendar_email: "Calendar iCal by E-Mail"
     edit:
+      vehicles: "Vehicles"
       position: "Position"
       lock_routes: "Lock routes"
       toggle_routes: "Toggle routes"

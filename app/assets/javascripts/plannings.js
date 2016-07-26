@@ -201,7 +201,7 @@ var plannings_edit = function(params) {
       clearInterval(tid);
     });
     if (!params.overlay_layers) params.overlay_layers = {};
-    params.overlay_layers["Vehicles"] = vehicleLayer;
+    params.overlay_layers[I18n.t("plannings.edit.vehicles")] = vehicleLayer;
   }
 
   params.geocoder = true;

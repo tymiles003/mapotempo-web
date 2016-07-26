@@ -890,6 +890,7 @@ fr:
       export_icalendar: "Agenda iCal"
       export_icalendar_email: "Agenda iCal par email"
     edit:
+      vehicles: "Véhicules"
       position: "Position"
       lock_routes: "Verrouiller les tournées"
       toggle_routes: "Masquer les tournées"
