@@ -460,6 +460,7 @@ fr:
               invalid_format: "ne doit pas contenir les caractères \".\", \"\\\" ou \"/\""
 
   errors:
+    connection_refused: "Connexion à la base de donnée impossible"
     location:
       geocoding_fail: "Le géocodage a échoué :"
     planning:
