@@ -48,7 +48,11 @@ class Stop < ActiveRecord::Base
       time - open # Negative
     elsif close && time > close
       soft_upper_bound = self.route.planning.customer.optimization_soft_upper_bound
-      (time - close) * (soft_upper_bound && soft_upper_bound != 0 ? soft_upper_bound : 1)  # Positive
+      if soft_upper_bound
+        (time - close) * (soft_upper_bound && soft_upper_bound != 0 ? soft_upper_bound : 1)  # Positive
+      else
+        nil # Strict
+      end
     else
       0
     end
