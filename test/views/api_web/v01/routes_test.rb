@@ -9,6 +9,7 @@ class ApiWeb::V01::PlanningsTest < ActiveSupport::TestCase
   end
 
   setup do
+    customers(:customer_one).update(enable_orders: false)
     @planning = plannings(:planning_one)
   end
 

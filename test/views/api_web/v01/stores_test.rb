@@ -10,6 +10,7 @@ class ApiWeb::V01::StoresTest < ActiveSupport::TestCase
 
   setup do
     @customer = customers(:customer_one)
+    @customer.update(enable_orders: false)
   end
 
   test 'Api-web: should return json for stores' do

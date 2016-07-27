@@ -91,7 +91,7 @@ json.routes @routes do |route|
           json.orders order.products.collect(&:code).join(', ')
         end
       else
-        json.extract! visit, :quantity1_1, quantity1_2
+        json.extract! visit, :quantity1_1, :quantity1_2
         json.quantity visit.quantity?
       end
       duration = visit.take_over.strftime('%H:%M:%S') if visit.take_over

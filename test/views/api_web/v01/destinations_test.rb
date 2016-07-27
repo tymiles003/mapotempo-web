@@ -10,6 +10,7 @@ class ApiWeb::V01::DestinationsTest < ActiveSupport::TestCase
 
   setup do
     @customer = customers(:customer_one)
+    @customer.update(enable_orders: false)
   end
 
   test 'Api-web: should return json for destinations' do

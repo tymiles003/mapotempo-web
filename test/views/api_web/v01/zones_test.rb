@@ -9,6 +9,7 @@ class ApiWeb::V01::ZonesTest < ActiveSupport::TestCase
   end
 
   setup do
+    customers(:customer_one).update(enable_orders: false)
     @zoning = zonings(:zoning_one)
   end
 
