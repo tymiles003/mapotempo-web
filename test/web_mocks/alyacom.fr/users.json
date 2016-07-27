@@ -1,3 +1,15 @@
-HTTP/1.1 200 OK
-
-{"data":[{"idExt":"idExtUser1","id":"idUser1","firstName":"","lastName":"MONSIEUR 1","address":"rue","postalCode":"75000","city":"PARIS","accessInfo":"301","deleted":false}],"next":"http://app.alyacom.fr/ws/__id__/users?apiKey\u003dapikey\u0026enc\u003djson\u0026page\u003d2"}
+{
+  "data":[
+    {
+      "idExt":"d41846622",
+      "id": "57988178e4b02bfdadb7f457",
+      "firstName":"",
+      "lastName":"destination_one",
+      "address":"Rue des Lilas",
+      "postalCode":"33200",
+      "city":"Bordeau",
+      "accessInfo":"MyString",
+      "deleted":false
+    }
+  ]
+}

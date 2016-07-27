@@ -1,3 +1,22 @@
-HTTP/1.1 200 OK
-
-{"data":[{"idExt":"idExtPlanning","idStaff":"idStaff","idUser":"idUser1","comment":"","start":"2016-02-29 01:00:00 +0100","end":"2016-02-29 02:00:00 +0100","deleted":false}]}
+{
+  "data":[
+    {
+      "idExt":"160807_d41846622",
+      "idStaff":"766404843",
+      "idUser":"d41846622",
+      "comment":"",
+      "start":"2016-08-07 01:00:00 +0100",
+      "end":"2016-08-07 01:10:00 +0100",
+      "deleted":false
+    },
+    {
+      "idExt":"160807_d702057418",
+      "idStaff":"766404843",
+      "idUser":"d702057418",
+      "comment":"",
+      "start":"2016-08-07 01:10:00 +0100",
+      "end":"2016-08-07 01:25:00 +0100",
+      "deleted":false
+    }
+  ]
+}

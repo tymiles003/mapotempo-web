@@ -17,14 +17,24 @@ module AlyacomBase
     begin
       stubs = []
       values.each do |method, names|
-        names.each do |name|
-          case name
-            when :staff, :users, :planning
-              expected_response = File.read(Rails.root.join("test/web_mocks/alyacom.fr/#{name}.json")).strip
-              api_url = URI.parse Mapotempo::Application.config.devices.alyacom.api_url
-              url = [api_url, @customer.alyacom_association, name.to_s].join "/"
-              stubs << stub_request(method, url).with(query: hash_including({ })).to_return(status: 200, body: "{}")
-          end
+        case method
+          when :get
+            names.each do |name|
+              case name
+                when :staff, :users, :planning
+                  expected_response = File.read(Rails.root.join("test/web_mocks/alyacom.fr/#{name}.json")).strip
+                  url = [URI.parse(Mapotempo::Application.config.devices.alyacom.api_url), @customer.alyacom_association, name.to_s].join "/"
+                  stubs << stub_request(method, url).with(query: hash_including({ })).to_return(status: 200, body: expected_response)
+              end
+            end
+          when :post
+            names.each do |name|
+              case name
+                when :staff, :users, :planning
+                  url = [URI.parse(Mapotempo::Application.config.devices.alyacom.api_url), @customer.alyacom_association, name.to_s].join "/"
+                  stubs << stub_request(method, url).with(query: hash_including({ })).to_return(status: 200)
+              end
+            end
         end
       end
       yield

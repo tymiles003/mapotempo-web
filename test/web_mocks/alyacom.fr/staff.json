@@ -1,3 +1,13 @@
-HTTP/1.1 200 OK
-
-{"data":[{"idExt":"idExtStaff","id":"idStaff","firstName":"","lastName":"STAFF","address":"Place de la Bastille","postalCode":"75000","city":"PARIS","accessInfo":"301","deleted":false}]}
+{
+  "data":[
+    {
+      "idExt":"766404843",
+      "firstName":"",
+      "lastName":"vehicle_one",
+      "address":"MyString",
+      "postalCode":"75001",
+      "city":"MyString",
+      "deleted":false
+    }
+  ]
+}
