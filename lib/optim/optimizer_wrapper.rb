@@ -86,7 +86,8 @@ class OptimizerWrapper
             prefer_short_segment: true
           },
           resolution: {
-            duration: optimize_time
+            duration: optimize_time,
+            iterations_without_improvment: 100
           }
         }
       }
@@ -112,7 +113,7 @@ class OptimizerWrapper
       result = JSON.parse(result)
     end
 
-    result['solution']['routes'][0]['activities'].collect{ |activity|
+    result['solutions'][0]['routes'][0]['activities'].collect{ |activity|
       if activity.key?('service_id')
         activity['service_id'][1..-1].to_i
       elsif activity.key?('rest_id')
