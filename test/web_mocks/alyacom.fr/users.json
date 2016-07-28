@@ -10,6 +10,16 @@
       "city":"Bordeau",
       "accessInfo":"MyString",
       "deleted":false
+    },
+    {
+      "idExt":"d702057418",
+      "firstName":"",
+      "lastName":"destination_two",
+      "address":"MyString",
+      "postalCode":"MyString",
+      "city":"MyString",
+      "accessInfo":"MyString",
+      "comment":"c 10:00-11:00 MyString"
     }
   ]
 }
