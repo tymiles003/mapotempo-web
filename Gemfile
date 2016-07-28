@@ -127,7 +127,7 @@ gem 'jquery-tablesorter'
 gem 'jquery-simplecolorpicker-rails'
 gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
 gem 'select2-rails', '=4.0.0' # FIXME test compatibility with planning sidebar
-gem 'i18n-js'
+gem 'i18n-js', github: 'fnando/i18n-js', tag: 'v3.0.0.rc13'
 gem 'mustache', '<1.0.0' # FIXME wait for ruby 2.0
 gem 'smt_rails'
 gem 'paloma'
