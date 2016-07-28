@@ -113,6 +113,34 @@
         </div>
       </div>
     </div>
+
+    <% if current_user.admin? %>
+      <%= f.toggles t 'activerecord.attributes.customer.enable_external_callback' do %>
+        <%= f.check_box :enable_external_callback %>
+      <% end %>
+    <% end %>
+    <% if @customer.enable_external_callback? %>
+      <div id="external_callback_container" class="panel panel-default accordion">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseExternalCallback">
+              <%= t '.external_callback.title' %>
+            </a>
+          </h2>
+        </div>
+        <div id="collapseExternalCallback" class="panel-collapse">
+          <div class="panel-body">
+            <div class="col-md-10">
+              <%= f.text_field :external_callback_name, t('.external_callback.name'), placeholder: t('.external_callback.name_placeholder') %>
+              <%= f.text_field :external_callback_url, t('.external_callback.url'), placeholder: t('.external_callback.url_placeholder') do %>
+                <div class="help-block"><%= simple_format t('.external_callback.url_help') %></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
     <% if current_user.admin? %>
       <%= f.toggles t 'activerecord.attributes.customer.enable_tomtom' do %>
         <%= f.check_box :enable_tomtom %>

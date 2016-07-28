@@ -651,6 +651,27 @@ var plannings_edit = function(params) {
 
   var initRoutes = function(context, data) {
 
+    $.each($('.customer_external_callback_url'), function(i, element) {
+      $(element).click(function(e) {
+        $.ajax({
+          url: $(e.target).data('url'),
+          type: 'GET',
+          beforeSend: function(jqXHR, settings) {
+            beforeSendWaiting();
+          },
+          complete: function(jqXHR, textStatus) {
+            completeWaiting();
+          },
+          success: function(data, textStatus, jqXHR) {
+            notice(I18n.t('plannings.edit.export.customer_external_callback_url.success'));
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            stickyError(I18n.t('plannings.edit.export.customer_external_callback_url.fail'));
+          }
+        });
+      });
+    });
+
     /* API: Devices */
     devices_observe_planning(context);
 
@@ -921,6 +942,11 @@ var plannings_edit = function(params) {
     });
   };
 
+  var buildUrl = function(url, hash) {
+    $.each(hash, function(k, v) { url = url.replace('\{' + k.toUpperCase() + '\}', hash[k]) });
+    return url;
+  }
+
   var displayPlanning = function(data, options) {
 
     if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options && options.error, options && options.success)) {
@@ -941,7 +967,18 @@ var plannings_edit = function(params) {
         route.vehicle = vehicles_usages_map[route.vehicle_id];
         route.path = '/vehicle_usages/' + route.vehicle_usage_id + '/edit?back=true';
       }
+
+      route.customer_enable_external_callback = data.customer_enable_external_callback;
+      if (data.customer_external_callback_url) {
+        route.customer_external_callback_url = buildUrl(data.customer_external_callback_url, { planning_id: data.id, route_id: route.route_id, planning_ref: data.ref, route_ref: route.ref });
+      }
     });
+
+    if (data.customer_enable_external_callback && data.customer_external_callback_url) {
+      $.each($('#global_tools').find('.customer_external_callback_url'), function(i, element) {
+        $(element).data('url', buildUrl(data.customer_external_callback_url, { planning_id: data.id, planning_ref: data.ref }));
+      });
+    }
 
     data.i18n = mustache_i18n;
     data.planning_id = data.id;

@@ -90,6 +90,13 @@
           </button>
           <!-- https://github.com/twbs/bootstrap/issues/1411 -->
           <ul class="dropdown-menu" class="dropdown-menu" style="right: 0; left: auto;" role="menu">
+            <% if current_user.customer.enable_external_callback && current_user.customer.external_callback_url %>
+              <li class="link customer_external_callback_url">
+                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                <%= current_user.customer.external_callback_name || t('plannings.edit.customer_external_callback_url.action') %>
+              </li>
+              <li role="separator" class="divider"></li>
+            <% end %>
             <% if @planning.customer.tomtom? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.tomtom_id.blank? } %>
               <li class="link planning-tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send_multiple" data-planning-id="<%= @planning.id %>">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>

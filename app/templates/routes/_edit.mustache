@@ -32,6 +32,20 @@
           <ul class="dropdown-menu pull-right" role="menu">
             <li><a class="reverse_order" href="/plannings/{{planning_id}}/{{route_id}}/reverse_order"><i class="fa fa-random fa-fw"></i> {{#i18n}}plannings.edit.reverse_order{{/i18n}}</a></li>
             <li role="separator" class="divider"></li>
+            {{#customer_enable_external_callback}}
+              {{#customer_external_callback_url}}
+                <li class="link customer_external_callback_url" data-url="{{customer_external_callback_url}}">
+                  <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                  {{#customer_external_callback_name}}
+                    {{customer_external_callback_name}}
+                  {{/customer_external_callback_name}}
+                  {{^customer_external_callback_name}}
+                    {{#i18n}}plannings.edit.customer_external_callback_url.action{{/i18n}}
+                  {{/customer_external_callback_name}}
+                </li>
+                <li role="separator" class="divider"></li>
+              {{/customer_external_callback_url}}
+            {{/customer_enable_external_callback}}
             {{#tomtom}}
               <li class="link tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send" data-route-id="{{route_id}}" data-type="waypoints">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>

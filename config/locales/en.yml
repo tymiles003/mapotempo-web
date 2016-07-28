@@ -132,6 +132,7 @@ en:
         other: "zonings"
     attributes:
       customer:
+        enable_external_callback: "Enable External Callback URL"
         end_subscription: "End subscription"
         max_vehicles: "Max vehicles"
         take_over: "Take over"
@@ -628,6 +629,18 @@ en:
         teksat:
           confirm: "Sync Vehicles from Teksat?"
           action: "Sync Vehicles from Teksat"
+      external_callback:
+        title: "External Callback URL"
+        name: "Name"
+        name_placeholder: "My Website"
+        url: "URL"
+        url_placeholder: "http://www.example.com?p_id={PLANNING_ID}"
+        url_help: >
+          External URL to call from Planning Export Menu
+
+          Can contain the following replacement tokens: PLANNING_ID, PLANNING_REF, ROUTE_ID, ROUTE_REF
+
+          Example: http://www.example.com?p_id={PLANNING_ID}
 
   destinations:
     upload_tomtom:
@@ -925,6 +938,8 @@ or you can click on this link to download file (no update in this case)."
       route_placeholder: "Route ref."
       service_time: "Service Time"
       exports: "Export plan"
+      customer_external_callback_url:
+        action: "Customer URL"
       teksat_send:
         action: "Send to Teksat"
         success: "Sent to Teksat successfully"
@@ -962,6 +977,9 @@ or you can click on this link to download file (no update in this case)."
         success: "Sent to Masternaut Successfully"
         fail: "Failed to send to Masternaut"
       export:
+        customer_external_callback_url:
+          success: "External URL called successfully"
+          fail: "Failed to call external URL"
         icalendar:
           action: "Calendar iCal"
           action_email: "Calendar iCal by E-Mail"

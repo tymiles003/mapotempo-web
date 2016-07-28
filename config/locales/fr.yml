@@ -132,6 +132,7 @@ fr:
         other: "zonages"
     attributes:
       customer:
+        enable_external_callback: "Activer URL Callback Externe"
         end_subscription: "Fin de souscription"
         max_vehicles: "Forfait"
         take_over: "Durée de visite"
@@ -628,6 +629,18 @@ fr:
         teksat:
           confirm: "Synchroniser les véhicules depuis Teksat ?"
           action: "Synchroniser les véhicules depuis Teksat"
+      external_callback:
+        title: "Export URL Callback Externe"
+        name: "Nom"
+        name_placeholder: "Mon site web"
+        url: "URL"
+        url_placeholder: "http://www.example.com?p_id={PLANNING_ID}"
+        url_help: >
+          URL externe à appeler depuis le menu export du Planning
+
+          Les chaînes de caractères suivantes vont etre remplacées : PLANNING_ID, PLANNING_REF, ROUTE_ID, ROUTE_REF
+
+          Exemple : http://www.example.com?p_id={PLANNING_ID}
 
   destinations:
     upload_tomtom:
@@ -925,6 +938,8 @@ fr:
       route_placeholder: "Réf. de la tournée"
       service_time: "Durées de service"
       exports: "Exporter le planning"
+      customer_external_callback_url:
+        action: "URL Compte Client"
       teksat_send:
         action: "Envoyer à Teksat"
         success: "Envoi vers Teksat terminé avec succès"
@@ -962,6 +977,9 @@ fr:
         success: "Envoyé à Masternaut avec succès"
         fail: "Échec lors de l'envoi vers Masternaut"
       export:
+        customer_external_callback_url:
+          success: "URL externe appelée avec succès"
+          fail: "Échec lors de l'appel de l'URL externe"
         icalendar:
           action: "Agenda iCal"
           action_email: "Agenda iCal par email"

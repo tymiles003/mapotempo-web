@@ -84,7 +84,10 @@ CREATE TABLE customers (
     router_dimension integer DEFAULT 0 NOT NULL,
     alyacom_api_key character varying,
     advanced_options text,
-    print_map boolean DEFAULT false NOT NULL
+    print_map boolean DEFAULT false NOT NULL,
+    external_callback_url character varying,
+    external_callback_name character varying,
+    enable_external_callback boolean DEFAULT false NOT NULL
 );
 
 
@@ -2367,4 +2370,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160708085953');
 INSERT INTO schema_migrations (version) VALUES ('20160712133500');
 
 INSERT INTO schema_migrations (version) VALUES ('20160720144957');
+
+INSERT INTO schema_migrations (version) VALUES ('20160722133109');
 

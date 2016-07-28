@@ -5,8 +5,11 @@ if @planning.customer.job_optimizer
     json.customer_id @planning.customer.id
   end
 else
-  json.extract! @planning, :id
+  json.extract! @planning, :id, :ref
   json.customer_id @planning.customer.id
+  json.customer_enable_external_callback current_user.customer.enable_external_callback
+  json.customer_external_callback_name current_user.customer.external_callback_name
+  json.customer_external_callback_url current_user.customer.external_callback_url
   duration = @planning.routes.select(&:vehicle_usage).to_a.sum(0){ |route| route.end && route.start ? route.end - route.start : 0 }
   json.duration '%i:%02i' % [duration / 60 / 60, duration / 60 % 60]
   json.distance number_to_human(@planning.routes.to_a.sum(0){ |route| route.distance || 0 }, units: :distance, precision: 3, format: '%n %u')
