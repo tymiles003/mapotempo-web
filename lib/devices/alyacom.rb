@@ -78,7 +78,7 @@ class Alyacom < DeviceBase
     update_staffs customer, [staff]
     update_users customer, waypoints.collect{ |w| w[:user] }
 
-    res = Hash[get(customer, 'planning', fromDate: planning_date.to_i, idStaff: staff[:id]).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
+    res = Hash[get(customer, 'planning', fromDate: planning_date.to_i * 1000, idStaff: staff[:id]).select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
 
     plannings = waypoints.collect{ |waypoint|
       planning = waypoint[:planning]
