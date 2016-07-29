@@ -104,23 +104,21 @@ class Alyacom < DeviceBase
   end
 
   def update_staffs(customer, staffs)
-    res = Hash[get(customer, 'staff').select{ |s| s.key?('idExt') }.map{ |s| [s['idExt'], s] }]
+    res = Hash[get(customer, 'staff').select{ |s| s.key?('idExt') }.collect{ |s| [s['idExt'], s.slice('idExt', 'lastName', 'firstName', 'address', 'postalCode', 'city')]}]
 
-    missing = staffs.select{ |s|
-      !res.key?(s[:id])
-    }.collect{ |s|
+    missing_or_update = staffs.collect{ |s|
       {
-        idExt: s[:id],
-        firstName: '',
-        lastName: s[:name],
-        address: s[:street],
-        postalCode: s[:postalcode],
-        city: s[:city],
+        'idExt' => s[:id],
+        'firstName' => '',
+        'lastName' => s[:name],
+        'address' => s[:street],
+        'postalCode' => s[:postalcode],
+        'city' => s[:city]
       }
-    }
+    }.delete_if{ |h| res.key?(h['idExt']) && res[h['idExt']].all?{ |k, v| h[k] == v } }
 
-    if !missing.empty?
-      rest_client_post [api_url, customer.alyacom_association, 'staff'].join('/'), { enc: :json, apiKey: customer.alyacom_api_key }, missing
+    if !missing_or_update.empty?
+      rest_client_post [api_url, customer.alyacom_association, 'staff'].join('/'), { enc: :json, apiKey: customer.alyacom_api_key }, missing_or_update
     end
   end
 
