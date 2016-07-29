@@ -4,7 +4,7 @@
       "idExt": <%= stops(:stop_one_one).base_id.to_json.html_safe %>,
       "firstName": "",
       "lastName": <%= stops(:stop_one_one).name.to_json.html_safe %>,
-      "address": <%= stops(:stop_one_one).street.to_json.html_safe %>,
+      "address": <%= [stops(:stop_one_one).street, stops(:stop_one_one).detail].join(', ').strip.to_json.html_safe %>,
       "postalCode": <%= stops(:stop_one_one).postalcode.to_json.html_safe %>,
       "city": <%= stops(:stop_one_one).city.to_json.html_safe %>,
       "accessInfo": "",
@@ -14,10 +14,10 @@
       "idExt": <%= stops(:stop_one_two).base_id.to_json.html_safe %>,
       "firstName": "",
       "lastName": <%= stops(:stop_one_two).name.to_json.html_safe %>,
-      "address": <%= stops(:stop_one_two).street.to_json.html_safe %>,
+      "address": <%= [stops(:stop_one_two).street, stops(:stop_one_two).detail].join(', ').strip.to_json.html_safe %>,
       "postalCode": <%= stops(:stop_one_two).postalcode.to_json.html_safe %>,
       "city": <%= stops(:stop_one_two).city.to_json.html_safe %>,
-      "accessInfo": "",
+      "accessInfo": "c 10:00-11:00 MyString",
       "deleted": false
     }
   ]

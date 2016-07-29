@@ -46,11 +46,10 @@ class Alyacom < DeviceBase
         user: {
           id: stop.base_id,
           name: stop.name,
-          street: position.street,
+          street: [position.street, stop.detail].compact.join(', ').strip,
           postalcode: position.postalcode,
           city: position.city,
-          detail: stop.detail,
-          comment: [
+          detail: [
             stop.ref,
             stop.open1 || stop.close1 ? (stop.open1 ? stop.open1.strftime('%H:%M') : '') + '-' + (stop.close1 ? stop.close1.strftime('%H:%M') : '') : nil,
             stop.open2 || stop.close2 ? (stop.open2 ? stop.open2.strftime('%H:%M') : '') + '-' + (stop.close2 ? stop.close2.strftime('%H:%M') : '') : nil,
@@ -126,7 +125,7 @@ class Alyacom < DeviceBase
   end
 
   def update_users(customer, users)
-    res = Hash[get(customer, 'users').select{ |s| s.key?('idExt') }.collect{ |s| [s['idExt'], s.slice('idExt', 'lastName', 'firstName', 'address', 'postalCode', 'city', 'accessInfo', 'comment')]}]
+    res = Hash[get(customer, 'users').select{ |s| s.key?('idExt') }.collect{ |s| [s['idExt'], s.slice('idExt', 'lastName', 'firstName', 'address', 'postalCode', 'city', 'accessInfo')]}]
 
     missing_or_update = users.collect{ |s|
       {
@@ -137,7 +136,6 @@ class Alyacom < DeviceBase
         'postalCode' => s[:postalcode],
         'city' => s[:city],
         'accessInfo' => s[:detail],
-        'comment' => s[:comment],
       }
     }.delete_if{ |h| res.key?(h['idExt']) && h == res[h['idExt']] }
 
