@@ -137,7 +137,7 @@ class Alyacom < DeviceBase
         'city' => s[:city],
         'accessInfo' => s[:detail],
       }
-    }.delete_if{ |h| res.key?(h['idExt']) && h == res[h['idExt']] }
+    }.delete_if{ |h| res.key?(h['idExt']) && res[h['idExt']].all?{ |k, v| h[k] == v } }
 
     if !missing_or_update.empty?
       rest_client_post [api_url, customer.alyacom_association, 'users'].join('/'), { enc: :json, apiKey: customer.alyacom_api_key }, missing_or_update
