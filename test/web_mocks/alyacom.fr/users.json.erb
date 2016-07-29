@@ -1,0 +1,24 @@
+{
+  "data":[
+    {
+      "idExt": <%= stops(:stop_one_one).base_id.to_json.html_safe %>,
+      "firstName": "",
+      "lastName": <%= stops(:stop_one_one).name.to_json.html_safe %>,
+      "address": <%= stops(:stop_one_one).street.to_json.html_safe %>,
+      "postalCode": <%= stops(:stop_one_one).postalcode.to_json.html_safe %>,
+      "city": <%= stops(:stop_one_one).city.to_json.html_safe %>,
+      "accessInfo": "",
+      "deleted": false
+    },
+    {
+      "idExt": <%= stops(:stop_one_two).base_id.to_json.html_safe %>,
+      "firstName": "",
+      "lastName": <%= stops(:stop_one_two).name.to_json.html_safe %>,
+      "address": <%= stops(:stop_one_two).street.to_json.html_safe %>,
+      "postalCode": <%= stops(:stop_one_two).postalcode.to_json.html_safe %>,
+      "city": <%= stops(:stop_one_two).city.to_json.html_safe %>,
+      "accessInfo": "",
+      "deleted": false
+    }
+  ]
+}

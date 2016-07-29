@@ -1,0 +1,22 @@
+{
+  "data":[
+    {
+      "idExt": <%= stops(:stop_one_one).base_id.to_json.html_safe %>,
+      "idStaff": <%= routes(:route_one_one).vehicle_usage.vehicle.name.to_json.html_safe %>,
+      "idUser": <%= stops(:stop_one_one).base_id.to_json.html_safe %>,
+      "comment": "",
+      "start": <%= (plannings(:planning_one).date.strftime("%Y-%m-%d") + " 00:10:00 +0100").to_json.html_safe %>,
+      "end": <%= (plannings(:planning_one).date.strftime("%Y-%m-%d") + " 01:10:00 +0100").to_json.html_safe %>,
+      "deleted": false
+    },
+    {
+      "idExt": <%= stops(:stop_one_two).base_id.to_json.html_safe %>,
+      "idStaff": <%= routes(:route_one_one).vehicle_usage.vehicle.name.to_json.html_safe %>,
+      "idUser": <%= stops(:stop_one_two).base_id.to_json.html_safe %>,
+      "comment": "",
+      "start": <%= (plannings(:planning_one).date.strftime("%Y-%m-%d") + " 01:10:00 +0100").to_json.html_safe %>,
+      "end": <%= (plannings(:planning_one).date.strftime("%Y-%m-%d") + " 01:25:00 +0100").to_json.html_safe %>,
+      "deleted": false
+    }
+  ]
+}

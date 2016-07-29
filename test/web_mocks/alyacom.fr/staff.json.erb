@@ -1,0 +1,13 @@
+{
+  "data":[
+    {
+      "idExt": <%= routes(:route_one_one).vehicle_usage.vehicle.name.to_json.html_safe %>,
+      "firstName": "",
+      "lastName": <%= routes(:route_one_one).vehicle_usage.vehicle.name.to_json.html_safe %>,
+      "address": <%= routes(:route_one_one).vehicle_usage.default_store_start.street.to_json.html_safe %>,
+      "postalCode": <%= routes(:route_one_one).vehicle_usage.default_store_start.postalcode.to_json.html_safe %>,
+      "city": <%= routes(:route_one_one).vehicle_usage.default_store_start.city.to_json.html_safe %>,
+      "deleted": false
+    }
+  ]
+}
