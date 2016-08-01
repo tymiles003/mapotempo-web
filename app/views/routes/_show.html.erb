@@ -138,10 +138,11 @@
                 </p>
               <% end %>
             <% elsif stop.visit.quantity? %>
-              <div class="quantity">
-                <i class="fa fa-archive fa-fw"></i> <%= stop.visit.localized_quantity1_1 %>&nbsp;<%= route.vehicle_usage.vehicle.capacity1_1 %>
-                <i class="fa fa-archive fa-fw"></i> <%= stop.visit.localized_quantity1_2 %>&nbsp;<%= route.vehicle_usage.vehicle.capacity1_2_unit %>
-              </div>
+              <% visit_quantities(stop.visit, route.vehicle_usage.vehicle).each do |quantity| %>
+                <div class="quantity">
+                  <i class="fa fa-archive fa-fw"></i> <%= quantity %>
+                </div>
+              <% end %>
             <% end %>
           <% end %>
           <% if stop.is_a?(StopRest) %>

@@ -67,7 +67,7 @@ controller.js(
   map_lat: (@planning && @planning.vehicle_usage_set.vehicle_usages.active.collect(&:default_store_start).compact.find{ |s| s.lat }.try(:lat)) || @zoning.customer.default_position[:lat],
   map_lng: (@planning && @planning.vehicle_usage_set.vehicle_usages.active.collect(&:default_store_start).compact.find{ |s| s.lng }.try(:lng)) || @zoning.customer.default_position[:lng],
   vehicles_array: zoning_vehicles(@zoning, @planning, active: true).map{|vehicle| vehicle.slice(:id, :name, :color).merge(router_avoid_zones: vehicle.default_router.avoid_zones) },
-  vehicles_map: zoning_vehicles(@zoning, @planning).each_with_object({}){|vehicle, hash| hash[vehicle.id] = vehicle.slice(:id, :name, :color, :capacity1_1, :capacity1_2).merge(router_avoid_zones: vehicle.default_router.avoid_zones) },
+  vehicles_map: zoning_vehicles(@zoning, @planning).each_with_object({}){|vehicle, hash| hash[vehicle.id] = vehicle.slice(:id, :name, :color, :capacity1_1, :capacity1_1_unit, :capacity1_2, :capacity1_2_unit).merge(router_avoid_zones: vehicle.default_router.avoid_zones) },
   show_capacity: @planning && !@planning.customer.enable_orders
 )
 %>

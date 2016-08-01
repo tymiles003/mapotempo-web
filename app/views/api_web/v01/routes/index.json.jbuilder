@@ -92,7 +92,9 @@ json.routes @routes do |route|
         end
       else
         json.extract! visit, :quantity1_1, :quantity1_2
-        json.quantity visit.quantity?
+        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
+          json.quantity quantity if quantity
+        end
       end
       duration = visit.take_over.strftime('%H:%M:%S') if visit.take_over
     elsif stop.is_a?(StopRest)

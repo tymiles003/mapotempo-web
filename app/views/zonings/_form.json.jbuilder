@@ -19,7 +19,11 @@ if @planning
       json.active route.vehicle_usage && stop.active
       if !@planning.customer.enable_orders
         json.extract! visit, :quantity1_1, :quantity1_2
-        json.quantity visit.quantity?
+        json.default_quantity1_1 1
+        json.default_quantity1_2 0
+        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
+          json.quantity quantity if quantity
+        end
       end
       (json.duration l(visit.take_over.utc, format: :hour_minute_second)) if visit.take_over
       (json.open1 l(stop.open1.utc, format: :hour_minute)) if stop.open1

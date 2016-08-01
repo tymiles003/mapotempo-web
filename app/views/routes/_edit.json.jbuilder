@@ -103,7 +103,9 @@ json.stops route.stops.sort_by{ |s| s.index || Float::INFINITY } do |stop|
       end
     else
       json.extract! visit, :quantity1_1, :quantity1_2
-      json.quantity visit.quantity?
+      json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
+        json.quantity quantity if quantity
+      end
     end
     duration = l(visit.take_over.utc, format: :hour_minute_second) if visit.take_over
   elsif stop.is_a?(StopRest)

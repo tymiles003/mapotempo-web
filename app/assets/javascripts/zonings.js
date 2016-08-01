@@ -132,21 +132,24 @@ var zonings_edit = function(params) {
     });
   });
 
-  var count_point_in_polygon = function(layer_id, ele) {
+  var countPointInPolygon = function(layer_id, ele) {
     if (hasPlanning) {
       geoJsonLayer = geoJsonLayers[layer_id];
       var n = 0,
-        quantity = 0;
+        quantity1_1 = 0,
+        quantity1_2 = 0;
       markersLayers.eachLayer(function(markerLayer) {
         if (leafletPip.pointInLayer(markerLayer.getLatLng(), geoJsonLayer, true).length > 0) {
           n += 1;
-          if (markerLayer.data && markerLayer.data.quantity) {
-            quantity += markerLayer.data.quantity;
+          if (markerLayer.data) {
+            quantity1_1 += (markerLayer.data.quantity1_1 !== null ? markerLayer.data.quantity1_1 : markerLayer.data.default_quantity1_1);
+            quantity1_2 += (markerLayer.data.quantity1_2 !== null ? markerLayer.data.quantity1_2 : markerLayer.data.default_quantity1_2);
           }
         }
       });
       $('.stop_number', ele).html(n);
-      $('.quantity_number', ele).html(quantity);
+      $('.quantity1_1_number', ele).html(quantity1_1);
+      $('.quantity1_2_number', ele).html(quantity1_2 || '');
       $('.stop').show(); // Display all
     }
   };
@@ -298,12 +301,11 @@ var zonings_edit = function(params) {
     zone.avoid_zone = zone.speed_multiplicator == 0;
     zone.router_avoid_zones = zone.vehicle_id && vehicles_map[zone.vehicle_id] ? vehicles_map[zone.vehicle_id].router_avoid_zones : router_avoid_zones;
     zone.show_capacity = show_capacity;
-    if (show_capacity) {
-      if (zone.vehicle_id && vehicles_map[zone.vehicle_id].capacity) {
-        zone.capacity = vehicles_map[zone.vehicle_id].capacity;
-      } else {
-        zone.capacity = '-';
-      }
+    if (show_capacity && zone.vehicle_id) {
+      zone.capacity1_1 = vehicles_map[zone.vehicle_id].capacity1_1;
+      zone.capacity1_1_unit = vehicles_map[zone.vehicle_id].capacity1_1_unit;
+      zone.capacity1_2 = vehicles_map[zone.vehicle_id].capacity1_2;
+      zone.capacity1_2_unit = vehicles_map[zone.vehicle_id].capacity1_2_unit;
     }
 
     $('#zones').append(SMT['zones/show'](zone));
@@ -317,7 +319,7 @@ var zonings_edit = function(params) {
       layer: geom,
       ele: ele
     };
-    count_point_in_polygon(geom._leaflet_id, ele);
+    countPointInPolygon(geom._leaflet_id, ele);
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select', ele).select2({
@@ -391,7 +393,7 @@ var zonings_edit = function(params) {
 
   var updateZone = function(geom) {
     $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[polygon\\]]', zone_map[geom._leaflet_id].ele).attr('value', JSON.stringify(geom.toGeoJSON()));
-    count_point_in_polygon(geom._leaflet_id, zone_map[geom._leaflet_id].ele);
+    countPointInPolygon(geom._leaflet_id, zone_map[geom._leaflet_id].ele);
   };
 
   var planning = undefined;
