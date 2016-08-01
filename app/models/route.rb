@@ -449,6 +449,10 @@ class Route < ActiveRecord::Base
     }
   end
 
+  include LocalizedAttr
+
+  attr_localized :quantity1_1, :quantity1_2
+
   def quantity1_1
     stops.to_a.sum(0) { |stop|
       stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.quantity1_1 || 1) : 0

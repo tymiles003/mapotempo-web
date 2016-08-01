@@ -35,6 +35,10 @@ class Visit < ActiveRecord::Base
 
   include RefSanitizer
 
+  include LocalizedAttr
+
+  attr_localized :quantity1_1, :quantity1_2
+
   amoeba do
     exclude_association :stop_visits
     exclude_association :orders
@@ -45,11 +49,6 @@ class Visit < ActiveRecord::Base
       def copy.update_out_of_date; end
     })
   end
-
-  include LocalizedAttr
-
-  attr_localized :quantity1_1
-  attr_localized :quantity1_2
 
   def destroy
     # Too late to do this in before_destroy callback, children already destroyed

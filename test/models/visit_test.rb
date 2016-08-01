@@ -79,4 +79,35 @@ class VisitTest < ActiveSupport::TestCase
     v.close2 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
     assert !d.save
   end
+
+  test 'Localized Quantity Attributes' do
+    visit = visits :visit_one
+
+    I18n.locale = :en
+    assert I18n.locale == :en
+    visit.update! quantity1_1: nil
+    assert visit.localized_quantity1_1.nil? # Don't crash with nil values
+    visit.update! quantity1_1: "10.5" # Assign with localized separator
+    assert_equal 10.5, visit.quantity1_1
+    assert_equal "10.5", visit.localized_quantity1_1 # Localized value
+    visit.update! quantity1_1: 10
+    assert_equal 10, visit.quantity1_1
+    assert_equal "10", visit.localized_quantity1_1 # Remove trailing zeros
+    visit.update! quantity1_1: 10.1 # Assign without localized separator
+    assert_equal 10.1, visit.quantity1_1
+
+    I18n.locale = :fr
+    assert I18n.locale == :fr
+    visit.update! quantity1_1: nil
+    assert visit.localized_quantity1_1.nil? # Don't crash with nil values
+    visit.update! quantity1_1: "10,5" # Assign with localized separator
+    assert_equal 10.5, visit.quantity1_1
+    assert_equal "10,5", visit.localized_quantity1_1 # Localized value
+    visit.update! quantity1_1: 10
+    assert_equal 10, visit.quantity1_1
+    assert_equal "10", visit.localized_quantity1_1 # Remove trailing zeros
+    visit.update! quantity1_1: 10.1 # Assign without localized separator
+    assert_equal 10.1, visit.quantity1_1
+  end
+
 end

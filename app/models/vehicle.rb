@@ -42,6 +42,10 @@ class Vehicle < ActiveRecord::Base
 
   include RefSanitizer
 
+  include LocalizedAttr
+
+  attr_localized :emission, :consumption
+
   def self.emissions_table
     [
       [I18n.t('vehicles.emissions_nothing', n: 0), '0.0'],

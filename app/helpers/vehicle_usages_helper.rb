@@ -18,9 +18,9 @@
 module VehicleUsagesHelper
   def vehicle_usage_emission_consumption(vehicle_usage)
     capture do
-      concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.emission, t('all.unit.kgco2e_l_html')] if vehicle_usage.vehicle.emission
+      concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.localized_emission, t('all.unit.kgco2e_l_html')] if vehicle_usage.vehicle.emission
       concat ' - ' if vehicle_usage.vehicle.emission && vehicle_usage.vehicle.consumption
-      concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.consumption, t('all.unit.l_100km')] if vehicle_usage.vehicle.consumption
+      concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.localized_consumption, t('all.unit.l_100km')] if vehicle_usage.vehicle.consumption
     end
   end
 

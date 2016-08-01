@@ -19,4 +19,8 @@ module ApplicationHelper
   def span_tag(content)
     content_tag :span, content, class: 'default-color'
   end
+  def number_to_human(number, options={})
+    options.merge! delimiter: I18n.t('number.format.delimiter'), separator: I18n.t('number.format.separator'), strip_insignificant_zeros: true
+    super number, options
+  end
 end
