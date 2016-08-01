@@ -1,83 +1,85 @@
 <%= twitter_bootstrap_form_for(@store, layout: :horizontal, html: {class: "form-horizontal", "data-destination_id" => (@store.id or 0)}) do |f| %>
   <%= render 'shared/error_messages', model: @store %>
-  <% if @store.customer.enable_references %>
-    <%= f.text_field :ref do %>
-      <p class="help-block"><%= t '.ref_help' %></p>
+  <fieldset id="destination-details">
+    <% if @store.customer.enable_references %>
+      <%= f.text_field :ref do %>
+        <p class="help-block"><%= t '.ref_help' %></p>
+      <% end %>
     <% end %>
-  <% end %>
-  <%= f.text_field :name, required: true %>
-  <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('button', content_tag('i', '', class: 'fa fa-crosshairs fa-fw'), class: 'btn btn-default', type: 'button', title: t('.locate_manually'))} %>
-  <div id="store_city_input" class="form-group">
-    <label class="sr-only" for="store_postalcode"><%= t 'activerecord.attributes.store.postalcode' %></label>
-    <label class="sr-only" for="store_city"><%= t 'activerecord.attributes.store.city' %></label>
-    <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.postalcode' %> / <%= t 'activerecord.attributes.store.city' %></label>
-    <div class="col-md-6">
-      <div class="input-group">
-        <%= text_field :store, :postalcode, maxlength: 17, class: 'form-control width_1_2' %>
-        <%= text_field :store, :city, class: 'form-control width_1_2' %>
-        <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
-      </div>
-    </div>
-  </div>
-  <%= f.text_field :country, {placeholder: t('.country_default', n: @store.customer.default_country)} %>
-  <div id="store_geocoding_input" class="form-group">
-    <label class="col-md-2 control-label" for="store_geocoding"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
-    <div class="col-md-6">
-      <div id="geocoding_accuracy"<% if ! @store.geocoding_accuracy %> style="display: none"<% end %>>
-        <input type="hidden" name="store[geocoding_accuracy]" value="<%= @store.geocoding_accuracy %>">
-        <div id="geocoding-progress" class="progress">
-          <div class="progress-bar<% if @store.geocoding_accuracy %> progress-bar-<%= @store.geocoding_accuracy > Mapotempo::Application.config.geocode_geocoder.accuracy_success ? 'success' : @store.geocoding_accuracy > Mapotempo::Application.config.geocode_geocoder.accuracy_warning ? 'warning' : 'danger' %><% end %>" style="width: <%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round : 0 %>%;">
-            <span><%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round.to_s + '%' : '' %></span>
-          </div>
+    <%= f.text_field :name, required: true %>
+    <%= f.text_field :street, {class: "form-control pointing", input_group: content_tag('button', content_tag('i', '', class: 'fa fa-crosshairs fa-fw'), class: 'btn btn-default', type: 'button', title: t('.locate_manually'))} %>
+    <div id="store_city_input" class="form-group">
+      <label class="sr-only" for="store_postalcode"><%= t 'activerecord.attributes.store.postalcode' %></label>
+      <label class="sr-only" for="store_city"><%= t 'activerecord.attributes.store.city' %></label>
+      <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.postalcode' %> / <%= t 'activerecord.attributes.store.city' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= text_field :store, :postalcode, maxlength: 17, class: 'form-control width_1_2' %>
+          <%= text_field :store, :city, class: 'form-control width_1_2' %>
+          <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
         </div>
-        <p class="help-block"><%= t 'destinations.form.geocoding_accuracy_help' %></p>
-      </div>
-      <div id="geocoding_fail" style="display: none">
-        <%= t 'destinations.form.geocoding_fail' %> - <a href="#" role="button" class="pointing"><i class="fa fa-crosshairs fa-fw"></i> <%= t '.locate_manually' %></a>
-      </div>
-      <div id="no_geocoding_accuracy"<% if @store.geocoding_accuracy %> style="display: none"<% end %>>
-        <%= t 'destinations.form.geocoding_accuracy_none' %>
-      </div>
-      <div id="geocoding_level"<% if ! @store.geocoding_level %> style="display: none"<% end %>>
-        <input type="hidden" name="store[geocoding_level]" value="<%= @store.geocoding_level %>">
-        <i id="geocoding-level-point" class="fa fa-map-marker fa-fw geocoding-level"<% if ! @store.point? %> style="display: none"<% end %>></i>
-        <i id="geocoding-level-house" class="fa fa-home fa-fw geocoding-level"<% if ! @store.house? %> style="display: none"<% end %>></i>
-        <i id="geocoding-level-intersection" class="fa fa-times fa-fw geocoding-level"<% if ! @store.intersection? %> style="display: none"<% end %>></i>
-        <i id="geocoding-level-street" class="fa fa-road fa-fw geocoding-level"<% if ! @store.street? %> style="display: none"<% end %>></i>
-        <i id="geocoding-level-city" class="fa fa-exclamation-triangle fa-fw geocoding-level"<% if ! @store.city? %> style="display: none"<% end %>></i>
-        <span><%= t 'activerecord.attributes.destination.geocoding_level' %>: <span id="geocoding-level-value"><%= if @store.geocoding_level
-          t 'destinations.form.geocoding_level.' + @store.geocoding_level
-          end %></span></span>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <span class="col-md-offset-2 col-md-6"><div id="map" class="map-fixed-size"></div></span>
-  </div>
-  <div id="store_geoloc_input" class="form-group">
-    <label class="sr-only" for="store_lat"><%= t 'activerecord.attributes.store.lat' %></label>
-    <label class="sr-only" for="store_lnt"><%= t 'activerecord.attributes.store.lng' %></label>
-    <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.lat' %> / <%= t 'activerecord.attributes.store.lng' %></label>
-    <div class="col-md-6">
-      <div class="input-group">
-        <%= number_field :store, :lat, step: 'any', class: 'form-control width_1_2' %>
-        <%= number_field :store, :lng, step: 'any', class: 'form-control width_1_2' %>
-        <span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+    <%= f.text_field :country, {placeholder: t('.country_default', n: @store.customer.default_country)} %>
+    <div id="store_geocoding_input" class="form-group">
+      <label class="col-md-2 control-label" for="store_geocoding"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
+      <div class="col-md-6">
+        <div id="geocoding_accuracy"<% if ! @store.geocoding_accuracy %> style="display: none"<% end %>>
+          <input type="hidden" name="store[geocoding_accuracy]" value="<%= @store.geocoding_accuracy %>">
+          <div id="geocoding-progress" class="progress">
+            <div class="progress-bar<% if @store.geocoding_accuracy %> progress-bar-<%= @store.geocoding_accuracy > Mapotempo::Application.config.geocode_geocoder.accuracy_success ? 'success' : @store.geocoding_accuracy > Mapotempo::Application.config.geocode_geocoder.accuracy_warning ? 'warning' : 'danger' %><% end %>" style="width: <%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round : 0 %>%;">
+              <span><%= @store.geocoding_accuracy ? (@store.geocoding_accuracy * 100).round.to_s + '%' : '' %></span>
+            </div>
+          </div>
+          <p class="help-block"><%= t 'destinations.form.geocoding_accuracy_help' %></p>
+        </div>
+        <div id="geocoding_fail" style="display: none">
+          <%= t 'destinations.form.geocoding_fail' %> - <a href="#" role="button" class="pointing"><i class="fa fa-crosshairs fa-fw"></i> <%= t '.locate_manually' %></a>
+        </div>
+        <div id="no_geocoding_accuracy"<% if @store.geocoding_accuracy %> style="display: none"<% end %>>
+          <%= t 'destinations.form.geocoding_accuracy_none' %>
+        </div>
+        <div id="geocoding_level"<% if ! @store.geocoding_level %> style="display: none"<% end %>>
+          <input type="hidden" name="store[geocoding_level]" value="<%= @store.geocoding_level %>">
+          <i id="geocoding-level-point" class="fa fa-map-marker fa-fw geocoding-level"<% if ! @store.point? %> style="display: none"<% end %>></i>
+          <i id="geocoding-level-house" class="fa fa-home fa-fw geocoding-level"<% if ! @store.house? %> style="display: none"<% end %>></i>
+          <i id="geocoding-level-intersection" class="fa fa-times fa-fw geocoding-level"<% if ! @store.intersection? %> style="display: none"<% end %>></i>
+          <i id="geocoding-level-street" class="fa fa-road fa-fw geocoding-level"<% if ! @store.street? %> style="display: none"<% end %>></i>
+          <i id="geocoding-level-city" class="fa fa-exclamation-triangle fa-fw geocoding-level"<% if ! @store.city? %> style="display: none"<% end %>></i>
+          <span><%= t 'activerecord.attributes.destination.geocoding_level' %>: <span id="geocoding-level-value"><%= if @store.geocoding_level
+            t 'destinations.form.geocoding_level.' + @store.geocoding_level
+            end %></span></span>
+        </div>
       </div>
     </div>
-  </div>
-  <%= f.select :color, [], (COLORS_TABLE + [@store[:color]]).compact.uniq, include_blank: '#000000' %>
-  <div id="store_icon_input" class="form-group">
-    <label class="col-md-2 control-label" for="store_icon"><%= t 'activerecord.attributes.store.icon' %></label>
-    <label class="sr-only" for="store_icon_size"><%= t 'activerecord.attributes.store.icon_size' %></label>
-    <div class="col-md-6">
-      <div class="input-group">
-        <%= select_tag 'store[icon]', options_for_select(@icons_table, @store.icon), include_blank: t('web.form.default', n: 'fa-home'), class: 'form-control width_1_2' %>
-        <%= select_tag 'store[icon_size]', options_for_select([[t('.icon_size.small'), :small], [t('.icon_size.medium'), :medium], [t('.icon_size.large'), :large]], @store.icon_size), include_blank: t('web.form.default', n: t('.icon_size.large')), class: 'form-control width_1_2' %>  
-        <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
+    <div class="form-group">
+      <span class="col-md-offset-2 col-md-6"><div id="map" class="map-fixed-size"></div></span>
+    </div>
+    <div id="store_geoloc_input" class="form-group">
+      <label class="sr-only" for="store_lat"><%= t 'activerecord.attributes.store.lat' %></label>
+      <label class="sr-only" for="store_lnt"><%= t 'activerecord.attributes.store.lng' %></label>
+      <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.lat' %> / <%= t 'activerecord.attributes.store.lng' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= number_field :store, :lat, step: 'any', class: 'form-control width_1_2' %>
+          <%= number_field :store, :lng, step: 'any', class: 'form-control width_1_2' %>
+          <span class="input-group-addon"><i class="fa fa-globe fa-fw"></i></span>
+        </div>
       </div>
     </div>
-  </div>
+    <%= f.select :color, [], (COLORS_TABLE + [@store[:color]]).compact.uniq, include_blank: '#000000' %>
+    <div id="store_icon_input" class="form-group">
+      <label class="col-md-2 control-label" for="store_icon"><%= t 'activerecord.attributes.store.icon' %></label>
+      <label class="sr-only" for="store_icon_size"><%= t 'activerecord.attributes.store.icon_size' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= select_tag 'store[icon]', options_for_select(@icons_table, @store.icon), include_blank: t('web.form.default', n: 'fa-home'), class: 'form-control width_1_2' %>
+          <%= select_tag 'store[icon_size]', options_for_select([[t('.icon_size.small'), :small], [t('.icon_size.medium'), :medium], [t('.icon_size.large'), :large]], @store.icon_size), include_blank: t('web.form.default', n: t('.icon_size.large')), class: 'form-control width_1_2' %>
+          <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
+        </div>
+      </div>
+    </div>
+  </fieldset>
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
