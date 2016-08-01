@@ -164,7 +164,7 @@ en:
         print_map: "Include map"
         stores: "Stores"
         enable_orders: "Enable orders"
-        enable_multi_vehicle_usage_sets: "Enable more than one vehicles configurations"
+        enable_multi_vehicle_usage_sets: "Enable more than one vehicle configuration"
         enable_references: "View references"
         enable_multi_visits: "Enable more than one visit per destination"
         test: "Test"
@@ -416,8 +416,8 @@ en:
             rest_stop:
               on_or_after: "Must be after opening time"
               after: "Must be after opening time"
-          missing_rest_window: "can't be blanked if rest duration is filled"
-          missing_rest_duration: "can't be blanked if rest time window is filled"
+          missing_rest_window: "can't be blank if rest duration is filled"
+          missing_rest_duration: "can't be blank if rest time window is filled"
         vehicle_usage_set:
           attributes:
             close:
@@ -425,9 +425,9 @@ en:
             rest_stop:
               on_or_after: "Must be after opening time"
               after: "Must be after opening time"
-          at_least_one: "At least one vehicles configuration needed"
-          missing_rest_window: "can't be blanked if rest duration is filled"
-          missing_rest_duration: "can't be blanked if rest time window is filled"
+          at_least_one: "At least one vehicle configuration needed"
+          missing_rest_window: "can't be blank if rest duration is filled"
+          missing_rest_duration: "can't be blank if rest time window is filled"
         visit:
           attributes:
             close1:
@@ -443,12 +443,12 @@ en:
         customer:
           attributes:
             destinations:
-              over_max_limit: "Over maximum number of destinations"
+              over_max_limit: "Maximum number of destinations reached"
             stores:
-              over_max_limit: "Over maximum number of stores"
+              over_max_limit: "Maximum number of stores reached"
         store:
           at_least_one: "At least one store needed"
-          icon_unknown: "is not in font-awesome icon list"
+          icon_unknown: "is not in font-awesome icons list"
           icon_size_invalid: "is not a valid size"
         route:
           attributes:
@@ -481,16 +481,16 @@ en:
       last_action_failed: "Your last action could not be processed"
     teksat:
       bad_url: "Bad URL"
-      get_ticket: "Can't Authenticate. Please Check Your Credentials"
-      list: "Can't List Devices"
-      get_vehicles_pos: "Can't Get Vehicles Positions"
-      set_mission: "Failed To Create Mission"
+      get_ticket: "Can't authenticate. Please check your credentials"
+      list: "Can't list devices"
+      get_vehicles_pos: "Can't get vehicles positions"
+      set_mission: "Failed to create mission"
       unauthorized: "Unauthorized"
     orange:
-      no_equipment: "Vehicle: No Equipment Found"
+      no_equipment: "Vehicle: No equipments found"
       unauthorized: "Unauthorized"
-      list: "Can't List Devices"
-      get_vehicles_pos: "Can't Get Vehicles Positions"
+      list: "Can't list devices"
+      get_vehicles_pos: "Can't get vehicles positions"
     alyacom:
       unauthorized: "Unauthorized"
       timeout: "Request Timeout"
@@ -513,8 +513,8 @@ en:
       edit:
         title: "Editing reseller"
       form:
-        host_help: "Web URL hostname and port used to match with this reseller."
-        name_help: "Reseller brand name."
+        host_help: "Web URL hostname and port used to match this reseller"
+        name_help: "Reseller brand name"
         welcome_url_help: "Web page address included as html as \"iframe\" on welcome page. It's possible to use \"{LG}\" which will be replaced by language like « en », « fr » (ie: http://mapotempo.com/{LG}/page.html)."
         help_url_help: "Web page address with help content. It's possible to use \"{LG}\" which will be replaced by language like « en », « fr » (ie: http://mapotempo.com/{LG}/page.html)."
         contact_url_help: "Web page address with contact form. It's possible to use \"{LG}\" which will be replaced by language like « en », « fr » (ie: http://mapotempo.com/{LG}/page.html)."
@@ -574,8 +574,8 @@ en:
       map: "Map"
       no_test: "not in test"
       status: "Status"
-      status_no_user: "No user"
-      status_no_sign_in_user: "User never logged"
+      status_no_user: "No users"
+      status_no_sign_in_user: "User never signed-in"
       status_inactive_user: "Inactive user"
     new:
       title: "New Account"
@@ -640,12 +640,12 @@ en:
       clear_confirm: "Are you sure to want to delete all destinations?"
     form:
       ref_help: "A free reference"
-      detail_help: "Non geocoded addresse complement; like flat number"
-      comment_help: "Delivery required information"
+      detail_help: "Non geocoded address complement, flat number for example"
+      comment_help: "Delivery informations"
       locate_manually: "Locate manually on the map"
       geocoding_accuracy_none: "Not applicable"
       geocoding_fail: "Geocoding has failed"
-      geocoding_accuracy_help: "Conversion quality of the address to the geographical position"
+      geocoding_accuracy_help: "Conversion quality of the address to the geographic position"
       country_default: "%{n} (default value)"
       geocoding_level:
         point: "Point"
@@ -667,13 +667,13 @@ en:
       title: "Import destinations"
       destinations: "Destinations"
       replace_no: "Update / in addition"
-      replace_no_help: "An update of existing destinations (unchanged destination references) is made and the new ones are added in application."
+      replace_no_help: "An update of existing destinations (unchanged destination references) is made and the new ones are added in the application."
       replace_yes: "Delete previous destinations"
       replace_yes_help: "Delete and replace destinations with import ones. Overwrite all destinations. Plans will also be lost."
-      replace_confirm: "Delete all clients and their amendments to replace them with imported ones?"
+      replace_confirm: "Delete all clients with their amendments and replace them with imported ones?"
       plannings: "Plans"
       delete_plannings: "Delete previous plans"
-      delete_plannings_help: "Delete previously created plans (allow better performances). If routes are present in your new import file, a plan will be created anyway after import."
+      delete_plannings_help: "Delete previously created plans (allows better performances). If routes are present in your new import file, a plan will be created after import."
       delete_plannings_confirm: "Delete all previously created plans?"
       csv:
         title: "CSV File"
@@ -688,10 +688,10 @@ en:
           columns_destination: "Visited destination columns"
           columns_visit: "Visit columns"
           def_help: "If you don't want use default columns names, you can customize them yourself. You can specify a list of column numbers or titles."
-          def_example: 'For example for "street", you can define "number, road, 4" to merge your columns "number", "road" and 4th column without title as value for "street" in application.'
+          def_example: 'For example for "street", you can define "number, road, 4" to merge your columns "number", "road" and 4th column without title as value for "street" in the application.'
       tomtom:
         title: "TomTom"
-        help: "Import TomTom WEBFLEET address as destinations."
+        help: "Import TomTom WEBFLEET addresses as destinations"
     index:
       title: "Listing destinations"
       new: "New Destination"
@@ -699,7 +699,7 @@ en:
       columns: "Columns"
       no_position: "missing"
       geocoding_level: "Geocoding level"
-      geocoding_column_help: "Geocoding level and accuracy. Order first by level and then by accuracy."
+      geocoding_column_help: "Geocoding level and accuracy. Order by level first, then by accuracy"
       geocoding_empty: "missing"
       click2call: "Click to call"
       quantity_small: "Qty."
@@ -719,7 +719,7 @@ en:
           correct_help: "Check address to correct or complete it if necessary"
           move_help: "Move points on the map if necessary"
           dismiss: "Dismiss"
-          sort_geocoding: "Display non reliable geocoded first"
+          sort_geocoding: "Display non reliable geocoded results first"
     new:
       title: "New destination"
     import_file:
@@ -766,7 +766,7 @@ en:
       quantity1_2: "quantity 1_2"
       quantity1_2_desc: "number 1 of units 2 to deliver."
       active: "active"
-      active_desc: "state if the visit is or is not active in this route / plan."
+      active_desc: "states whether the visit is active or not in this route/plan"
       open: "open"
       open_desc: "deprecated: use \"open 1\" instead."
       close: "close"
@@ -787,11 +787,11 @@ en:
       tags_desc: "destination tags (allowing to group them)."
       tags_format: "tag 1,tag 2"
       without_visit: "without visit"
-      without_visit_desc: "state that there is no associated visits."
+      without_visit_desc: "states that there is no associated visits"
       ref_visit: "reference visit"
       ref_visit_desc: "reference id of this visit."
       tags_visit: "tags visit"
-      tags_visit_desc: "tags of this visit (allowing for instance to group them)."
+      tags_visit_desc: "tags of this visit (allowing to group them for example)."
       format:
         string: "text"
         integer: "integer"
@@ -877,7 +877,7 @@ or you can click on this link to download file (no update in this case)."
   user_mailer:
     welcome:
       title: "Your %{s} account"
-      content: "<p>Hello and welcome on %{s},</p>\n
+      content: "<p>Hello and welcome to %{s},</p>\n
 \n
 <p>You can set your password with the following link: <a href=\"%{l}\">Set Password</a> or %{l} </p>\n
 \n
@@ -960,7 +960,7 @@ or you can click on this link to download file (no update in this case)."
         icalendar:
           action: "Calendar iCal"
           action_email: "Calendar iCal by E-Mail"
-          success: "File sucessfully sent by E-Mail"
+          success: "File successfully sent by E-Mail"
           fail: "Failed to export"
         kmz_email:
           action: "KML Track by E-Mail"
@@ -1013,13 +1013,13 @@ or you can click on this link to download file (no update in this case)."
       edit_visit_help: "Edit visit/customer information"
       marker_help: "Show on map"
       automatic_insert_help: "Find a route and insert this stop"
-      automatic_insert_help_multiple: "Find routes and insert stops (result will not be optimized anymore)"
-      automatic_insert_confirm: "Find a route for each stop? Result will not be optimized. Zonings are recommended to find a route for each stop with more exactness (Ok to continue anyway)."
-      automatic_insert_too_many: "Too many stops out of route. Zonings are recommended to find a route for each stop with more exactness."
+      automatic_insert_help_multiple: "Find routes and insert stops (results will not be optimized anymore)"
+      automatic_insert_confirm: "Find a route for each stop? Results will not be optimized. Zonings are recommended to find a route for each stop with accuracy (Ok to continue anyway)."
+      automatic_insert_too_many: "Too many stops without vehicles. Zonings are recommended to set a route for each stop with accuracy"
       active_all: "All"
       active_reverse: "Reverse"
       active_none: "None"
-      send_to_route_help: "Move this stop in a route"
+      send_to_route_help: "Move this stop to a route"
       wait: "Waiting time:"
       vehicle_speed: "Speed:"
       vehicle_last_position_time: "Last position:"
@@ -1041,7 +1041,7 @@ or you can click on this link to download file (no update in this case)."
         visit: "Visit"
       error:
         no_geolocalization: "No geolocalization"
-        no_geolocalization_help: "No geographical coordinates or addresses could not be located"
+        no_geolocalization_help: "No geographic coordinates or addresses could not be located"
         out_of_window: "Out of time window"
         out_of_window_help: "Stop planned out of specified time windows"
         out_of_capacity: "Out of capacity"
@@ -1053,7 +1053,7 @@ or you can click on this link to download file (no update in this case)."
       dialog:
         refresh:
           title: "Refresh the plan"
-          confirm: "You have performed changes that require a recompute of the plan. Do you want to refresh the plan now?"
+          confirm: "You have performed changes that require a recomputation of the plan. Do you want to refresh the plan now?"
         optimizer:
           title: "Optimization"
           in_progress: "Please wait, processing."
@@ -1079,9 +1079,9 @@ or you can click on this link to download file (no update in this case)."
           in_progress: "Please wait"
         zoning:
           title: "Zoning"
-          in_progress: "Please wait, applying new zoning in progress."
+          in_progress: "Please wait, applying new zoning"
         automatic_insert:
-          title: "Set routes for out of route stops"
+          title: "Set routes for stops without vehicles"
           in_progress: "Please wait"
         spreadsheet:
           title: "Export to spreadsheet"
@@ -1142,7 +1142,7 @@ or you can click on this link to download file (no update in this case)."
       ref_help: "A free reference"
       tags_help: "Restrict visits/destinations in the plan (visits/destinations should have all of these categories to be taken into account in the plan)"
       order_array: "Orders"
-      zonings_help: "Allow to automatically assign vehicles to visits/destinations with geographical zones."
+      zonings_help: "Allow to automatically assign vehicles to visits/destinations with geographic zones."
       avoid_zones_help: "In addition, allow to define zones where vehicle cannot circulate."
       default: "Default"
     show:
@@ -1238,7 +1238,7 @@ or you can click on this link to download file (no update in this case)."
       lng_desc: "longitude of the destination in decimal degrees between -180° and 180°. E.g. -0.781"
       lng_format: "floating number between -180 and 180"
       geocoding_accuracy: "geocoding accuracy"
-      geocoding_accuracy_desc: "quality score given to the process of converting the destination street address into geographic coordinates. If under 85%, please check your spelling and refresh the geocoding. This score is expressed with a value between 0 et 1. E.g. 0.70 means 70% accurate."
+      geocoding_accuracy_desc: "quality score given when converting the destination street address into geographic coordinates. If under 85%, please check your spelling and refresh the geocoding. This score is expressed with a value between 0 et 1. E.g. 0.70 means 70% accurate."
       geocoding_accuracy_format: "floating number from 0 to 1"
       geocoding_level: "geocoding level"
       geocoding_level_desc: "level of precision reached when converting the destination street address into geographic coordinates"
@@ -1328,9 +1328,9 @@ or you can click on this link to download file (no update in this case)."
         default: "Default"
       speed_multiplicator:
         default: "%{n} (default value)"
-        help: "A value higher than 100% mean higher speed. The global tune up set on settings is also used on computation."
+        help: "A value higher than 100% means higher speed. The global tune up set on settings is also used on computation."
       contact_email:
-        help: "Driver's Device E-Mail"
+        help: "Driver's device E-Mail"
 
   vehicle_usages:
     menu:
@@ -1353,9 +1353,9 @@ or you can click on this link to download file (no update in this case)."
     new:
       title: "New vehicle configuration"
     toggle:
-      success: "Vehicle Configuration Updated Successfully"
+      success: "Vehicle configuration updated successfully"
     form:
-      save: "Save Vehicle Configuration"
+      save: "Save vehicle configuration"
       vehicle:
         legend: "Vehicle"
         help: "The following informations on the vehicle are common to all vehicles configurations"
@@ -1391,7 +1391,7 @@ or you can click on this link to download file (no update in this case)."
         default: "%{n} (default value)"
       service_time_start_addon: "before"
       service_time_end_addon: "after"
-      service_times_help: "Durations added before the first stop and after the last stop."
+      service_times_help: "Durations added before the first stop and after the last stop"
 
   vehicle_usage_sets:
     default:
@@ -1429,7 +1429,7 @@ or you can click on this link to download file (no update in this case)."
     form:
       legend: "Visit #%{n}"
       destroy: "If checked, visit will be destroyed by submitting this page. Click here to cancel."
-      ref_help: "A free reference. Important to avoid overwriting visits on import / export"
+      ref_help: "A free reference. Important to avoid overwriting visits on import/export"
       quantity: "Quantiy"
       quantity_default: "default"
       quantity_help: "Quantity to be delivered"
@@ -1493,7 +1493,7 @@ or you can click on this link to download file (no update in this case)."
           vehicle_usage_set: "Vehicles configuration"
           vehicle_usage_set_help: "Vehicles configuration to consider, especially the start store."
           size: "Distance"
-          size_help: "Area accessible from the start point by this travel distance."
+          size_help: "Area accessible from the start point given this travel distance."
         isodistance-progress:
           title: "Isodistances computation in progress"
         validate: "Generate"
