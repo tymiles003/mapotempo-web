@@ -213,7 +213,7 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one_one)
 
     positions = [D.new(1,1,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(3,3,nil,nil,nil,nil,0)]
-    tws = [[nil, nil, 0]] + positions.collect{ |position|
+    tws = positions.collect{ |position|
         open, close, duration = position[:open1], position[:close1], position[:duration]
         open = open ? open - o.vehicle_usage.open.to_i : nil
         close = close ? close - o.vehicle_usage.open.to_i : nil
@@ -225,14 +225,14 @@ class RouteTest < ActiveSupport::TestCase
     ret = o.send(:unnil_positions, positions, tws){ |positions_loc, tws_loc, rest_tws|
       [0, 1, 2, 3, 4]
     }
-    assert_equal ret, [0, 1, 3, 4, 2]
+    assert_equal [0, 1, 3, 4, 2], ret
   end
 
   test 'should unnil_positions except start/stop' do
     o = routes(:route_one_one)
 
     positions = [D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0)]
-    tws = [[nil, nil, 0]] + positions.collect{ |position|
+    tws = positions.collect{ |position|
         open, close, duration = position[:open1], position[:close1], position[:duration]
         open = open ? open - o.vehicle_usage.open.to_i : nil
         close = close ? close - o.vehicle_usage.open.to_i : nil
@@ -244,7 +244,7 @@ class RouteTest < ActiveSupport::TestCase
     ret = o.send(:unnil_positions, positions, tws){ |positions_loc, tws_loc, rest_tws|
       [0, 1, 2, 3, 4]
     }
-    assert_equal ret, [0, 1, 3, 4, 2]
+    assert_equal [1, 3, 0, 2, 4], ret
   end
 
   test 'should reverse stops' do

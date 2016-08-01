@@ -397,25 +397,20 @@ class Route < ActiveRecord::Base
         {start1: open1, end1: close1, start2: open2, end2: close2, duration: duration}
       }
 
-      position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : [nil, nil]
-      position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : [nil, nil]
-      positions = [position_start] + positions + [position_stop]
-      order = unnil_positions(positions, services){ |positions, services, rests|
-        positions = positions[(position_start == [nil, nil] ? 1 : 0)..(position_stop == [nil, nil] ? -2 : -1)].collect{ |position| position[0..1] }
-        speed_multiplicator = vehicle_usage.vehicle.default_speed_multiplicator
-
-        matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
-        if position_start == [nil, nil]
-          matrix = [[[0, 0]] * matrix.length] + matrix
-          matrix.collect!{ |x| [[0, 0]] + x }
+      unnil_positions(positions, services){ |positions, services, rests|
+        position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : nil
+        position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : nil
+        positions = ([position_start] + positions + [position_stop]).compact.collect{ |position| position[0..1] }
+        matrix = router.matrix(positions, positions, vehicle_usage.vehicle.default_speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
+        order = optimizer.call(matrix, services, [position_start && :start, position_stop && :stop].compact, rests, router_dimension)
+        if position_stop
+          order = order[0..-2]
         end
-        if position_stop == [nil, nil]
-          matrix += [[[0, 0]] * matrix.length]
-          matrix.collect!{ |x| x + [[0, 0]] }
+        if position_start
+          order = order[1..-1].collect{ |i| i - 1 }
         end
-        optimizer.call(matrix, services, [position_start == [nil, nil] ? nil : :start, position_stop == [nil, nil] ? nil : :stop].compact, rests, router_dimension)
+        order
       }
-      order[1..-2].collect{ |i| i - 1 }
     }
     self.optimized_at = Time.now.utc
     o
@@ -560,22 +555,22 @@ class Route < ActiveRecord::Base
 
   def unnil_positions(positions, tws)
     # start/stop are always in input positions
-    not_nil_position_index = positions[1..-2].each_with_index.group_by{ |position, _index| !position[0].nil? && !position[1].nil? }
+    not_nil_position_index = positions.each_with_index.group_by{ |position, _index| !position[0].nil? && !position[1].nil? }
 
     if not_nil_position_index.key?(true)
-      not_nil_position, not_nil_tws, not_nil_index = not_nil_position_index[true].collect{ |position, index| [position, tws[index], index + 1] }.transpose
+      not_nil_position, not_nil_tws, not_nil_index = not_nil_position_index[true].collect{ |position, index| [position, tws[index], index] }.transpose
     else
       not_nil_position = not_nil_tws = not_nil_index = []
     end
     if not_nil_position_index.key?(false)
-      nil_tws, nil_index = not_nil_position_index[false].collect{ |_position, index| [tws[index], index + 1] }.transpose
+      nil_tws, nil_index = not_nil_position_index[false].collect{ |_position, index| [tws[index], index] }.transpose
     else
       nil_tws = nil_index = []
     end
 
-    order = yield([positions[0]] + not_nil_position + [positions[-1]], not_nil_tws, nil_tws)
+    order = yield(not_nil_position, not_nil_tws, nil_tws)
 
-    all_index = [0] + not_nil_index + [positions.length - 1] + nil_index
+    all_index = not_nil_index + nil_index
     order.collect{ |o| all_index[o] }
   end
 
