@@ -89,6 +89,13 @@ GIT
     tidy-html5 (0.1.1)
 
 GIT
+  remote: git://github.com/ngonzalez/pnotify-rails.git
+  revision: 614bdbbf98ed3fa5a4ecf6df34b5c2223eb31e8e
+  branch: remove-materials-css
+  specs:
+    pnotify-rails (3.0.0)
+
+GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: d3776ddd0b89d28fdebfd6e1c1541348cc90e5cc
   specs:
@@ -335,7 +342,6 @@ GEM
       ast (~> 2.2)
     pg (0.18.4)
     pkg-config (1.1.7)
-    pnotify-rails (3.0.0)
     polyglot (0.3.5)
     polylines (0.3.0)
     powerpack (0.1.1)
@@ -587,7 +593,7 @@ DEPENDENCIES
   nokogiri
   paloma
   pg
-  pnotify-rails
+  pnotify-rails!
   polylines
   rack-cors
   rails (~> 4.2)

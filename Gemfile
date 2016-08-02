@@ -157,7 +157,7 @@ gem 'rest-client'
 gem 'macaddr'
 gem 'rubyzip'
 
-gem 'pnotify-rails'
+gem 'pnotify-rails', github: 'ngonzalez/pnotify-rails', branch: 'remove-materials-css' # FIXME wait for https://github.com/navinpeiris/pnotify-rails/pull/12
 
 gem 'nokogiri'
 gem 'addressable'
