@@ -44,7 +44,7 @@ class Vehicle < ActiveRecord::Base
 
   include LocalizedAttr
 
-  attr_localized :emission, :consumption
+  attr_localized :emission, :consumption, :capacity1_1, :capacity1_2
 
   def self.emissions_table
     [

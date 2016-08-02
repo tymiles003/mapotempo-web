@@ -9,7 +9,9 @@ json.color_fake route.color
 json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at
 json.optimized_at_formatted l(route.optimized_at) if route.optimized_at
 if !@planning.customer.enable_orders
-  json.quantity route.quantity?
+  json.quantities route_quantities(route) do |quantity|
+    json.quantity quantity if quantity
+  end
   json.quantity1_1 route.quantity1_1
   json.quantity1_2 route.quantity1_2 if route.quantity1_2 > 0
 end
