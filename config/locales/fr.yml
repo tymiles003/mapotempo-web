@@ -432,6 +432,9 @@ fr:
           attributes:
             close1:
               on_or_after: "Doit être après l'horaire de début 1"
+              blank: "Doit être rempli(e) quand Plage horaire 2 déput est renseigné"
+            open2:
+              on_or_after: "Doit être après l'horaire de fin 1"
             close2:
               on_or_after: "Doit être après l'horaire de début 2"
         zone:

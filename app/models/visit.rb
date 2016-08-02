@@ -26,7 +26,8 @@ class Visit < ActiveRecord::Base
   validates :destination, presence: true
   validates_time :open1, if: :open1
   validates_time :close1, presence: false, on_or_after: :open1, if: :close1
-  validates_time :open2, if: :open2
+  validates :close1, presence: true, if: :open2
+  validates_time :open2, on_or_after: :close1, if: :open2
   validates_time :close2, presence: false, on_or_after: :open2, if: :close2
 
   before_save :update_tags, :create_orders

@@ -56,4 +56,27 @@ class VisitTest < ActiveSupport::TestCase
     v.open1 = v.close1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
     d.save!
   end
+
+  test 'should set invalid TW' do
+    d = destinations(:destination_one)
+    v = d.visits[0]
+    v.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    v.close1 = Time.new(2000, 01, 01, 00, 9, 00, '+00:00')
+    assert !d.save
+
+    v.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    v.open2 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
+    assert !d.save
+
+    v.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    v.close1 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
+    v.open2 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    assert !d.save
+
+    v.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    v.close1 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
+    v.open1 = Time.new(2000, 01, 01, 00, 12, 00, '+00:00')
+    v.close2 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
+    assert !d.save
+  end
 end

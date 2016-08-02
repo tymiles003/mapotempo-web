@@ -432,6 +432,9 @@ en:
           attributes:
             close1:
               on_or_after: "Must be after opening time 1"
+              blank: "Can't be blank when Time window 2 open is set"
+            open2:
+              on_or_after: "Must be before close time 1"
             close2:
               on_or_after: "Must be after opening time 2"
         zone:
