@@ -77,7 +77,10 @@ class ImportCsv
           }
         end
       rescue => e
-        errors[:base] << e.message + (last_row ? ' [' + last_row.to_a.collect{ |a| "#{a[0]}: \"#{a[1]}\"" }.join(', ') + ']' : '')
+        errors[:base] << e.message + (last_row ? ' [' + (last_row.size > 0 ? last_row.merge((h = @column_def ? @column_def.dup : {}).each{ |k, v| h[k] = nil }).to_a.collect{ |a|
+          (@column_def && @column_def[a[0]] && !column_def[a[0]].empty? ? '"' + @column_def[a[0]] + '"' : @importer.columns[a[0]][:title]) + ": \"#{a[1]}\""
+          }.join(', ') : I18n.t('destinations.import_file.none_column')) + ']' : '')
+        Rails.logger.error e.message
         Rails.logger.error e.backtrace.join("\n")
         return false
       end

@@ -809,6 +809,7 @@ fr:
       not_csv: "Le fichier importé n'est pas au format CSV."
       empty_file: "ne contient aucune donnée"
       too_many_lines: "Import stoppé, trop de lignes (max: %{n})."
+      none_column: "Aucune colonne trouvée"
       missing_name: "« nom » manquant à l'enregistrement %{line}."
       missing_location: "« ville » ou « code postal » ou « lat » et « lng » manquant à l'enregistrement %{line}."
       invalid_numeric_value: "Valeur numérique « %{value} » invalide à l'enregistrement %{line}"
