@@ -247,7 +247,7 @@ var zonings_edit = function(params) {
       }
 
       function toggleChange(k, v) {
-        if (params.zoning_details[zone_id][k] == v) {
+        if (params.zoning_details[zone_id] && params.zoning_details[zone_id][k] == v) {
           $.each(changes[zone_id], function(i, item) { if (item == k) changes[zone_id].splice(i, 1) });
         } else {
           if ($.inArray(k, changes[zone_id]) == -1) changes[zone_id].push(k);

@@ -78,7 +78,7 @@ class Zoning < ActiveRecord::Base
       stops = routes.map(&:stops).flatten.uniq
     end
     positions = (stops || customer.destinations).select(&:position?).map{|position| [position.lat, position.lng] }.compact.uniq
-    vehicles = planning ? planning.vehicle_usage_set.vehicle_usages.select(&:active).map(&:vehicle) : customer.vehicles
+    vehicles = planning ? planning.vehicle_usage_set.vehicle_usages.select(&:active).map(&:vehicle) : customer.vehicles.to_a
     clusters = Clustering.clustering(positions, n || vehicles.size)
     zones.clear
     Clustering.hulls(clusters).each{ |hull|
