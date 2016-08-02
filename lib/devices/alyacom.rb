@@ -50,10 +50,10 @@ class Alyacom < DeviceBase
           postalcode: position.postalcode,
           city: position.city,
           detail: [
-            stop.ref,
             stop.open1 || stop.close1 ? (stop.open1 ? stop.open1.strftime('%H:%M') : '') + '-' + (stop.close1 ? stop.close1.strftime('%H:%M') : '') : nil,
             stop.open2 || stop.close2 ? (stop.open2 ? stop.open2.strftime('%H:%M') : '') + '-' + (stop.close2 ? stop.close2.strftime('%H:%M') : '') : nil,
             stop.comment,
+            stop.ref,
           ].compact.join(' ').strip
         },
         planning: {
