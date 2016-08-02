@@ -9,7 +9,7 @@ class OrtTest < ActionController::TestCase
     begin
       uri_template = Addressable::Template.new('http://localhost:4567/0.1/optimize_tsptw')
       stub_table = stub_request(:post, uri_template)
-      .with(:body => {"data"=>"{\"matrix\":[[[0,0],[1,1],[1,1],[10,10],[0,0]],[[1,1],[0,0],[1,1],[10,10],[1,1]],[[1,1],[1,1],[0,0],[10,10],[1,1]],[[10,10],[10,10],[10,10],[0,0],[10,10]],[[0,0],[1,1],[1,1],[10,10],[0,0]]],\"time_window\":[[0,2147483647,0],[null,null,0],[null,null,0],[null,null,0]],\"rest_window\":[],\"optimize_time\":1,\"soft_upper_bound\":0}"})
+      .with(:body => {"data"=>"{\"matrix\":[[[0,0],[1,1],[1,1],[10,10],[0,0]],[[1,1],[0,0],[1,1],[10,10],[1,1]],[[1,1],[1,1],[0,0],[10,10],[1,1]],[[10,10],[10,10],[10,10],[0,0],[10,10]],[[0,0],[1,1],[1,1],[10,10],[0,0]]],\"time_window\":[[0,2147483647,null,null,0],[null,null,null,null,0],[null,null,null,null,0],[null,null,null,null,0]],\"rest_window\":[],\"optimize_time\":1,\"soft_upper_bound\":0}"})
       .to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/optimizer/ort.json').read)
       m = [
         [[ 0,  0], [ 1,  1], [ 1,  1], [10, 10], [ 0,  0]],
