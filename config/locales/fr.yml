@@ -1583,6 +1583,9 @@ fr:
       create: "Créer %{model}"
       update: "Enregistrer %{model}"
       submit: "Enregistrer %{model}"
+  number:
+    format:
+      delimiter: " "
 
   devise:
     shared:
