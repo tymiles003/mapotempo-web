@@ -15,6 +15,9 @@
   <%= f.text_field :contact_url do %>
     <p class="help-block"><%= t '.contact_url_help' %></p>
   <% end %>
+  <%= f.text_field :website_url do %>
+    <p class="help-block"><%= t '.website_url_help' %></p>
+  <% end %>
   <%= f.file_field :logo_large do %>
     <p class="help-block"><%= t '.logo_large_help' %></p>
   <% end %>
@@ -44,9 +47,6 @@
         <%= image_tag @reseller.favicon.url, width: 16, height: 16 %>
       </div>
     </div>
-  <% end %>
-  <%= f.text_field :website_url do %>
-    <p class="help-block"><%= t '.website_url_help' %></p>
   <% end %>
   <%= f.actions do %>
     <%= f.submit %>

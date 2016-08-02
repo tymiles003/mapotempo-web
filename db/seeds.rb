@@ -15,13 +15,13 @@ pedestrian = RouterWrapper.create!(mode: "pedestrian", name: "RouterWrapper-Pede
 truck = RouterWrapper.create!(mode: "truck", name: "RouterWrapper-HereTruck", url_time:"http://localhost:9090", time: true, distance: false, avoid_zones: true, isochrone: true, isodistance: true)
 public_transport = RouterWrapper.create!(mode: "public_transport", name: "RouterWrapper-PublicTransport", url_time:"http://localhost:9090", time: true, distance: false, avoid_zones: false, isochrone: true, isodistance: true)
 
-profile_all = Profile.create!(name: "All", layers: [mapnik_fr, mapnik, mapbox, mapquest, stamen_bw, here_layer], routers: [car, car_urban, bicycle, pedestrian, truck, public_transport])
+profile_all = Profile.create!(name: "All", layers: [mapnik_fr, mapnik, mapbox, stamen_bw, here_layer], routers: [car, car_urban, bicycle, pedestrian, truck, public_transport])
 
 reseller = Reseller.create!(host: "localhost:3000", name: "Mapotempo")
 customer = Customer.create!(reseller: reseller, name: "Toto", default_country: "France", router: car, profile: profile_all, test: true, max_vehicles: 2)
-admin = User.create!(email: "admin@example.com", password: "123456789", reseller: reseller, layer: mapquest)
-test = User.create!(email: "test@example.com", password: "123456789", layer: mapquest, customer: customer)
-toto = User.create!(email: "toto@example.com", password: "123456789", layer: mapquest, customer: customer)
+admin = User.create!(email: "admin@example.com", password: "123456789", reseller: reseller, layer: mapnik)
+test = User.create!(email: "test@example.com", password: "123456789", layer: mapnik, customer: customer)
+toto = User.create!(email: "toto@example.com", password: "123456789", layer: mapnik, customer: customer)
 
 Tag.create!(label: "lundi", customer: customer)
 Tag.create!(label: "jeudi", customer: customer)
