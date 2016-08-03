@@ -44,31 +44,36 @@ class OptimizerWrapper
           id: "p#{i}",
           matrix_index: i
         }},
-        services: services.each_with_index.collect{ |service, index| {
-          id: "s#{index + 1}",
-          activity: {
-            point_id: "p#{index + 1}",
-            timewindows: [
-              (service[:start1] || service[:end1]) && {
-                start: service[:start1],
-                end: service[:end1]
-              },
-              (service[:start2] || service[:end2]) && {
-                start: service[:start2],
-                end: service[:end2]
-              },
-            ].compact,
-            duration: service[:duration]
+        services: services.each_with_index.collect{ |service, index|
+          i = stores.include?(:start) ? index + 1 : index
+          {
+            id: "s#{i}",
+            activity: {
+              point_id: "p#{i}",
+              timewindows: [
+                (service[:start1] || service[:end1]) && {
+                  start: service[:start1],
+                  end: service[:end1]
+                },
+                (service[:start2] || service[:end2]) && {
+                  start: service[:start2],
+                  end: service[:end2]
+                },
+              ].compact,
+              duration: service[:duration]
+            }
           }
-        }},
-        rests: rests.each_with_index.collect{ |rest, index| {
-          id: "r#{index + services.size + 1 + 1}",
-          timewindows: [{
-            start: rest[:start],
-            end: rest[:end]
-          }],
-          duration: rest[:duration]
-        }},
+        },
+        rests: rests.each_with_index.collect{ |rest, index|
+          {
+            id: "r#{index + services.size + stores.size}",
+            timewindows: [{
+              start: rest[:start],
+              end: rest[:end]
+            }],
+            duration: rest[:duration]
+          }
+        },
         vehicles: [{
           id: 'v0',
           start_point_id: stores.include?(:start) ? 'p0' : nil,
@@ -78,7 +83,9 @@ class OptimizerWrapper
           cost_time_multiplier: dimension == 'time' ? 1 : 0,
           cost_waiting_time_multiplier: dimension == 'time' ? 1 : 0,
           cost_late_multiplier: (dimension == 'time' && soft_upper_bound && soft_upper_bound > 0) ? soft_upper_bound : nil,
-          rest_ids: rests.each_with_index.collect{ |rest, index| "r#{index + services.size + 1 + 1}" }
+          rest_ids: rests.each_with_index.collect{ |rest, index|
+            "r#{index + services.size + stores.size}"
+          }
         }],
         configuration: {
           preprocessing: {
