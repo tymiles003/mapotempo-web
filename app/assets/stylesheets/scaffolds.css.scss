@@ -383,6 +383,7 @@ span.color[data-color=''][data-selected]:after {
   display: inline-block;
   vertical-align: middle;
   cursor:pointer;
+  transform: translateX(-5px);
 }
 #customised_plus_color{
   color: #428bca;
