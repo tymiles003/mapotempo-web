@@ -67,14 +67,22 @@
         </div>
       </div>
     </div>
-    <%= f.select :color, [], (COLORS_TABLE + [@store[:color]]).compact.uniq, include_blank: '#000000' %>
+    <div id="store_color_input" class="form-group">
+      <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.color' %></label>
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= select_tag 'store[color]', options_for_select((COLORS_TABLE + [customised_color_verification(@store[:color])]).compact.uniq, @store.color), include_blank: '#000000' %> <i class="fa fa-paint-brush" id="customised_color_picker" title="<%= t('activerecord.attributes.store.customised_color') %>"></i>
+          <%= color_field :store, :color, option = { value: customised_color_verification(@store[:color]), id: 'color_picker', name: 'fff' } %>
+        </div>
+      </div>
+    </div>
     <div id="store_icon_input" class="form-group">
       <label class="col-md-2 control-label" for="store_icon"><%= t 'activerecord.attributes.store.icon' %></label>
       <label class="sr-only" for="store_icon_size"><%= t 'activerecord.attributes.store.icon_size' %></label>
       <div class="col-md-6">
         <div class="input-group">
           <%= select_tag 'store[icon]', options_for_select(@icons_table, @store.icon), include_blank: t('web.form.default', n: 'fa-home'), class: 'form-control width_1_2' %>
-          <%= select_tag 'store[icon_size]', options_for_select([[t('.icon_size.small'), :small], [t('.icon_size.medium'), :medium], [t('.icon_size.large'), :large]], @store.icon_size), include_blank: t('web.form.default', n: t('.icon_size.large')), class: 'form-control width_1_2' %>
+          <%= select_tag 'store[icon_size]', options_for_select([[t('.icon_size.small'), :small], [t('.icon_size.medium'), :medium], [t('.icon_size.large'), :large]], @store.icon_size), include_blank: t('web.form.default', n: t('.icon_size.large')), class: 'form-control width_1_2' %>  
           <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
         </div>
       </div>

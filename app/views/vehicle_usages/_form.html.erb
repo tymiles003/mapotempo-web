@@ -98,7 +98,17 @@
         <% if @vehicle_usage.vehicle.customer.enable_masternaut && !@vehicle_usage.vehicle.customer.masternaut_user.blank? && !@vehicle_usage.vehicle.customer.masternaut_password.blank? %>
           <%= f.text_field :masternaut_ref %>
         <% end %>
-        <%= f.select :color, [], (Vehicle.colors_table + [@vehicle_usage[:color]]).compact.uniq %>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_color">
+            <%= t("activerecord.attributes.vehicle.color") %>
+          </label>
+          <div class="col-md-6 input-append">
+            <div class="input-group">
+              <%= select_tag 'vehicle_usage[vehicle][color]', options_for_select((COLORS_TABLE + [customised_color_verification(@vehicle_usage.vehicle[:color])]).compact.uniq, @vehicle_usage.vehicle[:color]), include_blank: '#000000' %> <i class="fa fa-paint-brush" id="customised_color_picker" title="<%= t('activerecord.attributes.vehicle.customised_color') %>"></i>
+              <%= color_field :vehicle, :color, option = { value: customised_color_verification(@vehicle_usage.vehicle[:color]), id: 'color_picker', name: 'fff' } %>
+            </div>
+          </div>
+        </div>
       <% end %>
     </div>
   </fieldset>

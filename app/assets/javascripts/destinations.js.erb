@@ -49,6 +49,9 @@ var destinations_form = function(params, api) {
     $('#store_color').simplecolorpicker({
       theme: 'fontawesome'
     });
+
+    customColorInitialize('#store_color');
+
     $('#store_icon option').each(function(elem, val) {
       var $this = $(this);
       if ($this.val())

@@ -303,7 +303,7 @@ controller.js(
   map_lng: @planning.vehicle_usage_set.vehicle_usages.active.collect(&:default_store_start).compact.find{ |s| s.lng }.try(:lng) || @planning.customer.default_position[:lng],
   vehicles_array: planning_vehicles_array(@planning),
   vehicles_usages_map: planning_vehicles_usages_map(@planning),
-  colors: Vehicle.colors_table,
+  colors: COLORS_TABLE,
   url_click2call: current_user.link_phone_number,
   spreadsheet_columns: @spreadsheet_columns,
   isoline_capability: {isochrone: @isochrone_capability ? true : false, isodistance: @isodistance_capability ? true : false}

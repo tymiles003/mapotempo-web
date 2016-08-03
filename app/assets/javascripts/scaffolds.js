@@ -165,3 +165,25 @@ var mapInitialize = function(params) {
 
   return map;
 };
+
+var customColorInitialize = function(selecter){
+  $('#customised_color_picker').click(function(){
+
+      var colorPicker = $('#color_picker'), options_wrap = $(selecter + ' option[selected="selected"]');
+
+      $('.color[data-selected=""]').removeAttr('data-selected');
+      $('.color:last-child').attr('data-selected', '');
+      options_wrap.removeAttr('selected');
+
+      colorPicker.attr('name', 'store[color]')
+      .click()
+      .on("input", function() {
+          $('.color:last-child').attr('style', 'background-color: ' + this.value)
+          .attr('data-color', this.value)
+          .attr('title', this.value);
+          $(selecter + ' option:last-child').attr('value', this.value)
+          .attr('selected', 'selected')
+          .val(this.value);
+      });
+  });
+}

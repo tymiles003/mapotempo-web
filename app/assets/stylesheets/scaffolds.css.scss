@@ -374,3 +374,16 @@ span.color[data-color=''][data-selected]:after {
     }
   }
 }
+
+#color_picker{
+  opacity:0;
+  background: transparent;
+} 
+#customised_color_picker{
+  display: inline-block;
+  vertical-align: middle;
+  cursor:pointer;
+}
+#customised_plus_color{
+  color: #428bca;
+}

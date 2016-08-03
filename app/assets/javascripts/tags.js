@@ -22,6 +22,8 @@ var tags_form = function() {
     theme: 'fontawesome'
   });
 
+  customColorInitialize('#tag_color');
+
   var template = function(state) {
     if (state.id) {
       return $("<img src='/images/" + state.id + ".svg'/>");

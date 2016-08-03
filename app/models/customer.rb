@@ -260,7 +260,7 @@ class Customer < ActiveRecord::Base
         # Add new
         (max_vehicles - vehicles.size).times{ |_i|
           vehicle = vehicles.build(name: I18n.t('vehicles.default_name', n: vehicles.size + 1))
-          vehicle.color = Vehicle.colors_table[(vehicles.size - 1) % Vehicle.colors_table.size]
+          vehicle.color = COLORS_TABLE[(vehicles.size - 1) % COLORS_TABLE.size]
         }
       elsif vehicles.size > max_vehicles
         # Delete

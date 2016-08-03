@@ -284,6 +284,7 @@ fr:
         postalcode: "Code postal"
         city: "Ville"
         country: "Pays"
+        customised_color: "Couleur personnalisée"
         lat: "Latitude"
         lng: "Longitude"
         open: "Horaire début"
@@ -338,6 +339,7 @@ fr:
         router_id: "Calculateur d'itinéraire"
         router_dimension: "Objectif du calculateur"
         speed_multiplicator: "Ajustement de la vitesse"
+        customised_color: "Couleur personnalisée"
         ref: "Référence"
         contact_email: "Email"
       vehicle_usage:
@@ -1305,6 +1307,7 @@ fr:
       color_default: "Par défaut"
       icon_default: "Par défaut"
       color_help: "Forcer l'utilisation de cette couleur"
+      customised_color: "Couleur personnalisée"
       icon_help: "Forcer l'utilisation de ce symbole"
       ref: "Référence"
       ref_help: "Référence libre"

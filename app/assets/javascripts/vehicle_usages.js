@@ -34,6 +34,8 @@ var vehicle_usages_form = function(params) {
     theme: 'fontawesome'
   });
 
+  customColorInitialize('#vehicle_usage_vehicle_color');
+
   $('#capacity-unit-add').click(function(e) {
     $(this).hide();
     $('#vehicle_usage_vehicle_capacity_input .input-group').show();

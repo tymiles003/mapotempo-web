@@ -55,10 +55,6 @@ class Vehicle < ActiveRecord::Base
     ]
   end
 
-  def self.colors_table
-    COLORS_TABLE
-  end
-
   amoeba do
     exclude_association :vehicle_usages
     exclude_association :zones
@@ -95,7 +91,7 @@ class Vehicle < ActiveRecord::Base
   private
 
   def assign_defaults
-    self.color ||= Vehicle.colors_table[0]
+    self.color ||= COLORS_TABLE[0]
   end
 
   def increment_max_vehicles
