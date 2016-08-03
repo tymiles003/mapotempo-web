@@ -49,9 +49,9 @@ class Vehicle < ActiveRecord::Base
   def self.emissions_table
     [
       [I18n.t('vehicles.emissions_nothing', n: 0), '0.0'],
-      [I18n.t('vehicles.emissions_light_petrol', n: 2.71), '2.71'],
-      [I18n.t('vehicles.emissions_light_diesel', n: 3.07), '3.07'],
-      [I18n.t('vehicles.emissions_light_lgp', n: 1.77), '1.77'],
+      [I18n.t('vehicles.emissions_light_petrol', n: self.localize_numeric_value(2.71)), '2.71'],
+      [I18n.t('vehicles.emissions_light_diesel', n: self.localize_numeric_value(3.07)), '3.07'],
+      [I18n.t('vehicles.emissions_light_lgp', n: self.localize_numeric_value(1.77)), '1.77'],
     ]
   end
 

@@ -27,7 +27,7 @@
             <div class="input-group">
               <%= select 'vehicle_usage[vehicle]', :emission, Vehicle.emissions_table, { include_blank: t('web.form.empty_entry'), selected: @vehicle_usage.vehicle.emission }, class: 'form-control' %>
               <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
-              <%= text_field 'vehicle_usage[vehicle]', :consumption, value: @vehicle_usage.vehicle.consumption, class: 'form-control' %>
+              <%= text_field 'vehicle_usage[vehicle]', :consumption, value: @vehicle_usage.vehicle.localized_consumption, class: 'form-control' %>
               <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
             </div>
             <p class="help-block"><%= t 'vehicles.form.emissions.help' %> - <%= t 'vehicles.form.consumption.help' %></p>
