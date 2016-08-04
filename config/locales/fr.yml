@@ -307,7 +307,7 @@ fr:
         label: "Libellé"
         color: "Couleur"
         icon: "Icône"
-        ref: "référence"
+        ref: "Référence"
       user:
         email: "Email"
         customer: "Compte client"
@@ -1305,6 +1305,7 @@ fr:
       color_help: "Forcer l'utilisation de cette couleur"
       icon_help: "Forcer l'utilisation de ce symbole"
       ref: "Référence"
+      ref_help: "Référence libre"
 
   users:
     menu:

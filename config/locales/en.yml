@@ -1305,6 +1305,7 @@ or you can click on this link to download file (no update in this case)."
       color_help: "Force use of this color"
       icon_help: "Force use of this symbol"
       ref: "Reference"
+      ref_help: "A free reference"
 
   users:
     menu:
