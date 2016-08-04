@@ -102,7 +102,7 @@
           {{/no_path}}
           <span class="info">
             {{#time}}
-              {{time}}{{#with_service_time}}&nbsp;-&nbsp;{{with_service_time}}{{/with_service_time}} -
+              {{time}}{{#start_with_service}}&nbsp;-&nbsp;{{start_with_service}}{{/start_with_service}} -
             {{/time}}
           </span>
           <span class="name" title="{{name}}">{{name}}</span>
@@ -114,6 +114,19 @@
         <div class="clearfix"></div>
       </li>
     </ul>
+    {{/store_start}}
+    {{^store_start}}
+      {{#start_with_service}}
+        <ul class="stops list-group">
+          <li class="list-group-item">
+            <div class="title">
+              <span class="info">
+                {{start}}&nbsp;-&nbsp;{{start_with_service}}
+              </span>
+            </div>
+          </li>
+        </ul>
+      {{/start_with_service}}
     {{/store_start}}
 
     <ul class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>
@@ -207,7 +220,7 @@
           {{/no_path}}
           <span class="info">
             {{#time}}
-              {{#with_service_time}}{{with_service_time}}&nbsp;-&nbsp;{{/with_service_time}}{{time}} -
+              {{#end_without_service}}{{end_without_service}}&nbsp;-&nbsp;{{/end_without_service}}{{time}} -
             {{/time}}
           </span>
           <span class="name" title="{{name}}">{{name}}</span>
@@ -219,6 +232,19 @@
         <div class="clearfix"></div>
       </li>
     </ul>
+    {{/store_stop}}
+    {{^store_stop}}
+      {{#end_without_service}}
+        <ul class="stops list-group">
+          <li class="list-group-item">
+            <div class="title">
+              <span class="info">
+                {{end_without_service}}&nbsp;-&nbsp;{{end}}
+              </span>
+            </div>
+          </li>
+        </ul>
+      {{/end_without_service}}
     {{/store_stop}}
 
   {{/vehicle}}
