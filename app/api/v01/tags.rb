@@ -23,7 +23,7 @@ class V01::Tags < Grape::API
     def tag_params
       p = ActionController::Parameters.new(params)
       p = p[:tag] if p.key?(:tag)
-      p.permit(:label, :color, :icon)
+      p.permit(:label, :color, :icon, :ref)
     end
   end
 

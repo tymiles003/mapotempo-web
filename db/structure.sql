@@ -704,7 +704,8 @@ CREATE TABLE tags (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     color character varying(255),
-    icon character varying(255)
+    icon character varying(255),
+    ref character varying
 );
 
 
@@ -2373,3 +2374,4 @@ INSERT INTO schema_migrations (version) VALUES ('20160720144957');
 
 INSERT INTO schema_migrations (version) VALUES ('20160722133109');
 
+INSERT INTO schema_migrations (version) VALUES ('20160804104220');

@@ -20,6 +20,7 @@
       <th><button id="add" type="button" class="btn btn-default btn-xs index_toggle_selection" title="<%= t 'all.verb.toggle_selection' %>"><i class="fa fa-check fa-fw"></i></button></th>
       <th><%= t 'activerecord.attributes.tag.label' %></th>
       <th><%= t 'activerecord.attributes.tag.icon' %></th>
+      <th><%= t 'activerecord.attributes.tag.ref' %></th>
       <th></th>
     </tr>
   </thead>
@@ -30,6 +31,7 @@
         <td><%= check_box_tag("tags[#{tag.id}]") %></td>
         <td><%= tag.label %></td>
         <td><%= tag_icon tag %></td>
+        <td><%= tag.ref %></td>
         <td class="text-right">
           <%= link_to edit_tag_path(tag), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to tag, :class => 'btn btn-danger btn-sm', method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
