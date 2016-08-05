@@ -87,8 +87,8 @@ Rails.application.configure do
     'https://route.api.here.com/routing',
     'https://matrix.route.api.here.com/routing',
     'https://isoline.route.api.here.com/routing',
-    nil,
-    nil
+    'app_id',
+    'app_code'
   )
   config.router_wrapper = Routers::RouterWrapper.new(
     cache_factory('router_wrapper_request', 60*60*24*1),
