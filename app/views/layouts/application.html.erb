@@ -43,7 +43,7 @@
                     <% end %>
                   </ul>
               <% else %>
-                <li class="disabled"><a href="#"><i class="fa fa-calendar-o fa-fw"></i> <%= t 'plannings.menu.plannings' %></a></li>
+                <li class="disabled" id="disabled-planning"><a href="#"><i class="fa fa-calendar-o fa-fw"></i> <%= t 'plannings.menu.plannings' %></a></li>
               <% end %>
               </li>
               <% if can?(:manage, OrderArray) %>

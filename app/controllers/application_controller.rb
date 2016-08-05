@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
 
   before_action :api_key?, :load_vehicles
   before_action :set_locale
+  before_action :customer_payment_period, if: :current_user
   around_action :set_time_zone, if: :current_user
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -71,6 +72,15 @@ class ApplicationController < ActionController::Base
       'registration'
     else
       'application'
+    end
+  end
+
+  def customer_payment_period
+    if current_user.customer
+      customer = current_user.customer
+      if customer.end_subscription && Time.now >= customer.end_subscription
+        flash.now[:error] = I18n.t('subscribe.expiration_date_over', scope: :all) + customer.end_subscription.to_s
+      end
     end
   end
 end

@@ -1603,6 +1603,10 @@ or you can click on this link to download file (no update in this case)."
       _false: "false"
       _yes: "yes"
       _no: "no"
+    subscribe:
+      planning_unavailable: "Planning can’t be changed. Your subscription period is expired | Contact your reseller to get a contrat extension."
+      expiration_date: "Only few days to renew your subscription, please contact your dealer to renew your offer. End date : "
+      expiration_date_over: "The date of use is exceeded, please contact your dealer. Expiration date : "
 
   # Override rails-i18n
   helpers:

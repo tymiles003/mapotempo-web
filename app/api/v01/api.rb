@@ -38,7 +38,7 @@ class V01::Api < Grape::API
       error!('401 Unauthorized', 401) unless env
       current_customer
       error!('401 Unauthorized', 401) unless @current_user
-      error!('402 Payment Required', 402) if @current_customer && @current_customer.end_subscription && @current_customer.end_subscription < Time.now
+      error!('402 Subscription error : Subscription expired (' + @current_customer.end_subscription.to_s + ') - Contact your reseller ', 402) if @current_customer && @current_customer.end_subscription && @current_customer.end_subscription < Time.now
     end
 
     def authorize!

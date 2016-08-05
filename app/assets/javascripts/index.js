@@ -15,3 +15,16 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+
+$(document).ready(function(){
+  $('#disabled-planning').popover({
+    placement: 'bottom',
+    content: I18n.t('all.subscribe.planning_unavailable'),
+    trigger: 'manual click'
+  })
+  .popover("show")
+
+  $('.popover').on('click', function(){
+    $('.popover').popover("hide");
+  });
+});

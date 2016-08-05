@@ -16,10 +16,23 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class IndexController < ApplicationController
+
+  before_action :customer_payment_period_month, if: :current_user
+
   def index
     @customer = current_user && current_user.customer
   end
 
   def unsupported_browser
   end
+
+  def customer_payment_period_month
+    if current_user.customer
+      customer = current_user.customer
+      if customer.end_subscription && customer.end_subscription >= Time.now && (customer.end_subscription - 30.days) <= Time.now
+        flash.now[:warning] = I18n.t('subscribe.expiration_date', scope: :all) + customer.end_subscription.to_s
+      end
+    end
+  end
+
 end
