@@ -132,7 +132,7 @@ fr:
         other: "zonages"
     attributes:
       customer:
-        enable_external_callback: "Activer URL Callback Externe"
+        enable_external_callback: "Activer URL de rappel"
         end_subscription: "Fin de souscription"
         max_vehicles: "Forfait"
         take_over: "Durée de visite"
@@ -630,9 +630,9 @@ fr:
           confirm: "Synchroniser les véhicules depuis Teksat ?"
           action: "Synchroniser les véhicules depuis Teksat"
       external_callback:
-        title: "Export URL Callback Externe"
+        title: "URL de rappel"
         name: "Nom"
-        name_placeholder: "Mon site web"
+        name_placeholder: "Application externe"
         url: "URL"
         url_placeholder: "http://www.example.com?p_id={PLANNING_ID}"
         url_help: >
@@ -939,7 +939,7 @@ fr:
       service_time: "Durées de service"
       exports: "Exporter le planning"
       customer_external_callback_url:
-        action: "URL Compte Client"
+        action: "Application externe"
       teksat_send:
         action: "Envoyer à Teksat"
         success: "Envoi vers Teksat terminé avec succès"
@@ -978,8 +978,8 @@ fr:
         fail: "Échec lors de l'envoi vers Masternaut"
       export:
         customer_external_callback_url:
-          success: "URL externe appelée avec succès"
-          fail: "Échec lors de l'appel de l'URL externe"
+          success: "Application externe appelée avec succès"
+          fail: "Échec lors de l'appel à l'application externe"
         icalendar:
           action: "Agenda iCal"
           action_email: "Agenda iCal par email"
