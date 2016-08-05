@@ -114,7 +114,7 @@ class V01::Plannings < Grape::API
       nickname: 'automaticInsertStop'
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :stop_ids, type: Array[Integer], desc: 'Stop IDs'
+      requires :stop_ids, type: Array[Integer], desc: 'Stop IDs', documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
     end
     patch ':id/automatic_insert' do
       planning_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
@@ -178,11 +178,10 @@ class V01::Plannings < Grape::API
       present planning, with: V01::Entities::Planning
     end
 
-    desc 'Update Routes',
-      params: V01::Entities::Route.documentation.slice(:hidden, :locked)
+    desc 'Update Routes'
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :route_ids, type: Array[Integer]
+      requires :route_ids, type: Array[Integer], documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
       requires :selection, type: String, values: %w(all reverse none)
       requires :action, type: String, values: %w(toggle lock)
     end

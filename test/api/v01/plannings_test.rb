@@ -152,8 +152,16 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     order_array = order_arrays :order_array_one
     planning = plannings :planning_one
     assert !planning.order_array
-    patch api("#{@planning.id}/order_array", order_array_id: order_array.id, shift: 0)
+    patch api("#{planning.id}/order_array", order_array_id: order_array.id, shift: 0)
     assert_equal 200, last_response.status
     assert_equal order_array, planning.reload.order_array
   end
+
+  test 'Update Routes' do
+    planning = plannings :planning_one
+    route = routes :route_one_one
+    patch api("#{planning.id}/update_routes"), { route_ids: [route.id], selection: 'all', action: 'toggle' }
+    assert last_response.ok?
+  end
+
 end
