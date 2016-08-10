@@ -129,4 +129,9 @@ class StoresControllerTest < ActionController::TestCase
     assert_template :import
     assert_valid response
   end
+
+  test 'should display application layout on devise scope' do 
+    get :edit, id: @store
+    assert_template layout: 'application'
+  end
 end

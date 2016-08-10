@@ -16,5 +16,4 @@ class V01::OrderArraysTest < ActiveSupport::TestCase
     assert last_response.ok?
     assert order_array.orders[0].reload.products.none?
   end
-
 end

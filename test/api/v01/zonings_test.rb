@@ -102,4 +102,15 @@ class V01::ZoningsTest < ActiveSupport::TestCase
       assert_not_nil JSON.parse(last_response.body)['polygon']
     }
   end
+
+  test 'should generate an isochrone zone' do
+    store_one = stores(:store_one)
+    [:isochrone, :isodistance].each { |iso|
+      type = (iso == :isochrone) ? '&time=60' : '&size=10'
+      uri_template = Addressable::Template.new('localhost:1723/0.1/' + iso.to_s + '?lat=' + store_one.lat.to_s + '&lng=' + store_one.lng.to_s + type)
+      stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/isochrone/isochrone-1.json').read)
+      patch api(iso.to_s, {lat: store_one.lat.to_s, lng: store_one.lng.to_s, size: 10})
+      assert last_response.ok?, last_response.body
+    }
+  end
 end

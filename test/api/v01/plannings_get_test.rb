@@ -3,7 +3,6 @@ require 'test_helper'
 class V01::PlanningsGetTest < ActiveSupport::TestCase
 
   include Rack::Test::Methods
-  include ApiBase
 
   def app
     Rails.application
@@ -34,5 +33,4 @@ class V01::PlanningsGetTest < ActiveSupport::TestCase
     get api("/plannings/#{@planning.id}.ics", { api_key: @user.api_key, email: 1 })
     assert_equal 204, last_response.status
   end
-
 end

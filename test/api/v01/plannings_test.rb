@@ -164,4 +164,14 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     assert last_response.ok?
   end
 
+  test 'should optimize the planning id' do
+      get api("/#{@planning.id}/optimize", { details: true, synchronous: false })
+      assert last_response.ok?, last_response.body
+  end
+
+  test 'Should not optimize when a false planning\'s id is given' do
+    planning_false_id = Random.new_seed
+    get api("/#{planning_false_id}/optimize", {details: true, synchronous: false })
+    assert_equal 404, last_response.status
+  end
 end

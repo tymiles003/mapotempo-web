@@ -79,6 +79,14 @@ class V01::UsersTest < ActiveSupport::TestCase
     assert user.reload.email != email_reference
   end
 
+  test 'should return 402 error' do 
+    part = users(:user_two).ref
+    users(:user_two).customer.update! end_subscription: (Time.now - 30.days)
+    part = part ? '/' + part.to_s : ''
+    get "/api/0.1/users#{part}.json?api_key=testkey1"
+    assert_equal 402, last_response.status
+  end
+
   test 'should destroy a user' do
     assert_difference('User.count', -1) do
       delete api_admin('ref:' + @user.ref)
