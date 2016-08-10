@@ -110,16 +110,15 @@ class V01::Plannings < Grape::API
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Insert Destination Into Planning Routes',
+    desc 'Insert one or more stop into planning routes',
       nickname: 'automaticInsertStop'
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :stop_ids, type: Array[Integer], desc: 'Stop IDs', documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
+      requires :stop_ids, type: Array[Integer], desc: 'Ids separated by comma.', documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger
     end
     patch ':id/automatic_insert' do
-      planning_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
+      planning_id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(planning_id).first!
-      error!('Not Found', 404) if !planning
       stops = Stop.where id: params[:stop_ids], route_id: planning.route_ids
       error!('Not Found', 404) if stops.empty?
       stops.each{ |stop| planning.automatic_insert(stop) }
@@ -186,7 +185,7 @@ class V01::Plannings < Grape::API
       requires :action, type: String, values: %w(toggle lock)
     end
     patch ':id/update_routes' do
-      planning_id = ParseIdsRefs.read params[:id] rescue error!('Invalid IDs', 400)
+      planning_id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(planning_id).first!
       routes = planning.routes.find params[:route_ids]
       routes.each do |route|
