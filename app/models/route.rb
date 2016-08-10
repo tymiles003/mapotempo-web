@@ -404,7 +404,7 @@ class Route < ActiveRecord::Base
         matrix = router.matrix(positions, positions, vehicle_usage.vehicle.default_speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
         order = optimizer.call(matrix, services, [position_start && :start, position_stop && :stop].compact, rests, router_dimension)
         if position_stop
-          order = order[0..-2]
+          order = order[0..-2].collect{ |i| i > order.size - 2 ? i - 1 : i }
         end
         if position_start
           order = order[1..-1].collect{ |i| i - 1 }
@@ -558,7 +558,6 @@ class Route < ActiveRecord::Base
   end
 
   def unnil_positions(positions, tws)
-    # start/stop are always in input positions
     not_nil_position_index = positions.each_with_index.group_by{ |position, _index| !position[0].nil? && !position[1].nil? }
 
     if not_nil_position_index.key?(true)

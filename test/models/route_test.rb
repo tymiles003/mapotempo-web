@@ -18,6 +18,17 @@ class RouteTest < ActiveSupport::TestCase
     end
   end
 
+  # default order, put the rest at the end
+  def optimizer(matrix, services, stores, rests, dimension)
+    order = (0..(services.size+stores.size-1)).to_a
+    if stores.include? :stop
+      order = order[0..-2] + ((order.size)..(order.size-1+rests.size)).to_a + [order[-1]] if rests.size > 0
+    else
+      order += ((order.size)..(order.size-1+rests.size)).to_a
+    end
+    order
+  end
+
   test 'should not save' do
     o = Route.new
     assert_not o.save, 'Saved without required fields'
@@ -193,18 +204,40 @@ class RouteTest < ActiveSupport::TestCase
     assert_equal 0.upto(positions.size-1).to_a, ret
   end
 
-  test 'should optimize' do
+  test 'should optimize with one store rest' do
     o = routes(:route_one_one)
-    optim = o.optimize(nil) { |matrix|
-      (0..(matrix.size-1)).to_a
+    optim = o.optimize(nil) { |*a|
+      optimizer(*a)
     }
     assert_equal (0..(o.stops.size-1)).to_a, optim
   end
 
-  test 'should optimize whithout store' do
+  test 'should optimize with one no-geoloc rest' do
+    o = routes(:route_one_one)
+    vehicle_usages(:vehicle_usage_one_one).update! store_rest: nil
+    vehicle_usage_sets(:vehicle_usage_set_one).update! store_rest: nil
+    o.reload
+    optim = o.optimize(nil) { |*a|
+      optimizer(*a)
+    }
+    assert_equal (0..(o.stops.size-1)).to_a, optim
+  end
+
+  test 'should optimize without any store' do
+    o = routes(:route_one_one)
+    vehicle_usages(:vehicle_usage_one_one).update! store_start: nil, store_stop: nil, store_rest: nil
+    vehicle_usage_sets(:vehicle_usage_set_one).update! store_start: nil, store_stop: nil, store_rest: nil
+    o.reload
+    optim = o.optimize(nil) { |*a|
+      optimizer(*a)
+    }
+    assert_equal (0..(o.stops.size-1)).to_a, optim
+  end
+
+  test 'should optimize with none geoloc store' do
     o = routes(:route_three_one)
-    optim = o.optimize(nil) { |matrix|
-      (0..(matrix.size-1)).to_a
+    optim = o.optimize(nil) { |*a|
+      optimizer(*a)
     }
     assert_equal (0..(o.stops.size-1)).to_a, optim
   end
