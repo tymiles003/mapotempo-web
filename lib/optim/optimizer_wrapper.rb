@@ -68,8 +68,8 @@ class OptimizerWrapper
           {
             id: "r#{index + services.size + stores.size}",
             timewindows: [{
-              start: rest[:start],
-              end: rest[:end]
+              start: rest[:start1],
+              end: rest[:end1]
             }],
             duration: rest[:duration]
           }
@@ -93,7 +93,7 @@ class OptimizerWrapper
             prefer_short_segment: true
           },
           resolution: {
-            duration: optimize_time,
+            duration: optimize_time || 3600 * 1000,
             iterations_without_improvment: 100
           }
         }
