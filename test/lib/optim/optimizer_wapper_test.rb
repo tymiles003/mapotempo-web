@@ -7,7 +7,7 @@ class OptimizerWrapperTest < ActionController::TestCase
     uri_template = Addressable::Template.new('localhost:1791/0.1/vrp/submit.json')
     @stub_VrpSubmit = stub_request(:post, uri_template).to_return(File.new(File.expand_path('../../../', __FILE__) + '/fixtures/optimizer-wrapper/vrp-submit.json').read)
 
-    uri_template = Addressable::Template.new('http://localhost:1791/0.1/vrp/job/{job_id}.json?api_key={api_key}')
+    uri_template = Addressable::Template.new('http://localhost:1791/0.1/vrp/jobs/{job_id}.json?api_key={api_key}')
     @stub_VrpJob = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../../', __FILE__) + '/fixtures/optimizer-wrapper/vrp-job.json').read)
   end
 

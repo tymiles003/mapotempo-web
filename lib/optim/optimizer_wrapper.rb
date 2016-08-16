@@ -111,7 +111,7 @@ class OptimizerWrapper
         elsif ['queued', 'working'].include?(result['job']['status'])
           sleep(2)
           job_id = result['job']['id']
-          json = RestClient.get(@url + "/vrp/job/#{job_id}.json", params: {api_key: @api_key})
+          json = RestClient.get(@url + "/vrp/jobs/#{job_id}.json", params: {api_key: @api_key})
         else
           raise RuntimeError.new(result['job']['avancement'] || 'Optimizer return unknow error')
         end
