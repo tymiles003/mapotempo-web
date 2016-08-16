@@ -273,10 +273,10 @@ class Planning < ActiveRecord::Base
 
     available_routes.flat_map{ |route|
       route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
-        [(route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.position?) ? [route.vehicle_usage.default_store_start, route, 1] : nil,
+        [route.stops.select(&:position?).empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
         (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.compact.sort_by{ |a|
-      a[0].distance(stop.position)
+      (a[0] && a[0].position?) ? a[0].distance(stop.position) : 0
     }[0..9].flat_map{ |visit_route_index|
       [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
     }.uniq.min_by{ |ri|
