@@ -1541,24 +1541,27 @@ var plannings_show = function(params) {
   }
 };
 
-function observe_icalendar_export() {
-  $('.icalendar_email').click(function(e) {
+var observe_icalendar_export = function(){
+  var url = $('#ical_export').attr('href'), ids;
+  $('#ical-hook').click(function(){ 
+    ids = $.makeArray($('input[type=checkbox]:checked').map(function(index, id){ return $(id).val(); }));
+    $('#ical_export').attr('href', url + '&ids=' + ids.join(',') + '&email=false');
+  });
+  $('.icalendar_email').click(function(e){
     e.preventDefault();
     $.ajax({
       url: $(e.target).attr('href'),
       type: 'GET',
-      beforeSend: function(jqXHR, settings) {
-        beforeSendWaiting();
+      data: {
+        ids: ids.join(','),
+        email: true
       },
-      complete: function(jqXHR, textStatus) {
-        completeWaiting();
-      },
-      success: function(data, textStatus, jqXHR) {
-        notice(I18n.t('plannings.edit.export.icalendar.success'));
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
-      }
+    })
+    .done(function(data) {
+      notice(I18n.t('plannings.edit.export.icalendar.success'));
+    })
+    .fail(function() {
+      stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
     });
   });
 };

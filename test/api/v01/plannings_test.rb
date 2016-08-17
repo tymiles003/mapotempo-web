@@ -187,4 +187,30 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     patch "api/0.1/plannings/#{planning.id.to_s}/routes/none/visits/moves.json?api_key=testkey1&visit_ids=47,48"
     assert_equal  404, last_response.status
   end
+
+  test 'should return plannings in any case' do
+    planning2 = plannings :planning_two
+    ['ics', 'json', 'xml'].each do |ext|
+      ["#{@planning.id}, #{planning2.id}", "ref:#{@planning.ref},ref:#{planning2.ref}"].each do |params|
+        get "api/0.1/plannings.#{ext}?api_key=testkey1&ids=#{params}"
+        assert last_response.ok?, last_response.body
+        if (ext == 'json')
+          response = JSON.parse(last_response.body)
+          assert_equal 2, response.count
+        elsif (ext == 'xml')
+          response = last_response.body
+          assert_equal 2, response.scan('<id type="integer">').count
+        else
+          response = last_response.body
+          stop_count = customers(:customer_one).plannings.flat_map{ |p| p.routes.select(&:vehicle_usage).map{ |r| r.stops.select(&:active?).select(&:position?).select(&:time?).size } }.reduce(&:+)
+          assert_equal stop_count, response.scan('BEGIN:VEVENT').count
+        end
+      end
+    end
+  end
+
+  test 'should return a 204 header when email=true' do
+    get "api/0.1/plannings.ics?api_key=testkey1&ids=1&email=true"
+    assert_equal 204, last_response.status
+  end
 end

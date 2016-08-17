@@ -41,6 +41,14 @@ module PlanningIcalendar
     end
   end
 
+  def planning_calendar(planning)
+    calendar = Icalendar::Calendar.new
+    planning.routes.select(&:vehicle_usage).each do |route|
+      add_route_to_calendar calendar, route
+    end
+    calendar
+  end
+
   def plannings_calendar(plannings)
     calendar = Icalendar::Calendar.new
     plannings.each do |planning|
@@ -49,14 +57,6 @@ module PlanningIcalendar
       end
     end
     return calendar
-  end
-
-  def planning_calendar(planning)
-    calendar = Icalendar::Calendar.new
-    planning.routes.select(&:vehicle_usage).each do |route|
-      add_route_to_calendar calendar, route
-    end
-    calendar
   end
 
   def route_calendar(route)
