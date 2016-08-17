@@ -43,14 +43,6 @@ GIT
       railties (~> 4)
 
 GIT
-  remote: git://github.com/fnando/i18n-js.git
-  revision: 49a0a9c98df284bdd746d0603904ccb09c733337
-  tag: v3.0.0.rc13
-  specs:
-    i18n-js (3.0.0.rc13)
-      i18n (~> 0.6, >= 0.6.6)
-
-GIT
   remote: git://github.com/frodrigo/jquery-timeentry-rails.git
   revision: ccecc885d334b772d065bb722e2d4528a9f9a40c
   specs:
@@ -260,6 +252,8 @@ GEM
       rack
       socksify
     i18n (0.7.0)
+    i18n-js (3.0.0.rc13)
+      i18n (~> 0.6, >= 0.6.6)
     i18n-tasks (0.9.4)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
@@ -282,7 +276,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-simplecolorpicker-rails (0.5.0)
       railties (>= 3.1.0)
-    jquery-tablesorter (1.22.1)
+    jquery-tablesorter (1.21.1)
       railties (>= 3.2, < 6)
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
@@ -559,14 +553,14 @@ DEPENDENCIES
   grape-swagger (< 0.20)
   html_validation
   http_accept_language
-  i18n-js!
+  i18n-js (>= 3.0.0.rc13)
   i18n-tasks
   icalendar
   iconv
   jbuilder (~> 2.0)
   jquery-rails
   jquery-simplecolorpicker-rails
-  jquery-tablesorter
+  jquery-tablesorter (< 1.21.2)
   jquery-timeentry-rails!
   jquery-turbolinks
   jquery-ui-rails
