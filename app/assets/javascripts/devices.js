@@ -1014,6 +1014,10 @@
      inputs: ['user'],
      password_inputs: ['password']
    }, {
+     name: 'masternaut',
+     inputs: ['user'],
+     password_inputs: ['password']
+   }, {
      name: 'alyacom',
      inputs: ['association', 'api_key']
    }], function(i, config) {
