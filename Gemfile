@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~>4.2'
+gem 'rails', '=4.2.6' # FIXME: update sprockets
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -111,7 +111,7 @@ gem 'rails_12factor', group: :production
 
 gem 'leaflet-rails'
 gem 'leaflet-markercluster-rails'
-gem 'sprockets'
+gem 'sprockets', '<3.0.0' # FIXME wait for https://github.com/rails/sprockets/issues/104
 gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for https://github.com/zentrification/leaflet-draw-rails/pull/1
 gem 'leaflet_numbered_markers-rails', github: 'frodrigo/leaflet_numbered_markers-rails'
 gem 'leaflet-control-geocoder-rails', github: 'frodrigo/leaflet-control-geocoder-rails'
