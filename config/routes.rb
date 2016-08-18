@@ -94,7 +94,7 @@ Rails.application.routes.draw do
     patch ':route_id/active/:active' => 'plannings#active'
     patch ':route_id/reverse_order' => 'plannings#reverse_order'
     patch ':route_id/:stop_id' => 'plannings#update_stop'
-    get 'optimize_each' => 'plannings#optimize_each_routes'
+    get 'optimize' => 'plannings#optimize'
     get ':route_id/optimize' => 'plannings#optimize_route'
     member do
       patch :apply_zonings

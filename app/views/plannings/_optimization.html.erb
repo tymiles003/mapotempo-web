@@ -1,0 +1,28 @@
+<% if @planning.customer.enable_global_optimization? %>
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t 'plannings.edit.optimize_each' %>">
+      <i class="fa fa-gears"></i>
+      <span class="caret"></span>
+    </button>
+    <ul id="toggle_optimization_dropdown" class="dropdown-menu" style="right: -35px; left: auto;" role="menu">
+      <li id="optimize_each" data-opti-global="true">
+        <a class="active_reverse" href="#">
+          <i class="fa fa-gears"></i>
+          <%= t 'plannings.edit.specific_opti' %>
+        </a>
+      </li>
+      <li id="optimize_global" data-opti-global="false">
+        <a class="active_none" href="#">
+          <i class="fa fa-gears"></i>
+          <%= t 'plannings.edit.global_opti' %>
+        </a>
+      </li>
+    </ul>
+  </div>
+<% else %> 
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t 'plannings.edit.optimize_each' %>" id="optimize_each" data-opti="true">
+      <i class="fa fa-gears"></i>
+    </button>
+  </div>
+<% end %>

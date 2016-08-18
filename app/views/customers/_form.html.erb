@@ -87,6 +87,9 @@
       <%= f.toggles t 'activerecord.attributes.customer.enable_references' do %>
         <%= f.check_box :enable_references %>
       <% end %>
+      <%= f.toggles t 'activerecord.attributes.customer.enable_global_optimization' do %>
+        <%= f.check_box :enable_global_optimization %>
+      <% end %>
     </fieldset>
     <fieldset>
       <legend class="scheduler-border">

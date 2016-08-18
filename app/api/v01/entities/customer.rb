@@ -43,6 +43,7 @@ class V01::Entities::Customer < Grape::Entity
   expose(:enable_references, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:enable_multi_visits, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:advanced_options, documentation: { type: String, desc: 'Advanced options in a serialized json format' })
+  expose(:enable_global_optimization, documentation: { type: 'Boolean', desc: 'Advanced options for global optimization'})
 
   # Devices: Alyacom
   expose(:enable_alyacom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })

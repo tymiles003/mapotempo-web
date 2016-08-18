@@ -457,13 +457,14 @@ var plannings_edit = function(params) {
     notice(I18n.t('plannings.edit.optimize_complete'));
   };
 
-  $("#optimize_each").click(function(event, ui) {
-    if (!confirm(I18n.t('plannings.edit.optimize_each_confirm'))) {
+  $("#optimize_each, #optimize_global").click(function(event, ui) {
+    if (!confirm(I18n.t($(this).data('opti-global') ? 'plannings.edit.optimize_each_confirm' : 'plannings.edit.optimize_all'))) {
       return false;
     }
     $.ajax({
       type: "get",
-      url: '/plannings/' + planning_id + '/optimize_each.json',
+      url: '/plannings/' + planning_id + '/optimize.json',
+      data: { 'global': $(this).data('opti-global') },
       beforeSend: beforeSendWaiting,
       success: function(data) {
         displayPlanning(data, {

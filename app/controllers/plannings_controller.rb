@@ -21,8 +21,8 @@ require 'zip'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop,
-    :optimize_each_routes, :optimize_route, :active, :duplicate, :reverse_order, :apply_zonings]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :duplicate, :reverse_order, :apply_zonings, :optimize]
+
 
   include PlanningExport
 
@@ -228,12 +228,21 @@ class PlanningsController < ApplicationController
     end
   end
 
-  def optimize_each_routes
+  def optimize
+    global = ValueToBoolean::value_to_boolean(params[:global])
     respond_to do |format|
-      if Optimizer.optimize_each(@planning) && @planning.customer.save
-        format.json { render action: 'show', location: @planning }
+      if global
+        if Optimizer.optimize_each(@planning) && @planning.customer.save
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
+        end
       else
-        format.json { render json: @planning.errors, status: :unprocessable_entity }
+        if Optimizer.optimize_each(@planning) && @planning.customer.save
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

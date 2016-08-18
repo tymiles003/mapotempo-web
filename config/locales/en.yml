@@ -168,6 +168,7 @@ en:
         enable_multi_vehicle_usage_sets: "Enable more than one vehicle configuration"
         enable_references: "View references"
         enable_multi_visits: "Enable more than one visit per destination"
+        enable_global_optimization: "Enable global optimization"
         test: "Test"
         jobs: "Jobs"
         optimization_cluster_size: "Optimization cluster size"

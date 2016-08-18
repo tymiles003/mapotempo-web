@@ -24,11 +24,9 @@
       <% end %>
 
       <div id="global_tools" class="btn-group pull-right">
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary btn-sm" id="optimize_each" title="<%= t '.optimize_each' %>">
-            <i class="fa fa-gears"></i>
-          </button>
-        </div>
+
+        <%= render 'optimization' %> 
+
         <div class="btn-group">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t '.toggle_routes' %>">
             <i class="fa fa-eye"></i>
