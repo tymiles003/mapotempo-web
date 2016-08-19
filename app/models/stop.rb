@@ -34,8 +34,6 @@ class Stop < ActiveRecord::Base
       open || close
     }.collect{ |open, close|
       [open, close, eval_open_close(open, close, time)]
-    }.select{ |open, close, eval|
-      !eval.nil?
     }.min_by{ |open, close, eval|
       eval.abs
     }
@@ -51,7 +49,7 @@ class Stop < ActiveRecord::Base
       if soft_upper_bound > 0
         (time - close) * soft_upper_bound # Positive
       else
-        nil # Strict
+        2**31 # Strict
       end
     else
       0
