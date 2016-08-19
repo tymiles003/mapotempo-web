@@ -381,23 +381,24 @@ class Route < ActiveRecord::Base
     stops_on = stops_segregate[true]
     o = amalgamate_stops_same_position(stops_on) { |positions|
 
-      services = positions.collect{ |position|
+      services_and_rests = positions.collect{ |position|
         open1, close1, open2, close2, duration = position[2..6]
-        open1 = open1 ? Integer(open1 - vehicle_usage.default_open) : nil
-        close1 = close1 ? Integer(close1 - vehicle_usage.default_open) : nil
+
+        open1 = open1 ? Integer(open1 - vehicle_usage.default_open - (vehicle_usage.default_service_time_start || 0).to_f) : nil
+        close1 = close1 ? Integer(close1 - vehicle_usage.default_open - (vehicle_usage.default_service_time_start || 0).to_f) : nil
         if open1 && close1 && open1 > close1
           close1 = open1
         end
-
-        open2 = open2 ? Integer(open2 - vehicle_usage.default_open) : nil
-        close2 = close2 ? Integer(close2 - vehicle_usage.default_open) : nil
+        open2 = open2 ? Integer(open2 - vehicle_usage.default_open - (vehicle_usage.default_service_time_start || 0).to_f) : nil
+        close2 = close2 ? Integer(close2 - vehicle_usage.default_open - (vehicle_usage.default_service_time_start || 0).to_f) : nil
         if open2 && close2 && open2 > close2
           close2 = open2
         end
+
         {start1: open1, end1: close1, start2: open2, end2: close2, duration: duration}
       }
 
-      unnil_positions(positions, services){ |positions, services, rests|
+      unnil_positions(positions, services_and_rests){ |positions, services, rests|
         position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : nil
         position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : nil
         positions = ([position_start] + positions + [position_stop]).compact.collect{ |position| position[0..1] }
