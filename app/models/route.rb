@@ -383,14 +383,16 @@ class Route < ActiveRecord::Base
 
       services_and_rests = positions.collect{ |position|
         open1, close1, open2, close2, duration = position[2..6]
+        vehicle_open = vehicle_usage.default_open
+        vehicle_open += vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage.default_service_time_start
 
-        open1 = open1 ? Integer(open1 - vehicle_usage.default_open - (vehicle_usage.default_service_time_start || 0).to_f) : nil
-        close1 = close1 ? Integer(close1 - vehicle_usage.default_open - (vehicle_usage.default_service_time_start || 0).to_f) : nil
+        open1 = open1 ? Integer(open1 - vehicle_open) : nil
+        close1 = close1 ? Integer(close1 - vehicle_open) : nil
         if open1 && close1 && open1 > close1
           close1 = open1
         end
-        open2 = open2 ? Integer(open2 - vehicle_usage.default_open - (vehicle_usage.default_service_time_start || 0).to_f) : nil
-        close2 = close2 ? Integer(close2 - vehicle_usage.default_open - (vehicle_usage.default_service_time_start || 0).to_f) : nil
+        open2 = open2 ? Integer(open2 - vehicle_open) : nil
+        close2 = close2 ? Integer(close2 - vehicle_open) : nil
         if open2 && close2 && open2 > close2
           close2 = open2
         end
