@@ -91,7 +91,7 @@ class Route < ActiveRecord::Base
       quantity1_1 = quantity1_2 = 0
       router = vehicle_usage.vehicle.default_router
       router_dimension = vehicle_usage.vehicle.default_router_dimension
-      stops_time = {}
+      stops_drive_time = {}
 
       # Add service time
       if !service_time_start.nil?
@@ -153,7 +153,7 @@ class Route < ActiveRecord::Base
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
           stop.distance, stop.drive_time, stop.trace = traces.shift
           if stop.drive_time
-            stops_time[stop] = stop.drive_time
+            stops_drive_time[stop] = stop.drive_time
             stop.time = self.end + stop.drive_time
           elsif stop.is_a?(StopRest)
             stop.time = self.end
@@ -195,7 +195,7 @@ class Route < ActiveRecord::Base
       distance, drive_time, trace = traces.shift
       if drive_time
         self.distance += distance
-        stops_time[:stop] = drive_time
+        stops_drive_time[:stop] = drive_time
         self.end += drive_time
         self.stop_distance, self.stop_drive_time = distance, drive_time
       end
@@ -210,23 +210,23 @@ class Route < ActiveRecord::Base
 
       self.emission = vehicle_usage.vehicle.emission.nil? || vehicle_usage.vehicle.consumption.nil? ? nil : self.distance / 1000 * vehicle_usage.vehicle.emission * vehicle_usage.vehicle.consumption / 100
 
-      [stops_sort, stops_time, stops_time_windows]
+      [stops_sort, stops_drive_time, stops_time_windows]
     end
   end
 
   def compute(options = {})
-    stops_sort, stops_time, stops_time_windows = plan(nil, options[:ignore_errors])
+    stops_sort, stops_drive_time, stops_time_windows = plan(nil, options[:ignore_errors])
 
     if stops_sort
       # Try to minimize waiting time by a later begin
       time = self.end
-      time -= stops_time[:stop] if stops_time[:stop]
+      time -= stops_drive_time[:stop] if stops_drive_time[:stop]
       (time -= vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_end
       stops_sort.reverse_each{ |stop|
         if stop.active && (stop.position? || stop.is_a?(StopRest))
           open, close = stops_time_windows[stop]
           if stop.time && (stop.out_of_window || (close && time > close))
-            time = stop.time
+            time = [stop.time, close ? close - stop.duration : 0].max
           else
             # Latest departure time
             time = [time, close].min if close
@@ -236,7 +236,7 @@ class Route < ActiveRecord::Base
           end
 
           # Previous departure time
-          time -= stops_time[stop] if stops_time[stop]
+          time -= stops_drive_time[stop] if stops_drive_time[stop]
         end
       }
 

@@ -11,7 +11,7 @@ class RouteTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
-    Routers::Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
+    Routers::Osrm.stub_any_instance(:compute, [1, 720, 'trace']) do
       Routers::Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
         yield
       end
@@ -299,5 +299,23 @@ class RouteTest < ActiveSupport::TestCase
     s.lat = s.lng = 1 # Geocoded
     s.save!
     o.compute
+  end
+
+  test 'should shift departure' do
+    o = routes(:route_one_one)
+
+    stops = o.stops.select{ |s| s.is_a?(StopVisit) }
+    stops[0].time = '2000-01-01 10:30:00'
+    stops[0].visit.open1 = '2000-01-01 11:00:00'
+    stops[0].visit.close1 = '2000-01-01 11:30:00'
+    stops[1].time = '2000-01-01 11:00:00'
+    stops[1].visit.open1 = '2000-01-01 10:00:00'
+    stops[1].visit.close1 = '2000-01-01 11:30:00'
+    stops[2].time = '2000-01-01 11:30:00'
+    stops[2].visit.open1 = '2000-01-01 12:00:00'
+    stops[2].visit.close1 = '2000-01-01 14:00:00'
+
+    o.compute
+    assert_equal '2000-01-01 10:55:27 UTC', o.start.utc.to_s
   end
 end
