@@ -382,7 +382,7 @@ class Route < ActiveRecord::Base
     o = amalgamate_stops_same_position(stops_on) { |positions|
 
       services_and_rests = positions.collect{ |position|
-        open1, close1, open2, close2, duration = position[2..6]
+        stop_id, open1, close1, open2, close2, duration, vehicle_id = position[2..8]
         vehicle_open = vehicle_usage.default_open
         vehicle_open += vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage.default_service_time_start
 
@@ -397,22 +397,17 @@ class Route < ActiveRecord::Base
           close2 = open2
         end
 
-        {start1: open1, end1: close1, start2: open2, end2: close2, duration: duration}
+        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id}
       }
 
       unnil_positions(positions, services_and_rests){ |positions, services, rests|
         position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : nil
         position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : nil
-        positions = ([position_start] + positions + [position_stop]).compact.collect{ |position| position[0..1] }
+        positions = (positions + [position_start, position_stop]).compact.collect{ |position| position[0..1] }
         matrix = router.matrix(positions, positions, vehicle_usage.vehicle.default_speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
-        order = optimizer.call(matrix, services, [position_start && :start, position_stop && :stop].compact, rests, router_dimension)
-        if position_stop
-          order = order[0..-2].collect{ |i| i > order.size - 2 ? i - 1 : i }
-        end
-        if position_start
-          order = order[1..-1].collect{ |i| i - 1 }
-        end
-        order
+        optimizer.call(matrix, services, [stores: [position_start && :start, position_stop && :stop].compact, rests: rests], router_dimension)[0].collect{ |stop_id|
+          services.index{ |s| s[:stop_id] == stop_id } || (services.size + rests.index{ |s| s[:stop_id] == stop_id })
+        }
       }
     }
     self.optimized_at = Time.now.utc
@@ -534,7 +529,7 @@ class Route < ActiveRecord::Base
     if tws
       # Can't reduce cause of time windows
       positions_uniq = stops.collect{ |stop|
-        [stop.lat, stop.lng, stop.open1, stop.close1, stop.open2, stop.close2, stop.duration]
+        [stop.lat, stop.lng, stop.id, stop.open1, stop.close1, stop.open2, stop.close2, stop.duration, stop.is_a?(StopRest) ? stop.route.vehicle_usage_id : nil]
       }
 
       yield(positions_uniq)
@@ -547,7 +542,7 @@ class Route < ActiveRecord::Base
       }
 
       positions_uniq = stock.collect{ |k, v|
-        k + [nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }]
+        k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, v[0][0].is_a?(StopRest) ? v[0][0].route.vehicle_usage_id : nil]
       }
 
       optim_uniq = yield(positions_uniq)

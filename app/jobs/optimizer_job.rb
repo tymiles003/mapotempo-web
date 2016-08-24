@@ -51,7 +51,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
           @job.progress = "-1;0;" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
           @job.save
         end
-      }) { |matrix, services, stores, rests, dimension|
+      }) { |matrix, services, vehicles, dimension|
         @job.progress = '100;0;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         @job.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
@@ -60,7 +60,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
         @job.progress = "100;" + (routes[0].planning.customer.optimization_time ? "#{optimize_time * 1000}ms#{routes_count};" : '-1;') + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         @job.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-        optimum = Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, stores, rests, optimize_time ? optimize_time * 1000 : nil, soft_upper_bound, route.planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size)
+        optimum = Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, vehicles, {optimize_time: optimize_time ? optimize_time * 1000 : nil, soft_upper_bound: soft_upper_bound, cluster_threshold: route.planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size})
         @job.progress = '100;100;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
         @job.save
         Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"

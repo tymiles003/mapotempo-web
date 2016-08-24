@@ -25,15 +25,18 @@ class OptimizerWrapper
     @cache, @url, @api_key = cache, url, api_key
   end
 
-  def optimize(matrix, dimension, services, stores, rests, optimize_time, soft_upper_bound, cluster_threshold)
-    key = Digest::MD5.hexdigest(Marshal.dump([matrix, dimension, services, stores, rests, optimize_time, soft_upper_bound, cluster_threshold]))
+  # matrix has stores at the end
+  # services Array[Hash{start1: , end1: , duration: , stop_id: , vehicle_id: }]
+  # vehicles Array[Hash{stores: [], rests: [], capacities: []}]
+  def optimize(matrix, dimension, services, vehicles, options)
+    key = Digest::MD5.hexdigest(Marshal.dump([matrix, dimension, services, vehicles, options]))
 
     result = @cache.read(key)
     if !result
-      # TODO not compute too big matrix before seding it here
-      is_loop = if stores.include?(:start) && stores.include?(:stop) && matrix[0] == matrix[-1] && matrix.collect(&:first) == matrix.collect(&:last)
-        matrix = matrix[0..-2].collect{ |r| r[0..-2] }
-      end
+      # TODO simplify matrix without duplications (for instance same start and stop stores)
+      stores = vehicles.flat_map{ |v| v[:stores] }
+      rests = vehicles.flat_map{ |v| v[:rests] }
+      shift_stores = 0
 
       vrp = {
         matrices: {
@@ -45,12 +48,11 @@ class OptimizerWrapper
           matrix_index: i
         }},
         services: services.each_with_index.collect{ |service, index|
-          i = stores.include?(:start) ? index + 1 : index
           {
-            id: "s#{i}",
+            id: "s#{service[:stop_id]}",
             type: 'service',
             activity: {
-              point_id: "p#{i}",
+              point_id: "p#{index}",
               timewindows: [
                 (service[:start1] || service[:end1]) && {
                   start: service[:start1],
@@ -61,13 +63,14 @@ class OptimizerWrapper
                   end: service[:end2]
                 },
               ].compact,
-              duration: service[:duration]
+              duration: service[:duration],
+              vehicle_id: service[:vehicle_id] # to force an activity on a vehicle (for instance geoloc rests)
             }
           }
         },
-        rests: rests.each_with_index.collect{ |rest, index|
+        rests: rests.collect{ |rest|
           {
-            id: "r#{index + services.size + stores.size}",
+            id: "r#{rest[:stop_id]}",
             timewindows: [{
               start: rest[:start1],
               end: rest[:end1]
@@ -75,26 +78,30 @@ class OptimizerWrapper
             duration: rest[:duration]
           }
         },
-        vehicles: [{
-          id: 'v0',
-          start_point_id: stores.include?(:start) ? 'p0' : nil,
-          end_point_id: stores.include?(:stop) ? (is_loop ? 'p0' : "p#{matrix.size - 1}") : nil,
-          cost_fixed: 0,
-          cost_distance_multiplier: dimension == 'distance' ? 1 : 0,
-          cost_time_multiplier: dimension == 'time' ? 1 : 0,
-          cost_waiting_time_multiplier: dimension == 'time' ? 1 : 0,
-          cost_late_multiplier: (dimension == 'time' && soft_upper_bound && soft_upper_bound > 0) ? soft_upper_bound : nil,
-          rest_ids: rests.each_with_index.collect{ |rest, index|
-            "r#{index + services.size + stores.size}"
+        vehicles: vehicles.each_with_index.collect{ |vehicle, index|
+          v = {
+            id: "v#{index}",
+            start_point_id: vehicle[:stores].include?(:start) ? "p#{shift_stores + services.size}" : nil,
+            end_point_id: vehicle[:stores].include?(:stop) ? "p#{1 + shift_stores + services.size}" : nil,
+            cost_fixed: 0,
+            cost_distance_multiplier: dimension == 'distance' ? 1 : 0,
+            cost_time_multiplier: dimension == 'time' ? 1 : 0,
+            cost_waiting_time_multiplier: dimension == 'time' ? 1 : 0,
+            cost_late_multiplier: (dimension == 'time' && options[:soft_upper_bound] && options[:soft_upper_bound] > 0) ? options[:soft_upper_bound] : nil,
+            rest_ids: vehicle[:rests].collect{ |rest|
+              "r#{rest[:stop_id]}"
+            }
           }
-        }],
+          shift_stores += vehicle[:stores].size
+          v
+        },
         configuration: {
           preprocessing: {
-            cluster_threshold: cluster_threshold,
+            cluster_threshold: options[:cluster_threshold],
             prefer_short_segment: true
           },
           resolution: {
-            duration: optimize_time || 3600 * 1000,
+            duration: options[:optimize_time] || 3600 * 1000,
             iterations_without_improvment: 100,
             initial_time_out: 3000,
             time_out_multiplier: 2
@@ -123,14 +130,14 @@ class OptimizerWrapper
       result = JSON.parse(result)
     end
 
-    result['solutions'][0]['routes'][0]['activities'].collect{ |activity|
-      if activity.key?('service_id')
-        activity['service_id'][1..-1].to_i
-      elsif activity.key?('rest_id')
-        activity['rest_id'][1..-1].to_i
-      else
-        activity['point_id'][1..-1].to_i
-      end
+    result['solutions'][0]['routes'].collect{ |route|
+      route['activities'].collect{ |activity|
+        if activity.key?('service_id')
+          activity['service_id'][1..-1].to_i
+        elsif activity.key?('rest_id')
+          activity['rest_id'][1..-1].to_i
+        end
+      }.compact # stores are not returned anymore
     }
   end
 end

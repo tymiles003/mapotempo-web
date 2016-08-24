@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'routers/osrm'
 
-class D < Struct.new(:lat, :lng, :open1, :close1, :open2, :close2, :duration)
+class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duration, :vehicle_id)
   def visit
     self
   end
@@ -19,14 +19,8 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   # default order, put the rest at the end
-  def optimizer(matrix, services, stores, rests, dimension)
-    order = (0..(services.size+stores.size-1)).to_a
-    if stores.include? :stop
-      order = order[0..-2] + ((order.size)..(order.size-1+rests.size)).to_a + [order[-1]] if rests.size > 0
-    else
-      order += ((order.size)..(order.size-1+rests.size)).to_a
-    end
-    order
+  def optimizer(matrix, services, vehicles, dimension)
+    [(services + vehicles[0][:rests]).collect{ |s| s[:stop_id] }]
   end
 
   test 'should not save' do
@@ -165,7 +159,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should no amalgamate point at same position' do
     o = routes(:route_one_one)
 
-    positions = [D.new(1,1), D.new(2,2), D.new(3,3)]
+    positions = [D.new(1,1,1), D.new(2,2,2), D.new(3,3,3)]
     ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
@@ -180,7 +174,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should amalgamate point at same position' do
     o = routes(:route_one_one)
 
-    positions = [D.new(1,1,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(3,3,nil,nil,nil,nil,0)]
+    positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,nil,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
     ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
@@ -195,7 +189,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should amalgamate point at same position, tw' do
     o = routes(:route_one_one)
 
-    positions = [D.new(1,1,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(3,3,nil,nil,nil,nil,0)]
+    positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,10,20,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
     ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
       assert_equal 4, positions.size
       (0..(positions.size-1)).to_a

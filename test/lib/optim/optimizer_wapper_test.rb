@@ -25,19 +25,19 @@ class OptimizerWrapperTest < ActionController::TestCase
       [[2982, 2982], [2758, 2758], [1652, 1652], [7264, 7264], [0, 0], [2982, 2982]],
       [[0, 0], [655, 655], [1948, 1948], [5231, 5231], [2971, 2971], [0, 0]]]
     t = [
-      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0},
-      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0},
-      {start1: 28800, end1: 36000, start2: nil, end2: nil, duration: 500.0},
-      {start1: 0, end1: 7200, start2: nil, end2: nil, duration: 300.0},
+      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0, stop_id: 1},
+      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0, stop_id: 2},
+      {start1: 28800, end1: 36000, start2: nil, end2: nil, duration: 500.0, stop_id: 3},
+      {start1: 0, end1: 7200, start2: nil, end2: nil, duration: 300.0, stop_id: 4},
     ]
     r = [
-      {start: 28800, end: 36000, duration: 500.0},
+      {start1: 28800, end1: 36000, duration: 500.0, stop_id: 5},
     ]
 
-    assert_equal [0, 1, 2, 3, 4, 6, 5], @optim.optimize(m, 'time', t, [:start, :stop], r, nil, nil, nil)
+    assert_equal [[1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [stores: [:start, :stop], rests: r], {})
 
-    assert_equal [0, 1, 2, 3, 4, 6, 5], @optim.optimize(m, 'time', t, [:start], r, nil, nil, nil)
+    assert_equal [[1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [stores: [:start], rests: r], {})
 
-    assert_equal [0, 1, 2, 3, 4, 6, 5], @optim.optimize(m, 'time', t, [], r, nil, nil, nil)
+    assert_equal [[1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [stores: [], rests: r], {})
   end
 end

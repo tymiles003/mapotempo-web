@@ -18,7 +18,7 @@ class PlanningsControllerTest < ActionController::TestCase
   def around
     Routers::Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
       Routers::Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
-        Ort.stub_any_instance(:optimize, lambda { |matrix, dimension, services, stores, rests, optimize_time, soft_upper_bound, cluster_time_threshold| (0..(matrix.size-1)).to_a }) do
+        OptimizerWrapper.stub_any_instance(:optimize, lambda { |matrix, dimension, services, vehicles, options| [(services.reverse + vehicles[0][:rests]).collect{ |s| s[:stop_id] }] }) do
           yield
         end
       end

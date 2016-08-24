@@ -936,7 +936,7 @@ fr:
       last_sent_at: "Dernier envoi"
       optimized_at: "Optimisé"
       global_opti: "Optimisation globale"
-      specific_opti: "Optimisation par tournée"
+      specific_opti: "Optimiser chaque tournée"
       title: "Modifier planning"
       stops: "arrêts"
       optimize_all: "Optimiser l'ensemble"
