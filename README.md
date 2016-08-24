@@ -62,6 +62,10 @@ You can load demo data from `db/seeds.rb` into database with :
 
     rake db:seed
 
+You can load the schema and the demo data using :
+
+    rake db:setup
+
 # Running
 
 Start standalone rails server with
