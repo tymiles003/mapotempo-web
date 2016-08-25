@@ -59,6 +59,7 @@ route.stops.each do |stop|
     <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
     <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
   </address>
+  <phoneNumber><%= stop.phone_number if stop.phone_number %></phoneNumber>
   <description>
     <%= stop.comment %>
     <% if stop.open1 %><%= t('plannings.edit.popup.open1') %> <%= l(stop.open1.utc, format: :hour_minute) %><% end %>
