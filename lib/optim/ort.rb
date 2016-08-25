@@ -55,7 +55,10 @@ class Ort
           time_window: time_window,
           rest_window: rest_window,
           optimize_time: optimize_time,
-          soft_upper_bound: soft_upper_bound
+          soft_upper_bound: soft_upper_bound,
+          iterations_without_improvment: 100,
+          initial_time_out: 3000,
+          time_out_multiplier: 2,
         }.to_json
         resource = RestClient::Resource.new(@url, timeout: nil)
         result = resource.post({data: data}, content_type: :json, accept: :json)

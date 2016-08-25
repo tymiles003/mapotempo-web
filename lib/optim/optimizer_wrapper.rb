@@ -94,7 +94,9 @@ class OptimizerWrapper
           },
           resolution: {
             duration: optimize_time || 3600 * 1000,
-            iterations_without_improvment: 100
+            iterations_without_improvment: 100,
+            initial_time_out: 3000,
+            time_out_multiplier: 2
           }
         }
       }
