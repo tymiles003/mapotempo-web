@@ -20,7 +20,7 @@
 
 class Alyacom < DeviceBase
 
-  TIMEOUT_VALUE = 120
+  TIMEOUT_VALUE ||= 120
 
   def test_list(_customer, params)
     rest_client_get [api_url, params[:alyacom_association], 'users'].join('/'), { apiKey: params[:alyacom_api_key] }
