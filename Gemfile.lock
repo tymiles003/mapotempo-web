@@ -183,7 +183,6 @@ GEM
     coffee-script-source (1.10.0)
     color (1.8)
     commonjs (0.2.7)
-    concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.2)
@@ -591,7 +590,7 @@ DEPENDENCIES
   pnotify-rails!
   polylines
   rack-cors
-  rails
+  rails (~> 4.2)
   rails-i18n
   rails_12factor
   rails_engine_decorators
