@@ -1342,9 +1342,9 @@ fr:
         help: "Type de carburant"
       consumption:
         help: "Consommation moyenne aux 100 km en litres de carburant"
-      capacity:
-        label: "Capacité"
-        help: "Capacité maximum du véhicule"
+      capacities:
+        label: "Capacités"
+        help: "Capacités maximales du véhicule"
       capacity_unit:
         placeholder: "unité"
         help: "Unité de la capacité"
@@ -1458,9 +1458,9 @@ fr:
       legend: "Visite #%{n}"
       destroy: "Si coché, la visite sera supprimée. Cliquez-ici pour annuler."
       ref_help: "Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites avec l'import/export notamment."
-      quantity: "Quantité"
+      quantities: "Quantités"
       quantity_default: "défaut"
-      quantity_help: "Quantité à livrer"
+      quantities_help: "Quantités à livrer"
       take_over_default: "défaut"
       take_over_help: "Si vide utilise la valeur par défaut"
       open_close1: "Plage horaire 1"
