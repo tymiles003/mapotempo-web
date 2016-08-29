@@ -98,9 +98,7 @@ Rails.application.configure do
 
   config.devices.alyacom.api_url = 'https://alyacom.example.com'
   config.devices.masternaut.api_url = 'https://masternaut.example.com'
-  config.devices.masternaut.api_key = nil
   config.devices.orange.api_url = 'https://orange.example.com'
-  config.devices.orange.api_key = nil
   config.devices.tomtom.api_url = 'https://tomtom.example.com' #v1.26
   config.devices.tomtom.api_key = nil
   config.devices.cache_object = cache_factory('devices', 30)
