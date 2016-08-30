@@ -19,10 +19,10 @@ module VisitsHelper
   def visit_quantities(visit, vehicle)
     quantities = []
     if visit.quantity1_1
-      quantities << visit.localized_quantity1_1 + (vehicle && vehicle.capacity1_1_unit ? ' ' + vehicle.capacity1_1_unit : '')
+      quantities << visit.localized_quantity1_1 + (vehicle && vehicle.capacity1_1_unit ? "\u202F" + vehicle.capacity1_1_unit : '')
     end
     if visit.quantity1_2
-      quantities << visit.localized_quantity1_2 + (vehicle && vehicle.capacity1_2_unit ? ' ' + vehicle.capacity1_2_unit : '')
+      quantities << visit.localized_quantity1_2 + (vehicle && vehicle.capacity1_2_unit ? "\u202F" + vehicle.capacity1_2_unit : '')
     end
     [quantities.size > 0 ? quantities.join(' - ') : nil]
   end
