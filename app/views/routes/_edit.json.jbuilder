@@ -42,7 +42,7 @@ end if route.vehicle_usage && route.vehicle_usage.default_store_start
 (json.start_with_service l(display_start_time(route).utc, format: :hour_minute)) if display_start_time(route)
 previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
 first_active_free = nil
-route.stops.select{ |s| s.is_a?(StopVisit) }.reverse_each{ |stop|
+route.stops.select{ |s| s.is_a?(StopVisit) }.sort_by{ |s| s.index || Float::INFINITY }.reverse_each{ |stop|
   if !stop.active
     first_active_free = stop
   else
