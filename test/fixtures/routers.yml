@@ -2,6 +2,7 @@
 
 router_one:
   mode: car
+  type: RouterWrapper
   name: MyString
   time: true
   distance: true

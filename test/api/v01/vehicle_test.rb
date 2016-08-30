@@ -9,7 +9,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
   end
 
   def around
-    Routers::Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
       yield
     end
   end

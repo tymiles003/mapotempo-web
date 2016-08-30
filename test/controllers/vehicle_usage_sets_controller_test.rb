@@ -11,7 +11,7 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
   end
 
   def around
-    Routers::Osrm.stub_any_instance(:compute, [1000, 60, 'trace']) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1000, 60, 'trace'] } } ) do
       yield
     end
   end

@@ -67,6 +67,7 @@ class VehicleUsageTest < ActiveSupport::TestCase
 
   test 'disable vehicule usage' do
     # Stub Requests
+    routers(:router_one).update(type: RouterOsrm) # TMP
     expected_response = File.read(Rails.root.join("test/web_mocks/osrm/route.json")).strip
     store = stores :store_one
     stub_request(:get, "http://localhost:5000/viaroute?alt=false&loc=#{store.lat},#{store.lng}&output=json").to_return(status: 200, body: expected_response)

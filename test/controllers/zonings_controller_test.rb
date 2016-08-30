@@ -113,13 +113,17 @@ class ZoningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should generate isochrone' do
+  test 'should generate isochrone and isodistance' do
     store_one = stores(:store_one)
-    uri_template = Addressable::Template.new('localhost:1723/0.1/isochrone?lat=' + store_one.lat.to_s + '&lng=' + store_one.lng.to_s + '&time=600.0')
-    stub_table = stub_request(:get, uri_template).to_return(File.new(File.expand_path('../../web_mocks/', __FILE__) + '/isochrone/isochrone-1.json').read)
-    patch :isochrone, format: :json, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_id: @zoning
-    assert_response :success
-    assert_equal 1, JSON.parse(response.body)['zoning'].length
-    assert_not_nil JSON.parse(response.body)['zoning'][0]['polygon']
+    [:isochrone, :isodistance].each { |isowhat|
+      uri_template = Addressable::Template.new('localhost:5000/0.1/isoline.json')
+      stub_table = stub_request(:post, uri_template)
+        .with(:body => hash_including(dimension: (isowhat == :isochrone ? 'time' : 'distance'), loc: "#{store_one.lat},#{store_one.lng}", mode: 'car', size: '600'))
+        .to_return(File.new(File.expand_path('../../web_mocks/', __FILE__) + '/isochrone/isochrone-1.json').read)
+      patch :isochrone, format: :json, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_id: @zoning
+      assert_response :success
+      assert_equal 1, JSON.parse(response.body)['zoning'].length
+      assert_not_nil JSON.parse(response.body)['zoning'][0]['polygon']
+    }
   end
 end
