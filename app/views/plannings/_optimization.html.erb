@@ -5,15 +5,15 @@
       <span class="caret"></span>
     </button>
     <ul id="toggle_optimization_dropdown" class="dropdown-menu" style="right: -35px; left: auto;" role="menu">
-      <li id="optimize_each" data-opti-global="true">
-        <a class="active_reverse" href="#">
-          <i class="fa fa-gears"></i>
+      <li id="optimize_each" data-opti-global="false">
+        <a class="active_reverse" href="#" title="<%= t 'plannings.edit.specific_opti_help' %>">
+          <i class="fa fa-gears fa-fw"></i>
           <%= t 'plannings.edit.specific_opti' %>
         </a>
       </li>
-      <li id="optimize_global" data-opti-global="false">
-        <a class="active_none" href="#">
-          <i class="fa fa-gears"></i>
+      <li id="optimize_global" data-opti-global="true">
+        <a class="active_none" href="#" title="<%= t 'plannings.edit.global_opti_help' %>">
+          <i class="fa fa-gears fa-fw"></i>
           <%= t 'plannings.edit.global_opti' %>
         </a>
       </li>

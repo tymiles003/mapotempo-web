@@ -1,13 +1,38 @@
 require 'test_helper'
-require 'routers/osrm'
+require 'routers/router_wrapper'
+
+class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duration, :vehicle_id)
+  def visit
+    self
+  end
+  def route
+    Struct.new(:vehicle_usage_id).new(nil)
+  end
+end
 
 class PlanningTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
-    Routers::Osrm.stub_any_instance(:compute, [1, 1, 'trace']) do
-      yield
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
+      Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
+        yield
+      end
     end
+  end
+
+  # default order, rest at the end
+  def optimizer_route(matrix, services, vehicles, dimension)
+    [[]] + [(services + vehicles[0][:rests]).collect{ |s| s[:stop_id] }]
+  end
+
+  # return all services in reverse order in first route, rests at the end
+  def optimizer_global(matrix, services, vehicles, dimension)
+    [[]] + vehicles.each_with_index.map{ |v, i|
+      ((i.zero? ? services.reject{ |s| s[:vehicle_id] } : []) + services.select{ |s| s[:vehicle_id] && s[:vehicle_id] == v[:id] } + v[:rests]).map{ |s|
+        s[:stop_id]
+      }.reverse
+    }
   end
 
   test 'should not save' do
@@ -246,6 +271,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'should automatic insert' do
     o = plannings(:planning_one)
+    stops_count = o.routes.collect{ |r| r.stops.size }.inject(:+)
     o.zonings = []
     assert_difference('Stop.count', 0) do
       # route_zero has not any vehicle_usage => stop will be affected to another route
@@ -255,7 +281,7 @@ class PlanningTest < ActiveSupport::TestCase
     o.reload
     assert_equal 3, o.routes.size
     assert_equal 0, o.routes.find{ |ro| ro.ref == 'route_zero' }.stops.size
-    assert_equal 4 + 1 + 1, o.routes.select{ |ro| ro.ref != 'route_zero' }.collect{ |r| r.stops.size }.inject(:+)
+    assert_equal stops_count, o.routes.select{ |ro| ro.ref != 'route_zero' }.collect{ |r| r.stops.size }.inject(:+)
   end
 
   test 'should apply orders' do
@@ -403,6 +429,118 @@ class PlanningTest < ActiveSupport::TestCase
     dup_planning.save!
     assert dup_planning.zoning_out_of_date
   end
+
+  test 'should no amalgamate point at same position' do
+    o = routes(:route_one_one)
+
+    positions = [D.new(1,1,1), D.new(2,2,2), D.new(3,3,3)]
+    ret = o.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
+      assert_equal 3, positions.size
+      pos = positions.sort
+      [pos.collect{ |p|
+        p[2]
+      }]
+    }
+    assert_equal positions.size, ret[0].size
+    assert_equal 1.upto(positions.size).to_a, ret[0]
+  end
+
+  test 'should amalgamate point at same position' do
+    o = routes(:route_one_one)
+
+    positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,nil,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
+    ret = o.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
+      assert_equal 3, positions.size
+      pos = positions.sort
+      [pos.collect{ |p|
+        p[2]
+      }]
+    }
+    assert_equal positions.size, ret[0].size
+    assert_equal 1.upto(positions.size).to_a, ret[0]
+  end
+
+  test 'should no amalgamate point at same position, tw' do
+    o = routes(:route_one_one)
+
+    positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,10,20,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
+    ret = o.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
+      assert_equal 4, positions.size
+      [(1..(positions.size)).to_a]
+    }
+    assert_equal positions.size, ret[0].size
+    assert_equal 1.upto(positions.size).to_a, ret[0]
+  end
+
+  test 'should optimize one route with one store rest' do
+    o = routes(:route_one_one)
+    optim = o.planning.optimize([o], false, nil) { |*a|
+      optimizer_route(*a)
+    }
+    assert_equal [o.stops.collect(&:id)], optim
+  end
+
+  test 'should optimize one route with one no-geoloc rest' do
+    o = routes(:route_one_one)
+    vehicle_usages(:vehicle_usage_one_one).update! store_rest: nil
+    vehicle_usage_sets(:vehicle_usage_set_one).update! store_rest: nil
+    o.reload
+    optim = o.planning.optimize([o], false, nil) { |*a|
+      optimizer_route(*a)
+    }
+    assert_equal [o.stops.collect(&:id)], optim
+  end
+
+  test 'should optimize one route without any store' do
+    o = routes(:route_one_one)
+    vehicle_usages(:vehicle_usage_one_one).update! store_start: nil, store_stop: nil, store_rest: nil
+    vehicle_usage_sets(:vehicle_usage_set_one).update! store_start: nil, store_stop: nil, store_rest: nil
+    o.reload
+    optim = o.planning.optimize([o], false, nil) { |*a|
+      optimizer_route(*a)
+    }
+    assert_equal [o.stops.collect(&:id)], optim
+  end
+
+  test 'should optimize one route with none geoloc store' do
+    o = routes(:route_three_one)
+    optim = o.planning.optimize([o], false, nil) { |*a|
+      optimizer_route(*a)
+    }
+    assert_equal [o.stops.collect(&:id)], optim
+  end
+
+  test 'should optimize global planning' do
+    o = plannings(:planning_one)
+    optim = o.optimize(o.routes, true, nil) { |*a|
+      optimizer_global(*a)
+    }
+    assert_equal 0, optim[0].size
+    assert_equal o.routes[2].stops.select{ |s| s.is_a? StopRest }.size, optim[2].size
+    assert_equal o.routes.map{ |r| r.stops.size }.reduce(&:+), optim.flatten.size
+  end
+
+  test 'should set stops for one route' do
+    o = routes(:route_one_one)
+    original_order = o.stops.map(&:id)
+    o.planning.set_stops([o], [original_order.reverse])
+    assert_equal original_order.reverse, o.stops.map(&:id)
+    o.planning.save!
+    o.reload
+    assert_equal original_order.reverse, o.stops.map(&:id)
+  end
+
+  test 'should set stops for planning' do
+    o = plannings(:planning_one)
+    optim = o.optimize(o.routes, true, nil) { |*a|
+      optimizer_global(*a)
+    }
+    o.set_stops(o.routes, optim)
+    assert_equal optim, o.routes.map{ |r| r.stops.map(&:id) }
+    o.save!
+    o.reload
+    assert_equal optim, o.routes.map{ |r| r.stops.map(&:id) }
+  end
 end
 
 class PlanningTestError < ActiveSupport::TestCase
@@ -410,7 +548,7 @@ class PlanningTestError < ActiveSupport::TestCase
 
   test 'should not compute because of router error' do
     o = plannings(:planning_one)
-    Routers::Osrm.stub_any_instance(:compute, []) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, []) do
       assert_no_difference('Stop.count') do
         o.zoning_out_of_date = true
         o.compute
@@ -425,7 +563,7 @@ class PlanningTestException < ActiveSupport::TestCase
 
   test 'should not compute because of router exception' do
     o = plannings(:planning_one)
-    Routers::Osrm.stub_any_instance(:compute, lambda{ |*a| raise }) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda{ |*a| raise }) do
       assert_no_difference('Stop.count') do
         o.zoning_out_of_date = true
         assert_raises(RuntimeError) do

@@ -262,11 +262,175 @@ class Planning < ActiveRecord::Base
     self.date = order_array.base_date + shift
   end
 
+  def speed_multiplicator_areas
+    zonings.collect(&:zones).flatten.select{ |z| z.speed_multiplicator != 1 }.collect{ |z|
+      feat = RGeo::GeoJSON.decode(z.polygon, json_parser: :json)
+      coordinates = feat.geometry.coordinates[0] if feat && feat.geometry.geometry_type == RGeo::Feature::Polygon
+      coordinates = feat.geometry.coordinates[0][0] if feat && feat.geometry.geometry_type == RGeo::Feature::MultiPolygon
+      {
+        area: coordinates.collect(&:reverse),
+        speed_multiplicator_area: z.speed_multiplicator
+      }
+    }
+  end
+
+  def optimize(routes, global, matrix_progress, &optimizer)
+    routes_with_vehicle = routes.select{ |r| r.vehicle_usage }
+    # TODO: take into account multiple routers and send multiples matrix to optim
+    router = ((routers = routes_with_vehicle.map{ |r| r.vehicle_usage.vehicle.default_router }.uniq) && (routers.size == 1 || !global)) ? routers.first : (raise 'Global optim not supported: routes without same router')
+    router_dimension = ((dims = routes_with_vehicle.map{ |r| r.vehicle_usage.vehicle.default_router_dimension }.uniq) && (dims.size == 1 || !global)) ? dims.first : (raise 'Global optim not supported: routes without same dimension')
+    speed_multiplicator = ((ss = routes_with_vehicle.map{ |r| r.vehicle_usage.vehicle.default_speed_multiplicator }.uniq) && (ss.size == 1 || !global)) ? ss.first : (raise 'Global optim not supported: routes without same speed multiplier')
+
+    stops_on = (global ? routes.find{ |r| !r.vehicle_usage }.stops : []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate[true] }.compact
+    o = amalgamate_stops_same_position(stops_on, global) { |positions|
+
+      services_and_rests = positions.collect{ |position|
+        stop_id, open1, close1, open2, close2, duration, vehicle_id = position[2..8]
+        if open1 && close1 && open1 > close1
+          close1 = open1
+        end
+        if open2 && close2 && open2 > close2
+          close2 = open2
+        end
+
+        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id}
+      }
+
+      unnil_positions(positions, services_and_rests){ |positions, services, rests|
+        vehicles = []
+        routes_with_vehicle.each{ |r|
+          position_start = (r.vehicle_usage.default_store_start && !r.vehicle_usage.default_store_start.lat.nil? && !r.vehicle_usage.default_store_start.lng.nil?) ? [r.vehicle_usage.default_store_start.lat, r.vehicle_usage.default_store_start.lng] : nil
+          position_stop = (r.vehicle_usage.default_store_stop && !r.vehicle_usage.default_store_stop.lat.nil? && !r.vehicle_usage.default_store_stop.lng.nil?) ? [r.vehicle_usage.default_store_stop.lat, r.vehicle_usage.default_store_stop.lng] : nil
+          positions = (positions + [position_start, position_stop]).compact.collect{ |position| position[0..1] }
+          vehicle_open = r.vehicle_usage.default_open
+          vehicle_open += r.vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if r.vehicle_usage.default_service_time_start
+          vehicle_close = r.vehicle_usage.default_close
+          vehicle_close -= r.vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0) if r.vehicle_usage.default_service_time_end
+          vehicles << {
+            id: r.vehicle_usage_id,
+            router: r.vehicle_usage.vehicle.default_router,
+            router_dimension: r.vehicle_usage.vehicle.default_router_dimension,
+            speed_multiplier: r.vehicle_usage.vehicle.default_speed_multiplicator,
+            speed_multiplier_areas: speed_multiplicator_areas,
+            open: vehicle_open.to_f,
+            close: vehicle_close.to_f,
+            stores: [position_start && :start, position_stop && :stop].compact,
+            rests: rests.select{ |s| s[:vehicle_id] == r.vehicle_usage_id }
+          }
+        }
+        matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
+        optimizer.call(matrix, services, vehicles, router_dimension)[(global ? 0 : 1)..-1]
+      }
+    }
+    routes_with_vehicle.each_with_index{ |r, i|
+      if o[global ? i + 1 : i].size > 0
+        r.optimized_at = Time.now.utc
+      elsif global
+        r.optimized_at = nil
+      end
+    }
+    o
+  end
+
+  def set_stops(routes, stop_ids)
+    Route.transaction do
+      stops_count = routes.collect{ |r| r.stops.size }.reduce(&:+)
+      flat_stop_ids = stop_ids.flatten.compact
+      routes.each_with_index{ |route, index|
+        stops_ = route.stops_segregate
+        if routes.size == 1 && route.vehicle_usage
+          stops_[true] && stops_[true].each{ |stop|
+            stop.active = false
+            stop.out_of_window = true
+          }
+        end
+        ordered_stops = routes.flat_map{ |r| r.stops.select{ |s| stop_ids[index].include? s.id } }.sort_by{ |s| stop_ids[index].index s.id }
+        i = 0
+        ordered_stops.each{ |stop|
+          stop.route_id = route.id
+          if route.vehicle_usage
+            stop.active = true
+            stop.out_of_window = false
+            stop.index = i += 1
+          else
+            stop.index = stop.time = stop_distance = stop.trace = stop.drive_time = nil
+          end
+        }
+        if route.vehicle_usage
+          ((stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : [])).each{ |stop|
+            stop.index = i += 1
+          }
+        end
+      }
+      routes.each{ |route|
+        route.out_of_date = true if route.vehicle_usage
+        (route.no_stop_index_validation = true) && route.save!
+        route.reload # refresh route.stops collection if stops have been moved
+      }
+      raise 'Invalid stops count' unless routes.collect{ |r| r.stops.size }.reduce(&:+) == stops_count
+      self.reload # refresh route.stops collection if stops have been moved
+    end
+  end
+
   def to_s
     "#{name}=>" + routes.collect(&:to_s).join(' ')
   end
 
   private
+
+  def amalgamate_stops_same_position(stops, global)
+    tws = stops.find{ |stop|
+      stop.is_a?(StopRest) || stop.open1 || stop.close1 || stop.open2 || stop.close2
+    }
+
+    if tws || stops.collect{ |s| s.route.vehicle_usage_id }.uniq.size > 1
+      # Can't reduce cause of time windows or multiple vehicles
+      positions_uniq = stops.collect{ |stop|
+        [stop.lat, stop.lng, stop.id, stop.open1.try(:to_f), stop.close1.try(:to_f), stop.open2.try(:to_f), stop.close2.try(:to_f), stop.duration, (!global || stop.is_a?(StopRest)) ? stop.route.vehicle_usage_id : nil]
+      }
+
+      yield(positions_uniq)
+    else
+      # Reduce positions vector size by amalgamate points in same position
+      stock = Hash.new { [] }
+      i = -1
+      stops.each{ |stop|
+        stock[[stop.lat, stop.lng]] += [[stop, i += 1]]
+      }
+
+      positions_uniq = Hash.new { [] }
+      stock.each{ |k, v|
+        positions_uniq[v[0][0].id] = k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, !global ? v[0][0].route.vehicle_usage_id : nil]
+      }
+
+      optim_uniq = yield(positions_uniq.collect{ |k, v| v })
+
+      optim_uniq.collect{ |r|
+        r.flat_map{ |s|
+          stock[positions_uniq[s][0..1]]
+        }.collect{ |pa|
+          pa[0].id
+        }
+      }
+    end
+  end
+
+  def unnil_positions(positions, tws)
+    not_nil_position_index = positions.each_with_index.group_by{ |position, _index| !position[0].nil? && !position[1].nil? }
+
+    if not_nil_position_index.key?(true)
+      not_nil_position, not_nil_tws = not_nil_position_index[true].collect{ |position, index| [position, tws[index]] }.transpose
+    else
+      not_nil_position = not_nil_tws = []
+    end
+    if not_nil_position_index.key?(false)
+      nil_tws = not_nil_position_index[false].collect{ |_position, index| tws[index] }
+    else
+      nil_tws = []
+    end
+
+    yield(not_nil_position, not_nil_tws, nil_tws)
+  end
 
   def prefered_route_and_index(available_routes, stop)
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }

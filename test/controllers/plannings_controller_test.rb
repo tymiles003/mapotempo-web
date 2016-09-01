@@ -18,7 +18,8 @@ class PlanningsControllerTest < ActionController::TestCase
   def around
     Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1000, 60, 'trace'] } } ) do
       Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
-        OptimizerWrapper.stub_any_instance(:optimize, lambda { |matrix, dimension, services, vehicles, options| [(services.reverse + vehicles[0][:rests]).collect{ |s| s[:stop_id] }] }) do
+        # return all services in reverse order in first route, rests at the end
+        OptimizerWrapper.stub_any_instance(:optimize, lambda { |matrix, dimension, services, vehicles, options| [[]] + vehicles.each_with_index.map{ |v, i| ((i.zero? ? services.reverse : []) + vehicles[0][:rests]).map{ |s| s[:stop_id] }} }) do
           yield
         end
       end

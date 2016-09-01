@@ -65,9 +65,9 @@ class ImporterTest < ActionController::TestCase
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one.csv', 'text.csv')).import
 
-          stop = Planning.last.routes.collect{ |r| r.stops.find{ |s| s.type == 'StopVisit' && s.visit.destination.name == 'BF' } }.compact.first
+          stop = Planning.last.routes.collect{ |r| r.stops.find{ |s| s.is_a?(StopVisit) && s.visit.destination.name == 'BF' } }.compact.first
           assert_equal true, stop.active
-          assert_equal 'trace', stop.trace
+          assert_equal stop.route.vehicle_usage.default_store_start.position? ? 'trace' : nil, stop.trace
         end
       end
     end

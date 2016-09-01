@@ -34,10 +34,10 @@ class OptimizerWrapperTest < ActionController::TestCase
       {start1: 28800, end1: 36000, duration: 500.0, stop_id: 5},
     ]
 
-    assert_equal [[1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [stores: [:start, :stop], rests: r], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [id: 1, stores: [:start, :stop], rests: r, router: routers(:router_one)], {})
 
-    assert_equal [[1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [stores: [:start], rests: r], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [id: 1, stores: [:start], rests: r, router: routers(:router_one)], {})
 
-    assert_equal [[1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [stores: [], rests: r], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [id: 1, stores: [], rests: r, router: routers(:router_one)], {})
   end
 end

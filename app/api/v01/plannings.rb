@@ -126,17 +126,19 @@ class V01::Plannings < Grape::API
       status 200
     end
 
-    desc 'Optimize Routes',
-      detail: 'Optimize Routes',
+    desc 'Optimize routes',
+      detail: 'Optimize all unlocked routes by keeping visits in same route or not',
       nickname: 'optimizeRoutes'
     params do
       requires :id, type: String, desc: ID_DESC
-      optional :details, type: Boolean, desc: 'Output Route Details', default: false
+      optional :global, type: Boolean, desc: 'Use global optimization and move visits between routes if needed', default: false
+      optional :details, type: Boolean, desc: 'Output route details', default: false
       optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
     end
     get ':id/optimize' do
-      planning = current_customer.plannings.find params[:id]
-      Optimizer.optimize_each planning, params[:synchronous]
+      id = ParseIdsRefs.read params[:id]
+      planning = current_customer.plannings.where(id).first!
+      Optimizer.optimize planning, nil, params[:global], params[:synchronous]
       if params[:details]
         present planning, with: V01::Entities::Planning
       else

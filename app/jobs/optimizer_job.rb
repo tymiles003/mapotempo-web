@@ -17,7 +17,7 @@
 #
 require 'optim/ort'
 
-class OptimizerJob < Struct.new(:planning_id, :route_id)
+class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
   @@optimize_time = Mapotempo::Application.config.optimize_time
   @@soft_upper_bound = Mapotempo::Application.config.optimize_soft_upper_bound
 
@@ -27,54 +27,53 @@ class OptimizerJob < Struct.new(:planning_id, :route_id)
 
   def perform
     Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} perform"
-    routes = route_id ? Route.where(id: route_id, planning_id: planning_id) : Route.where(planning_id: planning_id)
-    optimize_time = routes[0].planning.customer.optimization_time || @@optimize_time
-    soft_upper_bound = routes[0].planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
+    planning = Planning.where(id: planning_id).first!
+    routes = planning.routes.select{ |r|
+      (route_id && r.id == route_id) || (!route_id && !global && r.vehicle_usage) || (!route_id && global)
+    }.reject(&:locked)
+    optimize_time = planning.customer.optimization_time || @@optimize_time
+    soft_upper_bound = planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
 
-    route_actives = routes.select{ |route|
-      route.vehicle_usage && route.size_active > 1
-    }
-    routes_size = route_actives.length
-    route_actives.each_with_index { |route, routes_count|
-      route = Route.find(route.id) # IMPORTANT: Lower Delayed Job Memory Usage
-      i = ii = 0
-      optimum = route.optimize(Proc.new { |computed, count|
-        if computed
-          i += computed
-          if i > ii + 50
-            @job.progress = "#{i * 100 / count};0;" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
-            @job.save
-            Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-            ii = i
-          end
-        else
-          @job.progress = "-1;0;" + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
+    i = ii = 0
+    optimum = planning.optimize(routes, global, Proc.new { |computed, count|
+      if computed
+        i += computed
+        if i > ii + 50
+          @job.progress = "#{i * 100 / count};0;"
           @job.save
+          Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
+          ii = i
         end
-      }) { |matrix, services, vehicles, dimension|
-        @job.progress = '100;0;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
+      else
+        @job.progress = "-1;0;"
         @job.save
-        Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-
-        # Optimize
-        @job.progress = "100;" + (routes[0].planning.customer.optimization_time ? "#{optimize_time * 1000}ms#{routes_count};" : '-1;') + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
-        @job.save
-        Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-        optimum = Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, vehicles, {optimize_time: optimize_time ? optimize_time * 1000 : nil, soft_upper_bound: soft_upper_bound, cluster_threshold: route.planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size})
-        @job.progress = '100;100;' + (routes_size > 1 ? "#{routes_count}/#{routes_size}" : '')
-        @job.save
-        Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-        optimum
-      }
-
-      # Apply result
-      if optimum
-        route.order(optimum)
-        route.save && route.reload # Refresh stops order
-        route.compute
-        route.save # Because route is not saved below
-        route.planning.save
       end
+    }) { |matrix, services, vehicles, dimension|
+      @job.progress = '100;0;'
+      @job.save
+      Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
+
+      # Optimize
+      @job.progress = "100;" + (planning.customer.optimization_time ? "#{optimize_time * 1000}ms0;" : '-1;')
+      @job.save
+      Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
+      optimum = Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, vehicles, {optimize_time: optimize_time ? optimize_time * 1000 : nil, soft_upper_bound: soft_upper_bound, cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size})
+      @job.progress = '100;100;'
+      @job.save
+      Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
+      optimum
     }
+
+    # Apply result
+    if optimum
+      planning.set_stops(routes, optimum)
+      routes.each{ |r|
+        r.reload # Refresh stops order
+        r.compute if r.vehicle_usage
+        r.save!
+      }
+      planning.reload
+      planning.save
+    end
   end
 end

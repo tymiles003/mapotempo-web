@@ -96,7 +96,7 @@ class V01::Api < Grape::API
 
     if e.is_a?(ActiveRecord::RecordNotFound) || e.is_a?(ArgumentError)
       rack_response(nil, 404)
-    elsif e.is_a?(ActiveRecord::RecordInvalid)
+    elsif e.is_a?(ActiveRecord::RecordInvalid) || e.is_a?(RangeError)
       rack_response({error: e.to_s}.to_json, 400)
     else
       rack_response(response.to_json, 500)

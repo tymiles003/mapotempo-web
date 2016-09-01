@@ -1,26 +1,15 @@
 require 'test_helper'
 require 'routers/osrm'
 
-class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duration, :vehicle_id)
-  def visit
-    self
-  end
-end
-
 class RouteTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
-    Routers::Osrm.stub_any_instance(:compute, [1, 720, 'trace']) do
-      Routers::Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 720, 'trace'] } } ) do
+      Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
         yield
       end
     end
-  end
-
-  # default order, put the rest at the end
-  def optimizer(matrix, services, vehicles, dimension)
-    [(services + vehicles[0][:rests]).collect{ |s| s[:stop_id] }]
   end
 
   test 'should not save' do
@@ -156,123 +145,43 @@ class RouteTest < ActiveSupport::TestCase
     o.save!
   end
 
-  test 'should no amalgamate point at same position' do
-    o = routes(:route_one_one)
+  # test 'should unnil_positions' do
+  #   o = routes(:route_one_one)
 
-    positions = [D.new(1,1,1), D.new(2,2,2), D.new(3,3,3)]
-    ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
-      assert_equal 3, positions.size
-      pos = positions.sort
-      pos.collect{ |p|
-        positions.index(p)
-      }
-    }
-    assert_equal positions.size, ret.size
-    assert_equal 0.upto(positions.size-1).to_a, ret
-  end
+  #   positions = [D.new(1,1,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(3,3,nil,nil,nil,nil,0)]
+  #   tws = positions.collect{ |position|
+  #       open, close, duration = position[:open1], position[:close1], position[:duration]
+  #       open = open ? open - o.vehicle_usage.open.to_i : nil
+  #       close = close ? close - o.vehicle_usage.open.to_i : nil
+  #       if open && close && open > close
+  #         close = open
+  #       end
+  #       [open, close, duration]
+  #     }
+  #   ret = o.send(:unnil_positions, positions, tws){ |positions_loc, tws_loc, rest_tws|
+  #     [0, 1, 2, 3, 4]
+  #   }
+  #   assert_equal [0, 1, 3, 4, 2], ret
+  # end
 
-  test 'should amalgamate point at same position' do
-    o = routes(:route_one_one)
+  # test 'should unnil_positions except start/stop' do
+  #   o = routes(:route_one_one)
 
-    positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,nil,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
-    ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
-      assert_equal 3, positions.size
-      pos = positions.sort
-      pos.collect{ |p|
-        positions.index(p)
-      }
-    }
-    assert_equal positions.size, ret.size
-    assert_equal 0.upto(positions.size-1).to_a, ret
-  end
-
-  test 'should amalgamate point at same position, tw' do
-    o = routes(:route_one_one)
-
-    positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,10,20,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
-    ret = o.send(:amalgamate_stops_same_position, positions) { |positions|
-      assert_equal 4, positions.size
-      (0..(positions.size-1)).to_a
-    }
-    assert_equal positions.size, ret.size
-    assert_equal 0.upto(positions.size-1).to_a, ret
-  end
-
-  test 'should optimize with one store rest' do
-    o = routes(:route_one_one)
-    optim = o.optimize(nil) { |*a|
-      optimizer(*a)
-    }
-    assert_equal (0..(o.stops.size-1)).to_a, optim
-  end
-
-  test 'should optimize with one no-geoloc rest' do
-    o = routes(:route_one_one)
-    vehicle_usages(:vehicle_usage_one_one).update! store_rest: nil
-    vehicle_usage_sets(:vehicle_usage_set_one).update! store_rest: nil
-    o.reload
-    optim = o.optimize(nil) { |*a|
-      optimizer(*a)
-    }
-    assert_equal (0..(o.stops.size-1)).to_a, optim
-  end
-
-  test 'should optimize without any store' do
-    o = routes(:route_one_one)
-    vehicle_usages(:vehicle_usage_one_one).update! store_start: nil, store_stop: nil, store_rest: nil
-    vehicle_usage_sets(:vehicle_usage_set_one).update! store_start: nil, store_stop: nil, store_rest: nil
-    o.reload
-    optim = o.optimize(nil) { |*a|
-      optimizer(*a)
-    }
-    assert_equal (0..(o.stops.size-1)).to_a, optim
-  end
-
-  test 'should optimize with none geoloc store' do
-    o = routes(:route_three_one)
-    optim = o.optimize(nil) { |*a|
-      optimizer(*a)
-    }
-    assert_equal (0..(o.stops.size-1)).to_a, optim
-  end
-
-  test 'should unnil_positions' do
-    o = routes(:route_one_one)
-
-    positions = [D.new(1,1,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(3,3,nil,nil,nil,nil,0)]
-    tws = positions.collect{ |position|
-        open, close, duration = position[:open1], position[:close1], position[:duration]
-        open = open ? open - o.vehicle_usage.open.to_i : nil
-        close = close ? close - o.vehicle_usage.open.to_i : nil
-        if open && close && open > close
-          close = open
-        end
-        [open, close, duration]
-      }
-    ret = o.send(:unnil_positions, positions, tws){ |positions_loc, tws_loc, rest_tws|
-      [0, 1, 2, 3, 4]
-    }
-    assert_equal [0, 1, 3, 4, 2], ret
-  end
-
-  test 'should unnil_positions except start/stop' do
-    o = routes(:route_one_one)
-
-    positions = [D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0)]
-    tws = positions.collect{ |position|
-        open, close, duration = position[:open1], position[:close1], position[:duration]
-        open = open ? open - o.vehicle_usage.open.to_i : nil
-        close = close ? close - o.vehicle_usage.open.to_i : nil
-        if open && close && open > close
-          close = open
-        end
-        [open, close, duration]
-      }
-    ret = o.send(:unnil_positions, positions, tws){ |positions_loc, tws_loc, rest_tws|
-      [0, 1, 2, 3, 4]
-    }
-    assert_equal [1, 3, 0, 2, 4], ret
-  end
+  #   positions = [D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,nil,nil,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0), D.new(2,2,10,20,nil,nil,0), D.new(nil,nil,nil,nil,nil,nil,0)]
+  #   tws = positions.collect{ |position|
+  #       open, close, duration = position[:open1], position[:close1], position[:duration]
+  #       open = open ? open - o.vehicle_usage.open.to_i : nil
+  #       close = close ? close - o.vehicle_usage.open.to_i : nil
+  #       if open && close && open > close
+  #         close = open
+  #       end
+  #       [open, close, duration]
+  #     }
+  #   ret = o.send(:unnil_positions, positions, tws){ |positions_loc, tws_loc, rest_tws|
+  #     [0, 1, 2, 3, 4]
+  #   }
+  #   assert_equal [1, 3, 0, 2, 4], ret
+  # end
 
   test 'should reverse stops' do
     o = routes(:route_one_one)

@@ -15,7 +15,8 @@ class V01::RoutesTest < ActiveSupport::TestCase
   def around
     Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1000, 60, 'trace'] } } ) do
       Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
-        OptimizerWrapper.stub_any_instance(:optimize, lambda { |matrix, dimension, services, vehicles, options| [(services.reverse + vehicles[0][:rests]).collect{ |s| s[:stop_id] }] }) do
+        # return all services in reverse order in first route, rests at the end
+        OptimizerWrapper.stub_any_instance(:optimize, lambda { |matrix, dimension, services, vehicles, options| [[]] + [(services.reverse + vehicles[0][:rests]).collect{ |s| s[:stop_id] }] }) do
           yield
         end
       end
@@ -70,10 +71,12 @@ class V01::RoutesTest < ActiveSupport::TestCase
 
   test 'should move visits in routes' do
     assert_no_difference('Stop.count') do
-      patch api(@route.planning.id, routes(:route_three_one).id.to_s + "/visits/moves"), visit_ids: [visits(:visit_two).id, visits(:visit_one).id]
+      r = routes(:route_three_one)
+      patch api(@route.planning.id, "#{r.id}/visits/moves"), visit_ids: [visits(:visit_two).id, visits(:visit_one).id]
       assert_equal 204, last_response.status, last_response.body
-      assert_equal visits(:visit_two).ref, routes(:route_three_one).stops[0].visit.ref
-      assert_equal visits(:visit_one).ref, routes(:route_three_one).stops[1].visit.ref
+      stops_visit = r.stops.select{ |s| s.is_a? StopVisit }
+      assert_equal visits(:visit_two).ref, stops_visit[0].visit.ref
+      assert_equal visits(:visit_one).ref, stops_visit[1].visit.ref
     end
   end
 
@@ -90,7 +93,7 @@ class V01::RoutesTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should optimize route' do
+  test 'should optimize route with one store rest' do
     default_order = @route.stops.collect(&:id)
 
     patch api(@route.planning.id, "#{@route.id}/optimize")
@@ -98,6 +101,19 @@ class V01::RoutesTest < ActiveSupport::TestCase
 
     get api(@route.planning.id, @route.id)
     assert_equal default_order.reverse, JSON.parse(last_response.body)['stops'].collect{ |s| s['id'] }
+  end
+
+  test 'should optimize route with one no-geoloc rest' do
+    vehicle_usages(:vehicle_usage_one_one).update! store_rest: nil
+    vehicle_usage_sets(:vehicle_usage_set_one).update! store_rest: nil
+
+    default_order = @route.stops.sort_by(&:index).select{ |s| s.is_a? StopVisit }.collect(&:id)
+
+    patch api(@route.planning.id, "#{@route.id}/optimize")
+    assert_equal 204, last_response.status, last_response.body
+
+    get api(@route.planning.id, @route.id)
+    assert_equal default_order.reverse + @route.stops.select{ |s| s.is_a? StopRest }.collect(&:id), JSON.parse(last_response.body)['stops'].collect{ |s| s['id'] }
   end
 
   test 'should optimize route with details' do

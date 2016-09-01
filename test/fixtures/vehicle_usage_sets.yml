@@ -9,8 +9,8 @@ vehicle_usage_set_one:
   store_stop: store_one
   rest_start: 2000-01-01 12:00:00
   rest_stop: 2000-01-01 14:00:00
-  rest_duration: 2000-01-01 00:45:00
-  store_rest: store_one
+  rest_duration: 2000-01-01 01:00:00
+  store_rest:
 
 vehicle_usage_set_two:
   name: vehicle_usage_set_two

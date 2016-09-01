@@ -26,8 +26,8 @@ class OptimizerWrapper
   end
 
   # matrix has stores at the end
-  # services Array[Hash{start1: , end1: , duration: , stop_id: , vehicle_id: }]
-  # vehicles Array[Hash{stores: [], rests: [], capacities: []}]
+  # services Array[Hash{start1: , end1: , duration: , stop_id: , vehicle_id: , quantities: []}]
+  # vehicles Array[Hash{id: , open: , close: , stores: [], rests: [], capacities: []}]
   def optimize(matrix, dimension, services, vehicles, options)
     key = Digest::MD5.hexdigest(Marshal.dump([matrix, dimension, services, vehicles, options]))
 
@@ -39,35 +39,15 @@ class OptimizerWrapper
       shift_stores = 0
 
       vrp = {
-        matrices: {
+        matrices: [{
+          id: "m",
           time: matrix.collect{ |row| row.collect(&:first) },
           distance: matrix.collect{ |row| row.collect(&:last) }
-        },
+        }],
         points: matrix.size.times.collect{ |i| {
           id: "p#{i}",
           matrix_index: i
         }},
-        services: services.each_with_index.collect{ |service, index|
-          {
-            id: "s#{service[:stop_id]}",
-            type: 'service',
-            activity: {
-              point_id: "p#{index}",
-              timewindows: [
-                (service[:start1] || service[:end1]) && {
-                  start: service[:start1],
-                  end: service[:end1]
-                },
-                (service[:start2] || service[:end2]) && {
-                  start: service[:start2],
-                  end: service[:end2]
-                },
-              ].compact,
-              duration: service[:duration],
-              vehicle_id: service[:vehicle_id] # to force an activity on a vehicle (for instance geoloc rests)
-            }
-          }
-        },
         rests: rests.collect{ |rest|
           {
             id: "r#{rest[:stop_id]}",
@@ -78,9 +58,16 @@ class OptimizerWrapper
             duration: rest[:duration]
           }
         },
-        vehicles: vehicles.each_with_index.collect{ |vehicle, index|
+        vehicles: vehicles.collect{ |vehicle|
           v = {
-            id: "v#{index}",
+            id: "v#{vehicle[:id]}",
+            matrix_id: 'm',
+            # TODO: compute matrix in wrapper
+            # router_mode: vehicle[:router].mode,
+            # router_dimension: vehicle[:router_dimension],
+            # speed_multiplier: vehicle[:speed_multiplier],
+            # speed_multiplier_areas: vehicle[:speed_multiplier_areas],
+            timewindows: [start: vehicle[:open], end: vehicle[:close]],
             start_point_id: vehicle[:stores].include?(:start) ? "p#{shift_stores + services.size}" : nil,
             end_point_id: vehicle[:stores].include?(:stop) ? "p#{1 + shift_stores + services.size}" : nil,
             cost_fixed: 0,
@@ -94,6 +81,27 @@ class OptimizerWrapper
           }
           shift_stores += vehicle[:stores].size
           v
+        },
+        services: services.each_with_index.collect{ |service, index|
+          {
+            id: "s#{service[:stop_id]}",
+            type: 'service',
+            sticky_vehicle_ids: service[:vehicle_id] ? ["v#{service[:vehicle_id]}"] : nil, # to force an activity on a vehicle (for instance geoloc rests)
+            activity: {
+              point_id: "p#{index}",
+              timewindows: [
+                (service[:start1] || service[:end1]) && {
+                  start: service[:start1],
+                  end: service[:end1]
+                },
+                (service[:start2] || service[:end2]) && {
+                  start: service[:start2],
+                  end: service[:end2]
+                },
+              ].compact,
+              duration: service[:duration]
+            }
+          }.delete_if{ |k, v| !v }
         },
         configuration: {
           preprocessing: {
@@ -130,8 +138,11 @@ class OptimizerWrapper
       result = JSON.parse(result)
     end
 
-    result['solutions'][0]['routes'].collect{ |route|
-      route['activities'].collect{ |activity|
+    [result['solutions'][0]['unassigned'] ? result['solutions'][0]['unassigned'].collect{ |activity|
+      activity['service_id'][1..-1].to_i
+    } : []] + vehicles.collect{ |vehicle|
+      route = result['solutions'][0]['routes'].find{ |r| r['vehicle_id'] == "v#{vehicle[:id]}" }
+      !route ? [] : route['activities'].collect{ |activity|
         if activity.key?('service_id')
           activity['service_id'][1..-1].to_i
         elsif activity.key?('rest_id')

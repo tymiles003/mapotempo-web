@@ -16,7 +16,8 @@ class V01::PlanningsTest < ActiveSupport::TestCase
   def around
     Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1000, 60, 'trace'] } } ) do
       Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
-        OptimizerWrapper.stub_any_instance(:optimize, lambda { |matrix, dimension, services, vehicles, options| [(services.reverse + vehicles[0][:rests]).collect{ |s| s[:stop_id] }] }) do
+        # return all services in reverse order in first route, rests at the end
+        OptimizerWrapper.stub_any_instance(:optimize, lambda { |matrix, dimension, services, vehicles, options| [[]] + vehicles.each_with_index.map{ |v, i| ((i.zero? ? services.reverse : []) + v[:rests]).map{ |s| s[:stop_id] }} }) do
           yield
         end
       end
@@ -165,15 +166,20 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     assert last_response.ok?
   end
 
-  test 'should optimize the planning id' do
-      get api("/#{@planning.id}/optimize", { details: true, synchronous: false })
-      assert last_response.ok?, last_response.body
+  test 'should optimize each route' do
+    get api("/#{@planning.id}/optimize", { details: true, synchronous: false })
+    assert last_response.ok?, last_response.body
   end
 
-  test 'Should not optimize when a false planning\'s id is given' do
+  test 'should perform a global optimization' do
+    get api("/#{@planning.id}/optimize", { global: true, details: true, synchronous: false })
+    assert last_response.ok?, last_response.body
+  end
+
+  test 'should not optimize when a false planning\'s id is given' do
     planning_false_id = Random.new_seed
     get api("/#{planning_false_id}/optimize", {details: true, synchronous: false })
-    assert_equal 404, last_response.status
+    assert_equal 400, last_response.status
   end
 
   test 'should return a 404 error' do

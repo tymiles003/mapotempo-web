@@ -24,6 +24,7 @@ class Route < ActiveRecord::Base
   validates :planning, presence: true
 #  validates :vehicle_usage, presence: true # nil on unplanned route
   validate :stop_index_validation
+  attr_accessor :no_stop_index_validation
 
   before_save :update_vehicle_usage
 
@@ -98,16 +99,6 @@ class Route < ActiveRecord::Base
         self.end += service_time_start
       end
 
-      speed_multiplicator_areas = planning.zonings.collect(&:zones).flatten.select{ |z| z.speed_multiplicator != 1 }.collect{ |z|
-        feat = RGeo::GeoJSON.decode(z.polygon, json_parser: :json)
-        coordinates = feat.geometry.coordinates[0] if feat && feat.geometry.geometry_type == RGeo::Feature::Polygon
-        coordinates = feat.geometry.coordinates[0][0] if feat && feat.geometry.geometry_type == RGeo::Feature::MultiPolygon
-        {
-          area: coordinates.collect(&:reverse),
-          speed_multiplicator_area: z.speed_multiplicator
-        }
-      }
-
       stops_sort = stops.sort_by(&:index)
 
       # Collect route legs
@@ -132,7 +123,7 @@ class Route < ActiveRecord::Base
       # Compute legs traces
       traces = [nil, nil, nil] * segments.size
       begin
-        ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas)
+        ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, speed_multiplicator_areas: planning.speed_multiplicator_areas)
         traces = segments.collect{ |segment|
           if segment.nil?
             [nil, nil, nil]
@@ -170,7 +161,7 @@ class Route < ActiveRecord::Base
             else
               stop.wait_time = nil
             end
-            stop.out_of_window = late_wait && late_wait > 0
+            stop.out_of_window = !!(late_wait && late_wait > 0)
 
             if stop.distance
               self.distance += stop.distance
@@ -365,55 +356,6 @@ class Route < ActiveRecord::Base
     }
   end
 
-  def optimize(matrix_progress, &optimizer)
-    router = vehicle_usage.vehicle.default_router
-    router_dimension = vehicle_usage.vehicle.default_router_dimension
-    speed_multiplicator_areas = planning.zonings.collect(&:zones).flatten.select{ |z| z.speed_multiplicator != 1 }.collect{ |z|
-      feat = RGeo::GeoJSON.decode(z.polygon, json_parser: :json)
-      coordinates = feat.geometry.coordinates[0] if feat && feat.geometry.geometry_type == RGeo::Feature::Polygon
-      coordinates = feat.geometry.coordinates[0][0] if feat && feat.geometry.geometry_type == RGeo::Feature::MultiPolygon
-      {
-        area: coordinates.collect(&:reverse),
-        speed_multiplicator_area: z.speed_multiplicator
-      }
-    }
-
-    stops_on = stops_segregate[true]
-    o = amalgamate_stops_same_position(stops_on) { |positions|
-
-      services_and_rests = positions.collect{ |position|
-        stop_id, open1, close1, open2, close2, duration, vehicle_id = position[2..8]
-        vehicle_open = vehicle_usage.default_open
-        vehicle_open += vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage.default_service_time_start
-
-        open1 = open1 ? Integer(open1 - vehicle_open) : nil
-        close1 = close1 ? Integer(close1 - vehicle_open) : nil
-        if open1 && close1 && open1 > close1
-          close1 = open1
-        end
-        open2 = open2 ? Integer(open2 - vehicle_open) : nil
-        close2 = close2 ? Integer(close2 - vehicle_open) : nil
-        if open2 && close2 && open2 > close2
-          close2 = open2
-        end
-
-        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id}
-      }
-
-      unnil_positions(positions, services_and_rests){ |positions, services, rests|
-        position_start = (vehicle_usage.default_store_start && !vehicle_usage.default_store_start.lat.nil? && !vehicle_usage.default_store_start.lng.nil?) ? [vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng] : nil
-        position_stop = (vehicle_usage.default_store_stop && !vehicle_usage.default_store_stop.lat.nil? && !vehicle_usage.default_store_stop.lng.nil?) ? [vehicle_usage.default_store_stop.lat, vehicle_usage.default_store_stop.lng] : nil
-        positions = (positions + [position_start, position_stop]).compact.collect{ |position| position[0..1] }
-        matrix = router.matrix(positions, positions, vehicle_usage.vehicle.default_speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
-        optimizer.call(matrix, services, [stores: [position_start && :start, position_stop && :stop].compact, rests: rests], router_dimension)[0].collect{ |stop_id|
-          services.index{ |s| s[:stop_id] == stop_id } || (services.size + rests.index{ |s| s[:stop_id] == stop_id })
-        }
-      }
-    }
-    self.optimized_at = Time.now.utc
-    o
-  end
-
   def order(o)
     stops_ = stops_segregate
     a = o.collect{ |i|
@@ -484,6 +426,10 @@ class Route < ActiveRecord::Base
     }
   end
 
+  def stops_segregate
+    stops.group_by{ |stop| !!(stop.active && (stop.position? || stop.is_a?(StopRest))) }
+  end
+
   def out_of_date
     vehicle_usage && self[:out_of_date]
   end
@@ -503,10 +449,6 @@ class Route < ActiveRecord::Base
     self.locked = false
   end
 
-  def stops_segregate
-    stops.group_by{ |stop| !!(stop.active && (stop.position? || stop.is_a?(StopRest))) }
-  end
-
   def shift_index(from, by = 1, to = nil)
     stops.partition{ |stop|
       stop.index.nil? || stop.index < from || (to && stop.index > to)
@@ -516,63 +458,10 @@ class Route < ActiveRecord::Base
   end
 
   def stop_index_validation
-    if vehicle_usage_id && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
+    if !@no_stop_index_validation && vehicle_usage_id && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
       errors.add(:stops, :bad_index)
     end
-  end
-
-  def amalgamate_stops_same_position(stops)
-    tws = stops.find{ |stop|
-      stop.is_a?(StopRest) || stop.open1 || stop.close1 || stop.open2 || stop.close2
-    }
-
-    if tws
-      # Can't reduce cause of time windows
-      positions_uniq = stops.collect{ |stop|
-        [stop.lat, stop.lng, stop.id, stop.open1, stop.close1, stop.open2, stop.close2, stop.duration, stop.is_a?(StopRest) ? stop.route.vehicle_usage_id : nil]
-      }
-
-      yield(positions_uniq)
-    else
-      # Reduce positions vector size by amalgamate points in same position
-      stock = Hash.new { [] }
-      i = -1
-      stops.each{ |stop|
-        stock[[stop.lat, stop.lng]] += [[stop, i += 1]]
-      }
-
-      positions_uniq = stock.collect{ |k, v|
-        k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, v[0][0].is_a?(StopRest) ? v[0][0].route.vehicle_usage_id : nil]
-      }
-
-      optim_uniq = yield(positions_uniq)
-
-      optim_uniq.flat_map{ |ou|
-        stock[positions_uniq[ou][0..1]]
-      }.collect{ |pa|
-        pa[1]
-      }
-    end
-  end
-
-  def unnil_positions(positions, tws)
-    not_nil_position_index = positions.each_with_index.group_by{ |position, _index| !position[0].nil? && !position[1].nil? }
-
-    if not_nil_position_index.key?(true)
-      not_nil_position, not_nil_tws, not_nil_index = not_nil_position_index[true].collect{ |position, index| [position, tws[index], index] }.transpose
-    else
-      not_nil_position = not_nil_tws = not_nil_index = []
-    end
-    if not_nil_position_index.key?(false)
-      nil_tws, nil_index = not_nil_position_index[false].collect{ |_position, index| [tws[index], index] }.transpose
-    else
-      nil_tws = nil_index = []
-    end
-
-    order = yield(not_nil_position, not_nil_tws, nil_tws)
-
-    all_index = not_nil_index + nil_index
-    order.collect{ |o| all_index[o] }
+    @no_stop_index_validation = nil
   end
 
   def update_stops_track(_stop)

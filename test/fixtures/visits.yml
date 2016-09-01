@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 visit_unaffected_one:
-  destination: destination_unaffected_one
+  destination: destination_unaffected_one # customer_one
   ref: a
   quantity1_1: 1
   take_over: 2000-01-01 00:01:00
@@ -10,7 +10,7 @@ visit_unaffected_one:
   tags: tag_one
 
 visit_one:
-  destination: destination_one
+  destination: destination_one # customer_one
   ref: b
   quantity1_1: 1
   take_over: 2000-01-01 00:05:33
@@ -19,7 +19,7 @@ visit_one:
   tags: tag_one
 
 visit_two:
-  destination: destination_two
+  destination: destination_two # customer_one
   ref: c
   quantity1_1: 3
   open1: 2000-01-01 10:00:00
@@ -27,7 +27,7 @@ visit_two:
   tags: tag_one
 
 visit_three:
-  destination: destination_three
+  destination: destination_three # customer_one
   ref: c
   quantity1_1: 3
   open1: 2000-01-01 10:00:00

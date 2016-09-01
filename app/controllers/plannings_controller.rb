@@ -231,18 +231,10 @@ class PlanningsController < ApplicationController
   def optimize
     global = ValueToBoolean::value_to_boolean(params[:global])
     respond_to do |format|
-      if global
-        if Optimizer.optimize_each(@planning) && @planning.customer.save
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
-        end
+      if Optimizer.optimize(@planning, nil, global) && @planning.customer.save
+        format.json { render action: 'show', location: @planning }
       else
-        if Optimizer.optimize_each(@planning) && @planning.customer.save
-          format.json { render action: 'show', location: @planning }
-        else
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
-        end
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
