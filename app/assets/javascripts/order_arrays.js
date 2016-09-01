@@ -308,7 +308,7 @@ var order_arrays_edit = function(params) {
         url: '/api/0.1/order_arrays/' + order_array_id + '.json',
         type: 'PATCH',
         data: {
-          orders: orders
+          orders: JSON.stringify(orders)
         },
         beforeSend: beforeSendWaiting,
         complete: completeWaiting,
