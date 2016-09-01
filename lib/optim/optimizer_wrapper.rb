@@ -48,6 +48,7 @@ class OptimizerWrapper
           i = stores.include?(:start) ? index + 1 : index
           {
             id: "s#{i}",
+            type: 'service',
             activity: {
               point_id: "p#{i}",
               timewindows: [
