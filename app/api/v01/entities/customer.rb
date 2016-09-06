@@ -67,3 +67,12 @@ class V01::Entities::Customer < Grape::Entity
   expose(:tomtom_user, documentation: { type: String })
   expose(:tomtom_account, documentation: { type: String })
 end
+
+class V01::Entities::CustomerAdmin < V01::Entities::Customer
+  def self.entity_name
+    'V01_CustomerAdmin'
+  end
+  EDIT_ONLY_ADMIN = 'Only available in admin.'.freeze
+  
+  expose(:description, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
+end

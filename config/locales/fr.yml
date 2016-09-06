@@ -178,6 +178,9 @@ fr:
         speed_multiplicator: "Ajustement de la vitesse"
         default_country: "Pays par défaut"
         ref: "Référence"
+        description_title: "Déscription"
+        description_label: "Informations utilisateur"
+        description_placeholder: "Détails sur l'utilisateur courant"
       destination:
         ref: "Référence"
         ref_small: "Réf."

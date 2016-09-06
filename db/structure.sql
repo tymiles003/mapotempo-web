@@ -87,7 +87,8 @@ CREATE TABLE customers (
     print_map boolean DEFAULT false NOT NULL,
     external_callback_url character varying,
     external_callback_name character varying,
-    enable_external_callback boolean DEFAULT false NOT NULL
+    enable_external_callback boolean DEFAULT false NOT NULL,
+    description character varying
 );
 
 
@@ -2375,3 +2376,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160720144957');
 INSERT INTO schema_migrations (version) VALUES ('20160722133109');
 
 INSERT INTO schema_migrations (version) VALUES ('20160804104220');
+
+INSERT INTO schema_migrations (version) VALUES ('20160906133935');
+

@@ -10,6 +10,19 @@
     <%= f.toggles t 'activerecord.attributes.customer.test' do %>
       <%= f.check_box :test %>
     <% end %>
+    <fieldset>
+      <legend class="scheduler-border">
+        <%= t 'activerecord.attributes.customer.description_title' %>
+      </legend>
+      <div id="customer_description_input" class="form-group">
+      <label class="col-md-2 control-label" for="description_customer"><%= t('activerecord.attributes.customer.description_label') %></label>
+        <div class="col-md-6">
+          <div class="input-group">
+          <%= text_area :customer, :description, { size:"100%", class:"form-control", placeholder: t('activerecord.attributes.customer.description_placeholder')} %>
+          </div>
+        </div>
+      </div>
+    </fieldset>
   <% end %>
   <fieldset>
     <legend class="scheduler-border">
