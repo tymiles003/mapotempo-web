@@ -44,6 +44,9 @@ class OptimizerWrapper
           time: matrix.collect{ |row| row.collect(&:first) },
           distance: matrix.collect{ |row| row.collect(&:last) }
         }],
+        units: vehicles[0][:capacities].each_with_index.collect{ |c, i|
+          {id: c["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}"}
+        },
         points: matrix.size.times.collect{ |i| {
           id: "p#{i}",
           matrix_index: i
@@ -77,7 +80,10 @@ class OptimizerWrapper
             cost_late_multiplier: (dimension == 'time' && options[:soft_upper_bound] && options[:soft_upper_bound] > 0) ? options[:soft_upper_bound] : nil,
             rest_ids: vehicle[:rests].collect{ |rest|
               "r#{rest[:stop_id]}"
-            }
+            },
+            quantities: vehicle[:capacities].each_with_index.map{ |c, i|
+              c["capacity1_#{i+1}".to_sym] ? {unit_id: c["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}", limit: c["capacity1_#{i+1}".to_sym]} : nil
+            }.compact
           }
           shift_stores += vehicle[:stores].size
           v
@@ -100,7 +106,10 @@ class OptimizerWrapper
                 },
               ].compact,
               duration: service[:duration]
-            }
+            },
+            quantities: service[:quantities].each_with_index.map{ |q, i|
+              (q["quantity1_#{i+1}".to_sym] || i == 0) ? {unit_id: vehicles[0][:capacities][i]["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}", value: q["quantity1_#{i+1}".to_sym] || 1} : nil
+            }.compact
           }.delete_if{ |k, v| !v }
         },
         configuration: {
