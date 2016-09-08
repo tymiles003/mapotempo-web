@@ -274,13 +274,20 @@ class Planning < ActiveRecord::Base
     }
   end
 
-  def optimize(routes, global, matrix_progress, &optimizer)
-    routes_with_vehicle = routes.select{ |r| r.vehicle_usage }
-    # TODO: take into account multiple routers and send multiples matrix to optim
-    router = ((routers = routes_with_vehicle.map{ |r| r.vehicle_usage.vehicle.default_router }.uniq) && (routers.size == 1 || !global)) ? routers.first : (raise 'Global optim not supported: routes without same router')
-    router_dimension = ((dims = routes_with_vehicle.map{ |r| r.vehicle_usage.vehicle.default_router_dimension }.uniq) && (dims.size == 1 || !global)) ? dims.first : (raise 'Global optim not supported: routes without same dimension')
-    speed_multiplicator = ((ss = routes_with_vehicle.map{ |r| r.vehicle_usage.vehicle.default_speed_multiplicator }.uniq) && (ss.size == 1 || !global)) ? ss.first : (raise 'Global optim not supported: routes without same speed multiplier')
+  # TODO: remove and take into account multiple routers with multiple matrix in optim wrapper
+  def able_to_optimize?(global)
+    routes_with_vehicle = routes.select{ |r| r.vehicle_usage && !r.locked }
+    if global && routes_with_vehicle.map{ |r| [r.vehicle_usage.vehicle.default_router, r.vehicle_usage.vehicle.default_router_dimension, r.vehicle_usage.vehicle.default_speed_multiplicator] }.uniq.size > 1
+      errors[:optimization] = I18n.t('errors.planning.optimization.global_without_same_router')
+      false
+    else
+      true
+    end
+  end
 
+  def optimize(routes, global, &optimizer)
+    raise errors.full_messages.join(' ') if !able_to_optimize?(global)
+    routes_with_vehicle = routes.select{ |r| r.vehicle_usage }
     stops_on = (global ? routes.find{ |r| !r.vehicle_usage }.stops : []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate[true] }.compact
     o = amalgamate_stops_same_position(stops_on, global) { |positions|
 
@@ -297,11 +304,13 @@ class Planning < ActiveRecord::Base
       }
 
       unnil_positions(positions, services_and_rests){ |positions, services, rests|
+        positions = positions.collect{ |position| position[0..1] }
         vehicles = []
         routes_with_vehicle.each{ |r|
-          position_start = (r.vehicle_usage.default_store_start && !r.vehicle_usage.default_store_start.lat.nil? && !r.vehicle_usage.default_store_start.lng.nil?) ? [r.vehicle_usage.default_store_start.lat, r.vehicle_usage.default_store_start.lng] : nil
-          position_stop = (r.vehicle_usage.default_store_stop && !r.vehicle_usage.default_store_stop.lat.nil? && !r.vehicle_usage.default_store_stop.lng.nil?) ? [r.vehicle_usage.default_store_stop.lat, r.vehicle_usage.default_store_stop.lng] : nil
-          positions = (positions + [position_start, position_stop]).compact.collect{ |position| position[0..1] }
+          position_start = r.vehicle_usage.default_store_start.try(&:position?) ? [r.vehicle_usage.default_store_start.lat, r.vehicle_usage.default_store_start.lng] : nil
+          position_stop = r.vehicle_usage.default_store_stop.try(&:position?) ? [r.vehicle_usage.default_store_stop.lat, r.vehicle_usage.default_store_stop.lng] : nil
+          # TODO simplify positions without duplications (for instance same start and stop stores)
+          positions = (positions + [position_start, position_stop]).compact
           vehicle_open = r.vehicle_usage.default_open
           vehicle_open += r.vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if r.vehicle_usage.default_service_time_start
           vehicle_close = r.vehicle_usage.default_close
@@ -322,8 +331,7 @@ class Planning < ActiveRecord::Base
             ]
           }
         }
-        matrix = router.matrix(positions, positions, speed_multiplicator, router_dimension, speed_multiplicator_areas: speed_multiplicator_areas, &matrix_progress)
-        optimizer.call(matrix, services, vehicles, router_dimension)[(global ? 0 : 1)..-1]
+        optimizer.call(positions, services, vehicles)[(global ? 0 : 1)..-1]
       }
     }
     routes_with_vehicle.each_with_index{ |r, i|

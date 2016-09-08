@@ -17,13 +17,7 @@ class OptimizerWrapperTest < ActionController::TestCase
   end
 
   test 'shoud optimize' do
-    m = [
-      [[0, 0], [655, 655], [1948, 1948], [5231, 5231], [2971, 2971], [0, 0]],
-      [[603, 603], [0, 0], [1692, 1692], [4977, 4977], [2715, 2715], [603, 603]],
-      [[1861, 1861], [1636, 1636], [0, 0], [6143, 6143], [1532, 1532], [1861, 1861]],
-      [[5184, 5184], [4951, 4951], [6221, 6221], [0, 0], [7244, 7244], [5184, 5184]],
-      [[2982, 2982], [2758, 2758], [1652, 1652], [7264, 7264], [0, 0], [2982, 2982]],
-      [[0, 0], [655, 655], [1948, 1948], [5231, 5231], [2971, 2971], [0, 0]]]
+    p = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6]]
     t = [
       {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0, stop_id: 1, quantities: []},
       {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0, stop_id: 2, quantities: []},
@@ -34,10 +28,10 @@ class OptimizerWrapperTest < ActionController::TestCase
       {start1: 28800, end1: 36000, duration: 500.0, stop_id: 5},
     ]
 
-    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [id: 1, stores: [:start, :stop], rests: r, router: routers(:router_one), capacities: []], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [:start, :stop], rests: r, router: routers(:router_one), capacities: []], {})
 
-    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [id: 1, stores: [:start], rests: r, router: routers(:router_one), capacities: []], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [:start], rests: r, router: routers(:router_one), capacities: []], {})
 
-    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(m, 'time', t, [id: 1, stores: [], rests: r, router: routers(:router_one), capacities: []], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [], rests: r, router: routers(:router_one), capacities: []], {})
   end
 end

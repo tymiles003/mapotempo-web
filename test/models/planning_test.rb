@@ -22,12 +22,12 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   # default order, rest at the end
-  def optimizer_route(matrix, services, vehicles, dimension)
+  def optimizer_route(positions, services, vehicles)
     [[]] + [(services + vehicles[0][:rests]).collect{ |s| s[:stop_id] }]
   end
 
   # return all services in reverse order in first route, rests at the end
-  def optimizer_global(matrix, services, vehicles, dimension)
+  def optimizer_global(positions, services, vehicles)
     [[]] + vehicles.each_with_index.map{ |v, i|
       ((i.zero? ? services.reject{ |s| s[:vehicle_id] } : []) + services.select{ |s| s[:vehicle_id] && s[:vehicle_id] == v[:id] } + v[:rests]).map{ |s|
         s[:stop_id]
@@ -474,7 +474,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'should optimize one route with one store rest' do
     o = routes(:route_one_one)
-    optim = o.planning.optimize([o], false, nil) { |*a|
+    optim = o.planning.optimize([o], false) { |*a|
       optimizer_route(*a)
     }
     assert_equal [o.stops.collect(&:id)], optim
@@ -485,7 +485,7 @@ class PlanningTest < ActiveSupport::TestCase
     vehicle_usages(:vehicle_usage_one_one).update! store_rest: nil
     vehicle_usage_sets(:vehicle_usage_set_one).update! store_rest: nil
     o.reload
-    optim = o.planning.optimize([o], false, nil) { |*a|
+    optim = o.planning.optimize([o], false) { |*a|
       optimizer_route(*a)
     }
     assert_equal [o.stops.collect(&:id)], optim
@@ -496,7 +496,7 @@ class PlanningTest < ActiveSupport::TestCase
     vehicle_usages(:vehicle_usage_one_one).update! store_start: nil, store_stop: nil, store_rest: nil
     vehicle_usage_sets(:vehicle_usage_set_one).update! store_start: nil, store_stop: nil, store_rest: nil
     o.reload
-    optim = o.planning.optimize([o], false, nil) { |*a|
+    optim = o.planning.optimize([o], false) { |*a|
       optimizer_route(*a)
     }
     assert_equal [o.stops.collect(&:id)], optim
@@ -504,7 +504,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'should optimize one route with none geoloc store' do
     o = routes(:route_three_one)
-    optim = o.planning.optimize([o], false, nil) { |*a|
+    optim = o.planning.optimize([o], false) { |*a|
       optimizer_route(*a)
     }
     assert_equal [o.stops.collect(&:id)], optim
@@ -512,7 +512,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'should optimize global planning' do
     o = plannings(:planning_one)
-    optim = o.optimize(o.routes, true, nil) { |*a|
+    optim = o.optimize(o.routes, true) { |*a|
       optimizer_global(*a)
     }
     assert_equal 0, optim[0].size
@@ -532,7 +532,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'should set stops for planning' do
     o = plannings(:planning_one)
-    optim = o.optimize(o.routes, true, nil) { |*a|
+    optim = o.optimize(o.routes, true) { |*a|
       optimizer_global(*a)
     }
     o.set_stops(o.routes, optim)

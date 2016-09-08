@@ -231,7 +231,7 @@ class PlanningsController < ApplicationController
   def optimize
     global = ValueToBoolean::value_to_boolean(params[:global])
     respond_to do |format|
-      if Optimizer.optimize(@planning, nil, global) && @planning.customer.save
+      if @planning.able_to_optimize?(global) && Optimizer.optimize(@planning, nil, global) && @planning.customer.save
         format.json { render action: 'show', location: @planning }
       else
         format.json { render json: @planning.errors, status: :unprocessable_entity }

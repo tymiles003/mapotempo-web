@@ -35,20 +35,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
     soft_upper_bound = planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
 
     i = ii = 0
-    optimum = planning.optimize(routes, global, Proc.new { |computed, count|
-      if computed
-        i += computed
-        if i > ii + 50
-          @job.progress = "#{i * 100 / count};0;"
-          @job.save
-          Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-          ii = i
-        end
-      else
-        @job.progress = "-1;0;"
-        @job.save
-      end
-    }) { |matrix, services, vehicles, dimension|
+    optimum = planning.optimize(routes, global) { |positions, services, vehicles|
       @job.progress = '100;0;'
       @job.save
       Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
@@ -57,7 +44,28 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
       @job.progress = "100;" + (planning.customer.optimization_time ? "#{optimize_time * 1000}ms0;" : '-1;')
       @job.save
       Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-      optimum = Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, vehicles, {optimize_time: optimize_time ? optimize_time * 1000 : nil, soft_upper_bound: soft_upper_bound, cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size})
+      optimum = Mapotempo::Application.config.optimize.optimize(
+        positions, services, vehicles,
+        {
+          optimize_time: optimize_time ? optimize_time * 1000 : nil,
+          soft_upper_bound: soft_upper_bound,
+          cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
+        }
+      ) { |computed, count|
+          # Matrix progress
+          if computed
+            i += computed
+            if i > ii + 50
+              @job.progress = "#{i * 100 / count};0;"
+              @job.save
+              Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
+              ii = i
+            end
+          else
+            @job.progress = "-1;0;"
+            @job.save
+          end
+        }
       @job.progress = '100;100;'
       @job.save
       Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"

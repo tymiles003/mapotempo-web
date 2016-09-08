@@ -25,32 +25,31 @@ class OptimizerWrapper
     @cache, @url, @api_key = cache, url, api_key
   end
 
-  # matrix has stores at the end
+  # positions with stores at the end
   # services Array[Hash{start1: , end1: , duration: , stop_id: , vehicle_id: , quantities: []}]
   # vehicles Array[Hash{id: , open: , close: , stores: [], rests: [], capacities: []}]
-  def optimize(matrix, dimension, services, vehicles, options)
-    key = Digest::MD5.hexdigest(Marshal.dump([matrix, dimension, services, vehicles, options]))
+  def optimize(positions, services, vehicles, options, &matrix_progress)
+    key = Digest::MD5.hexdigest(Marshal.dump([positions, services, vehicles, options]))
 
     result = @cache.read(key)
     if !result
-      # TODO simplify matrix without duplications (for instance same start and stop stores)
       stores = vehicles.flat_map{ |v| v[:stores] }
       rests = vehicles.flat_map{ |v| v[:rests] }
       shift_stores = 0
 
       vrp = {
-        matrices: [{
-          id: "m",
-          time: matrix.collect{ |row| row.collect(&:first) },
-          distance: matrix.collect{ |row| row.collect(&:last) }
-        }],
         units: vehicles[0][:capacities].each_with_index.collect{ |c, i|
           {id: c["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}"}
         },
-        points: matrix.size.times.collect{ |i| {
-          id: "p#{i}",
-          matrix_index: i
-        }},
+        points: positions.each_with_index.collect{ |pos, i|
+          {
+            id: "p#{i}",
+            location: {
+              lat: pos[0],
+              lon: pos[1]
+            }
+          }
+        },
         rests: rests.collect{ |rest|
           {
             id: "r#{rest[:stop_id]}",
@@ -64,20 +63,18 @@ class OptimizerWrapper
         vehicles: vehicles.collect{ |vehicle|
           v = {
             id: "v#{vehicle[:id]}",
-            matrix_id: 'm',
-            # TODO: compute matrix in wrapper
-            # router_mode: vehicle[:router].mode,
-            # router_dimension: vehicle[:router_dimension],
-            # speed_multiplier: vehicle[:speed_multiplier],
+            router_mode: vehicle[:router].mode,
+            router_dimension: vehicle[:router_dimension],
+            speed_multiplier: vehicle[:speed_multiplier],
             # speed_multiplier_areas: vehicle[:speed_multiplier_areas],
             timewindows: [start: vehicle[:open], end: vehicle[:close]],
             start_point_id: vehicle[:stores].include?(:start) ? "p#{shift_stores + services.size}" : nil,
             end_point_id: vehicle[:stores].include?(:stop) ? "p#{1 + shift_stores + services.size}" : nil,
             cost_fixed: 0,
-            cost_distance_multiplier: dimension == 'distance' ? 1 : 0,
-            cost_time_multiplier: dimension == 'time' ? 1 : 0,
-            cost_waiting_time_multiplier: dimension == 'time' ? 1 : 0,
-            cost_late_multiplier: (dimension == 'time' && options[:soft_upper_bound] && options[:soft_upper_bound] > 0) ? options[:soft_upper_bound] : nil,
+            cost_distance_multiplier: vehicle[:router_dimension] == 'distance' ? 1 : 0,
+            cost_time_multiplier: vehicle[:router_dimension] == 'time' ? 1 : 0,
+            cost_waiting_time_multiplier: vehicle[:router_dimension] == 'time' ? 1 : 0,
+            cost_late_multiplier: (vehicle[:router_dimension] == 'time' && options[:soft_upper_bound] && options[:soft_upper_bound] > 0) ? options[:soft_upper_bound] : nil,
             rest_ids: vehicle[:rests].collect{ |rest|
               "r#{rest[:stop_id]}"
             },
@@ -132,6 +129,7 @@ class OptimizerWrapper
       result = nil
       while json
         result = JSON.parse(json)
+        # TODO: matrix_progress.call(computed, count) if matrix_progress
         if result['job']['status'] == 'completed'
           @cache.write(key, json && String.new(json)) # String.new workaround waiting for RestClient 2.0
           break

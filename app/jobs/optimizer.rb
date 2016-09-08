@@ -43,8 +43,15 @@ class Optimizer
       routes = planning.routes.select{ |r|
         (route && r.id == route.id) || (!route && !global && r.vehicle_usage) || (!route && global)
       }.reject(&:locked)
-      optimum = planning.optimize(routes, global, nil) { |matrix, services, vehicles, dimension|
-        Mapotempo::Application.config.optimize.optimize(matrix, dimension, services, vehicles, {optimize_time: optimize_time ? optimize_time * 1000 : nil, soft_upper_bound: soft_upper_bound, cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size})
+      optimum = planning.optimize(routes, global) { |positions, services, vehicles|
+        Mapotempo::Application.config.optimize.optimize(
+          positions, services, vehicles,
+          {
+            optimize_time: optimize_time ? optimize_time * 1000 : nil,
+            soft_upper_bound: soft_upper_bound,
+            cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
+          }
+        )
       }
       if optimum
         planning.set_stops(routes, optimum)
