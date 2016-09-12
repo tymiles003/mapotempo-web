@@ -94,7 +94,7 @@ class V01::Api < Grape::API
       puts e.backtrace
     end
 
-    if e.is_a?(ActiveRecord::RecordNotFound)
+    if e.is_a?(ActiveRecord::RecordNotFound) || e.is_a?(ArgumentError)
       rack_response(nil, 404)
     elsif e.is_a?(ActiveRecord::RecordInvalid)
       rack_response({error: e.to_s}.to_json, 400)

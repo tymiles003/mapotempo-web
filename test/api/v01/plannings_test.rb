@@ -2,6 +2,7 @@ require 'test_helper'
 
 class V01::PlanningsTest < ActiveSupport::TestCase
   include Rack::Test::Methods
+
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def app
@@ -173,5 +174,11 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     planning_false_id = Random.new_seed
     get api("/#{planning_false_id}/optimize", {details: true, synchronous: false })
     assert_equal 404, last_response.status
+  end
+
+  test 'should return a 404 error' do
+    planning = plannings :planning_one
+    patch "api/0.1/plannings/#{planning.id.to_s}/routes/none/visits/moves.json?api_key=testkey1&visit_ids=47,48"
+    assert_equal  404, last_response.status
   end
 end
