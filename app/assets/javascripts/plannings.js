@@ -1006,6 +1006,7 @@ var plannings_edit = function(params) {
     });
 
     if (typeof options !== 'object' || !options.partial) {
+      data.ref = null; // here to prevent mustach template to get the value
       $("#planning").html(SMT['plannings/edit'](data));
 
       initRoutes($('#edit-planning'), data);
