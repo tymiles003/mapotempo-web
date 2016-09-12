@@ -175,14 +175,13 @@ var customColorInitialize = function(selecter){
       $('.color:last-child').attr('data-selected', '');
       options_wrap.removeAttr('selected');
 
-      colorPicker.attr('name', 'store[color]')
-      .click()
+      colorPicker.click()
       .on("input", function() {
           $('.color:last-child').attr('style', 'background-color: ' + this.value)
           .attr('data-color', this.value)
           .attr('title', this.value);
           $(selecter + ' option:last-child').attr('value', this.value)
-          .attr('selected', 'selected')
+          .prop('selected', true)
           .val(this.value);
       });
   });
