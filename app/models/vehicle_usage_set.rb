@@ -50,7 +50,6 @@ class VehicleUsageSet < ActiveRecord::Base
     customize(lambda { |_original, copy|
       def copy.assign_defaults; end
       def copy.nilify_times; end
-      def copy.set_stores; end
       def copy.update_out_of_date; end
       copy.vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.vehicle_usage_set = copy
@@ -66,12 +65,6 @@ class VehicleUsageSet < ActiveRecord::Base
 
   private
 
-  def set_stores
-    if customer
-      self.store_start = customer.stores[0] unless store_start
-    end
-  end
-
   def create_vehicle_usages
     if customer
       customer.vehicles.each { |vehicle|
@@ -84,7 +77,6 @@ class VehicleUsageSet < ActiveRecord::Base
   end
 
   def assign_defaults
-    set_stores
     self.open ||= Time.utc(2000, 1, 1, 8, 0) unless open
     self.close ||= Time.utc(2000, 1, 1, 12, 0) unless close
     create_vehicle_usages
