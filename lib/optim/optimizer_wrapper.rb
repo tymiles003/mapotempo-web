@@ -67,7 +67,7 @@ class OptimizerWrapper
             router_dimension: vehicle[:router_dimension],
             speed_multiplier: vehicle[:speed_multiplier],
             # speed_multiplier_areas: vehicle[:speed_multiplier_areas],
-            timewindows: [start: vehicle[:open], end: vehicle[:close]],
+            timewindow: {start: vehicle[:open], end: vehicle[:close]},
             start_point_id: vehicle[:stores].include?(:start) ? "p#{shift_stores + services.size}" : nil,
             end_point_id: vehicle[:stores].include?(:stop) ? "p#{1 + shift_stores + services.size}" : nil,
             cost_fixed: 0,
@@ -78,7 +78,7 @@ class OptimizerWrapper
             rest_ids: vehicle[:rests].collect{ |rest|
               "r#{rest[:stop_id]}"
             },
-            quantities: vehicle[:capacities].each_with_index.map{ |c, i|
+            capacities: vehicle[:capacities].each_with_index.map{ |c, i|
               c["capacity1_#{i+1}".to_sym] ? {unit_id: c["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}", limit: c["capacity1_#{i+1}".to_sym]} : nil
             }.compact
           }
