@@ -42,6 +42,18 @@ class Zoning < ActiveRecord::Base
     })
   end
 
+  def self.speed_multiplicator_areas(zonings)
+    zonings.collect(&:zones).flatten.select{ |z| z.speed_multiplicator != 1 }.collect{ |z|
+      feat = RGeo::GeoJSON.decode(z.polygon, json_parser: :json)
+      coordinates = feat.geometry.coordinates[0] if feat && feat.geometry.geometry_type == RGeo::Feature::Polygon
+      coordinates = feat.geometry.coordinates[0][0] if feat && feat.geometry.geometry_type == RGeo::Feature::MultiPolygon
+      {
+        area: coordinates.collect(&:reverse),
+        speed_multiplicator_area: z.speed_multiplicator
+      }
+    }
+  end
+
   def duplicate
     copy = self.amoeba_dup
     copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"

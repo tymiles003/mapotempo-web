@@ -46,11 +46,9 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
       Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
       optimum = Mapotempo::Application.config.optimize.optimize(
         positions, services, vehicles,
-        {
-          optimize_time: optimize_time ? optimize_time * 1000 : nil,
-          soft_upper_bound: soft_upper_bound,
-          cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
-        }
+        optimize_time: optimize_time ? optimize_time * 1000 : nil,
+        soft_upper_bound: soft_upper_bound,
+        cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
       ) { |computed, count|
           # Matrix progress
           if computed
@@ -81,7 +79,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
         r.save!
       }
       planning.reload
-      planning.save
+      planning.save!
     end
   rescue => e
     puts e.message

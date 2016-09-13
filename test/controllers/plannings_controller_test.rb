@@ -278,6 +278,12 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 
+  test 'should optimize planning' do
+    get :optimize, planning_id: @planning, format: :json, global: true
+    assert_response :success
+    assert_equal @planning.routes.size, JSON.parse(response.body)['routes'].size
+  end
+
   test 'should duplicate' do
     assert_difference('Planning.count') do
       patch :duplicate, planning_id: @planning

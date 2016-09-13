@@ -123,7 +123,7 @@ class Route < ActiveRecord::Base
       # Compute legs traces
       traces = [nil, nil, nil] * segments.size
       begin
-        ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, speed_multiplicator_areas: planning.speed_multiplicator_areas)
+        ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, speed_multiplicator_areas: Zoning.speed_multiplicator_areas(planning.zonings))
         traces = segments.collect{ |segment|
           if segment.nil?
             [nil, nil, nil]
@@ -353,24 +353,6 @@ class Route < ActiveRecord::Base
       else
         0
       end
-    }
-  end
-
-  def order(o)
-    stops_ = stops_segregate
-    a = o.collect{ |i|
-      stops_[true][i].out_of_window = false
-      stops_[true][i]
-    }
-    a += ((0..stops_[true].size - 1).to_a - o).collect{ |i|
-      stops_[true][i].active = false
-      stops_[true][i].out_of_window = true
-      stops_[true][i]
-    }
-    a += (stops_[false] || [])
-    i = 0
-    a.each{ |stop|
-      stop.index = i += 1
     }
   end
 

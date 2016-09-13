@@ -46,11 +46,9 @@ class Optimizer
       optimum = planning.optimize(routes, global) { |positions, services, vehicles|
         Mapotempo::Application.config.optimize.optimize(
           positions, services, vehicles,
-          {
-            optimize_time: optimize_time ? optimize_time * 1000 : nil,
-            soft_upper_bound: soft_upper_bound,
-            cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
-          }
+          optimize_time: optimize_time ? optimize_time * 1000 : nil,
+          soft_upper_bound: soft_upper_bound,
+          cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
         )
       }
       if optimum
@@ -61,7 +59,7 @@ class Optimizer
           r.save!
         }
         planning.reload
-        planning.save
+        planning.save!
       else
         false
       end

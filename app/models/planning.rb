@@ -262,18 +262,6 @@ class Planning < ActiveRecord::Base
     self.date = order_array.base_date + shift
   end
 
-  def speed_multiplicator_areas
-    zonings.collect(&:zones).flatten.select{ |z| z.speed_multiplicator != 1 }.collect{ |z|
-      feat = RGeo::GeoJSON.decode(z.polygon, json_parser: :json)
-      coordinates = feat.geometry.coordinates[0] if feat && feat.geometry.geometry_type == RGeo::Feature::Polygon
-      coordinates = feat.geometry.coordinates[0][0] if feat && feat.geometry.geometry_type == RGeo::Feature::MultiPolygon
-      {
-        area: coordinates.collect(&:reverse),
-        speed_multiplicator_area: z.speed_multiplicator
-      }
-    }
-  end
-
   # TODO: remove and take into account multiple routers with multiple matrix in optim wrapper
   def able_to_optimize?(global)
     routes_with_vehicle = routes.select{ |r| r.vehicle_usage && !r.locked }
@@ -286,41 +274,34 @@ class Planning < ActiveRecord::Base
   end
 
   def optimize(routes, global, &optimizer)
-    raise errors.full_messages.join(' ') if !able_to_optimize?(global)
+    raise errors.full_messages.join(' ') unless able_to_optimize?(global)
     routes_with_vehicle = routes.select{ |r| r.vehicle_usage }
     stops_on = (global ? routes.find{ |r| !r.vehicle_usage }.stops : []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate[true] }.compact
     o = amalgamate_stops_same_position(stops_on, global) { |positions|
 
       services_and_rests = positions.collect{ |position|
         stop_id, open1, close1, open2, close2, duration, vehicle_id, quantity1_1, quantity1_2 = position[2..10]
-        if open1 && close1 && open1 > close1
-          close1 = open1
-        end
-        if open2 && close2 && open2 > close2
-          close2 = open2
-        end
-
         {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id, quantities: [{quantity1_1: quantity1_1}, {quantity1_2: quantity1_2}]}
       }
 
       unnil_positions(positions, services_and_rests){ |positions, services, rests|
         positions = positions.collect{ |position| position[0..1] }
-        vehicles = []
-        routes_with_vehicle.each{ |r|
+        vehicles = routes_with_vehicle.collect{ |r|
           position_start = r.vehicle_usage.default_store_start.try(&:position?) ? [r.vehicle_usage.default_store_start.lat, r.vehicle_usage.default_store_start.lng] : nil
           position_stop = r.vehicle_usage.default_store_stop.try(&:position?) ? [r.vehicle_usage.default_store_stop.lat, r.vehicle_usage.default_store_stop.lng] : nil
-          # TODO simplify positions without duplications (for instance same start and stop stores)
+          # TODO: simplify positions without duplications (for instance same start and stop stores)
           positions = (positions + [position_start, position_stop]).compact
+
           vehicle_open = r.vehicle_usage.default_open
           vehicle_open += r.vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if r.vehicle_usage.default_service_time_start
           vehicle_close = r.vehicle_usage.default_close
           vehicle_close -= r.vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0) if r.vehicle_usage.default_service_time_end
-          vehicles << {
+          {
             id: r.vehicle_usage_id,
             router: r.vehicle_usage.vehicle.default_router,
             router_dimension: r.vehicle_usage.vehicle.default_router_dimension,
             speed_multiplier: r.vehicle_usage.vehicle.default_speed_multiplicator,
-            speed_multiplier_areas: speed_multiplicator_areas,
+            speed_multiplier_areas: Zoning.speed_multiplicator_areas(zonings),
             open: vehicle_open.to_f,
             close: vehicle_close.to_f,
             stores: [position_start && :start, position_stop && :stop].compact,
@@ -331,6 +312,8 @@ class Planning < ActiveRecord::Base
             ]
           }
         }
+
+        # Remove out-of-route if no global optimization
         optimizer.call(positions, services, vehicles)[(global ? 0 : 1)..-1]
       }
     }
@@ -353,7 +336,6 @@ class Planning < ActiveRecord::Base
         if routes.size == 1 && route.vehicle_usage
           stops_[true] && stops_[true].each{ |stop|
             stop.active = false
-            stop.out_of_window = true
           }
         end
         ordered_stops = routes.flat_map{ |r| r.stops.select{ |s| stop_ids[index].include? s.id } }.sort_by{ |s| stop_ids[index].index s.id }
@@ -369,6 +351,7 @@ class Planning < ActiveRecord::Base
           end
         }
         if route.vehicle_usage
+          # Set index for inactive stops
           ((stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : [])).each{ |stop|
             stop.index = i += 1
           }
@@ -390,14 +373,14 @@ class Planning < ActiveRecord::Base
 
   private
 
-  # to reduce matrix computation with only one route... remove code?
+  # To reduce matrix computation with only one route... remove code?
   def amalgamate_stops_same_position(stops, global)
-    tws = stops.find{ |stop|
-      stop.is_a?(StopRest) || stop.open1 || stop.close1 || stop.open2 || stop.close2
+    tws_or_quantities = stops.find{ |stop|
+      stop.is_a?(StopRest) || stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.visit.quantity1_1 || stop.visit.quantity1_2
     }
 
-    if tws || stops.collect{ |s| s.route.vehicle_usage_id }.uniq.size > 1
-      # Can't reduce cause of time windows or multiple vehicles
+    if tws_or_quantities || stops.collect{ |s| s.route.vehicle_usage_id }.uniq.size > 1
+      # Can't reduce cause of time windows, quantities or multiple vehicles
       positions_uniq = stops.collect{ |stop|
         [stop.lat, stop.lng, stop.id, stop.open1.try(:to_f), stop.close1.try(:to_f), stop.open2.try(:to_f), stop.close2.try(:to_f), stop.duration, (!global || stop.is_a?(StopRest)) ? stop.route.vehicle_usage_id : nil, stop.is_a?(StopVisit) ? stop.visit.quantity1_1 : nil, stop.is_a?(StopVisit) ? stop.visit.quantity1_2 : nil]
       }
