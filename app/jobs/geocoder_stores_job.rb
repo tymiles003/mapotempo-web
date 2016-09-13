@@ -44,5 +44,9 @@ class GeocoderStoresJob < Struct.new(:customer_id)
         Delayed::Worker.logger.info "GeocoderStoresJob customer_id=#{customer_id} #{@job.progress}%"
       end
     }
+  rescue => e
+    puts e.message
+    puts e.backtrace.join("\n")
+    raise e
   end
 end

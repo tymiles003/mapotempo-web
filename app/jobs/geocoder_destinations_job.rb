@@ -54,5 +54,9 @@ class GeocoderDestinationsJob < Struct.new(:customer_id, :planning_id)
         end
       end
     end
+  rescue => e
+    puts e.message
+    puts e.backtrace.join("\n")
+    raise e
   end
 end

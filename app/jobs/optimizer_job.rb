@@ -83,5 +83,9 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
       planning.reload
       planning.save
     end
+  rescue => e
+    puts e.message
+    puts e.backtrace.join("\n")
+    raise e
   end
 end
