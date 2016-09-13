@@ -152,7 +152,6 @@ class V01::Customers < Grape::API
     end
     put ':id/duplicate' do
       customer = current_customer.duplicate
-      customer.save!
       present customer, with: V01::Entities::Customer
     end
   end

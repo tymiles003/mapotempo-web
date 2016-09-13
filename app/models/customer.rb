@@ -39,6 +39,7 @@ class Customer < ActiveRecord::Base
 
   nilify_blanks
   auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association, :default_country
+  validates :ref, uniqueness: { scope: :reseller_id, case_sensitive: true }, allow_nil: true, allow_blank: true
   validates :profile, presence: true
   validates :router, presence: true
   validates :router_dimension, presence: true
@@ -66,10 +67,12 @@ class Customer < ActiveRecord::Base
     nullify :job_destination_geocoding_id
     nullify :job_store_geocoding_id
     nullify :job_optimizer_id
+    nullify :ref
 
     # No duplication of OrderArray
     exclude_association :products
     exclude_association :order_arrays
+    exclude_association :ref
 
     customize(lambda { |original, copy|
       def copy.assign_defaults; end
@@ -149,6 +152,7 @@ class Customer < ActiveRecord::Base
     Customer.transaction do
       copy = self.amoeba_dup
       copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
+      copy.ref = copy.ref ? Time.new.to_i.to_s : nil
       copy.save!
       copy
     end

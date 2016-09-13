@@ -178,6 +178,7 @@ en:
         speed_multiplicator: "Speed multiplier"
         default_country: "Default country"
         ref: "Reference"
+        ref_placeholder: "Reference must be uniq"
         description_title: "Description"
         description_label: "Specific user informations"
         description_placeholder: "User details"

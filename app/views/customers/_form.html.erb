@@ -1,7 +1,7 @@
 <%= twitter_bootstrap_form_for @customer, layout: :horizontal, html: { class: 'clear-passwords number-to-percentage form-horizontal'} do |f| %>
   <%= render 'shared/error_messages', model: @customer %>
   <% if current_user.admin? %>
-    <%= f.text_field :ref %>
+    <%= f.text_field :ref, { placeholder: t('activerecord.attributes.customer.ref_placeholder') } %>
   <% end %>
   <%= f.text_field :name, t('.name'), required: true, disabled: !current_user.admin? %>
   <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription.to_time, format: :datepicker) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>

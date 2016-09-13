@@ -85,6 +85,13 @@ class V01::CustomerTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not create a customer' do
+    assert_no_difference 'Customer.count', 1 do
+      post api_admin, { name: 'new cust', ref: "ref1", default_country: 'France', max_vehicles: 2, router_id: @customer.router_id, profile_id: @customer.profile_id }
+      assert_not last_response.created?, last_response.body
+    end
+  end
+
   test 'should destroy a customer' do
     assert_difference('Customer.count', -1) do
       delete api_admin('ref:' + @customer.ref)
