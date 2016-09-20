@@ -126,13 +126,15 @@ class RoutesController < ApplicationController
 
       :ref_visit,
       :duration,
-      @route.planning.customer.enable_orders ? :orders : :quantity1_1,
-      @route.planning.customer.enable_orders ? nil : :quantity1_2,
       :open1,
       :close1,
       :open2,
       :close2,
       :tags_visit
-    ].compact
+    ] + (@route.planning.customer.enable_orders ?
+      [:orders] :
+      @route.planning.customer.deliverable_units.map{ |du|
+        ('quantity' + (du.label ? '[' + du.label + ']' : '')).to_sym
+      })
   end
 end

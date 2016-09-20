@@ -19,19 +19,19 @@ class OptimizerWrapperTest < ActionController::TestCase
   test 'shoud optimize' do
     p = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6]]
     t = [
-      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0, stop_id: 1, quantities: []},
-      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0, stop_id: 2, quantities: []},
-      {start1: 28800, end1: 36000, start2: nil, end2: nil, duration: 500.0, stop_id: 3, quantities: []},
-      {start1: 0, end1: 7200, start2: nil, end2: nil, duration: 300.0, stop_id: 4, quantities: []},
+      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0, stop_id: 1, quantities: {}},
+      {start1: nil, end1: nil, start2: nil, end2: nil, duration: 300.0, stop_id: 2, quantities: {}},
+      {start1: 28800, end1: 36000, start2: nil, end2: nil, duration: 500.0, stop_id: 3},
+      {start1: 0, end1: 7200, start2: nil, end2: nil, duration: 300.0, stop_id: 4},
     ]
     r = [
       {start1: 28800, end1: 36000, duration: 500.0, stop_id: 5},
     ]
 
-    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [:start, :stop], rests: r, router: routers(:router_one), capacities: []], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [:start, :stop], rests: r, router: routers(:router_one), capacities: {}], {})
 
-    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [:start], rests: r, router: routers(:router_one), capacities: []], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [:start], rests: r, router: routers(:router_one)], {})
 
-    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [], rests: r, router: routers(:router_one), capacities: []], {})
+    assert_equal [[], [1, 2, 3, 4, 5]], @optim.optimize(p, t, [id: 1, stores: [], rests: r, router: routers(:router_one)], {})
   end
 end

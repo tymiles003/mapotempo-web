@@ -6,7 +6,7 @@ color = nil
 icon = nil
 tags = destination.tags
 json.visits destination.visits do |visit|
-  json.extract! visit, :id, :quantity1_1, :quantity1_2, :tag_ids
+  json.extract! visit, :id, :tag_ids
   json.quantities visit_quantities(visit, nil) do |quantity|
     json.quantity quantity if quantity
   end

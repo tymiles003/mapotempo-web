@@ -505,6 +505,7 @@ var destinations_index = function(params, api) {
       });
       destination.visits[i].tags_visit = t;
       destination.visits[i].tags = undefined;
+      destination.visits[i].disable_quantity = visit.quantities.length > 1;
       if (visit.open1) {
         destination.visits[i].open1 = visit.open1.split(':').slice(0, 2).join(':');
       }

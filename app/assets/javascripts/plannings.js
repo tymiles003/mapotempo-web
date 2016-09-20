@@ -75,14 +75,22 @@ var exportSpreadsheetModal = function(columns, id) {
         columnsExport.push(c);
     });
   }
+  var appendElement = function(parentSel, columnKey) {
+    var displayName;
+    var match = columnKey.match(new RegExp('^(.+)\\[(.*)\\]$'));
+    if (match)
+      displayName = I18n.t('plannings.export_file.' + match[1]) + '[' + match[2] + ']';
+    else
+      displayName = I18n.t('plannings.export_file.' + columnKey)
+    $(parentSel).append('<li data-value="' + columnKey + '">' + displayName + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
+  };
   $.each(columnsExport, function(i, c) {
-    if (columns.indexOf(c) >= 0) {
-      $('#columns-export').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
-    }
+    if (columns.indexOf(c) >= 0)
+      appendElement('#columns-export', c);
   });
   $.each(columnsSkip, function(i, c) {
     if (columns.indexOf(c) >= 0)
-      $('#columns-skip').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
+      appendElement('#columns-skip', c);
   });
   $('#columns-export a.remove').click(function(evt) {
     var $elem = $(evt.currentTarget).closest('li');
@@ -671,8 +679,6 @@ var plannings_edit = function(params) {
         stop.color = color;
         stop.vehicle_name = vehicle_name;
         stop.route_id = route.route_id;
-        stop.capacity1_1_unit = route.capacity1_1_unit;
-        stop.capacity1_2_unit = route.capacity1_2_unit;
         stop.routes = allRoutesVehicles;
         stop.planning_id = data.planning_id;
         stop.isoline_capability = params.isoline_capability.isochrone || params.isoline_capability.isodistance;

@@ -87,9 +87,11 @@ class StoresControllerTest < ActionController::TestCase
     assert_redirected_to stores_path
   end
 
-  test 'should show import_template' do
-    get :import_template, format: :csv
-    assert_response :success
+  test 'should show import template' do
+    [:csv, :excel].each{ |format|
+      get :import_template, format: format
+      assert_response :success
+    }
   end
 
   test 'should import' do

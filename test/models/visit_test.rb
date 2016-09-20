@@ -80,34 +80,39 @@ class VisitTest < ActiveSupport::TestCase
     assert !d.save
   end
 
-  test 'Localized Quantity Attributes' do
+  test 'should support localized number separator' do
+    orig_locale = I18n.locale
     visit = visits :visit_one
 
-    I18n.locale = :en
-    assert I18n.locale == :en
-    visit.update! quantity1_1: nil
-    assert visit.localized_quantity1_1.nil? # Don't crash with nil values
-    visit.update! quantity1_1: "10.5" # Assign with localized separator
-    assert_equal 10.5, visit.quantity1_1
-    assert_equal "10.5", visit.localized_quantity1_1 # Localized value
-    visit.update! quantity1_1: 10
-    assert_equal 10, visit.quantity1_1
-    assert_equal "10", visit.localized_quantity1_1 # Remove trailing zeros
-    visit.update! quantity1_1: 10.1 # Assign without localized separator
-    assert_equal 10.1, visit.quantity1_1
+    begin
+      I18n.locale = :en
+      assert I18n.locale == :en
+      visit.update! quantities: {1 => nil}
+      assert visit.localized_quantities[1].nil? # Don't crash with nil values
+      visit.update! quantities: {1 => "10.5"} # Assign with localized separator
+      assert_equal 10.5, visit.quantities[1]
+      assert_equal "10.5", visit.localized_quantities[1] # Localized value
+      visit.update! quantities: {1 => 10}
+      assert_equal 10, visit.quantities[1]
+      assert_equal "10", visit.localized_quantities[1] # Remove trailing zeros
+      visit.update! quantities: {1 => 10.1} # Assign without localized separator
+      assert_equal 10.1, visit.quantities[1]
 
-    I18n.locale = :fr
-    assert I18n.locale == :fr
-    visit.update! quantity1_1: nil
-    assert visit.localized_quantity1_1.nil? # Don't crash with nil values
-    visit.update! quantity1_1: "10,5" # Assign with localized separator
-    assert_equal 10.5, visit.quantity1_1
-    assert_equal "10,5", visit.localized_quantity1_1 # Localized value
-    visit.update! quantity1_1: 10
-    assert_equal 10, visit.quantity1_1
-    assert_equal "10", visit.localized_quantity1_1 # Remove trailing zeros
-    visit.update! quantity1_1: 10.1 # Assign without localized separator
-    assert_equal 10.1, visit.quantity1_1
+      I18n.locale = :fr
+      assert I18n.locale == :fr
+      visit.update! quantities: {1 => nil}
+      assert visit.localized_quantities[1].nil? # Don't crash with nil values
+      visit.update! quantities: {1 => "10,5"} # Assign with localized separator
+      assert_equal 10.5, visit.quantities[1]
+      assert_equal "10,5", visit.localized_quantities[1] # Localized value
+      visit.update! quantities: {1 => 10}
+      assert_equal 10, visit.quantities[1]
+      assert_equal "10", visit.localized_quantities[1] # Remove trailing zeros
+      visit.update! quantities: {1 => 10.1} # Assign without localized separator
+      assert_equal 10.1, visit.quantities[1]
+    ensure
+      I18n.locale = orig_locale
+    end
   end
 
 end

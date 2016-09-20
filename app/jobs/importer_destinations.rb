@@ -60,7 +60,6 @@ class ImporterDestinations < ImporterBase
 
   def columns_visit
     {
-      # Visit
       ref_visit: {title: I18n.t('destinations.import_file.ref_visit'), desc: I18n.t('destinations.import_file.ref_visit_desc'), format: I18n.t('destinations.import_file.format.string')},
       open1: {title: I18n.t('destinations.import_file.open1'), desc: I18n.t('destinations.import_file.open1_desc'), format: I18n.t('destinations.import_file.format.hour')},
       close1: {title: I18n.t('destinations.import_file.close1'), desc: I18n.t('destinations.import_file.close1_desc'), format: I18n.t('destinations.import_file.format.hour')},
@@ -68,19 +67,22 @@ class ImporterDestinations < ImporterBase
       close2: {title: I18n.t('destinations.import_file.close2'), desc: I18n.t('destinations.import_file.close2_desc'), format: I18n.t('destinations.import_file.format.hour')},
       tags_visit: {title: I18n.t('destinations.import_file.tags_visit'), desc: I18n.t('destinations.import_file.tags_visit_desc'), format: I18n.t('destinations.import_file.tags_format')},
       take_over: {title: I18n.t('destinations.import_file.take_over'), desc: I18n.t('destinations.import_file.take_over_desc'), format: I18n.t('destinations.import_file.format.second')},
-      quantity1_1: {title: I18n.t('destinations.import_file.quantity1_1'), desc: I18n.t('destinations.import_file.quantity1_1_desc'), format: I18n.t('destinations.import_file.format.integer')},
-      quantity1_2: {title: I18n.t('destinations.import_file.quantity1_2'), desc: I18n.t('destinations.import_file.quantity1_2_desc'), format: I18n.t('destinations.import_file.format.integer')},
-    }
+    }.merge(Hash[@customer.deliverable_units.map{ |du|
+      ["quantity#{du.id}".to_sym, {title: I18n.t('destinations.import_file.quantity') + (du.label ? '[' + du.label + ']' : ''), desc: I18n.t('destinations.import_file.quantity_desc'), format: I18n.t('destinations.import_file.format.float')}]
+    }])
   end
 
   def columns
     columns_route.merge(columns_destination).merge(columns_visit).merge(
       without_visit: {title: I18n.t('destinations.import_file.without_visit'), desc: I18n.t('destinations.import_file.without_visit_desc'), format: I18n.t('destinations.import_file.format.yes_no')},
+      quantities: {}, # only for json import
       # Deals with deprecated open and close
       open: {title: I18n.t('destinations.import_file.open'), desc: I18n.t('destinations.import_file.open_desc'), format: I18n.t('destinations.import_file.format.hour'), required: I18n.t('destinations.import_file.format.deprecated')},
       close: {title: I18n.t('destinations.import_file.close'), desc: I18n.t('destinations.import_file.close_desc'), format: I18n.t('destinations.import_file.format.hour'), required: I18n.t('destinations.import_file.format.deprecated')},
       # Deals with deprecated quantity
-      quantity: {title: I18n.t('destinations.import_file.quantity'), desc: I18n.t('destinations.import_file.quantity_desc'), format: I18n.t('destinations.import_file.format.integer'), required: I18n.t('destinations.import_file.format.deprecated')}
+      quantity: {title: I18n.t('destinations.import_file.quantity'), desc: I18n.t('destinations.import_file.quantity_desc'), format: I18n.t('destinations.import_file.format.integer'), required: I18n.t('destinations.import_file.format.deprecated')},
+      quantity1_1: {title: I18n.t('destinations.import_file.quantity1_1'), desc: I18n.t('destinations.import_file.quantity1_1_desc'), format: I18n.t('destinations.import_file.format.integer')},
+      quantity1_2: {title: I18n.t('destinations.import_file.quantity1_2'), desc: I18n.t('destinations.import_file.quantity1_2_desc'), format: I18n.t('destinations.import_file.format.integer')},
     )
   end
 
@@ -91,6 +93,7 @@ class ImporterDestinations < ImporterBase
         dest[:visits].collect{ |v|
           v[:ref_visit] = v.delete(:ref)
           v[:tags_visit] = v[:tag_ids].collect(&:to_i) if !v.key?(:tags) && v.key?(:tag_ids)
+          v[:quantities] = Hash[v[:quantities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if v[:quantities]
           dest.except(:visits).merge(v)
         }
       else
@@ -125,6 +128,27 @@ class ImporterDestinations < ImporterBase
       @customer.delete_all_destinations
     end
     @visit_ids = []
+  end
+
+  def prepare_quantities(row)
+    q = {}
+    row.each{ |key, value|
+      /^quantity([0-9]+)$/.match(key.to_s) { |m|
+        q.merge!({Integer(m[1]) => row.delete(m[0].to_sym)})
+      }
+    }
+    row[:quantities] = q if q.length > 0
+
+    # Deals with deprecated quantity
+    if !row.key?(:quantities)
+      if row.key?(:quantity) && @customer.deliverable_units.size > 0
+        row[:quantities] = {@customer.deliverable_units[0].id => row.delete(:quantity)}
+      elsif (row.key?(:quantity1_1) || row.key?(:quantity1_2)) && @customer.deliverable_units.size > 1
+        row[:quantities] = {}
+        row[:quantities].merge!({@customer.deliverable_units[0].id => row.delete(:quantity1_1)}) if row.key?(:quantity1_1)
+        row[:quantities].merge!({@customer.deliverable_units[1].id => row.delete(:quantity1_2)}) if row.key?(:quantity1_2)
+      end
+    end
   end
 
   def prepare_tags(row, key)
@@ -167,13 +191,13 @@ class ImporterDestinations < ImporterBase
     # Deals with deprecated open and close
     row[:open1] = row.delete(:open) if !row.key?(:open1)
     row[:close1] = row.delete(:close) if !row.key?(:close1)
-    # Deals with deprecated quantity
-    row[:quantity1_1] = row.delete(:quantity) if !row.key?(:quantity1_1)
+
+    prepare_quantities row
 
     [:tags, :tags_visit].each{ |key| prepare_tags row, key }
 
     destination_attributes = row.slice(*(@@col_dest_keys ||= columns_destination.keys))
-    visit_attributes = row.slice(*(@@columns_visit_keys ||= columns_visit.keys))
+    visit_attributes = row.slice(*(@@columns_visit_keys ||= columns_visit.keys + [:quantities]))
     visit_attributes[:ref] = visit_attributes.delete :ref_visit
     visit_attributes[:tags] = visit_attributes.delete :tags_visit if visit_attributes.key?(:tags_visit)
 

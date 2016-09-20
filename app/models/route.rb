@@ -91,7 +91,6 @@ class Route < ActiveRecord::Base
       if vehicle_usage.default_store_start && vehicle_usage.default_store_start.position?
         last_lat, last_lng = vehicle_usage.default_store_start.lat, vehicle_usage.default_store_start.lng
       end
-      quantity1_1 = quantity1_2 = 0
       router = vehicle_usage.vehicle.default_router
       router_dimension = vehicle_usage.vehicle.default_router_dimension
       stops_drive_time = {}
@@ -141,7 +140,7 @@ class Route < ActiveRecord::Base
       traces[0] = [0, 0, nil] if !vehicle_usage.default_store_start || !vehicle_usage.default_store_start.position?
 
       # Recompute Stops
-      stops_time_windows = {}
+      stops_time_windows = quantities_ = {}
       stops_sort.each{ |stop|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
           stop.distance, stop.drive_time, stop.trace = traces.shift
@@ -171,9 +170,12 @@ class Route < ActiveRecord::Base
             self.end = stop.time + stop.duration
 
             if stop.is_a?(StopVisit)
-              quantity1_1 += (stop.visit.quantity1_1 || 1)
-              quantity1_2 += (stop.visit.quantity1_2 || 1)
-              stop.out_of_capacity = (vehicle_usage.vehicle.capacity1_1 && quantity1_1 > vehicle_usage.vehicle.capacity1_1) || (vehicle_usage.vehicle.capacity1_2 && quantity1_2 > vehicle_usage.vehicle.capacity1_2)
+              stop.route.planning.customer.deliverable_units.each{ |du|
+                quantities_[du.id] = (quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)
+              }
+              stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
+                vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]
+              }
             end
 
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
@@ -381,22 +383,18 @@ class Route < ActiveRecord::Base
 
   include LocalizedAttr
 
-  attr_localized :quantity1_1, :quantity1_2
+  attr_localized :quantities
 
-  def quantity1_1
-    stops.to_a.sum(0) { |stop|
-      stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.quantity1_1 || 1) : 0
-    }
+  def quantities
+    Hash[planning.customer.deliverable_units.map{ |du|
+      [du.id, stops.to_a.sum(0) { |stop|
+        stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.default_quantities[du.id] || 0) : 0
+      }]
+    }]
   end
 
-  def quantity1_2
-    stops.to_a.sum(0) { |stop|
-      stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.quantity1_2 || 0) : 0
-    }
-  end
-
-  def quantity?
-    quantity1_1 > 0 || quantity1_2 > 0
+  def quantities?
+    quantities.flat_map{ |q| q.values }.any{ |q| q > 0 }
   end
 
   def active_all

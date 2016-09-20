@@ -15,13 +15,9 @@ if !@planning.customer.enable_orders
   json.quantities route_quantities(route) do |quantity|
     json.quantity quantity if quantity
   end
-  json.quantity1_1 route.quantity1_1
-  json.quantity1_2 route.quantity1_2 if route.quantity1_2 > 0
 end
 if route.vehicle_usage
   json.contact_email route.vehicle_usage.vehicle.contact_email if route.vehicle_usage.vehicle.contact_email
-  json.capacity1_1_unit route.vehicle_usage.vehicle.capacity1_1_unit
-  json.capacity1_2_unit route.vehicle_usage.vehicle.capacity1_2_unit if route.quantity1_2 > 0
   json.vehicle_usage_id route.vehicle_usage.id
   json.vehicle_id route.vehicle_usage.vehicle.id
   json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
@@ -107,7 +103,6 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
         json.orders order.products.collect(&:code).join(', ')
       end
     else
-      json.extract! visit, :quantity1_1, :quantity1_2
       json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
         json.quantity quantity if quantity
       end

@@ -103,6 +103,7 @@ Rails.application.configure do
   config.optimize_cluster_size = 0
   config.optimize_stop_soft_upper_bound = 0.3
   config.optimize_vehicle_soft_upper_bound = 0.3
+  config.optimize_overload_multiplier = 0
 
   config.geocode_code_cache = cache_factory('geocode', 60*60*24*10)
   config.geocode_reverse_cache = cache_factory('geocode_reverse', 60*60*24*10)

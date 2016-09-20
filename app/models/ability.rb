@@ -53,6 +53,9 @@ class Ability
           can [:new, :create], OrderArray
           can :manage, Product, customer_id: user.customer.id
           can [:new, :create], Product
+        else
+          can :manage, DeliverableUnit, customer_id: user.customer.id
+          # can [:new, :create], DeliverableUnit
         end
       end
     else

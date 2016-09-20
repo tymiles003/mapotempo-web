@@ -137,20 +137,23 @@ var zonings_edit = function(params) {
     if (hasPlanning) {
       geoJsonLayer = geoJsonLayers[layer_id];
       var n = 0,
-        quantity1_1 = 0,
-        quantity1_2 = 0;
+        quantities = {};
       markersLayers.eachLayer(function(markerLayer) {
         if (leafletPip.pointInLayer(markerLayer.getLatLng(), geoJsonLayer, true).length > 0) {
           n += 1;
           if (markerLayer.data) {
-            quantity1_1 += (markerLayer.data.quantity1_1 !== null ? markerLayer.data.quantity1_1 : markerLayer.data.default_quantity1_1);
-            quantity1_2 += (markerLayer.data.quantity1_2 !== null ? markerLayer.data.quantity1_2 : markerLayer.data.default_quantity1_2);
+            $.each(markerLayer.data.quantities, function(i, q) {
+              quantities[q.unit_id] = quantities[q.unit_id] ? (quantities[q.unit_id] + q.quantity) : q.quantity;
+            });
           }
         }
       });
       $('.stop_number', ele).html(n);
-      $('.quantity1_1_number', ele).html(quantity1_1);
-      $('.quantity1_2_number', ele).html(quantity1_2 || '');
+      $('span[data-unit-id]', ele).hide();
+      for (var key in quantities) {
+        if (quantities[key]) $('span[data-unit-id="' + key + '"]', ele).show();
+        $('span[data-unit-id="' + key + '"] .quantity_number', ele).html(quantities[key]);
+      }
       $('.stop').show(); // Display all
     }
   };
@@ -303,10 +306,7 @@ var zonings_edit = function(params) {
     zone.router_avoid_zones = zone.vehicle_id && vehicles_map[zone.vehicle_id] ? vehicles_map[zone.vehicle_id].router_avoid_zones : router_avoid_zones;
     zone.show_capacity = show_capacity;
     if (show_capacity && zone.vehicle_id) {
-      zone.capacity1_1 = vehicles_map[zone.vehicle_id].capacity1_1;
-      zone.capacity1_1_unit = vehicles_map[zone.vehicle_id].capacity1_1_unit;
-      zone.capacity1_2 = vehicles_map[zone.vehicle_id].capacity1_2;
-      zone.capacity1_2_unit = vehicles_map[zone.vehicle_id].capacity1_2_unit;
+      zone.capacities = vehicles_map[zone.vehicle_id].capacities;
     }
 
     $('#zones').append(SMT['zones/show'](zone));

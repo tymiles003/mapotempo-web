@@ -236,14 +236,15 @@ class ImporterDestinationsTest < ActionController::TestCase
   test 'should import and update' do
     destinations(:destination_unaffected_one).update(lat: 2.5, lng: 2.5, geocoding_accuracy: 0.9, geocoding_level: :house) && @customer.reload
     assert_difference('Destination.count', 1) do
-      ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
+      assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
     end
     destination = Destination.find_by(ref:'a')
     assert_equal 'unaffected_one_update', destination.name
     assert_equal 1.5, destination.lat
     assert_nil destination.geocoding_accuracy
     assert_equal 'point', destination.geocoding_level
-    assert_equal 'unaffected_two_update', Destination.find_by(ref:'unknown').name
+    assert_equal [[1]], destination.visits.map{ |v| v.quantities.values }
+    assert_equal 'unaffected_two_update', Visit.find_by(ref:'unknown').destination.name
   end
 
   test 'should import with route error in new planning' do
@@ -344,28 +345,30 @@ class ImporterDestinationsTest < ActionController::TestCase
     assert_equal '2000-01-01 15:00:00 UTC', Visit.last.open1.to_s
   end
 
-  test 'Import Destinations With French Separator (Commas)' do
-    [:en, :fr].each do |locale|
-      I18n.locale = I18n.default_locale = locale
-      assert I18n.locale == locale
-      assert_difference('Destination.count', 1) do
-        ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile("test/fixtures/files/import_destinations_#{locale.to_s.upcase}.csv", "text.csv")).import
+  test 'should import destinations with locale number separator (commas in french)' do
+    orig_locale = I18n.locale
+    begin
+      [:en, :fr].each do |locale|
+        I18n.locale = locale
+        assert_difference('Destination.count', 1) do
+          ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile("test/fixtures/files/import_destinations_#{locale.to_s.upcase}.csv", "text.csv")).import
+        end
+        assert 49.173419, Destination.last.lat
+        assert -0.326613, Destination.last.lng
+        assert_equal 39.482, Visit.last.quantities[1]
       end
-      assert Destination.last.lat == 49.173419
-      assert Destination.last.lng == -0.326613
-      assert Visit.last.quantity1_1 == 39.482
+    ensure
+      I18n.locale = orig_locale
     end
   end
 
-  test 'Import Destinations CSV File With Spaces In Headers' do
-    I18n.locale = I18n.default_locale = :fr
-    assert I18n.locale == :fr
+  test 'should import destinations CSV file with spaces in headers' do
     assert_difference('Destination.count', 1) do
       ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_headers_with_spaces.csv', 'text.csv')).import
     end
   end
 
-  test 'Import Blank CSV File' do
+  test 'should import blank CSV file' do
     assert_no_difference('Destination.count', 1) do
       ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/blank.csv', 'text.csv')).import
     end

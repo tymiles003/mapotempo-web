@@ -26,10 +26,11 @@ class VehicleTest < ActiveSupport::TestCase
 
   test 'should update out_of_date for capacity' do
     o = vehicles(:vehicle_one)
-    o.capacity1_1 = 123
+    o.capacities = {customers(:customer_one).deliverable_units[0].id => '12,3'}
     assert_not o.vehicle_usages[0].routes[-1].out_of_date
     o.save!
     assert o.vehicle_usages[0].routes[-1].out_of_date
+    assert 12.3, Vehicle.where(name: :vehicle_one).first.capacities[customers(:customer_one).deliverable_units[0].id]
   end
 
   test 'should validate email' do

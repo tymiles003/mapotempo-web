@@ -26,8 +26,7 @@ class VehicleUsagesController < ApplicationController
 
   def update
     respond_to do |format|
-      @vehicle_usage.assign_attributes(vehicle_usage_params)
-      if @vehicle_usage.save
+      if @vehicle_usage.update vehicle_usage_params
         format.html { redirect_to link_back || edit_vehicle_usage_path(@vehicle_usage), notice: t('activerecord.successful.messages.updated', model: @vehicle_usage.class.model_name.human) }
       else
         format.html { render action: 'edit' }
@@ -53,7 +52,7 @@ class VehicleUsagesController < ApplicationController
     if params[:vehicle_usage][:vehicle][:router]
       params[:vehicle_usage][:vehicle][:router_id], params[:vehicle_usage][:vehicle][:router_dimension] = params[:vehicle_usage][:vehicle][:router].split('_')
     end
-    p = params.require(:vehicle_usage).permit(:open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, :service_time_start, :service_time_end, vehicle: [:contact_email, :ref, :name, :emission, :consumption, :capacity1_1, :capacity1_1_unit, :capacity1_2, :capacity1_2_unit, :color, :tomtom_id, :teksat_id, :orange_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator])
+    p = params.require(:vehicle_usage).permit(:open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, :service_time_start, :service_time_end, vehicle: [:contact_email, :ref, :name, :emission, :consumption, :color, :tomtom_id, :teksat_id, :orange_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator, capacities: current_user.customer.deliverable_units.map{ |du| du.id.to_s }])
     if p.key?(:vehicle)
       p[:vehicle_attributes] = p[:vehicle]
       p.except(:vehicle)

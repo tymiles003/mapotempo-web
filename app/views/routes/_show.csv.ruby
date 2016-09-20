@@ -30,14 +30,17 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
 
     ref_visit: nil,
     duration: nil,
-    (route.planning.customer.enable_orders ? :orders : :quantity1_1) => nil,
-    (route.planning.customer.enable_orders ? nil : :quantity1_2) => nil,
     open1: nil,
     close1: nil,
     open2: nil,
     close2: nil,
     tags_visit: nil
-  }.delete_if{ |k, v| k.nil? }
+  }.merge(Hash[route.planning.customer.enable_orders ?
+    [[:orders, nil]] :
+    route.planning.customer.deliverable_units.map{ |du|
+      [('quantity' + (du.label ? '[' + du.label + ']' : '')).to_sym, nil]
+    }
+  ])
   csv << @columns.map{ |c| row[c.to_sym] }
 end
 
@@ -75,14 +78,17 @@ route.stops.each { |stop|
 
       ref_visit: (stop.visit.ref if stop.is_a?(StopVisit)),
       duration: stop.is_a?(StopVisit) ? (stop.visit.take_over ? l(stop.visit.take_over.utc, format: :hour_minute_second) : nil) : (route.vehicle_usage.default_rest_duration ? l(route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) : nil),
-      (route.planning.customer.enable_orders ? :orders : :quantity1_1) => ((route.planning.customer.enable_orders ? (stop.order && stop.order.products.length > 0 ? stop.order.products.collect(&:code).join('/') : nil) : stop.visit.quantity1_1) if stop.is_a?(StopVisit)),
-      (route.planning.customer.enable_orders ? nil : :quantity1_2) => ((route.planning.customer.enable_orders ? nil : stop.visit.quantity1_2) if stop.is_a?(StopVisit)),
       open1: (l(stop.open1.utc, format: :hour_minute) if stop.open1),
       close1: (l(stop.close1.utc, format: :hour_minute) if stop.close1),
       open2: (l(stop.open2.utc, format: :hour_minute) if stop.open2),
       close2: (l(stop.close2.utc, format: :hour_minute) if stop.close2),
       tags_visit: (stop.visit.tags.collect(&:label).join(',') if stop.is_a?(StopVisit))
-    }.delete_if{ |k, v| k.nil? }
+    }.merge(Hash[route.planning.customer.enable_orders ?
+      [[:orders, stop.is_a?(StopVisit) && stop.order && stop.order.products.length > 0 ? stop.order.products.collect(&:code).join('/') : nil]] :
+      route.planning.customer.deliverable_units.map{ |du|
+        [('quantity' + (du.label ? '[' + du.label + ']' : '')).to_sym, stop.is_a?(StopVisit) ? stop.visit.quantities[du.id] : nil]
+      }
+    ])
     csv << @columns.map{ |c| row[c.to_sym] }
   end
 }
@@ -119,13 +125,16 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
 
     ref_visit: nil,
     duration: nil,
-    (route.planning.customer.enable_orders ? :orders : :quantity1_1) => nil,
-    (route.planning.customer.enable_orders ? nil : :quantity1_2) => nil,
     open1: nil,
     close1: nil,
     open2: nil,
     close2: nil,
     tags_visit: nil
-  }.delete_if{ |k, v| k.nil? }
+  }.merge(Hash[route.planning.customer.enable_orders ?
+    [[:orders, nil]] :
+    route.planning.customer.deliverable_units.map{ |du|
+      [('quantity' + (du.label ? '[' + du.label + ']' : '')).to_sym, nil]
+    }
+  ])
   csv << @columns.map{ |c| row[c.to_sym] }
 end

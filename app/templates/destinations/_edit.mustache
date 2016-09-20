@@ -141,7 +141,7 @@
           {{/enable_references}}
           {{^enable_orders}}
           <span style="width:3em">
-            <input class="form-control input-sm" type="number" name="destination[visits_attributes][][quantity1_1]" value="{{quantity1_1}}" placeholder="1"/>
+            <input class="form-control input-sm" type="number" name="destination[visits_attributes][][quantity]" value="{{quantity}}" placeholder="{{quantity_default}}"{{#disable_quantity}} disabled{{/disable_quantity}}/>
           </span>
           {{/enable_orders}}
           {{#enable_multi_visits}}

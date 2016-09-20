@@ -27,6 +27,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -151,6 +165,39 @@ CREATE SEQUENCE delayed_jobs_id_seq
 --
 
 ALTER SEQUENCE delayed_jobs_id_seq OWNED BY delayed_jobs.id;
+
+
+--
+-- Name: deliverable_units; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE deliverable_units (
+    id integer NOT NULL,
+    customer_id integer,
+    label character varying,
+    default_quantity double precision,
+    default_capacity double precision,
+    optimization_overload_multiplier double precision
+);
+
+
+--
+-- Name: deliverable_units_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE deliverable_units_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: deliverable_units_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE deliverable_units_id_seq OWNED BY deliverable_units.id;
 
 
 --
@@ -888,7 +935,6 @@ CREATE TABLE vehicles (
     name character varying(255),
     emission double precision,
     consumption double precision,
-    capacity1_1 integer,
     color character varying NOT NULL,
     customer_id integer NOT NULL,
     created_at timestamp without time zone,
@@ -898,14 +944,12 @@ CREATE TABLE vehicles (
     masternaut_ref character varying(255),
     speed_multiplicator double precision,
     ref character varying,
-    capacity1_1_unit character varying,
     contact_email character varying,
     teksat_id character varying,
     orange_id character varying,
     fuel_type character varying,
     router_dimension integer,
-    capacity1_2 integer,
-    capacity1_2_unit character varying
+    capacities hstore
 );
 
 
@@ -934,7 +978,6 @@ ALTER SEQUENCE vehicles_id_seq OWNED BY vehicles.id;
 
 CREATE TABLE visits (
     id integer NOT NULL,
-    quantity1_1 double precision,
     open1 time without time zone,
     close1 time without time zone,
     ref character varying,
@@ -944,7 +987,7 @@ CREATE TABLE visits (
     updated_at timestamp without time zone,
     open2 time without time zone,
     close2 time without time zone,
-    quantity1_2 double precision
+    quantities hstore
 );
 
 
@@ -1046,6 +1089,13 @@ ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq
 --
 
 ALTER TABLE ONLY delayed_jobs ALTER COLUMN id SET DEFAULT nextval('delayed_jobs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY deliverable_units ALTER COLUMN id SET DEFAULT nextval('deliverable_units_id_seq'::regclass);
 
 
 --
@@ -1202,6 +1252,14 @@ ALTER TABLE ONLY customers
 
 ALTER TABLE ONLY delayed_jobs
     ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: deliverable_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY deliverable_units
+    ADD CONSTRAINT deliverable_units_pkey PRIMARY KEY (id);
 
 
 --
@@ -1551,6 +1609,13 @@ CREATE INDEX index_customers_on_job_optimizer_id ON customers USING btree (job_o
 --
 
 CREATE INDEX index_customers_on_job_store_geocoding_id ON customers USING btree (job_store_geocoding_id);
+
+
+--
+-- Name: index_deliverable_units_on_customer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_deliverable_units_on_customer_id ON deliverable_units USING btree (customer_id);
 
 
 --
@@ -2382,9 +2447,11 @@ INSERT INTO schema_migrations (version) VALUES ('20160722133109');
 
 INSERT INTO schema_migrations (version) VALUES ('20160804104220');
 
+INSERT INTO schema_migrations (version) VALUES ('20160818101635');
+
 INSERT INTO schema_migrations (version) VALUES ('20160906133935');
 
-INSERT INTO schema_migrations (version) VALUES ('20160818101635');
+INSERT INTO schema_migrations (version) VALUES ('20160914104336');
 
 INSERT INTO schema_migrations (version) VALUES ('20161004085743');
 
@@ -2395,3 +2462,4 @@ INSERT INTO schema_migrations (version) VALUES ('20161115121703');
 INSERT INTO schema_migrations (version) VALUES ('20161123163102');
 
 INSERT INTO schema_migrations (version) VALUES ('20161123163103');
+

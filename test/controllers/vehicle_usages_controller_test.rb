@@ -28,8 +28,9 @@ class VehicleUsagesControllerTest < ActionController::TestCase
   end
 
   test 'should update vehicle_usage' do
-    patch :update, id: @vehicle_usage, vehicle_usage: { vehicle: {capacity: 123, color: @vehicle_usage.vehicle.color, consumption: @vehicle_usage.vehicle.consumption, emission: @vehicle_usage.vehicle.emission, name: @vehicle_usage.vehicle.name},  open: @vehicle_usage.open}
+    patch :update, id: @vehicle_usage, vehicle_usage: { vehicle: {capacities: {'1' => 123, '2' => 456}, color: @vehicle_usage.vehicle.color, consumption: @vehicle_usage.vehicle.consumption, emission: @vehicle_usage.vehicle.emission, name: @vehicle_usage.vehicle.name},  open: @vehicle_usage.open}
     assert_redirected_to edit_vehicle_usage_path(@vehicle_usage)
+    assert_equal [123, 456], @vehicle_usage.vehicle.reload.capacities.values
   end
 
   test 'should not update vehicle_usage' do

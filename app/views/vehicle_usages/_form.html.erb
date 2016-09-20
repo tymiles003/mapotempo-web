@@ -33,26 +33,21 @@
             <p class="help-block"><%= t 'vehicles.form.emissions.help' %> - <%= t 'vehicles.form.consumption.help' %></p>
           </div>
         </div>
-        <div id="vehicle_usage_vehicle_capacity_input" class="form-group">
-          <label class="sr-only" for="vehicle_usage_vehicle_capacity"><%= t 'activerecord.attributes.vehicle.capacity1_1' %></label>
-          <label class="sr-only" for="vehicle_usage_vehicle_capacity1_1_unit"><%= t 'activerecord.attributes.vehicle.consumption' %></label>
-          <label class="sr-only" for="vehicle_usage_vehicle_capacity"><%= t 'activerecord.attributes.vehicle.capacity1_2' %></label>
-          <label class="sr-only" for="vehicle_usage_vehicle_capacity1_2_unit"><%= t 'activerecord.attributes.vehicle.consumption' %></label>
-          <label class="col-md-2 control-label"><%= t 'vehicles.form.capacities.label' %></label>
-          <div class="col-md-6">
-            <div class="input-group">
-              <%= number_field 'vehicle_usage[vehicle]', :capacity1_1, min: 1, value: @vehicle_usage.vehicle.capacity1_1, class: 'form-control width_1_2' %>
-              <%= text_field 'vehicle_usage[vehicle]', :capacity1_1_unit, value: @vehicle_usage.vehicle.capacity1_1_unit, class: 'form-control width_1_2', placeholder: t('vehicles.form.capacity_unit.placeholder') %>
-              <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-archive fa-fw') %></span>
+        <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle][capacities]', @vehicle_usage.vehicle.capacities, layout: :horizontal do |f| %>
+          <div id="vehicle_usage_vehicle_capacity_input" class="form-group">
+            <label class="col-md-2 control-label"><%= t 'vehicles.form.capacities.label' %></label>
+            <div class="col-md-6">
+              <% @vehicle_usage.vehicle.customer.deliverable_units.each do |du| %>
+              <div class="input-group">
+                <%= number_field 'vehicle_usage[vehicle][capacities]', du.id, value: @vehicle_usage.vehicle.capacities && @vehicle_usage.vehicle.capacities[du.id], placeholder: du.default_capacity && t('vehicles.form.capacities.default', n: du.localized_default_capacity), class: 'form-control width_1_2', step: 'any' %>
+                <%= text_field 'vehicle_usage[vehicle][capacities_unit]', du.id, value: du.label && (du.optimization_overload_multiplier == 0 || (du.optimization_overload_multiplier.nil? && Mapotempo::Application.config.optimize_overload_multiplier == 0)) ? du.label + t('vehicles.form.capacities.no_overload') : du.label, class: 'form-control width_1_2', placeholder: t('deliverable_units.form.label_placeholder') + (du.optimization_overload_multiplier == 0 || (du.optimization_overload_multiplier.nil? && Mapotempo::Application.config.optimize_overload_multiplier == 0) ? t('vehicles.form.capacities.no_overload') : ''), disabled: true %>
+                <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-archive fa-fw') %></span>
+              </div>
+              <% end %>
+              <p class="help-block"><%= t 'vehicles.form.capacities.help' %></p>
             </div>
-            <div class="input-group"<% if !@vehicle_usage.vehicle.capacity1_2 && !@vehicle_usage.vehicle.capacity1_2_unit %> style="display: none;"<% end %>>
-              <%= number_field 'vehicle_usage[vehicle]', :capacity1_2, min: 1, value: @vehicle_usage.vehicle.capacity1_2, class: 'form-control width_1_2' %>
-              <%= text_field 'vehicle_usage[vehicle]', :capacity1_2_unit, value: @vehicle_usage.vehicle.capacity1_2_unit, class: 'form-control width_1_2', placeholder: t('vehicles.form.capacity_unit.placeholder') %>
-              <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-archive fa-fw') %></span>
-            </div>
-            <p class="help-block"><%= t 'vehicles.form.capacities.help' %> - <%= t 'vehicles.form.capacity_unit.help' %><% if !@vehicle_usage.vehicle.capacity1_2 && !@vehicle_usage.vehicle.capacity1_2_unit %> - <a href="#" id="capacity-unit-add"><%= t 'vehicles.form.capacity_unit.add' %></a><% end %></p>
           </div>
-        </div>
+        <% end %>
         <div id="vehicle_router_input" class="form-group">
           <label class="col-md-2 control-label" for="vehicle_router"><%= t 'activerecord.attributes.vehicle.router' %></label>
           <div class="col-md-6">

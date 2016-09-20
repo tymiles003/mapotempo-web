@@ -21,7 +21,7 @@ require 'rest-client'
 require 'csv'
 require 'json'
 
-API_KEY = 'your_secret_api_key'
+API_KEY = '!!!your_secret_api_key!!!'
 # URL = 'http://app.beta.mapotempo.com'
 URL = 'http://0.0.0.0:3000'
 
@@ -44,7 +44,7 @@ def destination_hash index
     lat: 44.8798,
     lng: -0.544917,
     visits: [{
-      quantity1_1: 1,
+      quantities: [{deliverable_unit_id: !!!one_of_your_deliverable_unit_id!!!, quantity: 1.0}],
       open1: "08:00",
       close1: "12:00",
       open2: "14:00",
@@ -54,18 +54,18 @@ def destination_hash index
   }
 end
 
+# get the destinations list from api_key user's customer
 response = RestClient.get destinations_url
-
 puts "Found %s Destinations" % [ JSON.parse(response).length ]
 
+# post new destinations in json (will be automatically geocoded)
 response = RestClient.put destinations_url, { destinations: [destination_hash(1), destination_hash(2)] }.to_json, content_type: :json, accept: :json
-
 puts "Updated %s Destinations" % [ JSON.parse(response).length ]
 
+# import destinations and create a new planning by uploading csv using cURL
 CSV.open("/tmp/mapotempo_csv", "wb") do |csv|
   csv << ["référence","nom","voie","complément","code postal","ville","lat","lng","tournée","libellés","livré"]
   csv << ["ref-id","Test Name","123 Test","","33000","Bordeaux","44.8798","-0.544917","planning-1","tag-1","T"]
 end
-
 # Send Accept-Language => "en" headers when parsing files with header columns in english
 response = RestClient::Request.execute method: :put, url: destinations_url, headers: { "Accept-Language" => "fr" }, payload: { multipart: true, file: File.open("/tmp/mapotempo_csv") }

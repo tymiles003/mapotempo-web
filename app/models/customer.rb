@@ -35,7 +35,10 @@ class Customer < ActiveRecord::Base
   has_many :destinations, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :tags, -> { order('label') }, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :users, -> { order('LOWER(email)') }, inverse_of: :customer, dependent: :destroy
+  has_many :deliverable_units, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all, after_add: :update_deliverable_units_track, after_remove: :update_deliverable_units_track
   enum router_dimension: Router::DIMENSION
+
+  attr_accessor :deliverable_units_updated
 
   nilify_blanks
   auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association, :default_country
@@ -56,7 +59,7 @@ class Customer < ActiveRecord::Base
   validates :speed_multiplicator, numericality: { greater_than_or_equal_to: 0.5, less_than_or_equal_to: 1.5 }, if: :speed_multiplicator
 
   after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
-  after_create :create_default_store, :create_default_vehicle_usage_set
+  after_create :create_default_store, :create_default_vehicle_usage_set, :create_default_deliverable_unit
   before_update :update_out_of_date, :update_max_vehicles, :update_enable_multi_visits
   before_save :sanitize_print_header
   before_save :devices_update_vehicles, prepend: true
@@ -83,6 +86,8 @@ class Customer < ActiveRecord::Base
 
       def copy.create_default_vehicle_usage_set; end
 
+      def copy.create_default_deliverable_unit; end
+
       def copy.update_out_of_date; end
 
       def copy.update_enable_multi_visits; end
@@ -93,6 +98,7 @@ class Customer < ActiveRecord::Base
 
       copy.save!
 
+      deliverable_unit_ids_map = Hash[original.deliverable_units.map(&:id).zip(copy.deliverable_units)].merge(nil => nil)
       vehicles_map = Hash[original.vehicles.zip(copy.vehicles)].merge(nil => nil)
       vehicle_usage_sets_map = Hash[original.vehicle_usage_sets.zip(copy.vehicle_usage_sets)].merge(nil => nil)
       vehicle_usages_map = Hash[original.vehicle_usage_sets.collect(&:vehicle_usages).flatten.zip(copy.vehicle_usage_sets.collect(&:vehicle_usages).flatten)].merge(nil => nil)
@@ -100,6 +106,11 @@ class Customer < ActiveRecord::Base
       visits_map = Hash[original.destinations.collect(&:visits).flatten.zip(copy.destinations.collect(&:visits).flatten)].merge(nil => nil)
       tags_map = Hash[original.tags.zip(copy.tags)].merge(nil => nil)
       zonings_map = Hash[original.zonings.zip(copy.zonings)].merge(nil => nil)
+
+      copy.vehicles.each{ |vehicle|
+        vehicle.capacities = Hash[vehicle.capacities.to_a.map{ |q| [deliverable_unit_ids_map[q[0]].id, q[1]]}]
+        vehicle.save!
+      }
 
       copy.vehicle_usage_sets.each{ |vehicle_usage_set|
         vehicle_usage_set.store_start = stores_map[vehicle_usage_set.store_start]
@@ -121,6 +132,7 @@ class Customer < ActiveRecord::Base
 
         destination.visits.each{ |visit|
           visit.tags = visit.tags.collect{ |tag| tags_map[tag] }
+          visit.quantities = Hash[visit.quantities.to_a.map{ |q| [deliverable_unit_ids_map[q[0]].id, q[1]]}]
           visit.save!
         }
         destination.save!
@@ -252,8 +264,14 @@ class Customer < ActiveRecord::Base
     )
   end
 
+  def create_default_deliverable_unit
+    deliverable_units.create(
+      default_quantity: 1
+    )
+  end
+
   def update_out_of_date
-    if take_over_changed? || router_id_changed? || router_dimension_changed? || speed_multiplicator_changed?
+    if take_over_changed? || router_id_changed? || router_dimension_changed? || speed_multiplicator_changed? || @deliverable_units_updated
       Route.transaction do
         plannings.each{ |planning|
           planning.routes.each{ |route|
@@ -263,6 +281,10 @@ class Customer < ActiveRecord::Base
         }
       end
     end
+  end
+
+  def update_deliverable_units_track(_deliverable_unit)
+    @deliverable_units_updated = true
   end
 
   def update_max_vehicles

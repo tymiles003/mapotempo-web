@@ -23,14 +23,22 @@ class V01::Visits < Grape::API
     def visit_params
       p = ActionController::Parameters.new(params)
       p = p[:visit] if p.key?(:visit)
+      p[:quantities] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if p[:quantities] && p[:quantities].is_a?(Array)
 
       # Deals with deprecated open and close
       p[:open1] = p.delete(:open) if !p[:open1]
       p[:close1] = p.delete(:close) if !p[:close1]
       # Deals with deprecated quantity
-      p[:quantity1_1] = p.delete(:quantity) if !p[:quantity1_1]
+      if !p[:quantities]
+        p[:quantities] = { current_customer.deliverable_units[0].id => p.delete(:quantity) } if p[:quantity] && current_customer.deliverable_units.size > 0
+        if p[:quantity1_1] || p[:quantity1_2]
+          p[:quantities] = {}
+          p[:quantities].merge!({ current_customer.deliverable_units[0].id => p.delete(:quantity1_1) }) if p[:quantity1_1] && current_customer.deliverable_units.size > 0
+          p[:quantities].merge!({ current_customer.deliverable_units[1].id => p.delete(:quantity1_2) }) if p[:quantity1_2] && current_customer.deliverable_units.size > 1
+        end
+      end
 
-      p = p.permit(:ref, :quantity1_1, :quantity1_2, :take_over, :open1, :close1, :open2, :close2, tag_ids: [])
+      p = p.permit(:ref, :take_over, :open1, :close1, :open2, :close2, tag_ids: [], quantities: current_customer.deliverable_units.map{ |du| du.id.to_s })
 
       p
     end

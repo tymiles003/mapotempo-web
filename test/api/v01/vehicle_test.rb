@@ -49,12 +49,14 @@ class V01::VehiclesTest < ActiveSupport::TestCase
 
   test 'should update a vehicle' do
     @vehicle.name = 'new name'
-    put api(@vehicle.id), @vehicle.attributes
+    put api(@vehicle.id), @vehicle.attributes.merge({'capacities' => {1 => 30}})
     assert last_response.ok?, last_response.body
 
     get api(@vehicle.id)
     assert last_response.ok?, last_response.body
-    assert_equal @vehicle.name, JSON.parse(last_response.body)['name']
+    vehicle = JSON.parse last_response.body
+    assert_equal @vehicle.name, vehicle['name']
+    assert_equal 30, vehicle['capacities'][0]['quantity']
   end
 
   test 'should create a vehicle' do
@@ -68,9 +70,11 @@ class V01::VehiclesTest < ActiveSupport::TestCase
       assert_difference('Vehicle.count', 1) do
         assert_difference('VehicleUsage.count', customer.vehicle_usage_sets.length) do
           assert_difference('Route.count', customer.plannings.length) do
-            post api, { ref: 'new', name: 'Vh1', open: '10:00:00', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id, color: '#bebeef' }
+            post api, { ref: 'new', name: 'Vh1', open: '10:00:00', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id, color: '#bebeef', capacities: {1 => 30} }
             assert last_response.created?, last_response.body
-            assert_equal '#bebeef', JSON.parse(last_response.body)['color']
+            vehicle = JSON.parse last_response.body
+            assert_equal '#bebeef', vehicle['color']
+            assert_equal 30, vehicle['capacities'][0]['quantity']
           end
         end
       end

@@ -64,7 +64,6 @@ Rails.application.routes.draw do
   resources :vehicle_usage_sets do
     patch 'duplicate'
   end
-
   delete 'vehicle_usage_sets' => 'vehicle_usage_sets#destroy_multiple'
 
   resources :vehicle_usages do
@@ -104,6 +103,9 @@ Rails.application.routes.draw do
     patch 'update_stops_status'
   end
   delete 'plannings' => 'plannings#destroy_multiple'
+
+  resources :deliverable_units
+  delete 'deliverable_units' => 'deliverable_units#destroy_multiple'
 
   resources :products
   delete 'products' => 'products#destroy_multiple'

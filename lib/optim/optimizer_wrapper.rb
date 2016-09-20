@@ -38,8 +38,8 @@ class OptimizerWrapper
       shift_stores = 0
 
       vrp = {
-        units: vehicles[0][:capacities].each_with_index.collect{ |c, i|
-          {id: "u#{i+1}"}
+        units: vehicles.flat_map{ |v| v[:capacities] && v[:capacities].keys }.uniq.map{ |k|
+          {id: "u#{k}"}
         },
         points: positions.each_with_index.collect{ |pos, i|
           {
@@ -79,10 +79,14 @@ class OptimizerWrapper
             rest_ids: vehicle[:rests].collect{ |rest|
               "r#{rest[:stop_id]}"
             },
-            capacities: vehicle[:capacities].each_with_index.map{ |c, i|
-              # FIXME: overload is not authorized for global optim
-              c["capacity1_#{i+1}".to_sym] ? {unit_id: "u#{i+1}", limit: c["capacity1_#{i+1}".to_sym], overload_multiplier: services.all?{ |s| s[:vehicle_id] } ? 1 : nil} : nil
-            }.compact
+            capacities: vehicle[:capacities] ? vehicle[:capacities].each.map{ |k, v|
+              v ? {
+                unit_id: "u#{k}",
+                limit: v,
+                # TODO: use multiplier from units
+                overload_multiplier: services.all?{ |s| s[:vehicle_id] } ? 1 : nil
+              } : nil
+            }.compact : []
           }
           shift_stores += vehicle[:stores].size
           v
@@ -106,9 +110,12 @@ class OptimizerWrapper
               ].compact,
               duration: service[:duration]
             },
-            quantities: service[:quantities].each_with_index.map{ |q, i|
-              (q["quantity1_#{i+1}".to_sym] || i == 0) ? {unit_id: "u#{i+1}", value: q["quantity1_#{i+1}".to_sym] || 1} : nil
-            }.compact,
+            quantities: service[:quantities] ? service[:quantities].each.map{ |k, v|
+              v ? {
+                unit_id: "u#{k}",
+                value: v
+              } : nil
+            }.compact : [],
             late_multiplier: (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
           }.delete_if{ |k, v| !v }
         },

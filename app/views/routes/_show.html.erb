@@ -139,7 +139,7 @@
                   <% end %>
                 </p>
               <% end %>
-            <% elsif stop.visit.quantity? %>
+            <% elsif stop.visit.quantities? %>
               <% visit_quantities(stop.visit, route.vehicle_usage.vehicle).each do |quantity| %>
                 <div class="quantity">
                   <i class="fa fa-archive fa-fw"></i> <%= quantity %>

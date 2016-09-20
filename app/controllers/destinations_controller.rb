@@ -161,7 +161,15 @@ class DestinationsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def destination_params
-    params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :phone_number, :comment, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :quantity1_1, :quantity1_2, :take_over, :open1, :close1, :open2, :close2, :_destroy, tag_ids: []])
+    # Deals with deprecated quantity
+    if params[:visits_attributes]
+      params[:visits_attributes].each{ |p|
+        if !p[:quantities] && p[:quantity] && current_user.customer.deliverable_units.size > 0
+          p[:quantities] = { current_user.customer.deliverable_units[0].id => p.delete(:quantity) }
+        end
+      }
+    end
+    params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :phone_number, :comment, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :take_over, :open1, :close1, :open2, :close2, :_destroy, tag_ids: [], quantities: current_user.customer.deliverable_units.map{ |du| du.id.to_s }])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

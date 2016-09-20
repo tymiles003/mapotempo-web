@@ -2,8 +2,10 @@
   {{^vehicle}}
     <div class="panel-body">
       <p>
-        <i class="fa fa-check-square fa-fw"></i>{{size}}&nbsp;{{#i18n}}plannings.edit.stops{{/i18n}}
-        {{#quantity}}<i class="fa fa-archive fa-fw"></i>{{quantity1_1}} {{quantity1_2}}{{/quantity}}
+        <span class="route-info"><i class="fa fa-check-square fa-fw"></i>{{size}}&nbsp;{{#i18n}}plannings.edit.stops{{/i18n}}</span>
+        {{#quantities}}
+          <span class="route-info"><i class="fa fa-archive fa-fw"></i>{{quantity}}</span>
+        {{/quantities}}
       </p>
     </div>
     <ul id="out_of_route" class="stops sortable list-group" {{#hidden}}style="display: none;"{{/hidden}}>

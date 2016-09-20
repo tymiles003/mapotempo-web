@@ -60,6 +60,10 @@ fr:
       customers:
         one: "compte client"
         other: "comptes client"
+      deliverable_unit: "Unité déliverable"
+      deliverable_units:
+        one: "unité déliverable"
+        other: "unité déliverables"
       destination: "Client"
       destinations:
         one: "client"
@@ -184,6 +188,11 @@ fr:
         description_title: "Description"
         description_label: "Informations du compte"
         description_help: "Détails sur le compte et les utilisateurs courants"
+      deliverable_unit:
+        label: "Label"
+        default_quantity: "Quantité par défaut"
+        default_capacity: "Capacité par défaut"
+        optimization_overload_multiplier: "Coefficient dépassement"
       destination:
         ref: "Référence"
         ref_small: "Réf."
@@ -335,10 +344,6 @@ fr:
         name: "Nom"
         emission: "Émission"
         consumption: "Consommation"
-        capacity1_1: "Capacité 1_1"
-        capacity1_1_unit: "Unité 1 de la capacité 1"
-        capacity1_2: "Capacité 1_2"
-        capacity1_2_unit: "Unité 2 de la capacité 1"
         color: "Couleur"
         tomtom_id: "TomTom ID"
         masternaut_ref: "Ref. véhicule Masternaut"
@@ -349,6 +354,7 @@ fr:
         customised_color: "Couleur personnalisée"
         ref: "Référence"
         contact_email: "Email"
+        capacities: "Capacités"
       vehicle_usage:
         vehicle_id: "Véhicule"
         open: "Horaire début"
@@ -383,8 +389,6 @@ fr:
       visit:
         ref: "Référence"
         ref_small: "Réf."
-        quantity1_1: "Quantité"
-        quantity1_2: "Quantité avec autre unité"
         take_over: "Durée de visite"
         take_over_small: "Durée"
         open1: "Début de Plage horaire 1"
@@ -399,6 +403,7 @@ fr:
         open_close2_small: "Début/Fin 2"
         tags: "Libellés"
         tag_ids: "Libellés"
+        quantities: "Quantités"
       zoning:
         name: "Nom"
       zone:
@@ -417,6 +422,10 @@ fr:
           lat_outside_range: "doit être comprise entre -90..90"
           lng_outside_range: "doit être comprise entre -180..180"
           geocoding_accuracy_outside_range: "doit être comprise entre 0..1"
+        vehicle:
+          attributes:
+            capacities:
+              not_float: "doivent être un nombre"
         vehicles:
           at_least_one: "Au moins un véhicle est requis"
         vehicle_usage:
@@ -448,6 +457,8 @@ fr:
               on_or_after: "doit être après la fin de Plage horaire 1"
             close2:
               on_or_after: "doit être après le début de Plage horaire 2"
+            quantities:
+              not_float: "doivent être un nombre"
         zone:
           attributes:
             vehicle:
@@ -655,6 +666,23 @@ fr:
 
           Exemple : http://www.example.com?p_id={PLANNING_ID}
 
+  deliverable_units:
+    edit:
+      title: "Modifier unité déliverable"
+    index:
+      title: "Liste unités déliverables"
+      new: "Nouvelle unité déliverable"
+    new:
+      title: "Nouvelle unité déliverable"
+    form:
+      label_placeholder: "unité"
+      label_help: "Par exemple « colis » ou une unité comme « kg »."
+      default_quantity_help: "Quantité à livrer par défaut à toutes vos visites (laisser vide si pas de quantité)."
+      default_capacity_help: "Capacité par défaut de tous vos véhicules (laisser vide si illimité)."
+      optimization_overload_multiplier_no: "Non"
+      optimization_overload_multiplier_yes: "Oui"
+      optimization_overload_multiplier_help: "Dépassement autorisé ou non pendant l'optimisation (valable seulement si une capacité est précisée pour un véhicule). Si le dépassement est autorisé, plus le nombre indiqué est grand moins l'optimisation permettra un dépassement."
+
   destinations:
     upload_tomtom:
       success: "Adresses importées avec succès"
@@ -731,6 +759,7 @@ fr:
       geocoding_level: "Niveau de géocodage"
       geocoding_column_help: "Niveau de géocodage et qualité. Ordonner d'abord par niveau puis par qualité."
       geocoding_empty: "absent"
+      mutli_quantities: "Multiples quantités, éditez cette visite pour changer les quantités."
       click2call: "Cliquez pour appeler"
       quantity_small: "Qté."
       dialog:
@@ -790,11 +819,11 @@ fr:
       take_over: "durée visite"
       take_over_desc: "durée anticipée de la visite."
       quantity: "quantité"
-      quantity_desc: "déprécié : utiliser « quantité 1_1» à la place."
+      quantity_desc: "quantité d'unités à livrer."
       quantity1_1: "quantité 1_1"
-      quantity1_1_desc: "quantité 1 d'unités 1 à livrer."
+      quantity1_1_desc: "déprécié : utiliser « quantités » à la place."
       quantity1_2: "quantité 1_2"
-      quantity1_2_desc: "quantité 1 d'unités 2 à livrer."
+      quantity1_2_desc: "déprécié : utiliser « quantités » à la place."
       active: "livré"
       active_desc: "indique si le client est livré durant cette tournée ou pas"
       open: "horaire début"
@@ -1178,8 +1207,7 @@ fr:
       phone_number: "téléphone"
       ref_visit: "référence visite"
       duration: "durée visite"
-      quantity1_1: "quantité 1_1"
-      quantity1_2: "quantité 1_2"
+      quantity: "quantité"
       orders: "commandes"
       active: "livré"
       open1: "horaire début 1"
@@ -1373,11 +1401,9 @@ fr:
         help: "Consommation moyenne aux 100 km en litres de carburant"
       capacities:
         label: "Capacités"
+        default: "%{n} (valeur par défaut)"
+        no_overload: " (sans dépassement)"
         help: "Capacités maximales du véhicule"
-      capacity_unit:
-        placeholder: "unité"
-        help: "Unité de la capacité"
-        add: "Unité supplémentaire"
       router:
         default: "Défaut"
         help: "Forcer l'utilisation d'un calculateur d'itinéraire"
@@ -1396,7 +1422,7 @@ fr:
       title: "Modifier véhicule et configuration"
     index:
       title: "Liste configurations de véhicules"
-      capacity: "Capacité"
+      capacities: "Capacités"
       stores: "Départ - Arrivée"
       store:
         no_start: "Pas de dépôt de départ"
@@ -1455,6 +1481,7 @@ fr:
       name: "Défaut"
     menu:
       vehicle_usage_sets: "Véhicules"
+      deliverable_units: "Unités délivrables"
     edit:
       title: "Modifier configuration des véhicules"
     index:
@@ -1487,9 +1514,9 @@ fr:
       legend: "Visite #%{n}"
       destroy: "Si coché, la visite sera supprimée. Cliquez-ici pour annuler."
       ref_help: "Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites avec l'import/export notamment."
-      quantities: "Quantités"
-      quantity_default: "défaut"
-      quantities_help: "Quantités à livrer"
+      quantities:
+        default: "%{n} (valeur par défaut)"
+        help: "Quantités à livrer"
       take_over_default: "défaut"
       take_over_help: "Si vide utilise la valeur par défaut"
       open_close1: "Plage horaire 1"

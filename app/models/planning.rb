@@ -271,8 +271,8 @@ class Planning < ActiveRecord::Base
     o = amalgamate_stops_same_position(stops_on, global) { |positions|
 
       services_and_rests = positions.collect{ |position|
-        stop_id, open1, close1, open2, close2, duration, vehicle_id, quantity1_1, quantity1_2 = position[2..10]
-        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id, quantities: [{quantity1_1: quantity1_1}, {quantity1_2: quantity1_2}]}
+        stop_id, open1, close1, open2, close2, duration, vehicle_id, quantities = position[2..9]
+        {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id, quantities: quantities}
       }
 
       unnil_positions(positions, services_and_rests){ |positions, services, rests|
@@ -297,10 +297,8 @@ class Planning < ActiveRecord::Base
             close: vehicle_close.to_f,
             stores: [position_start && :start, position_stop && :stop].compact,
             rests: rests.select{ |s| s[:vehicle_id] == r.vehicle_usage_id },
-            capacities: [
-              {capacity1_1: r.vehicle_usage.vehicle.capacity1_1, capacity1_1_unit: r.vehicle_usage.vehicle.capacity1_1_unit},
-              {capacity1_2: r.vehicle_usage.vehicle.capacity1_2, capacity1_2_unit: r.vehicle_usage.vehicle.capacity1_2_unit}
-            ]
+            # TODO: send overload multiplier
+            capacities: r.vehicle_usage.vehicle.default_capacities
           }
         }
 
@@ -393,13 +391,15 @@ class Planning < ActiveRecord::Base
   # To reduce matrix computation with only one route... remove code?
   def amalgamate_stops_same_position(stops, global)
     tws_or_quantities = stops.find{ |stop|
-      stop.is_a?(StopRest) || stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.visit.quantity1_1 || stop.visit.quantity1_2
+      stop.is_a?(StopRest) || stop.open1 || stop.close1 || stop.open2 || stop.close2
     }
+    units_with_default = stops.flat_map{ |stop| stop.is_a?(StopVisit) && stop.visit.default_quantities.try(:keys) }.compact
+    multiples_vehicles_with_capacities = stops.collect{ |s| s.route.vehicle_usage_id }.uniq.size > 1 || (stops.size > 0 && (capacities = stops[0].route.vehicle_usage.try(&:vehicle).try(&:default_capacities)) && capacities.any?{ |k, v| units_with_default.include?(k) && v})
 
-    if tws_or_quantities || stops.collect{ |s| s.route.vehicle_usage_id }.uniq.size > 1 || (stops.size > 0 && stops[0].route.vehicle_usage.try(&:vehicle).try(&:capacity1_1))
+    if tws_or_quantities || multiples_vehicles_with_capacities
       # Can't reduce cause of time windows, quantities or multiple vehicles
       positions_uniq = stops.collect{ |stop|
-        [stop.lat, stop.lng, stop.id, stop.open1.try(:to_f), stop.close1.try(:to_f), stop.open2.try(:to_f), stop.close2.try(:to_f), stop.duration, (!global || stop.is_a?(StopRest)) ? stop.route.vehicle_usage_id : nil, stop.is_a?(StopVisit) ? stop.visit.quantity1_1 : nil, stop.is_a?(StopVisit) ? stop.visit.quantity1_2 : nil]
+        [stop.lat, stop.lng, stop.id, stop.open1.try(:to_f), stop.close1.try(:to_f), stop.open2.try(:to_f), stop.close2.try(:to_f), stop.duration, (!global || stop.is_a?(StopRest)) ? stop.route.vehicle_usage_id : nil, stop.is_a?(StopVisit) ? stop.visit.default_quantities : nil]
       }
 
       yield(positions_uniq)
@@ -413,7 +413,7 @@ class Planning < ActiveRecord::Base
 
       positions_uniq = Hash.new { [] }
       stock.each{ |k, v|
-        positions_uniq[v[0][0].id] = k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, !global ? v[0][0].route.vehicle_usage_id : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.quantity1_1 : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.quantity1_2 : nil]
+        positions_uniq[v[0][0].id] = k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, !global ? v[0][0].route.vehicle_usage_id : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.default_quantities : nil]
       }
 
       optim_uniq = yield(positions_uniq.collect{ |_k, v| v })

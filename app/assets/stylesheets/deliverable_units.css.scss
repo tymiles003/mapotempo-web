@@ -1,0 +1,33 @@
+// Copyright © Mapotempo, 2016
+//
+// This file is part of Mapotempo.
+//
+// Mapotempo is free software. You can redistribute it and/or
+// modify since you respect the terms of the GNU Affero General
+// Public License as published by the Free Software Foundation,
+// either version 3 of the License, or (at your option) any later version.
+//
+// Mapotempo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE.  See the Licenses for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with Mapotempo. If not, see:
+// <http://www.gnu.org/licenses/agpl.html>
+//
+// Place all the styles related to the Tags controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+[data-controller='deliverable_units'] {
+  #deliverable_unit_optimization_overload_multiplier_input {
+    .form-inline {
+      label {
+        margin-left: 10px;
+      }
+      label:nth-of-type(1) {
+        margin-left: 0px;
+      }
+    }
+  }
+}

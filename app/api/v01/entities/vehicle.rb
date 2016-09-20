@@ -26,12 +26,21 @@ class V01::Entities::VehicleWithoutVehicleUsage < Grape::Entity
   expose(:name, documentation: { type: String })
   expose(:emission, documentation: { type: Integer })
   expose(:consumption, documentation: { type: Integer })
-  expose(:capacity, documentation: { type: Integer, desc: 'Deprecated, use capacity1_1.' }) { |m| m.capacity1_1 }
-  expose(:capacity_unit, documentation: { type: String, desc: 'Deprecated, use capacity1_1_unit.' }) { |m| m.capacity1_1_unit }
-  expose(:capacity1_1, documentation: { type: Integer })
-  expose(:capacity1_1_unit, documentation: { type: String })
-  expose(:capacity1_2, documentation: { type: Integer })
-  expose(:capacity1_2_unit, documentation: { type: String })
+  expose(:capacity, documentation: { type: Integer, desc: 'Deprecated, use capacities instead.' }) { |m|
+    if m.capacities && m.customer.deliverable_units.size == 1
+      capacities = m.capacities.values
+      capacities[0] if capacities.size == 1
+    end
+  }
+  expose(:capacity_unit, documentation: { type: String, desc: 'Deprecated, use capacities and deliverable_unit entity instead.' }) { |m|
+    if m.capacities && m.customer.deliverable_units.size == 1
+      deliverable_unit_ids = m.capacities.keys
+      m.customer.deliverable_units[0].label if deliverable_unit_ids.size == 1
+    end
+  }
+  expose(:capacities, using: V01::Entities::DeliverableUnitQuantity, documentation: { type: V01::Entities::DeliverableUnitQuantity, is_array: true, param_type: 'form' }) { |m|
+    m.capacities ? m.capacities.to_a.collect{ |a| {deliverable_unit_id: a[0], quantity: a[1]} } : []
+  }
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
   expose(:fuel_type, documentation: { type: String })
   expose(:router_id, documentation: { type: Integer })

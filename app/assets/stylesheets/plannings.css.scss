@@ -183,9 +183,14 @@
       .dropdown-menu li.link:hover {
         background-color: #EEE;
       }
-
       .export_spreadsheet {
         cursor: pointer;
+      }
+
+      #planning {
+        .route-info {
+          white-space: nowrap;
+        }
       }
     }
   }

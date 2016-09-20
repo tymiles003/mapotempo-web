@@ -92,6 +92,19 @@ module VehicleUsagesHelper
     services.join(', ')
   end
 
+  def vehicle_capacities(vehicle)
+    capture do
+      vehicle.customer.deliverable_units.each do |du|
+        if vehicle.capacities && vehicle.capacities[du.id]
+          concat Vehicle.localize_numeric_value(vehicle.capacities[du.id]) + "\u202F" + du.label
+        elsif vehicle.default_capacities && vehicle.default_capacities[du.id]
+          concat span_tag(Vehicle.localize_numeric_value(vehicle.default_capacities[du.id]) + "\u202F" + du.label)
+        end
+        concat ' '
+      end
+    end
+  end
+
   def route_description(route)
     capture do
       concat [route.size_active, t('plannings.edit.stops')].join(' ')

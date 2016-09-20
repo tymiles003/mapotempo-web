@@ -35,7 +35,19 @@ class V01::Vehicles < Grape::API
     def vehicle_params
       p = ActionController::Parameters.new(params)
       p = p[:vehicle] if p.key?(:vehicle)
-      p.permit(:contact_email, :ref, :name, :emission, :consumption, :capacity1_1, :capacity1_1_unit, :capacity1_2, :capacity1_2_unit, :color, :tomtom_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator)
+      p[:capacities] = Hash[p[:capacities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if p[:capacities] && p[:capacities].is_a?(Array)
+
+      # Deals with deprecated capacity
+      if !p[:capacities]
+        p[:capacities] = { current_customer.deliverable_units[0].id => p.delete(:capacity) } if p[:capacity] && current_customer.deliverable_units.size > 0
+        if p[:capacity1_1] || p[:capacity1_2]
+          p[:capacities] = {}
+          p[:capacities] = p[:capacities].merge({ current_customer.deliverable_units[0].id => p.delete(:capacity1_1) }) if p[:capacity1_1] && current_customer.deliverable_units.size > 0
+          p[:capacities] = p[:capacities].merge({ current_customer.deliverable_units[1].id => p.delete(:capacity1_2) }) if p[:capacity1_2] && current_customer.deliverable_units.size > 1
+        end
+      end
+
+      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :tomtom_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator, capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s })
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

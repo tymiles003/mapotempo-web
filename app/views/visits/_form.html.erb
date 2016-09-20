@@ -5,8 +5,10 @@
       <a data-toggle="collapse" data-parent="" href="#collapseVisit<%= visit.id || 0 %>" class="accordion-toggle"><span><%= t('.legend', n: i) %></span></a>
     </legend>
     <div id="collapseVisit<%= visit.id || 0 %>" class="collapse in">
-      <div class="btn-group pull-right">
-        <button type="button" class="btn btn-default btn-sm flag-destroy" title="<%= t('.delete_help') %>"><i class="fa fa-trash-o fa-fw"></i> <%= t('.delete') %></button>
+      <div class="form-group destroy-block">
+        <div class="col-md-3">
+          <button type="button" class="btn btn-default btn-sm flag-destroy" title="<%= t('.delete_help') %>"><i class="fa fa-trash-o fa-fw"></i> <%= t('.delete') %></button>
+        </div>
       </div>
       <%= f.hidden_field :id %>
       <%= f.check_box :_destroy %>
@@ -20,16 +22,16 @@
       <% end %>
       <% if !visit.destination.customer.enable_orders %>
       <div id="visit_quantity_input" class="form-group">
-        <label class="sr-only" for="destination_visits_attributes_#{i}_quantity1_1"><%= t 'activerecord.attributes.visit.quantity1_1' %></label>
-        <label class="sr-only" for="destination_visits_attributes_#{i}_quantity1_2"><%= t 'activerecord.attributes.visit.quantity1_2' %></label>
-        <label class="col-md-2 control-label"><%= t '.quantities' %></label>
+        <label class="col-md-2 control-label"><%= t 'activerecord.attributes.visit.quantities' %></label>
         <div class="col-md-6">
+          <% visit.destination.customer.deliverable_units.each do |du| %>
           <div class="input-group">
-            <%= number_field "destination[visits_attributes][#{i}]", :quantity1_1, class: 'form-control width_1_2', placeholder: '1 (' + t('.quantity_default') + ')', value: visit.quantity1_1, step: 'any' %>
-            <%= number_field "destination[visits_attributes][#{i}]", :quantity1_2, class: 'form-control width_1_2', placeholder: '0 (' + t('.quantity_default') + ')', value: visit.quantity1_2, step: 'any' %>
+            <%= number_field "destination[visits_attributes][#{i}][quantities]", du.id, value: visit.quantities && visit.quantities[du.id], placeholder: du.default_quantity && t('.quantities.default', n: du.localized_default_quantity), class: 'form-control width_1_2', step: 'any' %>
+            <%= text_field "destination[visits_attributes][#{i}][quantities_unit]", du.id, value: du.label, class: 'form-control width_1_2', placeholder: t('deliverable_units.form.label_placeholder'), disabled: true %>
             <span class="input-group-addon"><i class="fa fa-archive fa-fw"></i></span>
           </div>
-          <p class="help-block"><%= t '.quantities_help' %></p>
+          <% end %>
+          <p class="help-block"><%= t '.quantities.help' %></p>
         </div>
       </div>
       <% end %>

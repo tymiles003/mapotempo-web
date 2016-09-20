@@ -125,7 +125,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               foo: 'bar',
               visits: [{
                 ref: 'v1',
-                quantity1_1: 1,
+                quantities: [{deliverable_unit_id: deliverable_units(:deliverable_unit_one_one).id, quantity: 1}],
                 open1: '08:00',
                 close1: '12:00',
                 open2: '14:00',
@@ -155,7 +155,9 @@ class V01::DestinationsTest < ActiveSupport::TestCase
 
           # zoning sets stops out_of_route
           planning = Planning.last
-          assert planning.routes.find{ |r| !r.vehicle_usage }.stops.map(&:visit).map(&:ref) == ['v1', 'v2']
+          visits = planning.routes.find{ |r| !r.vehicle_usage }.stops.map(&:visit)
+          assert_equal ['v1', 'v2'], visits.map(&:ref)
+          assert_equal [1, 2], visits.flat_map{ |v| v.quantities.values }
 
           get '/api/0.1/plannings/ref:Hop.json?api_key=testkey1'
           planning = JSON.parse(last_response.body)

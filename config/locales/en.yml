@@ -60,6 +60,10 @@ en:
       customers:
         one: "account"
         other: "accounts"
+      deliverable_unit: "Deliverable Unit"
+      deliverable_units:
+        one: "deliverable unit"
+        other: "deliverable units"
       destination: "Destination"
       destinations:
         one: "destination"
@@ -184,6 +188,11 @@ en:
         description_title: "Description"
         description_label: "Specific account informations"
         description_help: "Account and users details"
+      deliverable_unit:
+        label: "Label"
+        default_quantity: "Default quantity"
+        default_capacity: "Default capacity"
+        optimization_overload_multiplier: "Delay coefficient"
       destination:
         ref: "Reference"
         ref_small: "Ref."
@@ -335,10 +344,6 @@ en:
         name: "Name"
         emission: "Emission"
         consumption: "Consumption"
-        capacity1_1: "Capacity 1_1"
-        capacity1_1_unit: "Capacity 1 unit 1"
-        capacity1_2: "Capacity 1_2"
-        capacity1_2_unit: "Capacity 1 unit 2"
         color: "Color"
         customised_color: "Select a custom color"
         tomtom_id: "TomTom ID"
@@ -349,6 +354,7 @@ en:
         speed_multiplicator: "Speed multiplier"
         ref: "Reference"
         contact_email: "E-Mail"
+        capacities: "Capacities"
       vehicle_usage:
         vehicle_id: "Vehicle"
         open: "Open"
@@ -383,8 +389,6 @@ en:
       visit:
         ref: "Reference"
         ref_small: "Ref."
-        quantity1_1: "Quantity"
-        quantity1_2: "Quantity with another unit"
         take_over: "Take over"
         take_over_small: "Take over"
         open1: "Time window 1 open"
@@ -399,6 +403,7 @@ en:
         open_close2_small: "Open/Close 2"
         tags: "Tags"
         tag_ids: "Tags"
+        quantities: "Quantities"
       zoning:
         name: "Name"
       zone:
@@ -417,6 +422,10 @@ en:
           lat_outside_range: "must be inside range -90..90"
           lng_outside_range: "must be inside range -180..180"
           geocoding_accuracy_outside_range: "must be inside range 0..1"
+        vehicle:
+          attributes:
+            capacities:
+              not_float: "must be a number"
         vehicles:
           at_least_one: "At least one vehicle needed"
         vehicle_usage:
@@ -448,6 +457,8 @@ en:
               on_or_after: "must be after Time window 1 close"
             close2:
               on_or_after: "must be after Time window 2 open"
+            quantities:
+              not_float: "doivent être un nombre"
         zone:
           attributes:
             vehicle:
@@ -655,6 +666,23 @@ en:
 
           Example: http://www.example.com?p_id={PLANNING_ID}
 
+  deliverable_units:
+    edit:
+      title: "Editing deliverable unit"
+    index:
+      title: "Listing deliverable units"
+      new: "New deliverable unit"
+    new:
+      title: "New deliverable unit"
+    form:
+      label_placeholder: "unit"
+      label_help: 'For instance "packet" or a unit like "lb", kg".'
+      default_quantity_help: "Quantity to deliver for all your visits (keep empty if no quantity)."
+      default_capacity_help: "Capacity for all your vehicles (keep empty if no limit)."
+      optimization_overload_multiplier_no: "No"
+      optimization_overload_multiplier_yes: "Yes"
+      optimization_overload_multiplier_help: "Overload authorized or not during optimisation (valid only if capacity is specified for vehicle). If overload is authorized, the greater number is the less overload will be allowed by optimisation."
+
   destinations:
     upload_tomtom:
       success: "Addresses Imported Successfully"
@@ -731,6 +759,7 @@ en:
       geocoding_level: "Geocoding level"
       geocoding_column_help: "Geocoding level and accuracy. Order by level first, then by accuracy"
       geocoding_empty: "missing"
+      mutli_quantities: "Several quantities, edit this visit to change quantities."
       click2call: "Click to call"
       quantity_small: "Qty."
       dialog:
@@ -790,11 +819,11 @@ en:
       take_over: "take over"
       take_over_desc: "take over duration"
       quantity: "quantity"
-      quantity_desc: "deprecated: use \"quantity1_1\" instead."
+      quantity_desc: "number of units to deliver."
       quantity1_1: "quantity 1_1"
-      quantity1_1_desc: "number 1 of units 1 to deliver."
+      quantity1_1_desc: "deprecated: use \"quantities\" instead."
       quantity1_2: "quantity 1_2"
-      quantity1_2_desc: "number 1 of units 2 to deliver."
+      quantity1_2_desc: "deprecated: use \"quantities\" instead."
       active: "active"
       active_desc: "states whether the visit is active or not in this route/plan"
       open: "open"
@@ -1178,8 +1207,7 @@ or you can click on this link to download file (no update in this case)."
       phone_number: "phone"
       ref_visit: "reference visit"
       duration: "duration"
-      quantity1_1: "quantity 1_1"
-      quantity1_2: "quantity 1_2"
+      quantity: "quantity"
       orders: "orders"
       active: "active"
       open1: "open 1"
@@ -1373,11 +1401,9 @@ or you can click on this link to download file (no update in this case)."
         help: "Average fuel consumption in liters per 100 km"
       capacities:
         label: "Capacities"
+        default: "%{n} (default value)"
+        no_overload: " (no overload)"
         help: "Maximun vehicle's capacities"
-      capacity_unit:
-        placeholder: "unit"
-        help: "Unit of the capacity"
-        add: "Add unit"
       router:
         default: "Default"
         help: "Force use of a specific routing engine"
@@ -1396,7 +1422,7 @@ or you can click on this link to download file (no update in this case)."
       title: "Editing vehicle and configuration"
     index:
       title: "Listing vehicle configurations"
-      capacity: "Capacity"
+      capacities: "Capacities"
       stores: "Start - End"
       store:
         no_start: "No start store"
@@ -1455,6 +1481,7 @@ or you can click on this link to download file (no update in this case)."
       name: "Default"
     menu:
       vehicle_usage_sets: "Vehicles"
+      deliverable_units: "Deliverable units"
     edit:
       title: "Editing vehicle and configuration"
     index:
@@ -1487,9 +1514,9 @@ or you can click on this link to download file (no update in this case)."
       legend: "Visit #%{n}"
       destroy: "If checked, visit will be destroyed by submitting this page. Click here to cancel."
       ref_help: "A free reference. Important to avoid overwriting visits on import/export"
-      quantities: "Quantities"
-      quantity_default: "default"
-      quantities_help: "Quantities to be delivered"
+      quantities:
+        default: "%{n} (default value)"
+        help: "Quantities to be delivered"
       take_over_default: "default"
       take_over_help: "If empty, use the default value"
       open_close1: "Time window 1"

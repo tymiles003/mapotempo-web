@@ -15,12 +15,21 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+class QuantitiesValidator < ActiveModel::Validator
+  def validate(record)
+    !record.quantities || record.quantities.values.each{ |q| !q || Float(q) }
+  rescue
+    record.errors[:quantities] << I18n.t('activerecord.errors.models.visit.attributes.quantities.not_float')
+  end
+end
+
 class Visit < ActiveRecord::Base
   belongs_to :destination
   has_many :stop_visits, inverse_of: :visit, dependent: :delete_all
   has_many :orders, inverse_of: :visit, dependent: :delete_all
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
   delegate :lat, :lng, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :destination
+  serialize :quantities, DeliverableUnitQuantity
 
   nilify_blanks
   validates :destination, presence: true
@@ -29,6 +38,7 @@ class Visit < ActiveRecord::Base
   validates :close1, presence: true, if: :open2
   validates_time :open2, on_or_after: :close1, if: :open2
   validates_time :close2, presence: false, on_or_after: :open2, if: :close2
+  validates_with QuantitiesValidator, fields: [:quantities]
 
   before_save :update_tags, :create_orders
   before_update :update_out_of_date
@@ -37,7 +47,7 @@ class Visit < ActiveRecord::Base
 
   include LocalizedAttr
 
-  attr_localized :quantity1_1, :quantity1_2
+  attr_localized :quantities
 
   amoeba do
     exclude_association :stop_visits
@@ -77,18 +87,31 @@ class Visit < ActiveRecord::Base
     end
   end
 
-  def quantity?
-    (quantity1_1 && quantity1_1 > 0) || (quantity1_2 && quantity1_2 > 0)
+  def default_quantities
+    @default_quantities ||= Hash[destination.customer.deliverable_units.collect{ |du|
+      [du.id, quantities && quantities[du.id] ? quantities[du.id] : du.default_quantity]
+    }]
+    @default_quantities
   end
 
-  def quantity_changed?
-    quantity1_1_changed? || quantity1_2_changed?
+  def default_quantities?
+    default_quantities && default_quantities.values.any?{ |q| q && q > 0 }
+  end
+
+  def quantities?
+    quantities && quantities.values.any?{ |q| q }
+  end
+
+  def quantities_changed?
+    quantities ? quantities.each_with_index.any?{ |q, i|
+      quantities_was && q != quantities_was[i]
+    } : !!quantities_was
   end
 
   private
 
   def update_out_of_date
-    if open1_changed? || close1_changed? || open2_changed? || close2_changed? || quantity_changed? || take_over_changed?
+    if open1_changed? || close1_changed? || open2_changed? || close2_changed? || quantities_changed? || take_over_changed?
       out_of_date
     end
   end

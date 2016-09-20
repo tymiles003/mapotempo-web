@@ -18,9 +18,18 @@ json.visits do
     json.ref visit.ref if @customer.enable_references
     json.take_over visit.take_over && l(visit.take_over.utc, format: :hour_minute_second)
     if !@customer.enable_orders
-      json.quantity visit.quantity?
-      json.quantity1_1 visit.quantity1_1
-      json.quantity1_2 visit.quantity1_2
+      if @customer.deliverable_units.size == 1
+        json.quantity visit.quantities && visit.quantities[@customer.deliverable_units[0].id]
+        json.quantity_default @customer.deliverable_units[0].default_quantity
+      elsif visit.default_quantities.values.compact.size > 0
+        json.quantity '#'
+      end
+      json.quantities do
+        json.array! visit.quantities do |k, v|
+          json.deliverable_unit_id k
+          json.quantity v
+        end
+      end
     end
     json.open1 visit.open1 && l(visit.open1.utc, format: :hour_minute)
     json.close1 visit.close1 && l(visit.close1.utc, format: :hour_minute)

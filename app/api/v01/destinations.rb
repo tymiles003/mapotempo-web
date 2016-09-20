@@ -30,11 +30,20 @@ class V01::Destinations < Grape::API
 
       if p[:visits_attributes]
         p[:visits_attributes].each do |hash|
+          hash[:quantities] = Hash[hash[:quantities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if hash[:quantities] && hash[:quantities].is_a?(Array)
+
           # Deals with deprecated open and close
           hash[:open1] = hash.delete(:open) if !hash[:open1]
           hash[:close1] = hash.delete(:close) if !hash[:close1]
           # Deals with deprecated quantity
-          hash[:quantity1_1] = hash.delete(:quantity) if !hash[:quantity1_1]
+          if !hash[:quantities]
+            hash[:quantities] = { current_customer.deliverable_units[0].id => hash.delete(:quantity) } if hash[:quantity] && current_customer.deliverable_units.size > 0
+            if hash[:quantity1_1] || hash[:quantity1_2]
+              hash[:quantities] = {}
+              hash[:quantities].merge!({ current_customer.deliverable_units[0].id => hash.delete(:quantity1_1) }) if hash[:quantity1_1] && current_customer.deliverable_units.size > 0
+              hash[:quantities].merge!({ current_customer.deliverable_units[1].id => hash.delete(:quantity1_2) }) if hash[:quantity1_2] && current_customer.deliverable_units.size > 1
+            end
+          end
         end
       end
 

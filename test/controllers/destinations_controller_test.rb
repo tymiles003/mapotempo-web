@@ -33,10 +33,19 @@ class DestinationsControllerTest < ActionController::TestCase
   end
 
   test 'should get index in excel' do
+    customers(:customer_one).update enable_orders: false
+    visits(:visit_one).update quantities: {2 => 2.5}
     get :index, format: :excel
     assert_response :success
     assert_not_nil assigns(:destinations)
-    assert_equal "b;destination_one;Rue des Lilas;MyString;33200;Bordeau;;49.1857;-0.3735;;;MyString;MyString;\"\";\"\";b;00:05:33;1.0;;10:00;11:00;;;tag1\r", response.body.split("\n").find{ |l| l.start_with? 'b;destination_one' }
+    assert_equal "b;destination_one;Rue des Lilas;MyString;33200;Bordeau;;49.1857;-0.3735;;;MyString;MyString;\"\";\"\";b;00:05:33;10:00;11:00;;;tag1;;2.5\r", response.body.split("\n").find{ |l| l.start_with? 'b;destination_one' }
+  end
+
+  test 'should get index in excel with order array' do
+    get :index, format: :excel
+    assert_response :success
+    assert_not_nil assigns(:destinations)
+    assert_equal "b;destination_one;Rue des Lilas;MyString;33200;Bordeau;;49.1857;-0.3735;;;MyString;MyString;\"\";\"\";b;00:05:33;10:00;11:00;;;tag1\r", response.body.split("\n").find{ |l| l.start_with? 'b;destination_one' }
   end
 
   test 'should get new' do
@@ -143,6 +152,14 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to edit_destination_path(assigns(:destination))
   end
 
+  test 'should update destination & visit' do
+    size_visits = @destination.visits.size
+    visits_attributes = Hash[@destination.visits.map{ |v| [v.id.to_s, v.attributes.merge(quantities: {'1' => 1, '2' => 2.3})]}]
+    patch :update, id: @destination, destination: { visits_attributes: visits_attributes}
+    assert_redirected_to edit_destination_path(assigns(:destination))
+    assert_equal [[1, 2.3]] * size_visits, @destination.reload.visits.map{ |v| v.quantities.values }
+  end
+
   test 'should update destination with geocode error' do
     Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise GeocodeError.new }) do
       patch :update, id: @destination, destination: { city: 'Nantes', lat: nil, lng: nil }
@@ -178,9 +195,11 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to destinations_path
   end
 
-  test 'should show import_template' do
-    get :import_template, format: :csv
-    assert_response :success
+  test 'should show import template' do
+    [:csv, :excel].each{ |format|
+      get :import_template, format: format
+      assert_response :success
+    }
   end
 
   test 'should import' do

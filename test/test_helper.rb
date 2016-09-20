@@ -1,4 +1,4 @@
-if !ENV.key?('COV') || ENV['COV'] != 'false'
+if (!ENV.key?('COV') && !ENV.key?('COVERAGE')) || (ENV['COV'] != 'false' && ENV['COVERAGE'] != 'false')
   require 'simplecov'
   SimpleCov.minimum_coverage 83
   SimpleCov.start 'rails'

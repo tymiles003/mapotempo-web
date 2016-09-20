@@ -15,9 +15,7 @@ json.routes @routes do |route|
   json.extract! route, :color, :size_active
   json.ref route.ref if @planning.customer.enable_references
   if !@planning.customer.enable_orders
-    json.quantity route.quantity?
-    json.quantity1_1 route.quantity1_1
-    json.quantity1_2 route.quantity1_2
+    json.quantities route.quantities
   end
   if route.vehicle_usage
     json.vehicle_id route.vehicle_usage.vehicle.id
@@ -91,7 +89,6 @@ json.routes @routes do |route|
           json.orders order.products.collect(&:code).join(', ')
         end
       else
-        json.extract! visit, :quantity1_1, :quantity1_2
         json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
           json.quantity quantity if quantity
         end

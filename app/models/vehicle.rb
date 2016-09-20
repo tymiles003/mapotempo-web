@@ -15,12 +15,21 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+class CapacitiesValidator < ActiveModel::Validator
+  def validate(record)
+    !record.capacities || record.capacities.values.each{ |q| !q || Float(q) }
+  rescue
+    record.errors[:capacities] << I18n.t('activerecord.errors.models.vehicle.attributes.capacities.not_float')
+  end
+end
+
 class Vehicle < ActiveRecord::Base
   belongs_to :customer
   belongs_to :router
   has_many :vehicle_usages, inverse_of: :vehicle, dependent: :destroy, autosave: true
   has_many :zones, inverse_of: :vehicle, dependent: :nullify, autosave: true
   enum router_dimension: Router::DIMENSION
+  serialize :capacities, DeliverableUnitQuantity
 
   nilify_blanks
   auto_strip_attributes :name, :tomtom_id, :masternaut_ref
@@ -28,12 +37,11 @@ class Vehicle < ActiveRecord::Base
   validates :name, presence: true
   validates :emission, numericality: {only_float: true}, allow_nil: true
   validates :consumption, numericality: {only_float: true}, allow_nil: true
-  validates :capacity1_1, numericality: {only_integer: true}, allow_nil: true
-  validates :capacity1_2, numericality: {only_integer: true}, allow_nil: true
   validates :color, presence: true
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
   validates :speed_multiplicator, numericality: { greater_than_or_equal_to: 0.5, less_than_or_equal_to: 1.5 }, if: :speed_multiplicator
   validates :contact_email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_blank: true
+  validates_with CapacitiesValidator, fields: [:capacities]
 
   after_initialize :assign_defaults, :increment_max_vehicles, if: 'new_record?'
   before_create :create_vehicle_usage
@@ -44,7 +52,7 @@ class Vehicle < ActiveRecord::Base
 
   include LocalizedAttr
 
-  attr_localized :emission, :consumption, :capacity1_1, :capacity1_2
+  attr_localized :emission, :consumption, :capacities
 
   def self.emissions_table
     [
@@ -88,8 +96,25 @@ class Vehicle < ActiveRecord::Base
     (!tomtom_id.blank? && customer.tomtom?) || (!teksat_id.blank? && customer.teksat?) || (!orange_id.blank? && customer.orange?)
   end
 
-  def capacity_changed?
-    capacity1_1_changed? || capacity1_2_changed?
+  def default_capacities
+    @default_capacities ||= Hash[customer.deliverable_units.collect{ |du|
+      [du.id, capacities && capacities[du.id] ? capacities[du.id] : du.default_capacity]
+    }]
+    @default_capacities
+  end
+
+  def default_capacities?
+    default_capacities && default_capacities.values.any?{ |q| q && q > 0 }
+  end
+
+  def capacities?
+    capacities && capacities.values.any?{ |q| q }
+  end
+
+  def capacities_changed?
+    capacities ? capacities.each_with_index.any?{ |q, i|
+      capacities_was && q != capacities_was[i]
+    } : !!capacities_was
   end
 
   private
@@ -115,7 +140,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def update_out_of_date
-    if emission_changed? || consumption_changed? || capacity_changed? || router_id_changed? || router_dimension_changed? || speed_multiplicator_changed?
+    if emission_changed? || consumption_changed? || capacities_changed? || router_id_changed? || router_dimension_changed? || speed_multiplicator_changed?
       vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.routes.each{ |route|
           route.out_of_date = true

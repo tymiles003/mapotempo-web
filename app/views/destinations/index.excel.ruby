@@ -17,14 +17,16 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('destinations.import_file.without_visit'),
     I18n.t('destinations.import_file.ref_visit'),
     I18n.t('destinations.import_file.take_over'),
-    I18n.t('destinations.import_file.quantity1_1'),
-    I18n.t('destinations.import_file.quantity1_2'),
     I18n.t('destinations.import_file.open1'),
     I18n.t('destinations.import_file.close1'),
     I18n.t('destinations.import_file.open2'),
     I18n.t('destinations.import_file.close2'),
     I18n.t('destinations.import_file.tags_visit')
-  ]
+  ] + (@customer.enable_orders ?
+    [] :
+    @customer.deliverable_units.map{ |du|
+      I18n.t('destinations.import_file.quantity') + (du.label ? '[' + du.label + ']' : '')
+    })
   @destinations.each { |destination|
     destination_columns = [
       destination.ref,
@@ -48,14 +50,16 @@ CSV.generate({col_sep: ';'}) { |csv|
           '',
           visit.ref,
           visit.take_over && l(visit.take_over.utc, format: :hour_minute_second),
-          visit.quantity1_1,
-          visit.quantity1_2,
           visit.open1 && l(visit.open1.utc, format: :hour_minute),
           visit.close1 && l(visit.close1.utc, format: :hour_minute),
           visit.open2 && l(visit.open2.utc, format: :hour_minute),
           visit.close2 && l(visit.close2.utc, format: :hour_minute),
           visit.tags.collect(&:label).join(',')
-        ]
+        ] + (@customer.enable_orders ?
+          [] :
+          @customer.deliverable_units.map{ |du|
+            visit.quantities[du.id]
+          })
       }
     else
       csv << destination_columns + ['x']

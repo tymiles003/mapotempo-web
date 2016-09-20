@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+deliverable_unit_one_one:
+  id: 1
+  label: L
+  default_quantity: 1
+  default_capacity:
+  optimization_overload_multiplier:
+  customer: customer_one
+
+deliverable_unit_one_two:
+  id: 2
+  label: kg
+  default_quantity:
+  default_capacity:
+  optimization_overload_multiplier:
+  customer: customer_one
+
+deliverable_unit_one_other_one:
+  id: 3
+  label: unit
+  default_quantity: 1
+  default_capacity:
+  optimization_overload_multiplier: 1
+  customer: customer_one_other
+
+deliverable_unit_two_one:
+  id: 4
+  label: m³
+  default_quantity: 1
+  default_capacity: 10
+  optimization_overload_multiplier: 1
+  customer: customer_two

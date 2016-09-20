@@ -16,14 +16,10 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module VisitsHelper
-  def visit_quantities(visit, vehicle)
-    quantities = []
-    if visit.quantity1_1
-      quantities << visit.localized_quantity1_1 + (vehicle && vehicle.capacity1_1_unit ? "\u202F" + vehicle.capacity1_1_unit : '')
-    end
-    if visit.quantity1_2
-      quantities << visit.localized_quantity1_2 + (vehicle && vehicle.capacity1_2_unit ? "\u202F" + vehicle.capacity1_2_unit : '')
-    end
-    [quantities.size > 0 ? quantities.join(' - ') : nil]
+  def visit_quantities(visit, vehicle, options = {})
+    visit.destination.customer.deliverable_units.map{ |du|
+      quantities = visit.send(options[:with_default] ? :default_quantities : :quantities)
+      quantities && quantities[du.id] && Visit.localize_numeric_value(quantities[du.id]) + (vehicle && vehicle.default_capacities[du.id] ? '/' + Visit.localize_numeric_value(vehicle.default_capacities[du.id]) : '') + (du.label ? "\u202F" + du.label : '')
+    }.compact
   end
 end
