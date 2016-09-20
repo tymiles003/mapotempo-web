@@ -180,9 +180,9 @@ fr:
         default_country: "Pays par défaut"
         ref: "Référence"
         ref_help: "La référence doit être unique"
-        description_title: "Déscription"
-        description_label: "Informations utilisateur"
-        description_placeholder: "Détails sur l'utilisateur courant"
+        description_title: "Description"
+        description_label: "Informations du compte"
+        description_help: "Détails sur le compte et les utilisateurs courants"
       destination:
         ref: "Référence"
         ref_small: "Réf."

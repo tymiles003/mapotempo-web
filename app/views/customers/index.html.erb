@@ -82,7 +82,7 @@
           <% end %>
         </td>
         <td title="<%= customer.description if customer.description %>">
-          <%= customer.description ? (customer.description[0, 50]) + '...' : 'N/C' %>
+          <%= customer.description ? (customer.description[0, 50]) + '...' : '' %>
         </td>
         <td class="text-right">
           <%= link_to [:duplicate, customer], method: :patch, class: "btn btn-default btn-sm", data: { confirm: t('all.verb.destroy_confirm') } do %>

@@ -181,8 +181,8 @@ en:
         ref: "Reference"
         ref_help: "Reference must be unique"
         description_title: "Description"
-        description_label: "Specific user informations"
-        description_placeholder: "User details"
+        description_label: "Specific account informations"
+        description_help: "Account and users details"
       destination:
         ref: "Reference"
         ref_small: "Ref."
