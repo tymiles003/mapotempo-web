@@ -204,6 +204,7 @@ fr:
         geocoding_level: "Niveau de géocodage"
         tags: "Libellés"
         tag_ids: "Libellés"
+        visits: "Visites"
       # Duplicate for nested errors with autosave
       destinations:
         name: "Nom"
@@ -385,14 +386,14 @@ fr:
         quantity1_2: "Quantité avec autre unité"
         take_over: "Durée de visite"
         take_over_small: "Durée"
-        open1: "Plage horaire 1 début"
+        open1: "Début de Plage horaire 1"
         open1_small: "Début 1"
-        close1: "Plage horaire 1 fin"
+        close1: "Fin de Plage horaire 1"
         close1_small: "Fin 1"
         open_close1_small: "Début/Fin 1"
-        open2: "Plage horaire 2 début"
+        open2: "Début de Plage horaire 2"
         open2_small: "Début 2"
-        close2: "Plage horaire 2 fin"
+        close2: "Fin de Plage horaire 2"
         close2_small: "Fin 2"
         open_close2_small: "Début/Fin 2"
         tags: "Libellés"
@@ -420,32 +421,32 @@ fr:
         vehicle_usage:
           attributes:
             close:
-              on_or_after: "Doit être après l'horaire de début"
-              after: "Doit être après l'horaire de début"
+              on_or_after: "doit être après l'horaire de début"
+              after: "doit être après l'horaire de début"
             rest_stop:
-              on_or_after: "Doit être après l'horaire de début"
-              after: "Doit être après l'horaire de début"
+              on_or_after: "doit être après l'horaire de début"
+              after: "doit être après l'horaire de début"
           missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
           missing_rest_duration: "doit être remplie si une plage de repos est remplie"
         vehicle_usage_set:
           attributes:
             close:
-              after: "Doit être après l'horaire de début"
+              after: "doit être après l'horaire de début"
             rest_stop:
-              on_or_after: "Doit être après l'horaire de début"
-              after: "Doit être après l'horaire de début"
+              on_or_after: "doit être après l'horaire de début"
+              after: "doit être après l'horaire de début"
           at_least_one: "Au moins une configuration de véhicules est requise"
           missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
           missing_rest_duration: "doit être remplie si une plage de repos est remplie"
         visit:
           attributes:
             close1:
-              on_or_after: "Doit être après l'horaire de début 1"
-              blank: "Doit être rempli(e) quand Plage horaire 2 déput est renseigné"
+              on_or_after: "doit être après le début de Plage horaire 1"
+              blank: "doit être rempli(e) si un début de Plage horaire 2 est renseigné"
             open2:
-              on_or_after: "Doit être après l'horaire de fin 1"
+              on_or_after: "doit être après la fin de Plage horaire 1"
             close2:
-              on_or_after: "Doit être après l'horaire de début 2"
+              on_or_after: "doit être après le début de Plage horaire 2"
         zone:
           attributes:
             vehicle:

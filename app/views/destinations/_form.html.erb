@@ -81,7 +81,7 @@
     <% end %>
   </fieldset>
   <div id="visits">
-    <% ((@destination.id && @destination.visits) || [@destination.visits.build]).each_with_index do |visit, i| %>
+    <% ((!@destination.visits.empty? && @destination.visits) || [@destination.visits.build]).each_with_index do |visit, i| %>
       <%= render 'visits/form', visit: visit, i: i+1 %>
     <% end %>
   </div>

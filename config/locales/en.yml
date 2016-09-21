@@ -204,6 +204,7 @@ en:
         geocoding_level: "Geocoding level"
         tags: "Tags"
         tag_ids: "Tags"
+        visits: "Visits"
       # Duplicate for nested errors with autosave
       destinations:
         name: "Name"
@@ -420,32 +421,32 @@ en:
         vehicle_usage:
           attributes:
             close:
-              on_or_after: "Must be after opening time"
-              after: "Must be after opening time"
+              on_or_after: "must be after opening time"
+              after: "must be after opening time"
             rest_stop:
-              on_or_after: "Must be after opening time"
-              after: "Must be after opening time"
+              on_or_after: "must be after opening time"
+              after: "must be after opening time"
           missing_rest_window: "can't be blank if rest duration is filled"
           missing_rest_duration: "can't be blank if rest time window is filled"
         vehicle_usage_set:
           attributes:
             close:
-              after: "Must be after opening time"
+              after: "must be after opening time"
             rest_stop:
-              on_or_after: "Must be after opening time"
-              after: "Must be after opening time"
+              on_or_after: "must be after opening time"
+              after: "must be after opening time"
           at_least_one: "At least one vehicle configuration needed"
           missing_rest_window: "can't be blank if rest duration is filled"
           missing_rest_duration: "can't be blank if rest time window is filled"
         visit:
           attributes:
             close1:
-              on_or_after: "Must be after opening time 1"
-              blank: "Can't be blank when Time window 2 open is set"
+              on_or_after: "must be after Time window 1 open"
+              blank: "can't be blank when Time window 2 open is set"
             open2:
-              on_or_after: "Must be before close time 1"
+              on_or_after: "must be before Time window 1 close"
             close2:
-              on_or_after: "Must be after opening time 2"
+              on_or_after: "must be after Time window 2 open"
         zone:
           attributes:
             vehicle:
