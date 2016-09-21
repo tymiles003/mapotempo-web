@@ -57,7 +57,7 @@ class V01::Api < Grape::API
       if !ActiveRecord::Base.connection.transaction_manager.current_transaction.is_a?(ActiveRecord::ConnectionAdapters::NullTransaction)
         ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
       end
-      super.error!(*args)
+      super(*args)
     end
   end
 
