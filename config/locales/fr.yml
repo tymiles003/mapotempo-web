@@ -944,7 +944,7 @@ fr:
       title: "Modifier planning"
       stops: "arrêts"
       optimize_all: "Optimiser l'ensemble"
-      optimize_all_confirm: "Optimiser l'ensemble du planning ? (vos arrêts pourront être attribuées à une autre tournée qu'actuellement)"
+      optimize_all_confirm: "Optimiser l'ensemble du planning ? (vos arrêts pourront être attribués à une autre tournée qu'actuellement)"
       optimize_each: "Optimiser toutes les tournées"
       optimize_each_confirm: "Lancer un calcul d'optimisation pour chacune des tournées ? (vos arrêts resteront dans chaque tournée initiale)"
       optimize_confirm: "Lancer un calcul d'optimisation ?"
