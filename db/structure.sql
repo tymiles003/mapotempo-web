@@ -88,7 +88,7 @@ CREATE TABLE customers (
     external_callback_url character varying,
     external_callback_name character varying,
     enable_external_callback boolean DEFAULT false NOT NULL,
-    description character varying
+    description character varying,
     enable_global_optimization boolean DEFAULT false NOT NULL
 );
 
