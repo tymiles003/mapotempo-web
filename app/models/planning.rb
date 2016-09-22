@@ -333,12 +333,11 @@ class Planning < ActiveRecord::Base
       flat_stop_ids = stop_ids.flatten.compact
       routes.each_with_index{ |route, index|
         stops_ = route.stops_segregate
-        if routes.size == 1 && route.vehicle_usage
-          stops_[true] && stops_[true].each{ |stop|
-            stop.active = false
-          }
-        end
+
+        # Get ordered stops in current route
         ordered_stops = routes.flat_map{ |r| r.stops.select{ |s| stop_ids[index].include? s.id } }.sort_by{ |s| stop_ids[index].index s.id }
+
+        # 1. Set route and index
         i = 0
         ordered_stops.each{ |stop|
           stop.route_id = route.id
@@ -350,20 +349,24 @@ class Planning < ActiveRecord::Base
             stop.index = stop.time = stop_distance = stop.trace = stop.drive_time = nil
           end
         }
+
+        # 2. Set index for inactive stops in current route
         if route.vehicle_usage
-          # Set index for inactive stops
           ((stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : [])).each{ |stop|
+            stop.active = false
             stop.index = i += 1
           }
         end
       }
+
+      # Save route to update now stop.route_id
       routes.each{ |route|
         route.out_of_date = true if route.vehicle_usage
         (route.no_stop_index_validation = true) && route.save!
-        route.reload # refresh route.stops collection if stops have been moved
+        route.reload # Refresh route.stops collection if stops have been moved
       }
       raise 'Invalid stops count' unless routes.collect{ |r| r.stops.size }.reduce(&:+) == stops_count
-      self.reload # refresh route.stops collection if stops have been moved
+      self.reload # Refresh route.stops collection if stops have been moved
     end
   end
 
