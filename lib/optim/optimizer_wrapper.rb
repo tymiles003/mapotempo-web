@@ -106,7 +106,8 @@ class OptimizerWrapper
             },
             quantities: service[:quantities].each_with_index.map{ |q, i|
               (q["quantity1_#{i+1}".to_sym] || i == 0) ? {unit_id: vehicles[0][:capacities][i]["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}", value: q["quantity1_#{i+1}".to_sym] || 1} : nil
-            }.compact
+            }.compact,
+            late_multiplier: (options[:soft_upper_bound] && options[:soft_upper_bound] > 0) ? options[:soft_upper_bound] : nil
           }.delete_if{ |k, v| !v }
         },
         configuration: {
