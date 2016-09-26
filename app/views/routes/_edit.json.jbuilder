@@ -49,7 +49,7 @@ route.stops.select{ |s| s.is_a?(StopVisit) }.sort_by{ |s| s.index || Float::INFI
     break
   end
 }
-json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::INFINITY } : route.stops.sort_by{ |s| s.name } do |stop|
+json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::INFINITY } : (route.stops.all?{ |s| s.name.to_i != 0 } ? route.stops.sort_by{ |s| s.name.to_i } : route.stops.sort_by(&:name)) do |stop|
   duration = nil
   out_of_window |= stop.out_of_window
   out_of_capacity |= stop.out_of_capacity
