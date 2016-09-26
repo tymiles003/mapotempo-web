@@ -4,9 +4,9 @@
     <%= f.text_field :ref do %>
       <p class="help-block"><%= t('activerecord.attributes.customer.ref_help') %></p>
     <% end %>
-  <% end %>
-  <%= f.text_area :description, { size:"100%", class:"form-control" } do %>
-    <p class="help-block"><%= t('activerecord.attributes.customer.description_help') %></p>
+    <%= f.text_area :description, { size:"100%", class:"form-control" } do %>
+      <p class="help-block"><%= t('activerecord.attributes.customer.description_help') %></p>
+    <% end %>
   <% end %>
   <%= f.text_field :name, t('.name'), required: true, disabled: !current_user.admin? %>
   <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription.to_time, format: :datepicker) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
