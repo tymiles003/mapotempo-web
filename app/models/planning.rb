@@ -262,19 +262,7 @@ class Planning < ActiveRecord::Base
     self.date = order_array.base_date + shift
   end
 
-  # TODO: remove and take into account multiple routers with multiple matrix in optim wrapper
-  def able_to_optimize?(global)
-    routes_with_vehicle = routes.select{ |r| r.vehicle_usage && !r.locked }
-    if global && routes_with_vehicle.map{ |r| [r.vehicle_usage.vehicle.default_router, r.vehicle_usage.vehicle.default_router_dimension, r.vehicle_usage.vehicle.default_speed_multiplicator] }.uniq.size > 1
-      errors[:optimization] = I18n.t('errors.planning.optimization.global_without_same_router')
-      false
-    else
-      true
-    end
-  end
-
   def optimize(routes, global, &optimizer)
-    raise errors.full_messages.join(' ') unless able_to_optimize?(global)
     routes_with_vehicle = routes.select{ |r| r.vehicle_usage }
     stops_on = (global ? routes.find{ |r| !r.vehicle_usage }.stops : []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate[true] }.compact
     o = amalgamate_stops_same_position(stops_on, global) { |positions|

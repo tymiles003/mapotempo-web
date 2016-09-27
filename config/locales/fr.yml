@@ -479,8 +479,6 @@ fr:
     planning:
       import_too_routes: "Tentative d'importer plus de tournées que de véhicules disponibles."
       already_optimizing: "Une optimisation de planning est déjà en cours"
-      optimization:
-        global_without_same_router: "L'optimisation globale n'est pas disponible avec des caractéristiques véhicule différentes (calculateur d'itinéraire, ajustement vitesse)."
     tomtom:
       access_denied: "Non Autorisé. 'Accès complet aux commandes' n'est pas activé dans l'interface WebFLEET. Vous n'avez pas les permissions nécessaires pour effectuer cette action."
       invalid_account: "Utilisateur invalide (non existant)"

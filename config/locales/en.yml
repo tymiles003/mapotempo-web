@@ -479,8 +479,6 @@ en:
     planning:
       import_too_routes: "Tried to import more routes than available vehicles"
       already_optimizing: "A plan optimization is already in progress"
-      optimization:
-        global_without_same_router: "Global optimization is not available with different vehicle attributes (routing engine, speed multiplier)."
     tomtom:
       access_denied: "Access denied. 'Full Access Orders' is not enabled in WEBFLEET user interface. You have insufficient permissions to perform this function."
       invalid_account: "User invalid (does not exist)"
