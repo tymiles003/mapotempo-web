@@ -172,25 +172,25 @@ span.color[data-color=''][data-selected]:after {
   }
 }
 
+.stop-popup {
+  .visits {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .ui-state-error {
+    border: 0px;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 5px 10px;
+  }
+}
+
 #map {
   @media print {
     .leaflet-control-zoom {
       display: none;
-    }
-  }
-
-  .leaflet-popup-content {
-    .visits {
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    .ui-state-error {
-      border: 0px;
-    }
-    ul {
-      list-style-type: none;
-      margin: 0px;
-      padding: 5px 10px;
     }
   }
 

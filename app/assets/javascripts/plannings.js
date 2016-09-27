@@ -1089,39 +1089,63 @@ var plannings_edit = function(params) {
       update: sortPlanning
     }).disableSelection();
 
-    var sortableUpdate = false;
-    $(".stops.sortable").sortable({
-      distance: 8,
-      connectWith: ".sortable",
-      items: "> li",
-      cancel: '.wait',
-      start: function(event, ui) {
-        sortableUpdate = false;
-      },
-      update: function(event, ui) {
-        sortableUpdate = true;
-      },
-      stop: function(event, ui) {
-        if (sortableUpdate) {
-          sortPlanning(event, ui);
+    $.each(data.routes, function(i, route) {
+      var sortableUpdate = false;
+      $(".route[data-route_id='" + route.route_id + "'] .stops.sortable").sortable({
+        distance: 8,
+        connectWith: ".sortable",
+        items: "> li",
+        cancel: '.wait',
+        start: function(event, ui) {
+          sortableUpdate = false;
+        },
+        update: function(event, ui) {
+          sortableUpdate = true;
+        },
+        stop: function(event, ui) {
+          if (sortableUpdate) {
+            sortPlanning(event, ui);
+          }
         }
-      }
-    }).disableSelection();
+      }).disableSelection();
 
-    $('li[data-stop_id]').mouseover(function() {
-      $('span.number', $(this)).css({
-        display: 'none'
-      });
-      $('i.fa-reorder', $(this)).css({
-        display: 'inline-block'
-      });
-    });
-    $('li[data-stop_id]').mouseout(function() {
-      $('i.fa-reorder', $(this)).css({
-        display: 'none'
-      });
-      $('span.number', $(this)).css({
-        display: 'inline-block'
+      $(".route[data-route_id='" + route.route_id + "'] li[data-stop_id]")
+      .mouseover(function() {
+        $('span.number', this).css({
+          display: 'none'
+        });
+        $('i.fa-reorder', this).css({
+          display: 'inline-block'
+        });
+      })
+      .mouseout(function() {
+        var $this = $(this);
+        $('i.fa-reorder', this).css({
+          display: 'none'
+        });
+        $('span.number', this).css({
+          display: 'inline-block'
+        });
+      })
+      .each(function() {
+        var $this = $(this);
+        var stops = $.grep(route.stops, function(e) { return e.stop_id == $this.data('stop_id'); });
+        if (stops.length > 0) {
+          $this.popover({
+            content: SMT['stops/show'](
+              {
+                stop: stops[0]
+              }
+            ),
+            html: true,
+            placement: 'auto',
+            trigger: 'manual'
+          });
+        }
+      })
+      .click(function() {
+        $("li[data-stop_id!='" + $(this).data('stop_id') + "']").popover('hide');
+        $(this).popover($('.sidebar').hasClass('extended') ? 'toggle' : 'hide');
       });
     });
   }
