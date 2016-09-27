@@ -444,7 +444,7 @@ en:
               on_or_after: "must be after Time window 1 open"
               blank: "can't be blank when Time window 2 open is set"
             open2:
-              on_or_after: "must be before Time window 1 close"
+              on_or_after: "must be after Time window 1 close"
             close2:
               on_or_after: "must be after Time window 2 open"
         zone:
@@ -1474,7 +1474,7 @@ or you can click on this link to download file (no update in this case)."
       legend: "Visit #%{n}"
       destroy: "If checked, visit will be destroyed by submitting this page. Click here to cancel."
       ref_help: "A free reference. Important to avoid overwriting visits on import/export"
-      quantities: "Quantiies"
+      quantities: "Quantities"
       quantity_default: "default"
       quantities_help: "Quantities to be delivered"
       take_over_default: "default"
