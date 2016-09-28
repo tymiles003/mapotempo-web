@@ -66,7 +66,7 @@
           <% if customer.users.empty? %>
             <span title="<%= t '.status_no_user' %>"><i class="fa fa-user-times fa-fw"></i><i class="fa fa-warning" style="color: orange;"></i></span>
           <% else
-            max = customer.users.collect(&:last_sign_in_at).compact.max
+            max = customer.users.collect(&:current_sign_in_at).compact.max
             if !max %>
             <span title="<%= t '.status_no_sign_in_user' %>"><i class="fa fa-user-plus fa-fw"></i></span>
           <% elsif max < Time.now - 61.days %>
