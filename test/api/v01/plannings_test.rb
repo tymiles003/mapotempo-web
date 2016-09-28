@@ -191,8 +191,8 @@ class V01::PlanningsTest < ActiveSupport::TestCase
   test 'should return plannings in any case' do
     planning2 = plannings :planning_two
     ['ics', 'json', 'xml'].each do |ext|
-      ["#{@planning.id}, #{planning2.id}", "ref:#{@planning.ref},ref:#{planning2.ref}"].each do |params|
-        get "api/0.1/plannings.#{ext}?api_key=testkey1&ids=#{params}"
+      [nil, "#{@planning.id}, #{planning2.id}", "ref:#{@planning.ref},ref:#{planning2.ref}"].each do |params|
+        get "api/0.1/plannings.#{ext}?api_key=testkey1" + (params ? "&ids=#{params}" : '')
         assert last_response.ok?, last_response.body
         if (ext == 'json')
           response = JSON.parse(last_response.body)
@@ -200,7 +200,7 @@ class V01::PlanningsTest < ActiveSupport::TestCase
         elsif (ext == 'xml')
           response = last_response.body
           assert_equal 2, response.scan('<id type="integer">').count
-        else
+        elsif (ext == 'ics')
           response = last_response.body
           stop_count = customers(:customer_one).plannings.flat_map{ |p| p.routes.select(&:vehicle_usage).map{ |r| r.stops.select(&:active?).select(&:position?).select(&:time?).size } }.reduce(&:+)
           assert_equal stop_count, response.scan('BEGIN:VEVENT').count
