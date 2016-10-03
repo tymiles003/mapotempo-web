@@ -175,8 +175,8 @@ var customColorInitialize = function(selecter){
       $('.color:last-child').attr('data-selected', '');
       options_wrap.removeAttr('selected');
 
-      colorPicker.click()
-      .on("input", function() {
+      (navigator.userAgent.indexOf('Edge') != -1) ? colorPicker.focus() : colorPicker.click();
+      colorPicker.on("input", function() {
           $('.color:last-child').attr('style', 'background-color: ' + this.value)
           .attr('data-color', this.value)
           .attr('title', this.value);
