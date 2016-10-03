@@ -999,8 +999,8 @@ fr:
         icalendar:
           action: "Agenda iCal"
           action_email: "Agenda iCal par email"
-          success: "Fichier exporté avec succès"
-          fail: "Échec lors de l'export"
+          success: "Fichier envoyer par email avec succès à tous les véhicules"
+          fail: "Échec lors de l'export par email"
         kmz_email:
           action: "Tracé KML par email"
           success: "Email envoyé avec succès"

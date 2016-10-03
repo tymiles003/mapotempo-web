@@ -999,8 +999,8 @@ or you can click on this link to download file (no update in this case)."
         icalendar:
           action: "Calendar iCal"
           action_email: "Calendar iCal by E-Mail"
-          success: "File successfully sent by E-Mail"
-          fail: "Failed to export"
+          success: "File successfully sent by E-Mail to all the vehicles"
+          fail: "Failed to export E-Mail"
         kmz_email:
           action: "KML Track by E-Mail"
           success: "E-Mail sent successfully"
