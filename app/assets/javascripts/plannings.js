@@ -458,7 +458,7 @@ var plannings_edit = function(params) {
   };
 
   $("#optimize_each, #optimize_global").click(function(event, ui) {
-    if (!confirm(I18n.t($(this).data('opti-global') ? 'plannings.edit.optimize_all_confirm' : 'plannings.edit.optimize_each_confirm'))) {
+    if (!confirm(I18n.t($(this).data('opti-global') ? 'plannings.edit.optimize_global_confirm' : 'plannings.edit.optimize_each_confirm'))) {
       return false;
     }
     $.ajax({
