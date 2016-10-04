@@ -69,7 +69,7 @@ class OptimizerWrapper
             # speed_multiplier_areas: vehicle[:speed_multiplier_areas],
             timewindow: {start: vehicle[:open], end: vehicle[:close]},
             start_point_id: vehicle[:stores].include?(:start) ? "p#{shift_stores + services.size}" : nil,
-            end_point_id: vehicle[:stores].include?(:stop) ? "p#{1 + shift_stores + services.size}" : nil,
+            end_point_id: vehicle[:stores].include?(:stop) ? "p#{vehicle[:stores].size - 1 + shift_stores + services.size}" : nil,
             cost_fixed: 0,
             cost_distance_multiplier: vehicle[:router_dimension] == 'distance' ? 1 : 0,
             cost_time_multiplier: vehicle[:router_dimension] == 'time' ? 1 : 0,
@@ -118,7 +118,7 @@ class OptimizerWrapper
           resolution: {
             duration: options[:optimize_time] || 3600 * 1000,
             iterations_without_improvment: 100,
-            initial_time_out: 3000,
+            initial_time_out: 3000 * (services.any?{ |s| !s[:vehicle_id] } ? vehicles.size : 1),
             time_out_multiplier: 2
           }
         }
