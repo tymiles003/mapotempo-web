@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.2
--- Dumped by pg_dump version 9.5.2
+-- Dumped from database version 9.5.4
+-- Dumped by pg_dump version 9.5.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -167,7 +167,7 @@ CREATE TABLE destinations (
     customer_id integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    detail character varying(255),
+    detail text,
     comment text,
     geocoding_accuracy double precision,
     country character varying,
@@ -2381,4 +2381,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160804104220');
 INSERT INTO schema_migrations (version) VALUES ('20160906133935');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818101635');
+
+INSERT INTO schema_migrations (version) VALUES ('20161004085743');
 
