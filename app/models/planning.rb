@@ -264,7 +264,7 @@ class Planning < ActiveRecord::Base
 
   def optimize(routes, global, &optimizer)
     routes_with_vehicle = routes.select{ |r| r.vehicle_usage }
-    stops_on = (global ? routes.find{ |r| !r.vehicle_usage }.stops : []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate[true] }.compact
+    stops_on = (routes.find{ |r| !r.vehicle_usage }.try(:stops) || []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate[true] }.compact
     o = amalgamate_stops_same_position(stops_on, global) { |positions|
 
       services_and_rests = positions.collect{ |position|
@@ -302,11 +302,11 @@ class Planning < ActiveRecord::Base
         }
 
         # Remove out-of-route if no global optimization
-        optimizer.call(positions, services, vehicles)[(global ? 0 : 1)..-1]
+        optimizer.call(positions, services, vehicles)[(routes.find{ |r| !r.vehicle_usage } ? 0 : 1)..-1]
       }
     }
     routes_with_vehicle.each_with_index{ |r, i|
-      if o[global ? i + 1 : i].size > 0
+      if o[routes.find{ |r| !r.vehicle_usage } ? i + 1 : i].size > 0
         r.optimized_at = Time.now.utc
       elsif global
         r.optimized_at = nil
@@ -316,6 +316,7 @@ class Planning < ActiveRecord::Base
   end
 
   def set_stops(routes, stop_ids)
+    raise 'Invalid routes count' unless routes.size == stop_ids.size
     Route.transaction do
       stops_count = routes.collect{ |r| r.stops.size }.reduce(&:+)
       flat_stop_ids = stop_ids.flatten.compact
