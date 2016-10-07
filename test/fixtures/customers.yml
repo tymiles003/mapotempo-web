@@ -11,7 +11,8 @@ customer_one:
   router_dimension: 'time'
   enable_orders: true
   optimization_time: 10
-  optimization_soft_upper_bound: 3
+  optimization_stop_soft_upper_bound: 3
+  optimization_vehicle_soft_upper_bound: 3
   profile: profile_one
   speed_multiplicator: 1
   default_country: France
@@ -28,7 +29,8 @@ customer_one_other:
   router_dimension: 'time'
   enable_orders: true
   optimization_time: 10
-  optimization_soft_upper_bound: 3
+  optimization_stop_soft_upper_bound: 3
+  optimization_vehicle_soft_upper_bound: 3
   profile: profile_one
   speed_multiplicator: 1
   default_country: France

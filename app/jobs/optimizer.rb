@@ -20,11 +20,13 @@ require 'optimizer_job'
 
 class Optimizer
   @@optimize_time = Mapotempo::Application.config.optimize_time
-  @@soft_upper_bound = Mapotempo::Application.config.optimize_soft_upper_bound
+  @@stop_soft_upper_bound = Mapotempo::Application.config.optimize_stop_soft_upper_bound
+  @@vehicle_soft_upper_bound = Mapotempo::Application.config.optimize_vehicle_soft_upper_bound
 
   def self.optimize(planning, route, global = false, synchronous = false)
     optimize_time = planning.customer.optimization_time || @@optimize_time
-    soft_upper_bound = planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
+    stop_soft_upper_bound = planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound
+    vehicle_soft_upper_bound = planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound
     if route && route.size_active <= 1
       # Nothing to optimize
       route.compute
@@ -47,7 +49,8 @@ class Optimizer
         Mapotempo::Application.config.optimize.optimize(
           positions, services, vehicles,
           optimize_time: optimize_time ? optimize_time * 1000 : nil,
-          soft_upper_bound: soft_upper_bound,
+          stop_soft_upper_bound: stop_soft_upper_bound,
+          vehicle_soft_upper_bound: vehicle_soft_upper_bound,
           cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
         )
       }

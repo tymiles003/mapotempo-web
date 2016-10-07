@@ -19,7 +19,8 @@ require 'optim/ort'
 
 class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
   @@optimize_time = Mapotempo::Application.config.optimize_time
-  @@soft_upper_bound = Mapotempo::Application.config.optimize_soft_upper_bound
+  @@stop_soft_upper_bound = Mapotempo::Application.config.optimize_stop_soft_upper_bound
+  @@vehicle_soft_upper_bound = Mapotempo::Application.config.optimize_vehicle_soft_upper_bound
 
   def before(job)
     @job = job
@@ -32,7 +33,8 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
       (route_id && r.id == route_id) || (!route_id && !global && r.vehicle_usage) || (!route_id && global)
     }.reject(&:locked)
     optimize_time = planning.customer.optimization_time || @@optimize_time
-    soft_upper_bound = planning.customer.optimization_soft_upper_bound || @@soft_upper_bound
+    stop_soft_upper_bound = planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound
+    vehicle_soft_upper_bound = planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound
 
     i = ii = 0
     optimum = planning.optimize(routes, global) { |positions, services, vehicles|
@@ -47,7 +49,8 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
       optimum = Mapotempo::Application.config.optimize.optimize(
         positions, services, vehicles,
         optimize_time: optimize_time ? optimize_time * 1000 : nil,
-        soft_upper_bound: soft_upper_bound,
+        stop_soft_upper_bound: stop_soft_upper_bound,
+        vehicle_soft_upper_bound: vehicle_soft_upper_bound,
         cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
       ) { |computed, count|
           # Matrix progress

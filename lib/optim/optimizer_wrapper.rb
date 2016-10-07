@@ -74,7 +74,8 @@ class OptimizerWrapper
             cost_distance_multiplier: vehicle[:router_dimension] == 'distance' ? 1 : 0,
             cost_time_multiplier: vehicle[:router_dimension] == 'time' ? 1 : 0,
             cost_waiting_time_multiplier: vehicle[:router_dimension] == 'time' ? 1 : 0,
-            cost_late_multiplier: (vehicle[:router_dimension] == 'time' && options[:soft_upper_bound] && options[:soft_upper_bound] > 0) ? options[:soft_upper_bound] : nil,
+            # FIXME: ortools is not able to support non null late multipliers both services & multiple vehicles
+            cost_late_multiplier: (vehicle[:router_dimension] == 'time' && options[:vehicle_soft_upper_bound] && options[:vehicle_soft_upper_bound] > 0 && (!options[:stop_soft_upper_bound] || options[:stop_soft_upper_bound] == 0 || vehicles.size == 1 || services.all?{ |s| s[:vehicle_id] })) ? options[:vehicle_soft_upper_bound] : nil,
             rest_ids: vehicle[:rests].collect{ |rest|
               "r#{rest[:stop_id]}"
             },
@@ -107,7 +108,7 @@ class OptimizerWrapper
             quantities: service[:quantities].each_with_index.map{ |q, i|
               (q["quantity1_#{i+1}".to_sym] || i == 0) ? {unit_id: vehicles[0][:capacities][i]["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}", value: q["quantity1_#{i+1}".to_sym] || 1} : nil
             }.compact,
-            late_multiplier: (options[:soft_upper_bound] && options[:soft_upper_bound] > 0) ? options[:soft_upper_bound] : nil
+            late_multiplier: (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
           }.delete_if{ |k, v| !v }
         },
         configuration: {

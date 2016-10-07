@@ -51,10 +51,10 @@ Rails.application.configure do
     ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, namespace), namespace: namespace, expires_in: expires_in)
   end
 
-#  config.optimize = Ort.new(
-#    cache_factory('optimizer', 60*60*24*10),
-#    'http://localhost:4567/0.1/optimize_tsptw'
-#  )
+  # config.optimize = Ort.new(
+  #   cache_factory('optimizer', 60*60*24*10),
+  #   'http://localhost:4567/0.1/optimize_tsptw'
+  # )
   config.optimize = OptimizerWrapper.new(
     cache_factory('optimizer_wrapper', 60*60*24*10),
     'http://optim.mapotempo.com:1791/0.1',
@@ -62,7 +62,8 @@ Rails.application.configure do
   )
   config.optimize_time = nil
   config.optimize_cluster_size = 0
-  config.optimize_soft_upper_bound = 3
+  config.optimize_stop_soft_upper_bound = 3
+  config.optimize_vehicle_soft_upper_bound = 3
 
   config.geocode_code_cache = cache_factory('geocode', 60*60*24*10)
   config.geocode_reverse_cache = cache_factory('geocode_reverse', 60*60*24*10)
