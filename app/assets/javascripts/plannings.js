@@ -450,10 +450,12 @@ var plannings_edit = function(params) {
   };
 
   var errorOptimize = function(data) {
+    $('body').removeClass('ajax_waiting');
     stickyError(I18n.t('plannings.edit.optimize_failed'));
   };
 
   var successOptimize = function(data) {
+    $('body').removeClass('ajax_waiting');
     notice(I18n.t('plannings.edit.optimize_complete'));
   };
 
@@ -951,6 +953,7 @@ var plannings_edit = function(params) {
   var displayPlanning = function(data, options) {
 
     if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options && options.error, options && options.success)) {
+      $('body').addClass('ajax_waiting');
       return;
     }
 
