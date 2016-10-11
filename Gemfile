@@ -127,7 +127,7 @@ gem 'jquery-tablesorter', '<1.21.2'
 gem 'jquery-simplecolorpicker-rails'
 gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
 gem 'select2-rails', '=4.0.0' # FIXME test compatibility with planning sidebar
-gem 'i18n-js', '>=3.0.0.rc13'
+gem 'i18n-js', github: 'fnando/i18n-js' # FIXME wait for 3.0.0.rc15
 gem 'mustache', '<1.0.0' # FIXME wait for ruby 2.0
 gem 'smt_rails'
 gem 'paloma'
@@ -153,7 +153,7 @@ gem 'carrierwave'
 gem 'charlock_holmes'
 gem 'savon'
 gem 'savon-multipart', '~> 2.0.2'
-gem 'rest-client'
+gem 'rest-client', '<2.0.0' #FIXME wait for ruby 2.0
 gem 'macaddr'
 gem 'rubyzip'
 
