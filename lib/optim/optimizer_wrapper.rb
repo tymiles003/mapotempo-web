@@ -39,7 +39,7 @@ class OptimizerWrapper
 
       vrp = {
         units: vehicles[0][:capacities].each_with_index.collect{ |c, i|
-          {id: c["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}"}
+          {id: "u#{i+1}"}
         },
         points: positions.each_with_index.collect{ |pos, i|
           {
@@ -80,7 +80,7 @@ class OptimizerWrapper
               "r#{rest[:stop_id]}"
             },
             capacities: vehicle[:capacities].each_with_index.map{ |c, i|
-              c["capacity1_#{i+1}".to_sym] ? {unit_id: c["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}", limit: c["capacity1_#{i+1}".to_sym]} : nil
+              c["capacity1_#{i+1}".to_sym] ? {unit_id: "u#{i+1}", limit: c["capacity1_#{i+1}".to_sym]} : nil
             }.compact
           }
           shift_stores += vehicle[:stores].size
@@ -106,7 +106,7 @@ class OptimizerWrapper
               duration: service[:duration]
             },
             quantities: service[:quantities].each_with_index.map{ |q, i|
-              (q["quantity1_#{i+1}".to_sym] || i == 0) ? {unit_id: vehicles[0][:capacities][i]["capacity1_#{i+1}_unit".to_sym] || "unit#{i+1}", value: q["quantity1_#{i+1}".to_sym] || 1} : nil
+              (q["quantity1_#{i+1}".to_sym] || i == 0) ? {unit_id: "u#{i+1}", value: q["quantity1_#{i+1}".to_sym] || 1} : nil
             }.compact,
             late_multiplier: (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
           }.delete_if{ |k, v| !v }
