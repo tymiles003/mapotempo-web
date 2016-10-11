@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2014-2015
+# Copyright © Mapotempo, 2012
 #
 # This file is part of Mapotempo.
 #
@@ -15,14 +15,16 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'grape-swagger'
+class ApiCors
+  def initialize(app)
+    @app = app
+  end
 
-class ApiRootDef < Grape::API
-  mount ApiV01
-end
-
-ApiRoot = Rack::Builder.new do
-  use ApiLogger
-  use ApiCors
-  run ApiRootDef
+  def call(env)
+    if env['REQUEST_METHOD'] != 'OPTIONS'
+      @app.call(env)
+    else
+      Rack::Response.new([nil], 204).finish
+    end
+  end
 end

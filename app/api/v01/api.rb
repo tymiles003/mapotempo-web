@@ -98,6 +98,8 @@ class V01::Api < Grape::API
       rack_response(nil, 404)
     elsif e.is_a?(ActiveRecord::RecordInvalid) || e.is_a?(RangeError)
       rack_response({error: e.to_s}.to_json, 400)
+    elsif e.is_a?(Grape::Exceptions::MethodNotAllowed)
+      rack_response(response.to_json, 405)
     else
       rack_response(response.to_json, 500)
     end
