@@ -28,7 +28,7 @@ class OptimizerWrapper
   # positions with stores at the end
   # services Array[Hash{start1: , end1: , duration: , stop_id: , vehicle_id: , quantities: []}]
   # vehicles Array[Hash{id: , open: , close: , stores: [], rests: [], capacities: []}]
-  def optimize(positions, services, vehicles, options, &matrix_progress)
+  def optimize(positions, services, vehicles, options, &progress)
     key = Digest::MD5.hexdigest(Marshal.dump([positions, services, vehicles, options]))
 
     result = @cache.read(key)
@@ -131,11 +131,13 @@ class OptimizerWrapper
       result = nil
       while json
         result = JSON.parse(json)
-        # TODO: matrix_progress.call(computed, count) if matrix_progress
         if result['job']['status'] == 'completed'
           @cache.write(key, json && String.new(json)) # String.new workaround waiting for RestClient 2.0
           break
         elsif ['queued', 'working'].include?(result['job']['status'])
+          if progress && m = /^(process ([0-9]+)\/([0-9]+) \- )?([a-z ]+)/.match(result['job']['avancement'])
+            progress.call(m[4].start_with?('compute matrix') ? 0 : m[4].start_with?('run optimization') ? 1 : nil, m[1] && m[2].to_i, m[2] && m[3].to_i)
+          end
           sleep(2)
           job_id = result['job']['id']
           json = RestClient.get(@url + "/vrp/jobs/#{job_id}.json", params: {api_key: @api_key})

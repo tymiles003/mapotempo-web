@@ -36,36 +36,26 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
     stop_soft_upper_bound = planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound
     vehicle_soft_upper_bound = planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound
 
-    i = ii = 0
+    bars = Array.new(2, 0)
     optimum = planning.optimize(routes, global) { |positions, services, vehicles|
-      @job.progress = '100;0;'
-      @job.save
-      Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-
-      # Optimize
-      @job.progress = "100;" + (planning.customer.optimization_time ? "#{optimize_time * 1000}ms0;" : '-1;')
-      @job.save
-      Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
       optimum = Mapotempo::Application.config.optimize.optimize(
         positions, services, vehicles,
         optimize_time: optimize_time ? optimize_time * 1000 : nil,
         stop_soft_upper_bound: stop_soft_upper_bound,
         vehicle_soft_upper_bound: vehicle_soft_upper_bound,
         cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
-      ) { |computed, count|
-          # Matrix progress
-          if computed
-            i += computed
-            if i > ii + 50
-              @job.progress = "#{i * 100 / count};0;"
-              @job.save
-              Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
-              ii = i
+      ) { |bar, computed, count|
+          if bar
+            if computed
+              (0..bar).to_a.each{ |i| bars[i] = (computed - 1) * 100 / count }
+            else
+              (0..(bar-1)).to_a.each{ |i| bars[i] = 100 } if bar > 0
+              bars[bar] = bar == 1 && planning.customer.optimization_time ? "#{optimize_time * 1000}ms0" : -1
             end
-          else
-            @job.progress = "-1;0;"
-            @job.save
           end
+          @job.progress = bars.join(';') + ';'
+          @job.save
+          Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} #{@job.progress}"
         }
       @job.progress = '100;100;'
       @job.save

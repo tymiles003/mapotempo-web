@@ -118,7 +118,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       } else {
         $(e).parent().parent().show();
       }
-      if (!progress || !progress[i]) {
+      if (!progress || !progress[i] || progress[i] == 0) {
         $(e).parent().removeClass("active");
         $(e).css({
           transition: 'linear 0s',
