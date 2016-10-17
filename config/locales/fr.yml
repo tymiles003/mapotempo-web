@@ -889,7 +889,7 @@ fr:
 
   route_mailer:
     send_kmz_route:
-      content: "Un export au format KML vient de vous être envoyé depuis %{s} en pièce jointe à cet email."
+      content: "Un export au format KMZ vient de vous être envoyé depuis %{s} en pièce jointe à cet email."
       vehicle: "Véhicule"
       planning: "Planning"
       planning_ref: "Référence planning"
@@ -1002,14 +1002,14 @@ fr:
           success: "Fichier envoyé par email avec succès à tous les véhicules"
           fail: "Échec lors de l'export par email"
         kmz_email:
-          action: "Tracé KML par email"
+          action: "Tracé KMZ par email"
           success: "Email envoyé avec succès"
           fail: "Échec lors de l'envoi de l'email"
         print: "Imprimer"
         spreadsheet: "Tableur CSV / Excel"
         gpx_route: "Route GPX"
         gpx_track: "Tracé GPX"
-        kmz_track: "Tracé KML"
+        kmz_track: "Tracé KMZ"
       zoning:
         none: "Aucun"
         apply: "Appliquer zonage"

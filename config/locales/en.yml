@@ -889,7 +889,7 @@ en:
 
   route_mailer:
     send_kmz_route:
-      content: "A KML file containing route informations has been attached to this E-Mail from %{s}."
+      content: "A KMZ file containing route informations has been attached to this E-Mail from %{s}."
       vehicle: "Vehicle"
       planning: "Plan"
       planning_ref: "Plan Ref."
@@ -1002,14 +1002,14 @@ or you can click on this link to download file (no update in this case)."
           success: "File successfully sent by E-Mail to all the vehicles"
           fail: "Failed to export E-Mail"
         kmz_email:
-          action: "KML Track by E-Mail"
+          action: "KMZ Track by E-Mail"
           success: "E-Mail sent successfully"
           fail: "Failed to send E-Mail"
         print: "Print"
         spreadsheet: "Spreadsheet CSV / Excel"
         gpx_route: "GPX Route"
         gpx_track: "GPX Track"
-        kmz_track: "KML Track"
+        kmz_track: "KMZ Track"
       zoning:
         none: "None"
         apply: "Apply zoning"
