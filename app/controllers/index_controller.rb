@@ -24,6 +24,7 @@ class IndexController < ApplicationController
   end
 
   def unsupported_browser
+    render layout: "_unsupported_browser"
   end
 
   def customer_payment_period_month

@@ -1,12 +1,14 @@
-<h1><%= t '.unsupported_browser' %></h1>
-<p>
-<% if params[:browser] == 'modern' %>
-  <%= t '.unsupported_browser_modern' %>
-<% end %>
-</p>
-<% if params[:browser] == 'ie' || params[:browser] == 'modern'  %>
-<p>
-  <%= t '.download_browser' %>
-  <a href="https://www.mozilla.org/firefox">https://www.mozilla.org/firefox</a>
-</p>
-<% end %>
+<div class="container">
+  <h1><%= t '.unsupported_browser' %></h1>
+  <p>
+  <% if params[:browser] == 'modern' %>
+    <%= t '.unsupported_browser_modern' %>
+  <% end %>
+  </p>
+  <% if params[:browser] == 'ie' || params[:browser] == 'modern'  %>
+  <p>
+    <%= t '.download_browser' %>
+    <a href="https://www.mozilla.org/firefox">https://www.mozilla.org/firefox</a>
+  </p>
+  <% end %>
+</div>
