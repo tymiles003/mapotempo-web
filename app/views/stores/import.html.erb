@@ -14,7 +14,7 @@
       <p class="help-block"><%= t '.csv.help' %></p>
       <%= twitter_bootstrap_form_for(@import_csv, url: stores_import_csv_path, layout: :horizontal, multipart: true) do |f| %>
         <%= render 'shared/error_messages', model: @import_csv %>
-        <%= f.file_field :file do %>
+        <%= f.file_field :file, required: true do %>
           <p class="help-block">
             <%= t '.csv.file_help' %>
             <a data-toggle="modal" data-target="#import-help-modal" data-keyboard="true" href="#help" title="<%= t('.import_template_help') %>"><i class="fa fa-info-circle fa-fw"></i> <%= t('.import_template_help') %></a>
