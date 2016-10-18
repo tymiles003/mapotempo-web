@@ -274,6 +274,17 @@ class ImporterTest < ActionController::TestCase
     end
   end
 
+  test 'should import by merging columns' do
+    import_count = 1
+    assert_difference('Destination.count', import_count) do
+      assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, column_def: {name: 'code postal, nom'}, file: tempfile('test/fixtures/files/import_destinations_one.csv', 'text.csv')).import
+    end
+
+    o = Destination.where(ref: 'z').first
+    assert_equal '13010 BF', o.name
+    assert_equal '13010', o.postalcode
+  end
+
   test 'should import without header' do
     assert_no_difference('Planning.count') do
       assert_difference('Destination.count', 1) do

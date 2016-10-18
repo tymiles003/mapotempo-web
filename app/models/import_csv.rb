@@ -59,6 +59,7 @@ class ImportCsv
               @importer.columns.each{ |k, v|
                 if r.is_a?(Array)
                   values = ((column_def[k] && !column_def[k].empty?) ? column_def[k] : (without_header? ? '' : v[:title])).split(',').map{ |c|
+                    c.strip!
                     if c.to_i != 0
                       r[c.to_i - 1].is_a?(Array) ? r[c.to_i - 1][1] : r[c.to_i - 1]
                     else
