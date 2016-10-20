@@ -414,7 +414,8 @@ var destinations_index = function(params, api) {
     take_over_default = params.take_over_default,
     url_click2call = params.url_click2call,
     enable_references = params.enable_references,
-    enable_multi_visits = params.enable_multi_visits;
+    enable_multi_visits = params.enable_multi_visits,
+    enable_orders = params.enable_orders;
 
   params.geocoder = true;
 
@@ -456,6 +457,7 @@ var destinations_index = function(params, api) {
     // must be set here instead of in json because api used for update don't expose all attributes...
     destination.enable_references = enable_references;
     destination.enable_multi_visits = enable_multi_visits;
+    destination.enable_orders = enable_orders;
     destination.i18n = mustache_i18n;
     if (destination.geocoding_accuracy) {
       if (destination.geocoding_accuracy > <%= Mapotempo::Application.config.geocode_geocoder.accuracy_success %>) {

@@ -18,6 +18,7 @@
           <p class="help-block"><%= t '.ref_help' %></p>
         <% end %>
       <% end %>
+      <% if !visit.destination.customer.enable_orders %>
       <div id="visit_quantity_input" class="form-group">
         <label class="sr-only" for="destination_visits_attributes_#{i}_quantity1_1"><%= t 'activerecord.attributes.visit.quantity1_1' %></label>
         <label class="sr-only" for="destination_visits_attributes_#{i}_quantity1_2"><%= t 'activerecord.attributes.visit.quantity1_2' %></label>
@@ -31,6 +32,7 @@
           <p class="help-block"><%= t '.quantities_help' %></p>
         </div>
       </div>
+      <% end %>
       <%= f.text_field :take_over, {
         value: visit.take_over && l(visit.take_over.utc, format: :hour_minute_second),
         placeholder: visit.destination.customer.take_over ? l(visit.destination.customer.take_over.utc, format: :hour_minute_second) + ' (' + t('.take_over_default') + ')' : t('all.unit.hour_minute_second'),

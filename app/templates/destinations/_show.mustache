@@ -139,9 +139,11 @@
             </span>
           {{/enable_multi_visits}}
           {{/enable_references}}
-          <span style="width:4em">
+          {{^enable_orders}}
+          <span style="width:3em">
             <input class="form-control input-sm" type="number" name="destination[visits_attributes][][quantity1_1]" value="{{quantity1_1}}" placeholder="1"/>
           </span>
+          {{/enable_orders}}
           {{#enable_multi_visits}}
             <span>
               <div class="input-group select2-bootstrap-append input-group-tags">
@@ -180,19 +182,19 @@
               </div>
             </span>
           {{/enable_multi_visits}}
-          <span style="width:5em">
+          <span style="width:4em">
             <input class="form-control input-sm" type="datetime" name="destination[visits_attributes][][take_over]" value="{{take_over}}" placeholder="{{take_over_default}}"/>
           </span>
-          <span style="width:3.5em">
+          <span style="width:3em">
             <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][open1]" value="{{open1}}"/>
           </span>
-          <span style="width:3.5em">
+          <span style="width:3em">
             <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][close1]" value="{{close1}}"/>
           </span>
-          <span style="width:3.5em">
+          <span style="width:3em">
             <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][open2]" value="{{open2}}"/>
           </span>
-          <span style="width:3.5em">
+          <span style="width:3em">
             <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][close2]" value="{{close2}}"/>
           </span>
         </div>
