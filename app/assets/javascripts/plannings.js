@@ -1544,19 +1544,19 @@ var plannings_show = function(params) {
   }
 };
 
-var observe_icalendar_export = function(){
+var observe_icalendar_export = function() {
   var url = $('#ical_export').attr('href'), ids;
   $('#ical-hook').click(function(){ 
     ids = $.makeArray($('input[type=checkbox]:checked').map(function(index, id){ return $(id).val(); }));
     $('#ical_export').attr('href', url + '&ids=' + ids.join(',') + '&email=false');
   });
-  $('.icalendar_email').click(function(e){
+  $('.icalendar_email').click(function(e) {
     e.preventDefault();
     $.ajax({
       url: $(e.target).attr('href'),
       type: 'GET',
       data: {
-        ids: ids.join(','),
+        ids: ids && ids.join(','),
         email: true
       },
     })
