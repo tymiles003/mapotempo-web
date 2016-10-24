@@ -50,9 +50,11 @@ class V01::Stops < Grape::API
               planning = current_customer.plannings.find{ |planning| planning.id == planning_id }
               route = planning.routes.find{ |route| route.id == route_id }
               stop = route.stops.find{ |stop| stop.id == id }
-              stop.update! stop_params
-              route.compute && planning.save!
-              status 204
+              Planning.transaction do
+                stop.update! stop_params
+                route.compute && planning.save!
+                status 204
+              end
             end
 
             desc 'Move stop position in routes.',
@@ -69,9 +71,10 @@ class V01::Stops < Grape::API
               planning = current_customer.plannings.find{ |planning| planning.id == planning_id }
               stop = nil
               planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == stop_id } }
-
-              planning.move_stop(planning.routes.find{ |route| route.id == route_id }, stop, Integer(params[:index]) + 1) && planning.save!
-              status 204
+              Planning.transaction do
+                planning.move_stop(planning.routes.find{ |route| route.id == route_id }, stop, Integer(params[:index]) + 1) && planning.save!
+                status 204
+              end
             end
           end
         end
