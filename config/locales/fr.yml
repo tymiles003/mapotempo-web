@@ -623,8 +623,8 @@ fr:
       optimization_time_default: "3600 (valeur par défaut)"
       optimization_time_help: "L'optimisation s'arrête par défaut automatiquement. Néanmoins vous pouvez préciser ici une valeur limite à ne pas dépasser."
       optimization_soft_upper_bound_default: "%{n} (valeur par défaut)"
-      optimization_stop_soft_upper_bound_help: "Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte)."
-      optimization_vehicle_soft_upper_bound_help: "Pour une optimisation globale, permet de gérer la répartition sur les véhicules. Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte)."
+      optimization_stop_soft_upper_bound_help: "Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte : désactive les clusters dans ce cas)."
+      optimization_vehicle_soft_upper_bound_help: "Pour une optimisation globale, permet de gérer la répartition sur les véhicules. Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte : désactive les clusters dans ce cas)."
       print_header_help: "Bloc de texte ajouté avant chaque tournée"
       print:
         title: "Impressions"

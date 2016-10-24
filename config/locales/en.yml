@@ -623,8 +623,8 @@ en:
       optimization_time_default: "3600 (default value)"
       optimization_time_help: "The optimization stops automatically by default. Nevertheless you can specify here a maximum time for optimization."
       optimization_soft_upper_bound_default: "%{n} (default value)"
-      optimization_stop_soft_upper_bound_help: "More the value is important, more delays are detrimental (0 to disallow delays strictly)."
-      optimization_vehicle_soft_upper_bound_help: "For global optimization, allow to manage distribution on vehicles. More the value is important, more delays are detrimental (0 to disallow delays strictly)."
+      optimization_stop_soft_upper_bound_help: "More the value is important, more delays are detrimental (0 to disallow delays strictly: turn clusters off in this case)."
+      optimization_vehicle_soft_upper_bound_help: "For global optimization, allow to manage distribution on vehicles. More the value is important, more delays are detrimental (0 to disallow delays strictly: turn clusters off in this case)."
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"
