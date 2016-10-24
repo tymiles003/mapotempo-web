@@ -619,7 +619,7 @@ fr:
       alyacom: "AlyaCom"
       alyacom_help: "Permet d'envoyer les plannings vers l'application AlyaCom."
       optimization_cluster_size_default: "%{n} (valeur par défaut)"
-      optimization_cluster_size_help: "Valeur en secondes séparant les points à regrouper entre eux avant de les optimiser. Permet de réduire la durée d'optimisation, une valeur trop grande affectera la qualité de l'optimisation (30 sec est une grande valeur)."
+      optimization_cluster_size_help: "Valeur en secondes séparant les points à regrouper entre eux avant de les optimiser. Une valeur trop grande affectera la qualité de l'optimisation (30 sec est une grande valeur). Valable uniquement dans le cas d'une optimisation d'une seule tournée avec retards."
       optimization_time_default: "3600 (valeur par défaut)"
       optimization_time_help: "L'optimisation s'arrête par défaut automatiquement. Néanmoins vous pouvez préciser ici une valeur limite à ne pas dépasser."
       optimization_soft_upper_bound_default: "%{n} (valeur par défaut)"

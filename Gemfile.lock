@@ -29,6 +29,12 @@ GIT
     mapotempo_web_import_vehicle_store (0.0.1)
 
 GIT
+  remote: git://github.com/Mapotempo/paloma.git
+  revision: 25cbba9f33c7b36f4f4878035ae53541a0036ee9
+  specs:
+    paloma (5.0.0)
+
+GIT
   remote: git://github.com/Mapotempo/sidebar-v2-gh-pages-rails.git
   revision: 11f7717f4eca02b4be4567142d2df6e0274c8fc1
   specs:
@@ -336,7 +342,6 @@ GEM
       nokogiri
     nori (2.6.0)
     orm_adapter (0.5.0)
-    paloma (5.0.0)
     parser (2.3.1.2)
       ast (~> 2.2)
     pg (0.18.4)
@@ -590,7 +595,7 @@ DEPENDENCIES
   mustache (< 1.0.0)
   nilify_blanks
   nokogiri
-  paloma
+  paloma!
   pg
   pnotify-rails!
   polylines

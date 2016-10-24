@@ -130,7 +130,7 @@ gem 'select2-rails', '=4.0.0' # FIXME test compatibility with planning sidebar
 gem 'i18n-js', github: 'fnando/i18n-js' # FIXME wait for 3.0.0.rc15
 gem 'mustache', '<1.0.0' # FIXME wait for ruby 2.0
 gem 'smt_rails'
-gem 'paloma'
+gem 'paloma', github: 'Mapotempo/paloma' # FIXME wait for 25cbba9f33c7b36f4f4878035ae53541a0036ee9
 gem 'browser', '<2.0.0' #FIXME wait for ruby 2.0
 gem 'color'
 

@@ -28,10 +28,14 @@ function admin_resellers_edit(params, api) {
   admin_resellers_form(params, api);
 }
 
-Paloma.controller('Admin/Reseller').prototype.edit = function() {
-  admin_resellers_edit(this.params, 'destinations');
-};
+Paloma.controller('Admin/Resellers', {
+  edit: function() {
+    admin_resellers_edit(this.params);
+  }
+});
 
-Paloma.controller('Admin/Reseller').prototype.update = function() {
-  admin_resellers_edit(this.params, 'destinations');
-};
+Paloma.controller('Admin/Resellers', {
+  update: function() {
+    admin_resellers_edit(this.params);
+  }
+});
