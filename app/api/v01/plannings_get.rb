@@ -62,8 +62,7 @@ class V01::PlanningsGet < Grape::API
       requires :id, type: String, desc: ID_DESC
     end
     get ':id' do
-      id = ParseIdsRefs.read params[:id]
-      planning = current_customer.plannings.where(id).first!
+      planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
       if env['api.format'] == :ics
         if params.key?(:email)
           planning.routes.joins(vehicle_usage: [:vehicle]).select{ |route| route.vehicle_usage.vehicle.contact_email }.each do |route|

@@ -61,9 +61,7 @@ class V01::RoutesGet < Grape::API
           requires :id, type: String, desc: ID_DESC
         end
         get ':id' do
-          planning_id = ParseIdsRefs.read params[:planning_id] rescue error!('Invalid planning', 400)
-          route_id = ParseIdsRefs.read params[:id] rescue error!('Invalid route', 400)
-          route = current_customer.plannings.where(planning_id).first!.routes.where(route_id).first!
+          route = current_customer.plannings.where(ParseIdsRefs.read(params[:planning_id])).first!.routes.where(ParseIdsRefs.read(params[:id])).first!
           if params.key?(:email)
             route_calendar_email route
             status 204

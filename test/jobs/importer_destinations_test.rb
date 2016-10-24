@@ -215,13 +215,13 @@ class ImporterTest < ActionController::TestCase
   end
 
   test 'should import and update' do
-    destinations(:destination_unaffected_one).update(geocoding_accuracy: 0.9, geocoding_level: 1) && @customer.reload
+    destinations(:destination_unaffected_one).update(lat: 2.5, lng: 2.5, geocoding_accuracy: 0.9, geocoding_level: 1) && @customer.reload
     assert_difference('Destination.count', 1) do
       ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
     end
     destination = Destination.find_by(ref:'a')
     assert_equal 'unaffected_one_update', destination.name
-    assert_equal 2.5, destination.lat
+    assert_equal 1.5, destination.lat
     assert_equal nil, destination.geocoding_accuracy
     assert_equal nil, destination.geocoding_level
     assert_equal 'unaffected_two_update', Destination.find_by(ref:'unknown').name
