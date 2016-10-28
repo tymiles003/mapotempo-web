@@ -80,7 +80,7 @@ class OptimizerWrapper
               "r#{rest[:stop_id]}"
             },
             capacities: vehicle[:capacities].each_with_index.map{ |c, i|
-              c["capacity1_#{i+1}".to_sym] ? {unit_id: "u#{i+1}", limit: c["capacity1_#{i+1}".to_sym]} : nil
+              c["capacity1_#{i+1}".to_sym] ? {unit_id: "u#{i+1}", limit: c["capacity1_#{i+1}".to_sym], overload_multiplier: 1} : nil
             }.compact
           }
           shift_stores += vehicle[:stores].size
