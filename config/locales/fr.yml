@@ -1556,7 +1556,7 @@ fr:
     placeholder_filter: "filtrer"
     help_menu: "Aide"
     help: "Aide en ligne"
-    contact: "Contact"
+    contact: "Contacter le support"
     choose_file: "Sélectionner fichier"
     geocoder:
       search: "Recherche d'adresse"

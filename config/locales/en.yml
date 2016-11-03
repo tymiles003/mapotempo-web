@@ -1556,7 +1556,7 @@ or you can click on this link to download file (no update in this case)."
     placeholder_filter: "filter"
     help_menu: "Help"
     help: "Online help"
-    contact: "Contact"
+    contact: "Contact support"
     choose_file: "Choose file"
     geocoder:
       search: "Search an address..."
