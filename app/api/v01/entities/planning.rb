@@ -28,10 +28,10 @@ class V01::Entities::Planning < Grape::Entity
   expose(:zoning_id, documentation: { type: Integer, desc: 'DEPRECATED. Use zoning_ids instead.' }) { |p|
     p.zonings.first.id if p.zonings.size == 1
   }
-  expose(:zoning_ids, documentation: { type: Integer, is_array: true })
+  expose(:zoning_ids, documentation: { type: Integer, is_array: true, desc: 'If a new zoning is specified before planning save, all visits will be affected to vehicles specified in zones.' })
   expose(:zoning_out_of_date, documentation: { type: 'Boolean' })
   expose(:out_of_date, documentation: { type: 'Boolean' })
   expose(:route_ids, documentation: { type: Integer, is_array: true }) { |m| m.routes.collect(&:id) } # Workaround bug with fetch join stops
-  expose(:tag_ids, documentation: { type: Integer, is_array: true })
+  expose(:tag_ids, documentation: { type: Integer, is_array: true, desc: 'Restrict visits/destinations in the plan (visits/destinations should have all of these tags to be present in the plan)' })
   expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'})
 end

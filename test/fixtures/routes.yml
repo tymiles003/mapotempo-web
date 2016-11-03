@@ -1,8 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 route_zero_one:
-  distance: 1.5
-  emission: 1.5
+  distance:
+  emission:
   planning: planning_one
   out_of_date: false
   vehicle_usage:
@@ -27,8 +27,8 @@ route_three_one:
   start: 2000-01-01 07:00
 
 route_zero_two:
-  distance: 1.5
-  emission: 1.5
+  distance:
+  emission:
   planning: planning_two
   out_of_date: false
   vehicle_usage:

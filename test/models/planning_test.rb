@@ -57,7 +57,7 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should set_routes' do
     o = plannings(:planning_one)
 
-    o.set_routes({'route_one_one' => {visits: [[visits(:visit_one)]]}})
+    o.set_routes({'abc' => {visits: [[visits(:visit_one)]]}})
     assert o.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
     o.save!
   end
@@ -66,7 +66,7 @@ class PlanningTest < ActiveSupport::TestCase
     o = plannings(:planning_one)
     o.tags << tags(:tag_two)
 
-    o.set_routes({'route_one_one' => {visits: [[visits(:visit_one)]]}})
+    o.set_routes({'abc' => {visits: [[visits(:visit_one)]]}})
     assert_not o.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
     o.save!
   end
@@ -74,8 +74,8 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should set_routes with ref_vehicle' do
     o = plannings(:planning_one)
 
-    o.set_routes({'route_one_one' => {visits: [[visits(:visit_one)]], ref_vehicle: vehicles(:vehicle_one).ref}})
-    assert o.routes[2].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
+    o.set_routes({'abc' => {visits: [[visits(:visit_one)]], ref_vehicle: vehicles(:vehicle_three).ref}})
+    assert o.routes.find{ |r| r.vehicle_usage.try(&:vehicle) == vehicles(:vehicle_three) }.stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
     o.save!
   end
 

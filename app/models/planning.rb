@@ -62,7 +62,7 @@ class Planning < ActiveRecord::Base
     routes_visits = routes_visits.select{ |ref, _d| ref } # Remove out_of_route
     if routes_visits.size <= routes.size - 1
       visits = routes_visits.values.flat_map{ |s| s[:visits] }.collect{ |visit_active| visit_active[0] }
-      routes[0].set_visits((customer.visits - visits).select{ |visit|
+      routes.find{ |r| !r.vehicle_usage }.set_visits((customer.visits - visits).select{ |visit|
         ((visit.tags | visit.destination.tags) & tags).size == tags.size
       })
 
@@ -79,7 +79,7 @@ class Planning < ActiveRecord::Base
       }
     else
       raise I18n.t('errors.planning.import_too_routes')
-   end
+    end
   end
 
   def vehicle_usage_add(vehicle_usage, ignore_errors = false)

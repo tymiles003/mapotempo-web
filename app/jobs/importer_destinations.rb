@@ -279,9 +279,7 @@ class ImporterDestinations < ImporterBase
 
     if !@routes.keys.compact.empty?
       @planning = @customer.plannings.find_by(ref: @planning_hash['ref']) if @planning_hash.key?('ref')
-
       @planning = @customer.plannings.build if !@planning
-
       @planning.attributes = {
         name: name || I18n.t('activerecord.models.planning') + ' ' + I18n.l(Time.zone.now, format: :long),
         vehicle_usage_set: @customer.vehicle_usage_sets[0],
