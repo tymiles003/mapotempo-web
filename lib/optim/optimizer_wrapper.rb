@@ -117,9 +117,9 @@ class OptimizerWrapper
             prefer_short_segment: true
           },
           resolution: {
-            duration: options[:optimize_time] || 3600 * 1000,
+            duration: (options[:optimize_time] || 3600 * 1000) * (services.all?{ |s| s[:vehicle_id] } ? vehicles.size : 1),
             iterations_without_improvment: 100,
-            initial_time_out: 3000 * (services.any?{ |s| !s[:vehicle_id] } ? vehicles.size : 1),
+            initial_time_out: 3000 * (services.all?{ |s| s[:vehicle_id] } ? vehicles.size : 1),
             time_out_multiplier: 2
           }
         }
