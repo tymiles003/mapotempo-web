@@ -65,8 +65,8 @@ module Routers
             when 417 # OutOfSupportedAreaError
               ''
             else
-              # response.return!(request, result, &block)
-              raise RouterError.new(result.message)
+              response = (response && response.size > 1) ? JSON.parse(response) : nil
+              raise RouterError.new(result.message + (response ? ' - ' + response['error'] + ' ' + response['detail'] : ''))
             end
           }
           if request != ''
@@ -131,7 +131,8 @@ module Routers
           when 417
             ''
           else
-            response.return!(request, result, &block)
+            response = (response && response.size > 1) ? JSON.parse(response) : nil
+            raise RouterError.new(result.message + (response ? ' - ' + response['error'] + ' ' + response['detail'] : ''))
           end
         }
 
@@ -177,7 +178,8 @@ module Routers
           when 417
             ''
           else
-            response.return!(request, result, &block)
+            response = (response && response.size > 1) ? JSON.parse(response) : nil
+            raise RouterError.new(result.message + (response ? ' - ' + response['error'] + ' ' + response['detail'] : ''))
           end
         }
 

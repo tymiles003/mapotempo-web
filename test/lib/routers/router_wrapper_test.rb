@@ -35,7 +35,7 @@ class Routers::RouterWrapperTest < ActionController::TestCase
     end
   end
 
-  test 'should compute matrix on impassable' do
+  test 'should compute route & matrix on impassable' do
     begin
       points = [[46.634056, 2.547283], [42.161697, 9.138183]]
 
@@ -65,6 +65,23 @@ class Routers::RouterWrapperTest < ActionController::TestCase
       assert isoline['features'].size > 0
     ensure
       remove_request_stub(stub_isoline)
+    end
+  end
+
+  test 'should manage error' do
+    begin
+      points = [[1000, 1000], [1000, 1000]]
+
+      uri_template = Addressable::Template.new('http://localhost:5000/0.1/matrix.json')
+      stub_matrix = stub_request(:post, uri_template).with(body: hash_including({dimension: 'time', src: points.flatten.join(',')})).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/error.json'))
+
+      begin
+        matrices = @router_wrapper.matrix(routers(:router_one).url_time, :car, [:time], points, points)
+      rescue => e
+        assert e.message.match 'BadRequest'
+      end
+    ensure
+      remove_request_stub(stub_matrix)
     end
   end
 end
