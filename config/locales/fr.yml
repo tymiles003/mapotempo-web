@@ -928,6 +928,7 @@ fr:
       new: "Nouveau planning"
       export_icalendar: "Agenda iCal"
       export_icalendar_email: "Agenda iCal par email"
+      spreadsheet: "Tableur CSV / Excel"
     edit:
       vehicles: "Véhicules"
       position: "Position"
@@ -1005,6 +1006,9 @@ fr:
           action: "Tracé KMZ par email"
           success: "Email envoyé avec succès"
           fail: "Échec lors de l'envoi de l'email"
+        csv:
+          success: "CSV exporté avec succès"
+          fail: "Veuillez sélectionner un/des planning(s) à exporter"
         print: "Imprimer"
         spreadsheet: "Tableur CSV / Excel"
         gpx_route: "Route GPX"
@@ -1140,6 +1144,8 @@ fr:
     new:
       title: "Nouveau planning"
     export_file:
+      ref_planning: "référence planning"
+      planning: "planning"
       ref: "référence"
       vehicle: "véhicule"
       route: "tournée"

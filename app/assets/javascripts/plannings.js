@@ -38,12 +38,98 @@ var plannings_form = function() {
   });
 };
 
+var getPlanningsId = function() {
+  return $.makeArray($('#plannings input[type=checkbox]:checked').map(function(index, id){ return $(id).val(); }));
+}
+
 var plannings_new = function(params) {
   plannings_form();
   $("#planning_zoning_ids").select2({
     theme: 'bootstrap'
   });
 };
+
+// Export spreadsheet modal
+var exportSpreadsheetModal = function(columns, id) {
+  $('#planning-spreadsheet-modal').on('show.bs.modal', function() {
+    if ($('[name=spreadsheet-route]').val())
+      $('[name=spreadsheet-out-of-route]').parent().parent().hide();
+    else
+      $('[name=spreadsheet-out-of-route]').parent().parent().show();
+  });
+  if (localStorage.spreadsheetStops) {
+    $.each($('.spreadsheet-stops'), function(i, cb) {
+      $(cb).prop('checked', localStorage.spreadsheetStops.split('|').indexOf($(cb).val()) >= 0);
+    });
+  }
+  $('.columns-export-list').sortable({
+    connectWith: '#spreadsheet-columns .ui-sortable'
+  });
+  var columnsExport = columns;
+  var columnsSkip = localStorage.spreadsheetColumnsSkip && localStorage.spreadsheetColumnsSkip.split('|');
+  //refactor local storage later
+  if (localStorage.spreadsheetColumnsExport) {
+    columnsExport = localStorage.spreadsheetColumnsExport.split('|');
+    $.each(columns, function(i, c) {
+      if (columnsExport.indexOf(c) < 0 && (!columnsSkip || columnsSkip.indexOf(c) < 0))
+        columnsExport.push(c);
+    });
+  }
+  $.each(columnsExport, function(i, c) {
+    if (columns.indexOf(c) >= 0) {
+      $('#columns-export').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
+    }
+  });
+  $.each(columnsSkip, function(i, c) {
+    if (columns.indexOf(c) >= 0)
+      $('#columns-skip').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
+  });
+  $('#columns-export a.remove').click(function(evt) {
+    var $elem = $(evt.currentTarget).closest('li');
+    if ($elem.parent()[0].id == 'columns-export') {
+      var nextFocus = $elem.next();
+      $('a.remove', $elem).hide();
+      $('#columns-skip').append($elem);
+      if (nextFocus.length) $('a.remove', nextFocus).show();
+    }
+  });
+  $('#columns-export li').mouseenter(function(evt) {
+    if ($(evt.currentTarget).closest('#columns-export').length > 0)
+      $('a.remove', evt.currentTarget).show();
+  }).mouseleave(function(evt) {
+    $('a.remove', evt.currentTarget).hide();
+  });
+  if (localStorage.spreadsheetFormat)
+    $('[name=spreadsheet-format][value=' + localStorage.spreadsheetFormat + ']').prop('checked', true);
+
+  $('#btn-spreadsheet').click(function() {
+    var spreadsheetStops = localStorage.spreadsheetStops = $('.spreadsheet-stops:checked').map(function(i, e) {
+      return $(e).val()
+    }).get().join('|');
+    var spreadsheetColumnsExport = localStorage.spreadsheetColumnsExport = $('#columns-export li').map(function(i, e) {
+      return $(e).attr('data-value')
+    }).get().join('|');
+    var spreadsheetColumnsSkip = localStorage.spreadsheetColumnsSkip = $('#columns-skip li').map(function(i, e) {
+      return $(e).attr('data-value')
+    }).get().join('|');
+    var spreadsheetFormat = localStorage.spreadsheetFormat = $('[name=spreadsheet-format]:checked').val();
+    var planningsId = getPlanningsId();
+    var basePath = $('[name=spreadsheet-route]').val() ? ('/routes/' + $('[name=spreadsheet-route]').val()) : (id) ? '/plannings/' + id : '/plannings';
+    if (id || planningsId.length != 0) {
+      window.location.href = basePath + '.' + spreadsheetFormat + '?stops=' + spreadsheetStops + '&columns=' + spreadsheetColumnsExport + "&ids=" + planningsId;
+      notice(I18n.t('plannings.edit.export.csv.success'));
+    } else {
+      notify("warning", I18n.t('plannings.edit.export.csv.fail'));
+    }
+    $('#planning-spreadsheet-modal').modal("toggle");
+  });
+  $('.export_spreadsheet').click(function() {
+    $('#planning-spreadsheet-modal').modal({
+      keyboard: true,
+      show: true
+    });
+  });
+}
 
 var plannings_edit = function(params) {
   plannings_form();
@@ -1464,78 +1550,7 @@ var plannings_edit = function(params) {
     });
   });
 
-  // Export spreadsheet modal
-  $('#planning-spreadsheet-modal').on('show.bs.modal', function() {
-    if ($('[name=spreadsheet-route]').val())
-      $('[name=spreadsheet-out-of-route]').parent().parent().hide();
-    else
-      $('[name=spreadsheet-out-of-route]').parent().parent().show();
-  });
-  if (localStorage.spreadsheetStops) {
-    $.each($('.spreadsheet-stops'), function(i, cb) {
-      $(cb).prop('checked', localStorage.spreadsheetStops.split('|').indexOf($(cb).val()) >= 0);
-    });
-  }
-  $('.columns-export-list').sortable({
-    connectWith: '#spreadsheet-columns .ui-sortable'
-  });
-  var columns_export = params.spreadsheet_columns;
-  var columns_skip = localStorage.spreadsheetColumnsSkip && localStorage.spreadsheetColumnsSkip.split('|');
-  if (localStorage.spreadsheetColumnsExport) {
-    columns_export = localStorage.spreadsheetColumnsExport.split('|');
-    $.each(params.spreadsheet_columns, function(i, c) {
-      if (columns_export.indexOf(c) < 0 && (!columns_skip || columns_skip.indexOf(c) < 0))
-        columns_export.push(c);
-    });
-  }
-  $.each(columns_export, function(i, c) {
-    if (params.spreadsheet_columns.indexOf(c) >= 0) {
-      $('#columns-export').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
-    }
-  });
-  $.each(columns_skip, function(i, c) {
-    if (params.spreadsheet_columns.indexOf(c) >= 0)
-      $('#columns-skip').append('<li data-value="' + c + '">' + I18n.t('plannings.export_file.' + c) + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
-  });
-  $('#columns-export a.remove').click(function(evt) {
-    var $elem = $(evt.currentTarget).closest('li');
-    if ($elem.parent()[0].id == 'columns-export') {
-      var nextFocus = $elem.next();
-      $('a.remove', $elem).hide();
-      $('#columns-skip').append($elem);
-      if (nextFocus.length) $('a.remove', nextFocus).show();
-    }
-  });
-  $('#columns-export li').mouseenter(function(evt) {
-    if ($(evt.currentTarget).closest('#columns-export').length > 0)
-      $('a.remove', evt.currentTarget).show();
-  }).mouseleave(function(evt) {
-    $('a.remove', evt.currentTarget).hide();
-  });
-  if (localStorage.spreadsheetFormat)
-    $('[name=spreadsheet-format][value=' + localStorage.spreadsheetFormat + ']').prop('checked', true);
-
-  $('#btn-spreadsheet').click(function() {
-    var spreadsheetStops = localStorage.spreadsheetStops = $('.spreadsheet-stops:checked').map(function(i, e) {
-      return $(e).val()
-    }).get().join('|');
-    var spreadsheetColumnsExport = localStorage.spreadsheetColumnsExport = $('#columns-export li').map(function(i, e) {
-      return $(e).attr('data-value')
-    }).get().join('|');
-    var spreadsheetColumnsSkip = localStorage.spreadsheetColumnsSkip = $('#columns-skip li').map(function(i, e) {
-      return $(e).attr('data-value')
-    }).get().join('|');
-    var spreadsheetFormat = localStorage.spreadsheetFormat = $('[name=spreadsheet-format]:checked').val();
-    var basePath = $('[name=spreadsheet-route]').val() ? ('/routes/' + $('[name=spreadsheet-route]').val()) : ('/plannings/' + planning_id);
-    window.location.href = basePath + '.' + spreadsheetFormat + '?stops=' + spreadsheetStops + '&columns=' + spreadsheetColumnsExport;
-  });
-
-  $('.export_spreadsheet').click(function() {
-    $('#planning-spreadsheet-modal').modal({
-      keyboard: true,
-      show: true
-    });
-  });
+  exportSpreadsheetModal(params.spreadsheet_columns, params.planning_id);
 };
 
 var plannings_show = function(params) {
@@ -1551,7 +1566,7 @@ var plannings_show = function(params) {
 var observe_icalendar_export = function() {
   var url = $('#ical_export').attr('href'), ids;
   $('#ical-hook').click(function(){ 
-    ids = $.makeArray($('input[type=checkbox]:checked').map(function(index, id){ return $(id).val(); }));
+    ids = getPlanningsId();
     $('#ical_export').attr('href', url + '&ids=' + ids.join(',') + '&email=false');
   });
   $('.icalendar_email').click(function(e) {
@@ -1575,6 +1590,7 @@ var observe_icalendar_export = function() {
 
 var plannings_index = function(params) {
   observe_icalendar_export();
+  exportSpreadsheetModal(params.spreadsheet_columns);
 };
 
 Paloma.controller('Plannings', {

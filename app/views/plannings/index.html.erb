@@ -68,13 +68,19 @@
           <i class="fa fa-envelope fa-fw"></i> <%= t '.export_icalendar_email' %>
         <% end %>
       </li>
+      <li>
+        <a class="export_spreadsheet" href="#"><i class="fa fa-table fa-fw"></i> <%= t '.spreadsheet' %></a>
+      </li>
     </ul>
   </div>
 </div>
 <% end %>
 
+<%= render 'layouts/modal_csv' %>
+
 <%
 controller.js(
-  user_api_key: current_user.api_key
+  user_api_key: current_user.api_key,
+  spreadsheet_columns: @spreadsheet_columns
 )
 %>

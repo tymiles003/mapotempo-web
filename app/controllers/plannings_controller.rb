@@ -26,8 +26,17 @@ class PlanningsController < ApplicationController
   include PlanningExport
 
   def index
-    @plannings = current_user.customer.plannings
+    @plannings = current_user.customer.plannings.select{ |planning|
+      !params.key?(:ids) || (params[:ids] && params[:ids].split(',').include?(planning.id.to_s))
+    }
     @customer = current_user.customer
+    @spreadsheet_columns = export_columns
+    @params = params
+    respond_to do |format|
+      format.html
+      format.json
+      format_csv(format)
+    end
   end
 
   def show
@@ -63,17 +72,7 @@ class PlanningsController < ApplicationController
             filename: filename + '.kmz'
         end
       end
-      format.excel do
-        @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
-        data = render_to_string.gsub("\n", "\r\n")
-        send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
-            type: 'text/csv',
-            filename: filename + '.csv'
-      end
-      format.csv do
-        @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
-        response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
-      end
+      format_csv(format)
     end
   end
 
@@ -305,6 +304,20 @@ class PlanningsController < ApplicationController
     end
   end
 
+  def format_csv(format)
+    format.excel do
+      @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
+      data = render_to_string.gsub("\n", "\r\n")
+      send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
+      type: 'text/csv',
+      filename: filename + '.csv'
+      end
+    format.csv do
+      @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
+      response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -327,11 +340,17 @@ class PlanningsController < ApplicationController
   end
 
   def filename
-    export_filename @planning, @planning.ref
+    if @planning
+      export_filename @planning, @planning.ref;
+    else
+      I18n.t('plannings.menu.plannings') + "_" + I18n.l(Time.now, format: :datepicker)
+    end
   end
 
   def export_columns
     [
+      :ref_planning,
+      :planning,
       :route,
       :vehicle,
       :order,
@@ -360,8 +379,8 @@ class PlanningsController < ApplicationController
 
       :ref_visit,
       :duration,
-      @planning.customer.enable_orders ? :orders : :quantity1_1,
-      @planning.customer.enable_orders ? nil : :quantity1_2,
+      (@customer) ? @customer.enable_orders ? :orders : :quantity1_1 : @planning.customer.enable_orders ? :orders : :quantity1_1,
+      (@customer) ? @customer.enable_orders ? nil : :quantity1_2 : @planning.customer.enable_orders ? :orders : :quantity1_1,
       :open1,
       :close1,
       :open2,
