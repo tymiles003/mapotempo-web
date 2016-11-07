@@ -176,6 +176,14 @@
       width: 6em;
     }
 
+    span.form-control {
+      overflow: hidden;
+      word-break: break-all;
+      // white-space: nowrap;
+      // text-overflow: ellipsis;
+      border: 0px;
+    }
+
     .select2-container {
       .select2-selection {
         background-color: inherit;

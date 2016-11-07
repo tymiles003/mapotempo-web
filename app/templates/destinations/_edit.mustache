@@ -1,0 +1,211 @@
+<tr data-destination_id="{{id}}" class="destination{{#has_no_position}} has-error{{/has_no_position}}">
+  <td>
+    <input id="destination_{{id}}" type="checkbox" value="1" name="destinations[{{id}}]"/>
+  </td>
+  {{#enable_references}}
+  {{^enable_multi_visits}}
+    <td class="ref">
+      <input class="form-control input-sm" type="text" name="destination[ref]" value="{{ref}}"/>
+    </td>
+  {{/enable_multi_visits}}
+  {{/enable_references}}
+  <td class="name">
+    <input class="form-control input-sm" type="text" name="destination[name]" value="{{name}}" size="99" required="required"/>
+  </td>
+  <td class="address">
+    <span class="block">
+      <span>
+        <input class="form-control input-sm" type="text" name="destination[street]" value="{{street}}" size="99"/>
+      </span>
+      <span style="width:3em">
+        <input class="form-control input-sm" type="text" name="destination[detail]" value="{{detail}}" size="99"/>
+      </span>
+      <span style="width:4em">
+        <input class="form-control input-sm" type="text" maxlength="17" width="17" name="destination[postalcode]" value="{{postalcode}}"/>
+      </span>
+      <span>
+        <div class="input-group input-group-sm">
+          <input class="form-control input-sm pointing" type="text" name="destination[city]" value="{{city}}" size="99"/>
+          <span class="input-group-btn" title="{{#i18n}}destinations.form.locate_manually{{/i18n}}"><button class="btn btn-default" type="button"><i class="fa fa-crosshairs"></i></button></span>
+        </div>
+      </span>
+    </span>
+  </td>
+  <td class="country">
+    <span>
+      <input class="form-control input-sm" type="text" name="destination[country]" value="{{country}}" placeholder="{{default_country}}"/>
+    </span>
+  </td>
+  <td class="comment">
+    <textarea class="form-control input-sm" name="destination[comment]" rows="1">{{comment}}</textarea>
+  </td>
+  <td class="phone">
+    <div class="input-group input-group-sm">
+      <input class="form-control input-sm phone_number" type="datetime" name="destination[phone_number]" value="{{phone_number}}"/>
+      <span class="input-group-btn">
+        <a class="btn btn-default phone_link" target="click2call_iframe" href="{{phone_number}}" title="{{#i18n}}destinations.index.click2call{{/i18n}}"><i class="fa fa-phone"></i></a>
+      </span>
+    </div>
+  </td>
+  {{^enable_multi_visits}}
+    <td class="tags">
+      <div class="input-group select2-bootstrap-append input-group-tags">
+        <input type="hidden" value="" name="destination[tag_ids][]">
+        <select multiple="multiple" name="destination[tag_ids][]" class="select2" style="display:none">
+          {{#tags}}
+            <option value="{{id}}" {{#active}} selected="selected"{{/active}}{{#color}} data-color="{{color}}"{{/color}}{{#icon}} data-icon="{{icon}}"{{/icon}}>{{label}}</option>
+          {{/tags}}
+        </select>
+        <span class="fake select2 select2-container select2-container--bootstrap input-sm select2-container--below" dir="ltr" style="width: 100%;">
+          <span class="selection">
+            <span class="select2-selection select2-selection--multiple" aria-expanded="false" aria-haspopup="true" aria-autocomplete="list" role="combobox" tabindex="0" aria-owns="select2-destination[tag_ids][]-do-results">
+              <ul class="select2-selection__rendered">
+                {{#tags}}
+                  {{#active}}
+                    <li class="select2-selection__choice" title="{{label}}">
+                      <span class="select2-selection__choice__remove" role="presentation">×</span>
+                      <span>
+                        {{#color}}{{#icon}}<img src="/images/{{icon}}-{{color}}.svg" />{{/icon}}{{/color}}
+                        {{^color}}{{#icon}}<img src="/images/{{icon}}.svg" />{{/icon}}{{/color}}
+                        {{#color}}{{^icon}}<i style="color:#{{color}}" class="fa fa-flag" ></i>{{/icon}}{{/color}}
+                        {{label}}
+                      </span>
+                    </li>
+                  {{/active}}
+                {{/tags}}
+                <li class="select2-search select2-search--inline">
+                 <input class="select2-search__field" type="search" role="textbox" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" tabindex="-1" placeholder="" style="width: 0.75em;">
+                </li>
+              </ul>
+            </span>
+          </span>
+          <span class="dropdown-wrapper" aria-hidden="true"></span>
+        </span>
+        <span class="input-group-addon input-sm"><i class="fa fa-tags"></i></span>
+      </div>
+    </td>
+  {{/enable_multi_visits}}
+  <td class="geocoding">
+    <div class="block destination-geocoding">
+      <input type="hidden" name="destination[lat]" value="{{lat}}" />
+      <input type="hidden" name="destination[lng]" value="{{lng}}" />
+      <span class="geocoding_level" title="{{geocoding_level_title}}">
+        <input type="hidden" name="destination[geocoding_level]" value="{{geocoding_level}}">
+        {{#geocoding_level}}
+          {{#geocoding_level_point}}
+            <i class="fa fa-map-marker fa-fw geocoding-level"></i>
+          {{/geocoding_level_point}}
+          {{#geocoding_level_house}}
+            <i class="fa fa-home fa-fw geocoding-level"></i>
+          {{/geocoding_level_house}}
+          {{#geocoding_level_street}}
+            <i class="fa fa-road fa-fw geocoding-level"></i>
+          {{/geocoding_level_street}}
+          {{#geocoding_level_intersection}}
+            <i class="fa fa-times fa-fw geocoding-level"></i>
+          {{/geocoding_level_intersection}}
+          {{#geocoding_level_city}}
+            <i class="fa fa-exclamation-triangle fa-fw geocoding-level"></i>
+          {{/geocoding_level_city}}
+        {{/geocoding_level}}
+      </span>
+      <span>
+        {{#geocoding_accuracy}}
+          <input name="destination[geocoding_accuracy]" class="form-control input-sm" type="hidden" value="{{geocoding_accuracy}}"/>
+            <div class="progress" style="width:5em">
+              <div class="progress-bar progress-bar-{{geocoding_status}}" style="width: {{geocoding_accuracy_percent}}%;">
+                <span>{{geocoding_accuracy_percent}}%</span>
+              </div>
+            </div>
+        {{/geocoding_accuracy}}
+        {{^geocoding_accuracy}}
+          <input class="form-control input-sm" type="hidden" value="101"/>
+        {{/geocoding_accuracy}}
+      <span>
+      {{#has_no_position}}
+        <span class="no_position">{{#i18n}}destinations.index.geocoding_empty{{/i18n}}</span>
+      {{/has_no_position}}
+    </div>
+  </td>
+  <td class="visit">
+    <div class="destination-visits">
+      {{#visits}}
+        <div data-visit_id="{{id}}" class="block" role="visit">
+          <input type="hidden" name="destination[visits_attributes][][id]" value="{{id}}"/>
+          {{#enable_references}}
+          {{#enable_multi_visits}}
+            <span style="min-width:3em">
+              <input class="form-control input-sm" type="text" name="destination[visits_attributes][][ref]" value="{{ref_visit}}"/>
+            </span>
+          {{/enable_multi_visits}}
+          {{/enable_references}}
+          {{^enable_orders}}
+          <span style="width:3em">
+            <input class="form-control input-sm" type="number" name="destination[visits_attributes][][quantity1_1]" value="{{quantity1_1}}" placeholder="1"/>
+          </span>
+          {{/enable_orders}}
+          {{#enable_multi_visits}}
+            <span>
+              <div class="input-group select2-bootstrap-append input-group-tags">
+                <input type="hidden" value="" name="destination[visits_attributes][][tag_ids][]">
+                <select multiple="multiple" name="destination[visits_attributes][][tag_ids][]" class="select2" style="display:none">
+                  {{#tags_visit}}
+                    <option value="{{id}}" {{#active}} selected="selected"{{/active}}{{#color}} data-color="{{color}}"{{/color}}{{#icon}} data-icon="{{icon}}"{{/icon}}>{{label}}</option>
+                  {{/tags_visit}}
+                </select>
+                <span class="fake select2 select2-container select2-container--bootstrap input-sm select2-container--below" dir="ltr" style="width: 100%;">
+                  <span class="selection">
+                    <span class="select2-selection select2-selection--multiple" aria-expanded="false" aria-haspopup="true" aria-autocomplete="list" role="combobox" tabindex="0" aria-owns="select2-destination[visits_attributes][][tag_ids][]-do-results">
+                      <ul class="select2-selection__rendered">
+                        {{#tags_visit}}
+                          {{#active}}
+                            <li class="select2-selection__choice" title="{{label}}">
+                              <span class="select2-selection__choice__remove" role="presentation">×</span>
+                              <span>
+                                {{#color}}{{#icon}}<img src="/images/{{icon}}-{{color}}.svg" />{{/icon}}{{/color}}
+                                {{^color}}{{#icon}}<img src="/images/{{icon}}.svg" />{{/icon}}{{/color}}
+                                {{#color}}{{^icon}}<i style="color:#{{color}}" class="fa fa-flag" ></i>{{/icon}}{{/color}}
+                                {{label}}
+                              </span>
+                            </li>
+                          {{/active}}
+                        {{/tags_visit}}
+                        <li class="select2-search select2-search--inline">
+                         <input class="select2-search__field" type="search" role="textbox" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" tabindex="-1" placeholder="" style="width: 0.75em;">
+                        </li>
+                      </ul>
+                    </span>
+                  </span>
+                  <span class="dropdown-wrapper" aria-hidden="true"></span>
+                </span>
+                <span class="input-group-addon input-sm"><i class="fa fa-tags"></i></span>
+              </div>
+            </span>
+          {{/enable_multi_visits}}
+          <span style="width:4em">
+            <input class="form-control input-sm" type="datetime" name="destination[visits_attributes][][take_over]" value="{{take_over}}" placeholder="{{take_over_default}}"/>
+          </span>
+          <span style="width:3em">
+            <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][open1]" value="{{open1}}"/>
+          </span>
+          <span style="width:3em">
+            <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][close1]" value="{{close1}}"/>
+          </span>
+          <span style="width:3em">
+            <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][open2]" value="{{open2}}"/>
+          </span>
+          <span style="width:3em">
+            <input class="form-control input-sm" type="datetime" maxlength="5" name="destination[visits_attributes][][close2]" value="{{close2}}"/>
+          </span>
+        </div>
+      {{/visits}}
+    </div>
+  </td>
+  <td>
+    <div class="destination-buttons">
+      <a href="destinations/{{id}}/edit" class="btn btn-primary btn-xs" title="{{#i18n}}all.verb.edit{{/i18n}}"><i class="fa fa-pencil fa-fw"></i></a>
+      <button type="button" class="destroy btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
+    </div>
+  </td>
+</tr>
+
