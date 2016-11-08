@@ -89,9 +89,9 @@ GIT
 
 GIT
   remote: git://github.com/moneyadviceservice/tidy-html5-gem.git
-  revision: 54b78c66e94b32ab73d9907508857f4ceee5e032
+  revision: 030371e0190a3f42a3fa0aa165942c273194de5b
   specs:
-    tidy-html5 (0.1.1)
+    tidy-html5 (0.1.2)
 
 GIT
   remote: git://github.com/ngonzalez/pnotify-rails.git
@@ -148,7 +148,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    addressable (2.4.0)
+    addressable (2.5.0)
+      public_suffix (~> 2.0, >= 2.0.2)
     ai4r (1.13)
     akami (1.3.1)
       gyoku (>= 0.4.0)
@@ -174,7 +175,7 @@ GEM
       railties (>= 3.0)
     browser (1.1.0)
     builder (3.2.2)
-    byebug (9.0.5)
+    byebug (9.0.6)
     cancancan (1.11.0)
     carrierwave (0.11.2)
       activemodel (>= 3.2.0)
@@ -216,32 +217,31 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
-    devise-i18n (1.1.0)
+    devise-i18n (1.1.1)
     devise-i18n-views (0.3.7)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    domain_name (0.5.20160826)
+    domain_name (0.5.20161021)
       unf (>= 0.0.5, < 1.0.0)
     easy_translate (0.5.0)
       json
       thread
       thread_safe
-    enumerable-lazy (0.0.1)
     equalizer (0.0.11)
     erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.9.14)
-    font-awesome-rails (4.6.3.1)
+    font-awesome-rails (4.7.0.0)
       railties (>= 3.2, < 5.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    grape (0.17.0)
+    grape (0.18.0)
       activesupport
       builder
       hashie (>= 2.1.0)
       multi_json (>= 1.3.2)
       multi_xml (>= 0.5.2)
-      mustermann19 (~> 0.4.3)
+      mustermann-grape (~> 0.4.0)
       rack (>= 1.3.0)
       rack-accept
       virtus (>= 1.0.0)
@@ -254,13 +254,13 @@ GEM
     gyoku (1.3.1)
       builder (>= 2.1.2)
     hashdiff (0.3.0)
-    hashie (3.4.4)
+    hashie (3.4.6)
     highline (1.7.8)
     hike (1.2.3)
     html_validation (1.1.3)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    http_accept_language (2.0.5)
+    http_accept_language (2.1.0)
     httpi (2.4.2)
       rack
       socksify
@@ -275,13 +275,13 @@ GEM
       parser (>= 2.2.3.0)
       term-ansicolor (>= 1.3.2)
       terminal-table (>= 1.5.1)
-    icalendar (2.4.0)
+    icalendar (2.4.1)
     ice_nine (0.11.2)
     iconv (1.0.4)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
-    jquery-rails (4.1.1)
+    jquery-rails (4.2.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
@@ -300,7 +300,7 @@ GEM
     leaflet-rails (0.7.7)
     less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (2.7.1)
+    less-rails (2.8.0)
       actionpack (>= 4.0)
       less (~> 2.6.0)
       sprockets (> 2, < 4)
@@ -320,8 +320,8 @@ GEM
     mime-types (1.25.1)
     mimemagic (0.3.2)
     mini_portile2 (2.1.0)
-    minitest (5.9.0)
-    minitest-around (0.3.2)
+    minitest (5.9.1)
+    minitest-around (0.4.0)
       minitest (~> 5.0)
     minitest-focus (1.1.2)
       minitest (>= 4, < 6)
@@ -329,26 +329,27 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.5.5)
     mustache (0.99.8)
-    mustermann19 (0.4.4)
-      enumerable-lazy
+    mustermann (0.4.0)
+      tool (~> 0.2)
+    mustermann-grape (0.4.0)
+      mustermann (= 0.4.0)
     netrc (0.11.0)
     nilify_blanks (1.2.1)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
-    nokogiri (1.6.8)
+    nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
-    nokogumbo (1.4.9)
+    nokogumbo (1.4.10)
       nokogiri
     nori (2.6.0)
     orm_adapter (0.5.0)
-    parser (2.3.1.2)
+    parser (2.3.1.4)
       ast (~> 2.2)
-    pg (0.18.4)
-    pkg-config (1.1.7)
+    pg (0.19.0)
     polyglot (0.3.5)
     polylines (0.3.0)
     powerpack (0.1.1)
+    public_suffix (2.0.4)
     rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -390,9 +391,8 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rainbow (2.1.0)
-    rake (11.2.2)
-    rdoc (4.2.2)
-      json (~> 1.4)
+    rake (11.3.0)
+    rdoc (4.3.0)
     ref (2.0.0)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
@@ -419,7 +419,7 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.4)
-    rubocop (0.42.0)
+    rubocop (0.45.0)
       parser (>= 2.3.1.1, < 3.0)
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
@@ -428,7 +428,7 @@ GEM
     ruby-progressbar (1.8.1)
     rubyzip (1.2.0)
     safe_yaml (1.0.4)
-    sanitize (4.1.0)
+    sanitize (4.4.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4.1)
@@ -450,12 +450,12 @@ GEM
     savon-multipart (2.0.2)
       mail (~> 2.5.4)
       savon (~> 2)
-    sdoc (0.4.1)
+    sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
     select2-rails (4.0.0)
       thor (~> 0.14)
-    selenium-webdriver (2.53.4)
+    selenium-webdriver (3.0.1)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
@@ -484,9 +484,10 @@ GEM
       activesupport (>= 3)
       rails (>= 3)
     systemu (2.6.5)
-    term-ansicolor (1.3.2)
+    term-ansicolor (1.4.0)
       tins (~> 1.0)
-    terminal-table (1.6.0)
+    terminal-table (1.7.3)
+      unicode-display_width (~> 1.1.1)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -496,6 +497,7 @@ GEM
     tilt (1.4.1)
     timeliness (0.3.8)
     tins (1.12.0)
+    tool (0.2.3)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -503,12 +505,12 @@ GEM
       coffee-rails
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (3.0.1)
+    uglifier (3.0.3)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
-    unicode-display_width (1.1.0)
+    unicode-display_width (1.1.1)
     validates_timeliness (4.0.2)
       timeliness (~> 0.3.7)
     virtus (1.0.5)
@@ -544,9 +546,9 @@ DEPENDENCIES
   bootstrap-filestyle-rails
   bootstrap-select-rails
   bootstrap-wysihtml5-rails
-  browser (< 2.0.0)
+  browser
   byebug
-  cancancan (= 1.11.0)
+  cancancan
   carrierwave
   charlock_holmes
   coffee-rails (~> 4.1.0)
@@ -555,7 +557,7 @@ DEPENDENCIES
   database_cleaner
   delayed_job
   delayed_job_active_record
-  devise (< 4)
+  devise
   devise-i18n
   devise-i18n-views
   execjs
@@ -592,7 +594,7 @@ DEPENDENCIES
   minitest-around
   minitest-focus
   minitest-stub_any_instance
-  mustache (< 1.0.0)
+  mustache
   nilify_blanks
   nokogiri
   paloma!
@@ -604,7 +606,7 @@ DEPENDENCIES
   rails-i18n
   rails_12factor
   rails_engine_decorators
-  rest-client (< 2.0.0)
+  rest-client
   rgeo
   rgeo-geojson
   rspec-rails (~> 3.0.0)
