@@ -19,8 +19,10 @@ require 'optim/ort'
 
 class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
   @@optimize_time = Mapotempo::Application.config.optimize_time
+  @@optimize_time_force = Mapotempo::Application.config.optimize_time_force
   @@stop_soft_upper_bound = Mapotempo::Application.config.optimize_stop_soft_upper_bound
   @@vehicle_soft_upper_bound = Mapotempo::Application.config.optimize_vehicle_soft_upper_bound
+  @@optimization_cluster_size = Mapotempo::Application.config.optimize_cluster_size
 
   def before(job)
     @job = job
@@ -33,24 +35,22 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
       (route_id && r.id == route_id) || (!route_id && !global && r.vehicle_usage && r.size_active > 1) || (!route_id && global)
     }.reject(&:locked)
     optimize_time = planning.customer.optimization_time || @@optimize_time
-    stop_soft_upper_bound = planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound
-    vehicle_soft_upper_bound = planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound
 
     bars = Array.new(2, 0)
     optimum = planning.optimize(routes, global) { |positions, services, vehicles|
       optimum = Mapotempo::Application.config.optimize.optimize(
         positions, services, vehicles,
-        optimize_time: optimize_time ? optimize_time * 1000 : nil,
-        stop_soft_upper_bound: stop_soft_upper_bound,
-        vehicle_soft_upper_bound: vehicle_soft_upper_bound,
-        cluster_threshold: planning.customer.optimization_cluster_size || Mapotempo::Application.config.optimize_cluster_size
+        optimize_time: @@optimize_time_force || (optimize_time ? optimize_time * 1000 : nil),
+        stop_soft_upper_bound: planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound,
+        vehicle_soft_upper_bound: planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound,
+        cluster_threshold: planning.customer.optimization_cluster_size || @@optimization_cluster_size
       ) { |bar, computed, count|
           if bar
             if computed
               (0..bar).to_a.each{ |i| bars[i] = (computed - 1) * 100 / count }
             else
               (0..(bar-1)).to_a.each{ |i| bars[i] = 100 } if bar > 0
-              bars[bar] = bar == 1 && planning.customer.optimization_time ? "#{optimize_time * 1000}ms0" : -1
+              bars[bar] = bar == 1 && (@@optimize_time_force || planning.customer.optimization_time) ? "#{(@@optimize_time_force || optimize_time) * 1000}ms0" : -1
             end
           end
           @job.progress = bars.join(';') + ';'

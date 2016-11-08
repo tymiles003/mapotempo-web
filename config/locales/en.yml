@@ -620,7 +620,7 @@ en:
       alyacom_help: "Allows sending plans to AlyaCom application"
       optimization_cluster_size_default: "%{n} (default value)"
       optimization_cluster_size_help: "Value in seconds between points to group before optimization. A great value will degrade optimization result (30 sec is already an important value). Take into account only for a single route optimization with delays."
-      optimization_time_default: "3600 (default value)"
+      optimization_time_default: "%{n} (default value)"
       optimization_time_help: "The optimization stops automatically by default. Nevertheless you can specify here a maximum time for optimization."
       optimization_soft_upper_bound_default: "%{n} (default value)"
       optimization_stop_soft_upper_bound_help: "More the value is important, more delays are detrimental (0 to disallow delays strictly: turn clusters off in this case)."
