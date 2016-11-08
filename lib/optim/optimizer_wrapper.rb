@@ -133,7 +133,7 @@ class OptimizerWrapper
       while json
         result = JSON.parse(json)
         if result['job']['status'] == 'completed'
-          @cache.write(key, json && String.new(json)) # String.new workaround waiting for RestClient 2.0
+          @cache.write(key, json.body)
           break
         elsif ['queued', 'working'].include?(result['job']['status'])
           if progress && m = /^(process ([0-9]+)\/([0-9]+) \- )?([a-z ]+)/.match(result['job']['avancement'])

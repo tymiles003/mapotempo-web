@@ -34,14 +34,14 @@ class UsersController < ApplicationController
   def password
     if current_user != @user
       sign_out :user
-      sign_in @user, bypass: true
+      sign_in @user, bypass_sign_in: true
     end
   end
 
   def set_password
     if @user.update user_password_params
       @user.confirm! if !@user.confirmed?
-      sign_in @user, bypass: true
+      sign_in @user, bypass_sign_in: true
       redirect_to_default
     else
       render action: :password

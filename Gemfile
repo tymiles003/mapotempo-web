@@ -42,20 +42,8 @@ group :development, :test do
   #gem 'spring'
 
   gem 'rubocop'
-
-  # install_if appeared in bundler 1.10...
-  if respond_to?(:install_if)
-
-    install_if lambda { Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.0') } do
-      # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-      gem 'byebug'
-    end
-
-    # Install only for ruby >=2.1
-    install_if lambda { Gem::Version.new(RUBY_VERSION) > Gem::Version.new('2.1') } do
-      gem 'i18n-tasks'
-    end
-  end
+  gem 'byebug'
+  gem 'i18n-tasks'
 end
 
 group :test do
@@ -87,10 +75,10 @@ gem 'rails-i18n'
 gem 'http_accept_language'
 gem 'execjs'
 gem 'therubyracer'
-gem 'devise', '< 4' # FIXME wait for ruby 2.1
+gem 'devise'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
-gem 'cancancan', '=1.11.0' # FIXME wait for ruby 2.0
+gem 'cancancan'
 gem 'lograge'
 gem 'validates_timeliness'
 gem 'rails_engine_decorators'
@@ -128,10 +116,10 @@ gem 'jquery-simplecolorpicker-rails'
 gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
 gem 'select2-rails', '=4.0.0' # FIXME test compatibility with planning sidebar
 gem 'i18n-js', github: 'fnando/i18n-js' # FIXME wait for 3.0.0.rc15
-gem 'mustache', '<1.0.0' # FIXME wait for ruby 2.0
+gem 'mustache'
 gem 'smt_rails'
 gem 'paloma', github: 'Mapotempo/paloma' # FIXME wait for 25cbba9f33c7b36f4f4878035ae53541a0036ee9
-gem 'browser', '<2.0.0' #FIXME wait for ruby 2.0
+gem 'browser'
 gem 'color'
 
 gem 'daemons'
@@ -153,7 +141,7 @@ gem 'carrierwave'
 gem 'charlock_holmes'
 gem 'savon'
 gem 'savon-multipart', '~> 2.0.2'
-gem 'rest-client', '<2.0.0' #FIXME wait for ruby 2.0
+gem 'rest-client'
 gem 'macaddr'
 gem 'rubyzip'
 
