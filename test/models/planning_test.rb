@@ -1,12 +1,12 @@
 require 'test_helper'
 require 'routers/router_wrapper'
 
-class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duration, :vehicle_id, :quantity1_1, :quantity1_2)
+class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duration, :quantity1_1, :quantity1_2, :vehicle_usage)
   def visit
     self
   end
   def route
-    Struct.new(:vehicle_usage_id).new(nil)
+    Struct.new(:vehicle_usage, :vehicle_usage_id).new(vehicle_usage, vehicle_usage.try(&:id))
   end
 end
 
