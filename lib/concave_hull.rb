@@ -142,7 +142,8 @@ module ConcaveHull
     size = polygon.size
     size.times.each{ |i|
       min, max = [polygon[i][0], polygon[(i + 1) % size][0]].minmax
-      if min <= point[0] && point[0] <= max
+      if min < point[0] && point[0] <= max
+        # vertical ray, could return non homogenous result with a point on a vertical edge
         p = (polygon[i][1] - polygon[(i + 1) % size][1])
         q = (polygon[i][0] - polygon[(i + 1) % size][0])
         point_y = (point[0] - polygon[i][0]) * p / q + polygon[i][1]

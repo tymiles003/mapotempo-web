@@ -33,4 +33,9 @@ class ConcaveHullTest < ActionController::TestCase
 </svg>"
 #    puts svg
   end
+
+  test 'should compute specific hull with two points having same x' do
+    hull = ConcaveHull::concave_hull([[-0.490117, 43.8901], [-0.490117, 43.890145], [-0.49023, 43.8892], [-0.490458, 43.8887], [-0.490361, 43.890163], [-0.49, 43.89], [-0.492, 43.891]], 5)
+    assert_equal hull, [[-0.490458, 43.8887], [-0.492, 43.891], [-0.490117, 43.890145], [-0.49, 43.89], [-0.49023, 43.8892], [-0.490458, 43.8887]]
+  end
 end
