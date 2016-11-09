@@ -371,7 +371,7 @@ class Planning < ActiveRecord::Base
       stop.is_a?(StopRest) || stop.open1 || stop.close1 || stop.open2 || stop.close2 || stop.visit.quantity1_1 || stop.visit.quantity1_2
     }
 
-    if tws_or_quantities || stops.collect{ |s| s.route.vehicle_usage_id }.uniq.size > 1 || stops[0].route.vehicle_usage.try(&:vehicle).try(&:capacity1_1)
+    if tws_or_quantities || stops.collect{ |s| s.route.vehicle_usage_id }.uniq.size > 1 || (stops.size > 0 && stops[0].route.vehicle_usage.try(&:vehicle).try(&:capacity1_1))
       # Can't reduce cause of time windows, quantities or multiple vehicles
       positions_uniq = stops.collect{ |stop|
         [stop.lat, stop.lng, stop.id, stop.open1.try(:to_f), stop.close1.try(:to_f), stop.open2.try(:to_f), stop.close2.try(:to_f), stop.duration, (!global || stop.is_a?(StopRest)) ? stop.route.vehicle_usage_id : nil, stop.is_a?(StopVisit) ? stop.visit.quantity1_1 : nil, stop.is_a?(StopVisit) ? stop.visit.quantity1_2 : nil]
