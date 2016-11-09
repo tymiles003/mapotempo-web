@@ -415,8 +415,7 @@ var destinations_index = function(params, api) {
     enable_references = params.enable_references,
     enable_multi_visits = params.enable_multi_visits,
     enable_orders = params.enable_orders,
-    data = JSON.parse(params.data),
-    isEditable = data.destinations && data.destinations.length < <%= Mapotempo::Application.config.max_destinations_editable %>;
+    isEditable = params.is_editable;
 
   params.geocoder = true;
 
@@ -1099,7 +1098,13 @@ var destinations_index = function(params, api) {
     })
   });
 
-  checkForDisplayDestinations(data);
+  $.ajax({
+    url: '/destinations.json',
+    beforeSend: beforeSendWaiting,
+    success: checkForDisplayDestinations,
+    complete: completeWaiting,
+    error: ajaxError
+  });
 }
 
 var destinations_new = function(params, api) {

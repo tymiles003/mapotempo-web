@@ -23,7 +23,6 @@ class PlanningsController < ApplicationController
   load_and_authorize_resource
   before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :duplicate, :reverse_order, :apply_zonings, :optimize]
 
-
   include PlanningExport
 
   def index
@@ -310,7 +309,7 @@ class PlanningsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_planning
-    @planning = if [:show, :edit, :optimize_each_routes].include?(action_name.to_sym)
+    @planning = if [:show, :edit, :optimize].include?(action_name.to_sym) && !request.format.html?
       current_user.customer.plannings.includes(routes: {stops: :visit}).find(params[:id] || params[:planning_id])
     else
       current_user.customer.plannings.find(params[:id] || params[:planning_id])
