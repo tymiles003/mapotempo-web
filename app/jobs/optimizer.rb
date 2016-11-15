@@ -45,7 +45,7 @@ class Optimizer
       routes = planning.routes.select{ |r|
         (route && r.id == route.id) || (!route && !global && r.vehicle_usage && r.size_active > 1) || (!route && global)
       }.reject(&:locked)
-      optimum = !routes.empty? && planning.optimize(routes, global) { |positions, services, vehicles|
+      optimum = !routes.select(&:vehicle_usage).empty? && planning.optimize(routes, global) { |positions, services, vehicles|
         Mapotempo::Application.config.optimize.optimize(
           positions, services, vehicles,
           optimize_time: @@optimize_time_force || (optimize_time ? optimize_time * 1000 : nil),
