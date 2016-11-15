@@ -59,7 +59,7 @@ CREATE TABLE customers (
     alyacom_association character varying(255),
     optimization_cluster_size integer,
     optimization_time integer,
-    optimization_stop_soft_upper_bound integer,
+    optimization_stop_soft_upper_bound double precision,
     profile_id integer NOT NULL,
     speed_multiplicator double precision DEFAULT 1.0 NOT NULL,
     default_country character varying NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE customers (
     enable_external_callback boolean DEFAULT false NOT NULL,
     description character varying,
     enable_global_optimization boolean DEFAULT false NOT NULL,
-    optimization_vehicle_soft_upper_bound integer
+    optimization_vehicle_soft_upper_bound double precision
 );
 
 
@@ -2386,3 +2386,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160818101635');
 INSERT INTO schema_migrations (version) VALUES ('20161004085743');
 
 INSERT INTO schema_migrations (version) VALUES ('20161006133646');
+
+INSERT INTO schema_migrations (version) VALUES ('20161115121703');

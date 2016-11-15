@@ -91,10 +91,10 @@
       <%= f.number_field :optimization_time, { placeholder: t('.optimization_time_default', n: Mapotempo::Application.config.optimize_time), min: 0, input_group: t('all.unit.second')} do %>
         <p class="help-block"><%= t '.optimization_time_help' %></p>
       <% end %>
-      <%= f.number_field :optimization_stop_soft_upper_bound, { placeholder: t('.optimization_soft_upper_bound_default', n: Mapotempo::Application.config.optimize_stop_soft_upper_bound), min: 0, input_group: '×'} do %>
+      <%= f.number_field :optimization_stop_soft_upper_bound, { placeholder: t('.optimization_soft_upper_bound_default', n: Mapotempo::Application.config.optimize_stop_soft_upper_bound), min: 0, step: 'any', input_group: '×'} do %>
         <p class="help-block"><%= t '.optimization_stop_soft_upper_bound_help' %></p>
       <% end %>
-      <%= f.number_field :optimization_vehicle_soft_upper_bound, { placeholder: t('.optimization_soft_upper_bound_default', n: Mapotempo::Application.config.optimize_vehicle_soft_upper_bound), min: 0, input_group: '×'} do %>
+      <%= f.number_field :optimization_vehicle_soft_upper_bound, { placeholder: t('.optimization_soft_upper_bound_default', n: Mapotempo::Application.config.optimize_vehicle_soft_upper_bound), min: 0, step: 'any', input_group: '×'} do %>
         <p class="help-block"><%= t '.optimization_vehicle_soft_upper_bound_help' %></p>
       <% end %>
     </fieldset>
