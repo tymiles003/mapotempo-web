@@ -28,6 +28,12 @@ class V01::UsersTest < ActiveSupport::TestCase
     assert_equal @user.customer.users.size, JSON.parse(last_response.body).size
   end
 
+  test 'should return users from admin key' do
+    get api_admin()
+    assert last_response.ok?, last_response.body
+    assert_equal 4, JSON.parse(last_response.body).size
+  end
+
   test 'should return a user' do
     get api('ref:' + @user.ref)
     assert last_response.ok?, last_response.body

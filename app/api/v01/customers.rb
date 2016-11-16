@@ -33,6 +33,19 @@ class V01::Customers < Grape::API
   end
 
   resource :customers do
+    desc 'Fetch customers.',
+      detail: 'Only available with an admin api_key.',
+      nickname: 'getCustomers',
+      is_array: true,
+      entity: V01::Entities::Customer
+    get do
+      if @current_user.admin?
+        present @current_user.reseller.customers, with: V01::Entities::CustomerAdmin
+      else
+        error! 'Forbidden', 403
+      end
+    end
+
     desc 'Fetch customer.',
       nickname: 'getCustomer',
       is_array: true,
@@ -42,11 +55,10 @@ class V01::Customers < Grape::API
     end
     get ':id' do
       if @current_user.admin?
-        id = ParseIdsRefs.read params[:id]
-        customer = @current_user.reseller.customers.where(id).first!
+        customer = @current_user.reseller.customers.where(ParseIdsRefs.read(params[:id])).first!
         present customer, with: V01::Entities::CustomerAdmin
-      elsif @current_user.customer.id == params[:id].to_i || (@current_user.customer.ref && 'ref:' + @current_user.customer.ref == params[:id])
-        present @current_user.customer, with: V01::Entities::Customer
+      elsif ParseIdsRefs.match params[:id], @current_customer
+        present @current_customer, with: V01::Entities::Customer
       else
         status 404
       end
@@ -66,9 +78,16 @@ class V01::Customers < Grape::API
       requires :id, type: String, desc: ID_DESC
     end
     put ':id' do
-      current_customer(params[:id])
-      @current_customer.update! customer_params
-      present @current_customer, with: V01::Entities::Customer
+      if @current_user.admin?
+        customer = @current_user.reseller.customers.where(ParseIdsRefs.read(params[:id])).first!
+        customer.update! customer_params
+        present customer, with: V01::Entities::CustomerAdmin
+      elsif ParseIdsRefs.match params[:id], @current_customer
+        @current_customer.update! customer_params
+        present @current_customer, with: V01::Entities::Customer
+      else
+        status 404
+      end
     end
 
     desc 'Create customer.',
@@ -91,7 +110,9 @@ class V01::Customers < Grape::API
       if @current_user.admin?
         customer = @current_user.reseller.customers.build(customer_params)
         @current_user.reseller.save!
-        present customer, with: V01::Entities::Customer
+        present customer, with: V01::Entities::CustomerAdmin
+      else
+        error! 'Forbidden', 403
       end
     end
 
@@ -105,6 +126,8 @@ class V01::Customers < Grape::API
       if @current_user.admin?
         id = ParseIdsRefs.read(params[:id])
         @current_user.reseller.customers.where(id).first!.destroy
+      else
+        error! 'Forbidden', 403
       end
     end
 
@@ -116,13 +139,19 @@ class V01::Customers < Grape::API
       requires :job_id, type: Integer
     end
     get ':id/job/:job_id' do
-      current_customer(params[:id])
-      if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
-        @current_customer.job_optimizer
-      elsif @current_customer.job_destination_geocoding && @current_customer.job_destination_geocoding_id = params[:job_id]
-        @current_customer.job_destination_geocoding
-      elsif @current_customer.job_store_geocoding && @current_customer.job_store_geocoding_id = params[:job_id]
-        @current_customer.job_store_geocoding
+      customer = @current_user.admin? ?
+        @current_user.reseller.customers.where(ParseIdsRefs.read(params[:id])).first! :
+        ParseIdsRefs.match(params[:id], @current_customer) ? @current_customer : nil
+      if customer
+        if customer.job_optimizer && customer.job_optimizer_id == params[:job_id]
+          customer.job_optimizer
+        elsif customer.job_destination_geocoding && customer.job_destination_geocoding_id == params[:job_id]
+          customer.job_destination_geocoding
+        elsif customer.job_store_geocoding && customer.job_store_geocoding_id == params[:job_id]
+          customer.job_store_geocoding
+        end
+      else
+        status 404
       end
     end
 
@@ -134,25 +163,35 @@ class V01::Customers < Grape::API
       requires :job_id, type: Integer
     end
     delete ':id/job/:job_id' do
-      current_customer(params[:id])
-      if @current_customer.job_optimizer && @current_customer.job_optimizer_id = params[:job_id]
-        @current_customer.job_optimizer.destroy
-      elsif @current_customer.job_destination_geocoding && @current_customer.job_destination_geocoding_id = params[:job_id]
-        @current_customer.job_destination_geocoding.destroy
-      elsif @current_customer.job_store_geocoding && @current_customer.job_store_geocoding_id = params[:job_id]
-        @current_customer.job_store_geocoding.destroy
+      customer = @current_user.admin? ?
+        @current_user.reseller.customers.where(ParseIdsRefs.read(params[:id])).first! :
+        ParseIdsRefs.match(params[:id], @current_customer) ? @current_customer : nil
+      if customer
+        if customer.job_optimizer && customer.job_optimizer_id == params[:job_id]
+          customer.job_optimizer.destroy
+        elsif customer.job_destination_geocoding && customer.job_destination_geocoding_id == params[:job_id]
+          customer.job_destination_geocoding.destroy
+        elsif customer.job_store_geocoding && customer.job_store_geocoding_id == params[:job_id]
+          customer.job_store_geocoding.destroy
+        end
+      else
+        status 404
       end
     end
 
-    desc 'Duplicate Customer',
-      detail: 'Create a copy of Customer',
+    desc 'Duplicate customer',
+      detail: 'Create a copy of customer. Only available with an admin api_key.',
       nickname: 'duplicateCustomer'
     params do
       requires :id, type: String, desc: ID_DESC
     end
     put ':id/duplicate' do
-      customer = current_customer.duplicate
-      present customer, with: V01::Entities::Customer
+      if @current_user.admin?
+        customer = @current_user.reseller.customers.where(ParseIdsRefs.read(params[:id])).first!.duplicate
+        present customer, with: V01::Entities::CustomerAdmin
+      else
+        error! 'Forbidden', 403
+      end
     end
   end
 end

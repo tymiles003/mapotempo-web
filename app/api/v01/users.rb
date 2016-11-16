@@ -34,12 +34,18 @@ class V01::Users < Grape::API
   end
 
   resource :users do
-    desc 'Fetch customer\'s users.',
+    desc 'Fetch customer\'s users (or all users with an admin key).',
       nickname: 'getUsers',
       is_array: true,
       entity: V01::Entities::User
     get do
-      present current_customer.users.load, with: V01::Entities::User
+      if @current_user.admin?
+        users = User.where(reseller: @current_user.reseller) +
+          User.joins(:customer).where(customers: {reseller_id: @current_user.reseller.id})
+      else
+        users = @current_customer.users.load
+      end
+      present users, with: V01::Entities::User
     end
 
     desc 'Fetch user.',
@@ -59,7 +65,7 @@ class V01::Users < Grape::API
           status 404
         end
       else
-        present current_customer.users.where(id).first!, with: V01::Entities::User
+        present @current_customer.users.where(id).first!, with: V01::Entities::User
       end
     end
 

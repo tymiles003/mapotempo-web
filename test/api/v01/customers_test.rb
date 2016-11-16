@@ -22,16 +22,33 @@ class V01::CustomerTest < ActiveSupport::TestCase
     "/api/0.1/customers#{part}.json?api_key=adminkey"
   end
 
+  test 'should list customers' do
+    get api_admin
+    assert last_response.ok?, last_response.body
+    assert_equal resellers(:reseller_one).customers.size, JSON.parse(last_response.body).size
+  end
+
+  test 'should not list customers' do
+    get api
+    assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
+  end
+
   test 'should return a customer' do
     get api('ref:' + @customer.ref)
     assert last_response.ok?, last_response.body
     json = JSON.parse(last_response.body)
     assert_equal @customer.name, json['name']
     assert_equal @customer.ref, json['ref']
+
+    get api_admin(@customer.id)
+    assert last_response.ok?, last_response.body
   end
 
   test 'should not return a customer' do
     get api(customers(:customer_two).id)
+    assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+
+    get api_admin(customers(:customer_two).id)
     assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
   end
 
@@ -54,10 +71,14 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert_equal 'ref-abcd', JSON.parse(last_response.body)['ref']
   end
 
-  test 'should not update a customer in admin' do
+  test 'should not update a customer' do
     customer = customers(:customer_two)
     customer.ref = 'new ref'
+
     put api_admin(customer.id), customer.attributes
+    assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+
+    put api(customer.id), customer.attributes
     assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
   end
 
@@ -86,9 +107,12 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should not create a customer' do
-    assert_no_difference 'Customer.count', 1 do
-      post api_admin, { name: 'new cust', ref: "ref1", default_country: 'France', max_vehicles: 2, router_id: @customer.router_id, profile_id: @customer.profile_id }
-      assert_not last_response.created?, last_response.body
+    assert_no_difference 'Customer.count' do
+      post api_admin, { name: 'new cust', ref: @customer.ref, default_country: 'France', max_vehicles: 2, router_id: @customer.router_id, profile_id: @customer.profile_id }
+      assert_equal 400, last_response.status, 'Bad response: ' + last_response.body
+
+      post api, { name: 'new cust', default_country: 'France', max_vehicles: 2, router_id: @customer.router_id, profile_id: @customer.profile_id }
+      assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
     end
   end
 
@@ -103,6 +127,9 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert_no_difference('Customer.count') do
       delete api_admin('ref:' + customers(:customer_two).ref)
       assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+
+      delete api(@customer.id)
+      assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
     end
   end
 
@@ -118,11 +145,20 @@ class V01::CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'duplicate customer' do
-    customer = customers :customer_one
+  test 'should duplicate customer' do
     assert_difference('Customer.count', +1) do
-      put api(customer.id.to_s + '/duplicate')
+      put api_admin(@customer.id.to_s + '/duplicate')
       assert last_response.ok?
+    end
+  end
+
+  test 'should not duplicate customer' do
+    assert_no_difference('Customer.count') do
+      put api_admin(customers(:customer_two).id.to_s + '/duplicate')
+      assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+
+      put api(@customer.id.to_s + '/duplicate')
+      assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
     end
   end
 
