@@ -178,17 +178,22 @@ class CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'duplicate' do
-    customer = customers :customer_one
+  test 'should duplicate' do
     duplicate = nil
 
     assert_difference('Customer.count', 1) do
-      assert_difference('User.count', customer.users.size) do
-        assert_difference('Planning.count', customer.plannings.size) do
-          assert_difference('Destination.count', customer.destinations.size) do
-            assert_difference('Vehicle.count', customer.vehicles.size) do
-              duplicate = customer.duplicate
-              duplicate.save!
+      assert_difference('User.count', @customer.users.size) do
+        assert_difference('Planning.count', @customer.plannings.size) do
+          assert_difference('Destination.count', @customer.destinations.size) do
+            assert_difference('Vehicle.count', @customer.vehicles.size) do
+              assert_difference('Zoning.count', @customer.zonings.size) do
+                assert_difference('Tag.count', @customer.tags.size) do
+                  # assert_difference('OrderArray.count', @customer.order_arrays.size) do
+                    duplicate = @customer.duplicate
+                    duplicate.save!
+                  # end
+                end
+              end
             end
           end
         end
@@ -198,11 +203,17 @@ class CustomerTest < ActiveSupport::TestCase
     duplicate.reload
 
     assert_difference('Customer.count', -1) do
-      assert_difference('User.count', -customer.users.size) do
-        assert_difference('Planning.count', -customer.plannings.size) do
-          assert_difference('Destination.count', -customer.destinations.size) do
-            assert_difference('Vehicle.count', -customer.vehicles.size) do
-              duplicate.destroy!
+      assert_difference('User.count', -@customer.users.size) do
+        assert_difference('Planning.count', -@customer.plannings.size) do
+          assert_difference('Destination.count', -@customer.destinations.size) do
+            assert_difference('Vehicle.count', -@customer.vehicles.size) do
+              assert_difference('Zoning.count', -@customer.zonings.size) do
+                assert_difference('Tag.count', -@customer.tags.size) do
+                  # assert_difference('OrderArray.count', -@customer.order_arrays.size) do
+                    duplicate.destroy!
+                  # end
+                end
+              end
             end
           end
         end
