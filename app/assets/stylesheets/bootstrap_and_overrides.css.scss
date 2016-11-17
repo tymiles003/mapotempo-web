@@ -258,14 +258,14 @@ html.turbolinks-progress-bar::before {
 
 .leaflet-marker-icon.small .number {
   background: none;
-  color: #fff;
+  color: #fff !important; /* !important for print */
   right: -1px;
   top: 7px;
 }
 
 .leaflet-marker-icon.large .number {
   background: none;
-  color: #fff;
+  color: #fff !important; /* !important for print */
   right: 8px;
   top: 9px;
 }
