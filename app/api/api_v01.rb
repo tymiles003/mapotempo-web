@@ -73,7 +73,25 @@ class ApiV01 < Grape::API
 <p><code>Zoning</code> is a concept which allows to define multiple <code>Zone</code>s (areas) around destinatons. A <code>Zone</code> can be affected to a <code>Vehicle</code> and if it is used into a <code>Planning</code>, all <code>Destinations</code> inside areas will be affected to the zone\'s vehicle (or <code>Route</code>). A polygon defining a <code>Zone</code> can be created outside the application or can be automatically generated from a planning.</p>
 
 <h2>Code samples</h2>
-<p>Here some samples: <a href="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/examples/php/example.php" target="_blank">using PHP</a>, <a href="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/examples/ruby/example.rb" target="_blank">using Ruby</a>.</p>
+<ul>
+  <li>
+    <p>Create and display destinations or visits.<br>
+    Here some samples for these operations: <a href="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/examples/php/example.php" target="_blank">using PHP</a>, <a href="' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/examples/ruby/example.rb" target="_blank">using Ruby</a>.<br>
+    Note you can import destinations/visits and create a planning at the same time if you know beforehand the route for each destination/visit.</p>
+  </li>
+  <li>
+    <p>Same operations are available for stores (note you have an existing default store).</p>
+  </li>
+  <li>
+    <p>With created destinations/visits, you can create a planning (routes and stops are automatically created depending of yours vehicles and destinations/visits)</p>
+  </li>
+  <li>
+    <p>In existing planning, you have availability to move stops (which represent visits) on a dedicated route (which represent a dedicated vehicle).
+  </li>
+  <li>
+    <p>With many unaffected (out-of-route) stops in a planning, you may create a zoning to move many stops in several routes. Create a zoning (you can generate zones in this zoning automatically from automatic clustering), if you apply zoning (containing zones linked to a vehicle) on your planning, all stops contained in different zones will be moved in dedicated routes.
+  </li>
+</ul>
 ').delete("\n"),
   }
 end

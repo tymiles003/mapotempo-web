@@ -32,6 +32,7 @@ class V01::Plannings < Grape::API
 
   resource :plannings do
     desc 'Create planning.',
+      detail: 'Create a planning. An out-of-route (unplanned) route and a route for each vehicle are automatically created. If some visits exist (or fetch if you use tags), as many stops as fetching visits will be created.',
       nickname: 'createPlanning',
       params: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids).deep_merge(
         name: { required: true },
@@ -111,10 +112,11 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Insert one or more stop into planning routes',
+      detail: 'Insert automaticaly one or more stops in best routes and on best positions to have minimal influence on route\'s total time (this operation doesn\'t take into account time windows if they exist...). You should use this operation with existing stops in current planning\'s routes. In addition, you should not use this operation with many stops. You should use instead zoning (with automatic clustering creation for instance) to set multiple stops in each available route.',
       nickname: 'automaticInsertStop'
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :stop_ids, type: Array[Integer], desc: 'Ids separated by comma.', documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger
+      requires :stop_ids, type: Array[Integer], desc: 'Ids separated by comma. You should not have many stops.', documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger
     end
     patch ':id/automatic_insert' do
       planning_id = ParseIdsRefs.read params[:id]
@@ -127,7 +129,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Optimize routes',
-      detail: 'Optimize all unlocked routes by keeping visits in same route or not',
+      detail: 'Optimize all unlocked routes by keeping visits in same route or not.',
       nickname: 'optimizeRoutes'
     params do
       requires :id, type: String, desc: ID_DESC

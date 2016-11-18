@@ -58,7 +58,7 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Create zoning.',
-      detail: 'Create a new zoning. Zones will can be created for this zoning thereafter.',
+      detail: 'Create a new empty zoning. Zones will can be created for this zoning thereafter.',
       nickname: 'createZoning',
       params: V01::Entities::Zoning.documentation.except(:id).deep_merge(
         name: { required: true }
@@ -104,7 +104,7 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate zoning from planning.',
-      detail: 'Create new automatic zones in current zoning for a dedicated planning. Only destinations in a route with vehicle are taken into account. All previous existing zones are cleared.',
+      detail: 'Create new automatic zones in current zoning for a dedicated planning. Only stops in a route with vehicle are taken into account. All previous existing zones are cleared. Each generated zone is linked to a dedicated vehicle.',
       nickname: 'generateFromPlanning',
       entity: V01::Entities::Zoning
     params do
@@ -124,7 +124,7 @@ class V01::Zonings < Grape::API
     end
 
     desc 'Generate zoning automatically.',
-      detail: 'Create #N new automatic zones in current zoning for a dedicated planning. All planning\'s destinations are taken into account, even if they are out of route. All previous existing zones are cleared.',
+      detail: 'Create #N new automatic zones in current zoning for a dedicated planning (#N should be less or egal your vehicle\'s fleet size). All planning\'s stops (or all visits from destinations if there is no planning linked to this zoning) are taken into account, even if they are out of route. All previous existing zones are cleared. Each generated zone is linked to a dedicated vehicle.',
       nickname: 'generateAutomatic',
       entity: V01::Entities::Zoning
     params do
