@@ -39,7 +39,7 @@ var order_arrays_edit = function(params) {
   order_arrays_form();
 
   var filter_text = function(exactText, normalizedValue, filter, index) {
-    return !!String(normalizedValue).match(new RegExp(filter, 'i'));
+    return !!String(normalizedValue).match(new RegExp(filter.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), 'i'));
   };
 
   var formatNoMatches = I18n.t('web.select2.empty_result');
