@@ -43,7 +43,7 @@ group :development, :test do
 
   gem 'rubocop'
   gem 'byebug'
-  gem 'i18n-tasks'
+  gem 'i18n-tasks', github: 'Mapotempo/i18n-tasks' # FIXME wait for https://github.com/glebm/i18n-tasks/pull/211'
 end
 
 group :test do

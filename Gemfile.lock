@@ -1,4 +1,19 @@
 GIT
+  remote: git://github.com/Mapotempo/i18n-tasks.git
+  revision: 48a135dd999c9e2748b63dd323cf818501ba672f
+  specs:
+    i18n-tasks (0.9.6)
+      activesupport (>= 4.0.2)
+      ast (>= 2.1.0)
+      easy_translate (>= 0.5.0)
+      erubis
+      highline (>= 1.7.3)
+      i18n
+      parser (>= 2.2.3.0)
+      term-ansicolor (>= 1.3.2)
+      terminal-table (>= 1.5.1)
+
+GIT
   remote: git://github.com/Mapotempo/leaflet-controlledbounds-rails.git
   revision: ed306c23e5fba964384ceab8f9cc5e2e468f196d
   specs:
@@ -264,16 +279,6 @@ GEM
       rack
       socksify
     i18n (0.7.0)
-    i18n-tasks (0.9.5)
-      activesupport (>= 4.0.2)
-      ast (>= 2.1.0)
-      easy_translate (>= 0.5.0)
-      erubis
-      highline (>= 1.7.3)
-      i18n
-      parser (>= 2.2.3.0)
-      term-ansicolor (>= 1.3.2)
-      terminal-table (>= 1.5.1)
     icalendar (2.4.1)
     ice_nine (0.11.2)
     iconv (1.0.4)
@@ -567,7 +572,7 @@ DEPENDENCIES
   html_validation
   http_accept_language
   i18n-js!
-  i18n-tasks
+  i18n-tasks!
   icalendar
   iconv
   jbuilder (~> 2.0)
