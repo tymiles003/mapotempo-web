@@ -128,6 +128,26 @@ class V01::Plannings < Grape::API
       status 200
     end
 
+    desc 'Apply zonings',
+      detail: 'Apply zoning by assign stops to vehicles using the corresponding zones.',
+      nickname: 'applyZonings'
+    params do
+      requires :id, type: String, desc: ID_DESC
+      optional :details, type: Boolean, desc: 'Output route details', default: false
+    end
+    get ':id/apply_zonings' do
+      id = ParseIdsRefs.read params[:id]
+      planning = current_customer.plannings.where(id).first!
+      planning.zoning_out_of_date = true
+      planning.compute
+      planning.save! && planning.reload
+      if params[:details]
+        present planning, with: V01::Entities::Planning
+      else
+        status 204
+      end
+    end
+
     desc 'Optimize routes',
       detail: 'Optimize all unlocked routes by keeping visits in same route or not.',
       nickname: 'optimizeRoutes'

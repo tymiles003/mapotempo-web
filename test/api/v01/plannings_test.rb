@@ -166,6 +166,11 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     assert last_response.ok?
   end
 
+  test 'should apply zonings' do
+    get api("/#{@planning.id}/apply_zonings", { details: true })
+    assert last_response.ok?, last_response.body
+  end
+
   test 'should optimize each route' do
     get api("/#{@planning.id}/optimize", { details: true, synchronous: false })
     assert last_response.ok?, last_response.body
