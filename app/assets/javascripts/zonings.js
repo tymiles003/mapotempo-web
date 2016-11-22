@@ -43,7 +43,8 @@ var zonings_edit = function(params) {
   }).addTo(map);
 
   var fitBounds = window.location.hash ? false : true;
-  new L.Hash(map);
+  //FIXME when turoblinks get updated
+  if (navigator.userAgent.indexOf('Edge') == -1) new L.Hash(map);
 
   sidebar.addTo(map);
 
