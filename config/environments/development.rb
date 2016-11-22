@@ -100,7 +100,7 @@ Rails.application.configure do
   config.devices.alyacom.api_url = 'http://partners.alyacom.fr/ws'
   config.devices.masternaut.api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
-  config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.26'
+  config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.30'
   config.devices.tomtom.api_key = nil
   config.devices.cache_object = cache_factory('devices', 30)
 
