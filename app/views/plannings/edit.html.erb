@@ -19,7 +19,7 @@
       <%= twitter_bootstrap_form_for [:apply_zonings, @planning], { layout: :horizontal, default_div_class: 'col-lg-10 col-md-10', html: { class: 'form-horizontal update-zonings-form' }} do |f| %>
         <%= zoning_select f, @planning, t('plannings.edit.zonings.label') %>
         <%= f.actions do %>
-          <%= f.submit t('plannings.edit.zonings.action'), { class: 'btn btn-default' }, 'fa-object-ungroup' %>
+          <%= f.submit t('plannings.edit.zonings.action'), { class: 'btn ' + (@planning.zoning_out_of_date ? 'btn-warning' : 'btn-default'), title: @planning.zoning_out_of_date ? t('.out_of_date_zoning') : nil }, 'fa-object-ungroup' %>
         <% end %>
       <% end %>
 

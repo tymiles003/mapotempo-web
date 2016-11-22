@@ -99,7 +99,10 @@ var plannings_edit = function(params) {
         apply_zoning_modal.modal('hide');
       },
       success: function(data, textStatus, jqXHR) {
-        updatePlanning(data);
+        updatePlanning(data, {
+          'partial': false
+        });
+        $('.update-zonings-form button[type=submit]').removeClass('btn-warning').addClass('btn-default').removeAttr('title');
         notice(I18n.t('plannings.edit.zonings.success'));
         zoning_ids = getZonings();
       },

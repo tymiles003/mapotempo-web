@@ -1030,7 +1030,7 @@ fr:
       collapse_planning_panel: "Minifier le panneau du planning"
       refresh: "Actualiser"
       refresh_help: "Des paramètres ou des clients utilisés par ce planning ont été modifiés, il est nécessaire de le recalculer"
-      out_of_date_zoning: "Le Zonage a été modifié. Veuillez actualiser."
+      out_of_date_zoning: "Le zonage a été modifié. Appliquez à nouveau pour actualiser."
       stops_help: "Arrêts plannifiés / total"
       duration_help: "Somme des durées des tournées"
       distance_help: "Somme des distances des tournées"
