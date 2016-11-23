@@ -52,7 +52,7 @@ class Teksat < DeviceBase
   end
 
   def clear_route(customer, route)
-    response = RestClient.get get_missions_url(customer, date: planning_date(route).strftime('%Y-%m-%d'))
+    response = RestClient.get get_missions_url(customer, date: planning_date(route.planning).strftime('%Y-%m-%d'))
     Nokogiri::XML(response).xpath('//mission').map{ |item| RestClient.get(delete_mission_url(customer, mi_id: item['id'])) }
   end
 
