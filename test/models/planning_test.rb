@@ -541,6 +541,16 @@ class PlanningTest < ActiveSupport::TestCase
     o.reload
     assert_equal optim, o.routes.map{ |r| r.stops.map(&:id) }
   end
+
+  test 'should set stops with a geoloc rest in unassigned' do
+    o = plannings(:planning_one)
+    unassigned = o.routes.flat_map{ |r| r.stops.map(&:id) }
+    o.set_stops(o.routes, [unassigned] + [[]] * (o.routes.size - 1))
+    assert o.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == o.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
+    o.save!
+    o.reload
+    assert o.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == o.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
+  end
 end
 
 class PlanningTestError < ActiveSupport::TestCase

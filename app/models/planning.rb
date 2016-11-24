@@ -329,13 +329,18 @@ class Planning < ActiveRecord::Base
         # 1. Set route and index
         i = 0
         ordered_stops.each{ |stop|
-          stop.route_id = route.id
-          if route.vehicle_usage
-            stop.active = true
-            stop.out_of_window = false
-            stop.index = i += 1
+          # Don't change route for rests, but build index
+          if stop.is_a?(StopRest) && !route.vehicle_usage
+            flat_stop_ids.delete stop.id
           else
-            stop.index = stop.time = stop_distance = stop.trace = stop.drive_time = nil
+            stop.route_id = route.id
+            if route.vehicle_usage
+              stop.active = true
+              stop.out_of_window = false
+              stop.index = i += 1
+            else
+              stop.index = stop.time = stop_distance = stop.trace = stop.drive_time = nil
+            end
           end
         }
 
