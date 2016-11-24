@@ -115,7 +115,7 @@ class Vehicle < ActiveRecord::Base
       vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.routes.each{ |route|
           route.out_of_date = true
-          route.optimized_at = nil
+          route.optimized_at = route.last_sent_to = route.last_sent_at = nil
         }
       }
     end

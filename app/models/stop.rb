@@ -59,7 +59,7 @@ class Stop < ActiveRecord::Base
   def out_of_date
     if active_changed?
       route.out_of_date = true
-      route.optimized_at = nil
+      route.optimized_at = route.last_sent_to = route.last_sent_at = nil
     end
   end
 end

@@ -16,6 +16,10 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class TomtomService < DeviceService
+  def name
+    'TomTom'
+  end
+
   def test_list(params)
     service.test_list customer, params
   end

@@ -34,10 +34,10 @@ class V01::Devices::MasternautTest < ActiveSupport::TestCase
     with_stubs [:poi_wsdl, :poi, :job_wsdl, :job] do
       set_route
       post api("devices/masternaut/send", { customer_id: @customer.id, route_id: @route.id })
-      assert_equal 201, last_response.status
+      assert_equal 201, last_response.status, last_response.body
       @route.reload
       assert @route.reload.last_sent_at
-      assert_equal({ "id" => @route.id, "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
+      assert_equal({ "id" => @route.id, "last_sent_to" => 'Masternaut', "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
     end
   end
 
@@ -45,12 +45,11 @@ class V01::Devices::MasternautTest < ActiveSupport::TestCase
     with_stubs [:poi_wsdl, :poi, :job_wsdl, :job] do
       set_route
       post api("devices/masternaut/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
-      assert_equal 201, last_response.status
+      assert_equal 201, last_response.status, last_response.body
       routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.masternaut_ref }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
-      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => 'Masternaut', "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
     end
   end
-
 end

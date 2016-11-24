@@ -18,30 +18,46 @@
 module Devices
   module Helpers
     def device_send_route(options = {})
-      route = Route.for_customer(@customer).find params[:route_id]
-      service.send_route route, options
-      present route, with: V01::Entities::DeviceRouteLastSentAt
+      Route.transaction do
+        route = Route.for_customer(@customer).find params[:route_id]
+        service.send_route route, options
+        route.save!
+        present route, with: V01::Entities::DeviceRouteLastSentAt
+      end
     end
 
     def device_send_routes(options = {})
       planning = @customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
       routes = routes.select{ |route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
-      routes.each{ |route| service.send_route(route, options) }
+      routes.each{ |route|
+        Route.transaction do
+          service.send_route(route, options)
+          route.save!
+        end
+      }
       present routes, with: V01::Entities::DeviceRouteLastSentAt
     end
 
     def device_clear_route(_options = {})
-      route = Route.for_customer(@customer).find params[:route_id]
-      service.clear_route route
-      present route, with: V01::Entities::DeviceRouteLastSentAt
+      Route.transaction do
+        route = Route.for_customer(@customer).find params[:route_id]
+        service.clear_route route
+        route.save!
+        present route, with: V01::Entities::DeviceRouteLastSentAt
+      end
     end
 
     def device_clear_routes(options = {})
       planning = @customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
       routes = routes.select{ |route| route.vehicle_usage.vehicle.send(options[:device_id]) } if options[:device_id]
-      routes.each{ |route| service.clear_route(route) }
+      routes.each{ |route|
+        Route.transaction do
+          service.clear_route(route)
+          route.save!
+        end
+      }
       present routes, with: V01::Entities::DeviceRouteLastSentAt
     end
 

@@ -565,7 +565,8 @@ CREATE TABLE routes (
     vehicle_usage_id integer,
     stop_drive_time integer,
     last_sent_at timestamp without time zone,
-    optimized_at timestamp without time zone
+    optimized_at timestamp without time zone,
+    last_sent_to character varying
 );
 
 
@@ -2388,3 +2389,5 @@ INSERT INTO schema_migrations (version) VALUES ('20161004085743');
 INSERT INTO schema_migrations (version) VALUES ('20161006133646');
 
 INSERT INTO schema_migrations (version) VALUES ('20161115121703');
+
+INSERT INTO schema_migrations (version) VALUES ('20161123163102');

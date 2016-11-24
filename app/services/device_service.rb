@@ -16,24 +16,25 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class DeviceService
-  attr_reader :customer, :service_name, :cache_object, :service
+  attr_reader :customer, :service_name, :cache_object, :service, :name
 
   def initialize(params)
     @customer = params[:customer]
     @cache_object = Mapotempo::Application.config.devices.cache_object
-    @service_name = self.class.name.gsub('Service', '').downcase.to_sym
+    @name = self.class.name.gsub('Service', '')
+    @service_name = @name.downcase.to_sym
     @service = Mapotempo::Application.config.devices[service_name]
   end
 
   def send_route(route, options = {})
     service.send_route customer, route, options
-    route.update! last_sent_at: Time.now.utc
+    route.set_send_to(name)
     route.last_sent_at
   end
 
   def clear_route(route)
     service.clear_route customer, route
-    route.update! last_sent_at: nil
+    route.clear_sent_to
   end
 
   private

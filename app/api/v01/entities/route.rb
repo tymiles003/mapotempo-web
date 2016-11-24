@@ -45,6 +45,7 @@ class V01::Entities::Route < Grape::Entity
   expose(:stop_trace, documentation: { type: String, desc: 'Trace between the vehicle\'s store_stop and last stop.' })
   expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
   expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'})
+  expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent'})
   expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
   expose(:optimized_at, documentation: { type: DateTime, desc: 'Last optimized at'})
 end

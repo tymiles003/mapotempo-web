@@ -73,7 +73,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       assert_equal 201, last_response.status
       @route.reload
       assert @route.reload.last_sent_at
-      assert_equal({ "id" => @route.id, "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
+      assert_equal({ "id" => @route.id, "last_sent_to" => 'TomTom', "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
     end
   end
 
@@ -84,7 +84,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       assert_equal 201, last_response.status
       @route.reload
       assert @route.reload.last_sent_at
-      assert_equal({ "id" => @route.id, "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
+      assert_equal({ "id" => @route.id, "last_sent_to" => 'TomTom', "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
     end
   end
 
@@ -96,7 +96,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
-      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => 'TomTom', "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
     end
   end
 
@@ -108,7 +108,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
-      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => 'TomTom', "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
     end
   end
 
@@ -119,7 +119,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       assert_equal 200, last_response.status
       @route.reload
       assert !@route.reload.last_sent_at
-      assert_equal({ "id" => @route.id, "last_sent_at" => nil, "last_sent_at_formatted"=>nil }, JSON.parse(last_response.body))
+      assert_equal({ "id" => @route.id, "last_sent_to" => nil, "last_sent_at" => nil, "last_sent_at_formatted"=>nil }, JSON.parse(last_response.body))
     end
   end
 
@@ -131,7 +131,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
       routes.each &:reload
       routes.each{|route| assert !route.last_sent_at }
-      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_at" => nil, "last_sent_at_formatted"=>nil } }, JSON.parse(last_response.body))
+      assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => nil, "last_sent_at" => nil, "last_sent_at_formatted"=>nil } }, JSON.parse(last_response.body))
     end
   end
 
@@ -204,5 +204,4 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       assert_equal 5, @customer.destinations.reload.length
     end
   end
-
 end

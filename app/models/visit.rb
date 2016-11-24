@@ -69,7 +69,7 @@ class Visit < ActiveRecord::Base
     Route.transaction do
       stop_visits.each{ |stop|
         stop.route.out_of_date = true
-        stop.route.optimized_at = nil
+        stop.route.optimized_at = stop.route.last_sent_to = stop.route.last_sent_at = nil
         stop.route.save
       }
     end

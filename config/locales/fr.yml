@@ -937,7 +937,7 @@ fr:
       zonings: "Zonages"
       zoning_new: "Créer un nouveau zonage depuis ce planning"
       zoning_edit: "Modifier ce zonage depuis ce planning"
-      last_sent_at: "Dernier envoi"
+      last_sent_to: "Envoi"
       optimized_at: "Optimisé"
       optimize_global_help: "Optimiser le planning dans son ensemble excepté les tournées verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement)"
       optimize_each_help: "Optimiser les tournées non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)"

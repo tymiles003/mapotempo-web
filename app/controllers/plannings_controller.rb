@@ -164,7 +164,6 @@ class PlanningsController < ApplicationController
     respond_to do |format|
       Planning.transaction do
         route = @planning.routes.find{ |route| route.id == Integer(params['route_id']) }
-        route.update! last_sent_at: nil
         vehicle_usage_id_was = route.vehicle_usage.id
         vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params['vehicle_usage_id']))
         if route && vehicle_usage && @planning.switch(route, vehicle_usage) && @planning.save && @planning.compute && @planning.save

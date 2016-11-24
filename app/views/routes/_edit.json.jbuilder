@@ -8,6 +8,7 @@ json.extract! route, :ref, :color, :size_active
 (json.start l(route.start.utc, format: :hour_minute)) if route.start
 (json.end l(route.end.utc, format: :hour_minute)) if route.end
 json.color_fake route.color
+json.last_sent_to route.last_sent_to if route.last_sent_to
 json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at
 json.optimized_at_formatted l(route.optimized_at) if route.optimized_at
 if !@planning.customer.enable_orders

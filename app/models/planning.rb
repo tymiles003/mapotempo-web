@@ -255,7 +255,7 @@ class Planning < ActiveRecord::Base
         stop.active = orders.key?(stop.visit_id) && !orders[stop.visit_id].empty?
       }
       route.out_of_date = true
-      route.optimized_at = nil
+      route.optimized_at = route.last_sent_to = route.last_sent_at = nil
     }
 
     self.order_array = order_array
@@ -308,8 +308,9 @@ class Planning < ActiveRecord::Base
     routes_with_vehicle.each_with_index{ |r, i|
       if o[routes.find{ |r| !r.vehicle_usage } ? i + 1 : i].size > 0
         r.optimized_at = Time.now.utc
+        r.last_sent_to = r.last_sent_at = nil
       elsif global
-        r.optimized_at = nil
+        r.optimized_at = r.last_sent_to = r.last_sent_at = nil
       end
     }
     o
