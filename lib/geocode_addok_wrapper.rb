@@ -51,7 +51,7 @@ class GeocodeAddokWrapper
           country: country
         })
 
-        @cache_code.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
+        @cache_code.write(key, result && result.body)
       rescue RestClient::Exception => e
         raise GeocodeError.new e.message
       end
@@ -75,7 +75,7 @@ class GeocodeAddokWrapper
           country: country
         })
 
-        @cache_code.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
+        @cache_code.write(key, result && result.body)
       rescue
         raise
       end
@@ -110,7 +110,7 @@ class GeocodeAddokWrapper
     if !result
       begin
         result = RestClient.post(@url + '/geocode.json', {api_key: @api_key, geocodes: json}.to_json, content_type: :json, accept: :json)
-        @cache_code.write(key, result && String.new(result)) # String.new workaround waiting for RestClient 2.0
+        @cache_code.write(key, result && result.body)
       rescue RestClient::Exception => e
         raise GeocodeError.new e.message
       end
