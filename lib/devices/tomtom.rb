@@ -56,6 +56,34 @@ class Tomtom < DeviceBase
     'blue' => '#0000FF'
   }
 
+  @@order_status = {
+    'NotYetSent' => nil,
+    'Sent' => 'Planned',
+    'Received' => 'Planned',
+    'Read' => 'Planned',
+    'Accepted' => 'Planned',
+    'ServiceOrderStarted' => 'Started',
+    'ArrivedAtDestination' => 'Started',
+    'WorkStarted' => 'Started',
+    'WorkFinished' => 'Finished',
+    'DepartedFromDestination' => 'Finished',
+    'PickupOrderStarted' => 'Started',
+    'ArrivedAtPickUpLocation' => 'Started',
+    'PickUpStarted' => 'Started',
+    'PickUpFinished' => 'Finished',
+    'DepartedFromPickUpLocation' => 'Finished',
+    'DeliveryOrderStarted' => 'Started',
+    'ArrivedAtDeliveryLocation' => 'Started',
+    'DeliveryStarted' => 'Started',
+    'DeliveryFinished' => 'Finished',
+    'DepartedFromDeliveryLocation' => 'Finished',
+    'Resumed' => 'Started',
+    'Suspended' => nil,
+    'Cancelled' => 'Rejected',
+    'Rejected' => 'Rejected',
+    'Finished' => 'Finished',
+  }
+
   def test_list(customer, params)
     list_devices customer, { auth: params.slice(:account, :user, :password) }
   end
@@ -72,7 +100,7 @@ class Tomtom < DeviceBase
   end
 
   def get_vehicles_pos(customer)
-    objects = get customer, savon_client_objects, :show_object_report, {}, {}, ignore_busy = true
+    objects = get customer, savon_client_objects, :show_object_report, {}, {}, true
     objects = [objects] if objects.is_a?(Hash)
     objects.select{ |object| !object[:deleted] }.collect do |object|
       {
@@ -209,9 +237,31 @@ class Tomtom < DeviceBase
     }
   end
 
+  def fetch_stops(customer, planning)
+    orders = get customer, savon_client_orders, :show_order_report, {
+      queryFilter: {
+        dateRange: {
+          from: planning_date(planning).iso8601,
+          to: (planning_date(planning) + 2.day).iso8601 # FIXME remove hard limit of 2 days
+        },
+        attributes!: {
+          dateRange: {
+            rangePattern: 'UD'
+          }
+        }
+      }
+    }, {}, false, true
+
+    orders && orders.collect{ |order| {
+      order_id: decode_order_id(order[:order_id]),
+      status: @@order_status[order[:order_state][:@state_code]] || order[:order_state][:@state_code],
+      eta: order[:estimated_arrivalTime]
+    } } || []
+  end
+
   private
 
-  def get(customer, client, operation, message={}, options={}, ignore_busy = false)
+  def get(customer, client, operation, message={}, options={}, ignore_busy = false, ignore_addresses_empty_result = false)
     if options[:auth]
       account, username, password = options[:auth][:account], options[:auth][:user], options[:auth][:password]
     else
@@ -232,7 +282,7 @@ class Tomtom < DeviceBase
       response_body = response.body.first[1][:return]
       status_code = response_body[:status_code].to_i
       raise TomTomServiceBusyError.new if status_code == 8015 && !ignore_busy
-      if status_code == 0 || (ignore_busy && status_code == 8015)
+      if status_code == 0 || (ignore_busy && status_code == 8015) || (ignore_addresses_empty_result && status_code == 9198)
         return response_body[:results][:result_item] if response_body[:results]
       else
         raise DeviceServiceError.new 'TomTom: %s' % [ parse_error_msg(status_code) || response_body[:status_message] ]
@@ -296,7 +346,6 @@ class Tomtom < DeviceBase
 
   def sendDestinationOrder(customer, route, position, orderid, description, time, waypoints = nil)
     objectuid = route.vehicle_usage.vehicle.tomtom_id
-    unique_base_order_id = (orderid.to_s + Time.now.to_i.to_s).to_i.to_s(36)
     params = {
       dstOrderToSend: {
         orderText: strip_sql(description).strip[0..499],
@@ -320,7 +369,7 @@ class Tomtom < DeviceBase
           objectUid: objectuid,
         },
         dstOrderToSend: {
-          orderNo: (description.gsub(/[^a-z0-9\s]/i, '')[0..(19 - unique_base_order_id.length)] + unique_base_order_id).upcase,
+          orderNo: encode_order_id(description, orderid),
           orderType: 'DELIVERY_ORDER',
         }
       }
@@ -345,5 +394,14 @@ class Tomtom < DeviceBase
   def strip_sql(string)
     # Strip Quotes, forbidden by service in some cases (before Union or Select)
     string.tr('\'', "\u2019").tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ')
+  end
+
+  def encode_order_id(description, orderid)
+    unique_base_order_id = Time.now.to_i.to_s(36) + ':' + orderid.to_s(36)
+    description.upcase.gsub(/[^A-Z0-9\s]/i, '')[0..(19 - unique_base_order_id.length)] + unique_base_order_id
+  end
+
+  def decode_order_id(orderid)
+    orderid.split(':').last.to_i(36)
   end
 end

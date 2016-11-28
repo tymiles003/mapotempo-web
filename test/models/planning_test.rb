@@ -551,6 +551,25 @@ class PlanningTest < ActiveSupport::TestCase
     o.reload
     assert o.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == o.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
   end
+
+  require Rails.root.join('test/lib/devices/tomtom_base')
+  include TomtomBase
+
+  test 'should fetch_stops_status' do
+    o = plannings(:planning_one)
+    add_tomtom_credentials(o.customer)
+    set_route
+    s = stops(:stop_one_one)
+    assert !s.status
+    with_stubs [:orders_service_wsdl, :show_order_report] do
+      Planning.transaction do
+        o.fetch_stops_status
+        o.save!
+      end
+    end
+    s.reload
+    assert s.status
+  end
 end
 
 class PlanningTestError < ActiveSupport::TestCase

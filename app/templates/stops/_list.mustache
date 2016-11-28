@@ -184,7 +184,13 @@
           {{#no_path}}
             <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i>
           {{/no_path}}
-          <span class="info">{{#active}}{{#geocoded}}{{^no_path}}{{time}} - {{/no_path}}{{/geocoded}}{{/active}}</span>
+          <span class="info">
+            {{#active}}{{#geocoded}}{{^no_path}}
+              <span {{#status}}class="stop-status stop-status-{{status_code}}" title="{{status}}{{#eta_formated}} - {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}{{/eta_formated}}"{{/status}}>
+                {{time}}
+              </span> -
+            {{/no_path}}{{/geocoded}}{{/active}}
+          </span>
           <span class="name" title="{{name}}{{#index_visit}} #{{index_visit}}{{/index_visit}}">{{name}}</span>{{#index_visit}} #{{index_visit}}{{/index_visit}}
         </div>
         <div class="btn-group pull-right stop-tools">

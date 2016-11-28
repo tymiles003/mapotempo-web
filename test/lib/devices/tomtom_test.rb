@@ -66,4 +66,11 @@ class TomtomTest < ActionController::TestCase
       assert @service.get_vehicles_pos @customer
     end
   end
+
+  test 'should code and decode stop id' do
+    id = 758944
+    code = @service.send(:encode_order_id, 'plop', id)
+    decode = @service.send(:decode_order_id, code)
+    assert decode, id
+  end
 end

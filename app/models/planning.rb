@@ -365,6 +365,22 @@ class Planning < ActiveRecord::Base
     end
   end
 
+  def fetch_stops_status
+    stops_map = Hash[routes.select(&:vehicle_usage).collect(&:stops).flatten.collect{ |stop| [stop.id, stop] }]
+
+    Mapotempo::Application.config.devices.each_pair.collect{ |key, device|
+      if device.respond_to?(:fetch_stops) && customer.method(key.to_s + '?').call
+        device.fetch_stops(self.customer, self)
+      end
+    }.compact.flatten.select{ |s| s[:order_id] > 0 }.each{ |s|
+      if stops_map.key?(s[:order_id])
+        stop = stops_map[s[:order_id]]
+        stop.status = s[:status]
+        stop.eta = s[:eta]
+      end
+    }
+  end
+
   def to_s
     "#{name}=>" + routes.collect(&:to_s).join(' ')
   end

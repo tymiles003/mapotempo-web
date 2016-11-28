@@ -112,6 +112,13 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
         json.quantity quantity if quantity
       end
     end
+    if stop.status
+      json.status t('plannings.edit.stop_status.' + stop.status.downcase, default: stop.status)
+      json.status_code stop.status.downcase
+    end
+    if stop.route.last_sent_to && stop.status && stop.eta
+      (json.eta_formated l(stop.eta, format: :hour_minute)) if stop.eta
+    end
     duration = l(visit.take_over.utc, format: :hour_minute_second) if visit.take_over
   elsif stop.is_a?(StopRest)
     json.rest do

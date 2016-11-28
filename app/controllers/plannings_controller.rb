@@ -21,7 +21,7 @@ require 'zip'
 
 class PlanningsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :duplicate, :reverse_order, :apply_zonings, :optimize]
+  before_action :set_planning, only: [:show, :edit, :update, :destroy, :move, :refresh, :switch, :automatic_insert, :update_stop, :optimize_route, :active, :duplicate, :reverse_order, :apply_zonings, :optimize, :update_stops_status]
 
   include PlanningExport
 
@@ -317,6 +317,23 @@ class PlanningsController < ApplicationController
     end
   end
 
+  def update_stops_status
+    @planning.fetch_stops_status
+    if @planning.save
+      respond_to do |format|
+        format.json do
+          render action: :show
+        end
+      end
+    else
+      respond_to do |format|
+        format.json do
+          render json: @planning.errors, status: :unprocessable_entity
+        end
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -362,6 +379,8 @@ class PlanningsController < ApplicationController
       :out_of_window,
       :out_of_capacity,
       :out_of_drive_time,
+      :status,
+      :eta,
 
       :ref,
       :name,

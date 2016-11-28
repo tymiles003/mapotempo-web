@@ -14,6 +14,7 @@ stop_unaffected:
   out_of_drive_time: false
 
 stop_one_one:
+  id: 758944 # Refered by tomtom web mock as encoded string "g9ls"
   type: StopVisit
   index: 1
   active: true

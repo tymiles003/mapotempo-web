@@ -955,6 +955,11 @@ fr:
       route_placeholder: "Réf. de la tournée"
       service_time: "Durées de service"
       exports: "Exporter le planning"
+      stop_status:
+        planned: "Planifié"
+        started: "Démarré"
+        finished: "Terminé"
+        rejected: "Rejeté"
       customer_external_callback_url:
         action: "Application externe"
       teksat_send:
@@ -1074,7 +1079,7 @@ fr:
         open_close2: "Plage horaire 2 :"
         open2: "début 2"
         close2: "fin 2"
-        time: "Passage : "
+        time: "Planifié : "
         quantity: "Quantité : "
         orders: "Commandes : "
         duration: "Durée : "
@@ -1082,6 +1087,8 @@ fr:
         stop_drive_time: "Durée :"
         stop_distance: "Distance :"
         visit: "Visite"
+        status: "Statut :"
+        eta: "ETA :"
       error:
         no_geolocalization: "Pas de géolocalisation"
         no_geolocalization_help: "Pas de coordonnée géographique renseignée, ou l'adresse n'a pu être localisée"
@@ -1183,6 +1190,8 @@ fr:
       out_of_window: "hors créneau visite"
       out_of_capacity: "hors capacité véhicule"
       out_of_drive_time: "hors créneau véhicule"
+      status: "statut"
+      eta: "eta"
     form:
       ref_help: "Référence libre"
       tags_help: "Restreint les visites / clients dans le planning (les visites/clients doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)."

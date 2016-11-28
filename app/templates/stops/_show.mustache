@@ -98,8 +98,10 @@
       {{close2}} {{^open2}}({{#i18n}}plannings.edit.popup.close2{{/i18n}}){{/open2}}
     </li>
   {{/open_close2}}
-  {{#wait_time}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.wait{{/i18n}} {{wait_time}}</li>{{/wait_time}}
+  {{#status}}<li><i class="fa fa-check fa-fw"></i> {{#i18n}}plannings.edit.popup.status{{/i18n}} {{status}}</li>{{/status}}
+  {{#eta_formated}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}</li>{{/eta_formated}}
   {{#time}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.time{{/i18n}} {{time}}</li>{{/time}}
+  {{#wait_time}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.wait{{/i18n}} {{wait_time}}</li>{{/wait_time}}
   {{#duration}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.duration{{/i18n}} {{duration}}</li>{{/duration}}
   {{#quantities}}
     <li><i class="fa fa-archive fa-fw"></i> {{#i18n}}plannings.edit.popup.quantity{{/i18n}} {{quantity}}</li>

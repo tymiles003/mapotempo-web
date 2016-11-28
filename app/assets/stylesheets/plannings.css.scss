@@ -48,6 +48,26 @@
     }
   }
 
+  .stop-status {
+    background: gray;
+  }
+
+  .stop-status-planned {
+    background: blue;
+  }
+
+  .stop-status-started {
+    background: yellow;
+  }
+
+  .stop-status-finished {
+    background: green;
+  }
+
+  .stop-status-rejected {
+    background: red;
+  }
+
   #map {
     min-height: 250px;
 

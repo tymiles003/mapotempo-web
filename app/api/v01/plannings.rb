@@ -236,5 +236,25 @@ class V01::Plannings < Grape::API
       end
       present routes, with: V01::Entities::Route
     end
+
+    desc 'Update stops status',
+      detail: 'Update stops status from remote devices',
+      nickname: 'updateStopsStatus',
+      entity: V01::Entities::Planning
+    params do
+      requires :id, type: String, desc: ID_DESC
+      optional :details, type: Boolean, desc: 'Output route details', default: false
+    end
+    patch ':id/update_stops_status' do
+      id = ParseIdsRefs.read params[:id]
+      planning = current_customer.plannings.where(id).first!
+      planning.fetch_stops_status
+      planning.save!
+      if params[:details]
+        present planning, with: V01::Entities::Planning
+      else
+        status 204
+      end
+    end
   end
 end

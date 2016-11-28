@@ -620,6 +620,8 @@ CREATE TABLE stops (
     type character varying DEFAULT 'StopDestination'::character varying NOT NULL,
     drive_time integer,
     visit_id integer,
+    status character varying,
+    eta timestamp without time zone,
     CONSTRAINT check_visit_id CHECK ((((type)::text <> 'StopVisit'::text) OR (visit_id IS NOT NULL)))
 );
 
@@ -2391,3 +2393,5 @@ INSERT INTO schema_migrations (version) VALUES ('20161006133646');
 INSERT INTO schema_migrations (version) VALUES ('20161115121703');
 
 INSERT INTO schema_migrations (version) VALUES ('20161123163102');
+
+INSERT INTO schema_migrations (version) VALUES ('20161123163103');

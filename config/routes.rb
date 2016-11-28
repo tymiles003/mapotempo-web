@@ -100,6 +100,7 @@ Rails.application.routes.draw do
       patch :apply_zonings
       patch :automatic_insert
     end
+    patch 'update_stops_status'
   end
   delete 'plannings' => 'plannings#destroy_multiple'
 

@@ -218,4 +218,13 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     get "api/0.1/plannings.ics?api_key=testkey1&ids=1&email=true"
     assert_equal 204, last_response.status
   end
+
+  test 'should update stops status' do
+    planning = plannings :planning_one
+    patch api("#{planning.id}/update_stops_status")
+    assert_equal 204, last_response.status
+
+    patch api("#{planning.id}/update_stops_status", details: true)
+    assert_equal 200, last_response.status
+  end
 end

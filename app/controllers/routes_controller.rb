@@ -108,6 +108,8 @@ class RoutesController < ApplicationController
       :out_of_window,
       :out_of_capacity,
       :out_of_drive_time,
+      :status,
+      :eta,
 
       :ref,
       :name,
