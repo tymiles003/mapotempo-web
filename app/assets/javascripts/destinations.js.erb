@@ -745,7 +745,7 @@ var destinations_index = function(params, api) {
   var addMarker = function(id, lat, lng) {
     var marker = L.marker(new L.LatLng(lat, lng), {
       icon: icon_default,
-      draggable: true,
+      draggable: isEditable,
       destination: id
     }).addTo(markersLayers).addTo(cluster);
     marker.on('dragend', function(event) {
