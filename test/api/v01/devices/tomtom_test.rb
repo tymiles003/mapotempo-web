@@ -31,14 +31,14 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'authenticate' do
-    with_stubs [:client_objects_wsdl, :object_report] do
+    with_stubs [:client_objects_wsdl, :show_object_report] do
       get api("devices/tomtom/auth")
       assert_equal 204, last_response.status
     end
   end
 
   test 'list devices' do
-    with_stubs [:client_objects_wsdl, :object_report] do
+    with_stubs [:client_objects_wsdl, :show_object_report] do
       get api("devices/tomtom/devices", { customer_id: @customer.id })
       assert_equal 200, last_response.status
       assert_equal [
@@ -49,7 +49,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'vehicle positions' do
-    with_stubs [:client_objects_wsdl, :object_report] do
+    with_stubs [:client_objects_wsdl, :show_object_report, :clear_orders] do
       set_route
       get api("vehicles/current_position"), { ids: @customer.vehicle_ids }
       assert_equal 200, last_response.status
@@ -67,7 +67,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'send orders' do
-    with_stubs [:orders_service_wsdl, :orders_service] do
+    with_stubs [:orders_service_wsdl, :send_destination_order] do
       set_route
       post api("devices/tomtom/send", { customer_id: @customer.id, route_id: @route.id, type: "orders" })
       assert_equal 201, last_response.status
@@ -78,7 +78,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'send waypoints' do
-    with_stubs [:orders_service_wsdl, :orders_service] do
+    with_stubs [:orders_service_wsdl, :send_destination_order] do
       set_route
       post api("devices/tomtom/send", { customer_id: @customer.id, route_id: @route.id, type: "waypoints" })
       assert_equal 201, last_response.status
@@ -89,7 +89,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'send multiple orders' do
-    with_stubs [:orders_service_wsdl, :orders_service] do
+    with_stubs [:orders_service_wsdl, :send_destination_order] do
       set_route
       post api("devices/tomtom/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id, type: "orders" })
       assert_equal 201, last_response.status
@@ -101,7 +101,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'send multiple waypoints' do
-    with_stubs [:orders_service_wsdl, :orders_service] do
+    with_stubs [:orders_service_wsdl, :send_destination_order] do
       set_route
       post api("devices/tomtom/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id, type: "waypoints" })
       assert_equal 201, last_response.status
@@ -113,7 +113,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'clear' do
-    with_stubs [:orders_service_wsdl, :orders_service] do
+    with_stubs [:orders_service_wsdl, :send_destination_order, :clear_orders] do
       set_route
       delete api("devices/tomtom/clear", { customer_id: @customer.id, route_id: @route.id })
       assert_equal 200, last_response.status
@@ -124,7 +124,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'clear multiple' do
-    with_stubs [:orders_service_wsdl, :orders_service] do
+    with_stubs [:orders_service_wsdl, :send_destination_order, :clear_orders] do
       set_route
       delete api("devices/tomtom/clear_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
       assert_equal 200, last_response.status
@@ -136,7 +136,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'sync' do
-    with_stubs [:client_objects_wsdl, :vehicle_report] do
+    with_stubs [:client_objects_wsdl, :show_vehicle_report] do
       set_route
 
       # Customer Already Have Devices
@@ -166,7 +166,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'sync with credentials' do
-    with_stubs [:client_objects_wsdl, :vehicle_report] do
+    with_stubs [:client_objects_wsdl, :show_vehicle_report] do
       set_route
 
       # Reset Vehicle
@@ -198,7 +198,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   end
 
   test 'list addresses' do
-    with_stubs [:address_service_wsdl, :address_service] do
+    with_stubs [:address_service_wsdl, :show_address_report] do
       assert_equal 4, @customer.destinations.reload.length
       put api("destinations", { remote: 'tomtom' })
       assert_equal 5, @customer.destinations.reload.length

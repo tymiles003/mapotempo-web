@@ -1,0 +1,221 @@
+HTTP/1.1 200 OK
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Body>
+    <ns3:showOrderReportResponse xmlns:ns3="http://connect.webfleet.tomtomwork.com/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <return>
+        <statusCode>0</statusCode>
+        <statusMessage>The operation *showOrderReport* processed succesfully.</statusMessage>
+        <errors xsi:nil="true" />
+        <resultSize>5</resultSize>
+        <results>
+          <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/orders" xsi:type="ns4:ReportedOrderData">
+            <orderDate>2016-11-28T07:12:53Z</orderDate>
+            <orderId>DPART VHICUohcnn6:-1</orderId>
+            <orderText>Départ véhicule</orderText>
+            <orderType>DELIVERY_ORDER</orderType>
+            <object objectNo="mt-004" objectUid="1-44063-666F24630">
+              <objectName>MAPO2-mt</objectName>
+            </object>
+            <geoPosition>
+              <latitude>44834230</latitude>
+              <longitude>-600680</longitude>
+              <mapcode>FRA BFJ.2V</mapcode>
+            </geoPosition>
+            <destination>Bordeaux</destination>
+            <orderState stateCode="Accepted">
+              <time>2016-11-28T11:18:40.705Z</time>
+              <positionText xsi:nil="true" />
+              <geoPosition xsi:nil="true" />
+              <messageText>Order DPART VHICUohcnn6:-1: accepted</messageText>
+            </orderState>
+            <plannedArrivalTime>2016-11-28T07:12:53Z</plannedArrivalTime>
+            <estimatedArrivalTime xsi:nil="true" />
+            <arrivalTolerance xsi:nil="true" />
+            <delayWarning xsi:nil="true" />
+            <notificationEnabled>false</notificationEnabled>
+            <notificationMinutes>15</notificationMinutes>
+            <contact xsi:nil="true" />
+            <contacttel xsi:nil="true" />
+            <driverNo xsi:nil="true" />
+            <driverName xsi:nil="true" />
+            <driverTelmobile xsi:nil="true" />
+            <waypointCount>0</waypointCount>
+            <orderAddress>
+              <addrNr xsi:nil="true" />
+              <zip xsi:nil="true" />
+              <city>Bordeaux</city>
+              <street xsi:nil="true" />
+              <country xsi:nil="true" />
+            </orderAddress>
+            <driverUid xsi:nil="true" />
+          </resultItem>
+          <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/orders" xsi:type="ns4:ReportedOrderData">
+            <orderDate>2016-11-28T07:08:55Z</orderDate>
+            <orderId>L1 X10ohcnn5:g9ls</orderId>
+            <orderText>l1 x1.0</orderText>
+            <orderType>DELIVERY_ORDER</orderType>
+            <object objectNo="mt-004" objectUid="1-44063-666F24630">
+              <objectName>MAPO2-mt</objectName>
+            </object>
+            <geoPosition>
+              <latitude>44846407</latitude>
+              <longitude>-579915</longitude>
+              <mapcode>FRA BLD.CH</mapcode>
+            </geoPosition>
+            <destination>Bordeaux, Place Picard</destination>
+            <orderState stateCode="Accepted">
+              <time>2016-11-28T11:18:40.334Z</time>
+              <positionText xsi:nil="true" />
+              <geoPosition xsi:nil="true" />
+              <messageText>Order L1 X10ohcnn5:a: accepted</messageText>
+            </orderState>
+            <plannedArrivalTime>2016-11-28T07:08:55Z</plannedArrivalTime>
+            <estimatedArrivalTime xsi:nil="true" />
+            <arrivalTolerance xsi:nil="true" />
+            <delayWarning xsi:nil="true" />
+            <notificationEnabled>false</notificationEnabled>
+            <notificationMinutes>15</notificationMinutes>
+            <contact xsi:nil="true" />
+            <contacttel xsi:nil="true" />
+            <driverNo xsi:nil="true" />
+            <driverName xsi:nil="true" />
+            <driverTelmobile xsi:nil="true" />
+            <waypointCount>0</waypointCount>
+            <orderAddress>
+              <addrNr xsi:nil="true" />
+              <zip>33000</zip>
+              <city>Bordeaux</city>
+              <street>Place Picard</street>
+              <country xsi:nil="true" />
+            </orderAddress>
+            <driverUid xsi:nil="true" />
+          </resultItem>
+          <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/orders" xsi:type="ns4:ReportedOrderData">
+            <orderDate>2016-11-28T07:04:55Z</orderDate>
+            <orderId>L4 X05ohcnn5:9</orderId>
+            <orderText>l4 x0.5</orderText>
+            <orderType>DELIVERY_ORDER</orderType>
+            <object objectNo="mt-004" objectUid="1-44063-666F24630">
+              <objectName>MAPO2-mt</objectName>
+            </object>
+            <geoPosition>
+              <latitude>44865760</latitude>
+              <longitude>-575770</longitude>
+              <mapcode>FRA BM5.FK</mapcode>
+            </geoPosition>
+            <destination>Bordeaux, Rue de New York</destination>
+            <orderState stateCode="Accepted">
+              <time>2016-11-28T11:18:40.331Z</time>
+              <positionText xsi:nil="true" />
+              <geoPosition xsi:nil="true" />
+              <messageText>Order L4 X05ohcnn5:9: accepted</messageText>
+            </orderState>
+            <plannedArrivalTime>2016-11-28T07:04:55Z</plannedArrivalTime>
+            <estimatedArrivalTime xsi:nil="true" />
+            <arrivalTolerance xsi:nil="true" />
+            <delayWarning xsi:nil="true" />
+            <notificationEnabled>false</notificationEnabled>
+            <notificationMinutes>15</notificationMinutes>
+            <contact xsi:nil="true" />
+            <contacttel xsi:nil="true" />
+            <driverNo xsi:nil="true" />
+            <driverName xsi:nil="true" />
+            <driverTelmobile xsi:nil="true" />
+            <waypointCount>0</waypointCount>
+            <orderAddress>
+              <addrNr xsi:nil="true" />
+              <zip>33000</zip>
+              <city>Bordeaux</city>
+              <street>Rue de New York</street>
+              <country xsi:nil="true" />
+            </orderAddress>
+            <driverUid xsi:nil="true" />
+          </resultItem>
+          <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/orders" xsi:type="ns4:ReportedOrderData">
+            <orderDate>2016-11-28T07:04:55Z</orderDate>
+            <orderId>L4 X05ohcnn5:8</orderId>
+            <orderText>l4 x0.5</orderText>
+            <orderType>DELIVERY_ORDER</orderType>
+            <object objectNo="mt-004" objectUid="1-44063-666F24630">
+              <objectName>MAPO2-mt</objectName>
+            </object>
+            <geoPosition>
+              <latitude>44865760</latitude>
+              <longitude>-575770</longitude>
+              <mapcode>FRA BM5.FK</mapcode>
+            </geoPosition>
+            <destination>Bordeaux, Rue de New York</destination>
+            <orderState stateCode="Accepted">
+              <time>2016-11-28T11:18:40.328Z</time>
+              <positionText xsi:nil="true" />
+              <geoPosition xsi:nil="true" />
+              <messageText>Order L4 X05ohcnn5:8: accepted</messageText>
+            </orderState>
+            <plannedArrivalTime>2016-11-28T07:04:55Z</plannedArrivalTime>
+            <estimatedArrivalTime xsi:nil="true" />
+            <arrivalTolerance xsi:nil="true" />
+            <delayWarning xsi:nil="true" />
+            <notificationEnabled>false</notificationEnabled>
+            <notificationMinutes>15</notificationMinutes>
+            <contact xsi:nil="true" />
+            <contacttel xsi:nil="true" />
+            <driverNo xsi:nil="true" />
+            <driverName xsi:nil="true" />
+            <driverTelmobile xsi:nil="true" />
+            <waypointCount>0</waypointCount>
+            <orderAddress>
+              <addrNr xsi:nil="true" />
+              <zip>33000</zip>
+              <city>Bordeaux</city>
+              <street>Rue de New York</street>
+              <country xsi:nil="true" />
+            </orderAddress>
+            <driverUid xsi:nil="true" />
+          </resultItem>
+          <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/orders" xsi:type="ns4:ReportedOrderData">
+            <orderDate>2016-11-28T07:00:00Z</orderDate>
+            <orderId>DPART VHICUohcnn4:-2</orderId>
+            <orderText>Départ véhicule</orderText>
+            <orderType>DELIVERY_ORDER</orderType>
+            <object objectNo="mt-004" objectUid="1-44063-666F24630">
+              <objectName>MAPO2-mt</objectName>
+            </object>
+            <geoPosition>
+              <latitude>44834230</latitude>
+              <longitude>-600680</longitude>
+              <mapcode>FRA BFJ.2V</mapcode>
+            </geoPosition>
+            <destination>Bordeaux</destination>
+            <orderState stateCode="Accepted">
+              <time>2016-11-28T11:18:39.385Z</time>
+              <positionText xsi:nil="true" />
+              <geoPosition xsi:nil="true" />
+              <messageText>Order DPART VHICUohcnn4:-2: accepted</messageText>
+            </orderState>
+            <plannedArrivalTime>2016-11-28T07:00:00Z</plannedArrivalTime>
+            <estimatedArrivalTime xsi:nil="true" />
+            <arrivalTolerance xsi:nil="true" />
+            <delayWarning xsi:nil="true" />
+            <notificationEnabled>false</notificationEnabled>
+            <notificationMinutes>15</notificationMinutes>
+            <contact xsi:nil="true" />
+            <contacttel xsi:nil="true" />
+            <driverNo xsi:nil="true" />
+            <driverName xsi:nil="true" />
+            <driverTelmobile xsi:nil="true" />
+            <waypointCount>0</waypointCount>
+            <orderAddress>
+              <addrNr xsi:nil="true" />
+              <zip xsi:nil="true" />
+              <city>Bordeaux</city>
+              <street xsi:nil="true" />
+              <country xsi:nil="true" />
+            </orderAddress>
+            <driverUid xsi:nil="true" />
+          </resultItem>
+        </results>
+      </return>
+    </ns3:showOrderReportResponse>
+  </soap:Body>
+</soap:Envelope>

@@ -413,7 +413,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   end
 
   test 'should create bulk from tomtom' do
-    with_stubs [:address_service_wsdl, :address_service] do
+    with_stubs [:address_service_wsdl, :show_address_report] do
       assert_difference('Destination.count', 1) do
         put api(), replace: false, remote: :tomtom
         assert_equal 202, last_response.status, 'Bad response: ' + last_response.body

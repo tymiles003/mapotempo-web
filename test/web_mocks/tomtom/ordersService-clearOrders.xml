@@ -1,0 +1,30 @@
+HTTP/1.1 200 OK
+
+<!-- THIS IS NOT THE CONETENT OF clearOrders -->
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Body>
+    <ns3:sendDestinationOrderResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://connect.webfleet.tomtomwork.com/services">
+      <return>
+        <statusCode>0</statusCode>
+        <statusMessage>The operation *sendDestinationOrder* processed succesfully.</statusMessage>
+        <errors xsi:nil="true"/>
+        <failed xsi:nil="true"/>
+        <succeeded xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/orders" xsi:type="ns4:DestinationOrder" orderNo="L1-59G6LWW">
+          <text>l1</text>
+          <type>DELIVERY_ORDER</type>
+          <dateAndTime>2016-02-25T07:00:00+01:00</dateAndTime>
+          <arrivalTolerance xsi:nil="true"/>
+          <contactName xsi:nil="true"/>
+          <contactTel xsi:nil="true"/>
+          <addrNr xsi:nil="true"/>
+          <postcode>33000</postcode>
+          <city>Bordeaux</city>
+          <street>9 Rue Andre Darbon</street>
+          <country xsi:nil="true"/>
+          <longitude>-568150</longitude>
+          <latitude>44854801</latitude>
+        </succeeded>
+      </return>
+    </ns3:sendDestinationOrderResponse>
+  </soap:Body>
+</soap:Envelope>
