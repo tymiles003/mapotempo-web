@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module StopsHelper
-  def stop_order_quantities stop
-    stop.order.products.map(&:code).each_with_object({}){|code, hash| hash.has_key?(code) ? hash[code] += 1 : hash[code] = 1 }
+  def stop_order_quantities(stop)
+    stop.order.products.map(&:code).each_with_object({}){ |code, hash| hash.key?(code) ? hash[code] += 1 : hash[code] = 1 }
   end
 end

@@ -62,7 +62,7 @@ class ApiV01 < Grape::API
 <h2>More concepts</h2>
 
 <h3><code>Profiles</code>, <code>Layers</code>, <code>Routers</code></h3>
-<p><code>Profile</code> is a concept which allows to set several other concepts for the customer: 
+<p><code>Profile</code> is a concept which allows to set several other concepts for the customer:
 <ul><li><code>Layer</code>: which allows to choose the background map
 <li><code>Router</code>: which allows to build route\'s information.</li></ul></p>
 

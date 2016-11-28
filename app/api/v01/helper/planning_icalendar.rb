@@ -56,7 +56,7 @@ module PlanningIcalendar
         add_route_to_calendar calendar, route
       end
     end
-    return calendar
+    calendar
   end
 
   def route_calendar(route)

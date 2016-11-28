@@ -28,13 +28,13 @@ module ZoningsHelper
     end
   end
 
-  def zoning_details zoning
+  def zoning_details(zoning)
     zoning.zones.each_with_object({}) do |zone, hash|
       hash[zone.id] = zone.attributes.slice('vehicle_id').merge('avoid_zone' => zone.avoid_zone)
     end
   end
 
-  def zoning_select(f, planning, label=false)
+  def zoning_select(f, planning, label = false)
     input_group = content_tag('a', content_tag('i', nil, class: 'fa fa-plus fa-fw'), href: url_for([:new, :zonings, planning, back: true]), class: 'btn btn-default', title: t('plannings.edit.zoning_new')) if !planning.new_record?
     f.select :zoning_ids, label, options_for_select(planning.customer.zonings.map{ |zoning| [zoning.name, zoning.id] }, planning.zonings.map(&:id)), {}, { multiple: true, input_group: input_group }
   end
