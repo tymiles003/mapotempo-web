@@ -398,7 +398,7 @@ class PlanningsController < ApplicationController
       :ref_visit,
       :duration,
       (@customer) ? @customer.enable_orders ? :orders : :quantity1_1 : @planning.customer.enable_orders ? :orders : :quantity1_1,
-      (@customer) ? @customer.enable_orders ? nil : :quantity1_2 : @planning.customer.enable_orders ? :orders : :quantity1_1,
+      (@customer) ? @customer.enable_orders ? nil : :quantity1_2 : @planning.customer.enable_orders ? nil : :quantity1_2,
       :open1,
       :close1,
       :open2,
