@@ -120,7 +120,7 @@
                     <%= t 'zonings.form.dialog.isodistance.size_help' %>
                   </p>
                   <% if @zoning && @zoning.id && @zoning.customer.vehicles.find{ |vehicle| !vehicle.default_router.isodistance? } %>
-                    <p class="help-block"><%= t '.isodistance_missing_vehicle' %></p>
+                    <p class="help-block"><%= t 'zonings.edit.isodistance_missing_vehicle' %></p>
                   <% end %>
                 </div>
               </div>
