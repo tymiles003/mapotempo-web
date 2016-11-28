@@ -837,9 +837,9 @@ en:
       empty_file: "content is blank"
       too_many_lines: "Stop import, too many lines (max: %{n})."
       none_column: "None found column"
-      missing_name: "\"name\" missing at record %{line}."
-      missing_location: "\"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
-      invalid_numeric_value: "Invalid numeric value \"%{value}\" at record %{line}."
+      missing_name: "Record %{line}: \"name\" missing."
+      missing_location: "Record %{line}: \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing."
+      invalid_numeric_value: "Record %{line}: Invalid numeric value \"%{value}\"."
 
   index:
     unsupported_browser:
@@ -1296,9 +1296,9 @@ or you can click on this link to download file (no update in this case)."
       geocoding_accuracy_format: "floating number from 0 to 1"
       geocoding_level: "geocoding level"
       geocoding_level_desc: "level of precision reached when converting the destination street address into geographic coordinates"
-      missing_name: "\"name\" missing at record %{line}."
-      missing_location: "\"city\" or \"postalcode\" or \"lat\" and \"lng\" missing at record %{line}."
-      invalid_numeric_value: "Invalid numeric value \"%{value}\" at record %{line}."
+      missing_name: "Record %{line}: \"name\" missing."
+      missing_location: "Record %{line}: \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing."
+      invalid_numeric_value: "Record %{line}: Invalid numeric value \"%{value}\"."
       format:
         string: "text"
         integer: "integer"
