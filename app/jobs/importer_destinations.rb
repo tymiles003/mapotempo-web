@@ -251,12 +251,12 @@ class ImporterDestinations < ImporterBase
         @visit_ids << visit.id
       end
 
-      @destinations_to_geocode << visit.destination if visit.destination[:lat].nil? || visit.destination[:lng].nil?
+      @destinations_to_geocode << visit.destination if visit.destination.need_geocode?
       visit.destination # For subclasses
     else
       destination.delay_geocode
       destination.save!
-      @destinations_to_geocode << destination if destination[:lat].nil? || destination[:lng].nil?
+      @destinations_to_geocode << destination if destination.need_geocode?
       destination # For subclasses
     end
   end

@@ -1,4 +1,4 @@
-class ImporterTest < ActionController::TestCase
+class ImporterStoresTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
   end

@@ -1,4 +1,4 @@
-class ImporterTest < ActionController::TestCase
+class ImporterDestinationsTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
     @visit_tag1_count = @customer.visits.select{ |v| v.tags == [tags(:tag_one)] }.size
@@ -76,6 +76,7 @@ class ImporterTest < ActionController::TestCase
   end
 
   test 'should import postalcode in new planning' do
+    dest = lat = nil
     import_count = 1
     # vehicle_usage_set for new planning is hardcoded but random in tests... rest_count depends of it
     VehicleUsageSet.all.each { |v| v.destroy if v.id != vehicle_usage_sets(:vehicle_usage_set_one).id }
@@ -84,6 +85,19 @@ class ImporterTest < ActionController::TestCase
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
+          dest = @customer.destinations.last
+          lat = dest.lat
+          assert lat
+        end
+      end
+    end
+    dest.update postalcode: 13000, lat: 2, lng: 2
+    # dest should be geocoded again with a new import
+    assert_difference('Planning.count', 1) do
+      assert_no_difference('Destination.count') do
+        assert_difference('Stop.count', (@visit_tag1_count + import_count + rest_count)) do
+          assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
+          assert_equal lat, dest.lat
         end
       end
     end

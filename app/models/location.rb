@@ -51,6 +51,10 @@ class Location < ActiveRecord::Base
     !lat.nil? && !lng.nil?
   end
 
+  def need_geocode?
+    lat.nil? || lng.nil? || (!lat_changed? && !lng_changed? && (street_changed? || postalcode_changed? || city_changed? || country_changed?))
+  end
+
   def geocode
     geocode_result(Mapotempo::Application.config.geocode_geocoder.code(*geocode_args))
   rescue GeocodeError => e # avoid stop save
