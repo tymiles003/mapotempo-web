@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :send_email
 
-  after_create :send_welcome_email, if: lambda{|user| user.send_email.to_i == 1 }
+  after_create :send_welcome_email, if: ->(user) { user.send_email.to_i == 1 }
 
   def send_welcome_email
     Mapotempo::Application.config.delayed_job_use ? UserMailer.delay.welcome_message(self, I18n.locale) : UserMailer.welcome_message(self, I18n.locale).deliver_now
@@ -52,7 +52,9 @@ class User < ActiveRecord::Base
 
     customize(lambda { |_original, copy|
       def copy.assign_defaults; end
+
       def copy.assign_defaults_layer; end
+
       def copy.generate_confirmation_token; end
 
       copy.email = I18n.l(Time.zone.now, format: '%Y%m%d%H%M%S') + '_' + copy.email

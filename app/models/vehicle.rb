@@ -61,9 +61,13 @@ class Vehicle < ActiveRecord::Base
 
     customize(lambda { |_original, copy|
       def copy.assign_defaults; end
+
       def copy.increment_max_vehicles; end
+
       def copy.create_vehicle_usage; end
+
       def copy.update_out_of_date; end
+
       def copy.destroy_vehicle; end
     })
   end

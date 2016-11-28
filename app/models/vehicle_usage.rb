@@ -37,9 +37,9 @@ class VehicleUsage < ActiveRecord::Base
 
   nilify_blanks
   validates_time :open, if: :open
-  validates_time :close, on_or_after: :open, if: lambda { |vu| vu.open && vu.close }
+  validates_time :close, on_or_after: :open, if: ->(vu) { vu.open && vu.close }
   validates_time :rest_start, if: :rest_start
-  validates_time :rest_stop, on_or_after: :rest_start, if: lambda { |vu| vu.rest_start && vu.rest_stop }
+  validates_time :rest_stop, on_or_after: :rest_start, if: ->(vu) { vu.rest_start && vu.rest_stop }
 
   validates_with RestValidator, fields: [:rest_duration, :rest_start, :rest_stop]
 
@@ -51,7 +51,7 @@ class VehicleUsage < ActiveRecord::Base
 
   before_save :update_routes
 
-  scope :active, lambda{ where(active: true) }
+  scope :active, ->{ where(active: true) }
   scope :for_customer, lambda{ |customer| joins(:vehicle_usage_set).where(vehicle_usage_sets: { customer_id: customer.id }) }
 
   amoeba do
@@ -59,7 +59,9 @@ class VehicleUsage < ActiveRecord::Base
 
     customize(lambda { |_original, copy|
       def copy.nilify_times; end
+
       def copy.update_out_of_date; end
+
       def copy.update_routes; end
     })
   end

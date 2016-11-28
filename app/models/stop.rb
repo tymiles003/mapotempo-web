@@ -34,7 +34,7 @@ class Stop < ActiveRecord::Base
       open || close
     }.collect{ |open, close|
       [open, close, eval_open_close(open, close, time)]
-    }.min_by{ |open, close, eval|
+    }.min_by{ |_open, _close, eval|
       eval.abs
     }
   end

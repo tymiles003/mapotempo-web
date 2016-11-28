@@ -84,12 +84,12 @@ class Zoning < ActiveRecord::Base
     }
   end
 
-  def automatic_clustering(planning, n, out_of_route=true)
+  def automatic_clustering(planning, n, out_of_route = true)
     if planning
       routes = out_of_route ? planning.routes : planning.routes.select(&:vehicle_usage)
       stops = routes.map(&:stops).flatten.uniq
     end
-    positions = (stops || customer.destinations).select(&:position?).map{|position| [position.lat, position.lng] }.compact.uniq
+    positions = (stops || customer.destinations).select(&:position?).map{ |position| [position.lat, position.lng] }.compact.uniq
     vehicles = planning ? planning.vehicle_usage_set.vehicle_usages.select(&:active).map(&:vehicle) : customer.vehicles.to_a
     clusters = Clustering.clustering(positions, n || vehicles.size)
     zones.clear
@@ -111,13 +111,13 @@ class Zoning < ActiveRecord::Base
     Clustering.hulls(clusters).each{ |hull|
       route = routes.shift
       if hull
-        name = (route.ref) ? I18n.t('zonings.default.from_route') + ' ' + route.ref : nil
+        name = route.ref ? I18n.t('zonings.default.from_route') + ' ' + route.ref : nil
         zones.build(polygon: hull, name: name, vehicle: route.vehicle_usage.vehicle)
       end
     }
   end
 
-  def isochrone?(vehicle_usage_set, from_store = true)
+  def isochrone?(vehicle_usage_set, _from_store = true)
     isowhat?(:isochrone?, vehicle_usage_set)
   end
 
@@ -129,7 +129,7 @@ class Zoning < ActiveRecord::Base
     isowhats(:isochrone?, :isochrone, size, vehicle_usage_set)
   end
 
-  def isodistance?(vehicle_usage_set, from_store = true)
+  def isodistance?(vehicle_usage_set, _from_store = true)
     isowhat?(:isodistance?, vehicle_usage_set)
   end
 
@@ -186,7 +186,7 @@ class Zoning < ActiveRecord::Base
         zone.polygon = geom
         zone.name = name
       else
-        zones.build({polygon: geom, name: name, vehicle: vehicle_usage.try(&:vehicle)})
+        zones.build(polygon: geom, name: name, vehicle: vehicle_usage.try(&:vehicle))
       end
     end
   end

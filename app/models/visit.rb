@@ -45,7 +45,9 @@ class Visit < ActiveRecord::Base
 
     customize(lambda { |_original, copy|
       def copy.update_tags; end
+
       def copy.create_orders; end
+
       def copy.update_out_of_date; end
     })
   end

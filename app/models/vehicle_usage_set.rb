@@ -33,9 +33,9 @@ class VehicleUsageSet < ActiveRecord::Base
   validates_time :rest_start, if: :rest_start
   validates_time :rest_stop, on_or_after: :rest_start, if: :rest_stop
 
-  validates :rest_start, presence: {if: :rest_duration?, message: lambda { |*_| I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
-  validates :rest_stop, presence: {if: :rest_duration?, message: lambda { |*_| I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
-  validates :rest_duration, presence: {if: :rest_start?, message: lambda { |*_| I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
+  validates :rest_start, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
+  validates :rest_stop, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
+  validates :rest_duration, presence: {if: :rest_start?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
 
   validates_time :service_time_start, if: :service_time_start
   validates_time :service_time_end, if: :service_time_end
@@ -49,8 +49,11 @@ class VehicleUsageSet < ActiveRecord::Base
 
     customize(lambda { |_original, copy|
       def copy.assign_defaults; end
+
       def copy.nilify_times; end
+
       def copy.update_out_of_date; end
+
       copy.vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.vehicle_usage_set = copy
       }

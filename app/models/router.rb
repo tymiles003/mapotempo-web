@@ -98,8 +98,6 @@ class Router < ActiveRecord::Base
     }.slice(row.size)
   end
 
-  private
-
   # Access method after overide in sub classes
 
   def super_time?

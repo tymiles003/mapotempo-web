@@ -41,8 +41,11 @@ class Planning < ActiveRecord::Base
 
     customize(lambda { |_original, copy|
       def copy.update_zonings; end
+
       def copy.update_vehicle_usage_set; end
+
       def copy.default_routes; end
+
       def copy.update_zonings; end
 
       copy.routes.each{ |route|
@@ -340,7 +343,7 @@ class Planning < ActiveRecord::Base
               stop.out_of_window = false
               stop.index = i += 1
             else
-              stop.index = stop.time = stop_distance = stop.trace = stop.drive_time = nil
+              stop.index = stop.time = stop.distance = stop.trace = stop.drive_time = nil
             end
           end
         }
@@ -413,7 +416,7 @@ class Planning < ActiveRecord::Base
         positions_uniq[v[0][0].id] = k + [v[0][0].id, nil, nil, nil, nil, v.sum{ |vs| vs[0].duration }, !global ? v[0][0].route.vehicle_usage_id : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.quantity1_1 : nil, v[0][0].is_a?(StopVisit) ? v[0][0].visit.quantity1_2 : nil]
       }
 
-      optim_uniq = yield(positions_uniq.collect{ |k, v| v })
+      optim_uniq = yield(positions_uniq.collect{ |_k, v| v })
 
       optim_uniq.collect{ |r|
         r.flat_map{ |s|
@@ -450,7 +453,7 @@ class Planning < ActiveRecord::Base
         [route.stops.select(&:position?).empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
         (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.compact.sort_by{ |a|
-      (a[0] && a[0].position?) ? a[0].distance(stop.position) : 0
+      a[0] && a[0].position? ? a[0].distance(stop.position) : 0
     }[0..9].flat_map{ |visit_route_index|
       [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
     }.uniq.min_by{ |ri|

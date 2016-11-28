@@ -76,12 +76,19 @@ class Customer < ActiveRecord::Base
 
     customize(lambda { |original, copy|
       def copy.assign_defaults; end
+
       def copy.update_max_vehicles; end
+
       def copy.create_default_store; end
+
       def copy.create_default_vehicle_usage_set; end
+
       def copy.update_out_of_date; end
+
       def copy.update_enable_multi_visits; end
+
       def copy.sanitize_print_header; end
+
       def copy.devices_update_vehicles; end
 
       copy.save!

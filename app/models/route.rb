@@ -30,7 +30,7 @@ class Route < ActiveRecord::Base
 
   after_initialize :assign_defaults, if: 'new_record?'
 
-  scope :for_customer, lambda{ |customer| where(planning_id: customer.planning_ids) }
+  scope :for_customer, ->(customer) { where(planning_id: customer.planning_ids) }
 
   include RefSanitizer
 
@@ -39,7 +39,9 @@ class Route < ActiveRecord::Base
 
     customize(lambda { |original, copy|
       def copy.update_vehicle_usage; end
+
       def copy.assign_defaults; end
+
       copy.planning = original.planning
       copy.stops.each{ |stop|
         stop.route = copy
@@ -373,7 +375,7 @@ class Route < ActiveRecord::Base
 
   def size_active
     stops.to_a.sum(0) { |stop|
-      (stop.active || !vehicle_usage) ? 1 : 0
+      stop.active || !vehicle_usage ? 1 : 0
     }
   end
 
