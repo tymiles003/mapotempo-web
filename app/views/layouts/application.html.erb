@@ -40,7 +40,7 @@
               <% end %>
             <% end %>
             <% if user_signed_in? && current_user.customer %>
-              <% if can?(:manage, Planning) %>
+              <% if !@subscried %>
                 <li class="dropdown">
                   <%= link_to plannings_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-calendar-o fa-fw"></i> <span class="menu_label"><%= t 'plannings.menu.plannings' %></span> <span class="caret"></span><% end %>
                   <ul class="dropdown-menu">
