@@ -20,7 +20,7 @@
         <!-- Place everything within .navbar-collapse to hide it until above 768px -->
         <div class="collapse navbar-collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
-            <% if user_signed_in? and current_user.admin? %>
+            <% if user_signed_in? && current_user.admin? %>
               <% if can?(:manage, Customer) %>
                 <li><%= link_to edit_admin_reseller_path(current_user.reseller) do %><i class="fa fa-bank fa-fw"></i> <%= t 'admin.resellers.menu.reseller' %><% end %></li>
                 <li><%= link_to customers_path do %><i class="fa fa-user fa-fw"></i> <%= t 'customers.menu.customers' %><% end %></li>
@@ -28,7 +28,7 @@
                 <li><%= link_to admin_profiles_path do %><i class="fa fa-gear fa-fw"></i> <%= t 'admin.profiles.menu.profiles' %><% end %></li>
               <% end %>
             <% end %>
-            <% if user_signed_in? and current_user.customer %>
+            <% if user_signed_in? && current_user.customer %>
               <% if can?(:manage, Planning) %>
                 <li class="dropdown">
                   <%= link_to plannings_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-calendar-o fa-fw"></i> <span class="menu_label"><%= t 'plannings.menu.plannings' %></span> <span class="caret"></span><% end %>
@@ -112,16 +112,18 @@
               <% end %>
               <li class="dropdown">
                 <% if current_user.customer %>
-                  <%= link_to [:edit, current_user.customer], :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-user fa-fw"></i> <span class="menu_label"><%= current_user.customer ? current_user.customer.name : current_user.email %></span> <span class="caret"></span><% end %>
-                  <ul class="dropdown-menu pull-right">
-                    <li><%= link_to edit_customer_path(current_user.customer) do %><i class="fa fa-wrench fa-fw"></i> <%= t 'customers.menu.customer' %><% end %></li>
-                    <li><%= link_to edit_customer_user_path(current_user.customer, current_user) do %><i class="fa fa-user fa-fw"></i> <%= t 'customers.menu.user_settings' %><% end %></li>
-                    <li class="divider"></li>
-                    <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="fa fa-power-off fa-fw"></i> <%= t 'users.menu.sign_out' %><% end %></li>
-                  </ul>
-                <% elsif current_user.admin? %>
-                  <%= link_to destroy_user_session_path, :method => :delete do %><i class="fa fa-power-off fa-fw"></i> <%= t 'users.menu.sign_out' %><% end %>
+                  <%= link_to [:edit, current_user.customer], :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-user fa-fw"></i> <span class="menu_label"><%= current_user.customer.name %></span> <span class="caret"></span><% end %>
+                <% else %>
+                  <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-fw"></i> <span class="menu_label"><%= current_user.email %></span> <span class="caret"></span></a>
                 <% end %>
+                <ul class="dropdown-menu pull-right">
+                  <% if current_user.customer %>
+                    <li><%= link_to edit_customer_path(current_user.customer) do %><i class="fa fa-wrench fa-fw"></i> <%= t 'customers.menu.customer' %><% end %></li>
+                  <% end %>
+                  <li><%= link_to edit_user_path(current_user) do %><i class="fa fa-user fa-fw"></i> <%= t 'customers.menu.user_settings' %><% end %></li>
+                  <li class="divider"></li>
+                  <li><%= link_to destroy_user_session_path, :method => :delete do %><i class="fa fa-power-off fa-fw"></i> <%= t 'users.menu.sign_out' %><% end %></li>
+                </ul>
               </li>
             <% else %>
               <li><i class="fa fa-user fa-fw"></i> <%= t 'devise.sessions.new.sign_in' %></li>

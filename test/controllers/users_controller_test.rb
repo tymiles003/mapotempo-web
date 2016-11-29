@@ -16,7 +16,7 @@ class UsersControllerTest < ActionController::TestCase
     ability = Ability.new(users(:user_three))
     assert ability.cannot? :manage, users(:user_one)
     sign_in users(:user_three)
-    get :edit, customer_id: @user.customer_id, id: @user
+    get :edit, id: @user
     assert_response :redirect
   end
 
@@ -27,30 +27,47 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get edit' do
-    get :edit, customer_id: @user.customer_id, id: @user
+    get :edit, id: @user
+    assert_response :success
+    assert_valid response
+  end
+
+  test 'should get edit as admin' do
+    @user = users(:user_admin)
+    sign_in(@user)
+
+    get :edit, id: @user
     assert_response :success
     assert_valid response
   end
 
   test 'should update user' do
-    patch :update, customer_id: @user.customer_id, id: @user, user: { layer_id: @user.layer.id }
-    assert_redirected_to [:edit, @user.customer]
+    patch :update, id: @user, user: { layer_id: @user.layer.id }
+    assert_redirected_to edit_user_path(@user)
+  end
+
+  test 'should update user as admin' do
+    @user = users(:user_admin)
+    sign_in(@user)
+
+    patch :update, id: @user, user: { layer_id: @user.layer.id }
+    assert_redirected_to edit_user_path(@user)
   end
 
   test 'should get edit password' do
-    sign_out :user
+    sign_out(@user)
     user = users(:unconfirmed_user)
-    get :password, customer_id: user.customer_id, id: user.id, token: user.confirmation_token
+    get :password, id: user.id, token: user.confirmation_token
     assert_response :success
     assert_valid response
   end
 
   test 'should update user password' do
-    sign_out :user
-    user = users(:unconfirmed_user)
-    assert !user.confirmed?
-    patch :set_password, customer_id: user.customer_id, id: user.id, token: user.confirmation_token, user: { password: "abcd1212", password_confirmation: "abcd1212" }
+    sign_out(@user)
+    @user = users(:unconfirmed_user)
+    assert !@user.confirmed?
+    patch :set_password, id: @user.id, token: @user.confirmation_token, user: { password: "abcd1212", password_confirmation: "abcd1212" }
     assert assigns(:user).confirmed?
-    assert_redirected_to [:edit, @user.customer]
+    assert_redirected_to edit_user_path(@user)
   end
 end

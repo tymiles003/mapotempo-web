@@ -23,9 +23,9 @@ class Ability
       if user.admin?
         can :manage, Customer, reseller_id: user.reseller_id
         can [:index, :new, :create], Customer
-        can :manage, User, id: user.id
         can :manage, User, customer: {reseller_id: user.reseller_id}
         can [:index, :new, :create, :send_email], User
+        can [:edit, :update, :password, :set_password], User, id: user.id # Own admin user
         can :manage, Reseller, id: user.reseller_id
         can [:index], Profile
       else

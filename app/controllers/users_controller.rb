@@ -21,7 +21,8 @@ class UsersController < ApplicationController
   before_action :set_customer_and_user, except: [:password, :set_password]
   before_action :set_customer_and_user_from_token, only: [:password, :set_password]
 
-  def edit; end
+  def edit
+  end
 
   def update
     if @user.update user_params
@@ -32,7 +33,9 @@ class UsersController < ApplicationController
   end
 
   def password
-    if current_user != @user
+    if !@user
+      redirect_to unauthenticated_root_path
+    elsif current_user != @user
       sign_out :user
       sign_in @user, bypass_sign_in: true
     end
@@ -51,17 +54,19 @@ class UsersController < ApplicationController
   private
 
   def redirect_to_default
-    redirect_to !params[:url].blank? ? params[:url] : [:edit, @customer], notice: t("users.#{action_name}.success")
+    redirect_to edit_user_path(current_user), notice: t("users.#{action_name}.success")
   end
 
   def set_customer_and_user
-    @customer = current_user.customer
-    @user = current_user.customer.users.find params[:id]
+    if current_user.admin?
+      @user = current_user
+    else
+      @user = current_user.customer.users.find params[:id]
+    end
   end
 
   def set_customer_and_user_from_token
-    @customer = Customer.find params[:customer_id]
-    @user = @customer.users.find_by confirmation_token: params[:token]
+    @user = User.find_by confirmation_token: params[:token]
   end
 
   def user_password_params
