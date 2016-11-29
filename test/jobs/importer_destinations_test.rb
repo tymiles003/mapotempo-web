@@ -97,6 +97,7 @@ class ImporterDestinationsTest < ActionController::TestCase
       assert_no_difference('Destination.count') do
         assert_difference('Stop.count', (@visit_tag1_count + import_count + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
+          dest.reload
           assert_equal lat, dest.lat
         end
       end
@@ -229,7 +230,7 @@ class ImporterDestinationsTest < ActionController::TestCase
   end
 
   test 'should import and update' do
-    destinations(:destination_unaffected_one).update(lat: 2.5, lng: 2.5, geocoding_accuracy: 0.9, geocoding_level: 1) && @customer.reload
+    destinations(:destination_unaffected_one).update(lat: 2.5, lng: 2.5, geocoding_accuracy: 0.9, geocoding_level: :house) && @customer.reload
     assert_difference('Destination.count', 1) do
       ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
     end
@@ -237,7 +238,7 @@ class ImporterDestinationsTest < ActionController::TestCase
     assert_equal 'unaffected_one_update', destination.name
     assert_equal 1.5, destination.lat
     assert_equal nil, destination.geocoding_accuracy
-    assert_equal nil, destination.geocoding_level
+    assert_equal 'point', destination.geocoding_level
     assert_equal 'unaffected_two_update', Destination.find_by(ref:'unknown').name
   end
 

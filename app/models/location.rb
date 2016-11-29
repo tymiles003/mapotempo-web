@@ -76,7 +76,8 @@ class Location < ActiveRecord::Base
   end
 
   def delay_geocode
-    self.geocoding_accuracy = self.geocoding_level = nil if lat_changed? || lng_changed?
+    self.geocoding_accuracy = nil if lat_changed? || lng_changed?
+    self.geocoding_level = lat && lng ? :point : nil
     @is_gecoded = true
   end
 
