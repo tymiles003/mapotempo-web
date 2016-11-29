@@ -960,6 +960,8 @@ var destinations_index = function(params, api) {
         else {
           if ($node.hasClass('phone')) {
             return simply_phone($node.text());
+          } else if ($node.hasClass('geocoding')) {
+            return globalGeocodingScore($("[name$=\\[geocoding_level\\]]", node).val(), $("[name$=\\[geocoding_accuracy\\]]", node).val(), '', '');
           } else {
             return $node.text();
           }
