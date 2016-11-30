@@ -14,6 +14,13 @@ Rails.application.routes.draw do
   get 'edit_user_settings/:id' => 'users#edit_settings', :as => 'edit_user_settings'
   patch 'user_settings/:id' => 'users#update_settings', :as => 'update_user_settings'
 
+  resources :users, only: [:edit, :update] do
+    member do
+      get :password
+      patch :set_password
+    end
+  end
+
   namespace :admin do
     resources :users do
       member do
@@ -51,12 +58,6 @@ Rails.application.routes.draw do
     member do
       delete :delete_vehicle
       patch :duplicate
-    end
-    resources :users, only: [:edit, :update] do
-      member do
-        get :password
-        patch :set_password
-      end
     end
   end
 
