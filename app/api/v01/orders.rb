@@ -42,7 +42,7 @@ class V01::Orders < Grape::API
           detail: 'Only available if "order array" option is active for current customer.',
           nickname: 'updateOrder',
           params: V01::Entities::Order.documentation.except(:id),
-          entity: V01::Entities::Order
+          success: V01::Entities::Order
         params do
           requires :id, type: Integer
         end

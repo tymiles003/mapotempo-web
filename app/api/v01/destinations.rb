@@ -48,7 +48,7 @@ class V01::Destinations < Grape::API
     desc 'Fetch customer\'s destinations.',
       nickname: 'getDestinations',
       is_array: true,
-      entity: V01::Entities::Destination
+      success: V01::Entities::Destination
     params do
       optional :ids, type: Array[String], desc: 'Select returned destinations by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
@@ -65,7 +65,7 @@ class V01::Destinations < Grape::API
 
     desc 'Fetch destination.',
       nickname: 'getDestination',
-      entity: V01::Entities::Destination
+      success: V01::Entities::Destination
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -80,7 +80,7 @@ class V01::Destinations < Grape::API
         name: { required: true },
         geocoding_accuracy: { values: 0..1 }
       ),
-      entity: V01::Entities::Destination
+      success: V01::Entities::Destination
     params do
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
     end
@@ -94,9 +94,10 @@ class V01::Destinations < Grape::API
     desc 'Import destinations by upload a CSV file, by JSON or from TomTom',
       detail: 'Import multiple destinations and visits. Use your internal and unique ids as a "reference" to automatically retrieve and update objects. If "route" or "ref_vehicle" is provided for a visit, a planning will be automatically created at the same time. If "route" and "ref_vehicle" are blank, only destinations and visits will be created/updated.',
       nickname: 'importDestinations',
+      # FIXME The V01::Entities::DestinationImportPlanning is missing in the swagger spec
       params: V01::Entities::DestinationsImport.documentation,
       is_array: true,
-      entity: [V01::Entities::Destination, V01::Entities::DestinationsImport]
+      success: V01::Entities::Destination
     put do
       if params[:planning]
         if params[:planning][:vehicle_usage_set_id]
@@ -134,7 +135,7 @@ class V01::Destinations < Grape::API
       params: V01::Entities::Destination.documentation.except(:id, :tag_ids).deep_merge(
         geocoding_accuracy: { values: 0..1 }
       ),
-      entity: V01::Entities::Destination
+      success: V01::Entities::Destination
     params do
       requires :id, type: String, desc: ID_DESC
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
@@ -177,7 +178,7 @@ class V01::Destinations < Grape::API
       params: V01::Entities::Destination.documentation.except(:id, :visits_attributes).deep_merge(
         geocoding_accuracy: { values: 0..1 }
       ),
-      entity: V01::Entities::Destination
+      success: V01::Entities::Destination
     patch 'geocode' do
       destination = current_customer.destinations.build(destination_params.except(:id, :visits_attributes))
       destination.geocode

@@ -34,7 +34,7 @@ class V01::Zonings < Grape::API
     desc 'Fetch customer\'s zonings.',
       nickname: 'getZonings',
       is_array: true,
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       optional :ids, type: Array[Integer], desc: 'Select returned zonings by id.', coerce_with: CoerceArrayInteger
     end
@@ -49,7 +49,7 @@ class V01::Zonings < Grape::API
 
     desc 'Fetch zoning.',
       nickname: 'getZoning',
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       requires :id, type: Integer
     end
@@ -63,7 +63,7 @@ class V01::Zonings < Grape::API
       params: V01::Entities::Zoning.documentation.except(:id).deep_merge(
         name: { required: true }
       ),
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     post do
       zoning = current_customer.zonings.build(zoning_params)
       zoning.save!
@@ -73,7 +73,7 @@ class V01::Zonings < Grape::API
     desc 'Update zoning.',
       nickname: 'updateZoning',
       params: V01::Entities::Zoning.documentation.except(:id),
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       requires :id, type: Integer
     end
@@ -106,7 +106,7 @@ class V01::Zonings < Grape::API
     desc 'Generate zoning from planning.',
       detail: 'Create new automatic zones in current zoning for a dedicated planning. Only stops in a route with vehicle are taken into account. All previous existing zones are cleared. Each generated zone is linked to a dedicated vehicle.',
       nickname: 'generateFromPlanning',
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :planning_id, type: Integer
@@ -126,7 +126,7 @@ class V01::Zonings < Grape::API
     desc 'Generate zoning automatically.',
       detail: 'Create #N new automatic zones in current zoning for a dedicated planning (#N should be less or egal your vehicle\'s fleet size). All planning\'s stops (or all visits from destinations if there is no planning linked to this zoning) are taken into account, even if they are out of route. All previous existing zones are cleared. Each generated zone is linked to a dedicated vehicle.',
       nickname: 'generateAutomatic',
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :planning_id, type: Integer
@@ -148,7 +148,7 @@ class V01::Zonings < Grape::API
     desc 'Generate isochrones.',
       detail: 'Generate zoning with isochrone polygons for all vehicles. All previous existing zones are cleared.',
       nickname: 'generateIsochrone',
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
@@ -177,7 +177,7 @@ class V01::Zonings < Grape::API
     desc 'Generate isochrone for only one vehicle usage.',
       detail: 'Generate zoning with isochrone polygon from specified vehicle\'s start.',
       nickname: 'generateIsochroneVehicleUsage',
-      entity: V01::Entities::Zone
+      success: V01::Entities::Zone
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel time in seconds.'
@@ -206,7 +206,7 @@ class V01::Zonings < Grape::API
     desc 'Generate isodistances.',
       detail: 'Generate zoning with isodistance polygons for all vehicles. All previous existing zones are cleared.',
       nickname: 'generateIsodistance',
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
@@ -235,7 +235,7 @@ class V01::Zonings < Grape::API
     desc 'Generate isodistance for only one vehicle usage.',
       detail: 'Generate zoning with isodistance polygon from specified vehicle\'s start.',
       nickname: 'generateIsochroneVehicleUsage',
-      entity: V01::Entities::Zone
+      success: V01::Entities::Zone
     params do
       requires :id, type: Integer
       requires :size, type: Integer, desc: 'Area accessible from the start store by this travel distance in meters.'
@@ -264,7 +264,7 @@ class V01::Zonings < Grape::API
     desc 'Build isochrone for a point.',
       detail: 'Build isochrone polygon from a specific point. No zoning is saved in database.',
       nickname: 'buildIsochrone',
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       requires :lat, type: Float, desc: 'Latitude.'
       requires :lng, type: Float, desc: 'Longitude.'
@@ -286,7 +286,7 @@ class V01::Zonings < Grape::API
     desc 'Build isodistance for a point.',
       detail: 'Build isodistance polygon from a specific point. No zoning is saved in database.',
       nickname: 'buildIsodistance',
-      entity: V01::Entities::Zoning
+      success: V01::Entities::Zoning
     params do
       requires :lat, type: Float, desc: 'Latitude.'
       requires :lng, type: Float, desc: 'Longitude.'

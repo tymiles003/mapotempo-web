@@ -37,7 +37,7 @@ class V01::Customers < Grape::API
       detail: 'Only available with an admin api_key.',
       nickname: 'getCustomers',
       is_array: true,
-      entity: V01::Entities::Customer
+      success: V01::Entities::Customer
     get do
       if @current_user.admin?
         present @current_user.reseller.customers, with: V01::Entities::CustomerAdmin
@@ -49,7 +49,7 @@ class V01::Customers < Grape::API
     desc 'Fetch customer.',
       nickname: 'getCustomer',
       is_array: true,
-      entity: V01::Entities::Customer
+      success: V01::Entities::Customer
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -73,7 +73,7 @@ class V01::Customers < Grape::API
         :job_store_geocoding_id,
         :job_optimizer_id
       ),
-      entity: V01::Entities::Customer
+      success: V01::Entities::Customer
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -105,7 +105,7 @@ class V01::Customers < Grape::API
         router_id: { required: true },
         profile_id: { required: true }
       ),
-      entity: V01::Entities::Customer
+      success: V01::Entities::Customer
     post do
       if @current_user.admin?
         customer = @current_user.reseller.customers.build(customer_params)

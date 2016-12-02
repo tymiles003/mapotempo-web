@@ -31,7 +31,7 @@ class V01::Tags < Grape::API
     desc 'Fetch customer\'s tags.',
       nickname: 'getTags',
       is_array: true,
-      entity: V01::Entities::Tag
+      success: V01::Entities::Tag
     params do
       optional :ids, type: Array[Integer], desc: 'Select returned tags by id.', coerce_with: CoerceArrayInteger
     end
@@ -46,7 +46,7 @@ class V01::Tags < Grape::API
 
     desc 'Fetch tag.',
       nickname: 'getTag',
-      entity: V01::Entities::Tag
+      success: V01::Entities::Tag
     params do
       requires :id, type: Integer
     end
@@ -60,7 +60,7 @@ class V01::Tags < Grape::API
       params: V01::Entities::Tag.documentation.except(:id).deep_merge(
         label: { required: true }
       ),
-      entity: V01::Entities::Tag
+      success: V01::Entities::Tag
     post do
       tag = current_customer.tags.build(tag_params)
       tag.save!
@@ -70,7 +70,7 @@ class V01::Tags < Grape::API
     desc 'Update tag.',
       nickname: 'updateTag',
       params: V01::Entities::Tag.documentation.except(:id),
-      entity: V01::Entities::Tag
+      success: V01::Entities::Tag
     params do
       requires :id, type: Integer
     end

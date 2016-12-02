@@ -32,7 +32,7 @@ class V01::PlanningsGet < Grape::API
   resource :plannings do
     desc 'Fetch customer\'s plannings.',
       nickname: 'getPlannings',
-      entity: V01::Entities::Planning
+      success: V01::Entities::Planning
     params do
       optional :ids, type: Array[String], desc: 'Select returned plannings by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
@@ -57,7 +57,7 @@ class V01::PlanningsGet < Grape::API
 
     desc 'Fetch planning.',
       nickname: 'getPlanning',
-      entity: V01::Entities::Planning
+      success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
     end

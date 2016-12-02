@@ -37,7 +37,7 @@ class V01::Users < Grape::API
     desc 'Fetch customer\'s users (or all users with an admin key).',
       nickname: 'getUsers',
       is_array: true,
-      entity: V01::Entities::User
+      success: V01::Entities::User
     get do
       if @current_user.admin?
         users = User.where(reseller: @current_user.reseller) +
@@ -50,7 +50,7 @@ class V01::Users < Grape::API
 
     desc 'Fetch user.',
       nickname: 'getUser',
-      entity: V01::Entities::User
+      success: V01::Entities::User
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -78,7 +78,7 @@ class V01::Users < Grape::API
         customer_id: { required: true },
         layer_id: { required: true }
       ),
-      entity: V01::Entities::User
+      success: V01::Entities::User
     post do
       if @current_user.admin?
         customer = @current_user.reseller.customers.where(id: params[:customer_id]).first!
@@ -94,7 +94,7 @@ class V01::Users < Grape::API
     desc 'Update user.',
       nickname: 'updateUser',
       params: V01::Entities::User.documentation.except(:id),
-      entity: V01::Entities::User
+      success: V01::Entities::User
     params do
       requires :id, type: String, desc: ID_DESC
     end

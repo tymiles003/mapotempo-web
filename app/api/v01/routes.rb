@@ -38,7 +38,7 @@ class V01::Routes < Grape::API
         desc 'Update route.',
           nickname: 'updateRoute',
           params: V01::Entities::Route.documentation.slice(:hidden, :locked, :color),
-          entity: V01::Entities::Route
+          success: V01::Entities::Route
         params do
           requires :id, type: String, desc: ID_DESC
         end
@@ -53,7 +53,7 @@ class V01::Routes < Grape::API
         desc 'Change stops activation.',
           detail: 'Allow to activate/deactivate a stop in a planning\'s route.',
           nickname: 'activationStops',
-          entity: V01::Entities::Route
+          success: V01::Entities::Route
         params do
           requires :id, type: String, desc: ID_DESC
           requires :active, type: String, values: ['all', 'reverse', 'none']
@@ -126,7 +126,7 @@ class V01::Routes < Grape::API
       resource :routes_by_vehicle do
         desc 'Fetch route from vehicle.',
           nickname: 'getRouteByVehicle',
-          entity: V01::Entities::Route
+          success: V01::Entities::Route
         params do
           requires :planning_id, type: String, desc: ID_DESC
           requires :id, type: String, desc: 'ID / Ref (ref:abcd) of the VEHICLE attached to the Route'

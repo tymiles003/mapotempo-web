@@ -36,7 +36,7 @@ class V01::VehicleUsages < Grape::API
         desc 'Fetch customer\'s vehicle_usages.',
           nickname: 'getVehicleUsages',
           is_array: true,
-          entity: V01::Entities::VehicleUsageWithVehicle
+          success: V01::Entities::VehicleUsageWithVehicle
         params do
           optional :ids, type: Array[Integer], desc: 'Select returned vehicle_usages by id.', coerce_with: CoerceArrayInteger
         end
@@ -56,7 +56,7 @@ class V01::VehicleUsages < Grape::API
 
         desc 'Fetch vehicle_usage.',
           nickname: 'getVehicleUsage',
-          entity: V01::Entities::VehicleUsageWithVehicle
+          success: V01::Entities::VehicleUsageWithVehicle
         params do
           requires :id, type: Integer
         end
@@ -75,7 +75,7 @@ class V01::VehicleUsages < Grape::API
         desc 'Update vehicle_usage.',
           nickname: 'updateVehicleUsage',
           params: V01::Entities::VehicleUsage.documentation.except(:id, :vehicle_usage_set_id),
-          entity: V01::Entities::VehicleUsageWithVehicle
+          success: V01::Entities::VehicleUsageWithVehicle
         params do
           requires :id, type: Integer
         end

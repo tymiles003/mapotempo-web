@@ -21,7 +21,7 @@ class V01::Profiles < Grape::API
       detail: 'Only available with an admin api_key.<br> Get the available profiles which allow to select layers (maps) and routers (routes).',
       nickname: 'getProfiles',
       is_array: true,
-      entity: V01::Entities::Profile
+      success: V01::Entities::Profile
     get do
       if @current_user.admin?
         present Profile.all, with: V01::Entities::Profile
@@ -34,7 +34,7 @@ class V01::Profiles < Grape::API
       detail: 'Only available with an admin api_key.<br> Get the list of available routers which can be used for finding route.',
       nickname: 'getProfileRouters',
       is_array: true,
-      entity: V01::Entities::Router
+      success: V01::Entities::Router
     params do
       requires :id, type: Integer
     end
@@ -51,7 +51,7 @@ class V01::Profiles < Grape::API
       detail: 'Only available with an admin api_key.<br> Get the list of available layers which can be used for maps.',
       nickname: 'getProfileLayers',
       is_array: true,
-      entity: V01::Entities::Layer
+      success: V01::Entities::Layer
     params do
       requires :id, type: Integer
     end

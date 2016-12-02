@@ -21,7 +21,7 @@ class V01::Layers < Grape::API
       detail: 'Get the list of available layers which can be used for maps.',
       nickname: 'getLayers',
       is_array: true,
-      entity: V01::Entities::Layer
+      success: V01::Entities::Layer
     get do
       if @current_user.admin?
         error! 'Forbidden, empty customer', 403

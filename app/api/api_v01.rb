@@ -20,10 +20,9 @@ class ApiV01 < Grape::API
 
   mount V01::Api
 
-  add_swagger_documentation base_path: 'api', hide_documentation_path: true, markdown: GrapeSwagger::Markdown::KramdownAdapter.new, info: {
+  add_swagger_documentation base_path: '/api', hide_documentation_path: true, markdown: GrapeSwagger::Markdown::KramdownAdapter.new, info: {
     title: 'API',
     description: ('
-![](' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg){:width="600px"}
 [Simplified view of domain model](' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg).
 ## Model
 Model is structured around four majors concepts: the Customer account, Destinations, Vehicles and Plannings.

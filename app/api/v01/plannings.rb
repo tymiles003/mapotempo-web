@@ -38,7 +38,7 @@ class V01::Plannings < Grape::API
         name: { required: true },
         vehicle_usage_set_id: { required: true }
       ),
-      entity: V01::Entities::Planning
+      success: V01::Entities::Planning
     params do
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
     end
@@ -51,7 +51,7 @@ class V01::Plannings < Grape::API
     desc 'Update planning.',
       nickname: 'updatePlanning',
       params: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tags_ids),
-      entity: V01::Entities::Planning
+      success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -88,7 +88,7 @@ class V01::Plannings < Grape::API
     desc 'Recompute the planning after parameter update.',
       detail: 'Refresh planning and out_of_date routes infos if inputs have been changed (for instance stores, destinations, visits, etc...)',
       nickname: 'refreshPlanning',
-      entity: V01::Entities::Planning
+      success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -170,7 +170,7 @@ class V01::Plannings < Grape::API
 
     desc 'Clone the planning.',
       nickname: 'clonePlanning',
-      entity: V01::Entities::Planning
+      success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -185,7 +185,7 @@ class V01::Plannings < Grape::API
     desc 'Use order_array in the planning.',
       detail: 'Only available if "order array" option is active for current customer.',
       nickname: 'useOrderArray',
-      entity: V01::Entities::Planning
+      success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
       requires :order_array_id, type: Integer
@@ -240,7 +240,7 @@ class V01::Plannings < Grape::API
     desc 'Update stops status',
       detail: 'Update stops status from remote devices',
       nickname: 'updateStopsStatus',
-      entity: V01::Entities::Planning
+      success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
       optional :details, type: Boolean, desc: 'Output route details', default: false

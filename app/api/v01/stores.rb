@@ -33,7 +33,7 @@ class V01::Stores < Grape::API
     desc 'Fetch customer\'s stores.',
       nickname: 'getStores',
       is_array: true,
-      entity: V01::Entities::Store
+      success: V01::Entities::Store
     params do
       optional :ids, type: Array[String], desc: 'Select returned stores by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
@@ -50,7 +50,7 @@ class V01::Stores < Grape::API
 
     desc 'Fetch store.',
       nickname: 'getStore',
-      entity: V01::Entities::Store
+      success: V01::Entities::Store
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -66,7 +66,7 @@ class V01::Stores < Grape::API
         city: { required: true },
         geocoding_accuracy: { values: 0..1 }
       ),
-      entity: V01::Entities::Store
+      success: V01::Entities::Store
     post do
       store = current_customer.stores.build(store_params)
       current_customer.save!
@@ -77,7 +77,7 @@ class V01::Stores < Grape::API
       nickname: 'importStores',
       params: V01::Entities::StoresImport.documentation,
       is_array: true,
-      entity: V01::Entities::Store
+      success: V01::Entities::Store
     put do
       import = if params[:stores]
         ImportJson.new(importer: ImporterStores.new(current_customer), replace: params[:replace], json: params[:stores])
@@ -98,7 +98,7 @@ class V01::Stores < Grape::API
       params: V01::Entities::Store.documentation.except(:id).deep_merge(
         geocoding_accuracy: { values: 0..1 }
       ),
-      entity: V01::Entities::Store
+      success: V01::Entities::Store
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -142,7 +142,7 @@ class V01::Stores < Grape::API
       params: V01::Entities::Store.documentation.except(:id).deep_merge(
         geocoding_accuracy: { values: 0..1 }
       ),
-      entity: V01::Entities::Store
+      success: V01::Entities::Store
     patch 'geocode' do
       store = current_customer.stores.build(store_params)
       store.geocode

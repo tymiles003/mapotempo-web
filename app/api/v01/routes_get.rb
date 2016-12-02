@@ -38,7 +38,7 @@ class V01::RoutesGet < Grape::API
         desc 'Fetch planning\'s routes.',
           nickname: 'getRoutes',
           is_array: true,
-          entity: V01::Entities::Route
+          success: V01::Entities::Route
         params do
           optional :ids, type: Array[String], desc: 'Select returned routes by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
         end
@@ -56,7 +56,7 @@ class V01::RoutesGet < Grape::API
 
         desc 'Fetch route.',
           nickname: 'getRoute',
-          entity: V01::Entities::Route
+          success: V01::Entities::Route
         params do
           requires :id, type: String, desc: ID_DESC
         end

@@ -52,7 +52,7 @@ class V01::Vehicles < Grape::API
     desc 'Fetch customer\'s vehicles.',
       nickname: 'getVehicles',
       is_array: true,
-      entity: V01::Entities::Vehicle
+      success: V01::Entities::Vehicle
     params do
       optional :ids, type: Array[String], desc: 'Select returned vehicles by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
@@ -70,7 +70,7 @@ class V01::Vehicles < Grape::API
     desc 'Get vehicle\'s position.',
       nickname: 'currentPosition',
       is_array: true,
-      entity: V01::Entities::VehiclePosition
+      success: V01::Entities::VehiclePosition
     params do
       optional :ids, type: Array[Integer]
     end
@@ -125,7 +125,7 @@ class V01::Vehicles < Grape::API
 
     desc 'Fetch vehicle.',
       nickname: 'getVehicle',
-      entity: V01::Entities::Vehicle
+      success: V01::Entities::Vehicle
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -137,7 +137,7 @@ class V01::Vehicles < Grape::API
     desc 'Update vehicle.',
       nickname: 'updateVehicle',
       params: V01::Entities::Vehicle.documentation.except(:id),
-      entity: V01::Entities::Vehicle
+      success: V01::Entities::Vehicle
     params do
       requires :id, type: String, desc: ID_DESC
     end
@@ -158,7 +158,7 @@ class V01::Vehicles < Grape::API
       params: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
         name: { required: true },
       ).deep_merge(V01::Entities::VehicleUsage.documentation.except(:id).except(:vehicle_usage_set)),
-      entity: V01::Entities::Vehicle
+      success: V01::Entities::Vehicle
     if Mapotempo::Application.config.manage_vehicles_only_admin
       params do
         requires :customer_id, type: Integer

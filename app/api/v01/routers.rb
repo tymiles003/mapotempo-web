@@ -21,7 +21,7 @@ class V01::Routers < Grape::API
       detail: 'Get the list of available routers which can be used for finding route.',
       nickname: 'getRouters',
       is_array: true,
-      entity: V01::Entities::Router
+      success: V01::Entities::Router
     get do
       if @current_user.admin?
         error! 'Forbidden, empty customer', 403

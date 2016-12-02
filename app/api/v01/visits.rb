@@ -48,7 +48,7 @@ class V01::Visits < Grape::API
         desc 'Fetch destination\'s visits.',
           nickname: 'getVisits',
           is_array: true,
-          entity: V01::Entities::Visit
+          success: V01::Entities::Visit
         params do
           optional :ids, type: Array[String], desc: 'Select returned visits by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
         end
@@ -66,7 +66,7 @@ class V01::Visits < Grape::API
 
         desc 'Fetch visit.',
           nickname: 'getVisit',
-          entity: V01::Entities::Visit
+          success: V01::Entities::Visit
         params do
           requires :id, type: String, desc: ID_DESC
         end
@@ -79,7 +79,7 @@ class V01::Visits < Grape::API
         desc 'Create visit.',
           nickname: 'createVisit',
           params: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids),
-          entity: V01::Entities::Visit
+          success: V01::Entities::Visit
         params do
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
         end
@@ -96,7 +96,7 @@ class V01::Visits < Grape::API
           detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
           nickname: 'updateVisit',
           params: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids),
-          entity: V01::Entities::Visit
+          success: V01::Entities::Visit
         params do
           requires :id, type: String, desc: ID_DESC
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
@@ -133,7 +133,7 @@ class V01::Visits < Grape::API
     desc 'Fetch customer\'s visits.',
       nickname: 'getVisits',
       is_array: true,
-      entity: V01::Entities::Visit
+      success: V01::Entities::Visit
     params do
       optional :ids, type: Array[String], desc: 'Select returned visits by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
