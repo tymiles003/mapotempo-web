@@ -68,6 +68,7 @@ end
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger', '< 0.20'
+gem 'kramdown'
 gem 'rack-cors'
 gem 'swagger-docs'
 
