@@ -16,12 +16,14 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 var customers_index = function(params) {
+
   var map_layers = params.map_layers,
     map_attribution = params.map_attribution;
 
   var is_map_init = false;
 
   var map_init = function() {
+
     var map = mapInitialize(params);
     L.control.attribution({
       prefix: false
@@ -30,27 +32,49 @@ var customers_index = function(params) {
     var layer = L.featureGroup();
     map.addLayer(layer);
 
+
+    function determineIconColor(customer) {
+
+      var color = {
+        isActiv : '558800', // green
+        isNotActiv : '707070', // grey
+        isTest : '0077A3' // blue
+      };
+
+      return customer.test ? color.isTest : (customer.isActiv ? color.isActiv : color.isNotActiv);
+
+    }
+
     var display_customers = function(data) {
+
       $.each(data.customers, function(i, customer) {
+
+        var iconImg = '/images/point-' + determineIconColor(customer) + '.svg';
+
         var marker = L.marker(new L.LatLng(customer.lat, customer.lng), {
+
           icon: new L.NumberedDivIcon({
             number: customer.max_vehicles,
-            iconUrl: '/images/point-' + (customer.test ? '707070' : '004499') + '.svg',
+            iconUrl: iconImg,
             iconSize: new L.Point(12, 12),
             iconAnchor: new L.Point(6, 6),
             popupAnchor: new L.Point(0, -6),
             className: "small"
           })
+
         }).addTo(layer).bindPopup(customer.name);
+
       });
 
       map.invalidateSize();
+
       if (layer.getLayers().length > 0) {
         map.fitBounds(layer.getBounds(), {
           maxZoom: 15,
           padding: [20, 20]
         });
       }
+
     };
 
     $.ajax({
@@ -60,6 +84,7 @@ var customers_index = function(params) {
       complete: completeWaiting,
       error: ajaxError
     });
+
   };
 
   $('#accordion').on('show.bs.collapse', function(event, ui) {
