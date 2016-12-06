@@ -67,7 +67,11 @@ class ImporterDestinationsTest < ActionController::TestCase
 
           stop = Planning.last.routes.collect{ |r| r.stops.find{ |s| s.is_a?(StopVisit) && s.visit.destination.name == 'BF' } }.compact.first
           assert_equal true, stop.active
-          assert_equal stop.route.vehicle_usage.default_store_start.position? ? 'trace' : nil, stop.trace
+          if stop.route.vehicle_usage.default_store_start.position?
+            assert_equal 'trace', stop.trace
+          else
+            assert_nil stop.trace
+          end
         end
       end
     end
@@ -237,7 +241,7 @@ class ImporterDestinationsTest < ActionController::TestCase
     destination = Destination.find_by(ref:'a')
     assert_equal 'unaffected_one_update', destination.name
     assert_equal 1.5, destination.lat
-    assert_equal nil, destination.geocoding_accuracy
+    assert_nil destination.geocoding_accuracy
     assert_equal 'point', destination.geocoding_level
     assert_equal 'unaffected_two_update', Destination.find_by(ref:'unknown').name
   end
