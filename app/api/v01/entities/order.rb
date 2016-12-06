@@ -25,5 +25,5 @@ class V01::Entities::Order < Grape::Entity
   # Deprecated
   expose(:destination_id, documentation: { type: Integer }) { |m| m.visit.destination.id }
   expose(:shift, documentation: { type: Integer })
-  expose(:product_ids, documentation: { type: Integer, is_array: true })
+  expose(:product_ids, documentation: { type: Array[Integer] })
 end

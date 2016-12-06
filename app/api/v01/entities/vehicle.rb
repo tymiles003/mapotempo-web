@@ -49,5 +49,5 @@ class V01::Entities::Vehicle < V01::Entities::VehicleWithoutVehicleUsage
     'V01_Vehicle'
   end
 
-  expose(:vehicle_usages, using: V01::Entities::VehicleUsage, documentation: { type: V01::Entities::VehicleUsage, is_array: true, param_type: 'form' })
+  expose(:vehicle_usages, using: V01::Entities::VehicleUsage, documentation: { type: Array[V01::Entities::VehicleUsage] })
 end

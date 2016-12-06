@@ -67,7 +67,7 @@ end
 
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger'
+gem 'grape-swagger', github: 'Mapotempo/grape-swagger', branch: 'entity_name_from_string' # FIXME wait for https://github.com/ruby-grape/grape-swagger/pull/547
 gem 'grape-swagger-entity'
 gem 'kramdown'
 gem 'rack-cors'

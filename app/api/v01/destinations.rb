@@ -94,10 +94,22 @@ class V01::Destinations < Grape::API
     desc 'Import destinations by upload a CSV file, by JSON or from TomTom',
       detail: 'Import multiple destinations and visits. Use your internal and unique ids as a "reference" to automatically retrieve and update objects. If "route" or "ref_vehicle" is provided for a visit, a planning will be automatically created at the same time. If "route" and "ref_vehicle" are blank, only destinations and visits will be created/updated.',
       nickname: 'importDestinations',
-      # FIXME The V01::Entities::DestinationImportPlanning is missing in the swagger spec
-      params: V01::Entities::DestinationsImport.documentation,
       is_array: true,
       success: V01::Entities::Destination
+    params {
+      optional(:replace, type: Boolean)
+      optional(:planning, type: Hash, desc: 'Planning definition in case of planning created in the same time of destinations import. Planning is created if "route" field is provided in CVS or Json.') do
+        optional(:name, type: String)
+        optional(:ref, type: String)
+        optional(:date, type: String)
+        optional(:vehicle_usage_set_id, type: Integer)
+        optional(:zoning_ids, type: Array[Integer], desc: 'If a new zoning is specified before planning save, all visits will be affected to vehicles specified in zones.')
+      end
+      optional(:file, type: Rack::Multipart::UploadedFile, desc: 'CSV file, encoding, separator and line return automatically detected, with localized CSV header according to HTTP header Accept-Language.', documentation: {param_type: 'form'})
+      optional(:destinations, type: Array[V01::Entities::DestinationImportJson], desc: 'In mutual exclusion with CSV file upload and remote.')
+      optional(:remote, type: Symbol, values: [:tomtom])
+      at_least_one_of :file, :destinations, :remote
+    }
     put do
       if params[:planning]
         if params[:planning][:vehicle_usage_set_id]
@@ -113,7 +125,7 @@ class V01::Destinations < Grape::API
         ImportJson.new(importer: ImporterDestinations.new(current_customer, params[:planning]), replace: params[:replace], json: params[:destinations])
       elsif params[:remote]
         case params[:remote]
-        when 'tomtom' then ImportTomtom.new(importer: ImporterDestinations.new(current_customer, params[:planning]), customer: current_customer, replace: params[:replace])
+        when :tomtom then ImportTomtom.new(importer: ImporterDestinations.new(current_customer, params[:planning]), customer: current_customer, replace: params[:replace])
         end
       else
         ImportCsv.new(importer: ImporterDestinations.new(current_customer, params[:planning]), replace: params[:replace], file: params[:file])
@@ -121,7 +133,7 @@ class V01::Destinations < Grape::API
 
       if import && import.valid? && (destinations = import.import(true))
         case params[:remote]
-        when 'tomtom' then status 202
+        when :tomtom then status 202
         else present destinations, with: V01::Entities::Destination
         end
       else

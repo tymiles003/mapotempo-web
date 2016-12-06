@@ -27,7 +27,7 @@ class V01::Entities::Customer < Grape::Entity
   expose(:end_subscription, documentation: { type: Date, desc: EDIT_ONLY_ADMIN })
   expose(:max_vehicles, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
   expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
-  expose(:store_ids, documentation: { type: Integer, is_array: true })
+  expose(:store_ids, documentation: { type: Array[Integer] })
   expose(:job_destination_geocoding_id, documentation: { type: Integer })
   expose(:job_store_geocoding_id, documentation: { type: Integer })
   expose(:job_optimizer_id, documentation: { type: Integer })
