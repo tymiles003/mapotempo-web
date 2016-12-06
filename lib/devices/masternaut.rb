@@ -98,7 +98,7 @@ class Masternaut < DeviceBase
         street: position.street,
         city: position.city,
         postalcode: position.postalcode,
-        country: !position.country.nil? && !position.country.empty? ? country : customer.default_country,
+        country: position.country || customer.default_country,
         lat: position.lat,
         lng: position.lng,
         ref: stop.ref,
