@@ -234,7 +234,7 @@ class V01::Zonings < Grape::API
 
     desc 'Generate isodistance for only one vehicle usage.',
       detail: 'Generate zoning with isodistance polygon from specified vehicle\'s start.',
-      nickname: 'generateIsochroneVehicleUsage',
+      nickname: 'generateIsodistanceVehicleUsage',
       success: V01::Entities::Zone
     params do
       requires :id, type: Integer
