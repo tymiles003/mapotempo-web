@@ -449,7 +449,7 @@ var plannings_edit = function(params) {
     }
   };
 
-  layer_zoning = (new L.LayerGroup()).addTo(map);
+  layer_zoning = (new L.FeatureGroup()).addTo(map);
   var zoneGeometry = L.GeoJSON.extend({
     addOverlay: function(zone) {
       var that = this;
@@ -501,6 +501,19 @@ var plannings_edit = function(params) {
         geom.addTo(layer_zoning);
       }
     });
+
+    if (fitBounds) {
+      var bounds = layer_zoning.getBounds();
+      if (bounds && bounds.isValid()) {
+        map.invalidateSize();
+        map.fitBounds(bounds, {
+          maxZoom: 15,
+          animate: false,
+          padding: [20, 20]
+        });
+      }
+    }
+
   };
   var stripes = new L.StripePattern({
     color: '#FF0000',
@@ -1518,6 +1531,7 @@ var plannings_edit = function(params) {
       },
       success: function(data, textStatus, jqXHR) {
         hideNotices();
+        fitBounds = true;
         displayZoning(data);
         notice(I18n.t('zonings.edit.success'));
       },
@@ -1550,7 +1564,10 @@ var plannings_edit = function(params) {
         lng: $('#isodistance_lng').val()
       },
       beforeSend: beforeSendWaiting,
-      success: displayZoning,
+      success: function(data) {
+        fitBounds = true;
+        displayZoning(data)
+      },
       complete: function() {
         completeAjaxMap();
         $('#isodistance-progress-modal').modal('hide');
