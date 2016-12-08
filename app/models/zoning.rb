@@ -30,6 +30,8 @@ class Zoning < ActiveRecord::Base
   before_create :update_out_of_date
   before_save :update_out_of_date
 
+  attr_accessor :prefered_unit
+
   amoeba do
     exclude_association :plannings
 
@@ -170,8 +172,10 @@ class Zoning < ActiveRecord::Base
   def isowhat(what_qm, what, size, vehicle_usage, loc)
     return unless vehicle_usage || loc
     router = vehicle_usage ? vehicle_usage.vehicle.default_router : customer.router
-    size_to_human = what == :isochrone ? (size / 60).to_s + ' ' + I18n.t('all.unit.minute') : (size / 1000).to_s + ' ' + I18n.t('all.unit.km')
+
+    size_to_human = (what == :isochrone) ? ((size / 60).to_s + ' ' + I18n.t('all.unit.minute')) : get_isodistance_name(size / 1000)
     name = I18n.t('zonings.default.from_' + what.to_s) + ' ' + size_to_human
+
     if !loc
       loc = [vehicle_usage.default_store_start.try(&:lat), vehicle_usage.default_store_start.try(&:lng)]
       name += ' ' + I18n.t('zonings.default.from') + ' ' + vehicle_usage.default_store_start.name if vehicle_usage.try(&:default_store_start)
@@ -190,4 +194,9 @@ class Zoning < ActiveRecord::Base
       end
     end
   end
+
+  def get_isodistance_name(size)
+    !@prefered_unit.nil? && @prefered_unit != 'kms' ? (size / 1.609344).round(2).to_s + ' miles' : size.to_s + ' ' + ' kms' 
+  end
+
 end

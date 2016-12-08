@@ -34,4 +34,20 @@ module ApplicationHelper
       data
     end
   end
+
+  def locale_distance(distance, unit = 'kms', options = {})
+    base_options = { units: :distance, precision: 3, format: '%n %u' }
+    options.merge!(base_options)
+
+    if unit != 'kms'
+      distance = distance / 1.609344
+      options[:units] = :distance_miles
+    end
+
+    if !options[:display_unit].nil? && !options[:display_unit]
+      options.except!(:units)
+    end
+
+    number_to_human(distance, options)
+  end
 end

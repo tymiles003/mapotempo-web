@@ -142,7 +142,8 @@ var exportSpreadsheetModal = function(columns, id) {
 var plannings_edit = function(params) {
   plannings_form();
 
-  var planning_id = params.planning_id,
+  var prefered_unit = (params.prefered_unit === undefined ? 'km' : params.prefered_unit),
+    planning_id = params.planning_id,
     planning_ref = params.planning_ref,
     user_api_key = params.user_api_key,
     zoning_ids = params.zoning_ids,
@@ -632,8 +633,9 @@ var plannings_edit = function(params) {
         });
         //this.closePopup(); // doesn't work with Firefox
       });
+      distance = (prefered_unit == 'km') ? distance.toFixed(1) + ' kms'  : (distance / 1.609344).toFixed(1) + ' miles' ;
       var driveTime = (drive_time !== null) ? ('0' + parseInt(drive_time / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(drive_time / 60) % 60).slice(-2) + ':' + ('0' + (drive_time % 60)).slice(-2) : '';
-      this.bindPopup((driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance.toFixed(1) + ' km</div>');
+      this.bindPopup((driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>');
       return this;
     }
   });

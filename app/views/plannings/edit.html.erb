@@ -210,6 +210,7 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 }
 
 controller.js(
+  prefered_unit: current_user.prefered_unit,
   planning_id: @planning.id,
   planning_ref: @planning.ref,
   user_api_key: current_user.api_key,

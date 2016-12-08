@@ -65,6 +65,13 @@ class User < ActiveRecord::Base
     })
   end
 
+  def self.unities
+    [
+      ['Kms', 'km'],
+      ['Miles', 'mi']
+    ]
+  end
+
   def admin?
     !reseller_id.nil?
   end

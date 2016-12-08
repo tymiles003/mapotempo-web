@@ -132,6 +132,7 @@ class ZoningsController < ApplicationController
       vehicle_usage_set_id = Integer(params[:vehicle_usage_set_id])
       vehicle_usage_set = current_user.customer.vehicle_usage_sets.to_a.find{ |vehicle_usage_set| vehicle_usage_set.id == vehicle_usage_set_id }
       if size && vehicle_usage_set
+        @zoning.prefered_unit = current_user.prefered_unit
         @zoning.isodistances(size, vehicle_usage_set)
         @zoning.save
       end

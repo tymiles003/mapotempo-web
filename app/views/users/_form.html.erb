@@ -18,6 +18,7 @@ layers = (@user.admin? ? Layer.all : (@user.customer.profile.layers + [@user.lay
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" class="map-fixed-size"></div></span>
   </div>
+  <%= f.select :prefered_unit, [], User.unities, {}, {:class => 'form-control'} %>
   <%= f.text_field :url_click2call do %>
     <p class="help-block"><%= t '.url_click2call_help' %></p>
   <% end %>

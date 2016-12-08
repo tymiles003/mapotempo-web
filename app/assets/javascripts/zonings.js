@@ -17,7 +17,8 @@
 //
 var zonings_edit = function(params) {
 
-  var zoning_id = params.zoning_id,
+  var prefered_unit = params.prefered_unit,
+    zoning_id = params.zoning_id,
     planning_id = params.planning_id,
     vehicles_array = params.vehicles_array,
     vehicles_map = params.vehicles_map,
@@ -412,7 +413,6 @@ var zonings_edit = function(params) {
     });
 
     if (fitBounds) {
-      // var bounds = (planning ? markersLayers : featureGroup).getBounds();
       var bounds = (featureGroup.getLayers().length ?
         featureGroup :
         (markersLayers.getLayers().length ? markersLayers : stores_marker)
@@ -638,12 +638,15 @@ var zonings_edit = function(params) {
     });
   });
 
+
   $('#isodistance').click(function() {
     if (nbZones && !confirm(I18n.t('zonings.edit.generate_confirm'))) {
       return false;
     }
     var vehicle_usage_set_id = $('#isodistance_vehicle_usage_set_id').val();
-    var size = $('#isodistance_size').val();
+    var isodistanceSize = parseFloat($('#isodistance_size').val().replace(/,/g, '.'));
+    var size = (prefered_unit == 'kms') ? isodistanceSize : Math.ceil10(isodistanceSize * 1.60934, -2);
+
     $('#isodistance-progress-modal').modal({
       backdrop: 'static',
       keyboard: true

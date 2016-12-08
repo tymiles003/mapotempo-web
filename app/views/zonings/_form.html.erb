@@ -60,6 +60,7 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 }
 
 controller.js(
+  prefered_unit: current_user.prefered_unit,
   zoning_id: @zoning.id,
   zoning_details: zoning_details(@zoning),
   planning_id: @planning ? @planning.id : nil,

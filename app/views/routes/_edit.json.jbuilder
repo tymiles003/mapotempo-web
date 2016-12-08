@@ -2,7 +2,7 @@ json.route_id route.id
 (json.duration (route.start && route.end) ? '%i:%02i' % [(route.end - route.start) / 60 / 60, (route.end - route.start) / 60 % 60] : '0:00')
 (json.hidden true) if route.hidden
 (json.locked true) if route.locked
-json.distance number_to_human((route.distance || 0), units: :distance, precision: 3, format: '%n %u')
+json.distance locale_distance(route.distance || 0, current_user.prefered_unit)
 json.size route.stops.size
 json.extract! route, :ref, :color, :size_active
 (json.start l(route.start.utc, format: :hour_minute)) if route.start

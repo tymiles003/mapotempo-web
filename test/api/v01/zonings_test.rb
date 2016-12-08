@@ -94,6 +94,20 @@ class V01::ZoningsTest < ActiveSupport::TestCase
     }
   end
 
+  test 'should generate isochrone and isodistance with name according to unit' do
+    store_one = stores(:store_one)
+    [:km, :mi].each{ |unit|
+      uri_template = Addressable::Template.new('localhost:5000/0.1/isoline.json')
+      stub_table = stub_request(:post, uri_template)
+          .with(:body => hash_including(dimension: 'distance', loc: "#{store_one.lat},#{store_one.lng}", mode: 'car', size: '10000'))
+          .to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/isochrone/isochrone-1.json').read)
+      users(:user_one).update prefered_unit: :unit 
+      patch api("#{@zoning.id}/isodistance", vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, size: 10000) 
+      assert last_response.ok?, last_response.body
+      assert_equal "Isodistance "+ (unit == 'km' ? '10 kms' : '6.21 miles') + " depuis " + store_one.name, JSON.parse(last_response.body)['zones'][0]['name']
+    }
+  end  
+
   test 'should generate isochrone and isodistance for one vehicle' do
     store_one = stores(:store_one)
     [:isochrone, :isodistance].each{ |isowhat|

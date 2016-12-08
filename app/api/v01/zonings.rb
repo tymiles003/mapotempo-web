@@ -223,6 +223,7 @@ class V01::Zonings < Grape::API
         end
         size = Integer(params[:size])
         if zoning && vehicle_usage_set
+          zoning.prefered_unit = @current_user.prefered_unit
           zoning.isodistances(size, vehicle_usage_set)
           zoning.save!
           present zoning, with: V01::Entities::Zoning
@@ -252,6 +253,7 @@ class V01::Zonings < Grape::API
         }.compact.first
         size = Integer(params[:size])
         if zoning && vehicle_usage
+          zoning.prefered_unit = @current_user.prefered_unit
           zoning.isodistance(size, vehicle_usage)
           zoning.save!
           present zoning.zones.find{ |z| z.vehicle == vehicle_usage.vehicle }, with: V01::Entities::Zone
@@ -301,6 +303,7 @@ class V01::Zonings < Grape::API
         }
       }.compact.first
       size = Integer(params[:size])
+      zoning.prefered_unit = @current_user.prefered_unit
       zoning.isodistance(size, vehicle_usage, [params[:lat], params[:lng]])
       present zoning, with: V01::Entities::Zoning
     end
