@@ -38,21 +38,26 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test 'Admin: Update Customer' do
-    # EN
-    I18n.locale = I18n.default_locale = :en
-    assert_equal :en, I18n.locale
-    sign_in users(:user_admin)
-    patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '10-30-2016' }
-    assert_redirected_to [:edit, @customer]
-    assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
+    orig_locale = I18n.locale
+    begin
+      # EN
+      I18n.locale = I18n.default_locale = :en
+      assert_equal :en, I18n.locale
+      sign_in users(:user_admin)
+      patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '10-30-2016' }
+      assert_redirected_to [:edit, @customer]
+      assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
 
-    # FR
-    I18n.locale = I18n.default_locale = :fr
-    assert_equal :fr, I18n.locale
-    sign_in users(:user_admin)
-    patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '30-10-2016' }
-    assert_redirected_to [:edit, @customer]
-    assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
+      # FR
+      I18n.locale = I18n.default_locale = :fr
+      assert_equal :fr, I18n.locale
+      sign_in users(:user_admin)
+      patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '30-10-2016' }
+      assert_redirected_to [:edit, @customer]
+      assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
+    ensure
+      I18n.locale = I18n.default_locale = orig_locale
+    end
   end
 
   test 'should destroy vehicles' do
