@@ -57,4 +57,9 @@ class ApiWeb::V01::DestinationsControllerTest < ActionController::TestCase
     patch :update_position, id: @destination, destination: { lat: 6, lng: 6 }
     assert_redirected_to api_web_v01_edit_position_destination_path(assigns(:destination))
   end
+
+  test 'api-web should not have X-Frame-Options' do
+    get :index
+    assert_not response.headers.key?('X-Frame-Options')
+  end
 end

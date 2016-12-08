@@ -19,11 +19,16 @@ require 'parse_ids_refs'
 
 class ApiWeb::V01::ApiWebController < ApplicationController
   before_filter :skip_trackable
+  after_filter :allow_iframe
   layout 'api_web/v01'
 
   private
 
   def skip_trackable
    request.env['devise.skip_trackable'] = true
+  end
+
+  def allow_iframe
+    response.headers.delete 'X-Frame-Options'
   end
 end
