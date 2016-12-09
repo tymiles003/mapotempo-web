@@ -62,6 +62,23 @@ class Location < ActiveRecord::Base
     Rails.logger.info "Destination Geocode Failed: ID=#{self.id}"
   end
 
+  def reverse_geocoding(lat, lng)
+    jsonResponse = Mapotempo::Application.config.geocode_geocoder.reverse(lat, lng)
+    jsonHash = ActiveSupport::JSON.decode(jsonResponse)
+    if jsonHash["features"].present?
+      properties = jsonHash["features"].first
+      {
+        success: true,
+        result: properties["properties"]["geocoding"]
+      }
+    end
+  rescue GeocodeError => e
+    @warnings = {
+      success: false,
+      message: I18n.t('errors.location.reversegeocoding_fail') + ' ' + e.message
+    }
+  end    
+
   def geocode_args
     [street, postalcode, city, !country.nil? && !country.empty? ? country : customer.try(&:default_country)]
   end

@@ -143,6 +143,7 @@ var destinations_form = function(params, api) {
         url: url,
         beforeSend: beforeSendWaiting,
         success: function(data) {
+          $("#reverse-geocode").html("");
           update(id, data, move);
         },
         complete: completeWaiting,
@@ -249,6 +250,28 @@ var destinations_form = function(params, api) {
     $('[name$=\\[lng\\]]', row).val(latLng.lng.toFixed(6)).trigger('change', false);
   }
 
+  var reverse_geocoding = function(coords) {
+    if(coords instanceof L.LatLng) {
+      $.ajax({
+        url : '/api/0.1/' + api + '/reverse.json',
+        data : {lat: coords.lat, lng: coords.lng},
+        type : 'patch',
+        dataType: 'json',
+        success: function(json) {
+          if(json && json.success) {
+            $("#reverse-geocode").html(json.result.label);
+          } else {
+            $("#reverse-geocode").html('');
+          }
+        },
+        error: function(jqxhr, textStatus, error) {
+          var err = textStatus + ", " + error;
+          console.log( "Request Failed: " + err );
+        }
+      });  
+    }
+  }
+
   map.on('click', function(mouseEvent) {
     if (pointing !== false) {
       if (pointing in markers) {
@@ -270,8 +293,10 @@ var destinations_form = function(params, api) {
       draggable: true,
       destination: id
     }).addTo(map);
+
     marker.on('dragend', function(event) {
       markerChange(event.target.options.destination, event.target.getLatLng());
+      reverse_geocoding(event.target.getLatLng());
     });
     markers[id] = marker;
   }

@@ -89,6 +89,16 @@ class GeocodeAddokWrapper
   end
 
   def reverse(lat, lng)
+    begin
+      result = RestClient.get(@url + '/reverse.json', params: {
+        api_key: @api_key,
+        lat: lat,
+        lng: lng
+      })
+      result && result.body ? result.body : nil
+    rescue RestClient::Exception => e
+      raise GeocodeError.new e.message
+    end    
   end
 
   def complete(street, postalcode, city, country, lat = nil, lng = nil)

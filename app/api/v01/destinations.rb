@@ -206,6 +206,16 @@ class V01::Destinations < Grape::API
       present destination, with: V01::Entities::Destination
     end
 
+    desc 'Reverse geocoding.',
+      detail: 'Result of reverse geocoding is not saved with this operation.',
+      nickname: 'reverseGeocodingDestination',
+      params: V01::Entities::Destination.documentation.except(:id, :visits_attributes),
+      entity: V01::Entities::Destination
+    patch 'reverse' do
+      destination = current_customer.destinations.build(destination_params.except(:id, :visits_attributes))
+      destination.reverse_geocoding(params[:lat], params[:lng])
+    end
+
     if Mapotempo::Application.config.geocode_complete
       desc 'Auto completion on destination.',
         nickname: 'autocompleteDestination',

@@ -499,6 +499,7 @@ en:
     connection_refused: "Cannot connect database"
     location:
       geocoding_fail: "Geocoding has failed:"
+      reversegeocoding_fail: "Reverse geocoding has failed:"
     planning:
       import_too_routes: "Tried to import more routes than available vehicles"
       already_optimizing: "A plan optimization is already in progress"

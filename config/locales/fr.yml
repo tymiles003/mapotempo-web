@@ -499,6 +499,7 @@ fr:
     connection_refused: "Connexion à la base de donnée impossible"
     location:
       geocoding_fail: "Le géocodage a échoué :"
+      reversegeocoding_fail: "Le géocodage inversé a échoué :"
     planning:
       import_too_routes: "Tentative d'importer plus de tournées que de véhicules disponibles."
       already_optimizing: "Une optimisation de planning est déjà en cours"
