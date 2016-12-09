@@ -142,7 +142,7 @@ var exportSpreadsheetModal = function(columns, id) {
 var plannings_edit = function(params) {
   plannings_form();
 
-  var prefered_unit = (params.prefered_unit === undefined ? 'km' : params.prefered_unit),
+  var prefered_unit = (!params.prefered_unit ? "km" : params.prefered_unit),
     planning_id = params.planning_id,
     planning_ref = params.planning_ref,
     user_api_key = params.user_api_key,
@@ -258,7 +258,7 @@ var plannings_edit = function(params) {
             popupAnchor: new L.Point(0, -12),
             className: 'vehicle-position'
           }),
-          title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (pos.speed || 0) + 'km/h - ' + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (pos.time_formatted || (new Date(pos.time)).toLocaleString()),
+          title: vehicles_usages_map[pos.vehicle_id].name + ' - ' + pos.device_name + ' - ' + I18n.t('plannings.edit.vehicle_speed') + ' ' + (prefered_unit == 'km' ? (pos.speed || 0) + ' km/h - ' : (Math.ceil10(pos.speed/1.609344) || 0) + ' mph - ') + I18n.t('plannings.edit.vehicle_last_position_time') + ' ' + (pos.time_formatted || (new Date(pos.time)).toLocaleString()),
         }).addTo(vehicleLayer);
       }
     });

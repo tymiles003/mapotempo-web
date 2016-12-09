@@ -35,11 +35,11 @@ module ApplicationHelper
     end
   end
 
-  def locale_distance(distance, unit = 'kms', options = {})
+  def locale_distance(distance, unit = 'km', options = {})
     base_options = { units: :distance, precision: 3, format: '%n %u' }
     options.merge!(base_options)
 
-    if unit != 'kms'
+    if !unit.nil? && unit != 'km'
       distance = distance / 1.609344
       options[:units] = :distance_miles
     end

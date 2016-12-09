@@ -29,10 +29,10 @@ fr:
       other: "kms"
   distance_miles:
     unit:
-      one: "mi"
+      one: "mile"
       other: "miles"
     thousand:
-      one: "mile"
+      one: "miles"
       other: "miles"
   time:
     hour: "Heure"
