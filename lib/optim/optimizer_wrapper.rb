@@ -38,7 +38,7 @@ class OptimizerWrapper
       shift_stores = 0
 
       vrp = {
-        units: vehicles.flat_map{ |v| v[:capacities] && v[:capacities].keys }.uniq.map{ |k|
+        units: vehicles.flat_map{ |v| v[:capacities] && v[:capacities].map{ |c| c[:deliverable_unit_id] } }.uniq.map{ |k|
           {id: "u#{k}"}
         },
         points: positions.each_with_index.collect{ |pos, i|
@@ -79,12 +79,11 @@ class OptimizerWrapper
             rest_ids: vehicle[:rests].collect{ |rest|
               "r#{rest[:stop_id]}"
             },
-            capacities: vehicle[:capacities] ? vehicle[:capacities].each.map{ |k, v|
-              v ? {
-                unit_id: "u#{k}",
-                limit: v,
-                # TODO: use multiplier from units
-                overload_multiplier: services.all?{ |s| s[:vehicle_id] } ? 1 : nil
+            capacities: vehicle[:capacities] ? vehicle[:capacities].map{ |c|
+              c[:capacity] ? {
+                unit_id: "u#{c[:deliverable_unit_id]}",
+                limit: c[:capacity],
+                overload_multiplier: c[:overload_multiplier]
               } : nil
             }.compact : []
           }

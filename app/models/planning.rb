@@ -297,8 +297,13 @@ class Planning < ActiveRecord::Base
             close: vehicle_close.to_f,
             stores: [position_start && :start, position_stop && :stop].compact,
             rests: rests.select{ |s| s[:vehicle_id] == r.vehicle_usage_id },
-            # TODO: send overload multiplier
-            capacities: r.vehicle_usage.vehicle.default_capacities
+            capacities: r.vehicle_usage.vehicle.default_capacities && r.vehicle_usage.vehicle.default_capacities.each.map{ |k, v|
+              {
+                deliverable_unit_id: k,
+                capacity: v,
+                overload_multiplier: customer.deliverable_units.find{ |du| du.id == k}.optimization_overload_multiplier
+              }
+            }
           }
         }
 
