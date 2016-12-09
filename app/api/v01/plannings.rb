@@ -111,7 +111,7 @@ class V01::Plannings < Grape::API
       error!('501 Not Implemented', 501)
     end
 
-    desc 'Insert one or more stop into planning routes',
+    desc 'Insert one or more stop into planning routes.',
       detail: 'Insert automaticaly one or more stops in best routes and on best positions to have minimal influence on route\'s total time (this operation doesn\'t take into account time windows if they exist...). You should use this operation with existing stops in current planning\'s routes. In addition, you should not use this operation with many stops. You should use instead zoning (with automatic clustering creation for instance) to set multiple stops in each available route.',
       nickname: 'automaticInsertStop'
     params do
@@ -128,7 +128,7 @@ class V01::Plannings < Grape::API
       status 200
     end
 
-    desc 'Apply zonings',
+    desc 'Apply zonings.',
       detail: 'Apply zoning by assign stops to vehicles using the corresponding zones.',
       nickname: 'applyZonings'
     params do
@@ -148,7 +148,7 @@ class V01::Plannings < Grape::API
       end
     end
 
-    desc 'Optimize routes',
+    desc 'Optimize routes.',
       detail: 'Optimize all unlocked routes by keeping visits in same route or not.',
       nickname: 'optimizeRoutes'
     params do
@@ -201,7 +201,7 @@ class V01::Plannings < Grape::API
       present planning, with: V01::Entities::Planning
     end
 
-    desc 'Update Routes'
+    desc 'Update routes.'
     params do
       requires :id, type: String, desc: ID_DESC
       requires :route_ids, type: Array[Integer], documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
@@ -237,8 +237,8 @@ class V01::Plannings < Grape::API
       present routes, with: V01::Entities::Route
     end
 
-    desc 'Update stops status',
-      detail: 'Update stops status from remote devices',
+    desc 'Update stops status.',
+      detail: 'Update stops status from remote devices.',
       nickname: 'updateStopsStatus',
       success: V01::Entities::Planning
     params do

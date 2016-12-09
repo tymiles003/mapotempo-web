@@ -31,9 +31,10 @@ The customer has many users, each user has his own `api_key`.
 * `Destinations`: location points to visit with constraints. The same `Destination` can be visited several times : in this case several `Visit`s are associated to one `Destination`.
 * `Vehicles`: vehicles definition are splited in two parts:
  * the structural definition named `Vehicle` (car, truck, bike, consumption, etc.)
- * and the vehicle usage `VehicleUsage`, a specific usage of a physical vehicle in a specific context.Vehicles can be used in many contexts called `VehicleUsageSet` (set of all vehicles usages under a context). Multiple values are only available if dedicated option for customer is active. For instance, if customer needs to use its vehicle 2 times per day (morning and evening), he needs 2 `VehicleUsageSet` called "Morning" and "Evening". `VehicleUsageSet` defines default values for vehicle usage.
+ * and the vehicle usage `VehicleUsage`, a specific usage of a physical vehicle in a specific context. Vehicles can be used in many contexts called `VehicleUsageSet` (set of all vehicles usages under a context). Multiple values are only available if dedicated option for customer is active. For instance, if customer needs to use its vehicle 2 times per day (morning and evening), he needs 2 `VehicleUsageSet` called "Morning" and "Evening" : each can have different values defined for stores, rest, etc... `VehicleUsageSet` defines default values for vehicle usage.
 * `Plannings`: `Planning` is a set of `Route`s to `Visit` `Destination`s with `Vehicle` within a `VehicleUsageSet` context.  
 A route is a track between all destinations reached by a vehicle (a new route is created for each customer\'s vehicle and a route without vehicle is created for all out-of-route destinations). By default all customer\'s visites are used in a planning.
+
 ## Technical access
 ### Swagger descriptor
 This REST API is described with Swagger. The Swagger descriptor defines the request end-points, the parameters and the return values. The API can be addressed by HTTP request or with a generated client using the Swagger descriptor.
@@ -44,16 +45,25 @@ The API supports several return formats: `json` and `xml` which depend of the re
 ### I18n
 Functionnal textual returns are subject to translation and depend of HTTP header `Accept-Language`. HTTP error codes are not translated.
 ## Admin acces
-Using an admin `api_key` allows advanced opperations (on `Customer`, `User`, `Vehicle`, `Profile`).
+Using an admin `api_key` switches to advanced opperations (on `Customer`, `User`, `Vehicle`, `Profile`). Most of operations from the current api are usable either for normal user `api_key` or admin user `api_key` (not both).
 ## More concepts
-### `Profiles`, `Layers`, `Routers`
+When a customer is created some objects are created by default with this new customer:
+* `Vehicle`: multiple, depending of the `max_vehicles` defined for customer
+* `DeliverableUnit`: one default
+* `VehicleUsageSet`: one default
+* `VehicleUsage`: multiple, depending of the vehicles number
+* `Store`: one default
+
+### Profiles, Layers, Routers
 `Profile` is a concept which allows to set several other concepts for the customer:
 * `Layer`: which allows to choose the background map
 * `Router`: which allows to build route\'s information.
-### `Tags`
+
+### Tags
 `Tag` is a concept to filter visits and create planning only for a subset of visits. For instance, if some visits are tagged "Monday", it allows to create a new planning for "Monday" tag and use only dedicated visits.
-### `Zonings`
+### Zonings
 `Zoning` is a concept which allows to define multiple `Zone`s (areas) around destinatons. A `Zone` can be affected to a `Vehicle` and if it is used into a `Planning`, all `Destinations` inside areas will be affected to the zone\'s vehicle (or `Route`). A polygon defining a `Zone` can be created outside the application or can be automatically generated from a planning.
+
 ## Code samples
 * Create and display destinations or visits.  
 Here some samples for these operations: [using PHP](' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/examples/php/example.php), [using Ruby](' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/examples/ruby/example.rb).  

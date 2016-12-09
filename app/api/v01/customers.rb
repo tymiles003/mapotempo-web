@@ -131,7 +131,7 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Return a job',
+    desc 'Return a job.',
       detail: 'Return asynchronous job (like geocoding, optimizer) currently runned for the customer.',
       nickname: 'getJob'
     params do
@@ -155,7 +155,7 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Cancel job',
+    desc 'Cancel job.',
       detail: 'Cancel asynchronous job (like geocoding, optimizer) currently runned for the customer.',
       nickname: 'deleteJob'
     params do
@@ -179,7 +179,7 @@ class V01::Customers < Grape::API
       end
     end
 
-    desc 'Duplicate customer',
+    desc 'Duplicate customer.',
       detail: 'Create a copy of customer. Only available with an admin api_key.',
       nickname: 'duplicateCustomer'
     params do
