@@ -20,7 +20,7 @@
           <%= vehicle_usage_router vehicle_usage %>
         </td>
         <td>
-          <%= vehicle_usage_emission_consumption vehicle_usage %>
+          <%= vehicle_usage_emission_consumption(vehicle_usage, current_user.prefered_unity) %>
         </td>
         <td>
           <%= vehicle_capacities vehicle_usage.vehicle %>

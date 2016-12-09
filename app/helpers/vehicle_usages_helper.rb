@@ -16,11 +16,12 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module VehicleUsagesHelper
-  def vehicle_usage_emission_consumption(vehicle_usage)
+  def vehicle_usage_emission_consumption(vehicle_usage, unit)
+    unit = !unit.nil? ? unit : 'km'
     capture do
       concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.localized_emission, t('all.unit.kgco2e_l_html')] if vehicle_usage.vehicle.emission
       concat ' - ' if vehicle_usage.vehicle.emission && vehicle_usage.vehicle.consumption
-      concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.localized_consumption, t('all.unit.l_100km')] if vehicle_usage.vehicle.consumption
+      concat '%s&nbsp;%s'.html_safe % [vehicle_usage.vehicle.localized_consumption, unit == 'km' ? t('all.unit.l_100km') : t('all.unit.l_62Miles')] if vehicle_usage.vehicle.consumption
     end
   end
 

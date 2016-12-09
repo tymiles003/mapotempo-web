@@ -28,9 +28,9 @@
               <%= select 'vehicle_usage[vehicle]', :emission, Vehicle.emissions_table, { include_blank: t('web.form.empty_entry'), selected: @vehicle_usage.vehicle.emission }, class: 'form-control' %>
               <span class="input-group-addon"><%= t 'all.unit.kgco2e_l_html' %></span>
               <%= text_field 'vehicle_usage[vehicle]', :consumption, value: @vehicle_usage.vehicle.localized_consumption, class: 'form-control' %>
-              <span class="input-group-addon"><%= t 'all.unit.l_100km' %></span>
+              <span class="input-group-addon"><%= current_user.prefered_unit == 'mi' ? t('all.unit.l_62Miles') : t('all.unit.l_100km') %></span>
             </div>
-            <p class="help-block"><%= t 'vehicles.form.emissions.help' %> - <%= t 'vehicles.form.consumption.help' %></p>
+            <p class="help-block"><%= t 'vehicles.form.emissions.help' %> - <%= current_user.prefered_unit == 'mi' ? t('vehicles.form.consumption.help_miles') : t('vehicles.form.consumption.help') %></p>
           </div>
         </div>
         <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle][capacities]', @vehicle_usage.vehicle.capacities, layout: :horizontal do |f| %>

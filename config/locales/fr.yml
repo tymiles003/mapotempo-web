@@ -1409,7 +1409,8 @@ fr:
       emissions:
         help: "Type de carburant"
       consumption:
-        help: "Consommation moyenne aux 100 km en litres de carburant"
+        help: "Consommation moyenne aux 100 kms en litres de carburant"
+        help_miles: "Consommation moyenne aux 62.1 miles en litres de carburant"
       capacities:
         label: "Capacités"
         default: "%{n} (valeur par défaut)"
@@ -1662,6 +1663,7 @@ fr:
       kgco2e_html: "kgCO<sub>2</sub>e"
       kgco2e_l_html: "kgCO<sub>2</sub>e/l"
       l_100km: "l/100Km"
+      l_62Miles: "l/62.1Miles"
       hour_minute: "heure : minute"
       hour_minute_second: "heure : minute : seconde"
     value:
