@@ -818,7 +818,8 @@ CREATE TABLE users (
     confirmation_token character varying,
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
-    time_zone character varying DEFAULT 'UTC'::character varying NOT NULL
+    time_zone character varying DEFAULT 'UTC'::character varying NOT NULL,
+    prefered_unit character varying
 );
 
 
@@ -2026,6 +2027,14 @@ ALTER TABLE ONLY vehicle_usage_sets
 
 
 --
+-- Name: fk_rails_e3b080944e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY customers
+    ADD CONSTRAINT fk_rails_e3b080944e FOREIGN KEY (router_id) REFERENCES routers(id);
+
+
+--
 -- Name: fk_rails_f0e748b80c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2462,4 +2471,10 @@ INSERT INTO schema_migrations (version) VALUES ('20161115121703');
 INSERT INTO schema_migrations (version) VALUES ('20161123163102');
 
 INSERT INTO schema_migrations (version) VALUES ('20161123163103');
+
+INSERT INTO schema_migrations (version) VALUES ('20161205165722');
+
+INSERT INTO schema_migrations (version) VALUES ('20161208141114');
+
+INSERT INTO schema_migrations (version) VALUES ('20161208155944');
 
