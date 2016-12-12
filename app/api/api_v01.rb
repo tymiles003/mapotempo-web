@@ -18,11 +18,26 @@
 class ApiV01 < Grape::API
   version '0.1', using: :path
 
+  content_type :json, 'application/json; charset=UTF-8'
+  content_type :xml, 'application/xml'
+
   mount V01::Api
 
-  add_swagger_documentation base_path: '/api', hide_documentation_path: true, markdown: GrapeSwagger::Markdown::KramdownAdapter.new, info: {
-    title: 'API',
-    description: ('
+  add_swagger_documentation(
+    base_path: '/api',
+    hide_documentation_path: true,
+    consumes: [
+      'application/json; charset=UTF-8',
+      'application/xml',
+    ],
+    produces: [
+      'application/json; charset=UTF-8',
+      'application/xml',
+    ],
+    markdown: GrapeSwagger::Markdown::KramdownAdapter.new,
+    info: {
+      title: 'API',
+      description: '
 [Simplified view of domain model](' + Mapotempo::Application.config.swagger_docs_base_path + '/api/0.1/Model-simpel.svg).
 ## Model
 Model is structured around four majors concepts: the Customer account, Destinations, Vehicles and Plannings.
@@ -72,5 +87,5 @@ Note you can import destinations/visits and create a planning at the same time i
 * With created destinations/visits, you can create a planning (routes and stops are automatically created depending of yours vehicles and destinations/visits)
 * In existing planning, you have availability to move stops (which represent visits) on a dedicated route (which represent a dedicated vehicle).
 * With many unaffected (out-of-route) stops in a planning, you may create a zoning to move many stops in several routes. Create a zoning (you can generate zones in this zoning automatically from automatic clustering), if you apply zoning (containing zones linked to a vehicle) on your planning, all stops contained in different zones will be moved in dedicated routes.
-')}
+'})
 end
