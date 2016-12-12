@@ -47,51 +47,51 @@
               {{/customer_external_callback_url}}
             {{/customer_enable_external_callback}}
             {{#tomtom}}
-              <li class="link tomtom-send-waypoints" data-url="/api/0.1/devices/tomtom/send" data-route-id="{{route_id}}" data-type="waypoints">
+              <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="waypoints" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                   {{#i18n}}plannings.edit.tomtom_send_waypoints.action{{/i18n}}
               </li>
-              <li class="link tomtom-send-orders" data-url="/api/0.1/devices/tomtom/send" data-route-id="{{route_id}}" data-type="orders">
+              <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="orders" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                   {{#i18n}}plannings.edit.tomtom_send_orders.action{{/i18n}}
               </li>
-              <li class="link tomtom-clear" data-url="/api/0.1/devices/tomtom/clear" data-route-id="{{route_id}}">
+              <li class="link device-operation" data-service="tomtom" data-operation="clear" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                   {{#i18n}}plannings.edit.tomtom_clear.action{{/i18n}}
               </li>
               <li role="separator" class="divider"></li>
             {{/tomtom}}
             {{#teksat}}
-              <li class="link teksat-send" data-url="/api/0.1/devices/teksat/send" data-route-id="{{route_id}}">
+              <li class="link device-operation" data-service="teksat" data-operation="send" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                   {{#i18n}}plannings.edit.teksat_send.action{{/i18n}}
               </li>
-              <li class="link teksat-clear" data-url="/api/0.1/devices/teksat/clear" data-route-id="{{route_id}}">
+              <li class="link device-operation" data-service="teksat" data-operation="clear" data-route-id="{{route_id}}">
                   <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                   {{#i18n}}plannings.edit.teksat_clear.action{{/i18n}}
               </li>
               <li role="separator" class="divider"></li>
             {{/teksat}}
             {{#orange}}
-              <li class="link orange-send" data-url="/api/0.1/devices/orange/send" data-route-id="{{route_id}}">
+              <li class="link device-operation" data-service="orange" data-operation="send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 {{#i18n}}plannings.edit.orange_send.action{{/i18n}}
               </li>
-              <li class="link orange-clear" data-url="/api/0.1/devices/orange/clear" data-route-id="{{route_id}}">
+              <li class="link device-operation" data-service="orange" data-operation="clear" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 {{#i18n}}plannings.edit.orange_clear.action{{/i18n}}
               </li>
               <li role="separator" class="divider"></li>
             {{/orange}}
             {{#masternaut}}
-              <li class="link masternaut-send" data-url="/api/0.1/devices/masternaut/send" data-route-id="{{route_id}}">
+              <li class="link device-operation" data-service="masternaut" data-operation="send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
                 {{#i18n}}plannings.edit.masternaut_send.action{{/i18n}}
               </li>
               <li role="separator" class="divider"></li>
             {{/masternaut}}
             {{#alyacom}}
-              <li class="link alyacom-send" data-url="/api/0.1/devices/alyacom/send" data-route-id="{{route_id}}">
+              <li class="link device-operation" data-service="alyacom" data-operation="send" data-route-id="{{route_id}}">
                 <i class="fa fa-mobile fa-fw"></i>
                 {{#i18n}}plannings.edit.alyacom_send.action{{/i18n}}
               </li>
