@@ -27,6 +27,28 @@ class V01::PlanningsGet < Grape::API
 
   helpers do
     ID_DESC = 'ID or REF ref:[value]'.freeze
+
+    def get_format_routes_email(planning_ids)
+      Hash[current_customer.vehicles.select{ |v| v.contact_email }.map{ |v|
+        [v.contact_email,
+          {
+            vehicle: v,
+            filename: v.name + '.ics',
+            routes: v.vehicle_usages.flat_map{ |vu|
+              vu.routes.select{ |r|
+                planning_ids.include?(r.planning_id)
+              }.map{ |r|
+                {
+                  url: api_route_calendar_path(r, api_key: @current_user.api_key),
+                  route: r
+                }
+              }
+            }
+          }
+        ]
+      }]
+    end
+
   end
 
   resource :plannings do
@@ -41,11 +63,9 @@ class V01::PlanningsGet < Grape::API
       plannings = plannings.select{ |plan| params[:ids].any?{ |s| ParseIdsRefs.match(s, plan) } } if params.key?(:ids)
       if env['api.format'] == :ics
           if params.key?(:email) && YAML.load(params[:email])
-            plannings.each do |planning|
-              planning.routes.joins(vehicle_usage: [:vehicle]).select{ |route| route.vehicle_usage.vehicle.contact_email }.each do |route|
-                route_calendar_email(route)
-              end
-            end
+            planning_ids = plannings.map(&:id)
+            emails_routes = get_format_routes_email(planning_ids)
+            route_calendar_email(emails_routes)
             status 204
           else
             plannings_calendar(plannings).to_ical
@@ -65,9 +85,8 @@ class V01::PlanningsGet < Grape::API
       planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
       if env['api.format'] == :ics
         if params.key?(:email)
-          planning.routes.joins(vehicle_usage: [:vehicle]).select{ |route| route.vehicle_usage.vehicle.contact_email }.each do |route|
-            route_calendar_email route
-          end
+          emails_routes = get_format_routes_email([planning.id])
+          route_calendar_email(emails_routes)
           status 204
         else
           planning_calendar(planning).to_ical

@@ -1598,21 +1598,29 @@ var observe_icalendar_export = function() {
     $('#ical_export').attr('href', url + '&ids=' + ids.join(',') + '&email=false');
   });
   $('.icalendar_email').click(function(e) {
-    e.preventDefault();
-    $.ajax({
-      url: $(e.target).attr('href'),
-      type: 'GET',
-      data: {
-        ids: ids && ids.join(','),
-        email: true
-      },
-    })
-    .done(function(data) {
-      notice(I18n.t('plannings.edit.export.icalendar.success'));
-    })
-    .fail(function() {
-      stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
-    });
+    var ids = getPlanningsId();
+    var idsToSend = (ids && ids.length > 0) === undefined ? false : true;
+    if(idsToSend || $(this).data('email')) {
+      e.preventDefault();
+      paramstoSend = {email: true}
+      if(idsToSend) {
+        paramstoSend.ids = ids.join(',');
+      } 
+      $.ajax({
+        url: $(e.target).attr('href'),
+        type: 'GET',
+        data: paramstoSend,
+        dataType: 'json'
+      })
+      .done(function(data) {
+        notice(I18n.t('plannings.edit.export.icalendar.success'))
+      })
+      .fail(function() {
+        stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
+      });
+    } else {
+      stickyError(I18n.t('plannings.edit.export.icalendar.selected_error'));
+    }
   });
 };
 

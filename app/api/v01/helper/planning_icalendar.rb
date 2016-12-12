@@ -65,16 +65,12 @@ module PlanningIcalendar
     calendar
   end
 
-  def route_calendar_email(route)
-    if route.vehicle_usage.vehicle.contact_email
-      vehicle = route.vehicle_usage.vehicle
-      url = api_route_calendar_path(route, api_key: @current_user.api_key)
-      name = route.ref || route.vehicle_usage.vehicle.name
-      if Mapotempo::Application.config.delayed_job_use
-        RouteMailer.delay.send_ics_route @current_user, I18n.locale, vehicle, route, name + '.ics', url
-      else
-        RouteMailer.send_ics_route(@current_user, I18n.locale, vehicle, route, name + '.ics', url).deliver_now
-      end
+  def route_calendar_email(routes_to_send)
+    if Mapotempo::Application.config.delayed_job_use
+      RouteMailer.delay.send_computed_ics_route @current_user, I18n.locale, routes_to_send
+    else
+      RouteMailer.send_computed_ics_route(@current_user, I18n.locale, routes_to_send).deliver_now
     end
   end
+
 end

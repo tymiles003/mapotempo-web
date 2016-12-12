@@ -159,7 +159,7 @@
             <li role="separator" class="divider"></li>
             <li><%= link_to api_planning_calendar_path(@planning, api_key: current_user.api_key) do %><i class="fa fa-calendar fa-fw"></i> <%= t '.export.icalendar.action' %><% end %></li>
             <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.contact_email.blank? } %>
-              <li class="icalendar_email"><%= link_to api_planning_calendar_path(@planning, email: 1) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.icalendar.action_email' %><% end %></li>
+              <li class="icalendar_email" data-email="true"><%= link_to api_planning_calendar_path(@planning, email: 1) do %><i class="fa fa-envelope fa-fw"></i> <%= t '.export.icalendar.action_email' %><% end %></li>
             <% end %>
           </ul>
         </div>

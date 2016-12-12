@@ -936,7 +936,7 @@ en:
       planning_ref: "Plan Ref."
       route_ref: "Route Ref."
       order_array: "Orders"
-    send_ics_route:
+    send_computed_ics_route:
       content: "An iCalendar has been sent from %{s}\n
 you can copy-paste the following link to be able to use it as a source in your personnal calendar (update will be automatic)\n
 or you can click on this link to download file (no update in this case)."
@@ -945,6 +945,7 @@ or you can click on this link to download file (no update in this case)."
       planning_ref: "Plan Ref."
       route_ref: "Route Ref."
       order_array: "Orders"
+      link: "Download link"
 
   user_mailer:
     welcome:
@@ -1050,6 +1051,8 @@ or you can click on this link to download file (no update in this case)."
           action_email: "Calendar iCal by E-Mail"
           success: "File successfully sent by E-Mail to all the vehicles"
           fail: "Failed to export E-Mail"
+          selected_error: "You must select at least 1 planning to proceed to export."
+          mail_error: "Email(s) not send. <br/> Check email configuration for each vehicule."
         kmz_email:
           action: "KMZ Track by E-Mail"
           success: "E-Mail sent successfully"

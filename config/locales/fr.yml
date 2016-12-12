@@ -936,7 +936,7 @@ fr:
       planning_ref: "Référence planning"
       route_ref: "Référence de la tournée"
       order_array: "Commandes"
-    send_ics_route:
+    send_computed_ics_route:
       content: "Un export au format agenda iCalendar vient de vous être envoyé depuis %{s}, vous pouvez :\n
 - Copier-coller le lien et l'importer dans votre agenda personnel (la mise à jour de votre agenda se fera de manière automatique à l'avenir)\n
 - Cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à jour automatique)."
@@ -945,6 +945,7 @@ fr:
       planning_ref: "Référence planning"
       route_ref: "Référence de la tournée"
       order_array: "Commandes"
+      link: "Lien de téléchargement"
 
   user_mailer:
     welcome:
@@ -1050,6 +1051,8 @@ fr:
           action_email: "Agenda iCal par email"
           success: "Fichier envoyé par email avec succès à tous les véhicules"
           fail: "Échec lors de l'export par email"
+          selected_error: "Merci de sélectionner au moins 1 planning pour procéder à l'export."
+          mail_error: "Email(s) non envoyé(s). <br/> Vérifier la configuration des emails pour vos véhicules"
         kmz_email:
           action: "Tracé KMZ par email"
           success: "Email envoyé avec succès"

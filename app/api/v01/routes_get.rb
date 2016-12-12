@@ -61,14 +61,28 @@ class V01::RoutesGet < Grape::API
           requires :id, type: String, desc: ID_DESC
         end
         get ':id' do
-          route = current_customer.plannings.where(ParseIdsRefs.read(params[:planning_id])).first!.routes.where(ParseIdsRefs.read(params[:id])).first!
+          r = current_customer.plannings.where(ParseIdsRefs.read(params[:planning_id])).first!.routes.where(ParseIdsRefs.read(params[:id])).first!
           if params.key?(:email)
-            route_calendar_email route
+            vehicle = r.vehicle_usage && r.vehicle_usage.vehicle
+            if vehicle
+              route_to_send = Hash[
+                vehicle.contact_email,
+                {
+                  vehicle: vehicle,
+                  filename: vehicle.name + '.ics',
+                  routes: [
+                    url: api_route_calendar_path(r, api_key: @current_user.api_key),
+                    route: r
+                  ]
+                }
+              ]
+              route_calendar_email route_to_send
+            end
             status 204
           elsif env['api.format'] == :ics
-            route_calendar(route).to_ical
+            route_calendar(r).to_ical
           else
-            present route, with: V01::Entities::Route
+            present r, with: V01::Entities::Route
           end
         end
       end

@@ -1,0 +1,23 @@
+<%= t '.content', s: user.customer.reseller.name %>
+
+<%= "%s: %s" % [t(".vehicle"), infos[:vehicle].name] %>
+
+<% infos[:routes].each do |route_details| %>
+<% if route_details[:route].planning.date %>
+<%= "%s : %s (%s)" % [t(".planning"), route_details[:route].planning.name, l(route_details[:route].planning.date)] %>
+<% else %>
+<%= "%s : %s" % [t(".planning"), route_details[:route].planning.name] %>
+<% end %>
+<%= "%s : %s" % [t(".link"), "http://" + user.customer.reseller.host + route_details[:url]] %>
+<% if route_details[:route].planning.ref %>
+<%= "%s : %s" % [t(".planning_ref"), route_details[:route].planning.ref] %>
+<% end %>
+<% if route_details[:route].ref %>
+<%= "%s : %s" % [t(".route_ref"), route_details[:route].ref] %>
+<% end %>
+<% if route_details[:route].planning.customer.enable_orders && route_details[:route].planning.order_array %>
+<%= "%s : %s" % [t(".order_array"), route_details[:route].planning.order_array.name] %>
+<% end %>
+
+
+<% end %>

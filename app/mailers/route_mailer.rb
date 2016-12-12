@@ -7,10 +7,13 @@ class RouteMailer < ApplicationMailer
       end
     end
   end
-  def send_ics_route(user, locale, vehicle, route, filename, url)
+  
+  def send_computed_ics_route(user, locale, routes_to_send)
     I18n.with_locale(locale) do
-      mail from: user.email, to: vehicle.contact_email, subject: "[#{user.customer.reseller.name}] #{filename}" do |format|
-        format.text { render 'route_mailer/send_ics_route', locals: { user: user, vehicle: vehicle, route: route, url: url } }
+      routes_to_send.each do |email, infos|
+        mail from: user.email, to: email, subject: "[#{user.customer.reseller.name}] #{infos[:filename]}" do |format|
+          format.text { render 'route_mailer/send_computed_ics_route', locals: { user: user, infos: infos } }
+        end
       end
     end
   end
