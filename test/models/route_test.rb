@@ -140,7 +140,7 @@ class RouteTest < ActiveSupport::TestCase
     o.stops[0].active = false
     assert_equal 3, o.size_active
     o.active(:foo_bar)
-    assert_equal 3, o.size_active
+    assert_equal 0, o.size_active
 
     o.save!
   end
