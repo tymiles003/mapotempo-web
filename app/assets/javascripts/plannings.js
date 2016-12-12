@@ -979,7 +979,7 @@ var plannings_edit = function(params) {
           error: ajaxError
         });
       })
-      .on("click", ".active_all, .active_reverse, .active_none, .reverse_order", function(event, ui) {
+      .on("click", ".active_all, .active_reverse, .active_none, .active_status, .reverse_order", function(event, ui) {
         var url = this.href;
         $.ajax({
           type: "patch",

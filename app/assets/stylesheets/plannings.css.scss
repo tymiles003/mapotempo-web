@@ -50,14 +50,28 @@
 
   .stop-status {
     background: gray;
+    display: inline-block;
+    position: absolute;
+    left: 25px;
+    top: 5px;
+    width: 7px;
+    height: 7px;
+    border: 1px solid #2C3539;
+    border-radius: 1px;
+  }
+  .active_status .stop-status, .stop-popup .stop-status {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    margin: 0px 5px;
   }
 
   .stop-status-planned {
-    background: blue;
+    background: #357EC7;
   }
 
   .stop-status-started {
-    background: yellow;
+    background: #FBB117;
   }
 
   .stop-status-finished {

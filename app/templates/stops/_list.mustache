@@ -63,6 +63,9 @@
           <li><a class="active_none" href="/plannings/{{planning_id}}/{{route_id}}/active/none"><i class="fa fa-square-o fa-fw"></i> {{#i18n}}plannings.edit.active_none{{/i18n}}</a></li>
           <li><a class="active_reverse" href="/plannings/{{planning_id}}/{{route_id}}/active/reverse"><i class="fa fa-random fa-fw"></i> {{#i18n}}plannings.edit.active_reverse{{/i18n}}</a></li>
           <li><a class="active_all" href="/plannings/{{planning_id}}/{{route_id}}/active/all"><i class="fa fa-check-square-o fa-fw"></i> {{#i18n}}plannings.edit.active_all{{/i18n}}</a></li>
+          {{#status}}
+            <li><a class="active_status active_{{code}}" href="/plannings/{{planning_id}}/{{route_id}}/active/{{code}}"><span class="stop-status stop-status-{{code}}" title="{{status}}"></span> {{status}}</a></li>
+          {{/status}}
         </ul>
       </div>
       <span class="route-info"><i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.route_duration_help{{/i18n}}"></i>{{duration}}/{{work_time}}</span>
@@ -168,7 +171,7 @@
       {{#destination}}{{#visits}}
       <li data-stop_id="{{stop_id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
         <i class="fa fa-reorder fa-fw" title="{{#i18n}}plannings.edit.drag_help{{/i18n}}" style="display: none;"></i>
-        <span class="number label label-default{{^active}} label-empty{{/active}}{{#color_force}} color_force{{/color_force}}" style="background-color: {{color}};">{{number}}</span>
+        <span class="number label label-default{{^active}} label-empty{{/active}}{{#color_force}} color_force{{/color_force}}" style="background-color: {{color}};">{{#status}}<span class="stop-status stop-status-{{status_code}}" title="{{status}}{{#eta_formated}} - {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}{{/eta_formated}}"></span>{{/status}}{{number}}</span>
         <input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} {{^geocoded}}disabled="disabled"{{/geocoded}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>
         <div class="title">
           {{^geocoded}}
@@ -188,12 +191,10 @@
           {{/no_path}}
           <span class="info">
             {{#active}}{{#geocoded}}{{^no_path}}
-              <span {{#status}}class="stop-status stop-status-{{status_code}}" title="{{status}}{{#eta_formated}} - {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}{{/eta_formated}}"{{/status}}>
-                {{time}}
-              </span> -
+              <span>{{time}}</span> -
             {{/no_path}}{{/geocoded}}{{/active}}
           </span>
-          <span class="name" title="{{name}}{{#index_visit}} #{{index_visit}}{{/index_visit}}">{{name}}</span>{{#index_visit}} #{{index_visit}}{{/index_visit}}
+          <span class="name" title="{{name}}{{#index_visit}} #{{index_visit}}{{/index_visit}}{{#status}} - {{status}}{{/status}}{{#eta_formated}} - {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}{{/eta_formated}}">{{name}}</span>{{#index_visit}} #{{index_visit}}{{/index_visit}}
         </div>
         <div class="btn-group pull-right stop-tools">
           {{#automatic_insert}}

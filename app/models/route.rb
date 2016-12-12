@@ -367,9 +367,12 @@ class Route < ActiveRecord::Base
   end
 
   def active(action)
-    return false if ![:reverse, :all, :none].include?(action)
     stops.each{ |stop|
-      stop.active = action == :reverse ? !stop.active : action == :all
+      if [:reverse, :all, :none].include?(action)
+        stop.active = action == :reverse ? !stop.active : action == :all
+      else
+        stop.active = stop.status == action.to_s
+      end
     }
     self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     true
