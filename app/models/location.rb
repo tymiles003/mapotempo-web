@@ -32,7 +32,7 @@ class Location < ActiveRecord::Base
 
   belongs_to :customer
 
-  nilify_blanks
+  nilify_blanks before: :validation
   validates :customer, presence: true
   validates :name, presence: true
 #  validates :street, presence: true
@@ -52,6 +52,7 @@ class Location < ActiveRecord::Base
   end
 
   def need_geocode?
+    validate # to nilify blanks (for instance from import)
     lat.nil? || lng.nil? || (!lat_changed? && !lng_changed? && (street_changed? || postalcode_changed? || city_changed? || country_changed?))
   end
 
@@ -63,13 +64,11 @@ class Location < ActiveRecord::Base
   end
 
   def reverse_geocoding(lat, lng)
-    jsonResponse = Mapotempo::Application.config.geocode_geocoder.reverse(lat, lng)
-    jsonHash = ActiveSupport::JSON.decode(jsonResponse)
-    if jsonHash["features"].present?
-      properties = jsonHash["features"].first
+    json = ActiveSupport::JSON.decode(Mapotempo::Application.config.geocode_geocoder.reverse(lat, lng))
+    if json["features"].present?
       {
         success: true,
-        result: properties["properties"]["geocoding"]
+        result: json["features"].first["properties"]["geocoding"]
       }
     end
   rescue GeocodeError => e
@@ -77,7 +76,7 @@ class Location < ActiveRecord::Base
       success: false,
       message: I18n.t('errors.location.reversegeocoding_fail') + ' ' + e.message
     }
-  end    
+  end
 
   def geocode_args
     [street, postalcode, city, !country.nil? && !country.empty? ? country : customer.try(&:default_country)]

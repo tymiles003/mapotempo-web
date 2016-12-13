@@ -6,9 +6,11 @@ class ImporterDestinationsTest < ActionController::TestCase
   end
 
   def around
-    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
-      Routers::Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
-        yield
+    Location.stub_any_instance(:geocode, lambda{ |*a| puts 'Geocode destination without using bulk!'; raise }) do
+      Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
+        Routers::Osrm.stub_any_instance(:matrix, lambda{ |url, vector| Array.new(vector.size, Array.new(vector.size, 0)) }) do
+          yield
+        end
       end
     end
   end
@@ -82,7 +84,7 @@ class ImporterDestinationsTest < ActionController::TestCase
   end
 
   test 'should import postalcode in new planning' do
-    dest = lat = nil
+    dest = nil
     import_count = 1
     # vehicle_usage_set for new planning is hardcoded but random in tests... rest_count depends of it
     VehicleUsageSet.all.each { |v| v.destroy if v.id != vehicle_usage_sets(:vehicle_usage_set_one).id }
@@ -91,9 +93,8 @@ class ImporterDestinationsTest < ActionController::TestCase
       assert_difference('Destination.count', import_count) do
         assert_difference('Stop.count', (@visit_tag1_count + (import_count * (@plan_tag1_count + 1)) + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
-          dest = @customer.destinations.last
-          lat = dest.lat
-          assert lat
+          dest = @customer.destinations.find{ |d| d.ref == 'z' }
+          assert_equal 1, dest.lat # code_bulk result is lat=1.0, code only one result is lat=44.850154
         end
       end
     end
@@ -104,7 +105,7 @@ class ImporterDestinationsTest < ActionController::TestCase
         assert_difference('Stop.count', (@visit_tag1_count + import_count + rest_count)) do
           assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_postalcode.csv', 'text.csv')).import
           dest.reload
-          assert_equal lat, dest.lat
+          assert_equal 1, dest.lat # code_bulk result is lat=1.0, code only one result is lat=44.850154
         end
       end
     end
@@ -247,6 +248,13 @@ class ImporterDestinationsTest < ActionController::TestCase
     assert_equal 'point', destination.geocoding_level
     assert_equal [[1]], destination.visits.map{ |v| v.quantities.values }
     assert_equal 'unaffected_two_update', Visit.find_by(ref:'unknown').destination.name
+
+    assert_no_difference('Destination.count') do
+      # should import without need geocode (postalcode should be nilified and unchanged)
+      assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_update.csv', 'text.csv')).import
+      destination = Destination.find_by(ref:'a')
+      assert_equal 1.5, destination.lat
+    end
   end
 
   test 'should import with route error in new planning' do

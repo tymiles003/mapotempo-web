@@ -264,11 +264,11 @@ class ImporterDestinations < ImporterBase
         @common_tags &= (visit.tags | visit.destination.tags)
       end
 
+      visit.destination.delay_geocode
       if visit.destination.need_geocode?
         @destinations_to_geocode << visit.destination
         visit.destination.lat = nil # for job
       end
-      visit.destination.delay_geocode
       visit.destination.validate! # to get errors first
       visit.save!
 
@@ -281,11 +281,11 @@ class ImporterDestinations < ImporterBase
 
       visit.destination # For subclasses
     else
+      destination.delay_geocode
       if destination.need_geocode?
         @destinations_to_geocode << destination
         destination.lat = nil # for job
       end
-      destination.delay_geocode
       destination.save!
       destination # For subclasses
     end
