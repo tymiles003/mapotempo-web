@@ -164,7 +164,7 @@ class ImporterDestinationsTest < ActionController::TestCase
     planning.save!
     @customer.reload
     @customer.destinations.destroy_all
-    # destinations with same ref are merged
+    # destinations with same ref throw an error
     import_count = 5
     # vehicle_usage_set for new planning is hardcoded but random in tests... rest_count depends of it
     VehicleUsageSet.all.each { |v| v.destroy if v.id != vehicle_usage_sets(:vehicle_usage_set_one).id }
@@ -192,14 +192,12 @@ class ImporterDestinationsTest < ActionController::TestCase
   test 'should import many-iso' do
     Planning.all.each(&:destroy)
     @customer.destinations.destroy_all
-
-    # destinations with same ref are merged
     assert_difference('Destination.count', 5) do
       assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_many-iso.csv', 'text.csv')).import
-    end
 
-    o = Destination.find_by(name: 'Point 1')
-    assert_equal ['été'], o.tags.collect(&:label)
+      o = Destination.find_by(name: 'Point 1')
+      assert_equal ['été'], o.tags.collect(&:label)
+    end
   end
 
   test 'should import with many visits' do
@@ -293,6 +291,18 @@ class ImporterDestinationsTest < ActionController::TestCase
           end
         end
       end
+    end
+  end
+
+  test 'should not import many-iso due to multi-refs error' do
+    Planning.all.each(&:destroy)
+    @customer.destinations.destroy_all
+    assert_difference('Destination.count', 0) do
+        error = I18n.t('destinations.import_file.refs_duplicate', refs: "réf5|")
+        destinations_import = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_multi_refs.csv', 'text.csv'))
+        assert_equal false, destinations_import.import
+        assert_equal true, Rails.logger.error
+        assert_equal error, destinations_import.errors.messages[:base][0].scan(error)[0]
     end
   end
 

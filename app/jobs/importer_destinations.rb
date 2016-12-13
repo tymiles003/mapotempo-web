@@ -86,6 +86,7 @@ class ImporterDestinations < ImporterBase
     )
   end
 
+  # convert json with multi visits in several rows like in csv
   def json_to_rows(json)
     json.collect{ |dest|
       dest[:tags] = dest[:tag_ids].collect(&:to_i) if !dest.key?(:tags) && dest.key?(:tag_ids)

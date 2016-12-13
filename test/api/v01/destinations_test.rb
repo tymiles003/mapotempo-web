@@ -289,13 +289,12 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should create bulk from json with no visit ref' do
+  test 'should create bulk from json with visit ref' do
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
-        assert_difference('Stop.count',
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 1 +
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 1 +
-          1 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.default_rest_duration }.size) do
+        assert_difference('Stop.count', @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+          2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.default_rest_duration }.size) do
           put api(), {destinations: [{
             name: 'Nouveau client',
             street: nil,
@@ -311,6 +310,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
             geocoding_accuracy: nil,
             foo: 'bar',
             visits: [{
+              #to keep the same behavior between destinations refs and visits refs. visit can't be valided if no visit_ref have been settled.
+              ref: 'v1',
               quantity1_1: 1,
               open1: '08:00',
               close1: '12:00',
@@ -322,6 +323,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
             },
             {
               quantity1_1: 2,
+              ref: 'v2',
               open1: '14:00',
               close1: '18:00',
               open2: '20:00',
@@ -409,6 +411,57 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           }]}
           assert !last_response.ok?, last_response.body
           assert_not_nil JSON.parse(last_response.body)['error'], 'Bad response: ' + last_response.body.inspect
+        end
+      end
+    end
+  end
+
+  test 'should throw error when trying to import multi refs' do
+    assert_no_difference('Destination.count', 1) do
+      assert_no_difference('Planning.count', 1) do
+        assert_no_difference('Stop.count',
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
+          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+          2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.default_rest_duration }.size) do
+          put api(), {destinations: [{
+            name: 'Nouveau client',
+            street: nil,
+            postalcode: nil,
+            city: 'Tule',
+            lat: 43.5710885456786,
+            lng: 3.89636993408203,
+            detail: nil,
+            comment: nil,
+            phone_number: nil,
+            ref: 'z',
+            tag_ids: [tags(:tag_one).id, tags(:tag_two).id],
+            geocoding_accuracy: nil,
+            foo: 'bar',
+            visits: [{
+              ref: 'v1',
+              quantity1_1: nil,
+              open1: nil,
+              close1: nil,
+              open2: nil,
+              close2: nil,
+              take_over: nil,
+              route: '1',
+              active: '1'
+            },{
+              ref: 'v1',
+              quantity1_1: nil,
+              open1: nil,
+              close1: nil,
+              open2: nil,
+              close2: nil,
+              take_over: nil,
+              route: '1',
+              active: '1'
+            }]
+          }]}
+          assert_not last_response.ok?, last_response.body
+          error_message = I18n.t('destinations.import_file.refs_duplicate', refs: "z|v1")
+          assert_equal error_message, JSON.parse(last_response.body)["error"][0].scan(error_message)[0]
         end
       end
     end

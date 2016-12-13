@@ -20,6 +20,7 @@ require 'csv'
 class ImportBaseError < StandardError; end
 class ImportEmpty < ImportBaseError; end
 class ImportInvalidRow < ImportBaseError; end
+class ImportInvalidRef < ImportBaseError; end
 
 class ImporterBase
   def initialize(customer)
@@ -30,11 +31,13 @@ class ImporterBase
   def import(data, name, synchronous, options)
     @synchronous = synchronous
     dests = false
+    refs = []
 
     Customer.transaction do
       before_import(name, data, options)
 
       dests = data.each_with_index.collect{ |row, line|
+        # Switch from locale or custom to internal column name in case of csv
         row = yield(row)
 
         if row.empty?
@@ -42,6 +45,14 @@ class ImporterBase
         end
 
         begin
+          #check the concat of ref and ref_visit json import
+          ref = row[:ref].to_s + '|' + row[:ref_visit].to_s
+          if (row[:ref] || row[:ref_visit]) && (refs.include?(ref))
+            raise ImportInvalidRef.new(I18n.t('destinations.import_file.refs_duplicate', refs: ref))
+          else
+            refs.push(ref)
+          end
+
           dest = import_row(name, row, line + 1 + (options[:line_shift] || 0), options)
           if dest.nil?
             next
