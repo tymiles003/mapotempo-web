@@ -79,7 +79,7 @@ class ImportCsv
         end
       rescue => e
         # format error to be human friendly with row content (take into account customized column names)
-        errors[:base] << e.message + (last_row ? ' [' + (last_row.size > 0 ? last_row.merge((h = @column_def ? @column_def.dup : {}).each{ |k, v| h[k] = nil }).to_a.collect{ |a|
+        errors[:base] << e.message + (last_row ? ' [' + (last_row.size > 0 ? ((h = @column_def ? @column_def.dup.delete_if{ |k, v| !v || v.empty? } : {}).each{ |k, v| h[k] = nil }).merge(last_row).to_a.collect{ |a|
           (@column_def && @column_def[a[0]] && !@column_def[a[0]].empty? ?
             '"' + @column_def[a[0]] + '"' :
             @importer.columns[a[0]] && @importer.columns[a[0]][:title] ?
