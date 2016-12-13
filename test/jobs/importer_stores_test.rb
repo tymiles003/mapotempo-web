@@ -53,7 +53,9 @@ class ImporterStoresTest < ActionController::TestCase
 
   test 'should not import store' do
     assert_difference('Store.count', 0) do
-     assert !ImportCsv.new(importer: ImporterStores.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv')).import
+      si = ImportCsv.new(importer: ImporterStores.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv'))
+      assert !si.import
+      assert si.errors[:base][0] =~ /Enregistrement 2/
     end
   end
 

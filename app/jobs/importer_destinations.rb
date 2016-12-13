@@ -189,8 +189,8 @@ class ImporterDestinations < ImporterBase
     end
 
     # Deals with deprecated open and close
-    row[:open1] = row.delete(:open) if !row.key?(:open1)
-    row[:close1] = row.delete(:close) if !row.key?(:close1)
+    row[:open1] = row.delete(:open) if !row.key?(:open1) && row.key?(:open)
+    row[:close1] = row.delete(:close) if !row.key?(:close1) && row.key?(:close)
 
     prepare_quantities row
 

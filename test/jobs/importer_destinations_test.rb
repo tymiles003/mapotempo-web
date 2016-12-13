@@ -24,7 +24,9 @@ class ImporterDestinationsTest < ActionController::TestCase
   test 'should not import' do
     assert_no_difference('Destination.count') do
       assert_no_difference('Visit.count') do
-        assert !ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv')).import
+        di = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv'))
+        assert !di.import
+        assert di.errors[:base][0] =~ /Enregistrement 2/
       end
     end
   end
@@ -289,7 +291,9 @@ class ImporterDestinationsTest < ActionController::TestCase
   test 'should not import too many routes' do
     assert_no_difference('Destination.count') do
       assert_no_difference('Visit.count') do
-        assert !ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_too_many_routes.csv', 'text.csv')).import
+        di = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_too_many_routes.csv', 'text.csv'))
+        assert !di.import
+        assert di.errors[:base][0] =~ /plus de tournées que de véhicules disponibles/
       end
     end
   end
