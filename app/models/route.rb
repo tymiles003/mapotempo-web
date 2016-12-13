@@ -370,6 +370,8 @@ class Route < ActiveRecord::Base
     stops.each{ |stop|
       if [:reverse, :all, :none].include?(action)
         stop.active = action == :reverse ? !stop.active : action == :all
+      elsif [:status_any, :status_none].include?(action)
+        stop.active = action == :status_none ? stop.status.nil? : !!stop.status
       else
         stop.active = stop.status == action.to_s
       end

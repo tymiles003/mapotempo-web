@@ -1001,6 +1001,8 @@ or you can click on this link to download file (no update in this case)."
         started: "Started"
         finished: "Finished"
         rejected: "Rejected"
+        any: "Any status"
+        none: "Without status"
       customer_external_callback_url:
         action: "External Application"
       teksat_send:

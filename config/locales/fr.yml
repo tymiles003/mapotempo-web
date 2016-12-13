@@ -1001,6 +1001,8 @@ fr:
         started: "Démarré"
         finished: "Terminé"
         rejected: "Rejeté"
+        any: "Tous statuts"
+        none: "Sans statut"
       customer_external_callback_url:
         action: "Application externe"
       teksat_send:

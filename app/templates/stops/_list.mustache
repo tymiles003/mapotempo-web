@@ -63,9 +63,14 @@
           <li><a class="active_none" href="/plannings/{{planning_id}}/{{route_id}}/active/none"><i class="fa fa-square-o fa-fw"></i> {{#i18n}}plannings.edit.active_none{{/i18n}}</a></li>
           <li><a class="active_reverse" href="/plannings/{{planning_id}}/{{route_id}}/active/reverse"><i class="fa fa-random fa-fw"></i> {{#i18n}}plannings.edit.active_reverse{{/i18n}}</a></li>
           <li><a class="active_all" href="/plannings/{{planning_id}}/{{route_id}}/active/all"><i class="fa fa-check-square-o fa-fw"></i> {{#i18n}}plannings.edit.active_all{{/i18n}}</a></li>
-          {{#status}}
-            <li><a class="active_status active_{{code}}" href="/plannings/{{planning_id}}/{{route_id}}/active/{{code}}"><span class="stop-status stop-status-{{code}}" title="{{status}}"></span> {{status}}</a></li>
-          {{/status}}
+          {{#status_any}}
+            <li role="separator" class="divider"></li>
+            {{#status_all}}
+              <li><a class="active_status" href="/plannings/{{planning_id}}/{{route_id}}/active/{{code}}"><span class="stop-status stop-status-{{code}}" title="{{status}}"></span> {{status}}</a></li>
+            {{/status_all}}
+            <li><a class="active_status" href="/plannings/{{planning_id}}/{{route_id}}/active/status_any"><span class="stop-status"></span> {{#i18n}}plannings.edit.stop_status.any{{/i18n}}</a></li>
+            <li><a class="active_status" href="/plannings/{{planning_id}}/{{route_id}}/active/status_none"><span class="stop-status stop-status-none"></span> {{#i18n}}plannings.edit.stop_status.none{{/i18n}}</a></li>
+          {{/status_any}}
         </ul>
       </div>
       <span class="route-info"><i class="fa fa-clock-o fa-fw" title="{{#i18n}}plannings.edit.route_duration_help{{/i18n}}"></i>{{duration}}/{{work_time}}</span>

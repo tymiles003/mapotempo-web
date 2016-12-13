@@ -27,14 +27,16 @@ if route.vehicle_usage
   (json.orange true) if !route.vehicle_usage.vehicle.orange_id.blank? && route.planning.customer.orange?
   (json.alyacom true) if route.planning.customer.alyacom?
   (json.masternaut true) if !route.vehicle_usage.vehicle.masternaut_ref.blank? && route.planning.customer.masternaut?
-  json.status do
-    json.array! route.stops.map{ |stop|
+  status_uniq = route.stops.map{ |stop|
       {
         code: stop.status.downcase,
         status: t('plannings.edit.stop_status.' + stop.status.downcase, default: stop.status)
       } if stop.status
     }.uniq.compact
+  json.status_all do
+    json.array! status_uniq
   end
+  json.status_any status_uniq.size > 0
 end
 number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false

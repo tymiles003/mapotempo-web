@@ -69,17 +69,17 @@
   .stop-status-planned {
     background: #357EC7;
   }
-
   .stop-status-started {
     background: #FBB117;
   }
-
   .stop-status-finished {
     background: green;
   }
-
   .stop-status-rejected {
     background: red;
+  }
+  .stop-status-none {
+    background: none;
   }
 
   #map {
