@@ -65,6 +65,22 @@ class VehicleUsageTest < ActiveSupport::TestCase
    assert v.valid?
  end
 
+ test 'should validate rest range in relation to the working time range' do
+  v = vehicle_usages(:vehicle_usage_one_one)
+  v.update rest_start: "12:00", rest_stop: "14:00", open: "08:00", close: "18:00", service_time_start: "00:30", service_time_end: "00:15"
+  assert v.valid?
+  v.update rest_start: "07:00", rest_stop: "14:00", open: "08:00", close: "18:00", service_time_start: "00:45", service_time_end: "00:30"
+  assert_equal [:rest_start], v.errors.keys
+ end
+
+ test 'should validate service working day start/end in relation to the working time range' do
+  v = vehicle_usages(:vehicle_usage_one_one)
+  v.update open: "08:00", close: "18:00", service_time_start: "00:30", service_time_end: "00:15"
+  assert v.valid?
+  v.update open: "08:00", close: "18:00", service_time_start: "08:00", service_time_end: "18:00"
+  assert_equal [:service_time_start], v.errors.keys
+ end
+
   test 'disable vehicule usage' do
     # Stub Requests
     routers(:router_one).update(type: RouterOsrm) # TMP

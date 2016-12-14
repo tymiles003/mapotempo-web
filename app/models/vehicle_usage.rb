@@ -17,9 +17,33 @@
 #
 class RestValidator < ActiveModel::Validator
   def validate(record)
+
     record.errors[:rest_start] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window') if record.default_rest_duration && record.default_rest_start.nil?
     record.errors[:rest_stop] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window') if record.default_rest_duration && record.default_rest_stop.nil?
     record.errors[:rest_duration] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_duration') if record.default_rest_duration.nil? && record.default_rest_start
+  
+    open_seconds = !record.default_open.nil? ? Time.parse(record.default_open.to_s).seconds_since_midnight : 0
+    close_seconds = !record.default_close.nil? ? Time.parse(record.default_close.to_s).seconds_since_midnight : 0
+    rest_start_seconds = !record.default_rest_start.nil? ? Time.parse(record.default_rest_start.to_s).seconds_since_midnight : 0
+    rest_end_seconds = !record.default_rest_stop.nil? ? Time.parse(record.default_rest_stop.to_s).seconds_since_midnight : 0
+    service_time_start_seconds = !record.default_service_time_start.nil? ? Time.parse(record.default_service_time_start.to_s).seconds_since_midnight : 0
+    service_time_end_seconds = !record.default_service_time_end.nil? ? Time.parse(record.default_service_time_end.to_s).seconds_since_midnight : 0
+
+    working_day_start = open_seconds + service_time_start_seconds
+    working_day_end = close_seconds - service_time_end_seconds
+
+    service_time_start_error = false
+    if ((working_day_end - working_day_start) <= (service_time_start_seconds + service_time_end_seconds))
+      record.errors[:service_time_start] = I18n.t('activerecord.errors.models.vehicle_usage.service_range')
+      service_time_start_error = true
+    end
+
+    if rest_start_seconds != 0 && rest_end_seconds != 0
+      if ((!(rest_start_seconds >= working_day_start) || !(rest_end_seconds <= working_day_end)) && !service_time_start_error)
+        record.errors[:rest_start] = I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime("%H:%M"), end: Time.at(working_day_end).utc.strftime("%H:%M"))
+      end
+    end
+
   end
 end
 
