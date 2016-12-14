@@ -1606,6 +1606,7 @@ fr:
     default: "Vous n'êtes pas autorisé à accéder à cette page"
 
   web:
+    slow_browser: "Vous utilisez %{n} qui ralenti l'application. Nous vous invitons à utiliser un autre navigateur téléchargeable gratuitement pour de meilleures performances."
     form:
       default: "%{n} (valeur par défaut)"
       empty_entry: "- Non renseigné -"

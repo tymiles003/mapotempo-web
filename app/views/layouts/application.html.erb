@@ -2,6 +2,17 @@
 <html lang="<%= I18n.locale %>">
   <head>
     <%= render partial: 'layouts/head' %>
+    <script>
+    $(document).on('ready page:load', function() {
+      if (navigator.userAgent.indexOf('Edge') != -1 || navigator.userAgent.indexOf('MSIE') != -1) {
+        var name = (navigator.userAgent.indexOf('Edge') != -1) ? '<i class="fa fa-edge" aria-hidden="true"></i> Edge' : (navigator.userAgent.indexOf('MSIE') != -1) ? '<i class="fa fa-internet-explorer" aria-hidden="true"></i> Internet Explorer' : '';
+        $('body').append('<div class="footer-message">' + I18n.t('web.slow_browser', {n: name}) + ' <a class="link" id="footer-message-close"><i class="fa fa-times" aria-hidden="true"></i> ' +  I18n.t('web.dialog.close') + '</a></div>');
+        $('#footer-message-close').click(function() {
+          $(this).parent().hide();
+        });
+      }
+    });
+    </script>
   </head>
 
   <body data-controller="<%= controller.controller_path.gsub('/', '_') %>" data-action="<%= controller.action_name %>">
