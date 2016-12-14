@@ -20,9 +20,19 @@ class CustomerTest < ActiveSupport::TestCase
 
   test 'should save' do
     o = resellers(:reseller_one).customers.build(name: 'test', max_vehicles: 5, default_country: 'France', router: routers(:router_one), profile: profiles(:profile_one))
-    resellers(:reseller_one).save!
-    o.max_vehicles = 5
-    o.save!
+    assert_difference('Customer.count', 1) do
+      assert_difference('Vehicle.count', 5) do
+        assert_difference('Vehicle.count', 5) do
+          assert_difference('VehicleUsageSet.count', 1) do
+            assert_difference('DeliverableUnit.count', 1) do
+              assert_difference('Store.count', 1) do
+                resellers(:reseller_one).save!
+              end
+            end
+          end
+        end
+      end
+    end
   end
 
   test 'should stop job optimizer' do
@@ -54,7 +64,8 @@ class CustomerTest < ActiveSupport::TestCase
     }}
   end
 
-  test 'should update_max_vehicles up' do
+  test 'should update max vehicles up' do
+    assert !Mapotempo::Application.config.manage_vehicles_only_admin
     o = customers(:customer_one)
     assert_difference('Vehicle.count', 1) do
       assert_difference('VehicleUsage.count', o.vehicle_usage_sets.length) do
@@ -66,7 +77,8 @@ class CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should update_max_vehicles down' do
+  test 'should update max vehicles down' do
+    assert !Mapotempo::Application.config.manage_vehicles_only_admin
     o = customers(:customer_one)
     assert_difference('Vehicle.count', -1) do
       assert_difference('VehicleUsage.count', -o.vehicle_usage_sets.length) do

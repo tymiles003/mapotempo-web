@@ -61,14 +61,38 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert 'ref-abcd' != JSON.parse(last_response.body)['ref']
   end
 
+  test 'should update a customer without modifying max vehicles' do
+    begin
+      Mapotempo::Application.config.manage_vehicles_only_admin = true
+      assert_no_difference('Vehicle.count') do
+        put api(@customer.id), { max_vehicles: @customer.max_vehicles + 1 }
+        assert last_response.ok?, last_response.body
+      end
+    ensure
+      Mapotempo::Application.config.manage_vehicles_only_admin = false
+    end
+  end
+
   test 'should update a customer in admin' do
-    put api_admin(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd' }
-    assert last_response.ok?, last_response.body
+    assert_difference('Vehicle.count', 1) do
+      assert_difference('VehicleUsage.count', @customer.vehicle_usage_sets.size) do
+        # FIXME: routes are computed but not saved
+        # assert_difference('Route.count') do
+          Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
+            put api_admin(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd', max_vehicles: @customer.max_vehicles + 1 }
+            assert last_response.ok?, last_response.body
+          end
+        # end
+      end
+    end
+    assert 'trace', Route.last.stop_trace
 
     get api(@customer.id)
     assert last_response.ok?, last_response.body
-    assert_equal 'tomtom_user_abcd', JSON.parse(last_response.body)['tomtom_user']
-    assert_equal 'ref-abcd', JSON.parse(last_response.body)['ref']
+    response = JSON.parse(last_response.body)
+    assert_equal 'tomtom_user_abcd', response['tomtom_user']
+    assert_equal 'ref-abcd', response['ref']
+    assert_equal 3, response['max_vehicles']
   end
 
   test 'should not update a customer' do

@@ -6,7 +6,6 @@ class CustomersControllerTest < ActionController::TestCase
   setup do
     @request.env['reseller'] = resellers(:reseller_one)
     @customer = customers(:customer_one)
-    @vehicle_one = vehicles(:vehicle_one)
   end
 
   test 'user can only edit its customer' do
@@ -37,40 +36,9 @@ class CustomersControllerTest < ActionController::TestCase
     assert_equal 'distance', @customer.reload.router_dimension
   end
 
-  test 'Admin: Update Customer' do
-    orig_locale = I18n.locale
-    begin
-      # EN
-      I18n.locale = I18n.default_locale = :en
-      assert_equal :en, I18n.locale
-      sign_in users(:user_admin)
-      patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '10-30-2016' }
-      assert_redirected_to [:edit, @customer]
-      assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
-
-      # FR
-      I18n.locale = I18n.default_locale = :fr
-      assert_equal :fr, I18n.locale
-      sign_in users(:user_admin)
-      patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '30-10-2016' }
-      assert_redirected_to [:edit, @customer]
-      assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
-    ensure
-      I18n.locale = I18n.default_locale = orig_locale
-    end
-  end
-
-  test 'should destroy vehicles' do
-    sign_in users(:user_admin)
-    assert_difference('Vehicle.count', -1) do
-      delete :delete_vehicle, id: @customer.id, vehicle_id: @vehicle_one.id
-    end
-    assert_redirected_to edit_customer_path(assigns(:customer))
-  end
-
   test 'should not destroy vehicles' do
     assert_difference('Vehicle.count', 0) do
-      delete :delete_vehicle, id: @customer.id, vehicle_id: @vehicle_one.id
+      delete :delete_vehicle, id: @customer.id, vehicle_id: vehicles(:vehicle_one).id
     end
   end
 

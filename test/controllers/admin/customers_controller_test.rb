@@ -24,14 +24,56 @@ class Admin::CustomersControllerTest < ActionController::TestCase
 
   test 'should create customer' do
     assert_difference('Customer.count') do
-      post :create, customer: { name: 'new', max_vehicles: 2, default_country: 'France', speed_multiplicator: 1, profile_id: profiles(:profile_one), router: routers(:router_one).id.to_s + '_time' }
+      assert_difference('Vehicle.count', 2) do
+        assert_difference('VehicleUsage.count', 2) do
+          post :create, customer: { name: 'new', max_vehicles: 2, default_country: 'France', speed_multiplicator: 1, profile_id: profiles(:profile_one), router: routers(:router_one).id.to_s + '_time' }
+        end
+      end
     end
     assert_redirected_to edit_customer_path(assigns(:customer))
   end
 
   test 'should update customer' do
-    patch :update, id: @customer, customer: { take_over: 123, enable_orders: !@customer.enable_orders }
+    assert_difference('Vehicle.count', 1) do
+      assert_difference('VehicleUsage.count', @customer.vehicle_usage_sets.size) do
+        # FIXME: routes are computed but not saved
+        # assert_difference('Route.count') do
+          Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
+            patch :update, id: @customer, customer: { take_over: 123, enable_orders: !@customer.enable_orders, max_vehicles: @customer.max_vehicles + 1 }
+          end
+        # end
+      end
+    end
+    assert_redirected_to edit_customer_path(assigns(:customer))
+  end
 
+  test 'should update customer with locale' do
+    orig_locale = I18n.locale
+    begin
+      # EN
+      I18n.locale = I18n.default_locale = :en
+      assert_equal :en, I18n.locale
+      patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '10-30-2016' }
+      assert_redirected_to [:edit, @customer]
+      assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
+
+      # FR
+      I18n.locale = I18n.default_locale = :fr
+      assert_equal :fr, I18n.locale
+      patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance', end_subscription: '30-10-2016' }
+      assert_redirected_to [:edit, @customer]
+      assert @customer.reload.end_subscription.strftime("%d-%m-%Y") == '30-10-2016'
+    ensure
+      I18n.locale = I18n.default_locale = orig_locale
+    end
+  end
+
+  test 'should destroy vehicles' do
+    assert_difference('Vehicle.count', -1) do
+      assert_difference('VehicleUsage.count', -@customer.vehicle_usage_sets.size) do
+        delete :delete_vehicle, id: @customer.id, vehicle_id: vehicles(:vehicle_one).id
+      end
+    end
     assert_redirected_to edit_customer_path(assigns(:customer))
   end
 
