@@ -49,3 +49,15 @@ class V01::Entities::Route < Grape::Entity
   expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
   expose(:optimized_at, documentation: { type: DateTime, desc: 'Last optimized at'})
 end
+
+class V01::Entities::RouteStatus < Grape::Entity
+  def self.entity_name
+    'V01_RouteStatus'
+  end
+
+  expose(:id, documentation: { type: Integer })
+  expose(:vehicle_usage_id, documentation: { type: Integer })
+  expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent'})
+  expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
+  expose(:stops, using: V01::Entities::StopStatus, documentation: { type: Array[V01::Entities::StopStatus] })
+end

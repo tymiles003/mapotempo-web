@@ -224,6 +224,7 @@ controller.js(
   colors: COLORS_TABLE,
   url_click2call: current_user.link_phone_number,
   spreadsheet_columns: @spreadsheet_columns,
-  isoline_capability: {isochrone: @isochrone_capability ? true : false, isodistance: @isodistance_capability ? true : false}
+  isoline_capability: {isochrone: @isochrone_capability ? true : false, isodistance: @isodistance_capability ? true : false},
+  update_stop_status: (@planning.date.nil? || @planning.date.between?(Time.now.beginning_of_day, Time.now.end_of_day)) && @planning.routes.any?{ |r| r.stops.any?(&:status) }
 )
 %>

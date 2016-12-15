@@ -159,7 +159,8 @@ var plannings_edit = function(params) {
     layers_cluster = {},
     routes_layers,
     routes_layers_cluster,
-    zoning_ids = getZonings();
+    zoning_ids = getZonings(),
+    update_stop_status = params.update_stop_status;
 
   function getZonings() {
     return $("#planning_zoning_ids").val() || [];
@@ -264,7 +265,61 @@ var plannings_edit = function(params) {
     });
   };
 
-  var queryVehicles = function() {
+  var updateStopsStatus = function(data) {
+
+    var updateStopStatusContent = function(content, stop) {
+      var $elt = content.find('.stop-status');
+      if (stop.status) {
+        if ($elt.css('display') == 'none') $elt.show();
+      }
+      else {
+        if ($elt.css('display') != 'none') $elt.hide();
+      }
+      $elt.removeClass().addClass('stop-status' + (stop.status_code ? ' stop-status-' + stop.status_code : ''));
+      $elt.attr({
+        title: stop.status + (stop.eta_formated ? ' - ' + I18n.t('plannings.edit.popup.eta') + ' ' + stop.eta_formated : '')
+      });
+      var name = content.find('.title .name');
+      name.attr('title') && name.attr({
+        title: name.attr('title').substr(0, name.attr('title').lastIndexOf(' - ')) + (stop.status ? ' - ' + stop.status : '')
+      });
+      content.find('.status').text(stop.status);
+      content.find('.eta').text(stop.eta_formated);
+      return content;
+    };
+
+    if (data) {
+      data.forEach(function(route) {
+        if (route.vehicle_usage_id) {
+          route.stops.forEach(function(stop) {
+            $.each($("[data-stop_id='" + stop.id + "']"), function(i, item) {
+              // update list, active popup in map and active popover
+              var $item = $(item);
+              updateStopStatusContent($item, stop);
+              // for popups outside DOM
+              $.each(layers, function(route_id, layer) {
+                $.each(layer.getLayers(), function(k, m) {
+                  if (m instanceof L.Marker) {
+                    var popupContent = $(m.getPopup().getContent());
+                    if (popupContent.data('stop_id') == stop.id) {
+                      m.getPopup().setContent(updateStopStatusContent(popupContent, stop)[0]);
+                    }
+                  }
+                });
+              });
+              var popupContent = $item.data()['bs.popover'] && $($item.data()['bs.popover'].options.content);
+              if (popupContent) {
+                $item.data()['bs.popover'].options.content = updateStopStatusContent(popupContent, stop);
+              }
+            });
+          });
+        }
+      });
+    }
+  };
+
+  var backgroundTask = function() {
+    var nbErrors = 0;
     $.ajax({
       type: 'GET',
       url: '/api/0.1/vehicles/current_position.json',
@@ -272,28 +327,53 @@ var plannings_edit = function(params) {
         ids: vehicleIdsPosition
       },
       dataType: 'json',
-      beforeSend: beforeSendWaiting,
       success: function(data, textStatus, jqXHR) {
         if (data && data.errors) {
-          clearInterval(tid);
+          nbErrors++;
+          if (nbErrors > 1) clearInterval(tid);
           $.each(data.errors, function(i, error) {
-            stickyError(I18n.t('plannings.edit.position') + " " + error);
+            stickyError(I18n.t('plannings.edit.current_position') + ' ' + error);
           });
         } else {
           displayVehicles(data);
         }
       },
-      complete: completeAjaxMap,
       error: function(err) {
-        clearInterval(tid);
+        nbErrors++;
+        if (nbErrors > 1) clearInterval(tid);
       }
     });
+    if (update_stop_status) {
+      $.ajax({
+        type: 'PATCH',
+        url: '/api/0.1/plannings/' + planning_id + '/update_stops_status.json',
+        dataType: 'json',
+        data: {
+          details: true
+        },
+        success: function(data, textStatus, jqXHR) {
+          if (data && data.errors) {
+            nbErrors++;
+            if (nbErrors > 1) clearInterval(tid);
+            $.each(data.errors, function(i, error) {
+              stickyError(I18n.t('plannings.edit.update_stops_status') + ' ' + error);
+            });
+          } else {
+            updateStopsStatus(data);
+          }
+        },
+        error: function(err) {
+          nbErrors++;
+          if (nbErrors > 1) clearInterval(tid);
+        }
+      });
+    }
   };
 
   if (vehicleIdsPosition.length) {
     vehicleLayer = L.featureGroup();
-    queryVehicles();
-    tid = setInterval(queryVehicles, 30000);
+    backgroundTask();
+    tid = setInterval(backgroundTask, 30000);
     $(document).on('page:before-change', function() {
       clearInterval(tid);
     });
@@ -699,6 +779,7 @@ var plannings_edit = function(params) {
         stop.isoline_capability = params.isoline_capability.isochrone || params.isoline_capability.isodistance;
         stop.isochrone_capability = params.isoline_capability.isochrone;
         stop.isodistance_capability = params.isoline_capability.isodistance;
+        stop.tomtom = route.tomtom;
         var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
           icon: new L.NumberedDivIcon({
             number: stop.number,

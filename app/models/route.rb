@@ -373,7 +373,7 @@ class Route < ActiveRecord::Base
       elsif [:status_any, :status_none].include?(action)
         stop.active = action == :status_none ? stop.status.nil? : !!stop.status
       else
-        stop.active = stop.status == action.to_s
+        stop.active = stop.status && stop.status.downcase == action.to_s
       end
     }
     self.optimized_at = self.last_sent_to = self.last_sent_at = nil

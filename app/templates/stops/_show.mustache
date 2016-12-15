@@ -98,8 +98,10 @@
       {{close2}} {{^open2}}({{#i18n}}plannings.edit.popup.close2{{/i18n}}){{/open2}}
     </li>
   {{/open_close2}}
-  {{#status}}<li><i class="fa fa-check fa-fw"></i> {{#i18n}}plannings.edit.popup.status{{/i18n}} <span class="stop-status stop-status-{{status_code}}" title="{{status}}{{#eta_formated}} - {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}{{/eta_formated}}"></span>{{status}}</li>{{/status}}
-  {{#eta_formated}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}</li>{{/eta_formated}}
+  {{#tomtom}}
+  <li{{^status}} style="display: none;"{{/status}}><i class="fa fa-check fa-fw"></i> {{#i18n}}plannings.edit.popup.status{{/i18n}} <span class="stop-status{{#status}} stop-status-{{status_code}}{{/status}}" title="{{status}}{{#eta_formated}} - {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}{{/eta_formated}}"></span><span class="status">{{status}}</span></li>
+  <li{{^eta_formated}} style="display: none;"{{/eta_formated}}><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.eta{{/i18n}} <span class="eta">{{eta_formated}}</span></li>
+  {{/tomtom}}
   {{#time}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.time{{/i18n}} {{time}}</li>{{/time}}
   {{#wait_time}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.wait{{/i18n}} {{wait_time}}</li>{{/wait_time}}
   {{#duration}}<li><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}plannings.edit.popup.duration{{/i18n}} {{duration}}</li>{{/duration}}

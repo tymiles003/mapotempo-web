@@ -34,7 +34,13 @@ if route.vehicle_usage
       } if stop.status
     }.uniq.compact
   json.status_all do
-    json.array! status_uniq
+    # FIXME: to avoid refreshing select active stops, combined here with hardcoded status
+    json.array! status_uniq | [:planned, :started, :finished, :rejected].map{ |status|
+      {
+        code: status.to_s.downcase,
+        status: t('plannings.edit.stop_status.' + status.to_s)
+      }
+    }
   end
   json.status_any status_uniq.size > 0
 end

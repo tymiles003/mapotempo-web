@@ -91,6 +91,8 @@ function devices_observe_planning(context) {
             set_last_sent_at(data);
           else if (from.data('route-id') && operation == 'clear')
             clear_last_sent_at(data);
+
+          if (service == 'tomtom') update_stop_status = true; // for backgroundTask
         }
       },
       complete: function() {

@@ -975,7 +975,7 @@ fr:
       spreadsheet: "Tableur CSV / Excel"
     edit:
       vehicles: "Véhicules"
-      position: "Position"
+      current_position: "Position véhicle :"
       lock_routes: "Verrouiller les tournées"
       toggle_routes: "Masquer les tournées"
       zonings: "Zonages"
@@ -1006,6 +1006,7 @@ fr:
         rejected: "Rejeté"
         any: "Tous statuts"
         none: "Sans statut"
+      update_stops_status: "Statuts arrêts :"
       customer_external_callback_url:
         action: "Application externe"
       teksat_send:

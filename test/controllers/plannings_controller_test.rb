@@ -357,10 +357,4 @@ class PlanningsControllerTest < ActionController::TestCase
     assert !planning.out_of_date
     assert !planning.zoning_out_of_date
   end
-
-  test 'should update stops status' do
-    patch :update_stops_status, planning_id: @planning.id, format: :json
-    assert_response :success
-    assert JSON.parse(response.body)['routes'].size > 0
-  end
 end

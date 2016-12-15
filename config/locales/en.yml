@@ -975,7 +975,7 @@ or you can click on this link to download file (no update in this case)."
       spreadsheet: "Spreadsheet CSV / Excel"
     edit:
       vehicles: "Vehicles"
-      position: "Position"
+      current_position: "Vehicle position:"
       lock_routes: "Lock routes"
       toggle_routes: "Toggle routes"
       zonings: "Zonings"
@@ -1006,6 +1006,7 @@ or you can click on this link to download file (no update in this case)."
         rejected: "Rejected"
         any: "Any status"
         none: "Without status"
+      update_stops_status: "Stops status:"
       customer_external_callback_url:
         action: "External Application"
       teksat_send:

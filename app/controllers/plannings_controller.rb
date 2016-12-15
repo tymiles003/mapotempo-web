@@ -320,23 +320,6 @@ class PlanningsController < ApplicationController
     end
   end
 
-  def update_stops_status
-    @planning.fetch_stops_status
-    if @planning.save
-      respond_to do |format|
-        format.json do
-          render action: :show
-        end
-      end
-    else
-      respond_to do |format|
-        format.json do
-          render json: @planning.errors, status: :unprocessable_entity
-        end
-      end
-    end
-  end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
