@@ -26,8 +26,6 @@ class V01::Destinations < Grape::API
       if p[:visits]
         p[:visits_attributes] = p[:visits]
       end
-      p = p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :quantity, :quantity1_1, :quantity1_2, :take_over, :open, :close, :open1, :close1, :open2, :close2, tag_ids: []])
-
       if p[:visits_attributes]
         p[:visits_attributes].each do |hash|
           hash[:quantities] = Hash[hash[:quantities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if hash[:quantities] && hash[:quantities].is_a?(Array)
@@ -47,7 +45,7 @@ class V01::Destinations < Grape::API
         end
       end
 
-      p
+      p.permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :comment, :phone_number, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :take_over, :open1, :close1, :open2, :close2, tag_ids: [], quantities: current_customer.deliverable_units.map{ |du| du.id.to_s }])
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze

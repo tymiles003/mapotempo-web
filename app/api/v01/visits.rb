@@ -38,9 +38,7 @@ class V01::Visits < Grape::API
         end
       end
 
-      p = p.permit(:ref, :take_over, :open1, :close1, :open2, :close2, tag_ids: [], quantities: current_customer.deliverable_units.map{ |du| du.id.to_s })
-
-      p
+      p.permit(:ref, :take_over, :open1, :close1, :open2, :close2, tag_ids: [], quantities: current_customer.deliverable_units.map{ |du| du.id.to_s })
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze

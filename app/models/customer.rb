@@ -108,7 +108,7 @@ class Customer < ActiveRecord::Base
       zonings_map = Hash[original.zonings.zip(copy.zonings)].merge(nil => nil)
 
       copy.vehicles.each{ |vehicle|
-        vehicle.capacities = Hash[vehicle.capacities.to_a.map{ |q| [deliverable_unit_ids_map[q[0]].id, q[1]]}]
+        vehicle.capacities = Hash[vehicle.capacities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]]}.compact]
         vehicle.save!
       }
 
@@ -132,7 +132,7 @@ class Customer < ActiveRecord::Base
 
         destination.visits.each{ |visit|
           visit.tags = visit.tags.collect{ |tag| tags_map[tag] }
-          visit.quantities = Hash[visit.quantities.to_a.map{ |q| [deliverable_unit_ids_map[q[0]].id, q[1]]}]
+          visit.quantities = Hash[visit.quantities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]]}.compact]
           visit.save!
         }
         destination.save!

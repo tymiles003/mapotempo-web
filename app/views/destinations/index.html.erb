@@ -153,6 +153,7 @@ controller.js(
   url_click2call: current_user.link_phone_number,
   enable_references: @customer.enable_references,
   enable_multi_visits: @customer.enable_multi_visits,
-  enable_orders: @customer.enable_orders
+  enable_orders: @customer.enable_orders,
+  disable_quantity: @customer.deliverable_units.size == 0
 )
 %>
