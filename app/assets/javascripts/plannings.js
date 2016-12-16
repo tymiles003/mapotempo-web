@@ -1036,6 +1036,7 @@ var plannings_edit = function(params) {
         $('li[data-route_id=' + id + '] li[data-store_id] > i.fa').css('color', color || route.vehicle.color);
         $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
         $('span[data-route_id=' + id + '] i.vehicle-icon').css('color', color || route.vehicle.color);
+        // FIXME: should refresh popups outside DOM
       });
 
     $(".lock").click(function(event, ui) {
@@ -1170,7 +1171,7 @@ var plannings_edit = function(params) {
         var regExp = new RegExp('/plannings/' + route.planning_id + '/' + route.route_id + '/[0-9]+/move.json');
         // popups are not selected follow
         $.each($('.send_to_route'), function(j, link) {
-          $link = $(link);
+          var $link = $(link);
           if ($link.attr('href').match(regExp) != null)
             $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
         });
@@ -1180,13 +1181,24 @@ var plannings_edit = function(params) {
             if (m instanceof L.Marker) {
               var popupContent = $(m.getPopup().getContent());
               $.each($('.send_to_route', popupContent), function(j, link) {
-                $link = $(link);
+                var $link = $(link);
                 if ($link.attr('href').match(regExp) != null)
                   $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
               });
               m.getPopup().setContent(popupContent[0]);
             }
           });
+        });
+        $.each($('li[data-stop_id]'), function(i, stop) {
+          var popupContent = $(stop).data()['bs.popover'] && $($(stop).data()['bs.popover'].options.content);
+          if (popupContent) {
+            $.each($('.send_to_route', popupContent), function(j, link) {
+              var $link = $(link);
+              if ($link.attr('href').match(regExp) != null)
+                $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
+            });
+            $(stop).data()['bs.popover'].options.content = popupContent;
+          }
         });
       });
     } else if (typeof options === 'object' && options.partial == 'stops') {
