@@ -102,7 +102,7 @@
     {{#store_start}}
     <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
       <li data-store_id="{{id}}" class="{{type}}{{#error}} ui-state-error{{/error}} list-group-item">
-        <i class="fa {{icon}}{{^icon}}fa-home{{/icon}} fa-fw" style="color: {{color}}{{^color}}black{{/color}};"></i>
+        <i class="fa {{icon}}{{^icon}}fa-home{{/icon}} fa-fw" style="color: {{#color_fake}}{{color_fake}}{{/color_fake}}{{^color_fake}}{{color}}{{^color}}black{{/color}}{{/color_fake}};"></i>
         <div class="title">
           {{^geocoded}}
             <i class="fa fa-map-marker fa-fw" title="{{#i18n}}plannings.edit.error.no_geolocalization{{/i18n}}"></i>
