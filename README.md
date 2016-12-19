@@ -100,7 +100,7 @@ And finally install gem project dependencies with :
 I you have this message :
 >Important: You may need to add a javascript runtime to your Gemfile in order for bootstrap's LESS files to compile to CSS.
 
-Don't worry, we use SASS to compile CSS and not LESS. You don't need to install 'therubyracer' gem.
+Don't worry, we use SASS to compile CSS and not LESS.
 
 ## Configuration
 
