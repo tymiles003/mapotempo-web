@@ -1632,6 +1632,8 @@ or you can click on this link to download file (no update in this case)."
       routes:
         index:
           none_routes: 'No routes found'
+          departure: "Departure:"
+          arrival: "Arrival:"
       stores:
         index:
           none_stores: 'No stores found'

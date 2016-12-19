@@ -1632,6 +1632,8 @@ fr:
       routes:
         index:
           none_routes: "Aucune route n'a été chargée"
+          departure: "Départ :"
+          arrival: "Arrivée :"
       stores:
         index:
           none_stores: "Aucun dépôt n'a été chargée"

@@ -221,6 +221,7 @@ var api_web_v01_routes_index = function(params) {
     $.each(data.stores, function(i, store) {
       store.store = true;
       store.planning_id = data.planning_id;
+      store.i18n = mustache_i18n;
       if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
         var m = L.marker(new L.LatLng(store.lat, store.lng), {
           icon: L.divIcon({
