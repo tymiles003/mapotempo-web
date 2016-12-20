@@ -154,6 +154,6 @@ controller.js(
   enable_references: @customer.enable_references,
   enable_multi_visits: @customer.enable_multi_visits,
   enable_orders: @customer.enable_orders,
-  disable_quantity: @customer.deliverable_units.size == 0
+  disable_quantity: @customer.enable_orders || @customer.deliverable_units.size != 1
 )
 %>

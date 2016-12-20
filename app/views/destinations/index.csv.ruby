@@ -22,11 +22,11 @@ CSV.generate { |csv|
     I18n.t('destinations.import_file.open2'),
     I18n.t('destinations.import_file.close2'),
     I18n.t('destinations.import_file.tags_visit')
-  ] + @customer.enable_orders ?
+  ] + (@customer.enable_orders ?
     [] :
     @customer.deliverable_units.map{ |du|
       I18n.t('destinations.import_file.quantity') + (du.label ? '[' + du.label + ']' : '')
-    }
+    })
   @destinations.each { |destination|
     destination_columns = [
       destination.ref,
@@ -55,11 +55,11 @@ CSV.generate { |csv|
           visit.open2 && l(visit.open2.utc, format: :hour_minute),
           visit.close2 && l(visit.close2.utc, format: :hour_minute),
           visit.tags.collect(&:label).join(',')
-        ] + @customer.enable_orders ?
+        ] + (@customer.enable_orders ?
           [] :
           @customer.deliverable_units.map{ |du|
             visit.quantities[du.id]
-          }
+          })
       }
     else
       csv << destination_columns + ['x']
