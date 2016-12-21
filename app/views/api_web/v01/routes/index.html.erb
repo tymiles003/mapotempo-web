@@ -6,8 +6,10 @@
         <div class="map-caption-item">
           <span class="color_small" style="background: <%= route.color || route.vehicle_usage.vehicle.color %>"></span>
           <%= route.vehicle_usage.vehicle.name %>
+          <% if !route.start.nil? && !route.end.nil? %>
           <br/>
           <%= t '.departure' %> <%= route.start.strftime("%H:%M") %> / <%= t '.arrival' %> <%= route.end.strftime("%H:%M") %>
+          <% end %>
         </div>
       <% end %>
     <% end %>
