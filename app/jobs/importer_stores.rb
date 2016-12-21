@@ -50,7 +50,7 @@ class ImporterStores < ImporterBase
     rows
   end
 
-  def before_import(name, options)
+  def before_import(name, data, options)
     @stores_to_geocode = []
 
     if options[:replace]

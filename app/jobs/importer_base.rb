@@ -32,7 +32,7 @@ class ImporterBase
     dests = false
 
     Customer.transaction do
-      before_import(name, options)
+      before_import(name, data, options)
 
       dests = data.each_with_index.collect{ |row, line|
         row = yield(row)

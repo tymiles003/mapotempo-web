@@ -109,7 +109,7 @@ class ImporterDestinations < ImporterBase
     }
   end
 
-  def before_import(name, options)
+  def before_import(name, data, options)
     @common_tags = nil
     @tag_labels = Hash[@customer.tags.collect{ |tag| [tag.label, tag] }]
     @tag_ids = Hash[@customer.tags.collect{ |tag| [tag.id, tag] }]
@@ -118,8 +118,8 @@ class ImporterDestinations < ImporterBase
         hh[kk] = kk == :visits ? [] : nil
       }
     }
-
     @destinations_to_geocode = []
+    @visit_ids = []
 
     if options[:delete_plannings]
       @customer.plannings.delete_all
@@ -127,7 +127,19 @@ class ImporterDestinations < ImporterBase
     if options[:replace]
       @customer.delete_all_destinations
     end
-    @visit_ids = []
+    if options[:line_shift] == 1
+      # Create missing deliverable units if needed
+      column_titles = data[0].is_a?(Hash) ? data[0].keys : data[0].map{ |a| a[0] }
+      unit_labels = @customer.deliverable_units.map(&:label)
+      column_titles.each{ |name|
+        m = Regexp.new("^" + I18n.t('destinations.import_file.quantity') + "\\[(.*)\\]$").match(name)
+        if m && unit_labels.exclude?(m[1])
+          unit_labels.delete_at(unit_labels.index(m[1])) if unit_labels.index(m[1])
+          @customer.deliverable_units.build(label: m[1])
+        end
+      }
+      @customer.save!
+    end
   end
 
   def prepare_quantities(row)
