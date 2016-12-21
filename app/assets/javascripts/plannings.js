@@ -691,7 +691,7 @@ var plannings_edit = function(params) {
       complete: completeAjaxMap,
       error: function(request, status, error) {
         ajaxError(request, status, error);
-        $("#out_of_route, .stops").sortable('cancel');
+        $(".route[data-route_id] .stops.sortable").sortable('cancel');
       }
     });
   }
