@@ -70,6 +70,11 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert_equal 204, last_response.status, last_response.body
   end
 
+  test 'should not move stop with invalid position' do
+    patch api(@route.planning.id, "#{@route.id}/stops/#{@route.planning.routes[0].stops[0].id}/move/666")
+    assert_equal 400, last_response.status, last_response.body
+  end
+
   test 'should change stops activation' do
     patch api(@route.planning.id, "#{@route.id}/active/reverse")
     assert last_response.ok?, last_response.body
