@@ -72,7 +72,7 @@ class V01::Stops < Grape::API
               stop = nil
               planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == stop_id } }
               Planning.transaction do
-                planning.move_stop(planning.routes.find{ |route| route.id == route_id }, stop, Integer(params[:index]) + 1) && planning.save!
+                planning.move_stop(planning.routes.find{ |route| route.id == route_id }, stop, Integer(params[:index])) && planning.save!
                 status 204
               end
             end

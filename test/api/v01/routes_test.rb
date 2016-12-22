@@ -59,7 +59,13 @@ class V01::RoutesTest < ActiveSupport::TestCase
     assert_equal @route.locked, JSON.parse(last_response.body)['locked']
   end
 
-  test 'should move stop position in routes' do
+  test 'should move stop position in same route' do
+    patch api(@route.planning.id, "#{@route.id}/stops/#{@route.stops[0].id}/move/3")
+    assert_equal 204, last_response.status, last_response.body
+    assert_equal 3, @route.reload.stops.find{ |s| s.visit && s.visit.ref == 'b' }.index
+  end
+
+  test 'should move stop position from a route in another' do
     patch api(@route.planning.id, "#{@route.id}/stops/#{@route.planning.routes[0].stops[0].id}/move/1")
     assert_equal 204, last_response.status, last_response.body
   end
