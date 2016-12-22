@@ -52,34 +52,45 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert r.reload.out_of_date
   end
 
- test 'setting a rest duration requires time start and stop' do
-   v = vehicle_usages(:vehicle_usage_one_one)
-   v.update! rest_start: nil, rest_stop: nil, rest_duration: nil
-   assert v.valid?
-   v.vehicle_usage_set.update! rest_start: nil, rest_stop: nil, rest_duration: nil
-   v.rest_duration = Time.utc(2000, 1, 1, 0, 0) + 15.minutes
-   assert !v.valid?
-   assert_equal [:rest_start, :rest_stop], v.errors.keys
-   v.rest_start = Time.utc(2000, 1, 1, 0, 0) + 10.hours
-   v.rest_stop = Time.utc(2000, 1, 1, 0, 0) + 11.hours
-   assert v.valid?
- end
+  test 'setting a rest duration requires time start and stop' do
+    v = vehicle_usages(:vehicle_usage_one_one)
+    v.update! rest_start: nil, rest_stop: nil, rest_duration: nil
+    assert v.valid?
+    v.vehicle_usage_set.update! rest_start: nil, rest_stop: nil, rest_duration: nil
+    v.rest_duration = Time.utc(2000, 1, 1, 0, 0) + 15.minutes
+    assert !v.valid?
+    assert_equal [:rest_start, :rest_stop], v.errors.keys
+    v.rest_start = Time.utc(2000, 1, 1, 0, 0) + 10.hours
+    v.rest_stop = Time.utc(2000, 1, 1, 0, 0) + 11.hours
+    assert v.valid?
+  end
 
- test 'should validate rest range in relation to the working time range' do
-  v = vehicle_usages(:vehicle_usage_one_one)
-  v.update rest_start: "12:00", rest_stop: "14:00", open: "08:00", close: "18:00", service_time_start: "00:30", service_time_end: "00:15"
-  assert v.valid?
-  v.update rest_start: "07:00", rest_stop: "14:00", open: "08:00", close: "18:00", service_time_start: "00:45", service_time_end: "00:30"
-  assert_equal [:rest_start], v.errors.keys
- end
+  test 'should validate rest range in relation to the working time range' do
+    v = vehicle_usages(:vehicle_usage_one_one)
+    v.update rest_start: "12:00", rest_stop: "14:00", open: "08:00", close: "18:00", service_time_start: "00:30", service_time_end: "00:15"
+    assert v.valid?
+    v.update rest_start: "07:00", rest_stop: "14:00", open: "08:00", close: "18:00", service_time_start: "00:45", service_time_end: "00:30"
+    assert_equal [:rest_start], v.errors.keys
+  end
 
- test 'should validate service working day start/end in relation to the working time range' do
-  v = vehicle_usages(:vehicle_usage_one_one)
-  v.update open: "08:00", close: "18:00", service_time_start: "00:30", service_time_end: "00:15"
-  assert v.valid?
-  v.update open: "08:00", close: "18:00", service_time_start: "08:00", service_time_end: "18:00"
-  assert_equal [:service_time_start], v.errors.keys
- end
+  test 'should validate service working day start/end in relation to the working time range' do
+    v = vehicle_usages(:vehicle_usage_one_one)
+    v.update open: "08:00", close: "18:00", service_time_start: "00:30", service_time_end: "00:15"
+    assert v.valid?
+    v.update open: "08:00", close: "18:00", service_time_start: "08:00", service_time_end: "18:00"
+    assert_equal [:service_time_start], v.errors.keys
+  end
+
+  test 'should delete vehicle usage and place routes in out of route section' do
+    planning = plannings :planning_one
+    out_of_route = planning.routes.detect{|route| !route.vehicle_usage }
+    route = planning.routes.detect{|route| route.ref == 'route_one' }
+    vehicle_usage = route.vehicle_usage
+    vehicle_usage.destroy
+
+    assert_equal 0, route.stops.reload.select{|stop| stop.is_a?(StopVisit) }.count
+    assert_equal 4, out_of_route.stops.reload.select{|stop| stop.is_a?(StopVisit) }.count
+  end
 
   test 'disable vehicule usage' do
     # Stub Requests

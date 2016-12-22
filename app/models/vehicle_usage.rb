@@ -54,7 +54,7 @@ class VehicleUsage < ActiveRecord::Base
   belongs_to :store_start, class_name: 'Store', inverse_of: :vehicle_usage_starts
   belongs_to :store_stop, class_name: 'Store', inverse_of: :vehicle_usage_stops
   belongs_to :store_rest, class_name: 'Store', inverse_of: :vehicle_usage_rests
-  has_many :routes, inverse_of: :vehicle_usage, dependent: :delete_all, autosave: true
+  has_many :routes, inverse_of: :vehicle_usage, autosave: true
 
   accepts_nested_attributes_for :vehicle, update_only: true
   validates_associated_bubbling :vehicle
@@ -74,6 +74,8 @@ class VehicleUsage < ActiveRecord::Base
   before_update :update_out_of_date
 
   before_save :update_routes
+
+  before_destroy :update_stops
 
   scope :active, ->{ where(active: true) }
   scope :for_customer, lambda{ |customer| joins(:vehicle_usage_set).where(vehicle_usage_sets: { customer_id: customer.id }) }
@@ -183,4 +185,13 @@ class VehicleUsage < ActiveRecord::Base
       }
     end
   end
+
+  def update_stops
+    vehicle_usage_set.plannings.each do |planning|
+      planning.vehicle_usage_remove self
+      planning.save!
+      routes.destroy_all
+    end
+  end
+
 end
