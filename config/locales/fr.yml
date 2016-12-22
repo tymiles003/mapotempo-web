@@ -71,10 +71,10 @@ fr:
       customers:
         one: "compte client"
         other: "comptes client"
-      deliverable_unit: "Unité déliverable"
+      deliverable_unit: "Unité délivrable"
       deliverable_units:
-        one: "unité déliverable"
-        other: "unité déliverables"
+        one: "unité délivrable"
+        other: "unités délivrables"
       destination: "Client"
       destinations:
         one: "client"
@@ -351,6 +351,7 @@ fr:
         sign_in_at: "Dernière connexion"
         ref: "Référence"
         confirmed_at: "Date de confirmation"
+        prefered_unit: "Choix unité"
       vehicle:
         name: "Nom"
         emission: "Émission"
@@ -682,12 +683,12 @@ fr:
 
   deliverable_units:
     edit:
-      title: "Modifier unité déliverable"
+      title: "Modifier unité délivrable"
     index:
-      title: "Liste unités déliverables"
-      new: "Nouvelle unité déliverable"
+      title: "Liste unités délivrables"
+      new: "Nouvelle unité délivrable"
     new:
-      title: "Nouvelle unité déliverable"
+      title: "Nouvelle unité délivrable"
     form:
       label_placeholder: "unité"
       label_help: "Par exemple « colis » ou une unité comme « kg »."

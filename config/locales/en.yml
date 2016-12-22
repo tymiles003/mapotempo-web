@@ -351,6 +351,7 @@ en:
         sign_in_at: "Last connection"
         ref: "Reference"
         confirmed_at: "Confirmed at"
+        prefered_unit: "Prefered unit"
       vehicle:
         name: "Name"
         emission: "Emission"
