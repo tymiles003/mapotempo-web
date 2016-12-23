@@ -80,11 +80,12 @@ class VehicleUsageTest < ActiveSupport::TestCase
     v.update open: "08:00", close: "18:00", service_time_start: "08:00", service_time_end: "18:00"
     assert_equal [:service_time_start], v.errors.keys
   end
-
+  
   test 'should delete vehicle usage and place routes in out of route section' do
     planning = plannings :planning_one
     out_of_route = planning.routes.detect{|route| !route.vehicle_usage }
     route = planning.routes.detect{|route| route.ref == 'route_one' }
+
     vehicle_usage = route.vehicle_usage
     vehicle_usage.destroy
 

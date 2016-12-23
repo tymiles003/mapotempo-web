@@ -160,5 +160,16 @@ class V01::Stores < Grape::API
         address_list
       end
     end
+
+    desc 'Reverse geocoding.',
+      detail: 'Result of reverse geocoding is not saved with this operation.',
+      nickname: 'reverseGeocodingStore',
+      params: V01::Entities::Store.documentation.except(:id, :color, :name, :icon, :icon_size),
+      entity: V01::Entities::Store
+    patch 'reverse' do
+      store = current_customer.stores.build(store_params.except(:id, :color, :name, :icon, :icon_size))
+      store.reverse_geocoding(params[:lat], params[:lng])
+    end
+
   end
 end
