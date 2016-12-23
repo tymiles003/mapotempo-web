@@ -268,13 +268,14 @@ var plannings_edit = function(params) {
   var updateStopsStatus = function(data) {
 
     var updateStopStatusContent = function(content, stop) {
-      var $elt = content.find('.stop-status');
+      var $elt = content.find('.toggle-status, .number .stop-status');
       if (stop.status) {
         if ($elt.css('display') == 'none') $elt.show();
       }
       else {
         if ($elt.css('display') != 'none') $elt.hide();
       }
+      $elt = content.find('.stop-status');
       $elt.removeClass().addClass('stop-status' + (stop.status_code ? ' stop-status-' + stop.status_code : ''));
       $elt.attr({
         title: stop.status + (stop.eta_formated ? ' - ' + I18n.t('plannings.edit.popup.eta') + ' ' + stop.eta_formated : '')
