@@ -40,7 +40,7 @@ class RestValidator < ActiveModel::Validator
 
     if rest_start_seconds != 0 && rest_end_seconds != 0
       if ((!(rest_start_seconds >= working_day_start) || !(rest_end_seconds <= working_day_end)) && !service_time_start_error)
-        record.errors[:rest_start] = I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime("%H:%M"), end: Time.at(working_day_end).utc.strftime("%H:%M"))
+        record.errors[:base] = I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime("%H:%M"), end: Time.at(working_day_end).utc.strftime("%H:%M"))
       end
     end
 
