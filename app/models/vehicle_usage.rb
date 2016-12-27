@@ -190,8 +190,8 @@ class VehicleUsage < ActiveRecord::Base
     vehicle_usage_set.plannings.each do |planning|
       planning.vehicle_usage_remove self
       planning.save!
-      routes.destroy_all
     end
+    routes.destroy_all
   end
 
 end
