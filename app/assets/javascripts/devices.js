@@ -48,10 +48,12 @@ function devices_observe_planning(context) {
     tomtom: "TomTom WEBFLEET"
   };
 
-  $('.device-operation', context).click(function(e) {
+  $(context).off('click', '.device-operation').on('click', '.device-operation', function(e) {
+
     if (!confirm(I18n.t('all.verb.confirm'))) {
       return;
     }
+
     var from = $(e.target),
       service = from.data('service'),
       operation = from.data('operation'),
