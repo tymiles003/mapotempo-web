@@ -246,6 +246,7 @@ var destinations_form = function(params, api) {
   var markerChange = function(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     displayGeocoding(0, null, 'point');
+    reverse_geocoding(latLng);
     $('[name$=\\[lat\\]]', row).val(latLng.lat.toFixed(6));
     $('[name$=\\[lng\\]]', row).val(latLng.lng.toFixed(6)).trigger('change', false);
   }
