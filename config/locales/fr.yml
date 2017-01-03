@@ -1401,6 +1401,7 @@ fr:
       success: "Utilisateur mis à jour avec succès"
     password:
       title: "Editer le mot de passe"
+      unauthenticated: "Erreur de connexion, veuillez vérifier le lien fournit par email"
     set_password:
       action: "Mettre à jour le mot de passe"
       success: "Utilisateur mis à jour avec succès"

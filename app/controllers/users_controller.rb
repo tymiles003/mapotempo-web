@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class UsersController < ApplicationController
-  load_and_authorize_resource
+  authorize_resource
 
   before_action :set_customer_and_user, except: [:password, :set_password]
   before_action :set_customer_and_user_from_token, only: [:password, :set_password]
@@ -32,19 +32,20 @@ class UsersController < ApplicationController
     end
   end
 
+  # bypass_sign_in argument is depreciated, we must use bypass_sign_in method instead
   def password
     if !@user
-      redirect_to unauthenticated_root_path
+      redirect_to unauthenticated_root_path, alert: t("users.#{action_name}.unauthenticated")
     elsif current_user != @user
       sign_out :user
-      sign_in @user, bypass_sign_in: true
+      bypass_sign_in(@user)
     end
   end
 
   def set_password
     if @user.update user_password_params
       @user.confirm! if !@user.confirmed?
-      sign_in @user, bypass_sign_in: true
+      bypass_sign_in(@user)
       redirect_to_default
     else
       render action: :password
@@ -66,7 +67,7 @@ class UsersController < ApplicationController
   end
 
   def set_customer_and_user_from_token
-    @user = User.find_by confirmation_token: params[:token]
+    @user = User.find_by confirmation_token: params[:token] if !params[:token].nil?
   end
 
   def user_password_params

@@ -1401,6 +1401,7 @@ or you can click on this link to download file (no update in this case)."
       success: "User updated successfully"
     password:
       title: "Edit Password"
+      unauthenticated: "Connection error, please check the url inside your confirmation mail"
     set_password:
       action: "Set My Password"
       success: "User updated successfully"
