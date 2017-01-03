@@ -147,7 +147,6 @@ var plannings_edit = function(params) {
     planning_ref = params.planning_ref,
     user_api_key = params.user_api_key,
     zoning_ids = params.zoning_ids,
-    routes_array = params.routes_array,
     vehicles_array = params.vehicles_array,
     vehicles_usages_map = params.vehicles_usages_map,
     url_click2call = params.url_click2call,
@@ -160,7 +159,22 @@ var plannings_edit = function(params) {
     routes_layers,
     routes_layers_cluster,
     zoning_ids = getZonings(),
-    update_stop_status = params.update_stop_status;
+    update_stop_status = params.update_stop_status,
+    allRoutesWithVehicle = $.map(params.routes_array, function(route) {
+      if (route.vehicle_usage_id) {
+        var vehicle_usage = {};
+        $.each(vehicles_usages_map, function(i, v) {
+          if (v.vehicle_usage_id == route.vehicle_usage_id) {
+            vehicle_usage = v;
+          }
+        });
+        route.name = (route.ref ? (route.ref + ' ') : '') + vehicle_usage.name;
+        if (!route.color) {
+          route.color = vehicle_usage.color;
+        }
+      }
+      return route;
+    });
 
   function getZonings() {
     return $("#planning_zoning_ids").val() || [];
@@ -208,22 +222,6 @@ var plannings_edit = function(params) {
     });
   });
 
-  var allRoutesVehicles = $.map(routes_array, function(route) {
-    if (route.vehicle_usage_id) {
-      var vehicle_usage = {};
-      $.each(vehicles_usages_map, function(i, v) {
-        if (v.vehicle_usage_id == route.vehicle_usage_id) {
-          vehicle_usage = v;
-        }
-      });
-      route.name = (route.ref ? (route.ref + ' ') : '') + vehicle_usage.name;
-      if (!route.color) {
-        route.color = vehicle_usage.color;
-      }
-    }
-    return route;
-  });
-
   // sidebar has to be created before map
   var sidebar = L.control.sidebar('edit-planning', {
     position: 'right'
@@ -242,7 +240,7 @@ var plannings_edit = function(params) {
   var displayVehicles = function(data) {
     data.forEach(function(pos) {
       if ($.isNumeric(pos.lat) && $.isNumeric(pos.lng)) {
-        var route = routes_array.filter(function(route) {
+        var route = allRoutesWithVehicle.filter(function(route) {
           return route.vehicle_usage_id == vehicles_usages_map[pos.vehicle_id].vehicle_usage_id;
         })[0];
         var isMoving = pos.speed && (Date.parse(pos.time) > Date.now() - 600 * 1000);
@@ -416,7 +414,7 @@ var plannings_edit = function(params) {
     }
   });
 
-  $.each(routes_array, function(i, route) {
+  $.each(allRoutesWithVehicle, function(i, route) {
     layers[route.route_id] = L.featureGroup();
     layers_cluster[route.route_id] = L.featureGroup();
   });
@@ -424,22 +422,17 @@ var plannings_edit = function(params) {
   $.each($('#lock_routes_dropdown li a'), function(i, element) {
     $(element).click(function(e) {
 
-      if (routes_array.length == 0) return;
+      if (allRoutesWithVehicle.length == 0) return;
 
       var selection = $(element).parent('li').data('selection');
-
-      // Params
-      var array = [];
-      $.each(routes_array, function(index, route) {
-        array.push(route.route_id)
-      });
-      array.push($('#out_of_route').parents('[data-route_id]').data('route_id'));
 
       $.ajax({
         url: '/api/0.1/plannings/' + planning_id + '/update_routes',
         type: 'PATCH',
         data: {
-          route_ids: array,
+          route_ids: $.map(allRoutesWithVehicle, function(route) {
+            return route.id
+          }).concat($('#out_of_route').parents('[data-route_id]').data('route_id')),
           selection: selection,
           action: 'lock'
         },
@@ -471,22 +464,17 @@ var plannings_edit = function(params) {
   $.each($('#toggle_routes_dropdown li a'), function(i, element) {
     $(element).click(function(e) {
 
-      if (routes_array.length == 0) return;
+      if (allRoutesWithVehicle.length == 0) return;
 
       var selection = $(element).parent('li').data('selection');
-
-      // Params
-      var array = [];
-      $.each(routes_array, function(index, route) {
-        array.push(route.route_id)
-      });
-      array.push($('#out_of_route').parents('[data-route_id]').data('route_id'));
 
       $.ajax({
         url: '/api/0.1/plannings/' + planning_id + '/update_routes',
         type: 'PATCH',
         data: {
-          route_ids: array,
+          route_ids: $.map(allRoutesWithVehicle, function(route) {
+            return route.id
+          }).concat($('#out_of_route').parents('[data-route_id]').data('route_id')),
           selection: selection,
           action: 'toggle'
         },
@@ -721,7 +709,7 @@ var plannings_edit = function(params) {
     }
   });
 
-  var prepareAndDisplayRouteOnMap = function(data, route) {
+  var prepareAndDisplayRouteOnMap = function(route) {
     var color = route.color || (route.vehicle && route.vehicle.color) || '#707070';
     var vehicle_name;
     if (route.vehicle) {
@@ -775,8 +763,8 @@ var plannings_edit = function(params) {
         stop.color = color;
         stop.vehicle_name = vehicle_name;
         stop.route_id = route.route_id;
-        stop.routes = allRoutesVehicles;
-        stop.planning_id = data.planning_id;
+        stop.routes = allRoutesWithVehicle;
+        stop.planning_id = route.planning_id;
         stop.isoline_capability = params.isoline_capability.isochrone || params.isoline_capability.isodistance;
         stop.isochrone_capability = params.isoline_capability.isochrone;
         stop.isodistance_capability = params.isoline_capability.isodistance;
@@ -990,7 +978,9 @@ var plannings_edit = function(params) {
       items: "li.route"
     });
 
-    $(".routes", context)
+    var $routes = context.hasClass('route') ? context : $(".route", context);
+
+    $routes
       .on("click", ".toggle", function(event, ui) {
         var id = $(this).closest("[data-route_id]").attr("data-route_id");
         var li = $("ul.stops, ol.stops", $(this).closest("li"));
@@ -1106,7 +1096,7 @@ var plannings_edit = function(params) {
           url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
           error: ajaxError
         });
-        routes_array.forEach(function(route) {
+        allRoutesWithVehicle.forEach(function(route) {
           if (route.route_id == id)
             route.color = color;
         });
@@ -1114,14 +1104,14 @@ var plannings_edit = function(params) {
           return found || (el.route_id == id && el);
         }, null);
         route.color = color;
-        prepareAndDisplayRouteOnMap(data, route);
+        prepareAndDisplayRouteOnMap(route);
         $('li[data-route_id=' + id + '] li[data-store_id] > i.fa').css('color', color || route.vehicle.color);
         $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
         $('span[data-route_id=' + id + '] i.vehicle-icon').css('color', color || route.vehicle.color);
         // FIXME: should refresh popups outside DOM
       });
 
-    $(".lock").click(function(event, ui) {
+    $(".lock", context).click(function(event, ui) {
       var id = $(this).closest("[data-route_id]").attr("data-route_id");
       var i = $("i", this);
       i.toggleClass("fa-lock");
@@ -1203,7 +1193,7 @@ var plannings_edit = function(params) {
     });
 
     $.each(data.routes, function(i, route) {
-      prepareAndDisplayRouteOnMap(data, route);
+      prepareAndDisplayRouteOnMap(route);
     });
 
     if (typeof options !== 'object' || !options.partial) {
@@ -1223,15 +1213,15 @@ var plannings_edit = function(params) {
         });
       });
     } else if (typeof options === 'object' && options.partial == 'routes') {
-      // update allRoutesVehicles
+      // update allRoutesWithVehicle
       $.each(data.routes, function(i, route) {
         var vehicle_usage = {};
         $.each(vehicles_usages_map, function(i, v) {
           if (v.vehicle_usage_id == route.vehicle_usage_id) vehicle_usage = v;
         });
-        $.each(allRoutesVehicles, function(i, rv) {
+        $.each(allRoutesWithVehicle, function(i, rv) {
           if (rv.route_id == route.route_id)
-            allRoutesVehicles[i] = {
+            allRoutesWithVehicle[i] = {
               route_id: route.route_id,
               color: route.color || vehicle_usage.color,
               vehicle_usage_id: route.vehicle_usage_id,
@@ -1244,7 +1234,7 @@ var plannings_edit = function(params) {
       $.each(data.routes, function(i, route) {
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
-        route.routes = allRoutesVehicles;
+        route.routes = allRoutesWithVehicle;
 
         $(".route[data-route_id='" + route.route_id + "']").html(SMT['routes/edit'](route));
 
@@ -1287,7 +1277,7 @@ var plannings_edit = function(params) {
       $.each(data.routes, function(i, route) {
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
-        route.routes = allRoutesVehicles;
+        route.routes = allRoutesWithVehicle;
 
         $(".route[data-route_id='" + route.route_id + "'] .route-details").html(SMT['stops/list'](route));
       });
