@@ -26,7 +26,9 @@
               <i class="fa fa-lightbulb-o"></i>
             </button>
           {{/geocoded}}
+          {{#manage_destination}}
           <a href="/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+          {{/manage_destination}}
           {{#geocoded}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/geocoded}}
           <div class="btn-group">
             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.send_to_route_help{{/i18n}}"><i class="fa fa-truck fa-fw"></i><span class="caret"></span></button>
@@ -118,7 +120,9 @@
           <span class="name" title="{{name}}">{{name}}</span>
         </div>
         <div class="btn-group pull-right stop-tools">
+          {{#manage_store}}
           <a href="/stores/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_store_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+          {{/manage_store}}
           <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
         </div>
         <div class="clearfix"></div>
@@ -207,7 +211,9 @@
               <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
             {{/geocoded}}
           {{/automatic_insert}}
+          {{#manage_destination}}
           <a href="/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+          {{/manage_destination}}
           {{#geocoded}}
             <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
           {{/geocoded}}
@@ -240,7 +246,9 @@
           <span class="name" title="{{name}}">{{name}}</span>
         </div>
         <div class="btn-group pull-right stop-tools">
+          {{#manage_store}}
           <a href="/stores/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_store_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+          {{/manage_store}}
           <a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>
         </div>
         <div class="clearfix"></div>

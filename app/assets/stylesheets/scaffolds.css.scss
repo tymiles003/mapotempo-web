@@ -264,7 +264,9 @@ span.color[data-color=''][data-selected]:after {
 }
 
 [data-controller='plannings'][data-action='edit'],
+[data-controller='api_web_v01_plannings'][data-action='edit'],
 [data-controller='plannings'][data-action='update'],
+[data-controller='api_web_v01_plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],
 [data-controller='api_web_v01_destinations'][data-action='index'],
 [data-controller='api_web_v01_routes'][data-action='index'],
@@ -289,12 +291,41 @@ span.color[data-color=''][data-selected]:after {
 [data-controller='plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],
 [data-controller='zonings'][data-action='update'] {
+  #map {
+    top: $navbar-height;
+  }
+  .sidebar {
+    top: $navbar-height + $sidebar-margins;
+
+    &.collapsed {
+      top: $navbar-height + $sidebar-margins !important;
+    }
+  }
+  @media(max-width:768px) {
+    .sidebar {
+      top: $navbar-height;
+    }
+  }
+}
+
+[data-controller='api_web_v01_plannings'][data-action='edit'],
+[data-controller='api_web_v01_plannings'][data-action='update'] {
+  #map {
+    top: 0px;
+  }
+}
+
+[data-controller='plannings'][data-action='edit'],
+[data-controller='api_web_v01_plannings'][data-action='edit'],
+[data-controller='plannings'][data-action='update'],
+[data-controller='api_web_v01_plannings'][data-action='update'],
+[data-controller='zonings'][data-action='edit'],
+[data-controller='zonings'][data-action='update'] {
   $transition-duration: 0.5s;
 
   #map {
     position: absolute;
     z-index: -1;
-    top: $navbar-height;
     left: 0;
     right: 0;
     bottom: 0;
@@ -305,7 +336,6 @@ span.color[data-color=''][data-selected]:after {
   }
 
   .sidebar {
-    top: $navbar-height + $sidebar-margins;
     transition: right $transition-duration, top $transition-duration, width $transition-duration, height $transition-duration;
     z-index: 3;
 
@@ -342,7 +372,6 @@ span.color[data-color=''][data-selected]:after {
     &.sidebar {
       width: 40px !important;
       height: 40px !important;
-      top: $navbar-height + $sidebar-margins !important;
       right: $sidebar-margins !important;
       border-radius: 4px !important;
     }
@@ -357,11 +386,6 @@ span.color[data-color=''][data-selected]:after {
   @media(min-width:768px) {
     .sidebar {
       width: 350px;
-    }
-  }
-  @media(max-width:768px) {
-    .sidebar {
-      top: $navbar-height;
     }
   }
   .sidebar-tabs > li:hover, .sidebar-tabs > ul > li:hover, .sidebar-tabs > ul > li > a:hover, .sidebar-tabs > ul > li > a > i:hover,

@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       match 'zonings/:zoning_id/zones' => 'zones#index', :as => 'zones', via: [:get, :post]
 
       get 'plannings/:planning_id/routes' => 'routes#index', :as => 'routes'
+      get 'plannings/:planning_id/edit' => 'plannings#edit', :as => 'edit'
     end
   end
 

@@ -19,6 +19,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$navbar-height: 50px;
+
 [data-controller='plannings'][data-action='edit'] {
   @media screen and (min-width: 800px) {
     .ui-pnotify {
@@ -40,6 +42,17 @@
 }
 
 [data-controller='plannings'] {
+  .sidebar.extended {
+    top: $navbar-height !important;
+  }
+}
+[data-controller='api_web_v01_plannings'] {
+  .sidebar.extended {
+    top: 0px !important;
+  }
+}
+
+[data-controller='plannings'], [data-controller='api_web_v01_plannings'] {
 
   .stop-popup {
     .route-select {
@@ -211,7 +224,6 @@
 
   .sidebar.extended {
     width: 100% !important;
-    top: 50px !important;
     right: 0px;
     bottom: 0px;
     padding: 0px;

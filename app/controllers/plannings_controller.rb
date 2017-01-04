@@ -324,6 +324,7 @@ class PlanningsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_planning
+    @manage_planning = [:edit, :zoning, :export, :organize, :vehicle, :destination, :store]
     @planning = if [:show, :edit, :optimize].include?(action_name.to_sym) && !request.format.html?
       current_user.customer.plannings.includes(routes: {stops: :visit}).find(params[:id] || params[:planning_id])
     else

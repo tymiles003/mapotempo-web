@@ -760,6 +760,9 @@ var plannings_edit = function(params) {
       }
       if (stop.destination && $.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
         stop.i18n = mustache_i18n;
+        $.each(params.manage_planning, function(i, elt) {
+          stop['manage_' + elt] = true;
+        });
         stop.color = color;
         stop.vehicle_name = vehicle_name;
         stop.route_id = route.route_id;
@@ -1198,6 +1201,9 @@ var plannings_edit = function(params) {
 
     if (typeof options !== 'object' || !options.partial) {
       data.ref = null; // here to prevent mustach template to get the value
+      $.each(params.manage_planning, function(i, elt) {
+        data['manage_' + elt] = true;
+      });
       $("#planning").html(SMT['plannings/edit'](data));
 
       initRoutes($('#edit-planning'), data);
@@ -1235,6 +1241,9 @@ var plannings_edit = function(params) {
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
         route.routes = allRoutesWithVehicle;
+        $.each(params.manage_planning, function(i, elt) {
+          route['manage_' + elt] = true;
+        });
 
         $(".route[data-route_id='" + route.route_id + "']").html(SMT['routes/edit'](route));
 
@@ -1278,6 +1287,9 @@ var plannings_edit = function(params) {
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
         route.routes = allRoutesWithVehicle;
+        $.each(params.manage_planning, function(i, elt) {
+          route['manage_' + elt] = true;
+        });
 
         $(".route[data-route_id='" + route.route_id + "'] .route-details").html(SMT['stops/list'](route));
       });
@@ -1452,7 +1464,9 @@ var plannings_edit = function(params) {
       store.i18n = mustache_i18n;
       store.store = true;
       store.planning_id = data.planning_id;
-      store.edit_planning = true;
+      $.each(params.manage_planning, function(i, elt) {
+        store['manage_' + elt] = true;
+      });
       store.isoline_capability = params.isoline_capability.isochrone || params.isoline_capability.isodistance;
       store.isochrone_capability = params.isoline_capability.isochrone;
       store.isodistance_capability = params.isoline_capability.isodistance;
