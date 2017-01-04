@@ -32,7 +32,9 @@ class V01::Devices::Masternaut < Grape::API
         end
       end
 
-      desc 'Send Route', detail: 'Send Route'
+      desc 'Send Route',
+        detail: 'Send Route',
+        nickname: 'deviceMasternautSend'
       params do
         requires :route_id, type: Integer, desc: 'Route ID'
       end
@@ -40,7 +42,9 @@ class V01::Devices::Masternaut < Grape::API
         device_send_route
       end
 
-      desc 'Send Planning Routes', detail: 'Send Planning Routes'
+      desc 'Send Planning Routes',
+        detail: 'Send Planning Routes',
+        nickname: 'deviceMasternautSendMultiple'
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end

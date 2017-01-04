@@ -33,17 +33,23 @@ class V01::Devices::Teksat < Grape::API
         end
       end
 
-      desc 'Validate Teksat Credentials', detail: 'Validate Teksat Credentials'
+      desc 'Validate Teksat Credentials',
+        detail: 'Validate Teksat Credentials',
+        nickname: 'deviceTeksatAuth'
       get '/auth' do
         status 204
       end
 
-      desc 'List Devices', detail: 'List Devices'
+      desc 'List Devices',
+        detail: 'List Devices',
+        nickname: 'deviceTeksatList'
       get '/devices' do
         present service.list_devices, with: V01::Entities::DeviceItem
       end
 
-      desc 'Send Route', detail: 'Send Route'
+      desc 'Send Route',
+        detail: 'Send Route',
+        nickname: 'deviceTeksatSend'
       params do
         requires :route_id, type: Integer, desc: 'Route ID'
       end
@@ -51,7 +57,9 @@ class V01::Devices::Teksat < Grape::API
         device_send_route
       end
 
-      desc 'Send Planning Routes', detail: 'Send Planning Routes'
+      desc 'Send Planning Routes',
+        detail: 'Send Planning Routes',
+        nickname: 'deviceTeksatSendMultiple'
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
@@ -59,7 +67,9 @@ class V01::Devices::Teksat < Grape::API
         device_send_routes device_id: :teksat_id
       end
 
-      desc 'Clear Route', detail: 'Clear Route'
+      desc 'Clear Route',
+        detail: 'Clear Route',
+        nickname: 'deviceTeksatClear'
       params do
         requires :route_id, type: Integer, desc: 'Route ID'
       end
@@ -67,7 +77,9 @@ class V01::Devices::Teksat < Grape::API
         device_clear_route
       end
 
-      desc 'Clear Planning Routes', detail: 'Clear Planning Routes'
+      desc 'Clear Planning Routes',
+        detail: 'Clear Planning Routes',
+        nickname: 'deviceTeksatClearMultiple'
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
@@ -75,7 +87,9 @@ class V01::Devices::Teksat < Grape::API
         device_clear_routes device_id: :teksat_id
       end
 
-      desc 'Sync Vehicles', detail: 'Sync Vehicles'
+      desc 'Sync Vehicles',
+        detail: 'Sync Vehicles',
+        nickname: 'deviceTeksatSync'
       post '/sync' do
         teksat_sync_vehicles @customer, session[:teksat_ticket_id]
         status 204

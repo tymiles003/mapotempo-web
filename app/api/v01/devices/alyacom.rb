@@ -32,13 +32,17 @@ class V01::Devices::Alyacom < Grape::API
         end
       end
 
-      desc 'Check Alyacom Credentials', detail: 'Validate Alyacom Credentials'
+      desc 'Check Alyacom Credentials',
+        detail: 'Validate Alyacom Credentials',
+        nickname: 'deviceAlyacomAuth'
       get '/auth' do
         alyacom_authenticate @customer
         status 204
       end
 
-      desc 'Send Route', detail: 'Send Route'
+      desc 'Send Route',
+        detail: 'Send Route',
+        nickname: 'deviceAlyacomSend'
       params do
         requires :route_id, type: Integer, desc: 'Route ID'
       end
@@ -46,7 +50,9 @@ class V01::Devices::Alyacom < Grape::API
         device_send_route
       end
 
-      desc 'Send Planning Routes', detail: 'Send Planning Routes'
+      desc 'Send Planning Routes',
+        detail: 'Send Planning Routes',
+        nickname: 'deviceAlyacomSendMultiple'
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end

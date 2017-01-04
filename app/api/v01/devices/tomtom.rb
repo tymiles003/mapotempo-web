@@ -32,18 +32,24 @@ class V01::Devices::Tomtom < Grape::API
         end
       end
 
-      desc 'Validate TomTom WebFleet Credentials', detail: 'Validate TomTom WebFleet Credentials'
+      desc 'Validate TomTom WebFleet Credentials',
+        detail: 'Validate TomTom WebFleet Credentials',
+        nickname: 'deviceTomtomAuth'
       get '/auth' do
         tomtom_authenticate @customer
         status 204
       end
 
-      desc 'List Devices', detail: 'List Devices'
+      desc 'List Devices',
+        detail: 'List Devices',
+        nickname: 'deviceTomtomList'
       get '/devices' do
         present service.list_devices, with: V01::Entities::DeviceItem
       end
 
-      desc 'Send Route', detail: 'Send Route'
+      desc 'Send Route',
+        detail: 'Send Route',
+        nickname: 'deviceTomtomSend'
       params do
         requires :route_id, type: Integer, desc: 'Route ID'
         requires :type, type: String, desc: 'Action Name', values: %w(waypoints orders)
@@ -52,7 +58,9 @@ class V01::Devices::Tomtom < Grape::API
         device_send_route params.slice(:type)
       end
 
-      desc 'Send Planning Routes', detail: 'Send Planning Routes'
+      desc 'Send Planning Routes',
+        detail: 'Send Planning Routes',
+        nickname: 'deviceTomtomSendMultiple'
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
         requires :type, type: String, desc: 'Action Name', values: %w(waypoints orders)
@@ -61,7 +69,9 @@ class V01::Devices::Tomtom < Grape::API
         device_send_routes params.slice(:type).merge(device_id: :tomtom_id)
       end
 
-      desc 'Clear Route', detail: 'Clear Route'
+      desc 'Clear Route',
+        detail: 'Clear Route',
+        nickname: 'deviceTomtomClear'
       params do
         requires :route_id, type: Integer, desc: 'Route ID'
       end
@@ -69,7 +79,9 @@ class V01::Devices::Tomtom < Grape::API
         device_clear_route
       end
 
-      desc 'Clear Planning Routes', detail: 'Clear Planning Routes'
+      desc 'Clear Planning Routes',
+        detail: 'Clear Planning Routes',
+        nickname: 'deviceTomtomClearMultiple'
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
@@ -77,7 +89,9 @@ class V01::Devices::Tomtom < Grape::API
         device_clear_routes device_id: :tomtom_id
       end
 
-      desc 'Sync Vehicles', detail: 'Sync Vehicles'
+      desc 'Sync Vehicles',
+        detail: 'Sync Vehicles',
+        nickname: 'deviceTomtomSync'
       post '/sync' do
         tomtom_sync_vehicles @customer
         status 204
