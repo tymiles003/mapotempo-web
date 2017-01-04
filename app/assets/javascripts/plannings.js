@@ -431,7 +431,7 @@ var plannings_edit = function(params) {
         type: 'PATCH',
         data: {
           route_ids: $.map(allRoutesWithVehicle, function(route) {
-            return route.id
+            return route.route_id
           }).concat($('#out_of_route').parents('[data-route_id]').data('route_id')),
           selection: selection,
           action: 'lock'
@@ -473,7 +473,7 @@ var plannings_edit = function(params) {
         type: 'PATCH',
         data: {
           route_ids: $.map(allRoutesWithVehicle, function(route) {
-            return route.id
+            return route.route_id
           }).concat($('#out_of_route').parents('[data-route_id]').data('route_id')),
           selection: selection,
           action: 'toggle'
