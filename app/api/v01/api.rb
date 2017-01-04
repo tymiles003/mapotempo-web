@@ -98,7 +98,7 @@ class V01::Api < Grape::API
     elsif e.is_a?(Grape::Exceptions::MethodNotAllowed)
       rack_response(response.to_json, 405)
     else
-      rack_response(response.to_json, 500)
+      rack_response('Internal Server Error', 500)
     end
   end
 

@@ -60,6 +60,17 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
     assert_equal 'riri', JSON.parse(last_response.body)['name']
   end
 
+  test 'should update a vehicle_usage_set store with null value' do
+    put api(@vehicle_usage_set.id), store_start_id: 'null', store_stop_id: 'null', store_rest_id: 'null'
+    assert last_response.ok?, last_response.body
+
+    get api(@vehicle_usage_set.id)
+    assert last_response.ok?, last_response.body
+    assert_nil JSON.parse(last_response.body)['store_start_id']
+    assert_nil JSON.parse(last_response.body)['store_stop_id']
+    assert_nil JSON.parse(last_response.body)['store_rest_id']
+  end
+
   test 'should destroy a vehicle_usage_set' do
     assert_difference('VehicleUsageSet.count', -1) do
       delete api(@vehicle_usage_set.id)
