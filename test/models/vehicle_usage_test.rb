@@ -70,7 +70,7 @@ class VehicleUsageTest < ActiveSupport::TestCase
     v.update rest_start: "12:00", rest_stop: "14:00", open: "08:00", close: "18:00", service_time_start: "00:30", service_time_end: "00:15"
     assert v.valid?
     v.update rest_start: "07:00", rest_stop: "14:00", open: "08:00", close: "18:00", service_time_start: "00:45", service_time_end: "00:30"
-    assert_equal [:rest_start], v.errors.keys
+    assert_equal [:base], v.errors.keys
   end
 
   test 'should validate service working day start/end in relation to the working time range' do
