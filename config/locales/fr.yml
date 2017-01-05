@@ -547,6 +547,8 @@ fr:
         profiles: "Profils"
       index:
         title: "Liste profils"
+        avoid_zones: "Zones de contournement"
+        speed_multiplicator_zones: "Zones de ralentissement"
 
     resellers:
       menu:

@@ -547,6 +547,8 @@ en:
         profiles: "Profiles"
       index:
         title: "Listing profiles"
+        avoid_zones: "Bypass zones"
+        speed_multiplicator_zones: "Slowing down zones"
 
     resellers:
       menu:
