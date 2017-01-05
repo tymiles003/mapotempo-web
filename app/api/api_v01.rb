@@ -34,7 +34,6 @@ class ApiV01 < Grape::API
       'application/json; charset=UTF-8',
       'application/xml',
     ],
-    markdown: GrapeSwagger::Markdown::KramdownAdapter.new,
     info: {
       title: 'API',
       description: '

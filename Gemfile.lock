@@ -301,7 +301,6 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.3)
-    kramdown (1.13.1)
     leaflet-markercluster-rails (0.7.0)
       railties (>= 3.1)
     leaflet-rails (0.7.7)
@@ -586,7 +585,6 @@ DEPENDENCIES
   jquery-timeentry-rails!
   jquery-turbolinks
   jquery-ui-rails
-  kramdown
   leaflet-control-geocoder-rails!
   leaflet-controlledbounds-rails!
   leaflet-draw-rails!

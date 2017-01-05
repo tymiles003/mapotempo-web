@@ -69,7 +69,6 @@ gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger'
 gem 'grape-swagger-entity'
-gem 'kramdown'
 gem 'rack-cors'
 gem 'swagger-docs'
 
