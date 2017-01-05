@@ -27,6 +27,7 @@
 }
 
 $navbar-height: 50px;
+$sidebar-width: 350px;
 $sidebar-margins: 10px;
 
 body {
@@ -268,6 +269,9 @@ span.color[data-color=''][data-selected]:after {
 [data-controller='plannings'][data-action='update'],
 [data-controller='api_web_v01_plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],
+[data-controller='api_web_v01_zonings'][data-action='edit'],
+[data-controller='zonings'][data-action='update'],
+[data-controller='api_web_v01_zonings'][data-action='update'],
 [data-controller='api_web_v01_destinations'][data-action='index'],
 [data-controller='api_web_v01_routes'][data-action='index'],
 [data-controller='api_web_v01_zones'][data-action='index'] {
@@ -309,7 +313,9 @@ span.color[data-color=''][data-selected]:after {
 }
 
 [data-controller='api_web_v01_plannings'][data-action='edit'],
-[data-controller='api_web_v01_plannings'][data-action='update'] {
+[data-controller='api_web_v01_plannings'][data-action='update'],
+[data-controller='api_web_v01_zonings'][data-action='edit'],
+[data-controller='api_web_v01_zonings'][data-action='update'] {
   #map {
     top: 0px;
   }
@@ -320,7 +326,9 @@ span.color[data-color=''][data-selected]:after {
 [data-controller='plannings'][data-action='update'],
 [data-controller='api_web_v01_plannings'][data-action='update'],
 [data-controller='zonings'][data-action='edit'],
-[data-controller='zonings'][data-action='update'] {
+[data-controller='api_web_v01_zonings'][data-action='edit'],
+[data-controller='zonings'][data-action='update'],
+[data-controller='api_web_v01_zonings'][data-action='update'] {
   $transition-duration: 0.5s;
 
   #map {
@@ -385,7 +393,7 @@ span.color[data-color=''][data-selected]:after {
   }
   @media(min-width:768px) {
     .sidebar {
-      width: 350px;
+      width: $sidebar-width;
     }
   }
   .sidebar-tabs > li:hover, .sidebar-tabs > ul > li:hover, .sidebar-tabs > ul > li > a:hover, .sidebar-tabs > ul > li > a > i:hover,

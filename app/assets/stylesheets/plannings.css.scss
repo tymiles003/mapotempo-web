@@ -20,11 +20,13 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 $navbar-height: 50px;
+$sidebar-width: 350px;
+$sidebar-margins: 10px;
 
 [data-controller='plannings'][data-action='edit'] {
   @media screen and (min-width: 800px) {
     .ui-pnotify {
-      right: 350px !important; // SideMenu Width
+      right: $sidebar-width + 2*$sidebar-margins !important;
     }
   }
 }

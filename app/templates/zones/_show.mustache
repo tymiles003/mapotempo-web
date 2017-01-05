@@ -2,7 +2,12 @@
   <div class="panel-heading">
     <div>
       <input name="zoning[zones_attributes][][id]" type="hidden" value="{{id}}" />
-      <input class="form-control zone-name" type="text" value="{{name}}" name="zoning[zones_attributes][][name]" placeholder="{{#i18n}}zonings.form.zone_placeholder{{/i18n}} #{{index}}" />
+      {{#manage_edit}}
+      <input class="form-control zone-name" type="text" value="{{name}}" name="zoning[zones_attributes][][name]" placeholder="{{#i18n}}zonings.form.zone_placeholder{{/i18n}} #{{index}}" {{^manage_edit}}disabled{{/manage_edit}} />
+      {{/manage_edit}}
+      {{^manage_edit}}
+      <div class="form-control zone-name">{{name}}{{^name}}{{#i18n}}zonings.form.zone_placeholder{{/i18n}} #{{index}}{{/name}}</div>
+      {{/manage_edit}}
       <div class="btn-group pull-right">
         <button type="button" class="delete btn btn-danger btn-xs" title="{{#i18n}}all.verb.destroy{{/i18n}}"><i class="fa fa-trash-o fa-fw"></i></button>
       </div>

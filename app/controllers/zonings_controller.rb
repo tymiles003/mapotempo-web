@@ -20,6 +20,7 @@ class ZoningsController < ApplicationController
 
   load_and_authorize_resource
   before_action :set_zoning, only: [:show, :edit, :update, :destroy, :duplicate, :automatic, :from_planning, :isochrone, :isodistance]
+  before_action :manage_zoning
 
   def index
     @zonings = current_user.customer.zonings
@@ -157,6 +158,10 @@ class ZoningsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_zoning
     @zoning = current_user.customer.zonings.find params[:id] || params[:zoning_id]
+  end
+
+  def manage_zoning
+    @manage_zoning = [:edit, :organize]
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

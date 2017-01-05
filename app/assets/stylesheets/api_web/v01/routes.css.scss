@@ -25,29 +25,10 @@
     display: none;
   }
 
-  .ui-pnotify {
-    top: 20px !important;
-    right: 20px !important;
-  }
-
-  #map {
-    position: absolute;
-    z-index: -1;
-    top: 0px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
   #routes-caption {
     background: white;
     padding: 10px;
     max-height: 200px;
     overflow: auto;
-  }
-  .flash {
-    margin: 30px;
-    position: fixed;
-    left: 30px;
-    right: 30px;
   }
 }

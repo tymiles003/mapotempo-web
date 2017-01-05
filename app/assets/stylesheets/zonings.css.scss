@@ -19,7 +19,11 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-[data-controller='zonings'] {
+$sidebar-width: 350px;
+$sidebar-margins: 10px;
+
+[data-controller='zonings'],
+[data-controller='api_web_v01_zonings'] {
   .zone-name {
     width: 270px;
     display: inline-block;
@@ -28,7 +32,7 @@
   &[data-action='edit'] {
     @media screen and (min-width: 800px) {
       .ui-pnotify {
-        right: 350px !important; // SideMenu Width
+        right: $sidebar-width + 2*$sidebar-margins !important;
       }
     }
 

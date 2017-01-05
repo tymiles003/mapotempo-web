@@ -287,6 +287,9 @@ var zonings_edit = function(params) {
     featureGroup.addLayer(geom);
 
     zone.i18n = mustache_i18n;
+    $.each(params.manage_zoning, function(i, elt) {
+      zone['manage_' + elt] = true;
+    });
     zone.vehicles = $.map(vehicles_array, function(val, i) {
       return {
         id: val.id,

@@ -43,9 +43,11 @@ Rails.application.routes.draw do
       patch 'stores/:id/update_position' => 'stores#update_position', :as => 'update_position_store'
 
       match 'zonings/:zoning_id/zones' => 'zones#index', :as => 'zones', via: [:get, :post]
+      get 'zonings/:zoning_id/edit' => 'zonings#edit', :as => 'edit_zoning'
+      patch 'zonings/:zoning_id/edit' => 'zonings#update'
 
       get 'plannings/:planning_id/routes' => 'routes#index', :as => 'routes'
-      get 'plannings/:planning_id/edit' => 'plannings#edit', :as => 'edit'
+      get 'plannings/:planning_id/edit' => 'plannings#edit', :as => 'edit_planning'
     end
   end
 

@@ -1,12 +1,18 @@
-<% options = @zoning.id ? {layout: :horizontal, default_div_class: 'col-lg-10 col-md-10'} : {layout: :horizontal} %>
+<% options = {layout: :horizontal}
+options.merge!(url: "/api-web/0.1/zonings/#{params[:zoning_id]}/#{params[:action]}") if params[:controller] =~ /api_web/
+options.merge!(default_div_class: 'col-lg-10 col-md-10') if @zoning.id %>
 <%= twitter_bootstrap_form_for @zoning, options do |f| %>
   <%= render 'shared/error_messages', model: @zoning %>
   <% if @planning %>
     <input id="planning_id" type="hidden" value="<%= @planning.id %>" name="planning_id">
   <% end %>
-  <%= f.text_field :name, required: true %>
-  <%= f.actions do %>
-    <%= f.submit %>
+  <% if @manage_zoning.include? :edit %>
+    <%= f.text_field :name, required: true %>
+  <% end %>
+  <% if @manage_zoning.include?(:edit) || @manage_zoning.include?(:organize) %>
+    <%= f.actions do %>
+      <%= f.submit %>
+    <% end %>
   <% end %>
   <% if @zoning.id %>
     <hr>
@@ -22,27 +28,29 @@
           <label><input type="checkbox" name="all-destinations"> <%= t '.all_destinations' %> <i class="fa fa-lightbulb-o fa-fw" title="<%= t '.from_planning_help' %>"></i></label>
         </div>
       <% end %>
-      <div class="col-md-offset-2 col-md-10">
-        <button type="button" class="btn btn-primary dropdown-toggle" id="generate" data-toggle="dropdown" aria-expanded="false"<% if !@isochrone_capability && !@isodistance_capability && !@planning %> style="display: none;"<% end %>><i class="fa fa-magic fa-fw"></i> <%= t '.generate' %> <span class="caret"></span></button>
-        <ul class="dropdown-menu" role="menu">
-          <% if @isochrone_capability || @isodistance_capability %>
-            <% if @isochrone_capability %>
-              <li><a data-toggle="modal" data-target="#isochrone-modal" data-keyboard="true" href="#"><i class="fa fa-clock-o fa-fw"></i> <%= t '.isochrone' %></a></li>
+      <% if @manage_zoning.include? :organize %>
+        <div class="col-md-offset-2 col-md-10">
+          <button type="button" class="btn btn-primary dropdown-toggle" id="generate" data-toggle="dropdown" aria-expanded="false"<% if !@isochrone_capability && !@isodistance_capability && !@planning %> style="display: none;"<% end %>><i class="fa fa-magic fa-fw"></i> <%= t '.generate' %> <span class="caret"></span></button>
+          <ul class="dropdown-menu" role="menu">
+            <% if @isochrone_capability || @isodistance_capability %>
+              <% if @isochrone_capability %>
+                <li><a data-toggle="modal" data-target="#isochrone-modal" data-keyboard="true" href="#"><i class="fa fa-clock-o fa-fw"></i> <%= t '.isochrone' %></a></li>
+              <% end %>
+              <% if @isodistance_capability %>
+                <li><a data-toggle="modal" data-target="#isodistance-modal" data-keyboard="true" href="#"><i class="fa fa-road fa-fw"></i> <%= t '.isodistance' %></a></li>
+              <% end %>
+              <li class="divider"></li>
             <% end %>
-            <% if @isodistance_capability %>
-              <li><a data-toggle="modal" data-target="#isodistance-modal" data-keyboard="true" href="#"><i class="fa fa-road fa-fw"></i> <%= t '.isodistance' %></a></li>
+            <% if @planning %>
+              <li><a href="#" id="from_planning"><i class="fa fa-calendar fa-fw"></i> <%= t '.from_planning' %></a></li>
+              <li class="divider"></li>
             <% end %>
-            <li class="divider"></li>
-          <% end %>
-          <% if @planning %>
-            <li><a href="#" id="from_planning"><i class="fa fa-calendar fa-fw"></i> <%= t '.from_planning' %></a></li>
-            <li class="divider"></li>
-          <% end %>
-          <% zoning_vehicles(@zoning, @planning, active: true).count.times{ |n| %>
-            <li><a href="#" class="automatic<% if !@planning %> disabled<% end %>" data-n="<%= n + 1 %>"><i class="fa fa-magic fa-fw"></i> <%= t('.automatic', count: n + 1) %></a></li>
-          <% } %>
-        </ul>
-      </div>
+            <% zoning_vehicles(@zoning, @planning, active: true).count.times{ |n| %>
+              <li><a href="#" class="automatic<% if !@planning %> disabled<% end %>" data-n="<%= n + 1 %>"><i class="fa fa-magic fa-fw"></i> <%= t('.automatic', count: n + 1) %></a></li>
+            <% } %>
+          </ul>
+        </div>
+      <% end %>
     </div>
   <% end %>
   <div id="zones"></div>
@@ -60,6 +68,7 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 }
 
 controller.js(
+  manage_zoning: @manage_zoning,
   prefered_unit: current_user.prefered_unit,
   zoning_id: @zoning.id,
   zoning_details: zoning_details(@zoning),

@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2015
+// Copyright © Mapotempo, 2016
 //
 // This file is part of Mapotempo.
 //
@@ -15,16 +15,9 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-// Place all the styles related to the Destinations controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
 
-
-[data-controller='api_web_v01_destinations'],
-[data-controller='api_web_v01_stores'] {
-
-  #edit-position {
-    background: white;
-    padding: 10px;
+Paloma.controller('ApiWeb/V01/Zonings', {
+  edit: function() {
+    zonings_edit(this.params);
   }
-}
+});

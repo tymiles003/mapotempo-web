@@ -32,6 +32,8 @@
     padding-right:0;
 }
 
+$navbar-height: 50px;
+
 .navbar {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -283,8 +285,7 @@ html.turbolinks-progress-bar::before {
   PNotify
 */
 .ui-pnotify {
-  margin: 30px;
-  top: 30px;
+  top: $navbar-height + 10px !important;
   right: 30px;
   z-index: 10 !important;
   @media screen and (max-width: 767px) {
@@ -292,6 +293,27 @@ html.turbolinks-progress-bar::before {
   }
 }
 
+/* Api-web */
+body.api-web {
+  .ui-pnotify {
+    top: 10px !important;
+    right: 10px !important;
+  }
+  .flash {
+    margin: 30px;
+    position: fixed;
+    left: 30px;
+    right: 30px;
+  }
+  #map {
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
 
 @media print {
   .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
