@@ -78,10 +78,11 @@ class ApplicationController < ActionController::Base
   def customer_payment_period
     if current_user.customer
       customer = current_user.customer
-      @subscribed = customer.end_subscription && Time.now >= customer.end_subscription
-      if @subscribed
+      @unsubscribed = customer.end_subscription && Time.now >= customer.end_subscription
+      if @unsubscribed
         flash.now[:error] = I18n.t('subscribe.expiration_date_over', scope: :all) + I18n.l((customer.end_subscription - 1.second), format: :long)
       end
     end
   end
+
 end

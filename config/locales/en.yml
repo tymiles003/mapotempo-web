@@ -956,9 +956,10 @@ or you can click on this link to download file (no update in this case)."
       title: "Your %{s} account"
       content: "<p>Hello and welcome to %{s},</p>\n
 \n
-<p>You can set your password with the following link: <a href=\"%{l}\">Set Password</a> or %{l} </p>\n
+<p>You can set your password with the following link: <a href=\"%{l}\" target=\"_blank\" title=\"I change my password %{s}\">Set password</a>  <br/>
+or copy/paste following url in your browser : %{l} </p>\n
 \n
-<p>You will be able to connect our service online %{s} with: %{a} </p>\n
+<p>You will be able to connect our service online %{s} with click on following URL: <a href=\"%{a}\" target=\"_blank\" title=\"I'm log in on %{s}\">%{a}<a> </p>\n
 \n
 <p>If you need to contact us, please use the following link: %{c} </p>\n
 \n

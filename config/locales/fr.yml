@@ -956,9 +956,10 @@ fr:
       title: "Votre compte %{s}"
       content: "<p>Bonjour et bienvenue sur %{s},</p>\n
 \n
-<p>Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : <a href=\"%{l}\">Changer le mot de passe</a> ou %{l} </p>\n
+<p>Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : <a href=\"%{l}\" target=\"_blank\" title=\"Je change mon mot de passe %{s}\">Changer le mot de passe</a>  <br/>
+ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
 \n
-<p>Vous pourrez alors vous connecter à tout moment au service en ligne %{s} via : %{a} </p>\n
+<p>Vous pourrez alors vous connecter à tout moment au service en ligne %{s} en cliquant sur l'URL suivante: <a href=\"%{a}\" target=\"_blank\" title=\"Je me connecter sur %{s}\">%{a}<a> </p>\n
 \n
 <p>Pour nous contacter veuillez utiliser l'un des moyens listés sur cette page : %{c} </p>\n
 \n
