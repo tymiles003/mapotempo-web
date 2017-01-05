@@ -84,6 +84,8 @@ Rails.application.configure do
   config.default_from_mail = 'root@localhost'
 
   config.swagger_docs_base_path = 'http://localhost:3000/'
+  config.api_contact_email = 'tech@mapotempo.com'
+  config.api_contact_url = 'https://github.com/Mapotempo/mapotempo-web'
 
   def cache_factory(namespace, expires_in)
     ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, namespace), namespace: namespace, expires_in: expires_in)
