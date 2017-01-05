@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.4
--- Dumped by pg_dump version 9.5.4
+-- Dumped from database version 9.5.5
+-- Dumped by pg_dump version 9.5.5
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1891,6 +1891,14 @@ ALTER TABLE ONLY vehicle_usage_sets
 
 
 --
+-- Name: fk_rails_1f597e3fbf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY layers_profiles
+    ADD CONSTRAINT fk_rails_1f597e3fbf FOREIGN KEY (profile_id) REFERENCES profiles(id);
+
+
+--
 -- Name: fk_rails_2494c76b6d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1899,11 +1907,35 @@ ALTER TABLE ONLY vehicle_usages
 
 
 --
+-- Name: fk_rails_2d0f95c20f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY layers_profiles
+    ADD CONSTRAINT fk_rails_2d0f95c20f FOREIGN KEY (layer_id) REFERENCES layers(id);
+
+
+--
 -- Name: fk_rails_31b67ddbf0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicle_usages
     ADD CONSTRAINT fk_rails_31b67ddbf0 FOREIGN KEY (store_stop_id) REFERENCES stores(id);
+
+
+--
+-- Name: fk_rails_35ea0987c7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY profiles_routers
+    ADD CONSTRAINT fk_rails_35ea0987c7 FOREIGN KEY (router_id) REFERENCES routers(id);
+
+
+--
+-- Name: fk_rails_39e8ec541b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY deliverable_units
+    ADD CONSTRAINT fk_rails_39e8ec541b FOREIGN KEY (customer_id) REFERENCES customers(id);
 
 
 --
@@ -1936,6 +1968,14 @@ ALTER TABLE ONLY visits
 
 ALTER TABLE ONLY orders
     ADD CONSTRAINT fk_rails_596f74dea1 FOREIGN KEY (visit_id) REFERENCES visits(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_rails_598cb67a2e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT fk_rails_598cb67a2e FOREIGN KEY (reseller_id) REFERENCES resellers(id);
 
 
 --
@@ -1984,6 +2024,14 @@ ALTER TABLE ONLY plannings_zonings
 
 ALTER TABLE ONLY tags_visits
     ADD CONSTRAINT fk_rails_921d431096 FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_rails_b3c8f2f3d5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY customers
+    ADD CONSTRAINT fk_rails_b3c8f2f3d5 FOREIGN KEY (reseller_id) REFERENCES resellers(id);
 
 
 --
@@ -2048,6 +2096,14 @@ ALTER TABLE ONLY plannings
 
 ALTER TABLE ONLY destinations_tags
     ADD CONSTRAINT fk_rails_fde8fb742c FOREIGN KEY (destination_id) REFERENCES destinations(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_rails_fe7ed969d2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY profiles_routers
+    ADD CONSTRAINT fk_rails_fe7ed969d2 FOREIGN KEY (profile_id) REFERENCES profiles(id);
 
 
 --
@@ -2478,3 +2534,4 @@ INSERT INTO schema_migrations (version) VALUES ('20161208141114');
 
 INSERT INTO schema_migrations (version) VALUES ('20161208155944');
 
+INSERT INTO schema_migrations (version) VALUES ('20161220100839');
