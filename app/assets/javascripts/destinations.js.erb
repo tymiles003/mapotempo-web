@@ -260,7 +260,18 @@ var destinations_form = function(params, api) {
         dataType: 'json',
         success: function(json) {
           if(json && json.success) {
-            $("#reverse-geocode").html(json.result.label);
+
+            var button = $("<button />").addClass("btn btn-success btn-xs pull-right")
+              .attr("type", "button")
+              .text(I18n.t('destinations.reverse_geocoding.apply'))
+              .on("click", json.result, function (event) {
+                $("#destination_city").val(event.data.city);
+                $("#destination_postalcode").val(event.data.postcode);
+                $("#destination_street").val(event.data.name);
+              });
+
+            $("#reverse-geocode").html(json.result.label).append(button);
+
           } else {
             $("#reverse-geocode").html('');
           }
