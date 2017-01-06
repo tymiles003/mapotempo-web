@@ -886,8 +886,8 @@ fr:
       missing_location: "Enregistrement %{line} : « ville » ou « code postal » ou « lat » et « lng » manquant."
       invalid_numeric_value: "Enregistrement %{line} : valeur numérique « %{value} » invalide."
     reverse_geocoding:
-      apply: "Appliquer les nouvelles données"
-      
+      apply: "Appliquer la nouvelle adresse"
+
   index:
     unsupported_browser:
       unsupported_browser: "Navigateur non pris en charge"

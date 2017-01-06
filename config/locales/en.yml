@@ -886,7 +886,7 @@ en:
       missing_location: "Record %{line}: \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing."
       invalid_numeric_value: "Record %{line}: Invalid numeric value \"%{value}\"."
     reverse_geocoding:
-      apply: "Apply new data"
+      apply: "Apply new address"
 
   index:
     unsupported_browser:
