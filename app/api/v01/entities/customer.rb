@@ -44,6 +44,8 @@ class V01::Entities::Customer < Grape::Entity
   expose(:enable_multi_visits, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:advanced_options, documentation: { type: String, desc: 'Advanced options in a serialized json format' })
   expose(:enable_global_optimization, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  expose(:enable_vehicle_position, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  expose(:enable_stop_status, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
 
   # Devices: Alyacom
   expose(:enable_alyacom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })

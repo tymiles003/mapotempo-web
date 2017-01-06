@@ -104,7 +104,9 @@ CREATE TABLE customers (
     enable_external_callback boolean DEFAULT false NOT NULL,
     description character varying,
     enable_global_optimization boolean DEFAULT false NOT NULL,
-    optimization_vehicle_soft_upper_bound double precision
+    optimization_vehicle_soft_upper_bound double precision,
+    enable_vehicle_position boolean DEFAULT true NOT NULL,
+    enable_stop_status boolean DEFAULT false NOT NULL
 );
 
 
@@ -2535,3 +2537,5 @@ INSERT INTO schema_migrations (version) VALUES ('20161208141114');
 INSERT INTO schema_migrations (version) VALUES ('20161208155944');
 
 INSERT INTO schema_migrations (version) VALUES ('20161220100839');
+
+INSERT INTO schema_migrations (version) VALUES ('20170106110428');

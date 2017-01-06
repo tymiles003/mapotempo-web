@@ -199,6 +199,8 @@ en:
         description_title: "Description"
         description_label: "Specific account informations"
         description_help: "Account and users details"
+        enable_vehicle_position: "Enable vehicles's position"
+        enable_stop_status: "Enable visits status"
       deliverable_unit:
         label: "Label"
         default_quantity: "Default quantity"

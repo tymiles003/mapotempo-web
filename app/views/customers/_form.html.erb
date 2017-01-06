@@ -80,6 +80,12 @@
       <%= f.toggles t 'activerecord.attributes.customer.enable_global_optimization' do %>
         <%= f.check_box :enable_global_optimization %>
       <% end %>
+      <%= f.toggles t 'activerecord.attributes.customer.enable_vehicle_position' do %>
+        <%= f.check_box :enable_vehicle_position %>
+      <% end %>
+      <%= f.toggles t 'activerecord.attributes.customer.enable_stop_status' do %>
+        <%= f.check_box :enable_stop_status %>
+      <% end %>
     </fieldset>
     <fieldset>
       <legend class="scheduler-border">

@@ -199,6 +199,8 @@ fr:
         description_title: "Description"
         description_label: "Informations du compte"
         description_help: "Détails sur le compte et les utilisateurs courants"
+        enable_vehicle_position: "Activer la position des véhicules"
+        enable_stop_status: "Activer les statuts des visites"
       deliverable_unit:
         label: "Label"
         default_quantity: "Quantité par défaut"

@@ -238,7 +238,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Update stops status.',
-      detail: 'Update stops status from remote devices.',
+      detail: 'Update stops status from remote devices. Only available if enable_stop_status is true for customer.',
       nickname: 'updateStopsStatus',
       success: V01::Entities::Planning
     params do

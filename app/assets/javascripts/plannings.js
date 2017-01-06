@@ -159,7 +159,7 @@ var plannings_edit = function(params) {
     routes_layers,
     routes_layers_cluster,
     zoning_ids = getZonings(),
-    update_stop_status = params.update_stop_status,
+    needUpdateStopStatus = params.update_stop_status,
     allRoutesWithVehicle = $.map(params.routes_array, function(route) {
       if (route.vehicle_usage_id) {
         var vehicle_usage = {};
@@ -174,6 +174,11 @@ var plannings_edit = function(params) {
         }
       }
       return route;
+    }),
+    vehicleIdsPosition = vehicles_array.filter(function(vehicle) {
+      return vehicle.available_position;
+    }).map(function(vehicle) {
+      return vehicle.id;
     });
 
   function getZonings() {
@@ -227,12 +232,6 @@ var plannings_edit = function(params) {
     position: 'right'
   });
   sidebar.open('planning-pane');
-
-  var vehicleIdsPosition = vehicles_array.filter(function(vehicle) {
-    return vehicle.available_position;
-  }).map(function(vehicle) {
-    return vehicle.id;
-  });
 
   var vehicleLayer, tid;
   var vehicleMarkers = [];
@@ -319,30 +318,32 @@ var plannings_edit = function(params) {
 
   var backgroundTask = function() {
     var nbErrors = 0;
-    $.ajax({
-      type: 'GET',
-      url: '/api/0.1/vehicles/current_position.json',
-      data: {
-        ids: vehicleIdsPosition
-      },
-      dataType: 'json',
-      success: function(data, textStatus, jqXHR) {
-        if (data && data.errors) {
+    if (vehicleIdsPosition.length) {
+      $.ajax({
+        type: 'GET',
+        url: '/api/0.1/vehicles/current_position.json',
+        data: {
+          ids: vehicleIdsPosition
+        },
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR) {
+          if (data && data.errors) {
+            nbErrors++;
+            if (nbErrors > 1) clearInterval(tid);
+            $.each(data.errors, function(i, error) {
+              stickyError(I18n.t('plannings.edit.current_position') + ' ' + error);
+            });
+          } else {
+            displayVehicles(data);
+          }
+        },
+        error: function(err) {
           nbErrors++;
           if (nbErrors > 1) clearInterval(tid);
-          $.each(data.errors, function(i, error) {
-            stickyError(I18n.t('plannings.edit.current_position') + ' ' + error);
-          });
-        } else {
-          displayVehicles(data);
         }
-      },
-      error: function(err) {
-        nbErrors++;
-        if (nbErrors > 1) clearInterval(tid);
-      }
-    });
-    if (update_stop_status) {
+      });
+    }
+    if (needUpdateStopStatus) {
       $.ajax({
         type: 'PATCH',
         url: '/api/0.1/plannings/' + planning_id + '/update_stops_status.json',
@@ -369,15 +370,17 @@ var plannings_edit = function(params) {
     }
   };
 
-  if (vehicleIdsPosition.length) {
-    vehicleLayer = L.featureGroup();
+  if (vehicleIdsPosition.length || needUpdateStopStatus) {
+    if (vehicleIdsPosition.length) {
+      vehicleLayer = L.featureGroup();
+      if (!params.overlay_layers) params.overlay_layers = {};
+      params.overlay_layers[I18n.t("plannings.edit.vehicles")] = vehicleLayer;
+    }
     backgroundTask();
     tid = setInterval(backgroundTask, 30000);
     $(document).on('page:before-change', function() {
       clearInterval(tid);
     });
-    if (!params.overlay_layers) params.overlay_layers = {};
-    params.overlay_layers[I18n.t("plannings.edit.vehicles")] = vehicleLayer;
   }
 
   params.geocoder = true;

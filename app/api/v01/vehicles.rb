@@ -80,6 +80,7 @@ class V01::Vehicles < Grape::API
     end
 
     desc 'Get vehicle\'s position.',
+      detail: 'Only available if enable_vehicle_position is true for customer.',
       nickname: 'currentPosition',
       is_array: true,
       success: V01::Entities::VehiclePosition
