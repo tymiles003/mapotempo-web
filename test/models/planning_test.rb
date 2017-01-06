@@ -565,6 +565,7 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'should fetch_stops_status' do
     o = plannings(:planning_one)
+    o.customer.enable_stop_status = true
     add_tomtom_credentials(o.customer)
     set_route
     s = stops(:stop_one_one)

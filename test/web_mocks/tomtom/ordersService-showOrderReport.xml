@@ -52,7 +52,7 @@ HTTP/1.1 200 OK
           </resultItem>
           <resultItem xmlns:ns4="http://connect.webfleet.tomtomwork.com/transfer/orders" xsi:type="ns4:ReportedOrderData">
             <orderDate>2016-11-28T07:08:55Z</orderDate>
-            <orderId>L1 X10ohcnn5:g9ls</orderId>
+            <orderId>L1 X10ohcnn5:v1</orderId>
             <orderText>l1 x1.0</orderText>
             <orderType>DELIVERY_ORDER</orderType>
             <object objectNo="mt-004" objectUid="1-44063-666F24630">

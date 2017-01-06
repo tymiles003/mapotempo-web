@@ -177,7 +177,7 @@ class Tomtom < DeviceBase
             stop.comment,
             stop.phone_number,
           ].compact.join(' ').strip
-          sendDestinationOrder customer, route, position, stop.id, description, stop.time
+          sendDestinationOrder customer, route, position, (stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"), description, stop.time
         end
       }
       position = route.vehicle_usage.default_store_stop
@@ -237,12 +237,12 @@ class Tomtom < DeviceBase
     }
   end
 
-  def fetch_stops(customer, planning)
+  def fetch_stops(customer, date)
     orders = get customer, savon_client_orders, :show_order_report, {
       queryFilter: {
         dateRange: {
-          from: planning_date(planning).iso8601,
-          to: (planning_date(planning) + 2.day).iso8601 # FIXME remove hard limit of 2 days
+          from: date.iso8601,
+          to: (date + 2.day).iso8601 # FIXME remove hard limit of 2 days
         },
         attributes!: {
           dateRange: {
@@ -397,11 +397,22 @@ class Tomtom < DeviceBase
   end
 
   def encode_order_id(description, orderid)
-    unique_base_order_id = Time.now.to_i.to_s(36) + ':' + orderid.to_s(36)
+    # If orderid is a Visit or Rest, keep stop_type in encoded order_id
+    if orderid.is_a? String
+      stop_type = orderid[0]
+      orderid = orderid[1..-1].to_i
+    end
+    unique_base_order_id = Time.now.to_i.to_s(36) + ":#{stop_type}" + orderid.to_s(36)
     description.upcase.gsub(/[^A-Z0-9\s]/i, '')[0..(19 - unique_base_order_id.length)] + unique_base_order_id
   end
 
+  # Return a string, prefixed with 'v' (Visit), 'r' (Rest), or nothing (Store)
   def decode_order_id(orderid)
-    orderid.split(':').last.to_i(36)
+    sufix = orderid.split(':').last
+    if (sufix[0] == 'v' || sufix[0] == 'r')
+      sufix[0] + sufix[1..-1].to_i(36).to_s
+    else
+      sufix.to_i(36).to_s
+    end
   end
 end

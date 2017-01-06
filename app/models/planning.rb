@@ -134,19 +134,25 @@ class Planning < ActiveRecord::Base
   def switch(route, vehicle_usage)
     route_prec = routes.find{ |route| route.vehicle_usage == vehicle_usage }
     if route_prec
+      need_fetch_stop_status = route_prec.stops.any?{ |s| s.status }
+
       vehicle_usage_prec = route.vehicle_usage
       route.vehicle_usage = vehicle_usage
       route_prec.vehicle_usage = vehicle_usage_prec
 
       # Rest sticky with vehicle_usage
-      stops_prec = route_prec.stops.select{ |stop| stop.is_a?(StopRest) }
-      stops = route.stops.select{ |stop| stop.is_a?(StopRest) }
-      stops_prec.each{ |stop|
-        move_stop(route, stop, -1, true)
+      rests_prec = route_prec.stops.select{ |stop| stop.is_a?(StopRest) }
+      rests = route.stops.select{ |stop| stop.is_a?(StopRest) }
+      rests_prec.each{ |rest|
+        move_stop(route, rest, -1, true)
       }
-      stops.each{ |stop|
-        move_stop(route_prec, stop, -1, true)
+      rests.each{ |rest|
+        move_stop(route_prec, rest, -1, true)
       }
+
+      fetch_stops_status if need_fetch_stop_status
+
+      true
     else
       false
     end
@@ -372,19 +378,22 @@ class Planning < ActiveRecord::Base
   end
 
   def fetch_stops_status
-    stops_map = Hash[routes.select(&:vehicle_usage).collect(&:stops).flatten.collect{ |stop| [stop.id, stop] }]
+    if customer.enable_stop_status
+      stops_map = Hash[routes.select(&:vehicle_usage).collect(&:stops).flatten.collect{ |stop| [(stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"), stop] }]
 
-    Mapotempo::Application.config.devices.each_pair.collect{ |key, device|
-      if device.respond_to?(:fetch_stops) && customer.method(key.to_s + '?').call
-        device.fetch_stops(self.customer, self)
-      end
-    }.compact.flatten.select{ |s| s[:order_id] > 0 }.each{ |s|
-      if stops_map.key?(s[:order_id])
-        stop = stops_map[s[:order_id]]
-        stop.status = s[:status]
-        stop.eta = s[:eta]
-      end
-    }
+      Mapotempo::Application.config.devices.each_pair.collect{ |key, device|
+        if device.respond_to?(:fetch_stops) && customer.method(key.to_s + '?').call
+          device.fetch_stops(self.customer, device.planning_date(self))
+        end
+      }.compact.flatten.select{ |s|
+        # Remove stores
+        s[:order_id].to_i == 0
+      }.each{ |s|
+        if stops_map.key?(s[:order_id])
+          stops_map[s[:order_id]].assign_attributes status: s[:status], eta: s[:eta]
+        end
+      }
+    end
   end
 
   def to_s
@@ -491,6 +500,8 @@ class Planning < ActiveRecord::Base
       # Make sure there is at least one Zone with Vehicle, else, don't apply Zones
       return unless zonings.any?{ |zoning| zoning.zones.any?{ |zone| !zone.avoid_zone && !zone.vehicle_id.blank? } }
 
+      need_fetch_stop_status = routes.any?{ |r| r.stops.any?{ |s| s.status } }
+
       vehicles_map = Hash[routes.group_by(&:vehicle_usage).map { |vehicle_usage, routes|
         next if vehicle_usage && !vehicle_usage.active?
         [vehicle_usage && vehicle_usage.vehicle, routes[0]]
@@ -512,6 +523,8 @@ class Planning < ActiveRecord::Base
           routes.find{ |r| !r.vehicle_usage }.add_visits(visits.collect{ |d| [d, true] })
         end
       }
+
+      fetch_stops_status if need_fetch_stop_status
     end
   end
 
