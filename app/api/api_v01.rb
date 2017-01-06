@@ -21,6 +21,8 @@ class ApiV01 < Grape::API
   content_type :json, 'application/json; charset=UTF-8'
   content_type :xml, 'application/xml'
 
+  default_format :json
+
   mount V01::Api
 
   add_swagger_documentation(
