@@ -251,6 +251,7 @@ class Tomtom < DeviceBase
         }
       }
     }, {}, false, true
+    orders = [orders] if orders.is_a?(Hash)
 
     orders && orders.collect{ |order| {
       order_id: decode_order_id(order[:order_id]),

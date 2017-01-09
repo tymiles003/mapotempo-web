@@ -380,6 +380,7 @@ class Planning < ActiveRecord::Base
   def fetch_stops_status
     if customer.enable_stop_status
       stops_map = Hash[routes.select(&:vehicle_usage).collect(&:stops).flatten.collect{ |stop| [(stop.is_a?(StopVisit) ? "v#{stop.visit_id}" : "r#{stop.id}"), stop] }]
+      stops_map.each{ |ss| ss[1].assign_attributes status: nil, eta: nil }
 
       Mapotempo::Application.config.devices.each_pair.collect{ |key, device|
         if device.respond_to?(:fetch_stops) && customer.method(key.to_s + '?').call
