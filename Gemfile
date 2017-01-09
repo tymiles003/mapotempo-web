@@ -30,11 +30,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :development do
+gem 'rake', '< 12.0' # FIXME rake 12 remove deprecated methods need by dependencies
 
+group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
 end
 
 group :development, :test do
@@ -43,7 +43,7 @@ group :development, :test do
 
   gem 'rubocop'
   gem 'byebug'
-  gem 'i18n-tasks', github: 'Mapotempo/i18n-tasks' # FIXME wait for https://github.com/glebm/i18n-tasks/pull/211'
+  gem 'i18n-tasks'
 end
 
 group :test do

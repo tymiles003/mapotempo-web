@@ -20,8 +20,9 @@ begin
     require 'i18n/tasks/cli'
 
     task :i18n_health do
-      I18n::Tasks::CLI.new.run(['health'])
-      I18n.locale = :fr
+      I18n.with_locale 'en' do
+        I18n::Tasks::CLI.new.run(['health'])
+      end
     end
 
     Rake::Task['test'].enhance do

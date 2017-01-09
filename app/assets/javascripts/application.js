@@ -39,10 +39,10 @@
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.fr.js
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.fr-CH.js
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.en-GB.js
-//= require jquery-ui/sortable
-//= require jquery-ui/autocomplete
-//= require jquery-ui/dialog
-//= require jquery-ui/slider
+//= require jquery-ui/widgets/sortable
+//= require jquery-ui/widgets/autocomplete
+//= require jquery-ui/widgets/dialog
+//= require jquery-ui/widgets/slider
 //= require jquery-tablesorter
 //= require jquery-tablesorter/widgets/widget-filter-formatter-html5
 //= require jquery-tablesorter/widgets/widget-filter-formatter-jui
