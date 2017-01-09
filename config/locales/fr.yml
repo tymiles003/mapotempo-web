@@ -1394,6 +1394,7 @@ fr:
     edit:
       title: "Paramètres utilisateur"
       edit: "Modifier votre identifiant de connexion et mot de passe"
+      edit_user: "Vous n'avez pas le droit d'éditer un autre utilisateur"
     form:
       url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
       send_email: "Envoyer email"

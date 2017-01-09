@@ -18,10 +18,13 @@
 class UsersController < ApplicationController
   authorize_resource
 
-  before_action :set_customer_and_user, except: [:password, :set_password]
-  before_action :set_customer_and_user_from_token, only: [:password, :set_password]
+  before_action :set_user, except: [:password, :set_password]
+  before_action :set_user_from_token, only: [:password, :set_password]
 
   def edit
+    if !@user
+      redirect_to unauthenticated_root_path, alert: t("users.edit.edit_user")
+    end
   end
 
   def update
@@ -55,18 +58,15 @@ class UsersController < ApplicationController
   private
 
   def redirect_to_default
-    redirect_to edit_user_path(current_user), notice: t("users.#{action_name}.success")
+    # @user in case of token auth
+    redirect_to edit_user_path(current_user || @user), notice: t("users.#{action_name}.success")
   end
 
-  def set_customer_and_user
-    if current_user.admin?
-      @user = current_user
-    else
-      @user = current_user.customer.users.find params[:id]
-    end
+  def set_user
+    @user = current_user if current_user.id == Integer(params[:id])
   end
 
-  def set_customer_and_user_from_token
+  def set_user_from_token
     @user = User.find_by confirmation_token: params[:token] if !params[:token].nil?
   end
 
