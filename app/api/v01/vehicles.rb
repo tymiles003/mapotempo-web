@@ -212,11 +212,13 @@ class V01::Vehicles < Grape::API
         if @current_user.admin?
           vehicle = Vehicle.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id})).first!
           vehicle.destroy!
+          nil
         else
           error! 'Forbidden', 403
         end
       else
         current_customer.vehicles.where(id).first!.destroy!
+        nil
       end
     end
 
@@ -233,6 +235,7 @@ class V01::Vehicles < Grape::API
             Vehicle.joins(:customer).where(customers: {reseller_id: @current_user.reseller.id}).select{ |vehicle|
               params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
             }.each(&:destroy!)
+            nil
           else
             error! 'Forbidden', 403
           end
@@ -240,6 +243,7 @@ class V01::Vehicles < Grape::API
           current_customer.vehicles.select{ |vehicle|
             params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
           }.each(&:destroy!)
+          nil
         end
       end
     end

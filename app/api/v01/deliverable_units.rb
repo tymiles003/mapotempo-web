@@ -85,6 +85,7 @@ class V01::DeliverableUnits < Grape::API
     end
     delete ':id' do
       current_customer.deliverable_units.find(params[:id]).destroy
+      nil
     end
 
     desc 'Delete multiple deliverable units.',
@@ -95,6 +96,7 @@ class V01::DeliverableUnits < Grape::API
     delete do
       DeliverableUnit.transaction do
         current_customer.deliverable_units.select{ |deliverable_unit| params[:ids].include?(deliverable_unit.id) }.each(&:destroy)
+        nil
       end
     end
   end

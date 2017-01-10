@@ -70,6 +70,7 @@ class V01::Plannings < Grape::API
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       current_customer.plannings.where(id).first!.destroy
+      nil
     end
 
     desc 'Delete multiple plannings.',
@@ -82,6 +83,7 @@ class V01::Plannings < Grape::API
         current_customer.plannings.select{ |planning|
           params[:ids].any?{ |s| ParseIdsRefs.match(s, planning) }
         }.each(&:destroy)
+        nil
       end
     end
 

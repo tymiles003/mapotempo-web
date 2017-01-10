@@ -111,21 +111,21 @@ class V01::StoresTest < ActiveSupport::TestCase
   test 'should destroy a store' do
     assert_difference('Store.count', -1) do
       delete api(@store.id)
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 
   test 'should destroy multiple stores' do
     assert_difference('Store.count', -2) do
       delete api + "&ids=#{stores(:store_one).id},#{stores(:store_one_bis).id}"
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 
   test 'should destroy multiple stores with ref' do
     assert_difference('Store.count', -2) do
       delete api + "&ids=ref:#{stores(:store_one).ref},ref:#{stores(:store_one_bis).ref}"
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 

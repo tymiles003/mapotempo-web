@@ -87,6 +87,7 @@ class V01::Tags < Grape::API
     end
     delete ':id' do
       current_customer.tags.find(params[:id]).destroy
+      nil
     end
 
     desc 'Delete multiple tags.',
@@ -97,6 +98,7 @@ class V01::Tags < Grape::API
     delete do
       Tag.transaction do
         current_customer.tags.select{ |tag| params[:ids].include?(tag.id) }.each(&:destroy)
+        nil
       end
     end
   end

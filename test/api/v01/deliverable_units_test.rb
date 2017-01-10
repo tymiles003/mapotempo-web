@@ -56,14 +56,14 @@ class V01::DeliverableUnitsTest < ActiveSupport::TestCase
   test 'should destroy a deliverable unit' do
     assert_difference('DeliverableUnit.count', -1) do
       delete api(@deliverable_unit.id)
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 
   test 'should destroy multiple deliverable units' do
     assert_difference('DeliverableUnit.count', -2) do
       delete api + "&ids=#{deliverable_units(:deliverable_unit_one_one).id},#{deliverable_units(:deliverable_unit_one_two).id}"
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 end

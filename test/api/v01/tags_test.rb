@@ -58,14 +58,15 @@ class V01::TagsTest < ActiveSupport::TestCase
   test 'should destroy a tag' do
     assert_difference('Tag.count', -1) do
       delete api(@tag.id)
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
+      assert_equal '', last_response.body
     end
   end
 
   test 'should destroy multiple tags' do
     assert_difference('Tag.count', -2) do
       delete api + "&ids=#{tags(:tag_one).id},#{tags(:tag_two).id}"
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 end

@@ -74,14 +74,14 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
   test 'should destroy a vehicle_usage_set' do
     assert_difference('VehicleUsageSet.count', -1) do
       delete api(@vehicle_usage_set.id)
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 
   test 'should destroy multiple vehicle_usage_sets' do
     assert_difference('VehicleUsageSet.count', -1) do
       delete api + "&ids=#{vehicle_usage_sets(:vehicle_usage_set_one).id}"
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 end

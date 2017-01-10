@@ -118,6 +118,7 @@ class V01::Users < Grape::API
         user = (User.where(id.merge(reseller: @current_user.reseller)) +
           User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id}))).first
         user.destroy!
+        nil
       else
         error! 'Forbidden', 403
       end
@@ -137,6 +138,7 @@ class V01::Users < Grape::API
             params[:ids].any?{ |s| ParseIdsRefs.match(s, user) }
           }.each(&:destroy)
         end
+        nil
       else
         error! 'Forbidden', 403
       end

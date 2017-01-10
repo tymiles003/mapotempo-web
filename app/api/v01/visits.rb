@@ -129,6 +129,7 @@ class V01::Visits < Grape::API
           if destination
             destination.visits.where(id).first!.destroy
             destination.customer.save!
+            nil
           end
         end
       end
@@ -164,6 +165,7 @@ class V01::Visits < Grape::API
         current_customer.visits.select{ |visit|
           params[:ids].any?{ |s| ParseIdsRefs.match(s, visit) }
         }.each(&:destroy)
+        nil
       end
     end
   end

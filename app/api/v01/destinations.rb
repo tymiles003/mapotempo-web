@@ -176,6 +176,7 @@ class V01::Destinations < Grape::API
     delete ':id' do
       id = ParseIdsRefs.read(params[:id])
       current_customer.destinations.where(id).first!.destroy
+      nil
     end
 
     desc 'Delete multiple destinations.',
@@ -188,6 +189,7 @@ class V01::Destinations < Grape::API
         current_customer.destinations.select{ |destination|
           params[:ids].any?{ |s| ParseIdsRefs.match(s, destination) }
         }.each(&:destroy)
+        nil
       end
     end
 

@@ -96,7 +96,7 @@ class V01::UsersTest < ActiveSupport::TestCase
   test 'should destroy a user' do
     assert_difference('User.count', -1) do
       delete api_admin('ref:' + @user.ref)
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 
@@ -110,7 +110,7 @@ class V01::UsersTest < ActiveSupport::TestCase
   test 'should destroy multiple users' do
     assert_difference('User.count', -2) do
       delete api_admin + "&ids=#{users(:user_one).id},ref:#{users(:user_two).ref}"
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 end

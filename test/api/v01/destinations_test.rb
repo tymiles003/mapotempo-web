@@ -497,14 +497,14 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   test 'should destroy a destination' do
     assert_difference('Destination.count', -1) do
       delete api(@destination.id)
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 
   test 'should destroy multiple destinations' do
     assert_difference('Destination.count', -2) do
       delete api + "&ids=#{destinations(:destination_one).id},#{destinations(:destination_two).id}"
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 

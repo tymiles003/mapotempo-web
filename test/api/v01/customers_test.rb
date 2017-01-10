@@ -143,7 +143,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should destroy a customer' do
     assert_difference('Customer.count', -1) do
       delete api_admin('ref:' + @customer.ref)
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 
@@ -165,7 +165,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should delete job' do
     assert_difference('Delayed::Backend::ActiveRecord::Job.count', -1) do
       delete api("#{@customer.id}/job/#{@customer.job_destination_geocoding_id}")
-      assert last_response.ok?, last_response.body
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 

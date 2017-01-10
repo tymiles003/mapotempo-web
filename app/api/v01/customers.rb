@@ -126,6 +126,7 @@ class V01::Customers < Grape::API
       if @current_user.admin?
         id = ParseIdsRefs.read(params[:id])
         @current_user.reseller.customers.where(id).first!.destroy
+        nil
       else
         error! 'Forbidden', 403
       end
@@ -174,6 +175,7 @@ class V01::Customers < Grape::API
         elsif customer.job_store_geocoding && customer.job_store_geocoding_id == params[:job_id]
           customer.job_store_geocoding.destroy
         end
+        nil
       else
         status 404
       end

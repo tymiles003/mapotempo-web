@@ -120,7 +120,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
           assert_difference('VehicleUsage.count', -customer.vehicle_usage_sets.length) do
             assert_difference('Route.count', -customer.plannings.length) do
               delete (v ? api_admin('ref:new') : api('ref:new')) + "&customer_id=#{@vehicle.customer.id}"
-              assert last_response.ok?, last_response.body
+              assert_equal 204, last_response.status, last_response.body
             end
           end
         end
@@ -149,7 +149,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
           assert_difference('VehicleUsage.count', -2 * customer.vehicle_usage_sets.length) do
             assert_difference('Route.count', -2 * customer.plannings.length) do
               delete (v ? api_admin : api) + "&customer_id=#{@vehicle.customer.id}&ids=ref:new1,ref:new2"
-              assert last_response.ok?, last_response.body
+              assert_equal 204, last_response.status, last_response.body
             end
           end
         end
