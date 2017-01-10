@@ -266,6 +266,7 @@ var plannings_edit = function(params) {
 
     var updateStopStatusContent = function(content, stop) {
       var $elt = content.find('.toggle-status, .number .stop-status');
+      var hadStatus = ($elt.css('display') == 'none') ? false : true;
       if (stop.status) {
         if ($elt.css('display') == 'none') $elt.show();
       }
@@ -279,7 +280,7 @@ var plannings_edit = function(params) {
       });
       var name = content.find('.title .name');
       name.attr('title') && name.attr({
-        title: name.attr('title').substr(0, name.attr('title').lastIndexOf(' - ')) + (stop.status ? ' - ' + stop.status : '')
+        title: name.attr('title').substr(0, hadStatus ? name.attr('title').lastIndexOf(' - ') : name.attr('title').length) + (stop.status ? ' - ' + stop.status : '')
       });
       content.find('.status').text(stop.status);
       content.find('.eta').text(stop.eta_formated);
