@@ -1314,6 +1314,10 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
           title: "Liste des colonnes de votre fichier"
           desc: "Votre fichier d'import peut contenir l'ensemble des colonnes et types de valeurs suivants :"
     index:
+      dialog:
+        import:
+          title: "Import des dépôts"
+          in_progress: "Import des dépôts en cours, merci de patienter"
       title: "Liste dépôts"
       new: "Nouveau dépôt"
     new:

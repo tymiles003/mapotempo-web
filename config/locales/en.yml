@@ -1314,6 +1314,10 @@ or copy/paste following url in your browser : %{l} </p>\n
           title: "Column names in your file"
           desc: "Your import file can use the following column names:"
     index:
+      dialog:
+        import:
+          title: "Import stores"
+          in_progress: "Please wait, import in progress"
       title: "Listing stores"
       new: "New store"
     new:
