@@ -201,6 +201,7 @@ var plannings_edit = function(params) {
     routes_layers_cluster,
     nbBackgroundTaskErrors = 0,
     backgroundTaskIntervalId,
+    currentZoom = 17,
     needUpdateStopStatus = params.update_stop_status,
     enableStopStatus = params.enable_stop_status,
     allRoutesWithVehicle = $.map(params.routes_array, function(route) {
@@ -468,7 +469,7 @@ var plannings_edit = function(params) {
   map.addLayer(routes_layers);
 
   map.on('zoomend', function(e) {
-    if (map.getZoom() >= 17) {
+    if (map.getZoom() >= currentZoom) {
       map.removeLayer(routes_layers);
       map.addLayer(routes_layers_cluster);
     } else {
@@ -1077,21 +1078,31 @@ var plannings_edit = function(params) {
       })
       .on("click", ".marker", function(event, ui) {
         var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
+        mapZoom = map.getZoom();
+
         if (stop_id in markers) {
-          map.setView(markers[stop_id].getLatLng(), 17, {
-            reset: true
-          });
           var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
-          layers_cluster[route_id].zoomToShowLayer(markers[stop_id], function() {
+          if (!map.getBounds().contains(markers[stop_id].getLatLng())) {
+            map.setView(markers[stop_id].getLatLng(), currentZoom, {
+              reset: true,
+            });
+            layers_cluster[route_id].zoomToShowLayer(markers[stop_id], function() {
+              markers[stop_id].openPopup();
+            });
+          } else {
             markers[stop_id].openPopup();
-          });
+          }
         } else {
           var store_id = $(this).closest("[data-store_id]").attr("data-store_id");
           if (store_id in stores) {
-            map.setView(stores[store_id].getLatLng(), 17, {
-              reset: true
-            });
-            stores[store_id].openPopup();
+            if (!map.getBounds().contains(stores[store_id].getLatLng())) {
+              map.setView(stores[store_id].getLatLng(), currentZoom, {
+                reset: true
+              });
+              stores[store_id].openPopup();
+            } else {
+              stores[store_id].openPopup();
+            }
           }
         }
         $(this).blur();
