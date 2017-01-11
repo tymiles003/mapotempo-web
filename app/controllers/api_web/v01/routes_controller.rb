@@ -16,10 +16,9 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
+  skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource :planning
-  load_and_authorize_resource :route, through: :planning
-  before_action :set_planning, only: [:index]
-  before_action :set_route, only: []
+  load_and_authorize_resource through: :planning
 
   swagger_controller :routes, 'Routes'
 
@@ -37,17 +36,5 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
       @planning.routes
     end
     @layer = current_user.customer.profile.layers.find_by(id: params[:layer_id]) if params[:layer_id]
-  end
-
-  private
-
-  # Use callbacks to share common setup or constraints between actions.
-  # rights should be checked before thanks to CanCan::Ability
-  def set_planning
-    @planning = Planning.find(params[:planning_id])
-  end
-
-  def set_route
-    @route = Route.find(params[:id] || params[:route_id])
   end
 end

@@ -9,7 +9,6 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test 'user can only edit its customer' do
-    sign_in users(:user_one)
     ability = Ability.new(users(:user_one))
     assert ability.can? :edit, customers(:customer_one)
     assert ability.can? :update, customers(:customer_one)
@@ -17,8 +16,9 @@ class CustomersControllerTest < ActionController::TestCase
     assert ability.cannot? [:manage], customers(:customer_one)
     ability = Ability.new(users(:user_admin))
     assert ability.can? :manage, customers(:customer_one)
-    sign_in users(:user_three)
-    get :edit, id: @customer
+
+    sign_in users(:user_one)
+    get :edit, id: customers(:customer_two)
     assert_response :redirect
   end
 

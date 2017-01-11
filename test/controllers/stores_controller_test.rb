@@ -11,11 +11,11 @@ class StoresControllerTest < ActionController::TestCase
 
   test 'user can only view stores from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :manage, stores(:store_one)
+    assert ability.can? :manage, @store
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :manage, stores(:store_one)
-    sign_in users(:user_three)
-    get :edit, id: @store
+    assert ability.cannot? :manage, @store
+
+    get :edit, id: stores(:store_two)
     assert_response :redirect
   end
 

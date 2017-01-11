@@ -11,3 +11,7 @@ tag_two:
   color:
   icon: diamon
   customer: customer_one
+
+tag_three:
+  label: tag3
+  customer: customer_two

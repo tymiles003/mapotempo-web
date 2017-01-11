@@ -54,3 +54,15 @@ destination_three:
   comment: MyString
   phone_number: MyString
   tags: tag_one
+
+destination_four:
+  name: destination_four
+  street: MyString
+  postalcode: MyString
+  city: MyString
+  lat: 1.5
+  lng: 1.5
+  customer: customer_two
+  detail: MyString
+  comment: MyString
+  phone_number: MyString

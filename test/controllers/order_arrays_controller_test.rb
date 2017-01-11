@@ -14,11 +14,11 @@ class OrderArraysControllerTest < ActionController::TestCase
 
   test 'user can only view vehicles from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :manage, order_arrays(:order_array_one)
+    assert ability.can? :manage, @order_array
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :manage, order_arrays(:order_array_one)
-    sign_in users(:user_three)
-    get :edit, id: @order_array
+    assert ability.cannot? :manage, @order_array
+
+    get :edit, id: order_arrays(:order_array_three)
     assert_response :redirect
   end
 

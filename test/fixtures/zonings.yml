@@ -7,3 +7,7 @@ zoning_one:
 zoning_two:
   name: MyString
   customer: customer_one
+
+zoning_three:
+  name: MyString
+  customer: customer_two

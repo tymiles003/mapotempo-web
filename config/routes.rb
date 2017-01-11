@@ -42,14 +42,17 @@ Rails.application.routes.draw do
       get 'stores/:id/edit_position' => 'stores#edit_position', :as => 'edit_position_store'
       patch 'stores/:id/update_position' => 'stores#update_position', :as => 'update_position_store'
 
+      get 'zonings/:id/edit' => 'zonings#edit', :as => 'edit_zoning'
+      patch 'zonings/:id/edit' => 'zonings#update'
       match 'zonings/:zoning_id/zones' => 'zones#index', :as => 'zones', via: [:get, :post]
-      get 'zonings/:zoning_id/edit' => 'zonings#edit', :as => 'edit_zoning'
-      patch 'zonings/:zoning_id/edit' => 'zonings#update'
 
+      get 'plannings/:id/edit' => 'plannings#edit', :as => 'edit_planning'
       get 'plannings/:planning_id/routes' => 'routes#index', :as => 'routes'
-      get 'plannings/:planning_id/edit' => 'plannings#edit', :as => 'edit_planning'
     end
   end
+
+  # get 'zonings/:zoning_id/edit' => 'zonings_api_web#edit', :as => 'edit_zoning'
+      # patch 'zonings/:zoning_id/edit' => 'zonings_api_web#update'
 
   resources :tags
   delete 'tags' => 'tags#destroy_multiple'

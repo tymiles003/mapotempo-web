@@ -16,8 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ApiWeb::V01::ZoningsController < ApiWeb::V01::ApiWebController
-  load_and_authorize_resource :zoning
-  before_action :set_zoning, only: [:edit, :update]
+  skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
+  load_and_authorize_resource
   before_action :manage_zoning
 
   swagger_controller :zonings, 'Zonings'
@@ -54,10 +54,6 @@ class ApiWeb::V01::ZoningsController < ApiWeb::V01::ApiWebController
 
   # Use callbacks to share common setup or constraints between actions.
   # rights should be checked before thanks to CanCan::Ability
-  def set_zoning
-    @zoning = Zoning.find(params[:zoning_id])
-  end
-
   def manage_zoning
     @manage_zoning = [:organize]
   end

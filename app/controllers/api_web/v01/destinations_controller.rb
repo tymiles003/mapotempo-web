@@ -19,8 +19,8 @@ require 'value_to_boolean'
 
 class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
   skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
-  load_and_authorize_resource
   before_action :set_destination, only: [:edit_position, :update_position]
+  authorize_resource
 
   swagger_controller :stores, 'Destinations'
 

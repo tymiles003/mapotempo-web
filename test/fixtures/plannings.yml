@@ -16,3 +16,10 @@ planning_two:
   zonings: zoning_one
   tags: tag_two
   vehicle_usage_set: vehicle_usage_set_three
+
+planning_three:
+  name: planning3
+  ref: r1
+  customer: customer_two
+  zonings: zoning_three
+  vehicle_usage_set: vehicle_usage_set_two

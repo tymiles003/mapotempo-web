@@ -16,8 +16,9 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class ApiWeb::V01::PlanningsController < ApiWeb::V01::ApiWebController
+  skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource
-  before_action :set_planning, only: [:edit]
+  before_action :manage_planning
 
   swagger_controller :plannings, 'Plannings'
 
@@ -36,9 +37,8 @@ class ApiWeb::V01::PlanningsController < ApiWeb::V01::ApiWebController
 
   # Use callbacks to share common setup or constraints between actions.
   # rights should be checked before thanks to CanCan::Ability
-  def set_planning
+  def manage_planning
     @manage_planning = [:organize]
-    @planning = Planning.find(params[:planning_id])
   end
 
   def capabilities

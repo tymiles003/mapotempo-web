@@ -9,6 +9,16 @@ class DeliverableUnitsControllerTest < ActionController::TestCase
     customers(:customer_one).update(enable_orders: false)
   end
 
+  test 'user can only view deliverable units from its customer' do
+    ability = Ability.new(users(:user_one))
+    assert ability.can? :manage, @deliverable_unit
+    ability = Ability.new(users(:user_three))
+    assert ability.cannot? :manage, @deliverable_unit
+
+    get :edit, id: deliverable_units(:deliverable_unit_two_one)
+    assert_response :redirect
+  end
+
   test 'should get index' do
     get :index
     assert_response :success

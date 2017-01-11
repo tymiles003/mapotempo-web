@@ -28,11 +28,11 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'user can only view plannings from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :manage, plannings(:planning_one)
+    assert ability.can? :manage, @planning
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :manage, plannings(:planning_one)
-    sign_in users(:user_three)
-    get :edit, id: @planning
+    assert ability.cannot? :manage, @planning
+
+    get :edit, id: plannings(:planning_three)
     assert_response :redirect
   end
 

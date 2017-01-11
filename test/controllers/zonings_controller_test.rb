@@ -11,11 +11,11 @@ class ZoningsControllerTest < ActionController::TestCase
 
   test 'user can only view zonings from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :manage, zonings(:zoning_one)
+    assert ability.can? :manage, @zoning
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :manage, zonings(:zoning_one)
-    sign_in users(:user_three)
-    get :edit, id: @zoning
+    assert ability.cannot? :manage, @zoning
+
+    get :edit, id: zonings(:zoning_three)
     assert_response :redirect
   end
 

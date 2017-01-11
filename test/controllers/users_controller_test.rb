@@ -10,13 +10,13 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'user can only manage itself' do
-    ability = Ability.new(users(:user_one))
-    assert ability.can? :edit, users(:user_one)
-    assert ability.can? :update, users(:user_one)
+    ability = Ability.new(@user)
+    assert ability.can? :edit, @user
+    assert ability.can? :update, @user
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :manage, users(:user_one)
-    sign_in users(:user_three)
-    get :edit, id: @user
+    assert ability.cannot? :manage, @user
+
+    get :edit, id: users(:user_three)
     assert_response :redirect
   end
 

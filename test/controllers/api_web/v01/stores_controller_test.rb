@@ -11,12 +11,17 @@ class ApiWeb::V01::StoresControllerTest < ActionController::TestCase
 
   test 'user can only view stores from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :manage, stores(:store_one)
+    assert ability.can? :manage, @store
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :manage, stores(:store_one)
-    sign_in users(:user_three)
-    get :index, ids: stores(:store_one).id
+    assert ability.cannot? :manage, @store
+
+    assert @controller.can?(:edit_position, @store)
+    assert @controller.cannot?(:edit_position, stores(:store_two))
+
+    get :index, ids: stores(:store_two).id
     assert_equal 0, assigns(:stores).count
+    get :edit_position, id: stores(:store_two)
+    assert_response :redirect
   end
 
   test 'should sign in with api_key' do

@@ -11,11 +11,14 @@ class ApiWeb::V01::RoutesControllerTest < ActionController::TestCase
 
   test 'user can only view routes from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :index, routes(:route_one_one)
+    assert ability.can? :index, @route
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :index, routes(:route_one_one)
-    sign_in users(:user_three)
-    get :index, planning_id: @route.planning_id
+    assert ability.cannot? :index, @route
+
+    assert @controller.can?(:index, @route.planning)
+    assert @controller.cannot?(:index, plannings(:planning_three))
+
+    get :index, planning_id: plannings(:planning_three)
     assert_response :redirect
     assert_nil assigns(:routes)
   end

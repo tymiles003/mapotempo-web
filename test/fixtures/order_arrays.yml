@@ -11,3 +11,9 @@ order_array_two:
   name: order_array2
   base_date: 2014-10-10
   length: 7
+
+order_array_three:
+  customer: customer_two
+  name: order_array3
+  base_date: 2014-10-10
+  length: 7

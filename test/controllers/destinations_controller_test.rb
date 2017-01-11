@@ -17,11 +17,11 @@ class DestinationsControllerTest < ActionController::TestCase
 
   test 'user can only view destinations from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :manage, destinations(:destination_one)
+    assert ability.can? :manage, @destination
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :manage, destinations(:destination_one)
-    sign_in users(:user_three)
-    get :edit, id: @destination
+    assert ability.cannot? :manage, @destination
+
+    get :edit, id: destinations(:destination_four)
     assert_response :redirect
   end
 

@@ -11,11 +11,14 @@ class ApiWeb::V01::ZonesControllerTest < ActionController::TestCase
 
   test 'user can only view zones from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :index, zones(:zone_one)
+    assert ability.can? :index, @zone
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :index, zones(:zone_one)
-    sign_in users(:user_three)
-    get :index, zoning_id: @zone.zoning_id
+    assert ability.cannot? :index, @zone
+
+    assert @controller.can?(:index, @zone.zoning)
+    assert @controller.cannot?(:index, zonings(:zoning_three))
+
+    get :index, zoning_id: zonings(:zoning_three).id
     assert_response :redirect
     assert_nil assigns(:zones)
   end

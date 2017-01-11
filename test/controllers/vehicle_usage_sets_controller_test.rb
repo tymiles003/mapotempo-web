@@ -18,12 +18,12 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
 
   test 'user can only view vehicle_usage_sets from its customer' do
     ability = Ability.new(users(:user_one))
-    assert ability.can? :edit, vehicle_usage_sets(:vehicle_usage_set_one)
-    assert ability.can? :update, vehicle_usage_sets(:vehicle_usage_set_one)
+    assert ability.can? :edit, @vehicle_usage_set
+    assert ability.can? :update, @vehicle_usage_set
     ability = Ability.new(users(:user_three))
-    assert ability.cannot? :manage, vehicle_usage_sets(:vehicle_usage_set_one)
-    sign_in users(:user_three)
-    get :edit, id: @vehicle_usage_set
+    assert ability.cannot? :manage, @vehicle_usage_set
+
+    get :edit, id: vehicle_usage_sets(:vehicle_usage_set_two)
     assert_response :redirect
   end
 

@@ -9,6 +9,16 @@ class TagsControllerTest < ActionController::TestCase
     sign_in users(:user_one)
   end
 
+  test 'user can only view tags from its customer' do
+    ability = Ability.new(users(:user_one))
+    assert ability.can? :manage, @tag
+    ability = Ability.new(users(:user_three))
+    assert ability.cannot? :manage, @tag
+
+    get :edit, id: tags(:tag_three)
+    assert_response :redirect
+  end
+
   test 'should get index' do
     get :index
     assert_response :success

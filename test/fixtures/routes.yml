@@ -51,3 +51,16 @@ route_three_two:
   out_of_date: false
   vehicle_usage: vehicle_usage_three_two
   start: 2000-01-01 07:00
+
+route_zero_three:
+  planning: planning_three
+  out_of_date: false
+  vehicle_usage:
+
+route_one_three:
+  distance: 1.5
+  emission: 1.5
+  planning: planning_three
+  out_of_date: false
+  vehicle_usage: vehicle_usage_two_one
+  start: 2000-01-01 08:00

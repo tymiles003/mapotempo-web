@@ -21,8 +21,6 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
   skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource :zoning
   load_and_authorize_resource :zone, through: :zoning
-  before_action :set_zoning, only: [:index]
-  before_action :set_zone, only: []
 
   swagger_controller :zones, 'Zones'
 
@@ -63,17 +61,5 @@ class ApiWeb::V01::ZonesController < ApiWeb::V01::ApiWebController
       current_user.customer.vehicle_usage_sets.first
     end
     @method = request.method_symbol
-  end
-
-  private
-
-  # Use callbacks to share common setup or constraints between actions.
-  # rights should be checked before thanks to CanCan::Ability
-  def set_zoning
-    @zoning = Zoning.find(params[:zoning_id])
-  end
-
-  def set_zone
-    @zone = Zone.find(params[:id] || params[:zone_id])
   end
 end
