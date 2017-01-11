@@ -49,7 +49,9 @@
       <th class="center"><%= t '.status' %></th>
       <th class="center"><%= t 'activerecord.attributes.customer.end_subscription' %></th>
       <th class="center"><%= t 'activerecord.attributes.customer.description_title' %></th>
-      <th></th>
+      <th class="center" data-toggle="tooltip" data-placement="auto" title="Destination"><i class="fa fa-map-marker fa-fw"></i></th>
+      <th class="center" data-toggle="tooltip" data-placement="auto" title="Plannings"><i class="fa fa-calendar-o fa-fw"></i></th>
+      <th class="center" data-toggle="tooltip" data-placement="auto" title="Zonings"><i class="fa fa-object-ungroup fa-fw"></i></th>
     </tr>
   </thead>
 
@@ -57,21 +59,7 @@
     <% @customers.each do |customer| %>
       <tr<% if customer.end_subscription && customer.end_subscription < Time.now %> class="disabled"<% end %>>
         <td class="center"><%= check_box_tag("customers[#{customer.id}]") %></td>
-        <td>
-          <%= customer.name %>
-          <br/>
-          <ul class="account-customer-infos">
-            <li data-toggle="tooltip" data-placement="auto" title="<%= pluralize(customer.destinations.count, 'destination') %>">
-              <i class="fa fa-map-marker fa-fw"></i> <%= customer.destinations.count %>
-            </li>
-            <li data-toggle="tooltip" data-placement="auto" title="<%= pluralize(customer.plannings.count, 'planning') %>">
-              <i class="fa fa-calendar-o fa-fw"></i> <%= customer.plannings.count %>
-            </li>
-            <li data-toggle="tooltip" data-placement="auto" title="<%= pluralize(customer.zonings.count, 'zoning') %>">
-              <i class="fa fa-object-ungroup fa-fw"></i> <%= customer.zonings.count %>
-            </li>            
-          </ul>
-        </td>
+        <td><%= customer.name %></td>
         <td class="center"><%= customer.profile.name %></td>
         <td class="center"><%= customer.max_vehicles %></td>
         <td class="center"><%= customer.test ? raw('<i class="fa fa-check" aria-hidden="true"></i>') : '' %></td>
@@ -102,6 +90,9 @@
         <td class="center" title="<%= customer.description if customer.description %>">
           <%= customer.description.try { |d| (d.length > 51) ? d[0, 50] + '...' : d } %>
         </td>
+        <td><%= customer.destinations.count %></td>
+        <td><%= customer.plannings.count %></td>
+        <td><%= customer.zonings.count %></td>        
         <td class="text-right">
 
           <div class="btn-group" role="group" aria-label="Actions">
