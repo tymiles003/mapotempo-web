@@ -525,7 +525,8 @@ CREATE TABLE resellers (
     logo_small character varying,
     favicon character varying,
     contact_url character varying,
-    website_url character varying
+    website_url character varying,
+    url_protocol character varying DEFAULT 'http'::character varying
 );
 
 
@@ -2539,3 +2540,5 @@ INSERT INTO schema_migrations (version) VALUES ('20161208155944');
 INSERT INTO schema_migrations (version) VALUES ('20161220100839');
 
 INSERT INTO schema_migrations (version) VALUES ('20170106110428');
+
+INSERT INTO schema_migrations (version) VALUES ('20170111085136');

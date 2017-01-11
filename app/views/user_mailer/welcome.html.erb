@@ -6,8 +6,8 @@
   <body>
     <%= t('.content',
       s: user.customer.reseller.name,
-      l: user.customer.reseller.host + password_user_path(user, token: user.confirmation_token),
-      a: user.customer.reseller.host,
+      l: user.customer.reseller.url_protocol + "://" + user.customer.reseller.host + password_user_path(user, token: user.confirmation_token),
+      a: user.customer.reseller.url_protocol + "://" + user.customer.reseller.host,
       c: (user.customer.reseller.contact_url && user.customer.reseller.contact_url.gsub('{LG}', I18n.locale.to_s))
     ).html_safe
     %>
