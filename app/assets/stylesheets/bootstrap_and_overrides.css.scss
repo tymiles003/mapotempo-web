@@ -285,19 +285,14 @@ html.turbolinks-progress-bar::before {
   PNotify
 */
 .ui-pnotify {
-  top: $navbar-height + 10px !important;
-  right: 30px;
+  margin-top: $navbar-height; // not possible to use top because it's overloaded by pnotify
   z-index: 10 !important;
-  @media screen and (max-width: 767px) {
-    right: 0px !important;
-  }
 }
 
 /* Api-web */
 body.api-web {
   .ui-pnotify {
-    top: 10px !important;
-    right: 10px !important;
+    margin-top: 0px; // not possible to use top because it's overloaded by pnotify
   }
   .flash {
     margin: 30px;

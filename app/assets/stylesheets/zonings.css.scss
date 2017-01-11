@@ -30,9 +30,9 @@ $sidebar-margins: 10px;
   }
 
   &[data-action='edit'] {
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 768px) {
       .ui-pnotify {
-        right: $sidebar-width + 2*$sidebar-margins !important;
+        margin-right: $sidebar-width + $sidebar-margins; // not possible to use right because it's overloaded by pnotify
       }
     }
 
