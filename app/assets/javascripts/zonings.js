@@ -404,7 +404,7 @@ var zonings_edit = function(params) {
   var planning = undefined;
 
   var displayZoning = function(data) {
-    nbZones = data.zoning.length;
+    nbZones = data.zoning && data.zoning.length;
     $('#zones').empty();
     featureGroup.clearLayers();
     $.each(data.zoning, function(index, zone) {
