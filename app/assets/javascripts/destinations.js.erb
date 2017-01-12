@@ -261,7 +261,7 @@ var destinations_form = function(params, api) {
         success: function(json) {
           if(json && json.success) {
 
-            var button = $("<button />").addClass("btn btn-success btn-xs pull-right")
+            var button = $("<button />").addClass("btn btn-default btn-xs pull-right")
               .attr("type", "button")
               .text(I18n.t('destinations.reverse_geocoding.apply'))
               .on("click", json.result, function (event) {
