@@ -453,7 +453,7 @@ en:
           missing_rest_window: "can't be blank if rest duration is filled"
           missing_rest_duration: "can't be blank if rest time window is filled"
           rest_range: "Rest range must be between %{start} and %{end}"
-          service_range: "Duration service can't be greater than working day range"
+          service_range: "can't be greater than working day range"
         vehicle_usage_set:
           attributes:
             close:

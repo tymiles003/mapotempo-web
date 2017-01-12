@@ -32,14 +32,14 @@ class RestValidator < ActiveModel::Validator
     working_day_start = open_seconds + service_time_start_seconds
     working_day_end = close_seconds - service_time_end_seconds
 
-    service_time_start_error = false
-    if ((working_day_end - working_day_start) <= (service_time_start_seconds + service_time_end_seconds))
+    if (working_day_end - working_day_start) <= service_time_start_seconds
       record.errors[:service_time_start] = I18n.t('activerecord.errors.models.vehicle_usage.service_range')
-      service_time_start_error = true
-    end
-
-    if rest_start_seconds != 0 && rest_end_seconds != 0
-      if ((!(rest_start_seconds >= working_day_start) || !(rest_end_seconds <= working_day_end)) && !service_time_start_error)
+    elsif (working_day_end - working_day_start) <= service_time_end_seconds
+      record.errors[:service_time_end] = I18n.t('activerecord.errors.models.vehicle_usage.service_range')
+    elsif (working_day_end - working_day_start) <= (service_time_start_seconds + service_time_end_seconds)
+      record.errors[:base] = I18n.t('activerecord.attributes.vehicle_usage.service_time_start') + ' / ' + I18n.t('activerecord.attributes.vehicle_usage.service_time_end') + ' ' + I18n.t('activerecord.errors.models.vehicle_usage.service_range')
+    elsif rest_start_seconds != 0 && rest_end_seconds != 0
+      if !(rest_start_seconds >= working_day_start) || !(rest_end_seconds <= working_day_end)
         record.errors[:base] = I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime("%H:%M"), end: Time.at(working_day_end).utc.strftime("%H:%M"))
       end
     end
