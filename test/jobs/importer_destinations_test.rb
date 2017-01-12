@@ -59,6 +59,24 @@ class ImporterDestinationsTest < ActionController::TestCase
     end
   end
 
+  test 'should import without ref' do
+    import_count = 1
+    dest = nil
+    assert_difference('Destination.count', import_count) do
+      assert_difference('Visit.count', import_count) do
+        assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_without_ref.csv', 'text.csv')).import
+        dest = Destination.last
+      end
+    end
+    # new import of same data without ref should create a new visit for existing destination
+    assert_no_difference('Destination.count') do
+      assert_difference('Visit.count', import_count) do
+        assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_without_ref.csv', 'text.csv')).import
+        assert_equal dest.attributes, dest.reload.attributes
+      end
+    end
+  end
+
   test 'should import in new planning' do
     import_count = 1
     # vehicle_usage_set for new planning is hardcoded but random in tests... rest_count depends of it
