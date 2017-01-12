@@ -26,14 +26,14 @@ fr:
       other: "m"
     thousand:
       one: "km"
-      other: "kms"
+      other: "km"
   distance_miles:
     unit:
-      one: "mile"
-      other: "miles"
+      one: "mi."
+      other: "mi."
     thousand:
-      one: "miles"
-      other: "miles"
+      one: "mi."
+      other: "mi."
   time:
     hour: "Heure"
     minute: "Minute"
@@ -1433,8 +1433,8 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
       emissions:
         help: "Type de carburant"
       consumption:
-        help: "Consommation moyenne aux 100 kms en litres de carburant"
-        help_miles: "Consommation moyenne aux 62.1 miles en litres de carburant"
+        help: "Consommation moyenne aux 100 km en litres de carburant"
+        help_miles: "Consommation moyenne aux 62.1 mi. en litres de carburant"
       capacities:
         label: "Capacités"
         default: "%{n} (valeur par défaut)"
@@ -1681,16 +1681,16 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
       save: "Sauvegarder"
     unit:
       m: "m"
-      kms: "kms"
-      mile: "mile"
-      miles: "miles"
+      kms: "km"
+      mile: "mi."
+      miles: "mi."
       millisecond: "ms"
       second: "s"
       minute: "min"
       kgco2e_html: "kgCO<sub>2</sub>e"
       kgco2e_l_html: "kgCO<sub>2</sub>e/l"
-      l_100km: "l/100Km"
-      l_62Miles: "l/62.1Miles"
+      l_100km: "l/100 km"
+      l_62Miles: "l/62.1 mi."
       hour_minute: "heure : minute"
       hour_minute_second: "heure : minute : seconde"
     value:
