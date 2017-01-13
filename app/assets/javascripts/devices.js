@@ -15,7 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-function devices_observe_planning(context) {
+function devices_observe_planning(context, callback) {
 
   $.each($('.last-sent-at', context), function(i, element) {
     if ($(element).find('span').html() == '') $(element).hide();
@@ -94,7 +94,7 @@ function devices_observe_planning(context) {
           else if (from.data('route-id') && operation == 'clear')
             clear_last_sent_at(data);
 
-          if (service == 'tomtom') update_stop_status = true; // for backgroundTask
+          callback && callback(from); // for backgroundTask
         }
       },
       complete: function() {

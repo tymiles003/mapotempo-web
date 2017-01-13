@@ -159,7 +159,10 @@ var plannings_edit = function(params) {
     routes_layers,
     routes_layers_cluster,
     zoning_ids = getZonings(),
+    nbBackgroundTaskErrors = 0,
+    backgroundTaskIntervalId,
     needUpdateStopStatus = params.update_stop_status,
+    enableStopStatus = params.enable_stop_status,
     allRoutesWithVehicle = $.map(params.routes_array, function(route) {
       if (route.vehicle_usage_id) {
         var vehicle_usage = {};
@@ -233,7 +236,7 @@ var plannings_edit = function(params) {
   });
   sidebar.open('planning-pane');
 
-  var vehicleLayer, tid;
+  var vehicleLayer;
   var vehicleMarkers = [];
 
   var displayVehicles = function(data) {
@@ -274,16 +277,23 @@ var plannings_edit = function(params) {
         if ($elt.css('display') != 'none') $elt.hide();
       }
       $elt = content.find('.stop-status');
-      $elt.removeClass().addClass('stop-status' + (stop.status_code ? ' stop-status-' + stop.status_code : ''));
-      $elt.attr({
-        title: stop.status + (stop.eta_formated ? ' - ' + I18n.t('plannings.edit.popup.eta') + ' ' + stop.eta_formated : '')
+      $.each($elt, function(i, elt) {
+        $elt = $(elt);
+        if (!stop.status || stop.status && !$elt.hasClass('stop-status-' + stop.status_code)) {
+          $elt.removeClass().addClass('stop-status' + (stop.status_code ? ' stop-status-' + stop.status_code : ''));
+          $elt.attr({
+            title: stop.status + (stop.eta_formated ? ' - ' + I18n.t('plannings.edit.popup.eta') + ' ' + stop.eta_formated : '')
+          });
+        }
       });
       var name = content.find('.title .name');
-      name.attr('title') && name.attr({
+      name.attr('title') && (!stop.status || name.attr('title').search(stop.status) == -1) && name.attr({
         title: name.attr('title').substr(0, hadStatus ? name.attr('title').lastIndexOf(' - ') : name.attr('title').length) + (stop.status ? ' - ' + stop.status : '')
       });
-      content.find('.status').text(stop.status);
-      content.find('.eta').text(stop.eta_formated);
+      name = content.find('.status');
+      if (name.text() != stop.status) name.text(stop.status);
+      name = content.find('.eta');
+      if (name.text() != stop.eta_formated) name.text(stop.eta_formated);
       return content;
     };
 
@@ -295,30 +305,56 @@ var plannings_edit = function(params) {
               // update list, active popup in map and active popover
               var $item = $(item);
               updateStopStatusContent($item, stop);
-              // for popups outside DOM
-              $.each(layers, function(route_id, layer) {
-                $.each(layer.getLayers(), function(k, m) {
-                  if (m instanceof L.Marker) {
-                    var popupContent = $(m.getPopup().getContent());
-                    if (popupContent.data('stop_id') == stop.id) {
-                      m.getPopup().setContent(updateStopStatusContent(popupContent, stop)[0]);
-                    }
-                  }
-                });
-              });
+              // for popovers outside DOM
               var popupContent = $item.data()['bs.popover'] && $($item.data()['bs.popover'].options.content);
               if (popupContent) {
                 $item.data()['bs.popover'].options.content = updateStopStatusContent(popupContent, stop);
               }
             });
           });
+          // for popups outside DOM - it's important to perform update outside $("[data-stop_id='") selector to prevent memory leak with firefox
+          $.each(layers[route.id].getLayers(), function(k, m) {
+            if (m instanceof L.Marker) {
+              var popupContent = $(m.getPopup().getContent());
+              var stop = $.grep(route.stops, function(stop) { return stop.id == popupContent.data('stop_id') });
+              stop = stop.length ? stop[0] : null;
+              if (stop) {
+                m.getPopup().setContent(updateStopStatusContent(popupContent, stop)[0]);
+              }
+            }
+          });
         }
       });
     }
   };
 
+  var requestUpdateStopsStatus = function() {
+    $.ajax({
+      type: 'PATCH',
+      url: '/api/0.1/plannings/' + planning_id + '/update_stops_status.json',
+      dataType: 'json',
+      data: {
+        details: true
+      },
+      success: function(data, textStatus, jqXHR) {
+        if (data && data.errors) {
+          nbBackgroundTaskErrors++;
+          if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
+          $.each(data.errors, function(i, error) {
+            stickyError(I18n.t('plannings.edit.update_stops_status') + ' ' + error);
+          });
+        } else {
+          updateStopsStatus(data);
+        }
+      },
+      error: function(err) {
+        nbBackgroundTaskErrors++;
+        if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
+      }
+    });
+  };
+
   var backgroundTask = function() {
-    var nbErrors = 0;
     if (vehicleIdsPosition.length) {
       $.ajax({
         type: 'GET',
@@ -329,8 +365,8 @@ var plannings_edit = function(params) {
         dataType: 'json',
         success: function(data, textStatus, jqXHR) {
           if (data && data.errors) {
-            nbErrors++;
-            if (nbErrors > 1) clearInterval(tid);
+            nbBackgroundTaskErrors++;
+            if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
             $.each(data.errors, function(i, error) {
               stickyError(I18n.t('plannings.edit.current_position') + ' ' + error);
             });
@@ -339,35 +375,13 @@ var plannings_edit = function(params) {
           }
         },
         error: function(err) {
-          nbErrors++;
-          if (nbErrors > 1) clearInterval(tid);
+          nbBackgroundTaskErrors++;
+          if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
         }
       });
     }
     if (needUpdateStopStatus) {
-      $.ajax({
-        type: 'PATCH',
-        url: '/api/0.1/plannings/' + planning_id + '/update_stops_status.json',
-        dataType: 'json',
-        data: {
-          details: true
-        },
-        success: function(data, textStatus, jqXHR) {
-          if (data && data.errors) {
-            nbErrors++;
-            if (nbErrors > 1) clearInterval(tid);
-            $.each(data.errors, function(i, error) {
-              stickyError(I18n.t('plannings.edit.update_stops_status') + ' ' + error);
-            });
-          } else {
-            updateStopsStatus(data);
-          }
-        },
-        error: function(err) {
-          nbErrors++;
-          if (nbErrors > 1) clearInterval(tid);
-        }
-      });
+      requestUpdateStopsStatus();
     }
   };
 
@@ -378,9 +392,9 @@ var plannings_edit = function(params) {
       params.overlay_layers[I18n.t("plannings.edit.vehicles")] = vehicleLayer;
     }
     backgroundTask();
-    tid = setInterval(backgroundTask, 30000);
+    backgroundTaskIntervalId = setInterval(backgroundTask, 60000);
     $(document).on('page:before-change', function() {
-      clearInterval(tid);
+      clearInterval(backgroundTaskIntervalId);
     });
   }
 
@@ -866,7 +880,12 @@ var plannings_edit = function(params) {
     });
 
     /* API: Devices */
-    devices_observe_planning(context);
+    devices_observe_planning(context, function(from) {
+      if (from && from.data('service') == 'tomtom' && enableStopStatus) {
+        needUpdateStopStatus = true;
+        requestUpdateStopsStatus();
+      }
+    });
 
     var templateSelectionColor = function(state) {
       if (state.id) {
@@ -1261,18 +1280,16 @@ var plannings_edit = function(params) {
             $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
         });
         // for popups outside DOM
-        $.each(layers, function(route_id, layer) {
-          $.each(layer.getLayers(), function(k, m) {
-            if (m instanceof L.Marker) {
-              var popupContent = $(m.getPopup().getContent());
-              $.each($('.send_to_route', popupContent), function(j, link) {
-                var $link = $(link);
-                if ($link.attr('href').match(regExp) != null)
-                  $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
-              });
-              m.getPopup().setContent(popupContent[0]);
-            }
-          });
+        $.each(layers[route.route_id].getLayers(), function(k, m) {
+          if (m instanceof L.Marker) {
+            var popupContent = $(m.getPopup().getContent());
+            $.each($('.send_to_route', popupContent), function(j, link) {
+              var $link = $(link);
+              if ($link.attr('href').match(regExp) != null)
+                $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
+            });
+            m.getPopup().setContent(popupContent[0]);
+          }
         });
         $.each($('li[data-stop_id]'), function(i, stop) {
           var popupContent = $(stop).data()['bs.popover'] && $($(stop).data()['bs.popover'].options.content);
