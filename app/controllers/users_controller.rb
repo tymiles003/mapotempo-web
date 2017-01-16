@@ -17,7 +17,7 @@
 #
 class UsersController < ApplicationController
   authorize_resource
-
+  layout "registration", only: [:password, :set_password]
   before_action :set_user, except: [:password, :set_password]
   before_action :set_user_from_token, only: [:password, :set_password]
 
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   # bypass_sign_in argument is depreciated, we must use bypass_sign_in method instead
   def password
     if !@user
-      redirect_to unauthenticated_root_path, alert: t("users.#{action_name}.unauthenticated")
+      redirect_to unauthenticated_root_path, alert: t("users.#{action_name}.unauthenticated") and return
     elsif current_user != @user
       sign_out :user
       bypass_sign_in(@user)
