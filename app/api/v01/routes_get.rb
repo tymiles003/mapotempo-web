@@ -67,14 +67,13 @@ class V01::RoutesGet < Grape::API
             if vehicle
               route_to_send = Hash[
                 vehicle.contact_email,
-                {
+                [
                   vehicle: vehicle,
-                  filename: vehicle.name + '.ics',
                   routes: [
                     url: api_route_calendar_path(r, api_key: @current_user.api_key),
                     route: r
                   ]
-                }
+                ]
               ]
               route_calendar_email route_to_send
             end

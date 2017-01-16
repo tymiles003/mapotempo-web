@@ -1,8 +1,12 @@
 <%= t '.content', s: user.customer.reseller.name %>
 
-<%= "%s: %s" % [t(".vehicle"), infos[:vehicle].name] %>
+<% if !infos.nil? %>
+	
+<% infos.each do |info| %>
 
-<% infos[:routes].each do |route_details| %>
+<%= "%s: %s" % [t(".vehicle"), info[:vehicle].name] %>
+
+<% info[:routes].each do |route_details| %>
 <% if route_details[:route].planning.date %>
 <%= "%s : %s (%s)" % [t(".planning"), route_details[:route].planning.name, l(route_details[:route].planning.date)] %>
 <% else %>
@@ -18,6 +22,8 @@
 <% if route_details[:route].planning.customer.enable_orders && route_details[:route].planning.order_array %>
 <%= "%s : %s" % [t(".order_array"), route_details[:route].planning.order_array.name] %>
 <% end %>
+<% end %>
 
+<% end %>
 
 <% end %>
