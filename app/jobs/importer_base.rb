@@ -84,4 +84,11 @@ class ImporterBase
   def warnings
     @warnings
   end
+
+  private
+
+  def need_geocode? location
+    location.validate # to nilify blanks
+    location.lat.nil? || location.lng.nil?
+  end
 end

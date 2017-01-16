@@ -86,15 +86,17 @@ class ImporterStores < ImporterBase
       store = @customer.stores.find{ |store|
         store.ref && store.ref == row[:ref]
       }
-      store.assign_attributes(row) if store
+      store.assign_attributes({lat: nil, lng: nil}.merge(row)) if store
     end
 
     if !store
       store = @customer.stores.build(row) # Link only when store is complete
     end
 
-    if !store.position?
+    store.delay_geocode
+    if need_geocode? store
       @stores_to_geocode << store
+      store.lat = nil # for job
     end
 
     store # For subclasses

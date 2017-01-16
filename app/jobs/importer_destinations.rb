@@ -219,7 +219,7 @@ class ImporterDestinations < ImporterBase
         destination.ref && destination.ref == row[:ref]
       }
       if destination
-        destination.assign_attributes(destination_attributes.compact) # FIXME: don't use compact to overwrite database with row containing nil
+        destination.assign_attributes({lat: nil, lng: nil}.merge(destination_attributes.compact)) # FIXME: don't use compact to overwrite database with row containing nil
       else
         destination = @customer.destinations.build(destination_attributes)
       end
@@ -278,7 +278,7 @@ class ImporterDestinations < ImporterBase
       end
 
       visit.destination.delay_geocode
-      if visit.destination.need_geocode?
+      if need_geocode? visit.destination
         @destinations_to_geocode << visit.destination
         visit.destination.lat = nil # for job
       end
@@ -295,7 +295,7 @@ class ImporterDestinations < ImporterBase
       visit.destination # For subclasses
     else
       destination.delay_geocode
-      if destination.need_geocode?
+      if need_geocode? destination
         @destinations_to_geocode << destination
         destination.lat = nil # for job
       end
