@@ -1,3 +1,5 @@
+require "#{Rails.application.root}/lib/localized_values.rb"
+
 module LocalizedAttr
   extend ActiveSupport::Concern
 
@@ -38,7 +40,7 @@ module LocalizedAttr
       str && str.gsub(separator, '.').gsub(/#{delimiter}([0-9]{3})/, '\1')
     end
     def localize_numeric_value(float)
-      float && number_with_delimiter(("%g" % float).gsub('.', I18n.t('number.format.separator')))
+      LocalizedValues.localize_numeric_value(float)
     end
   end
 
