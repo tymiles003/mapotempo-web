@@ -1181,10 +1181,10 @@ Paloma.controller('Destinations', {
     destinations_import(this.params, 'destinations');
   },
   upload_csv: function() {
-    destinations_import(this.params);
+    destinations_import(this.params, 'destinations');
   },
   upload_tomtom: function() {
-    destinations_import(this.params);
+    destinations_import(this.params, 'destinations');
   },
   index: function() {
     destinations_index(this.params, 'destinations');
@@ -1208,6 +1208,6 @@ Paloma.controller('Stores', {
     destinations_import(this.params, 'stores');
   },
   upload_csv: function() {
-    destinations_import(this.params);
+    destinations_import(this.params, 'stores');
   }
 });
