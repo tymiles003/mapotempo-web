@@ -158,7 +158,6 @@ var plannings_edit = function(params) {
     layers_cluster = {},
     routes_layers,
     routes_layers_cluster,
-    zoning_ids = getZonings(),
     nbBackgroundTaskErrors = 0,
     backgroundTaskIntervalId,
     needUpdateStopStatus = params.update_stop_status,
