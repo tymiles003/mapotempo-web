@@ -97,9 +97,9 @@ module VehicleUsagesHelper
     capture do
       vehicle.customer.deliverable_units.each do |du|
         if vehicle.capacities && vehicle.capacities[du.id]
-          concat Vehicle.localize_numeric_value(vehicle.capacities[du.id]) + "\u202F" + du.label
+          concat Vehicle.localize_numeric_value(vehicle.capacities[du.id]) + (du.label ? "\u202F" + du.label : '')
         elsif vehicle.default_capacities && vehicle.default_capacities[du.id]
-          concat span_tag(Vehicle.localize_numeric_value(vehicle.default_capacities[du.id]) + "\u202F" + du.label)
+          concat span_tag(Vehicle.localize_numeric_value(vehicle.default_capacities[du.id]) + (du.label ? "\u202F" + du.label : ''))
         end
         concat ' '
       end
