@@ -265,16 +265,23 @@ var destinations_form = function(params, api) {
               .attr("type", "button")
               .text(I18n.t('destinations.reverse_geocoding.apply'))
               .on("click", json.result, function (event) {
-                $("#destination_country").val(event.data.country ? event.data.country : "");
-                $("#destination_city").val(event.data.city);
-                $("#destination_postalcode").val(event.data.postcode);
 
                 var street = event.data.name ? event.data.name : "";
                 if(event.data.housenumber && event.data.street) {
                   street = event.data.housenumber + ' ' + event.data.street;
                 }
 
-                $("#destination_street").val(street);
+                if (api == 'stores') {
+                  $("#store_country").val(event.data.country ? event.data.country : "");
+                  $("#store_city").val(event.data.city);
+                  $("#store_postalcode").val(event.data.postcode);
+                  $("#store_street").val(street);
+                } else {
+                  $("#destination_country").val(event.data.country ? event.data.country : "");
+                  $("#destination_city").val(event.data.city);
+                  $("#destination_postalcode").val(event.data.postcode);
+                  $("#destination_street").val(street);   
+                }
                 
               });
 
