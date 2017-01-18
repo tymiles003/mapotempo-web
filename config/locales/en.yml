@@ -205,7 +205,7 @@ en:
         label: "Label"
         default_quantity: "Default quantity"
         default_capacity: "Default capacity"
-        optimization_overload_multiplier: "Delay coefficient"
+        optimization_overload_multiplier: "Overload coefficient"
       destination:
         ref: "Reference"
         ref_small: "Ref."
