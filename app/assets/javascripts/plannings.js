@@ -15,42 +15,50 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
-var plannings_form = function() {
-  $('#planning_date').datepicker({
-    language: I18n.currentLocale(),
-    autoclose: true,
-    calendarWeeks: true,
-    todayHighlight: true,
-    format: I18n.t("all.datepicker"),
-    zIndexOffset: 1000
-  });
-
-  var formatNoMatches = I18n.t('web.select2.empty_result');
-  $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
-    theme: 'bootstrap',
-    minimumResultsForSearch: -1,
-    templateSelection: templateTag,
-    templateResult: templateTag,
-    formatNoMatches: function() {
-      return formatNoMatches;
-    },
-    width: '100%'
-  });
-};
-
 var getPlanningsId = function() {
   return $.makeArray($('#plannings input[type=checkbox]:checked').map(function(index, id){ return $(id).val(); }));
 }
 
-var plannings_new = function(params) {
-  plannings_form();
-  $("#planning_zoning_ids").select2({
-    theme: 'bootstrap'
+var iCalendarExport = function(planningId) {
+  var url = $('#ical_export').attr('href'), ids;
+  // Initialize data only for index
+  $('#btn-export').click(function(e) {
+    ids = getPlanningsId();
+    if (ids.length == 0) {
+      notify('warning', I18n.t('plannings.index.export.none_planning'));
+      e.preventDefault();
+    }
+    $('#ical_export').attr('href', url + '&ids=' + ids.join(','));
+  });
+
+  $('.icalendar_email').click(function(e) {
+    e.preventDefault();
+    var ajaxParams = {email: true}
+    if (!planningId) {
+      ids = getPlanningsId();
+      if (ids.length == 0) {
+        notify('warning', I18n.t('plannings.index.export.none_planning'));
+        return;
+      }
+      else
+        ajaxParams.ids = ids.join(',');
+    }
+    $.ajax({
+      url: $(e.target).attr('href'),
+      type: 'GET',
+      data: ajaxParams,
+      dataType: 'json'
+    })
+    .done(function(data) {
+      notice(I18n.t('plannings.edit.export.icalendar.success'))
+    })
+    .fail(function() {
+      stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
+    });
   });
 };
 
-// Export spreadsheet modal
-var exportSpreadsheetModal = function(columns, id) {
+var spreadsheetModalExport = function(columns, planningId) {
   $('#planning-spreadsheet-modal').on('show.bs.modal', function() {
     if ($('[name=spreadsheet-route]').val())
       $('[name=spreadsheet-out-of-route]').parent().parent().hide();
@@ -67,7 +75,6 @@ var exportSpreadsheetModal = function(columns, id) {
   });
   var columnsExport = columns;
   var columnsSkip = localStorage.spreadsheetColumnsSkip && localStorage.spreadsheetColumnsSkip.split('|');
-  //refactor local storage later
   if (localStorage.spreadsheetColumnsExport) {
     columnsExport = localStorage.spreadsheetColumnsExport.split('|');
     $.each(columns, function(i, c) {
@@ -111,6 +118,12 @@ var exportSpreadsheetModal = function(columns, id) {
     $('[name=spreadsheet-format][value=' + localStorage.spreadsheetFormat + ']').prop('checked', true);
 
   $('#btn-spreadsheet').click(function() {
+    var planningsId = getPlanningsId();
+    if (!planningId && planningsId.length == 0) {
+      notify('warning', I18n.t('plannings.index.export.none_planning'));
+      return;
+    }
+
     var spreadsheetStops = localStorage.spreadsheetStops = $('.spreadsheet-stops:checked').map(function(i, e) {
       return $(e).val()
     }).get().join('|');
@@ -121,15 +134,11 @@ var exportSpreadsheetModal = function(columns, id) {
       return $(e).attr('data-value')
     }).get().join('|');
     var spreadsheetFormat = localStorage.spreadsheetFormat = $('[name=spreadsheet-format]:checked').val();
-    var planningsId = getPlanningsId();
-    var basePath = $('[name=spreadsheet-route]').val() ? ('/routes/' + $('[name=spreadsheet-route]').val()) : (id) ? '/plannings/' + id : '/plannings';
-    if (id || planningsId.length != 0) {
-      window.location.href = basePath + '.' + spreadsheetFormat + '?stops=' + spreadsheetStops + '&columns=' + spreadsheetColumnsExport + "&ids=" + planningsId;
-      notice(I18n.t('plannings.edit.export.csv.success'));
-    } else {
-      notify("warning", I18n.t('plannings.edit.export.csv.fail'));
-    }
-    $('#planning-spreadsheet-modal').modal("toggle");
+    var basePath = $('[name=spreadsheet-route]').val() ? ('/routes/' + $('[name=spreadsheet-route]').val()) : (planningId) ? '/plannings/' + planningId : '/plannings';
+
+    window.location.href = basePath + '.' + spreadsheetFormat + '?stops=' + spreadsheetStops + '&columns=' + spreadsheetColumnsExport + "&ids=" + planningsId;
+
+    $('#planning-spreadsheet-modal').modal('toggle');
   });
   $('.export_spreadsheet').click(function() {
     $('#planning-spreadsheet-modal').modal({
@@ -138,6 +147,36 @@ var exportSpreadsheetModal = function(columns, id) {
     });
   });
 }
+
+var plannings_form = function() {
+  $('#planning_date').datepicker({
+    language: I18n.currentLocale(),
+    autoclose: true,
+    calendarWeeks: true,
+    todayHighlight: true,
+    format: I18n.t("all.datepicker"),
+    zIndexOffset: 1000
+  });
+
+  var formatNoMatches = I18n.t('web.select2.empty_result');
+  $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
+    theme: 'bootstrap',
+    minimumResultsForSearch: -1,
+    templateSelection: templateTag,
+    templateResult: templateTag,
+    formatNoMatches: function() {
+      return formatNoMatches;
+    },
+    width: '100%'
+  });
+};
+
+var plannings_new = function(params) {
+  plannings_form();
+  $("#planning_zoning_ids").select2({
+    theme: 'bootstrap'
+  });
+};
 
 var plannings_edit = function(params) {
   plannings_form();
@@ -878,7 +917,6 @@ var plannings_edit = function(params) {
       });
     });
 
-    /* API: Devices */
     devices_observe_planning(context, function(from) {
       if (from && from.data('service') == 'tomtom' && enableStopStatus) {
         needUpdateStopStatus = true;
@@ -974,7 +1012,6 @@ var plannings_edit = function(params) {
       });
     });
 
-    // KMZ: Export Route via E-Mail
     $('.kmz_email a', context).click(function(e) {
       e.preventDefault();
       $.ajax({
@@ -995,8 +1032,7 @@ var plannings_edit = function(params) {
       });
     });
 
-    // iCalendar Export
-    observe_icalendar_export();
+    iCalendarExport(planning_id);
 
     $(".routes", context).sortable({
       disabled: true,
@@ -1696,7 +1732,7 @@ var plannings_edit = function(params) {
     });
   });
 
-  exportSpreadsheetModal(params.spreadsheet_columns, params.planning_id);
+  spreadsheetModalExport(params.spreadsheet_columns, params.planning_id);
 };
 
 var plannings_show = function(params) {
@@ -1709,42 +1745,9 @@ var plannings_show = function(params) {
   }
 };
 
-var observe_icalendar_export = function() {
-  var url = $('#ical_export').attr('href'), ids;
-  $('#ical-hook').click(function(){ 
-    ids = getPlanningsId();
-    $('#ical_export').attr('href', url + '&ids=' + ids.join(',') + '&email=false');
-  });
-  $('.icalendar_email').click(function(e) {
-    var ids = getPlanningsId();
-    var idsToSend = (ids && ids.length > 0) === undefined ? false : true;
-    if(idsToSend || $(this).data('email')) {
-      e.preventDefault();
-      paramstoSend = {email: true}
-      if(idsToSend) {
-        paramstoSend.ids = ids.join(',');
-      } 
-      $.ajax({
-        url: $(e.target).attr('href'),
-        type: 'GET',
-        data: paramstoSend,
-        dataType: 'json'
-      })
-      .done(function(data) {
-        notice(I18n.t('plannings.edit.export.icalendar.success'))
-      })
-      .fail(function() {
-        stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
-      });
-    } else {
-      stickyError(I18n.t('plannings.edit.export.icalendar.selected_error'));
-    }
-  });
-};
-
 var plannings_index = function(params) {
-  observe_icalendar_export();
-  exportSpreadsheetModal(params.spreadsheet_columns);
+  iCalendarExport();
+  spreadsheetModalExport(params.spreadsheet_columns);
 };
 
 Paloma.controller('Plannings', {

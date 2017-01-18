@@ -979,9 +979,11 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
     index:
       title: "Liste plannings"
       new: "Nouveau planning"
-      export_icalendar: "Agenda iCal"
-      export_icalendar_email: "Agenda iCal par email"
-      spreadsheet: "Tableur CSV / Excel"
+      export:
+        icalendar: "Agenda iCal"
+        icalendar_email: "Agenda iCal par email"
+        spreadsheet: "Tableur CSV / Excel"
+        none_planning: "Veuillez sélectionner au moins un planning à exporter"
     edit:
       vehicles: "Véhicules"
       current_position: "Position véhicle :"
@@ -1063,7 +1065,6 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
           action_email: "Agenda iCal par email"
           success: "Fichier envoyé par email avec succès à tous les véhicules"
           fail: "Échec lors de l'export par email"
-          selected_error: "Merci de sélectionner au moins 1 planning pour procéder à l'export."
           mail_error: "Email(s) non envoyé(s). <br/> Vérifier la configuration des emails pour vos véhicules"
         kmz_email:
           action: "Tracé KMZ par email"
@@ -1071,7 +1072,6 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
           fail: "Échec lors de l'envoi de l'email"
         csv:
           success: "CSV exporté avec succès"
-          fail: "Veuillez sélectionner un/des planning(s) à exporter"
         print: "Imprimer"
         spreadsheet: "Tableur CSV / Excel"
         gpx_route: "Route GPX"

@@ -979,9 +979,11 @@ or copy/paste following url in your browser : %{l} </p>\n
     index:
       title: "Listing plans"
       new: "New Plan"
-      export_icalendar: "Calendar iCal"
-      export_icalendar_email: "Calendar iCal by E-Mail"
-      spreadsheet: "Spreadsheet CSV / Excel"
+      export:
+        icalendar: "Calendar iCal"
+        icalendar_email: "Calendar iCal by E-Mail"
+        spreadsheet: "Spreadsheet CSV / Excel"
+        none_planning: "Please select at least one plannning to export"
     edit:
       vehicles: "Vehicles"
       current_position: "Vehicle position:"
@@ -1063,7 +1065,6 @@ or copy/paste following url in your browser : %{l} </p>\n
           action_email: "Calendar iCal by E-Mail"
           success: "File successfully sent by E-Mail to all the vehicles"
           fail: "Failed to export E-Mail"
-          selected_error: "You must select at least 1 planning to proceed to export."
           mail_error: "Email(s) not send. <br/> Check email configuration for each vehicule."
         kmz_email:
           action: "KMZ Track by E-Mail"
@@ -1071,7 +1072,6 @@ or copy/paste following url in your browser : %{l} </p>\n
           fail: "Failed to send E-Mail"
         csv:
           success: "CSV file successfully exported"
-          fail: "Please select plannning(s) to export"
         print: "Print"
         spreadsheet: "Spreadsheet CSV / Excel"
         gpx_route: "GPX Route"
