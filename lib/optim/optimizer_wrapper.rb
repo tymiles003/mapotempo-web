@@ -126,7 +126,7 @@ class OptimizerWrapper
           resolution: {
             duration: options[:optimize_time] ? options[:optimize_time] * (services.all?{ |s| s[:vehicle_id] } ? vehicles.size : 1) : nil,
             iterations_without_improvment: 100,
-            initial_time_out: 3000 * (services.all?{ |s| s[:vehicle_id] } ? vehicles.size : 1),
+            initial_time_out: 3000 * vehicles.size,
             time_out_multiplier: 2
           }
         }
