@@ -71,10 +71,10 @@ fr:
       customers:
         one: "compte client"
         other: "comptes client"
-      deliverable_unit: "Unité délivrable"
+      deliverable_unit: "Unité livrable"
       deliverable_units:
-        one: "unité délivrable"
-        other: "unités délivrables"
+        one: "unité livrable"
+        other: "unités livrables"
       destination: "Client"
       destinations:
         one: "client"
@@ -202,7 +202,7 @@ fr:
         enable_vehicle_position: "Activer la position des véhicules"
         enable_stop_status: "Activer les statuts des visites"
       deliverable_unit:
-        label: "Label"
+        label: "Libellé"
         default_quantity: "Quantité par défaut"
         default_capacity: "Capacité par défaut"
         optimization_overload_multiplier: "Coefficient dépassement"
@@ -687,12 +687,12 @@ fr:
 
   deliverable_units:
     edit:
-      title: "Modifier unité délivrable"
+      title: "Modifier unité livrable"
     index:
-      title: "Liste unités délivrables"
-      new: "Nouvelle unité délivrable"
+      title: "Liste unités livrables"
+      new: "Nouvelle unité livrable"
     new:
-      title: "Nouvelle unité délivrable"
+      title: "Nouvelle unité livrable"
     form:
       label_placeholder: "unité"
       label_help: "Par exemple « colis » ou une unité comme « kg »."
@@ -1517,7 +1517,7 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
       name: "Défaut"
     menu:
       vehicle_usage_sets: "Véhicules"
-      deliverable_units: "Unités délivrables"
+      deliverable_units: "Unités livrables"
     edit:
       title: "Modifier configuration des véhicules"
     index:
