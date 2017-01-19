@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
 
   def self.unities
     [
-      ['Kms', 'km'],
+      ['Km', 'km'],
       ['Miles', 'mi']
     ]
   end

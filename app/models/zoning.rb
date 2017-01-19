@@ -196,7 +196,7 @@ class Zoning < ActiveRecord::Base
   end
 
   def get_isodistance_name(size)
-    !@prefered_unit.nil? && @prefered_unit != 'kms' ? (size / 1.609344).round(2).to_s + ' miles' : size.to_s + ' ' + ' kms' 
+    !@prefered_unit.nil? && @prefered_unit != 'km' ? (size / 1.609344).round(2).to_s + ' miles' : size.to_s + ' ' + ' km' 
   end
 
 end

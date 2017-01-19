@@ -104,7 +104,7 @@ class V01::ZoningsTest < ActiveSupport::TestCase
       users(:user_one).update prefered_unit: :unit 
       patch api("#{@zoning.id}/isodistance", vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, size: 10000) 
       assert last_response.ok?, last_response.body
-      assert_equal "Isodistance "+ (unit == 'km' ? '10 kms' : '6.21 miles') + " depuis " + store_one.name, JSON.parse(last_response.body)['zones'][0]['name']
+      assert_equal "Isodistance "+ (unit == 'km' ? '10 km' : '6.21 miles') + " depuis " + store_one.name, JSON.parse(last_response.body)['zones'][0]['name']
     }
   end  
 

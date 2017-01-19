@@ -648,7 +648,7 @@ var zonings_edit = function(params) {
     }
     var vehicle_usage_set_id = $('#isodistance_vehicle_usage_set_id').val();
     var isodistanceSize = parseFloat($('#isodistance_size').val().replace(/,/g, '.'));
-    var size = (prefered_unit == 'kms') ? isodistanceSize : Math.ceil10(isodistanceSize * 1.60934, -2);
+    var size = (prefered_unit == 'km') ? isodistanceSize : Math.ceil10(isodistanceSize * 1.60934, -2);
 
     $('#isodistance-progress-modal').modal({
       backdrop: 'static',
