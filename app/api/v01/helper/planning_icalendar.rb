@@ -13,6 +13,7 @@ module PlanningIcalendar
     event = Icalendar::Event.new
     event.uid = [stop.id, stop.visit_id].join('-')
     event.dtstart = event_start
+    event.dtend = event_start + (stop.duration ? stop.duration.to_i : 0)
     event.summary = stop.name
     event.location = [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].reject(&:blank?).join(', ')
     event.categories = route.ref || route.vehicle_usage.vehicle.name.delete(',')
