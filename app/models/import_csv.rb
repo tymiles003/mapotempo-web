@@ -57,8 +57,10 @@ class ImportCsv
               # Switch from locale or custom to internal column name
               r, row = row, {}
               @importer.columns.each{ |k, v|
+                next if !v[:title]
                 if r.is_a?(Array)
-                  values = ((column_def[k] && !column_def[k].empty?) ? column_def[k] : (without_header? || !v[:title] ? '' : v[:title])).split(',').map{ |c|
+                  # Import without column name or by merging columns
+                  values = ((column_def[k] && !column_def[k].empty?) ? column_def[k] : (without_header? ? '' : v[:title])).split(',').map{ |c|
                     c.strip!
                     if c.to_i != 0
                       r[c.to_i - 1].is_a?(Array) ? r[c.to_i - 1][1] : r[c.to_i - 1]
@@ -68,6 +70,7 @@ class ImportCsv
                   }.compact
                   row[k] = values.join(' ') if !values.empty?
                 elsif r.key?(v[:title])
+                  # Import with column name
                   row[k] = r[v[:title]]
                 end
               }
