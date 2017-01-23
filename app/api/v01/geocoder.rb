@@ -16,6 +16,9 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class V01::Geocoder < Grape::API
+  # Allow the class to use text/plain render while we use a default_format :json trough the API
+  content_type :txt, "text/plain"
+
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def destination_params
