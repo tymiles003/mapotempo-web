@@ -139,6 +139,24 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_equal 'r1,planning1,route_one,001,1,visite,1,,00:00,1.1,,"","","",,,b,destination_one,Rue des Lilas,MyString,33200,Bordeau,,49.1857,-0.3735,MyString,MyString,"",b,00:05:33,10:00,11:00,,,tag1,P1/P2', response.body.split("\n").select{ |l| l.include?('001') }[1]
   end
 
+  test "it shouldn't have special char in ref routes when using vehicle name" do
+    # Override all vehicle names
+    Vehicle.all.each do |v|
+      v.name = "vehicle;!,;.*"
+      v.save!
+    end
+
+    # Delete all routes refs
+    Route.all.each do |route|
+      route.ref = nil
+      route.save!
+    end
+
+    get :show, id: @planning, format: :csv
+    assert_response :success
+    assert_equal "r1,planning1,vehicle      ,003,0,dépôt,,,07:00,0,0,,,,,,,store nogeo,MyString,,MyString,MyString,,,,,,,,,,,,,,", response.body.split("\n")[2]
+  end
+
   test 'should show planning as csv with ordered columns' do
     get :show, id: @planning, format: :csv, stops: 'visit', columns: 'route|name|street|postalcode|city'
     assert_response :success

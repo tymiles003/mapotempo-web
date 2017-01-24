@@ -2,7 +2,7 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
   row = {
     ref_planning: route.planning.ref || route.planning.id,
     planning: route.planning.name,
-    route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
+    route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name.gsub(%r{[\./\\\-*,!:?;]}, ' ')),
     vehicle: (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
     order: 0,
     stop_type: I18n.t('plannings.export_file.stop_type_store'),
@@ -50,7 +50,7 @@ route.stops.each { |stop|
     row = {
       ref_planning: route.planning.ref || route.planning.id,
       planning: route.planning.name,
-      route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
+      route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name.gsub(%r{[\./\\\-*,!:?;]}, ' ')),
       vehicle: (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
       order: (index+=1 if route.vehicle_usage),
       stop_type: stop.is_a?(StopVisit) ? I18n.t('plannings.export_file.stop_type_visit') : I18n.t('plannings.export_file.stop_type_rest'),
@@ -99,7 +99,7 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
   row = {
     ref_planning: route.planning.ref || route.planning.id,
     planning: route.planning.name,
-    route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name),
+    route: route.ref || (route.vehicle_usage && route.vehicle_usage.vehicle.name.gsub(%r{[\./\\\-*,!:?;]}, ' ')),
     vehicle: (route.vehicle_usage.vehicle.ref if route.vehicle_usage),
     order: index+1,
     stop_type: I18n.t('plannings.export_file.stop_type_store'),
