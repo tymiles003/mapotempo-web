@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/Mapotempo/leaflet-controlledbounds-rails.git
-  revision: ed306c23e5fba964384ceab8f9cc5e2e468f196d
+  revision: cfe7e1688b05fe6f8314331c791e4412276b253f
   specs:
     leaflet-controlledbounds-rails (0.0.1)
 
@@ -11,10 +11,17 @@ GIT
     leaflet-encoded-rails (0.1.0)
 
 GIT
-  remote: git://github.com/Mapotempo/leaflet-pattern-rails.git
-  revision: 351209594cfcfd0d19c1e89dad20cedbdd48a5a4
+  remote: git://github.com/Mapotempo/leaflet-markercluster-rails.git
+  revision: 714ce0719c223dffaea264791b53a619a059df5a
   specs:
-    leaflet-pattern-rails (0.0.1)
+    leaflet-markercluster-rails (1.0.0)
+      railties (>= 3.1)
+
+GIT
+  remote: git://github.com/Mapotempo/leaflet-pattern-rails.git
+  revision: 8d33d456168bd4a8fcd42d56cd14718e81ac1b72
+  specs:
+    leaflet-pattern-rails (0.0.2)
 
 GIT
   remote: git://github.com/Mapotempo/mapotempo_web_by_time_distance.git
@@ -64,21 +71,21 @@ GIT
 
 GIT
   remote: git://github.com/frodrigo/leaflet-control-geocoder-rails.git
-  revision: 178e6f338a1c660c69af5881b42c4495f40fc8f6
+  revision: 100007bf9d857bc783739f5f2f0d5fb620f4b9df
   specs:
-    leaflet-control-geocoder-rails (1.0.0.1)
+    leaflet-control-geocoder-rails (1.0.0.2)
 
 GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
-  revision: 4b7fef8893af08f9e225e9265c07cb1e1191d459
+  revision: edef878c8ada3daf04e93fe0af0914708f3bc789
   specs:
-    leaflet-draw-rails (0.2.4.1)
+    leaflet-draw-rails (0.4.9.0)
 
 GIT
   remote: git://github.com/frodrigo/leaflet-hash-rails.git
-  revision: 02989ba2649e632f64a83d7392b44d6055a7bed9
+  revision: 4e9cc190e5a6811f5dab872a4d0a2506713ffcfe
   specs:
-    leaflet-hash-rails (0.2.1)
+    leaflet-hash-rails (1.0.1)
       railties (>= 3.1.0)
 
 GIT
@@ -331,9 +338,7 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.6)
-    leaflet-markercluster-rails (0.7.0)
-      railties (>= 3.1)
-    leaflet-rails (0.7.7)
+    leaflet-rails (1.0.2)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (2.8.0)
@@ -658,7 +663,7 @@ DEPENDENCIES
   leaflet-draw-rails!
   leaflet-encoded-rails!
   leaflet-hash-rails!
-  leaflet-markercluster-rails
+  leaflet-markercluster-rails!
   leaflet-pattern-rails!
   leaflet-rails
   leaflet_numbered_markers-rails!
