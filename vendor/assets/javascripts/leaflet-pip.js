@@ -34,6 +34,13 @@ function getLls(l) {
     return o;
 }
 
+function isPoly(l) {
+    return l.feature &&
+        l.feature.geometry &&
+        l.feature.geometry.type &&
+        ['Polygon', 'MultiPolygon'].indexOf(l.feature.geometry.type) !== -1;
+}
+
 var leafletPip = {
     bassackwards: false,
     pointInLayer: function(p, layer, first) {
@@ -43,19 +50,16 @@ var leafletPip = {
         if (leafletPip.bassackwards) p.reverse();
 
         var results = [];
+
         layer.eachLayer(function(l) {
             if (first && results.length) return;
-            // multipolygon
-            var lls = [];
-            if (l instanceof L.MultiPolygon) {
-                l.eachLayer(function(sub) { lls.push(getLls(sub)); });
-            } else if (l instanceof L.Polygon) {
-                lls.push(getLls(l));
-            }
-            for (var i = 0; i < lls.length; i++) {
-                if (pip(p, lls[i])) results.push(l);
+
+//            if (isPoly(l) && getLls(l)) {
+            if (getLls(l)) {
+                results.push(l);
             }
         });
+
         return results;
     }
 };
