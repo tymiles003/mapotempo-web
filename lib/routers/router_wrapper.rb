@@ -136,7 +136,7 @@ module Routers
           end
         }
 
-        @cache_request.write(key, request && request.body)
+        @cache_request.write(key, request && request.to_s)
       end
 
       if request == ''
@@ -183,7 +183,7 @@ module Routers
           end
         }
 
-        @cache_request.write(key, request && request.body)
+        @cache_request.write(key, request && request.to_s)
       end
 
       if request != ''
