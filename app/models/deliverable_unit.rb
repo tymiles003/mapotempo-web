@@ -22,13 +22,17 @@ class DeliverableUnit < ActiveRecord::Base
   auto_strip_attributes :label
   validates :default_quantity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :default_capacity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :optimization_overload_multiplier, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :optimization_overload_multiplier, numericality: { greater_than_or_equal_to: -1 }, allow_nil: true
 
   before_save :out_of_date
 
   include LocalizedAttr
 
   attr_localized :default_quantity, :default_capacity, :optimization_overload_multiplier
+
+  def default_optimization_overload_multiplier
+    optimization_overload_multiplier || Mapotempo::Application.config.optimize_overload_multiplier
+  end
 
   private
 

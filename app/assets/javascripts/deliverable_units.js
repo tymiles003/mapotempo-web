@@ -20,15 +20,16 @@
 var deliverable_units_form = function() {
   var optimisationOverloadMultiplier = function() {
     var input = $('input[name=deliverable_unit\\[optimization_overload_multiplier\\]]');
-    if ($('#deliverable_unit_optimization_overload_multiplier_no').prop('checked')) {
+    if (!$('#deliverable_unit_optimization_overload_multiplier_yes').prop('checked')) {
       input.css('visibility', 'hidden');
-      input.val(input.attr('placeholder') == '0' ? '' : '0');
+      var overloadMultiplier = $('#deliverable_unit_optimization_overload_multiplier_no').prop('checked') ? 0 : -1;
+      input.val(input.attr('placeholder') == overloadMultiplier ? '' : overloadMultiplier);
       input.attr('required', false);
     }
     else {
       input.css('visibility', 'visible');
-      if (!input.val()) input.val(input.attr('placeholder') != '0' ? '' : '1');
-      if (input.attr('placeholder') == '0') input.attr('required', true);
+      if (input.val() <= 0) input.val(input.attr('placeholder') > '0' ? '' : '1');
+      if (input.attr('placeholder') <= 0) input.attr('required', true);
     }
   }
   optimisationOverloadMultiplier();

@@ -700,6 +700,7 @@ en:
       default_capacity_help: "Capacity for all your vehicles (keep empty if no limit)."
       optimization_overload_multiplier_no: "No"
       optimization_overload_multiplier_yes: "Yes"
+      optimization_overload_multiplier_ignore: "Ignored"
       optimization_overload_multiplier_help: "Overload authorized or not during optimisation (valid only if capacity is specified for vehicle). If overload is authorized, the greater number is the less overload will be allowed by optimisation."
 
   destinations:
@@ -1439,6 +1440,7 @@ or copy/paste following url in your browser : %{l} </p>\n
         label: "Capacities"
         default: "%{n} (default value)"
         no_overload: " (no overload)"
+        ignore_overload: " (ignored)"
         help: "Maximun vehicle's capacities"
       router:
         default: "Default"

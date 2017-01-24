@@ -80,7 +80,7 @@ class OptimizerWrapper
               "r#{rest[:stop_id]}"
             },
             capacities: vehicle[:capacities] ? vehicle[:capacities].map{ |c|
-              c[:capacity] ? {
+              c[:capacity] && c[:overload_multiplier] >= 0 ? {
                 unit_id: "u#{c[:deliverable_unit_id]}",
                 limit: c[:capacity],
                 overload_multiplier: c[:overload_multiplier]

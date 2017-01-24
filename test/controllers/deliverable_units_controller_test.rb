@@ -42,7 +42,7 @@ class DeliverableUnitsControllerTest < ActionController::TestCase
 
   test 'should not create deliverable unit' do
     assert_no_difference('DeliverableUnit.count') do
-      post :create, deliverable_unit: { optimization_overload_multiplier: -1 }
+      post :create, deliverable_unit: { optimization_overload_multiplier: -2 }
     end
 
     assert_template :new
@@ -63,7 +63,7 @@ class DeliverableUnitsControllerTest < ActionController::TestCase
   end
 
   test 'should not update deliverable unit' do
-    patch :update, id: @deliverable_unit, deliverable_unit: { optimization_overload_multiplier: -1 }
+    patch :update, id: @deliverable_unit, deliverable_unit: { optimization_overload_multiplier: -2 }
     assert_template :edit
     deliverable_unit = assigns(:deliverable_unit)
     assert deliverable_unit.errors.any?

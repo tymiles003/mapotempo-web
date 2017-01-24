@@ -33,7 +33,7 @@
         <td><%= deliverable_unit.label %></td>
         <td><%= deliverable_unit.localized_default_quantity %></td>
         <td><%= deliverable_unit.localized_default_capacity %></td>
-        <td><%= deliverable_unit.optimization_overload_multiplier == 0 || (deliverable_unit.optimization_overload_multiplier.nil? && Mapotempo::Application.config.optimize_overload_multiplier == 0) ? t('deliverable_units.form.optimization_overload_multiplier_no') : deliverable_unit.localized_optimization_overload_multiplier %></td>
+        <td><%= deliverable_unit.default_optimization_overload_multiplier == 0 ? t('deliverable_units.form.optimization_overload_multiplier_no') : deliverable_unit.default_optimization_overload_multiplier == -1 ? t('deliverable_units.form.optimization_overload_multiplier_ignore') : deliverable_unit.localized_optimization_overload_multiplier %></td>
         <td class="text-right">
           <%= link_to edit_deliverable_unit_path(deliverable_unit), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <%= link_to deliverable_unit, :class => 'btn btn-danger btn-sm', method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %><% end %>
