@@ -101,7 +101,7 @@ a.btn-primary:active { color:#FFFFFF; }
 }
 
 .leaflet-top, .leaflet-bottom {
-    z-index: 2 !important; /* Bootstrap also use 1000 for control */
+    z-index: 900 !important; /* Bootstrap also use 1000 for control */
 }
 
 hr {
