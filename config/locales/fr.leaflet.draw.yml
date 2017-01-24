@@ -5,6 +5,9 @@ fr:
         actions:
           title: "Annuler le dessin"
           text: "Annuler"
+        finish:
+          title: "Terminer le dessin"
+          text: "Terminer"
         undo:
           title: "Supprime le dernier point ajouté"
           text: "Supprime le dernier point"

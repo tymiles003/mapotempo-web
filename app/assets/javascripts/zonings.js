@@ -110,15 +110,15 @@ var zonings_edit = function(params) {
 
   $(document).on('page:before-change', checkZoningChanges);
 
-  map.on('draw:editstart', function(e) {
+  map.on(L.Draw.Event.EDITSTART, function(e) {
     editing_drawing = true;
   });
 
-  map.on('draw:editstop', function(e) {
+  map.on(L.Draw.Event.EDITSTOP, function(e) {
     editing_drawing = true;
   });
 
-  map.on('draw:created', function(e) {
+  map.on(L.Draw.Event.CREATED, function (e) {
     drawing_changed = true;
     addZone({
       'vehicles': vehicles,
@@ -126,7 +126,7 @@ var zonings_edit = function(params) {
     }, e.layer);
   });
 
-  map.on('draw:edited', function(e) {
+  map.on(L.Draw.Event.EDITED, function(e) {
     editing_drawing = null;
     drawing_changed = true;
     e.layers.eachLayer(function(layer) {
@@ -134,7 +134,7 @@ var zonings_edit = function(params) {
     });
   });
 
-  map.on('draw:deleted', function(e) {
+  map.on(L.Draw.Event.DELETED, function(e) {
     drawing_changed = true;
     e.layers.eachLayer(function(layer) {
       deleteZone(layer);

@@ -25,6 +25,10 @@
             title: I18n.t('leaflet_draw.draw.toolbar.actions.title'),
             text: I18n.t('leaflet_draw.draw.toolbar.actions.text'),
           },
+          finish: {
+            title: I18n.t('leaflet_draw.draw.toolbar.finish.title'),
+            text: I18n.t('leaflet_draw.draw.toolbar.finish.text'),
+          },
           undo: {
             title: I18n.t('leaflet_draw.draw.toolbar.undo.title'),
             text: I18n.t('leaflet_draw.draw.toolbar.undo.text')
