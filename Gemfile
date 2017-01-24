@@ -119,7 +119,7 @@ gem 'iconv'
 gem 'pg', group: :production
 gem 'rails_12factor', group: :production
 
-gem 'sprockets', '<3.0.0' # FIXME wait for https://github.com/rails/sprockets/issues/104
+gem 'sprockets'
 
 gem 'leaflet-rails'
 gem 'leaflet-markercluster-rails', github: 'Mapotempo/leaflet-markercluster-rails' # FIXME wait for https://github.com/scpike/leaflet-markercluster-rails/pull/8
