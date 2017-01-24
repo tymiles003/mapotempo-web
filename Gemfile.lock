@@ -707,7 +707,7 @@ DEPENDENCIES
   simplecov
   smt_rails
   spring
-  sprockets (< 3.0.0)
+  sprockets
   swagger-docs
   therubyracer
   tidy-html5!
