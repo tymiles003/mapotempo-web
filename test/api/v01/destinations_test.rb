@@ -485,8 +485,11 @@ class V01::DestinationsTest < ActiveSupport::TestCase
       []
     ].each do |tags|
       @destination.name = 'new name'
-      put api(@destination.id), @destination.attributes.update({tag_ids: tags})
+      put api(@destination.id), @destination.attributes.merge(tag_ids: tags, visits: [ref: 'api', quantity: 5])
       assert last_response.ok?, last_response.body
+      destination = JSON.parse(last_response.body)
+      assert_equal @destination.name, destination['name']
+      assert_equal 5, destination['visits'].find{ |v| v['ref'] == 'api' }['quantities'][0]['quantity']
 
       get api(@destination.id)
       assert last_response.ok?, last_response.body

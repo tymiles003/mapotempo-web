@@ -31,15 +31,16 @@ class V01::Destinations < Grape::API
           hash[:quantities] = Hash[hash[:quantities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if hash[:quantities] && hash[:quantities].is_a?(Array)
 
           # Deals with deprecated open and close
-          hash[:open1] = hash.delete(:open) if !hash[:open1]
-          hash[:close1] = hash.delete(:close) if !hash[:close1]
+          hash[:open1] = hash.delete(:open) if !hash.key?(:open1) && hash.key?(:open)
+          hash[:close1] = hash.delete(:close) if !hash.key?(:close1) && hash.key?(:close)
           # Deals with deprecated quantity
           if !hash[:quantities]
-            hash[:quantities] = { current_customer.deliverable_units[0].id => hash.delete(:quantity) } if hash[:quantity] && current_customer.deliverable_units.size > 0
+            # hash[:quantities] keys must be string here because of permit below
+            hash[:quantities] = { current_customer.deliverable_units[0].id.to_s => hash.delete(:quantity) } if hash[:quantity] && current_customer.deliverable_units.size > 0
             if hash[:quantity1_1] || hash[:quantity1_2]
               hash[:quantities] = {}
-              hash[:quantities].merge!({ current_customer.deliverable_units[0].id => hash.delete(:quantity1_1) }) if hash[:quantity1_1] && current_customer.deliverable_units.size > 0
-              hash[:quantities].merge!({ current_customer.deliverable_units[1].id => hash.delete(:quantity1_2) }) if hash[:quantity1_2] && current_customer.deliverable_units.size > 1
+              hash[:quantities].merge!({ current_customer.deliverable_units[0].id.to_s => hash.delete(:quantity1_1) }) if hash[:quantity1_1] && current_customer.deliverable_units.size > 0
+              hash[:quantities].merge!({ current_customer.deliverable_units[1].id.to_s => hash.delete(:quantity1_2) }) if hash[:quantity1_2] && current_customer.deliverable_units.size > 1
             end
           end
         end
