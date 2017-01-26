@@ -1599,8 +1599,8 @@ or copy/paste following url in your browser : %{l} </p>\n
       zone_placeholder: "Zone"
       zone_vehicle: "Vehicle"
       avoid_zone: "Don't go inside this zone"
-      isochrone: "Isochrone"
-      isodistance: "Isodistance"
+      isochrone: "Isochrone / vehicle(s)"
+      isodistance: "Isodistance / vehicle(s)"
       dialog:
         isochrone:
           title: "Isochrone"
