@@ -43,10 +43,6 @@ var zonings_edit = function(params) {
     imperial: false
   }).addTo(map);
 
-  var fitBounds = window.location.hash ? false : true;
-  //FIXME when turoblinks get updated
-  if (navigator.userAgent.indexOf('Edge') == -1) new L.Hash(map);
-
   sidebar.addTo(map);
 
   var markersLayers = L.featureGroup(),
@@ -61,6 +57,7 @@ var zonings_edit = function(params) {
 
   var zone_map = {};
 
+  // Must be init before L.Hash
   new L.Control.Draw({
     draw: {
       polyline: false,
@@ -84,6 +81,15 @@ var zonings_edit = function(params) {
       }
     }
   }).addTo(map);
+
+  var fitBounds = window.location.hash ? false : true;
+  // FIXME when turbolinks get updated
+  if (navigator.userAgent.indexOf("Edge") == -1) map.addHash();
+  var removeHash = function() {
+    map.removeHash();
+    $(document).off('page:before-change', removeHash);
+  }
+  $(document).on('page:before-change', removeHash);
 
   function checkZoningChanges(e) {
     var zones_changed;
@@ -243,13 +249,8 @@ var zonings_edit = function(params) {
 
     function observeChanges(element) {
 
-      var zone_id = getID();
-
+      var zone_id = $(element).find("input[name='zoning[zones_attributes][][id]']").val();
       if (zone_id == '') return;
-
-      function getID() {
-        return $(element).find("input[name='zoning[zones_attributes][][id]']").val();
-      }
 
       function toggleChange(k, v) {
         if (params.zoning_details[zone_id] && params.zoning_details[zone_id][k] == v) {
@@ -498,7 +499,6 @@ var zonings_edit = function(params) {
       });
       planning = data.planning;
     }
-    fitBounds = true;
     displayZoning(data);
   };
 
@@ -575,7 +575,6 @@ var zonings_edit = function(params) {
         },
         complete: function(jqXHR, textStatus) {
           completeAjaxMap();
-          fitBounds = true;
         },
         error: ajaxError
       });
