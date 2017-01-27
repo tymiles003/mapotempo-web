@@ -633,12 +633,14 @@ var plannings_edit = function(params) {
         geom.setStyle((zone.speed_multiplicator === 0) ? {
           color: '#FF0000',
           fillColor: '#707070',
+          opacity: 0.5,
           weight: 5,
           dashArray: '10, 10',
           fillPattern: stripes
         } : {
           color: (zone.vehicle_id && vehicles_usages_map[zone.vehicle_id] ? vehicles_usages_map[zone.vehicle_id].color : '#707070'),
           fillColor: null,
+          opacity: 0.5,
           weight: 2,
           dashArray: 'none',
           fillPattern: null
@@ -826,10 +828,14 @@ var plannings_edit = function(params) {
     $.each(route.stops, function(index, stop) {
       if (stop.trace) {
         (new routeStepTrace(L.PolylineUtil.decode(stop.trace, 6), {
+          opacity: 0.5,
+          weight: 5,
           color: color
         })).addDriveInfos(stop.drive_time, stop.distance).addTo(layers[route.route_id]);
         (new routeStepTrace(L.PolylineUtil.decode(stop.trace, 6), {
           offset: 3,
+          opacity: 0.5,
+          weight: 5,
           color: color
         })).addDriveInfos(stop.drive_time, stop.distance).addTo(layers_cluster[route.route_id]);
       }
@@ -900,10 +906,14 @@ var plannings_edit = function(params) {
     });
     if (route.store_stop && route.store_stop.stop_trace) {
       (new routeStepTrace(L.PolylineUtil.decode(route.store_stop.stop_trace, 6), {
+        opacity: 0.5,
+        weight: 5,
         color: color
       })).addDriveInfos(route.store_stop.stop_drive_time, route.store_stop.stop_distance).addTo(layers[route.route_id]);
       (new routeStepTrace(L.PolylineUtil.decode(route.store_stop.stop_trace, 6), {
         offset: 3,
+        opacity: 0.5,
+        weight: 5,
         color: color
       })).addDriveInfos(route.store_stop.stop_drive_time, route.store_stop.stop_distance).addTo(layers_cluster[route.route_id]);
     }

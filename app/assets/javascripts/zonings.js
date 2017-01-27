@@ -170,12 +170,14 @@ var zonings_edit = function(params) {
     polygon.setStyle((speed_multiplicator === 0) ? {
       color: '#FF0000',
       fillColor: '#707070',
+      opacity: 0.5,
       weight: 5,
       dashArray: '10, 10',
       fillPattern: stripes
     } : {
       color: ((vehicle_id && vehiclesMap[vehicle_id]) ? vehiclesMap[vehicle_id].color : '#707070'),
       fillColor: null,
+      opacity: 0.5,
       weight: 2,
       dashArray: 'none',
       fillPattern: null
