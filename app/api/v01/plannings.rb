@@ -203,7 +203,7 @@ class V01::Plannings < Grape::API
       present planning, with: V01::Entities::Planning
     end
 
-    desc 'Update routes.'
+    desc 'Update routes visibility and lock.'
     params do
       requires :id, type: String, desc: ID_DESC
       requires :route_ids, type: Array[Integer], documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'

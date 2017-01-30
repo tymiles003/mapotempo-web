@@ -35,7 +35,7 @@ class V01::Routes < Grape::API
     end
     segment '/:planning_id' do
       resource :routes do
-        desc 'Update route.',
+        desc 'Update route visibility, color and lock.',
           nickname: 'updateRoute',
           params: V01::Entities::Route.documentation.slice(:hidden, :locked, :color),
           success: V01::Entities::Route

@@ -37,7 +37,7 @@ class V01::Stops < Grape::API
         segment '/:route_id' do
 
           resource :stops do
-            desc 'Update stop.',
+            desc 'Update stop activation.',
               nickname: 'updateStop',
               params: V01::Entities::Stop.documentation.slice(:active)
             params do
