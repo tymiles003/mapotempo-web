@@ -1,5 +1,10 @@
 {{#stop}}
 <div class="stop-popup"{{#route_id}} data-route_id="{{route_id}}" data-stop_id="{{stop_id}}"{{/route_id}}>
+  {{#close_popup}}
+    <a class="close-popover pull-right">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+  {{/close_popup}}
 {{#route_id}}
 {{^one_route}}
 <div{{#planning_id}}{{^store}}{{^vehicle_name}} class="ui-state-error"{{/vehicle_name}}{{/store}}{{/planning_id}}>

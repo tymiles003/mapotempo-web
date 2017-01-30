@@ -197,6 +197,7 @@ var plannings_edit = function(params) {
     stores = {},
     layers = {},
     layers_cluster = {},
+    lastPopover,
     routes_layers,
     routes_layers_cluster,
     nbBackgroundTaskErrors = 0,
@@ -1414,26 +1415,43 @@ var plannings_edit = function(params) {
           display: 'inline-block'
         });
       })
-      .each(function() {
+      .each(function(i) {
         var $this = $(this);
         var stops = $.grep(route.stops, function(e) { return e.stop_id == $this.data('stop_id'); });
         if (stops.length > 0) {
           $this.popover({
             content: SMT['stops/show'](
               {
-                stop: stops[0]
+                stop: stops[0],
+                close_popup: true
               }
             ),
             html: true,
             placement: 'auto',
-            trigger: 'manual'
+            trigger: 'manual',
+            viewport: {
+              selector: (i <= 4) ? '#planning' : '#wrapper',
+              padding: $('#wrapper').height()
+            }
           });
         }
       })
       .click(function() {
+        // Stack the last element activated
+        lastPopover = $(this);
         $("li[data-stop_id!='" + $(this).data('stop_id') + "']").popover('hide');
         $(this).popover($('.sidebar').hasClass('extended') ? 'toggle' : 'hide');
+        $('.close-popover').click(function() {
+          $(lastPopover).popover('hide');
+        });
       });
+
+    });
+
+    $(document).keyup(function(event) {
+      if ($(".sidebar").hasClass('extended') && event.keyCode == 27 && typeof lastPopover != 'undefined') {
+        $(lastPopover).popover('hide');
+      }
     });
 
     dropdownAutoDirection($('#planning').find('[data-toggle="dropdown"]'));
