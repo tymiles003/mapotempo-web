@@ -17,6 +17,8 @@
 //
 'use strict';
 
+var leafletPip = require('leaflet-pip');
+
 var zonings_edit = function(params) {
 
   var prefered_unit = params.prefered_unit,

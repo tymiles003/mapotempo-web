@@ -93,7 +93,7 @@ Go to project directory :
 
     cd mapotempo-web
     
-And finally install gem project dependencies with :
+Install gem project dependencies with :
 
     bundle install
 
@@ -101,6 +101,10 @@ I you have this message :
 >Important: You may need to add a javascript runtime to your Gemfile in order for bootstrap's LESS files to compile to CSS.
 
 Don't worry, we use SASS to compile CSS and not LESS.
+
+Install npm project dependencies with:
+
+    npm install
 
 ## Configuration
 
