@@ -30,11 +30,11 @@ class V01::Visits < Grape::API
       p[:close1] = p.delete(:close) if !p[:close1]
       # Deals with deprecated quantity
       if !p[:quantities]
-        p[:quantities] = { current_customer.deliverable_units[0].id => p.delete(:quantity) } if p[:quantity] && current_customer.deliverable_units.size > 0
+        p[:quantities] = { current_customer.deliverable_units[0].id.to_s => p.delete(:quantity) } if p[:quantity] && current_customer.deliverable_units.size > 0
         if p[:quantity1_1] || p[:quantity1_2]
           p[:quantities] = {}
-          p[:quantities].merge!({ current_customer.deliverable_units[0].id => p.delete(:quantity1_1) }) if p[:quantity1_1] && current_customer.deliverable_units.size > 0
-          p[:quantities].merge!({ current_customer.deliverable_units[1].id => p.delete(:quantity1_2) }) if p[:quantity1_2] && current_customer.deliverable_units.size > 1
+          p[:quantities].merge!({ current_customer.deliverable_units[0].id.to_s => p.delete(:quantity1_1) }) if p[:quantity1_1] && current_customer.deliverable_units.size > 0
+          p[:quantities].merge!({ current_customer.deliverable_units[1].id.to_s => p.delete(:quantity1_2) }) if p[:quantity1_2] && current_customer.deliverable_units.size > 1
         end
       end
 
