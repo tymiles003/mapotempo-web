@@ -17,9 +17,7 @@
 #
 module PlanningsHelper
   def planning_vehicles_array(planning)
-    planning.vehicle_usage_set.vehicle_usages.active.map(&:vehicle).map{ |vehicle|
-      { id: vehicle.id, text: vehicle.name, color: vehicle.color, available_position: vehicle.available_position? && vehicle.vehicle_usages.detect{ |item| item.vehicle_usage_set == @planning.vehicle_usage_set }.active? }
-    }
+    planning.vehicle_usage_set.vehicle_usages.active.map(&:vehicle).map{ |vehicle| { id: vehicle.id, text: vehicle.name, color: vehicle.color, available_position: vehicle.customer.device.available_position? && vehicle.vehicle_usages.detect{ |item| item.vehicle_usage_set == @planning.vehicle_usage_set }.active? } }
   end
 
   def planning_vehicles_usages_map(planning)

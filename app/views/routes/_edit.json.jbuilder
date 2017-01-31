@@ -23,11 +23,11 @@ if route.vehicle_usage
   json.vehicle_id route.vehicle_usage.vehicle.id
   json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
   # Devices
-  (json.teksat true) if !route.vehicle_usage.vehicle.teksat_id.blank? && route.planning.customer.teksat?
-  (json.tomtom true) if !route.vehicle_usage.vehicle.tomtom_id.blank? && route.planning.customer.tomtom?
-  (json.orange true) if !route.vehicle_usage.vehicle.orange_id.blank? && route.planning.customer.orange?
-  (json.alyacom true) if route.planning.customer.alyacom?
-  (json.masternaut true) if !route.vehicle_usage.vehicle.masternaut_ref.blank? && route.planning.customer.masternaut?
+  (json.teksat true) if !route.vehicle_usage.vehicle.devices[:teksat_id].blank? && route.planning.customer.device.configured?(:teksat)
+  (json.tomtom true) if !route.vehicle_usage.vehicle.devices[:tomtom_id].blank? && route.planning.customer.device.configured?(:tomtom)
+  (json.orange true) if !route.vehicle_usage.vehicle.devices[:orange_id].blank? && route.planning.customer.device.configured?(:orange)
+  (json.alyacom true) if route.planning.customer.device.configured?(:alyacom)
+  (json.masternaut true) if !route.vehicle_usage.vehicle.devices[:masternaut_ref].blank? && route.planning.customer.device.configured?(masternaut)
   status_uniq = route.stops.map{ |stop|
       {
         code: stop.status.downcase,
@@ -43,7 +43,7 @@ if route.vehicle_usage
       }
     }
   end
-  json.status_any @planning.customer.enable_stop_status && (status_uniq.size > 0 || !route.vehicle_usage.vehicle.tomtom_id.blank? && route.planning.customer.tomtom?)
+  json.status_any status_uniq.size > 0 || (!route.vehicle_usage.vehicle.devices[:tomtom_id].blank? && route.planning.customer.device.configured?(:tomtom))
 end
 number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false

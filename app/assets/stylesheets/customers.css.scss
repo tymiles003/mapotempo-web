@@ -41,4 +41,14 @@
       }
     }
   }
+
+  .panel-heading .accordion-toggle:after {
+    font-family: 'FontAwesome';
+    content: "\f078";
+    float: right;
+    color: grey;
+  }
+  .panel-heading .accordion-toggle.collapsed:after {
+    content: "\f054";
+  }
 }

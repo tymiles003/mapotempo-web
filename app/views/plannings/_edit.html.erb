@@ -108,57 +108,19 @@
               </li>
               <li role="separator" class="divider"></li>
             <% end %>
-            <% if @planning.customer.tomtom? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.tomtom_id.blank? } %>
-              <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="waypoints" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                <%= t 'plannings.edit.tomtom_send_waypoints.action' %>
-              </li>
-              <li class="link device-operation" data-service="tomtom" data-operation="send" data-type="orders" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                <%= t 'plannings.edit.tomtom_send_orders.action' %>
-              </li>
-              <li class="link device-operation" data-service="tomtom" data-operation="clear" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                <%= t 'plannings.edit.tomtom_clear.action' %>
-              </li>
-              <li role="separator" class="divider"></li>
-            <% end %>
-            <% if @planning.customer.teksat? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.teksat_id.blank? } %>
-              <li class="link device-operation" data-service="teksat" data-operation="send" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                <%= t 'plannings.edit.teksat_send.action' %>
-              </li>
-              <li class="link device-operation" data-service="teksat" data-operation="clear" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                <%= t 'plannings.edit.teksat_clear.action' %>
-              </li>
-              <li role="separator" class="divider"></li>
-            <% end %>
-            <% if @planning.customer.orange? && @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.orange_id.blank? } %>
-              <li class="link device-operation" data-service="orange" data-operation="send" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                <%= t 'plannings.edit.orange_send.action' %>
-              </li>
-              <li class="link device-operation" data-service="orange" data-operation="clear" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                <%= t 'plannings.edit.orange_clear.action' %>
-              </li>
-              <li role="separator" class="divider"></li>
-            <% end %>
-            <% if @planning.customer.masternaut? %>
-              <li class="link device-operation" data-service="masternaut" data-operation="send" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
-                <%= t 'plannings.edit.masternaut_send.action' %>
-              </li>
-              <li role="separator" class="divider"></li>
-            <% end %>
-            <% if @planning.customer.alyacom? %>
-              <li class="link device-operation" data-service="alyacom" data-operation="send" data-planning-id="<%= @planning.id %>">
-                <i class="fa fa-mobile fa-fw"></i>
-                <%= t 'plannings.edit.alyacom_send.action' %>
-              </li>
-              <li role="separator" class="divider"></li>
-            <% end %>
+
+            <% @planning.customer.device.configured_definitions.each{ |key, definition| %>
+              <% if @planning.routes.any?{|route| route.vehicle_usage && !route.vehicle_usage.vehicle.devices.key?(definition[:device]) } %>
+                <% definition[:route_operations].each{ |route_operation| %>
+                  <li class="link device-operation" data-service="<%= definition[:device] %>" data-operation="send" data-type="<%= route_operation %>" data-planning-id="<%= @planning.id %>">
+                    <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                    <%= t("plannings.edit.#{definition[:device]}_#{route_operation}.action") %>
+                  </li>
+                <% } %>
+                <li role="separator" class="divider"></li>
+              <% end %>
+            <% } %>
+
             <li><%= link_to planning_path(@planning) do %><i class="fa fa-print fa-fw"></i> <%= t '.export.print' %><% end %></li>
             <li role="separator" class="divider"></li>
             <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> <%= t '.export.spreadsheet' %></a></li>
@@ -241,7 +203,7 @@ controller.js(
   spreadsheet_columns: @spreadsheet_columns,
   isoline_capability: {isochrone: @isochrone_capability ? true : false, isodistance: @isodistance_capability ? true : false},
   enable_stop_status: @planning.customer.enable_stop_status,
-  update_stop_status: @planning.customer.enable_stop_status? && (@planning.date.nil? || @planning.date.between?(Time.now.beginning_of_day, Time.now.end_of_day)) && @planning.customer.enable_tomtom && @planning.routes.any?{ |r| r.vehicle_usage && r.vehicle_usage.vehicle.tomtom_id },
+  update_stop_status: @planning.customer.enable_stop_status? && (@planning.date.nil? || @planning.date.between?(Time.now.beginning_of_day, Time.now.end_of_day)) && @planning.customer.device.configured?(:tomtom) && @planning.routes.any?{ |r| r.vehicle_usage && r.vehicle_usage.vehicle.devices[:tomtom_id] },
   callback_button: @callback_button
 )
 %>

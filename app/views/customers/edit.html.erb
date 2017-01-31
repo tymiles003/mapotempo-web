@@ -1,115 +1,139 @@
 <% content_for :title, t('.title') %>
 <h1><%= t '.title' %></h1>
+<div>
+  <% if current_user.admin? %>
+    <ul class="nav nav-tabs" role="tablist" style="margin-bottom:30px;">
+      <li role="general" class="active">
+        <a href="#general" aria-controls="home" role="tab" data-toggle="tab">
+          <i class="fa fa-cogs" aria-hidden="true"></i>
+          <%= t '.title' %>
+        </a>
+      </li>
+      <li role="users">
+        <a href="#users" aria-controls="users" role="tab" data-toggle="tab">
+          <i class="fa fa-users" aria-hidden="true"></i>
+          <%= t '.user.list' %>
+        </a>
+      </li>
+      <li role="vehicles">
+        <a href="#vehicles" aria-controls="vehicles" role="tab" data-toggle="tab">
+          <i class="fa fa-truck" aria-hidden="true"></i>
+          <%= t '.vehicles.list' %>
+        </a>
+      </li>
+    </ul>
+  <% end %>
 
-<%= render 'form' %>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="general">
+      <div class="row">
+        <div class="col-md-12">
+          <%= render 'form' %>
+        </div>
+      </div>
+    </div>
+    <% if current_user.admin? %>
+    <div role="tabpanel" class="tab-pane" id="users">
+      <% if current_user.admin? %>
+        <p>
+          <%= link_to new_admin_user_path(customer_id: @customer.id, url: edit_customer_path(@customer)), class: 'btn btn-default btn-sm' do %>
+            <i class="fa fa-plus fa-fw"></i>
+            <%= t '.user.new' %>
+          <% end %>
+        </p>
+      <% end %>
+      <table id="users" class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th><%= t 'activerecord.attributes.user.email' %></th>
+            <th class="text-right"><%= t 'activerecord.attributes.user.sign_in_count' %></th>
+            <th><%= t 'activerecord.attributes.user.sign_in_at' %></th>
+            <th><%= t 'activerecord.attributes.user.confirmed_at' %></th>
+            <% if current_user.admin? %>
+              <th><%= t '.user.connect_as' %></th>
+            <% end %>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @customer.users.each do |user| %>
+            <tr>
+              <td><%= user.email %></td>
+              <td class="text-right"><%= user.sign_in_count %></td>
+              <td><%= user.current_sign_in_at && l(user.current_sign_in_at) %></td>
+              <td><%= user.confirmed_at && l(user.confirmed_at) %></td>
+              <% if current_user.admin? %>
+                <td><a href="/?api_key=<%= user.api_key %>"><%= t '.user.connect_as' %></a></td>
+                <td class="text-right">
+                  <div class="btn-group" role="group">
+                    <%= link_to send_email_admin_user_path(user), class: 'btn btn-default btn-sm' do %>
+                      <i class="fa fa-envelope fa-fw"></i>
+                      <%= t '.send_email' %>
+                    <% end %>
+                    <%= link_to edit_admin_user_path(user), class: 'btn btn-primary btn-sm' do %>
+                      <i class="fa fa-edit fa-fw"></i>
+                      <%= t 'all.verb.edit' %>
+                    <% end %>
+                    <%= link_to admin_user_path(user), class: 'btn btn-danger btn-sm', method: :delete, data: {confirm: t('all.verb.destroy_confirm') } do %>
+                      <i class="fa fa-trash-o fa-fw"></i>
+                      <%= t 'all.verb.destroy' %>
+                    <% end %>
+                  </div>
+                </td>
+              <% else %>
+                <td class="text-right">
+                  <% if current_user == user %>
+                    <%= link_to edit_user_path(user), class: 'btn btn-primary btn-sm' do %>
+                      <i class="fa fa-edit fa-fw"></i>
+                      <%= t 'all.verb.edit' %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="vehicles">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th><%= t 'activerecord.attributes.vehicle.name' %></th>
+            <th class="text-right"><%= t 'activerecord.attributes.vehicle.ref' %></th>
+            <th class="text-right"><%= t 'vehicle_usages.index.devices' %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @customer.vehicles.each do |vehicle| %>
+          <tr>
+            <td><%= vehicle.name %></td>
+            <td class="text-right"><%= vehicle.ref %></td>
+            <td class="text-right"><%= vehicle_external_services vehicle %></td>
+            <td class="text-right">
+            <%= link_to delete_vehicle_customer_path(@customer, vehicle_id: vehicle.id), class: 'btn btn-danger btn-sm', method: :delete, data: {confirm: t('all.verb.destroy_confirm') } do %>
+            <i class="fa fa-trash-o fa-fw"></i>
+            <%= t 'all.verb.destroy' %>
+            <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
 
 <%
   routers = @customer.id ? @customer.profile.routers : Router.all
 
   controller.js(
     customer_id: @customer.id,
-    tomtom: @customer.tomtom?,
-    enable_tomtom: @customer.enable_tomtom?,
-    teksat: @customer.teksat?,
-    enable_teksat: @customer.enable_teksat?,
-    orange: @customer.orange?,
-    enable_orange: @customer.enable_orange?,
-    masternaut: @customer.masternaut?,
-    enable_masternaut: @customer.enable_masternaut?,
-    alyacom: @customer.alyacom?,
-    enable_alyacom: @customer.enable_alyacom?,
-    routers_options: Hash[routers.collect { |r| [r.id, r.options] }]
+    routers_options: Hash[routers.collect { |r| [r.id, r.options] }],
+    devices: @customer.device.enabled_definitions
   )
 %>
-
-<h1><%= t '.user.list' %></h1>
-
-<% if current_user.admin? %>
-  <p>
-    <%= link_to new_admin_user_path(customer_id: @customer.id, url: edit_customer_path(@customer)), class: 'btn btn-default btn-sm' do %>
-      <i class="fa fa-plus fa-fw"></i>
-      <%= t '.user.new' %>
-    <% end %>
-  </p>
-<% end %>
-
-<table id="users" class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th><%= t 'activerecord.attributes.user.email' %></th>
-      <th class="text-right"><%= t 'activerecord.attributes.user.sign_in_count' %></th>
-      <th><%= t 'activerecord.attributes.user.sign_in_at' %></th>
-      <th><%= t 'activerecord.attributes.user.confirmed_at' %></th>
-      <% if current_user.admin? %>
-        <th><%= t '.user.connect_as' %></th>
-      <% end %>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @customer.users.each do |user| %>
-      <tr>
-        <td><%= user.email %></td>
-        <td class="text-right"><%= user.sign_in_count %></td>
-        <td><%= user.current_sign_in_at && l(user.current_sign_in_at) %></td>
-        <td><%= user.confirmed_at && l(user.confirmed_at) %></td>
-        <% if current_user.admin? %>
-          <td><a href="/?api_key=<%= user.api_key %>"><%= t '.user.connect_as' %></a></td>
-          <td class="text-right">
-            <%= link_to send_email_admin_user_path(user), class: 'btn btn-default btn-sm' do %>
-              <i class="fa fa-envelope fa-fw"></i>
-              <%= t '.send_email' %>
-            <% end %>
-            <%= link_to edit_admin_user_path(user), class: 'btn btn-primary btn-sm' do %>
-              <i class="fa fa-edit fa-fw"></i>
-              <%= t 'all.verb.edit' %>
-            <% end %>
-            <%= link_to admin_user_path(user), class: 'btn btn-danger btn-sm', method: :delete, data: {confirm: t('all.verb.destroy_confirm') } do %>
-              <i class="fa fa-trash-o fa-fw"></i>
-              <%= t 'all.verb.destroy' %>
-            <% end %>
-          </td>
-        <% else %>
-          <td class="text-right">
-            <% if current_user == user %>
-              <%= link_to edit_user_path(user), class: 'btn btn-primary btn-sm' do %>
-                <i class="fa fa-edit fa-fw"></i>
-                <%= t 'all.verb.edit' %>
-              <% end %>
-            <% end %>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<% if current_user.admin? %>
-  <h1><%= t '.vehicles.list' %></h1>
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-        <th><%= t 'activerecord.attributes.vehicle.name' %></th>
-        <th class="text-right"><%= t 'activerecord.attributes.vehicle.ref' %></th>
-        <th class="text-right"><%= t 'vehicle_usages.index.devices' %></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @customer.vehicles.each do |vehicle| %>
-        <tr>
-          <td><%= vehicle.name %></td>
-          <td class="text-right"><%= vehicle.ref %></td>
-          <td class="text-right"><%= vehicle_external_services vehicle %></td>
-          <td class="text-right">
-            <%= link_to delete_vehicle_customer_path(@customer, vehicle_id: vehicle.id), class: 'btn btn-danger btn-sm', method: :delete, data: {confirm: t('all.verb.destroy_confirm') } do %>
-              <i class="fa fa-trash-o fa-fw"></i>
-              <%= t 'all.verb.destroy' %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>

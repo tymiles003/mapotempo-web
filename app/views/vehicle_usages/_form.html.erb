@@ -221,18 +221,20 @@
           </div>
         </div>
 
-        <% if f.object.customer.tomtom? %>
-          <%= f.select :tomtom_id, t('vehicles.form.tomtom_id'), [] %>
+        <!-- this can be refactored with options_for_select -->
+        <% @vehicle_usage.vehicle.customer.device.configured_definitions.each do |key, definition| %>
+          <% if definition[:forms].key?(:vehicle) %>
+            <% definition[:forms][:vehicle].each do |field, type| %>
+              <div class="form-group">
+                <%= f.label_tag "#{key}[#{field}]", I18n.t("activerecord.attributes.customer.devices.#{key}.#{field}"), class: 'col-md-2 control-label' %>
+                <div class="col-md-6 input-append">
+                  <%= select_tag "#{key}[#{field}]", [], data: { device: key }, include_blank: false %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
         <% end %>
-        <% if f.object.customer.teksat? %>
-          <%= f.select :teksat_id, t('vehicles.form.teksat_id'), [] %>
-        <% end %>
-        <% if f.object.customer.orange? %>
-          <%= f.select :orange_id, t('vehicles.form.orange_id'), [] %>
-        <% end %>
-        <% if @vehicle_usage.vehicle.customer.enable_masternaut && !@vehicle_usage.vehicle.customer.masternaut_user.blank? && !@vehicle_usage.vehicle.customer.masternaut_password.blank? %>
-          <%= f.text_field :masternaut_ref %>
-        <% end %>
+
         <div class="form-group">
           <label class="col-md-2 control-label" for="vehicle_usage_vehicle_color">
             <%= t("activerecord.attributes.vehicle.color") %>

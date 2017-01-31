@@ -134,7 +134,7 @@ class DestinationsController < ApplicationController
 
   def upload_tomtom
     @import_tomtom = ImportTomtom.new import_tomtom_params.merge(importer: ImporterDestinations.new(current_user.customer), customer: current_user.customer)
-    if current_user.customer.tomtom? && @import_tomtom.valid? && @import_tomtom.import
+    if current_user.customer.device.configured?(:tomtom) && @import_tomtom.valid? && @import_tomtom.import
       flash[:warning] = @import_tomtom.warnings.join(', ') if @import_tomtom.warnings.any?
       redirect_to destinations_path, notice: t('.success')
     else

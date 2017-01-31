@@ -310,185 +310,61 @@
         </div>
       </div>
     <% end %>
-
-    <% if current_user.admin? %>
-      <%= f.toggles t 'activerecord.attributes.customer.enable_tomtom' do %>
-        <%= f.check_box :enable_tomtom %>
-      <% end %>
-    <% end %>
-    <% if @customer.enable_tomtom? %>
-      <div id="tomtom_container" class="panel panel-default accordion">
-        <div class="panel-heading">
-          <h2 class="panel-title">
-            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTomtom">
-              <%= t '.tomtom' %>
-            </a>
-          </h2>
-        </div>
-        <div id="collapseTomtom" class="panel-collapse collapse">
-          <div class="panel-body">
-            <p class="help-block"><%= t '.tomtom_help' %></p>
-            <div class="col-md-10">
-              <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
-              <input style="display:none" type="text" name="customer[tomtom_account]" />
-              <input style="display:none" type="text" name="customer[tomtom_user]" />
-              <input style="display:none" type="password" name="customer[tomtom_password]" />
-
-              <%= f.text_field :tomtom_account, autocomplete: "off" %>
-              <%= f.text_field :tomtom_user, autocomplete: "off" %>
-              <%= f.password_field :tomtom_password, value: nil, autocomplete: 'off', class: 'form-control' %>
-
-              <div class="btn btn-default btn-sm tomtom-api-sync" disabled="disabled">
-                <i class="fa fa-bolt fa-fw"></i>
-                <%= t 'customers.form.sync.tomtom.action' %>
-              </div>
-            </div>
-            <div class="pull-right col-md-2">
-              <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "tomtom_success" %>
-              <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "tomtom_not_found" %>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <% if current_user.admin? %>
-      <%= f.toggles t 'activerecord.attributes.customer.enable_teksat' do %>
-        <%= f.check_box :enable_teksat %>
-      <% end %>
-    <% end %>
-    <% if @customer.enable_teksat? %>
-      <div id="teksat_container" class="panel panel-default accordion">
-        <div class="panel-heading">
-          <h2 class="panel-title">
-            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTeksat">
-              <%= t '.teksat' %>
-            </a>
-          </h2>
-        </div>
-        <div id="collapseTeksat" class="panel-collapse collapse">
-          <div class="panel-body">
-            <p class="help-block"><%= t '.teksat_help' %></p>
-            <div class="col-md-10">
-
-              <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
-              <input style="display:none" type="text" name="customer[teksat_customer_id]" />
-              <input style="display:none" type="text" name="customer[teksat_url]" />
-              <input style="display:none" type="text" name="customer[teksat_username]" />
-              <input style="display:none" type="password" name="customer[teksat_password]" />
-
-              <%= f.text_field :teksat_customer_id, autocomplete: "off" %>
-              <%= f.text_field :teksat_url, autocomplete: "off", placeholder: "www.gpsXX.teksat.fr" %>
-              <%= f.text_field :teksat_username, autocomplete: "off" %>
-              <%= f.password_field :teksat_password, value: nil, autocomplete: "off", class: "form-control" %>
-
-              <div class="btn btn-default btn-sm teksat-api-sync" disabled="disabled">
-                <i class="fa fa-bolt fa-fw"></i>
-                <%= t "customers.form.sync.teksat.action" %>
-              </div>
-            </div>
-            <div class="pull-right col-md-2">
-              <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "teksat_success" %>
-              <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "teksat_not_found" %>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <% if current_user.admin? %>
-      <%= f.toggles t 'activerecord.attributes.customer.enable_orange_fleet' do %>
-        <%= f.check_box :enable_orange %>
-      <% end %>
-    <% end %>
-    <% if @customer.enable_orange? %>
-      <div id="orange_container" class="panel panel-default accordion">
-        <div class="panel-heading">
-          <h2 class="panel-title">
-            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOrange">
-              <%= t '.orange' %>
-            </a>
-          </h2>
-        </div>
-        <div id="collapseOrange" class="panel-collapse collapse">
-          <div class="panel-body">
-            <p class="help-block"><%= t '.orange_help' %></p>
-            <div class="col-md-10">
-              <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
-              <input style="display:none" type="text" name="customer[orange_user]" />
-              <input style="display:none" type="password" name="customer[orange_password]" />
-
-              <%= f.text_field :orange_user, autocomplete: "off" %>
-              <%= f.password_field :orange_password, value: nil, autocomplete: "off", class: "form-control" %>
-
-              <div class="btn btn-default btn-sm orange-api-sync" disabled="disabled">
-                <i class="fa fa-bolt fa-fw"></i>
-                <%= t "customers.form.sync.orange.action" %>
-              </div>
-            </div>
-            <div class="pull-right col-md-2">
-              <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "orange_success" %>
-              <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "orange_not_found" %>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <% if current_user.admin? %>
-      <%= f.toggles t 'activerecord.attributes.customer.enable_masternaut' do %>
-        <%= f.check_box :enable_masternaut %>
-      <% end %>
-    <% end %>
-    <% if @customer.enable_masternaut? %>
-      <div id="masternaut_container" class="panel panel-default accordion">
-        <div class="panel-heading">
-          <h2 class="panel-title">
-            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseMasternaut">
-              <%= t '.masternaut' %>
-            </a>
-          </h2>
-        </div>
-        <div id="collapseMasternaut" class="panel-collapse collapse">
-          <div class="panel-body">
-            <p class="help-block"><%= t '.masternaut_help' %></p>
-            <%= f.text_field :masternaut_user, autocomplete: "off" %>
-            <%= f.password_field :masternaut_password, value: f.object.masternaut_password, autocomplete: "off", class: "form-control" %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <% if current_user.admin? %>
-      <%= f.toggles t 'activerecord.attributes.customer.enable_alyacom' do %>
-        <%= f.check_box :enable_alyacom %>
-      <% end %>
-    <% end %>
-    <% if @customer.enable_alyacom? %>
-      <div id="alyacom_container" class="panel panel-default accordion">
-        <div class="panel-heading">
-          <h2 class="panel-title">
-            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAlyacom">
-              <%= t '.alyacom' %>
-            </a>
-          </h2>
-        </div>
-        <div id="collapseAlyacom" class="panel-collapse collapse">
-          <div class="panel-body">
-            <p class="help-block"><%= t '.alyacom_help' %></p>
-            <div class="col-md-10">
-              <!-- http://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
-              <input style="display:none" type="text" name="customer[alyacom_association]" />
-              <input style="display:none" type="text" name="customer[alyacom_api_key]" />
-
-              <%= f.text_field :alyacom_association, autocomplete: "off" %>
-              <%= f.text_field :alyacom_api_key, autocomplete: "off" %>
-            </div>
-            <div class="pull-right col-md-2">
-              <%= fa_icon "check 4x", style: "color:green;", class: "hidden", id: "alyacom_success" %>
-              <%= fa_icon "close 4x", style: "color:red;", class: "hidden", id: "alyacom_not_found" %>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
   </fieldset>
+
+  <% if current_user.admin? %>
+    <% @customer.device.definitions.each do |key, device| %>
+      <%= f.toggles device[:label] do %>
+        <%= f.check_box_tag "customer[devices][#{key}][enable]", true, to_bool(@customer.devices[key] && @customer.devices[key][:enable]) %>
+        <% if device[:help] %>
+          <p class="help-block"><%= t "customers.form.devices.#{key}.help" %></p>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if !@customer.device.enabled_definitions.empty? %>
+    <div class="row">
+      <div class="col-md-12" id="devices_settings">
+        <% @customer.device.definitions.each do |key, definition| %>
+          <% if definition[:forms].key?(:settings) %>
+            <div id="<%= key %>_container" class="panel panel-default device">
+              <div class="panel-heading">
+                <h2 class="panel-title">
+                  <%= definition[:label] %>
+                </h2>
+              </div>
+              <div class="panel-body">
+                <div class="col-md-12">
+                  <% definition[:forms][:settings].each{ |field, type| %>
+                    <div class="form-group">
+                      <% name = "customer[devices][#{key}][#{field}]" %>
+                      <%= f.label_tag name, t("activerecord.attributes.customer.devices.#{key}.#{field}"), class: 'col-md-2 control-label' %>
+                      <div class="col-md-6 input-append">
+                        <%= case type
+                          when :text
+                            f.text_field_tag name, @customer.devices[key] && @customer.devices[key][field], autocomplete: 'off', class: 'form-control'
+                          when :password
+                            f.password_field_tag name, @customer.devices[key] && @customer.devices[key][field], autocomplete: 'off', class: 'form-control'
+                          end %>
+                      </div>
+                    </div>
+                  <% } %>
+                  <% if definition[:has_sync] %>
+                  <div class="btn btn-default btn-sm <%= key %>-api-sync" disabled="disabled">
+                    <i class="fa fa-bolt fa-fw"></i>
+                    <%= t 'customers.form.devices.sync.action' %>
+                  </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <%= f.actions do %>
     <%= f.submit t('.submit') %>
   <% end %>

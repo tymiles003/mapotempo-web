@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2016
+# Copyright © Mapotempo, 2017
 #
 # This file is part of Mapotempo.
 #
@@ -15,8 +15,5 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class MasternautService < DeviceService
-  def check_auth(params)
-    service.check_auth customer, params
-  end
+class TrimbleService < DeviceService
 end

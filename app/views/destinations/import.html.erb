@@ -85,7 +85,7 @@
   </div>
 </div>
 
-<% if current_user.customer.tomtom? %>
+<% if current_user.customer.device.configured?(:tomtom) %>
   <div class="panel panel-default accordion">
     <div class="panel-heading">
       <h2 class="panel-title">

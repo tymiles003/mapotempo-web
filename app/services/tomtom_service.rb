@@ -20,31 +20,41 @@ class TomtomService < DeviceService
     'TomTom'
   end
 
-  def test_list(params)
-    service.test_list customer, params
-  end
-
   def list_devices
-    with_cache [:list_devices, service_name, customer.id, customer.tomtom_user] do
-      service.list_devices customer
+    if customer.devices[:tomtom] && customer.devices[:tomtom][:user]
+      # with_cache [:list_devices, service_name, customer.id, customer.devices[:tomtom][:user]] do
+        service.list_devices customer
+      # end
+    else
+      []
     end
   end
 
   def get_vehicles_pos
-    with_cache [:get_vehicles_pos, service_name, customer.id, customer.tomtom_user] do
-      service.get_vehicles_pos customer
+    if customer.devices[:tomtom] && customer.devices[:tomtom][:user]
+      with_cache [:get_vehicles_pos, service_name, customer.id, customer.devices[:tomtom][:user]] do
+        service.get_vehicles_pos customer
+      end
     end
   end
 
   def list_vehicles(params)
-    with_cache [:list_vehicles, service_name, customer.id, customer.tomtom_user] do
-      service.list_vehicles customer, params
+    if (customer.devices[:tomtom] && customer.devices[:tomtom][:user]) || (params && params[:user])
+      with_cache [:list_vehicles, service_name, customer.id, customer.devices[:tomtom][:user]] do
+        service.list_vehicles customer, params
+      end
+    else
+      []
     end
   end
 
   def list_addresses
-    with_cache [:list_addresses, service_name, customer.id, customer.tomtom_user] do
-      service.list_addresses customer
+    if customer.devices[:tomtom] && customer.devices[:tomtom][:user]
+      with_cache [:list_addresses, service_name, customer.id, customer.devices[:tomtom][:user]] do
+        service.list_addresses customer
+      end
+    else
+      []
     end
   end
 end

@@ -15,6 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require "value_to_boolean"
+
 module ApplicationHelper
   def span_tag(content)
     content_tag :span, content, class: 'default-color'
@@ -56,5 +58,9 @@ module ApplicationHelper
       number_of_days = Time.at(time_in_seconds).utc.strftime('%d').to_i - 1
       number_of_days > 0 ? number_of_days : nil
     end
+  end
+
+  def to_bool(str)
+    ValueToBoolean.value_to_boolean str
   end
 end
