@@ -61,7 +61,7 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
   end
 
   test 'should update a vehicle_usage_set store with null value' do
-    put api(@vehicle_usage_set.id), store_start_id: 'null', store_stop_id: 'null', store_rest_id: 'null'
+    put api(@vehicle_usage_set.id), store_start_id: nil, store_stop_id: nil, store_rest_id: nil
     assert last_response.ok?, last_response.body
 
     get api(@vehicle_usage_set.id)

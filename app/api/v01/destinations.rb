@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Destinations < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def destination_params
@@ -84,12 +85,12 @@ class V01::Destinations < Grape::API
 
     desc 'Create destination.',
       nickname: 'createDestination',
-      params: V01::Entities::Destination.documentation.except(:id, :tag_ids).deep_merge(
-        name: { required: true },
-        geocoding_accuracy: { values: 0..1 }
-      ),
       success: V01::Entities::Destination
     params do
+      use :params_from_entity, entity: V01::Entities::Destination.documentation.except(:id, :tag_ids).deep_merge(
+        name: { required: true },
+        geocoding_accuracy: { desc: 'Must be inside 0..1 range.' }
+      )
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
     end
     post do
@@ -152,12 +153,12 @@ class V01::Destinations < Grape::API
     desc 'Update destination.',
       detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
       nickname: 'updateDestination',
-      params: V01::Entities::Destination.documentation.except(:id, :tag_ids).deep_merge(
-        geocoding_accuracy: { values: 0..1 }
-      ),
       success: V01::Entities::Destination
     params do
       requires :id, type: String, desc: ID_DESC
+      use :params_from_entity, entity: V01::Entities::Destination.documentation.except(:id, :tag_ids).deep_merge(
+        geocoding_accuracy: { desc: 'Must be inside 0..1 range.' }
+      )
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
     end
     put ':id' do
@@ -195,10 +196,10 @@ class V01::Destinations < Grape::API
     desc 'Geocode destination.',
       detail: 'Result of geocoding is not saved with this operation. You can use update operation to save the result of geocoding.',
       nickname: 'geocodeDestination',
-      params: V01::Entities::Destination.documentation.except(:id, :visits_attributes).deep_merge(
-        geocoding_accuracy: { values: 0..1 }
-      ),
       success: V01::Entities::Destination
+    params do
+      use :params_from_entity, entity: V01::Entities::Destination.documentation.except(:id, :lat, :lng, :geocoding_accuracy, :geocoding_level, :visits)
+    end
     patch 'geocode' do
       destination = current_customer.destinations.build(destination_params.except(:id, :visits_attributes))
       destination.geocode
@@ -208,8 +209,10 @@ class V01::Destinations < Grape::API
     desc 'Reverse geocoding.',
       detail: 'Result of reverse geocoding is not saved with this operation.',
       nickname: 'reverseGeocodingDestination',
-      params: V01::Entities::Destination.documentation.except(:id, :visits_attributes),
       entity: V01::Entities::Destination
+    params do
+      use :params_from_entity, entity: V01::Entities::Destination.documentation.except(:id, :street, :postalcode, :city, :country, :visits)
+    end
     patch 'reverse' do
       destination = current_customer.destinations.build(destination_params.except(:id, :visits_attributes))
       destination.reverse_geocoding(params[:lat], params[:lng])
@@ -217,8 +220,10 @@ class V01::Destinations < Grape::API
 
     if Mapotempo::Application.config.geocode_complete
       desc 'Auto completion on destination.',
-        nickname: 'autocompleteDestination',
-        params: V01::Entities::Destination.documentation.except(:id, :visits_attributes)
+        nickname: 'autocompleteDestination'
+      params do
+        use :params_from_entity, entity: V01::Entities::Destination.documentation.except(:id, :visits)
+      end
       patch 'geocode_complete' do
         p = destination_params.except(:id, :visits_attributes)
         address_list = Mapotempo::Application.config.geocode_geocoder.complete(p[:street], p[:postalcode], p[:city], p[:country] || current_customer.default_country, current_customer.stores[0].lat, current_customer.stores[0].lng)

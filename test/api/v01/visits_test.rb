@@ -63,7 +63,7 @@ class V01::VisitsTest < ActiveSupport::TestCase
     ].each do |tags|
       assert_difference('Visit.count', 1) do
         assert_difference('Stop.count', 2) do
-          post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => {1 => 3.5}}).except('id')
+          post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => [{deliverable_unit_id: 1, quantity: 3.5}]}).except('id')
           assert last_response.created?, last_response.body
           visit = JSON.parse last_response.body
           assert_equal 2, visit['tag_ids'].size
@@ -90,7 +90,7 @@ class V01::VisitsTest < ActiveSupport::TestCase
       nil,
       []
     ].each do |tags|
-      put api_destination(@destination.id, @visit.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => {1 => 3.5, 2 => 3.5}})
+      put api_destination(@destination.id, @visit.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => [{deliverable_unit_id: 1, quantity: 3.5}, {deliverable_unit_id: 2, quantity: 3.5}]})
       assert last_response.ok?, last_response.body
 
       get api_destination(@destination.id, @visit.id)

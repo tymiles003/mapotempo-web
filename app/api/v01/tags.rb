@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Tags < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def tag_params
@@ -57,10 +58,12 @@ class V01::Tags < Grape::API
     desc 'Create tag.',
       detail: 'By creating a tag, it will be possible to filter visits and create a planning with only necessary visits.',
       nickname: 'createTag',
-      params: V01::Entities::Tag.documentation.except(:id).deep_merge(
-        label: { required: true }
-      ),
       success: V01::Entities::Tag
+    params do
+      use :params_from_entity, entity: V01::Entities::Tag.documentation.except(:id).deep_merge(
+        label: { required: true }
+      )
+    end
     post do
       tag = current_customer.tags.build(tag_params)
       tag.save!
@@ -69,10 +72,10 @@ class V01::Tags < Grape::API
 
     desc 'Update tag.',
       nickname: 'updateTag',
-      params: V01::Entities::Tag.documentation.except(:id),
       success: V01::Entities::Tag
     params do
       requires :id, type: Integer
+      use :params_from_entity, entity: V01::Entities::Tag.documentation.except(:id)
     end
     put ':id' do
       tag = current_customer.tags.find(params[:id])

@@ -26,6 +26,7 @@ class V01::Vehicles < Grape::API
     error! e.message, 200
   end
 
+  helpers SharedParams
   helpers do
     def session
       env[Rack::Session::Abstract::ENV_SESSION_KEY]
@@ -150,10 +151,12 @@ class V01::Vehicles < Grape::API
 
     desc 'Update vehicle.',
       nickname: 'updateVehicle',
-      params: V01::Entities::Vehicle.documentation.except(:id),
       success: V01::Entities::Vehicle
     params do
       requires :id, type: String, desc: ID_DESC
+      use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
+        router_dimension: { type: Symbol }
+      )
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -162,21 +165,22 @@ class V01::Vehicles < Grape::API
       present vehicle, with: V01::Entities::Vehicle
     end
 
-    detailCreate = 'For each new created <code>Vehicle</code> and <code>VehicleUsageSet</code> a new <code>VehicleUsage</code> will be created at the same time (i.e. customer has 2 VehicleUsageSets \'Morning\' and \'Evening\', a new Vehicle is created: 2 new VehicleUsages will be automatically created with the new vehicle.)'
+    detailCreate = 'For each new created Vehicle and VehicleUsageSet a new VehicleUsage will be created at the same time (i.e. customer has 2 VehicleUsageSets \'Morning\' and \'Evening\', a new Vehicle is created: 2 new VehicleUsages will be automatically created with the new vehicle.)'
     if Mapotempo::Application.config.manage_vehicles_only_admin
-      detailCreate = 'Only available with an admin api_key. <br>' + detailCreate
+      detailCreate = 'Only available with an admin api_key. ' + detailCreate
     end
     desc 'Create vehicle.',
       detail: detailCreate,
       nickname: 'createVehicle',
-      params: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
-        name: { required: true },
-      ).deep_merge(V01::Entities::VehicleUsage.documentation.except(:id).except(:vehicle_usage_set)),
       success: V01::Entities::Vehicle
-    if Mapotempo::Application.config.manage_vehicles_only_admin
-      params do
+    params do
+      if Mapotempo::Application.config.manage_vehicles_only_admin
         requires :customer_id, type: Integer
       end
+      use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
+        name: { required: true },
+        router_dimension: { type: Symbol }
+      ).deep_merge(V01::Entities::VehicleUsage.documentation.except(:id).except(:vehicle_usage_set))
     end
     post do
       if Mapotempo::Application.config.manage_vehicles_only_admin

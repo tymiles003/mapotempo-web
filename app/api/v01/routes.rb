@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Routes < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def route_params
@@ -37,10 +38,10 @@ class V01::Routes < Grape::API
       resource :routes do
         desc 'Update route visibility, color and lock.',
           nickname: 'updateRoute',
-          params: V01::Entities::Route.documentation.slice(:hidden, :locked, :color),
           success: V01::Entities::Route
         params do
           requires :id, type: String, desc: ID_DESC
+          use :params_from_entity, entity: V01::Entities::Route.documentation.slice(:hidden, :locked, :color)
         end
         put ':id' do
           planning_id = ParseIdsRefs.read(params[:planning_id])

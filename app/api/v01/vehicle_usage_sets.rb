@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::VehicleUsageSets < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def vehicle_usage_set_params
@@ -31,7 +32,7 @@ class V01::VehicleUsageSets < Grape::API
   end
 
   resource :vehicle_usage_sets do
-    desc 'Fetch customer\'s vehicle_usage_sets.',
+    desc 'Fetch customer\'s vehicle_usage_sets. At least one vehicle_usage_set exists per customer.',
       nickname: 'getVehicleUsageSets',
       is_array: true,
       success: V01::Entities::VehicleUsageSet
@@ -58,17 +59,19 @@ class V01::VehicleUsageSets < Grape::API
     end
 
     desc 'Create vehicle_usage_set.',
-      detail: "Only available if \"multi usage set\" option is active for current customer.
+      detail: "(Note a vehicle_usage_set is already automatically created with a customer.) Only available if \"multi usage set\" option is active for current customer.
         For instance, if customer needs to use its vehicle 2 times per day (morning and evening), he needs 2 VehicleUsageSet called \"Morning\" and \"Evening\". A VehicleUsage per Vehicle is automatically created. The new VehicleUsageSet allows to define new default values for VehicleUsage.",
       nickname: 'createVehicleUsageSet',
-      params: V01::Entities::VehicleUsageSet.documentation.except(:id).deep_merge(
+      success: V01::Entities::VehicleUsageSet
+    params do
+      use :params_from_entity, entity: V01::Entities::VehicleUsageSet.documentation.except(:id).deep_merge(
         name: { required: true },
         open: { required: true },
         close: { required: true },
         store_start_id: { required: true },
         store_stop_id: { required: true }
-      ),
-      success: V01::Entities::VehicleUsageSet
+      )
+    end
     post do
       vehicle_usage_set = current_customer.vehicle_usage_sets.build(vehicle_usage_set_params)
       vehicle_usage_set.save!
@@ -77,10 +80,10 @@ class V01::VehicleUsageSets < Grape::API
 
     desc 'Update vehicle_usage_set.',
       nickname: 'updateVehicleUsageSet',
-      params: V01::Entities::VehicleUsageSet.documentation.except(:id),
       success: V01::Entities::VehicleUsageSet
     params do
       requires :id, type: Integer
+      use :params_from_entity, entity: V01::Entities::VehicleUsageSet.documentation.except(:id)
     end
     put ':id' do
       vehicle_usage_set = current_customer.vehicle_usage_sets.find(params[:id])

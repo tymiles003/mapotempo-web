@@ -75,9 +75,11 @@ When a customer is created some objects are created by default with this new cus
 * `Store`: one default
 
 ### Profiles, Layers, Routers
-`Profile` is a concept which allows to set several other concepts for the customer:
+`Profile` is a concept which allows to set several parameters for the customer:
 * `Layer`: which allows to choose the background map
 * `Router`: which allows to build route\'s information.
+
+Several default profiles are available and can be listed with an admin `api_key`.
 
 ### Tags
 `Tag` is a concept to filter visits and create planning only for a subset of visits. For instance, if some visits are tagged "Monday", it allows to create a new planning for "Monday" tag and use only dedicated visits.

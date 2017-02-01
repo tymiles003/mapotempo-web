@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::VehicleUsages < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def vehicle_usage_params
@@ -77,10 +78,10 @@ class V01::VehicleUsages < Grape::API
 
         desc 'Update vehicle_usage.',
           nickname: 'updateVehicleUsage',
-          params: V01::Entities::VehicleUsage.documentation.except(:id, :vehicle_usage_set_id),
           success: V01::Entities::VehicleUsageWithVehicle
         params do
           requires :id, type: Integer
+          use :params_from_entity, entity: V01::Entities::VehicleUsage.documentation.except(:id, :vehicle_usage_set_id)
         end
         put ':id' do
           vehicle_usage_set = current_customer.vehicle_usage_sets.where(id: params[:vehicle_usage_set_id]).first

@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class V01::Stops < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def stop_params
@@ -38,10 +39,10 @@ class V01::Stops < Grape::API
 
           resource :stops do
             desc 'Update stop activation.',
-              nickname: 'updateStop',
-              params: V01::Entities::Stop.documentation.slice(:active)
+              nickname: 'updateStop'
             params do
               requires :id, type: Integer
+              use :params_from_entity, entity: V01::Entities::Stop.documentation.slice(:active)
             end
             put ':id' do
               planning_id = Integer(params[:planning_id])

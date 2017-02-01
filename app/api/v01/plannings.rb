@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Plannings < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def planning_params
@@ -32,14 +33,14 @@ class V01::Plannings < Grape::API
 
   resource :plannings do
     desc 'Create planning.',
-      detail: 'Create a planning. An out-of-route (unplanned) route and a route for each vehicle are automatically created. If some visits exist (or fetch if you use tags), as many stops as fetching visits will be created.',
+      detail: 'Create a planning. An out-of-route (unplanned) route and a route for each vehicle are automatically created. If some visits exist (or fetch if you use tags), as many stops as fetching visits will be created (ie: there is no specific operation to create routes and stops, the application create them for you).',
       nickname: 'createPlanning',
-      params: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids).deep_merge(
-        name: { required: true },
-        vehicle_usage_set_id: { required: true }
-      ),
       success: V01::Entities::Planning
     params do
+      use :params_from_entity, entity: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids).deep_merge(
+        name: { required: true },
+        vehicle_usage_set_id: { required: true }
+      )
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
     end
     post do
@@ -50,10 +51,10 @@ class V01::Plannings < Grape::API
 
     desc 'Update planning.',
       nickname: 'updatePlanning',
-      params: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tags_ids),
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
+      use :params_from_entity, entity: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids)
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])

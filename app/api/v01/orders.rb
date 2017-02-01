@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Orders < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
@@ -41,10 +42,10 @@ class V01::Orders < Grape::API
         desc 'Update order.',
           detail: 'Only available if "order array" option is active for current customer.',
           nickname: 'updateOrder',
-          params: V01::Entities::Order.documentation.except(:id),
           success: V01::Entities::Order
         params do
           requires :id, type: Integer
+          use :params_from_entity, entity: V01::Entities::Order.documentation.except(:id)
         end
         put ':id' do
           order = current_customer.order_arrays.find(params[:order_array_id]).orders.find(params[:id])

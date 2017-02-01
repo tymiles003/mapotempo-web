@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Users < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
@@ -72,13 +73,15 @@ class V01::Users < Grape::API
     desc 'Create user.',
       detail: 'Only available with an admin api_key.',
       nickname: 'createUser',
-      params: V01::Entities::User.documentation.except(:id).deep_merge(
+      success: V01::Entities::User
+    params do
+      use :params_from_entity, entity: V01::Entities::User.documentation.except(:id).deep_merge(
         email: { required: true },
         password: { required: true },
         customer_id: { required: true },
         layer_id: { required: true }
-      ),
-      success: V01::Entities::User
+      )
+    end
     post do
       if @current_user.admin?
         customer = @current_user.reseller.customers.where(id: params[:customer_id]).first!
@@ -93,10 +96,10 @@ class V01::Users < Grape::API
 
     desc 'Update user.',
       nickname: 'updateUser',
-      params: V01::Entities::User.documentation.except(:id),
       success: V01::Entities::User
     params do
       requires :id, type: String, desc: ID_DESC
+      use :params_from_entity, entity: V01::Entities::User.documentation.except(:id)
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
