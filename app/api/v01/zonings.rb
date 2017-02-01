@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Zonings < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def zoning_params
@@ -60,10 +61,12 @@ class V01::Zonings < Grape::API
     desc 'Create zoning.',
       detail: 'Create a new empty zoning. Zones will can be created for this zoning thereafter.',
       nickname: 'createZoning',
-      params: V01::Entities::Zoning.documentation.except(:id).deep_merge(
-        name: { required: true }
-      ),
       success: V01::Entities::Zoning
+    params do
+      use :params_from_entity, entity: V01::Entities::Zoning.documentation.except(:id).deep_merge(
+        name: { required: true }
+      )
+    end
     post do
       zoning = current_customer.zonings.build(zoning_params)
       zoning.save!
@@ -72,10 +75,10 @@ class V01::Zonings < Grape::API
 
     desc 'Update zoning.',
       nickname: 'updateZoning',
-      params: V01::Entities::Zoning.documentation.except(:id),
       success: V01::Entities::Zoning
     params do
       requires :id, type: Integer
+      use :params_from_entity, entity: V01::Entities::Zoning.documentation.except(:id)
     end
     put ':id' do
       zoning = current_customer.zonings.find(params[:id])

@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Visits < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def visit_params
@@ -84,9 +85,9 @@ class V01::Visits < Grape::API
 
         desc 'Create visit.',
           nickname: 'createVisit',
-          params: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids),
           success: V01::Entities::Visit
         params do
+          use :params_from_entity, entity: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids)
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
         end
         post do
@@ -101,10 +102,10 @@ class V01::Visits < Grape::API
         desc 'Update visit.',
           detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
           nickname: 'updateVisit',
-          params: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids),
           success: V01::Entities::Visit
         params do
           requires :id, type: String, desc: ID_DESC
+          use :params_from_entity, entity: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids)
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
         end
         put ':id' do

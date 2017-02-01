@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::Stores < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
@@ -30,7 +31,7 @@ class V01::Stores < Grape::API
   end
 
   resource :stores do
-    desc 'Fetch customer\'s stores.',
+    desc 'Fetch customer\'s stores. At least one store exists per customer.',
       nickname: 'getStores',
       is_array: true,
       success: V01::Entities::Store
@@ -60,13 +61,16 @@ class V01::Stores < Grape::API
     end
 
     desc 'Create store.',
+      detail: '(Note a default store is already automatically created with a customer.)',
       nickname: 'createStore',
-      params: V01::Entities::Store.documentation.except(:id).deep_merge(
+      success: V01::Entities::Store
+    params do
+      use :params_from_entity, entity: V01::Entities::Store.documentation.except(:id).deep_merge(
         name: { required: true },
         city: { required: true },
-        geocoding_accuracy: { values: 0..1 }
-      ),
-      success: V01::Entities::Store
+        geocoding_accuracy: { desc: 'Must be inside 0..1 range.' }
+      )
+    end
     post do
       store = current_customer.stores.build(store_params)
       current_customer.save!
@@ -75,9 +79,11 @@ class V01::Stores < Grape::API
 
     desc 'Import stores by upload a CSV file or by JSON.',
       nickname: 'importStores',
-      params: V01::Entities::StoresImport.documentation,
       is_array: true,
       success: V01::Entities::Store
+    params do
+      use :params_from_entity, entity: V01::Entities::StoresImport.documentation
+    end
     put do
       import = if params[:stores]
         ImportJson.new(importer: ImporterStores.new(current_customer), replace: params[:replace], json: params[:stores])
@@ -95,12 +101,12 @@ class V01::Stores < Grape::API
     desc 'Update store.',
       detail: 'If want to force geocoding for a new address, you have to send empty lat/lng with new address.',
       nickname: 'updateStore',
-      params: V01::Entities::Store.documentation.except(:id).deep_merge(
-        geocoding_accuracy: { values: 0..1 }
-      ),
       success: V01::Entities::Store
     params do
       requires :id, type: String, desc: ID_DESC
+      use :params_from_entity, entity: V01::Entities::Store.documentation.except(:id).deep_merge(
+        geocoding_accuracy: { desc: 'Must be inside 0..1 range.' }
+      )
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -141,10 +147,10 @@ class V01::Stores < Grape::API
     desc 'Geocode store.',
       detail: 'Result of geocoding is not saved with this operation. You can use update operation to save the result of geocoding.',
       nickname: 'geocodeStore',
-      params: V01::Entities::Store.documentation.except(:id).deep_merge(
-        geocoding_accuracy: { values: 0..1 }
-      ),
       success: V01::Entities::Store
+    params do
+      use :params_from_entity, entity: V01::Entities::Store.documentation.except(:id, :lat, :lng, :geocoding_accuracy, :geocoding_level)
+    end
     patch 'geocode' do
       store = current_customer.stores.build(store_params)
       store.geocode
@@ -153,8 +159,10 @@ class V01::Stores < Grape::API
 
     if Mapotempo::Application.config.geocode_complete
       desc 'Auto completion on store.',
-        nickname: 'autocompleteStore',
-        params: V01::Entities::Store.documentation.except(:id)
+        nickname: 'autocompleteStore'
+      params do
+        use :params_from_entity, entity: V01::Entities::Store.documentation.except(:id)
+      end
       patch 'geocode_complete' do
         p = store_params
         address_list = Mapotempo::Application.config.geocode_geocoder.complete(p[:street], p[:postalcode], p[:city], p[:country] || current_customer.default_country, current_customer.stores[0].lat, current_customer.stores[0].lng)
@@ -166,8 +174,10 @@ class V01::Stores < Grape::API
     desc 'Reverse geocoding.',
       detail: 'Result of reverse geocoding is not saved with this operation.',
       nickname: 'reverseGeocodingStore',
-      params: V01::Entities::Store.documentation.except(:id, :color, :name, :icon, :icon_size),
       entity: V01::Entities::Store
+    params do
+      use :params_from_entity, entity: V01::Entities::Store.documentation.except(:id, :color, :name, :icon, :icon_size, :street, :postalcode, :city, :country)
+    end
     patch 'reverse' do
       store = current_customer.stores.build(store_params.except(:id, :color, :name, :icon, :icon_size))
       store.reverse_geocoding(params[:lat], params[:lng])

@@ -18,6 +18,7 @@
 require 'coerce'
 
 class V01::DeliverableUnits < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def deliverable_unit_params
@@ -28,7 +29,7 @@ class V01::DeliverableUnits < Grape::API
   end
 
   resource :deliverable_units do
-    desc 'Fetch customer\'s deliverable units.',
+    desc 'Fetch customer\'s deliverable units. At least one deliverable unit exists per customer.',
       nickname: 'getDeliverableUnits',
       is_array: true,
       entity: V01::Entities::DeliverableUnit
@@ -55,10 +56,12 @@ class V01::DeliverableUnits < Grape::API
     end
 
     desc 'Create deliverable unit.',
-      detail: 'By creating a deliverable unit, it will be possible to specify quantities and capacities for this unit.',
+      detail: '(Note a default deliverable unit is already automatically created with a customer.) By creating a new deliverable unit, it will be possible to specify quantities and capacities for this another unit.',
       nickname: 'createDeliverableUnit',
-      params: V01::Entities::DeliverableUnit.documentation.except(:id),
       entity: V01::Entities::DeliverableUnit
+    params do
+      use :params_from_entity, entity: V01::Entities::DeliverableUnit.documentation.except(:id)
+    end
     post do
       deliverable_unit = current_customer.deliverable_units.build(deliverable_unit_params)
       deliverable_unit.save!
@@ -67,10 +70,10 @@ class V01::DeliverableUnits < Grape::API
 
     desc 'Update deliverable unit.',
       nickname: 'updateDeliverableUnit',
-      params: V01::Entities::DeliverableUnit.documentation.except(:id),
       entity: V01::Entities::DeliverableUnit
     params do
       requires :id, type: Integer
+      use :params_from_entity, entity: V01::Entities::DeliverableUnit.documentation.except(:id)
     end
     put ':id' do
       deliverable_unit = current_customer.deliverable_units.find(params[:id])

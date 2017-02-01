@@ -17,6 +17,7 @@
 #
 
 class V01::Customers < Grape::API
+  helpers SharedParams
   helpers do
     # Never trust parameters from the scary internet, only allow the white list through.
     def customer_params
@@ -66,16 +67,18 @@ class V01::Customers < Grape::API
 
     desc 'Update customer.',
       nickname: 'updateCustomer',
-      params: V01::Entities::Customer.documentation.except(
+      success: V01::Entities::Customer
+    params do
+      requires :id, type: String, desc: ID_DESC
+      use :params_from_entity, entity: V01::Entities::Customer.documentation.except(
         :id,
         :store_ids,
         :job_destination_geocoding_id,
         :job_store_geocoding_id,
         :job_optimizer_id
-      ),
-      success: V01::Entities::Customer
-    params do
-      requires :id, type: String, desc: ID_DESC
+      ).deep_merge(
+        router_dimension: { type: Symbol }
+      )
     end
     put ':id' do
       if @current_user.admin?
@@ -93,7 +96,9 @@ class V01::Customers < Grape::API
     desc 'Create customer.',
       detail: 'Only available with an admin api_key.',
       nickname: 'createCustomer',
-      params: V01::Entities::Customer.documentation.except(
+      success: V01::Entities::Customer
+    params do
+      use :params_from_entity, entity: V01::Entities::Customer.documentation.except(
         :id,
         :store_ids,
         :job_destination_geocoding_id,
@@ -103,9 +108,10 @@ class V01::Customers < Grape::API
         name: { required: true },
         default_country: { required: true },
         router_id: { required: true },
-        profile_id: { required: true }
-      ),
-      success: V01::Entities::Customer
+        profile_id: { required: true },
+        router_dimension: { type: Symbol }
+      )
+    end
     post do
       if @current_user.admin?
         customer = @current_user.reseller.customers.build(customer_params)
