@@ -86,7 +86,7 @@ class ImporterStores < ImporterBase
       store = @customer.stores.find{ |store|
         store.ref && store.ref == row[:ref]
       }
-      store.assign_attributes({lat: nil, lng: nil}.merge(row)) if store
+      store.assign_attributes((row.key?(:lat) || row.key?(:lng) ? {lat: nil, lng: nil} : {}).merge(row)) if store
     end
 
     if !store
