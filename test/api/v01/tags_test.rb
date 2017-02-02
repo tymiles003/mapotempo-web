@@ -44,6 +44,15 @@ class V01::TagsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not create a tag' do
+    @tag.icon = '' # Invalid for enum
+    post api(), @tag.attributes
+    assert_equal 500, last_response.status, 'Bad response: ' + last_response.body
+    response = JSON.parse(last_response.body)
+    assert_equal('icon does not have a valid value', response['message'])
+    assert response['backtrace'], 'Empty backtrace'
+  end
+
   test 'should update a tag' do
     @tag.label = 'new label'
     put api(@tag.id), label: 'riri', color: '#123456'

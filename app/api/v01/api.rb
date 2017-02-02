@@ -79,26 +79,22 @@ class V01::Api < Grape::API
     end
   end
 
-  rescue_from :all do |e|
+  rescue_from :all, backtrace: ENV['RAILS_ENV'] != 'production' do |e|
     ActiveRecord::Base.connection.transaction_open? and ActiveRecord::Base.connection.rollback_transaction
 
     @error = e
     Rails.logger.error "\n\n#{e.class} (#{e.message}):\n    " + e.backtrace.join("\n    ") + "\n\n"
-    response = {message: e.message}
-    if ENV['RAILS_ENV'] == 'test'
-      response[:backtrace] = Rails.backtrace_cleaner.clean(e.backtrace)[0..10].join("\n    ")
-    elsif ENV['RAILS_ENV'] == 'development'
-      puts e.backtrace
-    end
+    puts Rails.backtrace_cleaner.clean(e.backtrace).join("\n    ") if ENV['RAILS_ENV'] == 'development'
 
+    response = {message: e.message}
     if e.is_a?(ActiveRecord::RecordNotFound) || e.is_a?(ArgumentError)
       rack_response(nil, 404)
     elsif e.is_a?(ActiveRecord::RecordInvalid) || e.is_a?(RangeError)
-      rack_response({error: e.to_s}.to_json, 400)
+      rack_response(format_message(response, nil), 400)
     elsif e.is_a?(Grape::Exceptions::MethodNotAllowed)
-      rack_response(response.to_json, 405)
+      rack_response(format_message(response, nil), 405)
     else
-      rack_response('Internal Server Error', 500)
+      rack_response(format_message(response, e.backtrace), 500)
     end
   end
 
