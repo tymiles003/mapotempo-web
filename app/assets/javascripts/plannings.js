@@ -779,7 +779,7 @@ var plannings_edit = function(params) {
         });
         //this.closePopup(); // doesn't work with Firefox
       });
-      distance = (prefered_unit == 'km') ? distance.toFixed(1) + ' kms'  : (distance / 1.609344).toFixed(1) + ' miles' ;
+      distance = (prefered_unit == 'km') ? distance.toFixed(1) + ' ' + I18n.t('all.unit.kms')  : (distance / 1.609344).toFixed(1) + ' ' + I18n.t('all.unit.miles') ;
       var driveTime = (drive_time !== null) ? ('0' + parseInt(drive_time / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(drive_time / 60) % 60).slice(-2) + ':' + ('0' + (drive_time % 60)).slice(-2) : '';
       this.bindPopup((driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>');
       return this;
