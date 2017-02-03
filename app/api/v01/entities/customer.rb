@@ -26,26 +26,33 @@ class V01::Entities::Customer < Grape::Entity
   expose(:id, documentation: { type: Integer })
   expose(:end_subscription, documentation: { type: Date, desc: EDIT_ONLY_ADMIN })
   expose(:max_vehicles, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
-  expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
-  expose(:store_ids, documentation: { type: Array[Integer] })
-  expose(:job_destination_geocoding_id, documentation: { type: Integer })
-  expose(:job_store_geocoding_id, documentation: { type: Integer })
-  expose(:job_optimizer_id, documentation: { type: Integer })
+
+  # Default
+  expose(:store_ids, documentation: { type: Integer, is_array: true })
+  expose(:vehicle_usage_set_ids, documentation: { type: Integer, is_array: true })
+  expose(:deliverable_unit_ids, documentation: { type: Integer, is_array: true })
+
   expose(:ref, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
   expose(:name, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
+  expose(:default_country, documentation: { type: String })
+  expose(:profile_id, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
   expose(:router_id, documentation: { type: Integer })
   expose(:router_dimension, documentation: { type: String, values: ::Router::DIMENSION.keys })
   expose(:speed_multiplicator, documentation: { type: Float })
-  expose(:default_country, documentation: { type: String })
+  expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
   expose(:print_planning_annotating, documentation: { type: 'Boolean' })
   expose(:print_header, documentation: { type: String })
-  expose(:profile_id, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
+
+  expose(:job_destination_geocoding_id, documentation: { type: Integer })
+  expose(:job_store_geocoding_id, documentation: { type: Integer })
+  expose(:job_optimizer_id, documentation: { type: Integer })
+
   expose(:enable_references, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:enable_multi_visits, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:advanced_options, documentation: { type: String, desc: 'Advanced options in a serialized json format' })
   expose(:enable_global_optimization, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:enable_vehicle_position, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:enable_stop_status, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  expose(:advanced_options, documentation: { type: String, desc: 'Advanced options in a serialized json format' })
 
   # Devices: Alyacom
   expose(:enable_alyacom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })

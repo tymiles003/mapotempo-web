@@ -45,5 +45,5 @@ class V01::Entities::Visit < Grape::Entity
   expose(:ref, documentation: { type: String })
   expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
   expose(:take_over_default, documentation: { type: DateTime }) { |m| m.destination.customer && m.destination.customer.take_over && m.destination.customer.take_over.utc.strftime('%H:%M:%S') }
-  expose(:tag_ids, documentation: { type: Array[Integer] })
+  expose(:tag_ids, documentation: { type: Integer, is_array: true })
 end

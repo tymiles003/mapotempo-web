@@ -38,5 +38,5 @@ class V01::Entities::VehicleUsageWithVehicle < V01::Entities::VehicleUsage
     'V01_VehicleUsageWithVehicle'
   end
 
-  expose(:vehicle, using: V01::Entities::VehicleWithoutVehicleUsage, documentation: { type: Array[V01::Entities::VehicleWithoutVehicleUsage] })
+  expose(:vehicle, using: V01::Entities::VehicleWithoutVehicleUsage, documentation: { type: V01::Entities::VehicleWithoutVehicleUsage, is_array: true })
 end

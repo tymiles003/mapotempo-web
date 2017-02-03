@@ -24,9 +24,6 @@ class V01::VehicleUsages < Grape::API
     def vehicle_usage_params
       p = ActionController::Parameters.new(params)
       p = p[:vehicle_usage] if p.key?(:vehicle_usage)
-      p[:store_start_id] = nil if p[:store_start_id] == 'null'
-      p[:store_stop_id] = nil if p[:store_stop_id] == 'null'
-      p[:store_rest_id] = nil if p[:store_rest_id] == 'null'
       p.permit(:name, :open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, :active)
     end
   end

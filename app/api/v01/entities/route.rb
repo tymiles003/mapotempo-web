@@ -38,7 +38,7 @@ class V01::Entities::Route < Grape::Entity
   expose(:hidden, documentation: { type: 'Boolean' })
   expose(:locked, documentation: { type: 'Boolean' })
   expose(:out_of_date, documentation: { type: 'Boolean' })
-  expose(:stops, using: V01::Entities::Stop, documentation: { type: Array[V01::Entities::Stop] })
+  expose(:stops, using: V01::Entities::Stop, documentation: { type: V01::Entities::Stop, is_array: true })
   expose(:stop_out_of_drive_time, documentation: { type: 'Boolean' })
   expose(:stop_distance, documentation: { type: Float, desc: 'Distance between the vehicle\'s store_stop and last stop.' })
   expose(:stop_drive_time, documentation: { type: Integer, desc: 'Time in seconds between the vehicle\'s store_stop and last stop.' })
@@ -59,5 +59,5 @@ class V01::Entities::RouteStatus < Grape::Entity
   expose(:vehicle_usage_id, documentation: { type: Integer })
   expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent'})
   expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
-  expose(:stops, using: V01::Entities::StopStatus, documentation: { type: Array[V01::Entities::StopStatus] })
+  expose(:stops, using: V01::Entities::StopStatus, documentation: { type: V01::Entities::StopStatus, is_array: true })
 end

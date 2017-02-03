@@ -21,5 +21,5 @@ class V01::Entities::DestinationImportJson < V01::Entities::Destination
   end
 
   unexpose(:visits)
-  expose(:visits, using: V01::Entities::VisitImportJson, documentation: { type: Array[V01::Entities::VisitImportJson] })
+  expose(:visits, using: V01::Entities::VisitImportJson, documentation: { type: V01::Entities::VisitImportJson, is_array: true })
 end
