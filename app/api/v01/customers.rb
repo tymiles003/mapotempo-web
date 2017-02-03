@@ -73,11 +73,11 @@ class V01::Customers < Grape::API
       use :params_from_entity, entity: V01::Entities::Customer.documentation.except(
         :id,
         :store_ids,
+        :vehicle_usage_set_ids,
+        :deliverable_unit_ids,
         :job_destination_geocoding_id,
         :job_store_geocoding_id,
         :job_optimizer_id
-      ).deep_merge(
-        router_dimension: { type: Symbol }
       )
     end
     put ':id' do
@@ -101,6 +101,8 @@ class V01::Customers < Grape::API
       use :params_from_entity, entity: V01::Entities::Customer.documentation.except(
         :id,
         :store_ids,
+        :vehicle_usage_set_ids,
+        :deliverable_unit_ids,
         :job_destination_geocoding_id,
         :job_store_geocoding_id,
         :job_optimizer_id
@@ -108,8 +110,7 @@ class V01::Customers < Grape::API
         name: { required: true },
         default_country: { required: true },
         router_id: { required: true },
-        profile_id: { required: true },
-        router_dimension: { type: Symbol }
+        profile_id: { required: true }
       )
     end
     post do

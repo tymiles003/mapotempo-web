@@ -154,9 +154,7 @@ class V01::Vehicles < Grape::API
       success: V01::Entities::Vehicle
     params do
       requires :id, type: String, desc: ID_DESC
-      use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
-        router_dimension: { type: Symbol }
-      )
+      use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(:id)
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -178,8 +176,7 @@ class V01::Vehicles < Grape::API
         requires :customer_id, type: Integer
       end
       use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
-        name: { required: true },
-        router_dimension: { type: Symbol }
+        name: { required: true }
       ).deep_merge(V01::Entities::VehicleUsage.documentation.except(:id).except(:vehicle_usage_set))
     end
     post do

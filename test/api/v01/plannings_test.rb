@@ -57,9 +57,11 @@ class V01::PlanningsTest < ActiveSupport::TestCase
   test 'should create a planning' do
     assert_difference('Planning.count', 1) do
       @planning.name = 'new name'
-      post api(), @planning.attributes.update({tag_ids: tags(:tag_one).id})
+      post api(), @planning.attributes.merge({tag_ids: tags(:tag_one).id, zoning_ids: [zonings(:zoning_one).id]})
       assert last_response.created?, last_response.body
-      assert_equal 1, JSON.parse(last_response.body)['tag_ids'].size
+      response = JSON.parse(last_response.body)
+      assert_equal 1, response['tag_ids'].size
+      assert_equal 1, response['zoning_ids'].size
     end
   end
 
