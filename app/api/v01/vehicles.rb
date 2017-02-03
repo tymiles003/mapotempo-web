@@ -36,7 +36,7 @@ class V01::Vehicles < Grape::API
     def vehicle_params
       p = ActionController::Parameters.new(params)
       p = p[:vehicle] if p.key?(:vehicle)
-      p[:capacities] = Hash[p[:capacities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if p[:capacities] && p[:capacities].is_a?(Array)
+      p[:capacities] = Hash[p[:capacities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if p[:capacities] && p[:capacities].is_a?(Array)
 
       # Deals with deprecated capacity
       if !p[:capacities]

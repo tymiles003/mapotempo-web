@@ -24,7 +24,7 @@ class V01::Visits < Grape::API
     def visit_params
       p = ActionController::Parameters.new(params)
       p = p[:visit] if p.key?(:visit)
-      p[:quantities] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if p[:quantities] && p[:quantities].is_a?(Array)
+      p[:quantities] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if p[:quantities] && p[:quantities].is_a?(Array)
 
       # Deals with deprecated open and close
       p[:open1] = p.delete(:open) if !p[:open1]

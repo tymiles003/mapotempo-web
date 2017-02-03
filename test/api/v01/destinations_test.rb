@@ -146,7 +146,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
                 active: '1'
               }]
             }]
-          }
+          }.to_json,
+          'CONTENT_TYPE' => 'application/json'
           assert last_response.ok?, last_response.body
           assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
 
@@ -222,7 +223,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
                 active: true
               }]
             }]
-          }
+          }.to_json,
+          'CONTENT_TYPE' => 'application/json'
           assert last_response.ok?, last_response.body
           assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
 
@@ -278,7 +280,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               route: '1',
               active: '1'
             }]
-          }]}
+          }]}.to_json,
+          'CONTENT_TYPE' => 'application/json'
           assert last_response.ok?, last_response.body
           assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
 
@@ -332,7 +335,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               route: '1',
               active: '1'
             }]
-          }]}
+          }]}.to_json,
+          'CONTENT_TYPE' => 'application/json'
           assert last_response.ok?, last_response.body
           assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
 
@@ -362,7 +366,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
             geocoding_accuracy: nil,
             foo: 'bar',
             visits: []
-          }]}
+          }]}.to_json,
+          'CONTENT_TYPE' => 'application/json'
           assert last_response.ok?, last_response.body
           assert_equal 1, JSON.parse(last_response.body).size, 'Bad response size: ' + last_response.body.inspect
 
@@ -408,7 +413,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               route: '4',
               active: '1'
             }]
-          }]}
+          }]}.to_json,
+          'CONTENT_TYPE' => 'application/json'
           assert !last_response.ok?, last_response.body
           assert_not_nil JSON.parse(last_response.body)['error'], 'Bad response: ' + last_response.body.inspect
         end
@@ -458,7 +464,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
               route: '1',
               active: '1'
             }]
-          }]}
+          }]}.to_json,
+          'CONTENT_TYPE' => 'application/json'
           assert_not last_response.ok?, last_response.body
           error_message = I18n.t('destinations.import_file.refs_duplicate', refs: "z|v1")
           assert_equal error_message, JSON.parse(last_response.body)["error"][0].scan(error_message)[0]
@@ -485,7 +492,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
       []
     ].each do |tags|
       @destination.name = 'new name'
-      put api(@destination.id), @destination.attributes.merge(tag_ids: tags, visits: [ref: 'api', quantity: 5])
+      put api(@destination.id), @destination.attributes.merge(tag_ids: tags, visits: [ref: 'api', quantity: 5]).to_json, 'CONTENT_TYPE' => 'application/json'
       assert last_response.ok?, last_response.body
       destination = JSON.parse(last_response.body)
       assert_equal @destination.name, destination['name']
