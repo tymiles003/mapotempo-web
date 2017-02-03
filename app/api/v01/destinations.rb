@@ -29,7 +29,7 @@ class V01::Destinations < Grape::API
       end
       if p[:visits_attributes]
         p[:visits_attributes].each do |hash|
-          hash[:quantities] = Hash[hash[:quantities].map{ |q| [q[:deliverable_unit_id], q[:quantity]] }] if hash[:quantities] && hash[:quantities].is_a?(Array)
+          hash[:quantities] = Hash[hash[:quantities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if hash[:quantities] && hash[:quantities].is_a?(Array)
 
           # Deals with deprecated open and close
           hash[:open1] = hash.delete(:open) if !hash.key?(:open1) && hash.key?(:open)
