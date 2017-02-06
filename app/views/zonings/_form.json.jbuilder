@@ -18,8 +18,8 @@ if @planning
       json.ref visit.ref if @zoning.customer.enable_references
       json.active route.vehicle_usage && stop.active
       if !@planning.customer.enable_orders
-        json.quantities visit.default_quantities.map{ |k, v| {unit_id: k, quantity: v} } do |quantity|
-          json.extract! quantity, :unit_id, :quantity
+        json.quantities visit.default_quantities.map{ |k, v| {deliverable_unit_id: k, quantity: v} } do |quantity|
+          json.extract! quantity, :deliverable_unit_id, :quantity
         end
       end
       (json.duration l(visit.take_over.utc, format: :hour_minute_second)) if visit.take_over

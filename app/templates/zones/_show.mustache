@@ -31,15 +31,15 @@
         <label><input type="checkbox" name="zoning[zones_attributes][][avoid_zone]"{{#avoid_zone}} checked{{/avoid_zone}}> {{#i18n}}zonings.form.avoid_zone{{/i18n}}</label>
       </div>
     </div>
-    <span class="stop" style="display: none"><i class="fa fa-check-square fa-fw"></i><span class="stop_number"></span> {{#i18n}}plannings.edit.stops{{/i18n}}</span>
-    {{#show_capacity}}
-    <span class="stop" style="display: none">
-      {{#capacities}}
+    <span class="zone-info" style="display: none"><i class="fa fa-check-square fa-fw"></i><span class="stop_number"></span> {{#i18n}}plannings.edit.stops{{/i18n}}</span>
+    {{#show_deliverable_units}}
+    <span class="zone-info" style="display: none">
+      {{#deliverable_units}}
         <span data-unit-id="{{unit_id}}">
-          <i class="fa fa-archive fa-fw"></i><span class="quantity_number"></span>{{#capacity}}/<span class="capacity_number">{{capacity}}</span>{{/capacity}}{{#capacity_unit}}&nbsp;{{capacity_unit}}{{/capacity_unit}}
+          <i class="fa fa-archive fa-fw"></i><span class="quantity_number"></span>/<span class="capacity_number">{{#capacity}}{{capacity}}{{/capacity}}{{^capacity}}-{{/capacity}}</span>{{#unit_label}}&nbsp;{{unit_label}}{{/unit_label}}
         </span>
-      {{/capacities}}
+      {{/deliverable_units}}
     </span>
-    {{/show_capacity}}
+    {{/show_deliverable_units}}
   </div>
 </div>
