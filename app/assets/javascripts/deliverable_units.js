@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2016
+// Copyright © Mapotempo, 2016-2017
 //
 // This file is part of Mapotempo.
 //
@@ -17,6 +17,8 @@
 //
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
+'use strict';
+
 var deliverable_units_form = function() {
   var optimisationOverloadMultiplier = function() {
     var input = $('input[name=deliverable_unit\\[optimization_overload_multiplier\\]]');

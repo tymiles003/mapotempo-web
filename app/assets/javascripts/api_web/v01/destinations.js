@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2015
+// Copyright © Mapotempo, 2015-2017
 //
 // This file is part of Mapotempo.
 //
@@ -15,6 +15,8 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+'use strict';
+
 var api_web_v01_display_destinations_ = function(api, map, data) {
   var tags = {};
 

@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2015
+// Copyright © Mapotempo, 2015-2017
 //
 // This file is part of Mapotempo.
 //
@@ -15,6 +15,8 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+'use strict';
+
 $(document).on('ready page:load', function() {
   $('.index_toggle_selection').click(function() {
     $('input:checkbox').each(function() {
@@ -72,7 +74,7 @@ var mapInitialize = function(params) {
   var mapLayer, mapBaseLayers = {},
     mapOverlays = {},
     nbLayers = 0;
-  for (layer_name in params.map_layers) {
+  for (var layer_name in params.map_layers) {
     var layer = params.map_layers[layer_name];
     var l = L.tileLayer(layer.url, {
       maxZoom: 18,

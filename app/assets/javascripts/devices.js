@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2016
+// Copyright © Mapotempo, 2016-2017
 //
 // This file is part of Mapotempo.
 //
@@ -15,6 +15,8 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+'use strict';
+
 function devices_observe_planning(context, callback) {
 
   $.each($('.last-sent-at', context), function(i, element) {

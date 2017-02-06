@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2013-2015
+// Copyright © Mapotempo, 2013-2017
 //
 // This file is part of Mapotempo.
 //
@@ -15,6 +15,8 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+'use strict';
+
 var getPlanningsId = function() {
   return $.makeArray($('#plannings input[type=checkbox]:checked').map(function(index, id){ return $(id).val(); }));
 }

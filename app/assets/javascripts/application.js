@@ -1,4 +1,4 @@
-// Copyright © Mapotempo, 2013-2014
+// Copyright © Mapotempo, 2013-2017
 //
 // This file is part of Mapotempo.
 //
@@ -80,6 +80,9 @@
 //= require_tree .
 // jQuery Turbolinks documentation informs to load all scripts before turbolinks
 //= require turbolinks
+
+'use strict';
+
 Turbolinks.enableProgressBar();
 // bug in Firefox 40 when printing multi pages with progress bar
 window.onbeforeprint = function() {
@@ -90,10 +93,10 @@ window.onafterprint = function() {
 };
 
 $(document).ready(function() {
-  startSpinner = function() {
+  var startSpinner = function() {
     $('body').addClass('turbolinks_waiting');
   };
-  stopSpinner = function() {
+  var stopSpinner = function() {
     $('body').removeClass('turbolinks_waiting');
   };
   $(document).on("page:fetch", startSpinner);

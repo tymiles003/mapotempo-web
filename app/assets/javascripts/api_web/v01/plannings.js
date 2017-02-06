@@ -15,6 +15,7 @@
 // along with Mapotempo. If not, see:
 // <http://www.gnu.org/licenses/agpl.html>
 //
+'use strict';
 
 Paloma.controller('ApiWeb/V01/Plannings', {
   edit: function() {
