@@ -22,8 +22,8 @@ var zonings_edit = function(params) {
   var prefered_unit = params.prefered_unit,
     zoning_id = params.zoning_id,
     planning_id = params.planning_id,
-    vehicles_array = params.vehicles_array,
-    vehicles_map = params.vehicles_map,
+    vehicles = params.vehicles_array,
+    vehiclesMap = params.vehicles_map,
     url_click2call = params.url_click2call,
     deliverableUnits = params.deliverable_units,
     showUnits = params.show_deliverable_units;
@@ -48,16 +48,14 @@ var zonings_edit = function(params) {
 
   sidebar.addTo(map);
 
-  var markersLayers = L.featureGroup(),
-    stores_marker = L.featureGroup(),
-    featureGroup = L.featureGroup(),
-    unaffectedGroup = L.featureGroup();
+  var unplannedMarkers = L.featureGroup(),
+    withVehicleMarkers = L.featureGroup(),
+    storeMarkers = L.featureGroup(),
+    featureGroup = L.featureGroup();
 
-  map.addLayer(featureGroup).addLayer(stores_marker).addLayer(markersLayers).addLayer(unaffectedGroup);
+  map.addLayer(featureGroup).addLayer(storeMarkers).addLayer(withVehicleMarkers).addLayer(unplannedMarkers);
 
   var destinationsDisplayed = false;
-  var geoJsonLayers = {};
-
   var zonesMap = {};
 
   // Must be init before L.Hash
@@ -122,7 +120,7 @@ var zonings_edit = function(params) {
   map.on('draw:created', function(e) {
     drawing_changed = true;
     addZone({
-      'vehicles': vehicles_array,
+      'vehicles': vehicles,
       'polygon': JSON.stringify(e.layer.toGeoJSON())
     }, e.layer);
   });
@@ -143,12 +141,12 @@ var zonings_edit = function(params) {
     });
   });
 
-  var countPointInPolygon = function(layer_id, ele) {
+  var countPointInPolygon = function(layer, ele) {
     if (destinationsDisplayed) {
       var n = 0,
         quantities = {};
-      $.each($.merge(markersLayers.getLayers(), $('#hide_out_of_route').is(':checked') ? [] : unaffectedGroup.getLayers()), function(i, markerLayer) {
-        if (leafletPip.pointInLayer(markerLayer.getLatLng(), geoJsonLayers[layer_id], true).length > 0) {
+      $.each($.merge(withVehicleMarkers.getLayers(), $('#hide_out_of_route').is(':checked') ? [] : unplannedMarkers.getLayers()), function(i, markerLayer) {
+        if (leafletPip.pointInLayer(markerLayer.getLatLng(), layer, true).length > 0) {
           n += 1;
           if (markerLayer.data) {
             $.each(markerLayer.data.quantities, function(i, q) {
@@ -175,7 +173,7 @@ var zonings_edit = function(params) {
       dashArray: '10, 10',
       fillPattern: stripes
     } : {
-      color: ((vehicle_id && vehicles_map[vehicle_id]) ? vehicles_map[vehicle_id].color : '#707070'),
+      color: ((vehicle_id && vehiclesMap[vehicle_id]) ? vehiclesMap[vehicle_id].color : '#707070'),
       fillColor: null,
       weight: 2,
       dashArray: 'none',
@@ -189,14 +187,14 @@ var zonings_edit = function(params) {
   stripes.addTo(map);
 
   var template = function(state) {
-    if (state.id && vehicles_map[state.id]) {
-      return $("<span><span class='color_small' style='background:" + vehicles_map[state.id].color + "'></span>&nbsp;" + vehicles_map[state.id].name + "</span>");
+    if (state.id && vehiclesMap[state.id]) {
+      return $("<span><span class='color_small' style='background:" + vehiclesMap[state.id].color + "'></span>&nbsp;" + vehiclesMap[state.id].name + "</span>");
     } else {
       return I18n.t('web.form.empty_entry');
     }
   };
 
-  var router_avoid_zones = $.grep(vehicles_array, function(elem) {
+  var router_avoid_zones = $.grep(vehicles, function(elem) {
     return elem.router_avoid_zones;
   }).length > 0;
 
@@ -285,7 +283,6 @@ var zonings_edit = function(params) {
       geoJsonLayer = (new zoneGeometry).addOverlay(zone);
       geoJsonLayer.addLayer(geom);
     }
-    geoJsonLayers[geom._leaflet_id] = geoJsonLayer;
 
     featureGroup.addLayer(geom);
 
@@ -293,7 +290,7 @@ var zonings_edit = function(params) {
     $.each(params.manage_zoning, function(i, elt) {
       zone['manage_' + elt] = true;
     });
-    zone.vehicles = $.map(vehicles_array, function(val, i) {
+    zone.vehicles = $.map(vehicles, function(val, i) {
       return {
         id: val.id,
         selected: val.id == zone.vehicle_id,
@@ -304,17 +301,17 @@ var zonings_edit = function(params) {
         return val.selected;
       })) < 0) {
       zone.vehicles.unshift({
-        id: vehicles_map[zone.vehicle_id].id,
+        id: vehiclesMap[zone.vehicle_id].id,
         selected: true,
-        name: vehicles_map[zone.vehicle_id].name
+        name: vehiclesMap[zone.vehicle_id].name
       });
     }
     zone.avoid_zone = zone.speed_multiplicator == 0;
-    zone.router_avoid_zones = zone.vehicle_id && vehicles_map[zone.vehicle_id] ? vehicles_map[zone.vehicle_id].router_avoid_zones : router_avoid_zones;
+    zone.router_avoid_zones = zone.vehicle_id && vehiclesMap[zone.vehicle_id] ? vehiclesMap[zone.vehicle_id].router_avoid_zones : router_avoid_zones;
     zone.show_deliverable_units = showUnits;
     if (showUnits) {
       if (zone.vehicle_id)
-        zone.deliverable_units = vehicles_map[zone.vehicle_id].capacities;
+        zone.deliverable_units = vehiclesMap[zone.vehicle_id].capacities;
       else
         zone.deliverable_units = deliverableUnits;
     }
@@ -327,10 +324,10 @@ var zonings_edit = function(params) {
 
     ele.data('feature', zone);
     zonesMap[geom._leaflet_id] = {
-      layer: geom,
+      layer: geoJsonLayer,
       ele: ele
     };
-    countPointInPolygon(geom._leaflet_id, ele);
+    countPointInPolygon(geoJsonLayer, ele);
 
     var formatNoMatches = I18n.t('web.select2.empty_result');
     $('select', ele).select2({
@@ -359,19 +356,16 @@ var zonings_edit = function(params) {
       }
       var vehicleId = e.val || e.target.value;
 
-      var avoid_zones = router_avoid_zones;
-      if (vehicleId) {
-        avoid_zones = vehicles_map[vehicleId].router_avoid_zones;
-      }
-      if (!avoid_zones) {
-        $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[avoid_zone\\]]', $(this).closest('.zone')).prop('disabled', true);
-        $('.avoid-zone', $(this).closest('.zone')).addClass('disabled');
-      } else {
+      if (vehicleId ? vehiclesMap[vehicleId].router_avoid_zones : router_avoid_zones) {
         $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[avoid_zone\\]]', $(this).closest('.zone')).prop('disabled', false);
         $('.avoid-zone', $(this).closest('.zone')).css({
           display: 'block'
         });
         $('.avoid-zone', $(this).closest('.zone')).removeClass('disabled');
+      }
+      else {
+        $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[avoid_zone\\]]', $(this).closest('.zone')).prop('disabled', true);
+        $('.avoid-zone', $(this).closest('.zone')).addClass('disabled');
       }
 
       setColor(geom, vehicleId, ($('[name$=\\[avoid_zone\\]]', ele).is(':checked') && !$('[name$=\\[avoid_zone\\]]', ele).is(':disabled')) ? 0 : undefined);
@@ -380,7 +374,7 @@ var zonings_edit = function(params) {
         $('.capacity_number', $(this).closest('.zone')).html('-');
         if (this.value) {
           var that = this;
-          $.each(vehicles_map[this.value].capacities, function(index, capacity) {
+          $.each(vehiclesMap[this.value].capacities, function(index, capacity) {
             if (capacity.capacity) {
               $('[data-unit-id=' + capacity.unit_id + '] .capacity_number', $(that).closest('.zone')).html(capacity.capacity);
             }
@@ -408,7 +402,7 @@ var zonings_edit = function(params) {
 
   var updateZone = function(geom) {
     $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[polygon\\]]', zonesMap[geom._leaflet_id].ele).attr('value', JSON.stringify(geom.toGeoJSON()));
-    countPointInPolygon(geom._leaflet_id, zonesMap[geom._leaflet_id].ele);
+    countPointInPolygon(zonesMap[geom._leaflet_id].layer, zonesMap[geom._leaflet_id].ele);
   };
 
   var planning = undefined;
@@ -428,11 +422,11 @@ var zonings_edit = function(params) {
     if (fitBounds) {
       var bounds = (featureGroup.getLayers().length ?
         featureGroup :
-        unaffectedGroup.getLayers().length ?
-        unaffectedGroup :
-        markersLayers.getLayers().length ?
-        markersLayers :
-        stores_marker
+        unplannedMarkers.getLayers().length ?
+        unplannedMarkers :
+        withVehicleMarkers.getLayers().length ?
+        withVehicleMarkers :
+        storeMarkers
       ).getBounds();
       if (bounds && bounds.isValid()) {
         map.invalidateSize();
@@ -447,7 +441,7 @@ var zonings_edit = function(params) {
 
   var displayDestinations = function(route) {
     destinationsDisplayed = true
-    var has_vehicle = route.vehicle_id && vehicles_map[route.vehicle_id];
+    var hasVehicle = route.vehicle_id && vehiclesMap[route.vehicle_id];
 
     $.each(route.stops, function(index, stop) {
       stop.i18n = mustache_i18n;
@@ -455,7 +449,7 @@ var zonings_edit = function(params) {
       if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
         var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
           icon: L.icon({
-            iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (has_vehicle ? vehicles_map[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
+            iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (hasVehicle ? vehiclesMap[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
             iconSize: new L.Point(12, 12),
             iconAnchor: new L.Point(6, 6),
             popupAnchor: new L.Point(0, -6),
@@ -464,8 +458,8 @@ var zonings_edit = function(params) {
           stop: stop
         }));
 
-        if (has_vehicle) m.addTo(markersLayers);
-        else m.addTo(unaffectedGroup);
+        if (hasVehicle) m.addTo(withVehicleMarkers);
+        else m.addTo(unplannedMarkers);
 
         m.data = stop;
         m.on('mouseover', function(e) {
@@ -494,7 +488,7 @@ var zonings_edit = function(params) {
             popupAnchor: new L.Point(0, -Math.floor(map.iconSize[store.icon_size || 'large'].size / 2.5)),
             className: 'store-icon-container'
           })
-        }).addTo(stores_marker).bindPopup(SMT['stops/show']({
+        }).addTo(storeMarkers).bindPopup(SMT['stops/show']({
           stop: store
         }));
         m.on('mouseover', function(e) {
@@ -551,14 +545,14 @@ var zonings_edit = function(params) {
               stops: visits
             });
             $.each(featureGroup.getLayers(), function(idx, zone) {
-              countPointInPolygon(zone._leaflet_id, zonesMap[zone._leaflet_id].ele);
+              countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
             });
           },
           complete: completeAjaxMap,
           error: ajaxError
         });
       } else {
-        map.addLayer(unaffectedGroup);
+        map.addLayer(unplannedMarkers);
         $('.zone-info').show();
       }
       $('.automatic.disabled').each(function() {
@@ -566,7 +560,7 @@ var zonings_edit = function(params) {
       });
       $('#generate').css('display', 'inline-block');
     } else {
-      map.removeLayer(unaffectedGroup);
+      map.removeLayer(unplannedMarkers);
       $('.zone-info').hide();
       $('.automatic').each(function() {
         $(this).addClass('disabled');
@@ -576,12 +570,12 @@ var zonings_edit = function(params) {
 
   $('#hide_out_of_route').change(function(e) {
     if ($(e.target).is(':checked')) {
-      map.removeLayer(unaffectedGroup);
+      map.removeLayer(unplannedMarkers);
     } else {
-      map.addLayer(unaffectedGroup);
+      map.addLayer(unplannedMarkers);
     }
     $.each(featureGroup.getLayers(), function(idx, zone) {
-      countPointInPolygon(zone._leaflet_id, zonesMap[zone._leaflet_id].ele);
+      countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
     });
   });
 
@@ -635,7 +629,6 @@ var zonings_edit = function(params) {
     if (nbZones && !confirm(I18n.t('zonings.edit.generate_confirm'))) {
       return false;
     }
-    var vehicle_usage_set_id = $('#isochrone_vehicle_usage_set_id').val();
     var size = $('#isochrone_size').val().split(':');
     size = parseInt(size[0]) * 60 + parseInt(size[1]);
 
@@ -644,7 +637,7 @@ var zonings_edit = function(params) {
       type: "patch",
       dataType: "json",
       data: {
-        vehicle_usage_set_id: vehicle_usage_set_id,
+        vehicle_usage_set_id: $('#isochrone_vehicle_usage_set_id').val(),
         size: size
       },
       beforeSend: function(jqXHR, settings) {
@@ -676,7 +669,6 @@ var zonings_edit = function(params) {
     if (nbZones && !confirm(I18n.t('zonings.edit.generate_confirm'))) {
       return false;
     }
-    var vehicle_usage_set_id = $('#isodistance_vehicle_usage_set_id').val();
     var isodistanceSize = parseFloat($('#isodistance_size').val().replace(/,/g, '.'));
     var size = (prefered_unit == 'km') ? isodistanceSize : Math.ceil10(isodistanceSize * 1.60934, -2);
 
@@ -687,7 +679,7 @@ var zonings_edit = function(params) {
     $('#isodistance-modal').modal('hide');
     $.ajax({
       type: "patch",
-      url: '/zonings/' + zoning_id + '/isodistance.json?vehicle_usage_set_id=' + vehicle_usage_set_id + '&size=' + size,
+      url: '/zonings/' + zoning_id + '/isodistance.json?vehicle_usage_set_id=' + $('#isodistance_vehicle_usage_set_id').val() + '&size=' + size,
       beforeSend: beforeSendWaiting,
       success: function(data) {
         fitBounds = true;
