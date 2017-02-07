@@ -22,4 +22,5 @@ class V01::Entities::DeliverableUnitQuantity < Grape::Entity
 
   expose(:deliverable_unit_id, documentation: { type: Integer })
   expose(:quantity, documentation: { type: Float })
+  expose(:icon, documentation: { type: String })
 end

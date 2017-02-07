@@ -15,9 +15,12 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require 'font_awesome'
+
 class DeliverableUnitsController < ApplicationController
   load_and_authorize_resource
   before_action :set_deliverable_unit, only: [:edit, :update, :destroy]
+  before_action :icons_table, except: [:index]
 
   def index
     @deliverable_units = current_user.customer.deliverable_units
@@ -91,6 +94,10 @@ class DeliverableUnitsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def deliverable_unit_params
-    p = params.require(:deliverable_unit).permit(:label, :ref, :default_quantity, :default_capacity, :optimization_overload_multiplier)
+    p = params.require(:deliverable_unit).permit(:label, :ref, :default_quantity, :default_capacity, :optimization_overload_multiplier, :icon)
+  end
+
+  def icons_table
+    @grouped_icons ||= [FontAwesome::ICONS_TABLE_UNIT, (FontAwesome::ICONS_TABLE - FontAwesome::ICONS_TABLE_UNIT)]
   end
 end

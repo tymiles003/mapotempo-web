@@ -20,6 +20,10 @@
 'use strict';
 
 var deliverable_units_form = function() {
+
+  //for turbolinks, when clicking on link_to
+  $('.selectpicker').selectpicker();
+
   var optimisationOverloadMultiplier = function() {
     var input = $('input[name=deliverable_unit\\[optimization_overload_multiplier\\]]');
     if (!$('#deliverable_unit_optimization_overload_multiplier_yes').prop('checked')) {

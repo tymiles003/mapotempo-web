@@ -109,7 +109,9 @@ gem 'twitter_bootstrap_form_for', github: 'Mapotempo/twitter_bootstrap_form_for'
 gem 'bootstrap-filestyle-rails'
 gem 'bootstrap-wysihtml5-rails'
 gem 'bootstrap-datepicker-rails'
-gem 'bootstrap-select-rails'
+
+#FIXME: Update when optgroup index will be fixed. (ISSUE : https://github.com/Slashek/bootstrap-select-rails/issues/27)
+gem 'bootstrap-select-rails', '< 1.6.3'
 
 gem 'sanitize'
 gem 'iconv'

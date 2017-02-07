@@ -54,13 +54,10 @@ var destinations_form = function(params, api) {
 
     customColorInitialize('#store_color');
 
-    $('#store_icon option').each(function(elem, val) {
-      var $this = $(this);
-      if ($this.val())
-        $this.attr('data-content', '<i class="fa ' + $this.val() + '"></i> ' + $this.val());
-    })
-    $('#store_icon').attr('data-live-search', 'true').selectpicker();
+    //for turbolinks, when clicking on link_to
+    $('.selectpicker').selectpicker();
   }
+
 
   var markers = {};
 

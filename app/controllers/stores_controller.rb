@@ -24,7 +24,7 @@ class StoresController < ApplicationController
 
   load_and_authorize_resource
   before_action :set_store, only: [:show, :edit, :update, :destroy]
-  before_action :icons_table
+  before_action :icons_table, except: [:index]
   after_action :warnings, only: [:create, :update]
 
   def index
@@ -140,7 +140,7 @@ class StoresController < ApplicationController
   end
 
   def icons_table
-    @icons_table = FontAwesome::ICONS_TABLE
+    @grouped_icons ||= [FontAwesome::ICONS_TABLE_STORE, (FontAwesome::ICONS_TABLE - FontAwesome::ICONS_TABLE_STORE)]
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

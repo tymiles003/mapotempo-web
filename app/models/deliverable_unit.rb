@@ -15,7 +15,11 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
+require "font_awesome"
+
 class DeliverableUnit < ActiveRecord::Base
+  ICON_SIZE = %w(small medium large).freeze
+  
   belongs_to :customer
 
   nilify_blanks
@@ -24,6 +28,8 @@ class DeliverableUnit < ActiveRecord::Base
   validates :default_capacity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :optimization_overload_multiplier, numericality: { greater_than_or_equal_to: -1 }, allow_nil: true
   validates :ref, uniqueness: { scope: :customer_id, case_sensitive: true }, allow_nil: true, allow_blank: true
+
+  validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.store.icon_unknown') }
 
   before_save :out_of_date
 

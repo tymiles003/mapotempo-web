@@ -175,7 +175,7 @@ GEM
     bootstrap-datepicker-rails (1.6.4.1)
       railties (>= 3.0)
     bootstrap-filestyle-rails (1.2.1)
-    bootstrap-select-rails (1.6.3)
+    bootstrap-select-rails (1.6.2)
     bootstrap-wysihtml5-rails (0.3.3.8)
       railties (>= 3.0)
     browser (2.3.0)
@@ -611,7 +611,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-datepicker-rails
   bootstrap-filestyle-rails
-  bootstrap-select-rails
+  bootstrap-select-rails (< 1.6.3)
   bootstrap-wysihtml5-rails
   browser
   bullet

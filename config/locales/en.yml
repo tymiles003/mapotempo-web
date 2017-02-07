@@ -699,6 +699,8 @@ en:
     new:
       title: "New deliverable unit"
     form:
+      prefered_icons: "Prefered"
+      other_icons: "Others"
       label_placeholder: "unit"
       label_help: 'For instance "packet" or a unit like "lb", kg".'
       ref_help: "A free reference"
@@ -1303,6 +1305,8 @@ or copy/paste following url in your browser : %{l} </p>\n
         small: "small"
         medium: "medium"
         large: "large"
+      prefered_icons: "Prefered"
+      other_icons: "Others"
     edit:
       title: "Editing store"
     import:

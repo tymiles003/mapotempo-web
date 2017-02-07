@@ -30,4 +30,11 @@
       }
     }
   }
+   #deliverable_unit_icon + div {
+    z-index: 1000;
+
+    .btn[data-id='deliverable_unit_icon'] {
+      color: #555;
+    }
+  }
 }

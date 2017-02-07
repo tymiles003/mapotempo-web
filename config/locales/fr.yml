@@ -699,6 +699,8 @@ fr:
     new:
       title: "Nouvelle unité livrable"
     form:
+      prefered_icons: "Conseillés"
+      other_icons: "Autres"
       label_placeholder: "unité"
       label_help: "Par exemple « colis » ou une unité comme « kg »."
       ref_help: "Référence libre"
@@ -1303,7 +1305,9 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
         small: "petite"
         medium: "moyenne"
         large: "grande"
-    edit:
+      prefered_icons: "Conseillés"
+      other_icons: "Autres"
+    edit: 
       title: "Modifier dépôt"
     import:
       title: "Importer des dépôts"
