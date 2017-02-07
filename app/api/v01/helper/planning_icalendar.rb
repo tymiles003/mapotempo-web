@@ -13,7 +13,7 @@ module PlanningIcalendar
     event = Icalendar::Event.new
     event.uid = [stop.id, stop.visit_id].join('-')
     event.dtstart = event_start
-    event.dtend = event_start + (stop.duration ? stop.duration.to_i : 0)
+    event.dtend = event_start + stop.duration.to_i # Exclusive xor with event.duration
     event.summary = stop.name
     event.location = [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].reject(&:blank?).join(', ')
     event.categories = route.ref || route.vehicle_usage.vehicle.name.delete(',')
@@ -24,12 +24,7 @@ module PlanningIcalendar
     if stop.phone_number
       event.attendee = Icalendar::Values::CalAddress.new("tel:#{stop.phone_number}", cn: stop.phone_number)
     end
-    if stop.duration
-      hours = stop.duration.to_i / 3600
-      minutes = (stop.duration.to_i - hours * 3600) / 60
-      seconds = (stop.duration.to_i - hours * 3600 - minutes * 60)
-      event.duration = Icalendar::Values::Duration.new("#{hours}H#{minutes}M#{seconds}S").value_ical
-    end
+    # event.duration not supported in S Planner
     event.geo = [stop.lat, stop.lng]
     event
   end
