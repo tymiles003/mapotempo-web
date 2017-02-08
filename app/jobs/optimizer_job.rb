@@ -81,7 +81,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global)
       planning.set_stops(routes, optimum)
       routes.each { |r|
         r.reload # Refresh stops order
-        r.compute if r.vehicle_usage
+        r.compute
         r.save!
       }
       planning.reload

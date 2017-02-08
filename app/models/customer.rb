@@ -232,7 +232,7 @@ class Customer < ActiveRecord::Base
         # reindex remaining stops (like rests)
         route.force_reindex
         # out_of_date for last step
-        route.out_of_date = true if route.stop_trace
+        route.out_of_date = true if route.stop_drive_time
         route.optimized_at = route.last_sent_to = route.last_sent_at = nil
       end
       p.save!

@@ -65,6 +65,7 @@ class Route < ActiveRecord::Base
     planning.visits_compatibles.each { |visit|
       stops.build(type: StopVisit.name, visit: visit, active: true, index: i += 1)
     }
+    self.out_of_date = true
   end
 
   def service_time_start_value
@@ -214,35 +215,37 @@ class Route < ActiveRecord::Base
   end
 
   def compute(options = {})
-    stops_sort, stops_drive_time, stops_time_windows = plan(nil, options[:ignore_errors])
+    if self.vehicle_usage && self.out_of_date
+      stops_sort, stops_drive_time, stops_time_windows = plan(nil, options[:ignore_errors])
 
-    if stops_sort
-      # Try to minimize waiting time by a later begin
-      time = self.end
-      time -= stops_drive_time[:stop] if stops_drive_time[:stop]
-      (time -= vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_end
-      stops_sort.reverse_each{ |stop|
-        if stop.active && (stop.position? || stop.is_a?(StopRest))
-          open, close = stops_time_windows[stop]
-          if stop.time && (stop.out_of_window || (close && time > close))
-            time = [stop.time, close ? close - stop.duration : 0].max
-          else
-            # Latest departure time
-            time = [time, close].min if close
+      if stops_sort
+        # Try to minimize waiting time by a later begin
+        time = self.end
+        time -= stops_drive_time[:stop] if stops_drive_time[:stop]
+        (time -= vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_end
+        stops_sort.reverse_each{ |stop|
+          if stop.active && (stop.position? || stop.is_a?(StopRest))
+            open, close = stops_time_windows[stop]
+            if stop.time && (stop.out_of_window || (close && time > close))
+              time = [stop.time, close ? close - stop.duration : 0].max
+            else
+              # Latest departure time
+              time = [time, close].min if close
 
-            # New arrival stop time
-            time -= stop.duration
+              # New arrival stop time
+              time -= stop.duration
+            end
+
+            # Previous departure time
+            time -= stops_drive_time[stop] if stops_drive_time[stop]
           end
+        }
 
-          # Previous departure time
-          time -= stops_drive_time[stop] if stops_drive_time[stop]
+        (time -= vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_start
+        if time > start
+          # We can sleep a bit more on morning, shift departure
+          plan(time, options[:ignore_errors])
         end
-      }
-
-      (time -= vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_start
-      if time > start
-        # We can sleep a bit more on morning, shift departure
-        plan(time, options[:ignore_errors])
       end
     end
 
@@ -428,7 +431,7 @@ class Route < ActiveRecord::Base
   end
 
   def out_of_date
-    vehicle_usage && self[:out_of_date]
+    self[:out_of_date]
   end
 
   def changed?
