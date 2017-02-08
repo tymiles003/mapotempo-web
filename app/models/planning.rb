@@ -130,7 +130,7 @@ class Planning < ActiveRecord::Base
   def compute(options = {})
     Planning.transaction do
       split_by_zones if zoning_out_of_date
-      routes.select{ |r| r.vehicle_usage && r.out_of_date }.each{ |r| r.compute(options) }
+      routes.each{ |r| r.compute(options) }
     end
   end
 
@@ -262,12 +262,14 @@ class Planning < ActiveRecord::Base
     }
     orders = Hash[orders]
 
-    routes.select(&:vehicle_usage).each{ |route|
-      route.stops.each{ |stop|
-        stop.active = orders.key?(stop.visit_id) && !orders[stop.visit_id].empty?
-      }
+    routes.each{ |route|
+      if route.vehicle_usage
+        route.stops.each{ |stop|
+          stop.active = orders.key?(stop.visit_id) && !orders[stop.visit_id].empty?
+        }
+        route.optimized_at = route.last_sent_to = route.last_sent_at = nil
+      end
       route.out_of_date = true
-      route.optimized_at = route.last_sent_to = route.last_sent_at = nil
     }
 
     self.order_array = order_array
@@ -372,7 +374,7 @@ class Planning < ActiveRecord::Base
 
       # Save route to update now stop.route_id
       routes.each{ |route|
-        route.out_of_date = true if route.vehicle_usage
+        route.out_of_date = true
         (route.no_stop_index_validation = true) && route.save!
         route.reload # Refresh route.stops collection if stops have been moved
       }

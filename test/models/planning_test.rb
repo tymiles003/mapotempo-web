@@ -326,6 +326,7 @@ class PlanningTest < ActiveSupport::TestCase
     r = v.routes.take
 
     # 1st computation, set Stop times
+    r.out_of_date = true
     r.compute
     stop_times = r.stops.map &:time
     route_start = r.start
@@ -338,6 +339,7 @@ class PlanningTest < ActiveSupport::TestCase
     )
 
     # 2nd computation
+    r.out_of_date = true
     r.compute
     stop_times2 = r.stops.map &:time
     route_start2 = r.start
@@ -355,6 +357,7 @@ class PlanningTest < ActiveSupport::TestCase
     )
 
     # 3rd computation
+    r.out_of_date = true
     r.compute
     stop_times3 = r.stops.map &:time
     route_start3 = r.start
@@ -375,6 +378,7 @@ class PlanningTest < ActiveSupport::TestCase
     )
 
     # Compute a last time, this stop should be out of time window
+    r.out_of_date = true
     r.compute
     assert r.stops[0].out_of_window
   end
@@ -383,6 +387,7 @@ class PlanningTest < ActiveSupport::TestCase
     v = vehicle_usages(:vehicle_usage_one_one)
     r = v.routes.take
     r.planning.customer.stores.update_all lat: nil, lng: nil
+    r.out_of_date = true
     r.compute
     r.stops.sort_by(&:index).each_with_index do |stop, index|
       if index.zero?

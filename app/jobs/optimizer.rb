@@ -58,7 +58,7 @@ class Optimizer
         planning.set_stops(routes, optimum)
         routes.each{ |r|
           r.reload # Refresh stops order
-          r.compute if r.vehicle_usage
+          r.compute
           r.save!
         }
         planning.reload

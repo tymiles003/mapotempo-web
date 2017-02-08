@@ -46,6 +46,8 @@ class V01::Plannings < Grape::API
     post do
       planning = current_customer.plannings.build(planning_params)
       planning.save!
+      planning.compute
+      planning.save!
       present planning, with: V01::Entities::Planning
     end
 
