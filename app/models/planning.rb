@@ -307,7 +307,7 @@ class Planning < ActiveRecord::Base
               {
                 deliverable_unit_id: k,
                 capacity: v,
-                overload_multiplier: customer.deliverable_units.find{ |du| du.id == k}.optimization_overload_multiplier
+                overload_multiplier: customer.deliverable_units.find{ |du| du.id == k }.optimization_overload_multiplier || Mapotempo::Application.config.optimize_overload_multiplier
               }
             }
           }
