@@ -57,7 +57,7 @@ class Route < ActiveRecord::Base
       stops.build(type: StopRest.name, active: true, index: 1)
     end
 
-    compute(ignore_errors: ignore_errors)
+    compute!(ignore_errors: ignore_errors)
   end
 
   def default_stops
@@ -78,7 +78,6 @@ class Route < ActiveRecord::Base
 
   def plan(departure = nil, ignore_errors = false)
     self.touch if self.id # To force route save in case none attribute has changed below
-    self.out_of_date = false
     self.distance = 0
     self.stop_distance = 0
     self.stop_trace = nil
@@ -214,8 +213,8 @@ class Route < ActiveRecord::Base
     end
   end
 
-  def compute(options = {})
-    if self.vehicle_usage && self.out_of_date
+  def compute!(options = {})
+    if self.vehicle_usage
       stops_sort, stops_drive_time, stops_time_windows = plan(nil, options[:ignore_errors])
 
       if stops_sort
@@ -249,7 +248,12 @@ class Route < ActiveRecord::Base
       end
     end
 
+    self.out_of_date = false
     true
+  end
+
+  def compute(options = {})
+    compute!(options) if self.out_of_date
   end
 
   def set_visits(visits, recompute = true, ignore_errors = false)
@@ -269,10 +273,9 @@ class Route < ActiveRecord::Base
         stops.build(type: StopVisit.name, visit: visit, active: active, index: i += 1)
       }
       if vehicle_usage
-        self.out_of_date = true
         self.optimized_at = self.last_sent_to = self.last_sent_at = nil
       end
-      compute(ignore_errors: ignore_errors) if recompute
+      compute!(ignore_errors: ignore_errors) if recompute
     end
   end
 
@@ -285,8 +288,8 @@ class Route < ActiveRecord::Base
     end
     stops.build(type: StopVisit.name, visit: visit, index: index, active: active, id: stop_id)
 
+    self.out_of_date = true
     if vehicle_usage
-      self.out_of_date = true
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
   end
@@ -340,7 +343,7 @@ class Route < ActiveRecord::Base
     if vehicle_usage
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
-    compute
+    compute!
   end
 
   def move_stop_out(stop, force = false)
@@ -349,9 +352,8 @@ class Route < ActiveRecord::Base
         shift_index(stop.index + 1, -1)
         self.optimized_at = self.last_sent_to = self.last_sent_at = nil
       end
-      stop.active = false
-      compute
       stop.route.stops.destroy(stop)
+      compute!
     end
   end
 
@@ -416,7 +418,7 @@ class Route < ActiveRecord::Base
       end
     }
     self.optimized_at = self.last_sent_to = self.last_sent_at = nil
-    compute
+    compute!
   end
 
   def reverse_order
