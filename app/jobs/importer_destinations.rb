@@ -141,6 +141,14 @@ class ImporterDestinations < ImporterBase
       }
       @customer.save!
     end
+
+    @destinations_by_ref = Hash[@customer.destinations.select(&:ref).collect{ |destination| [destination.ref, destination] }]
+    @visits_by_ref = Hash[@customer.destinations.collect(&:visits).flatten.select(&:ref).collect{ |visit| [visit.ref, visit] }]
+
+    @@col_dest_keys ||= columns_destination.keys
+    @col_visit_keys = columns_visit.keys + [:quantities]
+    @@slice_attr ||= (@@col_dest_keys - [:customer_id, :lat, :lng, :geocoding_accuracy, :geocoding_level]).collect(&:to_s)
+    @destinations_by_attributes = Hash[@customer.destinations.collect{ |destination| [destination.attributes.slice(*@@slice_attr), destination] }]
   end
 
   def prepare_quantities(row)
@@ -209,27 +217,25 @@ class ImporterDestinations < ImporterBase
 
     [:tags, :tags_visit].each{ |key| prepare_tags row, key }
 
-    destination_attributes = row.slice(*(@@col_dest_keys ||= columns_destination.keys))
-    visit_attributes = row.slice(*(@@columns_visit_keys ||= columns_visit.keys + [:quantities]))
+    destination_attributes = row.slice(*@@col_dest_keys)
+    visit_attributes = row.slice(*@col_visit_keys)
     visit_attributes[:ref] = visit_attributes.delete :ref_visit
     visit_attributes[:tags] = visit_attributes.delete :tags_visit if visit_attributes.key?(:tags_visit)
 
     if !row[:ref].nil? && !row[:ref].strip.empty?
-      destination = @customer.destinations.find{ |destination|
-        destination.ref && destination.ref == row[:ref]
-      }
+      destination = @destinations_by_ref[row[:ref]]
       if destination
         destination.assign_attributes (destination_attributes.key?(:lat) || destination_attributes.key?(:lng) ?
           {lat: nil, lng: nil} :
           {}).merge(destination_attributes.compact) # FIXME: don't use compact to overwrite database with row containing nil
       else
         destination = @customer.destinations.build(destination_attributes)
+        @destinations_by_ref[destination.ref] = destination if destination.ref
+        @destinations_by_attributes[destination.attributes.slice(*@@slice_attr)] = destination
       end
       if row[:without_visit].nil? || row[:without_visit].strip.empty?
         visit = if !row[:ref_visit].nil? && !row[:ref_visit].strip.empty?
-          destination.visits.find{ |visit|
-            visit.ref && visit.ref == row[:ref_visit]
-          }
+          @visits_by_ref[row[:ref_visit]]
         else
           # Get the first visit without ref
           destination.visits.find{ |v| !v.ref }
@@ -238,15 +244,14 @@ class ImporterDestinations < ImporterBase
           visit.assign_attributes(visit_attributes.compact) # FIXME: don't use compact to overwrite database with row containing nil
         else
           visit = destination.visits.build(visit_attributes)
+          @visits_by_ref[visit.ref] = visit if visit.ref
         end
       else
         destination.visits = []
       end
     else
       if !row[:ref_visit].nil? && !row[:ref_visit].strip.empty?
-        visit = @customer.visits.find{ |visit|
-          visit.ref && visit.ref == row[:ref_visit]
-        }
+        visit = @visits_by_ref[row[:ref_visit]]
         if visit
           visit.destination.assign_attributes(destination_attributes)
           visit.assign_attributes(visit_attributes)
@@ -254,17 +259,17 @@ class ImporterDestinations < ImporterBase
       end
       if !visit
         row_compare_attr = (@@dest_attr_nil ||= Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten]).merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level, :tags).stringify_keys
-        @@slice_attr ||= (@@col_dest_keys - [:customer_id, :lat, :lng, :geocoding_accuracy, :geocoding_level]).collect(&:to_s)
         # Get destination from attributes for multiple visits
-        destination = @customer.destinations.find{ |d|
-          d.attributes.slice(*@@slice_attr) == row_compare_attr
-        }
+        destination = @destinations_by_attributes[row_compare_attr]
         if !destination
           destination = @customer.destinations.build(destination_attributes)
+          # No destination.ref here for @destinations_by_ref
+          @destinations_by_attributes[destination.attributes.slice(*@@slice_attr)] = destination
         end
         if row[:without_visit].nil? || row[:without_visit].strip.empty?
           # Link only when destination is complete
           visit = destination.visits.build(visit_attributes)
+          @visits_by_ref[visit.ref] = visit if visit.ref
         end
       end
     end

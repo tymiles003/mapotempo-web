@@ -72,6 +72,8 @@ class ImporterStores < ImporterBase
         end
       }
     end
+
+    @stores_by_ref = Hash[@customer.stores.select(&:ref).collect{ |store| [store.ref, store] }]
   end
 
   def import_row(name, row, line, options)
@@ -83,9 +85,7 @@ class ImporterStores < ImporterBase
     end
 
     if !row[:ref].nil? && !row[:ref].strip.empty?
-      store = @customer.stores.find{ |store|
-        store.ref && store.ref == row[:ref]
-      }
+      store = @stores_by_ref[row[:ref]]
       store.assign_attributes((row.key?(:lat) || row.key?(:lng) ? {lat: nil, lng: nil} : {}).merge(row)) if store
     end
 
