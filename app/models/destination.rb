@@ -54,6 +54,14 @@ class Destination < Location
     @tag_ids_changed || super
   end
 
+  def visits_color
+    (tags | visits.collect(&:tags).reduce(&:|)).find(&:color).try(&:color)
+  end
+
+  def visits_icon
+    (tags | visits.collect(&:tags).reduce(&:|)).find(&:icon).try(&:icon)
+  end
+
   private
 
   def update_tags_track(_tag)

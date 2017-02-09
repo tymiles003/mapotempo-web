@@ -2,7 +2,7 @@
 
 tag_one:
   label: tag1
-  color: #FF0000
+  color: "#FF0000"
   icon:
   customer: customer_one
 

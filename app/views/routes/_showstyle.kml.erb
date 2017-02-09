@@ -1,6 +1,6 @@
 <Style id="route-<%= route.id %>">
   <LineStyle>
-    <color>cc<%= (route.color || (route.vehicle_usage && route.vehicle_usage.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
+    <color>cc<%= route.default_color[1..-1].scan(/../).reverse.join %></color>
     <width>3</width>
   </LineStyle>
 </Style>
@@ -9,16 +9,16 @@
     <Icon>
       <href>marker-home.png</href>
     </Icon>
-    <color>cc<%= (route.color || (route.vehicle_usage && route.vehicle_usage.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
+    <color>cc<%= route.default_color[1..-1].scan(/../).reverse.join %></color>
     <width>3</width>
   </IconStyle>
 </Style>
 <Style id="route-<%= route.id %>-point">
   <IconStyle>
     <Icon>
-      <href>point-<%= (route.color || (route.vehicle_usage && route.vehicle_usage.vehicle.color) || '#707070')[1..-1] %>.png</href>
+      <href>point-<%= route.default_color[1..-1] %>.png</href>
     </Icon>
-    <color>cc<%= (route.color || (route.vehicle_usage && route.vehicle_usage.vehicle.color) || '#707070')[1..-1].scan(/../).reverse.join %></color>
+    <color>cc<%= route.default_color[1..-1].scan(/../).reverse.join %></color>
     <width>3</width>
   </IconStyle>
 </Style>

@@ -68,14 +68,12 @@ json.routes @routes do |route|
       json.visits true
       visit = stop.visit
       json.visit_id visit.id
-      tags = visit.destination.tags | visit.tags
       json.destination do
         json.destination_id visit.destination.id
-        color = tags.find(&:color)
-        (json.color color.color) if color
-        icon = tags.find(&:icon)
-        (json.icon icon.icon) if icon
+        (json.color visit.color) if visit.color
+        (json.icon visit.icon) if visit.icon
       end
+      tags = visit.destination.tags | visit.tags
       if !tags.empty?
         json.tags_present do
           json.tags do

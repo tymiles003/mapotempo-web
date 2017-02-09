@@ -111,6 +111,14 @@ class Visit < ActiveRecord::Base
     } : !!quantities_was
   end
 
+  def color
+    @color ||= (tags | destination.tags).find(&:color).try(&:color)
+  end
+
+  def icon
+    @icon ||= (tags | destination.tags).find(&:icon).try(&:icon)
+  end
+
   private
 
   def update_out_of_date

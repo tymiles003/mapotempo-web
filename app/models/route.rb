@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Route < ActiveRecord::Base
+  COLOR_DEFAULT = '#707070'
+
   belongs_to :planning
   belongs_to :vehicle_usage
   has_many :stops, -> { order(:index) }, inverse_of: :route, autosave: true, dependent: :delete_all, after_add: :update_stops_track, after_remove: :update_stops_track
@@ -438,6 +440,10 @@ class Route < ActiveRecord::Base
 
   def clear_sent_to
     self.last_sent_to = self.last_sent_at = nil
+  end
+
+  def default_color
+    self.color || (self.vehicle_usage && self.vehicle_usage.vehicle.color) || COLOR_DEFAULT
   end
 
   def to_s

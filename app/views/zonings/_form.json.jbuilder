@@ -27,11 +27,8 @@ if @planning
       (json.close1 l(stop.close1.utc, format: :hour_minute)) if stop.close1
       (json.open2 l(stop.open2.utc, format: :hour_minute)) if stop.open2
       (json.close2 l(stop.close2.utc, format: :hour_minute)) if stop.close2
-      tags = stop.visit.tags | stop.visit.destination.tags
-      color = tags.find(&:color)
-      (json.color color.color) if color
-      icon = tags.find(&:icon)
-      (json.icon icon.icon) if icon
+      (json.color visit.color) if visit.color
+      (json.icon visit.icon) if visit.icon
     end
   end
 end

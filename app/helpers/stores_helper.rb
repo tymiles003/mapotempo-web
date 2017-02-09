@@ -18,7 +18,7 @@
 module StoresHelper
   def store_icon(store)
     content_tag :i, '',
-      class: 'fa fa-lg %s' % [store.icon || 'fa-home'],
-      style: 'color: %s' % [store.color || '#000']
+      class: 'fa fa-lg %s' % [store.default_icon],
+      style: 'color: %s' % [store.default_color]
   end
 end

@@ -106,4 +106,23 @@ class DestinationTest < ActiveSupport::TestCase
     assert destination.lng == lng
   end
 
+  test 'should get visits color and icon' do
+    destination = destinations :destination_one
+    tag_one = tags :tag_one
+    tag_two = tags :tag_two
+    destination.tags = []
+    destination.visits.each{ |v| v.tags = [] }
+
+    assert_nil destination.visits_color
+    assert_nil destination.visits_icon
+
+    destination.tags = [tag_one, tag_two]
+    assert_equal tag_one.color, destination.visits_color
+    assert_equal tag_two.icon,  destination.visits_icon
+
+    destination.tags = []
+    destination.visits[0].tags = [tag_one, tag_two]
+    assert_equal tag_one.color, destination.visits_color
+    assert_equal tag_two.icon,  destination.visits_icon
+  end
 end

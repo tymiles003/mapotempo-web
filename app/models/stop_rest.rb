@@ -113,6 +113,18 @@ class StopRest < Stop
     nil
   end
 
+  def color
+    route.vehicle_usage.default_store_rest && route.vehicle_usage.default_store_rest.color
+  end
+
+  def icon
+    route.vehicle_usage.default_store_rest && route.vehicle_usage.default_store_rest.icon
+  end
+
+  def icon_size
+    route.vehicle_usage.default_store_rest && route.vehicle_usage.default_store_rest.icon_size
+  end
+
   def to_s
     "#{active ? 'x' : '_'} [Rest]"
   end

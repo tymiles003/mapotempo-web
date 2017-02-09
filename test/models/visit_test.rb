@@ -115,4 +115,11 @@ class VisitTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should return color and icon' do
+    o = visits :visit_one
+    t1 = tags :tag_one
+
+    assert_equal t1.color, o.color
+    assert_nil o.icon
+  end
 end

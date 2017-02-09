@@ -28,4 +28,28 @@ class StopTest < ActiveSupport::TestCase
       assert ActiveRecord::Base.connection.execute "INSERT INTO stops(active, route_id, type) VALUES('t', #{route.id}, '#{StopVisit.name}');"
     end
   end
+
+  test 'should return color and icon of stop visit' do
+    o = stops :stop_one_one
+    t1 = tags :tag_one
+
+    assert_equal t1.color, o.color
+    assert_nil o.icon
+    assert_nil o.icon_size
+  end
+
+  test 'should return color and icon of stop rest' do
+    o = stops :stop_one_four
+
+    assert_nil o.color
+    assert_nil o.icon
+    assert_nil o.icon_size
+
+    s = stores :store_one
+    s.color = '#beef'
+    s.icon = 'beef'
+    assert s.color, o.color
+    assert s.icon, o.icon
+    assert_nil o.icon_size
+  end
 end

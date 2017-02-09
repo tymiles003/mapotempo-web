@@ -183,4 +183,14 @@ class RouteTest < ActiveSupport::TestCase
     o.compute
     assert_equal '2000-01-01 10:55:27 UTC', o.start.utc.to_s
   end
+
+  test 'should get defautl color' do
+    o = routes(:route_one_one)
+    o.color = nil
+
+    assert_not_nil o.default_color
+
+    o.color = '#plop'
+    assert_equal o.color, o.default_color
+  end
 end

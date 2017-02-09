@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class StopVisit < Stop
-  delegate :lat, :lng, :open1, :close1, :open2, :close2, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :visit
+  delegate :lat, :lng, :open1, :close1, :open2, :close2, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, :color, :icon, to: :visit
 
   validates :visit, presence: true
 
@@ -50,6 +50,10 @@ class StopVisit < Stop
 
   def base_updated_at
     [visit.updated_at, visit.destination.updated_at].max
+  end
+
+  def icon_size
+    nil
   end
 
   def to_s

@@ -19,6 +19,9 @@ require 'font_awesome'
 
 class Store < Location
   ICON_SIZE = %w(small medium large).freeze
+  COLOR_DEFAULT = '#000000'
+  ICON_DEFAULT = 'fa-home'
+  ICON_SIZE_DEFAULT = 'large'
 
   has_many :vehicle_usage_set_starts, class_name: 'VehicleUsageSet', inverse_of: :store_start, foreign_key: 'store_start_id'
   has_many :vehicle_usage_set_stops, class_name: 'VehicleUsageSet', inverse_of: :store_stop, foreign_key: 'store_stop_id'
@@ -55,6 +58,18 @@ class Store < Location
   def destroy
     out_of_date # Too late to do this in before_destroy callback, children already destroyed
     super
+  end
+
+  def default_color
+    color || COLOR_DEFAULT
+  end
+
+  def default_icon
+    icon || ICON_DEFAULT
+  end
+
+  def default_icon_size
+    icon_size || ICON_SIZE_DEFAULT
   end
 
   private

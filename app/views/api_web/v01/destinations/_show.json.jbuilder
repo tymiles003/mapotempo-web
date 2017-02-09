@@ -2,8 +2,6 @@ json.extract! destination, :name, :street, :detail, :postalcode, :city, :country
 json.destination_id destination.id
 json.error !destination.position?
 
-color = nil
-icon = nil
 tags = destination.tags
 json.visits destination.visits do |visit|
   json.extract! visit, :id, :tag_ids
@@ -28,8 +26,6 @@ json.visits destination.visits do |visit|
         json.array! tags, :label
       end
     end
-    color ||= tags.find(&:color)
-    icon ||= tags.find(&:icon)
   end
 end
 if destination.visits.empty?
@@ -39,10 +35,8 @@ if destination.visits.empty?
         json.array! tags, :label
       end
     end
-    color ||= tags.find(&:color)
-    icon ||= tags.find(&:icon)
   end
 end
 # TODO: display several icons
-(json.color color.color) if color
-(json.icon icon.icon) if icon
+(json.color destination.visits_color) if destination.visits_color
+(json.icon destination.visits_icon) if destination.visits_icon

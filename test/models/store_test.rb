@@ -103,4 +103,18 @@ class StoreTest < ActiveSupport::TestCase
     o = stores(:store_one)
     assert_equal 2.51647173560523, o.distance(stores(:store_two))
   end
+
+  test 'should return default color' do
+    s = stores :store_one
+
+    assert_equal Store::COLOR_DEFAULT, s.default_color
+    assert_equal Store::ICON_DEFAULT, s.default_icon
+    assert_equal Store::ICON_SIZE_DEFAULT, s.default_icon_size
+
+    s.color = '#beef'
+    s.icon = 'beef'
+    assert_equal s.color, s.default_color
+    assert_equal s.icon, s.default_icon
+    assert_equal Store::ICON_SIZE_DEFAULT, s.default_icon_size
+  end
 end
