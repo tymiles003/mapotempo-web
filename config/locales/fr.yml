@@ -44,6 +44,7 @@ fr:
       hour_minute: "%H:%M"
       hour_minute_second: "%H:%M:%S"
       complete: "%d-%m-%Y %H:%M:%S"
+      date: "%d/%m/%Y"
       datepicker: "%d-%m-%Y"
   default_time_zone: "Paris"
 
@@ -622,6 +623,7 @@ fr:
       status_no_user: "Pas d'utilisateur"
       status_no_sign_in_user: "Utilisateur jamais connecté"
       status_inactive_user: "Utilisateur inactif"
+      created_end_subscription: "(Créé) Fin de souscription"
     new:
       title: "Nouveau compte client"
     destroy:

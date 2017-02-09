@@ -47,7 +47,7 @@
       <th class="center"><%= t 'activerecord.attributes.customer.test' %></th>
       <th class="center"><%= t 'activerecord.attributes.customer.jobs' %></th>
       <th class="center"><%= t '.status' %></th>
-      <th class="center"><%= t 'activerecord.attributes.customer.end_subscription' %></th>
+      <th class="center"><%= t '.created_end_subscription' %></th>
       <th class="center"><%= t 'activerecord.attributes.customer.description_title' %></th>
       <th class="center" data-toggle="tooltip" data-placement="auto" title="Destination"><i class="fa fa-map-marker fa-fw"></i></th>
       <th class="center" data-toggle="tooltip" data-placement="auto" title="Plannings"><i class="fa fa-calendar-o fa-fw"></i></th>
@@ -80,8 +80,9 @@
           <% end end %>
         </td>
         <td class="center">
+          <span class="disabled">(<%= l customer.created_at, format: :date %>)</span>
           <% if customer.end_subscription %>
-            <%= l(customer.end_subscription) %>
+            <%= l customer.end_subscription %>
             <% if customer.end_subscription < Time.now + 30.days && customer.end_subscription > Time.now %>
               <i class="fa fa-bell" style="color: orange;"></i>
             <% end %>
@@ -92,7 +93,7 @@
         </td>
         <td><%= customer.destinations.count %></td>
         <td><%= customer.plannings.count %></td>
-        <td><%= customer.zonings.count %></td>        
+        <td><%= customer.zonings.count %></td>
         <td class="text-right">
 
           <div class="btn-group" role="group" aria-label="Actions">

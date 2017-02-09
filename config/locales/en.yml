@@ -44,6 +44,7 @@ en:
       hour_minute: "%H:%M"
       hour_minute_second: "%H:%M:%S"
       complete: "%m-%d-%Y %H:%M:%S"
+      date: "%Y-%m-%d"
       datepicker: "%m-%d-%Y"
   default_time_zone: "London"
 
@@ -622,6 +623,7 @@ en:
       status_no_user: "No users"
       status_no_sign_in_user: "User never signed-in"
       status_inactive_user: "Inactive user"
+      created_end_subscription: "(Created) End subscription"
     new:
       title: "New Account"
     destroy:
