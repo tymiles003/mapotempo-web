@@ -42,7 +42,7 @@ if route.vehicle_usage
       }
     }
   end
-  json.status_any status_uniq.size > 0 || !route.vehicle_usage.vehicle.tomtom_id.blank? && route.planning.customer.tomtom?
+  json.status_any @planning.customer.enable_stop_status && (status_uniq.size > 0 || !route.vehicle_usage.vehicle.tomtom_id.blank? && route.planning.customer.tomtom?)
 end
 number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
