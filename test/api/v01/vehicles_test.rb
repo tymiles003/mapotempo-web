@@ -165,12 +165,12 @@ class V01::VehiclesTest < ActiveSupport::TestCase
       [true, false].each { |v|
         Mapotempo::Application.config.manage_vehicles_only_admin = v
         @vehicle.customer.vehicles[0..-2].each{ |vehicle|
-          delete (v ? api_admin("/#{vehicle.id}") : api) + "&customer_id=#{@vehicle.customer.id}"
+          delete (v ? api_admin("/#{vehicle.id}") : api("/#{vehicle.id}")) + "&customer_id=#{@vehicle.customer.id}"
         }
         assert_no_difference('Vehicle.count') do
           vehicle = @vehicle.customer.vehicles[-1]
-            delete (v ? api_admin("/#{vehicle.id}") : api) + "&customer_id=#{@vehicle.customer.id}"
-            assert last_response.server_error?, last_response.body
+          delete (v ? api_admin("/#{vehicle.id}") : api("/#{vehicle.id}")) + "&customer_id=#{@vehicle.customer.id}"
+          assert last_response.server_error?, last_response.body
         end
       }
     ensure
