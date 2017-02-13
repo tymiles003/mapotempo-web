@@ -43,7 +43,7 @@ class V01::Entities::Visit < Grape::Entity
   expose(:open2, documentation: { type: DateTime }) { |m| m.open2 && m.open2.utc.strftime('%H:%M:%S') }
   expose(:close2, documentation: { type: DateTime }) { |m| m.close2 && m.close2.utc.strftime('%H:%M:%S') }
   expose(:ref, documentation: { type: String })
-  expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
+  expose(:take_over, documentation: { type: DateTime, desc: 'Visit duration.' }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
   expose(:take_over_default, documentation: { type: DateTime }) { |m| m.destination.customer && m.destination.customer.take_over && m.destination.customer.take_over.utc.strftime('%H:%M:%S') }
   expose(:tag_ids, documentation: { type: Integer, is_array: true })
 end

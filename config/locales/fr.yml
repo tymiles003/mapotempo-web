@@ -151,7 +151,7 @@ fr:
         enable_external_callback: "Activer URL de rappel"
         end_subscription: "Fin de souscription"
         max_vehicles: "Forfait"
-        take_over: "Durée de visite"
+        take_over: "Durée de visite des clients"
         name: "Nom"
         destinations: "Clients"
         enable_tomtom: "Activer TomTom WEBFLEET"

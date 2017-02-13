@@ -39,7 +39,7 @@ class V01::Entities::Customer < Grape::Entity
   expose(:router_id, documentation: { type: Integer })
   expose(:router_dimension, documentation: { type: String, values: ::Router::DIMENSION.keys })
   expose(:speed_multiplicator, documentation: { type: Float })
-  expose(:take_over, documentation: { type: DateTime }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
+  expose(:take_over, documentation: { type: DateTime, desc: 'Visit duration' }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
   expose(:print_planning_annotating, documentation: { type: 'Boolean' })
   expose(:print_header, documentation: { type: String })
 
