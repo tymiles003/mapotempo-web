@@ -19,9 +19,9 @@ class Planning < ActiveRecord::Base
   belongs_to :customer
   has_and_belongs_to_many :zonings, autosave: true, after_add: :update_zonings_track, after_remove: :update_zonings_track
   has_many :routes, -> { includes(:stops).order('CASE WHEN vehicle_usage_id IS NULL THEN 0 ELSE routes.id END') }, inverse_of: :planning, autosave: true, dependent: :delete_all
-  has_and_belongs_to_many :tags, -> { order('label') }, autosave: true
+  has_and_belongs_to_many :tags, -> { order('label') }, autosave: true, after_add: :update_tags_track, after_remove: :update_tags_track
   belongs_to :order_array
-  belongs_to :vehicle_usage_set, inverse_of: :plannings
+  belongs_to :vehicle_usage_set, inverse_of: :plannings, validate: true
 
   nilify_blanks
   auto_strip_attributes :name
@@ -29,6 +29,9 @@ class Planning < ActiveRecord::Base
   validates :customer, presence: true
   validates :name, presence: true
   validates :vehicle_usage_set, presence: true
+
+  include Consistency
+  validate_consistency :vehicle_usage_set, :order_array, :zonings, :tags
 
   before_create :default_routes, :update_zonings
   before_save :update_zonings
@@ -492,7 +495,19 @@ class Planning < ActiveRecord::Base
   end
 
   def update_zonings_track(_zoning)
-    @zonings_updated = true
+    @zoning_ids_changed = true
+  end
+
+  def zoning_ids_changed?
+    @zoning_ids_changed
+  end
+
+  def update_tags_track(_tag)
+    @tag_ids_changed = true
+  end
+
+  def tag_ids_changed?
+    @tag_ids_changed
   end
 
   def split_by_zones
@@ -530,11 +545,11 @@ class Planning < ActiveRecord::Base
   end
 
   def update_zonings
-    if @zonings_updated
+    if @zoning_ids_changed
       self.zoning_out_of_date = true
     end
 
-    if !zonings.empty? && @zonings_updated
+    if !zonings.empty? && @zoning_ids_changed
       self.zoning_out_of_date = true
       split_by_zones
     end

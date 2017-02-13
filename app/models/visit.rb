@@ -40,6 +40,9 @@ class Visit < ActiveRecord::Base
   validates_time :close2, presence: false, on_or_after: :open2, if: :close2
   validates_with QuantitiesValidator, fields: [:quantities]
 
+  include Consistency
+  validate_consistency :tags, attr_consistency_method: -> (visit) { visit.destination.try :customer_id }
+
   before_save :update_tags, :create_orders
   before_update :update_out_of_date
 
@@ -74,7 +77,7 @@ class Visit < ActiveRecord::Base
   end
 
   def changed?
-    @tags_updated || super
+    @tag_ids_changed || super
   end
 
   def out_of_date
@@ -117,12 +120,16 @@ class Visit < ActiveRecord::Base
   end
 
   def update_tags_track(_tag)
-    @tags_updated = true
+    @tag_ids_changed = true
+  end
+
+  def tag_ids_changed?
+    @tag_ids_changed
   end
 
   def update_tags
-    if destination.customer && (@tags_updated || new_record?)
-      @tags_updated = false
+    if destination.customer && (@tag_ids_changed || new_record?)
+      @tag_ids_changed = false
 
       # Don't use local collection here, not set when save new record
       destination.customer.plannings.each{ |planning|

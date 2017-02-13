@@ -76,10 +76,15 @@ class V01::VisitsTest < ActiveSupport::TestCase
   test 'should create a visit with none tag' do
     ['', nil, []].each do |tags|
       assert_difference('Visit.count', 1) do
-        post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => nil}).to_json, 'CONTENT_TYPE' => 'application/json'
+        post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => nil}).except('id').to_json, 'CONTENT_TYPE' => 'application/json'
         assert last_response.created?, last_response.body
       end
     end
+  end
+
+  test 'should not create a visit' do
+    post api_destination(@destination.id), @visit.attributes.merge(tag_ids: [tags(:tag_three).id], 'quantities' => nil).except('id').to_json, 'CONTENT_TYPE' => 'application/json'
+    assert_equal 400, last_response.status, last_response.body
   end
 
   test 'should update a visit' do

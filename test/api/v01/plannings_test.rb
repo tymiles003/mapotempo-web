@@ -65,6 +65,18 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should not create a planning with inconsistent data' do
+    {
+      vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_two).id,
+      zoning_ids: [zonings(:zoning_three).id]
+    }.each{ |k, v|
+      attributes = @planning.attributes.merge('name' => 'new name')
+      attributes[k] = v
+      post api(), attributes
+      assert_equal 400, last_response.status
+    }
+  end
+
   test 'should update a planning' do
     @planning.name = 'new name'
     put api(@planning.id), @planning.attributes

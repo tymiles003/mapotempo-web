@@ -23,6 +23,9 @@ class Destination < Location
 
   auto_strip_attributes :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number
 
+  include Consistency
+  validate_consistency :tags
+
   before_save :update_tags
 
   include RefSanitizer
@@ -48,18 +51,22 @@ class Destination < Location
   end
 
   def changed?
-    @tags_updated || super
+    @tag_ids_changed || super
   end
 
   private
 
   def update_tags_track(_tag)
-    @tags_updated = true
+    @tag_ids_changed = true
+  end
+
+  def tag_ids_changed?
+    @tag_ids_changed
   end
 
   def update_tags
-    if customer && (@tags_updated || new_record?)
-      @tags_updated = false
+    if customer && (@tag_ids_changed || new_record?)
+      @tag_ids_changed = false
 
       # Don't use local collection here, not set when save new record
       customer.plannings.each{ |planning|

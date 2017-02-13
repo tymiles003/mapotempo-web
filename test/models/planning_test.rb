@@ -43,6 +43,18 @@ class PlanningTest < ActiveSupport::TestCase
     assert_not o.save, 'Saved without required fields'
   end
 
+  test 'should not save with inconsistent attributes' do
+    {
+      vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_two),
+      zonings: [zonings(:zoning_three)]
+    }.each{ |k, v|
+      attr = {name: 'plop'}
+      attr[k] = v
+      o = customers(:customer_one).plannings.build(attr)
+      assert_not o.save, 'Saved with inconsistent attributes'
+    }
+  end
+
   test 'should save' do
     o = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_one)])
     o.default_routes

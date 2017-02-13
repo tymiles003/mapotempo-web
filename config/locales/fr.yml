@@ -431,6 +431,8 @@ fr:
         updated: "%{model} a été mis à jour."
 
     errors:
+      attributes:
+        inconsistent_customer: "n'est pas une valeur autorisée pour ce compte client"
       models:
         location:
           missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
