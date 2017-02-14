@@ -1,6 +1,6 @@
 <% if user_signed_in? %>
-  <% if @customer %>
-    <% if not @customer.end_subscription or @customer.end_subscription > Time.now %>
+  <% if @customer || current_user.admin? %>
+    <% if current_user.admin? || (!@customer.end_subscription || @customer.end_subscription > Time.now) %>
       <%= render 'subscription_on' %>
     <% else %>
       <%= render 'subscription_end' %>
