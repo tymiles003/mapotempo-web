@@ -208,7 +208,7 @@ class PlanningsController < ApplicationController
             @routes = @planning.routes.select{ |r| route_ids.include? r.id }
             render action: :show
           else
-            render nothing: true, status: :unprocessable_entity
+            render json: @planning.errors, status: :unprocessable_entity
           end
         end
       end
@@ -226,7 +226,7 @@ class PlanningsController < ApplicationController
           @routes = [@route]
           format.json { render action: 'show', location: @planning }
         else
-          format.json { render nothing: true, status: :unprocessable_entity }
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
       end
     end
