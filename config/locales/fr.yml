@@ -497,7 +497,7 @@ fr:
         route:
           attributes:
             stops:
-              bad_index: "Mauvais index"
+              bad_index: "Mauvais index %{n}"
         planning:
           attributes:
             ref:

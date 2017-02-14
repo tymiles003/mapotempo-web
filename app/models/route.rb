@@ -461,7 +461,14 @@ class Route < ActiveRecord::Base
 
   def stop_index_validation
     if !@no_stop_index_validation && vehicle_usage_id && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
-      errors.add(:stops, :bad_index)
+      bad_index = nil
+      (1..stops.length).each{ |index|
+        if stops[0..(index-1)].collect(&:index).sum != (index * (index + 1)) / 2
+          bad_index = index
+          break
+        end
+      }
+      errors.add :stops, -> { I18n.t('activerecord.errors.models.route.attributes.stops.bad_index', n: bad_index || '') }
     end
     @no_stop_index_validation = nil
   end
