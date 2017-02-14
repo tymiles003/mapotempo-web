@@ -30,7 +30,10 @@ module RoutesHelper
       v > 0
     }.collect{ |k, v|
       unit = route.planning.customer.deliverable_units.find{ |du| du.id == k }.try(&:label)
-      Route.localize_numeric_value(v) + (vehicle && vehicle.default_capacities[k] ? '/' + Route.localize_numeric_value(vehicle.default_capacities[k]) : '') + (unit ? "\u202F" + unit : '')
+      {
+        quantity: Route.localize_numeric_value(v) + (vehicle && vehicle.default_capacities[k] ? '/' + Route.localize_numeric_value(vehicle.default_capacities[k]) : '') + (unit ? "\u202F" + unit : ''),
+        unit_icon: route.planning.customer.deliverable_units.find{ |du| du.id == k }.try(:default_icon)
+      }
     }
   end
 

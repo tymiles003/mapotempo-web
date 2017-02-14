@@ -87,8 +87,8 @@ json.routes @routes do |route|
           json.orders order.products.collect(&:code).join(', ')
         end
       else
-        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
-          json.quantity quantity if quantity
+        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |units|
+          json.quantity units[:quantity] if units[:quantity]
         end
       end
       duration = l(visit.take_over.utc, format: :hour_minute_second) if visit.take_over

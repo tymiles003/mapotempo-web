@@ -36,7 +36,7 @@
     <span class="zone-info" style="display: none">
       {{#deliverable_units}}
         <span data-unit-id="{{unit_id}}">
-          <i class="fa fa-archive fa-fw"></i><span class="quantity_number"></span>/<span class="capacity_number">{{#capacity}}{{capacity}}{{/capacity}}{{^capacity}}-{{/capacity}}</span>{{#unit_label}}&nbsp;{{unit_label}}{{/unit_label}}
+          <i class="fa {{unit_icon}} fa-fw"></i><span class="quantity_number"></span>/<span class="capacity_number">{{#capacity}}{{capacity}}{{/capacity}}{{^capacity}}-{{/capacity}}</span>{{#unit_label}}&nbsp;{{unit_label}}{{/unit_label}}
         </span>
       {{/deliverable_units}}
     </span>

@@ -77,7 +77,7 @@ controller.js(
   map_lat: (@planning && @planning.vehicle_usage_set.vehicle_usages.active.collect(&:default_store_start).compact.find{ |s| s.lat }.try(:lat)) || @zoning.customer.default_position[:lat],
   map_lng: (@planning && @planning.vehicle_usage_set.vehicle_usages.active.collect(&:default_store_start).compact.find{ |s| s.lng }.try(:lng)) || @zoning.customer.default_position[:lng],
   vehicles_array: zoning_vehicles(@zoning, @planning, active: true).map{|vehicle| vehicle.slice(:id, :name, :color).merge(router_avoid_zones: vehicle.default_router.avoid_zones) },
-  vehicles_map: zoning_vehicles(@zoning, @planning).each_with_object({}){|vehicle, hash| hash[vehicle.id] = vehicle.slice(:id, :name, :color).merge(router_avoid_zones: vehicle.default_router.avoid_zones, capacities: vehicle.default_capacities.map{ |k, v| {unit_id: k, capacity: v, unit_label: @zoning.customer.deliverable_units.find{ |du| du.id == k }.label} }) },
+  vehicles_map: zoning_vehicles(@zoning, @planning).each_with_object({}){|vehicle, hash| hash[vehicle.id] = vehicle.slice(:id, :name, :color).merge(router_avoid_zones: vehicle.default_router.avoid_zones, capacities: vehicle.default_capacities.map{ |k, v| {unit_id: k, capacity: v, unit_label: @zoning.customer.deliverable_units.find{ |du| du.id == k }.label, unit_icon: @zoning.customer.deliverable_units.find{ |du| du.id == k }.default_icon } }) },
   deliverable_units: @zoning.customer.deliverable_units.map{ |du| {unit_id: du.id, unit_label: du.label} },
   show_deliverable_units: !@zoning.customer.enable_orders
 )

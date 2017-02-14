@@ -5,8 +5,8 @@ json.error !destination.position?
 tags = destination.tags
 json.visits destination.visits do |visit|
   json.extract! visit, :id, :tag_ids
-  json.quantities visit_quantities(visit, nil) do |quantity|
-    json.quantity quantity if quantity
+  json.quantities visit_quantities(visit, nil) do |units|
+    json.quantity units[:quantity] if units[:quantity]
   end
   json.index_visit (destination.visits.index(visit) + 1) if destination.visits.size > 1
   json.ref visit.ref if @customer.enable_references

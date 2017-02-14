@@ -19,6 +19,7 @@ require "font_awesome"
 
 class DeliverableUnit < ActiveRecord::Base
   ICON_SIZE = %w(small medium large).freeze
+  ICON_DEFAULT = 'fa-archive'
   
   belongs_to :customer
 
@@ -40,6 +41,10 @@ class DeliverableUnit < ActiveRecord::Base
 
   def default_optimization_overload_multiplier
     optimization_overload_multiplier || Mapotempo::Application.config.optimize_overload_multiplier
+  end
+
+  def default_icon
+    icon || ICON_DEFAULT
   end
 
   private

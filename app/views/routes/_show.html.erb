@@ -30,8 +30,8 @@
     <i class="fa fa-clock-o fa-fw"></i> <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
     <i class="fa fa-road fa-fw"></i> <%= number_to_human(route.distance, units: :distance, precision: 3, format: '%n %u') %>
     <% if !route.planning.customer.enable_orders %>
-      <% route_quantities(route).each do |quantity| %>
-        <i class="fa fa-archive fa-fw"></i> <%= quantity %>
+      <% route_quantities(route).each do |units| %>
+        <i class="fa <%= units[:unit_icon] %> fa-fw"></i> <%= units[:quantity] %>
       <% end %>
     <% end %>
   </span>
@@ -140,9 +140,9 @@
                 </p>
               <% end %>
             <% elsif stop.visit.quantities? %>
-              <% visit_quantities(stop.visit, route.vehicle_usage.vehicle).each do |quantity| %>
+              <% visit_quantities(stop.visit, route.vehicle_usage.vehicle).each do |units| %>
                 <div class="quantity">
-                  <i class="fa fa-archive fa-fw"></i> <%= quantity %>
+                  <i class="fa <%= units[:unit_icon] %> fa-fw"></i> <%= units[:quantity] %>
                 </div>
               <% end %>
             <% end %>

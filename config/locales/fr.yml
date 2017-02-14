@@ -205,6 +205,7 @@ fr:
       deliverable_unit:
         label: "Libellé"
         ref: "Référence"
+        icon: "Icône"
         default_quantity: "Quantité par défaut"
         default_capacity: "Capacité par défaut"
         optimization_overload_multiplier: "Coefficient dépassement"

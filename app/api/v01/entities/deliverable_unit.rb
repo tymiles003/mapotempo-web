@@ -23,6 +23,7 @@ class V01::Entities::DeliverableUnit < Grape::Entity
   expose(:id, documentation: { type: Integer })
   expose(:label, documentation: { type: String })
   expose(:ref, documentation: { type: String })
+  expose(:icon, documentation: { type: String, desc: "Icon name from font-awesome. Default: #{::DeliverableUnit::ICON_DEFAULT}." })
   expose(:default_quantity, documentation: { type: Float })
   expose(:optimization_overload_multiplier, documentation: { type: Integer })
 end

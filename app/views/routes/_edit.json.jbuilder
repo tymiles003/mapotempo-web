@@ -12,8 +12,9 @@ json.last_sent_to route.last_sent_to if route.last_sent_to
 json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at
 json.optimized_at_formatted l(route.optimized_at) if route.optimized_at
 if !@planning.customer.enable_orders
-  json.quantities route_quantities(route) do |quantity|
-    json.quantity quantity if quantity
+  json.quantities route_quantities(route) do |units|
+    json.quantity units[:quantity] if units[:quantity]
+    json.unit_icon units[:unit_icon]
   end
 end
 if route.vehicle_usage
@@ -116,7 +117,8 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
       end
     else
       json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
-        json.quantity quantity if quantity
+        json.quantity quantity[:quantity] if quantity[:quantity]
+        json.unit_icon quantity[:unit_icon]
       end
     end
     if stop.status

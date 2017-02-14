@@ -205,6 +205,7 @@ en:
       deliverable_unit:
         label: "Label"
         ref: "Reference"
+        icon: "Icon"
         default_quantity: "Default quantity"
         default_capacity: "Default capacity"
         optimization_overload_multiplier: "Overload coefficient"
