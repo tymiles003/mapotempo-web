@@ -35,6 +35,8 @@ gem 'rake', '< 12.0' # FIXME rake 12 remove deprecated methods need by dependenc
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+
+  gem 'bullet'
 end
 
 group :development, :test do

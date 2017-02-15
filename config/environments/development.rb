@@ -117,4 +117,15 @@ Rails.application.configure do
 
   config.enable_references = true
   config.enable_multi_visits = false
+
+  # N 1 Queries: display only in log or console
+  config.after_initialize do
+    Bullet.enable               = true
+    Bullet.alert                = false
+    Bullet.bullet_logger        = false
+    Bullet.console              = false
+    Bullet.rails_logger         = true
+    Bullet.add_footer           = false
+    Bullet.counter_cache_enable = true
+  end
 end
