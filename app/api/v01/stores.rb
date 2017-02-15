@@ -67,7 +67,6 @@ class V01::Stores < Grape::API
     params do
       use :params_from_entity, entity: V01::Entities::Store.documentation.except(:id).deep_merge(
         name: { required: true },
-        city: { required: true },
         geocoding_accuracy: { desc: 'Must be inside 0..1 range.' }
       )
     end
