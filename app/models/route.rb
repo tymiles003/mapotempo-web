@@ -466,7 +466,7 @@ class Route < ActiveRecord::Base
   end
 
   def stop_index_validation
-    if !@no_stop_index_validation && vehicle_usage_id && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
+    if !@no_stop_index_validation && vehicle_usage_id && @stops_updated && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
       bad_index = nil
       (1..stops.length).each{ |index|
         if stops[0..(index-1)].collect(&:index).sum != (index * (index + 1)) / 2
