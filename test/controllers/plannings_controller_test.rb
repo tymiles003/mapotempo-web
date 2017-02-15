@@ -227,7 +227,7 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_equal 2, JSON.parse(response.body)['routes'].size
   end
 
-  test 'should move with error' do
+  test 'should not move with error' do
     Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
       assert_no_difference('Stop.count') do
         assert_raise do
@@ -244,11 +244,13 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should not move' do
-    patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 666, format: :json
-    planning = assigns(:planning)
-    assert planning.errors.any?
-    assert_valid response
-    assert_response 422
+    assert_no_difference('Stop.count') do
+      patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 666, format: :json
+      planning = assigns(:planning)
+      assert planning.errors.any?
+      assert_valid response
+      assert_response 422
+    end
   end
 
   test 'should not move stop to route with deactivated vehicle' do

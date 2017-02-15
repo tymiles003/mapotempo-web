@@ -131,8 +131,8 @@ class PlanningsController < ApplicationController
 
   def move
     respond_to do |format|
-      Planning.transaction do
-        begin
+      begin
+        Planning.transaction do
           route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
           stop = nil
           @planning.routes.find{ |route| stop = route.stops.find{ |stop| stop.id == Integer(params[:stop_id]) } }
@@ -143,9 +143,9 @@ class PlanningsController < ApplicationController
             @routes << @planning.routes.find{ |route| route.id == stop_route_id_was } if stop_route_id_was != route.id
             format.json { render action: 'show', location: @planning }
           end
-        rescue ActiveRecord::RecordInvalid => e
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
+      rescue ActiveRecord::RecordInvalid => e
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -163,8 +163,8 @@ class PlanningsController < ApplicationController
 
   def switch
     respond_to do |format|
-      Planning.transaction do
-        begin
+      begin
+        Planning.transaction do
           route = @planning.routes.find{ |route| route.id == Integer(params['route_id']) }
           vehicle_usage_id_was = route.vehicle_usage.id
           vehicle_usage = @planning.vehicle_usage_set.vehicle_usages.find(Integer(params['vehicle_usage_id']))
@@ -173,9 +173,9 @@ class PlanningsController < ApplicationController
             @routes << @planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.id == vehicle_usage_id_was } if vehicle_usage_id_was != route.vehicle_usage.id
             format.json { render action: 'show', location: @planning }
           end
-        rescue ActiveRecord::RecordInvalid => e
-          format.json { render json: @planning.errors, status: :unprocessable_entity }
         end
+      rescue ActiveRecord::RecordInvalid => e
+        format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
   end
