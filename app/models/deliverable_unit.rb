@@ -23,10 +23,12 @@ class DeliverableUnit < ActiveRecord::Base
   validates :default_quantity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :default_capacity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :optimization_overload_multiplier, numericality: { greater_than_or_equal_to: -1 }, allow_nil: true
+  validates :ref, uniqueness: { scope: :customer_id, case_sensitive: true }, allow_nil: true, allow_blank: true
 
   before_save :out_of_date
 
   include LocalizedAttr
+  include RefSanitizer
 
   attr_localized :default_quantity, :default_capacity, :optimization_overload_multiplier
 

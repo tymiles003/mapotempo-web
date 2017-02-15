@@ -204,6 +204,7 @@ en:
         enable_stop_status: "Enable visits status"
       deliverable_unit:
         label: "Label"
+        ref: "Reference"
         default_quantity: "Default quantity"
         default_capacity: "Default capacity"
         optimization_overload_multiplier: "Overload coefficient"
@@ -700,6 +701,7 @@ en:
     form:
       label_placeholder: "unit"
       label_help: 'For instance "packet" or a unit like "lb", kg".'
+      ref_help: "A free reference"
       default_quantity_help: "Quantity to deliver for all your visits (keep empty if no quantity)."
       default_capacity_help: "Capacity for all your vehicles (keep empty if no limit)."
       optimization_overload_multiplier_no: "No"

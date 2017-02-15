@@ -179,7 +179,8 @@ CREATE TABLE deliverable_units (
     label character varying,
     default_quantity double precision,
     default_capacity double precision,
-    optimization_overload_multiplier double precision
+    optimization_overload_multiplier double precision,
+    ref character varying
 );
 
 
@@ -1623,6 +1624,13 @@ CREATE INDEX index_deliverable_units_on_customer_id ON deliverable_units USING b
 
 
 --
+-- Name: index_deliverable_units_on_customer_id_and_ref; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_deliverable_units_on_customer_id_and_ref ON deliverable_units USING btree (customer_id, ref);
+
+
+--
 -- Name: index_destinations_tags_on_destination_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1676,6 +1684,13 @@ CREATE INDEX index_routes_on_vehicle_usage_id ON routes USING btree (vehicle_usa
 --
 
 CREATE INDEX index_stops_on_visit_id ON stops USING btree (visit_id);
+
+
+--
+-- Name: index_tags_on_customer_id_and_ref; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tags_on_customer_id_and_ref ON tags USING btree (customer_id, ref);
 
 
 --
@@ -2542,3 +2557,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161220100839');
 INSERT INTO schema_migrations (version) VALUES ('20170106110428');
 
 INSERT INTO schema_migrations (version) VALUES ('20170111085136');
+
+INSERT INTO schema_migrations (version) VALUES ('20170215102225');
+
+INSERT INTO schema_migrations (version) VALUES ('20170215113103');
+

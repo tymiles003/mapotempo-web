@@ -18,7 +18,7 @@ class V01::RoutersTest < ActiveSupport::TestCase
     "/api/0.1/routers#{part}.json?api_key=testkey1"
   end
 
-  test 'should return customer''s routers' do
+  test "should return customer's routers" do
     get api()
     assert last_response.ok?, last_response.body
     assert_equal @current_customer.profile.routers.size, JSON.parse(last_response.body).size

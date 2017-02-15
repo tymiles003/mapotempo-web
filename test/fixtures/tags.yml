@@ -8,6 +8,7 @@ tag_one:
 
 tag_two:
   label: tag2
+  ref: tag_2
   color:
   icon: diamon
   customer: customer_one

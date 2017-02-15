@@ -24,30 +24,32 @@ class V01::Tags < Grape::API
     def tag_params
       p = ActionController::Parameters.new(params)
       p = p[:tag] if p.key?(:tag)
-      p.permit(:label, :color, :icon, :ref)
+      p.permit(:label, :ref, :color, :icon)
     end
+
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
 
   resource :tags do
     desc 'Fetch customer\'s tags.',
-      nickname: 'getTags',
-      is_array: true,
-      success: V01::Entities::Tag
+         nickname: 'getTags',
+         is_array: true,
+         success: V01::Entities::Tag
     params do
       optional :ids, type: Array[String], desc: 'Select returned tags by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
     get do
       tags = if params.key?(:ids)
-        current_customer.tags.select{ |tag| params[:ids].any?{ |s| ParseIdsRefs.match(s, tag) } }
-      else
-        current_customer.tags.load
-      end
+               current_customer.tags.select { |tag| params[:ids].any? { |s| ParseIdsRefs.match(s, tag) } }
+             else
+               current_customer.tags.load
+             end
       present tags, with: V01::Entities::Tag
     end
 
     desc 'Fetch tag.',
-      nickname: 'getTag',
-      success: V01::Entities::Tag
+         nickname: 'getTag',
+         success: V01::Entities::Tag
     params do
       requires :id, type: Integer
     end
@@ -56,12 +58,12 @@ class V01::Tags < Grape::API
     end
 
     desc 'Create tag.',
-      detail: 'By creating a tag, it will be possible to filter visits and create a planning with only necessary visits.',
-      nickname: 'createTag',
-      success: V01::Entities::Tag
+         detail: 'By creating a tag, it will be possible to filter visits and create a planning with only necessary visits.',
+         nickname: 'createTag',
+         success: V01::Entities::Tag
     params do
       use :params_from_entity, entity: V01::Entities::Tag.documentation.except(:id).deep_merge(
-        label: { required: true }
+          label: {required: true}
       )
     end
     post do
@@ -71,36 +73,40 @@ class V01::Tags < Grape::API
     end
 
     desc 'Update tag.',
-      nickname: 'updateTag',
-      success: V01::Entities::Tag
+         nickname: 'updateTag',
+         success: V01::Entities::Tag
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
       use :params_from_entity, entity: V01::Entities::Tag.documentation.except(:id)
     end
     put ':id' do
-      tag = current_customer.tags.find(params[:id])
+      id = ParseIdsRefs.read(params[:id])
+      tag = current_customer.tags.where(id).first!
       tag.update! tag_params
       present tag, with: V01::Entities::Tag
     end
 
     desc 'Delete tag.',
-      nickname: 'deleteTag'
+         nickname: 'deleteTag'
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     delete ':id' do
-      current_customer.tags.find(params[:id]).destroy
+      id = ParseIdsRefs.read(params[:id])
+      current_customer.tags.where(id).first!.destroy
       nil
     end
 
     desc 'Delete multiple tags.',
-      nickname: 'deleteTags'
+         nickname: 'deleteTags'
     params do
-      requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger
+      requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
     delete do
       Tag.transaction do
-        current_customer.tags.select{ |tag| params[:ids].include?(tag.id) }.each(&:destroy)
+        current_customer.tags.select do |tag|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, tag) }
+        end.each(&:destroy)
         nil
       end
     end

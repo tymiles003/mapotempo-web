@@ -17,17 +17,19 @@ class V01::TagsTest < ActiveSupport::TestCase
     "/api/0.1/tags#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
-  test 'should return customer''s tags' do
+  test "should return customer's tags" do
     get api()
     assert last_response.ok?, last_response.body
     assert_equal @tag.customer.tags.size, JSON.parse(last_response.body).size
   end
 
-  test 'should return customer''s tags by ids' do
-    get api(nil, 'ids' => @tag.id)
+  test "should return customer's tags by ids" do
+    get api(nil, 'ids' => "#{@tag.id},ref:#{tags(:tag_two).ref}")
     assert last_response.ok?, last_response.body
-    assert_equal 1, JSON.parse(last_response.body).size
-    assert_equal @tag.id, JSON.parse(last_response.body)[0]['id']
+    body = JSON.parse(last_response.body)
+    assert_equal 2, body.size
+    assert_includes(body.map { |p| p['id'] }, @tag.id)
+    assert_includes(body.map { |p| p['ref'] }, tags(:tag_two).ref)
   end
 
   test 'should return a tag' do
@@ -74,7 +76,7 @@ class V01::TagsTest < ActiveSupport::TestCase
 
   test 'should destroy multiple tags' do
     assert_difference('Tag.count', -2) do
-      delete api + "&ids=#{tags(:tag_one).id},#{tags(:tag_two).id}"
+      delete api + "&ids=#{tags(:tag_one).id},ref:#{tags(:tag_two).ref}"
       assert_equal 204, last_response.status, last_response.body
     end
   end

@@ -25,8 +25,11 @@ class Tag < ActiveRecord::Base
   nilify_blanks
   auto_strip_attributes :label
   validates :label, presence: true
+  validates :ref, uniqueness: { scope: :customer_id, case_sensitive: true }, allow_nil: true, allow_blank: true
   validates_format_of :color, with: /\A(|\#[A-Fa-f0-9]{6})\Z/, allow_nil: true
   validates_inclusion_of :icon, in: [''] + ICONS_TABLE, allow_nil: true
+
+  include RefSanitizer
 
   amoeba do
     exclude_association :visits

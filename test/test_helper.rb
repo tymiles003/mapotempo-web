@@ -3,12 +3,13 @@ if (!ENV.key?('COV') && !ENV.key?('COVERAGE')) || (ENV['COV'] != 'false' && ENV[
   SimpleCov.minimum_coverage 83
   SimpleCov.start 'rails'
 end
-Dir[Rails.root.join('lib/**/*.rb')].each { |file| load file } # only explicitly required files are tracked
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'webmock/minitest'
+
+Dir[Rails.root.join('lib/**/*.rb')].each { |file| load file } # only explicitly required files are tracked
 
 #WebMock.allow_net_connect!
 WebMock.disable_net_connect!

@@ -204,6 +204,7 @@ fr:
         enable_stop_status: "Activer les statuts des visites"
       deliverable_unit:
         label: "Libellé"
+        ref: "Référence"
         default_quantity: "Quantité par défaut"
         default_capacity: "Capacité par défaut"
         optimization_overload_multiplier: "Coefficient dépassement"
@@ -700,6 +701,7 @@ fr:
     form:
       label_placeholder: "unité"
       label_help: "Par exemple « colis » ou une unité comme « kg »."
+      ref_help: "Référence libre"
       default_quantity_help: "Quantité à livrer par défaut à toutes vos visites (laisser vide si pas de quantité)."
       default_capacity_help: "Capacité par défaut de tous vos véhicules (laisser vide si illimité)."
       optimization_overload_multiplier_no: "Non"

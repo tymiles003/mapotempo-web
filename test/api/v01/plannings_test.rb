@@ -29,17 +29,19 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     "/api/0.1/plannings#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
-  test 'should return customer''s plannings' do
+  test "'should return customer's plannings'" do
     get api()
     assert last_response.ok?, last_response.body
     assert_equal @planning.customer.plannings.size, JSON.parse(last_response.body).size
   end
 
-  test 'should return customer''s plannings by ids' do
-    get api(nil, 'ids' => @planning.id)
+  test "should return customer's plannings by ids" do
+    get api(nil, ids: "#{@planning.id},ref:#{plannings(:planning_two).ref}")
     assert last_response.ok?, last_response.body
-    assert_equal 1, JSON.parse(last_response.body).size
-    assert_equal @planning.id, JSON.parse(last_response.body)[0]['id']
+    body = JSON.parse(last_response.body)
+    assert_equal 2, body.size
+    assert_includes(body.map { |p| p['id'] }, @planning.id)
+    assert_includes(body.map { |p| p['ref'] }, plannings(:planning_two).ref)
   end
 
   test 'should return a planning' do
@@ -96,7 +98,7 @@ class V01::PlanningsTest < ActiveSupport::TestCase
 
   test 'should destroy multiple plannings' do
     assert_difference('Planning.count', -2) do
-      delete api + "&ids=#{plannings(:planning_one).id},#{plannings(:planning_two).id}"
+      delete api + "&ids=#{plannings(:planning_one).id},ref:#{plannings(:planning_two).ref}"
       assert_equal 204, last_response.status, last_response.body
     end
   end

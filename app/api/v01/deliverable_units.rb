@@ -24,30 +24,32 @@ class V01::DeliverableUnits < Grape::API
     def deliverable_unit_params
       p = ActionController::Parameters.new(params)
       p = p[:deliverable_unit] if p.key?(:deliverable_unit)
-      p.permit(:label, :default_quantity, :optimization_overload_multiplier)
+      p.permit(:label, :ref, :default_quantity, :optimization_overload_multiplier)
     end
+
+    ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
 
   resource :deliverable_units do
     desc 'Fetch customer\'s deliverable units. At least one deliverable unit exists per customer.',
-      nickname: 'getDeliverableUnits',
-      is_array: true,
-      entity: V01::Entities::DeliverableUnit
+         nickname: 'getDeliverableUnits',
+         is_array: true,
+         entity: V01::Entities::DeliverableUnit
     params do
-      optional :ids, type: Array[Integer], desc: 'Select returned deliverable units by id.', coerce_with: CoerceArrayInteger
+      optional :ids, type: Array[String], desc: 'Select returned deliverable units by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
     get do
       deliverable_units = if params.key?(:ids)
-        current_customer.deliverable_units.select{ |deliverable_unit| params[:ids].include?(deliverable_unit.id) }
-      else
-        current_customer.deliverable_units.load
-      end
+                            current_customer.deliverable_units.select { |deliverable_unit| params[:ids].any? { |string| ParseIdsRefs.match(string, deliverable_unit) } }
+                          else
+                            current_customer.deliverable_units.load
+                          end
       present deliverable_units, with: V01::Entities::DeliverableUnit
     end
 
     desc 'Fetch deliverable unit.',
-      nickname: 'getDeliverableUnit',
-      entity: V01::Entities::DeliverableUnit
+         nickname: 'getDeliverableUnit',
+         entity: V01::Entities::DeliverableUnit
     params do
       requires :id, type: Integer
     end
@@ -56,9 +58,9 @@ class V01::DeliverableUnits < Grape::API
     end
 
     desc 'Create deliverable unit.',
-      detail: '(Note a default deliverable unit is already automatically created with a customer.) By creating a new deliverable unit, it will be possible to specify quantities and capacities for this another unit.',
-      nickname: 'createDeliverableUnit',
-      entity: V01::Entities::DeliverableUnit
+         detail: '(Note a default deliverable unit is already automatically created with a customer.) By creating a new deliverable unit, it will be possible to specify quantities and capacities for this another unit.',
+         nickname: 'createDeliverableUnit',
+         entity: V01::Entities::DeliverableUnit
     params do
       use :params_from_entity, entity: V01::Entities::DeliverableUnit.documentation.except(:id)
     end
@@ -69,36 +71,40 @@ class V01::DeliverableUnits < Grape::API
     end
 
     desc 'Update deliverable unit.',
-      nickname: 'updateDeliverableUnit',
-      entity: V01::Entities::DeliverableUnit
+         nickname: 'updateDeliverableUnit',
+         entity: V01::Entities::DeliverableUnit
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
       use :params_from_entity, entity: V01::Entities::DeliverableUnit.documentation.except(:id)
     end
     put ':id' do
-      deliverable_unit = current_customer.deliverable_units.find(params[:id])
+      id = ParseIdsRefs.read(params[:id])
+      deliverable_unit = current_customer.deliverable_units.where(id).first!
       deliverable_unit.update! deliverable_unit_params
       present deliverable_unit, with: V01::Entities::DeliverableUnit
     end
 
     desc 'Delete deliverable unit.',
-      nickname: 'deleteDeliverableUnit'
+         nickname: 'deleteDeliverableUnit'
     params do
-      requires :id, type: Integer
+      requires :id, type: String, desc: ID_DESC
     end
     delete ':id' do
-      current_customer.deliverable_units.find(params[:id]).destroy
+      id = ParseIdsRefs.read(params[:id])
+      current_customer.deliverable_units.where(id).first!.destroy
       nil
     end
 
     desc 'Delete multiple deliverable units.',
-      nickname: 'deleteDeliverableUnits'
+         nickname: 'deleteDeliverableUnits'
     params do
-      requires :ids, type: Array[Integer], coerce_with: CoerceArrayInteger
+      requires :ids, type: Array[String], desc: 'Ids separated by comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
     end
     delete do
       DeliverableUnit.transaction do
-        current_customer.deliverable_units.select{ |deliverable_unit| params[:ids].include?(deliverable_unit.id) }.each(&:destroy)
+        current_customer.deliverable_units.select do |deliverable_unit|
+          params[:ids].any?{ |s| ParseIdsRefs.match(s, deliverable_unit) }
+        end.each(&:destroy)
         nil
       end
     end

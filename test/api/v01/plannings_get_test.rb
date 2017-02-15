@@ -8,7 +8,7 @@ class V01::PlanningsGetTest < ActiveSupport::TestCase
     Rails.application
   end
 
-  def api path, params = {}
+  def api(path, params = {})
     Addressable::Template.new("/api/0.1/#{path}{?query*}").expand(query: params).to_s
   end
 
