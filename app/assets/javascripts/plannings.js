@@ -1424,7 +1424,9 @@ var plannings_edit = function(params) {
         $(this).popover($('.sidebar').hasClass('extended') ? 'toggle' : 'hide');
       });
     });
-  }
+
+    dropdownAutoDirection($('#planning').find('[data-toggle="dropdown"]'));
+  };
 
   var updatePlanning = function(data, options) {
     displayPlanning(data, $.extend({
