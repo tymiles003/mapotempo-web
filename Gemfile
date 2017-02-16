@@ -111,7 +111,7 @@ gem 'sidebar-v2-gh-pages-rails', github: 'Mapotempo/sidebar-v2-gh-pages-rails'
 gem 'leaflet-encoded-rails', github: 'Mapotempo/leaflet-encoded-rails'
 
 gem 'jquery-turbolinks'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '<6.0.0' # Support IE10 removed in jQuery UI 1.12 + bad performances for large list sortable
 gem 'jquery-tablesorter', '<1.21.2'
 gem 'jquery-simplecolorpicker-rails'
 gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
