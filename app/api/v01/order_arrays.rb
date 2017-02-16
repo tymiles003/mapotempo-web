@@ -9,7 +9,7 @@ class V01::OrderArrays < Grape::API
   resource :order_arrays do
 
     desc 'Orders mass assignment.',
-      detail: 'Only available if "order array" option is active for current customer.',
+      detail: 'Only available if "enable orders" option is active for current customer.',
       nickname: 'massAssignmentOrder'
     params do
       requires :id, type: Integer

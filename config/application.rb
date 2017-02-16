@@ -78,6 +78,9 @@ module Mapotempo
       {customer_id: customer_id, time: event.time, params: params}
     end
 
+    # Option to display or not orders in Admin (not available in API)
+    config.enable_orders = false
+
     config.devices = OpenStruct.new alyacom: Alyacom.new, masternaut: Masternaut.new, orange: Orange.new, teksat: Teksat.new, tomtom: Tomtom.new
   end
 end

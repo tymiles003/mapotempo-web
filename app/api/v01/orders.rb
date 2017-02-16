@@ -40,7 +40,7 @@ class V01::Orders < Grape::API
     segment '/:order_array_id' do
       resource :orders do
         desc 'Update order.',
-          detail: 'Only available if "order array" option is active for current customer.',
+          detail: 'Only available if "enable orders" option is active for current customer.',
           nickname: 'updateOrder',
           success: V01::Entities::Order
         params do
