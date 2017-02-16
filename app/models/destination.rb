@@ -79,7 +79,7 @@ class Destination < Location
       # Don't use local collection here, not set when save new record
       customer.plannings.each{ |planning|
         visits.select(&:id).each{ |visit|
-          if planning.visits.include?(visit)
+          if !new_record? && planning.visits.include?(visit)
             if (planning.tags.to_a & (tags.to_a + visit.tags.to_a).uniq) != planning.tags.to_a
               planning.visit_remove(visit)
             end
