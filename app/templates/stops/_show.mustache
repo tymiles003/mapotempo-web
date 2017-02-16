@@ -44,9 +44,12 @@
 <div>
   {{#planning_id}}
   <div class="btn-group pull-right stop-tools">
-    {{#manage_store}}
-    <a href="{{#store}}/stores/{{id}}/edit?back=true{{/store}}{{#destination}}/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}{{/destination}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
-    {{/manage_store}}
+    {{#store}}{{#manage_store}}
+    <a href="/stores/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+    {{/manage_store}}{{/store}}
+    {{#destination}}{{#manage_destination}}
+    <a href="/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
+    {{/manage_destination}}{{/destination}}
     {{#isoline_capability}}
       <button type="button" class="btn btn-xs btn-default dropdown-toggle draw_zone" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-magic"></i> <span class="caret"></span></button>
       <ul class="dropdown-menu" role="menu">
