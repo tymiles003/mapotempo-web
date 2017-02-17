@@ -165,6 +165,10 @@ GEM
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
     bcrypt (3.1.11)
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-datepicker-rails (1.6.4.1)
@@ -187,6 +191,7 @@ GEM
     charlock_holmes (0.7.3)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
+    coderay (1.1.1)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     coffee-rails (4.1.1)
@@ -544,6 +549,8 @@ DEPENDENCIES
   ai4r
   amoeba
   auto_strip_attributes
+  better_errors
+  binding_of_caller
   bootstrap-datepicker-rails
   bootstrap-filestyle-rails
   bootstrap-select-rails

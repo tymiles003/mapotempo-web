@@ -37,6 +37,10 @@ group :development do
   gem 'web-console', '~> 2.0'
 
   gem 'bullet'
+
+  # Improve error interaction
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :development, :test do
