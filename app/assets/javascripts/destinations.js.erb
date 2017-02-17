@@ -282,9 +282,9 @@ var destinations_form = function(params, api) {
                   $("#destination_country").val(event.data.country ? event.data.country : "");
                   $("#destination_city").val(event.data.city);
                   $("#destination_postalcode").val(event.data.postcode);
-                  $("#destination_street").val(street);   
+                  $("#destination_street").val(street);
                 }
-                
+
               });
 
             $("#reverse-geocode").html(json.result.label).append(button);
@@ -297,7 +297,7 @@ var destinations_form = function(params, api) {
           var err = textStatus + ", " + error;
           console.log( "Request Failed: " + err );
         }
-      });  
+      });
     }
   }
 
@@ -367,13 +367,14 @@ var destinations_form = function(params, api) {
       show24Hours: true,
       showSeconds: true,
       initialField: 1,
-      defaultTime: new Date(0, 0, 0, 0, 0, 0),
+      defaultTime: '00:00:00',
       spinnerImage: ''
     });
 
     $('[name$=\\[open1\\]], [name$=\\[close1\\]], [name$=\\[open2\\]], [name$=\\[close2\\]]', parent).timeEntry({
       show24Hours: true,
-      spinnerImage: ''
+      spinnerImage: '',
+      defaultTime: '00:00'
     });
 
     var formatNoMatches = I18n.t('web.select2.empty_result');

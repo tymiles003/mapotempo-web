@@ -1668,7 +1668,8 @@ var plannings_edit = function(params) {
 
   $('#isochrone_size').timeEntry({
     show24Hours: true,
-    spinnerImage: ''
+    spinnerImage: '',
+    defaultTime: '00:00'
   });
 
   $('#isochrone').click(function() {

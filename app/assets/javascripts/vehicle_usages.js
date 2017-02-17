@@ -29,7 +29,8 @@ var vehicle_usages_form = function(params) {
 
   $('#vehicle_usage_open, #vehicle_usage_close, #vehicle_usage_rest_start, #vehicle_usage_rest_stop, #vehicle_usage_rest_duration, #vehicle_usage_service_time_start, #vehicle_usage_service_time_end').timeEntry({
     show24Hours: true,
-    spinnerImage: ''
+    spinnerImage: '',
+    defaultTime: '00:00'
   });
 
   $('#vehicle_usage_vehicle_color').simplecolorpicker({

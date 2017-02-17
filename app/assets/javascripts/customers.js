@@ -125,7 +125,7 @@ var customers_edit = function(params) {
     show24Hours: true,
     showSeconds: true,
     initialField: 1,
-    defaultTime: new Date(0, 0, 0, 0, 0, 0),
+    defaultTime: '00:00:00',
     spinnerImage: ''
   });
 

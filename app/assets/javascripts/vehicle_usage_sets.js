@@ -45,7 +45,8 @@ var vehicle_usage_sets_index = function(params) {
 var vehicle_usage_sets_edit = function(params) {
   $('#vehicle_usage_set_open, #vehicle_usage_set_close, #vehicle_usage_set_rest_start, #vehicle_usage_set_rest_stop, #vehicle_usage_set_rest_duration, #vehicle_usage_set_service_time_start, #vehicle_usage_set_service_time_end').timeEntry({
     show24Hours: true,
-    spinnerImage: ''
+    spinnerImage: '',
+    defaultTime: '00:00'
   });
 };
 
