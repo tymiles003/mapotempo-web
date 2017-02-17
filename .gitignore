@@ -23,3 +23,5 @@ coverage
 /app/assets/javascripts/i18n/translations.js
 .idea/*
 config/initializers/dev.rb
+.ruby-gemset
+.ruby-version
