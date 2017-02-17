@@ -477,6 +477,8 @@ GEM
       sprockets (>= 2.0.3)
       tilt (>= 1.3.3)
     socksify (1.7.0)
+    spring (2.0.1)
+      activesupport (>= 4.2)
     sprockets (2.12.4)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -635,6 +637,7 @@ DEPENDENCIES
   sim_annealing
   simplecov
   smt_rails
+  spring
   sprockets (< 3.0.0)
   swagger-docs
   therubyracer
