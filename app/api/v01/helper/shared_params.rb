@@ -22,6 +22,11 @@ module SharedParams
     options[:entity].each{ |k, d|
       v = d.dup # Important: use dup not to modify original entity
       v[:type] = Boolean if v[:type] == 'Boolean'
+      # To be homogeneous with rails and avoid timezone problems, need to use Time instead of DateTime
+      if v[:type] == DateTime
+        v[:type] = Time
+        v[:coerce_with] = ->(val) { val.is_a?(String) ? Time.parse(val + ' UTC') : val }
+      end
       if v[:values]
         classes = v[:values].map(&:class).uniq
         v[:type] = classes[0] if classes.size == 1 && v[:type] != classes[0]
