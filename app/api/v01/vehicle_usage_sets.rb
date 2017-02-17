@@ -24,7 +24,7 @@ class V01::VehicleUsageSets < Grape::API
     def vehicle_usage_set_params
       p = ActionController::Parameters.new(params)
       p = p[:vehicle_usage_set] if p.key?(:vehicle_usage_set)
-      p.permit(:name, :open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id)
+      p.permit(:name, :open, :close, :store_start_id, :store_stop_id, :service_time_start, :service_time_end, :rest_start, :rest_stop, :rest_duration, :store_rest_id)
     end
   end
 

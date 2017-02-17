@@ -26,6 +26,8 @@ class V01::Entities::VehicleUsageSet < Grape::Entity
   expose(:close, documentation: { type: DateTime }) { |m| m.close && m.close.utc.strftime('%H:%M:%S') }
   expose(:store_start_id, documentation: { type: Integer })
   expose(:store_stop_id, documentation: { type: Integer })
+  expose(:service_time_start, documentation: { type: DateTime }) { |m| m.service_time_start && m.service_time_start.utc.strftime('%H:%M:%S') }
+  expose(:service_time_end, documentation: { type: DateTime }) { |m| m.service_time_end && m.service_time_end.utc.strftime('%H:%M:%S') }
   expose(:rest_start, documentation: { type: DateTime }) { |m| m.rest_start && m.rest_start.utc.strftime('%H:%M:%S') }
   expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop && m.rest_stop.utc.strftime('%H:%M:%S') }
   expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration && m.rest_duration.utc.strftime('%H:%M:%S') }
