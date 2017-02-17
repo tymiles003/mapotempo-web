@@ -29,26 +29,21 @@ class V01::PlanningsGet < Grape::API
     ID_DESC = 'ID or REF ref:[value]'.freeze
 
     def get_format_routes_email(planning_ids)
-      hash = current_customer.vehicles.select{ |v| v.contact_email }.group_by{ |v| v.contact_email }
+      hash = current_customer.vehicles.select(&:contact_email).group_by(&:contact_email)
       struct = hash.each{ |email, vehicles|
-        hash[email] = vehicles.map{ |v| 
-          {
-            vehicle: v,
-            routes: v.vehicle_usages.flat_map{ |vu|
-              vu.routes.select{ |r|
-                planning_ids.include?(r.planning_id)
-              }.map{ |r|
-                {
-                  url: api_route_calendar_path(r, api_key: @current_user.api_key),
-                  route: r
-                }
-              }
-            }
+        hash[email] = vehicles.map{ |v| {
+          vehicle: v,
+          routes: v.vehicle_usages.flat_map{ |vu|
+            vu.routes.select{ |r|
+              planning_ids.include?(r.planning_id)
+            }.map{ |r| {
+              url: api_route_calendar_path(r, api_key: @current_user.api_key),
+              route: r
+            }}
           }
         }
-      }
+      }}
     end
-
   end
 
   resource :plannings do
