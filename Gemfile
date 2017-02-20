@@ -50,6 +50,10 @@ group :development, :test do
   gem 'rubocop'
   gem 'byebug'
   gem 'i18n-tasks'
+
+  # Debugging tool
+  gem 'pry-rails'
+  gem 'awesome_print'
 end
 
 group :test do
