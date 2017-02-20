@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class StopVisit < Stop
-  delegate :lat, :lng, :open1, :close1, :open2, :close2, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, :color, :icon, to: :visit
+  delegate :lat, :lng, :open1, :close1, :open2, :close2, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, :color, :icon, :default_icon, :default_icon_size, to: :visit
 
   validates :visit, presence: true
 
@@ -54,6 +54,10 @@ class StopVisit < Stop
 
   def icon_size
     nil
+  end
+
+  def default_color
+    visit.color || route.default_color
   end
 
   def to_s
