@@ -42,7 +42,10 @@
         </button>
       </th>
       <th><%= t 'activerecord.attributes.customer.name' %></th>
-      <th class="center"><%= t 'activerecord.attributes.customer.profile' %></th>
+      <th class="center">
+        <%= t 'activerecord.attributes.customer.profile' %> </br>
+        <%= t 'activerecord.attributes.customer.router' %>
+      </th>
       <th class="center"><%= t 'activerecord.attributes.customer.max_vehicles' %></th>
       <th class="center"><%= t 'activerecord.attributes.customer.test' %></th>
       <th class="center"><%= t 'activerecord.attributes.customer.jobs' %></th>
@@ -60,7 +63,10 @@
       <tr<% if customer.end_subscription && customer.end_subscription < Time.now %> class="disabled"<% end %>>
         <td class="center"><%= check_box_tag("customers[#{customer.id}]") %></td>
         <td><%= customer.name %></td>
-        <td class="center"><%= customer.profile.name %></td>
+        <td class="center">
+          <%= customer.profile.name %> </br>
+          <%= customer.router.name %>
+        </td>
         <td class="center"><%= customer.max_vehicles %></td>
         <td class="center"><%= customer.test ? raw('<i class="fa fa-check" aria-hidden="true"></i>') : '' %></td>
         <td class="center">
