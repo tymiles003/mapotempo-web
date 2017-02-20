@@ -1720,6 +1720,7 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
   number:
     format:
       delimiter: " "
+      separator: ","
 
   devise:
     shared:

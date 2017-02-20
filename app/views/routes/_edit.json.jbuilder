@@ -30,7 +30,7 @@ if route.vehicle_usage
   status_uniq = route.stops.map{ |stop|
       {
         code: stop.status.downcase,
-        status: t('plannings.edit.stop_status.' + stop.status.downcase, default: stop.status)
+        status: t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)
       } if stop.status
     }.uniq.compact
   json.status_all do
@@ -38,7 +38,7 @@ if route.vehicle_usage
     json.array! status_uniq | [:planned, :started, :finished, :rejected].map{ |status|
       {
         code: status.to_s.downcase,
-        status: t('plannings.edit.stop_status.' + status.to_s)
+        status: t("plannings.edit.stop_status.#{status.to_s}")
       }
     }
   end
@@ -120,7 +120,7 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
       end
     end
     if stop.status
-      json.status t('plannings.edit.stop_status.' + stop.status.downcase, default: stop.status)
+      json.status t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)
       json.status_code stop.status.downcase
     end
     if stop.route.last_sent_to && stop.status && stop.eta

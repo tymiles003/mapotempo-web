@@ -62,7 +62,7 @@ route.stops.each { |stop|
       out_of_window: stop.out_of_window ? 'x' : '',
       out_of_capacity: stop.out_of_capacity ? 'x' : '',
       out_of_drive_time: stop.out_of_drive_time ? 'x' : '',
-      status: stop.status && I18n.t('plannings.edit.stop_status.' + stop.status.downcase, default: stop.status),
+      status: stop.status && I18n.t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status),
       eta: stop.eta && I18n.l(stop.eta, format: :hour_minute),
 
       ref: stop.is_a?(StopVisit) ? stop.visit.destination.ref : stop.ref,

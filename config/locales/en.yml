@@ -1717,6 +1717,10 @@ or copy/paste following url in your browser : %{l} </p>\n
       create: "Create %{model}"
       update: "Save %{model}"
       submit: "Save %{model}"
+  number:
+    format:
+      delimiter: ","
+      separator: "."
 
   devise:
     shared:
