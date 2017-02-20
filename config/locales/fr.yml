@@ -504,6 +504,7 @@ fr:
           attributes:
             ref:
               invalid_format: "ne doit pas contenir les caractères \".\", \"\\\" ou \"/\""
+              ref_value: "Référence tournée "
 
   errors:
     connection_refused: "Connexion à la base de donnée impossible"

@@ -504,6 +504,7 @@ en:
           attributes:
             ref:
               invalid_format: "must not contain characters \".\", \"\\\" or \"/\""
+              ref_value: "Route reference "
 
   errors:
     connection_refused: "Cannot connect database"
