@@ -123,6 +123,18 @@ class Visit < ActiveRecord::Base
     @icon ||= (tags | destination.tags).find(&:icon).try(&:icon)
   end
 
+  def default_color
+    color || Destination::COLOR_DEFAULT
+  end
+
+  def default_icon
+    icon || Destination::ICON_DEFAULT
+  end
+
+  def default_size
+    nil
+  end
+
   private
 
   def update_out_of_date

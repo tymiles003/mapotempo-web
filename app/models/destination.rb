@@ -16,6 +16,9 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Destination < Location
+  COLOR_DEFAULT = DEFAULT_COLOR
+  ICON_DEFAULT = 'circle'
+
   has_many :visits, -> { order(:id) }, inverse_of: :destination, dependent: :delete_all, autosave: true
   accepts_nested_attributes_for :visits, allow_destroy: true
   validates_associated_bubbling :visits
