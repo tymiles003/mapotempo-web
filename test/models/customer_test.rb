@@ -4,7 +4,7 @@ class CustomerTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
-    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |_url, _mode, _dimension, segments, _options| segments.collect{ |_i| [1, 1, 'trace'] } } ) do
       yield
     end
   end
@@ -14,25 +14,28 @@ class CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should not save' do
-    o = Customer.new
-    assert_not o.save, 'Saved without required fields'
+    customer = Customer.new
+    assert_not customer.save, 'Saved without required fields'
   end
 
   test 'should save' do
-    o = resellers(:reseller_one).customers.build(name: 'test', max_vehicles: 5, default_country: 'France', router: routers(:router_one), profile: profiles(:profile_one))
+    reseller = resellers(:reseller_one)
+    customer = reseller.customers.build(name: 'test', max_vehicles: 5, default_country: 'France', router: routers(:router_one), profile: profiles(:profile_one))
     assert_difference('Customer.count', 1) do
       assert_difference('Vehicle.count', 5) do
         assert_difference('Vehicle.count', 5) do
           assert_difference('VehicleUsageSet.count', 1) do
             assert_difference('DeliverableUnit.count', 1) do
               assert_difference('Store.count', 1) do
-                resellers(:reseller_one).save!
+                reseller.save!
               end
             end
           end
         end
       end
     end
+
+    assert customer.test, Mapotempo::Application.config.customer_test_default
   end
 
   test 'should stop job optimizer' do
@@ -42,23 +45,23 @@ class CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should destination add' do
-    c = customers(:customer_one)
+    customer = customers(:customer_one)
     assert_difference('Destination.count') do
-      d = c.destinations.build(name: 'new', city: 'Parlà')
-      d.visits.build(tags: [tags(:tag_one)])
-      c.save!
+      destination = customer.destinations.build(name: 'new', city: 'Parlà')
+      destination.visits.build(tags: [tags(:tag_one)])
+      customer.save!
     end
   end
 
   test 'should update_out_of_date' do
-    o = customers(:customer_one)
-    o.take_over = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    o.plannings.each{ |p|
+    customer = customers(:customer_one)
+    customer.take_over = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    customer.plannings.each{ |p|
       p.routes.select{ |r| r.vehicle_usage }.each{ |r|
         assert_not r.out_of_date
     }}
-    o.save!
-    o.plannings.each{ |p|
+    customer.save!
+    customer.plannings.each{ |p|
       p.routes.select{ |r| r.vehicle_usage }.each{ |r|
         assert r.out_of_date
     }}
@@ -66,12 +69,12 @@ class CustomerTest < ActiveSupport::TestCase
 
   test 'should update max vehicles up' do
     assert !Mapotempo::Application.config.manage_vehicles_only_admin
-    o = customers(:customer_one)
+    customer = customers(:customer_one)
     assert_difference('Vehicle.count', 1) do
-      assert_difference('VehicleUsage.count', o.vehicle_usage_sets.length) do
-        assert_difference('Route.count', o.plannings.length) do
-          o.max_vehicles += 1
-          o.save!
+      assert_difference('VehicleUsage.count', customer.vehicle_usage_sets.length) do
+        assert_difference('Route.count', customer.plannings.length) do
+          customer.max_vehicles += 1
+          customer.save!
         end
       end
     end
@@ -79,12 +82,12 @@ class CustomerTest < ActiveSupport::TestCase
 
   test 'should update max vehicles down' do
     assert !Mapotempo::Application.config.manage_vehicles_only_admin
-    o = customers(:customer_one)
+    customer = customers(:customer_one)
     assert_difference('Vehicle.count', -1) do
-      assert_difference('VehicleUsage.count', -o.vehicle_usage_sets.length) do
-        assert_difference('Route.count', -o.plannings.length) do
-          o.max_vehicles -= 1
-          o.save!
+      assert_difference('VehicleUsage.count', -customer.vehicle_usage_sets.length) do
+        assert_difference('Route.count', -customer.plannings.length) do
+          customer.max_vehicles -= 1
+          customer.save!
         end
       end
     end
@@ -210,6 +213,8 @@ class CustomerTest < ActiveSupport::TestCase
 
                       assert_equal @customer.destinations.flat_map{ |dest| dest.visits.map{ |v| v.quantities.values }}, duplicate.destinations.flat_map{ |dest| dest.visits.map{ |v| v.quantities.values }}
                       assert_equal [], @customer.destinations.flat_map{ |dest| dest.visits.flat_map{ |v| v.quantities.keys }} & duplicate.destinations.flat_map{ |dest| dest.visits.flat_map{ |v| v.quantities.keys }}
+
+                      assert duplicate.test, Mapotempo::Application.config.customer_test_default
                     # end
                   end
                 end

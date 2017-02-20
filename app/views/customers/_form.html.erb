@@ -5,7 +5,7 @@
     <%= f.text_field :ref do %>
       <p class="help-block"><%= t('activerecord.attributes.customer.ref_help') %></p>
     <% end %>
-    <%= f.text_area :description, { size:"100%", class:"form-control" } do %>
+    <%= f.text_area :description, { size: '100%', class: 'form-control' } do %>
       <p class="help-block"><%= t('activerecord.attributes.customer.description_help') %></p>
     <% end %>
   <% end %>
@@ -14,7 +14,7 @@
   <%= f.number_field :max_vehicles, min:1, disabled: (Mapotempo::Application.config.manage_vehicles_only_admin && !current_user.admin?), input_group: content_tag('i', '', class: 'fa fa-truck fa-fw') %>
   <% if current_user.admin? %>
     <%= f.toggles t 'activerecord.attributes.customer.test' do %>
-      <%= f.check_box :test %>
+      <%= f.check_box :test, '', checked: @customer.id ? @customer.test : Mapotempo::Application.config.customer_test_default %>
     <% end %>
   <% end %>
   <fieldset>

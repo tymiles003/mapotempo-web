@@ -172,6 +172,7 @@ class Customer < ActiveRecord::Base
       copy = self.amoeba_dup
       copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
       copy.ref = copy.ref ? Time.new.to_i.to_s : nil
+      copy.test = Mapotempo::Application.config.customer_test_default
       copy.save!
       copy
     end
@@ -245,6 +246,7 @@ class Customer < ActiveRecord::Base
     self.default_country ||= I18n.t('customers.default.country')
     self.enable_references = Mapotempo::Application.config.enable_references
     self.enable_multi_visits = Mapotempo::Application.config.enable_multi_visits
+    self.test = Mapotempo::Application.config.customer_test_default
   end
 
   def create_default_store
