@@ -569,7 +569,9 @@ CREATE TABLE routers (
     distance boolean DEFAULT false NOT NULL,
     avoid_zones boolean DEFAULT false NOT NULL,
     isochrone boolean DEFAULT false NOT NULL,
-    isodistance boolean DEFAULT false NOT NULL
+    isodistance boolean DEFAULT false NOT NULL,
+    locale hstore DEFAULT ''::hstore NOT NULL,
+    name_locale hstore DEFAULT ''::hstore NOT NULL
 );
 
 
@@ -2561,4 +2563,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170111085136');
 INSERT INTO schema_migrations (version) VALUES ('20170215102225');
 
 INSERT INTO schema_migrations (version) VALUES ('20170215113103');
+
+INSERT INTO schema_migrations (version) VALUES ('20170220092059');
 

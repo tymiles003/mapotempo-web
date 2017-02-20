@@ -30,9 +30,9 @@
         <div class="input-group">
           <% routers = @customer.id ? @customer.profile.routers : Router.all %>
           <%= select_tag 'customer[router]', grouped_options_for_select([[t('activerecord.attributes.router.router_dimensions.time'), routers.select(&:time?).collect{ |router|
-              [router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.time'), router.id.to_s + '_time']
+              [router.translated_name + ' - ' + t('activerecord.attributes.router.router_dimensions.time'), router.id.to_s + '_time']
               }]] + [[t('activerecord.attributes.router.router_dimensions.distance'), routers.select(&:distance?).collect{ |router|
-              [router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.distance'), router.id.to_s + '_distance']
+              [router.translated_name + ' - ' + t('activerecord.attributes.router.router_dimensions.distance'), router.id.to_s + '_distance']
               }]],
             @customer.router_id.to_s + '_' + @customer.router_dimension), class: 'form-control', required: true %>
           <span class="input-group-addon"><i class="fa fa-gear fa-fw"></i></span>
@@ -43,11 +43,11 @@
 
     <div class="form-group">
       <label class="col-md-2 control-label" for="speed_multiplicator">
-        <%= t("activerecord.attributes.customer.speed_multiplicator") %>
+        <%= t('activerecord.attributes.customer.speed_multiplicator') %>
       </label>
       <div class="col-md-6 input-append">
         <div class="input-group">
-          <%= number_field_tag :speed_multiplicator, (@customer.speed_multiplicator ? (@customer.speed_multiplicator * 100).to_i : 100), { min: 50, max: 150, placeholder: t(".speed_multiplicator_default", n: 100), class: "form-control number-to-percentage" } %>
+          <%= number_field_tag :speed_multiplicator, (@customer.speed_multiplicator ? (@customer.speed_multiplicator * 100).to_i : 100), { min: 50, max: 150, placeholder: t('.speed_multiplicator_default', n: 100), class: 'form-control number-to-percentage' } %>
           <span class="input-group-addon">%</span>
         </div>
         <p class="help-block">
@@ -190,11 +190,11 @@
 
               <%= f.text_field :tomtom_account, autocomplete: "off" %>
               <%= f.text_field :tomtom_user, autocomplete: "off" %>
-              <%= f.password_field :tomtom_password, value: nil, autocomplete: "off", class: "form-control" %>
+              <%= f.password_field :tomtom_password, value: nil, autocomplete: 'off', class: 'form-control' %>
 
               <div class="btn btn-default btn-sm tomtom-api-sync" disabled="disabled">
                 <i class="fa fa-bolt fa-fw"></i>
-                <%= t "customers.form.sync.tomtom.action" %>
+                <%= t 'customers.form.sync.tomtom.action' %>
               </div>
             </div>
             <div class="pull-right col-md-2">

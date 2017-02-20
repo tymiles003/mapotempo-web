@@ -54,9 +54,9 @@
             <div class="input-group">
               <% routers = @vehicle_usage.vehicle.customer.profile.routers %>
               <%= select_tag 'vehicle_usage[vehicle][router]', grouped_options_for_select([[t('activerecord.attributes.router.router_dimensions.time'), routers.select(&:time?).collect{ |router|
-                  [router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.time'), router.id.to_s + '_time']
+                  [router.translated_name + ' - ' + t('activerecord.attributes.router.router_dimensions.time'), router.id.to_s + '_time']
                   }]] + [[t('activerecord.attributes.router.router_dimensions.distance'), routers.select(&:distance?).collect{ |router|
-                  [router.name + ' - ' + t('activerecord.attributes.router.router_dimensions.distance'), router.id.to_s + '_distance']
+                  [router.translated_name + ' - ' + t('activerecord.attributes.router.router_dimensions.distance'), router.id.to_s + '_distance']
                   }]],
                 @vehicle_usage.vehicle.router_id || @vehicle_usage.vehicle.router_dimension ? (@vehicle_usage.vehicle.router_id || @vehicle_usage.vehicle.customer.router_id).to_s + '_' + (@vehicle_usage.vehicle.router_dimension || @vehicle_usage.vehicle.customer.router_dimension) : nil),
                 include_blank: t('vehicles.form.router.default') + ' (' + @vehicle_usage.vehicle.customer.router.name + ' - ' + t("activerecord.attributes.router.router_dimensions.#{@vehicle_usage.vehicle.customer.router_dimension}") + ')', class: 'form-control' %>

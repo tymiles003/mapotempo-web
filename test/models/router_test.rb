@@ -4,6 +4,23 @@ require 'routers/osrm'
 class RouterTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
+  test 'should translate name' do
+    I18n.default_locale = :en
+    router = routers(:router_one)
+    router2 = routers(:router_two)
+    router3 = routers(:router_osrm)
+
+    I18n.locale = :fr
+    assert_equal router.translated_name, router.name_locale['fr']
+    assert_equal router2.translated_name, router2.name_locale['en']
+    assert_equal router3.translated_name, router3.name
+
+    I18n.locale = :en
+    assert_equal router.translated_name, router.name_locale['en']
+    assert_equal router2.translated_name, router2.name_locale['en']
+    assert_equal router3.translated_name, router3.name
+  end
+
   test 'should pack and unpack sorted vector' do
     router = routers(:router_one)
     r = [[1, 1], [2, 2]]

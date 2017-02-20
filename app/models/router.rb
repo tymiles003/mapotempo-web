@@ -38,6 +38,14 @@ class Router < ActiveRecord::Base
     }
   end
 
+  def translated_name
+    if !self.name_locale.empty?
+      self.name_locale[I18n.locale.to_s] || self.name_locale[I18n.default_locale.to_s] || self.name
+    else
+      self.name
+    end
+  end
+
   private
 
   def pack_vector(row, column)

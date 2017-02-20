@@ -4,6 +4,9 @@ router_one:
   mode: car
   type: RouterWrapper
   name: MyString
+  name_locale:
+    fr: Router fr
+    en: Router en
   time: true
   distance: true
   url_time: http://localhost:5000
@@ -17,6 +20,8 @@ router_one:
 router_two:
   mode: car
   name: MyString
+  name_locale:
+    en: Router en
   time: true
   distance: false
   url_time: http://localhost:5000
