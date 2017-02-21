@@ -41,6 +41,15 @@ group :development do
   # Improve error interaction
   gem 'better_errors'
   gem 'binding_of_caller'
+
+  # Guard with plugins
+  gem 'guard'
+  gem 'guard-rails'
+  gem 'guard-migrate'
+  gem 'guard-rake'
+  gem 'guard-delayed'
+  gem 'guard-process'
+  gem 'libnotify'
 end
 
 group :development, :test do
