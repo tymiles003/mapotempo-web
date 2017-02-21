@@ -39,6 +39,7 @@ $sidebar-margins: 10px;
     #zones {
       .vehicle_select {
         min-width: 150px;
+        max-width: 200px;
       }
       .disabled {
         color: #ccc;
