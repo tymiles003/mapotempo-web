@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.5
--- Dumped by pg_dump version 9.5.5
+-- Dumped from database version 9.5.4
+-- Dumped by pg_dump version 9.5.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -180,7 +180,8 @@ CREATE TABLE deliverable_units (
     default_quantity double precision,
     default_capacity double precision,
     optimization_overload_multiplier double precision,
-    ref character varying
+    ref character varying,
+    icon character varying
 );
 
 
@@ -2559,6 +2560,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161220100839');
 INSERT INTO schema_migrations (version) VALUES ('20170106110428');
 
 INSERT INTO schema_migrations (version) VALUES ('20170111085136');
+
+INSERT INTO schema_migrations (version) VALUES ('20170131131403');
 
 INSERT INTO schema_migrations (version) VALUES ('20170215102225');
 
