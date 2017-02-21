@@ -790,12 +790,13 @@ en:
       quantity_small: "Qty."
       dialog:
         import:
-          title: 'Import'
-          in_progress: 'Please wait, import in progress'
+          title: "Import"
+          in_progress: "Please wait, import in progress"
         geocoding:
           title: "Geocoding"
           in_progress: "Please wait, geocoding in progress."
           attempts: "Attempts:"
+          inqueue: "Geocoding task queued"
           error: "Compute failed."
         geocoding_danger:
           title: "Geocoding results without reliability"
@@ -1176,6 +1177,7 @@ or copy/paste following url in your browser : %{l} </p>\n
           optimize: "Optimizing"
           routes: "Routes"
           attempts: "Attempts:"
+          inqueue: "Optimization task queued"
           error: "Compute fail."
         orange:
           title: "Orange Fleet Performance"

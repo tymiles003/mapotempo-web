@@ -790,12 +790,13 @@ fr:
       quantity_small: "Qté."
       dialog:
         import:
-          title: 'Import des clients'
-          in_progress: 'Import des clients en cours, merci de patienter'
+          title: "Import des clients"
+          in_progress: "Import des clients en cours, merci de patienter"
         geocoding:
           title: "Géocodage"
           in_progress: "Géocodage en cours, merci de patienter."
           attempts: "Tentatives :"
+          inqueue: "Tâche de géocodage en file d'attente"
           error: "Impossible d'effectuer le calcul."
         geocoding_danger:
           title: "Résultats de géocodage peu fiables"
@@ -1176,6 +1177,7 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
           optimize: "Optimisation"
           routes: "Tournées"
           attempts: "Tentatives :"
+          inqueue: "Tâche d'optimisation en file d'attente"
           error: "Impossible d'effectuer le calcul."
         orange:
           title: "Orange Fleet Performance"

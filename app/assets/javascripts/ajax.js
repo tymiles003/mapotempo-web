@@ -18,7 +18,7 @@
 'use strict';
 
 var ajaxWaitingGlobal = 0;
-var planningTimerId;
+var progressDialogTimerId;
 
 var beforeSendWaiting = function() {
   if (ajaxWaitingGlobal == 0) {
@@ -107,72 +107,98 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
 };
 
 var iteration = undefined;
+var isInqueue = false;
 var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, successCallback) {
   if (delayedJob !== undefined) {
     var timeout = 2000;
     var duration;
+
     dialog.modal(modal_options());
     freezeProgressDialog(dialog);
+
     var progress = delayedJob.progress && delayedJob.progress.split(';');
-    $(".progress-bar", dialog).each(function(i, e) {
-      if (progress == undefined || progress == '' || progress[i] == undefined || progress[i] == '') {
-        $(e).parent().parent().hide();
+    $(".progress-bar", dialog).each(function(i, event) {
+      // hide or show dialog-progress class
+      if (typeof progress === "undefined" || progress === null || progress === '' || typeof progress[i] === "undefined" || progress[i] === '') {
+        $(event).parent().parent().hide();
       } else {
-        $(e).parent().parent().show();
+        $(event).parent().parent().show();
       }
-      if (!progress || !progress[i] || progress[i] == 0) {
-        $(e).parent().removeClass("active");
-        $(e).css({
+
+      if (!progress || typeof progress[i] === "undefined" || progress[i] === null) {
+        // Inactive progress class
+        $(event).parent().removeClass("active");
+        $(event).css({
           transition: 'linear 0s',
           width: '0%'
         });
+      } else if (progress[i] == 0) {
+        // Display a waiting message to user
+        $(event).parent().parent().hide();
+        $(".dialog-inqueue", dialog).show();
+        isInqueue = true;
       } else if (progress[i] == 100) {
-        $(e).parent().removeClass("active");
-        $(e).css({
+        $(event).parent().removeClass("active");
+        $(event).css({
           transition: 'linear 0s',
           width: '100%'
         });
       } else if (progress[i] == -1) {
-        $(e).parent().addClass("active");
-        $(e).css({
+        $(event).parent().addClass("active");
+        $(event).css({
           transition: 'linear 0s',
           width: '100%'
         });
       } else if (progress[i].indexOf('ms') > -1) {
         // optimization in ms
-        var v = progress[i].split('ms');
-        if (iteration != v[1] || $(".dialog-attempts-number", dialog).html() != delayedJob.attempts) {
-          iteration = v[1];
-          $(e).css('transition', 'linear 0s');
-          $(e).css('width', '0%');
+        if (isInqueue) {
+          $(".dialog-inqueue", dialog).hide();
+          isInqueue = false;
+        }
+        var timeSpent = progress[i].split('ms');
+        if (iteration != timeSpent[1] || $(".dialog-attempts-number", dialog).html() != delayedJob.attempts) {
+          iteration = timeSpent[1];
+          $(event).css('transition', 'linear 0s');
+          $(event).css('width', '0%');
+
           setTimeout(function() { // to be sure width is 0%
-            duration = parseInt(v[0]);
+            duration = parseInt(timeSpent[0]);
             if (duration > timeout) {
-              $(e).parent().removeClass("active");
-              $(e).css("transition", "linear " + ((duration - timeout - 20) / 1000) + "s");
-              $(e).css("width", "100%");
+              $(event).parent().removeClass("active");
+              $(event).css("transition", "linear " + ((duration - timeout - 20) / 1000) + "s");
+              $(event).css("width", "100%");
             }
           }, 20);
         }
       } else if (progress[i].indexOf('/') > -1) {
         // optimization or geocoding current/total
-        var v = progress[i].split('/');
-        $(e).parent().removeClass("active");
-        $(e).css("transition", "linear 0.5s");
-        $(e).css("width", "" + (100 * v[0] / v[1]) + "%");
-        $(e).html(progress[i]);
+        var currentSteps = progress[i].split('/');
+        if (isInqueue) {
+          $(".dialog-inqueue", dialog).hide();
+          isInqueue = false;
+        }
+        $(event).parent().removeClass("active");
+        $(event).css("transition", "linear 0.5s");
+        $(event).css("width", "" + (100 * currentSteps[0] / currentSteps[1]) + "%");
+        $(event).html(progress[i]);
       } else {
-        $(e).parent().removeClass("active");
-        $(e).css("transition", "linear 2s");
-        $(e).css("width", "" + progress[i] + "%");
+        if (isInqueue) {
+          $(".dialog-inqueue", dialog).hide();
+          isInqueue = false;
+        }
+        $(event).parent().removeClass("active");
+        $(event).css("transition", "linear 2s");
+        $(event).css("width", "" + progress[i] + "%");
       }
     });
+
     if (delayedJob.attempts) {
       $(".dialog-attempts-number", dialog).html(delayedJob.attempts);
       $(".dialog-attempts", dialog).show();
     } else {
       $(".dialog-attempts", dialog).hide();
     }
+
     if (delayedJob.error) {
       if (errorCallback) {
         errorCallback();
@@ -181,7 +207,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       $(".dialog-error", dialog).show();
       unfreezeProgressDialog(dialog, delayedJob, url, callback);
     } else {
-      planningTimerId = setTimeout(function() {
+      progressDialogTimerId = setTimeout(function() {
         $.ajax({
           url: url,
           success: function(data) {
@@ -193,11 +219,13 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
           error: ajaxError
         });
       }, 2000);
+
       $(document).on('page:before-change', function(e) {
-        clearTimeout(planningTimerId);
+        clearTimeout(progressDialogTimerId);
         $(document).off('page:before-change');
       });
     }
+
     return false;
   } else {
     iteration = null;
@@ -205,6 +233,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       if (successCallback) {
         successCallback();
       }
+
       dialog.modal('hide');
       $($(".progress-bar", dialog)).css("width", "0%");
     }
