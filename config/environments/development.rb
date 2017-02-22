@@ -59,7 +59,7 @@ Rails.application.configure do
   # )
   config.optimize = OptimizerWrapper.new(
     cache_factory('optimizer_wrapper', 60*60*24*10),
-    'http://optim.mapotempo.com:1791/0.1',
+    'http://localhost:1791/0.1',
     'demo'
   )
   config.optimize_time = 600
