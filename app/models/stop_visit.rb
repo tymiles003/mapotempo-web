@@ -40,7 +40,7 @@ class StopVisit < Stop
   end
 
   def duration
-    to = visit.take_over ? visit.take_over : visit.destination.customer.take_over
+    to = visit.take_over || visit.destination.customer.take_over
     to ? to.seconds_since_midnight : 0
   end
 

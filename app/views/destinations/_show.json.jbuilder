@@ -17,12 +17,13 @@ json.visits do
     json.extract! visit, :id
     json.ref visit.ref if @customer.enable_references
     json.take_over visit.take_over && l(visit.take_over.utc, format: :hour_minute_second)
+    json.duration visit.default_take_over && l(visit.default_take_over.utc, format: :hour_minute_second)
     if !@customer.enable_orders
       if @customer.deliverable_units.size == 1
         json.quantity visit.quantities && visit.quantities[@customer.deliverable_units[0].id]
         json.quantity_default @customer.deliverable_units[0].default_quantity
-      elsif visit.default_quantities.values.compact.size > 0
-        json.quantity '#'
+      elsif visit.default_quantities.values.compact.size > 1
+        json.multiple_quantities true
       end
       json.quantities do
         json.array! visit.default_quantities do |k, v|

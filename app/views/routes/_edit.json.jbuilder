@@ -64,7 +64,6 @@ route.stops.select{ |s| s.is_a?(StopVisit) }.sort_by{ |s| s.index || Float::INFI
   end
 }
 json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::INFINITY } : (route.stops.all?{ |s| s.name.to_i != 0 } ? route.stops.sort_by{ |s| s.name.to_i } : route.stops.sort_by{ |s| s.name.to_s.downcase }) do |stop|
-  duration = nil
   out_of_window |= stop.out_of_window
   out_of_capacity |= stop.out_of_capacity
   out_of_drive_time |= stop.out_of_drive_time
@@ -128,17 +127,15 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
     if stop.route.last_sent_to && stop.status && stop.eta
       (json.eta_formated l(stop.eta, format: :hour_minute)) if stop.eta
     end
-    duration = l(visit.take_over.utc, format: :hour_minute_second) if visit.take_over
   elsif stop.is_a?(StopRest)
     json.rest do
       json.rest true
-      duration = l(route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) if route.vehicle_usage.default_rest_duration
       (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
       (json.geocoded true) if route.vehicle_usage.default_store_rest && route.vehicle_usage.default_store_rest.position?
       (json.error true) if route.vehicle_usage.default_store_rest && !route.vehicle_usage.default_store_rest.position?
     end
   end
-  json.duration duration if duration
+  json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration
   previous_with_pos = stop if stop.position?
 end
 json.store_stop do

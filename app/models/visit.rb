@@ -90,6 +90,10 @@ class Visit < ActiveRecord::Base
     end
   end
 
+  def default_take_over
+    take_over || destination.customer.take_over
+  end
+
   def default_quantities
     @default_quantities ||= Hash[destination.customer.deliverable_units.collect{ |du|
       [du.id, quantities && quantities[du.id] ? quantities[du.id] : du.default_quantity]
