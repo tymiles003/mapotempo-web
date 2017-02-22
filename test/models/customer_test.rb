@@ -195,6 +195,7 @@ class CustomerTest < ActiveSupport::TestCase
 
   test 'should duplicate' do
     duplicate = nil
+    unit_ids = @customer.deliverable_units.map(&:id)
 
     assert_difference('Customer.count', 1) do
       assert_difference('User.count', @customer.users.size) do
@@ -208,11 +209,11 @@ class CustomerTest < ActiveSupport::TestCase
                       duplicate = @customer.duplicate
                       duplicate.save!
 
-                      assert_equal @customer.vehicles.map{ |v| v.capacities.values }, duplicate.vehicles.map{ |v| v.capacities.values }
-                      assert_equal [], @customer.vehicles.map{ |v| v.capacities.keys } & duplicate.vehicles.map{ |v| v.capacities.keys }
+                      assert_equal @customer.vehicles.map{ |v| v.capacities.delete_if{ |k, v| unit_ids.exclude? k }.values }, duplicate.vehicles.map{ |v| v.capacities.values }
+                      assert_equal [], @customer.vehicles.map{ |v| v.capacities.delete_if{ |k, v| unit_ids.exclude? k }.keys } & duplicate.vehicles.map{ |v| v.capacities.keys }
 
-                      assert_equal @customer.destinations.flat_map{ |dest| dest.visits.map{ |v| v.quantities.values }}, duplicate.destinations.flat_map{ |dest| dest.visits.map{ |v| v.quantities.values }}
-                      assert_equal [], @customer.destinations.flat_map{ |dest| dest.visits.flat_map{ |v| v.quantities.keys }} & duplicate.destinations.flat_map{ |dest| dest.visits.flat_map{ |v| v.quantities.keys }}
+                      assert_equal @customer.destinations.flat_map{ |dest| dest.visits.map{ |v| v.quantities.delete_if{ |k, v| unit_ids.exclude? k }.values }}, duplicate.destinations.flat_map{ |dest| dest.visits.map{ |v| v.quantities.values }}
+                      assert_equal [], @customer.destinations.flat_map{ |dest| dest.visits.flat_map{ |v| v.quantities.delete_if{ |k, v| unit_ids.exclude? k }.keys }} & duplicate.destinations.flat_map{ |dest| dest.visits.flat_map{ |v| v.quantities.keys }}
 
                       assert duplicate.test, Mapotempo::Application.config.customer_test_default
                     # end

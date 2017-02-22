@@ -5,7 +5,7 @@ vehicle_one:
   name: vehicle_one
   emission: 1.5
   consumption: 1.5
-  capacities: '"1" => "1"'
+  capacities: '"1" => "1", "999" => "1"'
   color: "#004499"
   customer: customer_one
   speed_multiplicator:
