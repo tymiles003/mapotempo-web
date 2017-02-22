@@ -17,21 +17,62 @@
 //
 PNotify.prototype.options.styling = 'fontawesome';
 
-(function() {
-  function notify(status, message, options) {
-    new PNotify($.extend({
-      text: message,
-      type: status,
-      animation: 'slide',
-      animate_speed: 'normal',
-      shadow: true,
-      hide: true,
-      buttons: {
-        sticker: false,
-        closer: true
-      }
-    }, options));
+PNotify.prototype.options.buttons.labels = {
+  close: I18n.t('web.dialog.close')
+};
+
+var isWindowVisible = (function () {
+  var stateKey, eventKey, keys = {
+    hidden: 'visibilitychange',
+    webkitHidden: 'webkitvisibilitychange',
+    mozHidden: 'mozvisibilitychange',
+    msHidden: 'msvisibilitychange'
   };
+  for (stateKey in keys) {
+    if (stateKey in document) {
+      eventKey = keys[stateKey];
+      break;
+    }
+  }
+  return function (callback) {
+    if (callback) document.addEventListener(eventKey, callback);
+    return !document[stateKey];
+  }
+})();
+
+var notificationCalled = false;
+
+(function () {
+  function notify(status, message, options) {
+    notificationCalled = false;
+
+    var notification = function () {
+      new PNotify($.extend({
+        text: message,
+        type: status,
+        animation: 'slide',
+        animate_speed: 'normal',
+        shadow: true,
+        hide: true,
+        buttons: {
+          sticker: false,
+          closer: true
+        }
+      }, options));
+
+      notificationCalled = true;
+    };
+
+    if (isWindowVisible()) {
+      $(notification);
+    } else {
+      isWindowVisible(function () {
+        if (isWindowVisible() && !notificationCalled) {
+          $(notification);
+        }
+      });
+    }
+  }
 
   function desktop_notify(status, message, options) {
     PNotify.desktop.permission();
@@ -41,35 +82,27 @@ PNotify.prototype.options.styling = 'fontawesome';
         desktop: true
       }
     }, options));
-  };
+  }
 
   $.extend(window, {
-    notify: function(status, message, options) {
+    notify: function (status, message, options) {
       notify(status, message, $.extend({}, options));
     },
-    stickyNotice: function(message, options) {
-      notify('success', message, $.extend(options, {
-        hide: false
-      }));
-    },
-    notice: function(message, options) {
+    notice: function (message, options) {
       notify('success', message, options);
     },
-    desktopNotice: function(message, options) {
-      desktop_notify('success', message, $.extend({}, options));
+    warning: function (message, options) {
+      notify('warning', message, options);
     },
-    stickyError: function(message, options) {
+    error: function (message, options) {
+      notify('error', message, options);
+    },
+    stickyError: function (message, options) {
       notify('error', message, $.extend(options, {
         hide: false
       }));
     },
-    error: function(message, options) {
-      notify('error', message, options);
-    },
-    desktopError: function(message, options) {
-      desktop_notify('error', message, $.extend({}, options));
-    },
-    hideNotices: function() {
+    hideNotices: function () {
       PNotify.removeAll();
     }
   });

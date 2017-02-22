@@ -27,7 +27,7 @@ var iCalendarExport = function(planningId) {
   $('#btn-export').click(function(e) {
     ids = getPlanningsId();
     if (ids.length == 0) {
-      notify('warning', I18n.t('plannings.index.export.none_planning'));
+      warning(I18n.t('plannings.index.export.none_planning'));
       e.preventDefault();
     }
     $('#ical_export').attr('href', url + '&ids=' + ids.join(','));
@@ -39,7 +39,7 @@ var iCalendarExport = function(planningId) {
     if (!planningId) {
       ids = getPlanningsId();
       if (ids.length == 0) {
-        notify('warning', I18n.t('plannings.index.export.none_planning'));
+        warning(I18n.t('plannings.index.export.none_planning'));
         return;
       }
       else
@@ -122,7 +122,7 @@ var spreadsheetModalExport = function(columns, planningId) {
   $('#btn-spreadsheet').click(function() {
     var planningsId = getPlanningsId();
     if (!planningId && planningsId.length == 0) {
-      notify('warning', I18n.t('plannings.index.export.none_planning'));
+      warning(I18n.t('plannings.index.export.none_planning'));
       return;
     }
 
