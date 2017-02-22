@@ -1632,6 +1632,7 @@ or copy/paste following url in your browser : %{l} </p>\n
     default: "You are not authorized to access this page"
 
   web:
+    key_not_found: "Your connection key is invalid"
     slow_browser: "You use %{n} which slows down application. We recommand to use another browser free to download for better performances."
     form:
       default: "%{n} (default value)"

@@ -1632,6 +1632,7 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
     default: "Vous n'êtes pas autorisé à accéder à cette page"
 
   web:
+    key_not_found: "Votre clé de connexion n'est pas reconnu"
     slow_browser: "Vous utilisez %{n} qui ralentit l'application. Nous vous invitons à utiliser un autre navigateur téléchargeable gratuitement pour de meilleures performances."
     form:
       default: "%{n} (valeur par défaut)"

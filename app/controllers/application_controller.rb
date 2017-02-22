@@ -33,13 +33,19 @@ class ApplicationController < ActionController::Base
 
   def api_key?
     if params['api_key']
-      warden.set_user(User.find_by(api_key: params['api_key']), run_callbacks: false)
+      if (user = User.find_by(api_key: params['api_key']))
+        warden.set_user(user, run_callbacks: false)
+      else
+        redirect_to new_user_session_path, alert: t('web.key_not_found')
+      end
     end
+
+    # => redirect_to login page si user not found
   end
 
   def load_vehicles
     if current_user && !current_user.admin?
-      @vehicle_usage_sets = current_user.customer.vehicle_usage_sets.includes([:vehicle_usages, { vehicle_usages: [:vehicle] }])
+      @vehicle_usage_sets = current_user.customer.vehicle_usage_sets.includes([:vehicle_usages, {vehicle_usages: [:vehicle]}])
     end
   end
 
