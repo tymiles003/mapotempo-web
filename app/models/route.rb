@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2016
+# Copyright © Mapotempo, 2013-2017
 #
 # This file is part of Mapotempo.
 #
@@ -79,8 +79,10 @@ class Route < ActiveRecord::Base
   def plan(departure = nil, ignore_errors = false)
     self.touch if self.id # To force route save in case none attribute has changed below
     self.distance = 0
+    geojson_tracks = []
+
     self.stop_distance = 0
-    self.stop_trace = nil
+    self.stop_no_path = false
     self.stop_out_of_drive_time = nil
     self.emission = 0
     self.start = self.end = nil
@@ -145,7 +147,25 @@ class Route < ActiveRecord::Base
       stops_time_windows = quantities_ = {}
       stops_sort.each{ |stop|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
-          stop.distance, stop.drive_time, stop.trace = traces.shift
+          stop.distance, stop.drive_time, trace = traces.shift
+          stop.no_path = trace.nil?
+          if trace
+            geojson_tracks << {
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                polylines: trace,
+              },
+              properties: {
+                route_id: self.id,
+                color: self.default_color,
+                stop_id: stop.id,
+                drive_time: stop.drive_time,
+                distance: stop.distance
+              }.compact
+            }.to_json
+          end
+
           if stop.drive_time
             stops_drive_time[stop] = stop.drive_time
             stop.time = self.end + stop.drive_time
@@ -184,7 +204,7 @@ class Route < ActiveRecord::Base
           end
         else
           stop.active = stop.out_of_capacity = stop.out_of_drive_time = stop.out_of_window = false
-          stop.distance = stop.trace = stop.time = stop.wait_time = nil
+          stop.distance = stop.time = stop.wait_time = nil
         end
       }
 
@@ -202,9 +222,24 @@ class Route < ActiveRecord::Base
         self.end += service_time_end
       end
 
-      self.stop_trace = trace
-      self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
+      if trace
+        geojson_tracks << {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            polylines: trace,
+          },
+          properties: {
+            route_id: self.id,
+            color: self.default_color,
+            drive_time: self.stop_drive_time,
+            distance: self.stop_distance
+          }.compact
+        }.to_json
+      end
 
+      self.geojson_tracks = geojson_tracks.join(',')
+      self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
       self.emission = vehicle_usage.vehicle.emission.nil? || vehicle_usage.vehicle.consumption.nil? ? nil : self.distance / 1000 * vehicle_usage.vehicle.emission * vehicle_usage.vehicle.consumption / 100
 
       [stops_sort, stops_drive_time, stops_time_windows]
@@ -212,7 +247,38 @@ class Route < ActiveRecord::Base
   end
 
   def compute!(options = {})
+    self.geojson_points = if !stops.empty?
+      points = []
+      coordinates = []
+      stops.each{ |stop|
+        if stop.position?
+          coordinates << [stop.lat, stop.lng]
+          points << {
+            stop_id: stop.id,
+            color: stop.color,
+            icon: stop.icon,
+            icon_size: stop.icon_size
+          }.compact
+        end
+      }
+
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'MultiPoint',
+          polylines: Polylines::Encoder.encode_points(coordinates, 1e6)
+        },
+        properties: {
+          planning_id: self.planning.id,
+          route_id: self.id,
+          color: self.default_color,
+          points: points
+        }
+      }.to_json
+    end
+
     if self.vehicle_usage
+      self.geojson_tracks = nil
       stops_sort, stops_drive_time, stops_time_windows = plan(nil, options[:ignore_errors])
 
       if stops_sort
@@ -252,6 +318,7 @@ class Route < ActiveRecord::Base
 
   def compute(options = {})
     compute!(options) if self.out_of_date
+    true
   end
 
   def set_visits(visits, recompute = true, ignore_errors = false)
@@ -453,6 +520,63 @@ class Route < ActiveRecord::Base
 
   def to_s
     "#{ref}:#{vehicle_usage && vehicle_usage.vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
+  end
+
+  def self.routes_to_geojson(routes, include_stores = true, respect_hidden = true, polyline = true)
+    stores_geojson = if include_stores
+      coordinates = []
+      properties = []
+      routes.select{ |r| r.vehicle_usage && (!respect_hidden || !r.hidden) }.collect(&:vehicle_usage).collect{ |vu| [vu.default_store_start, vu.default_store_start, vu.default_store_start] }.flatten.compact.uniq.select(&:position?).collect{ |store|
+        coordinates << [store.lat, store.lng]
+        properties << {
+          store_id: store.id,
+          color: store.color,
+          icon: store.icon,
+          icon_size: store.icon_size
+        }
+      }
+
+      if !coordinates.empty?
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'MultiPoint'
+          },
+          properties: {
+            type: 'store',
+            points: properties
+          }
+        }
+      end
+    end
+
+    if polyline
+      features = routes.select{ |r| !respect_hidden || !r.hidden }.collect{ |r| [r.geojson_tracks, r.geojson_points] }.flatten.compact
+      if stores_geojson
+        stores_geojson[:geometry][:polylines] = Polylines::Encoder.encode_points(coordinates, 1e6)
+        features << stores_geojson.to_json
+      end
+
+      ('{"type":"FeatureCollection","features":[' + features.join(',') + ']}') if features.size > 0
+    else
+      features = JSON.parse('[' + routes.select{ |r| !respect_hidden || !r.hidden }.collect{ |r| [r.geojson_tracks, r.geojson_points] }.flatten.compact.join(',') + ']').collect{ |feature|
+        feature['geometry']['coordinates'] = Polylines::Decoder.decode_polyline(feature['geometry']['polylines'], 1e6).collect{ |a, b| [b.round(6), a.round(6)] }
+        feature['geometry'].delete('polylines')
+          feature
+      }
+      if stores_geojson
+        features << stores_geojson
+      end
+
+      {
+        type: 'FeatureCollection',
+        features: features
+      }.to_json if features.size > 0
+    end
+  end
+
+  def to_geojson(respect_hidden = true, polyline = true)
+    self.class.routes_to_geojson([self], false, true, polyline)
   end
 
   private
