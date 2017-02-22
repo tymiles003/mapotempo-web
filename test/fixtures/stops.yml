@@ -5,7 +5,6 @@ stop_unaffected:
   index:
   active: false
   distance: 1.0
-  trace: MyString
   route: route_zero_one # planning_one
   visit: visit_unaffected_one
   time: 00:00:30
@@ -18,7 +17,6 @@ stop_one_one:
   index: 1
   active: true
   distance: 1.1
-  trace: MyString
   route: route_one_one # planning_one
   visit_id: 1 # Refered by tomtom web mock as encoded string ":v1"
   time: 00:00:30
@@ -31,7 +29,6 @@ stop_one_two:
   index: 2
   active: true
   distance: 1.2
-  trace: MyString
   route: route_one_one # planning_one
   visit: visit_two
   time: 00:00:30
@@ -44,7 +41,6 @@ stop_one_three:
   index: 3
   active: true
   distance:
-  trace:
   route: route_one_one # planning_one
   visit: visit_three
   time: 00:00:30
@@ -58,7 +54,6 @@ stop_one_four:
   index: 4
   active: true
   distance: 1.4
-  trace: MyString
   route: route_one_one # planning_one
   time: 00:00:30
 
@@ -66,7 +61,6 @@ stop_one_four:
 #  type: StopRest
 #  active: true
 #  distance: 1.4
-#  trace: MyString
 #  route: route_zero_one
 #  time: 00:00:30
 #
@@ -74,7 +68,6 @@ stop_one_four:
 #  type: StopRest
 #  active: true
 #  distance: 1.4
-#  trace: MyString
 #  route: route_zero_one
 #  time: 00:00:30
 #
@@ -82,7 +75,6 @@ stop_one_four:
 #  type: StopRest
 #  active: true
 #  distance: 1.4
-#  trace: MyString
 #  route: route_zero_one
 #  time: 00:00:30
 
@@ -92,7 +84,6 @@ stop_two_one:
   index: 1
   active: false
   distance: 2.1
-  trace: MyString
   route: route_zero_two # planning_two
   visit: visit_two
   time: 00:00:30
@@ -106,7 +97,6 @@ stop_three_one:
   index: 1
   active: true
   distance: 3.1
-  trace: MyString
   route: route_three_one # planning_one
   visit_id: 1
   time: 00:00:30
@@ -120,7 +110,6 @@ stop_three_two:
   index: 2
   active: true
   distance: 1.4
-  trace: MyString
   route: route_three_one # planning_one
   time: 00:00:30
 
@@ -130,7 +119,6 @@ stop_four_unaffected_one:
   index: 1
   active: true
   distance: 1.1
-  trace: MyString_unaffected_one
   route: route_one_four
   time: 00:00:30
   visit: visit_four
@@ -143,7 +131,6 @@ stop_four_two:
   index: 1
   active: true
   distance: 1.1
-  trace: MyString_two
   route: route_one_four
   time: 00:00:30
   visit: visit_four
@@ -156,7 +143,6 @@ stop_four_three:
   index: 1
   active: true
   distance: 1.1
-  trace: MyString_three
   route: route_one_four
   time: 00:00:30
   visit: visit_five
@@ -169,7 +155,6 @@ stop_four_five:
   index: 1
   active: true
   distance: 1.1
-  trace: MyString_five
   route: route_one_four
   time: 00:00:30
   visit: visit_five

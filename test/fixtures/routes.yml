@@ -16,6 +16,8 @@ route_one_one:
   vehicle_usage: vehicle_usage_one_one
   ref: "route_one"
   start: 32:00
+  geojson_tracks: '{"type":"Feature","geometry":{"type":"LineString","polylines":"_ibE_seK_seK_seK"}}'
+  geojson_points: '{"type":"Feature","geometry":{"type":"MultiPoint","polylines":"_ibE_seK_seK_seK"}}'
 
 route_three_one:
   distance: 1.5
@@ -25,6 +27,8 @@ route_three_one:
   vehicle_usage: vehicle_usage_one_three
   ref: "route_three"
   start: 07:00
+  geojson_tracks: '{"type":"Feature","geometry":{"type":"LineString","polylines":"_ibE_seK_seK_seK"}}'
+  geojson_points: '{"type":"Feature","geometry":{"type":"MultiPoint","polylines":"_ibE_seK_seK_seK"}}'
 
 route_zero_two:
   distance:
@@ -43,6 +47,8 @@ route_one_two:
   vehicle_usage: vehicle_usage_three_one
   ref: "route 33"
   start: 08:00
+  geojson_tracks: '{"type":"Feature","geometry":{"type":"LineString","polylines":"_ibE_seK_seK_seK"}}'
+  geojson_points: '{"type":"Feature","geometry":{"type":"MultiPoint","polylines":"_ibE_seK_seK_seK"}}'
 
 route_three_two:
   distance: 1.5
@@ -51,6 +57,8 @@ route_three_two:
   out_of_date: false
   vehicle_usage: vehicle_usage_three_two
   start: 07:00
+  geojson_tracks: '{"type":"Feature","geometry":{"type":"LineString","polylines":"_ibE_seK_seK_seK"}}'
+  geojson_points: '{"type":"Feature","geometry":{"type":"MultiPoint","polylines":"_ibE_seK_seK_seK"}}'
 
 route_zero_three:
   planning: planning_three
@@ -74,3 +82,5 @@ route_one_four:
   planning: planning_four
   out_of_date: false
   vehicle_usage: vehicle_usage_two_one
+  geojson_tracks: '{"type":"Feature","geometry":{"type":"LineString","polylines":"_ibE_seK_seK_seK"}}'
+  geojson_points: '{"type":"Feature","geometry":{"type":"MultiPoint","polylines":"_ibE_seK_seK_seK"}}'

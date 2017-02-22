@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2017
 #
 # This file is part of Mapotempo.
 #
@@ -28,6 +28,8 @@ class Stop < ActiveRecord::Base
   validates :route, presence: true
 
   before_save :out_of_date
+
+  scope :for_customer, ->(customer) { joins(Route).where(route: {planning_id: customer.planning_ids}) }
 
   amoeba do
     enable

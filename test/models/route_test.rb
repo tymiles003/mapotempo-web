@@ -5,7 +5,7 @@ class RouteTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
-    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 720, 'trace'] } } ) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 720, '_ibE_seK_seK_seK'] } } ) do
       Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
         yield
       end
@@ -158,9 +158,9 @@ class RouteTest < ActiveSupport::TestCase
     route = routes(:route_one_one)
     route.stops[1].visit.destination.lat = route.stops[1].visit.destination.lng = 1 # Geocoded
     route.save!
-    route.stops[1].distance = route.stops[1].trace = nil
+    route.stops[1].distance = nil
     route.save!
-    route.stop_distance = route.stop_trace = nil
+    route.stop_distance = nil
     route.save!
     stop = route.vehicle_usage.store_stop
     stop.lat = stop.lng = 1 # Geocoded
@@ -196,5 +196,39 @@ class RouteTest < ActiveSupport::TestCase
 
     route.color = '#plop'
     assert_equal route.color, route.default_color
+  end
+
+  test 'should output as geojson' do
+    o = routes(:route_one_one)
+
+    # polyline
+
+    # respect_hidden
+    o.hidden = false
+    assert_not o.hidden
+    geojson = JSON.parse(o.to_geojson(true, true))
+    assert geojson['features'].size > 0
+    assert geojson['features'][0]['geometry']['polylines']
+
+    # dont't respect_hidden
+    o.hidden = true
+    assert o.hidden
+    geojson = o.to_geojson(true, true)
+    assert_nil geojson
+
+    # coordinates
+
+    # respect_hidden
+    o.hidden = false
+    assert_not o.hidden
+    geojson = JSON.parse(o.to_geojson(true, false))
+    assert geojson['features'].size > 0
+    assert geojson['features'][0]['geometry']['coordinates']
+
+    # dont't respect_hidden
+    o.hidden = true
+    assert o.hidden
+    geojson = o.to_geojson(true, false)
+    assert_nil geojson
   end
 end

@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2016
+# Copyright © Mapotempo, 2013-2017
 #
 # This file is part of Mapotempo.
 #
@@ -385,7 +385,7 @@ class Planning < ActiveRecord::Base
               stop.out_of_window = false
               stop.index = i += 1
             else
-              stop.index = stop.time = stop.distance = stop.trace = stop.drive_time = nil
+              stop.index = stop.time = stop.distance = stop.drive_time = nil
               stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = false
             end
           end
@@ -433,6 +433,10 @@ class Planning < ActiveRecord::Base
 
   def to_s
     "#{name}=>" + routes.collect(&:to_s).join(' ')
+  end
+
+  def to_geojson(respect_hidden = true, polyline = true)
+    Route.routes_to_geojson(routes, true, respect_hidden, polyline)
   end
 
   private

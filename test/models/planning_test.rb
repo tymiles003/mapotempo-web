@@ -17,7 +17,7 @@ class PlanningTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
-    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, '_ibE_seK_seK_seK'] } } ) do
       Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
         yield
       end
@@ -406,12 +406,10 @@ class PlanningTest < ActiveSupport::TestCase
         # Can't trace path, store has no lat / lng to start with
         assert_equal 0, stop.distance
         assert_equal Time.parse('10:44:25').seconds_since_midnight.to_i, stop.time
-        assert stop.trace.nil?
       elsif index == r.stops.length - 1
-        assert stop.distance.nil? && stop.trace.nil?
+        assert stop.distance.nil?
       else
         assert_equal 1.0, stop.distance
-        assert_equal 'trace', stop.trace
       end
     end
   end

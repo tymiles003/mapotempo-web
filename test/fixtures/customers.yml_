@@ -1,0 +1,71 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+customer_one:
+  end_subscription: 2030-08-09 00:00:00
+  take_over: 2000-01-01 00:05:00
+  job_destination_geocoding: job_destination_geocoding
+  job_optimizer: job_optimizer
+  ref: ref1
+  name: MyString
+  router: router_one
+  router_dimension: 'time'
+  enable_orders: true
+  optimization_time: 10
+  optimization_stop_soft_upper_bound: 3
+  optimization_vehicle_soft_upper_bound: 3
+  profile: profile_one
+  speed_multiplicator: 1
+  default_country: France
+  reseller: reseller_one
+  enable_tomtom: true
+  tomtom_account: a
+  tomtom_user: u
+  tomtom_password: p
+  enable_masternaut: true
+  masternaut_user: u
+  masternaut_password: p
+  enable_alyacom: true
+  alyacom_association: a
+  alyacom_api_key: a
+  enable_teksat: true
+  teksat_customer_id:
+  teksat_username: u
+  teksat_password: p
+  teksat_url: u
+  enable_orange: true
+  orange_user: u
+  orange_password: p
+
+customer_one_other:
+  end_subscription: 2030-08-09 00:00:00
+  take_over: 2000-01-01 00:05:00
+  job_destination_geocoding: job_destination_geocoding
+  job_optimizer: job_optimizer
+  ref: ref_1_o
+  name: MyString
+  router: router_one
+  router_dimension: 'time'
+  enable_orders: true
+  optimization_time: 10
+  optimization_stop_soft_upper_bound: 3
+  optimization_vehicle_soft_upper_bound: 3
+  profile: profile_one
+  speed_multiplicator: 1
+  default_country: France
+  reseller: reseller_one
+
+customer_two:
+  end_subscription: 2030-08-09 00:00:00
+  take_over: 2000-01-01 00:05:00
+  job_destination_geocoding:
+  job_optimizer:
+  ref: ref_2
+  name: MyString
+  router: router_one
+  router_dimension: 'time'
+  enable_orders: false
+  profile: profile_two
+  speed_multiplicator: 1.1
+  default_country: France
+  reseller: reseller_two
+
