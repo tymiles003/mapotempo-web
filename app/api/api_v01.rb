@@ -19,6 +19,7 @@ class ApiV01 < Grape::API
   version '0.1', using: :path
 
   content_type :json, 'application/json; charset=UTF-8'
+  content_type :geojson, 'application/vnd.geo+json; charset=UTF-8'
   content_type :xml, 'application/xml'
 
   # As rails utils 'status()' works with Fixnum, we need to set a special formatter for XML object
@@ -41,6 +42,7 @@ class ApiV01 < Grape::API
     ],
     produces: [
       'application/json; charset=UTF-8',
+      'application/vnd.geo+json; charset=UTF-8',
       'application/xml',
     ],
     info: {

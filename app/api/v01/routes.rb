@@ -52,10 +52,11 @@ class V01::Routes < Grape::API
         params do
           requires :id, type: String, desc: ID_DESC
           use :params_from_entity, entity: V01::Entities::Route.documentation.slice(:hidden, :locked, :color)
+          optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
         end
         put ':id' do
           get_route.update! route_params
-          present(get_route, with: V01::Entities::Route)
+          present(get_route, with: V01::Entities::Route, geojson: params[:geojson])
         end
 
         desc 'Change stops activation.',
@@ -65,11 +66,12 @@ class V01::Routes < Grape::API
         params do
           requires :id, type: String, desc: ID_DESC
           requires :active, type: String, values: ['all', 'reverse', 'none']
+          optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
         end
         patch ':id/active/:active' do
           get_route.active(params[:active].to_s.to_sym) && get_route.compute
           get_route.save!
-          present(get_route, with: V01::Entities::Route)
+          present(get_route, with: V01::Entities::Route, geojson: params[:geojson])
         end
 
         desc 'Move visit(s) to route. Append in order at end if automatic_insert is false.',
@@ -100,6 +102,7 @@ class V01::Routes < Grape::API
           optional :details, type: Boolean, desc: 'Output Route Details', default: false
           optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
           optional :all_stops, type: Boolean, desc: 'Optimize all stops (actives and inactives) if true, else only actives', default: false
+          optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
         end
         patch ':id/optimize' do
           begin
@@ -108,7 +111,7 @@ class V01::Routes < Grape::API
             else
               get_route.planning.customer.save!
               if params[:details]
-                present get_route, with: V01::Entities::Route
+                present get_route, with: V01::Entities::Route, geojson: params[:geojson]
               else
                 status 204
               end
@@ -138,17 +141,17 @@ class V01::Routes < Grape::API
           success: V01::Entities::Route
         params do
           requires :id, type: String, desc: 'ID / Ref (ref:abcd) of the VEHICLE attached to the Route'
+          optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
         end
         get ':id' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
-          id          = ParseIdsRefs.read(params[:id])
-          planning    = current_customer.plannings.find_by! planning_id
-          vehicle     = current_customer.vehicles.find_by! id
-          route       = planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.vehicle == vehicle }
-          present route, with: V01::Entities::Route
+          id = ParseIdsRefs.read(params[:id])
+          planning = current_customer.plannings.find_by! planning_id
+          vehicle = current_customer.vehicles.find_by! id
+          route = planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.vehicle == vehicle }
+          present route, with: V01::Entities::Route, geojson: params[:geojson]
         end
       end
     end
   end
 end
-

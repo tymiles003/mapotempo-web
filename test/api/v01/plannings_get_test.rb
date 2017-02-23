@@ -18,8 +18,8 @@ class V01::PlanningsGetTest < ActiveSupport::TestCase
   end
 
   test 'Export Planning' do
-    %w(json xml ics).each do |format|
-      get api("/plannings/#{@planning.id}.#{format}", { api_key: @user.api_key })
+    %w(json geojson xml ics).each do |format|
+      get api("/plannings/#{@planning.id}.#{format}", api_key: @user.api_key)
       assert last_response.ok?, last_response.body
     end
   end
@@ -30,7 +30,7 @@ class V01::PlanningsGetTest < ActiveSupport::TestCase
   end
 
   test 'Export Planning as iCalendar with E-Mail' do
-    get api("/plannings/#{@planning.id}.ics", { api_key: @user.api_key, email: 1 })
+    get api("/plannings/#{@planning.id}.ics", api_key: @user.api_key, email: 1)
     assert_equal 204, last_response.status
   end
 
@@ -74,5 +74,21 @@ class V01::PlanningsGetTest < ActiveSupport::TestCase
     response = JSON.parse(last_response.body)
 
     assert_equal Planning.where(customer_id: @planning.customer.id).joins(:tags).where(tags: {label: [first_tag.label, second_tag.label]}).reorder('tags.id').distinct.size, response.size
+  end
+
+  test 'should return a planning in geojson' do
+    get api("/plannings/#{@planning.id}.geojson", api_key: @user.api_key)
+    assert last_response.ok?, last_response.body
+    geojson = JSON.parse(last_response.body)
+    assert geojson['features'].size > 0
+    assert geojson['features'][0]['geometry']['coordinates']
+    assert_nil geojson['features'][0]['geometry']['polylines']
+
+    get api("/plannings/#{@planning.id}.geojson", api_key: @user.api_key, geojson: :polyline)
+    assert last_response.ok?, last_response.body
+    geojson = JSON.parse(last_response.body)
+    assert geojson['features'].size > 0
+    assert_nil geojson['features'][0]['geometry']['coordinates']
+    assert geojson['features'][0]['geometry']['polylines']
   end
 end

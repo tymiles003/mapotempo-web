@@ -97,14 +97,14 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert_difference('Vehicle.count', 1) do
       assert_difference('VehicleUsage.count', @customer.vehicle_usage_sets.size) do
         assert_difference('Route.count', @customer.plannings.length) do
-          Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
+          Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, '_ibE_seK_seK_seK'] } } ) do
             put api_admin(@customer.id), { devices: {tomtom_id: 'user_abcd'}, ref: 'ref-abcd', max_vehicles: @customer.max_vehicles + 1 }
             assert last_response.ok?, last_response.body
           end
         end
       end
     end
-    assert 'trace', Route.last.stop_trace
+    assert_not_nil Route.last.stop_distance
 
     get api(@customer.id)
     assert last_response.ok?, last_response.body

@@ -19,9 +19,10 @@
 include PlanningIcalendar
 include IcalendarUrlHelper
 
-# Specific file to get plannings becaus it needs to return specific content types (js, xml and ics)
+# Specific file to get plannings because it needs to return specific content types (js, xml and ics)
 class V01::PlanningsGet < Grape::API
   content_type :json, 'application/javascript'
+  content_type :geojson, 'application/vnd.geo+json'
   content_type :xml, 'application/xml'
   content_type :ics, 'text/calendar'
   default_format :json
@@ -57,6 +58,7 @@ class V01::PlanningsGet < Grape::API
       optional :end_date, type: Date, desc: 'Select only plannings before this date.'
       optional :active, type: Boolean, desc: 'Select only active plannings.'
       optional :tags, type: Array[String], coerce_with: ->(c) { c.split(',') }, desc: 'Select plannings which contains at least one of these tags label'
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry, when using json output.'
     end
     get do
       plannings = current_customer.plannings
@@ -86,7 +88,7 @@ class V01::PlanningsGet < Grape::API
             plannings_calendar(plannings).to_ical
           end
       else
-        present plannings, with: V01::Entities::Planning
+        present plannings, with: V01::Entities::Planning, geojson: params[:geojson]
       end
     end
 
@@ -95,6 +97,7 @@ class V01::PlanningsGet < Grape::API
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry, when using json output.'
     end
     get ':id' do
       planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
@@ -106,8 +109,10 @@ class V01::PlanningsGet < Grape::API
         else
           planning_calendar(planning).to_ical
         end
+      elsif env['api.format'] == :geojson
+        planning.to_geojson(true, params[:geojson] == :polyline)
       else
-        present planning, with: V01::Entities::Planning
+        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
       end
     end
   end

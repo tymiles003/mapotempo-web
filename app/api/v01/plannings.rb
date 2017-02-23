@@ -44,13 +44,14 @@ class V01::Plannings < Grape::API
         vehicle_usage_set_id: { required: true }
       )
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     post do
       planning = current_customer.plannings.build(planning_params)
       planning.save!
       planning.compute
       planning.save!
-      present planning, with: V01::Entities::Planning
+      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
     end
 
     desc 'Update planning.',
@@ -59,12 +60,13 @@ class V01::Plannings < Grape::API
     params do
       requires :id, type: String, desc: ID_DESC
       use :params_from_entity, entity: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids)
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       planning.update! planning_params
-      present planning, with: V01::Entities::Planning
+      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
     end
 
     desc 'Delete planning.',
@@ -98,13 +100,14 @@ class V01::Plannings < Grape::API
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     get ':id/refresh' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       planning.compute
       planning.save!
-      present planning, with: V01::Entities::Planning
+      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
     end
 
     desc 'Switch two vehicles.',
@@ -143,6 +146,7 @@ class V01::Plannings < Grape::API
     params do
       requires :id, type: String, desc: ID_DESC
       optional :details, type: Boolean, desc: 'Output route details', default: false
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     get ':id/apply_zonings' do
       id = ParseIdsRefs.read params[:id]
@@ -151,7 +155,7 @@ class V01::Plannings < Grape::API
       planning.compute
       planning.save! && planning.reload
       if params[:details]
-        present planning, with: V01::Entities::Planning
+        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
       else
         status 204
       end
@@ -166,6 +170,7 @@ class V01::Plannings < Grape::API
       optional :details, type: Boolean, desc: 'Output route details', default: false
       optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
       optional :all_stops, type: Boolean, desc: 'Optimize all stops (actives and inactives) if true, else only actives', default: false
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     get ':id/optimize' do
       id = ParseIdsRefs.read params[:id]
@@ -176,7 +181,7 @@ class V01::Plannings < Grape::API
         status 304
       end
       if params[:details]
-        present planning, with: V01::Entities::Planning
+        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
       else
         status 204
       end
@@ -187,13 +192,14 @@ class V01::Plannings < Grape::API
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     patch ':id/duplicate' do
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       planning = planning.duplicate
       planning.save!
-      present planning, with: V01::Entities::Planning
+      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
     end
 
     desc 'Use order_array in the planning.',
@@ -204,6 +210,7 @@ class V01::Plannings < Grape::API
       requires :id, type: String, desc: ID_DESC
       requires :order_array_id, type: Integer
       requires :shift, type: Integer
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     patch ':id/order_array' do
       id = ParseIdsRefs.read(params[:id])
@@ -212,7 +219,7 @@ class V01::Plannings < Grape::API
       shift = Integer(params[:shift])
       planning.apply_orders(order_array, shift)
       planning.save!
-      present planning, with: V01::Entities::Planning
+      present planning, with: V01::Entities::Planning, geojson: params[:geojson]
     end
 
     desc 'Update routes visibility and lock.',
@@ -222,6 +229,7 @@ class V01::Plannings < Grape::API
       requires :route_ids, type: Array[Integer], documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
       requires :selection, type: String, values: %w(all reverse none)
       requires :action, type: String, values: %w(toggle lock)
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     patch ':id/update_routes' do
       planning_id = ParseIdsRefs.read params[:id]
@@ -249,7 +257,7 @@ class V01::Plannings < Grape::API
           end
         end
       end
-      present routes, with: V01::Entities::Route
+      present routes, with: V01::Entities::Route, geojson: params[:geojson]
     end
 
     desc 'Update stops status.',
@@ -259,6 +267,7 @@ class V01::Plannings < Grape::API
     params do
       requires :id, type: String, desc: ID_DESC
       optional :details, type: Boolean, desc: 'Output route details', default: false
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     patch ':id/update_stops_status' do
       id = ParseIdsRefs.read params[:id]
@@ -266,7 +275,7 @@ class V01::Plannings < Grape::API
       planning.fetch_stops_status
       planning.save!
       if params[:details]
-        present planning.routes, with: V01::Entities::RouteStatus
+        present planning.routes, with: V01::Entities::RouteStatus, geojson: params[:geojson]
       else
         status 204
       end

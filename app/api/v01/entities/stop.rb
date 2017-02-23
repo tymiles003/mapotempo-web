@@ -35,7 +35,6 @@ class V01::Entities::Stop < Grape::Entity
   expose(:active, documentation: { type: 'Boolean' })
   expose(:distance, documentation: { type: Float, desc: 'Distance between the stop and previous one.' })
   expose(:drive_time, documentation: { type: Integer, desc: 'Time in seconds between the stop and previous one.' })
-  expose(:trace, documentation: { type: String, desc: 'Trace between the stop and previous one.' })
   expose(:visit_id, documentation: { type: Integer })
   # Deprecated
   expose(:destination_id, documentation: { type: Integer }) { |m| m.is_a?(StopVisit) ? m.visit.destination.id : nil }
