@@ -21,6 +21,7 @@ include IcalendarUrlHelper
 
 class V01::PlanningsGet < Grape::API
   content_type :json, 'application/javascript'
+  content_type :geojson, 'application/vnd.geo+json'
   content_type :xml, 'application/xml'
   content_type :ics, 'text/calendar'
   default_format :json
@@ -52,6 +53,7 @@ class V01::PlanningsGet < Grape::API
       success: V01::Entities::Planning
     params do
       optional :ids, type: Array[String], desc: 'Select returned plannings by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry, when using json output.'
     end
     get do
       plannings = current_customer.plannings
@@ -66,7 +68,7 @@ class V01::PlanningsGet < Grape::API
             plannings_calendar(plannings).to_ical
           end
       else
-        present plannings, with: V01::Entities::Planning
+        present plannings, with: V01::Entities::Planning, geojson: params[:geojson]
       end
     end
 
@@ -75,6 +77,7 @@ class V01::PlanningsGet < Grape::API
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
+      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry, when using json output.'
     end
     get ':id' do
       planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
@@ -86,8 +89,10 @@ class V01::PlanningsGet < Grape::API
         else
           planning_calendar(planning).to_ical
         end
+      elsif env['api.format'] == :geojson
+        planning.to_geojson(true, params[:geojson] == :polyline)
       else
-        present planning, with: V01::Entities::Planning
+        present planning, with: V01::Entities::Planning, geojson: params[:geojson]
       end
     end
   end

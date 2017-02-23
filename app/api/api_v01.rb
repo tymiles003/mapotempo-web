@@ -19,6 +19,7 @@ class ApiV01 < Grape::API
   version '0.1', using: :path
 
   content_type :json, 'application/json; charset=UTF-8'
+  content_type :geojson, 'application/vnd.geo+json; charset=UTF-8'
   content_type :xml, 'application/xml'
 
   default_format :json
@@ -34,6 +35,7 @@ class ApiV01 < Grape::API
     ],
     produces: [
       'application/json; charset=UTF-8',
+      'application/vnd.geo+json; charset=UTF-8',
       'application/xml',
     ],
     info: {
