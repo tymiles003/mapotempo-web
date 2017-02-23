@@ -44,9 +44,11 @@ var notificationCalled = false;
 
 (function () {
   function notify(status, message, options) {
-    notificationCalled = false;
-
     var notification = function () {
+      if (notificationCalled) {
+        return;
+      }
+
       new PNotify($.extend({
         text: message,
         type: status,
@@ -67,7 +69,7 @@ var notificationCalled = false;
       $(notification);
     } else {
       isWindowVisible(function () {
-        if (isWindowVisible() && !notificationCalled) {
+        if (isWindowVisible()) {
           $(notification);
         }
       });
