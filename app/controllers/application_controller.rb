@@ -39,8 +39,6 @@ class ApplicationController < ActionController::Base
         redirect_to new_user_session_path, alert: t('web.key_not_found')
       end
     end
-
-    # => redirect_to login page si user not found
   end
 
   def load_vehicles
