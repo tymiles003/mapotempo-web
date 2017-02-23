@@ -5,20 +5,26 @@ class RouterTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   test 'should translate name' do
-    I18n.default_locale = :en
-    router = routers(:router_one)
-    router2 = routers(:router_two)
-    router3 = routers(:router_osrm)
+    begin
+      I18n.default_locale = :en
+      router = routers(:router_one)
+      router2 = routers(:router_two)
+      router3 = routers(:router_osrm)
 
-    I18n.locale = :fr
-    assert_equal router.translated_name, router.name_locale['fr']
-    assert_equal router2.translated_name, router2.name_locale['en']
-    assert_equal router3.translated_name, router3.name
+      I18n.with_locale(:fr) do
+        assert_equal router.translated_name, router.name_locale['fr']
+        assert_equal router2.translated_name, router2.name_locale['en']
+        assert_equal router3.translated_name, router3.name
+      end
 
-    I18n.locale = :en
-    assert_equal router.translated_name, router.name_locale['en']
-    assert_equal router2.translated_name, router2.name_locale['en']
-    assert_equal router3.translated_name, router3.name
+      I18n.with_locale(:en) do
+        assert_equal router.translated_name, router.name_locale['en']
+        assert_equal router2.translated_name, router2.name_locale['en']
+        assert_equal router3.translated_name, router3.name
+      end
+    ensure
+      I18n.default_locale = :fr
+    end
   end
 
   test 'should pack and unpack sorted vector' do
@@ -46,7 +52,7 @@ class RouterTest < ActiveSupport::TestCase
   end
 
   test 'should compute matrix with OSRM' do
-    Routers::Osrm.stub_any_instance(:matrix, [[0,68212,69314,69167],[68257,0,2545,1878],[69494,2065,0,1093],[69515,1370,1596,0]]) do
+    Routers::Osrm.stub_any_instance(:matrix, [[0, 68212, 69314, 69167], [68257, 0, 2545, 1878], [69494, 2065, 0, 1093], [69515, 1370, 1596, 0]]) do
       router = routers(:router_osrm)
       row = [[47.3174, 5.0336]]
       column = [[45.750569, 4.839445], [45.763661, 4.851408], [45.755932, 4.850413]]
@@ -56,7 +62,7 @@ class RouterTest < ActiveSupport::TestCase
   end
 
   test 'should compute matrix with HERE' do
-    Routers::Here.stub_any_instance(:matrix, lambda{ |row, column, time| Array.new(row.size, Array.new(column.size, [0, 0])) }) do
+    Routers::Here.stub_any_instance(:matrix, lambda { |row, column, time| Array.new(row.size, Array.new(column.size, [0, 0])) }) do
       router = routers(:router_here)
       row = [[47.3174, 5.0336]]
       column = [[45.750569, 4.839445], [45.763661, 4.851408], [45.755932, 4.850413]]
