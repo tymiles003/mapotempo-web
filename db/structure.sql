@@ -571,7 +571,6 @@ CREATE TABLE routers (
     avoid_zones boolean DEFAULT false NOT NULL,
     isochrone boolean DEFAULT false NOT NULL,
     isodistance boolean DEFAULT false NOT NULL,
-    locale hstore DEFAULT ''::hstore NOT NULL,
     name_locale hstore DEFAULT ''::hstore NOT NULL
 );
 
