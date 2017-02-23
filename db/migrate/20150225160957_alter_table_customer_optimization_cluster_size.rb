@@ -3,7 +3,7 @@ class AlterTableCustomerOptimizationClusterSize < ActiveRecord::Migration
     add_column :customers, :optimization_cluster_size, :integer
   end
 
-  def donw
+  def down
     remove_column :customers, :optimization_cluster_size
   end
 end

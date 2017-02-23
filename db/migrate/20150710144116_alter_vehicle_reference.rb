@@ -3,7 +3,7 @@ class AlterVehicleReference < ActiveRecord::Migration
     add_column :vehicles, :ref, :string
   end
 
-  def donw
+  def down
     remove_column :vehicles, :ref
   end
 end

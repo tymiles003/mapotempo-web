@@ -3,7 +3,7 @@ class AlterTableCustomerMasternaut < ActiveRecord::Migration
     remove_column :customers, :masternaut_account
   end
 
-  def donw
+  def down
     add_column :customers, :masternaut_account, :string
   end
 end

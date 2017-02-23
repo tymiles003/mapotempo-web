@@ -6,7 +6,7 @@ class AlterTableRouterType < ActiveRecord::Migration
     RouterHere.create!(name: "Here")
   end
 
-  def donw
+  def down
     change_column :routers, :url, :string, null: false
     remove_column :routers, :type
   end

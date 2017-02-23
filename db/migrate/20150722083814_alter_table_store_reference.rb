@@ -3,7 +3,7 @@ class AlterTableStoreReference < ActiveRecord::Migration
     add_column :stores, :ref, :string
   end
 
-  def donw
+  def down
     remove_column :stores, :ref
   end
 end

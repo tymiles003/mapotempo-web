@@ -3,7 +3,7 @@ class AlterTableCustomerTest < ActiveRecord::Migration
     add_column :customers, :test, :boolean, :default => false, :null => false
   end
 
-  def donw
+  def down
     remove_column :customers, :test
   end
 end

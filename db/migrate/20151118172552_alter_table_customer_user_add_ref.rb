@@ -4,7 +4,7 @@ class AlterTableCustomerUserAddRef < ActiveRecord::Migration
     add_column :users, :ref, :string
   end
 
-  def donw
+  def down
     remove_column :users, :ref
     remove_column :customers, :ref
   end

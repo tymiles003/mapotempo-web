@@ -3,7 +3,7 @@ class AlterCustomerAlyacom < ActiveRecord::Migration
     add_column :customers, :alyacom_association, :string
   end
 
-  def donw
+  def down
     remove_column :customers, :alyacom_association
   end
 end
