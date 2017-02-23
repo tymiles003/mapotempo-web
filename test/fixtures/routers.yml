@@ -7,45 +7,50 @@ router_one:
   name_locale:
     fr: Router fr
     en: Router en
-  time: true
-  distance: true
   url_time: http://localhost:5000
   url_distance: http://localhost:5000
   url_isochrone: http://localhost:1723
   url_isodistance: http://localhost:1723
-  isochrone: true
-  isodistance: true
-  avoid_zones: true
+  options:
+    time: true
+    distance: true
+    isochrone: true
+    isodistance: true
+    avoid_zones: true
 
 router_two:
   mode: car
   name: MyString
   name_locale:
     en: Router en
-  time: true
-  distance: false
   url_time: http://localhost:5000
+  options:
+    time: true
+    distance: false
 
 router_osrm:
   mode: car
   type: RouterOsrm
   name: OSRM
-  time: true
-  distance: true
   url_time: http://localhost:5000
   url_distance: http://localhost:5000
+  options:
+    time: true
+    distance: true
 
 router_here:
   mode: truck
   type: RouterHere
-  time: true
-  distance: true
   name: HERE
+  options:
+    time: true
+    distance: true
 
 router_wrapper_public_transport:
   mode: public_transport
   type: RouterWrapper
   name: RouterWrapperPublicTransport
-  time: true
-  distance: false
   url_time: http://localhost:4899
+  options:
+    time: true
+    distance: false

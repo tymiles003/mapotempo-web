@@ -566,12 +566,8 @@ CREATE TABLE routers (
     url_isodistance character varying,
     url_distance character varying,
     mode character varying NOT NULL,
-    "time" boolean DEFAULT true NOT NULL,
-    distance boolean DEFAULT false NOT NULL,
-    avoid_zones boolean DEFAULT false NOT NULL,
-    isochrone boolean DEFAULT false NOT NULL,
-    isodistance boolean DEFAULT false NOT NULL,
-    name_locale hstore DEFAULT ''::hstore NOT NULL
+    name_locale hstore DEFAULT ''::hstore NOT NULL,
+    options hstore DEFAULT ''::hstore NOT NULL
 );
 
 

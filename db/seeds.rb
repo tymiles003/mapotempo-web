@@ -8,12 +8,42 @@ stamen_bw = Layer.create!(source: "osm", name: "Stamen B&W", url: "http://{s}.ti
 here_layer = Layer.create!(source: "here", name: "Here", url: "http://4.base.maps.cit.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?app_id=YOUR_APP_ID&app_code=YOUR_APP_CODE", urlssl: "https://4.base.maps.cit.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?app_id=YOUR_APP_ID&app_code=YOUR_APP_CODE", attribution: "Here")
 
 # Routers
-car = RouterWrapper.create!(mode: "car", name: "RouterWrapper-Car", url_time:"http://localhost:9090", time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true, name_locale: {fr: 'Calculateur pour voiture', en: 'Car router'})
-car_urban = RouterWrapper.create!(mode: "car_urban", name: "RouterWrapper-Car-Urban", url_time:"http://localhost:9090", time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true, name_locale: {fr: 'Calculateur pour voiture urbaine', en: 'Urban car router'})
-bicycle = RouterWrapper.create!(mode: "bicycle", name: "RouterWrapper-Bicycle", url_time:"http://localhost:9090", time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true, name_locale: {fr: 'Calculateur pour vélo', en: 'Bicycle router'})
-pedestrian = RouterWrapper.create!(mode: "pedestrian", name: "RouterWrapper-Pedestrian", url_time:"http://localhost:9090", time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true, name_locale: {fr: 'Calculateur pour piéton', en: 'Pedestrian router'})
-truck = RouterWrapper.create!(mode: "truck", name: "RouterWrapper-HereTruck", url_time:"http://localhost:9090", time: true, distance: false, avoid_zones: true, isochrone: true, isodistance: true, name_locale: {fr: 'Calculateur pour camion', en: 'Truck router'})
-public_transport = RouterWrapper.create!(mode: "public_transport", name: "RouterWrapper-PublicTransport", url_time:"http://localhost:9090", time: true, distance: false, avoid_zones: false, isochrone: true, isodistance: true, name_locale: {fr: 'Calculateur pour transport en commun', en: 'Public Transport router'})
+car = RouterWrapper.create!(
+    mode: 'car',
+    name: 'RouterWrapper-Car',
+    name_locale: {fr: 'Calculateur pour voiture', en: 'Car router'},
+    url_time: 'http://localhost:9090',
+    options: {time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true})
+car_urban = RouterWrapper.create!(
+    mode: 'car_urban',
+    name: 'RouterWrapper-Car-Urban',
+    name_locale: {fr: 'Calculateur pour voiture urbaine', en: 'Urban car router'},
+    url_time: 'http://localhost:9090',
+    options: {time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true})
+bicycle = RouterWrapper.create!(
+    mode: 'bicycle',
+    name: 'RouterWrapper-Bicycle',
+    name_locale: {fr: 'Calculateur pour vélo', en: 'Bicycle router'},
+    url_time: 'http://localhost:9090',
+    options: {time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true})
+pedestrian = RouterWrapper.create!(
+    mode: 'pedestrian',
+    name: 'RouterWrapper-Pedestrian',
+    name_locale: {fr: 'Calculateur pour piéton', en: 'Pedestrian router'},
+    url_time: 'http://localhost:9090',
+    options: {time: true, distance: true, avoid_zones: false, isochrone: true, isodistance: true})
+truck = RouterWrapper.create!(
+    mode: 'truck',
+    name: 'RouterWrapper-HereTruck',
+    name_locale: {fr: 'Calculateur pour camion', en: 'Truck router'},
+    url_time: 'http://localhost:9090',
+    options: {time: true, distance: false, avoid_zones: true, isochrone: true, isodistance: true})
+public_transport = RouterWrapper.create!(
+    mode: 'public_transport',
+    name: 'RouterWrapper-PublicTransport',
+    name_locale: {fr: 'Calculateur pour transport en commun', en: 'Public Transport router'},
+    url_time: 'http://localhost:9090',
+    options: {time: true, distance: false, avoid_zones: false, isochrone: true, isodistance: true})
 
 profile_all = Profile.create!(name: "All", layers: [mapnik_fr, mapnik, mapbox, stamen_bw, here_layer], routers: [car, car_urban, bicycle, pedestrian, truck, public_transport])
 

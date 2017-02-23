@@ -19,6 +19,10 @@
 class Router < ActiveRecord::Base
   DIMENSION = {time: 0, distance: 1}.freeze
 
+  include HashBoolAttr
+  store_accessor :options, :time, :distance, :avoid_zones, :isochrone, :isodistance
+  hash_bool_attr :options, :time, :distance, :avoid_zones, :isochrone, :isodistance
+
   nilify_blanks
   auto_strip_attributes :name, :url_time, :url_distance, :mode
   validates :name, presence: true
