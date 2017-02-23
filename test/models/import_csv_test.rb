@@ -48,7 +48,7 @@ class ImportCsvTest < ActiveSupport::TestCase
     assert_difference('Destination.count', 0) do
       o = ImportCsv.new(importer: @importer, replace: false, file: file)
       assert !o.import
-      assert o.errors[:base][0].match('Enregistrement 2')
+      assert o.errors[:base][0].match('ligne 2')
     end
   end
 end

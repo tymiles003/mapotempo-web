@@ -545,7 +545,12 @@ en:
       timeout: "Request Timeout"
 
   import:
-    empty: "Nothing to import"
+    empty: "Nothing to import, check your data."
+    data: "Content:"
+    data_erroneous:
+      csv: "Invalid file, line"
+      json: "Invalid file, record"
+      tomtom: "Invalid tomtom data, record"
     template_csv: "Import Template Spreadsheet Standard"
     template_excel: "Import Template Spreadsheet Excel"
 
@@ -898,9 +903,10 @@ en:
       empty_file: "content is blank"
       too_many_lines: "Stop import, too many lines (max: %{n})."
       none_column: "None found column"
-      missing_name: "Record %{line}: \"name\" missing."
-      missing_location: "Record %{line}: \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing."
-      invalid_numeric_value: "Record %{line}: Invalid numeric value \"%{value}\"."
+      missing_name: "%{line}: \"name\" missing."
+      missing_location: "%{line}: \"city / postalcode\" or \"lat / lng\" missing."
+      invalid_numeric_value: "%{line}: Invalid numeric value \"%{value}\"."
+      check_custom_columns: "Check your columns definition."
     reverse_geocoding:
       apply: "Apply new address"
 

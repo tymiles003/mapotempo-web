@@ -545,7 +545,12 @@ fr:
       timeout: "Délai d'attente depassé"
 
   import:
-    empty: "Rien à importer"
+    empty: "Rien à importer, vérifiez vos données."
+    data: "Contenu :"
+    data_erroneous:
+      csv: "Fichier invalide, ligne"
+      json: "Fichier invalide, enregistrement"
+      tomtom: "Données tomtom invalides, enregistrement"
     template_csv: "Modèle import tableur standard"
     template_excel: "Modèle import tableur Excel"
 
@@ -898,9 +903,10 @@ fr:
       empty_file: "ne contient aucune donnée"
       too_many_lines: "Import stoppé, trop de lignes (max: %{n})."
       none_column: "Aucune colonne trouvée"
-      missing_name: "Enregistrement %{line} : « nom » manquant."
-      missing_location: "Enregistrement %{line} : « ville » ou « code postal » ou « lat » et « lng » manquant."
-      invalid_numeric_value: "Enregistrement %{line} : valeur numérique « %{value} » invalide."
+      missing_name: "%{line} : « nom » manquant."
+      missing_location: "%{line} : « ville / code postal » ou « lat / lng » manquant."
+      invalid_numeric_value: "%{line} : valeur numérique « %{value} » invalide."
+      check_custom_columns: "Vérifiez votre définition des colonnes à importer."
     reverse_geocoding:
       apply: "Appliquer la nouvelle adresse"
 

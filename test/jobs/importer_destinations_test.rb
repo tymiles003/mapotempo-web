@@ -28,7 +28,7 @@ class ImporterDestinationsTest < ActionController::TestCase
       assert_no_difference('Visit.count') do
         di = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_invalid.csv', 'text.csv'))
         assert !di.import
-        assert di.errors[:base][0] =~ /Enregistrement 2/
+        assert di.errors[:base][0] =~ /ligne 2/
       end
     end
   end

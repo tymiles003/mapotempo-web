@@ -130,7 +130,7 @@ class ImporterDestinations < ImporterBase
     end
     if options[:line_shift] == 1
       # Create missing deliverable units if needed
-      column_titles = data[0].is_a?(Hash) ? data[0].keys : data[0].map{ |a| a[0] }
+      column_titles = data[0].is_a?(Hash) ? data[0].keys : data.size > 0 ? data[0].map{ |a| a[0] } : []
       unit_labels = @customer.deliverable_units.map(&:label)
       column_titles.each{ |name|
         m = Regexp.new("^" + I18n.t('destinations.import_file.quantity') + "\\[(.*)\\]$").match(name)
