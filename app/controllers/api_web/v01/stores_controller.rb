@@ -17,7 +17,7 @@
 #
 class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
   skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
-  before_action :set_store, only: [:edit_position, :update_position]
+  before_action :set_store, only: [:edit_position, :update_position, :show]
   authorize_resource
 
   swagger_controller :stores, 'Stores'
@@ -56,6 +56,14 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
     end
     @tags = current_user.customer.tags
     @method = request.method_symbol
+  end
+
+  def show
+    respond_to do |format|
+      @manage_planning = []
+      @show_isoline = false
+      format.json
+    end
   end
 
   def edit_position

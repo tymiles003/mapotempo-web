@@ -47,9 +47,7 @@ class ApiWeb::V01::ZoningsController < ApiWeb::V01::ApiWebController
 
   def capabilities
     @isochrone = []
-    @isochrone_capability = nil
     @isodistance = []
-    @isodistance_capability = nil
   end
 
   # Use callbacks to share common setup or constraints between actions.

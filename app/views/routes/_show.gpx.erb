@@ -97,17 +97,13 @@ route.stops.each{ |stop|
 <% if @gpx_track %>
   <trk>
     <trkseg>
-      <% route.stops.each{ |stop|
-        if stop.active && stop.trace %>
-          <% Polylines::Decoder.decode_polyline(stop.trace, 1e6).each do |v| %>
-            <trkpt lat="<%= v[0].to_s %>" lon="<%= v[1].to_s %>"></trkpt>
-          <% end %>
-        <% end } %>
-      <% if route.stop_trace
-           Polylines::Decoder.decode_polyline(route.stop_trace, 1e6).each do |v| %>
-          <trkpt lat="<%= v[0].to_s %>" lon="<%= v[1].to_s %>"></trkpt>
-        <% end %>
-      <% end %>
+      <% if route.geojson_tracks
+        JSON.parse('[' + route.geojson_tracks + ']').select{ |geojson| geojson['geometry']['type'] == 'LineString' }.collect{ |geojson| geojson['geometry']['polylines'] }.flatten.each{ |polyline|
+          Polylines::Decoder.decode_polyline(polyline, 1e6).each{ |coordinate| %>
+            <trkpt lat="<%= coordinate[0].round(6) %>" lon="<%= coordinate[1].round(6) %>"></trkpt>
+        <% }
+        }
+      end %>
     </trkseg>
   </trk>
 <% end %>

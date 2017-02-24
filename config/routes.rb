@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       match 'stores' => 'stores#index', :as => 'stores', via: [:get, :post]
       get 'stores/:id/edit_position' => 'stores#edit_position', :as => 'edit_position_store'
       patch 'stores/:id/update_position' => 'stores#update_position', :as => 'update_position_store'
+      get 'stores/:id' => 'stores#show'
 
       get 'zonings/:id/edit' => 'zonings#edit', :as => 'edit_zoning'
       patch 'zonings/:id/edit' => 'zonings#update'
@@ -48,6 +49,8 @@ Rails.application.routes.draw do
 
       get 'plannings/:id/edit' => 'plannings#edit', :as => 'edit_planning'
       get 'plannings/:planning_id/routes' => 'routes#index', :as => 'routes'
+
+      get 'stops/:id' => 'stops#show'
     end
   end
 
@@ -117,6 +120,8 @@ Rails.application.routes.draw do
   delete 'products' => 'products#destroy_multiple'
 
   resources :routes
+
+  get 'stops/:id' => 'stops#show'
 
   get '/zonings/new/planning/:planning_id' => 'zonings#new', as: :new_zonings_planning
   resources :zonings do

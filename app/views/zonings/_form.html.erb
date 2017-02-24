@@ -30,13 +30,13 @@ options.merge!(default_div_class: 'col-lg-10 col-md-10') if @zoning.id %>
       <% end %>
       <% if @manage_zoning.include? :organize %>
         <div class="col-md-offset-2 col-md-10">
-          <button type="button" class="btn btn-primary dropdown-toggle" id="generate" data-toggle="dropdown" aria-expanded="false"<% if !@isochrone_capability && !@isodistance_capability && !@planning %> style="display: none;"<% end %>><i class="fa fa-magic fa-fw"></i> <%= t '.generate' %> <span class="caret"></span></button>
+          <button type="button" class="btn btn-primary dropdown-toggle" id="generate" data-toggle="dropdown" aria-expanded="false"<% if @isochrone.empty? && @isodistance.empty? && !@planning %> style="display: none;"<% end %>><i class="fa fa-magic fa-fw"></i> <%= t '.generate' %> <span class="caret"></span></button>
           <ul class="dropdown-menu" role="menu">
-            <% if @isochrone_capability || @isodistance_capability %>
-              <% if @isochrone_capability %>
+            <% if !@isochrone.empty? || !@isodistance.empty? %>
+              <% if !@isochrone.empty? %>
                 <li><a data-toggle="modal" data-target="#isochrone-modal" data-keyboard="true" href="#"><i class="fa fa-clock-o fa-fw"></i> <%= t '.isochrone' %></a></li>
               <% end %>
-              <% if @isodistance_capability %>
+              <% if !@isodistance.empty? %>
                 <li><a data-toggle="modal" data-target="#isodistance-modal" data-keyboard="true" href="#"><i class="fa fa-road fa-fw"></i> <%= t '.isodistance' %></a></li>
               <% end %>
               <li class="divider"></li>

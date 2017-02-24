@@ -39,6 +39,8 @@ class StoresController < ApplicationController
   end
 
   def show
+    @manage_planning = PlanningsController.manage
+    @show_isoline = true
   end
 
   def new

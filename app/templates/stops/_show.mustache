@@ -1,4 +1,3 @@
-{{#stop}}
 <div class="stop-popup"{{#route_id}} data-route_id="{{route_id}}" data-stop_id="{{stop_id}}"{{/route_id}}>
   {{#close_popup}}
     <a class="close-popover pull-right">
@@ -6,7 +5,6 @@
     </a>
   {{/close_popup}}
 {{#route_id}}
-{{^one_route}}
 <div{{#planning_id}}{{^store}}{{^vehicle_name}} class="ui-state-error"{{/vehicle_name}}{{/store}}{{/planning_id}}>
   {{#planning_id}}
   {{^store}}
@@ -44,10 +42,8 @@
   {{/planning_id}}
 </div>
 <hr>
-{{/one_route}}
 {{/route_id}}
 <div>
-  {{#planning_id}}
   <div class="btn-group pull-right stop-tools">
     {{#store}}{{#manage_store}}
     <a href="/stores/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
@@ -55,20 +51,19 @@
     {{#destination}}{{#manage_destination}}
     <a href="/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
     {{/manage_destination}}{{/destination}}
-    {{#isoline_capability}}
+    {{#isoline}}
       <button type="button" class="btn btn-xs btn-default dropdown-toggle draw_zone" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-magic"></i> <span class="caret"></span></button>
       <ul class="dropdown-menu" role="menu">
-        {{#isochrone_capability}}
+        {{#isochrone}}
         <li><a data-toggle="modal" data-target="#isochrone-modal" data-keyboard="true" href="#"><i class="fa fa-clock-o fa-fw"></i> {{#i18n}}zonings.form.isochrone{{/i18n}}</a></li>
-        {{/isochrone_capability}}
-        {{#isodistance_capability}}
+        {{/isochrone}}
+        {{#isodistance}}
         <li><a data-toggle="modal" data-target="#isodistance-modal" data-keyboard="true" href="#"><i class="fa fa-road fa-fw"></i> {{#i18n}}zonings.form.isodistance{{/i18n}}</a></li>
-        {{/isodistance_capability}}
+        {{/isodistance}}
       </ul>
-    {{/isoline_capability}}
+    {{/isoline}}
   </div>
-  {{#vehicle_name}}<span class="number label label-default" style="background-color: {{color}};">{{#number}}{{number}}{{/number}}{{^number}}-{{/number}}</span>{{/vehicle_name}}
-  {{/planning_id}}
+  {{^store}}{{#color}}<span class="number label label-default" style="background-color: {{color}};">{{#number}}{{number}}{{/number}}{{^number}}-{{/number}}</span>{{/color}}{{/store}}
   {{#manage_organize}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/manage_organize}}
   <b>{{#ref}}{{^visits}}{{ref}} {{/visits}}{{/ref}}{{name}}</b><br/>
   {{#street}}{{street}}<br/>{{/street}}
@@ -144,4 +139,3 @@
 </div>
 {{/store}}
 </div>
-{{/stop}}

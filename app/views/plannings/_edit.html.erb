@@ -201,7 +201,6 @@ controller.js(
   colors: COLORS_TABLE,
   url_click2call: current_user.link_phone_number,
   spreadsheet_columns: @spreadsheet_columns,
-  isoline_capability: {isochrone: @isochrone_capability ? true : false, isodistance: @isodistance_capability ? true : false},
   enable_stop_status: @planning.customer.enable_stop_status,
   update_stop_status: @planning.customer.enable_stop_status? && (@planning.date.nil? || @planning.date.between?(Time.now.beginning_of_day, Time.now.end_of_day)) && @planning.customer.device.configured?(:tomtom) && @planning.routes.any?{ |r| r.vehicle_usage && r.vehicle_usage.vehicle.devices[:tomtom_id] },
   callback_button: @callback_button

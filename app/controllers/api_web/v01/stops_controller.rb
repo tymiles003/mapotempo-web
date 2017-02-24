@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2016
+# Copyright © Mapotempo, 2017
 #
 # This file is part of Mapotempo.
 #
@@ -15,35 +15,31 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class ApiWeb::V01::PlanningsController < ApiWeb::V01::ApiWebController
+
+
+class ApiWeb::V01::StopsController < ApiWeb::V01::ApiWebController
   skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource
-  before_action :manage_planning
 
-  swagger_controller :plannings, 'Plannings'
+  swagger_controller :stops, 'Stops'
 
-  swagger_api :edit do
-    summary 'Edit all or some routes of one planning.'
-    param :path, :planning_id, :integer, :required, 'Zonning ids'
-    param :query, :ids, :array, :optional, 'Planning''s routes ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
+  swagger_api :show do
+    summary 'Show a stops details.'
+    param :path, :stop_id, :integer, :required, 'Stop id'
   end
 
-  def edit
-    @spreadsheet_columns = []
-    capabilities
+  def show
+    respond_to do |format|
+      @manage_planning = []
+      @show_isoline = false
+      format.json
+    end
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  # rights should be checked before thanks to CanCan::Ability
-  def manage_planning
-    @manage_planning = [:organize]
-    @callback_button = true
-  end
-
-  def capabilities
-    @isochrone = []
-    @isodistance = []
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def route_params
+    params.require(:stop).permit()
   end
 end

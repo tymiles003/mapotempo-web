@@ -335,11 +335,15 @@ class PlanningsController < ApplicationController
     end
   end
 
+  def self.manage
+    [:edit, :zoning, :export, :organize, :vehicle, :destination, :store]
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_planning
-    @manage_planning = [:edit, :zoning, :export, :organize, :vehicle, :destination, :store]
+    @manage_planning = PlanningsController.manage
     @planning = if [:show, :edit, :optimize].include?(action_name.to_sym) && !request.format.html?
       current_user.customer.plannings.includes(routes: {stops: :visit}).find(params[:id] || params[:planning_id])
     else
@@ -416,8 +420,6 @@ class PlanningsController < ApplicationController
 
   def capabilities
     @isochrone = [[@planning.vehicle_usage_set, Zoning.new.isochrone?(@planning.vehicle_usage_set, false)]]
-    @isochrone_capability = @isochrone.find(&:last)
     @isodistance = [[@planning.vehicle_usage_set, Zoning.new.isodistance?(@planning.vehicle_usage_set, false)]]
-    @isodistance_capability = @isodistance.find(&:last)
   end
 end
