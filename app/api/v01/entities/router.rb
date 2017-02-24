@@ -20,7 +20,7 @@ class V01::Entities::Router < Grape::Entity
     'V01_Router'
   end
 
-  expose(:id, documentation: { type: Integer })
-  expose(:name, documentation: { type: String })
-  expose(:mode, documentation: { type: String })
+  expose(:id, documentation: {type: Integer})
+  expose(:name, documentation: {type: String}) { |router| router.name_locale[I18n.locale.to_s] || router.name }
+  expose(:mode, documentation: {type: String})
 end
