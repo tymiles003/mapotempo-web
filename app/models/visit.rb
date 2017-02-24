@@ -110,8 +110,8 @@ class Visit < ActiveRecord::Base
   end
 
   def quantities_changed?
-    quantities ? quantities.each_with_index.any?{ |q, i|
-      quantities_was && q != quantities_was[i]
+    quantities ? quantities.any?{ |i, q|
+      !quantities_was || q != quantities_was[i]
     } : !!quantities_was
   end
 
