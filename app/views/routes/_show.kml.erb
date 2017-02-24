@@ -17,17 +17,10 @@
     <tessellate>1</tessellate>
     <altitudeMode>clampToGround</altitudeMode>
     <coordinates>
-      <% route.stops.each do |stop|
-        if stop.active && stop.trace
-          Polylines::Decoder.decode_polyline(stop.trace, 1e6).each do |v| %>
-        <%= v[1].to_s + ',' + v[0].to_s %>
-      <%  end
-        end
-      end %>
-      <% if route.stop_trace
-        Polylines::Decoder.decode_polyline(route.stop_trace, 1e6).each do |v| %>
-        <%= v[1].to_s + ',' + v[0].to_s %>
-      <% end
+      <%= if route.geojson_tracks
+        JSON.parse('[' + route.geojson_tracks + ']').select{ |geojson| geojson['geometry']['type'] == 'LineString' }.collect{ |geojson| geojson['geometry']['polylines'] }.flatten.collect{ |polyline|
+          Polylines::Decoder.decode_polyline(polyline, 1e6).collect{ |coordinates| [coordinates[1].round(6), coordinates[0].round(6)].join(',') }.join(' ')
+        }.join(' ')
       end %>
     </coordinates>
   </LineString>

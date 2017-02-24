@@ -38,7 +38,7 @@ class Admin::CustomersControllerTest < ActionController::TestCase
       assert_difference('VehicleUsage.count', @customer.vehicle_usage_sets.size) do
         # FIXME: routes are computed but not saved
         # assert_difference('Route.count') do
-          Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
+          Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, '_ibE_seK_seK_seK'] } } ) do
             patch :update, id: @customer, customer: { take_over: 123, enable_orders: !@customer.enable_orders, max_vehicles: @customer.max_vehicles + 1 }
           end
         # end

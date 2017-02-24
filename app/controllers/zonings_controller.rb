@@ -148,11 +148,9 @@ class ZoningsController < ApplicationController
     @isochrone = vehicle_usage_sets.collect { |vehicle_usage_set|
       [vehicle_usage_set, @zoning.isochrone?(vehicle_usage_set)]
     }
-    @isochrone_capability = @isochrone.find(&:last)
     @isodistance = vehicle_usage_sets.collect { |vehicle_usage_set|
       [vehicle_usage_set, @zoning.isodistance?(vehicle_usage_set)]
     }
-    @isodistance_capability = @isodistance.find(&:last)
   end
 
   # Use callbacks to share common setup or constraints between actions.

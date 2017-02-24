@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2013-2014
+# Copyright © Mapotempo, 2013-2017
 #
 # This file is part of Mapotempo.
 #
@@ -48,6 +48,7 @@ class Ability
           can [:new, :create], Planning
         end
         can :manage, Route, planning: {customer_id: user.customer.id}
+        can :manage, Stop, route: {planning: {customer_id: user.customer.id}}
         if user.customer.enable_orders
           can :manage, OrderArray, customer_id: user.customer.id
           can [:new, :create], OrderArray

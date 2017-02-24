@@ -45,6 +45,12 @@ class ApiWeb::V01::StoresControllerTest < ActionController::TestCase
     assert_valid response
   end
 
+  test 'should get one' do
+    get :show, id: @store, format: :json
+    assert_response :success
+    assert_valid response
+  end
+
   test 'should get edit position' do
     get :edit_position, id: @store
     assert_response :success

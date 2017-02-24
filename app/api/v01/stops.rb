@@ -38,6 +38,17 @@ class V01::Stops < Grape::API
         segment '/:route_id' do
 
           resource :stops do
+            desc 'Fetch stop.',
+              nickname: 'getStop',
+              success: V01::Entities::Route
+            params do
+              requires :id, type: Integer
+            end
+            get ':id' do
+              s = current_customer.plannings.where(ParseIdsRefs.read(params[:planning_id])).first!.routes.where(ParseIdsRefs.read(params[:route_id])).first!.stops.where(id: params[:id]).first!
+              present s, with: V01::Entities::Stop
+            end
+
             desc 'Update stop activation.',
               nickname: 'updateStop'
             params do

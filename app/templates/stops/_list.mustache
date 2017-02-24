@@ -169,9 +169,6 @@
           <span class="name" title="{{name}}"><i class="fa fa-coffee fa-fw"></i> {{name}}</span>
         </div>
         <div class="btn-group pull-right stop-tools">
-          {{#automatic_insert}}
-            <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
-          {{/automatic_insert}}
           {{#geocoded}}<a href="#" class="marker btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.marker_help{{/i18n}}"><i class="fa fa-map-marker"></i></a>{{/geocoded}}
         </div>
         <div class="clearfix"></div>
@@ -206,11 +203,6 @@
           <span class="name" title="{{name}}{{#index_visit}} #{{index_visit}}{{/index_visit}}{{#status}} - {{status}}{{/status}}{{#eta_formated}} - {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}{{/eta_formated}}">{{name}}</span>{{#index_visit}} #{{index_visit}}{{/index_visit}}
         </div>
         <div class="btn-group pull-right stop-tools">
-          {{#automatic_insert}}
-            {{#geocoded}}
-              <button class="automatic_insert btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.automatic_insert_help{{/i18n}}"><i class="fa fa-lightbulb-o"></i></button>
-            {{/geocoded}}
-          {{/automatic_insert}}
           {{#manage_destination}}
           <a href="/destinations/{{destination_id}}/edit?back=true#collapseVisit{{visit_id}}" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
           {{/manage_destination}}

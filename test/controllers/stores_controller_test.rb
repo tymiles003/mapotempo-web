@@ -26,6 +26,12 @@ class StoresControllerTest < ActionController::TestCase
     assert_valid response
   end
 
+  test 'should get one' do
+    get :show, id: @store, format: :json
+    assert_response :success
+    assert_valid response
+  end
+
   test 'should get new' do
     get :new
     assert_response :success
