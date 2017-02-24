@@ -23,7 +23,8 @@ group :server do
 end
 
 guard 'delayed', number_of_workers: 2, environment: 'development' do
-  watch(%r{^app/(.+)\.rb})
+  watch(%r{^app/jobs/(.+)\.rb})
+  watch(%r{^app/models/(.+)\.rb})
   watch(%r{^config/initializers/.+\.rb})
 end
 
