@@ -22,7 +22,7 @@ if @planning
           json.extract! quantity, :deliverable_unit_id, :quantity
         end
       end
-      (json.duration l(visit.take_over.utc, format: :hour_minute_second)) if visit.take_over
+      (json.duration l(visit.default_take_over.utc, format: :hour_minute_second)) if visit.default_take_over
       (json.open1 l(stop.open1.utc, format: :hour_minute)) if stop.open1
       (json.close1 l(stop.close1.utc, format: :hour_minute)) if stop.close1
       (json.open2 l(stop.open2.utc, format: :hour_minute)) if stop.open2

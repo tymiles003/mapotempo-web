@@ -135,7 +135,7 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
       (json.error true) if route.vehicle_usage.default_store_rest && !route.vehicle_usage.default_store_rest.position?
     end
   end
-  json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration
+  json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration > 0
   previous_with_pos = stop if stop.position?
 end
 json.store_stop do

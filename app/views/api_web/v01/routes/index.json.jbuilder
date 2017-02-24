@@ -37,7 +37,6 @@ json.routes @routes do |route|
     end
   }
   json.stops route.stops do |stop|
-    duration = nil
     out_of_window |= stop.out_of_window
     out_of_capacity |= stop.out_of_capacity
     out_of_drive_time |= stop.out_of_drive_time
@@ -91,14 +90,12 @@ json.routes @routes do |route|
           json.quantity units[:quantity] if units[:quantity]
         end
       end
-      duration = l(visit.take_over.utc, format: :hour_minute_second) if visit.take_over
     elsif stop.is_a?(StopRest)
       json.rest do
-        duration = l(route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) if route.vehicle_usage.default_rest_duration
         (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
       end
     end
-    json.duration duration if duration
+    json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration > 0
     previous_with_pos = stop if stop.position?
   end
   json.store_stop do
