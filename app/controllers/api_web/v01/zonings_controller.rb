@@ -60,6 +60,7 @@ class ApiWeb::V01::ZoningsController < ApiWeb::V01::ApiWebController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def zoning_params
+    params[:zoning] ||= {id: params[:id]} # Require not empty if none zone
     params[:zoning][:zones_attributes].each{ |zone|
       zone[:speed_multiplicator] = zone[:avoid_zone] ? 0 : 1
     } if params[:zoning][:zones_attributes]
