@@ -1,6 +1,8 @@
 <% require "#{Rails.application.root}/lib/localized_values.rb" %>
 <%= twitter_bootstrap_form_for @customer, layout: :horizontal, html: { class: 'clear-passwords number-to-percentage form-horizontal'} do |f| %>
+
   <%= render 'shared/error_messages', model: @customer %>
+
   <% if current_user.admin? %>
     <%= f.text_field :ref do %>
       <p class="help-block"><%= t('activerecord.attributes.customer.ref_help') %></p>
@@ -9,23 +11,28 @@
       <p class="help-block"><%= t('activerecord.attributes.customer.description_help') %></p>
     <% end %>
   <% end %>
+
   <%= f.text_field :name, t('.name'), required: true, disabled: !current_user.admin? %>
   <%= f.text_field :end_subscription, {value: @customer.end_subscription ? l(@customer.end_subscription.to_time, format: :datepicker) : nil, disabled:!current_user.admin?, input_group: content_tag('i', '', {class: 'fa fa-calendar fa-fw'})} %>
   <%= f.number_field :max_vehicles, min:1, disabled: (Mapotempo::Application.config.manage_vehicles_only_admin && !current_user.admin?), input_group: content_tag('i', '', class: 'fa fa-truck fa-fw') %>
+
   <% if current_user.admin? %>
     <%= f.toggles t 'activerecord.attributes.customer.test' do %>
       <%= f.check_box :test, '', checked: @customer.id ? @customer.test : Mapotempo::Application.config.customer_test_default %>
     <% end %>
   <% end %>
+
   <fieldset>
     <legend class="scheduler-border">
       <%= t '.default_value' %>
     </legend>
+
     <% if current_user.admin? %>
       <%= f.collection_select :profile_id, [], Profile.all, :id, :name, {}, {required: true, input_group: content_tag('i', '', class: 'fa fa-gear fa-fw')} %>
     <% end %>
+
     <div id="customer_router_input" class="form-group">
-      <label class="col-md-2 control-label" for="customer_router"><%= t 'activerecord.attributes.customer.router' %></label>
+      <label class="col-md-2 control-label" for="customer_router"><%= t('activerecord.attributes.customer.router') %></label>
       <div class="col-md-6">
         <div class="input-group">
           <% routers = @customer.id ? @customer.profile.routers : Router.all %>
@@ -38,6 +45,105 @@
           <span class="input-group-addon"><i class="fa fa-gear fa-fw"></i></span>
         </div>
         <p class="help-block"><%= t '.router_help' %></p>
+      </div>
+    </div>
+
+    <div id="customer_router_options_motorway_input" class="form-group <%= !@customer.router.motorway? && 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_motorway">
+        <%= t('activerecord.attributes.customer.router_options_motorway') %>
+      </label>
+
+      <div class="col-md-6 input-append form-inline">
+        <label>
+          <input type="radio" name="customer[router_options][motorway]" id="customer_router_options_motorway_yes" value="true" <%= @customer.motorway? && 'checked' %>/>
+          <%= t('customers.form.router_options_motorway_yes') %>
+        </label>
+
+        <label>
+          <input type="radio" name="customer[router_options][motorway]" id="customer_router_options_motorway_no" value="false" <%= !@customer.motorway? && 'checked' %>/>
+          <%= t('customers.form.router_options_motorway_no') %>
+        </label>
+      </div>
+    </div>
+
+    <div id="customer_router_options_toll_input" class="form-group <%= !@customer.router.toll? && 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_toll">
+        <%= t('activerecord.attributes.customer.router_options_toll') %>
+      </label>
+
+      <div class="col-md-6 input-append form-inline">
+        <label>
+          <input type="radio" name="customer[router_options][toll]" id="customer_router_options_toll_yes" value="true" <%= @customer.toll? && 'checked' %>/>
+          <%= t('customers.form.router_options_toll_yes') %>
+        </label>
+
+        <label>
+          <input type="radio" name="customer[router_options][toll]" id="customer_router_options_toll_no" value="false" <%= !@customer.toll? && 'checked' %>/>
+          <%= t('customers.form.router_options_toll_no') %>
+        </label>
+      </div>
+    </div>
+
+    <div id="customer_router_options_trailers_input" class="form-group <%= !@customer.router.trailers? && 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_trailers">
+        <%= t('activerecord.attributes.customer.router_options_trailers') %>
+      </label>
+
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= number_field_tag 'customer[router_options][trailers]', @customer.router_options['trailers'], { min: 0, max: 4, placeholder: t('.router_options_trailers_default', n: 0), class: 'form-control' } %>
+          <span class="input-group-addon"><i class="fa fa-truck fa-fw"></i> </span>
+        </div>
+      </div>
+    </div>
+
+    <div id="customer_router_options_weight_input" class="form-group <%= !@customer.router.weight? && 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_weight">
+        <%= t('activerecord.attributes.customer.router_options_weight') %>
+      </label>
+
+      <div class="col-md-6">
+        <%= text_field 'customer[router_options]', :weight, value: @customer.router_options['weight'], placeholder: t('.router_options_weight_range', from: 0, to: 1000), class: 'form-control' %>
+      </div>
+    </div>
+
+    <div id="customer_router_options_weight_per_axle_input" class="form-group <%= !@customer.router.weight_per_axle? && 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_weight_per_axle">
+        <%= t('activerecord.attributes.customer.router_options_weight_per_axle') %>
+      </label>
+
+      <div class="col-md-6">
+        <%= text_field 'customer[router_options]', :weight_per_axle, value: @customer.router_options['weight_per_axle'], placeholder: t('.router_options_weight_per_axle_range', from: 0, to: 1000), class: 'form-control' %>
+      </div>
+    </div>
+
+    <div id="customer_router_options_height_input" class="form-group <%= !@customer.router.height? && 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_height">
+        <%= t('activerecord.attributes.customer.router_options_height') %>
+      </label>
+
+      <div class="col-md-6">
+        <%= text_field 'customer[router_options]', :height, value: @customer.router_options['height'], placeholder: t('.router_options_height_range', from: 0, to: 50), class: 'form-control' %>
+      </div>
+    </div>
+
+    <div id="customer_router_options_width_input" class="form-group <%= !@customer.router.width? && 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_width">
+        <%= t('activerecord.attributes.customer.router_options_width') %>
+      </label>
+
+      <div class="col-md-6">
+        <%= text_field 'customer[router_options]', :width, value: @customer.router_options['width'], placeholder: t('.router_options_width_range', from: 0, to: 50), class: 'form-control' %>
+      </div>
+    </div>
+
+    <div id="customer_router_options_length_input" class="form-group <%= !@customer.router.length? && 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_length">
+        <%= t('activerecord.attributes.customer.router_options_length') %>
+      </label>
+
+      <div class="col-md-6">
+        <%= text_field 'customer[router_options]', :length, value: @customer.router_options['length'], placeholder: t('.router_options_length_range', from: 0, to: 300), class: 'form-control' %>
       </div>
     </div>
 

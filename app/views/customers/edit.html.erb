@@ -4,19 +4,22 @@
 <%= render 'form' %>
 
 <%
-controller.js(
-  customer_id: @customer.id,
-  tomtom: @customer.tomtom?,
-  enable_tomtom: @customer.enable_tomtom?,
-  teksat: @customer.teksat?,
-  enable_teksat: @customer.enable_teksat?,
-  orange: @customer.orange?,
-  enable_orange: @customer.enable_orange?,
-  masternaut: @customer.masternaut?,
-  enable_masternaut: @customer.enable_masternaut?,
-  alyacom: @customer.alyacom?,
-  enable_alyacom: @customer.enable_alyacom?
-)
+  routers = @customer.id ? @customer.profile.routers : Router.all
+
+  controller.js(
+    customer_id: @customer.id,
+    tomtom: @customer.tomtom?,
+    enable_tomtom: @customer.enable_tomtom?,
+    teksat: @customer.teksat?,
+    enable_teksat: @customer.enable_teksat?,
+    orange: @customer.orange?,
+    enable_orange: @customer.enable_orange?,
+    masternaut: @customer.masternaut?,
+    enable_masternaut: @customer.enable_masternaut?,
+    alyacom: @customer.alyacom?,
+    enable_alyacom: @customer.enable_alyacom?,
+    routers_options: Hash[routers.collect { |r| [r.id, r.options] }]
+  )
 %>
 
 <h1><%= t '.user.list' %></h1>

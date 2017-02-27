@@ -71,4 +71,65 @@ class RouterTest < ActiveSupport::TestCase
       assert_equal 3, matrix[0].size
     end
   end
+
+
+  test 'should set hash options' do
+    router = routers(:router_one)
+    router.options = {
+        time: true,
+        distance: true,
+        isochrone: true,
+        isodistance: true,
+        avoid_zones: true,
+        motorway: true,
+        toll: true,
+        trailers: true,
+        weight: true,
+        weight_per_axle: true,
+        height: true,
+        width: true,
+        length: true
+    }
+
+    router.save!
+
+    assert router.time, true
+    assert router.time?, true
+
+    assert router.distance, true
+    assert router.distance?, true
+
+    assert router.isochrone, true
+    assert router.isochrone?, true
+
+    assert router.isodistance, true
+    assert router.isodistance?, true
+
+    assert router.avoid_zones, true
+    assert router.avoid_zones?, true
+
+    assert router.motorway, true
+    assert router.motorway?, true
+
+    assert router.toll, true
+    assert router.toll?, true
+
+    assert router.trailers, true
+    assert router.trailers?, true
+
+    assert router.weight, true
+    assert router.weight?, true
+
+    assert router.weight_per_axle, true
+    assert router.weight_per_axle?, true
+
+    assert router.height, true
+    assert router.height?, true
+
+    assert router.width, true
+    assert router.width?, true
+
+    assert router.length, true
+    assert router.length?, true
+  end
 end

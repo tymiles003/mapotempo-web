@@ -22,11 +22,11 @@ group :server do
   end
 end
 
-guard 'delayed', number_of_workers: 2, environment: 'development' do
-  watch(%r{^app/jobs/(.+)\.rb})
-  watch(%r{^app/models/(.+)\.rb})
-  watch(%r{^config/initializers/.+\.rb})
-end
+# guard 'delayed', number_of_workers: 2, environment: 'development' do
+#   watch(%r{^app/jobs/(.+)\.rb})
+#   watch(%r{^app/models/(.+)\.rb})
+#   watch(%r{^config/initializers/.+\.rb})
+# end
 
 # guard 'process', name: 'i18n-js', command: 'rake i18n:js:export' do
 #   watch(%r{^config/i18n-js\.yml})

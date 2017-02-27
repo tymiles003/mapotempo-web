@@ -20,8 +20,8 @@ class Router < ActiveRecord::Base
   DIMENSION = {time: 0, distance: 1}.freeze
 
   include HashBoolAttr
-  store_accessor :options, :time, :distance, :avoid_zones, :isochrone, :isodistance
-  hash_bool_attr :options, :time, :distance, :avoid_zones, :isochrone, :isodistance
+  store_accessor :options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length
+  hash_bool_attr :options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length
 
   nilify_blanks
   auto_strip_attributes :name, :url_time, :url_distance, :mode
@@ -110,7 +110,7 @@ class Router < ActiveRecord::Base
     }.slice(row.size)
   end
 
-  # Access method after overide in sub classes
+  # Access method after override in sub classes
 
   def super_time?
     time?

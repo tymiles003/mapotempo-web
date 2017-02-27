@@ -31,9 +31,10 @@ class CustomersControllerTest < ActionController::TestCase
 
   test 'should update customer' do
     sign_in users(:user_one)
-    patch :update, id: @customer, customer: { name: 123, router_dimension: 'distance' }
+    patch :update, id: @customer, customer: {name: 123, router_dimension: 'distance', router_options: {time: true, motorway: true, trailers: 2, weight: 10}}
     assert_redirected_to [:edit, @customer]
     assert_equal 'distance', @customer.reload.router_dimension
+    assert_equal @customer.reload.router_options, { 'time' => 'true', 'weight' => '10', 'motorway' => 'true', 'trailers' => '2' }
   end
 
   test 'should not destroy vehicles' do
@@ -51,7 +52,7 @@ class CustomersControllerTest < ActionController::TestCase
 
   test 'should delete multiple customers' do
     sign_in users(:user_admin)
-    delete :destroy_multiple, { customers: { @customer.id => 1 } }
+    delete :destroy_multiple, {customers: {@customer.id => 1}}
     assert_redirected_to customers_path
   end
 

@@ -17,6 +17,14 @@ router_one:
     isochrone: true
     isodistance: true
     avoid_zones: true
+    motorway: true
+    toll: true
+    trailers: true
+    weight: true
+    weight_per_axle: true
+    height: true
+    width: true
+    length: true
 
 router_two:
   mode: car
@@ -27,6 +35,8 @@ router_two:
   options:
     time: true
     distance: false
+    motorway: false
+    toll: false
 
 router_osrm:
   mode: car

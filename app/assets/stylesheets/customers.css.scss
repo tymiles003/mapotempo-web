@@ -28,6 +28,10 @@
     color: #ccc;
   }
 
+  .router-option-disabled {
+    display: none;
+  }
+
   #users {
     @media screen and (max-width: 767px) {
       tr th:nth-of-type(2), tr td:nth-of-type(2),

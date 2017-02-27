@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.4
--- Dumped by pg_dump version 9.5.4
+-- Dumped from database version 9.5.5
+-- Dumped by pg_dump version 9.5.5
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -106,7 +106,8 @@ CREATE TABLE customers (
     enable_global_optimization boolean DEFAULT false NOT NULL,
     optimization_vehicle_soft_upper_bound double precision,
     enable_vehicle_position boolean DEFAULT true NOT NULL,
-    enable_stop_status boolean DEFAULT false NOT NULL
+    enable_stop_status boolean DEFAULT false NOT NULL,
+    router_options hstore DEFAULT ''::hstore NOT NULL
 );
 
 
@@ -2563,4 +2564,10 @@ INSERT INTO schema_migrations (version) VALUES ('20170215102225');
 INSERT INTO schema_migrations (version) VALUES ('20170215113103');
 
 INSERT INTO schema_migrations (version) VALUES ('20170220092059');
+
+INSERT INTO schema_migrations (version) VALUES ('20170222165913');
+
+INSERT INTO schema_migrations (version) VALUES ('20170223120120');
+
+INSERT INTO schema_migrations (version) VALUES ('20170224144324');
 

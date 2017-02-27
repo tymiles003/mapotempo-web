@@ -4,7 +4,7 @@ class CustomerTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
-    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |_url, _mode, _dimension, segments, _options| segments.collect{ |_i| [1, 1, 'trace'] } } ) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |_url, _mode, _dimension, segments, _options| segments.collect { |_i| [1, 1, 'trace'] } }) do
       yield
     end
   end
@@ -56,15 +56,15 @@ class CustomerTest < ActiveSupport::TestCase
   test 'should update_out_of_date' do
     customer = customers(:customer_one)
     customer.take_over = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    customer.plannings.each{ |p|
-      p.routes.select{ |r| r.vehicle_usage }.each{ |r|
+    customer.plannings.each { |p|
+      p.routes.select { |r| r.vehicle_usage }.each { |r|
         assert_not r.out_of_date
-    }}
+      } }
     customer.save!
-    customer.plannings.each{ |p|
-      p.routes.select{ |r| r.vehicle_usage }.each{ |r|
+    customer.plannings.each { |p|
+      p.routes.select { |r| r.vehicle_usage }.each { |r|
         assert r.out_of_date
-    }}
+      } }
   end
 
   test 'should update max vehicles up' do
@@ -114,14 +114,14 @@ class CustomerTest < ActiveSupport::TestCase
     @customer = add_tomtom_credentials @customer
     @customer.vehicles.update_all tomtom_id: "tomtom_id"
     @customer.update! tomtom_account: @customer.tomtom_account + "_edit"
-    assert @customer.vehicles.all?{|vehicle| !vehicle.tomtom_id }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.tomtom_id }
   end
 
   test '[tomtom] disable service should update vehicles' do
     @customer = add_tomtom_credentials @customer
     @customer.vehicles.update_all tomtom_id: "tomtom_id"
     @customer.update! enable_tomtom: false
-    assert @customer.vehicles.all?{|vehicle| !vehicle.tomtom_id }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.tomtom_id }
   end
 
   require Rails.root.join("test/lib/devices/teksat_base")
@@ -131,14 +131,14 @@ class CustomerTest < ActiveSupport::TestCase
     @customer = add_teksat_credentials @customer
     @customer.vehicles.update_all teksat_id: "teksat_id"
     @customer.update! teksat_customer_id: Time.now.to_i
-    assert @customer.vehicles.all?{|vehicle| !vehicle.teksat_id }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.teksat_id }
   end
 
   test '[teksat] disable service should update vehicles' do
     @customer = add_teksat_credentials @customer
     @customer.vehicles.update_all teksat_id: "teksat_id"
     @customer.update! enable_teksat: false
-    assert @customer.vehicles.all?{|vehicle| !vehicle.teksat_id }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.teksat_id }
   end
 
   require Rails.root.join("test/lib/devices/orange_base")
@@ -148,25 +148,76 @@ class CustomerTest < ActiveSupport::TestCase
     @customer = add_orange_credentials @customer
     @customer.vehicles.update_all orange_id: "orange_id"
     @customer.update! orange_user: @customer.orange_user + "_edit"
-    assert @customer.vehicles.all?{|vehicle| !vehicle.orange_id }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.orange_id }
   end
 
   test '[orange] disable service should update vehicles' do
     @customer = add_teksat_credentials @customer
     @customer.vehicles.update_all orange_id: "orange_id"
     @customer.update! enable_orange: false
-    assert @customer.vehicles.all?{|vehicle| !vehicle.orange_id }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.orange_id }
   end
 
   test 'should get router dimension' do
     assert_equal 'time', @customer.router_dimension
   end
 
+
+  test 'should set hash options' do
+    customer = customers(:customer_two)
+    customer.router_options = {
+        time: true,
+        distance: true,
+        isochrone: true,
+        isodistance: true,
+        avoid_zones: true,
+        motorway: true,
+        toll: true,
+        trailers: 2,
+        weight: 10,
+        weight_per_axle: 5,
+        height: 5,
+        width: 6,
+        length: 30
+    }
+
+    customer.save!
+
+    assert customer.time, true
+    assert customer.time?, true
+
+    assert customer.distance, true
+    assert customer.distance?, true
+
+    assert customer.isochrone, true
+    assert customer.isochrone?, true
+
+    assert customer.isodistance, true
+    assert customer.isodistance?, true
+
+    assert customer.avoid_zones, true
+    assert customer.avoid_zones?, true
+
+    assert customer.motorway, true
+    assert customer.motorway?, true
+
+    assert customer.toll, true
+    assert customer.toll?, true
+
+    assert customer.trailers, 2
+    assert customer.weight, 10
+    assert customer.weight_per_axle, 5
+    assert customer.height, 5
+    assert customer.width, 6
+    assert customer.length, 30
+  end
+
+
   test 'customer with order array' do
     planning = plannings :planning_one
     order_array = order_arrays :order_array_one
     planning.update! order_array: order_array
-    products = Product.find ActiveRecord::Base.connection.select_all("SELECT product_id FROM orders_products WHERE order_id IN (%s)" % [ order_array.order_ids.join(",") ]).rows
+    products = Product.find ActiveRecord::Base.connection.select_all("SELECT product_id FROM orders_products WHERE order_id IN (%s)" % [order_array.order_ids.join(",")]).rows
     assert products.any?
     assert planning.customer.destroy
   end
@@ -174,13 +225,13 @@ class CustomerTest < ActiveSupport::TestCase
   test 'should update enable_multi_visits' do
     customer = @customer
     refs = customer.destinations.collect(&:ref)
-    tags = customer.destinations.collect{ |d| d.tags.collect(&:label) }.flatten
+    tags = customer.destinations.collect { |d| d.tags.collect(&:label) }.flatten
     assert_no_difference('Destination.count') do
       assert_no_difference('Visit.count') do
         customer.enable_multi_visits = true
         customer.save
-        assert_equal refs, customer.destinations.collect{ |d| d.visits.collect(&:ref) }.flatten
-        assert_equal tags, customer.destinations.collect{ |d| d.visits.collect{ |v| v.tags.collect(&:label)}.flatten }.flatten
+        assert_equal refs, customer.destinations.collect { |d| d.visits.collect(&:ref) }.flatten
+        assert_equal tags, customer.destinations.collect { |d| d.visits.collect { |v| v.tags.collect(&:label) }.flatten }.flatten
       end
     end
     assert_no_difference('Destination.count') do
@@ -188,7 +239,7 @@ class CustomerTest < ActiveSupport::TestCase
         customer.enable_multi_visits = false
         customer.save
         assert_equal refs, customer.destinations.collect(&:ref)
-        assert_equal tags, customer.destinations.collect{ |d| d.tags.collect(&:label) }.flatten
+        assert_equal tags, customer.destinations.collect { |d| d.tags.collect(&:label) }.flatten
       end
     end
   end
@@ -206,16 +257,16 @@ class CustomerTest < ActiveSupport::TestCase
                 assert_difference('Tag.count', @customer.tags.size) do
                   assert_difference('DeliverableUnit.count', @customer.deliverable_units.size) do
                     # assert_difference('OrderArray.count', @customer.order_arrays.size) do
-                      duplicate = @customer.duplicate
-                      duplicate.save!
+                    duplicate = @customer.duplicate
+                    duplicate.save!
 
-                      assert_equal @customer.vehicles.map{ |v| v.capacities.delete_if{ |k, v| unit_ids.exclude? k }.values }, duplicate.vehicles.map{ |v| v.capacities.values }
-                      assert_equal [], @customer.vehicles.map{ |v| v.capacities.delete_if{ |k, v| unit_ids.exclude? k }.keys } & duplicate.vehicles.map{ |v| v.capacities.keys }
+                    assert_equal @customer.vehicles.map { |v| v.capacities.delete_if { |k, v| unit_ids.exclude? k }.values }, duplicate.vehicles.map { |v| v.capacities.values }
+                    assert_equal [], @customer.vehicles.map { |v| v.capacities.delete_if { |k, v| unit_ids.exclude? k }.keys } & duplicate.vehicles.map { |v| v.capacities.keys }
 
-                      assert_equal @customer.destinations.flat_map{ |dest| dest.visits.map{ |v| v.quantities.delete_if{ |k, v| unit_ids.exclude? k }.values }}, duplicate.destinations.flat_map{ |dest| dest.visits.map{ |v| v.quantities.values }}
-                      assert_equal [], @customer.destinations.flat_map{ |dest| dest.visits.flat_map{ |v| v.quantities.delete_if{ |k, v| unit_ids.exclude? k }.keys }} & duplicate.destinations.flat_map{ |dest| dest.visits.flat_map{ |v| v.quantities.keys }}
+                    assert_equal @customer.destinations.flat_map { |dest| dest.visits.map { |v| v.quantities.delete_if { |k, v| unit_ids.exclude? k }.values } }, duplicate.destinations.flat_map { |dest| dest.visits.map { |v| v.quantities.values } }
+                    assert_equal [], @customer.destinations.flat_map { |dest| dest.visits.flat_map { |v| v.quantities.delete_if { |k, v| unit_ids.exclude? k }.keys } } & duplicate.destinations.flat_map { |dest| dest.visits.flat_map { |v| v.quantities.keys } }
 
-                      assert duplicate.test, Mapotempo::Application.config.customer_test_default
+                    assert duplicate.test, Mapotempo::Application.config.customer_test_default
                     # end
                   end
                 end
@@ -237,7 +288,7 @@ class CustomerTest < ActiveSupport::TestCase
                 assert_difference('Tag.count', -@customer.tags.size) do
                   assert_difference('DeliverableUnit.count', -@customer.deliverable_units.size) do
                     # assert_difference('OrderArray.count', -@customer.order_arrays.size) do
-                      duplicate.destroy!
+                    duplicate.destroy!
                     # end
                   end
                 end
