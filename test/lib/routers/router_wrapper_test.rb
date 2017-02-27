@@ -78,7 +78,7 @@ class Routers::RouterWrapperTest < ActionController::TestCase
       begin
         matrices = @router_wrapper.matrix(routers(:router_one).url_time, :car, [:time], points, points)
       rescue => e
-        assert e.message.match 'BadRequest'
+        assert e.message.match('BadRequest'), e.message
       end
     ensure
       remove_request_stub(stub_matrix)
