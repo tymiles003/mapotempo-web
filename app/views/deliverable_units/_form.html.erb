@@ -30,12 +30,12 @@
       <div class="input-group">
         <%= select_tag 'deliverable_unit[icon]', grouped_options_for_select([
          [t('deliverable_units.form.prefered_icons'),
-           @grouped_icons[0].map{ |icon| [icon, icon, {'data-content' => "<i class='fa #{icon}'> #{icon} </i>", "selected": (@deliverable_unit.icon == icon) ? true : nil }]},],
+           @grouped_icons[0].map{ |icon| [icon, icon, {:data => {:content => "<i class='fa fa-fw #{icon}'></i> #{icon}"}, :selected => (@deliverable_unit.icon == icon) ? true : nil }]},],
            [t('deliverable_units.form.other_icons'),
-            @grouped_icons[1].map{ |icon| [icon, icon, {'data-content' => "<i class='fa #{icon}'> #{icon} </i>", "selected": (@deliverable_unit.icon == icon) ? true : nil }]}
+            @grouped_icons[1].map{ |icon| [icon, icon, {:data => {:content => "<i class='fa fa-fw #{icon}'></i> #{icon}"}, :selected => (@deliverable_unit.icon == icon) ? true : nil }]}
           ]
-        ]), include_blank: t('web.form.default', n: 'fa-home'), class: 'form-control width_1 selectpicker', 'data-live-search': true  %>
-        <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
+        ]), include_blank: t('web.form.default', n: 'fa-home'), class: 'form-control width_1 selectpicker', 'data-live-search' => true  %>
+        <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-archive fa-fw') %></span>
       </div>
     </div>
   </div>

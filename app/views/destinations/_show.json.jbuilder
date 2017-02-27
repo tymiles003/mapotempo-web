@@ -27,9 +27,12 @@ json.visits do
       end
       json.quantities do
         json.array! visit.default_quantities do |k, v|
-          json.deliverable_unit_id k
-          json.quantity v
-          json.unit_icon @customer.deliverable_units.find{ |du| du.id == k }.try(:default_icon)
+          #now return {} if value is nil
+          if !v.nil?
+            json.deliverable_unit_id k
+            json.quantity v
+            json.unit_icon @customer.deliverable_units.find{ |du| du.id == k }.try(:default_icon)
+          end
         end
       end
     end

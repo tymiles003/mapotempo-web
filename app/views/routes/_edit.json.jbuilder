@@ -116,7 +116,7 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
       end
     else
       json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
-        json.quantity quantity[:quantity] if quantity[:quantity]
+        json.quantity quantity[:quantity]
         json.unit_icon quantity[:unit_icon]
       end
     end

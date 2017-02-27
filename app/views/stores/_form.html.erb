@@ -84,11 +84,11 @@
         <div class="input-group">
           <%= select_tag 'store[icon]', grouped_options_for_select([
            [t('stores.form.prefered_icons'),
-             @grouped_icons[0].map{ |icon| [icon, icon, {'data-content' => "<i class='fa #{icon}'> #{icon} </i>", "selected": (@store.icon == icon) ? true : nil }]},],
+             @grouped_icons[0].map{ |icon| [icon, icon, {:data => {:content => "<i class='fa fa-fw #{icon}'></i> #{icon}"}, :selected => (@store.icon == icon) ? true : nil }]},],
              [t('stores.form.other_icons'),
-              @grouped_icons[1].map{ |icon| [icon, icon, {'data-content' => "<i class='fa #{icon}'> #{icon} </i>", "selected": (@store.icon == icon) ? true : nil }]}
+              @grouped_icons[1].map{ |icon| [icon, icon, {:data => {:content => "<i class='fa fa-fw #{icon}'></i> #{icon}"}, :selected => (@store.icon == icon) ? true : nil }]}
             ]
-          ]), include_blank: t('web.form.default', n: 'fa-home'), class: 'form-control width_1_2 selectpicker', 'data-live-search': true  %>
+          ]), include_blank: t('web.form.default', n: 'fa-home'), class: 'form-control width_1_2 selectpicker', 'data-live-search' => true  %>
           <%= select_tag 'store[icon_size]', options_for_select([[t('.icon_size.small'), :small], [t('.icon_size.medium'), :medium], [t('.icon_size.large'), :large]], @store.icon_size), include_blank: t('web.form.default', n: t('.icon_size.large')), class: 'form-control width_1_2' %>
           <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
         </div>

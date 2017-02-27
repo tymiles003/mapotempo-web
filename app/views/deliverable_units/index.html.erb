@@ -34,7 +34,7 @@
         <td><%= check_box_tag("deliverable_units[#{deliverable_unit.id}]") %></td>
         <td><%= deliverable_unit.label %></td>
         <td><%= deliverable_unit.ref %></td>
-        <td><%= "<i class=\"fa fa-fw fa-lg #{deliverable_unit.default_icon}\"></i>".html_safe %></td>
+        <td><%= "<i class=\"fa fa-fw #{deliverable_unit.default_icon}\"></i>".html_safe %></td>
         <td><%= deliverable_unit.localized_default_quantity %></td>
         <td><%= deliverable_unit.localized_default_capacity %></td>
         <td><%= deliverable_unit.default_optimization_overload_multiplier == 0 ? t('deliverable_units.form.optimization_overload_multiplier_no') : deliverable_unit.default_optimization_overload_multiplier == -1 ? t('deliverable_units.form.optimization_overload_multiplier_ignore') : deliverable_unit.localized_optimization_overload_multiplier %></td>

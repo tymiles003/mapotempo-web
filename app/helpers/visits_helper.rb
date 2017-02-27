@@ -16,13 +16,16 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module VisitsHelper
+  # return a blank hash if quantity is nil, the hash is never filled for nothing
   def visit_quantities(visit, vehicle, options = {})
     visit.destination.customer.deliverable_units.map{ |du|
-      quantities = visit.send(options[:with_default] ? :default_quantities : :quantities)
-      {
-        quantity: quantities && quantities[du.id] && Visit.localize_numeric_value(quantities[du.id]) + (vehicle && vehicle.default_capacities[du.id] ? '/' + Visit.localize_numeric_value(vehicle.default_capacities[du.id]) : '') + (du.label ? "\u202F" + du.label : ''),
-        unit_icon: du.default_icon
-      }
+      quantities = visit.send(:default_quantities)
+      if quantities && quantities[du.id]
+        {
+          quantity: !options[:with_default] ? quantities[du.id] : quantities && quantities[du.id] && Visit.localize_numeric_value(quantities[du.id]) + (vehicle && vehicle.default_capacities[du.id] ? '/' + Visit.localize_numeric_value(vehicle.default_capacities[du.id]) : '') + (du.label ? "\u202F" + du.label : ''),
+          unit_icon: du.default_icon
+        }
+      end
     }.compact
   end
 end

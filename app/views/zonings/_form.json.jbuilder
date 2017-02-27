@@ -1,4 +1,4 @@
-json.stores @planning ? @planning.routes.select(&:vehicle_usage).collect{ |route| [route.vehicle_usage.default_store_start, route.vehicle_usage.default_store_stop, route.vehicle_usage.default_store_rest] }.flatten.compact.uniq : @zoning.customer.stores do |store|
+json.stores @planning ? @planning.routes.select(&:vehicle_usage).collect { |route| [route.vehicle_usage.default_store_start, route.vehicle_usage.default_store_stop, route.vehicle_usage.default_store_rest] }.flatten.compact.uniq : @zoning.customer.stores do |store|
   json.extract! store, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
 end
 index = 0
@@ -11,15 +11,17 @@ if @planning
     if route.vehicle_usage
       json.vehicle_id route.vehicle_usage.vehicle.id
     end
-    json.stops route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect do |stop|
+    json.stops route.stops.select { |stop| stop.is_a?(StopVisit) }.collect do |stop|
       visit = stop.visit
       json.extract! visit, :id
       json.extract! visit.destination, :id, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :phone_number, :comment
       json.ref visit.ref if @zoning.customer.enable_references
       json.active route.vehicle_usage && stop.active
       if !@planning.customer.enable_orders
-        json.quantities visit.default_quantities.map{ |k, v| {deliverable_unit_id: k, quantity: v} } do |quantity|
-          json.extract! quantity, :deliverable_unit_id, :quantity
+        json.quantities visit.default_quantities.map { |k, v|
+          {deliverable_unit_id: k, quantity: v, unit_icon: @customer.deliverable_units.find{ |du| du.id == k }.try(:default_icon)} unless v.nil?
+        }.compact do |quantity|
+          json.extract! quantity, :deliverable_unit_id, :quantity, :unit_icon
         end
       end
       (json.duration l(visit.default_take_over.utc, format: :hour_minute_second)) if visit.default_take_over
