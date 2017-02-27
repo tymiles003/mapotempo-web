@@ -215,13 +215,7 @@ var plannings_edit = function(params) {
     url_click2call = params.url_click2call,
     colors = params.colors,
     layer_zoning,
-    markers = {},
-    stores = {},
-    layers = {},
-    layers_cluster = {},
     lastPopover,
-    routes_layers,
-    routes_layers_cluster,
     nbBackgroundTaskErrors = 0,
     backgroundTaskIntervalId,
     currentZoom = 17,
@@ -377,23 +371,7 @@ var plannings_edit = function(params) {
               // update list, active popup in map and active popover
               var $item = $(item);
               updateStopStatusContent($item, stop);
-              // for popovers outside DOM
-              var popupContent = $item.data()['bs.popover'] && $($item.data()['bs.popover'].options.content);
-              if (popupContent) {
-                $item.data()['bs.popover'].options.content = updateStopStatusContent(popupContent, stop);
-              }
             });
-          });
-          // for popups outside DOM - it's important to perform update outside $("[data-stop_id='") selector to prevent memory leak with firefox
-          $.each(layers[route.id].getLayers(), function(k, m) {
-            if (m instanceof L.Marker) {
-              var popupContent = $(m.getPopup().getContent());
-              var stop = $.grep(route.stops, function(stop) { return stop.id == popupContent.data('stop_id') });
-              stop = stop.length ? stop[0] : null;
-              if (stop) {
-                m.getPopup().setContent(updateStopStatusContent(popupContent, stop)[0]);
-              }
-            }
           });
         }
       });
@@ -473,6 +451,24 @@ var plannings_edit = function(params) {
   params.geocoder = true;
 
   var map = mapInitialize(params);
+  var routesLayer = new RoutesLayer(planning_id, {
+    url_click2call: url_click2call,
+    unit: prefered_unit
+  }).on('initialLoad', function (e) {
+    if (fitBounds) {
+      var bounds = this.getBounds();
+      if (bounds && bounds.isValid()) {
+        map.invalidateSize();
+        map.fitBounds(bounds, {
+          maxZoom: 15,
+          animate: false,
+          padding: [20, 20]
+        });
+      }
+    }
+  }).on('clickStop', function (e) {
+    enlighten_stop(e.stopId);
+  }).addTo(map);
 
   if (vehicleLayer) map.addLayer(vehicleLayer);
 
@@ -496,25 +492,6 @@ var plannings_edit = function(params) {
   }
 
   sidebar.addTo(map);
-
-  routes_layers = L.featureGroup();
-  routes_layers_cluster = L.featureGroup();
-  map.addLayer(routes_layers);
-
-  map.on('zoomend', function(e) {
-    if (map.getZoom() >= currentZoom) {
-      map.removeLayer(routes_layers);
-      map.addLayer(routes_layers_cluster);
-    } else {
-      map.removeLayer(routes_layers_cluster);
-      map.addLayer(routes_layers);
-    }
-  });
-
-  $.each(allRoutesWithVehicle, function(i, route) {
-    layers[route.route_id] = L.featureGroup();
-    layers_cluster[route.route_id] = L.featureGroup();
-  });
 
   $.each($('#lock_routes_dropdown li a'), function(i, element) {
     $(element).click(function(e) {
@@ -579,19 +556,20 @@ var plannings_edit = function(params) {
         complete: completeAjaxMap,
         error: ajaxError,
         success: function(data, textStatus, jqXHR) {
+          if (selection == 'all' || selection == 'reverse') {
+            routesLayer.routesShowAll();
+          } else if (selection == 'none') {
+            routesLayer.routesHideAll();
+          }
 
           $.each(data, function(index, route) {
             var element = $("[data-route_id='" + route.id + "']");
             if (route.hidden) {
               element.find("ul.stops").hide();
               element.find('.toggle i').removeClass('fa-eye').addClass('fa-eye-slash');
-              routes_layers.removeLayer(layers[route.id]);
-              routes_layers_cluster.removeLayer(layers_cluster[route.id]);
             } else {
               element.find("ul.stops").show();
               element.find('.toggle i').removeClass('fa-eye-slash').addClass('fa-eye');
-              routes_layers.addLayer(layers[route.id]);
-              routes_layers_cluster.addLayer(layers_cluster[route.id]);
             }
           });
 
@@ -965,7 +943,7 @@ var plannings_edit = function(params) {
         }
       });
     });
-  };
+  }
 
   // called first during plan initialization (context: plan), and several times after a route need to be refreshed (context: route)
   var initRoutes = function(context, data, options) {
@@ -1122,52 +1100,35 @@ var plannings_edit = function(params) {
         var li = $("ul.stops, ol.stops", $(this).closest("li"));
         li.toggle();
         var hidden = !li.is(":visible");
+        var i = $("i", this);
         $.ajax({
           type: "put",
           data: JSON.stringify({
             hidden: hidden
           }),
           contentType: 'application/json',
-          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
+          url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json?geojson=true',
+          success: function(data) {
+            if (hidden) {
+              i.removeClass("fa-eye").addClass("fa-eye-slash");
+              routesLayer.routesHide({routeIds: [id]});
+            } else {
+              i.removeClass("fa-eye-slash").addClass("fa-eye");
+              routesLayer.routesShow({routeIds: [id]}, JSON.parse(data.geojson));
+            }
+          },
           error: ajaxError
         });
-
-        var i = $("i", this);
-        if (hidden) {
-          i.removeClass("fa-eye").addClass("fa-eye-slash");
-          routes_layers.removeLayer(layers[id]);
-          routes_layers_cluster.removeLayer(layers_cluster[id]);
-        } else {
-          i.removeClass("fa-eye-slash").addClass("fa-eye");
-          routes_layers.addLayer(layers[id]);
-          routes_layers_cluster.addLayer(layers_cluster[id]);
-        }
       })
       .on("click", ".marker", function(event, ui) {
         var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
-
-        if (stop_id in markers) {
-          var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
-          if (!map.getBounds().contains(markers[stop_id].getLatLng())) {
-            map.setView(markers[stop_id].getLatLng(), currentZoom, { reset: true });
-            var cluster = layers_cluster[route_id].getVisibleParent(markers[stop_id]); // Get the cluster parrent of a specific maker inside the layer
-            if (cluster && 'spiderfy' in cluster) cluster.spiderfy(); // Spiderify manually the cluster
-            map.panTo(markers[stop_id].getLatLng()); // Prevent a bug from leaflet on spiderfy at a certain distance
-            markers[stop_id].openPopup();
-          } else {
-            markers[stop_id].openPopup();
-          }
+        if (stop_id) {
+          var routeId = $(this).closest("[data-route_id]").attr("data-route_id");
+          routesLayer.focus({routeId: routeId, stopId: stop_id});
         } else {
-          var store_id = $(this).closest("[data-store_id]").attr("data-store_id");
-          if (store_id in stores) {
-            if (!map.getBounds().contains(stores[store_id].getLatLng())) {
-              map.setView(stores[store_id].getLatLng(), currentZoom, {
-                reset: true
-              });
-              stores[store_id].openPopup();
-            } else {
-              stores[store_id].openPopup();
-            }
+          var storeId = $(this).closest("[data-store_id]").attr("data-store_id");
+          if (storeId) {
+            routesLayer.focus({storeId: storeId});
           }
         }
         $(this).blur();
@@ -1249,11 +1210,9 @@ var plannings_edit = function(params) {
           return found || (el.route_id == id && el);
         }, null);
         route.color = color;
-        prepareAndDisplayRouteOnMap(route);
         $('li[data-route_id=' + id + '] li[data-store_id] > i.fa').css('color', color || route.vehicle.color);
         $('li[data-route_id=' + id + '] li[data-stop_id] .number:not(.color_force)').css('background', color || route.vehicle.color);
         $('span[data-route_id=' + id + '] i.vehicle-icon').css('color', color || route.vehicle.color);
-        // FIXME: should refresh popups outside DOM
       });
 
     $(".lock", context).click(function(event, ui) {
@@ -1362,10 +1321,6 @@ var plannings_edit = function(params) {
       });
     });
 
-    $.each(data.routes, function(i, route) {
-      prepareAndDisplayRouteOnMap(route);
-    });
-
     if (typeof options !== 'object' || !options.partial) {
       data.ref = null; // here to prevent mustache template to get the value
       $.each(params.manage_planning, function(i, elt) {
@@ -1375,6 +1330,9 @@ var plannings_edit = function(params) {
       $("#planning").html(SMT['plannings/edit'](data));
 
       initRoutes($('#edit-planning'), data);
+      if (!options.firstTime) {
+        routesLayer.routesShowAll();
+      }
 
       $("#refresh").click(function(event, ui) {
         $.ajax({
@@ -1405,7 +1363,9 @@ var plannings_edit = function(params) {
         });
       });
 
+      var routeIds = [];
       $.each(data.routes, function(i, route) {
+        routeIds.push(route.route_id);
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
         route.routes = allRoutesWithVehicle;
@@ -1424,22 +1384,6 @@ var plannings_edit = function(params) {
           if ($link.attr('href').match(regExp) != null)
             $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
         });
-
-        // for popups outside DOM - keep this loop to apply the RegExp for all route layers, not only the ones from the current route_id
-        $(route.routes).each(function(o, r) {
-          $.each(layers[r.route_id].getLayers(), function(k, m) {
-            if (m instanceof L.Marker) {
-              var popupContent = $(m.getPopup().getContent());
-              $.each(popupContent.find('.send_to_route'), function(j, link) {
-                if ($(link).attr('href').match(regExp) != null) {
-                  $(link).html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
-                }
-              });
-              m.setPopupContent(popupContent[0]).update();
-            };
-          });
-        });
-
         $.each($('li[data-stop_id]'), function(i, stop) {
           var popupContent = $(stop).data()['bs.popover'] && $($(stop).data()['bs.popover'].options.content);
           if (popupContent) {
@@ -1452,8 +1396,14 @@ var plannings_edit = function(params) {
           }
         });
       });
+      if (!options.firstTime) {
+        routesLayer.routesRefresh({routeIds: routeIds});
+      }
     } else if (typeof options === 'object' && options.partial == 'stops') {
       $.each(data.routes, function(i, route) {
+        if (!options.firstTime) {
+          routesLayer.routesRefresh({routeIds: [route.route_id]});
+        }
         route.i18n = mustache_i18n;
         route.planning_id = data.id;
         route.routes = allRoutesWithVehicle;
@@ -1535,12 +1485,31 @@ var plannings_edit = function(params) {
         // Stack the last element activated
         lastPopover = $(this);
         $("li[data-stop_id!='" + $(this).data('stop_id') + "']").popover('hide');
-        $(this).popover($('.sidebar').hasClass('extended') ? 'toggle' : 'hide');
-        $('.close-popover').click(function() {
-          $(lastPopover).popover('hide');
-        });
-      });
 
+        if ($('.sidebar').hasClass('extended')) {
+          var $this = $(this);
+          var stop_id = $this.data('stop_id');
+          routesLayer.buildPopupContent('stop', stop_id, function(content) {
+            $this.popover({
+              content: SMT['stops/show']($.extend(content, {
+                number: $('.number', $this).text(),
+                close_popup: true
+              })),
+              html: true,
+              placement: 'auto',
+              trigger: 'manual',
+              viewport: {
+                selector: (i <= 4) ? '#planning' : '#wrapper',
+                padding: $('#wrapper').height()
+              }
+            }).popover('show');
+
+            $('.close-popover').click(function() {
+              $(lastPopover).popover('hide');
+            });
+          });
+        }
+      });
     });
 
     $(document).keyup(function(event) {
@@ -1647,77 +1616,9 @@ var plannings_edit = function(params) {
   });
 
   var displayPlanningFirstTime = function(data) {
-    displayPlanning(data);
-
-    var stores_marker = L.featureGroup();
-    stores = {};
-    $.each(data.stores, function(i, store) {
-      store.i18n = mustache_i18n;
-      store.store = true;
-      store.planning_id = data.planning_id;
-      $.each(params.manage_planning, function(i, elt) {
-        store['manage_' + elt] = true;
-      });
-      store.isoline_capability = params.isoline_capability.isochrone || params.isoline_capability.isodistance;
-      store.isochrone_capability = params.isoline_capability.isochrone;
-      store.isodistance_capability = params.isoline_capability.isodistance;
-      if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
-        var m = L.marker(new L.LatLng(store.lat, store.lng), {
-          icon: L.divIcon({
-            html: '<i class="fa ' + (store.icon || 'fa-home') + ' ' + map.iconSize[store.icon_size || 'large'].name + ' store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
-            iconSize: new L.Point(map.iconSize[store.icon_size || 'large'].size, map.iconSize[store.icon_size || 'large'].size),
-            iconAnchor: new L.Point(map.iconSize[store.icon_size || 'large'].size / 2, map.iconSize[store.icon_size || 'large'].size / 2),
-            popupAnchor: new L.Point(0, -Math.floor(map.iconSize[store.icon_size || 'large'].size / 2.5)),
-            className: 'store-icon-container'
-          })
-        }).addTo(stores_marker).bindPopup(SMT['stops/show']({
-          stop: store
-        }), {
-          minWidth: 200,
-          autoPan: false
-        });
-        m.on('mouseover', function(e) {
-          m.openPopup();
-        }).on('mouseout', function(e) {
-          if (!m.click) {
-            m.closePopup();
-          }
-        }).on('click', function(e) {
-          if (m.click) {
-            m.closePopup();
-          } else {
-            m.click = true;
-            m.openPopup();
-          }
-        }).on('popupopen', function(e) {
-          $('[data-target$=isochrone-modal]').click(function(e) {
-            $('#isochrone_lat').val(store.lat);
-            $('#isochrone_lng').val(store.lng);
-            $('#isochrone_vehicle_usage_id').val('');
-          });
-          $('[data-target$=isodistance-modal]').click(function(e) {
-            $('#isodistance_lat').val(store.lat);
-            $('#isodistance_lng').val(store.lng);
-            $('#isodistance_vehicle_usage_id').val('');
-          });
-        }).on('popupclose', function(e) {
-          m.click = false;
-        });
-        stores[store.id] = m;
-      }
+    displayPlanning(data, {
+      firstTime: true
     });
-    stores_marker.addTo(map);
-
-    if (fitBounds) {
-      var bounds = routes_layers.getBounds();
-      if (bounds && bounds.isValid()) {
-        map.invalidateSize();
-        map.fitBounds(bounds, {
-          animate: false,
-          padding: [20, 20]
-        });
-      }
-    }
   };
 
   var checkForDisplayPlanningFirstTime = function(data) {

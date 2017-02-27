@@ -482,9 +482,7 @@ var zonings_edit = function(params) {
             iconAnchor: new L.Point(6, 6),
             popupAnchor: new L.Point(0, -6),
           })
-        }).bindPopup(SMT['stops/show']({
-          stop: stop
-        }));
+        }).bindPopup(SMT['stops/show'](stop));
 
         if (hasVehicle) m.addTo(withVehicleMarkers);
         else m.addTo(unplannedMarkers);
