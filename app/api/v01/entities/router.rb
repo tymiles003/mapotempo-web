@@ -23,4 +23,5 @@ class V01::Entities::Router < Grape::Entity
   expose(:id, documentation: {type: Integer})
   expose(:name, documentation: {type: String}) { |router| router.name_locale[I18n.locale.to_s] || router.name }
   expose(:mode, documentation: {type: String})
+  expose(:options, documentation: {type: Hash})
 end

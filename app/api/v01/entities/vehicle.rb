@@ -45,6 +45,7 @@ class V01::Entities::VehicleWithoutVehicleUsage < Grape::Entity
   expose(:fuel_type, documentation: { type: String })
   expose(:router_id, documentation: { type: Integer })
   expose(:router_dimension, documentation: { type: String, values: ::Router::DIMENSION.keys })
+  expose(:router_options, documentation: { type: Hash, desc: 'Options supplied to the router' })
   expose(:speed_multiplicator, documentation: { type: Float })
 
   # Devices

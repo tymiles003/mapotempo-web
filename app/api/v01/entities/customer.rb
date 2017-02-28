@@ -38,6 +38,7 @@ class V01::Entities::Customer < Grape::Entity
   expose(:profile_id, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
   expose(:router_id, documentation: { type: Integer })
   expose(:router_dimension, documentation: { type: String, values: ::Router::DIMENSION.keys })
+  expose(:router_options, documentation: { type: Hash, desc: 'Options supplied to the router' })
   expose(:speed_multiplicator, documentation: { type: Float })
   expose(:take_over, documentation: { type: DateTime, desc: 'Visit duration' }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
   expose(:print_planning_annotating, documentation: { type: 'Boolean' })
@@ -83,6 +84,6 @@ class V01::Entities::CustomerAdmin < V01::Entities::Customer
     'V01_CustomerAdmin'
   end
   EDIT_ONLY_ADMIN = 'Only available in admin.'.freeze
-  
+
   expose(:description, documentation: { type: String, desc: EDIT_ONLY_ADMIN })
 end
