@@ -66,17 +66,116 @@
           </div>
         </div>
 
+        <div id="router_options_motorway_input" class="form-group <%= @vehicle_usage.vehicle.default_router.motorway? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_motorway">
+            <%= t('activerecord.attributes.customer.router_options_motorway') %>
+          </label>
+
+          <div class="col-md-6 input-append form-inline">
+            <label>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_yes" value="true" <%= ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['motorway']) ? 'checked' : '' %>  <%= 'disabled' unless @vehicle_usage.vehicle.default_router.motorway? %>/>
+              <%= t('customers.form.router_options_motorway_yes') %>
+            </label>
+
+            <label>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_no" value="false" <%= !ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['motorway']) ? 'checked' : '' %>  <%= 'disabled' unless @vehicle_usage.vehicle.default_router.motorway? %>/>
+              <%= t('customers.form.router_options_motorway_no') %>
+            </label>
+          </div>
+        </div>
+
+        <div id="router_options_toll_input" class="form-group <%= @vehicle_usage.vehicle.default_router.toll? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_toll">
+            <%= t('activerecord.attributes.customer.router_options_toll') %>
+          </label>
+
+          <div class="col-md-6 input-append form-inline">
+            <label>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_yes" value="true" <%= ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['toll']) ? 'checked' : '' %>  <%= 'disabled' unless @vehicle_usage.vehicle.default_router.toll? %>/>
+              <%= t('customers.form.router_options_toll_yes') %>
+            </label>
+
+            <label>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_no" value="false" <%= !ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['toll']) ? 'checked' : '' %>  <%= 'disabled' unless @vehicle_usage.vehicle.default_router.toll? %>/>
+              <%= t('customers.form.router_options_toll_no') %>
+            </label>
+          </div>
+        </div>
+
+        <div id="router_options_trailers_input" class="form-group <%= @vehicle_usage.vehicle.default_router.trailers? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_trailers">
+            <%= t('activerecord.attributes.customer.router_options_trailers') %>
+          </label>
+
+          <div class="col-md-6">
+            <div class="input-group">
+              <%= number_field_tag 'vehicle_usage[vehicle][router_options][trailers]', @vehicle_usage.vehicle.default_router_options['trailers'], { min: 0, max: 4, placeholder: t('customers.form.router_options_trailers_default', n: 0), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.trailers? } %>
+              <span class="input-group-addon"><i class="fa fa-truck fa-fw"></i> </span>
+            </div>
+          </div>
+        </div>
+
+        <div id="router_options_weight_input" class="form-group <%= @vehicle_usage.vehicle.default_router.weight? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_weight">
+            <%= t('activerecord.attributes.customer.router_options_weight') %>
+          </label>
+
+          <div class="col-md-6">
+            <%= text_field 'vehicle_usage[vehicle][router_options]', :weight, value: @vehicle_usage.vehicle.default_router_options['weight'], placeholder: t('customers.form.router_options_weight_range', from: 0, to: 1000), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.weight? %>
+          </div>
+        </div>
+
+        <div id="router_options_weight_per_axle_input" class="form-group <%= @vehicle_usage.vehicle.default_router.weight_per_axle? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_weight_per_axle">
+            <%= t('activerecord.attributes.customer.router_options_weight_per_axle') %>
+          </label>
+
+          <div class="col-md-6">
+            <%= text_field 'vehicle_usage[vehicle][router_options]', :weight_per_axle, value: @vehicle_usage.vehicle.default_router_options['weight_per_axle'], placeholder: t('customers.form.router_options_weight_per_axle_range', from: 0, to: 1000), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.weight_per_axle? %>
+          </div>
+        </div>
+
+        <div id="router_options_height_input" class="form-group <%= @vehicle_usage.vehicle.default_router.height? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_height">
+            <%= t('activerecord.attributes.customer.router_options_height') %>
+          </label>
+
+          <div class="col-md-6">
+            <%= text_field 'vehicle_usage[vehicle][router_options]', :height, value: @vehicle_usage.vehicle.default_router_options['height'], placeholder: t('customers.form.router_options_height_range', from: 0, to: 50), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.height? %>
+          </div>
+        </div>
+
+        <div id="router_options_width_input" class="form-group <%= @vehicle_usage.vehicle.default_router.width? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_width">
+            <%= t('activerecord.attributes.customer.router_options_width') %>
+          </label>
+
+          <div class="col-md-6">
+            <%= text_field 'vehicle_usage[vehicle][router_options]', :width, value: @vehicle_usage.vehicle.default_router_options['width'], placeholder: t('customers.form.router_options_width_range', from: 0, to: 50), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.width? %>
+          </div>
+        </div>
+
+        <div id="router_options_length_input" class="form-group <%= @vehicle_usage.vehicle.default_router.length? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="vehicle_usage_vehicle_router_options_length">
+            <%= t('activerecord.attributes.customer.router_options_length') %>
+          </label>
+
+          <div class="col-md-6">
+            <%= text_field 'vehicle_usage[vehicle][router_options]', :length, value: @vehicle_usage.vehicle.default_router_options['length'], placeholder: t('customers.form.router_options_length_range', from: 0, to: 300), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.length? %>
+          </div>
+        </div>
+
         <div class="form-group">
           <label class="col-md-2 control-label" for="speed_multiplicator">
-            <%= t("activerecord.attributes.vehicle.speed_multiplicator") %>
+            <%= t('activerecord.attributes.vehicle.speed_multiplicator') %>
           </label>
           <div class="col-md-6 input-append">
             <div class="input-group">
-              <%= number_field_tag :speed_multiplicator, (@vehicle_usage.vehicle.speed_multiplicator ? (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i : nil), { min: 50, max: 150, placeholder: t("vehicles.form.speed_multiplicator.default", n: (@vehicle_usage.vehicle.customer.speed_multiplicator ? (@vehicle_usage.vehicle.customer.speed_multiplicator * 100).to_i : 75)), class: "form-control number-to-percentage" } %>
+              <%= number_field_tag :speed_multiplicator, (@vehicle_usage.vehicle.speed_multiplicator ? (@vehicle_usage.vehicle.speed_multiplicator * 100).to_i : nil), { min: 50, max: 150, placeholder: t('vehicles.form.speed_multiplicator.default', n: (@vehicle_usage.vehicle.customer.speed_multiplicator ? (@vehicle_usage.vehicle.customer.speed_multiplicator * 100).to_i : 75)), class: 'form-control number-to-percentage' } %>
               <span class="input-group-addon">%</span>
             </div>
             <p class="help-block">
-              <%= t("vehicles.form.speed_multiplicator.help") %>
+              <%= t('vehicles.form.speed_multiplicator.help') %>
             </p>
           </div>
         </div>

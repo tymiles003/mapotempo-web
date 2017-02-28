@@ -17,14 +17,14 @@
 //
 'use strict';
 
-var customers_index = function (params) {
+var customers_index = function(params) {
 
   var map_layers = params.map_layers,
     map_attribution = params.map_attribution;
 
   var is_map_init = false;
 
-  var map_init = function () {
+  var map_init = function() {
 
     var map = mapInitialize(params);
     L.control.attribution({
@@ -47,9 +47,9 @@ var customers_index = function (params) {
 
     }
 
-    var display_customers = function (data) {
+    var display_customers = function(data) {
 
-      $.each(data.customers, function (i, customer) {
+      $.each(data.customers, function(i, customer) {
 
         var iconImg = '/images/point-' + determineIconColor(customer) + '.svg';
 
@@ -89,7 +89,7 @@ var customers_index = function (params) {
 
   };
 
-  $('#accordion').on('show.bs.collapse', function (event, ui) {
+  $('#accordion').on('show.bs.collapse', function(event, ui) {
     if (!is_map_init) {
       is_map_init = true;
       map_init();
@@ -97,10 +97,10 @@ var customers_index = function (params) {
   });
 };
 
-var customers_edit = function (params) {
+var customers_edit = function(params) {
   /* Speed Multiplier */
-  $('form.number-to-percentage').submit(function (e) {
-    $.each($(e.target).find('input[type=\'number\'].number-to-percentage'), function (i, element) {
+  $('form.number-to-percentage').submit(function(e) {
+    $.each($(e.target).find('input[type=\'number\'].number-to-percentage'), function(i, element) {
       var value = $(element).val() ? Number($(element).val()) / 100 : 1;
       $($(document.createElement('input')).attr('type', 'hidden').attr('name', 'customer[' + $(element).attr('name') + ']').val(value)).insertAfter($(element));
     });
@@ -140,107 +140,23 @@ var customers_edit = function (params) {
     }
   });
 
-  $(document).on('change', '#customer_router', function () {
-    var routerId = this.value.split('_')[0];
-    var routerOptions = params.routers_options[routerId];
-
-    if (routerId && routerOptions) {
-      if (routerOptions.motorway === 'true') {
-        $('#customer_router_options_motorway_input').fadeIn();
-      } else {
-        $('#customer_router_options_motorway_input').fadeOut();
-      }
-
-      if (routerOptions.toll === 'true') {
-        $('#customer_router_options_toll_input').fadeIn();
-      } else {
-        $('#customer_router_options_toll_input').fadeOut();
-      }
-
-      if (routerOptions.trailers === 'true') {
-        $('#customer_router_options_trailers_input').fadeIn();
-      } else {
-        $('#customer_router_options_trailers_input').fadeOut();
-      }
-
-      if (routerOptions.weight === 'true') {
-        $('#customer_router_options_weight_input').fadeIn();
-      } else {
-        $('#customer_router_options_weight_input').fadeOut();
-      }
-
-      if (routerOptions.weight_per_axle === 'true') {
-        $('#customer_router_options_weight_per_axle_input').fadeIn();
-      } else {
-        $('#customer_router_options_weight_per_axle_input').fadeOut();
-      }
-
-      if (routerOptions.height === 'true') {
-        $('#customer_router_options_height_input').fadeIn();
-      } else {
-        $('#customer_router_options_height_input').fadeOut();
-      }
-
-      if (routerOptions.width === 'true') {
-        $('#customer_router_options_width_input').fadeIn();
-      } else {
-        $('#customer_router_options_width_input').fadeOut();
-      }
-
-      if (routerOptions.length === 'true') {
-        $('#customer_router_options_length_input').fadeIn();
-      } else {
-        $('#customer_router_options_length_input').fadeOut();
-      }
-    }
-  });
-
-  $('form').submit(function () {
-    if ($('#customer_router_options_length_input').is(':hidden')) {
-      $('#customer_router_options_length').val('');
-    }
-    if ($('#customer_router_options_width_input').is(':hidden')) {
-      $('#customer_router_options_width').val('');
-    }
-    if ($('#customer_router_options_height_input').is(':hidden')) {
-      $('#customer_router_options_height').val('');
-    }
-    if ($('#customer_router_options_weight_per_axle_input').is(':hidden')) {
-      $('#customer_router_options_weight_per_axle').val('');
-    }
-    if ($('#customer_router_options_weight_input').is(':hidden')) {
-      $('#customer_router_options_weight').val('');
-    }
-    if ($('#customer_router_options_trailers_input').is(':hidden')) {
-      $('#customer_router_options_trailers').val('');
-    }
-    if ($('#customer_router_options_toll_input').is(':hidden')) {
-      $('#customer_router_options_toll_yes').prop('checked', true);
-      $('#customer_router_options_toll_no').prop('checked', false);
-    }
-    if ($('#customer_router_options_motorway_input').is(':hidden')) {
-      $('#customer_router_options_motorway_yes').prop('checked', true);
-      $('#customer_router_options_motorway_no').prop('checked', false);
-    }
-
-    return true;
-  });
+  routerOptionsSelect('#customer_router', params);
 };
 
 Paloma.controller('Customers', {
-  index: function () {
+  index: function() {
     customers_index(this.params);
   },
-  new: function () {
+  new: function() {
     customers_edit(this.params);
   },
-  create: function () {
+  create: function() {
     customers_edit(this.params);
   },
-  edit: function () {
+  edit: function() {
     customers_edit(this.params);
   },
-  update: function () {
+  update: function() {
     customers_edit(this.params);
   }
 });

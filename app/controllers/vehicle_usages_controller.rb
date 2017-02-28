@@ -19,14 +19,14 @@ class VehicleUsagesController < ApplicationController
   include LinkBack
 
   load_and_authorize_resource
-  before_action :set_vehicle_usage, only: [:show, :edit, :update, :destroy, :toggle]
+  before_action :set_vehicle_usage, only: [:edit, :update, :toggle]
 
   def edit
   end
 
   def update
     respond_to do |format|
-      if @vehicle_usage.update vehicle_usage_params
+      if @vehicle_usage.update(vehicle_usage_params)
         format.html { redirect_to link_back || edit_vehicle_usage_path(@vehicle_usage), notice: t('activerecord.successful.messages.updated', model: @vehicle_usage.class.model_name.human) }
       else
         format.html { render action: 'edit' }
@@ -52,10 +52,51 @@ class VehicleUsagesController < ApplicationController
     if params[:vehicle_usage][:vehicle][:router]
       params[:vehicle_usage][:vehicle][:router_id], params[:vehicle_usage][:vehicle][:router_dimension] = params[:vehicle_usage][:vehicle][:router].split('_')
     end
-    p = params.require(:vehicle_usage).permit(:open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, :service_time_start, :service_time_end, vehicle: [:contact_email, :ref, :name, :emission, :consumption, :color, :tomtom_id, :teksat_id, :orange_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator, capacities: current_user.customer.deliverable_units.map{ |du| du.id.to_s }])
-    if p.key?(:vehicle)
-      p[:vehicle_attributes] = p[:vehicle]
-      p.except(:vehicle)
+
+    parameters = params.require(:vehicle_usage).permit(:open,
+                                                       :close,
+                                                       :store_start_id,
+                                                       :store_stop_id,
+                                                       :rest_start,
+                                                       :rest_stop,
+                                                       :rest_duration,
+                                                       :store_rest_id,
+                                                       :service_time_start,
+                                                       :service_time_end,
+                                                       vehicle: [
+                                                           :contact_email,
+                                                           :ref,
+                                                           :name,
+                                                           :emission,
+                                                           :consumption,
+                                                           :color,
+                                                           :tomtom_id,
+                                                           :teksat_id,
+                                                           :orange_id,
+                                                           :masternaut_ref,
+                                                           :router_id,
+                                                           :router_dimension,
+                                                           :speed_multiplicator,
+                                                           capacities: current_user.customer.deliverable_units.map { |du| du.id.to_s },
+                                                           router_options: [
+                                                               :time,
+                                                               :distance,
+                                                               :isochrone,
+                                                               :isodistance,
+                                                               :avoid_zones,
+                                                               :motorway,
+                                                               :toll,
+                                                               :trailers,
+                                                               :weight,
+                                                               :weight_per_axle,
+                                                               :height,
+                                                               :width,
+                                                               :length,
+                                                           ]
+                                                       ])
+    if parameters.key?(:vehicle)
+      parameters[:vehicle_attributes] = parameters[:vehicle]
+      parameters.except(:vehicle)
     end
   end
 end

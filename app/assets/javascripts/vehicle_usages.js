@@ -39,15 +39,17 @@ var vehicle_usages_form = function(params) {
 
   customColorInitialize('#vehicle_usage_vehicle_color');
 
-  $('#capacity-unit-add').click(function(e) {
+  $('#capacity-unit-add').click(function(event) {
     $(this).hide();
     $('#vehicle_usage_vehicle_capacity_input .input-group').show();
-    e.preventDefault();
+    event.preventDefault();
     return false;
   });
 
   /* API: Devices */
   devices_observe_vehicle(params);
+
+  routerOptionsSelect('#vehicle_usage_vehicle_router', params);
 };
 
 Paloma.controller('VehicleUsages', {

@@ -31,6 +31,10 @@
     }
   }
 
+  .router-option-disabled {
+    display: none;
+  }
+
   span.select2-results ul li {
     // Select2: Fix blank options height
     height: 30px;

@@ -953,7 +953,8 @@ CREATE TABLE vehicles (
     orange_id character varying,
     fuel_type character varying,
     router_dimension integer,
-    capacities hstore
+    capacities hstore,
+    router_options hstore DEFAULT ''::hstore NOT NULL
 );
 
 
@@ -2570,4 +2571,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170222165913');
 INSERT INTO schema_migrations (version) VALUES ('20170223120120');
 
 INSERT INTO schema_migrations (version) VALUES ('20170224144324');
+
+INSERT INTO schema_migrations (version) VALUES ('20170227095939');
 

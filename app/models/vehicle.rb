@@ -31,6 +31,10 @@ class Vehicle < ActiveRecord::Base
   enum router_dimension: Router::DIMENSION
   serialize :capacities, DeliverableUnitQuantity
 
+  include HashBoolAttr
+  store_accessor :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length
+  hash_bool_attr :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll
+
   nilify_blanks
   auto_strip_attributes :name, :tomtom_id, :masternaut_ref
   validates :customer, presence: true
@@ -88,6 +92,19 @@ class Vehicle < ActiveRecord::Base
     router_dimension || customer.router_dimension
   end
 
+  def default_router_options
+    @current_router_options ||= {}
+
+    customer.router.options.select do |key, value|
+      option_value = router_options[key.to_s] || customer.router_options[key.to_s]
+      if ValueToBoolean.value_to_boolean(value) && option_value
+        @current_router_options[key.to_s] = option_value
+      end
+    end if @current_router_options.empty?
+
+    return @current_router_options
+  end
+
   def default_speed_multiplicator
     customer.speed_multiplicator * (speed_multiplicator || 1)
   end
@@ -101,7 +118,7 @@ class Vehicle < ActiveRecord::Base
     @default_capacities ||= Hash[customer.deliverable_units.collect{ |du|
       [du.id, capacities && capacities[du.id] ? capacities[du.id] : du.default_capacity]
     }]
-    @default_capacities
+    return @default_capacities
   end
 
   def default_capacities?

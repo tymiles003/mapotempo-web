@@ -227,6 +227,34 @@ var dropdownAutoDirection = function ($updatedElement) {
   });
 };
 
+var routerOptionsSelect = function ($selectId, params) {
+  var checkFieldState = function ($field, stateValue) {
+    if (stateValue === 'true') {
+      $field.fadeIn();
+      $field.find('input').removeAttr('disabled');
+    } else {
+      $field.fadeOut();
+      $field.find('input').attr('disabled', 'disabled');
+    }
+  };
+
+  $(document).on('change', $selectId, function () {
+    var routerId = this.value.split('_')[0];
+    var routerOptions = params.routers_options[routerId];
+
+    if (routerId && routerOptions) {
+      checkFieldState($('#router_options_motorway_input'), routerOptions.motorway);
+      checkFieldState($('#router_options_toll_input'), routerOptions.toll);
+      checkFieldState($('#router_options_trailers_input'), routerOptions.trailers);
+      checkFieldState($('#router_options_weight_input'), routerOptions.weight);
+      checkFieldState($('#router_options_weight_per_axle_input'), routerOptions.weight_per_axle);
+      checkFieldState($('#router_options_height_input'), routerOptions.height);
+      checkFieldState($('#router_options_width_input'), routerOptions.width);
+      checkFieldState($('#router_options_length_input'), routerOptions.length);
+    }
+  });
+};
+
 if (!Math.round10) {
   Math.round10 = function(value, exp) {
     return decimalAdjust('round', value, exp);
