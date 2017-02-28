@@ -144,6 +144,26 @@ var customers_edit = function (params) {
   });
 
   routerOptionsSelect('#customer_router', params);
+
+  $(".delete-vehicles").mapotempoDialog({
+    bindedCheckboxes: $(".add-vehicle"),
+    buttons: [
+      {
+        text: "Fermer",
+        click: function($modal, $e) {
+          $e.preventDefault();
+          $modal.dismiss();
+        }
+      }, {
+        text: "Supprimer",
+        class: "btn-success",
+        click: function($modal, $e) {
+          console.log('action delete');
+          $modal.dismiss();
+        }
+      }
+    ]
+  });
 };
 
 Paloma.controller('Customers', {
@@ -163,3 +183,124 @@ Paloma.controller('Customers', {
     customers_edit(this.params);
   }
 });
+
+;(function($) {
+  $.utils = {
+    // http://stackoverflow.com/a/8809472
+    createUUID: function ()
+    {
+      var d = new Date().getTime();
+      if (window.performance && typeof window.performance.now === "function") {
+        d += performance.now(); //use high-precision timer if available
+      }
+      var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+      });
+      return uuid;
+    }
+  },
+
+  $.fn.dialogue = function (settings) {
+    var $modal = $("<div />").attr("id", settings.id).attr("role", "dialog").addClass("modal fade")
+          .append($("<div />").addClass("modal-dialog")
+            .append($("<div />").addClass("modal-content")
+              .append($("<div />").addClass("modal-header")
+                .append($("<h4 />").addClass("modal-title").text(settings.title)))
+              .append($("<div />").addClass("modal-body")
+                .append(settings.content))
+              .append($("<div />").addClass("modal-footer")
+              )
+            )
+          );
+
+     if (settings.closeIcon) {
+    $modal.find(".modal-header").prepend($("<button />").attr("type", "button").addClass("close").html("&times;")
+      .click(function () {
+      $modal.dismiss()
+      })
+    );
+    }
+
+    $modal.shown = false;
+    $modal.dismiss = function () {
+    if (!$modal.shown) {
+      window.setTimeout(function () {
+        $modal.dismiss();
+      }, 50);
+      return;
+    }
+    $modal.modal("hide");
+    $modal.prev().remove();
+    $modal.empty().remove();
+    $("body").removeClass("modal-open");
+    }
+
+    // add the buttons
+    if( settings.buttons.length > 0 ) {
+    var $footer = $modal.find(".modal-footer");
+    for(var i=0; i < settings.buttons.length; i++) {
+      (function (btn) {
+      var button = $("<button />").addClass("btn btn-default")
+        .attr("id", btn.id ? btn.id : $.utils.createUUID())
+        .attr("type", "button")
+        .text(btn.text)
+        .on("click", function (event) {
+          btn.click($modal, event)
+        });
+
+      if( btn.class ) {
+        button.addClass(btn.class).removeClass('btn-default');
+      }
+
+      $footer.prepend(button);
+      })(settings.buttons[i]);
+    }
+    }
+
+    settings.open($modal);
+    $modal.on('shown.bs.modal', function (e) {
+      $modal.shown = true;
+    });
+    $modal.modal("show");
+    return $modal;
+  },
+
+  $.fn.extend({
+    mapotempoDialog: function( options ) {
+    this.defaultOptions = {
+      bindedCheckboxes: null,
+      id: $.utils.createUUID(),
+      title: "Suppression des éléments",
+      content: "Etes-vous certain de vouloir supprimer ces éléments ?",
+      closeIcon: true,
+      buttons: [
+      { text: "Fermer", id: "close-modal", click: function ($modal) { $modal.dismiss(); } }
+      ],
+      open: function() {}
+    };
+
+    var settings = $.extend({}, this.defaultOptions, options);
+
+    return this.each(function() {
+      var $this = $(this);
+      if( $this.length > 0) {
+        if(settings.bindedCheckboxes != null) {
+        var htmlText = $this.html();
+
+        $(document).on('change', settings.bindedCheckboxes, function(e) {
+          var nbChecked = settings.bindedCheckboxes.filter(':checked').length;
+          (nbChecked > 0) ? $this.html(htmlText + "(<b>"+nbChecked+"</b>)") : $this.html(htmlText);
+        });
+        }
+
+        $this.on("click", function(e) {
+        e.preventDefault();
+        $.fn.dialogue(settings);
+        });
+      }
+    });
+    }
+  });
+})(jQuery);
