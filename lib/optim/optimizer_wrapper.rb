@@ -65,6 +65,7 @@ class OptimizerWrapper
             id: "v#{vehicle[:id]}",
             router_mode: vehicle[:router].mode,
             router_dimension: vehicle[:router_dimension],
+            router_options: vehicle[:router_options],
             speed_multiplier: vehicle[:speed_multiplier],
             # speed_multiplier_areas: vehicle[:speed_multiplier_areas],
             timewindow: {start: vehicle[:open], end: vehicle[:close]},

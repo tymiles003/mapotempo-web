@@ -126,7 +126,9 @@ class Route < ActiveRecord::Base
       # Compute legs traces
       traces = [nil, nil, nil] * segments.size
       begin
-        ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, speed_multiplicator_areas: Zoning.speed_multiplicator_areas(planning.zonings))
+        router_options = vehicle_usage.vehicle.default_router_options.merge(speed_multiplicator_areas: Zoning.speed_multiplicator_areas(planning.zonings))
+
+        ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, router_options)
         traces = segments.collect{ |segment|
           if segment.nil?
             [nil, nil, nil]

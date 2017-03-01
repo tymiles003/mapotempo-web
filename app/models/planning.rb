@@ -300,6 +300,7 @@ class Planning < ActiveRecord::Base
             id: r.vehicle_usage_id,
             router: r.vehicle_usage.vehicle.default_router,
             router_dimension: r.vehicle_usage.vehicle.default_router_dimension,
+            router_options: r.vehicle_usage.vehicle.default_router_options,
             speed_multiplier: r.vehicle_usage.vehicle.default_speed_multiplicator,
             speed_multiplier_areas: Zoning.speed_multiplicator_areas(zonings),
             open: vehicle_open.to_f,
