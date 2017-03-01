@@ -53,14 +53,14 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should update a customer' do
-    put api(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd', router_options: {time: true, motorway: true, trailers: 2, weight: 10} }
+    put api(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd', router_options: {time: true, motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'} }
     assert last_response.ok?, last_response.body
     get api(@customer.id)
     assert last_response.ok?, last_response.body
     customer_response = JSON.parse(last_response.body)
     assert_equal 'tomtom_user_abcd', customer_response['tomtom_user']
     assert 'ref-abcd' != customer_response['ref']
-    assert_equal customer_response['router_options'], { 'time' => 'true', 'weight' => '10', 'motorway' => 'true', 'trailers' => '2' }
+    assert_equal customer_response['router_options'], { 'time' => 'true', 'weight' => '10', 'motorway' => 'true', 'trailers' => '2', 'hazardous_goods' => 'gas' }
   end
 
   test 'should update a customer without modifying max vehicles' do

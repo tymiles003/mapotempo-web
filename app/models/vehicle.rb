@@ -32,7 +32,7 @@ class Vehicle < ActiveRecord::Base
   serialize :capacities, DeliverableUnitQuantity
 
   include HashBoolAttr
-  store_accessor :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length
+  store_accessor :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods
   hash_bool_attr :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll
 
   nilify_blanks
@@ -158,7 +158,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def update_out_of_date
-    if emission_changed? || consumption_changed? || capacities_changed? || router_id_changed? || router_dimension_changed? || speed_multiplicator_changed?
+    if emission_changed? || consumption_changed? || capacities_changed? || router_id_changed? || router_dimension_changed? || router_options_changed? || speed_multiplicator_changed?
       vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.routes.each{ |route|
           route.out_of_date = true

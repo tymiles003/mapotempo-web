@@ -88,7 +88,8 @@ class RouterTest < ActiveSupport::TestCase
         weight_per_axle: true,
         height: true,
         width: true,
-        length: true
+        length: true,
+        hazardous_goods: true
     }
 
     router.save!
@@ -131,5 +132,8 @@ class RouterTest < ActiveSupport::TestCase
 
     assert router.length, true
     assert router.length?, true
+
+    assert router.hazardous_goods, true
+    assert router.hazardous_goods?, true
   end
 end

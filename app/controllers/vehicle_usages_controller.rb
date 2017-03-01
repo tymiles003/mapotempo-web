@@ -92,6 +92,7 @@ class VehicleUsagesController < ApplicationController
                                                                :height,
                                                                :width,
                                                                :length,
+                                                               :hazardous_goods
                                                            ]
                                                        ])
     if parameters.key?(:vehicle)

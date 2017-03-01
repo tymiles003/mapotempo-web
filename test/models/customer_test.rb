@@ -178,7 +178,8 @@ class CustomerTest < ActiveSupport::TestCase
         weight_per_axle: 5,
         height: 5,
         width: 6,
-        length: 30
+        length: 30,
+        hazardous_goods: 'gas'
     }
 
     customer.save!
@@ -210,6 +211,7 @@ class CustomerTest < ActiveSupport::TestCase
     assert customer.height, 5
     assert customer.width, 6
     assert customer.length, 30
+    assert customer.hazardous_goods, 'gas'
   end
 
 

@@ -25,6 +25,7 @@ router_one:
     height: true
     width: true
     length: true
+    hazardous_goods: true
 
 router_two:
   mode: car

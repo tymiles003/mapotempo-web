@@ -251,8 +251,12 @@ var routerOptionsSelect = function ($selectId, params) {
       checkFieldState($('#router_options_height_input'), routerOptions.height);
       checkFieldState($('#router_options_width_input'), routerOptions.width);
       checkFieldState($('#router_options_length_input'), routerOptions.length);
+      checkFieldState($('#router_options_hazardous_goods_input'), routerOptions.length);
     }
   });
+
+  fieldsRouter($(selectId).val(), true);
+  $(document).on('change', selectId, fieldsRouter);
 };
 
 if (!Math.round10) {

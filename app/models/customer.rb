@@ -41,7 +41,7 @@ class Customer < ActiveRecord::Base
   attr_accessor :deliverable_units_updated
 
   include HashBoolAttr
-  store_accessor :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length
+  store_accessor :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods
   hash_bool_attr :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll
 
   nilify_blanks

@@ -73,12 +73,12 @@
 
           <div class="col-md-6 input-append form-inline">
             <label>
-              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_yes" value="true" <%= ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['motorway']) ? 'checked' : '' %>  <%= 'disabled' unless @vehicle_usage.vehicle.default_router.motorway? %>/>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_yes" value="true" <%= ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['motorway']) ? 'checked' : '' %>/>
               <%= t('customers.form.router_options_motorway_yes') %>
             </label>
 
             <label>
-              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_no" value="false" <%= !ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['motorway']) ? 'checked' : '' %>  <%= 'disabled' unless @vehicle_usage.vehicle.default_router.motorway? %>/>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_no" value="false" <%= !ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['motorway']) ? 'checked' : '' %>/>
               <%= t('customers.form.router_options_motorway_no') %>
             </label>
           </div>
@@ -91,12 +91,12 @@
 
           <div class="col-md-6 input-append form-inline">
             <label>
-              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_yes" value="true" <%= ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['toll']) ? 'checked' : '' %>  <%= 'disabled' unless @vehicle_usage.vehicle.default_router.toll? %>/>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_yes" value="true" <%= ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['toll']) ? 'checked' : '' %>/>
               <%= t('customers.form.router_options_toll_yes') %>
             </label>
 
             <label>
-              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_no" value="false" <%= !ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['toll']) ? 'checked' : '' %>  <%= 'disabled' unless @vehicle_usage.vehicle.default_router.toll? %>/>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_no" value="false" <%= !ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['toll']) ? 'checked' : '' %>/>
               <%= t('customers.form.router_options_toll_no') %>
             </label>
           </div>
@@ -109,9 +109,10 @@
 
           <div class="col-md-6">
             <div class="input-group">
-              <%= number_field_tag 'vehicle_usage[vehicle][router_options][trailers]', @vehicle_usage.vehicle.default_router_options['trailers'], { min: 0, max: 4, placeholder: t('customers.form.router_options_trailers_default', n: 0), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.trailers? } %>
+              <%= number_field_tag 'vehicle_usage[vehicle][router_options][trailers]', @vehicle_usage.vehicle.default_router_options['trailers'], { min: 0, max: 4, placeholder: !@vehicle_usage.vehicle.customer.trailers.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.trailers) : '', class: 'form-control' } %>
               <span class="input-group-addon"><i class="fa fa-truck fa-fw"></i> </span>
             </div>
+            <p class="help-block"><%= t('customers.form.router_options_trailers_range', from: 0, to: 4) %></p>
           </div>
         </div>
 
@@ -121,7 +122,11 @@
           </label>
 
           <div class="col-md-6">
-            <%= text_field 'vehicle_usage[vehicle][router_options]', :weight, value: @vehicle_usage.vehicle.default_router_options['weight'], placeholder: t('customers.form.router_options_weight_range', from: 0, to: 1000), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.weight? %>
+            <div class="input-group">
+              <%= text_field 'vehicle_usage[vehicle][router_options]', :weight, value: @vehicle_usage.vehicle.default_router_options['weight'], placeholder: !@vehicle_usage.vehicle.customer.weight.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.weight) : '', class: 'form-control'%>
+              <span class="input-group-addon"><%= t('all.unit.ton') %></span>
+            </div>
+            <p class="help-block"><%=  t('customers.form.router_options_weight_range', from: 0, to: 1000) %></p>
           </div>
         </div>
 
@@ -131,7 +136,11 @@
           </label>
 
           <div class="col-md-6">
-            <%= text_field 'vehicle_usage[vehicle][router_options]', :weight_per_axle, value: @vehicle_usage.vehicle.default_router_options['weight_per_axle'], placeholder: t('customers.form.router_options_weight_per_axle_range', from: 0, to: 1000), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.weight_per_axle? %>
+            <div class="input-group">
+              <%= text_field 'vehicle_usage[vehicle][router_options]', :weight_per_axle, value: @vehicle_usage.vehicle.default_router_options['weight_per_axle'], placeholder: !@vehicle_usage.vehicle.customer.weight_per_axle.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.weight_per_axle) : '', class: 'form-control' %>
+              <span class="input-group-addon"><%= t('all.unit.ton') %></span>
+            </div>
+            <p class="help-block"><%=  t('customers.form.router_options_weight_per_axle_range', from: 0, to: 1000) %></p>
           </div>
         </div>
 
@@ -141,7 +150,11 @@
           </label>
 
           <div class="col-md-6">
-            <%= text_field 'vehicle_usage[vehicle][router_options]', :height, value: @vehicle_usage.vehicle.default_router_options['height'], placeholder: t('customers.form.router_options_height_range', from: 0, to: 50), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.height? %>
+            <div class="input-group">
+              <%= text_field 'vehicle_usage[vehicle][router_options]', :height, value: @vehicle_usage.vehicle.default_router_options['height'], placeholder: !@vehicle_usage.vehicle.customer.height.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.height) : '', class: 'form-control' %>
+              <span class="input-group-addon"><%= t('all.unit.m') %></span>
+            </div>
+            <p class="help-block"><%= t('customers.form.router_options_height_range', from: 0, to: 50) %></p>
           </div>
         </div>
 
@@ -151,7 +164,11 @@
           </label>
 
           <div class="col-md-6">
-            <%= text_field 'vehicle_usage[vehicle][router_options]', :width, value: @vehicle_usage.vehicle.default_router_options['width'], placeholder: t('customers.form.router_options_width_range', from: 0, to: 50), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.width? %>
+            <div class="input-group">
+              <%= text_field 'vehicle_usage[vehicle][router_options]', :width, value: @vehicle_usage.vehicle.default_router_options['width'], placeholder: !@vehicle_usage.vehicle.customer.width.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.width) : '', class: 'form-control' %>
+              <span class="input-group-addon"><%= t('all.unit.m') %></span>
+            </div>
+            <p class="help-block"><%= t('customers.form.router_options_width_range', from: 0, to: 50) %></p>
           </div>
         </div>
 
@@ -161,7 +178,21 @@
           </label>
 
           <div class="col-md-6">
-            <%= text_field 'vehicle_usage[vehicle][router_options]', :length, value: @vehicle_usage.vehicle.default_router_options['length'], placeholder: t('customers.form.router_options_length_range', from: 0, to: 300), class: 'form-control', disabled: !@vehicle_usage.vehicle.default_router.length? %>
+            <div class="input-group">
+              <%= text_field 'vehicle_usage[vehicle][router_options]', :length, value: @vehicle_usage.vehicle.default_router_options['length'], placeholder: !@vehicle_usage.vehicle.customer.length.to_s.empty? ? t('customers.form.router_options_default', n: @vehicle_usage.vehicle.customer.length) : '', class: 'form-control' %>
+              <span class="input-group-addon"><%= t('all.unit.m') %></span>
+            </div>
+            <p class="help-block"><%= t('customers.form.router_options_length_range', from: 0, to: 300) %></p>
+          </div>
+        </div>
+
+        <div id="router_options_hazardous_goods_input" class="form-group <%= @vehicle_usage.vehicle.default_router.hazardous_goods? ? '' : 'router-option-disabled' %>">
+          <label class="col-md-2 control-label" for="customer_router_options_hazardous_goods">
+            <%= t('activerecord.attributes.customer.router_options_hazardous_goods') %>
+          </label>
+
+          <div class="col-md-6">
+            <%= select_tag 'vehicle_usage[vehicle][router_options][hazardous_goods]', options_for_select(t('activerecord.attributes.router.options.hazardous_goods').invert, @vehicle_usage.vehicle.default_router_options['hazardous_goods']), include_blank: true, class: 'form-control' %>
           </div>
         </div>
 

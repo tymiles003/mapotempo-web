@@ -157,6 +157,7 @@ class CustomersController < ApplicationController
                                                         :height,
                                                         :width,
                                                         :length,
+                                                        :hazardous_goods
                                                     ])
 
       parameters[:end_subscription] = Date.strptime(parameters[:end_subscription], I18n.t('time.formats.datepicker')).strftime(ACTIVE_RECORD_DATE_MASK) unless parameters[:end_subscription].blank?
@@ -200,6 +201,7 @@ class CustomersController < ApplicationController
               :height,
               :width,
               :length,
+              :hazardous_goods
           ]]
       allowed_params << :max_vehicles unless Mapotempo::Application.config.manage_vehicles_only_admin
 

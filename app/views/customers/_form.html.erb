@@ -91,9 +91,10 @@
 
       <div class="col-md-6">
         <div class="input-group">
-          <%= number_field_tag 'customer[router_options][trailers]', @customer.router_options['trailers'], { min: 0, max: 4, placeholder: t('customers.form.router_options_trailers_default', n: 0), class: 'form-control' } %>
+          <%= number_field_tag 'customer[router_options][trailers]', @customer.router_options['trailers'], { min: 0, max: 4, class: 'form-control' } %>
           <span class="input-group-addon"><i class="fa fa-truck fa-fw"></i> </span>
         </div>
+        <p class="help-block"><%= t('customers.form.router_options_trailers_range', from: 0, to: 4) %></p>
       </div>
     </div>
 
@@ -103,7 +104,11 @@
       </label>
 
       <div class="col-md-6">
-        <%= text_field 'customer[router_options]', :weight, value: @customer.router_options['weight'], placeholder: t('customers.form.router_options_weight_range', from: 0, to: 1000), class: 'form-control' %>
+        <div class="input-group">
+          <%= text_field 'customer[router_options]', :weight, value: @customer.router_options['weight'], class: 'form-control' %>
+          <span class="input-group-addon"><%= t('all.unit.ton') %></span>
+        </div>
+        <p class="help-block"><%= t('customers.form.router_options_weight_range', from: 0, to: 1000) %></p>
       </div>
     </div>
 
@@ -113,7 +118,11 @@
       </label>
 
       <div class="col-md-6">
-        <%= text_field 'customer[router_options]', :weight_per_axle, value: @customer.router_options['weight_per_axle'], placeholder: t('customers.form.router_options_weight_per_axle_range', from: 0, to: 1000), class: 'form-control' %>
+        <div class="input-group">
+          <%= text_field 'customer[router_options]', :weight_per_axle, value: @customer.router_options['weight_per_axle'], class: 'form-control' %>
+          <span class="input-group-addon"><%= t('all.unit.ton') %></span>
+        </div>
+        <p class="help-block"><%=  t('customers.form.router_options_weight_per_axle_range', from: 0, to: 1000) %></p>
       </div>
     </div>
 
@@ -123,7 +132,11 @@
       </label>
 
       <div class="col-md-6">
-        <%= text_field 'customer[router_options]', :height, value: @customer.router_options['height'], placeholder: t('customers.form.router_options_height_range', from: 0, to: 50), class: 'form-control' %>
+        <div class="input-group">
+          <%= text_field 'customer[router_options]', :height, value: @customer.router_options['height'], class: 'form-control' %>
+          <span class="input-group-addon"><%= t('all.unit.m') %></span>
+        </div>
+        <p class="help-block"><%= t('customers.form.router_options_height_range', from: 0, to: 50) %></p>
       </div>
     </div>
 
@@ -133,7 +146,11 @@
       </label>
 
       <div class="col-md-6">
-        <%= text_field 'customer[router_options]', :width, value: @customer.router_options['width'], placeholder: t('customers.form.router_options_width_range', from: 0, to: 50), class: 'form-control' %>
+        <div class="input-group">
+          <%= text_field 'customer[router_options]', :width, value: @customer.router_options['width'], class: 'form-control' %>
+          <span class="input-group-addon"><%= t('all.unit.m') %></span>
+        </div>
+        <p class="help-block"><%= t('customers.form.router_options_width_range', from: 0, to: 50) %></p>
       </div>
     </div>
 
@@ -143,7 +160,21 @@
       </label>
 
       <div class="col-md-6">
-        <%= text_field 'customer[router_options]', :length, value: @customer.router_options['length'], placeholder: t('customers.form.router_options_length_range', from: 0, to: 300), class: 'form-control' %>
+        <div class="input-group">
+          <%= text_field 'customer[router_options]', :length, value: @customer.router_options['length'], class: 'form-control' %>
+          <span class="input-group-addon"><%= t('all.unit.m') %></span>
+        </div>
+        <p class="help-block"><%= t('customers.form.router_options_length_range', from: 0, to: 300) %></p>
+      </div>
+    </div>
+
+    <div id="router_options_hazardous_goods_input" class="form-group <%= @customer.router.hazardous_goods? ? '' : 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_hazardous_goods">
+        <%= t('activerecord.attributes.customer.router_options_hazardous_goods') %>
+      </label>
+
+      <div class="col-md-6">
+        <%= select_tag 'customer[router_options][hazardous_goods]', options_for_select(t('activerecord.attributes.router.options.hazardous_goods').invert, @customer.router_options['hazardous_goods']), include_blank: true, class: 'form-control' %>
       </div>
     </div>
 

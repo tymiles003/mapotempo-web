@@ -49,7 +49,7 @@ class V01::Vehicles < Grape::API
         end
       end
 
-      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :tomtom_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s })
+      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :tomtom_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s })
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
