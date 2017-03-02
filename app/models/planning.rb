@@ -195,7 +195,7 @@ class Planning < ActiveRecord::Base
     end
   end
 
-  def automatic_insert(stop)
+  def automatic_insert(stop, out_of_zone = true)
     available_routes = []
 
     # If already in route, stay in route
@@ -215,7 +215,7 @@ class Planning < ActiveRecord::Base
     end
 
     # It still no route get all routes
-    if available_routes.empty?
+    if available_routes.empty? && out_of_zone
       available_routes = routes.select{ |route|
         route.vehicle_usage && !route.locked
       }

@@ -141,7 +141,7 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     assert @planning.valid?
     unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
     assert unassigned_stop.valid?
-    patch api("#{@planning.id}/automatic_insert"), { id: @planning.id, stop_ids: [unassigned_stop.id] }
+    patch api("#{@planning.id}/automatic_insert"), { id: @planning.id, stop_ids: [unassigned_stop.id], out_of_zone: true }
     assert_equal 200, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
   end
@@ -150,7 +150,7 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     assert @planning.valid?
     unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
     assert unassigned_stop.valid?
-    patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_ids: [unassigned_stop.id] }
+    patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_ids: [unassigned_stop.id], out_of_zone: true }
     assert_equal 200, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
   end
@@ -159,7 +159,7 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
       unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
       assert_no_difference('Stop.count') do
-        patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_ids: [unassigned_stop.id] }
+        patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_ids: [unassigned_stop.id], out_of_zone: true }
         assert_equal 500, last_response.status
         assert @planning.routes.reload.detect{|route| !route.vehicle_usage }.stop_ids.include?(unassigned_stop.id)
       end
