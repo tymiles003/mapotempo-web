@@ -41,6 +41,7 @@
           <i class="fa fa-check fa-fw"></i>
         </button>
       </th>
+      <th><%= t 'activerecord.attributes.customer.ref' %></th>
       <th><%= t 'activerecord.attributes.customer.name' %></th>
       <th class="center">
         <%= t 'activerecord.attributes.customer.profile' %> </br>
@@ -62,6 +63,7 @@
     <% @customers.each do |customer| %>
       <tr<% if customer.end_subscription && customer.end_subscription < Time.now %> class="disabled"<% end %>>
         <td class="center"><%= check_box_tag("customers[#{customer.id}]") %></td>
+        <td class="center"><%= customer.ref %></td>
         <td><%= customer.name %></td>
         <td class="center">
           <%= customer.profile.name %> </br>
