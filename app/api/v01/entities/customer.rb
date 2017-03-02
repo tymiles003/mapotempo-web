@@ -38,7 +38,9 @@ class V01::Entities::Customer < Grape::Entity
   expose(:profile_id, documentation: { type: Integer, desc: EDIT_ONLY_ADMIN })
   expose(:router_id, documentation: { type: Integer })
   expose(:router_dimension, documentation: { type: String, values: ::Router::DIMENSION.keys })
-  expose(:router_options, documentation: { type: Hash, desc: 'Options supplied to the router' })
+  # FIXME: RouterOptions entity can only be used to display results, otherwise swagger-ui interface is broken but tests are ok. Entities are working correctly only with is_array.
+  expose(:router_options, using: V01::Entities::RouterOptions, documentation: { type: V01::Entities::RouterOptions })
+
   expose(:speed_multiplicator, documentation: { type: Float })
   expose(:take_over, documentation: { type: DateTime, desc: 'Visit duration' }) { |m| m.take_over && m.take_over.utc.strftime('%H:%M:%S') }
   expose(:print_planning_annotating, documentation: { type: 'Boolean' })

@@ -31,10 +31,10 @@ class CustomersControllerTest < ActionController::TestCase
 
   test 'should update customer' do
     sign_in users(:user_one)
-    patch :update, id: @customer, customer: {name: 123, router_dimension: 'distance', router_options: {time: true, motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'}}
+    patch :update, id: @customer, customer: {name: 123, router_dimension: 'distance', router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'}}
     assert_redirected_to [:edit, @customer]
     assert_equal 'distance', @customer.reload.router_dimension
-    assert_equal @customer.reload.router_options, { 'time' => 'true', 'weight' => '10', 'motorway' => 'true', 'trailers' => '2', 'hazardous_goods' => 'gas' }
+    assert @customer.reload.router_options >= {'motorway' => 'true', 'trailers' => '2', 'weight' => '10', 'hazardous_goods' => 'gas'}
   end
 
   test 'should not destroy vehicles' do

@@ -154,7 +154,22 @@ class V01::Vehicles < Grape::API
       success: V01::Entities::Vehicle
     params do
       requires :id, type: String, desc: ID_DESC
-      use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(:id)
+      use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(
+          :id,
+          :router_options
+      )
+
+      optional :router_options, type: Hash do
+        optional :motorway, type: Boolean
+        optional :toll, type: Boolean
+        optional :trailers, type: Integer
+        optional :weight, type: Float
+        optional :weight_per_axle, type: Float
+        optional :height, type: Float
+        optional :width, type: Float
+        optional :length, type: Float
+        optional :hazardous_goods, type: String
+      end
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -175,9 +190,24 @@ class V01::Vehicles < Grape::API
       if Mapotempo::Application.config.manage_vehicles_only_admin
         requires :customer_id, type: Integer
       end
-      use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(:id).deep_merge(
+      use :params_from_entity, entity: V01::Entities::Vehicle.documentation.except(
+          :id,
+          :router_options
+      ).deep_merge(
         name: { required: true }
       ).deep_merge(V01::Entities::VehicleUsage.documentation.except(:id).except(:vehicle_usage_set))
+
+      optional :router_options, type: Hash do
+        optional :motorway, type: Boolean
+        optional :toll, type: Boolean
+        optional :trailers, type: Integer
+        optional :weight, type: Float
+        optional :weight_per_axle, type: Float
+        optional :height, type: Float
+        optional :width, type: Float
+        optional :length, type: Float
+        optional :hazardous_goods, type: String
+      end
     end
     post do
       if Mapotempo::Application.config.manage_vehicles_only_admin

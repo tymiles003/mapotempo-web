@@ -77,8 +77,21 @@ class V01::Customers < Grape::API
         :deliverable_unit_ids,
         :job_destination_geocoding_id,
         :job_store_geocoding_id,
-        :job_optimizer_id
+        :job_optimizer_id,
+        :router_options
       )
+
+      optional :router_options, type: Hash do
+        optional :motorway, type: Boolean
+        optional :toll, type: Boolean
+        optional :trailers, type: Integer
+        optional :weight, type: Float
+        optional :weight_per_axle, type: Float
+        optional :height, type: Float
+        optional :width, type: Float
+        optional :length, type: Float
+        optional :hazardous_goods, type: String
+      end
     end
     put ':id' do
       if @current_user.admin?
@@ -105,13 +118,26 @@ class V01::Customers < Grape::API
         :deliverable_unit_ids,
         :job_destination_geocoding_id,
         :job_store_geocoding_id,
-        :job_optimizer_id
+        :job_optimizer_id,
+        :router_options
       ).deep_merge(
         name: { required: true },
         default_country: { required: true },
         router_id: { required: true },
         profile_id: { required: true }
       )
+
+      optional :router_options, type: Hash do
+        optional :motorway, type: Boolean
+        optional :toll, type: Boolean
+        optional :trailers, type: Integer
+        optional :weight, type: Float
+        optional :weight_per_axle, type: Float
+        optional :height, type: Float
+        optional :width, type: Float
+        optional :length, type: Float
+        optional :hazardous_goods, type: String
+      end
     end
     post do
       if @current_user.admin?
