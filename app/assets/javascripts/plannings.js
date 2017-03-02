@@ -205,6 +205,11 @@ var plannings_edit = function(params) {
     currentZoom = 17,
     needUpdateStopStatus = params.update_stop_status,
     enableStopStatus = params.enable_stop_status,
+    outOfRouteId = params.routes_array.filter(function(route) {
+      return !route.vehicle_usage_id;
+    }).map(function(route) {
+      return route.route_id;
+    })[0],
     allRoutesWithVehicle = $.map(params.routes_array, function(route) {
       if (route.vehicle_usage_id) {
         var vehicle_usage = {};
@@ -831,6 +836,7 @@ var plannings_edit = function(params) {
         stop.color = color;
         stop.vehicle_name = vehicle_name;
         stop.route_id = route.route_id;
+        stop.out_of_route_id = outOfRouteId;
         stop.routes = allRoutesWithVehicle;
         stop.planning_id = planning_id;
         stop.isoline_capability = params.isoline_capability.isochrone || params.isoline_capability.isodistance;
