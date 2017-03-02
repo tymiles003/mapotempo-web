@@ -143,7 +143,8 @@ class ImporterDestinations < ImporterBase
     end
 
     @destinations_by_ref = Hash[@customer.destinations.select(&:ref).collect{ |destination| [destination.ref, destination] }]
-    @visits_by_ref = Hash[@customer.destinations.collect(&:visits).flatten.select(&:ref).collect{ |visit| [visit.ref, visit] }]
+    # @visits_by_ref must contains ref with and without destination since destination ref could not be present in imported data
+    @visits_by_ref = Hash[@customer.destinations.flat_map(&:visits).select(&:ref).flat_map{ |visit| [["#{visit.destination.ref}/#{visit.ref}", visit], ["/#{visit.ref}", visit]] }.uniq]
 
     @@col_dest_keys ||= columns_destination.keys
     @col_visit_keys = columns_visit.keys + [:quantities]
@@ -235,7 +236,7 @@ class ImporterDestinations < ImporterBase
       end
       if row[:without_visit].nil? || row[:without_visit].strip.empty?
         visit = if !row[:ref_visit].nil? && !row[:ref_visit].strip.empty?
-          @visits_by_ref[row[:ref_visit]]
+          @visits_by_ref["#{destination.ref}/#{row[:ref_visit]}"]
         else
           # Get the first visit without ref
           destination.visits.find{ |v| !v.ref }
@@ -244,14 +245,14 @@ class ImporterDestinations < ImporterBase
           visit.assign_attributes(visit_attributes.compact) # FIXME: don't use compact to overwrite database with row containing nil
         else
           visit = destination.visits.build(visit_attributes)
-          @visits_by_ref[visit.ref] = visit if visit.ref
+          @visits_by_ref["#{visit.destination.ref}/#{visit.ref}"] = visit if visit.ref
         end
       else
         destination.visits = []
       end
     else
       if !row[:ref_visit].nil? && !row[:ref_visit].strip.empty?
-        visit = @visits_by_ref[row[:ref_visit]]
+        visit = @visits_by_ref["#{row[:ref]}/#{row[:ref_visit]}"]
         if visit
           visit.destination.assign_attributes(destination_attributes)
           visit.assign_attributes(visit_attributes)
@@ -269,7 +270,7 @@ class ImporterDestinations < ImporterBase
         if row[:without_visit].nil? || row[:without_visit].strip.empty?
           # Link only when destination is complete
           visit = destination.visits.build(visit_attributes)
-          @visits_by_ref[visit.ref] = visit if visit.ref
+          @visits_by_ref["#{visit.destination.ref}/#{visit.ref}"] = visit if visit.ref
         end
       end
     end
