@@ -42,7 +42,8 @@ class Customer < ActiveRecord::Base
 
   nilify_blanks
   auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association, :default_country
-  validates :ref, uniqueness: { scope: :reseller_id, case_sensitive: true }, allow_nil: true, allow_blank: true
+  # We do not want to test if ref is uniq
+  #validates :ref, uniqueness: { scope: :reseller_id, case_sensitive: true }, allow_nil: true, allow_blank: true
   validates :profile, presence: true
   validates :router, presence: true
   validates :router_dimension, presence: true
