@@ -18,6 +18,8 @@
 'use strict';
 
 var vehicle_usage_sets_index = function(params) {
+  'use strict';
+
   // override accordion collapse bootstrap code
   $('a.accordion-toggle').click(function() {
     var id = $(this).attr('href');

@@ -18,6 +18,8 @@
 'use strict';
 
 var vehicle_usages_form = function(params) {
+  'use strict';
+
   /* Speed Multiplier */
   $('form.number-to-percentage').submit(function(e) {
     $.each($(e.target).find('input[type=\'number\'].number-to-percentage'), function(i, element) {

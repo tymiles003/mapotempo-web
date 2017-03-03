@@ -18,6 +18,8 @@
 'use strict';
 
 var api_web_v01_zones_index = function(params) {
+  'use strict';
+
   var progressBar = Turbolinks.enableProgressBar();
   progressBar && progressBar.advanceTo(25);
 

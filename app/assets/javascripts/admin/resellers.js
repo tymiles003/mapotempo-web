@@ -25,6 +25,8 @@ function admin_resellers_form(params, api) {
 
 
 function admin_resellers_edit(params, api) {
+  'use strict';
+
   admin_resellers_form(params, api);
 }
 

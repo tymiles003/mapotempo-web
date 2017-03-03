@@ -29,10 +29,14 @@ var order_arrays_form = function() {
 };
 
 var order_arrays_new = function(params) {
+  'use strict';
+
   order_arrays_form();
 };
 
 var order_arrays_edit = function(params) {
+  'use strict';
+
   var order_array_id = params.order_array_id,
     planning_id = params.planning_id,
     block_save_select_change = false,

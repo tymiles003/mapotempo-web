@@ -20,6 +20,7 @@
 'use strict';
 
 var deliverable_units_form = function() {
+  'use strict';
 
   //for turbolinks, when clicking on link_to
   $('.selectpicker').selectpicker();

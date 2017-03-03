@@ -18,6 +18,7 @@
 'use strict';
 
 var zonings_edit = function(params) {
+  'use strict';
 
   var prefered_unit = params.prefered_unit,
     zoning_id = params.zoning_id,

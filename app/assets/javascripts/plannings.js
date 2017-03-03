@@ -174,6 +174,8 @@ var plannings_form = function() {
 };
 
 var plannings_new = function(params) {
+  'use strict';
+
   plannings_form();
   $("#planning_zoning_ids").select2({
     theme: 'bootstrap'
@@ -181,6 +183,8 @@ var plannings_new = function(params) {
 };
 
 var plannings_edit = function(params) {
+  'use strict';
+
   plannings_form();
 
   var prefered_unit = (!params.prefered_unit ? "km" : params.prefered_unit),
@@ -1085,7 +1089,6 @@ var plannings_edit = function(params) {
       })
       .on("click", ".marker", function(event, ui) {
         var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
-        mapZoom = map.getZoom();
 
         if (stop_id in markers) {
           var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
@@ -1781,6 +1784,8 @@ var plannings_edit = function(params) {
 };
 
 var plannings_show = function(params) {
+  'use strict';
+
   if (!params.print_map) {
     window.print();
   } else {
@@ -1791,6 +1796,8 @@ var plannings_show = function(params) {
 };
 
 var plannings_index = function(params) {
+  'use strict';
+
   iCalendarExport();
   spreadsheetModalExport(params.spreadsheet_columns);
 };

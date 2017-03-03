@@ -43,6 +43,8 @@ var isWindowVisible = (function () {
 var notificationCalled = false;
 
 (function () {
+  'use strict';
+
   function notify(status, message, options) {
     var notification = function () {
       if (notificationCalled) {

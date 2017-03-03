@@ -83,6 +83,8 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
 };
 
 var api_web_v01_destinations_index = function(params, api) {
+  'use strict';
+
   var progressBar = Turbolinks.enableProgressBar();
   progressBar && progressBar.advanceTo(25);
 

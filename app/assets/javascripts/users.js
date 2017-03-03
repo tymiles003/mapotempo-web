@@ -18,6 +18,8 @@
 'use strict';
 
 var user_edit_settings = function(params) {
+  'use strict';
+
   var available_layers = params.map_available_layers;
 
   var map = mapInitialize(params);

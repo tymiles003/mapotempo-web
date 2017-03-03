@@ -400,6 +400,8 @@ var destinations_form = function(params, api) {
 
 
 var destinations_import = function(params, api) {
+  'use strict';
+
   var dialog_upload = bootstrap_dialog({
     title: I18n.t(api + '.index.dialog.import.title'),
     icon: 'fa-upload',
@@ -459,6 +461,7 @@ var destinations_import = function(params, api) {
 }
 
 var destinations_index = function(params, api) {
+  'use strict';
 
   var default_city = params.default_city,
     default_country = params.default_country,
@@ -1164,10 +1167,14 @@ var destinations_index = function(params, api) {
 }
 
 var destinations_new = function(params, api) {
+  'use strict';
+
   destinations_form(params, api);
 }
 
 var destinations_edit = function(params, api) {
+  'use strict';
+
   destinations_form(params, api);
 }
 

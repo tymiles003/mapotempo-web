@@ -17,7 +17,8 @@
 //
 'use strict';
 
-var customers_index = function(params) {
+var customers_index = function (params) {
+  'use strict';
 
   var map_layers = params.map_layers,
     map_attribution = params.map_attribution;
@@ -97,7 +98,9 @@ var customers_index = function(params) {
   });
 };
 
-var customers_edit = function(params) {
+var customers_edit = function (params) {
+  'use strict';
+
   /* Speed Multiplier */
   $('form.number-to-percentage').submit(function(e) {
     $.each($(e.target).find('input[type=\'number\'].number-to-percentage'), function(i, element) {

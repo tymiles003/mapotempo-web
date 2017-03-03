@@ -20,6 +20,8 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 var tags_form = function() {
+  'use strict';
+
   $('#tag_color').simplecolorpicker({
     theme: 'fontawesome'
   });

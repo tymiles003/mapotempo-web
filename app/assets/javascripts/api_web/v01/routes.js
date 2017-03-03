@@ -18,6 +18,8 @@
 'use strict';
 
 var api_web_v01_routes_index = function(params) {
+  'use strict';
+
   var progressBar = Turbolinks.enableProgressBar();
   progressBar && progressBar.advanceTo(25);
 
@@ -270,7 +272,7 @@ var api_web_v01_routes_index = function(params) {
   }
 
   progressBar && progressBar.advanceTo(50);
-  queryParam = (route_ids) ? ('?' + $.param({
+  var queryParam = (route_ids) ? ('?' + $.param({
     ids: route_ids.join(',')
   })) : '';
   $.ajax({
