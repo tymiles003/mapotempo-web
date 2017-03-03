@@ -529,6 +529,7 @@ var plannings_edit = function(params) {
             }
           });
 
+          checkLockOperation();
         }
       });
 
@@ -1209,6 +1210,7 @@ var plannings_edit = function(params) {
       $(this).toggleClass("btn-warning");
       var locked = i.hasClass("fa-lock");
       (!locked) ? $(this).prevAll('button.optimize').removeAttr('disabled') : $(this).prevAll('button.optimize').attr('disabled', 'disabled');
+      checkLockOperation();
       $.ajax({
         type: "put",
         data: JSON.stringify({
@@ -1219,6 +1221,26 @@ var plannings_edit = function(params) {
         error: ajaxError
       });
     });
+  };
+
+  var checkLockOperation = function() {
+    var hasStopAvailable = false;
+    $("[data-route_id]").each(function() {
+      var isRouteLocked = $(this).find(".lock i").hasClass('fa-lock');
+      var stopCount = $(this).find("[data-stop_id]").length;
+
+      if (!isRouteLocked && stopCount > 0) {
+        hasStopAvailable = true;
+      }
+    });
+
+    if (!hasStopAvailable) {
+      $('#global_tools').find('button').first().attr('disabled', 'disabled');
+      $('#planning_zoning_button').attr('disabled', 'disabled');
+    } else {
+      $('#global_tools').find('button').first().removeAttr('disabled');
+      $('#planning_zoning_button').removeAttr('disabled');
+    }
   };
 
   var buildUrl = function(url, hash) {
