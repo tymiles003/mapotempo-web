@@ -137,15 +137,16 @@ class V01::CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should not create a customer' do
-    assert_no_difference 'Customer.count' do
-      post api_admin, { name: 'new cust', ref: @customer.ref, default_country: 'France', max_vehicles: 2, router_id: @customer.router_id, profile_id: @customer.profile_id }
-      assert_equal 400, last_response.status, 'Bad response: ' + last_response.body
-
-      post api, { name: 'new cust', default_country: 'France', max_vehicles: 2, router_id: @customer.router_id, profile_id: @customer.profile_id }
-      assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
-    end
-  end
+  # We do not want to test if ref is uniq
+  # test 'should not create a customer' do
+  #   assert_no_difference 'Customer.count' do
+  #     post api_admin, { name: 'new cust', ref: @customer.ref, default_country: 'France', max_vehicles: 2, router_id: @customer.router_id, profile_id: @customer.profile_id }
+  #     assert_equal 400, last_response.status, 'Bad response: ' + last_response.body
+  #
+  #     post api, { name: 'new cust', default_country: 'France', max_vehicles: 2, router_id: @customer.router_id, profile_id: @customer.profile_id }
+  #     assert_equal 403, last_response.status, 'Bad response: ' + last_response.body
+  #   end
+  # end
 
   test 'should destroy a customer' do
     assert_difference('Customer.count', -1) do
