@@ -107,7 +107,7 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
 };
 
 var iteration = undefined;
-var isInqueue = false;
+var isProgressing = false;
 var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, successCallback) {
   if (delayedJob !== undefined) {
     var timeout = 2000;
@@ -132,18 +132,16 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
           transition: 'linear 0s',
           width: '0%'
         });
-      } else if (progress[i] == 0) {
+      } else if (progress[i] === 0 || progress[i] === '0') {
         // Display a waiting message to user
         $(event).parent().parent().hide();
-        $(".dialog-inqueue", dialog).show();
-        isInqueue = true;
-      } else if (progress[i] == 100) {
+      } else if (progress[i] === 100 || progress[i] === '100') {
         $(event).parent().removeClass("active");
         $(event).css({
           transition: 'linear 0s',
           width: '100%'
         });
-      } else if (progress[i] == -1) {
+      } else if (progress[i] === -1 || progress[i] === '-1') {
         $(event).parent().addClass("active");
         $(event).css({
           transition: 'linear 0s',
@@ -151,11 +149,10 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
         });
       } else if (progress[i].indexOf('ms') > -1) {
         // optimization in ms
-        if (isInqueue) {
-          $(".dialog-inqueue", dialog).hide();
-          isInqueue = false;
-        }
         var timeSpent = progress[i].split('ms');
+        if (timeSpent > 0) {
+          isProgressing = true;
+        }
         if (iteration != timeSpent[1] || $(".dialog-attempts-number", dialog).html() != delayedJob.attempts) {
           iteration = timeSpent[1];
           $(event).css('transition', 'linear 0s');
@@ -173,24 +170,26 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       } else if (progress[i].indexOf('/') > -1) {
         // optimization or geocoding current/total
         var currentSteps = progress[i].split('/');
-        if (isInqueue) {
-          $(".dialog-inqueue", dialog).hide();
-          isInqueue = false;
+        if (currentSteps[0] > 0) {
+          isProgressing = true;
         }
         $(event).parent().removeClass("active");
         $(event).css("transition", "linear 0.5s");
         $(event).css("width", "" + (100 * currentSteps[0] / currentSteps[1]) + "%");
         $(event).html(progress[i]);
       } else {
-        if (isInqueue) {
-          $(".dialog-inqueue", dialog).hide();
-          isInqueue = false;
-        }
+        isProgressing = true;
         $(event).parent().removeClass("active");
         $(event).css("transition", "linear 2s");
         $(event).css("width", "" + progress[i] + "%");
       }
     });
+
+    if (isProgressing) {
+      $(".dialog-inqueue", dialog).hide();
+    } else {
+      $(".dialog-inqueue", dialog).show();
+    }
 
     if (delayedJob.attempts) {
       $(".dialog-attempts-number", dialog).html(delayedJob.attempts);
