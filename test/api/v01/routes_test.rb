@@ -179,6 +179,27 @@ class V01::RoutesTest < V01::RoutesBaseTest
     assert_equal({ "error" => "Not Found" }, JSON.parse(last_response.body))
   end
 
+  test 'should update stops order' do
+    planning = @route.planning
+    stops_index = @route.stops.map{ |s| s[:index] + s[:id] }
+    patch "/api/0.1/plannings/#{planning[:id]}/routes/#{@route[:id]}/reverse_order?api_key=testkey1"
+    assert last_response.ok?, last_response.body
+    l = planning.routes.find(@route.id).stops.map{ |s| s[:index] + s[:id] }
+    assert_not_equal stops_index,  l
+  end
+
+  test 'should provide the good stops order' do
+    planning = @route.planning
+    stops_hash = @route.stops.each_with_object({}){ |stop, hash| hash[stop[:id]] = stop[:index] }
+    patch "/api/0.1/plannings/#{planning[:id]}/routes/#{@route[:id]}/reverse_order?api_key=testkey1"
+    assert last_response.ok?, last_response.body
+    stops_hash_new = planning.routes.find(@route.id).stops.each_with_object({}){ |stop, hash| hash[stop[:id]] = stop[:index] }
+    stops_hash.each do |k, v|
+      assert_not_equal stops_hash_new[k], v
+      assert_equal true, stops_hash_new[k] == (stops_hash.size) - (stops_hash[k] - 1)
+    end
+  end
+
 end
 
 class V01::RoutesErrorTest < V01::RoutesBaseTest

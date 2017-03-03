@@ -126,6 +126,21 @@ class V01::Routes < Grape::API
             status 304
           end
         end
+
+        desc 'Reverse stops order',
+             detail: 'Reverse all the stops in a route',
+             nickname: 'reverseStopsOrder',
+             success: V01::Entities::Route
+        params do
+          requires :id, type: String, desc: ID_DESC
+        end
+        patch ':id/reverse_order' do
+          id = ParseIdsRefs.read params[:planning_id]
+          planning = current_customer.plannings.where(id).first!
+          route = planning.routes.find{ |r| ParseIdsRefs.match(params[:id], r) } and route.reverse_order && route.compute
+          route.save!
+          present route, with: V01::Entities::Route
+        end
       end
 
       resource :routes_by_vehicle do
@@ -137,11 +152,9 @@ class V01::Routes < Grape::API
           requires :id, type: String, desc: 'ID / Ref (ref:abcd) of the VEHICLE attached to the Route'
         end
         get ':id' do
-          planning_id = ParseIdsRefs.read params[:planning_id] rescue error!('Invalid IDs', 400)
-          planning = current_customer.plannings.find_by planning_id
-          error!('Not Found', 404) if !planning
+          planning_id = ParseIdsRefs.read params[:planning_id]
+          planning = current_customer.plannings.find_by! planning_id
           route = planning.routes.detect{ |route| route.vehicle_usage && ParseIdsRefs.match(params[:id], route.vehicle_usage.vehicle) }
-          error!('Not Found', 404) if !route
           present route, with: V01::Entities::Route
         end
       end
