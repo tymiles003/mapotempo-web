@@ -61,9 +61,11 @@ class V01::CustomerTest < ActiveSupport::TestCase
     assert_equal 'tomtom_user_abcd', customer_response['tomtom_user']
     assert 'ref-abcd' != customer_response['ref']
 
-
-
-    assert customer_response['router_options'] >= { 'weight' => '10', 'motorway' => 'true', 'trailers' => '2', 'hazardous_goods' => 'gas' }
+    # FIXME: replace each assertion by one which checks if hash is included in another
+    assert customer_response['router_options']['weight'] = '10'
+    assert customer_response['router_options']['motorway'] = 'true'
+    assert customer_response['router_options']['trailers'] = '2'
+    assert customer_response['router_options']['hazardous_goods'] = 'gas'
   end
 
   test 'should update a customer without modifying max vehicles' do

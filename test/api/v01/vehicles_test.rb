@@ -64,7 +64,11 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
 
     vehicle = JSON.parse(last_response.body)
-    assert vehicle['router_options'] >= {'motorway' => 'false', 'weight_per_axle' => '3', 'length' => '30', 'hazardous_goods' => 'gas'}
+    # FIXME: replace each assertion by one which checks if hash is included in another
+    assert vehicle['router_options']['motorway'] = 'false'
+    assert vehicle['router_options']['weight_per_axle'] = '3'
+    assert vehicle['router_options']['length'] = '30'
+    assert vehicle['router_options']['hazardous_goods'] = 'gas'
   end
 
   test 'should create a vehicle' do

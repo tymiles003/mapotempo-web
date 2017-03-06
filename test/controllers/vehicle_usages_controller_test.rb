@@ -31,7 +31,11 @@ class VehicleUsagesControllerTest < ActionController::TestCase
     patch :update, id: @vehicle_usage, vehicle_usage: {vehicle: {capacities: {'1' => 123, '2' => 456}, color: @vehicle_usage.vehicle.color, consumption: @vehicle_usage.vehicle.consumption, emission: @vehicle_usage.vehicle.emission, name: @vehicle_usage.vehicle.name, router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'}}, open: @vehicle_usage.open}
     assert_redirected_to edit_vehicle_usage_path(@vehicle_usage)
     assert_equal [123, 456], @vehicle_usage.vehicle.reload.capacities.values
-    assert @vehicle_usage.vehicle.reload.router_options >= { 'weight' => '10', 'motorway' => 'true', 'trailers' => '2', 'hazardous_goods' => 'gas' }
+    # FIXME: replace each assertion by one which checks if hash is included in another
+    assert @vehicle_usage.vehicle.router_options['weight'] = '10'
+    assert @vehicle_usage.vehicle.router_options['motorway'] = 'true'
+    assert @vehicle_usage.vehicle.router_options['trailers'] = '2'
+    assert @vehicle_usage.vehicle.router_options['hazardous_goods'] = 'gas'
   end
 
   test 'should not update vehicle_usage' do
