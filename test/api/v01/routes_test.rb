@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class V01::RoutesTest < ActiveSupport::TestCase
+class V01::RoutesBaseTest < ActiveSupport::TestCase
   include Rack::Test::Methods
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
@@ -12,6 +12,13 @@ class V01::RoutesTest < ActiveSupport::TestCase
     @route = routes(:route_one_one)
   end
 
+  def api(planning_id, part = nil, param = {})
+    part = part ? '/' + part.to_s : ''
+    "/api/0.1/plannings/#{planning_id}/routes#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
+  end
+end
+
+class V01::RoutesTest < V01::RoutesBaseTest
   def around
     Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1000, 60, 'trace'] } } ) do
       Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
@@ -21,11 +28,6 @@ class V01::RoutesTest < ActiveSupport::TestCase
         end
       end
     end
-  end
-
-  def api(planning_id, part = nil, param = {})
-    part = part ? '/' + part.to_s : ''
-    "/api/0.1/plannings/#{planning_id}/routes#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
   test 'should return customer''s routes' do
@@ -175,6 +177,17 @@ class V01::RoutesTest < ActiveSupport::TestCase
     get "/api/0.1/plannings/1234/routes_by_vehicle/1234.json?api_key=testkey1"
     assert_equal(404, last_response.status)
     assert_equal({ "error" => "Not Found" }, JSON.parse(last_response.body))
+  end
+
+end
+
+class V01::RoutesErrorTest < V01::RoutesBaseTest
+
+  test 'should optimize route and return no solution found' do
+    OptimizerWrapper.stub_any_instance(:optimize, lambda{ |*_a| raise NoSolutionFoundError.new }) do
+      patch api(@route.planning.id, "#{@route.id}/optimize", details: true)
+      assert_equal 304, last_response.status, last_response.body
+    end
   end
 
 end

@@ -111,15 +111,19 @@ class V01::Routes < Grape::API
         patch ':id/optimize' do
           planning_id = ParseIdsRefs.read(params[:planning_id])
           route = current_customer.plannings.where(planning_id).first!.routes.find{ |r| ParseIdsRefs.match(params[:id], r) }
-          if !Optimizer.optimize(route.planning, route, false, params[:synchronous])
-            status 304
-          else
-            route.planning.customer.save!
-            if params[:details]
-              present route, with: V01::Entities::Route
+          begin
+            if !Optimizer.optimize(route.planning, route, false, params[:synchronous])
+              status 304
             else
-              status 204
+              route.planning.customer.save!
+              if params[:details]
+                present route, with: V01::Entities::Route
+              else
+                status 204
+              end
             end
+          rescue NoSolutionFoundError => e
+            status 304
           end
         end
       end

@@ -164,7 +164,11 @@ class V01::Plannings < Grape::API
     get ':id/optimize' do
       id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(id).first!
-      Optimizer.optimize planning, nil, params[:global], params[:synchronous]
+      begin
+        Optimizer.optimize planning, nil, params[:global], params[:synchronous]
+      rescue NoSolutionFoundError => e
+        status 304
+      end
       if params[:details]
         present planning, with: V01::Entities::Planning
       else

@@ -17,6 +17,8 @@
 #
 require 'rest_client'
 
+class NoSolutionFoundError < StandardError; end
+
 class OptimizerWrapper
 
   attr_accessor :cache, :url, :api_key
@@ -151,7 +153,11 @@ class OptimizerWrapper
           job_id = result['job']['id']
           json = RestClient.get(@url + "/vrp/jobs/#{job_id}.json", params: {api_key: @api_key})
         else
-          raise RuntimeError.new(result['job']['avancement'] || 'Optimizer return unknow error')
+          if result['job']['avancement'] == 'No solution provided'
+            raise NoSolutionFoundError.new
+          else
+            raise RuntimeError.new(result['job']['avancement'] || 'Optimizer return unknow error')
+          end
         end
       end
     else

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class V01::PlanningsTest < ActiveSupport::TestCase
+class V01::PlanningsBaseTest < ActiveSupport::TestCase
   include Rack::Test::Methods
 
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
@@ -13,6 +13,13 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     @planning = plannings(:planning_one)
   end
 
+  def api(part = nil, param = {})
+    part = part ? '/' + part.to_s : ''
+    "/api/0.1/plannings#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
+  end
+end
+
+class V01::PlanningsTest < V01::PlanningsBaseTest
   def around
     Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1000, 60, 'trace'] } } ) do
       Routers::RouterWrapper.stub_any_instance(:matrix, lambda{ |url, mode, dimensions, row, column, options| [Array.new(row.size) { Array.new(column.size, 0) }] }) do
@@ -22,11 +29,6 @@ class V01::PlanningsTest < ActiveSupport::TestCase
         end
       end
     end
-  end
-
-  def api(part = nil, param = {})
-    part = part ? '/' + part.to_s : ''
-    "/api/0.1/plannings#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
   test "'should return customer's plannings'" do
@@ -188,19 +190,25 @@ class V01::PlanningsTest < ActiveSupport::TestCase
   end
 
   test 'should optimize each route' do
-    get api("/#{@planning.id}/optimize", { details: true, synchronous: false })
-    assert last_response.ok?, last_response.body
+    [false, true].each do |sync|
+      get api("/#{@planning.id}/optimize", { details: true, synchronous: sync })
+      assert last_response.ok?, last_response.body
+    end
   end
 
   test 'should perform a global optimization' do
-    get api("/#{@planning.id}/optimize", { global: true, details: true, synchronous: false })
-    assert last_response.ok?, last_response.body
+    [false, true].each do |sync|
+      get api("/#{@planning.id}/optimize", { global: true, details: true, synchronous: sync })
+      assert last_response.ok?, last_response.body
+    end
   end
 
   test 'should not optimize when a false planning\'s id is given' do
     planning_false_id = Random.new_seed
-    get api("/#{planning_false_id}/optimize", {details: true, synchronous: false })
-    assert_equal 400, last_response.status
+    [false, true].each do |sync|
+      get api("/#{planning_false_id}/optimize", {details: true, synchronous: sync })
+      assert_equal 400, last_response.status
+    end
   end
 
   test 'should return a 404 error' do
@@ -243,4 +251,15 @@ class V01::PlanningsTest < ActiveSupport::TestCase
     patch api("#{planning.id}/update_stops_status", details: true)
     assert_equal 200, last_response.status
   end
+end
+
+class V01::PlanningsErrorTest < V01::PlanningsBaseTest
+
+  test 'should perform a global optimization and return no solution found' do
+    OptimizerWrapper.stub_any_instance(:optimize, lambda{ |*_a| raise NoSolutionFoundError.new }) do
+      get api("/#{@planning.id}/optimize", { global: true, details: true, synchronous: true })
+      assert_equal 304, last_response.status, last_response.body
+    end
+  end
+
 end
