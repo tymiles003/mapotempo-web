@@ -65,9 +65,10 @@ class OptimizerWrapper
             id: "v#{vehicle[:id]}",
             router_mode: vehicle[:router].mode,
             router_dimension: vehicle[:router_dimension],
-            router_options: vehicle[:router_options],
+            # router_options are flattened and merged below
             speed_multiplier: vehicle[:speed_multiplier],
-            # speed_multiplier_areas: vehicle[:speed_multiplier_areas],
+            # area: vehicle[:speed_multiplicator_areas] ? vehicle[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
+            # speed_multiplicator_area: vehicle[:speed_multiplicator_areas] ? vehicle[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil,
             timewindow: {start: vehicle[:open], end: vehicle[:close]},
             start_point_id: vehicle[:stores].include?(:start) ? "p#{shift_stores + services.size}" : nil,
             end_point_id: vehicle[:stores].include?(:stop) ? "p#{vehicle[:stores].size - 1 + shift_stores + services.size}" : nil,
@@ -87,7 +88,7 @@ class OptimizerWrapper
                 overload_multiplier: c[:overload_multiplier]
               } : nil
             }.compact : []
-          }
+          }.merge(vehicle[:router_options] || {})
           shift_stores += vehicle[:stores].size
           v
         },
