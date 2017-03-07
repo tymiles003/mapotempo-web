@@ -227,7 +227,7 @@ var dropdownAutoDirection = function ($updatedElement) {
   });
 };
 
-var routerOptionsSelect = function ($selectId, params) {
+var routerOptionsSelect = function (selectId, params) {
   var checkFieldState = function ($field, stateValue) {
     if (stateValue === 'true') {
       $field.fadeIn();
@@ -238,8 +238,10 @@ var routerOptionsSelect = function ($selectId, params) {
     }
   };
 
-  $(document).on('change', $selectId, function () {
-    var routerId = this.value.split('_')[0];
+  var fieldsRouter = function (selectedValue) {
+    selectedValue = this.value || selectedValue;
+
+    var routerId = selectedValue.split('_')[0];
     var routerOptions = params.routers_options[routerId];
 
     if (routerId && routerOptions) {
@@ -253,7 +255,7 @@ var routerOptionsSelect = function ($selectId, params) {
       checkFieldState($('#router_options_length_input'), routerOptions.length);
       checkFieldState($('#router_options_hazardous_goods_input'), routerOptions.length);
     }
-  });
+  };
 
   fieldsRouter($(selectId).val(), true);
   $(document).on('change', selectId, fieldsRouter);
