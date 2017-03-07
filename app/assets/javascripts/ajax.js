@@ -125,7 +125,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
         $(event).parent().parent().show();
       }
 
-      if (!progress || typeof progress[i] === "undefined" || progress[i] === null) {
+      if (!progress || typeof progress[i] === "undefined" || progress[i] === null || progress[i] === '') {
         // Inactive progress class
         $(event).parent().removeClass("active");
         $(event).css({
@@ -136,12 +136,14 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
         // Display a waiting message to user
         $(event).parent().parent().hide();
       } else if (progress[i] === 100 || progress[i] === '100') {
+        isProgressing = true;
         $(event).parent().removeClass("active");
         $(event).css({
           transition: 'linear 0s',
           width: '100%'
         });
       } else if (progress[i] === -1 || progress[i] === '-1') {
+        isProgressing = true;
         $(event).parent().addClass("active");
         $(event).css({
           transition: 'linear 0s',
