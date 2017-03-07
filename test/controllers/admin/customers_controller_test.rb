@@ -10,6 +10,12 @@ class Admin::CustomersControllerTest < ActionController::TestCase
     sign_in users(:user_admin)
   end
 
+  test 'should get new' do
+    get :new
+    assert_response :success
+    assert_valid response
+  end
+
   test 'should get index' do
     get :index
     assert_response :success

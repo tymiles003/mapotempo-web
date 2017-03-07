@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div id="router_options_motorway_input" class="form-group <%= @customer.router.motorway? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_motorway_input" class="form-group <%= @customer.router.try(&:motorway?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_motorway">
         <%= t('activerecord.attributes.customer.router_options_motorway') %>
       </label>
@@ -66,7 +66,7 @@
       </div>
     </div>
 
-    <div id="router_options_toll_input" class="form-group <%= @customer.router.toll? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_toll_input" class="form-group <%= @customer.router.try(&:toll?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_toll">
         <%= t('activerecord.attributes.customer.router_options_toll') %>
       </label>
@@ -84,7 +84,7 @@
       </div>
     </div>
 
-    <div id="router_options_trailers_input" class="form-group <%= @customer.router.trailers? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_trailers_input" class="form-group <%= @customer.router.try(&:trailers?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_trailers">
         <%= t('activerecord.attributes.customer.router_options_trailers') %>
       </label>
@@ -98,7 +98,7 @@
       </div>
     </div>
 
-    <div id="router_options_weight_input" class="form-group <%= @customer.router.weight? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_weight_input" class="form-group <%= @customer.router.try(&:weight?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_weight">
         <%= t('activerecord.attributes.customer.router_options_weight') %>
       </label>
@@ -112,7 +112,7 @@
       </div>
     </div>
 
-    <div id="router_options_weight_per_axle_input" class="form-group <%= @customer.router.weight_per_axle? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_weight_per_axle_input" class="form-group <%= @customer.router.try(&:weight_per_axle?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_weight_per_axle">
         <%= t('activerecord.attributes.customer.router_options_weight_per_axle') %>
       </label>
@@ -126,7 +126,7 @@
       </div>
     </div>
 
-    <div id="router_options_height_input" class="form-group <%= @customer.router.height? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_height_input" class="form-group <%= @customer.router.try(&:height?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_height">
         <%= t('activerecord.attributes.customer.router_options_height') %>
       </label>
@@ -140,7 +140,7 @@
       </div>
     </div>
 
-    <div id="router_options_width_input" class="form-group <%= @customer.router.width? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_width_input" class="form-group <%= @customer.router.try(&:width?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_width">
         <%= t('activerecord.attributes.customer.router_options_width') %>
       </label>
@@ -154,7 +154,7 @@
       </div>
     </div>
 
-    <div id="router_options_length_input" class="form-group <%= @customer.router.length? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_length_input" class="form-group <%= @customer.router.try(&:length?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_length">
         <%= t('activerecord.attributes.customer.router_options_length') %>
       </label>
@@ -168,7 +168,7 @@
       </div>
     </div>
 
-    <div id="router_options_hazardous_goods_input" class="form-group <%= @customer.router.hazardous_goods? ? '' : 'router-option-disabled' %>">
+    <div id="router_options_hazardous_goods_input" class="form-group <%= @customer.router.try(&:hazardous_goods?) ? '' : 'router-option-disabled' %>">
       <label class="col-md-2 control-label" for="customer_router_options_hazardous_goods">
         <%= t('activerecord.attributes.customer.router_options_hazardous_goods') %>
       </label>
