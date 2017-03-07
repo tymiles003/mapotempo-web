@@ -49,6 +49,7 @@ class Vehicle < ActiveRecord::Base
 
   after_initialize :assign_defaults, :increment_max_vehicles, if: 'new_record?'
   before_create :create_vehicle_usage
+  before_save :nilify_router_options_blanks
   before_update :update_out_of_date
   before_destroy :destroy_vehicle
 
@@ -93,16 +94,12 @@ class Vehicle < ActiveRecord::Base
   end
 
   def default_router_options
+    default_router.options.select{ |k, v| ValueToBoolean.value_to_boolean(v) }.each do |key, value|
+      @current_router_options ||= {}
+      @current_router_options[key.to_s] = router_options[key.to_s] || customer.router_options[key.to_s]
+    end if !@current_router_options
+
     @current_router_options ||= {}
-
-    customer.router.options.select do |key, value|
-      option_value = router_options[key.to_s] || customer.router_options[key.to_s]
-      if ValueToBoolean.value_to_boolean(value) && option_value
-        @current_router_options[key.to_s] = option_value
-      end
-    end if @current_router_options.empty?
-
-    return @current_router_options
   end
 
   def default_speed_multiplicator
@@ -118,7 +115,7 @@ class Vehicle < ActiveRecord::Base
     @default_capacities ||= Hash[customer.deliverable_units.collect{ |du|
       [du.id, capacities && capacities[du.id] ? capacities[du.id] : du.default_capacity]
     }]
-    return @default_capacities
+    @default_capacities
   end
 
   def default_capacities?
@@ -155,6 +152,10 @@ class Vehicle < ActiveRecord::Base
     customer.plannings.each{ |planning|
       planning.vehicle_usage_add(h[planning.vehicle_usage_set])
     }
+  end
+
+  def nilify_router_options_blanks
+    write_attribute :router_options, self.router_options.delete_if{ |k, v| v.to_s.empty? }
   end
 
   def update_out_of_date

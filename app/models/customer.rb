@@ -66,7 +66,7 @@ class Customer < ActiveRecord::Base
   after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
   after_create :create_default_store, :create_default_vehicle_usage_set, :create_default_deliverable_unit
   before_update :update_out_of_date, :update_max_vehicles, :update_enable_multi_visits
-  before_save :sanitize_print_header
+  before_save :sanitize_print_header, :nilify_router_options_blanks
   before_save :devices_update_vehicles, prepend: true
 
   include RefSanitizer
@@ -341,6 +341,10 @@ class Customer < ActiveRecord::Base
 
   def sanitize_print_header
     self.print_header = Sanitize.fragment(print_header, Sanitize::Config::RELAXED)
+  end
+
+  def nilify_router_options_blanks
+    write_attribute :router_options, self.router_options.delete_if{ |k, v| v.to_s.empty? }
   end
 
   def destroy_disable_vehicle_usage_sets_validation

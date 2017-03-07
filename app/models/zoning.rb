@@ -182,7 +182,7 @@ class Zoning < ActiveRecord::Base
     end
 
     if router.method(what_qm).call && loc[0] && loc[1]
-      geom = router.method('compute_' + what.to_s).call(loc[0], loc[1], size, vehicle_usage ? vehicle_usage.vehicle.default_speed_multiplicator : customer.speed_multiplicator)
+      geom = router.method('compute_' + what.to_s).call(loc[0], loc[1], size, vehicle_usage ? vehicle_usage.vehicle.default_speed_multiplicator : customer.speed_multiplicator, (vehicle_usage ? vehicle_usage.vehicle.default_router_options : customer.router_options).symbolize_keys)
     end
     if geom
       zone = vehicle_usage && zones.to_a.find{ |zone| zone.vehicle_id == vehicle_usage.vehicle.id }
@@ -196,7 +196,7 @@ class Zoning < ActiveRecord::Base
   end
 
   def get_isodistance_name(size)
-    !@prefered_unit.nil? && @prefered_unit != 'km' ? (size / 1.609344).round(2).to_s + ' miles' : size.to_s + ' ' + ' km' 
+    !@prefered_unit.nil? && @prefered_unit != 'km' ? (size / 1.609344).round(2).to_s + ' miles' : size.to_s + ' ' + ' km'
   end
 
 end

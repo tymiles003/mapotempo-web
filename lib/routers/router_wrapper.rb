@@ -184,21 +184,21 @@ module Routers
 
     def params(mode, dimension, options)
       {
-          api_key: @api_key,
-          mode: mode,
-          dimension: dimension,
-          speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
-          area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
-          speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil,
-          motorway: options[:motorway],
-          toll: options[:toll],
-          trailers: options[:trailers],
-          weight: options[:weight],
-          weight_per_axle: options[:weight_per_axle],
-          height: options[:height],
-          width: options[:width],
-          length: options[:length],
-          hazardous_goods: options[:hazardous_goods]
+        api_key: @api_key,
+        mode: mode,
+        dimension: dimension,
+        speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
+        area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
+        speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil,
+        motorway: options[:motorway],
+        toll: options[:toll],
+        trailers: options[:trailers],
+        weight: options[:weight],
+        weight_per_axle: options[:weight_per_axle],
+        height: options[:height],
+        width: options[:width],
+        length: options[:length],
+        hazardous_goods: options[:hazardous_goods]
       }.compact
     end
   end
