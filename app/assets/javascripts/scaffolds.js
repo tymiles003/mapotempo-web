@@ -238,8 +238,8 @@ var routerOptionsSelect = function (selectId, params) {
     }
   };
 
-  var fieldsRouter = function (selectedValue) {
-    selectedValue = this.value || selectedValue;
+  var fieldsRouter = function (event, initialValue) {
+    var selectedValue = initialValue || $(this).val();
 
     var routerId = selectedValue.split('_')[0];
     var routerOptions = params.routers_options[routerId];
@@ -257,8 +257,8 @@ var routerOptionsSelect = function (selectId, params) {
     }
   };
 
-  fieldsRouter($(selectId).val(), true);
-  $(document).on('change', selectId, fieldsRouter);
+  fieldsRouter(null, $(selectId).val());
+  $(selectId).on('change', fieldsRouter);
 };
 
 if (!Math.round10) {
