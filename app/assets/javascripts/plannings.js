@@ -1486,6 +1486,8 @@ var plannings_edit = function(params) {
     });
 
     dropdownAutoDirection($('#planning').find('[data-toggle="dropdown"]'));
+
+    checkLockOperation();
   };
 
   var updatePlanning = function(data, options) {
