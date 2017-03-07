@@ -4,11 +4,11 @@ class RemovePreviousOptionsToRouters < ActiveRecord::Migration
     previous_router_options = {}
     Router.all.order(:id).each do |router|
       previous_router_options[router.id] = {
-          time: router.time,
-          distance: router.distance,
-          avoid_zones: router.avoid_zones,
-          isochrone: router.isochrone,
-          isodistance: router.isodistance
+          time: router[:time],
+          distance: router[:distance],
+          avoid_zones: router[:avoid_zones],
+          isochrone: router[:isochrone],
+          isodistance: router[:isodistance]
       }
     end
 
@@ -55,11 +55,11 @@ class RemovePreviousOptionsToRouters < ActiveRecord::Migration
     # Restore data into old columns
     previous_router_options.each do |routerId, options|
       router = Router.find(routerId)
-      router.time = options[:time]
-      router.distance = options[:distance]
-      router.avoid_zones = options[:avoid_zones]
-      router.isochrone = options[:isochrone]
-      router.isodistance = options[:isodistance]
+      router[:time] = options[:time]
+      router[:distance] = options[:distance]
+      router[:avoid_zones] = options[:avoid_zones]
+      router[:isochrone] = options[:isochrone]
+      router[:isodistance] = options[:isodistance]
       router.save!
     end
   end
