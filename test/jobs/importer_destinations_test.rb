@@ -416,4 +416,12 @@ class ImporterDestinationsTest < ActionController::TestCase
     end
   end
 
+  test 'should import without end or begin datetime' do
+    import_count = 3
+    assert_difference('Destination.count', import_count) do
+      import = ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_time_missing.csv', 'text.csv'))
+      import.import
+    end
+  end
+
 end

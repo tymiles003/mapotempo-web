@@ -1,0 +1,4 @@
+référence,nom,voie,complément,code postal,ville,lat,lng,tournée,livré,horaire début 1,horaire fin 1
+time,BF,87 RUE DES FLEURS,,13010,Marseille,43.28,5.39,1,"oui",08:00,12:00
+no_end_time,BF,87 RUE DES FLEURS,,13010,Marseille,43.28,5.39,1,"oui",08:00,
+no_begin_time,BF,87 RUE DES FLEURS,,13010,Marseille,43.28,5.39,1,"oui",,12:00
