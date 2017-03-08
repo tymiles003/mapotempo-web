@@ -86,11 +86,11 @@ class Vehicle < ActiveRecord::Base
   end
 
   def default_router
-    router || customer.router
+    self.router || customer.router
   end
 
   def default_router_dimension
-    router_dimension || customer.router_dimension
+    self.router_dimension || customer.router_dimension
   end
 
   def default_router_options

@@ -73,12 +73,12 @@
 
           <div class="col-md-6 input-append form-inline">
             <label>
-              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_yes" value="true" <%= ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['motorway']) ? 'checked' : '' %>/>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_yes" value="true" <%= @vehicle_usage.vehicle.default_router_options['motorway'] == 'false' ? '' : 'checked' %>/>
               <%= t('customers.form.router_options_motorway_yes') %>
             </label>
 
             <label>
-              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_no" value="false" <%= !ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['motorway']) ? 'checked' : '' %>/>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_no" value="false" <%= @vehicle_usage.vehicle.default_router_options['motorway'] == 'false' ? 'checked' : '' %>/>
               <%= t('customers.form.router_options_motorway_no') %>
             </label>
           </div>
@@ -91,12 +91,12 @@
 
           <div class="col-md-6 input-append form-inline">
             <label>
-              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_yes" value="true" <%= ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['toll']) ? 'checked' : '' %>/>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_yes" value="true" <%= @vehicle_usage.vehicle.default_router_options['toll'] == 'false' ? '' : 'checked' %>/>
               <%= t('customers.form.router_options_toll_yes') %>
             </label>
 
             <label>
-              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_no" value="false" <%= !ValueToBoolean.value_to_boolean(@vehicle_usage.vehicle.default_router_options['toll']) ? 'checked' : '' %>/>
+              <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_no" value="false" <%= @vehicle_usage.vehicle.default_router_options['toll'] == 'false' ? 'checked' : '' %>/>
               <%= t('customers.form.router_options_toll_no') %>
             </label>
           </div>

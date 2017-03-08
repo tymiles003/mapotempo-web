@@ -55,12 +55,12 @@
 
       <div class="col-md-6 input-append form-inline">
         <label>
-          <input type="radio" name="customer[router_options][motorway]" id="customer_router_options_motorway_yes" value="true" <%= @customer.motorway?  ? 'checked' : '' %>/>
+          <input type="radio" name="customer[router_options][motorway]" id="customer_router_options_motorway_yes" value="true" <%= @customer.router_options['motorway'] == 'false' ? '' : 'checked' %>/>
           <%= t('customers.form.router_options_motorway_yes') %>
         </label>
 
         <label>
-          <input type="radio" name="customer[router_options][motorway]" id="customer_router_options_motorway_no" value="false" <%= !@customer.motorway?  ? 'checked' : '' %>/>
+          <input type="radio" name="customer[router_options][motorway]" id="customer_router_options_motorway_no" value="false" <%= @customer.router_options['motorway'] == 'false' ? 'checked' : '' %>/>
           <%= t('customers.form.router_options_motorway_no') %>
         </label>
       </div>
@@ -73,12 +73,12 @@
 
       <div class="col-md-6 input-append form-inline">
         <label>
-          <input type="radio" name="customer[router_options][toll]" id="customer_router_options_toll_yes" value="true" <%= @customer.toll?  ? 'checked' : '' %>/>
+          <input type="radio" name="customer[router_options][toll]" id="customer_router_options_toll_yes" value="true" <%= @customer.router_options['toll'] == 'false' ? '' : 'checked' %>/>
           <%= t('customers.form.router_options_toll_yes') %>
         </label>
 
         <label>
-          <input type="radio" name="customer[router_options][toll]" id="customer_router_options_toll_no" value="false" <%= !@customer.toll?  ? 'checked' : '' %>/>
+          <input type="radio" name="customer[router_options][toll]" id="customer_router_options_toll_no" value="false" <%= @customer.router_options['toll'] == 'false' ? 'checked' : '' %>/>
           <%= t('customers.form.router_options_toll_no') %>
         </label>
       </div>
