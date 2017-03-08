@@ -9,12 +9,6 @@ class Admin::ResellersControllerTest < ActionController::TestCase
     sign_in users(:user_admin)
   end
 
-  test 'should get new' do
-    get :new
-    assert_response :success
-    assert_valid response
-  end
-
   test 'should get edit' do
     get :edit, id: @reseller
     assert_response :success
