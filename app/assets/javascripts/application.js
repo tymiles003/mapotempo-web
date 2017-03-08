@@ -27,7 +27,8 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery3
+// FIXME: jQuery 3 not working with pnotify
+//= require jquery2
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require twitter/bootstrap

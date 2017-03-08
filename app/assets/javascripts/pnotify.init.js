@@ -40,17 +40,11 @@ var isWindowVisible = (function () {
   }
 })();
 
-var notificationCalled = false;
-
 (function () {
   'use strict';
 
   function notify(status, message, options) {
     var notification = function () {
-      if (notificationCalled) {
-        return;
-      }
-
       new PNotify($.extend({
         text: message,
         type: status,
@@ -63,16 +57,14 @@ var notificationCalled = false;
           closer: true
         }
       }, options));
-
-      notificationCalled = true;
     };
 
     if (isWindowVisible()) {
-      $(notification);
+      notification();
     } else {
       isWindowVisible(function () {
         if (isWindowVisible()) {
-          $(notification);
+          notification();
         }
       });
     }
