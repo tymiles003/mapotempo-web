@@ -3,24 +3,49 @@
   <%= f.text_field :host, required: true do %>
     <p class="help-block"><%= t '.host_help' %></p>
   <% end %>
+
+  <div class="form-group">
+    <label class="col-md-2 control-label" for="reseller_url_protocol_http">
+      <%= t('activerecord.attributes.reseller.url_protocol') %>
+    </label>
+
+    <div class="col-md-6 input-append form-inline">
+      <label>
+        <input type="radio" name="reseller[url_protocol]" id="reseller_url_protocol_http" value="http" <%= @reseller.url_protocol == 'http' ? 'checked' : '' %>/>
+        <%= t('admin.resellers.form.protocol_url_http') %>
+      </label>
+
+      <label>
+        <input type="radio" name="reseller[url_protocol]" id="reseller_url_protocol_https" value="https" <%= @reseller.url_protocol == 'https' ? 'checked' : '' %>/>
+        <%= t('admin.resellers.form.protocol_url_https') %>
+      </label>
+    </div>
+  </div>
+
   <%= f.text_field :name, required: true do %>
     <p class="help-block"><%= t '.name_help' %></p>
   <% end %>
+
   <%= f.text_field :welcome_url do %>
     <p class="help-block"><%= t '.welcome_url_help' %></p>
   <% end %>
+
   <%= f.text_field :help_url do %>
     <p class="help-block"><%= t '.help_url_help' %></p>
   <% end %>
+
   <%= f.text_field :contact_url do %>
     <p class="help-block"><%= t '.contact_url_help' %></p>
   <% end %>
+
   <%= f.text_field :website_url do %>
     <p class="help-block"><%= t '.website_url_help' %></p>
   <% end %>
+
   <%= f.file_field :logo_large do %>
     <p class="help-block"><%= t '.logo_large_help' %></p>
   <% end %>
+
   <% if @reseller.logo_large.url %>
     <div class="form-group">
       <div class="col-md-offset-2 col-md-6">
@@ -28,9 +53,11 @@
       </div>
     </div>
   <% end %>
+
   <%= f.file_field :logo_small do %>
     <p class="help-block"><%= t '.logo_small_help' %></p>
   <% end %>
+
   <% if @reseller.logo_small.url %>
     <div class="form-group">
       <div class="col-md-offset-2 col-md-6">
@@ -38,9 +65,11 @@
       </div>
     </div>
   <% end %>
+
   <%= f.file_field :favicon do %>
     <p class="help-block"><%= t '.favicon_help' %></p>
   <% end %>
+
   <% if @reseller.favicon.url %>
     <div class="form-group">
       <div class="col-md-offset-2 col-md-6">
@@ -48,6 +77,7 @@
       </div>
     </div>
   <% end %>
+
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>
