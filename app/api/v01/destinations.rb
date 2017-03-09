@@ -105,7 +105,7 @@ class V01::Destinations < Grape::API
       nickname: 'importDestinations',
       is_array: true,
       success: V01::Entities::Destination
-    params {
+    params do
       optional(:replace, type: Boolean)
       optional(:planning, type: Hash, desc: 'Planning definition in case of planning created in the same time of destinations import. Planning is created if "route" field is provided in CVS or Json.') do
         optional(:name, type: String)
@@ -115,10 +115,16 @@ class V01::Destinations < Grape::API
         optional(:zoning_ids, type: Array[Integer], desc: 'If a new zoning is specified before planning save, all visits will be affected to vehicles specified in zones.')
       end
       optional(:file, type: Rack::Multipart::UploadedFile, desc: 'CSV file, encoding, separator and line return automatically detected, with localized CSV header according to HTTP header Accept-Language.', documentation: {param_type: 'form'})
-      optional(:destinations, type: Array[V01::Entities::DestinationImportJson], desc: 'In mutual exclusion with CSV file upload and remote.')
       optional(:remote, type: Symbol, values: [:tomtom])
       at_least_one_of :file, :destinations, :remote
-    }
+      optional(:destinations, type: Array, desc: 'In mutual exclusion with CSV file upload and remote.') do
+        optional(:visits, type: Array, desc: '') do
+          optional(:route, type: String, desc: 'Route reference. If route reference is specified, a new planning will be created with a route using the specified reference')
+          optional(:ref_vehicle, type: String, desc: 'Vehicle reference. If vehicle reference is specified, a new planning will be created with a route using the vehicle with specified reference')
+          optional(:active, type: Boolean, desc: 'In order to specify is stop is active in planning or not')
+        end
+      end
+    end
     put do
       if params[:planning]
         if params[:planning][:vehicle_usage_set_id]
