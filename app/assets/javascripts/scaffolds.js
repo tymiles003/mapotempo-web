@@ -206,11 +206,55 @@ var dropdownAutoDirection = function ($updatedElement) {
 
     // Dropdown auto position
     var $parent = $(this).parent();
-    if (!$($parent).hasClass('nav')) {
-      var itemHeight = parseInt($parent.css('height'), 10);
-      var itemsSize = $parent.find('li').length;
 
-      if ( $(window).scrollTop() + $(window).height() - $parent.offset().top < itemHeight * itemsSize) {
+    if (!$($parent).hasClass('nav')) {
+      var $window = $(window);
+      var $dropdown = $(this).children('.dropdown-menu');
+
+      var newDirection = null;
+
+      var position = $parent.position();
+      var offset = $parent.offset();
+
+      offset.bottom = offset.top + $parent.outerHeight(false);
+
+      var container = {
+        height: $parent.outerHeight(false)
+      };
+
+      container.top = offset.top;
+      container.bottom = offset.top + container.height;
+
+      var dropdown = {
+        height: $dropdown.find('li').outerHeight(false) * $dropdown.find('li').length
+      };
+
+      var viewport = {
+        top: $window.scrollTop(),
+        bottom: $window.scrollTop() + $window.height()
+      };
+
+      var enoughRoomAbove = viewport.top < (offset.top - dropdown.height);
+      var enoughRoomBelow = viewport.bottom > (offset.bottom + dropdown.height);
+
+      newDirection = 'below';
+
+      if (!enoughRoomBelow && enoughRoomAbove) {
+        newDirection = 'above';
+      } else if (!enoughRoomAbove && enoughRoomBelow) {
+        newDirection = 'below';
+      }
+
+      // var css = {
+      //   left: offset.left,
+      //   top: container.bottom
+      // };
+      //
+      // if (newDirection == 'above') {
+      //   css.top = container.top - dropdown.height;
+      // }
+
+      if (newDirection == 'above') {
         if ($parent.hasClass('dropdown')) $parent.removeClass('dropdown');
         if (!$parent.hasClass('dropup')) $parent.addClass('dropup');
       } else {
