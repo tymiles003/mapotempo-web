@@ -16,4 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 module VehiclesHelper
+  def current_router_options(vehicle)
+    router_options = {}
+    (vehicle.customer.router.options.merge(vehicle.router.try(:options) || {})).each do |key, value|
+      router_options[key.to_s] = vehicle.router_options[key.to_s] || vehicle.customer.router_options[key.to_s]
+    end
+    return router_options
+  end
 end

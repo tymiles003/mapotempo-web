@@ -155,7 +155,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def nilify_router_options_blanks
-    write_attribute :router_options, self.router_options.delete_if{ |k, v| v.to_s.empty? }
+    write_attribute :router_options, self.router_options.delete_if { |k, v| v.to_s.empty? }
   end
 
   def update_out_of_date
