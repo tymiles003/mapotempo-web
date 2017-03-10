@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.5
--- Dumped by pg_dump version 9.5.5
+-- Dumped from database version 9.5.6
+-- Dumped by pg_dump version 9.5.6
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -822,7 +822,7 @@ CREATE TABLE users (
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
     time_zone character varying DEFAULT 'UTC'::character varying NOT NULL,
-    prefered_unit character varying
+    prefered_unit character varying DEFAULT 'km'::character varying
 );
 
 
@@ -1614,6 +1614,13 @@ CREATE INDEX index_customers_on_job_optimizer_id ON customers USING btree (job_o
 --
 
 CREATE INDEX index_customers_on_job_store_geocoding_id ON customers USING btree (job_store_geocoding_id);
+
+
+--
+-- Name: index_customers_on_router_options; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_customers_on_router_options ON customers USING gin (router_options);
 
 
 --
@@ -2573,4 +2580,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170223120120');
 INSERT INTO schema_migrations (version) VALUES ('20170224144324');
 
 INSERT INTO schema_migrations (version) VALUES ('20170227095939');
+
+INSERT INTO schema_migrations (version) VALUES ('20170310101048');
 
