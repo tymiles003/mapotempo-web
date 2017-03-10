@@ -194,6 +194,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     }
 
     if (delayedJob.attempts) {
+      isProgressing = true;
       $(".dialog-attempts-number", dialog).html(delayedJob.attempts);
       $(".dialog-attempts", dialog).show();
     } else {
@@ -204,6 +205,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       if (errorCallback) {
         errorCallback();
       }
+      isProgressing = true;
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
       unfreezeProgressDialog(dialog, delayedJob, url, callback);
