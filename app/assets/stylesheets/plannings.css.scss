@@ -225,6 +225,10 @@ $sidebar-margins: 10px;
           white-space: nowrap;
         }
       }
+
+      ul.dropdown-menu {
+        max-width: $sidebar-width - 100px;
+      }
     }
   }
 
