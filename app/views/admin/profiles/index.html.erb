@@ -26,7 +26,7 @@
           <ul>
           <% profile.routers.each { |router| %>
             <li>
-              <%= router.name %>
+              <%= router.translated_name %>
               <% if router.time? %>
                 <i class="fa fa-clock-o" title="<%= t 'activerecord.attributes.router.router_dimensions.time' %>"></i>
               <% end %>
