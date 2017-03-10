@@ -98,7 +98,7 @@ class V01::RoutesTest < V01::RoutesBaseTest
     assert_no_difference('Stop.count') do
       r = routes(:route_three_one)
       patch api(@route.planning.id, "#{r.id}/visits/moves"), visit_ids: [visits(:visit_two).id, visits(:visit_one).id]
-      assert_equal 204, last_response.status, last_response.body
+      assert_equal 200, last_response.status, last_response.body
       stops_visit = r.stops.select{ |s| s.is_a? StopVisit }
       assert_equal visits(:visit_two).ref, stops_visit[0].visit.ref
       assert_equal visits(:visit_one).ref, stops_visit[1].visit.ref
@@ -179,14 +179,12 @@ class V01::RoutesTest < V01::RoutesBaseTest
     assert_equal Time.parse('2015-10-10T00:00:30 -1000'), stops[0]['time']
   end
 
-  test 'should not return route because IDs are invalid' do
-    get '/api/0.1/plannings/Abcd/routes_by_vehicle/test1111.json?api_key=testkey1'
-    assert_equal(404, last_response.status)
-  end
-
   test 'should not return route because not found' do
-    get '/api/0.1/plannings/1234/routes_by_vehicle/1234.json?api_key=testkey1'
-    assert_equal(404, last_response.status)
+    ["/api/0.1/plannings/1234/routes_by_vehicle/#{@route.id}.json?api_key=testkey1",
+      "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/1234.json?api_key=testkey1"].each do |url|
+      get url
+      assert_equal(404, last_response.status)
+    end
   end
 
   test 'should update stops order' do

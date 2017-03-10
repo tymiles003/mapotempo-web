@@ -27,6 +27,16 @@ class V01::Routes < Grape::API
       p.permit(:hidden, :locked, :ref, :color)
     end
 
+    def _route
+      unless @route
+        planning_id = ParseIdsRefs.read(params[:planning_id])
+        id          = ParseIdsRefs.read(params[:id])
+        planning    = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
+        r           = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
+      end
+      @route ||= r
+    end
+
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
 
@@ -44,15 +54,12 @@ class V01::Routes < Grape::API
           use :params_from_entity, entity: V01::Entities::Route.documentation.slice(:hidden, :locked, :color)
         end
         put ':id' do
-          planning_id = ParseIdsRefs.read(params[:planning_id])
-          id = ParseIdsRefs.read(params[:id])
-          route = current_customer.plannings.where(planning_id).first!.routes.where(id).first!
-          route.update! route_params
-          present route, with: V01::Entities::Route
+          _route.update! route_params
+          present(_route, with: V01::Entities::Route)
         end
 
         desc 'Change stops activation.',
-          detail: 'Allow to activate/deactivate a stop in a planning\'s route.',
+          detail: 'Allow to activate/deactivate all stops in a planning\'s route.',
           nickname: 'activationStops',
           success: V01::Entities::Route
         params do
@@ -60,13 +67,9 @@ class V01::Routes < Grape::API
           requires :active, type: String, values: ['all', 'reverse', 'none']
         end
         patch ':id/active/:active' do
-          planning_id = ParseIdsRefs.read(params[:planning_id])
-          planning = current_customer.plannings.where(planning_id).first!
-          id = ParseIdsRefs.read(params[:id])
-          route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
-          if route && route.active(params[:active].to_s.to_sym) && route.compute! && planning.save!
-            present(route, with: V01::Entities::Route)
-          end
+          _route.active(params[:active].to_s.to_sym) && _route.compute
+          _route.save!
+          present(_route, with: V01::Entities::Route)
         end
 
         desc 'Move visit(s) to route. Append in order at end if automatic_insert is false.',
@@ -78,25 +81,14 @@ class V01::Routes < Grape::API
           optional :automatic_insert, type: Boolean, desc: 'If true, the best index in the route is automatically computed to have minimum impact on total route distance (without taking into account constraints like open/close, you have to start a new optimization if needed).'
         end
         patch ':id/visits/moves' do
-          planning_id = ParseIdsRefs.read(params[:planning_id])
-          planning = current_customer.plannings.find{ |planning| planning_id[:ref] ? planning.ref == planning_id[:ref] : planning.id == planning_id[:id] }
-          id = ParseIdsRefs.read(params[:id])
-          route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
           visits = current_customer.visits.select{ |visit| params[:visit_ids].any?{ |s| ParseIdsRefs.match(s, visit) } }
           visits_ordered = []
           params[:visit_ids].each{ |s| visits_ordered << visits.find{ |visit| ParseIdsRefs.match(s, visit) } }
-
-          if route && planning && !visits_ordered.empty?
+          unless visits_ordered.empty?
             Planning.transaction do
-              visits_ordered.each{ |visit|
-                planning.move_visit(route, visit, params[:automatic_insert] ? nil : -1)
-              }
-              planning.save!
+              visits_ordered.each{ |visit| _route.planning.move_visit(_route, visit, params[:automatic_insert] ? nil : -1) }
+              _route.planning.save!
             end
-
-            status 204
-          else
-            status 400
           end
         end
 
@@ -109,15 +101,13 @@ class V01::Routes < Grape::API
           optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
         end
         patch ':id/optimize' do
-          planning_id = ParseIdsRefs.read(params[:planning_id])
-          route = current_customer.plannings.where(planning_id).first!.routes.find{ |r| ParseIdsRefs.match(params[:id], r) }
           begin
-            if !Optimizer.optimize(route.planning, route, false, params[:synchronous])
+            if !Optimizer.optimize(_route.planning, _route, false, params[:synchronous])
               status 304
             else
-              route.planning.customer.save!
+              _route.planning.customer.save!
               if params[:details]
-                present route, with: V01::Entities::Route
+                present _route, with: V01::Entities::Route
               else
                 status 204
               end
@@ -135,11 +125,9 @@ class V01::Routes < Grape::API
           requires :id, type: String, desc: ID_DESC
         end
         patch ':id/reverse_order' do
-          id = ParseIdsRefs.read params[:planning_id]
-          planning = current_customer.plannings.where(id).first!
-          route = planning.routes.find{ |r| ParseIdsRefs.match(params[:id], r) } and route.reverse_order && route.compute!
-          route.save!
-          present route, with: V01::Entities::Route
+          _route and _route.reverse_order && _route.compute
+          _route.save!
+          present _route, with: V01::Entities::Route
         end
       end
 
@@ -148,16 +136,17 @@ class V01::Routes < Grape::API
           nickname: 'getRouteByVehicle',
           success: V01::Entities::Route
         params do
-          requires :planning_id, type: String, desc: ID_DESC
           requires :id, type: String, desc: 'ID / Ref (ref:abcd) of the VEHICLE attached to the Route'
         end
         get ':id' do
-          planning_id = ParseIdsRefs.read params[:planning_id]
+          planning_id, id = ParseIdsRefs.read(params[:planning_id]), ParseIdsRefs.read(params[:id])
           planning = current_customer.plannings.find_by! planning_id
-          route = planning.routes.detect{ |route| route.vehicle_usage && ParseIdsRefs.match(params[:id], route.vehicle_usage.vehicle) }
+          vehicle = current_customer.vehicles.find_by! id
+          route = planning.routes.find{ |route| route.vehicle_usage && route.vehicle_usage.vehicle == vehicle }
           present route, with: V01::Entities::Route
         end
       end
     end
   end
 end
+

@@ -179,13 +179,11 @@ class Planning < ActiveRecord::Base
 
   def move_visit(route, visit, index)
     stop = nil
-    routes.find{ |route|
-      route.stops.find{ |s|
-        if s.is_a?(StopVisit) && s.visit == visit
-          stop = s
-        end
-      }
-    }
+    routes.find do |route|
+      route.stops.find{ |s| stop = s if s.is_a?(StopVisit) && s.visit == visit }
+    end
+
+    # stop = Stop.where(route_id: self.routes.ids, visit_id: visit.id, type: 'StopVisit')
     if stop
       move_stop(route, stop, index)
     end
