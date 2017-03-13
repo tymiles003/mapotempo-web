@@ -1618,13 +1618,6 @@ CREATE INDEX index_customers_on_job_store_geocoding_id ON customers USING btree 
 
 
 --
--- Name: index_customers_on_router_options; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_customers_on_router_options ON customers USING gin (router_options);
-
-
---
 -- Name: index_deliverable_units_on_customer_id; Type: INDEX; Schema: public; Owner: -
 --
 
