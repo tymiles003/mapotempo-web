@@ -4,7 +4,10 @@
 <%= render 'form' %>
 
 <%
-controller.js(
-  admin: true
-)
+  routers = Router.all
+
+  controller.js(
+    admin: true,
+    routers_options: Hash[routers.collect { |r| [r.id, r.options] }]
+  )
 %>
