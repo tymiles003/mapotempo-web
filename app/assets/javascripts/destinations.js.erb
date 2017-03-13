@@ -484,7 +484,12 @@ var destinations_index = function(params, api) {
   }).addTo(map);
 
   var markers = {};
-  var markersLayers = L.featureGroup();
+  var markersLayers = new L.MarkerClusterGroup({
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      spiderfyDistanceMultiplier: 4
+  });
 
   var cluster = new L.MarkerClusterGroup({
     showCoverageOnHover: false
@@ -769,14 +774,13 @@ var destinations_index = function(params, api) {
 
   var over = function(id, move) {
     if (icon_over_stack.indexOf(id) != -1)
-      move = false;
-
+      return;
     // clean over
     $('.destination').removeClass('highlight');
     var i;
     while (i = icon_over_stack.pop()) {
       if (i in markers) {
-        markers[i].setIcon(icon_default);
+        markers[i].setIcon(icon_default).setZIndexOffset(1);
       }
     }
 
@@ -788,6 +792,10 @@ var destinations_index = function(params, api) {
         }
       }
       markers[id].setIcon(icon_over);
+      // Ensure that markers on the very same position are still visible
+      var cluster = markersLayers.getVisibleParent(markers[id]);
+      if ("getChildCount" in cluster) cluster.spiderfy();
+      markers[id].setIcon(icon_over).setZIndexOffset(100);
       icon_over_stack.push(id);
     }
     var row = $('[data-destination_id=' + id + ']');
