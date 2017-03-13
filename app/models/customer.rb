@@ -326,13 +326,15 @@ class Customer < ActiveRecord::Base
             destination.tag_ids = []
           }
         else
-          self.destinations.select(&:present?).each{ |destination|
-            destination.ref = destination.visits[0].ref
-            destination.tags = destination.visits[0].tags # ?
-            destination.visits.each{ |visit|
-              visit.ref = nil
-              visit.tag_ids = []
-            }
+          self.destinations.each{ |destination|
+            if destination.visits.size > 0
+              destination.ref = destination.visits[0].ref
+              destination.tags = destination.visits[0].tags # ?
+              destination.visits.each{ |visit|
+                visit.ref = nil
+                visit.tag_ids = []
+              }
+            end
           }
         end
       end
