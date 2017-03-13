@@ -1702,6 +1702,7 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
       close: "Fermer"
     placeholder_filter: "filtrer"
     help_menu: "Aide"
+    help_search_placeholder: "Termes à rechercher..."
     help: "Aide en ligne"
     contact: "Contacter le support"
     choose_file: "Sélectionner fichier"

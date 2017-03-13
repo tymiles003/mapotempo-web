@@ -28,4 +28,8 @@ class Reseller < ActiveRecord::Base
   mount_uploader :logo_large, Admin::LogoLargeUploader
   mount_uploader :logo_small, Admin::LogoSmallUploader
   mount_uploader :favicon, Admin::FaviconUploader
+
+  def help_search_url
+    nil
+  end
 end

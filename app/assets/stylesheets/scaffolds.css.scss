@@ -29,6 +29,8 @@
 $navbar-height: 50px;
 $sidebar-width: 350px;
 $sidebar-margins: 10px;
+$focus-background-color: #89C53F;
+$focus-font-color: white;
 
 body {
   background-color: #fff;
@@ -428,4 +430,12 @@ span.color[data-color=''][data-selected]:after {
 }
 #customised_plus_color{
   color: #428bca;
+}
+
+.help {
+  background-color: $focus-background-color;
+  > a {
+    color: $focus-font-color !important;
+    font-weight: bold;
+  }
 }

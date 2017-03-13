@@ -1702,6 +1702,7 @@ or copy/paste following url in your browser : %{l} </p>\n
       close: "Close"
     placeholder_filter: "filter"
     help_menu: "Help"
+    help_search_placeholder: "Keywords to search..."
     help: "Online help"
     contact: "Contact support"
     choose_file: "Choose file"
