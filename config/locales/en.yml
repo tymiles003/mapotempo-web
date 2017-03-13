@@ -1041,6 +1041,7 @@ or copy/paste following url in your browser : %{l} </p>\n
     index:
       title: "Listing plans"
       new: "New Plan"
+      export_selection: "Export selection"
       export:
         icalendar: "Calendar iCal"
         icalendar_email: "Calendar iCal by E-Mail"

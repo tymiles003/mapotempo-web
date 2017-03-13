@@ -1041,6 +1041,7 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
     index:
       title: "Liste plannings"
       new: "Nouveau planning"
+      export_selection: "Exporter sélection"
       export:
         icalendar: "Agenda iCal"
         icalendar_email: "Agenda iCal par email"

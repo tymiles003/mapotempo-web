@@ -55,7 +55,7 @@
   <%= button_tag type: :submit, class: "btn btn-danger btn-sm form-group", data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %><% end %>
   <div class="dropdown form-group">
     <button id="btn-export" class="btn btn-sm btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-      <i class="fa fa-share-square-o fa-fw"></i> <span class="caret"></span>
+      <i class="fa fa-share-square-o fa-fw"></i> <%= t('.export_selection') %> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
       <li>
