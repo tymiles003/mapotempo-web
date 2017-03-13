@@ -122,17 +122,27 @@ var destinations_form = function(params, api) {
         if (event.currentTarget.name.match(/\[lat\]|\[lng\]$/)) {
           var latChg = $(":input[id$=_lat]").val(),
             lngChg = $(":input[id$=_lng]").val();
-          if (destination_id in markers) {
-            markers[destination_id].setLatLng(new L.LatLng(latChg, lngChg));
-          } else {
-            addMarker(destination_id, latChg, lngChg);
-          }
-          if (move) {
-            if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
-              map.setView(markers[destination_id].getLatLng(), 16);
+          if (!latChg || !lngChg) {
+            if (destination_id in markers) {
+              map.removeLayer(markers[destination_id]);
+              delete markers[destination_id];
             }
+            $('#no_geocoding_accuracy').show();
+            $('#geocoding-level').hide();
           }
-          displayGeocoding(0, null, 'point');
+          else {
+            if (destination_id in markers) {
+              markers[destination_id].setLatLng(new L.LatLng(latChg, lngChg));
+            } else {
+              addMarker(destination_id, latChg, lngChg);
+            }
+            if (move) {
+              if (map.getZoom() != 16 || !map.getBounds().contains(markers[destination_id].getLatLng())) {
+                map.setView(markers[destination_id].getLatLng(), 16);
+              }
+            }
+            displayGeocoding(0, null, 'point');
+          }
         }
         return;
       }
@@ -219,6 +229,10 @@ var destinations_form = function(params, api) {
           map.setView(markers[destination_id].getLatLng(), 16);
         }
       }
+    }
+    else if (destination_id in markers) {
+      map.removeLayer(markers[destination_id]);
+      delete markers[destination_id];
     }
     if (destination.street || destination.postalcode || destination.city) {
       if (destination.geocoding_accuracy) {
@@ -726,7 +740,9 @@ var destinations_index = function(params, api) {
             map.setView(markers[destination_id].getLatLng(), 16);
           }
         }
-      } else {
+      } else if (destination_id in markers) {
+        markersLayers.removeLayer(markers[destination_id]);
+        cluster.removeLayer(markers[destination_id]);
         delete markers[destination_id];
       }
       if ($('tr.highlight').length == 0)
