@@ -344,7 +344,8 @@ class Customer < ActiveRecord::Base
   end
 
   def nilify_router_options_blanks
-    write_attribute :router_options, self.router_options.delete_if{ |k, v| v.to_s.empty? }
+    true_options = router.options.select { |o, v| v == 'true' }.keys
+    write_attribute :router_options, self.router_options.delete_if { |k, v| v.to_s.empty? || true_options.exclude?(k) }
   end
 
   def destroy_disable_vehicle_usage_sets_validation

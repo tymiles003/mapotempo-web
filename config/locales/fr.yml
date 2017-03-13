@@ -313,6 +313,7 @@ fr:
           time: "Au plus rapide"
           distance: "Au plus court"
         options:
+          hazardous_goods_none: "Aucune"
           hazardous_goods:
             explosive: "Explosif"
             gas: "Gaz"
@@ -678,10 +679,10 @@ fr:
       router_options_default: "%{n} (valeur par défaut)"
       router_options_motorway_yes: "Oui"
       router_options_motorway_no: "Non"
-      router_options_motorway_default: "Par défaut"
+      router_options_motorway_default: "Par défaut (%{value})"
       router_options_toll_yes: "Oui"
       router_options_toll_no: "Non"
-      router_options_toll_default: "par défaut"
+      router_options_toll_default: "par défaut (%{value})"
       router_options_trailers_range: "Entre %{from} et %{to} remorques"
       router_options_weight_range: "Poids (avec remorques et marchandises) entre %{from} et %{to} tonnes"
       router_options_weight_per_axle_range: "Poids par essieu entre %{from} et %{to} tonnes"

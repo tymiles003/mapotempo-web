@@ -84,7 +84,7 @@
 
             <label class="pull-right">
               <input type="radio" name="vehicle_usage[vehicle][router_options][motorway]" id="vehicle_usage_vehicle_router_options_motorway_default" value="" <%= @vehicle_usage.vehicle.router_options['motorway'].nil? && 'checked' %>/>
-              <%= t('customers.form.router_options_motorway_default') %>
+              <%= t('customers.form.router_options_motorway_default', value: @vehicle_usage.vehicle.customer.router_options['motorway'] == 'false' ? t('customers.form.router_options_motorway_no') : t('customers.form.router_options_motorway_yes')) %>
             </label>
           </div>
         </div>
@@ -107,7 +107,7 @@
 
             <label class="pull-right">
               <input type="radio" name="vehicle_usage[vehicle][router_options][toll]" id="vehicle_usage_vehicle_router_options_toll_default" value="" <%= @vehicle_usage.vehicle.router_options['toll'].nil? && 'checked' %>/>
-              <%= t('customers.form.router_options_toll_default') %>
+              <%= t('customers.form.router_options_toll_default', value: @vehicle_usage.vehicle.customer.router_options['toll'] == 'false' ? t('customers.form.router_options_toll_no') : t('customers.form.router_options_toll_yes')) %>
             </label>
           </div>
         </div>
@@ -202,7 +202,7 @@
           </label>
 
           <div class="col-md-6">
-            <%= select_tag 'vehicle_usage[vehicle][router_options][hazardous_goods]', options_for_select(t('activerecord.attributes.router.options.hazardous_goods').invert, current_router_options(@vehicle_usage.vehicle)['hazardous_goods']), include_blank: true, class: 'form-control' %>
+            <%= select_tag 'vehicle_usage[vehicle][router_options][hazardous_goods]', options_for_select(t('activerecord.attributes.router.options.hazardous_goods').invert, current_router_options(@vehicle_usage.vehicle)['hazardous_goods']), include_blank: t('vehicles.form.router.default') + ' (' + (!!@vehicle_usage.vehicle.customer.hazardous_goods ? t("activerecord.attributes.router.options.hazardous_goods.#{@vehicle_usage.vehicle.customer.hazardous_goods}") : t('activerecord.attributes.router.options.hazardous_goods_none')) + ')', class: 'form-control' %>
           </div>
         </div>
 

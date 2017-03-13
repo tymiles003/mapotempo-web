@@ -313,6 +313,7 @@ en:
           time: "Fastest"
           distance: "Shortest"
         options:
+          hazardous_goods_none: "None"
           hazardous_goods:
             explosive: "Explosive"
             gas: "Gas"
