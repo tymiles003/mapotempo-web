@@ -157,7 +157,7 @@ class OptimizerWrapper
           if result['job']['avancement'] == 'No solution provided'
             raise NoSolutionFoundError.new
           else
-            raise RuntimeError.new(result['job']['avancement'] || 'Optimizer return unknow error')
+            raise RuntimeError.new(result['job']['avancement'] || 'Optimizer return unknown error')
           end
         end
       end

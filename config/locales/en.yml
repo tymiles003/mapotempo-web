@@ -1227,6 +1227,7 @@ or copy/paste following url in your browser : %{l} </p>\n
           routes: "Routes"
           attempts: "Attempts:"
           inqueue: "Optimization task queued"
+          no_solution: "No solution found for your problem"
           error: "Compute fail."
         orange:
           title: "Orange Fleet Performance"

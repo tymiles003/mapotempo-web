@@ -1227,6 +1227,7 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
           routes: "Tournées"
           attempts: "Tentatives :"
           inqueue: "Tâche d'optimisation en file d'attente"
+          no_solution: "Pas de solution trouvée pour votre problème"
           error: "Impossible d'effectuer le calcul."
         orange:
           title: "Orange Fleet Performance"

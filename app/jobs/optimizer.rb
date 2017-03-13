@@ -46,16 +46,24 @@ class Optimizer
       routes = planning.routes.select{ |r|
         (route && r.id == route.id) || (!route && !global && r.vehicle_usage && r.size_active > 1) || (!route && global)
       }.reject(&:locked)
-      optimum = !routes.select(&:vehicle_usage).empty? && planning.optimize(routes, global) { |positions, services, vehicles|
-        Mapotempo::Application.config.optimize.optimize(
-          positions, services, vehicles,
-          optimize_time: @@optimize_time_force || (optimize_time ? optimize_time * 1000 : nil),
-          stop_soft_upper_bound: planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound,
-          vehicle_soft_upper_bound: planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound,
-          cluster_threshold: planning.customer.optimization_cluster_size || @@optimization_cluster_size,
+      optimum = unless routes.select(&:vehicle_usage).empty?
+                  begin
+                    planning.optimize(routes, global) do |positions, services, vehicles|
+                      Mapotempo::Application.config.optimize.optimize(
+                          positions, services, vehicles,
+                          optimize_time: @@optimize_time_force || (optimize_time ? optimize_time * 1000 : nil),
+                          stop_soft_upper_bound: planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound,
+                          vehicle_soft_upper_bound: planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound,
+                          cluster_threshold: planning.customer.optimization_cluster_size || @@optimization_cluster_size,
           cost_waiting_time: planning.customer.cost_waiting_time || @@cost_waiting_time
-        )
-      }
+                      )
+                    end
+                  rescue NoSolutionFoundError => e
+                    planning.errors[:base] = I18n.t('plannings.edit.dialog.optimizer.no_solution')
+                    false
+                  end
+      end
+
       if optimum
         planning.set_stops(routes, optimum)
         routes.each{ |r|

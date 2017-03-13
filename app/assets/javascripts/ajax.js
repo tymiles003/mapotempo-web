@@ -133,6 +133,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
           width: '0%'
         });
       } else if (progress[i] === 0 || progress[i] === '0') {
+        isProgressing = true;
         // Display a waiting message to user
         $(event).parent().parent().hide();
       } else if (progress[i] === 100 || progress[i] === '100') {
@@ -191,6 +192,19 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       $(".dialog-inqueue", dialog).hide();
     } else {
       $(".dialog-inqueue", dialog).show();
+    }
+
+    if (delayedJob.attempts > 0 && delayedJob.progress === 'no_solution') {
+      if (errorCallback) {
+        errorCallback();
+      }
+      isProgressing = true;
+
+      $(".dialog-no-solution", dialog).show();
+      $(".dialog-progress", dialog).hide();
+      unfreezeProgressDialog(dialog, delayedJob, url, callback);
+
+      return true;
     }
 
     if (delayedJob.attempts) {
