@@ -71,7 +71,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
 
   test 'should not create a planning with inconsistent data' do
     {
-      vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_two).id,
+      vehicle_usage_set_id: 0,
       zoning_ids: [zonings(:zoning_three).id]
     }.each{ |k, v|
       attributes = @planning.attributes.merge('name' => 'new name')

@@ -39,7 +39,7 @@ module Consistency
             if record.send("#{attr}_changed?".to_sym)
               model_name = attr.to_s.gsub(/_id(s?)$/, '\1').to_sym
               models = record.send(model_name)
-              models = [models] unless models.is_a? ActiveRecord::Associations::CollectionProxy
+              models = [models].compact unless models.is_a? ActiveRecord::Associations::CollectionProxy
 
               record.errors[model_name] << I18n.t('activerecord.errors.attributes.inconsistent_customer') if models.any?{ |m| m.customer_id != consistent_value }
             end
