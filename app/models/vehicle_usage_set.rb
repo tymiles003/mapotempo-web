@@ -28,8 +28,8 @@ class VehicleUsageSet < ActiveRecord::Base
   auto_strip_attributes :name
   validates :customer, presence: true
   validates :name, presence: true
-  validates_time :open, presence: true
-  validates_time :close, presence: true, after: :open
+  validates_time :open, allow_nil: false, allow_blank: false
+  validates_time :close, allow_nil: false, allow_blank: false, after: :open
   validates_time :rest_start, if: :rest_start
   validates_time :rest_stop, on_or_after: :rest_start, if: :rest_stop
 
