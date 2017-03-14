@@ -169,14 +169,12 @@ class V01::RoutesTest < V01::RoutesBaseTest
 
   test 'should not return route because IDs are invalid' do
     get "/api/0.1/plannings/Abcd/routes_by_vehicle/test1111.json?api_key=testkey1"
-    assert_equal(400, last_response.status)
-    assert_equal({ "error" => "Invalid IDs" }, JSON.parse(last_response.body))
+    assert_equal(404, last_response.status)
   end
 
   test 'should not return route because not found' do
     get "/api/0.1/plannings/1234/routes_by_vehicle/1234.json?api_key=testkey1"
     assert_equal(404, last_response.status)
-    assert_equal({ "error" => "Not Found" }, JSON.parse(last_response.body))
   end
 
   test 'should update stops order' do
