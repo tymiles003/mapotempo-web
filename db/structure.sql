@@ -107,7 +107,8 @@ CREATE TABLE customers (
     optimization_vehicle_soft_upper_bound double precision,
     enable_vehicle_position boolean DEFAULT true NOT NULL,
     enable_stop_status boolean DEFAULT false NOT NULL,
-    router_options hstore DEFAULT ''::hstore NOT NULL
+    router_options hstore DEFAULT ''::hstore NOT NULL,
+    cost_waiting_time double precision
 );
 
 
@@ -2582,4 +2583,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170224144324');
 INSERT INTO schema_migrations (version) VALUES ('20170227095939');
 
 INSERT INTO schema_migrations (version) VALUES ('20170310101048');
+
+INSERT INTO schema_migrations (version) VALUES ('20170314132235');
 

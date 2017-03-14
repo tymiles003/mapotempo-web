@@ -129,6 +129,7 @@ class CustomersController < ApplicationController
                                                     :optimization_time,
                                                     :optimization_stop_soft_upper_bound,
                                                     :optimization_vehicle_soft_upper_bound,
+                                                    :cost_waiting_time,
                                                     :profile_id,
                                                     :default_country,
                                                     :enable_multi_vehicle_usage_sets,

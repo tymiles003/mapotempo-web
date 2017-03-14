@@ -200,6 +200,7 @@ en:
         optimization_time: "Optimization maximum time"
         optimization_stop_soft_upper_bound: "Stops delay coefficient"
         optimization_vehicle_soft_upper_bound: "Vehicles delay coefficient"
+        cost_waiting_time: "Waiting time coefficient"
         profile: "Profile"
         profile_id: "Profile"
         speed_multiplicator: "Speed multiplier"
@@ -703,6 +704,8 @@ en:
       optimization_soft_upper_bound_default: "%{n} (default value)"
       optimization_stop_soft_upper_bound_help: "More the value is important, more delays are detrimental (0 to disallow delays strictly: turn clusters off in this case)."
       optimization_vehicle_soft_upper_bound_help: "For global optimization, allow to manage distribution on vehicles. More the value is important, more delays are detrimental (0 to disallow delays strictly: turn clusters off in this case)."
+      cost_waiting_time_default: "%{n} (valeur par défaut)"
+      cost_waiting_time_help: "Evaluate the importance of waiting times. More the value is important, more the delay before time slot opening is important (0 to disallow the waiting time)"
       print_header_help: "Block of text added before each route"
       print:
         title: "Printing"

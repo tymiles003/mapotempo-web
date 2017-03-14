@@ -200,6 +200,7 @@ fr:
         optimization_time: "Temps d'optimisation maximum"
         optimization_stop_soft_upper_bound: "Coefficient retards / arrêts"
         optimization_vehicle_soft_upper_bound: "Coefficient retards / véhicules"
+        cost_waiting_time: "Coefficient de temps d'attente"
         profile: "Profil"
         profile_id: "Profil"
         speed_multiplicator: "Ajustement de la vitesse"
@@ -703,6 +704,8 @@ fr:
       optimization_soft_upper_bound_default: "%{n} (valeur par défaut)"
       optimization_stop_soft_upper_bound_help: "Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte : désactive les clusters dans ce cas)."
       optimization_vehicle_soft_upper_bound_help: "Pour une optimisation globale, permet de gérer la répartition sur les véhicules. Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte : désactive les clusters dans ce cas)."
+      cost_waiting_time_default: "%{n} (valeur par défaut)"
+      cost_waiting_time_help: "Permet d'évaluer l'importance des temps d'attente. Plus la valeur est grande, plus l'attente avant l'ouverture d'un créneau horaire sera pénalisée (0 pour ne pas considérer l'attente dans l'optimisation)"
       print_header_help: "Bloc de texte ajouté avant chaque tournée"
       print:
         title: "Impressions"
