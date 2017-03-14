@@ -235,9 +235,14 @@ class PlanningsController < ApplicationController
   def optimize
     global = ValueToBoolean::value_to_boolean(params[:global])
     respond_to do |format|
-      if Optimizer.optimize(@planning, nil, global) && @planning.customer.save
-        format.json { render action: 'show', location: @planning }
-      else
+      begin
+        if Optimizer.optimize(@planning, nil, global) && @planning.customer.save
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
+        end
+      rescue NoSolutionFoundError
+        @planning.errors[:base] = I18n.t('plannings.edit.dialog.optimizer.no_solution')
         format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
@@ -246,10 +251,15 @@ class PlanningsController < ApplicationController
   def optimize_route
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
-      if route && Optimizer.optimize(@planning, route) && @planning.customer.save
-        @routes = [route]
-        format.json { render action: 'show', location: @planning }
-      else
+      begin
+        if route && Optimizer.optimize(@planning, route) && @planning.customer.save
+          @routes = [route]
+          format.json { render action: 'show', location: @planning }
+        else
+          format.json { render json: @planning.errors, status: :unprocessable_entity }
+        end
+      rescue NoSolutionFoundError
+        @planning.errors[:base] = I18n.t('plannings.edit.dialog.optimizer.no_solution')
         format.json { render json: @planning.errors, status: :unprocessable_entity }
       end
     end
