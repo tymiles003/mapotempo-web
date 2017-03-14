@@ -78,7 +78,7 @@ class OptimizerWrapper
             cost_distance_multiplier: vehicle[:router_dimension] == 'distance' ? 1 : 0,
             cost_time_multiplier: vehicle[:router_dimension] == 'time' ? 1 : 0,
             # Cost wait multiplier
-            cost_waiting_time_multiplier: vehicle[:router_dimension] == 'time' ? vehicle[:cost_waiting_time] : 0,
+            cost_waiting_time_multiplier: vehicle[:router_dimension] == 'time' ? options[:cost_waiting_time] : 0,
             # FIXME: ortools is not able to support non null late multipliers both services & multiple vehicles
             cost_late_multiplier: (options[:vehicle_soft_upper_bound] && options[:vehicle_soft_upper_bound] > 0 && (!options[:stop_soft_upper_bound] || options[:stop_soft_upper_bound] == 0 || vehicles.size == 1 || services.all?{ |s| s[:vehicle_id] })) ? options[:vehicle_soft_upper_bound] : nil,
             rest_ids: vehicle[:rests].collect{ |rest|
