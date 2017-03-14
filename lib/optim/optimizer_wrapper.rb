@@ -154,7 +154,7 @@ class OptimizerWrapper
           job_id = result['job']['id']
           json = RestClient.get(@url + "/vrp/jobs/#{job_id}.json", params: {api_key: @api_key})
         else
-          if result['job']['avancement'] == 'No solution provided'
+          if /No solution provided/.match result['job']['avancement']
             raise NoSolutionFoundError.new
           else
             raise RuntimeError.new(result['job']['avancement'] || 'Optimizer return unknown error')
