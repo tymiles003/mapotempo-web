@@ -532,6 +532,8 @@ en:
               ref_value: "Route reference "
 
   errors:
+    messages:
+      taken: "is already used"
     connection_refused: "Cannot connect database"
     location:
       geocoding_fail: "Geocoding has failed:"

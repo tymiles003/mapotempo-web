@@ -532,6 +532,8 @@ fr:
               ref_value: "Référence tournée "
 
   errors:
+    messages:
+      taken: "est déjà utilisé"
     connection_refused: "Connexion à la base de donnée impossible"
     location:
       geocoding_fail: "Le géocodage a échoué :"
