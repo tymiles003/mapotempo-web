@@ -914,7 +914,7 @@ var plannings_edit = function(params) {
     }
   }
 
-  var initRoutes = function(context, data) {
+  var initRoutes = function(context, data, options) {
 
     $.each($('.customer_external_callback_url'), function(i, element) {
       $(element).click(function(e) {
@@ -1015,7 +1015,8 @@ var plannings_edit = function(params) {
           beforeSend: beforeSendWaiting,
           success: function(data) {
             displayPlanning(data, {
-              partial: 'routes'
+              partial: 'routes',
+              noCallback: true
             });
           },
           complete: completeAjaxMap,
@@ -1059,6 +1060,11 @@ var plannings_edit = function(params) {
       items: "li.route"
     });
 
+    if (options && options.noCallback) {
+      // Do not set several times the callbacks
+      return;
+    }
+
     var $routes = context.hasClass('route') ? context : $(".route", context);
 
     $routes
@@ -1095,7 +1101,7 @@ var plannings_edit = function(params) {
           var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
           if (!map.getBounds().contains(markers[stop_id].getLatLng())) {
             map.setView(markers[stop_id].getLatLng(), currentZoom, {
-              reset: true,
+              reset: true
             });
             layers_cluster[route_id].zoomToShowLayer(markers[stop_id], function() {
               markers[stop_id].openPopup();
@@ -1312,7 +1318,7 @@ var plannings_edit = function(params) {
     });
 
     if (typeof options !== 'object' || !options.partial) {
-      data.ref = null; // here to prevent mustach template to get the value
+      data.ref = null; // here to prevent mustache template to get the value
       $.each(params.manage_planning, function(i, elt) {
         data['manage_' + elt] = true;
       });
@@ -1359,7 +1365,7 @@ var plannings_edit = function(params) {
 
         $(".route[data-route_id='" + route.route_id + "']").html(SMT['routes/edit'](route));
 
-        initRoutes($(".route[data-route_id='" + route.route_id + "']"), data);
+        initRoutes($(".route[data-route_id='" + route.route_id + "']"), data, options);
 
         var regExp = new RegExp('/plannings/' + route.planning_id + '/' + route.route_id + '/[0-9]+/move.json');
         // popups are not selected follow
