@@ -243,7 +243,7 @@
       <%= f.number_field :optimization_vehicle_soft_upper_bound, { placeholder: t('.optimization_soft_upper_bound_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.optimize_vehicle_soft_upper_bound)), min: 0, step: 'any', input_group: '×'} do %>
         <p class="help-block"><%= t '.optimization_vehicle_soft_upper_bound_help' %></p>
       <% end %>
-      <%= f.number_field :cost_waiting_time, { placeholder: t('.cost_waiting_time_default', n: LocalizedValues.localize_numeric_value(0.0)), min: 0, step: 'any', input_group: '×'} do %>
+      <%= f.number_field :cost_waiting_time, { placeholder: t('.cost_waiting_time_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.cost_waiting_time)), min: 0, step: 'any', input_group: '×'} do %>
           <p class="help-block"><%= t '.cost_waiting_time_help' %></p>
       <% end %>
     </fieldset>
