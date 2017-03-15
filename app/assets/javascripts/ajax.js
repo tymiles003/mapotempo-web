@@ -305,4 +305,4 @@ var phone_number_call = function(num, url_template, link) {
       link.target = link.target.replace('click2call_iframe', '_blank');
     }
   }
-}
+};

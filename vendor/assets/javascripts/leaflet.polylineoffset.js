@@ -224,7 +224,7 @@ L.PolylineOffset = {
 
     return points;
   }
-}
+};
 
 // Modify the L.Polyline class by overwriting the projection function,
 // to add offset related code

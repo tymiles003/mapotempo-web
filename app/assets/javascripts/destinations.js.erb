@@ -76,7 +76,7 @@ var destinations_form = function(params, api) {
       destination.geocoding_accuracy_percent = Math.round(destination.geocoding_accuracy * 100);
     }
     return destination;
-  }
+  };
 
   var wire = function(row) {
     var $row = $(row),
@@ -170,7 +170,7 @@ var destinations_form = function(params, api) {
       $('body').css('cursor', 'crosshair');
       $('.leaflet-container').css('cursor', 'crosshair');
     });
-  }
+  };
 
   var confirmGeocode = function(ajaxParams) {
     if ($('[name$=\\[geocoding_level\\]]').val() == 'point') {
@@ -184,7 +184,7 @@ var destinations_form = function(params, api) {
       $('[name$=\\[lng\\]]').val('');
       $.ajax(ajaxParams);
     }
-  }
+  };
 
   var displayGeocoding = function(accuracy_percent, status, level) {
     $('#geocoding_fail').hide();
@@ -207,7 +207,7 @@ var destinations_form = function(params, api) {
     $('.geocoding-level').hide();
     $('#geocoding-level-' + level).show();
     $('#geocoding-level-value').html(I18n.t('destinations.form.geocoding_level.' + level));
-  }
+  };
 
   var update = function(destination_id, destination, move) {
     var row = $('[data-destination_id=' + destination_id + ']');
@@ -254,7 +254,7 @@ var destinations_form = function(params, api) {
       $('#geocoding_level').hide();
       $('[name$=\\[geocoding_level\\]]', row).val(null);
     }
-  }
+  };
 
   var markerChange = function(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
@@ -262,7 +262,7 @@ var destinations_form = function(params, api) {
     reverse_geocoding(latLng);
     $('[name$=\\[lat\\]]', row).val(latLng.lat.toFixed(6));
     $('[name$=\\[lng\\]]', row).val(latLng.lng.toFixed(6)).trigger('change', false);
-  }
+  };
 
   var reverse_geocoding = function(coords) {
     if(coords instanceof L.LatLng) {
@@ -310,7 +310,7 @@ var destinations_form = function(params, api) {
         }
       });
     }
-  }
+  };
 
   map.on('click', function(mouseEvent) {
     if (pointing !== false) {
@@ -339,7 +339,7 @@ var destinations_form = function(params, api) {
       reverse_geocoding(event.target.getLatLng());
     });
     markers[id] = marker;
-  }
+  };
 
   if ($.isNumeric(marker_lat) && $.isNumeric(marker_lng)) {
     addMarker(destination_id, marker_lat, marker_lng);
@@ -399,7 +399,7 @@ var destinations_form = function(params, api) {
       },
       width: '100%'
     });
-  }
+  };
   initVisits($('form[data-destination_id]'));
 
   if (window.location.hash) {
@@ -410,7 +410,7 @@ var destinations_form = function(params, api) {
     });
     $("#visits .accordion-toggle[href!='" + window.location.hash + "']").addClass('collapsed');
   }
-}
+};
 
 
 var destinations_import = function(params, api) {
@@ -472,7 +472,7 @@ var destinations_import = function(params, api) {
       url: '/api/0.1/customers/' + params.customer_id + '.json'
     });
   });
-}
+};
 
 var destinations_index = function(params, api) {
   'use strict';
@@ -597,7 +597,7 @@ var destinations_index = function(params, api) {
     });
 
     return destination;
-  }
+  };
 
   var wire = function(row) {
     var $row = $(row),
@@ -715,7 +715,7 @@ var destinations_index = function(params, api) {
         });
       }
     });
-  }
+  };
 
   var update = function(destination_id, destination, move) {
     if (isEditable) {
@@ -748,32 +748,32 @@ var destinations_index = function(params, api) {
       if ($('tr.highlight').length == 0)
         row.addClass('highlight');
     }
-  }
+  };
 
   var count = function() {
     var n = $('.destinations tr:visible').length;
     $("#count").html(n);
     var v = $('.destinations tr:visible [role="visit"]').length;
     $("#count-visits").html(v);
-  }
+  };
 
   var count_inc = function() {
     $("#count").html(parseInt($("#count").text()) + 1);
     $("#count-visits").html(parseInt($("#count-visits").text()) + 1);
-  }
+  };
 
   var count_dec = function() {
     $("#count").html(parseInt($("#count").text()) - 1);
     var v = $('.destinations tr:visible [role="visit"]').length;
     $("#count-visits").html(v);
-  }
+  };
 
   var markerChange = function(id, latLng) {
     var row = $('[data-destination_id=' + id + ']');
     $('[name$=\\[geocoding_level\\]]', row).val('point');
     $('[name$=\\[lat\\]]', row).val(latLng.lat.toFixed(6));
     $('[name$=\\[lng\\]]', row).val(latLng.lng.toFixed(6)).trigger('change', false);
-  }
+  };
 
   map.on('click', function(mouseEvent) {
     if (pointing !== false) {
@@ -821,7 +821,7 @@ var destinations_index = function(params, api) {
         scrollTop: row.position().top - 100
       });
     }
-  }
+  };
 
   var addMarker = function(id, lat, lng) {
     var marker = L.marker(new L.LatLng(lat, lng), {
@@ -838,7 +838,7 @@ var destinations_index = function(params, api) {
       }
     });
     markers[id] = marker;
-  }
+  };
 
   if (isEditable) {
     $("#add").click(function(event) {
@@ -878,19 +878,19 @@ var destinations_index = function(params, api) {
 
   var filter_text = function(exactText, normalizedValue, filter, index) {
     return !!String(exactText).match(new RegExp(filter.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), 'i'));
-  }
+  };
 
   var filter_number = function(exactText, normalizedValue, filter, index) {
     return normalizedValue == filter;
-  }
+  };
 
   var filter_phone = function(exactText, normalizedValue, filter, index) {
     return !!String(normalizedValue).match(new RegExp(simply_phone(filter).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), 'i'));
-  }
+  };
 
   var simply_phone = function(number) {
     return number && number.replace(/^0|[-. ]/g, '');
-  }
+  };
 
   var globalGeocodingScore = function(level, accuracy, lat, lng) {
     var ret = (lat === '' || lng === '') ? 0 : null;
@@ -914,7 +914,7 @@ var destinations_index = function(params, api) {
     if (accuracy)
       ret += parseFloat(accuracy) * 100;
     return ret;
-  }
+  };
 
   var sortList = undefined;
 
@@ -1128,7 +1128,7 @@ var destinations_index = function(params, api) {
         });
       }
     });
-  }
+  };
 
   var checkForDisplayDestinations = function(data) {
     var isAccuracyDanger = data.destinations && $.grep(data.destinations, function(dest) {
@@ -1152,7 +1152,7 @@ var destinations_index = function(params, api) {
             cursor: cursorMap
           });
         }, 200);
-      }
+      };
 
       if (dialog_geocoding) dialog_geocoding.modal('hide');
       $('#geocoding-danger-modal').modal({
@@ -1171,7 +1171,7 @@ var destinations_index = function(params, api) {
     } else {
       displayDestinations(data);
     }
-  }
+  };
 
   var dialog_geocoding = bootstrap_dialog({
     title: I18n.t('destinations.index.dialog.geocoding.title'),
@@ -1188,19 +1188,19 @@ var destinations_index = function(params, api) {
     complete: completeWaiting,
     error: ajaxError
   });
-}
+};
 
 var destinations_new = function(params, api) {
   'use strict';
 
   destinations_form(params, api);
-}
+};
 
 var destinations_edit = function(params, api) {
   'use strict';
 
   destinations_form(params, api);
-}
+};
 
 Paloma.controller('Destinations', {
   new: function() {

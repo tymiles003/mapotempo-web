@@ -35,7 +35,7 @@ var zonings_edit = function(params) {
   // sidebar has to be created before map
   var sidebar = L.control.sidebar('edit-zoning', {
     position: 'right'
-  })
+  });
   sidebar.open('zoning');
 
   var map = mapInitialize(params);
@@ -90,7 +90,7 @@ var zonings_edit = function(params) {
   var removeHash = function() {
     map.removeHash();
     $(document).off('page:before-change', removeHash);
-  }
+  };
   $(document).on('page:before-change', removeHash);
 
   function checkZoningChanges(e) {
@@ -443,7 +443,7 @@ var zonings_edit = function(params) {
   };
 
   var displayDestinations = function(route) {
-    destinationsDisplayed = true
+    destinationsDisplayed = true;
     var hasVehicle = route.vehicle_id && vehiclesMap[route.vehicle_id];
 
     $.each(route.stops, function(index, stop) {

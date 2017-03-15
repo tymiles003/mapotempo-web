@@ -38,7 +38,7 @@ var deliverable_units_form = function() {
       if (input.val() <= 0) input.val(input.attr('placeholder') > '0' ? '' : '1');
       if (input.attr('placeholder') <= 0) input.attr('required', true);
     }
-  }
+  };
   optimisationOverloadMultiplier();
   $('input[name="deliverable_unit_optimization_overload_multiplier"]').change(function() {
     optimisationOverloadMultiplier();

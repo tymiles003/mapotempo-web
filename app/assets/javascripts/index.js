@@ -23,7 +23,7 @@ $(document).ready(function(){
     content: I18n.t('all.subscribe.planning_unavailable'),
     trigger: 'manual click'
   })
-  .popover("show")
+  .popover("show");
 
   $('.popover').on('click', function(){
     $('.popover').popover("hide");

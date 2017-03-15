@@ -320,7 +320,7 @@ var order_arrays_edit = function(params) {
         complete: completeWaiting,
         error: ajaxError
       });
-    }
+    };
 
     var copy_row;
     $('.copy_row').click(function(e) {
@@ -391,7 +391,7 @@ var order_arrays_edit = function(params) {
         }
       });
     });
-  }
+  };
 
   var dialog_loading = bootstrap_dialog({
     title: I18n.t('order_arrays.edit.dialog.loading.title'),

@@ -19,7 +19,7 @@
 
 var getPlanningsId = function() {
   return $.makeArray($('#plannings input[type=checkbox]:checked').map(function(index, id){ return $(id).val(); }));
-}
+};
 
 var iCalendarExport = function(planningId) {
   var url = $('#ical_export').attr('href'), ids;
@@ -35,7 +35,7 @@ var iCalendarExport = function(planningId) {
 
   $('.icalendar_email').click(function(e) {
     e.preventDefault();
-    var ajaxParams = {email: true}
+    var ajaxParams = {email: true};
     if (!planningId) {
       ids = getPlanningsId();
       if (ids.length == 0) {
@@ -90,7 +90,7 @@ var spreadsheetModalExport = function(columns, planningId) {
     if (match)
       displayName = I18n.t('plannings.export_file.' + match[1]) + '[' + match[2] + ']';
     else
-      displayName = I18n.t('plannings.export_file.' + columnKey)
+      displayName = I18n.t('plannings.export_file.' + columnKey);
     $(parentSel).append('<li data-value="' + columnKey + '">' + displayName + ' <a class="remove"><i class="fa fa-close fa-fw"></i></a></li>');
   };
   $.each(columnsExport, function(i, c) {
@@ -148,7 +148,7 @@ var spreadsheetModalExport = function(columns, planningId) {
       show: true
     });
   });
-}
+};
 
 var plannings_form = function() {
   $('#planning_date').datepicker({
@@ -469,7 +469,7 @@ var plannings_edit = function(params) {
   var removeHash = function() {
     map.removeHash();
     $(document).off('page:before-change', removeHash);
-  }
+  };
   $(document).on('page:before-change', removeHash);
 
   sidebar.addTo(map);
@@ -671,7 +671,7 @@ var plannings_edit = function(params) {
   var templateSelectionZoning = function(state) {
     if (state.id)
       return $('<span><span class="zoning_name">' + state.text + '</span> <a href="/zonings/' + state.id + '/edit/planning/' + planning_id + '?back=true" title="' + I18n.t('plannings.edit.zoning_edit') + '"><i class="fa fa-pencil fa-fw"></i></a></span>');
-  }
+  };
 
   $("#planning_zoning_ids").select2({
     theme: 'bootstrap',
@@ -760,7 +760,7 @@ var plannings_edit = function(params) {
         $(".route[data-route_id] .stops.sortable").sortable('cancel');
       }
     });
-  }
+  };
 
   var routeStepTrace = L.Polyline.extend({
     addDriveInfos: function(drive_time, distance) {
@@ -922,7 +922,7 @@ var plannings_edit = function(params) {
       routes_layers_cluster.addLayer(layers_cluster[route.route_id]);
       routes_layers.addLayer(layers[route.route_id]);
     }
-  }
+  };
 
   var initRoutes = function(context, data, options) {
 
@@ -960,7 +960,7 @@ var plannings_edit = function(params) {
       } else {
         return $("<i />").addClass("fa fa-paint-brush").css("color", "#CCC");
       }
-    }
+    };
 
     var templateResultColor = function(state) {
       if (state.id) {
@@ -968,7 +968,7 @@ var plannings_edit = function(params) {
       } else {
         return $("<span class='color_small' data-color=''></span>");
       }
-    }
+    };
 
     fake_select2($(".color_select", context), function(select) {
       select.select2({
@@ -989,7 +989,7 @@ var plannings_edit = function(params) {
           return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;</span>").append($("<span/>").text(vehicles_usages_map[state.id].name));
         }
       }
-    }
+    };
 
     var templateResultVehicles = function(state) {
       if (state.id) {
@@ -997,7 +997,7 @@ var plannings_edit = function(params) {
       } else {
         console.log(state);
       }
-    }
+    };
 
     fake_select2($(".vehicle_select", context), function(select) {
       select.select2({
@@ -1263,7 +1263,7 @@ var plannings_edit = function(params) {
   var buildUrl = function(url, hash) {
     $.each(hash, function(k, v) { url = url.replace('\{' + k.toUpperCase() + '\}', hash[k]) });
     return url;
-  }
+  };
 
   var displayPlanning = function(data, options) {
 
@@ -1283,7 +1283,7 @@ var plannings_edit = function(params) {
 
     $.each(data.routes, function(i, route) {
 
-      route.calendar_url = api_route_calendar_path(route)
+      route.calendar_url = api_route_calendar_path(route);
       route.calendar_url_api_key = api_route_calendar_path(route) + '?api_key=' + user_api_key;
 
       if (route.vehicle_id) {
@@ -1520,7 +1520,7 @@ var plannings_edit = function(params) {
     displayPlanning(data, $.extend({
       partial: 'stops'
     }, options));
-  }
+  };
 
   function automaticInsertStops(stop_ids, options) {
     $.ajax($.extend({
@@ -1680,7 +1680,7 @@ var plannings_edit = function(params) {
         });
       }
     }
-  }
+  };
 
   var checkForDisplayPlanningFirstTime = function(data) {
     if (data.out_of_date) {
@@ -1700,7 +1700,7 @@ var plannings_edit = function(params) {
             cursor: cursorMap
           });
         }, 100);
-      }
+      };
 
       $('#planning-refresh-modal').modal({
         keyboard: true,
@@ -1722,7 +1722,7 @@ var plannings_edit = function(params) {
     } else {
       displayPlanningFirstTime(data);
     }
-  }
+  };
 
   $('.btn.extend').click(function() {
     $('.sidebar').toggleClass('extended');

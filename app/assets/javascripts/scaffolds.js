@@ -177,7 +177,7 @@ var customColorInitialize = function(selecter){
           .val(this.value);
       });
   });
-}
+};
 
 function decimalAdjust(type, value, exp) {
 

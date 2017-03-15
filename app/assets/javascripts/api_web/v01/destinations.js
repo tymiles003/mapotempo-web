@@ -133,7 +133,7 @@ var api_web_v01_destinations_index = function(params, api) {
         padding: [20, 20]
       });
     }
-  }
+  };
 
   progressBar && progressBar.advanceTo(50);
   var ajaxParams = {};

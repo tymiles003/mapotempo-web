@@ -269,7 +269,7 @@ var api_web_v01_routes_index = function(params) {
         padding: [20, 20]
       });
     }
-  }
+  };
 
   progressBar && progressBar.advanceTo(50);
   var queryParam = (route_ids) ? ('?' + $.param({
