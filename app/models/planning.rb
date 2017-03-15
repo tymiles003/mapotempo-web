@@ -96,10 +96,13 @@ class Planning < ActiveRecord::Base
 
   def vehicle_usage_remove(vehicle_usage)
     route = routes.find{ |route| route.vehicle_usage == vehicle_usage}
-    route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
-      routes.find{ |r| !r.vehicle_usage }.stops.build(type: StopVisit.name, visit: stop.visit)
-    }
-    routes.destroy(route)
+    # route no longer exists if vehicle is disabled
+    if route
+      route.stops.select{ |stop| stop.is_a?(StopVisit) }.collect{ |stop|
+        routes.find{ |r| !r.vehicle_usage }.stops.build(type: StopVisit.name, visit: stop.visit)
+      }
+      routes.destroy(route)
+    end
   end
 
   def visit_add(visit)
