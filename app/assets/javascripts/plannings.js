@@ -1386,18 +1386,22 @@ var plannings_edit = function(params) {
           if ($link.attr('href').match(regExp) != null)
             $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
         });
-        // for popups outside DOM
-        $.each(layers[route.route_id].getLayers(), function(k, m) {
-          if (m instanceof L.Marker) {
-            var popupContent = $(m.getPopup().getContent());
-            $.each($('.send_to_route', popupContent), function(j, link) {
-              var $link = $(link);
-              if ($link.attr('href').match(regExp) != null)
-                $link.html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
-            });
-            m.getPopup().setContent(popupContent[0]);
-          }
+
+        // for popups outside DOM - keep this loop to apply the RegExp for all route layers, not only the ones from the current route_id
+        $(route.routes).each(function(o, r) {
+          $.each(layers[r.route_id].getLayers(), function(k, m) {
+            if (m instanceof L.Marker) {
+              var popupContent = $(m.getPopup().getContent());
+              $.each(popupContent.find('.send_to_route'), function(j, link) {
+                if ($(link).attr('href').match(regExp) != null) {
+                  $(link).html('<div class="color_small" style="background:' + (route.color || route.vehicle.color) + '"></div> ' + route.vehicle.name);
+                }
+              });
+              m.setPopupContent(popupContent[0]).update();
+            };
+          });
         });
+
         $.each($('li[data-stop_id]'), function(i, stop) {
           var popupContent = $(stop).data()['bs.popover'] && $($(stop).data()['bs.popover'].options.content);
           if (popupContent) {
