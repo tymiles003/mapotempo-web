@@ -32,7 +32,7 @@
   }
 
   .router-option-disabled {
-    display: none;
+    display: none !important;
   }
 
   span.select2-results ul li {

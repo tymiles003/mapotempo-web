@@ -324,7 +324,7 @@ fr:
             radio_active: "Radioactif"
             corrosive: "Corrosif"
             poisonous_inhalation: "Toxique"
-            harmful_to_water: "Nuisible pour l'eau"
+            harmful_to_water: "Nocif pour l'eau"
             other: "Autre"
       stop:
         active: "Actif"

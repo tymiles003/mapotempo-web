@@ -105,7 +105,7 @@
 
       <div class="col-md-6">
         <div class="input-group">
-          <%= text_field 'customer[router_options]', :weight, value: @customer.router_options['weight'], class: 'form-control' %>
+          <%= number_field 'customer[router_options]', :weight, value: @customer.router_options['weight'], step: 'any', class: 'form-control' %>
           <span class="input-group-addon"><%= t('all.unit.ton') %></span>
         </div>
         <p class="help-block"><%= t('customers.form.router_options_weight_range', from: 0, to: 1000) %></p>
@@ -119,7 +119,7 @@
 
       <div class="col-md-6">
         <div class="input-group">
-          <%= text_field 'customer[router_options]', :weight_per_axle, value: @customer.router_options['weight_per_axle'], class: 'form-control' %>
+          <%= number_field 'customer[router_options]', :weight_per_axle, value: @customer.router_options['weight_per_axle'], step: 'any', class: 'form-control' %>
           <span class="input-group-addon"><%= t('all.unit.ton') %></span>
         </div>
         <p class="help-block"><%=  t('customers.form.router_options_weight_per_axle_range', from: 0, to: 1000) %></p>
@@ -133,7 +133,7 @@
 
       <div class="col-md-6">
         <div class="input-group">
-          <%= text_field 'customer[router_options]', :height, value: @customer.router_options['height'], class: 'form-control' %>
+          <%= number_field 'customer[router_options]', :height, value: @customer.router_options['height'], step: 'any', class: 'form-control' %>
           <span class="input-group-addon"><%= t('all.unit.m') %></span>
         </div>
         <p class="help-block"><%= t('customers.form.router_options_height_range', from: 0, to: 50) %></p>
@@ -147,7 +147,7 @@
 
       <div class="col-md-6">
         <div class="input-group">
-          <%= text_field 'customer[router_options]', :width, value: @customer.router_options['width'], class: 'form-control' %>
+          <%= number_field 'customer[router_options]', :width, value: @customer.router_options['width'], step: 'any', class: 'form-control' %>
           <span class="input-group-addon"><%= t('all.unit.m') %></span>
         </div>
         <p class="help-block"><%= t('customers.form.router_options_width_range', from: 0, to: 50) %></p>
@@ -161,7 +161,7 @@
 
       <div class="col-md-6">
         <div class="input-group">
-          <%= text_field 'customer[router_options]', :length, value: @customer.router_options['length'], class: 'form-control' %>
+          <%= number_field 'customer[router_options]', :length, value: @customer.router_options['length'], step: 'any', class: 'form-control' %>
           <span class="input-group-addon"><%= t('all.unit.m') %></span>
         </div>
         <p class="help-block"><%= t('customers.form.router_options_length_range', from: 0, to: 300) %></p>

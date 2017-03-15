@@ -293,21 +293,28 @@ var routerOptionsSelect = function (selectId, params) {
   };
 
   var fieldsRouter = function (event, initialValue) {
-    var selectedValue = initialValue || $(this).val();
+    var selectedValue = null;
+    if (typeof initialValue === 'undefined') {
+      selectedValue = $(this).val();
+    } else {
+      selectedValue = initialValue;
+    }
 
-    var routerId = selectedValue.split('_')[0];
-    var routerOptions = params.routers_options[routerId];
+    if (selectedValue) {
+      var routerId = selectedValue.split('_')[0];
+      var routerOptions = params.routers_options[routerId];
 
-    if (routerId && routerOptions) {
-      checkInputFieldState($('#router_options_motorway_input'), routerOptions.motorway);
-      checkInputFieldState($('#router_options_toll_input'), routerOptions.toll);
-      checkInputFieldState($('#router_options_trailers_input'), routerOptions.trailers);
-      checkInputFieldState($('#router_options_weight_input'), routerOptions.weight);
-      checkInputFieldState($('#router_options_weight_per_axle_input'), routerOptions.weight_per_axle);
-      checkInputFieldState($('#router_options_height_input'), routerOptions.height);
-      checkInputFieldState($('#router_options_width_input'), routerOptions.width);
-      checkInputFieldState($('#router_options_length_input'), routerOptions.length);
-      checkSelectFieldState($('#router_options_hazardous_goods_input'), routerOptions.length);
+      if (routerId && routerOptions) {
+        checkInputFieldState($('#router_options_motorway_input'), routerOptions.motorway);
+        checkInputFieldState($('#router_options_toll_input'), routerOptions.toll);
+        checkInputFieldState($('#router_options_trailers_input'), routerOptions.trailers);
+        checkInputFieldState($('#router_options_weight_input'), routerOptions.weight);
+        checkInputFieldState($('#router_options_weight_per_axle_input'), routerOptions.weight_per_axle);
+        checkInputFieldState($('#router_options_height_input'), routerOptions.height);
+        checkInputFieldState($('#router_options_width_input'), routerOptions.width);
+        checkInputFieldState($('#router_options_length_input'), routerOptions.length);
+        checkSelectFieldState($('#router_options_hazardous_goods_input'), routerOptions.length);
+      }
     }
   };
 
