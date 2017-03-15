@@ -438,4 +438,7 @@ span.color[data-color=''][data-selected]:after {
     color: $focus-font-color !important;
     font-weight: bold;
   }
+  &.open > a {
+    color: #777 !important;
+  }
 }
