@@ -69,15 +69,14 @@ class OptimizerWrapper
             router_dimension: vehicle[:router_dimension],
             # router_options are flattened and merged below
             speed_multiplier: vehicle[:speed_multiplier],
-            # area: vehicle[:speed_multiplicator_areas] ? vehicle[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
-            # speed_multiplicator_area: vehicle[:speed_multiplicator_areas] ? vehicle[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil,
+            area: vehicle[:speed_multiplier_areas] ? vehicle[:speed_multiplier_areas].map{ |a| a[:area].join(',') }.join(';') : nil,
+            speed_multiplier_area: vehicle[:speed_multiplier_areas] ? vehicle[:speed_multiplier_areas].map{ |a| a[:speed_multiplicator_area] }.join(';') : nil,
             timewindow: {start: vehicle[:open], end: vehicle[:close]},
             start_point_id: vehicle[:stores].include?(:start) ? "p#{shift_stores + services.size}" : nil,
             end_point_id: vehicle[:stores].include?(:stop) ? "p#{vehicle[:stores].size - 1 + shift_stores + services.size}" : nil,
             cost_fixed: 0,
             cost_distance_multiplier: vehicle[:router_dimension] == 'distance' ? 1 : 0,
             cost_time_multiplier: vehicle[:router_dimension] == 'time' ? 1 : 0,
-            # Cost wait multiplier
             cost_waiting_time_multiplier: vehicle[:router_dimension] == 'time' ? options[:cost_waiting_time] : 0,
             # FIXME: ortools is not able to support non null late multipliers both services & multiple vehicles
             cost_late_multiplier: (options[:vehicle_soft_upper_bound] && options[:vehicle_soft_upper_bound] > 0 && (!options[:stop_soft_upper_bound] || options[:stop_soft_upper_bound] == 0 || vehicles.size == 1 || services.all?{ |s| s[:vehicle_id] })) ? options[:vehicle_soft_upper_bound] : nil,
