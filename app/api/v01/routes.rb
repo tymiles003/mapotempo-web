@@ -125,7 +125,7 @@ class V01::Routes < Grape::API
           requires :id, type: String, desc: ID_DESC
         end
         patch ':id/reverse_order' do
-          _route and _route.reverse_order && _route.compute
+          _route and _route.reverse_order && _route.compute!
           _route.save!
           present _route, with: V01::Entities::Route
         end
