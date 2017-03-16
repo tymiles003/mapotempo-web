@@ -60,15 +60,17 @@ class VehicleUsage < ActiveRecord::Base
   validates_associated_bubbling :vehicle
 
   nilify_blanks
-  validates_time :open, if: :open
-  validates_time :close, on_or_after: :open, if: ->(vu) { vu.open && vu.close }
-  validates_time :rest_start, if: :rest_start
-  validates_time :rest_stop, on_or_after: :rest_start, if: ->(vu) { vu.rest_start && vu.rest_stop }
 
-  validates_with RestValidator, fields: [:rest_duration, :rest_start, :rest_stop]
-
-  validates_time :service_time_start, if: :service_time_start
-  validates_time :service_time_end, if: :service_time_end
+  # FIXME: update validations using integer instead of time
+  # validates_time :open, if: :open
+  # validates_time :close, on_or_after: :open, if: ->(vu) { vu.open && vu.close }
+  # validates_time :rest_start, if: :rest_start
+  # validates_time :rest_stop, on_or_after: :rest_start, if: ->(vu) { vu.rest_start && vu.rest_stop }
+  #
+  # validates_with RestValidator, fields: [:rest_duration, :rest_start, :rest_stop]
+  #
+  # validates_time :service_time_start, if: :service_time_start
+  # validates_time :service_time_end, if: :service_time_end
 
   before_validation :nilify_times
   before_update :update_out_of_date

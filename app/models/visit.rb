@@ -34,14 +34,15 @@ class Visit < ActiveRecord::Base
   nilify_blanks
   validates :destination, presence: true
 
-  validates_time :open1, allow_nil: true, allow_blank: true
-  validates_time :close1, allow_nil: true, allow_blank: true, on_or_after: :open1, :if => lambda { open1 && close1 }
-
-  validates :close1, presence: true, if: :open2
-  validates_time :open2, on_or_after: :close1, if: :open2
-  validates_time :close2, allow_nil: true, allow_blank: true, on_or_after: :open2, :if => lambda { open2 && close2 }
-
-  validates_with QuantitiesValidator, fields: [:quantities]
+  # FIXME: update validations using integer instead of time
+  # validates_time :open1, allow_nil: true, allow_blank: true
+  # validates_time :close1, allow_nil: true, allow_blank: true, on_or_after: :open1, :if => lambda { open1 && close1 }
+  #
+  # validates :close1, presence: true, if: :open2
+  # validates_time :open2, on_or_after: :close1, if: :open2
+  # validates_time :close2, allow_nil: true, allow_blank: true, on_or_after: :open2, :if => lambda { open2 && close2 }
+  #
+  # validates_with QuantitiesValidator, fields: [:quantities]
 
   include Consistency
   validate_consistency :tags, attr_consistency_method: -> (visit) { visit.destination.try :customer_id }

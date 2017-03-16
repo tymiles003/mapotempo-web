@@ -28,17 +28,19 @@ class VehicleUsageSet < ActiveRecord::Base
   auto_strip_attributes :name
   validates :customer, presence: true
   validates :name, presence: true
-  validates_time :open, allow_nil: false, allow_blank: false
-  validates_time :close, allow_nil: false, allow_blank: false, after: :open
-  validates_time :rest_start, if: :rest_start
-  validates_time :rest_stop, on_or_after: :rest_start, if: :rest_stop
 
-  validates :rest_start, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
-  validates :rest_stop, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
-  validates :rest_duration, presence: {if: :rest_start?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
-
-  validates_time :service_time_start, if: :service_time_start
-  validates_time :service_time_end, if: :service_time_end
+  # FIXME: update validations using integer instead of time
+  # validates_time :open, allow_nil: false, allow_blank: false
+  # validates_time :close, allow_nil: false, allow_blank: false, after: :open
+  # validates_time :rest_start, if: :rest_start
+  # validates_time :rest_stop, on_or_after: :rest_start, if: :rest_stop
+  #
+  # validates :rest_start, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
+  # validates :rest_stop, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
+  # validates :rest_duration, presence: {if: :rest_start?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
+  #
+  # validates_time :service_time_start, if: :service_time_start
+  # validates_time :service_time_end, if: :service_time_end
 
   after_initialize :assign_defaults, if: :new_record?
   before_validation :nilify_times

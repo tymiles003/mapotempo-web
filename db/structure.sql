@@ -54,7 +54,6 @@ SET default_with_oids = false;
 CREATE TABLE customers (
     id integer NOT NULL,
     end_subscription date,
-    take_over time without time zone,
     job_destination_geocoding_id integer,
     job_optimizer_id integer,
     created_at timestamp without time zone,
@@ -108,7 +107,8 @@ CREATE TABLE customers (
     enable_vehicle_position boolean DEFAULT true NOT NULL,
     enable_stop_status boolean DEFAULT false NOT NULL,
     router_options hstore DEFAULT ''::hstore NOT NULL,
-    cost_waiting_time double precision
+    cost_waiting_time double precision,
+    take_over integer
 );
 
 
@@ -854,18 +854,18 @@ CREATE TABLE vehicle_usage_sets (
     id integer NOT NULL,
     customer_id integer NOT NULL,
     name character varying NOT NULL,
-    open time without time zone NOT NULL,
-    close time without time zone NOT NULL,
     store_start_id integer,
     store_stop_id integer,
     store_rest_id integer,
-    rest_start time without time zone,
-    rest_stop time without time zone,
-    rest_duration time without time zone,
-    service_time_start time without time zone,
-    service_time_end time without time zone,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    open integer,
+    close integer,
+    rest_start integer,
+    rest_stop integer,
+    rest_duration integer,
+    service_time_start integer,
+    service_time_end integer
 );
 
 
@@ -896,19 +896,19 @@ CREATE TABLE vehicle_usages (
     id integer NOT NULL,
     vehicle_usage_set_id integer NOT NULL,
     vehicle_id integer NOT NULL,
-    open time without time zone,
-    close time without time zone,
     store_start_id integer,
     store_stop_id integer,
     store_rest_id integer,
-    rest_start time without time zone,
-    rest_stop time without time zone,
-    rest_duration time without time zone,
-    service_time_start time without time zone,
-    service_time_end time without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    active boolean DEFAULT true
+    active boolean DEFAULT true,
+    open integer,
+    close integer,
+    rest_start integer,
+    rest_stop integer,
+    rest_duration integer,
+    service_time_start integer,
+    service_time_end integer
 );
 
 
@@ -984,16 +984,16 @@ ALTER SEQUENCE vehicles_id_seq OWNED BY vehicles.id;
 
 CREATE TABLE visits (
     id integer NOT NULL,
-    open1 time without time zone,
-    close1 time without time zone,
     ref character varying,
-    take_over time without time zone,
     destination_id integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    open2 time without time zone,
-    close2 time without time zone,
-    quantities hstore
+    quantities hstore,
+    open1 integer,
+    close1 integer,
+    take_over integer,
+    open2 integer,
+    close2 integer
 );
 
 
@@ -2578,4 +2578,12 @@ INSERT INTO schema_migrations (version) VALUES ('20170227095939');
 INSERT INTO schema_migrations (version) VALUES ('20170310101048');
 
 INSERT INTO schema_migrations (version) VALUES ('20170314132235');
+
+INSERT INTO schema_migrations (version) VALUES ('20170315164359');
+
+INSERT INTO schema_migrations (version) VALUES ('20170316085311');
+
+INSERT INTO schema_migrations (version) VALUES ('20170316092228');
+
+INSERT INTO schema_migrations (version) VALUES ('20170316092501');
 
