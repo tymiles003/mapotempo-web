@@ -218,7 +218,6 @@ class ImporterDestinations < ImporterBase
     row[:close1] = row.delete(:close) if !row.key?(:close1) && row.key?(:close)
 
     prepare_quantities row
-
     [:tags, :tags_visit].each{ |key| prepare_tags row, key }
 
     destination_attributes = row.slice(*@@col_dest_keys)
@@ -265,6 +264,7 @@ class ImporterDestinations < ImporterBase
         row_compare_attr = (@@dest_attr_nil ||= Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten]).merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level, :tags).stringify_keys
         # Get destination from attributes for multiple visits
         destination = @destinations_by_attributes[row_compare_attr]
+        destination.assign_attributes(destination_attributes) if destination
         if !destination
           destination = @customer.destinations.build(destination_attributes)
           # No destination.ref here for @destinations_by_ref
@@ -279,7 +279,6 @@ class ImporterDestinations < ImporterBase
     end
 
     valid_row(visit ? visit.destination : destination, row, line)
-
     if visit
       # Instersection of tags of all rows for tags of new planning
       if !@common_tags
