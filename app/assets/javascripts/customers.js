@@ -111,7 +111,8 @@ var customers_edit = function (params) {
   });
 
   /* API: Devices */
-  devices_observe_customer($.extend(params, {
+  devicesObserveCustomer.init($.extend(params, {
+    // FIXME -> THE DEFAULT PASSWORD MUST BE DONE AT THE BACKEND LVL, WICH MAKE NOT VISIBLE THE TRUE PASSWORD FROM DB
     default_password: Math.random().toString(36).slice(-8)
   }));
 
