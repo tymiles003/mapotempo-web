@@ -34,7 +34,7 @@ class V01::Devices::AlyacomTest < ActiveSupport::TestCase
     with_stubs({ get: [:staff, :users, :planning], post: [:staff, :users, :planning] }) do
       set_route
       post api("devices/alyacom/send", { customer_id: @customer.id, route_id: @route.id })
-      assert_equal 201, last_response.status
+      assert_equal 201, last_response.status, last_response.body
       @route.reload
       assert @route.reload.last_sent_at
       assert_equal({ "id" => @route.id, "last_sent_to" => 'Alyacom', "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
@@ -45,7 +45,7 @@ class V01::Devices::AlyacomTest < ActiveSupport::TestCase
     with_stubs({ get: [:staff, :users, :planning], post: [:staff, :users, :planning] }) do
       set_route
       post api("devices/alyacom/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
-      assert_equal 201, last_response.status
+      assert_equal 201, last_response.status, last_response.body
       routes = @route.planning.routes.select(&:vehicle_usage)
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }

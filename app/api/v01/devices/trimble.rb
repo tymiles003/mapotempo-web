@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2016
+# Copyright © Mapotempo, 2017
 #
 # This file is part of Mapotempo.
 #
@@ -15,29 +15,9 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class V01::Devices::Masternaut < Grape::API
+class V01::Devices::Trimble < Grape::API
   namespace :devices do
-    namespace :masternaut do
-
-      helpers do
-        def service
-          MasternautService.new customer: @customer
-        end
-      end
-
-      before do
-        @customer = current_customer(params[:customer_id])
-      end
-
-      desc 'Send Planning Routes',
-        detail: 'Send Planning Routes',
-        nickname: 'deviceMasternautSendMultiple'
-      params do
-        requires :planning_id, type: Integer, desc: 'Planning ID'
-      end
-      post '/send_multiple' do
-        device_send_routes device_id: :masternaut_ref
-      end
+    namespace :trimble do
     end
   end
 end

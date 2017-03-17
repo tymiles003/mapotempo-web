@@ -46,7 +46,7 @@ class V01::Devices::MasternautTest < ActiveSupport::TestCase
       set_route
       post api("devices/masternaut/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
       assert_equal 201, last_response.status, last_response.body
-      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.masternaut_ref }
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.devices[:masternaut_ref] }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
       assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => 'Masternaut', "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))

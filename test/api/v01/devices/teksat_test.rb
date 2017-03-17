@@ -33,14 +33,14 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
   test 'authenticate' do
     with_stubs [:auth] do
       get api("devices/teksat/auth")
-      assert_equal 204, last_response.status
+      assert_equal 204, last_response.status, last_response.body
     end
   end
 
   test 'list devices' do
     with_stubs [:auth, :get_vehicles] do
       get api("devices/teksat/devices", { customer_id: @customer.id })
-      assert_equal 200, last_response.status
+      assert_equal 200, last_response.status, last_response.body
       assert_equal [
         {"id"=>"97", "text"=>"FIAT DOBLO - 352848026546057"},
         {"id"=>"98", "text"=>"FIAT DOBLO - 352848026546131"},
@@ -84,7 +84,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
       set_route
       post api("devices/teksat/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
       assert_equal 201, last_response.status
-      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.teksat_id }
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.devices[:teksat_id] }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
       assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => 'Teksat', "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
@@ -107,7 +107,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
       set_route
       delete api("devices/teksat/clear_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
       assert_equal 200, last_response.status
-      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.teksat_id }
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.devices[:teksat_id] }
       routes.each &:reload
       routes.each{|route| assert !route.last_sent_at }
       assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => nil, "last_sent_at" => nil, "last_sent_at_formatted"=>nil } }, JSON.parse(last_response.body))
@@ -119,11 +119,11 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
       set_route
 
       # Customer Already Have Devices
-      @customer.vehicles.update_all teksat_id: "teksat_id"
+      @customer.vehicles.update_all devices: {teksat_id: "teksat_id"}
 
       # Reset Vehicle
       @customer.vehicles.reload ; @vehicle.reload
-      assert_equal "teksat_id", @vehicle.teksat_id
+      assert_equal "teksat_id", @vehicle.devices[:teksat_id]
 
       # Send Request.. Send Credentials As Parameters
       post api("devices/teksat/sync")
@@ -131,7 +131,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
 
       # Vehicle Should Now Have All Values
       @customer.vehicles.reload ; @vehicle.reload
-      assert_equal "97", @vehicle.teksat_id
+      assert_equal "97", @vehicle.devices[:teksat_id]
     end
   end
 end

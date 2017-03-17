@@ -548,6 +548,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   end
 
   test 'should create bulk from tomtom' do
+    @customer = add_tomtom_credentials customers(:customer_one)
+
     with_stubs [:address_service_wsdl, :show_address_report] do
       assert_difference('Destination.count', 1) do
         put api(), replace: false, remote: :tomtom

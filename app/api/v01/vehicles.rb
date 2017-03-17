@@ -49,7 +49,7 @@ class V01::Vehicles < Grape::API
         end
       end
 
-      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :tomtom_id, :masternaut_ref, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s })
+      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :devices, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s })
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -94,11 +94,12 @@ class V01::Vehicles < Grape::API
       vehicles = customer.vehicles.find params[:ids]
       positions = []
       errors = []
+      # Masternaut
       begin
-        if customer.orange?
-          (OrangeService.new(customer: customer).get_vehicles_pos || []).each do |item|
-            vehicle_id = item.delete :orange_vehicle_id
-            vehicle = vehicles.detect{ |v| v.orange_id == vehicle_id }
+        if customer.device.configured?(:masternaut)
+          (MasternautService.new(customer: customer).get_vehicles_pos || []).each do |item|
+            vehicle_id = item.delete :masternaut_vehicle_id
+            vehicle = vehicles.detect{ |v| v.devices[:masternaut_ref] == vehicle_id }
             next if !vehicle
             positions << item.merge(vehicle_id: vehicle.id)
           end
@@ -106,12 +107,26 @@ class V01::Vehicles < Grape::API
       rescue DeviceServiceError => e
         errors << e.message
       end
+      # Orange
       begin
-        if customer.teksat?
+        if customer.device.configured?(:orange)
+          (OrangeService.new(customer: customer).get_vehicles_pos || []).each do |item|
+            vehicle_id = item.delete :orange_vehicle_id
+            vehicle = vehicles.detect{ |v| v.devices[:orange_id] == vehicle_id }
+            next if !vehicle
+            positions << item.merge(vehicle_id: vehicle.id)
+          end
+        end
+      rescue DeviceServiceError => e
+        errors << e.message
+      end
+      # Teksat
+      begin
+        if customer.device.configured?(:teksat)
           teksat_authenticate customer
           (TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :teksat_vehicle_id
-            vehicle = vehicles.detect{ |v| v.teksat_id == vehicle_id }
+            vehicle = vehicles.detect{ |v| v.devices[:teksat_id] == vehicle_id }
             next if !vehicle
             positions << item.merge(vehicle_id: vehicle.id)
           end
@@ -119,11 +134,12 @@ class V01::Vehicles < Grape::API
       rescue DeviceServiceError => e
         errors << e.message
       end
+      # TomTom
       begin
-        if customer.tomtom?
+        if customer.device.configured?(:tomtom)
           (TomtomService.new(customer: customer).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :tomtom_vehicle_id
-            vehicle = vehicles.detect{ |v| v.tomtom_id == vehicle_id }
+            vehicle = vehicles.detect{ |v| v.devices[:tomtom_id] == vehicle_id }
             next if !vehicle
             positions << item.merge(vehicle_id: vehicle.id)
           end

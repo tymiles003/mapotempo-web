@@ -52,7 +52,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
     with_stubs [:client_objects_wsdl, :show_object_report, :clear_orders] do
       set_route
       get api("vehicles/current_position"), { ids: @customer.vehicle_ids }
-      assert_equal 200, last_response.status
+      assert_equal 200, last_response.status, last_response.body
       assert_equal [{
         "vehicle_id"=>@vehicle.id,
         "device_name"=>"MAPO2",
@@ -69,8 +69,8 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   test 'send orders' do
     with_stubs [:orders_service_wsdl, :send_destination_order] do
       set_route
-      post api("devices/tomtom/send", { customer_id: @customer.id, route_id: @route.id, type: "orders" })
-      assert_equal 201, last_response.status
+      post api("devices/tomtom/send", { customer_id: @customer.id, route_id: @route.id, type: :orders })
+      assert_equal 201, last_response.status, last_response.body
       @route.reload
       assert @route.reload.last_sent_at
       assert_equal({ "id" => @route.id, "last_sent_to" => 'TomTom', "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
@@ -80,8 +80,8 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
   test 'send waypoints' do
     with_stubs [:orders_service_wsdl, :send_destination_order] do
       set_route
-      post api("devices/tomtom/send", { customer_id: @customer.id, route_id: @route.id, type: "waypoints" })
-      assert_equal 201, last_response.status
+      post api("devices/tomtom/send", { customer_id: @customer.id, route_id: @route.id, type: :waypoints })
+      assert_equal 201, last_response.status, last_response.body
       @route.reload
       assert @route.reload.last_sent_at
       assert_equal({ "id" => @route.id, "last_sent_to" => 'TomTom', "last_sent_at" => @route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(@route.last_sent_at) }, JSON.parse(last_response.body))
@@ -92,8 +92,8 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
     with_stubs [:orders_service_wsdl, :send_destination_order] do
       set_route
       post api("devices/tomtom/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id, type: "orders" })
-      assert_equal 201, last_response.status
-      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
+      assert_equal 201, last_response.status, last_response.body
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.devices[:tomtom_id] }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
       assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => 'TomTom', "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
@@ -104,8 +104,8 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
     with_stubs [:orders_service_wsdl, :send_destination_order] do
       set_route
       post api("devices/tomtom/send_multiple", { customer_id: @customer.id, planning_id: @route.planning_id, type: "waypoints" })
-      assert_equal 201, last_response.status
-      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
+      assert_equal 201, last_response.status, last_response.body
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.devices[:tomtom_id] }
       routes.each &:reload
       routes.each{|route| assert route.last_sent_at }
       assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => 'TomTom', "last_sent_at" => route.last_sent_at.iso8601(3), "last_sent_at_formatted"=>I18n.l(route.last_sent_at) } }, JSON.parse(last_response.body))
@@ -127,8 +127,8 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
     with_stubs [:orders_service_wsdl, :send_destination_order, :clear_orders] do
       set_route
       delete api("devices/tomtom/clear_multiple", { customer_id: @customer.id, planning_id: @route.planning_id })
-      assert_equal 200, last_response.status
-      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.tomtom_id }
+      assert_equal 200, last_response.status, last_response.body
+      routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.devices[:tomtom_id] }
       routes.each &:reload
       routes.each{|route| assert !route.last_sent_at }
       assert_equal(routes.map{|route| { "id" => route.id, "last_sent_to" => nil, "last_sent_at" => nil, "last_sent_at_formatted"=>nil } }, JSON.parse(last_response.body))
@@ -140,28 +140,28 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
       set_route
 
       # Customer Already Have Devices
-      @customer.vehicles.update_all tomtom_id: "tomtom_id"
+      @customer.vehicles.update_all devices: {tomtom_id: "tomtom_id"}
 
       # Reset Vehicle
       default_color = "#004499"
       @vehicle.update! fuel_type: nil, color: default_color
       @customer.vehicles.reload ; @vehicle.reload
-      assert_equal "tomtom_id", @vehicle.tomtom_id
+      assert_equal "tomtom_id", @vehicle.devices[:tomtom_id]
       assert !@vehicle.fuel_type
       assert_equal default_color, @vehicle.color
 
       # Send Request.. Send Credentials As Parameters
       post api("devices/tomtom/sync")
-      assert_equal 204, last_response.status
+      assert_equal 204, last_response.status, last_response.body
 
       # Vehicle Should Now Have All Values
       @customer.vehicles.reload ; @vehicle.reload
-      assert_equal "1-44063-666E054E7", @vehicle.tomtom_id
+      assert_equal "1-44063-666E054E7", @vehicle.devices[:tomtom_id]
       assert_equal "DIESEL", @vehicle.fuel_type
       assert_equal "#0000FF", @vehicle.color # Blue
 
       # Customer Vehicles Should Have Devices Cleared, Except For The Two TomTom Vehicles
-      assert @customer.vehicles.where(tomtom_id: nil).count == (@customer.vehicles.count - 2)
+      assert @customer.vehicles.where("devices->>'tomtom_id' = ?", nil).count == (@customer.vehicles.count - 2)
     end
   end
 
@@ -171,27 +171,31 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
 
       # Reset Vehicle
       default_color = "#004499"
-      @vehicle.update! tomtom_id: nil, fuel_type: nil, color: default_color
+      @vehicle.update! devices: { tomtom_id: nil}, fuel_type: nil, color: default_color
       @vehicle.reload
-      assert !@vehicle.tomtom_id
+      assert !@vehicle.devices[:tomtom_id]
       assert !@vehicle.fuel_type
       assert_equal default_color, @vehicle.color
 
-      # Reset Customer
-      @customer.update! tomtom_account: nil, tomtom_user: nil, tomtom_password: nil
-      @customer.reload
-      tomtom_account, tomtom_user, tomtom_password = @customer.tomtom_account, @customer.tomtom_user, @customer.tomtom_password
-      assert !@customer.tomtom_account
-      assert !@customer.tomtom_user
-      assert !@customer.tomtom_password
+      devices = @customer.devices
 
+      # Reset Customer
+      tomtom_reset = {
+        tomtom: {
+          account: nil,
+          user: nil,
+          password: nil
+        }
+      }
+      @customer.update! devices: tomtom_reset
+      @customer.reload
       # Send Request.. Send Credentials As Parameters
-      post api("devices/tomtom/sync"), { tomtom_account: tomtom_account, tomtom_user: tomtom_user, tomtom_password: tomtom_password }
+      post api("devices/tomtom/sync"), devices[:tomtom]
       assert_equal 204, last_response.status
 
       # Vehicle Should Now Have All Values
       @vehicle.reload
-      assert_equal "1-44063-666E054E7", @vehicle.tomtom_id
+      assert_equal "1-44063-666E054E7", @vehicle.devices[:tomtom_id]
       assert_equal "DIESEL", @vehicle.fuel_type
       assert_equal "#0000FF", @vehicle.color # Blue
     end

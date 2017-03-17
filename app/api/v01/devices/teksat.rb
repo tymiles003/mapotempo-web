@@ -20,11 +20,7 @@ class V01::Devices::Teksat < Grape::API
     namespace :teksat do
       before do
         @customer = current_customer params[:customer_id]
-        teksat_authenticate @customer
-      end
-
-      rescue_from DeviceServiceError do |e|
-        error! e.message, 200
+        Mapotempo::Application.config.devices[:teksat].authenticate @customer, params
       end
 
       helpers do
@@ -33,28 +29,11 @@ class V01::Devices::Teksat < Grape::API
         end
       end
 
-      desc 'Validate Teksat Credentials',
-        detail: 'Validate Teksat Credentials',
-        nickname: 'deviceTeksatAuth'
-      get '/auth' do
-        status 204
-      end
-
       desc 'List Devices',
         detail: 'List Devices',
         nickname: 'deviceTeksatList'
       get '/devices' do
         present service.list_devices, with: V01::Entities::DeviceItem
-      end
-
-      desc 'Send Route',
-        detail: 'Send Route',
-        nickname: 'deviceTeksatSend'
-      params do
-        requires :route_id, type: Integer, desc: 'Route ID'
-      end
-      post '/send' do
-        device_send_route
       end
 
       desc 'Send Planning Routes',

@@ -18,13 +18,6 @@
 class V01::Devices::Orange < Grape::API
   namespace :devices do
     namespace :orange do
-      before do
-        @customer = current_customer params[:customer_id]
-      end
-
-      rescue_from DeviceServiceError do |e|
-        error! e.message, 200
-      end
 
       helpers do
         def service
@@ -32,12 +25,8 @@ class V01::Devices::Orange < Grape::API
         end
       end
 
-      desc 'Check Orange Fleet Credentials',
-        detail: 'Validate Orange Fleet Credentials',
-        nickname: 'deviceMasternautAuth'
-      get '/auth' do
-        orange_fleet_authenticate @customer
-        status 204
+      before do
+        @customer = current_customer(params[:customer_id])
       end
 
       desc 'List Devices',
@@ -45,16 +34,6 @@ class V01::Devices::Orange < Grape::API
         nickname: 'deviceOrangeList'
       get '/devices' do
         present service.list_devices, with: V01::Entities::DeviceItem
-      end
-
-      desc 'Send Route',
-        detail: 'Send Route',
-        nickname: 'deviceOrangeSend'
-      params do
-        requires :route_id, type: Integer, desc: 'Route ID'
-      end
-      post '/send' do
-        device_send_route
       end
 
       desc 'Send Planning Routes',

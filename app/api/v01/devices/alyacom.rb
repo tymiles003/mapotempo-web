@@ -18,13 +18,6 @@
 class V01::Devices::Alyacom < Grape::API
   namespace :devices do
     namespace :alyacom do
-      before do
-        @customer = current_customer params[:customer_id]
-      end
-
-      rescue_from DeviceServiceError do |e|
-        error! e.message, 200
-      end
 
       helpers do
         def service
@@ -32,22 +25,8 @@ class V01::Devices::Alyacom < Grape::API
         end
       end
 
-      desc 'Check Alyacom Credentials',
-        detail: 'Validate Alyacom Credentials',
-        nickname: 'deviceAlyacomAuth'
-      get '/auth' do
-        alyacom_authenticate @customer
-        status 204
-      end
-
-      desc 'Send Route',
-        detail: 'Send Route',
-        nickname: 'deviceAlyacomSend'
-      params do
-        requires :route_id, type: Integer, desc: 'Route ID'
-      end
-      post '/send' do
-        device_send_route
+      before do
+        @customer = current_customer(params[:customer_id])
       end
 
       desc 'Send Planning Routes',

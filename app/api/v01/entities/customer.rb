@@ -57,28 +57,31 @@ class V01::Entities::Customer < Grape::Entity
   expose(:enable_stop_status, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
   expose(:advanced_options, documentation: { type: String, desc: 'Advanced options in a serialized json format' })
 
-  # Devices: Alyacom
-  expose(:enable_alyacom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:alyacom_association, documentation: { type: String })
+  expose(:devices, documentation: { type: Hash, desc: EDIT_ONLY_ADMIN })
 
-  # Devices: Masternaut
-  expose(:enable_masternaut, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:masternaut_user, documentation: { type: String })
+  # # Devices: Alyacom
+  # expose(:enable_alyacom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  # expose(:alyacom_association, documentation: { type: String })
 
-  # Devices: Orange
-  expose(:enable_orange, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:orange_user, documentation: { type: String })
+  # # Devices: Masternaut
+  # expose(:enable_masternaut, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  # expose(:masternaut_user, documentation: { type: String })
 
-  # Devices: Teksat
-  expose(:enable_teksat, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:teksat_customer_id, documentation: { type: Integer })
-  expose(:teksat_username, documentation: { type: String })
-  expose(:teksat_url, documentation: { type: String })
+  # # Devices: Orange
+  # expose(:enable_orange, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  # expose(:orange_user, documentation: { type: String })
 
-  # Devices: TomTom
-  expose(:enable_tomtom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
-  expose(:tomtom_user, documentation: { type: String })
-  expose(:tomtom_account, documentation: { type: String })
+  # # Devices: Teksat
+  # expose(:enable_teksat, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  # expose(:teksat_customer_id, documentation: { type: Integer })
+  # expose(:teksat_username, documentation: { type: String })
+  # expose(:teksat_url, documentation: { type: String })
+
+  # # Devices: TomTom
+  # expose(:enable_tomtom, documentation: { type: 'Boolean', desc: EDIT_ONLY_ADMIN })
+  # expose(:tomtom_user, documentation: { type: String })
+  # expose(:tomtom_account, documentation: { type: String })
+  
 end
 
 class V01::Entities::CustomerAdmin < V01::Entities::Customer
