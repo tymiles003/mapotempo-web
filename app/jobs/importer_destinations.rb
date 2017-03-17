@@ -152,6 +152,11 @@ class ImporterDestinations < ImporterBase
     @destinations_by_attributes = Hash[@customer.destinations.collect{ |destination| [destination.attributes.slice(*@@slice_attr), destination] }]
   end
 
+  def uniq_ref(row)
+    return if !row[:stop_type].nil? && row[:stop_type] != I18n.t('destinations.import_file.stop_type_visit')
+    row[:ref] || row[:ref_visit] ? [row[:ref], row[:ref_visit]] : nil
+  end
+
   def prepare_quantities(row)
     q = {}
     row.each{ |key, value|
@@ -206,9 +211,7 @@ class ImporterDestinations < ImporterBase
   end
 
   def import_row(name, row, line, options)
-    if !row[:stop_type].nil? && row[:stop_type] != I18n.t('destinations.import_file.stop_type_visit')
-      return
-    end
+    return if !row[:stop_type].nil? && row[:stop_type] != I18n.t('destinations.import_file.stop_type_visit')
 
     # Deals with deprecated open and close
     row[:open1] = row.delete(:open) if !row.key?(:open1) && row.key?(:open)
@@ -295,8 +298,9 @@ class ImporterDestinations < ImporterBase
 
       # Add visit to route if needed
       if row.key?(:route) && !@visit_ids.include?(visit.id)
-        @routes[row[:route]][:ref_vehicle] = row[:ref_vehicle].gsub(%r{[\./\\]}, ' ') if row[:ref_vehicle]
-        @routes[row[:route]][:visits] << [visit, ValueToBoolean.value_to_boolean(row[:active], true)]
+        ref_route = (!row.key?(:ref_vehicle) || row[:ref_vehicle]) && row[:route] # Remove ref from out_of_route
+        @routes[ref_route][:ref_vehicle] = row[:ref_vehicle].gsub(%r{[\./\\]}, ' ') if row[:ref_vehicle]
+        @routes[ref_route][:visits] << [visit, ValueToBoolean.value_to_boolean(row[:active], true)]
         @visit_ids << visit.id
       end
 

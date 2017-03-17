@@ -28,6 +28,11 @@ class ImporterBase
     @warnings = []
   end
 
+  # Overrided in importer_destinations.rb
+  def uniq_ref(row)
+    row[:ref]
+  end
+
   def import(data, name, synchronous, options)
     @synchronous = synchronous
     dests = false
@@ -45,12 +50,12 @@ class ImporterBase
         end
 
         begin
-          #check the concat of ref and ref_visit json import
-          ref = row[:ref].to_s + '|' + row[:ref_visit].to_s
-          if (row[:ref] || row[:ref_visit]) && (refs.include?(ref))
-            raise ImportInvalidRef.new(I18n.t('destinations.import_file.refs_duplicate', refs: ref))
-          else
-            refs.push(ref)
+          if ref = uniq_ref(row)
+            if refs.include?(ref)
+              raise ImportInvalidRef.new(I18n.t('destinations.import_file.refs_duplicate', refs: ref.is_a?(Array) ? ref.compact.join('|') : ref))
+            else
+              refs.push(ref)
+            end
           end
 
           dest = import_row(name, row, line + 1 + (options[:line_shift] || 0), options)

@@ -127,6 +127,30 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should export and import' do
+    # Fix INVALID fixtures
+    stops(:stop_three_one).destroy
+    # Remove duplicate in ref
+    destinations(:destination_three).update ref: 'd'
+    # Activate all vehicles (first vehicle_usage_set is random)
+    customers(:customer_one).vehicle_usage_sets[0].vehicle_usages.each{ |vu| vu.update active: true }
+
+    get :show, id: plannings(:planning_one), format: :csv
+    assert_response :success
+    tempfile = Tempfile.new('text.csv')
+    tempfile.write(response.body)
+    tempfile.rewind
+    file = ActionDispatch::Http::UploadedFile.new({
+      tempfile: tempfile,
+    })
+    file.original_filename = 'text.csv'
+
+    assert_difference('Planning.count', 1) do
+      import = ImportCsv.new(importer: ImporterDestinations.new(customers(:customer_one)), replace: false, file: file)
+      assert import.import, import.errors.messages
+    end
+  end
+
   test 'should show planning as csv with order array' do
     o = plannings(:planning_one)
     oa = order_arrays(:order_array_one)
