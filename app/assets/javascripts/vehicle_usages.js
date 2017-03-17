@@ -49,7 +49,7 @@ var vehicle_usages_form = function(params) {
   });
 
   /* API: Devices */
-  devices_observe_vehicle(params);
+  devicesObserveVehicle.init(params);
 
   routerOptionsSelect('#vehicle_usage_vehicle_router', params);
 };

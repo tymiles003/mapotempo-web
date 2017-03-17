@@ -62,7 +62,7 @@ var devicesObserveCustomer = (function() {
             (data && data.error) ? errorCallback(data.error): successCallback();
           },
           error: function(jqXHR, textStatus, error) {
-            errorCallback("Api unreachable - actually not working");
+            errorCallback(textStatus);
           }
         }));
       });

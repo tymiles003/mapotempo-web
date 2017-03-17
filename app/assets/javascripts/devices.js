@@ -111,40 +111,4 @@ var devices_observe_planning = function(context, callback) {
   });
 }
 
-function devices_observe_vehicle(params) {
-  function devices_init_vehicle(base_name, name) {
-    $.ajax({
-      url: '/api/0.1/devices/' + name + '/devices.json',
-      data: {
-        customer_id: params.customer_id
-      },
-      dataType: 'json',
-      success: function(data, textStatus, jqXHR) {
-        if (data && data.error) {
-          stickyError(data.error);
-        } else {
-          data.unshift(' '); // Blank option
-        }
-        $('#' + base_name + '_' + name + '_id').select2({
-          data: data,
-          theme: 'bootstrap',
-          width: '100%',
-          // placeholder: I18n.t('vehicle_usages.form.devices.placeholder'),
-          minimumResultsForSearch: -1,
-          templateResult: function(data_selection) {
-            return data_selection.text;
-          },
-          templateSelection: function(data_selection) {
-            return data_selection.text;
-          }
-        });
-        $('#' + base_name + '_' + name + '_id').val(params[name + '_id']).trigger('change');
-      }
-    });
-  }
 
-  /* API: Devices */
-  $.each(['tomtom', 'teksat', 'orange'], function(i, name) {
-    if (params[name]) devices_init_vehicle('vehicle_usage_vehicle_devices', name);
-  });
-}
