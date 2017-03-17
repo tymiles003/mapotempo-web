@@ -5,13 +5,17 @@ module MasternautBase
     @route.update! end: @route.start + 5.hours
     @route.planning.update! date: 10.days.from_now
     @vehicle = @route.vehicle_usage.vehicle
-    @vehicle.update! masternaut_ref: "masternaut_ref"
+    @vehicle.update! devices: {masternaut_ref: 'masternaut_ref'}
   end
 
   def add_masternaut_credentials customer
-    customer.enable_masternaut = true
-    customer.masternaut_user = "masternaut_user"
-    customer.masternaut_password = "masternaut_password"
+    customer.devices = {
+      masternaut: {
+        enable: 'true',
+        username: 'masternaut_user',
+        password: 'masternaut_password'
+      }
+    }
     customer.save!
     customer
   end

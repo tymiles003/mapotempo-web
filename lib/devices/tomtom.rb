@@ -20,6 +20,27 @@ class Tomtom < DeviceBase
 
   class TomTomServiceBusyError < StandardError; end
 
+  def definition
+    {
+      device: 'tomtom',
+      label: 'TomTom WEBFLEET',
+      label_small: 'TomTom',
+      route_operations: [:orders, :waypoints, :clear],
+      has_sync: true,
+      help: true,
+      forms: {
+        settings: {
+          account: :text,
+          user: :text,
+          password: :password
+        },
+        vehicle: {
+          tomtom_id: :select
+        },
+      }
+    }
+  end
+
   def savon_client_objects
     @client_objects ||= Savon.client(wsdl: api_url + '/objectsAndPeopleReportingService?wsdl', multipart: true, soap_version: 2, open_timeout: 60, read_timeout: 60) do
       #log true
@@ -84,8 +105,8 @@ class Tomtom < DeviceBase
     'Finished' => 'Finished',
   }
 
-  def test_list(customer, params)
-    list_devices customer, { auth: params.slice(:account, :user, :password) }
+  def check_auth(params)
+    list_devices nil, { auth: params.slice(:account, :user, :password) }
   end
 
   def list_devices(customer, params = {})
@@ -157,7 +178,7 @@ class Tomtom < DeviceBase
   end
 
   def send_route(customer, route, options = {})
-    case options[:type].to_sym
+    case options[:type]
     when :orders
       position = route.vehicle_usage.default_store_start
       if position && !position.lat.nil? && !position.lng.nil?
@@ -231,7 +252,7 @@ class Tomtom < DeviceBase
       },
       attributes!: {
         deviceToClear: {
-          objectUid: route.vehicle_usage.vehicle.tomtom_id,
+          objectUid: route.vehicle_usage.vehicle.devices[:tomtom_id],
         }
       }
     }
@@ -266,7 +287,7 @@ class Tomtom < DeviceBase
     if options[:auth]
       account, username, password = options[:auth][:account], options[:auth][:user], options[:auth][:password]
     else
-      account, username, password = customer.tomtom_account, customer.tomtom_user, customer.tomtom_password
+      account, username, password = customer.devices[:tomtom][:account], customer.devices[:tomtom][:user], customer.devices[:tomtom][:password]
     end
 
     message[:order!] = [:aParm, :gParm] + (message[:order!] || (message.keys - [:attributes!]))
@@ -346,7 +367,7 @@ class Tomtom < DeviceBase
   end
 
   def sendDestinationOrder(customer, route, position, orderid, description, time, waypoints = nil)
-    objectuid = route.vehicle_usage.vehicle.tomtom_id
+    objectuid = route.vehicle_usage.vehicle.devices[:tomtom_id]
     params = {
       dstOrderToSend: {
         orderText: strip_sql(description).strip[0..499],

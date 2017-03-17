@@ -5,15 +5,20 @@ module TeksatBase
     @route.update! end: @route.start + 5.hours
     @route.planning.update! date: 10.days.from_now
     @vehicle = @route.vehicle_usage.vehicle
-    @vehicle.update! teksat_id: "1091"
+    @vehicle.update! devices: {teksat_id: '1091'}
   end
 
   def add_teksat_credentials customer
-    customer.enable_teksat = true
-    customer.teksat_customer_id = rand(100)
-    customer.teksat_username = "teksat_username"
-    customer.teksat_password = "teksat_password"
-    customer.teksat_url = "www.gps00.teksat.fr"
+
+    customer.devices = {
+      teksat: {
+        enable: 'true',
+        customer_id: rand(100).to_s,
+        username: 'teksat_username',
+        password: 'teksat_password',
+        url: 'www.gps00.teksat.fr'
+      }
+    }
     customer.save!
     customer
   end
@@ -25,7 +30,13 @@ module TeksatBase
         case name
           when :auth
             @ticket_id = File.read(Rails.root.join("test/web_mocks/teksat/get_ticket")).strip
-            url = TeksatService.new(customer: @customer).service.send :get_ticket_url, @customer, { url: @customer.teksat_url, customer_id: @customer.teksat_customer_id, username: @customer.teksat_username, password: @customer.teksat_password }
+            params = {
+              url: @customer.devices[:teksat][:url],
+              customer_id: @customer.devices[:teksat][:customer_id],
+              username: @customer.devices[:teksat][:username],
+              password: @customer.devices[:teksat][:password]
+            }
+            url = TeksatService.new(customer: @customer).service.send :get_ticket_url, @customer, params
             stubs << stub_request(:get, url).to_return(status: 200, body: @ticket_id)
           when :get_vehicles
             expected_response = File.read(Rails.root.join("test/web_mocks/teksat/get_vehicles.xml")).strip
@@ -37,14 +48,14 @@ module TeksatBase
             stubs << stub_request(:get, url).to_return(status: 200, body: expected_response)
           when :send_route
             expected_response = File.read(Rails.root.join("test/web_mocks/teksat/mission_data.xml")).strip
-            url = @customer.teksat_url + "/webservices/map/set-mission.jsp"
+            url = @customer.devices[:teksat][:url] + "/webservices/map/set-mission.jsp"
             stubs << stub_request(:get, url).with(:query => hash_including({ })).to_return(status: 200, body: expected_response)
           when :clear_route
             expected_response = File.read(Rails.root.join("test/web_mocks/teksat/get_missions.xml")).strip
-            url = @customer.teksat_url + "/webservices/map/get-missions.jsp"
+            url = @customer.devices[:teksat][:url] + "/webservices/map/get-missions.jsp"
             stubs << stub_request(:get, url).with(:query => hash_including({ })).to_return(status: 200, body: expected_response)
             expected_response = File.read(Rails.root.join("test/web_mocks/teksat/mission_data.xml")).strip
-            url = @customer.teksat_url + "/webservices/map/delete-mission.jsp"
+            url = @customer.devices[:teksat][:url] + "/webservices/map/delete-mission.jsp"
             stubs << stub_request(:get, url).with(:query => hash_including({ })).to_return(status: 200, body: expected_response)
         end
       end

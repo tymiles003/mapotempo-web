@@ -10,9 +10,13 @@ class OrangeTest < ActionController::TestCase
     @service = Mapotempo::Application.config.devices.orange
   end
 
-  test 'test list' do
+  test 'test authentication' do
     with_stubs [:auth] do
-      assert @service.test_list @customer, { user: @customer.orange_user, password: @customer.orange_password }
+      params = {
+        user: @customer.devices[:orange][:username],
+        password: @customer.devices[:orange][:password]
+      }
+      assert @service.check_auth params
     end
   end
 

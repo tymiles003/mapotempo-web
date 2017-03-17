@@ -5,13 +5,17 @@ module OrangeBase
     @route.update! end: @route.start + 5.hours
     @route.planning.update! date: 10.days.from_now
     @vehicle = @route.vehicle_usage.vehicle
-    @vehicle.update! orange_id: "325000749"
+    @vehicle.update! devices: {orange_id: '325000749'}
   end
 
   def add_orange_credentials customer
-    customer.enable_orange = true
-    customer.orange_user = "orange_user"
-    customer.orange_password = "orange_password"
+    customer.devices = {
+      orange: {
+        enable: 'true',
+        username: 'orange_user',
+        password: 'orange_password',
+      }
+    }
     customer.save!
     customer
   end

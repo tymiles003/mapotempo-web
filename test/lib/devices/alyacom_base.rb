@@ -9,8 +9,13 @@ module AlyacomBase
   end
 
   def add_alyacom_credentials customer
-    customer.enable_alyacom = true
-    customer.alyacom_association = "alyacom_association"
+    customer.devices = {
+      alyacom: {
+        enable: 'true',
+        association: 'alyacom_association',
+        api_key: '',
+      }
+    }
     customer.save!
     customer
   end
@@ -25,7 +30,7 @@ module AlyacomBase
               case name
                 when :staff, :users, :planning
                   expected_response = ERB.new(File.read(Rails.root.join("test/web_mocks/alyacom.fr/#{name}.json.erb"))).result(binding)
-                  url = [URI.parse(Mapotempo::Application.config.devices.alyacom.api_url), @customer.alyacom_association, name.to_s].join "/"
+                  url = [URI.parse(Mapotempo::Application.config.devices.alyacom.api_url), @customer.devices[:alyacom][:association], name.to_s].join "/"
                   stubs << stub_request(method, url).with(query: hash_including({ })).to_return(status: 200, body: expected_response)
               end
             end
@@ -33,7 +38,7 @@ module AlyacomBase
             names.each do |name|
               case name
                 when :staff, :users, :planning
-                  url = [URI.parse(Mapotempo::Application.config.devices.alyacom.api_url), @customer.alyacom_association, name.to_s].join "/"
+                  url = [URI.parse(Mapotempo::Application.config.devices.alyacom.api_url), @customer.devices[:alyacom][:association], name.to_s].join "/"
                   stubs << stub_request(method, url).with(query: hash_including({ })).to_return(status: 200)
               end
             end

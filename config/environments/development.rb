@@ -106,6 +106,7 @@ Rails.application.configure do
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
   config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.30'
   config.devices.tomtom.api_key = nil
+  config.devices.trimble.api_url = 'https://soap.box.trimbletl.com/jboss-net/services'
   config.devices.cache_object = cache_factory('devices', 30)
 
   config.delayed_job_use = true

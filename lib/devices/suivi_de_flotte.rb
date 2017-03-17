@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2016
+# Copyright © Mapotempo, 2017
 #
 # This file is part of Mapotempo.
 #
@@ -15,26 +15,24 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class DeviceBase
-  attr_accessor :api_url, :api_key
-
-  def planning_date(planning)
-    planning.date ? planning.date.beginning_of_day : Time.zone.now.beginning_of_day
+class SuiviDeFlotte < DeviceBase
+  def definition
+    {
+      device: 'suivi_de_flotte',
+      label: 'SuiviDeFlotte',
+      label_small: 'SuiviDeFlotte',
+      route_operations: [:send],
+      has_sync: false,
+      help: false,
+      forms: {
+        settings: {
+          username: :text,
+          password: :password
+        },
+        vehicle: {
+          ref: :text
+        },
+      }
+    }
   end
-
-  def p_time(route, time)
-    planning_date(route.planning) + time
-  end
-
-  def number_of_days(time_in_seconds)
-    if time_in_seconds && time_in_seconds > 0
-      number_of_days = Time.at(time_in_seconds).utc.strftime('%d').to_i - 1
-      number_of_days > 0 ? " (J+#{number_of_days.to_s})" : ''
-    else
-      ''
-    end
-  end
-end
-
-class DeviceServiceError < StandardError
 end

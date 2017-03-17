@@ -1,10 +1,14 @@
 module TomtomBase
 
   def add_tomtom_credentials customer
-    customer.enable_tomtom = true
-    customer.tomtom_account = "tomtom_account"
-    customer.tomtom_user = "tomtom_user"
-    customer.tomtom_password = "tomtom_password"
+    customer.devices = {
+      tomtom: {
+        enable: 'true',
+        account: 'account',
+        user: 'user',
+        password: 'password'
+      }
+    }
     customer.save!
     customer
   end
@@ -14,7 +18,7 @@ module TomtomBase
     @route.update! end: @route.start + 5.hours
     @route.planning.update! date: 10.days.from_now
     @vehicle = @route.vehicle_usage.vehicle
-    @vehicle.update! tomtom_id: "1-44063-666F24630"
+    @vehicle.update! devices: {tomtom_id: "1-44063-666F24630"}
   end
 
   def with_stubs names, &block
