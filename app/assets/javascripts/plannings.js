@@ -1322,6 +1322,7 @@ var plannings_edit = function(params) {
       $.each(params.manage_planning, function(i, elt) {
         data['manage_' + elt] = true;
       });
+      data.callback_button = params.callback_button;
       $("#planning").html(SMT['plannings/edit'](data));
 
       initRoutes($('#edit-planning'), data);

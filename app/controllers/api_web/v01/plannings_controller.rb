@@ -39,6 +39,7 @@ class ApiWeb::V01::PlanningsController < ApiWeb::V01::ApiWebController
   # rights should be checked before thanks to CanCan::Ability
   def manage_planning
     @manage_planning = [:organize]
+    @callback_button = true
   end
 
   def capabilities
