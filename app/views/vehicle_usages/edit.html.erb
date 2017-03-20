@@ -8,7 +8,7 @@
 
   controller.js(
     customer_id: @vehicle_usage.vehicle.customer.id,
-    devices: @vehicle_usage.vehicle.devices.select { |d, v| v && !v.empty? },
+    devices: @vehicle_usage.vehicle.devices && @vehicle_usage.vehicle.devices.select { |d, v| v && !v.empty? },
     routers_options: Hash[routers.collect { |r| [r.id, r.options] }]
   )
 %>

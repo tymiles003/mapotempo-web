@@ -948,7 +948,7 @@ var plannings_edit = function(params) {
       });
     });
 
-    devices_observe_planning(context, function(from) {
+    devicesObservePlanning.init(context, function(from) {
       if (from && from.data('service') == 'tomtom' && enableStopStatus) {
         needUpdateStopStatus = true;
         requestUpdateStopsStatus();
