@@ -64,7 +64,7 @@ class V01::Routes < Grape::API
           planning = current_customer.plannings.where(planning_id).first!
           id = ParseIdsRefs.read(params[:id])
           route = planning.routes.find{ |route| id[:ref] ? route.ref == id[:ref] : route.id == id[:id] }
-          if route && route.active(params[:active].to_s.to_sym) && route.compute && planning.save!
+          if route && route.active(params[:active].to_s.to_sym) && route.compute! && planning.save!
             present(route, with: V01::Entities::Route)
           end
         end
@@ -137,7 +137,7 @@ class V01::Routes < Grape::API
         patch ':id/reverse_order' do
           id = ParseIdsRefs.read params[:planning_id]
           planning = current_customer.plannings.where(id).first!
-          route = planning.routes.find{ |r| ParseIdsRefs.match(params[:id], r) } and route.reverse_order && route.compute
+          route = planning.routes.find{ |r| ParseIdsRefs.match(params[:id], r) } and route.reverse_order && route.compute!
           route.save!
           present route, with: V01::Entities::Route
         end
