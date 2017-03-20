@@ -3,7 +3,7 @@
     <div>
       <input name="zoning[zones_attributes][][id]" type="hidden" value="{{id}}" />
       {{#manage_edit}}
-      <input class="form-control zone-name" type="text" value="{{name}}" name="zoning[zones_attributes][][name]" placeholder="{{#i18n}}zonings.form.zone_placeholder{{/i18n}} #{{index}}" {{^manage_edit}}disabled{{/manage_edit}} />
+      <input class="form-control zone-name" type="text" value="{{name}}" name="zoning[zones_attributes][][name]" placeholder="{{#i18n}}zonings.form.zone_placeholder{{/i18n}} #{{index}}" {{^manage_organize}}disabled{{/manage_organize}} />
       {{/manage_edit}}
       {{^manage_edit}}
       <div class="form-control zone-name">{{name}}{{^name}}{{#i18n}}zonings.form.zone_placeholder{{/i18n}} #{{index}}{{/name}}</div>
