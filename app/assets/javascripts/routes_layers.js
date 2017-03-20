@@ -267,15 +267,24 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
   },
 
+  pointInView: function(layer, id, point) {
+      if (!this.map.getBounds().contains(point.getLatLng())) {
+        this.map.setView(point.getLatLng(), 17, { reset: true });
+        point.openPopup();
+      } else {
+        this.removeLayer(this.clusterSmallZoom);
+        this.addLayer(this.clusterLargeZoom);
+        this.clusterLargeZoom.zoomToShowLayer(point, L.bind(function() {
+          this.createPopupForLayer(point);
+        }, this));
+      }
+  },
+
   focusOnMarkerInFeatureGroup: function(layers, idName, id) {
     var markers = this.clusterSmallZoom.getLayers();
     for (var j = 0; j < markers.length; j++) {
       if (markers[j].properties[idName] == id) {
-        this.removeLayer(this.clusterSmallZoom);
-        this.addLayer(this.clusterLargeZoom);
-        this.clusterLargeZoom.zoomToShowLayer(markers[j], L.bind(function() {
-          this.createPopupForLayer(markers[j]);
-        }, this));
+        this.pointInView(layers, id, markers[j]);
         break;
       }
     }
