@@ -28,6 +28,11 @@ class Route < ActiveRecord::Base
   validate :stop_index_validation
   attr_accessor :no_stop_index_validation
 
+  include TimeAttr
+  attribute :start, ScheduleType.new
+  attribute :end, ScheduleType.new
+  time_attr :start, :end
+
   before_save :update_vehicle_usage
 
   after_initialize :assign_defaults, if: 'new_record?'
@@ -69,11 +74,11 @@ class Route < ActiveRecord::Base
   end
 
   def service_time_start_value
-    vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage && vehicle_usage.default_service_time_start
+    vehicle_usage.default_service_time_start if vehicle_usage && vehicle_usage.default_service_time_start
   end
 
   def service_time_end_value
-    vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0) if vehicle_usage && vehicle_usage.default_service_time_end
+    vehicle_usage.default_service_time_end if vehicle_usage && vehicle_usage.default_service_time_end
   end
 
   def plan(departure = nil, ignore_errors = false)
@@ -98,7 +103,7 @@ class Route < ActiveRecord::Base
       stops_drive_time = {}
 
       # Add service time
-      if !service_time_start.nil?
+      unless service_time_start.nil?
         self.end += service_time_start
       end
 
@@ -221,7 +226,7 @@ class Route < ActiveRecord::Base
         # Try to minimize waiting time by a later begin
         time = self.end
         time -= stops_drive_time[:stop] if stops_drive_time[:stop]
-        (time -= vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_end
+        time -= vehicle_usage.default_service_time_end if vehicle_usage.default_service_time_end
         stops_sort.reverse_each{ |stop|
           if stop.active && (stop.position? || stop.is_a?(StopRest))
             open, close = stops_time_windows[stop]
@@ -240,7 +245,7 @@ class Route < ActiveRecord::Base
           end
         }
 
-        (time -= vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0)) if vehicle_usage.default_service_time_start
+        time -= vehicle_usage.default_service_time_start if vehicle_usage.default_service_time_start
         if time > start
           # We can sleep a bit more on morning, shift departure
           plan(time, options[:ignore_errors])

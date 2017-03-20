@@ -8,7 +8,7 @@
           <%= route.vehicle_usage.vehicle.name %>
           <% if !route.start.nil? && !route.end.nil? %>
           <br/>
-          <%= t '.departure' %> <%= l(route.start.utc, format: :hour_minute) %> / <%= t '.arrival' %> <%= l(route.end.utc, format: :hour_minute) %>
+          <%= t '.departure' %> <%= route.start_time %> / <%= t '.arrival' %> <%= route.end_time %>
           <% end %>
         </div>
       <% end %>

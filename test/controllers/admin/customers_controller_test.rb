@@ -45,7 +45,7 @@ class Admin::CustomersControllerTest < ActionController::TestCase
         # FIXME: routes are computed but not saved
         # assert_difference('Route.count') do
           Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
-            patch :update, id: @customer, customer: { take_over: 123, enable_orders: !@customer.enable_orders, max_vehicles: @customer.max_vehicles + 1 }
+            patch :update, id: @customer, customer: { take_over: '00:30', enable_orders: !@customer.enable_orders, max_vehicles: @customer.max_vehicles + 1 }
           end
         # end
       end

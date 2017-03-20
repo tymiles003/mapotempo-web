@@ -15,38 +15,6 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class RestValidator < ActiveModel::Validator
-  def validate(record)
-
-    record.errors[:rest_start] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window') if record.default_rest_duration && record.default_rest_start.nil?
-    record.errors[:rest_stop] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window') if record.default_rest_duration && record.default_rest_stop.nil?
-    record.errors[:rest_duration] << I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_duration') if record.default_rest_duration.nil? && record.default_rest_start
-
-    open_seconds = !record.default_open.nil? ? Time.parse(record.default_open.to_s).seconds_since_midnight : 0
-    close_seconds = !record.default_close.nil? ? Time.parse(record.default_close.to_s).seconds_since_midnight : 0
-    rest_start_seconds = !record.default_rest_start.nil? ? Time.parse(record.default_rest_start.to_s).seconds_since_midnight : 0
-    rest_end_seconds = !record.default_rest_stop.nil? ? Time.parse(record.default_rest_stop.to_s).seconds_since_midnight : 0
-    service_time_start_seconds = !record.default_service_time_start.nil? ? Time.parse(record.default_service_time_start.to_s).seconds_since_midnight : 0
-    service_time_end_seconds = !record.default_service_time_end.nil? ? Time.parse(record.default_service_time_end.to_s).seconds_since_midnight : 0
-
-    working_day_start = open_seconds + service_time_start_seconds
-    working_day_end = close_seconds - service_time_end_seconds
-
-    if (close_seconds - open_seconds) <= service_time_start_seconds
-      record.errors[:service_time_start] = I18n.t('activerecord.errors.models.vehicle_usage.service_range')
-    elsif (close_seconds - open_seconds) <= service_time_end_seconds
-      record.errors[:service_time_end] = I18n.t('activerecord.errors.models.vehicle_usage.service_range')
-    elsif (close_seconds - open_seconds) <= (service_time_start_seconds + service_time_end_seconds)
-      record.errors[:base] = I18n.t('activerecord.attributes.vehicle_usage.service_time_start') + ' / ' + I18n.t('activerecord.attributes.vehicle_usage.service_time_end') + ' ' + I18n.t('activerecord.errors.models.vehicle_usage.service_range')
-    elsif rest_start_seconds != 0 && rest_end_seconds != 0
-      if !(rest_start_seconds >= working_day_start) || !(rest_end_seconds <= working_day_end)
-        record.errors[:base] = I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime('%H:%M'), end: Time.at(working_day_end).utc.strftime('%H:%M'))
-      end
-    end
-
-  end
-end
-
 class VehicleUsage < ActiveRecord::Base
   belongs_to :vehicle_usage_set
 
@@ -61,18 +29,20 @@ class VehicleUsage < ActiveRecord::Base
 
   nilify_blanks
 
-  # FIXME: update validations using integer instead of time
-  # validates_time :open, if: :open
-  # validates_time :close, on_or_after: :open, if: ->(vu) { vu.open && vu.close }
-  # validates_time :rest_start, if: :rest_start
-  # validates_time :rest_stop, on_or_after: :rest_start, if: ->(vu) { vu.rest_start && vu.rest_stop }
-  #
-  # validates_with RestValidator, fields: [:rest_duration, :rest_start, :rest_stop]
-  #
-  # validates_time :service_time_start, if: :service_time_start
-  # validates_time :service_time_end, if: :service_time_end
+  include TimeAttr
+  attribute :open, ScheduleType.new
+  attribute :close, ScheduleType.new
+  attribute :rest_start, ScheduleType.new
+  attribute :rest_stop, ScheduleType.new
+  attribute :rest_duration, ScheduleType.new
+  attribute :service_time_start, ScheduleType.new
+  attribute :service_time_end, ScheduleType.new
+  time_attr :open, :close, :rest_start, :rest_stop, :rest_duration, :service_time_start, :service_time_end
 
-  before_validation :nilify_times
+  validate :close_after_open
+  validate :rest_stop_after_rest_start
+  validate :rest_duration_range
+
   before_update :update_out_of_date
 
   before_save :update_routes
@@ -86,8 +56,6 @@ class VehicleUsage < ActiveRecord::Base
     exclude_association :routes
 
     customize(lambda { |_original, copy|
-      def copy.nilify_times; end
-
       def copy.update_out_of_date; end
 
       def copy.update_routes; end
@@ -98,32 +66,68 @@ class VehicleUsage < ActiveRecord::Base
     open || vehicle_usage_set.open
   end
 
+  def default_open_time
+    open_time || vehicle_usage_set.open_time
+  end
+
   def default_close
     close || vehicle_usage_set.close
+  end
+
+  def default_close_time
+    close_time || vehicle_usage_set.close_time
   end
 
   def default_store_start
     store_start || vehicle_usage_set.store_start
   end
 
+  def default_store_start_time
+    store_start_time || vehicle_usage_set.store_start_time
+  end
+
   def default_store_stop
     store_stop || vehicle_usage_set.store_stop
+  end
+
+  def default_store_stop_time
+    store_stop_time || vehicle_usage_set.store_stop_time
   end
 
   def default_store_rest
     store_rest || vehicle_usage_set.store_rest
   end
 
+  def default_store_rest_time
+    store_rest_time || vehicle_usage_set.store_rest_time
+  end
+
   def default_rest_start
     rest_start || vehicle_usage_set.rest_start
+  end
+
+  def default_rest_start_time
+    rest_start_time || vehicle_usage_set.rest_start_time
   end
 
   def default_rest_stop
     rest_stop || vehicle_usage_set.rest_stop
   end
 
+  def default_rest_stop_time
+    rest_stop_time || vehicle_usage_set.rest_stop_time
+  end
+
   def default_rest_duration
     rest_duration || vehicle_usage_set.rest_duration
+  end
+
+  def default_rest_duration_time
+    rest_duration_time || vehicle_usage_set.rest_duration_time
+  end
+
+  def default_rest_duration_time_in_seconds
+    rest_duration_time_in_seconds || vehicle_usage_set.rest_duration_time_in_seconds
   end
 
   def default_rest_duration?
@@ -134,8 +138,16 @@ class VehicleUsage < ActiveRecord::Base
     service_time_start || vehicle_usage_set.service_time_start
   end
 
+  def default_service_time_start_time
+    service_time_start_time || vehicle_usage_set.service_time_start_time
+  end
+
   def default_service_time_end
     service_time_end || vehicle_usage_set.service_time_end
+  end
+
+  def default_service_time_end_time
+    service_time_end_time || vehicle_usage_set.service_time_end_time
   end
 
   def update_rest
@@ -169,12 +181,6 @@ class VehicleUsage < ActiveRecord::Base
     end
   end
 
-  def nilify_times
-    assign_attributes(rest_duration: nil) if rest_duration.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00')) && vehicle_usage_set.rest_duration.nil?
-    assign_attributes(service_time_start: nil) if service_time_start.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00')) && vehicle_usage_set.service_time_start.nil?
-    assign_attributes(service_time_end: nil) if service_time_end.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00')) && vehicle_usage_set.service_time_end.nil?
-  end
-
   def update_out_of_date
     if rest_duration_changed?
       update_rest
@@ -194,6 +200,44 @@ class VehicleUsage < ActiveRecord::Base
       planning.save!
     end
     routes.destroy_all
+  end
+
+  def close_after_open
+    if self.open.present? && self.close.present? && self.close <= self.open
+      errors.add(:close, I18n.t('activerecord.errors.models.vehicle_usage.attributes.close.after'))
+    end
+  end
+
+  def rest_stop_after_rest_start
+    if self.rest_start.present? && self.rest_stop.present? && self.rest_stop <= self.rest_start
+      errors.add(:rest_stop, I18n.t('activerecord.errors.models.vehicle_usage.attributes.rest_stop.after'))
+    end
+  end
+
+  def rest_duration_range
+    errors.add(:rest_start, I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')) if self.default_rest_duration && self.default_rest_start.nil?
+    errors.add(:rest_stop, I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_window')) if self.default_rest_duration && self.default_rest_stop.nil?
+    errors.add(:rest_duration, I18n.t('activerecord.errors.models.vehicle_usage.missing_rest_duration')) if self.default_rest_duration.nil? && self.default_rest_start
+
+    open_duration = self.default_open || 0
+    service_time_start_duration = self.default_service_time_start || 0
+    close_duration = self.default_close || 0
+    service_time_end_duration = self.default_service_time_end || 0
+
+    working_day_start = open_duration + service_time_start_duration
+    working_day_end = close_duration - service_time_end_duration
+
+    if (close_duration - open_duration) <= service_time_start_duration
+      errors.add(:service_time_start, I18n.t('activerecord.errors.models.vehicle_usage.service_range'))
+    elsif (close_duration - open_duration) <= service_time_end_duration
+      errors.add(:service_time_end, I18n.t('activerecord.errors.models.vehicle_usage.service_range'))
+    elsif (close_duration - open_duration) <= (service_time_start_duration + service_time_end_duration)
+      errors.add(:base, "#{I18n.t('activerecord.attributes.vehicle_usage.service_time_start')} / #{I18n.t('activerecord.attributes.vehicle_usage.service_time_end')} #{I18n.t('activerecord.errors.models.vehicle_usage.service_range')}")
+    elsif self.default_rest_start && self.default_rest_start != 0 && self.default_rest_stop && self.default_rest_stop != 0
+      if !(self.default_rest_start >= working_day_start) || !(self.default_rest_stop <= working_day_end)
+        errors.add(:base, I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime('%H:%M'), end: Time.at(working_day_end).utc.strftime('%H:%M')))
+      end
+    end
   end
 
 end

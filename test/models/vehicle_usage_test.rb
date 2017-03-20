@@ -48,7 +48,7 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert v.service_time_end.nil?
     r = v.routes.take
     assert !r.out_of_date
-    v.update! service_time_end: Time.utc(2000, 1, 1, 0, 0) + 10.minutes
+    v.update! service_time_end: 10.minutes.to_i
     assert r.reload.out_of_date
   end
 

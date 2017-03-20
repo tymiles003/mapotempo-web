@@ -82,7 +82,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
       assert_difference('Vehicle.count', 1) do
         assert_difference('VehicleUsage.count', customer.vehicle_usage_sets.length) do
           assert_difference('Route.count', customer.plannings.length) do
-            post api, { ref: 'new', name: 'Vh1', open: '10:00:00', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id, color: '#bebeef', capacities: [{deliverable_unit_id: 1, quantity: 30}] }.to_json, 'CONTENT_TYPE' => 'application/json'
+            post api, { ref: 'new', name: 'Vh1', open: '10:00', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id, color: '#bebeef', capacities: [{deliverable_unit_id: 1, quantity: 30}] }.to_json, 'CONTENT_TYPE' => 'application/json'
             assert last_response.created?, last_response.body
             vehicle = JSON.parse last_response.body
             assert_equal '#bebeef', vehicle['color']
@@ -108,7 +108,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
         assert_difference('Vehicle.count', 1) do
           assert_difference('VehicleUsage.count', customer.vehicle_usage_sets.length) do
             assert_difference('Route.count', customer.plannings.length) do
-              post v ? api_admin : api, { ref: 'new', name: new_name, open: '10:00:00', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id }
+              post v ? api_admin : api, { ref: 'new', name: new_name, open: '10:00', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id }
               assert last_response.created?, last_response.body
             end
           end
@@ -120,10 +120,10 @@ class V01::VehiclesTest < ActiveSupport::TestCase
         assert_equal new_name, JSON.parse(last_response.body)[0]['name']
         id = JSON.parse(last_response.body)[0]['id']
         customer.vehicle_usage_sets.each { |s|
-          get "/api/0.1/vehicle_usage_sets/" + s.id.to_s + "/vehicle_usages.json?api_key=testkey1"
+          get "/api/0.1/vehicle_usage_sets/#{s.id.to_s}/vehicle_usages.json?api_key=testkey1"
           hash = JSON.parse(last_response.body)
           u = hash.find{ |u| u['vehicle']['id'] == id }
-          assert_equal '10:00:00', u['open']
+          assert_equal '10:00', u['open']
           assert_equal stores(:store_zero).id, u['store_start_id']
         }
 

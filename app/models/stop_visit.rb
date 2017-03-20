@@ -16,7 +16,25 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class StopVisit < Stop
-  delegate :lat, :lng, :open1, :close1, :open2, :close2, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, :color, :icon, :default_icon, :default_icon_size, to: :visit
+  delegate :lat,
+           :lng,
+           :open1, :open1_time,
+           :close1, :close1_time,
+           :open2, :open2_time,
+           :close2, :close2_time,
+           :name,
+           :street,
+           :postalcode,
+           :city,
+           :country,
+           :detail,
+           :comment,
+           :phone_number,
+           :color,
+           :icon,
+           :default_icon,
+           :default_icon_size,
+           to: :visit
 
   validates :visit, presence: true
 
@@ -40,8 +58,11 @@ class StopVisit < Stop
   end
 
   def duration
-    to = visit.take_over || visit.destination.customer.take_over
-    to ? to.seconds_since_midnight : 0
+    visit.take_over || visit.destination.customer.take_over || 0
+  end
+
+  def duration_time_in_seconds
+    visit.take_over_time_in_seconds || visit.destination.customer.take_over_time_in_seconds || 0
   end
 
   def base_id

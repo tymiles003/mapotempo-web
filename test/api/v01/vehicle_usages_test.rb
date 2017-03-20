@@ -33,7 +33,7 @@ class V01::VehicleUsagesTest < ActiveSupport::TestCase
   test 'should return a vehicle_usage' do
     get api(@vehicle_usage.vehicle_usage_set.id, @vehicle_usage.id)
     assert last_response.ok?, last_response.body
-    assert_equal @vehicle_usage.rest_duration.to_s.split(' ')[-2], JSON.parse(last_response.body)['rest_duration']
+    assert_equal @vehicle_usage.rest_duration_time, JSON.parse(last_response.body)['rest_duration']
   end
 
   test 'should update a vehicle_usage' do
@@ -43,6 +43,6 @@ class V01::VehicleUsagesTest < ActiveSupport::TestCase
 
     get api(@vehicle_usage.vehicle_usage_set.id, @vehicle_usage.id)
     assert last_response.ok?, last_response.body
-    assert_equal @vehicle_usage.rest_duration.to_s.split(' ')[-2], JSON.parse(last_response.body)['rest_duration']
+    assert_equal @vehicle_usage.rest_duration_time, JSON.parse(last_response.body)['rest_duration']
   end
 end

@@ -17,7 +17,7 @@
       <name>
         <%= route.vehicle_usage.default_store_start.name %>
       </name>
-      <desc><%= l(route.start.utc, format: :hour_minute) if route.start %>
+      <desc><%= route.end_time if route.end %>
 <%= [route.vehicle_usage.default_store_start.street, route.vehicle_usage.default_store_start.postalcode, route.vehicle_usage.default_store_start.city, route.vehicle_usage.default_store_start.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>
@@ -42,18 +42,18 @@ route.stops.each{ |stop|
           stop.is_a?(StopVisit) ? (route.planning.customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : stop.visit.default_quantities ? visit_quantities(stop.visit, route.vehicle_usage.try(&:vehicle), with_default: true).map{ |d| d[:quantity] }.join(' ') : '') : '',
           ' ',
           stop.is_a?(StopVisit) ?
-            (stop.visit.take_over ? '(' + l(stop.visit.take_over.utc, format: :hour_minute_second) + ')' : '') :
-            (route.vehicle_usage.default_rest_duration ? '(' + l(route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) + ')' : '')
+            (stop.visit.take_over ? '(' + stop.visit.take_over_time_in_seconds + ')' : '') :
+            (route.vehicle_usage.default_rest_duration ? '(' + route.vehicle_usage.default_rest_duration_time_in_seconds + ')' : '')
         ].join.gsub(/\s+/, ' ').strip
         %>
       </name>
-      <desc><%= l(stop.time.utc, format: :hour_minute) if stop.time %>
+      <desc><%= stop.time_time %>
       <% if stop.open1 || stop.close1 %>
-<%= l(stop.open1.utc, format: :hour_minute) if stop.open1 %>-<%= l(stop.close1.utc, format: :hour_minute) if stop.close1 %>
+<%= stop.open1_time %>-<%= stop.close1_time %>
       <% end %>
       <% if (stop.open1 || stop.close1) && (stop.open2 || stop.close2) %>/<% end %>
       <% if stop.open2 || stop.close2 %>
-<%= l(stop.open2.utc, format: :hour_minute) if stop.open2 %>-<%= l(stop.close2.utc, format: :hour_minute) if stop.close2 %>
+<%= stop.open2_time %>-<%= stop.close2_time %>
       <% end %>
 <%= [stop.street, stop.detail, stop.postalcode, stop.city, stop.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if !stop.comment.blank? %>
@@ -85,7 +85,7 @@ route.stops.each{ |stop|
       <name>
         <%= route.vehicle_usage.default_store_stop.name %>
       </name>
-      <desc><%= l(route.end.utc, format: :hour_minute) if route.end %>
+      <desc><%= route.end_time %>
 <%= [route.vehicle_usage.default_store_stop.street, route.vehicle_usage.default_store_stop.postalcode, route.vehicle_usage.default_store_stop.city, route.vehicle_usage.default_store_stop.country].select{ |i| !i.blank? }.join(', ') %>.
       <% if route.stop_out_of_drive_time %>
 <%= t 'plannings.edit.error.out_of_drive_time' %>

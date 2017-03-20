@@ -20,6 +20,11 @@ class Stop < ActiveRecord::Base
   belongs_to :visit
 
   nilify_blanks
+
+  include TimeAttr
+  attribute :time, ScheduleType.new
+  time_attr :time
+
   validates :route, presence: true
 
   before_save :out_of_date

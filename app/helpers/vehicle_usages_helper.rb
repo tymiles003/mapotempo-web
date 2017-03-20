@@ -71,25 +71,25 @@ module VehicleUsagesHelper
   def vehicle_usage_store_hours(vehicle_usage)
     capture do
       if vehicle_usage.open
-        concat l(vehicle_usage.open, format: :hour_minute)
+        concat vehicle_usage.open_time
         concat ' - '
       elsif vehicle_usage.vehicle_usage_set.open
-        concat span_tag(l(vehicle_usage.vehicle_usage_set.open, format: :hour_minute))
+        concat span_tag(vehicle_usage.vehicle_usage_set.open_time)
         concat span_tag(' - ')
       end
       if vehicle_usage.close
-        concat l(vehicle_usage.close, format: :hour_minute)
+        concat vehicle_usage.close_time
       elsif vehicle_usage.vehicle_usage_set.close
-        concat span_tag(l(vehicle_usage.vehicle_usage_set.close, format: :hour_minute))
+        concat span_tag(vehicle_usage.vehicle_usage_set.close_time)
       end
     end
   end
 
   def vehicle_external_services(vehicle)
     services = []
-    services << 'TomTom' if !vehicle.tomtom_id.blank?
-    services << 'Teksat' if !vehicle.teksat_id.blank?
-    services << 'Orange' if !vehicle.orange_id.blank?
+    services << 'TomTom' unless vehicle.tomtom_id.blank?
+    services << 'Teksat' unless vehicle.teksat_id.blank?
+    services << 'Orange' unless vehicle.orange_id.blank?
     services.join(', ')
   end
 
@@ -119,13 +119,13 @@ module VehicleUsagesHelper
       if route.vehicle_usage.default_service_time_start
         concat ' - %s: %s' % [
           t('activerecord.attributes.vehicle_usage.service_time_start'),
-          l(route.vehicle_usage.default_service_time_start, format: :hour_minute)
+          route.vehicle_usage.default_service_time_start_time
         ]
       end
       if route.vehicle_usage.default_service_time_end
         concat ' - %s: %s' % [
           t('activerecord.attributes.vehicle_usage.service_time_end'),
-          l(route.vehicle_usage.default_service_time_end, format: :hour_minute)
+          route.vehicle_usage.default_service_time_end_time
         ]
       end
     end

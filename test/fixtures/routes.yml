@@ -15,7 +15,7 @@ route_one_one:
   out_of_date: false
   vehicle_usage: vehicle_usage_one_one
   ref: "route_one"
-  start: 2000-01-01 08:00
+  start: 08:00
 
 route_three_one:
   distance: 1.5
@@ -24,7 +24,7 @@ route_three_one:
   out_of_date: false
   vehicle_usage: vehicle_usage_one_three
   ref: "route_three"
-  start: 2000-01-01 07:00
+  start: 07:00
 
 route_zero_two:
   distance:
@@ -33,7 +33,7 @@ route_zero_two:
   out_of_date: false
   vehicle_usage:
   ref:
-  start: 2000-01-01 16:00
+  start: 16:00
 
 route_one_two:
   distance: 1.5
@@ -42,7 +42,7 @@ route_one_two:
   out_of_date: false
   vehicle_usage: vehicle_usage_three_one
   ref: "route 33"
-  start: 2000-01-01 08:00
+  start: 08:00
 
 route_three_two:
   distance: 1.5
@@ -50,7 +50,7 @@ route_three_two:
   planning: planning_two
   out_of_date: false
   vehicle_usage: vehicle_usage_three_two
-  start: 2000-01-01 07:00
+  start: 07:00
 
 route_zero_three:
   planning: planning_three
@@ -63,4 +63,4 @@ route_one_three:
   planning: planning_three
   out_of_date: false
   vehicle_usage: vehicle_usage_two_one
-  start: 2000-01-01 08:00
+  start: 08:00

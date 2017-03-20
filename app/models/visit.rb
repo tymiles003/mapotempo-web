@@ -34,15 +34,20 @@ class Visit < ActiveRecord::Base
   nilify_blanks
   validates :destination, presence: true
 
-  # FIXME: update validations using integer instead of time
-  # validates_time :open1, allow_nil: true, allow_blank: true
-  # validates_time :close1, allow_nil: true, allow_blank: true, on_or_after: :open1, :if => lambda { open1 && close1 }
-  #
-  # validates :close1, presence: true, if: :open2
-  # validates_time :open2, on_or_after: :close1, if: :open2
-  # validates_time :close2, allow_nil: true, allow_blank: true, on_or_after: :open2, :if => lambda { open2 && close2 }
-  #
-  # validates_with QuantitiesValidator, fields: [:quantities]
+  include TimeAttr
+  attribute :open1, ScheduleType.new
+  attribute :close1, ScheduleType.new
+  attribute :open2, ScheduleType.new
+  attribute :close2, ScheduleType.new
+  attribute :take_over, ScheduleType.new
+  time_attr :open1, :close1, :open2, :close2, :take_over
+
+  validate :close1_after_open1
+  validates :close1, presence: true, if: :open2
+  validate :close2_after_open2
+  validate :open2_after_close1
+
+  validates_with QuantitiesValidator, fields: [:quantities]
 
   include Consistency
   validate_consistency :tags, attr_consistency_method: -> (visit) { visit.destination.try :customer_id }
@@ -96,6 +101,10 @@ class Visit < ActiveRecord::Base
 
   def default_take_over
     take_over || destination.customer.take_over
+  end
+
+  def default_take_over_time
+    take_over_time || destination.customer.take_over_time
   end
 
   def default_quantities
@@ -181,4 +190,23 @@ class Visit < ActiveRecord::Base
       }
     end
   end
+
+  def close1_after_open1
+    if self.open1.present? && self.close1.present? && self.close1 < self.open1
+      errors.add(:close, I18n.t('activerecord.errors.models.visit.attributes.close1.after'))
+    end
+  end
+
+  def close2_after_open2
+    if self.open2.present? && self.close2.present? && self.close2 < self.open2
+      errors.add(:close, I18n.t('activerecord.errors.models.visit.attributes.close2.after'))
+    end
+  end
+
+  def open2_after_close1
+    if self.open2.present? && self.close1.present? && self.open2 < self.close1
+      errors.add(:close, I18n.t('activerecord.errors.models.visit.attributes.open2.after'))
+    end
+  end
+
 end

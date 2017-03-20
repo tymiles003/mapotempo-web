@@ -44,7 +44,7 @@ module Mapotempo
 
     I18n.available_locales = %w(en fr)
 
-    config.autoload_paths += %W(#{config.root}/app/services #{config.root}/app/api/v01/helper)
+    config.autoload_paths += %W(#{config.root}/app/services #{config.root}/app/api/v01/helper #{config.root}/app/models/types)
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true

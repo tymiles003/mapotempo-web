@@ -298,9 +298,9 @@ class Planning < ActiveRecord::Base
           positions = (positions + [position_start, position_stop]).compact
 
           vehicle_open = r.vehicle_usage.default_open
-          vehicle_open += r.vehicle_usage.default_service_time_start - Time.utc(2000, 1, 1, 0, 0) if r.vehicle_usage.default_service_time_start
+          vehicle_open += r.vehicle_usage.default_service_time_start if r.vehicle_usage.default_service_time_start
           vehicle_close = r.vehicle_usage.default_close
-          vehicle_close -= r.vehicle_usage.default_service_time_end - Time.utc(2000, 1, 1, 0, 0) if r.vehicle_usage.default_service_time_end
+          vehicle_close -= r.vehicle_usage.default_service_time_end if r.vehicle_usage.default_service_time_end
           {
             id: r.vehicle_usage_id,
             router: r.vehicle_usage.vehicle.default_router,

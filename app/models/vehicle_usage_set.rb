@@ -25,25 +25,29 @@ class VehicleUsageSet < ActiveRecord::Base
   has_many :vehicle_usages, -> { order(:id) }, inverse_of: :vehicle_usage_set, dependent: :delete_all, autosave: true
 
   nilify_blanks
+
   auto_strip_attributes :name
+
+  include TimeAttr
+  attribute :open, ScheduleType.new
+  attribute :close, ScheduleType.new
+  attribute :rest_start, ScheduleType.new
+  attribute :rest_stop, ScheduleType.new
+  attribute :rest_duration, ScheduleType.new
+  attribute :service_time_start, ScheduleType.new
+  attribute :service_time_end, ScheduleType.new
+  time_attr :open, :close, :rest_start, :rest_stop, :rest_duration, :service_time_start, :service_time_end
+
   validates :customer, presence: true
   validates :name, presence: true
 
-  # FIXME: update validations using integer instead of time
-  # validates_time :open, allow_nil: false, allow_blank: false
-  # validates_time :close, allow_nil: false, allow_blank: false, after: :open
-  # validates_time :rest_start, if: :rest_start
-  # validates_time :rest_stop, on_or_after: :rest_start, if: :rest_stop
-  #
-  # validates :rest_start, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
-  # validates :rest_stop, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
-  # validates :rest_duration, presence: {if: :rest_start?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
-  #
-  # validates_time :service_time_start, if: :service_time_start
-  # validates_time :service_time_end, if: :service_time_end
+  validate :close_after_open
+  validate :rest_stop_after_rest_start
+  validates :rest_start, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
+  validates :rest_stop, presence: {if: :rest_duration?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_window') }}
+  validates :rest_duration, presence: {if: :rest_start?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
 
   after_initialize :assign_defaults, if: :new_record?
-  before_validation :nilify_times
   before_update :update_out_of_date
 
   amoeba do
@@ -51,8 +55,6 @@ class VehicleUsageSet < ActiveRecord::Base
 
     customize(lambda { |_original, copy|
       def copy.assign_defaults; end
-
-      def copy.nilify_times; end
 
       def copy.update_out_of_date; end
 
@@ -82,15 +84,9 @@ class VehicleUsageSet < ActiveRecord::Base
   end
 
   def assign_defaults
-    self.open ||= Time.utc(2000, 1, 1, 8, 0) unless open
-    self.close ||= Time.utc(2000, 1, 1, 18, 0) unless close
+    self.open ||= 8 * 3600 unless open
+    self.close ||= 18 * 3600 unless close
     create_vehicle_usages
-  end
-
-  def nilify_times
-    assign_attributes(rest_duration: nil) if rest_duration.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
-    assign_attributes(service_time_start: nil) if service_time_start.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
-    assign_attributes(service_time_end: nil) if service_time_end.eql?(Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
   end
 
   def update_out_of_date
@@ -138,4 +134,17 @@ class VehicleUsageSet < ActiveRecord::Base
       }
     end
   end
+
+  def close_after_open
+    if self.open.present? && self.close.present? && self.close <= self.open
+      errors.add(:close, I18n.t('activerecord.errors.models.vehicle_usage_set.attributes.close.after'))
+    end
+  end
+
+  def rest_stop_after_rest_start
+    if self.rest_start.present? && self.rest_stop.present? && self.rest_stop <= self.rest_start
+      errors.add(:rest_stop, I18n.t('activerecord.errors.models.vehicle_usage_set.attributes.rest_stop.after'))
+    end
+  end
+
 end

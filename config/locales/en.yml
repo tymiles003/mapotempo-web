@@ -475,10 +475,8 @@ en:
         vehicle_usage:
           attributes:
             close:
-              on_or_after: "must be after opening time"
               after: "must be after opening time"
             rest_stop:
-              on_or_after: "must be after opening time"
               after: "must be after opening time"
           missing_rest_window: "can't be blank if rest duration is filled"
           missing_rest_duration: "can't be blank if rest time window is filled"
@@ -489,7 +487,6 @@ en:
             close:
               after: "must be after opening time"
             rest_stop:
-              on_or_after: "must be after opening time"
               after: "must be after opening time"
           at_least_one: "At least one vehicle configuration needed"
           missing_rest_window: "can't be blank if rest duration is filled"
@@ -497,12 +494,12 @@ en:
         visit:
           attributes:
             close1:
-              on_or_after: "must be after Time window 1 open"
+              after: "must be after Time window 1 open"
               blank: "can't be blank when Time window 2 open is set"
             open2:
-              on_or_after: "must be after Time window 1 close"
+              after: "must be after Time window 1 close"
             close2:
-              on_or_after: "must be after Time window 2 open"
+              after: "must be after Time window 2 open"
             quantities:
               not_float: "doivent être un nombre"
         zone:

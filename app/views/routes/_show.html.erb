@@ -27,7 +27,7 @@
   <% end %>
   <span>
     <i class="fa fa-check-square fa-fw"></i> <%= route.size_active %>&nbsp;<%= I18n.t 'plannings.edit.stops' %>
-    <i class="fa fa-clock-o fa-fw"></i> <%= ("%i:%02i" % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
+    <i class="fa fa-clock-o fa-fw"></i> <%= ('%i:%02i' % [(route.end - route.start)/60/60, (route.end - route.start)/60%60]) if route.start && route.end %>
     <i class="fa fa-road fa-fw"></i> <%= number_to_human(route.distance, units: :distance, precision: 3, format: '%n %u') %>
     <% if !route.planning.customer.enable_orders %>
       <% route_quantities(route).each do |units| %>
@@ -40,11 +40,7 @@
     <% if route.vehicle_usage.default_store_start %>
       <li class="list-group-item store" style="border-left: 5px solid <%= route.default_color %>">
         <div class="row no-gutter">
-          <% if route.planning.customer.print_planning_annotating %>
-            <div class="col-md-5 col-sm-6 col-xs-6">
-          <% else %>
-            <div class="col-md-6 col-sm-6 col-xs-9">
-          <% end %>
+          <div class=<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>>
             <i class="fa fa-2x <%= route.vehicle_usage.default_store_start.default_icon %>" style="color: <%= route.vehicle_usage.default_store_start.default_color %>;"></i>
             <span class="name"><%= route.vehicle_usage.default_store_start.name %></span><br/>
             <span class="address">
@@ -55,9 +51,9 @@
 
           <div class="title col-md-2 col-sm-2 col-xs-3">
             <span class="time">
-              <%= l(route.start.utc, format: :hour_minute) if route.start %>
+              <%= route.start_time %>
               <% if display_start_time(route) %>
-                - <%= l(display_start_time(route).utc, format: :hour_minute) %>
+                - <%= Time.at(display_start_time(route)).utc.strftime('%H:%M') %>
               <% end %>
             </span>
           </div>
@@ -80,11 +76,7 @@
         <hr/>
       <% end %>
       <div class="row no-gutter">
-        <% if route.planning.customer.print_planning_annotating %>
-          <div class="col-md-5 col-sm-6 col-xs-6">
-        <% else %>
-          <div class="col-md-6 col-sm-6 col-xs-9">
-        <% end %>
+        <div class=<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>>
           <span class="number"><%= index += 1 %></span>
           <span class="name"><% if stop.is_a?(StopRest) %><i class="fa fa-coffee fa-fw"></i> <% end %><%= stop.name %></span>
           <% if stop.ref %>
@@ -105,17 +97,17 @@
 
         <div class="title col-md-2 col-sm-2 col-xs-3">
           <% if route.planning.customer.print_stop_time %>
-            <span class="time"><%= l(stop.time.utc, format: :hour_minute) if stop.time %></span>
+            <span class="time"><%= stop.time_time %></span>
           <% end %>
           <% if stop.open1 || stop.close1 %>
             <span class="window">
-              <%= l(stop.open1.utc, format: :hour_minute) if stop.open1 %>-<%= l(stop.close1.utc, format: :hour_minute) if stop.close1 %>
+              <%= stop.open1_time %>-<%= stop.close1_time %>
             </span>
           <% end %>
           <% if (stop.open1 || stop.close1) && (stop.open2 || stop.close2) %><span>/</span><% end %>
           <% if stop.open2 || stop.close2 %>
             <span class="window">
-              <%= l(stop.open2.utc, format: :hour_minute) if stop.open2 %>-<%= l(stop.close2.utc, format: :hour_minute) if stop.close2 %>
+              <%= stop.open2_time %>-<%= stop.close2_time %>
             </span>
           <% end %>
           <% if stop.is_a?(StopVisit) %>
@@ -128,7 +120,7 @@
               </div>
             <% end %>
             <% if stop.visit.take_over %>
-              <span class="duration">(<%= l(stop.visit.take_over.utc, format: :hour_minute_second) %>)</span>
+              <span class="duration">(<%= stop.visit.take_over_time_in_seconds %>)</span>
             <% end %>
             <% if route.planning.customer.enable_orders %>
               <% if stop.order && stop.order.products.any? %>
@@ -148,7 +140,7 @@
             <% end %>
           <% end %>
           <% if stop.is_a?(StopRest) %>
-            <span class="duration">(<%= l(route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) %>)</span>
+            <span class="duration">(<%= route.vehicle_usage.default_rest_duration_time_in_seconds %>)</span>
           <% end %>
         </div>
 
@@ -199,11 +191,7 @@
       <li class="list-group-item store" style="border-left: 5px solid <%= route.default_color %>">
         <div class="row no-gutter">
 
-          <% if route.planning.customer.print_planning_annotating %>
-            <div class="col-md-5 col-sm-6 col-xs-6">
-          <% else %>
-            <div class="col-md-6 col-sm-6 col-xs-9">
-          <% end %>
+          <div class=<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>>
             <i class="fa fa-2x <%= route.vehicle_usage.default_store_stop.default_icon %>" style="color: <%= route.vehicle_usage.default_store_stop.default_color %>;"></i>
             <span class="name"><%= route.vehicle_usage.default_store_stop.name %></span><br/>
             <span class="address">
@@ -216,9 +204,9 @@
             <% if route.planning.customer.print_stop_time %>
               <span class="time">
                 <% if display_end_time(route) %>
-                  <%= l(display_end_time(route).utc, format: :hour_minute) %> -
+                  <%= Time.at(display_end_time(route)).utc.strftime('%H:%M') %> -
                 <% end %>
-                <%= l(route.end.utc, format: :hour_minute) if route.end %>
+                <%= route.end_time %>
               </span>
             <% end %>
           </div>

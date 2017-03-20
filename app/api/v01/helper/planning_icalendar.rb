@@ -6,7 +6,7 @@ module PlanningIcalendar
   end
 
   def p_time(route, time)
-    planning_date(route) + (time - Time.new(2000, 1, 1, 0, 0, 0, '+00:00'))
+    planning_date(route) + time
   end
 
   def stop_ics(route, stop, event_start)

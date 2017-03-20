@@ -334,8 +334,8 @@ class PlanningTest < ActiveSupport::TestCase
 
     # Add Service Time
     v.vehicle_usage_set.update!(
-      service_time_start: Time.utc(2000, 1, 1, 0, 0) + 10.minutes,
-      service_time_end: Time.utc(2000, 1, 1, 0, 0) + 25.minutes
+      service_time_start: 10.minutes.to_i,
+      service_time_end: 25.minutes.to_i
     )
 
     # 2nd computation
@@ -346,14 +346,14 @@ class PlanningTest < ActiveSupport::TestCase
     route_end2 = r.end
 
     # Make sure time has been added to route start and end, and stops are still in tw
-    assert_equal route_start - 10.minutes, route_start2
+    assert_equal route_start - 10.minutes.to_i, route_start2
     assert_equal stop_times[0], stop_times2[0]
-    assert_equal route_end + 25.minutes, route_end2
+    assert_equal route_end + 25.minutes.to_i, route_end2
 
     # Vehicle Usage overrides Service Time values
     v.update!(
-      service_time_start: Time.utc(2000, 1, 1, 0, 0) + 50.minutes,
-      service_time_end: Time.utc(2000, 1, 1, 0, 0) + 20.minutes
+      service_time_start: 50.minutes.to_i,
+      service_time_end: 20.minutes.to_i
     )
 
     # 3rd computation
@@ -364,17 +364,17 @@ class PlanningTest < ActiveSupport::TestCase
     route_end3 = r.end
 
     # Let's verify route start is minimal, stops are not at same time
-    assert_equal '2000-01-01 10:00:00 UTC', route_start3.utc.to_s
+    assert_equal Time.parse('10:00:00').seconds_since_midnight.to_i, route_start3
     assert_not_equal stop_times[0], stop_times3[0]
-    assert_equal route_end + 20.minutes, route_end3
+    assert_equal route_end + 20.minutes.to_i, route_end3
 
     # First stop should not be out of time window
     assert !r.stops[0].out_of_window
 
     # Change time window
     r.stops[0].visit.update!(
-      open1: v.service_time_start + 5.minutes,
-      close1: v.service_time_start + 10.minutes
+      open1: v.service_time_start + 5.minutes.to_i,
+      close1: v.service_time_start + 10.minutes.to_i
     )
 
     # Compute a last time, this stop should be out of time window
@@ -393,7 +393,7 @@ class PlanningTest < ActiveSupport::TestCase
       if index.zero?
         # Can't trace path, store has no lat / lng to start with
         assert_equal 0, stop.distance
-        assert_equal '2000-01-01 10:44:25 UTC', stop.time.utc.to_s
+        assert_equal Time.parse('10:44:25').seconds_since_midnight.to_i, stop.time
         assert stop.trace.nil?
       elsif index == r.stops.length - 1
         assert stop.distance.nil? && stop.trace.nil?

@@ -16,9 +16,9 @@ json.visits do
   json.array! destination.visits do |visit|
     json.extract! visit, :id
     json.ref visit.ref if @customer.enable_references
-    json.take_over visit.take_over && l(visit.take_over.utc, format: :hour_minute_second)
-    json.duration visit.default_take_over && l(visit.default_take_over.utc, format: :hour_minute_second)
-    if !@customer.enable_orders
+    json.take_over visit.take_over_time
+    json.duration visit.default_take_over_time
+    unless @customer.enable_orders
       if @customer.deliverable_units.size == 1
         json.quantity visit.quantities && visit.quantities[@customer.deliverable_units[0].id]
         json.quantity_default @customer.deliverable_units[0].default_quantity
@@ -28,18 +28,18 @@ json.visits do
       json.quantities do
         json.array! visit.default_quantities do |k, v|
           #now return {} if value is nil
-          if !v.nil?
+          unless v.nil?
             json.deliverable_unit_id k
             json.quantity v
-            json.unit_icon @customer.deliverable_units.find{ |du| du.id == k }.try(:default_icon)
+            json.unit_icon @customer.deliverable_units.find { |du| du.id == k }.try(:default_icon)
           end
         end
       end
     end
-    json.open1 visit.open1 && l(visit.open1.utc, format: :hour_minute)
-    json.close1 visit.close1 && l(visit.close1.utc, format: :hour_minute)
-    json.open2 visit.open2 && l(visit.open2.utc, format: :hour_minute)
-    json.close2 visit.close2 && l(visit.close2.utc, format: :hour_minute)
+    json.open1 visit.open1_time
+    json.close1 visit.close1_time
+    json.open2 visit.open2_time
+    json.close2 visit.close2_time
     json.tag_ids do
       json.array! visit.tags.collect(&:id)
     end

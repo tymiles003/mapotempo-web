@@ -50,8 +50,8 @@ class Alyacom < DeviceBase
           postalcode: position.postalcode,
           city: position.city,
           detail: [
-            stop.open1 || stop.close1 ? (stop.open1 ? stop.open1.strftime('%H:%M') : '') + '-' + (stop.close1 ? stop.close1.strftime('%H:%M') : '') : nil,
-            stop.open2 || stop.close2 ? (stop.open2 ? stop.open2.strftime('%H:%M') : '') + '-' + (stop.close2 ? stop.close2.strftime('%H:%M') : '') : nil,
+            stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time : '') + '-' + (stop.close1 ? stop.close1_time : '') : nil,
+            stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time : '') + '-' + (stop.close2 ? stop.close2_time : '') : nil,
             stop.comment,
             stop.ref,
           ].compact.join(' ').strip
@@ -63,8 +63,8 @@ class Alyacom < DeviceBase
           comment: [
             stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : customer.deliverable_units.map{ |du| stop.visit.default_quantities[du.id] && "x#{stop.visit.default_quantities[du.id]}#{du.label}" }.compact.join(' ')) : nil,
           ].compact.join(' ').strip,
-          start: planning_date(route.planning) + stop.time.utc.seconds_since_midnight.seconds,
-          end: planning_date(route.planning) + (stop.time.utc.seconds_since_midnight + stop.duration).seconds
+          start: planning_date(route.planning) + stop.time,
+          end: planning_date(route.planning) + stop.time + stop.duration
         }
       }
     }.compact

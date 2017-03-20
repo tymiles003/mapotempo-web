@@ -3,7 +3,9 @@ require 'test_helper'
 class V01::RoutesGetTest < ActiveSupport::TestCase
 
   include Rack::Test::Methods
-  include ApiBase
+
+  # FIXME: utility to include ApiBase?
+  # include ApiBase
 
   def app
     Rails.application

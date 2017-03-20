@@ -4,9 +4,9 @@ visit_unaffected_one:
   destination: destination_unaffected_one # customer_one
   ref: a
   quantities:
-  take_over: 2000-01-01 00:01:00
-  open1: 2000-01-01 10:00:00
-  close1: 2000-01-01 11:00:00
+  take_over: 00:01:00
+  open1: 10:00:00
+  close1: 11:00:00
   tags: tag_one
 
 visit_one:
@@ -14,23 +14,23 @@ visit_one:
   destination: destination_one # customer_one
   ref: b
   quantities:
-  take_over: 2000-01-01 00:05:33
-  open1: 2000-01-01 10:00:00
-  close1: 2000-01-01 11:00:00
+  take_over: 00:05:33
+  open1: 10:00:00
+  close1: 11:00:00
   tags: tag_one
 
 visit_two:
   destination: destination_two # customer_one
   ref: c
   quantities: '"1" => "3", "999" => "1"'
-  open1: 2000-01-01 10:00:00
-  close1: 2000-01-01 11:00:00
+  open1: 10:00:00
+  close1: 11:00:00
   tags: tag_one
 
 visit_three:
   destination: destination_three # customer_one
   ref: c
   quantities: '"1" => "3"'
-  open1: 2000-01-01 10:00:00
-  close1: 2000-01-01 11:00:00
+  open1: 10:00:00
+  close1: 11:00:00
   tags: tag_one

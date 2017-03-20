@@ -5,13 +5,13 @@ json.route_id route.id
 json.distance locale_distance(route.distance || 0, current_user.prefered_unit)
 json.size route.stops.size
 json.extract! route, :ref, :color, :size_active
-(json.start l(route.start.utc, format: :hour_minute)) if route.start
-(json.end l(route.end.utc, format: :hour_minute)) if route.end
+(json.start_time) if route.start
+(json.end_time) if route.end
 json.color_fake route.color
 json.last_sent_to route.last_sent_to if route.last_sent_to
 json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at
 json.optimized_at_formatted l(route.optimized_at) if route.optimized_at
-if !@planning.customer.enable_orders
+unless @planning.customer.enable_orders
   json.quantities route_quantities(route) do |units|
     json.quantity units[:quantity] if units[:quantity]
     json.unit_icon units[:unit_icon]
@@ -49,11 +49,11 @@ number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
 json.store_start do
   json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
-  (json.time l(route.start.utc, format: :hour_minute)) if route.start
+  (json.time_time) if route.start
   (json.geocoded true) if route.vehicle_usage.default_store_start.position?
-  (json.error true) if !route.vehicle_usage.default_store_start.position?
+  (json.error true) unless route.vehicle_usage.default_store_start.position?
 end if route.vehicle_usage && route.vehicle_usage.default_store_start
-(json.start_with_service l(display_start_time(route).utc, format: :hour_minute)) if display_start_time(route)
+(json.start_with_service display_start_time(route)) if display_start_time(route)
 previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
 first_active_free = nil
 route.stops.select{ |s| s.is_a?(StopVisit) }.sort_by{ |s| s.index || Float::INFINITY }.reverse_each{ |stop|
@@ -74,15 +74,15 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
   json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
   json.ref stop.ref if @planning.customer.enable_references
   json.open_close1 stop.open1 || stop.close1
-  (json.open1 l(stop.open1.utc, format: :hour_minute)) if stop.open1
-  (json.close1 l(stop.close1.utc, format: :hour_minute)) if stop.close1
+  (json.open1 stop.open1_time) if stop.open1
+  (json.close1 stop.close1_time) if stop.close1
   json.open_close2 stop.open2 || stop.close2
-  (json.open2 l(stop.open2.utc, format: :hour_minute)) if stop.open2
-  (json.close2 l(stop.close2.utc, format: :hour_minute)) if stop.close2
+  (json.open2 stop.open2_time) if stop.open2
+  (json.close2 stop.close2_time) if stop.close2
   (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
   (json.geocoded true) if stop.position?
   (json.no_path true) if stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
-  (json.time l(stop.time.utc, format: :hour_minute)) if stop.time
+  (json.time stop.time_time) if stop.time
   (json.active true) if stop.active
   (json.number number += 1) if route.vehicle_usage && stop.active
   (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
@@ -135,12 +135,12 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
       (json.error true) if route.vehicle_usage.default_store_rest && !route.vehicle_usage.default_store_rest.position?
     end
   end
-  json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration > 0
+  json.duration stop.duration_time_in_seconds if stop.duration > 0
   previous_with_pos = stop if stop.position?
 end
 json.store_stop do
   json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
-  (json.time l(route.end.utc, format: :hour_minute)) if route.end
+  (json.time route.end_time) if route.end
   (json.geocoded true) if route.vehicle_usage.default_store_stop.position?
   (json.no_path true) if !route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace
   (json.error true) if !route.vehicle_usage.default_store_stop.position? || (!route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace)
@@ -151,7 +151,7 @@ json.store_stop do
   json.stop_distance (route.stop_distance || 0) / 1000
   json.stop_drive_time route.stop_drive_time
 end if route.vehicle_usage && route.vehicle_usage.default_store_stop
-(json.end_without_service l(display_end_time(route).utc, format: :hour_minute)) if display_end_time(route)
+(json.end_without_service Time.at(display_end_time(route)).utc.strftime('%H:%M')) if display_end_time(route)
 (json.route_no_geolocalization no_geolocalization) if no_geolocalization
 (json.route_out_of_window out_of_window) if out_of_window
 (json.route_out_of_capacity out_of_capacity) if out_of_capacity

@@ -152,7 +152,7 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to edit_destination_path(assigns(:destination))
   end
 
-  test 'should update destination & visit' do
+  test 'should update destination and visit' do
     size_visits = @destination.visits.size
     visits_attributes = Hash[@destination.visits.map{ |v| [v.id.to_s, v.attributes.merge(quantities: {'1' => 1, '2' => 2.3})]}]
     patch :update, id: @destination, destination: { visits_attributes: visits_attributes}

@@ -25,7 +25,7 @@ json.routes @routes do |route|
   no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
   json.store_start do
     json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
-    (json.time l(route.start.utc, format: :hour_minute)) if route.start
+    (json.time route.start_time) if route.start
   end if route.vehicle_usage && route.vehicle_usage.default_store_start
   previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
   first_active_free = nil
@@ -47,15 +47,15 @@ json.routes @routes do |route|
     json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :trace, :out_of_window, :out_of_capacity, :out_of_drive_time
     json.ref stop.ref if @planning.customer.enable_references
     json.open_close1 stop.open1 || stop.close1
-    json.open1 stop.open1 && l(stop.open1.utc, format: :hour_minute)
-    json.close1 stop.close1 && l(stop.close1.utc, format: :hour_minute)
+    json.open1 stop.open1_time
+    json.close1 stop.close1_time
     json.open_close2 stop.open2 || stop.close2
-    json.open2 stop.open2 && l(stop.open2.utc, format: :hour_minute)
-    json.close2 stop.close2 && l(stop.close2.utc, format: :hour_minute)
+    json.open2 stop.open2_time
+    json.close2 stop.close2_time
     (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
     (json.geocoded true) if stop.position?
     (json.no_path true) if stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
-    (json.time l(stop.time.utc, format: :hour_minute)) if stop.time
+    (json.time stop.time_time) if stop.time
     (json.active true) if stop.active
     (json.number number += 1) if route.vehicle_usage && stop.active
     json.distance (stop.distance || 0) / 1000
@@ -96,12 +96,12 @@ json.routes @routes do |route|
         (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
       end
     end
-    json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration > 0
+    json.duration stop.duration_time_in_seconds if stop.duration > 0
     previous_with_pos = stop if stop.position?
   end
   json.store_stop do
     json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
-    (json.time l(route.end.utc, format: :hour_minute)) if route.end
+    (json.time route.end_time) if route.end
     json.stop_trace route.stop_trace
     json.stop_distance (route.stop_distance || 0) / 1000
     json.stop_drive_time route.stop_drive_time

@@ -108,9 +108,9 @@ class Masternaut < DeviceBase
           stop.name,
           stop.ref,
           stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : customer.deliverable_units.map{ |du| stop.visit.default_quantities[du.id] && "x#{stop.visit.default_quantities[du.id]}#{du.label}" }.compact.join(' ')) : nil,
-          stop.is_a?(StopVisit) ? (stop.visit.take_over ? '(' + stop.visit.take_over.strftime('%H:%M:%S') + ')' : nil) : route.vehicle_usage.default_rest_duration.strftime('%H:%M:%S'),
-          stop.open1 || stop.close1 ? (stop.open1 ? stop.open1.strftime('%H:%M') : '') + '-' + (stop.close1 ? stop.close1.strftime('%H:%M') : '') : nil,
-          stop.open2 || stop.close2 ? (stop.open2 ? stop.open2.strftime('%H:%M') : '') + '-' + (stop.close2 ? stop.close2.strftime('%H:%M') : '') : nil,
+          stop.is_a?(StopVisit) ? (stop.visit.take_over ? '(' + stop.visit.take_over_time + ')' : nil) : route.vehicle_usage.default_rest_duration_time_in_seconds,
+          stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time : '') + '-' + (stop.close1 ? stop.close1_time : '') : nil,
+          stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time : '') + '-' + (stop.close2 ? stop.close2_time : '') : nil,
           stop.detail,
           stop.comment,
           stop.phone_number,
@@ -127,8 +127,6 @@ class Masternaut < DeviceBase
   private
 
   def createJobRoute(customer, vehicleRef, reference, description, date, begin_time, end_time, waypoints)
-    time_2000 = Time.utc(2000, 1, 1, 0, 0, 0, '+00:00').to_i
-
     existing_waypoints = fetchPOI(customer)
     if existing_waypoints.empty?
       createPOICategory(customer)
@@ -143,9 +141,9 @@ class Masternaut < DeviceBase
 
     params = {
       jobRoute: {
-        begin: (date.to_time + (begin_time.utc.to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
+        begin: (date.to_time + begin_time).strftime('%Y-%m-%dT%H:%M:%S'),
         description: description ? description.tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ').strip[0..50] : nil,
-        end: (date.to_time + (end_time.utc.to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
+        end: (date.to_time + end_time).strftime('%Y-%m-%dT%H:%M:%S'),
         reference: reference,
       }
     }
@@ -157,7 +155,7 @@ class Masternaut < DeviceBase
         job: {
           description: waypoint[:description].tr("\r", ' ').tr("\n", ' ').gsub(/\s+/, ' ').strip[0..255],
           poiReference: [waypoint[:id], waypoint[:updated_at].to_i.to_s(36)].join(':'),
-          scheduledBegin: (date.to_time + (waypoint[:time].to_i - time_2000)).strftime('%Y-%m-%dT%H:%M:%S'),
+          scheduledBegin: (date.to_time + waypoint[:time]).strftime('%Y-%m-%dT%H:%M:%S'),
           type: 'job',
           vehicleRef: vehicleRef,
         },

@@ -475,10 +475,8 @@ fr:
         vehicle_usage:
           attributes:
             close:
-              on_or_after: "doit être après l'horaire de début"
               after: "doit être après l'horaire de début"
             rest_stop:
-              on_or_after: "doit être après l'horaire de début"
               after: "doit être après l'horaire de début"
           missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
           missing_rest_duration: "doit être remplie si une plage de repos est remplie"
@@ -489,7 +487,6 @@ fr:
             close:
               after: "doit être après l'horaire de début"
             rest_stop:
-              on_or_after: "doit être après l'horaire de début"
               after: "doit être après l'horaire de début"
           at_least_one: "Au moins une configuration de véhicules est requise"
           missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
@@ -497,12 +494,12 @@ fr:
         visit:
           attributes:
             close1:
-              on_or_after: "doit être après le début de Plage horaire 1"
+              after: "doit être après le début de Plage horaire 1"
               blank: "doit être rempli(e) si un début de Plage horaire 2 est renseigné"
             open2:
-              on_or_after: "doit être après la fin de Plage horaire 1"
+              after: "doit être après la fin de Plage horaire 1"
             close2:
-              on_or_after: "doit être après le début de Plage horaire 2"
+              after: "doit être après le début de Plage horaire 2"
             quantities:
               not_float: "doivent être un nombre"
         zone:

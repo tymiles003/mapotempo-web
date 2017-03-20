@@ -8,7 +8,7 @@ stop_unaffected:
   trace: MyString
   route: route_zero_one # planning_one
   visit: visit_unaffected_one
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -21,7 +21,7 @@ stop_one_one:
   trace: MyString
   route: route_one_one # planning_one
   visit_id: 1 # Refered by tomtom web mock as encoded string ":v1"
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -34,7 +34,7 @@ stop_one_two:
   trace: MyString
   route: route_one_one # planning_one
   visit: visit_two
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -47,7 +47,7 @@ stop_one_three:
   trace:
   route: route_one_one # planning_one
   visit: visit_three
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -60,7 +60,7 @@ stop_one_four:
   distance: 1.4
   trace: MyString
   route: route_one_one # planning_one
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
 
 stop_one_five:
   type: StopRest
@@ -69,7 +69,7 @@ stop_one_five:
   distance: 1.4
   trace: MyString
   route: route_two_one # ???
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
 
 stop_one_six:
   type: StopRest
@@ -78,7 +78,7 @@ stop_one_six:
   distance: 1.4
   trace: MyString
   route: route_two_one # ???
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
 
 stop_one_seven:
   type: StopRest
@@ -87,7 +87,7 @@ stop_one_seven:
   distance: 1.4
   trace: MyString
   route: route_two_one # ???
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
 
 # INVALID: planning_two from customer_two, visit_two from customer_one
 stop_two_one:
@@ -98,7 +98,7 @@ stop_two_one:
   trace: MyString
   route: route_zero_two # planning_two
   visit: visit_two
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -112,7 +112,7 @@ stop_three_one:
   trace: MyString
   route: route_three_one # planning_one
   visit_id: 1
-  time: 2000-01-01 00:00:30
+  time: 00:00:30
   out_of_window: false
   out_of_capacity: false
   out_of_drive_time: false
@@ -125,4 +125,4 @@ stop_three_two:
   distance: 1.4
   trace: MyString
   route: route_three_one # planning_one
-  time: 2000-01-01 00:00:30
+  time: 00:00:30

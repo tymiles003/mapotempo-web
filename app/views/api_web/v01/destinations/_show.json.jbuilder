@@ -11,17 +11,17 @@ json.visits destination.visits do |visit|
   end
   json.index_visit (destination.visits.index(visit) + 1) if destination.visits.size > 1
   json.ref visit.ref if @customer.enable_references
-  take_over = visit.take_over && l(visit.take_over.utc, format: :hour_minute_second)
+  take_over = visit.take_over_time_in_seconds
   json.take_over take_over
   json.duration take_over
   json.open_close1 visit.open1 || visit.close1
-  json.open1 visit.open1 && l(visit.open1.utc, format: :hour_minute)
-  json.close1 visit.close1 && l(visit.close1.utc, format: :hour_minute)
+  json.open1 visit.open1_time
+  json.close1 visit.close1_time
   json.open_close2 visit.open2 || visit.close2
-  json.open2 visit.open2 && l(visit.open2.utc, format: :hour_minute)
-  json.close2 visit.close2 && l(visit.close2.utc, format: :hour_minute)
+  json.open2 visit.open2_time
+  json.close2 visit.close2_time
   tags = visit.tags | destination.tags
-  if !tags.empty?
+  unless tags.empty?
     json.tags_present do
       json.tags do
         json.array! tags, :label
@@ -30,7 +30,7 @@ json.visits destination.visits do |visit|
   end
 end
 if destination.visits.empty?
-  if !tags.empty?
+  unless tags.empty?
     json.tags_present do
       json.tags do
         json.array! tags, :label

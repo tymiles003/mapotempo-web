@@ -185,7 +185,7 @@ class RouteTest < ActiveSupport::TestCase
 
     o.out_of_date = true
     o.compute
-    assert_equal '2000-01-01 10:55:27 UTC', o.start.utc.to_s
+    assert_equal Time.parse('10:55:27').seconds_since_midnight.to_i, o.start
   end
 
   test 'should get defautl color' do

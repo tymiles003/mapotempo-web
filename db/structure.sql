@@ -603,8 +603,6 @@ CREATE TABLE routes (
     planning_id integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    start timestamp without time zone,
-    "end" timestamp without time zone,
     hidden boolean,
     locked boolean,
     out_of_date boolean,
@@ -617,7 +615,9 @@ CREATE TABLE routes (
     stop_drive_time integer,
     last_sent_at timestamp without time zone,
     optimized_at timestamp without time zone,
-    last_sent_to character varying
+    last_sent_to character varying,
+    start integer,
+    "end" integer
 );
 
 
@@ -662,7 +662,6 @@ CREATE TABLE stops (
     route_id integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    "time" timestamp without time zone,
     out_of_window boolean,
     out_of_capacity boolean,
     out_of_drive_time boolean,
@@ -673,6 +672,7 @@ CREATE TABLE stops (
     visit_id integer,
     status character varying,
     eta timestamp without time zone,
+    "time" integer,
     CONSTRAINT check_visit_id CHECK ((((type)::text <> 'StopVisit'::text) OR (visit_id IS NOT NULL)))
 );
 
@@ -2586,4 +2586,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170316085311');
 INSERT INTO schema_migrations (version) VALUES ('20170316092228');
 
 INSERT INTO schema_migrations (version) VALUES ('20170316092501');
+
+INSERT INTO schema_migrations (version) VALUES ('20170316164808');
+
+INSERT INTO schema_migrations (version) VALUES ('20170316164815');
 

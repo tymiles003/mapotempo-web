@@ -537,27 +537,27 @@ class V01::DestinationsTest < ActiveSupport::TestCase
 
   test 'Update Destination' do
     visit = visits :visit_one
-    destination_params = @destination.attributes.slice *@destination.attributes.keys - ["id"]
-    visit_attributes = visit.attributes.slice *visit.attributes.keys - ["created_at", "updated_at"]
-    destination_params.merge! "visits_attributes" => [visit_attributes]
+    destination_params = @destination.attributes.slice *@destination.attributes.keys - ['id']
+    visit_attributes = visit.attributes.slice *visit.attributes.keys - ['created_at', 'updated_at']
+    destination_params.merge! 'visits_attributes' => [visit_attributes]
     put api(@destination.id), destination_params
     assert last_response.ok?, last_response.body
   end
 
-  test 'Update Destination w/ Deprecated Params' do
+  test 'Update Destination with Deprecated Params' do
     visit = visits :visit_one
-    destination_params = @destination.attributes.slice *@destination.attributes.keys - ["id"]
-    visit_attributes = visit.attributes.slice *visit.attributes.keys - ["created_at", "updated_at"]
+    destination_params = @destination.attributes.slice *@destination.attributes.keys - ['id']
+    visit_attributes = visit.attributes.slice *visit.attributes.keys - ['created_at', 'updated_at']
 
-    open_time = Time.utc(2000, 1, 1) + 15.hours
-    visit_attributes.delete "open1"
-    visit_attributes["open"] = open_time
+    open_time = 15.hours.to_i
+    visit_attributes.delete 'open1'
+    visit_attributes['open'] = open_time
 
-    close_time = Time.utc(2000, 1, 1) + 17.hours
-    visit_attributes.delete "close1"
-    visit_attributes["close"] = close_time
+    close_time = 17.hours.to_i
+    visit_attributes.delete 'close1'
+    visit_attributes['close'] = close_time
 
-    destination_params.merge! "visits_attributes" => [ visit_attributes ]
+    destination_params.merge! 'visits_attributes' => [ visit_attributes ]
     put api(@destination.id), destination_params
     assert last_response.ok?, last_response.body
 

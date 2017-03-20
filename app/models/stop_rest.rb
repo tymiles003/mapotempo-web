@@ -40,11 +40,23 @@ class StopRest < Stop
     route.vehicle_usage.default_rest_start
   end
 
+  def open1_time
+    route.vehicle_usage.default_rest_start_time
+  end
+
   def close1
     route.vehicle_usage.default_rest_stop
   end
 
+  def close1_time
+    route.vehicle_usage.default_rest_stop_time
+  end
+
   def open2
+    nil
+  end
+
+  def open2_time
     nil
   end
 
@@ -52,9 +64,16 @@ class StopRest < Stop
     nil
   end
 
+  def close2_time
+    nil
+  end
+
   def duration
-    to = route.vehicle_usage.default_rest_duration
-    to ? to.seconds_since_midnight : 0
+    route.vehicle_usage.default_rest_duration || 0
+  end
+
+  def duration_time_in_seconds
+    route.vehicle_usage.default_rest_duration_time_in_seconds || 0
   end
 
   def base_id
