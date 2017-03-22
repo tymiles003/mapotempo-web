@@ -810,7 +810,7 @@ var destinations_index = function(params, api) {
       markers[id].setIcon(icon_over);
       // Ensure that markers on the very same position are still visible
       var cluster = markersLayers.getVisibleParent(markers[id]);
-      if ("getChildCount" in cluster) cluster.spiderfy();
+      if (cluster && ("getChildCount" in cluster)) cluster.spiderfy();
       markers[id].setIcon(icon_over).setZIndexOffset(100);
       icon_over_stack.push(id);
     }
