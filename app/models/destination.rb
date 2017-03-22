@@ -55,11 +55,11 @@ class Destination < Location
   end
 
   def visits_color
-    (tags | visits.collect(&:tags).reduce(&:|)).find(&:color).try(&:color)
+    (tags | visits.flat_map(&:tags).uniq).find(&:color).try(&:color)
   end
 
   def visits_icon
-    (tags | visits.collect(&:tags).reduce(&:|)).find(&:icon).try(&:icon)
+    (tags | visits.flat_map(&:tags).uniq).find(&:icon).try(&:icon)
   end
 
   private
