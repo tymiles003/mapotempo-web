@@ -134,8 +134,12 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
         });
       } else if (progress[i] === 0 || progress[i] === '0') {
         isProgressing = true;
-        // Display a waiting message to user
         $(event).parent().parent().hide();
+        $(event).parent().removeClass("active");
+        $(event).css({
+          transition: 'linear 0s',
+          width: '0%'
+        });
       } else if (progress[i] === 100 || progress[i] === '100') {
         isProgressing = true;
         $(event).parent().removeClass("active");
