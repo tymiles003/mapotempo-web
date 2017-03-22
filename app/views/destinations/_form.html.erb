@@ -44,11 +44,11 @@
         </div>
         <div id="geocoding_level"<% if ! @destination.geocoding_level %> style="display: none"<% end %>>
           <input type="hidden" name="destination[geocoding_level]" value="<%= @destination.geocoding_level %>">
-          <i id="geocoding-level-point" class="fa fa-map-marker fa-fw geocoding-level"<% if ! @destination.point? %> style="display: none"<% end %>></i>
+          <i id="geocoding-level-point" class="fa fa-map-marker fa-fw geocoding-level"<% unless @destination.point? %> style="display: none"<% end %>></i>
           <i id="geocoding-level-house" class="fa fa-home fa-fw geocoding-level"<% if ! @destination.house? %> style="display: none"<% end %>></i>
-          <i id="geocoding-level-intersection" class="fa fa-times fa-fw geocoding-level"<% if ! @destination.intersection? %> style="display: none"<% end %>></i>
+          <i id="geocoding-level-intersection" class="fa fa-times fa-fw geocoding-level"<% unless @destination.intersection? %> style="display: none"<% end %>></i>
           <i id="geocoding-level-street" class="fa fa-road fa-fw geocoding-level"<% if ! @destination.street? %> style="display: none"<% end %>></i>
-          <i id="geocoding-level-city" class="fa fa-exclamation-triangle fa-fw geocoding-level"<% if ! @destination.city? %> style="display: none"<% end %>></i>
+          <i id="geocoding-level-city" class="fa fa-exclamation-triangle fa-fw geocoding-level"<% unless @destination.city? %> style="display: none"<% end %>></i>
           <span><%= t 'activerecord.attributes.destination.geocoding_level' %>: <span id="geocoding-level-value"><%= if @destination.geocoding_level
             t 'destinations.form.geocoding_level.' + @destination.geocoding_level
             end %></span></span>
@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <% if !@destination.customer.enable_multi_visits %>
+    <% unless @destination.customer.enable_multi_visits %>
       <%= f.select :tag_ids, t('activerecord.attributes.destination.tag_ids'), options_for_select(@destination.customer.tags.map{ |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}]}, @destination.tags.collect(&:id)), {}, {multiple: true, input_group: content_tag('i', '', class: 'fa fa-tags fa-fw')} do %>
         <p class="help-block"><%= t '.tags_help' %></p>
       <% end %>
@@ -89,7 +89,7 @@
   <% if @destination.visits.empty? || @destination.customer.enable_multi_visits %>
     <button id="visit-new" type="button" class="btn btn-default btn-sm" title="<%= t('destinations.form.visit.new_help') %>"><i class="fa fa-plus fa-fw"></i> <%= t('destinations.form.visit.new') %></button>
   <% end %>
-  <% if !@destination.customer.enable_multi_visits %>
+  <% unless @destination.customer.enable_multi_visits %>
     <p class="help-block">
     <%= t('destinations.form.visit.enable_multi_visits') %>
     </p>

@@ -10,44 +10,44 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
   end
 
   test 'should not save' do
-    o = customers(:customer_one).vehicle_usage_sets.build
-    assert_not o.save, 'Saved without required fields'
+    vehicle_usage_set = customers(:customer_one).vehicle_usage_sets.build
+    assert_not vehicle_usage_set.save, 'Saved without required fields'
   end
 
   test 'should save' do
-    o = customers(:customer_one).vehicle_usage_sets.build(name: '1')
-    o.save!
+    vehicle_usage_set = customers(:customer_one).vehicle_usage_sets.build(name: '1')
+    vehicle_usage_set.save!
   end
 
   test 'should update out_of_date for rest' do
-    o = vehicle_usage_sets(:vehicle_usage_set_one)
-    c = o.customer
-    vu = o.vehicle_usages[0]
-    vu.rest_duration = vu.rest_start = vu.rest_stop = nil
-    vu.save!
-    nb_vu_no_rest = o.vehicle_usages.select{ |vu| vu.rest_duration.nil? && vu.rest_start.nil? && vu.rest_stop.nil? }.size
+    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
+    customer = vehicle_usage_set.customer
+    vehicle_usage = vehicle_usage_set.vehicle_usages[0]
+    vehicle_usage.rest_duration = vehicle_usage.rest_start = vehicle_usage.rest_stop = nil
+    vehicle_usage.save!
+    nb_vu_no_rest = vehicle_usage_set.vehicle_usages.select{ |vu| vu.rest_duration.nil? && vu.rest_start.nil? && vu.rest_stop.nil? }.size
     assert nb_vu_no_rest > 0
-    nb = (c.vehicles.size - nb_vu_no_rest) * o.plannings.size
+    nb = (customer.vehicles.size - nb_vu_no_rest) * vehicle_usage_set.plannings.size
     assert nb > 0
 
     assert_difference('Stop.count', -nb) do
-      o.vehicle_usages[0].routes[-1].compute
-      o.vehicle_usages[0].routes[-1].out_of_date = false
-      assert !o.rest_duration.nil?
+      vehicle_usage_set.vehicle_usages[0].routes[-1].compute
+      vehicle_usage_set.vehicle_usages[0].routes[-1].out_of_date = false
+      assert !vehicle_usage_set.rest_duration.nil?
 
-      o.rest_duration = o.rest_start = o.rest_stop = nil
-      o.save!
-      o.customer.save!
-      assert o.vehicle_usages[0].routes[-1].out_of_date
+      vehicle_usage_set.rest_duration = vehicle_usage_set.rest_start = vehicle_usage_set.rest_stop = nil
+      vehicle_usage_set.save!
+      vehicle_usage_set.customer.save!
+      assert vehicle_usage_set.vehicle_usages[0].routes[-1].out_of_date
     end
   end
 
   test 'should update out_of_date for open' do
-    o = vehicle_usage_sets(:vehicle_usage_set_one)
-    o.open = '2000-01-01 09:00:00'
-    assert_not o.vehicle_usages[0].routes[-1].out_of_date
-    o.save!
-    assert o.vehicle_usages[0].routes[-1].out_of_date
+    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
+    vehicle_usage_set.open = '09:00:00'
+    assert_not vehicle_usage_set.vehicle_usages[0].routes[-1].out_of_date
+    vehicle_usage_set.save!
+    assert vehicle_usage_set.vehicle_usages[0].routes[-1].out_of_date
   end
 
   test 'should delete in use' do
@@ -57,40 +57,40 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
   end
 
   test 'should keep at least one' do
-    o = customers(:customer_one)
-    o.vehicle_usage_sets[0..-2].each(&:destroy)
-    o.reload
-    assert_equal 1, o.vehicle_usage_sets.size
-    assert !o.vehicle_usage_sets[0].destroy
+    customer = customers(:customer_one)
+    customer.vehicle_usage_sets[0..-2].each(&:destroy)
+    customer.reload
+    assert_equal 1, customer.vehicle_usage_sets.size
+    assert !customer.vehicle_usage_sets[0].destroy
   end
 
   test 'changes on service time start should set route out of date' do
-    v = vehicle_usage_sets(:vehicle_usage_set_one)
-    assert v.service_time_start.nil?
-    r = v.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_start.nil? }.routes.take
-    assert !r.out_of_date
-    v.update! service_time_start: Time.utc(2000, 1, 1, 0, 0) + 10.minutes
-    assert r.reload.out_of_date
+    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
+    assert vehicle_usage_set.service_time_start.nil?
+    route = vehicle_usage_set.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_start.nil? }.routes.take
+    assert !route.out_of_date
+    vehicle_usage_set.update! service_time_start: 10.minutes.to_i
+    assert route.reload.out_of_date
   end
 
   test 'changes on service time end should set route out of date' do
-    v = vehicle_usage_sets(:vehicle_usage_set_one)
-    assert v.service_time_end.nil?
-    r = v.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_end.nil? }.routes.take
-    assert !r.out_of_date
-    v.update! service_time_end: Time.utc(2000, 1, 1, 0, 0) + 10.minutes
-    assert r.reload.out_of_date
+    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
+    assert vehicle_usage_set.service_time_end.nil?
+    route = vehicle_usage_set.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_end.nil? }.routes.take
+    assert !route.out_of_date
+    vehicle_usage_set.update! service_time_end: 10.minutes.to_i
+    assert route.reload.out_of_date
   end
 
   test 'setting a rest duration requires time start and stop' do
-    v = vehicle_usage_sets(:vehicle_usage_set_one)
-    v.update! rest_start: nil, rest_stop: nil, rest_duration: nil
-    assert v.valid?
-    v.rest_duration = Time.utc(2000, 1, 1, 0, 0) + 15.minutes
-    assert !v.valid?
-    assert_equal [:rest_start, :rest_stop], v.errors.keys
-    v.rest_start = Time.utc(2000, 1, 1, 0, 0) + 10.hours
-    v.rest_stop = Time.utc(2000, 1, 1, 0, 0) + 11.hours
-    assert v.valid?
+    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
+    vehicle_usage_set.update! rest_start: nil, rest_stop: nil, rest_duration: nil
+    assert vehicle_usage_set.valid?
+    vehicle_usage_set.rest_duration = 15.minutes.to_i
+    assert !vehicle_usage_set.valid?
+    assert_equal [:rest_start, :rest_stop], vehicle_usage_set.errors.keys
+    vehicle_usage_set.rest_start = 10.hours.to_i
+    vehicle_usage_set.rest_stop = 11.hours.to_i
+    assert vehicle_usage_set.valid?
   end
 end

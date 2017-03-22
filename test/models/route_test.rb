@@ -119,14 +119,14 @@ class RouteTest < ActiveSupport::TestCase
         s.save!
       end
     }
-    o.vehicle_usage.open = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
-    o.planning.customer.take_over = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
+    o.vehicle_usage.open = 0
+    o.planning.customer.take_over = 0
     o.planning.customer.save!
 
     assert_equal 0, o.sum_out_of_window
 
-    o.stops[1].visit.open1 = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
-    o.stops[1].visit.close1 = Time.new(2000, 01, 01, 00, 00, 00, '+00:00')
+    o.stops[1].visit.open1 = 0
+    o.stops[1].visit.close1 = 0
     o.stops[1].visit.save!
     assert_equal 30, o.sum_out_of_window
   end
@@ -173,22 +173,22 @@ class RouteTest < ActiveSupport::TestCase
     o = routes(:route_one_one)
 
     stops = o.stops.select{ |s| s.is_a?(StopVisit) }
-    stops[0].time = '2000-01-01 10:30:00'
-    stops[0].visit.open1 = '2000-01-01 11:00:00'
-    stops[0].visit.close1 = '2000-01-01 11:30:00'
-    stops[1].time = '2000-01-01 11:00:00'
-    stops[1].visit.open1 = '2000-01-01 10:00:00'
-    stops[1].visit.close1 = '2000-01-01 11:30:00'
-    stops[2].time = '2000-01-01 11:30:00'
-    stops[2].visit.open1 = '2000-01-01 12:00:00'
-    stops[2].visit.close1 = '2000-01-01 14:00:00'
+    stops[0].time = '10:30:00'
+    stops[0].visit.open1 = '11:00:00'
+    stops[0].visit.close1 = '11:30:00'
+    stops[1].time = '11:00:00'
+    stops[1].visit.open1 = '10:00:00'
+    stops[1].visit.close1 = '11:30:00'
+    stops[2].time = '11:30:00'
+    stops[2].visit.open1 = '12:00:00'
+    stops[2].visit.close1 = '14:00:00'
 
     o.out_of_date = true
     o.compute
     assert_equal Time.parse('10:55:27').seconds_since_midnight.to_i, o.start
   end
 
-  test 'should get defautl color' do
+  test 'should get default color' do
     o = routes(:route_one_one)
     o.color = nil
 

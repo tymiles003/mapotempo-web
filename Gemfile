@@ -173,3 +173,5 @@ gem 'pnotify-rails', github: 'ngonzalez/pnotify-rails', branch: 'remove-material
 gem 'nokogiri'
 gem 'addressable'
 gem 'icalendar'
+
+gem 'chronic_duration'

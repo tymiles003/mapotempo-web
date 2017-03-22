@@ -25,6 +25,9 @@ class VehicleUsageSetsController < ApplicationController
     @customer = current_user.customer
   end
 
+  def show
+  end
+
   def new
     @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build
     @vehicle_usage_set.store_start = current_user.customer.stores[0]
@@ -35,7 +38,9 @@ class VehicleUsageSetsController < ApplicationController
   end
 
   def create
-    @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build(vehicle_usage_set_params)
+    p = vehicle_usage_set_params
+    p[:close] = ChronicDuration.parse("#{params[:vehicle_usage_set][:open_close_days]} days and #{p[:close].gsub(':', 'h')}") unless params[:vehicle_usage_set][:open_close_days].to_s.empty?
+    @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build(p)
 
     respond_to do |format|
       if @vehicle_usage_set.save
@@ -49,7 +54,9 @@ class VehicleUsageSetsController < ApplicationController
   def update
     respond_to do |format|
       p = vehicle_usage_set_params
+      p[:close] = ChronicDuration.parse("#{params[:vehicle_usage_set][:open_close_days]} days and #{p[:close].gsub(':', 'h')}") unless params[:vehicle_usage_set][:open_close_days].to_s.empty?
       @vehicle_usage_set.assign_attributes(p)
+
       if @vehicle_usage_set.save
         format.html { redirect_to link_back || vehicle_usage_sets_path, notice: t('activerecord.successful.messages.updated', model: @vehicle_usage_set.class.model_name.human) }
       else
@@ -98,6 +105,16 @@ class VehicleUsageSetsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def vehicle_usage_set_params
-    params.require(:vehicle_usage_set).permit(:name, :open, :close, :store_start_id, :store_stop_id, :rest_start, :rest_stop, :rest_duration, :store_rest_id, :service_time_start, :service_time_end)
+    params.require(:vehicle_usage_set).permit(:name,
+                                              :open,
+                                              :close,
+                                              :store_start_id,
+                                              :store_stop_id,
+                                              :rest_start,
+                                              :rest_stop,
+                                              :rest_duration,
+                                              :store_rest_id,
+                                              :service_time_start,
+                                              :service_time_end)
   end
 end

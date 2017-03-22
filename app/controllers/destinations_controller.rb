@@ -57,13 +57,16 @@ class DestinationsController < ApplicationController
   end
 
   def create
-    @destination = current_user.customer.destinations.build(destination_params)
+    p = destination_params
+    p[:visits_attributes]['1'][:close1] = ChronicDuration.parse("#{params[:destination][:visits_attributes]['1'][:open1_close1_days]} days and #{p[:visits_attributes]['1'][:close1].gsub(':', 'h')}") unless params[:destination][:visits_attributes]['1'].nil? || params[:destination][:visits_attributes]['1'][:open1_close1_days].to_s.empty?
+    p[:visits_attributes]['1'][:close2] = ChronicDuration.parse("#{params[:destination][:visits_attributes]['1'][:open2_close2_days]} days and #{p[:visits_attributes]['1'][:close2].gsub(':', 'h')}") unless params[:destination][:visits_attributes]['1'].nil? || params[:destination][:visits_attributes]['1'][:open2_close2_days].to_s.empty?
+    @destination = current_user.customer.destinations.build(p)
 
     respond_to do |format|
       if @destination.save && current_user.customer.save
         format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.created', model: @destination.class.model_name.human) }
       else
-        flash.now[:error] = @destination.customer.errors.full_messages if !@destination.customer.errors.empty?
+        flash.now[:error] = @destination.customer.errors.full_messages unless @destination.customer.errors.empty?
         format.html { render action: 'new' }
       end
     end
@@ -72,10 +75,15 @@ class DestinationsController < ApplicationController
   def update
     respond_to do |format|
       Destination.transaction do
-        if @destination.update(destination_params) && @destination.customer.save
+        p = destination_params
+        p[:visits_attributes]['1'][:close1] = ChronicDuration.parse("#{params[:destination][:visits_attributes]['1'][:open1_close1_days]} days and #{p[:visits_attributes]['1'][:close1].gsub(':', 'h')}") unless params[:destination][:visits_attributes]['1'].nil? || params[:destination][:visits_attributes]['1'][:open1_close1_days].to_s.empty?
+        p[:visits_attributes]['1'][:close2] = ChronicDuration.parse("#{params[:destination][:visits_attributes]['1'][:open2_close2_days]} days and #{p[:visits_attributes]['1'][:close2].gsub(':', 'h')}") unless params[:destination][:visits_attributes]['1'].nil? || params[:destination][:visits_attributes]['1'][:open2_close2_days].to_s.empty?
+        @destination.assign_attributes(p)
+
+        if @destination.save && @destination.customer.save
           format.html { redirect_to link_back || edit_destination_path(@destination), notice: t('activerecord.successful.messages.updated', model: @destination.class.model_name.human) }
         else
-          flash.now[:error] = @destination.customer.errors.full_messages if !@destination.customer.errors.empty?
+          flash.now[:error] = @destination.customer.errors.full_messages unless @destination.customer.errors.empty?
           format.html { render action: 'edit' }
         end
       end
@@ -169,12 +177,39 @@ class DestinationsController < ApplicationController
         end
       }
     end
-    params.require(:destination).permit(:ref, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :phone_number, :comment, :geocoding_accuracy, :geocoding_level, tag_ids: [], visits_attributes: [:id, :ref, :take_over, :open1, :close1, :open2, :close2, :_destroy, tag_ids: [], quantities: current_user.customer.deliverable_units.map{ |du| du.id.to_s }])
+
+    params.require(:destination).permit(:ref,
+                                        :name,
+                                        :street,
+                                        :detail,
+                                        :postalcode,
+                                        :city,
+                                        :country,
+                                        :lat,
+                                        :lng,
+                                        :phone_number,
+                                        :comment,
+                                        :geocoding_accuracy,
+                                        :geocoding_level,
+                                        tag_ids: [],
+                                        visits_attributes: [:id,
+                                                            :ref,
+                                                            :take_over,
+                                                            :open1,
+                                                            :close1,
+                                                            :open2,
+                                                            :close2,
+                                                            :_destroy,
+                                                            tag_ids: [],
+                                                            quantities: current_user.customer.deliverable_units.map{ |du| du.id.to_s }])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def import_csv_params
-    params.require(:import_csv).permit(:replace, :file, :delete_plannings, column_def: ImporterDestinations.new(current_user.customer).columns.keys)
+    params.require(:import_csv).permit(:replace,
+                                       :file,
+                                       :delete_plannings,
+                                       column_def: ImporterDestinations.new(current_user.customer).columns.keys)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

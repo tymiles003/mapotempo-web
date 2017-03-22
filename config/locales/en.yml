@@ -438,11 +438,14 @@ en:
         close1: "Time window 1 close"
         close1_small: "Close 1"
         open_close1_small: "Open/Close 1"
+        open1_close1_days: "D+"
         open2: "Time window 2 open"
         open2_small: "Open 2"
         close2: "Time window 2 close"
         close2_small: "Close 2"
         open_close2_small: "Open/Close 2"
+        open2_close2_days: "D+"
+        multi_visit: "Multi"
         tags: "Tags"
         tag_ids: "Tags"
         quantities: "Quantities"
@@ -1550,9 +1553,11 @@ or copy/paste following url in your browser : %{l} </p>\n
         legend: "Vehicle configuration: \"%{s}\""
         help: "The following informations are specific to the configuration of the vehicle."
       open:
-        default: "%{n} (default value)"
+        default: "%{n} (default)"
       close:
-        default: "%{n} (default value)"
+        default: "%{n} (default)"
+      open_close_days:
+        default: "%{n}"
       open_close: "Hours"
       open_close_help: "Deliveryman's working hours"
       stores: "Start / End"
@@ -1695,8 +1700,9 @@ or copy/paste following url in your browser : %{l} </p>\n
     form:
       default: "%{n} (default value)"
       empty_entry: "- N/A -"
-      from_time: 'from'
-      to_time: 'to'
+      from_time: "from"
+      to_time: "to"
+      days: "D+"
     select2:
       empty_result: "No results matched"
     dialog:

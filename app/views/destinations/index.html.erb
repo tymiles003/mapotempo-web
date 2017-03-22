@@ -65,14 +65,14 @@
           <div class="col-title"><%= t 'activerecord.attributes.destination.geocoding_accuracy_small' %></div>
         </th>
         <% visit_width = {}
-        visit_width[:ref] = 3 if @customer.enable_references && @customer.enable_multi_visits
-        visit_width[:quantity] = 3 if !@customer.enable_orders
-        visit_width[:tags] = 8 if @customer.enable_multi_visits
-        visit_width[:take_over] = 4
-        visit_width[:open1] = 2.5
-        visit_width[:close1] = 2.5
-        visit_width[:open2] = 2.5
-        visit_width[:close2] = 2.5
+           visit_width[:ref] = 3 if @customer.enable_references && @customer.enable_multi_visits
+           visit_width[:quantity] = 3 if !@customer.enable_orders
+           visit_width[:tags] = 8 if @customer.enable_multi_visits
+           visit_width[:take_over] = 4
+           visit_width[:open1] = 2.5
+           visit_width[:close1] = 2.5
+           visit_width[:open2] = 2.5
+           visit_width[:close2] = 2.5
         %>
         <th data-sorter="false" class="visit columnSelector-disable" style="min-width:<%= visit_width.values.reduce(&:+) %>em;">
           <div class="col-title"><%= t 'activerecord.models.visit' %></div>

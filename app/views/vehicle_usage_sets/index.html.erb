@@ -4,7 +4,7 @@
 <div class="row row-top">
   <div class="col-md-6">
     <% if @customer.enable_multi_vehicle_usage_sets %>
-      <%= link_to new_vehicle_usage_set_path, class:"btn btn-primary btn-sm" do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
+      <%= link_to new_vehicle_usage_set_path, class: 'btn btn-primary btn-sm' do %><i class="fa fa-plus fa-fw"></i> <%= t '.new' %><% end %>
     <% end %>
   </div>
   <div class="col-md-6">
@@ -52,14 +52,15 @@
           <%= vehicle_usage_set.open_time %>
           -
           <%= vehicle_usage_set.close_time %>
+          <%= '(J+' + number_of_days(vehicle_usage_set.close).to_s + ')' if vehicle_usage_set.close %>
         </td>
         <td class="text-right">
           <% if @customer.enable_multi_vehicle_usage_sets %>
-            <%= link_to vehicle_usage_set_duplicate_path(vehicle_usage_set), :class => "btn btn-default btn-sm", method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
+            <%= link_to vehicle_usage_set_duplicate_path(vehicle_usage_set), :class => 'btn btn-default btn-sm', method: :patch do %><i class="fa fa-copy fa-fw"></i> <%= t 'all.verb.duplicate' %><% end %>
           <% end %>
-          <%= link_to edit_vehicle_usage_set_path(vehicle_usage_set, back: true), :class => "btn btn-primary btn-sm" do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
+          <%= link_to edit_vehicle_usage_set_path(vehicle_usage_set, back: true), :class => 'btn btn-primary btn-sm' do %><i class="fa fa-edit fa-fw"></i> <%= t 'all.verb.edit' %><% end %>
           <% if @vehicle_usage_sets.count > 1 %>
-            <%= link_to vehicle_usage_set, :class => "btn btn-danger btn-sm", method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %>
+            <%= link_to vehicle_usage_set, :class => 'btn btn-danger btn-sm', method: :delete, data: { confirm: t('all.verb.destroy_confirm') } do %>
               <i class="fa fa-trash-o fa-fw"></i> <%= t 'all.verb.destroy' %>
             <% end %>
           <% end %>
@@ -79,6 +80,6 @@
 </table>
 
 <% if @customer.enable_multi_vehicle_usage_sets %>
-  <%= button_tag type: :submit, class: "btn btn-danger btn-sm", disabled: @vehicle_usage_sets.count == 1, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %><% end %>
+  <%= button_tag type: :submit, class: 'btn btn-danger btn-sm', disabled: @vehicle_usage_sets.count == 1, data: { confirm: t('all.verb.destroy_confirm') } do %><i class="fa fa-trash-o fa-fw"></i> <%= t('all.verb.destroy_selection') %><% end %>
   <% end %>
 <% end %>

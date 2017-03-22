@@ -171,6 +171,72 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should create bulk from json with time exceeding one day' do
+    assert_difference('Destination.count', 1) do
+      assert_difference('Planning.count', 1) do
+        put api(), {
+            planning: {
+                name: 'Hey',
+                ref: 'Hop',
+                date: '2017-10-10',
+                vehicle_usage_set_id: @customer.vehicle_usage_sets[1].id,
+                zoning_ids: [zonings(:zoning_one).id]
+            },
+            destinations: [{
+                               name: 'Nouveau client',
+                               street: nil,
+                               postalcode: nil,
+                               city: 'Tule',
+                               lat: 43.5710885456786,
+                               lng: 3.89636993408203,
+                               detail: nil,
+                               comment: nil,
+                               phone_number: nil,
+                               ref: 'z',
+                               tags: ['tag1', 'tag2'],
+                               geocoding_accuracy: nil,
+                               foo: 'bar',
+                               visits: [{
+                                            ref: 'v1',
+                                            quantities: [{deliverable_unit_id: deliverable_units(:deliverable_unit_one_one).id, quantity: 1}],
+                                            open1: '20:00',
+                                            close1: '32:00',
+                                            open2: '38:00',
+                                            close2: '44:00',
+                                            take_over: nil,
+                                            route: 'useless_because_of_zoning_ids',
+                                            active: '1'
+                                        },
+                                        {
+                                            ref: 'v2',
+                                            quantity1_1: 2,
+                                            open1: '12:00',
+                                            close1: '18:00',
+                                            open2: '32:00',
+                                            close2: '36:00',
+                                            take_over: nil,
+                                            route: 'useless_because_of_zoning_ids',
+                                            active: '1'
+                                        }]
+                           }]
+        }, as: :json
+        assert last_response.ok?, last_response.body
+
+        visits = JSON.parse(last_response.body)[0]['visits']
+
+        assert_equal '20:00:00', visits[0]['open1']
+        assert_equal '32:00:00', visits[0]['close1']
+        assert_equal '38:00:00', visits[0]['open2']
+        assert_equal '44:00:00', visits[0]['close2']
+
+        assert_equal '12:00:00', visits[1]['open1']
+        assert_equal '18:00:00', visits[1]['close1']
+        assert_equal '32:00:00', visits[1]['open2']
+        assert_equal '36:00:00', visits[1]['close2']
+      end
+    end
+  end
+
   test 'should create bulk from json with ref vehicle' do
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do

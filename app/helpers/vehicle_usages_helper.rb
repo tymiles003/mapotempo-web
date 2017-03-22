@@ -77,10 +77,13 @@ module VehicleUsagesHelper
         concat span_tag(vehicle_usage.vehicle_usage_set.open_time)
         concat span_tag(' - ')
       end
+
       if vehicle_usage.close
         concat vehicle_usage.close_time
+        concat ('&nbsp;(J+' + number_of_days(vehicle_usage.close).to_s + ')').html_safe if number_of_days(vehicle_usage.close)
       elsif vehicle_usage.vehicle_usage_set.close
         concat span_tag(vehicle_usage.vehicle_usage_set.close_time)
+        concat span_tag(('&nbsp;(J+' + number_of_days(vehicle_usage.vehicle_usage_set.close).to_s + ')').html_safe) if number_of_days(vehicle_usage.vehicle_usage_set.close)
       end
     end
   end

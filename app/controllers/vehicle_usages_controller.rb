@@ -26,7 +26,11 @@ class VehicleUsagesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @vehicle_usage.update(vehicle_usage_params)
+      p = vehicle_usage_params
+      p[:close] = ChronicDuration.parse("#{params[:vehicle_usage][:open_close_days]} days and #{p[:close].gsub(':', 'h')}") unless params[:vehicle_usage][:open_close_days].to_s.empty?
+      @vehicle_usage.assign_attributes(p)
+
+      if @vehicle_usage.save
         format.html { redirect_to link_back || edit_vehicle_usage_path(@vehicle_usage), notice: t('activerecord.successful.messages.updated', model: @vehicle_usage.class.model_name.human) }
       else
         format.html { render action: 'edit' }

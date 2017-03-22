@@ -438,11 +438,14 @@ fr:
         close1: "Fin de Plage horaire 1"
         close1_small: "Fin 1"
         open_close1_small: "Début/Fin 1"
+        open1_close1_days: "J+"
         open2: "Début de Plage horaire 2"
         open2_small: "Début 2"
         close2: "Fin de Plage horaire 2"
         close2_small: "Fin 2"
         open_close2_small: "Début/Fin 2"
+        open2_close2_days: "J+"
+        multi_visit: "Multi"
         tags: "Libellés"
         tag_ids: "Libellés"
         quantities: "Quantités"
@@ -1550,9 +1553,11 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
         legend: "Configuration du véhicule : « %{s} »"
         help: "Les informations ci-dessous sont spécifiques à la configuration du véhicule."
       open:
-        default: "%{n} (valeur par défaut)"
+        default: "%{n} (défaut)"
       close:
-        default: "%{n} (valeur par défaut)"
+        default: "%{n} (défaut)"
+      open_close_days:
+        default: "%{n}"
       open_close: "Horaire"
       open_close_help: "Horaire de travail livreur"
       stores: "Départ / Arrivée"
@@ -1695,8 +1700,9 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
     form:
       default: "%{n} (valeur par défaut)"
       empty_entry: "- Non renseigné -"
-      from_time: 'de'
-      to_time: 'à'
+      from_time: "de"
+      to_time: "à"
+      days: "J+"
     select2:
       empty_result: "Pas de résultat"
     dialog:

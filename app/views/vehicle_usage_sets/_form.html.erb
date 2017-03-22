@@ -19,6 +19,11 @@
           placeholder: t('all.unit.hour_minute'),
           value: @vehicle_usage_set.close_time,
           required: true %>
+        <span class="input-group-addon"><%= t 'web.form.days' %></span>
+        <%= number_field :vehicle_usage_set, :open_close_days,
+                         class: 'form-control number-of-days',
+                         placeholder: '0',
+                         value: number_of_days(@vehicle_usage_set.close) %>
         <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
       </div>
       <p class="help-block"><%= t '.open_close_help' %></p>

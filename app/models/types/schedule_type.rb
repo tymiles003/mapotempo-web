@@ -4,9 +4,9 @@ class ScheduleType < ActiveRecord::Type::Integer
         value.seconds_since_midnight.to_i
     elsif value.kind_of?(String)
       return nil if value.empty?
-      integer_string = Integer(value) rescue false
-      integer_string || Time.parse(value).seconds_since_midnight.to_i
-    elsif value.kind_of?(Float)
+      value = value + ':00' if value =~ /\A\d+:\d+\Z/
+      ChronicDuration.parse(value)
+    elsif value.kind_of?(Float) || value.kind_of?(ActiveSupport::Duration)
       value.to_i
     else
       value
