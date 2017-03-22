@@ -442,3 +442,9 @@ span.color[data-color=''][data-selected]:after {
     color: #777 !important;
   }
 }
+
+[data-id="deliverable_unit_icon"], [data-id=store_icon] {
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+}
+

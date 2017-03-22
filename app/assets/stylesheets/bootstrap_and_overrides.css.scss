@@ -519,10 +519,3 @@ body.api-web {
   }
 
 }
-
-/* Overwrite default behavior from bootstrap-jquery pluging bootstrap-select */
-.dropdown-toggle {
-  @extend .dropdown-toggle;
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
-}
