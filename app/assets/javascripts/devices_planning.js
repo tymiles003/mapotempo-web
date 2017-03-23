@@ -101,7 +101,7 @@ var devicesObservePlanning = (function() {
           dialog.modal('hide');
         },
         error: function() {
-          stickyError(I18n.t('plannings.edit.' + service + '_' + operation + (from.data('type') ? '_' + from.data('type') : '') + '.fail'));
+          stickyError(I18n.t('plannings.edit.' + service + (from.data('type') ? '_' + from.data('type') : '') + '.fail'));
         }
       });
 
