@@ -131,28 +131,36 @@ fr:
         take_over: Durée de visite des clients
         name: Nom
         destinations: Clients
-        enable_tomtom: Activer TomTom WEBFLEET
-        enable_masternaut: Activer Masternaut
-        enable_alyacom: Activer Alyacom
-        enable_teksat: Activer Teksat
-        enable_orange_fleet: Activer Orange Fleet Performance
-        orange_user: Utilisateur Orange
-        orange_password: Mot de passe Orange
-        teksat_customer_id: Client ID Teksat
-        teksat_username: Nom d'utilisateur Teksat
-        teksat_password: Mot de passe Teksat
-        teksat_url: URL Teksat
-        tomtom_account: Compte WEBFLEET
-        tomtom_user: Nom d'utilisateur WEBFLEET
-        tomtom_password: Mot de passe WEBFLEET
-        masternaut_user: Nom d'utilisateur
-        masternaut_password: Mot de passe
-        alyacom_association: Identifiant AlyaCom
-        alyacom_api_key: Clé d'API AlyaCom
+        devices:
+          tomtom:
+            account: Compte
+            user: Utilisateur
+            password: Mot de passe
+            tomtom_id: TomTom
+          masternaut:
+            username: Nom d'utilisateur
+            password: Mot de passe
+            masternaut_ref: Ref. véhicule Masternaut
+          orange:
+            username: Utilisateur
+            password: Mot de passe
+            orange_id: Orange
+          alyacom:
+            association: Identifiant
+            api_key: Clé d'API
+          teksat:
+            customer_id: Client ID
+            username: Nom d'utilisateur
+            password: Mot de passe
+            url: URL
+            teksat_id: Teksat
+          trimble:
+          locster:
+          suivi_de_flotte:
         router: Calculateur d'itinéraire
         router_id: Calculateur d'itinéraire
         router_dimension: Objectif du calculateur
-        router_options_motorway: Utiliser les autouroutes
+        router_options_motorway: Utiliser les autoroutes
         router_options_toll: Autoriser les sections à péage
         router_options_trailers: Nombre de remorques
         router_options_weight: Poids du véhicule
@@ -369,8 +377,6 @@ fr:
         emission: Émission
         consumption: Consommation
         color: Couleur
-        tomtom_id: TomTom ID
-        masternaut_ref: Ref. véhicule Masternaut
         router: Calculateur d'itinéraire
         router_id: Calculateur d'itinéraire
         router_dimension: Objectif du calculateur
@@ -571,6 +577,9 @@ fr:
     alyacom:
       unauthorized: Non autorisé
       timeout: Délai d'attente depassé
+    masternaut:
+      invalid_account: Utilisateur invalide (non existant)
+
   import:
     empty: Rien à importer, vérifiez vos données.
     data: 'Contenu :'
@@ -655,6 +664,7 @@ fr:
       vehicles:
         list: Liste des véhicules
       time_zone: Fuseau horaire
+      devices: Exports GPS & Mobiles
     index:
       title: Liste comptes client
       new: Nouveau compte client
@@ -696,16 +706,6 @@ fr:
       router_options_width_range: Largeur entre %{from} et %{to} mètres
       router_options_length_range: Longueur entre %{from} et %{to} mètres
       take_over_help: Durée de visite moyenne par client
-      tomtom: TomTom WEBFLEET
-      tomtom_help: Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET.
-      teksat: Teksat
-      teksat_help: Envoyer les plannings vers les GPS Teksat
-      orange: Orange Fleet Performance
-      orange_help: Envoyer les plannings vers les GPS Orange Fleet Performance
-      masternaut: Masternaut
-      masternaut_help: Permet d'envoyer les plannings vers les GPS Masternaut
-      alyacom: AlyaCom
-      alyacom_help: Permet d'envoyer les plannings vers l'application AlyaCom
       optimization_cluster_size_default: '%{n} (valeur par défaut)'
       optimization_cluster_size_help: Valeur en secondes séparant les points à regrouper
         entre eux avant de les optimiser. Une valeur trop grande affectera la qualité
@@ -1160,11 +1160,11 @@ fr:
         action: Vider Teksat
         success: Les commandes Teksat ont été vidées avec succès
         fail: Échec lors de la suppression des commandes Teksat
-      tomtom_send_orders:
+      tomtom_orders:
         action: Commandes vers TomTom
         success: Envoi vers TomTom terminé avec succès
         fail: Échec lors de l'envoi vers TomTom
-      tomtom_send_waypoints:
+      tomtom_waypoints:
         action: Points de passage vers TomTom
         success: Envoi vers TomTom terminé avec succès
         fail: Échec lors de l'envoi vers TomTom
@@ -1188,6 +1188,18 @@ fr:
         action: Envoyer à Masternaut
         success: Envoyé à Masternaut avec succès
         fail: Échec lors de l'envoi vers Masternaut
+      trimble_send:
+        action: Envoyer à Trimble
+        success: Envoyé à Trimble avec succès
+        fail: Échec lors de l'envoi vers Trimble
+      locster_send:
+        action: Envoyer à Locster
+        success: Envoyé à Locster avec succès
+        fail: Échec lors de l'envoi vers Locster
+      suivi_de_flote_send:
+        action: Envoyer à SuiviDeFlote
+        success: Envoyé à SuiviDeFlote avec succès
+        fail: Échec lors de l'envoi vers SuiviDeFlote
       export:
         customer_external_callback_url:
           success: Application externe appelée avec succès
@@ -1581,9 +1593,6 @@ fr:
     emissions_light_diesel: VL - Gazole - %{n}
     emissions_light_lgp: VL - GPL - %{n}
     form:
-      tomtom_id: TomTom
-      teksat_id: Teksat
-      orange_id: Orange
       ref:
         help: Référence libre
       emissions:
@@ -1673,6 +1682,10 @@ fr:
       service_time_end_addon: après
       service_times_help: Durées ajoutées avant le premier arrêt et après le dernier
         arrêt
+      devices:
+        placeholder: Sélectionner un appareil
+        fieldset : GPS & Mobiles
+
   vehicle_usage_sets:
     default:
       name: Défaut

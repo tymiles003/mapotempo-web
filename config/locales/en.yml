@@ -131,24 +131,32 @@ en:
         take_over: Visit duration
         name: Name
         destinations: Destinations
-        enable_tomtom: Enable TomTom WEBFLEET
-        enable_masternaut: Enable Masternaut
-        enable_alyacom: Enable Alyacom
-        enable_teksat: Enable Teksat
-        enable_orange_fleet: Enable Orange Fleet Performance
-        orange_user: Orange Username
-        orange_password: Orange Password
-        teksat_customer_id: Teksat Customer ID
-        teksat_username: Teksat Username
-        teksat_password: Teksat Password
-        teksat_url: Teksat URL
-        tomtom_account: WEBFLEET account name
-        tomtom_user: WEBFLEET Username
-        tomtom_password: WEBFLEET Password
-        masternaut_user: Username
-        masternaut_password: Password
-        alyacom_association: AlyaCom identifier
-        alyacom_api_key: AlyaCom API key
+        devices:
+          tomtom:
+            account: Aaccount name
+            user: User
+            password: Password
+            tomtom_id: TomTom
+          masternaut:
+            username: Username
+            password: Password
+            masternaut_ref: Masternaut vehicle Ref.
+          orange:
+            username: Username
+            password: Password
+            orange_id: Orange
+          alyacom:
+            association: Identifier
+            api_key: API key
+          teksat:
+            customer_id: Customer ID
+            username: Username
+            password: Password
+            url: URL
+            teksat_id: Teksat
+          trimble:
+          locster:
+          suivi_de_flotte:
         router: Routing Engine
         router_id: Routing Engine
         router_dimension: Router objective
@@ -368,8 +376,6 @@ en:
         emission: Emission
         consumption: Consumption
         color: Color
-        tomtom_id: TomTom ID
-        masternaut_ref: Masternaut vehicle ref.
         router: Routing Engine
         router_id: Routing Engine
         router_dimension: Router objective
@@ -568,6 +574,9 @@ en:
     alyacom:
       unauthorized: Unauthorized
       timeout: Request Timeout
+    masternaut:
+      invalid_account: User invalid (does not exist)
+
   import:
     empty: Nothing to import, check your data.
     data: 'Content:'
@@ -650,6 +659,7 @@ en:
       vehicles:
         list: Vehicles list
       time_zone: Time Zone
+      devices: GPS & Mobiles Exports
     index:
       title: Listing accounts
       new: New Account
@@ -691,16 +701,6 @@ en:
       router_options_width_range: Width between %{from} and %{to} meters
       router_options_length_range: Length between %{from} and %{to} meters
       take_over_help: Average time per account
-      tomtom: TomTom WEBFLEET
-      tomtom_help: Allows sending plans to TomTom Pro with WEBFLEET.
-      teksat: Teksat
-      teksat_help: Send plans to Teksat devices
-      orange: Orange Fleet Performance
-      orange_help: Send plans to Orange Fleet Performance devices
-      masternaut: Masternaut
-      masternaut_help: Allows sending plans to Masternaut devices
-      alyacom: AlyaCom
-      alyacom_help: Allows sending plans to AlyaCom application
       optimization_cluster_size_default: '%{n} (default value)'
       optimization_cluster_size_help: Value in seconds between points to group before
         optimization. A great value will degrade optimization result (30 sec is already
@@ -726,17 +726,21 @@ en:
       speed_multiplicator_default: '%{n} (default value)'
       speed_multiplicator_help: A value higher than 100% means higher speed.
       submit: Update Global settings
-      sync:
-        complete: Sync Complete
-        orange:
-          confirm: Sync Vehicles from Orange Fleet Performance?
-          action: Sync Vehicles from Orange Fleet Performance
+      devices:
+        sync:
+          complete: Sync Complete
+          confirm: Sync Vehicles?
+          action: Sync Vehicles
+        alyacom:
+          help: Allows sending plans to AlyaCom application
         tomtom:
-          confirm: Sync Vehicles from TomTom WebFLEET?
-          action: Sync Vehicles from TomTom WebFLEET
+          help: Allows sending plans to TomTom Pro with WEBFLEET.
         teksat:
-          confirm: Sync Vehicles from Teksat?
-          action: Sync Vehicles from Teksat
+          help: Send plans to Teksat devices
+        orange:
+          help: Send plans to Orange Fleet Performance devices
+        masternaut:
+          help: Allows sending plans to Masternaut devices
       external_callback:
         title: Callback URL
         name: Name
@@ -1139,11 +1143,11 @@ en:
         action: Clear Teksat
         success: Teksat commands have been cleared successfully
         fail: Failed to clear Teksat commands
-      tomtom_send_orders:
+      tomtom_orders:
         action: Send to TomTom as Orders
         success: Sent to TomTom successfully
         fail: Failed to send to TomTom
-      tomtom_send_waypoints:
+      tomtom_waypoints:
         action: Send to TomTom as Waypoints
         success: Sent to TomTom successfully
         fail: Failed to send to TomTom
@@ -1167,6 +1171,18 @@ en:
         action: Send to Masternaut
         success: Sent to Masternaut Successfully
         fail: Failed to send to Masternaut
+      trimble_send:
+        action: Send to Trimble
+        success: Sent to Trimble Successfully
+        fail: Failed to send to Trimble
+      locster_send:
+        action: Send to Locster
+        success: Sent to Locster Successfully
+        fail: Failed to send to Locster
+      suivi_de_flote_send:
+        action: Send to SuiviDeFlote
+        success: Sent to SuiviDeFlote Successfully
+        fail: Failed to send to SuiviDeFlote
       export:
         customer_external_callback_url:
           success: External Application called successfully
@@ -1554,9 +1570,6 @@ en:
     emissions_light_diesel: Light - Diesel - %{n}
     emissions_light_lgp: Light - LGP - %{n}
     form:
-      tomtom_id: TomTom
-      teksat_id: Teksat
-      orange_id: Orange
       ref:
         help: A free reference
       emissions:
@@ -1647,6 +1660,10 @@ en:
       service_time_end_addon: after
       service_times_help: Durations added before the first stop and after the last
         stop
+      devices:
+        placeholder: Choose a device
+        fieldset : GPS & Mobiles
+
   vehicle_usage_sets:
     default:
       name: Default
