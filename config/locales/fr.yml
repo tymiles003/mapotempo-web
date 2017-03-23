@@ -1771,7 +1771,7 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
       _yes: "oui"
       _no: "non"
     subscribe:
-      planning_unavailable: "Le planning n’est pas modifiable pour le moment, la date de votre abonnement a expirée. Veuillez contacter votre revendeur afin de renouveler votre abonnement"
+      planning_unavailable: "Le planning n’est pas modifiable pour le moment, la date de votre abonnement a expiré. Veuillez contacter votre revendeur afin de renouveler votre abonnement."
       expiration_date: "Il ne vous reste que quelques jours pour renouveler votre adhésion, n'hésitez pas à contacter votre revendeur afin de renouveler votre offre. Date de fin : "
       expiration_date_over: "La date d'utilisation est dépassée, veuillez contacter votre revendeur. Date d'expiration : "
 
