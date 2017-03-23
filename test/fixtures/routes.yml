@@ -6,7 +6,7 @@ route_zero_one:
   planning: planning_one
   out_of_date: false
   vehicle_usage:
-  ref: "route_zero"
+  ref:
 
 route_one_one:
   distance: 1.5

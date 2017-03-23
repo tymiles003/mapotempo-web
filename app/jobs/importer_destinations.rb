@@ -298,7 +298,7 @@ class ImporterDestinations < ImporterBase
 
       # Add visit to route if needed
       if row.key?(:route) && !@visit_ids.include?(visit.id)
-        ref_route = (!row.key?(:ref_vehicle) || row[:ref_vehicle]) && row[:route] # Remove ref from out_of_route
+        ref_route = row[:route] # ref has to be nil for out-of-route
         @routes[ref_route][:ref_vehicle] = row[:ref_vehicle].gsub(%r{[\./\\]}, ' ') if row[:ref_vehicle]
         @routes[ref_route][:visits] << [visit, ValueToBoolean.value_to_boolean(row[:active], true)]
         @visit_ids << visit.id
