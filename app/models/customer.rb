@@ -16,6 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 require 'sanitize'
+require 'json'
 
 class Customer < ActiveRecord::Base
   belongs_to :reseller
@@ -38,15 +39,14 @@ class Customer < ActiveRecord::Base
   has_many :deliverable_units, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all, after_add: :update_deliverable_units_track, after_remove: :update_deliverable_units_track
   enum router_dimension: Router::DIMENSION
 
-  attr_accessor :deliverable_units_updated
+  attr_accessor :deliverable_units_updated, :device
 
   include HashBoolAttr
   store_accessor :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods
   hash_bool_attr :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll
 
   nilify_blanks
-
-  auto_strip_attributes :name, :tomtom_account, :tomtom_user, :tomtom_password, :print_header, :masternaut_user, :masternaut_password, :alyacom_association, :default_country
+  auto_strip_attributes :name, :print_header, :default_country
 
   include TimeAttr
   attribute :take_over, ScheduleType.new
@@ -70,6 +70,7 @@ class Customer < ActiveRecord::Base
   validates :speed_multiplicator, numericality: { greater_than_or_equal_to: 0.5, less_than_or_equal_to: 1.5 }, if: :speed_multiplicator
 
   after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
+  after_initialize :assign_device
   after_create :create_default_store, :create_default_vehicle_usage_set, :create_default_deliverable_unit
   before_update :update_out_of_date, :update_max_vehicles, :update_enable_multi_visits
   before_save :sanitize_print_header, :nilify_router_options_blanks
@@ -189,6 +190,18 @@ class Customer < ActiveRecord::Base
     end
   end
 
+  def assign_device
+    @device = Device.new(self)
+  end
+
+  def devices
+    if self[:devices].respond_to?('deep_symbolize_keys!')
+      self[:devices].deep_symbolize_keys!
+    else
+      self[:devices]
+    end
+  end
+
   def default_position
     store = stores.find{ |s| !s.lat.nil? && !s.lng.nil? }
     # store ? [store.lat, store.lng] : [I18n.t('stores.default.lat'), I18n.t('stores.default.lng')]
@@ -205,26 +218,6 @@ class Customer < ActiveRecord::Base
     end
   rescue ArgumentError
     @invalid_max_vehicle = true
-  end
-
-  def masternaut?
-    enable_masternaut && !masternaut_user.blank? && !masternaut_password.blank?
-  end
-
-  def alyacom?
-    enable_alyacom && !alyacom_association.blank?
-  end
-
-  def tomtom?
-    enable_tomtom && !tomtom_account.blank? && !tomtom_user.blank? && !tomtom_password.blank?
-  end
-
-  def teksat?
-    enable_teksat && !teksat_customer_id.blank? && !teksat_url.blank? && !teksat_username.blank? && !teksat_password.blank?
-  end
-
-  def orange?
-    enable_orange && !orange_user.blank? && !orange_password.blank?
   end
 
   def visits
@@ -248,9 +241,50 @@ class Customer < ActiveRecord::Base
   private
 
   def devices_update_vehicles
-    self.vehicles.select(&:tomtom_id).each{ |vehicle| vehicle.tomtom_id = nil } if !self.enable_tomtom || (self.tomtom_account_changed? && !self.tomtom_account_was.nil?) || (self.tomtom_user_changed? && !self.tomtom_user_was.nil?)
-    self.vehicles.select(&:teksat_id).each{ |vehicle| vehicle.teksat_id = nil } if !self.enable_teksat || (self.teksat_customer_id_changed? && !self.teksat_customer_id_was.nil?) || (self.teksat_username_changed? && !self.teksat_username_was.nil?)
-    self.vehicles.select(&:orange_id).each{ |vehicle| vehicle.orange_id = nil } if !self.enable_orange || (self.orange_user_changed? && !self.orange_user_was.nil?)
+    # Remove device association on vehicles
+    self.vehicles.select(&:devices).each{ |vehicle| vehicle.devices[:tomtom_id] = nil } if check_tomtom_changes
+    self.vehicles.select(&:devices).each{ |vehicle| vehicle.devices[:teksat_id] = nil } if check_teksat_changes
+    self.vehicles.select(&:devices).each{ |vehicle| vehicle.devices[:orange_id] = nil } if check_orange_changes
+  end
+
+  # TODO : refactor
+  def check_tomtom_changes
+    before = self.changed.include?('devices') ? self.changes[:devices].first : nil
+    after = self.changed.include?('devices') ? self.changes[:devices].second : nil
+
+    if self.changed.include?('devices') && !before.nil? && !after.nil?
+      if after.include?(:tomtom) && before.include?(:tomtom)
+        return !after[:tomtom][:enable] || ((after[:tomtom][:account] != before[:tomtom][:account])  && !after[:tomtom][:account].nil?) || ((after[:tomtom][:user] != before[:tomtom][:user])  && !after[:tomtom][:user].nil?)
+      end
+    end
+
+    false
+  end
+
+  def check_teksat_changes
+    before = self.changed.include?('devices') ? self.changes[:devices].first : nil
+    after = self.changed.include?('devices') ? self.changes[:devices].second : nil
+
+    if self.changed.include?('devices') && !before.nil? && !after.nil?
+      if after.include?(:teksat) && before.include?(:teksat)
+        return !after[:teksat][:enable] || ((after[:teksat][:customer_id] != before[:teksat][:customer_id])  && !after[:teksat][:customer_id].nil?) || ((after[:teksat][:username] != before[:teksat][:username])  && !after[:teksat][:username].nil?)
+      end
+    end
+
+    false
+  end
+
+  def check_orange_changes
+    before = self.changed.include?('devices') ? self.changes[:devices].first : nil
+    after = self.changed.include?('devices') ? self.changes[:devices].second : nil
+
+    if self.changed.include?('devices') && !before.nil? && !after.nil?
+      if after.include?(:orange) && before.include?(:orange)
+        return !after[:orange][:enable] || ((after[:orange][:username] != before[:orange][:username])  && !after[:orange][:username].nil?)
+      end
+    end
+
+    false
   end
 
   def assign_defaults

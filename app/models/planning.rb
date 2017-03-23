@@ -408,7 +408,7 @@ class Planning < ActiveRecord::Base
       stops_map.each{ |ss| ss[1].assign_attributes status: nil, eta: nil }
 
       Mapotempo::Application.config.devices.each_pair.collect{ |key, device|
-        if device.respond_to?(:fetch_stops) && customer.method(key.to_s + '?').call
+        if device.respond_to?(:fetch_stops) && customer.device.configured?(key)
           device.fetch_stops(self.customer, device.planning_date(self))
         end
       }.compact.flatten.select{ |s|

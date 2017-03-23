@@ -126,16 +126,16 @@ class CustomerTest < ActiveSupport::TestCase
 
   test '[tomtom] change device credentials should update vehicles' do
     @customer = add_tomtom_credentials @customer
-    @customer.vehicles.update_all tomtom_id: "tomtom_id"
-    @customer.update! tomtom_account: @customer.tomtom_account + "_edit"
-    assert @customer.vehicles.all? { |vehicle| !vehicle.tomtom_id }
+    @customer.vehicles.update_all devices: {tomtom_id: "tomtom_id"}
+    @customer.update! devices: {tomtom: {account: @customer.devices[:tomtom][:account] + "_edit"} }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.devices[:tomtom_id] }
   end
 
   test '[tomtom] disable service should update vehicles' do
     @customer = add_tomtom_credentials @customer
-    @customer.vehicles.update_all tomtom_id: "tomtom_id"
-    @customer.update! enable_tomtom: false
-    assert @customer.vehicles.all? { |vehicle| !vehicle.tomtom_id }
+    @customer.vehicles.update_all devices: {tomtom_id: "tomtom_id"}
+    @customer.update! devices: {tomtom: {enable: false} }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.devices[:tomtom_id] }
   end
 
   require Rails.root.join("test/lib/devices/teksat_base")
@@ -143,16 +143,16 @@ class CustomerTest < ActiveSupport::TestCase
 
   test '[teksat] change device credentials should update vehicles' do
     @customer = add_teksat_credentials @customer
-    @customer.vehicles.update_all teksat_id: "teksat_id"
-    @customer.update! teksat_customer_id: Time.now.to_i
-    assert @customer.vehicles.all? { |vehicle| !vehicle.teksat_id }
+    @customer.vehicles.update_all devices: {teksat_id: "teksat_id"}
+    @customer.update! devices: {teksat: {customer_id: Time.now.to_i} }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.devices[:teksat_id]  }
   end
 
   test '[teksat] disable service should update vehicles' do
     @customer = add_teksat_credentials @customer
-    @customer.vehicles.update_all teksat_id: "teksat_id"
-    @customer.update! enable_teksat: false
-    assert @customer.vehicles.all? { |vehicle| !vehicle.teksat_id }
+    @customer.vehicles.update_all devices: {teksat_id: "teksat_id"}
+    @customer.update! devices: {teksat: {enable: false} }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.devices[:teksat_id]  }
   end
 
   require Rails.root.join("test/lib/devices/orange_base")
@@ -160,16 +160,16 @@ class CustomerTest < ActiveSupport::TestCase
 
   test '[orange] change device credentials should update vehicles' do
     @customer = add_orange_credentials @customer
-    @customer.vehicles.update_all orange_id: "orange_id"
-    @customer.update! orange_user: @customer.orange_user + "_edit"
-    assert @customer.vehicles.all? { |vehicle| !vehicle.orange_id }
+    @customer.vehicles.update_all devices: {orange_id: "orange_id"}
+    @customer.update! devices: {orange: {username: @customer.devices[:orange][:username] + "_edit"} }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.devices[:orange_id]  }
   end
 
   test '[orange] disable service should update vehicles' do
-    @customer = add_teksat_credentials @customer
-    @customer.vehicles.update_all orange_id: "orange_id"
-    @customer.update! enable_orange: false
-    assert @customer.vehicles.all? { |vehicle| !vehicle.orange_id }
+    @customer = add_orange_credentials @customer
+    @customer.vehicles.update_all devices: {orange_id: "orange_id"}
+    @customer.update! devices: {orange: {enable: false} }
+    assert @customer.vehicles.all? { |vehicle| !vehicle.devices[:orange_id]  }
   end
 
   test 'should get router dimension' do

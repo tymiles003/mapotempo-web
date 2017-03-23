@@ -36,7 +36,7 @@ class Vehicle < ActiveRecord::Base
   hash_bool_attr :router_options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll
 
   nilify_blanks
-  auto_strip_attributes :name, :tomtom_id, :masternaut_ref
+  auto_strip_attributes :name
   validates :customer, presence: true
   validates :name, presence: true
   validates :emission, numericality: {only_float: true}, allow_nil: true
@@ -85,6 +85,14 @@ class Vehicle < ActiveRecord::Base
     })
   end
 
+  def devices
+    if self[:devices].respond_to?('deep_symbolize_keys!')
+      self[:devices].deep_symbolize_keys!
+    else
+      self[:devices]
+    end
+  end
+
   def default_router
     self.router || customer.router
   end
@@ -104,11 +112,6 @@ class Vehicle < ActiveRecord::Base
 
   def default_speed_multiplicator
     customer.speed_multiplicator * (speed_multiplicator || 1)
-  end
-
-  def available_position?
-    customer.enable_vehicle_position? &&
-      ((!tomtom_id.blank? && customer.tomtom?) || (!teksat_id.blank? && customer.teksat?) || (!orange_id.blank? && customer.orange?))
   end
 
   def default_capacities
