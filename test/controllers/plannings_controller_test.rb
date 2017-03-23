@@ -408,13 +408,13 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'should update active' do
     patch :active, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, active: :none
-    assert_response :success
+    assert_response :success, response.body
     assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 
   test 'should reverse route stops' do
     patch :reverse_order, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
-    assert_response :success
+    assert_response :success, response.body
     assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 

@@ -47,6 +47,7 @@ class CustomersController < ApplicationController
 
   def update
     @customer.assign_attributes(customer_params)
+    #@customer.update_columns(devices: customer_params[:devices])
     respond_to do |format|
       if @customer.save
         format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.updated', model: @customer.class.model_name.human) }
@@ -102,29 +103,11 @@ class CustomersController < ApplicationController
                                                     :take_over,
                                                     :print_planning_annotating,
                                                     :print_header,
-                                                    :enable_tomtom,
-                                                    :enable_masternaut,
-                                                    :enable_alyacom,
-                                                    :enable_teksat,
-                                                    :enable_orange,
-                                                    :orange_user,
-                                                    :orange_password,
-                                                    :teksat_url,
-                                                    :teksat_customer_id,
-                                                    :teksat_username,
-                                                    :teksat_password,
-                                                    :tomtom_account,
-                                                    :tomtom_user,
-                                                    :tomtom_password,
-                                                    :masternaut_user,
-                                                    :masternaut_password,
                                                     :router_id,
                                                     :router_dimension,
                                                     :speed_multiplicator,
                                                     :enable_orders,
                                                     :test,
-                                                    :alyacom_association,
-                                                    :alyacom_api_key,
                                                     :optimization_cluster_size,
                                                     :optimization_time,
                                                     :optimization_stop_soft_upper_bound,
@@ -160,8 +143,8 @@ class CustomersController < ApplicationController
                                                         :width,
                                                         :length,
                                                         :hazardous_goods
-                                                    ])
-
+                                                    ],
+                                                    devices: permit_recursive_params(params[:customer][:devices]))
       parameters[:end_subscription] = Date.strptime(parameters[:end_subscription], I18n.t('time.formats.datepicker')).strftime(ACTIVE_RECORD_DATE_MASK) unless parameters[:end_subscription].blank?
       return parameters
     else
@@ -169,21 +152,9 @@ class CustomersController < ApplicationController
         :take_over,
         :print_planning_annotating,
         :print_header,
-        :orange_user,
-        :orange_password,
-        :teksat_url,
-        :teksat_customer_id, :teksat_username,
-        :teksat_password,
-        :tomtom_account,
-        :tomtom_user,
-        :tomtom_password,
-        :masternaut_user,
-        :masternaut_password,
         :router_id,
         :router_dimension,
         :speed_multiplicator,
-        :alyacom_association,
-        :alyacom_api_key,
         :default_country,
         :with_state,
         :print_stop_time,
@@ -205,10 +176,26 @@ class CustomersController < ApplicationController
           :width,
           :length,
           :hazardous_goods
-        ]]
+        ],
+        devices: permit_recursive_params(params[:customer][:devices])
+      ]
       allowed_params << :max_vehicles unless Mapotempo::Application.config.manage_vehicles_only_admin
 
       params.require(:customer).permit(*allowed_params)
+    end
+  end
+
+  def permit_recursive_params(params)
+    if !params.nil? 
+      params.map do |key, value|
+        if value.is_a?(Array)
+          { key => [ permit_recursive_params(value.first) ] }
+        elsif value.is_a?(Hash) || value.is_a?(ActionController::Parameters)
+          { key => permit_recursive_params(value) }
+        else
+          key
+        end
+      end
     end
   end
 end
