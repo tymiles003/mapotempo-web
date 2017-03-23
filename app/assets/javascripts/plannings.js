@@ -677,6 +677,7 @@ var plannings_edit = function(params) {
     theme: 'bootstrap',
     templateSelection: templateSelectionZoning
   });
+
   $("#planning_zoning_ids").change(function() {
     layer_zoning.clearLayers();
     var ids = $(this).val();

@@ -160,7 +160,6 @@ var mapInitialize = function(params) {
 
 var customColorInitialize = function(selecter){
   $('#customised_color_picker').click(function(){
-
       var colorPicker = $('#color_picker'), options_wrap = $(selecter + ' option[selected="selected"]');
 
       $('.color[data-selected=""]').removeAttr('data-selected');

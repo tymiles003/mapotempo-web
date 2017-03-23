@@ -51,7 +51,6 @@ function devices_observe_planning(context, callback) {
   };
 
   $(context).off('click', '.device-operation').on('click', '.device-operation', function(e) {
-
     if (!confirm(I18n.t('all.verb.confirm'))) {
       return;
     }
@@ -111,11 +110,9 @@ function devices_observe_planning(context, callback) {
     $(this).closest(".dropdown-menu").prev().dropdown("toggle");
     return false;
   });
-
 }
 
 function devices_observe_vehicle(params) {
-
   function devices_init_vehicle(base_name, name) {
     $.ajax({
       url: '/api/0.1/devices/' + name + '/devices.json',
@@ -133,6 +130,7 @@ function devices_observe_vehicle(params) {
           data: data,
           theme: 'bootstrap',
           width: '100%',
+          // placeholder: I18n.t('vehicle_usages.form.devices.placeholder'),
           minimumResultsForSearch: -1,
           templateResult: function(data_selection) {
             return data_selection.text;
@@ -148,54 +146,57 @@ function devices_observe_vehicle(params) {
 
   /* API: Devices */
   $.each(['tomtom', 'teksat', 'orange'], function(i, name) {
-    if (params[name]) devices_init_vehicle('vehicle_usage_vehicle', name);
+    if (params[name]) devices_init_vehicle('vehicle_usage_vehicle_devices', name);
   });
 }
 
 function devices_observe_customer(params) {
-
   function devices_init_customer(base_name, config, params) {
     var requests = [];
 
     function clear_callback() {
-      $('#' + config.name + '_success').addClass('hidden');
-      $('#' + config.name + '_not_found').addClass('hidden');
       $('.' + config.name + '-api-sync').attr('disabled', 'disabled');
+      $('#' + config.name + '_container').removeClass('panel-success panel-danger').addClass('panel-default');
     }
 
     function success_callback() {
-      $('#' + config.name + '_success').removeClass('hidden');
-      $('#' + config.name + '_not_found').addClass('hidden');
       $('.' + config.name + '-api-sync').removeAttr('disabled');
+      $('#' + config.name + '_container').removeClass('panel-default panel-danger').addClass('panel-success');
     }
 
-    function error_callback() {
-      $('#' + config.name + '_success').addClass('hidden');
-      $('#' + config.name + '_not_found').removeClass('hidden');
+    function error_callback(apiError) {
+      apiError = apiError || false;
+      var apiClass = apiError ? 'api-error' : '';
       $('.' + config.name + '-api-sync').attr('disabled', 'disabled');
+      $('#' + config.name + '_container').removeClass('panel-default panel-success').addClass('panel-danger');
     }
 
     function user_credentials() {
       var hash = {};
+      var device = config.name;
 
       // Optional Customer ID
-      if (params.customer_id) hash.customer_id = params.customer_id;
+      if (params.customer_id) {
+        hash.customer_id = params.customer_id;
+      }
 
       // Customer ID and Username
-      $.each(config.inputs, function(i, name) {
-        hash[config.name + '_' + name] = $('#' + base_name + '_' + config.name + '_' + name).val();
+      $.each(config, function(key, value) {
+        if($.inArray(key, ['password', 'enable', 'name']) == -1) {
+          hash[device + '_' + key] = $('#' + base_name + '_' + device + '_' + key).val();
+        }
       });
 
       // Prevent submitting default password value
-      $.each(config.password_inputs, function(i, name) {
-        var passwd = $('#' + base_name + '_' + config.name + '_' + name).val();
-        if (passwd != params.default_password) hash[config.name + '_' + name] = passwd;
-      });
+      var passwd = $('#' + base_name + '_' + device + '_password').val();
+      if (passwd != params.default_password) {
+        hash[device + '_password'] = passwd;
+      }
 
       return hash;
     }
 
-    // Check TomTom Credentials Without Before / Complete Callbacks
+    // Check Credentials Without Before / Complete Callbacks
     function check_credentials() {
       requests.push($.ajax({
         url: '/api/0.1/devices/' + config.name + '/auth.json',
@@ -208,35 +209,34 @@ function devices_observe_customer(params) {
           } else {
             success_callback();
           }
-        }
+        },
+        error: function(jqXHR, textStatus, error) {
+          error_callback(true);
+        } 
       }));
     }
 
     // Check Credentials: Observe User Events with Delay
     function observe() {
-
       var timeout_id;
 
       function all_fields_filled() {
-        var array = [];
+        var isValid = true;
+        var search = $('input[type="text"], input[type="password"]', "#" + config.name);
 
-        var count = Object.keys(config.inputs).length;
-        if (config.password_inputs) count += Object.keys(config.password_inputs).length;
+        search.each(function() {
+          var id = $(this).attr('id');
 
-        $.each(config.inputs, function(i, name) {
-          if ($('#' + base_name + '_' + config.name + '_' + name).val() != '') array.push(name)
+          if (typeof id !== typeof undefined && id !== false) {
+            if ($(this).val() == "") {
+              isValid = false;
+            }
+          }
         });
-
-        if (config.password_inputs) {
-          $.each(config.password_inputs, function(i, name) {
-            if ($('#' + base_name + '_' + config.name + '_' + name).val() != '') array.push(name)
-          });
-        }
-        return array.length == count;
+        return isValid;
       }
 
       function check_credentials_with_callbacks() {
-
         // Don't check credentials unless all fields are filled
         if (!all_fields_filled()) {
           clear_callback();
@@ -267,7 +267,10 @@ function devices_observe_customer(params) {
             } else {
               success_callback();
             }
-          }
+          },
+          error: function(jqXHR, textStatus, error) {
+            error_callback(true);
+          } 
         }));
       }
 
@@ -276,15 +279,13 @@ function devices_observe_customer(params) {
         timeout_id = setTimeout(check_credentials_with_callbacks, 750);
       }
 
-      // Observe Inputs
-      $.each([].concat(config.inputs, config.password_inputs), function(i, name) {
-        $('#' + base_name + '_' + config.name + '_' + name).keyup(function(e) {
-          check_credentials_with_delay();
-        });
+      // Listen all inputs on KeyUp event
+      $('#devices_settings input').on('keyup', function(e) {
+        check_credentials_with_delay();
       });
 
       // Sync
-      $('.' + config.name + '-api-sync').click(function(e) {
+      $('.' + config.name + '-api-sync').on('click', function(e) {
         if (confirm(I18n.t('customers.form.sync.' + config.name + '.confirm'))) {
           $.ajax({
             url: '/api/0.1/devices/' + config.name + '/sync.json',
@@ -306,48 +307,28 @@ function devices_observe_customer(params) {
       });
     }
 
-    // Expand or Collapse Widget
-    function toggle_panel() {
-      $('#' + config.name + '_container .panel-collapse').collapse('toggle');
-    }
-
-    // Admin: Toggle Container When Toggling Check-Box
-    function toggle_widget() {
-      function toggle(enabled) {
-        enabled ? $('#' + config.name + '_container').show() : $('#' + config.name + '_container').hide()
+    /* Password Inputs: set fake password  (input view fake) */
+    if("password" in config) {
+      var password_field = '#' + [base_name, config.name, "password"].join('_');
+      if ($(password_field).val() == '') {
+        $(password_field).val(params.default_password);
       }
-      $('#' + base_name + '_enable_' + config.name).change(function(e) {
-        toggle($(e.target).is(':checked'))
-      });
-      $('#' + base_name + '_enable_' + config.name).trigger('change');
-      toggle_panel();
-    }
+    };
 
-    /* Password Inputs: Set value */
-    $.each(config.password_inputs, function(i, name) {
-      var password_field = $('#' + [base_name, config.name, name].join('_'));
-      if (params[config.name] && $(password_field).val() == '') $(password_field).val(params.default_password);
-    });
-
-    // Check TomTom on Page Load if Customer has Service Enabled with Credentials
-    if (params[config.name]) {
-      toggle_panel();
-      check_credentials();
-    }
-
+    // Check credantial for current device config
     // Observe Widget if Customer has Service Enabled or Admin (New Customer)
-    if (params['enable_' + config.name] || params.admin) observe();
-
-    // Toggle Widget if Customer has Service Enabled with Credentials or Admin (New Customer)
-    if (params[config.name] || params.admin) toggle_widget();
+    check_credentials();
+    observe();
   }
 
   function observe_form() {
     /* Chrome / FF, Prevent Sending Default Password
        The browsers would ask to remember it. */
-    $('form.clear-passwords').submit(function(e) {
+    $('form.clear-passwords').on('submit', function(e) {
       $.each($(e.target).find('input[type=\'password\']'), function(i, element) {
-        if ($(element).val() == params.default_password) $(element).val('');
+        if ($(element).val() == params.default_password) {
+          $(element).val('');
+        }
       });
       return true;
     });
@@ -355,28 +336,8 @@ function devices_observe_customer(params) {
 
   observe_form();
 
-  $.each([{
-    name: 'tomtom',
-    inputs: ['account', 'user'],
-    password_inputs: ['password']
-  }, {
-    name: 'teksat',
-    inputs: ['url', 'customer_id', 'username'],
-    password_inputs: ['password']
-  }, {
-    name: 'orange',
-    inputs: ['user'],
-    password_inputs: ['password']
-  }, {
-    name: 'masternaut',
-    inputs: ['user'],
-    password_inputs: ['password']
-  }, {
-    name: 'alyacom',
-    inputs: ['association', 'api_key']
-  }], function(i, config) {
-    if (params['enable_' + config.name]) {
-      devices_init_customer('customer', config, params);
-    }
+  $.each(params['devices'], function(deviceName, config) {
+    config.name = deviceName;
+    devices_init_customer('customer_devices', config, params);
   });
 }
