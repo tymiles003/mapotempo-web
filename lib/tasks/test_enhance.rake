@@ -29,6 +29,10 @@ begin
       if !ENV.key?('I18N') || ENV['I18N'] != 'false'
         Rake::Task[:i18n_health].invoke
       end
+      if !ENV.key?('BRAKEMAN') || ENV['BRAKEMAN'] != 'false'
+        require 'brakeman'
+        Brakeman.run app_path: '.', print_report: true
+      end
     end
   end
 rescue Gem::LoadError

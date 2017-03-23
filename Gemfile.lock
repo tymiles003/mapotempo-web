@@ -184,6 +184,7 @@ GEM
     bootstrap-select-rails (1.6.2)
     bootstrap-wysihtml5-rails (0.3.3.8)
       railties (>= 3.0)
+    brakeman (3.6.0)
     browser (2.3.0)
     builder (3.2.3)
     bullet (5.5.0)
@@ -618,6 +619,7 @@ DEPENDENCIES
   bootstrap-filestyle-rails
   bootstrap-select-rails (< 1.6.3)
   bootstrap-wysihtml5-rails
+  brakeman
   browser
   bullet
   byebug
