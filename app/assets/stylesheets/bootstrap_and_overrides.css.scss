@@ -119,6 +119,10 @@ select.form-control[required]:not(:disabled) {
   background: #EEFAFF;
 }
 
+label .popover {
+  font-weight: normal;
+}
+
 /** External look-like **/
 
 /* Select2 */

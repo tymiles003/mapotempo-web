@@ -758,9 +758,12 @@ en:
       default_quantity_help: "Quantity to deliver for all your visits (keep empty if no quantity)."
       default_capacity_help: "Capacity for all your vehicles (keep empty if no limit)."
       optimization_overload_multiplier_no: "No"
+      optimization_overload_multiplier_no_help: "During optimisation, if you set some capacities for your vehicles, overload is forbidden."
       optimization_overload_multiplier_yes: "Yes"
+      optimization_overload_multiplier_yes_help: "During optimisation, if you set some capacities for your vehicles, overload is authorized. The greater number is, the less overload will be allowed by optimisation."
       optimization_overload_multiplier_ignore: "Ignored"
-      optimization_overload_multiplier_help: "Overload authorized or not during optimisation (valid only if capacity is specified for vehicle). If overload is authorized, the greater number is the less overload will be allowed by optimisation."
+      optimization_overload_multiplier_ignore_help: "During optimisation, quantities and vehicles' capacities will not be taken into account."
+      optimization_overload_multiplier_help: "Overload authorized or not during optimisation (valid only if capacity is specified for vehicle). If overload is authorized, the greater number is, the less overload will be allowed by optimisation."
 
   destinations:
     upload_tomtom:

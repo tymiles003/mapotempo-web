@@ -758,9 +758,12 @@ fr:
       default_quantity_help: "Quantité à livrer par défaut à toutes vos visites (laisser vide si pas de quantité)."
       default_capacity_help: "Capacité par défaut de tous vos véhicules (laisser vide si illimité)."
       optimization_overload_multiplier_no: "Non"
+      optimization_overload_multiplier_no_help: "Lors de l'optimisation, si vous indiquez une capacité pour vos véhicules, aucun dépassement ne sera autorisé."
       optimization_overload_multiplier_yes: "Oui"
+      optimization_overload_multiplier_yes_help: "Lors de l'optimisation, si vous indiquez une capacité pour vos véhicules, un dépassement est autorisé. Plus le coefficient est grand moins, l'optimisation permettra un dépassement."
       optimization_overload_multiplier_ignore: "Ignoré"
-      optimization_overload_multiplier_help: "Dépassement autorisé ou non pendant l'optimisation (valable seulement si une capacité est précisée pour un véhicule). Si le dépassement est autorisé, plus le nombre indiqué est grand moins l'optimisation permettra un dépassement."
+      optimization_overload_multiplier_ignore_help: "Lors de l'optimisation, les quantités et capacités sur vos véhicules ne seront pas prises en compte."
+      optimization_overload_multiplier_help: "Dépassement autorisé ou non pendant l'optimisation (valable seulement si une capacité est précisée pour un véhicule). Si le dépassement est autorisé, plus le nombre indiqué est grand, moins l'optimisation permettra un dépassement."
 
   destinations:
     upload_tomtom:

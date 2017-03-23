@@ -43,6 +43,13 @@ var deliverable_units_form = function() {
   $('input[name="deliverable_unit_optimization_overload_multiplier"]').change(function() {
     optimisationOverloadMultiplier();
   });
+
+  $('[name=deliverable_unit_optimization_overload_multiplier]').change(function(e) {
+    $('#deliverable_unit_optimization_overload_multiplier_no:not(:checked), #deliverable_unit_optimization_overload_multiplier_yes:not(:checked), #deliverable_unit_optimization_overload_multiplier_ignore:not(:checked)').popover('hide');
+    if (e.target.checked) {
+      $(this).popover('show');
+    }
+  })
 };
 
 Paloma.controller('DeliverableUnits', {
