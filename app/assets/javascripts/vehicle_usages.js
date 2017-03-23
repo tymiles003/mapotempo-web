@@ -65,7 +65,7 @@ var devicesObserveVehicle = (function() {
       theme: 'bootstrap',
       width: '100%',
       // placeholder: I18n.t('vehicle_usages.form.devices.placeholder'),
-      minimumResultsForSearch: -1,
+      minimumResultsForSearch: Infinity,
       templateResult: function(data_selection) {
         return data_selection.text;
       },
@@ -90,7 +90,9 @@ var devicesObserveVehicle = (function() {
         _buildSelect(data, name, params.devices);
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        _buildSelect([errorThrown], name, params.devices);
+        // Ensure select 2 is never nill. If reponseJSON doesn't existe, it means that api has been not found
+        var err = (jqXHR && jqXHR.responseJSON && jqXHR.responseJSON.message) ? jqXHR.responseJSON.message : errorThrown;
+        _buildSelect([err], name, params.devices);
       }
     });
   }
