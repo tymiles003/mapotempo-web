@@ -59,9 +59,9 @@ var devicesObserveVehicle = (function() {
 
   const base_name = 'vehicle_usage_vehicle_devices';
 
-  var _buildSelect = function(data, name, devices) {
+  var _buildSelect = function(name, datas) {
     $('[data-device=' + name + ']').select2({
-      data: data,
+      data: datas || [],
       theme: 'bootstrap',
       width: '100%',
       // placeholder: I18n.t('vehicle_usages.form.devices.placeholder'),
@@ -73,11 +73,16 @@ var devicesObserveVehicle = (function() {
         return data_selection.text;
       }
     });
-    // this is used to set a default value for select2 builder
-    $('[data-device=' + name + ']').val(devices[name + "_id"] || data[0]).trigger("change");
+  }
+
+    // this is used to set a default value for select2 builder - Update datas from ajax request
+  var _addDataToSelect2 = function(name, datas, devices) {
+    _buildSelect(name, datas);
+    $('[data-device=' + name + ']').val(devices[name + "_id"] || datas[0]).trigger("change");
   }
 
   var _devicesInitVehicle = function(name, params) {
+    _buildSelect(name, params.devices);
     $.ajax({
       url: '/api/0.1/devices/' + name + '/devices.json',
       data: {
@@ -87,12 +92,12 @@ var devicesObserveVehicle = (function() {
       success: function(data, textStatus, jqXHR) {
         // Blank option
         if (data && data.error) stickyError(data.error);
-        _buildSelect(data, name, params.devices);
+        _addDataToSelect2(name, data, params.devices);
       },
       error: function(jqXHR, textStatus, errorThrown) {
         // Ensure select 2 is never nill. If reponseJSON doesn't existe, it means that api has been not found
         var err = (jqXHR && jqXHR.responseJSON && jqXHR.responseJSON.message) ? jqXHR.responseJSON.message : errorThrown;
-        _buildSelect([err], name, params.devices);
+        _addDataToSelect2(name, [err], params.devices);
       }
     });
   }
