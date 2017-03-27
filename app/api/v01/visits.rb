@@ -27,15 +27,15 @@ class V01::Visits < Grape::API
       p[:quantities] = Hash[p[:quantities].map{ |q| [q[:deliverable_unit_id].to_s, q[:quantity]] }] if p[:quantities] && p[:quantities].is_a?(Array)
 
       # Deals with deprecated open and close
-      p[:open1] = p.delete(:open) if !p[:open1]
-      p[:close1] = p.delete(:close) if !p[:close1]
+      p[:open1] = p.delete(:open) unless p[:open1]
+      p[:close1] = p.delete(:close) unless p[:close1]
       # Deals with deprecated quantity
-      if !p[:quantities]
-        p[:quantities] = { current_customer.deliverable_units[0].id.to_s => p.delete(:quantity) } if p[:quantity] && current_customer.deliverable_units.size > 0
+      unless p[:quantities]
+        p[:quantities] = {current_customer.deliverable_units[0].id.to_s => p.delete(:quantity)} if p[:quantity] && current_customer.deliverable_units.size > 0
         if p[:quantity1_1] || p[:quantity1_2]
           p[:quantities] = {}
-          p[:quantities].merge!({ current_customer.deliverable_units[0].id.to_s => p.delete(:quantity1_1) }) if p[:quantity1_1] && current_customer.deliverable_units.size > 0
-          p[:quantities].merge!({ current_customer.deliverable_units[1].id.to_s => p.delete(:quantity1_2) }) if p[:quantity1_2] && current_customer.deliverable_units.size > 1
+          p[:quantities].merge!({current_customer.deliverable_units[0].id.to_s => p.delete(:quantity1_1)}) if p[:quantity1_1] && current_customer.deliverable_units.size > 0
+          p[:quantities].merge!({current_customer.deliverable_units[1].id.to_s => p.delete(:quantity1_2)}) if p[:quantity1_2] && current_customer.deliverable_units.size > 1
         end
       end
 
@@ -87,8 +87,23 @@ class V01::Visits < Grape::API
           nickname: 'createVisit',
           success: V01::Entities::Visit
         params do
-          use :params_from_entity, entity: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids)
+          use :params_from_entity, entity: V01::Entities::Visit.documentation.except(
+              :id,
+              :destination_id,
+              :tag_ids,
+              :open1,
+              :close1,
+              :take_over,
+              :open2,
+              :close2)
+
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
+
+          optional :open1, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close1, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :open2, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close2, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
         end
         post do
           destination_id = ParseIdsRefs.read(params[:destination_id])
@@ -105,8 +120,23 @@ class V01::Visits < Grape::API
           success: V01::Entities::Visit
         params do
           requires :id, type: String, desc: ID_DESC
-          use :params_from_entity, entity: V01::Entities::Visit.documentation.except(:id, :destination_id, :tag_ids)
+          use :params_from_entity, entity: V01::Entities::Visit.documentation.except(
+              :id,
+              :destination_id,
+              :tag_ids,
+              :open1,
+              :close1,
+              :take_over,
+              :open2,
+              :close2)
+
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
+
+          optional :open1, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close1, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :open2, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close2, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
         end
         put ':id' do
           destination_id = ParseIdsRefs.read(params[:destination_id])

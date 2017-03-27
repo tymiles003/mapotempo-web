@@ -1,75 +1,69 @@
 class ChangeTimeToIntegerToVisits < ActiveRecord::Migration
   def up
-    previous_times = {}
-    Visit.all.order(:id).each do |visit|
-      previous_times[visit.id] = {
-          open1: visit.open1,
-          close1: visit.close1,
-          take_over: visit.take_over,
-          open2: visit.open2,
-          close2: visit.close2
-      }
+    fake_missing_props
+
+    add_column :visits, :open1_temp, :integer
+    add_column :visits, :close1_temp, :integer
+    add_column :visits, :take_over_temp, :integer
+    add_column :visits, :open2_temp, :integer
+    add_column :visits, :close2_temp, :integer
+
+    Visit.connection.schema_cache.clear!
+    Visit.reset_column_information
+
+    Visit.find_in_batches do |visits|
+      visits.each do |visit|
+        visit.open1_temp = visit.open1.seconds_since_midnight.to_i if visit.open1
+        visit.close1_temp = visit.close1.seconds_since_midnight.to_i if visit.close1
+        visit.take_over_temp = visit.take_over.seconds_since_midnight.to_i if visit.take_over
+        visit.open2_temp = visit.open2.seconds_since_midnight.to_i if visit.open2
+        visit.close2_temp = visit.close2.seconds_since_midnight.to_i if visit.close2
+        visit.save!
+      end
     end
 
-    remove_column :visits, :open1
-    remove_column :visits, :close1
-    remove_column :visits, :take_over
-    remove_column :visits, :open2
-    remove_column :visits, :close2
-    add_column :visits, :open1, :integer
-    add_column :visits, :close1, :integer
-    add_column :visits, :take_over, :integer
-    add_column :visits, :open2, :integer
-    add_column :visits, :close2, :integer
+    remove_column :visits, :open1_temp
+    remove_column :visits, :close1_temp
+    remove_column :visits, :take_over_temp
+    remove_column :visits, :open2_temp
+    remove_column :visits, :close2_temp
 
+    rename_column :visits, :open1_temp, :open1
+    rename_column :visits, :close1_temp, :close1
+    rename_column :visits, :take_over_temp, :take_over
+    rename_column :visits, :open2_temp, :open2
+    rename_column :visits, :close2_temp, :close2
+  end
+
+  def down
+    add_column :visits, :open1_temp, :time
+    add_column :visits, :close1_temp, :time
+    add_column :visits, :take_over_temp, :time
+    add_column :visits, :open2_temp, :time
+    add_column :visits, :close2_temp, :time
+
+    Visit.connection.schema_cache.clear!
     Visit.reset_column_information
-    Visit.transaction do
-      previous_times.each do |visit_id, times|
-        visit = Visit.find(visit_id)
-        visit.open1 = times[:open1].seconds_since_midnight.to_i if times[:open1]
-        visit.close1 = times[:close1].seconds_since_midnight.to_i if times[:close1]
-        visit.take_over = times[:take_over].seconds_since_midnight.to_i if times[:take_over]
-        visit.open2 = times[:open2].seconds_since_midnight.to_i if times[:open2]
-        visit.close2 = times[:close2].seconds_since_midnight.to_i if times[:close2]
+
+    Visit.find_in_batches do |visits|
+      visits.each do |visit|
+        visit.open1_temp = Time.at(visit.open1).utc.strftime('%H:%M:%S') if visit.open1
+        visit.close1_temp = Time.at(visit.close1).utc.strftime('%H:%M:%S') if visit.close1
+        visit.take_over_temp = Time.at(visit.take_over).utc.strftime('%H:%M:%S') if visit.take_over
+        visit.open2_temp = Time.at(visit.open2).utc.strftime('%H:%M:%S') if visit.open2
+        visit.close2_temp = Time.at(visit.close2).utc.strftime('%H:%M:%S') if visit.close2
         visit.save!
       end
     end
   end
 
-  def down
-    previous_times = {}
-    Visit.all.order(:id).each do |visit|
-      previous_times[visit.id] = {
-          open1: visit.open1,
-          close1: visit.close1,
-          take_over: visit.take_over,
-          open2: visit.open2,
-          close2: visit.close2
-      }
-    end
-
-    remove_column :visits, :open1
-    remove_column :visits, :close1
-    remove_column :visits, :take_over
-    remove_column :visits, :open2
-    remove_column :visits, :close2
-    add_column :visits, :open1, :time
-    add_column :visits, :close1, :time
-    add_column :visits, :take_over, :time
-    add_column :visits, :open2, :time
-    add_column :visits, :close2, :time
-
-    Visit.reset_column_information
-    Visit.transaction do
-      previous_times.each do |visit_id, times|
-        visit = Visit.find(visit_id)
-        visit.open1 = Time.at(times[:open1]).utc.strftime('%H:%M:%S') if times[:open1]
-        visit.close1 = Time.at(times[:close1]).utc.strftime('%H:%M:%S') if times[:close1]
-        visit.take_over = Time.at(times[:take_over]).utc.strftime('%H:%M:%S') if times[:take_over]
-        visit.open2 = Time.at(times[:open2]).utc.strftime('%H:%M:%S') if times[:open2]
-        visit.close2 = Time.at(times[:close2]).utc.strftime('%H:%M:%S') if times[:close2]
-        visit.save!
-      end
+  def fake_missing_props
+    Visit.class_eval do
+      attribute :open1, ActiveRecord::Type::Time.new
+      attribute :close1, ActiveRecord::Type::Time.new
+      attribute :open2, ActiveRecord::Type::Time.new
+      attribute :close2, ActiveRecord::Type::Time.new
+      attribute :take_over, ActiveRecord::Type::Time.new
     end
   end
 end

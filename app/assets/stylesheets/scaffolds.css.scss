@@ -124,6 +124,13 @@ a.disabled {
   font-weight: normal;
 }
 
+.input-group-borderless {
+  background: none;
+  border-right: 0 !important;
+  padding-right: 4px;
+  margin-right: 0;
+}
+
 /* Colors */
 
 .color_small {
@@ -449,5 +456,5 @@ span.color[data-color=''][data-selected]:after {
 }
 
 input.form-control.number-of-days {
-  width: 70px;
+  width: 60px;
 }

@@ -4,80 +4,134 @@ class VisitTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   test 'should not save' do
-    o = Visit.new
-    assert_not o.save, 'Saved without required fields'
+    visit = Visit.new
+    assert_not visit.save, 'Saved without required fields'
   end
 
   test 'should update add tag' do
-    d = destinations(:destination_one)
+    destination = destinations(:destination_one)
     stops(:stop_three_one).destroy
     assert_difference('Stop.count') do
-      d.visits[0].tags << tags(:tag_two)
-      d.save!
-      d.customer.save!
+      destination.visits[0].tags << tags(:tag_two)
+      destination.save!
+      destination.customer.save!
     end
   end
 
   test 'should update remove tag' do
-    d = destinations(:destination_one)
+    destination = destinations(:destination_one)
     stops(:stop_three_one).destroy
     assert_difference('Stop.count', -1) do
-      d.visits[0].tags = []
-      d.save!
-      d.customer.save!
+      destination.visits[0].tags = []
+      destination.save!
+      destination.customer.save!
     end
   end
 
   test 'should update tag' do
-    d = destinations(:destination_one)
-    p = plannings(:planning_one)
+    destination = destinations(:destination_one)
+    planing = plannings(:planning_one)
     stops(:stop_three_one).destroy
-    p.tags = [tags(:tag_one), tags(:tag_two)]
+    planing.tags = [tags(:tag_one), tags(:tag_two)]
 
     routes(:route_one_one).stops.clear
-    d.visits[0].tags = []
+    destination.visits[0].tags = []
 
     assert_difference('Stop.count', 0) do
-      d.visits[0].tags = [tags(:tag_one)]
-      d.save!
-      d.customer.save!
+      destination.visits[0].tags = [tags(:tag_one)]
+      destination.save!
+      destination.customer.save!
     end
 
     assert_difference('Stop.count', 2) do
-      d.visits[0].tags = [tags(:tag_one), tags(:tag_two)]
-      d.save!
-      d.customer.save!
+      destination.visits[0].tags = [tags(:tag_one), tags(:tag_two)]
+      destination.save!
+      destination.customer.save!
     end
   end
 
   test 'should set same start and close' do
-    d = destinations(:destination_one)
-    v = d.visits[0]
-    v.open1 = v.close1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    d.save!
+    destination = destinations(:destination_one)
+    visit = destination.visits[0]
+    visit.open1 = visit.close1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    destination.save!
+  end
+
+  test 'should validate open and close time exceeding one day' do
+    destination = destinations(:destination_one)
+    visit = destination.visits[0]
+    visit.update open1: '08:00', close1: '12:00'
+    assert visit.valid?
+    assert_equal visit.close1, 12 * 3_600
+    visit.update open2: '18:00', close2: '32:00'
+    assert visit.valid?
+    assert_equal visit.close2, 32 * 3_600
+  end
+
+  test 'should validate open and close time from different type' do
+    destination = destinations(:destination_one)
+    visit = destination.visits[0]
+    visit.update open1: '08:00', close1: 32 * 3_600
+    assert visit.valid?
+    assert_equal visit.close1, 32 * 3_600
+    visit.update open1: '08:00', close1: '32:00'
+    assert visit.valid?
+    assert_equal visit.close1, 32 * 3_600
+    visit.update open1: '08:00', close1: 115200.0
+    assert visit.valid?
+    assert_equal visit.close1, 32 * 3_600
+    visit.update open1: Time.parse('08:00'), close1: '32:00'
+    assert visit.valid?
+    assert_equal visit.open1, 8 * 3_600
+    visit.update open1: DateTime.parse('2011-01-01 08:00'), close1: '32:00'
+    assert visit.valid?
+    assert_equal visit.open1, 8 * 3_600
+    visit.update open1: 8.hours, close1: '32:00'
+    assert visit.valid?
+    assert_equal visit.open1, 8 * 3_600
+
+    visit.update open1: '06:00', close1: '07:00'
+    visit.update open2: '08:00', close2: 32 * 3_600
+    assert visit.valid?
+    assert_equal visit.close2, 32 * 3_600
+    visit.update open2: '08:00', close2: '32:00'
+    assert visit.valid?
+    assert_equal visit.close2, 32 * 3_600
+    visit.update open2: '08:00', close2: 115200.0
+    assert visit.valid?
+    assert_equal visit.close2, 32 * 3_600
+    visit.update open2: Time.parse('08:00'), close2: '32:00'
+    assert visit.valid?
+    assert_equal visit.open2, 8 * 3_600
+    visit.update open2: DateTime.parse('2011-01-01 08:00'), close2: '32:00'
+    assert visit.valid?
+    assert_equal visit.open2, 8 * 3_600
+    visit.update open2: 8.hours, close2: '32:00'
+    assert visit.valid?
+    assert_equal visit.open2, 8 * 3_600
   end
 
   test 'should set invalid TW' do
-    d = destinations(:destination_one)
-    v = d.visits[0]
-    v.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    v.close1 = Time.new(2000, 01, 01, 00, 9, 00, '+00:00')
-    assert !d.save
+    destination = destinations(:destination_one)
+    visit = destination.visits[0]
+    visit.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    visit.close1 = Time.new(2000, 01, 01, 00, 9, 00, '+00:00')
+    assert !destination.save
 
-    v.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    v.open2 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
-    assert !d.save
+    visit.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    visit.open2 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
+    assert !destination.save
 
-    v.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    v.close1 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
-    v.open2 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    assert !d.save
+    visit.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    visit.close1 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
+    visit.open2 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    assert !destination.save
 
-    v.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
-    v.close1 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
-    v.open1 = Time.new(2000, 01, 01, 00, 12, 00, '+00:00')
-    v.close2 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
-    assert !d.save
+    visit.open1 = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    visit.close1 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
+    visit.open1 = Time.new(2000, 01, 01, 00, 12, 00, '+00:00')
+    visit.close2 = Time.new(2000, 01, 01, 00, 11, 00, '+00:00')
+    assert !destination.save
   end
 
   test 'should support localized number separator' do
@@ -116,10 +170,10 @@ class VisitTest < ActiveSupport::TestCase
   end
 
   test 'should return color and icon' do
-    o = visits :visit_one
-    t1 = tags :tag_one
+    visit = visits :visit_one
+    tag1 = tags :tag_one
 
-    assert_equal t1.color, o.color
-    assert_nil o.icon
+    assert_equal tag1.color, visit.color
+    assert_nil visit.icon
   end
 end

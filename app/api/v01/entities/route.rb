@@ -25,15 +25,11 @@ class V01::Entities::Route < Grape::Entity
   expose(:distance, documentation: { type: Float, desc: 'Total route\'s distance.' })
   expose(:emission, documentation: { type: Float })
   expose(:vehicle_usage_id, documentation: { type: Integer })
-  expose(:start, documentation: { types: [Integer, DateTime] }) { |m|
-    if m.start
-      (m.planning.date || Time.zone.today).beginning_of_day + m.start
-    end
+  expose(:start, documentation: { type: DateTime }) { |m|
+    (m.planning.date || Time.zone.today).beginning_of_day + m.start if m.start
   }
-  expose(:end, documentation: { types: [Integer, DateTime] }) { |m|
-    if m.end
-      (m.planning.date || Time.zone.today).beginning_of_day + m.end
-    end
+  expose(:end, documentation: { type: DateTime }) { |m|
+    (m.planning.date || Time.zone.today).beginning_of_day + m.end if m.end
   }
   expose(:hidden, documentation: { type: 'Boolean' })
   expose(:locked, documentation: { type: 'Boolean' })

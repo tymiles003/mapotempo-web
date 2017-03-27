@@ -30,13 +30,13 @@ class V01::RoutesTest < V01::RoutesBaseTest
     end
   end
 
-  test 'should return customer''s routes' do
+  test 'should return customer\'s routes' do
     get api(@route.planning.id)
     assert last_response.ok?, last_response.body
     assert_equal @route.planning.routes.size, JSON.parse(last_response.body).size
   end
 
-  test 'should return customer''s routes by ids' do
+  test 'should return customer\'s routes by ids' do
     get api(@route.planning.id, nil, 'ids' => @route.id)
     assert last_response.ok?, last_response.body
     assert_equal 1, JSON.parse(last_response.body).size
@@ -46,9 +46,10 @@ class V01::RoutesTest < V01::RoutesBaseTest
   test 'should return a route' do
     get api(@route.planning.id, @route.id)
     assert last_response.ok?, last_response.body
-    stops = JSON.parse(last_response.body)['stops']
-    assert_equal @route.stops.size, stops.size
-    assert_equal Time.parse('2015-10-10T00:00:30 -1000'), Time.parse(stops[0]['time'])
+    route = JSON.parse(last_response.body)
+    assert_equal @route.stops.size, route['stops'].size
+    assert_equal Time.parse('2015-10-10T08:00:00 -1000'), Time.parse(route['start'])
+    assert_equal Time.parse('2015-10-10T00:00:30 -1000'), Time.parse(route['stops'][0]['time'])
   end
 
   test 'should return a route with time exceeding one day' do
@@ -165,7 +166,7 @@ class V01::RoutesTest < V01::RoutesBaseTest
   test 'should return a route from vehicle from Ref XML' do
     get "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/ref:" + vehicles(:vehicle_one).ref + ".xml?api_key=testkey1"
     assert last_response.ok?, last_response.body
-    stops = Hash.from_xml(last_response.body)["hash"]["stops"]
+    stops = Hash.from_xml(last_response.body)['hash']['stops']
     assert_equal @route.stops.size, stops.size
     assert_equal Time.parse('2015-10-10T00:00:30 -1000'), stops[0]['time']
   end
@@ -173,7 +174,7 @@ class V01::RoutesTest < V01::RoutesBaseTest
   test 'should return a route from vehicle from ID XML' do
     get "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/" + vehicles(:vehicle_one).id.to_s + ".xml?api_key=testkey1"
     assert last_response.ok?, last_response.body
-    stops = Hash.from_xml(last_response.body)["hash"]["stops"]
+    stops = Hash.from_xml(last_response.body)['hash']['stops']
     assert_equal @route.stops.size, stops.size
     assert_equal Time.parse('2015-10-10T00:00:30 -1000'), stops[0]['time']
   end

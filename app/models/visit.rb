@@ -193,19 +193,19 @@ class Visit < ActiveRecord::Base
 
   def close1_after_open1
     if self.open1.present? && self.close1.present? && self.close1 < self.open1
-      errors.add(:close, I18n.t('activerecord.errors.models.visit.attributes.close1.after'))
+      errors.add(:close1, I18n.t('activerecord.errors.models.visit.attributes.close1.after'))
     end
   end
 
   def close2_after_open2
     if self.open2.present? && self.close2.present? && self.close2 < self.open2
-      errors.add(:close, I18n.t('activerecord.errors.models.visit.attributes.close2.after'))
+      errors.add(:close1, I18n.t('activerecord.errors.models.visit.attributes.close2.after'))
     end
   end
 
   def open2_after_close1
     if self.open2.present? && self.close1.present? && self.open2 < self.close1
-      errors.add(:close, I18n.t('activerecord.errors.models.visit.attributes.open2.after'))
+      errors.add(:open2, I18n.t('activerecord.errors.models.visit.attributes.open2.after'))
     end
   end
 

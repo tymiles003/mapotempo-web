@@ -50,6 +50,18 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
     assert_redirected_to vehicle_usage_sets_path
   end
 
+  test 'should create vehicle_usage_set with time exceeding one day' do
+    post :create, vehicle_usage_set: { name: 'toto', open: '20:00', close: '08:00', close_day: '1' }
+    assert_equal VehicleUsageSet.last.open, 20 * 3_600
+    assert_equal VehicleUsageSet.last.close, 32 * 3_600
+  end
+
+  test 'should create vehicle_usage_set with default close' do
+    post :create, vehicle_usage_set: { name: 'toto', open: '16:00', close_day: '1' }
+    assert VehicleUsageSet.last.open, 16 * 3_600
+    assert VehicleUsageSet.last.close, 18 * 3_600
+  end
+
   test 'should not create vehicle_usage_set' do
     assert_difference('VehicleUsageSet.count', 0) do
       post :create, vehicle_usage_set: { name: '' }
@@ -70,6 +82,20 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
   test 'should update vehicle_usage_set' do
     patch :update, id: @vehicle_usage_set, vehicle_usage_set: { name: 'toto', open: @vehicle_usage_set.open }
     assert_redirected_to vehicle_usage_sets_path
+  end
+
+  test 'should update vehicle_usage_set with time exceeding one day' do
+    patch :update, id: @vehicle_usage_set, vehicle_usage_set: { name: 'toto', open: '20:00', close: '08:00', close_day: '1' }
+    @vehicle_usage_set.reload
+    assert_equal @vehicle_usage_set.open, 20 * 3_600
+    assert_equal @vehicle_usage_set.close, 32 * 3_600
+
+    patch :update, id: @vehicle_usage_set, vehicle_usage_set: { name: 'toto', open: '08:00', open_day: '1', close: '12:00', close_day: '1', rest_start: '10:00', rest_start_day: '1', rest_stop: '11:00', rest_stop_day: '1', rest_duration: '01:00' }
+    @vehicle_usage_set.reload
+    assert_equal @vehicle_usage_set.open, 32 * 3_600
+    assert_equal @vehicle_usage_set.close, 36 * 3_600
+    assert_equal @vehicle_usage_set.rest_start, 34 * 3_600
+    assert_equal @vehicle_usage_set.rest_stop, 35 * 3_600
   end
 
   test 'should not update vehicle_usage_set' do

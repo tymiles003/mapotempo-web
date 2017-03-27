@@ -63,11 +63,18 @@ class V01::VisitsTest < ActiveSupport::TestCase
     ].each do |tags|
       assert_difference('Visit.count', 1) do
         assert_difference('Stop.count', 2) do
-          post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => [{deliverable_unit_id: 1, quantity: 3.5}]}).except('id').to_json, 'CONTENT_TYPE' => 'application/json'
+          post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => [{deliverable_unit_id: 1, quantity: 3.5}]}).except('id'), as: :json
           assert last_response.created?, last_response.body
           visit = JSON.parse last_response.body
           assert_equal 2, visit['tag_ids'].size
           assert_equal 3.5, visit['quantities'][0]['quantity']
+
+          assert_equal '10:00:00', visit['open']
+          assert_equal '11:00:00', visit['close']
+          assert_equal '10:00:00', visit['open1']
+          assert_equal '11:00:00', visit['close1']
+          assert_equal '5:33', visit['take_over']
+          assert_equal '5:00', visit['take_over_default']
         end
       end
     end
@@ -76,14 +83,14 @@ class V01::VisitsTest < ActiveSupport::TestCase
   test 'should create a visit with none tag' do
     ['', nil, []].each do |tags|
       assert_difference('Visit.count', 1) do
-        post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => nil}).except('id').to_json, 'CONTENT_TYPE' => 'application/json'
+        post api_destination(@destination.id), @visit.attributes.merge({tag_ids: tags, 'quantities' => nil}).except('id'), as: :json
         assert last_response.created?, last_response.body
       end
     end
   end
 
   test 'should not create a visit' do
-    post api_destination(@destination.id), @visit.attributes.merge(tag_ids: [tags(:tag_three).id], 'quantities' => nil).except('id').to_json, 'CONTENT_TYPE' => 'application/json'
+    post api_destination(@destination.id), @visit.attributes.merge(tag_ids: [tags(:tag_three).id], 'quantities' => nil).except('id'), as: :json
     assert_equal 400, last_response.status, last_response.body
   end
 

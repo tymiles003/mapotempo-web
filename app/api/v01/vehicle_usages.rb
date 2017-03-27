@@ -78,7 +78,25 @@ class V01::VehicleUsages < Grape::API
           success: V01::Entities::VehicleUsageWithVehicle
         params do
           requires :id, type: Integer
-          use :params_from_entity, entity: V01::Entities::VehicleUsage.documentation.except(:id, :vehicle_usage_set_id)
+
+          use :params_from_entity, entity: V01::Entities::VehicleUsage.documentation.except(
+              :id,
+              :vehicle_usage_set_id,
+              :open,
+              :close,
+              :service_time_start,
+              :service_time_end,
+              :rest_start,
+              :rest_stop,
+              :rest_duration)
+
+          optional :open, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :service_time_start, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :service_time_end, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :rest_start, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :rest_stop, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :rest_duration, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
         end
         put ':id' do
           vehicle_usage_set = current_customer.vehicle_usage_sets.where(id: params[:vehicle_usage_set_id]).first

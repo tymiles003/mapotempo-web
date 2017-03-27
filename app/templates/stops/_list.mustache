@@ -114,7 +114,7 @@
           {{/no_path}}
           <span class="info">
             {{#time}}
-              {{time}}{{#start_with_service}}&nbsp;-&nbsp;{{start_with_service}}{{/start_with_service}} -
+              {{time}}{{#time_day}}&nbsp;(+{{time_day}}){{/time_day}}{{#start_with_service}}&nbsp;-&nbsp;{{start_with_service}}{{#start_with_service_day}}&nbsp;(+{{start_with_service_day}}){{/start_with_service_day}}{{/start_with_service}} -
             {{/time}}
           </span>
           <span class="name" title="{{name}}">{{name}}</span>
@@ -165,7 +165,7 @@
           {{#no_path}}
             <i class="fa fa-road fa-fw" title="{{#i18n}}plannings.edit.error.no_path_help{{/i18n}}"></i>
           {{/no_path}}
-          <span class="info">{{#active}}{{time}} - {{/active}}</span>
+          <span class="info">{{#active}}{{time}}{{#time_day}}&nbsp;(+{{time_day}}){{/time_day}} - {{/active}}</span>
           <span class="name" title="{{name}}"><i class="fa fa-coffee fa-fw"></i> {{name}}</span>
         </div>
         <div class="btn-group pull-right stop-tools">
@@ -200,7 +200,7 @@
           {{/no_path}}
           <span class="info">
             {{#active}}{{#geocoded}}{{^no_path}}
-              <span>{{time}}</span> -
+              <span>{{time}}{{#time_day}}&nbsp;(+{{time_day}}){{/time_day}}</span> -
             {{/no_path}}{{/geocoded}}{{/active}}
           </span>
           <span class="name" title="{{name}}{{#index_visit}} #{{index_visit}}{{/index_visit}}{{#status}} - {{status}}{{/status}}{{#eta_formated}} - {{#i18n}}plannings.edit.popup.eta{{/i18n}} {{eta_formated}}{{/eta_formated}}">{{name}}</span>{{#index_visit}} #{{index_visit}}{{/index_visit}}
@@ -240,7 +240,7 @@
           {{/no_path}}
           <span class="info">
             {{#time}}
-              {{#end_without_service}}{{end_without_service}}&nbsp;-&nbsp;{{/end_without_service}}{{time}} -
+              {{#end_without_service}}{{end_without_service}}{{#end_without_service_day}}&nbsp;(+{{end_without_service_day}}){{/end_without_service_day}}&nbsp;-&nbsp;{{/end_without_service}}{{time}}{{#time_day}}&nbsp;(+{{time_day}}){{/time_day}} -
             {{/time}}
           </span>
           <span class="name" title="{{name}}">{{name}}</span>
@@ -261,7 +261,7 @@
           <li class="list-group-item">
             <div class="title">
               <span class="info">
-                {{end_without_service}}&nbsp;-&nbsp;{{end}}
+                {{end_without_service}}{{#end_without_service_day}}&nbsp;(+{{end_without_service_day}}){{/end_without_service_day}}&nbsp;-&nbsp;{{end}}
               </span>
             </div>
           </li>

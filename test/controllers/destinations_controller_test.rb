@@ -102,6 +102,52 @@ class DestinationsControllerTest < ActionController::TestCase
     assert_redirected_to edit_destination_path(assigns(:destination))
   end
 
+  test 'should create destination with visit exceeding one day' do
+    assert_difference('Destination.count', 1) do
+      assert_difference('Visit.count', 1) do
+        post :create, destination: {
+            city: 'Bordeaux',
+            name: 'new dest',
+            postalcode: '33000',
+            comment: 'comment',
+            phone_number: '+336123456789',
+            visits_attributes: {'1' => {
+                open1: '18:00',
+                close1: '06:00',
+                close1_day: '1',
+                open2: '10:00',
+                open2_day: '1',
+                close2: '14:00',
+                close2_day: '1'
+            }}
+        }
+      end
+    end
+    assert_redirected_to edit_destination_path(assigns(:destination))
+
+    assert_difference('Destination.count', 1) do
+      assert_difference('Visit.count', 1) do
+        post :create, destination: {
+            city: 'Bordeaux',
+            name: 'new dest',
+            postalcode: '33000',
+            comment: 'comment',
+            phone_number: '+336123456789',
+            visits_attributes: [{
+                                    open1: '18:00',
+                                    close1: '06:00',
+                                    close1_day: '1',
+                                    open2: '10:00',
+                                    open2_day: '1',
+                                    close2: '14:00',
+                                    close2_day: '1'
+                                }]
+        }
+      end
+    end
+    assert_redirected_to edit_destination_path(assigns(:destination))
+  end
+
   test 'should create destination and touch planning' do
     d = Planning.find_by(name: 'planning1')
     d.tags = []

@@ -39,7 +39,7 @@ class VehicleUsageSetsController < ApplicationController
 
   def create
     p = vehicle_usage_set_params
-    p[:close] = ChronicDuration.parse("#{params[:vehicle_usage_set][:open_close_days]} days and #{p[:close].gsub(':', 'h')}") unless params[:vehicle_usage_set][:open_close_days].to_s.empty?
+    time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop])
     @vehicle_usage_set = current_user.customer.vehicle_usage_sets.build(p)
 
     respond_to do |format|
@@ -54,7 +54,7 @@ class VehicleUsageSetsController < ApplicationController
   def update
     respond_to do |format|
       p = vehicle_usage_set_params
-      p[:close] = ChronicDuration.parse("#{params[:vehicle_usage_set][:open_close_days]} days and #{p[:close].gsub(':', 'h')}") unless params[:vehicle_usage_set][:open_close_days].to_s.empty?
+      time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop])
       @vehicle_usage_set.assign_attributes(p)
 
       if @vehicle_usage_set.save
@@ -97,6 +97,12 @@ class VehicleUsageSetsController < ApplicationController
   end
 
   private
+
+  def time_with_day_params(params, local_params, times)
+    times.each do |time|
+      local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage_set]["#{time.to_s}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}") unless params[:vehicle_usage_set]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[time].to_s.empty?
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_vehicle_usage_set

@@ -58,8 +58,7 @@ class DestinationsController < ApplicationController
 
   def create
     p = destination_params
-    p[:visits_attributes]['1'][:close1] = ChronicDuration.parse("#{params[:destination][:visits_attributes]['1'][:open1_close1_days]} days and #{p[:visits_attributes]['1'][:close1].gsub(':', 'h')}") unless params[:destination][:visits_attributes]['1'].nil? || params[:destination][:visits_attributes]['1'][:open1_close1_days].to_s.empty?
-    p[:visits_attributes]['1'][:close2] = ChronicDuration.parse("#{params[:destination][:visits_attributes]['1'][:open2_close2_days]} days and #{p[:visits_attributes]['1'][:close2].gsub(':', 'h')}") unless params[:destination][:visits_attributes]['1'].nil? || params[:destination][:visits_attributes]['1'][:open2_close2_days].to_s.empty?
+    time_with_day_params(params, p, [:open1, :close1, :open2, :close2])
     @destination = current_user.customer.destinations.build(p)
 
     respond_to do |format|
@@ -76,8 +75,7 @@ class DestinationsController < ApplicationController
     respond_to do |format|
       Destination.transaction do
         p = destination_params
-        p[:visits_attributes]['1'][:close1] = ChronicDuration.parse("#{params[:destination][:visits_attributes]['1'][:open1_close1_days]} days and #{p[:visits_attributes]['1'][:close1].gsub(':', 'h')}") unless params[:destination][:visits_attributes]['1'].nil? || params[:destination][:visits_attributes]['1'][:open1_close1_days].to_s.empty?
-        p[:visits_attributes]['1'][:close2] = ChronicDuration.parse("#{params[:destination][:visits_attributes]['1'][:open2_close2_days]} days and #{p[:visits_attributes]['1'][:close2].gsub(':', 'h')}") unless params[:destination][:visits_attributes]['1'].nil? || params[:destination][:visits_attributes]['1'][:open2_close2_days].to_s.empty?
+        time_with_day_params(params, p, [:open1, :close1, :open2, :close2])
         @destination.assign_attributes(p)
 
         if @destination.save && @destination.customer.save
@@ -157,6 +155,24 @@ class DestinationsController < ApplicationController
   end
 
   private
+
+  def time_with_day_params(params, local_params, times)
+    if local_params[:visits_attributes]
+      if local_params[:visits_attributes].is_a?(Hash)
+        local_params[:visits_attributes].each do |k, _|
+          times.each do |time|
+            local_params[:visits_attributes][k][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][k]["#{time.to_s}_day".to_sym]} days and #{local_params[:visits_attributes][k][time].tr(':', 'h')}") unless params[:destination][:visits_attributes][k]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[:visits_attributes][k][time].to_s.empty?
+          end
+        end
+      else
+        local_params[:visits_attributes].each_with_index do |k, i|
+          times.each do |time|
+            local_params[:visits_attributes][i][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][i]["#{time.to_s}_day".to_sym]} days and #{local_params[:visits_attributes][i][time].tr(':', 'h')}") unless params[:destination][:visits_attributes][i]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[:visits_attributes][i][time].to_s.empty?
+          end
+        end
+      end
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_destination

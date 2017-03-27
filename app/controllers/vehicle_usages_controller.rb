@@ -27,7 +27,7 @@ class VehicleUsagesController < ApplicationController
   def update
     respond_to do |format|
       p = vehicle_usage_params
-      p[:close] = ChronicDuration.parse("#{params[:vehicle_usage][:open_close_days]} days and #{p[:close].gsub(':', 'h')}") unless params[:vehicle_usage][:open_close_days].to_s.empty?
+      time_with_day_params(params, p, [:open, :close, :rest_start, :rest_stop])
       @vehicle_usage.assign_attributes(p)
 
       if @vehicle_usage.save
@@ -48,12 +48,18 @@ class VehicleUsagesController < ApplicationController
 
   private
 
+  def time_with_day_params(params, local_params, times)
+    times.each do |time|
+      local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time.to_s}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}") unless params[:vehicle_usage]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[time].to_s.empty?
+    end
+  end
+
   def set_vehicle_usage
     @vehicle_usage = VehicleUsage.for_customer(current_user.customer).find params[:id]
   end
 
   def vehicle_usage_params
-    if params[:vehicle_usage][:vehicle][:router]
+    if params[:vehicle_usage][:vehicle] && params[:vehicle_usage][:vehicle][:router]
       params[:vehicle_usage][:vehicle][:router_id], params[:vehicle_usage][:vehicle][:router_dimension] = params[:vehicle_usage][:vehicle][:router].split('_')
     end
 
@@ -102,6 +108,8 @@ class VehicleUsagesController < ApplicationController
     if parameters.key?(:vehicle)
       parameters[:vehicle_attributes] = parameters[:vehicle]
       parameters.except(:vehicle)
+    else
+      parameters
     end
   end
 end

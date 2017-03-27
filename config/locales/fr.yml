@@ -1567,9 +1567,9 @@ ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
       stores_help: "Dépôts de départ et d'arrivée"
       rest_duration_store: "Durée de repos / lieu"
       rest_start:
-        default: "%{n} (valeur par défaut)"
+        default: "%{n} (défaut)"
       rest_stop:
-        default: "%{n} (valeur par défaut)"
+        default: "%{n} (défaut)"
       rest_start_stop: "Plage de repos"
       rest_start_stop_help: "Sans tenir compte de la durée de pause"
       rest_duration:

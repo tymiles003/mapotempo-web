@@ -1567,9 +1567,9 @@ or copy/paste following url in your browser : %{l} </p>\n
       stores_help: "Start and end stores"
       rest_duration_store: "Rest duration / place"
       rest_start:
-        default: "%{n} (default value)"
+        default: "%{n} (default)"
       rest_stop:
-        default: "%{n} (default value)"
+        default: "%{n} (default)"
       rest_start_stop: "Rest time window"
       rest_start_stop_help: "Without taking into account rest duration"
       rest_duration:

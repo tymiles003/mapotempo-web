@@ -36,14 +36,14 @@ class V01::Entities::Visit < Grape::Entity
   expose(:quantities, using: V01::Entities::DeliverableUnitQuantity, documentation: { type: V01::Entities::DeliverableUnitQuantity, is_array: true, param_type: 'form' }) { |m|
     m.quantities ? m.quantities.to_a.collect{ |a| {deliverable_unit_id: a[0], quantity: a[1]} } : []
   }
-  expose(:open, documentation: { types: [Integer, DateTime], desc: 'Deprecated, use open1 instead.' }) { |m| m.open1_time }
-  expose(:close, documentation: { types: [Integer, DateTime], desc: 'Deprecated, use close2 instead.' }) { |m| m.close1_time }
-  expose(:open1, documentation: { types: [Integer, DateTime] }) { |m| m.open1_time }
-  expose(:close1, documentation: { types: [Integer, DateTime] }) { |m| m.close1_time }
-  expose(:open2, documentation: { types: [Integer, DateTime] }) { |m| m.open2_time }
-  expose(:close2, documentation: { types: [Integer, DateTime] }) { |m| m.close2_time }
+  expose(:open, documentation: { type: DateTime, desc: 'Deprecated, use open1 instead.' }) { |m| m.open1_time_hours }
+  expose(:close, documentation: { type: DateTime, desc: 'Deprecated, use close2 instead.' }) { |m| m.close1_time_hours }
+  expose(:open1, documentation: { type: DateTime }) { |m| m.open1_time_hours }
+  expose(:close1, documentation: { type: DateTime }) { |m| m.close1_time_hours }
+  expose(:open2, documentation: { type: DateTime }) { |m| m.open2_time_hours }
+  expose(:close2, documentation: { type: DateTime }) { |m| m.close2_time_hours }
   expose(:ref, documentation: { type: String })
-  expose(:take_over, documentation: { types: [Integer, DateTime], desc: 'Visit duration.' }) { |m| m.take_over_time }
-  expose(:take_over_default, documentation: { type: DateTime }) { |m| m.destination.customer && m.destination.customer.take_over_time }
+  expose(:take_over, documentation: { type: DateTime, desc: 'Visit duration.' }) { |m| m.take_over_time_hours }
+  expose(:take_over_default, documentation: { type: DateTime }) { |m| m.destination.customer && m.destination.customer.take_over_time_hours }
   expose(:tag_ids, documentation: { type: Integer, is_array: true })
 end

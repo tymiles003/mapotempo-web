@@ -1,43 +1,47 @@
 class ChangeTimeToIntegerToStops < ActiveRecord::Migration
   def up
-    previous_times = {}
-    Stop.all.order(:id).each do |stop|
-      previous_times[stop.id] = {
-          time: stop.time
-      }
-    end
+    fake_missing_props
 
-    remove_column :stops, :time
-    add_column :stops, :time, :integer
+    add_column :stops, :time_temp, :integer
 
+    Stop.connection.schema_cache.clear!
     Stop.reset_column_information
-    Stop.transaction do
-      previous_times.each do |stop_id, times|
-        stop = Stop.find(stop_id)
-        stop.time = times[:time].seconds_since_midnight.to_i if times[:time]
+
+    Stop.find_in_batches do |stops|
+      stops.each do |stop|
+        stop.time_temp = stop.time.seconds_since_midnight.to_i if stop.time
         stop.save!
       end
     end
+
+    remove_column :stops, :time
+
+    rename_column :stops, :time_temp, :time
   end
 
   def down
-    previous_times = {}
-    Stop.all.order(:id).each do |stop|
-      previous_times[stop.id] = {
-          time: stop.time
-      }
-    end
+    add_column :stops, :time_temp, :time
 
-    remove_column :stops, :time
-    add_column :stops, :time, :time
-
+    Stop.connection.schema_cache.clear!
     Stop.reset_column_information
-    Stop.transaction do
-      previous_times.each do |stop_id, times|
-        stop = Stop.find(stop_id)
-        stop.time = Time.at(times[:time]).utc.strftime('%H:%M:%S') if times[:time]
+
+    Stop.find_in_batches do |stops|
+      stops.each do |stop|
+        stop.time_temp = Time.at(stop.time).utc.strftime('%H:%M:%S') if stop.time
         stop.save!
       end
+    end
+
+    fake_missing_props
+
+    remove_column :stops, :time
+
+    rename_column :stops, :time_temp, :time
+  end
+
+  def fake_missing_props
+    Stop.class_eval do
+      attribute :time, ActiveRecord::Type::Time.new
     end
   end
 end

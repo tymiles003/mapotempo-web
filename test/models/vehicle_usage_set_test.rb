@@ -19,6 +19,35 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     vehicle_usage_set.save!
   end
 
+  test 'should validate open and close time exceeding one day' do
+    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
+    vehicle_usage_set.update open: '08:00', close: '32:00'
+    assert vehicle_usage_set.valid?
+    assert_equal vehicle_usage_set.close, 32 * 3_600
+  end
+
+  test 'should validate open and close time from different type' do
+    vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
+    vehicle_usage_set.update open: '08:00', close: 32 * 3_600
+    assert vehicle_usage_set.valid?
+    assert_equal vehicle_usage_set.close, 32 * 3_600
+    vehicle_usage_set.update open: '08:00', close: '32:00'
+    assert vehicle_usage_set.valid?
+    assert_equal vehicle_usage_set.close, 32 * 3_600
+    vehicle_usage_set.update open: '08:00', close: 115200.0
+    assert vehicle_usage_set.valid?
+    assert_equal vehicle_usage_set.close, 32 * 3_600
+    vehicle_usage_set.update open: Time.parse('08:00'), close: '32:00'
+    assert vehicle_usage_set.valid?
+    assert_equal vehicle_usage_set.open, 8 * 3_600
+    vehicle_usage_set.update open: DateTime.parse('2011-01-01 08:00'), close: '32:00'
+    assert vehicle_usage_set.valid?
+    assert_equal vehicle_usage_set.open, 8 * 3_600
+    vehicle_usage_set.update open: 8.hours, close: '32:00'
+    assert vehicle_usage_set.valid?
+    assert_equal vehicle_usage_set.open, 8 * 3_600
+  end
+
   test 'should update out_of_date for rest' do
     vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
     customer = vehicle_usage_set.customer

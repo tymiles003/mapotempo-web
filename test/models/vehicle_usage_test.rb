@@ -85,6 +85,35 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert_equal [:base], vehicle_usage.errors.keys
   end
 
+  test 'should validate open and close time exceeding one day' do
+    vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
+    vehicle_usage.update open: '08:00', close: '32:00'
+    assert vehicle_usage.valid?
+    assert_equal vehicle_usage.close, 32 * 3_600
+  end
+
+  test 'should validate open and close time from different type' do
+    vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
+    vehicle_usage.update open: '08:00', close: 32 * 3_600
+    assert vehicle_usage.valid?
+    assert_equal vehicle_usage.close, 32 * 3_600
+    vehicle_usage.update open: '08:00', close: '32:00'
+    assert vehicle_usage.valid?
+    assert_equal vehicle_usage.close, 32 * 3_600
+    vehicle_usage.update open: '08:00', close: 115200.0
+    assert vehicle_usage.valid?
+    assert_equal vehicle_usage.close, 32 * 3_600
+    vehicle_usage.update open: Time.parse('08:00'), close: '32:00'
+    assert vehicle_usage.valid?
+    assert_equal vehicle_usage.open, 8 * 3_600
+    vehicle_usage.update open: DateTime.parse('2011-01-01 08:00'), close: '32:00'
+    assert vehicle_usage.valid?
+    assert_equal vehicle_usage.open, 8 * 3_600
+    vehicle_usage.update open: 8.hours, close: '32:00'
+    assert vehicle_usage.valid?
+    assert_equal vehicle_usage.open, 8 * 3_600
+  end
+
   test 'should delete vehicle usage and place routes in out of route section' do
     planning = plannings(:planning_one)
     out_of_route = planning.routes.detect{|route| !route.vehicle_usage }

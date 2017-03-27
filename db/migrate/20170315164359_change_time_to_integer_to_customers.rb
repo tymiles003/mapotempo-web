@@ -1,43 +1,47 @@
 class ChangeTimeToIntegerToCustomers < ActiveRecord::Migration
   def up
-    previous_times = {}
-    Customer.all.order(:id).each do |customer|
-      previous_times[customer.id] = {
-          take_over: customer.take_over
-      }
-    end
+    fake_missing_props
 
-    remove_column :customers, :take_over
-    add_column :customers, :take_over, :integer
+    add_column :customers, :take_over_temp, :integer
 
+    Customer.connection.schema_cache.clear!
     Customer.reset_column_information
-    Customer.transaction do
-      previous_times.each do |customer_id, times|
-        customer = Customer.find(customer_id)
-        customer.take_over = times[:take_over].seconds_since_midnight.to_i if times[:take_over]
+
+    Customer.find_in_batches do |customers|
+      customers.each do |customer|
+        customer.take_over_temp = customer.take_over.seconds_since_midnight.to_i if customer.take_over
         customer.save!
       end
     end
+
+    remove_column :customers, :take_over
+
+    rename_column :customers, :take_over_temp, :time
   end
 
   def down
-    previous_times = {}
-    Customer.all.order(:id).each do |customer|
-      previous_times[customer.id] = {
-          take_over: customer.take_over
-      }
-    end
+    add_column :customers, :take_over_temp, :time
 
-    remove_column :customers, :take_over
-    add_column :customers, :take_over, :time
+    Stop.connection.schema_cache.clear!
+    Stop.reset_column_information
 
-    Customer.reset_column_information
-    Customer.transaction do
-      previous_times.each do |customer_id, times|
-        customer = Customer.find(customer_id)
-        customer.take_over = Time.at(times[:take_over]).utc.strftime('%H:%M:%S') if times[:take_over]
+    Customer.find_in_batches do |customers|
+      customers.each do |customer|
+        customer.take_over_temp = Time.at(customer.take_over).utc.strftime('%H:%M:%S') if customer.take_over
         customer.save!
       end
+    end
+
+    fake_missing_props
+
+    remove_column :customers, :take_over
+
+    rename_column :customers, :take_over_temp, :time
+  end
+
+  def fake_missing_props
+    Customer.class_eval do
+      attribute :take_over, ActiveRecord::Type::Time.new
     end
   end
 end

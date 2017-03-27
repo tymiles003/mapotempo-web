@@ -49,11 +49,14 @@ number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
 json.store_start do
   json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
-  (json.time_time) if route.start
+  (json.time route.start_time) if route.start
+  (json.time_day number_of_days(route.start)) if route.start
   (json.geocoded true) if route.vehicle_usage.default_store_start.position?
   (json.error true) unless route.vehicle_usage.default_store_start.position?
 end if route.vehicle_usage && route.vehicle_usage.default_store_start
-(json.start_with_service display_start_time(route)) if display_start_time(route)
+(json.start_with_service Time.at(display_start_time(route)).utc.strftime('%H:%M')) if display_start_time(route)
+(json.start_with_service_day number_of_days(display_start_time(route))) if display_start_time(route)
+
 previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
 first_active_free = nil
 route.stops.select{ |s| s.is_a?(StopVisit) }.sort_by{ |s| s.index || Float::INFINITY }.reverse_each{ |stop|
@@ -83,6 +86,7 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
   (json.geocoded true) if stop.position?
   (json.no_path true) if stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
   (json.time stop.time_time) if stop.time
+  (json.time_day number_of_days(stop.time)) if stop.time
   (json.active true) if stop.active
   (json.number number += 1) if route.vehicle_usage && stop.active
   (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
@@ -141,6 +145,7 @@ end
 json.store_stop do
   json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
   (json.time route.end_time) if route.end
+  (json.time_day number_of_days(route.end)) if route.end
   (json.geocoded true) if route.vehicle_usage.default_store_stop.position?
   (json.no_path true) if !route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace
   (json.error true) if !route.vehicle_usage.default_store_stop.position? || (!route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace)
@@ -152,6 +157,7 @@ json.store_stop do
   json.stop_drive_time route.stop_drive_time
 end if route.vehicle_usage && route.vehicle_usage.default_store_stop
 (json.end_without_service Time.at(display_end_time(route)).utc.strftime('%H:%M')) if display_end_time(route)
+(json.end_without_service_day number_of_days(display_end_time(route))) if display_end_time(route)
 (json.route_no_geolocalization no_geolocalization) if no_geolocalization
 (json.route_out_of_window out_of_window) if out_of_window
 (json.route_out_of_capacity out_of_capacity) if out_of_capacity

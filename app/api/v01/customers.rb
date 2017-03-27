@@ -78,7 +78,8 @@ class V01::Customers < Grape::API
         :job_destination_geocoding_id,
         :job_store_geocoding_id,
         :job_optimizer_id,
-        :router_options
+        :router_options,
+        :take_over
       )
 
       optional :router_options, type: Hash do
@@ -92,6 +93,8 @@ class V01::Customers < Grape::API
         optional :length, type: Float
         optional :hazardous_goods, type: String
       end
+
+      optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
     end
     put ':id' do
       if @current_user.admin?
@@ -119,7 +122,8 @@ class V01::Customers < Grape::API
         :job_destination_geocoding_id,
         :job_store_geocoding_id,
         :job_optimizer_id,
-        :router_options
+        :router_options,
+        :take_over
       ).deep_merge(
         name: { required: true },
         default_country: { required: true },
@@ -138,6 +142,8 @@ class V01::Customers < Grape::API
         optional :length, type: Float
         optional :hazardous_goods, type: String
       end
+
+      optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
     end
     post do
       if @current_user.admin?

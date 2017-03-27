@@ -38,6 +38,27 @@ class VehicleUsagesControllerTest < ActionController::TestCase
     assert @vehicle_usage.vehicle.router_options['hazardous_goods'] = 'gas'
   end
 
+  test 'should update vehicle_usage with default close' do
+    patch :update, id: @vehicle_usage, vehicle_usage: { open: '07:00', close_day: '1' }
+    assert_equal @vehicle_usage.reload.open, 7 * 3_600
+    assert_equal @vehicle_usage.reload.close, 15 * 3_600
+  end
+
+  test 'should update vehicle_usage with time exceeding one day' do
+    patch :update, id: @vehicle_usage, vehicle_usage: { open: '20:00', close: '08:00', close_day: '1', rest_start: '22:00', rest_stop: '23:00' }
+    assert_redirected_to edit_vehicle_usage_path(@vehicle_usage)
+    @vehicle_usage.reload
+    assert_equal @vehicle_usage.close, 32 * 3_600
+
+    patch :update, id: @vehicle_usage, vehicle_usage: { open: '08:00', open_day: '1', close: '12:00', close_day: '1', rest_start: '10:00', rest_start_day: '1', rest_stop: '11:00', rest_stop_day: '1', rest_duration: '01:00' }
+    assert_redirected_to edit_vehicle_usage_path(@vehicle_usage)
+    @vehicle_usage.reload
+    assert_equal @vehicle_usage.open, 32 * 3_600
+    assert_equal @vehicle_usage.close, 36 * 3_600
+    assert_equal @vehicle_usage.rest_start, 34 * 3_600
+    assert_equal @vehicle_usage.rest_stop, 35 * 3_600
+  end
+
   test 'should not update vehicle_usage' do
     patch :update, id: @vehicle_usage, vehicle_usage: { vehicle: {name: ''} }
 
@@ -47,7 +68,7 @@ class VehicleUsagesControllerTest < ActionController::TestCase
     assert_valid response
   end
 
-  test 'disable vehicule usage' do
+  test 'disable vehicle usage' do
     patch :toggle, id: @vehicle_usage.id
     assert !@vehicle_usage.reload.active
     assert_redirected_to vehicle_usage_sets_path
