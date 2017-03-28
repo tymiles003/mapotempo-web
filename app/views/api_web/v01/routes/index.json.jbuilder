@@ -88,6 +88,7 @@ json.routes @routes do |route|
       else
         json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |units|
           json.quantity units[:quantity] if units[:quantity]
+          json.unit_icon units[:unit_icon]
         end
       end
     elsif stop.is_a?(StopRest)
