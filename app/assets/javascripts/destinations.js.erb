@@ -325,7 +325,7 @@ var destinations_form = function(params, api) {
     }
   });
 
-  wire($("form"));
+  wire($("form[data-destination_id]"));
 
   var addMarker = function(id, lat, lng) {
     var marker = L.marker(new L.LatLng(lat, lng), {
@@ -400,7 +400,7 @@ var destinations_form = function(params, api) {
       width: '100%'
     });
   }
-  initVisits($('form'));
+  initVisits($('form[data-destination_id]'));
 
   if (window.location.hash) {
     $('#visits .collapse.in').each(function(index) {
@@ -435,7 +435,7 @@ var destinations_import = function(params, api) {
       $('#import_csv_delete_plannings').prop('checked', true);
     }
   });
-  $("form").submit(function() {
+  $('form#new_import_csv, form#new_import_tomtom').submit(function() {
     var confirmChecks = [];
     $('input[id$=replace_1]', $(this)).is(':checked') && confirmChecks.push('replace');
     $('input[name$=\\[delete_plannings\\]]', $(this)).is(':checked') && confirmChecks.push('delete_plannings');

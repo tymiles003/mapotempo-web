@@ -509,7 +509,7 @@ var zonings_edit = function(params) {
     displayZoning(data);
   };
 
-  $('form').submit(function(e) {
+  $('form[id^=edit_zoning]').submit(function(e) {
     var empty = false;
     $.each($('select').serializeArray(), function(i, e) {
       if (!e.value) {
