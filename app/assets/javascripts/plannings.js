@@ -1103,6 +1103,7 @@ var plannings_edit = function(params) {
             map.setView(markers[stop_id].getLatLng(), currentZoom, {
               reset: true
             });
+            map.panTo(markers[stop_id].getLatLng()); // Prevent a bug from leaflet on spiderfy at a certain distance
             layers_cluster[route_id].zoomToShowLayer(markers[stop_id], function() {
               markers[stop_id].openPopup();
             });
