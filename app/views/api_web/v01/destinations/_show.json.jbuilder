@@ -17,9 +17,11 @@ json.visits destination.visits do |visit|
   json.open_close1 visit.open1 || visit.close1
   json.open1 visit.open1_time
   json.close1 visit.close1_time
+  json.open1_close1_days number_of_days(visit.close1)
   json.open_close2 visit.open2 || visit.close2
   json.open2 visit.open2_time
   json.close2 visit.close2_time
+  json.open2_close2_days number_of_days(visit.close2)
   tags = visit.tags | destination.tags
   unless tags.empty?
     json.tags_present do

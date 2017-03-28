@@ -14,7 +14,7 @@ json.routes @routes do |route|
   json.size route.stops.size
   json.extract! route, :color, :size_active
   json.ref route.ref if @planning.customer.enable_references
-  if !@planning.customer.enable_orders
+  unless @planning.customer.enable_orders
     json.quantities route.quantities
   end
   if route.vehicle_usage
@@ -26,6 +26,7 @@ json.routes @routes do |route|
   json.store_start do
     json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.start_time) if route.start
+    (json.time_day number_of_days(route.start)) if route.start
   end if route.vehicle_usage && route.vehicle_usage.default_store_start
   previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
   first_active_free = nil
@@ -49,13 +50,16 @@ json.routes @routes do |route|
     json.open_close1 stop.open1 || stop.close1
     json.open1 stop.open1_time
     json.close1 stop.close1_time
+    json.open1_close1_days number_of_days(stop.close1)
     json.open_close2 stop.open2 || stop.close2
     json.open2 stop.open2_time
     json.close2 stop.close2_time
+    json.open2_close2_days number_of_days(stop.close2)
     (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
     (json.geocoded true) if stop.position?
     (json.no_path true) if stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
     (json.time stop.time_time) if stop.time
+    (json.time_day number_of_days(stop.time)) if stop.time
     (json.active true) if stop.active
     (json.number number += 1) if route.vehicle_usage && stop.active
     json.distance (stop.distance || 0) / 1000
@@ -73,7 +77,7 @@ json.routes @routes do |route|
         (json.icon visit.icon) if visit.icon
       end
       tags = visit.destination.tags | visit.tags
-      if !tags.empty?
+      unless tags.empty?
         json.tags_present do
           json.tags do
             json.array! tags, :label
@@ -102,6 +106,7 @@ json.routes @routes do |route|
   json.store_stop do
     json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng
     (json.time route.end_time) if route.end
+    (json.time_day number_of_days(route.end)) if route.end
     json.stop_trace route.stop_trace
     json.stop_distance (route.stop_distance || 0) / 1000
     json.stop_drive_time route.stop_drive_time
