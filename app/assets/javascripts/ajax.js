@@ -134,7 +134,6 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
         });
       } else if (progress[i] === 0 || progress[i] === '0') {
         isProgressing = true;
-        $(event).parent().parent().hide();
         $(event).parent().removeClass("active");
         $(event).css({
           transition: 'linear 0s',
