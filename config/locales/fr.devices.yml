@@ -1,0 +1,75 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+fr:
+  activerecord:
+    attributes:
+      customer:
+        devices:
+          tomtom:
+            account: "Compte"
+            user: "Utilisateur"
+            password: "Mot de passe"
+            tomtom_id: "TomTom"
+          masternaut:
+            username: "Nom d'utilisateur"
+            password: "Mot de passe"
+            masternaut_ref: "Ref. véhicule Masternaut"
+          orange:
+            username: "Utilisateur"
+            password: "Mot de passe"
+            orange_id: "Orange"
+          alyacom:
+            association: "Identifiant"
+            api_key: "Clé d'API"
+          teksat:
+            customer_id: "Client ID"
+            username: "Nom d'utilisateur"
+            password: "Mot de passe"
+            url: "URL"
+            teksat_id: "Teksat"
+          trimble:
+            customer: "Compte client"
+            username: "Utilisateur"
+            password: "Mot de passe"
+          locster:
+            username: "Utilisateur"
+            password: "Mot de passe"
+          suivi_de_flotte:
+            username: "Utilisateur"
+            password: "Mot de passe"
+  customers:
+    form:
+      devices:
+        sync:
+          complete: "Synchronisation complète"
+          confirm: "Synchroniser les véhicules ?"
+          action: "Synchroniser les véhicules"
+        alyacom:
+          help: "Permet d'envoyer les plannings vers l'application AlyaCom."
+        tomtom:
+          help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
+        teksat:
+          help: "Permet d'envoyer les plannings vers les GPS Teksat"
+        orange:
+          help: "Permet d'envoyer les plannings vers les GPS Orange Fleet Performance"
+        masternaut:
+          help: "Permet d'envoyer les plannings vers les GPS Masternaut."

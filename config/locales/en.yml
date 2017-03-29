@@ -131,32 +131,6 @@ en:
         take_over: Visit duration
         name: Name
         destinations: Destinations
-        devices:
-          tomtom:
-            account: Aaccount name
-            user: User
-            password: Password
-            tomtom_id: TomTom
-          masternaut:
-            username: Username
-            password: Password
-            masternaut_ref: Masternaut vehicle Ref.
-          orange:
-            username: Username
-            password: Password
-            orange_id: Orange
-          alyacom:
-            association: Identifier
-            api_key: API key
-          teksat:
-            customer_id: Customer ID
-            username: Username
-            password: Password
-            url: URL
-            teksat_id: Teksat
-          trimble:
-          locster:
-          suivi_de_flotte:
         router: Routing Engine
         router_id: Routing Engine
         router_dimension: Router objective

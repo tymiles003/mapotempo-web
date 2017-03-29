@@ -131,32 +131,6 @@ fr:
         take_over: Durée de visite des clients
         name: Nom
         destinations: Clients
-        devices:
-          tomtom:
-            account: Compte
-            user: Utilisateur
-            password: Mot de passe
-            tomtom_id: TomTom
-          masternaut:
-            username: Nom d'utilisateur
-            password: Mot de passe
-            masternaut_ref: Ref. véhicule Masternaut
-          orange:
-            username: Utilisateur
-            password: Mot de passe
-            orange_id: Orange
-          alyacom:
-            association: Identifiant
-            api_key: Clé d'API
-          teksat:
-            customer_id: Client ID
-            username: Nom d'utilisateur
-            password: Mot de passe
-            url: URL
-            teksat_id: Teksat
-          trimble:
-          locster:
-          suivi_de_flotte:
         router: Calculateur d'itinéraire
         router_id: Calculateur d'itinéraire
         router_dimension: Objectif du calculateur
