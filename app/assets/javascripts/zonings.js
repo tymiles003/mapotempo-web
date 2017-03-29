@@ -151,7 +151,8 @@ var zonings_edit = function(params) {
           n += 1;
           if (markerLayer.data) {
             $.each(markerLayer.data.quantities, function(i, q) {
-              quantities[q.deliverable_unit_id] = quantities[q.deliverable_unit_id] ? (quantities[q.deliverable_unit_id] + q.quantity) : q.quantity;
+              var newQuantity = quantities[q.deliverable_unit_id] ? (parseFloat(quantities[q.deliverable_unit_id]) + parseFloat((q.quantity))) : parseFloat(q.quantity);
+              quantities[q.deliverable_unit_id] = newQuantity.toFixed(2);
             });
           }
         }
