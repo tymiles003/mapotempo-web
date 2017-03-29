@@ -180,7 +180,7 @@ class Route < ActiveRecord::Base
 
             if stop.is_a?(StopVisit)
               stop.route.planning.customer.deliverable_units.each{ |du|
-                quantities_[du.id] = (quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)
+                quantities_[du.id] = ((quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)).round(3)
               }
               stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
                 vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]
