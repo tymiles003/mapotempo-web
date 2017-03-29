@@ -1129,13 +1129,11 @@ var plannings_edit = function(params) {
         if (stop_id in markers) {
           var route_id = $(this).closest("[data-route_id]").attr("data-route_id");
           if (!map.getBounds().contains(markers[stop_id].getLatLng())) {
-            map.setView(markers[stop_id].getLatLng(), currentZoom, {
-              reset: true
-            });
+            map.setView(markers[stop_id].getLatLng(), currentZoom, { reset: true });
+            var cluster = layers_cluster[route_id].getVisibleParent(markers[stop_id]); // Get the cluster parrent of a specific maker inside the layer
+            if (cluster) cluster.spiderfy(); // Spiderify manually the cluster
             map.panTo(markers[stop_id].getLatLng()); // Prevent a bug from leaflet on spiderfy at a certain distance
-            layers_cluster[route_id].zoomToShowLayer(markers[stop_id], function() {
-              markers[stop_id].openPopup();
-            });
+            markers[stop_id].openPopup();
           } else {
             markers[stop_id].openPopup();
           }
