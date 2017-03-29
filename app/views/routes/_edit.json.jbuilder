@@ -78,10 +78,14 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
   json.ref stop.ref if @planning.customer.enable_references
   json.open_close1 stop.open1 || stop.close1
   (json.open1 stop.open1_time) if stop.open1
+  (json.open1_day number_of_days(stop.open1)) if stop.open1
   (json.close1 stop.close1_time) if stop.close1
+  (json.close1_day number_of_days(stop.close1)) if stop.close1
   json.open_close2 stop.open2 || stop.close2
   (json.open2 stop.open2_time) if stop.open2
+  (json.open2_day number_of_days(stop.open2)) if stop.open2
   (json.close2 stop.close2_time) if stop.close2
+  (json.close2_day number_of_days(stop.close2)) if stop.close2
   (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
   (json.geocoded true) if stop.position?
   (json.no_path true) if stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
@@ -139,7 +143,7 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
       (json.error true) if route.vehicle_usage.default_store_rest && !route.vehicle_usage.default_store_rest.position?
     end
   end
-  json.duration stop.duration_time_in_seconds if stop.duration > 0
+  json.duration stop.duration_time_with_seconds if stop.duration > 0
   previous_with_pos = stop if stop.position?
 end
 json.store_stop do

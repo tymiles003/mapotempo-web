@@ -94,7 +94,7 @@ class V01::Customers < Grape::API
         optional :hazardous_goods, type: String
       end
 
-      optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+      optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
     end
     put ':id' do
       if @current_user.admin?
@@ -143,7 +143,7 @@ class V01::Customers < Grape::API
         optional :hazardous_goods, type: String
       end
 
-      optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+      optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
     end
     post do
       if @current_user.admin?

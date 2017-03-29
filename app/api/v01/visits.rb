@@ -99,11 +99,11 @@ class V01::Visits < Grape::API
 
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
 
-          optional :open1, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
-          optional :close1, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
-          optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
-          optional :open2, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
-          optional :close2, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :open1, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close1, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :open2, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close2, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
         end
         post do
           destination_id = ParseIdsRefs.read(params[:destination_id])
@@ -132,11 +132,11 @@ class V01::Visits < Grape::API
 
           optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
 
-          optional :open1, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
-          optional :close1, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
-          optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
-          optional :open2, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
-          optional :close2, type: Integer, documentation: { type: 'string', desc: 'Schedule time' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :open1, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close1, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :take_over, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :open2, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
+          optional :close2, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }
         end
         put ':id' do
           destination_id = ParseIdsRefs.read(params[:destination_id])

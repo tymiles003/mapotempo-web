@@ -120,7 +120,7 @@
               </div>
             <% end %>
             <% if stop.visit.take_over %>
-              <span class="duration">(<%= stop.visit.take_over_time_in_seconds %>)</span>
+              <span class="duration">(<%= stop.visit.take_over_time_with_seconds %>)</span>
             <% end %>
             <% if route.planning.customer.enable_orders %>
               <% if stop.order && stop.order.products.any? %>
@@ -140,7 +140,7 @@
             <% end %>
           <% end %>
           <% if stop.is_a?(StopRest) %>
-            <span class="duration">(<%= route.vehicle_usage.default_rest_duration_time_in_seconds %>)</span>
+            <span class="duration">(<%= route.vehicle_usage.default_rest_duration_time_with_seconds %>)</span>
           <% end %>
         </div>
 

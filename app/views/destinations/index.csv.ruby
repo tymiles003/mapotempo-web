@@ -49,11 +49,11 @@ CSV.generate { |csv|
         csv << destination_columns + [
           '',
           visit.ref,
-          visit.take_over_time_in_seconds,
-          visit.open1_time,
-          visit.close1_time,
-          visit.open2_time,
-          visit.close2_time,
+          visit.take_over_absolute_time_with_seconds,
+          visit.open1_absolute_time,
+          visit.close1_absolute_time,
+          visit.open2_absolute_time,
+          visit.close2_absolute_time,
           visit.tags.collect(&:label).join(',')
         ] + (@customer.enable_orders ?
           [] :

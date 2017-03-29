@@ -18,10 +18,10 @@
 class StopVisit < Stop
   delegate :lat,
            :lng,
-           :open1, :open1_time,
-           :close1, :close1_time,
-           :open2, :open2_time,
-           :close2, :close2_time,
+           :open1, :open1_time, :open1_absolute_time,
+           :close1, :close1_time, :close1_absolute_time,
+           :open2, :open2_time, :open2_absolute_time,
+           :close2, :close2_time, :close2_absolute_time,
            :name,
            :street,
            :postalcode,
@@ -61,8 +61,8 @@ class StopVisit < Stop
     visit.take_over || visit.destination.customer.take_over || 0
   end
 
-  def duration_time_in_seconds
-    visit.take_over_time_in_seconds || visit.destination.customer.take_over_time_in_seconds || 0
+  def duration_time_with_seconds
+    visit.take_over_time_with_seconds || visit.destination.customer.take_over_time_with_seconds || 0
   end
 
   def base_id

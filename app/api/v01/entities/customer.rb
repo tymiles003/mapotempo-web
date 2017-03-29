@@ -42,7 +42,7 @@ class V01::Entities::Customer < Grape::Entity
   expose(:router_options, using: V01::Entities::RouterOptions, documentation: { type: V01::Entities::RouterOptions })
 
   expose(:speed_multiplicator, documentation: { type: Float })
-  expose(:take_over, documentation: { type: DateTime, desc: 'Visit duration' }) { |m| m.take_over_time_in_seconds }
+  expose(:take_over, documentation: { type: DateTime, desc: 'Visit duration' }) { |m| m.take_over_time_with_seconds }
   expose(:print_planning_annotating, documentation: { type: 'Boolean' })
   expose(:print_header, documentation: { type: String })
 

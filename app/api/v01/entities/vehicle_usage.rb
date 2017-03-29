@@ -22,15 +22,15 @@ class V01::Entities::VehicleUsage < Grape::Entity
 
   expose(:id, documentation: { type: Integer })
   expose(:vehicle_usage_set_id, documentation: { type: Integer })
-  expose(:open, documentation: { type: DateTime }) { |m| m.open_time_hours }
-  expose(:close, documentation: { type: DateTime }) { |m| m.close_time_hours }
+  expose(:open, documentation: { type: DateTime }) { |m| m.open_absolute_time }
+  expose(:close, documentation: { type: DateTime }) { |m| m.close_absolute_time }
   expose(:store_start_id, documentation: { type: Integer })
   expose(:store_stop_id, documentation: { type: Integer })
-  expose(:service_time_start, documentation: { type: DateTime }) { |m| m.service_time_start_time_hours }
-  expose(:service_time_end, documentation: { type: DateTime }) { |m| m.service_time_end_time_hours }
-  expose(:rest_start, documentation: { type: DateTime }) { |m| m.rest_start_time_hours }
-  expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop_time_hours }
-  expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration_time_hours }
+  expose(:service_time_start, documentation: { type: DateTime }) { |m| m.service_time_start_absolute_time_with_seconds }
+  expose(:service_time_end, documentation: { type: DateTime }) { |m| m.service_time_end_absolute_time_with_seconds }
+  expose(:rest_start, documentation: { type: DateTime }) { |m| m.rest_start_absolute_time }
+  expose(:rest_stop, documentation: { type: DateTime }) { |m| m.rest_stop_absolute_time }
+  expose(:rest_duration, documentation: { type: DateTime }) { |m| m.rest_duration_absolute_time_with_seconds }
   expose(:store_rest_id, documentation: { type: Integer })
   expose(:active, documentation: { type: 'Boolean' })
 end

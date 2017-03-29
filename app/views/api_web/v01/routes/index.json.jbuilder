@@ -100,7 +100,7 @@ json.routes @routes do |route|
         (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
       end
     end
-    json.duration stop.duration_time_in_seconds if stop.duration > 0
+    json.duration stop.duration_time_with_seconds if stop.duration > 0
     previous_with_pos = stop if stop.position?
   end
   json.store_stop do

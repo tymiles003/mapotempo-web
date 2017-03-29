@@ -33,7 +33,7 @@ class V01::VehicleUsagesTest < ActiveSupport::TestCase
   test 'should return a vehicle_usage' do
     get api(@vehicle_usage.vehicle_usage_set.id, @vehicle_usage.id)
     assert last_response.ok?, last_response.body
-    assert_equal @vehicle_usage.rest_duration_time_hours, JSON.parse(last_response.body)['rest_duration']
+    assert_equal @vehicle_usage.rest_duration_absolute_time, JSON.parse(last_response.body)['rest_duration']
   end
 
   test 'should update a vehicle_usage' do
@@ -43,7 +43,7 @@ class V01::VehicleUsagesTest < ActiveSupport::TestCase
 
     get api(@vehicle_usage.vehicle_usage_set.id, @vehicle_usage.id)
     assert last_response.ok?, last_response.body
-    assert_equal @vehicle_usage.rest_duration_time_hours, JSON.parse(last_response.body)['rest_duration']
+    assert_equal @vehicle_usage.rest_duration_absolute_time, JSON.parse(last_response.body)['rest_duration']
   end
 
   test 'should update a vehicle_usage with time exceeding one day' do
@@ -55,9 +55,9 @@ class V01::VehicleUsagesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
 
     @vehicle_usage.reload
-    assert_equal @vehicle_usage.open_time_hours, JSON.parse(last_response.body)['open']
-    assert_equal @vehicle_usage.rest_start_time_hours, JSON.parse(last_response.body)['rest_start']
-    assert_equal @vehicle_usage.rest_stop_time_hours, JSON.parse(last_response.body)['rest_stop']
-    assert_equal @vehicle_usage.close_time_hours, JSON.parse(last_response.body)['close']
+    assert_equal @vehicle_usage.open_absolute_time, JSON.parse(last_response.body)['open']
+    assert_equal @vehicle_usage.rest_start_absolute_time, JSON.parse(last_response.body)['rest_start']
+    assert_equal @vehicle_usage.rest_stop_absolute_time, JSON.parse(last_response.body)['rest_stop']
+    assert_equal @vehicle_usage.close_absolute_time, JSON.parse(last_response.body)['close']
   end
 end

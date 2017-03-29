@@ -36,8 +36,8 @@
       </div>
       <% end %>
       <%= f.text_field :take_over, {
-        value: visit.take_over_time_in_seconds,
-        placeholder: visit.destination.customer.take_over ? visit.destination.customer.take_over_time_in_seconds + ' (' + t('.take_over_default') + ')' : t('all.unit.hour_minute_second'),
+        value: visit.take_over_time_with_seconds,
+        placeholder: visit.destination.customer.take_over ? visit.destination.customer.take_over_time_with_seconds + ' (' + t('.take_over_default') + ')' : t('all.unit.hour_minute_second'),
         input_group: content_tag('i', '', class: 'fa fa-clock-o fa-fw')} do %>
         <p class="help-block"><%= t '.take_over_help' %></p>
       <% end %>
@@ -47,12 +47,13 @@
         <label class="col-md-2 control-label"><%= t '.open_close1' %></label>
         <div class="col-md-6">
           <div class="input-group">
-            <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
+            <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
             <%= text_field "destination[visits_attributes][#{i}]", :open1, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.open1_time %>
             <span class="input-group-addon input-group-borderless"><%= t 'web.form.days' %></span>
             <%= number_field "destination[visits_attributes][#{i}]", :open1_day,
                              class: 'form-control number-of-days',
                              placeholder: '0',
+                             min: 0,
                              value: number_of_days(visit.open1) %>
             <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
             <%= text_field "destination[visits_attributes][#{i}]", :close1, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.close1_time %>
@@ -60,6 +61,7 @@
             <%= number_field "destination[visits_attributes][#{i}]", :close1_day,
                              class: 'form-control number-of-days',
                              placeholder: '0',
+                             min: 0,
                              value: number_of_days(visit.close1) %>
             <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
           </div>
@@ -72,12 +74,13 @@
         <label class="col-md-2 control-label"><%= t '.open_close2' %></label>
         <div class="col-md-6">
           <div class="input-group">
-            <span class="input-group-addon"><%= t 'web.form.from_time' %></span>
+            <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
             <%= text_field "destination[visits_attributes][#{i}]", :open2, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.open2_time %>
             <span class="input-group-addon input-group-borderless"><%= t 'web.form.days' %></span>
             <%= number_field "destination[visits_attributes][#{i}]", :open2_day,
                              class: 'form-control number-of-days',
                              placeholder: '0',
+                             min: 0,
                              value: number_of_days(visit.open2) %>
             <span class="input-group-addon"><%= t 'web.form.to_time' %></span>
             <%= text_field "destination[visits_attributes][#{i}]", :close2, class: 'form-control', placeholder: t('all.unit.hour_minute'), value: visit.close2_time %>
@@ -85,6 +88,7 @@
             <%= number_field "destination[visits_attributes][#{i}]", :close2_day,
                              class: 'form-control number-of-days',
                              placeholder: '0',
+                             min: 0,
                              value: number_of_days(visit.close2) %>
             <span class="input-group-addon"><i class="fa fa-arrows-h fa-fw"></i></span>
           </div>

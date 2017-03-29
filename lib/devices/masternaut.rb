@@ -108,7 +108,7 @@ class Masternaut < DeviceBase
           stop.name,
           stop.ref,
           stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : customer.deliverable_units.map{ |du| stop.visit.default_quantities[du.id] && "x#{stop.visit.default_quantities[du.id]}#{du.label}" }.compact.join(' ')) : nil,
-          stop.is_a?(StopVisit) ? (stop.visit.take_over ? '(' + stop.visit.take_over_time + ')' : nil) : route.vehicle_usage.default_rest_duration_time_in_seconds,
+          stop.is_a?(StopVisit) ? (stop.visit.take_over ? '(' + stop.visit.take_over_time + ')' : nil) : route.vehicle_usage.default_rest_duration_time_with_seconds,
           stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time : '') + '-' + (stop.close1 ? stop.close1_time : '') : nil,
           stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time : '') + '-' + (stop.close2 ? stop.close2_time : '') : nil,
           stop.detail,

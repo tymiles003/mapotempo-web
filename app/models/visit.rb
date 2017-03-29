@@ -103,8 +103,8 @@ class Visit < ActiveRecord::Base
     take_over || destination.customer.take_over
   end
 
-  def default_take_over_time
-    take_over_time || destination.customer.take_over_time
+  def default_take_over_time_with_seconds
+    take_over_time_with_seconds || destination.customer.take_over_time_with_seconds
   end
 
   def default_quantities

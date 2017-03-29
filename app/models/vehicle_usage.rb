@@ -110,12 +110,20 @@ class VehicleUsage < ActiveRecord::Base
     rest_start_time || vehicle_usage_set.rest_start_time
   end
 
+  def default_rest_start_absolute_time
+    rest_start_absolute_time || vehicle_usage_set.rest_start_absolute_time
+  end
+
   def default_rest_stop
     rest_stop || vehicle_usage_set.rest_stop
   end
 
   def default_rest_stop_time
     rest_stop_time || vehicle_usage_set.rest_stop_time
+  end
+
+  def default_rest_stop_absolute_time
+    rest_stop_absolute_time || vehicle_usage_set.rest_stop_absolute_time
   end
 
   def default_rest_duration
@@ -126,8 +134,8 @@ class VehicleUsage < ActiveRecord::Base
     rest_duration_time || vehicle_usage_set.rest_duration_time
   end
 
-  def default_rest_duration_time_in_seconds
-    rest_duration_time_in_seconds || vehicle_usage_set.rest_duration_time_in_seconds
+  def default_rest_duration_time_with_seconds
+    rest_duration_time_with_seconds || vehicle_usage_set.rest_duration_time_with_seconds
   end
 
   def default_rest_duration?

@@ -17,14 +17,14 @@ if @planning
       json.extract! visit.destination, :id, :name, :street, :detail, :postalcode, :city, :country, :lat, :lng, :phone_number, :comment
       json.ref visit.ref if @zoning.customer.enable_references
       json.active route.vehicle_usage && stop.active
-      if !@planning.customer.enable_orders
+      unless @planning.customer.enable_orders
         json.quantities visit.default_quantities.map { |k, v|
-          {deliverable_unit_id: k, quantity: v, unit_icon: @planning.customer.deliverable_units.find{ |du| du.id == k }.try(:default_icon)} unless v.nil?
+          {deliverable_unit_id: k, quantity: v, unit_icon: @planning.customer.deliverable_units.find { |du| du.id == k }.try(:default_icon)} unless v.nil?
         }.compact do |quantity|
           json.extract! quantity, :deliverable_unit_id, :quantity, :unit_icon
         end
       end
-      (json.duration visit.default_take_over_time) if visit.default_take_over_time
+      (json.duration visit.default_take_over_time_with_seconds) if visit.default_take_over_time_with_seconds
       (json.open1 stop.open1_time) if stop.open1
       (json.close1 stop.close1_time) if stop.close1
       (json.open2 stop.open2_time) if stop.open2
