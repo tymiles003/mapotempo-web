@@ -93,6 +93,20 @@ class Vehicle < ActiveRecord::Base
     end
   end
 
+  # Used in form helpers (store_accessor cannot be used since devices keys are symbolized)
+  Mapotempo::Application.config.devices.to_h.each{ |device_name, device_object|
+    if device_object.respond_to?('definition')
+      device_definition = device_object.definition
+      if device_definition.key?(:forms) && device_definition[:forms].key?(:vehicle)
+        device_definition[:forms][:vehicle].keys.each{ |key|
+          define_method("#{key}") do
+            self.devices[key]
+          end
+        }
+      end
+    end
+  }
+
   def default_router
     self.router || customer.router
   end

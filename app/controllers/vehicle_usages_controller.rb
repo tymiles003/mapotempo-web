@@ -116,7 +116,9 @@ class VehicleUsagesController < ApplicationController
       if device_object.respond_to?('definition')
         device_definition = device_object.definition
         if device_definition.key?(:forms) && device_definition[:forms].key?(:vehicle)
-          permit << device_definition[:forms][:vehicle].first.second
+          device_definition[:forms][:vehicle].keys.each{ |key|
+            permit << key
+          }
         end
       end
     }

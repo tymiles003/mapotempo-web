@@ -34,11 +34,13 @@ class V01::Customers < Grape::API
 
     def permit_devices
       permit = []
-      Mapotempo::Application.config.devices.to_h.each{ |key, device|
-        if device.respond_to?('definition')
-          definition = device.definition
-          if definition.key?(:forms) && definition[:forms].key?(:vehicle)
-            permit << definition[:forms][:vehicle].first.second
+      Mapotempo::Application.config.devices.to_h.each{ |device_name, device_object|
+        if device_object.respond_to?('definition')
+          device_definition = device_object.definition
+          if device_definition.key?(:forms) && device_definition[:forms].key?(:vehicle)
+            device_definition[:forms][:vehicle].keys.each{ |key|
+              permit << key
+            }
           end
         end
       }

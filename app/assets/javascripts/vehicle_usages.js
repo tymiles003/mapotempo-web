@@ -75,7 +75,7 @@ var devicesObserveVehicle = (function() {
     });
   }
 
-    // this is used to set a default value for select2 builder - Update datas from ajax request
+  // this is used to set a default value for select2 builder - Update datas from ajax request
   var _addDataToSelect2 = function(name, datas, devices) {
     _buildSelect(name, datas);
     $('[data-device=' + name + ']').val(devices[name + "_id"] || datas[0]).trigger("change");
@@ -95,9 +95,8 @@ var devicesObserveVehicle = (function() {
         _addDataToSelect2(name, data, params.devices);
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        // Ensure select 2 is never nill. If reponseJSON doesn't existe, it means that api has been not found
         var err = (jqXHR && jqXHR.responseJSON && jqXHR.responseJSON.message) ? jqXHR.responseJSON.message : errorThrown;
-        _addDataToSelect2(name, [err], params.devices);
+        stickyError(err);
       }
     });
   }

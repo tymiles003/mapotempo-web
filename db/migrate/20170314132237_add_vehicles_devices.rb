@@ -1,5 +1,7 @@
 class AddVehiclesDevices < ActiveRecord::Migration
   def up
+    remove_devices_store_accessor
+
     add_column :vehicles, :devices, :jsonb, default: {}, null: false
 
     Vehicle.order(:id).each{ |vehicle|
@@ -24,6 +26,8 @@ class AddVehiclesDevices < ActiveRecord::Migration
   end
 
   def down
+    remove_devices_store_accessor
+
     add_column :vehicles, :tomtom_id, :string
     add_column :vehicles, :orange_id, :string
     add_column :vehicles, :teksat_id, :string
@@ -40,5 +44,14 @@ class AddVehiclesDevices < ActiveRecord::Migration
     }
 
     remove_column :vehicles, :devices
+  end
+
+  def remove_devices_store_accessor
+    Vehicle.class_eval do
+      remove_method :tomtom_id
+      remove_method :orange_id
+      remove_method :teksat_id
+      remove_method :masternaut_ref
+    end
   end
 end

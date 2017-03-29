@@ -221,16 +221,17 @@
           </div>
         </div>
 
-        <!-- this can be refactored with options_for_select -->
-        <% @vehicle_usage.vehicle.customer.device.configured_definitions.each do |key, definition| %>
-          <% if definition[:forms].key?(:vehicle) %>
-            <% definition[:forms][:vehicle].each do |field, type| %>
-              <div class="form-group">
-                <%= f.label_tag "#{key}[#{field}]", I18n.t("activerecord.attributes.customer.devices.#{key}.#{field}"), class: 'col-md-2 control-label' %>
-                <div class="col-md-6 input-append">
-                  <%= select_tag "#{key}[#{field}]", [], data: { device: key }, include_blank: false %>
-                </div>
-              </div>
+        <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle][devices]', @vehicle_usage.vehicle, layout: :horizontal do |f| %>
+          <% @vehicle_usage.vehicle.customer.device.configured_definitions.each do |key, definition| %>
+            <% if definition[:forms].key?(:vehicle) %>
+              <% definition[:forms][:vehicle].each do |field, type| %>
+                <% if type == :text %>
+                  <%= f.text_field field %>
+                <% elsif type == :select %>
+                  <!-- this can be refactored with options_for_select -->
+                  <%= f.select field, [], [], {}, data: {device: key} %>
+                <% end %>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>
