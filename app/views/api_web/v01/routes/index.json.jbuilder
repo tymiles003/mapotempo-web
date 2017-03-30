@@ -100,8 +100,8 @@ json.routes @routes do |route|
         (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
       end
     end
-    json.duration stop.duration_time_with_seconds if stop.duration > 0
-    previous_with_pos = stop if stop.position?
+    json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration > 0
+    previous_with_pos = stop if stop.position? && stop.active
   end
   json.store_stop do
     json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng

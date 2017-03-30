@@ -143,14 +143,15 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
       (json.error true) if route.vehicle_usage.default_store_rest && !route.vehicle_usage.default_store_rest.position?
     end
   end
-  json.duration stop.duration_time_with_seconds if stop.duration > 0
-  previous_with_pos = stop if stop.position?
+  json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration > 0
+  previous_with_pos = stop if stop.position? && stop.active
 end
 json.store_stop do
   json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
   (json.time route.end_time) if route.end
   (json.time_day number_of_days(route.end)) if route.end
   (json.geocoded true) if route.vehicle_usage.default_store_stop.position?
+  no_path |= !route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace
   (json.no_path true) if !route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace
   (json.error true) if !route.vehicle_usage.default_store_stop.position? || (!route.distance.nil? && route.distance > 0 && route.vehicle_usage.default_store_stop.position? && !route.stop_trace)
   json.stop_trace route.stop_trace
