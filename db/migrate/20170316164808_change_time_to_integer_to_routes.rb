@@ -50,7 +50,7 @@ class ChangeTimeToIntegerToRoutes < ActiveRecord::Migration
   end
 
   def fake_missing_props
-    Stop.class_eval do
+    Route.class_eval do
       attribute :start, ActiveRecord::Type::Time.new
       attribute :end, ActiveRecord::Type::Time.new
     end

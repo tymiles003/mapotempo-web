@@ -19,7 +19,7 @@ class ChangeTimeToIntegerToVehicleUsageSets < ActiveRecord::Migration
         vehicle_usage_set.close_temp = vehicle_usage_set.close.seconds_since_midnight.to_i if vehicle_usage_set.close
         vehicle_usage_set.rest_start_temp = vehicle_usage_set.rest_start.seconds_since_midnight.to_i if vehicle_usage_set.rest_start
         vehicle_usage_set.rest_stop_temp = vehicle_usage_set.rest_stop.seconds_since_midnight.to_i if vehicle_usage_set.rest_stop
-        vehicle_usage_set.rest_duration_temp = vehicle_usage_set.time.seconds_since_midnight.to_i if vehicle_usage_set.rest_duration
+        vehicle_usage_set.rest_duration_temp = vehicle_usage_set.rest_duration.seconds_since_midnight.to_i if vehicle_usage_set.rest_duration
         vehicle_usage_set.service_time_start_temp = vehicle_usage_set.service_time_start.seconds_since_midnight.to_i if vehicle_usage_set.service_time_start
         vehicle_usage_set.service_time_end_temp = vehicle_usage_set.service_time_end.seconds_since_midnight.to_i if vehicle_usage_set.service_time_end
         vehicle_usage_set.save!

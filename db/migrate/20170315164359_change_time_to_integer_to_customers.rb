@@ -16,14 +16,14 @@ class ChangeTimeToIntegerToCustomers < ActiveRecord::Migration
 
     remove_column :customers, :take_over
 
-    rename_column :customers, :take_over_temp, :time
+    rename_column :customers, :take_over_temp, :take_over
   end
 
   def down
     add_column :customers, :take_over_temp, :time
 
-    Stop.connection.schema_cache.clear!
-    Stop.reset_column_information
+    Customer.connection.schema_cache.clear!
+    Customer.reset_column_information
 
     Customer.find_in_batches do |customers|
       customers.each do |customer|
@@ -36,7 +36,7 @@ class ChangeTimeToIntegerToCustomers < ActiveRecord::Migration
 
     remove_column :customers, :take_over
 
-    rename_column :customers, :take_over_temp, :time
+    rename_column :customers, :take_over_temp, :take_over
   end
 
   def fake_missing_props
