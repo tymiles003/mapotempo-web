@@ -18,7 +18,7 @@ class ChangeTimeToIntegerToVisits < ActiveRecord::Migration
         visit.take_over_temp = visit.take_over.seconds_since_midnight.to_i if visit.take_over
         visit.open2_temp = visit.open2.seconds_since_midnight.to_i if visit.open2
         visit.close2_temp = visit.close2.seconds_since_midnight.to_i if visit.close2
-        visit.save!
+        visit.save!(validate: false)
       end
     end
 
