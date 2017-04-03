@@ -24,12 +24,18 @@ class ChangeTimeToIntegerToRoutes < ActiveRecord::Migration
   end
 
   def down
-    previous_times = {}
-    Route.all.order(:id).each do |route|
-      previous_times[route.id] = {
-          start: route.start,
-          end: route.end
-      }
+    add_column :routes, :start_temp, :time
+    add_column :routes, :end_temp, :time
+
+    Route.connection.schema_cache.clear!
+    Route.reset_column_information
+
+    Route.find_in_batches do |routes|
+      routes.each do |route|
+        route.start_temp = Time.at(times[:start]).utc.strftime('%H:%M:%S') if route.start
+        route.end_temp = Time.at(times[:end]).utc.strftime('%H:%M:%S') if route.end
+        route.save!
+      end
     end
 
     remove_column :routes, :start
@@ -37,16 +43,6 @@ class ChangeTimeToIntegerToRoutes < ActiveRecord::Migration
 
     add_column :routes, :start, :time
     add_column :routes, :end, :time
-
-    Route.reset_column_information
-    Route.transaction do
-      previous_times.each do |route_id, times|
-        route = Route.find(route_id)
-        route.start = Time.at(times[:start]).utc.strftime('%H:%M:%S') if times[:start]
-        route.end = Time.at(times[:end]).utc.strftime('%H:%M:%S') if times[:end]
-        route.save!
-      end
-    end
   end
 
   def fake_missing_props

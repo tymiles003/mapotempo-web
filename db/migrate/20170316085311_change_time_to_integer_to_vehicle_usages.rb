@@ -44,13 +44,13 @@ class ChangeTimeToIntegerToVehicleUsages < ActiveRecord::Migration
   end
 
   def down
-    add_column :vehicle_usages, :open_temp, :integer
-    add_column :vehicle_usages, :close_temp, :integer
-    add_column :vehicle_usages, :rest_start_temp, :integer
-    add_column :vehicle_usages, :rest_stop_temp, :integer
-    add_column :vehicle_usages, :rest_duration_temp, :integer
-    add_column :vehicle_usages, :service_time_start_temp, :integer
-    add_column :vehicle_usages, :service_time_end_temp, :integer
+    add_column :vehicle_usages, :open_temp, :time
+    add_column :vehicle_usages, :close_temp, :time
+    add_column :vehicle_usages, :rest_start_temp, :time
+    add_column :vehicle_usages, :rest_stop_temp, :time
+    add_column :vehicle_usages, :rest_duration_temp, :time
+    add_column :vehicle_usages, :service_time_start_temp, :time
+    add_column :vehicle_usages, :service_time_end_temp, :time
 
     VehicleUsage.connection.schema_cache.clear!
     VehicleUsage.reset_column_information
@@ -67,6 +67,22 @@ class ChangeTimeToIntegerToVehicleUsages < ActiveRecord::Migration
         vehicle_usage.save!(validate: false)
       end
     end
+
+    remove_column :vehicle_usages, :open
+    remove_column :vehicle_usages, :close
+    remove_column :vehicle_usages, :rest_start
+    remove_column :vehicle_usages, :rest_stop
+    remove_column :vehicle_usages, :rest_duration
+    remove_column :vehicle_usages, :service_time_start
+    remove_column :vehicle_usages, :service_time_end
+
+    rename_column :vehicle_usages, :open_temp, :open
+    rename_column :vehicle_usages, :close_temp, :close
+    rename_column :vehicle_usages, :rest_start_temp, :rest_start
+    rename_column :vehicle_usages, :rest_stop_temp, :rest_stop
+    rename_column :vehicle_usages, :rest_duration_temp, :rest_duration
+    rename_column :vehicle_usages, :service_time_start_temp, :service_time_start
+    rename_column :vehicle_usages, :service_time_end_temp, :service_time_end
   end
 
   def fake_missing_props

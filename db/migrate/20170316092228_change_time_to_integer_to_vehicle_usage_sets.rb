@@ -44,13 +44,13 @@ class ChangeTimeToIntegerToVehicleUsageSets < ActiveRecord::Migration
   end
 
   def down
-    add_column :vehicle_usage_sets, :open_temp, :integer
-    add_column :vehicle_usage_sets, :close_temp, :integer
-    add_column :vehicle_usage_sets, :rest_start_temp, :integer
-    add_column :vehicle_usage_sets, :rest_stop_temp, :integer
-    add_column :vehicle_usage_sets, :rest_duration_temp, :integer
-    add_column :vehicle_usage_sets, :service_time_start_temp, :integer
-    add_column :vehicle_usage_sets, :service_time_end_temp, :integer
+    add_column :vehicle_usage_sets, :open_temp, :time
+    add_column :vehicle_usage_sets, :close_temp, :time
+    add_column :vehicle_usage_sets, :rest_start_temp, :time
+    add_column :vehicle_usage_sets, :rest_stop_temp, :time
+    add_column :vehicle_usage_sets, :rest_duration_temp, :time
+    add_column :vehicle_usage_sets, :service_time_start_temp, :time
+    add_column :vehicle_usage_sets, :service_time_end_temp, :time
 
     VehicleUsageSet.connection.schema_cache.clear!
     VehicleUsageSet.reset_column_information
@@ -67,6 +67,22 @@ class ChangeTimeToIntegerToVehicleUsageSets < ActiveRecord::Migration
         vehicle_usage_set.save!
       end
     end
+
+    remove_column :vehicle_usage_sets, :open
+    remove_column :vehicle_usage_sets, :close
+    remove_column :vehicle_usage_sets, :rest_start
+    remove_column :vehicle_usage_sets, :rest_stop
+    remove_column :vehicle_usage_sets, :rest_duration
+    remove_column :vehicle_usage_sets, :service_time_start
+    remove_column :vehicle_usage_sets, :service_time_end
+
+    rename_column :vehicle_usage_sets, :open_temp, :open
+    rename_column :vehicle_usage_sets, :close_temp, :close
+    rename_column :vehicle_usage_sets, :rest_start_temp, :rest_start
+    rename_column :vehicle_usage_sets, :rest_stop_temp, :rest_stop
+    rename_column :vehicle_usage_sets, :rest_duration_temp, :rest_duration
+    rename_column :vehicle_usage_sets, :service_time_start_temp, :service_time_start
+    rename_column :vehicle_usage_sets, :service_time_end_temp, :service_time_end
   end
 
   def fake_missing_props

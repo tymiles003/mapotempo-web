@@ -55,6 +55,18 @@ class ChangeTimeToIntegerToVisits < ActiveRecord::Migration
         visit.save!
       end
     end
+
+    remove_column :visits, :open1
+    remove_column :visits, :close1
+    remove_column :visits, :take_over
+    remove_column :visits, :open2
+    remove_column :visits, :close2
+
+    rename_column :visits, :open1_temp, :open1
+    rename_column :visits, :close1_temp, :close1
+    rename_column :visits, :take_over_temp, :take_over
+    rename_column :visits, :open2_temp, :open2
+    rename_column :visits, :close2_temp, :close2
   end
 
   def fake_missing_props
