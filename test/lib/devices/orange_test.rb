@@ -4,6 +4,7 @@ class OrangeTest < ActionController::TestCase
 
   require Rails.root.join("test/lib/devices/orange_base")
   include OrangeBase
+  include ApiBase
 
   setup do
     @customer = add_orange_credentials customers(:customer_one)
@@ -12,11 +13,7 @@ class OrangeTest < ActionController::TestCase
 
   test 'test authentication' do
     with_stubs [:auth] do
-      params = {
-        user: @customer.devices[:orange][:username],
-        password: @customer.devices[:orange][:password]
-      }
-      assert @service.check_auth params
+      assert @service.check_auth params_for(:orange, @customer)
     end
   end
 

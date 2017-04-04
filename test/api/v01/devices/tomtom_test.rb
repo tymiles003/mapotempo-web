@@ -32,7 +32,7 @@ class V01::Devices::TomtomTest < ActiveSupport::TestCase
 
   test 'authenticate' do
     with_stubs [:client_objects_wsdl, :show_object_report] do
-      get api("devices/tomtom/auth")
+      get api("devices/tomtom/auth/#{@customer.id}", params_for(:tomtom, @customer))
       assert_equal 204, last_response.status
     end
   end

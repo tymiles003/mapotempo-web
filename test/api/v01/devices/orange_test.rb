@@ -32,7 +32,7 @@ class V01::Devices::OrangeTest < ActiveSupport::TestCase
 
   test 'authenticate' do
     with_stubs [:auth] do
-      get api("devices/orange/auth")
+      get api("devices/orange/auth/#{@customer.id}", params_for(:orange, @customer))
       assert_equal 204, last_response.status
     end
   end
