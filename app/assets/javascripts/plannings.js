@@ -161,7 +161,7 @@ var plannings_form = function() {
   });
 
   var formatNoMatches = I18n.t('web.select2.empty_result');
-  $('select[name=planning\\[tag_ids\\]\\[\\]]').select2({
+  $('select#planning_tag_ids').select2({
     theme: 'bootstrap',
     minimumResultsForSearch: -1,
     templateSelection: templateTag,

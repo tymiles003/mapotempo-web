@@ -26,6 +26,8 @@ class Planning < ActiveRecord::Base
   nilify_blanks
   auto_strip_attributes :name
 
+  enum tag_operation: [:and, :or]
+
   validates :customer, presence: true
   validates :name, presence: true
   validates :vehicle_usage_set, presence: true
@@ -69,7 +71,11 @@ class Planning < ActiveRecord::Base
     if routes_visits.size <= routes.size - 1
       visits = routes_visits.values.flat_map{ |s| s[:visits] }.collect{ |visit_active| visit_active[0] }
       routes.find{ |r| !r.vehicle_usage }.set_visits((customer.visits - visits).select{ |visit|
-        ((visit.tags | visit.destination.tags) & tags).size == tags.size
+        if self.tag_operation == 'or'
+          ((visit.tags.to_a | visit.destination.tags.to_a) & tags.to_a).present?
+        else
+          ((visit.tags.to_a | visit.destination.tags.to_a) & tags.to_a).size == tags.size
+        end
       })
 
       index_routes = (1..routes.size).to_a
@@ -80,7 +86,11 @@ class Planning < ActiveRecord::Base
         i = routes.index{ |rr| r[:ref_vehicle] && rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] } || index_routes.shift
         routes[i].ref = ref
         routes[i].set_visits(r[:visits].select{ |visit|
-          ((visit[0].tags | visit[0].destination.tags) & tags).size == tags.size
+          if self.tag_operation == 'or'
+            ((visit[0].tags.to_a | visit[0].destination.tags.to_a) & tags.to_a).present?
+          else
+            ((visit[0].tags.to_a | visit[0].destination.tags.to_a) & tags.to_a).size == tags.size
+          end
         }, recompute, ignore_errors)
       }
     else
@@ -246,9 +256,15 @@ class Planning < ActiveRecord::Base
   end
 
   def visits_compatibles
-    customer.visits.select{ |visit|
-      tags.to_a & (visit.tags.to_a | visit.destination.tags.to_a) == tags.to_a
-    }
+    if self.tag_operation == 'or'
+      customer.visits.select { |visit|
+        (tags.to_a & (visit.tags.to_a | visit.destination.tags.to_a)).present?
+      }
+    else
+      customer.visits.select { |visit|
+        tags.to_a & (visit.tags.to_a | visit.destination.tags.to_a) == tags.to_a
+      }
+    end
   end
 
   def visits

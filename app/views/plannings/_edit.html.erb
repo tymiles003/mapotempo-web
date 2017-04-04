@@ -16,7 +16,7 @@
 
       <% if @callback_button && @planning.customer.enable_external_callback && @planning.customer.external_callback_url %>
         <p class="text-center">
-          <button type="button" class="btn btn-primary btn-sm customer_external_callback_url id="external-callback-btn" data-url="<%= @planning.customer.external_callback_url %>">
+          <button type="button" class="btn btn-primary btn-sm customer_external_callback_url" id="external-callback-btn" data-url="<%= @planning.customer.external_callback_url %>">
             <i class="fa fa-desktop fa-fw"></i>
             <%= @planning.customer.external_callback_name || I18n.t('plannings.edit.customer_external_callback_url.action') %>
           </button>

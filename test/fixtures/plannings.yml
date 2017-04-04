@@ -7,6 +7,7 @@ planning_one:
   customer: customer_one
   zonings: zoning_one
   tags: tag_one
+  tag_operation: and
   vehicle_usage_set: vehicle_usage_set_one
 
 planning_two:
@@ -22,4 +23,16 @@ planning_three:
   ref: r1
   customer: customer_two
   zonings: zoning_three
+  vehicle_usage_set: vehicle_usage_set_two
+
+# Planning must have one route with no vehicle usage and two routes for vehicle_usage_one_one and vehicle_usage_one_three
+planning_four:
+  name: planning4
+  ref: r4
+  customer: customer_two
+  zonings: zoning_three
+  tag_operation: or
+  tags:
+    - tag_three
+    - tag_four
   vehicle_usage_set: vehicle_usage_set_two

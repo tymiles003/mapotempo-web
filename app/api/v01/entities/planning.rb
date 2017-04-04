@@ -32,6 +32,7 @@ class V01::Entities::Planning < Grape::Entity
   expose(:zoning_out_of_date, documentation: { type: 'Boolean' })
   expose(:out_of_date, documentation: { type: 'Boolean' })
   expose(:route_ids, documentation: { type: Integer, is_array: true }) { |m| m.routes.collect(&:id) } # Workaround bug with fetch join stops
-  expose(:tag_ids, documentation: { type: Integer, desc: 'Restrict visits/destinations in the plan (visits/destinations should have all of these tags to be present in the plan)', is_array: true })
+  expose(:tag_ids, documentation: { type: Integer, desc: 'Restrict visits/destinations in the plan (visits/destinations should have all of these tags to be present in the plan).', is_array: true })
+  expose(:tag_operation, documentation: { type: String, values: ['and', 'or'], desc: 'Choose how to use selected tags: and (for visits with all tags, by default) / or (for visits with at least one tag).', default: 'and' })
   expose(:updated_at, documentation: { type: DateTime, desc: 'Last Updated At'})
 end

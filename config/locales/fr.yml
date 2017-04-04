@@ -260,6 +260,9 @@ fr:
         vehicle_usage_set: Configuration des véhicules
         vehicle_usage_set_id: Configuration des véhicules
         vehicle_usage_set_small: Conf.
+        tag_operation:
+          and: et
+          or: ou
       profile:
         name: Nom
         layers: Fond de carte
@@ -1388,11 +1391,9 @@ fr:
       eta: eta
     form:
       ref_help: Référence libre
-      tags_help: Restreint les visites / clients dans le planning (les visites/clients
-        doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)
+      tags_help: Restreint les visites / clients dans le planning (les visites/clients doivent soit avoir l'ensemble de tous ces libellés (ET) soit un des libéllés sélectionnés (OU) pour apparaître dans le planning).
       order_array: Comm.
-      zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules
-        suivant des zones géographiques prédéfinies.
+      zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules suivant des zones géographiques prédéfinies.
       avoid_zones_help: Permet également de définir des zones où ne pas circuler.
       default: Défaut
     show:

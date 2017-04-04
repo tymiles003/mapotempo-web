@@ -169,15 +169,23 @@ class Visit < ActiveRecord::Base
       @tag_ids_changed = false
 
       # Don't use local collection here, not set when save new record
-      destination.customer.plannings.each{ |planning|
+      destination.customer.plannings.each do |planning|
         if !new_record? && planning.visits.include?(self)
-          if (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) != planning.tags.to_a
-            planning.visit_remove(self)
+          if planning.tag_operation == 'or'
+            unless (planning.tags.to_a & (tags.to_a | destination.tags.to_a)).present?
+              planning.visit_remove(self)
+            end
+          else
+            if planning.tags.to_a & (tags.to_a | destination.tags.to_a) != planning.tags.to_a
+              planning.visit_remove(self)
+            end
           end
-        elsif (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) == planning.tags.to_a
+        elsif planning.tag_operation == 'or' && (planning.tags.to_a & (tags.to_a | destination.tags.to_a)).present?
+          planning.visit_add(self)
+        elsif planning.tag_operation == 'and' && (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) == planning.tags.to_a
           planning.visit_add(self)
         end
-      }
+      end
     end
 
     true

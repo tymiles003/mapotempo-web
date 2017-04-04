@@ -343,8 +343,8 @@ class PlanningsController < ApplicationController
   end
 
   def planning_params
-    p = params.require(:planning).permit(:name, :ref, :date, :vehicle_usage_set_id, tag_ids: [], zoning_ids: [])
-    p[:date] = Date.strptime(p[:date], I18n.t('time.formats.datepicker')).strftime(ACTIVE_RECORD_DATE_MASK) if !p[:date].blank?
+    p = params.require(:planning).permit(:name, :ref, :date, :vehicle_usage_set_id, :tag_operation, tag_ids: [], zoning_ids: [])
+    p[:date] = Date.strptime(p[:date], I18n.t('time.formats.datepicker')).strftime(ACTIVE_RECORD_DATE_MASK) unless p[:date].blank?
     p
   end
 
@@ -356,7 +356,7 @@ class PlanningsController < ApplicationController
     if @planning
       export_filename @planning, @planning.ref;
     else
-      I18n.t('plannings.menu.plannings') + "_" + I18n.l(Time.now, format: :datepicker)
+      I18n.t('plannings.menu.plannings') + '_' + I18n.l(Time.now, format: :datepicker)
     end
   end
 
@@ -391,6 +391,7 @@ class PlanningsController < ApplicationController
       :comment,
       :phone_number,
       :tags,
+      :tag_operation,
 
       :ref_visit,
       :duration,

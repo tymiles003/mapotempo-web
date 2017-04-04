@@ -16,3 +16,7 @@ tag_two:
 tag_three:
   label: tag3
   customer: customer_two
+
+tag_four:
+  label: tag4
+  customer: customer_two

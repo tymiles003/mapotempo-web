@@ -66,3 +66,17 @@ destination_four:
   detail: MyString
   comment: MyString
   phone_number: MyString
+  tags: tag_three
+
+destination_five:
+  name: destination_five
+  street: MyString
+  postalcode: MyString
+  city: MyString
+  lat: 1.5
+  lng: 1.5
+  customer: customer_two
+  detail: MyString
+  comment: MyString
+  phone_number: MyString
+  tags: tag_three

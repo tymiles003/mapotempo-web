@@ -61,6 +61,18 @@ class PlanningTest < ActiveSupport::TestCase
     o.save!
   end
 
+  test 'should save according to tag operation' do
+    planning_and_tags = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_one)], tag_operation: 'and', tag_ids: [tags(:tag_one).id, tags(:tag_two).id])
+    planning_and_tags.default_routes
+    assert_equal 2, planning_and_tags.visits_compatibles.count
+    planning_and_tags.save!
+
+    planning_or_tags = customers(:customer_one).plannings.build(name: 'plop 2', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_two)], tag_operation: 'or', tag_ids: [tags(:tag_one).id, tags(:tag_two).id])
+    planning_or_tags.default_routes
+    assert_equal 6, planning_or_tags.visits_compatibles.count
+    planning_or_tags.save!
+  end
+
   test 'should dup' do
     o = plannings(:planning_one)
     oo = o.duplicate

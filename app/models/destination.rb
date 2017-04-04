@@ -80,17 +80,25 @@ class Destination < Location
       @tag_ids_changed = false
 
       # Don't use local collection here, not set when save new record
-      customer.plannings.each{ |planning|
-        visits.select(&:id).each{ |visit|
+      customer.plannings.each do |planning|
+        visits.select(&:id).each do |visit|
           if !new_record? && planning.visits.include?(visit)
-            if (planning.tags.to_a & (tags.to_a + visit.tags.to_a).uniq) != planning.tags.to_a
-              planning.visit_remove(visit)
+            if planning.tag_operation == 'or'
+              unless (planning.tags.to_a & (tags.to_a | visit.tags.to_a)).present?
+                planning.visit_remove(visit)
+              end
+            else
+              if planning.tags.to_a & (tags.to_a | visit.tags.to_a) != planning.tags.to_a
+                planning.visit_remove(visit)
+              end
             end
-          elsif (planning.tags.to_a & (tags.to_a + visit.tags.to_a).uniq) == planning.tags.to_a
+          elsif planning.tag_operation == 'or' && (planning.tags.to_a & (tags.to_a | visit.tags.to_a)).present?
+            planning.visit_add(visit)
+          elsif planning.tag_operation == 'and' && (planning.tags.to_a & (tags.to_a | visit.tags.to_a)) == planning.tags.to_a
             planning.visit_add(visit)
           end
-        }
-      }
+        end
+      end
     end
 
     true

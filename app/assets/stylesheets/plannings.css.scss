@@ -108,7 +108,7 @@ $sidebar-margins: 10px;
     animation: pulse 1s linear infinite;
   }
 
-  @keyframes "pulse" {
+  @keyframes pulse {
     0% {
       -webkit-transform: scale(1);
       -moz-transform: scale(1);
@@ -147,7 +147,7 @@ $sidebar-margins: 10px;
     }
   }
 
-  @-webkit-keyframes "pulse" {
+  @-webkit-keyframes pulse {
     0% {
       -webkit-transform: scale(1);
       transform: scale(1);
@@ -162,7 +162,7 @@ $sidebar-margins: 10px;
     }
   }
 
-  @-ms-keyframes "pulse" {
+  @-ms-keyframes pulse {
     0% {
       -ms-transform: scale(1);
       transform: scale(1);
@@ -479,5 +479,9 @@ $sidebar-margins: 10px;
         color: #aaa;
       }
     }
+  }
+
+  .tag-operation-field {
+    min-width: 80px;
   }
 }

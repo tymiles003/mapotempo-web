@@ -400,7 +400,8 @@ CREATE TABLE plannings (
     order_array_id integer,
     ref character varying,
     date date,
-    vehicle_usage_set_id integer NOT NULL
+    vehicle_usage_set_id integer NOT NULL,
+    tag_operation integer DEFAULT 0 NOT NULL
 );
 
 
@@ -992,11 +993,11 @@ CREATE TABLE visits (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     quantities hstore,
-    open1 integer,
-    close1 integer,
-    take_over integer,
-    open2 integer,
-    close2 integer
+    open1 time without time zone,
+    close1 time without time zone,
+    take_over time without time zone,
+    open2 time without time zone,
+    close2 time without time zone
 );
 
 
@@ -2593,6 +2594,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170316092501');
 INSERT INTO schema_migrations (version) VALUES ('20170316164808');
 
 INSERT INTO schema_migrations (version) VALUES ('20170316164815');
+
+INSERT INTO schema_migrations (version) VALUES ('20170329132713');
 
 INSERT INTO schema_migrations (version) VALUES ('20170406093321');
 

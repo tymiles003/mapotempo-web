@@ -61,7 +61,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
   test 'should create a planning' do
     assert_difference('Planning.count', 1) do
       @planning.name = 'new name'
-      post api(), @planning.attributes.merge({tag_ids: tags(:tag_one).id, zoning_ids: [zonings(:zoning_one).id]})
+      post api(), @planning.attributes.merge({tag_operation: 'and', tag_ids: tags(:tag_one).id, zoning_ids: [zonings(:zoning_one).id]})
       assert last_response.created?, last_response.body
       response = JSON.parse(last_response.body)
       assert_equal 1, response['tag_ids'].size
@@ -74,16 +74,46 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
       vehicle_usage_set_id: 0,
       zoning_ids: [zonings(:zoning_three).id]
     }.each{ |k, v|
-      attributes = @planning.attributes.merge('name' => 'new name')
+      attributes = @planning.attributes.merge(name: 'new name', tag_operation: 'and')
       attributes[k] = v
       post api(), attributes
       assert_equal 400, last_response.status
     }
   end
 
+  test 'should create a planning with selected tags and according to tag operation' do
+    planning = plannings(:planning_four)
+
+    assert_difference('Planning.count', 1) do
+      post '/api/0.1/plannings.json?api_key=testkey3', planning.attributes.merge({tag_ids: [tags(:tag_three).id, tags(:tag_four).id], tag_operation: 'and'})
+      assert last_response.created?, last_response.body
+      response = JSON.parse(last_response.body)
+      assert_equal 2, response['tag_ids'].size
+      new_planning = Planning.last
+
+      # Check number of visits (including both tags) associated to the new planning
+      assert_equal 1, new_planning.visits_compatibles.count
+      # Check number of stops (including both tags) in the new planning
+      assert_equal 1, new_planning.routes.map { |route| route.stops }.first.count
+    end
+
+    assert_difference('Planning.count', 1) do
+      post '/api/0.1/plannings.json?api_key=testkey3', planning.attributes.merge({tag_ids: [tags(:tag_three).id, tags(:tag_four).id], tag_operation: 'or'})
+      assert last_response.created?, last_response.body
+      response = JSON.parse(last_response.body)
+      assert_equal 2, response['tag_ids'].size
+      new_planning = Planning.last
+
+      # Check number of visits (including at least one tag) associated to the new planning
+      assert_equal 2, new_planning.visits_compatibles.count
+      # Check number of stops (including at least one tags) in the new planning
+      assert_equal 2, new_planning.routes.map { |route| route.stops }.first.count
+    end
+  end
+
   test 'should update a planning' do
     @planning.name = 'new name'
-    put api(@planning.id), @planning.attributes
+    put api(@planning.id), @planning.attributes.merge(tag_operation: 'and')
     assert last_response.ok?, last_response.body
 
     get api(@planning.id)
@@ -212,7 +242,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
   end
 
   test 'should return a 404 error' do
-    planning = plannings :planning_one
+    planning = plannings(:planning_one)
     patch "api/0.1/plannings/#{planning.id.to_s}/routes/none/visits/moves.json?api_key=testkey1&visit_ids=47,48"
     assert_equal  404, last_response.status
   end

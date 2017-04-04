@@ -76,6 +76,32 @@ class PlanningsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'Create Planning with selected tag operation' do
+    sign_in users(:user_three) # to use customer_two
+    planning = plannings(:planning_four)
+
+    assert_difference('Planning.count') do
+      post :create, planning: { name: planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_two).id, zoning_ids: planning.zonings.collect(&:id), tag_operation: 'and', tag_ids: [tags(:tag_three).id, tags(:tag_four).id] }
+    end
+    assert assigns(:planning).persisted?
+    assert_redirected_to edit_planning_path(assigns(:planning))
+    # Check number of visits (including both tags) associated to the new planning
+    assert_equal 1, assigns(:planning).visits_compatibles.count
+    # Check number of stops (including both tags) in the new planning
+    assert_equal 1, assigns(:planning).routes.map { |route| route.stops }.first.count
+
+
+    assert_difference('Planning.count') do
+      post :create, planning: { name: planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_two).id, zoning_ids: planning.zonings.collect(&:id), tag_operation: 'or', tag_ids: [tags(:tag_three).id, tags(:tag_four).id] }
+    end
+    assert assigns(:planning).persisted?
+    assert_redirected_to edit_planning_path(assigns(:planning))
+    # Check number of visits (including both tags) associated to the new planning
+    assert_equal 2, assigns(:planning).visits_compatibles.count
+    # Check number of stops (including both tags) in the new planning
+    assert_equal 2, assigns(:planning).routes.map { |route| route.stops }.first.count
+  end
+
   test 'Update Planning' do
     orig_locale = I18n.locale
     begin
@@ -152,15 +178,15 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should show planning as csv with order array' do
-    o = plannings(:planning_one)
-    oa = order_arrays(:order_array_one)
-    o.apply_orders(oa, 0)
-    o.save!
+    planning = plannings(:planning_one)
+    order_array = order_arrays(:order_array_one)
+    planning.apply_orders(order_array, 0)
+    planning.save!
 
     get :show, id: @planning, format: :csv
     assert_response :success
-    assert_equal 'r1,planning1,,,,visite,,,,,,"","","",,,a,unaffected_one,MyString,MyString,MyString,MyString,,1.5,1.5,MyString,MyString,tag1,a,00:01:00,10:00,11:00,,,tag1,', response.body.split("\n")[1]
-    assert_equal 'r1,planning1,route_one,001,1,visite,1,,00:00,1.1,,"","","",,,b,destination_one,Rue des Lilas,MyString,33200,Bordeau,,49.1857,-0.3735,MyString,MyString,"",b,00:05:33,10:00,11:00,,,tag1,P1/P2', response.body.split("\n").select{ |l| l.include?('001') }[1]
+    assert_equal 'r1,planning1,,,,visite,,,,,,"","","",,,a,unaffected_one,MyString,MyString,MyString,MyString,,1.5,1.5,MyString,MyString,tag1,,a,00:01:00,10:00,11:00,,,tag1,', response.body.split("\n")[1]
+    assert_equal 'r1,planning1,route_one,001,1,visite,1,,0,1.1,,"","","",,,b,destination_one,Rue des Lilas,MyString,33200,Bordeau,,49.1857,-0.3735,MyString,MyString,"",,b,00:05:33,10:00,11:00,,,tag1,P1/P2', response.body.split("\n").select{ |l| l.include?('001') }[1]
   end
 
   test "it shouldn't have special char in ref routes when using vehicle name" do
@@ -178,7 +204,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
     get :show, id: @planning, format: :csv
     assert_response :success
-    assert_equal "r1,planning1,vehicle      ,003,0,dépôt,,,07:00,0,0,,,,,,,store nogeo,MyString,,MyString,MyString,,,,,,,,,,,,,,", response.body.split("\n")[2]
+    assert_equal 'r1,planning1,vehicle      ,003,0,dépôt,,,07:00,0,0,,,,,,,store nogeo,MyString,,MyString,MyString,,,,,,,,,,,,,,,', response.body.split("\n")[2]
   end
 
   test 'should show planning as csv with ordered columns' do
