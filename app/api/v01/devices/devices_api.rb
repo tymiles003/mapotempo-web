@@ -23,7 +23,7 @@ class V01::Devices::DevicesApi < Grape::API
     segment '/:device' do
 
       before do
-        @customer = current_customer(params[:customer_id])
+        current_customer(params[:id]) if @current_user.admin?
       end
 
       rescue_from DeviceServiceError do |e|
@@ -33,8 +33,11 @@ class V01::Devices::DevicesApi < Grape::API
       desc 'Validate device Credentials',
         detail: 'Validate device Credentials.',
         nickname: 'checkAuth'
-      get 'auth' do
-        device = @customer.device.enableds[params[:device]]
+      params do
+        requires :id, type: Integer, desc: 'Customer ID as we need to get customer devices'
+      end
+      get 'auth/:id' do
+        device = @current_customer.device.enableds[params[:device]]
         if device && device.respond_to?('check_auth')
           device.check_auth(params) # raises DeviceServiceError
           status 204
@@ -54,8 +57,8 @@ class V01::Devices::DevicesApi < Grape::API
         device = @customer.device.enableds[params[:device]]
         if device && device.respond_to?('send_route')
           Route.transaction do
-            route = Route.for_customer(@customer).find params[:route_id]
-            device.send_route(@customer, route, params.slice(:type))
+            route = Route.for_customer(@current_customer).find params[:route_id]
+            device.send_route(@current_customer, route, params.slice(:type))
             route.set_send_to(device.definition[:label_small])
             route.save!
             present route, with: V01::Entities::DeviceRouteLastSentAt

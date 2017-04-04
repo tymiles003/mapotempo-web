@@ -18,7 +18,7 @@
 module Devices
   module Helpers
     def device_send_routes(options = {})
-      planning = @customer.plannings.find params[:planning_id]
+      planning = @current_customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
       routes = routes.select{ |route| route.vehicle_usage.vehicle.devices[options[:device_id]] } if options[:device_id]
       routes.each{ |route|
@@ -32,7 +32,7 @@ module Devices
 
     def device_clear_route(_options = {})
       Route.transaction do
-        route = Route.for_customer(@customer).find params[:route_id]
+        route = Route.for_customer(@current_customer).find params[:route_id]
         service.clear_route route
         route.save!
         present route, with: V01::Entities::DeviceRouteLastSentAt
@@ -40,7 +40,7 @@ module Devices
     end
 
     def device_clear_routes(options = {})
-      planning = @customer.plannings.find params[:planning_id]
+      planning = @current_customer.plannings.find params[:planning_id]
       routes = planning.routes.select(&:vehicle_usage)
       routes = routes.select{ |route| route.vehicle_usage.vehicle.devices[options[:device_id]] } if options[:device_id]
       routes.each{ |route|
@@ -57,17 +57,33 @@ module Devices
       orange_vehicles = OrangeService.new(customer: customer).list_devices(params.slice(:user, :password))
       customer.vehicles.update_all devices: {orange_id: nil}
       orange_vehicles.each_with_index do |vehicle, index|
-        next if !customer.vehicles[index]
+        next unless customer.vehicles[index]
         customer.vehicles[index].update! devices: {orange_id: vehicle[:id]}
       end
     end
 
     # Tekstat
+    def teksat_authenticate(customer) # Must declare the ticket_id wich is needed for Teksat Api itself (up to 4 hours according to the documentation)
+      if params[:check_only].to_i == 1 || !session[:teksat_ticket_id] || (Time.now - Time.at(session[:teksat_authenticated_at])) > 4.hours
+        session[:teksat_ticket_id] = TeksatService.new(customer: customer).authenticate teksat_credentials(customer)
+        session[:teksat_authenticated_at] = Time.now.to_i
+      end
+    end
+
+    def teksat_credentials(customer) # Return the formatted hash for Teksat authenticate method
+      {
+        url:         params[:url]         || customer.devices[:teksat][:url],
+        customer_id: params[:customer_id] || customer.devices[:teksat][:customer_id],
+        username:    params[:username]    || customer.devices[:teksat][:username],
+        password:    params[:password]    || customer.devices[:teksat][:password]
+      }
+    end
+
     def teksat_sync_vehicles(customer, ticket_id)
       teksat_vehicles = TeksatService.new(customer: customer, ticket_id: ticket_id).list_devices
       customer.vehicles.update_all devices: {teksat_id: nil}
       teksat_vehicles.each_with_index do |vehicle, index|
-        next if !customer.vehicles[index]
+        next unless customer.vehicles[index]
         customer.vehicles[index].update! devices: {teksat_id: vehicle[:id]}
       end
     end
@@ -78,7 +94,7 @@ module Devices
       tomtom_vehicles = tomtom_vehicles.select{ |item| !item[:objectUid].blank? }
       customer.vehicles.update_all devices: {tomtom_id: nil}
       tomtom_vehicles.each_with_index do |vehicle, index|
-        next if !customer.vehicles[index]
+        next unless customer.vehicles[index]
         customer.vehicles[index].update! devices: {tomtom_id: vehicle[:objectUid]}, fuel_type: vehicle[:fuelType], color: vehicle[:color]
       end
     end

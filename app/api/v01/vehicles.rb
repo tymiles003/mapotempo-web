@@ -138,7 +138,7 @@ class V01::Vehicles < Grape::API
       # Teksat
       begin
         if customer.device.configured?(:teksat)
-          teksat_authenticate customer
+          teksat_authenticate customer # Required to set a session variable needed for teksat Api
           (TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos || []).each do |item|
             vehicle_id = item.delete :teksat_vehicle_id
             vehicle = vehicles.detect{ |v| v.devices[:teksat_id] == vehicle_id }
