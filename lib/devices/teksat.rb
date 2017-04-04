@@ -47,7 +47,7 @@ class Teksat < DeviceBase
   end
 
   def authenticate(customer, params)
-    response = RestClient.get get_ticket_url(customer, { auth: params.slice(:url, :customer_id, :username, :password) })
+    response = RestClient.get get_ticket_url(customer, params)
     if response.code == 200 && response.strip.length >= 1
       return response.strip
     else
@@ -115,17 +115,16 @@ class Teksat < DeviceBase
   end
 
   def get_ticket_url(customer, options = {})
-    if options[:auth] && options[:auth][:url]
-      url, customer_id, username, password = options[:auth][:url], options[:auth][:customer_id], options[:auth][:username], options[:auth][:password]
-    else
-      url, customer_id, username, password = customer.devices[:teksat][:url], customer.devices[:teksat][:customer_id], customer.devices[:teksat][:username], customer.devices[:teksat][:password]
-    end
+    url = options[:url] || customer.devices[:teksat][:url] # Url pattern followed by the Teksat Api hash
+    teksat_query = {
+      custID: options[:customer_id] || customer.devices[:teksat][:customer_id],
+      username: options[:username] || customer.devices[:teksat][:username],
+      pw: options[:password] || customer.devices[:teksat][:password]
+    }
     if (url =~ /\A(www.*.teksat.fr)\Z/).nil?
       raise DeviceServiceError.new('Teksat: %s "%s"' % [I18n.t('errors.teksat.bad_url'), url])
     end
-    Addressable::Template.new('http://%s/webservices/map/get-ticket.jsp{?query*}' % [url]).expand(
-      query: { custID: customer_id, username: username, pw: password }
-    ).to_s
+    Addressable::Template.new('http://%s/webservices/map/get-ticket.jsp{?query*}' % [url]).expand(query: teksat_query).to_s
   end
 
   def get_vehicles_url(customer)
