@@ -177,4 +177,12 @@ class VehicleUsageTest < ActiveSupport::TestCase
     assert_equal 1, route.stops.reload.select{|stop| stop.is_a?(StopRest) }.count
     assert_equal 4, out_of_route.stops.reload.select{|stop| stop.is_a?(StopVisit) }.count
   end
+
+  test 'should destroy disabled vehicle usage' do
+    planning = plannings(:planning_one)
+    vehicle_usage = planning.vehicle_usage_set.vehicle_usages.first.vehicle
+    planning.vehicle_usage_remove(vehicle_usage)
+
+    assert vehicle_usage.destroy
+  end
 end
