@@ -80,6 +80,7 @@ class V01::StoresTest < ActiveSupport::TestCase
         street: nil,
         postalcode: nil,
         city: 'Tule',
+        state: 'Limousin',
         country: 'fra',
         lat: 43.5710885456786,
         lng: 3.89636993408203,
@@ -130,13 +131,13 @@ class V01::StoresTest < ActiveSupport::TestCase
   end
 
   test 'should geocode' do
-    patch api('geocode'), format: :json, store: { city: @store.city, name: @store.name, postalcode: @store.postalcode, street: @store.street }
+    patch api('geocode'), format: :json, store: { city: @store.city, name: @store.name, postalcode: @store.postalcode, street: @store.street, state: @store.state }
     assert last_response.ok?, last_response.body
   end
 
   test 'should geocode with error' do
     Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise GeocodeError.new }) do
-      patch api('geocode'), format: :json, store: { city: @store.city, name: @store.name, postalcode: @store.postalcode, street: @store.street }
+      patch api('geocode'), format: :json, store: { city: @store.city, name: @store.name, postalcode: @store.postalcode, street: @store.street, state: @store.state }
       assert last_response.ok?, last_response.body
     end
   end

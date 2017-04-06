@@ -65,6 +65,7 @@ class DestinationsControllerTest < ActionController::TestCase
             name: @destination.name,
             postalcode: @destination.postalcode,
             street: @destination.street,
+            state: @destination.state,
             detail: @destination.detail,
             comment: @destination.comment,
             phone_number: @destination.phone_number
@@ -84,6 +85,7 @@ class DestinationsControllerTest < ActionController::TestCase
             city: 'Bordeaux',
             name: 'new dest',
             postalcode: '33000',
+            state: 'Aquitaine',
             comment: 'comment',
             phone_number: '+336123456789',
             visits_attributes: [{
@@ -109,6 +111,7 @@ class DestinationsControllerTest < ActionController::TestCase
             city: 'Bordeaux',
             name: 'new dest',
             postalcode: '33000',
+            state: 'Aquitaine',
             comment: 'comment',
             phone_number: '+336123456789',
             visits_attributes: {'1' => {
@@ -131,6 +134,7 @@ class DestinationsControllerTest < ActionController::TestCase
             city: 'Bordeaux',
             name: 'new dest',
             postalcode: '33000',
+            state: 'Aquitaine',
             comment: 'comment',
             phone_number: '+336123456789',
             visits_attributes: [{
@@ -194,7 +198,7 @@ class DestinationsControllerTest < ActionController::TestCase
   end
 
   test 'should update destination' do
-    patch :update, id: @destination, destination: { city: @destination.city, lat: @destination.lat, lng: @destination.lng, name: @destination.name, postalcode: @destination.postalcode, street: @destination.street, detail: @destination.detail, comment: @destination.comment, phone_number: @destination.phone_number }
+    patch :update, id: @destination, destination: { city: @destination.city, lat: @destination.lat, lng: @destination.lng, name: @destination.name, postalcode: @destination.postalcode, street: @destination.street, state: @destination.state, detail: @destination.detail, comment: @destination.comment, phone_number: @destination.phone_number }
     assert_redirected_to edit_destination_path(assigns(:destination))
   end
 

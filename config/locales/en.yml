@@ -182,6 +182,7 @@ en:
         profile_id: Profile
         speed_multiplicator: Speed multiplier
         default_country: Default country
+        with_state: Add State field in addresses
         ref: Reference
         ref_help: Reference must be unique
         description_title: Description
@@ -205,6 +206,7 @@ en:
         detail: Detail
         postalcode: Postalcode
         city: City
+        tate: State
         country: Country
         lat: Latitude
         lng: Longitude
@@ -316,6 +318,7 @@ en:
         detail: Detail
         postalcode: Postalcode
         city: City
+        state: State
         country: Country
         customised_color: Select a custom color
         lat: Latitude

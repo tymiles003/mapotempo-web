@@ -20,7 +20,7 @@ class CustomerTest < ActiveSupport::TestCase
 
   test 'should save' do
     reseller = resellers(:reseller_one)
-    customer = reseller.customers.build(name: 'test', max_vehicles: 5, default_country: 'France', router: routers(:router_one), profile: profiles(:profile_one))
+    customer = reseller.customers.build(name: 'test', max_vehicles: 5, with_state: true, default_country: 'France', router: routers(:router_one), profile: profiles(:profile_one))
     assert_difference('Customer.count', 1) do
       assert_difference('Vehicle.count', 5) do
         assert_difference('Vehicle.count', 5) do

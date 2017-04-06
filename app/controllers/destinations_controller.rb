@@ -200,6 +200,7 @@ class DestinationsController < ApplicationController
                                         :detail,
                                         :postalcode,
                                         :city,
+                                        :state,
                                         :country,
                                         :lat,
                                         :lng,

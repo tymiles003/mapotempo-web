@@ -4,46 +4,46 @@ class StoreTest < ActiveSupport::TestCase
   set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   test 'should not save' do
-    o = Store.new
-    assert_not o.save, 'Saved without required fields'
+    store = Store.new
+    assert_not store.save, 'Saved without required fields'
   end
 
   test 'should save' do
-    o = customers(:customer_one).stores.build(name: 'plop', city: 'Bordeaux')
-    assert o.save!
-    o.reload
-    assert !o.lat.nil?, 'Latitude not built'
+    store = customers(:customer_one).stores.build(name: 'plop', city: 'Bordeaux', state: 'Midi-Pyrénées')
+    assert store.save!
+    store.reload
+    assert !store.lat.nil?, 'Latitude not built'
   end
 
   test 'should destroy' do
-    o = customers(:customer_one)
-    assert_difference('o.stores.size', -1) do
-      store = o.stores.find{ |store| store[:name] == 'store 0' }
+    store = customers(:customer_one)
+    assert_difference('store.stores.size', -1) do
+      store = store.stores.find{ |s| s[:name] == 'store 0' }
       assert store.destroy
-      o.reload
+      store.reload
       assert_equal stores(:store_one), vehicle_usages(:vehicle_usage_one_one).store_start
     end
   end
 
   test 'should destroy in use for vehicle_usage' do
-    o = customers(:customer_one)
-    assert_difference('o.stores.size', -1) do
-      store = o.stores.find{ |store| store[:name] == 'store 1' }
+    store = customers(:customer_one)
+    assert_difference('store.stores.size', -1) do
+      store = store.stores.find{ |s| s[:name] == 'store 1' }
       assert store.destroy
-      o.reload
+      store.reload
       assert_not_equal store, vehicle_usages(:vehicle_usage_one_one).store_start
     end
   end
 
   test 'should not destroy last store' do
-    o = customers(:customer_one)
-    assert_not_equal 0, o.stores.size
-    for i in 0..(o.stores.size - 2)
-      assert o.stores[i].destroy
+    store = customers(:customer_one)
+    assert_not_equal 0, store.stores.size
+    for i in 0..(store.stores.size - 2)
+      assert store.stores[i].destroy
     end
-    o.reload
+    store.reload
     begin
-      o.stores[0].destroy!
+      store.stores[0].destroy!
       assert false
     rescue
       assert true
@@ -51,70 +51,72 @@ class StoreTest < ActiveSupport::TestCase
   end
 
   test 'should out_of_date' do
-    o = stores(:store_one)
-    assert_not o.customer.plannings.where(name: 'planning1').first.out_of_date
-    o.lat = 10.1
-    o.save!
-    o.reload
-    assert o.customer.plannings.where(name: 'planning1').first.out_of_date
+    store = stores(:store_one)
+    assert_not store.customer.plannings.where(name: 'planning1').first.out_of_date
+    store.lat = 10.1
+    store.save!
+    store.reload
+    assert store.customer.plannings.where(name: 'planning1').first.out_of_date
   end
 
   test 'should geocode' do
-    o = stores(:store_one)
-    lat, lng = o.lat, o.lng
-    o.geocode
-    assert o.lat
-    assert_not_equal lat, o.lat
-    assert o.lng
-    assert_not_equal lng, o.lng
+    store = stores(:store_one)
+    lat, lng = store.lat, store.lng
+    store.geocode
+    assert store.lat
+    assert_not_equal lat, store.lat
+    assert store.lng
+    assert_not_equal lng, store.lng
   end
 
   test 'should geocode with error' do
     Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise GeocodeError.new }) do
-      o = stores(:store_one)
-      assert o.geocode
-      assert 1, o.warnings.size
+      store = stores(:store_one)
+      assert store.geocode
+      assert 1, store.warnings.size
     end
   end
 
   test 'should update_geocode' do
-    o = stores(:store_one)
-    o.city = 'Toulouse'
-    o.lat = o.lng = nil
-    lat, lng = o.lat, o.lng
-    o.save!
-    assert o.lat
-    assert_not_equal lat, o.lat
-    assert o.lng
-    assert_not_equal lng, o.lng
+    store = stores(:store_one)
+    store.city = 'Toulouse'
+    store.state = 'Midi-Pyrénées'
+    store.lat = store.lng = nil
+    lat, lng = store.lat, store.lng
+    store.save!
+    assert store.lat
+    assert_not_equal lat, store.lat
+    assert store.lng
+    assert_not_equal lng, store.lng
   end
 
   test 'should update_geocode with error' do
     Mapotempo::Application.config.geocode_geocoder.class.stub_any_instance(:code, lambda{ |*a| raise GeocodeError.new }) do
-      o = stores(:store_one)
-      o.city = 'Toulouse'
-      o.lat = o.lng = nil
-      assert o.save!
-      assert 1, o.warnings.size
+      store = stores(:store_one)
+      store.city = 'Toulouse'
+      store.state = 'Midi-Pyrénées'
+      store.lat = store.lng = nil
+      assert store.save!
+      assert 1, store.warnings.size
     end
   end
 
   test 'should distance' do
-    o = stores(:store_one)
-    assert_equal 2.51647173560523, o.distance(stores(:store_two))
+    store = stores(:store_one)
+    assert_equal 2.51647173560523, store.distance(stores(:store_two))
   end
 
   test 'should return default color' do
-    s = stores :store_one
+    store = stores :store_one
 
-    assert_equal Store::COLOR_DEFAULT, s.default_color
-    assert_equal Store::ICON_DEFAULT, s.default_icon
-    assert_equal Store::ICON_SIZE_DEFAULT, s.default_icon_size
+    assert_equal Store::COLOR_DEFAULT, store.default_color
+    assert_equal Store::ICON_DEFAULT, store.default_icon
+    assert_equal Store::ICON_SIZE_DEFAULT, store.default_icon_size
 
-    s.color = '#beef'
-    s.icon = 'beef'
-    assert_equal s.color, s.default_color
-    assert_equal s.icon, s.default_icon
-    assert_equal Store::ICON_SIZE_DEFAULT, s.default_icon_size
+    store.color = '#beef'
+    store.icon = 'beef'
+    assert_equal store.color, store.default_color
+    assert_equal store.icon, store.default_icon
+    assert_equal Store::ICON_SIZE_DEFAULT, store.default_icon_size
   end
 end

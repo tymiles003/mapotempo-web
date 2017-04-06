@@ -108,7 +108,8 @@ CREATE TABLE customers (
     enable_stop_status boolean DEFAULT false NOT NULL,
     router_options hstore DEFAULT ''::hstore NOT NULL,
     cost_waiting_time double precision,
-    take_over integer
+    take_over integer,
+    with_state boolean DEFAULT false
 );
 
 
@@ -227,7 +228,8 @@ CREATE TABLE destinations (
     country character varying,
     geocoding_level integer,
     phone_number character varying,
-    ref character varying
+    ref character varying,
+    state character varying
 );
 
 
@@ -717,7 +719,8 @@ CREATE TABLE stores (
     geocoding_level integer,
     color character varying,
     icon character varying,
-    icon_size character varying
+    icon_size character varying,
+    state character varying
 );
 
 
@@ -2591,3 +2594,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170316164808');
 
 INSERT INTO schema_migrations (version) VALUES ('20170316164815');
 
+INSERT INTO schema_migrations (version) VALUES ('20170406093321');
+
+INSERT INTO schema_migrations (version) VALUES ('20170406095830');
+
+INSERT INTO schema_migrations (version) VALUES ('20170406095839');

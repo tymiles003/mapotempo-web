@@ -196,7 +196,13 @@
     <%= f.text_field :take_over, {placeholder: t('all.unit.hour_minute_second'), value: @customer.take_over_time_with_seconds, input_group: content_tag('i', '', class: 'fa fa-clock-o fa-fw')} do %>
       <p class="help-block"><%= t '.take_over_help' %></p>
     <% end %>
+
     <%= f.text_field :default_country, required: true %>
+
+    <%= f.toggles t 'activerecord.attributes.customer.with_state' do %>
+      <%= f.check_box :with_state %>
+    <% end %>
+
   </fieldset>
   <% if current_user.admin? %>
     <fieldset>

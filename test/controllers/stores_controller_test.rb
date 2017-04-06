@@ -34,7 +34,7 @@ class StoresControllerTest < ActionController::TestCase
 
   test 'should create store' do
     assert_difference('Store.count') do
-      post :create, store: { city: @store.city, lat: @store.lat, lng: @store.lng, name: @store.name, postalcode: @store.postalcode, street: @store.street }
+      post :create, store: { city: @store.city, lat: @store.lat, lng: @store.lng, name: @store.name, postalcode: @store.postalcode, street: @store.street, state: @store.state }
     end
 
     assert_redirected_to edit_store_path(assigns(:store))
@@ -58,7 +58,7 @@ class StoresControllerTest < ActionController::TestCase
   end
 
   test 'should update store' do
-    patch :update, id: @store, store: { city: @store.city, lat: @store.lat, lng: @store.lng, name: @store.name, postalcode: @store.postalcode, street: @store.street }
+    patch :update, id: @store, store: { city: @store.city, lat: @store.lat, lng: @store.lng, name: @store.name, postalcode: @store.postalcode, street: @store.street, state: @store.state }
     assert_redirected_to edit_store_path(assigns(:store))
   end
 
@@ -132,7 +132,7 @@ class StoresControllerTest < ActionController::TestCase
     assert_valid response
   end
 
-  test 'should display application layout on devise scope' do 
+  test 'should display application layout on devise scope' do
     get :edit, id: @store
     assert_template layout: 'application'
   end

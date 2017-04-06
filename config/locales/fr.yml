@@ -183,6 +183,7 @@ fr:
         profile_id: Profil
         speed_multiplicator: Ajustement de la vitesse
         default_country: Pays par défaut
+        with_state: Ajouter champ État dans les adresses
         ref: Référence
         ref_help: La référence doit être unique
         description_title: Description
@@ -206,6 +207,7 @@ fr:
         detail: Complément
         postalcode: Code postal
         city: Ville
+        state: État
         country: Pays
         lat: Latitude
         lng: Longitude
@@ -317,6 +319,7 @@ fr:
         detail: Complément
         postalcode: Code postal
         city: Ville
+        state: État
         country: Pays
         customised_color: Couleur personnalisée
         lat: Latitude

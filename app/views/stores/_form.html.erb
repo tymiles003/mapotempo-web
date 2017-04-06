@@ -20,7 +20,22 @@
         </div>
       </div>
     </div>
-    <%= f.text_field :country, {placeholder: t('.country_default', n: @store.customer.default_country)} %>
+
+    <% if @store.customer.with_state %>
+      <div id="store_country_input" class="form-group">
+        <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.state' %> / <%= t 'activerecord.attributes.store.country' %></label>
+        <div class="col-md-6">
+          <div class="input-group">
+            <%= text_field :store, :state, class: 'form-control width_1_2' %>
+            <%= text_field :store, :country, placeholder: t('.country_default', n: @store.customer.default_country), class: 'form-control width_1_2' %>
+            <span class="input-group-addon"><i class="fa fa-map-o fa-fw"></i></span>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <%= f.text_field :country, {placeholder: t('.country_default', n: @store.customer.default_country)} %>
+    <% end %>
+
     <div id="store_geocoding_input" class="form-group">
       <label class="col-md-2 control-label" for="store_geocoding"><%= t 'activerecord.attributes.destination.geocoding_accuracy' %></label>
       <div class="col-md-6">

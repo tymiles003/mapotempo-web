@@ -31,6 +31,7 @@ class StoresController < ApplicationController
     if current_user.customer.job_store_geocoding
       flash.now[:warning] = t('stores.geocoding.geocoding_in_progress')
     end
+
     @stores = current_user.customer.stores
     respond_to do |format|
       format.html
@@ -56,7 +57,7 @@ class StoresController < ApplicationController
       if current_user.customer.save
         format.html { redirect_to link_back || edit_store_path(@store), notice: t('activerecord.successful.messages.created', model: @store.class.model_name.human) }
       else
-        flash.now[:error] = @store.customer.errors.full_messages if !@store.customer.errors.empty?
+        flash.now[:error] = @store.customer.errors.full_messages unless @store.customer.errors.empty?
         format.html { render action: 'new' }
       end
     end
@@ -68,7 +69,7 @@ class StoresController < ApplicationController
         if @store.update(store_params) && @store.customer.save
           format.html { redirect_to link_back || edit_store_path(@store), notice: t('activerecord.successful.messages.updated', model: @store.class.model_name.human) }
         else
-          flash.now[:error] = @store.customer.errors.full_messages if !@store.customer.errors.empty?
+          flash.now[:error] = @store.customer.errors.full_messages unless @store.customer.errors.empty?
           format.html { render action: 'edit' }
         end
       end
@@ -91,7 +92,7 @@ class StoresController < ApplicationController
         if params['stores']
           ids = params['stores'].keys.collect{ |i| Integer(i) }
           current_user.customer.stores.select{ |store| ids.include?(store.id) }.each{ |store|
-            if !store.destroy
+            unless store.destroy
               format.html { redirect_to stores_path and return }
             end
           }
@@ -145,11 +146,24 @@ class StoresController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def store_params
-    params.require(:store).permit(:name, :street, :postalcode, :city, :country, :lat, :lng, :ref, :geocoding_accuracy, :geocoding_level, :color, :icon, :icon_size)
+    params.require(:store).permit(:name,
+                                  :street,
+                                  :postalcode,
+                                  :city,
+                                  :state,
+                                  :country,
+                                  :lat,
+                                  :lng,
+                                  :ref,
+                                  :geocoding_accuracy,
+                                  :geocoding_level,
+                                  :color, :icon,
+                                  :icon_size)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def import_csv_params
-    params.require(:import_csv).permit(:replace, :file)
+    params.require(:import_csv).permit(:replace,
+                                       :file)
   end
 end

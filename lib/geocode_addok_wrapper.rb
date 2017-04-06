@@ -98,10 +98,10 @@ class GeocodeAddokWrapper
       result && result.body ? result.body : nil
     rescue RestClient::Exception => e
       raise GeocodeError.new e.message
-    end    
+    end
   end
 
-  def complete(street, postalcode, city, country, lat = nil, lng = nil)
+  def complete(street, postalcode, city, state, country, lat = nil, lng = nil)
     []
   end
 
