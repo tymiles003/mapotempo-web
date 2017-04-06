@@ -278,7 +278,7 @@ class Customer < ActiveRecord::Base
   end
 
   def update_out_of_date
-    if take_over_changed? || router_id_changed? || router_dimension_changed? || speed_multiplicator_changed? || @deliverable_units_updated
+    if take_over_changed? || router_id_changed? || router_dimension_changed? || router_options_changed? || speed_multiplicator_changed? || @deliverable_units_updated
       Route.transaction do
         plannings.each{ |planning|
           planning.routes.each{ |route|

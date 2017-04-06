@@ -55,7 +55,21 @@ class CustomerTest < ActiveSupport::TestCase
 
   test 'should update_out_of_date' do
     customer = customers(:customer_one)
-    customer.take_over = Time.new(2000, 01, 01, 00, 10, 00, '+00:00')
+    customer.take_over = '00::10:00'
+    customer.plannings.each { |p|
+      p.routes.select { |r| r.vehicle_usage }.each { |r|
+        assert_not r.out_of_date
+      } }
+    customer.save!
+    customer.plannings.each { |p|
+      p.routes.select { |r| r.vehicle_usage }.each { |r|
+        assert r.out_of_date
+      } }
+  end
+
+  test 'should update_out_of_date for router options' do
+    customer = customers(:customer_one)
+    customer.weight = 20
     customer.plannings.each { |p|
       p.routes.select { |r| r.vehicle_usage }.each { |r|
         assert_not r.out_of_date
