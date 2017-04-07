@@ -20,6 +20,14 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  # Handle exceptions
+  rescue_from StandardError, with: :server_error
+  rescue_from ActionController::InvalidAuthenticityToken, with: :server_error
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found_error
+  rescue_from ActionController::RoutingError, with: :not_found_error
+  rescue_from AbstractController::ActionNotFound, with: :not_found_error
+  rescue_from ActionController::UnknownController, with: :not_found_error
+
   layout :layout_by_resource
 
   before_action :api_key?, :load_vehicles
@@ -86,6 +94,30 @@ class ApplicationController < ActionController::Base
       if @unsubscribed
         flash.now[:error] = I18n.t('subscribe.expiration_date_over', scope: :all) + I18n.l((customer.end_subscription - 1.second), format: :long)
       end
+    end
+  end
+
+  def not_found_error(exception)
+    # Display in logger
+    Rails.logger.fatal(exception.class.to_s + ' : ' + exception.to_s)
+    Rails.logger.fatal(exception.backtrace.join("\n"))
+
+    respond_to do |format|
+      format.html { render 'errors/show', layout: 'full_page', locals: { status: 404 }, status: 404 }
+      format.json { render json: { error: t('errors.management.status.explanation.404'), status: :not_found } }
+      format.all { render body: nil, status: :not_found }
+    end
+  end
+
+  def server_error(exception)
+    # Display in logger
+    Rails.logger.fatal(exception.class.to_s + ' : ' + exception.to_s)
+    Rails.logger.fatal(exception.backtrace.join("\n"))
+
+    respond_to do |format|
+      format.html { render 'errors/show', layout: 'full_page', locals: { status: 500 }, status: 500 }
+      format.json { render json: { error: t('errors.management.status.explanation.default'), status: :internal_server_error } }
+      format.all { render body: nil, status: :internal_server_error }
     end
   end
 

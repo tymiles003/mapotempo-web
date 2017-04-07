@@ -252,10 +252,12 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should not move with error' do
-    Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
-      assert_no_difference('Stop.count') do
-        assert_raise do
-          patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 1, format: :json
+    ApplicationController.stub_any_instance(:server_error, lambda { |*a| raise }) do
+      Route.stub_any_instance(:compute, lambda { |*a| raise }) do
+        assert_no_difference('Stop.count') do
+          assert_raise do
+            patch :move, planning_id: @planning, route_id: @planning.routes[1], stop_id: @planning.routes[0].stops[0], index: 1, format: :json
+          end
         end
       end
     end

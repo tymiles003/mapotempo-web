@@ -78,6 +78,9 @@ module Mapotempo
       {customer_id: customer_id, time: event.time, params: params}
     end
 
+    # Errors handling
+    config.exceptions_app = self.routes
+
     # Option to display or not orders in Admin (not available in API)
     config.enable_orders = false
 

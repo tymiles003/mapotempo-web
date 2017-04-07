@@ -509,6 +509,22 @@ fr:
               invalid_format: ne doit pas contenir les caractères ".", "\" ou "/"
               ref_value: 'Référence tournée '
   errors:
+    management:
+      title: "Impossible d'accèder à la page"
+      description: "La page que vous essayez d'atteindre a provoquée une erreur"
+      status:
+        title:
+          default: "Une erreur est survenue dans l'application"
+          '404': "Page introuvable"
+          '422': "Action impossible"
+          '500': "Une erreur interne est survenue"
+        explanation:
+          default: "Une erreur interne s'est produite. Le problème a été signalé, merci d'essayer une autre action en attendant. Contactez le support si urgence."
+          '404': "La page n'a pas été trouvée sur le serveur, elle a peut être été supprimée."
+          '422': "Vous n'avez pas l'autorisation d'exécuter cette action."
+          '500': "Une erreur interne s'est produite. Le problème a été signalé, merci d'essayer une autre action en attendant. Contactez le support si urgence."
+      back_button: "Page précédente"
+      home_button: "Retourner à l'accueil"
     messages:
       taken: est déjà utilisé(e)
     connection_refused: Connexion à la base de donnée impossible
