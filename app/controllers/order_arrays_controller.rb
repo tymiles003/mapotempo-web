@@ -27,7 +27,8 @@ class OrderArraysController < ApplicationController
 
   def show
     @visits_orders = @order_array.visits_orders
-    planning = params.key?(:planning_id) ? current_user.customer.plannings.find(params[:planning_id]) : nil
+    planning = params.key?(:planning_id) && current_user.customer.plannings.find(params[:planning_id])
+
     if planning
       i = -1
       visit_index = Hash[planning.routes.flat_map{ |route|
@@ -39,7 +40,7 @@ class OrderArraysController < ApplicationController
       @visits_orders = @visits_orders.sort_by{ |visit_orders|
         visit_index[visit_orders[0].visit.id] ? visit_index[visit_orders[0].visit.id][0] : Float::INFINITY
       }.collect{ |visit_orders|
-        [visit_orders, visit_index[visit_orders[0].visit.id][1]]
+        visit_index[visit_orders[0].visit.id] ? [visit_orders, visit_index[visit_orders[0].visit.id][1]] : [visit_orders]
       }
     else
       @visits_orders = @visits_orders.collect{ |visit_orders|
