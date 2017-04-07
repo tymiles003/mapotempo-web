@@ -77,7 +77,7 @@
           <%= render 'job', customer: customer, job: customer.job_store_geocoding %>
         </td>
         <td class="center">
-          <% if customer.users.empty? %>
+          <% if !customer.users.exists? %>
             <span title="<%= t '.status_no_user' %>"><i class="fa fa-user-times fa-fw"></i><i class="fa fa-warning" style="color: orange;"></i></span>
           <% else
             max = customer.users.collect(&:current_sign_in_at).compact.max

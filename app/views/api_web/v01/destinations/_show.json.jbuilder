@@ -33,12 +33,10 @@ json.visits destination.visits do |visit|
     end
   end
 end
-if destination.visits.empty?
-  unless tags.empty?
-    json.tags_present do
-      json.tags do
-        json.array! tags, :label
-      end
+unless destination.visits.exists? || tags.empty?
+  json.tags_present do
+    json.tags do
+      json.array! tags, :label
     end
   end
 end

@@ -393,7 +393,7 @@ class PlanningsControllerTest < ActionController::TestCase
     zoning = zonings :zoning_one
     patch :apply_zonings, id: @planning.id, format: :json
     assert_response :success
-    assert planning.zonings.empty?
+    assert planning.zonings.exists?
     assert !planning.out_of_date
     assert !planning.zoning_out_of_date
     patch :apply_zonings, id: @planning.id, format: :json, planning: { zoning_ids: [zoning.id] }

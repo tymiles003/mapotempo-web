@@ -123,7 +123,7 @@
               <span class="duration">(<%= stop.visit.take_over_time_with_seconds %>)</span>
             <% end %>
             <% if route.planning.customer.enable_orders %>
-              <% if stop.order && stop.order.products.any? %>
+              <% if stop.order && stop.order.products.exists? %>
                 <p>
                   <i class="fa fa-cube fa-fw"></i>
                   <% stop_order_quantities(stop).each do |code, quantity| %>

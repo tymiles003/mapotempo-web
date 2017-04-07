@@ -69,7 +69,7 @@ class ZoningTest < ActiveSupport::TestCase
     customer = customers :customer_one
     planning = plannings :planning_one
     zoning = customer.zonings.new
-    assert planning.routes.detect{|route| !route.vehicle_usage }.stops.any?
+    assert planning.routes.detect{|route| !route.vehicle_usage }.stops.exists?
     zoning.automatic_clustering planning, nil, true
     assert_equal customer.vehicles.count, zoning.zones.length
   end
@@ -78,7 +78,7 @@ class ZoningTest < ActiveSupport::TestCase
     customer = customers :customer_one
     planning = plannings :planning_one
     zoning = customer.zonings.new
-    assert planning.routes.detect{|route| !route.vehicle_usage }.stops.any?
+    assert planning.routes.detect{|route| !route.vehicle_usage }.stops.exists?
     zoning.automatic_clustering planning, nil, false
     assert_equal customer.vehicles.count, zoning.zones.length
   end
