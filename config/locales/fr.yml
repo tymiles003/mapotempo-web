@@ -793,7 +793,7 @@ fr:
         street: "Voie"
         intersection: "Intersection"
         city: "Commune"
-        null: "Aucun"
+        "null": "Aucun"
       tags_help: "Catégories du client"
       dialog:
         confirm_overwrite_point: "La position précédente a été définie manuellement sur la carte. Voulez-vous la remplacer avec le résultat du géocodage automatique ?"
