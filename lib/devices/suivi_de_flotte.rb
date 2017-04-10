@@ -30,7 +30,7 @@ class SuiviDeFlotte < DeviceBase
           password: :password
         },
         vehicle: {
-          ref: :text
+          suivi_de_flotte_ref: :text
         },
       }
     }
