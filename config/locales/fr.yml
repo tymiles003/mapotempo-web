@@ -1,1802 +1,1879 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 fr:
   distance:
     unit:
-      one: "m"
-      other: "m"
+      one: m
+      other: m
     thousand:
-      one: "km"
-      other: "km"
+      one: km
+      other: km
   distance_miles:
     unit:
-      one: "mi."
-      other: "mi."
+      one: mi.
+      other: mi.
     thousand:
-      one: "mi."
-      other: "mi."
+      one: mi.
+      other: mi.
   time:
-    hour: "Heure"
-    minute: "Minute"
+    hour: Heure
+    minute: Minute
     formats:
-      default: "%d %B %Y %H:%M:%S"
-      long: "%A %d %B %Y %H:%M"
-      short: "%d %b %H:%M"
-      hour_minute: "%H:%M"
-      hour_minute_second: "%H:%M:%S"
-      complete: "%d-%m-%Y %H:%M:%S"
-      date: "%d/%m/%Y"
-      datepicker: "%d-%m-%Y"
-  default_time_zone: "Paris"
-
+      default: '%d %B %Y %H:%M:%S'
+      long: '%A %d %B %Y %H:%M'
+      short: '%d %b %H:%M'
+      hour_minute: '%H:%M'
+      hour_minute_second: '%H:%M:%S'
+      complete: '%d-%m-%Y %H:%M:%S'
+      date: '%d/%m/%Y'
+      datepicker: '%d-%m-%Y'
+  default_time_zone: Paris
   activemodel:
     models:
-      import_csv: "Import CSV"
+      import_csv: Import CSV
       import_csvs:
-        one: "Import CSV"
-        other: "Imports CSV"
-      import_tomtom: "Import TomTom"
+        one: Import CSV
+        other: Imports CSV
+      import_tomtom: Import TomTom
       import_tomtoms:
-        one: "Import TomTom"
-        other: "Imports TomTom"
+        one: Import TomTom
+        other: Imports TomTom
     attributes:
       import_csv:
-        file: "Fichier"
-        replace: "Remplacer"
-        delete_plannings: "Supprimer anciens plannings"
+        file: Fichier
+        replace: Remplacer
+        delete_plannings: Supprimer anciens plannings
       import_tomtom:
-        replace: "Remplacer"
-
+        replace: Remplacer
   activerecord:
     models:
-      customer: "Compte client"
+      customer: Compte client
       customers:
-        one: "compte client"
-        other: "comptes client"
-      deliverable_unit: "Unité livrable"
+        one: compte client
+        other: comptes client
+      deliverable_unit: Unité livrable
       deliverable_units:
-        one: "unité livrable"
-        other: "unités livrables"
-      destination: "Client"
+        one: unité livrable
+        other: unités livrables
+      destination: Client
       destinations:
-        one: "client"
-        other: "clients"
-      layer: "Fond de carte"
+        one: client
+        other: clients
+      layer: Fond de carte
       layers:
-        one: "fond de carte"
-        other: "fonds de cartes"
-      order: "Commande"
+        one: fond de carte
+        other: fonds de cartes
+      order: Commande
       orders:
-        one: "Commande"
-        other: "Commandes"
-      order_array: "Tableau de commandes"
+        one: Commande
+        other: Commandes
+      order_array: Tableau de commandes
       order_arrays:
-        one: "tableau de commandes"
-        other: "tableaux de commandes"
-      planning: "Planning"
+        one: tableau de commandes
+        other: tableaux de commandes
+      planning: Planning
       plannings:
-        one: "planning"
-        other: "plannings"
-      product: "Produit"
+        one: planning
+        other: plannings
+      product: Produit
       products:
-        one: "produit"
-        other: "produits"
-      profile: "Profil"
+        one: produit
+        other: produits
+      profile: Profil
       profiles:
-        one: "profil"
-        other: "profils"
-      reseller: "Revendeur"
-      resellers: "Revendeurs"
-      route: "Tournée"
+        one: profil
+        other: profils
+      reseller: Revendeur
+      resellers: Revendeurs
+      route: Tournée
       routes:
-        one: "tournée"
-        other: "tournées"
-      stop: "Arrêt"
+        one: tournée
+        other: tournées
+      stop: Arrêt
       stops:
-        one: "arrêt"
-        other: "arrêts"
-      store: "Dépôt"
+        one: arrêt
+        other: arrêts
+      store: Dépôt
       stores:
-        one: "dépôt"
-        other: "dépôts"
-      tag: "Libellé"
+        one: dépôt
+        other: dépôts
+      tag: Libellé
       tags:
-        one: "libellé"
-        other: "libellés"
-      user: "Utilisateur"
+        one: libellé
+        other: libellés
+      user: Utilisateur
       users:
-        one: "utilisateur"
-        other: "utilisateurs"
-      vehicle: "Véhicule"
+        one: utilisateur
+        other: utilisateurs
+      vehicle: Véhicule
       vehicles:
-        one: "véhicule"
-        other: "véhicules"
-      vehicle_usage: "Configuration du véhicule"
+        one: véhicule
+        other: véhicules
+      vehicle_usage: Configuration du véhicule
       vehicle_usages:
-        one: "configuration du véhicule"
-        other: "configurations de véhicule"
-      vehicle_usage_set: "Configuration des véhicules"
+        one: configuration du véhicule
+        other: configurations de véhicule
+      vehicle_usage_set: Configuration des véhicules
       vehicle_usage_sets:
-        one: "configuration des véhicules"
-        other: "configurations des véhicules"
-      visit: "Visite"
+        one: configuration des véhicules
+        other: configurations des véhicules
+      visit: Visite
       visits:
-        one: "visite"
-        other: "visites"
-      zoning: "Zonage"
+        one: visite
+        other: visites
+      zoning: Zonage
       zonings:
-        one: "zonage"
-        other: "zonages"
+        one: zonage
+        other: zonages
     attributes:
       customer:
-        enable_external_callback: "Activer URL de rappel"
-        end_subscription: "Fin de souscription"
-        max_vehicles: "Forfait"
-        take_over: "Durée de visite des clients"
-        name: "Nom"
-        destinations: "Clients"
-        enable_tomtom: "Activer TomTom WEBFLEET"
-        enable_masternaut: "Activer Masternaut"
-        enable_alyacom: "Activer Alyacom"
-        enable_teksat: "Activer Teksat"
-        enable_orange_fleet: "Activer Orange Fleet Performance"
-        orange_user: "Utilisateur Orange"
-        orange_password: "Mot de passe Orange"
-        teksat_customer_id: "Client ID Teksat"
-        teksat_username: "Nom d'utilisateur Teksat"
-        teksat_password: "Mot de passe Teksat"
-        teksat_url: "URL Teksat"
-        tomtom_account: "Compte WEBFLEET"
-        tomtom_user: "Nom d'utilisateur WEBFLEET"
-        tomtom_password: "Mot de passe WEBFLEET"
-        masternaut_user: "Nom d'utilisateur"
-        masternaut_password: "Mot de passe"
-        alyacom_association: "Identifiant AlyaCom"
-        alyacom_api_key: "Clé d'API AlyaCom"
-        router: "Calculateur d'itinéraire"
-        router_id: "Calculateur d'itinéraire"
-        router_dimension: "Objectif du calculateur"
-        router_options_motorway: "Utiliser les autouroutes"
-        router_options_toll: "Autoriser les sections à péage"
-        router_options_trailers: "Nombre de remorques"
-        router_options_weight: "Poids du véhicule"
-        router_options_weight_per_axle: "Poids par essieu"
-        router_options_height: "Hauteur du véhicule"
-        router_options_width: "Largeur du véhicule"
-        router_options_length: "Longueur du véhicule"
-        router_options_hazardous_goods: "Type de matière dangeureuse"
-        print_planning_annotating: "Inclure un émargement client"
-        print_header: "Entête des tournées"
-        print_stop_time: "Inclure les horaires de passage"
-        print_map: "Inclure la carte"
-        stores: "Dépôts"
-        enable_orders: "Activer les commandes"
-        enable_multi_vehicle_usage_sets: "Autoriser les configurations de véhicules multiples"
-        enable_references: "Montrer les références"
-        enable_multi_visits: "Autoriser les visites multiples"
-        enable_global_optimization: "Activer l'optimisation globale"
-        test: "Test"
-        jobs: "Tâches"
-        optimization_cluster_size: "Taille des clusters d'optimisation"
-        optimization_time: "Temps d'optimisation maximum"
-        optimization_stop_soft_upper_bound: "Coefficient retards / arrêts"
-        optimization_vehicle_soft_upper_bound: "Coefficient retards / véhicules"
-        cost_waiting_time: "Coefficient de temps d'attente"
-        profile: "Profil"
-        profile_id: "Profil"
-        speed_multiplicator: "Ajustement de la vitesse"
-        default_country: "Pays par défaut"
-        ref: "Référence"
-        ref_help: "La référence doit être unique"
-        description_title: "Description"
-        description_label: "Informations du compte"
-        description_help: "Détails sur le compte et les utilisateurs courants"
-        enable_vehicle_position: "Activer la position des véhicules"
-        enable_stop_status: "Activer les statuts des visites"
+        enable_external_callback: Activer URL de rappel
+        end_subscription: Fin de souscription
+        max_vehicles: Forfait
+        take_over: Durée de visite des clients
+        name: Nom
+        destinations: Clients
+        enable_tomtom: Activer TomTom WEBFLEET
+        enable_masternaut: Activer Masternaut
+        enable_alyacom: Activer Alyacom
+        enable_teksat: Activer Teksat
+        enable_orange_fleet: Activer Orange Fleet Performance
+        orange_user: Utilisateur Orange
+        orange_password: Mot de passe Orange
+        teksat_customer_id: Client ID Teksat
+        teksat_username: Nom d'utilisateur Teksat
+        teksat_password: Mot de passe Teksat
+        teksat_url: URL Teksat
+        tomtom_account: Compte WEBFLEET
+        tomtom_user: Nom d'utilisateur WEBFLEET
+        tomtom_password: Mot de passe WEBFLEET
+        masternaut_user: Nom d'utilisateur
+        masternaut_password: Mot de passe
+        alyacom_association: Identifiant AlyaCom
+        alyacom_api_key: Clé d'API AlyaCom
+        router: Calculateur d'itinéraire
+        router_id: Calculateur d'itinéraire
+        router_dimension: Objectif du calculateur
+        router_options_motorway: Utiliser les autouroutes
+        router_options_toll: Autoriser les sections à péage
+        router_options_trailers: Nombre de remorques
+        router_options_weight: Poids du véhicule
+        router_options_weight_per_axle: Poids par essieu
+        router_options_height: Hauteur du véhicule
+        router_options_width: Largeur du véhicule
+        router_options_length: Longueur du véhicule
+        router_options_hazardous_goods: Type de matière dangeureuse
+        print_planning_annotating: Inclure un émargement client
+        print_header: Entête des tournées
+        print_stop_time: Inclure les horaires de passage
+        print_map: Inclure la carte
+        stores: Dépôts
+        enable_orders: Activer les commandes
+        enable_multi_vehicle_usage_sets: Autoriser les configurations de véhicules
+          multiples
+        enable_references: Montrer les références
+        enable_multi_visits: Autoriser les visites multiples
+        enable_global_optimization: Activer l'optimisation globale
+        test: Test
+        jobs: Tâches
+        optimization_cluster_size: Taille des clusters d'optimisation
+        optimization_time: Temps d'optimisation maximum
+        optimization_stop_soft_upper_bound: Coefficient retards / arrêts
+        optimization_vehicle_soft_upper_bound: Coefficient retards / véhicules
+        cost_waiting_time: Coefficient de temps d'attente
+        profile: Profil
+        profile_id: Profil
+        speed_multiplicator: Ajustement de la vitesse
+        default_country: Pays par défaut
+        ref: Référence
+        ref_help: La référence doit être unique
+        description_title: Description
+        description_label: Informations du compte
+        description_help: Détails sur le compte et les utilisateurs courants
+        enable_vehicle_position: Activer la position des véhicules
+        enable_stop_status: Activer les statuts des visites
       deliverable_unit:
-        label: "Libellé"
-        ref: "Référence"
-        icon: "Icône"
-        default_quantity: "Quantité par défaut"
-        default_capacity: "Capacité par défaut"
-        optimization_overload_multiplier: "Coefficient dépassement"
+        label: Libellé
+        ref: Référence
+        icon: Icône
+        default_quantity: Quantité par défaut
+        default_capacity: Capacité par défaut
+        optimization_overload_multiplier: Coefficient dépassement
       destination:
-        ref: "Référence"
-        ref_small: "Réf."
-        name: "Nom"
-        address: "Adresse"
-        street: "Voie"
-        detail: "Complément"
-        postalcode: "Code postal"
-        city: "Ville"
-        country: "Pays"
-        lat: "Latitude"
-        lng: "Longitude"
-        comment: "Commentaire"
-        comment_small: "Comment."
-        phone_number: "Numéro de téléphone"
-        phone_number_small: "Tél."
-        geocoding_accuracy: "Qualité du géocodage"
-        geocoding_accuracy_small: "Géoc."
-        geocoding_level: "Niveau de géocodage"
-        tags: "Libellés"
-        tag_ids: "Libellés"
-        visits: "Visites"
-      # Duplicate for nested errors with autosave
+        ref: Référence
+        ref_small: Réf.
+        name: Nom
+        address: Adresse
+        street: Voie
+        detail: Complément
+        postalcode: Code postal
+        city: Ville
+        country: Pays
+        lat: Latitude
+        lng: Longitude
+        comment: Commentaire
+        comment_small: Comment.
+        phone_number: Numéro de téléphone
+        phone_number_small: Tél.
+        geocoding_accuracy: Qualité du géocodage
+        geocoding_accuracy_small: Géoc.
+        geocoding_level: Niveau de géocodage
+        tags: Libellés
+        tag_ids: Libellés
+        visits: Visites
       destinations:
-        name: "Nom"
-        address: "Adresse"
-        street: "Voie"
-        detail: "Complément"
-        postalcode: "Code postal"
-        city: "Ville"
-        country: "Pays"
-        comment: "Commentaire"
-        phone_number: "Numéro de téléphone"
-        geocoding_accuracy: "Qualité du géocodage"
-        geocoding_level: "Niveau de géocodage"
+        name: Nom
+        address: Adresse
+        street: Voie
+        detail: Complément
+        postalcode: Code postal
+        city: Ville
+        country: Pays
+        comment: Commentaire
+        phone_number: Numéro de téléphone
+        geocoding_accuracy: Qualité du géocodage
+        geocoding_level: Niveau de géocodage
       layer:
-        name: "Nom"
-        url: "URL"
-        attribution: "Attribution"
+        name: Nom
+        url: URL
+        attribution: Attribution
       order:
-        date: "Date"
-        destination_id: "Client"
-        order_array_id: "Tableau de commandes"
+        date: Date
+        destination_id: Client
+        order_array_id: Tableau de commandes
       order_array:
-        name: "Nom"
-        base_date: "Date de base"
-        length: "Période"
-        customer_id: "Compte client"
+        name: Nom
+        base_date: Date de base
+        length: Période
+        customer_id: Compte client
       planning:
-        name: "Nom"
-        ref: "Référence"
-        ref_small: "Réf."
-        tag_ids: "Libellés"
-        tags: "Libellés"
-        zoning_id: "Zonage"
-        created_at: "Création"
-        updated_at: "Mise à jour"
-        order_array_id: "Tableau de commandes"
-        date: "Date"
-        vehicle_usage_set: "Configuration des véhicules"
-        vehicle_usage_set_id: "Configuration des véhicules"
-        vehicle_usage_set_small: "Conf."
+        name: Nom
+        ref: Référence
+        ref_small: Réf.
+        tag_ids: Libellés
+        tags: Libellés
+        zoning_id: Zonage
+        created_at: Création
+        updated_at: Mise à jour
+        order_array_id: Tableau de commandes
+        date: Date
+        vehicle_usage_set: Configuration des véhicules
+        vehicle_usage_set_id: Configuration des véhicules
+        vehicle_usage_set_small: Conf.
       profile:
-        name: "Nom"
-        layers: "Fond de carte"
-        routers: "Calculateur d'itinéraire"
+        name: Nom
+        layers: Fond de carte
+        routers: Calculateur d'itinéraire
       product:
-        code: "Code"
-        name: "Nom"
+        code: Code
+        name: Nom
       reseller:
-        host: "Hôte"
-        name: "Nom"
-        welcome_url: "URL d'accueil"
-        help_url: "URL d'aide"
-        contact_url: "URL de contact"
-        logo_large: "Grand logo"
-        logo_small: "Petit logo"
-        favicon: "Favicon"
-        website_url: "URL site web"
-        url_protocol: "Type de connexion"
+        host: Hôte
+        name: Nom
+        welcome_url: URL d'accueil
+        help_url: URL d'aide
+        contact_url: URL de contact
+        logo_large: Grand logo
+        logo_small: Petit logo
+        favicon: Favicon
+        website_url: URL site web
+        url_protocol: Type de connexion
       route:
-        distance: "Distance"
-        emission: "Émissions"
-        out_of_date: "Périmé"
-        start: "Début"
-        end: "Fin"
-        hidden: "Masqué"
-        locked: "Verrouillé"
-        ref: "Référence"
+        distance: Distance
+        emission: Émissions
+        out_of_date: Périmé
+        start: Début
+        end: Fin
+        hidden: Masqué
+        locked: Verrouillé
+        ref: Référence
       router:
         router_dimensions:
-          time: "Au plus rapide"
-          distance: "Au plus court"
+          time: Au plus rapide
+          distance: Au plus court
         options:
-          hazardous_goods_none: "Aucune"
+          hazardous_goods_none: Aucune
           hazardous_goods:
-            explosive: "Explosif"
-            gas: "Gaz"
-            flammable: "Inflammable"
-            combustible: "Combustible"
-            organic: "Organique"
-            poison: "Poison"
-            radio_active: "Radioactif"
-            corrosive: "Corrosif"
-            poisonous_inhalation: "Toxique"
-            harmful_to_water: "Nocif pour l'eau"
-            other: "Autre"
+            explosive: Explosif
+            gas: Gaz
+            flammable: Inflammable
+            combustible: Combustible
+            organic: Organique
+            poison: Poison
+            radio_active: Radioactif
+            corrosive: Corrosif
+            poisonous_inhalation: Toxique
+            harmful_to_water: Nocif pour l'eau
+            other: Autre
       stop:
-        active: "Actif"
-        begin: "Début"
-        end: "Fin"
-        distance: "Distance"
-        time: "Durée"
-        wait_time: "Temps d'attente"
+        active: Actif
+        begin: Début
+        end: Fin
+        distance: Distance
+        time: Durée
+        wait_time: Temps d'attente
       store:
-        name: "Nom"
-        address: "Adresse"
-        street: "Voie"
-        detail: "Complément"
-        postalcode: "Code postal"
-        city: "Ville"
-        country: "Pays"
-        customised_color: "Couleur personnalisée"
-        lat: "Latitude"
-        lng: "Longitude"
-        open: "Horaire début"
-        close: "Horaire fin"
-        store_start: "Dépôt début"
-        store_end: "Dépôt fin"
-        color: "Couleur"
-        icon: "Icône"
-        icon_size: "Taille d'icône"
-      # Duplicate for nested errors with autosave
+        name: Nom
+        address: Adresse
+        street: Voie
+        detail: Complément
+        postalcode: Code postal
+        city: Ville
+        country: Pays
+        customised_color: Couleur personnalisée
+        lat: Latitude
+        lng: Longitude
+        open: Horaire début
+        close: Horaire fin
+        store_start: Dépôt début
+        store_end: Dépôt fin
+        color: Couleur
+        icon: Icône
+        icon_size: Taille d'icône
       stores:
-        name: "Nom"
-        address: "Adresse"
-        street: "Voie"
-        postalcode: "Code postal"
-        city: "Ville"
-        country: "Pays"
-        geocoding_accuracy: "Qualité du géocodage"
-        geocoding_level: "Niveau de géocodage"
+        name: Nom
+        address: Adresse
+        street: Voie
+        postalcode: Code postal
+        city: Ville
+        country: Pays
+        geocoding_accuracy: Qualité du géocodage
+        geocoding_level: Niveau de géocodage
       tag:
-        label: "Libellé"
-        color: "Couleur"
-        icon: "Icône"
-        ref: "Référence"
+        label: Libellé
+        color: Couleur
+        icon: Icône
+        ref: Référence
       user:
-        email: "Email"
-        customer: "Compte client"
-        customer_id: "Compte client"
-        layer: "Fond de carte"
-        layer_id: "Fond de carte"
-        password: "Mot de passe"
-        password_confirmation: "Confirmation mot de passe"
-        current_password: "Mot de passe actuel"
-        api_key: "Clé d'API"
-        url_click2call: "URL Click2Call"
-        sign_in_count: "Nombre de connexions"
-        sign_in_at: "Dernière connexion"
-        ref: "Référence"
-        confirmed_at: "Date de confirmation"
-        prefered_unit: "Choix unité"
+        email: Email
+        customer: Compte client
+        customer_id: Compte client
+        layer: Fond de carte
+        layer_id: Fond de carte
+        password: Mot de passe
+        password_confirmation: Confirmation mot de passe
+        current_password: Mot de passe actuel
+        api_key: Clé d'API
+        url_click2call: URL Click2Call
+        sign_in_count: Nombre de connexions
+        sign_in_at: Dernière connexion
+        ref: Référence
+        confirmed_at: Date de confirmation
+        prefered_unit: Choix unité
       vehicle:
-        name: "Nom"
-        emission: "Émission"
-        consumption: "Consommation"
-        color: "Couleur"
-        tomtom_id: "TomTom ID"
-        masternaut_ref: "Ref. véhicule Masternaut"
-        router: "Calculateur d'itinéraire"
-        router_id: "Calculateur d'itinéraire"
-        router_dimension: "Objectif du calculateur"
-        speed_multiplicator: "Ajustement de la vitesse"
-        customised_color: "Couleur personnalisée"
-        ref: "Référence"
-        contact_email: "Email"
-        capacities: "Capacités"
+        name: Nom
+        emission: Émission
+        consumption: Consommation
+        color: Couleur
+        tomtom_id: TomTom ID
+        masternaut_ref: Ref. véhicule Masternaut
+        router: Calculateur d'itinéraire
+        router_id: Calculateur d'itinéraire
+        router_dimension: Objectif du calculateur
+        speed_multiplicator: Ajustement de la vitesse
+        customised_color: Couleur personnalisée
+        ref: Référence
+        contact_email: Email
+        capacities: Capacités
       vehicle_usage:
-        vehicle_id: "Véhicule"
-        open: "Horaire début"
-        close: "Horaire fin"
-        store_start: "Dépôt départ"
-        store_start_id: "Dépôt départ"
-        store_stop: "Dépôt arrivé"
-        store_stop_id: "Dépôt arrivée"
-        rest_start: "Début plage repos"
-        rest_stop: "Fin plage repos"
-        rest_duration: "Durée de repos"
-        store_rest: "Lieu de repos"
-        store_rest_id: "Lieu de repos"
-        service_time_start: "Durée de service avant"
-        service_time_end: "Durée de service après"
-        vehicle: "Véhicule"
+        vehicle_id: Véhicule
+        open: Horaire début
+        close: Horaire fin
+        store_start: Dépôt départ
+        store_start_id: Dépôt départ
+        store_stop: Dépôt arrivé
+        store_stop_id: Dépôt arrivée
+        rest_start: Début plage repos
+        rest_stop: Fin plage repos
+        rest_duration: Durée de repos
+        store_rest: Lieu de repos
+        store_rest_id: Lieu de repos
+        service_time_start: Durée de service avant
+        service_time_end: Durée de service après
+        vehicle: Véhicule
       vehicle_usage_set:
-        name: "Nom"
-        open: "Horaire début"
-        close: "Horaire fin"
-        store_start: "Dépôt départ"
-        store_start_id: "Dépôt départ"
-        store_stop: "Dépôt arrivée"
-        store_stop_id: "Dépôt arrivée"
-        rest_start: "Début plage repos"
-        rest_stop: "Fin plage repos"
-        rest_duration: "Durée de repos"
-        store_rest: "Lieu de repos"
-        store_rest_id: "Lieu de repos"
-        service_time_start: "Durée de service avant"
-        service_time_end: "Durée de service après"
+        name: Nom
+        open: Horaire début
+        close: Horaire fin
+        store_start: Dépôt départ
+        store_start_id: Dépôt départ
+        store_stop: Dépôt arrivée
+        store_stop_id: Dépôt arrivée
+        rest_start: Début plage repos
+        rest_stop: Fin plage repos
+        rest_duration: Durée de repos
+        store_rest: Lieu de repos
+        store_rest_id: Lieu de repos
+        service_time_start: Durée de service avant
+        service_time_end: Durée de service après
       visit:
-        ref: "Référence"
-        ref_small: "Réf."
-        take_over: "Durée de visite"
-        take_over_small: "Durée"
-        open1: "Début de Plage horaire 1"
-        open1_small: "Début 1"
-        close1: "Fin de Plage horaire 1"
-        close1_small: "Fin 1"
-        open_close1_small: "Début/Fin 1"
-        open1_close1_days: "J+"
-        open2: "Début de Plage horaire 2"
-        open2_small: "Début 2"
-        close2: "Fin de Plage horaire 2"
-        close2_small: "Fin 2"
-        open_close2_small: "Début/Fin 2"
-        open2_close2_days: "J+"
-        multi_visit: "Multi"
-        tags: "Libellés"
-        tag_ids: "Libellés"
-        quantities: "Quantités"
+        ref: Référence
+        ref_small: Réf.
+        take_over: Durée de visite
+        take_over_small: Durée
+        open1: Début de Plage horaire 1
+        open1_small: Début 1
+        close1: Fin de Plage horaire 1
+        close1_small: Fin 1
+        open_close1_small: Début/Fin 1
+        open1_close1_days: J+
+        open2: Début de Plage horaire 2
+        open2_small: Début 2
+        close2: Fin de Plage horaire 2
+        close2_small: Fin 2
+        open_close2_small: Début/Fin 2
+        open2_close2_days: J+
+        multi_visit: Multi
+        tags: Libellés
+        tag_ids: Libellés
+        quantities: Quantités
       zoning:
-        name: "Nom"
+        name: Nom
       zone:
-        vehicle: "Véhicule"
-        name: "Nom"
-
+        vehicle: Véhicule
+        name: Nom
     successful:
       messages:
-        created: "%{model} a été créé."
-        updated: "%{model} a été mis à jour."
-
+        created: '%{model} a été créé.'
+        updated: '%{model} a été mis à jour.'
     errors:
       attributes:
-        inconsistent_customer: "n'est pas une valeur autorisée pour ce compte client"
+        inconsistent_customer: n'est pas une valeur autorisée pour ce compte client
       models:
         location:
-          missing_address_or_latlng: "Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides"
-          lat_outside_range: "doit être comprise entre -90..90"
-          lng_outside_range: "doit être comprise entre -180..180"
-          geocoding_accuracy_outside_range: "doit être comprise entre 0..1"
+          missing_address_or_latlng: Le code postal et la ville ne peuvent pas être
+            vides si lat/lng sont vides
+          lat_outside_range: doit être comprise entre -90..90
+          lng_outside_range: doit être comprise entre -180..180
+          geocoding_accuracy_outside_range: doit être comprise entre 0..1
         vehicle:
           attributes:
             capacities:
-              not_float: "doivent être un nombre"
+              not_float: doivent être un nombre
         vehicles:
-          at_least_one: "Au moins un véhicle est requis"
+          at_least_one: Au moins un véhicle est requis
         vehicle_usage:
           attributes:
             close:
-              after: "doit être après l'horaire de début"
+              after: doit être après l'horaire de début
             rest_stop:
-              after: "doit être après l'horaire de début"
-          missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
-          missing_rest_duration: "doit être remplie si une plage de repos est remplie"
-          rest_range: "La plage de repos doit être comprise entre %{start} et %{end}"
-          service_range: "ne peut pas être supérieure ou égale au temps de travail"
+              after: doit être après l'horaire de début
+          missing_rest_window: doit être rempli(e) si la durée de repos est remplie
+          missing_rest_duration: doit être remplie si une plage de repos est remplie
+          rest_range: La plage de repos doit être comprise entre %{start} et %{end}
+          service_range: ne peut pas être supérieure ou égale au temps de travail
         vehicle_usage_set:
           attributes:
             close:
-              after: "doit être après l'horaire de début"
+              after: doit être après l'horaire de début
             rest_stop:
-              after: "doit être après l'horaire de début"
-          at_least_one: "Au moins une configuration de véhicules est requise"
-          missing_rest_window: "doit être rempli(e) si la durée de repos est remplie"
-          missing_rest_duration: "doit être remplie si une plage de repos est remplie"
+              after: doit être après l'horaire de début
+          at_least_one: Au moins une configuration de véhicules est requise
+          missing_rest_window: doit être rempli(e) si la durée de repos est remplie
+          missing_rest_duration: doit être remplie si une plage de repos est remplie
         visit:
           attributes:
             close1:
-              after: "doit être après le début de Plage horaire 1"
-              blank: "doit être rempli(e) si un début de Plage horaire 2 est renseigné"
+              after: doit être après le début de Plage horaire 1
+              blank: doit être rempli(e) si un début de Plage horaire 2 est renseigné
             open2:
-              after: "doit être après la fin de Plage horaire 1"
+              after: doit être après la fin de Plage horaire 1
             close2:
-              after: "doit être après le début de Plage horaire 2"
+              after: doit être après le début de Plage horaire 2
             quantities:
-              not_float: "doivent être un nombre"
+              not_float: doivent être un nombre
         zone:
           attributes:
             vehicle:
-              bad_customer: "non associé au compte client"
+              bad_customer: non associé au compte client
             polygon:
-              invalid_json: "n'est pas une chaîne de caractères json valide"
+              invalid_json: n'est pas une chaîne de caractères json valide
         customer:
           attributes:
             destinations:
-              over_max_limit: "Dépassement du nombre maximal de clients"
+              over_max_limit: Dépassement du nombre maximal de clients
             stores:
-              over_max_limit: "Dépassement du nombre maximal de dépôts"
+              over_max_limit: Dépassement du nombre maximal de dépôts
         store:
-          at_least_one: "Au moins un dépôt est requis"
-          icon_unknown: "n'est pas une icône font-awesome autorisée"
-          icon_size_invalid: "n'est pas une taille valide"
+          at_least_one: Au moins un dépôt est requis
+          icon_unknown: n'est pas une icône font-awesome autorisée
+          icon_size_invalid: n'est pas une taille valide
         route:
           attributes:
             stops:
-              bad_index: "Mauvais index %{n}"
+              bad_index: Mauvais index %{n}
         planning:
           attributes:
             ref:
-              invalid_format: "ne doit pas contenir les caractères \".\", \"\\\" ou \"/\""
-              ref_value: "Référence tournée "
-
+              invalid_format: ne doit pas contenir les caractères ".", "\" ou "/"
+              ref_value: 'Référence tournée '
   errors:
     messages:
-      taken: "est déjà utilisé(e)"
-    connection_refused: "Connexion à la base de donnée impossible"
+      taken: est déjà utilisé(e)
+    connection_refused: Connexion à la base de donnée impossible
     location:
-      geocoding_fail: "Le géocodage a échoué :"
-      reversegeocoding_fail: "Le géocodage inversé a échoué :"
+      geocoding_fail: 'Le géocodage a échoué :'
+      reversegeocoding_fail: 'Le géocodage inversé a échoué :'
     planning:
-      import_too_routes: "Tentative d'importer plus de tournées que de véhicules disponibles."
-      already_optimizing: "Une optimisation de planning est déjà en cours"
+      import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles.
+      already_optimizing: Une optimisation de planning est déjà en cours
     tomtom:
-      access_denied: "Non Autorisé. 'Accès complet aux commandes' n'est pas activé dans l'interface WebFLEET. Vous n'avez pas les permissions nécessaires pour effectuer cette action."
-      invalid_account: "Utilisateur invalide (non existant)"
-      external_requests_not_allowed: "Non Autorisé. 'Accès à l'interface WebFLEET.connect' n'est pas activé dans l'interface WebFLEET. Les requêtes externes ne sont pas autorisées pour ce compte/utilisateur."
-      hostname_not_allowed: "Le nom de domaine n'est pas autorisé"
-      request_quota_reached: "Quota de requêtes dépassé"
-      addresses_empty_result: "Aucune adresse trouvée"
-      could_not_process_last_request: "La requête n'a pas pu être traitée"
-      unsupported_export_type: "Le GPS connecté ne supporte pas l'export de points de passage"
-      duplicate_order: "Commande déjà envoyée"
-      busy_processing: "Compte occupé à traiter une autre demande"
-      gps_unreachable: "GPS actuellement indisponible"
-      last_action_failed: "Votre dernier envoi n'a pas fonctionné"
-      service_failed: "Service occupé après plusieurs tentatives"
+      access_denied: Non Autorisé. 'Accès complet aux commandes' n'est pas activé
+        dans l'interface WebFLEET. Vous n'avez pas les permissions nécessaires pour
+        effectuer cette action.
+      invalid_account: Utilisateur invalide (non existant)
+      external_requests_not_allowed: Non Autorisé. 'Accès à l'interface WebFLEET.connect'
+        n'est pas activé dans l'interface WebFLEET. Les requêtes externes ne sont
+        pas autorisées pour ce compte/utilisateur.
+      hostname_not_allowed: Le nom de domaine n'est pas autorisé
+      request_quota_reached: Quota de requêtes dépassé
+      addresses_empty_result: Aucune adresse trouvée
+      could_not_process_last_request: La requête n'a pas pu être traitée
+      unsupported_export_type: Le GPS connecté ne supporte pas l'export de points
+        de passage
+      duplicate_order: Commande déjà envoyée
+      busy_processing: Compte occupé à traiter une autre demande
+      gps_unreachable: GPS actuellement indisponible
+      last_action_failed: Votre dernier envoi n'a pas fonctionné
+      service_failed: Service occupé après plusieurs tentatives
     teksat:
-      bad_url: "URL non valide"
-      get_ticket: "Échec de l'identification. Veuillez vérifier vos identifiants"
-      list: "Impossible de lister les appareils"
-      get_vehicles_pos: "Impossible de lister les positions des véhicules"
-      set_mission: "Échec lors de la création de la mission"
-      unauthorized: "Non autorisé"
+      bad_url: URL non valide
+      get_ticket: Échec de l'identification. Veuillez vérifier vos identifiants
+      list: Impossible de lister les appareils
+      get_vehicles_pos: Impossible de lister les positions des véhicules
+      set_mission: Échec lors de la création de la mission
+      unauthorized: Non autorisé
     orange:
-      no_equipment: "Véhicule: Aucun équipement trouvé"
-      unauthorized: "Non autorisé"
-      list: "Impossible de lister les appareils"
-      get_vehicles_pos: "Impossible de lister les positions des véhicules"
+      no_equipment: 'Véhicule: Aucun équipement trouvé'
+      unauthorized: Non autorisé
+      list: Impossible de lister les appareils
+      get_vehicles_pos: Impossible de lister les positions des véhicules
     alyacom:
-      unauthorized: "Non autorisé"
-      timeout: "Délai d'attente depassé"
-
+      unauthorized: Non autorisé
+      timeout: Délai d'attente depassé
   import:
-    empty: "Rien à importer, vérifiez vos données."
-    data: "Contenu :"
+    empty: Rien à importer, vérifiez vos données.
+    data: 'Contenu :'
     data_erroneous:
-      csv: "Fichier invalide, ligne"
-      json: "Fichier invalide, enregistrement"
-      tomtom: "Données tomtom invalides, enregistrement"
-    template_csv: "Modèle import tableur standard"
-    template_excel: "Modèle import tableur Excel"
-
+      csv: Fichier invalide, ligne
+      json: Fichier invalide, enregistrement
+      tomtom: Données tomtom invalides, enregistrement
+    template_csv: Modèle import tableur standard
+    template_excel: Modèle import tableur Excel
   admin:
     profiles:
       menu:
-        profiles: "Profils"
+        profiles: Profils
       index:
-        title: "Liste profils"
-        avoid_zones: "Zones de contournement"
-        speed_multiplicator_zones: "Zones de ralentissement"
-
+        title: Liste profils
+        avoid_zones: Zones de contournement
+        speed_multiplicator_zones: Zones de ralentissement
     resellers:
       menu:
-        reseller: "Revendeur"
+        reseller: Revendeur
       edit:
-        title: "Modifier revendeur"
+        title: Modifier revendeur
       form:
-        host_help: "Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur."
-        name_help: "Marque du revendeur."
-        welcome_url_help: "Adresse de la page web html incluse comme « iframe » dans la page de bienvenue. Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html)."
-        help_url_help: "Adresse de la page web contenant l'aide. Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html)."
-        contact_url_help: "Adresse de la page web contenant le formulaire de contact. Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html)."
-        logo_large_help: "Logo pleine page redimensionnable, de préférence au format SVG, à défaut en PNG."
-        logo_small_help: "Logo du menu, 150×40 pixels en SVG ou PNG."
-        favicon_help: "Icône du site web, 16x16 pixels au format PNG ou ICO."
-        website_url_help: "Adresse du site web. Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html)."
-        protocol_url_http: "HTTP"
-        protocol_url_https: "HTTPS"
-
+        host_help: Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur.
+        name_help: Marque du revendeur.
+        welcome_url_help: 'Adresse de la page web html incluse comme « iframe » dans
+          la page de bienvenue. Vous pouvez utiliser « {LG} » qui sera remplacé par
+          la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html).'
+        help_url_help: 'Adresse de la page web contenant l''aide. Vous pouvez utiliser
+          « {LG} » qui sera remplacé par la langue telle que « en », « fr » (par ex :
+          http://mapotempo.com/{LG}/page.html).'
+        contact_url_help: 'Adresse de la page web contenant le formulaire de contact.
+          Vous pouvez utiliser « {LG} » qui sera remplacé par la langue telle que
+          « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html).'
+        logo_large_help: Logo pleine page redimensionnable, de préférence au format
+          SVG, à défaut en PNG.
+        logo_small_help: Logo du menu, 150×40 pixels en SVG ou PNG.
+        favicon_help: Icône du site web, 16x16 pixels au format PNG ou ICO.
+        website_url_help: 'Adresse du site web. Vous pouvez utiliser « {LG} » qui
+          sera remplacé par la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html).'
+        protocol_url_http: HTTP
+        protocol_url_https: HTTPS
     users:
       menu:
-        users : "Utilisateurs"
-        send_email: "Envoyer email de confirmation"
+        users: Utilisateurs
+        send_email: Envoyer email de confirmation
       index:
-        title: "Modifier utilisateurs"
-        new: "Nouvel utilisateur"
+        title: Modifier utilisateurs
+        new: Nouvel utilisateur
       new:
-        title: "Nouvel utilisateur"
+        title: Nouvel utilisateur
       create:
-        success: "Utilisateur créé avec succès"
+        success: User créé avec succès
       edit:
-        title: "Modifier utilisateur"
-        connect_as: "Connecter en tant que…"
-      create:
-        success: "User créé avec succès"
+        title: Modifier utilisateur
+        connect_as: Connecter en tant que…
       update:
-        success: "Utilisateur mis à jour avec succès"
+        success: Utilisateur mis à jour avec succès
       destroy:
-        success: "Utilisateur supprimé avec succès"
+        success: Utilisateur supprimé avec succès
       destroy_multiple:
-        success: "Utilisateurs supprimés avec succès"
+        success: Utilisateurs supprimés avec succès
       send_email:
-        success: "Email envoyé à l'utilisateur avec succès"
-
+        success: Email envoyé à l'utilisateur avec succès
   customers:
     duplicate:
-      success: "Compte client dupliqué avec succès"
+      success: Compte client dupliqué avec succès
     default:
-      country: "France"
+      country: France
     menu:
-      customer: "Paramétrage global"
-      user_settings: "Paramètres utilisateur"
-      customers: "Comptes client"
+      customer: Paramétrage global
+      user_settings: Paramètres utilisateur
+      customers: Comptes client
     edit:
-      title: "Modifier paramétrage global"
-      send_email: "Envoyer email de confirmation"
-      password: "Changer le mot de passe"
+      title: Modifier paramétrage global
+      send_email: Envoyer email de confirmation
+      password: Changer le mot de passe
       user:
-        connect_as: "Connecter en tant que…"
-        list: "Liste des utilisateurs"
-        new: "Nouvel utilisateur"
+        connect_as: Connecter en tant que…
+        list: Liste des utilisateurs
+        new: Nouvel utilisateur
       vehicles:
-        list: "Liste des véhicules"
-      time_zone: "Fuseau horaire"
+        list: Liste des véhicules
+      time_zone: Fuseau horaire
     index:
-      title: "Liste comptes client"
-      new: "Nouveau compte client"
-      map: "Carte"
-      no_test: "hors test"
-      status: "Statut"
-      status_no_user: "Pas d'utilisateur"
-      status_no_sign_in_user: "Utilisateur jamais connecté"
-      status_inactive_user: "Utilisateur inactif"
-      created_end_subscription: "(Créé) Fin de souscription"
+      title: Liste comptes client
+      new: Nouveau compte client
+      map: Carte
+      no_test: hors test
+      status: Statut
+      status_no_user: Pas d'utilisateur
+      status_no_sign_in_user: Utilisateur jamais connecté
+      status_inactive_user: Utilisateur inactif
+      created_end_subscription: (Créé) Fin de souscription
     new:
-      title: "Nouveau compte client"
+      title: Nouveau compte client
     destroy:
-      success: "Client supprimé avec succès"
+      success: Client supprimé avec succès
     destroy_multiple:
-      success: "Clients supprimés avec succès"
+      success: Clients supprimés avec succès
     delete_vehicle:
-      success: "Véhicule supprimé avec succès"
+      success: Véhicule supprimé avec succès
     form:
-      name: "Compte"
-      default_value: "Valeurs par défaut"
-      outputs: "Diffusion des tournées"
-      options: "Options"
-      optimization_parameters: "Paramètres d'optimisation"
-      router_help: "Profil utilisé pour les calculs d'itinéraires par défaut"
-      router_options_default: "%{n} (valeur par défaut)"
-      router_options_motorway_yes: "Oui"
-      router_options_motorway_no: "Non"
-      router_options_motorway_default: "Par défaut (%{value})"
-      router_options_toll_yes: "Oui"
-      router_options_toll_no: "Non"
-      router_options_toll_default: "par défaut (%{value})"
-      router_options_trailers_range: "Entre %{from} et %{to} remorques"
-      router_options_weight_range: "Poids (avec remorques et marchandises) entre %{from} et %{to} tonnes"
-      router_options_weight_per_axle_range: "Poids par essieu entre %{from} et %{to} tonnes"
-      router_options_height_range: "Hauteur entre %{from} et %{to} mètres"
-      router_options_width_range: "Largeur entre %{from} et %{to} mètres"
-      router_options_length_range: "Longueur entre %{from} et %{to} mètres"
-      take_over_help: "Durée de visite moyenne par client"
-      tomtom: "TomTom WEBFLEET"
-      tomtom_help: "Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET."
-      teksat: "Teksat"
-      teksat_help: "Envoyer les plannings vers les GPS Teksat"
-      orange: "Orange Fleet Performance"
-      orange_help: "Envoyer les plannings vers les GPS Orange Fleet Performance"
-      masternaut: "Masternaut"
-      masternaut_help: "Permet d'envoyer les plannings vers les GPS Masternaut."
-      alyacom: "AlyaCom"
-      alyacom_help: "Permet d'envoyer les plannings vers l'application AlyaCom."
-      optimization_cluster_size_default: "%{n} (valeur par défaut)"
-      optimization_cluster_size_help: "Valeur en secondes séparant les points à regrouper entre eux avant de les optimiser. Une valeur trop grande affectera la qualité de l'optimisation (30 sec est une grande valeur). Valable uniquement dans le cas d'une optimisation d'une seule tournée avec retards."
-      optimization_time_default: "%{n} (valeur par défaut)"
-      optimization_time_help: "L'optimisation s'arrête par défaut automatiquement. Néanmoins vous pouvez préciser ici une valeur limite à ne pas dépasser."
-      optimization_soft_upper_bound_default: "%{n} (valeur par défaut)"
-      optimization_stop_soft_upper_bound_help: "Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte : désactive les clusters dans ce cas)."
-      optimization_vehicle_soft_upper_bound_help: "Pour une optimisation globale, permet de gérer la répartition sur les véhicules. Plus la valeur est grande plus les retards seront pénalisants (0 pour empêcher les retards de manière stricte : désactive les clusters dans ce cas)."
-      cost_waiting_time_default: "%{n} (valeur par défaut)"
-      cost_waiting_time_help: "Permet d'évaluer l'importance des temps d'attente. Plus la valeur est grande, plus l'attente avant l'ouverture d'un créneau horaire sera pénalisée (0 pour ne pas considérer l'attente dans l'optimisation)"
-      print_header_help: "Bloc de texte ajouté avant chaque tournée"
+      name: Compte
+      default_value: Valeurs par défaut
+      outputs: Diffusion des tournées
+      options: Options
+      optimization_parameters: Paramètres d'optimisation
+      router_help: Profil utilisé pour les calculs d'itinéraires par défaut
+      router_options_default: '%{n} (valeur par défaut)'
+      router_options_motorway_yes: Oui
+      router_options_motorway_no: Non
+      router_options_motorway_default: Par défaut (%{value})
+      router_options_toll_yes: Oui
+      router_options_toll_no: Non
+      router_options_toll_default: par défaut (%{value})
+      router_options_trailers_range: Entre %{from} et %{to} remorques
+      router_options_weight_range: Poids (avec remorques et marchandises) entre %{from}
+        et %{to} tonnes
+      router_options_weight_per_axle_range: Poids par essieu entre %{from} et %{to}
+        tonnes
+      router_options_height_range: Hauteur entre %{from} et %{to} mètres
+      router_options_width_range: Largeur entre %{from} et %{to} mètres
+      router_options_length_range: Longueur entre %{from} et %{to} mètres
+      take_over_help: Durée de visite moyenne par client
+      tomtom: TomTom WEBFLEET
+      tomtom_help: Permet d'envoyer les plannings vers les GPS TomTom Pro avec WEBFLEET.
+      teksat: Teksat
+      teksat_help: Envoyer les plannings vers les GPS Teksat
+      orange: Orange Fleet Performance
+      orange_help: Envoyer les plannings vers les GPS Orange Fleet Performance
+      masternaut: Masternaut
+      masternaut_help: Permet d'envoyer les plannings vers les GPS Masternaut.
+      alyacom: AlyaCom
+      alyacom_help: Permet d'envoyer les plannings vers l'application AlyaCom.
+      optimization_cluster_size_default: '%{n} (valeur par défaut)'
+      optimization_cluster_size_help: Valeur en secondes séparant les points à regrouper
+        entre eux avant de les optimiser. Une valeur trop grande affectera la qualité
+        de l'optimisation (30 sec est une grande valeur). Valable uniquement dans
+        le cas d'une optimisation d'une seule tournée avec retards.
+      optimization_time_default: '%{n} (valeur par défaut)'
+      optimization_time_help: L'optimisation s'arrête par défaut automatiquement.
+        Néanmoins vous pouvez préciser ici une valeur limite à ne pas dépasser.
+      optimization_soft_upper_bound_default: '%{n} (valeur par défaut)'
+      optimization_stop_soft_upper_bound_help: 'Plus la valeur est grande plus les
+        retards seront pénalisants (0 pour empêcher les retards de manière stricte :
+        désactive les clusters dans ce cas).'
+      optimization_vehicle_soft_upper_bound_help: 'Pour une optimisation globale,
+        permet de gérer la répartition sur les véhicules. Plus la valeur est grande
+        plus les retards seront pénalisants (0 pour empêcher les retards de manière
+        stricte : désactive les clusters dans ce cas).'
+      cost_waiting_time_default: '%{n} (valeur par défaut)!'
+      cost_waiting_time_help: Permet d'évaluer l'importance des temps d'attente. Plus
+        la valeur est grande, plus l'attente avant l'ouverture d'un créneau horaire
+        sera pénalisée (0 pour ne pas considérer l'attente dans l'optimisation)
+      print_header_help: Bloc de texte ajouté avant chaque tournée
       print:
-        title: "Impressions"
-      speed_multiplicator_default: "%{n} (valeur par défaut)"
-      speed_multiplicator_help: "Une valeur supérieure à 100% signifie une vitesse plus élevée."
-      submit: "Enregistrer paramétrage global"
+        title: Impressions
+      speed_multiplicator_default: '%{n} (valeur par défaut)'
+      speed_multiplicator_help: Une valeur supérieure à 100% signifie une vitesse
+        plus élevée.
+      submit: Enregistrer paramétrage global
       sync:
-        complete: "Synchronisation complète"
+        complete: Synchronisation complète
         orange:
-          confirm: "Synchroniser les véhicules depuis Orange Fleet Performance ?"
-          action: "Synchroniser les véhicules depuis Orange Fleet Performance"
+          confirm: Synchroniser les véhicules depuis Orange Fleet Performance ?
+          action: Synchroniser les véhicules depuis Orange Fleet Performance
         tomtom:
-          confirm: "Synchroniser les véhicules depuis TomTom WebFLEET ?"
-          action: "Synchroniser les véhicules depuis TomTom WebFLEET"
+          confirm: Synchroniser les véhicules depuis TomTom WebFLEET ?
+          action: Synchroniser les véhicules depuis TomTom WebFLEET
         teksat:
-          confirm: "Synchroniser les véhicules depuis Teksat ?"
-          action: "Synchroniser les véhicules depuis Teksat"
+          confirm: Synchroniser les véhicules depuis Teksat ?
+          action: Synchroniser les véhicules depuis Teksat
       external_callback:
-        title: "URL de rappel"
-        name: "Nom"
-        name_placeholder: "Application externe"
-        url: "URL"
-        url_placeholder: "http://www.example.com?p_id={PLANNING_ID}"
-        url_help: >
-          URL externe à appeler depuis le menu export du Planning
+        title: URL de rappel
+        name: Nom
+        name_placeholder: Application externe
+        url: URL
+        url_placeholder: http://www.example.com?p_id={PLANNING_ID}
+        url_help: 'URL externe à appeler depuis le menu export du Planning
 
-          Les chaînes de caractères suivantes vont etre remplacées : PLANNING_ID, PLANNING_REF, ROUTE_ID, ROUTE_REF
+          Les chaînes de caractères suivantes vont etre remplacées : PLANNING_ID,
+          PLANNING_REF, ROUTE_ID, ROUTE_REF
 
           Exemple : http://www.example.com?p_id={PLANNING_ID}
 
+          '
   deliverable_units:
     edit:
-      title: "Modifier unité livrable"
+      title: Modifier unité livrable
     index:
-      title: "Liste unités livrables"
-      new: "Nouvelle unité livrable"
+      title: Liste unités livrables
+      new: Nouvelle unité livrable
     new:
-      title: "Nouvelle unité livrable"
+      title: Nouvelle unité livrable
     form:
-      prefered_icons: "Conseillés"
-      other_icons: "Autres"
-      label_placeholder: "unité"
-      label_help: "Par exemple « colis » ou une unité comme « kg »."
-      ref_help: "Référence libre"
-      default_quantity_help: "Quantité à livrer par défaut à toutes vos visites (laisser vide si pas de quantité)."
-      default_capacity_help: "Capacité par défaut de tous vos véhicules (laisser vide si illimité)."
-      optimization_overload_multiplier_no: "Non"
-      optimization_overload_multiplier_no_help: "Lors de l'optimisation, si vous indiquez une capacité pour vos véhicules, aucun dépassement ne sera autorisé."
-      optimization_overload_multiplier_yes: "Oui"
-      optimization_overload_multiplier_yes_help: "Lors de l'optimisation, si vous indiquez une capacité pour vos véhicules, un dépassement est autorisé. Plus le coefficient est grand moins, l'optimisation permettra un dépassement."
-      optimization_overload_multiplier_ignore: "Ignoré"
-      optimization_overload_multiplier_ignore_help: "Lors de l'optimisation, les quantités et capacités sur vos véhicules ne seront pas prises en compte."
-      optimization_overload_multiplier_help: "Dépassement autorisé ou non pendant l'optimisation (valable seulement si une capacité est précisée pour un véhicule). Si le dépassement est autorisé, plus le nombre indiqué est grand, moins l'optimisation permettra un dépassement."
-
+      prefered_icons: Conseillés
+      other_icons: Autres
+      label_placeholder: unité
+      label_help: Par exemple « colis » ou une unité comme « kg ».
+      ref_help: Référence libre
+      default_quantity_help: Quantité à livrer par défaut à toutes vos visites (laisser
+        vide si pas de quantité).
+      default_capacity_help: Capacité par défaut de tous vos véhicules (laisser vide
+        si illimité).
+      optimization_overload_multiplier_no: Non
+      optimization_overload_multiplier_no_help: Lors de l'optimisation, si vous indiquez
+        une capacité pour vos véhicules, aucun dépassement ne sera autorisé.
+      optimization_overload_multiplier_yes: Oui
+      optimization_overload_multiplier_yes_help: Lors de l'optimisation, si vous indiquez
+        une capacité pour vos véhicules, un dépassement est autorisé. Plus le coefficient
+        est grand moins, l'optimisation permettra un dépassement.
+      optimization_overload_multiplier_ignore: Ignoré
+      optimization_overload_multiplier_ignore_help: Lors de l'optimisation, les quantités
+        et capacités sur vos véhicules ne seront pas prises en compte.
+      optimization_overload_multiplier_help: Dépassement autorisé ou non pendant l'optimisation
+        (valable seulement si une capacité est précisée pour un véhicule). Si le dépassement
+        est autorisé, plus le nombre indiqué est grand, moins l'optimisation permettra
+        un dépassement.
   destinations:
     upload_tomtom:
-      success: "Adresses importées avec succès"
+      success: Adresses importées avec succès
     menu:
-      destinations: "Clients"
-      import: "Importer"
-      export_spreadsheet_standard: "Export tableur standard"
-      export_spreadsheet_excel: "Export tableur Excel"
-      stores: "Dépôts"
-      import_stores: "Importer dépôts"
-      tags: "Libellés"
-      clear: "Supprimer tous les clients"
-      clear_confirm: "Êtes-vous sûr de vouloir supprimer tous les clients ?"
+      destinations: Clients
+      import: Importer
+      export_spreadsheet_standard: Export tableur standard
+      export_spreadsheet_excel: Export tableur Excel
+      stores: Dépôts
+      import_stores: Importer dépôts
+      tags: Libellés
+      clear: Supprimer tous les clients
+      clear_confirm: Êtes-vous sûr de vouloir supprimer tous les clients ?
     form:
-      ref_help: "Référence libre"
-      detail_help: "Complément d'adresse non géocodable, ex. numéro d'escalier"
-      comment_help: "Informations nécessaires pour la livraison"
-      locate_manually: "Positionner manuellement sur la carte"
-      geocoding_accuracy_none: "Non applicable"
-      geocoding_fail: "Le géocodage a échoué"
-      geocoding_accuracy_help: "Qualité de la conversion de l'adresse vers la position géographique"
-      country_default: "%{n} (valeur par défaut)"
+      ref_help: Référence libre
+      detail_help: Complément d'adresse non géocodable, ex. numéro d'escalier
+      comment_help: Informations nécessaires pour la livraison
+      locate_manually: Positionner manuellement sur la carte
+      geocoding_accuracy_none: Non applicable
+      geocoding_fail: Le géocodage a échoué
+      geocoding_accuracy_help: Qualité de la conversion de l'adresse vers la position
+        géographique
+      country_default: '%{n} (valeur par défaut)'
       geocoding_level:
-        point: "Point"
-        house: "Adresse"
-        street: "Voie"
-        intersection: "Intersection"
-        city: "Commune"
-        "null": "Aucun"
-      tags_help: "Catégories du client"
+        point: Point
+        house: Adresse
+        street: Voie
+        intersection: Intersection
+        city: Commune
+        'null': Aucun
+      tags_help: Catégories du client
       dialog:
-        confirm_overwrite_point: "La position précédente a été définie manuellement sur la carte. Voulez-vous la remplacer avec le résultat du géocodage automatique ?"
+        confirm_overwrite_point: La position précédente a été définie manuellement
+          sur la carte. Voulez-vous la remplacer avec le résultat du géocodage automatique
+          ?
       visit:
-        enable_multi_visits: "Besoin de plusieurs visites pour le même client ? Contactez l'administrateur pour avoir accès à cette fonctionnalité."
-        new: "Nouvelle visite"
-        new_help: "Nouvelle visite si vous vous rendez plusieurs fois chez ce client."
+        enable_multi_visits: Besoin de plusieurs visites pour le même client ? Contactez
+          l'administrateur pour avoir accès à cette fonctionnalité.
+        new: Nouvelle visite
+        new_help: Nouvelle visite si vous vous rendez plusieurs fois chez ce client.
     edit:
-      title: "Modifier client"
+      title: Modifier client
     import:
-      title: "Importer des clients"
-      destinations: "Clients"
-      replace_no: "Mise à jour / ajout"
-      replace_no_help: "Une mise à jour des clients existants (référence client inchangée) est faite et les nouveaux sont ajoutés à l'application."
-      replace_yes: "Supprimer anciens clients"
-      replace_yes_help: "Efface et remplace tous les anciens clients par ceux de l'import. Les plannings seront également perdus."
-      replace_confirm: "Supprimer tous les clients et leurs modifications pour les remplacer par ceux importés ?"
-      plannings: "Plannings"
-      delete_plannings: "Supprimer anciens plannings"
-      delete_plannings_help: "Supprime les anciens plannings (permet notamment d'améliorer la réactivité de l'application). Si des tournées sont présentes dans votre fichier d'import, un nouveau planning sera tout de même créé après l'import."
-      delete_plannings_confirm: "Supprimer tous les anciens plannings ?"
+      title: Importer des clients
+      destinations: Clients
+      replace_no: Mise à jour / ajout
+      replace_no_help: Une mise à jour des clients existants (référence client inchangée)
+        est faite et les nouveaux sont ajoutés à l'application.
+      replace_yes: Supprimer anciens clients
+      replace_yes_help: Efface et remplace tous les anciens clients par ceux de l'import.
+        Les plannings seront également perdus.
+      replace_confirm: Supprimer tous les clients et leurs modifications pour les
+        remplacer par ceux importés ?
+      plannings: Plannings
+      delete_plannings: Supprimer anciens plannings
+      delete_plannings_help: Supprime les anciens plannings (permet notamment d'améliorer
+        la réactivité de l'application). Si des tournées sont présentes dans votre
+        fichier d'import, un nouveau planning sera tout de même créé après l'import.
+      delete_plannings_confirm: Supprimer tous les anciens plannings ?
       csv:
-        title: "Fichier CSV"
-        help: "Importe les clients depuis un fichier CSV. Les fichiers CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels."
-        file_help: "Import de fichier CSV uniquement."
-      import_template_help: "Aide - Définition des colonnes"
+        title: Fichier CSV
+        help: Importe les clients depuis un fichier CSV. Les fichiers CSV peuvent
+          être exportés à partir de tableurs ou depuis d'autres logiciels.
+        file_help: Import de fichier CSV uniquement.
+      import_template_help: Aide - Définition des colonnes
       dialog:
         help:
-          title: "Liste des colonnes de votre fichier"
-          desc: "Votre fichier d'import peut contenir l'ensemble des colonnes et types de valeurs suivants :"
-          columns_route: "Colonnes de la tournée"
-          columns_destination: "Colonnes de la destination visitée"
-          columns_visit: "Colonnes de la visite"
-          def_help: "Si vous souhaitez ne pas utiliser les noms de colonnes par défaut, vous pouvez les définir vous-même. Vous pouvez définir une suite de numéro de colonnes, ou d'intitulés."
-          def_example: "Par exemple pour « voie », renseigner « numéro, rue, 4 » signifie que vos colonnes intitulées « numéro », « rue », et la 4ème colonne (sans nom) seront fusionnées pour valeur de « voie » dans l'application."
+          title: Liste des colonnes de votre fichier
+          desc: 'Votre fichier d''import peut contenir l''ensemble des colonnes et
+            types de valeurs suivants :'
+          columns_route: Colonnes de la tournée
+          columns_destination: Colonnes de la destination visitée
+          columns_visit: Colonnes de la visite
+          def_help: Si vous souhaitez ne pas utiliser les noms de colonnes par défaut,
+            vous pouvez les définir vous-même. Vous pouvez définir une suite de numéro
+            de colonnes, ou d'intitulés.
+          def_example: Par exemple pour « voie », renseigner « numéro, rue, 4 » signifie
+            que vos colonnes intitulées « numéro », « rue », et la 4ème colonne (sans
+            nom) seront fusionnées pour valeur de « voie » dans l'application.
       tomtom:
-        title: "TomTom"
-        help: "Importe les adresses de TomTom WEBFLEET comme clients."
+        title: TomTom
+        help: Importe les adresses de TomTom WEBFLEET comme clients.
     index:
-      title: "Liste clients"
-      new: "Nouveau client"
-      default_name: "Nouveau client"
-      columns: "Colonnes"
-      no_position: "manquant"
-      geocoding_level: "Niveau de géocodage"
-      geocoding_column_help: "Niveau de géocodage et qualité. Ordonner d'abord par niveau puis par qualité."
-      geocoding_empty: "absent"
-      mutli_quantities: "Multiples quantités, éditez cette visite pour changer les quantités."
-      click2call: "Cliquez pour appeler"
-      quantity_small: "Qté."
+      title: Liste clients
+      new: Nouveau client
+      default_name: Nouveau client
+      columns: Colonnes
+      no_position: manquant
+      geocoding_level: Niveau de géocodage
+      geocoding_column_help: Niveau de géocodage et qualité. Ordonner d'abord par
+        niveau puis par qualité.
+      geocoding_empty: absent
+      mutli_quantities: Multiples quantités, éditez cette visite pour changer les
+        quantités.
+      click2call: Cliquez pour appeler
+      quantity_small: Qté.
       dialog:
         import:
-          title: "Import des clients"
-          in_progress: "Import des clients en cours, merci de patienter"
+          title: Import des clients
+          in_progress: Import des clients en cours, merci de patienter
         geocoding:
-          title: "Géocodage"
-          in_progress: "Géocodage en cours, merci de patienter."
-          attempts: "Tentatives :"
-          inqueue: "Tâche de géocodage en file d'attente"
-          error: "Impossible d'effectuer le calcul."
+          title: Géocodage
+          in_progress: Géocodage en cours, merci de patienter.
+          attempts: 'Tentatives :'
+          inqueue: Tâche de géocodage en file d'attente
+          error: Impossible d'effectuer le calcul.
         geocoding_danger:
-          title: "Résultats de géocodage peu fiables"
-          infos: "Certains de vos clients semblent être géocodés de manière peu fiable. Souhaitez-vous les revoir dans la liste ?"
-          hide_help: "Pour ne plus voir ce message, sélectionnez les clients ayant un géocodage peu fiable puis :"
-          correct_help: "Vérifiez l'adresse pour la corriger ou compléter si besoin"
-          move_help: "Déplacez les points manuellement sur la carte le cas échéant"
-          dismiss: "Ignorer"
-          sort_geocoding: "Montrer les géocodages peu fiables d'abord"
+          title: Résultats de géocodage peu fiables
+          infos: Certains de vos clients semblent être géocodés de manière peu fiable.
+            Souhaitez-vous les revoir dans la liste ?
+          hide_help: 'Pour ne plus voir ce message, sélectionnez les clients ayant
+            un géocodage peu fiable puis :'
+          correct_help: Vérifiez l'adresse pour la corriger ou compléter si besoin
+          move_help: Déplacez les points manuellement sur la carte le cas échéant
+          dismiss: Ignorer
+          sort_geocoding: Montrer les géocodages peu fiables d'abord
     new:
-      title: "Nouveau client"
+      title: Nouveau client
     import_file:
-      refs_duplicate: "La référence : %{refs} est présente en double dans le fichier"
-      ref: "référence"
-      ref_desc: "un identifiant stable, constant et unique permettant la mise à jour non-destructrice de cet élément lors du prochain import."
-      route: "tournée"
-      route_desc: "numéro ou référence de la tournée dans le planning."
-      ref_vehicle: "véhicule"
-      ref_vehicle_desc: "référence ou nom du véhicule effectuant l'arrêt dans le planning."
-      stop_type: "type arrêt"
-      stop_type_desc: "type d'arrêt dans le planning."
-      stop_type_visit: "visite"
-      stop_type_visit_desc: ""
-      stop_format: "[visite | dépôt | pause]"
-      name: "nom"
-      name_desc: "nom du client ou de la destination visitée."
-      street: "voie"
-      street_desc: "numéro de l'immeuble, type de voie et nom de la voie (l'orthographe doit être correcte pour un géocodage fiable). Note : les détails d'accés doivent eux être posés dans le champ « complément »."
-      detail: "complément"
-      detail_desc: "détails d'accès complémentaires à la voie permettant à l'agent de terrain d'atteindre le seuil de porte de sa destination. Ex. Bâtiment d'un complexe, résidence, escalier, étage, numéro de porte…"
-      postalcode: "code postal"
-      postalcode_desc: "code postal de la ville ou commune (l'exactitude est importante pour un géocodage fiable)."
-      city: "ville"
-      city_desc: "nom de la ville ou commune (l'orthographe doit être correcte pour un géocodage fiable)."
-      country: "pays"
-      country_desc: "nom du pays (l'orthographe doit être correcte pour un géocodage fiable)."
-      lat: "lat"
-      lat_desc: "latitude de la destination (en degrés décimaux) comprise entre -90° et 90°. Ex. 45,91"
-      lat_format: "nombre à virgule entre -90 et 90"
-      lng: "lng"
-      lng_desc: "longitude de la destination (en degrés décimaux) comprise entre -180° et 180°. Ex. -0,781"
-      lng_format: "nombre à virgule entre -180 et 180"
-      geocoding_accuracy: "qualité géocodage"
-      geocoding_accuracy_desc: "note qualifiant la certitude de conversion de l'adresse postale en coordonnées géographiques. Ceci via un pourcentage exprimé entre 0 et 1. Ex. 0,70 représente 70% de fiabilité."
-      geocoding_accuracy_format: "nombre à virgule de 0 à 1"
-      geocoding_level: "niveau géocodage"
-      geocoding_level_desc: "niveau de précision atteint lors de la conversion de l'adresse postale en coordonnées géographiques, exprimé de manière sémantique."
-      take_over: "durée visite"
-      take_over_desc: "durée anticipée de la visite."
-      quantity: "quantité"
-      quantity_desc: "quantité d'unités à livrer."
-      quantity1_1: "quantité 1_1"
-      quantity1_1_desc: "déprécié : utiliser « quantités » à la place."
-      quantity1_2: "quantité 1_2"
-      quantity1_2_desc: "déprécié : utiliser « quantités » à la place."
-      active: "livré"
-      active_desc: "indique si le client est livré durant cette tournée ou pas"
-      open: "horaire début"
-      open_desc: "déprécié : utiliser « horaire début 1 » à la place."
-      close: "horaire fin"
-      close_desc: "déprécié : utiliser « horaire fin 1 » à la place."
-      open1: "horaire début 1"
-      open1_desc: "début de la plage horaire 1 conseillée pour la visite."
-      close1: "horaire fin 1"
-      close1_desc: "fin de la plage horaire 1 conseillée pour la visite."
-      open2: "horaire début 2"
-      open2_desc: "début de la plage horaire 2 conseillée pour la visite."
-      close2: "horaire fin 2"
-      close2_desc: "fin de la plage horaire 2 conseillée pour la visite."
-      comment: "commentaire"
-      comment_desc: "informations nécessaires pour la visite."
-      phone_number: "téléphone"
-      phone_number_desc: "numéro de téléphone du client à contacter."
-      tags: "libellés"
-      tags_desc: "catégories du client (permettant par exemple de les grouper)."
-      tags_format: "libellé 1,libellé 2"
-      without_visit: "sans visite"
-      without_visit_desc: "précise qu'il n'y a pas de visite associée."
-      ref_visit: "référence visite"
-      ref_visit_desc: "référence de la visite."
-      tags_visit: "libellés visite"
-      tags_visit_desc: "catégories de la visite (permettant par exemple de les grouper)."
+      refs_duplicate: 'La référence : %{refs} est présente en double dans le fichier'
+      ref: référence
+      ref_desc: un identifiant stable, constant et unique permettant la mise à jour
+        non-destructrice de cet élément lors du prochain import.
+      route: tournée
+      route_desc: numéro ou référence de la tournée dans le planning.
+      ref_vehicle: véhicule
+      ref_vehicle_desc: référence ou nom du véhicule effectuant l'arrêt dans le planning.
+      stop_type: type arrêt
+      stop_type_desc: type d'arrêt dans le planning.
+      stop_type_visit: visite
+      stop_type_visit_desc: ''
+      stop_format: '[visite | dépôt | pause]'
+      name: nom
+      name_desc: nom du client ou de la destination visitée.
+      street: voie
+      street_desc: 'numéro de l''immeuble, type de voie et nom de la voie (l''orthographe
+        doit être correcte pour un géocodage fiable). Note : les détails d''accés
+        doivent eux être posés dans le champ « complément ».'
+      detail: complément
+      detail_desc: détails d'accès complémentaires à la voie permettant à l'agent
+        de terrain d'atteindre le seuil de porte de sa destination. Ex. Bâtiment d'un
+        complexe, résidence, escalier, étage, numéro de porte…
+      postalcode: code postal
+      postalcode_desc: code postal de la ville ou commune (l'exactitude est importante
+        pour un géocodage fiable).
+      city: ville
+      city_desc: nom de la ville ou commune (l'orthographe doit être correcte pour
+        un géocodage fiable).
+      country: pays
+      country_desc: nom du pays (l'orthographe doit être correcte pour un géocodage
+        fiable).
+      lat: lat
+      lat_desc: latitude de la destination (en degrés décimaux) comprise entre -90°
+        et 90°. Ex. 45,91
+      lat_format: nombre à virgule entre -90 et 90
+      lng: lng
+      lng_desc: longitude de la destination (en degrés décimaux) comprise entre -180°
+        et 180°. Ex. -0,781
+      lng_format: nombre à virgule entre -180 et 180
+      geocoding_accuracy: qualité géocodage
+      geocoding_accuracy_desc: note qualifiant la certitude de conversion de l'adresse
+        postale en coordonnées géographiques. Ceci via un pourcentage exprimé entre
+        0 et 1. Ex. 0,70 représente 70% de fiabilité.
+      geocoding_accuracy_format: nombre à virgule de 0 à 1
+      geocoding_level: niveau géocodage
+      geocoding_level_desc: niveau de précision atteint lors de la conversion de l'adresse
+        postale en coordonnées géographiques, exprimé de manière sémantique.
+      take_over: durée visite
+      take_over_desc: durée anticipée de la visite.
+      quantity: quantité
+      quantity_desc: quantité d'unités à livrer.
+      quantity1_1: quantité 1_1
+      quantity1_1_desc: 'déprécié : utiliser « quantités » à la place.'
+      quantity1_2: quantité 1_2
+      quantity1_2_desc: 'déprécié : utiliser « quantités » à la place.'
+      active: livré
+      active_desc: indique si le client est livré durant cette tournée ou pas
+      open: horaire début
+      open_desc: 'déprécié : utiliser « horaire début 1 » à la place.'
+      close: horaire fin
+      close_desc: 'déprécié : utiliser « horaire fin 1 » à la place.'
+      open1: horaire début 1
+      open1_desc: début de la plage horaire 1 conseillée pour la visite.
+      close1: horaire fin 1
+      close1_desc: fin de la plage horaire 1 conseillée pour la visite.
+      open2: horaire début 2
+      open2_desc: début de la plage horaire 2 conseillée pour la visite.
+      close2: horaire fin 2
+      close2_desc: fin de la plage horaire 2 conseillée pour la visite.
+      comment: commentaire
+      comment_desc: informations nécessaires pour la visite.
+      phone_number: téléphone
+      phone_number_desc: numéro de téléphone du client à contacter.
+      tags: libellés
+      tags_desc: catégories du client (permettant par exemple de les grouper).
+      tags_format: libellé 1,libellé 2
+      without_visit: sans visite
+      without_visit_desc: précise qu'il n'y a pas de visite associée.
+      ref_visit: référence visite
+      ref_visit_desc: référence de la visite.
+      tags_visit: libellés visite
+      tags_visit_desc: catégories de la visite (permettant par exemple de les grouper).
       format:
-        string: "texte"
-        integer: "nombre"
-        float: "0.123"
-        hour: "HH:MM"
-        second: "HH:MM:SS"
-        yes_no: "oui/non"
-        required: "obligatoire"
-        advisable: "recommandé"
-        optionnal: "optionnel"
-        deprecated: "déprécié"
-      not_csv: "Le fichier importé n'est pas au format CSV."
-      empty_file: "ne contient aucune donnée"
-      too_many_lines: "Import stoppé, trop de lignes (max: %{n})."
-      none_column: "Aucune colonne trouvée"
-      missing_name: "%{line} : « nom » manquant."
-      missing_location: "%{line} : « ville / code postal » ou « lat / lng » manquant."
-      invalid_numeric_value: "%{line} : valeur numérique « %{value} » invalide."
-      check_custom_columns: "Vérifiez votre définition des colonnes à importer."
+        string: texte
+        integer: nombre
+        float: '0.123'
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: oui/non
+        required: obligatoire
+        advisable: recommandé
+        optionnal: optionnel
+        deprecated: déprécié
+      not_csv: Le fichier importé n'est pas au format CSV.
+      empty_file: ne contient aucune donnée
+      too_many_lines: 'Import stoppé, trop de lignes (max: %{n}).'
+      none_column: Aucune colonne trouvée
+      missing_name: '%{line} : « nom » manquant.'
+      missing_location: '%{line} : « ville / code postal » ou « lat / lng » manquant.'
+      invalid_numeric_value: '%{line} : valeur numérique « %{value} » invalide.'
+      check_custom_columns: Vérifiez votre définition des colonnes à importer.
     reverse_geocoding:
-      apply: "Appliquer la nouvelle adresse"
-
+      apply: Appliquer la nouvelle adresse
   index:
     unsupported_browser:
-      unsupported_browser: "Navigateur non pris en charge"
-      unsupported_browser_modern: "Votre navigateur est trop ancien, s'il vous plaît utilisez un navigateur récent."
-      download_browser: "Vous pouvez télécharger la dernière version du navigateur libre Firefox à cette adresse : "
-
+      unsupported_browser: Navigateur non pris en charge
+      unsupported_browser_modern: Votre navigateur est trop ancien, s'il vous plaît
+        utilisez un navigateur récent.
+      download_browser: 'Vous pouvez télécharger la dernière version du navigateur
+        libre Firefox à cette adresse : '
   order_arrays:
     menu:
-      order_arrays: "Commandes"
+      order_arrays: Commandes
     form:
-      week: "Semaine"
-      week2: "2 Semaines"
-      month: "Mois"
+      week: Semaine
+      week2: 2 Semaines
+      month: Mois
       export:
-        print: "Imprimer"
-        menu: "Exporter"
-        spreadsheet_standard: "Tableur standard"
-        spreadsheet_excel: "Tableur Excel"
+        print: Imprimer
+        menu: Exporter
+        spreadsheet_standard: Tableur standard
+        spreadsheet_excel: Tableur Excel
     index:
-      title: "Liste tableaux de commandes"
-      new: "Nouveau tableau de commandes"
+      title: Liste tableaux de commandes
+      new: Nouveau tableau de commandes
     edit:
-      title: "Modifier tableau de commandes"
-      vehicle: "Véhicule"
-      name: "Nom"
-      comment: "Commentaire"
-      empty_row: "Vider la ligne"
-      empty_column: "Vider la colonne"
-      copy: "Copier"
-      paste: "Coller"
-      total: "Total"
-      planning: "Appliquer au planning"
-      confirm_ovewrite_column: "Êtes-vous sûr de vouloir modifier les données de la colonne ?"
-      confirm_ovewrite_row: "Êtes-vous sûr de vouloir modifier les données de la ligne ?"
+      title: Modifier tableau de commandes
+      vehicle: Véhicule
+      name: Nom
+      comment: Commentaire
+      empty_row: Vider la ligne
+      empty_column: Vider la colonne
+      copy: Copier
+      paste: Coller
+      total: Total
+      planning: Appliquer au planning
+      confirm_ovewrite_column: Êtes-vous sûr de vouloir modifier les données de la
+        colonne ?
+      confirm_ovewrite_row: Êtes-vous sûr de vouloir modifier les données de la ligne
+        ?
       dialog:
         loading:
-          title: "Chargement"
-          in_progress: "Chargement en cours, merci de patienter."
+          title: Chargement
+          in_progress: Chargement en cours, merci de patienter.
     new:
-      title: "Nouveau tableau de commandes"
+      title: Nouveau tableau de commandes
     export_file:
-      vehicle: "véhicule"
-      name: "nom"
-      comment: "commentaire"
-      total: "total"
-
+      vehicle: véhicule
+      name: nom
+      comment: commentaire
+      total: total
   route_mailer:
     send_kmz_route:
-      content: "Un export au format KMZ vient de vous être envoyé depuis %{s} en pièce jointe à cet email."
-      vehicle: "Véhicule"
-      planning: "Planning"
-      planning_ref: "Référence planning"
-      route_ref: "Référence de la tournée"
-      order_array: "Commandes"
+      content: Un export au format KMZ vient de vous être envoyé depuis %{s} en pièce
+        jointe à cet email.
+      vehicle: Véhicule
+      planning: Planning
+      planning_ref: Référence planning
+      route_ref: Référence de la tournée
+      order_array: Commandes
     send_computed_ics_route:
-      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis %{s}, vous pouvez :\n
-- Copier-coller le lien et l'importer dans votre agenda personnel (la mise à jour de votre agenda se fera de manière automatique à l'avenir)\n
-- Cliquer sur le lien pour télécharger le contenu de l'agenda (pas de mise à jour automatique)."
-      vehicle: "Véhicule"
-      planning: "Planning"
-      planning_ref: "Référence planning"
-      route_ref: "Référence de la tournée"
-      order_array: "Commandes"
-      link: "Lien de téléchargement"
-
+      content: "Un export au format agenda iCalendar vient de vous être envoyé depuis\
+        \ %{s}, vous pouvez :\n - Copier-coller le lien et l'importer dans votre agenda\
+        \ personnel (la mise à jour de votre agenda se fera de manière automatique\
+        \ à l'avenir)\n - Cliquer sur le lien pour télécharger le contenu de l'agenda\
+        \ (pas de mise à jour automatique)."
+      vehicle: Véhicule
+      planning: Planning
+      planning_ref: Référence planning
+      route_ref: Référence de la tournée
+      order_array: Commandes
+      link: Lien de téléchargement
   user_mailer:
     welcome:
-      title: "Votre compte %{s}"
-      content: "<p>Bonjour et bienvenue sur %{s},</p>\n
-\n
-<p>Merci de bien vouloir initialiser votre mot de passe en cliquant sur le lien suivant : <a href=\"%{l}\" target=\"_blank\" title=\"Je change mon mot de passe %{s}\">Changer le mot de passe</a>  <br/>
-ou en effectuant un copier/coller de l'URL suivante : %{l} </p>\n
-\n
-<p>Vous pourrez alors vous connecter à tout moment au service en ligne %{s} en cliquant sur l'URL suivante: <a href=\"%{a}\" target=\"_blank\" title=\"Je me connecte sur %{s}\">%{a}<a> </p>\n
-\n
-<p>Pour nous contacter veuillez utiliser l'un des moyens listés sur cette page : <a href=\"%{c}\" target=\"_blank\" title=\"Je contacte le support\">%{c}</a> </p>\n
-\n
-<p>Avec toute notre attention,</p>\n
-\n
-<p>L'équipe %{s}</p>"
-
+      title: Votre compte %{s}
+      content: "<p>Bonjour et bienvenue sur %{s},</p>\n \n <p>Merci de bien vouloir\
+        \ initialiser votre mot de passe en cliquant sur le lien suivant : <a href=\"\
+        %{l}\" target=\"_blank\" title=\"Je change mon mot de passe %{s}\">Changer\
+        \ le mot de passe</a>  <br/> ou en effectuant un copier/coller de l'URL suivante\
+        \ : %{l} </p>\n \n <p>Vous pourrez alors vous connecter à tout moment au service\
+        \ en ligne %{s} en cliquant sur l'URL suivante: <a href=\"%{a}\" target=\"\
+        _blank\" title=\"Je me connecte sur %{s}\">%{a}<a> </p>\n \n <p>Pour nous\
+        \ contacter veuillez utiliser l'un des moyens listés sur cette page : <a href=\"\
+        %{c}\" target=\"_blank\" title=\"Je contacte le support\">%{c}</a> </p>\n\
+        \ \n <p>Avec toute notre attention,</p>\n \n <p>L'équipe %{s}</p>"
   plannings:
     menu:
-      plannings: "Plannings"
+      plannings: Plannings
     index:
-      title: "Liste plannings"
-      new: "Nouveau planning"
-      export_selection: "Exporter sélection"
+      title: Liste plannings
+      new: Nouveau planning
+      export_selection: Exporter sélection
       export:
-        icalendar: "Agenda iCal"
-        icalendar_email: "Agenda iCal par email"
-        spreadsheet: "Tableur CSV / Excel"
-        none_planning: "Veuillez sélectionner au moins un planning à exporter"
+        icalendar: Agenda iCal
+        icalendar_email: Agenda iCal par email
+        spreadsheet: Tableur CSV / Excel
+        none_planning: Veuillez sélectionner au moins un planning à exporter
     edit:
-      vehicles: "Véhicules"
-      current_position: "Position véhicle :"
-      lock_routes: "Verrouiller les tournées"
-      toggle_routes: "Masquer les tournées"
-      zonings: "Zonages"
-      zoning_new: "Créer un nouveau zonage depuis ce planning"
-      zoning_edit: "Modifier ce zonage depuis ce planning"
-      last_sent_to: "Envoi"
-      optimized_at: "Optimisé"
-      optimize_global_help: "Optimiser le planning dans son ensemble excepté les tournées verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement)"
-      optimize_each_help: "Optimiser les tournées non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)"
-      title: "Modifier planning"
-      stops: "arrêts"
-      optimize_global: "Optimiser l'ensemble"
-      optimize_global_confirm: "Optimiser l'ensemble du planning ? (vos arrêts pourront être attribués à une autre tournée qu'actuellement)"
-      optimize_each: "Optimiser chaque tournée"
-      optimize_each_confirm: "Lancer un calcul d'optimisation pour chacune des tournées ? (vos arrêts resteront dans chaque tournée initiale)"
-      optimize_confirm: "Lancer un calcul d'optimisation ?"
-      optimize_complete: "Optimisation terminée"
-      optimize_failed: "Échec lors de l'optimisation"
-      zoning_confirm: "Enregistrer et appliquer le nouveau zonage ? Les tournées du planning vont être modifiées"
-      page_change_zoning_confirm: "Souhaitez-vous quitter la page et perdre les changements de zonage ?"
-      route_placeholder: "Réf. de la tournée"
-      service_time: "Durées de service"
-      exports: "Exporter le planning"
+      vehicles: Véhicules
+      current_position: 'Position véhicle :'
+      lock_routes: Verrouiller les tournées
+      toggle_routes: Masquer les tournées
+      zonings:
+        label: Zonages
+        success: Zonages appliqués avec succès
+        fail: Échec lors de l'application des zonages
+        action: Appliquer Zonages
+      zoning_new: Créer un nouveau zonage depuis ce planning
+      zoning_edit: Modifier ce zonage depuis ce planning
+      last_sent_to: Envoi
+      optimized_at: Optimisé
+      optimize_global_help: Optimiser le planning dans son ensemble excepté les tournées
+        verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
+      optimize_each_help: Optimiser les tournées non verrouillées du planning une
+        à une (vos arrêts resteront dans chaque tournée initiale)
+      title: Modifier planning
+      stops: arrêts
+      optimize_global: Optimiser l'ensemble
+      optimize_global_confirm: Optimiser l'ensemble du planning ? (vos arrêts pourront
+        être attribués à une autre tournée qu'actuellement)
+      optimize_each: Optimiser chaque tournée
+      optimize_each_confirm: Lancer un calcul d'optimisation pour chacune des tournées ?
+        (vos arrêts resteront dans chaque tournée initiale)
+      optimize_confirm: Lancer un calcul d'optimisation ?
+      optimize_complete: Optimisation terminée
+      optimize_failed: Échec lors de l'optimisation
+      zoning_confirm: Enregistrer et appliquer le nouveau zonage ? Les tournées du
+        planning vont être modifiées
+      page_change_zoning_confirm: Souhaitez-vous quitter la page et perdre les changements
+        de zonage ?
+      route_placeholder: Réf. de la tournée
+      service_time: Durées de service
+      exports: Exporter le planning
       stop_status:
-        planned: "Planifié"
-        started: "Démarré"
-        finished: "Terminé"
-        rejected: "Rejeté"
-        any: "Tous statuts"
-        none: "Sans statut"
-      update_stops_status: "Statuts arrêts :"
+        planned: Planifié
+        started: Démarré
+        finished: Terminé
+        rejected: Rejeté
+        any: Tous statuts
+        none: Sans statut
+      update_stops_status: 'Statuts arrêts :'
       customer_external_callback_url:
-        action: "Application externe"
+        action: Application externe
       teksat_send:
-        action: "Envoyer à Teksat"
-        success: "Envoi vers Teksat terminé avec succès"
-        fail: "Échec lors de l'envoi vers Teksat"
+        action: Envoyer à Teksat
+        success: Envoi vers Teksat terminé avec succès
+        fail: Échec lors de l'envoi vers Teksat
       teksat_clear:
-        action: "Vider Teksat"
-        success: "Les commandes Teksat ont été vidées avec succès"
-        fail: "Échec lors de la suppression des commandes Teksat"
+        action: Vider Teksat
+        success: Les commandes Teksat ont été vidées avec succès
+        fail: Échec lors de la suppression des commandes Teksat
       tomtom_send_orders:
-        action: "Commandes vers TomTom"
-        success: "Envoi vers TomTom terminé avec succès"
-        fail: "Échec lors de l'envoi vers TomTom"
+        action: Commandes vers TomTom
+        success: Envoi vers TomTom terminé avec succès
+        fail: Échec lors de l'envoi vers TomTom
       tomtom_send_waypoints:
-        action: "Points de passage vers TomTom"
-        success: "Envoi vers TomTom terminé avec succès"
-        fail: "Échec lors de l'envoi vers TomTom"
+        action: Points de passage vers TomTom
+        success: Envoi vers TomTom terminé avec succès
+        fail: Échec lors de l'envoi vers TomTom
       tomtom_clear:
-        action: "Vider TomTom"
-        success: "Les commandes TomTom ont été vidées avec succès"
-        fail: "Échec lors de la suppression des commandes TomTom"
+        action: Vider TomTom
+        success: Les commandes TomTom ont été vidées avec succès
+        fail: Échec lors de la suppression des commandes TomTom
       orange_send:
-        action: "Envoyer à Orange Fleet Performance"
-        success: "Envoyé à Orange Fleet Performance avec succès"
-        fail: "Échec lors de l'envoi vers Orange Fleet Performance"
+        action: Envoyer à Orange Fleet Performance
+        success: Envoyé à Orange Fleet Performance avec succès
+        fail: Échec lors de l'envoi vers Orange Fleet Performance
       orange_clear:
-        action: "Vider Orange Fleet Performance"
-        success: "Les commandes Orange Fleet Performance ont été vidées avec succès"
-        fail: "Échec lors de la suppression des commandes Orange Fleet Performance"
+        action: Vider Orange Fleet Performance
+        success: Les commandes Orange Fleet Performance ont été vidées avec succès
+        fail: Échec lors de la suppression des commandes Orange Fleet Performance
       alyacom_send:
-        action: "Envoyer à Alyacom"
-        success: "Envoyé à Alyacom avec succès"
-        fail: "Échec lors de l'envoi vers Alyacom"
+        action: Envoyer à Alyacom
+        success: Envoyé à Alyacom avec succès
+        fail: Échec lors de l'envoi vers Alyacom
       masternaut_send:
-        action: "Envoyer à Masternaut"
-        success: "Envoyé à Masternaut avec succès"
-        fail: "Échec lors de l'envoi vers Masternaut"
+        action: Envoyer à Masternaut
+        success: Envoyé à Masternaut avec succès
+        fail: Échec lors de l'envoi vers Masternaut
       export:
         customer_external_callback_url:
-          success: "Application externe appelée avec succès"
-          fail: "Échec lors de l'appel à l'application externe"
+          success: Application externe appelée avec succès
+          fail: Échec lors de l'appel à l'application externe
         icalendar:
-          action: "Agenda iCal"
-          action_email: "Agenda iCal par email"
-          success: "Fichier envoyé par email avec succès à tous les véhicules"
-          fail: "Échec lors de l'export par email"
-          mail_error: "Email(s) non envoyé(s). <br/> Vérifier la configuration des emails pour vos véhicules"
+          action: Agenda iCal
+          action_email: Agenda iCal par email
+          success: Fichier envoyé par email avec succès à tous les véhicules
+          fail: Échec lors de l'export par email
+          mail_error: Email(s) non envoyé(s). <br/> Vérifier la configuration des
+            emails pour vos véhicules
         kmz_email:
-          action: "Tracé KMZ par email"
-          success: "Email envoyé avec succès"
-          fail: "Échec lors de l'envoi de l'email"
+          action: Tracé KMZ par email
+          success: Email envoyé avec succès
+          fail: Échec lors de l'envoi de l'email
         csv:
-          success: "CSV exporté avec succès"
-        print: "Imprimer"
-        spreadsheet: "Tableur CSV / Excel"
-        gpx_route: "Route GPX"
-        gpx_track: "Tracé GPX"
-        kmz_track: "Tracé KMZ"
+          success: CSV exporté avec succès
+        print: Imprimer
+        spreadsheet: Tableur CSV / Excel
+        gpx_route: Route GPX
+        gpx_track: Tracé GPX
+        kmz_track: Tracé KMZ
       zoning:
-        none: "Aucun"
-        apply: "Appliquer zonage"
-        edit: "Modifier zonage"
-        new: "Nouveau zonage"
+        none: Aucun
+        apply: Appliquer zonage
+        edit: Modifier zonage
+        new: Nouveau zonage
       order_array:
-        edit: "Modifier tableau de commandes"
+        edit: Modifier tableau de commandes
       map:
-        zoom_in: "Augmenter le zoom"
-        zoom_out: "Diminuer le zoom"
-      zonings:
-        label: "Zonages"
-        success: "Zonages appliqués avec succès"
-        fail: "Échec lors de l'application des zonages"
-        action: "Appliquer Zonages"
-      reverse_order: "Inverser l'ordre des arrêts"
-      open_planning_panel: "Déployer le panneau du planning"
-      collapse_planning_panel: "Minifier le panneau du planning"
-      refresh: "Actualiser"
-      refresh_help: "Des paramètres ou des clients utilisés par ce planning ont été modifiés, il est nécessaire de le recalculer"
-      out_of_date_zoning: "Le zonage a été modifié. Appliquez à nouveau pour actualiser."
-      stops_help: "Arrêts plannifiés / total"
-      duration_help: "Somme des durées des tournées"
-      distance_help: "Somme des distances des tournées"
-      emission_help: "Emission"
-      out_of_route: "Non planifiés"
-      toggle_help: "Affiche ou cache les clients sur la carte"
-      locked_unplanned_help: "Verrouille les non-planifiés pour les opérations globales sur le planning"
-      locked_help: "Verrouille la tournée pour les opérations globales sur le planning"
-      vehicle_help: "Paramétrer le véhicule"
-      optimize_help: "Optimiser la tournée"
-      export_help: "Exporter la tournée"
-      route_stops_active_help: "Sélectionner les arrêts actifs"
-      route_duration_help: "Durée de la tournée / Créneau horaire véhicule"
-      route_distance_help: "Distance de la tournée"
-      route_quantity_help: "Quantité / Capacité véhicule"
-      drag_help: "Glisser-déposer pour ordonner le client dans les tournées"
-      active_help: "Prendre en compte ou non un client dans la tournée"
-      edit_store_help: "Modifier les informations du dépôt"
-      edit_visit_help: "Modifier les informations du client"
-      marker_help: "Visualiser sur la carte"
-      automatic_insert_help: "Propose un endroit pour insérer ce client dans une tournée"
-      automatic_insert_help_multiple: "Propose un endroit pour insérer les clients dans des tournées (le résultat ne sera plus optimisé)"
-      automatic_insert_confirm: "Affecter tous les arrêts non planifiés à des tournées ? Le résultat ne sera plus optimisé. Les zonages sont recommandés pour affecter les arrêts de manière plus précise (Ok pour continuer malgré tout)."
-      automatic_insert_too_many: "Trop d'arrêts non planifiés. Les zonages sont recommandés pour affecter les arrêts de manière plus précise."
-      active_all: "Tous"
-      active_reverse: "Inverser"
-      active_none: "Aucun"
-      send_to_route_help: "Envoyer cet arrêt dans une tournée"
-      wait: "Temps d'attente :"
-      vehicle_speed: "Vitesse :"
-      vehicle_last_position_time: "Dernier relevé :"
-      route_change_color_help: "Changer la couleur de la tournée"
+        zoom_in: Augmenter le zoom
+        zoom_out: Diminuer le zoom
+      reverse_order: Inverser l'ordre des arrêts
+      open_planning_panel: Déployer le panneau du planning
+      collapse_planning_panel: Minifier le panneau du planning
+      refresh: Actualiser
+      refresh_help: Des paramètres ou des clients utilisés par ce planning ont été
+        modifiés, il est nécessaire de le recalculer
+      out_of_date_zoning: Le zonage a été modifié. Appliquez à nouveau pour actualiser.
+      stops_help: Arrêts plannifiés / total
+      duration_help: Somme des durées des tournées
+      distance_help: Somme des distances des tournées
+      emission_help: Emission
+      out_of_route: Non planifiés
+      toggle_help: Affiche ou cache les clients sur la carte
+      locked_unplanned_help: Verrouille les non-planifiés pour les opérations globales
+        sur le planning
+      locked_help: Verrouille la tournée pour les opérations globales sur le planning
+      vehicle_help: Paramétrer le véhicule
+      optimize_help: Optimiser la tournée
+      export_help: Exporter la tournée
+      route_stops_active_help: Sélectionner les arrêts actifs
+      route_duration_help: Durée de la tournée / Créneau horaire véhicule
+      route_distance_help: Distance de la tournée
+      route_quantity_help: Quantité / Capacité véhicule
+      drag_help: Glisser-déposer pour ordonner le client dans les tournées
+      active_help: Prendre en compte ou non un client dans la tournée
+      edit_store_help: Modifier les informations du dépôt
+      edit_visit_help: Modifier les informations du client
+      marker_help: Visualiser sur la carte
+      automatic_insert_help: Propose un endroit pour insérer ce client dans une tournée
+      automatic_insert_help_multiple: Propose un endroit pour insérer les clients
+        dans des tournées (le résultat ne sera plus optimisé)
+      automatic_insert_confirm: Affecter tous les arrêts non planifiés à des tournées ?
+        Le résultat ne sera plus optimisé. Les zonages sont recommandés pour affecter
+        les arrêts de manière plus précise (Ok pour continuer malgré tout).
+      automatic_insert_too_many: Trop d'arrêts non planifiés. Les zonages sont recommandés
+        pour affecter les arrêts de manière plus précise.
+      active_all: Tous
+      active_reverse: Inverser
+      active_none: Aucun
+      send_to_route_help: Envoyer cet arrêt dans une tournée
+      wait: 'Temps d''attente :'
+      vehicle_speed: 'Vitesse :'
+      vehicle_last_position_time: 'Dernier relevé :'
+      route_change_color_help: Changer la couleur de la tournée
       popup:
-        open_close1: "Plage horaire 1 : "
-        open1: "début 1"
-        close1: "fin 1"
-        open_close2: "Plage horaire 2 :"
-        open2: "début 2"
-        close2: "fin 2"
-        time: "Planifié : "
-        quantity: "Quantité : "
-        orders: "Commandes : "
-        duration: "Durée : "
-        tags: "Libellés : "
-        stop_drive_time: "Durée :"
-        stop_distance: "Distance :"
-        visit: "Visite"
-        status: "Statut :"
-        eta: "ETA :"
+        open_close1: 'Plage horaire 1 : '
+        open1: début 1
+        close1: fin 1
+        open_close2: 'Plage horaire 2 :'
+        open2: début 2
+        close2: fin 2
+        time: 'Planifié : '
+        quantity: 'Quantité : '
+        orders: 'Commandes : '
+        duration: 'Durée : '
+        tags: 'Libellés : '
+        stop_drive_time: 'Durée :'
+        stop_distance: 'Distance :'
+        visit: Visite
+        status: 'Statut :'
+        eta: 'ETA :'
       error:
-        no_geolocalization: "Pas de géolocalisation"
-        no_geolocalization_help: "Pas de coordonnée géographique renseignée, ou l'adresse n'a pu être localisée"
-        out_of_window: "Hors créneau horaire"
-        out_of_window_help: "Planifié en dehors des créneaux horaires définis"
-        out_of_capacity: "Hors capacité véhicule"
-        out_of_capacity_help: "Capacité du véhicule dépassée"
-        out_of_drive_time: "Hors créneau véhicule"
-        out_of_drive_time_help: "Planifié en dehors des créneaux d'activité du véhicule"
-        no_path: "Destination inaccessible"
-        no_path_help: "Destination inaccessible : pas de voie d'accès ou itinéraire pour aller ou partir de la destination"
+        no_geolocalization: Pas de géolocalisation
+        no_geolocalization_help: Pas de coordonnée géographique renseignée, ou l'adresse
+          n'a pu être localisée
+        out_of_window: Hors créneau horaire
+        out_of_window_help: Planifié en dehors des créneaux horaires définis
+        out_of_capacity: Hors capacité véhicule
+        out_of_capacity_help: Capacité du véhicule dépassée
+        out_of_drive_time: Hors créneau véhicule
+        out_of_drive_time_help: Planifié en dehors des créneaux d'activité du véhicule
+        no_path: Destination inaccessible
+        no_path_help: 'Destination inaccessible : pas de voie d''accès ou itinéraire
+          pour aller ou partir de la destination'
       dialog:
         refresh:
-          title: "Actualiser le planning"
-          confirm: "Vous avez effectué des modifications qui nécessitent de recalculer votre planning. Souhaitez-vous l'actualiser maintenant ?"
+          title: Actualiser le planning
+          confirm: Vous avez effectué des modifications qui nécessitent de recalculer
+            votre planning. Souhaitez-vous l'actualiser maintenant ?
         optimizer:
-          title: "Optimisation"
-          in_progress: "Processus en cours, merci de patienter."
-          matrix: "Calcul du distancier"
-          optimize: "Optimisation"
-          routes: "Tournées"
-          attempts: "Tentatives :"
-          inqueue: "Tâche d'optimisation en file d'attente"
-          no_solution: "Pas de solution trouvée pour votre problème"
-          error: "Impossible d'effectuer le calcul."
+          title: Optimisation
+          in_progress: Processus en cours, merci de patienter.
+          matrix: Calcul du distancier
+          optimize: Optimisation
+          routes: Tournées
+          attempts: 'Tentatives :'
+          inqueue: Tâche d'optimisation en file d'attente
+          no_solution: Pas de solution trouvée pour votre problème
+          error: Impossible d'effectuer le calcul.
         orange:
-          title: "Orange Fleet Performance"
-          in_progress: "Veuillez patienter"
+          title: Orange Fleet Performance
+          in_progress: Veuillez patienter
         teksat:
-          title: "Teksat"
-          in_progress: "Veuillez patienter"
+          title: Teksat
+          in_progress: Veuillez patienter
         tomtom:
-          title: "TomTom"
-          in_progress: "Veuillez patienter"
+          title: TomTom
+          in_progress: Veuillez patienter
         masternaut:
-          title: "Masternaut"
-          in_progress: "Veuillez patienter"
+          title: Masternaut
+          in_progress: Veuillez patienter
         alyacom:
-          title: "AlyaCom"
-          in_progress: "Veuillez patienter"
+          title: AlyaCom
+          in_progress: Veuillez patienter
         zoning:
-          title: "Zonage"
-          in_progress: "Application du nouveau zonage en cours, merci de patienter."
+          title: Zonage
+          in_progress: Application du nouveau zonage en cours, merci de patienter.
         automatic_insert:
-          title: "Affectation des arrêts non planifiés"
-          in_progress: "Veuillez patienter"
+          title: Affectation des arrêts non planifiés
+          in_progress: Veuillez patienter
         spreadsheet:
-          title: "Export vers un tableur"
-          stops: "Arrêts additionnels"
-          out_of_route: "non planifiés"
-          stores: "dépôts"
-          rests: "pauses"
-          stops_inactives: "arrêts inactifs"
-          columns: "Colonnes"
-          columns_export: "À exporter"
-          columns_skip: "Non exportées"
-          columns_DnD_help: "Utilisez la souris pour glisser-déposer les colonnes à exporter"
-          format: "Format"
-          csv: "format standard CSV"
-          excel: "format Excel CSV"
-          download: "Télécharger"
+          title: Export vers un tableur
+          stops: Arrêts additionnels
+          out_of_route: non planifiés
+          stores: dépôts
+          rests: pauses
+          stops_inactives: arrêts inactifs
+          columns: Colonnes
+          columns_export: À exporter
+          columns_skip: Non exportées
+          columns_DnD_help: Utilisez la souris pour glisser-déposer les colonnes à
+            exporter
+          format: Format
+          csv: format standard CSV
+          excel: format Excel CSV
+          download: Télécharger
     new:
-      title: "Nouveau planning"
+      title: Nouveau planning
     export_file:
-      ref_planning: "référence planning"
-      planning: "planning"
-      ref: "référence"
-      vehicle: "véhicule"
-      route: "tournée"
-      order: "ordre"
-      stop_type: "type arrêt"
-      stop_type_store: "dépôt"
-      stop_type_visit: "visite"
-      stop_type_rest: "pause"
-      wait_time: "attente"
-      time: "heure"
-      distance: "distance"
-      drive_time: "temps trajet"
-      name: "nom"
-      street: "voie"
-      detail: "complément"
-      postalcode: "code postal"
-      city: "ville"
-      country: "pays"
-      lat: "lat"
-      lng: "lng"
-      comment: "commentaire"
-      tags: "libellés"
-      phone_number: "téléphone"
-      ref_visit: "référence visite"
-      duration: "durée visite"
-      quantity: "quantité"
-      orders: "commandes"
-      active: "livré"
-      open1: "horaire début 1"
-      close1: "horaire fin 1"
-      open2: "horaire début 2"
-      close2: "horaire fin 2"
-      tags_visit: "libellés visite"
-      out_of_window: "hors créneau visite"
-      out_of_capacity: "hors capacité véhicule"
-      out_of_drive_time: "hors créneau véhicule"
-      status: "statut"
-      eta: "eta"
+      ref_planning: référence planning
+      planning: planning
+      ref: référence
+      vehicle: véhicule
+      route: tournée
+      order: ordre
+      stop_type: type arrêt
+      stop_type_store: dépôt
+      stop_type_visit: visite
+      stop_type_rest: pause
+      wait_time: attente
+      time: heure
+      distance: distance
+      drive_time: temps trajet
+      name: nom
+      street: voie
+      detail: complément
+      postalcode: code postal
+      city: ville
+      country: pays
+      lat: lat
+      lng: lng
+      comment: commentaire
+      tags: libellés
+      phone_number: téléphone
+      ref_visit: référence visite
+      duration: durée visite
+      quantity: quantité
+      orders: commandes
+      active: livré
+      open1: horaire début 1
+      close1: horaire fin 1
+      open2: horaire début 2
+      close2: horaire fin 2
+      tags_visit: libellés visite
+      out_of_window: hors créneau visite
+      out_of_capacity: hors capacité véhicule
+      out_of_drive_time: hors créneau véhicule
+      status: statut
+      eta: eta
     form:
-      ref_help: "Référence libre"
-      tags_help: "Restreint les visites / clients dans le planning (les visites/clients doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)."
-      order_array: "Comm."
-      zonings_help: "Permet d'affecter automatiquement des visites/clients à des véhicules suivant des zones géographiques prédéfinies."
-      avoid_zones_help: "Permet également de définir des zones où ne pas circuler."
-      default: "Défaut"
+      ref_help: Référence libre
+      tags_help: Restreint les visites / clients dans le planning (les visites/clients
+        doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning).
+      order_array: Comm.
+      zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules
+        suivant des zones géographiques prédéfinies.
+      avoid_zones_help: Permet également de définir des zones où ne pas circuler.
+      default: Défaut
     show:
-      print: "Imprimer"
-
+      print: Imprimer
   routes:
     show:
-      print: "Imprimer"
-      wait: "Temps d'attente :"
+      print: Imprimer
+      wait: 'Temps d''attente :'
       annotating:
-        hour: "Heure de passage :"
-        signature: "Signature :"
-
+        hour: 'Heure de passage :'
+        signature: 'Signature :'
   shared:
     error_messages:
       form_contains_error:
-        one: "Le formulaire contient une erreur."
-        other: "Le formulaire contient des erreurs."
-
+        one: Le formulaire contient une erreur.
+        other: Le formulaire contient des erreurs.
   stops:
     default:
-      name_rest: "Pause"
-
+      name_rest: Pause
   stores:
     default:
-      name: "Départ véhicule"
-      lat: "44.83423"
-      lng: "-0.60068"
-      city: "Bordeaux"
+      name: Départ véhicule
+      lat: '44.83423'
+      lng: '-0.60068'
+      city: Bordeaux
     geocoding:
-      geocoding_in_progress: "Geocodage en cours."
+      geocoding_in_progress: Geocodage en cours.
     form:
-      ref: "Référence"
-      ref_help: "Référence libre"
-      locate_manually: "Positionner manuellement sur la carte"
-      country_default: "%{n} (valeur par défaut)"
+      ref: Référence
+      ref_help: Référence libre
+      locate_manually: Positionner manuellement sur la carte
+      country_default: '%{n} (valeur par défaut)'
       icon_size:
-        small: "petite"
-        medium: "moyenne"
-        large: "grande"
-      prefered_icons: "Conseillés"
-      other_icons: "Autres"
+        small: petite
+        medium: moyenne
+        large: grande
+      prefered_icons: Conseillés
+      other_icons: Autres
     edit:
-      title: "Modifier dépôt"
+      title: Modifier dépôt
     import:
-      title: "Importer des dépôts"
-      stores: "Dépôts"
-      replace_no: "Mise à jour / ajout"
-      replace_no_help: "Une mise à jour des dépôts existants (référence dépôt inchangée) est faite et les nouveaux sont ajoutés à l'application."
-      replace_yes: "Supprimer anciens dépôts"
-      replace_yes_help: "Efface et remplace tous les anciens dépôts par ceux de l'import."
-      replace_confirm: "Supprimer tous les dépôts et leurs modifications pour les remplacer par ceux importés ?"
+      title: Importer des dépôts
+      stores: Dépôts
+      replace_no: Mise à jour / ajout
+      replace_no_help: Une mise à jour des dépôts existants (référence dépôt inchangée)
+        est faite et les nouveaux sont ajoutés à l'application.
+      replace_yes: Supprimer anciens dépôts
+      replace_yes_help: Efface et remplace tous les anciens dépôts par ceux de l'import.
+      replace_confirm: Supprimer tous les dépôts et leurs modifications pour les remplacer
+        par ceux importés ?
       csv:
-        title: "Fichier CSV"
-        help: "Importe les dépôts depuis un fichier CSV. Les fichiers CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels."
-        file_help: "Import de fichier CSV uniquement."
-      import_template_help: "Aide"
+        title: Fichier CSV
+        help: Importe les dépôts depuis un fichier CSV. Les fichiers CSV peuvent être
+          exportés à partir de tableurs ou depuis d'autres logiciels.
+        file_help: Import de fichier CSV uniquement.
+      import_template_help: Aide
       dialog:
         help:
-          title: "Liste des colonnes de votre fichier"
-          desc: "Votre fichier d'import peut contenir l'ensemble des colonnes et types de valeurs suivants :"
+          title: Liste des colonnes de votre fichier
+          desc: 'Votre fichier d''import peut contenir l''ensemble des colonnes et
+            types de valeurs suivants :'
     index:
       dialog:
         import:
-          title: "Import des dépôts"
-          in_progress: "Import des dépôts en cours, merci de patienter"
-      title: "Liste dépôts"
-      new: "Nouveau dépôt"
+          title: Import des dépôts
+          in_progress: Import des dépôts en cours, merci de patienter
+      title: Liste dépôts
+      new: Nouveau dépôt
     new:
-      title: "Nouveau dépôt"
+      title: Nouveau dépôt
     import_file:
-      ref: "référence"
-      ref_desc: "un identifiant stable, constant et unique permettant la mise à jour non-destructrice de cet élément lors du prochain import."
-      name: "nom"
-      name_desc: "nom du dépôt."
-      color: "couleur"
-      color_desc: "la couleur de votre icône de dépôt, issue des couleurs du web https://fr.wikipedia.org/wiki/Couleur_du_Web"
-      color_format: "#000000 ou black"
-      icon: "icône"
-      icon_desc: "nom de l'icône représentant le dépôt sur la carte, issue de la liste officielle de font-awesome http://fontawesome.io/icons préfixé de “fa-”. Ex. fa-building"
-      icon_size: "taille icône"
-      icon_size_desc: "taille de l'icône localisant le dépôt sur la carte. Défaut : large"
-      open: "horaire début"
-      open_desc: "début des horaires d'activités du dépôt."
-      close: "horaire fin"
-      close_desc: "fin des horaires d'activités du dépôt."
-      street: "voie"
-      street_desc: "numéro de l'immeuble, type de voie et nom de la voie (l'orthographe doit être correcte pour un géocodage fiable)."
-      postalcode: "code postal"
-      postalcode_desc: "code postal de la ville ou commune (l'exactitude est importante pour un géocodage fiable)."
-      city: "ville"
-      city_desc: "nom de la ville ou commune (l'orthographe doit être correcte pour un géocodage fiable)."
-      country: "pays"
-      country_desc: "nom du pays (l'orthographe doit être correcte pour un géocodage fiable)."
-      lat: "lat"
-      lat_desc: "latitude du dépôt (en degrés décimaux) comprise entre -90° et 90°. Ex. 45,91"
-      lat_format: "nombre à virgule entre -90 et 90"
-      lng: "lng"
-      lng_desc: "longitude du dépôt (en dégrés décimaux) comprise entre -180° et 180°. Ex. -0,781"
-      lng_format: "nombre à virgule entre -180 et 180"
-      geocoding_accuracy: "qualité géocodage"
-      geocoding_accuracy_desc: "note qualifiant la certitude de conversion de l'adresse postale en coordonnées géographiques. Ceci via un pourcentage exprimé entre 0 et 1. Ex. 0,70 représente 70% de fiabilité."
-      geocoding_accuracy_format: "nombre à virgule de 0 à 1"
-      geocoding_level: "niveau géocodage"
-      geocoding_level_desc: "niveau de précision atteint lors de la conversion de l'adresse postale en coordonnées géographiques, exprimé de manière sémantique."
-      missing_name: "Enregistrement %{line} : « nom » manquant."
-      missing_location: "Enregistrement %{line} : « ville » ou « code postal » ou « lat » et « lng » manquant."
-      invalid_numeric_value: "Enregistrement %{line} : valeur numérique « %{value} » invalide à l'enregistrement %{line}."
+      ref: référence
+      ref_desc: un identifiant stable, constant et unique permettant la mise à jour
+        non-destructrice de cet élément lors du prochain import.
+      name: nom
+      name_desc: nom du dépôt.
+      color: couleur
+      color_desc: la couleur de votre icône de dépôt, issue des couleurs du web https://fr.wikipedia.org/wiki/Couleur_du_Web
+      color_format: '#000000 ou black'
+      icon: icône
+      icon_desc: nom de l'icône représentant le dépôt sur la carte, issue de la liste
+        officielle de font-awesome http://fontawesome.io/icons préfixé de “fa-”. Ex.
+        fa-building
+      icon_size: taille icône
+      icon_size_desc: 'taille de l''icône localisant le dépôt sur la carte. Défaut
+        : large'
+      open: horaire début
+      open_desc: début des horaires d'activités du dépôt.
+      close: horaire fin
+      close_desc: fin des horaires d'activités du dépôt.
+      street: voie
+      street_desc: numéro de l'immeuble, type de voie et nom de la voie (l'orthographe
+        doit être correcte pour un géocodage fiable).
+      postalcode: code postal
+      postalcode_desc: code postal de la ville ou commune (l'exactitude est importante
+        pour un géocodage fiable).
+      city: ville
+      city_desc: nom de la ville ou commune (l'orthographe doit être correcte pour
+        un géocodage fiable).
+      country: pays
+      country_desc: nom du pays (l'orthographe doit être correcte pour un géocodage
+        fiable).
+      lat: lat
+      lat_desc: latitude du dépôt (en degrés décimaux) comprise entre -90° et 90°.
+        Ex. 45,91
+      lat_format: nombre à virgule entre -90 et 90
+      lng: lng
+      lng_desc: longitude du dépôt (en dégrés décimaux) comprise entre -180° et 180°.
+        Ex. -0,781
+      lng_format: nombre à virgule entre -180 et 180
+      geocoding_accuracy: qualité géocodage
+      geocoding_accuracy_desc: note qualifiant la certitude de conversion de l'adresse
+        postale en coordonnées géographiques. Ceci via un pourcentage exprimé entre
+        0 et 1. Ex. 0,70 représente 70% de fiabilité.
+      geocoding_accuracy_format: nombre à virgule de 0 à 1
+      geocoding_level: niveau géocodage
+      geocoding_level_desc: niveau de précision atteint lors de la conversion de l'adresse
+        postale en coordonnées géographiques, exprimé de manière sémantique.
+      missing_name: 'Enregistrement %{line} : « nom » manquant.'
+      missing_location: 'Enregistrement %{line} : « ville » ou « code postal » ou
+        « lat » et « lng » manquant.'
+      invalid_numeric_value: 'Enregistrement %{line} : valeur numérique « %{value} »
+        invalide à l''enregistrement %{line}.'
       format:
-        string: "texte"
-        integer: "nombre"
-        hour: "HH:MM"
-        float: "0.123"
-        required: "obligatoire"
-        advisable: "recommandé"
-        optionnal: "optionnel"
+        string: texte
+        integer: nombre
+        hour: HH:MM
+        float: '0.123'
+        required: obligatoire
+        advisable: recommandé
+        optionnal: optionnel
   products:
     menu:
-      products: "Produits"
+      products: Produits
     edit:
-      title: "Modifier produit"
+      title: Modifier produit
     index:
-      title: "Liste produits"
-      new: "Nouveau produit"
+      title: Liste produits
+      new: Nouveau produit
     new:
-      title: "Nouveau produit"
+      title: Nouveau produit
     form:
-      name_help: "Nom long du produit"
-      code_help: "Code court, quelques lettres"
-
+      name_help: Nom long du produit
+      code_help: Code court, quelques lettres
   tags:
     edit:
-      title: "Modifier libellé"
+      title: Modifier libellé
     index:
-      title: "Liste libellés"
-      new: "Nouveau libellé"
+      title: Liste libellés
+      new: Nouveau libellé
     new:
-      title: "Nouveau libellé"
+      title: Nouveau libellé
     form:
-      color_default: "Par défaut"
-      icon_default: "Par défaut"
-      color_help: "Forcer l'utilisation de cette couleur"
-      customised_color: "Couleur personnalisée"
-      icon_help: "Forcer l'utilisation de ce symbole"
-      ref: "Référence"
-      ref_help: "Référence libre"
-
+      color_default: Par défaut
+      icon_default: Par défaut
+      color_help: Forcer l'utilisation de cette couleur
+      customised_color: Couleur personnalisée
+      icon_help: Forcer l'utilisation de ce symbole
+      ref: Référence
+      ref_help: Référence libre
   users:
     menu:
-      sign_out: "Déconnexion"
+      sign_out: Déconnexion
     edit:
-      title: "Paramètres utilisateur"
-      edit: "Modifier votre identifiant de connexion et mot de passe"
-      edit_user: "Vous n'avez pas le droit d'éditer un autre utilisateur"
+      title: Paramètres utilisateur
+      edit: Modifier votre identifiant de connexion et mot de passe
+      edit_user: Vous n'avez pas le droit d'éditer un autre utilisateur
     form:
-      url_click2call_help: "URL de la solution de communication VOIP. L'URL doit prendre le paramètre '{TEL}' à l'emplacement du numéro de téléphone."
-      send_email: "Envoyer email"
+      url_click2call_help: URL de la solution de communication VOIP. L'URL doit prendre
+        le paramètre '{TEL}' à l'emplacement du numéro de téléphone.
+      send_email: Envoyer email
     update:
-      success: "Utilisateur mis à jour avec succès"
+      success: Utilisateur mis à jour avec succès
     password:
-      title: "Editer le mot de passe"
-      unauthenticated: "Erreur de connexion, veuillez vérifier le lien fournit par email"
+      title: Editer le mot de passe
+      unauthenticated: Erreur de connexion, veuillez vérifier le lien fournit par
+        email
     set_password:
-      action: "Mettre à jour le mot de passe"
-      success: "Utilisateur mis à jour avec succès"
-
+      action: Mettre à jour le mot de passe
+      success: Utilisateur mis à jour avec succès
   vehicles:
-    default_name: "Véhicule %{n}"
-    emissions_nothing: "Aucun - %{n}"
-    emissions_light_petrol: "VL - Essence - %{n}"
-    emissions_light_diesel: "VL - Gazole - %{n}"
-    emissions_light_lgp: "VL - GPL - %{n}"
+    default_name: Véhicule %{n}
+    emissions_nothing: Aucun - %{n}
+    emissions_light_petrol: VL - Essence - %{n}
+    emissions_light_diesel: VL - Gazole - %{n}
+    emissions_light_lgp: VL - GPL - %{n}
     form:
-      tomtom_id: "TomTom"
-      teksat_id: "Teksat"
-      orange_id: "Orange"
+      tomtom_id: TomTom
+      teksat_id: Teksat
+      orange_id: Orange
       ref:
-        help: "Référence libre"
+        help: Référence libre
       emissions:
-        help: "Type de carburant"
+        help: Type de carburant
       consumption:
-        help: "Consommation moyenne aux 100 km en litres de carburant"
-        help_miles: "Consommation moyenne aux 62.1 mi. en litres de carburant"
+        help: Consommation moyenne aux 100 km en litres de carburant
+        help_miles: Consommation moyenne aux 62.1 mi. en litres de carburant
       capacities:
-        label: "Capacités"
-        default: "%{n} (valeur par défaut)"
-        no_overload: " (sans dépassement)"
-        ignore_overload: " (ignoré)"
-        help: "Capacités maximales du véhicule"
+        label: Capacités
+        default: '%{n} (valeur par défaut)'
+        no_overload: ' (sans dépassement)'
+        ignore_overload: ' (ignoré)'
+        help: Capacités maximales du véhicule
       router:
-        default: "Défaut"
-        help: "Forcer l'utilisation d'un calculateur d'itinéraire"
+        default: Défaut
+        help: Forcer l'utilisation d'un calculateur d'itinéraire
       router_dimension:
-        default: "Défaut"
+        default: Défaut
       speed_multiplicator:
-        default: "%{n} (valeur par défaut)"
-        help: "Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement global au niveau du paramétrage est également utilisé lors des calculs."
+        default: '%{n} (valeur par défaut)'
+        help: Une valeur supérieure à 100% signifie une vitesse plus élevée. L'ajustement
+          global au niveau du paramétrage est également utilisé lors des calculs.
       contact_email:
-        help: "Email du terminal du chauffeur"
-
+        help: Email du terminal du chauffeur
   vehicle_usages:
     menu:
-      vehicle_usages: "Configurations de véhicules"
+      vehicle_usages: Configurations de véhicules
     edit:
-      title: "Modifier véhicule et configuration"
+      title: Modifier véhicule et configuration
     index:
-      title: "Liste configurations de véhicules"
-      capacities: "Capacités"
-      stores: "Départ - Arrivée"
+      title: Liste configurations de véhicules
+      capacities: Capacités
+      stores: Départ - Arrivée
       store:
-        no_start: "Pas de dépôt de départ"
-        no_stop: "Pas de dépôt d'arrivée : fin de tournée libre"
-        same_start_stop: "Véhicule retournant à son dépôt de départ"
-      time: "Début - Fin"
-      devices: "Terminaux mobiles"
-      disable: "Désactiver"
-      disable_confirm: "Êtes-vous sûr ? Toutes les tournées utilisant ce véhicule dans cette configuration seront perdues."
-      enable: "Activer"
+        no_start: Pas de dépôt de départ
+        no_stop: 'Pas de dépôt d''arrivée : fin de tournée libre'
+        same_start_stop: Véhicule retournant à son dépôt de départ
+      time: Début - Fin
+      devices: Terminaux mobiles
+      disable: Désactiver
+      disable_confirm: Êtes-vous sûr ? Toutes les tournées utilisant ce véhicule dans
+        cette configuration seront perdues.
+      enable: Activer
     new:
-      title: "Nouvelle configuration de véhicule"
+      title: Nouvelle configuration de véhicule
     toggle:
-      success: "Configuration du véhicule mise à jour avec succès"
+      success: Configuration du véhicule mise à jour avec succès
     form:
-      save: "Enregistrer la configuration du véhicule"
+      save: Enregistrer la configuration du véhicule
       vehicle:
-        legend: "Véhicule"
-        help: "Les informations ci-dessous sur le véhicule sont communes à toutes les configurations de véhicules"
+        legend: Véhicule
+        help: Les informations ci-dessous sur le véhicule sont communes à toutes les
+          configurations de véhicules
       vehicle_usage:
-        legend: "Configuration du véhicule : « %{s} »"
-        help: "Les informations ci-dessous sont spécifiques à la configuration du véhicule."
+        legend: 'Configuration du véhicule : « %{s} »'
+        help: Les informations ci-dessous sont spécifiques à la configuration du véhicule.
       open:
-        default: "%{n} (défaut)"
+        default: '%{n} (défaut)'
       close:
-        default: "%{n} (défaut)"
+        default: '%{n} (défaut)'
       open_close_days:
-        default: "%{n}"
-      open_close: "Horaire"
-      open_close_help: "Horaire de travail livreur"
-      stores: "Départ / Arrivée"
+        default: '%{n}'
+      open_close: Horaire
+      open_close_help: Horaire de travail livreur
+      stores: Départ / Arrivée
       store:
-        default: "Défaut"
-        none: "Aucun"
-      stores_help: "Dépôts de départ et d'arrivée"
-      rest_duration_store: "Durée de repos / lieu"
+        default: Défaut
+        none: Aucun
+      stores_help: Dépôts de départ et d'arrivée
+      rest_duration_store: Durée de repos / lieu
       rest_start:
-        default: "%{n} (défaut)"
+        default: '%{n} (défaut)'
       rest_stop:
-        default: "%{n} (défaut)"
-      rest_start_stop: "Plage de repos"
-      rest_start_stop_help: "Sans tenir compte de la durée de pause"
+        default: '%{n} (défaut)'
+      rest_start_stop: Plage de repos
+      rest_start_stop_help: Sans tenir compte de la durée de pause
       rest_duration:
-        default: "%{n} (valeur par défaut)"
-        help: "Requiert une plage de repos si renseigné"
+        default: '%{n} (valeur par défaut)'
+        help: Requiert une plage de repos si renseigné
       store_rest:
-        default: "Défaut"
-        none: "Aucun"
-      service_times: "Durées de service"
+        default: Défaut
+        none: Aucun
+      service_times: Durées de service
       service_time:
-        default: "%{n} (valeur par défaut)"
-      service_time_start_addon: "avant"
-      service_time_end_addon: "après"
-      service_times_help: "Durées ajoutées avant le premier arrêt et après le dernier arrêt."
-
+        default: '%{n} (valeur par défaut)'
+      service_time_start_addon: avant
+      service_time_end_addon: après
+      service_times_help: Durées ajoutées avant le premier arrêt et après le dernier
+        arrêt.
   vehicle_usage_sets:
     default:
-      name: "Défaut"
+      name: Défaut
     menu:
-      vehicle_usage_sets: "Véhicules"
-      deliverable_units: "Unités livrables"
+      vehicle_usage_sets: Véhicules
+      deliverable_units: Unités livrables
     edit:
-      title: "Modifier configuration des véhicules"
+      title: Modifier configuration des véhicules
     index:
-      title: "Liste configurations des véhicules"
-      new: "Nouvelle configuration des véhicules"
-      stores: "Départ - Arrivée"
-      time: "Début - Fin"
-      service_time: "Durées de service"
+      title: Liste configurations des véhicules
+      new: Nouvelle configuration des véhicules
+      stores: Départ - Arrivée
+      time: Début - Fin
+      service_time: Durées de service
     new:
-      title: "Nouvelle configuration des véhicules"
+      title: Nouvelle configuration des véhicules
     form:
-      open_close: "Horaire"
-      open_close_help: "Horaire de travail livreur"
-      stores: "Départ / Arrivée"
+      open_close: Horaire
+      open_close_help: Horaire de travail livreur
+      stores: Départ / Arrivée
       store:
-        none: "Aucun"
-      stores_help: "Dépôts de départ et d'arrivée"
-      service_times: "Durées de service"
-      service_time_start_addon: "avant"
-      service_time_end_addon: "après"
-      service_times_help: "Durées ajoutées avant le premier arrêt et après le dernier arrêt."
-      rest_duration_store: "Durée de repos / lieu"
+        none: Aucun
+      stores_help: Dépôts de départ et d'arrivée
+      service_times: Durées de service
+      service_time_start_addon: avant
+      service_time_end_addon: après
+      service_times_help: Durées ajoutées avant le premier arrêt et après le dernier
+        arrêt.
+      rest_duration_store: Durée de repos / lieu
       rest_duration:
-        help: "Requiert une plage de repos si renseigné"
-      rest_start_stop: "Plage de repos"
-      rest_start_stop_help: "Sans tenir compte de la durée de pause"
-
+        help: Requiert une plage de repos si renseigné
+      rest_start_stop: Plage de repos
+      rest_start_stop_help: Sans tenir compte de la durée de pause
   visits:
     form:
-      legend: "Visite #%{n}"
-      destroy: "Si coché, la visite sera supprimée. Cliquez-ici pour annuler."
-      ref_help: "Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites avec l'import/export notamment."
+      legend: 'Visite #%{n}'
+      destroy: Si coché, la visite sera supprimée. Cliquez-ici pour annuler.
+      ref_help: Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites
+        avec l'import/export notamment.
       quantities:
-        default: "%{n} (valeur par défaut)"
-        help: "Quantités à livrer"
-      take_over_default: "défaut"
-      take_over_help: "Si vide utilise la valeur par défaut"
-      open_close1: "Plage horaire 1"
-      open_close2: "Plage horaire 2"
-      close_help: "Sans tenir compte de la durée de visite"
-      tags_help: "Catégories de la visite"
-      delete: "Marquer à supprimer"
-      delete_help: "Supprimer cette visite (le client sera conservé)"
-
+        default: '%{n} (valeur par défaut)'
+        help: Quantités à livrer
+      take_over_default: défaut
+      take_over_help: Si vide utilise la valeur par défaut
+      open_close1: Plage horaire 1
+      open_close2: Plage horaire 2
+      close_help: Sans tenir compte de la durée de visite
+      tags_help: Catégories de la visite
+      delete: Marquer à supprimer
+      delete_help: Supprimer cette visite (le client sera conservé)
   zonings:
     default:
-      from_route: "Tournée"
-      from_isochrone: "Isochrone"
-      from_isodistance: "Isodistance"
-      from: "depuis"
+      from_route: Tournée
+      from_isochrone: Isochrone
+      from_isodistance: Isodistance
+      from: depuis
     menu:
-      zonings: "Zonages"
+      zonings: Zonages
     edit:
-      title: "Modifier zonage"
-      collapse_zoning_panel: "Minifier le panneau de zonage"
-      generate_confirm: "Ceci réinitialisera toutes vos zones actuelles. Continuer ?"
-      vehicleless_confirm: "Confirmer l'enregistrement de zones sans véhicules ?"
-      isochrone_missing_vehicle: "Un isochrone ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
-      isodistance_missing_vehicle: "Un isodistance ne peut être généré pour au moins un véhicule du fait d'une restriction du calculateur d'itinéraire"
-      failed: "Échec lors de la génération de l'isochrone"
-      success: "Isochrone généré avec succès"
+      title: Modifier zonage
+      collapse_zoning_panel: Minifier le panneau de zonage
+      generate_confirm: Ceci réinitialisera toutes vos zones actuelles. Continuer
+        ?
+      vehicleless_confirm: Confirmer l'enregistrement de zones sans véhicules ?
+      isochrone_missing_vehicle: Un isochrone ne peut être généré pour au moins un
+        véhicule du fait d'une restriction du calculateur d'itinéraire
+      isodistance_missing_vehicle: Un isodistance ne peut être généré pour au moins
+        un véhicule du fait d'une restriction du calculateur d'itinéraire
+      failed: Échec lors de la génération de l'isochrone
+      success: Isochrone généré avec succès
     index:
-      title: "Liste zonages"
-      new: "Nouveau zonage"
+      title: Liste zonages
+      new: Nouveau zonage
     new:
-      title: "Nouveau zonage"
+      title: Nouveau zonage
     form:
-      hide_out_of_route: "Cacher les clients non planifiés"
-      all_destinations: "Afficher tous les clients"
-      from_planning_help: "Vous pouvez aussi afficher les clients d'un unique planning en modifiant ce zonage depuis le planning"
-      stops_from_planning: "Clients chargés depuis le planning « %{s} »"
-      generate: "Générer"
+      hide_out_of_route: Cacher les clients non planifiés
+      all_destinations: Afficher tous les clients
+      from_planning_help: Vous pouvez aussi afficher les clients d'un unique planning
+        en modifiant ce zonage depuis le planning
+      stops_from_planning: Clients chargés depuis le planning « %{s} »
+      generate: Générer
       automatic:
-        one: "Automatique : 1 zone"
-        other: "Automatique : %{count} zones"
-      from_planning: "Depuis les tournées du planning"
-      zone_placeholder: "Zone"
-      zone_vehicle: "Véhicule"
-      avoid_zone: "Ne pas circuler dans cette zone"
-      isochrone: "Isochrone / véhicule(s)"
-      isodistance: "Isodistance / véhicule(s)"
+        one: 'Automatique : 1 zone'
+        other: 'Automatique : %{count} zones'
+      from_planning: Depuis les tournées du planning
+      zone_placeholder: Zone
+      zone_vehicle: Véhicule
+      avoid_zone: Ne pas circuler dans cette zone
+      isochrone: Isochrone / véhicule(s)
+      isodistance: Isodistance / véhicule(s)
       dialog:
         isochrone:
-          title: "Isochrone"
-          vehicle_usage_set: "Configuration des véhicules"
-          vehicle_usage_set_help: "Configuration des véhicules à prendre en compte, en particulier le dépôt de départ."
-          size: "Temps"
-          size_help: "Zone accessible depuis le point de départ en ce temps de parcours."
+          title: Isochrone
+          vehicle_usage_set: Configuration des véhicules
+          vehicle_usage_set_help: Configuration des véhicules à prendre en compte,
+            en particulier le dépôt de départ.
+          size: Temps
+          size_help: Zone accessible depuis le point de départ en ce temps de parcours.
         isochrone-progress:
-          title: "Calcul d'isochrones en cours"
+          title: Calcul d'isochrones en cours
         isodistance:
-          title: "Isodistance"
-          vehicle_usage_set: "Configuration des véhicules"
-          vehicle_usage_set_help: "Configuration des véhicules à prendre en compte, en particulier le dépôt de départ."
-          size: "Distance"
-          size_help: "Zone accessible depuis le point de départ avec cette distance de parcours."
+          title: Isodistance
+          vehicle_usage_set: Configuration des véhicules
+          vehicle_usage_set_help: Configuration des véhicules à prendre en compte,
+            en particulier le dépôt de départ.
+          size: Distance
+          size_help: Zone accessible depuis le point de départ avec cette distance
+            de parcours.
         isodistance-progress:
-          title: "Calcul d'isodistances en cours"
-        validate: "Générer"
-
+          title: Calcul d'isodistances en cours
+        validate: Générer
   unauthorized:
-    default: "Vous n'êtes pas autorisé à accéder à cette page"
-
+    default: Vous n'êtes pas autorisé à accéder à cette page
   web:
-    key_not_found: "Votre clé de connexion n'est pas reconnue"
-    slow_browser: "Vous utilisez %{n} qui ralentit l'application. Nous vous invitons à utiliser un autre navigateur téléchargeable gratuitement pour de meilleures performances."
+    key_not_found: Votre clé de connexion n'est pas reconnue
+    slow_browser: Vous utilisez %{n} qui ralentit l'application. Nous vous invitons
+      à utiliser un autre navigateur téléchargeable gratuitement pour de meilleures
+      performances.
     form:
-      default: "%{n} (valeur par défaut)"
-      empty_entry: "- Non renseigné -"
-      from_time: "de"
-      to_time: "à"
-      days: "J+"
+      default: '%{n} (valeur par défaut)'
+      empty_entry: '- Non renseigné -'
+      from_time: de
+      to_time: à
+      days: J+
     select2:
-      empty_result: "Pas de résultat"
+      empty_result: Pas de résultat
     dialog:
-      close: "Fermer"
-    placeholder_filter: "filtrer"
-    help_menu: "Aide"
-    help_search_placeholder: "Termes à rechercher..."
-    help: "Aide en ligne"
-    contact: "Contacter le support"
-    choose_file: "Sélectionner fichier"
+      close: Fermer
+    placeholder_filter: filtrer
+    help_menu: Aide
+    help_search_placeholder: Termes à rechercher...
+    help: Aide en ligne
+    contact: Contacter le support
+    choose_file: Sélectionner fichier
     geocoder:
-      search: "Recherche d'adresse"
-      empty_result: "Pas de résultat"
-
+      search: Recherche d'adresse
+      empty_result: Pas de résultat
   api_web:
     v01:
       destinations:
         index:
-          none_destinations: "Aucune destination n'a été chargée"
+          none_destinations: Aucune destination n'a été chargée
       routes:
         index:
-          none_routes: "Aucune route n'a été chargée"
-          departure: "Départ :"
-          arrival: "Arrivée :"
+          none_routes: Aucune route n'a été chargée
+          departure: 'Départ :'
+          arrival: 'Arrivée :'
       stores:
         index:
-          none_stores: "Aucun dépôt n'a été chargée"
+          none_stores: Aucun dépôt n'a été chargée
       zones:
         index:
-          none_zones: "Aucune zone n'a été chargée"
+          none_zones: Aucune zone n'a été chargée
           without_vehicle: Sans véhicule
-
   all:
-    datepicker: "dd-mm-yyyy"
+    datepicker: dd-mm-yyyy
     map_attribution:
-      osm: "Carte et données &copy; contributeurs <a href=\"http://openstreetmap.org\" target=\"_blank\">OpenStreetMap</a>, %{attribution}"
-      here: "Here"
+      osm: Carte et données &copy; contributeurs <a href="http://openstreetmap.org"
+        target="_blank">OpenStreetMap</a>, %{attribution}
+      here: Here
     verb:
-      new: "Nouveau"
-      list: "Liste"
-      show: "Afficher"
-      edit: "Modifier"
-      send: "Envoyer"
-      destroy: "Supprimer"
-      destroy_selection: "Supprimer sélection"
-      destroy_confirm: "Êtes-vous sûr ?"
-      confirm: "Êtes-vous sûr ?"
-      duplicate: "Dupliquer"
-      toggle_selection: "Inverser sélection"
-      dismiss: "Fermer"
-      import: "Importer"
-      save: "Sauvegarder"
+      new: Nouveau
+      list: Liste
+      show: Afficher
+      edit: Modifier
+      send: Envoyer
+      destroy: Supprimer
+      destroy_selection: Supprimer sélection
+      destroy_confirm: Êtes-vous sûr ?
+      confirm: Êtes-vous sûr ?
+      duplicate: Dupliquer
+      toggle_selection: Inverser sélection
+      dismiss: Fermer
+      import: Importer
+      save: Sauvegarder
     unit:
-      m: "m"
-      kms: "km"
-      mile: "mi."
-      miles: "mi."
-      millisecond: "ms"
-      second: "s"
-      minute: "min"
-      kg: "kg"
-      ton: "tonnes"
-      kgco2e_html: "kgCO<sub>2</sub>e"
-      kgco2e_l_html: "kgCO<sub>2</sub>e/l"
-      l_100km: "l/100 km"
-      l_62Miles: "l/62.1 mi."
-      hour_minute: "heure : minute"
-      hour_minute_second: "heure : minute : seconde"
+      m: m
+      kms: km
+      mile: mi.
+      miles: mi.
+      millisecond: ms
+      second: s
+      minute: min
+      kg: kg
+      ton: tonnes
+      kgco2e_html: kgCO<sub>2</sub>e
+      kgco2e_l_html: kgCO<sub>2</sub>e/l
+      l_100km: l/100 km
+      l_62Miles: l/62.1 mi.
+      hour_minute: 'heure : minute'
+      hour_minute_second: 'heure : minute : seconde'
     value:
-      _true: "vrai"
-      _false: "faux"
-      _yes: "oui"
-      _no: "non"
+      _true: vrai
+      _false: faux
+      _yes: oui
+      _no: non
     subscribe:
-      planning_unavailable: "Le planning n’est pas modifiable pour le moment, la date de votre abonnement a expiré. Veuillez contacter votre revendeur afin de renouveler votre abonnement."
-      expiration_date: "Il ne vous reste que quelques jours pour renouveler votre adhésion, n'hésitez pas à contacter votre revendeur afin de renouveler votre offre. Date de fin : "
-      expiration_date_over: "La date d'utilisation est dépassée, veuillez contacter votre revendeur. Date d'expiration : "
-
-  # Override rails-i18n
+      planning_unavailable: Le planning n’est pas modifiable pour le moment, la date
+        de votre abonnement a expiré. Veuillez contacter votre revendeur afin de renouveler
+        votre abonnement.
+      expiration_date: 'Il ne vous reste que quelques jours pour renouveler votre
+        adhésion, n''hésitez pas à contacter votre revendeur afin de renouveler votre
+        offre. Date de fin : '
+      expiration_date_over: 'La date d''utilisation est dépassée, veuillez contacter
+        votre revendeur. Date d''expiration : '
   helpers:
     submit:
-      create: "Créer %{model}"
-      update: "Enregistrer %{model}"
-      submit: "Enregistrer %{model}"
+      create: Créer %{model}
+      update: Enregistrer %{model}
+      submit: Enregistrer %{model}
   number:
     format:
-      delimiter: " "
-      separator: ","
-
+      delimiter:  
+      separator: ','
   devise:
     shared:
       links:
-        sign_in_prefix: "Vous possédez déjà un compte ?"
-        sign_up_prefix: "Besoin de vous créer un compte ?"
+        sign_in_prefix: Vous possédez déjà un compte ?
+        sign_up_prefix: Besoin de vous créer un compte ?
     sessions:
       new:
-        remember_me: "Se souvenir de moi"
+        remember_me: Se souvenir de moi
