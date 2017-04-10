@@ -478,7 +478,7 @@ en:
             close2:
               after: must be after Time window 2 open
             quantities:
-              not_float: doivent être un nombre
+              not_float: must be a number
         zone:
           attributes:
             vehicle:
@@ -695,7 +695,7 @@ en:
         to manage distribution on vehicles. More the value is important, more delays
         are detrimental (0 to disallow delays strictly: turn clusters off in this
         case).'
-      cost_waiting_time_default: '%{n} (valeur par défaut)'
+      cost_waiting_time_default: '%{n} (default value)'
       cost_waiting_time_help: Evaluate the importance of waiting times. More the value
         is important, more the delay before time slot opening is important (0 to disallow
         the waiting time)

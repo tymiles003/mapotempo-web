@@ -210,7 +210,7 @@ fr:
         lat: Latitude
         lng: Longitude
         comment: Commentaire
-        comment_small: Comment.
+        comment_small: Comment
         phone_number: Numéro de téléphone
         phone_number_small: Tél.
         geocoding_accuracy: Qualité du géocodage
@@ -432,8 +432,8 @@ fr:
         name: Nom
     successful:
       messages:
-        created: '%{model} a été créé.'
-        updated: '%{model} a été mis à jour.'
+        created: '%{model} a été créé'
+        updated: '%{model} a été mis à jour'
     errors:
       attributes:
         inconsistent_customer: n'est pas une valeur autorisée pour ce compte client
@@ -479,7 +479,7 @@ fr:
             close2:
               after: doit être après le début de Plage horaire 2
             quantities:
-              not_float: doivent être un nombre
+              not_float: doit être un nombre
         zone:
           attributes:
             vehicle:
@@ -513,7 +513,7 @@ fr:
       geocoding_fail: 'Le géocodage a échoué :'
       reversegeocoding_fail: 'Le géocodage inversé a échoué :'
     planning:
-      import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles.
+      import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles
       already_optimizing: Une optimisation de planning est déjà en cours
     tomtom:
       access_denied: Non Autorisé. 'Accès complet aux commandes' n'est pas activé
@@ -572,8 +572,8 @@ fr:
       edit:
         title: Modifier revendeur
       form:
-        host_help: Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur.
-        name_help: Marque du revendeur.
+        host_help: Nom d'hôte et port de l'URL web utilisés pour détecter ce revendeur
+        name_help: Marque du revendeur
         welcome_url_help: 'Adresse de la page web html incluse comme « iframe » dans
           la page de bienvenue. Vous pouvez utiliser « {LG} » qui sera remplacé par
           la langue telle que « en », « fr » (par ex : http://mapotempo.com/{LG}/page.html).'
@@ -681,9 +681,9 @@ fr:
       orange: Orange Fleet Performance
       orange_help: Envoyer les plannings vers les GPS Orange Fleet Performance
       masternaut: Masternaut
-      masternaut_help: Permet d'envoyer les plannings vers les GPS Masternaut.
+      masternaut_help: Permet d'envoyer les plannings vers les GPS Masternaut
       alyacom: AlyaCom
-      alyacom_help: Permet d'envoyer les plannings vers l'application AlyaCom.
+      alyacom_help: Permet d'envoyer les plannings vers l'application AlyaCom
       optimization_cluster_size_default: '%{n} (valeur par défaut)'
       optimization_cluster_size_help: Valeur en secondes séparant les points à regrouper
         entre eux avant de les optimiser. Une valeur trop grande affectera la qualité
@@ -700,7 +700,7 @@ fr:
         permet de gérer la répartition sur les véhicules. Plus la valeur est grande
         plus les retards seront pénalisants (0 pour empêcher les retards de manière
         stricte : désactive les clusters dans ce cas).'
-      cost_waiting_time_default: '%{n} (valeur par défaut)!'
+      cost_waiting_time_default: '%{n} (valeur par défaut)'
       cost_waiting_time_help: Permet d'évaluer l'importance des temps d'attente. Plus
         la valeur est grande, plus l'attente avant l'ouverture d'un créneau horaire
         sera pénalisée (0 pour ne pas considérer l'attente dans l'optimisation)
@@ -849,7 +849,7 @@ fr:
             nom) seront fusionnées pour valeur de « voie » dans l'application.
       tomtom:
         title: TomTom
-        help: Importe les adresses de TomTom WEBFLEET comme clients.
+        help: Importe les adresses de TomTom WEBFLEET comme clients
     index:
       title: Liste clients
       new: Nouveau client
@@ -858,7 +858,7 @@ fr:
       no_position: manquant
       geocoding_level: Niveau de géocodage
       geocoding_column_help: Niveau de géocodage et qualité. Ordonner d'abord par
-        niveau puis par qualité.
+        niveau puis par qualité
       geocoding_empty: absent
       mutli_quantities: Multiples quantités, éditez cette visite pour changer les
         quantités.
@@ -890,7 +890,7 @@ fr:
       refs_duplicate: 'La référence : %{refs} est présente en double dans le fichier'
       ref: référence
       ref_desc: un identifiant stable, constant et unique permettant la mise à jour
-        non-destructrice de cet élément lors du prochain import.
+        non-destructrice de cet élément lors du prochain import
       route: tournée
       route_desc: numéro ou référence de la tournée dans le planning.
       ref_vehicle: véhicule
@@ -912,13 +912,13 @@ fr:
         complexe, résidence, escalier, étage, numéro de porte…
       postalcode: code postal
       postalcode_desc: code postal de la ville ou commune (l'exactitude est importante
-        pour un géocodage fiable).
+        pour un géocodage fiable)
       city: ville
       city_desc: nom de la ville ou commune (l'orthographe doit être correcte pour
-        un géocodage fiable).
+        un géocodage fiable)
       country: pays
       country_desc: nom du pays (l'orthographe doit être correcte pour un géocodage
-        fiable).
+        fiable)
       lat: lat
       lat_desc: latitude de la destination (en degrés décimaux) comprise entre -90°
         et 90°. Ex. 45,91
@@ -936,7 +936,7 @@ fr:
       geocoding_level_desc: niveau de précision atteint lors de la conversion de l'adresse
         postale en coordonnées géographiques, exprimé de manière sémantique.
       take_over: durée visite
-      take_over_desc: durée anticipée de la visite.
+      take_over_desc: durée anticipée de la visite
       quantity: quantité
       quantity_desc: quantité d'unités à livrer.
       quantity1_1: quantité 1_1
@@ -965,7 +965,7 @@ fr:
       tags_desc: catégories du client (permettant par exemple de les grouper).
       tags_format: libellé 1,libellé 2
       without_visit: sans visite
-      without_visit_desc: précise qu'il n'y a pas de visite associée.
+      without_visit_desc: précise qu'il n'y a pas de visite associée
       ref_visit: référence visite
       ref_visit_desc: référence de la visite.
       tags_visit: libellés visite
@@ -981,7 +981,7 @@ fr:
         advisable: recommandé
         optionnal: optionnel
         deprecated: déprécié
-      not_csv: Le fichier importé n'est pas au format CSV.
+      not_csv: Le fichier importé n'est pas au format CSV
       empty_file: ne contient aucune donnée
       too_many_lines: 'Import stoppé, trop de lignes (max: %{n}).'
       none_column: Aucune colonne trouvée
@@ -1045,8 +1045,8 @@ fr:
         jointe à cet email.
       vehicle: Véhicule
       planning: Planning
-      planning_ref: Référence planning
-      route_ref: Référence de la tournée
+      planning_ref: Réf. planning
+      route_ref: Réf. de la tournée
       order_array: Commandes
     send_computed_ics_route:
       content: "Un export au format agenda iCalendar vient de vous être envoyé depuis\
@@ -1056,7 +1056,7 @@ fr:
         \ (pas de mise à jour automatique)."
       vehicle: Véhicule
       planning: Planning
-      planning_ref: Référence planning
+      planning_ref: Réf. planning
       route_ref: Référence de la tournée
       order_array: Commandes
       link: Lien de téléchargement
@@ -1177,7 +1177,7 @@ fr:
           success: Fichier envoyé par email avec succès à tous les véhicules
           fail: Échec lors de l'export par email
           mail_error: Email(s) non envoyé(s). <br/> Vérifier la configuration des
-            emails pour vos véhicules
+            emails pour vos véhicules.
         kmz_email:
           action: Tracé KMZ par email
           success: Email envoyé avec succès
@@ -1209,7 +1209,7 @@ fr:
       stops_help: Arrêts plannifiés / total
       duration_help: Somme des durées des tournées
       distance_help: Somme des distances des tournées
-      emission_help: Emission
+      emission_help: Émission
       out_of_route: Non planifiés
       toggle_help: Affiche ou cache les clients sur la carte
       locked_unplanned_help: Verrouille les non-planifiés pour les opérations globales
@@ -1234,7 +1234,7 @@ fr:
         Le résultat ne sera plus optimisé. Les zonages sont recommandés pour affecter
         les arrêts de manière plus précise (Ok pour continuer malgré tout).
       automatic_insert_too_many: Trop d'arrêts non planifiés. Les zonages sont recommandés
-        pour affecter les arrêts de manière plus précise.
+        pour affecter les arrêts de manière plus précise
       active_all: Tous
       active_reverse: Inverser
       active_none: Aucun
@@ -1305,7 +1305,7 @@ fr:
           in_progress: Veuillez patienter
         zoning:
           title: Zonage
-          in_progress: Application du nouveau zonage en cours, merci de patienter.
+          in_progress: Application du nouveau zonage en cours, merci de patienter
         automatic_insert:
           title: Affectation des arrêts non planifiés
           in_progress: Veuillez patienter
@@ -1371,7 +1371,7 @@ fr:
     form:
       ref_help: Référence libre
       tags_help: Restreint les visites / clients dans le planning (les visites/clients
-        doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning).
+        doivent avoir l'ensemble de tous ces libellés pour apparaître dans le planning)
       order_array: Comm.
       zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules
         suivant des zones géographiques prédéfinies.
@@ -1429,7 +1429,7 @@ fr:
         title: Fichier CSV
         help: Importe les dépôts depuis un fichier CSV. Les fichiers CSV peuvent être
           exportés à partir de tableurs ou depuis d'autres logiciels.
-        file_help: Import de fichier CSV uniquement.
+        file_help: Import de fichier CSV uniquement
       import_template_help: Aide
       dialog:
         help:
@@ -1448,23 +1448,23 @@ fr:
     import_file:
       ref: référence
       ref_desc: un identifiant stable, constant et unique permettant la mise à jour
-        non-destructrice de cet élément lors du prochain import.
+        non-destructrice de cet élément lors du prochain import
       name: nom
-      name_desc: nom du dépôt.
+      name_desc: nom du dépôt
       color: couleur
       color_desc: la couleur de votre icône de dépôt, issue des couleurs du web https://fr.wikipedia.org/wiki/Couleur_du_Web
       color_format: '#000000 ou black'
       icon: icône
       icon_desc: nom de l'icône représentant le dépôt sur la carte, issue de la liste
         officielle de font-awesome http://fontawesome.io/icons préfixé de “fa-”. Ex.
-        fa-building
+        fa-building.
       icon_size: taille icône
       icon_size_desc: 'taille de l''icône localisant le dépôt sur la carte. Défaut
-        : large'
+        : large.'
       open: horaire début
-      open_desc: début des horaires d'activités du dépôt.
+      open_desc: Début des horaires d'activités du dépôt
       close: horaire fin
-      close_desc: fin des horaires d'activités du dépôt.
+      close_desc: Fin des horaires d'activités du dépôt
       street: voie
       street_desc: numéro de l'immeuble, type de voie et nom de la voie (l'orthographe
         doit être correcte pour un géocodage fiable).
@@ -1492,7 +1492,7 @@ fr:
       geocoding_accuracy_format: nombre à virgule de 0 à 1
       geocoding_level: niveau géocodage
       geocoding_level_desc: niveau de précision atteint lors de la conversion de l'adresse
-        postale en coordonnées géographiques, exprimé de manière sémantique.
+        postale en coordonnées géographiques, exprimé de manière sémantique
       missing_name: 'Enregistrement %{line} : « nom » manquant.'
       missing_location: 'Enregistrement %{line} : « ville » ou « code postal » ou
         « lat » et « lng » manquant.'
@@ -1544,7 +1544,7 @@ fr:
       edit_user: Vous n'avez pas le droit d'éditer un autre utilisateur
     form:
       url_click2call_help: URL de la solution de communication VOIP. L'URL doit prendre
-        le paramètre '{TEL}' à l'emplacement du numéro de téléphone.
+        le paramètre '{TEL}' à l'emplacement du numéro de téléphone
       send_email: Envoyer email
     update:
       success: Utilisateur mis à jour avec succès
@@ -1653,7 +1653,7 @@ fr:
       service_time_start_addon: avant
       service_time_end_addon: après
       service_times_help: Durées ajoutées avant le premier arrêt et après le dernier
-        arrêt.
+        arrêt
   vehicle_usage_sets:
     default:
       name: Défaut
@@ -1692,7 +1692,7 @@ fr:
       legend: 'Visite #%{n}'
       destroy: Si coché, la visite sera supprimée. Cliquez-ici pour annuler.
       ref_help: Référence libre. IMPORTANTE si vous souhaitez ne pas écraser vos visites
-        avec l'import/export notamment.
+        avec l'import/export notamment
       quantities:
         default: '%{n} (valeur par défaut)'
         help: Quantités à livrer
@@ -1790,7 +1790,7 @@ fr:
     contact: Contacter le support
     choose_file: Sélectionner fichier
     geocoder:
-      search: Recherche d'adresse
+      search: Recherche d'adresse...
       empty_result: Pas de résultat
   api_web:
     v01:
