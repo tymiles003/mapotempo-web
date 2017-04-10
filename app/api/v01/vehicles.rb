@@ -49,7 +49,22 @@ class V01::Vehicles < Grape::API
         end
       end
 
-      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :devices, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s })
+      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s }, devices: permit_devices)
+    end
+
+    def permit_devices
+      permit = []
+      Mapotempo::Application.config.devices.to_h.each{ |device_name, device_object|
+        if device_object.respond_to?('definition')
+          device_definition = device_object.definition
+          if device_definition.key?(:forms) && device_definition[:forms].key?(:vehicle)
+            device_definition[:forms][:vehicle].keys.each{ |key|
+              permit << key
+            }
+          end
+        end
+      }
+      permit
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

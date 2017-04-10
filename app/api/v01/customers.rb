@@ -24,28 +24,27 @@ class V01::Customers < Grape::API
       p = ActionController::Parameters.new(params)
       p = p[:customer] if p.key?(:customer)
       if @current_user.admin?
-        p.permit(:ref, :name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :router_id, :router_dimension, :test, :optimization_cluster_size, :optimization_time, :optimization_stop_soft_upper_bound, :optimization_vehicle_soft_upper_bound, :cost_waiting_time, :profile_id, :default_country, :reseller_id, :print_stop_time, :speed_multiplicator, :enable_references, :enable_multi_vehicle_usage_sets, :enable_multi_visits, :advanced_options, :enable_external_callback, :external_callback_url, :external_callback_name, :description, :enable_global_optimization, :enable_vehicle_position, :enable_stop_status, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], devices: permit_devices)
+        p.permit(:ref, :name, :end_subscription, :max_vehicles, :take_over, :print_planning_annotating, :print_header, :router_id, :router_dimension, :test, :optimization_cluster_size, :optimization_time, :optimization_stop_soft_upper_bound, :optimization_vehicle_soft_upper_bound, :cost_waiting_time, :profile_id, :default_country, :reseller_id, :print_stop_time, :speed_multiplicator, :enable_references, :enable_multi_vehicle_usage_sets, :enable_multi_visits, :advanced_options, :enable_external_callback, :external_callback_url, :external_callback_name, :description, :enable_global_optimization, :enable_vehicle_position, :enable_stop_status, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], devices: permit_recursive_params(p[:devices]))
       else
-        p.permit(:take_over, :print_planning_annotating, :print_header, :tomtom_account, :tomtom_user, :tomtom_password, :masternaut_user, :masternaut_password, :router_id, :router_dimension, :alyacom_association, :default_country, :print_stop_time, :speed_multiplicator, :advanced_options, :enable_external_callback, :external_callback_url, :external_callback_name, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods])
+        p.permit(:take_over, :print_planning_annotating, :print_header, :router_id, :router_dimension, :default_country, :print_stop_time, :speed_multiplicator, :advanced_options, :enable_external_callback, :external_callback_url, :external_callback_name, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], devices: permit_recursive_params(p[:devices]))
+      end
+    end
+
+    def permit_recursive_params(params)
+      if !params.nil?
+        params.map do |key, value|
+          if value.is_a?(Array)
+            { key => [ permit_recursive_params(value.first) ] }
+          elsif value.is_a?(Hash) || value.is_a?(ActionController::Parameters)
+            { key => permit_recursive_params(value) }
+          else
+            key
+          end
+        end
       end
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
-
-    def permit_devices
-      permit = []
-      Mapotempo::Application.config.devices.to_h.each{ |device_name, device_object|
-        if device_object.respond_to?('definition')
-          device_definition = device_object.definition
-          if device_definition.key?(:forms) && device_definition[:forms].key?(:vehicle)
-            device_definition[:forms][:vehicle].keys.each{ |key|
-              permit << key
-            }
-          end
-        end
-      }
-      permit
-    end
   end
 
   resource :customers do
