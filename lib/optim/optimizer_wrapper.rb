@@ -128,12 +128,11 @@ class OptimizerWrapper
             prefer_short_segment: true
           },
           resolution: {
-            duration: options[:optimize_time] ? options[:optimize_time] * (services.all?{ |s| s[:vehicle_id] } ? vehicles.size : 1) : nil,
+            duration: options[:optimize_time] ? options[:optimize_time] * vehicles.size : nil,
             iterations_without_improvment: 100,
             initial_time_out: 3000 * vehicles.size,
             time_out_multiplier: 2
-          }
-        }
+          }  }
       }
 
       resource_vrp = RestClient::Resource.new(@url + '/vrp/submit.json')

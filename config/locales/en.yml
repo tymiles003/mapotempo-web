@@ -174,7 +174,7 @@ en:
         test: Test
         jobs: Jobs
         optimization_cluster_size: Optimization cluster size
-        optimization_time: Optimization maximum time
+        optimization_time: Maximum optimization time by vehicle
         optimization_stop_soft_upper_bound: Stops delay coefficient
         optimization_vehicle_soft_upper_bound: Vehicles delay coefficient
         cost_waiting_time: Waiting time coefficient
@@ -704,8 +704,7 @@ en:
         an important value). Take into account only for a single route optimization
         with delays.
       optimization_time_default: '%{n} (default value)'
-      optimization_time_help: The optimization stops automatically by default. Nevertheless
-        you can specify here a maximum time for optimization.
+      optimization_time_help: Time spent for each vehicle before optimization automatically stops by default. Nevertheless you can specify here a maximum time for optimization.
       optimization_soft_upper_bound_default: '%{n} (default value)'
       optimization_stop_soft_upper_bound_help: 'More the value is important, more
         delays are detrimental (0 to disallow delays strictly: turn clusters off in
