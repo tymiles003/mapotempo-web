@@ -83,13 +83,12 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should update a customer in admin' do
     assert_difference('Vehicle.count', 1) do
       assert_difference('VehicleUsage.count', @customer.vehicle_usage_sets.size) do
-        # FIXME: routes are computed but not saved
-        # assert_difference('Route.count') do
+        assert_difference('Route.count', @customer.plannings.length) do
           Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
             put api_admin(@customer.id), { tomtom_user: 'tomtom_user_abcd', ref: 'ref-abcd', max_vehicles: @customer.max_vehicles + 1 }
             assert last_response.ok?, last_response.body
           end
-        # end
+        end
       end
     end
     assert 'trace', Route.last.stop_trace
