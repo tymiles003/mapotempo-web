@@ -229,8 +229,7 @@ var destinations_form = function(params, api) {
           map.setView(markers[destination_id].getLatLng(), 16);
         }
       }
-    }
-    else if (destination_id in markers) {
+    } else if (destination_id in markers) {
       map.removeLayer(markers[destination_id]);
       delete markers[destination_id];
     }
@@ -265,22 +264,25 @@ var destinations_form = function(params, api) {
   };
 
   var reverse_geocoding = function(coords) {
-    if(coords instanceof L.LatLng) {
+    if (coords instanceof L.LatLng) {
       $.ajax({
-        url : '/api/0.1/' + api + '/reverse.json',
-        data : {lat: coords.lat, lng: coords.lng},
-        type : 'patch',
+        url: '/api/0.1/' + api + '/reverse.json',
+        data: {
+          lat: coords.lat,
+          lng: coords.lng
+        },
+        type: 'patch',
         dataType: 'json',
         success: function(json) {
-          if(json && json.success) {
+          if (json && json.success) {
 
             var button = $("<button />").addClass("btn btn-default btn-xs pull-right")
               .attr("type", "button")
               .text(I18n.t('destinations.reverse_geocoding.apply'))
-              .on("click", json.result, function (event) {
+              .on("click", json.result, function(event) {
 
                 var street = event.data.name ? event.data.name : "";
-                if(event.data.housenumber && event.data.street) {
+                if (event.data.housenumber && event.data.street) {
                   street = event.data.housenumber + ' ' + event.data.street;
                 }
 
@@ -306,7 +308,7 @@ var destinations_form = function(params, api) {
         },
         error: function(jqxhr, textStatus, error) {
           var err = textStatus + ", " + error;
-          console.log( "Request Failed: " + err );
+          console.log("Request Failed: " + err);
         }
       });
     }
@@ -440,7 +442,7 @@ var destinations_import = function(params, api) {
     $('input[id$=replace_1]', $(this)).is(':checked') && confirmChecks.push('replace');
     $('input[name$=\\[delete_plannings\\]]', $(this)).is(':checked') && confirmChecks.push('delete_plannings');
     if (confirmChecks.length > 0 && !confirm(confirmChecks.map(function(c) {
-      return (api == 'stores') ? I18n.t('stores.import.' + c + '_confirm') : I18n.t('destinations.import.' + c + '_confirm');
+        return (api == 'stores') ? I18n.t('stores.import.' + c + '_confirm') : I18n.t('destinations.import.' + c + '_confirm');
       }).join(" \n"))) {
       return false;
     }
@@ -499,10 +501,10 @@ var destinations_index = function(params, api) {
 
   var markers = {};
   var markersLayers = new L.MarkerClusterGroup({
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true,
-      spiderfyDistanceMultiplier: 4
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    spiderfyDistanceMultiplier: 4
   });
 
   var cluster = new L.MarkerClusterGroup({
@@ -1037,8 +1039,7 @@ var destinations_index = function(params, api) {
               return e.value;
             }).join(",");
           }
-        }
-        else {
+        } else {
           if ($node.hasClass('phone')) {
             return simply_phone($node.text());
           } else if ($node.hasClass('geocoding')) {

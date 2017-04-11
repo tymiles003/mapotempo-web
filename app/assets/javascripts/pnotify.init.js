@@ -21,7 +21,7 @@ PNotify.prototype.options.buttons.labels = {
   close: I18n.t('web.dialog.close')
 };
 
-var isWindowVisible = (function () {
+var isWindowVisible = (function() {
   var stateKey, eventKey, keys = {
     hidden: 'visibilitychange',
     webkitHidden: 'webkitvisibilitychange',
@@ -34,17 +34,17 @@ var isWindowVisible = (function () {
       break;
     }
   }
-  return function (callback) {
+  return function(callback) {
     if (callback) document.addEventListener(eventKey, callback);
     return !document[stateKey];
   }
 })();
 
-(function () {
+(function() {
   'use strict';
 
   function notify(status, message, options) {
-    var notification = function () {
+    var notification = function() {
       new PNotify($.extend({
         text: message,
         type: status,
@@ -62,7 +62,7 @@ var isWindowVisible = (function () {
     if (isWindowVisible()) {
       notification();
     } else {
-      isWindowVisible(function () {
+      isWindowVisible(function() {
         if (isWindowVisible()) {
           notification();
         }
@@ -81,24 +81,24 @@ var isWindowVisible = (function () {
   }
 
   $.extend(window, {
-    notify: function (status, message, options) {
+    notify: function(status, message, options) {
       notify(status, message, $.extend({}, options));
     },
-    notice: function (message, options) {
+    notice: function(message, options) {
       notify('success', message, options);
     },
-    warning: function (message, options) {
+    warning: function(message, options) {
       notify('warning', message, options);
     },
-    error: function (message, options) {
+    error: function(message, options) {
       notify('error', message, options);
     },
-    stickyError: function (message, options) {
+    stickyError: function(message, options) {
       notify('error', message, $.extend(options, {
         hide: false
       }));
     },
-    hideNotices: function () {
+    hideNotices: function() {
       PNotify.removeAll();
     }
   });

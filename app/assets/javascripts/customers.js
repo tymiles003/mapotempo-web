@@ -17,7 +17,7 @@
 //
 'use strict';
 
-var customers_index = function (params) {
+var customers_index = function(params) {
   'use strict';
 
   var map_layers = params.map_layers,
@@ -98,7 +98,7 @@ var customers_index = function (params) {
   });
 };
 
-var customers_edit = function (params) {
+var customers_edit = function(params) {
   'use strict';
 
   /* Speed Multiplier */
@@ -225,7 +225,7 @@ var devicesObserveCustomer = (function() {
       _ajaxCall(true);
     }
 
-      // Check Credentials: Observe User Events with Delay
+    // Check Credentials: Observe User Events with Delay
     var _observe = function() {
       var timeout_id;
 
@@ -278,8 +278,8 @@ var devicesObserveCustomer = (function() {
     _observe();
   }
 
-    /* Chrome / FF, Prevent Sending Default Password
-       The browsers would ask to remember it. */
+  /* Chrome / FF, Prevent Sending Default Password
+     The browsers would ask to remember it. */
   (function() {
     $('form.clear-passwords').on('submit', function(e) {
       $.each($(e.target).find('input[type=\'password\']'), function(i, element) {

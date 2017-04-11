@@ -118,7 +118,7 @@ var zonings_edit = function(params) {
     editing_drawing = true;
   });
 
-  map.on(L.Draw.Event.CREATED, function (e) {
+  map.on(L.Draw.Event.CREATED, function(e) {
     drawing_changed = true;
     addZone({
       'vehicles': vehicles,
@@ -366,8 +366,7 @@ var zonings_edit = function(params) {
           display: 'block'
         });
         $('.avoid-zone', $(this).closest('.zone')).removeClass('disabled');
-      }
-      else {
+      } else {
         $('input[name=zoning\\[zones_attributes\\]\\[\\]\\[avoid_zone\\]]', $(this).closest('.zone')).prop('disabled', true);
         $('.avoid-zone', $(this).closest('.zone')).addClass('disabled');
       }
@@ -540,8 +539,7 @@ var zonings_edit = function(params) {
                 $.each(dest.visits, function(i, visit) {
                   visits.push($.extend(dest, visit));
                 });
-              }
-              else {
+              } else {
                 visits.push(dest);
               }
             });

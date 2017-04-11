@@ -158,23 +158,24 @@ var mapInitialize = function(params) {
   return map;
 };
 
-var customColorInitialize = function(selecter){
-  $('#customised_color_picker').click(function(){
-      var colorPicker = $('#color_picker'), options_wrap = $(selecter + ' option[selected="selected"]');
+var customColorInitialize = function(selecter) {
+  $('#customised_color_picker').click(function() {
+    var colorPicker = $('#color_picker'),
+      options_wrap = $(selecter + ' option[selected="selected"]');
 
-      $('.color[data-selected=""]').removeAttr('data-selected');
-      $('.color:last-child').attr('data-selected', '');
-      options_wrap.removeAttr('selected');
+    $('.color[data-selected=""]').removeAttr('data-selected');
+    $('.color:last-child').attr('data-selected', '');
+    options_wrap.removeAttr('selected');
 
-      (navigator.userAgent.indexOf('Edge') != -1) ? colorPicker.focus() : colorPicker.click();
-      colorPicker.on("input", function() {
-          $('.color:last-child').attr('style', 'background-color: ' + this.value)
-          .attr('data-color', this.value)
-          .attr('title', this.value);
-          $(selecter + ' option:last-child').attr('value', this.value)
-          .prop('selected', true)
-          .val(this.value);
-      });
+    (navigator.userAgent.indexOf('Edge') != -1) ? colorPicker.focus(): colorPicker.click();
+    colorPicker.on("input", function() {
+      $('.color:last-child').attr('style', 'background-color: ' + this.value)
+        .attr('data-color', this.value)
+        .attr('title', this.value);
+      $(selecter + ' option:last-child').attr('value', this.value)
+        .prop('selected', true)
+        .val(this.value);
+    });
   });
 };
 
@@ -197,7 +198,7 @@ function decimalAdjust(type, value, exp) {
   return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
 }
 
-var dropdownAutoDirection = function ($updatedElement) {
+var dropdownAutoDirection = function($updatedElement) {
   $updatedElement.parent().on('show.bs.dropdown', function(e) {
     $(this).find('.dropdown-menu').first().stop(true, true).slideDown({
       duration: 200
@@ -270,8 +271,8 @@ var dropdownAutoDirection = function ($updatedElement) {
   });
 };
 
-var routerOptionsSelect = function (selectId, params) {
-  var checkInputFieldState = function ($field, stateValue) {
+var routerOptionsSelect = function(selectId, params) {
+  var checkInputFieldState = function($field, stateValue) {
     if (stateValue === 'true') {
       $field.fadeIn();
       $field.find('input').removeAttr('disabled');
@@ -281,7 +282,7 @@ var routerOptionsSelect = function (selectId, params) {
     }
   };
 
-  var checkSelectFieldState = function ($field, stateValue) {
+  var checkSelectFieldState = function($field, stateValue) {
     if (stateValue === 'true') {
       $field.fadeIn();
       $field.find('select').removeAttr('disabled');
@@ -291,7 +292,7 @@ var routerOptionsSelect = function (selectId, params) {
     }
   };
 
-  var fieldsRouter = function (event, initialValue) {
+  var fieldsRouter = function(event, initialValue) {
     var selectedValue = null;
     if (typeof initialValue === 'undefined') {
       selectedValue = $(this).val();

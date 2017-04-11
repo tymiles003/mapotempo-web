@@ -32,8 +32,7 @@ var deliverable_units_form = function() {
       var overloadMultiplier = $('#deliverable_unit_optimization_overload_multiplier_no').prop('checked') ? 0 : -1;
       input.val(input.attr('placeholder') == overloadMultiplier ? '' : overloadMultiplier);
       input.attr('required', false);
-    }
-    else {
+    } else {
       input.css('visibility', 'visible');
       if (input.val() <= 0) input.val(input.attr('placeholder') > '0' ? '' : '1');
       if (input.attr('placeholder') <= 0) input.attr('required', true);
