@@ -105,15 +105,15 @@ class V01::VehiclesTest < ActiveSupport::TestCase
             post api, { ref: 'new', name: 'Vh1', store_start_id: stores(:store_zero).id, store_stop_id: stores(:store_zero).id, customer_id: customers(:customer_one).id, open: '19:00', close: '30:00', rest_start: '22:00', rest_stop: '26:00' }, as: :json
             assert last_response.created?, last_response.body
             vehicle = JSON.parse last_response.body
-            assert_equal '19:00:00', vehicle['vehicle_usages'][0]['open']
-            assert_equal '30:00:00', vehicle['vehicle_usages'][0]['close']
-            assert_equal '22:00:00', vehicle['vehicle_usages'][0]['rest_start']
-            assert_equal '26:00:00', vehicle['vehicle_usages'][0]['rest_stop']
+            assert_equal '19:00', vehicle['vehicle_usages'][0]['open']
+            assert_equal '30:00', vehicle['vehicle_usages'][0]['close']
+            assert_equal '22:00', vehicle['vehicle_usages'][0]['rest_start']
+            assert_equal '26:00', vehicle['vehicle_usages'][0]['rest_stop']
 
-            assert_equal '19:00:00', vehicle['vehicle_usages'][1]['open']
-            assert_equal '30:00:00', vehicle['vehicle_usages'][1]['close']
-            assert_equal '22:00:00', vehicle['vehicle_usages'][1]['rest_start']
-            assert_equal '26:00:00', vehicle['vehicle_usages'][1]['rest_stop']
+            assert_equal '19:00', vehicle['vehicle_usages'][1]['open']
+            assert_equal '30:00', vehicle['vehicle_usages'][1]['close']
+            assert_equal '22:00', vehicle['vehicle_usages'][1]['rest_start']
+            assert_equal '26:00', vehicle['vehicle_usages'][1]['rest_stop']
           end
         end
       end
@@ -147,7 +147,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
           get "/api/0.1/vehicle_usage_sets/#{s.id.to_s}/vehicle_usages.json?api_key=testkey1"
           hash = JSON.parse(last_response.body)
           u = hash.find{ |u| u['vehicle']['id'] == id }
-          assert_equal '10:00:00', u['open']
+          assert_equal '10:00', u['open']
           assert_equal stores(:store_zero).id, u['store_start_id']
         }
 

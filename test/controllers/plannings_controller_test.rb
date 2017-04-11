@@ -192,7 +192,7 @@ class PlanningsControllerTest < ActionController::TestCase
   test "it shouldn't have special char in ref routes when using vehicle name" do
     # Override all vehicle names
     Vehicle.all.each do |v|
-      v.name = "vehicle;!,;.*"
+      v.name = 'vehicle;!,;.*'
       v.save!
     end
 
@@ -310,8 +310,10 @@ class PlanningsControllerTest < ActionController::TestCase
     route.vehicle_usage.update! active: !route.vehicle_usage.active?
     out_of_route = @planning.routes.detect{|route| !route.vehicle_usage }
     stop = out_of_route.stops.take
-    assert_raises do
-      patch :move, planning_id: @planning.id, route_id: route.id, stop_id: stop.id, index: 1, format: :json
+    ApplicationController.stub_any_instance(:server_error, lambda { |*a| raise }) do
+      assert_raises do
+        patch :move, planning_id: @planning.id, route_id: route.id, stop_id: stop.id, index: 1, format: :json
+      end
     end
     assert stop.reload.route == out_of_route
   end
@@ -343,8 +345,10 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should not switch' do
-    assert_raises ActiveRecord::RecordNotFound do
-      patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: 666
+    ApplicationController.stub_any_instance(:not_found_error, lambda { |*a| raise ActiveRecord::RecordNotFound }) do
+      assert_raises ActiveRecord::RecordNotFound do
+        patch :switch, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id, vehicle_usage_id: 666
+      end
     end
   end
 
@@ -419,7 +423,7 @@ class PlanningsControllerTest < ActionController::TestCase
     zoning = zonings :zoning_one
     patch :apply_zonings, id: @planning.id, format: :json
     assert_response :success
-    assert planning.zonings.exists?
+    assert !planning.zonings.exists?
     assert !planning.out_of_date
     assert !planning.zoning_out_of_date
     patch :apply_zonings, id: @planning.id, format: :json, planning: { zoning_ids: [zoning.id] }

@@ -15,7 +15,7 @@ route_one_one:
   out_of_date: false
   vehicle_usage: vehicle_usage_one_one
   ref: "route_one"
-  start: 08:00
+  start: 32:00
 
 route_three_one:
   distance: 1.5

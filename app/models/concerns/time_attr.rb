@@ -11,8 +11,14 @@ module TimeAttr
 
         define_method("#{name}_absolute_time") do
           integer_value = send(name)
-          ChronicDuration.output(integer_value, limit_to_hours: true, format: :chrono) if integer_value
           # Display hours and minutes only: units: 5
+          if integer_value
+            if integer_value == 0
+              '00:00'
+            else
+              ChronicDuration.output(integer_value, limit_to_hours: true, format: :chrono, units: 5)
+            end
+          end
         end
 
         define_method("#{name}_time_with_seconds") do
@@ -28,6 +34,8 @@ module TimeAttr
               "00:0#{value}"
             elsif value =~ /\A\d+:\d+\z/
               "00:#{value}"
+            elsif value == '0'
+              '00:00:00'
             else
               value
             end

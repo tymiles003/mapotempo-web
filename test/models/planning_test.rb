@@ -297,18 +297,18 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should automatic insert' do
-    o = plannings(:planning_one)
-    stops_count = o.routes.collect{ |r| r.stops.size }.inject(:+)
-    o.zonings = []
+    planning = plannings(:planning_one)
+    stops_count = planning.routes.collect{ |r| r.stops.size }.inject(:+)
+    planning.zonings = []
     assert_difference('Stop.count', 0) do
       # route_zero has not any vehicle_usage => stop will be affected to another route
-      o.automatic_insert(o.routes.find{ |r| !r.vehicle_usage }.stops[0])
-      o.save!
+      planning.automatic_insert(planning.routes.find{ |r| !r.vehicle_usage }.stops[0])
+      planning.save!
     end
-    o.reload
-    assert_equal 3, o.routes.size
-    assert_equal 0, o.routes.find{ |r| !r.vehicle_usage }.stops.size
-    assert_equal stops_count, o.routes.select{ |r| r.vehicle_usage }.collect{ |r| r.stops.size }.inject(:+)
+    planning.reload
+    assert_equal 3, planning.routes.size
+    assert_equal 0, planning.routes.find{ |r| !r.vehicle_usage }.stops.size
+    assert_equal stops_count, planning.routes.select{ |r| r.vehicle_usage }.collect{ |r| r.stops.size }.inject(:+)
   end
 
   test 'should apply orders' do
@@ -630,11 +630,13 @@ class PlanningTestException < ActiveSupport::TestCase
 
   test 'should not compute because of router exception' do
     o = plannings(:planning_one)
-    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda{ |*a| raise }) do
-      assert_no_difference('Stop.count') do
-        o.zoning_out_of_date = true
-        assert_raises(RuntimeError) do
-          o.compute
+    ApplicationController.stub_any_instance(:server_error, lambda { |*a| raise }) do
+      Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |*a| raise }) do
+        assert_no_difference('Stop.count') do
+          o.zoning_out_of_date = true
+          assert_raises(RuntimeError) do
+            o.compute
+          end
         end
       end
     end

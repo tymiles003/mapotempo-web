@@ -48,12 +48,12 @@ class V01::RoutesTest < V01::RoutesBaseTest
     assert last_response.ok?, last_response.body
     route = JSON.parse(last_response.body)
     assert_equal @route.stops.size, route['stops'].size
-    assert_equal Time.parse('2015-10-10T08:00:00 -1000'), Time.parse(route['start'])
+    assert_equal Time.parse('2015-10-11T08:00:00 -1000'), Time.parse(route['start'])
     assert_equal Time.parse('2015-10-10T00:00:30 -1000'), Time.parse(route['stops'][0]['time'])
   end
 
   test 'should return a route with time exceeding one day' do
-    route_multi_days = routes(:route_one_multi_days)
+    route_multi_days = routes(:route_one_one)
 
     get api(route_multi_days.planning.id, route_multi_days.id)
     assert last_response.ok?, last_response.body

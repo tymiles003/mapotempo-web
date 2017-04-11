@@ -9,41 +9,41 @@ class StoreTest < ActiveSupport::TestCase
   end
 
   test 'should save' do
-    store = customers(:customer_one).stores.build(name: 'plop', city: 'Bordeaux', state: 'Midi-Pyrénées')
-    assert store.save!
-    store.reload
-    assert !store.lat.nil?, 'Latitude not built'
+    customer = customers(:customer_one).stores.build(name: 'plop', city: 'Bordeaux', state: 'Midi-Pyrénées')
+    assert customer.save!
+    customer.reload
+    assert !customer.lat.nil?, 'Latitude not built'
   end
 
   test 'should destroy' do
-    store = customers(:customer_one)
-    assert_difference('store.stores.size', -1) do
-      store = store.stores.find{ |s| s[:name] == 'store 0' }
+    customer = customers(:customer_one)
+    assert_difference('customer.stores.size', -1) do
+      store = customer.stores.find{ |s| s[:name] == 'store 0' }
       assert store.destroy
-      store.reload
+      customer.reload
       assert_equal stores(:store_one), vehicle_usages(:vehicle_usage_one_one).store_start
     end
   end
 
   test 'should destroy in use for vehicle_usage' do
-    store = customers(:customer_one)
-    assert_difference('store.stores.size', -1) do
-      store = store.stores.find{ |s| s[:name] == 'store 1' }
+    customer = customers(:customer_one)
+    assert_difference('customer.stores.size', -1) do
+      store = customer.stores.find{ |s| s[:name] == 'store 1' }
       assert store.destroy
-      store.reload
+      customer.reload
       assert_not_equal store, vehicle_usages(:vehicle_usage_one_one).store_start
     end
   end
 
   test 'should not destroy last store' do
-    store = customers(:customer_one)
-    assert_not_equal 0, store.stores.size
-    for i in 0..(store.stores.size - 2)
-      assert store.stores[i].destroy
+    customer = customers(:customer_one)
+    assert_not_equal 0, customer.stores.size
+    for i in 0..(customer.stores.size - 2)
+      assert customer.stores[i].destroy
     end
-    store.reload
+    customer.reload
     begin
-      store.stores[0].destroy!
+      customer.stores[0].destroy!
       assert false
     rescue
       assert true
