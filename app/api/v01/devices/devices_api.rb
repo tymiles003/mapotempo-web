@@ -54,7 +54,7 @@ class V01::Devices::DevicesApi < Grape::API
         optional :type, type: Symbol, desc: 'Action Name'
       end
       post 'send' do
-        device = @customer.device.enableds[params[:device]]
+        device = @current_customer.device.enableds[params[:device]]
         if device && device.respond_to?('send_route')
           Route.transaction do
             route = Route.for_customer(@current_customer).find params[:route_id]

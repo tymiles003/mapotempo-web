@@ -36,9 +36,9 @@ class V01::CustomerTest < ActiveSupport::TestCase
   test 'should return a customer' do
     get api('ref:' + @customer.ref)
     assert last_response.ok?, last_response.body
-    json = JSON.parse(last_response.body)
-    assert_equal @customer.name, json['name']
-    assert_equal @customer.ref, json['ref']
+    json = JSON.parse(last_response.body, symbolize_names: true)
+    assert_equal @customer.name, json[:name]
+    assert_equal @customer.ref, json[:ref]
 
     get api_admin(@customer.id)
     assert last_response.ok?, last_response.body
@@ -53,19 +53,19 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should update a customer' do
-    put api(@customer.id), {devices: {tomtom: {user: 'user_abcd'}}, ref: 'ref-abcd', router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'} }
+    put api(@customer.id), { devices: {tomtom: {user: 'user_abcd'}}, ref: 'ref-abcd', router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'} }
     assert last_response.ok?, last_response.body
     get api(@customer.id)
     assert last_response.ok?, last_response.body
-    customer_response = JSON.parse(last_response.body)
-    assert_equal 'user_abcd', customer_response['devices']['tomtom']['user'], last_response.body
-    assert 'ref-abcd' != customer_response['ref'], last_response.body
+    customer_response = JSON.parse(last_response.body, symbolize_names: true)
+    assert_equal 'user_abcd', customer_response[:devices][:tomtom][:user], last_response.body
+    assert 'ref-abcd' != customer_response[:ref], last_response.body
 
     # FIXME: replace each assertion by one which checks if hash is included in another
-    assert customer_response['router_options']['weight'] = '10'
-    assert customer_response['router_options']['motorway'] = 'true'
-    assert customer_response['router_options']['trailers'] = '2'
-    assert customer_response['router_options']['hazardous_goods'] = 'gas'
+    assert customer_response[:router_options][:weight] = '10'
+    assert customer_response[:router_options][:motorway] = 'true'
+    assert customer_response[:router_options][:trailers] = '2'
+    assert customer_response[:router_options][:hazardous_goods] = 'gas'
   end
 
   test 'should update a customer without modifying max vehicles' do
@@ -85,7 +85,7 @@ class V01::CustomerTest < ActiveSupport::TestCase
       assert_difference('VehicleUsage.count', @customer.vehicle_usage_sets.size) do
         assert_difference('Route.count', @customer.plannings.length) do
           Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, 'trace'] } } ) do
-            put api_admin(@customer.id), { devices: {tomtom: {user: 'user_abcd'}}, ref: 'ref-abcd', max_vehicles: @customer.max_vehicles + 1 }
+            put api_admin(@customer.id), { devices: {tomtom_id: 'user_abcd'}, ref: 'ref-abcd', max_vehicles: @customer.max_vehicles + 1 }
             assert last_response.ok?, last_response.body
           end
         end
@@ -95,10 +95,11 @@ class V01::CustomerTest < ActiveSupport::TestCase
 
     get api(@customer.id)
     assert last_response.ok?, last_response.body
-    response = JSON.parse(last_response.body)
-    assert_equal 'user_abcd', response['devices']['tomtom']['user']
-    assert_equal 'ref-abcd', response['ref']
-    assert_equal 3, response['max_vehicles']
+    response = JSON.parse(last_response.body, symbolize_names: true)
+
+    assert_equal 'user_abcd', response[:devices][:tomtom_id]
+    assert_equal 'ref-abcd', response[:ref]
+    assert_equal 3, response[:max_vehicles]
   end
 
   test 'should not update a customer' do
