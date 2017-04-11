@@ -8,7 +8,7 @@ module TeksatBase
     @vehicle.update! devices: {teksat_id: '1091'}
   end
 
-  def add_teksat_credentials customer
+  def add_teksat_credentials(customer)
 
     customer.devices = {
       teksat: {
