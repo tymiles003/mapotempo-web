@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class ImporterStoresTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)

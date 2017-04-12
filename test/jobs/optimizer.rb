@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class OptimizerTest < ActionController::TestCase
   setup do
     @route = routes(:route_one_one)
