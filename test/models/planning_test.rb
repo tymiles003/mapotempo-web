@@ -39,8 +39,8 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should not save' do
-    o = Planning.new
-    assert_not o.save, 'Saved without required fields'
+    planning = Planning.new
+    assert_not planning.save, 'Saved without required fields'
   end
 
   test 'should not save with inconsistent attributes' do
@@ -50,141 +50,141 @@ class PlanningTest < ActiveSupport::TestCase
     }.each{ |k, v|
       attr = {name: 'plop'}
       attr[k] = v
-      o = customers(:customer_one).plannings.build(attr)
-      assert_not o.save, 'Saved with inconsistent attributes'
+      planning = customers(:customer_one).plannings.build(attr)
+      assert_not planning.save, 'Saved with inconsistent attributes'
     }
   end
 
   test 'should save' do
-    o = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_one)])
-    o.default_routes
-    o.save!
+    planning = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_one)])
+    planning.default_routes
+    planning.save!
   end
 
   test 'should save according to tag operation' do
-    planning_and_tags = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_one)], tag_operation: 'and', tag_ids: [tags(:tag_one).id, tags(:tag_two).id])
+    planning_and_tags = customers(:customer_two).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_two), zonings: [zonings(:zoning_three)], tag_operation: 'and', tag_ids: [tags(:tag_three).id, tags(:tag_four).id])
     planning_and_tags.default_routes
-    assert_equal 2, planning_and_tags.visits_compatibles.count
     planning_and_tags.save!
+    assert_equal 1, planning_and_tags.visits_compatibles.count
 
-    planning_or_tags = customers(:customer_one).plannings.build(name: 'plop 2', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_two)], tag_operation: 'or', tag_ids: [tags(:tag_one).id, tags(:tag_two).id])
+    planning_or_tags = customers(:customer_two).plannings.build(name: 'plop 2', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_two), zonings: [zonings(:zoning_three)], tag_operation: 'or', tag_ids: [tags(:tag_three).id, tags(:tag_four).id])
     planning_or_tags.default_routes
-    assert_equal 6, planning_or_tags.visits_compatibles.count
     planning_or_tags.save!
+    assert_equal 2, planning_or_tags.visits_compatibles.count
   end
 
   test 'should dup' do
-    o = plannings(:planning_one)
-    oo = o.duplicate
+    planning = plannings(:planning_one)
+    planning_dup = planning.duplicate
 
-    assert_equal oo, oo.routes[0].planning
-    oo.save!
+    assert_equal planning_dup, planning_dup.routes[0].planning
+    planning_dup.save!
   end
 
   test 'should set_routes' do
-    o = plannings(:planning_one)
+    planning = plannings(:planning_one)
 
-    o.set_routes({'abc' => {visits: [[visits(:visit_one)]]}})
-    assert o.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
-    o.save!
+    planning.set_routes({'abc' => {visits: [[visits(:visit_one)]]}})
+    assert planning.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
+    planning.save!
   end
 
   test 'should not set_routes for tags' do
-    o = plannings(:planning_one)
-    o.tags << tags(:tag_two)
+    planning = plannings(:planning_one)
+    planning.tags << tags(:tag_two)
 
-    o.set_routes({'abc' => {visits: [[visits(:visit_one)]]}})
-    assert_not o.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
-    o.save!
+    planning.set_routes({'abc' => {visits: [[visits(:visit_one)]]}})
+    assert_not planning.routes[1].stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
+    planning.save!
   end
 
   test 'should set_routes with ref_vehicle' do
-    o = plannings(:planning_one)
+    planning = plannings(:planning_one)
 
-    o.set_routes({'abc' => {visits: [[visits(:visit_one)]], ref_vehicle: vehicles(:vehicle_three).ref}})
-    assert o.routes.find{ |r| r.vehicle_usage.try(&:vehicle) == vehicles(:vehicle_three) }.stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
-    o.save!
+    planning.set_routes({'abc' => {visits: [[visits(:visit_one)]], ref_vehicle: vehicles(:vehicle_three).ref}})
+    assert planning.routes.find{ |r| r.vehicle_usage.try(&:vehicle) == vehicles(:vehicle_three) }.stops.select{ |stop| stop.is_a?(StopVisit) }.collect(&:visit).include?(visits(:visit_one))
+    planning.save!
   end
 
   test 'should not set_routes for size' do
-    o = plannings(:planning_one)
+    planning = plannings(:planning_one)
 
     assert_raises(RuntimeError) {
-      o.set_routes(Hash[0.upto(o.routes.size).collect{ |i| ["route#{i}", {visits: [visits(:visit_one)]}] }])
+      planning.set_routes(Hash[0.upto(planning.routes.size).collect{ |i| ["route#{i}", {visits: [visits(:visit_one)]}] }])
     }
-    o.save!
+    planning.save!
   end
 
   test 'should vehicle_usage_add' do
-    o = plannings(:planning_one)
+    planning = plannings(:planning_one)
     assert_difference('Stop.count', 1) do # One StopRest
       assert_difference('Route.count', 1) do
-        o.vehicle_usage_add(vehicle_usages(:vehicle_usage_one_three))
-        o.save!
+        planning.vehicle_usage_add(vehicle_usages(:vehicle_usage_one_three))
+        planning.save!
       end
     end
   end
 
   test 'should vehicle_usage_remove' do
-    o = plannings(:planning_one)
+    planning = plannings(:planning_one)
     assert_difference('Stop.count', -1) do
       assert_difference('Route.count', -1) do
-        o.vehicle_usage_remove(vehicle_usages(:vehicle_usage_one_one))
-        o.save!
+        planning.vehicle_usage_remove(vehicle_usages(:vehicle_usage_one_one))
+        planning.save!
       end
     end
   end
 
   test 'should visit_add' do
-    o = plannings(:planning_one)
+    planning = plannings(:planning_one)
     assert_difference('Stop.count') do
-      o.visit_add(visits(:visit_two))
-      o.save!
+      planning.visit_add(visits(:visit_two))
+      planning.save!
     end
   end
 
   test 'should visit_remove' do
-    o = plannings(:planning_one)
+    planning = plannings(:planning_one)
     assert_difference('Stop.count', -2) do
-      o.visit_remove(visits(:visit_one))
-      o.save!
+      planning.visit_remove(visits(:visit_one))
+      planning.save!
     end
   end
 
   test 'move stop on same route from inside to start' do
-    o = plannings(:planning_one)
-    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    planning = plannings(:planning_one)
+    r = planning.routes.select{ |route| route == routes(:route_one_one) }.first
     s = r.stops[1]
     assert_equal 2, s.index
     assert_difference('Stop.count', 0) do
-      o.move_stop(r, s, 1)
-      o.save!
+      planning.move_stop(r, s, 1)
+      planning.save!
       s.reload
       assert_equal 1, s.index
     end
   end
 
   test 'move stop on same route from inside to end' do
-    o = plannings(:planning_one)
-    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    planning = plannings(:planning_one)
+    r = planning.routes.select{ |route| route == routes(:route_one_one) }.first
     s = r.stops[1]
     assert_equal 2, s.index
     assert_difference('Stop.count', 0) do
-      o.move_stop(r, s, 3)
-      o.save!
+      planning.move_stop(r, s, 3)
+      planning.save!
       s.reload
       assert_equal 3, s.index
     end
   end
 
   test 'move stop on same route from start to inside' do
-    o = plannings(:planning_one)
-    r = o.routes.select{ |route| route == routes(:route_one_one) }.first
+    planning = plannings(:planning_one)
+    r = planning.routes.select{ |route| route == routes(:route_one_one) }.first
     s = r.stops[0]
     assert_equal 1, s.index
     assert_difference('Stop.count', 0) do
-      o.move_stop(r, s, 2)
-      o.save!
+      planning.move_stop(r, s, 2)
+      planning.save!
       s.reload
       assert_equal 2, s.index
     end
@@ -483,10 +483,10 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should amalgamate point at same position' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
 
     positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,nil,nil,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
-    ret = o.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
+    ret = route.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
       assert_equal 3, positions.size
       pos = positions.sort
       [pos.collect{ |p|
@@ -498,10 +498,10 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should no amalgamate point at same position, tw' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
 
     positions = [D.new(1,1,1,nil,nil,nil,nil,0), D.new(2,2,2,nil,nil,nil,nil,0), D.new(2,2,3,10,20,nil,nil,0), D.new(3,3,4,nil,nil,nil,nil,0)]
-    ret = o.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
+    ret = route.planning.send(:amalgamate_stops_same_position, positions, false) { |positions|
       assert_equal 4, positions.size
       [(1..(positions.size)).to_a]
     }
@@ -510,11 +510,11 @@ class PlanningTest < ActiveSupport::TestCase
   end
 
   test 'should optimize one route with one store rest' do
-    o = routes(:route_one_one)
-    optim = o.planning.optimize([o], false) { |*a|
+    route = routes(:route_one_one)
+    optim = route.planning.optimize([route], false) { |*a|
       optimizer_route(*a)
     }
-    assert_equal [o.stops.collect(&:id)], optim
+    assert_equal [route.stops.collect(&:id)], optim
   end
 
   test 'should optimize one route with one no-geoloc rest' do

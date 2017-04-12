@@ -204,7 +204,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
     get :show, id: @planning, format: :csv
     assert_response :success
-    assert_equal 'r1,planning1,vehicle      ,003,0,dépôt,,,07:00,0,0,,,,,,,store nogeo,MyString,,MyString,MyString,,,,,,,,,,,,,,,', response.body.split("\n")[2]
+    assert_equal 'r1,planning1,vehicle      ,003,0,dépôt,,,7:00,0,0,,,,,,,store nogeo,MyString,,MyString,MyString,,,,,,,,,,,,,,,', response.body.split("\n")[2]
   end
 
   test 'should show planning as csv with ordered columns' do

@@ -13,166 +13,166 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   test 'should not save' do
-    o = Route.new
-    assert_not o.save, 'Saved without required fields'
+    route = Route.new
+    assert_not route.save, 'Saved without required fields'
   end
 
   test 'should dup' do
-    o = routes(:route_one_one)
-    oo = o.amoeba_dup
-    assert_equal oo, oo.stops[0].route
-    oo.save!
+    route = routes(:route_one_one)
+    route_dup = route.amoeba_dup
+    assert_equal route_dup, route_dup.stops[0].route
+    route_dup.save!
   end
 
   test 'should default_stops' do
-    o = routes(:route_one_one)
-    o.planning.tags.clear
-    o.stops.clear
-    o.save!
-    assert_difference('Stop.count', Visit.all.size) do
-      o.default_stops
-      o.save!
+    route = routes(:route_one_one)
+    route.planning.tags.clear
+    route.stops.clear
+    route.save!
+    assert_difference('Stop.count', Visit.joins(:destination).where(destinations: {customer_id: route.planning.customer_id}).count) do
+      route.default_stops
+      route.save!
     end
   end
 
   test 'should compute' do
-    o = routes(:route_one_one)
-    o.distance = o.emission = o.start = o.end = nil
-    o.out_of_date = true
-    o.compute
-    assert_not o.out_of_date
-    assert o.distance
-    assert o.emission
-    assert o.start
-    assert o.end
-    assert_equal o.stops.size + 1, o.distance
-    o.save!
+    route = routes(:route_one_one)
+    route.distance = route.emission = route.start = route.end = nil
+    route.out_of_date = true
+    route.compute
+    assert_not route.out_of_date
+    assert route.distance
+    assert route.emission
+    assert route.start
+    assert route.end
+    assert_equal route.stops.size + 1, route.distance
+    route.save!
   end
 
   test 'should compute empty' do
-    o = routes(:route_one_one)
-    assert o.stops.size > 1
-    o.out_of_date = true
-    o.compute
-    assert_equal o.stops.size + 1, o.distance
+    route = routes(:route_one_one)
+    assert route.stops.size > 1
+    route.out_of_date = true
+    route.compute
+    assert_equal route.stops.size + 1, route.distance
 
-    o.stops.each{ |stop|
+    route.stops.each{ |stop|
       stop.active = false
     }
 
-    o.out_of_date = true
-    o.compute
-    assert_equal 1, o.distance
-    o.save!
+    route.out_of_date = true
+    route.compute
+    assert_equal 1, route.distance
+    route.save!
   end
 
   test 'should set visits' do
-    o = routes(:route_one_one)
-    o.stops.clear
+    route = routes(:route_one_one)
+    route.stops.clear
     assert_difference('Stop.count', 1) do
-      o.set_visits([[visits(:visit_two), true]])
-      o.save!
+      route.set_visits([[visits(:visit_two), true]])
+      route.save!
     end
   end
 
   test 'should add' do
-    o = routes(:route_zero_one)
-    o.add(visits(:visit_two))
-    o.save!
-    o.reload
-    assert o.stops.collect(&:visit).include?(visits(:visit_two))
+    route = routes(:route_zero_one)
+    route.add(visits(:visit_two))
+    route.save!
+    route.reload
+    assert route.stops.collect(&:visit).include?(visits(:visit_two))
   end
 
   test 'should add index' do
-    o = routes(:route_one_one)
-    o.add(visits(:visit_two), 1)
-    o.save!
-    o.stops.reload
-    assert_equal visits(:visit_two), o.stops.find{ |s| s.visit.destination.name == 'destination_two' }.visit
+    route = routes(:route_one_one)
+    route.add(visits(:visit_two), 1)
+    route.save!
+    route.stops.reload
+    assert_equal visits(:visit_two), route.stops.find{ |s| s.visit.destination.name == 'destination_two' }.visit
   end
 
   test 'should not add without index' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
     assert_raises(RuntimeError) {
-      o.add(visits(:visit_two))
+      route.add(visits(:visit_two))
     }
   end
 
   test 'should remove' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
     assert_difference('Stop.count', -1) do
-      o.remove_visit(visits(:visit_two))
-      o.save!
+      route.remove_visit(visits(:visit_two))
+      route.save!
     end
   end
 
   test 'should sum_out_of_window' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
 
-    o.stops.each { |s|
-      if s.is_a?(StopVisit)
-        s.visit.open1 = s.visit.close1 = nil
-        s.visit.open2 = s.visit.close2 = nil
-        s.visit.save!
+    route.stops.each { |stop|
+      if stop.is_a?(StopVisit)
+        stop.visit.open1 = stop.visit.close1 = nil
+        stop.visit.open2 = stop.visit.close2 = nil
+        stop.visit.save!
       else
-        s.time = s.open1
-        s.save!
+        stop.time = stop.open1
+        stop.save!
       end
     }
-    o.vehicle_usage.open = 0
-    o.planning.customer.take_over = 0
-    o.planning.customer.save!
+    route.vehicle_usage.open = 0
+    route.planning.customer.take_over = 0
+    route.planning.customer.save!
 
-    assert_equal 0, o.sum_out_of_window
+    assert_equal 0, route.sum_out_of_window
 
-    o.stops[1].visit.open1 = 0
-    o.stops[1].visit.close1 = 0
-    o.stops[1].visit.save!
-    assert_equal 30, o.sum_out_of_window
+    route.stops[1].visit.open1 = 0
+    route.stops[1].visit.close1 = 0
+    route.stops[1].visit.save!
+    assert_equal 30, route.sum_out_of_window
   end
 
   test 'should change active' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
 
-    assert_equal 4, o.size_active
-    o.active(:none)
-    assert_equal 0, o.size_active
-    o.active(:all)
-    assert_equal 4, o.size_active
-    o.stops[0].active = false
-    assert_equal 3, o.size_active
-    o.active(:foo_bar)
-    assert_equal 0, o.size_active
+    assert_equal 4, route.size_active
+    route.active(:none)
+    assert_equal 0, route.size_active
+    route.active(:all)
+    assert_equal 4, route.size_active
+    route.stops[0].active = false
+    assert_equal 3, route.size_active
+    route.active(:foo_bar)
+    assert_equal 0, route.size_active
 
-    o.save!
+    route.save!
   end
 
   test 'should reverse stops' do
-    o = routes(:route_one_one)
-    ids = o.stops.collect(&:id)
-    o.reverse_order
-    assert_equal ids, o.stops.collect(&:id)
+    route = routes(:route_one_one)
+    ids = route.stops.collect(&:id)
+    route.reverse_order
+    assert_equal ids, route.stops.collect(&:id)
   end
 
   test 'compute route with impossible path' do
-    o = routes(:route_one_one)
-    o.stops[1].visit.destination.lat = o.stops[1].visit.destination.lng = 1 # Geocoded
-    o.save!
-    o.stops[1].distance = o.stops[1].trace = nil
-    o.save!
-    o.stop_distance = o.stop_trace = nil
-    o.save!
-    s = o.vehicle_usage.store_stop
-    s.lat = s.lng = 1 # Geocoded
-    s.save!
-    o.out_of_date = true
-    o.compute
+    route = routes(:route_one_one)
+    route.stops[1].visit.destination.lat = route.stops[1].visit.destination.lng = 1 # Geocoded
+    route.save!
+    route.stops[1].distance = route.stops[1].trace = nil
+    route.save!
+    route.stop_distance = route.stop_trace = nil
+    route.save!
+    stop = route.vehicle_usage.store_stop
+    stop.lat = stop.lng = 1 # Geocoded
+    stop.save!
+    route.out_of_date = true
+    route.compute
   end
 
   test 'should shift departure' do
-    o = routes(:route_one_one)
+    route = routes(:route_one_one)
 
-    stops = o.stops.select{ |s| s.is_a?(StopVisit) }
+    stops = route.stops.select{ |s| s.is_a?(StopVisit) }
     stops[0].time = '10:30:00'
     stops[0].visit.open1 = '11:00:00'
     stops[0].visit.close1 = '11:30:00'
@@ -183,18 +183,18 @@ class RouteTest < ActiveSupport::TestCase
     stops[2].visit.open1 = '12:00:00'
     stops[2].visit.close1 = '14:00:00'
 
-    o.out_of_date = true
-    o.compute
-    assert_equal Time.parse('10:55:27').seconds_since_midnight.to_i, o.start
+    route.out_of_date = true
+    route.compute
+    assert_equal Time.parse('10:55:27').seconds_since_midnight.to_i, route.start
   end
 
   test 'should get default color' do
-    o = routes(:route_one_one)
-    o.color = nil
+    route = routes(:route_one_one)
+    route.color = nil
 
-    assert_not_nil o.default_color
+    assert_not_nil route.default_color
 
-    o.color = '#plop'
-    assert_equal o.color, o.default_color
+    route.color = '#plop'
+    assert_equal route.color, route.default_color
   end
 end

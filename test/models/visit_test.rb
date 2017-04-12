@@ -11,7 +11,7 @@ class VisitTest < ActiveSupport::TestCase
   test 'should update add tag' do
     destination = destinations(:destination_one)
     stops(:stop_three_one).destroy
-    assert_difference('Stop.count') do
+    assert_difference('Stop.count', destination.customer.plannings.select{ |planning| planning.tags.include?(tags(:tag_two)) }.count) do
       destination.visits[0].tags << tags(:tag_two)
       destination.save!
       destination.customer.save!
