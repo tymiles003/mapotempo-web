@@ -150,8 +150,6 @@ var customers_edit = function(params) {
 var devicesObserveCustomer = (function() {
   'use strict';
 
-  var _hash = {};
-
   function _devicesInitCustomer(base_name, config, params) {
     var requests = [];
 
@@ -173,10 +171,10 @@ var devicesObserveCustomer = (function() {
     }
 
     function _userCredential() {
-      var hash = _hash[config.name] = {};
+      var hash = {};
       $.each(config.forms.settings, function(key, type) {
-        hash[key] = $('#' + base_name + "_" + config.name + "_" + key).val() ||  void(0);
-        if (key == "password" && hash[key] == params.default_password)
+        hash[key] = $('#' + base_name + '_' + config.name + '_' + key).val() || void(0);
+        if (key == 'password' && hash[key] == params.default_password)
           hash[key] = void(0);
       });
       return hash;
@@ -184,9 +182,9 @@ var devicesObserveCustomer = (function() {
 
     function _allFieldsFilled() {
       var isNotEmpty = true;
-      var inputs = $('input[type="text"], input[type="password"]', "#" + config.name + "_container");
+      var inputs = $('input[type="text"], input[type="password"]', '#' + config.name + '_container');
       inputs.each(function() {
-        if ($(this).val() == "")
+        if ($(this).val() == '')
           return isNotEmpty = false;
       });
       return isNotEmpty;
@@ -208,7 +206,7 @@ var devicesObserveCustomer = (function() {
             completeWaiting();
           },
           success: function(data, textStatus, jqXHR) {
-            (data && data.error) ? errorCallback(data.error): successCallback();
+            (data && data.error) ? errorCallback(data.error) : successCallback();
           },
           error: function(jqXHR, textStatus, error) {
             errorCallback(textStatus);
@@ -228,15 +226,15 @@ var devicesObserveCustomer = (function() {
       var timeout_id;
 
       // Anonymous function handle setTimeout()
-      var check_credentials_with_delay = function() {
+      var checkCredentialsWithDelay = function() {
         if (timeout_id) clearTimeout(timeout_id);
-        timeout_id = setTimeout(function () { _ajaxCall(false); }, 750);
+        timeout_id = setTimeout(function() { _ajaxCall(false); }, 750);
       }
 
       $("#" + config.name + "_container input").on('keyup', function(e) {
         clearCallback();
         if (_allFieldsFilled())
-          check_credentials_with_delay();
+          checkCredentialsWithDelay();
       });
 
       // Sync
