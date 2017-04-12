@@ -315,7 +315,8 @@
   <% if current_user.admin? %>
     <% @customer.device.definitions.each do |key, device| %>
       <%= f.toggles device[:label] do %>
-        <%= f.check_box_tag "customer[devices][#{key}][enable]", true, to_bool(@customer.devices[key] && @customer.devices[key][:enable]) %>
+        <input name="<%= "customer[devices][#{key}][enable]" %>" value="0" type="hidden">
+        <%= f.check_box_tag "customer[devices][#{key}][enable]", 1, to_bool(@customer.devices[key] && @customer.devices[key][:enable]) %>
         <% if device[:help] %>
           <p class="help-block"><%= t "customers.form.devices.#{key}.help" %></p>
         <% end %>
@@ -326,7 +327,7 @@
   <% if !@customer.device.enabled_definitions.empty? %>
     <div class="row">
       <div class="col-md-12" id="devices_settings">
-        <% @customer.device.definitions.each do |key, definition| %>
+        <% @customer.device.enabled_definitions.each do |key, definition| %>
           <% if definition[:forms].key?(:settings) %>
             <div id="<%= key %>_container" class="panel panel-default device">
               <div class="panel-heading">

@@ -47,7 +47,6 @@ class CustomersController < ApplicationController
 
   def update
     @customer.assign_attributes(customer_params)
-    #@customer.update_columns(devices: customer_params[:devices])
     respond_to do |format|
       if @customer.save
         format.html { redirect_to edit_customer_path(@customer), notice: t('activerecord.successful.messages.updated', model: @customer.class.model_name.human) }
@@ -95,6 +94,8 @@ class CustomersController < ApplicationController
     if params[:customer][:router]
       params[:customer][:router_id], params[:customer][:router_dimension] = params[:customer][:router].split('_')
     end
+    # From customer form all keys are not present: need merge
+    params[:customer][:devices] = @customer[:devices].deep_merge(params[:customer][:devices] || {}) if @customer && @customer[:devices].size > 0
     if current_user.admin?
       parameters = params.require(:customer).permit(:ref,
                                                     :name,

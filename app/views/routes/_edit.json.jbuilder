@@ -27,7 +27,7 @@ if route.vehicle_usage
   (json.tomtom true) if !route.vehicle_usage.vehicle.devices[:tomtom_id].blank? && route.planning.customer.device.configured?(:tomtom)
   (json.orange true) if !route.vehicle_usage.vehicle.devices[:orange_id].blank? && route.planning.customer.device.configured?(:orange)
   (json.alyacom true) if route.planning.customer.device.configured?(:alyacom)
-  (json.masternaut true) if !route.vehicle_usage.vehicle.devices[:masternaut_ref].blank? && route.planning.customer.device.configured?(masternaut)
+  (json.masternaut true) if !route.vehicle_usage.vehicle.devices[:masternaut_ref].blank? && route.planning.customer.device.configured?(:masternaut)
   status_uniq = route.stops.map{ |stop|
       {
         code: stop.status.downcase,
