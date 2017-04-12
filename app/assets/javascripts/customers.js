@@ -174,12 +174,10 @@ var devicesObserveCustomer = (function() {
 
     function _userCredential() {
       var hash = _hash[config.name] = {};
-      hash.customer_id = params.customer_id;
-      // Used to make sure that password is not the same as the one generated rodomly | maybe change strategy on this
-      $.each(config.forms.admin_customer, function(i, v) {
-        hash[v[1]] = $('#' + base_name + "_" + config.name + "_" + v[1]).val() ||  void(0);
-        if (v[1] == "password" && hash[v[1]] == params.default_password)
-          hash[v[1]] = void(0);
+      $.each(config.forms.settings, function(key, type) {
+        hash[key] = $('#' + base_name + "_" + config.name + "_" + key).val() ||  void(0);
+        if (key == "password" && hash[key] == params.default_password)
+          hash[key] = void(0);
       });
       return hash;
     }
@@ -197,7 +195,7 @@ var devicesObserveCustomer = (function() {
     function _ajaxCall(all) {
       $.when($(requests)).done(function() {
         requests.push($.ajax({
-          url: '/api/0.1/devices/' + config.name + '/auth.json',
+          url: '/api/0.1/devices/' + config.name + '/auth/' + params.customer_id + '.json',
           data: (all) ? _userCredential() : $.extend(_userCredential(), {
             check_only: 1
           }),
