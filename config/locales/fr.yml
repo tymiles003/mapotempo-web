@@ -706,17 +706,6 @@ fr:
       speed_multiplicator_help: Une valeur supérieure à 100% signifie une vitesse
         plus élevée.
       submit: Enregistrer paramétrage global
-      sync:
-        complete: Synchronisation complète
-        orange:
-          confirm: Synchroniser les véhicules depuis Orange Fleet Performance ?
-          action: Synchroniser les véhicules depuis Orange Fleet Performance
-        tomtom:
-          confirm: Synchroniser les véhicules depuis TomTom WebFLEET ?
-          action: Synchroniser les véhicules depuis TomTom WebFLEET
-        teksat:
-          confirm: Synchroniser les véhicules depuis Teksat ?
-          action: Synchroniser les véhicules depuis Teksat
       external_callback:
         title: URL de rappel
         name: Nom

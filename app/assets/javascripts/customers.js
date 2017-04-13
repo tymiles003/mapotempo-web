@@ -239,7 +239,7 @@ var devicesObserveCustomer = (function() {
 
       // Sync
       $('.' + config.name + '-api-sync').on('click', function(e) {
-        if (confirm(I18n.t('customers.form.sync.' + config.name + '.confirm'))) {
+        if (confirm(I18n.t('customers.form.devices.sync.' + config.name + '.confirm'))) {
           $.ajax({
             url: '/api/0.1/devices/' + config.name + '/sync.json',
             type: 'POST',
@@ -253,7 +253,7 @@ var devicesObserveCustomer = (function() {
               completeWaiting();
             },
             success: function(data, textStatus, jqXHR) {
-              alert(I18n.t('customers.form.sync.complete'));
+              alert(I18n.t('customers.form.devices.sync.complete'));
             }
           });
         }

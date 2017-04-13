@@ -700,21 +700,6 @@ en:
       speed_multiplicator_default: '%{n} (default value)'
       speed_multiplicator_help: A value higher than 100% means higher speed.
       submit: Update Global settings
-      devices:
-        sync:
-          complete: Sync Complete
-          confirm: Sync Vehicles?
-          action: Sync Vehicles
-        alyacom:
-          help: Allows sending plans to AlyaCom application
-        tomtom:
-          help: Allows sending plans to TomTom Pro with WEBFLEET.
-        teksat:
-          help: Send plans to Teksat devices
-        orange:
-          help: Send plans to Orange Fleet Performance devices
-        masternaut:
-          help: Allows sending plans to Masternaut devices
       external_callback:
         title: Callback URL
         name: Name
