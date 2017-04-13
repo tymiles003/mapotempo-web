@@ -21,7 +21,7 @@ class OrangeService < DeviceService
   end
 
   def list_devices(params = {})
-    if (customer.devices[:orange] && customer.devices[:orange][:username]) || (params && params[:username])
+    if (customer.devices[service_name] && customer.devices[:orange][:username]) || (params && params[:username])
       #with_cache [:list_devices, service_name, customer.id, customer.devices[:orange][:username]] do
         service.list_devices customer, params
       #end
@@ -31,7 +31,7 @@ class OrangeService < DeviceService
   end
 
   def get_vehicles_pos
-    if customer.devices[:orange] && customer.devices[:orange][:username]
+    if customer.devices[service_name] && customer.devices[:orange][:username]
       with_cache [:get_vehicles_pos, service_name, customer.id, customer.devices[:orange][:username]] do
         service.get_vehicles_pos customer
       end

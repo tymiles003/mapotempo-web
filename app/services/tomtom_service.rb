@@ -21,7 +21,7 @@ class TomtomService < DeviceService
   end
 
   def list_devices
-    if customer.devices[:tomtom] && customer.devices[:tomtom][:user]
+    if customer.devices[service_name] && customer.devices[:tomtom][:user]
       # with_cache [:list_devices, service_name, customer.id, customer.devices[:tomtom][:user]] do
         service.list_devices customer
       # end
@@ -31,7 +31,7 @@ class TomtomService < DeviceService
   end
 
   def get_vehicles_pos
-    if customer.devices[:tomtom] && customer.devices[:tomtom][:user]
+    if customer.devices[service_name] && customer.devices[:tomtom][:user]
       with_cache [:get_vehicles_pos, service_name, customer.id, customer.devices[:tomtom][:user]] do
         service.get_vehicles_pos customer
       end
@@ -39,7 +39,7 @@ class TomtomService < DeviceService
   end
 
   def list_vehicles(params)
-    if (customer.devices[:tomtom] && customer.devices[:tomtom][:user]) || (params && params[:user])
+    if (customer.devices[service_name] && customer.devices[:tomtom][:user]) || (params && params[:user])
       with_cache [:list_vehicles, service_name, customer.id, customer.devices[:tomtom][:user]] do
         service.list_vehicles customer, params
       end
@@ -49,7 +49,7 @@ class TomtomService < DeviceService
   end
 
   def list_addresses
-    if customer.devices[:tomtom] && customer.devices[:tomtom][:user]
+    if customer.devices[service_name] && customer.devices[:tomtom][:user]
       with_cache [:list_addresses, service_name, customer.id, customer.devices[:tomtom][:user]] do
         service.list_addresses customer
       end

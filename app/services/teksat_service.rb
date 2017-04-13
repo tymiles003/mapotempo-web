@@ -26,7 +26,7 @@ class TeksatService < DeviceService
   end
 
   def list_devices
-    if (customer.devices[:teksat] && customer.devices[:teksat][:username]) || (params && params[:username])
+    if (customer.devices[service_name] && customer.devices[:teksat][:username]) || (params && params[:username])
       #with_cache [:list_devices, service_name, customer.id, customer.devices[:teksat][:username]] do
         service.list_devices customer
       #end
@@ -36,7 +36,7 @@ class TeksatService < DeviceService
   end
 
   def get_vehicles_pos
-    if customer.devices[:teksat] && customer.devices[:teksat][:username]
+    if customer.devices[service_name] && customer.devices[:teksat][:username]
       with_cache [:get_vehicles_pos, service_name, customer.id, customer.devices[:teksat][:username]] do
         service.get_vehicles_pos customer
       end
