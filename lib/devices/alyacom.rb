@@ -50,8 +50,8 @@ class Alyacom < DeviceBase
           postalcode: position.postalcode,
           city: position.city,
           detail: [
-            stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time : '') + '-' + (stop.close1 ? stop.close1_time : '') : nil,
-            stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time : '') + '-' + (stop.close2 ? stop.close2_time : '') : nil,
+              stop.open1 || stop.close1 ? (stop.open1 ? stop.open1_time + number_of_days(stop.open1) : '') + '-' + (stop.close1_time + number_of_days(stop.close1) || '') : nil,
+              stop.open2 || stop.close2 ? (stop.open2 ? stop.open2_time + number_of_days(stop.open2) : '') + '-' + (stop.close2_time + number_of_days(stop.close2) || '') : nil,
             stop.comment,
             stop.ref,
           ].compact.join(' ').strip

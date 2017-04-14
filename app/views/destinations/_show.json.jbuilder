@@ -36,13 +36,13 @@ json.visits do
         end
       end
     end
-    json.open1 visit.open1_time
+    json.open1 visit.open1_absolute_time
     json.open1_day number_of_days(visit.open1)
-    json.close1 visit.close1_time
+    json.close1 visit.close1_absolute_time
     json.close1_day number_of_days(visit.close1)
-    json.open2 visit.open2_time
+    json.open2 visit.open2_absolute_time
     json.open2_day number_of_days(visit.open2)
-    json.close2 visit.close2_time
+    json.close2 visit.close2_absolute_time
     json.close2_day number_of_days(visit.close2)
     json.tag_ids do
       json.array! visit.tags.collect(&:id)

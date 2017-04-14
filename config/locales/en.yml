@@ -955,13 +955,13 @@ en:
       close: close
       close_desc: 'deprecated: use "close 1" instead.'
       open1: open 1
-      open1_desc: start time 1 to visit destination.
+      open1_desc: start time 1 (can go beyond 24:00) to visit destination.
       close1: close 1
-      close1_desc: end time 1 to visit destination.
+      close1_desc: end time 1 (can go beyond 24:00) to visit destination.
       open2: open 2
-      open2_desc: start time 2 to visit destination.
+      open2_desc: start time 2 (can go beyond 24:00) to visit destination.
       close2: close 2
-      close2_desc: end time 2 to visit destination.
+      close2_desc: end time 2 (can go beyond 24:00) to visit destination.
       comment: comment
       comment_desc: complementary informations.
       phone_number: phone

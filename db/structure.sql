@@ -993,11 +993,11 @@ CREATE TABLE visits (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     quantities hstore,
-    open1 time without time zone,
-    close1 time without time zone,
-    take_over time without time zone,
-    open2 time without time zone,
-    close2 time without time zone
+    open1 integer,
+    close1 integer,
+    take_over integer,
+    open2 integer,
+    close2 integer
 );
 
 

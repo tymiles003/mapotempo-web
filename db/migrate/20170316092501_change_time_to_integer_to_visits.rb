@@ -11,14 +11,16 @@ class ChangeTimeToIntegerToVisits < ActiveRecord::Migration
     Visit.connection.schema_cache.clear!
     Visit.reset_column_information
 
-    Visit.find_in_batches do |visits|
-      visits.each do |visit|
-        visit.open1_temp = visit.open1.seconds_since_midnight.to_i if visit.open1
-        visit.close1_temp = visit.close1.seconds_since_midnight.to_i if visit.close1
-        visit.take_over_temp = visit.take_over.seconds_since_midnight.to_i if visit.take_over
-        visit.open2_temp = visit.open2.seconds_since_midnight.to_i if visit.open2
-        visit.close2_temp = visit.close2.seconds_since_midnight.to_i if visit.close2
-        visit.save!(validate: false)
+    Visit.transaction do
+      Visit.find_in_batches do |visits|
+        visits.each do |visit|
+          visit.open1_temp = visit.open1.seconds_since_midnight.to_i if visit.open1
+          visit.close1_temp = visit.close1.seconds_since_midnight.to_i if visit.close1
+          visit.take_over_temp = visit.take_over.seconds_since_midnight.to_i if visit.take_over
+          visit.open2_temp = visit.open2.seconds_since_midnight.to_i if visit.open2
+          visit.close2_temp = visit.close2.seconds_since_midnight.to_i if visit.close2
+          visit.save!(validate: false)
+        end
       end
     end
 
@@ -45,14 +47,16 @@ class ChangeTimeToIntegerToVisits < ActiveRecord::Migration
     Visit.connection.schema_cache.clear!
     Visit.reset_column_information
 
-    Visit.find_in_batches do |visits|
-      visits.each do |visit|
-        visit.open1_temp = Time.at(visit.open1).utc.strftime('%H:%M:%S') if visit.open1
-        visit.close1_temp = Time.at(visit.close1).utc.strftime('%H:%M:%S') if visit.close1
-        visit.take_over_temp = Time.at(visit.take_over).utc.strftime('%H:%M:%S') if visit.take_over
-        visit.open2_temp = Time.at(visit.open2).utc.strftime('%H:%M:%S') if visit.open2
-        visit.close2_temp = Time.at(visit.close2).utc.strftime('%H:%M:%S') if visit.close2
-        visit.save!
+    Visit.transaction do
+      Visit.find_in_batches do |visits|
+        visits.each do |visit|
+          visit.open1_temp = Time.at(visit.open1).utc.strftime('%H:%M:%S') if visit.open1
+          visit.close1_temp = Time.at(visit.close1).utc.strftime('%H:%M:%S') if visit.close1
+          visit.take_over_temp = Time.at(visit.take_over).utc.strftime('%H:%M:%S') if visit.take_over
+          visit.open2_temp = Time.at(visit.open2).utc.strftime('%H:%M:%S') if visit.open2
+          visit.close2_temp = Time.at(visit.close2).utc.strftime('%H:%M:%S') if visit.close2
+          visit.save!
+        end
       end
     end
 
@@ -76,6 +80,9 @@ class ChangeTimeToIntegerToVisits < ActiveRecord::Migration
       attribute :open2, ActiveRecord::Type::Time.new
       attribute :close2, ActiveRecord::Type::Time.new
       attribute :take_over, ActiveRecord::Type::Time.new
+
+      skip_callback :save, :before, :update_tags, :create_orders
+      skip_callback :update, :before, :update_out_of_date
     end
   end
 end

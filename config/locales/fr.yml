@@ -514,7 +514,7 @@ fr:
   errors:
     management:
       title: "Impossible d'accèder à la page"
-      description: "La page que vous essayez d'atteindre a provoquée une erreur"
+      description: "La page que vous essayez d'atteindre a provoqué une erreur"
       status:
         title:
           default: "Une erreur est survenue dans l'application"
@@ -971,13 +971,13 @@ fr:
       close: horaire fin
       close_desc: 'déprécié : utiliser « horaire fin 1 » à la place.'
       open1: horaire début 1
-      open1_desc: début de la plage horaire 1 conseillée pour la visite.
+      open1_desc: début de la plage horaire 1 (peut dépasser 24:00) conseillée pour la visite.
       close1: horaire fin 1
-      close1_desc: fin de la plage horaire 1 conseillée pour la visite.
+      close1_desc: fin de la plage horaire 1 (peut dépasser 24:00) conseillée pour la visite.
       open2: horaire début 2
-      open2_desc: début de la plage horaire 2 conseillée pour la visite.
+      open2_desc: début de la plage horaire 2 (peut dépasser 24:00) conseillée pour la visite.
       close2: horaire fin 2
-      close2_desc: fin de la plage horaire 2 conseillée pour la visite.
+      close2_desc: fin de la plage horaire 2 (peut dépasser 24:00) conseillée pour la visite.
       comment: commentaire
       comment_desc: informations nécessaires pour la visite.
       phone_number: téléphone

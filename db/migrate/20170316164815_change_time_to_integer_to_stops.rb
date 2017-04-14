@@ -7,10 +7,12 @@ class ChangeTimeToIntegerToStops < ActiveRecord::Migration
     Stop.connection.schema_cache.clear!
     Stop.reset_column_information
 
-    Stop.find_in_batches do |stops|
-      stops.each do |stop|
-        stop.time_temp = stop.time.seconds_since_midnight.to_i if stop.time
-        stop.save!
+    Stop.transaction do
+      Stop.find_in_batches do |stops|
+        stops.each do |stop|
+          stop.time_temp = stop.time.seconds_since_midnight.to_i if stop.time
+          stop.save!(validate: false)
+        end
       end
     end
 
@@ -25,10 +27,12 @@ class ChangeTimeToIntegerToStops < ActiveRecord::Migration
     Stop.connection.schema_cache.clear!
     Stop.reset_column_information
 
-    Stop.find_in_batches do |stops|
-      stops.each do |stop|
-        stop.time_temp = Time.at(stop.time).utc.strftime('%H:%M:%S') if stop.time
-        stop.save!
+    Stop.transaction do
+      Stop.find_in_batches do |stops|
+        stops.each do |stop|
+          stop.time_temp = Time.at(stop.time).utc.strftime('%H:%M:%S') if stop.time
+          stop.save!(validate: false)
+        end
       end
     end
 
@@ -42,6 +46,9 @@ class ChangeTimeToIntegerToStops < ActiveRecord::Migration
   def fake_missing_props
     Stop.class_eval do
       attribute :time, ActiveRecord::Type::Time.new
+
+      skip_callback :save, :before, :out_of_date
     end
   end
+
 end

@@ -13,16 +13,18 @@ class ChangeTimeToIntegerToVehicleUsageSets < ActiveRecord::Migration
     VehicleUsageSet.connection.schema_cache.clear!
     VehicleUsageSet.reset_column_information
 
-    VehicleUsageSet.find_in_batches do |vehicle_usage_sets|
-      vehicle_usage_sets.each do |vehicle_usage_set|
-        vehicle_usage_set.open_temp = vehicle_usage_set.open.seconds_since_midnight.to_i if vehicle_usage_set.open
-        vehicle_usage_set.close_temp = vehicle_usage_set.close.seconds_since_midnight.to_i if vehicle_usage_set.close
-        vehicle_usage_set.rest_start_temp = vehicle_usage_set.rest_start.seconds_since_midnight.to_i if vehicle_usage_set.rest_start
-        vehicle_usage_set.rest_stop_temp = vehicle_usage_set.rest_stop.seconds_since_midnight.to_i if vehicle_usage_set.rest_stop
-        vehicle_usage_set.rest_duration_temp = vehicle_usage_set.rest_duration.seconds_since_midnight.to_i if vehicle_usage_set.rest_duration
-        vehicle_usage_set.service_time_start_temp = vehicle_usage_set.service_time_start.seconds_since_midnight.to_i if vehicle_usage_set.service_time_start
-        vehicle_usage_set.service_time_end_temp = vehicle_usage_set.service_time_end.seconds_since_midnight.to_i if vehicle_usage_set.service_time_end
-        vehicle_usage_set.save!(validate: false)
+    VehicleUsageSet.transaction do
+      VehicleUsageSet.find_in_batches do |vehicle_usage_sets|
+        vehicle_usage_sets.each do |vehicle_usage_set|
+          vehicle_usage_set.open_temp = vehicle_usage_set.open.seconds_since_midnight.to_i if vehicle_usage_set.open
+          vehicle_usage_set.close_temp = vehicle_usage_set.close.seconds_since_midnight.to_i if vehicle_usage_set.close
+          vehicle_usage_set.rest_start_temp = vehicle_usage_set.rest_start.seconds_since_midnight.to_i if vehicle_usage_set.rest_start
+          vehicle_usage_set.rest_stop_temp = vehicle_usage_set.rest_stop.seconds_since_midnight.to_i if vehicle_usage_set.rest_stop
+          vehicle_usage_set.rest_duration_temp = vehicle_usage_set.rest_duration.seconds_since_midnight.to_i if vehicle_usage_set.rest_duration
+          vehicle_usage_set.service_time_start_temp = vehicle_usage_set.service_time_start.seconds_since_midnight.to_i if vehicle_usage_set.service_time_start
+          vehicle_usage_set.service_time_end_temp = vehicle_usage_set.service_time_end.seconds_since_midnight.to_i if vehicle_usage_set.service_time_end
+          vehicle_usage_set.save!(validate: false)
+        end
       end
     end
 
@@ -55,16 +57,18 @@ class ChangeTimeToIntegerToVehicleUsageSets < ActiveRecord::Migration
     VehicleUsageSet.connection.schema_cache.clear!
     VehicleUsageSet.reset_column_information
 
-    VehicleUsageSet.find_in_batches do |vehicle_usage_sets|
-      vehicle_usage_sets.each do |vehicle_usage_set|
-        vehicle_usage_set.open_temp =Time.at(vehicle_usage_set.open).utc.strftime('%H:%M:%S') if vehicle_usage_set.open
-        vehicle_usage_set.close_temp = Time.at(vehicle_usage_set.close).utc.strftime('%H:%M:%S') if vehicle_usage_set.close
-        vehicle_usage_set.rest_start_temp = Time.at(vehicle_usage_set.rest_start).utc.strftime('%H:%M:%S') if vehicle_usage_set.rest_start
-        vehicle_usage_set.rest_stop_temp = Time.at(vehicle_usage_set.rest_stop).utc.strftime('%H:%M:%S') if vehicle_usage_set.rest_stop
-        vehicle_usage_set.rest_duration_temp = Time.at(vehicle_usage_set.rest_duration).utc.strftime('%H:%M:%S') if vehicle_usage_set.rest_duration
-        vehicle_usage_set.service_time_start_temp = Time.at(vehicle_usage_set.service_time_start).utc.strftime('%H:%M:%S') if vehicle_usage_set.service_time_start
-        vehicle_usage_set.service_time_end_temp = Time.at(vehicle_usage_set.service_time_end).utc.strftime('%H:%M:%S') if vehicle_usage_set.service_time_end
-        vehicle_usage_set.save!
+    VehicleUsageSet.transaction do
+      VehicleUsageSet.find_in_batches do |vehicle_usage_sets|
+        vehicle_usage_sets.each do |vehicle_usage_set|
+          vehicle_usage_set.open_temp =Time.at(vehicle_usage_set.open).utc.strftime('%H:%M:%S') if vehicle_usage_set.open
+          vehicle_usage_set.close_temp = Time.at(vehicle_usage_set.close).utc.strftime('%H:%M:%S') if vehicle_usage_set.close
+          vehicle_usage_set.rest_start_temp = Time.at(vehicle_usage_set.rest_start).utc.strftime('%H:%M:%S') if vehicle_usage_set.rest_start
+          vehicle_usage_set.rest_stop_temp = Time.at(vehicle_usage_set.rest_stop).utc.strftime('%H:%M:%S') if vehicle_usage_set.rest_stop
+          vehicle_usage_set.rest_duration_temp = Time.at(vehicle_usage_set.rest_duration).utc.strftime('%H:%M:%S') if vehicle_usage_set.rest_duration
+          vehicle_usage_set.service_time_start_temp = Time.at(vehicle_usage_set.service_time_start).utc.strftime('%H:%M:%S') if vehicle_usage_set.service_time_start
+          vehicle_usage_set.service_time_end_temp = Time.at(vehicle_usage_set.service_time_end).utc.strftime('%H:%M:%S') if vehicle_usage_set.service_time_end
+          vehicle_usage_set.save!(validate: false)
+        end
       end
     end
 

@@ -480,4 +480,8 @@ span.color[data-color=''][data-selected]:after {
 
 input.form-control.number-of-days {
   width: 60px;
+
+  &:focus {
+    border-left-width: 1px;
+  }
 }

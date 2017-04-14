@@ -8,11 +8,13 @@ class ChangeTimeToIntegerToRoutes < ActiveRecord::Migration
     Route.connection.schema_cache.clear!
     Route.reset_column_information
 
-    Route.find_in_batches do |routes|
-      routes.each do |route|
-        route.start_temp = route.start.seconds_since_midnight.to_i if route.start
-        route.end_temp = route.end.seconds_since_midnight.to_i if route.end
-        route.save!
+    Route.transaction do
+      Route.find_in_batches do |routes|
+        routes.each do |route|
+          route.start_temp = route.start.seconds_since_midnight.to_i if route.start
+          route.end_temp = route.end.seconds_since_midnight.to_i if route.end
+          route.save!(validate: false)
+        end
       end
     end
 
@@ -30,25 +32,31 @@ class ChangeTimeToIntegerToRoutes < ActiveRecord::Migration
     Route.connection.schema_cache.clear!
     Route.reset_column_information
 
-    Route.find_in_batches do |routes|
-      routes.each do |route|
-        route.start_temp = Time.at(times[:start]).utc.strftime('%H:%M:%S') if route.start
-        route.end_temp = Time.at(times[:end]).utc.strftime('%H:%M:%S') if route.end
-        route.save!
+    Route.transaction do
+      Route.find_in_batches do |routes|
+        routes.each do |route|
+          route.start_temp = Time.at(times[:start]).utc.strftime('%H:%M:%S') if route.start
+          route.end_temp = Time.at(times[:end]).utc.strftime('%H:%M:%S') if route.end
+          route.save!(validate: false)
+        end
       end
     end
 
     remove_column :routes, :start
     remove_column :routes, :end
 
-    add_column :routes, :start, :time
-    add_column :routes, :end, :time
+    rename_column :routes, :start_temp, :start
+    rename_column :routes, :end_temp, :end
   end
 
   def fake_missing_props
     Route.class_eval do
       attribute :start, ActiveRecord::Type::Time.new
       attribute :end, ActiveRecord::Type::Time.new
+
+      skip_callback :save, :before, :update_vehicle_usage
+
+      def changed?; end
     end
   end
 end
