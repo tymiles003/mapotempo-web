@@ -38,7 +38,7 @@ class Trimble < DeviceBase
   end
 
   def check_auth(params)
-    client ||= Savon.client(basic_auth: [params[:trimble_username] || '', params[:trimble_password] || ''], wsdl: api_url + '/Customer?wsdl', soap_version: 1) do
+    client ||= Savon.client(basic_auth: [params[:username] || '', params[:password] || ''], wsdl: api_url + '/Customer?wsdl', soap_version: 1) do
       # log true
       # pretty_print_xml true
       convert_request_keys_to :none
