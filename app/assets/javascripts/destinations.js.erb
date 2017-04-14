@@ -499,17 +499,18 @@ var destinations_index = function(params, api) {
     imperial: false
   }).addTo(map);
 
-  var markers = {};
-  var markersLayers = new L.MarkerClusterGroup({
+  var clusterConfig = {
     spiderfyOnMaxZoom: true,
     showCoverageOnHover: false,
     zoomToBoundsOnClick: true,
-    spiderfyDistanceMultiplier: 4
-  });
+    spiderfyDistanceMultiplier: 4,
+    removeOutsideVisibleBounds: true
+  }
 
-  var cluster = new L.MarkerClusterGroup({
-    showCoverageOnHover: false
-  });
+  var markers = {};
+  var markersLayers = new L.MarkerClusterGroup(clusterConfig);
+
+  var cluster = new L.MarkerClusterGroup(clusterConfig);
   map.addLayer(cluster);
 
   map.on('zoomend', function(e) {
