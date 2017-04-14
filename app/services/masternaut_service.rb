@@ -19,4 +19,12 @@ class MasternautService < DeviceService
   def check_auth(params)
     service.check_auth customer, params
   end
+
+  def get_vehicles_pos
+    if customer.devices[service_name] && customer.devices[:masternaut][:username]
+      with_cache [:get_vehicles_pos, service_name, customer.id, customer.devices[:masternaut][:username]] do
+        service.get_vehicles_pos customer, customer.vehicles.map{ |v| v.masternaut_ref }.compact
+      end
+    end
+  end
 end

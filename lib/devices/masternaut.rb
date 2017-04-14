@@ -165,13 +165,30 @@ class Masternaut < DeviceBase
     end
   end
 
-  def get_vehicles_pos(customer, vehicleRef)
+  def get_vehicles_pos(customer, refs)
     params = {
-      vehicle_reference: vehicleRef,
-      geoloc: true
+      group_reference: nil, # All vehicles
+      geoloc: false # No address, only coordinates
     }
 
-    get(savon_client_geoloc(customer), 200, :get_vehicle_last_position, params, @@error_code_geoloc)
+    response = get(savon_client_geoloc(customer), nil, :get_vehicles_last_position, params, @@error_code_geoloc)
+
+    response[:multi_ref].each{ |item|
+      hash[item[:@id]] = item
+    }
+    response[:multi_ref].map{ |item|
+      if item[:"@xsi:type"] =~ /LastPositionVehicle$/
+        id = item[:address][:@href][1..-1] # Remove # at begining
+        {
+          masternaut_vehicle_id: item[:reference],
+          lat: hash[id][:latitude],
+          lng: hash[id][:longitude],
+          time: item[:date],
+          speed: item[:speed],
+          direction:item[:direction]
+        }
+      end
+    }.compact
   end
 
   private
