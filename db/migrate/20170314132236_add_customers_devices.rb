@@ -88,7 +88,7 @@ class AddCustomersDevices < ActiveRecord::Migration
     add_column :customers, :masternaut_user, :string
     add_column :customers, :masternaut_password, :string
     add_column :customers, :enable_alyacom, :boolean
-    add_column :customers, :alyacom_api_key, :boolean
+    add_column :customers, :alyacom_api_key, :string
     add_column :customers, :alyacom_association, :string
 
     Customer.order(:id).each{ |customer|
