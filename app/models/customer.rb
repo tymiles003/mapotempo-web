@@ -241,51 +241,42 @@ class Customer < ActiveRecord::Base
   private
 
   def devices_update_vehicles
-    # Remove device association on vehicles
-    self.vehicles.select(&:devices).each{ |vehicle| vehicle.devices[:tomtom_id] = nil } if check_tomtom_changes
-    self.vehicles.select(&:devices).each{ |vehicle| vehicle.devices[:teksat_id] = nil } if check_teksat_changes
-    self.vehicles.select(&:devices).each{ |vehicle| vehicle.devices[:orange_id] = nil } if check_orange_changes
+    # Remove device association on vehicles if devices credentials have changed
+    Mapotempo::Application.config.devices.to_h.each{ |device_name, device_object|
+      if device_object.respond_to?('definition')
+        device_definition = device_object.definition
+        if device_definition.key?(:forms) && device_definition[:forms].key?(:settings) && device_definition[:forms].key?(:vehicle)
+          device_definition[:forms][:vehicle].keys.each{ |key|
+            self.vehicles.select(&:devices).each{ |vehicle| vehicle.devices[key] = nil } if self.send("#{device_name}_changed?")
+          }
+        end
+      end
+    }
   end
 
-  # TODO : refactor
-  def check_tomtom_changes
-    before = self.changed.include?('devices') ? self.changes[:devices].first : nil
-    after = self.changed.include?('devices') ? self.changes[:devices].second : nil
+  Mapotempo::Application.config.devices.to_h.each{ |device_name, device_object|
+    if device_object.respond_to?('definition')
+      device_definition = device_object.definition
+      if device_definition.key?(:forms) && device_definition[:forms].key?(:settings)
 
-    if self.changed.include?('devices') && !before.nil? && !after.nil?
-      if after.include?(:tomtom) && before.include?(:tomtom)
-        return !after[:tomtom][:enable] || ((after[:tomtom][:account] != before[:tomtom][:account])  && !after[:tomtom][:account].nil?) || ((after[:tomtom][:user] != before[:tomtom][:user])  && !after[:tomtom][:user].nil?)
+        define_method("#{device_name}_changed?") do
+          before = self.changed.include?('devices') ? self.changes[:devices].first : nil
+          after = self.changed.include?('devices') ? self.changes[:devices].second : nil
+
+          if self.changed.include?('devices') && !before.nil? && !after.nil?
+            if after.include?(device_name) && before.include?(device_name)
+              device_definition[:forms][:settings].keys.each{ |key|
+                return true if after[device_name][key] != before[device_name][key]
+              }
+            end
+          end
+
+          false
+        end
+
       end
     end
-
-    false
-  end
-
-  def check_teksat_changes
-    before = self.changed.include?('devices') ? self.changes[:devices].first : nil
-    after = self.changed.include?('devices') ? self.changes[:devices].second : nil
-
-    if self.changed.include?('devices') && !before.nil? && !after.nil?
-      if after.include?(:teksat) && before.include?(:teksat)
-        return !after[:teksat][:enable] || ((after[:teksat][:customer_id] != before[:teksat][:customer_id])  && !after[:teksat][:customer_id].nil?) || ((after[:teksat][:username] != before[:teksat][:username])  && !after[:teksat][:username].nil?)
-      end
-    end
-
-    false
-  end
-
-  def check_orange_changes
-    before = self.changed.include?('devices') ? self.changes[:devices].first : nil
-    after = self.changed.include?('devices') ? self.changes[:devices].second : nil
-
-    if self.changed.include?('devices') && !before.nil? && !after.nil?
-      if after.include?(:orange) && before.include?(:orange)
-        return !after[:orange][:enable] || ((after[:orange][:username] != before[:orange][:username])  && !after[:orange][:username].nil?)
-      end
-    end
-
-    false
-  end
+  }
 
   def assign_defaults
     self.default_country ||= I18n.t('customers.default.country')

@@ -19,7 +19,6 @@ class CustomersController < ApplicationController
   load_and_authorize_resource
 
   before_action :set_customer, only: [:edit, :update, :delete_vehicle]
-  before_action :clear_customer_params, only: [:create, :update]
 
   include Devices::Helpers
 
@@ -82,12 +81,6 @@ class CustomersController < ApplicationController
 
   def set_customer
     @customer = current_user.admin? ? current_user.reseller.customers.find(params[:id]) : current_user.customer
-  end
-
-  def clear_customer_params # Delete default password displayed in form
-    params[:customer].delete(:tomtom_password) if params[:customer][:tomtom_password].blank?
-    params[:customer].delete(:teksat_password) if params[:customer][:teksat_password].blank?
-    params[:customer].delete(:orange_password) if params[:customer][:orange_password].blank?
   end
 
   def customer_params
