@@ -206,7 +206,7 @@ en:
         detail: Detail
         postalcode: Postalcode
         city: City
-        tate: State
+        state: State
         country: Country
         lat: Latitude
         lng: Longitude
@@ -259,6 +259,9 @@ en:
         vehicle_usage_set: Vehicles configuration
         vehicle_usage_set_id: Vehicles configuration
         vehicle_usage_set_small: Conf.
+        tag_operation:
+          and: and
+          or: or
       profile:
         name: Name
         layers: Base Maps
