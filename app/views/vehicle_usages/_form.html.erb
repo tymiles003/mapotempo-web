@@ -33,8 +33,8 @@
             <p class="help-block"><%= t 'vehicles.form.emissions.help' %> - <%= current_user.prefered_unit == 'mi' ? t('vehicles.form.consumption.help_miles') : t('vehicles.form.consumption.help') %></p>
           </div>
         </div>
-        <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle][capacities]', @vehicle_usage.vehicle.capacities, layout: :horizontal do |f| %>
-          <div id="vehicle_usage_vehicle_capacity_input" class="form-group">
+        <%= twitter_bootstrap_fields_for 'vehicle_usage[vehicle][capacities]', @vehicle_usage.vehicle.capacities, layout: :horizontal do |capacity| %>
+          <div id="vehicle_usage_vehicle_capacity_input" class="form-group <%= 'has-error' if @vehicle_usage.vehicle.errors.messages[:capacities].present? %>">
             <label class="col-md-2 control-label"><%= t 'vehicles.form.capacities.label' %></label>
             <div class="col-md-6">
               <% @vehicle_usage.vehicle.customer.deliverable_units.each do |du| %>

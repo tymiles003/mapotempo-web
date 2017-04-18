@@ -414,6 +414,29 @@ en:
         tags: Tags
         tag_ids: Tags
         quantities: Quantities
+      visits:
+        ref: Reference
+        ref_small: Ref.
+        take_over: Visit duration
+        take_over_small: Duration
+        open1: Time window 1 open
+        open1_small: Open 1
+        close1: Time window 1 close
+        close1_small: Close 1
+        open_close1_small: Open/Close 1
+        open1_close1_days: D+
+        open2: Time window 2 open
+        open2_small: Open 2
+        close2: Time window 2 close
+        close2_small: Close 2
+        open_close2_small: Open/Close 2
+        open2_close2_days: D+
+        multi_visit: Multi
+        tags: Tags
+        tag_ids: Tags
+        quantities:
+          one: Quantity
+          other: Quantities
       zoning:
         name: Name
       zone:
@@ -426,6 +449,7 @@ en:
     errors:
       attributes:
         inconsistent_customer: is not authorized for this customer
+        visits: Visit
       models:
         location:
           missing_address_or_latlng: Postalcode and city cannot be empty if lat/lng
@@ -461,14 +485,15 @@ en:
         visit:
           attributes:
             close1:
-              after: must be after Time window 1 open
+              after: "must be after Time window 1 open (Ref: %{id})"
               blank: can't be blank when Time window 2 open is set
             open2:
-              after: must be after Time window 1 close
+              after: "must be after Time window 1 close (Ref: %{id})"
             close2:
-              after: must be after Time window 2 open
+              after: "must be after Time window 2 open (Ref: %{id})"
             quantities:
               not_float: must be a number
+              negative_value: Ref:%{id} is negative (%{value})
         zone:
           attributes:
             vehicle:

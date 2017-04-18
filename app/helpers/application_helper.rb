@@ -15,7 +15,8 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require "value_to_boolean"
+require 'value_to_boolean'
+require 'exceptions'
 
 module ApplicationHelper
   def span_tag(content)
@@ -62,5 +63,11 @@ module ApplicationHelper
 
   def to_bool(str)
     ValueToBoolean.value_to_boolean str
+  end
+
+  def nested_has_error?(key, id)
+    manager = Exceptions::NestedAttributesManager.instance
+    error_list = manager.get_hash_for(key, id)
+    'has-error nested' if error_list
   end
 end

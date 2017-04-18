@@ -21,7 +21,6 @@ class Destination < Location
 
   has_many :visits, -> { order(:id) }, inverse_of: :destination, dependent: :delete_all, autosave: true
   accepts_nested_attributes_for :visits, allow_destroy: true
-  validates_associated_bubbling :visits
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
 
   auto_strip_attributes :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number

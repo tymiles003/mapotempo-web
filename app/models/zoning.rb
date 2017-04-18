@@ -21,7 +21,6 @@ class Zoning < ActiveRecord::Base
   has_and_belongs_to_many :plannings, autosave: true
 
   accepts_nested_attributes_for :zones, allow_destroy: true
-  validates_associated_bubbling :zones
 
   nilify_blanks
   auto_strip_attributes :name

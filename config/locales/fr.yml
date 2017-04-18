@@ -415,6 +415,29 @@ fr:
         tags: Libellés
         tag_ids: Libellés
         quantities: Quantités
+      visits:
+        ref: Référence
+        ref_small: Réf.
+        take_over: Durée de visite
+        take_over_small: Durée
+        open1: Début de Plage horaire 1
+        open1_small: Début 1
+        close1: Fin de Plage horaire 1
+        close1_small: Fin 1
+        open_close1_small: Début/Fin 1
+        open1_close1_days: J+
+        open2: Début de Plage horaire 2
+        open2_small: Début 2
+        close2: Fin de Plage horaire 2
+        close2_small: Fin 2
+        open_close2_small: Début/Fin 2
+        open2_close2_days: J+
+        multi_visit: Multi
+        tags: Libellés
+        tag_ids: Libellés
+        quantities:
+          one: Quantité
+          other: Quantités
       zoning:
         name: Nom
       zone:
@@ -429,15 +452,15 @@ fr:
         inconsistent_customer: n'est pas une valeur autorisée pour ce compte client
       models:
         location:
-          missing_address_or_latlng: Le code postal et la ville ne peuvent pas être
-            vides si lat/lng sont vides
+          missing_address_or_latlng: Le code postal et la ville ne peuvent pas être vides si lat/lng sont vides
           lat_outside_range: doit être comprise entre -90..90
           lng_outside_range: doit être comprise entre -180..180
           geocoding_accuracy_outside_range: doit être comprise entre 0..1
         vehicle:
           attributes:
             capacities:
-              not_float: doivent être un nombre
+              not_float: "doivent être un nombre"
+              vehicle_capacity: "ne doit pas être une valeur négative"
         vehicles:
           at_least_one: Au moins un véhicle est requis
         vehicle_usage:
@@ -462,14 +485,15 @@ fr:
         visit:
           attributes:
             close1:
-              after: doit être après le début de Plage horaire 1
+              after: "doit être après le début de Plage horaire 1 (Ref: %{id})"
               blank: doit être rempli(e) si un début de Plage horaire 2 est renseigné
             open2:
-              after: doit être après la fin de Plage horaire 1
+              after: "doit être après la fin de Plage horaire 1 (Ref: %{id})"
             close2:
-              after: doit être après le début de Plage horaire 2
+              after: "doit être après le début de Plage horaire 2 (Ref: %{id})"
             quantities:
               not_float: doit être un nombre
+              negative_value: Ref:%{id} est négative (%{value})
         zone:
           attributes:
             vehicle:

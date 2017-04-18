@@ -25,7 +25,6 @@ class VehicleUsage < ActiveRecord::Base
   has_many :routes, inverse_of: :vehicle_usage, autosave: true
 
   accepts_nested_attributes_for :vehicle, update_only: true
-  validates_associated_bubbling :vehicle
 
   nilify_blanks
 

@@ -8,6 +8,7 @@ require_relative '../lib/routers/here'
 require_relative '../lib/routers/router_wrapper'
 require_relative '../lib/optim/ort'
 require_relative '../lib/optim/optimizer_wrapper'
+require_relative '../lib/exceptions'
 
 require_relative '../lib/devices/device_base'
 ['alyacom', 'masternaut', 'orange', 'teksat', 'tomtom', 'trimble', 'locster', 'suivi_de_flotte'].each{|name|
@@ -107,28 +108,6 @@ ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
     html_tag.insert class_attr_index+7, 'ui-state-error '
   else
     html_tag.insert html_tag.index('>'), ' class="ui-state-error"'
-  end
-end
-
-module ActiveRecord
-  module Validations
-    class AssociatedBubblingValidator < ActiveModel::EachValidator
-      def validate_each(record, attribute, value)
-        (value.is_a?(Enumerable) || value.is_a?(ActiveRecord::Associations::CollectionProxy) ? value : [value]).each do |v|
-          unless v.valid?
-            v.errors.full_messages.each do |msg|
-              record.errors.add(attribute, msg, options.merge(:value => value))
-            end
-          end
-        end
-      end
-    end
-
-    module ClassMethods
-      def validates_associated_bubbling(*attr_names)
-        validates_with AssociatedBubblingValidator, _merge_attributes(attr_names)
-      end
-    end
   end
 end
 

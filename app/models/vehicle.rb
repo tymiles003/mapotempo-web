@@ -15,13 +15,6 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class CapacitiesValidator < ActiveModel::Validator
-  def validate(record)
-    !record.capacities || record.capacities.values.each{ |q| !q || Float(q) }
-  rescue
-    record.errors[:capacities] << I18n.t('activerecord.errors.models.vehicle.attributes.capacities.not_float')
-  end
-end
 
 class Vehicle < ActiveRecord::Base
   belongs_to :customer
@@ -45,7 +38,7 @@ class Vehicle < ActiveRecord::Base
   validates_format_of :color, with: /\A(\#[A-Fa-f0-9]{6})\Z/
   validates :speed_multiplicator, numericality: { greater_than_or_equal_to: 0.5, less_than_or_equal_to: 1.5 }, if: :speed_multiplicator
   validates :contact_email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_blank: true
-  validates_with CapacitiesValidator, fields: [:capacities]
+  validate :capacities_validator
 
   after_initialize :assign_defaults, :increment_max_vehicles, if: 'new_record?'
   before_create :create_vehicle_usage
@@ -58,6 +51,15 @@ class Vehicle < ActiveRecord::Base
   include LocalizedAttr
 
   attr_localized :emission, :consumption, :capacities
+
+  def capacities_validator
+    !capacities || capacities.values.each do |q|
+      raise Exceptions::NegativeErrors.new(q, id) if Float(q) < 0; # Raise both Float && NegativeErrors type
+    end
+  rescue StandardError => e
+    errors.add :capacities, :not_float if e.is_a?(ArgumentError || TypeError)
+    errors.add :capacities, :vehicle_capacity if e.is_a? Exceptions::NegativeErrors
+  end
 
   def self.emissions_table
     [

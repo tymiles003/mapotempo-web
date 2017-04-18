@@ -15,14 +15,6 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class QuantitiesValidator < ActiveModel::Validator
-  def validate(record)
-    !record.quantities || record.quantities.values.each{ |q| !q || Float(q) }
-  rescue
-    record.errors[:quantities] << I18n.t('activerecord.errors.models.visit.attributes.quantities.not_float')
-  end
-end
-
 class Visit < ActiveRecord::Base
   belongs_to :destination
   has_many :stop_visits, inverse_of: :visit, dependent: :delete_all
@@ -47,7 +39,7 @@ class Visit < ActiveRecord::Base
   validate :close2_after_open2
   validate :open2_after_close1
 
-  validates_with QuantitiesValidator, fields: [:quantities]
+  validate :quantities_validator
 
   include Consistency
   validate_consistency :tags, attr_consistency_method: -> (visit) { visit.destination.try :customer_id }
@@ -72,6 +64,16 @@ class Visit < ActiveRecord::Base
 
       def copy.update_out_of_date; end
     })
+  end
+
+  # Custom validator for quantities. Mostly used by the destination model (:update, :create)
+  def quantities_validator
+    !quantities || quantities.values.each do |q|
+      raise Exceptions::NegativeErrors.new(q, id, { nested_attr: :quantities, record: self }) if Float(q) < 0; # Raise both Float && NegativeErrors type
+    end
+  rescue StandardError => e
+    self.errors.add :quantities, :not_float if e.is_a?(ArgumentError || TypeError)
+    self.errors.add :quantities, :negative_value, {id: e.object[:visit_id], value: e.object[:value]} if e.is_a?(Exceptions::NegativeErrors)
   end
 
   def destroy
@@ -201,20 +203,26 @@ class Visit < ActiveRecord::Base
 
   def close1_after_open1
     if self.open1.present? && self.close1.present? && self.close1 < self.open1
-      errors.add(:close1, I18n.t('activerecord.errors.models.visit.attributes.close1.after'))
+      raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close1, record: self })
     end
+    rescue Exceptions::CLoseAndOpenErrors => e
+      self.errors.add(:close1, :after, {id: e.object[:visit_id]})
   end
 
   def close2_after_open2
     if self.open2.present? && self.close2.present? && self.close2 < self.open2
-      errors.add(:close1, I18n.t('activerecord.errors.models.visit.attributes.close2.after'))
+      raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close2, record: self })
     end
+    rescue Exceptions::CLoseAndOpenErrors => e
+      self.errors.add(:close2, :after, {id: e.object[:visit_id]})
   end
 
   def open2_after_close1
     if self.open2.present? && self.close1.present? && self.open2 < self.close1
-      errors.add(:open2, I18n.t('activerecord.errors.models.visit.attributes.open2.after'))
+      raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close2, record: self })
     end
+  rescue Exceptions::CLoseAndOpenErrors => e
+      self.errors.add(:open2, :after, {id: e.object[:visit_id]})
   end
 
 end
