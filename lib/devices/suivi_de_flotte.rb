@@ -21,7 +21,7 @@ class SuiviDeFlotte < DeviceBase
       device: 'suivi_de_flotte',
       label: 'SuiviDeFlotte',
       label_small: 'SuiviDeFlotte',
-      route_operations: [:send],
+      route_operations: [],
       has_sync: false,
       help: false,
       forms: {
@@ -30,9 +30,79 @@ class SuiviDeFlotte < DeviceBase
           password: :password
         },
         vehicle: {
-          suivi_de_flotte_ref: :text
+          suivi_de_flotte_id: :select
         },
       }
     }
+  end
+
+  def check_auth(credentials)
+    response = get(savon_client, nil, :login, {username: credentials[:username], passkey: credentials[:password]}, {})
+
+    response[:login_response][:session_id]
+  end
+
+  def list_devices(credentials)
+    session_id = check_auth credentials
+    response = get(savon_client, nil, :fleet_devices_list, {session_id: session_id}, {})
+
+    response[:fleet_devices_list_response][:device_list][:item].map{ |item|
+      {
+        id: item[:id_sdf],
+        text: [item[:name], item[:reg_plate] && item[:reg_plate].is_a?(String) ? item[:reg_plate] : nil].compact.join(' / '),
+      }
+    }
+  end
+
+  def get_vehicles_pos(credentials, refs)
+    session_id = check_auth credentials
+    response = get(savon_client, nil, :fleet_devices_info, {session_id: session_id}, {})
+
+    response[:fleet_devices_info_response][:device_details_list][:item].map{ |item|
+      {
+        suivi_de_flotte_vehicle_id: item[:id_sdf],
+        lat: item[:address][:address][:coord][:lat],
+        lng: item[:address][:address][:coord][:lon],
+        time: item[:address][:dt],
+        speed: 0,
+        direction: item[:angle]
+      }
+    }
+  end
+
+  private
+
+  def savon_client
+    client ||= Savon.client(
+      wsdl: api_url + '?wsdl',
+      endpoint: api_url, # Need it to use ssl if api_key is defined with https
+      soap_version: 1,
+      # log: true,
+      # pretty_print_xml: true,
+      convert_request_keys_to: :none,
+    )
+  end
+
+  def get(client, no_error_code, operation, message = {}, error_code)
+    response = client.call(operation, message: message)
+
+    op_response = (operation.to_s + '_response').to_sym
+    op_return = (operation.to_s + '_return').to_sym
+    if no_error_code && response.body[op_response] && response.body[op_response][op_return] != no_error_code.to_s
+      Rails.logger.info response.body[op_response]
+      raise DeviceServiceError.new("Suivi De Flotte operation #{operation} returns error: #{error_code[response.body[op_response][op_return]] || response.body[op_response][op_return]}")
+    end
+    response.body
+  rescue Savon::SOAPFault => error
+    Rails.logger.info error
+    fault_code = error.to_hash[:fault][:faultcode]
+    raise DeviceServiceError.new("Suivi De Flotte: #{fault_code}")
+  rescue Savon::HTTPError => error
+    if error.http.code == 401
+      raise DeviceServiceError.new('Suivi De Flotte: ' + I18n.t('errors.suivi_de_flotte.invalid_account'))
+    else
+      Rails.logger.info error.http.code
+      raise error
+    end
   end
 end

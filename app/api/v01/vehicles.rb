@@ -109,6 +109,19 @@ class V01::Vehicles < Grape::API
       vehicles = customer.vehicles.find params[:ids]
       positions = []
       errors = []
+      # Suivi De Flotte
+      begin
+        if customer.device.configured?(:suivi_de_flotte)
+          (SuiviDeFlotteService.new(customer: customer).get_vehicles_pos || []).each do |item|
+            vehicle_id = item.delete :suivi_de_flotte_vehicle_id
+            vehicle = vehicles.detect{ |v| v.devices[:suivi_de_flotte_id] == vehicle_id }
+            next if !vehicle
+            positions << item.merge(vehicle_id: vehicle.id)
+          end
+        end
+      rescue DeviceServiceError => e
+        errors << e.message
+      end
       # Masternaut
       begin
         if customer.device.configured?(:masternaut)

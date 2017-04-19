@@ -128,6 +128,7 @@ class V01::Api < Grape::API
   mount V01::Devices::Teksat
   mount V01::Devices::Tomtom
   mount V01::Devices::Trimble
+  mount V01::Devices::SuiviDeFlotte
 
   # Tools
   mount V01::Geocoder

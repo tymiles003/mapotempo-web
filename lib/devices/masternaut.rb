@@ -185,7 +185,7 @@ class Masternaut < DeviceBase
           lng: hash[id][:longitude],
           time: item[:date],
           speed: item[:speed],
-          direction:item[:direction]
+          direction: item[:direction]
         }
       end
     }.compact

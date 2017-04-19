@@ -22,7 +22,7 @@ class DeviceService
     @customer = params[:customer]
     @cache_object = Mapotempo::Application.config.devices.cache_object
     @name = self.class.name.gsub('Service', '')
-    @service_name = @name.downcase.to_sym
+    @service_name = @name.underscore.to_sym
     @service = Mapotempo::Application.config.devices[service_name]
   end
 
