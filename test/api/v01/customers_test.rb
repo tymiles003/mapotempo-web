@@ -53,13 +53,18 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should update a customer' do
+    @customer.devices[:tomtom] = {enable: true}
+    @customer.save!
     put api(@customer.id), { devices: {tomtom: {user: 'user_abcd'}}, ref: 'ref-abcd', router_options: {motorway: true, trailers: 2, weight: 10, hazardous_goods: 'gas'} }
     assert last_response.ok?, last_response.body
+
     get api(@customer.id)
     assert last_response.ok?, last_response.body
     customer_response = JSON.parse(last_response.body, symbolize_names: true)
-    assert_equal 'user_abcd', customer_response[:devices][:tomtom][:user], last_response.body
     assert 'ref-abcd' != customer_response[:ref], last_response.body
+
+    assert customer_response[:devices][:tomtom][:enable]
+    assert_equal 'user_abcd', customer_response[:devices][:tomtom][:user], last_response.body
 
     # FIXME: replace each assertion by one which checks if hash is included in another
     assert customer_response[:router_options][:weight] = '10'
