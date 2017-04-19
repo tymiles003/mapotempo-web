@@ -60,7 +60,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
   end
 
   test 'should update vehicle router options' do
-    put api(@vehicle.id), {router_options: {motorway: false, weight_per_axle: 3, length: 30, hazardous_goods: 'gas'}}.to_json, 'CONTENT_TYPE' => 'application/json'
+    put api(@vehicle.id), {router_options: {motorway: false, weight_per_axle: 3, length: 30, hazardous_goods: 'gas', max_walk_distance: 600}}.to_json, 'CONTENT_TYPE' => 'application/json'
     assert last_response.ok?, last_response.body
 
     vehicle = JSON.parse(last_response.body)
@@ -69,6 +69,7 @@ class V01::VehiclesTest < ActiveSupport::TestCase
     assert vehicle['router_options']['weight_per_axle'] = '3'
     assert vehicle['router_options']['length'] = '30'
     assert vehicle['router_options']['hazardous_goods'] = 'gas'
+    assert vehicle['router_options']['max_walk_distance'] = '600'
   end
 
   test 'should create a vehicle' do

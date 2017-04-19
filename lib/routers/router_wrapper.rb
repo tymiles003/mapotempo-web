@@ -198,7 +198,8 @@ module Routers
         height: options[:height],
         width: options[:width],
         length: options[:length],
-        hazardous_goods: options[:hazardous_goods]
+        hazardous_goods: options[:hazardous_goods],
+        max_walk_distance: options[:max_walk_distance]
       }.compact
     end
   end

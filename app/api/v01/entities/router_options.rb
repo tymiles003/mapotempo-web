@@ -29,4 +29,5 @@ class V01::Entities::RouterOptions < Grape::Entity
   expose(:width, documentation: { type: Float }) { |m| m['width'] }
   expose(:length, documentation: { type: Float }) { |m| m['length'] }
   expose(:hazardous_goods, documentation: { type: String, values: %w(explosive gas flammable combustible organic poison radio_active corrosive poisonous_inhalation harmful_to_water other)}) { |m| m['hazardous_goods'] }
+  expose(:max_walk_distance, documentation: { type: Float }) { |m| m['max_walk_distance'] }
 end

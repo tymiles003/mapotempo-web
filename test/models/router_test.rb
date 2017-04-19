@@ -89,7 +89,8 @@ class RouterTest < ActiveSupport::TestCase
         height: true,
         width: true,
         length: true,
-        hazardous_goods: true
+        hazardous_goods: true,
+        max_walk_distance: true
     }
 
     router.save!
@@ -135,5 +136,8 @@ class RouterTest < ActiveSupport::TestCase
 
     assert router.hazardous_goods, true
     assert router.hazardous_goods?, true
+
+    assert router.max_walk_distance, true
+    assert router.max_walk_distance?, true
   end
 end

@@ -49,7 +49,7 @@ class V01::Vehicles < Grape::API
         end
       end
 
-      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s }, devices: permit_devices)
+      p.permit(:contact_email, :ref, :name, :emission, :consumption, :color, :router_id, :router_dimension, :speed_multiplicator, router_options: [:time, :distance, :isochrone, :isodistance, :avoid_zones, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance], capacities: (current_customer || @current_user.reseller.customers.where(id: params[:customer_id]).first!).deliverable_units.map{ |du| du.id.to_s }, devices: permit_devices)
     end
 
     def permit_devices
@@ -200,6 +200,7 @@ class V01::Vehicles < Grape::API
         optional :width, type: Float
         optional :length, type: Float
         optional :hazardous_goods, type: String
+        optional :max_walk_distance, type: Float
       end
     end
     put ':id' do
@@ -248,6 +249,7 @@ class V01::Vehicles < Grape::API
         optional :width, type: Float
         optional :length, type: Float
         optional :hazardous_goods, type: String
+        optional :max_walk_distance, type: Float
       end
 
       optional :open, type: Integer, documentation: { type: 'string', desc: 'Schedule time (HH:MM)' }, coerce_with: ->(value) { ScheduleType.new.type_cast(value) }

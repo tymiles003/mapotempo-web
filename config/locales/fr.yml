@@ -143,6 +143,7 @@ fr:
         router_options_width: Largeur du véhicule
         router_options_length: Longueur du véhicule
         router_options_hazardous_goods: Type de matière dangeureuse
+        router_options_max_walk_distance: Distance maximum à pied
         print_planning_annotating: Inclure un émargement client
         print_header: Entête des tournées
         print_stop_time: Inclure les horaires de passage
@@ -681,6 +682,7 @@ fr:
       router_options_height_range: Hauteur entre %{from} et %{to} mètres
       router_options_width_range: Largeur entre %{from} et %{to} mètres
       router_options_length_range: Longueur entre %{from} et %{to} mètres
+      router_options_max_walk_distance_range: Distance maximum à pied avant de prendre les transports en commun
       take_over_help: Durée de visite moyenne par client
       optimization_cluster_size_default: '%{n} (valeur par défaut)'
       optimization_cluster_size_help: Valeur en secondes séparant les points à regrouper

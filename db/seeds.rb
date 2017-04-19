@@ -43,7 +43,7 @@ public_transport = RouterWrapper.create!(
     name: 'RouterWrapper-PublicTransport',
     name_locale: {fr: 'Calculateur pour transport en commun', en: 'Public Transport router'},
     url_time: 'http://localhost:9090',
-    options: {time: true, distance: false, avoid_zones: false, isochrone: true, isodistance: true})
+    options: {time: true, distance: false, avoid_zones: false, isochrone: true, isodistance: true, max_walk_distance: true})
 
 profile_all = Profile.create!(name: "All", layers: [mapnik_fr, mapnik, mapbox, stamen_bw, here_layer], routers: [car, car_urban, bicycle, pedestrian, truck, public_transport])
 

@@ -40,7 +40,8 @@ class VehicleTest < ActiveSupport::TestCase
         height: 5,
         width: 6,
         length: 30,
-        hazardous_goods: 'gas'
+        hazardous_goods: 'gas',
+        max_walk_distance: 200
     }
 
     vehicle.save!
@@ -73,6 +74,7 @@ class VehicleTest < ActiveSupport::TestCase
     assert vehicle.width, 6
     assert vehicle.length, 30
     assert vehicle.hazardous_goods, 'gas'
+    assert vehicle.max_walk_distance, 200
   end
 
   test 'should use default router options' do
@@ -80,7 +82,8 @@ class VehicleTest < ActiveSupport::TestCase
     customer.router_options = {
         motorway: true,
         trailers: 2,
-        weight: 10
+        weight: 10,
+        max_walk_distance: 200
     }
 
     vehicle = customer.vehicles.build(name: '3')
@@ -98,6 +101,7 @@ class VehicleTest < ActiveSupport::TestCase
     assert vehicle.default_router_options['weight_per_axle'], '3'
     assert vehicle.default_router_options['length'], '30'
     assert vehicle.default_router_options['hazardous_goods'], 'gas'
+    assert vehicle.default_router_options['max_walk_distance'], '200'
   end
 
   test 'should update out_of_date for capacity' do

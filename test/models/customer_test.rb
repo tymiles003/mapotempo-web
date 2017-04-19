@@ -193,7 +193,8 @@ class CustomerTest < ActiveSupport::TestCase
         height: 5,
         width: 6,
         length: 30,
-        hazardous_goods: 'gas'
+        hazardous_goods: 'gas',
+        max_walk_distance: 200
     }
 
     customer.save!
@@ -226,6 +227,7 @@ class CustomerTest < ActiveSupport::TestCase
     assert customer.width, 6
     assert customer.length, 30
     assert customer.hazardous_goods, 'gas'
+    assert customer.max_walk_distance, 200
   end
 
 

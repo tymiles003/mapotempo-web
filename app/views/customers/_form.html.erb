@@ -178,6 +178,20 @@
       </div>
     </div>
 
+    <div id="router_options_max_walk_distance_input" class="form-group <%= @customer.router.try(&:max_walk_distance?) ? '' : 'router-option-disabled' %>">
+      <label class="col-md-2 control-label" for="customer_router_options_max_walk_distance">
+        <%= t('activerecord.attributes.customer.router_options_max_walk_distance') %>
+      </label>
+
+      <div class="col-md-6">
+        <div class="input-group">
+          <%= number_field 'customer[router_options]', :max_walk_distance, value: @customer.router_options['max_walk_distance'], step: 'any', class: 'form-control' %>
+          <span class="input-group-addon"><%= t('all.unit.m') %></span>
+        </div>
+        <p class="help-block"><%=  t('customers.form.router_options_max_walk_distance_range', from: 0) %></p>
+      </div>
+    </div>
+
     <div class="form-group">
       <label class="col-md-2 control-label" for="speed_multiplicator">
         <%= t('activerecord.attributes.customer.speed_multiplicator') %>

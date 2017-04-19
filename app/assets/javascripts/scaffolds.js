@@ -305,6 +305,7 @@ var routerOptionsSelect = function(selectId, params) {
       var routerOptions = params.routers_options[routerId];
 
       if (routerId && routerOptions) {
+        // Truck
         checkInputFieldState($('#router_options_motorway_input'), routerOptions.motorway);
         checkInputFieldState($('#router_options_toll_input'), routerOptions.toll);
         checkInputFieldState($('#router_options_trailers_input'), routerOptions.trailers);
@@ -313,7 +314,10 @@ var routerOptionsSelect = function(selectId, params) {
         checkInputFieldState($('#router_options_height_input'), routerOptions.height);
         checkInputFieldState($('#router_options_width_input'), routerOptions.width);
         checkInputFieldState($('#router_options_length_input'), routerOptions.length);
-        checkSelectFieldState($('#router_options_hazardous_goods_input'), routerOptions.length);
+        checkSelectFieldState($('#router_options_hazardous_goods_input'), routerOptions.hazardous_goods);
+
+        // Public transport
+        checkInputFieldState($('#router_options_max_walk_distance_input'), routerOptions.max_walk_distance);
       }
     }
   };

@@ -143,6 +143,7 @@ en:
         router_options_width: Vehicle width
         router_options_length: Vehicle length
         router_options_hazardous_goods: Hazardous goods
+        router_options_max_walk_distance: Max walk distance
         print_planning_annotating: Include plan annotating
         print_header: Routes header
         print_stop_time: Include stop time
@@ -674,6 +675,7 @@ en:
       router_options_height_range: Height between %{from} and %{to} meters
       router_options_width_range: Width between %{from} and %{to} meters
       router_options_length_range: Length between %{from} and %{to} meters
+      router_options_max_walk_distance_range: Max walking distance before taking public transport
       take_over_help: Average time per account
       optimization_cluster_size_default: '%{n} (default value)'
       optimization_cluster_size_help: Value in seconds between points to group before
