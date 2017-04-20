@@ -155,7 +155,9 @@ class Route < ActiveRecord::Base
       stops_sort.each{ |stop|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
           stop.distance, stop.drive_time, trace = traces.shift
-          stop.no_path = trace.nil?
+          stop.no_path = (!traces[0].nil? && (!vehicle_usage.default_store_start || !vehicle_usage.default_store_start.position?)) ? false : trace.nil?
+          self.stop_no_path |= stop.no_path # Settled to true once
+
           if trace
             geojson_tracks << {
               type: 'Feature',

@@ -29,7 +29,7 @@ json.open_close2 stop.open2 || stop.close2
 (json.open2 l(stop.open2.utc, format: :hour_minute)) if stop.open2
 (json.close2 l(stop.close2.utc, format: :hour_minute)) if stop.close2
 (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
-(json.time l(stop.time.utc, format: :hour_minute)) if stop.time
+(json.time stop.time_time) if stop.time
 (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
 json.distance (stop.distance || 0) / 1000
 json.out_of_route_id stop.route.planning.routes.detect{ |route| !route.vehicle_usage }.id

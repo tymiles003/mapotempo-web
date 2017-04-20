@@ -2,7 +2,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
   def up
     add_column :routes, :geojson_tracks, :text
     add_column :routes, :geojson_points, :text
-    add_column :routes, :stop_no_path, :text
+    add_column :routes, :stop_no_path, :boolean
     add_column :stops, :no_path, :boolean
 
     Route.find_each{ |route|

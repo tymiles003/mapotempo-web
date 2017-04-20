@@ -98,5 +98,5 @@ json.routes @routes do |route|
   (json.route_out_of_capacity out_of_capacity) if out_of_capacity
   (json.route_out_of_drive_time out_of_drive_time) if out_of_drive_time
   (json.route_no_path no_path) if no_path
-  (json.route_error true) if no_geolocalization || out_of_window || out_of_capacity || out_of_drive_time
+  (json.route_error true) if no_geolocalization || out_of_window || out_of_capacity || out_of_drive_time || no_path
 end
