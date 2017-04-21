@@ -73,3 +73,73 @@ fr:
           help: "Permet d'envoyer les plannings vers les GPS Orange Fleet Performance"
         masternaut:
           help: "Permet d'envoyer les plannings vers les GPS Masternaut."
+  plannings:
+    edit:
+      teksat_send:
+        action: Envoyer à Teksat
+        success: Envoi vers Teksat terminé avec succès
+        fail: Échec lors de l'envoi vers Teksat
+      teksat_clear:
+        action: Vider Teksat
+        success: Les commandes Teksat ont été vidées avec succès
+        fail: Échec lors de la suppression des commandes Teksat
+      tomtom_orders:
+        action: Commandes vers TomTom
+        success: Envoi vers TomTom terminé avec succès
+        fail: Échec lors de l'envoi vers TomTom
+      tomtom_waypoints:
+        action: Points de passage vers TomTom
+        success: Envoi vers TomTom terminé avec succès
+        fail: Échec lors de l'envoi vers TomTom
+      tomtom_clear:
+        action: Vider TomTom
+        success: Les commandes TomTom ont été vidées avec succès
+        fail: Échec lors de la suppression des commandes TomTom
+      orange_send:
+        action: Envoyer à Orange Fleet Performance
+        success: Envoyé à Orange Fleet Performance avec succès
+        fail: Échec lors de l'envoi vers Orange Fleet Performance
+      orange_clear:
+        action: Vider Orange Fleet Performance
+        success: Les commandes Orange Fleet Performance ont été vidées avec succès
+        fail: Échec lors de la suppression des commandes Orange Fleet Performance
+      alyacom_send:
+        action: Envoyer à Alyacom
+        success: Envoyé à Alyacom avec succès
+        fail: Échec lors de l'envoi vers Alyacom
+      masternaut_send:
+        action: Envoyer à Masternaut
+        success: Envoyé à Masternaut avec succès
+        fail: Échec lors de l'envoi vers Masternaut
+      trimble_send:
+        action: Envoyer à Trimble
+        success: Envoyé à Trimble avec succès
+        fail: Échec lors de l'envoi vers Trimble
+      trimble_clear:
+        action: Vider Trimble
+        success: Trimble a été vidé avec succès
+        fail: Échec lors de la suppression de Trimble
+      locster_send:
+        action: Envoyer à Locster
+        success: Envoyé à Locster avec succès
+        fail: Échec lors de l'envoi vers Locster
+      suivi_de_flote_send:
+        action: Envoyer à SuiviDeFlote
+        success: Envoyé à SuiviDeFlote avec succès
+        fail: Échec lors de l'envoi vers SuiviDeFlote
+      dialog:
+        orange:
+          title: Orange Fleet Performance
+          in_progress: Veuillez patienter
+        teksat:
+          title: Teksat
+          in_progress: Veuillez patienter
+        tomtom:
+          title: TomTom
+          in_progress: Veuillez patienter
+        masternaut:
+          title: Masternaut
+          in_progress: Veuillez patienter
+        alyacom:
+          title: AlyaCom
+          in_progress: Veuillez patienter

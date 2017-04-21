@@ -1164,54 +1164,6 @@ fr:
       update_stops_status: 'Statuts arrêts :'
       customer_external_callback_url:
         action: Application externe
-      teksat_send:
-        action: Envoyer à Teksat
-        success: Envoi vers Teksat terminé avec succès
-        fail: Échec lors de l'envoi vers Teksat
-      teksat_clear:
-        action: Vider Teksat
-        success: Les commandes Teksat ont été vidées avec succès
-        fail: Échec lors de la suppression des commandes Teksat
-      tomtom_orders:
-        action: Commandes vers TomTom
-        success: Envoi vers TomTom terminé avec succès
-        fail: Échec lors de l'envoi vers TomTom
-      tomtom_waypoints:
-        action: Points de passage vers TomTom
-        success: Envoi vers TomTom terminé avec succès
-        fail: Échec lors de l'envoi vers TomTom
-      tomtom_clear:
-        action: Vider TomTom
-        success: Les commandes TomTom ont été vidées avec succès
-        fail: Échec lors de la suppression des commandes TomTom
-      orange_send:
-        action: Envoyer à Orange Fleet Performance
-        success: Envoyé à Orange Fleet Performance avec succès
-        fail: Échec lors de l'envoi vers Orange Fleet Performance
-      orange_clear:
-        action: Vider Orange Fleet Performance
-        success: Les commandes Orange Fleet Performance ont été vidées avec succès
-        fail: Échec lors de la suppression des commandes Orange Fleet Performance
-      alyacom_send:
-        action: Envoyer à Alyacom
-        success: Envoyé à Alyacom avec succès
-        fail: Échec lors de l'envoi vers Alyacom
-      masternaut_send:
-        action: Envoyer à Masternaut
-        success: Envoyé à Masternaut avec succès
-        fail: Échec lors de l'envoi vers Masternaut
-      trimble_send:
-        action: Envoyer à Trimble
-        success: Envoyé à Trimble avec succès
-        fail: Échec lors de l'envoi vers Trimble
-      locster_send:
-        action: Envoyer à Locster
-        success: Envoyé à Locster avec succès
-        fail: Échec lors de l'envoi vers Locster
-      suivi_de_flote_send:
-        action: Envoyer à SuiviDeFlote
-        success: Envoyé à SuiviDeFlote avec succès
-        fail: Échec lors de l'envoi vers SuiviDeFlote
       export:
         customer_external_callback_url:
           success: Application externe appelée avec succès
@@ -1332,21 +1284,6 @@ fr:
           inqueue: Tâche d'optimisation en file d'attente
           no_solution: Pas de solution trouvée pour votre problème
           error: Impossible d'effectuer le calcul.
-        orange:
-          title: Orange Fleet Performance
-          in_progress: Veuillez patienter
-        teksat:
-          title: Teksat
-          in_progress: Veuillez patienter
-        tomtom:
-          title: TomTom
-          in_progress: Veuillez patienter
-        masternaut:
-          title: Masternaut
-          in_progress: Veuillez patienter
-        alyacom:
-          title: AlyaCom
-          in_progress: Veuillez patienter
         zoning:
           title: Zonage
           in_progress: Application du nouveau zonage en cours, merci de patienter

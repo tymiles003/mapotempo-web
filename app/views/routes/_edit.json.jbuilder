@@ -23,11 +23,9 @@ if route.vehicle_usage
   json.vehicle_id route.vehicle_usage.vehicle.id
   json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
   # Devices
-  (json.teksat true) if !route.vehicle_usage.vehicle.devices[:teksat_id].blank? && route.planning.customer.device.configured?(:teksat)
-  (json.tomtom true) if !route.vehicle_usage.vehicle.devices[:tomtom_id].blank? && route.planning.customer.device.configured?(:tomtom)
-  (json.orange true) if !route.vehicle_usage.vehicle.devices[:orange_id].blank? && route.planning.customer.device.configured?(:orange)
-  (json.alyacom true) if route.planning.customer.device.configured?(:alyacom)
-  (json.masternaut true) if !route.vehicle_usage.vehicle.devices[:masternaut_ref].blank? && route.planning.customer.device.configured?(:masternaut)
+  route.planning.customer.device.configured_definitions.each do |key, definition|
+    json.set!(key, true) if !definition[:route_operations].empty? && (definition[:forms][:vehicle].keys.empty? || !definition[:forms][:vehicle].keys.any?{ |k| route.vehicle_usage.vehicle.devices[k].blank? })
+  end
   status_uniq = route.stops.map{ |stop|
       {
         code: stop.status.downcase,

@@ -73,3 +73,73 @@ en:
           help: "Allows sending plans to Orange Fleet Performance devices"
         masternaut:
           help: "Allows sending plans to Masternaut devices"
+  plannings:
+    edit:
+      teksat_send:
+        action: Send to Teksat
+        success: Sent to Teksat successfully
+        fail: Failed to send to Teksat
+      teksat_clear:
+        action: Clear Teksat
+        success: Teksat commands have been cleared successfully
+        fail: Failed to clear Teksat commands
+      tomtom_orders:
+        action: Send to TomTom as Orders
+        success: Sent to TomTom successfully
+        fail: Failed to send to TomTom
+      tomtom_waypoints:
+        action: Send to TomTom as Waypoints
+        success: Sent to TomTom successfully
+        fail: Failed to send to TomTom
+      tomtom_clear:
+        action: Clear TomTom
+        success: TomTom commands have been cleared successfully
+        fail: Failed to clear TomTom commands
+      orange_send:
+        action: Send to Orange Fleet Performance
+        success: Sent to Orange Fleet Performance Successfully
+        fail: Failed to send to Orange Fleet Performance
+      orange_clear:
+        action: Clear Orange Fleet Performance
+        success: Orange Fleet Performance commands have been cleared successfully
+        fail: Failed to clear Orange Fleet Performance commands
+      alyacom_send:
+        action: Send to Alyacom
+        success: Sent to Alyacom successfully
+        fail: Failed to send to Alyacom
+      masternaut_send:
+        action: Send to Masternaut
+        success: Sent to Masternaut successfully
+        fail: Failed to send to Masternaut
+      trimble_send:
+        action: Send to Trimble
+        success: Sent to Trimble successfully
+        fail: Failed to send to Trimble
+      trimble_clear:
+        action: Clear Trimble
+        success: Trimble trip has been cleared successfully
+        fail: Failed to clear Trimble
+      locster_send:
+        action: Send to Locster
+        success: Sent to Locster successfully
+        fail: Failed to send to Locster
+      suivi_de_flote_send:
+        action: Send to SuiviDeFlote
+        success: Sent to SuiviDeFlote successfully
+        fail: Failed to send to SuiviDeFlote
+      dialog:
+        orange:
+          title: Orange Fleet Performance
+          in_progress: Please wait
+        teksat:
+          title: Teksat
+          in_progress: Please wait
+        tomtom:
+          title: TomTom
+          in_progress: Please wait
+        masternaut:
+          title: Masternaut
+          in_progress: Please wait
+        alyacom:
+          title: AlyaCom
+          in_progress: Please wait

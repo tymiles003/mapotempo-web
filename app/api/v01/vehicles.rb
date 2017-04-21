@@ -109,69 +109,25 @@ class V01::Vehicles < Grape::API
       vehicles = customer.vehicles.find params[:ids]
       positions = []
       errors = []
-      # Suivi De Flotte
       begin
-        if customer.device.configured?(:suivi_de_flotte)
-          (SuiviDeFlotteService.new(customer: customer).get_vehicles_pos || []).each do |item|
-            vehicle_id = item.delete :suivi_de_flotte_vehicle_id
-            vehicle = vehicles.detect{ |v| v.devices[:suivi_de_flotte_id] == vehicle_id }
-            next if !vehicle
-            positions << item.merge(vehicle_id: vehicle.id)
+        Mapotempo::Application.config.devices.to_h.each{ |key, device|
+          if customer.device.configured?(key)
+            options = {customer: customer}
+            if key == :teksat
+              teksat_authenticate customer # Required to set a session variable needed for teksat Api
+              options[:ticket_id] = session[:teksat_ticket_id]
+            end
+            service = Object.const_get(device.class.name + 'Service').new(options)
+            if service.respond_to? :get_vehicles_pos
+              (service.get_vehicles_pos || []).each do |item|
+                vehicle_id = item.delete "#{key}_vehicle_id".to_sym
+                vehicle = vehicles.detect{ |v| v.devices[device.definition[:forms][:vehicle].keys.first] == vehicle_id }
+                next if !vehicle
+                positions << item.merge(vehicle_id: vehicle.id)
+              end
+            end
           end
-        end
-      rescue DeviceServiceError => e
-        errors << e.message
-      end
-      # Masternaut
-      begin
-        if customer.device.configured?(:masternaut)
-          (MasternautService.new(customer: customer).get_vehicles_pos || []).each do |item|
-            vehicle_id = item.delete :masternaut_vehicle_id
-            vehicle = vehicles.detect{ |v| v.devices[:masternaut_ref] == vehicle_id }
-            next if !vehicle
-            positions << item.merge(vehicle_id: vehicle.id)
-          end
-        end
-      rescue DeviceServiceError => e
-        errors << e.message
-      end
-      # Orange
-      begin
-        if customer.device.configured?(:orange)
-          (OrangeService.new(customer: customer).get_vehicles_pos || []).each do |item|
-            vehicle_id = item.delete :orange_vehicle_id
-            vehicle = vehicles.detect{ |v| v.devices[:orange_id] == vehicle_id }
-            next if !vehicle
-            positions << item.merge(vehicle_id: vehicle.id)
-          end
-        end
-      rescue DeviceServiceError => e
-        errors << e.message
-      end
-      # Teksat
-      begin
-        if customer.device.configured?(:teksat)
-          teksat_authenticate customer # Required to set a session variable needed for teksat Api
-          (TeksatService.new(customer: customer, ticket_id: session[:teksat_ticket_id]).get_vehicles_pos || []).each do |item|
-            vehicle_id = item.delete :teksat_vehicle_id
-            vehicle = vehicles.detect{ |v| v.devices[:teksat_id] == vehicle_id }
-            next if !vehicle
-            positions << item.merge(vehicle_id: vehicle.id)
-          end
-        end
-      rescue DeviceServiceError => e
-        errors << e.message
-      end
-      # TomTom
-      begin
-        if customer.device.configured?(:tomtom)
-          (TomtomService.new(customer: customer).get_vehicles_pos || []).each do |item|
-            vehicle_id = item.delete :tomtom_vehicle_id
-            vehicle = vehicles.detect{ |v| v.devices[:tomtom_id] == vehicle_id }
-            next if !vehicle
-            positions << item.merge(vehicle_id: vehicle.id)
-          end
-        end
+        }
       rescue DeviceServiceError => e
         errors << e.message
       end
