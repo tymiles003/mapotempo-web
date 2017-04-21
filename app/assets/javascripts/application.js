@@ -36,10 +36,12 @@
 //= require bootstrap-wysihtml5
 //= require bootstrap-wysihtml5/locales/fr-FR.js
 //= require bootstrap-wysihtml5/locales/en-US.js
+// require bootstrap-wysihtml5/locales/he-.js // Not available, yet
 //= require bootstrap-datepicker/core.js
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.fr.js
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.fr-CH.js
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.en-GB.js
+// require bootstrap-datepicker/locales/bootstrap-datepicker.he.js // Not available, yet
 //= require jquery-ui/sortable
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog
@@ -69,6 +71,7 @@
 //= require select2
 //= require select2_locale_fr
 //= require select2_locale_en
+//= require select2_locale_he
 //= require bootstrap-select
 //= require_tree ../../templates
 //= require paloma
