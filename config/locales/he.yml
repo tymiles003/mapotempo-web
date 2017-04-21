@@ -793,7 +793,7 @@ he:
         street: "רחוב"
         intersection: "הצטלבות"
         city: "עיר"
-        null: "ללא"
+        "null": "ללא"
       tags_help: "קטגוריות יעד"
       dialog:
         confirm_overwrite_point: "המיקום הוגדר באופן ידני. עקוף עם תוצאות קידוד גיאוגרפי?"
