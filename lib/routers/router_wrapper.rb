@@ -47,7 +47,7 @@ module Routers
         nocache_segments.each_slice(50){ |slice_segments|
           resource = RestClient::Resource.new(url + '/0.1/routes.json', timeout: nil)
           request = resource.post(params(mode, dimension, options).merge({
-              locs: slice_segments.collect{ |segment| segment.join(',') }.join(';')
+              locs: slice_segments.collect{ |segment| segment.join(',') }.join('|')
           })) { |response, request, result, &block|
             case response.code
             when 200
@@ -188,8 +188,8 @@ module Routers
         mode: mode,
         dimension: dimension,
         speed_multiplicator: options[:speed_multiplicator] == 1 ? nil : options[:speed_multiplicator],
-        area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join(';') : nil,
-        speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join(';') : nil,
+        area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:area].join(',') }.join('|') : nil,
+        speed_multiplicator_area: options[:speed_multiplicator_areas] ? options[:speed_multiplicator_areas].collect{ |a| a[:speed_multiplicator_area] }.join('|') : nil,
         motorway: options[:motorway],
         toll: options[:toll],
         trailers: options[:trailers],
