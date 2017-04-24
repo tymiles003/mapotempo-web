@@ -340,7 +340,8 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.6)
-    leaflet-rails (1.0.2)
+    leaflet-rails (1.0.3)
+      rails (>= 4.2.0)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (2.8.0)
@@ -668,7 +669,7 @@ DEPENDENCIES
   leaflet-hash-rails!
   leaflet-markercluster-rails!
   leaflet-pattern-rails!
-  leaflet-rails
+  leaflet-rails (> 1.0.2)
   leaflet_numbered_markers-rails!
   libnotify
   lograge

@@ -123,7 +123,7 @@ gem 'rails_12factor', group: :production
 
 gem 'sprockets'
 
-gem 'leaflet-rails'
+gem 'leaflet-rails', '> 1.0.2'
 gem 'leaflet-markercluster-rails', github: 'Mapotempo/leaflet-markercluster-rails' # FIXME wait for https://github.com/scpike/leaflet-markercluster-rails/pull/8
 gem 'leaflet-draw-rails', github: 'frodrigo/leaflet-draw-rails' # FIXME wait for https://github.com/zentrification/leaflet-draw-rails/pull/1
 gem 'leaflet_numbered_markers-rails', github: 'frodrigo/leaflet_numbered_markers-rails'
