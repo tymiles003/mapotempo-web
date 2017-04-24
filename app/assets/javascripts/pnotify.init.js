@@ -59,12 +59,16 @@ var isWindowVisible = (function() {
       }, options));
     };
 
+    var notifyDisplayed = false;
     if (isWindowVisible()) {
       notification();
     } else {
       isWindowVisible(function() {
         if (isWindowVisible()) {
-          notification();
+          if (!notifyDisplayed) {
+            notification();
+          }
+          notifyDisplayed = true;
         }
       });
     }
