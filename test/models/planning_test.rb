@@ -557,36 +557,57 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal o.routes.map{ |r| r.stops.size }.reduce(&:+), optim.flatten.size
   end
 
+  test 'should return all or only active stops after optimization' do
+    planning = plannings(:planning_one)
+    inactive_stop = planning.routes.third.stops.second
+    inactive_stop.update_attribute(:active, false)
+
+    active_optim = planning.optimize(planning.routes, false, false) { |*a|
+      optimizer_global(*a)
+    }
+    planning.set_stops(planning.routes, active_optim)
+    active_stops = planning.routes.third.stops.map(&:id)
+
+    all_optim = planning.optimize(planning.routes, false, true) { |*a|
+      optimizer_global(*a)
+    }
+    planning.set_stops(planning.routes, all_optim, true)
+    all_stops = planning.routes.third.stops.map(&:id)
+
+    assert_equal active_stops.size, all_stops.size
+    assert_not_equal active_stops, all_stops
+  end
+
   test 'should set stops for one route' do
-    o = routes(:route_one_one)
-    original_order = o.stops.map(&:id)
-    o.planning.set_stops([o], [original_order.reverse])
-    assert_equal original_order.reverse, o.stops.map(&:id)
-    o.planning.save!
-    o.reload
-    assert_equal original_order.reverse, o.stops.map(&:id)
+    route = routes(:route_one_one)
+    original_order = route.stops.map(&:id)
+    route.planning.set_stops([route], [original_order.reverse])
+    assert_equal original_order.reverse, route.stops.map(&:id)
+    route.planning.save!
+    route.reload
+    assert_equal original_order.reverse, route.stops.map(&:id)
   end
 
   test 'should set stops for planning' do
-    o = plannings(:planning_one)
-    optim = o.optimize(o.routes, true) { |*a|
+    planning = plannings(:planning_one)
+    optim = planning.optimize(planning.routes, true) { |*a|
       optimizer_global(*a)
     }
-    o.set_stops(o.routes, optim)
-    assert_equal optim, o.routes.map{ |r| r.stops.map(&:id) }
-    o.save!
-    o.reload
-    assert_equal optim, o.routes.map{ |r| r.stops.map(&:id) }
+    planning.set_stops(planning.routes, optim)
+    assert_equal optim, planning.routes.map{ |r| r.stops.map(&:id) }
+    planning.save!
+    planning.reload
+    assert_equal optim, planning.routes.map{ |r| r.stops.map(&:id) }
   end
 
   test 'should set stops with a geoloc rest in unassigned' do
-    o = plannings(:planning_one)
-    unassigned = o.routes.flat_map{ |r| r.stops.map(&:id) }
-    o.set_stops(o.routes, [unassigned] + [[]] * (o.routes.size - 1))
-    assert o.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == o.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
-    o.save!
-    o.reload
-    assert o.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == o.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
+    planning = plannings(:planning_one)
+    unassigned = planning.routes.flat_map{ |r| r.stops.map(&:id) }
+    planning.set_stops(planning.routes, [unassigned] + [[]] * (planning.routes.size - 1))
+    assert planning.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == planning.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
+    planning.save!
+    planning.reload
+    assert planning.routes.flat_map{ |r| r.stops.select{ |s| s.is_a? StopRest }.map{ |s| s.route.vehicle_usage_id } }.compact.size == planning.vehicle_usage_set.vehicle_usages.map(&:default_rest_duration?).size
   end
 
   require Rails.root.join('test/lib/devices/tomtom_base')

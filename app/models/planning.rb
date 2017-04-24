@@ -295,9 +295,9 @@ class Planning < ActiveRecord::Base
     self.date = order_array.base_date + shift
   end
 
-  def optimize(routes, global, &optimizer)
+  def optimize(routes, global, all_stops = false, &optimizer)
     routes_with_vehicle = routes.select{ |r| r.vehicle_usage }
-    stops_on = (routes.find{ |r| !r.vehicle_usage }.try(:stops) || []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate[true] }.compact
+    stops_on = (routes.find{ |r| !r.vehicle_usage }.try(:stops) || []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate(all_stops)[true] }.compact
     o = amalgamate_stops_same_position(stops_on, global) { |positions|
 
       services_and_rests = positions.collect{ |position|
@@ -305,7 +305,7 @@ class Planning < ActiveRecord::Base
         {stop_id: stop_id, start1: open1, end1: close1, start2: open2, end2: close2, duration: duration, vehicle_id: vehicle_id, quantities: quantities}
       }
 
-      unnil_positions(positions, services_and_rests){ |positions, services, rests|
+      unnil_positions(positions, services_and_rests) { |positions, services, rests|
         positions = positions.collect{ |position| position[0..1] }
         vehicles = routes_with_vehicle.collect{ |r|
           position_start = r.vehicle_usage.default_store_start.try(&:position?) ? [r.vehicle_usage.default_store_start.lat, r.vehicle_usage.default_store_start.lng] : nil
@@ -343,7 +343,7 @@ class Planning < ActiveRecord::Base
       }
     }
     routes_with_vehicle.each_with_index{ |r, i|
-      if o[routes.find{ |r| !r.vehicle_usage } ? i + 1 : i].size > 0
+      if o[routes.find{ |route| !route.vehicle_usage } ? i + 1 : i].size > 0
         r.optimized_at = Time.now.utc
         r.last_sent_to = r.last_sent_at = nil
       elsif global
@@ -353,7 +353,7 @@ class Planning < ActiveRecord::Base
     o
   end
 
-  def set_stops(routes, stop_ids)
+  def set_stops(routes, stop_ids, all_stops = false)
     raise 'Invalid routes count' unless routes.size == stop_ids.size
     Route.transaction do
       stops_count = routes.collect{ |r| r.stops.size }.reduce(&:+)
@@ -386,7 +386,7 @@ class Planning < ActiveRecord::Base
         if route.vehicle_usage
           ((stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : [])).each{ |stop|
             stop.active = false
-            stop.index = i += 1
+            stop.index = i += 1 unless all_stops
           }
         end
       }

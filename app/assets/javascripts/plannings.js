@@ -720,14 +720,14 @@ var plannings_edit = function(params) {
     notice(I18n.t('plannings.edit.optimize_complete'));
   };
 
-  $("#optimize_each, #optimize_global").click(function(event, ui) {
-    if (!confirm(I18n.t($(this).data('opti-global') ? 'plannings.edit.optimize_global_confirm' : 'plannings.edit.optimize_each_confirm'))) {
+  $("#optimize_each_all, #optimize_global_all, #optimize_each_actives, #optimize_global_actives").click(function(event, ui) {
+    if (!confirm(I18n.t($(this).data('opti-global') ? 'plannings.edit.optimize_global.confirm' : 'plannings.edit.optimize_each.confirm'))) {
       return false;
     }
     $.ajax({
       type: "get",
       url: '/plannings/' + planning_id + '/optimize.json',
-      data: { 'global': $(this).data('opti-global') },
+      data: { 'global': $(this).data('opti-global'), 'all_stops': $(this).data('opti-all') },
       beforeSend: beforeSendWaiting,
       success: function(data) {
         displayPlanning(data, {
@@ -1148,6 +1148,7 @@ var plannings_edit = function(params) {
         $.ajax({
           type: "get",
           url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
+          data: { 'all_stops': $(this).data('opti-all') },
           beforeSend: beforeSendWaiting,
           success: function(data) {
             updatePlanning(data, {

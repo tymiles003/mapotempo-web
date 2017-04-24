@@ -358,13 +358,13 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 
-  test 'should optimize route' do
+  test 'should optimize one route in planning' do
     get :optimize_route, planning_id: @planning, format: :json, route_id: routes(:route_one_one).id
     assert_response :success
     assert_equal 1, JSON.parse(response.body)['routes'].size
   end
 
-  test 'should optimize planning' do
+  test 'should optimize all routes in planning' do
     get :optimize, planning_id: @planning, format: :json, global: true
     assert_response :success
     assert_equal @planning.routes.size, JSON.parse(response.body)['routes'].size

@@ -209,6 +209,18 @@ $sidebar-margins: 10px;
         vertical-align: bottom;
       }
 
+      .dropdown-white {
+        color: #fff;
+      }
+
+      .dropdown-title {
+        font-style: italic;
+        font-size: 15px;
+        color: #787878;
+        margin-left: 10px;
+        margin-bottom: 5px;
+      }
+
       .dropdown-menu li.link {
         padding-left: 20px;
         cursor: pointer;

@@ -1092,19 +1092,26 @@ fr:
       zoning_new: Créer un nouveau zonage depuis ce planning
       zoning_edit: Modifier ce zonage depuis ce planning
       last_sent_to: Envoi
-      optimized_at: Optimisé
-      optimize_global_help: Optimiser le planning dans son ensemble excepté les tournées
-        verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
-      optimize_each_help: Optimiser les tournées non verrouillées du planning une
-        à une (vos arrêts resteront dans chaque tournée initiale)
       title: Modifier planning
       stops: arrêts
-      optimize_global: Optimiser l'ensemble
-      optimize_global_confirm: Optimiser l'ensemble du planning ? (vos arrêts pourront
-        être attribués à une autre tournée qu'actuellement)
-      optimize_each: Optimiser chaque tournée
-      optimize_each_confirm: Lancer un calcul d'optimisation pour chacune des tournées ?
-        (vos arrêts resteront dans chaque tournée initiale)
+      optimized_at: Optimisé
+      optimize_global:
+        title: Optimisation globale
+        all_help: Optimiser les tournées (pour tous les arrêts) non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        active_help: Optimiser les tournées (uniquement pour les arrêts actifs) non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        all_stops: Tous les arrêts
+        active_stops: Uniquement les arrêts actifs
+        confirm: Optimiser l'ensemble du planning ? (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
+      optimize_each:
+        title: Optimisation de chaque tournée
+        all_help: Optimiser les tournées (pour tous les arrêts) non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        active_help: Optimiser les tournées (uniquement pour les arrêts actifs) non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        all_stops: Tous les arrêts
+        active_stops: Uniquement les arrêts actifs
+        confirm: Lancer un calcul d'optimisation pour chacune des tournées ? (vos arrêts resteront dans chaque tournée initiale)
+      optimize_all: Optimiser toute la tournée
+      optimize_actives: Optimiser les arrêts actifs
+      optimize_help: Optimiser la tournée
       optimize_confirm: Lancer un calcul d'optimisation ?
       optimize_complete: Optimisation terminée
       optimize_failed: Échec lors de l'optimisation
@@ -1222,7 +1229,6 @@ fr:
         sur le planning
       locked_help: Verrouille la tournée pour les opérations globales sur le planning
       vehicle_help: Paramétrer le véhicule
-      optimize_help: Optimiser la tournée
       export_help: Exporter la tournée
       route_stops_active_help: Sélectionner les arrêts actifs
       route_duration_help: Durée de la tournée / Créneau horaire véhicule

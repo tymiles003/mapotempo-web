@@ -26,7 +26,16 @@
         {{#manage_vehicle}}
         <a href="{{path}}" class="btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.vehicle_help{{/i18n}}"><i class="fa fa-truck"></i></a>
         {{/manage_vehicle}}
-        <button type="button" class="optimize btn btn-primary btn-xs" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"{{#locked}}disabled="disabled"{{/locked}}><i class="fa fa-gear"></i></button>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary btn-xs dropdown-toggle dropdown-white" data-toggle="dropdown" title="{{#i18n}}plannings.edit.optimize_help{{/i18n}}"{{#locked}}disabled="disabled"{{/locked}}><i class="fa fa-gear"></i><span class="caret"></span></button>
+          <ul class="dropdown-menu pull-right" role="menu">
+            <li><a class="optimize" href="#" data-opti-all="true">{{#i18n}}plannings.edit.optimize_all{{/i18n}}</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a class="optimize" href="#">{{#i18n}}plannings.edit.optimize_actives{{/i18n}}</a></li>
+          </ul>
+        </div>
+
         <button type="button" class="toggle btn btn-default btn-xs" title="{{#i18n}}plannings.edit.toggle_help{{/i18n}}"><i class="fa fa-eye{{#hidden}}-slash{{/hidden}}"></i></button>
         <button type="button" class="lock btn {{^locked}}btn-default{{/locked}}{{#locked}}btn-warning{{/locked}} btn-xs" title="{{#i18n}}plannings.edit.locked_help{{/i18n}}"><i class="fa fa-{{^locked}}un{{/locked}}lock"></i></button>
         {{#manage_export}}

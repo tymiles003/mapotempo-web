@@ -1,28 +1,47 @@
-<% if @planning.customer.enable_global_optimization? %>
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t 'plannings.edit.optimize_each' %>">
-      <i class="fa fa-gears"></i>
-      <span class="caret"></span>
-    </button>
-    <ul id="toggle_optimization_dropdown" class="dropdown-menu" style="right: -35px; left: auto;" role="menu">
-      <li id="optimize_each" data-opti-global="false">
-        <a class="active_reverse" href="#" title="<%= t 'plannings.edit.optimize_each_help' %>">
+<div class="btn-group">
+  <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+    <i class="fa fa-gears"></i>
+    <span class="caret"></span>
+  </button>
+
+  <ul id="toggle_optimization_dropdown" class="dropdown-menu" style="right: -60px; left: auto;" role="menu">
+    <% if @planning.customer.enable_global_optimization? %>
+      <li class="dropdown-title">
+        <%= t 'plannings.edit.optimize_global.title' %>
+      </li>
+
+      <li id="optimize_global_all" data-opti-global="true" data-opti-all="true">
+        <a class="active_reverse" href="#" title="<%= t 'plannings.edit.optimize_global.all_help' %>">
           <i class="fa fa-gears fa-fw"></i>
-          <%= t 'plannings.edit.optimize_each' %>
+          <%= t 'plannings.edit.optimize_global.all_stops' %>
         </a>
       </li>
-      <li id="optimize_global" data-opti-global="true">
-        <a class="active_none" href="#" title="<%= t 'plannings.edit.optimize_global_help' %>">
+
+      <li id="optimize_global_actives" data-opti-global="true">
+        <a class="active_none" href="#" title="<%= t 'plannings.edit.optimize_global.active_help' %>">
           <i class="fa fa-gears fa-fw"></i>
-          <%= t 'plannings.edit.optimize_global' %>
+          <%= t 'plannings.edit.optimize_global.active_stops' %>
         </a>
       </li>
-    </ul>
-  </div>
-<% else %> 
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" title="<%= t 'plannings.edit.optimize_each' %>" id="optimize_each" data-opti="true">
-      <i class="fa fa-gears"></i>
-    </button>
-  </div>
-<% end %>
+
+      <li role="separator" class="divider"></li>
+    <% end %>
+
+    <li class="dropdown-title">
+      <%= t 'plannings.edit.optimize_each.title' %>
+    </li>
+
+    <li id="optimize_each_all" data-opti-global="false" data-opti-all="true">
+      <a class="active_reverse" href="#" title="<%= t 'plannings.edit.optimize_each.all_help' %>">
+        <i class="fa fa-gears fa-fw"></i>
+        <%= t 'plannings.edit.optimize_each.all_stops' %>
+      </a>
+    </li>
+    <li id="optimize_each_actives" data-opti-global="false">
+      <a class="active_reverse" href="#" title="<%= t 'plannings.edit.optimize_each.active_help' %>">
+        <i class="fa fa-gears fa-fw"></i>
+        <%= t 'plannings.edit.optimize_each.active_stops' %>
+      </a>
+    </li>
+  </ul>
+</div>

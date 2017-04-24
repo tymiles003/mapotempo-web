@@ -433,8 +433,8 @@ class Route < ActiveRecord::Base
     }
   end
 
-  def stops_segregate
-    stops.group_by{ |stop| !!(stop.active && (stop.position? || stop.is_a?(StopRest))) }
+  def stops_segregate(all_stops = false)
+    stops.group_by{ |stop| (all_stops ? true : stop.active) && (stop.position? || stop.is_a?(StopRest))}
   end
 
   def out_of_date
