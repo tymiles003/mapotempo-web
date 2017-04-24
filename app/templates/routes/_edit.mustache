@@ -110,6 +110,17 @@
               </li>
               <li role="separator" class="divider"></li>
             {{/alyacom}}
+            {{#trimble}}
+              <li class="link device-operation" data-service="trimble" data-operation="send" data-route-id="{{route_id}}">
+                  <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                  {{#i18n}}plannings.edit.trimble_send.action{{/i18n}}
+              </li>
+              <li class="link device-operation" data-service="trimble" data-operation="clear" data-route-id="{{route_id}}">
+                  <i class="fa fa-mobile fa-rotate-90 fa-fw"></i>
+                  {{#i18n}}plannings.edit.trimble_clear.action{{/i18n}}
+              </li>
+              <li role="separator" class="divider"></li>
+            {{/trimble}}
             <li><a href="/routes/{{route_id}}"><i class="fa fa-print fa-fw"></i> {{#i18n}}plannings.edit.export.print{{/i18n}}</a></li>
             <li role="separator" class="divider"></li>
             <li><a class="export_spreadsheet"><i class="fa fa-table fa-fw"></i> {{#i18n}}plannings.edit.export.spreadsheet{{/i18n}}</a></li>

@@ -143,3 +143,6 @@ en:
         alyacom:
           title: AlyaCom
           in_progress: Please wait
+        trimble:
+          title: Trimble
+          in_progress: Please wait

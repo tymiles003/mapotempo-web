@@ -145,7 +145,7 @@ Rails.application.configure do
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
   config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.30'
   config.devices.tomtom.api_key = nil
-  config.devices.trimble.api_url = 'https://soap.box.trimbletl.com/jboss-net/services'
+  config.devices.trimble.api_url = 'https://soap.box.trimbletl.com/fleet-service/'
   config.devices.suivi_de_flotte.api_url = 'https://webservice.suivideflotte.net/service/'
   config.devices.cache_object = cache_factory('devices', 30)
 
