@@ -67,7 +67,7 @@ en:
           help: "Allows sending plans to AlyaCom application"
         tomtom:
           help: "Allows sending plans to TomTom Pro with WEBFLEET."
-          teksat:
+        teksat:
           help: "Allows sending plans to Teksat devices"
         orange:
           help: "Allows sending plans to Orange Fleet Performance devices"
