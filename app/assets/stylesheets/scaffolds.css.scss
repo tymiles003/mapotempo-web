@@ -52,6 +52,13 @@ body {
   }
 }
 
+// Ultra minimal support of languages written from right to left
+body:lang(he), body:lang(ar) {
+  input, select {
+    direction: rtl;
+  }
+}
+
 div {
   &.field, &.actions {
     margin-bottom: 10px;
