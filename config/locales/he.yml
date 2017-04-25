@@ -1,1802 +1,1822 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 he:
   distance:
     unit:
-      one: "מטר"
-      other: "מטר"
+      one: מטר
+      other: מטר
     thousand:
-      one: "ק\"מ"
-      other: "ק\"מ"
+      one: ק"מ
+      other: ק"מ
   distance_miles:
     unit:
-      one: "מייל"
-      other: "מייל"
+      one: מייל
+      other: מייל
     thousand:
-      one: "מייל"
-      other: "מייל"
+      one: מייל
+      other: מייל
   time:
-    hour: "שעות"
-    minute: "דקות"
+    hour: שעות
+    minute: דקות
     formats:
-      default: "%B %d, %Y (%H:%M:%S)"
-      long: "%A %d %B %Y %H:%M"
-      short: "%d %b %H:%M"
-      hour_minute: "%H:%M"
-      hour_minute_second: "%H:%M:%S"
-      complete: "%m-%d-%Y %H:%M:%S"
-      date: "%Y-%m-%d"
-      datepicker: "%m-%d-%Y"
-  default_time_zone: "לונדון"
-
+      default: '%B %d, %Y (%H:%M:%S)'
+      long: '%A %d %B %Y %H:%M'
+      short: '%d %b %H:%M'
+      hour_minute: '%H:%M'
+      hour_minute_second: '%H:%M:%S'
+      complete: '%m-%d-%Y %H:%M:%S'
+      date: '%Y-%m-%d'
+      datepicker: '%m-%d-%Y'
+  default_time_zone: לונדון
   activemodel:
     models:
-      import_csv: "CSV יבוא"
+      import_csv: CSV יבוא
       import_csvs:
-        one: "CSV יבוא"
-        other: "CSV יבוא"
-      import_tomtom: "יבוא TomTom"
+        one: CSV יבוא
+        other: CSV יבוא
+      import_tomtom: יבוא TomTom
       import_tomtoms:
-        one: "יבוא TomTom"
-        other: "Imports TomTom"
+        one: יבוא TomTom
+        other: Imports TomTom
     attributes:
       import_csv:
-        file: "קובץ"
-        replace: "החלף"
-        delete_plannings: "מחק תיכנון קודם"
+        file: קובץ
+        replace: החלף
+        delete_plannings: מחק תיכנון קודם
       import_tomtom:
-        replace: "החלף"
-
+        replace: החלף
   activerecord:
     models:
-      customer: "כרטיס לקוח"
+      customer: כרטיס לקוח
       customers:
-        one: "כרטיס לקוח"
-        other: "כרטיס לקוח"
-      deliverable_unit: "יחידות לשילוח"
+        one: כרטיס לקוח
+        other: כרטיס לקוח
+      deliverable_unit: יחידות לשילוח
       deliverable_units:
-        one: "יחידות לשילוח"
-        other: "יחידות לשילוח"
-      destination: "יעד"
+        one: יחידות לשילוח
+        other: יחידות לשילוח
+      destination: יעד
       destinations:
-        one: "יעד"
-        other: "יעד"
-      layer: "מפה בסיסית"
+        one: יעד
+        other: יעד
+      layer: מפה בסיסית
       layers:
-        one: "מפה בסיסית"
-        other: "מפות בסיס"
-      order: "הזמנה"
+        one: מפה בסיסית
+        other: מפות בסיס
+      order: הזמנה
       orders:
-        one: "הזמנה"
-        other: "הזמנות"
-      order_array: "תוכנית ברזל"
+        one: הזמנה
+        other: הזמנות
+      order_array: תוכנית ברזל
       order_arrays:
-        one: "תוכנית ברזל"
-        other: "תיכנון הזמנות"
-      planning: "תיכנון"
+        one: תוכנית ברזל
+        other: תיכנון הזמנות
+      planning: תיכנון
       plannings:
-        one: "תיכנון"
-        other: "תוכניות"
-      product: "מוצר"
+        one: תיכנון
+        other: תוכניות
+      product: מוצר
       products:
-        one: "מוצר"
-        other: "מוצרים"
-      profile: "פרופיל"
+        one: מוצר
+        other: מוצרים
+      profile: פרופיל
       profiles:
-        one: "פרופיל"
-        other: "פרופילים"
-      reseller: "מוכרנים"
-      resellers: "מוכרנים"
-      route: "מסלול"
+        one: פרופיל
+        other: פרופילים
+      reseller: מוכרנים
+      resellers: מוכרנים
+      route: מסלול
       routes:
-        one: "ניתוב"
-        other: "ניתובים"
-      stop: "עצירה"
+        one: ניתוב
+        other: ניתובים
+      stop: עצירה
       stops:
-        one: "עצירה"
-        other: "עצירות"
-      store: "מחסן"
+        one: עצירה
+        other: עצירות
+      store: מחסן
       stores:
-        one: "מחסן"
-        other: "מחסנים"
-      tag: "תג"
+        one: מחסן
+        other: מחסנים
+      tag: תג
       tags:
-        one: "תג"
-        other: "תגים"
-      user: "משתמש"
+        one: תג
+        other: תגים
+      user: משתמש
       users:
-        one: "משתמש"
-        other: "משתמשים"
-      vehicle: "רכב"
+        one: משתמש
+        other: משתמשים
+      vehicle: רכב
       vehicles:
-        one: "רכב"
-        other: "רכבים"
-      vehicle_usage: "הגדרות לרכבים"
+        one: רכב
+        other: רכבים
+      vehicle_usage: הגדרות לרכבים
       vehicle_usages:
-        one: "הגדרות לרכבים"
-        other: "הגדרות לרכבים"
-      vehicle_usage_set: "הגדרות בסיסיות לרכבים"
+        one: הגדרות לרכבים
+        other: הגדרות לרכבים
+      vehicle_usage_set: הגדרות בסיסיות לרכבים
       vehicle_usage_sets:
-        one: "הגדרות בסיסיות לרכבים"
-        other: "הגדרות בסיסיות לרכבים"
-      visit: "עצירה"
+        one: הגדרות בסיסיות לרכבים
+        other: הגדרות בסיסיות לרכבים
+      visit: עצירה
       visits:
-        one: "עצירה"
-        other: "עצירות"
-      zoning: "איזור"
+        one: עצירה
+        other: עצירות
+      zoning: איזור
       zonings:
-        one: "איזור"
-        other: "איזורים"
+        one: איזור
+        other: איזורים
     attributes:
       customer:
-        enable_external_callback: "הפעל כתובת אתר"
-        end_subscription: "End subscription"
-        max_vehicles: "מקסימום רכבים"
-        take_over: "משך השהייה"
-        name: "שם"
-        destinations: "יעדים"
-        enable_tomtom: "Enable TomTom WEBFLEET"
-        enable_masternaut: "Enable Masternaut"
-        enable_alyacom: "Enable Alyacom"
-        enable_teksat: "Enable Teksat"
-        enable_orange_fleet: "Enable Orange Fleet Performance"
-        orange_user: "Orange משתמש"
-        orange_password: "Orange סיסמת"
-        teksat_customer_id: "Teksat לקוח ID"
-        teksat_username: "Teksat משתמש"
-        teksat_password: "Teksat סיסמת"
-        teksat_url: "Teksat URL"
-        tomtom_account: "WEBFLEET שם חשבון"
-        tomtom_user: "WEBFLEET שם משתמש"
-        tomtom_password: "WEBFLEET סיסמת"
-        masternaut_user: "שם משתמש"
-        masternaut_password: "סיסמה"
-        alyacom_association: "AlyaCom מזהה"
-        alyacom_api_key: "AlyaCom API מפתח"
-        router: "מנגנון חישוב"
-        router_id: "מנגנון חישוב"
-        router_dimension: "Router objective"
-        router_options_motorway: "כביש מהיר"
-        router_options_toll: "אישור סעיפי אגרה"
-        router_options_trailers: "מספר נגררים לטריילר"
-        router_options_weight: "משקל עצמי"
-        router_options_weight_per_axle: "משקל לכל סרן"
-        router_options_height: "גובה הרכב"
-        router_options_width: "רוחב הרכב"
-        router_options_length: "אורך הרכב"
-        router_options_hazardous_goods: "חומרים מסוכנים"
-        print_planning_annotating: "הכנס הערות לתיכנון"
-        print_header: "כותרות ניתובים"
-        print_stop_time: "כלול זמן עצירות"
-        print_map: "כלול מפה"
-        stores: "מחסנים"
-        enable_orders: "הפעל הזמנות"
-        enable_multi_vehicle_usage_sets: "אפשר הגדרות לריבוי רכבים"
-        enable_references: "הצג הפניות"
-        enable_multi_visits: "אפשר ריבוי עצירות ליעד אחד"
-        enable_global_optimization: "הפעל אופטימיזציה גלובאלית"
-        test: "ניסיון"
-        jobs: "משימה"
-        optimization_cluster_size: "גודל אשכול האופטימיזציה"
-        optimization_time: "אופטימיזציה לפי מקסימום זמן"
-        optimization_stop_soft_upper_bound: "מקדם עיכוב לעצירות"
-        optimization_vehicle_soft_upper_bound: "מקדם עיכוב לרכבים"
-        cost_waiting_time: "מקדם זמן המתנה"
-        profile: "פרופיל"
-        profile_id: "פרופיל"
-        speed_multiplicator: "מכפיל מהירות"
-        default_country: "ארץ ברירת מחדל"
-        ref: "הפניה"
-        ref_help: "הפניה חייבת להיות אחידה"
-        description_title: "תיאור"
-        description_label: "מידע ספציפי על החשבון"
-        description_help: "פרטי משתמש וחשבון"
-        enable_vehicle_position: "אפשר מיקום רכבים"
-        enable_stop_status: "אפשר סטטוס עצירות"
+        enable_external_callback: הפעל כתובת אתר
+        end_subscription: End subscription
+        max_vehicles: מקסימום רכבים
+        take_over: משך השהייה
+        name: שם
+        destinations: יעדים
+        enable_tomtom: Enable TomTom WEBFLEET
+        enable_masternaut: Enable Masternaut
+        enable_alyacom: Enable Alyacom
+        enable_teksat: Enable Teksat
+        enable_orange_fleet: Enable Orange Fleet Performance
+        orange_user: Orange משתמש
+        orange_password: Orange סיסמת
+        teksat_customer_id: Teksat לקוח ID
+        teksat_username: Teksat משתמש
+        teksat_password: Teksat סיסמת
+        teksat_url: Teksat URL
+        tomtom_account: WEBFLEET שם חשבון
+        tomtom_user: WEBFLEET שם משתמש
+        tomtom_password: WEBFLEET סיסמת
+        masternaut_user: שם משתמש
+        masternaut_password: סיסמה
+        alyacom_association: AlyaCom מזהה
+        alyacom_api_key: AlyaCom API מפתח
+        router: מנגנון חישוב
+        router_id: מנגנון חישוב
+        router_dimension: Router objective
+        router_options_motorway: כביש מהיר
+        router_options_toll: אישור סעיפי אגרה
+        router_options_trailers: מספר נגררים לטריילר
+        router_options_weight: משקל עצמי
+        router_options_weight_per_axle: משקל לכל סרן
+        router_options_height: גובה הרכב
+        router_options_width: רוחב הרכב
+        router_options_length: אורך הרכב
+        router_options_hazardous_goods: חומרים מסוכנים
+        print_planning_annotating: הכנס הערות לתיכנון
+        print_header: כותרות ניתובים
+        print_stop_time: כלול זמן עצירות
+        print_map: כלול מפה
+        stores: מחסנים
+        enable_orders: הפעל הזמנות
+        enable_multi_vehicle_usage_sets: אפשר הגדרות לריבוי רכבים
+        enable_references: הצג הפניות
+        enable_multi_visits: אפשר ריבוי עצירות ליעד אחד
+        enable_global_optimization: הפעל אופטימיזציה גלובאלית
+        test: ניסיון
+        jobs: משימה
+        optimization_cluster_size: גודל אשכול האופטימיזציה
+        optimization_time: אופטימיזציה לפי מקסימום זמן
+        optimization_stop_soft_upper_bound: מקדם עיכוב לעצירות
+        optimization_vehicle_soft_upper_bound: מקדם עיכוב לרכבים
+        cost_waiting_time: מקדם זמן המתנה
+        profile: פרופיל
+        profile_id: פרופיל
+        speed_multiplicator: מכפיל מהירות
+        default_country: ארץ ברירת מחדל
+        ref: הפניה
+        ref_help: הפניה חייבת להיות אחידה
+        description_title: תיאור
+        description_label: מידע ספציפי על החשבון
+        description_help: פרטי משתמש וחשבון
+        enable_vehicle_position: אפשר מיקום רכבים
+        enable_stop_status: אפשר סטטוס עצירות
       deliverable_unit:
-        label: "תווית"
-        ref: "הפניה"
-        icon: "סמל"
-        default_quantity: "כמות ברירת מחדל"
-        default_capacity: "קיבולת ברירת מחדל"
-        optimization_overload_multiplier: "מקדם לעומס יתר"
+        label: תווית
+        ref: הפניה
+        icon: סמל
+        default_quantity: כמות ברירת מחדל
+        default_capacity: קיבולת ברירת מחדל
+        optimization_overload_multiplier: מקדם לעומס יתר
       destination:
-        ref: "מס"
-        ref_small: "מס"
-        name: "שם"
-        address: "כתובת"
-        street: "רחוב"
-        detail: "פרטים"
-        postalcode: "מיקוד"
-        city: "עיר"
-        country: "ארץ"
-        lat: "קו רוחב"
-        lng: "קו אורך"
-        comment: "הערות"
-        comment_small: "הערות"
-        phone_number: "מספר טלפון"
-        phone_number_small: "טלפון"
-        geocoding_accuracy: "דיוק הגיאוקוד"
-        geocoding_accuracy_small: "Geoc."
-        geocoding_level: "דרגת הגיאוקוד"
-        tags: "תגים"
-        tag_ids: "תגים"
-        visits: "עצירות"
-      # Duplicate for nested errors with autosave
+        ref: מס
+        ref_small: מס
+        name: שם
+        address: כתובת
+        street: רחוב
+        detail: פרטים
+        postalcode: מיקוד
+        city: עיר
+        country: ארץ
+        lat: קו רוחב
+        lng: קו אורך
+        comment: הערות
+        comment_small: הערות
+        phone_number: מספר טלפון
+        phone_number_small: טלפון
+        geocoding_accuracy: דיוק הגיאוקוד
+        geocoding_accuracy_small: Geoc.
+        geocoding_level: דרגת הגיאוקוד
+        tags: תגים
+        tag_ids: תגים
+        visits: עצירות
       destinations:
-        name: "שם"
-        address: "כתובת"
-        street: "רחוב"
-        detail: "פרטים"
-        postalcode: "מיקוד"
-        city: "עיר"
-        country: "Country"
-        comment: "הערות"
-        phone_number: "מספר טלפון"
-        geocoding_accuracy: "דיוק הגיאוקוד"
-        geocoding_level: "דרגת הגיאוקוד"
+        name: שם
+        address: כתובת
+        street: רחוב
+        detail: פרטים
+        postalcode: מיקוד
+        city: עיר
+        country: Country
+        comment: הערות
+        phone_number: מספר טלפון
+        geocoding_accuracy: דיוק הגיאוקוד
+        geocoding_level: דרגת הגיאוקוד
       layer:
-        name: "שם"
-        url: "קישור"
-        attribution: "שיוך"
+        name: שם
+        url: קישור
+        attribution: שיוך
       order:
-        date: "תאריך"
-        destination_id: "יעד"
-        order_array_id: "תוכנית ברזל"
+        date: תאריך
+        destination_id: יעד
+        order_array_id: תוכנית ברזל
       order_array:
-        name: "שם"
-        base_date: "תאריך בסיס"
-        length: "פרק זמן"
-        customer_id: "חשבון"
+        name: שם
+        base_date: תאריך בסיס
+        length: פרק זמן
+        customer_id: חשבון
       planning:
-        name: "שם"
-        ref: "הפניה"
-        ref_small: "מס"
-        tag_ids: "תג"
-        tags: "תגים"
-        zoning_id: "Zoning"
-        created_at: "נוצר"
-        updated_at: "עודכן"
-        order_array_id: "תוכנית ברזל"
-        date: "תאריך"
-        vehicle_usage_set: "הגדרות לרכבים"
-        vehicle_usage_set_id: "הגדרות לרכבים"
-        vehicle_usage_set_small: "הגדרות"
+        name: שם
+        ref: הפניה
+        ref_small: מס
+        tag_ids: תג
+        tags: תגים
+        zoning_id: Zoning
+        created_at: נוצר
+        updated_at: עודכן
+        order_array_id: תוכנית ברזל
+        date: תאריך
+        vehicle_usage_set: הגדרות לרכבים
+        vehicle_usage_set_id: הגדרות לרכבים
+        vehicle_usage_set_small: הגדרות
       profile:
-        name: "שם"
-        layers: "מפות בסיס"
-        routers: "Routing Engines"
+        name: שם
+        layers: מפות בסיס
+        routers: Routing Engines
       product:
-        code: "קוד"
-        name: "שם"
+        code: קוד
+        name: שם
       reseller:
-        host: "מארח"
-        name: "שם"
-        welcome_url: "ברוך הבא URL"
-        help_url: "עזרה  URL"
-        contact_url: "איש קשר URL"
-        logo_large: "לוגו גדול"
-        logo_small: "לוגו קטן"
-        favicon: "סמל"
-        website_url: "אתר URL"
-        url_protocol: "סוג חיבור"
+        host: מארח
+        name: שם
+        welcome_url: ברוך הבא URL
+        help_url: עזרה  URL
+        contact_url: איש קשר URL
+        logo_large: לוגו גדול
+        logo_small: לוגו קטן
+        favicon: סמל
+        website_url: אתר URL
+        url_protocol: סוג חיבור
       route:
-        distance: "מרחק"
-        emission: "פליטה"
-        out_of_date: "פג תוקף"
-        start: "התחלה"
-        end: "סיום"
-        hidden: "מוסתר"
-        locked: "נעול"
-        ref: "הפניה"
+        distance: מרחק
+        emission: פליטה
+        out_of_date: פג תוקף
+        start: התחלה
+        end: סיום
+        hidden: מוסתר
+        locked: נעול
+        ref: הפניה
       router:
         router_dimensions:
-          time: "המהיר ביותר"
-          distance: "הקצר ביותר"
+          time: המהיר ביותר
+          distance: הקצר ביותר
         options:
-          hazardous_goods_none: "כלום"
+          hazardous_goods_none: כלום
           hazardous_goods:
-            explosive: "חומר נפץ"
-            gas: "גז"
-            flammable: "דליק"
-            combustible: "דליק"
-            organic: "אורגני"
-            poison: "רעל"
-            radio_active: "רדיואקטיבי"
-            corrosive: "מאכל"
-            poisonous_inhalation: "שאיפת רעל"
-            harmful_to_water: "מזיק למים"
-            other: "אחר"
+            explosive: חומר נפץ
+            gas: גז
+            flammable: דליק
+            combustible: דליק
+            organic: אורגני
+            poison: רעל
+            radio_active: רדיואקטיבי
+            corrosive: מאכל
+            poisonous_inhalation: שאיפת רעל
+            harmful_to_water: מזיק למים
+            other: אחר
       stop:
-        active: "פעיל"
-        begin: "התחל"
-        end: "סיים"
-        distance: "מרחק"
-        time: "זמן"
-        wait_time: "זמן המתנה"
+        active: פעיל
+        begin: התחל
+        end: סיים
+        distance: מרחק
+        time: זמן
+        wait_time: זמן המתנה
       store:
-        name: "שם"
-        address: "כתובת"
-        street: "רחוב"
-        detail: "פרט"
-        postalcode: "מיקוד"
-        city: "עיר"
-        country: "מדינה"
-        customised_color: "בחירת צבע מותאם אישית"
-        lat: "קן רןחב"
-        lng: "קו אורך"
-        open: "לפתוח"
-        close: "לסגור"
-        store_start: "התחל במחסן"
-        store_end: "סיים במחסן"
-        color: "צבע"
-        icon: "סמל"
-        icon_size: "גודל הסמל"
-      # Duplicate for nested errors with autosave
+        name: שם
+        address: כתובת
+        street: רחוב
+        detail: פרט
+        postalcode: מיקוד
+        city: עיר
+        country: מדינה
+        customised_color: בחירת צבע מותאם אישית
+        lat: קן רןחב
+        lng: קו אורך
+        open: לפתוח
+        close: לסגור
+        store_start: התחל במחסן
+        store_end: סיים במחסן
+        color: צבע
+        icon: סמל
+        icon_size: גודל הסמל
       stores:
-        name: "שם"
-        address: "כתובת"
-        street: "רחוב"
-        postalcode: "מיקוד"
-        city: "עיר"
-        country: "מדינה"
-        geocoding_accuracy: "דיוק הגיאוקוד"
-        geocoding_level: "רמת הגיאוקוד"
+        name: שם
+        address: כתובת
+        street: רחוב
+        postalcode: מיקוד
+        city: עיר
+        country: מדינה
+        geocoding_accuracy: דיוק הגיאוקוד
+        geocoding_level: רמת הגיאוקוד
       tag:
-        label: "תווית"
-        color: "צבע"
-        icon: "סמל"
-        ref: "הפניה"
+        label: תווית
+        color: צבע
+        icon: סמל
+        ref: הפניה
       user:
-        email: "דואר אלקטרוני"
-        customer: "משתמש"
-        customer_id: "משתמש"
-        layer: "מפה בסיסית"
-        layer_id: "מפה בסיסית"
-        password: "סיסמא"
-        password_confirmation: "אימות סיסמא"
-        current_password: "סיסמא נוכחית"
-        api_key: "API מפתח"
-        url_click2call: "לחץ בשביל להתקשר"
-        sign_in_count: "מונה חיבורים"
-        sign_in_at: "חיבור אחרון"
-        ref: "הפניה"
-        confirmed_at: "אושר ב"
-        prefered_unit: "יחידה מועדפת"
+        email: דואר אלקטרוני
+        customer: משתמש
+        customer_id: משתמש
+        layer: מפה בסיסית
+        layer_id: מפה בסיסית
+        password: סיסמא
+        password_confirmation: אימות סיסמא
+        current_password: סיסמא נוכחית
+        api_key: API מפתח
+        url_click2call: לחץ בשביל להתקשר
+        sign_in_count: מונה חיבורים
+        sign_in_at: חיבור אחרון
+        ref: הפניה
+        confirmed_at: אושר ב
+        prefered_unit: יחידה מועדפת
       vehicle:
-        name: "שם"
-        emission: "פליטה"
-        consumption: "צרכן"
-        color: "צבע"
-        tomtom_id: "TomTom ID"
-        masternaut_ref: "הפניה של כלי רכב"
-        router: "מנוע ניתוב"
-        router_id: "מנוע ניתוב"
-        router_dimension: "נתב המטרה"
-        speed_multiplicator: "מכפיל מהירות"
-        customised_color: "בחירת צבע מותאם אישית"
-        ref: "הפניה"
-        contact_email: "דואר אלקטרוני"
-        capacities: "מימדים"
+        name: שם
+        emission: פליטה
+        consumption: צרכן
+        color: צבע
+        tomtom_id: TomTom ID
+        masternaut_ref: הפניה של כלי רכב
+        router: מנוע ניתוב
+        router_id: מנוע ניתוב
+        router_dimension: נתב המטרה
+        speed_multiplicator: מכפיל מהירות
+        customised_color: בחירת צבע מותאם אישית
+        ref: הפניה
+        contact_email: דואר אלקטרוני
+        capacities: מימדים
       vehicle_usage:
-        vehicle_id: "רכב"
-        open: "לפתוח"
-        close: "לסגור"
-        store_start: "להתחיל במחסן"
-        store_start_id: "להתחיל במחסן"
-        store_stop: "עצור במחסן"
-        store_stop_id: "עצור במחסן"
-        rest_start: "להתחיל את החלון"
-        rest_stop: "לעצור את החלון"
-        rest_duration: "משך מנוחה"
-        store_rest: "מקום מנוחה"
-        store_rest_id: "מקום מנוחה"
-        service_time_start: "זמן שירות לפני"
-        service_time_end: "זמן שירות אחרי"
-        vehicle: "רכב"
+        vehicle_id: רכב
+        open: לפתוח
+        close: לסגור
+        store_start: להתחיל במחסן
+        store_start_id: להתחיל במחסן
+        store_stop: עצור במחסן
+        store_stop_id: עצור במחסן
+        rest_start: להתחיל את החלון
+        rest_stop: לעצור את החלון
+        rest_duration: משך מנוחה
+        store_rest: מקום מנוחה
+        store_rest_id: מקום מנוחה
+        service_time_start: זמן שירות לפני
+        service_time_end: זמן שירות אחרי
+        vehicle: רכב
       vehicle_usage_set:
-        name: "שם"
-        open: "לפתוח"
-        close: "לסגור"
-        store_start: "התחל במחסן"
-        store_start_id: "התחל במחסן"
-        store_stop: "עצור במחסן"
-        store_stop_id: "עצור במחסן"
-        rest_start: "להתחיל את החלון"
-        rest_stop: "לעצור את החלון"
-        rest_duration: "משך מנוחהon"
-        store_rest: "מקום מנוחה"
-        store_rest_id: "מקום מנוחה"
-        service_time_start: "זמן שירות לפני"
-        service_time_end: "זמן שירות אחרי"
+        name: שם
+        open: לפתוח
+        close: לסגור
+        store_start: התחל במחסן
+        store_start_id: התחל במחסן
+        store_stop: עצור במחסן
+        store_stop_id: עצור במחסן
+        rest_start: להתחיל את החלון
+        rest_stop: לעצור את החלון
+        rest_duration: משך מנוחהon
+        store_rest: מקום מנוחה
+        store_rest_id: מקום מנוחה
+        service_time_start: זמן שירות לפני
+        service_time_end: זמן שירות אחרי
       visit:
-        ref: "הפניה"
-        ref_small: "מס"
-        take_over: "משך הביקור"
-        take_over_small: "משך"
-        open1: "חלון זמן 1 פתוח"
-        open1_small: "לפתוח 1"
-        close1: "חלון זמן 1 סגור"
-        close1_small: "סגור 1"
-        open_close1_small: "פתוח/סגור 1"
-        open1_close1_days: "D+"
-        open2: "חלון זמן 2 פתוח"
-        open2_small: "פתוח 2"
-        close2: "חלון זמן 2 סגור"
-        close2_small: "סגור 2"
-        open_close2_small: "פתוח/סגור 2"
-        open2_close2_days: "D+"
-        multi_visit: "רב"
-        tags: ""
-        tag_ids: "תגים"
-        quantities: "שאלות"
+        ref: הפניה
+        ref_small: מס
+        take_over: משך הביקור
+        take_over_small: משך
+        open1: חלון זמן 1 פתוח
+        open1_small: לפתוח 1
+        close1: חלון זמן 1 סגור
+        close1_small: סגור 1
+        open_close1_small: פתוח/סגור 1
+        open1_close1_days: D+
+        open2: חלון זמן 2 פתוח
+        open2_small: פתוח 2
+        close2: חלון זמן 2 סגור
+        close2_small: סגור 2
+        open_close2_small: פתוח/סגור 2
+        open2_close2_days: D+
+        multi_visit: רב
+        tags: ''
+        tag_ids: תגים
+        quantities: שאלות
       zoning:
-        name: "שם"
+        name: שם
       zone:
-        vehicle: "Vehicle"
-        name: "Name"
-
+        vehicle: Vehicle
+        name: Name
     successful:
       messages:
-        created: "%{model} has been created successfully"
-        updated: "%{model} has been updated successfully"
-
+        created: '%{model} has been created successfully'
+        updated: '%{model} has been updated successfully'
     errors:
       attributes:
-        inconsistent_customer: "אינו מורשה עבור לקוח זה"
+        inconsistent_customer: אינו מורשה עבור לקוח זה
       models:
         location:
-          missing_address_or_latlng: "המיקוד והעיר אינם יכולים להיות ריקים אם קוי האורך והרוחב ריקים"
-          lat_outside_range: "חייב להיות בטווח  -90..90"
-          lng_outside_range: "חייב להיות בטווח -180..180"
-          geocoding_accuracy_outside_range: "חייב להיות בטווח 0..1"
+          missing_address_or_latlng: המיקוד והעיר אינם יכולים להיות ריקים אם קוי האורך
+            והרוחב ריקים
+          lat_outside_range: חייב להיות בטווח  -90..90
+          lng_outside_range: חייב להיות בטווח -180..180
+          geocoding_accuracy_outside_range: חייב להיות בטווח 0..1
         vehicle:
           attributes:
             capacities:
-              not_float: "חייב להיות מספר"
+              not_float: חייב להיות מספר
         vehicles:
-          at_least_one: "צורך ברכב אחד לפחות"
+          at_least_one: צורך ברכב אחד לפחות
         vehicle_usage:
           attributes:
             close:
-              after: "חייב להיות לאחר זמן הפתיחה"
+              after: חייב להיות לאחר זמן הפתיחה
             rest_stop:
-              after: "חייב להיות לאחר זמן הפתיחה"
-          missing_rest_window: "לא יכול להיות ריק אם משך המנוחה מלא"
-          missing_rest_duration: "לא יכול להיות ריק אם חלון הזמן מנוחה מלא"
-          rest_range: "טווח המנוחה חייב להיות בין %{התחלה} עד %{סיום}"
-          service_range: "לא יכול להיות גדול יותר מאשר טווח עבודה"
+              after: חייב להיות לאחר זמן הפתיחה
+          missing_rest_window: לא יכול להיות ריק אם משך המנוחה מלא
+          missing_rest_duration: לא יכול להיות ריק אם חלון הזמן מנוחה מלא
+          rest_range: טווח המנוחה חייב להיות בין %{start} עד %{end}
+          service_range: לא יכול להיות גדול יותר מאשר טווח עבודה
         vehicle_usage_set:
           attributes:
             close:
               after: חייב להיות לאחר זמן הפתיחה"
             rest_stop:
-              after: "חייב להיות לאחר זמן הפתיחה"
-          at_least_one: "צריך לפחות תוצרת רכב אחת"
-          missing_rest_window: "לא יכול להיות ריק אם משך המנוחה מלא"
-          missing_rest_duration: "לא יכול להיות ריק אם חלון הזמן מנוחה מלא"
+              after: חייב להיות לאחר זמן הפתיחה
+          at_least_one: צריך לפחות תוצרת רכב אחת
+          missing_rest_window: לא יכול להיות ריק אם משך המנוחה מלא
+          missing_rest_duration: לא יכול להיות ריק אם חלון הזמן מנוחה מלא
         visit:
           attributes:
             close1:
-              after: "חייב להיות פתוח אחרי חלון זמן 1"
-              blank: "לא יכול להיות ריק כאשר חלון הזמן 2 פתוח"
+              after: חייב להיות פתוח אחרי חלון זמן 1
+              blank: לא יכול להיות ריק כאשר חלון הזמן 2 פתוח
             open2:
-              after: "חייב להיות אחרי שחלון זמן 1 סגור"
+              after: חייב להיות אחרי שחלון זמן 1 סגור
             close2:
-              after: "חייב להיות אחרי שחלון זמן 2 פתוח"
+              after: חייב להיות אחרי שחלון זמן 2 פתוח
             quantities:
-              not_float: "חייב להיות מספר"
+              not_float: חייב להיות מספר
         zone:
           attributes:
             vehicle:
-              bad_customer: "לא משוייך לחשבון"
+              bad_customer: לא משוייך לחשבון
             polygon:
-              invalid_json: "is not a valid stringified json"
+              invalid_json: is not a valid stringified json
         customer:
           attributes:
             destinations:
-              over_max_limit: "הגעת למספר היעדים המירבי"
+              over_max_limit: הגעת למספר היעדים המירבי
             stores:
-              over_max_limit: "הגעת למספר הנקודות המירבי"
+              over_max_limit: הגעת למספר הנקודות המירבי
         store:
-          at_least_one: "נידרש מחסן אחד לפחות"
-          icon_unknown: "הוא לא ברשימת הגופן"
-          icon_size_invalid: "הגודל אינו חוקי"
+          at_least_one: נידרש מחסן אחד לפחות
+          icon_unknown: הוא לא ברשימת הגופן
+          icon_size_invalid: הגודל אינו חוקי
         route:
           attributes:
             stops:
-              bad_index: "אינדקס לא תקין %{n}"
+              bad_index: אינדקס לא תקין %{n}
         planning:
           attributes:
             ref:
-              invalid_format: "השימוש ב תווים הבאים אינו חוקי \".\", \"\\\" or \"/\""
-              ref_value: "הפניה למסלול"
-
+              invalid_format: השימוש ב תווים הבאים אינו חוקי ".", "\" or "/"
+              ref_value: 'הפניה למסלול '
   errors:
     messages:
-      taken: "הוא כבר בשימוש"
-    connection_refused: "לא ניתן להתחבר לבסיס הנתונים"
+      taken: הוא כבר בשימוש
+    connection_refused: לא ניתן להתחבר לבסיס הנתונים
     location:
-      geocoding_fail: "החיבור לגיאוקודינג נכשלה:"
-      reversegeocoding_fail: "איחזור הגאוקודינג נכשל:"
+      geocoding_fail: 'החיבור לגיאוקודינג נכשלה:'
+      reversegeocoding_fail: 'איחזור הגאוקודינג נכשל:'
     planning:
-      import_too_routes: "היה ניסיון לייבא יותר ניתובים מאשר כלי רכב זמינים"
-      already_optimizing: "תכנית אופטימיזציה נמצאת בתהליך"
+      import_too_routes: היה ניסיון לייבא יותר ניתובים מאשר כלי רכב זמינים
+      already_optimizing: תכנית אופטימיזציה נמצאת בתהליך
     tomtom:
-      access_denied: "גישה נידחיתה. 'Full Access Orders' אינה זמינה בממשק המשתמש של WEBFLEET. אין לך את ההרשאות המתאימות לביצוע פעולה זו."
-      invalid_account: "משתמש לא חוקי (לא קיים)"
-      external_requests_not_allowed: "גישה נידחיתה. 'Access to interface WEBFLEET.connect' אינה זמינה בממשק המשתמש של WEBFLEET. בקשות חיצוניות אינן מותרות עבור החשבון / משתמש זה."
-      hostname_not_allowed: "שם המארח אינו מותר"
-      request_quota_reached: "מכסת בקשה התקבלה"
-      addresses_empty_result: "כתובת לא אותרה"
-      could_not_process_last_request: "הבקשה האחרונה לא ניתנת לביצוע"
-      unsupported_export_type: "ה- GPS הנוכחי אינו תומך בייצוא כנקודות ציון"
-      duplicate_order: "כפילות במספר ההזמנה"
-      busy_processing: "חשבון / שם משתמש עסוק בעיבוד בקשה אחרת"
-      gps_unreachable: "GPS אינו זמין ברגע זה"
-      last_action_failed: "הפעולה האחרונה לא ניתנת לביצוע"
-      service_failed: "Service busy after several attempts"
+      access_denied: גישה נידחיתה. 'Full Access Orders' אינה זמינה בממשק המשתמש של
+        WEBFLEET. אין לך את ההרשאות המתאימות לביצוע פעולה זו.
+      invalid_account: משתמש לא חוקי (לא קיים)
+      external_requests_not_allowed: גישה נידחיתה. 'Access to interface WEBFLEET.connect'
+        אינה זמינה בממשק המשתמש של WEBFLEET. בקשות חיצוניות אינן מותרות עבור החשבון
+        / משתמש זה.
+      hostname_not_allowed: שם המארח אינו מותר
+      request_quota_reached: מכסת בקשה התקבלה
+      addresses_empty_result: כתובת לא אותרה
+      could_not_process_last_request: הבקשה האחרונה לא ניתנת לביצוע
+      unsupported_export_type: ה- GPS הנוכחי אינו תומך בייצוא כנקודות ציון
+      duplicate_order: כפילות במספר ההזמנה
+      busy_processing: חשבון / שם משתמש עסוק בעיבוד בקשה אחרת
+      gps_unreachable: GPS אינו זמין ברגע זה
+      last_action_failed: הפעולה האחרונה לא ניתנת לביצוע
+      service_failed: Service busy after several attempts
     teksat:
-      bad_url: "קישור לא תקין"
-      get_ticket: "אימות שגוי. נא לאמת הפרטים שוב"
-      list: "לא ניתן להציג רשימה של התקנים"
-      get_vehicles_pos: "לא ניתן לאתר את מיקום הרכב"
-      set_mission: "יצירת המשימה ניכשלה"
-      unauthorized: "לא מורשה"
+      bad_url: קישור לא תקין
+      get_ticket: אימות שגוי. נא לאמת הפרטים שוב
+      list: לא ניתן להציג רשימה של התקנים
+      get_vehicles_pos: לא ניתן לאתר את מיקום הרכב
+      set_mission: יצירת המשימה ניכשלה
+      unauthorized: לא מורשה
     orange:
-      no_equipment: "רכב: לא נמצא ציוד המשוייך לרכב"
-      unauthorized: "לא מורשה"
-      list: "לא ניתן להציג רשימה של התקנים"
-      get_vehicles_pos: "לא ניתן לאתר את מיקום הרכב"
+      no_equipment: 'רכב: לא נמצא ציוד המשוייך לרכב'
+      unauthorized: לא מורשה
+      list: לא ניתן להציג רשימה של התקנים
+      get_vehicles_pos: לא ניתן לאתר את מיקום הרכב
     alyacom:
-      unauthorized: "לא מורשה"
-      timeout: "המשימה נכשלה"
-
+      unauthorized: לא מורשה
+      timeout: המשימה נכשלה
   import:
-    empty: "אין נתונים לייבוא. אנא בדוק שוב את הנתונים לייבוא"
-    data: "תוכן:"
+    empty: אין נתונים לייבוא. אנא בדוק שוב את הנתונים לייבוא.
+    data: 'תוכן:'
     data_erroneous:
-      csv: "קובץ לא חוקי בשורה"
-      json: "קובץ לא חוקי ברשומה"
-      tomtom: "נתונים לא חוקיים ברשומה"
-    template_csv: "ייבוא תבנית גיליון אלקטרוני סטנדרטי"
-    template_excel: "ייבוא תבנית גיליון אלקטרוני אקסל"
-
+      csv: קובץ לא חוקי בשורה
+      json: קובץ לא חוקי ברשומה
+      tomtom: נתונים לא חוקיים ברשומה
+    template_csv: ייבוא תבנית גיליון אלקטרוני סטנדרטי
+    template_excel: ייבוא תבנית גיליון אלקטרוני אקסל
   admin:
     profiles:
       menu:
-        profiles: "פרופילים"
+        profiles: פרופילים
       index:
-        title: "רשימת פרופילים"
-        avoid_zones: "איזור עקיפה"
-        speed_multiplicator_zones: "האטת איזורים"
-
+        title: רשימת פרופילים
+        avoid_zones: איזור עקיפה
+        speed_multiplicator_zones: האטת איזורים
     resellers:
       menu:
-        reseller: "מפיץ"
+        reseller: מפיץ
       edit:
-        title: "עריכת מפיץ"
+        title: עריכת מפיץ
       form:
-        host_help: "נעשה שיומש רב בכתובת האתר ובפורט של המפיץ"
-        name_help: "שם מותג המפיץ"
-        welcome_url_help: "כתובת דף אינטרנט הכלולה כ- HTML כ- \"iframe\" בדף הפתיחה. ניתן להשתמש ב- \"{LG}\" אשר יוחלף בשפה כמו «en», «fr» (כלומר: http://mapotempo.com/{LG}/page.html"
-        help_url_help: "כתובת דף אינטרנט עם תוכן עזרה.אפשרי להשתמש   \"{LG}\" שיוחלפו בשפה כגון « en », « fr »  (כלומר:  http://mapotempo.com/{LG}/page.html)."
-        contact_url_help: "כתובת דף אינטרנט עם תוכן עזרה.אפשרי להשתמש   \"{LG}\" שיוחלפו בשפה כגון « en », « fr »  (כלומר:  http://mapotempo.com/{LG}/page.html)."
-        logo_large_help: "הגדרת לוגו על דף מלא, עדיפות ל- SVG, או לחילופין בפורמט PNG"
-        logo_small_help: "סמל תפריט ראשי, 150 × 40 פיקסלים בפורמט SVG או PNG."
-        favicon_help: "סמל אתר, 16 × 16 פיקסלים בפורמט PNG או ICO."
-        website_url_help: "כתובת דף אינטרנט עם תוכן עזרה.אפשרי להשתמש   \"{LG}\" שיוחלפו בשפה כגון « en », « fr »  (כלומר:  http://mapotempo.com/{LG}/page.html)."
-        protocol_url_http: "HTTP"
-        protocol_url_https: "HTTPS"
-
+        host_help: נעשה שיומש רב בכתובת האתר ובפורט של המפיץ
+        name_help: שם מותג המפיץ
+        welcome_url_help: 'כתובת דף אינטרנט הכלולה כ- HTML כ- "iframe" בדף הפתיחה.
+          ניתן להשתמש ב- "{LG}" אשר יוחלף בשפה כמו «en», «fr» (כלומר: http://mapotempo.com/{LG}/page.htm).'
+        help_url_help: 'כתובת דף אינטרנט עם תוכן עזרה.אפשרי להשתמש   "{LG}" שיוחלפו
+          בשפה כגון « en », « fr »  (כלומר:  http://mapotempo.com/{LG}/page.html).'
+        contact_url_help: 'כתובת דף אינטרנט עם תוכן עזרה.אפשרי להשתמש   "{LG}" שיוחלפו
+          בשפה כגון « en », « fr »  (כלומר:  http://mapotempo.com/{LG}/page.html).'
+        logo_large_help: הגדרת לוגו על דף מלא, עדיפות ל- SVG, או לחילופין בפורמט PNG.
+        logo_small_help: סמל תפריט ראשי, 150 × 40 פיקסלים בפורמט SVG או PNG.
+        favicon_help: סמל אתר, 16 × 16 פיקסלים בפורמט PNG או ICO.
+        website_url_help: 'כתובת דף אינטרנט עם תוכן עזרה.אפשרי להשתמש   "{LG}" שיוחלפו
+          בשפה כגון « en », « fr »  (כלומר:  http://mapotempo.com/{LG}/page.html).'
+        protocol_url_http: HTTP
+        protocol_url_https: HTTPS
     users:
       menu:
-        users: "משתמש"
-        send_email: "שלח הודעת דוא\"ל לאישור"
+        users: משתמש
+        send_email: שלח הודעת דוא"ל לאישור
       index:
-        title: "ערוך משתמש"
-        new: "משתמש חדש"
+        title: ערוך משתמש
+        new: משתמש חדש
       new:
-        title: "משתמש חדש"
+        title: משתמש חדש
       create:
-        success: "משתמש חדש נוצר בהצלחה"
+        success: משתמש נוצר בהצלחה
       edit:
-        title: "ערוך משתמש"
-        connect_as: "התחבר כ..."
-      create:
-        success: "משתמש נוצר בהצלחה"
+        title: ערוך משתמש
+        connect_as: התחבר כ...
       update:
-        success: "המשתמש עודכן בהצלחה"
+        success: המשתמש עודכן בהצלחה
       destroy:
-        success: "משתמש נמחק בהצלחה"
+        success: משתמש נמחק בהצלחה
       destroy_multiple:
-        success: "משתמש נמחק בהצלחה"
+        success: משתמש נמחק בהצלחה
       send_email:
-        success: "דוא\"ל נשלח בהצלחה למשתמש"
-
+        success: דוא"ל נשלח בהצלחה למשתמש
   customers:
     duplicate:
-      success: "חשבון משתמש שוכפל בהצלחה"
+      success: חשבון משתמש שוכפל בהצלחה
     default:
-      country: "אנגליה"
+      country: אנגליה
     menu:
-      customer: "הגדרות גלובאליות"
-      user_settings: "הגדרות משתמש"
-      customers: "חשבונות"
+      customer: הגדרות גלובאליות
+      user_settings: הגדרות משתמש
+      customers: חשבונות
     edit:
-      title: "עריכת הגדרות גלובאליים"
-      send_email: "שלח מייל לאישור"
-      password: "שנה סיסמה"
+      title: עריכת הגדרות גלובאליים
+      send_email: שלח מייל לאישור
+      password: שנה סיסמה
       user:
-        connect_as: "התחבר כ..."
-        list: "רשימת משתמשים"
-        new: "משתמש חדש"
+        connect_as: התחבר כ...
+        list: רשימת משתמשים
+        new: משתמש חדש
       vehicles:
-        list: "רכבים חדשים"
-      time_zone: "איזור זמן"
+        list: רכבים חדשים
+      time_zone: איזור זמן
     index:
-      title: "רישום חשבונות"
-      new: "חשבון חדש"
-      map: "מפה"
-      no_test: "לא בבדיקה"
-      status: "סטטוס"
-      status_no_user: "משתמש לא קיים"
-      status_no_sign_in_user: "המשתמש לא ניכנס בעבר"
-      status_inactive_user: "משתמש לא פעיל"
-      created_end_subscription: "נוצר בהצלחה"
+      title: רישום חשבונות
+      new: חשבון חדש
+      map: מפה
+      no_test: לא בבדיקה
+      status: סטטוס
+      status_no_user: משתמש לא קיים
+      status_no_sign_in_user: המשתמש לא ניכנס בעבר
+      status_inactive_user: משתמש לא פעיל
+      created_end_subscription: נוצר בהצלחה
     new:
-      title: "חשבון חדש"
+      title: חשבון חדש
     destroy:
-      success: "החשבון נמחק בהצלחה"
+      success: החשבון נמחק בהצלחה
     destroy_multiple:
-      success: "החשבונות נמחקו בהצלחה"
+      success: החשבונות נמחקו בהצלחה
     delete_vehicle:
-      success: "הרכב נמחק בהצלחה"
+      success: הרכב נמחק בהצלחה
     form:
-      name: "חשבון"
-      default_value: "ערכי ברירת מחדל"
-      outputs: "פלט"
-      options: "אפשרויות"
-      optimization_parameters: "הגדרות אופטימיזציה"
-      router_help: "פרופיל בשימוש על ידי תיכנון הניתוב כברירת מחדל"
-      router_options_default: "%{n} (ברירת מחדל)"
-      router_options_motorway_yes: "כן"
-      router_options_motorway_no: "לא"
-      router_options_motorway_default: "ברירת מחדל (%{value})"
-      router_options_toll_yes: "כן"
-      router_options_toll_no: "לא"
-      router_options_toll_default: "ברירת מחדל (%{value})"
-      router_options_trailers_range: "ערכי טריילר בין הערכים %{מערך} לבין%{עד ערך} "
-      router_options_weight_range: "ערכי משקל (כולל טריילרים וסחורה) בין הערכים %{מטון} לבין%{עד טון}"
-      router_options_weight_per_axle_range: "ערכי משקל לכל סרן בין%{מערך} לבין%{עד ערך} טון"
-      router_options_height_range: "ערכי גובה בין%{מגובה} לבין%{עד גובה} מטרים"
-      router_options_width_range: "ערכי רחב בין%{מרוחב} לבין%{עד רחב} מטרים"
-      router_options_length_range: "ערכי אורך בין%{מאורך} לבין%{עד אורך} מטרים"
-      take_over_help: "זמן ממוצע לחשבון"
-      tomtom: "TomTom WEBFLEET"
-      tomtom_help: "מאפשר לשלוח תוכניות TomTom Pro עם WEBFLEET."
-      teksat: "איתורן"
-      teksat_help: "שליחת תיכנון לאיתורן"
-      orange: "ביצועי רכב אורנג'"
-      orange_help: "שליחת תכנית לרכב עם התקן אורנג'"
-      masternaut: "Masternaut"
-      masternaut_help: "אפשר שליחת תכנית להתקן Masternaut"
-      alyacom: "AlyaCom"
-      alyacom_help: "אפשר שליחת תכנית לאפליקציית AlyaCom"
-      optimization_cluster_size_default: "%{n} (ערך ברירת מחדל)"
-      optimization_cluster_size_help: "ערך בשניות בין נקודות לקבוצה לפני ביצוע אופטימיזציה. ערך גדול יפגע בתוצאות האופטימיזציה (30 שניות כבר ערך חשוב). יש לקחת בחשבון רק אופטימיזציה של מסלול אחד עם עיכובים."
-      optimization_time_default: "%{n} (ערך ברירת מחדל)"
-      optimization_time_help: "האופטימיזציה נעצרת אוטומטית כברירת מחדל. עם זאת, תוכל לציין כאן זמן מקסימלי לאופטימיזציה."
-      optimization_soft_upper_bound_default: "%{n} (ערך ברירת מחדל)"
-      optimization_stop_soft_upper_bound_help: "הערך הוא חשוב ביותר, ככל שיש יותר עיכובים כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל אשכולות)."
-      optimization_vehicle_soft_upper_bound_help: "בכדי להריץ אופטימיזציה גלובאלית, יש לאפשר ניהול הפצה באמצעות רכבים. הערך הוא חשוב ביותר, ככל שיש יותר עיכובים כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל אשכולות)."
-      cost_waiting_time_default: "%{n} (ערך ברירת מחדל)"
-      cost_waiting_time_help: "הערכת שווי זמן ההמתנה. הערך הוא חשוב ביותר, ככל שיש יותר עיכובים כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל אשכולות)"
-      print_header_help: "Block of text added before each route"
+      name: חשבון
+      default_value: ערכי ברירת מחדל
+      outputs: פלט
+      options: אפשרויות
+      optimization_parameters: הגדרות אופטימיזציה
+      router_help: פרופיל בשימוש על ידי תיכנון הניתוב כברירת מחדל
+      router_options_default: '%{n} (ברירת מחדל)'
+      router_options_motorway_yes: כן
+      router_options_motorway_no: לא
+      router_options_motorway_default: ברירת מחדל (%{value})
+      router_options_toll_yes: כן
+      router_options_toll_no: לא
+      router_options_toll_default: ברירת מחדל (%{value})
+      router_options_trailers_range: ערכי טריילר בין הערכים %{from} לבין%{to}
+      router_options_weight_range: ערכי משקל (כולל טריילרים וסחורה) בין הערכים %{from}
+        לבין%{to}
+      router_options_weight_per_axle_range: ערכי משקל לכל סרן בין%{from} לבין%{to} טון
+      router_options_height_range: ערכי גובה בין%{from} לבין%{to} מטרים
+      router_options_width_range: ערכי רחב בין%{from} לבין%{to} מטרים
+      router_options_length_range: ערכי אורך בין%{from} לבין%{to} מטרים
+      take_over_help: זמן ממוצע לחשבון
+      tomtom: TomTom WEBFLEET
+      tomtom_help: מאפשר לשלוח תוכניות TomTom Pro עם WEBFLEET.
+      teksat: איתורן
+      teksat_help: שליחת תיכנון לאיתורן
+      orange: ביצועי רכב אורנג'
+      orange_help: שליחת תכנית לרכב עם התקן אורנג'
+      masternaut: Masternaut
+      masternaut_help: אפשר שליחת תכנית להתקן Masternaut
+      alyacom: AlyaCom
+      alyacom_help: אפשר שליחת תכנית לאפליקציית AlyaCom
+      optimization_cluster_size_default: '%{n} (ערך ברירת מחדל)'
+      optimization_cluster_size_help: ערך בשניות בין נקודות לקבוצה לפני ביצוע אופטימיזציה.
+        ערך גדול יפגע בתוצאות האופטימיזציה (30 שניות כבר ערך חשוב). יש לקחת בחשבון
+        רק אופטימיזציה של מסלול אחד עם עיכובים.
+      optimization_time_default: '%{n} (ערך ברירת מחדל)'
+      optimization_time_help: האופטימיזציה נעצרת אוטומטית כברירת מחדל. עם זאת, תוכל
+        לציין כאן זמן מקסימלי לאופטימיזציה.
+      optimization_soft_upper_bound_default: '%{n} (ערך ברירת מחדל)'
+      optimization_stop_soft_upper_bound_help: הערך הוא חשוב ביותר, ככל שיש יותר עיכובים
+        כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל אשכולות).
+      optimization_vehicle_soft_upper_bound_help: בכדי להריץ אופטימיזציה גלובאלית,
+        יש לאפשר ניהול הפצה באמצעות רכבים. הערך הוא חשוב ביותר, ככל שיש יותר עיכובים
+        כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל אשכולות).
+      cost_waiting_time_default: '%{n} (ערך ברירת מחדל)'
+      cost_waiting_time_help: הערכת שווי זמן ההמתנה. הערך הוא חשוב ביותר, ככל שיש
+        יותר עיכובים כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל
+        אשכולות)
+      print_header_help: Block of text added before each route
       print:
-        title: "הדפסה"
-      speed_multiplicator_default: "%{n} (ערך ברירת מחדל)"
-      speed_multiplicator_help: "ערך הגבוה מ-100% משמעו מהירות גבוה יותר."
-      submit: "עידכון הגדרות גלובליות"
+        title: הדפסה
+      speed_multiplicator_default: '%{n} (ערך ברירת מחדל)'
+      speed_multiplicator_help: ערך הגבוה מ-100% משמעו מהירות גבוה יותר.
+      submit: עידכון הגדרות גלובליות
       sync:
-        complete: "סינכרון הושלם"
+        complete: סינכרון הושלם
         orange:
-          confirm: "האם לסנכרן רכבים מביצועי הרכב ב-Orange?"
-          action: "סנכרן רכבים מביצועי הרכב ב-Orange"
+          confirm: האם לסנכרן רכבים מביצועי הרכב ב-Orange?
+          action: סנכרן רכבים מביצועי הרכב ב-Orange
         tomtom:
-          confirm: "האם לסנכרן רכבים מביצועי הרכב ב-tomtom?"
-          action: "סנכרן רכבים מביצועי הרכב ב- TomTom WebFLEET"
+          confirm: האם לסנכרן רכבים מביצועי הרכב ב-tomtom?
+          action: סנכרן רכבים מביצועי הרכב ב- TomTom WebFLEET
         teksat:
-          confirm: "האם לסנכרן רכבים מביצועי הרכב ב-teksat?"
-          action: "סנכרן רכבים מביצועי הרכב ב-teksat"
+          confirm: האם לסנכרן רכבים מביצועי הרכב ב-teksat?
+          action: סנכרן רכבים מביצועי הרכב ב-teksat
       external_callback:
-        title: "קישור לחיוג חוזר"
-        name: "שם"
-        name_placeholder: "אפליקציה חיצונית"
-        url: "קישור"
-        url_placeholder: "http://www.example.com?p_id={PLANNING_ID}"
-        url_help: >
-          External URL to call from Planning Export Menu
+        title: קישור לחיוג חוזר
+        name: שם
+        name_placeholder: אפליקציה חיצונית
+        url: קישור
+        url_placeholder: http://www.example.com?p_id={PLANNING_ID}
+        url_help: 'External URL to call from Planning Export Menu
 
-          Can contain the following replacement tokens: PLANNING_ID, PLANNING_REF, ROUTE_ID, ROUTE_REF
+          Can contain the following replacement tokens: PLANNING_ID, PLANNING_REF,
+          ROUTE_ID, ROUTE_REF
 
           Example: http://www.example.com?p_id={PLANNING_ID}
 
+          '
   deliverable_units:
     edit:
-      title: "עריכת יחידות משלוח"
+      title: עריכת יחידות משלוח
     index:
-      title: "יחידות משלוח"
-      new: "הוספת יחידת משלוח"
+      title: יחידות משלוח
+      new: הוספת יחידת משלוח
     new:
-      title: "הוספת יחידות משלוח"
+      title: הוספת יחידות משלוח
     form:
-      prefered_icons: "מועדף"
-      other_icons: "אחרים"
-      label_placeholder: "יחידה"
-      label_help: 'For instance "מנות" or a unit like "ליברות", קג".'
-      ref_help: "הפניה חופשית"
-      default_quantity_help: "כמות למשלוח בכל ביקור (השאר ריק אם אין מגבלה)."
-      default_capacity_help: "הגבלה לכל הרכבים (השאר ריק אם אין מגבלה)."
-      optimization_overload_multiplier_no: "לא"
-      optimization_overload_multiplier_no_help: "במהלך האופטימיזציה, במקרה של הגדרת מספר מיגבלות עבור כלי הרכב, חריגה בעומס היתר אינה אפשרית."
-      optimization_overload_multiplier_yes: "כן"
-      optimization_overload_multiplier_yes_help: "במהלך האופטימיזציה, במקרה של הגדרת מספר מיגבלות עבור כלי הרכב, חריגה בעומס היתר כן אפשרית. עומס יתר יהיה מותר על ידי אופטימיזציה."
-      optimization_overload_multiplier_ignore: "התעלם"
-      optimization_overload_multiplier_ignore_help: "במהלך האופטימיזציה, כמויות וכלי רכב לא יובאו בחשבון."
-      optimization_overload_multiplier_help: "עומס יתר או לא במהלך האופטימיזציה (תקף רק אם הקיבולת מוגדרת לרכב). אם העומס יתר על המידה, המספר הגדול יותר הוא, עומס יתר יהיה מותר על ידי אופטימיזציה."
-
+      prefered_icons: מועדף
+      other_icons: אחרים
+      label_placeholder: יחידה
+      label_help: For instance "מנות" or a unit like "ליברות", קג".
+      ref_help: הפניה חופשית
+      default_quantity_help: כמות למשלוח בכל ביקור (השאר ריק אם אין מגבלה).
+      default_capacity_help: הגבלה לכל הרכבים (השאר ריק אם אין מגבלה).
+      optimization_overload_multiplier_no: לא
+      optimization_overload_multiplier_no_help: במהלך האופטימיזציה, במקרה של הגדרת
+        מספר מיגבלות עבור כלי הרכב, חריגה בעומס היתר אינה אפשרית.
+      optimization_overload_multiplier_yes: כן
+      optimization_overload_multiplier_yes_help: במהלך האופטימיזציה, במקרה של הגדרת
+        מספר מיגבלות עבור כלי הרכב, חריגה בעומס היתר כן אפשרית. עומס יתר יהיה מותר
+        על ידי אופטימיזציה.
+      optimization_overload_multiplier_ignore: התעלם
+      optimization_overload_multiplier_ignore_help: במהלך האופטימיזציה, כמויות וכלי
+        רכב לא יובאו בחשבון.
+      optimization_overload_multiplier_help: עומס יתר או לא במהלך האופטימיזציה (תקף
+        רק אם הקיבולת מוגדרת לרכב). אם העומס יתר על המידה, המספר הגדול יותר הוא, עומס
+        יתר יהיה מותר על ידי אופטימיזציה.
   destinations:
     upload_tomtom:
-      success: "כתובות יובאו בהצלחה"
+      success: כתובות יובאו בהצלחה
     menu:
-      destinations: "יעדים"
-      import: "יבא"
-      export_spreadsheet_standard: "יצוא לגיליונות סטנדרטיים"
-      export_spreadsheet_excel: "יצוא לגיליונות אקסל"
-      stores: "מחסנים"
-      import_stores: "יבא מחסנים"
-      tags: "תגים"
-      clear: "מחק את כל היעדים"
-      clear_confirm: "מחיקת כל היעדים הינה בילתי הפיכה, האם לבצע מחיקה ?"
+      destinations: יעדים
+      import: יבא
+      export_spreadsheet_standard: יצוא לגיליונות סטנדרטיים
+      export_spreadsheet_excel: יצוא לגיליונות אקסל
+      stores: מחסנים
+      import_stores: יבא מחסנים
+      tags: תגים
+      clear: מחק את כל היעדים
+      clear_confirm: מחיקת כל היעדים הינה בילתי הפיכה, האם לבצע מחיקה ?
     form:
-      ref_help: "הפניה חופשית"
-      detail_help: "כתובת גאוקודינג אינה חוקית, אפשרי מספר שטוח"
-      comment_help: "פרטי שילוח"
-      locate_manually: "אתר מיקום מפה באופן ידני"
-      geocoding_accuracy_none: "לא יישים"
-      geocoding_fail: "גאוקודינג נכשל"
-      geocoding_accuracy_help: "המרת איכות הכתובת למיקום גאוגרפי"
-      country_default: "%{n} (ערך ברירת מחדל)"
+      ref_help: הפניה חופשית
+      detail_help: כתובת גאוקודינג אינה חוקית, אפשרי מספר שטוח
+      comment_help: פרטי שילוח
+      locate_manually: אתר מיקום מפה באופן ידני
+      geocoding_accuracy_none: לא יישים
+      geocoding_fail: גאוקודינג נכשל
+      geocoding_accuracy_help: המרת איכות הכתובת למיקום גאוגרפי
+      country_default: '%{n} (ערך ברירת מחדל)'
       geocoding_level:
-        point: "נקודה"
-        house: "בית"
-        street: "רחוב"
-        intersection: "הצטלבות"
-        city: "עיר"
-        "null": "ללא"
-      tags_help: "קטגוריות יעד"
+        point: נקודה
+        house: בית
+        street: רחוב
+        intersection: הצטלבות
+        city: עיר
+        'null': ללא
+      tags_help: קטגוריות יעד
       dialog:
-        confirm_overwrite_point: "המיקום הוגדר באופן ידני. עקוף עם תוצאות קידוד גיאוגרפי?"
+        confirm_overwrite_point: המיקום הוגדר באופן ידני. עקוף עם תוצאות קידוד גיאוגרפי?
       visit:
-        enable_multi_visits: "האם נדרשים מספר ביקורים ליעד זה ? אנא פנה לתמיכה."
-        new: "ביקור חדש"
-        new_help: "ביקור חדש אם קיימים מספר ביקורים לאותו יעד."
+        enable_multi_visits: האם נדרשים מספר ביקורים ליעד זה ? אנא פנה לתמיכה.
+        new: ביקור חדש
+        new_help: ביקור חדש אם קיימים מספר ביקורים לאותו יעד.
     edit:
-      title: "עריכת יעד"
+      title: עריכת יעד
     import:
-      title: "יבוא יעדים"
-      destinations: "יעדים"
-      replace_no: "עדכון / בנוסף"
-      replace_no_help: "עדכון של היעדים הקיימים (הפניות יעד ללא שינוי) בוצע ונוסף למערכת."
-      replace_yes: "מחיקת יעדים קודמים"
-      replace_yes_help: "מחק והחלף יעדים ביבוא. החלף את כל היעדים. גם התוכניות יימחקו."
-      replace_confirm: "מחק את כל הלקוחות עם התיקונים שלהם ולהחליף אותם עם אלה מיובאים?"
-      plannings: "תוכניות"
-      delete_plannings: "מחק תוכניות קודמות"
-      delete_plannings_help: "מחק תוכניות שנוצרו בעבר (מאפשר ביצוע טוב יותר). אם נתיבים קיימים בקובץ הייבוא החדש שלך, תיווצר תכנית לאחר הייבוא."
-      delete_plannings_confirm: "מחק את כל התוכניות הקודמות?"
+      title: יבוא יעדים
+      destinations: יעדים
+      replace_no: עדכון / בנוסף
+      replace_no_help: עדכון של היעדים הקיימים (הפניות יעד ללא שינוי) בוצע ונוסף למערכת.
+      replace_yes: מחיקת יעדים קודמים
+      replace_yes_help: מחק והחלף יעדים ביבוא. החלף את כל היעדים. גם התוכניות יימחקו.
+      replace_confirm: מחק את כל הלקוחות עם התיקונים שלהם ולהחליף אותם עם אלה מיובאים?
+      plannings: תוכניות
+      delete_plannings: מחק תוכניות קודמות
+      delete_plannings_help: מחק תוכניות שנוצרו בעבר (מאפשר ביצוע טוב יותר). אם נתיבים
+        קיימים בקובץ הייבוא החדש שלך, תיווצר תכנית לאחר הייבוא.
+      delete_plannings_confirm: מחק את כל התוכניות הקודמות?
       csv:
-        title: "CSV קובץ"
-        help: "ייבוא יעדים מקובץ CSV. קבצי CSV ניתן לייצא מגיליון אלקטרוני או תוכנות אחרות."
-        file_help: "ייבא רק קובצי CSV."
-      import_template_help: "עזרה - הגדרת עמודות"
+        title: CSV קובץ
+        help: ייבוא יעדים מקובץ CSV. קבצי CSV ניתן לייצא מגיליון אלקטרוני או תוכנות
+          אחרות.
+        file_help: ייבא רק קובצי CSV.
+      import_template_help: עזרה - הגדרת עמודות
       dialog:
         help:
-          title: "עמודות בקובץ שלך"
-          desc: "קובץ הייבוא יכול להכיל את העמודות הבאות:"
-          columns_route: "נתיב עמודות"
-          columns_destination: "עמודות היעדים שביקרת"
-          columns_visit: "בקר בעמודות"
-          def_help: "אם אינך מעוניין להשתמש בשמות של עמודות ברירת מחדל, תוכל להתאים אישית אותן בעצמך. באפשרותך לציין רשימה של מספרי עמודות או כותרות."
-          def_example: 'לדוגמה, עבור "רחוב", ניתן להגדיר "מספר, כביש, 4" כדי למזג את העמודות "מספר", "כביש" ואת העמודה 4 ללא כותרת כמו ערך עבור "רחוב" ביישום.'
+          title: עמודות בקובץ שלך
+          desc: 'קובץ הייבוא יכול להכיל את העמודות הבאות:'
+          columns_route: נתיב עמודות
+          columns_destination: עמודות היעדים שביקרת
+          columns_visit: בקר בעמודות
+          def_help: אם אינך מעוניין להשתמש בשמות של עמודות ברירת מחדל, תוכל להתאים
+            אישית אותן בעצמך. באפשרותך לציין רשימה של מספרי עמודות או כותרות.
+          def_example: לדוגמה, עבור "רחוב", ניתן להגדיר "מספר, כביש, 4" כדי למזג את
+            העמודות "מספר", "כביש" ואת העמודה 4 ללא כותרת כמו ערך עבור "רחוב" ביישום.
       tomtom:
-        title: "TomTom"
-        help: "ייבוא כתובות TomTom WEBFLEET כיעדים"
+        title: TomTom
+        help: ייבוא כתובות TomTom WEBFLEET כיעדים
     index:
-      title: "רשימת יעדים"
-      new: "יעד חדש"
-      default_name: "יעד חדש"
-      columns: "עמודות"
-      no_position: "חסר"
-      geocoding_level: "רמות גאוקודינג"
-      geocoding_column_help: "רמת הגיאוקוד ודיוק. סדר לפי הרמה הראשונה, ולאחר מכן על ידי דיוק"
-      geocoding_empty: "חסר"
-      mutli_quantities: "מספר כמויות, לערוך ביקור זה כדי לשנות כמויות."
-      click2call: "לחץ להתקשרות"
-      quantity_small: "כמות."
+      title: רשימת יעדים
+      new: יעד חדש
+      default_name: יעד חדש
+      columns: עמודות
+      no_position: חסר
+      geocoding_level: רמות גאוקודינג
+      geocoding_column_help: רמת הגיאוקוד ודיוק. סדר לפי הרמה הראשונה, ולאחר מכן על
+        ידי דיוק
+      geocoding_empty: חסר
+      mutli_quantities: מספר כמויות, לערוך ביקור זה כדי לשנות כמויות.
+      click2call: לחץ להתקשרות
+      quantity_small: כמות.
       dialog:
         import:
-          title: "יבוא"
-          in_progress: "אנא המתן, יבוא בתהליך"
+          title: יבוא
+          in_progress: אנא המתן, יבוא בתהליך
         geocoding:
-          title: "גאוקודינג"
-          in_progress: "אנא המתן, גאוקודינג בתהליך."
-          attempts: "ניסיונות:"
-          inqueue: "משימת הגאוקוד בתור"
-          error: "נפילת מחשב."
+          title: גאוקודינג
+          in_progress: אנא המתן, גאוקודינג בתהליך.
+          attempts: 'ניסיונות:'
+          inqueue: משימת הגאוקוד בתור
+          error: נפילת מחשב.
         geocoding_danger:
-          title: "תוצאות הגאוקודינג אינן אמינות"
-          infos: "חלק מתוצאות הגאוקודינג אינן אמינות. האם להציגן ?"
-          hide_help: "כדי להסתיר הודעה זו, בחר את היעדים הלא מאומתים שלך:"
-          correct_help: "בדוק את הכתובת כדי לתקן או להשלים אותה במידת הצורך"
-          move_help: "הזז נקודות על המפה במידת הצורך"
-          dismiss: "שחרר"
-          sort_geocoding: "הצג תחילה תוצאות לא אמינות של גאוקודינג"
+          title: תוצאות הגאוקודינג אינן אמינות
+          infos: חלק מתוצאות הגאוקודינג אינן אמינות. האם להציגן ?
+          hide_help: 'כדי להסתיר הודעה זו, בחר את היעדים הלא מאומתים שלך:'
+          correct_help: בדוק את הכתובת כדי לתקן או להשלים אותה במידת הצורך
+          move_help: הזז נקודות על המפה במידת הצורך
+          dismiss: שחרר
+          sort_geocoding: הצג תחילה תוצאות לא אמינות של גאוקודינג
     new:
-      title: "יעד חדש"
+      title: יעד חדש
     import_file:
-      refs_duplicate: "ההתייחסות: (%{refs}) שוכפלה"
-      ref: "התייחסות"
-      ref_desc: "מזהה ייחוס יציב, ייחודי, קבוע, המאפשר עדכון לא הרסני של פריט זה כאשר יבוא הבא קורה"
-      route: "מסלול"
-      route_desc: "מדד או הפניה של המסלול בתוכנית."
-      ref_vehicle: "רכב"
-      ref_vehicle_desc: "הפניה או שם הרכב המשמש לביצוע העצירה בתכנית."
-      stop_type: "סוג עצירה"
-      stop_type_desc: "סוג עצירה בתכנית."
-      stop_type_visit: "ביקורים"
-      stop_type_visit_desc: ""
-      stop_format: "[ביקור | מחסן | מנוחה]"
-      name: "שם"
-      name_desc: "שם יעד או חשבון יעד."
-      street: "רחוב"
-      street_desc: "כתובת רחוב עם מספר בניין, סוג כביש ושם כביש (איות הוא קריטי עבור קידוד אמין). אלמנטים לא רשמיים כגון מספר החדר, מדרגות המכתב, וכו 'יש להעביר לשדה \"פרט \"."
-      detail: "פרטים"
-      detail_desc: "פרטים ידידותיים לאדם וסימנים המוביל את הסוכן שלך מרכב שלו אל הסף של היעד. לְמָשָׁל. שם הבניין, הרצפה, מספר החדר…"
-      postalcode: "מיקוד"
-      postalcode_desc: "postal code of your district (exactness is critical for reliable geocoding)"
-      city: "city"
-      city_desc: "עיר, עיר או שם מחוז (איות הוא קריטי עבור גאוקודינג אמין)"
-      country: "ארץ"
-      country_desc: "מדינה או שם המדינה (איות הוא קריטי עבור גאוקודינג אמין)"
-      lat: "lat"
-      lat_desc: "קו הרוחב של היעד במעלות עשרוניות בין -90 ° ל -90 °. לְמָשָׁל. 45.91"
-      lat_format: "floating number between -90 and 90"
-      lng: "lng"
-      lng_desc: "קו אורך של היעד במעלות עשרוניות בין -180 ° ל 180 °. לְמָשָׁל. -0.781"
-      lng_format: "floating number between -180 and 180"
-      geocoding_accuracy: "רמת דיוק הגאוקודינג"
-      geocoding_accuracy_desc: "ציון איכות שניתן לתהליך המרת כתובת הרחוב של היעד לקואורדינטות גיאוגרפיות. ציון זה בא לידי ביטוי באמצעות ציון בין 0 et 1. למשל 0.70 פירושו 70% מדויק."
-      geocoding_accuracy_format: "floating number between 0 and 1"
-      geocoding_level: "רמת הגאוקודינג"
-      geocoding_level_desc: "רמת הדיוק הגיע בעת המרת כתובת הרחוב של היעד לתוך קואורדינטות גיאוגרפיות, לידי ביטוי ברמות ידידותיות אנושיות."
-      take_over: "משך הביקור"
-      take_over_desc: "משך הביקור"
-      quantity: "כמות"
-      quantity_desc: "מספר יחידות להעברה."
-      quantity1_1: "כמות 1_1"
-      quantity1_1_desc: "הוצא משימוש: השתמש \"כמויות\" במקום זאת."
-      quantity1_2: "כמות 1_2"
-      quantity1_2_desc: "הוצא משימוש: השתמש \"כמויות\" במקום זאת."
-      active: "active"
-      active_desc: "קובע אם הביקור פעיל או לא בתוואי זה"
-      open: "פתוח"
-      open_desc: "הוצא משימוש: השתמש \"פתח 1\" במקום זאת."
-      close: "סגור"
-      close_desc: "הוצא משימוש: השתמש \"סגור\" במקום זאת."
-      open1: "פתוח 1"
-      open1_desc: "זמן התחלה 1 להגעה ליעד."
-      close1: "close 1"
-      close1_desc: "זמן אחרון 1 להגעה ליעד."
-      open2: "open 2"
-      open2_desc: "זמן התחלה 1 להגעה ליעד."
-      close2: "סגור 2"
-      close2_desc: "זמן אחרון 2 להגעה ליעד."
-      comment: "הערות"
-      comment_desc: "מידע משלים."
-      phone_number: "טלפון"
-      phone_number_desc: "מספר טלפון של היעד."
-      tags: "תגים"
-      tags_desc: "תגי יעדים (אפשר קיבוץ)."
-      tags_format: "תג 1, תג 2"
-      without_visit: "ללא ביקור"
-      without_visit_desc: "קובע כי אין ביקורים קשורים"
-      ref_visit: "מזהה לביקור"
-      ref_visit_desc: "מספר מזהה לביקור."
-      tags_visit: "תגי ביקורים"
-      tags_visit_desc: "תגי ביקורים (אפשר קיבוץ)."
+      refs_duplicate: 'ההתייחסות: (%{refs}) שוכפלה'
+      ref: התייחסות
+      ref_desc: מזהה ייחוס יציב, ייחודי, קבוע, המאפשר עדכון לא הרסני של פריט זה כאשר
+        יבוא הבא קורה
+      route: מסלול
+      route_desc: מדד או הפניה של המסלול בתוכנית.
+      ref_vehicle: רכב
+      ref_vehicle_desc: הפניה או שם הרכב המשמש לביצוע העצירה בתכנית.
+      stop_type: סוג עצירה
+      stop_type_desc: סוג עצירה בתכנית.
+      stop_type_visit: ביקורים
+      stop_type_visit_desc: ''
+      stop_format: '[ביקור | מחסן | מנוחה]'
+      name: שם
+      name_desc: שם יעד או חשבון יעד.
+      street: רחוב
+      street_desc: כתובת רחוב עם מספר בניין, סוג כביש ושם כביש (איות הוא קריטי עבור
+        קידוד אמין). אלמנטים לא רשמיים כגון מספר החדר, מדרגות המכתב, וכו 'יש להעביר
+        לשדה "פרט ".
+      detail: פרטים
+      detail_desc: פרטים ידידותיים לאדם וסימנים המוביל את הסוכן שלך מרכב שלו אל הסף
+        של היעד. לְמָשָׁל. שם הבניין, הרצפה, מספר החדר…
+      postalcode: מיקוד
+      postalcode_desc: postal code of your district (exactness is critical for reliable
+        geocoding)
+      city: city
+      city_desc: עיר, עיר או שם מחוז (איות הוא קריטי עבור גאוקודינג אמין)
+      country: ארץ
+      country_desc: מדינה או שם המדינה (איות הוא קריטי עבור גאוקודינג אמין)
+      lat: lat
+      lat_desc: קו הרוחב של היעד במעלות עשרוניות בין -90 ° ל -90 °. לְמָשָׁל. 45.91
+      lat_format: floating number between -90 and 90
+      lng: lng
+      lng_desc: קו אורך של היעד במעלות עשרוניות בין -180 ° ל 180 °. לְמָשָׁל. -0.781
+      lng_format: floating number between -180 and 180
+      geocoding_accuracy: רמת דיוק הגאוקודינג
+      geocoding_accuracy_desc: ציון איכות שניתן לתהליך המרת כתובת הרחוב של היעד לקואורדינטות
+        גיאוגרפיות. ציון זה בא לידי ביטוי באמצעות ציון בין 0 et 1. למשל 0.70 פירושו
+        70% מדויק.
+      geocoding_accuracy_format: floating number between 0 and 1
+      geocoding_level: רמת הגאוקודינג
+      geocoding_level_desc: רמת הדיוק הגיע בעת המרת כתובת הרחוב של היעד לתוך קואורדינטות
+        גיאוגרפיות, לידי ביטוי ברמות ידידותיות אנושיות.
+      take_over: משך הביקור
+      take_over_desc: משך הביקור
+      quantity: כמות
+      quantity_desc: מספר יחידות להעברה.
+      quantity1_1: כמות 1_1
+      quantity1_1_desc: 'הוצא משימוש: השתמש "כמויות" במקום זאת.'
+      quantity1_2: כמות 1_2
+      quantity1_2_desc: 'הוצא משימוש: השתמש "כמויות" במקום זאת.'
+      active: active
+      active_desc: קובע אם הביקור פעיל או לא בתוואי זה
+      open: פתוח
+      open_desc: 'הוצא משימוש: השתמש "פתח 1" במקום זאת.'
+      close: סגור
+      close_desc: 'הוצא משימוש: השתמש "סגור" במקום זאת.'
+      open1: פתוח 1
+      open1_desc: זמן התחלה 1 להגעה ליעד.
+      close1: close 1
+      close1_desc: זמן אחרון 1 להגעה ליעד.
+      open2: open 2
+      open2_desc: זמן התחלה 1 להגעה ליעד.
+      close2: סגור 2
+      close2_desc: זמן אחרון 2 להגעה ליעד.
+      comment: הערות
+      comment_desc: מידע משלים.
+      phone_number: טלפון
+      phone_number_desc: מספר טלפון של היעד.
+      tags: תגים
+      tags_desc: תגי יעדים (אפשר קיבוץ).
+      tags_format: תג 1, תג 2
+      without_visit: ללא ביקור
+      without_visit_desc: קובע כי אין ביקורים קשורים
+      ref_visit: מזהה לביקור
+      ref_visit_desc: מספר מזהה לביקור.
+      tags_visit: תגי ביקורים
+      tags_visit_desc: תגי ביקורים (אפשר קיבוץ).
       format:
-        string: "טקטס"
-        integer: "מספר שלם"
-        float: "0.123"
-        hour: "HH:MM"
-        second: "HH:MM:SS"
-        yes_no: "כן / לא"
-        required: "נדרש"
-        advisable: "מומלץ"
-        optionnal: "אופציונאלי"
-        deprecated: "הוצא משימוש"
-      not_csv: "הקובץ המיובא אינו CSV"
-      empty_file: "התוכן ריק"
-      too_many_lines: "עצור יבוא, חריגה בכמות השורות המותרת (max: %{n})."
-      none_column: "העמודה לא נמצאה"
-      missing_name: "%{line}: \"name\" missing."
-      missing_location: "%{line}: \"city / postalcode\" or \"lat / lng\" missing."
-      invalid_numeric_value: "%{line}: Invalid numeric value \"%{value}\"."
-      check_custom_columns: "בדוק את הגדרת העמודות שלך."
+        string: טקטס
+        integer: מספר שלם
+        float: '0.123'
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: כן / לא
+        required: נדרש
+        advisable: מומלץ
+        optionnal: אופציונאלי
+        deprecated: הוצא משימוש
+      not_csv: הקובץ המיובא אינו CSV
+      empty_file: התוכן ריק
+      too_many_lines: 'עצור יבוא, חריגה בכמות השורות המותרת (max: %{n}).'
+      none_column: העמודה לא נמצאה
+      missing_name: '%{line}: "name" missing.'
+      missing_location: '%{line}: "city / postalcode" or "lat / lng" missing.'
+      invalid_numeric_value: '%{line}: Invalid numeric value "%{value}".'
+      check_custom_columns: בדוק את הגדרת העמודות שלך.
     reverse_geocoding:
-      apply: "עדכן כתובת חדשה"
-
+      apply: עדכן כתובת חדשה
   index:
     unsupported_browser:
-      unsupported_browser: "דפדפן לא נתמך"
-      unsupported_browser_modern: "הדפדפן שלך ישן מדי, השתמש בכל דפדפן עדכני."
-      download_browser: "ניתן להוריד גירסת דפדפן מתקדמת בחינם: "
-
+      unsupported_browser: דפדפן לא נתמך
+      unsupported_browser_modern: הדפדפן שלך ישן מדי, השתמש בכל דפדפן עדכני.
+      download_browser: 'ניתן להוריד גירסת דפדפן מתקדמת בחינם: '
   order_arrays:
     menu:
-      order_arrays: "הזמנות"
+      order_arrays: הזמנות
     form:
-      week: "שבוע"
-      week2: "2 שבועות"
-      month: "חודש"
+      week: שבוע
+      week2: 2 שבועות
+      month: חודש
       export:
-        print: "הדפס"
-        menu: "ייצא"
-        spreadsheet_standard: "גיליון אלקטרוני סטנדרטי"
-        spreadsheet_excel: "גיליון אלקטרוני של Excel"
+        print: הדפס
+        menu: ייצא
+        spreadsheet_standard: גיליון אלקטרוני סטנדרטי
+        spreadsheet_excel: גיליון אלקטרוני של Excel
     index:
-      title: "רשימת הזמנות מתוכננות"
-      new: "הזמנות חדשות לתיכנון"
+      title: רשימת הזמנות מתוכננות
+      new: הזמנות חדשות לתיכנון
     edit:
-      title: "ערוך הזמנות לתיכנון"
-      vehicle: "רכבים"
-      name: "שם"
-      comment: "הערות"
-      empty_row: "שורה ריקה"
-      empty_column: "עמודה ריקה"
-      copy: "העתק"
-      paste: "הדבק"
-      total: "סך הכל"
-      planning: "החל לתוכנית"
-      confirm_ovewrite_column: "האם אתה בטוח שברצונך להחליף את נתוני העמודות?"
-      confirm_ovewrite_row: "האם אתה בטוח שברצונך להחליף את נתוני השורה?"
+      title: ערוך הזמנות לתיכנון
+      vehicle: רכבים
+      name: שם
+      comment: הערות
+      empty_row: שורה ריקה
+      empty_column: עמודה ריקה
+      copy: העתק
+      paste: הדבק
+      total: סך הכל
+      planning: החל לתוכנית
+      confirm_ovewrite_column: האם אתה בטוח שברצונך להחליף את נתוני העמודות?
+      confirm_ovewrite_row: האם אתה בטוח שברצונך להחליף את נתוני השורה?
       dialog:
         loading:
-          title: "טוען"
-          in_progress: "טוען, נא המתן."
+          title: טוען
+          in_progress: טוען, נא המתן.
     new:
-      title: "הזמנות חדשות בתיכנון"
+      title: הזמנות חדשות בתיכנון
     export_file:
-      vehicle: "רכב"
-      name: "שם"
-      comment: "הערות"
-      total: "סך הכל"
-
+      vehicle: רכב
+      name: שם
+      comment: הערות
+      total: סך הכל
   route_mailer:
     send_kmz_route:
-      content: "דואר אלקטרוני זה מכיל קובץ KMZ המכיל מידע על המסלול %{s}."
-      vehicle: "רכב"
-      planning: "תוכנית"
-      planning_ref: "תכנית מס'"
-      route_ref: "ניתוב מס'"
-      order_array: "הזמנות"
+      content: דואר אלקטרוני זה מכיל קובץ KMZ המכיל מידע על המסלול %{s}.
+      vehicle: רכב
+      planning: תוכנית
+      planning_ref: תכנית מס'
+      route_ref: ניתוב מס'
+      order_array: הזמנות
     send_computed_ics_route:
-      content: "An iCalendar has been sent from %{s}\n
-you can copy-paste the following link to be able to use it as a source in your personnal calendar (update will be automatic)\n
-or you can click on this link to download file (no update in this case)."
-      vehicle: "רכב"
-      planning: "תכנית"
-      planning_ref: "תכנית מס'"
-      route_ref: "מסלול מס'"
-      order_array: "הזמנות"
-      link: "קישור להורדה"
-
+      content: "An iCalendar has been sent from %{s}\n you can copy-paste the following\
+        \ link to be able to use it as a source in your personnal calendar (update\
+        \ will be automatic)\n or you can click on this link to download file (no\
+        \ update in this case)."
+      vehicle: רכב
+      planning: תכנית
+      planning_ref: תכנית מס'
+      route_ref: מסלול מס'
+      order_array: הזמנות
+      link: קישור להורדה
   user_mailer:
     welcome:
-      title: "החשבון נמצא בניצולת של - %{s} "
-      content: "<p>שלום וברוך הבא %{s},</p>\n
-\n
-<p>You can set your password with the following link: <a href=\"%{l}\" target=\"_blank\" title=\"אני משנה את הסיסמה שלי %{s}\">הגדר סיסמא</a>  <br/>
-or copy/paste following url in your browser : %{l} </p>\n
-\n
-<p>You will be able to connect our service online %{s} with click on following URL: <a href=\"%{a}\" target=\"_blank\" title=\"I log in %{s}\">%{a}<a> </p>\n
-\n
-<p>If you need to contact us, please use the following link: <a href=\"%{c}\" target=\"_blank\" title=\"I contact support\">%{c}</a> </p>\n
-\n
-<p>Best regards,</p>\n
-\n
-<p>%{s} team</p>"
-
+      title: החשבון נמצא בניצולת של - %{s}
+      content: "<p>שלום וברוך הבא %{s},</p>\n \n <p>You can set your password with\
+        \ the following link: <a href=\"%{l}\" target=\"_blank\" title=\"אני משנה\
+        \ את הסיסמה שלי %{s}\">הגדר סיסמא</a>  <br/> or copy/paste following url in\
+        \ your browser : %{l} </p>\n \n <p>You will be able to connect our service\
+        \ online %{s} with click on following URL: <a href=\"%{a}\" target=\"_blank\"\
+        \ title=\"I log in %{s}\">%{a}<a> </p>\n \n <p>If you need to contact us,\
+        \ please use the following link: <a href=\"%{c}\" target=\"_blank\" title=\"\
+        I contact support\">%{c}</a> </p>\n \n <p>Best regards,</p>\n \n <p>%{s} team</p>"
   plannings:
     menu:
-      plannings: "תוכניות"
+      plannings: תוכניות
     index:
-      title: "רשימת תוכניות"
-      new: "תכנית חדשה"
-      export_selection: "ייצא בחירה"
+      title: רשימת תוכניות
+      new: תכנית חדשה
+      export_selection: ייצא בחירה
       export:
-        icalendar: "יומן iCal"
-        icalendar_email: "יומן iCal עי מייל"
-        spreadsheet: "גיליון אלקטרוני CSV / Excel"
-        none_planning: "יש לבחור לפחות תכנית אחת ליצוא"
+        icalendar: יומן iCal
+        icalendar_email: יומן iCal עי מייל
+        spreadsheet: גיליון אלקטרוני CSV / Excel
+        none_planning: יש לבחור לפחות תכנית אחת ליצוא
     edit:
-      vehicles: "רכבים"
-      current_position: "מיקום הרכב:"
-      lock_routes: "נעל מסלול"
-      toggle_routes: "החלף מסלולים"
-      zonings: "איזורים"
-      zoning_new: "איזור חדש מתוכנית זו"
-      zoning_edit: "ערוך איזור מתכנית זו"
-      last_sent_to: "שלח ל"
-      optimized_at: "אופטימיזציה"
-      optimize_global_help: "ייעל את כל התכנון למעט מסלולים נעולים (עצירות יכולות להיות מהנקודה האמיתית למסלול אחר)"
-      optimize_each_help: "בצע אופטימיזציה לכל המסלולים הנעולים אחד אחרי השני (עצירות יישארו במסלול הראשוני)"
-      title: "עריכת תוכנית"
-      stops: "עצירה"
-      optimize_global: "בצע אופטימיזציה להכל"
-      optimize_global_confirm: "האם לייעל את כל התכנון? (עצירות ניתן להקצות מחדש לתוואי אחר)"
-      optimize_each: "ייעל כל מסלול"
-      optimize_each_confirm: "להפעיל חישוב אופטימיזציה על כל מסלול? (עצירות יישארו במסלול הראשוני)"
-      optimize_confirm: "האם להריץ חישוב ייעול"
-      optimize_complete: "האופטימיזציה הושלמה"
-      optimize_failed: "האופטימיזציה נכשלה"
-      zoning_confirm: "האם לשמור וליישם את האזורים החדשים ? נתיבים יעודכנו בהתאם"
-      page_change_zoning_confirm: "השאר את הדף פתוח ובטל שינויים"
-      route_placeholder: "מסלול מס'"
-      service_time: "זמן שירות"
-      exports: "ייצא תוכנית"
+      vehicles: רכבים
+      current_position: 'מיקום הרכב:'
+      lock_routes: נעל מסלול
+      toggle_routes: החלף מסלולים
+      zonings:
+        label: איזורים
+        success: האיזורים עודכנו בהצלחה
+        fail: נכשל בעידכון איזורים
+        action: עדכן איזורים
+      zoning_new: איזור חדש מתוכנית זו
+      zoning_edit: ערוך איזור מתכנית זו
+      last_sent_to: שלח ל
+      optimized_at: אופטימיזציה
+      optimize_global_help: ייעל את כל התכנון למעט מסלולים נעולים (עצירות יכולות להיות
+        מהנקודה האמיתית למסלול אחר)
+      optimize_each_help: בצע אופטימיזציה לכל המסלולים הנעולים אחד אחרי השני (עצירות
+        יישארו במסלול הראשוני)
+      title: עריכת תוכנית
+      stops: עצירה
+      optimize_global: בצע אופטימיזציה להכל
+      optimize_global_confirm: האם לייעל את כל התכנון? (עצירות ניתן להקצות מחדש לתוואי
+        אחר)
+      optimize_each: ייעל כל מסלול
+      optimize_each_confirm: להפעיל חישוב אופטימיזציה על כל מסלול? (עצירות יישארו
+        במסלול הראשוני)
+      optimize_confirm: האם להריץ חישוב ייעול ?
+      optimize_complete: האופטימיזציה הושלמה
+      optimize_failed: האופטימיזציה נכשלה
+      zoning_confirm: האם לשמור וליישם את האזורים החדשים ? נתיבים יעודכנו בהתאם
+      page_change_zoning_confirm: השאר את הדף פתוח ובטל שינויים ?
+      route_placeholder: מסלול מס'
+      service_time: זמן שירות
+      exports: ייצא תוכנית
       stop_status:
-        planned: "תוכנן"
-        started: "התחיל"
-        finished: "הסתיים"
-        rejected: "נידחה"
-        any: "כל סטטוס"
-        none: "ללא סטטוס"
-      update_stops_status: "עצור סטטוס:"
+        planned: תוכנן
+        started: התחיל
+        finished: הסתיים
+        rejected: נידחה
+        any: כל סטטוס
+        none: ללא סטטוס
+      update_stops_status: 'עצור סטטוס:'
       customer_external_callback_url:
-        action: "אפליקציה חיצונית"
+        action: אפליקציה חיצונית
       teksat_send:
-        action: "שלח ל - Teksat"
-        success: "נישלח ל - Teksat בהצלחה"
-        fail: "השליחה ל - Teksat נכשלה"
+        action: שלח ל - Teksat
+        success: נישלח ל - Teksat בהצלחה
+        fail: השליחה ל - Teksat נכשלה
       teksat_clear:
-        action: "נקה Teksat"
-        success: "פקודות Teksat נוקו בהצלחה"
-        fail: "מחיקת פקודות Teksat נכשלה"
+        action: נקה Teksat
+        success: פקודות Teksat נוקו בהצלחה
+        fail: מחיקת פקודות Teksat נכשלה
       tomtom_send_orders:
-        action: "נישלח ל- TomTom כהזמנה"
-        success: "השליחה ל - TomTom עברה בהצלחה"
-        fail: "השליחה ל - TomTom ניכשלה"
+        action: נישלח ל- TomTom כהזמנה
+        success: השליחה ל - TomTom עברה בהצלחה
+        fail: השליחה ל - TomTom ניכשלה
       tomtom_send_waypoints:
-        action: "שליחה ל - TomTom כנקודות ציון"
-        success: "השליחה ל - TomTom עברה בהצלחה"
-        fail: "השליחה ל - TomTom ניכשלה"
+        action: שליחה ל - TomTom כנקודות ציון
+        success: השליחה ל - TomTom עברה בהצלחה
+        fail: השליחה ל - TomTom ניכשלה
       tomtom_clear:
-        action: "ניקוי TomTom"
-        success: "פקודות TomTom נוקו בהצלחה"
-        fail: "מחיקת פקודות TomTom נכשלה"
+        action: ניקוי TomTom
+        success: פקודות TomTom נוקו בהצלחה
+        fail: מחיקת פקודות TomTom נכשלה
       orange_send:
-        action: "מאוחר יותר שלח לתפקוד צי אורנג '"
-        success: "השליחה לתפקוד צי אורנג' הסתיימה בהצלחה"
-        fail: "השליחה לתפקוד הצי של אורנג' נכשלה"
+        action: מאוחר יותר שלח לתפקוד צי אורנג '
+        success: השליחה לתפקוד צי אורנג' הסתיימה בהצלחה
+        fail: השליחה לתפקוד הצי של אורנג' נכשלה
       orange_clear:
-        action: "נקה תפקוד הצי של אורנג'"
-        success: "הפקודות לתפקוד הצי של אורנג' נוקו בהצלחה"
-        fail: "נכשל בניקוי הפקודות לתפקוד הצי של אורנג' "
+        action: נקה תפקוד הצי של אורנג'
+        success: הפקודות לתפקוד הצי של אורנג' נוקו בהצלחה
+        fail: נכשל בניקוי הפקודות לתפקוד הצי של אורנג'
       alyacom_send:
-        action: "שלח ל - Alyacom"
-        success: "השליחה ל - Alyacom עברה בהצלחה"
-        fail: "השליחה ל - Alyacom נכשלה"
+        action: שלח ל - Alyacom
+        success: השליחה ל - Alyacom עברה בהצלחה
+        fail: השליחה ל - Alyacom נכשלה
       masternaut_send:
-        action: "שלח ל -  Masternaut"
-        success: "השליחה ל - Masternaut עברה בהצלחה"
-        fail: "השליחה ל -Masternaut נכשלה"
+        action: שלח ל -  Masternaut
+        success: השליחה ל - Masternaut עברה בהצלחה
+        fail: השליחה ל -Masternaut נכשלה
       export:
         customer_external_callback_url:
-          success: "יישום חיצוני התקשר בהצלחה"
-          fail: "נכשל בהתקשרות ליישום חיצוני"
+          success: יישום חיצוני התקשר בהצלחה
+          fail: נכשל בהתקשרות ליישום חיצוני
         icalendar:
-          action: "יומן iCal"
-          action_email: "יומן iCal עי מייל"
-          success: "הקבץ נשלח בהצלחה לכל הרכבים"
-          fail: "ייצוא הקובץ במייל נכשל"
-          mail_error: "מייל(s) לא נשלח. <br/> בדוק את ההגדרות מייל לכל רכב."
+          action: יומן iCal
+          action_email: יומן iCal עי מייל
+          success: הקבץ נשלח בהצלחה לכל הרכבים
+          fail: ייצוא הקובץ במייל נכשל
+          mail_error: מייל(s) לא נשלח. <br/> בדוק את ההגדרות מייל לכל רכב.
         kmz_email:
-          action: "KMZ מעקב על ידי המייל"
-          success: "המייל נשלח בהצלחה"
-          fail: "שליחת המייל נכשלה"
+          action: KMZ מעקב על ידי המייל
+          success: המייל נשלח בהצלחה
+          fail: שליחת המייל נכשלה
         csv:
-          success: "ייצוא קובץ ה - CSV עברה בהצלחה"
-        print: "הדפס"
-        spreadsheet: "גיליון אלקטרוני CSV / Excel"
-        gpx_route: "GPX ניתוב"
-        gpx_track: "GPX מסלול"
-        kmz_track: "KMZ מסלול"
+          success: ייצוא קובץ ה - CSV עברה בהצלחה
+        print: הדפס
+        spreadsheet: גיליון אלקטרוני CSV / Excel
+        gpx_route: GPX ניתוב
+        gpx_track: GPX מסלול
+        kmz_track: KMZ מסלול
       zoning:
-        none: "אף אחד"
-        apply: "עדכן איזורים"
-        edit: "ערוך איזורים"
-        new: "איזור חדש"
+        none: אף אחד
+        apply: עדכן איזורים
+        edit: ערוך איזורים
+        new: איזור חדש
       order_array:
-        edit: "ערוך תוכנית הזמנות"
+        edit: ערוך תוכנית הזמנות
       map:
-        zoom_in: "הגדל מיקוד"
-        zoom_out: "הקטן מיקוד"
-      zonings:
-        label: "איזורים"
-        success: "האיזורים עודכנו בהצלחה"
-        fail: "נכשל בעידכון איזורים"
-        action: "עדכן איזורים"
-      reverse_order: "החזר עצירות הזמנה"
-      open_planning_panel: "פתח פנל תיכנון"
-      collapse_planning_panel: "הקטן את לוח התיכנון"
-      refresh: "רענן"
-      refresh_help: "פרמטרי התוכנית שונו, נדרש לחשב תוכנית מחדש"
-      out_of_date_zoning: "האיזורים שונו. עדכן שוב כדי לבצע ריענון."
-      stops_help: "תיכנון עצירות / סך הכל"
-      duration_help: "משך זמן כולל"
-      distance_help: "סך הכל מרחק"
-      emission_help: "פליטה"
-      out_of_route: "מחוץ למסלול"
-      toggle_help: "החלף לקוחות על המפה"
-      locked_unplanned_help: "מנע יציאה מהמסלול בתיכנון גלובלי"
-      locked_help: "נעל את המסלול בתיכנון גלובלי"
-      vehicle_help: "פרמטרים לרכב"
-      optimize_help: "אופטימיזציה למסלול"
-      export_help: "ייצא מסלול"
-      route_stops_active_help: "בחר עצירות פעילות"
-      route_duration_help: "משך הנסיעה / חלון זמן הרכב"
-      route_distance_help: "מרחק המסלול"
-      route_quantity_help: "כמות / מגבלת כמות לרכב"
-      drag_help: "גרור ושחרר עצירות על מסלולים"
-      active_help: "לכלול או לא לכלול עצירות במסלול"
-      edit_store_help: "עריכת מידע שמור"
-      edit_visit_help: "עריכת מידע ביקורים / ללקוח"
-      marker_help: "הצג על המפה"
-      automatic_insert_help: "מצא מסלול והכנס עצירה זו"
-      automatic_insert_help_multiple: "מצא מסלול והוסף עצירות (התוצאות לא יהיו מייטביות)"
-      automatic_insert_confirm: "האם למצוא מסלול עבור כל עצירה? במצב זה התוצאות אינן אופטימאליות. בעבודה עם איזורים מומלץ למצוא מסלול עבור כל עצירה (אוקי להמשיך בכל מקרה)."
-      automatic_insert_too_many: "יותר מדי עצירות ללא כלי רכב. מומלץ לקבוע אזורי נסיעה עבור כל עצירה"
-      active_all: "אפשר הכל"
-      active_reverse: "אפשר חזרה"
-      active_none: "ללא"
-      send_to_route_help: "עצירה זו הועברה למסלול"
-      wait: "זמן המתנה:"
-      vehicle_speed: "מהירות:"
-      vehicle_last_position_time: "מיקום אחרון:"
-      route_change_color_help: "שנה צבע מסלול"
+        zoom_in: הגדל מיקוד
+        zoom_out: הקטן מיקוד
+      reverse_order: החזר עצירות הזמנה
+      open_planning_panel: פתח פנל תיכנון
+      collapse_planning_panel: הקטן את לוח התיכנון
+      refresh: רענן
+      refresh_help: פרמטרי התוכנית שונו, נדרש לחשב תוכנית מחדש
+      out_of_date_zoning: האיזורים שונו. עדכן שוב כדי לבצע ריענון.
+      stops_help: תיכנון עצירות / סך הכל
+      duration_help: משך זמן כולל
+      distance_help: סך הכל מרחק
+      emission_help: פליטה
+      out_of_route: מחוץ למסלול
+      toggle_help: החלף לקוחות על המפה
+      locked_unplanned_help: מנע יציאה מהמסלול בתיכנון גלובלי
+      locked_help: נעל את המסלול בתיכנון גלובלי
+      vehicle_help: פרמטרים לרכב
+      optimize_help: אופטימיזציה למסלול
+      export_help: ייצא מסלול
+      route_stops_active_help: בחר עצירות פעילות
+      route_duration_help: משך הנסיעה / חלון זמן הרכב
+      route_distance_help: מרחק המסלול
+      route_quantity_help: כמות / מגבלת כמות לרכב
+      drag_help: גרור ושחרר עצירות על מסלולים
+      active_help: לכלול או לא לכלול עצירות במסלול
+      edit_store_help: עריכת מידע שמור
+      edit_visit_help: עריכת מידע ביקורים / ללקוח
+      marker_help: הצג על המפה
+      automatic_insert_help: מצא מסלול והכנס עצירה זו
+      automatic_insert_help_multiple: מצא מסלול והוסף עצירות (התוצאות לא יהיו מייטביות)
+      automatic_insert_confirm: האם למצוא מסלול עבור כל עצירה? במצב זה התוצאות אינן
+        אופטימאליות. בעבודה עם איזורים מומלץ למצוא מסלול עבור כל עצירה (אוקי להמשיך
+        בכל מקרה).
+      automatic_insert_too_many: יותר מדי עצירות ללא כלי רכב. מומלץ לקבוע אזורי נסיעה
+        עבור כל עצירה
+      active_all: אפשר הכל
+      active_reverse: אפשר חזרה
+      active_none: ללא
+      send_to_route_help: עצירה זו הועברה למסלול
+      wait: 'זמן המתנה:'
+      vehicle_speed: 'מהירות:'
+      vehicle_last_position_time: 'מיקום אחרון:'
+      route_change_color_help: שנה צבע מסלול
       popup:
-        open_close1: "חלון זמן 1:"
-        open1: "זמן פתיחה 1"
-        close1: "זמן סגירה 1"
-        open_close2: "חלון זמן 2:"
-        open2: "זמן פתיחה 2"
-        close2: "זמן סגירה 2"
-        time: "תוכנן:"
-        quantity: "כמות:"
-        orders: "הזמנות:"
-        duration: "משך הביקור:"
-        tags: "תגים:"
-        stop_drive_time: "סך הכל זמן:"
-        stop_distance: "סך הכל מרחק:"
-        visit: "ביקור"
-        status: "סטטוס:"
-        eta: "ETA:"
+        open_close1: 'חלון זמן 1:'
+        open1: זמן פתיחה 1
+        close1: זמן סגירה 1
+        open_close2: 'חלון זמן 2:'
+        open2: זמן פתיחה 2
+        close2: זמן סגירה 2
+        time: 'תוכנן:'
+        quantity: 'כמות:'
+        orders: 'הזמנות:'
+        duration: 'משך הביקור:'
+        tags: 'תגים:'
+        stop_drive_time: 'סך הכל זמן:'
+        stop_distance: 'סך הכל מרחק:'
+        visit: ביקור
+        status: 'סטטוס:'
+        eta: 'ETA:'
       error:
-        no_geolocalization: "אין מיקום גאוגרפי"
-        no_geolocalization_help: "לא ניתן לאתר מיקום גאוגרפי או כתובת"
-        out_of_window: "חגירה בחלון זמן"
-        out_of_window_help: "עצירה תוכננה מחוץ לחלון הזמן שהוגדר"
-        out_of_capacity: "חריגה ממגבלות שהוגדרו"
-        out_of_capacity_help: "חריגה בקיבולת הרכב"
-        out_of_drive_time: "חריגה מחלון הזמן של הרכב"
-        out_of_drive_time_help: "פעילות הרכב חורגת מחלון הזמן של הרכב"
-        no_path: "יעד בילתי נגיש"
-        no_path_help: "יעד שלא ניתן להגיע אליו: חסר או אין מסלול אל היעד וממנו כדי למצוא מסלול מתאים"
+        no_geolocalization: אין מיקום גאוגרפי
+        no_geolocalization_help: לא ניתן לאתר מיקום גאוגרפי או כתובת
+        out_of_window: חגירה בחלון זמן
+        out_of_window_help: עצירה תוכננה מחוץ לחלון הזמן שהוגדר
+        out_of_capacity: חריגה ממגבלות שהוגדרו
+        out_of_capacity_help: חריגה בקיבולת הרכב
+        out_of_drive_time: חריגה מחלון הזמן של הרכב
+        out_of_drive_time_help: פעילות הרכב חורגת מחלון הזמן של הרכב
+        no_path: יעד בילתי נגיש
+        no_path_help: 'יעד שלא ניתן להגיע אליו: חסר או אין מסלול אל היעד וממנו כדי
+          למצוא מסלול מתאים'
       dialog:
         refresh:
-          title: "רענן תיכנון"
-          confirm: "ביצעת שינויים הדורשים שחזור של התוכנית. האם ברצונך לרענן את התוכנית כעת?"
+          title: רענן תיכנון
+          confirm: ביצעת שינויים הדורשים שחזור של התוכנית. האם ברצונך לרענן את התוכנית
+            כעת?
         optimizer:
-          title: "אופטימיזציה"
-          in_progress: "אנא המתן, עד גמר התהליך"
-          matrix: "מטריצת מרחקים"
-          optimize: "אופטימיזציה"
-          routes: "מסלול"
-          attempts: "ניסיונות:"
-          inqueue: "משימת אופטימיזציה נמצאת בתור"
-          no_solution: "לא נמצא פיתרון לבעייה שהוצגה"
-          error: "קריסת מחשב."
+          title: אופטימיזציה
+          in_progress: אנא המתן, עד גמר התהליך.
+          matrix: מטריצת מרחקים
+          optimize: אופטימיזציה
+          routes: מסלול
+          attempts: 'ניסיונות:'
+          inqueue: משימת אופטימיזציה נמצאת בתור
+          no_solution: לא נמצא פיתרון לבעייה שהוצגה
+          error: קריסת מחשב.
         orange:
-          title: "Orange Fleet Performance"
-          in_progress: "אנא המתן"
+          title: Orange Fleet Performance
+          in_progress: אנא המתן
         teksat:
-          title: "Teksat"
-          in_progress: "אנא המתן"
+          title: Teksat
+          in_progress: אנא המתן
         tomtom:
-          title: "TomTom"
-          in_progress: "אנא המתן"
+          title: TomTom
+          in_progress: אנא המתן
         masternaut:
-          title: "Masternaut"
-          in_progress: "אנא המתן"
+          title: Masternaut
+          in_progress: אנא המתן
         alyacom:
-          title: "AlyaCom"
-          in_progress: "אנא המתן"
+          title: AlyaCom
+          in_progress: אנא המתן
         zoning:
-          title: "Zoning"
-          in_progress: "אנא המתן, מעדכן איזורים חדשים"
+          title: Zoning
+          in_progress: אנא המתן, מעדכן איזורים חדשים
         automatic_insert:
-          title: "Set routes for stops without vehicles"
-          in_progress: "אנא המתן"
+          title: Set routes for stops without vehicles
+          in_progress: אנא המתן
         spreadsheet:
-          title: "ייצא לגיליון אלקטרוני"
-          stops: "עצירות נוספות"
-          out_of_route: "מחוץ למסלול"
-          stores: "stores"
-          rests: "מנוחות"
-          stops_inactives: "עצירות לא פעילות"
-          columns: "עמודות"
-          columns_export: "לייצוא"
-          columns_skip: "דלג"
-          columns_DnD_help: "השתמש בעכבר על מנת לגרור ולהוסיף עמודות"
-          format: "פורמט"
-          csv: "פורמט CSV סטנדרטי"
-          excel: "פורמט Excel   ו-CSV"
-          download: "הורדה"
+          title: ייצא לגיליון אלקטרוני
+          stops: עצירות נוספות
+          out_of_route: מחוץ למסלול
+          stores: stores
+          rests: מנוחות
+          stops_inactives: עצירות לא פעילות
+          columns: עמודות
+          columns_export: לייצוא
+          columns_skip: דלג
+          columns_DnD_help: השתמש בעכבר על מנת לגרור ולהוסיף עמודות
+          format: פורמט
+          csv: פורמט CSV סטנדרטי
+          excel: פורמט Excel   ו-CSV
+          download: הורדה
     new:
-      title: "תיכנון חדש"
+      title: תיכנון חדש
     export_file:
-      ref_planning: "reference planning"
-      planning: "תיכנון"
-      ref: "reference"
-      vehicle: "רכב"
-      route: "מסלול"
-      order: "הזמנה"
-      stop_type: "סוג עצירה"
-      stop_type_store: "store"
-      stop_type_visit: "ביקור"
-      stop_type_rest: "מנוחה"
-      wait_time: "זמן המתנה"
-      time: "זמן"
-      distance: "מרחק"
-      drive_time: "זמן נסיעה"
-      name: "שם"
-      street: "רחוב"
-      detail: "פרטים"
-      postalcode: "מיקוד"
-      city: "עיר"
-      country: "ארץ"
-      lat: "lat"
-      lng: "lng"
-      comment: "הערה"
-      tags: "תגים"
-      phone_number: "טלפון"
-      ref_visit: "מס' ביקור"
-      duration: "משך"
-      quantity: "כמות"
-      orders: "הזמנות"
-      active: "פעיל"
-      open1: "זמן פתיחה 1"
-      close1: "זמן סגירה 1"
-      open2: "זמן פתיחה 2"
-      close2: "זמן סגירה 2"
-      tags_visit: "תגים לביקור"
-      out_of_window: "חריגה בחלון זמן ביקורים"
-      out_of_capacity: "חריגה מהמיגבלות שהוגדרו"
-      out_of_drive_time: "מחוץ לחלון הזמן שהוגדר לרכב"
-      status: "סטטוס"
-      eta: "eta"
+      ref_planning: reference planning
+      planning: תיכנון
+      ref: reference
+      vehicle: רכב
+      route: מסלול
+      order: הזמנה
+      stop_type: סוג עצירה
+      stop_type_store: store
+      stop_type_visit: ביקור
+      stop_type_rest: מנוחה
+      wait_time: זמן המתנה
+      time: זמן
+      distance: מרחק
+      drive_time: זמן נסיעה
+      name: שם
+      street: רחוב
+      detail: פרטים
+      postalcode: מיקוד
+      city: עיר
+      country: ארץ
+      lat: lat
+      lng: lng
+      comment: הערה
+      tags: תגים
+      phone_number: טלפון
+      ref_visit: מס' ביקור
+      duration: משך
+      quantity: כמות
+      orders: הזמנות
+      active: פעיל
+      open1: זמן פתיחה 1
+      close1: זמן סגירה 1
+      open2: זמן פתיחה 2
+      close2: זמן סגירה 2
+      tags_visit: תגים לביקור
+      out_of_window: חריגה בחלון זמן ביקורים
+      out_of_capacity: חריגה מהמיגבלות שהוגדרו
+      out_of_drive_time: מחוץ לחלון הזמן שהוגדר לרכב
+      status: סטטוס
+      eta: eta
     form:
-      ref_help: "A free reference"
-      tags_help: "הגבלת ביקורים / יעדים בתכנית (ביקורים / יעדים צריכים לכלול את כל הקטגוריות הללו בכדי להילקח בחשבון בתוכנית)"
-      order_array: "הזמנות"
-      zonings_help: "אפשר להקצות אוטומטתי רכבים לביקורים / יעדים עם איזורים גאוגרפים זההים."
-      avoid_zones_help: "אפשר להגדיר איזור שבו הרכב לא יוכל לחזור אחורה."
-      default: "ברירת מחדל"
+      ref_help: A free reference
+      tags_help: הגבלת ביקורים / יעדים בתכנית (ביקורים / יעדים צריכים לכלול את כל
+        הקטגוריות הללו בכדי להילקח בחשבון בתוכנית)
+      order_array: הזמנות
+      zonings_help: אפשר להקצות אוטומטתי רכבים לביקורים / יעדים עם איזורים גאוגרפים
+        זההים.
+      avoid_zones_help: אפשר להגדיר איזור שבו הרכב לא יוכל לחזור אחורה.
+      default: ברירת מחדל
     show:
-      print: "הדפס"
-
+      print: הדפס
   routes:
     show:
-      print: "הדפס"
-      wait: "זמן המתנה:"
+      print: הדפס
+      wait: 'זמן המתנה:'
       annotating:
-        hour: "זמן מעבר:"
-        signature: "חתימה:"
-
+        hour: 'זמן מעבר:'
+        signature: 'חתימה:'
   shared:
     error_messages:
       form_contains_error:
-        one: "קיימת שגיאה אחת בטופס."
-        other: "הטופס מכיל שגיאות."
-
+        one: קיימת שגיאה אחת בטופס.
+        other: הטופס מכיל שגיאות.
   stops:
     default:
-      name_rest: "מנוחה"
-
+      name_rest: מנוחה
   stores:
     default:
-      name: "Store"
-      lat: "51.4899"
-      lng: "-0.2596"
-      city: "לונדון"
+      name: Store
+      lat: '51.4899'
+      lng: '-0.2596'
+      city: לונדון
     geocoding:
-      geocoding_in_progress: "גאוקודינג בתהליך."
+      geocoding_in_progress: גאוקודינג בתהליך.
     form:
-      ref: "Reference"
-      ref_help: "A free reference"
-      locate_manually: "אתר מיקום במפה באופן ידני"
-      country_default: "%{n} (ערך ברירת מחדל)"
+      ref: Reference
+      ref_help: A free reference
+      locate_manually: אתר מיקום במפה באופן ידני
+      country_default: '%{n} (ערך ברירת מחדל)'
       icon_size:
-        small: "קטן"
-        medium: "בינוני"
-        large: "גדול"
-      prefered_icons: "נבחר"
-      other_icons: "אחר"
+        small: קטן
+        medium: בינוני
+        large: גדול
+      prefered_icons: נבחר
+      other_icons: אחר
     edit:
-      title: "עריכת ערכים שמורים"
+      title: עריכת ערכים שמורים
     import:
-      title: "ייצא ערכים שמורים"
-      stores: "ערכים שמורים"
-      replace_no: "עידכון / בנוסף"
-      replace_no_help: "An update of existing stores (unchanged store references) is made and the new ones are added."
-      replace_yes: "Delete previous stores"
-      replace_yes_help: "Delete and replace stores with imported ones. Overwrite all stores."
-      replace_confirm: "Delete all stores and their amendments and replace them with imported ones?"
+      title: ייצא ערכים שמורים
+      stores: ערכים שמורים
+      replace_no: עידכון / בנוסף
+      replace_no_help: An update of existing stores (unchanged store references) is
+        made and the new ones are added.
+      replace_yes: Delete previous stores
+      replace_yes_help: Delete and replace stores with imported ones. Overwrite all
+        stores.
+      replace_confirm: Delete all stores and their amendments and replace them with
+        imported ones?
       csv:
-        title: "CSV File"
-        help: "Import stores from CSV file. CSV files can be exported from spreadsheet or other softwares."
-        file_help: "Import CSV files only"
-      import_template_help: "Help"
+        title: CSV File
+        help: Import stores from CSV file. CSV files can be exported from spreadsheet
+          or other softwares.
+        file_help: Import CSV files only
+      import_template_help: Help
       dialog:
         help:
-          title: "Column names in your file"
-          desc: "Your import file can use the following column names:"
+          title: Column names in your file
+          desc: 'Your import file can use the following column names:'
     index:
       dialog:
         import:
-          title: "Import stores"
-          in_progress: "Please wait, import in progress"
-      title: "Listing stores"
-      new: "New store"
+          title: Import stores
+          in_progress: Please wait, import in progress
+      title: Listing stores
+      new: New store
     new:
-      title: "New store"
+      title: New store
     import_file:
-      ref: "reference"
-      ref_desc: "a stable, unique, constant reference id, allowing non-destructive update of this item when the next import happens"
-      name: "name"
-      name_desc: "store name"
-      color: "color"
-      color_desc: "color of your icon, value being a color code. See web-color at https://en.wikipedia.org/wiki/Web_colors"
-      color_format: "#000000 or black"
-      icon: "icon"
-      icon_desc: "name of the icon you selected in font-awesome list http://fontawesome.io/icons . Please include the \"fa-\" prefix. E.g. fa-building."
-      icon_size: "icon size"
-      icon_size_desc: "size of the icon representing your store on the map. Default: large."
-      open: "open"
-      open_desc: "Store opening time"
-      close: "close"
-      close_desc: "Store closing time"
-      street: "street"
-      street_desc: "street address with building number, road type and road name (spelling is critical for reliable geocoding)."
-      postalcode: "postalcode"
-      postalcode_desc: "postal code of your district (exactness is critical for reliable geocoding)."
-      city: "city"
-      city_desc: "city, town or district name (spelling is critical for reliable geocoding)."
-      country: "country"
-      country_desc: "country or state name (spelling is critical for reliable geocoding)."
-      lat: "lat"
-      lat_desc: "latitude of the destination in decimal degrees between -90° and 90°. E.g. 45.91"
-      lat_format: "floating number between -90 and 90"
-      lng: "lng"
-      lng_desc: "longitude of the destination in decimal degrees between -180° and 180°. E.g. -0.781"
-      lng_format: "floating number between -180 and 180"
-      geocoding_accuracy: "geocoding accuracy"
-      geocoding_accuracy_desc: "quality score given when converting the destination street address into geographic coordinates. If under 85%, please check your spelling and refresh the geocoding. This score is expressed with a value between 0 et 1. E.g. 0.70 means 70% accurate."
-      geocoding_accuracy_format: "floating number from 0 to 1"
-      geocoding_level: "geocoding level"
-      geocoding_level_desc: "level of precision reached when converting the destination street address into geographic coordinates"
-      missing_name: "Record %{line}: \"name\" missing."
-      missing_location: "Record %{line}: \"city\" or \"postalcode\" or \"lat\" and \"lng\" missing."
-      invalid_numeric_value: "Record %{line}: Invalid numeric value \"%{value}\"."
+      ref: reference
+      ref_desc: a stable, unique, constant reference id, allowing non-destructive
+        update of this item when the next import happens
+      name: name
+      name_desc: store name
+      color: color
+      color_desc: color of your icon, value being a color code. See web-color at https://en.wikipedia.org/wiki/Web_colors
+      color_format: '#000000 or black'
+      icon: icon
+      icon_desc: name of the icon you selected in font-awesome list http://fontawesome.io/icons
+        . Please include the "fa-" prefix. E.g. fa-building.
+      icon_size: icon size
+      icon_size_desc: 'size of the icon representing your store on the map. Default:
+        large.'
+      open: open
+      open_desc: Store opening time
+      close: close
+      close_desc: Store closing time
+      street: street
+      street_desc: street address with building number, road type and road name (spelling
+        is critical for reliable geocoding).
+      postalcode: postalcode
+      postalcode_desc: postal code of your district (exactness is critical for reliable
+        geocoding).
+      city: city
+      city_desc: city, town or district name (spelling is critical for reliable geocoding).
+      country: country
+      country_desc: country or state name (spelling is critical for reliable geocoding).
+      lat: lat
+      lat_desc: latitude of the destination in decimal degrees between -90° and 90°.
+        E.g. 45.91
+      lat_format: floating number between -90 and 90
+      lng: lng
+      lng_desc: longitude of the destination in decimal degrees between -180° and
+        180°. E.g. -0.781
+      lng_format: floating number between -180 and 180
+      geocoding_accuracy: geocoding accuracy
+      geocoding_accuracy_desc: quality score given when converting the destination
+        street address into geographic coordinates. If under 85%, please check your
+        spelling and refresh the geocoding. This score is expressed with a value between
+        0 et 1. E.g. 0.70 means 70% accurate.
+      geocoding_accuracy_format: floating number from 0 to 1
+      geocoding_level: geocoding level
+      geocoding_level_desc: level of precision reached when converting the destination
+        street address into geographic coordinates
+      missing_name: 'Record %{line}: "name" missing.'
+      missing_location: 'Record %{line}: "city" or "postalcode" or "lat" and "lng"
+        missing.'
+      invalid_numeric_value: 'Record %{line}: Invalid numeric value "%{value}".'
       format:
-        string: "text"
-        integer: "integer"
-        hour: "HH:MM"
-        float: "0.123"
-        required: "required"
-        advisable: "advised"
-        optionnal: "optionnal"
+        string: text
+        integer: integer
+        hour: HH:MM
+        float: '0.123'
+        required: required
+        advisable: advised
+        optionnal: optionnal
   products:
     menu:
-      products: "Products"
+      products: Products
     edit:
-      title: "Editing product"
+      title: Editing product
     index:
-      title: "Listing products"
-      new: "New product"
+      title: Listing products
+      new: New product
     new:
-      title: "New product"
+      title: New product
     form:
-      name_help: "Long name of the product"
-      code_help: "Short code, few letters"
-
+      name_help: Long name of the product
+      code_help: Short code, few letters
   tags:
     edit:
-      title: "Editing tag"
+      title: Editing tag
     index:
-      title: "Listing tags"
-      new: "New tag"
+      title: Listing tags
+      new: New tag
     new:
-      title: "New tag"
+      title: New tag
     form:
-      color_default: "Default"
-      icon_default: "Default"
-      color_help: "Force use of this color"
-      customised_color: "Select a custom color"
-      icon_help: "Force use of this symbol"
-      ref: "Reference"
-      ref_help: "A free reference"
-
+      color_default: Default
+      icon_default: Default
+      color_help: Force use of this color
+      customised_color: Select a custom color
+      icon_help: Force use of this symbol
+      ref: Reference
+      ref_help: A free reference
   users:
     menu:
-      sign_out: "Sign out"
+      sign_out: Sign out
     edit:
-      title: "Edit User"
-      edit: "Change your login credentials and password"
-      edit_user: "You do not have the right to edit another user"
+      title: Edit User
+      edit: Change your login credentials and password
+      edit_user: You do not have the right to edit another user
     form:
-      url_click2call_help: "URL of VOIP communications solution. In URL set '{TEL}' in place of the phone number"
-      send_email: "Send E-Mail"
+      url_click2call_help: URL of VOIP communications solution. In URL set '{TEL}'
+        in place of the phone number
+      send_email: Send E-Mail
     update:
-      success: "User updated successfully"
+      success: User updated successfully
     password:
-      title: "Edit Password"
-      unauthenticated: "Connection error, please check the url inside your confirmation mail"
+      title: Edit Password
+      unauthenticated: Connection error, please check the url inside your confirmation
+        mail
     set_password:
-      action: "Set My Password"
-      success: "User updated successfully"
-
+      action: Set My Password
+      success: User updated successfully
   vehicles:
-    default_name: "Vehicle %{n}"
-    emissions_nothing: "Nothing - %{n}"
-    emissions_light_petrol: "Light - Petrol - %{n}"
-    emissions_light_diesel: "Light - Diesel - %{n}"
-    emissions_light_lgp: "Light - LGP - %{n}"
+    default_name: Vehicle %{n}
+    emissions_nothing: Nothing - %{n}
+    emissions_light_petrol: Light - Petrol - %{n}
+    emissions_light_diesel: Light - Diesel - %{n}
+    emissions_light_lgp: Light - LGP - %{n}
     form:
-      tomtom_id: "TomTom"
-      teksat_id: "Teksat"
-      orange_id: "Orange"
+      tomtom_id: TomTom
+      teksat_id: Teksat
+      orange_id: Orange
       ref:
-        help: "A free reference"
+        help: A free reference
       emissions:
-        help: "Fuel Type"
+        help: Fuel Type
       consumption:
-        help: "Average fuel consumption in liters per 100 km"
-        help_miles: "Average fuel consumption in liters per 62.1 mi."
+        help: Average fuel consumption in liters per 100 km
+        help_miles: Average fuel consumption in liters per 62.1 mi.
       capacities:
-        label: "Capacities"
-        default: "%{n} (default value)"
-        no_overload: " (no overload)"
-        ignore_overload: " (ignored)"
-        help: "Maximun vehicle's capacities"
+        label: Capacities
+        default: '%{n} (default value)'
+        no_overload: ' (no overload)'
+        ignore_overload: ' (ignored)'
+        help: Maximun vehicle's capacities
       router:
-        default: "Default"
-        help: "Force use of a specific routing engine"
+        default: Default
+        help: Force use of a specific routing engine
       router_dimension:
-        default: "Default"
+        default: Default
       speed_multiplicator:
-        default: "%{n} (default value)"
-        help: "A value higher than 100% means higher speed. The global tune up set on settings is also used on computation."
+        default: '%{n} (default value)'
+        help: A value higher than 100% means higher speed. The global tune up set
+          on settings is also used on computation.
       contact_email:
-        help: "Driver's device E-Mail"
-
+        help: Driver's device E-Mail
   vehicle_usages:
     menu:
-      vehicle_usages: "Vehicle configurations"
+      vehicle_usages: Vehicle configurations
     edit:
-      title: "Editing vehicle and configuration"
+      title: Editing vehicle and configuration
     index:
-      title: "Listing vehicle configurations"
-      capacities: "Capacities"
-      stores: "Start - End"
+      title: Listing vehicle configurations
+      capacities: Capacities
+      stores: Start - End
       store:
-        no_start: "No start store"
-        no_stop: "No stop store: end of route is free"
-        same_start_stop: "Vehicle returns to start store"
-      time: "Open - Close"
-      devices: "Devices"
-      disable: "Disable"
-      disable_confirm: "Are you sure? All routes using this vehicle and configuration will be lost."
-      enable: "Enable"
+        no_start: No start store
+        no_stop: 'No stop store: end of route is free'
+        same_start_stop: Vehicle returns to start store
+      time: Open - Close
+      devices: Devices
+      disable: Disable
+      disable_confirm: Are you sure? All routes using this vehicle and configuration
+        will be lost.
+      enable: Enable
     new:
-      title: "New vehicle configuration"
+      title: New vehicle configuration
     toggle:
-      success: "Vehicle configuration updated successfully"
+      success: Vehicle configuration updated successfully
     form:
-      save: "Save vehicle configuration"
+      save: Save vehicle configuration
       vehicle:
-        legend: "Vehicle"
-        help: "The following informations on the vehicle are common to all vehicles configurations"
+        legend: Vehicle
+        help: The following informations on the vehicle are common to all vehicles
+          configurations
       vehicle_usage:
-        legend: "Vehicle configuration: \"%{s}\""
-        help: "The following informations are specific to the configuration of the vehicle."
+        legend: 'Vehicle configuration: "%{s}"'
+        help: The following informations are specific to the configuration of the
+          vehicle.
       open:
-        default: "%{n} (default)"
+        default: '%{n} (default)'
       close:
-        default: "%{n} (default)"
+        default: '%{n} (default)'
       open_close_days:
-        default: "%{n}"
-      open_close: "Hours"
-      open_close_help: "Deliveryman's working hours"
-      stores: "Start / End"
+        default: '%{n}'
+      open_close: Hours
+      open_close_help: Deliveryman's working hours
+      stores: Start / End
       store:
-        default: "Default"
-        none: "None"
-      stores_help: "Start and end stores"
-      rest_duration_store: "Rest duration / place"
+        default: Default
+        none: None
+      stores_help: Start and end stores
+      rest_duration_store: Rest duration / place
       rest_start:
-        default: "%{n} (default)"
+        default: '%{n} (default)'
       rest_stop:
-        default: "%{n} (default)"
-      rest_start_stop: "Rest time window"
-      rest_start_stop_help: "Without taking into account rest duration"
+        default: '%{n} (default)'
+      rest_start_stop: Rest time window
+      rest_start_stop_help: Without taking into account rest duration
       rest_duration:
-        default: "%{n} (default value)"
-        help: "Requires rest time window if filled"
+        default: '%{n} (default value)'
+        help: Requires rest time window if filled
       store_rest:
-        default: "Default"
-        none: "None"
-      service_times: "Service times"
+        default: Default
+        none: None
+      service_times: Service times
       service_time:
-        default: "%{n} (default value)"
-      service_time_start_addon: "before"
-      service_time_end_addon: "after"
-      service_times_help: "Durations added before the first stop and after the last stop"
-
+        default: '%{n} (default value)'
+      service_time_start_addon: before
+      service_time_end_addon: after
+      service_times_help: Durations added before the first stop and after the last
+        stop
   vehicle_usage_sets:
     default:
-      name: "Default"
+      name: Default
     menu:
-      vehicle_usage_sets: "Vehicles"
-      deliverable_units: "Deliverable units"
+      vehicle_usage_sets: Vehicles
+      deliverable_units: Deliverable units
     edit:
-      title: "Editing vehicle and configuration"
+      title: Editing vehicle and configuration
     index:
-      title: "Listing vehicles configurations"
-      new: "New vehicles configuration"
-      stores: "Start - End"
-      time: "Open - Close"
-      service_time: "Service Time"
+      title: Listing vehicles configurations
+      new: New vehicles configuration
+      stores: Start - End
+      time: Open - Close
+      service_time: Service Time
     new:
-      title: "New vehicles configuration"
+      title: New vehicles configuration
     form:
-      open_close: "Hours"
-      open_close_help: "Deliveryman's working hours"
-      stores: "Start / End"
+      open_close: Hours
+      open_close_help: Deliveryman's working hours
+      stores: Start / End
       store:
-        none: "None"
-      stores_help: "Start and end stores"
-      service_times: "Service times"
-      service_time_start_addon: "before"
-      service_time_end_addon: "after"
-      service_times_help: "Durations added before the first stop and after the last stop."
-      rest_duration_store: "Rest duration / place"
+        none: None
+      stores_help: Start and end stores
+      service_times: Service times
+      service_time_start_addon: before
+      service_time_end_addon: after
+      service_times_help: Durations added before the first stop and after the last
+        stop.
+      rest_duration_store: Rest duration / place
       rest_duration:
-        help: "Requires rest time window if filled"
-      rest_start_stop: "Rest time window"
-      rest_start_stop_help: "Without taking into account rest duration"
-
+        help: Requires rest time window if filled
+      rest_start_stop: Rest time window
+      rest_start_stop_help: Without taking into account rest duration
   visits:
     form:
-      legend: "Visit #%{n}"
-      destroy: "If checked, visit will be destroyed by submitting this page. Click here to cancel."
-      ref_help: "A free reference. Important to avoid overwriting visits on import/export"
+      legend: 'Visit #%{n}'
+      destroy: If checked, visit will be destroyed by submitting this page. Click
+        here to cancel.
+      ref_help: A free reference. Important to avoid overwriting visits on import/export
       quantities:
-        default: "%{n} (default value)"
-        help: "Quantities to be delivered"
-      take_over_default: "default"
-      take_over_help: "If empty, use the default value"
-      open_close1: "Time window 1"
-      open_close2: "Time window 2"
-      close_help: "Without taking into account visit duration"
-      tags_help: "Visit categories"
-      delete: "Flag for deletion"
-      delete_help: "Delete this visit (destination will be kept)"
-
+        default: '%{n} (default value)'
+        help: Quantities to be delivered
+      take_over_default: default
+      take_over_help: If empty, use the default value
+      open_close1: Time window 1
+      open_close2: Time window 2
+      close_help: Without taking into account visit duration
+      tags_help: Visit categories
+      delete: Flag for deletion
+      delete_help: Delete this visit (destination will be kept)
   zonings:
     default:
-      from_route: "Route"
-      from_isochrone: "Isochrone"
-      from_isodistance: "Isodistance"
-      from: "from"
+      from_route: Route
+      from_isochrone: Isochrone
+      from_isodistance: Isodistance
+      from: from
     menu:
-      zonings: "Zonings"
+      zonings: Zonings
     edit:
-      title: "Editing zoning"
-      collapse_zoning_panel: "Collapse zoning panel"
-      generate_confirm: "This action will reset all your current zones. Continue?"
-      vehicleless_confirm: "Are you sure? Some zones don't have a vehicle"
-      isochrone_missing_vehicle: "Isochrone cannot be generated for at least one vehicle due to routing engine restrictions"
-      isodistance_missing_vehicle: "Isodistance cannot be generated for at least one vehicle due to routing engine restrictions"
-      failed: "Failed to generate Isochrone"
-      success: "Isochrone generated successfully"
+      title: Editing zoning
+      collapse_zoning_panel: Collapse zoning panel
+      generate_confirm: This action will reset all your current zones. Continue?
+      vehicleless_confirm: Are you sure? Some zones don't have a vehicle
+      isochrone_missing_vehicle: Isochrone cannot be generated for at least one vehicle
+        due to routing engine restrictions
+      isodistance_missing_vehicle: Isodistance cannot be generated for at least one
+        vehicle due to routing engine restrictions
+      failed: Failed to generate Isochrone
+      success: Isochrone generated successfully
     index:
-      title: "Listing zonings"
-      new: "New Zoning"
+      title: Listing zonings
+      new: New Zoning
     new:
-      title: "New zoning"
+      title: New zoning
     form:
-      hide_out_of_route: "Hide unaffected destinations"
-      all_destinations: "Show all destinations"
-      from_planning_help: "It's also possible to filter destinations from a unique plan by editing this zoning from plan"
-      stops_from_planning: "Destinations from plan \"%{s}\""
-      generate: "Generate"
+      hide_out_of_route: Hide unaffected destinations
+      all_destinations: Show all destinations
+      from_planning_help: It's also possible to filter destinations from a unique
+        plan by editing this zoning from plan
+      stops_from_planning: Destinations from plan "%{s}"
+      generate: Generate
       automatic:
-        one: "Automatic: 1 zone"
-        other: "Automatic: %{count} zones"
-      from_planning: "From plan routes"
-      zone_placeholder: "Zone"
-      zone_vehicle: "Vehicle"
-      avoid_zone: "Don't go inside this zone"
-      isochrone: "Isochrone / רכבים(s)"
-      isodistance: "Isodistance / רכבים(s)"
+        one: 'Automatic: 1 zone'
+        other: 'Automatic: %{count} zones'
+      from_planning: From plan routes
+      zone_placeholder: Zone
+      zone_vehicle: Vehicle
+      avoid_zone: Don't go inside this zone
+      isochrone: Isochrone / רכבים(s)
+      isodistance: Isodistance / רכבים(s)
       dialog:
         isochrone:
-          title: "Isochrone"
-          vehicle_usage_set: "Vehicles configuration"
-          vehicle_usage_set_help: "Vehicles configuration to consider, especially the start store."
-          size: "Time"
-          size_help: "Area accessible from the start point by this travel time."
+          title: Isochrone
+          vehicle_usage_set: Vehicles configuration
+          vehicle_usage_set_help: Vehicles configuration to consider, especially the
+            start store.
+          size: Time
+          size_help: Area accessible from the start point by this travel time.
         isochrone-progress:
-          title: "Isochrones computations in progress"
+          title: Isochrones computations in progress
         isodistance:
-          title: "Isodistance"
-          vehicle_usage_set: "Vehicles configuration"
-          vehicle_usage_set_help: "Vehicles configuration to consider, especially the start store."
-          size: "מרחק"
-          size_help: "האיזור נגיש מנקודת ההתחלה בהתחשב במרחק הנסיעה"
+          title: Isodistance
+          vehicle_usage_set: Vehicles configuration
+          vehicle_usage_set_help: Vehicles configuration to consider, especially the
+            start store.
+          size: מרחק
+          size_help: האיזור נגיש מנקודת ההתחלה בהתחשב במרחק הנסיעה.
         isodistance-progress:
-          title: "Isodistances computation in progress"
-        validate: "מעבד נתונים"
-
+          title: Isodistances computation in progress
+        validate: מעבד נתונים
   unauthorized:
-    default: "אינך מורשה להיכנס לדף זה"
-
+    default: אינך מורשה להיכנס לדף זה
   web:
-    key_not_found: "פרטי החיבור שלך אינם חוקיים"
-    slow_browser: "אתה משתמש ב-%{n} שמאט את היישום. אנו ממליצים להשתמש בדפדפן אחר להורדה בחינם להופעות טובות יותר."
+    key_not_found: פרטי החיבור שלך אינם חוקיים
+    slow_browser: אתה משתמש ב-%{n} שמאט את היישום. אנו ממליצים להשתמש בדפדפן אחר להורדה
+      בחינם להופעות טובות יותר.
     form:
-      default: "%{n} (ברירת מחדל)"
-      empty_entry: "- N/A -"
-      from_time: "משעה"
-      to_time: "עד שעה"
-      days: "D+"
+      default: '%{n} (ברירת מחדל)'
+      empty_entry: '- N/A -'
+      from_time: משעה
+      to_time: עד שעה
+      days: D+
     select2:
-      empty_result: "אין תוצאות מתאימות"
+      empty_result: אין תוצאות מתאימות
     dialog:
-      close: "סגור"
-    placeholder_filter: "סנן"
-    help_menu: "עזרה"
-    help_search_placeholder: "חפש לפי..."
-    help: "קבלת תמיכה"
-    contact: "פרטי קשר לתמיכה"
-    choose_file: "בחר קובץ"
+      close: סגור
+    placeholder_filter: סנן
+    help_menu: עזרה
+    help_search_placeholder: חפש לפי...
+    help: קבלת תמיכה
+    contact: פרטי קשר לתמיכה
+    choose_file: בחר קובץ
     geocoder:
-      search: "חפש כתובת..."
-      empty_result: "לא נמצאו תוצאות"
-
+      search: חפש כתובת...
+      empty_result: לא נמצאו תוצאות
   api_web:
     v01:
       destinations:
         index:
-          none_destinations: 'לא נמצאו יעדים'
+          none_destinations: לא נמצאו יעדים
       routes:
         index:
-          none_routes: 'לא נמצא מסלול'
-          departure: "יציאה:"
-          arrival: "הגעה:"
+          none_routes: לא נמצא מסלול
+          departure: 'יציאה:'
+          arrival: 'הגעה:'
       stores:
         index:
-          none_stores: 'אתר לא נמצא'
+          none_stores: אתר לא נמצא
       zones:
         index:
-          none_zones: 'לא נמצא איזור'
-          without_vehicle: "ללא רכבי"
-
+          none_zones: לא נמצא איזור
+          without_vehicle: ללא רכבי
   all:
-    datepicker: "mm-dd-yyyy"
+    datepicker: mm-dd-yyyy
     map_attribution:
-      osm: "Map data &copy; <a href=\"http://openstreetmap.org\" target=\"_blank\">OpenStreetMap</a> contributors, %{attribution}"
-      here: "כאן"
+      osm: Map data &copy; <a href="http://openstreetmap.org" target="_blank">OpenStreetMap</a>
+        contributors, %{attribution}
+      here: כאן
     verb:
-      new: "חדש"
-      list: "רשימה"
-      show: "הצג"
-      edit: "ערוך"
-      send: "שלח"
-      destroy: "בטל"
-      destroy_selection: "סטל בחירות"
-      destroy_confirm: "האם אתה בטוח ?"
-      confirm: "האם אתה בטוח ?"
-      duplicate: "Duplicate"
-      toggle_selection: "בחירת בחירה"
-      dismiss: "נידחה"
-      import: "ייצא"
-      save: "שמור"
+      new: חדש
+      list: רשימה
+      show: הצג
+      edit: ערוך
+      send: שלח
+      destroy: בטל
+      destroy_selection: סטל בחירות
+      destroy_confirm: האם אתה בטוח ?
+      confirm: האם אתה בטוח ?
+      duplicate: Duplicate
+      toggle_selection: בחירת בחירה
+      dismiss: נידחה
+      import: ייצא
+      save: שמור
     unit:
-      m: "מטר"
-      kms: "קמ"
-      mile: "מייל"
-      miles: "מייל"
-      millisecond: "אלפית השניה"
-      second: "ש'"
-      minute: "דק'"
-      kg: "קג"
-      ton: "טון"
-      kgco2e_html: "kgCO<sub>2</sub>e"
-      kgco2e_l_html: "kgCO<sub>2</sub>e/l"
-      l_100km: "l/100 ק\"מ"
-      l_62Miles: "l/62.1 מייל"
-      hour_minute: "דקות : שעות"
-      hour_minute_second: "שניות : דקות : שעות"
+      m: מטר
+      kms: קמ
+      mile: מייל
+      miles: מייל
+      millisecond: אלפית השניה
+      second: ש'
+      minute: דק'
+      kg: קג
+      ton: טון
+      kgco2e_html: kgCO<sub>2</sub>e
+      kgco2e_l_html: kgCO<sub>2</sub>e/l
+      l_100km: l/100 ק"מ
+      l_62Miles: l/62.1 מייל
+      hour_minute: 'דקות : שעות'
+      hour_minute_second: 'שניות : דקות : שעות'
     value:
-      _true: "אמת"
-      _false: "שקר"
-      _yes: "כן"
-      _no: "לא"
+      _true: אמת
+      _false: שקר
+      _yes: כן
+      _no: לא
     subscribe:
-      planning_unavailable: "Planning can’t be changed. Your subscription period is expired | Contact your reseller to get a contrat extension."
-      expiration_date: "Only few days to renew your subscription, please contact your dealer to renew your offer. End date : "
-      expiration_date_over: "The date of use is exceeded, please contact your dealer. Expiration date : "
-
-  # Override rails-i18n
+      planning_unavailable: Planning can’t be changed. Your subscription period is
+        expired | Contact your reseller to get a contrat extension.
+      expiration_date: 'Only few days to renew your subscription, please contact your
+        dealer to renew your offer. End date : '
+      expiration_date_over: 'The date of use is exceeded, please contact your dealer.
+        Expiration date : '
   helpers:
     submit:
-      create: "צור %{model}"
-      update: "שמור %{model}"
-      submit: "שמור %{model}"
+      create: צור %{model}
+      update: שמור %{model}
+      submit: שמור %{model}
   number:
     format:
-      delimiter: ","
-      separator: "."
-
+      delimiter: ','
+      separator: .
   devise:
     shared:
       links:
-        sign_in_prefix: "האם כבר יש לך חשבון ?"
-        sign_up_prefix: "האם אתה מעוניין להקים חשבון חדש ?"
+        sign_in_prefix: האם כבר יש לך חשבון ?
+        sign_up_prefix: האם אתה מעוניין להקים חשבון חדש ?
     sessions:
       new:
-        remember_me: "זכור אותי"
+        remember_me: זכור אותי
