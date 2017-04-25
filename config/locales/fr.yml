@@ -194,7 +194,7 @@ fr:
         lat: Latitude
         lng: Longitude
         comment: Commentaire
-        comment_small: Comment
+        comment_small: Comment.
         phone_number: Numéro de téléphone
         phone_number_small: Tél.
         geocoding_accuracy: Qualité du géocodage
@@ -493,21 +493,24 @@ fr:
               ref_value: 'Référence tournée '
   errors:
     management:
-      title: "Impossible d'accèder à la page"
-      description: "La page que vous essayez d'atteindre a provoqué une erreur"
+      title: Impossible d'accèder à la page
+      description: La page que vous essayez d'atteindre a provoqué une erreur
       status:
         title:
-          default: "Une erreur est survenue dans l'application"
-          '404': "Page introuvable"
-          '422': "Action impossible"
-          '500': "Une erreur interne est survenue"
+          default: Une erreur est survenue dans l'application
+          '404': Page introuvable
+          '422': Action impossible
+          '500': Une erreur interne est survenue
         explanation:
-          default: "Une erreur interne s'est produite. Le problème a été signalé, merci d'essayer une autre action en attendant. Contactez le support si urgence."
-          '404': "La page n'a pas été trouvée sur le serveur, elle a peut être été supprimée."
-          '422': "Vous n'avez pas l'autorisation d'exécuter cette action."
-          '500': "Une erreur interne s'est produite. Le problème a été signalé, merci d'essayer une autre action en attendant. Contactez le support si urgence."
-      back_button: "Page précédente"
-      home_button: "Retourner à l'accueil"
+          default: Une erreur interne s'est produite. Le problème a été signalé, merci
+            d'essayer une autre action en attendant. Contactez le support si urgence.
+          '404': La page n'a pas été trouvée sur le serveur, elle a peut être été
+            supprimée.
+          '422': Vous n'avez pas l'autorisation d'exécuter cette action.
+          '500': Une erreur interne s'est produite. Le problème a été signalé, merci
+            d'essayer une autre action en attendant. Contactez le support si urgence.
+      back_button: Page précédente
+      home_button: Retourner à l'accueil
     messages:
       taken: est déjà utilisé(e)
     connection_refused: Connexion à la base de donnée impossible
@@ -553,7 +556,6 @@ fr:
       timeout: Délai d'attente depassé
     masternaut:
       invalid_account: Utilisateur invalide (non existant)
-
   import:
     empty: Rien à importer, vérifiez vos données.
     data: 'Contenu :'
@@ -686,7 +688,9 @@ fr:
         de l'optimisation (30 sec est une grande valeur). Valable uniquement dans
         le cas d'une optimisation d'une seule tournée avec retards.
       optimization_time_default: '%{n} (valeur par défaut)'
-      optimization_time_help: Temps passé, pour chaque véhicule, avant que l'optimisation ne s'arrête par défaut automatiquement. Néanmoins vous pouvez préciser ici une valeur limite à ne pas dépasser.
+      optimization_time_help: Temps passé, pour chaque véhicule, avant que l'optimisation
+        ne s'arrête par défaut automatiquement. Néanmoins vous pouvez préciser ici
+        une valeur limite à ne pas dépasser.
       optimization_soft_upper_bound_default: '%{n} (valeur par défaut)'
       optimization_stop_soft_upper_bound_help: 'Plus la valeur est grande plus les
         retards seront pénalisants (0 pour empêcher les retards de manière stricte :
@@ -934,13 +938,17 @@ fr:
       close: horaire fin
       close_desc: 'déprécié : utiliser « horaire fin 1 » à la place.'
       open1: horaire début 1
-      open1_desc: début de la plage horaire 1 (peut dépasser 24:00) conseillée pour la visite.
+      open1_desc: début de la plage horaire 1 (peut dépasser 24:00) conseillée pour
+        la visite.
       close1: horaire fin 1
-      close1_desc: fin de la plage horaire 1 (peut dépasser 24:00) conseillée pour la visite.
+      close1_desc: fin de la plage horaire 1 (peut dépasser 24:00) conseillée pour
+        la visite.
       open2: horaire début 2
-      open2_desc: début de la plage horaire 2 (peut dépasser 24:00) conseillée pour la visite.
+      open2_desc: début de la plage horaire 2 (peut dépasser 24:00) conseillée pour
+        la visite.
       close2: horaire fin 2
-      close2_desc: fin de la plage horaire 2 (peut dépasser 24:00) conseillée pour la visite.
+      close2_desc: fin de la plage horaire 2 (peut dépasser 24:00) conseillée pour
+        la visite.
       comment: commentaire
       comment_desc: informations nécessaires pour la visite.
       phone_number: téléphone
@@ -1202,7 +1210,7 @@ fr:
       refresh_help: Des paramètres ou des clients utilisés par ce planning ont été
         modifiés, il est nécessaire de le recalculer
       out_of_date_zoning: Le zonage a été modifié. Appliquez à nouveau pour actualiser.
-      stops_help: Arrêts plannifiés / total
+      stops_help: Arrêts planifiés / total
       duration_help: Somme des durées des tournées
       distance_help: Somme des distances des tournées
       emission_help: Émission
@@ -1366,9 +1374,12 @@ fr:
       eta: eta
     form:
       ref_help: Référence libre
-      tags_help: Restreint les visites / clients dans le planning (les visites/clients doivent soit avoir l'ensemble de tous ces libellés (ET) soit un des libéllés sélectionnés (OU) pour apparaître dans le planning).
+      tags_help: Restreint les visites / clients dans le planning (les visites/clients
+        doivent soit avoir l'ensemble de tous ces libellés (ET) soit un des libéllés
+        sélectionnés (OU) pour apparaître dans le planning).
       order_array: Comm.
-      zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules suivant des zones géographiques prédéfinies.
+      zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules
+        suivant des zones géographiques prédéfinies.
       avoid_zones_help: Permet également de définir des zones où ne pas circuler.
       default: Défaut
     show:
@@ -1647,8 +1658,7 @@ fr:
         arrêt
       devices:
         placeholder: Sélectionner un appareil
-        fieldset : GPS & Mobiles
-
+        fieldset: GPS & Mobiles
   vehicle_usage_sets:
     default:
       name: Défaut
