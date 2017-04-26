@@ -56,10 +56,13 @@ class V01::PlanningsGet < Grape::API
       optional :begin_date, type: Date, desc: 'Select only plannings after this date.'
       optional :end_date, type: Date, desc: 'Select only plannings before this date.'
       optional :active, type: Boolean, desc: 'Select only active plannings.'
+      optional :tags, type: Array[String], coerce_with: ->(c) { c.split(',') }, desc: 'Select plannings which contains at least one of these tags label'
     end
     get do
       plannings = current_customer.plannings
+
       plannings = plannings.where(active: params[:active]) unless params[:active].nil?
+
       if params[:begin_date] || params[:end_date]
         plannings = if params[:begin_date] && params[:end_date]
                       plannings.where('begin_date >= ? AND end_date <= ?', params[:begin_date], params[:end_date])
@@ -69,6 +72,9 @@ class V01::PlanningsGet < Grape::API
                       plannings.where('begin_date >= ?', params[:begin_date])
                     end
       end
+
+      plannings = plannings.joins(:tags).where(tags: {label: params[:tags]}).reorder('tags.id') if params[:tags]
+
       plannings = plannings.select{ |plan| params[:ids].any?{ |s| ParseIdsRefs.match(s, plan) } } if params.key?(:ids)
       if env['api.format'] == :ics
           if params.key?(:email) && YAML.load(params[:email])

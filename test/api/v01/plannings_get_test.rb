@@ -57,4 +57,22 @@ class V01::PlanningsGetTest < ActiveSupport::TestCase
     response = JSON.parse(last_response.body)
     assert_equal Planning.where('begin_date >= ? AND end_date <= ?', '18-04-2017', '26-04-2017').count, response.size
   end
+
+  test 'Get plannings with specific tags' do
+    first_tag = @planning.customer.tags.first
+    second_tag = @planning.customer.tags.second
+
+    @planning.update(tags: [first_tag, second_tag])
+
+    get api('/plannings.json', { api_key: @user.api_key, tags: "#{first_tag.label}" })
+    assert last_response.ok?, last_response.body
+    response = JSON.parse(last_response.body)
+    assert_equal Planning.joins(:tags).where(tags: {label: first_tag.label}).reorder('tags.id').size, response.size
+
+    get api('/plannings.json', { api_key: @user.api_key, tags: "#{first_tag.label},#{second_tag.label}" })
+    assert last_response.ok?, last_response.body
+    response = JSON.parse(last_response.body)
+
+    assert_equal Planning.where(customer_id: @planning.customer.id).joins(:tags).where(tags: {label: [first_tag.label, second_tag.label]}).reorder('tags.id').distinct.size, response.size
+  end
 end
