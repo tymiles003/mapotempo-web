@@ -392,7 +392,7 @@ class ImporterDestinationsTest < ActionController::TestCase
   test 'should import destinations with locale number separator (commas in french)' do
     orig_locale = I18n.locale
     begin
-      [:en, :fr, :he].each do |locale|
+      [:en, :fr].each do |locale|
         I18n.locale = locale
         assert_difference('Destination.count', 1) do
           ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile("test/fixtures/files/import_destinations_#{locale.to_s.upcase}.csv", "text.csv")).import
