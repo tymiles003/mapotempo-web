@@ -160,6 +160,24 @@ var plannings_form = function() {
     zIndexOffset: 1000
   });
 
+  $('#planning_begin_date').datepicker({
+    language: I18n.currentLocale(),
+    autoclose: true,
+    calendarWeeks: true,
+    todayHighlight: true,
+    format: I18n.t("all.datepicker"),
+    zIndexOffset: 1000
+  });
+
+  $('#planning_end_date').datepicker({
+    language: I18n.currentLocale(),
+    autoclose: true,
+    calendarWeeks: true,
+    todayHighlight: true,
+    format: I18n.t("all.datepicker"),
+    zIndexOffset: 1000
+  });
+
   var formatNoMatches = I18n.t('web.select2.empty_result');
   $('select#planning_tag_ids').select2({
     theme: 'bootstrap',

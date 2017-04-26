@@ -102,6 +102,17 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_equal 2, assigns(:planning).routes.map { |route| route.stops }.first.count
   end
 
+  test 'Create Planning with begin and end date' do
+    assert_difference('Planning.count') do
+      post :create, planning: { name: @planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, zoning_ids: @planning.zonings.collect(&:id), begin_date: '20-04-2017', end_date: '25-04-2017', active: false }
+    end
+    assert_redirected_to edit_planning_path(assigns(:planning))
+    assert assigns(:planning).persisted?
+    assert !assigns(:planning).active
+    assert assigns(:planning).begin_date.strftime('%d-%m-%Y') == '20-04-2017'
+    assert assigns(:planning).end_date.strftime('%d-%m-%Y') == '25-04-2017'
+  end
+
   test 'Update Planning' do
     orig_locale = I18n.locale
     begin

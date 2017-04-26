@@ -18,19 +18,43 @@ class V01::PlanningsGetTest < ActiveSupport::TestCase
   end
 
   test 'Export Planning' do
-    ["json", "xml", "ics"].each do |format|
+    %w(json xml ics).each do |format|
       get api("/plannings/#{@planning.id}.#{format}", { api_key: @user.api_key })
       assert last_response.ok?, last_response.body
     end
   end
 
   test 'Export Plannings as iCalendar' do
-    get api("/plannings.ics", { api_key: @user.api_key })
+    get api('/plannings.ics', { api_key: @user.api_key })
     assert last_response.ok?, last_response.body
   end
 
   test 'Export Planning as iCalendar with E-Mail' do
     get api("/plannings/#{@planning.id}.ics", { api_key: @user.api_key, email: 1 })
     assert_equal 204, last_response.status
+  end
+
+  test 'Get active plannings only' do
+    get api('/plannings.json', { api_key: @user.api_key, active: true })
+    assert last_response.ok?, last_response.body
+    response = JSON.parse(last_response.body)
+    assert_equal Planning.where(active: true).count, response.size
+  end
+
+  test 'Get plannings according to begin or end dates' do
+    get api('/plannings.json', { api_key: @user.api_key, begin_date: '18-04-2017' })
+    assert last_response.ok?, last_response.body
+    response = JSON.parse(last_response.body)
+    assert_equal Planning.where('begin_date >= ?', '18-04-2017').count, response.size
+
+    get api('/plannings.json', { api_key: @user.api_key, end_date: '26-04-2017' })
+    assert last_response.ok?, last_response.body
+    response = JSON.parse(last_response.body)
+    assert_equal Planning.where('end_date <= ?', '26-04-2017').count, response.size
+
+    get api('/plannings.json', { api_key: @user.api_key, begin_date: '18-04-2017', end_date: '26-04-2017' })
+    assert last_response.ok?, last_response.body
+    response = JSON.parse(last_response.body)
+    assert_equal Planning.where('begin_date >= ? AND end_date <= ?', '18-04-2017', '26-04-2017').count, response.size
   end
 end

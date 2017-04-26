@@ -25,11 +25,13 @@ class V01::Plannings < Grape::API
       p = ActionController::Parameters.new(params)
       p = p[:planning] if p.key?(:planning)
       p[:zoning_ids] = [p[:zoning_id]] if p[:zoning_id] && (!p[:zoning_ids] || p[:zoning_ids].empty?)
-      p.permit(:name, :ref, :date, :vehicle_usage_set_id, :tag_operation, tag_ids: [], zoning_ids: [])
+      p.permit(:name, :ref, :date, :begin_date, :end_date, :active, :vehicle_usage_set_id, :tag_operation, tag_ids: [], zoning_ids: [])
     end
 
     ID_DESC = 'Id or the ref field value, then use "ref:[value]".'.freeze
   end
+
+  # Planning get is located in plannings_get file because it needs to return specific content types (js, xml and ics)
 
   resource :plannings do
     desc 'Create planning.',

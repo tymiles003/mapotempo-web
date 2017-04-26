@@ -31,7 +31,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     end
   end
 
-  test "'should return customer's plannings'" do
+  test "should return customer's plannings" do
     get api()
     assert last_response.ok?, last_response.body
     assert_equal @planning.customer.plannings.size, JSON.parse(last_response.body).size
@@ -64,21 +64,21 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
       post api(), @planning.attributes.merge({tag_operation: 'and', tag_ids: tags(:tag_one).id, zoning_ids: [zonings(:zoning_one).id]})
       assert last_response.created?, last_response.body
       response = JSON.parse(last_response.body)
+      assert_equal true, response['active']
       assert_equal 1, response['tag_ids'].size
       assert_equal 1, response['zoning_ids'].size
     end
   end
 
-  test 'should not create a planning with inconsistent data' do
-    {
-      vehicle_usage_set_id: 0,
-      zoning_ids: [zonings(:zoning_three).id]
-    }.each{ |k, v|
-      attributes = @planning.attributes.merge(name: 'new name', tag_operation: 'and')
-      attributes[k] = v
-      post api(), attributes
-      assert_equal 400, last_response.status
-    }
+  test 'should create a planning with begin and end date' do
+    assert_difference('Planning.count', 1) do
+      @planning.name = 'new name'
+      post api(), @planning.attributes.merge({tag_operation: 'and', begin_date: '20-04-2017', end_date: '25-04-2017'})
+      assert last_response.created?, last_response.body
+      response = JSON.parse(last_response.body)
+      assert_equal '2017-04-20', response['begin_date']
+      assert_equal '2017-04-25', response['end_date']
+    end
   end
 
   test 'should create a planning with selected tags and according to tag operation' do
@@ -109,6 +109,18 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
       # Check number of stops (including at least one tags) in the new planning
       assert_equal 2, new_planning.routes.map { |route| route.stops }.first.count
     end
+  end
+
+  test 'should not create a planning with inconsistent data' do
+    {
+        vehicle_usage_set_id: 0,
+        zoning_ids: [zonings(:zoning_three).id]
+    }.each{ |k, v|
+      attributes = @planning.attributes.merge(name: 'new name', tag_operation: 'and')
+      attributes[k] = v
+      post api(), attributes
+      assert_equal 400, last_response.status
+    }
   end
 
   test 'should update a planning' do

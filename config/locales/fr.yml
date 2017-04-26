@@ -233,6 +233,7 @@ fr:
         name: Nom
         ref: Référence
         ref_small: Réf.
+        active: Actif
         tag_ids: Libellés
         tags: Libellés
         zoning_id: Zonage
@@ -240,6 +241,8 @@ fr:
         updated_at: Mise à jour
         order_array_id: Tableau de commandes
         date: Date
+        begin_date: Début validité
+        end_date: Fin validité
         vehicle_usage_set: Configuration des véhicules
         vehicle_usage_set_id: Configuration des véhicules
         vehicle_usage_set_small: Conf.
@@ -492,6 +495,11 @@ fr:
             ref:
               invalid_format: ne doit pas contenir les caractères ".", "\" ou "/"
               ref_value: 'Référence tournée '
+            begin_date:
+              blank: doit être rempli(e) si une date de fin de validité est renseignée
+            end_date:
+              blank: doit être rempli(e) si une date de début de validité est renseignée
+              after: doit être après la date de début de validité
   errors:
     management:
       title: Impossible d'accèder à la page
@@ -1382,6 +1390,8 @@ fr:
       eta: eta
     form:
       ref_help: Référence libre
+      begin_end_date: Période de validité
+      begin_end_date_help: Période durant laquelle le planning est valide
       tags_help: Restreint les visites / clients dans le planning (les visites/clients
         doivent soit avoir l'ensemble de tous ces libellés (ET) soit un des libéllés
         sélectionnés (OU) pour apparaître dans le planning).
@@ -1389,6 +1399,7 @@ fr:
       zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules
         suivant des zones géographiques prédéfinies.
       avoid_zones_help: Permet également de définir des zones où ne pas circuler.
+      default_date: Date du jour par défaut
       default: Défaut
     show:
       print: Imprimer

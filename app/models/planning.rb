@@ -31,6 +31,9 @@ class Planning < ActiveRecord::Base
   validates :customer, presence: true
   validates :name, presence: true
   validates :vehicle_usage_set, presence: true
+  validates :begin_date, presence: true, if: :end_date
+  validates :end_date, presence: true, if: :begin_date
+  validate :begin_after_end_date
 
   include Consistency
   validate_consistency :vehicle_usage_set, :order_array, :zonings, :tags
@@ -592,6 +595,12 @@ class Planning < ActiveRecord::Base
         end
       }
       compute
+    end
+  end
+
+  def begin_after_end_date
+    if self.begin_date.present? && self.end_date.present? && self.end_date < self.begin_date
+      errors.add(:end_date, I18n.t('activerecord.errors.models.planning.attributes.end_date.after'))
     end
   end
 end

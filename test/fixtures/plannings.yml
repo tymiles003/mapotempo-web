@@ -7,6 +7,7 @@ planning_one:
   customer: customer_one
   zonings: zoning_one
   tags: tag_one
+  active: true
   tag_operation: and
   vehicle_usage_set: vehicle_usage_set_one
 
@@ -17,6 +18,8 @@ planning_two:
   zonings: zoning_one
   tags: tag_two
   vehicle_usage_set: vehicle_usage_set_three
+  begin_date: 2017-04-20 00:00:00
+  end_date: 2017-04-25 00:00:00
 
 planning_three:
   name: planning3

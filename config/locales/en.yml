@@ -231,7 +231,8 @@ en:
       planning:
         name: Name
         ref: Reference
-        ref_small: Ref.
+        ref_small: Ref.$
+        active: Active
         tag_ids: Tags
         tags: Tags
         zoning_id: Zoning
@@ -239,6 +240,8 @@ en:
         updated_at: Updated
         order_array_id: Orders Plan
         date: Date
+        begin_date: Begin validity period
+        end_date: End validity period
         vehicle_usage_set: Vehicles configuration
         vehicle_usage_set_id: Vehicles configuration
         vehicle_usage_set_small: Conf.
@@ -491,6 +494,11 @@ en:
             ref:
               invalid_format: must not contain characters ".", "\" or "/"
               ref_value: 'Route reference '
+            begin_date:
+              blank: can't be blank when if end date is set
+            end_date:
+              blank: can't be blank when if begin date is set
+              after: must be after begin date
   errors:
     management:
       title: "An error occurred"
@@ -1350,6 +1358,8 @@ en:
       eta: eta
     form:
       ref_help: A free reference
+      begin_end_date: Validity period
+      begin_end_date_help: Period when planning is valid
       tags_help: Restrict visits/destinations in the plan (visits/destinations should have either all of these categories (AND) or one of the selected tags (OR) to be taken into account in the plan)
       order_array: Orders
       zonings_help: Allow to automatically assign vehicles to visits/destinations with geographic zones.

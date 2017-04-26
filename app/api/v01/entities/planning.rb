@@ -24,6 +24,9 @@ class V01::Entities::Planning < Grape::Entity
   expose(:name, documentation: { type: String })
   expose(:ref, documentation: { type: String })
   expose(:date, documentation: { type: Date })
+  expose(:begin_date, documentation: { type: Date, desc: 'Begin validity period' })
+  expose(:end_date, documentation: { type: Date, desc: 'End validity period' })
+  expose(:active, documentation: { type: 'Boolean', default: true })
   expose(:vehicle_usage_set_id, documentation: { type: Integer })
   expose(:zoning_id, documentation: { type: Integer, desc: 'DEPRECATED. Use zoning_ids instead.' }) { |p|
     p.zonings.first.id if p.zonings.size == 1

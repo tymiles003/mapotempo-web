@@ -19,6 +19,7 @@
 include PlanningIcalendar
 include IcalendarUrlHelper
 
+# Specific file to get plannings becaus it needs to return specific content types (js, xml and ics)
 class V01::PlanningsGet < Grape::API
   content_type :json, 'application/javascript'
   content_type :xml, 'application/xml'
@@ -52,9 +53,22 @@ class V01::PlanningsGet < Grape::API
       success: V01::Entities::Planning
     params do
       optional :ids, type: Array[String], desc: 'Select returned plannings by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
+      optional :begin_date, type: Date, desc: 'Select only plannings after this date.'
+      optional :end_date, type: Date, desc: 'Select only plannings before this date.'
+      optional :active, type: Boolean, desc: 'Select only active plannings.'
     end
     get do
       plannings = current_customer.plannings
+      plannings = plannings.where(active: params[:active]) unless params[:active].nil?
+      if params[:begin_date] || params[:end_date]
+        plannings = if params[:begin_date] && params[:end_date]
+                      plannings.where('begin_date >= ? AND end_date <= ?', params[:begin_date], params[:end_date])
+                    elsif params[:end_date]
+                      plannings.where('end_date <= ?', params[:end_date])
+                    elsif params[:begin_date]
+                      plannings.where('begin_date >= ?', params[:begin_date])
+                    end
+      end
       plannings = plannings.select{ |plan| params[:ids].any?{ |s| ParseIdsRefs.match(s, plan) } } if params.key?(:ids)
       if env['api.format'] == :ics
           if params.key?(:email) && YAML.load(params[:email])
