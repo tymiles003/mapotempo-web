@@ -523,3 +523,14 @@ body.api-web {
   }
 
 }
+
+/* import errors */
+table.grid, .grid tr * {
+  border: 1px solid;
+  padding: 3px;
+}
+
+div.grid-container {
+  margin-top: 5px;
+  overflow: auto;
+}

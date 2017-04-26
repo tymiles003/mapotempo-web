@@ -22,7 +22,7 @@ class ImportCsv
   include ActiveRecord::AttributeAssignment
   extend ActiveModel::Translation
 
-  attr_accessor :importer, :replace, :file, :delete_plannings, :column_def
+  attr_accessor :importer, :replace, :file, :delete_plannings, :column_def, :content_code
   validates :file, presence: true
   validate :data
 
@@ -84,13 +84,7 @@ class ImportCsv
         message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.csv') + ' ' + e.message : e.message
         message += ' ' + I18n.t('destinations.import_file.check_custom_columns') if column_def && column_def.values.compact.size > 0
         # format error to be human friendly with row content (take into account customized column names)
-        errors[:base] << message + (last_row ? ' ' + I18n.t('import.data') + ' [' + (last_row.size > 0 ? ((h = @column_def ? @column_def.dup.delete_if{ |k, v| !v || v.empty? } : {}).each{ |k, v| h[k] = nil }).merge(last_row).to_a.collect{ |a|
-          (@column_def && @column_def[a[0]] && !@column_def[a[0]].empty? ?
-            '"' + @column_def[a[0]] + '"' :
-            @importer.columns[a[0]] && @importer.columns[a[0]][:title] ?
-            @importer.columns[a[0]][:title] :
-            a[0].to_s) + ": \"#{a[1]}\""
-          }.join(', ') : I18n.t('destinations.import_file.none_column')) + ']' : '')
+        errors[:base] << error_and_format_row(message, last_row)
         Rails.logger.error e.message
         Rails.logger.error e.backtrace.join("\n")
         return false
@@ -151,5 +145,37 @@ class ImportCsv
     end
 
     data
+  end
+
+  def error_and_format_row(message, row)
+    error = message
+    if row
+      error += ' ' + I18n.t('import.data') + ' '
+      row_content = row.size > 0 ? (((h = @column_def && @column_def.dup) ? h : {}).each{ |k, v| h[k] = nil }).merge(row) : nil
+      if row_content
+        row_content[:tags] = row_content[:tags].map(&:label).join(',') if row_content[:tags] && row_content[:tags].is_a?(Enumerable)
+        row_content[:tags_visit] = row_content[:tags_visit].map(&:label).join(',') if row_content[:tags_visit] && row_content[:tags_visit].is_a?(Enumerable)
+        if @content_code == :html
+          error += '<div class="grid-container"><table class="grid">'
+          error += '<tr>' + row_content.keys.map{ |a| "<th>" + (@importer.columns[a] && @importer.columns[a][:title] ?
+              @importer.columns[a][:title] :
+              a.to_s) + (@column_def && @column_def[a] && !@column_def[a].empty? ?
+              ' (' + @column_def[a] + ')' : '') + "</th>" }.join('') + '</tr>'
+          error += '<tr>' + row_content.values.map{ |a| "<td>#{a}</td>" }.join('') + '</tr>'
+          error += '</table></div>'
+        else
+          error += '[' + row_content.to_a.map{ |a|
+            (@column_def && @column_def[a[0]] && !@column_def[a[0]].empty? ?
+              '"' + @column_def[a[0]] + '"' :
+              @importer.columns[a[0]] && @importer.columns[a[0]][:title] ?
+              @importer.columns[a[0]][:title] :
+              a[0].to_s) + ": \"#{a[1]}\""
+          }.join(', ') + ']'
+        end
+      else
+        error += I18n.t('destinations.import_file.none_column')
+      end
+    end
+    @content_code == :html ? error.html_safe : error
   end
 end

@@ -118,7 +118,7 @@ class DestinationsController < ApplicationController
 
   def upload_csv
     respond_to do |format|
-      @import_csv = ImportCsv.new(import_csv_params.merge(importer: ImporterDestinations.new(current_user.customer)))
+      @import_csv = ImportCsv.new(import_csv_params.merge(importer: ImporterDestinations.new(current_user.customer), content_code: :html))
       if @import_csv.valid? && @import_csv.import
         format.html { redirect_to action: 'index' }
       else
@@ -133,7 +133,7 @@ class DestinationsController < ApplicationController
   end
 
   def upload_tomtom
-    @import_tomtom = ImportTomtom.new import_tomtom_params.merge(importer: ImporterDestinations.new(current_user.customer), customer: current_user.customer)
+    @import_tomtom = ImportTomtom.new import_tomtom_params.merge(importer: ImporterDestinations.new(current_user.customer), customer: current_user.customer, content_code: :html)
     if current_user.customer.device.configured?(:tomtom) && @import_tomtom.valid? && @import_tomtom.import
       flash[:warning] = @import_tomtom.warnings.join(', ') if @import_tomtom.warnings.any?
       redirect_to destinations_path, notice: t('.success')
