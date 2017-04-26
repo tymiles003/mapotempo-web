@@ -140,7 +140,7 @@ gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
 gem 'select2-rails', '=4.0.0' # FIXME test compatibility with planning sidebar
 gem 'i18n-js', github: 'fnando/i18n-js' # FIXME wait for 3.0.0.rc15
 gem 'mustache'
-gem 'smt_rails'
+gem 'smt_rails', '0.2.9' # FIXME: 0.3.0, JS not working
 gem 'paloma', github: 'Mapotempo/paloma' # FIXME wait for 25cbba9f33c7b36f4f4878035ae53541a0036ee9
 gem 'browser'
 gem 'color'

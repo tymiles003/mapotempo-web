@@ -12,9 +12,9 @@ GIT
 
 GIT
   remote: git://github.com/Mapotempo/leaflet-markercluster-rails.git
-  revision: 714ce0719c223dffaea264791b53a619a059df5a
+  revision: 29942b66b7d11d2acffcf6aed37d020fb3c8c904
   specs:
-    leaflet-markercluster-rails (1.0.0)
+    leaflet-markercluster-rails (1.0.4)
       railties (>= 3.1)
 
 GIT
@@ -531,7 +531,7 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
     slop (3.6.0)
-    smt_rails (0.3.0)
+    smt_rails (0.2.9)
       mustache (>= 0.99.4)
       rails (>= 3.1.0)
       sprockets (>= 2.0.3)
@@ -706,7 +706,7 @@ DEPENDENCIES
   sidebar-v2-gh-pages-rails!
   sim_annealing
   simplecov
-  smt_rails
+  smt_rails (= 0.2.9)
   spring
   sprockets
   swagger-docs

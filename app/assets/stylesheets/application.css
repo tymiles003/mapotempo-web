@@ -51,7 +51,7 @@
  *= require leaflet
  *= require leaflet_numbered_markers
  *= require leaflet.markercluster
- *= require leaflet.markercluster.default
+ *= require leaflet.markercluster-default
  *= require leaflet-sidebar
  *= require pnotify
  *= require_tree .
