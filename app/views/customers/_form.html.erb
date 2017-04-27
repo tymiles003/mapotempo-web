@@ -266,6 +266,10 @@
       <%= f.number_field :cost_waiting_time, { placeholder: t('.cost_waiting_time_default', n: LocalizedValues.localize_numeric_value(Mapotempo::Application.config.cost_waiting_time)), min: 0, step: 'any', input_group: '×'} do %>
           <p class="help-block"><%= t '.cost_waiting_time_help' %></p>
       <% end %>
+      <%= f.toggles t 'activerecord.attributes.customer.optimization_force_start' do %>
+        <%= f.check_box :optimization_force_start %>
+        <p class="help-block"><%= t '.optimization_force_start_help' %></p>
+      <% end %>
     </fieldset>
   <% end %>
   <fieldset>

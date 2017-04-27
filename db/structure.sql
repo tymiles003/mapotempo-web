@@ -93,7 +93,8 @@ CREATE TABLE customers (
     cost_waiting_time double precision,
     take_over integer,
     with_state boolean DEFAULT false,
-    devices jsonb DEFAULT '{}'::jsonb NOT NULL
+    devices jsonb DEFAULT '{}'::jsonb NOT NULL,
+    optimization_force_start boolean DEFAULT false NOT NULL
 );
 
 
@@ -2594,4 +2595,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170419132237');
 INSERT INTO schema_migrations (version) VALUES ('20170424151804');
 
 INSERT INTO schema_migrations (version) VALUES ('20170424152112');
+
+INSERT INTO schema_migrations (version) VALUES ('20170427142658');
 
