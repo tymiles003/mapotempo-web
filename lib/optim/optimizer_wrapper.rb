@@ -111,15 +111,15 @@ class OptimizerWrapper
                   end: service[:end2]
                 },
               ].compact,
-              duration: service[:duration]
+              duration: service[:duration],
+              late_multiplier: (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
             },
             quantities: service[:quantities] ? service[:quantities].each.map{ |k, v|
               v ? {
                 unit_id: "u#{k}",
                 value: v
               } : nil
-            }.compact : [],
-            late_multiplier: (options[:stop_soft_upper_bound] && options[:stop_soft_upper_bound] > 0) ? options[:stop_soft_upper_bound] : nil
+            }.compact : []
           }.delete_if{ |k, v| !v }
         },
         configuration: {
