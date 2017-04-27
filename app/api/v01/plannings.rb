@@ -123,15 +123,16 @@ class V01::Plannings < Grape::API
       nickname: 'automaticInsertStop'
     params do
       requires :id, type: String, desc: ID_DESC
-      requires :stop_ids, type: Array[Integer], desc: 'Ids separated by comma. You should not have many stops.', documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger
-      optional :out_of_zone, type: Boolean, desc: 'Take into account points out of zones', default: true
+      requires :stop_ids, type: Array[Integer], desc: 'Ids separated by comma. You should not have too many stops.', documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger
+      optional :active_only, type: Boolean, desc: 'Use only active stops.', default: true
+      optional :out_of_zone, type: Boolean, desc: 'Take into account points out of zones.', default: true
     end
     patch ':id/automatic_insert' do
       planning_id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(planning_id).first!
-      stops = Stop.where id: params[:stop_ids], route_id: planning.route_ids
+      stops = Stop.where(id: params[:stop_ids], route_id: planning.route_ids)
       error!('Not Found', 404) if stops.empty?
-      stops.each{ |stop| planning.automatic_insert(stop, params[:out_of_zone]) }
+      stops.each{ |stop| planning.automatic_insert(stop, params[:out_of_zone], params[:active_only]) }
       planning.save!
       status 200
     end

@@ -190,7 +190,7 @@ class Planning < ActiveRecord::Base
   end
 
   def move_stop(route, stop, index, force = false)
-    route, index = prefered_route_and_index([route], stop) if !index
+    route, index = prefered_route_and_index([route], stop) unless index
     if stop.route != route
       if stop.is_a?(StopVisit)
         visit, active = stop.visit, stop.active
@@ -209,7 +209,7 @@ class Planning < ActiveRecord::Base
     end
   end
 
-  def automatic_insert(stop, out_of_zone = true)
+  def automatic_insert(stop, out_of_zone = true, active_only = true)
     available_routes = []
 
     # If already in route, stay in route
@@ -241,7 +241,7 @@ class Planning < ActiveRecord::Base
     end
 
     # Take the closest routes visit and eval insert
-    route, index = prefered_route_and_index(available_routes, stop)
+    route, index = prefered_route_and_index(available_routes, stop, active_only)
 
     if route
       stop.active = true
@@ -486,12 +486,12 @@ class Planning < ActiveRecord::Base
     yield(not_nil_position, not_nil_tws, nil_tws)
   end
 
-  def prefered_route_and_index(available_routes, stop)
+  def prefered_route_and_index(available_routes, stop, active_only = true)
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
-    available_routes.flat_map{ |route|
-      route.stops.select(&:position?).map{ |stop| [stop.position, route, stop.index] } +
-        [route.stops.select(&:position?).empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
+    available_routes.flat_map { |route|
+      route.stops.select { |s| (active_only ? s.active? : true) && s.position? }.map { |s| [s.position, route, s.index] } +
+        [route.stops.select { |s| (active_only ? s.active? : true) && s.position? }.empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
         (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.compact.sort_by{ |a|
       a[0] && a[0].position? ? a[0].distance(stop.position) : 0
