@@ -299,10 +299,13 @@ var plannings_edit = function(params) {
     });
   });
 
+  // Ensure touch compliance with chrome like browser
+  L.controlTouchScreenCompliance();
   // sidebar has to be created before map
   var sidebar = L.control.sidebar('edit-planning', {
     position: 'right'
   });
+
   sidebar.open('planning-pane');
 
   var vehicleLayer;

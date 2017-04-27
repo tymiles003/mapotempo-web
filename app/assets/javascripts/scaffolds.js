@@ -80,29 +80,16 @@ var mapInitialize = function(params) {
     }
     nbLayers++;
   }
+
+  // Ensure touch compliance with chrome like browser
+  L.controlTouchScreenCompliance();
+
   var map = L.map('map', {
     attributionControl: false,
     layers: mapLayer,
     zoomControl: false
   }).setView([params.map_lat || 0, params.map_lng || 0], params.map_zoom || 13);
 
-  /*
-   Debug Leaflet.js => Detect if browser is mobile compliant && delete leaflet-touch css class
-
-   Chrome | Safari | Edge respond to maxTouchPoints
-   Chrome | Safari | Edge respond to any-pointer:fine
-   Firefox doesn't respond at all
-   */
-  if (L.Browser.WebKit || L.Browser.chrome) {
-    var removeTouchStyle;
-    if (('maxTouchPoints' in navigator) || ('msMaxTouchPoints' in navigator)) {
-      removeTouchStyle = (navigator.maxTouchPoints === 0) || (navigator.msMaxTouchPoints === 0);
-    } else if (window.matchMedia && window.matchMedia('(any-pointer:coarse),(any-pointer:fine)').matches) {
-      removeTouchStyle = !window.matchMedia('(any-pointer:coarse)').matches;
-    }
-
-    if (removeTouchStyle) L.DomUtil.removeClass(map.getContainer(), 'leaflet-touch');
-  }
 
   L.control.zoom({
     position: 'topleft',
@@ -358,4 +345,23 @@ if (!Math.ceil10) {
   Math.ceil10 = function(value, exp) {
     return decimalAdjust('ceil', value, exp);
   };
+}
+
+L.controlTouchScreenCompliance = function() {
+  /*
+   Debug Leaflet.js => Detect if browser is mobile compliant && delete leaflet-touch css class
+
+   Chrome | Safari | Edge respond to maxTouchPoints
+   Chrome | Safari | Edge respond to any-pointer:fine
+   Firefox doesn't respond at all
+   */
+  if (L.Browser.WebKit || L.Browser.chrome) {
+    var removeTouchStyle;
+    if (('maxTouchPoints' in navigator) || ('msMaxTouchPoints' in navigator)) {
+      removeTouchStyle = (navigator.maxTouchPoints === 0) || (navigator.msMaxTouchPoints === 0);
+    } else if (window.matchMedia && window.matchMedia('(any-pointer:coarse),(any-pointer:fine)').matches) {
+      removeTouchStyle = !window.matchMedia('(any-pointer:coarse)').matches;
+    }
+    if (removeTouchStyle) L.Browser.touch = false;
+  }
 }
