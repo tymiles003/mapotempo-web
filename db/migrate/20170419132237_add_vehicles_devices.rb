@@ -1,5 +1,8 @@
 class AddVehiclesDevices < ActiveRecord::Migration
   def up
+    Vehicle.connection.schema_cache.clear!
+    Vehicle.reset_column_information
+
     remove_devices_store_accessor
 
     add_column :vehicles, :devices, :jsonb, default: {}, null: false
@@ -11,13 +14,14 @@ class AddVehiclesDevices < ActiveRecord::Migration
         teksat_id: vehicle.teksat_id,
         masternaut_ref: vehicle.masternaut_ref,
         trimble_ref: nil,
-        suiviDeFlotte_ref: nil,
-        locster_ref: nil,
-        alyacom_ref: nil
+        suivi_de_flotte_id: nil,
+        locster_ref: nil
       }
 
       vehicle.save!
     }
+
+    raise 'Incorrect devices migration' if Vehicle.all.map(&:devices).uniq.first == {} && (Vehicle.all.map(&:tomtom_id).compact.size > 0 || Vehicle.all.map(&:orange_id).compact.size > 0 || Vehicle.all.map(&:teksat_id).compact.size > 0 || Vehicle.all.map(&:masternaut_ref).compact.size > 0)
 
     remove_column :vehicles, :tomtom_id
     remove_column :vehicles, :orange_id
@@ -26,6 +30,9 @@ class AddVehiclesDevices < ActiveRecord::Migration
   end
 
   def down
+    Vehicle.connection.schema_cache.clear!
+    Vehicle.reset_column_information
+
     remove_devices_store_accessor
 
     add_column :vehicles, :tomtom_id, :string

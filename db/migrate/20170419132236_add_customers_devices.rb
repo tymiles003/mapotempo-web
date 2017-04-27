@@ -1,5 +1,8 @@
 class AddCustomersDevices < ActiveRecord::Migration
   def up
+    Customer.connection.schema_cache.clear!
+    Customer.reset_column_information
+
     add_column :customers, :devices, :jsonb, default: {}, null: false
 
     Customer.order(:id).each{ |customer|
@@ -51,6 +54,9 @@ class AddCustomersDevices < ActiveRecord::Migration
       customer.save!
     }
 
+    devices_uniq = Customer.all.map(&:devices).uniq
+    raise 'Incorrect devices migration' if devices_uniq.size == 1 && devices_uniq.first == {} && Customer.all.flat_map{ |c| [c.enable_orange, c.enable_tomtom, c.enable_teksat, c.enable_masternaut, c.enable_alyacom] }.uniq.compact.size > 0
+
     remove_column :customers, :enable_orange
     remove_column :customers, :orange_user
     remove_column :customers, :orange_password
@@ -72,6 +78,9 @@ class AddCustomersDevices < ActiveRecord::Migration
   end
 
   def down
+    Customer.connection.schema_cache.clear!
+    Customer.reset_column_information
+
     add_column :customers, :enable_orange, :boolean
     add_column :customers, :orange_user, :string
     add_column :customers, :orange_password, :string
