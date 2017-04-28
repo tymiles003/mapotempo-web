@@ -228,7 +228,6 @@ class Tomtom < DeviceBase
           [
             position.lat,
             position.lng,
-            '',
             stop.is_a?(StopVisit) ? (customer.enable_orders ? (stop.order ? stop.order.products.collect(&:code).join(',') : '') : customer.deliverable_units.map{ |du| stop.visit.default_quantities[du.id] && "x#{stop.visit.default_quantities[du.id]}#{du.label}" }.compact.join(' ')) : nil,
             stop.name,
             stop.comment,
