@@ -32,6 +32,9 @@ var zonings_edit = function(params) {
   var changes = {};
   var drawing_changed, editing_drawing;
 
+  // Ensure touch compliance with chrome like browser
+  L.controlTouchScreenCompliance();
+
   // sidebar has to be created before map
   var sidebar = L.control.sidebar('edit-zoning', {
     position: 'right'
