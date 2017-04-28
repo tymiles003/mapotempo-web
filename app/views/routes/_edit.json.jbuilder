@@ -24,7 +24,7 @@ if route.vehicle_usage
   json.work_time '%i:%02i' % [(route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 / 60, (route.vehicle_usage.default_close - route.vehicle_usage.default_open) / 60 % 60]
   # Devices
   route.planning.customer.device.configured_definitions.each do |key, definition|
-    json.set!(key, true) if !definition[:route_operations].empty? && (definition[:forms][:vehicle].keys.empty? || !definition[:forms][:vehicle].keys.any?{ |k| route.vehicle_usage.vehicle.devices[k].blank? })
+    json.set!(key, true) if !definition[:route_operations].empty? && definition[:forms][:vehicle] && (definition[:forms][:vehicle].keys.empty? || !definition[:forms][:vehicle].keys.any?{ |k| route.vehicle_usage.vehicle.devices[k].blank? })
   end
   status_uniq = route.stops.map{ |stop|
       {

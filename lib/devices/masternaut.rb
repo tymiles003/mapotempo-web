@@ -173,6 +173,7 @@ class Masternaut < DeviceBase
 
     response = get(savon_client_geoloc(customer), nil, :get_vehicles_last_position, params, @@error_code_geoloc)
 
+    hash = {}
     response[:multi_ref].each{ |item|
       hash[item[:@id]] = item
     }
