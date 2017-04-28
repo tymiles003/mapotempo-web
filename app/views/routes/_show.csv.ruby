@@ -55,7 +55,7 @@ route.stops.each { |stop|
       order: (index+=1 if route.vehicle_usage),
       stop_type: stop.is_a?(StopVisit) ? I18n.t('plannings.export_file.stop_type_visit') : I18n.t('plannings.export_file.stop_type_rest'),
       active: ((stop.active ? '1' : '0') if route.vehicle_usage),
-      wait_time: (stop.wait_time_absolute_time if route.vehicle_usage && stop.wait_time),
+      wait_time: ("%i:%02i" % [stop.wait_time/60/60, stop.wait_time/60%60] if route.vehicle_usage && stop.wait_time),
       time: (stop.time_absolute_time if route.vehicle_usage && stop.time),
       distance: (stop.distance if route.vehicle_usage),
       drive_time: (stop.drive_time if route.vehicle_usage),
