@@ -42,10 +42,10 @@
         <p class="help-block"><%= t '.begin_end_date_help' %></p>
       </div>
     </div>
-  <% end %>
 
-  <%= f.toggles t 'activerecord.attributes.planning.active' do %>
-    <%= f.check_box :active, '', checked: true %>
+    <%= f.toggles t 'activerecord.attributes.planning.active' do %>
+      <%= f.check_box :active, '', checked: true %>
+    <% end %>
   <% end %>
 
   <% if (@planning.id && !@planning.tags.empty?) || !@planning.id %>

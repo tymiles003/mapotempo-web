@@ -387,9 +387,9 @@ CREATE TABLE plannings (
     date date,
     vehicle_usage_set_id integer NOT NULL,
     tag_operation integer DEFAULT 0 NOT NULL,
-    active boolean DEFAULT false,
     begin_date date,
-    end_date date
+    end_date date,
+    active boolean DEFAULT true
 );
 
 
