@@ -83,11 +83,11 @@ en:
         action: Clear Teksat
         success: Teksat commands have been cleared successfully
         fail: Failed to clear Teksat commands
-      tomtom_orders:
+      tomtom_send_orders:
         action: Send to TomTom as Orders
         success: Sent to TomTom successfully
         fail: Failed to send to TomTom
-      tomtom_waypoints:
+      tomtom_send_waypoints:
         action: Send to TomTom as Waypoints
         success: Sent to TomTom successfully
         fail: Failed to send to TomTom
