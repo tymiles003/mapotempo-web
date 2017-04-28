@@ -592,7 +592,7 @@ fr:
       invalid_account: Utilisateur invalide (non existant)
   import:
     empty: Rien à importer, vérifiez vos données.
-    data: 'Contenu :'
+    data: 'Vérifiez vos données :'
     data_erroneous:
       csv: Fichier invalide, ligne
       json: Fichier invalide, enregistrement

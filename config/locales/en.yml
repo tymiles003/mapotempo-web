@@ -588,7 +588,7 @@ en:
 
   import:
     empty: Nothing to import, check your data.
-    data: 'Content:'
+    data: 'Check your data:'
     data_erroneous:
       csv: Invalid file, line
       json: Invalid file, record
