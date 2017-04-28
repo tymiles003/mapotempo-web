@@ -106,7 +106,7 @@ class ApplicationController < ActionController::Base
 
     respond_to do |format|
       format.html { render 'errors/show', layout: 'full_page', locals: { status: 404 }, status: 404 }
-      format.json { render json: { error: t('errors.management.status.explanation.404'), status: :not_found } }
+      format.json { render json: { error: t('errors.management.status.explanation.404') }, status: :not_found }
       format.all { render body: nil, status: :not_found }
     end
   end
@@ -120,7 +120,7 @@ class ApplicationController < ActionController::Base
 
     respond_to do |format|
       format.html { render 'errors/show', layout: 'full_page', locals: { status: 500 }, status: 500 }
-      format.json { render json: { error: t('errors.management.status.explanation.default'), status: :internal_server_error } }
+      format.json { render json: { error: t('errors.management.status.explanation.default') }, status: :internal_server_error }
       format.all { render body: nil, status: :internal_server_error }
     end
   end
