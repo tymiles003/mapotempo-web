@@ -267,16 +267,20 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
   },
 
-  pointInView: function(layer, id, point) {
-      if (!this.map.getBounds().contains(point.getLatLng())) {
-        this.map.setView(point.getLatLng(), 17, { reset: true });
-        point.openPopup();
+  setViewForMarker: function(layer, id, marker) {
+      if (this.map.getBounds().contains(marker.getLatLng())) {
+        this.map.setView(marker.getLatLng(), this.map.getZoom(), { reset: true });
+        this.createPopupForLayer(marker);
       } else {
-        this.removeLayer(this.clusterSmallZoom);
-        this.addLayer(this.clusterLargeZoom);
-        this.clusterLargeZoom.zoomToShowLayer(point, L.bind(function() {
-          this.createPopupForLayer(point);
-        }, this));
+
+        if (!this.clusterSmallZoom.hasLayer(marker))
+          marker.addTo(this.clusterSmallZoom);
+
+        this.map.setView(marker.getLatLng(), 17, { reset: true });
+        var cluster = this.clusterSmallZoom.getVisibleParent(marker);
+        if (cluster && ('spiderfy' in cluster)) cluster.spiderfy();
+        this.createPopupForLayer(marker);
+
       }
   },
 
@@ -284,7 +288,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     var markers = this.clusterSmallZoom.getLayers();
     for (var j = 0; j < markers.length; j++) {
       if (markers[j].properties[idName] == id) {
-        this.pointInView(layers, id, markers[j]);
+        this.setViewForMarker(layers, id, markers[j]);
         break;
       }
     }
