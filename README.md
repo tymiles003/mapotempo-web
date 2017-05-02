@@ -32,24 +32,24 @@ For exemple, with __Ubuntu__, follows this instructions :
 To know the last version, check with this command tools
 
     apt-cache search [package_name]
-    
+
 First, install Ruby :
 
     sudo apt-get install ruby2.3 ruby2.3-dev
 
 Next, install Postgrsql environement :
 
-     postgresql postgresql-client-9.5 postgresql-server-dev-9.5 
-     
+     postgresql postgresql-client-9.5 postgresql-server-dev-9.5
+
 You need some others libs :
 
     libz-dev libicu-dev build-essential g++ libgeos++-dev
-    
+
 __It's important to have all of this installed packages before installing following gems.__
 
 ### Install Bundler Gem
 
-Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed. 
+Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed.
 For more informations see [Bundler website](http://bundler.io).
 
 To install Bundler Ruby Gem:
@@ -68,13 +68,13 @@ Now add gem bin directory to path with :
 Add Environement Variables into the end of your .bashrc file :
 
     nano ~/.bashrc
-    
+
 Add following code :
 
     # RUBY GEM CONFIG
     export GEM_HOME=~/.gem/ruby/2.3
     export PATH=$PATH:~/.gem/ruby/2.3/bin
-     
+
 Save changes and Quit
 
 Run this command to activate your modifications :
@@ -88,11 +88,11 @@ For the following installation, your current working directory needs to be the m
 Clone the project :
 
     git clone git@github.com:Mapotempo/mapotempo-web.git
-    
+
 Go to project directory :
 
     cd mapotempo-web
-    
+
 And finally install gem project dependencies with :
 
     bundle install
@@ -125,19 +125,19 @@ As postgres user:
     sudo -i -u postgres
 
  Create user and databases:
- 
+
     createuser -s [username]
     createdb -E UTF8 -T template0 -O [username] mapotempo-dev
     createdb -E UTF8 -T template0 -O [username] mapotempo-test
 
 For informations, to __delete a user__ use :
-    
+
     dropuser [username]
-    
+
 To __delete a database__ :
 
     dropdb [database]
-    
+
 As normal user, we call rake to initialize databases (load schema and demo data) :
 
     rake db:setup
