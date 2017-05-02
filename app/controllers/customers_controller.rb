@@ -186,7 +186,7 @@ class CustomersController < ApplicationController
     if !params.nil?
       params.map do |key, value|
         if value.is_a?(Array)
-          { key => [ permit_recursive_params(value.first) ] }
+          { key => [permit_recursive_params(value.first)] }
         elsif value.is_a?(Hash) || value.is_a?(ActionController::Parameters)
           { key => permit_recursive_params(value) }
         else

@@ -100,7 +100,7 @@ class VehicleUsageSetsController < ApplicationController
 
   def time_with_day_params(params, local_params, times)
     times.each do |time|
-      local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage_set]["#{time.to_s}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}min") unless params[:vehicle_usage_set]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[time].to_s.empty?
+      local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage_set]["#{time}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}min") unless params[:vehicle_usage_set]["#{time}_day".to_sym].to_s.empty? || local_params[time].to_s.empty?
     end
   end
 

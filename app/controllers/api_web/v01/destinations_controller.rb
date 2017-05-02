@@ -26,8 +26,8 @@ class ApiWeb::V01::DestinationsController < ApiWeb::V01::ApiWebController
 
   swagger_api :index do
     summary 'Display all or some destinations.'
-    param :query, :ids, :array, :optional, 'Destination ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
-    param :query, :store_ids, :array, :optional, 'Store ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
+    param :query, :ids, :array, :optional, 'Destination ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', 'items' => { 'type' => 'string' }
+    param :query, :store_ids, :array, :optional, 'Store ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', 'items' => { 'type' => 'string' }
     param :query, :disable_clusters, 'boolean', :optional, 'Set this disable_clusters to true/1 to disable clusters on map.'
   end
 

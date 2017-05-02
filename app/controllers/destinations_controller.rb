@@ -161,13 +161,13 @@ class DestinationsController < ApplicationController
       if local_params[:visits_attributes].is_a?(Hash)
         local_params[:visits_attributes].each do |k, _|
           times.each do |time|
-            local_params[:visits_attributes][k][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][k]["#{time.to_s}_day".to_sym]} days and #{local_params[:visits_attributes][k][time].tr(':', 'h')}min") unless params[:destination][:visits_attributes][k]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[:visits_attributes][k][time].to_s.empty?
+            local_params[:visits_attributes][k][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][k]["#{time}_day".to_sym]} days and #{local_params[:visits_attributes][k][time].tr(':', 'h')}min") unless params[:destination][:visits_attributes][k]["#{time}_day".to_sym].to_s.empty? || local_params[:visits_attributes][k][time].to_s.empty?
           end
         end
       else
-        local_params[:visits_attributes].each_with_index do |k, i|
+        local_params[:visits_attributes].each_with_index do |_, i|
           times.each do |time|
-            local_params[:visits_attributes][i][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][i]["#{time.to_s}_day".to_sym]} days and #{local_params[:visits_attributes][i][time].tr(':', 'h')}min") unless params[:destination][:visits_attributes][i]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[:visits_attributes][i][time].to_s.empty?
+            local_params[:visits_attributes][i][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][i]["#{time}_day".to_sym]} days and #{local_params[:visits_attributes][i][time].tr(':', 'h')}min") unless params[:destination][:visits_attributes][i]["#{time}_day".to_sym].to_s.empty? || local_params[:visits_attributes][i][time].to_s.empty?
           end
         end
       end
@@ -188,7 +188,7 @@ class DestinationsController < ApplicationController
     # Deals with deprecated quantity
     if params[:visits_attributes]
       params[:visits_attributes].each{ |p|
-        if !p[:quantities] && p[:quantity] && current_user.customer.deliverable_units.size > 0
+        if !p[:quantities] && p[:quantity] && !current_user.customer.deliverable_units.empty?
           p[:quantities] = { current_user.customer.deliverable_units[0].id => p.delete(:quantity) }
         end
       }

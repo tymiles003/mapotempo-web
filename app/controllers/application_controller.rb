@@ -120,5 +120,4 @@ class ApplicationController < ActionController::Base
       format.all { render body: nil, status: :internal_server_error }
     end
   end
-
 end

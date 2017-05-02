@@ -24,7 +24,7 @@ class ApiWeb::V01::StoresController < ApiWeb::V01::ApiWebController
 
   swagger_api :index do
     summary 'Display all or some stores.'
-    param :query, :ids, :array, :optional, 'Store ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', { 'items' => { 'type' => 'string' } }
+    param :query, :ids, :array, :optional, 'Store ids or refs (as "ref:[VALUE]") to be displayed, separated by commas', 'items' => { 'type' => 'string' }
   end
 
   swagger_api :edit_position do

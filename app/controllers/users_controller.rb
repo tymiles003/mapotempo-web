@@ -17,13 +17,13 @@
 #
 class UsersController < ApplicationController
   authorize_resource
-  layout "registration", only: [:password, :set_password]
+  layout 'registration', only: [:password, :set_password]
   before_action :set_user, except: [:password, :set_password]
   before_action :set_user_from_token, only: [:password, :set_password]
 
   def edit
     if !@user
-      redirect_to unauthenticated_root_path, alert: t("users.edit.edit_user")
+      redirect_to unauthenticated_root_path, alert: t('users.edit.edit_user')
     end
   end
 

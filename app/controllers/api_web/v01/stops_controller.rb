@@ -16,7 +16,6 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 
-
 class ApiWeb::V01::StopsController < ApiWeb::V01::ApiWebController
   skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
   load_and_authorize_resource
@@ -40,6 +39,6 @@ class ApiWeb::V01::StopsController < ApiWeb::V01::ApiWebController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def route_params
-    params.require(:stop).permit()
+    params.require(:stop).permit
   end
 end

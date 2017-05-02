@@ -187,7 +187,7 @@ class PlanningsController < ApplicationController
     if params[:stop_ids] && !params[:stop_ids].empty?
       stop_ids = params[:stop_ids].collect{ |id| Integer(id) }
       stops = @planning.routes.collect{ |r| r.stops.select{ |s| stop_ids.include? s.id } }.flatten
-      route_ids = stops.collect{ |s| s.route_id }.uniq
+      route_ids = stops.collect(&:route_id).uniq
     else
       stops = @planning.routes.detect{ |r| !r.vehicle_usage }.stops
       route_ids = stops.any? ? [stops[0].route_id] : []
@@ -236,8 +236,8 @@ class PlanningsController < ApplicationController
   end
 
   def optimize
-    global = ValueToBoolean::value_to_boolean(params[:global])
-    all_stops = ValueToBoolean::value_to_boolean(params[:all_stops])
+    global = ValueToBoolean.value_to_boolean(params[:global])
+    all_stops = ValueToBoolean.value_to_boolean(params[:all_stops])
     respond_to do |format|
       begin
         if Optimizer.optimize(@planning, nil, global, false, all_stops) && @planning.customer.save
@@ -253,7 +253,7 @@ class PlanningsController < ApplicationController
   end
 
   def optimize_route
-    all_stops = ValueToBoolean::value_to_boolean(params[:all_stops])
+    all_stops = ValueToBoolean.value_to_boolean(params[:all_stops])
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
       begin
@@ -328,7 +328,7 @@ class PlanningsController < ApplicationController
       send_data Iconv.iconv('ISO-8859-1//translit//ignore', 'utf-8', data).join(''),
       type: 'text/csv',
       filename: filename + '.csv'
-      end
+    end
     format.csv do
       @columns = (@params[:columns] && @params[:columns].split('|')) || export_columns
       response.headers['Content-Disposition'] = 'attachment; filename="' + filename + '.csv"'
@@ -365,7 +365,7 @@ class PlanningsController < ApplicationController
 
   def filename
     if @planning
-      export_filename @planning, @planning.ref;
+      export_filename @planning, @planning.ref
     else
       I18n.t('plannings.menu.plannings') + '_' + I18n.l(Time.now, format: :datepicker)
     end

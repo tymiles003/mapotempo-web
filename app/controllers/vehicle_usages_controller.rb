@@ -51,13 +51,13 @@ class VehicleUsagesController < ApplicationController
   def time_with_day_params(params, local_params, times)
     # Convert each time field into integer from hour and day value
     times.each do |time|
-      if !params[:vehicle_usage]["#{time.to_s}_day".to_sym].to_s.empty? && !local_params[time].to_s.empty?
-        local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time.to_s}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}min")
-      elsif !params[:vehicle_usage]["#{time.to_s}_day".to_sym].to_s.empty? && local_params[time].to_s.empty?
+      if !params[:vehicle_usage]["#{time}_day".to_sym].to_s.empty? && !local_params[time].to_s.empty?
+        local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}min")
+      elsif !params[:vehicle_usage]["#{time}_day".to_sym].to_s.empty? && local_params[time].to_s.empty?
         # Use default value if only input day is given
-        default_time_value = @vehicle_usage.send("default_#{time.to_s}_time")
+        default_time_value = @vehicle_usage.send("default_#{time}_time")
         if default_time_value && !default_time_value.empty?
-          local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time.to_s}_day".to_sym]} days and #{default_time_value.tr(':', 'h')}min")
+          local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time}_day".to_sym]} days and #{default_time_value.tr(':', 'h')}min")
         end
       end
     end
@@ -122,7 +122,7 @@ class VehicleUsagesController < ApplicationController
 
   def permit_devices
     permit = []
-    Mapotempo::Application.config.devices.to_h.each{ |device_name, device_object|
+    Mapotempo::Application.config.devices.to_h.each{ |_device_name, device_object|
       if device_object.respond_to?('definition')
         device_definition = device_object.definition
         if device_definition.key?(:forms) && device_definition[:forms].key?(:vehicle)
