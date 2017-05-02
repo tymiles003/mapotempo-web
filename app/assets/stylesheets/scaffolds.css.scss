@@ -376,14 +376,14 @@ span.color[data-color=''][data-selected]:after {
     z-index: 3;
 
     .sidebar-tabs {
-      width: 0px;
+      width: 0;
     }
     .sidebar-content {
-      right: 0px;
+      right: 0;
       background-color: white;
 
       .sidebar-pane {
-        padding: 10px;
+        padding: 5px;
         min-width: 100%;
 
         h1 {
