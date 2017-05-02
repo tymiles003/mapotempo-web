@@ -25,7 +25,7 @@ class Tomtom < DeviceBase
       device: 'tomtom',
       label: 'TomTom WEBFLEET',
       label_small: 'TomTom',
-      route_operations: [:orders, :waypoints, :clear],
+      route_operations: [{send: :orders}, {send: :waypoints}, :clear],
       has_sync: true,
       help: true,
       forms: {
