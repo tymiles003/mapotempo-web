@@ -75,16 +75,24 @@
     document.body.appendChild(logEl);
   }
 
-  window.screenLog = {
+  window.ScreenLog = {
     init: init,
     log: log,
     clear: clear
   };
 
-  // Public API
-  return {
-    init: init,
-    log: log,
-    clear: clear
-  };
+  <% if Rails.env.development? %>
+  $(document).ready(function () {
+    ScreenLog.init();
+
+    console.now = function (data, colorStyle) {
+      ScreenLog.log(data, colorStyle);
+    };
+
+    // Error management
+    window.onerror = function (message, url, lineNumber, columnNumber, trace) {
+      console.now('Error: ' + message + ' (File: ' + url + ' ; ' + lineNumber + ')', 'red');
+    };
+  });
+  <% end %>
 }));

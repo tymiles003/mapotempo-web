@@ -106,16 +106,6 @@ $(document).ready(function () {
   $(document).on("page:fetch", startSpinner);
   $(document).on("page:receive", stopSpinner);
 
-  screenLog.init();
-  console.now = function (data, colorStyle) {
-    screenLog.log(data, colorStyle);
-  };
-
-  // Error management
-  window.onerror = function (message, url, lineNumber, columnNumber, trace) {
-    console.now('Error: ' + message + ' (File: ' + url + ' ; ' + lineNumber + ')', 'red');
-  };
-
   Paloma.start();
 });
 
