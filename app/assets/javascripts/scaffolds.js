@@ -87,7 +87,8 @@ var mapInitialize = function(params) {
   var map = L.map('map', {
     attributionControl: false,
     layers: mapLayer,
-    zoomControl: false
+    zoomControl: false,
+    closePopupOnClick: false
   }).setView([params.map_lat || 0, params.map_lng || 0], params.map_zoom || 13);
 
 

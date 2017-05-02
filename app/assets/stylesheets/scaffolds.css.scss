@@ -236,11 +236,6 @@ span.color[data-color=''][data-selected]:after {
     }
   }
 
-  .leaflet-popup-content {
-    min-height: 150px;
-    transition: all 0.3s ease;
-  }
-
   .focus-geocoder {
     background-color: red;
     border: none;

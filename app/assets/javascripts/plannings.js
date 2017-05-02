@@ -579,6 +579,7 @@ var plannings_edit = function(params) {
     });
   });
 
+  // Used to highlight the current stop in sidebar routes
   var enlighten_stop = function(stop_id) {
     var e = $(".routes [data-stop_id='" + stop_id + "']");
     e.css("background", "orange");

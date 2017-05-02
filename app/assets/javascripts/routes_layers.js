@@ -26,6 +26,9 @@ var RoutesLayer = L.FeatureGroup.extend({
     markerBaseUrl: '/'
   },
 
+  // Keep track of pevious popup
+  previousMarker: void(0),
+
   initialize: function(planningId, options) {
     L.FeatureGroup.prototype.initialize.call(this);
     this.planningId = planningId;
@@ -50,6 +53,8 @@ var RoutesLayer = L.FeatureGroup.extend({
 
     this.on('mouseover', function(e) {
       if (e.layer instanceof L.Marker) {
+        // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
+        if(self.previousMarker && (self.previousMarker != e.layer)) self.previousMarker.unbindPopup();
         if (!e.layer.getPopup()) {
           this.createPopupForLayer(e.layer);
         } else if (!e.layer.getPopup().isOpen()) {
@@ -63,6 +68,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       }
     }).on('mouseout', function(e) {
       if (e.layer instanceof L.Marker) {
+        self.previousMarker = e.layer;
         if (!e.layer.click) {
           e.layer.closePopup();
         }
@@ -82,8 +88,10 @@ var RoutesLayer = L.FeatureGroup.extend({
         }
         if (e.layer.click) {
           e.layer.closePopup();
+          e.layer.click = false;
         } else {
           e.layer.click = true;
+          e.layer.openPopup();
         }
       } else if (e.layer instanceof L.Path) {
         var distance = e.layer.properties.distance / 1000;
@@ -113,7 +121,6 @@ var RoutesLayer = L.FeatureGroup.extend({
       }, 100);
     }).on('popupclose', function(e) {
       e.layer.click = false;
-      e.layer.unbindPopup();
     });
 
     // Empty layer required to create empty cluster
