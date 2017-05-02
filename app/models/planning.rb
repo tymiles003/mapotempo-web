@@ -209,7 +209,15 @@ class Planning < ActiveRecord::Base
     end
   end
 
-  def automatic_insert(stop, out_of_zone = true, active_only = true)
+  # Available options:
+  # out_of_zone (true by default)
+  # active_only (true by default)
+  # max_time
+  # max_distance
+  def automatic_insert(stop, options = {})
+    options[:out_of_zone] ||= true
+    options[:active_only] ||= true
+
     available_routes = []
 
     # If already in route, stay in route
@@ -229,7 +237,7 @@ class Planning < ActiveRecord::Base
     end
 
     # It still no route get all routes
-    if available_routes.empty? && out_of_zone
+    if available_routes.empty? && options[:out_of_zone]
       available_routes = routes.select{ |route|
         route.vehicle_usage && !route.locked
       }
@@ -241,7 +249,7 @@ class Planning < ActiveRecord::Base
     end
 
     # Take the closest routes visit and eval insert
-    route, index = prefered_route_and_index(available_routes, stop, active_only)
+    route, index = prefered_route_and_index(available_routes, stop, options)
 
     if route
       stop.active = true
@@ -486,18 +494,18 @@ class Planning < ActiveRecord::Base
     yield(not_nil_position, not_nil_tws, nil_tws)
   end
 
-  def prefered_route_and_index(available_routes, stop, active_only = true)
+  def prefered_route_and_index(available_routes, stop, options = {})
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
     available_routes.flat_map { |route|
-      route.stops.select { |s| (active_only ? s.active? : true) && s.position? }.map { |s| [s.position, route, s.index] } +
-        [route.stops.select { |s| (active_only ? s.active? : true) && s.position? }.empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
+      route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }.map { |s| [s.position, route, s.index] } +
+        [route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }.empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
         (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.compact.sort_by{ |a|
       a[0] && a[0].position? ? a[0].distance(stop.position) : 0
     }[0..9].flat_map{ |visit_route_index|
       [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
-    }.uniq.min_by{ |ri|
+    }.uniq.map { |ri|
       ri[0].class.amoeba do
         clone :stops # No need to duplicate stop juste for compute evaluation
         nullify :planning_id
@@ -512,8 +520,20 @@ class Planning < ActiveRecord::Base
       r.compute
 
       # Difference of total time + difference of sum of out_of_window time
-      ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) +
-        (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
+      ri[2] = ((r.end - r.start) - (ri[0].end && ri[0].start ? ri[0].end - ri[0].start : 0)) + (r.sum_out_of_window - cache_sum_out_of_window[ri[0]])
+      # Delta distance
+      ri[3] = r.distance - ri[0].distance
+      # Return ri with time and distance added
+      ri
+    }.select { |ri|
+      # Check for max time or distance if any
+      route_available = true
+      route_available = ri[2].abs < options[:max_time] if options[:max_time] && route_available
+      route_available = ri[3].abs < options[:max_distance] if options[:max_distance] && route_available
+      route_available
+    }.min_by { |ri|
+      # Return route with the minimum time
+      ri[2]
     }
   end
 

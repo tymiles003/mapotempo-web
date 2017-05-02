@@ -212,6 +212,34 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     assert @planning.routes.reload.select(&:vehicle_usage).any? {|route| route.stop_ids.include?(unassigned_stop.id)}
   end
 
+  test 'should automatic insert or not with max time' do
+    assert @planning.valid?
+    unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
+    assert unassigned_stop.valid?
+
+    patch api("#{@planning.id}/automatic_insert"), {id: @planning.ref, stop_ids: [unassigned_stop.id], max_time: 50_000}
+    assert_equal 200, last_response.status
+    assert_not @planning.routes.reload.select(&:vehicle_usage).any? {|route| route.stop_ids.include?(unassigned_stop.id)}
+
+    patch api("#{@planning.id}/automatic_insert"), {id: @planning.ref, stop_ids: [unassigned_stop.id], max_time: 100_000}
+    assert_equal 200, last_response.status
+    assert @planning.routes.reload.select(&:vehicle_usage).any? {|route| route.stop_ids.include?(unassigned_stop.id)}
+  end
+
+  test 'should automatic insert or not with max distance' do
+    assert @planning.valid?
+    unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
+    assert unassigned_stop.valid?
+
+    patch api("#{@planning.id}/automatic_insert"), {id: @planning.ref, stop_ids: [unassigned_stop.id], max_distance: 500}
+    assert_equal 200, last_response.status
+    assert_not @planning.routes.reload.select(&:vehicle_usage).any? {|route| route.stop_ids.include?(unassigned_stop.id)}
+
+    patch api("#{@planning.id}/automatic_insert"), {id: @planning.ref, stop_ids: [unassigned_stop.id], max_distance: 1_000}
+    assert_equal 200, last_response.status
+    assert @planning.routes.reload.select(&:vehicle_usage).any? {|route| route.stop_ids.include?(unassigned_stop.id)}
+  end
+
   test 'should automatic insert with error' do
     Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
       unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take

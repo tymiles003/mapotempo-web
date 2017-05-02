@@ -119,11 +119,13 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Insert one or more stop into planning routes.',
-      detail: 'Insert automaticaly one or more stops in best routes and on best positions to have minimal influence on route\'s total time (this operation doesn\'t take into account time windows if they exist...). You should use this operation with existing stops in current planning\'s routes. In addition, you should not use this operation with many stops. You should use instead zoning (with automatic clustering creation for instance) to set multiple stops in each available route.',
+      detail: 'Insert automatically one or more stops in best routes and on best positions to have minimal influence on route\'s total time (this operation doesn\'t take into account time windows if they exist...). You should use this operation with existing stops in current planning\'s routes. In addition, you should not use this operation with many stops. You should use instead zoning (with automatic clustering creation for instance) to set multiple stops in each available route.',
       nickname: 'automaticInsertStop'
     params do
       requires :id, type: String, desc: ID_DESC
       requires :stop_ids, type: Array[Integer], desc: 'Ids separated by comma. You should not have too many stops.', documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger
+      optional :max_time, type: Float, desc: 'Maximum time for best routes (in seconds).'
+      optional :max_distance, type: Float, desc: 'Maximum distance for best routes (in meters).'
       optional :active_only, type: Boolean, desc: 'Use only active stops.', default: true
       optional :out_of_zone, type: Boolean, desc: 'Take into account points out of zones.', default: true
     end
@@ -132,7 +134,7 @@ class V01::Plannings < Grape::API
       planning = current_customer.plannings.where(planning_id).first!
       stops = Stop.where(id: params[:stop_ids], route_id: planning.route_ids)
       error!('Not Found', 404) if stops.empty?
-      stops.each{ |stop| planning.automatic_insert(stop, params[:out_of_zone], params[:active_only]) }
+      stops.each{ |stop| planning.automatic_insert(stop, max_time: params[:max_time], max_distance: params[:max_distance], out_of_zone: params[:out_of_zone], active_only: params[:active_only]) }
       planning.save!
       status 200
     end

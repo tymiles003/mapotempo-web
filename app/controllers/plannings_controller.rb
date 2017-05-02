@@ -196,7 +196,7 @@ class PlanningsController < ApplicationController
     Planning.transaction do
       success = true
       stops.each do |stop|
-        route = @planning.automatic_insert stop
+        route = @planning.automatic_insert(stop)
         if route
           route_ids << route.id if route_ids.exclude?(route.id)
         else
