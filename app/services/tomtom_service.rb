@@ -22,9 +22,9 @@ class TomtomService < DeviceService
 
   def list_devices
     if customer.devices[service_name] && customer.devices[:tomtom][:user]
-      # with_cache [:list_devices, service_name, customer.id, customer.devices[:tomtom][:user]] do
+      with_cache [:list_devices, service_name, customer.id, customer.devices[:tomtom][:user]] do
         service.list_devices customer
-      # end
+      end
     else
       []
     end

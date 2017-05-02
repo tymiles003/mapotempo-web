@@ -22,9 +22,9 @@ class OrangeService < DeviceService
 
   def list_devices(params = {})
     if (customer.devices[service_name] && customer.devices[:orange][:username]) || (params && params[:username])
-      #with_cache [:list_devices, service_name, customer.id, customer.devices[:orange][:username]] do
+      with_cache [:list_devices, service_name, customer.id, customer.devices[:orange][:username]] do
         service.list_devices customer, params
-      #end
+      end
     else
       []
     end
