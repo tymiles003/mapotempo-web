@@ -122,6 +122,8 @@ Rails.application.configure do
   config.enable_references = true
   config.enable_multi_visits = false
 
+  config.display_javascript_errors_on_screen = true
+
   # N 1 Queries: display only in log or console
   config.after_initialize do
     Bullet.enable               = true
