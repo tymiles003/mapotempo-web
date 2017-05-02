@@ -17,7 +17,7 @@
 #
 module ZoningsHelper
   def zoning_vehicles(zoning, planning = nil, options = {})
-    if planning && planning.vehicle_usage_set.exists?
+    if planning && planning.vehicle_usage_set.present?
       planning.vehicle_usage_set.vehicle_usages.select{ |v|
         options[:active].nil? || options[:active] == v.active
       }.map(&:vehicle)
