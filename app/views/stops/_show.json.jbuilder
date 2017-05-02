@@ -23,11 +23,15 @@ end
 json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :no_path, :active
 json.ref stop.ref if stop.route.planning.customer.enable_references
 json.open_close1 stop.open1 || stop.close1
-(json.open1 l(stop.open1.utc, format: :hour_minute)) if stop.open1
-(json.close1 l(stop.close1.utc, format: :hour_minute)) if stop.close1
+(json.open1 stop.open1_time) if stop.open1
+(json.open1_day number_of_days(stop.open1)) if stop.open1
+(json.close1 stop.close1_time) if stop.close1
+(json.close1_day number_of_days(stop.close1)) if stop.close1
 json.open_close2 stop.open2 || stop.close2
-(json.open2 l(stop.open2.utc, format: :hour_minute)) if stop.open2
-(json.close2 l(stop.close2.utc, format: :hour_minute)) if stop.close2
+(json.open2 stop.open2_time) if stop.open2
+(json.open2_day number_of_days(stop.open2)) if stop.open2
+(json.close2 stop.close2_time) if stop.close2
+(json.close2_day number_of_days(stop.close2)) if stop.close2
 (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
 (json.time stop.time_time) if stop.time
 (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
@@ -67,7 +71,7 @@ if stop.is_a?(StopVisit)
   if stop.route.last_sent_to && stop.status && stop.eta
     (json.eta_formated l(stop.eta, format: :hour_minute)) if stop.eta
   end
-  duration = l(visit.take_over.utc, format: :hour_minute_second) if visit.take_over
+  duration = visit.default_take_over_time_with_seconds
   if @show_isoline && stop.route.vehicle_usage_id
     json.vehicle_usage_id stop.route.vehicle_usage_id
     json.isoline stop.route.vehicle_usage.vehicle.default_router.isochrone || stop.route.vehicle_usage.vehicle.default_router.isodistance
@@ -77,7 +81,7 @@ if stop.is_a?(StopVisit)
 elsif stop.is_a?(StopRest)
   json.rest do
     json.rest true
-    duration = l(stop.route.vehicle_usage.default_rest_duration.utc, format: :hour_minute_second) if stop.route.vehicle_usage.default_rest_duration
+    duration = stop.route.vehicle_usage.default_rest_duration_time_with_seconds
     (json.store_id stop.route.vehicle_usage.default_store_rest.id) if stop.route.vehicle_usage.default_store_rest
     (json.error true) if stop.route.vehicle_usage.default_store_rest && !stop.route.vehicle_usage.default_store_rest.position?
   end
