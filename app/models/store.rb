@@ -19,9 +19,9 @@ require 'font_awesome'
 
 class Store < Location
   ICON_SIZE = %w(small medium large).freeze
-  COLOR_DEFAULT = '#000000'
-  ICON_DEFAULT = 'fa-home'
-  ICON_SIZE_DEFAULT = 'large'
+  COLOR_DEFAULT = '#000000'.freeze
+  ICON_DEFAULT = 'fa-home'.freeze
+  ICON_SIZE_DEFAULT = 'large'.freeze
 
   has_many :vehicle_usage_set_starts, class_name: 'VehicleUsageSet', inverse_of: :store_start, foreign_key: 'store_start_id'
   has_many :vehicle_usage_set_stops, class_name: 'VehicleUsageSet', inverse_of: :store_stop, foreign_key: 'store_stop_id'

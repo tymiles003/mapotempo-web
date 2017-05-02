@@ -34,7 +34,7 @@ module Consistency
           record.send(attribute_consistency)
         if consistent_value
           attributes.each{ |attr|
-            attr = attr.to_s.gsub(/^(.+[^s])(s?)$/, '\1_id\2').to_sym unless attr.to_s.match(/_ids?$/)
+            attr = attr.to_s.gsub(/^(.+[^s])(s?)$/, '\1_id\2').to_sym unless attr.to_s =~ /_ids?$/
 
             if record.send("#{attr}_changed?".to_sym)
               model_name = attr.to_s.gsub(/_id(s?)$/, '\1').to_sym

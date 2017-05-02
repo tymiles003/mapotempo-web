@@ -244,9 +244,8 @@ class VehicleUsage < ActiveRecord::Base
       if !(self.default_rest_start >= working_day_start) || !(self.default_rest_stop <= working_day_end)
         begin_day = Time.at(working_day_start).utc.strftime('%d').to_i - 1
         end_day = Time.at(working_day_end).utc.strftime('%d').to_i - 1
-        errors.add(:base, I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime('%H:%M') + (begin_day > 0 ? " (+#{begin_day.to_s})" : ''), end: Time.at(working_day_end).utc.strftime('%H:%M') + (end_day > 0 ? " (+#{end_day.to_s})" : '')))
+        errors.add(:base, I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime('%H:%M') + (begin_day > 0 ? " (+#{begin_day})" : ''), end: Time.at(working_day_end).utc.strftime('%H:%M') + (end_day > 0 ? " (+#{end_day})" : '')))
       end
     end
   end
-
 end

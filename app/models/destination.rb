@@ -17,7 +17,7 @@
 #
 class Destination < Location
   COLOR_DEFAULT = DEFAULT_COLOR
-  ICON_DEFAULT = 'circle'
+  ICON_DEFAULT = 'circle'.freeze
 
   has_many :visits, -> { order(:id) }, inverse_of: :destination, dependent: :delete_all, autosave: true
   accepts_nested_attributes_for :visits, allow_destroy: true
@@ -86,10 +86,8 @@ class Destination < Location
               unless (planning.tags.to_a & (tags.to_a | visit.tags.to_a)).present?
                 planning.visit_remove(visit)
               end
-            else
-              if planning.tags.to_a & (tags.to_a | visit.tags.to_a) != planning.tags.to_a
-                planning.visit_remove(visit)
-              end
+            elsif planning.tags.to_a & (tags.to_a | visit.tags.to_a) != planning.tags.to_a
+              planning.visit_remove(visit)
             end
           elsif planning.tag_operation == 'or' && (planning.tags.to_a & (tags.to_a | visit.tags.to_a)).present?
             planning.visit_add(visit)

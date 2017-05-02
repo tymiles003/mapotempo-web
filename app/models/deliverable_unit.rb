@@ -15,12 +15,12 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require "font_awesome"
+require 'font_awesome'
 
 class DeliverableUnit < ActiveRecord::Base
   ICON_SIZE = %w(small medium large).freeze
-  ICON_DEFAULT = 'fa-archive'
-  
+  ICON_DEFAULT = 'fa-archive'.freeze
+
   belongs_to :customer
 
   nilify_blanks

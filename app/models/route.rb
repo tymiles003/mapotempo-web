@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Route < ActiveRecord::Base
-  COLOR_DEFAULT = '#707070'
+  COLOR_DEFAULT = '#707070'.freeze
 
   belongs_to :planning
   belongs_to :vehicle_usage
@@ -489,7 +489,7 @@ class Route < ActiveRecord::Base
   end
 
   def quantities?
-    quantities.flat_map{ |q| q.values }.any{ |q| q > 0 }
+    quantities.flat_map(&:values).any{ |q| q > 0 }
   end
 
   def active_all
@@ -573,12 +573,12 @@ class Route < ActiveRecord::Base
         features << stores_geojson.to_json
       end
 
-      ('{"type":"FeatureCollection","features":[' + features.join(',') + ']}') if features.size > 0
+      ('{"type":"FeatureCollection","features":[' + features.join(',') + ']}') if !features.empty?
     else
       features = JSON.parse('[' + routes.select{ |r| !respect_hidden || !r.hidden }.collect{ |r| [r.geojson_tracks, r.geojson_points] }.flatten.compact.join(',') + ']').collect{ |feature|
         feature['geometry']['coordinates'] = Polylines::Decoder.decode_polyline(feature['geometry']['polylines'], 1e6).collect{ |a, b| [b.round(6), a.round(6)] }
         feature['geometry'].delete('polylines')
-          feature
+        feature
       }
       if stores_geojson
         features << stores_geojson
@@ -587,7 +587,7 @@ class Route < ActiveRecord::Base
       {
         type: 'FeatureCollection',
         features: features
-      }.to_json if features.size > 0
+      }.to_json if !features.empty?
     end
   end
 
@@ -614,7 +614,7 @@ class Route < ActiveRecord::Base
     if !@no_stop_index_validation && vehicle_usage_id && @stops_updated && !stops.empty? && stops.collect(&:index).sum != (stops.length * (stops.length + 1)) / 2
       bad_index = nil
       (1..stops.length).each{ |index|
-        if stops[0..(index-1)].collect(&:index).sum != (index * (index + 1)) / 2
+        if stops[0..(index - 1)].collect(&:index).sum != (index * (index + 1)) / 2
           bad_index = index
           break
         end

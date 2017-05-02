@@ -60,10 +60,10 @@ class Location < ActiveRecord::Base
 
   def reverse_geocoding(lat, lng)
     json = ActiveSupport::JSON.decode(Mapotempo::Application.config.geocode_geocoder.reverse(lat, lng))
-    if json["features"].present?
+    if json['features'].present?
       {
         success: true,
-        result: json["features"].first["properties"]["geocoding"]
+        result: json['features'].first['properties']['geocoding']
       }
     end
   rescue GeocodeError => e

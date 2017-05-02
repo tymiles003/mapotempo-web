@@ -78,3 +78,6 @@ Style/ElseAlignment:
 
 Style/BlockDelimiters:
   Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false

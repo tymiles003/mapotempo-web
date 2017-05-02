@@ -33,25 +33,25 @@ class Device
   end
 
   def enableds
-    all.select{ |key, conf|
+    all.select{ |key, _|
       @customer.devices.key?(key) && ValueToBoolean.value_to_boolean(@customer.devices[key][:enable])
     } || {}
   end
 
   def enabled_definitions
-    definitions.select{ |key, conf|
+    definitions.select{ |key, _|
       @customer.devices.key?(key) && ValueToBoolean.value_to_boolean(@customer.devices[key][:enable])
     } || {}
   end
 
   def configured_definitions
-    enabled_definitions.select{ |key, conf|
+    enabled_definitions.select{ |key, _|
       configured?(key)
     }
   end
 
   def configured?(key)
-    @customer.devices.key?(key) && ValueToBoolean.value_to_boolean(@customer.devices[key][:enable]) && @customer.devices[key].all?{ |k, v|
+    @customer.devices.key?(key) && ValueToBoolean.value_to_boolean(@customer.devices[key][:enable]) && @customer.devices[key].all?{ |_, v|
       !v.blank?
     }
   end

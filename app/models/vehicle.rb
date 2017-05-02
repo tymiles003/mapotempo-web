@@ -96,12 +96,12 @@ class Vehicle < ActiveRecord::Base
   end
 
   # Used in form helpers (store_accessor cannot be used since devices keys are symbolized)
-  Mapotempo::Application.config.devices.to_h.each{ |device_name, device_object|
+  Mapotempo::Application.config.devices.to_h.each{ |_device_name, device_object|
     if device_object.respond_to?('definition')
       device_definition = device_object.definition
       if device_definition.key?(:forms) && device_definition[:forms].key?(:vehicle)
         device_definition[:forms][:vehicle].keys.each{ |key|
-          define_method("#{key}") do
+          define_method(key) do
             self.devices[key]
           end
         }
@@ -118,7 +118,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def default_router_options
-    default_router.options.select{ |k, v| ValueToBoolean.value_to_boolean(v) }.each do |key, value|
+    default_router.options.select{ |_, v| ValueToBoolean.value_to_boolean(v) }.each do |key, value|
       @current_router_options ||= {}
       @current_router_options[key.to_s] = router_options[key.to_s] || customer.router_options[key.to_s]
     end if !@current_router_options
@@ -172,7 +172,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def nilify_router_options_blanks
-    true_options = default_router.options.select { |o, v| v == 'true' }.keys
+    true_options = default_router.options.select { |_, v| v == 'true' }.keys
     write_attribute :router_options, self.router_options.delete_if { |k, v| v.to_s.empty? || true_options.exclude?(k) }
   end
 

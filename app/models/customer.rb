@@ -120,7 +120,7 @@ class Customer < ActiveRecord::Base
       zonings_map = Hash[original.zonings.zip(copy.zonings)].merge(nil => nil)
 
       copy.vehicles.each{ |vehicle|
-        vehicle.capacities = Hash[vehicle.capacities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]]}.compact]
+        vehicle.capacities = Hash[vehicle.capacities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
         vehicle.save!
       }
 
@@ -144,7 +144,7 @@ class Customer < ActiveRecord::Base
 
         destination.visits.each{ |visit|
           visit.tags = visit.tags.collect{ |tag| tags_map[tag] }
-          visit.quantities = Hash[visit.quantities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]]}.compact]
+          visit.quantities = Hash[visit.quantities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
           visit.save!
         }
         destination.save!
@@ -358,7 +358,7 @@ class Customer < ActiveRecord::Base
           }
         else
           self.destinations.each{ |destination|
-            if destination.visits.size > 0
+            if !destination.visits.empty?
               destination.ref = destination.visits[0].ref
               destination.tags = destination.visits[0].tags # ?
               destination.visits.each{ |visit|
@@ -377,7 +377,7 @@ class Customer < ActiveRecord::Base
   end
 
   def nilify_router_options_blanks
-    true_options = router.options.select { |o, v| v == 'true' }.keys
+    true_options = router.options.select { |_, v| v == 'true' }.keys
     write_attribute :router_options, self.router_options.delete_if { |k, v| v.to_s.empty? || true_options.exclude?(k) }
   end
 

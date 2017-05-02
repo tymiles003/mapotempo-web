@@ -86,7 +86,7 @@ class ImportCsv
       rescue => e
         message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.csv', s: last_line) + ', ' : (last_line && !e.is_a?(ImportBaseError)) ? I18n.t('import.csv.line', s: last_line) + ', ' : ''
         message += e.message
-        message += ' ' + I18n.t('destinations.import_file.check_custom_columns') if column_def && column_def.values.join('').size > 0
+        message += ' ' + I18n.t('destinations.import_file.check_custom_columns') if column_def && !column_def.values.compact.empty?
         # format error to be human friendly with row content (take into account customized column names)
         errors[:base] << error_and_format_row(message, last_row)
         Rails.logger.error e.message
@@ -127,8 +127,8 @@ class ImportCsv
     end
 
     line = contents.lines.first
-    splitComma, splitSemicolon, splitTab = line.split(','), line.split(';'), line.split("\t")
-    _split, separator = [[splitComma, ',', splitComma.size], [splitSemicolon, ';', splitSemicolon.size], [splitTab, "\t", splitTab.size]].max{ |a, b| a[2] <=> b[2] }
+    split_comma, split_semicolon, split_tab = line.split(','), line.split(';'), line.split("\t")
+    _split, separator = [[split_comma, ',', split_comma.size], [split_semicolon, ';', split_semicolon.size], [split_tab, "\t", split_tab.size]].max{ |a, b| a[2] <=> b[2] }
 
     begin
       column_def_any = column_def && column_def.values.any?{ |v| !v.strip.empty? }
@@ -155,16 +155,16 @@ class ImportCsv
     error = message
     if row
       error += ' ' + I18n.t('import.data') + ' '
-      row_content = row.size > 0 ? (((h = @column_def && @column_def.dup) ? h : {}).each{ |k, v| h[k] = nil }).merge(row) : nil
+      row_content = !row.empty? ? (((h = @column_def && @column_def.dup) ? h : {}).each{ |k, _| h[k] = nil }).merge(row) : nil
       if row_content
         row_content[:tags] = row_content[:tags].map(&:label).join(',') if row_content[:tags] && row_content[:tags].is_a?(Enumerable)
         row_content[:tags_visit] = row_content[:tags_visit].map(&:label).join(',') if row_content[:tags_visit] && row_content[:tags_visit].is_a?(Enumerable)
         if @content_code == :html
           error += '<div class="grid-container"><table class="grid">'
-          error += '<tr>' + row_content.keys.map{ |a| "<th>" + (@importer.columns[a] && @importer.columns[a][:title] ?
+          error += '<tr>' + row_content.keys.map{ |a| '<th>' + (@importer.columns[a] && @importer.columns[a][:title] ?
               @importer.columns[a][:title] :
               a.to_s) + (@column_def && @column_def[a] && !@column_def[a].empty? ?
-              ' (' + @column_def[a] + ')' : '') + "</th>" }.join('') + '</tr>'
+              ' (' + @column_def[a] + ')' : '') + '</th>' }.join('') + '</tr>'
           error += '<tr>' + row_content.values.map{ |a| "<td>#{a}</td>" }.join('') + '</tr>'
           error += '</table></div>'
         else

@@ -42,7 +42,7 @@ class Visit < ActiveRecord::Base
   validate :quantities_validator
 
   include Consistency
-  validate_consistency :tags, attr_consistency_method: -> (visit) { visit.destination.try :customer_id }
+  validate_consistency :tags, attr_consistency_method: ->(visit) { visit.destination.try :customer_id }
 
   before_save :update_tags, :create_orders
   before_update :update_out_of_date
@@ -69,11 +69,11 @@ class Visit < ActiveRecord::Base
   # Custom validator for quantities. Mostly used by the destination model (:update, :create)
   def quantities_validator
     !quantities || quantities.values.each do |q|
-      raise Exceptions::NegativeErrors.new(q, id, { nested_attr: :quantities, record: self }) if Float(q) < 0; # Raise both Float && NegativeErrors type
+      raise Exceptions::NegativeErrors.new(q, id, nested_attr: :quantities, record: self) if Float(q) < 0; # Raise both Float && NegativeErrors type
     end
   rescue StandardError => e
     self.errors.add :quantities, :not_float if e.is_a?(ArgumentError) || e.is_a?(TypeError)
-    self.errors.add :quantities, :negative_value, {value: e.object[:value]} if e.is_a?(Exceptions::NegativeErrors)
+    self.errors.add(:quantities, :negative_value, value: e.object[:value]) if e.is_a?(Exceptions::NegativeErrors)
   end
 
   def destroy
@@ -201,26 +201,25 @@ class Visit < ActiveRecord::Base
 
   def close1_after_open1
     if self.open1.present? && self.close1.present? && self.close1 < self.open1
-      raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close1, record: self })
+      raise Exceptions::CLoseAndOpenErrors.new(nil, id, nested_attr: :close1, record: self)
     end
-    rescue Exceptions::CLoseAndOpenErrors => e
-      self.errors.add(:close1, :after, { s: I18n.t('activerecord.attributes.visit.open1').downcase })
+  rescue Exceptions::CLoseAndOpenErrors => e
+    self.errors.add(:close1, :after, s: I18n.t('activerecord.attributes.visit.open1').downcase)
   end
 
   def close2_after_open2
     if self.open2.present? && self.close2.present? && self.close2 < self.open2
-      raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close2, record: self })
+      raise Exceptions::CLoseAndOpenErrors.new(nil, id, nested_attr: :close2, record: self)
     end
-    rescue Exceptions::CLoseAndOpenErrors => e
-      self.errors.add(:close2, :after, { s: I18n.t('activerecord.attributes.visit.open2').downcase })
+  rescue Exceptions::CLoseAndOpenErrors => e
+    self.errors.add(:close2, :after, s: I18n.t('activerecord.attributes.visit.open2').downcase)
   end
 
   def open2_after_close1
     if self.open2.present? && self.close1.present? && self.open2 < self.close1
-      raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close2, record: self })
+      raise Exceptions::CLoseAndOpenErrors.new(nil, id, nested_attr: :close2, record: self)
     end
   rescue Exceptions::CLoseAndOpenErrors => e
-      self.errors.add(:open2, :after, { s: I18n.t('activerecord.attributes.visit.close1').downcase })
+    self.errors.add(:open2, :after, s: I18n.t('activerecord.attributes.visit.close1').downcase)
   end
-
 end

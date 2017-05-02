@@ -55,7 +55,7 @@ class Zone < ActiveRecord::Base
   end
 
   def avoid_zone=(bool)
-    speed_multiplicator = bool ? 0 : 1;
+    speed_multiplicator = bool ? 0 : 1
   end
 
   private

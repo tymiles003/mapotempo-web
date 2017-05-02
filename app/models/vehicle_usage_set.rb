@@ -146,5 +146,4 @@ class VehicleUsageSet < ActiveRecord::Base
       errors.add(:rest_stop, I18n.t('activerecord.errors.models.vehicle_usage_set.attributes.rest_stop.after'))
     end
   end
-
 end

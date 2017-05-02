@@ -12,7 +12,7 @@ module RefSanitizer
     end
 
     def self.human_attribute_name(attr, l = {})
-      attr.to_s == "routes.ref" ? I18n.t('activerecord.errors.models.planning.attributes.ref.ref_value') : super;
+      attr.to_s == 'routes.ref' ? I18n.t('activerecord.errors.models.planning.attributes.ref.ref_value') : super
     end
   end
 end
