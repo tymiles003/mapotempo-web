@@ -49,8 +49,17 @@ class VehicleUsagesController < ApplicationController
   private
 
   def time_with_day_params(params, local_params, times)
+    # Convert each time field into integer from hour and day value
     times.each do |time|
-      local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time.to_s}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}") unless params[:vehicle_usage]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[time].to_s.empty?
+      if !params[:vehicle_usage]["#{time.to_s}_day".to_sym].to_s.empty? && !local_params[time].to_s.empty?
+        local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time.to_s}_day".to_sym]} days and #{local_params[time].tr(':', 'h')}")
+      elsif !params[:vehicle_usage]["#{time.to_s}_day".to_sym].to_s.empty? && local_params[time].to_s.empty?
+        # Use default value if only input day is given
+        default_time_value = @vehicle_usage.send("default_#{time.to_s}_time")
+        if default_time_value && !default_time_value.empty?
+          local_params[time] = ChronicDuration.parse("#{params[:vehicle_usage]["#{time.to_s}_day".to_sym]} days and #{default_time_value.tr(':', 'h')}")
+        end
+      end
     end
   end
 
