@@ -38,24 +38,24 @@ class V01::PlanningsGetTest < ActiveSupport::TestCase
     get api('/plannings.json', { api_key: @user.api_key, active: true })
     assert last_response.ok?, last_response.body
     response = JSON.parse(last_response.body)
-    assert_equal Planning.where(active: true).count, response.size
+    assert_equal Planning.where(customer_id: @planning.customer.id).where(active: true).count, response.size
   end
 
   test 'Get plannings according to begin or end dates' do
     get api('/plannings.json', { api_key: @user.api_key, begin_date: '18-04-2017' })
     assert last_response.ok?, last_response.body
     response = JSON.parse(last_response.body)
-    assert_equal Planning.where('begin_date >= ?', '18-04-2017').count, response.size
+    assert_equal Planning.where(customer_id: @planning.customer.id).where('begin_date >= ?', '18-04-2017').count, response.size
 
     get api('/plannings.json', { api_key: @user.api_key, end_date: '26-04-2017' })
     assert last_response.ok?, last_response.body
     response = JSON.parse(last_response.body)
-    assert_equal Planning.where('end_date <= ?', '26-04-2017').count, response.size
+    assert_equal Planning.where(customer_id: @planning.customer.id).where('end_date <= ?', '26-04-2017').count, response.size
 
     get api('/plannings.json', { api_key: @user.api_key, begin_date: '18-04-2017', end_date: '26-04-2017' })
     assert last_response.ok?, last_response.body
     response = JSON.parse(last_response.body)
-    assert_equal Planning.where('begin_date >= ? AND end_date <= ?', '18-04-2017', '26-04-2017').count, response.size
+    assert_equal Planning.where(customer_id: @planning.customer.id).where('begin_date >= ? AND end_date <= ?', '18-04-2017', '26-04-2017').count, response.size
   end
 
   test 'Get plannings with specific tags' do

@@ -41,7 +41,7 @@ class VehicleUsagesControllerTest < ActionController::TestCase
   test 'should update vehicle_usage with default close' do
     patch :update, id: @vehicle_usage, vehicle_usage: { open: '07:00', close_day: '1' }
     assert_equal @vehicle_usage.reload.open, 7 * 3_600
-    assert_equal @vehicle_usage.reload.close, 15 * 3_600
+    assert_equal @vehicle_usage.reload.close, @vehicle_usage.default_close
   end
 
   test 'should update vehicle_usage with time exceeding one day' do
