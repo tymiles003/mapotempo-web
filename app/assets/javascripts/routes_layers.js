@@ -26,13 +26,38 @@ var RoutesLayer = L.FeatureGroup.extend({
     markerBaseUrl: '/'
   },
 
-  // Keep track of pevious popup
+  // Keep track of Popups
+  currentAjaxRequested: void(0),
   previousMarker: void(0),
+  ajaxTimer: 100,
 
   initialize: function(planningId, options) {
     L.FeatureGroup.prototype.initialize.call(this);
     this.planningId = planningId;
     this.options = $.extend(this.options, options);
+  },
+
+  ajaxCanBeProceeded: function() {
+    var currentTime = (!Date.now) ? (new Date().getTime()) : Date.now(); // Ensure IE <9 compatibility
+    if ((currentTime - this.ajaxTimer) >= 100) {
+      this.ajaxTimer = currentTime;
+      return true;
+    }
+    return false;
+  },
+
+  buildContentForPopup: function(marker) {
+    if(this.ajaxCanBeProceeded()) {
+      this.buildPopupContent(marker.properties.type || 'stop', marker.properties.store_id || marker.properties.stop_id, function(content) {
+        marker.getPopup().setContent(SMT['stops/show']($.extend(content, { number: marker.properties.index } )));
+        return marker.getPopup()._container;
+      });
+      //Wait for ajax request
+      this.currentAjaxRequested.done(function() {
+        marker.openPopup();
+      });
+
+    }
   },
 
   onAdd: function(map) {
@@ -56,7 +81,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
         if(self.previousMarker && (self.previousMarker != e.layer)) self.previousMarker.unbindPopup();
         if (!e.layer.getPopup()) {
-          this.createPopupForLayer(e.layer);
+          self.createPopupForLayer(e.layer);
         } else if (!e.layer.getPopup().isOpen()) {
           e.layer.openPopup();
         }
@@ -105,20 +130,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         }).setLatLng(e.latlng).setContent(content).openOn(self.map);
       }
     }).on('popupopen', function(e) {
-      // Wait a bit before make ajax call, avoid too many ajax call
-      setTimeout(function() {
-        // The popup still open ?
-        if (e.popup.isOpen()) {
-          self.buildPopupContent(e.layer.properties.type || 'stop', e.layer.properties.store_id || e.layer.properties.stop_id, function(content) {
-            if (e.popup.isOpen()) {
-              e.popup.setContent(SMT['stops/show']($.extend(content, {
-                number: e.layer.properties.index
-              })));
-              return e.popup._container;
-            }
-          });
-        }
-      }, 100);
+      // Silence is golden
     }).on('popupclose', function(e) {
       e.layer.click = false;
     });
@@ -173,7 +185,7 @@ var RoutesLayer = L.FeatureGroup.extend({
 
   buildPopupContent: function(type, id, callBack) {
     var self = this;
-    $.ajax({
+    this.currentAjaxRequested = $.ajax({
       url: self.options.markerBaseUrl + (type == 'store' ?
         'stores/' + id + '.json' : 'stops/' + id + '.json'),
       beforeSend: beforeSendWaiting,
@@ -306,7 +318,8 @@ var RoutesLayer = L.FeatureGroup.extend({
     }), {
       minWidth: 200,
       autoPan: false
-    }).openPopup();
+    });
+    this.buildContentForPopup(layer);
   },
 
   load: function(routeIds, includeStores, geojson, callBack) {
