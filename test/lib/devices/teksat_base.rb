@@ -13,7 +13,7 @@ module TeksatBase
     customer.devices = {
       teksat: {
         enable: 'true',
-        customer_id: rand(100).to_s,
+        teksat_customer_id: rand(100).to_s,
         username: 'teksat_username',
         password: 'teksat_password',
         url: 'www.gps00.teksat.fr'
@@ -32,7 +32,7 @@ module TeksatBase
             @ticket_id = File.read(Rails.root.join("test/web_mocks/teksat/get_ticket")).strip
             params = {
               url: @customer.devices[:teksat][:url],
-              customer_id: @customer.devices[:teksat][:customer_id],
+              teksat_customer_id: @customer.devices[:teksat][:teksat_customer_id],
               username: @customer.devices[:teksat][:username],
               password: @customer.devices[:teksat][:password]
             }

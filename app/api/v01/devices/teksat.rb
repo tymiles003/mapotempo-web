@@ -19,7 +19,7 @@ class V01::Devices::Teksat < Grape::API
   namespace :devices do
     namespace :teksat do
       before do
-        current_customer params[:id]
+        current_customer params[:customer_id]
         Mapotempo::Application.config.devices[:teksat].authenticate @current_customer, params
         teksat_authenticate @current_customer
       end
@@ -33,7 +33,7 @@ class V01::Devices::Teksat < Grape::API
       desc 'List Devices',
         detail: 'List Devices',
         nickname: 'deviceTeksatList'
-      get ':id/devices' do
+      get 'devices' do
         present service.list_devices, with: V01::Entities::DeviceItem
       end
 
@@ -43,7 +43,7 @@ class V01::Devices::Teksat < Grape::API
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
-      post ':id/send_multiple' do
+      post 'send_multiple' do
         device_send_routes device_id: :teksat_id
       end
 
@@ -53,7 +53,7 @@ class V01::Devices::Teksat < Grape::API
       params do
         requires :route_id, type: Integer, desc: 'Route ID'
       end
-      delete ':id/clear' do
+      delete 'clear' do
         device_clear_route
       end
 
@@ -63,14 +63,14 @@ class V01::Devices::Teksat < Grape::API
       params do
         requires :planning_id, type: Integer, desc: 'Planning ID'
       end
-      delete ':id/clear_multiple' do
+      delete 'clear_multiple' do
         device_clear_routes device_id: :teksat_id
       end
 
       desc 'Sync Vehicles',
         detail: 'Sync Vehicles',
         nickname: 'deviceTeksatSync'
-      post ':id/sync' do
+      post 'sync' do
         teksat_sync_vehicles @current_customer, session[:teksat_ticket_id]
         status 204
       end

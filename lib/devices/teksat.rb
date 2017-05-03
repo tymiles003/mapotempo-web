@@ -30,7 +30,7 @@ class Teksat < DeviceBase
       help: true,
       forms: {
         settings: {
-          customer_id: :text,
+          teksat_customer_id: :text,
           url: :text,
           username: :text,
           password: :password
@@ -117,9 +117,9 @@ class Teksat < DeviceBase
   def get_ticket_url(customer, options = {})
     url = options[:url] || customer.devices[:teksat][:url] # Url pattern followed by the Teksat Api hash
     teksat_query = {
-      custID: options[:customer_id] || customer.devices[:teksat][:customer_id],
-      username: options[:username] || customer.devices[:teksat][:username],
-      pw: options[:password] || customer.devices[:teksat][:password]
+      custID:   options[:teksat_customer_id] || customer.devices[:teksat][:teksat_customer_id],
+      username: options[:username]           || customer.devices[:teksat][:username],
+      pw:       options[:password]           || customer.devices[:teksat][:password]
     }
     if (url =~ /\A(www.*.teksat.fr)\Z/).nil?
       raise DeviceServiceError.new('Teksat: %s "%s"' % [I18n.t('errors.teksat.bad_url'), url])

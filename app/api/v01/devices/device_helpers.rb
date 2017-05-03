@@ -65,17 +65,17 @@ module Devices
     # Tekstat
     def teksat_authenticate(customer) # Must declare the ticket_id wich is needed for Teksat Api itself (up to 4 hours according to the documentation)
       if params[:check_only].to_i == 1 || !session[:teksat_ticket_id] || (Time.now - Time.at(session[:teksat_authenticated_at])) > 4.hours
-        session[:teksat_ticket_id] = TeksatService.new(customer: customer).authenticate teksat_credentials(customer)
+        session[:teksat_ticket_id]        = TeksatService.new(customer: customer).authenticate teksat_credentials(customer)
         session[:teksat_authenticated_at] = Time.now.to_i
       end
     end
 
     def teksat_credentials(customer) # Return the formatted hash for Teksat authenticate method
       {
-        url:         params[:url]         || customer.devices[:teksat][:url],
-        customer_id: params[:customer_id] || customer.devices[:teksat][:customer_id],
-        username:    params[:username]    || customer.devices[:teksat][:username],
-        password:    params[:password]    || customer.devices[:teksat][:password]
+        url:                params[:url]                || customer.devices[:teksat][:url],
+        teksat_customer_id: params[:teksat_customer_id] || customer.devices[:teksat][:teksat_customer_id],
+        username:           params[:username]           || customer.devices[:teksat][:username],
+        password:           params[:password]           || customer.devices[:teksat][:password]
       }
     end
 

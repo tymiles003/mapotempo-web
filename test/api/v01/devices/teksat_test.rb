@@ -39,7 +39,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
 
   test 'list devices' do
     with_stubs [:auth, :get_vehicles] do
-      get api("devices/teksat/#{@customer.id}/devices")
+      get api("devices/teksat/devices")
       assert_equal 200, last_response.status, last_response.body
       assert_equal [
         {id: '97', text: 'FIAT DOBLO - 352848026546057'},
@@ -88,7 +88,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
   test 'send multiple' do
     with_stubs [:auth, :send_route] do
       set_route
-      post api("devices/teksat/#{@customer.id}/send_multiple", planning_id: @route.planning_id)
+      post api("devices/teksat/send_multiple", planning_id: @route.planning_id)
       assert_equal 201, last_response.status
       routes = @route.planning.routes.select(&:vehicle_usage).select { |route| route.vehicle_usage.vehicle.devices[:teksat_id] }
       routes.each &:reload
@@ -108,7 +108,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
   test 'clear' do
     with_stubs [:auth, :clear_route] do
       set_route
-      delete api("devices/teksat/#{@customer.id}/clear", route_id: @route.id)
+      delete api("devices/teksat/clear", route_id: @route.id)
       assert_equal 200, last_response.status
       @route.reload
       assert !@route.reload.last_sent_at
@@ -124,7 +124,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
   test 'clear multiple' do
     with_stubs [:auth, :clear_route] do
       set_route
-      delete api("devices/teksat/#{@customer.id}/clear_multiple", planning_id: @route.planning_id)
+      delete api("devices/teksat/clear_multiple", planning_id: @route.planning_id)
       assert_equal 200, last_response.status
       routes = @route.planning.routes.select(&:vehicle_usage).select{|route| route.vehicle_usage.vehicle.devices[:teksat_id] }
       routes.each &:reload
@@ -152,7 +152,7 @@ class V01::Devices::TeksatTest < ActiveSupport::TestCase
       assert_equal "teksat_id", @vehicle.devices[:teksat_id]
 
       # Sync vehicles with Teksat and ensure Teksat_id has been correctly settled
-      post api("devices/teksat/#{@customer.id}/sync")
+      post api("devices/teksat/sync")
       assert_equal 204, last_response.status
       @customer.vehicles.reload
       @vehicle.reload

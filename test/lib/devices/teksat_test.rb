@@ -12,7 +12,7 @@ class TeksatTest < ActionController::TestCase
 
   test 'authenticate' do
     with_stubs [:auth] do
-      assert @service.authenticate @customer, { url: @customer.devices[:teksat][:url], customer_id: @customer.devices[:teksat][:customer_id], username: @customer.devices[:teksat][:username], password: @customer.devices[:teksat][:password] }
+      assert @service.authenticate @customer, { url: @customer.devices[:teksat][:url], teksat_customer_id: @customer.devices[:teksat][:teksat_customer_id], username: @customer.devices[:teksat][:username], password: @customer.devices[:teksat][:password] }
     end
   end
 

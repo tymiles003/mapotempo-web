@@ -41,7 +41,7 @@ en:
             association: "Identifier"
             api_key: "API key"
           teksat:
-            customer_id: "Customer ID"
+            teksat_customer_id: "Customer ID"
             username: "Username"
             password: "Password"
             url: "URL"

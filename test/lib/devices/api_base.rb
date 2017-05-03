@@ -14,7 +14,7 @@ module ApiBase
       when :teksat
         {
           url: customer.devices[device][:url],
-          customer_id: customer.devices[device][:customer_id],
+          teksat_customer_id: customer.devices[device][:teksat_customer_id],
           username: customer.devices[device][:username],
           password: customer.devices[device][:password]
         }

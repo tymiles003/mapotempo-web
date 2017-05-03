@@ -21,12 +21,12 @@ class V01::Devices::Orange < Grape::API
 
       helpers do
         def service
-          OrangeService.new customer: @customer
+          OrangeService.new customer: @current_customer
         end
       end
 
       before do
-        @customer = current_customer(params[:customer_id])
+        current_customer(params[:customer_id])
       end
 
       desc 'List Devices',
@@ -70,7 +70,7 @@ class V01::Devices::Orange < Grape::API
         detail: 'Sync Vehicles',
         nickname: 'deviceOrangeClearSync'
       post '/sync' do
-        orange_sync_vehicles @customer
+        orange_sync_vehicles @current_customer
         status 204
       end
     end
