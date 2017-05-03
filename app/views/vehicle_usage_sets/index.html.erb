@@ -50,9 +50,11 @@
         </td>
         <td>
           <%= vehicle_usage_set.open_time %>
+          <%= '(J+' + number_of_days(vehicle_usage_set.open).to_s + ')' if number_of_days(vehicle_usage_set.open) %>
           -
           <%= vehicle_usage_set.close_time %>
-          <%= '(J+' + number_of_days(vehicle_usage_set.close).to_s + ')' if vehicle_usage_set.close %>
+          <%= '(J+' + number_of_days(vehicle_usage_set.close).to_s + ')' if number_of_days(vehicle_usage_set.close) %>
+
         </td>
         <td class="text-right">
           <% if @customer.enable_multi_vehicle_usage_sets %>
