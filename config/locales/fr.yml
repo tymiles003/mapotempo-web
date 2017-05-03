@@ -1131,15 +1131,15 @@ fr:
       optimized_at: Optimisé
       optimize_global:
         title: Optimisation globale
-        all_help: Optimiser les tournées (pour tous les arrêts) non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
-        active_help: Optimiser les tournées (uniquement pour les arrêts actifs) non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        all_help: Optimiser le planning dans son ensemble, pour tous les arrêts, excepté les tournées verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
+        active_help: Optimiser le planning dans son ensemble, uniquement pour les arrêts actifs, excepté les tournées verrouillées (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
         all_stops: Tous les arrêts
         active_stops: Uniquement les arrêts actifs
         confirm: Optimiser l'ensemble du planning ? (vos arrêts pourront être attribués à une autre tournée qu'actuellement)
       optimize_each:
         title: Optimisation de chaque tournée
-        all_help: Optimiser les tournées (pour tous les arrêts) non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
-        active_help: Optimiser les tournées (uniquement pour les arrêts actifs) non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        all_help: Optimiser les tournées, pour tous les arrêts, non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
+        active_help: Optimiser les tournées, uniquement pour les arrêts actifs, non verrouillées du planning une à une (vos arrêts resteront dans chaque tournée initiale)
         all_stops: Tous les arrêts
         active_stops: Uniquement les arrêts actifs
         confirm: Lancer un calcul d'optimisation pour chacune des tournées ? (vos arrêts resteront dans chaque tournée initiale)
