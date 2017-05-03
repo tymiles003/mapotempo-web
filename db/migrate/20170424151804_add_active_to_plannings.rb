@@ -6,7 +6,7 @@ class AddActiveToPlannings < ActiveRecord::Migration
       Planning.find_in_batches do |plannings|
         plannings.each do |planning|
           planning.active = true
-          planning.save!
+          planning.save!(validate: false)
         end
       end
     end
