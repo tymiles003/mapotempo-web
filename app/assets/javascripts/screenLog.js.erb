@@ -81,7 +81,7 @@
     clear: clear
   };
 
-  <% if Rails.env.development? %>
+  <% if Mapotempo::Application.config.display_javascript_errors_on_screen %>
   $(document).ready(function () {
     ScreenLog.init();
 
