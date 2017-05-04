@@ -21,6 +21,13 @@ class ApiV01 < Grape::API
   content_type :json, 'application/json; charset=UTF-8'
   content_type :xml, 'application/xml'
 
+  # As rails utils 'status()' works with Fixnum, we need to set a special formatter for XML object
+  xml_custom_formatter = ->(object, env) {
+    object.is_a?(Integer) ? object.to_s : object.to_xml
+  }
+
+  formatter :xml, xml_custom_formatter
+
   default_format :json
 
   mount V01::Api

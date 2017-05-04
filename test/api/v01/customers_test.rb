@@ -12,14 +12,14 @@ class V01::CustomerTest < ActiveSupport::TestCase
     @customer = customers(:customer_one)
   end
 
-  def api(part = nil, param = {})
+  def api(part = nil, param = {}, format = 'json')
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/customers#{part}.json?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
+    "/api/0.1/customers#{part}.#{format}?api_key=testkey1&" + param.collect{ |k, v| "#{k}=" + URI.escape(v.to_s) }.join('&')
   end
 
-  def api_admin(part = nil)
+  def api_admin(part = nil, format = 'json')
     part = part ? '/' + part.to_s : ''
-    "/api/0.1/customers#{part}.json?api_key=adminkey"
+    "/api/0.1/customers#{part}.#{format}?api_key=adminkey"
   end
 
   test 'should list customers' do
@@ -45,11 +45,19 @@ class V01::CustomerTest < ActiveSupport::TestCase
   end
 
   test 'should not return a customer' do
-    get api(customers(:customer_two).id)
-    assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+    # XML TESTS
+    get api(customers(:customer_two).id, {}, 'xml')
+    assert_equal 404, last_response.status, 'Bad response for XML request: ' + last_response.body
 
-    get api_admin(customers(:customer_two).id)
-    assert_equal 404, last_response.status, 'Bad response: ' + last_response.body
+    get api_admin(customers(:customer_two).id, 'xml')
+    assert_equal 404, last_response.status, 'Bad response for XML request: ' + last_response.body
+
+    # JSON TESTS
+    get api(customers(:customer_two).id, {}, 'json')
+    assert_equal 404, last_response.status, 'Bad response for JSON request: ' + last_response.body
+
+    get api_admin(customers(:customer_two).id, 'json')
+    assert_equal 404, last_response.status, 'Bad response for JSON request: ' + last_response.body
   end
 
   test 'should update a customer' do
