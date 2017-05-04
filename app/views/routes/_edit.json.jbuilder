@@ -121,10 +121,8 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
         json.orders order.products.collect(&:code).join(', ')
       end
     else
-      json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |quantity|
-        json.quantity quantity[:quantity]
-        json.unit_icon quantity[:unit_icon]
-      end
+      # Hash { id, quantity, icon, label } for deliverable units
+      json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle)
     end
     if stop.status
       json.status t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)

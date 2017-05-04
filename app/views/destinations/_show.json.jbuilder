@@ -25,16 +25,8 @@ json.visits do
       elsif visit.default_quantities.values.compact.size > 1
         json.multiple_quantities true
       end
-      json.quantities do
-        json.array! visit.default_quantities do |k, v|
-          #now return {} if value is nil
-          unless v.nil?
-            json.deliverable_unit_id k
-            json.quantity v
-            json.unit_icon @customer.deliverable_units.find { |du| du.id == k }.try(:default_icon)
-          end
-        end
-      end
+      # Hash { id, quantity, icon, label } for deliverable units
+      json.quantities visit_quantities(visit, {})
     end
     json.open1 visit.open1_absolute_time
     json.open1_day number_of_days(visit.open1)

@@ -90,10 +90,8 @@ json.routes @routes do |route|
           json.orders order.products.collect(&:code).join(', ')
         end
       else
-        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle) do |units|
-          json.quantity units[:quantity] if units[:quantity]
-          json.unit_icon units[:unit_icon]
-        end
+        # Hash { id, quantity, icon, label } for deliverable units
+        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle)
       end
     elsif stop.is_a?(StopRest)
       json.rest do

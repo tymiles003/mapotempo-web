@@ -22,8 +22,10 @@ module VisitsHelper
       quantities = visit.send(:default_quantities)
       if quantities && quantities[du.id]
         {
+          deliverable_unit_id: du.id,
           quantity: !options[:with_default] ? quantities[du.id] : quantities && quantities[du.id] && Visit.localize_numeric_value(quantities[du.id]) + (vehicle && vehicle.default_capacities[du.id] ? '/' + Visit.localize_numeric_value(vehicle.default_capacities[du.id]) : '') + (du.label ? "\u202F" + du.label : ''),
-          unit_icon: du.default_icon
+          unit_icon: du.default_icon,
+          unit_label: du.label ? "#{du.label} : ".capitalize : I18n.t('plannings.edit.popup.quantity')
         }
       end
     }.compact
