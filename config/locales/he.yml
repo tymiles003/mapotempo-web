@@ -189,6 +189,7 @@ he:
         description_help: פרטי משתמש וחשבון
         enable_vehicle_position: אפשר מיקום רכבים
         enable_stop_status: אפשר סטטוס עצירות
+        router_options_max_walk_distance: מרחק הליכה מקסימאלי
       deliverable_unit:
         label: תווית
         ref: הפניה
@@ -225,7 +226,7 @@ he:
         detail: פרטים
         postalcode: מיקוד
         city: עיר
-        country: Country
+        country: ארץ
         comment: הערות
         phone_number: מספר טלפון
         geocoding_accuracy: דיוק הגיאוקוד
@@ -249,7 +250,7 @@ he:
         ref_small: מס
         tag_ids: תג
         tags: תגים
-        zoning_id: Zoning
+        zoning_id: ייעוד
         created_at: נוצר
         updated_at: עודכן
         order_array_id: תוכנית ברזל
@@ -260,7 +261,7 @@ he:
       profile:
         name: שם
         layers: מפות בסיס
-        routers: Routing Engines
+        routers: תיכנון מסלול
       product:
         code: קוד
         name: שם
@@ -427,12 +428,12 @@ he:
       zoning:
         name: שם
       zone:
-        vehicle: Vehicle
+        vehicle: רכב
         name: Name
     successful:
       messages:
-        created: '%{model} has been created successfully'
-        updated: '%{model} has been updated successfully'
+        created: '%{model}נוצרו בהצלחה'
+        updated: '%{model} עודכנו בהצלחה'
     errors:
       attributes:
         inconsistent_customer: אינו מורשה עבור לקוח זה
@@ -484,7 +485,7 @@ he:
             vehicle:
               bad_customer: לא משוייך לחשבון
             polygon:
-              invalid_json: is not a valid stringified json
+              invalid_json: היא לא מחרוזת JSON חוקית
         customer:
           attributes:
             destinations:
@@ -530,7 +531,7 @@ he:
       busy_processing: חשבון / שם משתמש עסוק בעיבוד בקשה אחרת
       gps_unreachable: GPS אינו זמין ברגע זה
       last_action_failed: הפעולה האחרונה לא ניתנת לביצוע
-      service_failed: Service busy after several attempts
+      service_failed: שירות תפוס לאחר מספר ניסיונות
     teksat:
       bad_url: קישור לא תקין
       get_ticket: אימות שגוי. נא לאמת הפרטים שוב
@@ -661,7 +662,8 @@ he:
       router_options_trailers_range: ערכי טריילר בין הערכים %{from} לבין%{to}
       router_options_weight_range: ערכי משקל (כולל טריילרים וסחורה) בין הערכים %{from}
         לבין%{to}
-      router_options_weight_per_axle_range: ערכי משקל לכל סרן בין%{from} לבין%{to} טון
+      router_options_weight_per_axle_range: ערכי משקל לכל סרן בין%{from} לבין%{to}
+        טון
       router_options_height_range: ערכי גובה בין%{from} לבין%{to} מטרים
       router_options_width_range: ערכי רחב בין%{from} לבין%{to} מטרים
       router_options_length_range: ערכי אורך בין%{from} לבין%{to} מטרים
@@ -693,7 +695,7 @@ he:
       cost_waiting_time_help: הערכת שווי זמן ההמתנה. הערך הוא חשוב ביותר, ככל שיש
         יותר עיכובים כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל
         אשכולות)
-      print_header_help: Block of text added before each route
+      print_header_help: טקסט שיוכנס לפני כל מסלול
       print:
         title: הדפסה
       speed_multiplicator_default: '%{n} (ערך ברירת מחדל)'
