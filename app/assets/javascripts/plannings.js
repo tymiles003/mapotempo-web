@@ -898,7 +898,7 @@ var plannings_edit = function(params) {
           if (!m.click) {
             m.closePopup();
           }
-        }).off('click').on('click', function(e) {
+        }).on('click', function(e) {
           if (m.click) {
             m.closePopup();
           } else {
@@ -1665,7 +1665,7 @@ var plannings_edit = function(params) {
           if (!m.click) {
             m.closePopup();
           }
-        }).off('click').on('click', function(e) {
+        }).on('click', function(e) {
           if (m.click) {
             m.closePopup();
           } else {
