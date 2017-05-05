@@ -232,7 +232,7 @@ en:
       planning:
         name: Name
         ref: Reference
-        ref_small: Ref.$
+        ref_small: Ref.
         active: Active
         tag_ids: Tags
         tags: Tags
