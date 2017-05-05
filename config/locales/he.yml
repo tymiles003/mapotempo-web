@@ -432,7 +432,7 @@ he:
         name: Name
     successful:
       messages:
-        created: '%{model}נוצרו בהצלחה'
+        created: '%{model} נוצרו בהצלחה'
         updated: '%{model} עודכנו בהצלחה'
     errors:
       attributes:
@@ -694,7 +694,7 @@ he:
       cost_waiting_time_default: '%{n} (ערך ברירת מחדל)'
       cost_waiting_time_help: הערכת שווי זמן ההמתנה. הערך הוא חשוב ביותר, ככל שיש
         יותר עיכובים כך הביצועים נפגמים (הקלד 0  כדי למנוע עיכובים ובמקרה זה אין לבטל
-        אשכולות)
+        אשכולות).
       print_header_help: טקסט שיוכנס לפני כל מסלול
       print:
         title: הדפסה
