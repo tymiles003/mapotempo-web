@@ -139,31 +139,30 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     end
   end
 
-  test 'should automatic insert with ID' do
-    assert @planning.valid?
-    unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
-    assert unassigned_stop.valid?
-    patch api("#{@planning.id}/automatic_insert"), { id: @planning.id, stop_ids: [unassigned_stop.id], out_of_zone: true }
+  test 'should automatic insert stop with ID from unassigned' do
+    unassigned_stop = @planning.routes.detect{ |route| !route.vehicle_usage }.stops.select(&:position?).first
+    patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], out_of_zone: true }
     assert_equal 200, last_response.status
-    assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
+    assert @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stops.select(&:active).map(&:id).include?(unassigned_stop.id) }
   end
 
-  test 'should automatic insert with Ref' do
-    assert @planning.valid?
-    unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
-    assert unassigned_stop.valid?
-    patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_ids: [unassigned_stop.id], out_of_zone: true }
+  test 'should automatic insert stop with Ref from existing route with vehicle' do
+    last_stop = routes(:route_one_one).stops.select(&:position?).last
+    last_stop.update! active: false
+    patch api("ref:#{@planning.ref}/automatic_insert"), { stop_ids: [last_stop.id], out_of_zone: true }
     assert_equal 200, last_response.status
-    assert @planning.routes.reload.select(&:vehicle_usage).any?{|route| route.stop_ids.include?(unassigned_stop.id) }
+    routes = @planning.routes.reload.select(&:vehicle_usage)
+    assert routes.any?{ |route| route.stops.select(&:active).map(&:id).include?(last_stop.id) }
+    assert routes.all?{ |r| r.stops.collect(&:index).sum == (r.stops.length * (r.stops.length + 1)) / 2 }
   end
 
   test 'should automatic insert with error' do
     Route.stub_any_instance(:compute, lambda{ |*a| raise }) do
-      unassigned_stop = @planning.routes.detect{|route| !route.vehicle_usage }.stops.take
+      unassigned_stop = @planning.routes.detect{ |route| !route.vehicle_usage }.stops.select(&:position?).first
       assert_no_difference('Stop.count') do
-        patch api("#{@planning.id}/automatic_insert"), { id: @planning.ref, stop_ids: [unassigned_stop.id], out_of_zone: true }
+        patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], out_of_zone: true }
         assert_equal 500, last_response.status
-        assert @planning.routes.reload.detect{|route| !route.vehicle_usage }.stop_ids.include?(unassigned_stop.id)
+        assert @planning.routes.reload.detect{ |route| !route.vehicle_usage }.stop_ids.include?(unassigned_stop.id)
       end
     end
   end
