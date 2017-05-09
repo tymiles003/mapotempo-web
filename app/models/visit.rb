@@ -206,7 +206,7 @@ class Visit < ActiveRecord::Base
       raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close1, record: self })
     end
     rescue Exceptions::CLoseAndOpenErrors => e
-      self.errors.add(:close1, :after, {id: e.object[:visit_id]})
+      self.errors.add(:close1, :after, { s: I18n.t('activerecord.attributes.visit.open1').downcase })
   end
 
   def close2_after_open2
@@ -214,7 +214,7 @@ class Visit < ActiveRecord::Base
       raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close2, record: self })
     end
     rescue Exceptions::CLoseAndOpenErrors => e
-      self.errors.add(:close2, :after, {id: e.object[:visit_id]})
+      self.errors.add(:close2, :after, { s: I18n.t('activerecord.attributes.visit.open2').downcase })
   end
 
   def open2_after_close1
@@ -222,7 +222,7 @@ class Visit < ActiveRecord::Base
       raise Exceptions::CLoseAndOpenErrors.new(nil, id, { nested_attr: :close2, record: self })
     end
   rescue Exceptions::CLoseAndOpenErrors => e
-      self.errors.add(:open2, :after, {id: e.object[:visit_id]})
+      self.errors.add(:open2, :after, { s: I18n.t('activerecord.attributes.visit.close1').downcase })
   end
 
 end

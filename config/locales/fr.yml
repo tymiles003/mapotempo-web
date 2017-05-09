@@ -486,12 +486,12 @@ fr:
         visit:
           attributes:
             close1:
-              after: "doit être après le début de Plage horaire 1 (Ref: %{id})"
+              after: "doit être après le %{s}"
               blank: doit être rempli(e) si un début de Plage horaire 2 est renseigné
             open2:
-              after: "doit être après la fin de Plage horaire 1 (Ref: %{id})"
+              after: "doit être après la fin de %{s}"
             close2:
-              after: "doit être après le début de Plage horaire 2 (Ref: %{id})"
+              after: "doit être après le %{s}"
             quantities:
               not_float: doit être un nombre
               negative_value: Ref:%{id} est négative (%{value})
