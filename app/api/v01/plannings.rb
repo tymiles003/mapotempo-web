@@ -132,11 +132,9 @@ class V01::Plannings < Grape::API
     patch ':id/automatic_insert' do
       planning_id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(planning_id).first!
-      stops = Stop.where(id: params[:stop_ids], route_id: planning.route_ids)
-      error!('Not Found', 404) if stops.empty?
+      stops = planning.routes.flat_map{ |r| r.stops }.select{ |stop| params[:stop_ids].include?(stop.id) }
       stops.each{ |stop| planning.automatic_insert(stop, max_time: params[:max_time], max_distance: params[:max_distance], out_of_zone: params[:out_of_zone], active_only: params[:active_only]) }
       planning.save!
-      status 200
     end
 
     desc 'Apply zonings.',

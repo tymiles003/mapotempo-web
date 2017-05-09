@@ -498,9 +498,10 @@ class Planning < ActiveRecord::Base
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
     available_routes.flat_map { |route|
-      route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }.map { |s| [s.position, route, s.index] } +
-        [route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }.empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
-        (route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
+      stops = route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }
+      stops.map { |s| [s.position, route, s.index] } +
+        [stops.empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
+        ((stop.route_id != route.id) && route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.compact.sort_by{ |a|
       a[0] && a[0].position? ? a[0].distance(stop.position) : 0
     }[0..9].flat_map{ |visit_route_index|
@@ -515,7 +516,7 @@ class Planning < ActiveRecord::Base
       if stop.is_a?(StopVisit)
         r.add(stop.visit, ri[1], true)
       else
-        r.add_rest(ri[1], true)
+        r.add_rest(true)
       end
       r.compute
 
