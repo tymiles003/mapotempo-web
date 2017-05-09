@@ -242,8 +242,9 @@ class VehicleUsage < ActiveRecord::Base
       errors.add(:base, "#{I18n.t('activerecord.attributes.vehicle_usage.service_time_start')} / #{I18n.t('activerecord.attributes.vehicle_usage.service_time_end')} #{I18n.t('activerecord.errors.models.vehicle_usage.service_range')}")
     elsif self.default_rest_start && self.default_rest_start != 0 && self.default_rest_stop && self.default_rest_stop != 0
       if !(self.default_rest_start >= working_day_start) || !(self.default_rest_stop <= working_day_end)
-        day = Time.at(working_day_end).utc.strftime('%d').to_i - 1
-        errors.add(:base, I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime('%H:%M'), end: Time.at(working_day_end).utc.strftime('%H:%M') + (day > 0 ? " (+#{day.to_s})" : '')))
+        begin_day = Time.at(working_day_start).utc.strftime('%d').to_i - 1
+        end_day = Time.at(working_day_end).utc.strftime('%d').to_i - 1
+        errors.add(:base, I18n.t('activerecord.errors.models.vehicle_usage.rest_range', start: Time.at(working_day_start).utc.strftime('%H:%M') + (begin_day > 0 ? " (+#{begin_day.to_s})" : ''), end: Time.at(working_day_end).utc.strftime('%H:%M') + (end_day > 0 ? " (+#{end_day.to_s})" : '')))
       end
     end
   end
