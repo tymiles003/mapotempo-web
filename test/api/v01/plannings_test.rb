@@ -199,17 +199,37 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
   end
 
   test 'should automatic insert taking into account only active or all stops' do
+    # 0. Init all stops inactive
+    @planning.routes.each{ |r| r.stops.each{ |s| s.update! active: false } }
+    @planning.reload
     unassigned_stop = @planning.routes.detect{ |route| !route.vehicle_usage }.stops.select(&:position?).first
 
+    # 1. First insert with active_only = true
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], out_of_zone: true, active_only: true }
     assert_equal 200, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stop_ids.include?(unassigned_stop.id) }
 
-    @planning.reload
+    stop = @planning.routes.flat_map{ |r| r.stops.select{ |s| s.id == unassigned_stop.id } }.compact.first
+    stop_compare = [stop.route_id, stop.index]
 
+    # 2. Move back stop to original route
+    @planning.move_stop(@planning.routes.detect{ |route| !route.vehicle_usage }, stop, nil)
+    @planning.routes.each{ |r| r.compute && r.save! }
+    @planning.save!
+
+    # 3. Init all stops active
+    @planning.routes.each{ |r| r.stops.each{ |s| s.update! active: true } }
+    @planning.reload
+    unassigned_stop = @planning.reload.routes.detect{ |route| !route.vehicle_usage }.stops.select(&:position?).first
+
+    # 4. Second insert with active_only = false
     patch api("#{@planning.id}/automatic_insert"), { stop_ids: [unassigned_stop.id], out_of_zone: true, active_only: false }
     assert_equal 200, last_response.status
     assert @planning.routes.reload.select(&:vehicle_usage).any?{ |route| route.stop_ids.include?(unassigned_stop.id) }
+
+    # 5. Route or index should be different between automatic insert
+    stop = @planning.routes.flat_map{ |r| r.stops.select{ |s| s.id == unassigned_stop.id } }.compact.first
+    assert_not_equal stop_compare, [stop.route_id, stop.index]
   end
 
   test 'should automatic insert or not with max time' do

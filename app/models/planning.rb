@@ -190,7 +190,7 @@ class Planning < ActiveRecord::Base
   end
 
   def move_stop(route, stop, index, force = false)
-    route, index = prefered_route_and_index([route], stop) unless index
+    route, index = prefered_route_and_index([route], stop) unless index || !route.vehicle_usage
     if stop.route != route
       if stop.is_a?(StopVisit)
         visit, active = stop.visit, stop.active
@@ -211,12 +211,11 @@ class Planning < ActiveRecord::Base
 
   # Available options:
   # out_of_zone (true by default)
-  # active_only (true by default)
+  # active_only (true by default, only for for prefered_route_and_index)
   # max_time
   # max_distance
   def automatic_insert(stop, options = {})
-    options[:out_of_zone] ||= true
-    options[:active_only] ||= true
+    options[:out_of_zone] = true if options[:out_of_zone] == nil
 
     available_routes = []
 
@@ -495,15 +494,16 @@ class Planning < ActiveRecord::Base
   end
 
   def prefered_route_and_index(available_routes, stop, options = {})
+    options[:active_only] = true if options[:active_only] == nil
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
     available_routes.flat_map { |route|
       stops = route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }
       stops.map { |s| [s.position, route, s.index] } +
-        [stops.empty? ? [route.vehicle_usage.default_store_start, route, 1] : nil,
-        ((stop.route_id != route.id) && route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.position?) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
+        [stops.empty? ? [route.vehicle_usage.try(:default_store_start), route, 1] : nil,
+        ((stop.route_id != route.id) && route.vehicle_usage.try(:default_store_stop).try(:position?)) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]
     }.compact.sort_by{ |a|
-      a[0] && a[0].position? ? a[0].distance(stop.position) : 0
+      a[0] && a[0].position? ? a[0].distance(stop.position) : Float::INFINITY
     }[0..9].flat_map{ |visit_route_index|
       [[visit_route_index[1], visit_route_index[2]], [visit_route_index[1], visit_route_index[2] + 1]]
     }.uniq.map { |ri|
