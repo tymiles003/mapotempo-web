@@ -1372,9 +1372,9 @@ he:
       name_rest: מנוחה
   stores:
     default:
-      name: Store
-      lat: '51.4899'
-      lng: '-0.2596'
+      name: מחסן
+      lat: '32.79641'
+      lng: '35.03550'
       city: לונדון
     geocoding:
       geocoding_in_progress: גאוקודינג בתהליך.
