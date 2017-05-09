@@ -35,7 +35,7 @@ he:
       import_tomtom: יבוא TomTom
       import_tomtoms:
         one: יבוא TomTom
-        other: Imports TomTom
+        other: ייבא TomTom
     attributes:
       import_csv:
         file: קובץ
@@ -126,7 +126,7 @@ he:
     attributes:
       customer:
         enable_external_callback: הפעל כתובת אתר
-        end_subscription: End subscription
+        end_subscription: סיים מנוי
         max_vehicles: מקסימום רכבים
         take_over: משך השהייה
         name: שם
@@ -151,7 +151,7 @@ he:
         alyacom_api_key: AlyaCom API מפתח
         router: מנגנון חישוב
         router_id: מנגנון חישוב
-        router_dimension: Router objective
+        router_dimension: נתב המטרה
         router_options_motorway: כביש מהיר
         router_options_toll: אישור סעיפי אגרה
         router_options_trailers: מספר נגררים לטריילר
@@ -214,7 +214,7 @@ he:
         phone_number: מספר טלפון
         phone_number_small: טלפון
         geocoding_accuracy: דיוק הגיאוקוד
-        geocoding_accuracy_small: Geoc.
+        geocoding_accuracy_small: גאו'
         geocoding_level: דרגת הגיאוקוד
         tags: תגים
         tag_ids: תגים
@@ -230,6 +230,7 @@ he:
         comment: הערות
         phone_number: מספר טלפון
         geocoding_accuracy: דיוק הגיאוקוד
+        geocoding_accuracy_small: גאו'
         geocoding_level: דרגת הגיאוקוד
       layer:
         name: שם
@@ -549,7 +550,7 @@ he:
       timeout: המשימה נכשלה
   import:
     empty: אין נתונים לייבוא. אנא בדוק שוב את הנתונים לייבוא.
-    data: 'תוכן:'
+    data: 'יש לבדוק את הנתונים:'
     data_erroneous:
       csv: קובץ לא חוקי בשורה
       json: קובץ לא חוקי ברשומה
@@ -718,14 +719,15 @@ he:
         name_placeholder: אפליקציה חיצונית
         url: קישור
         url_placeholder: http://www.example.com?p_id={PLANNING_ID}
-        url_help: 'External URL to call from Planning Export Menu
+        url_help: 'כתובת אתר חיצונית לקישור מתפריט ייצוא תכנון
 
-          Can contain the following replacement tokens: PLANNING_ID, PLANNING_REF,
-          ROUTE_ID, ROUTE_REF
+          יכול להכיל את האסימונים החלפת בעקבות: PLANNING_ID, PLANNING_REF, route_id,
+          route_ref
 
-          Example: http://www.example.com?p_id={PLANNING_ID}
+          דוגמה: http://www.example.com?p_id={PLANNING_ID}
 
           '
+      optimization_force_start_help: אלץ רכב להתחיל עם תחילת לוח הזמנים
   deliverable_units:
     edit:
       title: עריכת יחידות משלוח
@@ -883,23 +885,22 @@ he:
       detail_desc: פרטים ידידותיים לאדם וסימנים המוביל את הסוכן שלך מרכב שלו אל הסף
         של היעד. לְמָשָׁל. שם הבניין, הרצפה, מספר החדר…
       postalcode: מיקוד
-      postalcode_desc: postal code of your district (exactness is critical for reliable
-        geocoding)
-      city: city
+      postalcode_desc: המיקוד של עיר או עיירה (הדיוק חשוב עבור geocoding אמין)
+      city: עיר
       city_desc: עיר, עיר או שם מחוז (איות הוא קריטי עבור גאוקודינג אמין)
       country: ארץ
       country_desc: מדינה או שם המדינה (איות הוא קריטי עבור גאוקודינג אמין)
-      lat: lat
+      lat: רוחב
       lat_desc: קו הרוחב של היעד במעלות עשרוניות בין -90 ° ל -90 °. לְמָשָׁל. 45.91
-      lat_format: floating number between -90 and 90
+      lat_format: מספר float בין הערכים מינוס 90  ו- 90
       lng: lng
       lng_desc: קו אורך של היעד במעלות עשרוניות בין -180 ° ל 180 °. לְמָשָׁל. -0.781
-      lng_format: floating number between -180 and 180
+      lng_format: מספר float בין הערכים מינוס 180 ו-180
       geocoding_accuracy: רמת דיוק הגאוקודינג
       geocoding_accuracy_desc: ציון איכות שניתן לתהליך המרת כתובת הרחוב של היעד לקואורדינטות
         גיאוגרפיות. ציון זה בא לידי ביטוי באמצעות ציון בין 0 et 1. למשל 0.70 פירושו
         70% מדויק.
-      geocoding_accuracy_format: floating number between 0 and 1
+      geocoding_accuracy_format: מספר float בין הערכים 0 ו-1
       geocoding_level: רמת הגאוקודינג
       geocoding_level_desc: רמת הדיוק הגיע בעת המרת כתובת הרחוב של היעד לתוך קואורדינטות
         גיאוגרפיות, לידי ביטוי ברמות ידידותיות אנושיות.
@@ -919,7 +920,7 @@ he:
       close_desc: 'הוצא משימוש: השתמש "סגור" במקום זאת.'
       open1: פתוח 1
       open1_desc: זמן התחלה 1 להגעה ליעד.
-      close1: close 1
+      close1: סגור 1
       close1_desc: זמן אחרון 1 להגעה ליעד.
       open2: open 2
       open2_desc: זמן התחלה 1 להגעה ליעד.
@@ -953,8 +954,8 @@ he:
       empty_file: התוכן ריק
       too_many_lines: 'עצור יבוא, חריגה בכמות השורות המותרת (max: %{n}).'
       none_column: העמודה לא נמצאה
-      missing_name: '%{line}: "name" missing.'
-      missing_location: '%{line}: "city / postalcode" or "lat / lng" missing.'
+      missing_name: '% {קו} "שם" חסר.'
+      missing_location: '% {קו} "עיר / מיקוד" או "קווי רוחב / LNG" חסרה.'
       invalid_numeric_value: '%{line}: Invalid numeric value "%{value}".'
       check_custom_columns: בדוק את הגדרת העמודות שלך.
     reverse_geocoding:
@@ -1058,6 +1059,27 @@ he:
       zoning_new: איזור חדש מתוכנית זו
       zoning_edit: ערוך איזור מתכנית זו
       last_sent_to: שלח ל
+      optimize_global:
+        title: אופטימיזציה גלובלית
+        all_help: בצע אופטימיזציה לכל התוכנית (לכל העצירות) למעט מסלולים סגורים (עצירות
+          יכולות להשתייך לניתובים אחרים)
+        active_help: אופטימיזציה של התזמון בכללותה, רק עבור עצירות פעילה למעט סיורים
+          נעולים (העצירות שלך יכולה להיות מוקצי סיור אחר כרגע)
+        all_stops: כל העצירות
+        active_stops: רק עצירות פעילות
+        confirm: מטב מהתכנון הכולל? (עצירות שלך יכולים להיות מוקצים סיור אחר כרגע)
+      optimize_each:
+        title: בצע אופטימיזציה לכל מסלול
+        all_help: ייעול מסלולים, לכל התחנות, לוח זמנים לא נעולים אחד אחד (העצירות
+          שלך תישאר כל סיור ראשוני)
+        active_help: ייעול מסלולים, רק עבור עצירות פעילה, לוח זמנים לא נעולים אחד
+          אחד (העצירות שלך תישאר כל סיור ראשוני)
+        all_stops: כל העצירות
+        active_stops: רק עצירות פעילות
+        confirm: השקת חישוב אופטימיזציה עבור כל הסיורים? (העצירות שלך תישאר כל סיור
+          ראשוני)
+      optimize_all: בצע אופטימיזציה לכל העצירות
+      optimize_actives: בצע אופטימיזציה רק לעצירות פעילות
       optimized_at: אופטימיזציה
       optimize_global_help: ייעל את כל התכנון למעט מסלולים נעולים (עצירות יכולות להיות
         מהנקודה האמיתית למסלול אחר)
@@ -1329,6 +1351,8 @@ he:
         זההים.
       avoid_zones_help: אפשר להגדיר איזור שבו הרכב לא יוכל לחזור אחורה.
       default: ברירת מחדל
+      begin_end_date: תקופת תוקף
+      begin_end_date_help: התקופה שבה התכנון תקף
     show:
       print: הדפס
   routes:
@@ -1604,6 +1628,9 @@ he:
       service_time_end_addon: after
       service_times_help: Durations added before the first stop and after the last
         stop
+      devices:
+        placeholder: בחר התקן
+        fieldset: GPS & טלפון נייד
   vehicle_usage_sets:
     default:
       name: Default
