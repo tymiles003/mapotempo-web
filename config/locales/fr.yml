@@ -1143,7 +1143,7 @@ fr:
         all_stops: Tous les arrêts
         active_stops: Uniquement les arrêts actifs
         confirm: Lancer un calcul d'optimisation pour chacune des tournées ? (vos arrêts resteront dans chaque tournée initiale)
-      optimize_all: Optimiser toute la tournée
+      optimize_all: Optimiser tous les arrêts
       optimize_actives: Optimiser les arrêts actifs
       optimize_help: Optimiser la tournée
       optimize_confirm: Lancer un calcul d'optimisation ?
