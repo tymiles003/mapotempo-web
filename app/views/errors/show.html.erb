@@ -2,17 +2,15 @@
 
 <div class="row">
   <div class="col-md-offset-2 col-md-8">
-    <div class="panel panel-default">
-      <div class="panel-heading">
+    <div class="panel panel-default error-panel">
+      <div class="panel-heading error-heading">
         <h1><%= t("errors.management.status.title.#{status}") %></h1>
       </div>
       <div class="panel-body">
         <div class="row">
-          <blockquote>
-            <p>
-              <%= t("errors.management.status.explanation.#{status}") %>
-            </p>
-          </blockquote>
+          <p class="error-details">
+            <%= t("errors.management.status.explanation.#{status}") %>
+          </p>
 
           <div class="col-md-6 text-center">
             <%= link_to t('errors.management.back_button'), :back, class: 'btn btn-primary btn-lg' %>

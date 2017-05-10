@@ -504,3 +504,19 @@ input.form-control.number-of-days {
     border-left-width: 1px;
   }
 }
+
+// Error pages
+.error-panel {
+  border-color: #ebccd1;
+}
+
+.panel-heading.error-heading {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+.error-details {
+  padding: 10px 20px;
+  margin: 0 0 20px;
+  font-size: 17.5px;
+}
