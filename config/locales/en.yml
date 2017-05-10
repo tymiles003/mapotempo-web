@@ -1259,6 +1259,9 @@ en:
         zoning:
           title: Zoning
           in_progress: Please wait, applying new zoning
+        vehicle:
+          title: Switch vehicle
+          in_progress: Please wait, applying new vehicle
         automatic_insert:
           title: Set routes for stops without vehicles
           in_progress: Please wait

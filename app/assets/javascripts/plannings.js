@@ -273,7 +273,7 @@ var plannings_edit = function(params) {
 
   $('.update-zonings-form').submit(function(e) {
     e.preventDefault();
-    if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) { return };
+    if (!confirm(I18n.t('plannings.edit.zoning_confirm'))) return;
     $.ajax({
       url: $(e.target).attr('action'),
       type: 'PATCH',
@@ -1032,10 +1032,18 @@ var plannings_edit = function(params) {
       select.next('.select2-container--bootstrap').addClass('input-sm');
     });
 
+    var switch_vehicle_modal = bootstrap_dialog({
+      title: I18n.t('plannings.edit.dialog.vehicle.title'),
+      icon: 'fa-bars',
+      message: SMT['modals/default_with_progress']({
+        msg: I18n.t('plannings.edit.dialog.vehicle.in_progress')
+      })
+    });
+
     $(".vehicle_select", context).change(function() {
       var $this = $(this);
       var initial_value = $this.data("initial-value");
-      if (initial_value != $this.val()) {
+      if (initial_value !== $this.val()) {
         $.ajax({
           type: "patch",
           data: JSON.stringify({
@@ -1044,14 +1052,20 @@ var plannings_edit = function(params) {
           }),
           contentType: 'application/json',
           url: '/plannings/' + planning_id + '/switch.json',
-          beforeSend: beforeSendWaiting,
+          beforeSend: function(jqXHR) {
+            beforeSendWaiting();
+            switch_vehicle_modal.modal('show');
+          },
           success: function(data) {
             displayPlanning(data, {
               partial: 'routes',
               noCallback: true
             });
           },
-          complete: completeAjaxMap,
+          complete: function(xhr, status) {
+            completeAjaxMap();
+            switch_vehicle_modal.modal('hide');
+          },
           error: ajaxError
         });
       }

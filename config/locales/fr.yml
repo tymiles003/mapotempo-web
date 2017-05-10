@@ -1289,6 +1289,9 @@ fr:
         zoning:
           title: Zonage
           in_progress: Application du nouveau zonage en cours, merci de patienter
+        vehicle:
+          title: Changement de véhicule
+          in_progress: Application du nouveau véhicule en cours, merci de patienter
         automatic_insert:
           title: Affectation des arrêts non planifiés
           in_progress: Veuillez patienter
