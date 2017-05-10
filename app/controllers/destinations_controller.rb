@@ -161,13 +161,13 @@ class DestinationsController < ApplicationController
       if local_params[:visits_attributes].is_a?(Hash)
         local_params[:visits_attributes].each do |k, _|
           times.each do |time|
-            local_params[:visits_attributes][k][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][k]["#{time.to_s}_day".to_sym]} days and #{local_params[:visits_attributes][k][time].tr(':', 'h')}") unless params[:destination][:visits_attributes][k]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[:visits_attributes][k][time].to_s.empty?
+            local_params[:visits_attributes][k][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][k]["#{time.to_s}_day".to_sym]} days and #{local_params[:visits_attributes][k][time].tr(':', 'h')}min") unless params[:destination][:visits_attributes][k]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[:visits_attributes][k][time].to_s.empty?
           end
         end
       else
         local_params[:visits_attributes].each_with_index do |k, i|
           times.each do |time|
-            local_params[:visits_attributes][i][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][i]["#{time.to_s}_day".to_sym]} days and #{local_params[:visits_attributes][i][time].tr(':', 'h')}") unless params[:destination][:visits_attributes][i]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[:visits_attributes][i][time].to_s.empty?
+            local_params[:visits_attributes][i][time] = ChronicDuration.parse("#{params[:destination][:visits_attributes][i]["#{time.to_s}_day".to_sym]} days and #{local_params[:visits_attributes][i][time].tr(':', 'h')}min") unless params[:destination][:visits_attributes][i]["#{time.to_s}_day".to_sym].to_s.empty? || local_params[:visits_attributes][i][time].to_s.empty?
           end
         end
       end
