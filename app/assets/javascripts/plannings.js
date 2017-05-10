@@ -1509,7 +1509,7 @@ var plannings_edit = function(params) {
       })
       .each(function(i) {
         var $this = $(this);
-        var stops = $.grep(route.stops, function(e) { return e.stop_id == $this.data('stop_id'); });
+        var stops = $.grep(route.stops, function(e) { return e.stop_id === $this.data('stop_id'); });
         if (stops.length > 0) {
           $this.popover({
             content: SMT['stops/show'](
@@ -1522,8 +1522,8 @@ var plannings_edit = function(params) {
             placement: 'auto',
             trigger: 'manual',
             viewport: {
-              selector: (i <= 4) ? '#planning' : '#wrapper',
-              padding: $('#wrapper').height()
+              selector: $('#wrapper').length > 0 ? '#wrapper' : '#planning',
+              padding: $('#wrapper').height() * 2 || 0
             }
           });
         }
@@ -1541,7 +1541,7 @@ var plannings_edit = function(params) {
     });
 
     $(document).keyup(function(event) {
-      if ($(".sidebar").hasClass('extended') && event.keyCode == 27 && typeof lastPopover != 'undefined') {
+      if ($(".sidebar").hasClass('extended') && event.keyCode === 27 && typeof lastPopover !== 'undefined') {
         $(lastPopover).popover('hide');
       }
     });
