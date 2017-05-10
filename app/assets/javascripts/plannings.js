@@ -1285,10 +1285,9 @@ var plannings_edit = function(params) {
       }
     });
 
+    // Set Callback URL.
     if (data.customer_enable_external_callback && data.customer_external_callback_url) {
-      $.each($('#global_tools').find('.customer_external_callback_url'), function(i, element) {
-        $(element).data('url', buildUrl(data.customer_external_callback_url, { planning_id: data.id, planning_ref: data.ref }));
-      });
+      $("#global_tools .customer_external_callback_url, #external-callback-btn").data('url', buildUrl(data.customer_external_callback_url, { planning_id: data.id, planning_ref: data.ref }));
     }
 
     data.i18n = mustache_i18n;
