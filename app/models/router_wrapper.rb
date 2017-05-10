@@ -28,7 +28,11 @@ class RouterWrapper < Router
 
   def matrix(row, column, speed_multiplicator, dimension = :time, options = {}, &block)
     block.call(nil, nil) if block
-    Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, [dimension], row, column, sanitize_options(options, speed_multiplicator: speed_multiplicator))[0].map{ |row|
+
+    matrix = Mapotempo::Application.config.router_wrapper.matrix(url_time, mode, [dimension], row, column, sanitize_options(options, speed_multiplicator: speed_multiplicator))
+    matrix ||= [Array.new(row.size) { Array.new(column.size, 2147483647) }]
+
+    matrix[0].map{ |row|
       row.map{ |v| [v, v] }
     }
   end

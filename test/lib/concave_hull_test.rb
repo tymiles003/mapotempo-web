@@ -1,3 +1,5 @@
+require 'test_helper'
+
 require 'concave_hull.rb'
 
 class ConcaveHullTest < ActionController::TestCase

@@ -1,5 +1,7 @@
 require 'test_helper'
 
+require 'lib/devices/api_base'
+
 class OrangeTest < ActionController::TestCase
 
   require Rails.root.join("test/lib/devices/orange_base")

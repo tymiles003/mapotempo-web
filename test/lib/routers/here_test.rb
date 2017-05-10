@@ -1,3 +1,5 @@
+require 'test_helper'
+
 require 'routers/here'
 
 class Routers::HereTest < ActionController::TestCase

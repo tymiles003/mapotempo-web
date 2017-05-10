@@ -1,3 +1,5 @@
+require 'test_helper'
+
 require 'optim/optimizer_wrapper'
 
 class OptimizerWrapperTest < ActionController::TestCase

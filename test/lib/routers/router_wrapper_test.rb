@@ -1,3 +1,5 @@
+require 'test_helper'
+
 require 'routers/router_wrapper'
 
 class Routers::RouterWrapperTest < ActionController::TestCase
@@ -80,6 +82,19 @@ class Routers::RouterWrapperTest < ActionController::TestCase
       rescue => e
         assert e.message.match('Bad Request'), e.message
       end
+    ensure
+      remove_request_stub(stub_matrix)
+    end
+  end
+
+  test 'should manage router error' do
+    begin
+      points = [[44.82641, -0.55674], [44.83, -0.557], [44.822, -0.554]]
+
+      uri_template = Addressable::Template.new('http://localhost:4899/0.1/matrix.json')
+      stub_matrix = stub_request(:post, uri_template).with(body: hash_including(dimension: 'time', src: points.flatten.join(','))).to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/router_wrapper/matrix-error.json'))
+
+      assert_nil @router_wrapper.matrix(routers(:router_wrapper_public_transport).url_time, :public_transport, [:time], points, points)
     ensure
       remove_request_stub(stub_matrix)
     end

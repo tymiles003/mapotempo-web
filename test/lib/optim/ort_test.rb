@@ -1,3 +1,5 @@
+require 'test_helper'
+
 require 'optim/ort'
 
 class OrtTest < ActionController::TestCase

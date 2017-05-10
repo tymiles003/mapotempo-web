@@ -1,3 +1,5 @@
+require 'test_helper'
+
 require 'routers/osrm'
 
 class Routers::OsrmTest < ActionController::TestCase
