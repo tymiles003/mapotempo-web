@@ -499,37 +499,25 @@ var destinations_index = function(params, api) {
     imperial: false
   }).addTo(map);
 
-  var clusterConfig = {
+  var markers       = {};
+  var markersLayers = new L.MarkerClusterGroup({
     spiderfyOnMaxZoom: true,
     showCoverageOnHover: false,
     zoomToBoundsOnClick: true,
-    spiderfyDistanceMultiplier: 4,
-    removeOutsideVisibleBounds: true
-  }
-
-  var markers = {};
-  var markersLayers = new L.MarkerClusterGroup(clusterConfig);
-
-  var cluster = new L.MarkerClusterGroup(clusterConfig);
-  map.addLayer(cluster);
-
-  map.on('zoomend', function(e) {
-    if (map.getZoom() > 14) {
-      map.removeLayer(cluster);
-      map.addLayer(markersLayers);
-    } else {
-      map.removeLayer(markersLayers);
-      map.addLayer(cluster);
-    }
+    spiderfyDistanceMultiplier: 2
   });
+
+  map.addLayer(markersLayers);
 
   var tags = {};
   var pointing = false;
-  var icon_default = new L.Icon.Default();
-  var icon_over = new L.Icon({
-    iconUrl: '/images/marker-FFBB00.svg'
+  var iconDefault = new L.Icon.Default();
+  var iconOver = new L.Icon({
+    iconUrl: '/images/marker-FFBB00.svg',
+    iconSize: [25.13, 40.22],
+    iconAnchor: [(25.13 * 0.5), 40.22]
   });
-  var icon_over_stack = [];
+  var iconOverStack = [];
 
   var prepare_display_destination = function(destination) {
     // must be set here instead of in json because api used for update don't expose all attributes...
@@ -708,7 +696,6 @@ var destinations_index = function(params, api) {
             $(row).remove();
             if (markers[id]) {
               markersLayers.removeLayer(markers[id]);
-              cluster.removeLayer(markers[id]);
               delete markers[id];
             }
             count_dec();
@@ -745,7 +732,6 @@ var destinations_index = function(params, api) {
         }
       } else if (destination_id in markers) {
         markersLayers.removeLayer(markers[destination_id]);
-        cluster.removeLayer(markers[destination_id]);
         delete markers[destination_id];
       }
       if ($('tr.highlight').length == 0)
@@ -792,31 +778,22 @@ var destinations_index = function(params, api) {
   });
 
   var over = function(id, move) {
-    if (icon_over_stack.indexOf(id) != -1)
+    if (iconOverStack.indexOf(id) != -1)
       return;
     // clean over
     $('.destination').removeClass('highlight');
     var i;
-    while (i = icon_over_stack.pop()) {
+    while (i = iconOverStack.pop()) {
       if (i in markers) {
-        markers[i].setIcon(icon_default).setZIndexOffset(1);
+        markers[i].setIcon(iconDefault).setZIndexOffset(1);
       }
+    }
+    if (id in markers) {
+      spiderfyCluster(null, id, move);
+      markers[id].setIcon(iconOver).setZIndexOffset(100);
+      iconOverStack.push(id);
     }
 
-    // new over
-    if (id in markers) {
-      if (move) {
-        if (map.getZoom() != 16 || !map.getBounds().contains(markers[id].getLatLng())) {
-          map.setView(markers[id].getLatLng(), 16);
-        }
-      }
-      markers[id].setIcon(icon_over);
-      // Ensure that markers on the very same position are still visible
-      var cluster = markersLayers.getVisibleParent(markers[id]);
-      if (cluster && ("getChildCount" in cluster)) cluster.spiderfy();
-      markers[id].setIcon(icon_over).setZIndexOffset(100);
-      icon_over_stack.push(id);
-    }
     var row = $('[data-destination_id=' + id + ']');
     row.addClass('highlight');
     if (row.position().top < $("#destination_box").scrollTop() || row.position().top > $("#destination_box").scrollTop() + $("#destination_box").height()) {
@@ -826,12 +803,29 @@ var destinations_index = function(params, api) {
     }
   };
 
+  var spiderfyCluster = function(layer, id, move) {
+    var localCluster;
+
+    localCluster = markers[id].__parent;
+    if (move) {
+      map.setView(localCluster.getLatLng(), map.getZoom(), { animate: true, duration: 600 });
+      markersLayers.refreshClusters();
+
+      if (localCluster && 'spiderfy' in localCluster) {
+        markersLayers.zoomToShowLayer(markers[id], function() {
+          map.panTo(markers[id].getLatLng(), {});
+          return true;
+        });
+      }
+    }
+  }
+
   var addMarker = function(id, lat, lng) {
     var marker = L.marker(new L.LatLng(lat, lng), {
-      icon: icon_default,
+      icon: iconDefault,
       draggable: isEditable,
       destination: id
-    }).addTo(markersLayers).addTo(cluster);
+    }).addTo(markersLayers);
     marker.on('dragend', function(event) {
       markerChange(event.target.options.destination, event.target.getLatLng());
     });
@@ -1089,12 +1083,10 @@ var destinations_index = function(params, api) {
       count();
 
       markersLayers.clearLayers();
-      cluster.clearLayers();
       $('.destinations tr:visible').each(function(i, e) {
         var marker = markers[$(e).attr('data-destination_id')];
         if (marker) {
           markersLayers.addLayer(marker);
-          cluster.addLayer(marker);
         }
       });
     });
@@ -1119,7 +1111,6 @@ var destinations_index = function(params, api) {
               row.remove();
               if (markers[id]) {
                 markersLayers.removeLayer(markers[id]);
-                cluster.removeLayer(markers[id]);
                 delete markers[id];
               }
               count_dec();
