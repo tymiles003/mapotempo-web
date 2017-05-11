@@ -21,9 +21,9 @@
           </p>
         <% end %>
         <%= f.toggles t '.destinations' do %>
-          <%= f.radio_button :replace, t('.replace_no'), 0, checked: true %>
+          <%= f.radio_button :replace, t('.replace_no'), 0, checked: !@import_csv.replace %>
           <p class="help-block"><%= t '.replace_no_help' %></p>
-          <%= f.radio_button :replace, t('.replace_yes'), 1 %>
+          <%= f.radio_button :replace, t('.replace_yes'), 1, checked: @import_csv.replace %>
           <p class="help-block"><%= t '.replace_yes_help' %></p>
         <% end %>
         <%= f.toggles t '.plannings' do %>
@@ -100,9 +100,9 @@
           <%= twitter_bootstrap_form_for(@import_tomtom, url: destinations_import_tomtom_path, layout: :horizontal, multipart: true) do |f| %>
             <%= render 'shared/error_messages', model: @import_tomtom %>
             <%= f.toggles t '.destinations' do %>
-              <%= f.radio_button :replace, t('.replace_no'), 0, checked: true %>
+              <%= f.radio_button :replace, t('.replace_no'), 0, checked: !@import_tomtom.replace %>
               <p class="help-block"><%= t '.replace_no_help' %></p>
-              <%= f.radio_button :replace, t('.replace_yes'), 1 %>
+              <%= f.radio_button :replace, t('.replace_yes'), 1, checked: @import_tomtom.replace %>
               <p class="help-block"><%= t '.replace_yes_help' %></p>
             <% end %>
             <%= f.actions do %>

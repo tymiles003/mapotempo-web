@@ -21,9 +21,9 @@
           </p>
         <% end %>
         <%= f.toggles t '.stores' do %>
-          <%= f.radio_button :replace, t('.replace_no'), 0, checked: true %>
+          <%= f.radio_button :replace, t('.replace_no'), 0, checked: !@import_csv.replace %>
           <p class="help-block"><%= t '.replace_no_help' %></p>
-          <%= f.radio_button :replace, t('.replace_yes'), 1 %>
+          <%= f.radio_button :replace, t('.replace_yes'), 1, checked: @import_csv.replace %>
           <p class="help-block"><%= t '.replace_yes_help' %></p>
         <% end %>
         <%= f.actions do %>
