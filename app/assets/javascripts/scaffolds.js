@@ -351,11 +351,11 @@ L.controlTouchScreenCompliance = function() {
   /*
    Debug Leaflet.js => Detect if browser is mobile compliant && delete leaflet-touch css class
 
-   Chrome | Safari | Edge respond to maxTouchPoints
-   Chrome | Safari | Edge respond to any-pointer:fine
+   Chrome | Safari | Edge | IE respond to maxTouchPoints
+   Chrome | Safari | Edge | IE respond to any-pointer:fine
    Firefox doesn't respond at all
    */
-  if (L.Browser.WebKit || L.Browser.chrome) {
+  if (L.Browser.WebKit || L.Browser.chrome || L.Browser.ie) {
     var removeTouchStyle;
     if (('maxTouchPoints' in navigator) || ('msMaxTouchPoints' in navigator)) {
       removeTouchStyle = (navigator.maxTouchPoints === 0) || (navigator.msMaxTouchPoints === 0);
