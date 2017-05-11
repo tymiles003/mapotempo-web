@@ -76,12 +76,12 @@ class ImporterStores < ImporterBase
     @stores_by_ref = Hash[@customer.stores.select(&:ref).collect{ |store| [store.ref, store] }]
   end
 
-  def import_row(name, row, line, options)
+  def import_row(name, row, options)
     if row[:name].nil?
-      raise ImportInvalidRow.new(I18n.t('stores.import_file.missing_name', line: (row[:line] || line)))
+      raise ImportInvalidRow.new(I18n.t('stores.import_file.missing_name'))
     end
     if row[:city].nil? && row[:postalcode].nil? && (row[:lat].nil? || row[:lng].nil?)
-      raise ImportInvalidRow.new(I18n.t('stores.import_file.missing_location', line: (row[:line] || line)))
+      raise ImportInvalidRow.new(I18n.t('stores.import_file.missing_location'))
     end
 
     if !row[:ref].nil? && !row[:ref].strip.empty?

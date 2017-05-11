@@ -47,9 +47,9 @@ class ImportCsv
   def import(synchronous = false)
     if data
       begin
-        last_row = nil
+        last_row = last_line = nil
         Customer.transaction do
-          @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, line_shift: (without_header? ? 0 : 1), column_def: column_def) { |row|
+          rows = @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, line_shift: (without_header? ? 0 : 1), column_def: column_def) { |row, line|
             if row
               # Column Names: Strip Whitespaces
               row = row.each_with_object({}){ |(k, v), hash| hash[k.is_a?(String) ? k.strip : k] = v } if row.is_a? Hash
@@ -76,12 +76,16 @@ class ImportCsv
               }
             end
             last_row = row
+            last_line = line
 
             row
           }
+          last_row = last_line = nil
+          rows
         end
       rescue => e
-        message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.csv') + ' ' + e.message : e.message
+        message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.csv', s: last_line) + ', ' : last_line ? I18n.t('import.csv.line', s: last_line) + ', ' : ''
+        message += e.message
         message += ' ' + I18n.t('destinations.import_file.check_custom_columns') if column_def && column_def.values.join('').size > 0
         # format error to be human friendly with row content (take into account customized column names)
         errors[:base] << error_and_format_row(message, last_row)

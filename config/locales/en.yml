@@ -587,12 +587,16 @@ en:
       invalid_account: User invalid (does not exist)
 
   import:
+    csv:
+      line: Line %{s}
+    tomtom:
+      record: Record %{s}
     empty: Nothing to import, check your data.
     data: 'Check your data:'
     data_erroneous:
-      csv: Invalid file, line
-      json: Invalid file, record
-      tomtom: Invalid tomtom data, record
+      csv: Invalid file, line %{s}
+      json: Invalid file
+      tomtom: Invalid tomtom data, record %{s}
     template_csv: Import Template Spreadsheet Standard
     template_excel: Import Template Spreadsheet Excel
   admin:
@@ -993,9 +997,9 @@ en:
       empty_file: content is blank
       too_many_lines: 'Stop import, too many lines (max: %{n}).'
       none_column: None found column
-      missing_name: '%{line}: "name" missing.'
-      missing_location: '%{line}: "city / postalcode" or "lat / lng" missing.'
-      invalid_numeric_value: '%{line}: Invalid numeric value "%{value}".'
+      missing_name: '"name" missing.'
+      missing_location: '"city / postalcode" or "lat / lng" missing.'
+      invalid_numeric_value: 'Invalid numeric value "%{value}".'
       check_custom_columns: Check your columns definition.
     reverse_geocoding:
       apply: Apply new address
@@ -1446,10 +1450,10 @@ en:
       geocoding_level: geocoding level
       geocoding_level_desc: level of precision reached when converting the destination
         street address into geographic coordinates
-      missing_name: 'Record %{line}: "name" missing.'
-      missing_location: 'Record %{line}: "city" or "postalcode" or "lat" and "lng"
+      missing_name: '"name" missing.'
+      missing_location: '"city" or "postalcode" or "lat" and "lng"
         missing.'
-      invalid_numeric_value: 'Record %{line}: Invalid numeric value "%{value}".'
+      invalid_numeric_value: 'Invalid numeric value "%{value}".'
       format:
         string: text
         integer: integer

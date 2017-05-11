@@ -36,7 +36,7 @@ class ImportJson
         Customer.transaction do
           keys = @importer.columns.keys
 
-          rows = @importer.import(data, nil, synchronous, ignore_errors: false, replace: replace) { |row|
+          rows = @importer.import(data, nil, synchronous, ignore_errors: false, replace: replace) { |row, _line|
             if row
               r, row = row, {}
               r.each{ |k, v|
@@ -50,10 +50,11 @@ class ImportJson
 
             row
           }
+          last_row = nil
           @importer.rows_to_json rows
         end
       rescue => e
-        message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.json') + ' ' + e.message : e.message
+        message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.json') + ', ' + e.message : e.message
         errors[:base] << message + (last_row ? ' [' + last_row.to_a.collect{ |a| "#{a[0]}: \"#{a[1]}\"" }.join(', ') + ']' : '')
         Rails.logger.error e.message
         Rails.logger.error e.backtrace.join("\n")

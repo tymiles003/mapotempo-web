@@ -32,20 +32,22 @@ class ImportTomtom
     last_row = nil
     Customer.transaction do
       addresses = TomtomService.new(customer: customer).list_addresses
-      @importer.import(addresses, nil, synchronous, ignore_errors: true, replace: replace) { |row|
+      rows = @importer.import(addresses, nil, synchronous, ignore_errors: true, replace: replace) { |row, _line|
         if row
           if !row[:tags].nil?
             row[:tags] = row[:tags].join(',')
           end
-          row[:line] = row[:ref]
         end
         last_row = row
 
         row
       }
+      last_row = nil
+      rows
     end
   rescue => e
-    message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.tomtom') + ' ' + e.message : e.message
+    message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.tomtom', s: last_row[:ref]) + ', ' : last_row[:ref] ? I18n.t('import.tomtom.record', s: last_row[:ref]) + ', ' : ''
+    message += e.message
     errors[:base] << message + (last_row ? ' [' + last_row.to_a.collect{ |a| "#{a[0]}: \"#{a[1]}\"" }.join(', ') + ']' : '')
     Rails.logger.error e.message
     Rails.logger.error e.backtrace.join("\n")

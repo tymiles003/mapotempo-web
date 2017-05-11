@@ -43,7 +43,7 @@ class ImporterBase
 
       dests = data.each_with_index.collect{ |row, line|
         # Switch from locale or custom to internal column name in case of csv
-        row = yield(row)
+        row = yield(row, line + 1 + (options[:line_shift] || 0))
 
         if row.empty?
           next # Skip empty line
@@ -58,7 +58,7 @@ class ImporterBase
             end
           end
 
-          dest = import_row(name, row, line + 1 + (options[:line_shift] || 0), options)
+          dest = import_row(name, row, options)
           if dest.nil?
             next
           end
