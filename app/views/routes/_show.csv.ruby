@@ -20,7 +20,12 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
     street: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.street,
     detail: nil,
     postalcode: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.postalcode,
-    city: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.city,
+    city: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.city
+    }
+
+  row.merge!(state: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.state) if route.planning.customer.with_state?
+
+  row.merge!({
     country: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.country,
     lat: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.lat,
     lng: route.vehicle_usage.default_store_start && route.vehicle_usage.default_store_start.lng,
@@ -35,12 +40,15 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
     open2: nil,
     close2: nil,
     tags_visit: nil
-  }.merge(Hash[route.planning.customer.enable_orders ?
+  })
+
+  row.merge!(Hash[route.planning.customer.enable_orders ?
     [[:orders, nil]] :
     route.planning.customer.deliverable_units.map{ |du|
       [('quantity' + (du.label ? '[' + du.label + ']' : '')).to_sym, nil]
     }
   ])
+
   csv << @columns.map{ |c| row[c.to_sym] }
 end
 
@@ -71,6 +79,11 @@ route.stops.each { |stop|
       detail: stop.detail,
       postalcode: stop.postalcode,
       city: stop.city,
+    }
+
+    row.merge!(state: stop.state) if route.planning.customer.with_state?
+
+    row.merge!({
       country: stop.country,
       lat: stop.lat,
       lng: stop.lng,
@@ -85,12 +98,15 @@ route.stops.each { |stop|
       open2: (stop.open2_absolute_time if stop.open2),
       close2: (stop.close2_absolute_time if stop.close2),
       tags_visit: (stop.visit.tags.collect(&:label).join(',') if stop.is_a?(StopVisit))
-    }.merge(Hash[route.planning.customer.enable_orders ?
+    })
+
+    row.merge!(Hash[route.planning.customer.enable_orders ?
       [[:orders, stop.is_a?(StopVisit) && stop.order && stop.order.products.length > 0 ? stop.order.products.collect(&:code).join('/') : nil]] :
       route.planning.customer.deliverable_units.map{ |du|
         [('quantity' + (du.label ? '[' + du.label + ']' : '')).to_sym, stop.is_a?(StopVisit) ? stop.visit.quantities[du.id] : nil]
       }
     ])
+
     csv << @columns.map{ |c| row[c.to_sym] }
   end
 }
@@ -118,6 +134,11 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
     detail: nil,
     postalcode: route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.postalcode,
     city: route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.city,
+    }
+
+  row.merge!(state: route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.state) if route.planning.customer.with_state?
+
+  row.merge!({
     country: route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.country,
     lat: route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.lat,
     lng: route.vehicle_usage.default_store_stop && route.vehicle_usage.default_store_stop.lng,
@@ -132,11 +153,14 @@ if route.vehicle_usage && (!@params.key?(:stops) || @params[:stops].split('|').i
     open2: nil,
     close2: nil,
     tags_visit: nil
-  }.merge(Hash[route.planning.customer.enable_orders ?
+  })
+
+  row.merge!(Hash[route.planning.customer.enable_orders ?
     [[:orders, nil]] :
     route.planning.customer.deliverable_units.map{ |du|
       [('quantity' + (du.label ? '[' + du.label + ']' : '')).to_sym, nil]
     }
   ])
+
   csv << @columns.map{ |c| row[c.to_sym] }
 end

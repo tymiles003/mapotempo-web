@@ -26,6 +26,7 @@ class StopVisit < Stop
            :street,
            :postalcode,
            :city,
+           :state,
            :country,
            :detail,
            :comment,

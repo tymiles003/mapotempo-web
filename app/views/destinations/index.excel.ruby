@@ -6,6 +6,7 @@ CSV.generate({col_sep: ';'}) { |csv|
     I18n.t('destinations.import_file.detail'),
     I18n.t('destinations.import_file.postalcode'),
     I18n.t('destinations.import_file.city'),
+  ] + (@customer.with_state? ? [I18n.t('destinations.import_file.state')] : []) + [
     I18n.t('destinations.import_file.country'),
     I18n.t('destinations.import_file.lat'),
     I18n.t('destinations.import_file.lng'),
@@ -35,6 +36,7 @@ CSV.generate({col_sep: ';'}) { |csv|
       destination.detail,
       destination.postalcode,
       destination.city,
+    ] + (@customer.with_state? ? [destination.state] : []) + [
       destination.country,
       destination.lat,
       destination.lng,

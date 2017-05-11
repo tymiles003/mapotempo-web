@@ -392,13 +392,13 @@ class PlanningsController < ApplicationController
       :detail,
       :postalcode,
       :city,
+    ] + ((@customer || @planning.customer).with_state? ? [:state] : []) + [
       :country,
       :lat,
       :lng,
       :comment,
       :phone_number,
       :tags,
-      :tag_operation,
 
       :ref_visit,
       :duration,

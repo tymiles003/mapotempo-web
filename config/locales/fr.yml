@@ -929,11 +929,11 @@ fr:
       stop_type_visit_desc: ''
       stop_format: '[visite | dépôt | pause]'
       name: nom
-      name_desc: nom du client ou de la destination visitée.
+      name_desc: nom du client ou de la destination visitée
       street: voie
-      street_desc: 'numéro de l''immeuble, type de voie et nom de la voie (l''orthographe
-        doit être correcte pour un géocodage fiable). Note : les détails d''accés
-        doivent eux être posés dans le champ « complément ».'
+      street_desc: "numéro de l'immeuble, type de voie et nom de la voie (l'orthographe
+        doit être correcte pour un géocodage fiable). Note : les détails d'accès
+        doivent eux être posés dans le champ « complément »"
       detail: complément
       detail_desc: détails d'accès complémentaires à la voie permettant à l'agent
         de terrain d'atteindre le seuil de porte de sa destination. Ex. Bâtiment d'un
@@ -943,6 +943,9 @@ fr:
         pour un géocodage fiable)
       city: ville
       city_desc: nom de la ville ou commune (l'orthographe doit être correcte pour
+        un géocodage fiable)
+      state: état
+      state_desc: nom de l'état (l'orthographe doit être correcte pour
         un géocodage fiable)
       country: pays
       country_desc: nom du pays (l'orthographe doit être correcte pour un géocodage
@@ -1337,6 +1340,7 @@ fr:
       detail: complément
       postalcode: code postal
       city: ville
+      state: état
       country: pays
       lat: lat
       lng: lng
@@ -1468,6 +1472,9 @@ fr:
       city: ville
       city_desc: nom de la ville ou commune (l'orthographe doit être correcte pour
         un géocodage fiable).
+      state: état
+      state_desc: nom de l'état (l'orthographe doit être correcte pour
+        un géocodage fiable)
       country: pays
       country_desc: nom du pays (l'orthographe doit être correcte pour un géocodage
         fiable).

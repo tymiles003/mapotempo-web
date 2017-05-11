@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <% if @store.customer.with_state %>
+    <% if @store.customer.with_state? %>
       <div id="store_country_input" class="form-group">
         <label class="col-md-2 control-label"><%= t 'activerecord.attributes.store.state' %> / <%= t 'activerecord.attributes.store.country' %></label>
         <div class="col-md-6">

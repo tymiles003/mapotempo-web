@@ -20,7 +20,7 @@ class Visit < ActiveRecord::Base
   has_many :stop_visits, inverse_of: :visit, dependent: :delete_all
   has_many :orders, inverse_of: :visit, dependent: :delete_all
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
-  delegate :lat, :lng, :name, :street, :postalcode, :city, :country, :detail, :comment, :phone_number, to: :destination
+  delegate :lat, :lng, :name, :street, :postalcode, :city, :state, :country, :detail, :comment, :phone_number, to: :destination
   serialize :quantities, DeliverableUnitQuantity
 
   nilify_blanks

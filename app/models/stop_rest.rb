@@ -122,6 +122,12 @@ class StopRest < Stop
     end
   end
 
+  def state
+    if route.planning.customer.with_state? && position?
+      route.vehicle_usage.default_store_rest.state
+    end
+  end
+
   def country
     if position?
       route.vehicle_usage.default_store_rest.country

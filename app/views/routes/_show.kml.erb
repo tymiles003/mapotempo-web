@@ -37,7 +37,11 @@
   <name><%= route.vehicle_usage.default_store_start.name %></name>
   <address>
     <%= route.vehicle_usage.default_store_start.street %>
-    <%= route.vehicle_usage.default_store_start.postalcode %> <%= route.vehicle_usage.default_store_start.city %>  <%= route.vehicle_usage.default_store_start.country %>
+    <% if route.planning.customer.with_state? %>
+      <%= route.vehicle_usage.default_store_start.postalcode %> <%= route.vehicle_usage.default_store_start.city %> <%= route.vehicle_usage.default_store_start.state %> <%= route.vehicle_usage.default_store_start.country %>
+    <% else %>
+      <%= route.vehicle_usage.default_store_start.postalcode %> <%= route.vehicle_usage.default_store_start.city %> <%= route.vehicle_usage.default_store_start.country %>
+    <% end %>
   </address>
   <styleUrl>#route-<%= route.id %>-store</styleUrl>
   <Point>
@@ -57,7 +61,11 @@ route.stops.each do |stop|
   <name><%= "#{index += 1}. #{stop.name}" %></name>
   <address>
     <%= stop.street %><% if stop.detail && !stop.detail.empty? %>, <%= stop.detail %><% end %>
-    <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
+    <% if route.planning.customer.with_state? %>
+      <%= stop.postalcode %> <%= stop.city %>  <%= stop.state %> <%= stop.country %>
+    <% else %>
+      <%= stop.postalcode %> <%= stop.city %> <%= stop.country %>
+    <% end %>
   </address>
   <phoneNumber><%= stop.phone_number if stop.phone_number %></phoneNumber>
   <description>
@@ -88,7 +96,11 @@ end
   <name><%= route.vehicle_usage.default_store_stop.name %></name>
   <address>
     <%= route.vehicle_usage.default_store_stop.street %>
-    <%= route.vehicle_usage.default_store_stop.postalcode %> <%= route.vehicle_usage.default_store_stop.city %> <%= route.vehicle_usage.default_store_stop.country %>
+    <% if route.planning.customer.with_state? %>
+      <%= route.vehicle_usage.default_store_stop.postalcode %> <%= route.vehicle_usage.default_store_stop.city %> <%= route.vehicle_usage.default_store_stop.state %> <%= route.vehicle_usage.default_store_stop.country %>
+    <% else %>
+      <%= route.vehicle_usage.default_store_stop.postalcode %> <%= route.vehicle_usage.default_store_stop.city %> <%= route.vehicle_usage.default_store_stop.country %>
+    <% end %>
   </address>
   <styleUrl>#route-<%= route.id %>-store</styleUrl>
   <Point>

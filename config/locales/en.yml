@@ -915,11 +915,11 @@ en:
       stop_type_visit_desc: ''
       stop_format: '[visit | store | rest]'
       name: name
-      name_desc: account or visited destination name.
+      name_desc: account or visited destination name
       street: street
       street_desc: street address with building number, road type and road name (spelling
         is critical for reliable geocoding). Non-official elements such as room number,
-        stair letter, etc must be moved to the field "detail".
+        stair letter, etc must be moved to the field "detail"
       detail: detail
       detail_desc: human friendly details and indications leading your agent from
         his/her vehicle to the destination's doorstep. E.g. building name, floor,
@@ -929,8 +929,10 @@ en:
         geocoding)
       city: city
       city_desc: city, town or district name (spelling is critical for reliable geocoding)
+      state: state
+      state_desc: state name (spelling is critical for reliable geocoding)
       country: country
-      country_desc: country or state name (spelling is critical for reliable geocoding)
+      country_desc: country name (spelling is critical for reliable geocoding)
       lat: lat
       lat_desc: latitude of the destination in decimal degrees between -90° and 90°.
         E.g. 45.91
@@ -1306,6 +1308,7 @@ en:
       detail: detail
       postalcode: postalcode
       city: city
+      state: state
       country: country
       lat: lat
       lng: lng
@@ -1431,6 +1434,8 @@ en:
         geocoding).
       city: city
       city_desc: city, town or district name (spelling is critical for reliable geocoding).
+      state: state
+      state_desc: state name (spelling is critical for reliable geocoding)
       country: country
       country_desc: country or state name (spelling is critical for reliable geocoding).
       lat: lat

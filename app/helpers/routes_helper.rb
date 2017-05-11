@@ -39,7 +39,7 @@ module RoutesHelper
 
   def export_column_titles(columns)
     columns.map{ |c|
-      if m = /^(.+)\[(.*)\]$/.match(c)
+      if (m = /^(.+)\[(.*)\]$/.match(c))
         I18n.t('plannings.export_file.' + m[1]) + '[' + m[2] + ']'
       else
         I18n.t('plannings.export_file.' + c.to_s)
