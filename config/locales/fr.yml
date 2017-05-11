@@ -494,7 +494,7 @@ fr:
               after: "doit être après le %{s}"
             quantities:
               not_float: doit être un nombre
-              negative_value: Ref:%{id} est négative (%{value})
+              negative_value: est négative (%{value})
         zone:
           attributes:
             vehicle:

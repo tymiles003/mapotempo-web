@@ -73,7 +73,7 @@ class Visit < ActiveRecord::Base
     end
   rescue StandardError => e
     self.errors.add :quantities, :not_float if e.is_a?(ArgumentError || TypeError)
-    self.errors.add :quantities, :negative_value, {id: e.object[:visit_id], value: e.object[:value]} if e.is_a?(Exceptions::NegativeErrors)
+    self.errors.add :quantities, :negative_value, {value: e.object[:value]} if e.is_a?(Exceptions::NegativeErrors)
   end
 
   def destroy
