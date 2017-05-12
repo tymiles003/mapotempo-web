@@ -131,11 +131,6 @@ he:
         take_over: משך השהייה
         name: שם
         destinations: יעדים
-        enable_tomtom: Enable TomTom WEBFLEET
-        enable_masternaut: Enable Masternaut
-        enable_alyacom: Enable Alyacom
-        enable_teksat: Enable Teksat
-        enable_orange_fleet: Enable Orange Fleet Performance
         orange_user: Orange משתמש
         orange_password: Orange סיסמת
         teksat_customer_id: Teksat לקוח ID
@@ -1015,10 +1010,6 @@ he:
       route_ref: ניתוב מס'
       order_array: הזמנות
     send_computed_ics_route:
-      content: "An iCalendar has been sent from %{s}\n you can copy-paste the following\
-        \ link to be able to use it as a source in your personnal calendar (update\
-        \ will be automatic)\n or you can click on this link to download file (no\
-        \ update in this case)."
       vehicle: רכב
       planning: תכנית
       planning_ref: תכנית מס'
@@ -1305,9 +1296,7 @@ he:
     new:
       title: תיכנון חדש
     export_file:
-      ref_planning: reference planning
       planning: תיכנון
-      ref: reference
       vehicle: רכב
       route: מסלול
       order: הזמנה
@@ -1346,7 +1335,6 @@ he:
       status: סטטוס
       eta: eta
     form:
-      ref_help: A free reference
       tags_help: הגבלת ביקורים / יעדים בתכנית (ביקורים / יעדים צריכים לכלול את כל
         הקטגוריות הללו בכדי להילקח בחשבון בתוכנית)
       order_array: הזמנות
@@ -1398,139 +1386,6 @@ he:
       title: ייצא ערכים שמורים
       stores: ערכים שמורים
       replace_no: עידכון / בנוסף
-      replace_no_help: An update of existing stores (unchanged store references) is
-        made and the new ones are added.
-      replace_yes: Delete previous stores
-      replace_yes_help: Delete and replace stores with imported ones. Overwrite all
-        stores.
-      replace_confirm: Delete all stores and their amendments and replace them with
-        imported ones?
-      csv:
-        title: CSV File
-        help: Import stores from CSV file. CSV files can be exported from spreadsheet
-          or other softwares.
-        file_help: Import CSV files only
-      import_template_help: Help
-      dialog:
-        help:
-          title: Column names in your file
-          desc: 'Your import file can use the following column names:'
-    index:
-      dialog:
-        import:
-          title: Import stores
-          in_progress: Please wait, import in progress
-      title: Listing stores
-      new: New store
-    new:
-      title: New store
-    import_file:
-      ref: reference
-      ref_desc: a stable, unique, constant reference id, allowing non-destructive
-        update of this item when the next import happens
-      name: name
-      name_desc: store name
-      color: color
-      color_desc: color of your icon, value being a color code. See web-color at https://en.wikipedia.org/wiki/Web_colors
-      color_format: '#000000 or black'
-      icon: icon
-      icon_desc: name of the icon you selected in font-awesome list http://fontawesome.io/icons
-        . Please include the "fa-" prefix. E.g. fa-building.
-      icon_size: icon size
-      icon_size_desc: 'size of the icon representing your store on the map. Default:
-        large.'
-      open: open
-      open_desc: Store opening time
-      close: close
-      close_desc: Store closing time
-      street: street
-      street_desc: street address with building number, road type and road name (spelling
-        is critical for reliable geocoding).
-      postalcode: postalcode
-      postalcode_desc: postal code of your district (exactness is critical for reliable
-        geocoding).
-      city: city
-      city_desc: city, town or district name (spelling is critical for reliable geocoding).
-      country: country
-      country_desc: country or state name (spelling is critical for reliable geocoding).
-      lat: lat
-      lat_desc: latitude of the destination in decimal degrees between -90° and 90°.
-        E.g. 45.91
-      lat_format: floating number between -90 and 90
-      lng: lng
-      lng_desc: longitude of the destination in decimal degrees between -180° and
-        180°. E.g. -0.781
-      lng_format: floating number between -180 and 180
-      geocoding_accuracy: geocoding accuracy
-      geocoding_accuracy_desc: quality score given when converting the destination
-        street address into geographic coordinates. If under 85%, please check your
-        spelling and refresh the geocoding. This score is expressed with a value between
-        0 et 1. E.g. 0.70 means 70% accurate.
-      geocoding_accuracy_format: floating number from 0 to 1
-      geocoding_level: geocoding level
-      geocoding_level_desc: level of precision reached when converting the destination
-        street address into geographic coordinates
-      missing_name: 'Record %{line}: "name" missing.'
-      missing_location: 'Record %{line}: "city" or "postalcode" or "lat" and "lng"
-        missing.'
-      invalid_numeric_value: 'Record %{line}: Invalid numeric value "%{value}".'
-      format:
-        string: text
-        integer: integer
-        hour: HH:MM
-        float: '0.123'
-        required: required
-        advisable: advised
-        optionnal: optionnal
-  products:
-    menu:
-      products: Products
-    edit:
-      title: Editing product
-    index:
-      title: Listing products
-      new: New product
-    new:
-      title: New product
-    form:
-      name_help: Long name of the product
-      code_help: Short code, few letters
-  tags:
-    edit:
-      title: Editing tag
-    index:
-      title: Listing tags
-      new: New tag
-    new:
-      title: New tag
-    form:
-      color_default: Default
-      icon_default: Default
-      color_help: Force use of this color
-      customised_color: Select a custom color
-      icon_help: Force use of this symbol
-      ref: Reference
-      ref_help: A free reference
-  users:
-    menu:
-      sign_out: Sign out
-    edit:
-      title: Edit User
-      edit: Change your login credentials and password
-      edit_user: You do not have the right to edit another user
-    form:
-      url_click2call_help: URL of VOIP communications solution. In URL set '{TEL}'
-        in place of the phone number
-      send_email: Send E-Mail
-    update:
-      success: User updated successfully
-    password:
-      title: Edit Password
-      unauthenticated: Connection error, please check the url inside your confirmation
-        mail
-    set_password:
-      action: Set My Password
-      success: User updated successfully
   vehicles:
     default_name: רכב %{n}
     emissions_nothing: ריק - %{n}
@@ -1538,16 +1393,6 @@ he:
     emissions_light_diesel: Light - Diesel - %{n}
     emissions_light_lgp: Light - LGP - %{n}
     form:
-      tomtom_id: TomTom
-      teksat_id: Teksat
-      orange_id: Orange
-      ref:
-        help: A free reference
-      emissions:
-        help: Fuel Type
-      consumption:
-        help: Average fuel consumption in liters per 100 km
-        help_miles: Average fuel consumption in liters per 62.1 mi.
       capacities:
         label: מיגבלה
         default: '%{n} (ערך ברירת מחדל)'
@@ -1556,190 +1401,34 @@ he:
         help: מקסימום מיגבלת רכב
       router:
         default: ברירת מחדל
-        help: Force use of a specific routing engine
       router_dimension:
         default: ברירת מחדל
       speed_multiplicator:
         default: '%{n} (ערך ברירת מחדל)'
-        help: A value higher than 100% means higher speed. The global tune up set
-          on settings is also used on computation.
       contact_email:
         help: סוג דוא"ל לנהג
   vehicle_usages:
-    menu:
-      vehicle_usages: Vehicle configurations
-    edit:
-      title: Editing vehicle and configuration
-    index:
-      title: Listing vehicle configurations
-      capacities: Capacities
-      stores: Start - End
-      store:
-        no_start: No start store
-        no_stop: 'No stop store: end of route is free'
-        same_start_stop: Vehicle returns to start store
-      time: Open - Close
-      devices: Devices
-      disable: Disable
-      disable_confirm: Are you sure? All routes using this vehicle and configuration
-        will be lost.
-      enable: Enable
-    new:
-      title: New vehicle configuration
-    toggle:
-      success: Vehicle configuration updated successfully
     form:
-      save: Save vehicle configuration
       vehicle:
-        legend: Vehicle
         help: המידע הבא על הרכב משותף לכל תצורות כלי הרכב
-      vehicle_usage:
-        legend: 'Vehicle configuration: "%{s}"'
-        help: The following informations are specific to the configuration of the
-          vehicle.
-      open:
-        default: '%{n} (default)'
-      close:
-        default: '%{n} (default)'
-      open_close_days:
-        default: '%{n}'
-      open_close: Hours
-      open_close_help: Deliveryman's working hours
-      stores: Start / End
-      store:
-        default: Default
-        none: None
-      stores_help: Start and end stores
-      rest_duration_store: Rest duration / place
-      rest_start:
-        default: '%{n} (default)'
-      rest_stop:
-        default: '%{n} (default)'
-      rest_start_stop: Rest time window
-      rest_start_stop_help: Without taking into account rest duration
-      rest_duration:
-        default: '%{n} (default value)'
-        help: Requires rest time window if filled
-      store_rest:
-        default: Default
-        none: None
-      service_times: Service times
-      service_time:
-        default: '%{n} (default value)'
-      service_time_start_addon: before
-      service_time_end_addon: after
-      service_times_help: Durations added before the first stop and after the last
-        stop
-      devices:
-        placeholder: בחר התקן
-        fieldset: GPS & טלפון נייד
   vehicle_usage_sets:
-    default:
-      name: Default
-    menu:
-      vehicle_usage_sets: רכבים
-      deliverable_units: יחידות מישלוח
-    edit:
-      title: Editing vehicle and configuration
     index:
       title: רשימה של תצורות כלי רכב
       new: תצורת כלי רכב חדשים
-      stores: Start - End
-      time: Open - Close
-      service_time: Service Time
     new:
       title: תצורת כלי רכב חדשים
-    form:
-      open_close: Hours
-      open_close_help: Deliveryman's working hours
-      stores: Start / End
-      store:
-        none: None
-      stores_help: Start and end stores
-      service_times: Service times
-      service_time_start_addon: before
-      service_time_end_addon: after
-      service_times_help: Durations added before the first stop and after the last
-        stop.
-      rest_duration_store: Rest duration / place
-      rest_duration:
-        help: Requires rest time window if filled
-      rest_start_stop: Rest time window
-      rest_start_stop_help: Without taking into account rest duration
-  visits:
-    form:
-      legend: 'Visit #%{n}'
-      destroy: If checked, visit will be destroyed by submitting this page. Click
-        here to cancel.
-      ref_help: A free reference. Important to avoid overwriting visits on import/export
-      quantities:
-        default: '%{n} (default value)'
-        help: Quantities to be delivered
-      take_over_default: default
-      take_over_help: If empty, use the default value
-      open_close1: Time window 1
-      open_close2: Time window 2
-      close_help: Without taking into account visit duration
-      tags_help: Visit categories
-      delete: Flag for deletion
-      delete_help: Delete this visit (destination will be kept)
   zonings:
-    default:
-      from_route: Route
-      from_isochrone: Isochrone
-      from_isodistance: Isodistance
-      from: from
-    menu:
-      zonings: Zonings
-    edit:
-      title: Editing zoning
-      collapse_zoning_panel: Collapse zoning panel
-      generate_confirm: This action will reset all your current zones. Continue?
-      vehicleless_confirm: Are you sure? Some zones don't have a vehicle
-      isochrone_missing_vehicle: Isochrone cannot be generated for at least one vehicle
-        due to routing engine restrictions
-      isodistance_missing_vehicle: Isodistance cannot be generated for at least one
-        vehicle due to routing engine restrictions
-      failed: Failed to generate Isochrone
-      success: Isochrone generated successfully
-    index:
-      title: Listing zonings
-      new: New Zoning
-    new:
-      title: New zoning
     form:
-      hide_out_of_route: Hide unaffected destinations
-      all_destinations: Show all destinations
-      from_planning_help: It's also possible to filter destinations from a unique
-        plan by editing this zoning from plan
-      stops_from_planning: Destinations from plan "%{s}"
-      generate: Generate
-      automatic:
-        one: 'Automatic: 1 zone'
-        other: 'Automatic: %{count} zones'
-      from_planning: From plan routes
-      zone_placeholder: Zone
-      zone_vehicle: Vehicle
-      avoid_zone: Don't go inside this zone
-      isochrone: Isochrone / רכבים(s)
       isodistance: Isodistance / רכבים(s)
       dialog:
         isochrone:
-          title: Isochrone
           vehicle_usage_set: תצורת כלי רכב
           vehicle_usage_set_help: בחינת תצורת כלי רכב, במיוחד את מחסן ההתחלה.
-          size: Time
-          size_help: Area accessible from the start point by this travel time.
-        isochrone-progress:
-          title: Isochrones computations in progress
         isodistance:
-          title: Isodistance
           vehicle_usage_set: תצורת כלי רכב
           vehicle_usage_set_help: בחינת תצורת כלי רכב, במיוחד את מחסן ההתחלה.
           size: מרחק
           size_help: האיזור נגיש מנקודת ההתחלה בהתחשב במרחק הנסיעה.
-        isodistance-progress:
-          title: Isodistances computation in progress
         validate: מעבד נתונים
   unauthorized:
     default: אינך מורשה להיכנס לדף זה
@@ -1786,8 +1475,6 @@ he:
   all:
     datepicker: mm-dd-yyyy
     map_attribution:
-      osm: Map data &copy; <a href="http://openstreetmap.org" target="_blank">OpenStreetMap</a>
-        contributors, %{attribution}
       here: כאן
     verb:
       new: חדש
@@ -1825,13 +1512,6 @@ he:
       _false: שקר
       _yes: כן
       _no: לא
-    subscribe:
-      planning_unavailable: Planning can’t be changed. Your subscription period is
-        expired | Contact your reseller to get a contrat extension.
-      expiration_date: 'Only few days to renew your subscription, please contact your
-        dealer to renew your offer. End date : '
-      expiration_date_over: 'The date of use is exceeded, please contact your dealer.
-        Expiration date : '
   helpers:
     submit:
       create: צור %{model}
