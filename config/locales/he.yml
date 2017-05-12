@@ -506,6 +506,8 @@ he:
             ref:
               invalid_format: השימוש ב תווים הבאים אינו חוקי ".", "\" or "/"
               ref_value: 'הפניה למסלול '
+            begin_date:
+              blank: לא יכול לקבל ערכים ריקים אם קיים תאריך סיום
   errors:
     messages:
       taken: הוא כבר בשימוש
@@ -1060,7 +1062,7 @@ he:
       zoning_edit: ערוך איזור מתכנית זו
       last_sent_to: שלח ל
       optimize_global:
-        title: אופטימיזציה גלובלית
+        title: לייעל את הכל
         all_help: בצע אופטימיזציה לכל התוכנית (לכל העצירות) למעט מסלולים סגורים (עצירות
           יכולות להשתייך לניתובים אחרים)
         active_help: אופטימיזציה של התזמון בכללותה, רק עבור עצירות פעילה למעט סיורים
@@ -1069,15 +1071,14 @@ he:
         active_stops: רק עצירות פעילות
         confirm: מטב מהתכנון הכולל? (עצירות שלך יכולים להיות מוקצים סיור אחר כרגע)
       optimize_each:
-        title: בצע אופטימיזציה לכל מסלול
+        title: בצע אופטימיזציה לכל נתיב
         all_help: ייעול מסלולים, לכל התחנות, לוח זמנים לא נעולים אחד אחד (העצירות
           שלך תישאר כל סיור ראשוני)
         active_help: ייעול מסלולים, רק עבור עצירות פעילה, לוח זמנים לא נעולים אחד
           אחד (העצירות שלך תישאר כל סיור ראשוני)
         all_stops: כל העצירות
         active_stops: רק עצירות פעילות
-        confirm: השקת חישוב אופטימיזציה עבור כל הסיורים? (העצירות שלך תישאר כל סיור
-          ראשוני)
+        confirm: להפעיל חישוב אופטימיזציה על כל מסלול? (מפסיק תישאר inital נתיב)
       optimize_all: בצע אופטימיזציה לכל העצירות
       optimize_actives: בצע אופטימיזציה רק לעצירות פעילות
       optimized_at: אופטימיזציה
@@ -1299,6 +1300,8 @@ he:
           csv: פורמט CSV סטנדרטי
           excel: פורמט Excel   ו-CSV
           download: הורדה
+        automatic_insert:
+          title: הגדר נתיבים עבור עצירות ללא כלי רכב
     new:
       title: תיכנון חדש
     export_file:
@@ -1529,8 +1532,8 @@ he:
       action: Set My Password
       success: User updated successfully
   vehicles:
-    default_name: Vehicle %{n}
-    emissions_nothing: Nothing - %{n}
+    default_name: רכב %{n}
+    emissions_nothing: ריק - %{n}
     emissions_light_petrol: Light - Petrol - %{n}
     emissions_light_diesel: Light - Diesel - %{n}
     emissions_light_lgp: Light - LGP - %{n}
@@ -1546,22 +1549,22 @@ he:
         help: Average fuel consumption in liters per 100 km
         help_miles: Average fuel consumption in liters per 62.1 mi.
       capacities:
-        label: Capacities
-        default: '%{n} (default value)'
-        no_overload: ' (no overload)'
-        ignore_overload: ' (ignored)'
-        help: Maximun vehicle's capacities
+        label: מיגבלה
+        default: '%{n} (ערך ברירת מחדל)'
+        no_overload: ' (אין חריגה)'
+        ignore_overload: ' (התעלם)'
+        help: מקסימום מיגבלת רכב
       router:
-        default: Default
+        default: ברירת מחדל
         help: Force use of a specific routing engine
       router_dimension:
-        default: Default
+        default: ברירת מחדל
       speed_multiplicator:
-        default: '%{n} (default value)'
+        default: '%{n} (ערך ברירת מחדל)'
         help: A value higher than 100% means higher speed. The global tune up set
           on settings is also used on computation.
       contact_email:
-        help: Driver's device E-Mail
+        help: סוג דוא"ל לנהג
   vehicle_usages:
     menu:
       vehicle_usages: Vehicle configurations
@@ -1589,8 +1592,7 @@ he:
       save: Save vehicle configuration
       vehicle:
         legend: Vehicle
-        help: The following informations on the vehicle are common to all vehicles
-          configurations
+        help: המידע הבא על הרכב משותף לכל תצורות כלי הרכב
       vehicle_usage:
         legend: 'Vehicle configuration: "%{s}"'
         help: The following informations are specific to the configuration of the
@@ -1635,18 +1637,18 @@ he:
     default:
       name: Default
     menu:
-      vehicle_usage_sets: Vehicles
-      deliverable_units: Deliverable units
+      vehicle_usage_sets: רכבים
+      deliverable_units: יחידות מישלוח
     edit:
       title: Editing vehicle and configuration
     index:
-      title: Listing vehicles configurations
-      new: New vehicles configuration
+      title: רשימה של תצורות כלי רכב
+      new: תצורת כלי רכב חדשים
       stores: Start - End
       time: Open - Close
       service_time: Service Time
     new:
-      title: New vehicles configuration
+      title: תצורת כלי רכב חדשים
     form:
       open_close: Hours
       open_close_help: Deliveryman's working hours
@@ -1724,18 +1726,16 @@ he:
       dialog:
         isochrone:
           title: Isochrone
-          vehicle_usage_set: Vehicles configuration
-          vehicle_usage_set_help: Vehicles configuration to consider, especially the
-            start store.
+          vehicle_usage_set: תצורת כלי רכב
+          vehicle_usage_set_help: בחינת תצורת כלי רכב, במיוחד את מחסן ההתחלה.
           size: Time
           size_help: Area accessible from the start point by this travel time.
         isochrone-progress:
           title: Isochrones computations in progress
         isodistance:
           title: Isodistance
-          vehicle_usage_set: Vehicles configuration
-          vehicle_usage_set_help: Vehicles configuration to consider, especially the
-            start store.
+          vehicle_usage_set: תצורת כלי רכב
+          vehicle_usage_set_help: בחינת תצורת כלי רכב, במיוחד את מחסן ההתחלה.
           size: מרחק
           size_help: האיזור נגיש מנקודת ההתחלה בהתחשב במרחק הנסיעה.
         isodistance-progress:
