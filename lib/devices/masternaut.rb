@@ -314,7 +314,7 @@ class Masternaut < DeviceBase
     fault_code = error.to_hash[:fault][:faultcode]
     raise DeviceServiceError.new("Masternaut: #{fault_code}")
   rescue Savon::HTTPError => error
-    if error.http.code == 401
+    if error.http.code == 401 || error.http.code == 403
       raise DeviceServiceError.new('Masternaut: ' + I18n.t('errors.masternaut.invalid_account'))
     else
       Rails.logger.info error.http.code
