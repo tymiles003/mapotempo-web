@@ -946,28 +946,31 @@ var plannings_edit = function(params) {
     }
   };
 
-  var initRoutes = function(context, data, options) {
-
-    $.each($('.customer_external_callback_url'), function(i, element) {
-      $(element).click(function(e) {
-        $.ajax({
-          url: $(e.target).data('url'),
-          type: 'GET',
-          beforeSend: function(jqXHR, settings) {
-            beforeSendWaiting();
-          },
-          complete: function(jqXHR, textStatus) {
-            completeWaiting();
-          },
-          success: function(data, textStatus, jqXHR) {
-            notice(I18n.t('plannings.edit.export.customer_external_callback_url.success'));
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            stickyError(I18n.t('plannings.edit.export.customer_external_callback_url.fail'));
-          }
-        });
+  var externalCallbackUrl = function(context) {
+    $('.customer_external_callback_url', context).click(function(e) {
+      $.ajax({
+        url: $(e.target).data('url'),
+        type: 'GET',
+        beforeSend: function(jqXHR, settings) {
+          beforeSendWaiting();
+        },
+        complete: function(jqXHR, textStatus) {
+          completeWaiting();
+        },
+        success: function(data, textStatus, jqXHR) {
+          notice(I18n.t('plannings.edit.export.customer_external_callback_url.success'));
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          stickyError(I18n.t('plannings.edit.export.customer_external_callback_url.fail'));
+        }
       });
     });
+  };
+
+  // called first during plan initialization (context: plan), and several times after a route need to be refreshed (context: route)
+  var initRoutes = function(context, data, options) {
+
+    externalCallbackUrl(context);
 
     devicesObservePlanning.init(context, function(from) {
       if (from && from.data('service') == 'tomtom' && enableStopStatus) {
@@ -1332,7 +1335,6 @@ var plannings_edit = function(params) {
       }
     });
 
-    // Set Callback URL.
     if (data.customer_enable_external_callback && data.customer_external_callback_url) {
       $("#global_tools .customer_external_callback_url, #external-callback-btn").data('url', buildUrl(data.customer_external_callback_url, { planning_id: data.id, planning_ref: data.ref }));
     }
