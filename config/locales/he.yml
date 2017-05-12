@@ -418,7 +418,6 @@ he:
         open_close2_small: פתוח/סגור 2
         open2_close2_days: D+
         multi_visit: רב
-        tags: ''
         tag_ids: תגים
         quantities: שאלות
       zoning:
@@ -870,7 +869,6 @@ he:
       stop_type: סוג עצירה
       stop_type_desc: סוג עצירה בתכנית.
       stop_type_visit: ביקורים
-      stop_type_visit_desc: ''
       stop_format: '[ביקור | מחסן | מנוחה]'
       name: שם
       name_desc: שם יעד או חשבון יעד.
@@ -890,7 +888,6 @@ he:
       lat: רוחב
       lat_desc: קו הרוחב של היעד במעלות עשרוניות בין -90 ° ל -90 °. לְמָשָׁל. 45.91
       lat_format: מספר float בין הערכים מינוס 90  ו- 90
-      lng: lng
       lng_desc: קו אורך של היעד במעלות עשרוניות בין -180 ° ל 180 °. לְמָשָׁל. -0.781
       lng_format: מספר float בין הערכים מינוס 180 ו-180
       geocoding_accuracy: רמת דיוק הגאוקודינג
@@ -1079,10 +1076,8 @@ he:
         יישארו במסלול הראשוני)
       title: עריכת תוכנית
       stops: עצירה
-      optimize_global: בצע אופטימיזציה להכל
       optimize_global_confirm: האם לייעל את כל התכנון? (עצירות ניתן להקצות מחדש לתוואי
         אחר)
-      optimize_each: ייעל כל מסלול
       optimize_each_confirm: להפעיל חישוב אופטימיזציה על כל מסלול? (עצירות יישארו
         במסלול הראשוני)
       optimize_confirm: האם להריץ חישוב ייעול ?
@@ -1271,16 +1266,13 @@ he:
           title: AlyaCom
           in_progress: אנא המתן
         zoning:
-          title: Zoning
           in_progress: אנא המתן, מעדכן איזורים חדשים
         automatic_insert:
-          title: Set routes for stops without vehicles
-          in_progress: אנא המתן
+          title: הגדר נתיבים עבור עצירות ללא כלי רכב
         spreadsheet:
           title: ייצא לגיליון אלקטרוני
           stops: עצירות נוספות
           out_of_route: מחוץ למסלול
-          stores: stores
           rests: מנוחות
           stops_inactives: עצירות לא פעילות
           columns: עמודות
@@ -1291,8 +1283,6 @@ he:
           csv: פורמט CSV סטנדרטי
           excel: פורמט Excel   ו-CSV
           download: הורדה
-        automatic_insert:
-          title: הגדר נתיבים עבור עצירות ללא כלי רכב
     new:
       title: תיכנון חדש
     export_file:
@@ -1301,7 +1291,6 @@ he:
       route: מסלול
       order: הזמנה
       stop_type: סוג עצירה
-      stop_type_store: store
       stop_type_visit: ביקור
       stop_type_rest: מנוחה
       wait_time: זמן המתנה
@@ -1314,8 +1303,6 @@ he:
       postalcode: מיקוד
       city: עיר
       country: ארץ
-      lat: lat
-      lng: lng
       comment: הערה
       tags: תגים
       phone_number: טלפון
@@ -1333,7 +1320,6 @@ he:
       out_of_capacity: חריגה מהמיגבלות שהוגדרו
       out_of_drive_time: מחוץ לחלון הזמן שהוגדר לרכב
       status: סטטוס
-      eta: eta
     form:
       tags_help: הגבלת ביקורים / יעדים בתכנית (ביקורים / יעדים צריכים לכלול את כל
         הקטגוריות הללו בכדי להילקח בחשבון בתוכנית)
@@ -1370,8 +1356,6 @@ he:
     geocoding:
       geocoding_in_progress: גאוקודינג בתהליך.
     form:
-      ref: Reference
-      ref_help: A free reference
       locate_manually: אתר מיקום במפה באופן ידני
       country_default: '%{n} (ערך ברירת מחדל)'
       icon_size:
@@ -1389,9 +1373,6 @@ he:
   vehicles:
     default_name: רכב %{n}
     emissions_nothing: ריק - %{n}
-    emissions_light_petrol: Light - Petrol - %{n}
-    emissions_light_diesel: Light - Diesel - %{n}
-    emissions_light_lgp: Light - LGP - %{n}
     form:
       capacities:
         label: מיגבלה
@@ -1473,7 +1454,6 @@ he:
           none_zones: לא נמצא איזור
           without_vehicle: ללא רכבי
   all:
-    datepicker: mm-dd-yyyy
     map_attribution:
       here: כאן
     verb:
@@ -1486,7 +1466,6 @@ he:
       destroy_selection: סטל בחירות
       destroy_confirm: האם אתה בטוח ?
       confirm: האם אתה בטוח ?
-      duplicate: Duplicate
       toggle_selection: בחירת בחירה
       dismiss: נידחה
       import: ייצא
