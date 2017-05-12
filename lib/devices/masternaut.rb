@@ -178,7 +178,7 @@ class Masternaut < DeviceBase
       hash[item[:@id]] = item
     }
     response[:multi_ref].map{ |item|
-      if item[:"@xsi:type"] =~ /LastPositionVehicle$/
+      if item[:"@xsi:type"] =~ /LastPositionVehicle$/ && item[:address] && item[:address][:@href]
         id = item[:address][:@href][1..-1] # Remove # at begining
         {
           masternaut_vehicle_id: item[:reference],
