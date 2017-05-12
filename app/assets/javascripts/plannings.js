@@ -915,7 +915,7 @@ var plannings_edit = function(params) {
   }
 
   var externalCallbackUrl = function(context) {
-    $('.customer_external_callback_url', context).click(function(e) {
+    $('.customer_external_callback_url', context).off('click').click(function(e) {
       $.ajax({
         url: $(e.target).data('url'),
         type: 'GET',
