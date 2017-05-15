@@ -30,6 +30,12 @@ GIT
     leaflet-pattern-rails (0.0.2)
 
 GIT
+  remote: git://github.com/Mapotempo/leaflet-responsive-popup-rails.git
+  revision: 1166f3b893faa52a3157a5c3925533efb75248d5
+  specs:
+    leaflet-responsive-popup-rails (0.2.0.0)
+
+GIT
   remote: git://github.com/Mapotempo/mapotempo_web_by_time_distance.git
   revision: a79653124b64d5ae50780058627de55b1581dd39
   specs:
@@ -671,6 +677,7 @@ DEPENDENCIES
   leaflet-markercluster-rails!
   leaflet-pattern-rails!
   leaflet-rails (> 1.0.2)
+  leaflet-responsive-popup-rails!
   leaflet_numbered_markers-rails!
   libnotify
   lograge

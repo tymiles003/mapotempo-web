@@ -99,7 +99,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         distance = (self.options.unit == 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
         driveTime = (driveTime !== null) ? ('0' + parseInt(driveTime / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(driveTime / 60) % 60).slice(-2) + ':' + ('0' + (driveTime % 60)).slice(-2) : '';
         var content = (driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>';
-        L.popup({
+        L.responsivePopup({
           minWidth: 200,
           autoPan: false
         }).setLatLng(e.latlng).setContent(content).openOn(self.map);
@@ -161,7 +161,6 @@ var RoutesLayer = L.FeatureGroup.extend({
           iconUrl: '/images/point_large-' + color.substr(1) + '.svg',
           iconSize: new L.Point(24, 24),
           iconAnchor: new L.Point(12, 12),
-          popupAnchor: new L.Point(0, -12),
           className: "large"
         });
       }
@@ -302,7 +301,9 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   createPopupForLayer: function(layer) {
-    layer.bindPopup('', {
+    layer.bindPopup(L.responsivePopup({
+      offset: layer.options.icon.options.iconSize.divideBy(2)
+    }), {
       minWidth: 200,
       autoPan: false
     }).openPopup();
@@ -399,7 +400,6 @@ var RoutesLayer = L.FeatureGroup.extend({
             html: '<i class="fa ' + point.icon + ' ' + self.map.iconSize[point.icon_size].name + ' store-icon" style="color: ' + point.color + ';"></i>',
             iconSize: new L.Point(self.map.iconSize[point.icon_size || 'large'].size, self.map.iconSize[point.icon_size || 'large'].size),
             iconAnchor: new L.Point(self.map.iconSize[point.icon_size || 'large'].size / 2, self.map.iconSize[point.icon_size || 'large'].size / 2),
-            popupAnchor: new L.Point(0, -Math.floor(self.map.iconSize[point.icon_size || 'large'].size / 2.5)),
             className: 'store-icon-container'
           });
         } else {
@@ -409,7 +409,7 @@ var RoutesLayer = L.FeatureGroup.extend({
             iconUrl: '/images/' + point.icon + '-' + point.color.substr(1) + '.svg',
             iconSize: new L.Point(12, 12),
             iconAnchor: new L.Point(6, 6),
-            popupAnchor: new L.Point(0, -6),
+            popupAnchor: new L.Point(0, 0),
             className: "small"
           });
         }

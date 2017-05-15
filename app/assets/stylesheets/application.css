@@ -53,6 +53,7 @@
  *= require leaflet.markercluster
  *= require leaflet.markercluster-default
  *= require leaflet-sidebar
+ *= require leaflet.responsive.popup
  *= require pnotify
  *= require_tree .
  */

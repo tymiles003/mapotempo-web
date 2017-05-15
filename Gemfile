@@ -133,6 +133,7 @@ gem 'leaflet-hash-rails', github: 'frodrigo/leaflet-hash-rails'
 gem 'leaflet-pattern-rails', github: 'Mapotempo/leaflet-pattern-rails'
 gem 'sidebar-v2-gh-pages-rails', github: 'Mapotempo/sidebar-v2-gh-pages-rails'
 gem 'leaflet-encoded-rails', github: 'Mapotempo/leaflet-encoded-rails'
+gem 'leaflet-responsive-popup-rails', github: 'Mapotempo/leaflet-responsive-popup-rails'
 
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails', '<6.0.0' # Support IE10 removed in jQuery UI 1.12 + bad performances for large list sortable

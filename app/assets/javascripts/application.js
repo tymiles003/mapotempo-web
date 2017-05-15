@@ -65,6 +65,7 @@
 //= require leaflet-sidebar
 //= require leaflet-hash
 //= require leaflet.pattern
+//= require leaflet.responsive.popup
 //= require Control.Geocoder
 //= require Polyline.encoded
 //= require mustache
