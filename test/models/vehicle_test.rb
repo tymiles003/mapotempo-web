@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class VehicleTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
     Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |_url, _mode, _dimension, segments, _options| segments.collect{ |_i| [1, 1, '_ibE_seK_seK_seK'] } } ) do

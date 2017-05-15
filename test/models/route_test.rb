@@ -2,7 +2,6 @@ require 'test_helper'
 require 'routers/osrm'
 
 class RouteTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
     Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 720, '_ibE_seK_seK_seK'] } } ) do

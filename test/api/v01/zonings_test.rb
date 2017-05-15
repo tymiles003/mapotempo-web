@@ -2,7 +2,6 @@ require 'test_helper'
 
 class V01::ZoningsTest < ActiveSupport::TestCase
   include Rack::Test::Methods
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def app
     Rails.application
@@ -101,12 +100,12 @@ class V01::ZoningsTest < ActiveSupport::TestCase
       stub_table = stub_request(:post, uri_template)
           .with(:body => hash_including(dimension: 'distance', loc: "#{store_one.lat},#{store_one.lng}", mode: 'car', size: '10000'))
           .to_return(File.new(File.expand_path('../../../web_mocks/', __FILE__) + '/isochrone/isochrone-1.json').read)
-      users(:user_one).update prefered_unit: :unit 
-      patch api("#{@zoning.id}/isodistance", vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, size: 10000) 
+      users(:user_one).update prefered_unit: :unit
+      patch api("#{@zoning.id}/isodistance", vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id, size: 10000)
       assert last_response.ok?, last_response.body
       assert_equal "Isodistance "+ (unit == 'km' ? '10 km' : '6.21 miles') + " depuis " + store_one.name, JSON.parse(last_response.body)['zones'][0]['name']
     }
-  end  
+  end
 
   test 'should generate isochrone and isodistance for one vehicle' do
     store_one = stores(:store_one)

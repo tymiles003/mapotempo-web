@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ApplicationRecordTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
-
   test 'precision of second for created_at' do
     customer = customers(:customer_one)
 

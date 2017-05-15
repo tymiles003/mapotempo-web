@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ProductTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   test 'should not save' do
     o = customers(:customer_one).products.build

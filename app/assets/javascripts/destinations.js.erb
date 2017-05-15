@@ -206,7 +206,8 @@ var destinations_form = function(params, api) {
     $('[name$=\\[geocoding_level\\]]').val(level);
     $('.geocoding-level').hide();
     $('#geocoding-level-' + level).show();
-    $('#geocoding-level-value').html(I18n.t('destinations.form.geocoding_level.' + level));
+    var translation_level = 'destinations.form.geocoding_level.' + level;
+    $('#geocoding-level-value').html(I18n.t(translation_level));
   };
 
   var update = function(destination_id, destination, move) {
@@ -422,7 +423,7 @@ var destinations_import = function(params, api) {
     title: I18n.t(api + '.index.dialog.import.title'),
     icon: 'fa-upload',
     message: SMT['modals/default_with_progress']({
-      msg: I18n.t(api + '.index.dialog.import.in_progress'),
+      msg: I18n.t(api + '.index.dialog.import.in_progress')
     })
   });
 
@@ -442,7 +443,9 @@ var destinations_import = function(params, api) {
     $('input[id$=replace_1]', $(this)).is(':checked') && confirmChecks.push('replace');
     $('input[name$=\\[delete_plannings\\]]', $(this)).is(':checked') && confirmChecks.push('delete_plannings');
     if (confirmChecks.length > 0 && !confirm(confirmChecks.map(function(c) {
-        return (api == 'stores') ? I18n.t('stores.import.' + c + '_confirm') : I18n.t('destinations.import.' + c + '_confirm');
+        var store_import_translation = 'stores.import.' + c + '_confirm';
+        var destination_import_translation = 'destinations.import.' + c + '_confirm';
+        return (api == 'stores') ? I18n.t(store_import_translation) : I18n.t(destination_import_translation);
       }).join(" \n"))) {
       return false;
     }
@@ -543,8 +546,9 @@ var destinations_index = function(params, api) {
       destination.geocoding_accuracy_percent = Math.round(destination.geocoding_accuracy * 100);
     }
     if (destination.geocoding_level) {
+      var geocoding_translation = 'destinations.form.geocoding_level.' + destination.geocoding_level;
       destination['geocoding_level_' + destination.geocoding_level] = true;
-      destination['geocoding_level_title'] = I18n.t('destinations.index.geocoding_level') + ' : ' + I18n.t('destinations.form.geocoding_level.' + destination.geocoding_level);
+      destination['geocoding_level_title'] = I18n.t('destinations.index.geocoding_level') + ' : ' + I18n.t(geocoding_translation);
     }
     if (destination.lat === null || destination.lng === null) {
       destination.has_no_position = I18n.t('destinations.index.no_position');

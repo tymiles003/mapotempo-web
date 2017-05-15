@@ -3,7 +3,6 @@ require 'test_helper'
 class V01::DestinationsTest < ActiveSupport::TestCase
   include Rack::Test::Methods
   include ActionDispatch::TestProcess
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   require Rails.root.join("test/lib/devices/tomtom_base")
   include TomtomBase

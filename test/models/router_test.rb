@@ -2,7 +2,6 @@ require 'test_helper'
 require 'routers/osrm'
 
 class RouterTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   test 'should translate name' do
     begin

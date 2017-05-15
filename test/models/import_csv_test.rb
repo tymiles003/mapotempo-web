@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ImportCsvTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
-
   setup do
     @importer = ImporterDestinations.new(customers(:customer_one))
   end

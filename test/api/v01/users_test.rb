@@ -2,7 +2,6 @@ require 'test_helper'
 
 class V01::UsersTest < ActiveSupport::TestCase
   include Rack::Test::Methods
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def app
     Rails.application
@@ -85,7 +84,7 @@ class V01::UsersTest < ActiveSupport::TestCase
     assert user.reload.email != email_reference
   end
 
-  test 'should return 402 error' do 
+  test 'should return 402 error' do
     part = users(:user_two).ref
     users(:user_two).customer.update! end_subscription: (Time.now - 30.days)
     part = part ? '/' + part.to_s : ''

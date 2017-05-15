@@ -41,7 +41,7 @@ class ActiveSupport::TestCase
       request.body.include?("methodName='LocationUtilityService'")
     }.to_return(File.new(File.expand_path('../', __FILE__) + '/fixtures/gpp3-wxs.ign.fr/LocationUtilityService.xml').read)
 
-    @stub_GeocodeMapotempo = stub_request(:get, "https://geocode.mapotempo.com/0.1/geocode.json").with(:query => hash_including({})).
+    @stub_GeocodeMapotempo = stub_request(:get, 'https://geocode.mapotempo.com/0.1/geocode.json').with(:query => hash_including({})).
       to_return(File.new(File.expand_path('../', __FILE__) + '/fixtures/geocode.mapotempo.com/geocode.json').read)
 
     def (Mapotempo::Application.config.geocode_geocoder).code_bulk(addresses)
@@ -64,4 +64,22 @@ end
 
 class ActionController::TestCase
   include Devise::Test::ControllerHelpers
+end
+
+def suppress_output
+  begin
+    original_stderr = $stderr.clone
+    original_stdout = $stdout.clone
+    $stderr.reopen(File.new('/dev/null', 'w'))
+    $stdout.reopen(File.new('/dev/null', 'w'))
+    retval = yield
+  rescue Exception => e
+    $stdout.reopen(original_stdout)
+    $stderr.reopen(original_stderr)
+    raise e
+  ensure
+    $stdout.reopen(original_stdout)
+    $stderr.reopen(original_stderr)
+  end
+  retval
 end

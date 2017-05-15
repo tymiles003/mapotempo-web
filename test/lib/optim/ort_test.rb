@@ -199,6 +199,6 @@ class OrtTest < ActionController::TestCase
       [[1, 1], [0, 0], [7, 7]],
       [[1, 1], [3, 3], [0, 0]]], a
     assert_equal [[nil, nil, 0], [nil, nil, 0]], b
-    assert_equal m.size, @optim.send(:unzip_cluster, [0, 1, 2], c, m, 0).size
+    suppress_output { assert_equal m.size, @optim.send(:unzip_cluster, [0, 1, 2], c, m, 0).size }
   end
 end

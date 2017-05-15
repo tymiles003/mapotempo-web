@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class ImportJsonTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
-
   setup do
     @importer = ImporterDestinations.new(customer: customers(:customer_one))
   end

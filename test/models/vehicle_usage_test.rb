@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class VehicleUsageTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
 #  test 'should not save' do
 #    o = vehicle_usage_sets(:vehicle_usage_set_one).vehicle_usages.build()

@@ -65,7 +65,7 @@
           <i id="geocoding-level-street" class="fa fa-road fa-fw geocoding-level"<% unless @destination.street? %> style="display: none"<% end %>></i>
           <i id="geocoding-level-city" class="fa fa-exclamation-triangle fa-fw geocoding-level"<% unless @destination.city? %> style="display: none"<% end %>></i>
           <span><%= t 'activerecord.attributes.destination.geocoding_level' %>: <span id="geocoding-level-value"><%= if @destination.geocoding_level
-            t 'destinations.form.geocoding_level.' + @destination.geocoding_level
+            t("destinations.form.geocoding_level.#{@destination.geocoding_level}")
             end %></span></span>
         </div>
         <div id="reverse-geocode"></div>

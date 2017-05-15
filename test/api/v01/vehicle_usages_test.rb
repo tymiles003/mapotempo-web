@@ -2,7 +2,6 @@ require 'test_helper'
 
 class V01::VehicleUsagesTest < ActiveSupport::TestCase
   include Rack::Test::Methods
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def app
     Rails.application

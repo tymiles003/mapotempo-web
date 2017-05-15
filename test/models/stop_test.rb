@@ -1,24 +1,23 @@
 require 'test_helper'
 
 class StopTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   test 'should not save' do
-    o = Stop.new
-    assert_not o.save, 'Saved without required fields'
+    stop = Stop.new
+    assert_not stop.save, 'Saved without required fields'
   end
 
   test 'get order' do
-    o = routes(:route_one_one)
-    o.planning.customer.enable_orders = true
-    assert_not o.stops[0].order
-    assert_not o.stops[1].order
+    route = routes(:route_one_one)
+    route.planning.customer.enable_orders = true
+    assert_not route.stops[0].order
+    assert_not route.stops[1].order
 
-    o.planning.apply_orders(order_arrays(:order_array_one), 0)
-    o.planning.save!
+    route.planning.apply_orders(order_arrays(:order_array_one), 0)
+    route.planning.save!
 
-    assert_equal [products(:product_one), products(:product_two)], o.stops[0].order.products.to_a
-    assert o.stops[1].order.products.empty?
+    assert_equal [products(:product_one), products(:product_two)], route.stops[0].order.products.to_a
+    assert route.stops[1].order.products.empty?
   end
 
   test 'Create Stops With or Without visit_id' do
@@ -30,26 +29,26 @@ class StopTest < ActiveSupport::TestCase
   end
 
   test 'should return color and icon of stop visit' do
-    o = stops :stop_one_one
+    stop = stops :stop_one_one
     t1 = tags :tag_one
 
-    assert_equal t1.color, o.color
-    assert_nil o.icon
-    assert_nil o.icon_size
+    assert_equal t1.color, stop.color
+    assert_nil stop.icon
+    assert_nil stop.icon_size
   end
 
   test 'should return color and icon of stop rest' do
-    o = stops :stop_one_four
+    stop = stops :stop_one_four
 
-    assert_nil o.color
-    assert_nil o.icon
-    assert_nil o.icon_size
+    assert_nil stop.color
+    assert_nil stop.icon
+    assert_nil stop.icon_size
 
-    s = stores :store_one
-    s.color = '#beef'
-    s.icon = 'beef'
-    assert s.color, o.color
-    assert s.icon, o.icon
-    assert_nil o.icon_size
+    store = stores :store_one
+    store.color = '#beef'
+    store.icon = 'beef'
+    assert store.color, stop.color
+    assert store.icon, stop.icon
+    assert_nil stop.icon_size
   end
 end

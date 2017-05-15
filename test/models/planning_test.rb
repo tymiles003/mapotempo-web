@@ -14,7 +14,6 @@ class D < Struct.new(:lat, :lng, :id, :open1, :close1, :open2, :close2, :duratio
 end
 
 class PlanningTest < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def around
     Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1, 1, '_ibE_seK_seK_seK'] } } ) do
@@ -630,7 +629,6 @@ class PlanningTest < ActiveSupport::TestCase
 end
 
 class PlanningTestError < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   test 'should not compute because of router error' do
     o = plannings(:planning_one)
@@ -645,7 +643,6 @@ class PlanningTestError < ActiveSupport::TestCase
 end
 
 class PlanningTestException < ActiveSupport::TestCase
-  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   test 'should not compute because of router exception' do
     o = plannings(:planning_one)

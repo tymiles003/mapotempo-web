@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class DeliverableUnitTest < ActiveSupport::TestCase
-
   test 'should not save' do
     customer = customers(:customer_one).deliverable_units.build(optimization_overload_multiplier: -2)
     assert_not customer.save, 'Saved with bad fields'

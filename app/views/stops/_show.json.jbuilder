@@ -65,7 +65,7 @@ if stop.is_a?(StopVisit)
     end
   end
   if stop.status
-    json.status t('plannings.edit.stop_status.' + stop.status.downcase, default: stop.status)
+    json.status t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)
     json.status_code stop.status.downcase
   end
   if stop.route.last_sent_to && stop.status && stop.eta

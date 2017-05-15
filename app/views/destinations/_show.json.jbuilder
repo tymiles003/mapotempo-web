@@ -6,7 +6,7 @@ json.geocoding_level_street destination.street?
 json.geocoding_level_intersection destination.intersection?
 json.geocoding_level_city destination.city?
 if destination.geocoding_level
-  json.geocoding_level_title t('activerecord.attributes.destination.geocoding_level') + ' : ' + t('destinations.form.geocoding_level.' + destination.geocoding_level.to_s)
+  json.geocoding_level_title t('activerecord.attributes.destination.geocoding_level') + ' : ' + t("destinations.form.geocoding_level.#{destination.geocoding_level.to_s}")
 end
 json.tag_ids do
   json.array! destination.tags.collect(&:id)
