@@ -511,12 +511,19 @@ var destinations_index = function(params, api) {
 
   var tags = {};
   var pointing = false;
-  var iconDefault = new L.Icon.Default();
-  var iconOver = new L.Icon({
-    iconUrl: '/images/marker-FFBB00.svg',
-    iconSize: [25.13, 40.22],
-    iconAnchor: [(25.13 * 0.5), 40.22]
-  });
+
+  // Only use our Icon or chrome crashes
+  var pointsH     = L.point(24, 40), pointsV = L.point(12, pointsH.y),
+      iconDefault = new L.Icon({
+        iconUrl: '/images/marker-428BCA.svg',
+        iconSize: pointsH,
+        iconAnchor: pointsV
+      }),
+      iconOver = new L.Icon({
+          iconUrl: '/images/marker-FFBB00.svg',
+          iconSize: pointsH,
+          iconAnchor: pointsV
+        });
   var iconOverStack = [];
 
   var prepare_display_destination = function(destination) {
@@ -789,8 +796,10 @@ var destinations_index = function(params, api) {
       }
     }
     if (id in markers) {
-      spiderfyCluster(null, id, move);
-      markers[id].setIcon(iconOver).setZIndexOffset(100);
+      spiderfyCluster(null, id, move, function(id) {
+        markers[id].setIcon(iconOver)
+                   .setZIndexOffset(100);
+      });
       iconOverStack.push(id);
     }
 
@@ -803,20 +812,24 @@ var destinations_index = function(params, api) {
     }
   };
 
-  var spiderfyCluster = function(layer, id, move) {
+  var spiderfyCluster = function(layer, id, move, callback) {
     var localCluster;
 
+    markersLayers.refreshClusters();
     localCluster = markers[id].__parent;
     if (move) {
       map.setView(localCluster.getLatLng(), map.getZoom(), { animate: true, duration: 600 });
-      markersLayers.refreshClusters();
-
       if (localCluster && 'spiderfy' in localCluster) {
         markersLayers.zoomToShowLayer(markers[id], function() {
           map.panTo(markers[id].getLatLng(), {});
+          callback(id);
           return true;
         });
+      } else {
+        callback(id);
       }
+    } else {
+      callback(id);
     }
   }
 
