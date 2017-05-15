@@ -36,8 +36,6 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 
-  gem 'brakeman'
-
   gem 'bullet'
 
   # Improve error interaction
@@ -65,6 +63,8 @@ group :development, :test do
   # Debugging tool
   gem 'pry-rails'
   gem 'awesome_print'
+
+  gem 'brakeman'
 end
 
 group :test do
@@ -118,7 +118,7 @@ gem 'bootstrap-select-rails', '< 1.6.3'
 gem 'sanitize'
 gem 'iconv'
 
-gem 'pg', group: :production
+gem 'pg'
 gem 'rails_12factor', group: :production
 
 gem 'sprockets'

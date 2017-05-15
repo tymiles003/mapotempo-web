@@ -19,14 +19,16 @@ addons:
   apt:
     packages:
     - libgeos++-dev
+  postgresql: "9.4"
 
 
 # Setup
 before_install:
-  - bundle
+  - bundle install --without development
 
 before_script:
-  - psql -c 'create database mapotempo;' -U postgres
+  - psql -c 'CREATE DATABASE mapotempo;' -U postgres
+  - psql mapotempo -c 'CREATE EXTENSION hstore;' -U postgres
   - cp config/database.yml.travis config/database.yml
 
 
