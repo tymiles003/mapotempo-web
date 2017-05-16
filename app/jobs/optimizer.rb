@@ -56,7 +56,7 @@ class Optimizer
                         vehicle_soft_upper_bound: planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound,
                         cluster_threshold: planning.customer.optimization_cluster_size || @@optimization_cluster_size,
                         cost_waiting_time: planning.customer.cost_waiting_time || @@cost_waiting_time,
-                        force_start: planning.customer.optimization_force_start || @@force_start
+                        force_start: planning.customer.optimization_force_start.nil? ? @@force_start : planning.customer.optimization_force_start
                     )
                   end
                 end
