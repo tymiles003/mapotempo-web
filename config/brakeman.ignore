@@ -1,0 +1,42 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Session Setting",
+      "warning_code": 29,
+      "fingerprint": "715ad9c0d76f57a6a657192574d528b620176a80fec969e2f63c88eacab0b984",
+      "check_name": "SessionSettings",
+      "message": "Session secret should not be included in version control",
+      "file": "config/initializers/secret_token.rb",
+      "line": 12,
+      "link": "http://brakemanscanner.org/docs/warning_types/session_setting/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "High",
+      "note": ""
+    },
+    {
+      "warning_type": "SSL Verification Bypass",
+      "warning_code": 71,
+      "fingerprint": "f93a2581cc39566ba47cbb8db2ed392b07bc930dcc55883a42074799b439fc3a",
+      "check_name": "SSLVerify",
+      "message": "SSL certificate verification was bypassed",
+      "file": "lib/devices/orange.rb",
+      "line": 111,
+      "link": "http://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
+      "code": "Net::HTTP.new(URI.parse(api_url).host, URI.parse(api_url).port).verify_mode = OpenSSL::SSL::VERIFY_NONE",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Orange",
+        "method": "net_request"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": ""
+    }
+  ],
+  "updated": "2017-05-16 16:49:50 +0200",
+  "brakeman_version": "3.6.0"
+}
