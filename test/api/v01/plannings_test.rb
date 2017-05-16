@@ -319,7 +319,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
   test 'should return plannings in any case' do
     planning2 = plannings :planning_two
     ['ics', 'json', 'xml'].each do |ext|
-      [nil, "#{@planning.id}, #{planning2.id}", "ref:#{@planning.ref},ref:#{planning2.ref}"].each do |params|
+      [nil, "#{@planning.id},#{planning2.id}", "ref:#{@planning.ref},ref:#{planning2.ref}"].each do |params|
         get "api/0.1/plannings.#{ext}?api_key=testkey1" + (params ? "&ids=#{params}" : '')
         assert last_response.ok?, last_response.body
         if (ext == 'json')

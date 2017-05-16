@@ -27,6 +27,8 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  # Associate delayed job class to customer
+  set_fixture_class delayed_jobs: Delayed::Backend::ActiveRecord::Job
 
   def setup
     uri_template = Addressable::Template.new('gpp3-wxs.ign.fr/{api_key}/geoportail/ols')
