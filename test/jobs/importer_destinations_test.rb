@@ -71,6 +71,25 @@ class ImporterDestinationsTest < ActionController::TestCase
         dest = Destination.last
       end
     end
+    # new import of same data without ref should create a new destination and new visit
+    assert_difference('Destination.count', import_count) do
+      assert_difference('Visit.count', import_count) do
+        assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_without_ref.csv', 'text.csv')).import
+        assert_equal dest.attributes, dest.reload.attributes
+      end
+    end
+  end
+
+  test 'should import without ref and multi visit' do
+    @customer.update! enable_multi_visits: true # Move dest.ref to visit.ref !
+    import_count = 1
+    dest = nil
+    assert_difference('Destination.count', import_count) do
+      assert_difference('Visit.count', import_count) do
+        assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one_without_ref.csv', 'text.csv')).import
+        dest = Destination.last
+      end
+    end
     # new import of same data without ref should create a new visit for existing destination
     assert_no_difference('Destination.count') do
       assert_difference('Visit.count', import_count) do
@@ -223,6 +242,7 @@ class ImporterDestinationsTest < ActionController::TestCase
   end
 
   test 'should import with many visits' do
+    @customer.update! enable_multi_visits: true # Move dest.ref to visit.ref !
     dest_import_count = 6
     visit_import_count = 7
     visit_tag1_import_count = 1
@@ -240,6 +260,7 @@ class ImporterDestinationsTest < ActionController::TestCase
   end
 
   test 'should replace with many visits' do
+    @customer.update! enable_multi_visits: true # Move dest.ref to visit.ref !
     dest_import_count = 6
     visit_import_count = 7
     visit_tag1_import_count = 1

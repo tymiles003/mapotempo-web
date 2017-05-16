@@ -269,11 +269,16 @@ class ImporterDestinations < ImporterBase
         end
       end
       if !visit
-        row_compare_attr = (@@dest_attr_nil ||= Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten]).merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level, :tags).stringify_keys
         # Get destination from attributes for multiple visits
-        destination = @destinations_by_attributes[row_compare_attr]
-        destination.assign_attributes(destination_attributes) if destination
-        if !destination
+        destination = if @customer.enable_multi_visits
+            row_compare_attr = (@@dest_attr_nil ||= Hash[*columns_destination.keys.collect{ |v| [v, nil] }.flatten]).merge(destination_attributes).except(:lat, :lng, :geocoding_accuracy, :geocoding_level, :tags).stringify_keys
+            @destinations_by_attributes[row_compare_attr]
+          else
+            nil
+          end
+        if destination
+          destination.assign_attributes(destination_attributes)
+        else
           destination = @customer.destinations.build(destination_attributes)
           # No destination.ref here for @destinations_by_ref
           @destinations_by_attributes[destination.attributes.slice(*@@slice_attr)] = destination

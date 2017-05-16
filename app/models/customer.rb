@@ -226,7 +226,7 @@ class Customer < ApplicationRecord
 
   def delete_all_destinations
     destinations.delete_all
-    plannings.each { |p|
+    plannings.reload.each { |p|
       p.routes.select(&:vehicle_usage).each do |route|
         # reindex remaining stops (like rests)
         route.force_reindex
