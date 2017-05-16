@@ -18,9 +18,10 @@
 class DeliverableUnitQuantity
   def self.dump(quantities)
     hash = quantities.is_a?(Hash) ? quantities : quantities.attributes
-    hash.delete_if{ |k, v|
+    hash = hash.delete_if{ |k, v|
       !v
-    }.size > 0 ? hash : nil
+    }
+    hash.size > 0 ? hash : nil
   end
 
   def self.load(quantities)
@@ -35,6 +36,10 @@ class DeliverableUnitQuantity
 
   def attributes
     @quantities
+  end
+
+  def ==(other)
+    @quantities == other.attributes
   end
 
   def to_s
