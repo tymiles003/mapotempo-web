@@ -150,6 +150,10 @@ a.disabled {
   }
 }
 
+.input-group-radiusless + .select2-container--bootstrap .select2-selection {
+  border-radius: 0;
+}
+
 /* Colors */
 
 .color_small {

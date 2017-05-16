@@ -247,7 +247,7 @@ en:
         vehicle_usage_set_id: Vehicles configuration
         vehicle_usage_set_small: Conf.
         tag_operation:
-          and: and
+          and: all
           or: or
       profile:
         name: Name
@@ -1334,7 +1334,7 @@ en:
       ref_help: A free reference
       begin_end_date: Validity period
       begin_end_date_help: Period when planning is valid
-      tags_help: Restrict visits/destinations in the plan (visits/destinations should have either all of these categories (AND) or one of the selected tags (OR) to be taken into account in the plan)
+      tags_help: Restrict visits/destinations in the plan (visits/destinations should have either all of these tags (AND) or one of the selected tags (OR) to be taken into account in the plan)
       order_array: Orders
       zonings_help: Allow to automatically assign vehicles to visits/destinations with geographic zones.
       avoid_zones_help: In addition, allow to define zones where vehicle cannot circulate.

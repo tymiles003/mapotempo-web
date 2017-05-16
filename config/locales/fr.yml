@@ -248,7 +248,7 @@ fr:
         vehicle_usage_set_id: Configuration des véhicules
         vehicle_usage_set_small: Conf.
         tag_operation:
-          and: et
+          and: tous
           or: ou
       profile:
         name: Nom

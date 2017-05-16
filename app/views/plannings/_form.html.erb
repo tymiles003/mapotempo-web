@@ -56,7 +56,7 @@
 
       <div class="input-append <%= @planning.id ? 'col-md-10' : 'col-md-6' %>">
         <div class="input-group">
-          <%= select_tag 'planning[tag_ids]', options_for_select(@planning.customer.tags.map { |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}] }, @planning.tags.collect(&:id)), { multiple: true, include_blank: t('web.form.empty_entry'), class: 'form-control', disabled: @planning.id } %>
+          <%= select_tag 'planning[tag_ids]', options_for_select(@planning.customer.tags.map { |tag| [tag.label, tag.id, {'data-color' => tag.color && tag.color[1..-1], 'data-icon' => tag.icon}] }, @planning.tags.collect(&:id)), { multiple: true, include_blank: t('web.form.empty_entry'), class: 'form-control input-group-radiusless', disabled: @planning.id } %>
           <% if @planning.id %>
             <span class="input-group-addon input-group-borderless borderless-disabled"><%= t("activerecord.attributes.planning.tag_operation.#{@planning.tag_operation}") %></span>
           <% else %>
