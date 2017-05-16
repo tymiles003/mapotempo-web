@@ -5,8 +5,11 @@ json.route_id route.id
 json.distance locale_distance(route.distance || 0, current_user.prefered_unit)
 json.size route.stops.size
 json.extract! route, :ref, :color, :size_active
-(json.start_time) if route.start
-(json.end_time) if route.end
+(json.start_time route.start_time) if route.start
+(json.start_day number_of_days(route.start)) if route.start
+(json.end_time route.end_time) if route.end
+(json.end_day number_of_days(route.end)) if route.end
+
 json.color_fake route.color
 json.last_sent_to route.last_sent_to if route.last_sent_to
 json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at

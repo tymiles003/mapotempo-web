@@ -131,11 +131,11 @@
     {{/store_start}}
     {{^store_start}}
       {{#start_with_service}}
-        <ul class="stops list-group">
+        <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
           <li class="list-group-item">
             <div class="title">
               <span class="info">
-                {{start}}&nbsp;-&nbsp;{{start_with_service}}
+                {{start_time}}{{#start_day}}&nbsp;(+{{start_day}}){{/start_day}}{{#start_with_service}}&nbsp;-&nbsp;{{start_with_service}}{{#start_with_service_day}}&nbsp;(+{{start_with_service_day}}){{/start_with_service_day}}{{/start_with_service}}
               </span>
             </div>
           </li>
@@ -257,11 +257,11 @@
     {{/store_stop}}
     {{^store_stop}}
       {{#end_without_service}}
-        <ul class="stops list-group">
+        <ul class="stops list-group" {{#hidden}}style="display: none;"{{/hidden}}>
           <li class="list-group-item">
             <div class="title">
               <span class="info">
-                {{end_without_service}}{{#end_without_service_day}}&nbsp;(+{{end_without_service_day}}){{/end_without_service_day}}&nbsp;-&nbsp;{{end}}
+                {{end_without_service}}{{#end_without_service_day}}&nbsp;(+{{end_without_service_day}}){{/end_without_service_day}}&nbsp;-&nbsp;{{end_time}}{{#end_day}}&nbsp;(+{{end_day}}){{/end_day}}
               </span>
             </div>
           </li>
