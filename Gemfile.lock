@@ -31,7 +31,7 @@ GIT
 
 GIT
   remote: git://github.com/Mapotempo/mapotempo_web_import_vehicle_store.git
-  revision: 4cc4e8bc9227d5529566597ee76ab811e7b55224
+  revision: 32be1a5f1c28b0b09e7ea14c662951e8307af956
   specs:
     mapotempo_web_import_vehicle_store (0.0.1)
 
@@ -724,4 +724,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.14.4
+   1.14.6
