@@ -1,4 +1,4 @@
-# Copyright © Mapotempo, 2015
+# Copyright © Mapotempo, 2017
 #
 # This file is part of Mapotempo.
 #
@@ -15,21 +15,14 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-require 'sanitize'
+class ApplicationRecord < ActiveRecord::Base
+  self.abstract_class = true
 
-class Reseller < ApplicationRecord
-  has_many :customers, -> { order('id') }, inverse_of: :reseller, autosave: true, dependent: :delete_all
+  before_save :set_creation_date
 
-  nilify_blanks
-  auto_strip_attributes :host, :name, :welcome_url, :help_url, :contact_url, :website_url
-  validates :host, presence: true
-  validates :name, presence: true
-
-  mount_uploader :logo_large, Admin::LogoLargeUploader
-  mount_uploader :logo_small, Admin::LogoSmallUploader
-  mount_uploader :favicon, Admin::FaviconUploader
-
-  def help_search_url
-    nil
+  def set_creation_date
+    # Align precision of second to Postgres default. Avoid object change when reload from database.
+    self.updated_at ||= DateTime.now.iso8601(6)
+    self.created_at ||= self.updated_at
   end
 end

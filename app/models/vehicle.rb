@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 
-class Vehicle < ActiveRecord::Base
+class Vehicle < ApplicationRecord
   belongs_to :customer
   belongs_to :router
   has_many :vehicle_usages, inverse_of: :vehicle, dependent: :destroy, autosave: true

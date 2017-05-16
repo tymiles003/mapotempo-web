@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Visit < ActiveRecord::Base
+class Visit < ApplicationRecord
   belongs_to :destination
   has_many :stop_visits, inverse_of: :visit, dependent: :delete_all
   has_many :orders, inverse_of: :visit, dependent: :delete_all

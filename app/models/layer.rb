@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Layer < ActiveRecord::Base
+class Layer < ApplicationRecord
   nilify_blanks
   auto_strip_attributes :name, :url, :attribution, :urlssl, :source
   validates :source, presence: true

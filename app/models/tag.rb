@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Tag < ActiveRecord::Base
+class Tag < ApplicationRecord
   ICONS_TABLE = %w(square diamon star user).freeze
 
   belongs_to :customer

@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class OrderArray < ActiveRecord::Base
+class OrderArray < ApplicationRecord
   belongs_to :customer
   has_many :orders, -> { includes :products }, inverse_of: :order_array, autosave: true, dependent: :delete_all
   has_many :planning, inverse_of: :order_array, dependent: :nullify

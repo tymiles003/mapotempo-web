@@ -23,7 +23,7 @@ class LocalizationValidator < ActiveModel::Validator
   end
 end
 
-class Location < ActiveRecord::Base
+class Location < ApplicationRecord
   GEOCODING_LEVEL = {point: 1, house: 2, intersection: 3, street: 4, city: 5}.freeze
 
   self.abstract_class = true

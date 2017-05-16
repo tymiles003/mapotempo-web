@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Route < ActiveRecord::Base
+class Route < ApplicationRecord
   COLOR_DEFAULT = '#707070'.freeze
 
   belongs_to :planning

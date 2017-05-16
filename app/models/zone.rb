@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Zone < ActiveRecord::Base
+class Zone < ApplicationRecord
   belongs_to :zoning, inverse_of: :zones
   belongs_to :vehicle, inverse_of: :zones
 

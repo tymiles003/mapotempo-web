@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class VehicleUsageSet < ActiveRecord::Base
+class VehicleUsageSet < ApplicationRecord
   belongs_to :customer
   belongs_to :store_start, class_name: 'Store', inverse_of: :vehicle_usage_set_starts
   belongs_to :store_stop, class_name: 'Store', inverse_of: :vehicle_usage_set_stops

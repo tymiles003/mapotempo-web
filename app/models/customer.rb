@@ -18,7 +18,7 @@
 require 'sanitize'
 require 'json'
 
-class Customer < ActiveRecord::Base
+class Customer < ApplicationRecord
   belongs_to :reseller
   belongs_to :profile
   belongs_to :router

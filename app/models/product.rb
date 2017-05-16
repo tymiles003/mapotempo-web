@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Product < ActiveRecord::Base
+class Product < ApplicationRecord
   belongs_to :customer
   has_and_belongs_to_many :orders
 

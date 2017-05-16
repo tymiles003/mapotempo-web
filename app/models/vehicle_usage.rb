@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class VehicleUsage < ActiveRecord::Base
+class VehicleUsage < ApplicationRecord
   belongs_to :vehicle_usage_set
 
   belongs_to :vehicle

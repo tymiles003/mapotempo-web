@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Profile < ActiveRecord::Base
+class Profile < ApplicationRecord
   has_and_belongs_to_many :layers, -> { order('name') }
   has_and_belongs_to_many :routers, -> { order('name') }
 

@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Zoning < ActiveRecord::Base
+class Zoning < ApplicationRecord
   belongs_to :customer
   has_many :zones, -> { order('id') }, inverse_of: :zoning, dependent: :delete_all, autosave: true, after_add: :touch_zones, after_remove: :touch_zones
   has_and_belongs_to_many :plannings, autosave: true

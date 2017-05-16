@@ -15,7 +15,7 @@
 # along with Mapotempo. If not, see:
 # <http://www.gnu.org/licenses/agpl.html>
 #
-class Stop < ActiveRecord::Base
+class Stop < ApplicationRecord
   belongs_to :route
   belongs_to :visit
 

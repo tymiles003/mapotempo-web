@@ -16,7 +16,7 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 
-class Router < ActiveRecord::Base
+class Router < ApplicationRecord
   DIMENSION = {time: 0, distance: 1}.freeze
 
   include HashBoolAttr
