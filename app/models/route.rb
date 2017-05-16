@@ -20,7 +20,7 @@ class Route < ApplicationRecord
 
   belongs_to :planning
   belongs_to :vehicle_usage
-  has_many :stops, -> { order(:index) }, inverse_of: :route, autosave: true, dependent: :delete_all, after_add: :update_stops_track, after_remove: :update_stops_track
+  has_many :stops, inverse_of: :route, autosave: true, dependent: :delete_all, after_add: :update_stops_track, after_remove: :update_stops_track
 
   nilify_blanks
   validates :planning, presence: true

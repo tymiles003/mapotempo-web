@@ -23,6 +23,8 @@ class Store < Location
   ICON_DEFAULT = 'fa-home'.freeze
   ICON_SIZE_DEFAULT = 'large'.freeze
 
+  default_scope { order(:id) }
+
   has_many :vehicle_usage_set_starts, class_name: 'VehicleUsageSet', inverse_of: :store_start, foreign_key: 'store_start_id'
   has_many :vehicle_usage_set_stops, class_name: 'VehicleUsageSet', inverse_of: :store_stop, foreign_key: 'store_stop_id'
   has_many :vehicle_usage_set_rests, class_name: 'VehicleUsageSet', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify

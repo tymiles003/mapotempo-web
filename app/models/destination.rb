@@ -19,7 +19,9 @@ class Destination < Location
   COLOR_DEFAULT = DEFAULT_COLOR
   ICON_DEFAULT = 'circle'.freeze
 
-  has_many :visits, -> { order(:id) }, inverse_of: :destination, dependent: :delete_all, autosave: true
+  default_scope { order(:id) }
+
+  has_many :visits, inverse_of: :destination, dependent: :delete_all, autosave: true
   accepts_nested_attributes_for :visits, allow_destroy: true
   has_and_belongs_to_many :tags, after_add: :update_tags_track, after_remove: :update_tags_track
 

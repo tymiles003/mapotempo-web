@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Stop < ApplicationRecord
+  default_scope { order(:index) }
+
   belongs_to :route
   belongs_to :visit
 

@@ -16,13 +16,15 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class VehicleUsageSet < ApplicationRecord
+  default_scope { order(:id) }
+
   belongs_to :customer
   belongs_to :store_start, class_name: 'Store', inverse_of: :vehicle_usage_set_starts
   belongs_to :store_stop, class_name: 'Store', inverse_of: :vehicle_usage_set_stops
   belongs_to :store_rest, class_name: 'Store', inverse_of: :vehicle_usage_set_rests
   has_many :plannings, inverse_of: :vehicle_usage_set
   before_destroy :destroy_vehicle_usage_set # Update planning.vehicle_usage_set before destroy self
-  has_many :vehicle_usages, -> { order(:id) }, inverse_of: :vehicle_usage_set, dependent: :delete_all, autosave: true
+  has_many :vehicle_usages, inverse_of: :vehicle_usage_set, dependent: :delete_all, autosave: true
 
   nilify_blanks
 

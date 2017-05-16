@@ -20,7 +20,7 @@ class Admin::ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
   def index
-    @profiles = Profile.order(:name)
+    @profiles = Profile.all
   end
 
   private

@@ -18,6 +18,8 @@
 class Tag < ApplicationRecord
   ICONS_TABLE = %w(square diamon star user).freeze
 
+  default_scope { order(:label) }
+
   belongs_to :customer
   has_and_belongs_to_many :visits
   has_and_belongs_to_many :plannings

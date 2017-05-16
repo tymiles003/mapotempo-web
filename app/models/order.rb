@@ -16,9 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Order < ApplicationRecord
+  default_scope { includes(:products) }
+
   belongs_to :order_array
   belongs_to :visit
-  has_and_belongs_to_many :products, -> { order('code') }, autosave: true
+  has_and_belongs_to_many :products, autosave: true
 
   nilify_blanks
   validates :order_array, presence: true

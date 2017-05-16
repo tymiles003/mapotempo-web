@@ -19,24 +19,26 @@ require 'sanitize'
 require 'json'
 
 class Customer < ApplicationRecord
+  default_scope { order(:id) }
+
   belongs_to :reseller
   belongs_to :profile
   belongs_to :router
   belongs_to :job_destination_geocoding, class_name: 'Delayed::Backend::ActiveRecord::Job', dependent: :destroy
   belongs_to :job_store_geocoding, class_name: 'Delayed::Backend::ActiveRecord::Job', dependent: :destroy
   belongs_to :job_optimizer, class_name: 'Delayed::Backend::ActiveRecord::Job', dependent: :destroy
-  has_many :products, -> { order('code') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :plannings, -> { includes(:tags).order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :order_arrays, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :products, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :plannings, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :order_arrays, inverse_of: :customer, autosave: true, dependent: :delete_all
   has_many :zonings, inverse_of: :customer, dependent: :delete_all
   before_destroy :destroy_disable_vehicle_usage_sets_validation # Declare and run before has_many :vehicle_usage_sets
-  has_many :vehicle_usage_sets, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :destroy
-  has_many :vehicles, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :stores, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :destinations, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :tags, -> { order('label') }, inverse_of: :customer, autosave: true, dependent: :delete_all
-  has_many :users, -> { order('LOWER(email)') }, inverse_of: :customer, dependent: :destroy
-  has_many :deliverable_units, -> { order('id') }, inverse_of: :customer, autosave: true, dependent: :delete_all, after_add: :update_deliverable_units_track, after_remove: :update_deliverable_units_track
+  has_many :vehicle_usage_sets, inverse_of: :customer, autosave: true, dependent: :destroy
+  has_many :vehicles, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :stores, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :destinations, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :tags, inverse_of: :customer, autosave: true, dependent: :delete_all
+  has_many :users, inverse_of: :customer, dependent: :destroy
+  has_many :deliverable_units, inverse_of: :customer, autosave: true, dependent: :delete_all, after_add: :update_deliverable_units_track, after_remove: :update_deliverable_units_track
   enum router_dimension: Router::DIMENSION
 
   attr_accessor :deliverable_units_updated, :device

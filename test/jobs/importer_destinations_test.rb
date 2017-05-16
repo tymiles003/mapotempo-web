@@ -420,7 +420,7 @@ class ImporterDestinationsTest < ActionController::TestCase
         end
         assert 49.173419, Destination.last.lat
         assert -0.326613, Destination.last.lng
-        assert_equal 39.482, Visit.last.quantities[1]
+        assert_equal 39.482, Visit.last.quantities[2]
       end
     ensure
       I18n.locale = orig_locale

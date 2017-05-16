@@ -21,6 +21,8 @@ class DeliverableUnit < ApplicationRecord
   ICON_SIZE = %w(small medium large).freeze
   ICON_DEFAULT = 'fa-archive'.freeze
 
+  default_scope { order(:label) }
+
   belongs_to :customer
 
   nilify_blanks

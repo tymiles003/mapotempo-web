@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Layer < ApplicationRecord
+  default_scope { order(:name) }
+
   nilify_blanks
   auto_strip_attributes :name, :url, :attribution, :urlssl, :source
   validates :source, presence: true

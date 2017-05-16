@@ -19,6 +19,8 @@
 class Router < ApplicationRecord
   DIMENSION = {time: 0, distance: 1}.freeze
 
+  default_scope { order(:name) }
+
   include HashBoolAttr
   store_accessor :options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance
   hash_bool_attr :options, :time, :distance, :avoid_zones, :isochrone, :isodistance, :motorway, :toll, :trailers, :weight, :weight_per_axle, :height, :width, :length, :hazardous_goods, :max_walk_distance

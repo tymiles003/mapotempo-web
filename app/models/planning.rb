@@ -16,10 +16,12 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Planning < ApplicationRecord
+  default_scope { includes(:tags).order(:id) }
+
   belongs_to :customer
   has_and_belongs_to_many :zonings, autosave: true, after_add: :update_zonings_track, after_remove: :update_zonings_track
   has_many :routes, -> { includes(:stops).order('CASE WHEN vehicle_usage_id IS NULL THEN 0 ELSE routes.id END') }, inverse_of: :planning, autosave: true, dependent: :delete_all
-  has_and_belongs_to_many :tags, -> { order('label') }, autosave: true, after_add: :update_tags_track, after_remove: :update_tags_track
+  has_and_belongs_to_many :tags, autosave: true, after_add: :update_tags_track, after_remove: :update_tags_track
   belongs_to :order_array
   belongs_to :vehicle_usage_set, inverse_of: :plannings, validate: true
 

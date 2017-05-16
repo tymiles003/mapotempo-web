@@ -16,8 +16,10 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Profile < ApplicationRecord
-  has_and_belongs_to_many :layers, -> { order('name') }
-  has_and_belongs_to_many :routers, -> { order('name') }
+  default_scope { order(:name) }
+
+  has_and_belongs_to_many :layers
+  has_and_belongs_to_many :routers
 
   nilify_blanks
   auto_strip_attributes :name

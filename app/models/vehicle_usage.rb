@@ -16,6 +16,8 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class VehicleUsage < ApplicationRecord
+  default_scope { order(:id) }
+
   belongs_to :vehicle_usage_set
 
   belongs_to :vehicle
