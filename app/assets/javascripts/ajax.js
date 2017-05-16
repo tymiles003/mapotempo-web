@@ -94,6 +94,7 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
     $(".dialog-progress", dialog).show();
     $(".dialog-attempts", dialog).hide();
     $(".dialog-error", dialog).hide();
+    $(".dialog-no-solution", dialog).hide();
     $(".progress-bar", dialog).css("width", "0%");
   });
   dialog.on('keyup', function(e) {
