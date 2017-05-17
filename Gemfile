@@ -2,39 +2,28 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~>4.2'
+gem 'rails', '~> 4.2'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 5'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'coffee-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '<5.0.0' # FIXME: need js migration with new event names
+gem 'turbolinks', '< 5' # FIXME: turbolinks not working with anchors in url
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'sdoc', '~> 0.4', group: :doc
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-gem 'rake', '< 12.0' # FIXME rake 12 remove deprecated methods need by dependencies
+gem 'rake'
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 2' # FIXME: require Rails 5
 
   gem 'bullet'
 
@@ -72,15 +61,11 @@ group :test do
   gem 'minitest-around'
   gem 'minitest-stub_any_instance'
   gem 'simplecov', require: false
-  # gem 'capybara'
-  gem 'selenium-webdriver'
-  # gem 'capybara-webkit'
-  gem 'database_cleaner'
   gem 'webmock'
   gem 'tidy-html5', github: 'moneyadviceservice/tidy-html5-gem'
   gem 'html_validation'
 
-  gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-rails'
 
   gem 'mapotempo_web_by_time_distance', github: 'Mapotempo/mapotempo_web_by_time_distance'
   gem 'mapotempo_web_import_vehicle_store', github: 'Mapotempo/mapotempo_web_import_vehicle_store'
@@ -106,20 +91,18 @@ gem 'validates_timeliness'
 gem 'rails_engine_decorators'
 
 gem 'font-awesome-rails'
-gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', ref: 'd3776ddd0b89d28fdebfd6e1c1541348cc90e5cc' # FIXME wait for >3.2.2 with drop font-awesome, revision stiky: stay on bootstrap 3 until 4 relased
+gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', ref: 'd3776ddd0b89d28fdebfd6e1c1541348cc90e5cc' # FIXME wait for >3.2.2 with drop font-awesome, require Rails 5
 gem 'twitter_bootstrap_form_for', github: 'Mapotempo/twitter_bootstrap_form_for' # FIXME wait for pull request
 gem 'bootstrap-filestyle-rails'
 gem 'bootstrap-wysihtml5-rails'
 gem 'bootstrap-datepicker-rails'
 
-#FIXME: Update when optgroup index will be fixed. (ISSUE : https://github.com/Slashek/bootstrap-select-rails/issues/27)
-gem 'bootstrap-select-rails', '< 1.6.3'
+gem 'bootstrap-select-rails'
 
 gem 'sanitize'
 gem 'iconv'
 
 gem 'pg'
-gem 'rails_12factor', group: :production
 
 gem 'sprockets'
 
@@ -136,15 +119,15 @@ gem 'leaflet-encoded-rails', github: 'Mapotempo/leaflet-encoded-rails'
 gem 'leaflet-responsive-popup-rails', github: 'Mapotempo/leaflet-responsive-popup-rails'
 
 gem 'jquery-turbolinks'
-gem 'jquery-ui-rails', '<6.0.0' # Support IE10 removed in jQuery UI 1.12 + bad performances for large list sortable
-gem 'jquery-tablesorter', '<1.21.2'
+gem 'jquery-ui-rails', '< 6' # FIXME Support IE10 removed in jQuery UI 1.12 + bad performances for large list sortable
+gem 'jquery-tablesorter', '< 1.21.2' # FIXME waiting for a replacement (v59)
 gem 'jquery-simplecolorpicker-rails'
 gem 'jquery-timeentry-rails', github: 'frodrigo/jquery-timeentry-rails'
-gem 'select2-rails', '=4.0.0' # FIXME test compatibility with planning sidebar
-gem 'i18n-js', github: 'fnando/i18n-js' # FIXME wait for 3.0.0.rc15
+gem 'select2-rails', '= 4.0.0' # FIXME test compatibility with planning sidebar
+gem 'i18n-js'
 gem 'mustache'
-gem 'smt_rails', '0.2.9' # FIXME: 0.3.0, JS not working
-gem 'paloma', github: 'Mapotempo/paloma' # FIXME wait for 25cbba9f33c7b36f4f4878035ae53541a0036ee9
+gem 'smt_rails', '0.2.9' # FIXME: JS not working in 0.3.0
+gem 'paloma', github: 'Mapotempo/paloma' # FIXME wait for https://github.com/Mapotempo/paloma/commit/25cbba9f33c7b36f4f4878035ae53541a0036ee9 but paloma not maintained !
 gem 'browser'
 gem 'color'
 
@@ -178,3 +161,7 @@ gem 'addressable'
 gem 'icalendar'
 
 gem 'chronic_duration'
+
+group :production do
+  gem 'rails_12factor'
+end
