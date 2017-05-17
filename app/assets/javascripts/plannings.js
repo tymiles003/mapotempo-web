@@ -542,11 +542,9 @@ var plannings_edit = function(params) {
             if (route.locked) {
               element.find(".lock").removeClass("btn-default").addClass("btn-warning");
               element.find('.lock i').removeClass('fa-unlock').addClass('fa-lock');
-              $(element.find(".lock")).prevAll("button.optimize").attr('disabled', 'disabled');
             } else {
               element.find(".lock").removeClass("btn-warning").addClass("btn-default");
               element.find('.lock i').removeClass('fa-lock').addClass('fa-unlock');
-              $(element.find(".lock")).prevAll("button.optimize").removeAttr('disabled');
             }
           });
 
@@ -1264,7 +1262,6 @@ var plannings_edit = function(params) {
       $(this).toggleClass("btn-default");
       $(this).toggleClass("btn-warning");
       var locked = i.hasClass("fa-lock");
-      (!locked) ? $(this).prevAll('button.optimize').removeAttr('disabled') : $(this).prevAll('button.optimize').attr('disabled', 'disabled');
       checkLockOperation();
       $.ajax({
         type: "put",
@@ -1286,7 +1283,10 @@ var plannings_edit = function(params) {
 
       if (!isRouteLocked && stopCount > 0) {
         hasStopAvailable = true;
+        $(this).find('.optimize').parent().parent().prevAll('.btn').prop('disabled', false);
       }
+      else
+        $(this).find('.optimize').parent().parent().prevAll('.btn').prop('disabled', true)
     });
 
     if (!hasStopAvailable) {
