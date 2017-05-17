@@ -40,12 +40,13 @@ class V01::Vehicles < Grape::API
 
       # Deals with deprecated capacity
       if !p[:capacities]
+        customer = current_customer || @current_user.admin? && @current_user.reseller.customers.where(id: params[:customer_id]).first!
         # p[:capacities] keys must be string here because of permit below
-        p[:capacities] = { current_customer.deliverable_units[0].id.to_s => p.delete(:capacity) } if p[:capacity] && current_customer.deliverable_units.size > 0
+        p[:capacities] = { customer.deliverable_units[0].id.to_s => p.delete(:capacity) } if p[:capacity] && customer.deliverable_units.size > 0
         if p[:capacity1_1] || p[:capacity1_2]
           p[:capacities] = {}
-          p[:capacities] = p[:capacities].merge({ current_customer.deliverable_units[0].id.to_s => p.delete(:capacity1_1) }) if p[:capacity1_1] && current_customer.deliverable_units.size > 0
-          p[:capacities] = p[:capacities].merge({ current_customer.deliverable_units[1].id.to_s => p.delete(:capacity1_2) }) if p[:capacity1_2] && current_customer.deliverable_units.size > 1
+          p[:capacities] = p[:capacities].merge({ customer.deliverable_units[0].id.to_s => p.delete(:capacity1_1) }) if p[:capacity1_1] && customer.deliverable_units.size > 0
+          p[:capacities] = p[:capacities].merge({ customer.deliverable_units[1].id.to_s => p.delete(:capacity1_2) }) if p[:capacity1_2] && customer.deliverable_units.size > 1
         end
       end
 
