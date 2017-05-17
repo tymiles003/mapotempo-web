@@ -37,8 +37,8 @@ class GeocodeAddokWrapper
     @cache_code = Mapotempo::Application.config.geocode_code_cache
   end
 
-  def code(street, postalcode, city, country)
-    key = ['addok_wrapper', street, postalcode, city, country]
+  def code(street, postalcode, city, state, country)
+    key = ['addok_wrapper', street, postalcode, city, state, country]
     result = @cache_code.read(key)
     if !result
       begin
@@ -48,6 +48,7 @@ class GeocodeAddokWrapper
           street: street,
           postcode: postalcode,
           city: city,
+          state: state,
           country: country
         })
 
@@ -111,7 +112,8 @@ class GeocodeAddokWrapper
         street: address[0],
         postcode: address[1],
         city: address[2],
-        country: address[3],
+        state: address[3],
+        country: address[4],
       }
     }
 

@@ -74,7 +74,7 @@ class Location < ActiveRecord::Base
   end
 
   def geocode_args
-    [street, postalcode, city, !country.nil? && !country.empty? ? country : customer.try(&:default_country)]
+    [street, postalcode, city, state, !country.nil? && !country.empty? ? country : customer.try(&:default_country)]
   end
 
   def geocode_result(address)
@@ -123,7 +123,7 @@ class Location < ActiveRecord::Base
       if position?
         @is_gecoded = true
       end
-      if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed? || country_changed?)
+      if !@is_gecoded && (street_changed? || postalcode_changed? || city_changed? || state_changed? || country_changed?)
         geocode
       end
     end
