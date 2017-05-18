@@ -129,31 +129,31 @@ class Teksat < DeviceBase
 
   def get_vehicles_url(customer)
     Addressable::Template.new('http://%s/webservices/map/get-vehicles.jsp{?query*}' % [customer.devices[:teksat][:url]]).expand(
-      query: { custID: customer.devices[:teksat][:customer_id], tck: ticket_id }
+      query: { custID: customer.devices[:teksat][:teksat_customer_id], tck: ticket_id }
     ).to_s
   end
 
   def get_vehicles_pos_url(customer)
     Addressable::Template.new('http://%s/webservices/map/get-vehicles-pos.jsp{?query*}' % [customer.devices[:teksat][:url]]).expand(
-      query: { custID: customer.devices[:teksat][:customer_id], tck: ticket_id }
+      query: { custID: customer.devices[:teksat][:teksat_customer_id], tck: ticket_id }
     ).to_s
   end
 
   def set_mission_url(customer, options)
     Addressable::Template.new('http://%s/webservices/map/set-mission.jsp{?query*}' % [customer.devices[:teksat][:url]]).expand(
-      query: options.merge(custID: customer.devices[:teksat][:customer_id], tck: ticket_id)
+      query: options.merge(custID: customer.devices[:teksat][:teksat_customer_id], tck: ticket_id)
     ).to_s
   end
 
   def get_missions_url(customer, options)
     Addressable::Template.new('http://%s/webservices/map/get-missions.jsp{?query*}' % [customer.devices[:teksat][:url]]).expand(
-      query: options.merge(custID: customer.devices[:teksat][:customer_id], tck: ticket_id)
+      query: options.merge(custID: customer.devices[:teksat][:teksat_customer_id], tck: ticket_id)
     ).to_s
   end
 
   def delete_mission_url(customer, options)
     Addressable::Template.new('http://%s/webservices/map/delete-mission.jsp{?query*}' % [customer.devices[:teksat][:url]]).expand(
-      query: options.merge(custID: customer.devices[:teksat][:customer_id], tck: ticket_id)
+      query: options.merge(custID: customer.devices[:teksat][:teksat_customer_id], tck: ticket_id)
     ).to_s
   end
 end
