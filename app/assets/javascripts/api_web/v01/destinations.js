@@ -56,9 +56,6 @@ var api_web_v01_display_destinations_ = function(api, map, data) {
     var marker = L.marker(new L.LatLng(options.lat, options.lng), {
       icon: licon
     }).addTo((options.store && api == 'destinations') ? map.storesLayers : map.markersLayers);
-    if (map.cluster && !options.store) {
-      marker.addTo(map.cluster);
-    }
     return marker;
   };
 
@@ -100,27 +97,15 @@ var api_web_v01_destinations_index = function(params, api) {
     imperial: false
   }).addTo(map);
 
-  var markersLayers = map.markersLayers = L.featureGroup();
+  // var markersLayers = map.markersLayers = L.featureGroup();
+  var markersLayers = map.markersLayers = new L.MarkerClusterGroup({
+    showCoverageOnHover: false,
+    removeOutsideVisibleBounds: true,
+    disableClusteringAtZoom: (api == 'destinations' && !params.disable_clusters) ? 19 : 0
+  });
   map.addLayer(markersLayers);
 
   if (api == 'destinations') {
-    if (!params.disable_clusters) {
-      var cluster = map.cluster = new L.MarkerClusterGroup({
-        showCoverageOnHover: false
-      });
-      map.addLayer(cluster);
-
-      map.on('zoomend', function(e) {
-        if (map.getZoom() > 14) {
-          map.removeLayer(cluster);
-          map.addLayer(markersLayers);
-        } else {
-          map.removeLayer(markersLayers);
-          map.addLayer(cluster);
-        }
-      });
-    }
-
     var storesLayers = map.storesLayers = L.featureGroup();
     storesLayers.addTo(map);
   }
