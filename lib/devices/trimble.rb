@@ -141,9 +141,13 @@ class Trimble < DeviceBase
     Rails.logger.info error
     fault_code = error.to_hash[:fault][:faultcode]
     fault_string = error.to_hash[:fault][:faultstring]
-    raise DeviceServiceError.new("Trimble : #{fault_code} #{fault_string}")
+    raise DeviceServiceError.new("Trimble: #{fault_code} #{fault_string}")
   rescue Savon::HTTPError => error
-    Rails.logger.info error.http.code
-    raise error
+    if error.http.code == 401
+      raise DeviceServiceError.new('Trimble: ' + I18n.t('errors.trimble.invalid_account'))
+    else
+      Rails.logger.info error.http.code
+      raise error
+    end
   end
 end

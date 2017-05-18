@@ -554,42 +554,6 @@ fr:
     planning:
       import_too_routes: Tentative d'importer plus de tournées que de véhicules disponibles
       already_optimizing: Une optimisation de planning est déjà en cours
-    tomtom:
-      access_denied: Non Autorisé. 'Accès complet aux commandes' n'est pas activé
-        dans l'interface WebFLEET. Vous n'avez pas les permissions nécessaires pour
-        effectuer cette action.
-      invalid_account: Utilisateur invalide (non existant)
-      external_requests_not_allowed: Non Autorisé. 'Accès à l'interface WebFLEET.connect'
-        n'est pas activé dans l'interface WebFLEET. Les requêtes externes ne sont
-        pas autorisées pour ce compte/utilisateur.
-      hostname_not_allowed: Le nom de domaine n'est pas autorisé
-      request_quota_reached: Quota de requêtes dépassé
-      addresses_empty_result: Aucune adresse trouvée
-      could_not_process_last_request: La requête n'a pas pu être traitée
-      unsupported_export_type: Le GPS connecté ne supporte pas l'export de points
-        de passage
-      duplicate_order: Commande déjà envoyée
-      busy_processing: Compte occupé à traiter une autre demande
-      gps_unreachable: GPS actuellement indisponible
-      last_action_failed: Votre dernier envoi n'a pas fonctionné
-      service_failed: Service occupé après plusieurs tentatives
-    teksat:
-      bad_url: URL non valide
-      get_ticket: Échec de l'identification. Veuillez vérifier vos identifiants
-      list: Impossible de lister les appareils
-      get_vehicles_pos: Impossible de lister les positions des véhicules
-      set_mission: Échec lors de la création de la mission
-      unauthorized: Non autorisé
-    orange:
-      no_equipment: 'Véhicule: Aucun équipement trouvé'
-      unauthorized: Non autorisé
-      list: Impossible de lister les appareils
-      get_vehicles_pos: Impossible de lister les positions des véhicules
-    alyacom:
-      unauthorized: Non autorisé
-      timeout: Délai d'attente depassé
-    masternaut:
-      invalid_account: Utilisateur invalide (non existant)
   import:
     csv:
       line: Ligne %{s}
