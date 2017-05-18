@@ -84,7 +84,7 @@ class ImportCsv
           rows
         end
       rescue => e
-        message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.csv', s: last_line) + ', ' : last_line ? I18n.t('import.csv.line', s: last_line) + ', ' : ''
+        message = e.is_a?(ImportInvalidRow) ? I18n.t('import.data_erroneous.csv', s: last_line) + ', ' : (last_line && !e.is_a?(ImportBaseError)) ? I18n.t('import.csv.line', s: last_line) + ', ' : ''
         message += e.message
         message += ' ' + I18n.t('destinations.import_file.check_custom_columns') if column_def && column_def.values.join('').size > 0
         # format error to be human friendly with row content (take into account customized column names)

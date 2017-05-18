@@ -998,7 +998,7 @@ en:
       not_csv: Imported file is not a CSV
       empty_file: content is blank
       too_many_lines: 'Stop import, too many lines (max: %{n}).'
-      none_column: None found column
+      none_column: No matched column found
       missing_name: '"name" missing.'
       missing_location: '"city / postalcode" or "lat / lng" missing.'
       invalid_numeric_value: 'Invalid numeric value "%{value}".'
