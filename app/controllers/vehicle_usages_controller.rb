@@ -64,7 +64,7 @@ class VehicleUsagesController < ApplicationController
   end
 
   def set_vehicle_usage
-    @vehicle_usage = VehicleUsage.for_customer(current_user.customer).find params[:id]
+    @vehicle_usage = VehicleUsage.for_customer_id(current_user.customer_id).find params[:id]
   end
 
   def vehicle_usage_params

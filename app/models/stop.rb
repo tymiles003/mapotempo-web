@@ -31,8 +31,6 @@ class Stop < ApplicationRecord
 
   before_save :out_of_date
 
-  scope :for_customer, ->(customer) { joins(Route).where(route: {planning_id: customer.planning_ids}) }
-
   amoeba do
     enable
   end

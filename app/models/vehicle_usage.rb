@@ -51,7 +51,7 @@ class VehicleUsage < ApplicationRecord
   before_destroy :update_stops
 
   scope :active, ->{ where(active: true) }
-  scope :for_customer, lambda{ |customer| joins(:vehicle_usage_set).where(vehicle_usage_sets: { customer_id: customer.id }) }
+  scope :for_customer_id, ->(customer_id) { joins(:vehicle_usage_set).where(vehicle_usage_sets: { customer_id: customer_id }) }
 
   amoeba do
     exclude_association :routes

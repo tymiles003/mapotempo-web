@@ -62,7 +62,7 @@ class V01::Devices::DevicesApi < Grape::API
         device = @current_customer.device.enableds[params[:device]]
         if device && device.respond_to?('send_route')
           Route.transaction do
-            route = Route.for_customer(@current_customer).find params[:route_id]
+            route = Route.for_customer_id(@current_customer.id).find params[:route_id]
             device.send_route(@current_customer, route, params.slice(:type))
             route.set_send_to(device.definition[:label_small])
             route.save!
