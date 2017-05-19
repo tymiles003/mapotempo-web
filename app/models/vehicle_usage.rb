@@ -234,11 +234,11 @@ class VehicleUsage < ActiveRecord::Base
     working_day_start = open_duration + service_time_start_duration
     working_day_end = close_duration - service_time_end_duration
 
-    if (close_duration - open_duration) <= service_time_start_duration
+    if (close_duration - open_duration) <= service_time_start_duration && service_time_start_duration > 0
       errors.add(:service_time_start, I18n.t('activerecord.errors.models.vehicle_usage.service_range'))
-    elsif (close_duration - open_duration) <= service_time_end_duration
+    elsif (close_duration - open_duration) <= service_time_end_duration && service_time_start_duration > 0
       errors.add(:service_time_end, I18n.t('activerecord.errors.models.vehicle_usage.service_range'))
-    elsif (close_duration - open_duration) <= (service_time_start_duration + service_time_end_duration)
+    elsif (close_duration - open_duration) <= (service_time_start_duration + service_time_end_duration) && service_time_start_duration + service_time_end_duration > 0
       errors.add(:base, "#{I18n.t('activerecord.attributes.vehicle_usage.service_time_start')} / #{I18n.t('activerecord.attributes.vehicle_usage.service_time_end')} #{I18n.t('activerecord.errors.models.vehicle_usage.service_range')}")
     elsif self.default_rest_start && self.default_rest_start != 0 && self.default_rest_stop && self.default_rest_stop != 0
       if !(self.default_rest_start >= working_day_start) || !(self.default_rest_stop <= working_day_end)
