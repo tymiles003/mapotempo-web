@@ -1527,6 +1527,19 @@ fr:
     emissions_light_petrol: VL - Essence - %{n}
     emissions_light_diesel: VL - Gazole - %{n}
     emissions_light_lgp: VL - GPL - %{n}
+    import:
+      ref: Référence
+      name: Nom
+      contact_email: Email
+      emission: Émission
+      consumption: Consommation
+      capacities: Capacités
+      router_mode: Calculateur d'itinéraire
+      router_dimension: Objectif du calculateur
+      router_options: Options du calculateur
+      speed_multiplicator: Ajustement de la vitesse
+      color: Couleur
+      devices: Appareils
     form:
       ref:
         help: Référence libre
@@ -1636,6 +1649,48 @@ fr:
       service_time: Durées de service
     new:
       title: Nouvelle configuration des véhicules
+    import:
+      names_duplicate: "Le nom : %{names} est présent en double dans le fichier"
+      name: Nom
+      name_desc: nom de la configuration par défaut
+      open: Horaire début
+      open_desc: Début de l'horaire de travail du livreur
+      close: Horaire fin
+      close_desc: Fin de l'horaire de travail du livreur
+      store_start_ref: Dépôt départ
+      store_start_desc: Référence du dépôt de départ du livreur
+      store_stop_ref: Dépôt arrivée
+      store_stop_desc: Référence du dépôt d'arrivé du livreur
+      rest_start: Début plage repos
+      rest_start_desc: Heure du début de la plage de repos
+      rest_stop: Fin plage repos
+      rest_stop_desc: Heure de fin de la plage de repos
+      rest_duration: Durée de repos
+      rest_duration_desc: Durée du repos pris par le livreur
+      store_rest_ref: Lieu de repos
+      store_rest_desc: Référence du dépôt pour la pause du livreur / requise si plage de repos renseigné
+      service_time_start: Durée de service avant
+      service_time_start_desc: Durée de service avant et sans tenir compte de la durée de pause
+      service_time_end: Durée de service après
+      service_time_end_desc: Durée de service après et sans tenir compte de la durée de pause
+      format:
+        string: texte
+        integer: nombre
+        float: '0.123'
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: oui/non
+        required: obligatoire
+        advisable: recommandé
+        optionnal: optionnel
+        deprecated: déprécié
+      not_csv: Le fichier importé n'est pas au format CSV
+      empty_file: ne contient aucune donnée
+      too_many_lines: 'Import stoppé, trop de lignes (max: %{n}).'
+      none_column: Aucune colonne trouvée
+      missing_name: « nom » manquant.
+      invalid_numeric_value: valeur numérique « %{value} » invalide.
+      check_custom_columns: Vérifiez votre définition des colonnes à importer.
     form:
       open_close: Horaire
       open_close_help: Horaire de travail livreur
@@ -1786,6 +1841,10 @@ fr:
       list: Liste
       show: Afficher
       edit: Modifier
+      export:
+        button: Exporter
+        csv: Tableur CSV
+        excel: Tableur Excel
       send: Envoyer
       destroy: Supprimer
       destroy_selection: Supprimer sélection

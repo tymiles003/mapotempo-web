@@ -1491,6 +1491,19 @@ en:
     emissions_light_petrol: Light - Petrol - %{n}
     emissions_light_diesel: Light - Diesel - %{n}
     emissions_light_lgp: Light - LGP - %{n}
+    import:
+      ref: Reference
+      name: Name
+      contact_email: E-Mail
+      emission: Emission
+      consumption: Consumption
+      capacities: Capacities
+      router_mode: Routing Engine
+      router_dimension: Router objective
+      router_options: Router options
+      speed_multiplicator: Speed multiplier
+      color: Color
+      devices: Devices
     form:
       ref:
         help: A free reference
@@ -1602,6 +1615,49 @@ en:
       service_time: Service Time
     new:
       title: New vehicles configuration
+    import:
+      names_duplicate: 'The name : (%{names}) is duplicated'
+      name: Name
+      name_desc: default configuration name
+      open: Open
+      open_desc: Start time for delivery man
+      close: Close
+      close_desc: End time for delivery man
+      store_start_ref: Store start
+      store_start_desc: Store start reference for delivery man
+      store_stop_ref: Store stop
+      store_stop_desc: Store end reference for delivery man
+      rest_start: Rest time start
+      rest_start_desc: Begin of the rest start window
+      rest_stop: Rest time end
+      rest_stop_desc: End of the rest start window
+      rest_duration: Rest duration
+      rest_duration_desc: Rest duration time for delivery man
+      store_rest_ref: Rest store
+      store_rest_desc: Store rest reference for delivery man
+      service_time_start: Service Time Before
+      service_time_start_desc: Durations added before the first stop
+      service_time_end: Service Time After
+      service_time_end_desc: Durations added before the last stop
+      format:
+        string: text
+        integer: integer
+        float: '0.123'
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: yes/no
+        required: required
+        advisable: advised
+        optionnal: optionnal
+        deprecated: deprecated
+      not_csv: Imported file is not a CSV
+      empty_file: content is blank
+      too_many_lines: 'Stop import, too many lines (max: %{n}).'
+      none_column: None found column
+      missing_name: '"name" missing.'
+      missing_location: '"city / postalcode" or "lat / lng" missing.'
+      invalid_numeric_value: 'Invalid numeric value "%{value}".'
+      check_custom_columns: Check your columns definition.
     form:
       open_close: Hours
       open_close_help: Deliveryman's working hours
@@ -1749,6 +1805,10 @@ en:
       list: List
       show: Show
       edit: Edit
+      export:
+        button: Export
+        csv: CSV spreadsheet
+        excel: Excel spreadsheet
       send: Send
       destroy: Destroy
       destroy_selection: Destroy selected

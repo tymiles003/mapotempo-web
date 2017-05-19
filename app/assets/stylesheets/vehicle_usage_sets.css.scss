@@ -34,6 +34,10 @@
   .accordion-toggle.collapsed > .usage-set-name:before {
     content: "▸ ";
   }
+  .export-dropdown {
+    float: right;
+    padding: 0 5px;
+  }
   .table-hover .vehicle_usages:hover > td {
     background-color: white;
   }
