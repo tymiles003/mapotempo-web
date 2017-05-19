@@ -63,11 +63,11 @@ class V01::Destinations < Grape::API
     end
     get do
       destinations = if params.key?(:ids)
-        current_customer.destinations.select{ |destination|
+        current_customer.destinations.includes_visits.select{ |destination|
           params[:ids].any?{ |s| ParseIdsRefs.match(s, destination) }
         }
       else
-        current_customer.destinations.load
+        current_customer.destinations.includes_visits.load
       end
       present destinations, with: V01::Entities::Destination
     end
@@ -80,7 +80,7 @@ class V01::Destinations < Grape::API
     end
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
-      present current_customer.destinations.where(id).first!, with: V01::Entities::Destination
+      present current_customer.destinations.includes_visits.where(id).first!, with: V01::Entities::Destination
     end
 
     desc 'Create destination.',
@@ -163,7 +163,7 @@ class V01::Destinations < Grape::API
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
-      destination = current_customer.destinations.where(id).first!
+      destination = current_customer.destinations.includes_visits.where(id).first!
       destination.assign_attributes(destination_params)
       destination.save!
       destination.customer.save! if destination.customer

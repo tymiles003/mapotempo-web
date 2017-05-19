@@ -34,6 +34,8 @@ class Destination < Location
 
   include RefSanitizer
 
+  scope :includes_visits, -> { includes([{visits: :tags}, :tags]) }
+
   amoeba do
     enable
 

@@ -62,11 +62,11 @@ class V01::Visits < Grape::API
         get do
           destination_id = ParseIdsRefs.read(params[:destination_id])
           visits = if params.key?(:ids)
-            current_customer.destinations.where(destination_id).first!.visits.select{ |visit|
+            current_customer.destinations.includes_visits.where(destination_id).first!.visits.select{ |visit|
               params[:ids].any?{ |s| ParseIdsRefs.match(s, visit) }
             }
           else
-            current_customer.destinations.where(destination_id).first!.visits.load
+            current_customer.destinations.includes_visits.where(destination_id).first!.visits.load
           end
           present visits, with: V01::Entities::Visit
         end
@@ -80,7 +80,7 @@ class V01::Visits < Grape::API
         get ':id' do
           destination_id = ParseIdsRefs.read(params[:destination_id])
           id = ParseIdsRefs.read(params[:id])
-          present current_customer.destinations.where(destination_id).first!.visits.where(id).first!, with: V01::Entities::Visit
+          present current_customer.destinations.includes_visits.where(destination_id).first!.visits.where(id).first!, with: V01::Entities::Visit
         end
 
         desc 'Create visit.',

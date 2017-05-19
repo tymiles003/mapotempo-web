@@ -27,7 +27,7 @@ class DestinationsController < ApplicationController
 
   def index
     @customer = current_user.customer
-    @destinations = request.format.html? ? current_user.customer.destinations : current_user.customer.destinations.includes(:tags, visits: :tags)
+    @destinations = request.format.html? ? current_user.customer.destinations : current_user.customer.destinations.includes_visits
     @tags = current_user.customer.tags
     respond_to do |format|
       format.html
