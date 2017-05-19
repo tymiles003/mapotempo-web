@@ -19,7 +19,7 @@ module VisitsHelper
   # return a blank hash if quantity is nil, the hash is never filled for nothing
   def visit_quantities(visit, vehicle, options = {})
     visit.destination.customer.deliverable_units.map{ |du|
-      quantities = visit.send(:default_quantities)
+      quantities = visit.default_quantities
       if quantities && quantities[du.id]
         {
           deliverable_unit_id: du.id,
