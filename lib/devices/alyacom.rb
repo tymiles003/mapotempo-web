@@ -33,14 +33,14 @@ class Alyacom < DeviceBase
       forms: {
         settings: {
           association: :text,
-          api_key: :text
+          alyacom_api_key: :text # FIXME: parameters are sent at root level in api...
         }
       }
     }
   end
 
   def check_auth(params)
-    rest_client_get [api_url, params[:association], 'users'].join('/'), { apiKey: params[:api_key] }
+    rest_client_get [api_url, params[:association], 'users'].join('/'), { apiKey: params[:alyacom_api_key] }
   rescue RestClient::Forbidden, RestClient::InternalServerError, RestClient::ResourceNotFound
     raise DeviceServiceError.new('Alyacom: %s' % [ I18n.t('errors.alyacom.unauthorized') ])
   end
@@ -117,7 +117,7 @@ class Alyacom < DeviceBase
       planning
     }
 
-    rest_client_post [api_url, customer.devices[:alyacom][:association], 'planning'].join('/'), { enc: :json, apiKey: customer.devices[:alyacom][:api_key] }, plannings
+    rest_client_post [api_url, customer.devices[:alyacom][:association], 'planning'].join('/'), { enc: :json, apiKey: customer.devices[:alyacom][:alyacom_api_key] }, plannings
   end
 
   def update_staffs(customer, staffs)
@@ -135,7 +135,7 @@ class Alyacom < DeviceBase
     }.delete_if{ |h| res.key?(h['idExt']) && res[h['idExt']].all?{ |k, v| h[k] == v } }
 
     if !missing_or_update.empty?
-      rest_client_post [api_url, customer.devices[:alyacom][:association], 'staff'].join('/'), { enc: :json, apiKey: customer.devices[:alyacom][:api_key] }, missing_or_update
+      rest_client_post [api_url, customer.devices[:alyacom][:association], 'staff'].join('/'), { enc: :json, apiKey: customer.devices[:alyacom][:alyacom_api_key] }, missing_or_update
     end
   end
 
@@ -155,12 +155,12 @@ class Alyacom < DeviceBase
     }.delete_if{ |h| res.key?(h['idExt']) && res[h['idExt']].all?{ |k, v| h[k] == v } }
 
     if !missing_or_update.empty?
-      rest_client_post [api_url, customer.devices[:alyacom][:association], 'users'].join('/'), { enc: :json, apiKey: customer.devices[:alyacom][:api_key] }, missing_or_update
+      rest_client_post [api_url, customer.devices[:alyacom][:association], 'users'].join('/'), { enc: :json, apiKey: customer.devices[:alyacom][:alyacom_api_key] }, missing_or_update
     end
   end
 
   def get(customer, object, params = {})
-    get_raw "#{api_url}/#{customer.devices[:alyacom][:association]}/#{object}", { enc: :json, apiKey: customer.devices[:alyacom][:api_key] }.merge(params)
+    get_raw "#{api_url}/#{customer.devices[:alyacom][:association]}/#{object}", { enc: :json, apiKey: customer.devices[:alyacom][:alyacom_api_key] }.merge(params)
   end
 
   def get_raw(url, params)

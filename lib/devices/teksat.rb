@@ -30,7 +30,7 @@ class Teksat < DeviceBase
       help: true,
       forms: {
         settings: {
-          teksat_customer_id: :text,
+          teksat_customer_id: :text, # FIXME: parameters are sent at root level in api...
           url: :text,
           username: :text,
           password: :password
