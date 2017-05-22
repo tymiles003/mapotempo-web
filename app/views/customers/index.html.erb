@@ -24,8 +24,8 @@
     <div class="pull-right">
       <%= @customers.count %> <%= t 'activerecord.models.customers', count: @customers.count %> (<%= t '.no_test' %> : <%= @customers.select{ |customer| !customer.test }.count %>),
       <%
-        vehicles_count = Vehicle.joins(:customer).where(customers: {reseller_id: @current_user.reseller_id}).count
-        vehicles_no_test_count = Vehicle.joins(:customer).where(customers: {reseller_id: @current_user.reseller_id, test: false}).count
+        vehicles_count = Vehicle.for_reseller_id(@current_user.reseller_id).count
+        vehicles_no_test_count = Vehicle.for_reseller_id(@current_user.reseller_id).where(customers: {test: false}).count
       %>
       <%= vehicles_count %> <%= t 'activerecord.models.vehicles', count: vehicles_count %> (<%= t '.no_test' %> : <%= vehicles_no_test_count %>),
     </div>

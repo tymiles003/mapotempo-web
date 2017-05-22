@@ -263,7 +263,7 @@ class V01::Vehicles < Grape::API
       id = ParseIdsRefs.read(params[:id])
       if Mapotempo::Application.config.manage_vehicles_only_admin
         if @current_user.admin?
-          vehicle = Vehicle.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id})).first!
+          vehicle = Vehicle.for_reseller_id(@current_user.reseller.id).where(id).first!
           vehicle.destroy!
           nil
         else
@@ -285,7 +285,7 @@ class V01::Vehicles < Grape::API
       Vehicle.transaction do
         if Mapotempo::Application.config.manage_vehicles_only_admin
           if @current_user.admin?
-            Vehicle.joins(:customer).where(customers: {reseller_id: @current_user.reseller.id}).select{ |vehicle|
+            Vehicle.for_reseller_id(@current_user.reseller.id).select{ |vehicle|
               params[:ids].any?{ |s| ParseIdsRefs.match(s, vehicle) }
             }.each(&:destroy!)
             nil

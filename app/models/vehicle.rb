@@ -54,6 +54,8 @@ class Vehicle < ApplicationRecord
 
   attr_localized :emission, :consumption, :capacities
 
+  scope :for_reseller_id, ->(reseller_id) { joins(:customer).where(customers: {reseller_id: reseller_id}) }
+
   def capacities_validator
     !capacities || capacities.values.each do |q|
       raise Exceptions::NegativeErrors.new(q, id) if Float(q) < 0; # Raise both Float && NegativeErrors type
