@@ -209,13 +209,6 @@ label .popover {
 .leaflet-control-geocoder-expanded input, .leaflet-control-geocoder-error {
   width: 350px;
 }
-.leaflet-control-geocoder-expanded .leaflet-control-geocoder-icon {
-  width: 32px;
-  background-position: right;
-}
-.leaflet-control-geocoder-expanded .leaflet-control-geocoder-icon:before {
-  content: '◂';
-}
 
 ul.leaflet-control-geocoder-alternatives {
   width: inherit;

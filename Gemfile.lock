@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/Mapotempo/leaflet-control-geocoder-rails.git
+  revision: fb49d6e2259bca79f397486236ec6f414ab6451e
+  specs:
+    leaflet-control-geocoder-rails (1.0.0.3)
+
+GIT
   remote: git://github.com/Mapotempo/leaflet-controlledbounds-rails.git
   revision: cfe7e1688b05fe6f8314331c791e4412276b253f
   specs:
@@ -68,12 +74,6 @@ GIT
   specs:
     jquery-timeentry-rails (1.5.2)
       railties (>= 3.1.0)
-
-GIT
-  remote: git://github.com/frodrigo/leaflet-control-geocoder-rails.git
-  revision: 100007bf9d857bc783739f5f2f0d5fb620f4b9df
-  specs:
-    leaflet-control-geocoder-rails (1.0.0.2)
 
 GIT
   remote: git://github.com/frodrigo/leaflet-draw-rails.git
