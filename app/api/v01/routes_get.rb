@@ -52,7 +52,7 @@ class V01::RoutesGet < Grape::API
               params[:ids].any?{ |s| ParseIdsRefs.match(s, route) }
             }
           else
-            current_customer.plannings.where(planning_id).first!.routes.load
+            current_customer.plannings.where(planning_id).first!.routes.includes_vehicle_usages.load
           end
           if env['api.format'] == :geojson
             Route.routes_to_geojson(routes, params[:stores], true, params[:geojson] == :polyline)

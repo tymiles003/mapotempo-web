@@ -38,9 +38,10 @@ class Route < ApplicationRecord
   after_initialize :assign_defaults, if: 'new_record?'
 
   scope :for_customer_id, ->(customer_id) { joins(:planning).where(plannings: {customer_id: customer_id}) }
-  scope :includes_vehicle_usages, -> { includes({vehicle_usage: :vehicle}) }
+  scope :includes_vehicle_usages, -> { includes({vehicle_usage: [:vehicle_usage_set, :vehicle]}) }
   scope :includes_stops, -> { includes(:stops) }
-  scope :includes_destinations, -> { includes({stops: {visit: [:tags, {destination: [:tags, :customer]}]}}) }
+  # The second visit is for counting the visit index from all the visits of the destination
+  scope :includes_destinations, -> { includes({stops: {visit: [:tags, {destination: [:visits, :tags, :customer]}]}}) }
 
   include RefSanitizer
 
