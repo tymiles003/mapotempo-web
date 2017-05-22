@@ -22,7 +22,7 @@ class Admin::UsersController < ApplicationController
   before_action :find_customers, except: [:index, :destroy_multiple]
 
   def index
-    @users = User.joins(:customer).where(customers: {reseller_id: current_user.reseller_id})
+    @users = User.from_customers_for_reseller_id(current_user.reseller_id)
   end
 
   def new
@@ -75,7 +75,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def find_user
-    User.joins(:customer).where(customers: { reseller_id: current_user.reseller_id }).find params[:id]
+    User.from_customers_for_reseller_id(current_user.reseller_id).find params[:id]
   end
 
   def user_params

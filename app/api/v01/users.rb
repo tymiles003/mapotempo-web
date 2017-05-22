@@ -41,8 +41,7 @@ class V01::Users < Grape::API
       success: V01::Entities::User
     get do
       if @current_user.admin?
-        users = User.where(reseller: @current_user.reseller) +
-          User.joins(:customer).where(customers: {reseller_id: @current_user.reseller.id})
+        users = User.for_reseller_id(@current_user.reseller_id) + User.from_customers_for_reseller_id(@current_user.reseller.id)
       else
         users = @current_customer.users.load
       end
@@ -58,8 +57,7 @@ class V01::Users < Grape::API
     get ':id' do
       id = ParseIdsRefs.read(params[:id])
       if @current_user.admin?
-        user = (User.where(id.merge(reseller: @current_user.reseller)) +
-          User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id}))).first
+        user = (User.for_reseller_id(@current_user.reseller_id).where(id) + User.from_customers_for_reseller_id(@current_user.reseller_id).where(id)).first
         if user
           present user, with: V01::Entities::User
         else
@@ -103,8 +101,7 @@ class V01::Users < Grape::API
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
-      user = (User.where(id.merge(reseller: @current_user.reseller)) +
-        User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller_id}))).first
+      user = (User.for_reseller_id(@current_user.reseller_id).where(id) + User.from_customers_for_reseller_id(@current_user.reseller_id).where(id)).first
       user.update! user_params
       present user, with: V01::Entities::User
     end
@@ -118,8 +115,7 @@ class V01::Users < Grape::API
     delete ':id' do
       if @current_user.admin?
         id = ParseIdsRefs.read(params[:id])
-        user = (User.where(id.merge(reseller: @current_user.reseller)) +
-          User.joins(:customer).where(id.merge(customers: {reseller_id: @current_user.reseller.id}))).first
+        user = (User.for_reseller_id(@current_user.reseller_id).where(id) + User.from_customers_for_reseller_id(@current_user.reseller_id).where(id)).first
         user.destroy!
         nil
       else
@@ -136,8 +132,7 @@ class V01::Users < Grape::API
     delete do
       if @current_user.admin?
         User.transaction do
-          (User.where(reseller: @current_user.reseller) +
-            User.joins(:customer).where(customers: {reseller_id: @current_user.reseller.id})).select{ |user|
+          (User.for_reseller_id(@current_user.reseller_id) + User.from_customers_for_reseller_id(@current_user.reseller_id)).select{ |user|
             params[:ids].any?{ |s| ParseIdsRefs.match(s, user) }
           }.each(&:destroy)
         end
@@ -146,6 +141,5 @@ class V01::Users < Grape::API
         error! 'Forbidden', 403
       end
     end
-
   end
 end

@@ -49,6 +49,9 @@ class User < ApplicationRecord
 
   include Confirmable
 
+  scope :for_reseller_id, ->(reseller_id) { where(reseller_id: reseller_id) }
+  scope :from_customers_for_reseller_id, ->(reseller_id) { joins(:customer).where(customers: {reseller_id: reseller_id}) }
+
   amoeba do
     enable
 
