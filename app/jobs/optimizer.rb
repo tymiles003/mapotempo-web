@@ -44,7 +44,7 @@ class Optimizer
         planning.customer.job_optimizer.save!
       end
     else
-      routes = planning.routes.select { |r|
+      routes = planning.routes.includes_destinations.select { |r|
         (route && r.id == route.id) || (!route && !global && r.vehicle_usage && r.size_active > 1) || (!route && global)
       }.reject(&:locked)
       optimum = unless routes.select(&:vehicle_usage).empty?

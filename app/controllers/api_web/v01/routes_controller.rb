@@ -31,9 +31,9 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
   def index
     @routes = if params.key?(:ids)
       ids = params[:ids].split(',')
-      @planning.routes.where(ParseIdsRefs.where(Route, ids))
+      @planning.routes.includes_destinations.where(ParseIdsRefs.where(Route, ids))
     else
-      @planning.routes
+      @planning.routes.includes_destinations
     end
     @layer = current_user.customer.profile.layers.find_by(id: params[:layer_id]) if params[:layer_id]
   end

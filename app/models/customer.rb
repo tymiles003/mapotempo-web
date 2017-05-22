@@ -164,7 +164,7 @@ class Customer < ApplicationRecord
         planning.zonings = planning.zonings.collect{ |zoning| zonings_map[zoning] }
         planning.tags = planning.tags.collect{ |tag| tags_map[tag] }
 
-        planning.routes.each{ |route|
+        planning.routes.includes_vehicle_usages.includes_stops.each{ |route|
           route.vehicle_usage = vehicle_usages_map[route.vehicle_usage]
 
           route.stops.each{ |stop|
@@ -229,7 +229,7 @@ class Customer < ApplicationRecord
   def delete_all_destinations
     destinations.delete_all
     plannings.reload.each { |p|
-      p.routes.select(&:vehicle_usage).each do |route|
+      p.routes.includes_stops.select(&:vehicle_usage).each do |route|
         # reindex remaining stops (like rests)
         route.force_reindex
         # out_of_date for last step

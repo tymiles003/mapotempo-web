@@ -234,7 +234,7 @@ class V01::Plannings < Grape::API
     patch ':id/update_routes' do
       planning_id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(planning_id).first!
-      routes = planning.routes.find params[:route_ids]
+      routes = planning.routes.includes_stops.find params[:route_ids]
       routes.each do |route|
         case params[:action].to_sym
         when :toggle
@@ -275,7 +275,7 @@ class V01::Plannings < Grape::API
       planning.fetch_stops_status
       planning.save!
       if params[:details]
-        present planning.routes, with: V01::Entities::RouteStatus, geojson: params[:geojson]
+        present planning.routes.includes_stops, with: V01::Entities::RouteStatus, geojson: params[:geojson]
       else
         status 204
       end

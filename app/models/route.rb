@@ -38,6 +38,9 @@ class Route < ApplicationRecord
   after_initialize :assign_defaults, if: 'new_record?'
 
   scope :for_customer_id, ->(customer_id) { joins(:planning).where(plannings: {customer_id: customer_id}) }
+  scope :includes_vehicle_usages, -> { includes({vehicle_usage: :vehicle}) }
+  scope :includes_stops, -> { includes(:stops) }
+  scope :includes_destinations, -> { includes({stops: {visit: [:tags, {destination: [:tags, :customer]}]}}) }
 
   include RefSanitizer
 

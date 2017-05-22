@@ -54,7 +54,7 @@ class PlanningsController < ApplicationController
       end
       format.kmz do
         if params[:email]
-          @planning.routes.joins(vehicle_usage: [:vehicle]).each do |route|
+          @planning.routes.includes_vehicle_usages.joins(vehicle_usage: [:vehicle]).each do |route|
             next if !route.vehicle_usage.vehicle.contact_email
             vehicle = route.vehicle_usage.vehicle
             content = kmz_string_io(route: route, with_home_markers: true).string

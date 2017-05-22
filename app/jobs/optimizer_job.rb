@@ -35,7 +35,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :all_stops)
 
     Delayed::Worker.logger.info "OptimizerJob planning_id=#{planning_id} perform"
     planning = Planning.where(id: planning_id).first!
-    routes = planning.routes.select { |r|
+    routes = planning.routes.includes_destinations.select { |r|
       (route_id && r.id == route_id) || (!route_id && !global && r.vehicle_usage && r.size_active > 1) || (!route_id && global)
     }.reject(&:locked)
     optimize_time = planning.customer.optimization_time || @@optimize_time
