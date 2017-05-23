@@ -386,6 +386,7 @@ class Planning < ActiveRecord::Base
               stop.index = i += 1
             else
               stop.index = stop.time = stop.distance = stop.trace = stop.drive_time = nil
+              stop.out_of_window = stop.out_of_capacity = stop.out_of_drive_time = false
             end
           end
         }
