@@ -1331,7 +1331,7 @@ fr:
       begin_end_date: Période de validité
       begin_end_date_help: Période durant laquelle le planning est valide
       tags_help: Restreint les visites / clients dans le planning (les visites/clients
-        doivent soit avoir l'ensemble de tous ces libellés (ET) soit un des libellés
+        doivent soit avoir l'ensemble de tous ces libellés (TOUS) soit un des libellés
         sélectionnés (OU) pour apparaître dans le planning).
       order_array: Comm.
       zonings_help: Permet d'affecter automatiquement des visites/clients à des véhicules
