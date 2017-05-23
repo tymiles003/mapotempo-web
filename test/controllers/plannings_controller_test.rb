@@ -137,7 +137,7 @@ class PlanningsControllerTest < ActionController::TestCase
 
   test 'should not create planning' do
     assert_difference('Planning.count', 0) do
-      post :create, planning: { name: '' }
+      post :create, planning: { name: '', vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id }
     end
 
     assert_template :new

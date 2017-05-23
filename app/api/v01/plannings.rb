@@ -48,6 +48,7 @@ class V01::Plannings < Grape::API
     end
     post do
       planning = current_customer.plannings.build(planning_params)
+      planning.default_routes
       planning.save!
       planning.compute
       planning.save!

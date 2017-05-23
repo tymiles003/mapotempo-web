@@ -201,6 +201,7 @@ class ImporterDestinationsTest < ActionController::TestCase
   test 'should import many-utf-8 in new planning' do
     Planning.all.each(&:destroy)
     planning = @customer.plannings.build(name: 'plan été', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), tags: [@customer.tags.build(label: 'été')])
+    planning.default_routes
     planning.save!
     @customer.reload
     @customer.destinations.destroy_all

@@ -40,7 +40,7 @@ class Planning < ApplicationRecord
   include Consistency
   validate_consistency :vehicle_usage_set, :order_array, :zonings, :tags
 
-  before_create :default_routes, :update_zonings
+  before_create :update_zonings
   before_save :update_zonings
   before_save :update_vehicle_usage_set
 
@@ -53,8 +53,6 @@ class Planning < ApplicationRecord
       def copy.update_zonings; end
 
       def copy.update_vehicle_usage_set; end
-
-      def copy.default_routes; end
 
       def copy.update_zonings; end
 
@@ -139,15 +137,18 @@ class Planning < ApplicationRecord
   end
 
   def default_routes
-    if routes.length != vehicle_usage_set.vehicle_usages.select(&:active).length + 1
+    if vehicle_usage_set && routes.length != vehicle_usage_set.vehicle_usages.select(&:active).length + 1
       default_empty_routes
-      routes.find{ |r| !r.vehicle_usage }.default_stops
+
+      if !split_by_zones(visits_compatibles)
+        routes.find{ |r| !r.vehicle_usage }.default_stops
+      end
     end
   end
 
   def compute(options = {})
     Planning.transaction do
-      split_by_zones if zoning_out_of_date
+      split_by_zones(nil) if zoning_out_of_date
       routes.each{ |r| r.compute(options) }
     end
   end
@@ -560,7 +561,7 @@ class Planning < ApplicationRecord
     @tag_ids_changed
   end
 
-  def split_by_zones
+  def split_by_zones(visits_free)
     self.zoning_out_of_date = false
     if !zonings.empty? && !routes.empty?
       # Make sure there is at least one Zone with Vehicle, else, don't apply Zones
@@ -573,13 +574,16 @@ class Planning < ApplicationRecord
         [vehicle_usage && vehicle_usage.vehicle, routes[0]]
       }]
 
-      visits_free = routes.select{ |route|
-        !route.locked
-      }.collect(&:stops).flatten.select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
+      # Get free visits if not the first initial split on planning building
+      if !visits_free
+        visits_free = routes.select{ |route|
+          !route.locked
+        }.collect(&:stops).flatten.select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
 
-      routes.each{ |route|
-        route.locked || route.set_visits([])
-      }
+        routes.each{ |route|
+          route.locked || route.set_visits([])
+        }
+      end
 
       Zoning.new(zones: zonings.collect(&:zones).flatten).apply(visits_free).each{ |zone, visits|
         if zone && zone.vehicle && vehicles_map[zone.vehicle] && !vehicles_map[zone.vehicle].locked
@@ -591,6 +595,8 @@ class Planning < ApplicationRecord
       }
 
       fetch_stops_status if need_fetch_stop_status
+
+      true
     end
   end
 
@@ -601,7 +607,7 @@ class Planning < ApplicationRecord
 
     if !zonings.empty? && @zoning_ids_changed
       self.zoning_out_of_date = true
-      split_by_zones
+      split_by_zones(nil)
     end
     true
   end
