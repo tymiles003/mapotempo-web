@@ -29,7 +29,7 @@ class Orange < DeviceBase
       help: true,
       forms: {
         settings: {
-          username: :text,
+          user: :text,
           password: :password
         },
         vehicle: {
@@ -101,7 +101,7 @@ class Orange < DeviceBase
     if options[:auth]
       user, password = options[:auth][:user], options[:auth][:password]
     else
-      user, password = customer.devices[:orange][:username], customer.devices[:orange][:password]
+      user, password = customer.devices[:orange][:user], customer.devices[:orange][:password]
     end
 
     # HTTP Request w/ SSL
@@ -133,7 +133,7 @@ class Orange < DeviceBase
     f = Tempfile.new Time.zone.now.to_i.to_s
     f.write to_xml(route, options)
     f.rewind
-    response = RestClient::Request.execute method: :post, user: customer.devices[:orange][:username], password: customer.devices[:orange][:password], url: api_url + '/pnd/index.php', payload: { multipart: true, file: f }
+    response = RestClient::Request.execute method: :post, user: customer.devices[:orange][:user], password: customer.devices[:orange][:password], url: api_url + '/pnd/index.php', payload: { multipart: true, file: f }
     f.unlink
     response
   end
