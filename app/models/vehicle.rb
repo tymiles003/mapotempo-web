@@ -57,8 +57,8 @@ class Vehicle < ActiveRecord::Base
       raise Exceptions::NegativeErrors.new(q, id) if Float(q) < 0; # Raise both Float && NegativeErrors type
     end
   rescue StandardError => e
-    errors.add :capacities, :not_float if e.is_a?(ArgumentError || TypeError)
-    errors.add :capacities, :vehicle_capacity if e.is_a? Exceptions::NegativeErrors
+    errors.add :capacities, :not_float if e.is_a?(ArgumentError) || e.is_a?(TypeError)
+    errors.add :capacities, :negative_value, {value: e.object[:value]} if e.is_a? Exceptions::NegativeErrors
   end
 
   def self.emissions_table

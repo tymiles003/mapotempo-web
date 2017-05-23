@@ -460,8 +460,8 @@ fr:
         vehicle:
           attributes:
             capacities:
-              not_float: "doivent être un nombre"
-              vehicle_capacity: "ne doit pas être une valeur négative"
+              not_float: doit être un nombre
+              negative_value: doit être une valeur positive (%{value})
         vehicles:
           at_least_one: Au moins un véhicle est requis
         vehicle_usage:
@@ -494,7 +494,7 @@ fr:
               after: "doit être après le %{s}"
             quantities:
               not_float: doit être un nombre
-              negative_value: est négative (%{value})
+              negative_value: doit être une valeur positive (%{value})
         zone:
           attributes:
             vehicle:

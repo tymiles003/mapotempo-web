@@ -72,7 +72,7 @@ class Visit < ActiveRecord::Base
       raise Exceptions::NegativeErrors.new(q, id, { nested_attr: :quantities, record: self }) if Float(q) < 0; # Raise both Float && NegativeErrors type
     end
   rescue StandardError => e
-    self.errors.add :quantities, :not_float if e.is_a?(ArgumentError || TypeError)
+    self.errors.add :quantities, :not_float if e.is_a?(ArgumentError) || e.is_a?(TypeError)
     self.errors.add :quantities, :negative_value, {value: e.object[:value]} if e.is_a?(Exceptions::NegativeErrors)
   end
 
