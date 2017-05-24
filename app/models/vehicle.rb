@@ -146,9 +146,7 @@ class Vehicle < ActiveRecord::Base
   end
 
   def capacities_changed?
-    capacities ? capacities.any?{ |i, q|
-      !capacities_was || q != capacities_was[i]
-    } : !!capacities_was
+    !capacities.empty? ? capacities.any?{ |i, q| q != capacities_was[i] } : !capacities_was.empty?
   end
 
   private

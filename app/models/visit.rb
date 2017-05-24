@@ -125,9 +125,7 @@ class Visit < ActiveRecord::Base
   end
 
   def quantities_changed?
-    quantities ? quantities.any?{ |i, q|
-      !quantities_was || q != quantities_was[i]
-    } : !!quantities_was
+    !quantities.empty? ? quantities.any?{ |i, q| q != quantities_was[i] } : !quantities_was.empty?
   end
 
   def color
