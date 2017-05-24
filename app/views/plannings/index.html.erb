@@ -22,8 +22,8 @@
       <th><%= t 'activerecord.attributes.planning.ref' %></th>
       <% end %>
       <th><%= t 'activerecord.attributes.planning.date' %></th>
-      <th><%= t 'activerecord.attributes.planning.begin_date' %></th>
-      <th><%= t 'activerecord.attributes.planning.end_date' %></th>
+      <!--<th><%= t 'activerecord.attributes.planning.begin_date' %></th>-->
+      <!--<th><%= t 'activerecord.attributes.planning.end_date' %></th>-->
       <!--<th><%= t 'activerecord.attributes.planning.active' %></th>-->
       <th><%= t 'activerecord.attributes.planning.tags' %></th>
       <th></th>
@@ -39,8 +39,8 @@
         <td><%= planning.ref %></td>
         <% end %>
         <td><%= planning.date && l(planning.date) %></td>
-        <td><%= planning.begin_date && l(planning.begin_date) %></td>
-        <td><%= planning.end_date && l(planning.end_date) %></td>
+        <!--<td><%= planning.begin_date && l(planning.begin_date) %></td>-->
+        <!--<td><%= planning.end_date && l(planning.end_date) %></td>-->
         <!--<td><%= planning.active? ? '✔' : '' %></td>-->
         <td>
         <% planning.tags.each{ |tag| %>
