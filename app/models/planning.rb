@@ -441,6 +441,15 @@ class Planning < ApplicationRecord
     Route.routes_to_geojson(routes, true, respect_hidden, polyline)
   end
 
+  def save_import
+    valid? && Planning.import([self], recursive: true, validate: false)
+  end
+
+  def save_import!
+    validate!
+    Planning.import([self], recursive: true, validate: false)
+  end
+
   private
 
   # To reduce matrix computation with only one route... remove code?

@@ -87,7 +87,7 @@ class PlanningsControllerTest < ActionController::TestCase
     # Check number of visits (including both tags) associated to the new planning
     assert_equal 1, assigns(:planning).visits_compatibles.count
     # Check number of stops (including both tags) in the new planning
-    assert_equal 1, assigns(:planning).routes.map { |route| route.stops }.first.count
+    assert_equal 1, assigns(:planning).routes[0].stops.size
 
 
     assert_difference('Planning.count') do
@@ -98,7 +98,7 @@ class PlanningsControllerTest < ActionController::TestCase
     # Check number of visits (including both tags) associated to the new planning
     assert_equal 2, assigns(:planning).visits_compatibles.count
     # Check number of stops (including both tags) in the new planning
-    assert_equal 2, assigns(:planning).routes.map { |route| route.stops }.first.count
+    assert_equal 2, assigns(:planning).routes[0].stops.size
   end
 
   test 'Create Planning with begin and end date' do

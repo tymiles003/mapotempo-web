@@ -50,7 +50,7 @@ class V01::Plannings < Grape::API
       planning = current_customer.plannings.build(planning_params)
       planning.default_routes
       planning.compute
-      planning.save!
+      planning.save_import!
       present planning, with: V01::Entities::Planning, geojson: params[:geojson]
     end
 

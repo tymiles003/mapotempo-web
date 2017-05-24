@@ -89,6 +89,7 @@ gem 'cancancan'
 gem 'lograge'
 gem 'validates_timeliness'
 gem 'rails_engine_decorators'
+gem 'activerecord-import'
 
 gem 'font-awesome-rails'
 gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', ref: 'd3776ddd0b89d28fdebfd6e1c1541348cc90e5cc' # FIXME wait for >3.2.2 with drop font-awesome, require Rails 5

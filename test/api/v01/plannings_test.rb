@@ -93,7 +93,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
       # Check number of visits (including both tags) associated to the new planning
       assert_equal 1, new_planning.visits_compatibles.count
       # Check number of stops (including both tags) in the new planning
-      assert_equal 1, new_planning.routes.map { |route| route.stops }.first.count
+      assert_equal 1, new_planning.routes[0].stops.size
     end
 
     assert_difference('Planning.count', 1) do
@@ -106,7 +106,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
       # Check number of visits (including at least one tag) associated to the new planning
       assert_equal 2, new_planning.visits_compatibles.count
       # Check number of stops (including at least one tags) in the new planning
-      assert_equal 2, new_planning.routes.map { |route| route.stops }.first.count
+      assert_equal 2, new_planning.routes[0].stops.size
     end
   end
 

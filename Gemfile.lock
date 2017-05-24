@@ -149,6 +149,8 @@ GEM
       activemodel (= 4.2.8)
       activesupport (= 4.2.8)
       arel (~> 6.0)
+    activerecord-import (0.18.3)
+      activerecord (>= 3.2)
     activesupport (4.2.8)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -601,6 +603,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-import
   addressable
   ai4r
   amoeba
