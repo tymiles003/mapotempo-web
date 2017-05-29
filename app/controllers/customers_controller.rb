@@ -23,7 +23,14 @@ class CustomersController < ApplicationController
   include Devices::Helpers
 
   def index
-    @customers = current_user.reseller.customers.order(:name)
+    respond_to do |format|
+      format.html do
+        @customers = current_user.reseller.customers.includes_deps
+      end
+      format.json do
+        @customers = current_user.reseller.customers.includes_stores
+      end
+    end
   end
 
   def new

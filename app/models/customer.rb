@@ -80,6 +80,9 @@ class Customer < ApplicationRecord
 
   include RefSanitizer
 
+  scope :includes_deps, -> { includes([:profile, :router, :job_optimizer, :job_destination_geocoding, :job_store_geocoding, :users]) }
+  scope :includes_stores, -> { includes(:stores) }
+
   amoeba do
     nullify :job_destination_geocoding_id
     nullify :job_store_geocoding_id
