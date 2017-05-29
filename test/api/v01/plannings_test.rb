@@ -89,6 +89,7 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
       response = JSON.parse(last_response.body)
       assert_equal 2, response['tag_ids'].size
       new_planning = Planning.last
+      assert_equal 2, new_planning.tags.size
 
       # Check number of visits (including both tags) associated to the new planning
       assert_equal 1, new_planning.visits_compatibles.count
