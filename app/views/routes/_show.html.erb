@@ -40,7 +40,7 @@
     <% if route.vehicle_usage.default_store_start %>
       <li class="list-group-item store" style="border-left: 5px solid <%= route.default_color %>">
         <div class="row no-gutter">
-          <div class=<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>>
+          <div class="<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>">
             <i class="fa fa-2x <%= route.vehicle_usage.default_store_start.default_icon %>" style="color: <%= route.vehicle_usage.default_store_start.default_color %>;"></i>
             <span class="name"><%= route.vehicle_usage.default_store_start.name %></span><br/>
             <span class="address">
@@ -76,7 +76,7 @@
         <hr/>
       <% end %>
       <div class="row no-gutter">
-        <div class=<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>>
+        <div class="<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>">
           <span class="number"><%= index += 1 %></span>
           <span class="name"><% if stop.is_a?(StopRest) %><i class="fa fa-coffee fa-fw"></i> <% end %><%= stop.name %></span>
           <% if stop.ref %>
@@ -191,7 +191,7 @@
       <li class="list-group-item store" style="border-left: 5px solid <%= route.default_color %>">
         <div class="row no-gutter">
 
-          <div class=<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>>
+          <div class="<%= route.planning.customer.print_planning_annotating ? 'col-md-5 col-sm-6 col-xs-6' : 'col-md-6 col-sm-6 col-xs-9' %>">
             <i class="fa fa-2x <%= route.vehicle_usage.default_store_stop.default_icon %>" style="color: <%= route.vehicle_usage.default_store_stop.default_color %>;"></i>
             <span class="name"><%= route.vehicle_usage.default_store_stop.name %></span><br/>
             <span class="address">
