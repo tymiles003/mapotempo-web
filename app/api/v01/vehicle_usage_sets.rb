@@ -140,5 +140,26 @@ class V01::VehicleUsageSets < Grape::API
       end
       nil
     end
+
+    desc 'Import vehicle usage set by upload a CSV file or by JSON.',
+         nickname: 'importVehicleUsageSets',
+         is_array: true,
+         success: V01::Entities::VehicleUsageSet
+    params do
+      use :params_from_entity, entity: V01::Entities::VehicleUsageSetsImport.documentation
+    end
+    put do
+      import = if params[:vehicle_usage_sets]
+                 ImportJson.new(importer: ImporterVehicleUsageSets.new(current_customer), replace_vehicles: params[:replace_vehicles], json: params[:vehicle_usage_sets])
+               else
+                 ImportCsv.new(importer: ImporterVehicleUsageSets.new(current_customer), replace_vehicles: params[:replace_vehicles], file: params[:file])
+               end
+
+      if import && import.valid? && (vehicles_usages_with_conf = import.import)
+        present vehicles_usages_with_conf[0], with: V01::Entities::VehicleUsageSet
+      else
+        error!({error: import.errors.full_messages}, 422)
+      end
+    end
   end
 end

@@ -1528,18 +1528,43 @@ fr:
     emissions_light_diesel: VL - Gazole - %{n}
     emissions_light_lgp: VL - GPL - %{n}
     import:
-      ref: Référence
-      name: Nom
+      ref_vehicle: Référence véhicule
+      ref_desc: Référence du véhicule
+      name_vehicle: Nom véhicule
+      name_desc: Nom du véhicule
       contact_email: Email
+      contact_email_desc: Email du terminal du chauffeur
       emission: Émission
+      emission_desc: Émission du véhicule
       consumption: Consommation
+      consumption_desc: Consommation du véhicule
       capacities: Capacités
+      capacities_desc: Capacités maximales du véhicule
+      capacities_format: ""
       router_mode: Calculateur d'itinéraire
+      router_mode_desc: Forcer l'utilisation d'un calculateur d'itinéraire
       router_dimension: Objectif du calculateur
+      router_dimension_desc: Forcer l'utilisation d'un calculateur d'objectif du calculateur
       router_options: Options du calculateur
+      router_options_desc: Forcer l'utilisation les options du calculateur d'itinéraire
       speed_multiplicator: Ajustement de la vitesse
+      speed_multiplicator_desc: Une valeur supérieure à 100% signifie une vitesse plus élevée.
       color: Couleur
+      color_desc: Couleur associée au véhicule
       devices: Appareils
+      devices_desc: Référence ou ID des appareils associée au véhicule
+      missing_name: « nom » du véhicule manquant
+      format:
+        string: texte
+        integer: nombre
+        float: nombre décimal
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: oui/non
+        required: obligatoire
+        advisable: recommandé
+        optionnal: optionnel
+        deprecated: déprécié
     form:
       ref:
         help: Référence libre
@@ -1638,6 +1663,7 @@ fr:
       name: Défaut
     menu:
       vehicle_usage_sets: Véhicules
+      import_vehicle_usage_sets: Importer configuration
       deliverable_units: Unités livrables
     edit:
       title: Modifier configuration des véhicules
@@ -1650,8 +1676,29 @@ fr:
     new:
       title: Nouvelle configuration des véhicules
     import:
-      names_duplicate: "Le nom : %{names} est présent en double dans le fichier"
-      name: Nom
+      title: Importer une nouvelle configuration de véhicules
+      vehicle_usage_set: Configuration de véhicules
+      replace_no: Ajouter la nouvelle configuration
+      replace_no_help: Une nouvelle configuration de véhicules sera ajouté sans modifier les anciennes.
+      vehicles: Véhicules
+      replace_vehicles: Remplacer les véhicules existants
+      replace_vehicles_help: Tous les véhicules dans l'application seront mise à jour avec les données importées (les véhicules avec le même référence seront rempalcés par les données correspondantes).
+      csv:
+        title: Fichier CSV
+        help: Importe la configuration de véhicules depuis un fichier CSV. Les fichiers CSV peuvent être exportés à partir de tableurs ou depuis d'autres logiciels.
+        file_help: Import de fichier CSV uniquement
+      import_template_help: Aide
+      dialog:
+        replace_vehicles_confirm: Êtes-vous sûr de vouloir remplacer toutes les propriétés de tous les véhicules par celle du fichier d'import ?
+        import:
+          title: Import d'une configuration des véhicules
+          in_progress: Import de la configuration en cours, merci de patienter
+        help:
+          title: Liste des colonnes de votre fichier
+          desc: "Votre fichier d'import peut contenir l'ensemble des colonnes et types de valeurs suivants :"
+          columns_vehicle_usage_set: Colonnes de la configuration des véhicules (et si besoin pour les véhicules)
+          columns_vehicle: Colonnes des véhicules
+      name_vehicle_usage_set: Nom configuration
       name_desc: nom de la configuration par défaut
       open: Horaire début
       open_desc: Début de l'horaire de travail du livreur
@@ -1676,19 +1723,21 @@ fr:
       format:
         string: texte
         integer: nombre
-        float: '0.123'
+        float: nombre décimal
         hour: HH:MM
         second: HH:MM:SS
         yes_no: oui/non
         required: obligatoire
+        required_for_default: requis pour défaut
         advisable: recommandé
-        optionnal: optionnel
+        optional: optionnel
         deprecated: déprécié
       not_csv: Le fichier importé n'est pas au format CSV
       empty_file: ne contient aucune donnée
       too_many_lines: 'Import stoppé, trop de lignes (max: %{n}).'
       none_column: Aucune colonne trouvée
-      missing_name: « nom » manquant.
+      missing_name: « nom » de la configuration par défaut manquant
+      missing_open_close: heure de début ou de fin de la configuration par défaut manquantes
       invalid_numeric_value: valeur numérique « %{value} » invalide.
       check_custom_columns: Vérifiez votre définition des colonnes à importer.
     form:

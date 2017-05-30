@@ -26,7 +26,7 @@ var vehicle_usage_sets_index = function(params) {
     window.location.hash = id;
     $('.accordion-body.collapse.in').each(function(index) {
       var $this = $(this);
-      if (id != '#' + $this.attr('id')) {
+      if (id !== '#' + $this.attr('id')) {
         $this.collapse('hide');
       }
     });
@@ -35,7 +35,7 @@ var vehicle_usage_sets_index = function(params) {
   if (window.location.hash) {
     $('.accordion-body.collapse.in').each(function(index) {
       var $this = $(this);
-      if (window.location.hash != '#' + $this.attr('id')) {
+      if (window.location.hash !== '#' + $this.attr('id')) {
         $this.removeClass('in');
       }
     });
@@ -49,6 +49,37 @@ var vehicle_usage_sets_edit = function(params) {
     show24Hours: true,
     spinnerImage: '',
     defaultTime: '00:00'
+  });
+};
+
+var vehicle_usage_sets_import = function(params) {
+  'use strict';
+
+  var dialog_upload = bootstrap_dialog({
+    title: I18n.t('vehicle_usage_sets.import.dialog.import.title'),
+    icon: 'fa-upload',
+    message: SMT['modals/default_with_progress']({
+      msg: I18n.t('vehicle_usage_sets.import.dialog.import.in_progress')
+    })
+  });
+
+  $(":file").filestyle({
+    buttonName: "btn-primary",
+    iconName: "fa fa-folder-open",
+    buttonText: I18n.t('web.choose_file')
+  });
+
+  $('form#new_import_csv').submit(function () {
+    var confirmChecks = [];
+    $('#import_csv_replace_vehicles', $(this)).is(':checked') && confirmChecks.push('replace_vehicles');
+    if (confirmChecks.length > 0 && !confirm(confirmChecks.map(function (c) {
+        var vehicle_usage_set_import_translation = 'vehicle_usage_sets.import.dialog.' + c + '_confirm';
+        return I18n.t(vehicle_usage_set_import_translation);
+      }).join(" \n"))) {
+      return false;
+    }
+
+    dialog_upload.modal(modal_options());
   });
 };
 
@@ -67,5 +98,11 @@ Paloma.controller('VehicleUsageSets', {
   },
   update: function() {
     vehicle_usage_sets_edit(this.params);
+  },
+  import: function() {
+    vehicle_usage_sets_import(this.params);
+  },
+  upload_csv: function() {
+    vehicle_usage_sets_import(this.params);
   }
 });

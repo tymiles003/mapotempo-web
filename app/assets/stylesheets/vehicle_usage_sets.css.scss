@@ -19,64 +19,86 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-[data-controller='vehicle_usage_sets'][data-action='index'] {
-
-  .usage-set-name {
-    font-size: 1.5em;
-    @media screen and (max-width: 767px) {
-      font-size: 1.1em;
-      font-weight: bold;
+[data-controller='vehicle_usage_sets'] {
+  &[data-action='index'] {
+    .usage-set-name {
+      font-size: 1.5em;
+      @media screen and (max-width: 767px) {
+        font-size: 1.1em;
+        font-weight: bold;
+      }
+    }
+    .accordion-toggle > .usage-set-name:before {
+      content: "▾ ";
+    }
+    .accordion-toggle.collapsed > .usage-set-name:before {
+      content: "▸ ";
+    }
+    .export-dropdown {
+      float: right;
+      padding: 0 5px;
+    }
+    .table-hover .vehicle_usages:hover > td {
+      background-color: white;
+    }
+    #accordion-vehicle-usage-sets {
+      .vehicle_usages {
+        table {
+          @media screen and (max-width: 991px) {
+            tr th:nth-of-type(3), tr td:nth-of-type(3),
+            tr th:nth-of-type(4), tr td:nth-of-type(4),
+            tr th:nth-of-type(7), tr td:nth-of-type(7) {
+              display: none;
+            }
+          }
+          @media screen and (max-width: 767px) {
+            tr th:nth-of-type(2), tr td:nth-of-type(2),
+            tr th:nth-of-type(6), tr td:nth-of-type(6) {
+              display: none;
+            }
+          }
+          tr.disabled td {
+            opacity: 0.5;
+          }
+          tr.disabled td:last-child {
+            opacity: 1;
+          }
+          @media screen and (min-width: 768px) {
+            td:last-child {
+              white-space: nowrap;
+            }
+          }
+          .vehicle_color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -o-border-radius: 50%;
+            vertical-align: middle;
+          }
+        }
+      }
     }
   }
-  .accordion-toggle > .usage-set-name:before {
-    content: "▾ ";
-  }
-  .accordion-toggle.collapsed > .usage-set-name:before {
-    content: "▸ ";
-  }
-  .export-dropdown {
-    float: right;
-    padding: 0 5px;
-  }
-  .table-hover .vehicle_usages:hover > td {
-    background-color: white;
-  }
-  #accordion-vehicle-usage-sets {
-    .vehicle_usages {
-      table {
-        @media screen and (max-width: 991px) {
-          tr th:nth-of-type(3), tr td:nth-of-type(3),
-          tr th:nth-of-type(4), tr td:nth-of-type(4),
-          tr th:nth-of-type(7), tr td:nth-of-type(7) {
-            display: none;
-          }
-        }
-        @media screen and (max-width: 767px) {
-          tr th:nth-of-type(2), tr td:nth-of-type(2),
-          tr th:nth-of-type(6), tr td:nth-of-type(6) {
-            display: none;
-          }
-        }
-        tr.disabled td {
-          opacity: 0.5;
-        }
-        tr.disabled td:last-child {
-          opacity: 1;
-        }
-        @media screen and (min-width: 768px) {
-          td:last-child {
-            white-space: nowrap;
-          }
-        }
-        .vehicle_color {
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          -moz-border-radius: 50%;
-          -webkit-border-radius: 50%;
-          -o-border-radius: 50%;
-          vertical-align: middle;
+
+  &[data-action='import'], &[data-action='upload_csv'] {
+    #columns-table {
+      margin: 5px;
+
+      .column-heading td, .column-desc td {
+        padding-bottom: 5px;
+      }
+
+      h5 {
+        background-color: #f5f5f5;
+        padding: 5px;
+      }
+
+      .column {
+        td:first-child {
+          min-width: 180px;
         }
       }
     }

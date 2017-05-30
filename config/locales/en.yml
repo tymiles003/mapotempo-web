@@ -1492,18 +1492,42 @@ en:
     emissions_light_diesel: Light - Diesel - %{n}
     emissions_light_lgp: Light - LGP - %{n}
     import:
-      ref: Reference
-      name: Name
+      ref_vehicle: Reference vehicle
+      ref_desc: Vehicle reference
+      name_vehicle: Name vehicle
+      name_desc: Vehicle name
       contact_email: E-Mail
+      contact_email_desc: Driver's device E-Mail
       emission: Emission
+      emission_desc: Fuel Type
       consumption: Consumption
+      consumption_desc: Average fuel consumption in liters per 100 km
       capacities: Capacities
+      capacities_desc: Maximun vehicle's capacities
       router_mode: Routing Engine
+      router_mode_desc: Force use of a specific routing engine
       router_dimension: Router objective
+      router_dimension_desc: Force use of a specific routing dimension
       router_options: Router options
+      router_options_desc: Force use of specific routing options
       speed_multiplicator: Speed multiplier
+      speed_multiplicator_desc: A value higher than 100% means higher speed.
       color: Color
+      color_desc: Color associated to vehicle
       devices: Devices
+      devices_desc: Reference or ID of devices associated to vehicle
+      missing_name: « nom » of the vehicle missing
+      format:
+        string: text
+        integer: integer
+        float: '0.123'
+        hour: HH:MM
+        second: HH:MM:SS
+        yes_no: yes/no
+        required: required
+        advisable: advised
+        optionnal: optionnal
+        deprecated: deprecated
     form:
       ref:
         help: A free reference
@@ -1604,6 +1628,7 @@ en:
       name: Default
     menu:
       vehicle_usage_sets: Vehicles
+      import_vehicle_usage_sets: Import configuration
       deliverable_units: Deliverable units
     edit:
       title: Editing vehicle and configuration
@@ -1616,8 +1641,29 @@ en:
     new:
       title: New vehicles configuration
     import:
-      names_duplicate: 'The name : (%{names}) is duplicated'
-      name: Name
+      title: Import vehicles configuration
+      vehicle_usage_set: Vehicles configuration
+      replace_no: Add vheicles configuration
+      replace_no_help: A new configuration will be added without changing exisiting configurations.
+      vehicles: Véhicles
+      replace_vehicles: Replace existing vehicles
+      replace_vehicles_help: All vehicles in application will be updated with imported data (vehicles with the same reference will be replaced by the relevant data).
+      csv:
+        title: CSV File
+        help: Import vehicles configuration from CSV file. CSV files can be exported from spreadsheet or other softwares.
+        file_help: Import CSV files only
+      import_template_help: Help
+      dialog:
+        replace_vehicles_confirm: Are you sure to replace all vehicles properties by data from import file?
+        import:
+          title: Import vehicles configuration
+          in_progress: Configuration import in progress, please wait
+        help:
+          title: Column names in your file
+          desc: "Your import file can use the following column names:"
+          columns_vehicle_usage_set: Vehicles configuration columns (and if needed for vehicles)
+          columns_vehicle: Vehicles columns
+      name_vehicle_usage_set: Name configuration
       name_desc: default configuration name
       open: Open
       open_desc: Start time for delivery man
@@ -1642,20 +1688,21 @@ en:
       format:
         string: text
         integer: integer
-        float: '0.123'
+        float: number
         hour: HH:MM
         second: HH:MM:SS
         yes_no: yes/no
         required: required
+        required_for_default: required for default
         advisable: advised
-        optionnal: optionnal
+        optional: optionnal
         deprecated: deprecated
       not_csv: Imported file is not a CSV
       empty_file: content is blank
       too_many_lines: 'Stop import, too many lines (max: %{n}).'
       none_column: None found column
-      missing_name: '"name" missing.'
-      missing_location: '"city / postalcode" or "lat / lng" missing.'
+      missing_name: « nom » of the default configuration missing
+      missing_open_close: begin or end time of the default configuration missing
       invalid_numeric_value: 'Invalid numeric value "%{value}".'
       check_custom_columns: Check your columns definition.
     form:

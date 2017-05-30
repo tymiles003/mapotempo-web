@@ -22,7 +22,7 @@ class ImportCsv
   include ActiveRecord::AttributeAssignment
   extend ActiveModel::Translation
 
-  attr_accessor :importer, :replace, :file, :delete_plannings, :column_def, :content_code
+  attr_accessor :importer, :replace, :file, :delete_plannings, :column_def, :content_code, :replace_vehicles
   validates :file, presence: true
   validate :data
 
@@ -32,6 +32,10 @@ class ImportCsv
 
   def delete_plannings=(value)
     @delete_plannings = ValueToBoolean.value_to_boolean(value)
+  end
+
+  def replace_vehicles=(value)
+    @replace_vehicles = ValueToBoolean.value_to_boolean(value)
   end
 
   def column_def=(values)
@@ -49,7 +53,7 @@ class ImportCsv
       begin
         last_row = last_line = nil
         Customer.transaction do
-          rows = @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, line_shift: (without_header? ? 0 : 1), column_def: column_def) { |row, line|
+          rows = @importer.import(data, name, synchronous, ignore_errors: false, replace: replace, delete_plannings: delete_plannings, replace_vehicles: replace_vehicles, line_shift: (without_header? ? 0 : 1), column_def: column_def) { |row, line|
             if row
               # Column Names: Strip Whitespaces
               row = row.each_with_object({}){ |(k, v), hash| hash[k.is_a?(String) ? k.strip : k] = v } if row.is_a? Hash
@@ -57,7 +61,7 @@ class ImportCsv
               # Switch from locale or custom to internal column name
               r, row = row, {}
               @importer.columns.each{ |k, v|
-                next if !v[:title]
+                next unless v[:title]
                 if r.is_a?(Array)
                   # Import without column name or by merging columns
                   values = ((column_def[k] && !column_def[k].empty?) ? column_def[k] : (without_header? ? '' : v[:title])).split(',').map{ |c|
@@ -68,7 +72,7 @@ class ImportCsv
                       r.find{ |rr| rr[0] == c }.try{ |rr| rr[1] }
                     end
                   }.compact
-                  row[k] = values.join(' ') if !values.empty?
+                  row[k] = values.join(' ') unless values.empty?
                 elsif r.key?(v[:title])
                   # Import with column name
                   row[k] = r[v[:title]]
@@ -107,12 +111,10 @@ class ImportCsv
   end
 
   def parse_csv
-    if !file
-      return false
-    end
+    return false unless file
 
     contents = File.open(file.tempfile, 'r:bom|utf-8').read
-    if !contents.valid_encoding?
+    unless contents.valid_encoding?
       detection = CharlockHolmes::EncodingDetector.detect(contents)
       if !contents || !detection[:encoding]
         errors[:file] << I18n.t('destinations.import_file.not_csv')

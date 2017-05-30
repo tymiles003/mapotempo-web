@@ -50,7 +50,7 @@ class ImporterBase
         end
 
         begin
-          if ref = uniq_ref(row)
+          if (ref = uniq_ref(row))
             if refs.include?(ref)
               raise ImportInvalidRef.new(I18n.t('destinations.import_file.refs_duplicate', refs: ref.is_a?(Array) ? ref.compact.join('|') : ref))
             else
@@ -69,7 +69,7 @@ class ImporterBase
           dest
         rescue ImportBaseError
           if options[:ignore_errors]
-            @warnings << e if !@warnings.include?(e)
+            @warnings << e unless @warnings.include?(e)
           else
             raise
           end

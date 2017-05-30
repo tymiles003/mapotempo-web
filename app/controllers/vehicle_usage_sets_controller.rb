@@ -91,8 +91,8 @@ class VehicleUsageSetsController < ApplicationController
   def destroy_multiple
     VehicleUsageSet.transaction do
       if params['vehicle_usage_sets']
-        ids = params['vehicle_usage_sets'].keys.collect{ |i| Integer(i) }
-        current_user.customer.vehicle_usage_sets.select{ |v| ids.include?(v.id) }.each(&:destroy)
+        ids = params['vehicle_usage_sets'].keys.collect { |i| Integer(i) }
+        current_user.customer.vehicle_usage_sets.select { |v| ids.include?(v.id) }.each(&:destroy)
       end
       respond_to do |format|
         format.html { redirect_to vehicle_usage_sets_url }
@@ -105,6 +105,22 @@ class VehicleUsageSetsController < ApplicationController
       @vehicle_usage_set = @vehicle_usage_set.duplicate
       @vehicle_usage_set.save!(validate: false)
       format.html { redirect_to edit_vehicle_usage_set_path(@vehicle_usage_set), notice: t('activerecord.successful.messages.updated', model: @vehicle_usage_set.class.model_name.human) }
+    end
+  end
+
+  def import
+    @import_csv = ImportCsv.new
+  end
+
+  def upload_csv
+    respond_to do |format|
+      @customer = current_user.customer
+      @import_csv = ImportCsv.new(import_csv_params.merge(importer: ImporterVehicleUsageSets.new(current_user.customer)))
+      if @import_csv.valid? && @import_csv.import
+        format.html { redirect_to action: 'index' }
+      else
+        format.html { render action: 'import' }
+      end
     end
   end
 
@@ -134,5 +150,11 @@ class VehicleUsageSetsController < ApplicationController
                                               :store_rest_id,
                                               :service_time_start,
                                               :service_time_end)
+  end
+
+  def import_csv_params
+    params.require(:import_csv).permit(:replace_vehicles,
+                                       :file,
+                                       column_def: ImporterVehicleUsageSets.new(current_user.customer).columns.keys)
   end
 end

@@ -359,7 +359,7 @@ class Route < ApplicationRecord
       if recompute
         compute!(ignore_errors: ignore_errors)
       else
-        self.out_of_date = true
+        self.outdated = true
       end
     end
   end

@@ -91,8 +91,9 @@
                 <%= link_to vehicle_usage_sets_path, :class=>"dropdown-toggle", 'data-toggle'=>"dropdown" do %><i class="fa fa-truck fa-fw"></i> <span class="menu_label"><%= t 'vehicle_usage_sets.menu.vehicle_usage_sets' %></span> <span class="caret"></span><% end %>
                 <ul class="dropdown-menu">
                   <li><%= link_to vehicle_usage_sets_path do %><i class="fa fa-truck fa-fw"></i> <%= t 'all.verb.list' %><% end %></li>
+                  <li><%= link_to import_vehicle_usage_sets_path do %><i class="fa fa-upload fa-fw"></i> <%= t 'vehicle_usage_sets.menu.import_vehicle_usage_sets' %><% end %></li>
                   <li class="divider"></li>
-                  <% if !can?(:manage, OrderArray) %>
+                  <% unless can?(:manage, OrderArray) %>
                   <li><%= link_to deliverable_units_path do %><i class="fa fa-archive fa-fw"></i> <%= t 'vehicle_usage_sets.menu.deliverable_units' %><% end %></li>
                   <% end %>
                   <li><%= link_to stores_path do %><i class="fa fa-home fa-fw"></i> <%= t 'destinations.menu.stores' %><% end %></li>

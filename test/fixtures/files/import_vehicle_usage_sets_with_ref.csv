@@ -1,0 +1,4 @@
+Nom configuration,Horaire début,Horaire fin,Dépôt départ,Dépôt arrivée,Début plage repos,Fin plage repos,Durée de repos,Lieu de repos,Durée de service avant,Durée de service après,Référence véhicule,Nom véhicule,Email,Émission,Consommation,Calculateur d'itinéraire,Objectif du calculateur,Options du calculateur,Ajustement de la vitesse,Couleur,Appareils
+Test,28800,57600,,,,,,,,
+,,,,,,,,,,,,Véhicule 2,vehicle2@mapotempo.com,,,,,,,,
+,,,,,,,,,,,001,Véhicule 1,vehicle1@mapotempo.com,,10,,,,,#9000EE,

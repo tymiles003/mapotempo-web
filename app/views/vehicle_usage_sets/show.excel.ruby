@@ -1,6 +1,6 @@
-CSV.generate({col_sep: ';'}) |csv|
+CSV.generate({col_sep: ';'}) { |csv|
   csv << [
-    I18n.t('vehicle_usage_sets.import.name'),
+    I18n.t('vehicle_usage_sets.import.name_vehicle_usage_set'),
     I18n.t('vehicle_usage_sets.import.open'),
     I18n.t('vehicle_usage_sets.import.close'),
     I18n.t('vehicle_usage_sets.import.store_start_ref'),
@@ -12,12 +12,16 @@ CSV.generate({col_sep: ';'}) |csv|
     I18n.t('vehicle_usage_sets.import.service_time_start'),
     I18n.t('vehicle_usage_sets.import.service_time_end'),
 
-    I18n.t('vehicles.import.ref'),
-    I18n.t('vehicles.import.name'),
+    I18n.t('vehicles.import.ref_vehicle'),
+    I18n.t('vehicles.import.name_vehicle'),
     I18n.t('vehicles.import.contact_email'),
     I18n.t('vehicles.import.emission'),
     I18n.t('vehicles.import.consumption'),
-    I18n.t('vehicles.import.capacities'),
+  ] +
+    @vehicle_usage_set.customer.deliverable_units.map { |du|
+      I18n.t('vehicles.import.capacities') + (du.label ? '[' + du.label + ']' : '')
+    } +
+  [
     I18n.t('vehicles.import.router_mode'),
     I18n.t('vehicles.import.router_dimension'),
     I18n.t('vehicles.import.router_options'),
@@ -71,7 +75,11 @@ CSV.generate({col_sep: ';'}) |csv|
       vehicle_usage.vehicle.contact_email,
       vehicle_usage.vehicle.emission,
       vehicle_usage.vehicle.consumption,
-      vehicle_usage.vehicle.capacities.to_json,
+    ] +
+    @vehicle_usage_set.customer.deliverable_units.map { |du|
+      vehicle_usage.vehicle.capacities[du.id]
+    } +
+    [
       vehicle_usage.vehicle.router.try(:mode),
       vehicle_usage.vehicle.router_dimension,
       vehicle_usage.vehicle.router_options.to_json,
@@ -84,7 +92,7 @@ CSV.generate({col_sep: ';'}) |csv|
       enabled_devices.merge!(vehicle_usage.vehicle.devices.slice(*device_keys[device_key]))
     }
 
-    vehicle_columns << enabled_devices.select { |key, value| !value.to_s.empty? }
+    vehicle_columns << enabled_devices.select { |key, value| !value.to_s.empty? }.to_json
 
     csv << vehicle_usage_columns + vehicle_columns
   }

@@ -17,6 +17,7 @@ group :server do
   guard :rails, port: 3000, timeout: 60 do
     # watch(%r{^Gemfile\.lock$})
     watch(%r{^app/api/(.+)\.rb})
+    watch(%r{^app/jobs/(.+)\.rb})
     watch(%r{^config/.+(?<!locales)/.*})
     watch(%r{^config/*/[^.][^/]+\.(rb|yml)(?<!i18n-js\.yml)})
     watch(%r{^lib/.*})

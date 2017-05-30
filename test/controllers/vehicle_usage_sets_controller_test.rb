@@ -10,7 +10,7 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
   end
 
   def around
-    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect{ |i| [1000, 60, '_ibE_seK_seK_seK'] } } ) do
+    Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |url, mode, dimension, segments, options| segments.collect { |i| [1000, 60, '_ibE_seK_seK_seK'] } }) do
       yield
     end
   end
@@ -136,5 +136,45 @@ class VehicleUsageSetsControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to edit_vehicle_usage_set_path(assigns(:vehicle_usage_set))
+  end
+
+  test 'should show import template' do
+    [:csv, :excel].each { |format|
+      get :import_template, format: format
+      assert_response :success
+    }
+  end
+
+  test 'should import' do
+    get :import
+    assert_response :success
+    assert_valid response
+  end
+
+  test 'should upload' do
+    file = ActionDispatch::Http::UploadedFile.new(
+        tempfile: File.new(Rails.root.join('test/fixtures/files/import_vehicle_usage_sets_one.csv')),
+    )
+    file.original_filename = 'import_vehicle_usage_sets_one.csv'
+
+    assert_difference('VehicleUsageSet.count') do
+      post :upload_csv, import_csv: { replace_vehicles: true, file: file }
+    end
+
+    assert_redirected_to vehicle_usage_sets_path
+  end
+
+  test 'should not upload' do
+    file = ActionDispatch::Http::UploadedFile.new(
+        tempfile: File.new(Rails.root.join('test/fixtures/files/import_vehicle_usage_sets_without_conf_name.csv')),
+    )
+    file.original_filename = 'import_vehicle_usage_sets_without_conf_name.csv'
+
+    assert_difference('VehicleUsageSet.count', 0) do
+      post :upload_csv, import_csv: { replace_vehicles: true, file: file }
+    end
+
+    assert_template :import
+    assert_valid response
   end
 end

@@ -71,6 +71,11 @@ Rails.application.routes.draw do
   end
 
   resources :vehicle_usage_sets do
+    collection do
+      get :import, to: 'vehicle_usage_sets#import'
+      get :import_template, to: 'vehicle_usage_sets#import_template'
+      post :upload_csv, to: 'vehicle_usage_sets#upload_csv', :as => 'import_csv'
+    end
     patch 'duplicate'
   end
   delete 'vehicle_usage_sets' => 'vehicle_usage_sets#destroy_multiple'

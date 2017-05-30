@@ -2,6 +2,7 @@ require 'test_helper'
 
 class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
   include Rack::Test::Methods
+  include ActionDispatch::TestProcess
 
   def app
     Rails.application
@@ -81,6 +82,28 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
     assert_difference('VehicleUsageSet.count', -1) do
       delete api + "&ids=#{vehicle_usage_sets(:vehicle_usage_set_one).id}"
       assert_equal 204, last_response.status, last_response.body
+    end
+  end
+
+  test 'should import vehicle usage set from csv' do
+    assert_difference('VehicleUsageSet.count', 1) do
+      put api(), replace_vehicles: false, file: fixture_file_upload('files/import_vehicle_usage_sets_one.csv', 'text/csv')
+      assert last_response.ok?, last_response.body
+      json = JSON.parse(last_response.body)
+
+      assert_equal 'Test', json['name']
+      assert_equal '8:00', json['open']
+      assert_equal '16:00', json['close']
+    end
+  end
+
+  test 'should import vehicle usage set from csv and replace vehicles' do
+    assert_difference('VehicleUsageSet.count', 1) do
+      put api(), replace_vehicles: true, file: fixture_file_upload('files/import_vehicle_usage_sets_one.csv', 'text/csv')
+      assert last_response.ok?, last_response.body
+
+      assert_equal Vehicle.where(name: 'Véhicule 1').first.contact_email, 'vehicle1@mapotempo.com'
+      assert_equal Vehicle.where(name: 'Véhicule 1').first.consumption, 10
     end
   end
 end
