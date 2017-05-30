@@ -69,10 +69,10 @@ class V01::VisitsTest < ActiveSupport::TestCase
           assert_equal 2, visit['tag_ids'].size
           assert_equal 3.5, visit['quantities'][0]['quantity']
 
-          assert_equal '10:00', visit['open']
-          assert_equal '11:00', visit['close']
-          assert_equal '10:00', visit['open1']
-          assert_equal '11:00', visit['close1']
+          assert_equal '10:00:00', visit['open']
+          assert_equal '11:00:00', visit['close']
+          assert_equal '10:00:00', visit['open1']
+          assert_equal '11:00:00', visit['close1']
           assert_equal '00:05:33', visit['take_over']
           assert_equal '00:05:00', visit['take_over_default']
         end

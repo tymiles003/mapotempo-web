@@ -11,6 +11,7 @@ module TimeAttr
 
         define_method("#{name}_absolute_time") do
           integer_value = send(name)
+          # ChronicDuration is used for time over 24 hours
           # Display hours and minutes only: units: 5
           if integer_value
             if integer_value == 0
@@ -30,18 +31,9 @@ module TimeAttr
         define_method("#{name}_absolute_time_with_seconds") do
           integer_value = send(name)
           if integer_value
-            value = ChronicDuration.output(integer_value, limit_to_hours: true, format: :chrono)
-            if value =~ /\A\d:\d+\z/
-              "00:0#{value}"
-            elsif value =~ /\A\d+:\d+\z/
-              "00:#{value}"
-            elsif value == '0'
-              '00:00:00'
-            else
-              value
-            end
+            hour_value = ChronicDuration.output(integer_value, limit_to_hours: true, format: :chrono)
+            hour_value.length < 8 ? '00:00:00'[0..7 - hour_value.length] + hour_value : hour_value
           end
-          # Display hours and minutes only: units: 5
         end
       end
     end

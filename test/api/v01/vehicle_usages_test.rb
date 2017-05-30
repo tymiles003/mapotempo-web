@@ -55,9 +55,9 @@ class V01::VehicleUsagesTest < ActiveSupport::TestCase
     assert last_response.ok?, last_response.body
 
     @vehicle_usage.reload
-    assert_equal @vehicle_usage.open_absolute_time, JSON.parse(last_response.body)['open']
-    assert_equal @vehicle_usage.rest_start_absolute_time, JSON.parse(last_response.body)['rest_start']
-    assert_equal @vehicle_usage.rest_stop_absolute_time, JSON.parse(last_response.body)['rest_stop']
-    assert_equal @vehicle_usage.close_absolute_time, JSON.parse(last_response.body)['close']
+    assert_equal @vehicle_usage.open_absolute_time_with_seconds, JSON.parse(last_response.body)['open']
+    assert_equal @vehicle_usage.rest_start_absolute_time_with_seconds, JSON.parse(last_response.body)['rest_start']
+    assert_equal @vehicle_usage.rest_stop_absolute_time_with_seconds, JSON.parse(last_response.body)['rest_stop']
+    assert_equal @vehicle_usage.close_absolute_time_with_seconds, JSON.parse(last_response.body)['close']
   end
 end

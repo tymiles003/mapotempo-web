@@ -226,15 +226,15 @@ class V01::DestinationsTest < ActiveSupport::TestCase
 
         visits = JSON.parse(last_response.body)[0]['visits']
 
-        assert_equal '20:00', visits[0]['open1']
-        assert_equal '32:00', visits[0]['close1']
-        assert_equal '38:00', visits[0]['open2']
-        assert_equal '44:00', visits[0]['close2']
+        assert_equal '20:00:00', visits[0]['open1']
+        assert_equal '32:00:00', visits[0]['close1']
+        assert_equal '38:00:00', visits[0]['open2']
+        assert_equal '44:00:00', visits[0]['close2']
 
-        assert_equal '12:00', visits[1]['open1']
-        assert_equal '18:00', visits[1]['close1']
-        assert_equal '32:00', visits[1]['open2']
-        assert_equal '36:00', visits[1]['close2']
+        assert_equal '12:00:00', visits[1]['open1']
+        assert_equal '18:00:00', visits[1]['close1']
+        assert_equal '32:00:00', visits[1]['open2']
+        assert_equal '36:00:00', visits[1]['close2']
       end
     end
   end
