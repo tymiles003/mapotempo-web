@@ -16,7 +16,8 @@ module TimeAttr
             if integer_value == 0
               '00:00'
             else
-              ChronicDuration.output(integer_value, limit_to_hours: true, format: :chrono, units: 5)
+              hour_value = ChronicDuration.output(integer_value, limit_to_hours: true, format: :chrono, units: 5)
+              hour_value.length < 5 ? '00:00'[0..4 - hour_value.length] + hour_value : hour_value
             end
           end
         end

@@ -25,6 +25,8 @@ fr:
       complete: '%d-%m-%Y %H:%M:%S'
       date: '%d/%m/%Y'
       datepicker: '%d-%m-%Y'
+  schedule_type:
+    invalid: Format d'heure invalide
   default_time_zone: Paris
   activemodel:
     models:
