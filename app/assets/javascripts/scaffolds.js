@@ -108,14 +108,14 @@ var mapInitialize = function(params) {
       }),
       position: 'topleft',
       placeholder: I18n.t('web.geocoder.search'),
-      errorMessage: I18n.t('web.geocoder.empty_result')
-    }).addTo(map);
-    geocoder.markGeocode = function(result) {
-      this._map.fitBounds(result.bbox, {
+      errorMessage: I18n.t('web.geocoder.empty_result'),
+      defaultMarkGeocode: false
+    }).on('markgeocode', function(e) {
+      this._map.fitBounds(e.geocode.bbox, {
         maxZoom: 15,
         padding: [20, 20]
       });
-      var focusGeocode = L.marker(result.center, {
+      var focusGeocode = L.marker(e.geocode.center, {
         icon: new L.divIcon({
           html: '',
           iconSize: new L.Point(14, 14),
@@ -125,7 +125,7 @@ var mapInitialize = function(params) {
       setTimeout(function() {
         geocoderLayer.removeLayer(focusGeocode);
       }, 2000);
-    };
+    }).addTo(map);
   }
 
   if (params.overlay_layers) {
