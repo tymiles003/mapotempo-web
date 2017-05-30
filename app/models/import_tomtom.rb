@@ -22,7 +22,7 @@ class ImportTomtom
   include ActiveRecord::AttributeAssignment
   extend ActiveModel::Translation
 
-  attr_accessor :importer, :replace, :customer
+  attr_accessor :importer, :replace, :customer, :content_code
 
   def replace=(value)
     @replace = ValueToBoolean.value_to_boolean(value)
