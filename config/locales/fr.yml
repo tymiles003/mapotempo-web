@@ -1540,7 +1540,6 @@ fr:
       consumption_desc: Consommation du véhicule
       capacities: Capacités
       capacities_desc: Capacités maximales du véhicule
-      capacities_format: ""
       router_mode: Calculateur d'itinéraire
       router_mode_desc: Forcer l'utilisation d'un calculateur d'itinéraire
       router_dimension: Objectif du calculateur

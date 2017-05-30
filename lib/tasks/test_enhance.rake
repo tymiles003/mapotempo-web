@@ -16,20 +16,10 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 begin
-  if Gem::Specification.find_by_name('i18n-tasks')
-    require 'i18n/tasks/cli'
-
-    task :i18n_health do
-      I18n.with_locale 'en' do
-        I18n::Tasks::CLI.new.run(['health'])
-      end
-    end
-
-    Rake::Task['test'].enhance do
-      if !ENV.key?('BRAKEMAN') || ENV['BRAKEMAN'] != 'false'
-        require 'brakeman'
-        Brakeman.run app_path: '.', print_report: true
-      end
+  Rake::Task['test'].enhance do
+    if !ENV.key?('BRAKEMAN') || ENV['BRAKEMAN'] != 'false'
+      require 'brakeman'
+      Brakeman.run app_path: '.', print_report: true
     end
   end
 rescue Gem::LoadError
