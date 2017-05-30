@@ -288,6 +288,7 @@ var zonings_edit = function(params) {
       geom = geom.getLayers()[0];
     } else {
       geoJsonLayer = (new zoneGeometry).addOverlay(zone);
+      geom.feature = {geometry: {type: 'Polygon'} }; // FIXME: by-pass because https://github.com/zentrification/leaflet-draw-rails uses an old version which doesn't work anymore with CountInPolygon
       geoJsonLayer.addLayer(geom);
     }
 
