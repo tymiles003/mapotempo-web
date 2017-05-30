@@ -34,12 +34,12 @@ en:
             password: "Password"
             masternaut_ref: "Masternaut vehicle Ref."
           orange:
-            username: "Username"
+            user: "Username"
             password: "Password"
             orange_id: "Orange"
           alyacom:
             association: "Identifier"
-            api_key: "API key"
+            alyacom_api_key: "API key"
           teksat:
             teksat_customer_id: "Customer ID"
             username: "Username"

@@ -34,7 +34,8 @@ class Alyacom < DeviceBase
         settings: {
           association: :text,
           alyacom_api_key: :text # FIXME: parameters are sent at root level in api...
-        }
+        },
+        vehicle: {} # Empty hash to display export alyacom on route
       }
     }
   end
