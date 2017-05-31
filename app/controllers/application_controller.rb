@@ -30,6 +30,8 @@ class ApplicationController < ActionController::Base
 
   layout :layout_by_resource
 
+  # saves the location before loading each page so we can return to the right page.
+  before_action :store_current_location, unless: :devise_controller?
   before_action :api_key?, :load_vehicles
   before_action :set_locale
   before_action :customer_payment_period, if: :current_user
@@ -119,5 +121,15 @@ class ApplicationController < ActionController::Base
       format.json { render json: { error: t('errors.management.status.explanation.default') }, status: :internal_server_error }
       format.all { render body: nil, status: :internal_server_error }
     end
+  end
+
+  private
+
+  def store_current_location
+    store_location_for(:user, request.url) if request.get?
+  end
+
+  def after_sign_out_path_for(_resource)
+    request.referrer || root_path
   end
 end
