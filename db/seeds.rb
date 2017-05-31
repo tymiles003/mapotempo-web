@@ -37,7 +37,7 @@ truck = RouterWrapper.create!(
     name: 'RouterWrapper-HereTruck',
     name_locale: {fr: 'Calculateur pour camion', en: 'Truck router'},
     url_time: 'http://localhost:9090',
-    options: {time: true, distance: false, avoid_zones: true, isochrone: true, isodistance: true, motorway: true, toll: true, trailers: true, weight: true, weight_per_axle: true, height: true, width: true, length: true, hazardous_goods: true})
+    options: {time: true, distance: false, avoid_zones: true, isochrone: false, isodistance: false, motorway: true, toll: true, trailers: true, weight: true, weight_per_axle: true, height: true, width: true, length: true, hazardous_goods: true})
 public_transport = RouterWrapper.create!(
     mode: 'public_transport',
     name: 'RouterWrapper-PublicTransport',
