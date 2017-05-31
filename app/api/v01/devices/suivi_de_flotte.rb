@@ -28,6 +28,10 @@ class V01::Devices::SuiviDeFlotte < Grape::API
         @customer = current_customer(params[:customer_id])
       end
 
+      rescue_from DeviceServiceError do |e|
+        error! e.message, 200
+      end
+
       desc 'List Devices',
         detail: 'List Devices',
         nickname: 'deviceTomtomList'

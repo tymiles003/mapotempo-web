@@ -29,6 +29,10 @@ class V01::Devices::Alyacom < Grape::API
         @customer = current_customer(params[:customer_id])
       end
 
+      rescue_from DeviceServiceError do |e|
+        error! e.message, 200
+      end
+
       desc 'Send Planning Routes',
         detail: 'Send Planning Routes',
         nickname: 'deviceAlyacomSendMultiple'

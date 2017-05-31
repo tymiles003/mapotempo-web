@@ -16,6 +16,11 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class V01::Devices::Trimble < Grape::API
+
+  rescue_from DeviceServiceError do |e|
+    error! e.message, 200
+  end
+
   namespace :devices do
     namespace :trimble do
     end
