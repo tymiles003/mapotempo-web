@@ -147,6 +147,14 @@ class V01::RoutesTest < V01::RoutesBaseTest
     assert JSON.parse(last_response.body)['id']
   end
 
+  test 'should optimize all stops in the current route' do
+    [false, true].each do |all|
+      patch api(@route.planning.id, "#{@route.id}/optimize", details: true, all_stops: all)
+      assert_equal 200, last_response.status, last_response.body
+      assert JSON.parse(last_response.body)['id']
+    end
+  end
+
   test 'should return a route from vehicle from Ref JSON' do
     get "/api/0.1/plannings/#{@route.planning.id}/routes_by_vehicle/ref:#{vehicles(:vehicle_one).ref}.json?api_key=testkey1"
     assert last_response.ok?, last_response.body

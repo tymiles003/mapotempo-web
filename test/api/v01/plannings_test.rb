@@ -302,6 +302,13 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     end
   end
 
+  test 'should optimize all stops in routes' do
+    [false, true].each do |all|
+      get api("/#{@planning.id}/optimize", { details: true, all_stops: all })
+      assert last_response.ok?, last_response.body
+    end
+  end
+
   test 'should not optimize when a false planning\'s id is given' do
     planning_false_id = Random.new_seed
     [false, true].each do |sync|

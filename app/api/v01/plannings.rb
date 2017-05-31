@@ -165,13 +165,14 @@ class V01::Plannings < Grape::API
       optional :global, type: Boolean, desc: 'Use global optimization and move visits between routes if needed', default: false
       optional :details, type: Boolean, desc: 'Output route details', default: false
       optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
+      optional :all_stops, type: Boolean, desc: 'Optimize all stops (actives and inactives) if true, else only actives', default: false
     end
     get ':id/optimize' do
       id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(id).first!
       begin
-        Optimizer.optimize planning, nil, params[:global], params[:synchronous]
-      rescue NoSolutionFoundError => e
+        Optimizer.optimize(planning, nil, params[:global], params[:synchronous], params[:all_stops])
+      rescue NoSolutionFoundError
         status 304
       end
       if params[:details]

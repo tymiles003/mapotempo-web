@@ -99,10 +99,11 @@ class V01::Routes < Grape::API
           requires :id, type: String, desc: ID_DESC
           optional :details, type: Boolean, desc: 'Output Route Details', default: false
           optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
+          optional :all_stops, type: Boolean, desc: 'Optimize all stops (actives and inactives) if true, else only actives', default: false
         end
         patch ':id/optimize' do
           begin
-            if !Optimizer.optimize(get_route.planning, get_route, false, params[:synchronous])
+            if !Optimizer.optimize(get_route.planning, get_route, false, params[:synchronous], params[:all_stops])
               status 304
             else
               get_route.planning.customer.save!
