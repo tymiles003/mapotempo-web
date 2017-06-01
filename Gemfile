@@ -73,7 +73,7 @@ end
 
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger'
+gem 'grape-swagger', '< 0.26' # FIXME wait for ruby 2.2.6
 gem 'grape-swagger-entity'
 gem 'rack-cors'
 gem 'swagger-docs'

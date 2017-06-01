@@ -264,10 +264,10 @@ GEM
     grape-entity (0.6.0)
       activesupport
       multi_json (>= 1.3.2)
-    grape-swagger (0.27.2)
-      grape (>= 0.16.2)
-    grape-swagger-entity (0.2.0)
-      grape-entity (>= 0.5.0)
+    grape-swagger (0.25.3)
+      grape (>= 0.12.0)
+    grape-swagger-entity (0.1.5)
+      grape-entity
       grape-swagger (>= 0.20.4)
     guard (2.14.1)
       formatador (>= 0.2.4)
@@ -635,7 +635,7 @@ DEPENDENCIES
   font-awesome-rails
   grape
   grape-entity
-  grape-swagger
+  grape-swagger (< 0.26)
   grape-swagger-entity
   guard
   guard-delayed
