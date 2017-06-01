@@ -40,7 +40,6 @@ class Optimizer
         false
       else
         planning.customer.job_optimizer = Delayed::Job.enqueue(OptimizerJob.new(planning.id, route && route.id, global, all_stops))
-        planning.customer.job_optimizer.progress = '0;0;'
         planning.customer.job_optimizer.save!
       end
     else
