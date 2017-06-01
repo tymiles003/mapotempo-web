@@ -29,6 +29,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   // Keep track of Popups
   currentAjaxRequested: void(0),
   previousMarker: void(0),
+  activeClickMarker: void(0),
   ajaxTimer: 100,
 
   initialize: function(planningId, options) {
@@ -77,9 +78,10 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
 
     this.on('mouseover', function(e) {
-      if (e.layer instanceof L.Marker) {
+      if (e.layer instanceof L.Marker && !self.activeClickMarker) {
         // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
-        if(self.previousMarker && (self.previousMarker != e.layer)) self.previousMarker.unbindPopup();
+        if (self.previousMarker && (self.previousMarker != e.layer)) self.previousMarker.unbindPopup();
+        if (e.layer.click) e.layer.click = false; // Don't forget to re-init e.layer.click
         if (!e.layer.getPopup()) {
           self.createPopupForLayer(e.layer);
         } else if (!e.layer.getPopup().isOpen()) {
@@ -105,6 +107,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       }
     })
     .on('click', function(e) {
+      // Open popup if only one is actually in a click statement.
       if (e.layer instanceof L.Marker) {
         if (e.layer.properties.stop_id) {
           this.fire('clickStop', {
@@ -112,11 +115,26 @@ var RoutesLayer = L.FeatureGroup.extend({
           });
         }
         if (e.layer.click) {
-          e.layer.closePopup();
+          if (e.layer === self.activeClickMarker) {
+            e.layer.unbindPopup();
+            self.activeClickMarker = void(0);
+          }
           e.layer.click = false;
         } else {
+          if (self.activeClickMarker === void(0)) {
+            if (!e.layer.getPopup()) {
+              self.createPopupForLayer(self.activeClickMarker);
+            } else {
+              e.layer.openPopup();
+            }
+          } else if (e.layer !== self.activeClickMarker) {
+            self.activeClickMarker.click = false;
+            self.activeClickMarker.closePopup()
+                                  .unbindPopup();
+            self.createPopupForLayer(e.layer);
+          }
+          self.activeClickMarker = e.layer;
           e.layer.click = true;
-          e.layer.openPopup();
         }
       } else if (e.layer instanceof L.Path) {
         var distance = e.layer.properties.distance / 1000;
@@ -132,7 +150,8 @@ var RoutesLayer = L.FeatureGroup.extend({
     }).on('popupopen', function(e) {
       // Silence is golden
     }).on('popupclose', function(e) {
-      e.layer.click = false;
+      // Silence is golden
+      self.activeClickMarker = void(0);
     });
 
     // Empty layer required to create empty cluster
@@ -218,11 +237,15 @@ var RoutesLayer = L.FeatureGroup.extend({
 
   setClusterByZoom: function(e) {
     if (this.map.getZoom() >= 17) {
-      this.removeLayer(this.clusterSmallZoom);
-      this.addLayer(this.clusterLargeZoom);
+      if (!this.hasLayer(this.clusterLargeZoom)) {
+        this.removeLayer(this.clusterSmallZoom);
+        this.addLayer(this.clusterLargeZoom);
+      }
     } else {
-      this.removeLayer(this.clusterLargeZoom);
-      this.addLayer(this.clusterSmallZoom);
+      if (!this.hasLayer(this.clusterSmallZoom)) {
+        this.removeLayer(this.clusterLargeZoom);
+        this.addLayer(this.clusterSmallZoom);
+      }
     }
   },
 
