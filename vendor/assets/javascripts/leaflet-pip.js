@@ -3,9 +3,9 @@
 var gju = require('geojson-utils');
 
 function isPoly(l) {
-    return l.feature &&
-        l.feature.geometry &&
-        l.feature.geometry.type &&
+    return L.MultiPolygon && l instanceof L.MultiPolygon ||
+        l instanceof L.Polygon ||
+        l.feature && l.feature.geometry && l.feature.geometry.type &&
         ['Polygon', 'MultiPolygon'].indexOf(l.feature.geometry.type) !== -1;
 }
 
