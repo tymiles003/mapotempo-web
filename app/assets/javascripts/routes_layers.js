@@ -17,7 +17,6 @@
 //
 'use strict';
 
-
 /******************
  * PopupModule
  *
@@ -42,10 +41,10 @@ var popupModule = (function() {
   var _buildContentForPopup = function(marker) {
     if (_ajaxCanBeProceeded()) {
       buildPopupContent(marker.properties.type || 'stop', marker.properties.store_id || marker.properties.stop_id, function(content) {
-        marker.getPopup().setContent(SMT['stops/show']($.extend(content, { number: marker.properties.index } )));
+        marker.getPopup().setContent(SMT['stops/show']($.extend(content, { number: marker.properties.route_id != _context.options.outOfRouteId && marker.properties.index } )));
         return marker.getPopup()._container;
       });
-      //Wait for ajax request
+      // Wait for ajax request
       _currentAjaxRequested.done(function() {
         marker.openPopup();
       });
@@ -131,6 +130,7 @@ var popupModule = (function() {
 
 var RoutesLayer = L.FeatureGroup.extend({
   options: {
+    outOfRouteId: undefined,
     isochrone: false,
     isodistance: false,
     url_click2call: undefined,
@@ -250,7 +250,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       showCoverageOnHover: false,
       spiderfyOnMaxZoom: false,
       animate: false,
-      disableClusteringAtZoom: 12
+      disableClusteringAtZoom: 6
     });
     this.clusterSmallZoom.addLayer(layer);
 
@@ -469,7 +469,7 @@ var RoutesLayer = L.FeatureGroup.extend({
             var point = geoJsonPoint.properties.points[i];
             geoJsonPoint.properties.points[i] = undefined;
             point.type = geoJsonPoint.properties.type;
-            point.index = i + 1;
+            if (point.active) point.index = i + 1;
             point.route_id = geoJsonPoint.properties.route_id;
             point.color = point.color || geoJsonPoint.properties.color || (point.type == 'store' ? 'black' : '#707070');
             point.icon = point.icon || geoJsonPoint.properties.icon || (point.type == 'store' ? 'fa-home' : 'point');
@@ -487,7 +487,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         } else {
           point.route = geoJsonPoint.properties;
           var icon = new L.NumberedDivIcon({
-            number: point.index,
+            number: point.route_id != self.options.outOfRouteId && point.index,
             iconUrl: '/images/' + point.icon + '-' + point.color.substr(1) + '.svg',
             iconSize: new L.Point(12, 12),
             iconAnchor: new L.Point(6, 6),
