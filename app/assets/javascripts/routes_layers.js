@@ -231,8 +231,21 @@ var RoutesLayer = L.FeatureGroup.extend({
       } else if (e.layer instanceof L.Path) {
         var distance = e.layer.properties.distance / 1000;
         var driveTime = e.layer.properties.drive_time;
-        distance = (self.options.unit == 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
-        driveTime = (driveTime !== null) ? ('0' + parseInt(driveTime / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(driveTime / 60) % 60).slice(-2) + ':' + ('0' + (driveTime % 60)).slice(-2) : '';
+        distance = (self.options.unit === 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
+
+        if (driveTime) {
+          var driveTimeDay = null;
+          if (driveTime > 3600 * 24) {
+            driveTimeDay = driveTime / (3600 * 24) | 0;
+          }
+          driveTime = ('0' + parseInt(driveTime / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(driveTime / 60) % 60).slice(-2) + ':' + ('0' + (driveTime % 60)).slice(-2);
+          if (driveTimeDay) {
+            driveTime += ' (' + I18n.t('plannings.edit.popup.day') + driveTimeDay + ')';
+          }
+        } else {
+          driveTime = '';
+        }
+
         var content = (driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>';
         L.responsivePopup({
           minWidth: 200,
@@ -264,7 +277,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       spiderfyDistanceMultiplier: 0.5,
       iconCreateFunction: function(cluster) {
         var markers = cluster.getAllChildMarkers();
-        var n = [markers[0].properties.index, markers.length == 2 ? markers[1].properties.index : '…'];
+        var n = [markers[0].properties.index, markers.length === 2 ? markers[1].properties.index : '…'];
         var color;
         if (markers.length > 50) {
           color = markers[0].properties.color;
@@ -387,7 +400,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   focusOnMarkerInFeatureGroup: function(layers, idName, id) {
     var markers = this.clusterSmallZoom.getLayers();
     for (var j = 0; j < markers.length; j++) {
-      if (markers[j].properties[idName] == id) {
+      if (markers[j].properties[idName] === id) {
         this.setViewForMarker(layers, id, markers[j]);
         break;
       }

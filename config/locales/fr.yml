@@ -1230,6 +1230,7 @@ fr:
         visit: Visite
         status: 'Statut :'
         eta: 'ETA :'
+        day: 'J+'
       error:
         no_geolocalization: Pas de géolocalisation
         no_geolocalization_help: Pas de coordonnée géographique renseignée, ou l'adresse

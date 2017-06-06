@@ -1202,6 +1202,7 @@ en:
         visit: Visit
         status: 'Status:'
         eta: 'ETA:'
+        day: 'D+'
       error:
         no_geolocalization: No geolocalization
         no_geolocalization_help: No geographic coordinates or addresses could not
