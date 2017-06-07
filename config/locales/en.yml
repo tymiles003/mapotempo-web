@@ -1302,7 +1302,7 @@ en:
       ref_help: A free reference
       begin_end_date: Validity period
       begin_end_date_help: Period when planning is valid
-      tags_help: Restrict visits/destinations in the plan (visits/destinations should have either all of these tags (ALL) or one of the selected tags (OR) to be taken into account in the plan)
+      tags_help: Restrict visits/destinations in the plan (visits/destinations should have either all of these tags (ALL), or one of the selected tags (OR), to be taken into account in the plan).
       order_array: Orders
       zonings_help: Allow to automatically assign vehicles to visits/destinations with geographic zones.
       avoid_zones_help: In addition, allow to define zones where vehicle cannot circulate.
@@ -1406,7 +1406,7 @@ en:
       state: state
       state_desc: state name (spelling is critical for reliable geocoding)
       country: country
-      country_desc: country or state name (spelling is critical for reliable geocoding).
+      country_desc: country name (spelling is critical for reliable geocoding).
       lat: lat
       lat_desc: latitude of the destination in decimal degrees between -90° and 90°.
         E.g. 45.91
