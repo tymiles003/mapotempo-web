@@ -13,6 +13,7 @@ json.routes do
   json.array!(stop.route.planning.routes.select(&:vehicle_usage_id)) do |route|
     json.vehicle_usage_id route.vehicle_usage_id
     json.extract! route.vehicle_usage.vehicle, :color, :name
+    json.extract! route, :id
   end
 end
 

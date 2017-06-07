@@ -1494,7 +1494,7 @@ var plannings_edit = function(params) {
         if ($('.sidebar').hasClass('extended')) {
           var $this = $(this);
           var stop_id = $this.data('stop_id');
-          routesLayer.buildPopupContent('stop', stop_id, function(content) {
+          popupModule.buildPopupContent('stop', stop_id, function(content) {
             $this.popover({
               content: SMT['stops/show']($.extend(content, {
                 number: $('.number', $this).text(),

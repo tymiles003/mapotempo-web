@@ -17,6 +17,118 @@
 //
 'use strict';
 
+
+/******************
+ * PopupModule
+ *
+ */
+var popupModule = (function() {
+
+  var _context,
+      _previousMarker,
+      _activeClickMarker,
+      _currentAjaxRequested,
+      _ajaxTimer = 100;
+
+  var _ajaxCanBeProceeded = function() {
+    var currentTime = (!Date.now) ? (new Date().getTime()) : Date.now(); // Ensure IE <9 compatibility
+    if ((currentTime - _ajaxTimer) >= 100) {
+      _ajaxTimer = currentTime;
+      return true;
+    }
+    return false;
+  };
+
+  var _buildContentForPopup = function(marker) {
+    if (_ajaxCanBeProceeded()) {
+      buildPopupContent(marker.properties.type || 'stop', marker.properties.store_id || marker.properties.stop_id, function(content) {
+        marker.getPopup().setContent(SMT['stops/show']($.extend(content, { number: marker.properties.index } )));
+        return marker.getPopup()._container;
+      });
+      //Wait for ajax request
+      _currentAjaxRequested.done(function() {
+        marker.openPopup();
+      });
+    }
+  };
+
+  var buildPopupContent = function(type, id, callBack) {
+    _currentAjaxRequested = $.ajax({
+      url: _context.options.markerBaseUrl + (type == 'store' ?
+        'stores/' + id + '.json' : 'stops/' + id + '.json'),
+      beforeSend: beforeSendWaiting,
+      success: function(data) {
+        data.i18n = mustache_i18n;
+        data[type] = true;
+        var container = callBack(data);
+        if (container) {
+          if (_context.options.url_click2call) {
+            $('.phone_number', container).click(function(e) {
+              phone_number_call(e.currentTarget.innerHTML, _context.options.url_click2call, e.target);
+            });
+          }
+          $('[data-target$=isochrone-modal]', container).click(function(e) {
+            $('#isochrone_lat').val(data.lat);
+            $('#isochrone_lng').val(data.lng);
+            $('#isochrone_vehicle_usage_id').val(data.vehicle_usage_id);
+          });
+          $('[data-target$=isodistance-modal]', container).click(function(e) {
+            $('#isodistance_lat').val(data.lat);
+            $('#isodistance_lng').val(data.lng);
+            $('#isodistance_vehicle_usage_id').val(data.vehicle_usage_id);
+          });
+        }
+      },
+      complete: completeAjaxMap,
+      error: ajaxError
+    });
+  };
+
+  var createPopupForLayer = function(layer) {
+    layer.bindPopup(L.responsivePopup({
+      offset: layer.options.icon.options.iconSize.divideBy(2)
+    }), {
+      minWidth: 200,
+      autoPan: false
+    });
+    _buildContentForPopup(layer);
+  };
+
+  var initializeModule = function(options, that) {
+    _context = that;
+  };
+
+  var publicObject = {
+    initGlobal: initializeModule,
+    buildPopupContent: buildPopupContent,
+    createPopupForLayer: createPopupForLayer,
+
+    // PreviousMarker setter/getter
+    get previousMarker() {
+      return _previousMarker;
+    },
+    set previousMarker(value) {
+      if (value instanceof L.Marker) {
+        if (_previousMarker !== value) _previousMarker = value;
+      } else {
+        throw Error("Only Markers can be set in this variable");
+      }
+    },
+
+    // activeClickMarker setter/getter
+    get activeClickMarker() {
+      return _activeClickMarker;
+    },
+    set activeClickMarker(value) {
+      if (_activeClickMarker !== value) _activeClickMarker = value;
+    }
+
+  };
+
+  return publicObject;
+
+})();
+
 var RoutesLayer = L.FeatureGroup.extend({
   options: {
     isochrone: false,
@@ -26,50 +138,11 @@ var RoutesLayer = L.FeatureGroup.extend({
     markerBaseUrl: '/'
   },
 
-  // Keep track of Popups
-  currentAjaxRequested: void(0),
-  previousMarker: void(0),
-  activeClickMarker: void(0),
-  ajaxTimer: 100,
-
   initialize: function(planningId, options) {
+    popupModule.initGlobal(null, this);
     L.FeatureGroup.prototype.initialize.call(this);
     this.planningId = planningId;
     this.options = $.extend(this.options, options);
-  },
-
-  ajaxCanBeProceeded: function() {
-    var currentTime = (!Date.now) ? (new Date().getTime()) : Date.now(); // Ensure IE <9 compatibility
-    if ((currentTime - this.ajaxTimer) >= 100) {
-      this.ajaxTimer = currentTime;
-      return true;
-    }
-    return false;
-  },
-
-  createPopupForLayer: function(layer) {
-    layer.bindPopup(L.responsivePopup({
-      offset: layer.options.icon.options.iconSize.divideBy(2)
-    }), {
-      minWidth: 200,
-      autoPan: false
-    });
-    console.log('layer popup stop id => ', layer.properties.stop_id);
-    this.buildContentForPopup(layer);
-  },
-
-  buildContentForPopup: function(marker) {
-    if (this.ajaxCanBeProceeded()) {
-      this.buildPopupContent(marker.properties.type || 'stop', marker.properties.store_id || marker.properties.stop_id, function(content) {
-        marker.getPopup().setContent(SMT['stops/show']($.extend(content, { number: marker.properties.index } )));
-        return marker.getPopup()._container;
-      });
-      //Wait for ajax request
-      this.currentAjaxRequested.done(function() {
-        marker.openPopup();
-      });
-
-    }
   },
 
   onAdd: function(map) {
@@ -89,17 +162,17 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
 
     this.on('mouseover', function(e) {
-      if (e.layer instanceof L.Marker && !self.activeClickMarker) {
+      if (e.layer instanceof L.Marker && !popupModule.activeClickMarker) {
         // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
 
-        if (self.previousMarker && (self.previousMarker != e.layer))
-          self.previousMarker.closePopup();
+        if (popupModule.previousMarker && (popupModule.previousMarker != e.layer))
+          popupModule.previousMarker.closePopup();
 
         if (e.layer.click)
           e.layer.click = false; // Don't forget to re-init e.layer.click
 
         if (!e.layer.getPopup()) {
-          self.createPopupForLayer(e.layer);
+          popupModule.createPopupForLayer(e.layer);
         } else if (!e.layer.getPopup().isOpen()) {
           e.layer.openPopup();
         }
@@ -111,7 +184,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       }
     }).on('mouseout', function(e) {
       if (e.layer instanceof L.Marker) {
-        self.previousMarker = e.layer;
+        popupModule.previousMarker = e.layer;
         if (!e.layer.click && e.layer.getPopup()) {
           e.layer.closePopup();
         }
@@ -131,25 +204,25 @@ var RoutesLayer = L.FeatureGroup.extend({
           });
         }
         if (e.layer.click) {
-          if (e.layer === self.activeClickMarker) {
+          if (e.layer === popupModule.activeClickMarker) {
             e.layer.closePopup();
-            self.activeClickMarker = void(0);
+            popupModule.activeClickMarker = void(0);
           }
           e.layer.click = false;
         } else {
-          if (self.activeClickMarker === void(0)) {
+          if (popupModule.activeClickMarker === void(0)) {
             if (!e.layer.getPopup()) {
-              self.createPopupForLayer(e.layer);
+              popupModule.createPopupForLayer(e.layer);
             } else {
               e.layer.openPopup();
             }
-          } else if (e.layer !== self.activeClickMarker) {
-            self.activeClickMarker.click = false;
-            self.activeClickMarker.closePopup()
-                                  .unbindPopup();
-            self.createPopupForLayer(e.layer);
+          } else if (e.layer !== popupModule.activeClickMarker) {
+            popupModule.activeClickMarker.click = false;
+            popupModule.activeClickMarker.closePopup()
+                                         .unbindPopup();
+            popupModule.createPopupForLayer(e.layer);
           }
-          self.activeClickMarker = e.layer;
+          popupModule.activeClickMarker = e.layer;
           e.layer.click = true;
         }
       } else if (e.layer instanceof L.Path) {
@@ -167,7 +240,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       // Silence is golden
     }).on('popupclose', function(e) {
       // Silence is golden
-      self.activeClickMarker = void(0);
+      popupModule.activeClickMarker = void(0);
     });
 
     // Empty layer required to create empty cluster
@@ -216,39 +289,6 @@ var RoutesLayer = L.FeatureGroup.extend({
 
     this.map.on('zoomend', L.bind(this.setClusterByZoom, this));
     this.setClusterByZoom();
-  },
-
-  buildPopupContent: function(type, id, callBack) {
-    var self = this;
-    this.currentAjaxRequested = $.ajax({
-      url: self.options.markerBaseUrl + (type == 'store' ?
-        'stores/' + id + '.json' : 'stops/' + id + '.json'),
-      beforeSend: beforeSendWaiting,
-      success: function(data) {
-        data.i18n = mustache_i18n;
-        data[type] = true;
-        var container = callBack(data);
-        if (container) {
-          if (self.options.url_click2call) {
-            $('.phone_number', container).click(function(e) {
-              phone_number_call(e.currentTarget.innerHTML, self.options.url_click2call, e.target);
-            });
-          }
-          $('[data-target$=isochrone-modal]', container).click(function(e) {
-            $('#isochrone_lat').val(data.lat);
-            $('#isochrone_lng').val(data.lng);
-            $('#isochrone_vehicle_usage_id').val(data.vehicle_usage_id);
-          });
-          $('[data-target$=isodistance-modal]', container).click(function(e) {
-            $('#isodistance_lat').val(data.lat);
-            $('#isodistance_lng').val(data.lng);
-            $('#isodistance_vehicle_usage_id').val(data.vehicle_usage_id);
-          });
-        }
-      },
-      complete: completeAjaxMap,
-      error: ajaxError
-    });
   },
 
   setClusterByZoom: function(e) {
@@ -327,7 +367,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   setViewForMarker: function(layer, id, marker) {
       if (this.map.getBounds().contains(marker.getLatLng())) {
         this.map.setView(marker.getLatLng(), this.map.getZoom(), { reset: true });
-        this.createPopupForLayer(marker);
+        popupModule.createPopupForLayer(marker);
       } else {
 
         if (!this.clusterSmallZoom.hasLayer(marker))
@@ -336,7 +376,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         this.map.setView(marker.getLatLng(), 17, { reset: true });
         var cluster = this.clusterSmallZoom.getVisibleParent(marker);
         if (cluster && ('spiderfy' in cluster)) cluster.spiderfy();
-        this.createPopupForLayer(marker);
+        popupModule.createPopupForLayer(marker);
 
       }
   },
