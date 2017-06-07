@@ -37,4 +37,13 @@ class ApiWeb::V01::RoutesController < ApiWeb::V01::ApiWebController
     end
     @layer = current_user.customer.profile.layers.find_by(id: params[:layer_id]) if params[:layer_id]
   end
+
+  def print
+    @params = params
+    @route = @planning.routes.includes_destinations.find(params[:id])
+
+    respond_to do |format|
+      format.html
+    end
+  end
 end

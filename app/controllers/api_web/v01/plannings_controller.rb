@@ -33,12 +33,19 @@ class ApiWeb::V01::PlanningsController < ApiWeb::V01::ApiWebController
     capabilities
   end
 
+  def print
+    @params = params
+    respond_to do |format|
+      format.html
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
   # rights should be checked before thanks to CanCan::Ability
   def manage_planning
-    @manage_planning = [:organize]
+    @manage_planning = [:organize, :print]
     @callback_button = true
   end
 

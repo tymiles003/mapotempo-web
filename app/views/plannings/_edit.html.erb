@@ -139,6 +139,13 @@
           </ul>
         </div>
         <% end %>
+
+        <% if @manage_planning.include? :print %>
+          <%= link_to api_web_v01_print_planning_path(@planning), class: 'btn btn-default btn-sm', title: t('.export.print') do %>
+            <i class="fa fa-print fa-fw"></i>
+          <% end %>
+        <% end %>
+
       </div>
       <div id="planning"></div>
     </div>

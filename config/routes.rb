@@ -49,6 +49,8 @@ Rails.application.routes.draw do
 
       get 'plannings/:id/edit' => 'plannings#edit', :as => 'edit_planning'
       get 'plannings/:planning_id/routes' => 'routes#index', :as => 'routes'
+      get 'plannings/:id/print' => 'plannings#print', :as => 'print_planning'
+      get 'plannings/:planning_id/routes/:id/print' => 'routes#print', :as => 'print_route'
 
       get 'stops/:id' => 'stops#show'
     end

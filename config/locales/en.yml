@@ -1827,6 +1827,9 @@ en:
       empty_result: No results found
   api_web:
     v01:
+      plannings:
+        print:
+          button: Print
       destinations:
         index:
           none_destinations: No destinations found
@@ -1835,6 +1838,8 @@ en:
           none_routes: No routes found
           departure: 'Departure:'
           arrival: 'Arrival:'
+        print:
+          button: Print
       stores:
         index:
           none_stores: No stores found

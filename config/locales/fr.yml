@@ -1346,7 +1346,7 @@ fr:
   routes:
     show:
       print: Imprimer
-      wait: 'Temps d''attente :'
+      wait: "Temps d'attente :"
       annotating:
         hour: 'Heure de passage :'
         signature: 'Signature :'
@@ -1864,6 +1864,9 @@ fr:
       empty_result: Pas de résultat
   api_web:
     v01:
+      plannings:
+        print:
+          button: Imprimer
       destinations:
         index:
           none_destinations: Aucune destination n'a été chargée
@@ -1872,6 +1875,8 @@ fr:
           none_routes: Aucune route n'a été chargée
           departure: 'Départ :'
           arrival: 'Arrivée :'
+        print:
+          button: Imprimer
       stores:
         index:
           none_stores: Aucun dépôt n'a été chargée

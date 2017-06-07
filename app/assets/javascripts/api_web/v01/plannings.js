@@ -17,8 +17,19 @@
 //
 'use strict';
 
+var api_web_v01_plannings_print = function(params) {
+  'use strict';
+
+  $('.btn-print').click(function() {
+    window.print();
+  });
+};
+
 Paloma.controller('ApiWeb/V01/Plannings', {
   edit: function() {
     plannings_edit(this.params);
+  },
+  print: function() {
+    api_web_v01_plannings_print(this.params);
   }
 });

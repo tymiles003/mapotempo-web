@@ -139,6 +139,12 @@
           </ul>
         </div>
         {{/manage_export}}
+
+        {{^manage_export}}
+          {{#manage_print}}
+            <a href="/api-web/0.1/plannings/{{planning_id}}/routes/{{route_id}}/print" class="btn btn-default btn-xs" title="{{#i18n}}plannings.edit.export.print{{/i18n}}"><i class="fa fa-print fa-fw"></i></a>
+          {{/manage_print}}
+        {{/manage_export}}
       </div>
     {{/vehicle}}
   </div>

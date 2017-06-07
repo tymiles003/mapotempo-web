@@ -20,36 +20,43 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 [data-controller='routes'][data-action='show'],
-[data-controller='plannings'][data-action='show'] {
+[data-controller='plannings'][data-action='show'],
+[data-controller='api_web_v01_routes'][data-action='print'],
+[data-controller='api_web_v01_plannings'][data-action='print'] {
   @media print {
     .btn-print {
       display: none;
     }
+
     .route-print {
       page-break-after: always;
+
+      &:last-of-type {
+        page-break-after: avoid !important;
+      }
     }
-    .route-print:last-of-type {
-      page-break-after: avoid !important;
-    }
+
     li.list-group-item {
       page-break-inside: avoid;
     }
 
     .container {
-      padding: 0px !important;
+      padding: 0 !important;
     }
   }
+
   @media screen {
     .btn-print {
       position: fixed;
       right: 20px;
+      top: 60px;
       cursor: pointer;
       z-index: 100;
     }
   }
 
   ol.routes-print {
-    padding: 0px;
+    padding: 0;
     position: relative;
   }
   .route-print {
@@ -75,41 +82,50 @@
     }
 
     > ol {
-      padding: 0px;
+      padding: 0;
 
       li {
-        padding: 0px;
+        padding: 0;
+
+        &:nth-child(odd) {
+          background: lightgray !important;
+          -webkit-print-color-adjust: exact;
+        }
+
+        &.store,
+        &.stop {
+          padding-left: 5px;
+        }
       }
-      li:nth-child(odd) {
-        background: lightgray !important;
-        -webkit-print-color-adjust: exact;
-      }
-      li.store, li.stop {
-        padding-left: 5px;
-      }
+
       .number {
         background: #111 !important;
-        padding: 0px 6px;
+        padding: 0 6px;
         border: 1px solid #222;
         border-radius: 20px;
         color: white !important;
         -webkit-print-color-adjust: exact;
       }
+
       .number, .name {
         font-size: 150%;
         font-weight: bold;
       }
+
       .title {
         .window {
           display: block;
         }
       }
+
       .ref {
         font-weight: bold;
       }
+
       .quantity {
         font-weight: bold;
       }
+
       .comment {
         font-style: italic;
       }

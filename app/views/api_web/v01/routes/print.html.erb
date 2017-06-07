@@ -1,0 +1,15 @@
+<% content_for :title, @route.ref || @route.vehicle_usage.vehicle.name %>
+
+<%= button_tag class: 'btn btn-primary btn-print' do %>
+  <i class="fa fa-print fa-fw"></i> <%= t '.button' %>
+<% end %>
+
+<ol class="routes-print">
+  <%= render 'routes/show', route: @route %>
+</ol>
+
+<%
+  controller.js(
+    print_map: @route.planning.customer.print_map
+  )
+%>

@@ -75,8 +75,19 @@ var api_web_v01_routes_index = function(params) {
   progressBar && progressBar.advanceTo(50);
 };
 
+var api_web_v01_routes_print = function(params) {
+  'use strict';
+
+  $('.btn-print').click(function() {
+    window.print();
+  });
+};
+
 Paloma.controller('ApiWeb/V01/Routes', {
   index: function() {
     api_web_v01_routes_index(this.params);
+  },
+  print: function() {
+    api_web_v01_routes_print(this.params);
   }
 });
