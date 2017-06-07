@@ -458,7 +458,8 @@ var plannings_edit = function(params) {
   var routesLayer = new RoutesLayer(planning_id, {
     url_click2call: url_click2call,
     unit: prefered_unit,
-    outOfRouteId: outOfRouteId
+    outOfRouteId: outOfRouteId,
+    allRoutesWithVehicle: allRoutesWithVehicle
   }).on('initialLoad', function (e) {
     if (fitBounds) {
       var bounds = this.getBounds();
@@ -1333,7 +1334,7 @@ var plannings_edit = function(params) {
         if ($('.sidebar').hasClass('extended')) {
           var $this = $(this);
           var stop_id = $this.data('stop_id');
-          popupModule.buildPopupContent('stop', stop_id, function(content) {
+          popupModule.getPopupContent('stop', stop_id, function(content) {
             $this.popover({
               content: SMT['stops/show']($.extend(content, {
                 number: $('.number', $this).text(),

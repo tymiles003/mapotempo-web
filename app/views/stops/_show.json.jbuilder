@@ -9,14 +9,6 @@ else
   json.automatic_insert true
 end
 
-json.routes do
-  json.array!(stop.route.planning.routes.select(&:vehicle_usage_id)) do |route|
-    json.vehicle_usage_id route.vehicle_usage_id
-    json.extract! route.vehicle_usage.vehicle, :color, :name
-    json.extract! route, :id
-  end
-end
-
 (json.manage_organize true) if @manage_planning.include?(:organize)
 (json.manage_destination true) if @manage_planning.include?(:destination)
 (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
@@ -37,7 +29,6 @@ json.open_close2 stop.open2 || stop.close2
 (json.time stop.time_time) if stop.time
 (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
 json.distance (stop.distance || 0) / 1000
-json.out_of_route_id stop.route.planning.routes.detect{ |route| !route.vehicle_usage }.id
 duration = nil
 if stop.is_a?(StopVisit)
   json.visits true

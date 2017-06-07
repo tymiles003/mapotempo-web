@@ -40,7 +40,7 @@ var popupModule = (function() {
 
   var _buildContentForPopup = function(marker) {
     if (_ajaxCanBeProceeded()) {
-      buildPopupContent(marker.properties.type || 'stop', marker.properties.store_id || marker.properties.stop_id, function(content) {
+      getPopupContent(marker.properties.type || 'stop', marker.properties.store_id || marker.properties.stop_id, function(content) {
         marker.getPopup().setContent(SMT['stops/show']($.extend(content, { number: marker.properties.route_id != _context.options.outOfRouteId && marker.properties.index } )));
         return marker.getPopup()._container;
       });
@@ -51,7 +51,7 @@ var popupModule = (function() {
     }
   };
 
-  var buildPopupContent = function(type, id, callBack) {
+  var getPopupContent = function(type, id, callback) {
     _currentAjaxRequested = $.ajax({
       url: _context.options.markerBaseUrl + (type == 'store' ?
         'stores/' + id + '.json' : 'stops/' + id + '.json'),
@@ -59,7 +59,9 @@ var popupModule = (function() {
       success: function(data) {
         data.i18n = mustache_i18n;
         data[type] = true;
-        var container = callBack(data);
+        data.routes = _context.options.allRoutesWithVehicle; // unecessary to load all routes for each stop
+        data.out_of_route_id = _context.options.outOfRouteId;
+        var container = callback(data);
         if (container) {
           if (_context.options.url_click2call) {
             $('.phone_number', container).click(function(e) {
@@ -99,7 +101,7 @@ var popupModule = (function() {
 
   var publicObject = {
     initGlobal: initializeModule,
-    buildPopupContent: buildPopupContent,
+    getPopupContent: getPopupContent,
     createPopupForLayer: createPopupForLayer,
 
     // PreviousMarker setter/getter
@@ -131,6 +133,7 @@ var popupModule = (function() {
 var RoutesLayer = L.FeatureGroup.extend({
   options: {
     outOfRouteId: undefined,
+    allRoutesWithVehicle: [],
     isochrone: false,
     isodistance: false,
     url_click2call: undefined,
@@ -305,8 +308,8 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
   },
 
-  routesShow: function(e, geojson, callBack) {
-    this.load(e.routeIds, false, geojson, callBack);
+  routesShow: function(e, geojson, callback) {
+    this.load(e.routeIds, false, geojson, callback);
   },
 
   getPopRouteLayers: function(routeIds) {
@@ -391,7 +394,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
   },
 
-  load: function(routeIds, includeStores, geojson, callBack) {
+  load: function(routeIds, includeStores, geojson, callback) {
     if (!geojson) {
       var self = this;
       $.ajax({
@@ -399,8 +402,8 @@ var RoutesLayer = L.FeatureGroup.extend({
         beforeSend: beforeSendWaiting,
         success: function(data) {
           self.addRoutes(data);
-          if (callBack) {
-            callBack();
+          if (callback) {
+            callback();
           }
         },
         complete: completeAjaxMap,
@@ -408,21 +411,21 @@ var RoutesLayer = L.FeatureGroup.extend({
       });
     } else {
       this.addRoutes(geojson);
-      if (callBack) {
-        callBack();
+      if (callback) {
+        callback();
       }
     }
   },
 
-  loadAll: function(callBack) {
+  loadAll: function(callback) {
     var self = this;
     $.ajax({
       url: '/api/0.1/plannings/' + this.planningId + '.geojson?geojson=polyline',
       beforeSend: beforeSendWaiting,
       success: function(data) {
         self.addRoutes(data);
-        if (callBack) {
-          callBack();
+        if (callback) {
+          callback();
         }
       },
       complete: completeAjaxMap,
