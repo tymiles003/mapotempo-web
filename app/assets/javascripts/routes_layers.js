@@ -47,8 +47,19 @@ var RoutesLayer = L.FeatureGroup.extend({
     return false;
   },
 
+  createPopupForLayer: function(layer) {
+    layer.bindPopup(L.responsivePopup({
+      offset: layer.options.icon.options.iconSize.divideBy(2)
+    }), {
+      minWidth: 200,
+      autoPan: false
+    });
+    console.log('layer popup stop id => ', layer.properties.stop_id);
+    this.buildContentForPopup(layer);
+  },
+
   buildContentForPopup: function(marker) {
-    if(this.ajaxCanBeProceeded()) {
+    if (this.ajaxCanBeProceeded()) {
       this.buildPopupContent(marker.properties.type || 'stop', marker.properties.store_id || marker.properties.stop_id, function(content) {
         marker.getPopup().setContent(SMT['stops/show']($.extend(content, { number: marker.properties.index } )));
         return marker.getPopup()._container;
@@ -80,8 +91,13 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.on('mouseover', function(e) {
       if (e.layer instanceof L.Marker && !self.activeClickMarker) {
         // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
-        if (self.previousMarker && (self.previousMarker != e.layer)) self.previousMarker.unbindPopup();
-        if (e.layer.click) e.layer.click = false; // Don't forget to re-init e.layer.click
+
+        if (self.previousMarker && (self.previousMarker != e.layer))
+          self.previousMarker.closePopup();
+
+        if (e.layer.click)
+          e.layer.click = false; // Don't forget to re-init e.layer.click
+
         if (!e.layer.getPopup()) {
           self.createPopupForLayer(e.layer);
         } else if (!e.layer.getPopup().isOpen()) {
@@ -96,7 +112,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     }).on('mouseout', function(e) {
       if (e.layer instanceof L.Marker) {
         self.previousMarker = e.layer;
-        if (!e.layer.click) {
+        if (!e.layer.click && e.layer.getPopup()) {
           e.layer.closePopup();
         }
       } else if (e.layer instanceof L.Path) {
@@ -116,14 +132,14 @@ var RoutesLayer = L.FeatureGroup.extend({
         }
         if (e.layer.click) {
           if (e.layer === self.activeClickMarker) {
-            e.layer.unbindPopup();
+            e.layer.closePopup();
             self.activeClickMarker = void(0);
           }
           e.layer.click = false;
         } else {
           if (self.activeClickMarker === void(0)) {
             if (!e.layer.getPopup()) {
-              self.createPopupForLayer(self.activeClickMarker);
+              self.createPopupForLayer(e.layer);
             } else {
               e.layer.openPopup();
             }
@@ -333,16 +349,6 @@ var RoutesLayer = L.FeatureGroup.extend({
         break;
       }
     }
-  },
-
-  createPopupForLayer: function(layer) {
-    layer.bindPopup(L.responsivePopup({
-      offset: layer.options.icon.options.iconSize.divideBy(2)
-    }), {
-      minWidth: 200,
-      autoPan: false
-    });
-    this.buildContentForPopup(layer);
   },
 
   load: function(routeIds, includeStores, geojson, callBack) {
