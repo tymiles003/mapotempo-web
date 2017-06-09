@@ -107,9 +107,6 @@ class ApplicationController < ActionController::Base
       format.json { render json: { error: t('errors.management.status.explanation.404') }, status: :not_found }
       format.all { render body: nil, status: :not_found }
     end
-
-    # Raise error in development for debugging and in production for sentry
-    raise
   end
 
   def server_error(exception)
@@ -122,9 +119,6 @@ class ApplicationController < ActionController::Base
       format.json { render json: { error: t('errors.management.status.explanation.default') }, status: :internal_server_error }
       format.all { render body: nil, status: :internal_server_error }
     end
-
-    # Raise error in development for debugging and in production for sentry
-    raise
   end
 
 end
