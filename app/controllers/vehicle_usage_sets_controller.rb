@@ -23,6 +23,7 @@ class VehicleUsageSetsController < ApplicationController
 
   def index
     @customer = current_user.customer
+    @vehicle_usage_sets = @customer.vehicle_usage_sets.includes([:vehicle_usages, {vehicle_usages: [vehicle: [:router, :customer]]}])
   end
 
   def show

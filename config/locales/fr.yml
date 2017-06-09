@@ -336,6 +336,7 @@ fr:
         label: Libellé
         color: Couleur
         icon: Icône
+        icon_size: Taille d'icône
         ref: Référence
       user:
         email: Email
@@ -527,6 +528,9 @@ fr:
             end_date:
               blank: doit être rempli(e) si une date de début de validité est renseignée
               after: doit être après la date de début de validité
+        tag:
+          icon_unknown: n'est pas une icône font-awesome autorisée
+          icon_size_invalid: n'est pas une taille valide
   errors:
     management:
       title: Impossible d'accèder à la page
@@ -1496,12 +1500,16 @@ fr:
       title: Nouveau libellé
     form:
       color_default: Par défaut
-      icon_default: Par défaut
       color_help: Forcer l'utilisation de cette couleur
       customised_color: Couleur personnalisée
-      icon_help: Forcer l'utilisation de ce symbole
       ref: Référence
       ref_help: Référence libre
+      icon_size:
+        small: petite
+        medium: moyenne
+        large: grande
+      prefered_icons: Conseillés
+      other_icons: Autres
   users:
     menu:
       sign_out: Déconnexion

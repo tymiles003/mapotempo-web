@@ -155,7 +155,7 @@ class ZoningsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_zoning
-    @zoning = current_user.customer.zonings.find params[:id] || params[:zoning_id]
+    @zoning = current_user.customer.zonings.includes(customer: [vehicle_usage_sets: [vehicle_usages: :vehicle]]).find(params[:id] || params[:zoning_id])
   end
 
   def manage_zoning

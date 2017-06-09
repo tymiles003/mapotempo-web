@@ -335,6 +335,7 @@ en:
         label: Label
         color: Color
         icon: Icon
+        icon_size: Icon size
         ref: Reference
       user:
         email: E-Mail
@@ -527,6 +528,9 @@ en:
             end_date:
               blank: can't be blank when if begin date is set
               after: must be after begin date
+        tag:
+          icon_unknown: is not in font-awesome icons list
+          icon_size_invalid: is not a valid size
   errors:
     management:
       title: "An error occurred"
@@ -1460,12 +1464,16 @@ en:
       title: New tag
     form:
       color_default: Default
-      icon_default: Default
       color_help: Force use of this color
       customised_color: Select a custom color
-      icon_help: Force use of this symbol
       ref: Reference
       ref_help: A free reference
+      icon_size:
+        small: small
+        medium: medium
+        large: large
+      prefered_icons: Prefered
+      other_icons: Others
   users:
     menu:
       sign_out: Sign out

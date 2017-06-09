@@ -22,16 +22,12 @@ class StopsController < ApplicationController
 
   def show
     respond_to do |format|
+      @stop = Stop.includes(route: [planning: [routes: [vehicle_usage: [:vehicle]]]]).find(params[:id])
+
       @manage_planning = PlanningsController.manage
       @show_isoline = true
+
       format.json
     end
-  end
-
-  private
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def route_params
-    params.require(:stop).permit()
   end
 end

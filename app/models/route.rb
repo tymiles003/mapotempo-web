@@ -222,7 +222,7 @@ class Route < ApplicationRecord
       }
 
       # Last stop to store
-      distance, drive_time, trace = traces.shift
+      distance, drive_time,   trace = traces.shift
       if drive_time
         self.distance += distance
         stops_drive_time[:stop] = drive_time
@@ -231,9 +231,7 @@ class Route < ApplicationRecord
       end
 
       # Add service time to end point
-      if !service_time_end.nil?
-        self.end += service_time_end
-      end
+      self.end += service_time_end unless service_time_end.nil?
 
       if trace
         geojson_tracks << {
@@ -260,34 +258,26 @@ class Route < ApplicationRecord
   end
 
   def compute!(options = {})
-    self.geojson_points = if !stops.empty?
-      points = []
-      coordinates = []
-      stops.each{ |stop|
+    unless stops.empty?
+      self.geojson_points = stops.map.with_index do |stop, i|
         if stop.position?
-          coordinates << [stop.lat, stop.lng]
-          points << {
-            stop_id: stop.id,
-            color: stop.color,
-            icon: stop.icon,
-            icon_size: stop.icon_size
-          }.compact
+          {
+              type: 'Feature',
+              geometry: {
+                  type: 'Point',
+                  coordinates: [stop.lng, stop.lat]
+              },
+              properties: {
+                  route_id: self.id,
+                  stop_id: stop.id,
+                  index: i + 1,
+                  color: stop.default_color,
+                  icon: stop.icon,
+                  icon_size: stop.icon_size
+              }
+          }.to_json
         end
-      }
-
-      {
-        type: 'Feature',
-        geometry: {
-          type: 'MultiPoint',
-          polylines: Polylines::Encoder.encode_points(coordinates, 1e6)
-        },
-        properties: {
-          planning_id: self.planning.id,
-          route_id: self.id,
-          color: self.default_color,
-          points: points
-        }
-      }.to_json
+      end.compact
     end
 
     if self.vehicle_usage
@@ -301,7 +291,7 @@ class Route < ApplicationRecord
         time -= vehicle_usage.default_service_time_end if vehicle_usage.default_service_time_end
         stops_sort.reverse_each{ |stop|
           if stop.active && (stop.position? || stop.is_a?(StopRest))
-            open, close = stops_time_windows[stop]
+            _open, close = stops_time_windows[stop]
             if stop.time && (stop.out_of_window || (close && time > close))
               time = [stop.time, close ? close - stop.duration : 0].max
             else
@@ -543,44 +533,35 @@ class Route < ApplicationRecord
   end
 
   def self.routes_to_geojson(routes, include_stores = true, respect_hidden = true, polyline = true)
-    stores_geojson = if include_stores
-      coordinates = []
-      properties = []
-      routes.select{ |r| r.vehicle_usage && (!respect_hidden || !r.hidden) }.collect(&:vehicle_usage).collect{ |vu| [vu.default_store_start, vu.default_store_start, vu.default_store_start] }.flatten.compact.uniq.select(&:position?).collect{ |store|
-        coordinates << [store.lat, store.lng]
-        properties << {
-          store_id: store.id,
-          color: store.color,
-          icon: store.icon,
-          icon_size: store.icon_size
-        }
-      }
+    stores_geojson = []
 
-      if !coordinates.empty?
+    if include_stores
+      stores_geojson = routes.select { |r| r.vehicle_usage && (!respect_hidden || !r.hidden) }.collect(&:vehicle_usage).collect { |vu| [vu.default_store_start, vu.default_store_start, vu.default_store_start] }.flatten.compact.uniq.select(&:position?).collect do |store|
+        coordinates = [store.lng, store.lat]
         {
-          type: 'Feature',
-          geometry: {
-            type: 'MultiPoint'
-          },
-          properties: {
-            type: 'store',
-            points: properties
-          }
-        }
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: coordinates
+            },
+            properties: {
+                store_id: store.id,
+                color: store.color,
+                icon: store.icon,
+                icon_size: store.icon_size
+            }
+        }.to_json unless coordinates.empty?
       end
     end
 
     if polyline
-      features = routes.select{ |r| !respect_hidden || !r.hidden }.collect{ |r| [r.geojson_tracks, r.geojson_points] }.flatten.compact
-      if stores_geojson
-        stores_geojson[:geometry][:polylines] = Polylines::Encoder.encode_points(coordinates, 1e6)
-        features << stores_geojson.to_json
-      end
+      features = routes.select { |r| !respect_hidden || !r.hidden }.map { |r| [r.geojson_tracks, *r.geojson_points] }.flatten.compact
+      features += stores_geojson if stores_geojson
 
-      ('{"type":"FeatureCollection","features":[' + features.join(',') + ']}') if !features.empty?
+      ('{"type":"FeatureCollection","features":[' + features.join(',') + ']}') unless features.empty?
     else
-      features = JSON.parse('[' + routes.select{ |r| !respect_hidden || !r.hidden }.collect{ |r| [r.geojson_tracks, r.geojson_points] }.flatten.compact.join(',') + ']').collect{ |feature|
-        feature['geometry']['coordinates'] = Polylines::Decoder.decode_polyline(feature['geometry']['polylines'], 1e6).collect{ |a, b| [b.round(6), a.round(6)] }
+      features = JSON.parse('[' + routes.select { |r| !respect_hidden || !r.hidden }.collect { |r| [r.geojson_tracks, *r.geojson_points] }.flatten.compact.join(',') + ']').collect { |feature|
+        feature['geometry']['coordinates'] = Polylines::Decoder.decode_polyline(feature['geometry']['polylines'], 1e6).collect { |a, b| [b.round(6), a.round(6)] }
         feature['geometry'].delete('polylines')
         feature
       }
@@ -589,9 +570,9 @@ class Route < ApplicationRecord
       end
 
       {
-        type: 'FeatureCollection',
-        features: features
-      }.to_json if !features.empty?
+          type: 'FeatureCollection',
+          features: features
+      }.to_json unless features.empty?
     end
   end
 

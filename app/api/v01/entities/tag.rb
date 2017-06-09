@@ -23,6 +23,7 @@ class V01::Entities::Tag < Grape::Entity
   expose(:id, documentation: { type: Integer })
   expose(:label, documentation: { type: String })
   expose(:ref, documentation: { type: String })
-  expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
-  expose(:icon, documentation: { type: String, values: ::Tag::ICONS_TABLE })
+  expose(:color, documentation: { type: String, desc: "Color code with #. Default: #{::Tag::COLOR_DEFAULT}." })
+  expose(:icon, documentation: { type: String, desc: "Icon name from font-awesome. Default: #{::Tag::ICON_DEFAULT}." })
+  expose(:icon_size, documentation: { type: String, values: ::Tag::ICON_SIZE, desc: "Icon size. Default: #{::Tag::ICON_SIZE_DEFAULT}." })
 end

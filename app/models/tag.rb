@@ -16,7 +16,10 @@
 # <http://www.gnu.org/licenses/agpl.html>
 #
 class Tag < ApplicationRecord
-  ICONS_TABLE = %w(square diamon star user).freeze
+  ICON_SIZE = %w(small medium large).freeze
+  COLOR_DEFAULT = '#000000'.freeze
+  ICON_DEFAULT = 'fa-circle'.freeze
+  ICON_SIZE_DEFAULT = 'medium'.freeze
 
   default_scope { order(:label) }
 
@@ -32,10 +35,24 @@ class Tag < ApplicationRecord
   validates :label, presence: true
   validates :ref, uniqueness: { scope: :customer_id, case_sensitive: true }, allow_nil: true, allow_blank: true
   validates_format_of :color, with: /\A(|\#[A-Fa-f0-9]{6})\Z/, allow_nil: true
-  validates_inclusion_of :icon, in: [''] + ICONS_TABLE, allow_nil: true
+
+  validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.tag.icon_unknown') }
+  validates :icon_size, inclusion: { in: Tag::ICON_SIZE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.tag.icon_size_invalid') } }
 
   amoeba do
     exclude_association :visits
     exclude_association :plannings
+  end
+
+  def default_color
+    color || COLOR_DEFAULT
+  end
+
+  def default_icon
+    icon || ICON_DEFAULT
+  end
+
+  def default_icon_size
+    icon_size || ICON_SIZE_DEFAULT
   end
 end

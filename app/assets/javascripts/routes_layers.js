@@ -130,6 +130,68 @@ var popupModule = (function() {
 
 })();
 
+function markerClusterIcon(childCount, defaultColor, borderColors) {
+  var totalCountColors = 0;
+  for (var colorCount in borderColors) {
+    totalCountColors += borderColors[colorCount];
+  }
+
+  L.Icon.MarkerCluster = L.Icon.extend({
+    options: {
+      iconSize: new L.Point(36, 36),
+      className: 'marker-cluster-multi-color leaflet-markercluster-icon'
+    },
+    createIcon: function () {
+      var canvas = document.createElement('canvas');
+      this._setIconStyles(canvas, 'icon');
+      var iconSize = this.options.iconSize;
+      canvas.width = iconSize.x;
+      canvas.height = iconSize.y;
+      this.draw(canvas.getContext('2d'), iconSize.x, iconSize.y);
+      return canvas;
+    },
+    createShadow: function () {
+      return null;
+    },
+    draw: function (canvas, width, height) {
+      var borderSize = 6;
+      var halfSize = width / 2 | 0;
+      var start = 0;
+      for (var colorValue in borderColors) {
+        var size = borderColors[colorValue] / totalCountColors;
+
+        if (size > 0) {
+          canvas.beginPath();
+          canvas.moveTo(halfSize, halfSize);
+          canvas.fillStyle = colorValue;
+          var from = start + 0.14,
+            to = start + size * Math.PI * 2;
+          if (to < from) {
+            from = start;
+          }
+          canvas.arc(halfSize, halfSize, halfSize, from, to);
+          start = start + size * Math.PI * 2;
+          canvas.lineTo(halfSize, halfSize);
+          canvas.fill();
+          canvas.closePath();
+        }
+      }
+      canvas.beginPath();
+      canvas.fillStyle = defaultColor;
+      canvas.arc(halfSize, halfSize, halfSize - borderSize, 0, Math.PI * 2);
+      canvas.fill();
+      canvas.closePath();
+      canvas.fillStyle = 'white';
+      canvas.textAlign = 'center';
+      canvas.textBaseline = 'middle';
+      canvas.font = '12px "Helvetica Neue", Arial, Helvetica, sans-serif';
+      canvas.fillText(childCount, halfSize, halfSize, halfSize * 2 - borderSize);
+    }
+  });
+
+  return new L.Icon.MarkerCluster();
+}
+
 var RoutesLayer = L.FeatureGroup.extend({
   options: {
     outOfRouteId: undefined,
@@ -139,6 +201,74 @@ var RoutesLayer = L.FeatureGroup.extend({
     url_click2call: undefined,
     unit: 'km',
     markerBaseUrl: '/'
+  },
+
+  // Clusters for each route
+  clusterByRoutes: {},
+
+  // Markers for each store
+  markerStores: [],
+
+  // Marker options
+  markerOptions: {
+    showCoverageOnHover: false,
+    spiderfyOnMaxZoom: true,
+    animate: false,
+    maxClusterRadius: function (currentZoom) {
+      return currentZoom >= 13 ? 1 : 30;
+    },
+    spiderfyDistanceMultiplier: 0.5,
+    // disableClusteringAtZoom: 12,
+    iconCreateFunction: function(cluster) {
+      var currentZoom = cluster._map.getZoom();
+
+      if (currentZoom >= 13) {
+        var markers = cluster.getAllChildMarkers();
+        var n = [markers[0].properties.index, markers.length === 2 ? markers[1].properties.index : '…'];
+        var color;
+        if (markers.length > 50) {
+          color = markers[0].properties.color;
+        } else {
+          var colors = {};
+          var max = 0;
+          for (var i = 0; i < markers.length; i++) {
+            var count = colors[markers[i].properties.color] ? colors[markers[i].properties.color] + 1 : 1;
+            if (count > max) {
+              max = count;
+              color = markers[i].properties.color;
+            }
+          }
+        }
+
+        return new L.divIcon({
+          html: '<span class="fa-stack"><i class="fa fa-circle cluster-point-icon" style="color: ' + color + ';"></i><span class="fa-stack-1x point-icon-text">' + n.join(',') + '</span></span>',
+          iconSize: new L.Point(24, 24),
+          iconAnchor: new L.Point(12, 12),
+          className: 'cluster-icon-container'
+        });
+      } else {
+        var childCount = cluster.getChildCount();
+        var routeColor = cluster.getAllChildMarkers()[0].properties.route_color || cluster.getAllChildMarkers()[0].properties.color;
+        var countByColor = {};
+        cluster.getAllChildMarkers().forEach(function (childMarker) {
+          if (!countByColor[childMarker.properties.color]) {
+            countByColor[childMarker.properties.color] = 1;
+          } else {
+            countByColor[childMarker.properties.color] += 1;
+          }
+        });
+
+        if (Object.keys(countByColor).length > 1) {
+          return markerClusterIcon(childCount, routeColor, countByColor);
+        } else {
+          return new L.DivIcon({
+            html: '<div class="marker-cluster-icon" style="background-color: ' + routeColor + ';"><span>' + childCount + '</span></div>',
+            className: 'marker-cluster marker-cluster-small',
+            iconSize: new L.Point(40, 40)
+          });
+        }
+      }
+    }
   },
 
   initialize: function(planningId, options) {
@@ -191,11 +321,15 @@ var RoutesLayer = L.FeatureGroup.extend({
         if (!e.layer.click && e.layer.getPopup()) {
           e.layer.closePopup();
         }
-      } else if (e.layer instanceof L.Path) {
-        e.layer.setStyle({
+      } else if (event.layer instanceof L.Path) {
+        event.layer.setStyle({
           opacity: 0.5,
           weight: 5
         });
+      }
+
+      if (self.popupOpenTimer) {
+        clearTimeout(self.popupOpenTimer);
       }
     })
     .on('click', function(e) {
@@ -203,7 +337,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       if (e.layer instanceof L.Marker) {
         if (e.layer.properties.stop_id) {
           this.fire('clickStop', {
-            stopId: e.layer.properties.stop_id
+            stopId: event.layer.properties.stop_id
           });
         }
         if (e.layer.click) {
@@ -228,9 +362,9 @@ var RoutesLayer = L.FeatureGroup.extend({
           popupModule.activeClickMarker = e.layer;
           e.layer.click = true;
         }
-      } else if (e.layer instanceof L.Path) {
-        var distance = e.layer.properties.distance / 1000;
-        var driveTime = e.layer.properties.drive_time;
+      } else if (event.layer instanceof L.Path) {
+        var distance = event.layer.properties.distance / 1000;
+        var driveTime = event.layer.properties.drive_time;
         distance = (self.options.unit === 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
 
         if (driveTime) {
@@ -250,75 +384,14 @@ var RoutesLayer = L.FeatureGroup.extend({
         L.responsivePopup({
           minWidth: 200,
           autoPan: false
-        }).setLatLng(e.latlng).setContent(content).openOn(self.map);
+        }).setLatLng(event.latlng).setContent(content).openOn(self.map);
       }
-    }).on('popupopen', function(e) {
+    }).on('popupopen', function(event) {
       // Silence is golden
     }).on('popupclose', function(e) {
       // Silence is golden
       popupModule.activeClickMarker = void(0);
     });
-
-    // Empty layer required to create empty cluster
-    var layer = L.featureGroup([]);
-
-    this.clusterSmallZoom = L.markerClusterGroup({
-      showCoverageOnHover: false,
-      spiderfyOnMaxZoom: false,
-      animate: false,
-      disableClusteringAtZoom: 6
-    });
-    this.clusterSmallZoom.addLayer(layer);
-
-    this.clusterLargeZoom = L.markerClusterGroup({
-      showCoverageOnHover: false,
-      animate: false,
-      maxClusterRadius: 1,
-      spiderfyDistanceMultiplier: 0.5,
-      iconCreateFunction: function(cluster) {
-        var markers = cluster.getAllChildMarkers();
-        var n = [markers[0].properties.index, markers.length === 2 ? markers[1].properties.index : '…'];
-        var color;
-        if (markers.length > 50) {
-          color = markers[0].properties.color;
-        } else {
-          var colors = {};
-          var max = 0;
-          for (var i = 0; i < markers.length; i++) {
-            var count = colors[markers[i].properties.color] ? colors[markers[i].properties.color] + 1 : 1;
-            if (count > max) {
-              max = count;
-              color = markers[i].properties.color;
-            }
-          }
-        }
-        return new L.NumberedDivIcon({
-          number: n.join(","),
-          iconUrl: '/images/point_large-' + color.substr(1) + '.svg',
-          iconSize: new L.Point(24, 24),
-          iconAnchor: new L.Point(12, 12),
-          className: "large"
-        });
-      }
-    });
-    this.clusterLargeZoom.addLayer(layer);
-
-    this.map.on('zoomend', L.bind(this.setClusterByZoom, this));
-    this.setClusterByZoom();
-  },
-
-  setClusterByZoom: function(e) {
-    if (this.map.getZoom() >= 17) {
-      if (!this.hasLayer(this.clusterLargeZoom)) {
-        this.removeLayer(this.clusterSmallZoom);
-        this.addLayer(this.clusterLargeZoom);
-      }
-    } else {
-      if (!this.hasLayer(this.clusterSmallZoom)) {
-        this.removeLayer(this.clusterLargeZoom);
-        this.addLayer(this.clusterSmallZoom);
-      }
-    }
   },
 
   routesShow: function(e, geojson, callback) {
@@ -342,8 +415,11 @@ var RoutesLayer = L.FeatureGroup.extend({
 
   routesHide: function(e) {
     var routeLayers = this.getPopRouteLayers(e.routeIds);
-    this.clusterSmallZoom.removeLayers(routeLayers);
-    this.clusterLargeZoom.removeLayers(routeLayers);
+    for(var routeId in e.routeIds) {
+      if(this.clusterByRoutes[routeId]) {
+        this.clusterByRoutes[routeId].removeLayers(routeLayers);
+      }
+    }
   },
 
   routesRefresh: function(e, geojson) {
@@ -351,8 +427,11 @@ var RoutesLayer = L.FeatureGroup.extend({
 
     var self = this;
     this.routesShow(e, geojson, function() {
-      self.clusterSmallZoom.removeLayers(routeLayers);
-      self.clusterLargeZoom.removeLayers(routeLayers);
+      for(var routeId in self.clusterByRoutes) {
+        if(self.clusterByRoutes[routeId]) {
+          self.clusterByRoutes[routeId].removeLayers(routeLayers);
+        }
+      }
     });
   },
 
@@ -380,29 +459,32 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
   },
 
-  setViewForMarker: function(layer, id, marker) {
+  setViewForMarker: function(routeId, layer, id, marker) {
       if (this.map.getBounds().contains(marker.getLatLng())) {
         this.map.setView(marker.getLatLng(), this.map.getZoom(), { reset: true });
         popupModule.createPopupForLayer(marker);
       } else {
-
-        if (!this.clusterSmallZoom.hasLayer(marker))
-          marker.addTo(this.clusterSmallZoom);
+        if (!this.clusterByRoutes[routeId].hasLayer(marker)) {
+          marker.addTo(this.clusterByRoutes[routeId]);
+        }
 
         this.map.setView(marker.getLatLng(), 17, { reset: true });
-        var cluster = this.clusterSmallZoom.getVisibleParent(marker);
-        if (cluster && ('spiderfy' in cluster)) cluster.spiderfy();
+        var cluster = this.clusterByRoutes[routeId].getVisibleParent(marker);
+        if (cluster && ('spiderfy' in cluster)) {
+          cluster.spiderfy();
+        }
         popupModule.createPopupForLayer(marker);
-
       }
   },
 
   focusOnMarkerInFeatureGroup: function(layers, idName, id) {
-    var markers = this.clusterSmallZoom.getLayers();
-    for (var j = 0; j < markers.length; j++) {
-      if (markers[j].properties[idName] === id) {
-        this.setViewForMarker(layers, id, markers[j]);
-        break;
+    for(var routeId in this.clusterByRoutes) {
+      var markers = this.clusterByRoutes[routeId].getLayers();
+      for (var j = 0; j < markers.length; j++) {
+        if (markers[j].properties[idName] === id) {
+          this.setViewForMarker(routeId, layers, id, markers[j]);
+          break;
+        }
       }
     }
   },
@@ -446,9 +528,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     });
   },
 
-  addRoutes: function(geojson) {
-    var self = this;
-
+  formatGeojsonWithPolylines: function(geojson) {
     for (var i = 0; i < geojson.features.length; i++) {
       if (geojson.features[i].geometry.polylines) {
         var feature = geojson.features[i];
@@ -459,6 +539,15 @@ var RoutesLayer = L.FeatureGroup.extend({
         delete feature.geometry.polylines;
       }
     }
+  },
+
+  addRoutes: function(geojson) {
+    var self = this;
+
+    self.formatGeojsonWithPolylines(geojson);
+
+    var colorByRoutes = {};
+    var overlappingMarkers = {};
 
     var layer = L.geoJSON(geojson, {
       onEachFeature: function(feature, layer) {
@@ -467,12 +556,16 @@ var RoutesLayer = L.FeatureGroup.extend({
             self.layersRouteId[feature.properties.route_id] = [];
           }
           self.layersRouteId[feature.properties.route_id].push(layer);
-        } else if (feature.properties.type == 'store') {
+        } else if (feature.properties.store_id) {
           self.layerStores = layer;
         }
         layer.properties = feature.properties;
       },
       style: function(feature) {
+        if (!colorByRoutes[feature.properties.route_id]) {
+          colorByRoutes[feature.properties.route_id] = feature.properties.color;
+        }
+
         return {
           color: feature.properties.color,
           opacity: 0.5,
@@ -480,47 +573,71 @@ var RoutesLayer = L.FeatureGroup.extend({
         };
       },
       pointToLayer: function(geoJsonPoint, latlng) {
-        for (var i = 0; i < geoJsonPoint.geometry.coordinates.length; i++) {
-          if (geoJsonPoint.properties.points[i] && geoJsonPoint.geometry.coordinates[i][0] == latlng.lng && geoJsonPoint.geometry.coordinates[i][1] == latlng.lat) {
-            var point = geoJsonPoint.properties.points[i];
-            geoJsonPoint.properties.points[i] = undefined;
-            point.type = geoJsonPoint.properties.type;
-            if (point.active) point.index = i + 1;
-            point.route_id = geoJsonPoint.properties.route_id;
-            point.color = point.color || geoJsonPoint.properties.color || (point.type == 'store' ? 'black' : '#707070');
-            point.icon = point.icon || geoJsonPoint.properties.icon || (point.type == 'store' ? 'fa-home' : 'point');
-            point.icon_size = point.icon_size || geoJsonPoint.properties.icon_size || 'large';
-            break;
-          }
-        }
-        if (point.type == 'store') {
-          var icon = L.divIcon({
-            html: '<i class="fa ' + point.icon + ' ' + self.map.iconSize[point.icon_size].name + ' store-icon" style="color: ' + point.color + ';"></i>',
-            iconSize: new L.Point(self.map.iconSize[point.icon_size || 'large'].size, self.map.iconSize[point.icon_size || 'large'].size),
-            iconAnchor: new L.Point(self.map.iconSize[point.icon_size || 'large'].size / 2, self.map.iconSize[point.icon_size || 'large'].size / 2),
+        var icon;
+        var overlapKey = latlng.lat.toString() + latlng.lng.toString();
+
+        var storeId = geoJsonPoint.properties.store_id;
+        var routeId = geoJsonPoint.properties.route_id;
+
+        // map.iconSize is defined in scaffold file
+        if (storeId) {
+          var storeIcon = geoJsonPoint.properties.icon || 'fa-home';
+          var storeIconSize = geoJsonPoint.properties.icon_size || 'large';
+          var storeColor = geoJsonPoint.properties.color || 'black';
+          icon = L.divIcon({
+            html: '<i class="fa ' + storeIcon + ' ' + self.map.iconSize[storeIconSize].name + ' store-icon" style="color: ' + storeColor + ';"></i>',
+            iconSize: new L.Point(self.map.iconSize[storeIconSize].size, self.map.iconSize[storeIconSize].size),
+            iconAnchor: new L.Point(self.map.iconSize[storeIconSize].size / 2, self.map.iconSize[storeIconSize].size / 2),
             className: 'store-icon-container'
           });
         } else {
-          point.route = geoJsonPoint.properties;
-          var icon = new L.NumberedDivIcon({
-            number: point.route_id != self.options.outOfRouteId && point.index,
-            iconUrl: '/images/' + point.icon + '-' + point.color.substr(1) + '.svg',
-            iconSize: new L.Point(12, 12),
-            iconAnchor: new L.Point(6, 6),
-            popupAnchor: new L.Point(0, 0),
-            className: "small"
+          var pointIcon = geoJsonPoint.properties.icon || 'fa-circle';
+          var pointIconSize = geoJsonPoint.properties.icon_size || 'medium';
+          var pointColor = geoJsonPoint.properties.color || '#707070';
+          var pointAnchor = new L.Point(self.map.iconSize[pointIconSize].size / 2, self.map.iconSize[pointIconSize].size / 2);
+          if (overlappingMarkers[overlapKey] && overlappingMarkers[overlapKey] !== routeId) {
+            pointAnchor = new L.Point(0, 0);
+          } else {
+            overlappingMarkers[overlapKey] = routeId;
+          }
+
+          icon = L.divIcon({
+            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + self.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + geoJsonPoint.properties.index + '</span></span>',
+            iconSize: new L.Point(self.map.iconSize[pointIconSize].size, self.map.iconSize[pointIconSize].size),
+            iconAnchor: pointAnchor,
+            className: 'point-icon-container'
           });
         }
+
         var marker = L.marker(new L.LatLng(latlng.lat, latlng.lng), {
           icon: icon
         });
-        marker.properties = point;
-        return marker;
+        marker.properties = geoJsonPoint.properties;
+        // Add route color to each marker
+        marker.properties.route_color = colorByRoutes[geoJsonPoint.properties.route_id];
+
+        if (storeId) {
+          self.markerStores.push(marker);
+        } else {
+          if (!self.clusterByRoutes[routeId]) {
+            self.clusterByRoutes[routeId] = L.markerClusterGroup(self.markerOptions);
+          }
+          self.clusterByRoutes[routeId].addLayer(marker);
+        }
       }
     });
-    this.clusterSmallZoom.addLayers(layer.getLayers());
-    this.clusterLargeZoom.addLayers(layer.getLayers());
 
-    this.setClusterByZoom();
+    // Add only route polylines to map
+    layer.addTo(this.map);
+
+    // Add marker clusters
+    for(var routeId in this.clusterByRoutes) {
+      this.addLayer(this.clusterByRoutes[routeId]);
+    }
+
+    // Add store markers
+    for (var storeId in self.markerStores) {
+      this.addLayer(self.markerStores[storeId]);
+    }
   }
 });

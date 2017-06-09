@@ -17,14 +17,8 @@
 #
 module TagsHelper
   def tag_icon(tag)
-    if tag.icon
-      if tag.color
-        image_tag '/images/%s.svg?color=%s' % [tag.icon, tag.color.tr('#', '')]
-      else
-        image_tag '/images/%s.svg' % [tag.icon]
-      end
-    elsif tag.color
-      content_tag :div, '', class: 'tag_color', style: 'background-color: %s' % [tag.color]
-    end
+    content_tag :i, '',
+                class: 'fa fa-lg %s' % [tag.default_icon],
+                style: 'color: %s' % [tag.default_color]
   end
 end

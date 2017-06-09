@@ -1,7 +1,7 @@
 class MoveTraceToRoute < ActiveRecord::Migration
   def up
     add_column :routes, :geojson_tracks, :text
-    add_column :routes, :geojson_points, :text
+    add_column :routes, :geojson_points, :string, array: true
     add_column :routes, :stop_no_path, :boolean
     add_column :stops, :no_path, :boolean
 
@@ -47,37 +47,29 @@ class MoveTraceToRoute < ActiveRecord::Migration
         }.to_json
       end
 
-      if !geojson_tracks.empty?
-        route.geojson_tracks = geojson_tracks.join(',')
-      end
+      route.geojson_tracks = geojson_tracks.join(',') unless geojson_tracks.empty?
 
-      multi_points_coordinates = []
-      multi_points_properties = []
-      route.stops.select(&:position?).each{ |stop|
-        multi_points_coordinates << [stop.lat, stop.lng]
-        multi_points_properties << {
-          stop_id: stop.id,
-          color: stop.color,
-          icon: stop.icon,
-          icon_size: stop.icon_size
-        }.compact
-      }
+      geojson_points = route.stops.select(&:position?).map.with_index do |stop, i|
+        if stop.position?
+          {
+              type: 'Feature',
+              geometry: {
+                  type: 'Point',
+                  coordinates: [stop.lng, stop.lat]
+              },
+              properties: {
+                  route_id: route.id,
+                  stop_id: stop.id,
+                  index: i + 1,
+                  color: stop.default_color,
+                  icon: stop.icon,
+                  icon_size: stop.icon_size
+              }
+          }.to_json
+        end
+      end.compact
 
-      if !multi_points_coordinates.empty?
-        route.geojson_points = {
-          type: 'Feature',
-          geometry: {
-            type: 'MultiPoint',
-            polylines: Polylines::Encoder.encode_points(multi_points_coordinates, 1e6),
-          },
-          properties: {
-            planning_id: route.planning_id,
-            route_id: route.id,
-            color: route.default_color,
-            points: multi_points_properties
-          }.compact
-        }.to_json
-      end
+      route.geojson_points = geojson_points unless geojson_points.empty?
 
       route.save!
     }
@@ -91,7 +83,8 @@ class MoveTraceToRoute < ActiveRecord::Migration
     add_column :routes, :stop_trace, :text
 
     Route.find_each{ |route|
-      next if !route.geojson_tracks
+      next unless route.geojson_tracks
+      geojson_track_stop = nil
 
       if route.geojson_tracks
         geojson_tracks = JSON.parse('[' + route.geojson_tracks + ']')
@@ -108,9 +101,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
           }
         end
 
-        if geojson_track_stop
-          route.stop_trace = geojson_track_stop['geometry']['polylines']
-        end
+        route.stop_trace = geojson_track_stop['geometry']['polylines'] if geojson_track_stop
       end
 
       route.save!

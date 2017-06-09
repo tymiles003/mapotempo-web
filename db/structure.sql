@@ -614,7 +614,7 @@ CREATE TABLE routes (
     start integer,
     "end" integer,
     geojson_tracks text,
-    geojson_points text,
+    geojson_points character varying[],
     stop_no_path boolean
 );
 
@@ -761,7 +761,8 @@ CREATE TABLE tags (
     updated_at timestamp without time zone,
     color character varying(255),
     icon character varying(255),
-    ref character varying
+    ref character varying,
+    icon_size character varying
 );
 
 
@@ -2622,3 +2623,5 @@ INSERT INTO schema_migrations (version) VALUES ('20170531132552');
 INSERT INTO schema_migrations (version) VALUES ('20170613152549');
 
 INSERT INTO schema_migrations (version) VALUES ('20170614151617');
+
+INSERT INTO schema_migrations (version) VALUES ('20170613092505');

@@ -308,7 +308,8 @@ span.color[data-color=''][data-selected]:after {
 [data-controller='api_web_v01_routes'][data-action='index'],
 [data-controller='api_web_v01_zones'][data-action='index'] {
   .number {
-    vertical-align: text-top;
+    margin-top: -3px;
+    white-space: nowrap;
   }
 
   .label {

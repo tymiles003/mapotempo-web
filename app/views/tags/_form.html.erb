@@ -12,9 +12,27 @@
       <p class="help-block"><%= t '.color_help' %></p>
     </div>
   </div>
-  <%= f.select :icon, [], Tag::ICONS_TABLE, { include_blank: t('.icon_default') } do %>
-    <p class="help-block"><%= t '.icon_help' %></p>
-  <% end %>
+
+  <div id="tag_icon_input" class="form-group">
+    <label class="col-md-2 control-label" for="tag_icon"><%= t 'activerecord.attributes.tag.icon' %></label>
+    <label class="sr-only" for="tag_icon_size"><%= t 'activerecord.attributes.tag.icon_size' %></label>
+    <div class="col-md-6">
+      <div class="input-group">
+        <%= select_tag 'tag[icon]', grouped_options_for_select(
+          [
+            [t('tags.form.prefered_icons'),
+             @grouped_icons[0].map { |icon| [icon, icon, { :data => { :content => "<i class='fa fa-fw #{icon}'></i> #{icon}" }, :selected => (@tag.icon == icon) ? true : nil }] },],
+            [t('tags.form.other_icons'),
+             @grouped_icons[1].map { |icon| [icon, icon, { :data => { :content => "<i class='fa fa-fw #{icon}'></i> #{icon}" }, :selected => (@tag.icon == icon) ? true : nil }] }
+            ]
+          ]
+        ), include_blank: t('web.form.default', n: 'fa-circle'), class: 'form-control width_1_2 selectpicker', 'data-live-search' => true %>
+        <%= select_tag 'tag[icon_size]', options_for_select([[t('.icon_size.small'), :small], [t('.icon_size.medium'), :medium], [t('.icon_size.large'), :large]], @tag.icon_size), include_blank: t('web.form.default', n: t('.icon_size.large')), class: 'form-control width_1_2' %>
+        <span class="input-group-addon"><%= content_tag('i', '', class: 'fa fa-home fa-fw') %></span>
+      </div>
+    </div>
+  </div>
+
   <%= f.actions do %>
     <%= f.submit %>
   <% end %>

@@ -18,6 +18,7 @@
 class TagsController < ApplicationController
   load_and_authorize_resource
   before_action :set_tag, only: [:edit, :update, :destroy]
+  before_action :icons_table, only: [:new, :edit]
 
   def index
     @tags = current_user.customer.tags
@@ -72,6 +73,10 @@ class TagsController < ApplicationController
   end
 
   private
+
+  def icons_table
+    @grouped_icons ||= [FontAwesome::ICONS_TABLE_TAG, (FontAwesome::ICONS_TABLE - FontAwesome::ICONS_TABLE_TAG)]
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_tag
