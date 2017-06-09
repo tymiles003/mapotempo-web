@@ -486,12 +486,14 @@ var plannings_edit = function(params) {
 
   var fitBounds = (window.location.hash) ? false : true;
   // FIXME when turbolinks get updated
-  if (navigator.userAgent.indexOf("Edge") == -1) map.addHash();
-  var removeHash = function() {
-    map.removeHash();
-    $(document).off('page:before-change', removeHash);
-  };
-  $(document).on('page:before-change', removeHash);
+  if (navigator.userAgent.indexOf("Edge") == -1) {
+    map.addHash();
+    var removeHash = function() {
+      map.removeHash();
+      $(document).off('page:before-change', removeHash);
+    };
+    $(document).on('page:before-change', removeHash);
+  }
 
   sidebar.addTo(map);
 
