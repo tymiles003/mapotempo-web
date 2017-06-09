@@ -192,6 +192,7 @@ var devicesObserveCustomer = (function() {
 
     function _ajaxCall(all) {
       $.when($(requests)).done(function() {
+        if (!_allFieldsFilled()) return;
         requests.push($.ajax({
           url: '/api/0.1/devices/' + config.name + '/auth/' + params.customer_id + '.json',
           data: (all) ? _userCredential() : $.extend(_userCredential(), {
@@ -233,8 +234,7 @@ var devicesObserveCustomer = (function() {
 
       $("#" + config.name + "_container input").on('keyup', function(e) {
         clearCallback();
-        if (_allFieldsFilled())
-          checkCredentialsWithDelay();
+        checkCredentialsWithDelay();
       });
 
       // Sync
