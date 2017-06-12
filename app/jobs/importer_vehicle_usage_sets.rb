@@ -89,6 +89,10 @@ class ImporterVehicleUsageSets < ImporterBase
       @customer.save!
     end
 
+    if options[:replace]
+      @previous_vehicle_usage_set = @customer.vehicle_usage_sets.first
+    end
+
     @vehicle_usage_set = nil
     @stores_by_ref = Hash[@customer.stores.select(&:ref).collect { |store| [store.ref, store] }]
 
@@ -163,6 +167,10 @@ class ImporterVehicleUsageSets < ImporterBase
 
   def after_import(name, options)
     @customer.save!
+
+    if options[:replace] && @previous_vehicle_usage_set && @vehicle_usage_set && @vehicle_usage_set.persisted?
+      @previous_vehicle_usage_set.destroy!
+    end
   end
 
   def finalize_import(name, options)

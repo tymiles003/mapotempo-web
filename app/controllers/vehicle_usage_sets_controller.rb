@@ -110,6 +110,7 @@ class VehicleUsageSetsController < ApplicationController
   end
 
   def import
+    @customer = current_user.customer
     @import_csv = ImportCsv.new
   end
 
@@ -154,7 +155,8 @@ class VehicleUsageSetsController < ApplicationController
   end
 
   def import_csv_params
-    params.require(:import_csv).permit(:replace_vehicles,
+    params.require(:import_csv).permit(:replace,
+                                       :replace_vehicles,
                                        :file,
                                        column_def: ImporterVehicleUsageSets.new(current_user.customer).columns.keys)
   end

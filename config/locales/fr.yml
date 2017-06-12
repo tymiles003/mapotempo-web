@@ -1686,6 +1686,8 @@ fr:
     import:
       title: Importer une nouvelle configuration de véhicules
       vehicle_usage_set: Configuration de véhicules
+      replace_yes: Remplacer la configuration existante
+      replace_yes_help: La configuration existante sera supprimée et remplacée par la configuration importée.
       replace_no: Ajouter la nouvelle configuration
       replace_no_help: Une nouvelle configuration de véhicules sera ajouté sans modifier les anciennes.
       vehicles: Véhicules

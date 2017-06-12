@@ -21,10 +21,19 @@
             </a>
           </p>
         <% end %>
-        <%= f.toggles t '.vehicle_usage_set' do %>
-          <%= f.radio_button :add, t('.replace_no'), 0, checked: true %>
-          <p class="help-block"><%= t '.replace_no_help' %></p>
-        <% end %>
+
+        <%- if @customer.enable_multi_vehicle_usage_sets %>
+          <%= f.toggles t '.vehicle_usage_set' do %>
+            <%= f.radio_button :add, t('.replace_no'), 1, checked: true %>
+            <p class="help-block"><%= t '.replace_no_help' %></p>
+          <% end %>
+        <% else %>
+          <%= f.toggles t '.vehicle_usage_set' do %>
+            <%= f.radio_button :replace, t('.replace_yes'), 1, checked: true %>
+            <p class="help-block"><%= t '.replace_yes_help' %></p>
+          <% end %>
+        <% end -%>
+
         <%= f.toggles t '.vehicles' do %>
           <%= f.check_box :replace_vehicles, t('.replace_vehicles') %>
           <p class="help-block"><%= t '.replace_vehicles_help' %></p>
@@ -32,6 +41,7 @@
         <%= f.actions do %>
           <%= f.submit t('all.verb.import'), {}, 'fa-upload' %>
         <% end %>
+
         <div class="form-group">
           <div class="col-md-offset-2 col-md-6">
             <a href="/vehicle_usage_sets/import_template.csv" class="btn btn-default" role="button"><i class="fa fa-download fa-fw"></i> <%= t 'import.template_csv' %>
