@@ -1398,6 +1398,9 @@ he:
       new: תצורת כלי רכב חדשים
     new:
       title: תצורת כלי רכב חדשים
+    menu:
+      vehicle_usage_sets: רכבים
+      deliverable_units: יחידות מישלוח
   zonings:
     form:
       isodistance: Isodistance / רכבים(s)
@@ -1411,6 +1414,8 @@ he:
           size: מרחק
           size_help: האיזור נגיש מנקודת ההתחלה בהתחשב במרחק הנסיעה.
         validate: מעבד נתונים
+    menu:
+      zonings: איזורים
   unauthorized:
     default: אינך מורשה להיכנס לדף זה
   web:
