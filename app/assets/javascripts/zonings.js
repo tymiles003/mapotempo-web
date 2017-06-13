@@ -20,6 +20,26 @@
 var zonings_edit = function(params) {
   'use strict';
 
+  /**********************************************
+   Override by prototype _onTouch() leaflet Draw
+  ************************************************/
+  L.Draw.Polyline.prototype._onTouch = function(e) {
+    var originalEvent = e.originalEvent;
+    var clientX;
+    var clientY;
+    if (originalEvent.touches && originalEvent.touches[0] && !this._clickHandled && !this._touchHandled && !this._disableMarkers && L.Browser.touch) {
+      // Add L.Browser.touch condition do not block dblcick event anymore, as we are checking if browser is truly a touch screen.
+      clientX = originalEvent.touches[0].clientX;
+      clientY = originalEvent.touches[0].clientY;
+      this._disableNewMarkers();
+      this._touchHandled = true;
+      this._startPoint.call(this, clientX, clientY);
+      this._endPoint.call(this, clientX, clientY, e);
+      this._touchHandled = null;
+    }
+    this._clickHandled = null;
+  };
+
   var prefered_unit = params.prefered_unit,
     zoning_id = params.zoning_id,
     planning_id = params.planning_id,
