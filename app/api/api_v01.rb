@@ -45,6 +45,7 @@ class ApiV01 < Grape::API
       'application/vnd.geo+json; charset=UTF-8',
       'application/xml',
     ],
+    doc_version: nil,
     info: {
       title: 'API',
       contact_email: Mapotempo::Application.config.api_contact_email,
