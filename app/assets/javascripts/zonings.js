@@ -514,9 +514,7 @@ var zonings_edit = function(params) {
             popupAnchor: new L.Point(0, -Math.floor(map.iconSize[store.icon_size || 'large'].size / 2.5)),
             className: 'store-icon-container'
           })
-        }).addTo(storeMarkers).bindPopup(SMT['stops/show']({
-          stop: store
-        }));
+        }).addTo(storeMarkers).bindPopup(SMT['stops/show'](store));
         m.on('mouseover', function(e) {
           m.openPopup();
         }).on('mouseout', function(e) {
