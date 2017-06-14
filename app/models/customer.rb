@@ -113,7 +113,7 @@ class Customer < ApplicationRecord
 
       def copy.devices_update_vehicles; end
 
-      copy.save!
+      copy.save!(validate: false)
 
       deliverable_unit_ids_map = Hash[original.deliverable_units.map(&:id).zip(copy.deliverable_units)].merge(nil => nil)
       vehicles_map = Hash[original.vehicles.zip(copy.vehicles)].merge(nil => nil)
@@ -126,7 +126,7 @@ class Customer < ApplicationRecord
 
       copy.vehicles.each{ |vehicle|
         vehicle.capacities = Hash[vehicle.capacities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
-        vehicle.save!
+        vehicle.save!(validate: false)
       }
 
       copy.vehicle_usage_sets.each{ |vehicle_usage_set|
@@ -139,9 +139,9 @@ class Customer < ApplicationRecord
           vehicle_usage.store_start = stores_map[vehicle_usage.store_start]
           vehicle_usage.store_stop = stores_map[vehicle_usage.store_stop]
           vehicle_usage.store_rest = stores_map[vehicle_usage.store_rest]
-          vehicle_usage.save!
+          vehicle_usage.save!(validate: false)
         }
-        vehicle_usage_set.save!
+        vehicle_usage_set.save!(validate: false)
       }
 
       copy.destinations.each{ |destination|
@@ -150,15 +150,15 @@ class Customer < ApplicationRecord
         destination.visits.each{ |visit|
           visit.tags = visit.tags.collect{ |tag| tags_map[tag] }
           visit.quantities = Hash[visit.quantities.to_a.map{ |q| deliverable_unit_ids_map[q[0]] && [deliverable_unit_ids_map[q[0]].id, q[1]] }.compact]
-          visit.save!
+          visit.save!(validate: false)
         }
-        destination.save!
+        destination.save!(validate: false)
       }
 
       copy.zonings.each{ |zoning|
         zoning.zones.each{ |zone|
           zone.vehicle = vehicles_map[zone.vehicle]
-          zone.save!
+          zone.save!(validate: false)
         }
       }
 
@@ -172,14 +172,14 @@ class Customer < ApplicationRecord
 
           route.stops.each{ |stop|
             stop.visit = visits_map[stop.visit]
-            stop.save!
+            stop.save!(validate: false)
           }
-          route.save!
+          route.save!(validate: false)
         }
-        planning.save!
+        planning.save!(validate: false)
       }
 
-      copy.save!
+      copy.save!(validate: false)
       copy.reload
     })
   end
@@ -190,7 +190,7 @@ class Customer < ApplicationRecord
       copy.name += " (#{I18n.l(Time.zone.now, format: :long)})"
       copy.ref = copy.ref ? Time.new.to_i.to_s : nil
       copy.test = Mapotempo::Application.config.customer_test_default
-      copy.save!
+      copy.save!(validate: false)
       copy
     end
   end

@@ -388,6 +388,17 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_redirected_to edit_planning_path(assigns(:planning))
   end
 
+  test 'should duplicate with error' do
+    assert_difference('Planning.count') do
+      @planning.routes[1].stops[0].index = 666
+      @planning.routes[1].stops[0].save!
+
+      patch :duplicate, planning_id: @planning
+    end
+
+    assert_redirected_to edit_planning_path(assigns(:planning))
+  end
+
   test 'Automatic Insert' do
     patch :automatic_insert, id: @planning.id, format: :json, stop_ids: [stops(:stop_unaffected).id]
     assert_response :success

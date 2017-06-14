@@ -198,7 +198,7 @@ class V01::Plannings < Grape::API
       id = ParseIdsRefs.read(params[:id])
       planning = current_customer.plannings.where(id).first!
       planning = planning.duplicate
-      planning.save!
+      planning.save!(validate: false)
       present planning, with: V01::Entities::Planning, geojson: params[:geojson]
     end
 

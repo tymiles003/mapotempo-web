@@ -85,4 +85,21 @@ class CustomersControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should duplicate customer' do
+    sign_in users(:user_admin)
+    assert_difference('Customer.count', 1) do
+      patch :duplicate, id: @customer.id
+    end
+  end
+
+  test 'should duplicate customer wit error' do
+    @customer.plannings[1].routes[1].stops[0].index = 666
+    @customer.plannings[1].routes[1].stops[0].save!
+
+    sign_in users(:user_admin)
+    assert_difference('Customer.count', 1) do
+      patch :duplicate, id: @customer.id
+    end
+  end
 end

@@ -87,7 +87,7 @@ class ZoningsController < ApplicationController
   def duplicate
     respond_to do |format|
       @zoning = @zoning.duplicate
-      @zoning.save!
+      @zoning.save!(validate: false)
       format.html { redirect_to edit_zoning_path(@zoning), notice: t('activerecord.successful.messages.updated', model: @zoning.class.model_name.human) }
     end
   end

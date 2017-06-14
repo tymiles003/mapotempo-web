@@ -80,7 +80,7 @@ class CustomersController < ApplicationController
   end
 
   def duplicate
-    @customer.duplicate.save!
+    @customer.duplicate.save!(validate: false)
     redirect_to [:customers], notice: t('.success')
   end
 

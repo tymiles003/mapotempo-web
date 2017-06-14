@@ -286,7 +286,7 @@ class PlanningsController < ApplicationController
   def duplicate
     respond_to do |format|
       @planning = @planning.duplicate
-      @planning.save!
+      @planning.save!(validate: false)
       format.html { redirect_to edit_planning_path(@planning), notice: t('activerecord.successful.messages.updated', model: @planning.class.model_name.human) }
     end
   end
