@@ -266,7 +266,7 @@ GEM
       activesupport
       multi_json (>= 1.3.2)
     grape-swagger (0.25.3)
-      grape (>= 0.16.2)
+      grape (>= 0.12.0)
     grape-swagger-entity (0.1.5)
       grape-entity
       grape-swagger (>= 0.20.4)
