@@ -198,6 +198,7 @@ class ImporterDestinations < ImporterBase
         if tag.is_a?(Fixnum)
           @tag_ids[tag]
         else
+          tag = tag.strip
           if !@tag_labels.key?(tag)
             @tag_labels[tag] = @customer.tags.build(label: tag)
           end
