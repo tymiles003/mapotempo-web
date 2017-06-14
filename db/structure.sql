@@ -263,7 +263,8 @@ CREATE TABLE layers (
     urlssl character varying NOT NULL,
     source character varying NOT NULL,
     "overlay" boolean DEFAULT false,
-    print boolean DEFAULT false NOT NULL
+    print boolean DEFAULT false NOT NULL,
+    name_locale hstore DEFAULT ''::hstore NOT NULL
 );
 
 
@@ -2617,3 +2618,5 @@ INSERT INTO schema_migrations (version) VALUES ('20170516093306');
 INSERT INTO schema_migrations (version) VALUES ('20170516093307');
 
 INSERT INTO schema_migrations (version) VALUES ('20170613152549');
+
+INSERT INTO schema_migrations (version) VALUES ('20170614151617');

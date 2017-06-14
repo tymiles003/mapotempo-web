@@ -3,6 +3,9 @@
 layer_one:
   source: osm
   name: MyString
+  name_locale:
+    fr: MaChaine
+    en: MyString (en)
   url: /favicon.ico
   attribution: MyString
   urlssl: /favicon.ico
@@ -10,6 +13,9 @@ layer_one:
 layer_two:
   source: here
   name: MyString
+  name_locale:
+    fr: MaChaine
+    en: MyString (en)
   url: /favicon.ico
   attribution: MyString
   urlssl: /favicon.ico

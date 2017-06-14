@@ -3,7 +3,7 @@ layers = (@user.admin? ? Layer.all : (@user.customer.profile.layers + [@user.lay
   .sort_by(&:id).collect{ |layer|
     {
       id: layer.id,
-      name: layer.name,
+      name: layer.translated_name,
       url: request.ssl? ? layer.urlssl : layer.url,
       attribution: layer.map_attribution,
       default: layer == @user.layer,
@@ -14,7 +14,7 @@ layers = (@user.admin? ? Layer.all : (@user.customer.profile.layers + [@user.lay
 <%= twitter_bootstrap_form_for @user, layout: :horizontal do |f| %>
   <%= render 'shared/error_messages', model: @user %>
   <%= render partial: "users/time_zone" %>
-  <%= f.collection_select :layer_id, [], (@user.admin? ? Layer.all.sort_by(&:id) : @user.customer.profile.layers).select{ |l| !l[:overlay] }, :id, :name, {}, {required: true} %>
+  <%= f.collection_select :layer_id, [], (@user.admin? ? Layer.all.sort_by(&:id) : @user.customer.profile.layers).select{ |l| !l[:overlay] }, :id, :translated_name, {}, {required: true} %>
   <div class="form-group">
     <span class="col-md-offset-2 col-md-6"><div id="map" class="map-fixed-size"></div></span>
   </div>

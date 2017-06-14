@@ -29,4 +29,12 @@ class Layer < ApplicationRecord
   def map_attribution
     I18n.t("all.map_attribution.#{source}", attribution: attribution)
   end
+
+  def translated_name
+    if !self.name_locale.empty?
+      self.name_locale[I18n.locale.to_s] || self.name_locale[I18n.default_locale.to_s] || self.name
+    else
+      self.name
+    end
+  end
 end

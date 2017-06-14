@@ -59,7 +59,7 @@ options.merge!(default_div_class: 'col-lg-10 col-md-10') if @zoning.id %>
 <%
 layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&:id).uniq.collect{ |layer|
   {
-    name: layer.name,
+    name: layer.translated_name,
     url: request.ssl? ? layer.urlssl : layer.url,
     attribution: layer.map_attribution,
     default: layer == current_user.layer,
