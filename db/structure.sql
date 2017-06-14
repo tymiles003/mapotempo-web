@@ -390,9 +390,9 @@ CREATE TABLE plannings (
     date date,
     vehicle_usage_set_id integer NOT NULL,
     tag_operation integer DEFAULT 0 NOT NULL,
+    active boolean DEFAULT true,
     begin_date date,
-    end_date date,
-    active boolean DEFAULT true
+    end_date date
 );
 
 
@@ -2605,17 +2605,17 @@ INSERT INTO schema_migrations (version) VALUES ('20170424152112');
 
 INSERT INTO schema_migrations (version) VALUES ('20170427142658');
 
-INSERT INTO schema_migrations (version) VALUES ('20170522155742');
-
-INSERT INTO schema_migrations (version) VALUES ('20170522155743');
-
-INSERT INTO schema_migrations (version) VALUES ('20170523094750');
-
 INSERT INTO schema_migrations (version) VALUES ('20170516093305');
 
 INSERT INTO schema_migrations (version) VALUES ('20170516093306');
 
 INSERT INTO schema_migrations (version) VALUES ('20170516093307');
+
+INSERT INTO schema_migrations (version) VALUES ('20170522155742');
+
+INSERT INTO schema_migrations (version) VALUES ('20170522155743');
+
+INSERT INTO schema_migrations (version) VALUES ('20170523094750');
 
 INSERT INTO schema_migrations (version) VALUES ('20170613152549');
 
