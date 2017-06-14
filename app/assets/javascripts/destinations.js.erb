@@ -690,18 +690,20 @@ var destinations_index = function(params, api) {
         phone_number_call($('.phone_number', $row).attr('value'), url_click2call, e.currentTarget);
       });
     }
-    $row.click(function(event) {
-      over(id, true);
-    })
-    .on("click", ".destroy", function(event) {
+    toogleClickForRow($row, id, true);
+  };
+
+  var ajaxCallForRow = function($row, id) {
+    $row.on("click", ".destroy", function(event) {
       event.stopPropagation(); // Don't call over(id, move) while the row has been destroyed
+      toogleClickForRow($row);
       if (confirm(I18n.t('all.verb.destroy_confirm'))) {
         $.ajax({
           type: "delete",
           url: '/api/0.1/' + api + '/' + id + '.json',
           beforeSend: beforeSendWaiting,
           success: function(data) {
-            $(row).remove();
+            $row.remove();
             if (markers[id]) {
               markersLayers.removeLayer(markers[id]);
               delete markers[id];
@@ -709,10 +711,23 @@ var destinations_index = function(params, api) {
             count_dec();
           },
           complete: completeWaiting,
-          error: ajaxError
+          error: function(request, status, error) {
+            ajaxError(request, status, error);
+            toogleClickForRow($row, id, true);
+          }
         });
       }
     });
+  };
+
+  // Unbind / bind events according to the current operation. (Prevents deleting non existing objects issue)
+  var toogleClickForRow = function(row, id, addOrRemove) {
+    if (addOrRemove) {
+      row.click(function(){ over(id, true); });
+      ajaxCallForRow(row, id);
+    } else {
+      row.off('click');
+    }
   };
 
   var update = function(destination_id, destination, move) {
