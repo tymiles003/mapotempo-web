@@ -1,7 +1,7 @@
 json.planning_id @planning.id
 
 json.routes @routes do |route|
-  (json.out_of_date true) if route.out_of_date
+  (json.outdated true) if route.outdated
   json.route_id route.id
   (json.duration '%i:%02i' % [(route.end - route.start) / 60 / 60, (route.end - route.start) / 60 % 60]) if route.start && route.end
   (json.hidden true) if route.hidden

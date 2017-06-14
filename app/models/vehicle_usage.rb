@@ -44,7 +44,7 @@ class VehicleUsage < ApplicationRecord
   validate :rest_stop_after_rest_start
   validate :rest_duration_range
 
-  before_update :update_out_of_date
+  before_update :update_outdated
 
   before_save :update_routes
 
@@ -57,7 +57,7 @@ class VehicleUsage < ApplicationRecord
     exclude_association :routes
 
     customize(lambda { |_original, copy|
-      def copy.update_out_of_date; end
+      def copy.update_outdated; end
 
       def copy.update_routes; end
     })
@@ -190,14 +190,14 @@ class VehicleUsage < ApplicationRecord
     end
   end
 
-  def update_out_of_date
+  def update_outdated
     if rest_duration_changed?
       update_rest
     end
 
     if open_changed? || close_changed? || store_start_id_changed? || store_stop_id_changed? || rest_start_changed? || rest_stop_changed? || rest_duration_changed? || store_rest_id_changed? || service_time_start_changed? || service_time_end_changed?
       routes.each{ |route|
-        route.out_of_date = true
+        route.outdated = true
         route.optimized_at = route.last_sent_to = route.last_sent_at = nil
       }
     end

@@ -29,7 +29,7 @@ class Stop < ApplicationRecord
 
   validates :route, presence: true
 
-  before_save :out_of_date
+  before_save :outdated
 
   amoeba do
     enable
@@ -63,9 +63,9 @@ class Stop < ApplicationRecord
     end
   end
 
-  def out_of_date
+  def outdated
     if active_changed?
-      route.out_of_date = true
+      route.outdated = true
       route.optimized_at = route.last_sent_to = route.last_sent_at = nil
     end
   end

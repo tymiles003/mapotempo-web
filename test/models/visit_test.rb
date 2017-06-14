@@ -176,21 +176,21 @@ class VisitTest < ActiveSupport::TestCase
     assert_nil visit.icon
   end
 
-  test 'should update out_of_date for quantity' do
+  test 'should update outdated for quantity' do
     visit = visits :visit_one
-    assert_not visit.stop_visits[-1].route.out_of_date
+    assert_not visit.stop_visits[-1].route.outdated
     visit.quantities = {customers(:customer_one).deliverable_units[0].id => '12,3'}
     visit.save!
-    assert visit.stop_visits[-1].route.out_of_date
+    assert visit.stop_visits[-1].route.outdated
     assert_equal 12.3, Visit.find(visit.id).quantities[customers(:customer_one).deliverable_units[0].id]
   end
 
-  test 'should update out_of_date for empty quantity' do
+  test 'should update outdated for empty quantity' do
     visit = visits :visit_two
-    assert_not visit.stop_visits[-1].route.out_of_date
+    assert_not visit.stop_visits[-1].route.outdated
     visit.quantities = {}
     visit.save!
-    assert visit.stop_visits[-1].route.out_of_date
+    assert visit.stop_visits[-1].route.outdated
     assert_nil Visit.find(visit.id).quantities[customers(:customer_one).deliverable_units[0].id]
   end
 end

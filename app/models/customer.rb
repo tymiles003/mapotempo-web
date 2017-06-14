@@ -74,7 +74,7 @@ class Customer < ApplicationRecord
   after_initialize :assign_defaults, :update_max_vehicles, if: 'new_record?'
   after_initialize :assign_device
   after_create :create_default_store, :create_default_vehicle_usage_set, :create_default_deliverable_unit
-  before_update :update_out_of_date, :update_max_vehicles, :update_enable_multi_visits
+  before_update :update_outdated, :update_max_vehicles, :update_enable_multi_visits
   before_save :sanitize_print_header, :nilify_router_options_blanks
   before_save :devices_update_vehicles, prepend: true
 
@@ -105,7 +105,7 @@ class Customer < ApplicationRecord
 
       def copy.create_default_deliverable_unit; end
 
-      def copy.update_out_of_date; end
+      def copy.update_outdated; end
 
       def copy.update_enable_multi_visits; end
 
@@ -235,8 +235,8 @@ class Customer < ApplicationRecord
       p.routes.includes_stops.select(&:vehicle_usage).each do |route|
         # reindex remaining stops (like rests)
         route.force_reindex
-        # out_of_date for last step
-        route.out_of_date = true if route.stop_drive_time
+        # outdated for last step
+        route.outdated = true if route.stop_drive_time
         route.optimized_at = route.last_sent_to = route.last_sent_at = nil
       end
       p.save!
@@ -313,12 +313,12 @@ class Customer < ApplicationRecord
     )
   end
 
-  def update_out_of_date
+  def update_outdated
     if take_over_changed? || router_id_changed? || router_dimension_changed? || router_options_changed? || speed_multiplicator_changed? || @deliverable_units_updated
       Route.transaction do
         plannings.each{ |planning|
           planning.routes.each{ |route|
-            route.out_of_date = true
+            route.outdated = true
             route.optimized_at = route.last_sent_to = route.last_sent_at = nil
           }
         }

@@ -273,7 +273,7 @@ fr:
       route:
         distance: Distance
         emission: Émissions
-        out_of_date: Périmé
+        outdated: Périmé
         start: Début
         end: Fin
         hidden: Masqué
@@ -1176,7 +1176,7 @@ fr:
       refresh: Actualiser
       refresh_help: Des paramètres ou des clients utilisés par ce planning ont été
         modifiés, il est nécessaire de le recalculer
-      out_of_date_zoning: Le zonage a été modifié. Appliquez à nouveau pour actualiser.
+      outdated_zoning: Le zonage a été modifié. Appliquez à nouveau pour actualiser.
       stops_help: Arrêts planifiés / total
       duration_help: Somme des durées des tournées
       distance_help: Somme des distances des tournées

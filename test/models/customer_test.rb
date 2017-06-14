@@ -51,31 +51,31 @@ class CustomerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should update_out_of_date' do
+  test 'should update_outdated' do
     customer = customers(:customer_one)
     customer.take_over = '00::10:00'
     customer.plannings.each { |p|
       p.routes.select { |r| r.vehicle_usage }.each { |r|
-        assert_not r.out_of_date
+        assert_not r.outdated
       } }
     customer.save!
     customer.plannings.each { |p|
       p.routes.select { |r| r.vehicle_usage }.each { |r|
-        assert r.out_of_date
+        assert r.outdated
       } }
   end
 
-  test 'should update_out_of_date for router options' do
+  test 'should update_outdated for router options' do
     customer = customers(:customer_one)
     customer.weight = 20
     customer.plannings.each { |p|
       p.routes.select { |r| r.vehicle_usage }.each { |r|
-        assert_not r.out_of_date
+        assert_not r.outdated
       } }
     customer.save!
     customer.plannings.each { |p|
       p.routes.select { |r| r.vehicle_usage }.each { |r|
-        assert r.out_of_date
+        assert r.outdated
       } }
   end
 

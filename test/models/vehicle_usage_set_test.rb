@@ -47,7 +47,7 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     assert_equal vehicle_usage_set.open, 8 * 3_600
   end
 
-  test 'should update out_of_date for rest' do
+  test 'should update outdated for rest' do
     vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
     customer = vehicle_usage_set.customer
     vehicle_usage = vehicle_usage_set.vehicle_usages[0]
@@ -60,22 +60,22 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
 
     assert_difference('Stop.count', -nb) do
       vehicle_usage_set.vehicle_usages[0].routes[-1].compute
-      vehicle_usage_set.vehicle_usages[0].routes[-1].out_of_date = false
+      vehicle_usage_set.vehicle_usages[0].routes[-1].outdated = false
       assert !vehicle_usage_set.rest_duration.nil?
 
       vehicle_usage_set.rest_duration = vehicle_usage_set.rest_start = vehicle_usage_set.rest_stop = nil
       vehicle_usage_set.save!
       vehicle_usage_set.customer.save!
-      assert vehicle_usage_set.vehicle_usages[0].routes[-1].out_of_date
+      assert vehicle_usage_set.vehicle_usages[0].routes[-1].outdated
     end
   end
 
-  test 'should update out_of_date for open' do
+  test 'should update outdated for open' do
     vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
     vehicle_usage_set.open = '09:00:00'
-    assert_not vehicle_usage_set.vehicle_usages[0].routes[-1].out_of_date
+    assert_not vehicle_usage_set.vehicle_usages[0].routes[-1].outdated
     vehicle_usage_set.save!
-    assert vehicle_usage_set.vehicle_usages[0].routes[-1].out_of_date
+    assert vehicle_usage_set.vehicle_usages[0].routes[-1].outdated
   end
 
   test 'should delete in use' do
@@ -96,18 +96,18 @@ class VehicleUsageSetTest < ActiveSupport::TestCase
     vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
     assert vehicle_usage_set.service_time_start.nil?
     route = vehicle_usage_set.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_start.nil? }.routes.take
-    assert !route.out_of_date
+    assert !route.outdated
     vehicle_usage_set.update! service_time_start: 10.minutes.to_i
-    assert route.reload.out_of_date
+    assert route.reload.outdated
   end
 
   test 'changes on service time end should set route out of date' do
     vehicle_usage_set = vehicle_usage_sets(:vehicle_usage_set_one)
     assert vehicle_usage_set.service_time_end.nil?
     route = vehicle_usage_set.vehicle_usages.detect{|vehicle_usage| vehicle_usage.service_time_end.nil? }.routes.take
-    assert !route.out_of_date
+    assert !route.outdated
     vehicle_usage_set.update! service_time_end: 10.minutes.to_i
-    assert route.reload.out_of_date
+    assert route.reload.outdated
   end
 
   test 'setting a rest duration requires time start and stop' do

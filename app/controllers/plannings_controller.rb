@@ -305,7 +305,7 @@ class PlanningsController < ApplicationController
 
   def apply_zonings
     @planning.zonings = params[:planning] && planning_params[:zoning_ids] ? current_user.customer.zonings.find(planning_params[:zoning_ids]) : []
-    @planning.zoning_out_of_date = true
+    @planning.zoning_outdated = true
     @planning.compute
     if @planning.save && @planning.reload
       respond_to do |format|

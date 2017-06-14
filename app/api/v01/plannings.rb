@@ -39,7 +39,7 @@ class V01::Plannings < Grape::API
       nickname: 'createPlanning',
       success: V01::Entities::Planning
     params do
-      use :params_from_entity, entity: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids).deep_merge(
+      use :params_from_entity, entity: V01::Entities::Planning.documentation.except(:id, :route_ids, :outdated, :tag_ids).deep_merge(
         name: { required: true },
         vehicle_usage_set_id: { required: true }
       )
@@ -59,7 +59,7 @@ class V01::Plannings < Grape::API
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
-      use :params_from_entity, entity: V01::Entities::Planning.documentation.except(:id, :route_ids, :out_of_date, :tag_ids)
+      use :params_from_entity, entity: V01::Entities::Planning.documentation.except(:id, :route_ids, :outdated, :tag_ids)
       optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     put ':id' do
@@ -95,7 +95,7 @@ class V01::Plannings < Grape::API
     end
 
     desc 'Recompute the planning after parameter update.',
-      detail: 'Refresh planning and out_of_date routes infos if inputs have been changed (for instance stores, destinations, visits, etc...)',
+      detail: 'Refresh planning and outdated routes infos if inputs have been changed (for instance stores, destinations, visits, etc...)',
       nickname: 'refreshPlanning',
       success: V01::Entities::Planning
     params do
@@ -151,7 +151,7 @@ class V01::Plannings < Grape::API
     get ':id/apply_zonings' do
       id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(id).first!
-      planning.zoning_out_of_date = true
+      planning.zoning_outdated = true
       planning.compute
       planning.save! && planning.reload
       if params[:details]

@@ -34,7 +34,7 @@ class DeliverableUnit < ApplicationRecord
 
   validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.store.icon_unknown') }
 
-  before_save :out_of_date
+  before_save :outdated
 
   include LocalizedAttr
   include RefSanitizer
@@ -51,7 +51,7 @@ class DeliverableUnit < ApplicationRecord
 
   private
 
-  def out_of_date
+  def outdated
     if default_quantity_changed? || default_capacity_changed?
       customer.deliverable_units_updated = true
     end

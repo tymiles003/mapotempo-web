@@ -49,13 +49,13 @@ class StoreTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should out_of_date' do
+  test 'should outdated' do
     store = stores(:store_one)
-    assert_not store.customer.plannings.where(name: 'planning1').first.out_of_date
+    assert_not store.customer.plannings.where(name: 'planning1').first.outdated
     store.lat = 10.1
     store.save!
     store.reload
-    assert store.customer.plannings.where(name: 'planning1').first.out_of_date
+    assert store.customer.plannings.where(name: 'planning1').first.outdated
   end
 
   test 'should geocode' do

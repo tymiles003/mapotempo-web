@@ -357,6 +357,20 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     patch api("#{planning.id}/update_stops_status", details: true)
     assert_equal 200, last_response.status
   end
+
+  test 'should return a planning with deprecated attributs' do
+    @planning.zoning_outdated = true
+    @planning.routes[0].outdated = true
+    @planning.save!
+
+    get api(@planning.id)
+    assert last_response.ok?, last_response.body
+    json = JSON.parse(last_response.body)
+    assert json['zoning_outdated']
+    assert json['zoning_out_of_date']
+    assert json['outdated']
+    assert json['out_of_date']
+  end
 end
 
 class V01::PlanningsErrorTest < V01::PlanningsBaseTest

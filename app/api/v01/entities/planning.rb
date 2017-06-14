@@ -32,8 +32,10 @@ class V01::Entities::Planning < Grape::Entity
     p.zonings.first.id if p.zonings.size == 1
   }
   expose(:zoning_ids, documentation: { type: Integer, desc: 'If a new zoning is specified before planning save, all visits will be affected to vehicles specified in zones.', is_array: true })
-  expose(:zoning_out_of_date, documentation: { type: 'Boolean' })
-  expose(:out_of_date, documentation: { type: 'Boolean' })
+  expose(:zoning_outdated, as: :zoning_out_of_date, documentation: { type: 'Boolean', desc: 'DEPRECATED. Use zoning_outdated instead.' })
+  expose(:zoning_outdated, documentation: { type: 'Boolean' })
+  expose(:outdated, as: :out_of_date, documentation: { type: 'Boolean', desc: 'DEPRECATED. Use outdated instead.' })
+  expose(:outdated, documentation: { type: 'Boolean' })
   expose(:route_ids, documentation: { type: Integer, is_array: true }) { |m| m.routes.collect(&:id) } # Workaround bug with fetch join stops
   expose(:tag_ids, documentation: { type: Integer, desc: 'Restrict visits/destinations in the plan (visits/destinations should have all of these tags to be present in the plan).', is_array: true })
   expose(:tag_operation, documentation: { type: String, values: ['and', 'or'], desc: 'Choose how to use selected tags: and (for visits with all tags, by default) / or (for visits with at least one tag).', default: 'and' })

@@ -12,14 +12,14 @@ class VehicleUsageTest < ActiveSupport::TestCase
     vehicle_usage.save!
   end
 
-  test 'should update out_of_date for store' do
+  test 'should update outdated for store' do
     store = stores(:store_one).dup
     store.save!
     vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
     vehicle_usage.store_start = store
-    assert_not vehicle_usage.routes[-1].out_of_date
+    assert_not vehicle_usage.routes[-1].outdated
     vehicle_usage.save!
-    assert vehicle_usage.routes[-1].out_of_date
+    assert vehicle_usage.routes[-1].outdated
   end
 
   test 'should change store' do
@@ -37,18 +37,18 @@ class VehicleUsageTest < ActiveSupport::TestCase
     vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
     assert vehicle_usage.service_time_start.nil?
     route = vehicle_usage.routes.take
-    assert !route.out_of_date
+    assert !route.outdated
     vehicle_usage.update! service_time_start: 10.minutes.to_i
-    assert route.reload.out_of_date
+    assert route.reload.outdated
   end
 
   test 'changes on service time end should set route out of date' do
     vehicle_usage = vehicle_usages(:vehicle_usage_one_one)
     assert vehicle_usage.service_time_end.nil?
     route = vehicle_usage.routes.take
-    assert !route.out_of_date
+    assert !route.outdated
     vehicle_usage.update! service_time_end: 10.minutes.to_i
-    assert route.reload.out_of_date
+    assert route.reload.outdated
   end
 
   test 'setting a rest duration requires time start and stop' do

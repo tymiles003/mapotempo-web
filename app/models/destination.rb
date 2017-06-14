@@ -105,9 +105,9 @@ class Destination < Location
     true
   end
 
-  def out_of_date
+  def outdated
     Route.transaction do
-      visits.each(&:out_of_date)
+      visits.each(&:outdated)
     end
   end
 end

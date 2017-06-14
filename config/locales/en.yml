@@ -272,7 +272,7 @@ en:
       route:
         distance: Distance
         emission: Emission
-        out_of_date: Outdated
+        outdated: Outdated
         start: Start
         end: End
         hidden: Hidden
@@ -1149,7 +1149,7 @@ en:
       collapse_planning_panel: Collapse plan panel
       refresh: Refresh
       refresh_help: Plan parameters have been changed, it is required to recalculate
-      out_of_date_zoning: Zoning changed. Apply again to refresh.
+      outdated_zoning: Zoning changed. Apply again to refresh.
       stops_help: Plan stops / total
       duration_help: Total duration
       distance_help: Total distance

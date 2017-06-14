@@ -26,7 +26,7 @@ class Zone < ApplicationRecord
   validate :polygon_json_format_validation
   validate :vehicle_from_customer_validation
 
-  before_save :update_out_of_date
+  before_save :update_outdated
 
   amoeba do
     enable
@@ -36,7 +36,7 @@ class Zone < ApplicationRecord
 
       def copy.vehicle_from_customer_validation; end
 
-      def copy.update_out_of_date; end
+      def copy.update_outdated; end
     })
   end
 
@@ -97,9 +97,9 @@ class Zone < ApplicationRecord
     end
   end
 
-  def update_out_of_date
+  def update_outdated
     if self.changed?
-      zoning.flag_out_of_date
+      zoning.flag_outdated
     end
   end
 end

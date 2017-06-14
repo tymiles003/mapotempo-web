@@ -215,6 +215,16 @@ class V01::RoutesTest < V01::RoutesBaseTest
     end
   end
 
+  test 'should return a route with deprecated attributs' do
+    @route.outdated = true
+    @route.save!
+
+    get api(@route.planning_id, @route.id)
+    assert last_response.ok?, last_response.body
+    json = JSON.parse(last_response.body)
+    assert json['outdated']
+    assert json['out_of_date']
+  end
 end
 
 class V01::RoutesErrorTest < V01::RoutesBaseTest

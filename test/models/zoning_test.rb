@@ -26,11 +26,11 @@ class ZoningTest < ActiveSupport::TestCase
     assert oo.zones[0].zoning == oo
   end
 
-  test 'should flag_out_of_date' do
+  test 'should flag_outdated' do
     zoning = zonings(:zoning_one)
-    assert_not zoning.plannings[0].zoning_out_of_date
-    zoning.flag_out_of_date
-    assert zoning.plannings[0].zoning_out_of_date
+    assert_not zoning.plannings[0].zoning_outdated
+    zoning.flag_outdated
+    assert zoning.plannings[0].zoning_outdated
   end
 
   test 'should generate automatic clustering' do

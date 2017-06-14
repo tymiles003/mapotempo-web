@@ -50,7 +50,7 @@ class VehicleUsageSet < ApplicationRecord
   validates :rest_duration, presence: {if: :rest_start?, message: ->(*_) { I18n.t('activerecord.errors.models.vehicle_usage_set.missing_rest_duration') }}
 
   after_initialize :assign_defaults, if: :new_record?
-  before_update :update_out_of_date
+  before_update :update_outdated
 
   amoeba do
     exclude_association :plannings
@@ -58,7 +58,7 @@ class VehicleUsageSet < ApplicationRecord
     customize(lambda { |_original, copy|
       def copy.assign_defaults; end
 
-      def copy.update_out_of_date; end
+      def copy.update_outdated; end
 
       copy.vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.vehicle_usage_set = copy
@@ -91,7 +91,7 @@ class VehicleUsageSet < ApplicationRecord
     create_vehicle_usages
   end
 
-  def update_out_of_date
+  def update_outdated
     if rest_duration_changed?
       vehicle_usages.each(&:update_rest)
     end
@@ -116,7 +116,7 @@ class VehicleUsageSet < ApplicationRecord
           (service_time_end_changed? && vehicle_usage.default_service_time_end == service_time_end)
 
           vehicle_usage.routes.each{ |route|
-            route.out_of_date = true
+            route.outdated = true
             route.optimized_at = route.last_sent_to = route.last_sent_at = nil
           }
         end

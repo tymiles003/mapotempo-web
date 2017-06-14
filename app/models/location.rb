@@ -45,7 +45,7 @@ class Location < ApplicationRecord
   validates_with LocalizationValidator, fields: [:street, :city, :lat, :lng]
 
   before_validation :update_geocode
-  before_update :update_out_of_date
+  before_update :update_outdated
 
   def position?
     !lat.nil? && !lng.nil?
@@ -104,9 +104,9 @@ class Location < ApplicationRecord
 
   private
 
-  def update_out_of_date
+  def update_outdated
     if lat_changed? || lng_changed?
-      out_of_date
+      outdated
     end
   end
 

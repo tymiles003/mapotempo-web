@@ -74,7 +74,7 @@ class Route < ApplicationRecord
     planning.visits_compatibles.each { |visit|
       stops.build(type: StopVisit.name, visit: visit, active: true, index: i += 1)
     }
-    self.out_of_date = true
+    self.outdated = true
   end
 
   def service_time_start_value
@@ -327,12 +327,12 @@ class Route < ApplicationRecord
       end
     end
 
-    self.out_of_date = false
+    self.outdated = false
     true
   end
 
   def compute(options = {})
-    compute!(options) if self.out_of_date
+    compute!(options) if self.outdated
     true
   end
 
@@ -373,7 +373,7 @@ class Route < ApplicationRecord
     end
     stops.build(type: StopVisit.name, visit: visit, index: index, active: active, id: stop_id)
 
-    self.out_of_date = true
+    self.outdated = true
     if vehicle_usage
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
@@ -382,7 +382,7 @@ class Route < ApplicationRecord
   def add_rest(active = true, stop_id = nil)
     index = stops.size + 1
     stops.build(type: StopRest.name, index: index, active: active, id: stop_id)
-    self.out_of_date = true
+    self.outdated = true
     if vehicle_usage
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
@@ -392,7 +392,7 @@ class Route < ApplicationRecord
     if !stops.find{ |stop| stop.is_a?(StopRest) }
       add_rest(active, stop_id)
     end
-    self.out_of_date = true
+    self.outdated = true
     if vehicle_usage
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
@@ -409,7 +409,7 @@ class Route < ApplicationRecord
   def remove_stop(stop)
     if vehicle_usage
       shift_index(stop.index + 1, -1)
-      self.out_of_date = true
+      self.outdated = true
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
     stops.destroy(stop)
@@ -517,8 +517,8 @@ class Route < ApplicationRecord
     stops.group_by{ |stop| (all_stops ? true : stop.active) && (stop.position? || stop.is_a?(StopRest))}
   end
 
-  def out_of_date
-    self[:out_of_date]
+  def outdated
+    self[:outdated]
   end
 
   def changed?
@@ -641,7 +641,7 @@ class Route < ApplicationRecord
       elsif !stops.any?{ |stop| stop.is_a?(StopRest) }
         add_rest
       end
-      self.out_of_date = true if id || out_of_date.nil?
+      self.outdated = true if id || outdated.nil?
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
   end

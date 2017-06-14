@@ -275,7 +275,7 @@ he:
       route:
         distance: מרחק
         emission: פליטה
-        out_of_date: פג תוקף
+        outdated: פג תוקף
         start: התחלה
         end: סיום
         hidden: מוסתר
@@ -1170,7 +1170,7 @@ he:
       collapse_planning_panel: הקטן את לוח התיכנון
       refresh: רענן
       refresh_help: פרמטרי התוכנית שונו, נדרש לחשב תוכנית מחדש
-      out_of_date_zoning: האיזורים שונו. עדכן שוב כדי לבצע ריענון.
+      outdated_zoning: האיזורים שונו. עדכן שוב כדי לבצע ריענון.
       stops_help: תיכנון עצירות / סך הכל
       duration_help: משך זמן כולל
       distance_help: סך הכל מרחק

@@ -58,7 +58,7 @@ class Store < Location
   attr_localized :lat, :lng
 
   def destroy
-    out_of_date # Too late to do this in before_destroy callback, children already destroyed
+    outdated # Too late to do this in before_destroy callback, children already destroyed
     super
   end
 
@@ -76,7 +76,7 @@ class Store < Location
 
   private
 
-  def out_of_date
+  def outdated
     Route.transaction do
       routes_usage_set = vehicle_usage_set_starts.collect{ |vehicle_usage_set_start|
         vehicle_usage_set_start.vehicle_usages.select{ |vehicle_usage| !vehicle_usage.store_start }.collect(&:routes)
@@ -89,7 +89,7 @@ class Store < Location
       routes_usage = (vehicle_usage_starts + vehicle_usage_stops + vehicle_usage_rests).collect(&:routes)
 
       (routes_usage_set + routes_usage).flatten.uniq.each{ |route|
-        route.out_of_date = true
+        route.outdated = true
         route.optimized_at = route.last_sent_to = route.last_sent_at = nil
         route.save!
       }

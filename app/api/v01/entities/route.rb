@@ -33,7 +33,8 @@ class V01::Entities::Route < Grape::Entity
   }
   expose(:hidden, documentation: { type: 'Boolean' })
   expose(:locked, documentation: { type: 'Boolean' })
-  expose(:out_of_date, documentation: { type: 'Boolean' })
+  expose(:outdated, as: :out_of_date, documentation: { type: 'Boolean', desc: 'DEPRECATED. Use outdated instead.' })
+  expose(:outdated, documentation: { type: 'Boolean' })
   expose(:stops, using: V01::Entities::Stop, documentation: { type: V01::Entities::Stop, is_array: true })
   expose(:stop_out_of_drive_time, documentation: { type: 'Boolean' })
   expose(:stop_distance, documentation: { type: Float, desc: 'Distance between the vehicle\'s store_stop and last stop.' })

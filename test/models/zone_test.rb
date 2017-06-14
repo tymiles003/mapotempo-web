@@ -9,21 +9,21 @@ class ZoneTest < ActiveSupport::TestCase
 
   test 'should touch planning changed' do
     zone = zones(:zone_one)
-    assert_not zone.zoning.plannings[0].zoning_out_of_date
+    assert_not zone.zoning.plannings[0].zoning_outdated
     zone.polygon = '{"plop": "plop"}'
     zone.save!
-    assert zone.zoning.plannings[0].zoning_out_of_date
+    assert zone.zoning.plannings[0].zoning_outdated
   end
 
   test 'should touch planning collection changed' do
     zone = zones(:zone_one)
-    assert_not zone.zoning.plannings[0].zoning_out_of_date
+    assert_not zone.zoning.plannings[0].zoning_outdated
     assert zone.vehicle
     zone.vehicle = nil
     zone.save!
     zone.zoning.save!
     zone.reload
-    assert zone.zoning.plannings[0].zoning_out_of_date
+    assert zone.zoning.plannings[0].zoning_outdated
   end
 
   test 'calculate distance between point and simple polygon' do

@@ -102,7 +102,7 @@ class Planning < ApplicationRecord
   end
 
   def vehicle_usage_add(vehicle_usage, ignore_errors = false)
-    route = routes.build(vehicle_usage: vehicle_usage, out_of_date: false)
+    route = routes.build(vehicle_usage: vehicle_usage, outdated: false)
     vehicle_usage.routes << route if !vehicle_usage.id
     route.init_stops(ignore_errors)
   end
@@ -148,7 +148,7 @@ class Planning < ApplicationRecord
 
   def compute(options = {})
     Planning.transaction do
-      split_by_zones(nil) if zoning_out_of_date
+      split_by_zones(nil) if zoning_outdated
       routes.each{ |r| r.compute(options) }
     end
   end
@@ -260,9 +260,9 @@ class Planning < ApplicationRecord
     end
   end
 
-  def out_of_date
+  def outdated
     routes.inject(false){ |acc, route|
-      acc || route.out_of_date
+      acc || route.outdated
     }
   end
 
@@ -299,7 +299,7 @@ class Planning < ApplicationRecord
         }
         route.optimized_at = route.last_sent_to = route.last_sent_at = nil
       end
-      route.out_of_date = true
+      route.outdated = true
     }
 
     self.order_array = order_array
@@ -404,7 +404,7 @@ class Planning < ApplicationRecord
 
       # Save route to update now stop.route_id
       routes.each{ |route|
-        route.out_of_date = true
+        route.outdated = true
         (route.no_stop_index_validation = true) && route.save!
         route.reload # Refresh route.stops collection if stops have been moved
       }
@@ -587,7 +587,7 @@ class Planning < ApplicationRecord
   end
 
   def split_by_zones(visits_free)
-    self.zoning_out_of_date = false
+    self.zoning_outdated = false
     if !zonings.empty? && !routes.empty?
       # Make sure there is at least one Zone with Vehicle, else, don't apply Zones
       return unless zonings.any?{ |zoning| zoning.zones.any?{ |zone| !zone.avoid_zone && !zone.vehicle_id.blank? } }
@@ -627,11 +627,11 @@ class Planning < ApplicationRecord
 
   def update_zonings
     if @zoning_ids_changed
-      self.zoning_out_of_date = true
+      self.zoning_outdated = true
     end
 
     if !zonings.empty? && @zoning_ids_changed
-      self.zoning_out_of_date = true
+      self.zoning_outdated = true
       split_by_zones(nil)
     end
     true

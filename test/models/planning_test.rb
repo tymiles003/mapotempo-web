@@ -257,42 +257,42 @@ class PlanningTest < ActiveSupport::TestCase
   test 'should compute' do
     o = plannings(:planning_one)
     assert_no_difference('Stop.count') do
-      o.zoning_out_of_date = true
+      o.zoning_outdated = true
       o.compute
       o.routes.select{ |r| r.vehicle_usage }.each{ |r|
-        assert_not r.out_of_date
+        assert_not r.outdated
       }
-      assert_not o.zoning_out_of_date
+      assert_not o.zoning_outdated
       o.save!
     end
   end
 
   test 'should compute with non geocoded' do
     o = plannings(:planning_one)
-    o.zoning_out_of_date = true
+    o.zoning_outdated = true
     d0 = o.routes[0].stops[0].visit.destination
     d0.lat = d0.lng = nil
     o.compute
     o.routes.select{ |r| r.vehicle_usage }.each{ |r|
-      assert_not r.out_of_date
+      assert_not r.outdated
     }
-    assert_not o.zoning_out_of_date
+    assert_not o.zoning_outdated
   end
 
-  test 'should out_of_date' do
+  test 'should outdated' do
     o = plannings(:planning_one)
-    assert_not o.out_of_date
+    assert_not o.outdated
 
-    o.routes[1].out_of_date = true
-    assert o.out_of_date
+    o.routes[1].outdated = true
+    assert o.outdated
   end
 
   test 'should update zoning' do
     o = plannings(:planning_one)
-    assert_not o.zoning_out_of_date
+    assert_not o.zoning_outdated
     o.zonings = [zonings(:zoning_two)]
     o.save!
-    assert_not o.out_of_date
+    assert_not o.outdated
   end
 
   test 'should automatic insert' do
@@ -337,7 +337,7 @@ class PlanningTest < ActiveSupport::TestCase
     r = v.routes.take
 
     # 1st computation, set Stop times
-    r.out_of_date = true
+    r.outdated = true
     r.compute
     stop_times = r.stops.map &:time
     route_start = r.start
@@ -350,7 +350,7 @@ class PlanningTest < ActiveSupport::TestCase
     )
 
     # 2nd computation
-    r.out_of_date = true
+    r.outdated = true
     r.compute
     stop_times2 = r.stops.map &:time
     route_start2 = r.start
@@ -368,7 +368,7 @@ class PlanningTest < ActiveSupport::TestCase
     )
 
     # 3rd computation
-    r.out_of_date = true
+    r.outdated = true
     r.compute
     stop_times3 = r.stops.map &:time
     route_start3 = r.start
@@ -389,7 +389,7 @@ class PlanningTest < ActiveSupport::TestCase
     )
 
     # Compute a last time, this stop should be out of time window
-    r.out_of_date = true
+    r.outdated = true
     r.compute
     assert r.stops[0].out_of_window
   end
@@ -398,7 +398,7 @@ class PlanningTest < ActiveSupport::TestCase
     v = vehicle_usages(:vehicle_usage_one_one)
     r = v.routes.take
     r.planning.customer.stores.update_all lat: nil, lng: nil
-    r.out_of_date = true
+    r.outdated = true
     r.compute
     r.stops.sort_by(&:index).each_with_index do |stop, index|
       if index.zero?
@@ -449,19 +449,19 @@ class PlanningTest < ActiveSupport::TestCase
 
   test 'duplicate should not change zonings outdated flag when initially false' do
     planning = plannings :planning_one
-    assert !planning.zoning_out_of_date
+    assert !planning.zoning_outdated
     dup_planning = planning.duplicate
     dup_planning.save!
-    assert !dup_planning.zoning_out_of_date
+    assert !dup_planning.zoning_outdated
   end
 
   test 'duplicate should not change zonings outdated flag when initially true' do
     planning = plannings :planning_one
-    planning.update! zoning_out_of_date: true
-    assert planning.zoning_out_of_date
+    planning.update! zoning_outdated: true
+    assert planning.zoning_outdated
     dup_planning = planning.duplicate
     dup_planning.save!
-    assert dup_planning.zoning_out_of_date
+    assert dup_planning.zoning_outdated
   end
 
   test 'should no amalgamate point at same position' do
@@ -634,7 +634,7 @@ class PlanningTestError < ActiveSupport::TestCase
     o = plannings(:planning_one)
     Routers::RouterWrapper.stub_any_instance(:compute_batch, []) do
       assert_no_difference('Stop.count') do
-        o.zoning_out_of_date = true
+        o.zoning_outdated = true
         o.compute
         o.save!
       end
@@ -649,7 +649,7 @@ class PlanningTestException < ActiveSupport::TestCase
     ApplicationController.stub_any_instance(:server_error, lambda { |*a| raise }) do
       Routers::RouterWrapper.stub_any_instance(:compute_batch, lambda { |*a| raise }) do
         assert_no_difference('Stop.count') do
-          o.zoning_out_of_date = true
+          o.zoning_outdated = true
           assert_raises(RuntimeError) do
             o.compute
           end

@@ -1627,7 +1627,7 @@ var plannings_edit = function(params) {
   };
 
   var checkForDisplayPlanningFirstTime = function(data) {
-    if (data.out_of_date) {
+    if (data.outdated) {
 
       var displayPlanningAfterModal = function() {
         var cursorBody = $('body').css('cursor');

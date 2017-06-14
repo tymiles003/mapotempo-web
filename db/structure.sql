@@ -383,7 +383,7 @@ CREATE TABLE plannings (
     customer_id integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    zoning_out_of_date boolean,
+    zoning_outdated boolean,
     order_array_id integer,
     ref character varying,
     date date,
@@ -600,7 +600,7 @@ CREATE TABLE routes (
     updated_at timestamp without time zone,
     hidden boolean,
     locked boolean,
-    out_of_date boolean,
+    outdated boolean,
     stop_out_of_drive_time boolean,
     stop_distance double precision,
     ref character varying(255),
@@ -2616,3 +2616,4 @@ INSERT INTO schema_migrations (version) VALUES ('20170516093306');
 
 INSERT INTO schema_migrations (version) VALUES ('20170516093307');
 
+INSERT INTO schema_migrations (version) VALUES ('20170613152549');

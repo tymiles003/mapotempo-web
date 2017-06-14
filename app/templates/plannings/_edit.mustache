@@ -1,11 +1,11 @@
 <p class="global_info">
   {{> plannings/edit_head}}
 </p>
-{{#out_of_date}}
+{{#outdated}}
 <p class="text-center">
   <button type="button" class="btn btn-warning btn-sm" id="refresh" title="{{#i18n}}plannings.edit.refresh_help{{/i18n}}"><i class="fa fa-refresh fa-fw"></i> {{#i18n}}plannings.edit.refresh{{/i18n}}</button>
 </p>
-{{/out_of_date}}
+{{/outdated}}
 <ol class="routes">
 {{#routes}}
 <li class="route" data-route_id="{{route_id}}"{{#vehicle}} data-color="{{color}}" {{/vehicle}}>

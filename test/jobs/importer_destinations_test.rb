@@ -228,7 +228,7 @@ class ImporterDestinationsTest < ActionController::TestCase
     p = Planning.last
     assert_equal 2, p.routes[0].stops.size
     assert_equal 4, p.routes[1].stops.size
-    refute_includes Planning.last.routes.map(&:out_of_date), true
+    refute_includes Planning.last.routes.map(&:outdated), true
   end
 
   test 'should import many-iso' do

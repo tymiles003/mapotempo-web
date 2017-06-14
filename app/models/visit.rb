@@ -47,7 +47,7 @@ class Visit < ApplicationRecord
   validate_consistency :tags, attr_consistency_method: ->(visit) { visit.destination.try :customer_id }
 
   before_save :update_tags, :create_orders
-  before_update :update_out_of_date
+  before_update :update_outdated
 
   include RefSanitizer
 
@@ -64,7 +64,7 @@ class Visit < ApplicationRecord
 
       def copy.create_orders; end
 
-      def copy.update_out_of_date; end
+      def copy.update_outdated; end
     })
   end
 
@@ -93,10 +93,10 @@ class Visit < ApplicationRecord
     @tag_ids_changed || super
   end
 
-  def out_of_date
+  def outdated
     Route.transaction do
       stop_visits.each{ |stop|
-        stop.route.out_of_date = true
+        stop.route.outdated = true
         stop.route.optimized_at = stop.route.last_sent_to = stop.route.last_sent_at = nil
         stop.route.save
       }
@@ -152,9 +152,9 @@ class Visit < ApplicationRecord
 
   private
 
-  def update_out_of_date
+  def update_outdated
     if open1_changed? || close1_changed? || open2_changed? || close2_changed? || quantities_changed? || take_over_changed?
-      out_of_date
+      outdated
     end
   end
 

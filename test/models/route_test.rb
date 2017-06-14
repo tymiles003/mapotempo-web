@@ -37,9 +37,9 @@ class RouteTest < ActiveSupport::TestCase
   test 'should compute' do
     route = routes(:route_one_one)
     route.distance = route.emission = route.start = route.end = nil
-    route.out_of_date = true
+    route.outdated = true
     route.compute
-    assert_not route.out_of_date
+    assert_not route.outdated
     assert route.distance
     assert route.emission
     assert route.start
@@ -51,7 +51,7 @@ class RouteTest < ActiveSupport::TestCase
   test 'should compute empty' do
     route = routes(:route_one_one)
     assert route.stops.size > 1
-    route.out_of_date = true
+    route.outdated = true
     route.compute
     assert_equal route.stops.size + 1, route.distance
 
@@ -59,7 +59,7 @@ class RouteTest < ActiveSupport::TestCase
       stop.active = false
     }
 
-    route.out_of_date = true
+    route.outdated = true
     route.compute
     assert_equal 1, route.distance
     route.save!
@@ -164,7 +164,7 @@ class RouteTest < ActiveSupport::TestCase
     stop = route.vehicle_usage.store_stop
     stop.lat = stop.lng = 1 # Geocoded
     stop.save!
-    route.out_of_date = true
+    route.outdated = true
     route.compute
   end
 
@@ -182,7 +182,7 @@ class RouteTest < ActiveSupport::TestCase
     stops[2].visit.open1 = '12:00:00'
     stops[2].visit.close1 = '14:00:00'
 
-    route.out_of_date = true
+    route.outdated = true
     route.compute
     assert_equal Time.parse('10:55:27').seconds_since_midnight.to_i, route.start
   end

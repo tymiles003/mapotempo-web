@@ -45,7 +45,7 @@ class Vehicle < ApplicationRecord
   after_initialize :assign_defaults, :increment_max_vehicles, if: 'new_record?'
   before_create :create_vehicle_usage
   before_save :nilify_router_options_blanks
-  before_update :update_out_of_date
+  before_update :update_outdated
   before_destroy :destroy_vehicle
 
   include RefSanitizer
@@ -85,7 +85,7 @@ class Vehicle < ApplicationRecord
 
       def copy.create_vehicle_usage; end
 
-      def copy.update_out_of_date; end
+      def copy.update_outdated; end
 
       def copy.destroy_vehicle; end
     })
@@ -180,11 +180,11 @@ class Vehicle < ApplicationRecord
     write_attribute :router_options, self.router_options.delete_if { |k, v| v.to_s.empty? || true_options.exclude?(k) }
   end
 
-  def update_out_of_date
+  def update_outdated
     if emission_changed? || consumption_changed? || capacities_changed? || router_id_changed? || router_dimension_changed? || router_options_changed? || speed_multiplicator_changed?
       vehicle_usages.each{ |vehicle_usage|
         vehicle_usage.routes.each{ |route|
-          route.out_of_date = true
+          route.outdated = true
           route.optimized_at = route.last_sent_to = route.last_sent_at = nil
         }
       }

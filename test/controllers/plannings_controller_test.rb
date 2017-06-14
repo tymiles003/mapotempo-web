@@ -334,12 +334,12 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should refresh zoning' do
-    @planning.zoning_out_of_date = true
+    @planning.zoning_outdated = true
     @planning.save!
     get :refresh, planning_id: @planning, format: :json
     assert_response :success
     planning = assigns(:planning)
-    assert_not planning.zoning_out_of_date
+    assert_not planning.zoning_outdated
   end
 
   test 'should switch with same vehicle' do
@@ -434,13 +434,13 @@ class PlanningsControllerTest < ActionController::TestCase
     patch :apply_zonings, id: @planning.id, format: :json
     assert_response :success
     assert !planning.zonings.exists?
-    assert !planning.out_of_date
-    assert !planning.zoning_out_of_date
+    assert !planning.outdated
+    assert !planning.zoning_outdated
     patch :apply_zonings, id: @planning.id, format: :json, planning: { zoning_ids: [zoning.id] }
     assert_response :success
     planning.reload
     assert_equal [zoning.id], planning.zonings.map(&:id)
-    assert !planning.out_of_date
-    assert !planning.zoning_out_of_date
+    assert !planning.outdated
+    assert !planning.zoning_outdated
   end
 end

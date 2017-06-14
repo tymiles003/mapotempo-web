@@ -26,8 +26,8 @@ class Zoning < ApplicationRecord
   auto_strip_attributes :name
   validates :name, presence: true
 
-  before_create :update_out_of_date
-  before_save :update_out_of_date
+  before_create :update_outdated
+  before_save :update_outdated
 
   attr_accessor :prefered_unit
 
@@ -35,7 +35,7 @@ class Zoning < ApplicationRecord
     exclude_association :plannings
 
     customize(lambda { |_original, copy|
-      def copy.update_out_of_date; end
+      def copy.update_outdated; end
 
       copy.zones.each{ |zone|
         zone.zoning = copy
@@ -79,9 +79,9 @@ class Zoning < ApplicationRecord
     z[0] if z
   end
 
-  def flag_out_of_date
+  def flag_outdated
     plannings.each{ |planning|
-      planning.zoning_out_of_date = true
+      planning.zoning_outdated = true
     }
   end
 
@@ -144,9 +144,9 @@ class Zoning < ApplicationRecord
 
   private
 
-  def update_out_of_date
+  def update_outdated
     if @collection_touched
-      flag_out_of_date
+      flag_outdated
     end
   end
 
