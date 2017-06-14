@@ -278,6 +278,7 @@ $sidebar-margins: 10px;
           display: inline-block;
           vertical-align: top;
           margin: 2px;
+          max-width: 350px;
 
           .stops {
             display: block !important;
@@ -396,6 +397,8 @@ $sidebar-margins: 10px;
       }
 
       .panel-body {
+        white-space: initial;
+
         .btn {
           padding: 0 5px;
         }
