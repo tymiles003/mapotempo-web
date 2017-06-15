@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.5
--- Dumped by pg_dump version 9.5.5
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2624,4 +2624,5 @@ INSERT INTO schema_migrations (version) VALUES ('20170613152549');
 
 INSERT INTO schema_migrations (version) VALUES ('20170614151617');
 
-INSERT INTO schema_migrations (version) VALUES ('20170613092505');
+INSERT INTO schema_migrations (version) VALUES ('20170615092505');
+
