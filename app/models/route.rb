@@ -282,7 +282,12 @@ class Route < ActiveRecord::Base
       if vehicle_usage
         self.optimized_at = self.last_sent_to = self.last_sent_at = nil
       end
-      compute!(ignore_errors: ignore_errors) if recompute
+
+      if recompute
+        compute!(ignore_errors: ignore_errors)
+      else
+        self.out_of_date = true
+      end
     end
   end
 
