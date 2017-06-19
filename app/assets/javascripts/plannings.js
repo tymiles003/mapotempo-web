@@ -16,7 +16,6 @@
 // <http://www.gnu.org/licenses/agpl.html>
 //
 'use strict';
-
 var getPlanningsId = function() {
   return $.makeArray($('#plannings input[type=checkbox]:checked').map(function(index, id){ return $(id).val(); }));
 };
@@ -980,13 +979,12 @@ var plannings_edit = function(params) {
         return false;
       })
       .on("click", ".optimize", function(event, ui) {
-
         initOptimizerDialog();
-
-        if (!confirm(I18n.t('plannings.edit.optimize_confirm'))) {
+        if (!confirm(I18n.t('plannings.edit.optimize_confirm')))
           return;
-        }
+
         var id = $(this).closest("[data-route_id]").attr("data-route_id");
+        // Call optimize_route
         $.ajax({
           type: "get",
           url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
@@ -1125,8 +1123,7 @@ var plannings_edit = function(params) {
         '/routes/' + (route.ref ? 'ref:' + encodeURIComponent(route.ref) : route.route_id) + '.ics';
     }
 
-    $.each(data.routes, function(i, route) {
-
+    function setRouteVariables(i, route) {
       route.calendar_url = api_route_calendar_path(route);
       route.calendar_url_api_key = api_route_calendar_path(route) + '?api_key=' + user_api_key;
 
@@ -1138,11 +1135,10 @@ var plannings_edit = function(params) {
       route.customer_enable_external_callback = data.customer_enable_external_callback;
       if (data.customer_external_callback_url) {
         route.customer_external_callback_url = buildUrl(data.customer_external_callback_url, { planning_id: data.id, route_id: route.route_id, planning_ref: data.ref, route_ref: route.ref });
-      }
-    });
 
-    if (data.customer_enable_external_callback && data.customer_external_callback_url) {
-      $("#global_tools .customer_external_callback_url, #external-callback-btn").data('url', buildUrl(data.customer_external_callback_url, { planning_id: data.id, planning_ref: data.ref }));
+        if (data.customer_enable_external_callback)
+          $("#global_tools .customer_external_callback_url, #external-callback-btn").data('url', buildUrl(data.customer_external_callback_url, { planning_id: data.id, planning_ref: data.ref }));
+      }
     }
 
     data.i18n = mustache_i18n;
@@ -1150,7 +1146,8 @@ var plannings_edit = function(params) {
 
     var empty_colors = colors.slice();
     empty_colors.unshift('');
-    $.each(data.routes, function(i, route) {
+
+    var updateColorsForRoutesAndStops = function(i, route) {
       route.colors = $.map(empty_colors, function(color) {
         return {
           color: color,
@@ -1164,7 +1161,17 @@ var plannings_edit = function(params) {
           stop.color = route.color;
         }
       });
-    });
+    };
+
+    if (data.routes.length === 0) {
+      setRouteVariables(null, $.first(data.routes));
+      updateColorsForRoutesAndStops(null, $.first(data.routes));
+    } else {
+      $.each(data.routes, function(i, route) {
+        setRouteVariables(i, route);
+        updateColorsForRoutesAndStops(i, route);
+      });
+    }
 
     if (typeof options !== 'object' || !options.partial) {
       data.ref = null; // here to prevent mustache template to get the value
@@ -1244,7 +1251,7 @@ var plannings_edit = function(params) {
       if (!options.firstTime) {
         routesLayer.refreshRoutes(routeIds);
       }
-    } else if (typeof options === 'object' && options.partial == 'stops') {
+    } else if (typeof options === 'object' && options.partial === 'stops') {
       $.each(data.routes, function(i, route) {
         if (!options.firstTime) {
           routesLayer.refreshRoutes([route.route_id]);
