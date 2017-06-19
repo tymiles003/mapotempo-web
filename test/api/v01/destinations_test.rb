@@ -307,6 +307,62 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     end
   end
 
+  test 'should save route after import' do
+    put api(), {
+      planning: {
+        ref: 'r1',
+        name: 'Hey',
+        vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_one).id
+      },
+      replace: true,
+      destinations: [{
+        name: 'Nouveau client',
+        street: nil,
+        postalcode: nil,
+        city: 'Tule',
+        state: 'Limousin',
+        lat: 43.5710885456786,
+        lng: 3.89636993408203,
+        detail: nil,
+        comment: nil,
+        phone_number: nil,
+        ref: 'z',
+        tags: ['tag1', 'tag2'],
+        geocoding_accuracy: nil,
+        foo: 'bar',
+        visits: [{
+          ref: 'v1',
+          quantity1_1: 1,
+          open1: '08:00',
+          close1: '12:00',
+          open2: '14:00',
+          close2: '18:00',
+          take_over: nil,
+          route: '1',
+          ref_vehicle: '003',
+          active: true
+        },
+        {
+          ref: 'v2',
+          quantity1_1: 2,
+          open1: '14:00',
+          close1: '18:00',
+          open2: '20:00',
+          close2: '21:00',
+          take_over: nil,
+          route: '1',
+          ref_vehicle: '003',
+          active: true
+        }]
+      }]
+    }.to_json,
+    'CONTENT_TYPE' => 'application/json'
+    assert last_response.ok?, last_response.body
+
+    planning = Planning.last
+    assert_not_nil planning.routes.last.stop_drive_time
+  end
+
   test 'should create bulk from json with tag_id' do
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
@@ -384,7 +440,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
             geocoding_accuracy: nil,
             foo: 'bar',
             visits: [{
-              #to keep the same behavior between destinations refs and visits refs. visit can't be valided if no visit_ref have been settled.
+              #to keep the same behavior between destinations refs and visits refs. visit can't be validated if no visit_ref have been settled.
               ref: 'v1',
               quantity1_1: 1,
               open1: '08:00',
