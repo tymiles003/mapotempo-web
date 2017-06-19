@@ -29,7 +29,7 @@ class Optimizer
 
   def self.optimize(planning, route, global = false, synchronous = false, all_stops = false)
     optimize_time = planning.customer.optimization_time || @@optimize_time
-    if route && route.size_active <= 1
+    if route && route.size_active <= 1 && !all_stops
       # Nothing to optimize
       route.compute
       planning.save

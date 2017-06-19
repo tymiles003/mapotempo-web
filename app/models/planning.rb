@@ -367,7 +367,7 @@ class Planning < ActiveRecord::Base
       stops_count = routes.collect{ |r| r.stops.size }.reduce(&:+)
       flat_stop_ids = stop_ids.flatten.compact
       routes.each_with_index{ |route, index|
-        stops_ = route.stops_segregate
+        stops_ = route.stops_segregate(all_stops)
 
         # Get ordered stops in current route
         ordered_stops = routes.flat_map{ |r| r.stops.select{ |s| stop_ids[index].include? s.id } }.sort_by{ |s| stop_ids[index].index s.id }
@@ -395,7 +395,7 @@ class Planning < ActiveRecord::Base
         if route.vehicle_usage
           ((stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : [])).each{ |stop|
             stop.active = false
-            stop.index = i += 1 unless all_stops
+            stop.index = i += 1
           }
         end
       }
