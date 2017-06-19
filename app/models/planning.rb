@@ -370,7 +370,7 @@ class Planning < ApplicationRecord
       stops_count = routes.collect{ |r| r.stops.size }.reduce(&:+)
       flat_stop_ids = stop_ids.flatten.compact
       routes.each_with_index{ |route, index|
-        stops_ = route.stops_segregate
+        stops_ = route.stops_segregate(all_stops)
 
         # Get ordered stops in current route
         ordered_stops = routes.flat_map{ |r| r.stops.select{ |s| stop_ids[index].include? s.id } }.sort_by{ |s| stop_ids[index].index s.id }

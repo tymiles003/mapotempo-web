@@ -29,7 +29,7 @@ class Optimizer
 
   def self.optimize(planning, route, global = false, synchronous = false, all_stops = false)
     optimize_time = planning.customer.optimization_time || @@optimize_time
-    if route && route.size_active <= 1
+    if route && route.size_active <= 1 && !all_stops
       # Nothing to optimize
       route.compute
       planning.save
@@ -43,8 +43,8 @@ class Optimizer
         planning.customer.job_optimizer.save!
       end
     else
-      routes = planning.routes.includes_destinations.select { |r|
-        (route && r.id == route.id) || (!route && !global && r.vehicle_usage && r.size_active > 1) || (!route && global)
+      routes = route ? [route] : planning.routes.includes_destinations.select {|r|
+        (!global && r.vehicle_usage && r.size_active >= 1) || (global)
       }.reject(&:locked)
       optimum = unless routes.select(&:vehicle_usage).empty?
                   planning.optimize(routes, global, all_stops) do |positions, services, vehicles|
