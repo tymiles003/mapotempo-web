@@ -693,9 +693,8 @@ fr:
         de l'optimisation (30 sec est une grande valeur). Valable uniquement dans
         le cas d'une optimisation d'une seule tournée avec retards.
       optimization_time_default: '%{n} (valeur par défaut)'
-      optimization_time_help: Temps passé, pour chaque véhicule, avant que l'optimisation
-        ne s'arrête par défaut automatiquement. Néanmoins vous pouvez préciser ici
-        une valeur limite à ne pas dépasser.
+      optimization_time_help: L'optimisation s'arrête par défaut automatiquement.
+        Néanmoins vous pouvez préciser ici une valeur limite, par véhicule, à ne pas dépasser.
       optimization_soft_upper_bound_default: '%{n} (valeur par défaut)'
       optimization_stop_soft_upper_bound_help: 'Plus la valeur est grande plus les
         retards seront pénalisants (0 pour empêcher les retards de manière stricte :
