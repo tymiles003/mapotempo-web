@@ -107,9 +107,17 @@ Don't worry, we use SASS to compile CSS and not LESS.
 ### Override variables
 Default project configuration is in `config/application.rb` you can override any setting by create a `config/initializers/mapotempo.rb` file and override any variable.
 
-For exemple, you can override cache directory with this line of code :
-
-    Mapotempo::Application.config.trace_cache_dir
+External resources can be configured trough environment variables:
+* POSTGRES_USERNAME, default: 'mapotempo'
+* POSTGRES_PASSWORD, default: 'mapotempo'
+* POSTGRES_DATABASE', default: 'mapotempo-test', 'mapotempo-dev' or 'mapotempo-prod'
+* REDIS_HOST', default: 'localhost', production environment only
+* OPTIMIZER_HOST, default: 'http://optim.mapotempo.com:1791/0.1'
+* OPTIMIZER_API_KEY
+* GEOCODER_HOST, default: 'https://geocode.mapotempo.com/0.1'
+* GEOCODER_API_KEY
+* ROUTER_API_KEY
+* DEVICE_TOMTOM_API_KEY
 
 ### Background Tasks
 Delayed job (background task) can be activated by setting `Mapotempo::Application.config.delayed_job_use = true` it's allow asynchronous running of import geocoder and optimization computation.

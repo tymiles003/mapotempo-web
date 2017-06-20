@@ -59,8 +59,8 @@ Rails.application.configure do
   # )
   config.optimize = OptimizerWrapper.new(
     cache_factory('optimizer_wrapper', 60*60*24*10),
-    'http://localhost:1791/0.1',
-    'demo'
+    ENV['OPTIMIZER_HOST'] || 'http://localhost:1791/0.1',
+    ENV['OPTIMIZER_API_KEY']
   )
   config.optimize_time = 600
   config.optimize_time_force = nil
@@ -77,7 +77,7 @@ Rails.application.configure do
   config.geocode_complete = false # Build time setting
 
   require 'geocode_addok_wrapper'
-  config.geocode_geocoder = GeocodeAddokWrapper.new('https://geocode.mapotempo.com/0.1', 'secret_api_key')
+  config.geocode_geocoder = GeocodeAddokWrapper.new(ENV['GEOCODER_HOST'] || 'https://geocode.mapotempo.com/0.1', ENV['GEOCODER_API_KEY'])
 
   config.router_osrm = Routers::Osrm.new(
     cache_factory('osrm_request', 60*60*24*1),
@@ -99,14 +99,14 @@ Rails.application.configure do
   config.router_wrapper = Routers::RouterWrapper.new(
     cache_factory('router_wrapper_request', 60*60*24*1),
     cache_factory('router_wrapper_result', 60*60*24*1),
-    nil
+    ENV['ROUTER_API_KEY']
   )
 
   config.devices.alyacom.api_url = 'http://partners.alyacom.fr/ws'
   config.devices.masternaut.api_url = 'http://ws.webservices.masternaut.fr/MasterWS/services'
   config.devices.orange.api_url = 'https://m2m-services.ft-dm.com'
   config.devices.tomtom.api_url = 'https://soap.business.tomtom.com/v1.30'
-  config.devices.tomtom.api_key = nil
+  config.devices.tomtom.api_key = ENV['DEVICE_TOMTOM_API_KEY']
   config.devices.trimble.api_url = 'https://soap.box.trimbletl.com/fleet-service/'
   config.devices.suivi_de_flotte.api_url = 'https://webservice.suivideflotte.net/service/'
   config.devices.cache_object = cache_factory('devices', 30)
