@@ -88,7 +88,7 @@ Rails.application.configure do
   config.api_contact_url = 'https://github.com/Mapotempo/mapotempo-web'
 
   def cache_factory(namespace, expires_in)
-    ActiveSupport::Cache::FileStore.new(File.join(Dir.tmpdir, namespace), namespace: namespace, expires_in: expires_in)
+    ActiveSupport::Cache::RedisStore.new(namespace: namespace, expires_in: expires_in)
   end
 
 #  config.optimize = Ort.new(

@@ -117,6 +117,7 @@ gem 'bootstrap-select-rails', '< 1.6.3'
 
 gem 'sanitize'
 gem 'iconv'
+gem 'redis-rails', group: :production
 
 gem 'pg'
 gem 'rails_12factor', group: :production
