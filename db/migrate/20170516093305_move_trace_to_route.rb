@@ -1,7 +1,7 @@
 class MoveTraceToRoute < ActiveRecord::Migration
   def up
-    add_column :routes, :geojson_tracks, :text
-    add_column :routes, :geojson_points, :string, array: true
+    add_column :routes, :geojson_tracks, :text, array: true
+    add_column :routes, :geojson_points, :text, array: true
     add_column :routes, :stop_no_path, :boolean
     add_column :stops, :no_path, :boolean
 
@@ -9,26 +9,29 @@ class MoveTraceToRoute < ActiveRecord::Migration
       previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
 
       geojson_tracks = []
-      route.stops.select(&:position?).select(&:active).each{ |stop|
-        stop.no_path |= stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
-        previous_with_pos = stop if stop.position?
+      route.stops.sort_by(&:id).each_with_index{ |stop, i|
+        if stop.position? && stop.active?
+          stop.no_path |= stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
+          previous_with_pos = stop if stop.position?
 
-        if stop.trace
-          geojson_tracks << {
-            type: 'Feature',
-            geometry: {
-              type: 'LineString',
-              polylines: stop.trace,
-            },
-            properties: {
-              route_id: stop.route_id,
-              color: stop.route.default_color,
-              stop_id: stop.id,
-              drive_time: stop.drive_time,
-              distance: stop.distance
-            }.compact
-          }.to_json
+          if stop.trace
+            geojson_tracks << {
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                polylines: stop.trace,
+              },
+              properties: {
+                color: stop.route.default_color,
+                index: stop.index,
+                drive_time: stop.drive_time,
+                distance: stop.distance
+              }.compact
+            }.to_json
+          end
         end
+
+        stop.index = i + 1 unless stop.route.vehicle_usage
       }
 
       if route.stop_trace
@@ -39,7 +42,6 @@ class MoveTraceToRoute < ActiveRecord::Migration
             polylines: route.stop_trace,
           },
           properties: {
-            route_id: route.id,
             color: route.default_color,
             drive_time: route.stop_drive_time,
             distance: route.stop_distance
@@ -47,24 +49,22 @@ class MoveTraceToRoute < ActiveRecord::Migration
         }.to_json
       end
 
-      route.geojson_tracks = geojson_tracks.join(',') unless geojson_tracks.empty?
+      route.geojson_tracks = geojson_tracks unless geojson_tracks.empty?
 
       geojson_points = route.stops.select(&:position?).map.with_index do |stop, i|
         if stop.position?
           {
-              type: 'Feature',
-              geometry: {
-                  type: 'Point',
-                  coordinates: [stop.lng, stop.lat]
-              },
-              properties: {
-                  route_id: route.id,
-                  stop_id: stop.id,
-                  index: i + 1,
-                  color: stop.default_color,
-                  icon: stop.icon,
-                  icon_size: stop.icon_size
-              }
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [stop.lng, stop.lat]
+            },
+            properties: {
+              index: stop.index,
+              color: stop.is_a?(StopVisit) ? stop.default_color : nil,
+              icon: stop.icon,
+              icon_size: stop.icon_size
+            }
           }.to_json
         end
       end.compact
@@ -74,6 +74,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
       route.save!
     }
 
+    change_column :stops, :index, :integer, null: false
     remove_column :stops, :trace
     remove_column :routes, :stop_trace
   end
@@ -81,6 +82,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
   def down
     add_column :stops, :trace, :text
     add_column :routes, :stop_trace, :text
+    change_column :stops, :index, :integer, null: true
 
     Route.find_each{ |route|
       next unless route.geojson_tracks

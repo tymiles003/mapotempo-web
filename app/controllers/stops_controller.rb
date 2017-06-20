@@ -18,16 +18,30 @@
 
 
 class StopsController < ApplicationController
-  load_and_authorize_resource
+  before_action :set_stop, only: :show # Before load_and_authorize_resource
+  load_and_authorize_resource # Load resource except for show action
 
   def show
     respond_to do |format|
-      @stop = Stop.includes(route: [planning: [routes: [vehicle_usage: [:vehicle]]]]).find(params[:id])
-
       @manage_planning = PlanningsController.manage
       @show_isoline = true
-
       format.json
     end
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_stop
+    if params[:id]
+      @stop = Stop.find params[:id]
+    else
+      @stop = Stop.find_by route_id: params[:route_id], index: params[:index]
+    end
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def stop_params
+    params.require(:stop).permit()
   end
 end

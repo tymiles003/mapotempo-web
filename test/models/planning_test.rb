@@ -205,7 +205,7 @@ class PlanningTest < ActiveSupport::TestCase
   test 'move stop from unaffected to affected route' do
     o = plannings(:planning_one)
     s = o.routes.select{ |route| route == routes(:route_zero_one) }.first.stops[0]
-    assert_not s.index
+    assert s.index
     r = o.routes.select{ |route| route == routes(:route_one_one) }.first
     assert_difference('Stop.count', 0) do
       assert_difference('r.stops.size', 1) do
@@ -218,7 +218,7 @@ class PlanningTest < ActiveSupport::TestCase
   test 'move stop from unaffected to affected route with automatic_insert' do
     o = plannings(:planning_one)
     s = o.routes.select{ |route| route == routes(:route_zero_one) }.first.stops[0]
-    assert_not s.index
+    assert s.index
     r = o.routes.select{ |route| route == routes(:route_one_one) }.first
     assert_difference('Stop.count', 0) do
       assert_difference('r.stops.size', 1) do

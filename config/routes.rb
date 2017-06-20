@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       get 'plannings/:planning_id/routes/:id/print' => 'routes#print', :as => 'print_route'
 
       get 'stops/:id' => 'stops#show'
+      get 'routes/:route_id/stops/by_index/:index' => 'stops#show'
     end
   end
 
@@ -129,6 +130,7 @@ Rails.application.routes.draw do
   resources :routes
 
   get 'stops/:id' => 'stops#show'
+  get 'routes/:route_id/stops/by_index/:index' => 'stops#show'
 
   get '/zonings/new/planning/:planning_id' => 'zonings#new', as: :new_zonings_planning
   resources :zonings do

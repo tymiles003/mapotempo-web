@@ -170,9 +170,8 @@ class Route < ApplicationRecord
                 polylines: trace,
               },
               properties: {
-                route_id: self.id,
                 color: self.default_color,
-                stop_id: stop.id,
+                index: stop.index,
                 drive_time: stop.drive_time,
                 distance: stop.distance
               }.compact
@@ -222,7 +221,7 @@ class Route < ApplicationRecord
       }
 
       # Last stop to store
-      distance, drive_time,   trace = traces.shift
+      distance, drive_time, trace = traces.shift
       if drive_time
         self.distance += distance
         stops_drive_time[:stop] = drive_time
@@ -241,7 +240,6 @@ class Route < ApplicationRecord
             polylines: trace,
           },
           properties: {
-            route_id: self.id,
             color: self.default_color,
             drive_time: self.stop_drive_time,
             distance: self.stop_distance
@@ -249,7 +247,7 @@ class Route < ApplicationRecord
         }.to_json
       end
 
-      self.geojson_tracks = geojson_tracks.join(',')
+      self.geojson_tracks = geojson_tracks
       self.stop_out_of_drive_time = self.end > vehicle_usage.default_close
       self.emission = vehicle_usage.vehicle.emission.nil? || vehicle_usage.vehicle.consumption.nil? ? nil : self.distance / 1000 * vehicle_usage.vehicle.emission * vehicle_usage.vehicle.consumption / 100
 
@@ -259,22 +257,20 @@ class Route < ApplicationRecord
 
   def compute!(options = {})
     unless stops.empty?
-      self.geojson_points = stops.map.with_index do |stop, i|
+      self.geojson_points = stops.map do |stop|
         if stop.position?
           {
-              type: 'Feature',
-              geometry: {
-                  type: 'Point',
-                  coordinates: [stop.lng, stop.lat]
-              },
-              properties: {
-                  route_id: self.id,
-                  stop_id: stop.id,
-                  index: i + 1,
-                  color: stop.default_color,
-                  icon: stop.icon,
-                  icon_size: stop.icon_size
-              }
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [stop.lng, stop.lat]
+            },
+            properties: {
+              index: stop.index,
+              color: stop.is_a?(StopVisit) ? stop.default_color : nil,
+              icon: stop.icon,
+              icon_size: stop.icon_size
+            }
           }.to_json
         end
       end.compact
@@ -355,12 +351,8 @@ class Route < ApplicationRecord
   end
 
   def add(visit, index = nil, active = false, stop_id = nil)
-    index = stops.size + 1 if index && index < 0
-    if index
-      shift_index(index)
-    elsif vehicle_usage
-      raise
-    end
+    index = stops.size + 1 if !index || index < 0
+    shift_index(index)
     stops.build(type: StopVisit.name, visit: visit, index: index, active: active, id: stop_id)
 
     self.outdated = true
@@ -536,44 +528,54 @@ class Route < ApplicationRecord
     stores_geojson = []
 
     if include_stores
-      stores_geojson = routes.select { |r| r.vehicle_usage && (!respect_hidden || !r.hidden) }.collect(&:vehicle_usage).collect { |vu| [vu.default_store_start, vu.default_store_start, vu.default_store_start] }.flatten.compact.uniq.select(&:position?).collect do |store|
+      stores_geojson = routes.select { |r| r.vehicle_usage && (!respect_hidden || !r.hidden) }.map(&:vehicle_usage).flat_map { |vu| [vu.default_store_start, vu.default_store_stop, vu.default_store_rest] }.compact.uniq.select(&:position?).map do |store|
         coordinates = [store.lng, store.lat]
         {
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                coordinates: coordinates
-            },
-            properties: {
-                store_id: store.id,
-                color: store.color,
-                icon: store.icon,
-                icon_size: store.icon_size
-            }
-        }.to_json unless coordinates.empty?
-      end
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: coordinates
+          },
+          properties: {
+            store_id: store.id,
+            color: store.color,
+            icon: store.icon,
+            icon_size: store.icon_size
+          }
+        } unless coordinates.empty?
+      end.compact
     end
 
-    if polyline
-      features = routes.select { |r| !respect_hidden || !r.hidden }.map { |r| [r.geojson_tracks, *r.geojson_points] }.flatten.compact
-      features += stores_geojson if stores_geojson
+    features = routes.select { |r| !respect_hidden || !r.hidden }.flat_map { |r|
+      geojson_tracks = r.geojson_tracks && r.geojson_tracks.map { |s|
+        linestring = JSON.parse(s)
+        linestring['properties'] = {} unless linestring['properties']
+        linestring['properties']['route_id'] = r.id
+        linestring
+      } || []
+      geojson_points = r.geojson_points && r.geojson_points.map { |s|
+        point = JSON.parse(s)
+        point['properties'] = {} unless point['properties']
+        point['properties']['route_id'] = r.id
+        point
+      } || []
+      [*geojson_tracks, *geojson_points].compact
+    }.compact
+    features += stores_geojson if stores_geojson
 
-      ('{"type":"FeatureCollection","features":[' + features.join(',') + ']}') unless features.empty?
-    else
-      features = JSON.parse('[' + routes.select { |r| !respect_hidden || !r.hidden }.collect { |r| [r.geojson_tracks, *r.geojson_points] }.flatten.compact.join(',') + ']').collect { |feature|
-        feature['geometry']['coordinates'] = Polylines::Decoder.decode_polyline(feature['geometry']['polylines'], 1e6).collect { |a, b| [b.round(6), a.round(6)] }
-        feature['geometry'].delete('polylines')
+    unless polyline
+      features = features.map { |feature|
+        if feature['geometry'] && feature['geometry']['polylines']
+          feature['geometry']['coordinates'] = Polylines::Decoder.decode_polyline(feature['geometry'].delete('polylines'), 1e6).map { |a, b| [b.round(6), a.round(6)] }
+        end
         feature
       }
-      if stores_geojson
-        features << stores_geojson
-      end
-
-      {
-          type: 'FeatureCollection',
-          features: features
-      }.to_json unless features.empty?
     end
+
+    {
+      type: 'FeatureCollection',
+      features: features
+    }.to_json
   end
 
   def to_geojson(respect_hidden = true, polyline = true)

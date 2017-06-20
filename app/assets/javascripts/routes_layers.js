@@ -24,10 +24,10 @@
 var popupModule = (function() {
 
   var _context,
-      _previousMarker,
-      _activeClickMarker,
-      _currentAjaxRequested,
-      _ajaxTimer = 100;
+    _previousMarker,
+    _activeClickMarker,
+    _currentAjaxRequested,
+    _ajaxTimer = 100;
 
   var _ajaxCanBeProceeded = function() {
     var currentTime = (!Date.now) ? (new Date().getTime()) : Date.now(); // Ensure IE <9 compatibility
@@ -40,8 +40,13 @@ var popupModule = (function() {
 
   var _buildContentForPopup = function(marker) {
     if (_ajaxCanBeProceeded()) {
-      getPopupContent(marker.properties.type || 'stop', marker.properties.store_id || marker.properties.stop_id, function(content) {
-        marker.getPopup().setContent(SMT['stops/show']($.extend(content, { number: marker.properties.route_id != _context.options.outOfRouteId && marker.properties.index } )));
+      getPopupContent(marker.properties.store_id ? 'store' : 'stop', marker.properties.store_id || {
+        route_id: marker.properties.route_id,
+        index: marker.properties.index
+      }, function(content) {
+        marker.getPopup().setContent(SMT['stops/show']($.extend(content, {
+          number: marker.properties.route_id != _context.options.outOfRouteId && marker.properties.index
+        })));
         return marker.getPopup()._container;
       });
       // Wait for ajax request
@@ -54,7 +59,7 @@ var popupModule = (function() {
   var getPopupContent = function(type, id, callback) {
     _currentAjaxRequested = $.ajax({
       url: _context.options.markerBaseUrl + (type == 'store' ?
-        'stores/' + id + '.json' : 'stops/' + id + '.json'),
+        'stores/' + id + '.json' : 'routes/' + id.route_id + '/stops/by_index/' + id.index + '.json'),
       beforeSend: beforeSendWaiting,
       success: function(data) {
         data.i18n = mustache_i18n;
@@ -141,7 +146,7 @@ function markerClusterIcon(childCount, defaultColor, borderColors) {
       iconSize: new L.Point(36, 36),
       className: 'marker-cluster-multi-color leaflet-markercluster-icon'
     },
-    createIcon: function () {
+    createIcon: function() {
       var canvas = document.createElement('canvas');
       this._setIconStyles(canvas, 'icon');
       var iconSize = this.options.iconSize;
@@ -150,10 +155,10 @@ function markerClusterIcon(childCount, defaultColor, borderColors) {
       this.draw(canvas.getContext('2d'), iconSize.x, iconSize.y);
       return canvas;
     },
-    createShadow: function () {
+    createShadow: function() {
       return null;
     },
-    draw: function (canvas, width, height) {
+    draw: function(canvas, width, height) {
       var borderSize = 6;
       var halfSize = width / 2 | 0;
       var start = 0;
@@ -214,7 +219,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     showCoverageOnHover: false,
     spiderfyOnMaxZoom: true,
     animate: false,
-    maxClusterRadius: function (currentZoom) {
+    maxClusterRadius: function(currentZoom) {
       return currentZoom >= 13 ? 1 : 30;
     },
     spiderfyDistanceMultiplier: 0.5,
@@ -250,7 +255,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         var childCount = cluster.getChildCount();
         var routeColor = cluster.getAllChildMarkers()[0].properties.route_color || cluster.getAllChildMarkers()[0].properties.color;
         var countByColor = {};
-        cluster.getAllChildMarkers().forEach(function (childMarker) {
+        cluster.getAllChildMarkers().forEach(function(childMarker) {
           if (!countByColor[childMarker.properties.color]) {
             countByColor[childMarker.properties.color] = 1;
           } else {
@@ -356,7 +361,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           } else if (e.layer !== popupModule.activeClickMarker) {
             popupModule.activeClickMarker.click = false;
             popupModule.activeClickMarker.closePopup()
-                                         .unbindPopup();
+              .unbindPopup();
             popupModule.createPopupForLayer(e.layer);
           }
           popupModule.activeClickMarker = e.layer;
@@ -415,8 +420,8 @@ var RoutesLayer = L.FeatureGroup.extend({
 
   routesHide: function(e) {
     var routeLayers = this.getPopRouteLayers(e.routeIds);
-    for(var routeId in e.routeIds) {
-      if(this.clusterByRoutes[routeId]) {
+    for (var routeId in e.routeIds) {
+      if (this.clusterByRoutes[routeId]) {
         this.clusterByRoutes[routeId].removeLayers(routeLayers);
       }
     }
@@ -427,8 +432,8 @@ var RoutesLayer = L.FeatureGroup.extend({
 
     var self = this;
     this.routesShow(e, geojson, function() {
-      for(var routeId in self.clusterByRoutes) {
-        if(self.clusterByRoutes[routeId]) {
+      for (var routeId in self.clusterByRoutes) {
+        if (self.clusterByRoutes[routeId]) {
           self.clusterByRoutes[routeId].removeLayers(routeLayers);
         }
       }
@@ -460,25 +465,29 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   setViewForMarker: function(routeId, layer, id, marker) {
-      if (this.map.getBounds().contains(marker.getLatLng())) {
-        this.map.setView(marker.getLatLng(), this.map.getZoom(), { reset: true });
-        popupModule.createPopupForLayer(marker);
-      } else {
-        if (!this.clusterByRoutes[routeId].hasLayer(marker)) {
-          marker.addTo(this.clusterByRoutes[routeId]);
-        }
-
-        this.map.setView(marker.getLatLng(), 17, { reset: true });
-        var cluster = this.clusterByRoutes[routeId].getVisibleParent(marker);
-        if (cluster && ('spiderfy' in cluster)) {
-          cluster.spiderfy();
-        }
-        popupModule.createPopupForLayer(marker);
+    if (this.map.getBounds().contains(marker.getLatLng())) {
+      this.map.setView(marker.getLatLng(), this.map.getZoom(), {
+        reset: true
+      });
+      popupModule.createPopupForLayer(marker);
+    } else {
+      if (!this.clusterByRoutes[routeId].hasLayer(marker)) {
+        marker.addTo(this.clusterByRoutes[routeId]);
       }
+
+      this.map.setView(marker.getLatLng(), 17, {
+        reset: true
+      });
+      var cluster = this.clusterByRoutes[routeId].getVisibleParent(marker);
+      if (cluster && ('spiderfy' in cluster)) {
+        cluster.spiderfy();
+      }
+      popupModule.createPopupForLayer(marker);
+    }
   },
 
   focusOnMarkerInFeatureGroup: function(layers, idName, id) {
-    for(var routeId in this.clusterByRoutes) {
+    for (var routeId in this.clusterByRoutes) {
       var markers = this.clusterByRoutes[routeId].getLayers();
       for (var j = 0; j < markers.length; j++) {
         if (markers[j].properties[idName] === id) {
@@ -631,7 +640,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     layer.addTo(this.map);
 
     // Add marker clusters
-    for(var routeId in this.clusterByRoutes) {
+    for (var routeId in this.clusterByRoutes) {
       this.addLayer(this.clusterByRoutes[routeId]);
     }
 

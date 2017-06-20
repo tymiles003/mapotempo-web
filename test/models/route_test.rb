@@ -90,11 +90,12 @@ class RouteTest < ActiveSupport::TestCase
     assert_equal visits(:visit_two), route.stops.find{ |s| s.visit.destination.name == 'destination_two' }.visit
   end
 
-  test 'should not add without index' do
+  test 'should add without index' do
     route = routes(:route_one_one)
-    assert_raises(RuntimeError) {
-      route.add(visits(:visit_two))
-    }
+    route.add(visits(:visit_two))
+    route.save!
+    route.stops.reload
+    assert_equal visits(:visit_two), route.stops.find{ |s| s.visit.destination.name == 'destination_two' }.visit
   end
 
   test 'should remove' do

@@ -2,7 +2,7 @@
 
 stop_unaffected:
   type: StopVisit
-  index:
+  index: 1
   active: false
   distance: 1.0
   route: route_zero_one # planning_one
