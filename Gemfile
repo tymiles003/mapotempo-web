@@ -102,6 +102,7 @@ gem 'bootstrap-select-rails'
 
 gem 'sanitize'
 gem 'iconv'
+gem 'redis-rails', group: :production
 
 gem 'pg'
 
