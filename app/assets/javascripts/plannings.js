@@ -563,9 +563,9 @@ var plannings_edit = function(params) {
         error: ajaxError,
         success: function(data, textStatus, jqXHR) {
           if (selection == 'all' || selection == 'reverse') {
-            routesLayer.routesShowAll();
+            routesLayer.showAllRoutes();
           } else if (selection == 'none') {
-            routesLayer.routesHideAll();
+            routesLayer.hideAllRoutes();
           }
 
           $.each(data, function(index, route) {
@@ -956,10 +956,10 @@ var plannings_edit = function(params) {
           success: function(data) {
             if (hidden) {
               i.removeClass("fa-eye").addClass("fa-eye-slash");
-              routesLayer.routesHide({routeIds: [id]});
+              routesLayer.hideRoutes([id]);
             } else {
               i.removeClass("fa-eye-slash").addClass("fa-eye");
-              routesLayer.routesShow({routeIds: [id]}, JSON.parse(data.geojson));
+              routesLayer.showRoutes([id], JSON.parse(data.geojson));
             }
           },
           error: ajaxError
@@ -1176,7 +1176,7 @@ var plannings_edit = function(params) {
 
       initRoutes($('#edit-planning'), data);
       if (!options.firstTime) {
-        routesLayer.routesShowAll();
+        routesLayer.showAllRoutes();
       }
 
       $("#refresh").click(function(event, ui) {
@@ -1242,12 +1242,12 @@ var plannings_edit = function(params) {
         });
       });
       if (!options.firstTime) {
-        routesLayer.routesRefresh({routeIds: routeIds});
+        routesLayer.refreshRoutes(routeIds);
       }
     } else if (typeof options === 'object' && options.partial == 'stops') {
       $.each(data.routes, function(i, route) {
         if (!options.firstTime) {
-          routesLayer.routesRefresh({routeIds: [route.route_id]});
+          routesLayer.refreshRoutes([route.route_id]);
         }
         route.i18n = mustache_i18n;
         route.planning_id = data.id;

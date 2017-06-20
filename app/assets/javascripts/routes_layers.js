@@ -209,7 +209,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   // Clusters for each route
-  clusterByRoutes: {},
+  clustersByRoute: {},
 
   // Markers for each store
   markerStores: [],
@@ -286,22 +286,22 @@ var RoutesLayer = L.FeatureGroup.extend({
   onAdd: function(map) {
     L.FeatureGroup.prototype.onAdd.call(this, map);
     var self = this;
-    this.layersRouteId = {};
+    this.layersByRoute = {};
     this.map = map;
 
-    var loadCallBack = function() {
+    var onLoaded = function() {
       self.fire('initialLoad');
     };
 
     if (this.options.routeIds) {
-      this.load(this.options.routeIds, true, undefined, loadCallBack);
+      this._load(this.options.routeIds, true, undefined, onLoaded);
     } else {
-      this.loadAll(loadCallBack);
+      this._loadAll(onLoaded);
     }
 
     this.on('mouseover', function(e) {
       if (e.layer instanceof L.Marker && !popupModule.activeClickMarker) {
-        // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
+        // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
 
         if (popupModule.previousMarker && (popupModule.previousMarker != e.layer))
           popupModule.previousMarker.closePopup();
@@ -326,8 +326,8 @@ var RoutesLayer = L.FeatureGroup.extend({
         if (!e.layer.click && e.layer.getPopup()) {
           e.layer.closePopup();
         }
-      } else if (event.layer instanceof L.Path) {
-        event.layer.setStyle({
+      } else if (e.layer instanceof L.Path) {
+        e.layer.setStyle({
           opacity: 0.5,
           weight: 5
         });
@@ -342,7 +342,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       if (e.layer instanceof L.Marker) {
         if (e.layer.properties.stop_id) {
           this.fire('clickStop', {
-            stopId: event.layer.properties.stop_id
+            stopId: e.layer.properties.stop_id
           });
         }
         if (e.layer.click) {
@@ -367,9 +367,9 @@ var RoutesLayer = L.FeatureGroup.extend({
           popupModule.activeClickMarker = e.layer;
           e.layer.click = true;
         }
-      } else if (event.layer instanceof L.Path) {
-        var distance = event.layer.properties.distance / 1000;
-        var driveTime = event.layer.properties.drive_time;
+      } else if (e.layer instanceof L.Path) {
+        var distance = e.layer.properties.distance / 1000;
+        var driveTime = e.layer.properties.drive_time;
         distance = (self.options.unit === 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
 
         if (driveTime) {
@@ -389,9 +389,9 @@ var RoutesLayer = L.FeatureGroup.extend({
         L.responsivePopup({
           minWidth: 200,
           autoPan: false
-        }).setLatLng(event.latlng).setContent(content).openOn(self.map);
+        }).setLatLng(e.latlng).setContent(content).openOn(self.map);
       }
-    }).on('popupopen', function(event) {
+    }).on('popupopen', function(e) {
       // Silence is golden
     }).on('popupclose', function(e) {
       // Silence is golden
@@ -399,86 +399,60 @@ var RoutesLayer = L.FeatureGroup.extend({
     });
   },
 
-  routesShow: function(e, geojson, callback) {
-    this.load(e.routeIds, false, geojson, callback);
+  showRoutes: function(routeIds, geojson, callback) {
+    this._load(routeIds, false, geojson, callback);
   },
 
-  getPopRouteLayers: function(routeIds) {
-    var routeLayers = [];
-    for (var j = 0; j < routeIds.length; j++) {
-      var id = routeIds[j];
-      if (id in this.layersRouteId) {
-        var layers = this.layersRouteId[id];
-        for (var i = 0; i < layers.length; i++) {
-          routeLayers.push(layers[i]);
-        }
-        delete this.layersRouteId[id];
-      }
-    }
-    return routeLayers;
+  hideRoutes: function(routeIds) {
+    this._removeRoutes(routeIds);
   },
 
-  routesHide: function(e) {
-    var routeLayers = this.getPopRouteLayers(e.routeIds);
-    for (var routeId in e.routeIds) {
-      if (this.clusterByRoutes[routeId]) {
-        this.clusterByRoutes[routeId].removeLayers(routeLayers);
-      }
-    }
+  refreshRoutes: function(routeIds, geojson) {
+    this._removeRoutes(routeIds);
+    // FIXME: callback could be used to avoid blink
+    this.showRoutes(routeIds, geojson);
   },
 
-  routesRefresh: function(e, geojson) {
-    var routeLayers = this.getPopRouteLayers(e.routeIds);
-
-    var self = this;
-    this.routesShow(e, geojson, function() {
-      for (var routeId in self.clusterByRoutes) {
-        if (self.clusterByRoutes[routeId]) {
-          self.clusterByRoutes[routeId].removeLayers(routeLayers);
-        }
-      }
-    });
-  },
-
-  routesShowAll: function(e, geojson) {
+  showAllRoutes: function() {
     this.clearLayers();
-    this.loadAll();
+    this._loadAll();
   },
 
-  routesHideAll: function(e, geojson) {
+  hideAllRoutes: function() {
     this.clearLayers();
-    this.layersRouteId = {};
+    this.layersByRoute = {};
+    this.clustersByRoute = {};
   },
 
-  focus: function(e) {
-    if (e.routeId && e.stopId) {
-      var layers = this.layersRouteId[e.routeId];
+  focus: function(options) {
+    if (options.routeId && options.stopId) {
+      var layers = this.layersByRoute[options.routeId];
       for (var i = 0; i < layers.length; i++) {
         if (layers[i] instanceof L.FeatureGroup) {
-          this.focusOnMarkerInFeatureGroup(layers[i], 'stop_id', e.stopId);
+          this._focusOnMarkerInFeatureGroup(layers[i], 'stop_id', options.stopId);
           break;
         }
       }
-    } else if (e.storeId) {
-      this.focusOnMarkerInFeatureGroup(this.layerStores, 'store_id', e.storeId);
+    } else if (options.storeId) {
+      this._focusOnMarkerInFeatureGroup(this.layerStores, 'store_id', options.storeId);
     }
   },
 
-  setViewForMarker: function(routeId, layer, id, marker) {
+  _setViewForMarker: function(routeId, layer, id, marker) {
     if (this.map.getBounds().contains(marker.getLatLng())) {
       this.map.setView(marker.getLatLng(), this.map.getZoom(), {
         reset: true
       });
       popupModule.createPopupForLayer(marker);
     } else {
-      if (!this.clusterByRoutes[routeId].hasLayer(marker)) {
-        marker.addTo(this.clusterByRoutes[routeId]);
+      if (!this.clustersByRoute[routeId].hasLayer(marker)) {
+        marker.addTo(this.clustersByRoute[routeId]);
       }
 
       this.map.setView(marker.getLatLng(), 17, {
         reset: true
       });
-      var cluster = this.clusterByRoutes[routeId].getVisibleParent(marker);
+      var cluster = this.clustersByRoute[routeId].getVisibleParent(marker);
       if (cluster && ('spiderfy' in cluster)) {
         cluster.spiderfy();
       }
@@ -486,26 +460,26 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
   },
 
-  focusOnMarkerInFeatureGroup: function(layers, idName, id) {
-    for (var routeId in this.clusterByRoutes) {
-      var markers = this.clusterByRoutes[routeId].getLayers();
+  _focusOnMarkerInFeatureGroup: function(layers, idName, id) {
+    for (var routeId in this.clustersByRoute) {
+      var markers = this.clustersByRoute[routeId].getLayers();
       for (var j = 0; j < markers.length; j++) {
         if (markers[j].properties[idName] === id) {
-          this.setViewForMarker(routeId, layers, id, markers[j]);
+          this._setViewForMarker(routeId, layers, id, markers[j]);
           break;
         }
       }
     }
   },
 
-  load: function(routeIds, includeStores, geojson, callback) {
+  _load: function(routeIds, includeStores, geojson, callback) {
     if (!geojson) {
       var self = this;
       $.ajax({
         url: '/api/0.1/plannings/' + this.planningId + '/routes.geojson?geojson=polyline&ids=' + routeIds.join(',') + '&stores=' + includeStores,
         beforeSend: beforeSendWaiting,
         success: function(data) {
-          self.addRoutes(data);
+          self._addRoutes(data);
           if (callback) {
             callback();
           }
@@ -514,20 +488,20 @@ var RoutesLayer = L.FeatureGroup.extend({
         error: ajaxError
       });
     } else {
-      this.addRoutes(geojson);
+      this._addRoutes(geojson);
       if (callback) {
         callback();
       }
     }
   },
 
-  loadAll: function(callback) {
+  _loadAll: function(callback) {
     var self = this;
     $.ajax({
       url: '/api/0.1/plannings/' + this.planningId + '.geojson?geojson=polyline',
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        self.addRoutes(data);
+        self._addRoutes(data);
         if (callback) {
           callback();
         }
@@ -537,7 +511,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     });
   },
 
-  formatGeojsonWithPolylines: function(geojson) {
+  _formatGeojsonFromPolylines: function(geojson) {
     for (var i = 0; i < geojson.features.length; i++) {
       if (geojson.features[i].geometry.polylines) {
         var feature = geojson.features[i];
@@ -550,29 +524,29 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
   },
 
-  addRoutes: function(geojson) {
+  _addRoutes: function(geojson) {
     var self = this;
 
-    self.formatGeojsonWithPolylines(geojson);
+    self._formatGeojsonFromPolylines(geojson);
 
-    var colorByRoutes = {};
+    var colorsByRoute = {};
     var overlappingMarkers = {};
 
     var layer = L.geoJSON(geojson, {
       onEachFeature: function(feature, layer) {
         if (feature.properties.route_id) {
-          if (!(feature.properties.route_id in self.layersRouteId)) {
-            self.layersRouteId[feature.properties.route_id] = [];
+          if (!(feature.properties.route_id in self.layersByRoute)) {
+            self.layersByRoute[feature.properties.route_id] = [];
           }
-          self.layersRouteId[feature.properties.route_id].push(layer);
+          self.layersByRoute[feature.properties.route_id].push(layer);
         } else if (feature.properties.store_id) {
           self.layerStores = layer;
         }
         layer.properties = feature.properties;
       },
       style: function(feature) {
-        if (!colorByRoutes[feature.properties.route_id]) {
-          colorByRoutes[feature.properties.route_id] = feature.properties.color;
+        if (!colorsByRoute[feature.properties.route_id]) {
+          colorsByRoute[feature.properties.route_id] = feature.properties.color;
         }
 
         return {
@@ -611,7 +585,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           }
 
           icon = L.divIcon({
-            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + self.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + geoJsonPoint.properties.index + '</span></span>',
+            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + self.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + ((/*geoJsonPoint.properties.active && */geoJsonPoint.properties.route_id != self.options.outOfRouteId) ? geoJsonPoint.properties.index : '') + '</span></span>',
             iconSize: new L.Point(self.map.iconSize[pointIconSize].size, self.map.iconSize[pointIconSize].size),
             iconAnchor: pointAnchor,
             className: 'point-icon-container'
@@ -623,16 +597,17 @@ var RoutesLayer = L.FeatureGroup.extend({
         });
         marker.properties = geoJsonPoint.properties;
         // Add route color to each marker
-        marker.properties.route_color = colorByRoutes[geoJsonPoint.properties.route_id];
+        marker.properties.route_color = colorsByRoute[geoJsonPoint.properties.route_id];
 
         if (storeId) {
           self.markerStores.push(marker);
         } else {
-          if (!self.clusterByRoutes[routeId]) {
-            self.clusterByRoutes[routeId] = L.markerClusterGroup(self.markerOptions);
+          if (!self.clustersByRoute[routeId]) {
+            self.clustersByRoute[routeId] = L.markerClusterGroup(self.markerOptions);
           }
-          self.clusterByRoutes[routeId].addLayer(marker);
+          self.clustersByRoute[routeId].addLayer(marker);
         }
+        return marker;
       }
     });
 
@@ -640,13 +615,27 @@ var RoutesLayer = L.FeatureGroup.extend({
     layer.addTo(this.map);
 
     // Add marker clusters
-    for (var routeId in this.clusterByRoutes) {
-      this.addLayer(this.clusterByRoutes[routeId]);
+    for (var routeId in this.clustersByRoute) {
+      this.addLayer(this.clustersByRoute[routeId]);
     }
 
     // Add store markers
     for (var storeId in self.markerStores) {
       this.addLayer(self.markerStores[storeId]);
     }
+  },
+
+  _removeRoutes: function(routeIds) {
+    var that = this;
+    routeIds.forEach(function(routeId) {
+      if (routeId in that.layersByRoute) {
+        that.removeLayer(that.layersByRoute[routeId]);
+        delete that.layersByRoute[routeId];
+      }
+      if (routeId in that.clustersByRoute) {
+        that.removeLayer(that.clustersByRoute[routeId]);
+        delete that.clustersByRoute[routeId];
+      }
+    });
   }
 });
