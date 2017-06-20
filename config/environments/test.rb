@@ -60,8 +60,8 @@ Rails.application.configure do
   # )
   config.optimize = OptimizerWrapper.new(
     cache_factory('optimizer_wrapper', 60*60*24*10),
-    'http://optim.mapotempo.com:1791/0.1',
-    'api_key'
+    ENV['OPTIMIZER_HOST'] || 'http://optim.mapotempo.com:1791/0.1',
+    ENV['OPTIMIZER_API_KEY']
   )
   config.optimize_time = nil
   config.optimize_time_force = 1
@@ -78,7 +78,7 @@ Rails.application.configure do
   config.geocode_complete = true # Build time setting
 
   require 'geocode_addok_wrapper'
-  config.geocode_geocoder = GeocodeAddokWrapper.new('https://geocode.mapotempo.com/0.1', 'demo')
+  config.geocode_geocoder = GeocodeAddokWrapper.new(ENV['GEOCODER_HOST'] || 'https://geocode.mapotempo.com/0.1', ENV['GEOCODER_API_KEY'])
 
   config.router_osrm = Routers::Osrm.new(
     cache_factory('osrm_request', 60*60*24*1),
@@ -100,14 +100,14 @@ Rails.application.configure do
   config.router_wrapper = Routers::RouterWrapper.new(
     cache_factory('router_wrapper_request', 60*60*24*1),
     cache_factory('router_wrapper_result', 60*60*24*1),
-    'api_key'
+    ENV['ROUTER_API_KEY']
   )
 
   config.devices.alyacom.api_url = 'https://alyacom.example.com'
   config.devices.masternaut.api_url = 'https://masternaut.example.com'
   config.devices.orange.api_url = 'https://orange.example.com'
   config.devices.tomtom.api_url = 'https://tomtom.example.com'
-  config.devices.tomtom.api_key = nil
+  config.devices.tomtom.api_key = ENV['DEVICE_TOMTOM_API_KEY']
   config.devices.cache_object = cache_factory('devices', 30)
 
   config.delayed_job_use = false
