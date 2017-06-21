@@ -1,5 +1,5 @@
-<% reseller_name = request.env['reseller'].name %>
-<title><%= [yield(:title), reseller_name].select{ |t| !t.empty? }.join(' – ') %></title>
+<% @reseller_name = request.env['reseller'].name %>
+<title><%= [yield(:title), @reseller_name].select{ |t| !t.empty? }.join(' – ') %></title>
 <%= csrf_meta_tags %>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,9 +22,3 @@
 <!-- Javascripts -->
 <!-- Placed inside head element to support turbolinks -->
 <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-
-<% if user_signed_in? %>
-  <script type="text/javascript">
-    var reseller_name = <%= reseller_name.to_json.html_safe %>;
-  </script>
-<% end %>
