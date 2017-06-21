@@ -18,7 +18,7 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test 'should save' do
-    tag = customers(:customer_one).tags.build(label: 'plop', color: '#ff0000', icon: 'diamon')
+    tag = customers(:customer_one).tags.build(label: 'plop', color: '#ff0000', icon: 'fa-diamond')
     assert tag.save
   end
 end

@@ -10,7 +10,7 @@ tag_two:
   label: tag2
   ref: tag_2
   color:
-  icon: diamon
+  icon: fa-diamond
   customer: customer_one
 
 tag_three:
