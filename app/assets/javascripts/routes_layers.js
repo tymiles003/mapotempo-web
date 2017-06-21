@@ -585,7 +585,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           }
 
           icon = L.divIcon({
-            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + self.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + ((/*geoJsonPoint.properties.active && */geoJsonPoint.properties.route_id != self.options.outOfRouteId) ? geoJsonPoint.properties.index : '') + '</span></span>',
+            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + self.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + ((geoJsonPoint.properties.active && geoJsonPoint.properties.route_id != self.options.outOfRouteId) ? geoJsonPoint.properties.index : '') + '</span></span>',
             iconSize: new L.Point(self.map.iconSize[pointIconSize].size, self.map.iconSize[pointIconSize].size),
             iconAnchor: pointAnchor,
             className: 'point-icon-container'

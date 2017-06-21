@@ -171,7 +171,6 @@ class Route < ApplicationRecord
               },
               properties: {
                 color: self.default_color,
-                index: stop.index,
                 drive_time: stop.drive_time,
                 distance: stop.distance
               }.compact
@@ -267,6 +266,7 @@ class Route < ApplicationRecord
             },
             properties: {
               index: stop.index,
+              active: stop.active,
               color: stop.is_a?(StopVisit) ? stop.default_color : nil,
               icon: stop.icon,
               icon_size: stop.icon_size

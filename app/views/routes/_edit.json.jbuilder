@@ -46,7 +46,6 @@ if route.vehicle_usage
   end
   json.status_any status_uniq.size > 0 || (!route.vehicle_usage.vehicle.devices[:tomtom_id].blank? && route.planning.customer.device.configured?(:tomtom))
 end
-number = 0
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
 json.store_start do
   json.extract! route.vehicle_usage.default_store_start, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
@@ -58,6 +57,7 @@ end if route.vehicle_usage && route.vehicle_usage.default_store_start
 (json.start_with_service Time.at(display_start_time(route)).utc.strftime('%H:%M')) if display_start_time(route)
 (json.start_with_service_day number_of_days(display_start_time(route))) if display_start_time(route)
 
+inactive_stops = 0
 json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::INFINITY } : (route.stops.all?{ |s| s.name.to_i != 0 } ? route.stops.sort_by{ |s| s.name.to_i } : route.stops.sort_by{ |s| s.name.to_s.downcase }) do |stop|
   out_of_window |= stop.out_of_window
   out_of_capacity |= stop.out_of_capacity
@@ -82,8 +82,12 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
   (json.geocoded true) if stop.position?
   (json.time stop.time_time) if stop.time
   (json.time_day number_of_days(stop.time)) if stop.time
-  (json.active true) if stop.active
-  (json.number number += 1) if route.vehicle_usage && stop.active
+  if stop.active
+    json.active true
+    (json.number stop.index - inactive_stops) if route.vehicle_usage
+  else
+    inactive_stops += 1
+  end
   (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
   json.distance (stop.distance || 0) / 1000
   if stop.is_a?(StopVisit)

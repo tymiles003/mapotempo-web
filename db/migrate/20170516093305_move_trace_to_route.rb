@@ -9,7 +9,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
       previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
 
       geojson_tracks = []
-      route.stops.sort_by(&:id).each_with_index{ |stop, i|
+      route.stops.sort_by{ |s| s.route.vehicle_usage ? s.index : s.id }.each_with_index{ |stop, i|
         if stop.position? && stop.active?
           stop.no_path |= stop.position? && stop.active && route.vehicle_usage && !stop.trace && previous_with_pos
           previous_with_pos = stop if stop.position?
@@ -23,7 +23,6 @@ class MoveTraceToRoute < ActiveRecord::Migration
               },
               properties: {
                 color: stop.route.default_color,
-                index: stop.index,
                 drive_time: stop.drive_time,
                 distance: stop.distance
               }.compact
@@ -61,6 +60,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
             },
             properties: {
               index: stop.index,
+              active: stop.active,
               color: stop.is_a?(StopVisit) ? stop.default_color : nil,
               icon: stop.icon,
               icon_size: stop.icon_size
@@ -89,7 +89,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
       geojson_track_stop = nil
 
       if route.geojson_tracks
-        geojson_tracks = JSON.parse('[' + route.geojson_tracks + ']')
+        geojson_tracks = route.geojson_tracks.map{ |s| JSON.parse(s) }
         if route.vehicle_usage && route.vehicle_usage.default_store_stop
           geojson_track_stop = geojson_tracks[-1]
           geojson_tracks = geojson_tracks[0..-2]
