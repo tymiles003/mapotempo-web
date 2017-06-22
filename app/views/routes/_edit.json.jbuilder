@@ -66,6 +66,7 @@ json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::I
   no_path |= stop.is_a?(StopVisit) && stop.no_path
   (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
   json.stop_id stop.id
+  json.stop_index stop.index
   json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :no_path
   json.ref stop.ref if @planning.customer.enable_references
   json.open_close1 stop.open1 || stop.close1

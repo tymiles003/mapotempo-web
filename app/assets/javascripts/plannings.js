@@ -965,10 +965,10 @@ var plannings_edit = function(params) {
         });
       })
       .on("click", ".marker", function(event, ui) {
-        var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
-        if (stop_id) {
+        var stopIndex = $(this).closest("[data-stop_index]").attr("data-stop_index");
+        if (stopIndex) {
           var routeId = $(this).closest("[data-route_id]").attr("data-route_id");
-          routesLayer.focus({routeId: routeId, stopId: stop_id});
+          routesLayer.focus({routeId: routeId, stopIndex: stopIndex});
         } else {
           var storeId = $(this).closest("[data-store_id]").attr("data-store_id");
           if (storeId) {

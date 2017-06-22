@@ -425,51 +425,40 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   focus: function(options) {
-    if (options.routeId && options.stopId) {
-      var layers = this.layersByRoute[options.routeId];
-      for (var i = 0; i < layers.length; i++) {
-        if (layers[i] instanceof L.FeatureGroup) {
-          this._focusOnMarkerInFeatureGroup(layers[i], 'stop_id', options.stopId);
+    if (options.routeId && options.stopIndex) {
+      var markers = this.clustersByRoute[options.routeId].getLayers();
+      for (var i = 0; i < markers.length; i++) {
+        if (markers[i].properties['index'] == options.stopIndex) {
+          this._setViewForMarker(options.routeId, markers[i]);
           break;
         }
       }
     } else if (options.storeId) {
-      this._focusOnMarkerInFeatureGroup(this.layerStores, 'store_id', options.storeId);
-    }
-  },
-
-  _setViewForMarker: function(routeId, layer, id, marker) {
-    if (this.map.getBounds().contains(marker.getLatLng())) {
-      this.map.setView(marker.getLatLng(), this.map.getZoom(), {
-        reset: true
-      });
-      popupModule.createPopupForLayer(marker);
-    } else {
-      if (!this.clustersByRoute[routeId].hasLayer(marker)) {
-        marker.addTo(this.clustersByRoute[routeId]);
-      }
-
-      this.map.setView(marker.getLatLng(), 17, {
-        reset: true
-      });
-      var cluster = this.clustersByRoute[routeId].getVisibleParent(marker);
-      if (cluster && ('spiderfy' in cluster)) {
-        cluster.spiderfy();
-      }
-      popupModule.createPopupForLayer(marker);
-    }
-  },
-
-  _focusOnMarkerInFeatureGroup: function(layers, idName, id) {
-    for (var routeId in this.clustersByRoute) {
-      var markers = this.clustersByRoute[routeId].getLayers();
-      for (var j = 0; j < markers.length; j++) {
-        if (markers[j].properties[idName] === id) {
-          this._setViewForMarker(routeId, layers, id, markers[j]);
+      for (var i = 0; i < this.markerStores.length; i++) {
+        if (this.markerStores[i].properties['store_id'] == options.storeId) {
+          this.map.setView(this.markerStores[i].getLatLng(), this.map.getZoom(), {
+            reset: true
+          });
+          popupModule.createPopupForLayer(this.markerStores[i]);
           break;
         }
       }
     }
+  },
+
+  _setViewForMarker: function(routeId, marker) {
+    if (!this.clustersByRoute[routeId].hasLayer(marker)) {
+      marker.addTo(this.clustersByRoute[routeId]);
+    }
+
+    this.map.setView(marker.getLatLng(), this.map.getBounds().contains(marker.getLatLng()) ? this.map.getZoom() : 17, {
+      reset: true
+    });
+    var cluster = this.clustersByRoute[routeId].getVisibleParent(marker);
+    if (cluster && ('spiderfy' in cluster)) {
+      cluster.spiderfy();
+    }
+    popupModule.createPopupForLayer(marker);
   },
 
   _load: function(routeIds, includeStores, geojson, callback) {
