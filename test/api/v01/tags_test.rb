@@ -79,4 +79,12 @@ class V01::TagsTest < ActiveSupport::TestCase
       assert_equal 204, last_response.status, last_response.body
     end
   end
+
+  test 'should update outdated' do
+    tag = tags :tag_one
+    assert_not tag.visits[0].stop_visits[-1].route.outdated
+    tag.icon = 'fa-bolt'
+    tag.save!
+    assert tag.visits[0].stop_visits[-1].route.reload.outdated # Reload route because it not updated in main scope
+  end
 end

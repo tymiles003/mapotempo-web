@@ -181,7 +181,7 @@ class VisitTest < ActiveSupport::TestCase
     assert_not visit.stop_visits[-1].route.outdated
     visit.quantities = {customers(:customer_one).deliverable_units[0].id => '12,3'}
     visit.save!
-    assert visit.stop_visits[-1].route.outdated
+    assert visit.stop_visits[-1].route.reload.outdated # Reload route because it not updated in main scope
     assert_equal 12.3, Visit.find(visit.id).quantities[customers(:customer_one).deliverable_units[0].id]
   end
 
@@ -190,7 +190,7 @@ class VisitTest < ActiveSupport::TestCase
     assert_not visit.stop_visits[-1].route.outdated
     visit.quantities = {}
     visit.save!
-    assert visit.stop_visits[-1].route.outdated
+    assert visit.stop_visits[-1].route.reload.outdated # Reload route because it not updated in main scope
     assert_nil Visit.find(visit.id).quantities[customers(:customer_one).deliverable_units[0].id]
   end
 end

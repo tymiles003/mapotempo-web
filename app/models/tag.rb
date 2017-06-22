@@ -24,6 +24,7 @@ class Tag < ApplicationRecord
   default_scope { order(:label) }
 
   belongs_to :customer
+  has_and_belongs_to_many :destinations
   has_and_belongs_to_many :visits
   has_and_belongs_to_many :plannings
 
@@ -38,6 +39,8 @@ class Tag < ApplicationRecord
 
   validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.tag.icon_unknown') }
   validates :icon_size, inclusion: { in: Tag::ICON_SIZE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.tag.icon_size_invalid') } }
+
+  before_update :update_outdated
 
   amoeba do
     exclude_association :visits
@@ -54,5 +57,25 @@ class Tag < ApplicationRecord
 
   def default_icon_size
     icon_size || ICON_SIZE_DEFAULT
+  end
+
+  private
+
+  def outdated
+    Route.transaction do
+      # Local function should be called outside update for planning/route
+      # => Allow using different graph
+      Route.where(id: (destinations.flat_map(&:visits) | visits).flat_map{ |v| v.stop_visits.map(&:route_id) }.uniq).each{ |route|
+        route.outdated = true
+        route.optimized_at = route.last_sent_to = route.last_sent_at = nil
+        route.save!
+      }
+    end
+  end
+
+  def update_outdated
+    if color_changed? || icon_changed? || icon_size_changed?
+      outdated
+    end
   end
 end

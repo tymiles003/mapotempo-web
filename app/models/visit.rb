@@ -93,12 +93,15 @@ class Visit < ApplicationRecord
     @tag_ids_changed || super
   end
 
+  # Do not call during a planning/route save processing
   def outdated
     Route.transaction do
-      stop_visits.each{ |stop|
-        stop.route.outdated = true
-        stop.route.optimized_at = stop.route.last_sent_to = stop.route.last_sent_at = nil
-        stop.route.save
+      # Function should be called outside update for planning/route
+      # => Allow using different graph
+      Route.where(id: stop_visits.map(&:route_id).uniq).each{ |route|
+        route.outdated = true
+        route.optimized_at = route.last_sent_to = route.last_sent_at = nil
+        route.save!
       }
     end
   end
