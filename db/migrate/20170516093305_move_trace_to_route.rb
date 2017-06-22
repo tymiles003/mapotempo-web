@@ -50,7 +50,9 @@ class MoveTraceToRoute < ActiveRecord::Migration
 
       route.geojson_tracks = geojson_tracks unless geojson_tracks.empty?
 
-      geojson_points = route.stops.select(&:position?).map.with_index do |stop, i|
+      inactive_stops = 0
+      geojson_points = route.stops.select(&:position?).map do |stop|
+        inactive_stops += 1 unless stop.active
         if stop.position?
           {
             type: 'Feature',
@@ -61,6 +63,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
             properties: {
               index: stop.index,
               active: stop.active,
+              number: stop.active && stop.route.vehicle_usage ? stop.index - inactive_stops : nil,
               color: stop.is_a?(StopVisit) ? stop.default_color : nil,
               icon: stop.icon,
               icon_size: stop.icon_size

@@ -256,7 +256,9 @@ class Route < ApplicationRecord
 
   def compute!(options = {})
     unless stops.empty?
+      inactive_stops = 0
       self.geojson_points = stops.map do |stop|
+        inactive_stops += 1 unless stop.active
         if stop.position?
           {
             type: 'Feature',
@@ -267,6 +269,7 @@ class Route < ApplicationRecord
             properties: {
               index: stop.index,
               active: stop.active,
+              number: stop.active && stop.route.vehicle_usage ? stop.index - inactive_stops : nil,
               color: stop.is_a?(StopVisit) ? stop.default_color : nil,
               icon: stop.icon,
               icon_size: stop.icon_size

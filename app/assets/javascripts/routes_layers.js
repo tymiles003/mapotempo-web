@@ -45,7 +45,7 @@ var popupModule = (function() {
         index: marker.properties.index
       }, function(content) {
         marker.getPopup().setContent(SMT['stops/show']($.extend(content, {
-          number: marker.properties.route_id != _context.options.outOfRouteId && marker.properties.index
+          number: marker.properties.number
         })));
         return marker.getPopup()._container;
       });
@@ -585,7 +585,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           }
 
           icon = L.divIcon({
-            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + self.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + ((geoJsonPoint.properties.active && geoJsonPoint.properties.route_id != self.options.outOfRouteId) ? geoJsonPoint.properties.index : '') + '</span></span>',
+            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + self.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + (geoJsonPoint.properties.number || '') + '</span></span>',
             iconSize: new L.Point(self.map.iconSize[pointIconSize].size, self.map.iconSize[pointIconSize].size),
             iconAnchor: pointAnchor,
             className: 'point-icon-container'
@@ -607,7 +607,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           }
           self.clustersByRoute[routeId].addLayer(marker);
         }
-        return marker;
+        // return marker; // Markers are already added in cluster, don't add to layer
       }
     });
 
