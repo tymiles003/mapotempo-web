@@ -71,7 +71,7 @@ group :test do
   gem 'mapotempo_web_import_vehicle_store', github: 'Mapotempo/mapotempo_web_import_vehicle_store'
 end
 
-gem 'grape'
+gem 'grape', '< 0.19.2' # FIXME wait for ruby 2.2.6
 gem 'grape-entity'
 gem 'grape-swagger', '< 0.26' # FIXME wait for ruby 2.2.6
 gem 'grape-swagger-entity'
