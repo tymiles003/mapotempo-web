@@ -30,6 +30,8 @@ class GeocodeAddokWrapper
     0.5
   end
 
+  attr_accessor :cache_code, :url, :api_key
+
   def initialize(url, api_key)
     @url = url
     @api_key = api_key
