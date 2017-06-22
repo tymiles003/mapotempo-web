@@ -117,7 +117,6 @@ class VehicleUsageSet < ApplicationRecord
 
           vehicle_usage.routes.each{ |route|
             route.outdated = true
-            route.optimized_at = route.last_sent_to = route.last_sent_at = nil
           }
         end
       }

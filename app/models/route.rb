@@ -34,6 +34,7 @@ class Route < ApplicationRecord
   time_attr :start, :end
 
   before_save :update_vehicle_usage
+  before_update :check_outdated
 
   after_initialize :assign_defaults, if: 'new_record?'
 
@@ -368,9 +369,6 @@ class Route < ApplicationRecord
     index = stops.size + 1
     stops.build(type: StopRest.name, index: index, active: active, id: stop_id)
     self.outdated = true
-    if vehicle_usage
-      self.optimized_at = self.last_sent_to = self.last_sent_at = nil
-    end
   end
 
   def add_or_update_rest(active = true, stop_id = nil)
@@ -378,9 +376,6 @@ class Route < ApplicationRecord
       add_rest(active, stop_id)
     end
     self.outdated = true
-    if vehicle_usage
-      self.optimized_at = self.last_sent_to = self.last_sent_at = nil
-    end
   end
 
   def remove_visit(visit)
@@ -395,7 +390,6 @@ class Route < ApplicationRecord
     if vehicle_usage
       shift_index(stop.index + 1, -1)
       self.outdated = true
-      self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
     stops.destroy(stop)
   end
@@ -628,6 +622,12 @@ class Route < ApplicationRecord
         add_rest
       end
       self.outdated = true if id || outdated.nil?
+      self.optimized_at = self.last_sent_to = self.last_sent_at = nil
+    end
+  end
+
+  def check_outdated
+    if self.outdated && self.vehicle_usage_id
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
   end

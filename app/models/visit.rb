@@ -100,7 +100,6 @@ class Visit < ApplicationRecord
       # => Allow using different graph
       Route.where(id: stop_visits.map(&:route_id).uniq).each{ |route|
         route.outdated = true
-        route.optimized_at = route.last_sent_to = route.last_sent_at = nil
         route.save!
       }
     end

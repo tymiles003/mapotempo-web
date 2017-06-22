@@ -67,7 +67,6 @@ class Tag < ApplicationRecord
       # => Allow using different graph
       Route.where(id: (destinations.flat_map(&:visits) | visits).flat_map{ |v| v.stop_visits.map(&:route_id) }.uniq).each{ |route|
         route.outdated = true
-        route.optimized_at = route.last_sent_to = route.last_sent_at = nil
         route.save!
       }
     end

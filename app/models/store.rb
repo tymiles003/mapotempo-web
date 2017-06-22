@@ -90,7 +90,6 @@ class Store < Location
 
       (routes_usage_set + routes_usage).flatten.uniq.each{ |route|
         route.outdated = true
-        route.optimized_at = route.last_sent_to = route.last_sent_at = nil
         route.save!
       }
     end
