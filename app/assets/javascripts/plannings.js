@@ -241,8 +241,8 @@ var plannings_edit = function(params) {
         if (!route.color) {
           route.color = vehicle_usage.color;
         }
+        return route;
       }
-      return route;
     }),
     vehicleIdsPosition = vehicles_array.filter(function(vehicle) {
       return vehicle.available_position;
