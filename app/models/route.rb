@@ -37,6 +37,7 @@ class Route < ApplicationRecord
   before_update :check_outdated, :update_geojson
 
   after_initialize :assign_defaults, if: 'new_record?'
+  after_create :complete_geojson
 
   scope :for_customer_id, ->(customer_id) { joins(:planning).where(plannings: {customer_id: customer_id}) }
   scope :includes_vehicle_usages, -> { includes({vehicle_usage: [:vehicle_usage_set, :vehicle]}) }
@@ -171,6 +172,7 @@ class Route < ApplicationRecord
                 polylines: trace,
               },
               properties: {
+                route_id: self.id,
                 color: self.default_color,
                 drive_time: stop.drive_time,
                 distance: stop.distance
@@ -240,6 +242,7 @@ class Route < ApplicationRecord
             polylines: trace,
           },
           properties: {
+            route_id: self.id,
             color: self.default_color,
             drive_time: self.stop_drive_time,
             distance: self.stop_distance
@@ -517,40 +520,26 @@ class Route < ApplicationRecord
             icon: store.icon,
             icon_size: store.icon_size
           }
-        } unless coordinates.empty?
+        }.to_json unless coordinates.empty?
       end.compact
     end
 
     features = routes.select { |r| !respect_hidden || !r.hidden }.flat_map { |r|
-      geojson_tracks = r.geojson_tracks && r.geojson_tracks.map { |s|
-        linestring = JSON.parse(s)
-        linestring['properties'] = {} unless linestring['properties']
-        linestring['properties']['route_id'] = r.id
-        linestring
-      } || []
-      geojson_points = r.geojson_points && r.geojson_points.map { |s|
-        point = JSON.parse(s)
-        point['properties'] = {} unless point['properties']
-        point['properties']['route_id'] = r.id
-        point
-      } || []
-      [*geojson_tracks, *geojson_points].compact
+      (r.geojson_tracks || []) + (r.geojson_points || []).compact
     }.compact
-    features += stores_geojson if stores_geojson
+    features += stores_geojson unless stores_geojson.empty?
 
     unless polyline
       features = features.map { |feature|
+        feature = JSON.parse(feature)
         if feature['geometry'] && feature['geometry']['polylines']
           feature['geometry']['coordinates'] = Polylines::Decoder.decode_polyline(feature['geometry'].delete('polylines'), 1e6).map { |a, b| [b.round(6), a.round(6)] }
         end
-        feature
+        feature.to_json
       }
     end
 
-    {
-      type: 'FeatureCollection',
-      features: features
-    }.to_json
+    '{"type":"FeatureCollection","features":[' + features.join(',') + ']}'
   end
 
   def to_geojson(respect_hidden = true, polyline = true)
@@ -623,6 +612,7 @@ class Route < ApplicationRecord
               coordinates: [stop.lng, stop.lat]
             },
             properties: {
+              route_id: self.id,
               index: stop.index,
               active: stop.active,
               number: stop.active && stop.route.vehicle_usage ? stop.index - inactive_stops : nil,
@@ -636,6 +626,7 @@ class Route < ApplicationRecord
     end
   end
 
+  # Update geojson without need of computing route
   def update_geojson
     if color_changed?
       self.geojson_tracks = self.geojson_tracks.map{ |s|
@@ -645,5 +636,20 @@ class Route < ApplicationRecord
       }
       self.geojson_points = stops_to_geojson_points
     end
+  end
+
+  # Add route_id to geojson after create
+  def complete_geojson
+    self.geojson_tracks = self.geojson_tracks && self.geojson_tracks.map{ |s|
+      linestring = JSON.parse(s)
+      linestring['properties']['route_id'] = self.id
+      linestring.to_json
+    }
+    self.geojson_points = self.geojson_points && self.geojson_points.map{ |s|
+      point = JSON.parse(s)
+      point['properties']['route_id'] = self.id
+      point.to_json
+    }
+    self.update_columns(attributes.slice('geojson_tracks', 'geojson_points'))
   end
 end

@@ -22,6 +22,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
                 polylines: stop.trace,
               },
               properties: {
+                route_id: route.id,
                 color: stop.route.default_color,
                 drive_time: stop.drive_time,
                 distance: stop.distance
@@ -41,6 +42,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
             polylines: route.stop_trace,
           },
           properties: {
+            route_id: route.id,
             color: route.default_color,
             drive_time: route.stop_drive_time,
             distance: route.stop_distance
@@ -61,6 +63,7 @@ class MoveTraceToRoute < ActiveRecord::Migration
               coordinates: [stop.lng, stop.lat]
             },
             properties: {
+              route_id: route.id,
               index: stop.index,
               active: stop.active,
               number: stop.active && stop.route.vehicle_usage ? stop.index - inactive_stops : nil,

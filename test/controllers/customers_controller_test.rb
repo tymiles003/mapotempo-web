@@ -93,7 +93,7 @@ class CustomersControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should duplicate customer wit error' do
+  test 'should duplicate customer with error' do
     @customer.plannings[1].routes[1].stops[0].index = 666
     @customer.plannings[1].routes[1].stops[0].save!
 
