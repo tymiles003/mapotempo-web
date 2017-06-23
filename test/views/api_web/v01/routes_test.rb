@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApiWeb::V01::PlanningsTest < ActiveSupport::TestCase
+class ApiWeb::V01::RoutesTest < ActiveSupport::TestCase
   include Rack::Test::Methods
 
   def app

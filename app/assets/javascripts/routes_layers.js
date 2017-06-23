@@ -58,7 +58,7 @@ var popupModule = (function() {
 
   var getPopupContent = function(type, id, callback) {
     _currentAjaxRequested = $.ajax({
-      url: _context.options.markerBaseUrl + (type == 'store' ?
+      url: _context.options.appBaseUrl + (type == 'store' ?
         'stores/' + id + '.json' : 'routes/' + id.route_id + '/stops/by_index/' + id.index + '.json'),
       beforeSend: beforeSendWaiting,
       success: function(data) {
@@ -205,7 +205,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     isodistance: false,
     url_click2call: undefined,
     unit: 'km',
-    markerBaseUrl: '/'
+    appBaseUrl: '/'
   },
 
   // Clusters for each route

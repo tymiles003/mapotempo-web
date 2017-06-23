@@ -18,7 +18,8 @@
 
 class ApiWeb::V01::StopsController < ApiWeb::V01::ApiWebController
   skip_before_filter :verify_authenticity_token # because rails waits for a form token with POST
-  load_and_authorize_resource
+  before_action :set_stop, only: :show # Before load_and_authorize_resource
+  load_and_authorize_resource # Load resource except for show action
 
   swagger_controller :stops, 'Stops'
 
@@ -29,13 +30,22 @@ class ApiWeb::V01::StopsController < ApiWeb::V01::ApiWebController
 
   def show
     respond_to do |format|
-      @manage_planning = []
+      @manage_planning = [:organize]
       @show_isoline = false
       format.json
     end
   end
 
   private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_stop
+    if params[:id]
+      @stop = Stop.find params[:id]
+    else
+      @stop = Stop.find_by route_id: params[:route_id], index: params[:index]
+    end
+  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def route_params

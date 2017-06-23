@@ -458,7 +458,8 @@ var plannings_edit = function(params) {
     url_click2call: url_click2call,
     unit: prefered_unit,
     outOfRouteId: outOfRouteId,
-    allRoutesWithVehicle: allRoutesWithVehicle
+    allRoutesWithVehicle: allRoutesWithVehicle,
+    appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/'
   }).on('initialLoad', function (e) {
     if (fitBounds) {
       var bounds = this.getBounds();

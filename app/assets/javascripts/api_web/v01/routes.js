@@ -37,10 +37,10 @@ var api_web_v01_routes_index = function(params) {
     imperial: false
   }).addTo(map);
 
-  var routes_layer = new RoutesLayer(planning_id, {
-    markerBaseUrl: '/api-web/0.1/',
+  var routesLayer = new RoutesLayer(planning_id, {
     routeIds: route_ids,
-    unit: prefered_unit
+    unit: prefered_unit,
+    appBaseUrl: '/api-web/0.1/'
   }).on('initialLoad', function (e) {
     if (fitBounds) {
       progressBar && progressBar.done();

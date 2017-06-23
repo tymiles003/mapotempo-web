@@ -27,6 +27,7 @@ var api_web_v01_plannings_print = function(params) {
 
 Paloma.controller('ApiWeb/V01/Plannings', {
   edit: function() {
+    this.params.apiWeb = true;
     plannings_edit(this.params);
   },
   print: function() {
