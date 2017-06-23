@@ -34,7 +34,7 @@ class Route < ApplicationRecord
   time_attr :start, :end
 
   before_save :update_vehicle_usage
-  before_update :check_outdated
+  before_update :check_outdated, :update_geojson
 
   after_initialize :assign_defaults, if: 'new_record?'
 
@@ -256,29 +256,7 @@ class Route < ApplicationRecord
   end
 
   def compute!(options = {})
-    unless stops.empty?
-      inactive_stops = 0
-      self.geojson_points = stops.map do |stop|
-        inactive_stops += 1 unless stop.active
-        if stop.position?
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [stop.lng, stop.lat]
-            },
-            properties: {
-              index: stop.index,
-              active: stop.active,
-              number: stop.active && stop.route.vehicle_usage ? stop.index - inactive_stops : nil,
-              color: stop.is_a?(StopVisit) ? stop.default_color : nil,
-              icon: stop.icon,
-              icon_size: stop.icon_size
-            }
-          }.to_json
-        end
-      end.compact
-    end
+    self.geojson_points = stops_to_geojson_points
 
     if self.vehicle_usage
       self.geojson_tracks = nil
@@ -629,6 +607,43 @@ class Route < ApplicationRecord
   def check_outdated
     if self.outdated && self.vehicle_usage_id
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
+    end
+  end
+
+  def stops_to_geojson_points
+    unless stops.empty?
+      inactive_stops = 0
+      stops.map do |stop|
+        inactive_stops += 1 unless stop.active
+        if stop.position?
+          {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [stop.lng, stop.lat]
+            },
+            properties: {
+              index: stop.index,
+              active: stop.active,
+              number: stop.active && stop.route.vehicle_usage ? stop.index - inactive_stops : nil,
+              color: stop.is_a?(StopVisit) ? stop.default_color : nil,
+              icon: stop.icon,
+              icon_size: stop.icon_size
+            }
+          }.to_json
+        end
+      end.compact
+    end
+  end
+
+  def update_geojson
+    if color_changed?
+      self.geojson_tracks = self.geojson_tracks.map{ |s|
+        linestring = JSON.parse(s)
+        linestring['properties']['color'] = self.color
+        linestring.to_json
+      }
+      self.geojson_points = stops_to_geojson_points
     end
   end
 end
