@@ -1,0 +1,49 @@
+version: '2'
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: mapotempo/mapotempo-web:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./mapotempo.rb:/srv/app/config/initializers/mapotempo.rb
+      - web-uploads:/srv/app/public/uploads
+    links:
+      - db
+      - redis-cache
+    env_file:
+      - ./db.env
+      - ./rails.env
+    command: /bin/bash -c "chown www-data:www-data /srv/app/public/uploads && exec nginx -g 'daemon off;'"
+
+  db:
+    image: "postgres:9.6"
+    volumes:
+      - postgres-9.6:/var/lib/postgres
+  redis-cache:
+    image: "redis:alpine"
+
+  delayed-job:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: mapotempo/mapotempo-web:latest
+    ports: []
+    volumes:
+      - ./mapotempo.rb:/srv/app/config/initializers/mapotempo.rb
+      - web-uploads:/srv/app/public/uploads
+    links:
+      - db
+      - redis-cache
+    env_file:
+      - ./db.env
+      - ./rails.env
+    command: /bin/bash -c "chown www-data:www-data /srv/app/public/uploads && exec sudo -E -u www-data /usr/bin/bundle exec /srv/app/bin/delayed_job run -n 4"
+
+volumes:
+  web-uploads:
+      #      driver_opts:
+      #          o: uid=www-data,gid=www-data
+  postgres-9.6:
