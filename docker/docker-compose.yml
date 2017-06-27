@@ -22,7 +22,6 @@ services:
       - router_default
       - geocoder_default
       - optimizer_default
-
     env_file:
       - ./db.env
       - ./rails.env
