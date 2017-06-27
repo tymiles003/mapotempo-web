@@ -98,6 +98,9 @@ module Mapotempo
       locster: Locster.new,
       suivi_de_flotte: SuiviDeFlotte.new
     )
+
+    # Warn for plannings limitation in coming
+    config.plannings_limitation = nil
   end
 end
 

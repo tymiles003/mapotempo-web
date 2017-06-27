@@ -243,6 +243,14 @@ class Customer < ApplicationRecord
     }
   end
 
+  def too_many_plannings?
+    if !Rails.configuration.plannings_limitation.nil?
+      Rails.configuration.plannings_limitation <= self.plannings.length
+    else
+      false
+    end
+  end
+
   private
 
   def devices_update_vehicles

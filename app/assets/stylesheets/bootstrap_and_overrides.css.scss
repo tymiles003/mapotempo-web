@@ -567,3 +567,13 @@ div.grid-container {
   margin-top: 5px;
   overflow: auto;
 }
+
+.dropdown-menu > li > p.padding-list {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
