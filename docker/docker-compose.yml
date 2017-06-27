@@ -14,9 +14,15 @@ services:
       - db
       - redis-cache
     external_links:
-      - router_wrapper_1: router
-      - geocoder_wrapper_1: geocoder
-      - optimizer_wrapper_1: optimizer
+      - router_wrapper_1:router
+      - geocoder_wrapper_1:geocoder
+      - optimizer_wrapper_1:optimizer
+    networks:
+      - default
+      - router_default
+      - geocoder_default
+      - optimizer_default
+
     env_file:
       - ./db.env
       - ./rails.env
@@ -51,3 +57,11 @@ volumes:
       #      driver_opts:
       #          o: uid=www-data,gid=www-data
   postgres-9.6:
+
+networks:
+  router_default:
+    external: true
+  geocoder_default:
+    external: true
+  optimizer_default:
+    external: true
