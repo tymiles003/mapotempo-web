@@ -38,10 +38,10 @@ var api_web_v01_routes_index = function(params) {
   }).addTo(map);
 
   var routesLayer = new RoutesLayer(planning_id, {
-    routeIds: route_ids,
     unit: prefered_unit,
     appBaseUrl: '/api-web/0.1/'
-  }).on('initialLoad', function (e) {
+  }).addTo(map);
+  routesLayer.showRoutes(route_ids, null, function() {
     if (fitBounds) {
       progressBar && progressBar.done();
       var bounds = this.getBounds();
@@ -54,7 +54,7 @@ var api_web_v01_routes_index = function(params) {
         });
       }
     }
-  }).addTo(map);
+  });
 
   var caption = L.DomUtil.get('routes-caption');
   if (caption) {

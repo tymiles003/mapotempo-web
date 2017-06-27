@@ -460,19 +460,7 @@ var plannings_edit = function(params) {
     outOfRouteId: outOfRouteId,
     allRoutesWithVehicle: allRoutesWithVehicle,
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/'
-  }).on('initialLoad', function (e) {
-    if (fitBounds) {
-      var bounds = this.getBounds();
-      if (bounds && bounds.isValid()) {
-        map.invalidateSize();
-        map.fitBounds(bounds, {
-          maxZoom: 15,
-          animate: false,
-          padding: [20, 20]
-        });
-      }
-    }
-  }).on('clickStop', function (e) {
+  }).on('clickStop', function(e) {
     enlighten_stop(e.stopId);
   }).addTo(map);
 
@@ -1183,7 +1171,22 @@ var plannings_edit = function(params) {
       $("#planning").html(SMT['plannings/edit'](data));
 
       initRoutes($('#edit-planning'), data);
-      if (!options.firstTime) {
+      if (options.firstTime) {
+        routesLayer.showAllRoutes(function() {
+          if (fitBounds) {
+            var bounds = this.getBounds();
+            if (bounds && bounds.isValid()) {
+              map.invalidateSize();
+              map.fitBounds(bounds, {
+                maxZoom: 15,
+                animate: false,
+                padding: [20, 20]
+              });
+            }
+          }
+        });
+      }
+      else {
         routesLayer.showAllRoutes();
       }
 

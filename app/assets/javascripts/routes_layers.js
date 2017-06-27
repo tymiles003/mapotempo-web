@@ -289,16 +289,6 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.layersByRoute = {};
     this.map = map;
 
-    var onLoaded = function() {
-      self.fire('initialLoad');
-    };
-
-    if (this.options.routeIds) {
-      this._load(this.options.routeIds, true, undefined, onLoaded);
-    } else {
-      this._loadAll(onLoaded);
-    }
-
     this.on('mouseover', function(e) {
       if (e.layer instanceof L.Marker && !popupModule.activeClickMarker) {
         // Unbind pop when needed | != compare memory adress between marker objects (Very same instance equality).
@@ -413,9 +403,9 @@ var RoutesLayer = L.FeatureGroup.extend({
     this.showRoutes(routeIds, geojson);
   },
 
-  showAllRoutes: function() {
+  showAllRoutes: function(callback) {
     this.clearLayers();
-    this._loadAll();
+    this._loadAll(callback);
   },
 
   hideAllRoutes: function() {
@@ -470,7 +460,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         success: function(data) {
           self._addRoutes(data);
           if (callback) {
-            callback();
+            callback.call(self);
           }
         },
         complete: completeAjaxMap,
@@ -479,7 +469,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     } else {
       this._addRoutes(geojson);
       if (callback) {
-        callback();
+        callback.call(this);
       }
     }
   },
@@ -492,7 +482,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       success: function(data) {
         self._addRoutes(data);
         if (callback) {
-          callback();
+          callback.call(self);
         }
       },
       complete: completeAjaxMap,
