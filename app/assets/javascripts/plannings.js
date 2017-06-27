@@ -487,90 +487,60 @@ var plannings_edit = function(params) {
 
   sidebar.addTo(map);
 
-  $.each($('#lock_routes_dropdown li a'), function(i, element) {
-    $(element).click(function(e) {
+  $('#lock_routes_dropdown li a, #toggle_routes_dropdown li a').click(function() {
+    if (allRoutesWithVehicle.length == 0) return;
 
-      if (allRoutesWithVehicle.length == 0) return;
+    var action = $(this).parent('li').parent('ul').attr('id') == 'lock_routes_dropdown' ? 'lock' : 'toggle';
+    var selection = $(this).parent('li').data('selection');
 
-      var selection = $(element).parent('li').data('selection');
-
-      $.ajax({
-        url: '/api/0.1/plannings/' + planning_id + '/update_routes',
-        type: 'PATCH',
-        data: {
-          route_ids: $.map(allRoutesWithVehicle, function(route) {
-            return route.route_id
-          }).concat($('#out_of_route').parents('[data-route_id]').data('route_id')),
-          selection: selection,
-          action: 'lock'
-        },
-        dataType: 'json',
-        beforeSend: beforeSendWaiting,
-        complete: completeAjaxMap,
-        error: ajaxError,
-        success: function(data, textStatus, jqXHR) {
-
-          $.each(data, function(index, route) {
-            var element = $("[data-route_id='" + route.id + "']");
-            if (route.locked) {
-              element.find(".lock").removeClass("btn-default").addClass("btn-warning");
-              element.find('.lock i').removeClass('fa-unlock').addClass('fa-lock');
-            } else {
-              element.find(".lock").removeClass("btn-warning").addClass("btn-default");
-              element.find('.lock i').removeClass('fa-lock').addClass('fa-unlock');
-            }
-          });
-
-          checkLockOperation();
+    var successLock = function(data, textStatus, jqXHR) {
+      $.each(data, function(index, route) {
+        var element = $("[data-route_id='" + route.id + "']");
+        if (route.locked) {
+          element.find(".lock").removeClass("btn-default").addClass("btn-warning");
+          element.find('.lock i').removeClass('fa-unlock').addClass('fa-lock');
+        } else {
+          element.find(".lock").removeClass("btn-warning").addClass("btn-default");
+          element.find('.lock i').removeClass('fa-lock').addClass('fa-unlock');
         }
       });
-
-    });
-  });
-
-  $.each($('#toggle_routes_dropdown li a'), function(i, element) {
-    $(element).click(function(e) {
-
-      if (allRoutesWithVehicle.length == 0) return;
-
-      var selection = $(element).parent('li').data('selection');
-
-      $.ajax({
-        url: '/api/0.1/plannings/' + planning_id + '/update_routes',
-        type: 'PATCH',
-        data: {
-          route_ids: $.map(allRoutesWithVehicle, function(route) {
-            return route.route_id
-          }).concat($('#out_of_route').parents('[data-route_id]').data('route_id')),
-          selection: selection,
-          action: 'toggle'
-        },
-        dataType: 'json',
-        beforeSend: beforeSendWaiting,
-        complete: completeAjaxMap,
-        error: ajaxError,
-        success: function(data, textStatus, jqXHR) {
-          if (selection == 'all' || selection == 'reverse') {
-            routesLayer.showAllRoutes();
-          } else if (selection == 'none') {
-            routesLayer.hideAllRoutes();
-          }
-
-          $.each(data, function(index, route) {
-            var element = $("[data-route_id='" + route.id + "']");
-            if (route.hidden) {
-              element.find("ul.stops").hide();
-              element.find('.toggle i').removeClass('fa-eye').addClass('fa-eye-slash');
-            } else {
-              element.find("ul.stops").show();
-              element.find('.toggle i').removeClass('fa-eye-slash').addClass('fa-eye');
-            }
-          });
-
+      checkLockOperation();
+    };
+    var successToggle = function(data, textStatus, jqXHR) {
+      if (selection == 'all' || selection == 'reverse') {
+        routesLayer.showAllRoutes();
+      } else if (selection == 'none') {
+        routesLayer.hideAllRoutes();
+      }
+      $.each(data, function(index, route) {
+        var element = $("[data-route_id='" + route.id + "']");
+        if (route.hidden) {
+          element.find("ul.stops").hide();
+          element.find('.toggle i').removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+          element.find("ul.stops").show();
+          element.find('.toggle i').removeClass('fa-eye-slash').addClass('fa-eye');
         }
       });
+    };
 
+    $.ajax({
+      url: '/api/0.1/plannings/' + planning_id + '/update_routes',
+      type: 'PATCH',
+      data: {
+        route_ids: $.map(allRoutesWithVehicle, function(route) {
+          return route.route_id
+        }).concat($('#out_of_route').parents('[data-route_id]').data('route_id')),
+        selection: selection,
+        action: action
+      },
+      dataType: 'json',
+      beforeSend: beforeSendWaiting,
+      complete: completeAjaxMap,
+      error: ajaxError,
+      success: action == 'lock' ? successLock : successToggle
     });
+
   });
 
   // Used to highlight the current stop in sidebar routes
@@ -654,8 +624,8 @@ var plannings_edit = function(params) {
         });
       }
     }
-
   };
+
   var stripes = new L.StripePattern({
     color: '#FF0000',
     angle: -45
@@ -704,16 +674,6 @@ var plannings_edit = function(params) {
     });
   };
 
-  var errorOptimize = function(data) {
-    $('body').removeClass('ajax_waiting');
-    stickyError(I18n.t('plannings.edit.optimize_failed'));
-  };
-
-  var successOptimize = function(data) {
-    $('body').removeClass('ajax_waiting');
-    notice(I18n.t('plannings.edit.optimize_complete'));
-  };
-
   $("#optimize_each_all, #optimize_global_all, #optimize_each_actives, #optimize_global_actives").click(function(event, ui) {
     if (!confirm(I18n.t($(this).data('opti-global') ? 'plannings.edit.optimize_global.confirm' : 'plannings.edit.optimize_each.confirm'))) {
       return false;
@@ -725,8 +685,12 @@ var plannings_edit = function(params) {
       beforeSend: beforeSendWaiting,
       success: function(data) {
         displayPlanning(data, {
-          error: errorOptimize,
-          success: successOptimize
+          error: function() {
+            stickyError(I18n.t('plannings.edit.optimize_failed'));
+          },
+          success: function() {
+            notice(I18n.t('plannings.edit.optimize_complete'));
+          }
         })
       },
       complete: completeAjaxMap,

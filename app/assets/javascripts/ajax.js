@@ -199,11 +199,9 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     }
 
     if (delayedJob.attempts > 0 && delayedJob.progress === 'no_solution') {
-      if (errorCallback) {
-        errorCallback();
-      }
+      $('body').removeClass('ajax_waiting');
+      errorCallback && errorCallback();
       isProgressing = true;
-
       $(".dialog-no-solution", dialog).show();
       $(".dialog-progress", dialog).hide();
       unfreezeProgressDialog(dialog, delayedJob, url, callback);
@@ -220,9 +218,8 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     }
 
     if (delayedJob.error) {
-      if (errorCallback) {
-        errorCallback();
-      }
+      $('body').removeClass('ajax_waiting');
+      errorCallback && errorCallback();
       isProgressing = true;
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
@@ -250,14 +247,17 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     return false;
   } else {
     iteration = null;
+    $('body').removeClass('ajax_waiting');
     if (dialog.is(':visible')) {
-      if (successCallback) {
-        successCallback();
-      }
-
       dialog.modal('hide');
-      $($(".progress-bar", dialog)).css("width", "0%");
+      $(".progress-bar", dialog).css({
+        transition: 'linear 0s',
+        width: '0%'
+      });
+      $('body').removeClass('ajax_waiting');
+      successCallback && successCallback();
     }
+
     return true;
   }
 };
