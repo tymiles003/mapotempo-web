@@ -307,9 +307,9 @@ class Planning < ApplicationRecord
     self.date = order_array.base_date + shift
   end
 
-  def optimize(routes, global, all_stops = false, &optimizer)
+  def optimize(routes, global, active_only = true, &optimizer)
     routes_with_vehicle = routes.select(&:vehicle_usage)
-    stops_on = (routes.find{ |r| !r.vehicle_usage }.try(:stops) || []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate(all_stops)[true] }.compact
+    stops_on = (routes.find{ |r| !r.vehicle_usage }.try(:stops) || []) + routes_with_vehicle.flat_map{ |r| r.stops_segregate(active_only)[true] }.compact
     o = amalgamate_stops_same_position(stops_on, global) { |positions|
       services_and_rests = positions.collect{ |position|
         stop_id, open1, close1, open2, close2, duration, vehicle_id, quantities = position[2..9]
@@ -364,13 +364,15 @@ class Planning < ApplicationRecord
     o
   end
 
-  def set_stops(routes, stop_ids, all_stops = false)
+  def set_stops(routes, stop_ids, active_only = true)
     raise 'Invalid routes count' unless routes.size == stop_ids.size
     Route.transaction do
       stops_count = routes.collect{ |r| r.stops.size }.reduce(&:+)
       flat_stop_ids = stop_ids.flatten.compact
       routes.each_with_index{ |route, index|
-        stops_ = route.stops_segregate(all_stops)
+
+        inactive_stop_ids = route.stops.select {|s| !s.active }.map(&:id) # Map all ids that need to be settled back to false
+        stops_            = route.stops_segregate(active_only)            # Split stops according to stop active statement
 
         # Get ordered stops in current route
         ordered_stops = routes.flat_map{ |r| r.stops.select{ |s| stop_ids[index].include? s.id } }.sort_by{ |s| stop_ids[index].index s.id }
@@ -385,7 +387,7 @@ class Planning < ApplicationRecord
             stop.route_id = route.id
             stop.index = i += 1
             if route.vehicle_usage
-              stop.active = true
+              stop.active = true if !inactive_stop_ids.include?(stop.id)
               stop.out_of_window = false
             else
               stop.time = stop.distance = stop.drive_time = nil
@@ -394,8 +396,9 @@ class Planning < ApplicationRecord
           end
         }
 
-        # 2. Set index and for other stops (inactive or not in optim for instance)
-        ((stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : [])).each{ |stop|
+        # 2. Set index and active for other stops (inactive or not in optim for instance)
+        other_inactive_stops = ((stops_[true] ? stops_[true].select{ |s| s.route_id == route.id && flat_stop_ids.exclude?(s.id) }.sort_by(&:index) : []) - ordered_stops + (stops_[false] ? stops_[false].sort_by(&:index) : []))
+        other_inactive_stops.each{ |stop|
           stop.active = false if route.vehicle_usage
           stop.index = i += 1
         }
@@ -525,11 +528,11 @@ class Planning < ApplicationRecord
   end
 
   def prefered_route_and_index(available_routes, stop, options = {})
-    options[:active_only] = true if options[:active_only] == nil
+    options[:active_only] = false if options[:active_only] == nil
     cache_sum_out_of_window = Hash.new{ |h, k| h[k] = k.sum_out_of_window }
 
     available_routes.flat_map { |route|
-      stops = route.stops.select { |s| (options[:active_only] ? s.active? : true) && s.position? }
+      stops = route.stops.select { |s| (!options[:active_only] ? s.active? : true) && s.position? }
       stops.map { |s| [s.position, route, s.index] } +
         [stops.empty? ? [route.vehicle_usage.try(:default_store_start), route, 1] : nil,
         ((stop.route_id != route.id) && route.vehicle_usage.try(:default_store_stop).try(:position?)) ? [route.vehicle_usage.default_store_stop, route, route.stops.size + 1] : nil]

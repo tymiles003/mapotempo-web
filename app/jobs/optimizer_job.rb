@@ -17,7 +17,7 @@
 #
 require 'optim/ort'
 
-class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :all_stops)
+class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :active_only)
   @@optimize_time = Mapotempo::Application.config.optimize_time
   @@optimize_time_force = Mapotempo::Application.config.optimize_time_force
   @@stop_soft_upper_bound = Mapotempo::Application.config.optimize_stop_soft_upper_bound
@@ -43,7 +43,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :all_stops)
     bars = Array.new(2, 0)
     optimum = unless routes.select(&:vehicle_usage).empty?
                 begin
-                  planning.optimize(routes, global, all_stops) do |positions, services, vehicles|
+                  planning.optimize(routes, global, active_only) do |positions, services, vehicles|
                     optimum = Mapotempo::Application.config.optimize.optimize(
                         positions, services, vehicles,
                         optimize_time: @@optimize_time_force || (optimize_time ? optimize_time * 1000 : nil),
@@ -80,7 +80,7 @@ class OptimizerJob < Struct.new(:planning_id, :route_id, :global, :all_stops)
 
     # Apply result
     if optimum
-      planning.set_stops(routes, optimum, all_stops)
+      planning.set_stops(routes, optimum, active_only)
       routes.each { |r|
         r.reload # Refresh stops order
         r.compute

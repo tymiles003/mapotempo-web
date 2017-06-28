@@ -473,8 +473,8 @@ class Route < ApplicationRecord
     }
   end
 
-  def stops_segregate(all_stops = false)
-    stops.group_by{ |stop| (all_stops ? true : stop.active) && (stop.position? || stop.is_a?(StopRest))}
+  def stops_segregate(active_only = true)
+    stops.group_by{ |stop| (!active_only ? true : stop.active) && (stop.position? || stop.is_a?(StopRest))}
   end
 
   def outdated

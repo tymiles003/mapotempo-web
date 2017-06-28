@@ -237,11 +237,11 @@ class PlanningsController < ApplicationController
   end
 
   def optimize
-    global = ValueToBoolean.value_to_boolean(params[:global])
-    all_stops = ValueToBoolean.value_to_boolean(params[:all_stops])
+    global = ValueToBoolean::value_to_boolean(params[:global])
+    active_only = ValueToBoolean::value_to_boolean(params[:active_only])
     respond_to do |format|
       begin
-        if Optimizer.optimize(@planning, nil, global, false, all_stops) && @planning.customer.save
+        if Optimizer.optimize(@planning, nil, global, false, active_only) && @planning.customer.save
           format.json { render action: 'show', location: @planning }
         else
           format.json { render json: @planning.errors, status: :unprocessable_entity }
@@ -254,11 +254,11 @@ class PlanningsController < ApplicationController
   end
 
   def optimize_route
-    all_stops = ValueToBoolean.value_to_boolean(params[:all_stops])
+    active_only = ValueToBoolean::value_to_boolean(params[:active_only])
     respond_to do |format|
       route = @planning.routes.find{ |route| route.id == Integer(params[:route_id]) }
       begin
-        if route && Optimizer.optimize(@planning, route, false, false, all_stops) && @planning.customer.save
+        if route && Optimizer.optimize(@planning, route, false, false, active_only) && @planning.customer.save
           @routes = [route]
           format.json { render action: 'show', location: @planning }
         else
