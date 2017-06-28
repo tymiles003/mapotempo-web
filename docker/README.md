@@ -43,10 +43,10 @@ After the first deployment, you will need to initialize the database (you may
 want to change values for database name, user name and password but don't
 forget to update `db.env` file):
 
-    docker-compose exec --user postgres db psql -c "CREATE ROLE mapotempo PASSWORD 'mapotempo' LOGIN;"
-    docker-compose exec --user postgres db psql -c "CREATE DATABASE mapotempo OWNER mapotempo ENCODING 'utf-8';"
-    docker-compose exec --user postgres db psql mapotempo -c "CREATE EXTENSION hstore;"
+    docker-compose -p app exec --user postgres db psql -c "CREATE ROLE mapotempo PASSWORD 'mapotempo' LOGIN;"
+    docker-compose -p app exec --user postgres db psql -c "CREATE DATABASE mapotempo OWNER mapotempo ENCODING 'utf-8';"
+    docker-compose -p app exec --user postgres db psql mapotempo -c "CREATE EXTENSION hstore;"
 
 Then you can initialize with base data:
 
-    docker-compose exec --user www-data web bundle exec rake db:setup"
+    docker-compose -p app exec --user www-data web bundle exec rake db:setup
