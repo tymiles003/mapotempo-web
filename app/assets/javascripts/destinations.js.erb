@@ -699,9 +699,9 @@ var destinations_index = function(params, api) {
 
   var ajaxCallForRow = function($row, id) {
     $row.on("click", ".destroy", function(event) {
-      event.stopPropagation(); // Don't call over(id, move) while the row has been destroyed
-      toogleClickForRow($row);
       if (confirm(I18n.t('all.verb.destroy_confirm'))) {
+        event.stopPropagation(); // Don't call over(id, move) while the row has been destroyed
+        toogleClickForRow($row);
         $.ajax({
           type: "delete",
           url: '/api/0.1/' + api + '/' + id + '.json',
