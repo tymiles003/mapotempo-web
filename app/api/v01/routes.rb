@@ -99,11 +99,12 @@ class V01::Routes < Grape::API
           requires :id, type: String, desc: ID_DESC
           optional :details, type: Boolean, desc: 'Output Route Details', default: false
           optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
-          optional :all_stops, type: Boolean, desc: 'Optimize all stops (actives and inactives) if true, else only actives', default: false
+          optional :all_stops, type: Boolean, desc: 'Deprecated (Use active_only instead)'
+          optional :active_only, type: Boolean, desc: 'If true only active stops are taken into account by optimization, else inactive stops are also taken into account but are not activated in result route.', default: true
         end
         patch ':id/optimize' do
           begin
-            if !Optimizer.optimize(get_route.planning, get_route, false, params[:synchronous], params[:all_stops])
+            if !Optimizer.optimize(get_route.planning, get_route, false, params[:synchronous], params[:all_stops].nil? ? params[:active_only] : !params[:all_stops])
               status 304
             else
               get_route.planning.customer.save!

@@ -149,7 +149,7 @@ class V01::RoutesTest < V01::RoutesBaseTest
 
   test 'should optimize all stops in the current route' do
     [false, true].each do |all|
-      patch api(@route.planning.id, "#{@route.id}/optimize", details: true, all_stops: all)
+      patch api(@route.planning.id, "#{@route.id}/optimize", details: true, active_only: all)
       assert_equal 200, last_response.status, last_response.body
       assert JSON.parse(last_response.body)['id']
     end

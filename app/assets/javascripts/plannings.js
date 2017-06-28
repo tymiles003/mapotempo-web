@@ -748,7 +748,7 @@ var plannings_edit = function(params) {
     $.ajax({
       type: "get",
       url: '/plannings/' + planning_id + '/optimize.json',
-      data: { 'global': $(this).data('opti-global'), 'all_stops': $(this).data('opti-all') },
+      data: { 'global': $(this).data('opti-global'), 'active_only': $(this).data('active-only') },
       beforeSend: beforeSendWaiting,
       success: function(data) {
         displayPlanning(data, {
@@ -1184,7 +1184,7 @@ var plannings_edit = function(params) {
         $.ajax({
           type: "get",
           url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
-          data: { 'all_stops': $(this).data('opti-all') },
+          data: { 'active_only': $(this).data('active-only') },
           beforeSend: beforeSendWaiting,
           success: function(data) {
             updatePlanning(data, {

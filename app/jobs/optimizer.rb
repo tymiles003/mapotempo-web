@@ -27,9 +27,9 @@ class Optimizer
   @@cost_waiting_time = Mapotempo::Application.config.cost_waiting_time
   @@force_start = Mapotempo::Application.config.optimize_force_start
 
-  def self.optimize(planning, route, global = false, synchronous = false, all_stops = false)
+  def self.optimize(planning, route, global = false, synchronous = false, active_only = true)
     optimize_time = planning.customer.optimization_time || @@optimize_time
-    if route && route.size_active <= 1 && !all_stops
+    if route && route.size_active <= 1 && active_only
       # Nothing to optimize
       route.compute
       planning.save
@@ -39,7 +39,7 @@ class Optimizer
         planning.errors.add(:base, I18n.t('errors.planning.already_optimizing'))
         false
       else
-        planning.customer.job_optimizer = Delayed::Job.enqueue(OptimizerJob.new(planning.id, route && route.id, global, all_stops))
+        planning.customer.job_optimizer = Delayed::Job.enqueue(OptimizerJob.new(planning.id, route && route.id, global, active_only))
         planning.customer.job_optimizer.progress = '0;0;'
         planning.customer.job_optimizer.save!
       end
@@ -48,7 +48,7 @@ class Optimizer
         (route && r.id == route.id) || (!route && !global && r.vehicle_usage && r.size_active > 1) || (!route && global)
       }.reject(&:locked)
       optimum = unless routes.select(&:vehicle_usage).empty?
-                  planning.optimize(routes, global, all_stops) do |positions, services, vehicles|
+                  planning.optimize(routes, global, active_only) do |positions, services, vehicles|
                     Mapotempo::Application.config.optimize.optimize(
                         positions, services, vehicles,
                         optimize_time: @@optimize_time_force || (optimize_time ? optimize_time * 1000 : nil),
@@ -62,7 +62,7 @@ class Optimizer
                 end
 
       if optimum
-        planning.set_stops(routes, optimum, all_stops)
+        planning.set_stops(routes, optimum, active_only)
         routes.each{ |r|
           r.reload # Refresh stops order
           r.compute

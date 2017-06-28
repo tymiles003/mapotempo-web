@@ -572,10 +572,10 @@ class PlanningTest < ActiveSupport::TestCase
       optimizer_global(*a)
     }
     planning.set_stops(planning.routes, all_optim, true)
-    all_stops = planning.routes.third.stops.map(&:id)
+    active_only = planning.routes.third.stops.map(&:id)
 
-    assert_equal active_stops.size, all_stops.size
-    assert_not_equal active_stops, all_stops
+    assert_equal active_stops.size, active_only.size
+    assert_not_equal active_stops, active_only
   end
 
   test 'should set stops for one route' do
