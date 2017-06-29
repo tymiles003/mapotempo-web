@@ -214,7 +214,7 @@ class RouteTest < ActiveSupport::TestCase
     o.hidden = true
     assert o.hidden
     geojson = o.to_geojson(true, true)
-    assert_nil geojson
+    assert_equal geojson, "{\"type\":\"FeatureCollection\",\"features\":[]}"
 
     # coordinates
 
@@ -229,6 +229,6 @@ class RouteTest < ActiveSupport::TestCase
     o.hidden = true
     assert o.hidden
     geojson = o.to_geojson(true, false)
-    assert_nil geojson
+    assert_equal geojson, "{\"type\":\"FeatureCollection\",\"features\":[]}"
   end
 end

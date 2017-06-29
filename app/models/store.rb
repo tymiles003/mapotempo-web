@@ -33,7 +33,7 @@ class Store < Location
   has_many :vehicle_usage_rests, class_name: 'VehicleUsage', inverse_of: :store_rest, foreign_key: 'store_rest_id', dependent: :nullify
 
   auto_strip_attributes :name, :street, :postalcode, :city
-  validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.store.icon_unknown') }
+  validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_nil: true, message: ->(*_) { I18n.t('activerecord.errors.models.store.icon_unknown') }
   validates :icon_size, inclusion: { in: Store::ICON_SIZE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.store.icon_size_invalid') } }
 
   before_destroy :destroy_vehicle_store

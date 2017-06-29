@@ -92,8 +92,8 @@ class V01::VehicleUsageSetsTest < ActiveSupport::TestCase
       json = JSON.parse(last_response.body)
 
       assert_equal 'Test', json['name']
-      assert_equal '8:00', json['open']
-      assert_equal '16:00', json['close']
+      assert_equal '08:00:00', json['open']
+      assert_equal '16:00:00', json['close']
     end
   end
 

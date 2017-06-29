@@ -50,7 +50,7 @@ class V01::TagsTest < ActiveSupport::TestCase
     post api(), @tag.attributes
     assert_equal 400, last_response.status, 'Bad response: ' + last_response.body
     response = JSON.parse(last_response.body)
-    assert_equal('icon does not have a valid value', response['message'])
+    assert_match I18n.t('activerecord.errors.models.tag.icon_unknown'), response['message']
     assert response['backtrace'], 'Empty backtrace'
   end
 

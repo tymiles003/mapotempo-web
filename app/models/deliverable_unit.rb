@@ -32,7 +32,7 @@ class DeliverableUnit < ApplicationRecord
   validates :optimization_overload_multiplier, numericality: { greater_than_or_equal_to: -1 }, allow_nil: true
   validates :ref, uniqueness: { scope: :customer_id, case_sensitive: true }, allow_nil: true, allow_blank: true
 
-  validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.store.icon_unknown') }
+  validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_nil: true, message: ->(*_) { I18n.t('activerecord.errors.models.store.icon_unknown') }
 
   before_save :outdated
 
