@@ -4,7 +4,7 @@
     <span class="caret"></span>
   </button>
 
-  <ul id="toggle_optimization_dropdown" class="dropdown-menu" style="right: -60px; left: auto;" role="menu">
+  <ul id="toggle_optimization_dropdown" class="dropdown-menu" role="menu">
     <% if @planning.customer.enable_global_optimization? %>
       <li class="dropdown-title">
         <%= t 'plannings.edit.optimize_global.title' %>

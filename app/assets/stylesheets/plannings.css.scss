@@ -243,7 +243,12 @@ $sidebar-margins: 10px;
       }
 
       ul.dropdown-menu {
-        max-width: $sidebar-width - 100px;
+        max-width: $sidebar-width - 50px;
+      }
+
+      #toggle_optimization_dropdown, .dropdown-optimize-each {
+        right: -80px;
+        left: auto;
       }
     }
   }
