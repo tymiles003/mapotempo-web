@@ -446,11 +446,13 @@ class Planning < ApplicationRecord
   def save_import
     if valid? && Planning.import([self], recursive: true, validate: false)
       # Import does not save has_and_belongs_to_many
-      # So save it manualy
+      # So save it manually
       # https://github.com/zdennis/activerecord-import/pull/380
       t, z = self.tags, self.zonings
       self.reload
       self.tags, self.zonings = t, z
+      # ActiveRecordImport doesn't call callbacks
+      self.routes.each { |route| route.complete_geojson }
       save!
     end
   end
@@ -465,6 +467,8 @@ class Planning < ApplicationRecord
     t, z = self.tags, self.zonings
     self.reload
     self.tags, self.zonings = t, z
+    # ActiveRecordImport doesn't call callbacks
+    self.routes.each { |route| route.complete_geojson }
     save!
   end
 

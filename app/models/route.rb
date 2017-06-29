@@ -545,6 +545,21 @@ class Route < ApplicationRecord
     self.class.routes_to_geojson([self], false, true, polyline)
   end
 
+  # Add route_id to geojson after create
+  def complete_geojson
+    self.geojson_tracks = self.geojson_tracks && self.geojson_tracks.map{ |s|
+      linestring = JSON.parse(s)
+      linestring['properties']['route_id'] = self.id
+      linestring.to_json
+    }
+    self.geojson_points = self.geojson_points && self.geojson_points.map{ |s|
+      point = JSON.parse(s)
+      point['properties']['route_id'] = self.id
+      point.to_json
+    }
+    self.update_columns(attributes.slice('geojson_tracks', 'geojson_points'))
+  end
+
   private
 
   def assign_defaults
@@ -635,20 +650,5 @@ class Route < ApplicationRecord
       }
       self.geojson_points = stops_to_geojson_points
     end
-  end
-
-  # Add route_id to geojson after create
-  def complete_geojson
-    self.geojson_tracks = self.geojson_tracks && self.geojson_tracks.map{ |s|
-      linestring = JSON.parse(s)
-      linestring['properties']['route_id'] = self.id
-      linestring.to_json
-    }
-    self.geojson_points = self.geojson_points && self.geojson_points.map{ |s|
-      point = JSON.parse(s)
-      point['properties']['route_id'] = self.id
-      point.to_json
-    }
-    self.update_columns(attributes.slice('geojson_tracks', 'geojson_points'))
   end
 end
