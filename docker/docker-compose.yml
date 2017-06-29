@@ -24,6 +24,7 @@ services:
       - postgres-9.6:/var/lib/postgres
   redis-cache:
     image: "redis:alpine"
+    command: redis-server --save ""
 
   delayed-job:
     build:
