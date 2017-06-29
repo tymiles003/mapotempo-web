@@ -160,6 +160,10 @@ class V01::DestinationsTest < ActiveSupport::TestCase
           assert_equal ['v1', 'v2'], visits.map(&:ref)
           assert_equal [1, 2], visits.flat_map{ |v| v.quantities.values }
 
+          route = Route.last
+          assert_equal [route.id], JSON.parse('[' + route.geojson_tracks.join(',') + ']').map{ |t| t['properties']['route_id'] }.uniq
+          assert_equal [route.id], JSON.parse('[' + route.geojson_points.join(',') + ']').map{ |t| t['properties']['route_id'] }.uniq
+
           get '/api/0.1/plannings/ref:Hop.json?api_key=testkey1'
           planning = JSON.parse(last_response.body)
           assert_equal 'Hey', planning['name']
