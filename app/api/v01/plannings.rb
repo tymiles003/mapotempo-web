@@ -166,7 +166,7 @@ class V01::Plannings < Grape::API
       optional :details, type: Boolean, desc: 'Output route details', default: false
       optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
       optional :all_stops, type: Boolean, desc: 'Deprecated (Use active_only instead)'
-      optional :active_only, type: Boolean, desc: 'Optimize all stops (actives and inactives) if false, else only actives', default: true
+      optional :active_only, type: Boolean, desc: 'If true only active stops are taken into account by optimization, else inactive stops are also taken into account but are not activated in result route.', default: true
     end
     get ':id/optimize' do
       id = ParseIdsRefs.read params[:id]
