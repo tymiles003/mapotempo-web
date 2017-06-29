@@ -945,8 +945,12 @@ var plannings_edit = function(params) {
           beforeSend: beforeSendWaiting,
           success: function(data) {
             updatePlanning(data, {
-              error: errorOptimize,
-              success: successOptimize
+              error: function() {
+                stickyError(I18n.t('plannings.edit.optimize_failed'));
+              },
+              success: function() {
+                notice(I18n.t('plannings.edit.optimize_complete'));
+              }
             });
           },
           complete: completeAjaxMap,
