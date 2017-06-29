@@ -41,6 +41,10 @@ class PlanningsController < ApplicationController
 
   def show
     @params = params
+    @routes = if params[:route_ids]
+      route_ids = params[:route_ids].split(',').map{ |s| Integer(s) }
+      @planning.routes.select{ |r| route_ids.include?(r.id) }
+    end
     respond_to do |format|
       format.html
       format.json
@@ -345,7 +349,8 @@ class PlanningsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_planning
     @manage_planning = PlanningsController.manage
-    @planning = if [:show, :edit, :optimize].include?(action_name.to_sym) && !request.format.html?
+    @with_stops = ValueToBoolean.value_to_boolean(params[:with_stops], true)
+    @planning = if [:show, :edit, :optimize].include?(action_name.to_sym) && @with_stops && !request.format.html?
       current_user.customer.plannings.includes(routes: {stops: :visit}).find(params[:id] || params[:planning_id])
     else
       current_user.customer.plannings.find(params[:id] || params[:planning_id])

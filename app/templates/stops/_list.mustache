@@ -45,6 +45,9 @@
       </li>
       {{/visits}}{{/destination}}
     {{/stops}}
+    {{^with_stops}}{{#size}}
+      <div class="load-stops" title="{{#i18n}}plannings.edit.without_stops_title{{/i18n}}"><i class="fa fa-list fa-fw"></i> {{#i18n}}plannings.edit.load_stops_out_of_route{{/i18n}}</div>
+    {{/size}}{{/with_stops}}
     </ul>
   {{/vehicle}}
   {{#vehicle}}
@@ -60,7 +63,11 @@
         {{/optimized_at_formatted}}
       </div>
       <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.route_stops_active_help{{/i18n}}"><i class="fa fa-check-square fa-fw"></i>{{size_active}}/{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}<span class="caret"></span></button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="{{#i18n}}plannings.edit.route_stops_active_help{{/i18n}}"{{^with_stops}} disabled{{/with_stops}}>
+          <span data-size-active={{size_active}}>
+            <i class="fa fa-check-square fa-fw"></i>{{size_active}}/{{size}} {{#i18n}}plannings.edit.stops{{/i18n}}<span class="caret"></span>
+          </span>
+        </button>
         <ul class="dropdown-menu" role="menu">
           <li><a class="active_none" href="/plannings/{{planning_id}}/{{route_id}}/active/none"><i class="fa fa-square-o fa-fw"></i> {{#i18n}}plannings.edit.active_none{{/i18n}}</a></li>
           <li><a class="active_reverse" href="/plannings/{{planning_id}}/{{route_id}}/active/reverse"><i class="fa fa-random fa-fw"></i> {{#i18n}}plannings.edit.active_reverse{{/i18n}}</a></li>
@@ -214,6 +221,9 @@
       </li>
       {{/visits}}{{/destination}}
     {{/stops}}
+    {{^with_stops}}{{#size}}
+      <div class="load-stops" title="{{#i18n}}plannings.edit.without_stops_title{{/i18n}}"><i class="fa fa-list fa-fw"></i> {{#i18n}}plannings.edit.load_stops{{/i18n}}</div>
+    {{/size}}{{/with_stops}}
     </ul>
 
     {{#store_stop}}

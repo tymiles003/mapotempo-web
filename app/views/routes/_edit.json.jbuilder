@@ -1,10 +1,11 @@
 json.route_id route.id
+json.extract! route, :ref, :color
 (json.duration (route.start && route.end) ? '%i:%02i' % [(route.end - route.start) / 60 / 60, (route.end - route.start) / 60 % 60] : '0:00')
 (json.hidden true) if route.hidden
 (json.locked true) if route.locked
 json.distance locale_distance(route.distance || 0, current_user.prefered_unit)
 json.size route.stops.size
-json.extract! route, :ref, :color, :size_active
+json.size_active route.size_active
 (json.start_time route.start_time) if route.start
 (json.start_day number_of_days(route.start)) if route.start
 (json.end_time route.end_time) if route.end
@@ -14,7 +15,7 @@ json.color_fake route.color
 json.last_sent_to route.last_sent_to if route.last_sent_to
 json.last_sent_at_formatted l(route.last_sent_at) if route.last_sent_at
 json.optimized_at_formatted l(route.optimized_at) if route.optimized_at
-unless @planning.customer.enable_orders
+unless @planning.customer.enable_orders || !@with_stops
   json.quantities route_quantities(route) do |units|
     json.quantity units[:quantity] if units[:quantity]
     json.unit_icon units[:unit_icon]
@@ -29,22 +30,24 @@ if route.vehicle_usage
   route.planning.customer.device.configured_definitions.each do |key, definition|
     json.set!(key, true) if !definition[:route_operations].empty? && definition[:forms][:vehicle] && (definition[:forms][:vehicle].keys.empty? || !definition[:forms][:vehicle].keys.any?{ |k| route.vehicle_usage.vehicle.devices[k].blank? })
   end
-  status_uniq = route.stops.map{ |stop|
-      {
-        code: stop.status.downcase,
-        status: t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)
-      } if stop.status
-    }.uniq.compact
-  json.status_all do
-    # FIXME: to avoid refreshing select active stops, combined here with hardcoded status
-    json.array! status_uniq | [:planned, :started, :finished, :rejected].map{ |status|
-      {
-        code: status.to_s.downcase,
-        status: t("plannings.edit.stop_status.#{status.to_s}")
+  if @with_stops
+    status_uniq = route.stops.map{ |stop|
+        {
+          code: stop.status.downcase,
+          status: t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)
+        } if stop.status
+      }.uniq.compact
+    json.status_all do
+      # FIXME: to avoid refreshing select active stops, combined here with hardcoded status
+      json.array! status_uniq | [:planned, :started, :finished, :rejected].map{ |status|
+        {
+          code: status.to_s.downcase,
+          status: t("plannings.edit.stop_status.#{status.to_s}")
+        }
       }
-    }
+    end
+    json.status_any status_uniq.size > 0 || (!route.vehicle_usage.vehicle.devices[:tomtom_id].blank? && route.planning.customer.device.configured?(:tomtom))
   end
-  json.status_any status_uniq.size > 0 || (!route.vehicle_usage.vehicle.devices[:tomtom_id].blank? && route.planning.customer.device.configured?(:tomtom))
 end
 no_geolocalization = out_of_window = out_of_capacity = out_of_drive_time = no_path = false
 json.store_start do
@@ -57,84 +60,88 @@ end if route.vehicle_usage && route.vehicle_usage.default_store_start
 (json.start_with_service Time.at(display_start_time(route)).utc.strftime('%H:%M')) if display_start_time(route)
 (json.start_with_service_day number_of_days(display_start_time(route))) if display_start_time(route)
 
-inactive_stops = 0
-json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::INFINITY } : (route.stops.all?{ |s| s.name.to_i != 0 } ? route.stops.sort_by{ |s| s.name.to_i } : route.stops.sort_by{ |s| s.name.to_s.downcase }) do |stop|
-  out_of_window |= stop.out_of_window
-  out_of_capacity |= stop.out_of_capacity
-  out_of_drive_time |= stop.out_of_drive_time
-  no_geolocalization |= stop.is_a?(StopVisit) && !stop.position?
-  no_path |= stop.is_a?(StopVisit) && stop.no_path
-  (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
-  json.stop_id stop.id
-  json.stop_index stop.index
-  json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :no_path
-  json.ref stop.ref if @planning.customer.enable_references
-  json.open_close1 stop.open1 || stop.close1
-  (json.open1 stop.open1_time) if stop.open1
-  (json.open1_day number_of_days(stop.open1)) if stop.open1
-  (json.close1 stop.close1_time) if stop.close1
-  (json.close1_day number_of_days(stop.close1)) if stop.close1
-  json.open_close2 stop.open2 || stop.close2
-  (json.open2 stop.open2_time) if stop.open2
-  (json.open2_day number_of_days(stop.open2)) if stop.open2
-  (json.close2 stop.close2_time) if stop.close2
-  (json.close2_day number_of_days(stop.close2)) if stop.close2
-  (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
-  (json.geocoded true) if stop.position?
-  (json.time stop.time_time) if stop.time
-  (json.time_day number_of_days(stop.time)) if stop.time
-  if stop.active
-    json.active true
-    (json.number stop.index - inactive_stops) if route.vehicle_usage
-  else
-    inactive_stops += 1
-  end
-  (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
-  json.distance (stop.distance || 0) / 1000
-  if stop.is_a?(StopVisit)
-    json.visits true
-    visit = stop.visit
-    json.visit_id visit.id
-    json.destination do
-      json.destination_id visit.destination.id
-      (json.color visit.color) if visit.color
-      (json.icon visit.icon) if visit.icon
+json.with_stops @with_stops
+if @with_stops
+  inactive_stops = 0
+  json.stops route.vehicle_usage_id ? route.stops.sort_by{ |s| s.index || Float::INFINITY } : (route.stops.all?{ |s| s.name.to_i != 0 } ? route.stops.sort_by{ |s| s.name.to_i } : route.stops.sort_by{ |s| s.name.to_s.downcase }) do |stop|
+    out_of_window |= stop.out_of_window
+    out_of_capacity |= stop.out_of_capacity
+    out_of_drive_time |= stop.out_of_drive_time
+    no_geolocalization |= stop.is_a?(StopVisit) && !stop.position?
+    no_path |= stop.is_a?(StopVisit) && stop.no_path
+    (json.error true) if (stop.is_a?(StopVisit) && !stop.position?) || stop.out_of_window || stop.out_of_capacity || stop.out_of_drive_time || stop.no_path
+    json.stop_id stop.id
+    json.stop_index stop.index
+    json.extract! stop, :name, :street, :detail, :postalcode, :city, :country, :comment, :phone_number, :lat, :lng, :drive_time, :out_of_window, :out_of_capacity, :out_of_drive_time, :no_path
+    json.ref stop.ref if @planning.customer.enable_references
+    json.open_close1 stop.open1 || stop.close1
+    (json.open1 stop.open1_time) if stop.open1
+    (json.open1_day number_of_days(stop.open1)) if stop.open1
+    (json.close1 stop.close1_time) if stop.close1
+    (json.close1_day number_of_days(stop.close1)) if stop.close1
+    json.open_close2 stop.open2 || stop.close2
+    (json.open2 stop.open2_time) if stop.open2
+    (json.open2_day number_of_days(stop.open2)) if stop.open2
+    (json.close2 stop.close2_time) if stop.close2
+    (json.close2_day number_of_days(stop.close2)) if stop.close2
+    (json.wait_time '%i:%02i' % [stop.wait_time / 60 / 60, stop.wait_time / 60 % 60]) if stop.wait_time && stop.wait_time > 60
+    (json.geocoded true) if stop.position?
+    (json.time stop.time_time) if stop.time
+    (json.time_day number_of_days(stop.time)) if stop.time
+    if stop.active
+      json.active true
+      (json.number stop.index - inactive_stops) if route.vehicle_usage
+    else
+      inactive_stops += 1
     end
-    json.index_visit (visit.destination.visits.index(visit) + 1) if visit.destination.visits.size > 1
-    tags = visit.destination.tags | visit.tags
-    if !tags.empty?
-      json.tags_present do
-        json.tags do
-          json.array! tags, :label
+    (json.link_phone_number current_user.link_phone_number) if current_user.url_click2call
+    json.distance (stop.distance || 0) / 1000
+    if stop.is_a?(StopVisit)
+      json.visits true
+      visit = stop.visit
+      json.visit_id visit.id
+      json.destination do
+        json.destination_id visit.destination.id
+        (json.color visit.color) if visit.color
+        (json.icon visit.icon) if visit.icon
+      end
+      json.index_visit (visit.destination.visits.index(visit) + 1) if visit.destination.visits.size > 1
+      tags = visit.destination.tags | visit.tags
+      if !tags.empty?
+        json.tags_present do
+          json.tags do
+            json.array! tags, :label
+          end
         end
       end
-    end
-    if @planning.customer.enable_orders
-      order = stop.order
-      if order
-        json.orders order.products.collect(&:code).join(', ')
+      if @planning.customer.enable_orders
+        order = stop.order
+        if order
+          json.orders order.products.collect(&:code).join(', ')
+        end
+      else
+        # Hash { id, quantity, icon, label } for deliverable units
+        json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle)
       end
-    else
-      # Hash { id, quantity, icon, label } for deliverable units
-      json.quantities visit_quantities(visit, route.vehicle_usage && route.vehicle_usage.vehicle)
+      if stop.status
+        json.status t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)
+        json.status_code stop.status.downcase
+      end
+      if stop.route.last_sent_to && stop.status && stop.eta
+        (json.eta_formated l(stop.eta, format: :hour_minute)) if stop.eta
+      end
+    elsif stop.is_a?(StopRest)
+      json.rest do
+        json.rest true
+        (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
+        (json.geocoded true) if route.vehicle_usage.default_store_rest && route.vehicle_usage.default_store_rest.position?
+        (json.error true) if route.vehicle_usage.default_store_rest && !route.vehicle_usage.default_store_rest.position?
+      end
     end
-    if stop.status
-      json.status t("plannings.edit.stop_status.#{stop.status.downcase}", default: stop.status)
-      json.status_code stop.status.downcase
-    end
-    if stop.route.last_sent_to && stop.status && stop.eta
-      (json.eta_formated l(stop.eta, format: :hour_minute)) if stop.eta
-    end
-  elsif stop.is_a?(StopRest)
-    json.rest do
-      json.rest true
-      (json.store_id route.vehicle_usage.default_store_rest.id) if route.vehicle_usage.default_store_rest
-      (json.geocoded true) if route.vehicle_usage.default_store_rest && route.vehicle_usage.default_store_rest.position?
-      (json.error true) if route.vehicle_usage.default_store_rest && !route.vehicle_usage.default_store_rest.position?
-    end
+    json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration > 0
   end
-  json.duration l(Time.at(stop.duration).utc, format: :hour_minute_second) if stop.duration > 0
 end
+
 json.store_stop do
   json.extract! route.vehicle_usage.default_store_stop, :id, :name, :street, :postalcode, :city, :country, :lat, :lng, :color, :icon, :icon_size
   (json.time route.end_time) if route.end

@@ -89,7 +89,6 @@ class PlanningsControllerTest < ActionController::TestCase
     # Check number of stops (including both tags) in the new planning
     assert_equal 1, assigns(:planning).routes[0].stops.size
 
-
     assert_difference('Planning.count') do
       post :create, planning: { name: planning.name, vehicle_usage_set_id: vehicle_usage_sets(:vehicle_usage_set_two).id, zoning_ids: planning.zonings.collect(&:id), tag_operation: 'or', tag_ids: [tags(:tag_three).id, tags(:tag_four).id] }
     end
@@ -156,6 +155,24 @@ class PlanningsControllerTest < ActionController::TestCase
     get :show, format: :json, id: @planning
     assert_response :success
     assert_equal 3, JSON.parse(response.body)['routes'].size
+  end
+
+  test 'should show planning without stops' do
+    begin
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise
+        end
+      end
+      get :show, format: :json, id: @planning, with_stops: false
+      assert_response :success
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'should show planning as excel' do
@@ -246,9 +263,22 @@ class PlanningsControllerTest < ActionController::TestCase
   end
 
   test 'should get edit' do
-    get :edit, id: @planning
-    assert_response :success
-    assert_valid response
+    begin
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise
+        end
+      end
+      get :edit, id: @planning
+      assert_response :success
+      assert_valid response
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'should update planning and change zoning' do

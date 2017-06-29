@@ -435,9 +435,8 @@ class Route < ApplicationRecord
   end
 
   def size_active
-    stops.to_a.sum(0) { |stop|
-      stop.active || !vehicle_usage ? 1 : 0
-    }
+    # TODO: use :counter_cache for has_many relation
+    vehicle_usage_id ? (stops.loaded? ? stops.select(&:active).size : stops.select(:active).count) : 0
   end
 
   include LocalizedAttr

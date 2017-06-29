@@ -194,6 +194,8 @@ layers = (current_user.customer.profile.layers + [current_user.layer]).sort_by(&
 
 controller.js(
   manage_planning: @manage_planning,
+  # TODO: don't count stops
+  with_stops: @planning.routes.to_a.sum(0) { |r| r.stops.size } < 1000,
   prefered_unit: current_user.prefered_unit,
   planning_id: @planning.id,
   planning_ref: @planning.ref,
