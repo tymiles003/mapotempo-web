@@ -229,7 +229,12 @@ var RoutesLayer = L.FeatureGroup.extend({
 
       if (currentZoom > 15) {
         var markers = cluster.getAllChildMarkers();
-        var n = [markers[0].properties.index, markers.length === 2 ? markers[1].properties.index : '…'];
+        var n = ['…'];
+        if (markers[0].properties.number && markers[1].properties.number) {
+          n = [markers[0].properties.number, markers[1].properties.number];
+        } else if (markers[0].properties.number && markers.length > 2) {
+          n = [markers[0].properties.number, '…'];
+        }
         var color;
         if (markers.length > 50) {
           color = markers[0].properties.color;
@@ -246,7 +251,7 @@ var RoutesLayer = L.FeatureGroup.extend({
         }
 
         return new L.divIcon({
-          html: '<span class="fa-stack"><i class="fa fa-circle cluster-point-icon" style="color: ' + color + ';"></i><span class="fa-stack-1x point-icon-text">' + n.join(',') + '</span></span>',
+          html: '<span class="fa-stack"><i class="fa fa-circle cluster-point-icon" style="color: ' + color + ';"></i><span class="fa-stack-1x point-icon-text cluster-point-text">' + n.join(',') + '</span></span>',
           iconSize: new L.Point(24, 24),
           iconAnchor: new L.Point(12, 12),
           className: 'cluster-icon-container'
@@ -350,8 +355,7 @@ var RoutesLayer = L.FeatureGroup.extend({
             }
           } else if (e.layer !== popupModule.activeClickMarker) {
             popupModule.activeClickMarker.click = false;
-            popupModule.activeClickMarker.closePopup()
-              .unbindPopup();
+            popupModule.activeClickMarker.closePopup().unbindPopup();
             popupModule.createPopupForLayer(e.layer);
           }
           popupModule.activeClickMarker = e.layer;
