@@ -7,7 +7,7 @@ class ScheduleType < ActiveRecord::Type::Integer
 
       return nil if value.empty?
       value = value + ':00' if value =~ /\A\d+:\d+\Z/
-      ChronicDuration.parse(value)
+      ChronicDuration.parse(value, keep_zero: true)
     elsif value.kind_of?(Float) || value.kind_of?(ActiveSupport::Duration)
       value.to_i
     else
