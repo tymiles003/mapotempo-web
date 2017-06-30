@@ -113,14 +113,14 @@ Rails.application.configure do
 
   config.delayed_job_use = true
 
-  config.self_care = true # Allow subscription and resiliation by the user himself
+  config.self_care = true # Allow subscription and termination by the user himself
 
-  config.max_destinations = 3000
-  config.max_destinations_editable = 500
-  config.manage_vehicles_only_admin = false
+  config.max_destinations = 3000 # Max number of destinations allowed by customer account
+  config.max_destinations_editable = 500 # After this limit the destinations index list switch to readonly
+  config.manage_vehicles_only_admin = false # Whether the user can change himself the number of vehicle of this own account
 
-  config.enable_references = true
-  config.enable_multi_visits = false
+  config.enable_references = true # Default value when create new customer account of display or not references
+  config.enable_multi_visits = false # Default value when create new customer account of display or not the ability to support multiple visits per destination
 
   config.display_javascript_errors_on_screen = true
 
