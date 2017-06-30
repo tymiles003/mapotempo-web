@@ -859,8 +859,8 @@ CREATE TABLE vehicle_usage_sets (
     store_rest_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    open integer,
-    close integer,
+    open integer NOT NULL,
+    close integer NOT NULL,
     rest_start integer,
     rest_stop integer,
     rest_duration integer,
@@ -2625,4 +2625,6 @@ INSERT INTO schema_migrations (version) VALUES ('20170613152549');
 INSERT INTO schema_migrations (version) VALUES ('20170614151617');
 
 INSERT INTO schema_migrations (version) VALUES ('20170615092505');
+
+INSERT INTO schema_migrations (version) VALUES ('20170630083809');
 
