@@ -31,10 +31,6 @@ First, we need to retrieve the source code and the prebuilt images:
     cd mapotempo-web/docker
     docker-compose pull
 
-Make the directory for PostgreSQL:
-
-    mkdir /var/lib/postgres
-
 Finally run the services:
 
     docker-compose -p app up -d
