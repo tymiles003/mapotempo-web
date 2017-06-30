@@ -49,11 +49,9 @@ var iCalendarExport = function(planningId) {
       type: 'GET',
       data: ajaxParams,
       dataType: 'json'
-    })
-    .done(function(data) {
-      notice(I18n.t('plannings.edit.export.icalendar.success'))
-    })
-    .fail(function() {
+    }).done(function() {
+      notice(I18n.t('plannings.edit.export.icalendar.success'));
+    }).fail(function() {
       stickyError(I18n.t('plannings.edit.export.icalendar.fail'));
     });
   });
@@ -130,13 +128,13 @@ var spreadsheetModalExport = function(columns, planningId) {
     }
 
     var spreadsheetStops = localStorage.spreadsheetStops = $('.spreadsheet-stops:checked').map(function(i, e) {
-      return $(e).val()
+      return $(e).val();
     }).get().join('|');
     var spreadsheetColumnsExport = localStorage.spreadsheetColumnsExport = $('#columns-export li').map(function(i, e) {
-      return $(e).attr('data-value')
+      return $(e).attr('data-value');
     }).get().join('|');
     var spreadsheetColumnsSkip = localStorage.spreadsheetColumnsSkip = $('#columns-skip li').map(function(i, e) {
-      return $(e).attr('data-value')
+      return $(e).attr('data-value');
     }).get().join('|');
     var spreadsheetFormat = localStorage.spreadsheetFormat = $('[name=spreadsheet-format]:checked').val();
     var basePath = $('[name=spreadsheet-route]').val() ? ('/routes/' + $('[name=spreadsheet-route]').val()) : (planningId) ? '/plannings/' + planningId : '/plannings';
@@ -255,12 +253,6 @@ var plannings_edit = function(params) {
     return $("#planning_zoning_ids").val() || [];
   }
 
-  function eqArrays(a, b) {
-    return (a.length == b.length) && a.every(function(item, index) {
-      return item === b[index];
-    });
-  }
-
   var apply_zoning_modal = bootstrap_dialog({
     title: I18n.t('plannings.edit.dialog.zoning.title'),
     icon: 'fa-bars',
@@ -277,13 +269,13 @@ var plannings_edit = function(params) {
       type: 'PATCH',
       data: { planning: { zoning_ids: getZonings() }},
       dataType: 'json',
-      beforeSend: function(jqXHR) {
+      beforeSend: function() {
         apply_zoning_modal.modal('show');
       },
-      complete: function(xhr, status) {
+      complete: function() {
         apply_zoning_modal.modal('hide');
       },
-      success: function(data, textStatus, jqXHR) {
+      success: function(data) {
         updatePlanning(data, {
           'partial': false
         });
@@ -291,7 +283,7 @@ var plannings_edit = function(params) {
         notice(I18n.t('plannings.edit.zonings.success'));
         zoning_ids = getZonings();
       },
-      error: function(jqXHR, textStatus, errorThrown) {
+      error: function() {
         stickyError(I18n.t('plannings.edit.zonings.fail'));
       }
     });
@@ -390,7 +382,7 @@ var plannings_edit = function(params) {
       data: {
         details: true
       },
-      success: function(data, textStatus, jqXHR) {
+      success: function(data) {
         if (data && data.errors) {
           nbBackgroundTaskErrors++;
           if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
@@ -401,7 +393,7 @@ var plannings_edit = function(params) {
           updateStopsStatus(data);
         }
       },
-      error: function(err) {
+      error: function() {
         nbBackgroundTaskErrors++;
         if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
       }
@@ -417,7 +409,7 @@ var plannings_edit = function(params) {
           ids: vehicleIdsPosition
         },
         dataType: 'json',
-        success: function(data, textStatus, jqXHR) {
+        success: function(data) {
           if (data && data.errors) {
             nbBackgroundTaskErrors++;
             if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
@@ -428,7 +420,7 @@ var plannings_edit = function(params) {
             displayVehicles(data);
           }
         },
-        error: function(err) {
+        error: function() {
           nbBackgroundTaskErrors++;
           if (nbBackgroundTaskErrors > 1) clearInterval(backgroundTaskIntervalId);
         }
@@ -494,7 +486,7 @@ var plannings_edit = function(params) {
     var action = $(this).parent('li').parent('ul').attr('id') == 'lock_routes_dropdown' ? 'lock' : 'toggle';
     var selection = $(this).parent('li').data('selection');
 
-    var successLock = function(data, textStatus, jqXHR) {
+    var successLock = function(data) {
       $.each(data, function(index, route) {
         var element = $("[data-route_id='" + route.id + "']");
         if (route.locked) {
@@ -507,7 +499,7 @@ var plannings_edit = function(params) {
       });
       checkLockAndActive();
     };
-    var successToggle = function(data, textStatus, jqXHR) {
+    var successToggle = function(data) {
       if (selection == 'all' || selection == 'reverse') {
         routesLayer.showAllRoutes();
       } else if (selection == 'none') {
@@ -530,7 +522,7 @@ var plannings_edit = function(params) {
       type: 'PATCH',
       data: {
         route_ids: $.map(allRoutesWithVehicle, function(route) {
-          return route.route_id
+          return route.route_id;
         }).concat($('#out_of_route').parents('[data-route_id]').data('route_id')),
         selection: selection,
         action: action
@@ -565,7 +557,7 @@ var plannings_edit = function(params) {
       var that = this;
       var labelLayer = (new L.layerGroup()).addTo(map);
       var labelMarker;
-      this.on('mouseover', function(e) {
+      this.on('mouseover', function() {
         that.setStyle({
           opacity: 0.9,
           weight: (zone.speed_multiplicator === 0) ? 5 : 3
@@ -578,13 +570,13 @@ var plannings_edit = function(params) {
           })
         }).addTo(labelLayer);
       });
-      this.on('mouseout', function(e) {
+      this.on('mouseout', function() {
         that.setStyle({
           opacity: 0.5,
           weight: (zone.speed_multiplicator === 0) ? 5 : 2
         });
         if (labelMarker) labelLayer.removeLayer(labelMarker);
-        labelMarker = null
+        labelMarker = null;
       });
       return this;
     }
@@ -638,19 +630,19 @@ var plannings_edit = function(params) {
       return $('<span><span class="zoning_name">' + state.text + '</span> <a href="/zonings/' + state.id + '/edit/planning/' + planning_id + '?back=true" title="' + I18n.t('plannings.edit.zoning_edit') + '"><i class="fa fa-pencil fa-fw"></i></a></span>');
   };
 
-  $("#planning_zoning_ids").select2({
+  $('#planning_zoning_ids').select2({
     theme: 'bootstrap',
     templateSelection: templateSelectionZoning
   });
 
-  $("#planning_zoning_ids").change(function() {
+  $('#planning_zoning_ids').change(function() {
     layer_zoning.clearLayers();
     var ids = $(this).val();
     if (ids && ids.length > 0) {
       $.each(ids, function(i, id) {
         $.ajax({
-          type: "get",
-          url: "/api/0.1/zonings/" + id + ".json",
+          type: 'GET',
+          url: '/api/0.1/zonings/' + id + '.json',
           beforeSend: beforeSendWaiting,
           success: displayZoning,
           complete: completeAjaxMap,
@@ -661,10 +653,7 @@ var plannings_edit = function(params) {
   });
 
   var dialog_optimizer;
-
-  initOptimizerDialog();
-
-  function initOptimizerDialog() {
+  var initOptimizerDialog = function() {
     hideNotices(); // Clear Failed Optimization Notices
     dialog_optimizer = bootstrap_dialog({
       title: I18n.t('plannings.edit.dialog.optimizer.title'),
@@ -674,13 +663,14 @@ var plannings_edit = function(params) {
       })
     });
   };
+  initOptimizerDialog();
 
-  $("#optimize_each_all, #optimize_global_all, #optimize_each_actives, #optimize_global_actives").click(function(event, ui) {
+  $('#optimize_each_all, #optimize_global_all, #optimize_each_actives, #optimize_global_actives').click(function() {
     if (!confirm(I18n.t($(this).data('opti-global') ? 'plannings.edit.optimize_global.confirm' : 'plannings.edit.optimize_each.confirm'))) {
       return false;
     }
     $.ajax({
-      type: "get",
+      type: 'GET',
       url: '/plannings/' + planning_id + '/optimize.json',
       data: { 'global': $(this).data('opti-global'), 'active_only': $(this).data('active-only') },
       beforeSend: beforeSendWaiting,
@@ -692,7 +682,7 @@ var plannings_edit = function(params) {
           success: function() {
             notice(I18n.t('plannings.edit.optimize_complete'));
           }
-        })
+        });
       },
       complete: completeAjaxMap,
       error: ajaxError
@@ -710,7 +700,7 @@ var plannings_edit = function(params) {
       index++;
     }
     $.ajax({
-      type: 'patch',
+      type: 'PATCH',
       url: '/plannings/' + planning_id + '/' + route_id + '/' + stop_id + '/move/' + (index + 1) + '.json',
       beforeSend: beforeSendWaiting,
       success: updatePlanning,
@@ -727,16 +717,12 @@ var plannings_edit = function(params) {
       $.ajax({
         url: $(e.target).data('url'),
         type: 'GET',
-        beforeSend: function(jqXHR, settings) {
-          beforeSendWaiting();
-        },
-        complete: function(jqXHR, textStatus) {
-          completeWaiting();
-        },
-        success: function(data, textStatus, jqXHR) {
+        beforeSend: beforeSendWaiting,
+        complete: completeWaiting,
+        success: function() {
           notice(I18n.t('plannings.edit.export.customer_external_callback_url.success'));
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function() {
           stickyError(I18n.t('plannings.edit.export.customer_external_callback_url.fail'));
         }
       });
@@ -823,7 +809,7 @@ var plannings_edit = function(params) {
       else
         $('.color_small', $('.vehicle_select', $(this).parent()).next()).show();
       $.ajax({
-        type: "put",
+        type: 'PUT',
         data: JSON.stringify({
           color: color
         }),
@@ -860,14 +846,14 @@ var plannings_edit = function(params) {
         var initial_value = $this.data("initial-value");
         if (initial_value !== $this.val()) {
           $.ajax({
-            type: 'patch',
+            type: 'PATCH',
             data: JSON.stringify({
               route_id: $this.closest('[data-route_id]').attr('data-route_id'),
               vehicle_usage_id: vehicles_usages_map[$this.val()].vehicle_usage_id
             }),
             contentType: 'application/json',
             url: '/plannings/' + planning_id + '/switch.json',
-            beforeSend: function(jqXHR) {
+            beforeSend: function() {
               beforeSendWaiting();
               switchVehicleModal.modal('show');
             },
@@ -876,7 +862,7 @@ var plannings_edit = function(params) {
                 partial: 'routes'
               });
             },
-            complete: function(xhr, status) {
+            complete: function() {
               completeAjaxMap();
               switchVehicleModal.modal('hide');
             },
@@ -917,14 +903,14 @@ var plannings_edit = function(params) {
       });
 
       $routes
-        .on("click", ".toggle", function(event, ui) {
+        .on("click", ".toggle", function() {
           var id = $(this).closest("[data-route_id]").attr("data-route_id");
           var li = $("ul.stops, ol.stops", $(this).closest("li"));
           li.toggle();
           var hidden = !li.is(":visible");
           var i = $("i", this);
           $.ajax({
-            type: "put",
+            type: 'PUT',
             data: JSON.stringify({
               hidden: hidden
             }),
@@ -942,7 +928,7 @@ var plannings_edit = function(params) {
             error: ajaxError
           });
         })
-        .on("click", ".marker", function(event, ui) {
+        .on("click", ".marker", function() {
           var stopIndex = $(this).closest("[data-stop_index]").attr("data-stop_index");
           if (stopIndex) {
             var routeId = $(this).closest("[data-route_id]").attr("data-route_id");
@@ -956,7 +942,7 @@ var plannings_edit = function(params) {
           $(this).blur();
           return false;
         })
-        .on("click", ".optimize", function(event, ui) {
+        .on("click", ".optimize", function() {
           initOptimizerDialog();
           if (!confirm(I18n.t('plannings.edit.optimize_confirm')))
             return;
@@ -964,7 +950,7 @@ var plannings_edit = function(params) {
           var id = $(this).closest("[data-route_id]").attr("data-route_id");
           // Call optimize_route
           $.ajax({
-            type: "get",
+            type: 'GET',
             url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
             data: { 'active_only': $(this).data('active-only') },
             beforeSend: beforeSendWaiting,
@@ -982,10 +968,10 @@ var plannings_edit = function(params) {
             error: ajaxError
           });
         })
-        .on("click", ".active_all, .active_reverse, .active_none, .active_status, .reverse_order", function(event, ui) {
+        .on("click", ".active_all, .active_reverse, .active_none, .active_status, .reverse_order", function() {
           var url = this.href;
           $.ajax({
-            type: "patch",
+            type: 'PATCH',
             url: url,
             beforeSend: beforeSendWaiting,
             success: updatePlanning,
@@ -1000,7 +986,7 @@ var plannings_edit = function(params) {
           var id = $(this).closest("[data-route_id]").attr("data-route_id");
           var ref = this.value;
           $.ajax({
-            type: "put",
+            type: 'PUT',
             data: JSON.stringify({
               ref: ref
             }),
@@ -1010,7 +996,7 @@ var plannings_edit = function(params) {
           });
         });
 
-      $(".lock", context).click(function(event, ui) {
+      $(".lock", context).click(function() {
         var id = $(this).closest("[data-route_id]").attr("data-route_id");
         var i = $("i", this);
         i.toggleClass("fa-lock");
@@ -1020,7 +1006,7 @@ var plannings_edit = function(params) {
         var locked = i.hasClass("fa-lock");
         checkLockAndActive();
         $.ajax({
-          type: "put",
+          type: 'PUT',
           data: JSON.stringify({
             locked: locked
           }),
@@ -1033,7 +1019,7 @@ var plannings_edit = function(params) {
       $('.load-stops', context).click(function(event) {
         var routeId = $(event.target).closest('[data-route_id]').attr('data-route_id');
         $.ajax({
-          type: 'get',
+          type: 'GET',
           contentType: 'application/json',
           url: '/plannings/' + planning_id + '.json',
           data: {
@@ -1181,9 +1167,9 @@ var plannings_edit = function(params) {
         routesLayer.showAllRoutes();
       }
 
-      $("#refresh").click(function(event, ui) {
+      $('#refresh').click(function() {
         $.ajax({
-          type: "get",
+          type: 'GET',
           url: '/plannings/' + planning_id + '/refresh.json?with_stops=' + withStopsInSidePanel,
           beforeSend: beforeSendWaiting,
           success: displayPlanning,
@@ -1280,10 +1266,10 @@ var plannings_edit = function(params) {
         connectWith: ".sortable",
         items: "> li",
         cancel: '.wait',
-        start: function(event, ui) {
+        start: function() {
           sortableUpdate = false;
         },
-        update: function(event, ui) {
+        update: function() {
           sortableUpdate = true;
         },
         stop: function(event, ui) {
@@ -1303,7 +1289,6 @@ var plannings_edit = function(params) {
           });
         })
         .mouseout(function() {
-          var $this = $(this);
           $('i.fa-reorder', this).css({
             display: 'none'
           });
@@ -1311,7 +1296,7 @@ var plannings_edit = function(params) {
             display: 'inline-block'
           });
         })
-        .each(function(i) {
+        .each(function() {
           var $this = $(this);
           var stops = $.grep(route.stops, function(e) { return e.stop_id === $this.data('stop_id'); });
           if (stops.length > 0) {
@@ -1396,17 +1381,17 @@ var plannings_edit = function(params) {
     }, options));
   }
 
-  $(".main").on("click", ".automatic_insert", function(e, ui) {
+  $(".main").on("click", ".automatic_insert", function() {
     var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
     automaticInsertStops([stop_id], {
-      success: function(data, textStatus, jqXHR) {
+      success: function(data) {
         updatePlanning(data);
         enlighten_stop(stop_id);
       }
     });
   });
 
-  $(".main").on("click", ".automatic_insert_all", function(e, ui) {
+  $(".main").on("click", ".automatic_insert_all", function() {
     if ($('#out_of_route > li').length > 20) {
       alert(I18n.t('plannings.edit.automatic_insert_too_many'));
       return false;
@@ -1430,12 +1415,12 @@ var plannings_edit = function(params) {
     }
   });
 
-  $(".main").on('change', 'input:checkbox.stop_active', function(event, ui) {
+  $(".main").on('change', 'input:checkbox.stop_active', function(event) {
     var route_id = $(event.target).closest("[data-route_id]").attr("data-route_id");
     var stop_id = $(event.target).closest("[data-stop_id]").attr("data-stop_id");
     var active = $(event.target).is(':checked');
     $.ajax({
-      type: "patch",
+      type: 'PATCH',
       data: JSON.stringify({
         stop: {
           active: active
@@ -1450,11 +1435,11 @@ var plannings_edit = function(params) {
     });
   });
 
-  $(".main").on("click", ".send_to_route", function(event, ui) {
+  $(".main").on("click", ".send_to_route", function() {
     var stop_id = $(this).closest("[data-stop_id]").attr("data-stop_id");
     var url = this.href;
     $.ajax({
-      type: 'patch',
+      type: 'PATCH',
       url: url,
       beforeSend: beforeSendWaiting,
       success: function(data) {
@@ -1497,11 +1482,11 @@ var plannings_edit = function(params) {
         keyboard: true,
         show: true
       });
-      $("#refresh-modal").click(function(event, ui) {
+      $("#refresh-modal").click(function() {
         $('#planning-refresh-modal').off('hidden.bs.modal', displayPlanningAfterModal);
         $('#planning-refresh-modal').modal('hide');
         $.ajax({
-          type: "get",
+          type: 'GET',
           url: '/plannings/' + planning_id + '/refresh.json?with_stops=' + withStopsInSidePanel,
           beforeSend: beforeSendWaiting,
           success: displayPlanningFirstTime,
@@ -1535,7 +1520,7 @@ var plannings_edit = function(params) {
   if (zoning_ids && zoning_ids.length > 0) {
     $.each(zoning_ids, function(i, zoningId) {
       $.ajax({
-        type: "get",
+        type: 'GET',
         url: "/api/0.1/zonings/" + zoningId + ".json",
         beforeSend: beforeSendWaiting,
         success: displayZoning,
@@ -1558,7 +1543,7 @@ var plannings_edit = function(params) {
 
     $.ajax({
       url: '/api/0.1/zonings/isochrone',
-      type: "patch",
+      type: 'PATCH',
       dataType: "json",
       data: {
         vehicle_usage_id: vehicle_usage_id,
@@ -1566,7 +1551,7 @@ var plannings_edit = function(params) {
         lat: $('#isochrone_lat').val(),
         lng: $('#isochrone_lng').val()
       },
-      beforeSend: function(jqXHR, settings) {
+      beforeSend: function() {
         beforeSendWaiting();
         $('#isochrone-modal').modal('hide');
         $('#isochrone-progress-modal').modal({
@@ -1574,17 +1559,17 @@ var plannings_edit = function(params) {
           keyboard: true
         });
       },
-      success: function(data, textStatus, jqXHR) {
+      success: function(data) {
         hideNotices();
         fitBounds = true;
         displayZoning(data);
         notice(I18n.t('zonings.edit.success'));
       },
-      complete: function(jqXHR, textStatus) {
+      complete: function() {
         completeAjaxMap();
         $('#isochrone-progress-modal').modal('hide');
       },
-      error: function(jqXHR, textStatus, errorThrown) {
+      error: function() {
         stickyError(I18n.t('zonings.edit.failed'));
       }
     });
@@ -1599,7 +1584,7 @@ var plannings_edit = function(params) {
     });
     $('#isodistance-modal').modal('hide');
     $.ajax({
-      type: "patch",
+      type: 'PATCH',
       url: '/api/0.1/zonings/isodistance.json',
       dataType: "json",
       data: {
@@ -1653,23 +1638,23 @@ var devicesObservePlanning = (function() {
     route.i18n = mustache_i18n;
     container.html(SMT['routes/last_sent_at'](route));
     route.last_sent_at ? container.show() : container.hide();
-  }
+  };
 
   var _setPlanningRoutesLastSentAt = function(routes) {
     $.each(routes, function(i, route) {
       _setLastSentAt(route);
     });
-  }
+  };
 
   var _clearLastSentAt = function(route) {
     $("[data-route_id='" + route.id + "'] .last-sent-at", _context).hide();
-  }
+  };
 
   var _clearPlanningRoutesLastSentAt = function(routes) {
     $.each(routes, function(i, route) {
       _clearLastSentAt(route);
     });
-  }
+  };
 
   var _devicesInitVehicle = function(callback) {
 
