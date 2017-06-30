@@ -220,14 +220,14 @@ var RoutesLayer = L.FeatureGroup.extend({
     spiderfyOnMaxZoom: true,
     animate: false,
     maxClusterRadius: function(currentZoom) {
-      return currentZoom >= 13 ? 1 : 30;
+      return currentZoom > 15 ? 1 : 30;
     },
     spiderfyDistanceMultiplier: 0.5,
     // disableClusteringAtZoom: 12,
     iconCreateFunction: function(cluster) {
       var currentZoom = cluster._map.getZoom();
 
-      if (currentZoom >= 13) {
+      if (currentZoom > 15) {
         var markers = cluster.getAllChildMarkers();
         var n = [markers[0].properties.index, markers.length === 2 ? markers[1].properties.index : '…'];
         var color;
