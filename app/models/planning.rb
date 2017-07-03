@@ -524,7 +524,8 @@ class Planning < ApplicationRecord
     if not_nil_position_index.key?(true)
       not_nil_position, not_nil_tws = not_nil_position_index[true].collect{ |position, index| [position, tws[index]] }.transpose
     else
-      not_nil_position = not_nil_tws = []
+      not_nil_position = []
+      not_nil_tws = []
     end
     if not_nil_position_index.key?(false)
       nil_tws = not_nil_position_index[false].collect{ |_position, index| tws[index] }

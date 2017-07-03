@@ -3,7 +3,12 @@ class MoveTraceToRoute < ActiveRecord::Migration
     add_column :routes, :geojson_tracks, :text, array: true
     add_column :routes, :geojson_points, :text, array: true
     add_column :routes, :stop_no_path, :boolean
+    add_column :routes, :quantities, :hstore
+
     add_column :stops, :no_path, :boolean
+
+    Route.connection.schema_cache.clear!
+    Route.reset_column_information
 
     Route.includes({stops: {visit: [:tags, {destination: [:visits, :tags, :customer]}]}}).find_each{ |route|
       previous_with_pos = route.vehicle_usage && route.vehicle_usage.default_store_start.try(&:position?)
@@ -79,7 +84,9 @@ class MoveTraceToRoute < ActiveRecord::Migration
 
       route.geojson_points = geojson_points unless geojson_points.empty?
 
-      route.save!
+      route.quantities = route.compute_quantities
+
+      route.save!(validate: false)
     }
 
     change_column :stops, :index, :integer, null: false
@@ -114,12 +121,14 @@ class MoveTraceToRoute < ActiveRecord::Migration
         route.stop_trace = geojson_track_stop['geometry']['polylines'] if geojson_track_stop
       end
 
-      route.save!
+      route.save!(validate: false)
     }
 
     remove_column :routes, :geojson_tracks
     remove_column :routes, :geojson_points
     remove_column :routes, :stop_no_path
+    remove_column :routes, :quantities
+
     remove_column :stops, :no_path
   end
 end

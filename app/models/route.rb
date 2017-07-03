@@ -21,6 +21,7 @@ class Route < ApplicationRecord
   belongs_to :planning
   belongs_to :vehicle_usage
   has_many :stops, inverse_of: :route, autosave: true, dependent: :delete_all, after_add: :update_stops_track, after_remove: :update_stops_track
+  serialize :quantities, DeliverableUnitQuantity
 
   nilify_blanks
   validates :planning, presence: true
@@ -156,7 +157,8 @@ class Route < ApplicationRecord
       traces[0] = [0, 0, nil] if !vehicle_usage.default_store_start.try(&:position?)
 
       # Recompute Stops
-      stops_time_windows = quantities_ = {}
+      stops_time_windows = {}
+      quantities_ = {}
       stops_sort.each{ |stop|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
           stop.distance, stop.drive_time, trace = traces.shift
@@ -208,6 +210,8 @@ class Route < ApplicationRecord
               stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
                 vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]
               }
+
+              self.quantities = quantities_
             else
               stop.out_of_capacity = false
             end
@@ -464,16 +468,13 @@ class Route < ApplicationRecord
 
   attr_localized :quantities
 
-  def quantities
+  # required for migration
+  def compute_quantities
     Hash[planning.customer.deliverable_units.map{ |du|
       [du.id, stops.to_a.sum(0) { |stop|
         stop.is_a?(StopVisit) && (stop.active || !vehicle_usage) ? (stop.visit.default_quantities[du.id] || 0) : 0
       }]
     }]
-  end
-
-  def quantities?
-    quantities.flat_map(&:values).any{ |q| q > 0 }
   end
 
   def active_all
