@@ -490,9 +490,9 @@ var plannings_edit = function(params) {
     map.addHash();
     var removeHash = function() {
       map.removeHash();
-      $(document).off('page:before-change', removeHash);
+      $(document).off('page:before-change page:restore', removeHash);
     };
-    $(document).on('page:before-change', removeHash);
+    $(document).on('page:before-change page:restore', removeHash);
   }
 
   sidebar.addTo(map);
