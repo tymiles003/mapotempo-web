@@ -220,7 +220,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     spiderfyOnMaxZoom: true,
     animate: false,
     maxClusterRadius: function(currentZoom) {
-      return currentZoom > 15 ? 1 : 30;
+      return currentZoom > 15 ? 1 : 100;
     },
     spiderfyDistanceMultiplier: 0.5,
     // disableClusteringAtZoom: 12,
