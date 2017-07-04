@@ -366,10 +366,15 @@ class Planning < ActiveRecord::Base
     Route.transaction do
       stops_count = routes.collect{ |r| r.stops.size }.reduce(&:+)
       flat_stop_ids = stop_ids.flatten.compact
+      inactive_stop_ids = Array.new
+
+      routes.map do |route|
+        inactive_stop_ids += route.stops.reject(&:active).map(&:id)
+      end
+
       routes.each_with_index{ |route, index|
 
-        inactive_stop_ids = route.stops.select {|s| !s.active }.map(&:id) # Map all ids that need to be settled back to false
-        stops_            = route.stops_segregate(active_only)            # Split stops according to stop active statement
+        stops_ = route.stops_segregate(active_only) # Split stops according to stop active statement
 
         # Get ordered stops in current route
         ordered_stops = routes.flat_map{ |r| r.stops.select{ |s| stop_ids[index].include? s.id } }.sort_by{ |s| stop_ids[index].index s.id }
