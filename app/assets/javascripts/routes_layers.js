@@ -518,7 +518,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     var colorsByRoute = {};
     var overlappingMarkers = {};
 
-    var layer = L.geoJSON(geojson, {
+    var globalLayer = L.geoJSON(geojson, {
       onEachFeature: function(feature, layer) {
         if (feature.properties.route_id) {
           if (!(feature.properties.route_id in self.layersByRoute)) {
@@ -598,7 +598,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     });
 
     // Add only route polylines to map
-    this.addLayer(layer);
+    this.addLayer(globalLayer);
 
     // Add marker clusters
     for (var routeId in this.clustersByRoute) {
@@ -612,15 +612,17 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   _removeRoutes: function(routeIds) {
-    var that = this;
+    var self = this;
     routeIds.forEach(function(routeId) {
-      if (routeId in that.layersByRoute) {
-        that.removeLayer(that.layersByRoute[routeId]);
-        delete that.layersByRoute[routeId];
+      if (routeId in self.layersByRoute) {
+        self.layersByRoute[routeId].forEach(function (layer) {
+          self.map.removeLayer(layer);
+        });
+        delete self.layersByRoute[routeId];
       }
-      if (routeId in that.clustersByRoute) {
-        that.removeLayer(that.clustersByRoute[routeId]);
-        delete that.clustersByRoute[routeId];
+      if (routeId in self.clustersByRoute) {
+        self.removeLayer(self.clustersByRoute[routeId]);
+        delete self.clustersByRoute[routeId];
       }
     });
   }

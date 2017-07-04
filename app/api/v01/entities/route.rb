@@ -60,3 +60,15 @@ class V01::Entities::RouteStatus < Grape::Entity
   expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
   expose(:stops, using: V01::Entities::StopStatus, documentation: { type: V01::Entities::StopStatus, is_array: true })
 end
+
+class V01::Entities::RouteProperties < Grape::Entity
+  def self.entity_name
+    'V01_RouteProperties'
+  end
+
+  expose(:id, documentation: { type: Integer })
+  expose(:vehicle_usage_id, documentation: { type: Integer })
+  expose(:hidden, documentation: { type: 'Boolean' })
+  expose(:locked, documentation: { type: 'Boolean' })
+  expose(:color, documentation: { type: String, desc: 'Color code with #. For instance: #FF0000' })
+end

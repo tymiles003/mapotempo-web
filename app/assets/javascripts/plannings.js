@@ -919,10 +919,11 @@ var plannings_edit = function(params) {
           $.ajax({
             type: 'PUT',
             data: JSON.stringify({
-              hidden: hidden
+              hidden: hidden,
+              geojson: hidden ? 'false' : 'true'
             }),
             contentType: 'application/json',
-            url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json?geojson=true',
+            url: '/api/0.1/plannings/' + planning_id + '/routes/' + id + '.json',
             success: function(data) {
               if (hidden) {
                 i.removeClass("fa-eye").addClass("fa-eye-slash");

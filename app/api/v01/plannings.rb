@@ -258,7 +258,12 @@ class V01::Plannings < Grape::API
           end
         end
       end
-      present routes, with: V01::Entities::Route, geojson: params[:geojson]
+
+      if params[:geojson] && params[:geojson] != :false
+        present routes, with: V01::Entities::Route, geojson: params[:geojson]
+      else
+        present routes, with: V01::Entities::RouteProperties
+      end
     end
 
     desc 'Update stops status.',

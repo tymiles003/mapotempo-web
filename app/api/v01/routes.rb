@@ -56,7 +56,11 @@ class V01::Routes < Grape::API
         end
         put ':id' do
           get_route.update! route_params
-          present(get_route, with: V01::Entities::Route, geojson: params[:geojson])
+          if params[:geojson] && params[:geojson] != :false
+            present(get_route, with: V01::Entities::Route, geojson: params[:geojson])
+          else
+            present(get_route, with: V01::Entities::RouteProperties)
+          end
         end
 
         desc 'Change stops activation.',
