@@ -286,6 +286,9 @@ var RoutesLayer = L.FeatureGroup.extend({
     L.FeatureGroup.prototype.initialize.call(this);
     this.planningId = planningId;
     this.options = $.extend(this.options, options);
+
+    // Clear layers if page is reloaded with turbolinks
+    this.hideAllRoutes();
   },
 
   onAdd: function(map) {
