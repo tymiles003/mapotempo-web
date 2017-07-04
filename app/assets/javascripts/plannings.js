@@ -267,7 +267,10 @@ var plannings_edit = function(params) {
     $.ajax({
       url: $(e.target).attr('action'),
       type: 'PATCH',
-      data: { planning: { zoning_ids: getZonings() }},
+      data: {
+        planning: { zoning_ids: getZonings() },
+        with_stops: withStopsInSidePanel
+      },
       dataType: 'json',
       beforeSend: function() {
         apply_zoning_modal.modal('show');
@@ -672,7 +675,11 @@ var plannings_edit = function(params) {
     $.ajax({
       type: 'GET',
       url: '/plannings/' + planning_id + '/optimize.json',
-      data: { 'global': $(this).data('opti-global'), 'active_only': $(this).data('active-only') },
+      data: {
+        global: $(this).data('opti-global'),
+        active_only: $(this).data('active-only'),
+        with_stops: withStopsInSidePanel
+      },
       beforeSend: beforeSendWaiting,
       success: function(data) {
         displayPlanning(data, {
