@@ -598,7 +598,7 @@ var RoutesLayer = L.FeatureGroup.extend({
     });
 
     // Add only route polylines to map
-    layer.addTo(this.map);
+    this.addLayer(layer);
 
     // Add marker clusters
     for (var routeId in this.clustersByRoute) {
