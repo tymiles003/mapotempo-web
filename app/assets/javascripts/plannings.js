@@ -1157,9 +1157,9 @@ var plannings_edit = function(params) {
       initRoutes($('#edit-planning'), data);
 
       if (options.firstTime) {
-        routesLayer.showAllRoutes(function() {
+        routesLayer.showAllRoutes(function(layer) {
           if (fitBounds) {
-            var bounds = this.getBounds();
+            var bounds = layer.getBounds();
             if (bounds && bounds.isValid()) {
               map.invalidateSize();
               map.fitBounds(bounds, {

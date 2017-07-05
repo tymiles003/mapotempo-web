@@ -293,7 +293,6 @@ var RoutesLayer = L.FeatureGroup.extend({
 
   onAdd: function(map) {
     L.FeatureGroup.prototype.onAdd.call(this, map);
-    var self = this;
     this.layersByRoute = {};
     this.map = map;
 
@@ -318,7 +317,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           weight: 7
         });
       }
-    }).on('mouseout', function(e) {
+    }.bind(this)).on('mouseout', function(e) {
       if (e.layer instanceof L.Marker) {
         popupModule.previousMarker = e.layer;
         if (!e.layer.click && e.layer.getPopup()) {
@@ -331,69 +330,71 @@ var RoutesLayer = L.FeatureGroup.extend({
         });
       }
 
-      if (self.popupOpenTimer) {
-        clearTimeout(self.popupOpenTimer);
+      if (this.popupOpenTimer) {
+        clearTimeout(this.popupOpenTimer);
       }
-    })
-    .on('click', function(e) {
-      // Open popup if only one is actually in a click statement.
-      if (e.layer instanceof L.Marker) {
-        if (e.layer.properties.stop_id) {
-          this.fire('clickStop', {
-            stopId: e.layer.properties.stop_id
-          });
-        }
-        if (e.layer.click) {
-          if (e.layer === popupModule.activeClickMarker) {
-            e.layer.closePopup();
-            popupModule.activeClickMarker = void(0);
+    }.bind(this))
+      .on('click', function(e) {
+        // Open popup if only one is actually in a click statement.
+        if (e.layer instanceof L.Marker) {
+          if (e.layer.properties.stop_id) {
+            this.fire('clickStop', {
+              stopId: e.layer.properties.stop_id
+            });
           }
-          e.layer.click = false;
-        } else {
-          if (popupModule.activeClickMarker === void(0)) {
-            if (!e.layer.getPopup()) {
-              popupModule.createPopupForLayer(e.layer);
-            } else {
-              e.layer.openPopup();
+          if (e.layer.click) {
+            if (e.layer === popupModule.activeClickMarker) {
+              e.layer.closePopup();
+              popupModule.activeClickMarker = void(0);
             }
-          } else if (e.layer !== popupModule.activeClickMarker) {
-            popupModule.activeClickMarker.click = false;
-            popupModule.activeClickMarker.closePopup().unbindPopup();
-            popupModule.createPopupForLayer(e.layer);
+            e.layer.click = false;
+          } else {
+            if (popupModule.activeClickMarker === void(0)) {
+              if (!e.layer.getPopup()) {
+                popupModule.createPopupForLayer(e.layer);
+              } else {
+                e.layer.openPopup();
+              }
+            } else if (e.layer !== popupModule.activeClickMarker) {
+              popupModule.activeClickMarker.click = false;
+              popupModule.activeClickMarker.closePopup().unbindPopup();
+              popupModule.createPopupForLayer(e.layer);
+            }
+            popupModule.activeClickMarker = e.layer;
+            e.layer.click = true;
           }
-          popupModule.activeClickMarker = e.layer;
-          e.layer.click = true;
-        }
-      } else if (e.layer instanceof L.Path) {
-        var distance = e.layer.properties.distance / 1000;
-        var driveTime = e.layer.properties.drive_time;
-        distance = (self.options.unit === 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
+        } else if (e.layer instanceof L.Path) {
+          var distance = e.layer.properties.distance / 1000;
+          var driveTime = e.layer.properties.drive_time;
+          distance = (this.options.unit === 'km') ? distance.toFixed(1) + ' km' : (distance / 1.609344).toFixed(1) + ' miles';
 
-        if (driveTime) {
-          var driveTimeDay = null;
-          if (driveTime > 3600 * 24) {
-            driveTimeDay = driveTime / (3600 * 24) | 0;
+          if (driveTime) {
+            var driveTimeDay = null;
+            if (driveTime > 3600 * 24) {
+              driveTimeDay = driveTime / (3600 * 24) | 0;
+            }
+            driveTime = ('0' + parseInt(driveTime / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(driveTime / 60) % 60).slice(-2) + ':' + ('0' + (driveTime % 60)).slice(-2);
+            if (driveTimeDay) {
+              driveTime += ' (' + I18n.t('plannings.edit.popup.day') + driveTimeDay + ')';
+            }
+          } else {
+            driveTime = '';
           }
-          driveTime = ('0' + parseInt(driveTime / 3600) % 24).slice(-2) + ':' + ('0' + parseInt(driveTime / 60) % 60).slice(-2) + ':' + ('0' + (driveTime % 60)).slice(-2);
-          if (driveTimeDay) {
-            driveTime += ' (' + I18n.t('plannings.edit.popup.day') + driveTimeDay + ')';
-          }
-        } else {
-          driveTime = '';
-        }
 
-        var content = (driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>';
-        L.responsivePopup({
-          minWidth: 200,
-          autoPan: false
-        }).setLatLng(e.latlng).setContent(content).openOn(self.map);
-      }
-    }).on('popupopen', function(e) {
-      // Silence is golden
-    }).on('popupclose', function(e) {
-      // Silence is golden
-      popupModule.activeClickMarker = void(0);
-    });
+          var content = (driveTime ? '<div>' + I18n.t('plannings.edit.popup.stop_drive_time') + ' ' + driveTime + '</div>' : '') + '<div>' + I18n.t('plannings.edit.popup.stop_distance') + ' ' + distance + '</div>';
+          L.responsivePopup({
+            minWidth: 200,
+            autoPan: false
+          }).setLatLng(e.latlng).setContent(content).openOn(this.map);
+        }
+      }.bind(this))
+      .on('popupopen', function(e) {
+        // Silence is golden
+      }.bind(this))
+      .on('popupclose', function(e) {
+        // Silence is golden
+        popupModule.activeClickMarker = void(0);
+      }.bind(this));
   },
 
   showRoutes: function(routeIds, geojson, callback) {
@@ -460,38 +461,36 @@ var RoutesLayer = L.FeatureGroup.extend({
 
   _load: function(routeIds, includeStores, geojson, callback) {
     if (!geojson) {
-      var self = this;
       $.ajax({
         url: '/api/0.1/plannings/' + this.planningId + '/routes.geojson?geojson=polyline&ids=' + routeIds.join(',') + '&stores=' + includeStores,
         beforeSend: beforeSendWaiting,
         success: function(data) {
-          self._addRoutes(data);
-          if (callback) {
-            callback.call(self);
+          this._addRoutes(data);
+          if (typeof callback === 'function') {
+            callback();
           }
-        },
+        }.bind(this),
         complete: completeAjaxMap,
         error: ajaxError
       });
     } else {
       this._addRoutes(geojson);
-      if (callback) {
-        callback.call(this);
+      if (typeof callback === 'function') {
+        callback();
       }
     }
   },
 
   _loadAll: function(callback) {
-    var self = this;
     $.ajax({
       url: '/api/0.1/plannings/' + this.planningId + '.geojson?geojson=polyline',
       beforeSend: beforeSendWaiting,
       success: function(data) {
-        self._addRoutes(data);
-        if (callback) {
-          callback.call(self);
+        this._addRoutes(data);
+        if (typeof callback === 'function') {
+          callback(this);
         }
-      },
+      }.bind(this),
       complete: completeAjaxMap,
       error: ajaxError
     });
@@ -511,9 +510,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   _addRoutes: function(geojson) {
-    var self = this;
-
-    self._formatGeojsonFromPolylines(geojson);
+    this._formatGeojsonFromPolylines(geojson);
 
     var colorsByRoute = {};
     var overlappingMarkers = {};
@@ -521,15 +518,15 @@ var RoutesLayer = L.FeatureGroup.extend({
     var globalLayer = L.geoJSON(geojson, {
       onEachFeature: function(feature, layer) {
         if (feature.properties.route_id) {
-          if (!(feature.properties.route_id in self.layersByRoute)) {
-            self.layersByRoute[feature.properties.route_id] = [];
+          if (!(feature.properties.route_id in this.layersByRoute)) {
+            this.layersByRoute[feature.properties.route_id] = [];
           }
-          self.layersByRoute[feature.properties.route_id].push(layer);
+          this.layersByRoute[feature.properties.route_id].push(layer);
         } else if (feature.properties.store_id) {
-          self.layerStores = layer;
+          this.layerStores = layer;
         }
         layer.properties = feature.properties;
-      },
+      }.bind(this),
       style: function(feature) {
         if (!colorsByRoute[feature.properties.route_id]) {
           colorsByRoute[feature.properties.route_id] = feature.properties.color;
@@ -540,7 +537,7 @@ var RoutesLayer = L.FeatureGroup.extend({
           opacity: 0.5,
           weight: 5
         };
-      },
+      }.bind(this),
       pointToLayer: function(geoJsonPoint, latlng) {
         var icon;
         var overlapKey = latlng.lat.toString() + latlng.lng.toString();
@@ -554,16 +551,16 @@ var RoutesLayer = L.FeatureGroup.extend({
           var storeIconSize = geoJsonPoint.properties.icon_size || 'large';
           var storeColor = geoJsonPoint.properties.color || 'black';
           icon = L.divIcon({
-            html: '<i class="fa ' + storeIcon + ' ' + self.map.iconSize[storeIconSize].name + ' store-icon" style="color: ' + storeColor + ';"></i>',
-            iconSize: new L.Point(self.map.iconSize[storeIconSize].size, self.map.iconSize[storeIconSize].size),
-            iconAnchor: new L.Point(self.map.iconSize[storeIconSize].size / 2, self.map.iconSize[storeIconSize].size / 2),
+            html: '<i class="fa ' + storeIcon + ' ' + this.map.iconSize[storeIconSize].name + ' store-icon" style="color: ' + storeColor + ';"></i>',
+            iconSize: new L.Point(this.map.iconSize[storeIconSize].size, this.map.iconSize[storeIconSize].size),
+            iconAnchor: new L.Point(this.map.iconSize[storeIconSize].size / 2, this.map.iconSize[storeIconSize].size / 2),
             className: 'store-icon-container'
           });
         } else {
           var pointIcon = geoJsonPoint.properties.icon || 'fa-circle';
           var pointIconSize = geoJsonPoint.properties.icon_size || 'medium';
           var pointColor = geoJsonPoint.properties.color || '#707070';
-          var pointAnchor = new L.Point(self.map.iconSize[pointIconSize].size / 2, self.map.iconSize[pointIconSize].size / 2);
+          var pointAnchor = new L.Point(this.map.iconSize[pointIconSize].size / 2, this.map.iconSize[pointIconSize].size / 2);
           if (overlappingMarkers[overlapKey] && overlappingMarkers[overlapKey] !== routeId) {
             pointAnchor = new L.Point(0, 0);
           } else {
@@ -571,8 +568,8 @@ var RoutesLayer = L.FeatureGroup.extend({
           }
 
           icon = L.divIcon({
-            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + self.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + (geoJsonPoint.properties.number || '') + '</span></span>',
-            iconSize: new L.Point(self.map.iconSize[pointIconSize].size, self.map.iconSize[pointIconSize].size),
+            html: '<span class="fa-stack"><i class="fa ' + pointIcon + ' ' + this.map.iconSize[pointIconSize].name + ' point-icon" style="color: ' + pointColor + ';"></i><span class="fa-stack-1x point-icon-text">' + (geoJsonPoint.properties.number || '') + '</span></span>',
+            iconSize: new L.Point(this.map.iconSize[pointIconSize].size, this.map.iconSize[pointIconSize].size),
             iconAnchor: pointAnchor,
             className: 'point-icon-container'
           });
@@ -586,15 +583,15 @@ var RoutesLayer = L.FeatureGroup.extend({
         marker.properties.route_color = colorsByRoute[geoJsonPoint.properties.route_id];
 
         if (storeId) {
-          self.markerStores.push(marker);
+          this.markerStores.push(marker);
         } else {
-          if (!self.clustersByRoute[routeId]) {
-            self.clustersByRoute[routeId] = L.markerClusterGroup(self.markerOptions);
+          if (!this.clustersByRoute[routeId]) {
+            this.clustersByRoute[routeId] = L.markerClusterGroup(this.markerOptions);
           }
-          self.clustersByRoute[routeId].addLayer(marker);
+          this.clustersByRoute[routeId].addLayer(marker);
         }
         // return marker; // Markers are already added in cluster, don't add to layer
-      }
+      }.bind(this)
     });
 
     // Add only route polylines to map
@@ -606,24 +603,23 @@ var RoutesLayer = L.FeatureGroup.extend({
     }
 
     // Add store markers
-    for (var storeId in self.markerStores) {
-      this.addLayer(self.markerStores[storeId]);
+    for (var storeId in this.markerStores) {
+      this.addLayer(this.markerStores[storeId]);
     }
   },
 
   _removeRoutes: function(routeIds) {
-    var self = this;
     routeIds.forEach(function(routeId) {
-      if (routeId in self.layersByRoute) {
-        self.layersByRoute[routeId].forEach(function (layer) {
-          self.map.removeLayer(layer);
-        });
-        delete self.layersByRoute[routeId];
+      if (routeId in this.layersByRoute) {
+        this.layersByRoute[routeId].forEach(function (layer) {
+          this.map.removeLayer(layer);
+        }.bind(this));
+        delete this.layersByRoute[routeId];
       }
-      if (routeId in self.clustersByRoute) {
-        self.removeLayer(self.clustersByRoute[routeId]);
-        delete self.clustersByRoute[routeId];
+      if (routeId in this.clustersByRoute) {
+        this.removeLayer(this.clustersByRoute[routeId]);
+        delete this.clustersByRoute[routeId];
       }
-    });
+    }.bind(this));
   }
 });
