@@ -33,8 +33,7 @@ class Route < ApplicationRecord
   attribute :end, ScheduleType.new
   time_attr :start, :end
 
-  before_save :update_vehicle_usage
-  before_update :check_outdated, :update_geojson
+  before_update :update_vehicle_usage, :check_outdated, :update_geojson
 
   after_initialize :assign_defaults, if: 'new_record?'
   after_create :complete_geojson
@@ -473,7 +472,7 @@ class Route < ApplicationRecord
   end
 
   def stops_segregate(active_only = true)
-    stops.group_by{ |stop| (!active_only ? true : stop.active) && (stop.position? || stop.is_a?(StopRest))}
+    stops.group_by{ |stop| (!active_only ? true : stop.active) && (stop.position? || stop.is_a?(StopRest)) }
   end
 
   def outdated
@@ -481,7 +480,7 @@ class Route < ApplicationRecord
   end
 
   def changed?
-    @stops_updated || super || stops.any?(&:changed?)
+    !id || @stops_updated || super || stops.loaded? && stops.any?(&:changed?)
   end
 
   def set_send_to(name)
@@ -542,7 +541,7 @@ class Route < ApplicationRecord
   end
 
   def to_geojson(respect_hidden = true, polyline = true)
-    self.class.routes_to_geojson([self], false, true, polyline)
+    self.class.routes_to_geojson([self], false, respect_hidden, polyline)
   end
 
   # Add route_id to geojson after create
@@ -593,16 +592,17 @@ class Route < ApplicationRecord
     @stops_updated = true
   end
 
+  # When route is created, rest is already set in init_stops
   def update_vehicle_usage
     if vehicle_usage_id_changed?
       if vehicle_usage.default_rest_duration.nil?
         stops.select{ |stop| stop.is_a?(StopRest) }.each{ |stop|
           remove_stop(stop)
         }
-      elsif !stops.any?{ |stop| stop.is_a?(StopRest) }
+      elsif stops.none?{ |stop| stop.is_a?(StopRest) }
         add_rest
       end
-      self.outdated = true if id || outdated.nil?
+      self.outdated = true if outdated.nil?
       self.optimized_at = self.last_sent_to = self.last_sent_at = nil
     end
   end

@@ -369,14 +369,13 @@ class Planning < ApplicationRecord
     Route.transaction do
       stops_count = routes.collect{ |r| r.stops.size }.reduce(&:+)
       flat_stop_ids = stop_ids.flatten.compact
-      inactive_stop_ids = Array.new
+      inactive_stop_ids = []
 
       routes.map do |route|
         inactive_stop_ids += route.stops.reject(&:active).map(&:id)
       end
 
       routes.each_with_index{ |route, index|
-
         stops_ = route.stops_segregate(active_only) # Split stops according to stop active statement
 
         # Get ordered stops in current route
@@ -612,9 +611,7 @@ class Planning < ApplicationRecord
 
       # Get free visits if not the first initial split on planning building
       if !visits_free
-        visits_free = routes.select{ |route|
-          !route.locked
-        }.collect(&:stops).flatten.select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
+        visits_free = routes.reject(&:locked).flat_map(&:stops).select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
 
         routes.each{ |route|
           route.locked || route.set_visits([])
