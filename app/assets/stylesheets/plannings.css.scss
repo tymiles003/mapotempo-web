@@ -56,6 +56,10 @@ $sidebar-margins: 10px;
 
 [data-controller='plannings'], [data-controller='api_web_v01_plannings'] {
 
+  .leaflet-popup {
+    margin-top: 10px;
+  }
+
   .stop-popup {
     .route-select {
       cursor: pointer;
