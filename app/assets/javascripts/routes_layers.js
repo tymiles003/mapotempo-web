@@ -230,10 +230,10 @@ var RoutesLayer = L.FeatureGroup.extend({
       if (currentZoom > 15) {
         var markers = cluster.getAllChildMarkers();
         var n = ['…'];
-        if (markers[0].properties.number && markers[1].properties.number) {
-          n = [markers[0].properties.number, markers[1].properties.number];
-        } else if (markers[0].properties.number && markers.length > 2) {
+        if (markers[0].properties.number && markers.length > 2) {
           n = [markers[0].properties.number, '…'];
+        } else if (markers[0].properties.number && markers[1].properties.number) {
+          n = [markers[0].properties.number, markers[1].properties.number];
         }
         var color;
         if (markers.length > 50) {
@@ -578,6 +578,11 @@ var RoutesLayer = L.FeatureGroup.extend({
         var marker = L.marker(new L.LatLng(latlng.lat, latlng.lng), {
           icon: icon
         });
+
+        if (geoJsonPoint.properties.number) {
+          marker.setZIndexOffset(500);
+        }
+
         marker.properties = geoJsonPoint.properties;
         // Add route color to each marker
         marker.properties.route_color = colorsByRoute[geoJsonPoint.properties.route_id];
