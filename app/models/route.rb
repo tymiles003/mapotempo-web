@@ -61,13 +61,13 @@ class Route < ApplicationRecord
     })
   end
 
-  def init_stops(ignore_errors = false)
+  def init_stops(compute = true, ignore_errors = false)
     stops.clear
     if vehicle_usage && vehicle_usage.default_rest_duration
       stops.build(type: StopRest.name, active: true, index: 1)
     end
 
-    compute!(ignore_errors: ignore_errors)
+    compute!(ignore_errors: ignore_errors) if compute
   end
 
   def default_stops
@@ -140,7 +140,7 @@ class Route < ApplicationRecord
       begin
         router_options = vehicle_usage.vehicle.default_router_options.symbolize_keys.merge(speed_multiplicator_areas: Zoning.speed_multiplicator_areas(planning.zonings))
 
-        ts = router.trace_batch(speed_multiplicator, segments.select{ |segment| !segment.nil? }, router_dimension, router_options)
+        ts = router.trace_batch(speed_multiplicator, segments.reject(&:nil?), router_dimension, router_options)
         traces = segments.collect{ |segment|
           if segment.nil?
             [nil, nil, nil]
@@ -160,7 +160,7 @@ class Route < ApplicationRecord
       stops_sort.each{ |stop|
         if stop.active && (stop.position? || (stop.is_a?(StopRest) && ((stop.open1 && stop.close1) || (stop.open2 && stop.close2)) && stop.duration))
           stop.distance, stop.drive_time, trace = traces.shift
-          stop.no_path = (!traces[0].nil? && (!vehicle_usage.default_store_start || !vehicle_usage.default_store_start.position?)) ? false : trace.nil?
+          stop.no_path = (traces[0].nil? || vehicle_usage.default_store_start.try(:position?)) && trace.nil?
           self.stop_no_path |= stop.no_path # Settled to true once
 
           if trace
@@ -199,18 +199,18 @@ class Route < ApplicationRecord
             end
             stop.out_of_window = !!(late_wait && late_wait > 0)
 
-            if stop.distance
-              self.distance += stop.distance
-            end
+            self.distance += stop.distance if stop.distance
             self.end = stop.time + stop.duration
 
-            if stop.is_a?(StopVisit)
+            if vehicle_usage.vehicle.default_capacities? && stop.visit.try(:default_quantities?)
               stop.route.planning.customer.deliverable_units.each{ |du|
                 quantities_[du.id] = ((quantities_[du.id] || 0) + (stop.visit.default_quantities[du.id] || 0)).round(3)
               }
               stop.out_of_capacity = stop.route.planning.customer.deliverable_units.any?{ |du|
                 vehicle_usage.vehicle.default_capacities[du.id] && quantities_[du.id] > vehicle_usage.vehicle.default_capacities[du.id]
               }
+            else
+              stop.out_of_capacity = false
             end
 
             stop.out_of_drive_time = stop.time > vehicle_usage.default_close
@@ -308,10 +308,8 @@ class Route < ApplicationRecord
 
   def set_visits(visits, recompute = true, ignore_errors = false)
     Stop.transaction do
-      stops.select{ |stop| stop.is_a?(StopVisit) }.each{ |stop|
-        remove_stop(stop)
-      }
-      add_visits(visits, recompute, ignore_errors)
+      init_stops false
+      add_visits visits, recompute, ignore_errors
     end
   end
 
@@ -367,10 +365,8 @@ class Route < ApplicationRecord
   end
 
   def remove_stop(stop)
-    if vehicle_usage
-      shift_index(stop.index + 1, -1)
-      self.outdated = true
-    end
+    shift_index(stop.index + 1, -1)
+    self.outdated = true
     stops.destroy(stop)
   end
 
@@ -392,8 +388,8 @@ class Route < ApplicationRecord
 
   def move_stop_out(stop, force = false)
     if force || stop.is_a?(StopVisit)
+      shift_index(stop.index + 1, -1)
       if vehicle_usage
-        shift_index(stop.index + 1, -1)
         self.optimized_at = self.last_sent_to = self.last_sent_at = nil
       end
       stop.route.stops.destroy(stop)

@@ -104,7 +104,7 @@ class Planning < ApplicationRecord
   def vehicle_usage_add(vehicle_usage, ignore_errors = false)
     route = routes.build(vehicle_usage: vehicle_usage, outdated: false)
     vehicle_usage.routes << route if !vehicle_usage.id
-    route.init_stops(ignore_errors)
+    route.init_stops(true, ignore_errors)
   end
 
   def vehicle_usage_remove(vehicle_usage)
@@ -611,7 +611,7 @@ class Planning < ApplicationRecord
 
       # Get free visits if not the first initial split on planning building
       if !visits_free
-        visits_free = routes.reject(&:locked).flat_map(&:stops).select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
+        visits_free = routes.includes_destinations.reject(&:locked).flat_map(&:stops).select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
 
         routes.each{ |route|
           route.locked || route.set_visits([])

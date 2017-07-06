@@ -29,7 +29,7 @@ class Stop < ApplicationRecord
 
   validates :route, presence: true
 
-  before_save :outdated
+  before_update :outdated
 
   amoeba do
     enable

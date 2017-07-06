@@ -68,7 +68,8 @@ class RouteTest < ActiveSupport::TestCase
   test 'should set visits' do
     route = routes(:route_one_one)
     route.stops.clear
-    assert_difference('Stop.count', 1) do
+    assert_difference('Stop.count', 2) do
+      # Set one visit in addition of the rest automatically added
       route.set_visits([[visits(:visit_two), true]])
       route.save!
     end
