@@ -63,4 +63,24 @@ class RoutesControllerTest < ActionController::TestCase
     patch :update, id: @route, route: { hidden: @route.hidden, locked: @route.locked, ref: 'ref8' }
     assert_redirected_to route_path(assigns(:route))
   end
+
+  test 'should update route without loading stops' do
+    begin
+      Stop.class_eval do
+        after_initialize :after_init
+
+        def after_init
+          raise
+        end
+      end
+
+      patch :update, id: @route, route: { hidden: @route.hidden, locked: @route.locked, ref: 'ref8' }
+      assert_response 302
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
+  end
 end

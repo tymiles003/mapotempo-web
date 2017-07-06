@@ -18,7 +18,7 @@
 class Stop < ApplicationRecord
   default_scope { order(:index) }
 
-  belongs_to :route
+  belongs_to :route, touch: true
   belongs_to :visit
 
   nilify_blanks

@@ -476,7 +476,7 @@ class Route < ApplicationRecord
   end
 
   def changed?
-    !id || @stops_updated || super || stops.loaded? && stops.any?(&:changed?)
+    @stops_updated || super
   end
 
   def set_send_to(name)

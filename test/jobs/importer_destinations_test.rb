@@ -448,4 +448,23 @@ class ImporterDestinationsTest < ActionController::TestCase
     end
   end
 
+  test 'should import then add geojson and quantities to route' do
+    assert ImportCsv.new(importer: ImporterDestinations.new(@customer), replace: false, file: tempfile('test/fixtures/files/import_destinations_one.csv', 'text.csv')).import
+
+    routes = Planning.last.routes
+    routes.each do |route|
+      route.geojson_points.each do |line_string|
+        decoded_line_string = JSON.parse(line_string)
+        assert_not_nil decoded_line_string['properties']['route_id']
+      end
+
+      route.geojson_tracks.each do |point|
+        decoded_point = JSON.parse(point)
+        assert_not_nil decoded_point['properties']['route_id']
+      end if route.geojson_tracks
+
+      assert_not route.quantities.to_s.blank?
+    end
+  end
+
 end

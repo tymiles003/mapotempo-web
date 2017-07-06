@@ -72,6 +72,63 @@ class PlanningTest < ActiveSupport::TestCase
     assert_equal 2, planning_or_tags.visits_compatibles.count
   end
 
+  test 'should not loading stops after save import' do
+    # Without zonings
+    planning = customers(:customer_one).plannings.build(name: 'plop', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one))
+    planning.default_routes
+    planning.compute
+    Planning.import([planning], recursive: true, validate: false)
+
+    begin
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise
+        end
+      end
+
+      t, z = planning.tags, planning.zonings
+      planning.reload
+      planning.tags, planning.zonings = t, z
+      planning.routes.each { |route| route.complete_geojson }
+      planning.save!
+
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
+
+    # With zonings
+    planning = customers(:customer_one).plannings.build(name: 'plop with zoning', vehicle_usage_set: vehicle_usage_sets(:vehicle_usage_set_one), zonings: [zonings(:zoning_one)])
+    planning.default_routes
+    planning.compute
+    Planning.import([planning], recursive: true, validate: false)
+
+    begin
+      Stop.class_eval do
+        after_initialize :after_init
+        def after_init
+          raise
+        end
+      end
+
+      # TODO : correct me, prevent loading stops in split_by_zones/need_fetch_stop_status
+      t, z = planning.tags, planning.zonings
+      planning.reload
+      planning.tags, planning.zonings = t, z
+      planning.routes.each { |route| route.complete_geojson }
+      planning.save!
+
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
+  end
+
   test 'should dup' do
     planning = plannings(:planning_one)
     planning_dup = planning.duplicate

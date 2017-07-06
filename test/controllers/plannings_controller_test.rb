@@ -157,7 +157,7 @@ class PlanningsControllerTest < ActionController::TestCase
     assert_equal 3, JSON.parse(response.body)['routes'].size
   end
 
-  test 'should show planning without stops' do
+  test 'should show planning without loading stops' do
     begin
       Stop.class_eval do
         after_initialize :after_init
