@@ -44,9 +44,19 @@ var popupModule = (function() {
         route_id: marker.properties.route_id,
         index: marker.properties.index
       }, function(content) {
-        marker.getPopup().setContent(SMT['stops/show']($.extend(content, {
+
+        // Base options
+        var options = {
           number: marker.properties.number
-        })));
+        };
+
+        // Add tomtom options for status tracking
+        if (marker.properties.tomtom) {
+          $.extend(options, { tomtom: marker.properties.tomtom });
+        }
+
+        // Fill template with new options
+        marker.getPopup().setContent(SMT['stops/show']($.extend(content, options)));
         return marker.getPopup()._container;
       });
       // Wait for ajax request

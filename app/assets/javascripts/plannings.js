@@ -363,12 +363,27 @@ var plannings_edit = function(params) {
     };
 
     if (data) {
+      var routeL, routeStops, currentStop, $item;
+
       data.forEach(function(route) {
         if (route.vehicle_usage_id) {
           route.stops.forEach(function(stop) {
+            var sort = function(element) {
+              return (element.properties.index == stop.index) ? element : void(0);
+            };
+
+            routeL = routesLayer.clustersByRoute[route.id];
+            if (routeL) {
+              routeStops = routeL.getLayers();
+              currentStop = routeStops.find(sort);
+
+              if (currentStop) {
+                currentStop.properties.tomtom = stop;
+              }
+            }
             $.each($("[data-stop_id='" + stop.id + "']"), function(i, item) {
               // update list, active popup in map and active popover
-              var $item = $(item);
+              $item = $(item);
               updateStopStatusContent($item, stop);
             });
           });
