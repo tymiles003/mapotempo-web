@@ -766,8 +766,6 @@ var plannings_edit = function(params) {
   var templateResultVehicles = function(state) {
     if (state.id) {
       return $("<span><span class='color_small' style='background:" + vehicles_usages_map[state.id].color + "'></span>&nbsp;</span>").append($("<span/>").text(vehicles_usages_map[state.id].name));
-    } else {
-      console.log(state);
     }
   };
 

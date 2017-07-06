@@ -247,16 +247,15 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     return false;
   } else {
     iteration = null;
-    $('body').removeClass('ajax_waiting');
     if (dialog.is(':visible')) {
       dialog.modal('hide');
       $(".progress-bar", dialog).css({
         transition: 'linear 0s',
         width: '0%'
       });
-      $('body').removeClass('ajax_waiting');
-      successCallback && successCallback();
     }
+    $('body').removeClass('ajax_waiting');
+    successCallback && successCallback();
 
     return true;
   }
