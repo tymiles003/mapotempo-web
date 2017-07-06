@@ -412,7 +412,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   },
 
   showAllRoutes: function(callback) {
-    this.clearLayers();
+    this.hideAllRoutes();
     this._loadAll(callback);
   },
 
