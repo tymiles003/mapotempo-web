@@ -349,7 +349,8 @@ var RoutesLayer = L.FeatureGroup.extend({
         if (e.layer instanceof L.Marker) {
           if (e.layer.properties.stop_id) {
             this.fire('clickStop', {
-              stopId: e.layer.properties.stop_id
+              index: e.layer.properties.index,
+              routeId: e.layer.properties.route_id
             });
           }
           if (e.layer.click) {

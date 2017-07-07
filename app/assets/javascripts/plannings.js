@@ -471,8 +471,8 @@ var plannings_edit = function(params) {
     outOfRouteId: outOfRouteId,
     allRoutesWithVehicle: allRoutesWithVehicle,
     appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/'
-  }).on('clickStop', function(e) {
-    enlighten_stop(e.stopId);
+  }).on('clickStop', function(stop) {
+    enlighten_stop(stop.index, stop.routeId);
   }).addTo(map);
 
   if (vehicleLayer) map.addLayer(vehicleLayer);
@@ -555,16 +555,17 @@ var plannings_edit = function(params) {
   });
 
   // Used to highlight the current stop in sidebar routes
-  var enlighten_stop = function(stop_id) {
-    var e = $(".routes [data-stop_id='" + stop_id + "']");
-    e.css("background", "orange");
+  var enlighten_stop = function(index, routeId) {
+    var target = $(".routes [data-route_id='" + routeId + "'] [data-stop_index='" + index + "']");
+
+    target.css("background", "orange");
     setTimeout(function() {
-      e.css("background", "");
+      target.css("background", "");
     }, 1500);
 
-    if (e.offset().top < 0 || e.offset().top > $(".sidebar-content").height()) {
+    if (target.offset().top < 0 || target.offset().top > $(".sidebar-content").height()) {
       $(".sidebar-content").animate({
-        scrollTop: e.offset().top + $(".sidebar-content").scrollTop() - 100
+        scrollTop: target.offset().top + $(".sidebar-content").scrollTop() - 100
       });
     }
   };
