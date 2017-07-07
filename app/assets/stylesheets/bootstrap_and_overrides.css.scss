@@ -274,16 +274,16 @@ html.turbolinks-progress-bar::before {
 }
 
 .fa-stack {
-  width: 20px;
-  height: 20px;
+  width: inherit;
+  height: inherit;
 }
 
-.point-icon {
-  font-size: 18px;
-}
+//.point-icon {
+//  font-size: 18px;
+//}
 
 .point-icon-text {
-  font-size: 10px;
+  font-size: 13px;
   color: white;
   width: 18px;
   font-weight: 600;

@@ -18,7 +18,7 @@
 class TagsController < ApplicationController
   load_and_authorize_resource
   before_action :set_tag, only: [:edit, :update, :destroy]
-  before_action :icons_table, only: [:new, :edit]
+  before_action :icons_table, only: [:new, :edit, :update]
 
   def index
     @tags = current_user.customer.tags
