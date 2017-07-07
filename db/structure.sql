@@ -134,7 +134,7 @@ CREATE TABLE delayed_jobs (
     queue character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    progress character varying(255) DEFAULT '0'::character varying NOT NULL
+    progress character varying(255)
 );
 
 
