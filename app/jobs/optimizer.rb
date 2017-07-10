@@ -43,22 +43,22 @@ class Optimizer
         planning.customer.job_optimizer.save!
       end
     else
-      routes = route ? [route] : planning.routes.includes_destinations.select {|r|
-        (!global && r.vehicle_usage && r.size_active >= 1) || (global)
+      routes = planning.routes.select { |r|
+        (route && r.id == route.id) || (!route && !global && r.vehicle_usage && r.size_active > 1) || (!route && global)
       }.reject(&:locked)
       optimum = unless routes.select(&:vehicle_usage).empty?
-                  planning.optimize(routes, global, active_only) do |positions, services, vehicles|
-                    Mapotempo::Application.config.optimize.optimize(
-                        positions, services, vehicles,
-                        optimize_time: @@optimize_time_force || (optimize_time ? optimize_time * 1000 : nil),
-                        stop_soft_upper_bound: planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound,
-                        vehicle_soft_upper_bound: planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound,
-                        cluster_threshold: planning.customer.optimization_cluster_size || @@optimization_cluster_size,
-                        cost_waiting_time: planning.customer.cost_waiting_time || @@cost_waiting_time,
-                        force_start: planning.customer.optimization_force_start.nil? ? @@force_start : planning.customer.optimization_force_start
-                    )
-                  end
-                end
+        planning.optimize(routes, global, active_only) do |positions, services, vehicles|
+          Mapotempo::Application.config.optimize.optimize(
+            positions, services, vehicles,
+            optimize_time: @@optimize_time_force || (optimize_time ? optimize_time * 1000 : nil),
+            stop_soft_upper_bound: planning.customer.optimization_stop_soft_upper_bound || @@stop_soft_upper_bound,
+            vehicle_soft_upper_bound: planning.customer.optimization_vehicle_soft_upper_bound || @@vehicle_soft_upper_bound,
+            cluster_threshold: planning.customer.optimization_cluster_size || @@optimization_cluster_size,
+            cost_waiting_time: planning.customer.cost_waiting_time || @@cost_waiting_time,
+            force_start: planning.customer.optimization_force_start.nil? ? @@force_start : planning.customer.optimization_force_start
+          )
+        end
+      end
 
       if optimum
         planning.set_stops(routes, optimum, active_only)
