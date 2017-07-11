@@ -78,10 +78,6 @@ class StopVisit < Stop
     nil
   end
 
-  def default_color
-    visit.color || route.default_color
-  end
-
   def to_s
     "#{active ? 'x' : '_'} #{visit.destination.name}"
   end

@@ -18,6 +18,7 @@
   {{^vehicle_name}}{{#i18n}}plannings.edit.out_of_route{{/i18n}}{{/vehicle_name}}
   {{#planning_id}}
   {{^store}}
+  {{^rest}}
   {{#manage_organize}}
   <span class="caret"></span>
   </span>
@@ -38,12 +39,14 @@
     {{/automatic_insert}}
   </div>
   {{/manage_organize}}
+  {{/rest}}
   {{/store}}
   {{/planning_id}}
 </div>
 <hr>
 {{/route_id}}
 <div>
+{{^rest}}
   <div class="btn-group pull-right stop-tools">
     {{#store}}{{#manage_store}}
     <a href="/stores/{{id}}/edit?back=true" class="marker_edit btn btn-inverse btn-xs" title="{{#i18n}}plannings.edit.edit_visit_help{{/i18n}}"><i class="fa fa-pencil"></i></a>
@@ -63,6 +66,7 @@
       </ul>
     {{/isoline}}
   </div>
+{{/rest}}
   {{^store}}{{#color}}<span class="number label label-default" style="background-color: {{color}};">{{#number}}{{number}}{{/number}}{{^number}}-{{/number}}</span>{{/color}}{{/store}}
   {{#manage_organize}}{{#vehicle_name}}{{^store}}<input type="checkbox" class="stop_active"{{#active}} checked="checked"{{/active}} title="{{#i18n}}plannings.edit.active_help{{/i18n}}"/>{{/store}}{{/vehicle_name}}{{/manage_organize}}
   <b>{{#ref}}{{^visits}}{{ref}} {{/visits}}{{/ref}}{{name}}</b><br/>

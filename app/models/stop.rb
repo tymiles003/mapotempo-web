@@ -46,6 +46,18 @@ class Stop < ApplicationRecord
     }
   end
 
+  def number(inactive_stop)
+    if self.active && self.route.vehicle_usage
+      self.index - inactive_stop
+    else
+      nil
+    end
+  end
+
+  def default_color
+    (self.visit && visit.color) || route.default_color
+  end
+
   private
 
   def eval_open_close(open, close, time)
