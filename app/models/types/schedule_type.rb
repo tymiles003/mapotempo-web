@@ -5,8 +5,8 @@ class ScheduleType < ActiveRecord::Type::Integer
     elsif value.kind_of?(String)
       raise ArgumentError.new(I18n.t('schedule_type.invalid')) if value !~ /\A[0-9: ]*\Z/
 
-      return nil if value.empty?
-      value = value + ':00' if value =~ /\A\d+:\d+\Z/
+      return nil if value.strip.empty?
+      value += ':00' if value =~ /\A\d+:\d+\Z/
       ChronicDuration.parse(value, keep_zero: true)
     elsif value.kind_of?(Float) || value.kind_of?(ActiveSupport::Duration)
       value.to_i
