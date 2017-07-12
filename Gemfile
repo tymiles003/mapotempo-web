@@ -31,14 +31,19 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
 
-  # Guard with plugins
-  gem 'guard'
-  gem 'guard-rails'
-  gem 'guard-migrate'
-  gem 'guard-rake'
-  gem 'guard-delayed'
-  gem 'guard-process'
-  gem 'libnotify'
+  if respond_to?(:install_if)
+    # Install only for ruby >=2.2
+    install_if lambda { Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.2') } do
+      # Guard with plugins
+      gem 'guard'
+      gem 'guard-rails'
+      gem 'guard-migrate'
+      gem 'guard-rake'
+      gem 'guard-delayed'
+      gem 'guard-process'
+      gem 'libnotify'
+    end
+  end
 end
 
 group :development, :test do
