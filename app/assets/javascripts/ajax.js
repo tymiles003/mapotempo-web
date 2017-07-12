@@ -63,10 +63,15 @@ var mustache_i18n = function() {
   };
 };
 
+var progressDialogFrozen = false;
 var freezeProgressDialog = function(dialog) {
-  dialog.find('[data-dismiss]').hide();
-  dialog.off('hidden.bs.modal'); // important to avoid canceling old jobs
-  dialog.off('keyup');
+  if (!progressDialogFrozen) {
+    dialog.find('[data-dismiss]').hide();
+    dialog.off('hidden.bs.modal'); // important to avoid canceling old jobs
+    dialog.off('keyup');
+    beforeSendWaiting();
+    progressDialogFrozen = true;
+  }
 };
 
 var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
@@ -105,6 +110,8 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
       dialog.find('.btn-primary')[0].click();
     }
   });
+  completeWaiting();
+  progressDialogFrozen = false;
 };
 
 var iteration = undefined;
@@ -199,7 +206,6 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     }
 
     if (delayedJob.attempts > 0 && delayedJob.progress === 'no_solution') {
-      $('body').removeClass('ajax_waiting');
       errorCallback && errorCallback();
       isProgressing = true;
       $(".dialog-no-solution", dialog).show();
@@ -218,7 +224,6 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     }
 
     if (delayedJob.error) {
-      $('body').removeClass('ajax_waiting');
       errorCallback && errorCallback();
       isProgressing = true;
       $(".dialog-progress", dialog).hide();
@@ -246,15 +251,17 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
 
     return false;
   } else {
+    // Called when job has ended or when delayedjob is not active
     iteration = null;
+    progressDialogFrozen = false;
     if (dialog.is(':visible')) {
       dialog.modal('hide');
       $(".progress-bar", dialog).css({
         transition: 'linear 0s',
         width: '0%'
       });
+      completeWaiting(); // In case of success with delayedjob unfreezeProgressDialog is never called
     }
-    $('body').removeClass('ajax_waiting');
     successCallback && successCallback();
 
     return true;

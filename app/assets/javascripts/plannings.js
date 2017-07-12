@@ -1096,11 +1096,6 @@ var plannings_edit = function(params) {
   var displayPlanning = function(data, options) {
 
     if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options && options.error, options && options.success)) {
-      if (data.optimizer.error === true) {
-        $('body').removeClass('ajax_waiting');
-      } else {
-        $('body').addClass('ajax_waiting');
-      }
       return;
     }
 
