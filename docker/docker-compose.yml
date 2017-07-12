@@ -4,7 +4,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    image: mapotempo/mapotempo-web:latest
+    image: mapotempo/mapotempo-web:${MAPOTEMPO_VERSION:-latest}
     ports:
       - "8080:80" # HOST:CONTAINER, edit only HOST part
     volumes:
@@ -23,14 +23,14 @@ services:
     volumes:
       - ./postgres:/var/lib/postgresql/data
   redis-cache:
-    image: "redis:alpine"
+    image: redis:${REDIS_VERSION:-3.2-alpine}
     command: redis-server --save ""
 
   delayed-job:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    image: mapotempo/mapotempo-web:latest
+    image: mapotempo/mapotempo-web:${MAPOTEMPO_VERSION:-latest}
     ports: []
     volumes:
       - ./mapotempo.rb:/srv/app/config/initializers/mapotempo.rb
