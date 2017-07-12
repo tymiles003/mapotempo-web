@@ -950,11 +950,11 @@ var destinations_index = function(params, api) {
 
   var displayDestinations = function(data) {
 
-    function error_callback() {
+    var errorCallback = function() {
       stickyError(I18n.t('destinations.index.dialog.geocoding.error'));
     }
 
-    if (!progressDialog(data.geocoding, dialog_geocoding, '/destinations.json', checkForDisplayDestinations, error_callback)) {
+    if (!progressDialog(data.geocoding, dialog_geocoding, '/destinations.json', checkForDisplayDestinations, {error: errorCallback})) {
       return;
     }
 

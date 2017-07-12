@@ -3,6 +3,10 @@ if @planning.customer.job_optimizer
     json.extract! @planning.customer.job_optimizer, :id, :progress, :attempts
     json.error !!@planning.customer.job_optimizer.failed_at
     json.customer_id @planning.customer.id
+    json.dispatch_params_delayed_job do
+      json.with_stops @with_stops
+      json.route_ids @routes.map(&:id).join(',') if @routes
+    end
   end
 else
   json.prefered_unit current_user.prefered_unit

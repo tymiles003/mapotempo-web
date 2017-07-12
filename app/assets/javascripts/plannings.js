@@ -692,9 +692,9 @@ var plannings_edit = function(params) {
       type: 'GET',
       url: '/plannings/' + planning_id + '/optimize.json',
       data: {
+        with_stops: withStopsInSidePanel,
         global: $(this).data('opti-global'),
-        active_only: $(this).data('active-only'),
-        with_stops: withStopsInSidePanel
+        active_only: $(this).data('active-only')
       },
       beforeSend: beforeSendWaiting,
       success: function(data) {
@@ -964,17 +964,20 @@ var plannings_edit = function(params) {
           $(this).blur();
           return false;
         })
-        .on("click", ".optimize", function() {
+        .on('click', '.optimize', function() {
           initOptimizerDialog();
           if (!confirm(I18n.t('plannings.edit.optimize_confirm')))
             return;
 
-          var id = $(this).closest("[data-route_id]").attr("data-route_id");
+          var id = $(this).closest('[data-route_id]').attr('data-route_id');
           // Call optimize_route
           $.ajax({
             type: 'GET',
             url: '/plannings/' + planning_id + '/' + id + '/optimize.json',
-            data: { 'active_only': $(this).data('active-only') },
+            data: {
+              with_stops: true,
+              active_only: $(this).data('active-only')
+            },
             beforeSend: beforeSendWaiting,
             success: function(data) {
               updatePlanning(data, {
@@ -1095,7 +1098,7 @@ var plannings_edit = function(params) {
   // Depending 'options.partial' this function is called for initilization or for pieces of planning
   var displayPlanning = function(data, options) {
 
-    if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options && options.error, options && options.success)) {
+    if (!progressDialog(data.optimizer, dialog_optimizer, '/plannings/' + planning_id + '.json', displayPlanning, options)) {
       return;
     }
 

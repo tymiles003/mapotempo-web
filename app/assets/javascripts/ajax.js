@@ -116,10 +116,11 @@ var unfreezeProgressDialog = function(dialog, delayedJob, url, callback) {
 
 var iteration = undefined;
 var isProgressing = false;
-var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, successCallback) {
+var progressDialog = function(delayedJob, dialog, url, callback, options) {
   if (delayedJob !== undefined) {
     var timeout = 2000;
     var duration;
+    if (delayedJob.dispatch_params_delayed_job) url += '?' + $.param(delayedJob.dispatch_params_delayed_job);
 
     dialog.modal(modal_options());
     freezeProgressDialog(dialog);
@@ -206,7 +207,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     }
 
     if (delayedJob.attempts > 0 && delayedJob.progress === 'no_solution') {
-      errorCallback && errorCallback();
+      options && options.error && options.error();
       isProgressing = true;
       $(".dialog-no-solution", dialog).show();
       $(".dialog-progress", dialog).hide();
@@ -224,7 +225,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
     }
 
     if (delayedJob.error) {
-      errorCallback && errorCallback();
+      options && options.error && options.error();
       isProgressing = true;
       $(".dialog-progress", dialog).hide();
       $(".dialog-error", dialog).show();
@@ -234,10 +235,8 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
         $.ajax({
           url: url,
           success: function(data) {
-            callback(data, {
-              error: errorCallback,
-              success: successCallback
-            });
+            data.dispatch_params_delayed_job = delayedJob.dispatch_params_delayed_job;
+            callback(data, options);
           },
           error: ajaxError
         });
@@ -262,7 +261,7 @@ var progressDialog = function(delayedJob, dialog, url, callback, errorCallback, 
       });
       completeWaiting(); // In case of success with delayedjob unfreezeProgressDialog is never called
     }
-    successCallback && successCallback();
+    options && options.success && options.success();
 
     return true;
   }
