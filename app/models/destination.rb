@@ -93,9 +93,7 @@ class Destination < Location
             elsif planning.tags.to_a & (tags.to_a | visit.tags.to_a) != planning.tags.to_a
               planning.visit_remove(visit)
             end
-          elsif planning.tag_operation == 'or' && (planning.tags.to_a & (tags.to_a | visit.tags.to_a)).present?
-            planning.visit_add(visit)
-          elsif planning.tag_operation == 'and' && (planning.tags.to_a & (tags.to_a | visit.tags.to_a)) == planning.tags.to_a
+          elsif planning.tags_compatible?(tags.to_a | visit.tags.to_a)
             planning.visit_add(visit)
           end
         end

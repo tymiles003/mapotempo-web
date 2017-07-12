@@ -3,8 +3,8 @@ require 'test_helper'
 class ImporterDestinationsTest < ActionController::TestCase
   setup do
     @customer = customers(:customer_one)
-    @visit_tag1_count = @customer.visits.select{ |v| v.tags == [tags(:tag_one)] }.size
-    @plan_tag1_count = @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size
+    @visit_tag1_count = @customer.visits.select{ |v| v.tags.include? tags(:tag_one) }.size
+    @plan_tag1_count = @customer.plannings.select{ |p| p.tags_compatible? [tags(:tag_one)] }.size
   end
 
   def around

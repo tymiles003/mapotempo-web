@@ -74,11 +74,7 @@ class Planning < ApplicationRecord
     if routes_visits.size <= routes.size - 1
       visits = routes_visits.values.flat_map{ |s| s[:visits] }.collect{ |visit_active| visit_active[0] }
       routes.find{ |r| !r.vehicle_usage }.set_visits((customer.visits - visits).select{ |visit|
-        if self.tag_operation == 'or'
-          ((visit.tags.to_a | visit.destination.tags.to_a) & tags.to_a).present?
-        else
-          ((visit.tags.to_a | visit.destination.tags.to_a) & tags.to_a).size == tags.size
-        end
+        tags_compatible?(visit.tags.to_a | visit.destination.tags.to_a)
       })
 
       index_routes = (1..routes.size).to_a
@@ -89,11 +85,7 @@ class Planning < ApplicationRecord
         i = routes.index{ |rr| r[:ref_vehicle] && rr.vehicle_usage && rr.vehicle_usage.vehicle.ref == r[:ref_vehicle] } || index_routes.shift
         routes[i].ref = ref
         routes[i].set_visits(r[:visits].select{ |visit|
-          if self.tag_operation == 'or'
-            ((visit[0].tags.to_a | visit[0].destination.tags.to_a) & tags.to_a).present?
-          else
-            ((visit[0].tags.to_a | visit[0].destination.tags.to_a) & tags.to_a).size == tags.size
-          end
+          tags_compatible?(visit[0].tags.to_a | visit[0].destination.tags.to_a)
         }, recompute, ignore_errors)
       }
     else
@@ -265,6 +257,14 @@ class Planning < ApplicationRecord
     routes.inject(false){ |acc, route|
       acc || route.outdated
     }
+  end
+
+  def tags_compatible?(tags_)
+    if self.tag_operation == 'or'
+      (tags_.to_a & tags.to_a).present?
+    else
+      (tags_.to_a & tags.to_a).size == tags.size
+    end
   end
 
   def visits_compatibles

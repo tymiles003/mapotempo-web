@@ -184,9 +184,7 @@ class Visit < ApplicationRecord
               planning.visit_remove(self)
             end
           end
-        elsif planning.tag_operation == 'or' && (planning.tags.to_a & (tags.to_a | destination.tags.to_a)).present?
-          planning.visit_add(self)
-        elsif planning.tag_operation == 'and' && (planning.tags.to_a & (tags.to_a | destination.tags.to_a)) == planning.tags.to_a
+        elsif planning.tags_compatible?(tags.to_a | destination.tags.to_a)
           planning.visit_add(self)
         end
       end

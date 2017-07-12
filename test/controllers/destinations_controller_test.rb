@@ -266,7 +266,7 @@ class DestinationsControllerTest < ActionController::TestCase
     file.original_filename = 'import_destinations_one.csv'
 
     destinations_count = @destination.customer.destinations.count
-    plannings_count = @destination.customer.plannings.select{ |planning| planning.tags == [tags(:tag_one)] }.count
+    plannings_count = @destination.customer.plannings.select{ |planning| planning.tags_compatible? [tags(:tag_one)] }.count
     import_count = 1
     import_rest_count = @destination.customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.rest_duration && v.rest_start && v.rest_stop }.size
 

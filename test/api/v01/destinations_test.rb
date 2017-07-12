@@ -97,8 +97,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
         assert_difference('Stop.count',
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+          @customer.plannings.select{ |p| p.tags_compatible?([tags(:tag_one), tags(:tag_two)]) }.size * 2 +
           2 + @customer.vehicle_usage_sets[1].vehicle_usages.select{ |v| v.default_rest_duration }.size) do
           put api(), {
             planning: {
@@ -246,8 +245,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
         assert_difference('Stop.count',
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+          @customer.plannings.select{ |p| p.tags_compatible?([tags(:tag_one), tags(:tag_two)]) }.size * 2 +
           2 + vehicle_usage_sets(:vehicle_usage_set_one).vehicle_usages.select{ |v| v.default_rest_duration }.size) do
           put api(), {
             planning: {
@@ -370,8 +368,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
         assert_difference('Stop.count',
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+          @customer.plannings.select{ |p| p.tags_compatible?([tags(:tag_one), tags(:tag_two)]) }.size * 2 +
           2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.default_rest_duration }.size) do
           put api(), {destinations: [{
             name: 'Nouveau client',
@@ -424,8 +421,8 @@ class V01::DestinationsTest < ActiveSupport::TestCase
   test 'should create bulk from json with visit ref' do
     assert_difference('Destination.count', 1) do
       assert_difference('Planning.count', 1) do
-        assert_difference('Stop.count', @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+        assert_difference('Stop.count',
+          @customer.plannings.select{ |p| p.tags_compatible?([tags(:tag_one), tags(:tag_two)]) }.size * 2 +
           2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.default_rest_duration }.size) do
           put api(), {destinations: [{
             name: 'Nouveau client',
@@ -557,8 +554,7 @@ class V01::DestinationsTest < ActiveSupport::TestCase
     assert_no_difference('Destination.count', 1) do
       assert_no_difference('Planning.count', 1) do
         assert_no_difference('Stop.count',
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_one)] }.size * 2 +
-          @customer.plannings.select{ |p| p.tags == [tags(:tag_two)] }.size * 2 +
+          @customer.plannings.select{ |p| p.tags_compatible?([tags(:tag_one), tags(:tag_two)]) }.size * 2 +
           2 + @customer.vehicle_usage_sets[0].vehicle_usages.select{ |v| v.active && v.default_rest_duration }.size) do
           put api(), {destinations: [{
             name: 'Nouveau client',

@@ -111,12 +111,9 @@ class StoresControllerTest < ActionController::TestCase
     })
     file.original_filename = 'import_stores_one.csv'
 
-    stores_count = @store.customer.stores.count
-    plannings_count = @store.customer.plannings.select{ |planning| planning.tags == [tags(:tag_one)] }.count
     import_count = 1
-    rest_count = 1
 
-    assert_difference('Store.count') do
+    assert_difference('Store.count', import_count) do
       post :upload_csv, import_csv: { replace: false, file: file }
     end
 
