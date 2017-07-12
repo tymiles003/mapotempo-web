@@ -276,11 +276,27 @@ class V01::PlanningsTest < V01::PlanningsBaseTest
     assert_equal order_array, planning.reload.order_array
   end
 
-  test 'Update Routes' do
-    planning = plannings :planning_one
-    route = routes :route_one_one
-    patch api("#{planning.id}/update_routes"), { route_ids: [route.id], selection: 'all', action: 'toggle' }
-    assert last_response.ok?
+  test 'should update routes' do
+    begin
+      Stop.class_eval do
+        after_initialize :after_init
+
+        def after_init
+          raise
+        end
+      end
+
+      planning = plannings :planning_one
+      route = routes :route_one_one
+      patch api("#{planning.id}/update_routes"), { route_ids: [route.id], selection: 'none', action: 'toggle' }
+      assert last_response.ok?
+      assert true, JSON.parse(last_response.body)[0]['hidden']
+    ensure
+      Stop.class_eval do
+        def after_init
+        end
+      end
+    end
   end
 
   test 'should apply zonings' do

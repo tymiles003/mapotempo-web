@@ -230,12 +230,11 @@ class V01::Plannings < Grape::API
       requires :route_ids, type: Array[Integer], documentation: { param_type: 'form' }, coerce_with: CoerceArrayInteger, desc: 'Ids separated by comma.'
       requires :selection, type: String, values: %w(all reverse none)
       requires :action, type: String, values: %w(toggle lock)
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     patch ':id/update_routes' do
       planning_id = ParseIdsRefs.read params[:id]
       planning = current_customer.plannings.where(planning_id).first!
-      routes = planning.routes.includes_stops.find params[:route_ids]
+      routes = planning.routes.find params[:route_ids]
       routes.each do |route|
         case params[:action].to_sym
         when :toggle
@@ -259,11 +258,7 @@ class V01::Plannings < Grape::API
         end
       end
 
-      if params[:geojson] && params[:geojson] != :false
-        present routes, with: V01::Entities::Route, geojson: params[:geojson]
-      else
-        present routes, with: V01::Entities::RouteProperties
-      end
+      present routes, with: V01::Entities::RouteProperties
     end
 
     desc 'Update stops status.',
@@ -273,7 +268,6 @@ class V01::Plannings < Grape::API
     params do
       requires :id, type: String, desc: ID_DESC
       optional :details, type: Boolean, desc: 'Output route details', default: false
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
     end
     patch ':id/update_stops_status' do
       id = ParseIdsRefs.read params[:id]
@@ -281,7 +275,7 @@ class V01::Plannings < Grape::API
       planning.fetch_stops_status
       planning.save!
       if params[:details]
-        present planning.routes.includes_stops, with: V01::Entities::RouteStatus, geojson: params[:geojson]
+        present planning.routes.includes_stops, with: V01::Entities::RouteStatus
       else
         status 204
       end
