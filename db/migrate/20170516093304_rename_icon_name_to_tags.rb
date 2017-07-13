@@ -12,7 +12,9 @@ class RenameIconNameToTags < ActiveRecord::Migration
           elsif tag.icon == 'user'
             tag.icon = 'fa-user'
           end
-          tag.save!(validate: false)
+          Tag.without_callback :update, :before, :update_outdated do
+            tag.save! validate: false
+          end
         end
       end
     end
@@ -33,7 +35,9 @@ class RenameIconNameToTags < ActiveRecord::Migration
           else
             tag.icon = nil
           end
-          tag.save!(validate: false)
+          Tag.without_callback :update, :before, :update_outdated do
+            tag.save! validate: false
+          end
         end
       end
     end

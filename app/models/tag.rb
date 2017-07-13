@@ -35,8 +35,8 @@ class Tag < ApplicationRecord
   validates :ref, uniqueness: { scope: :customer_id, case_sensitive: true }, allow_nil: true, allow_blank: true
   validates_format_of :color, with: /\A(|\#[A-Fa-f0-9]{6})\Z/, allow_nil: true
 
-  validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.tag.icon_unknown') }
-  validates :icon_size, inclusion: { in: Tag::ICON_SIZE, allow_blank: true, message: ->(*_) { I18n.t('activerecord.errors.models.tag.icon_size_invalid') } }
+  validates_inclusion_of :icon, in: FontAwesome::ICONS_TABLE, allow_nil: true, message: ->(*_) { I18n.t('activerecord.errors.models.tag.icon_unknown') }
+  validates :icon_size, inclusion: { in: Tag::ICON_SIZE, allow_nil: true, message: ->(*_) { I18n.t('activerecord.errors.models.tag.icon_size_invalid') } }
 
   include RefSanitizer
 
