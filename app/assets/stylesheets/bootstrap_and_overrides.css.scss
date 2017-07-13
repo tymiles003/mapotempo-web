@@ -149,6 +149,16 @@ label .popover {
   vertical-align: baseline; /* better for tags */
 }
 
+/* Bootstrap-select */
+.bootstrap-select {
+  button {
+    color: #555 !important;
+  }
+  .caret {
+    border-left-width: 4px !important; // conflict with ".input-group :first-child" and gem version 1.12.1
+  }
+}
+
 /* Move padding in a for easier click area */
 .accordion > .panel-heading {
   padding: 0px;
