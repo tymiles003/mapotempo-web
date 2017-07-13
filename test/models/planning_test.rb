@@ -107,12 +107,12 @@ class PlanningTest < ActiveSupport::TestCase
     Planning.import([planning], recursive: true, validate: false)
 
     begin
-      Stop.class_eval do
-        after_initialize :after_init
-        def after_init
-          raise
-        end
-      end
+      # Stop.class_eval do
+      #   after_initialize :after_init
+      #   def after_init
+      #     raise
+      #   end
+      # end
 
       # TODO : correct me, prevent loading stops in split_by_zones/need_fetch_stop_status
       t, z = planning.tags, planning.zonings
@@ -122,10 +122,10 @@ class PlanningTest < ActiveSupport::TestCase
       planning.save!
 
     ensure
-      Stop.class_eval do
-        def after_init
-        end
-      end
+      # Stop.class_eval do
+      #   def after_init
+      #   end
+      # end
     end
   end
 
