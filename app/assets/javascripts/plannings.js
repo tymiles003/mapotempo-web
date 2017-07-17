@@ -195,6 +195,18 @@ var plannings_form = function() {
 var plannings_new = function(params) {
   'use strict';
 
+  var onPlanningCreateModal = bootstrap_dialog({
+    title: I18n.t('plannings.new.title'),
+    icon: 'fa-calendar-check-o',
+    message: SMT['modals/default_with_progress']({
+      msg: I18n.t('plannings.new.dialog.new_planning')
+    })
+  });
+
+  $('#new_planning').off('submit').on('submit', function(event) {
+    onPlanningCreateModal.modal("show");
+  });
+
   plannings_form();
   $("#planning_zoning_ids").select2({
     theme: 'bootstrap'
