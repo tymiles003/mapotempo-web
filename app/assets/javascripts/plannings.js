@@ -387,7 +387,7 @@ var plannings_edit = function(params) {
             routeL = routesLayer.clustersByRoute[route.id];
             if (routeL) {
               routeStops = routeL.getLayers();
-              currentStop = routeStops.find(sort);
+              currentStop = $(routeStops).sort(sort);
 
               if (currentStop) {
                 currentStop.properties.tomtom = stop;

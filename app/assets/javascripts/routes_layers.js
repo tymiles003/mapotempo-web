@@ -352,7 +352,7 @@ var RoutesLayer = L.FeatureGroup.extend({
       .on('click', function(e) {
         // Open popup if only one is actually in a click statement.
         if (e.layer instanceof L.Marker) {
-          if (e.layer.properties.stop_id) {
+          if (e.layer.properties.index) {
             this.fire('clickStop', {
               index: e.layer.properties.index,
               routeId: e.layer.properties.route_id
