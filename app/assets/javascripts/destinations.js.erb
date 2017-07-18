@@ -761,8 +761,6 @@ var destinations_index = function(params, api) {
         markersLayers.removeLayer(markers[destination_id]);
         delete markers[destination_id];
       }
-      if ($('tr.highlight').length == 0)
-        row.addClass('highlight');
     }
   };
 
@@ -773,7 +771,7 @@ var destinations_index = function(params, api) {
     $("#count-visits").html(v);
   };
 
-  var count_inc = function() {
+  var countInc = function() {
     $("#count").html(parseInt($("#count").text()) + 1);
     $("#count-visits").html(parseInt($("#count-visits").text()) + 1);
   };
@@ -838,10 +836,9 @@ var destinations_index = function(params, api) {
     markersLayers.refreshClusters();
     localCluster = markers[id].__parent;
     if (move) {
-      map.setView(localCluster.getLatLng(), map.getZoom(), { animate: true, duration: 600 });
       if (localCluster && 'spiderfy' in localCluster) {
         markersLayers.zoomToShowLayer(markers[id], function() {
-          map.panTo(markers[id].getLatLng(), {});
+          map.setView(markers[id].getLatLng(), map.getZoom(), { animate: true, duration: 600 });
           callback(id);
           return true;
         });
@@ -891,12 +888,11 @@ var destinations_index = function(params, api) {
         url: '/api/0.1/destinations.json',
         beforeSend: beforeSendWaiting,
         success: function(data) {
+          $(".destinations").append(SMT['destinations/edit'](data));
           update(data.id, data, true);
           destination.i18n = mustache_i18n;
-          $(".destinations").append(SMT['destinations/edit'](data));
-          wire($('[data-destination_id=' + data.id + ']'));
           over(data.id, true);
-          count_inc();
+          countInc();
         },
         complete: completeWaiting,
         error: ajaxError
