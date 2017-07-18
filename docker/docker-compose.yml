@@ -42,3 +42,6 @@ services:
       - ./db.env
       - ./rails.env
     command: /bin/bash -c "chown www-data:www-data /srv/app/public/uploads && exec sudo -E -u www-data /usr/bin/bundle exec /srv/app/bin/delayed_job run -n 4"
+
+volumes:
+    web-uploads:
