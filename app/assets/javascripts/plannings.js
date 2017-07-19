@@ -566,14 +566,18 @@ var plannings_edit = function(params) {
 
   });
 
-  // Used to highlight the current stop in sidebar routes
+  // Used to highlight the current stop (or route if over 1t points) in sidebar routes
   var enlighten_stop = function(index, routeId) {
     var target = $(".routes [data-route_id='" + routeId + "'] [data-stop_index='" + index + "']");
 
-    target.css("background", "orange");
-    setTimeout(function() {
-      target.css("background", "");
-    }, 1500);
+    if (target.length === 0) {
+      target = $(".routes [data-route_id='" + routeId + "']");
+    } else {
+      target.css("background", "orange");
+      setTimeout(function() {
+        target.css("background", "");
+      }, 1500);
+    }
 
     if (target.offset().top < 0 || target.offset().top > $(".sidebar-content").height()) {
       $(".sidebar-content").animate({
