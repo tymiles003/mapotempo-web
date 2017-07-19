@@ -132,6 +132,8 @@ Rails.application.routes.draw do
   get 'stops/:id' => 'stops#show'
   get 'routes/:route_id/stops/by_index/:index' => 'stops#show'
 
+  get 'visits/:id' => 'visits#show'
+
   get '/zonings/new/planning/:planning_id' => 'zonings#new', as: :new_zonings_planning
   resources :zonings do
     get 'edit/planning/:planning_id' => 'zonings#edit'

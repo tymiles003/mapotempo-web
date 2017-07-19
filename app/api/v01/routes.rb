@@ -65,7 +65,7 @@ class V01::Routes < Grape::API
         params do
           requires :id, type: String, desc: ID_DESC
           requires :active, type: String, values: ['all', 'reverse', 'none']
-          optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+          optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
         end
         patch ':id/active/:active' do
           get_route.active(params[:active].to_s.to_sym) && get_route.compute
@@ -102,7 +102,7 @@ class V01::Routes < Grape::API
           optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
           optional :all_stops, type: Boolean, desc: 'Deprecated (Use active_only instead)'
           optional :active_only, type: Boolean, desc: 'If true only active stops are taken into account by optimization, else inactive stops are also taken into account but are not activated in result route.', default: true
-          optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+          optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
         end
         patch ':id/optimize' do
           begin
@@ -141,7 +141,7 @@ class V01::Routes < Grape::API
           success: V01::Entities::Route
         params do
           requires :id, type: String, desc: 'ID / Ref (ref:abcd) of the VEHICLE attached to the Route'
-          optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+          optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
         end
         get ':id' do
           planning_id = ParseIdsRefs.read(params[:planning_id])

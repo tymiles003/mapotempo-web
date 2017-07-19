@@ -496,7 +496,7 @@ class Route < ApplicationRecord
     "#{ref}:#{vehicle_usage && vehicle_usage.vehicle.name}=>[" + stops.collect(&:to_s).join(', ') + ']'
   end
 
-  def self.routes_to_geojson(routes, include_stores = true, respect_hidden = true, polyline = true)
+  def self.routes_to_geojson(routes, include_stores = true, respect_hidden = true, include_linestrings = :polyline, with_quantities = false)
     stores_geojson = []
 
     if include_stores
@@ -519,11 +519,12 @@ class Route < ApplicationRecord
     end
 
     features = routes.select { |r| !respect_hidden || !r.hidden }.flat_map { |r|
-      (r.geojson_tracks || []) + (r.geojson_points || []).compact
+      (include_linestrings && r.geojson_tracks || []) +
+        ((with_quantities ? r.stops_to_geojson_points(with_quantities: true) : r.geojson_points) || []).compact
     }.compact
     features += stores_geojson unless stores_geojson.empty?
 
-    unless polyline
+    if include_linestrings == true
       features = features.map { |feature|
         feature = JSON.parse(feature)
         if feature['geometry'] && feature['geometry']['polylines']
@@ -536,8 +537,8 @@ class Route < ApplicationRecord
     '{"type":"FeatureCollection","features":[' + features.join(',') + ']}'
   end
 
-  def to_geojson(respect_hidden = true, polyline = true)
-    self.class.routes_to_geojson([self], false, respect_hidden, polyline)
+  def to_geojson(respect_hidden = true, include_linestrings = :polyline, with_quantities = false)
+    self.class.routes_to_geojson([self], false, respect_hidden, include_linestrings, with_quantities)
   end
 
   # Add route_id to geojson after create
@@ -553,6 +554,40 @@ class Route < ApplicationRecord
       point.to_json
     }
     self.update_columns(attributes.slice('geojson_tracks', 'geojson_points'))
+  end
+
+  def stops_to_geojson_points(options = {})
+    unless stops.empty?
+      inactive_stops = 0
+      stops.map do |stop|
+        inactive_stops += 1 unless stop.active
+        if stop.position?
+          feat = {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [stop.lng, stop.lat]
+            },
+            properties: {
+              route_id: self.id,
+              index: stop.index,
+              active: stop.active,
+              number: stop.active && stop.route.vehicle_usage ? stop.index - inactive_stops : nil,
+              color: stop.is_a?(StopVisit) ? stop.default_color : nil,
+              icon: stop.icon,
+              icon_size: stop.icon_size
+            }
+          }
+          feat[:properties][:quantities] = stop.visit.default_quantities.map { |k, v|
+            {
+              deliverable_unit_id: k,
+              quantity: v
+            }
+          } if options[:with_quantities] && stop.is_a?(StopVisit)
+          feat.to_json
+        end
+      end.compact
+    end
   end
 
   private
@@ -607,33 +642,6 @@ class Route < ApplicationRecord
     if self.outdated && self.vehicle_usage_id
       self.optimized_at = nil unless optimized_at_changed?
       self.last_sent_to = self.last_sent_at = nil
-    end
-  end
-
-  def stops_to_geojson_points
-    unless stops.empty?
-      inactive_stops = 0
-      stops.map do |stop|
-        inactive_stops += 1 unless stop.active
-        if stop.position?
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [stop.lng, stop.lat]
-            },
-            properties: {
-              route_id: self.id,
-              index: stop.index,
-              active: stop.active,
-              number: stop.active && stop.route.vehicle_usage ? stop.index - inactive_stops : nil,
-              color: stop.is_a?(StopVisit) ? stop.default_color : nil,
-              icon: stop.icon,
-              icon_size: stop.icon_size
-            }
-          }.to_json
-        end
-      end.compact
     end
   end
 

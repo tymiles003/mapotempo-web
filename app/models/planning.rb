@@ -443,8 +443,8 @@ class Planning < ApplicationRecord
     "#{name}=>" + routes.collect(&:to_s).join(' ')
   end
 
-  def to_geojson(respect_hidden = true, polyline = true)
-    Route.routes_to_geojson(routes, true, respect_hidden, polyline)
+  def to_geojson(respect_hidden = true, include_linestrings = :polyline, with_quantities = false)
+    Route.routes_to_geojson(routes, true, respect_hidden, include_linestrings, with_quantities)
   end
 
   def save_import
@@ -611,7 +611,7 @@ class Planning < ApplicationRecord
 
       # Get free visits if not the first initial split on planning building
       if !visits_free
-        visits_free = routes.includes_destinations.reject(&:locked).flat_map(&:stops).select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
+        visits_free = routes.reject(&:locked).flat_map(&:stops).select{ |stop| stop.is_a?(StopVisit) }.map(&:visit)
 
         routes.each{ |route|
           route.locked || route.set_visits([])

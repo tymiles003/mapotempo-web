@@ -40,10 +40,10 @@ var popupModule = (function() {
 
   var _buildContentForPopup = function(marker) {
     if (_ajaxCanBeProceeded()) {
-      getPopupContent(marker.properties.store_id ? 'store' : 'stop', marker.properties.store_id || {
+      getPopupContent(marker.properties.store_id ? 'store' : 'stop', _context.planningId ? marker.properties.store_id || {
         route_id: marker.properties.route_id,
         index: marker.properties.index
-      }, function(content) {
+      } : marker.properties.visit_id, function(content) {
 
         // Base options
         var options = {
@@ -67,9 +67,14 @@ var popupModule = (function() {
   };
 
   var getPopupContent = function(type, id, callback) {
+    var url = _context.options.appBaseUrl;
+    if (_context.planningId)
+      url += (type == 'store' ?
+        'stores/' + id + '.json' : 'routes/' + id.route_id + '/stops/by_index/' + id.index + '.json');
+    else
+      url += 'visits/' + id + '.json';
     _currentAjaxRequested = $.ajax({
-      url: _context.options.appBaseUrl + (type == 'store' ?
-        'stores/' + id + '.json' : 'routes/' + id.route_id + '/stops/by_index/' + id.index + '.json'),
+      url: url,
       beforeSend: beforeSendWaiting,
       success: function(data) {
         data.i18n = mustache_i18n;
@@ -83,12 +88,12 @@ var popupModule = (function() {
               phone_number_call(e.currentTarget.innerHTML, _context.options.url_click2call, e.target);
             });
           }
-          $('[data-target$=isochrone-modal]', container).click(function(e) {
+          $('[data-target$=isochrone-modal]', container).click(function() {
             $('#isochrone_lat').val(data.lat);
             $('#isochrone_lng').val(data.lng);
             $('#isochrone_vehicle_usage_id').val(data.vehicle_usage_id);
           });
-          $('[data-target$=isodistance-modal]', container).click(function(e) {
+          $('[data-target$=isodistance-modal]', container).click(function() {
             $('#isodistance_lat').val(data.lat);
             $('#isodistance_lng').val(data.lng);
             $('#isodistance_vehicle_usage_id').val(data.vehicle_usage_id);
@@ -215,7 +220,9 @@ var RoutesLayer = L.FeatureGroup.extend({
     isodistance: false,
     url_click2call: undefined,
     unit: 'km',
-    appBaseUrl: '/'
+    appBaseUrl: '/',
+    withPolylines: true,
+    withQuantities: false
   },
 
   // Clusters for each route
@@ -230,14 +237,12 @@ var RoutesLayer = L.FeatureGroup.extend({
     spiderfyOnMaxZoom: true,
     animate: false,
     maxClusterRadius: function(currentZoom) {
-      return currentZoom > 15 ? 1 : 100;
+      return currentZoom > defaultMapZoom ? 1 : 100;
     },
     spiderfyDistanceMultiplier: 0.5,
     // disableClusteringAtZoom: 12,
     iconCreateFunction: function(cluster) {
-      var currentZoom = cluster._map.getZoom();
-
-      if (currentZoom > 15) {
+      if (cluster._map.getZoom() > cluster._map.defaultMapZoom) {
         var markers = cluster.getAllChildMarkers();
         var n = ['…'];
         if (markers[0].properties.number && markers.length > 2) {
@@ -473,7 +478,7 @@ var RoutesLayer = L.FeatureGroup.extend({
   _load: function(routeIds, includeStores, geojson, callback) {
     if (!geojson) {
       $.ajax({
-        url: '/api/0.1/plannings/' + this.planningId + '/routes.geojson?geojson=polyline&ids=' + routeIds.join(',') + '&stores=' + includeStores,
+        url: '/api/0.1/plannings/' + this.planningId + '/routes.geojson?geojson=' + (this.options.withPolylines ? 'polyline' : 'point') + '&ids=' + routeIds.join(',') + '&stores=' + includeStores,
         beforeSend: beforeSendWaiting,
         success: function(data) {
           this._addRoutes(data);
@@ -494,7 +499,9 @@ var RoutesLayer = L.FeatureGroup.extend({
 
   _loadAll: function(callback) {
     $.ajax({
-      url: '/api/0.1/plannings/' + this.planningId + '.geojson?geojson=polyline',
+      url: this.planningId ?
+        '/api/0.1/plannings/' + this.planningId + '.geojson?geojson=' + (this.options.withPolylines ? 'polyline' : 'point') + '&quantities=' + this.options.withQuantities :
+        '/api/0.1/visits.geojson?quantities=' + this.options.withQuantities,
       beforeSend: beforeSendWaiting,
       success: function(data) {
         this._addRoutes(data);
@@ -507,26 +514,21 @@ var RoutesLayer = L.FeatureGroup.extend({
     });
   },
 
-  _formatGeojsonFromPolylines: function(geojson) {
-    for (var i = 0; i < geojson.features.length; i++) {
-      if (geojson.features[i].geometry.polylines) {
-        var feature = geojson.features[i];
-        feature.geometry.coordinates = L.PolylineUtil.decode(feature.geometry.polylines, 6);
-        for (var j = 0; j < feature.geometry.coordinates.length; j++) {
-          feature.geometry.coordinates[j] = [feature.geometry.coordinates[j][1], feature.geometry.coordinates[j][0]];
-        }
-        delete feature.geometry.polylines;
-      }
-    }
-  },
-
   _addRoutes: function(geojson) {
-    this._formatGeojsonFromPolylines(geojson);
-
     var colorsByRoute = {};
     var overlappingMarkers = {};
 
     var globalLayer = L.geoJSON(geojson, {
+      filter: function(feature) {
+        if (feature.geometry.polylines) {
+          feature.geometry.coordinates = L.PolylineUtil.decode(feature.geometry.polylines, 6); // precision
+          for (var j = 0; j < feature.geometry.coordinates.length; j++) {
+            feature.geometry.coordinates[j] = [feature.geometry.coordinates[j][1], feature.geometry.coordinates[j][0]];
+          }
+          delete feature.geometry.polylines;
+        }
+        return true;
+      },
       onEachFeature: function(feature, layer) {
         if (feature.properties.route_id) {
           if (!(feature.properties.route_id in this.layersByRoute)) {

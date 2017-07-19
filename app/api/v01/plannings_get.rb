@@ -58,7 +58,7 @@ class V01::PlanningsGet < Grape::API
       optional :end_date, type: Date, desc: 'Select only plannings before this date.'
       optional :active, type: Boolean, desc: 'Select only active plannings.'
       optional :tags, type: Array[String], coerce_with: ->(c) { c.split(',') }, desc: 'Select plannings which contains at least one of these tags label'
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry, when using json output.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     get do
       plannings = current_customer.plannings
@@ -97,7 +97,8 @@ class V01::PlanningsGet < Grape::API
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry, when using json output.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry, when using json output. For geojson output, param can be only set to `point` to return only points, `polyline` to return with encoded linestring.'
+      optional :quantities, type: Boolean, default: false, desc: 'Include the quantities when using geojson output.'
     end
     get ':id' do
       planning = current_customer.plannings.where(ParseIdsRefs.read(params[:id])).first!
@@ -110,7 +111,15 @@ class V01::PlanningsGet < Grape::API
           planning_calendar(planning).to_ical
         end
       elsif env['api.format'] == :geojson
-        planning.to_geojson(true, params[:geojson] == :polyline)
+        planning.to_geojson(true,
+          if params[:geojson] == :polyline
+            :polyline
+          elsif params[:geojson] == :point
+            false
+          else
+            true
+          end,
+          params[:quantities])
       else
         present planning, with: V01::Entities::Planning, geojson: params[:geojson]
       end

@@ -44,7 +44,7 @@ class V01::Plannings < Grape::API
         vehicle_usage_set_id: { required: true }
       )
       optional :tag_ids, type: Array[Integer], desc: 'Ids separated by comma.', coerce_with: CoerceArrayInteger, documentation: { param_type: 'form' }
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     post do
       planning = current_customer.plannings.build(planning_params)
@@ -60,7 +60,7 @@ class V01::Plannings < Grape::API
     params do
       requires :id, type: String, desc: ID_DESC
       use :params_from_entity, entity: V01::Entities::Planning.documentation.except(:id, :route_ids, :outdated, :tag_ids)
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     put ':id' do
       id = ParseIdsRefs.read(params[:id])
@@ -100,7 +100,7 @@ class V01::Plannings < Grape::API
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     get ':id/refresh' do
       id = ParseIdsRefs.read(params[:id])
@@ -146,7 +146,7 @@ class V01::Plannings < Grape::API
     params do
       requires :id, type: String, desc: ID_DESC
       optional :details, type: Boolean, desc: 'Output route details', default: false
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     get ':id/apply_zonings' do
       id = ParseIdsRefs.read params[:id]
@@ -171,7 +171,7 @@ class V01::Plannings < Grape::API
       optional :synchronous, type: Boolean, desc: 'Synchronous', default: true
       optional :all_stops, type: Boolean, desc: 'Deprecated (Use active_only instead)'
       optional :active_only, type: Boolean, desc: 'Optimize all stops (actives and inactives) if false, else only actives', default: true
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     get ':id/optimize' do
       id = ParseIdsRefs.read params[:id]
@@ -193,7 +193,7 @@ class V01::Plannings < Grape::API
       success: V01::Entities::Planning
     params do
       requires :id, type: String, desc: ID_DESC
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     patch ':id/duplicate' do
       id = ParseIdsRefs.read(params[:id])
@@ -211,7 +211,7 @@ class V01::Plannings < Grape::API
       requires :id, type: String, desc: ID_DESC
       requires :order_array_id, type: Integer
       requires :shift, type: Integer
-      optional :geojson, type: Symbol, values: [:true, :false, :polyline], default: :false, desc: 'Fill the geojson field with route geometry.'
+      optional :geojson, type: Symbol, values: [:true, :false, :point, :polyline], default: :false, desc: 'Fill the geojson field with route geometry: `point` to return only points, `polyline` to return with encoded linestring.'
     end
     patch ':id/order_array' do
       id = ParseIdsRefs.read(params[:id])

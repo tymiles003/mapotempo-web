@@ -37,6 +37,7 @@ class Ability
         can :manage, Tag, customer_id: user.customer.id
         can [:new, :create], Tag
         can :manage, Destination, customer_id: user.customer.id
+        can :manage, Visit, destination: {customer_id: user.customer.id}
         can [:new, :create, :upload], Destination
         can :manage, Store, customer_id: user.customer.id
         can [:new, :create], Store

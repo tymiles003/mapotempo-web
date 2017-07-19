@@ -72,14 +72,18 @@ var zonings_edit = function(params) {
 
   sidebar.addTo(map);
 
-  var unplannedMarkers = L.featureGroup(),
-    withVehicleMarkers = L.featureGroup(),
-    storeMarkers = L.featureGroup(),
-    featureGroup = L.featureGroup();
+  var featureGroup = L.featureGroup().addTo(map);
 
-  map.addLayer(featureGroup).addLayer(storeMarkers).addLayer(withVehicleMarkers).addLayer(unplannedMarkers);
+  var markersGroup = new RoutesLayer(planning_id, {
+    url_click2call: url_click2call,
+    unit: prefered_unit,
+    outOfRouteId: params.out_of_route_id,
+    allRoutesWithVehicle: [],
+    appBaseUrl: params.apiWeb ? '/api-web/0.1/' : '/',
+    withPolylines: false,
+    withQuantities: deliverableUnits.length > 0
+  }).addTo(map);
 
-  var destinationsDisplayed = false;
   var zonesMap = {};
 
   // Must be init before L.Hash
@@ -128,18 +132,18 @@ var zonings_edit = function(params) {
         e.preventDefault();
       }
     }
-    $(document).on('page:change', function(e) {
+    $(document).on('page:change', function() {
       $(document).off('page:before-change', checkZoningChanges);
     });
   }
 
   $(document).on('page:before-change', checkZoningChanges);
 
-  map.on(L.Draw.Event.EDITSTART, function(e) {
+  map.on(L.Draw.Event.EDITSTART, function() {
     editing_drawing = true;
   });
 
-  map.on(L.Draw.Event.EDITSTOP, function(e) {
+  map.on(L.Draw.Event.EDITSTOP, function() {
     editing_drawing = true;
   });
 
@@ -168,16 +172,21 @@ var zonings_edit = function(params) {
   });
 
   var countPointInPolygon = function(layer, ele) {
-    if (destinationsDisplayed) {
+    var markers = [];
+    for (var routeId in markersGroup.clustersByRoute) {
+      if (!$('#hide_out_of_route').is(':checked') || routeId != params.out_of_route_id)
+        markers = markers.concat(markersGroup.clustersByRoute[routeId].getLayers());
+    }
+    if (markers.length) {
       var n = 0,
         quantities = {};
-      $.each($.merge(withVehicleMarkers.getLayers(), $('#hide_out_of_route').is(':checked') ? [] : unplannedMarkers.getLayers()), function(i, markerLayer) {
-        if (leafletPip.pointInLayer(markerLayer.getLatLng(), layer, true).length > 0) {
+      markers.forEach(function(marker) {
+        if (leafletPip.pointInLayer(marker.getLatLng(), layer, true).length > 0) {
           n += 1;
-          if (markerLayer.data) {
-            $.each(markerLayer.data.quantities, function(i, q) {
-              var newQuantity = quantities[q.deliverable_unit_id] ? (parseFloat(quantities[q.deliverable_unit_id]) + parseFloat((q.quantity))) : parseFloat(q.quantity);
-              quantities[q.deliverable_unit_id] = newQuantity.toFixed(2);
+          if (marker.properties) {
+            $.each(marker.properties.quantities, function(i, q) {
+              var quantity = quantities[q.deliverable_unit_id] ? (parseFloat(quantities[q.deliverable_unit_id]) + parseFloat((q.quantity))) : parseFloat(q.quantity);
+              quantities[q.deliverable_unit_id] = quantity && Math.round(quantity * 100) / 100;
             });
           }
         }
@@ -232,7 +241,7 @@ var zonings_edit = function(params) {
     addOverlay: function(zone) {
       var that = this;
       var labelMarker;
-      this.on('mouseover', function(e) {
+      this.on('mouseover', function() {
         that.setStyle({
           opacity: 0.9,
           weight: (zone.speed_multiplicator === 0) ? 5 : 3
@@ -247,7 +256,7 @@ var zonings_edit = function(params) {
           }).addTo(labelLayer);
         }
       });
-      this.on('mouseout', function(e) {
+      this.on('mouseout', function() {
         that.setStyle({
           opacity: 0.5,
           weight: (zone.speed_multiplicator === 0) ? 5 : 2
@@ -257,7 +266,7 @@ var zonings_edit = function(params) {
         }
         labelMarker = null;
       });
-      this.on('click', function(e) {
+      this.on('click', function() {
         if (!zone.id) {
           return;
         }
@@ -283,7 +292,7 @@ var zonings_edit = function(params) {
 
       function toggleChange(k, v) {
         if (params.zoning_details[zone_id] && params.zoning_details[zone_id][k] == v) {
-          $.each(changes[zone_id], function(i, item) { if (item == k) changes[zone_id].splice(i, 1) });
+          $.each(changes[zone_id], function(i, item) { if (item == k) changes[zone_id].splice(i, 1); });
         } else {
           if ($.inArray(k, changes[zone_id]) == -1) changes[zone_id].push(k);
         }
@@ -415,7 +424,7 @@ var zonings_edit = function(params) {
       setColor(geom, $('select', ele).val(), e.target.checked ? 0 : undefined);
     });
 
-    $('.delete', ele).click(function(event) {
+    $('.delete', ele).click(function() {
       deleteZone(geom);
     });
   };
@@ -433,8 +442,6 @@ var zonings_edit = function(params) {
     countPointInPolygon(zonesMap[geom._leaflet_id].layer, zonesMap[geom._leaflet_id].ele);
   };
 
-  var planning = undefined;
-
   var displayZoning = function(data) {
     nbZones = data.zoning && data.zoning.length;
     $('#zones').empty();
@@ -448,14 +455,7 @@ var zonings_edit = function(params) {
     });
 
     if (fitBounds) {
-      var bounds = (featureGroup.getLayers().length ?
-        featureGroup :
-        unplannedMarkers.getLayers().length ?
-        unplannedMarkers :
-        withVehicleMarkers.getLayers().length ?
-        withVehicleMarkers :
-        storeMarkers
-      ).getBounds();
+      var bounds = (featureGroup.getLayers().length ? featureGroup : markersGroup).getBounds();
       if (bounds && bounds.isValid()) {
         map.invalidateSize();
         map.fitBounds(bounds, {
@@ -467,72 +467,29 @@ var zonings_edit = function(params) {
     }
   };
 
-  var displayDestinations = function(route) {
-    destinationsDisplayed = true;
-    var hasVehicle = route.vehicle_id && vehiclesMap[route.vehicle_id];
-
-    $.each(route.stops, function(index, stop) {
-      stop.i18n = mustache_i18n;
-      stop.visits = true;
-      if ($.isNumeric(stop.lat) && $.isNumeric(stop.lng)) {
-        var m = L.marker(new L.LatLng(stop.lat, stop.lng), {
-          icon: L.icon({
-            iconUrl: '/images/' + (stop.icon || 'point') + '-' + (stop.color || (hasVehicle ? vehiclesMap[route.vehicle_id].color : '#707070')).substr(1) + '.svg',
-            iconSize: new L.Point(12, 12),
-            iconAnchor: new L.Point(6, 6),
-            popupAnchor: new L.Point(0, -6),
-          })
-        }).bindPopup(SMT['stops/show'](stop));
-
-        if (hasVehicle) m.addTo(withVehicleMarkers);
-        else m.addTo(unplannedMarkers);
-
-        m.data = stop;
-        m.on('mouseover', function(e) {
-          m.openPopup();
-        }).on('mouseout', function(e) {
-          m.closePopup();
-        }).on('popupopen', function(e) {
-          $('.phone_number', e.popup._container).click(function(e) {
-            phone_number_call(e.currentTarget.innerHTML, url_click2call, e.target);
-          });
-        });
-      }
-    });
-  };
-
   var displayZoningFirstTime = function(data) {
-    $.each(data.stores, function(i, store) {
-      store.store = true;
-      store.i18n = mustache_i18n;
-      if ($.isNumeric(store.lat) && $.isNumeric(store.lng)) {
-        var m = L.marker(new L.LatLng(store.lat, store.lng), {
-          icon: L.divIcon({
-            html: '<i class="fa ' + (store.icon || 'fa-home') + ' ' + map.iconSize[store.icon_size || 'large'].name + ' store-icon" style="color: ' + (store.color || 'black') + ';"></i>',
-            iconSize: new L.Point(map.iconSize[store.icon_size || 'large'].size, map.iconSize[store.icon_size || 'large'].size),
-            iconAnchor: new L.Point(map.iconSize[store.icon_size || 'large'].size / 2, map.iconSize[store.icon_size || 'large'].size / 2),
-            popupAnchor: new L.Point(0, -Math.floor(map.iconSize[store.icon_size || 'large'].size / 2.5)),
-            className: 'store-icon-container'
-          })
-        }).addTo(storeMarkers).bindPopup(SMT['stops/show'](store));
-        m.on('mouseover', function(e) {
-          m.openPopup();
-        }).on('mouseout', function(e) {
-          m.closePopup();
-        });
-      }
-    });
-
-    if (data.planning) {
-      $.each(data.planning, function(index, route) {
-        displayDestinations(route);
-      });
-      planning = data.planning;
-    }
     displayZoning(data);
+    if (planning_id) {
+      markersGroup.showAllRoutes(function(layer) {
+        $.each(featureGroup.getLayers(), function(idx, zone) {
+          countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
+        });
+        if (fitBounds && featureGroup.getLayers().length == 0) {
+          var bounds = layer.getBounds();
+          if (bounds && bounds.isValid()) {
+            map.invalidateSize();
+            map.fitBounds(bounds, {
+              maxZoom: 15,
+              animate: false,
+              padding: [20, 20]
+            });
+          }
+        }
+      });
+    }
   };
 
-  $('form[id^=edit_zoning]').submit(function(e) {
+  $('form[id^=edit_zoning]').submit(function() {
     var empty = false;
     $.each($('select').serializeArray(), function(i, e) {
       if (!e.value) {
@@ -548,34 +505,14 @@ var zonings_edit = function(params) {
   $('[name=all-destinations]').change(function() {
     if ($(this).is(':checked')) {
       if (!destLoaded) {
-        $.ajax({
-          type: 'get',
-          url: '/destinations.json',
-          beforeSend: beforeSendWaiting,
-          success: function(data) {
-            destLoaded = true;
-            var visits = [];
-            $.each(data.destinations, function(i, dest) {
-              if (dest.visits.length) {
-                $.each(dest.visits, function(i, visit) {
-                  visits.push($.extend(dest, visit));
-                });
-              } else {
-                visits.push(dest);
-              }
-            });
-            displayDestinations({
-              stops: visits
-            });
-            $.each(featureGroup.getLayers(), function(idx, zone) {
-              countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
-            });
-          },
-          complete: completeAjaxMap,
-          error: ajaxError
+        markersGroup.showAllRoutes(function() {
+          destLoaded = true;
+          $.each(featureGroup.getLayers(), function(idx, zone) {
+            countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
+          });
         });
       } else {
-        map.addLayer(unplannedMarkers);
+        map.addLayer(markersGroup);
         $('.zone-info').show();
       }
       $('.automatic.disabled').each(function() {
@@ -583,7 +520,7 @@ var zonings_edit = function(params) {
       });
       $('#generate').css('display', 'inline-block');
     } else {
-      map.removeLayer(unplannedMarkers);
+      map.removeLayer(markersGroup);
       $('.zone-info').hide();
       $('.automatic').each(function() {
         $(this).addClass('disabled');
@@ -592,14 +529,16 @@ var zonings_edit = function(params) {
   });
 
   $('#hide_out_of_route').change(function(e) {
-    if ($(e.target).is(':checked')) {
-      map.removeLayer(unplannedMarkers);
-    } else {
-      map.addLayer(unplannedMarkers);
+    if (params.out_of_route_id in markersGroup.clustersByRoute) {
+      if ($(e.target).is(':checked')) {
+        map.removeLayer(markersGroup.clustersByRoute[params.out_of_route_id]);
+      } else {
+        map.addLayer(markersGroup.clustersByRoute[params.out_of_route_id]);
+      }
+      $.each(featureGroup.getLayers(), function(idx, zone) {
+        countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
+      });
     }
-    $.each(featureGroup.getLayers(), function(idx, zone) {
-      countPointInPolygon(zonesMap[zone._leaflet_id].layer, zonesMap[zone._leaflet_id].ele);
-    });
   });
 
   var nbZones = undefined;
@@ -621,7 +560,7 @@ var zonings_edit = function(params) {
           fitBounds = true;
           displayZoning(data);
         },
-        complete: function(jqXHR, textStatus) {
+        complete: function() {
           completeAjaxMap();
         },
         error: ajaxError
@@ -664,7 +603,7 @@ var zonings_edit = function(params) {
         vehicle_usage_set_id: $('#isochrone_vehicle_usage_set_id').val(),
         size: size
       },
-      beforeSend: function(jqXHR, settings) {
+      beforeSend: function() {
         beforeSendWaiting();
         $('#isochrone-modal').modal('hide');
         $('#isochrone-progress-modal').modal({
@@ -672,17 +611,17 @@ var zonings_edit = function(params) {
           keyboard: true
         });
       },
-      success: function(data, textStatus, jqXHR) {
+      success: function(data) {
         hideNotices();
         fitBounds = true;
         displayZoning(data);
         notice(I18n.t('zonings.edit.success'));
       },
-      complete: function(jqXHR, textStatus) {
+      complete: function() {
         completeAjaxMap();
         $('#isochrone-progress-modal').modal('hide');
       },
-      error: function(jqXHR, textStatus, errorThrown) {
+      error: function() {
         stickyError(I18n.t('zonings.edit.failed'));
       }
     });
@@ -718,7 +657,7 @@ var zonings_edit = function(params) {
   });
 
   $.ajax({
-    url: '/zonings/' + (zoning_id ? zoning_id + '/edit' : 'new') + (planning_id ? '/planning/' + planning_id : '') + '.json',
+    url: '/zonings/' + (zoning_id ? zoning_id + '/edit' : 'new') + '.json',
     beforeSend: beforeSendWaiting,
     success: displayZoningFirstTime,
     complete: completeWaiting,

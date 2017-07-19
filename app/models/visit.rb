@@ -140,6 +140,10 @@ class Visit < ApplicationRecord
     @icon ||= (tags | destination.tags).find(&:icon).try(&:icon)
   end
 
+  def icon_size
+    @icon_size ||= (tags | destination.tags).find(&:icon_size).try(&:icon_size)
+  end
+
   def default_color
     color || Destination::COLOR_DEFAULT
   end
@@ -148,7 +152,7 @@ class Visit < ApplicationRecord
     icon || Destination::ICON_DEFAULT
   end
 
-  def default_size
+  def default_icon_size
     nil
   end
 

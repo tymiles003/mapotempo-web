@@ -59,6 +59,7 @@ var bootstrap_dialog = function(options) {
   return default_modal;
 };
 
+var defaultMapZoom = 12;
 var mapInitialize = function(params) {
   var mapLayer, mapBaseLayers = {},
     mapOverlays = {},
@@ -89,8 +90,8 @@ var mapInitialize = function(params) {
     layers: mapLayer,
     zoomControl: false,
     closePopupOnClick: false
-  }).setView([params.map_lat || 0, params.map_lng || 0], params.map_zoom || 13);
-
+  }).setView([params.map_lat || 0, params.map_lng || 0], params.map_zoom || defaultMapZoom);
+  map.defaultMapZoom = defaultMapZoom;
 
   L.control.zoom({
     position: 'topleft',

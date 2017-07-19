@@ -44,8 +44,17 @@ class V01::Entities::Route < Grape::Entity
   expose(:last_sent_to, documentation: { type: String, desc: 'Type GPS Device of Last Sent'})
   expose(:last_sent_at, documentation: { type: DateTime, desc: 'Last Time Sent To External GPS Device'})
   expose(:optimized_at, documentation: { type: DateTime, desc: 'Last optimized at'})
-  expose(:geojson, documentation: { type: String, desc: 'Geojson string of track and stops of the route. Default empty, set parameter geojson=true to get this extra content.' }) { |m, options|
-    options[:geojson] != :false && m.to_geojson(true, options[:geojson] == :polyline) || nil
+  expose(:geojson, documentation: { type: String, desc: 'Geojson string of track and stops of the route. Default empty, set parameter geojson=true|point|polyline to get this extra content.' }) { |m, options|
+    if options[:geojson] != :false
+      m.to_geojson(true,
+        if options[:geojson] == :polyline
+          :polyline
+        elsif options[:geojson] == :point
+          false
+        else
+          true
+        end)
+    end
   }
 end
 

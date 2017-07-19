@@ -168,24 +168,6 @@ class V01::Visits < Grape::API
   end
 
   resource :visits do
-    desc 'Fetch customer\'s visits.',
-      nickname: 'getVisits',
-      is_array: true,
-      success: V01::Entities::Visit
-    params do
-      optional :ids, type: Array[String], desc: 'Select returned visits by id separated with comma. You can specify ref (not containing comma) instead of id, in this case you have to add "ref:" before each ref, e.g. ref:ref1,ref:ref2,ref:ref3.', coerce_with: CoerceArrayString
-    end
-    get do
-      visits = if params.key?(:ids)
-        current_customer.visits.select{ |visit|
-          params[:ids].any?{ |s| ParseIdsRefs.match(s, visit) }
-        }
-      else
-        current_customer.visits
-      end
-      present visits, with: V01::Entities::Visit
-    end
-
     desc 'Delete multiple visits.',
       nickname: 'deleteVisits'
     params do
