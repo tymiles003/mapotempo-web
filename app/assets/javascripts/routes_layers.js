@@ -22,6 +22,7 @@
  *
  */
 var popupModule = (function() {
+  'use strict';
 
   var _context,
     _previousMarker,
@@ -39,49 +40,45 @@ var popupModule = (function() {
   };
 
   var _buildContentForPopup = function(marker) {
+
     if (_ajaxCanBeProceeded()) {
-      getPopupContent(marker.properties.store_id ? 'store' : 'stop', _context.planningId ? marker.properties.store_id || {
-        route_id: marker.properties.route_id,
-        index: marker.properties.index
-      } : marker.properties.visit_id, function(content) {
+      var url = _context.options.appBaseUrl;
 
-        // Base options
-        var options = {
-          number: marker.properties.number
-        };
+      if (_context.planningId) {
+        url += (marker.properties.store_id) ? 'stores/' + marker.properties.store_id + '.json' :
+                                              'routes/' + marker.properties.route_id + '/stops/by_index/' + marker.properties.index + '.json';
+      } else {
+        url += 'visits/' + marker.properties.visit_id + '.json';
+      }
 
-        // Add tomtom options for status tracking
-        if (marker.properties.tomtom) {
-          $.extend(options, { tomtom: marker.properties.tomtom });
-        }
+      getPopupContent(url, marker);
 
-        // Fill template with new options
-        marker.getPopup().setContent(SMT['stops/show']($.extend(content, options)));
-        return marker.getPopup()._container;
-      });
-      // Wait for ajax request
       _currentAjaxRequested.done(function() {
         marker.openPopup();
       });
     }
   };
 
-  var getPopupContent = function(type, id, callback) {
-    var url = _context.options.appBaseUrl;
-    if (_context.planningId)
-      url += (type == 'store' ?
-        'stores/' + id + '.json' : 'routes/' + id.route_id + '/stops/by_index/' + id.index + '.json');
-    else
-      url += 'visits/' + id + '.json';
+  var getPopupContent = function(url, marker) {
+
     _currentAjaxRequested = $.ajax({
       url: url,
       beforeSend: beforeSendWaiting,
       success: function(data) {
         data.i18n = mustache_i18n;
-        data[type] = true;
-        data.routes = _context.options.allRoutesWithVehicle; // unecessary to load all routes for each stop
+        data.routes = _context.options.allRoutesWithVehicle; // unecessary to load all for each stop
         data.out_of_route_id = _context.options.outOfRouteId;
-        var container = callback(data);
+
+        var container = (function(data, marker) {
+          var options = { number: marker.properties.number };
+          if (marker.properties.tomtom) {
+            $.extend(options, { tomtom: marker.properties.tomtom });
+          }
+          marker.getPopup().setContent(SMT['stops/show']($.extend(data, options)));
+
+          return marker.getPopup()._container;
+        })(data, marker);
+
         if (container) {
           if (_context.options.url_click2call) {
             $('.phone_number', container).click(function(e) {
